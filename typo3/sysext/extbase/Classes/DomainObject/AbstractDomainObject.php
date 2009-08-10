@@ -91,7 +91,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return void
 	 */
 	public function _setProperty($propertyName, $propertyValue) {
-		if (property_exists($this, $propertyName)) {
+		if ($this->_hasProperty($propertyName)) {
 			$this->$propertyName = $propertyValue;
 			return TRUE;
 		}
@@ -116,6 +116,16 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 		$properties = get_object_vars($this);
 		unset($properties['_cleanProperties']);
 		return $properties;
+	}
+	
+	/**
+	 * Returns the property value of the given property name. Only for internal use.
+	 *
+	 * @return boolean TRUE bool true if the property exists, FALSE if it doesn't exist or
+	 * NULL in case of an error.
+	 */
+	public function _hasProperty($propertyName) {
+		return property_exists($this, $propertyName);
 	}
 
 	/**

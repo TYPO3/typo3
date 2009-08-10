@@ -42,6 +42,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected $QOMFactory;
 
 	/**
+	 * @var Tx_Extbase_Persistence_Session
+	 */
+	protected $persistenceSession;
+
+	/**
 	 * A reference to the page select object providing methods to perform language and work space overlays
 	 *
 	 * @var t3lib_pageSelect
@@ -93,6 +98,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
 		$this->QOMFactory = $persistenceManager->getBackend()->getQOMFactory();
+		$this->persistenceSession = $persistenceManager->getSession();
 	}
 
 	/**
@@ -117,13 +123,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return object
 	 */
 	protected function mapSingleRow($className, Tx_Extbase_Persistence_RowInterface $row) {
-		if ($this->identityMap->hasUid($className, $row['uid'])) {
-			$object = $this->identityMap->getObjectByUid($className, $row['uid']);
+		if ($this->identityMap->hasIdentifier($row['uid'], $className)) {
+			$object = $this->identityMap->getObjectByIdentifier($row['uid'], $className);
 		} else {
 			$object = $this->createEmptyObject($className);
 			$this->thawProperties($object, $row);
 			$this->identityMap->registerObject($object, $object->getUid());
 			$object->_memorizeCleanState();
+			$this->persistenceSession->registerReconstitutedObject($object);
 		}
 		return $object;
 	}
@@ -342,7 +349,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return string The selector name
 	 */
 	public function convertClassNameToTableName($className) {
-		
 		return $this->getDataMap($className)->getTableName();
 	}
 
@@ -363,7 +369,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				}
 			}
 		}
-		return Tx_Extbase_Utility_Plugin::convertCamelCaseToLowerCaseUnderscored($propertyName);
+		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($propertyName);
 	}
 	
 }

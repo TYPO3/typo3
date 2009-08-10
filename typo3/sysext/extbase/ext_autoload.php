@@ -208,7 +208,6 @@ return array(
 	'tx_extbase_reflection_service' => $extensionClassesPath . 'Reflection/Service.php',
 	'tx_extbase_utility_arrays' => $extensionClassesPath . 'Utility/Arrays.php',
 	'tx_extbase_utility_extension' => $extensionClassesPath . 'Utility/Extension.php',
-	'tx_extbase_utility_plugin' => $extensionClassesPath . 'Utility/Plugin.php',
 	'tx_extbase_utility_typoscript' => $extensionClassesPath . 'Utility/TypoScript.php',
 	'tx_extbase_validation_error' => $extensionClassesPath . 'Validation/Error.php',
 	'tx_extbase_validation_exception' => $extensionClassesPath . 'Validation/Exception.php',

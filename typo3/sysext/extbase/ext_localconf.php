@@ -2,7 +2,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Dispatcher.php');
-require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Plugin.php');
+require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Extension.php');
 
 // use own cache table
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection'] = array(

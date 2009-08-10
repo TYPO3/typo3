@@ -26,11 +26,11 @@
 ***************************************************************/
 
 /**
- * An Idetity Map for Domain Objects
+ * An identity mapper to map nodes to objects
  *
- * @package Extbase
- * @subpackage Persistence
- * @version $ID:$
+ * @version $Id$
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @see \F3\TYPO3CR\FLOW3\Persistence\DataMapper, \F3\TYPO3CR\FLOW3\Persistence\Backend
  */
 class Tx_Extbase_Persistence_IdentityMap {
 
@@ -42,10 +42,12 @@ class Tx_Extbase_Persistence_IdentityMap {
 	/**
 	 * @var array
 	 */
-	protected $uidMap = array();
+	protected $uuidMap = array();
 
 	/**
 	 * Constructs a new Identity Map
+	 *
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct() {
 		$this->objectMap = new Tx_Extbase_Persistence_ObjectStorage();
@@ -56,35 +58,36 @@ class Tx_Extbase_Persistence_IdentityMap {
 	 *
 	 * @param object $object
 	 * @return boolean
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function hasObject($object) {
 		return $this->objectMap->contains($object);
 	}
 
 	/**
-	 * Checks whether the given uiduid is known to the identity map
+	 * Checks whether the given UUID is known to the identity map
 	 *
+	 * @param string $uuid
 	 * @param string $className
-	 * @param string $uid
 	 * @return boolean
 	 */
-	public function hasUid($className, $uid) {
-		if (is_array($this->uidMap[$className])) {
-			return array_key_exists($uid, $this->uidMap[$className]);
+	public function hasIdentifier($uuid, $className) {
+		if (is_array($this->uuidMap[$className])) {
+			return array_key_exists($uuid, $this->uuidMap[$className]);
 		} else {
 			return FALSE;
 		}
 	}
 
 	/**
-	 * Returns the object for the given uid
+	 * Returns the object for the given UUID
 	 *
+	 * @param string $uuid
 	 * @param string $className
-	 * @param string $uid
 	 * @return object
 	 */
-	public function getObjectByUid($className, $uid) {
-		return $this->uidMap[$className][$uid];
+	public function getObjectByIdentifier($uuid, $className) {
+		return $this->uuidMap[$className][$uuid];
 	}
 
 	/**
@@ -92,8 +95,13 @@ class Tx_Extbase_Persistence_IdentityMap {
 	 *
 	 * @param object $object
 	 * @return string
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getIdentifierByObject($object) {
+		if (!is_object($object)) throw new InvalidArgumentException('Object expected, ' . gettype($object) . ' given.', 1246892972);
+		if (!isset($this->objectMap[$object])) {
+			throw new Tx_Extbase_Persisitence_Exception_UnknownObjectException('The given object (class: ' . get_class($object) . ') is not registered in this Identity Map.', 1246892970);
+		}
 		return $this->objectMap[$object];
 	}
 
@@ -101,11 +109,12 @@ class Tx_Extbase_Persistence_IdentityMap {
 	 * Register a node identifier for an object
 	 *
 	 * @param object $object
-	 * @param string $uid
+	 * @param string $uuid
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function registerObject($object, $uid) {
-		$this->objectMap[$object] = $uid;
-		$this->uidMap[get_class($object)][$uid] = $object;
+	public function registerObject($object, $uuid) {
+		$this->objectMap[$object] = $uuid;
+		$this->uuidMap[get_class($object)][$uuid] = $object;
 	}
 
 	/**
@@ -113,12 +122,12 @@ class Tx_Extbase_Persistence_IdentityMap {
 	 *
 	 * @param string $object
 	 * @return void
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function unregisterObject($object) {
-		unset($this->uidMap[get_class($object)][$this->objectMap[$object]]);
+		unset($this->uuidMap[get_class($object)][$this->objectMap[$object]]);
 		$this->objectMap->detach($object);
 	}
 
 }
-
 ?>

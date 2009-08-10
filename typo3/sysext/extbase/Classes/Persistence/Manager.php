@@ -46,6 +46,18 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	protected $session;
 
 	/**
+	 * @var Tx_Extbase_Object_ManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
+	 * This is an array of registered repository class names.
+	 *
+	 * @var array
+	 */
+	protected $repositoryClassNames = array();
+
+	/**
 	 * Injects the Persistence Backend
 	 *
 	 * @param Tx_Extbase_Persistence_BackendInterface $backend The persistence backend
@@ -67,6 +79,16 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	public function injectSession(Tx_Extbase_Persistence_Session $session) {
 		$this->session = $session;
 	}
+	
+	/**
+	 * Injects the object manager
+	 *
+	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * Returns the current persistence session
@@ -86,6 +108,25 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	public function getBackend() {
 		return $this->backend;
 	}
+	
+	/**
+	 * Registers a repository
+	 *
+	 * @param string $className The class name of the repository to be reigistered
+	 * @return void
+	 */
+	public function registerRepositoryClassName($className) {
+		$this->repositoryClassNames[] = $className;
+	}
+
+	/**
+	 * Returns all repository class names
+	 *
+	 * @return array An array holding the registered repository class names
+	 */
+	public function getRepositoryClassNames() {
+		return $this->repositoryClassNames;
+	}
 
 	/**
 	 * Commits new objects and changes to objects in the current persistence
@@ -96,14 +137,32 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 */
 	public function persistAll() {
 		$aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$aggregateRootObjects->addAll($this->session->getAddedObjects());
+		$removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+
+			// fetch and inspect objects from all known repositories
+		$repositoryClassNames = $this->getRepositoryClassNames();
+		foreach ($repositoryClassNames as $repositoryClassName) {
+			$repository = $this->objectManager->getObject($repositoryClassName);
+			$aggregateRootObjects->addAll($repository->getAddedObjects());
+			$removedObjects->addAll($repository->getRemovedObjects());
+		}
+
 		$aggregateRootObjects->addAll($this->session->getReconstitutedObjects());
 
-		$removedObjects = $this->session->getRemovedObjects();
-
+			// hand in only aggregate roots, leaving handling of subobjects to
+			// the underlying storage layer
 		$this->backend->setAggregateRootObjects($aggregateRootObjects);
 		$this->backend->setDeletedObjects($removedObjects);
 		$this->backend->commit();
+
+			// this needs to unregister more than just those, as at least some of
+			// the subobjects are supposed to go away as well...
+			// OTOH those do no harm, changes to the unused ones should not happen,
+			// so all they do is eat some memory.
+		foreach($removedObjects as $removedObject) {
+			$this->session->unregisterReconstitutedObject($removedObject);
+		}
 	}
+		
 }
 ?>

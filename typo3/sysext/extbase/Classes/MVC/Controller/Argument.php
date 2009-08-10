@@ -36,11 +36,6 @@
 class Tx_Extbase_MVC_Controller_Argument {
 
 	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
-	 */
-	protected $persistenceManager;
-
-	/**
 	 * @var Tx_Extbase_Persistence_QueryFactory
 	 */
 	protected $queryFactory;
@@ -114,6 +109,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function __construct($name, $dataType = 'Text') {
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
+		$this->propertyMapper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
 		if (is_array($dataType)) {

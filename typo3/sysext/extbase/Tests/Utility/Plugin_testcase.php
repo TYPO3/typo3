@@ -24,12 +24,12 @@
 
 
 /**
- * Testcase for class Tx_Extbase_Utility_Plugin
+ * Testcase for class Tx_Extbase_Utility_Extension
  *
  * @package Extbase
  * @subpackage extbase
  */
-class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
+class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 	
 	/**
 	 * Contains backup of $TYPO3_CONF_VARS
@@ -49,12 +49,12 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 	
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingTsWorksForMinimalisticSetup() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'Pi1',
 			'My Plugin Title',
@@ -73,12 +73,12 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 	
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingTsAddsEnablesCacheClearingByDefault() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'Pi1',
 			'My Plugin Title',
@@ -93,12 +93,12 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 	
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingTsWorksForASingleControllerAction() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'Pi1',
 			'My Plugin Title',
@@ -120,11 +120,11 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingPluginWithEmptyPluginNameResultsInAnError() {
 		$this->setExpectedException('InvalidArgumentException');
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'',
 			'My Plugin Title',
@@ -136,11 +136,11 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingPluginWithEmptyExtensionNameResultsInAnError() {
 		$this->setExpectedException('InvalidArgumentException');
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'',
 			'Pi1',
 			'My Plugin Title',
@@ -152,12 +152,12 @@ class Tx_Extbase_Utility_Plugin_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingPluginRespectsDefaultActionAsANonCachableAction() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'Pi1',
 			'My Plugin Title',
@@ -180,12 +180,12 @@ tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingPluginRespectsNonDefaultActionAsANonCachableAction() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'Pi1',
 			'My Plugin Title',
@@ -208,12 +208,12 @@ tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingPluginWorksForMultipleControllerActionsWithCachableActionAsDefault() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'Pi1',
 			'My Plugin Title',
@@ -251,12 +251,12 @@ tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function addingPluginWorksForMultipleControllerActionsWithNonCachableActionAsDefault() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Plugin::registerPlugin(
+		Tx_Extbase_Utility_Extension::registerPlugin(
 			'MyExtension',
 			'Pi1',
 			'My Plugin Title',
@@ -290,12 +290,12 @@ tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 
 		/**
 		 * @test
-		 * @see Tx_Extbase_Utility_Plugin::registerPlugin
+		 * @see Tx_Extbase_Utility_Extension::registerPlugin
 		 */
 		public function addingPluginWorksForMultipleControllerActionsWithNonCachableActionAsDefaultAndOnlyNonCachableActions() {
 			global $TYPO3_CONF_VARS;
 			$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-			Tx_Extbase_Utility_Plugin::registerPlugin(
+			Tx_Extbase_Utility_Extension::registerPlugin(
 				'MyExtension',
 				'Pi1',
 				'My Plugin Title',

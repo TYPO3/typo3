@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,11 +26,21 @@
 ***************************************************************/
 
 class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcase {
-	
+
+	/**
+	 * @var array
+	 */
+	protected $getBackup = array();
+
+	/**
+	 * @var array
+	 */
+	protected $postBackup = array();
+
 	public function __construct() {
 		require_once(t3lib_extMgm::extPath('extbase', 'Classes/MVC/Web/RequestBuilder.php'));
 	}
-	
+
 	public function setUp() {
 		$this->configuration = array(
 			'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',
@@ -54,8 +64,15 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 				)
 			);
 		$this->builder = new Tx_Extbase_MVC_Web_RequestBuilder;
+		$this->getBackup = $_GET;
+		$this->postBackup = $_POST;
 	}
-	
+
+	public function tearDown() {
+		$_GET = $this->getBackup;
+		$_POST = $this->postBackup;
+	}
+
 	/**
 	 * @test
 	 */
@@ -68,7 +85,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->assertEquals('TheFirstController', $request->getControllerName());
 		$this->assertEquals('show', $request->getControllerActionName());
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -95,7 +112,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->assertEquals('Standard', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -118,6 +135,49 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_Base_testcas
 		$this->builder->initialize($this->configuration);
 		$request = $this->builder->build();
 		$this->assertEquals(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), $request->getRequestURI());
+	}
+
+	/**
+	 * @test
+	 */
+	public function buildSetsParametersFromGetAndPostVariables() {
+		$builder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_RequestBuilder'), array('dummy'));
+		$builder->_set('extensionName', 'someExtensionName');
+		$builder->_set('pluginName', 'somePluginName');
+
+		$_GET = array(
+			'tx_someotherextensionname_somepluginname' => array(
+				'foo' => 'bar'
+			),
+			'tx_someextensionname_somepluginname' => array(
+				'parameter1' => 'valueGetsOverwritten',
+				'parameter2' => array(
+					'parameter3' => 'value3'
+				)
+			)
+		);
+		$_POST = array(
+			'tx_someextensionname_someotherpluginname' => array(
+				'foo' => 'bar'
+			),
+			'tx_someextensionname_somepluginname' => array(
+				'parameter1' => 'value1',
+				'parameter2' => array(
+					'parameter4' => 'value4'
+				)
+			)
+		);
+
+		$request = $builder->build();
+		$expectedResult = array(
+			'parameter1' => 'value1',
+			'parameter2' => array(
+				'parameter3' => 'value3',
+				'parameter4' => 'value4',
+			),
+		);
+		$actualResult = $request->getArguments();
+		$this->assertEquals($expectedResult, $actualResult);
 	}
 
 }

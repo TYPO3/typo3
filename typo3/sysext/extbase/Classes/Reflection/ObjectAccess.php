@@ -115,7 +115,9 @@ class Tx_Extbase_Reflection_ObjectAccess {
 
 		foreach (get_class_methods($object) as $methodName) {
 			if (substr($methodName, 0, 3) === 'get') {
-				$declaredPropertyNames[] = t3lib_div::lcfirst(substr($methodName, 3));
+				$propertyName = substr($methodName, 3);
+				$propertyName[0] = strtolower($propertyName[0]);
+				$declaredPropertyNames[] = $propertyName;
 			}
 		}
 

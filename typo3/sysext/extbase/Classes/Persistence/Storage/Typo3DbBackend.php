@@ -592,7 +592,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$rows = array();
 		while ($row = $this->databaseHandle->sql_fetch_assoc($res)) {
 			if	($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-			$row = $this->doLanguageAndWorkspaceOverlay($source->getSelectorName(), $row);
+				// FIXME The overlay is only performed if we query a single table; no joins
+				$row = $this->doLanguageAndWorkspaceOverlay($source->getSelectorName(), $row);
 			}
 			if (is_array($row)) {
 				// TODO Check if this is necessary, maybe the last line is enough
@@ -635,7 +636,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			} else {
 				require_once(PATH_t3lib . 'class.t3lib_page.php');
 				$this->pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
-				//$this->pageSelectObject->versioningPreview =  TRUE;
 				if ($workspaceUid === NULL) {
 					$workspaceUid = $GLOBALS['BE_USER']->workspace;
 				}

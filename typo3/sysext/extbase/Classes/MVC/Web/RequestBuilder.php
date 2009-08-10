@@ -108,7 +108,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 * @return Tx_Extbase_MVC_Web_Request The web request as an object
 	 */
 	public function build() {
-		$parameters = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
+		$parameters = t3lib_div::_GPmerged('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
 
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
 			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
@@ -131,24 +131,11 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
 		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 		$request->setMethod((isset($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : NULL);
-		$GET = t3lib_div::_GET('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
-		if (is_array($GET)) {
-			foreach ($GET as $argumentName => $argumentValue) {
-				$request->setArgument($argumentName, $argumentValue);
-			}
+
+		foreach ($parameters as $argumentName => $argumentValue) {
+			$request->setArgument($argumentName, $argumentValue);
 		}
-		// POST
-		if ($request->getMethod() === 'POST') {
-			if (is_array($_POST)) {
-				foreach ($_POST as $argumentName => $argumentValue) {
-					$request->setArgument($argumentName, $argumentValue);
-				}
-			}
-		}
-		// FIXME The following lines are the preferred solution to fetch the GET and POST arguments. They can't be used until Fluid is patched to namespace POST arguments
-//		foreach (t3lib_div::_GPmerged('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName)) as $argumentName => $argumentValue) {
-//			$request->setArgument($argumentName, $argumentValue);
-//		}
+
 		return $request;
 	}
 

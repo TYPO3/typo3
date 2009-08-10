@@ -51,6 +51,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $identityMap;
 
 	/**
+	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
+	 */
+	protected $queryFactory;
+
+	/**
 	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
 	 */
 	protected $QOMFactory;
@@ -111,6 +116,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$this->identityMap = $identityMap;
 	}
 
+	/**
+	 * Injects the QueryFactory
+	 *
+	 * @param Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory
+	 * @return void
+	 */
+	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactoryInterface $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+	
 	/**
 	 * Injects the QueryObjectModelFactory
 	 *
@@ -188,6 +203,28 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			return $this->identityMap->getIdentifierByObject($object);
 		} else {
 			return NULL;
+		}
+	}
+
+	/**
+	 * Returns the object with the (internal) identifier, if it is known to the
+	 * backend. Otherwise NULL is returned.
+	 *
+	 * @param string $identifier
+	 * @param string $className
+	 * @return object The object for the identifier if it is known, or NULL
+	 */
+	public function getObjectByIdentifier($identifier, $className) {
+		if ($this->identityMap->hasIdentifier($identifier, $className)) {
+			return $this->identityMap->getObjectByIdentifier($identifier, $className);
+		} else {
+			$query = $this->queryFactory->create($className);
+			$result = $query->matching($query->withUid($uid))->execute();
+			$object = NULL;
+			if (count($result) > 0) {
+				$object = current($result);
+			}
+			return $object;			
 		}
 	}
 

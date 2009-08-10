@@ -119,7 +119,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				if (!empty($mapping[$columnName]['mapOnProperty'])) {
 					$propertyName = $mapping[$columnName]['mapOnProperty'];
 				} else {
-					$propertyName = Tx_Extbase_Utility_Plugin::convertUnderscoredToLowerCamelCase($columnName);
+					$propertyName = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
 				}
 				if (isset($mapping[$columnName]['foreignClass']) && !isset($columnConfiguration['config']['foreign_class'])) {
 					$columnConfiguration['config']['foreign_class'] = $mapping[$columnName]['foreignClass'];
@@ -273,7 +273,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	public function addColumn($columnName, $propertyName = '', $propertyType = Tx_Extbase_Persistence_PropertyType::STRING, $typeOfRelation = Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE) {
 		if (empty($propertyName)) {
-			$propertyName = Tx_Extbase_Utility_Plugin::convertUnderscoredToLowerCamelCase($columnName);
+			$propertyName = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
 		}
 
 		$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);

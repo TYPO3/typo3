@@ -35,6 +35,20 @@
 class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
 
 	/**
+	 * Objects of this repository
+	 *
+	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 */
+	protected $addedObjects;
+
+	/**
+	 * Objects removed but not found in $this->addedObjects at removal time
+	 *
+	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 */
+	protected $removedObjects;
+
+	/**
 	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
 	 */
 	protected $queryFactory;
@@ -54,9 +68,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 */
 	public function __construct() {
-		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
-		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
+		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
+		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
+		$this->persistenceManager->registerRepositoryClassName(get_class($this));
+		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
 	}
 
 	/**
@@ -67,9 +84,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function add($object) {
-	// SK: Why is this commented out?
-//		if (!is_object($object) || !($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
-		$this->persistenceManager->getSession()->registerAddedObject($object);
+		if (!($object instanceof $this->objectType)) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+		}
+
+		$this->addedObjects->attach($object);
+		$this->removedObjects->detach($object);
 	}
 
 	/**
@@ -80,10 +100,15 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function remove($object) {
+		if (!($object instanceof $this->objectType)) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+		}
 
-	// SK: Why is this commented out?
-//		if (!is_object($object) || !($object instanceof $this->aggregateRootClassName)) throw new Tx_Extbase_Persistence_Exception_InvalidClass('The class "' . get_class($object) . '" is not supported by the repository.');
-		$this->persistenceManager->getSession()->registerRemovedObject($object);
+		if ($this->addedObjects->contains($object)) {
+			$this->addedObjects->detach($object);
+		} else {
+			$this->removedObjects->attach($object);
+		}
 	}
 
 	/**
@@ -95,17 +120,32 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function replace($existingObject, $newObject) {
-		// TODO: Update this method from FLOW3
+		if (!($existingObject instanceof $this->objectType)) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The existing object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363434);
+		}
+		if (!($newObject instanceof $this->objectType)) {
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The new object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363439);
+		}
+		
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
-		$uid = $backend->getIdentifierByObject($existingObject);
-		if ($uid !== NULL) {
+		$uuid = $backend->getIdentifierByObject($existingObject);
+		if ($uuid !== NULL) {
 			$backend->replaceObject($existingObject, $newObject);
 			$session->unregisterReconstitutedObject($existingObject);
 			$session->registerReconstitutedObject($newObject);
+
+			if ($this->removedObjects->contains($existingObject)) {
+				$this->removedObjects->detach($existingObject);
+				$this->removedObjects->attach($newObject);
+			}
+		} elseif ($this->addedObjects->contains($existingObject)) {
+			$this->addedObjects->detach($existingObject);
+			$this->addedObjects->attach($newObject);
 		} else {
-			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the repository.', 1238068475);
+			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
 		}
+		
 	}
 
 	/**
@@ -127,7 +167,29 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
 		}
 	}
+	
+	/**
+	 * Returns all addedObjects that have been added to this repository with add().
+	 *
+	 * This is a service method for the persistence manager to get all addedObjects
+	 * added to the repository. Those are only objects *added*, not objects
+	 * fetched from the underlying storage.
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage the objects
+	 */
+	public function getAddedObjects() {
+		return $this->addedObjects;
+	}
 
+	/**
+	 * Returns an Tx_Extbase_Persistence_ObjectStorage with objects remove()d from the repository
+	 * that had been persisted to the storage layer before.
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage the objects
+	 */
+	public function getRemovedObjects() {
+		return $this->removedObjects;
+	}
 
 	/**
 	 * Returns all objects of this repository
@@ -137,7 +199,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function findAll() {
 		$result = $this->createQuery()->execute();
-		$this->persistenceManager->getSession()->registerReconstitutedObjects($result);
 		return $result;
 	}
 
@@ -155,7 +216,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
-			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
 		}
 		return $object;
 	}
@@ -186,7 +246,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$query = $this->createQuery();
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))
 				->execute();
-			$this->persistenceManager->getSession()->registerReconstitutedObjects($result);
 			return $result;
 		} elseif (substr($methodName, 0, 9) === 'findOneBy' && strlen($methodName) > 10) {
 			$propertyName = strtolower(substr(substr($methodName, 9), 0, 1) ) . substr(substr($methodName, 9), 1);
@@ -197,8 +256,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$object = NULL;
 			if (count($result) > 0) {
 				$object = current($result);
-				// SK: registerReconstitutedObject() needs to be called automatically inside the DataMapper!
-				$this->persistenceManager->getSession()->registerReconstitutedObject($object);
 			}
 			return $object;
 		}

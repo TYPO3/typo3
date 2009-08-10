@@ -126,7 +126,11 @@ class Tx_Extbase_MVC_Web_Routing_URIBuilder {
 	 */
 	public function typolinkURI($pageUid = NULL, array $arguments = array(), $pageType = 0, $noCache = FALSE, $useCacheHash = TRUE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE) {
 		if ($pageUid === NULL) {
-			$pageUid = $GLOBALS['TSFE']->id;
+			if (isset($GLOBALS['TSFE'])) {
+				$pageUid = $GLOBALS['TSFE']->id;
+			} else {
+				$pageUid = 0;
+			}
 		}
 
 		$typolinkConfiguration = array();

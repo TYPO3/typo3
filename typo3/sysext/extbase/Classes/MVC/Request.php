@@ -181,7 +181,7 @@ class Tx_Extbase_MVC_Request {
 	 * @api
 	 */
 	public function getControllerExtensionKey() {
-		return Tx_Extbase_Utility_Plugin::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
 	}
 
 	/**

@@ -67,6 +67,16 @@ interface Tx_Extbase_Persistence_BackendInterface {
 	public function getIdentifierByObject($object);
 
 	/**
+	 * Returns the object with the (internal) identifier, if it is known to the
+	 * backend. Otherwise NULL is returned.
+	 *
+	 * @param string $identifier
+	 * @param string $className
+	 * @return object The object for the identifier if it is known, or NULL
+	 */
+	public function getObjectByIdentifier($identifier, $className);
+
+	/**
 	 * Checks if the given object has ever been persisted.
 	 *
 	 * @param object $object The object to check

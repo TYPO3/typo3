@@ -61,6 +61,16 @@ class Tx_Extbase_Property_Mapper {
 	 * @var Tx_Extbase_Validation_ValidatorResolver
 	 */
 	protected $validatorResolver;
+	
+	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
+	 * @var Tx_Extbase_Persistence_ManagerInterface
+	 */
+	protected $persistenceManager;
 
 	/**
 	 * Constructs the Property Mapper.
@@ -69,8 +79,19 @@ class Tx_Extbase_Property_Mapper {
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$this->validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
 		$this->validatorResolver->injectObjectManager($objectManager);
+		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
 	}
 
+	/**
+	 * Injects the Reflection Service
+	 *
+	 * @param Tx_Extbase_Reflection_Service
+	 * @return void
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
+	
 	/**
 	 * Maps the given properties to the target object and validates the properties according to the defined
 	 * validators. If the result object is not valid, the operation will be undone (the target object remains
@@ -87,6 +108,7 @@ class Tx_Extbase_Property_Mapper {
 	 * @return boolean TRUE if the mapped properties are valid, otherwise FALSE
 	 * @see getMappingResults()
 	 * @see map()
+	 * @api
 	 */
 	public function mapAndValidate(array $propertyNames, $source, $target, $optionalPropertyNames = array(), Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator) {
 		$backupProperties = array();
@@ -134,12 +156,19 @@ class Tx_Extbase_Property_Mapper {
 	 * @param array $optionalPropertyNames Names of optional properties. If a property is specified here and it doesn't exist in the source, no error is issued.
 	 * @return boolean TRUE if the properties could be mapped, otherwise FALSE
 	 * @see mapAndValidate()
+	 * @api
 	 */
 	public function map(array $propertyNames, $source, $target, $optionalPropertyNames = array()) {
-		if (!is_object($source) && !is_array($source) && ($source instanceof ArrayAccess)) throw new Tx_Extbase_Property_Exception_InvalidSource('The source object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
+		if (!is_object($source) && !is_array($source)) throw new Tx_Extbase_Property_Exception_InvalidSource('The source object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 		if (!is_object($target) && !is_array($target)) throw new Tx_Extbase_Property_Exception_InvalidTarget('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 
-		$this->mappingResults = t3lib_div::makeInstance('Tx_Extbase_Property_MappingResults');
+		if (is_object($target)) {
+			$targetClassSchema = $this->reflectionService->getClassSchema(get_class($target));
+		} else {
+			$targetClassSchema = NULL;
+		}
+		
+		$this->mappingResults = new Tx_Extbase_Property_MappingResults();
 		$propertyValues = array();
 
 		foreach ($propertyNames as $propertyName) {
@@ -151,16 +180,44 @@ class Tx_Extbase_Property_Mapper {
 		}
 		foreach ($propertyNames as $propertyName) {
 			if (isset($propertyValues[$propertyName])) {
+
+					// source is array with (seemingly) uid strings and we have a target knowing the property
+				if (is_array($propertyValues[$propertyName])
+						&& is_string(current($propertyValues[$propertyName]))
+						&& $targetClassSchema !== NULL
+						&& $targetClassSchema->hasProperty($propertyName)) {
+
+					$propertyMetaData = $targetClassSchema->getProperty($propertyName);
+						// the target is array-like and the elementType is a class
+					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage')) && strpos($propertyMetaData['elementType'], '_') !== FALSE) {
+						foreach ($propertyValues[$propertyName] as $key => $value) {
+								// convert to object and override original value
+							$existingObject = $this->persistenceManager->getBackend()->getObjectByIdentifier($value, get_class($target));
+							if ($existingObject === FALSE) throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('Querying the repository for the specified object was not successful.', 1249379517);
+							$propertyValues[$propertyName][$key] = $existingObject;
+						}
+					}
+						// make sure we hand out what is expected
+					if ($propertyMetaData['type'] === 'ArrayObject') {
+						$propertyValues[$propertyName] = new ArrayObject($propertyValues[$propertyName]);
+					} elseif ($propertyMetaData['type']=== 'SplObjectStorage') {
+						$objects = $propertyValues[$propertyName];
+						$propertyValues[$propertyName] = new Tx_Extbase_Persistence_ObjectStorage();
+						foreach ($objects as $object) {
+							$propertyValues[$propertyName]->attach($object);
+						}
+					}
+				}
+
 				if (is_array($target)) {
 					$target[$propertyName] = $source[$propertyName];
 				} elseif (Tx_Extbase_Reflection_ObjectAccess::setProperty($target, $propertyName, $propertyValues[$propertyName]) === FALSE) {
-					$this->mappingResults->addError(t3lib_div::makeInstance('Tx_Extbase_Error_Error', "Property '$propertyName' could not be set." , 1236783102), $propertyName);
+					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '$propertyName' could not be set." , 1236783102), $propertyName);
 				}
 			} elseif (!in_array($propertyName, $optionalPropertyNames)) {
-				$this->mappingResults->addError(t3lib_div::makeInstance('Tx_Extbase_Error_Error', "Required property '$propertyName' does not exist." , 1236785359), $propertyName);
+				$this->mappingResults->addError(new Tx_Extbase_Error_Error("Required property '$propertyName' does not exist." , 1236785359), $propertyName);
 			}
 		}
-
 		return (!$this->mappingResults->hasErrors() && !$this->mappingResults->hasWarnings());
 	}
 
@@ -168,6 +225,7 @@ class Tx_Extbase_Property_Mapper {
 	 * Returns the results of the last mapping operation.
 	 *
 	 * @return Tx_Extbase_Property_MappingResults The mapping results (or NULL if no mapping has been carried out yet)
+	 * @api
 	 */
 	public function getMappingResults() {
 		return $this->mappingResults;

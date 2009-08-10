@@ -139,11 +139,12 @@ class Tx_Extbase_Dispatcher {
 		if (!$controller instanceof Tx_Extbase_MVC_Controller_ControllerInterface) {
 			throw new Tx_Extbase_MVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
 		}
+		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
+		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
 		$controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionName()));
 		$cacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
-		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		try {
 			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
 		} catch (t3lib_cache_exception_NoSuchCache $exception) {
@@ -175,25 +176,29 @@ class Tx_Extbase_Dispatcher {
 	 */
 	public static function getPersistenceManager() {
 		if (self::$persistenceManager === NULL) {
-			$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
-
 			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);
 
+			$qomFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper);
+			
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 
 			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
 			$persistenceBackend->injectDataMapper($dataMapper);
 			$persistenceBackend->injectIdentityMap(t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap'));
-			$persistenceBackend->injectQOMFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper));
+			$persistenceBackend->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
+			$persistenceBackend->injectQOMFactory($qomFactory);
 			$persistenceBackend->injectValueFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_ValueFactory'));
 
+			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager'); // singleton
+			
 			$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton
 			$persistenceManager->injectBackend($persistenceBackend);
 			$persistenceManager->injectSession($persistenceSession);
-
+			$persistenceManager->injectObjectManager($objectManager);
+			
 			self::$persistenceManager = $persistenceManager;
 		}
 
@@ -222,7 +227,7 @@ class Tx_Extbase_Dispatcher {
 		// TODO Make a registry for Extbase classes
 		//$starttime = microtime(true);
 		$classNameParts = explode('_', $className, 3);
-		$extensionKey = Tx_Extbase_Utility_Plugin::convertCamelCaseToLowerCaseUnderscored($classNameParts[1]);
+		$extensionKey = Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($classNameParts[1]);
 		if (t3lib_extMgm::isLoaded($extensionKey)) {
 			$classFilePathAndName = t3lib_extMgm::extPath($extensionKey) . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
 			if (file_exists($classFilePathAndName)) {

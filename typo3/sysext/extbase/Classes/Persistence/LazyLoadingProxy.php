@@ -90,11 +90,18 @@ class Tx_Extbase_Persistence_LazyLoadingProxy {
 	 * @return object The instance (hopefully) returned
 	 */
 	public function _loadRealInstance() {
-		$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
-		$result = $dataMapper->fetchRelatedObjects($this->parentObject, $this->propertyName, $this->fieldValue, $this->columnMap);
-		$this->parentObject->_setProperty($this->propertyName, $result);
-		$this->parentObject->_memorizeCleanState($this->propertyName);
-		return $result;
+		// this check safeguards against a proxy being activated multiple times
+		// usually that does not happen, but if the proxy is held from outside
+		// it's parent... the result would be weird.
+		if ($this->parentObject->_getProperty($this->propertyName) instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
+			$realInstance = $dataMapper->fetchRelatedObjects($this->parentObject, $this->propertyName, $this->fieldValue, $this->columnMap);
+			$this->parentObject->_setProperty($this->propertyName, $realInstance);
+			$this->parentObject->_memorizeCleanState($this->propertyName);
+			return $realInstance;
+		} else {
+			return $this->parentObject->_getProperty($this->propertyName);
+		}
 	}
 
 	/**

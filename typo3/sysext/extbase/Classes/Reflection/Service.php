@@ -144,8 +144,10 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if ($this->initialized) throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
 
 		$this->loadFromCache();
-
+		
 		$this->initialized = TRUE;
+	
+		$this->buildClassSchemata();
 	}
 
 	/**
@@ -169,6 +171,20 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	}
 
 	/**
+	 * Searches for and returns all names of classes which are tagged by the specified tag.
+	 * If no classes were found, an empty array is returned.
+	 *
+	 * @param string $tag Tag to search for
+	 * @return array An array of class names tagged by the tag
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	public function getClassNamesByTag($tag) {
+		if ($this->initialized !== TRUE) throw new Tx_Extbase_Reflection_Exception('Reflection has not yet been initialized.', 1238667825);
+		return (isset($this->taggedClasses[$tag])) ? $this->taggedClasses[$tag] : array();
+	}
+	
+	/**
 	 * Returns the names of all properties of the specified class
 	 *
 	 * @param string $className Name of the class to return the property names of
@@ -177,6 +193,18 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	public function getClassPropertyNames($className) {
 		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
 		return (isset($this->classPropertyNames[$className])) ? $this->classPropertyNames[$className] : array();
+	}
+
+	/**
+	 * Returns the class schema for the given class
+	 *
+	 * @param mixed $classNameOrObject The class name or an object
+	 * @return Tx_Extbase_Reflection_ClassSchema
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	public function getClassSchema($classNameOrObject) {
+		$className = is_object($classNameOrObject) ? get_class($classNameOrObject) : $classNameOrObject;
+		return isset($this->classSchemata[$className]) ? $this->classSchemata[$className] : NULL;
 	}
 
 	/**
@@ -231,6 +259,69 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if (!isset($this->propertyTagsValues[$className])) return array();
 		return (isset($this->propertyTagsValues[$className][$propertyName])) ? $this->propertyTagsValues[$className][$propertyName] : array();
 	}
+	
+	/**
+	 * Returns the values of the specified class property tag
+	 *
+	 * @param string $className Name of the class containing the property
+	 * @param string $propertyName Name of the tagged property
+	 * @param string $tag Tag to return the values of
+		if (!isset($this->propertyTagsValues[$className])) return array();
+	 * @return array An array of values or an empty array if the tag was not found
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	public function getPropertyTagValues($className, $propertyName, $tag) {
+		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
+		if (!isset($this->propertyTagsValues[$className][$propertyName])) return array();
+		return (isset($this->propertyTagsValues[$className][$propertyName][$tag])) ? $this->propertyTagsValues[$className][$propertyName][$tag] : array();
+	}
+	
+	/**
+	 * Tells if the specified class is known to this reflection service and
+	 * reflection information is available.
+	 *
+	 * @param string $className Name of the class
+	 * @return boolean If the class is reflected by this service
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	public function isClassReflected($className) {
+		return isset($this->reflectedClassNames[$className]);
+	}
+	
+	/**
+	 * Tells if the specified class is tagged with the given tag
+	 *
+	 * @param string $className Name of the class
+	 * @param string $tag Tag to check for
+	 * @return boolean TRUE if the class is tagged with $tag, otherwise FALSE
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	public function isClassTaggedWith($className, $tag) {
+		if ($this->initialized === FALSE) return FALSE;
+		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
+		if (!isset($this->classTagsValues[$className])) return FALSE;
+		return isset($this->classTagsValues[$className][$tag]);
+	}
+
+	/**
+	 * Tells if the specified class property is tagged with the given tag
+	 *
+	 * @param string $className Name of the class
+	 * @param string $propertyName Name of the property
+	 * @param string $tag Tag to check for
+	 * @return boolean TRUE if the class property is tagged with $tag, otherwise FALSE
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	public function isPropertyTaggedWith($className, $propertyName, $tag) {
+		if (!isset($this->reflectedClassNames[$className])) $this->reflectClass($className);
+		if (!isset($this->propertyTagsValues[$className])) return FALSE;
+		if (!isset($this->propertyTagsValues[$className][$propertyName])) return FALSE;
+		return isset($this->propertyTagsValues[$className][$propertyName][$tag]);
+	}
 
 	/**
 	 * Reflects the given class and stores the results in this service's properties.
@@ -275,6 +366,45 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		ksort($this->reflectedClassNames);
 
 		$this->cacheNeedsUpdate = TRUE;
+	}
+	
+	/**
+	 * Builds class schemata from classes annotated as entities or value objects
+	 *
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	protected function buildClassSchemata() {
+		$this->classSchemata = array();
+
+		$classNames = array_merge($this->getClassNamesByTag('entity'), $this->getClassNamesByTag('valueobject'));
+		foreach ($classNames as $className) {
+			$classSchema = new Tx_Extbase_Reflection_ClassSchema($className);
+			if ($this->isClassTaggedWith($className, 'entity')) {
+				$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_ENTITY);
+
+				$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
+				if ($this->isClassReflected($possibleRepositoryClassName)) {
+					$classSchema->setAggregateRoot(TRUE);
+				}
+			} elseif ($this->isClassTaggedWith($className, 'valueobject')) {
+				$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_VALUEOBJECT);
+			}
+
+			foreach ($this->getClassPropertyNames($className) as $propertyName) {
+				if (!$this->isPropertyTaggedWith($className, $propertyName, 'transient') && $this->isPropertyTaggedWith($className, $propertyName, 'var')) {
+					$classSchema->addProperty($propertyName, implode(' ', $this->getPropertyTagValues($className, $propertyName, 'var')), $this->isPropertyTaggedWith($className, $propertyName, 'lazy'));
+				}
+				if ($this->isPropertyTaggedWith($className, $propertyName, 'uuid')) {
+					$classSchema->setUUIDPropertyName($propertyName);
+				}
+				if ($this->isPropertyTaggedWith($className, $propertyName, 'identity')) {
+					$classSchema->markAsIdentityProperty($propertyName);
+				}
+			}
+			$this->classSchemata[$className] = $classSchema;
+		}
 	}
 
 	/**
