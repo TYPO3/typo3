@@ -279,7 +279,7 @@ class Tx_Extbase_MVC_Request {
 	 * @api
 	 */
 	public function getArgument($argumentName) {
-		if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_MVC_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
+		if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('An argument "' . $argumentName . '" does not exist for this request.', 1176558158);
 		return $this->arguments[$argumentName];
 	}
 
