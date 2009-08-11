@@ -24,7 +24,7 @@
 
 
 /**
- * A caching backend which stores cache entries in files
+ * A caching backend which stores cache entries in database tables
  *
  * @package TYPO3
  * @subpackage t3lib_cache
