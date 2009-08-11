@@ -319,7 +319,7 @@ CREATE TABLE sys_refindex (
 );
 
 #
-# Table structure for table ''
+# Table structure for table 'sys_refindex_words'
 #
 CREATE TABLE sys_refindex_words (
   wid int(11) DEFAULT '0' NOT NULL,
@@ -328,7 +328,7 @@ CREATE TABLE sys_refindex_words (
 );
 
 #
-# Table structure for table ''
+# Table structure for table 'sys_refindex_rel'
 #
 CREATE TABLE sys_refindex_rel (
   rid int(11) DEFAULT '0' NOT NULL,
@@ -338,7 +338,7 @@ CREATE TABLE sys_refindex_rel (
 
 
 #
-# Table structure for table ''
+# Table structure for table 'sys_refindex_res'
 #
 CREATE TABLE sys_refindex_res (
   rid int(11) DEFAULT '0' NOT NULL,
