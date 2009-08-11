@@ -217,8 +217,8 @@ tt_content.list.20.' . $pluginSignature . ' {
 			'config' => $config,
 		);
 		$GLOBALS['TBE_EXTBASE_MODULES'][$key] = $moduleConfig;
-		$GLOBALS['TBE_EXTBASE_MODULES'][$key]['configureModuleFunction'] = array('Tx_Extbase_Utility_Module', 'setModuleConfiguration');
-		
+		$GLOBALS['TBE_EXTBASE_MODULES'][$key]['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'setModuleConfiguration');
+
 		t3lib_extMgm::addModule($main, $sub, $position, $path);
 	}
 	
@@ -283,7 +283,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 		
 			// Fill $modconf
-		$modconf['script'] = 'mod.php?M=TX_' . rawurlencode($key);
+		$modconf['script'] = 'mod.php?M=Tx_' . rawurlencode($key);
 		$modconf['name'] = $key;
 					
 				// Default tab setting
