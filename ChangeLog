@@ -12,20 +12,20 @@
 	* Added feature #11652: Modern integration of module into backend using Extbase (thanks to Xavier Perseguers): modified t3lib_loadmodules.php to allow modules without having conf.php. This is needed for extbase driven backend modules.
 	* Added feature #11651: Allow Extbase as framework for backend modules (thanks to Xavier Perseguers): modified mod.php to dispatch extbase driven modules
 
-2009-08-09	Andreas Otto	<andreas@otto-hanika.de>
+2009-08-09  Andreas Otto  <andreas@otto-hanika.de>
 
-	* Added feature #4270: displayCond for flexforms, that affects on row of element (thanks to Tolleiv Nietsch and Rupert German)
+	* Added feature #4270: displayCond for FlexForms, that affects on row of element (thanks to Tolleiv Nietsch and Rupert Germann)
 
 2009-08-05  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #11627: Add CSS-Class and Ids to fields in TCEFORMS
+	* Fixed bug #11627: Add CSS class and IDs to fields in TCEFORMS
 
 2009-08-05  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11539: t3ver_stage will not be resetted when t3ver_stage was >0 before (thanks to Fabrizio Branca)
 	* Fixed #11430: Performance improvement: use $GLOBALS['EXEC_TIME'] instead of time() where it makes sense (thanks to Niels Pardon)
 	* Fixed #11512: Performance improvement: replace while(list()...) by foreach in the TYPO3 core (part 1)
-	* Fixed #11474: Performance improvement: Store separate extlist for the frontend (thanks to Mathias Schreiber)
+	* Fixed #11474: Performance improvement: Store separate extList for the frontend (thanks to Mathias Schreiber)
 	* Fixed #11475: Add 'doNotLoadInFE' => 1 (introduced with 11474), to several system extensions, speeding up the frontend (thanks to Mathias Schreiber)
 
 2009-08-04  Michael Stucki  <michael@typo3.org>
