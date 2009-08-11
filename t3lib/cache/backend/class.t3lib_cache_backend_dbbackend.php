@@ -233,11 +233,12 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	public function flushByTags(array $tags) {
-		$tmpListQuery = array();
+		$listQueryConditions = array();
 		foreach ($tags as $tag) {
-			$tmpListQuery[$tag] = $this->getListQueryForTag($tag);
+			$listQueryConditions[$tag] = $this->getListQueryForTag($tag);
 		}
-		$listQuery = implode(' OR ',$tmpListQuery);
+
+		$listQuery = implode(' OR ', $listQueryConditions);
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
 			$listQuery
