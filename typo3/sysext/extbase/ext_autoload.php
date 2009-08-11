@@ -5,6 +5,7 @@
 $extensionClassesPath = t3lib_extMgm::extPath('extbase') . 'Classes/';
 return array(
 	'tx_extbase_dispatcher' => $extensionClassesPath . 'Dispatcher.php',
+	'tx_extbase_backenddispatcher' => $extensionClassesPath . 'BackendDispatcher.php',
 	'tx_extbase_exception' => $extensionClassesPath . 'Exception.php',
 	'tx_extbase_configuration_exception' => $extensionClassesPath . 'Configuration/Exception.php',
 	'tx_extbase_configuration_manager' => $extensionClassesPath . 'Configuration/Manager.php',
