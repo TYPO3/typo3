@@ -374,7 +374,8 @@ class t3lib_TStemplate	{
 				if ($this->tt_track)	$GLOBALS['TT']->setTSlogMessage('TS template size, serialized: '.strlen(serialize($this->setup)).' bytes');
 
 				$rowSumHash = md5('ROWSUM:'.serialize($this->rowSum));
-				t3lib_pageSelect::storeHash($rowSumHash, serialize($cc['all']), 'TMPL CONDITIONS - ALL');
+					// Note: Do not fix the obvious typo below! The reason for cutting "ALL" is that in older TYPO3 versions, the field "ident" was just 20 bytes long, so by writing "ALL" the string would be too long for that.
+				t3lib_pageSelect::storeHash($rowSumHash, serialize($cc['all']), 'TMPL CONDITIONS - AL');
 			}
 				// Add rootLine
 			$cc['rootLine'] = $this->rootLine;

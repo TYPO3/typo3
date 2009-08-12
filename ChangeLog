@@ -1,5 +1,6 @@
 2009-08-12  Michael Stucki  <michael@typo3.org>
 
+	* Follow-up to bug #11513: Shorten one ident field which is known to be too long (solved the issue on those setups where the DB is not updated)
 	* Fixed bug #11513: cache_hash table could not be filled because information field (ident) was too short (thanks to Ingo Schmitt)
 
 2009-08-02  Oliver Hader  <oliver@typo3.org>
