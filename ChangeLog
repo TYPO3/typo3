@@ -1,3 +1,7 @@
+2009-08-12  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11513: cache_hash table could not be filled because information field (ident) was too short (thanks to Ingo Schmitt)
+
 2009-08-02  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10769: Wrong encoded email header (thanks to Ivan Kartolo)
