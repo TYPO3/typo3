@@ -5,6 +5,7 @@
 2009-08-14  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #11438: Add a registry to t3lib
+	* Added missing icon in t3skin for the divider content element
 
 2009-08-14  Michael Stucki  <michael@typo3.org>
 
