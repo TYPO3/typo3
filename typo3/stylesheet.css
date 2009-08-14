@@ -1395,7 +1395,7 @@ div#typo3-docbody {
 }
 
 div#typo3-inner-docbody {
-	padding: 10px 0 10px 10px;
+	padding: 10px;
 }
 
 /* Fix for IE 6 */
@@ -1492,11 +1492,11 @@ table#logintable {
 	position: absolute;
 	left: 35%;
 	top: 78px;
-	margin: 5px 20px 5px 20px;
+	margin: 5px 20px;
 }
 
 table#logintable tr td {
-	padding: 1px 1px 1px 1px;
+	padding: 1px;
 }
 
 table#logintable H2 {
@@ -1522,8 +1522,8 @@ table#logintable P.c-wrong {
 	font-size: 10px;
 	width: 300px;
 	border: #858585 solid 1px;
-	margin: 5px 0px 5px 0px;
-	padding: 5px 15px 5px 15px;
+	margin: 5px 0px;
+	padding: 5px 15px;
 }
 
 table#logintable input.c-username,
@@ -1847,11 +1847,18 @@ table.typo3-dblist tr:hover td {
 }
 
 table.typo3-dblist tr td.col-icon {
-	width: 40px;
+	width: 20px;
+	padding-right: 0px;
+	padding-left: 4px;
+	vertical-align: middle;
+}
+
+table.typo3-dblist tr.c-headLineTable td.col-icon {
+	padding-left: 3px;
 }
 
 table.typo3-dblist tr td.col-icon a {
-	width: 40px;
+	width: 20px;
 	display: block;
 }
 
@@ -1862,6 +1869,7 @@ table.typo3-dblist tr td.col-icon a img.collapseIcon {
 table.typo3-dblist tr td.col-title {
 	width: 240px;
 	overflow: hidden;
+	vertical-align: middle;
 }
 
 table.typo3-dblist tr.c-headLine td.col-title a {
