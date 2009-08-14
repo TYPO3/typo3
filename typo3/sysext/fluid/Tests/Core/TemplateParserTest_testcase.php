@@ -75,6 +75,17 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 
 	/**
 	 * @test
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
+	 */
+	public function viewHelperNameCanBeResolved() {
+		$mockTemplateParser = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_TemplateParser'), array('dummy'), array(), '', FALSE);
+		$result = $mockTemplateParser->_call('resolveViewHelperName', 'f', 'foo.bar.baz');
+		$expected = 'Tx_Fluid_ViewHelpers_Foo_Bar_BazViewHelper';
+		$this->assertEquals($result, $expected, 'The name of the View Helper Name could not be resolved.');
+	}
+
+	/**
+	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 */

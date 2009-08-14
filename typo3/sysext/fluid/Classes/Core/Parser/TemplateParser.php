@@ -423,9 +423,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		$explodedViewHelperName = explode('.', $methodIdentifier);
 		$className = '';
 		if (count($explodedViewHelperName) > 1) {
-			$className = ucfirst($explodedViewHelperName[0]);
-			$className .= Tx_Fluid_Fluid::NAMESPACE_SEPARATOR;
-			$className .= ucfirst($explodedViewHelperName[1]);
+			$className = implode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, array_map('ucfirst', $explodedViewHelperName));
 		} else {
 			$className = ucfirst($explodedViewHelperName[0]);
 		}
