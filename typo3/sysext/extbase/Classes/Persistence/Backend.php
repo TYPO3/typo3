@@ -347,7 +347,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$this->updateObject($object, $parentObject, $parentPropertyName, $row);
 		}
 
-		// SK: Where does $queueChildObjects come from? Do we need the code below?
 		$objectHasToBeUpdated = $this->processQueuedChildObjects($object, $queuedObjects, $row);
 		if ($objectHasToBeUpdated === TRUE) {
 			// TODO Check if this can be merged with the first update

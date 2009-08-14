@@ -66,7 +66,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	}
 
 	/**
-
 	 * Injects the DataMapper to map nodes to objects
 	 *
 	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
@@ -248,7 +247,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$parameters[] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
-
+		$fields[] = 'deleted!=1';
+		$fields[] = 'hidden!=1';
+		
 		$sqlString = 'SELECT * FROM ' . $dataMap->getTableName() .  ' WHERE ' . implode(' AND ', $fields);
 		$this->replacePlaceholders($sqlString, $parameters);
 		$res = $this->databaseHandle->sql_query($sqlString);
@@ -491,7 +492,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				if ($parameter === NULL) {
 					$parameter = 'NULL';
 				} else {
-					$parameter = "'" . $parameter . "'"; // TODO Discuss: Do we need quotation?
+					$parameter = $this->databaseHandle->fullQuoteStr($parameter, 'foo'); // FIXME This may not work with DBAL; check this
 				}
 				$sqlString = substr($sqlString, 0, $markPosition) . $parameter . substr($sqlString, $markPosition + 1);
 			}
