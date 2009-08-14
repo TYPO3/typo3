@@ -1,6 +1,7 @@
 2009-08-14  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11718: Performance improvement: speed up function t3lib_iconWorks::skinImg() by caching the results
+	* Fixed bug #11722: Performance improvement: speed up function t3lib_BEfunc::selectVersionsOfRecord
 	* Followup to 11474: updated performance section in NEWT.txt
 
 2009-08-14  Ingo Renner  <ingo@typo3.org>

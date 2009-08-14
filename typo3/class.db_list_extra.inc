@@ -1122,7 +1122,7 @@ class localRecordList extends recordList {
 
 					// Versioning:
 				if (t3lib_extMgm::isLoaded('version'))	{
-					$vers = t3lib_BEfunc::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace);
+					$vers = t3lib_BEfunc::selectVersionsOfRecord($table, $row['uid'], 'uid', $GLOBALS['BE_USER']->workspace, FALSE, $row);
 					if (is_array($vers))	{	// If table can be versionized.
 						if (count($vers)>1)	{
 							$class = 'typo3-ctrl-versioning-multipleVersions';

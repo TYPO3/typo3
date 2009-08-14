@@ -3521,31 +3521,40 @@ final class t3lib_BEfunc {
 	 * @param	string		Field list to select
 	 * @param	integer		Workspace ID, if zero all versions regardless of workspace is found.
 	 * @param	boolean		If set, deleted-flagged versions are included! (Only for clean-up script!)
+	 * @param	array		The current record
 	 * @return	array		Array of versions of table/uid
 	 */
-	public static function selectVersionsOfRecord($table, $uid, $fields = '*', $workspace = 0, $includeDeletedRecords = FALSE) {
+	public static function selectVersionsOfRecord($table, $uid, $fields = '*', $workspace = 0, $includeDeletedRecords = FALSE, $row = NULL) {
 		global $TCA;
 
-		if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	{
+		$realPid = 0;
+		$outputRows = array();
 
-			$realPid = 0;
-			$outputRows = array();
+		if ($TCA[$table] && $TCA[$table]['ctrl']['versioningWS']) {
 
-				// Select UID version:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				$fields,
-				$table,
-				'uid='.intval($uid).
-					($includeDeletedRecords ? '' : t3lib_BEfunc::deleteClause($table)),
-				'',
-				't3ver_id DESC'
-			);
-
-						// Add rows to output array:
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			if (is_array($row) && !$includeDeletedRecords) {
 				$row['_CURRENT_VERSION'] = TRUE;
 				$realPid = $row['pid'];
 				$outputRows[] = $row;
+			} else {
+					// Select UID version:
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+					$fields,
+					$table,
+					'uid=' . intval($uid) .
+						($includeDeletedRecords ? '' : t3lib_BEfunc::deleteClause($table))
+				);
+
+					// Add rows to output array:
+				if ($res) {
+					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+					if ($row) {
+						$row['_CURRENT_VERSION'] = TRUE;
+						$realPid = $row['pid'];
+						$outputRows[] = $row;
+					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				}
 			}
 
 				// Select all offline versions of record:
@@ -3559,14 +3568,14 @@ final class t3lib_BEfunc {
 			);
 
 				// Add rows to output array:
-			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 				$outputRows[] = $row;
 			}
 
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 				// Set real-pid:
-			foreach($outputRows as $idx => $oRow) {
+			foreach ($outputRows as $idx => $oRow) {
 				$outputRows[$idx]['_REAL_PID'] = $realPid;
 			}
 
