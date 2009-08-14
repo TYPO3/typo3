@@ -249,6 +249,17 @@ Speed improvements
 	  in the Apache configuration. See the FAQ section in the INSTALL.txt about disabling
 	  these files if necessary.
 
+	* There's a new $EM_CONF parameter called "doNotLoadInFE". When set it will prevent
+	  TYPO3 from adding the extension's ext_localconf.php and ext_tables.php to the
+	  temp_CACHED files when rendering frontend content. Technically this is done by
+	  adding an additional list of extensions to localconf.php ($TYPO3_CONF_VARS['extListFE'])
+	  which contains only a subset of all installed extensions. This list is only used
+	  when rendering frontend content. Since this list is shorter
+	  than the list of all extensions this will result in 2 new temp_CACHED_FE* files which are
+	  smaller than the files containing all extensions settings. This can save some
+	  precious milliseconds when delivering content.
+
+
 Important bugfixes
 ==================
 
