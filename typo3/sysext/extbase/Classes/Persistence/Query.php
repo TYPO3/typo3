@@ -161,7 +161,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return string The class name
 	 */
 	public function getClassName() {
-		$this->className;
+		return $this->className;
 	}
 
 	/**
