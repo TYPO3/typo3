@@ -668,6 +668,13 @@ class localRecordList extends recordList {
 							'</a>';
 					}
 					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
+
+					$localizationMarkerClass = '';
+					if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
+					&& $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] != 0) {
+							// it's a translated record
+						$localizationMarkerClass = ' localization';
+					}
 				} elseif ($fCol == 'pid') {
 					$theData[$fCol]=$row[$fCol];
 				} elseif ($fCol == '_PATH_') {
@@ -703,7 +710,7 @@ class localRecordList extends recordList {
 			}
 
 			// Add classes to table cells
-			$this->addElement_tdCssClass[$titleCol]         = 'col-title';
+			$this->addElement_tdCssClass[$titleCol]         = 'col-title' . $localizationMarkerClass;
 			if (!$this->dontShowClipControlPanels) {
 				$this->addElement_tdCssClass['_CONTROL_']       = 'col-control';
 				$this->addElement_tdCssClass['_AFTERCONTROL_']  = 'col-control-space';
