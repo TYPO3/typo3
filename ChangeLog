@@ -1,3 +1,7 @@
+2009-08-14  Francois Suter  <francois@typo3.org>
+
+	* Code cleanup #11687: Removed duplicate SQL definition of table index_stat_word
+
 2009-08-11  Francois Suter  <francois@typo3.org>
 
 	* Code cleanup #11686: Incomplete SQL comments in t3lib/stddb/tables.sql

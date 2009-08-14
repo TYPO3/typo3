@@ -116,19 +116,6 @@ CREATE TABLE index_stat_search (
   PRIMARY KEY (uid)
 ) ENGINE=InnoDB;
 
-
-#
-# Table structure for table 'index_stat_word'
-#
-CREATE TABLE index_stat_word (
-  uid int(11) NOT NULL auto_increment,
-  word varchar(30) DEFAULT '' NOT NULL,
-  index_stat_search_id int(11) DEFAULT '0' NOT NULL,
-  tstamp int(11) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (uid),
-  KEY tstamp (tstamp,word)
-) ENGINE=InnoDB;
-
 #
 # Table structure for table 'index_debug'
 #
