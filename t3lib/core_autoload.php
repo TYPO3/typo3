@@ -47,6 +47,7 @@ return array(
 	't3lib_readmail' => PATH_t3lib . 'class.t3lib_readmail.php',
 	't3lib_recordlist' => PATH_t3lib . 'class.t3lib_recordlist.php',
 	't3lib_refindex' => PATH_t3lib . 'class.t3lib_refindex.php',
+	't3lib_registry' => PATH_t3lib . 'class.t3lib_registry.php',
 	't3lib_rteapi' => PATH_t3lib . 'class.t3lib_rteapi.php',
 	't3lib_scbase' => PATH_t3lib . 'class.t3lib_scbase.php',
 	't3lib_softrefproc' => PATH_t3lib . 'class.t3lib_softrefproc.php',

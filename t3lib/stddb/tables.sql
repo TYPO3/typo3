@@ -188,6 +188,18 @@ CREATE TABLE pages (
 );
 
 #
+# Table structure for table 'sys_registry'
+#
+CREATE TABLE sys_registry (
+  uid int(11) unsigned NOT NULL auto_increment,
+  entry_namespace varchar(128) DEFAULT '' NOT NULL,
+  entry_key varchar(255) DEFAULT '' NOT NULL,
+  entry_value blob,
+  PRIMARY KEY (uid),
+  UNIQUE KEY entry_identifier (entry_namespace,entry_key)
+);
+
+#
 # Table structure for table 'sys_be_shortcuts'
 #
 CREATE TABLE sys_be_shortcuts (
