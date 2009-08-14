@@ -191,7 +191,7 @@ class tx_impexp_modfunc1 extends mod_user_task {
 		$presets = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 				'*',
 				'tx_impexp_presets',
-				'(public>0 || user_uid='.intval($GLOBALS['BE_USER']->user['uid']).')',
+				'(public>0 OR user_uid='.intval($GLOBALS['BE_USER']->user['uid']).')',
 				'',
 				'item_uid DESC, title'
 			);
