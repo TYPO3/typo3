@@ -282,7 +282,7 @@ final class t3lib_iconWorks	{
 
 		static $cachedSkinImages = array();
 
-		$imageId = md5($backPath . $src . $wHattribs . $outputMode );
+		$imageId = md5($backPath . $src . $wHattribs . $outputMode);
 
 		if (isset($cachedSkinImages[$imageId])) {
 			return $cachedSkinImages[$imageId];
@@ -298,8 +298,8 @@ final class t3lib_iconWorks	{
 
 				// Search for alternative icon automatically:
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
-			$scaleFactor = ($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1);	// Scaling factor
-			$lookUpName = ($fExt ? preg_replace('/\.[[:alnum:]]+$/', '', $srcKey) . '.' . $fExt : $srcKey);	// Set filename to look for
+			$scaleFactor = ($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor']) ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;	// Scaling factor
+			$lookUpName = ($fExt) ? preg_replace('/\.[[:alnum:]]+$/', '', $srcKey) . '.' . $fExt : $srcKey;	// Set filename to look for
 
 			if ($fExt && !@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . $lookUpName)) {
 				// fallback to original filename if icon with forced extension doesn't exists
