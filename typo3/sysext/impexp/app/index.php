@@ -944,7 +944,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$presets = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 						'*',
 						'tx_impexp_presets',
-						'(public>0 || user_uid='.intval($GLOBALS['BE_USER']->user['uid']).')'.
+						'(public>0 OR user_uid='.intval($GLOBALS['BE_USER']->user['uid']).')'.
 							($inData['pagetree']['id'] ? ' AND (item_uid='.intval($inData['pagetree']['id']).' OR item_uid=0)' : '')
 
 					);
