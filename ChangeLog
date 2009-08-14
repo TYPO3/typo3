@@ -1,3 +1,7 @@
+2009-08-14  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11718: Performance improvement: speed up function t3lib_iconWorks::skinImg() by caching the results
+
 2009-08-14  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #11438: Add a registry to t3lib

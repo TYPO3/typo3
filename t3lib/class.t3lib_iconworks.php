@@ -280,49 +280,57 @@ final class t3lib_iconWorks	{
 	 */
 	public static function skinImg($backPath, $src, $wHattribs = '', $outputMode = 0)	{
 
+		static $cachedSkinImages = array();
+
+		$imageId = md5($backPath . $src . $wHattribs . $outputMode );
+
+		if (isset($cachedSkinImages[$imageId])) {
+			return $cachedSkinImages[$imageId];
+		}
 			// Setting source key. If the icon is refered to inside an extension, we homogenize the prefix to "ext/":
 		$srcKey = preg_replace('/^(\.\.\/typo3conf\/ext|sysext|ext)\//', 'ext/', $src);
-#if ($src!=$srcKey)debug(array($src, $srcKey));
+		#if ($src!=$srcKey)debug(array($src, $srcKey));
 
 			// LOOKING for alternative icons:
-		if ($GLOBALS['TBE_STYLES']['skinImg'][$srcKey])	{	// Slower or faster with is_array()? Could be used.
+		if ($GLOBALS['TBE_STYLES']['skinImg'][$srcKey]) {	// Slower or faster with is_array()? Could be used.
 			list($src, $wHattribs) = $GLOBALS['TBE_STYLES']['skinImg'][$srcKey];
-		} elseif ($GLOBALS['TBE_STYLES']['skinImgAutoCfg'])	{	// Otherwise, test if auto-detection is enabled:
+		} elseif ($GLOBALS['TBE_STYLES']['skinImgAutoCfg']) {	// Otherwise, test if auto-detection is enabled:
 
 				// Search for alternative icon automatically:
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
-			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;	// Scaling factor
-			$lookUpName = $fExt ? preg_replace('/\.[[:alnum:]]+$/', '', $srcKey).'.'.$fExt : $srcKey;	// Set filename to look for
+			$scaleFactor = ($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1);	// Scaling factor
+			$lookUpName = ($fExt ? preg_replace('/\.[[:alnum:]]+$/', '', $srcKey) . '.' . $fExt : $srcKey);	// Set filename to look for
 
 			if ($fExt && !@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . $lookUpName)) {
 				// fallback to original filename if icon with forced extension doesn't exists
 				$lookUpName = $srcKey;
 			}
 				// If file is found:
-			if (@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName))	{	// If there is a file...
-				$iInfo = @getimagesize($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName);	// Get width/height:
+			if (@is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'].$lookUpName)) {	// If there is a file...
+				$iInfo = @getimagesize($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . $lookUpName);	// Get width/height:
 
 					// Set $src and $wHattribs:
-				$src = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'].$lookUpName;
-				$wHattribs = 'width="'.round($iInfo[0]*$scaleFactor).'" height="'.round($iInfo[1]*$scaleFactor).'"';
+				$src = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'] . $lookUpName;
+				$wHattribs = 'width="' . round($iInfo[0] * $scaleFactor) . '" height="' . round($iInfo[1] * $scaleFactor) . '"';
 			}
 
-				// In anycase, set currect src / wHattrib - this way we make sure that an entry IS found next time we hit the function, regardless of whether it points to a alternative icon or just the current.
+				// In any case, set currect src / wHattrib - this way we make sure that an entry IS found next time we hit the function,
+				// regardless of whether it points to a alternative icon or just the current.
 			$GLOBALS['TBE_STYLES']['skinImg'][$srcKey] = array($src, $wHattribs);		// Set default...
 		}
 
 			// DEBUG: This doubles the size of all icons - for testing/debugging:
-#		if (preg_match('/^width="([0-9]+)" height="([0-9]+)"$/', $wHattribs, $reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
+		# if (preg_match('/^width="([0-9]+)" height="([0-9]+)"$/', $wHattribs, $reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
 
 
 			// rendering disabled (greyed) icons using _i (inactive) as name suffix ("_d" is already used)
 		$matches = array();
 		$srcBasename = basename($src);
 		if (preg_match('/(.*)_i(\....)$/', $srcBasename, $matches)) {
-			$temp_path = dirname(PATH_thisScript).'/';
-			if(!@is_file($temp_path.$backPath.$src)) {
-				$srcOrg = preg_replace('/_i'.preg_quote($matches[2]).'$/', $matches[2], $src);
-				$src = t3lib_iconWorks::makeIcon($backPath.$srcOrg, 'disabled', 0, false, $temp_path.$backPath.$srcOrg, $srcBasename);
+			$temp_path = dirname(PATH_thisScript) . '/';
+			if (!@is_file($temp_path . $backPath . $src)) {
+				$srcOrg = preg_replace('/_i' . preg_quote($matches[2]) . '$/', $matches[2], $src);
+				$src = t3lib_iconWorks::makeIcon($backPath . $srcOrg, 'disabled', 0, false, $temp_path . $backPath . $srcOrg, $srcBasename);
 			}
 		}
 
@@ -331,15 +339,17 @@ final class t3lib_iconWorks	{
 		$output = '';
 		switch($outputMode) {
 			case 0:
-				$output = ' src="'.$backPath.$src.'" '.$wHattribs;
+				$output = ' src="' . $backPath . $src . '" ' . $wHattribs;
 			break;
 			case 1:
-				$output = $backPath.$src;
+				$output = $backPath . $src;
 			break;
 			case 2:
 				$output = $wHattribs;
 			break;
 		}
+
+		$cachedSkinImages[$imageId] = $output;
 		return $output;
 	}
 
