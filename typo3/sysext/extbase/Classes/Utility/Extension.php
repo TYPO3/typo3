@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry 
+ * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry
  * file ext_autoload.php.
  *
  * @package Extbase
@@ -166,7 +166,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
 	}
-	
+
 	/**
 	 * Registers an Extbase module (main or sub) to the backend interface.
 	 * FOR USE IN ext_tables.php FILES
@@ -185,30 +185,30 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 		$extensionKey = $extensionName;
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-		
+
 		$path = t3lib_extMgm::extPath($extensionKey, 'Classes/');
 		$relPath = t3lib_extMgm::extRelPath($extensionKey) . 'Classes/';
-		
+
 		if (!isset($GLOBALS['TBE_EXTBASE_MODULES'])) {
 			$GLOBALS['TBE_EXTBASE_MODULES'] = array();
 		}
-		
+
 		// TODO Make if condition explicit
 		if ($main && !isset($GLOBALS['TBE_MODULES'][$main])) {
 			$main = $extensionName . ucfirst($main);
 		} else {
 			$main = $main ? $main : $extensionName;
 		}
-		
+
 		if (!is_array($config) || count($config) == 0) {
 			$config['access'] = 'admin';
 			$config['icon'] = '';
 			$config['labels'] = '';
 			$config['extRelPath'] = $relPath;
 		}
-		
+
 		$key = $main . ($sub ? '_' . $sub : '');
-		
+
 		$moduleConfig = array(
 			'name' => $key,
 			'extensionKey' => $extensionKey,
@@ -221,17 +221,17 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 		t3lib_extMgm::addModule($main, $sub, $position, $path);
 	}
-	
+
 	/**
 	 * This method is called from t3lib_loadModules::checkMod and it replaces old conf.php.
-	 * 
+	 *
 	 * @param string $key The module name
 	 * @param string $fullpath	Absolute path to module
 	 * @param array $MCONF Reference to the array holding the configuration of the module
 	 * @param array $MLANG Reference to the array holding the localized module labels
 	 * @return array Configuration of the module
 	 */
-	public function setModuleConfiguration($key, $fullpath, &$MCONF, &$MLANG) {
+	public function setModuleConfiguration($key, $fullpath, $MCONF, $MLANG) {
 		$path = preg_replace('/\/[^\/.]+\/\.\.\//', '/', $fullpath); // because 'path/../path' does not work
 		$config = $GLOBALS['TBE_EXTBASE_MODULES'][$key]['config'];
 		define('TYPO3_MOD_PATH', $config['extRelPath']);
@@ -247,7 +247,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 			list($extKey, $local) = explode('/', substr($config['icon'], 4), 2);
 			$config['icon'] = t3lib_extMgm::extRelPath($extKey) . $local;
 		}
-         
+
 			// Initialize search for alternative icon:
 		$altIconKey = 'MOD:' . $key . '/' . $config['icon'];		// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
 		$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
@@ -261,15 +261,15 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 
 			// Fill $MLANG
-		$MLANG['default']['ll_ref'] = $config['labels'];   
-		
+		$MLANG['default']['ll_ref'] = $config['labels'];
+
 			// Finally, set the icon with correct path:
 		if (substr($tabImage, 0 ,3) === '../') {
 			$MLANG['default']['tabs_images']['tab'] = PATH_site . substr($tabImage, 3);
 		} else {
 			$MLANG['default']['tabs_images']['tab'] = PATH_typo3 . $tabImage;
 		}
-		
+
 			// If LOCAL_LANG references are used for labels of the module:
 		if ($MLANG['default']['ll_ref']) {
 				// Now the 'default' key is loaded with the CURRENT language - not the english translation...
@@ -281,11 +281,11 @@ tt_content.list.20.' . $pluginSignature . ' {
 			$GLOBALS['LANG']->addModuleLabels($MLANG['default'], $key . '_');
 			$GLOBALS['LANG']->addModuleLabels($MLANG[$GLOBALS['LANG']->lang], $key . '_');
 		}
-		
+
 			// Fill $modconf
 		$modconf['script'] = 'mod.php?M=Tx_' . rawurlencode($key);
 		$modconf['name'] = $key;
-					
+
 				// Default tab setting
 		if ($MCONF['defaultMod']) {
 			$modconf['defaultMod'] = $MCONF['defaultMod'];
@@ -298,12 +298,12 @@ tt_content.list.20.' . $pluginSignature . ' {
 				$modconf['navFrameScript'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $MCONF['navFrameScript']);
 			}
 		}
-		
+
 			// Additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
 		if ($MCONF['navFrameScriptParam']) {
 			$modconf['navFrameScriptParam'] = $MCONF['navFrameScriptParam'];
 		}
-				
+
 		return $modconf;
 	}
 
@@ -325,7 +325,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	public static function convertLowerUnderscoreToUpperCamelCase($camelCasedString) {
 		return t3lib_div::underscoredToUpperCamelCase($camelCasedString);
 	}
-	
+
 	/**
 	 * Build the autoload registry for a given extension and place it ext_autoload.php.
 	 *
