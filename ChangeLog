@@ -8,7 +8,7 @@
 
 	* Added feature #11438: Add a registry to t3lib
 	* Added missing icon in t3skin for the divider content element
-	* Fixed vertical alignment of text and icons in list module
+	* Fixed bug #11724: Icons in List Module aligned badly
 
 2009-08-14  Michael Stucki  <michael@typo3.org>
 
