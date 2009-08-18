@@ -1,3 +1,7 @@
+2009-08-19  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11716: Install Tool always sets TYPO3_CONF_VARS[FE][disableNoCacheParameter] upon save
+
 2009-08-14  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #8968: DBAL incompatible SQL in "impexp" extension (thanks to Marc Bastian Heinrichs)
