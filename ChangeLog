@@ -1,3 +1,7 @@
+2009-08-18  Francois Suter  <francois@typo3.org>
+
+	* Follow-up to #11408: Removed unnecessary use of second parameter in calls to $GLOBALS['LANG']->getLL()
+
 2009-08-14  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11718: Performance improvement: speed up function t3lib_iconWorks::skinImg() by caching the results
