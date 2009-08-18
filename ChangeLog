@@ -1,3 +1,7 @@
+2009-08-19  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11716: Install Tool always sets TYPO3_CONF_VARS[FE][disableNoCacheParameter] upon save
+
 2009-08-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11476: Redundant rendering of helpTextIcon in TCEforms

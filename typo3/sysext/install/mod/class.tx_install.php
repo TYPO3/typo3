@@ -1343,6 +1343,14 @@ From sub-directory:
 										$value = str_replace(chr(13),'',$value);	// Force Unix linebreaks in textareas
 										$value = str_replace(chr(10),"'.chr(10).'",$value);	// Preserve linebreaks
 									}
+									if (preg_match('/^boolean/i', $description)) {
+											// When submitting settings in the Install Tool, values that default to "false" or "true" in config_default.php will be sent as "0" resp. "1". Therefore, reset the values to their boolean equivalent.
+										if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === false && $value === '0') {
+											$value = false;
+										} elseif ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === true && $value === '1') {
+											$value = true;
+										}
+									}
 
 									if ($doit && strcmp($GLOBALS['TYPO3_CONF_VARS'][$k][$vk],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\''.$k.'\'][\''.$vk.'\']', $value);
 								}
