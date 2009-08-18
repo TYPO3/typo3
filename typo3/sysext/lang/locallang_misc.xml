@@ -71,6 +71,7 @@
 			<label index="synchronizeWithOriginalLanguage">Synchronize with original language</label>
 			<label index="pageTree_filter">Filter</label>
 			<label index="switchtouser">Switch to User</label>
+			<label index="switchtousershort">SU:</label>
 		</languageKey>
 	</data>
 </T3locallang>

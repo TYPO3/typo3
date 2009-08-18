@@ -281,7 +281,7 @@ class TYPO3backend {
 	}
 
 	/**
-	 * gets the label of the currently loged in BE user
+	 * Gets the label of the BE user currently logged in
 	 *
 	 * @return	string		html code snippet displaying the currently logged in user
 	 */
@@ -312,8 +312,9 @@ class TYPO3backend {
 			// superuser mode
 		if($BE_USER->user['ses_backuserid']) {
 			$username   = ' su-user">'.$icon.
-			'<span title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:switchtouser').'">SU: </span>'.
-			'<span>'.htmlspecialchars($label).'</span>';
+			'<span title="' . $GLOBALS['LANG']->getLL('switchtouser') . '">' .
+			$GLOBALS['LANG']->getLL('switchtousershort') . ' </span>' .
+			'<span>' . htmlspecialchars($label) . '</span>';
 		}
 
 		return '<div id="username" class="toolbar-item no-separator'.$username.'</div>';
