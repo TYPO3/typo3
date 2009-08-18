@@ -151,7 +151,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$this->doc->getContextMenuCode();
 
 				// Build the modulle content
-			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle', true));
+			$this->content = $this->doc->header($GLOBALS['LANG']->getLL('moduleTitle'));
 			$this->extObjContent();
 			$this->content .= $this->doc->spacer(10);
 
@@ -192,17 +192,17 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 			$lines = array();
 			$lines[] = '<tr class="c-headLineTable">
-				<td nowrap>' . $GLOBALS['LANG']->getLL('pageName', true) . '</td>
-				<td nowrap>' . $GLOBALS['LANG']->getLL('templates', true) . '</td>
-				<td nowrap>' . $GLOBALS['LANG']->getLL('isRoot', true) . '</td>
-				<td nowrap>' . $GLOBALS['LANG']->getLL('isExt', true) . '</td>
+				<td nowrap>' . $GLOBALS['LANG']->getLL('pageName') . '</td>
+				<td nowrap>' . $GLOBALS['LANG']->getLL('templates') . '</td>
+				<td nowrap>' . $GLOBALS['LANG']->getLL('isRoot') . '</td>
+				<td nowrap>' . $GLOBALS['LANG']->getLL('isExt') . '</td>
 				</tr>';
 			$lines = array_merge($lines, $this->renderList($pArray));
 
 			$table = '<table border="0" cellpadding="0" cellspacing="1" id="ts-overview">' . implode('', $lines) . '</table>';
-			$this->content = $this->doc->section($GLOBALS['LANG']->getLL('moduleTitle', true), '
+			$this->content = $this->doc->section($GLOBALS['LANG']->getLL('moduleTitle'), '
 			<br />
-			' . $GLOBALS['LANG']->getLL('overview', true) . '
+			' . $GLOBALS['LANG']->getLL('overview') . '
 			<br /><br />' . $table);
 
 			// ********************************************
@@ -348,13 +348,13 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$tmpl->tt_track = false;	// Do not log time-performance information
 		$tmpl->init();
 
-		$areYouSure = $GLOBALS['LANG']->getLL('areYouSure', true);
+		$areYouSure = $GLOBALS['LANG']->getLL('areYouSure');
 		$confirm = ' onClick="return confirm(\'' . $areYouSure . '\');"';
 
 			// No template
 		$theOutput .= $this->doc->spacer(10);
-		$theOutput .= $this->doc->section('<span class="typo3-red">' . $GLOBALS['LANG']->getLL('noTemplate', true) . '</span>', $GLOBALS['LANG']->getLL('noTemplateDescription', true) . '<br />
-			' . $GLOBALS['LANG']->getLL('createTemplate', true), 0, 0, 0, 1);
+		$theOutput .= $this->doc->section('<span class="typo3-red">' . $GLOBALS['LANG']->getLL('noTemplate') . '</span>', $GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />
+			' . $GLOBALS['LANG']->getLL('createTemplate'), 0, 0, 0, 1);
 
 			// New standard?
 		if ($newStandardTemplate) {
@@ -369,22 +369,22 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 				// Extension?
 			$theOutput .= $this->doc->spacer(10);
-			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite', true), $GLOBALS['LANG']->getLL('newWebsiteDescription', true) . '<br />
+			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite'), $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br />
 			<br />' .
 			$selector . '<br />
 			<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') . ' hspace="5" align="top">
-			<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction', true) . '"' . $confirm . '>', 0, 1);
+			<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '"' . $confirm . '>', 0, 1);
 		}
 			// Extension?
 		$theOutput .= $this->doc->spacer(10);
-		$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('extTemplate', true), $GLOBALS['LANG']->getLL('extTemplateDescription', true) . '<BR><BR><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') . ' hspace="5" align="top"><input type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction', true) . '"' . $confirm . '>', 0, 1);
+		$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('extTemplate'), $GLOBALS['LANG']->getLL('extTemplateDescription') . '<BR><BR><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') . ' hspace="5" align="top"><input type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '"' . $confirm . '>', 0, 1);
 
 			// Go to first appearing...
 		$first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
 		if ($first) {
 			$theOutput .= $this->doc->spacer(10);
-			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('goToClosest', true),
-					sprintf($GLOBALS['LANG']->getLL('goToClosestDescription', true) . '<br /><br />%s<strong>' . $GLOBALS['LANG']->getLL('goToClosestAction', true) . '</strong>%s', $first['title'], $first['uid'],
+			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('goToClosest'),
+					sprintf($GLOBALS['LANG']->getLL('goToClosestDescription') . '<br /><br />%s<strong>' . $GLOBALS['LANG']->getLL('goToClosestAction') . '</strong>%s', $first['title'], $first['uid'],
 					'<a href="index.php?id=' . $first['uid'] . '">', '</a>'), 0, 1);
 		}
 		return $theOutput;
@@ -435,7 +435,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				$staticT = intval(t3lib_div::_GP('createStandard'));
 				$recData['sys_template']['NEW'] = array(
 					'pid' => $id,
-					'title' => $GLOBALS['LANG']->getLL('titleNewSiteStandard', true),
+					'title' => $GLOBALS['LANG']->getLL('titleNewSiteStandard'),
 					'sorting' => 0,
 					'root' => 1,
 					'clear' => 3,
@@ -444,7 +444,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			} else {
 				$recData['sys_template']['NEW'] = array(
 					'pid' => $id,
-					'title' => $GLOBALS['LANG']->getLL('titleNewSite', true),
+					'title' => $GLOBALS['LANG']->getLL('titleNewSite'),
 					'sorting' => 0,
 					'root' => 1,
 					'clear' => 3,
