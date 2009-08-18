@@ -1,3 +1,7 @@
+2009-08-18  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed Bug #11476: Redundant render of helpTextIcon in tceforms
+
 2009-08-18  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #11373, #11379, #11408: Removed unnecessary use of second parameter in calls to $GLOBALS['LANG']->getLL()
