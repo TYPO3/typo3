@@ -1,6 +1,6 @@
 2009-08-18  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed Bug #11476: Redundant render of helpTextIcon in tceforms
+	* Fixed bug #11476: Redundant rendering of helpTextIcon in TCEforms
 
 2009-08-18  Francois Suter  <francois@typo3.org>
 
@@ -1698,7 +1698,7 @@
 
 2009-01-02  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10043: removed deprecated function-calls in openid
+	* Fixed bug #10043: removed deprecated function-calls in OpenID
 
 2009-01-01  Steffen Kamper  <info@sk-typo3.de>
 
@@ -5653,9 +5653,9 @@
 
 	* Alphabetically sorted TS tree in TS Object Browser (Thanks to Ingo Renner)
 
-2007-01-09  Sebastian Kurfuerst  <sebastian@typo3.org> (Thanks to Oliver Hader)
+2007-01-09  Sebastian Kurfuerst  <sebastian@typo3.org>
 
-	* Rewrote TBE_EDITOR Javascript functions to use JS "objects" and outsourced them to an external file
+	* Rewrote TBE_EDITOR Javascript functions to use JS "objects" and outsourced them to an external file (thanks to Oliver Hader)
 	* !!! Removed the variables TBE_EDITOR_isChanged and TBE_EDITOR_loadTime in TBE_EDITOR javascript
 	* Change in getRecordTitle: a too long title is wrapped in a <span title="..."> tag to show a tooltip
 
