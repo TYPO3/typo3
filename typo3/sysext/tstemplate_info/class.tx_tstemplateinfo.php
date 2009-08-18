@@ -25,9 +25,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- */
-/**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
  *
@@ -46,6 +43,13 @@
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
 
+/**
+ * This class displays the Info/Modify screen of the Web > Template module
+ * 
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ *
+ * $Id$
+ */
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
 	public $tce_processed = false;  // indicator for t3editor, whether data is stored

@@ -5,6 +5,7 @@
 2009-08-18  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #11373, #11379, #11408: Removed unnecessary use of second parameter in calls to $GLOBALS['LANG']->getLL()
+	* Code cleanup #11745: Class tx_tstemplateinfo misses phpdoc declaration and SVN Id keyword placeholder
 
 2009-08-14  Rupert Germann  <rupi@gmx.li>
 
