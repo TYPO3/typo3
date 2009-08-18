@@ -1,6 +1,6 @@
 2009-08-18  Francois Suter  <francois@typo3.org>
 
-	* Follow-up to #11373, #11408: Removed unnecessary use of second parameter in calls to $GLOBALS['LANG']->getLL()
+	* Follow-up to #11373, #11379, #11408: Removed unnecessary use of second parameter in calls to $GLOBALS['LANG']->getLL()
 
 2009-08-14  Rupert Germann  <rupi@gmx.li>
 

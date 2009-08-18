@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -80,8 +80,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			$path = PATH_site.$GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'].'/'.$v;
 			$functions = '';
 			if ($func)	{
-				$functions = '<td bgcolor=red nowrap>' . $GLOBALS['LANG']->getLL('delete', true) . ' <input type="Checkbox" name="data[remove_resource]['.$k.']" value="'.htmlspecialchars($v).'"></td>';
-				$functions.= '<td'.$bgcol.' nowrap>' . $GLOBALS['LANG']->getLL('toTop', true) . ' <input type="Checkbox" name="data[totop_resource]['.$k.']" value="'.htmlspecialchars($v).'"></td>';
+				$functions = '<td bgcolor=red nowrap>' . $GLOBALS['LANG']->getLL('delete') . ' <input type="Checkbox" name="data[remove_resource]['.$k.']" value="'.htmlspecialchars($v).'"></td>';
+				$functions.= '<td'.$bgcol.' nowrap>' . $GLOBALS['LANG']->getLL('toTop') . ' <input type="Checkbox" name="data[totop_resource]['.$k.']" value="'.htmlspecialchars($v).'"></td>';
 				$functions.= '<td'.$bgcol.' nowrap>';
 				$fI = t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions,$fI['fileext']))	{
@@ -303,8 +303,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 								$theOutput.= $this->pObj->doc->spacer(10);
 								$theOutput.= $this->pObj->doc->section(
-									'<font color=red>' . $GLOBALS['LANG']->getLL('fileChanged', true) . '</font>',
-									sprintf($GLOBALS['LANG']->getLL('resourceUpdated', true), $edit['filename']),
+									'<font color=red>' . $GLOBALS['LANG']->getLL('fileChanged') . '</font>',
+									sprintf($GLOBALS['LANG']->getLL('resourceUpdated'), $edit['filename']),
 									0, 0, 0, 1
 								);
 
@@ -335,7 +335,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			}
 
 			$theOutput.= $this->pObj->doc->spacer(5);
-			$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation', true), '<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)).' align="top" /> <b>'.htmlspecialchars($tplRow['title']).'</b>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
+			$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation'), '<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)).' align="top" /> <b>'.htmlspecialchars($tplRow['title']).'</b>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
 			if ($manyTemplatesMenu)	{
 				$theOutput.= $this->pObj->doc->section('', $manyTemplatesMenu);
 				$theOutput.= $this->pObj->doc->divider(5);
@@ -355,29 +355,29 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$outCode = '<input type="Text" name="data[title]" value="'.htmlspecialchars($tplRow['title']).'"'.$this->pObj->doc->formWidth().'>';
 				$outCode.= '<input type="Hidden" name="e[title]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('title', true), $outCode);
+				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('title'), $outCode);
 			}
 			if ($e['sitetitle'])	{
 				$outCode = '<input type="Text" name="data[sitetitle]" value="'.htmlspecialchars($tplRow['sitetitle']).'"'.$this->pObj->doc->formWidth().'>';
 				$outCode.= '<input type="Hidden" name="e[sitetitle]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('sitetitle', true), $outCode);
+				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('sitetitle'), $outCode);
 			}
 			if ($e['description'])	{
 				$outCode = '<textarea name="data[description]" rows="5" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, '', '').'>'.t3lib_div::formatForTextarea($tplRow['description']).'</textarea>';
 				$outCode.= '<input type="Hidden" name="e[description]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('description', true), $outCode);
+				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('description'), $outCode);
 			}
 			if ($e['resources'])	{
 					// Upload
 				$outCode = '<input type="File" name="resources"'.$this->pObj->doc->formWidth().' size="50">';
 				$outCode.= '<input type="Hidden" name="data[resources]" value="1">';
 				$outCode.= '<input type="Hidden" name="e[resources]" value="1">';
-				$outCode.= '<BR>' . $GLOBALS['LANG']->getLL('allowedExtensions', true) . ' <b>' . $TCA['sys_template']['columns']['resources']['config']['allowed'] . '</b>';
-				$outCode.= '<BR>' . $GLOBALS['LANG']->getLL('maxFilesize', true) . ' <b>' . t3lib_div::formatSize($TCA['sys_template']['columns']['resources']['config']['max_size']*1024) . '</b>';
+				$outCode.= '<BR>' . $GLOBALS['LANG']->getLL('allowedExtensions') . ' <b>' . $TCA['sys_template']['columns']['resources']['config']['allowed'] . '</b>';
+				$outCode.= '<BR>' . $GLOBALS['LANG']->getLL('maxFilesize') . ' <b>' . t3lib_div::formatSize($TCA['sys_template']['columns']['resources']['config']['max_size']*1024) . '</b>';
 				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('uploadResource', true), $outCode);
+				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('uploadResource'), $outCode);
 
 					// New
 				$opt = explode(',', $this->pObj->textExtensions);
@@ -389,27 +389,27 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					<select name="new_resource_ext">'.$optTags.'</select>';
 				$outCode.= '<input type="Hidden" name="data[new_resource]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('newTextResource', true), $outCode);
+				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('newTextResource'), $outCode);
 
 					// Make copy
 				$rL = $this->resourceListForCopy($this->pObj->id, $template_uid);
 				if ($rL)	{
 					$theOutput.= $this->pObj->doc->spacer(20);
-					$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('copyResource', true), $rL);
+					$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('copyResource'), $rL);
 				}
 
 					// Update resource list
 				$rL = $this->procesResources($tplRow['resources'], 1);
 				if ($rL)	{
 					$theOutput.= $this->pObj->doc->spacer(20);
-					$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('updateResourceList', true), $rL);
+					$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('updateResourceList'), $rL);
 				}
 			}
 			if ($e['constants'])	{
 				$outCode = '<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['constants']).'</textarea>';
 				$outCode.= '<input type="Hidden" name="e[constants]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', true), '');
+				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants'), '');
 				$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
 			}
 			if ($e['file'])	{
@@ -419,17 +419,17 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				if (@is_file($path) && t3lib_div::inList($this->pObj->textExtensions, $fI['fileext']))	{
 					if (filesize($path) < $TCA['sys_template']['columns']['resources']['config']['max_size']*1024)	{
 						$fileContent = t3lib_div::getUrl($path);
-						$outCode = $GLOBALS['LANG']->getLL('file', true). ' <b>' . $e[file] . '</b><BR>';
+						$outCode = $GLOBALS['LANG']->getLL('file'). ' <b>' . $e[file] . '</b><BR>';
 						$outCode.= '<textarea name="edit[file]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
 						$outCode.= '<input type="Hidden" name="edit[filename]" value="'.$e[file].'">';
 						$outCode.= '<input type="Hidden" name="e[file]" value="'.htmlspecialchars($e[file]).'">';
 						$theOutput.= $this->pObj->doc->spacer(15);
-						$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editResource', true), '');
+						$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editResource'), '');
 						$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
 					} else {
 						$theOutput.= $this->pObj->doc->spacer(15);
-						$fileToBig = sprintf($GLOBALS['LANG']->getLL('filesizeExceeded', true), $TCA['sys_template']['columns']['resources']['config']['max_size']); 
-						$filesizeNotAllowed = sprintf($GLOBALS['LANG']->getLL('notAllowed', true), $TCA['sys_template']['columns']['resources']['config']['max_size']);
+						$fileToBig = sprintf($GLOBALS['LANG']->getLL('filesizeExceeded'), $TCA['sys_template']['columns']['resources']['config']['max_size']); 
+						$filesizeNotAllowed = sprintf($GLOBALS['LANG']->getLL('notAllowed'), $TCA['sys_template']['columns']['resources']['config']['max_size']);
 						$theOutput.= $this->pObj->doc->section(
 							'<font color=red>' . $fileToBig . '</font>',
 							$filesizeNotAllowed,
@@ -452,40 +452,40 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 				$outCode.= '<input type="Hidden" name="e[config]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
-				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', true), '');
+				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup'), '');
 				$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
 			}
 
 				// Processing:
 			$outCode = '';
 			$outCode.= $this->tableRow(
-				$GLOBALS['LANG']->getLL('title', true),
+				$GLOBALS['LANG']->getLL('title'),
 				htmlspecialchars($tplRow['title']),
 				'title'
 			);
 			$outCode.= $this->tableRow(
-				$GLOBALS['LANG']->getLL('sitetitle', true),
+				$GLOBALS['LANG']->getLL('sitetitle'),
 				htmlspecialchars($tplRow['sitetitle']),
 				'sitetitle'
 			);
 			$outCode.= $this->tableRow(
-				$GLOBALS['LANG']->getLL('description', true),
+				$GLOBALS['LANG']->getLL('description'),
 				nl2br(htmlspecialchars($tplRow['description'])),
 				'description'
 			);
 			$outCode.= $this->tableRow(
-				$GLOBALS['LANG']->getLL('resources', true),
+				$GLOBALS['LANG']->getLL('resources'),
 				$this->procesResources($tplRow['resources']),
 				'resources'
 			);
 			$outCode.= $this->tableRow(
-				$GLOBALS['LANG']->getLL('constants', true),
-				sprintf($GLOBALS['LANG']->getLL('editToView', true), (trim($tplRow[constants]) ? count(explode(chr(10), $tplRow[constants])) : 0)),
+				$GLOBALS['LANG']->getLL('constants'),
+				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[constants]) ? count(explode(chr(10), $tplRow[constants])) : 0)),
 				'constants'
 			);
 			$outCode.= $this->tableRow(
-				$GLOBALS['LANG']->getLL('setup', true),
-				sprintf($GLOBALS['LANG']->getLL('editToView', true), (trim($tplRow[config]) ? count(explode(chr(10), $tplRow[config])) : 0)),
+				$GLOBALS['LANG']->getLL('setup'),
+				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[config]) ? count(explode(chr(10), $tplRow[config])) : 0)),
 				'config'
 			);
 			$outCode = '<table border=0 cellpadding=1 cellspacing=1 width="100%">'.$outCode.'</table>';
@@ -495,7 +495,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			</table>';
 
 				// Edit all icon:
-			$outCode.= '<BR><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') . '&edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong>' . $GLOBALS['LANG']->getLL('editTemplateRecord', true) . '</strong></a>';
+			$outCode.= '<BR><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') . '&edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong>' . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
 
 			$theOutput.= $this->pObj->doc->spacer(25);
 			$theOutput.= $this->pObj->doc->section('', $outCode);
