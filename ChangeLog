@@ -1,6 +1,7 @@
 2009-08-19  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11746: Performance improvement: speed up function t3lib_BEfunc::isRecordLocked()
+	* Follow-up to bug #11052: removed some superfluous whitespaces in class t3lib_befunc
 
 2009-08-19  Michael Stucki  <michael@typo3.org>
 

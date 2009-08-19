@@ -4153,11 +4153,11 @@ final class t3lib_BEfunc {
 									$failed[] = $configuredServer;
 								}
 							}
-						} 
-					} 
+						}
+					}
 					if (count($failed) > 0) {
-					 	$warnings['memcached'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.memcache_not_usable') . '<br/>' . 
-					 		implode(', ', $failed);
+						$warnings['memcached'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.memcache_not_usable') . '<br/>' .
+							implode(', ', $failed);
 					}
 				}
 			}
