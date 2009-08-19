@@ -1,3 +1,7 @@
+2009-08-19  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11746: Performance improvement: speed up function t3lib_BEfunc::isRecordLocked()
+
 2009-08-19  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #11716: Install Tool always sets TYPO3_CONF_VARS[FE][disableNoCacheParameter] upon save

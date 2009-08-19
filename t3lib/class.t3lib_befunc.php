@@ -3007,6 +3007,7 @@ final class t3lib_BEfunc {
 	public static function isRecordLocked($table, $uid) {
 		global $LOCKED_RECORDS;
 		if (!is_array($LOCKED_RECORDS)) {
+			$LOCKED_RECORDS = array();
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'*',
 							'sys_lockedrecords',
