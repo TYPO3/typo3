@@ -133,7 +133,7 @@ class filelistFolderTree extends t3lib_folderTree {
 
 		$out = '
 			<!-- TYPO3 folder tree structure. -->
-			<ul class="tree">
+			<ul class="tree" id="treeRoot">
 		';
 		$titleLen=intval($this->BE_USER->uc['titleLen']);
 		if (!is_array($treeArr))	$treeArr=$this->tree;
