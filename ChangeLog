@@ -1,6 +1,6 @@
 2009-08-20  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug 11726: File list tree-<ul> lacks id="treeRoot" (thanks to Steffen Gebert)
+	* Fixed bug #11726: File list tree-<ul> lacks id="treeRoot" (thanks to Steffen Gebert)
 
 2009-08-19  Rupert Germann  <rupi@gmx.li>
 
