@@ -1,3 +1,7 @@
+2009-08-21  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11747: Performance improvement: speed up list module by improving internal handling of references
+
 2009-08-20  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11726: File list tree-<ul> lacks id="treeRoot" (thanks to Steffen Gebert)

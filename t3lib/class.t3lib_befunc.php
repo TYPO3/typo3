@@ -3469,28 +3469,32 @@ final class t3lib_BEfunc {
 	 * @param	string		Table name (or "_FILE" if its a file)
 	 * @param	string		Reference: If table, then integer-uid, if _FILE, then file reference (relative to PATH_site)
 	 * @param	string		Message with %s, eg. "There were %s records pointing to this file!"
+	 * @param	string		reference count
 	 * @return	string		Output string (or integer count value if no msg string specified)
 	 */
-	public static function referenceCount($table, $ref, $msg = '')	{
-			// Look up the path:
-		if ($table=='_FILE') {
-			if (t3lib_div::isFirstPartOfStr($ref, PATH_site)) {
-				$ref = substr($ref, strlen(PATH_site));
-				$condition = 'ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'sys_refindex');
-			} else {
-				return '';
-			}
-		} else {
-			$condition = 'ref_uid=' . intval($ref);
-		}
+	public static function referenceCount($table, $ref, $msg = '', $count = NULL) {
+		if ($count === NULL) {
 
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-			'*',
-			'sys_refindex',
-			'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') .
-				' AND ' . $condition .
-				' AND deleted=0'
-		);
+				// Look up the path:
+			if ($table=='_FILE') {
+				if (t3lib_div::isFirstPartOfStr($ref, PATH_site)) {
+					$ref = substr($ref, strlen(PATH_site));
+					$condition = 'ref_string='.$GLOBALS['TYPO3_DB']->fullQuoteStr($ref, 'sys_refindex');
+				} else {
+					return '';
+				}
+			} else {
+				$condition = 'ref_uid=' . intval($ref);
+			}
+
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
+				'sys_refindex',
+				'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') .
+					' AND ' . $condition .
+					' AND deleted=0'
+			);
+		}
 
 		return ($count ? ($msg ? sprintf($msg, $count) : $count) : '');
 	}

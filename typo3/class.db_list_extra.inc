@@ -119,6 +119,8 @@ class localRecordList extends recordList {
 	var $CBnames=array();					// Tracking names of elements (for clipboard use)
 	var $duplicateStack=array();			// Used to track which elements has duplicates and how many
 
+	var $references;						// References of the current record
+
 	public function __construct() {
 		parent::__construct();
 	}
@@ -630,6 +632,7 @@ class localRecordList extends recordList {
 
 		if (is_array($row))	{
 
+			$this->setReferences($table, $row['uid']);
 				// add special classes for first and last row
 			$rowSpecial = '';
 			if ($cc == 1 && $indent == 0) {
@@ -732,6 +735,24 @@ class localRecordList extends recordList {
 				// Finally, return table row element:
 			return $iOut;
 		}
+	}
+
+	/**
+	 * Write sys_refindex entries for current record to $this->references
+	 *
+	 * @param	string		Table name
+	 * @param	integer		Uid of current record
+	 * @return	void
+	 */
+	function setReferences($table, $uid) {
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_refindex',
+			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
+				' AND ref_uid='.intval($uid).
+				' AND deleted=0'
+		);
+		$this->references = $rows;
 	}
 
 	/**
@@ -1219,7 +1240,9 @@ class localRecordList extends recordList {
 					$titleOrig = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
 					$title = t3lib_div::slashJS(t3lib_div::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
 					$params = '&cmd['.$table.']['.$row['uid'].'][delete]=1';
-					$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').' "'. $title.'" '.t3lib_BEfunc::referenceCount($table,$row['uid'],' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.referencesToRecord'))).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'">'.
+
+					$refCountMsg = t3lib_BEfunc::referenceCount($table, $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.referencesToRecord'), count($this->references));
+					$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').' "'. $title.'" '.$refCountMsg).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('delete',1).'" alt="" />'.
 							'</a>';
 				} elseif(!$this->table) {
@@ -1390,19 +1413,10 @@ class localRecordList extends recordList {
 	 */
 	function makeRef($table,$uid)	{
 
-			// Look up the path:
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			'sys_refindex',
-			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
-				' AND ref_uid='.intval($uid).
-				' AND deleted=0'
-		);
-
 			// Compile information for title tag:
 		$infoData=array();
-		if (is_array($rows)) {
-			foreach($rows as $row)	{
+		if (is_array($this->references)) {
+			foreach ($this->references as $row) {
 				$infoData[]=$row['tablename'].':'.$row['recuid'].':'.$row['field'];
 			}
 		}
