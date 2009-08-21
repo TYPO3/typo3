@@ -6,7 +6,7 @@ if (TYPO3_MODE=='BE')	{
 		'web_ts',
 		'tx_tstemplateanalyzer',
 		t3lib_extMgm::extPath($_EXTKEY).'class.tx_tstemplateanalyzer.php',
-		'Template Analyzer'
+		'LLL:EXT:tstemplate/ts/locallang.xml:templateAnalyzer'
 	);
 }
 ?>

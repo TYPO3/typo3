@@ -7,6 +7,10 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="moduleTitle">Template tools</label>
+			<label index="templateAnalyzer">Template Analyzer</label>
+			<label index="constantEditor">Constant Editor</label>
+			<label index="infoModify">Info/Modify</label>
+			<label index="objectBrowser">TypoScript Object Browser</label>
 			<label index="viewTemplates">Viewing templates of</label>
 			<label index="pageName">Page name</label>
 			<label index="templates"># Templates</label>

@@ -6,7 +6,7 @@ if (TYPO3_MODE=='BE')	{
 		'web_ts',
 		'tx_tstemplateobjbrowser',
 		t3lib_extMgm::extPath($_EXTKEY).'class.tx_tstemplateobjbrowser.php',
-		'TypoScript Object Browser'
+		'LLL:EXT:tstemplate/ts/locallang.xml:objectBrowser'
 	);
 }
 ?>

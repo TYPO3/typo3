@@ -6,7 +6,7 @@ if (TYPO3_MODE=='BE')	{
 		'web_ts',
 		'tx_tstemplateinfo',
 		t3lib_extMgm::extPath($_EXTKEY).'class.tx_tstemplateinfo.php',
-		'Info/Modify'
+		'LLL:EXT:tstemplate/ts/locallang.xml:infoModify'
 	);
 }
 ?>

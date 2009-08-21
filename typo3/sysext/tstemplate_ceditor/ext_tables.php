@@ -6,7 +6,7 @@ if (TYPO3_MODE=='BE')	{
 		'web_ts',
 		'tx_tstemplateceditor',
 		t3lib_extMgm::extPath($_EXTKEY).'class.tx_tstemplateceditor.php',
-		'Constant Editor'
+		'LLL:EXT:tstemplate/ts/locallang.xml:constantEditor'
 	);
 }
 ?>
