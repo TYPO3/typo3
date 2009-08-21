@@ -169,14 +169,14 @@ class localRecordList extends recordList {
 			} else {
 					//default exclusion: doktype 254, 255
 				$noViewDokTypes = array('254', '255');
-			}	
-				
+			}
+
 			if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
 				$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->id, $this->backPath, t3lib_BEfunc::BEgetRootLine($this->id))) . '">' .
 							'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/zoom.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" alt="" />' .
 							'</a>';
 			}
-			
+
 				// New record
 			if (!$GLOBALS['SOBE']->modTSconfig['properties']['noCreateRecordsLink']) {
 				$buttons['new_record'] = '<a href="#" onclick="' . htmlspecialchars('return jumpExt(\'' . $this->backPath . 'db_new.php?id=' . $this->id . '\');') . '">' .
@@ -1052,7 +1052,7 @@ class localRecordList extends recordList {
 				. '</span>';
 
 			$content .= '<div id="typo3-dblist-pagination">'
-				. $first . $previous  
+				. $first . $previous
 				. '<span class="bar">&nbsp;</span>'
 				. $rangeIndicator . '<span class="bar">&nbsp;</span>'
 				. $pageIndicator . '<span class="bar">&nbsp;</span>'
