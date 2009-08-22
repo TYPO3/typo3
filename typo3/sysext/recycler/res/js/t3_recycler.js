@@ -91,10 +91,9 @@ Recycler.grid = {
 		var filterGrid = function(grid, cmp) {
 			var filterText = cmp.getValue();
 
-			addParameters('filterTxt', filterText);
-
+			gridDs.setBaseParam('filterTxt', filterText);
 			// load the datastore
-			grid.getStore().load({
+			gridDs.load({
 				params: {
 					start: 0
 				}
@@ -126,48 +125,17 @@ Recycler.grid = {
 				direction: "ASC"
 			},
 			groupField: 'table',
-			url: Recycler.statics.ajaxController + '&depth=' + Recycler.statics.depthSelection + '&startUid=' + Recycler.statics.startUid + '&cmd=getDeletedRecords&pagingSizeDefault=' + Recycler.statics.pagingSize + '&table=' + Recycler.statics.tableSelection
-
+			url: Recycler.statics.ajaxController + '&cmd=getDeletedRecords'
 		});
-
-		/****************************************************
-		 * add param to grid store GET
-		 ****************************************************/
-		var addParameters = function(key, value) {
-			var grid = tabs.getComponent(0).getComponent(0);
-
-			var url = grid.getStore().proxy.conn.url;
-			var urlParts = url.split('?');
-
-			var params = urlParts[1].split('&');
-			var newParams = [];
-			var k = 0;	// used to specify offset if we set a value
-
-			// add our new key / value to the new params if value is not ''
-			if ('' !== value) {
-				newParams[0] = key + '=' + value;
-				k = 1;
-			}
-
-			// find the key and remove it
-			var l = params.length;
-
-			for (var i = 0; i < l; i ++) {
-				if (params[i].indexOf(key + '=') != -1) {
-					k -= 1;
-					continue;
-				} else {
-					newParams[i + k] = params[i];
-				}
-			}
-
-			// make new url from http + params
-			url = urlParts[0] + '?' + newParams.join('&');
-
-
-			// set the new url for the store
-			grid.getStore().proxy.conn.url = url;
-		};
+		
+		gridDs.baseParams = {
+				depth: Recycler.statics.depthSelection,
+				startUid: Recycler.statics.startUid,
+				pagingSizeDefault: Recycler.statics.pagingSize,
+				table: Recycler.statics.tableSelection
+		}
+		
+		
 
 		/****************************************************
 		 * permanent deleting function
@@ -417,9 +385,12 @@ Recycler.grid = {
 											fn: function(cmp, rec, index) {
 												var store = tabs.getComponent(0).getComponent(0).getStore();
 												var depth = rec.get('depth');
-
-												addParameters('depth', depth);
-												store.load();
+												gridDs.setBaseParam('depth', depth);
+												store.load({
+													params: {
+														start: 0
+													}
+												});
 
 												Ext.getCmp('tableSelector').store.load({
 													params: {
@@ -471,7 +442,7 @@ Recycler.grid = {
 									listeners: {
 										'select': {
 											fn: function(cmp, rec, index) {
-												var store = tabs.getComponent(0).getComponent(0).getStore();
+												var store = gridDs;
 												var table = rec.get('valueField');
 
 												// do not reload if the table selected has no deleted records - hide all records
@@ -479,9 +450,7 @@ Recycler.grid = {
 													store.filter('uid', '-1'); // never true
 													return false;
 												}
-
-												addParameters('table', table);
-
+												gridDs.setBaseParam('table', table);
 												store.load({
 													params: {
 														start: 0

@@ -1,3 +1,7 @@
+2009-08-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11528: JS Error in Recycler - refactored the store handling
+
 2009-08-21  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11747: Performance improvement: speed up list module by improving internal handling of references
