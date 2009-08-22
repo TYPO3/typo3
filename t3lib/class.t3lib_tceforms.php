@@ -4998,7 +4998,7 @@ class t3lib_TCEforms	{
 
 					// Hover popup textbox with alttitle and description
 				if ($this->edit_showFieldHelp == 'icon') {
-					$arrow = '<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/rel_db.gif', 'width="13" height="12"') . ' class="absmiddle" alt="" />';
+					$arrow = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/rel_db.gif', 'width="13" height="12"') . ' class="absmiddle" alt="" />';
 						// add description text
 					$hoverText = '<span class="paragraph">' . nl2br(htmlspecialchars($value)) . $arrow . '</span>';
 						// put header before the rest of the text
