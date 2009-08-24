@@ -120,6 +120,7 @@ class localRecordList extends recordList {
 	var $duplicateStack=array();			// Used to track which elements has duplicates and how many
 
 	var $references;						// References of the current record
+	var $translations;						// Translations of the current record
 
 	public function __construct() {
 		parent::__construct();
@@ -376,6 +377,7 @@ class localRecordList extends recordList {
 		$selectFields = array_unique($selectFields);		// Unique list!
 		$selectFields = array_intersect($selectFields,$this->makeFieldList($table,1));		// Making sure that the fields in the field-list ARE in the field-list from TCA!
 		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
+		$this->translateTools->selFieldList = $selFieldList;
 
 		/**
 		 * @hook			DB-List getTable
@@ -540,28 +542,16 @@ class localRecordList extends recordList {
 					// Render item row if counter < limit
 					if ($cc < $this->iLimit) {
 						$cc++;
+						$this->translations = FALSE;
 						$iOut.= $this->renderListRow($table,$row,$cc,$titleCol,$thumbsCol);
 
 							// If localization view is enabled it means that the selected records are either default or All language and here we will not select translations which point to the main record:
 						if ($this->localizationView && $l10nEnabled)	{
-
-								// Look for translations of this record:
-							$translations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-								$selFieldList,
-								$table,
-								'pid='.$row['pid'].
-									' AND '.$TCA[$table]['ctrl']['languageField'].'>0'.
-									' AND '.$TCA[$table]['ctrl']['transOrigPointerField'].'='.intval($row['uid']).
-									t3lib_BEfunc::deleteClause($table).
-									t3lib_BEfunc::versioningPlaceholderClause($table)
-							);
-
 								// For each available translation, render the record:
-							if (is_array($translations)) {
-								foreach($translations as $lRow)	{
+							if (is_array($this->translations)) {
+								foreach ($this->translations as $lRow) {
 										// In offline workspace, look for alternative record:
 									t3lib_BEfunc::workspaceOL($table, $lRow, $GLOBALS['BE_USER']->workspace);
-
 									if (is_array($lRow) && $GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
 										$currentIdList[] = $lRow['uid'];
 										$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
@@ -1439,8 +1429,8 @@ class localRecordList extends recordList {
 			1 => '',
 		);
 
-		$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
-		$translations = $t8Tools->translationInfo($table,$row['uid']);
+		$translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row);
+		$this->translations = $translations['translations'];
 
 			// Language title and icon:
 		$out[0] = $this->languageFlag($row[$TCA[$table]['ctrl']['languageField']]);

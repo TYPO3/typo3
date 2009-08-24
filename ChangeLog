@@ -1,3 +1,7 @@
+2009-08-24  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11764: Performance improvement: speed up list module by improving internal handling of localisations
+
 2009-08-23  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11769: publish function in adminPanel is broken

@@ -129,15 +129,19 @@ class t3lib_transl8tools	{
 	 * @param	string		Table name
 	 * @param	integer		Record uid
 	 * @param	integer		Language uid. If zero, then all languages are selected.
+	 * @param	array		The record to be translated
 	 * @return	array		Array with information. Errors will return string with message.
 	 */
-	function translationInfo($table,$uid,$sys_language_uid=0)	{
+	function translationInfo($table, $uid, $sys_language_uid = 0, $row = NULL) {
 		global $TCA;
 
 		if ($TCA[$table] && $uid)	{
 			t3lib_div::loadTCA($table);
 
-			$row = t3lib_BEfunc::getRecordWSOL($table,$uid);
+			if ($row === NULL) {
+				$row = t3lib_BEfunc::getRecordWSOL($table, $uid);
+			}
+
 			if (is_array($row))	{
 				$trTable = $this->getTranslationTable($table);
 				if ($trTable)	{
@@ -146,11 +150,11 @@ class t3lib_transl8tools	{
 
 								// Look for translations of this record, index by language field value:
 							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-								'uid,'.$TCA[$trTable]['ctrl']['languageField'],
+								$this->selFieldList,
 								$trTable,
-								'pid='.intval($table==='pages' ? $row['uid'] : $row['pid']).	// Making exception for pages of course where the translations will always be ON the page, not on the level above...
+								$TCA[$trTable]['ctrl']['transOrigPointerField'] . '=' . intval($uid) .
+									' AND pid=' . intval($table === 'pages' ? $row['uid'] : $row['pid']).	// Making exception for pages of course where the translations will always be ON the page, not on the level above...
 									' AND '.$TCA[$trTable]['ctrl']['languageField'].(!$sys_language_uid ? '>0' : '='.intval($sys_language_uid)).
-									' AND '.$TCA[$trTable]['ctrl']['transOrigPointerField'].'='.intval($uid).
 									t3lib_BEfunc::deleteClause($trTable).
 									t3lib_BEfunc::versioningPlaceholderClause($trTable)
 							);
