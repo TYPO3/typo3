@@ -214,6 +214,7 @@ class SC_db_list {
 		$dblist->returnUrl=$this->returnUrl;
 		$dblist->allFields = ($this->MOD_SETTINGS['bigControlPanel'] || $this->table) ? 1 : 0;
 		$dblist->localizationView = $this->MOD_SETTINGS['localization'];
+		$dblist->translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
 		$dblist->showClipboard = 1;
 		$dblist->disableSingleTableView = $this->modTSconfig['properties']['disableSingleTableView'];
 		$dblist->listOnlyInSingleTableMode = $this->modTSconfig['properties']['listOnlyInSingleTableView'];

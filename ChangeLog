@@ -1,6 +1,7 @@
 2009-08-24  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11764: Performance improvement: speed up list module by improving internal handling of localisations
+	* Follow-up to #11764: $this->translateTools was not initialized in the page module.
 
 2009-08-23  Rupert Germann  <rupi@gmx.li>
 

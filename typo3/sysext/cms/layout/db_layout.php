@@ -936,6 +936,7 @@ class SC_db_layout {
 		if (!$dblist->nextThree)	$dblist->nextThree = 1;
 
 		$dblist->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
+		$dblist->translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
 
 
 			// Create menu for selecting a table to jump to (this is, if more than just pages/tt_content elements are found on the page!)

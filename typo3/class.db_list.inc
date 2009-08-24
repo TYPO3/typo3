@@ -225,7 +225,6 @@ class recordList extends t3lib_recordList {
 
 			// Initialize languages:
 		if ($this->localizationView)	{
-			$this->translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
 			$this->initializeLanguages();
 		}
 	}
