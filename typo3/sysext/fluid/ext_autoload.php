@@ -38,6 +38,7 @@ return array(
 	'tx_fluid_core_viewhelper_facets_postparseinterface' => $extensionClassesPath . 'Core/ViewHelper/Facets/PostParseInterface.php',
 	'tx_fluid_service_docbookgenerator' => $extensionClassesPath . 'Service/DocbookGenerator.php',
 	'tx_fluid_view_templateview' => $extensionClassesPath . 'View/TemplateView.php',
+	'tx_fluid_view_templateviewinterface' => $extensionClassesPath . 'View/TemplateViewInterface.php',
 	'tx_fluid_viewhelpers_aliasviewhelper' => $extensionClassesPath . 'ViewHelpers/AliasViewHelper.php',
 	'tx_fluid_viewhelpers_baseviewhelper' => $extensionClassesPath . 'ViewHelpers/BaseViewHelper.php',
 	'tx_fluid_viewhelpers_cobjectviewhelper' => $extensionClassesPath . 'ViewHelpers/CObjectViewHelper.php',
