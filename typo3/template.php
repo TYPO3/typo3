@@ -1812,6 +1812,76 @@ $str.=$this->docBodyTagBegin().
 		}
 	}
 
+	/**
+	 * Add a flash message to the queue. It will live until the next call to
+	 * popFlashMessages() in the current session.
+	 *
+	 * @param	t3lib_FlashMessage	A flash message object.
+	 * @return	void
+	 * @author	Karsten Dambekalns <karsten@typo3.org>
+	 * @author	Ingo Renner <ingo@typo3.org>
+	 */
+	public function pushFlashMessage(t3lib_FlashMessage $message) {
+		$queuedFlashMessages = $this->getFlashMessagesFromSession();
+		$queuedFlashMessages[] = $message;
+
+		$GLOBALS['BE_USER']->setAndSaveSessionData(
+			'core.template.flashMessages',
+			$queuedFlashMessages
+		);
+	}
+
+	/**
+	 * Returns queued flash messages and clears the queue.
+	 *
+	 * @return	array	An array with t3lib_FlashMessage flash messages.
+	 * @author	Karsten Dambekalns <karsten@typo3.org>
+	 * @author	Ingo Renner <ingo@typo3.org>
+	 */
+	protected function popFlashMessages() {
+		$queuedFlashMessages = $this->getFlashMessagesFromSession();
+
+		if (!empty($queuedFlashMessages)) {
+			$GLOBALS['BE_USER']->setAndSaveSessionData(
+				'core.template.flashMessages',
+				null
+			);
+		}
+
+		return $queuedFlashMessages;
+	}
+
+	/**
+	 * Returns current flash messages from the seesion, making sure to always
+	 * return an array.
+	 *
+	 * @return	array	An array of t3lib_FlashMessage flash messages.
+	 * @author	Karsten Dambekalns <karsten@typo3.org>
+	 * @author	Ingo Renner <ingo@typo3.org>
+	 */
+	protected function getFlashMessagesFromSession() {
+		$flashMessages = $GLOBALS['BE_USER']->getSessionData('core.template.flashMessages');
+
+		return is_array($flashMessages) ? $flashMessages : array();
+	}
+
+	/**
+	 * Renders all available flash messages in the queue
+	 *
+	 * @return	string	All flash messages in the queue rendered as HTML
+	 * @author	Ingo Renner <ingo@typo3.org>
+	 */
+	public function renderFlashMessages() {
+		$content       = '';
+		$flashMessages = $this->popFlashMessages();
+
+		foreach ($flashMessages as $flashMessage) {
+			$content .= $flashMessage->render();
+		}
+
+		return $content;
+	}
+
 
 	/**
 	 * Function to load a HTML template file with markers.
@@ -1884,6 +1954,29 @@ $str.=$this->docBodyTagBegin().
 		foreach ($subpartArray as $marker => $content) {
 			$moduleBody = t3lib_parsehtml::substituteSubpart($moduleBody, $marker, $content);
 		}
+
+			// adding flash messages
+		$flashMessages = $this->renderFlashMessages();
+		if (!empty($flashMessages)) {
+			$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
+		}
+
+		if (strstr($moduleBody, '###FLASHMESSAGES###')) {
+				// either replace a dedicated marker for the messages if present
+			$moduleBody = str_replace(
+				'###FLASHMESSAGES###',
+				$flashMessages,
+				$moduleBody
+			);
+		} else {
+				// or force them to appear before the content
+			$moduleBody = str_replace(
+				'###CONTENT###',
+				$flashMessages . '###CONTENT###',
+				$moduleBody
+			);
+		}
+
 			// replacing all markers with the finished markers and return the HTML content
 		return t3lib_parsehtml::substituteMarkerArray($moduleBody, $markerArray, '###|###');
 

@@ -597,6 +597,63 @@ div.typo3-dyntabmenu-divs-foldout div.tabact_over a {
 
 /* - - - - - - - - - - - - - - - - - - - - -
 
+Flash Messages (template.php)
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-messages {
+	margin-bottom: 10px;
+}
+
+.typo3-message {
+	padding: 6px;
+	padding-left: 26px;
+	margin-bottom: 4px;
+	background-repeat: no-repeat;
+	background-position: 4px 4px;
+	border: 1px solid;
+}
+
+.typo3-message .message-header {
+	display: block;
+	margin-bottom: 5px;
+	margin-top: -1px;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.message-notice {
+	background-color: #fff;
+	border-color: #dee0e1;
+}
+
+.message-information {
+	background-image: url(gfx/information.png);
+	background-color: #dfedf8;
+	border-color: #bccfe4;
+}
+
+.message-ok {
+	background-image: url(gfx/ok.png);
+	background-color: #dfd;
+	border-color: #beb;
+}
+
+.message-warning {
+	background-image: url(gfx/warning.png);
+	background-color: #ffd;
+	border-color: #f6ea68;
+}
+
+.message-error {
+	background-image: url(gfx/error.png);
+	background-color: #fcc;
+	border-color: #ebb;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - -
+
 User settings
 
 - - - - - - - - - - - - - - - - - - - - - */
