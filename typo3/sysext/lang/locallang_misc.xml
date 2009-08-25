@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
-		<description>General Core Labels 2 (shortcut frame, special clickmenu items, various newer labels).</description>
+		<description>General Core Labels 2 (shortcut frame, special clickmenu items, flash uploader and various newer labels).</description>
 		<type>module</type>
 	</meta>
 	<data type="array">
@@ -72,6 +72,32 @@
 			<label index="pageTree_filter">Filter</label>
 			<label index="switchtouser">Switch to User</label>
 			<label index="switchtousershort">SU:</label>
+			<label index="fileUpload_windowTitle">File Upload Progress</label>
+			<label index="fileUpload_buttonSelectFiles">Select Files</label>
+			<label index="fileUpload_buttonCancelAll">Cancel All Uploads</label>
+			<label index="fileUpload_infoComponentMaxFileSize">You can upload files with a maximum size of {0}.</label>
+			<label index="fileUpload_infoComponentFileUploadLimit">You can upload a total of {0}.</label>
+			<label index="fileUpload_infoComponentFileTypeLimit">You can upload the following file types {0}.</label>
+			<label index="fileUpload_infoComponentOverrideFiles">Overwrite existing files</label>
+			<label index="fileUpload_processRunning">Another process is already uploading</label>
+			<label index="fileUpload_uploadWait">Waiting to start upload of {0}</label>
+			<label index="fileUpload_uploadStarting">Starting upload of {0}</label>
+			<label index="fileUpload_uploadProgress">{0}% of {1} uploaded</label>
+			<label index="fileUpload_uploadSuccess">{0} was successfully uploaded!</label>
+			<label index="fileUpload_errorQueueLimitExceeded">Too many files selected</label>
+			<label index="fileUpload_errorQueueFileSizeLimit">{0} is too big</label>
+			<label index="fileUpload_errorQueueZeroByteFile">{0} is empty</label>
+			<label index="fileUpload_errorQueueInvalidFiletype">Filetype not allowed for {0}</label>
+			<label index="fileUpload_errorUploadHttp">Too many files selected</label>
+			<label index="fileUpload_errorUploadMissingUrl">Internal error: No Upload URL set</label>
+			<label index="fileUpload_errorUploadIO">Internal error: Problems while reading/writing the file</label>
+			<label index="fileUpload_errorUploadSecurityError">Internal error: {0}</label>
+			<label index="fileUpload_errorUploadLimit">Upload limit exceeded</label>
+			<label index="fileUpload_errorUploadFailed">Upload failed</label>
+			<label index="fileUpload_errorUploadFileIDNotFound">Internal error: File ID not found</label>
+			<label index="fileUpload_errorUploadFileValidation">Internal error while validating the file</label>
+			<label index="fileUpload_errorUploadFileCancelled">Upload of {0} canceled</label>
+			<label index="fileUpload_errorUploadStopped">Upload of {0} stopped</label>
 		</languageKey>
 	</data>
 </T3locallang>

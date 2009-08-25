@@ -2,6 +2,7 @@
 
 	* Added feature #11707: Integrate possibility to enable/disable the deprecation logging (thanks to Sascha Kettler)
 	* Fixed bug #11657: Extension sys_action uses hardcoded labels (thanks to Christopher Stelmaszyk)
+	* Fixed bug #11660: Hardcoded labels in backend.php (thanks to Christopher Stelmaszyk)
 
 2009-08-25  Ingo Renner  <ingo@typo3.org>
 
