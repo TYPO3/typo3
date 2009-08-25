@@ -172,6 +172,8 @@ require_once('class.em_xmlhandler.php');
 require_once('class.em_terconnection.php');
 require_once('class.em_unzip.php');
 
+$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_tools_em.xml');
+
 	// from tx_ter by Robert Lemke
 define('TX_TER_RESULT_EXTENSIONSUCCESSFULLYUPLOADED', '10504');
 
@@ -217,35 +219,9 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		)
 	);
 
-	/**
-	 * Extension Categories (static var)
-	 * Content must be redundant with the same internal variable as in class.tx_extrep.php!
-	 */
-	var $categories = Array(
-		'be' => 'Backend',
-		'module' => 'Backend Modules',
-		'fe' => 'Frontend',
-		'plugin' => 'Frontend Plugins',
-		'misc' => 'Miscellaneous',
-		'services' => 'Services',
-		'templates' => 'Templates',
-		'example' => 'Examples',
-		'doc' => 'Documentation'
-	);
+	var $categories = array();			// Extension Categories (static var); see init()
 
-	/**
-	 * Extension States
-	 * Content must be redundant with the same internal variable as in class.tx_extrep.php!
-	 */
-	var $states = Array (
-		'alpha' => 'Alpha',
-		'beta' => 'Beta',
-		'stable' => 'Stable',
-		'experimental' => 'Experimental',
-		'test' => 'Test',
-		'obsolete' => 'Obsolete',
-		'excludeFromUpdates' => 'Exclude From Updates'
-	);
+	var $states = array();				// Extension States; see init()
 
 	/**
 	 * Colors for extension states
@@ -261,18 +237,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	);
 
 	/**
-	 * "TYPE" information; labels, paths, description etc.
+	 * "TYPE" information; labels, paths, description etc. See init()
 	 */
-	var $typeLabels = Array (
-		'S' => 'System',
-		'G' => 'Global',
-		'L' => 'Local',
-	);
-	var $typeDescr = Array (
-		'S' => 'System extension (typo3/sysext/) - Always distributed with source code (Static).',
-		'G' => 'Global extensions (typo3/ext/) - Available for shared source on server (Dynamic).',
-		'L' => 'Local extensions (typo3conf/ext/) - Local for this TYPO3 installation only (Dynamic).',
-	);
+	var $typeLabels = array();
+	var $typeDescr = array();
 	var $typePaths = Array();			// Also static, set in init()
 	var $typeBackPaths = Array();		// Also static, set in init()
 
@@ -296,8 +264,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		'password' => '',
 	);
 
-	var $privacyNotice = 'When you interact with the online repository, server information may be sent and stored in the repository for statistics.';
-	var $securityHint = '<strong>Found a security problem? Please get in touch with us!</strong><br />If you think you have found a security issue in TYPO3 or an extension, please contact the <a href="http://typo3.org/teams/security/" target="_blank">TYPO3 security team</a>! Thank you!';
+	var $privacyNotice;					// Set in init()
+	var $securityHint;					// Set in init()
 	var $editTextExtensions = 'html,htm,txt,css,tmpl,inc,php,sql,conf,cnf,pl,pm,sh,xml,ChangeLog';
 	var $nameSpaceExceptions = 'beuser_tracking,design_components,impexp,static_file_edit,cms,freesite,quickhelp,classic_welcome,indexed_search,sys_action,sys_workflows,sys_todos,sys_messages,direct_mail,sys_stat,tt_address,tt_board,tt_calender,tt_guest,tt_links,tt_news,tt_poll,tt_rating,tt_products,setup,taskcenter,tsconfig_help,context_help,sys_note,tstemplate,lowlevel,install,belog,beuser,phpmyadmin,aboutmodules,imagelist,setup,taskcenter,sys_notepad,viewpage,adodb';
 
@@ -357,6 +325,50 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	function init()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
+		/**
+	 	 * Extension Categories (static var)
+	 	 * Content must be redundant with the same internal variable as in class.tx_extrep.php!
+	 	 */
+		$this->categories = array(
+			'be' => $GLOBALS['LANG']->getLL('category_BE'),
+			'module' => $GLOBALS['LANG']->getLL('category_BE_modules'),
+			'fe' => $GLOBALS['LANG']->getLL('category_FE'),
+			'plugin' => $GLOBALS['LANG']->getLL('category_FE_plugins'),
+			'misc' => $GLOBALS['LANG']->getLL('category_miscellanous'),
+			'services' => $GLOBALS['LANG']->getLL('category_services'),
+			'templates' => $GLOBALS['LANG']->getLL('category_templates'),
+			'example' => $GLOBALS['LANG']->getLL('category_examples'),
+			'doc' => $GLOBALS['LANG']->getLL('category_documentation')
+		);
+
+		/**
+	 	 * Extension States
+	 	 * Content must be redundant with the same internal variable as in class.tx_extrep.php!
+	 	 */
+		$this->states = array(
+			'alpha' => $GLOBALS['LANG']->getLL('state_alpha'),
+			'beta' => $GLOBALS['LANG']->getLL('state_beta'),
+			'stable' => $GLOBALS['LANG']->getLL('state_stable'),
+			'experimental' => $GLOBALS['LANG']->getLL('state_experimental'),
+			'test' => $GLOBALS['LANG']->getLL('state_test'),
+			'obsolete' => $GLOBALS['LANG']->getLL('state_obsolete'),
+			'excludeFromUpdates' => $GLOBALS['LANG']->getLL('state_exclude_from_updates')
+		);
+
+		/**
+		 * "TYPE" information; labels, paths, description etc.
+		 */
+		$this->typeLabels = array(
+			'S' => $GLOBALS['LANG']->getLL('type_system'),
+			'G' => $GLOBALS['LANG']->getLL('type_global'),
+			'L' => $GLOBALS['LANG']->getLL('type_local'),
+		);
+		$this->typeDescr = array(	
+			'S' => $GLOBALS['LANG']->getLL('descr_system'),
+			'G' => $GLOBALS['LANG']->getLL('descr_global'),
+			'L' => $GLOBALS['LANG']->getLL('descr_local'),
+		);
+	
 			// Setting paths of install scopes:
 		$this->typePaths = Array (
 			'S' => TYPO3_mainDir.'sysext/',
@@ -368,6 +380,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			'G' => '../../../',
 			'L' => '../../../../'.TYPO3_mainDir
 		);
+
+		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
+		$this->securityHint = '<strong>' . $GLOBALS['LANG']->getLL('security_header') . '</strong><br />' .
+			sprintf($GLOBALS['LANG']->getLL('security_descr'),
+				'<a href="http://typo3.org/teams/security/" target="_blank">', '</a>'
+			);
 
 		$this->excludeForPackaging = $GLOBALS['TYPO3_CONF_VARS']['EXT']['excludeForPackaging'];
 
