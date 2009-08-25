@@ -146,6 +146,8 @@ Compatibility
 	  in the TYPO3 Core. Developers have to make sure to adjust their code to avoid using
 	  this old functionality since deprecated methods will be removed in future TYPO3 releases!
 	  The information can be found in /typo3conf/deprecation_[hash-value].log
+	  The install tool has a setting "enableDeprecationLog" that allows one to disable the logging of
+	  deprecation messages since the file might grow quite fast depending on the extensions installed.
 
 	* The caching system has been revamped. It is not possible to query the cache tables directly.
 	  Any compliant extension has to use the new caching framework.

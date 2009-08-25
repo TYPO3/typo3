@@ -5405,6 +5405,10 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function deprecationLog($msg) {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
+			return;
+		}
+
 		// write a longer message to the deprecation log
 		$destination = PATH_typo3conf . '/deprecation_' . t3lib_div::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
 		$file = @fopen($destination, 'a');
@@ -5426,6 +5430,10 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function logDeprecatedFunction() {
+		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
+			return;
+		}
+
 		$trail = debug_backtrace();
 
 		if ($trail[1]['type']) {

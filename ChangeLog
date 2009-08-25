@@ -1,3 +1,7 @@
+2009-08-25  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #11707: Integrate possibility to enable/disable the deprecation logging (thanks to Sascha Kettler)
+
 2009-08-25  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #11684: Add support for flash messages in the backend
