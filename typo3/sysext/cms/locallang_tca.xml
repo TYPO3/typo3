@@ -116,6 +116,9 @@
 			<label index="sys_template.editorcfg">Backend Editor Configuration:</label>
 			<label index="sys_template.description">Description:</label>
 			<label index="sys_template.static_file_mode">Static template files from T3 Extensions:</label>
+			<label index="sys_template.static_file_mode.0">Default (Include before if Root-flag is set)</label>
+			<label index="sys_template.static_file_mode.1">Always include before this template record</label>
+			<label index="sys_template.static_file_mode.2">Never include before this template record</label>
 			<label index="sys_template.basedOn_add">Add new basis template</label>
 			<label index="sys_template.tabs.files">Resources</label>
 			<label index="sys_template.tabs.include">Includes</label>

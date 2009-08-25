@@ -926,9 +926,9 @@ $TCA['sys_template'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('Default (Include before if Root-flag is set)', '0'),
-					array('Always include before this template record', '1'),
-					array('Never include before this template record', '2'),
+					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.0', '0'),
+					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.1', '1'),
+					array('LLL:EXT:cms/locallang_tca.xml:sys_template.static_file_mode.2', '2'),
 				),
 				'default' => '0'
 			)
