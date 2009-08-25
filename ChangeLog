@@ -1,3 +1,7 @@
+2009-08-24  Rupert Germann  <rupi@gmx.li>
+
+	* Follow-up 2 to #11764: fixed bug that occured when localizing records via tceforms
+
 2009-08-25  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #11707: Integrate possibility to enable/disable the deprecation logging (thanks to Sascha Kettler)

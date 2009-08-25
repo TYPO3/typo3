@@ -130,9 +130,10 @@ class t3lib_transl8tools	{
 	 * @param	integer		Record uid
 	 * @param	integer		Language uid. If zero, then all languages are selected.
 	 * @param	array		The record to be translated
+	 * @param	array		select fields for the query which fetches the translations of the current record
 	 * @return	array		Array with information. Errors will return string with message.
 	 */
-	function translationInfo($table, $uid, $sys_language_uid = 0, $row = NULL) {
+	function translationInfo($table, $uid, $sys_language_uid = 0, $row = NULL, $selFieldList = '') {
 		global $TCA;
 
 		if ($TCA[$table] && $uid)	{
@@ -150,7 +151,7 @@ class t3lib_transl8tools	{
 
 								// Look for translations of this record, index by language field value:
 							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-								$this->selFieldList,
+								($selFieldList ? $selFieldList : 'uid,'.$TCA[$trTable]['ctrl']['languageField']),
 								$trTable,
 								$TCA[$trTable]['ctrl']['transOrigPointerField'] . '=' . intval($uid) .
 									' AND pid=' . intval($table === 'pages' ? $row['uid'] : $row['pid']).	// Making exception for pages of course where the translations will always be ON the page, not on the level above...

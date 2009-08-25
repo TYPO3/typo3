@@ -121,6 +121,7 @@ class localRecordList extends recordList {
 
 	var $references;						// References of the current record
 	var $translations;						// Translations of the current record
+	var $selFieldList;						// select fields for the query which fetches the translations of the current record
 
 	public function __construct() {
 		parent::__construct();
@@ -377,7 +378,7 @@ class localRecordList extends recordList {
 		$selectFields = array_unique($selectFields);		// Unique list!
 		$selectFields = array_intersect($selectFields,$this->makeFieldList($table,1));		// Making sure that the fields in the field-list ARE in the field-list from TCA!
 		$selFieldList = implode(',',$selectFields);		// implode it into a list of fields for the SQL-statement.
-		$this->translateTools->selFieldList = $selFieldList;
+		$this->selFieldList = $selFieldList;
 
 		/**
 		 * @hook			DB-List getTable
@@ -1429,7 +1430,7 @@ class localRecordList extends recordList {
 			1 => '',
 		);
 
-		$translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row);
+		$translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $this->selFieldList);
 		$this->translations = $translations['translations'];
 
 			// Language title and icon:
