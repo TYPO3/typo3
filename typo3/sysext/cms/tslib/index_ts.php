@@ -542,7 +542,7 @@ echo $TSFE->beLoginLinkIPList();
 // *************
 // Admin panel
 // *************
-if (is_object($BE_USER) && $TSFE->beUserLogin) {
+if (is_object($BE_USER) && $BE_USER->isAdminPanelVisible() && $TSFE->beUserLogin) {
 	echo $BE_USER->displayAdminPanel();
 }
 

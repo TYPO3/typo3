@@ -247,11 +247,18 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	string.
 	 */
 	public function displayAdminPanel() {
-		if (!$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel']) {
-			$content =  $this->adminPanel->display();
-		}
+		$content =  $this->adminPanel->display();
 
 		return $content;
+	}
+
+	/**
+	 * Determines whether the admin panel is enabled and visible.
+	 *
+	 * @return	boolean		Whether the admin panel is enabled and visible
+	 */
+	public function isAdminPanelVisible() {
+		return ($this->extAdmEnabled && !$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel']);
 	}
 
 	/*****************************************************

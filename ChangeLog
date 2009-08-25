@@ -1,5 +1,6 @@
-2009-08-24  Rupert Germann  <rupi@gmx.li>
+2009-08-25  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #11212: Turning off the admin-panel results in error
 	* Follow-up 2 to #11764: fixed bug that occured when localizing records via tceforms
 
 2009-08-25  Oliver Hader  <oliver@typo3.org>
