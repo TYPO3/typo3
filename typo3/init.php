@@ -332,14 +332,14 @@ if (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript)	{
 // *************************
 if ($TYPO3_DB->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
 	if (!TYPO3_db)	{
-		t3lib_BEfunc::typo3PrintError ('No database selected','Database Error');
+		t3lib_BEfunc::typo3PrintError('Database Error', 'No database selected');
 		exit;
 	} elseif (!$TYPO3_DB->sql_select_db(TYPO3_db))	{
-		t3lib_BEfunc::typo3PrintError ('Cannot connect to the current database, "'.TYPO3_db.'"','Database Error');
+		t3lib_BEfunc::typo3PrintError('Database Error', 'Cannot connect to the current database, "' . TYPO3_db . '"');
 		exit;
 	}
 } else {
-	t3lib_BEfunc::typo3PrintError ('The current username, password or host was not accepted when the connection to the database was attempted to be established!','Database Error');
+	t3lib_BEfunc::typo3PrintError('Database Error', 'The current username, password or host was not accepted when the connection to the database was attempted to be established!');
 	exit;
 }
 

@@ -1,3 +1,7 @@
+2009-08-26  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11786: Wrong order of arguments for typo3PrintError() (thanks to Steffen Gebert)
+
 2009-08-25  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11212: Turning off the admin-panel results in error
