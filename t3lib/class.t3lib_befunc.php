@@ -3896,7 +3896,7 @@ final class t3lib_BEfunc {
 	public static function displayWarningMessages() {
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$warnings = array();	// Array containing warnings that must be displayed
-			$enableInstallToolFile = PATH_site.'typo3conf/ENABLE_INSTALL_TOOL';	// If this file exists, the Install Tool is enabled
+			$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';	// If this file exists and it isn't older than one hour, the Install Tool is enabled
 
 			$cmd = t3lib_div::_GET('adminWarning_cmd');	// Cleanup command, if set
 			switch($cmd) {
@@ -3929,7 +3929,8 @@ final class t3lib_BEfunc {
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-			if (@is_file($enableInstallToolFile)) {
+				// Check whether the file ENABLE_INSTALL_TOOL contains the string "KEEP_FILE" which permanently unlocks the install tool
+			if (@is_file($enableInstallToolFile) && trim(@file_get_contents($enableInstallToolFile)) === 'KEEP_FILE') {
 				$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT').'?adminWarning_cmd=remove_ENABLE_INSTALL_TOOL';
 				$warnings['install_enabled'] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled'),

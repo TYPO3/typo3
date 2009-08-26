@@ -1,3 +1,7 @@
+2009-08-26  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11731: ENABLE_INSTALL_TOOL file check in yellow box does not check the file age (thanks to Moreno Feltscher)
+
 2009-08-19  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #11716: Install Tool always sets TYPO3_CONF_VARS[FE][disableNoCacheParameter] upon save
