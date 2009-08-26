@@ -41,7 +41,7 @@ final class Tx_Extbase_MVC_View_EmptyView extends Tx_Extbase_MVC_View_AbstractVi
 	 * @return string An empty string
 	 */
 	public function render() {
-		return '';
+		return '<!-- This is the output of the Empty View. An appropriate View was not found. -->';
 	}
 
 	/**

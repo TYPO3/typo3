@@ -33,7 +33,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_Extbase_MVC_Request {
+class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
 
@@ -52,10 +52,17 @@ class Tx_Extbase_MVC_Request {
 	/**
 	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
 	 */
-	protected $controllerExtensionName = 'Extbase';
+	protected $controllerExtensionName = NULL;
 
 	/**
-	 * @var string Name of the controller which is supposed to handle this request.
+	 * Subextension name of the controller which is supposed to handle this request.
+	 *
+	 * @var string
+	 */
+	protected $controllerSubextensionName = NULL;
+
+	/**
+	 * @var string Object name of the controller which is supposed to handle this request.
 	 */
 	protected $controllerName = 'Standard';
 
@@ -65,9 +72,14 @@ class Tx_Extbase_MVC_Request {
 	protected $controllerActionName = 'index';
 
 	/**
-	 * @var ArrayObject The arguments for this request
+	 * @var array The arguments for this request
 	 */
 	protected $arguments = array();
+
+	/**
+	 * @var string The requested representation format
+	 */
+	protected $format = 'txt';
 
 	/**
 	 * @var boolean If this request has been changed and needs to be dispatched again
@@ -78,14 +90,7 @@ class Tx_Extbase_MVC_Request {
 	 * @var array Errors that occured during this request
 	 */
 	protected $errors = array();
-
-	/**
-	 * Constructs this request
-	 *
-	 */
-	public function __construct() {
-	}
-
+	
 	/**
 	 * Sets the dispatched flag
 	 *
@@ -158,7 +163,7 @@ class Tx_Extbase_MVC_Request {
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_InvalidExtensionName if the extension name is not valid
 	 */
-	public function setControllerExtensionName($controllerExtensionName = NULL) {
+	public function setControllerExtensionName($controllerExtensionName) {
 		if ($controllerExtensionName !== NULL) {
 			$this->controllerExtensionName = $controllerExtensionName;
 		}
@@ -177,11 +182,34 @@ class Tx_Extbase_MVC_Request {
 	/**
 	 * Returns the extension name of the specified controller.
 	 *
-	 * @return string The extension name
+	 * @return string The extension key
 	 * @api
 	 */
 	public function getControllerExtensionKey() {
 		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
+	}
+	
+	/**
+	 * Sets the subextension name of the controller.
+	 *
+	 * @param string $subextensionName The subextensionName.
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function setControllerSubextensionName($subextensionName) {
+		$this->controllerSubextensionName = $subextensionName;
+	}
+
+	/**
+	 * Returns the subextension name of the specified controller.
+	 *
+	 * @return string The subextension name
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
+	 * // TODO mark different API
+	 */
+	public function getControllerSubextensionName() {
+		return $this->controllerSubextensionName;
 	}
 
 	/**
@@ -191,7 +219,7 @@ class Tx_Extbase_MVC_Request {
 	 * @param string $controllerName Name of the controller
 	 * @return void
 	 */
-	public function setControllerName($controllerName = NULL) {
+	public function setControllerName($controllerName) {
 		if (!is_string($controllerName) && $controllerName !== NULL) throw new Tx_Extbase_MVC_Exception_InvalidControllerName('The controller name must be a valid string, ' . gettype($controllerName) . ' given.', 1187176358);
 		if (strpos($controllerName, '_') !== FALSE) throw new Tx_Extbase_MVC_Exception_InvalidControllerName('The controller name must not contain underscores.', 1217846412);
 		if ($controllerName !== NULL) {
@@ -219,7 +247,7 @@ class Tx_Extbase_MVC_Request {
 	 * @return void
 	 * @throws Tx_Extbase_MVC_Exception_InvalidActionName if the action name is not valid
 	 */
-	public function setControllerActionName($actionName = NULL) {
+	public function setControllerActionName($actionName) {
 		if (!is_string($actionName) && $actionName !== NULL) throw new Tx_Extbase_MVC_Exception_InvalidActionName('The action name must be a valid string, ' . gettype($actionName) . ' given (' . $actionName . ').', 1187176358);
 		if (($actionName{0} !== strtolower($actionName{0})) && $actionName !== NULL) throw new Tx_Extbase_MVC_Exception_InvalidActionName('The action name must start with a lower case letter, "' . $actionName . '" does not match this criteria.', 1218473352);
 		if ($actionName !== NULL) {
@@ -292,6 +320,28 @@ class Tx_Extbase_MVC_Request {
 	 */
 	public function hasArgument($argumentName) {
 		return isset($this->arguments[$argumentName]);
+	}
+
+	/**
+	 * Sets the requested representation format
+	 *
+	 * @param string $format The desired format, something like "html", "xml", "png", "json" or the like. Can even be something like "rss.xml".
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function setFormat($format) {
+		$this->format = $format;
+	}
+
+	/**
+	 * Returns the requested representation format
+	 *
+	 * @return string The desired format, something like "html", "xml", "png", "json" or the like.
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	public function getFormat() {
+		return $this->format;
 	}
 
 	/**

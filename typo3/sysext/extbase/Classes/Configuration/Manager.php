@@ -39,6 +39,13 @@ class Tx_Extbase_Configuration_Manager {
 	const DEFAULT_BACKEND_STORAGE_PID = 0;
 
 	/**
+	 * The TypoScript parser
+	 *
+	 * @var t3lib_TSparser
+	 */
+	protected $typoScriptParser;
+
+	/**
 	 * Storage for the settings, loaded by loadSettings()
 	 *
 	 * @var array
@@ -58,6 +65,7 @@ class Tx_Extbase_Configuration_Manager {
 	 * @param array $configurationSources An array of configuration sources
 	 */
 	public function __construct($configurationSources = NULL) {
+		$this->typoScriptParser = t3lib_div::makeInstance('t3lib_TSparser');
 		if (is_array($configurationSources)) {
 			$this->configurationSources = $configurationSources;
 		}
@@ -113,14 +121,14 @@ class Tx_Extbase_Configuration_Manager {
 		// TODO Support BE modules by parsing the file "manually" and all files EXT:myext/Configuration/Objects/setup.txt
 		$extbaseConfiguration = $GLOBALS['TSFE']->tmpl->setup['config.']['tx_extbase.'];
 		if (is_array($extbaseConfiguration)) {
-			$extbaseConfiguration = Tx_Extbase_Configuration_Manager::postProcessSettings($extbaseConfiguration);
+			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($extbaseConfiguration);
 			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
 		}
 
 		if (isset($pluginConfiguration['persistence'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
 		}
-		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, self::postProcessSettings($pluginConfiguration));
+		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 		return $frameworkConfiguration;
 	}
 
@@ -135,9 +143,8 @@ class Tx_Extbase_Configuration_Manager {
 	 */
 	protected function resolveTyposcriptReference($pluginConfiguration, $setting) {
 		if (is_string($pluginConfiguration[$setting]) && substr($pluginConfiguration[$setting], 0, 1) === '<') {
-			$typoScriptParser = t3lib_div::makeInstance('t3lib_TSparser');
 			$key = trim(substr($pluginConfiguration[$setting], 1));
-			list(, $newValue) = $typoScriptParser->getVal($key,$GLOBALS['TSFE']->tmpl->setup);
+			list(, $newValue) = $this->typoScriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
 
 			unset($pluginConfiguration[$setting]);
 			$pluginConfiguration[$setting . '.'] = $newValue;
@@ -174,38 +181,29 @@ class Tx_Extbase_Configuration_Manager {
 		}
 		return self::DEFAULT_BACKEND_STORAGE_PID;
 	}
-
-	/**
-	 * Removes all trailing dots recursively from TS settings array
-	 * TODO Explain why we remove the dots.
-	 *
-	 * @param array $setup The settings array
-	 * @return void
-	 */
-	public static function postProcessSettings(array $settings) {
-		$processedSettings = array();
-		// TODO Check if the t3lib_div::removeDotsFromTS() fits for this purpose (using rtrim() for removing trailing dots)
-		foreach ($settings as $key => $value) {
-			if (substr($key, -1) === '.') {
-				$keyWithoutDot = substr($key, 0, -1);
-				$processedSettings[$keyWithoutDot] = self::postProcessSettings($value);
-				if (array_key_exists($keyWithoutDot, $settings)) {
-					$processedSettings[$keyWithoutDot]['_typoScriptNodeValue'] = $settings[$keyWithoutDot];
-					unset($settings[$keyWithoutDot]);
-				}
-			} else {
-				$keyWithDot = $key . '.';
-				if (array_key_exists($keyWithDot, $settings)) {
-					$processedSettings[$key] = self::postProcessSettings($settings[$keyWithDot]);
-					$processedSettings[$key]['_typoScriptNodeValue'] = $value;
-					unset($settings[$keyWithDot]);
-				} else {
-					$processedSettings[$key] = $value;
-				}
-			}
-		}
-		return $processedSettings;
-	}
+	
+//	/**
+//	 * Scans all configuration directories in the extension directories.
+//	 *
+//	 * @return void
+//	 */
+//	protected function scanAvailableTyposcriptConfigurations() {
+//		foreach (new DirectoryIterator(t3lib_extMgm::) as $parentFileInfo) {
+//			$parentFilename = $parentFileInfo->getFilename();
+//			if ($parentFilename[0] === '.' || !$parentFileInfo->isDir()) continue;
+//
+//			foreach (new DirectoryIterator($parentFileInfo->getPathname()) as $childFileInfo) {
+//				$childFilename = $childFileInfo->getFilename();
+//				if ($childFilename[0] !== '.' && $childFilename !== 'FLOW3') {
+//					$packagePath = \F3\FLOW3\Utility\Files::getUnixStylePath($childFileInfo->getPathName()) . '/';
+//					$this->packages[$childFilename] = $this->objectFactory->create('F3\FLOW3\Package\Package', $childFilename, $packagePath);
+//				}
+//			}
+//		}
+//		foreach (array_keys($this->packages) as $upperCamelCasedPackageKey) {
+//			$this->packageKeys[strtolower($upperCamelCasedPackageKey)] = $upperCamelCasedPackageKey;
+//		}
+//	}
 
 }
 ?>

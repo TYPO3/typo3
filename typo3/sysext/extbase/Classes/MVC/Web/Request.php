@@ -37,6 +37,11 @@
 class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 
 	/**
+	 * @var string The requested representation format
+	 */
+	protected $format = 'html';
+
+	/**
 	 * @var string Contains the request method
 	 */
 	protected $method = 'GET';

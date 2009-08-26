@@ -14,6 +14,8 @@ if (TYPO3_MODE == 'BE') {
 	} catch(t3lib_cache_exception_NoSuchCache $exception) {
 
 	}
+	
+	$TBE_MODULES['_dispatcher'][] = t3lib_div::makeInstance('Tx_Extbase_Dispatcher');
 }
 
 ?>

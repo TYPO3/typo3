@@ -55,7 +55,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @var string
 	 * @api
 	 */
-	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action';
+	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action@format';
 
 	/**
 	 * The default view object to use if neither a Fluid template nor an action
@@ -257,8 +257,8 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$view->setControllerContext($controllerContext);
 		if ($view->hasTemplate() === FALSE) {
 			$viewObjectName = $this->resolveViewObjectName();
-			if ($viewObjectName === FALSE) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
-			$view = t3lib_div::makeInstance($viewObjectName);
+			if (class_exists($viewObjectName) === FALSE) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
+			$view = $this->objectManager->getObject($viewObjectName);
 			$view->setControllerContext($controllerContext);
 		}
 		if (method_exists($view, 'injectSettings')) {
@@ -277,18 +277,23 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function resolveViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
-		$possibleViewName = str_replace('@extension', $this->request->getControllerExtensionName(), $possibleViewName);
+		$extensionName = $this->request->getControllerExtensionName();
+		$subextensionName = $this->request->getControllerSubextensionName();
+		if ($subextensionName !== NULL && $subextensionName !== '') {
+			$extensionName.= '_' . $subextensionName;
+		}
+		$possibleViewName = str_replace('@extension', $extensionName, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
 
-		if (class_exists($possibleViewName)) {
-			return $possibleViewName;
+		$viewObjectName = str_replace('@format', ucfirst($this->request->getFormat()), $possibleViewName);		
+		if (class_exists($viewObjectName) === FALSE) {
+			$viewObjectName = str_replace('@format', '', $possibleViewName);
 		}
-
-		if ($this->defaultViewObjectName !== NULL && class_exists($this->defaultViewObjectName)) {
-			return $this->defaultViewObjectName;
+		if (class_exists($viewObjectName) === FALSE && $this->defaultViewObjectName !== NULL) {
+			$viewObjectName = $this->defaultViewObjectName;
 		}
-		return FALSE;
+		return $viewObjectName;
 	}
 
 	/**

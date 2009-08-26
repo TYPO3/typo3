@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry
+ * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry 
  * file ext_autoload.php.
  *
  * @package Extbase
@@ -51,7 +51,7 @@ class Tx_Extbase_Utility_Extension {
 	 * @param string $defaultControllerAction is an optional array controller name (as array key) and action name (as array value) that should be called as default
 	 * @return void
 	 */
-	public static function configureDispatcher($extensionName, $pluginName, array $controllerActions, array $nonCachableControllerActions = array()) {
+	public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCachableControllerActions = array()) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -166,74 +166,19 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 		t3lib_extMgm::addPlugin(array($pluginTitle, $pluginSignature), 'list_type');
 	}
-
-	/**
-	 * Registers an Extbase module (main or sub) to the backend interface.
-	 * FOR USE IN ext_tables.php FILES
-	 *
-	 * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
-	 * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
-	 * @param array $config The configuration options of the module (icon, locallang.xml file)
-	 * @param string $main The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there. If $main is not set a blank $extensionName module is created
-	 * @param string $sub The submodule key. If $sub is not set a blank $main module is created
-	 * @param string $position This can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
-	 * @return void
-	 */
-	public static function registerModule($extensionName, array $controllerActions, $config = array(), $main = '', $sub = '', $position = '') {
-		if (empty($extensionName)) {
-			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
-		}
-		$extensionKey = $extensionName;
-		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-
-		$path = t3lib_extMgm::extPath($extensionKey, 'Classes/');
-		$relPath = t3lib_extMgm::extRelPath($extensionKey) . 'Classes/';
-
-		if (!isset($GLOBALS['TBE_EXTBASE_MODULES'])) {
-			$GLOBALS['TBE_EXTBASE_MODULES'] = array();
-		}
-
-		// TODO Make if condition explicit
-		if ($main && !isset($GLOBALS['TBE_MODULES'][$main])) {
-			$main = $extensionName . ucfirst($main);
-		} else {
-			$main = $main ? $main : $extensionName;
-		}
-
-		if (!is_array($config) || count($config) == 0) {
-			$config['access'] = 'admin';
-			$config['icon'] = '';
-			$config['labels'] = '';
-			$config['extRelPath'] = $relPath;
-		}
-
-		$key = $main . ($sub ? '_' . $sub : '');
-
-		$moduleConfig = array(
-			'name' => $key,
-			'extensionKey' => $extensionKey,
-			'extensionName' => $extensionName,
-			'controllerActions' => $controllerActions,
-			'config' => $config,
-		);
-		$GLOBALS['TBE_EXTBASE_MODULES'][$key] = $moduleConfig;
-		$GLOBALS['TBE_EXTBASE_MODULES'][$key]['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'setModuleConfiguration');
-
-		t3lib_extMgm::addModule($main, $sub, $position, $path);
-	}
-
+	
 	/**
 	 * This method is called from t3lib_loadModules::checkMod and it replaces old conf.php.
-	 *
+	 * 
 	 * @param string $key The module name
 	 * @param string $fullpath	Absolute path to module
 	 * @param array $MCONF Reference to the array holding the configuration of the module
 	 * @param array $MLANG Reference to the array holding the localized module labels
 	 * @return array Configuration of the module
 	 */
-	public function setModuleConfiguration($key, $fullpath, $MCONF, $MLANG) {
+	public function configureModule($key, $fullpath, array $MCONF = array(), array $MLANG = array()) {
 		$path = preg_replace('/\/[^\/.]+\/\.\.\//', '/', $fullpath); // because 'path/../path' does not work
-		$config = $GLOBALS['TBE_EXTBASE_MODULES'][$key]['config'];
+		$config = $GLOBALS['TBE_MODULES'][$key]['config'];
 		define('TYPO3_MOD_PATH', $config['extRelPath']);
 
 		$GLOBALS['BACK_PATH'] = '';
@@ -247,7 +192,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 			list($extKey, $local) = explode('/', substr($config['icon'], 4), 2);
 			$config['icon'] = t3lib_extMgm::extRelPath($extKey) . $local;
 		}
-
+         
 			// Initialize search for alternative icon:
 		$altIconKey = 'MOD:' . $key . '/' . $config['icon'];		// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
 		$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
@@ -261,15 +206,15 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 
 			// Fill $MLANG
-		$MLANG['default']['ll_ref'] = $config['labels'];
-
+		$MLANG['default']['ll_ref'] = $config['labels'];   
+		
 			// Finally, set the icon with correct path:
 		if (substr($tabImage, 0 ,3) === '../') {
 			$MLANG['default']['tabs_images']['tab'] = PATH_site . substr($tabImage, 3);
 		} else {
 			$MLANG['default']['tabs_images']['tab'] = PATH_typo3 . $tabImage;
 		}
-
+		
 			// If LOCAL_LANG references are used for labels of the module:
 		if ($MLANG['default']['ll_ref']) {
 				// Now the 'default' key is loaded with the CURRENT language - not the english translation...
@@ -281,11 +226,11 @@ tt_content.list.20.' . $pluginSignature . ' {
 			$GLOBALS['LANG']->addModuleLabels($MLANG['default'], $key . '_');
 			$GLOBALS['LANG']->addModuleLabels($MLANG[$GLOBALS['LANG']->lang], $key . '_');
 		}
-
+		
 			// Fill $modconf
-		$modconf['script'] = 'mod.php?M=Tx_' . rawurlencode($key);
+		$modconf['script'] = 'mod.php?M=' . rawurlencode($key);
 		$modconf['name'] = $key;
-
+					
 				// Default tab setting
 		if ($MCONF['defaultMod']) {
 			$modconf['defaultMod'] = $MCONF['defaultMod'];
@@ -298,15 +243,70 @@ tt_content.list.20.' . $pluginSignature . ' {
 				$modconf['navFrameScript'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $MCONF['navFrameScript']);
 			}
 		}
-
+		
 			// Additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
 		if ($MCONF['navFrameScriptParam']) {
 			$modconf['navFrameScriptParam'] = $MCONF['navFrameScriptParam'];
 		}
-
+				
 		return $modconf;
 	}
+	
+	/**
+	 * Registers an Extbase module (main or sub) to the backend interface.
+	 * FOR USE IN ext_tables.php FILES
+	 *
+	 * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
+	 * @param string $main The main module key, $sub is the submodule key. So $main would be an index in the $TBE_MODULES array and $sub could be an element in the lists there. If $main is not set a blank $extensionName module is created
+	 * @param string $sub The submodule key. If $sub is not set a blank $main module is created
+	 * @param string $position This can be used to set the position of the $sub module within the list of existing submodules for the main module. $position has this syntax: [cmd]:[submodule-key]. cmd can be "after", "before" or "top" (or blank which is default). If "after"/"before" then submodule will be inserted after/before the existing submodule with [submodule-key] if found. If not found, the bottom of list. If "top" the module is inserted in the top of the submodule list.
+	 * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
+	 * @param array $config The configuration options of the module (icon, locallang.xml file)
+	 * @return void
+	 */
+	public static function registerModule($extensionName, $main = '', $sub = '', $position = '', array $controllerActions, $config = array()) {
+		if (empty($extensionName)) {
+			throw new InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
+		}
+		$extensionKey = $extensionName; // FIXME This will break if the $extensionName is given as BlogExample
+		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
+		
+		$path = t3lib_extMgm::extPath($extensionKey, 'Classes/');
+		$relPath = t3lib_extMgm::extRelPath($extensionKey) . 'Classes/';
 
+		if (!is_array($config) || count($config) == 0) {
+			$config['access'] = 'admin';
+			$config['icon'] = '';
+			$config['labels'] = '';
+			$config['extRelPath'] = $relPath;
+		}
+				
+		if ((strlen($main) > 0) && !isset($GLOBALS['TBE_MODULES'][$main])) {
+			$main = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($main);
+		} else {
+			$main = (strlen($main) > 0) ? $main : 'web'; // TODO By now, $main must default to 'web'
+		}
+		
+		if ((strlen($sub) > 0)) {
+			$sub = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($sub);
+			$key = $main . '_' . $sub;
+		} else {
+			$key = $main;
+		}
+		
+		$moduleConfig = array(
+			'name' => $key,
+			'extensionKey' => $extensionKey,
+			'extensionName' => $extensionName,
+			'controllerActions' => $controllerActions,
+			'config' => $config,
+		);
+		$GLOBALS['TBE_MODULES'][$key] = $moduleConfig;
+		$GLOBALS['TBE_MODULES'][$key]['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
+
+		t3lib_extMgm::addModule($main, $sub, $position);
+	}
+	
 	// TODO PHPdoc
 	public static function convertCamelCaseToLowerCaseUnderscored($string) {
 		static $conversionMap = array();
@@ -325,8 +325,8 @@ tt_content.list.20.' . $pluginSignature . ' {
 	public static function convertLowerUnderscoreToUpperCamelCase($camelCasedString) {
 		return t3lib_div::underscoredToUpperCamelCase($camelCasedString);
 	}
-
-	/**
+	
+		/**
 	 * Build the autoload registry for a given extension and place it ext_autoload.php.
 	 *
 	 * @param	string	$extensionKey	Key of the extension
@@ -355,7 +355,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 		$errors[] = 'Wrote the following data: <pre>' . htmlspecialchars($autoloadFileString) . '</pre>';
 		return implode('<br />', $errors);
-	}
+	}	
 
 	/**
 	 * Generate autoload PHP file data. Takes an associative array with class name to file mapping, and outputs it as PHP.
@@ -481,6 +481,6 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 		return $returnValue;
 	}
-
+	
 }
 ?>

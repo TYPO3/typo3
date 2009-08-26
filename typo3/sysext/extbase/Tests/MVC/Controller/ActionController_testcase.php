@@ -188,18 +188,20 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	 * @test
 	 */
 	public function resolveViewPreparesTheViewSpecifiedInTheRequestObjectAndUsesTheEmptyViewIfNoneCouldBeFound() {
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array(), array(), '', FALSE);
-		$mockRequest->expects($this->at(0))->method('getControllerExtensionKey')->will($this->returnValue('Foo'));
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface', array(), array(), '', FALSE);
+		$mockRequest->expects($this->at(0))->method('getControllerExtensionName')->will($this->returnValue('Foo'));
+		$mockRequest->expects($this->at(1))->method('getControllerSubextensionName')->will($this->returnValue(''));
 		$mockRequest->expects($this->at(1))->method('getControllerName')->will($this->returnValue('Test'));
 		$mockRequest->expects($this->at(2))->method('getControllerActionName')->will($this->returnValue('list'));
+		$mockRequest->expects($this->once())->method('getFormat')->will($this->returnValue('html'));
 
-		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array('getRequest'), array(), '', FALSE);
+		$mockControllerContext = $this->getMock('Tx_extbase_MVC_Controller_ControllerContext', array('getRequest'), array(), '', FALSE);
 		$mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
 
-		$mockFluidTemplateView = $this->getMock('Tx_Extbase_MVC_View_AbstractView', array('setControllerContext', 'getViewHelper', 'assign', 'render', 'hasTemplate'));
+		$mockFluidTemplateView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface', array('setControllerContext', 'getViewHelper', 'assign', 'assignMultiple', 'render', 'hasTemplate'));
 		$mockFluidTemplateView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
 		$mockFluidTemplateView->expects($this->once())->method('hasTemplate')->will($this->returnValue(FALSE));
-		$mockView = $this->getMock('Tx_Extbase_MVC_View_AbstractView');
+		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
 		$mockView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
@@ -212,7 +214,7 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockController->_set('objectManager', $mockObjectManager);
 
 		$this->assertSame($mockView, $mockController->_call('resolveView'));
-	}
+		}
 
 	/**
 	 * @test
@@ -361,30 +363,34 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	public function initializeActionMethodValidatorsDetectsValidateAnnotationsAndRegistersNewValidatorsForEachArgument() {
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('fooAction'), array(), '', FALSE);
 	
-		$chain1 = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
-		$chain2 = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
+		$conjunction1 = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
+		$conjunction2 = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
 	
-		$validatorChains = array(
-			'arg1' => $chain1,
-			'arg2' => $chain2
+		$validatorConjunctions = array(
+			'arg1' => $conjunction1,
+			'arg2' => $conjunction2
 		);
 	
 		$mockValidatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array(), array(), '', FALSE);
-		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($validatorChains));
+		$mockValidatorResolver->expects($this->once())->method('buildMethodArgumentsValidatorConjunctions')->with(get_class($mockController), 'fooAction')->will($this->returnValue($validatorConjunctions));
 	
-		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array(), '', FALSE);
-		$mockArgument->expects($this->at(0))->method('setValidator')->with($chain1);
-		$mockArgument->expects($this->at(1))->method('setValidator')->with($chain1);
-	
+		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('setValidator'), array(), '', FALSE);
+		$mockArgument->expects($this->at(0))->method('setValidator')->with($conjunction1);
+		$mockArgument->expects($this->at(1))->method('setValidator')->with($conjunction2);
+		
 		$mockArguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array(), array(), '', FALSE);
 		$mockArguments->expects($this->at(0))->method('offsetExists')->with('arg1')->will($this->returnValue(TRUE));
 		$mockArguments->expects($this->at(1))->method('offsetGet')->with('arg1')->will($this->returnValue($mockArgument));
 		$mockArguments->expects($this->at(2))->method('offsetExists')->with('arg2')->will($this->returnValue(TRUE));
 		$mockArguments->expects($this->at(3))->method('offsetGet')->with('arg2')->will($this->returnValue($mockArgument));
-	
-		$mockController->injectValidatorResolver($mockValidatorResolver);
+		
+		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+		$mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue(array('tag' => 'lorem ipsum')));
+		
+		$mockController->_set('validatorResolver', $mockValidatorResolver);
 		$mockController->_set('actionMethodName', 'fooAction');
 		$mockController->_set('arguments', $mockArguments);
+		$mockController->_set('reflectionService', $mockReflectionService);
 		$mockController->_call('initializeActionMethodValidators');
 	}
 

@@ -26,32 +26,37 @@
 ***************************************************************/
 
 /**
- * Configuration source based on TS settings
+ * Autoloader of Extbase
  *
  * @package Extbase
- * @subpackage Configuration\Source
- * @version $ID:$
+ * @subpackage Utility
+ * @version $Id: $
  */
-class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Configuration_SourceInterface {
-
+class Tx_Extbase_Utility_ClassLoader {
+	
 	/**
-	 * Loads the specified TypoScript configuration file and returns its content in a
-	 * configuration container. If the file does not exist or could not be loaded,
-	 * the empty configuration container is returned.
+	 * Loads php files containing classes or interfaces found in the classes directory of
+	 * an extension.
 	 *
-	 * @param string $extensionName The extension name
-	 * @return array The settings as array without trailing dots
+	 * @param string $className: Name of the class/interface to load
+	 * @uses t3lib_extMgm::extPath()
+	 * @return void
 	 */
-	 public function load($extensionName) {
-		// TODO Needs a FE (does actually not work with BE or CLI)
-		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.']['settings.'];
-		if (is_array($settings)) {
-			$settings = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($settings);
-		} else {
-			$settings = array();
+	public static function loadClass($className) {
+		// TODO Remove debug code
+		// TODO Make a registry for Extbase classes
+		//$starttime = microtime(true);
+		$classNameParts = explode('_', $className, 3);
+		$extensionKey = Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($classNameParts[1]);
+		if (t3lib_extMgm::isLoaded($extensionKey)) {
+			$classFilePathAndName = t3lib_extMgm::extPath($extensionKey) . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
+			if (file_exists($classFilePathAndName)) {
+				require($classFilePathAndName);
+			}
 		}
-		return $settings;
+		//$endtime = microtime(true);
+		//debug(($endtime - $starttime) * 10000, $className);
 	}
-
+	
 }
 ?>

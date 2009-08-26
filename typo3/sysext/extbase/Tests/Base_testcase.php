@@ -36,11 +36,17 @@ abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	protected $objectManager;
 
 	/**
+	 * Constructs this TestCase and registers the autoloader
+	 */
+	public function __construct() {
+		spl_autoload_register(array('Tx_Extbase_Utility_Extension', 'autoloadClass'));
+	}
+
+	/**
 	 * Injects an untainted clone of the object manager and all its referencing
 	 * objects for every test.
 	 *
 	 * @return void
-
 	 */
 	public function runBare() {
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');

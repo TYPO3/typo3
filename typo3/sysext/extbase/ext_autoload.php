@@ -5,7 +5,6 @@
 $extensionClassesPath = t3lib_extMgm::extPath('extbase') . 'Classes/';
 return array(
 	'tx_extbase_dispatcher' => $extensionClassesPath . 'Dispatcher.php',
-	'tx_extbase_backenddispatcher' => $extensionClassesPath . 'BackendDispatcher.php',
 	'tx_extbase_exception' => $extensionClassesPath . 'Exception.php',
 	'tx_extbase_configuration_exception' => $extensionClassesPath . 'Configuration/Exception.php',
 	'tx_extbase_configuration_manager' => $extensionClassesPath . 'Configuration/Manager.php',
@@ -17,7 +16,6 @@ return array(
 	'tx_extbase_configuration_exception_parseerror' => $extensionClassesPath . 'Configuration/Exception/ParseError.php',
 	'tx_extbase_configuration_source_flexformsource' => $extensionClassesPath . 'Configuration/Source/FlexFormSource.php',
 	'tx_extbase_configuration_source_typoscriptsource' => $extensionClassesPath . 'Configuration/Source/TypoScriptSource.php',
-	'tx_extbase_controller_standardcontroller' => $extensionClassesPath . 'Controller/StandardController.php',
 	'tx_extbase_domain_model_frontenduser' => $extensionClassesPath . 'Domain/Model/FrontendUser.php',
 	'tx_extbase_domain_model_frontendusergroup' => $extensionClassesPath . 'Domain/Model/FrontendUserGroup.php',
 	'tx_extbase_domain_repository_frontendusergrouprepository' => $extensionClassesPath . 'Domain/Repository/FrontendUserGroupRepository.php',
@@ -52,6 +50,7 @@ return array(
 	'tx_extbase_exception_unsupportedrequesttype' => $extensionClassesPath . 'Exception/UnsupportedRequestType.php',
 	'tx_extbase_mvc_exception' => $extensionClassesPath . 'MVC/Exception.php',
 	'tx_extbase_mvc_request' => $extensionClassesPath . 'MVC/Request.php',
+	'tx_extbase_mvc_requestinterface' => $extensionClassesPath . 'MVC/RequestInterface.php',
 	'tx_extbase_mvc_response' => $extensionClassesPath . 'MVC/Response.php',
 	'tx_extbase_mvc_controller_abstractcontroller' => $extensionClassesPath . 'MVC/Controller/AbstractController.php',
 	'tx_extbase_mvc_controller_actioncontroller' => $extensionClassesPath . 'MVC/Controller/ActionController.php',

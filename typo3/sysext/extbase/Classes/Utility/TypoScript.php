@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Christian M�ller <christian@kitsunet.de>
+*  (c) 2009 Christian Müller <christian@kitsunet.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,6 +32,43 @@
 class Tx_Extbase_Utility_TypoScript {
 
 	/**
+	 * Removes all trailing dots recursively from TS settings array
+	 * TODO Explain why we remove the dots.
+	 *
+	 * @param array $setup The settings array
+	 * @return void
+	 * @api
+	 */
+	public static function convertTypoScriptArrayToPlainArray(array $settings) {
+		$processedSettings = array();
+		// TODO Check if the t3lib_div::removeDotsFromTS() fits for this purpose (using rtrim() for removing trailing dots)
+		foreach ($settings as $key => $value) {
+			if (substr($key, -1) === '.') {
+				$keyWithoutDot = substr($key, 0, -1);
+				if (is_array($value)) {
+					$processedSettings[$keyWithoutDot] = self::convertTypoScriptArrayToPlainArray($value);
+				} else {
+					$processedSettings[$keyWithoutDot] = NULL;
+				}
+				if (array_key_exists($keyWithoutDot, $settings)) {
+					$processedSettings[$keyWithoutDot]['_typoScriptNodeValue'] = $settings[$keyWithoutDot];
+					unset($settings[$keyWithoutDot]);
+				}
+			} else {
+				$keyWithDot = $key . '.';
+				if (array_key_exists($keyWithDot, $settings)) {
+					$processedSettings[$key] = self::convertTypoScriptArrayToPlainArray($settings[$keyWithDot]);
+					$processedSettings[$key]['_typoScriptNodeValue'] = $value;
+					unset($settings[$keyWithDot]);
+				} else {
+					$processedSettings[$key] = $value;
+				}
+			}
+		}
+		return $processedSettings;
+	}
+
+	/**
 	 * Returns an array with Typoscript the old way (with dot).
 	 *
 	 * Extbase converts the "classical" TypoScript (with trailing dot) to a format without trailing dot,
@@ -39,26 +76,26 @@ class Tx_Extbase_Utility_TypoScript {
 	 * However, if you want to call legacy TypoScript objects, you somehow need the "old" syntax (because this is what TYPO3 is used to).
 	 * With this method, you can convert the extbase TypoScript to classical TYPO3 TypoScript which is understood by the rest of TYPO3.
 	 *
-	 * @param array $extbaseTS An Typoscript Array with Extbase Syntax (without dot but with _typoscriptNodeValue)
+	 * @param array $plainArray An Typoscript Array with Extbase Syntax (without dot but with _typoscriptNodeValue)
 	 * @return array array with Typoscript as usual (with dot)
 	 * @api
 	 */
-	static public function convertExtbaseToClassicTS($extbaseTS) {
-		$classicTS = array();
-		if (is_array($extbaseTS)) {
-			foreach ($extbaseTS as $key => $value) {
+	public static function convertPlainArrayToTypoScriptArray($plainArray) {
+		$typoScriptArray = array();
+		if (is_array($plainArray)) {
+			foreach ($plainArray as $key => $value) {
 				if (is_array($value)) {
 					if (isset($value['_typoscriptNodeValue'])) {
-						$classicTS[$key] = $value['_typoscriptNodeValue'];
+						$typoScriptArray[$key] = $value['_typoscriptNodeValue'];
 						unset($value['_typoscriptNodeValue']);
 					}
-					$classicTS[$key.'.'] = Tx_Extbase_Utility_TypoScript::convertExtbaseToClassicTS($value);
+					$typoScriptArray[$key.'.'] = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($value);
 				} else {
-					$classicTS[$key] = $value;
+					$typoScriptArray[$key] = $value;
 				}
 			}
 		}
-		return $classicTS;
+		return $typoScriptArray;
 	}
 }
 ?>
