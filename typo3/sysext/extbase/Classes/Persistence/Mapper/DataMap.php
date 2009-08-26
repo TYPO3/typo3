@@ -210,7 +210,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				} else {
 					$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
 				}
-				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
+				$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
 				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 				$columnMap->setChildTableWhereStatement($columnConfiguration['config']['foreign_table_where']);
 				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
@@ -220,7 +220,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
 				// TODO support for MM_insert_fields and MM_match_fields
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
-				$columnMap->setChildClassName($columnConfiguration['config']['foreign_class']);
+				$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
 				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
 				$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
 				if (is_array($columnConfiguration['config']['MM_match_fields'])) {
@@ -241,6 +241,31 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
 			}
 		}
+	}
+	
+	/**
+	 * This function determines the child class name. It can either be defined as foreign_class in the column configuration (TCA)
+	 * or it must be defined in the extbase framework configuration (reverse mapping from tableName to className).
+	 * 
+	 * @param $columnConfiguration The column configuration (from TCA)
+	 * @return string The class name of the related child object
+	 */
+	protected function determineChildClassName($columnConfiguration) {
+		$foreignClassName = '';
+		if (is_string($columnConfiguration['config']['foreign_class']) && (strlen($columnConfiguration['config']['foreign_class']) > 0)) {
+			$foreignClassName = $columnConfiguration['config']['foreign_class'];
+		} else {
+			$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+			// TODO Apply a cache to increase performance (profile first)
+			foreach	($extbaseSettings['persistence']['classes'] as $className => $classConfiguration) {
+				if ($classConfiguration['mapping']['tableName'] === $columnConfiguration['config']['foreign_table']) {
+					$foreignClassName = $className;
+					break;
+				}
+			}
+		}
+		// TODO Throw exception if no appropriate class name was found
+		return $foreignClassName;
 	}
 
 	/**

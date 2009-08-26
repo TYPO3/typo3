@@ -224,7 +224,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			// TODO Remove dependency to the loading strategy implementation
 			$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyLoadingProxy', $parentObject, $propertyName, $fieldValue, $columnMap);
 		} else {
-			$result = $this->fetchRelatedObjects( $parentObject, $propertyName, $fieldValue, $columnMap);
+			$result = $this->fetchRelatedObjects($parentObject, $propertyName, $fieldValue, $columnMap);
 		}
 
 		return $result;
@@ -237,7 +237,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
-
 	 */
 	public function fetchRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
@@ -313,7 +312,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function getDataMap($className) {
-		if (is_string($className) && strlen($className) > 0) {
+		if (!is_string($className) || strlen($className) === 0) throw new Tx_Extbase_Persistence_Exception('No class name was given to retrieve the Data Map for.', 1251315965);
 			if (empty($this->dataMaps[$className])) {
 				// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
 				$mapping = array();
@@ -326,7 +325,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 							$tableName = $extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['tableName'];
 							break;
 						}
-						// TODO throw Exception
 					}
 				}
 				if (is_array($extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['columns'])) {
@@ -337,9 +335,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$this->dataMaps[$className] = $dataMap;
 			}
 			return $this->dataMaps[$className];
-		} else {
-			return NULL;
-		}
 	}
 
 	/**

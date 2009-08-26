@@ -119,7 +119,6 @@ class Tx_Extbase_Dispatcher {
 	 *
 	 * @return void
 	 */
-	
 	protected function initializeClassLoader() {
 		if (!class_exists('Tx_Extbase_Utility_ClassLoader')) {
 			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
