@@ -1,3 +1,7 @@
+2009-08-26  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11731: ENABLE_INSTALL_TOOL file check in yellow box does not check the file age (thanks to Moreno Feltscher)
+
 2009-08-26  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11786: Wrong order of arguments for typo3PrintError() (thanks to Steffen Gebert)
