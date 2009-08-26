@@ -401,7 +401,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 			}
 			$temporaryPattern = str_replace('@subpackage', implode('/', ($i<0 ? $subpackageParts : array_slice($subpackageParts, $i))), $temporaryPattern);
 
-			$results[] = t3lib_div::fixWindowsFilePath(str_replace('@format', html, $temporaryPattern));
+			$results[] = t3lib_div::fixWindowsFilePath(str_replace('@format', $this->controllerContext->getRequest()->getFormat(), $temporaryPattern));
 			if ($formatIsOptional) {
 				$results[] =  t3lib_div::fixWindowsFilePath(str_replace('.@format', '', $temporaryPattern));
 			}
