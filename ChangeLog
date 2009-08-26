@@ -1,3 +1,7 @@
+2009-08-27  Ingo Renner  <ingo@typo3.org>
+
+	* Follow-up to #11684: fixed styling of links and lists in flash messages
+
 2009-08-26  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #11731: ENABLE_INSTALL_TOOL file check in yellow box does not check the file age (thanks to Moreno Feltscher)

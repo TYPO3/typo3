@@ -614,6 +614,15 @@ Flash Messages (template.php)
 	border: 1px solid;
 }
 
+.typo3-message a {
+	text-decoration: underline;
+}
+
+.typo3-message ul,
+.typo3-message ol {
+	padding-left: 16px;
+}
+
 .typo3-message .message-header {
 	display: block;
 	margin-bottom: 5px;
@@ -856,7 +865,7 @@ body#ext-lowlevel-config-index-php #lowlevel-config-var {
 }
 
 
-/* dbint module */ 
+/* dbint module */
 body#ext-lowlevel-dbint-index-php table.qg-make-query td input {
 	margin: 0 2px;
 	vertical-align: middle;
