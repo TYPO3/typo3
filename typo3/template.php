@@ -1813,7 +1813,7 @@ $str.=$this->docBodyTagBegin().
 	}
 
 	/**
-	 * Add a flash message to the queue. It will live until the next call to
+	 * Adds a flash message to the queue. It will live until the next call to
 	 * popFlashMessages() in the current session.
 	 *
 	 * @param	t3lib_FlashMessage	A flash message object.
@@ -1838,7 +1838,7 @@ $str.=$this->docBodyTagBegin().
 	 * @author	Karsten Dambekalns <karsten@typo3.org>
 	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
-	protected function popFlashMessages() {
+	public function popFlashMessages() {
 		$queuedFlashMessages = $this->getFlashMessagesFromSession();
 
 		if (!empty($queuedFlashMessages)) {
@@ -1852,7 +1852,7 @@ $str.=$this->docBodyTagBegin().
 	}
 
 	/**
-	 * Returns current flash messages from the seesion, making sure to always
+	 * Returns current flash messages from the session, making sure to always
 	 * return an array.
 	 *
 	 * @return	array	An array of t3lib_FlashMessage flash messages.
@@ -1866,9 +1866,9 @@ $str.=$this->docBodyTagBegin().
 	}
 
 	/**
-	 * Renders all available flash messages in the queue
+	 * Renders all available flash messages in the queue.
 	 *
-	 * @return	string	All flash messages in the queue rendered as HTML
+	 * @return	string	All flash messages in the queue rendered as HTML.
 	 * @author	Ingo Renner <ingo@typo3.org>
 	 */
 	public function renderFlashMessages() {

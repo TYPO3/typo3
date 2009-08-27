@@ -10,7 +10,8 @@
 
 2009-08-27  Ingo Renner  <ingo@typo3.org>
 
-	* Follow-up to #11684: fixed styling of links and lists in flash messages
+	* Follow-up to #11684: Fixed styling of links and lists in flash messages
+	* Follow-up to #11684: Minor comments cleanup, switched popFlashMessages() to public to enable access from ExtJs f.e.
 
 2009-08-26  Michael Stucki  <michael@typo3.org>
 
