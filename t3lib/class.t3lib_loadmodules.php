@@ -385,12 +385,10 @@ class t3lib_loadModules {
 	 */
 	function checkMod($name, $fullpath)	{
 			// Check for own way of configuring module
-		if (is_array($GLOBALS['TBE_EXTBASE_MODULES'][$name]['configureModuleFunction'])) {
-			$obj = $GLOBALS['TBE_EXTBASE_MODULES'][$name]['configureModuleFunction'];
+		if (is_array($GLOBALS['TBE_MODULES'][$name]['configureModuleFunction'])) {
+			$obj = $GLOBALS['TBE_MODULES'][$name]['configureModuleFunction'];
 			if (is_callable($obj)) {
-				$MCONF = array();
-				$MLANG = array();
-				return call_user_func($obj, $name, $fullpath, $MCONF, $MLANG);
+				return call_user_func($obj, $name, $fullpath);
 			}
 		}
 

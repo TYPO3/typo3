@@ -1,6 +1,7 @@
 2009-08-27  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug 11511: Resources -> Files missing in doktype Sysfolder (thanks to Steffen Gebert)
+	* Follow-up to #11652: Modern integration of module into backend using Extbase - general approach without naming of Extbase
+	* Fixed bug #11511: Resources -> Files missing in doktype Sysfolder (thanks to Steffen Gebert)
 
 2009-08-27  Oliver Hader  <oliver@typo3.org>
 
