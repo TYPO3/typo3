@@ -370,8 +370,8 @@ class Tx_Extbase_Dispatcher {
 	 */
 	protected function getModuleFunctionControllerAction($module, $defaultController) {
 		$controllerAction = array(
-			'controller' => '',
-			'action' => '',
+			'controllerName' => '',
+			'actionName' => '',
 		);
 
 		$set = t3lib_div::_GP('SET');
@@ -383,14 +383,14 @@ class Tx_Extbase_Dispatcher {
 		$moduleFunction = $set['function'];
 		$matches = array();
 		if (preg_match('/^(.*)->(.*)$/', $moduleFunction, $matches)) {
-			$controllerAction['controller'] = $matches[1];
-			$controllerAction['action'] = $matches[2];
+			$controllerAction['controllerName'] = $matches[1];
+			$controllerAction['actionName'] = $matches[2];
 		} else {
 				// Support for external SCbase module function rendering
 			$functions = $GLOBALS['TBE_MODULES_EXT'][$module]['MOD_MENU']['function'];
 			if (isset($functions[$moduleFunction])) {
-				$controllerAction['controller'] = $defaultController;
-				$controllerAction['action'] = 'extObj';
+				$controllerAction['controllerName'] = $defaultController;
+				$controllerAction['actionName'] = 'extObj';
 			}
 		}
 
