@@ -249,7 +249,7 @@ if (!(defined('TYPO3_cliMode') && TYPO3_cliMode) && @is_file(PATH_typo3conf.'LOC
 		if ($fContent)	{
 			header('Location: '.$fContent);	// Redirect
 		} else {
-			die('Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.'.chr(10).chr(10));
+			t3lib_BEfunc::typo3printError('Backend locked', 'Browser backend is locked for maintenance. Remove lock by removing the file "typo3conf/LOCK_BACKEND" or use CLI-scripts.');
 		}
 		exit;
 	}

@@ -1,3 +1,7 @@
+2009-08-27  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11799: Use typo3printError() if backend is locked (thanks to Steffen Gebert)
+
 2009-08-27  Ingo Renner  <ingo@typo3.org>
 
 	* Follow-up to #11684: fixed styling of links and lists in flash messages
