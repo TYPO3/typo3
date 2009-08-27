@@ -40,20 +40,30 @@ unset($MCONF);
 require('init.php');
 require('template.php');
 
-	// Find module path:
+// Find module path:
 $temp_M = (string)t3lib_div::_GET('M');
-if (substr($temp_M, 0, 3) === 'Tx_') {
-	$dispatcher = t3lib_div::makeInstance('Tx_Extbase_BackendDispatcher');
-	$dispatcher->callModule(substr($temp_M, 3));
-} else {
-	if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
-		$MCONF['_'] = 'mod.php?M=' . rawurlencode($temp_M);
-		require($temp_path . 'conf.php');
-		$BACK_PATH = '';
-		require($temp_path . 'index.php');
-	} else {
-		die('Value "' . htmlspecialchars($temp_M) . '" for "M" was not found as a module');
+$isDispatched = FALSE;
+
+if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
+	$MCONF['_'] = 'mod.php?M=' . rawurlencode($temp_M);
+	require($temp_path . 'conf.php');
+	$BACK_PATH = '';
+	require($temp_path . 'index.php');
+	$isDispatched = TRUE;
+} else {	
+	if (is_array($TBE_MODULES['_dispatcher'])) {
+		foreach ($TBE_MODULES['_dispatcher'] as $dispatcher) {
+			if (is_object($dispatcher)) {
+				if ($dispatcher->callModule($temp_M) === TRUE) {
+					$isDispatched = TRUE;
+					break;
+				}
+			}
+		}
 	}
 }
 
+if ($isDispatched === FALSE) {
+	die('Value "' . htmlspecialchars($temp_M) . '" for "M" was not found as a module'); 
+}
 ?>
