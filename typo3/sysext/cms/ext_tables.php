@@ -564,6 +564,8 @@ if (TYPO3_MODE=='BE')	{
 			// sysfolder
 		'254' => array('showitem' =>
 				'doktype;;2;;1-1-1, hidden, title;LLL:EXT:lang/locallang_general.xml:LGL.title,
+			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
+				media,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
 				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
