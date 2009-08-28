@@ -57,7 +57,7 @@ if (is_file($enableInstallToolFile) && (time() - filemtime($enableInstallToolFil
 }
 
 	// Change 1==2 to 1==1 if you want to lock the Install Tool regardless of the file ENABLE_INSTALL_TOOL
-if (1==2 || ($_SERVER['REMOTE_ADDR']!='127.0.0.1' && !is_file($enableInstallToolFile))) {
+if (1==2 || !is_file($enableInstallToolFile)) {
 	die(nl2br('<strong>The Install Tool is locked.</strong>
 
 		Fix: Create a file typo3conf/ENABLE_INSTALL_TOOL
