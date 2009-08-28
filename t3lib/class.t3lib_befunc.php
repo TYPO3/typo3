@@ -4179,12 +4179,19 @@ final class t3lib_BEfunc {
 
 			if (count($warnings)) {
 				$style = ' style="margin-bottom:10px;"';
-				$content = '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>' .
-					$GLOBALS['TBE_TEMPLATE']->icons(3) . '<span class="warningboxheader">' .
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.header') .
-					'</span><br /><ul><li' . $style.'>' .
-					implode('</li><li' . $style . '>', $warnings) . '</li></ul>' .
-					'</td></tr></table>';
+				$securityWarnings = '<ul><li' . $style . '>'
+					. implode('</li><li' . $style . '>', $warnings)
+					. '</li></ul>';
+
+				$securityMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$securityWarnings,
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.header'),
+					t3lib_FlashMessage::ERROR
+				);
+				$content = '<div style="margin: 20px 0px;">'
+					. $securityMessage->render()
+					. '</div>';
 
 				unset($warnings);
 				return $content;

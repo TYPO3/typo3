@@ -760,21 +760,18 @@ class SC_alt_doc {
 									}
 
 										// Display "is-locked" message:
-									if ($lockInfo = t3lib_BEfunc::isRecordLocked($table,$rec['uid']))	{
-										$lockIcon = '
-
-											<!-- Warning box: -->
-											<table border="0" cellpadding="0" cellspacing="0" class="warningbox">
-												<tr>
-													<td><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/recordlock_warning3.gif','width="17" height="12"').' alt="" /></td>
-													<td>'.htmlspecialchars($lockInfo['msg']).'</td>
-												</tr>
-											</table>
-										';
-									} else $lockIcon = '';
+									if ($lockInfo = t3lib_BEfunc::isRecordLocked($table, $rec['uid'])) {
+										$lockedMessage = t3lib_div::makeInstance(
+											't3lib_FlashMessage',
+											htmlspecialchars($lockInfo['msg']),
+											'',
+											t3lib_FlashMessage::WARNING
+										);
+										$this->doc->pushFlashMessage($lockedMessage);
+									}
 
 										// Combine it all:
-									$editForm.= $lockIcon.$panel;
+									$editForm .= $panel;
 								}
 
 								$thePrevUid = $rec['uid'];

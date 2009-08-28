@@ -389,10 +389,15 @@ class SC_mod_web_perm_index {
 	public function doEdit() {
 		global $BE_USER,$LANG;
 
-		if ($BE_USER->workspace!=0)	{
+		if ($BE_USER->workspace != 0) {
 				// Adding section with the permission setting matrix:
-			$this->content.=$this->doc->divider(5);
-			$this->content.=$this->doc->section($LANG->getLL('WorkspaceWarning'),'<div class="warningbox">'.$LANG->getLL('WorkspaceWarningText').'</div>',0,1,3);
+			$lockedMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('WorkspaceWarningText'),
+				$LANG->getLL('WorkspaceWarning'),
+				t3lib_FlashMessage::WARNING
+			);
+			$this->doc->pushFlashMessage($lockedMessage);
 		}
 
 			// Get usernames and groupnames

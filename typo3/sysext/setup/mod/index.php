@@ -612,11 +612,20 @@ class SC_mod_user_setup_index {
 					implode('', $languageOptions) . '
 				</select>';
 		if ($GLOBALS['BE_USER']->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $GLOBALS['BE_USER']->uc['lang'])) {
-			$languageCode .= '<table border="0" cellpadding="0" cellspacing="0" class="warningbox"><tr><td>'.
-					$this->doc->icons(3) .
-					'The selected language is not available before the language pack is installed.<br />'.
-					($GLOBALS['BE_USER']->isAdmin() ? 'You can use the Extension Manager to easily download and install new language packs.':'Please ask your system administrator to do this.') .
-					'</td></tr></table>';
+			$languageUnavailableWarning = 'The selected language is not available before the language pack is installed.<br />'
+				. ($GLOBALS['BE_USER']->isAdmin() ?
+					'You can use the Extension Manager to easily download and install new language packs.'
+				:	'Please ask your system administrator to do this.');
+
+
+			$languageUnavailableMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$languageUnavailableWarning,
+				'',
+				t3lib_FlashMessage::WARNING
+			);
+
+			$languageCode = $languageUnavailableMessage->render() . $languageCode;
 		}
 
 		return $languageCode;

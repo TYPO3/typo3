@@ -826,23 +826,18 @@ class SC_db_layout {
 				$theCode=$tceforms->printNeededJSFunctions_top().$theCode.$tceforms->printNeededJSFunctions();
 
 					// Add warning sign if record was "locked":
-				if ($lockInfo=t3lib_BEfunc::isRecordLocked($this->eRParts[0],$rec['uid']))	{
-					$lockIcon='
-
-						<!--
-						 	Warning box:
-						-->
-						<table border="0" cellpadding="0" cellspacing="0" class="warningbox">
-							<tr>
-								<td><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/recordlock_warning3.gif','width="17" height="12"').' alt="" /></td>
-								<td>'.htmlspecialchars($lockInfo['msg']).'</td>
-							</tr>
-						</table>
-						';
-				} else $lockIcon='';
+				if ($lockInfo = t3lib_BEfunc::isRecordLocked($this->eRParts[0], $rec['uid'])) {
+					$lockedMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						htmlspecialchars($lockInfo['msg']),
+						'',
+						t3lib_FlashMessage::WARNING
+					);
+					$this->doc->pushFlashMessage($lockedMessage);
+				}
 
 					// Add whole form as a document section:
-				$content.=$this->doc->section('',$lockIcon.$theCode);
+				$content .= $this->doc->section('', $theCode);
 			}
 		} else {
 				// If no edit access, print error message:
