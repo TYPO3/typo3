@@ -1,3 +1,7 @@
+2009-08-28  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #11784: Change existing messages in the Template Object Browser top use flash messages
+
 2009-08-28  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11710: Remove local loopback bypass in Install Tool Login (thanks to Mario Rimann)

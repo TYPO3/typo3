@@ -40,6 +40,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xml');
  * @subpackage	tx_tstemplateobjbrowser
  */
 class tx_tstemplateobjbrowser extends t3lib_extobjbase {
+
 	function init(&$pObj,$conf)	{
 		parent::init($pObj,$conf);
 
@@ -235,42 +236,52 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 						$POST['add_property'] = 'Add';
 					}
 					if ($POST["add_property"])	{
-						$property = trim($POST["data"][$name]["name"]);
-						if (preg_replace('/[^a-zA-Z0-9_\.]*/','',$property)!=$property)	{
-							$theOutput .= $this->pObj->doc->spacer(10);
-							$theOutput .= $this->pObj->doc->section(
-								$GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('badProperty')),
-								$GLOBALS['LANG']->getLL('noSpaces') . '<br />' . $GLOBALS['LANG']->getLL('nothingUpdated'),
-								0, 0, 0, 1
+						$property = trim($POST['data'][$name]['name']);
+						if (preg_replace('/[^a-zA-Z0-9_\.]*/', '', $property) != $property) {
+							$badPropertyMessage = t3lib_div::makeInstance(
+								't3lib_FlashMessage',
+								$GLOBALS['LANG']->getLL('noSpaces') . '<br />'
+									. $GLOBALS['LANG']->getLL('nothingUpdated'),
+								$GLOBALS['LANG']->getLL('badProperty'),
+								t3lib_FlashMessage::ERROR
 							);
+							$this->pObj->doc->pushFlashMessage($badPropertyMessage);
 						} else {
-							$pline= $name.".".$property." = ".trim($POST["data"][$name]["propertyValue"]);
-							$theOutput .= $this->pObj->doc->spacer(10);
-							$theOutput .= $this->pObj->doc->section(
-								$GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('propertyAdded')),
-								htmlspecialchars($pline), 0, 0, 0, 1
+							$pline = $name . '.' . $property . ' = '
+								. trim($POST['data'][$name]['propertyValue']);
+
+							$propertyAddedMessage = t3lib_div::makeInstance(
+								't3lib_FlashMessage',
+								htmlspecialchars($pline),
+								$GLOBALS['LANG']->getLL('propertyAdded')
 							);
+							$this->pObj->doc->pushFlashMessage($propertyAddedMessage);
+
 							$line.=chr(10).$pline;
 						}
-					}
-					elseif ($POST['update_value']) {
-						$pline= $name." = ".trim($POST["data"][$name]["value"]);
-						$theOutput .= $this->pObj->doc->spacer(10);
-						$theOutput .= $this->pObj->doc->section(
-							$GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('valueUpdated')),
-							htmlspecialchars($pline), 0, 0, 0, 1
+					} elseif ($POST['update_value']) {
+						$pline = $name . " = " . trim($POST['data'][$name]['value']);
+
+						$updatedMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							htmlspecialchars($pline),
+							$GLOBALS['LANG']->getLL('valueUpdated')
 						);
-						$line.=chr(10).$pline;
-					}
-					elseif ($POST['clear_object']) {
-						if ($POST["data"][$name]["clearValue"])	{
-							$pline= $name." >";
-							$theOutput .= $this->pObj->doc->spacer(10);
-							$theOutput .= $this->pObj->doc->section(
-								$GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('objectCleared')),
-								htmlspecialchars($pline), 0, 0, 0, 1
+						$this->pObj->doc->pushFlashMessage($updatedMessage);
+
+						$line .= chr(10) . $pline;
+					} elseif ($POST['clear_object']) {
+						if ($POST['data'][$name]['clearValue'])	{
+							$pline = $name . ' >';
+
+							$objectClearedMessage = t3lib_div::makeInstance(
+								't3lib_FlashMessage',
+								htmlspecialchars($pline),
+								$GLOBALS['LANG']->getLL('objectCleared')
 							);
-							$line.=chr(10).$pline;
+							$this->pObj->doc->pushFlashMessage($objectClearedMessage);
+
+							$line .= chr(10) . $pline;
 						}
 					}
 				}
@@ -343,7 +354,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			// EDIT A VALUE:
 		if ($this->pObj->sObj)	{
 			list($theSetup,$theSetupValue) = $tmpl->ext_getSetup($theSetup, ($this->pObj->sObj?$this->pObj->sObj:""));
-			$theOutput.=$this->pObj->doc->divider(5);
+
 			if ($existTemplate)	{
 					// Value
 				$out = '';
@@ -380,7 +391,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 				$theOutput .= $this->pObj->doc->spacer(10);
 			} else {
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('edit'), $GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('noCurrentTemplate')), 0, 0, 0, 1);
+				$noTemplateMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$GLOBALS['LANG']->getLL('noCurrentTemplate'),
+					$GLOBALS['LANG']->getLL('edit'),
+					t3lib_FlashMessage::ERROR
+				);
+
+				$this->pObj->doc->pushFlashMessage($noTemplateMessage);
 			}
 				// Links:
 			$out = '';
@@ -455,7 +473,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$label = $theKey ? $theKey : ($bType == 'setup' ? t3lib_div::strtoupper($GLOBALS['LANG']->getLL('setupRoot')) : t3lib_div::strtoupper($GLOBALS['LANG']->getLL('constantRoot')));
 			$theOutput .= $this->pObj->doc->spacer(15);
 			$theOutput .= $this->pObj->doc->sectionEnd();
-			$theOutput .= '<table border=0 cellpadding=1 cellspacing=0 id="typo3-objectBrowser">
+			$theOutput .= '<table border="0" cellpadding="1" cellspacing="0" id="typo3-objectBrowser" width="100%">
 					<tr>
 						<td><img src=clear.gif width=4 height=1></td>
 						<td class="bgColor2">
