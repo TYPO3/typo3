@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
 ***************************************************************/
 
 class Tx_Extbase_Configuration_Manager_testcase extends Tx_Extbase_Base_testcase {
-	
+
 	public function setUp() {
 		$this->settings = array(
 			'maxItems' => 3,
@@ -43,9 +43,9 @@ class Tx_Extbase_Configuration_Manager_testcase extends Tx_Extbase_Base_testcase
 					)
 				)
 			);
-		
+
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -59,62 +59,8 @@ class Tx_Extbase_Configuration_Manager_testcase extends Tx_Extbase_Base_testcase
 		$configurationSources[] = $configurationSource;
 		$configurationManager = new Tx_Extbase_Configuration_Manager($configurationSources);
 		$settings = $configurationManager->getSettings('Tx_Extbase_Foo_Bar');
-		$this->assertEquals($this->settings, $settings, 'The retrieved settings differs from the retrieved settings.');		
+		$this->assertEquals($this->settings, $settings, 'The retrieved settings differs from the retrieved settings.');
 	}
-	
-	/**
-	 * @test
-	 */	
-	public function postProcessSettingsRemovesTrailingDots() {		
-		$typoScriptSettings = array(
-			'10' => 'TEXT',
-			'10.' => array(
-				'value' => 'Hello World!',
-				'foo.' => array(
-					'bar' => 5,
-					),
-				),
-			);
-		$expectedSettings = array(
-			'10' => array(
-				'value' => 'Hello World!',
-				'foo' => array(
-					'bar' => 5,					
-					),
-				'_typoScriptNodeValue' => 'TEXT',
-				),
-			);
-		$processedSettings = Tx_Extbase_Configuration_Manager::postProcessSettings($typoScriptSettings);
-			
-		$this->assertEquals($expectedSettings, $processedSettings);		
-	}
-	
-	/**
-	 * @test
-	 */
-	public function postProcessSettingsRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray() {		
-		$typoScriptSettings = array(
-			'10.' => array(
-				'value' => 'Hello World!',
-				'foo.' => array(
-					'bar' => 5,
-					),
-				),
-			'10' => 'TEXT', // This line was moved down
-			);
-		$expectedSettings = array(
-			'10' => array(
-				'value' => 'Hello World!',
-				'foo' => array(
-					'bar' => 5,					
-					),
-				'_typoScriptNodeValue' => 'TEXT',
-				),
-			);
-		$processedSettings = Tx_Extbase_Configuration_Manager::postProcessSettings($typoScriptSettings);
 
-		$this->assertEquals($expectedSettings, $processedSettings);		
-	}
-	
 }
 ?>

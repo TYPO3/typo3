@@ -430,7 +430,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 				$token = $this->findToken($tokens, array(T_STRING), array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT));
 				if ($token === false) {
 					// unexpected end of file or token: remove found names because of parse error
-					t3lib_div::sysLog('Parse error in "' . $file. '".', 'Core', 2);
+					t3lib_div::sysLog('Parse error in "' . $filePath. '".', 'Core', 2);
 					$classNames = array();
 					break;
 				}

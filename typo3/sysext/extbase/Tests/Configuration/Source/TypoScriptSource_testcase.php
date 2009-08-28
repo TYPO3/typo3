@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,12 @@
 ***************************************************************/
 
 class Tx_Extbase_Configuration_Source_TypoScriptSource_testcase extends Tx_Extbase_Base_testcase {
-	
-	
+
+	/**
+	 * @test
+	 */
+	public function xy() {
+		$this->markTestSkipped('No test has been written for class Tx_Extbase_Configuration_Source_TypoScriptSource');
+	}
 }
 ?>

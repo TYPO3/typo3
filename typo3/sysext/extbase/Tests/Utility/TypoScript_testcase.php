@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Christian Müller <christian@kitsunet.de>
+*  (c) 2009 Christian Mï¿½ller <christian@kitsunet.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,9 +34,62 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_TypoScript::convertExtbaseToClassicTS
 	 */
-	public function basicExtBase2ClassicTest() {
+	public function convertTypoScriptArrayToPlainArrayRemovesTrailingDots() {
+		$typoScriptSettings = array(
+			'10' => 'TEXT',
+			'10.' => array(
+				'value' => 'Hello World!',
+				'foo.' => array(
+					'bar' => 5,
+					),
+				),
+			);
+		$expectedSettings = array(
+			'10' => array(
+				'value' => 'Hello World!',
+				'foo' => array(
+					'bar' => 5,
+					),
+				'_typoScriptNodeValue' => 'TEXT',
+				),
+			);
+		$processedSettings = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($typoScriptSettings);
+
+		$this->assertEquals($expectedSettings, $processedSettings);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray() {
+		$typoScriptSettings = array(
+			'10.' => array(
+				'value' => 'Hello World!',
+				'foo.' => array(
+					'bar' => 5,
+					),
+				),
+			'10' => 'TEXT', // This line was moved down
+			);
+		$expectedSettings = array(
+			'10' => array(
+				'value' => 'Hello World!',
+				'foo' => array(
+					'bar' => 5,
+					),
+				'_typoScriptNodeValue' => 'TEXT',
+				),
+			);
+		$processedSettings = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($typoScriptSettings);
+
+		$this->assertEquals($expectedSettings, $processedSettings);
+	}
+
+	/**
+	 * @test
+	 */
+	public function convertPlainArrayToTypoScriptArrayAddsNodeValueAndTrailingDots() {
 		$extbaseTS = array(
 			'10' => array(
 				'value' => 'Hallo',
@@ -51,7 +104,7 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 			)
 		);
 
-		$converted = Tx_Extbase_Utility_TypoScript::convertExtbaseToClassicTS($extbaseTS);
+		$converted = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($extbaseTS);
 
 		$this->assertEquals($converted, $classic);
 	}

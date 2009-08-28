@@ -49,6 +49,15 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	 * @api
 	 */
 	public function render();
+
+	/**
+	 * Initializes this view.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function initializeView();
+
 }
 
 ?>

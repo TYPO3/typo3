@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,7 +39,7 @@ abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	 * Constructs this TestCase and registers the autoloader
 	 */
 	public function __construct() {
-		spl_autoload_register(array('Tx_Extbase_Utility_Extension', 'autoloadClass'));
+		spl_autoload_register(array('Tx_Extbase_Utility_ClassLoader', 'loadClass'));
 	}
 
 	/**
@@ -55,7 +55,7 @@ abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Creates a proxy class of the specified class which allows		
+	 * Creates a proxy class of the specified class which allows
 	 * for calling even protected methods and access of protected properties.
 	 *
 	 * @param protected $className Full qualified name of the original class
@@ -98,6 +98,6 @@ abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 		');
 		return $accessibleClassName;
 	}
-	
+
 }
 ?>
