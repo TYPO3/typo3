@@ -3610,9 +3610,10 @@ class t3lib_BEfunc	{
 			}
 
 				// Check if the Install Tool is enabled
-			$enableInstallToolFile = PATH_site.'typo3conf/ENABLE_INSTALL_TOOL';
-			if (@is_file($enableInstallToolFile))	{
-				$warnings[] = 'The Install Tool is enabled. Make sure to delete the file "'.$enableInstallToolFile.'" when you have finished setting up TYPO3';
+			$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';	// If this file exists and it isn't older than one hour, the Install Tool is enabled
+				// Check whether the file ENABLE_INSTALL_TOOL contains the string "KEEP_FILE" which permanently unlocks the install tool
+			if (@is_file($enableInstallToolFile) && trim(@file_get_contents($enableInstallToolFile)) === 'KEEP_FILE') {
+				$warnings[] = 'The Install Tool is permanently enabled. Make sure to delete the file "'.$enableInstallToolFile.'" when you have finished setting up TYPO3';
 			}
 
 				// Check if the encryption key is empty

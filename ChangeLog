@@ -1,3 +1,7 @@
+2009-08-28  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #11731: ENABLE_INSTALL_TOOL file check in yellow box does not check the file age (thanks to Moreno Feltscher)
+
 2009-07-03  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.1.12
