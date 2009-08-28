@@ -1,3 +1,7 @@
+2009-08-29  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #11804: Upgrade wizard does not install opendocs as system extension (thanks to Steffen Gebert)
+
 2009-08-28  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #11784: Change existing messages in the Template Object Browser top use flash messages
