@@ -1463,6 +1463,30 @@ class t3lib_cs {
 	}
 
 	/**
+	 * Method to crop strings using the mb_substr function.
+	 *
+	 * @param  string		The character set
+	 * @param  string		String to be cropped
+	 * @param  integer		Crop length (in characters)
+	 * @param  string		Crop signifier
+	 * @return string		The shortened string
+	 * @see mb_strlen(), mb_substr()
+	 */
+	protected function cropMbstring($charset, $string, $len, $crop = '') {
+		if (intval($len) == 0 || mb_strlen($string) < $len) {
+			return $string;
+		}
+
+		if ($len > 0) {
+			$string = mb_substr($string, 0, $len, $charset) . $crop;
+		} else {
+			$string = $crop . mb_substr($string, $len, mb_strlen($string, $charset), $charset);
+		}
+
+		return $string;
+	}
+
+	/**
 	 * Truncates a string and pre-/appends a string.
 	 * Unit tested by Kasper
 	 *
@@ -1475,6 +1499,10 @@ class t3lib_cs {
 	 * @author	Martin Kutschker <martin.t.kutschker@blackbox.net>
 	 */
 	function crop($charset,$string,$len,$crop='')	{
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] == 'mbstring') {
+			return $this->cropMbstring($charset, $string, $len, $crop);
+		}
+
 		if (intval($len) == 0)	return $string;
 
 		if ($charset == 'utf-8')	{

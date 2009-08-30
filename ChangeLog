@@ -1,3 +1,7 @@
+2009-08-29  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11808: Increase performance using mbstring in t3lib_cs->crop (thanks to Timo Schmidt)
+
 2009-08-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #11804: Upgrade wizard does not install opendocs as system extension (thanks to Steffen Gebert)
