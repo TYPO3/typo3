@@ -1653,10 +1653,10 @@ class t3lib_cs {
 			$isoLang = join('-', explode('_', $isoLang));
 			$allLanguageCodes[$typo3Lang] = $isoLang;
 		}
-		
+
 		// move the iso codes to the (because we're comparing the keys with "isset" later on)
 		$allLanguageCodes = array_flip($allLanguageCodes);
-		
+
 
 		$preferredLanguages = t3lib_div::trimExplode(',', $languageCodesList);
 		// order the preferred languages after they key
