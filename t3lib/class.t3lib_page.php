@@ -188,6 +188,19 @@ class t3lib_pageSelect {
 	 * @see getPage_noCheck()
 	 */
 	function getPage($uid, $disableGroupAccessCheck=FALSE)	{
+			// Hook to manipulate the page uid for special overlay handling
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPage'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+
+				if (!($hookObject instanceof t3lib_pageSelect_getPageHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface t3lib_pageSelect_getPageHook', 1251476766);
+				}
+
+				$hookObject->getPage_preProcess($uid, $disableGroupAccessCheck, $this);
+			}
+		}
+
 		$accessCheck = $disableGroupAccessCheck ? '' : $this->where_groupAccess;
 		$cacheKey = md5($accessCheck . '-' . $this->where_hid_del . '-' . $this->sys_language_uid);
 

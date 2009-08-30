@@ -1,3 +1,7 @@
+2009-08-30  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Added feature #11431: Hook to manipulate the page request in method getPage of class t3lib_pageSelect
+
 2009-08-30  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11808: Increase performance using mbstring in t3lib_cs->crop (thanks to Timo Schmidt)
