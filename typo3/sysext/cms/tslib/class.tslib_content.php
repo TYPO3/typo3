@@ -335,7 +335,8 @@ class tslib_cObj {
 	var $substMarkerCache=array();	// Caching substituteMarkerArrayCached function
 	var $recordRegister=array();	// Array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
 	var $cObjHookObjectsArr = array();		// Containig hooks for userdefined cObjects
-	protected $stdWrapHookObjects = array();		// Containig hook objects for stdWrap
+	protected $stdWrapHookObjects = array();		// Containing hook objects for stdWrap
+	protected $getImgResourceHookObjects;			// Containing hook objects for getImgResource 
 
 	/**
 	 * Set to true by doConvertToUserIntObject() if USER object wants to become USER_INT
@@ -394,7 +395,32 @@ class tslib_cObj {
 				$this->stdWrapHookObjects[] = $hookObject;
 			}
 		}
+	}
 
+	/**
+	 * Gets the 'getImgResource' hook objects.
+	 * The first call initializes the accordant objects.
+	 *
+	 * @return	array		The 'getImgResource' hook objects (if any)
+	 */
+	protected function getGetImgResourceHookObjects() {
+		if (!isset($this->getImgResourceHookObjects)) {
+			$this->getImgResourceHookObjects = array();
+
+			if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'])) {
+				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] as $classData) {
+					$hookObject = t3lib_div::getUserObj($classData);
+
+					if(!($hookObject instanceof tslib_cObj_getImgResourceHook)) {
+						throw new UnexpectedValueException('$hookObject must implement interface tslib_cObj_getImgResourceHook', 1218636383);
+					}
+
+					$this->getImgResourceHookObjects[] = $hookObject;
+				}
+			}
+		}
+
+		return $this->getImgResourceHookObjects;
 	}
 
 	/**
@@ -4764,7 +4790,7 @@ class tslib_cObj {
 						$gifCreator->start($fileArray,$this->data);
 						$theImage = $gifCreator->gifBuild();
 					}
-					return $gifCreator->getImageDimensions($theImage);
+					$imageResource = $gifCreator->getImageDimensions($theImage);
 				break;
 				default:
 					if ($fileArray['import.'])	{
@@ -4894,23 +4920,35 @@ class tslib_cObj {
 							}
 							$GLOBALS['TSFE']->tmpl->fileCache[$hash]['origFile'] = $theImage;
 							$GLOBALS['TSFE']->tmpl->fileCache[$hash]['origFile_mtime'] = @filemtime($theImage);	// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
+							$GLOBALS['TSFE']->tmpl->fileCache[$hash]['fileCacheHash'] = $hash;
 						}
-						return $GLOBALS['TSFE']->tmpl->fileCache[$hash];
+						$imageResource = $GLOBALS['TSFE']->tmpl->fileCache[$hash];
 					}
 
 				break;
 			}
 		}
 		$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
-		if ($theImage)	{
+			// If image was processed by GIFBUILDER:
+			// ($imageResource indicates that it was processed the regular way)
+		if (!isset($imageResource) && $theImage) {
 			$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 			/* @var $gifCreator tslib_gifbuilder */
 			$gifCreator->init();
 			$info= $gifCreator->imageMagickConvert($theImage,'WEB','','','','','');
 			$info['origFile'] = $theImage;
 			$info['origFile_mtime'] = @filemtime($theImage);	// This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
-			return $info;
+			$imageResource = $info;
 		}
+
+			// Hook 'getImgResource': Post-processing of image resources 
+		if (isset($imageResource)) {
+			foreach($this->getGetImgResourceHookObjects() as $hookObject) {
+				$imageResource = $hookObject->getImgResourcePostProcess($file, (array)$fileArray, $imageResource, $this);
+			}
+		}
+
+		return $imageResource;
 	}
 
 	/**
