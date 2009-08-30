@@ -313,28 +313,28 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function getDataMap($className) {
 		if (!is_string($className) || strlen($className) === 0) throw new Tx_Extbase_Persistence_Exception('No class name was given to retrieve the Data Map for.', 1251315965);
-			if (empty($this->dataMaps[$className])) {
-				// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
-				$mapping = array();
-				$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-				if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['mapping']['tableName'])) {
-					$tableName = $extbaseSettings['persistence']['classes'][$className]['mapping']['tableName'];
-				} else {
-					foreach (class_parents($className) as $parentClassName) {
-						if (isset($extbaseSettings['persistence']['classes'][$parentClassName]) && !empty($extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['tableName'])) {
-							$tableName = $extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['tableName'];
-							break;
-						}
+		if (empty($this->dataMaps[$className])) {
+			// FIXME This is a costy for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
+			$mapping = array();
+			$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+			if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['mapping']['tableName'])) {
+				$tableName = $extbaseSettings['persistence']['classes'][$className]['mapping']['tableName'];
+			} else {
+				foreach (class_parents($className) as $parentClassName) {
+					if (isset($extbaseSettings['persistence']['classes'][$parentClassName]) && !empty($extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['tableName'])) {
+						$tableName = $extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['tableName'];
+						break;
 					}
 				}
-				if (is_array($extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['columns'])) {
-					$mapping = $extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['columns'];
-				}
-
-				$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $mapping);
-				$this->dataMaps[$className] = $dataMap;
 			}
-			return $this->dataMaps[$className];
+			if (is_array($extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['columns'])) {
+				$mapping = $extbaseSettings['persistence']['classes'][$parentClassName]['mapping']['columns'];
+			}
+
+			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $mapping);
+			$this->dataMaps[$className] = $dataMap;
+		}
+		return $this->dataMaps[$className];
 	}
 
 	/**
@@ -366,6 +366,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		}
 		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($propertyName);
 	}
-	
+
 }
 ?>
