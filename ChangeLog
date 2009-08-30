@@ -1,5 +1,6 @@
 2009-08-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to #11431: Unit test for getPage_preProcess hook
 	* Added feature #11431: Hook to manipulate the page request in method getPage of class t3lib_pageSelect
 
 2009-08-30  Rupert Germann  <rupi@gmx.li>
