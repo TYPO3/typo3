@@ -192,6 +192,23 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether fields can be added to a palette after a not existing elements.
+	 * @test
+	 * @see t3lib_extMgm::addFieldsToPalette()
+	 */
+	public function canAddFieldsToPaletteAfterNotExistingOnes() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
+
+		t3lib_extMgm::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:' . uniqid('notExisting'));
+
+		$this->assertEquals(
+			'fieldX, fieldY, newA, newB',
+			$GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
+		);
+	}
+
+	/**
 	 * Tests whether fields can be added to all palettes of a regular field before existing ones.
 	 * @test
 	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
@@ -217,7 +234,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Tests whether fields can be added to all palettes of a regular field before existing ones.
+	 * Tests whether fields can be added to all palettes of a regular field after existing ones.
 	 * @test
 	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
 	 */
@@ -225,7 +242,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 
-		t3lib_extMgm::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newB, fieldX', 'after:fieldX');
+		t3lib_extMgm::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:fieldX');
 
 		$this->assertEquals(
 			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
@@ -238,6 +255,59 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		);
 		$this->assertEquals(
 			'fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']
+		);
+	}
+
+	/**
+	 * Tests whether fields can be added to all palettes of a regular field after a not existing field.
+	 * @test
+	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 */
+	public function canAddFieldsToAllPalettesOfFieldAfterNotExistingOnes() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
+
+		t3lib_extMgm::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'after:' . uniqid('notExisting'));
+
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']
+		);
+	}
+
+	/**
+	 * Tests whether fields are added to a new palette that did not exist before.
+	 * @test
+	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 */
+	public function canAddFieldsToAllPalettesOfFieldWithoutPaletteExistingBefore() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
+
+		t3lib_extMgm::addFieldsToAllPalettesOfField($table, 'fieldA', 'newA, newA, newB, fieldX');
+
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']
+		);
+		$this->assertEquals(
+			'newA, newB, fieldX', $GLOBALS['TCA'][$table]['palettes']['generatedFor-fieldA']['showitem']
 		);
 	}
 
@@ -256,7 +326,10 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 	private function generateTCAForTable($table) {
 		$tca = array();
 		$tca[$table] = array();
-		$tca[$table]['columns']['fieldC'] = array();
+		$tca[$table]['columns'] = array(
+			'fieldA' => array(),
+			'fieldC' => array(),
+		);
 		$tca[$table]['types'] = array(
 			'typeA' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
 			'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
