@@ -74,7 +74,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 
-		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newB, fieldA', '', 'before:fieldD');
+		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'before:fieldD');
 
 			// Checking typeA:
 		$this->assertEquals(
@@ -97,7 +97,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 
-		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newB, fieldA', '', 'after:fieldC');
+		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:fieldC');
 
 			// Checking typeA:
 		$this->assertEquals(
@@ -120,7 +120,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 
-		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newB, fieldA', 'typeA', 'before:fieldD');
+		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'before:fieldD');
 
 			// Checking typeA:
 		$this->assertEquals(
@@ -143,7 +143,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 
-		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newB, fieldA', 'typeA', 'after:fieldC');
+		t3lib_extMgm::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'after:fieldC');
 
 			// Checking typeA:
 		$this->assertEquals(
@@ -166,7 +166,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 
-		t3lib_extMgm::addFieldsToPalette($table, 'paletteA', 'newA, newB, fieldX', 'before:fieldY');
+		t3lib_extMgm::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'before:fieldY');
 
 		$this->assertEquals(
 			'fieldX, newA, newB, fieldY',
@@ -183,11 +183,61 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$table = uniqid('tx_coretest_table');
 		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
 
-		t3lib_extMgm::addFieldsToPalette($table, 'paletteA', 'newA, newB, fieldX', 'after:fieldX');
+		t3lib_extMgm::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:fieldX');
 
 		$this->assertEquals(
 			'fieldX, newA, newB, fieldY',
 			$GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
+		);
+	}
+
+	/**
+	 * Tests whether fields can be added to all palettes of a regular field before existing ones.
+	 * @test
+	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 */
+	public function canAddFieldsToAllPalettesOfFieldBeforeExistingOnes() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
+
+		t3lib_extMgm::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newA, newB, fieldX', 'before:fieldY');
+
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']
+		);
+	}
+
+	/**
+	 * Tests whether fields can be added to all palettes of a regular field before existing ones.
+	 * @test
+	 * @see t3lib_extMgm::addFieldsToAllPalettesOfField()
+	 */
+	public function canAddFieldsToAllPalettesOfFieldAfterExistingOnes() {
+		$table = uniqid('tx_coretest_table');
+		$GLOBALS['TCA'] = $this->generateTCAForTable($table);
+
+		t3lib_extMgm::addFieldsToAllPalettesOfField($table, 'fieldC', 'newA, newB, fieldX', 'after:fieldX');
+
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']
+		);
+		$this->assertEquals(
+			'fieldX, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']
 		);
 	}
 
@@ -206,13 +256,17 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 	private function generateTCAForTable($table) {
 		$tca = array();
 		$tca[$table] = array();
+		$tca[$table]['columns']['fieldC'] = array();
 		$tca[$table]['types'] = array(
 			'typeA' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
 			'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
+			'typeC' => array('showitem' => 'fieldC;;paletteD'),
 		);
 		$tca[$table]['palettes'] = array(
 			'paletteA' => array('showitem' => 'fieldX, fieldY'),
 			'paletteB' => array('showitem' => 'fieldX, fieldY'),
+			'paletteC' => array('showitem' => 'fieldX, fieldY'),
+			'paletteD' => array('showitem' => 'fieldX, fieldY'),
 		);
 
 		return $tca;
