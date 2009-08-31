@@ -3752,6 +3752,7 @@ class tslib_cObj {
 				if ($conf['bytes']){$content=t3lib_div::formatSize($content, $conf['bytes.']['labels']);}
 				if ($conf['substring']){$content=$this->substring($content,$conf['substring']);}
 				if ($conf['removeBadHTML'])	{$content = $this->removeBadHTML($content, $conf['removeBadHTML.']);}
+				if ($conf['cropHTML']) {$content=$this->cropHTML($content, $conf['cropHTML']);}
 				if ($conf['stripHtml']){$content = strip_tags($content);}
 				if ($conf['crop']){$content=$this->crop($content, $conf['crop']);}
 				if ($conf['rawUrlEncode']){$content = rawurlencode($content);}
@@ -4200,6 +4201,133 @@ class tslib_cObj {
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Implements the stdWrap property "cropHTML" which is a modified "substr" function allowing to limit a string length 
+	 * to a certain number of chars (from either start or end of string) and having a pre/postfix applied if the string 
+	 * really was cropped.
+	 * 
+	 * Compared to stdWrap.crop it respects HTML tags and entities.
+	 *
+	 * @param	string		The string to perform the operation on
+	 * @param	string		The parameters splitted by "|": First parameter is the max number of chars of the string. Negative value means cropping from end of string. Second parameter is the pre/postfix string to apply if cropping occurs. Third parameter is a boolean value. If set then crop will be applied at nearest space.
+	 * @return	string		The processed input value.
+	 * @access private
+	 * @see stdWrap()
+	 */
+	function cropHTML($content, $options) {
+		$options = explode('|', $options);
+		$chars = intval($options[0]);
+		$absChars = abs($chars);
+		$replacementForEllipsis = trim($options[1]);
+		$crop2space = $options[2] === '1' ? TRUE : FALSE;
+
+		// Split $content into an array (even items in the array are outside the tags, odd numbers are tag-blocks).
+		$tags= 'a|b|blockquote|body|div|em|font|form|h1|h2|h3|h4|h5|h6|i|li|map|ol|option|p|pre|sub|sup|select|span|strong|table|thead|tbody|tfoot|td|textarea|tr|u|ul|br|hr|img|input|area|link';
+		// TODO We should not crop inside <script> tags.
+		$tagsRegEx = "
+			(
+				(?:
+					<!--.*?-->					# a comment
+				)
+				|
+				</?(?:". $tags . ")+			# opening tag ('<tag') or closing tag ('</tag')
+				(?:
+					(?:
+						\s+\w+					# EITHER spaces, followed by word characters (attribute names) 
+						(?:
+							\s*=?\s*			# equals
+							(?>
+								\".*?\"			# attribute values in double-quotes
+								|
+								'.*?'			# attribute values in single-quotes
+								|
+								[^'\">\s]+		# plain attribute values
+							)
+						)?
+					)+\s*
+					|							# OR only spaces
+					\s*
+				)
+				/?>								# closing the tag with '>' or '/>'
+			)";
+		$splittedContent = preg_split('%' . $tagsRegEx . '%xs', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
+
+		// Reverse array if we are cropping from right.
+		if ($chars < 0) {
+			$splittedContent = array_reverse($splittedContent);
+		}
+
+		// Crop the text (chars of tag-blocks are not counted).
+		$strLen = 0;
+		$croppedOffset = NULL; // This is the offset of the content item which was cropped.
+		$countSplittedContent = count($splittedContent);
+		for ($offset = 0; $offset < $countSplittedContent; $offset++) {
+			if ($offset%2 === 0) {
+				$tempContent = $GLOBALS['TSFE']->csConvObj->utf8_encode($splittedContent[$offset], $GLOBALS['TSFE']->renderCharset);
+				$thisStrLen = $GLOBALS['TSFE']->csConvObj->strlen('utf-8', html_entity_decode($tempContent, ENT_COMPAT, 'UTF-8'));
+				if (($strLen + $thisStrLen > $absChars)) {
+					$croppedOffset = $offset;
+					$cropPosition = $absChars - $strLen;
+					if ($crop2space) {
+						$cropRegEx = $chars < 0 ? '#(?<=\s)(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}$#ui' : '#^(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}(?=\s)#ui';
+					} else {
+						// The snippets "&[^&\s;]{2,7};" in the RegEx below represents entities.
+						$cropRegEx = $chars < 0 ? '#(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}$#ui' : '#^(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}#ui';
+					}
+					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
+						$tempContent = $croppedMatch[0];
+					}
+					$splittedContent[$offset] = $GLOBALS['TSFE']->csConvObj->utf8_decode($tempContent, $GLOBALS['TSFE']->renderCharset);
+					break;
+				} else {
+					$strLen += $thisStrLen;
+				}
+			}
+		}
+
+		// Close cropped tags.
+		$closingTags = array();
+		if($croppedOffset !== NULL) {
+			$tagName = '';
+			$openingTagRegEx = '#^<(\w+)(?:\s|>)#';
+			$closingTagRegEx = '#^</(\w+)(?:\s|>)#';
+			for ($offset = $croppedOffset - 1; $offset >= 0; $offset = $offset - 2) {
+				if (substr($splittedContent[$offset], -2) === '/>') {
+					// Ignore empty element tags (e.g. <br />).
+					continue;
+				}
+				preg_match($chars < 0 ? $closingTagRegEx : $openingTagRegEx, $splittedContent[$offset], $matches);
+				$tagName = isset($matches[1]) ? $matches[1] : NULL;
+				if ($tagName !== NULL) {
+					// Seek for the closing (or opening) tag.
+					$seekingTagName = '';
+					$countSplittedContent = count($splittedContent);
+					for ($seekingOffset = $offset + 2; $seekingOffset < $countSplittedContent; $seekingOffset = $seekingOffset + 2) {
+						preg_match($chars < 0 ? $openingTagRegEx : $closingTagRegEx, $splittedContent[$seekingOffset], $matches);
+						$seekingTagName = isset($matches[1]) ? $matches[1] : NULL;
+						if ($tagName === $seekingTagName) { // We found a matching tag.
+							// Add closing tag only if it occurs after the cropped content item.
+							if ($seekingOffset > $croppedOffset) {
+								$closingTags[] = $splittedContent[$seekingOffset];
+							}
+							break;
+						}
+					}
+				}
+			}
+			// Drop the cropped items of the content array. The $closingTags will be added later on again.
+			array_splice($splittedContent, $croppedOffset + 1);
+		}
+		$splittedContent = array_merge($splittedContent, array($croppedOffset !== NULL ? $replacementForEllipsis : ''), $closingTags);
+
+		// Reverse array once again if we are cropping from the end.
+		if ($chars < 0) {
+			$splittedContent = array_reverse($splittedContent);
+		}
+
+		return implode('', $splittedContent);
 	}
 
 	/**
