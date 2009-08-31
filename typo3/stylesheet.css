@@ -929,6 +929,11 @@ body#typo3-alt-file-navframe-php {
 	padding: 0;
 }
 
+body#typo3-pagetree #typo3-inner-docbody,
+body#typo3-alt-file-navframe-php #typo3-inner-docbody {
+	padding-right: 0px;
+}
+
 ul.tree {
 	list-style: none;
 	margin: 0;
