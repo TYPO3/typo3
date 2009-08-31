@@ -970,7 +970,7 @@ class tslib_pibase {
 	 */
 	function pi_loadLL()	{
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath)	{
-			$basePath = t3lib_extMgm::extPath($this->extKey).dirname($this->scriptRelPath).'/locallang.php';
+			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xml';
 
 				// Read the strings in the required charset (since TYPO3 4.2)
 			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->LLkey,$GLOBALS['TSFE']->renderCharset);

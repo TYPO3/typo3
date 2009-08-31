@@ -168,6 +168,7 @@ $TYPO3_CONF_VARS = Array(
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()
 		),
+		'locallangXMLOverride' => array(),					// For extension/overriding of the arrays in 'locallang' files in frontend and backend. See 'Inside TYPO3' for more information.
 	),
 	'BE' => Array(		// Backend Configuration.
 		'unzip_path' => '',						// Path to "unzip".

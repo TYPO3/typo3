@@ -1,3 +1,7 @@
+2009-09-01  Christian Kuhn <lolli@schwarzbu.ch>
+
+	* Added feature #11825: Override FE labels with XML files
+
 2009-08-31  Jochen Rau <jochen.rau@typoplanet.de>
 
 	* Added feature #7984: Besides stdWrap.crop there is now a function stdWrap.cropHTML that is aware of HTML tags (same options)
