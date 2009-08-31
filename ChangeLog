@@ -1,8 +1,8 @@
-2009-09-01  Christian Kuhn <lolli@schwarzbu.ch>
+2009-09-01  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Added feature #11825: Override FE labels with XML files
 
-2009-08-31  Jochen Rau <jochen.rau@typoplanet.de>
+2009-08-31  Jochen Rau  <jochen.rau@typoplanet.de>
 
 	* Added feature #7984: Besides stdWrap.crop there is now a function stdWrap.cropHTML that is aware of HTML tags (same options)
 
@@ -205,11 +205,11 @@
 	* Follow-up to bug #10769: Added unit tests for t3lib_div::encodeHeader()
 	* Added test #11626: Extend unit tests for t3lib_matchCondition globalVar comparison
 
-2009-08-02  Christian Kuhn  <lollli@schwarzbu.ch>
+2009-08-02  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Added feature #11500: Order fe_groups in select fields alphabetically (Thanks to Steffen Gebert)
 
-2009-08-01  Christian Kuhn  <lollli@schwarzbu.ch>
+2009-08-01  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Added feature #6039: Implement file_reference for TCA "group" type. Files can be referenced instead of copied to upload folder (Thanks to Martin Borer)
 
@@ -217,7 +217,7 @@
 
 	* Follow-up to bug #11410: Speed up BEgetRootLine even more by adding a real 2-level cache
 
-2009-07-31  Christian Kuhn  <lollli@schwarzbu.ch>
+2009-07-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Added feature #11581: Small speed improvement in class.t3lib_tstemplate.php (Thanks to Dan Osipov)
 	* Fixed bug #11601: Copyright-Notice is hardcoded (Thanks to Christopher Stelmaszyk)
@@ -274,7 +274,7 @@
 
 2009-07-16  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Added feature #11544: select/deselect all checkbox in db compare tool and extension manager for each type of modification
+	* Added feature #11544: select/deselect all checkbox in db compare tool and extension manager for each type of modification (thanks to Bastian Waidelich)
 
 2009-07-16  Francois Suter  <francois@typo3.org>
 
