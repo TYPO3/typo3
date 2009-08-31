@@ -286,6 +286,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$possibleViewName = $this->viewObjectNamePattern;
 		$extensionName = $this->request->getControllerExtensionName();
 		$subextensionName = $this->request->getControllerSubextensionName();
+		// TODO: Remove Subextension matching
 		if ($subextensionName !== NULL && $subextensionName !== '') {
 			$extensionName.= '_' . $subextensionName;
 		}
