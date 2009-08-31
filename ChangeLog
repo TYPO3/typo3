@@ -1,3 +1,7 @@
+2009-08-31  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Set SVN properties and tags
+
 2009-08-31  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #11810: Workspace indicator bar does not cover the full width of the page tree
