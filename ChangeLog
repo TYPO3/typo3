@@ -1,3 +1,7 @@
+2009-08-31  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #11717: Filelist module doesn't work in IE6 (thanks to Steffen Gebert)
+
 2009-08-31  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #11374: Add Linebreak in Palette of TCEFORMS
