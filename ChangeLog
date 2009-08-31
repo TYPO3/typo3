@@ -1,6 +1,7 @@
 2009-08-31  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Set SVN properties and tags
+	* Follow-up to feature #9897: Added unit tests for addFieldsToPalette() and addToAllTCAtypes() in t3lib_extMgm
 
 2009-08-31  Ingo Renner  <ingo@typo3.org>
 
