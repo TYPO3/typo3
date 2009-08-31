@@ -55,13 +55,6 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	protected $controllerExtensionName = NULL;
 
 	/**
-	 * Subextension name of the controller which is supposed to handle this request.
-	 *
-	 * @var string
-	 */
-	protected $controllerSubextensionName = NULL;
-
-	/**
 	 * @var string Object name of the controller which is supposed to handle this request.
 	 */
 	protected $controllerName = 'Standard';
@@ -187,29 +180,6 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 */
 	public function getControllerExtensionKey() {
 		return Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($this->controllerExtensionName);
-	}
-	
-	/**
-	 * Sets the subextension name of the controller.
-	 *
-	 * @param string $subextensionName The subextensionName.
-	 * @return void
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function setControllerSubextensionName($subextensionName) {
-		$this->controllerSubextensionName = $subextensionName;
-	}
-
-	/**
-	 * Returns the subextension name of the specified controller.
-	 *
-	 * @return string The subextension name
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @api
-	 * // TODO mark different API
-	 */
-	public function getControllerSubextensionName() {
-		return $this->controllerSubextensionName;
 	}
 
 	/**

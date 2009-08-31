@@ -285,11 +285,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected function resolveViewObjectName() {
 		$possibleViewName = $this->viewObjectNamePattern;
 		$extensionName = $this->request->getControllerExtensionName();
-		$subextensionName = $this->request->getControllerSubextensionName();
-		// TODO: Remove Subextension matching
-		if ($subextensionName !== NULL && $subextensionName !== '') {
-			$extensionName.= '_' . $subextensionName;
-		}
 		$possibleViewName = str_replace('@extension', $extensionName, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);

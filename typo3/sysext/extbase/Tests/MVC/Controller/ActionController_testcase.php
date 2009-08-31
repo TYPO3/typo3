@@ -190,7 +190,6 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	public function resolveViewPreparesTheViewSpecifiedInTheRequestObjectAndUsesTheEmptyViewIfNoneCouldBeFound() {
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface', array(), array(), '', FALSE);
 		$mockRequest->expects($this->at(0))->method('getControllerExtensionName')->will($this->returnValue('Foo'));
-		$mockRequest->expects($this->at(1))->method('getControllerSubextensionName')->will($this->returnValue(''));
 		$mockRequest->expects($this->at(1))->method('getControllerName')->will($this->returnValue('Test'));
 		$mockRequest->expects($this->at(2))->method('getControllerActionName')->will($this->returnValue('list'));
 		$mockRequest->expects($this->once())->method('getFormat')->will($this->returnValue('html'));

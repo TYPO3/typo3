@@ -85,23 +85,6 @@ interface Tx_Extbase_MVC_RequestInterface {
 	public function getControllerExtensionName();
 
 	/**
-	 * Sets the subextension name of the controller.
-	 *
-	 * @param string $subextensionName The subextension name.
-	 * @return void
-	 * @api
-	 */
-	public function setControllerSubextensionName($subextensionName);
-
-	/**
-	 * Returns the subextension name of the specified controller.
-	 *
-	 * @return string The subextension name.
-	 * @api
-	 */
-	public function getControllerSubextensionName();
-
-	/**
 	 * Sets the name of the controller which is supposed to handle the request.
 	 * Note: This is not the object name of the controller!
 	 *
