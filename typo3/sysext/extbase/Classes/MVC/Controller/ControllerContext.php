@@ -57,9 +57,9 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	protected $argumentsMappingResults;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Routing_URIBuilder
+	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
 	 */
-	protected $URIBuilder;
+	protected $uriBuilder;
 
 	/**
 	 * Set the request of the controller
@@ -142,19 +142,19 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	}
 
 	/**
-	 * Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder
+	 * Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder
 	 * @return void
 	 */
-	public function setURIBuilder(Tx_Extbase_MVC_Web_Routing_URIBuilder $URIBuilder) {
-		$this->URIBuilder = $URIBuilder;
+	public function setUriBuilder(Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder) {
+		$this->uriBuilder = $uriBuilder;
 	}
 
 	/**
-	 * @return Tx_Extbase_MVC_Web_Routing_URIBuilder
+	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder
 	 * @api
 	 */
-	public function getURIBuilder() {
-		return $this->URIBuilder;
+	public function getUriBuilder() {
+		return $this->uriBuilder;
 	}
 
 }

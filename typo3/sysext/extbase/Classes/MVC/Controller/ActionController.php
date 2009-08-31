@@ -118,8 +118,8 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
-		$this->URIBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_URIBuilder');
-		$this->URIBuilder->setRequest($request);
+		$this->uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->uriBuilder->setRequest($request);
 
 		$this->actionMethodName = $this->resolveActionMethodName();
 

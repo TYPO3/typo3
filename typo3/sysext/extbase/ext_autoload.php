@@ -85,7 +85,7 @@ return array(
 	'tx_extbase_mvc_web_request' => $extensionClassesPath . 'MVC/Web/Request.php',
 	'tx_extbase_mvc_web_requestbuilder' => $extensionClassesPath . 'MVC/Web/RequestBuilder.php',
 	'tx_extbase_mvc_web_response' => $extensionClassesPath . 'MVC/Web/Response.php',
-	'tx_extbase_mvc_web_routing_uribuilder' => $extensionClassesPath . 'MVC/Web/Routing/URIBuilder.php',
+	'tx_extbase_mvc_web_routing_uribuilder' => $extensionClassesPath . 'MVC/Web/Routing/UriBuilder.php',
 	'tx_extbase_object_exception' => $extensionClassesPath . 'Object/Exception.php',
 	'tx_extbase_object_manager' => $extensionClassesPath . 'Object/Manager.php',
 	'tx_extbase_object_managerinterface' => $extensionClassesPath . 'Object/ManagerInterface.php',

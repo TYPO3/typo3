@@ -40,9 +40,9 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_Web_Routing_URIBuilder
+	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
 	 */
-	protected $URIBuilder;
+	protected $uriBuilder;
 
 	/**
 	 * @var string Key of the extension this controller belongs to
@@ -188,8 +188,8 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
-		$this->URIBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_URIBuilder');
-		$this->URIBuilder->setRequest($request);
+		$this->uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->uriBuilder->setRequest($request);
 
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
@@ -211,7 +211,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		if ($this->argumentsMappingResults !== NULL) {
 			$controllerContext->setArgumentsMappingResults($this->argumentsMappingResults);
 		}
-		$controllerContext->setURIBuilder($this->URIBuilder);
+		$controllerContext->setUriBuilder($this->uriBuilder);
 		return $controllerContext;
 	}
 
@@ -263,7 +263,9 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$uri = $this->URIBuilder->URIFor($pageUid, $actionName, $arguments, $controllerName, $extensionName);
+		$this->uriBuilder->reset();
+		$this->uriBuilder->setTargetPageUid($pageUid);
+		$uri = $this->uriBuilder->uriFor($actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToURI($uri, $delay, $statusCode);
 	}
 
