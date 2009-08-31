@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperBaseTestcase.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: ViewHelperBaseTestcase.php 3109 2009-08-31 17:22:46Z bwaidelich $
  */
 abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Base_testcase {
 
@@ -36,7 +36,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $templateVariableContainer;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Web_Routing_URIBuilder
+	 * @var \Tx_Extbase_MVC_Web_Routing_UriBuilder
 	 */
 	protected $uriBuilder;
 
@@ -56,15 +56,32 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $arguments;
 
 	/**
+	 * @var \Tx_Extbase_MVC_Web_Request
+	 */
+	protected $request;
+
+	/**
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setUp() {
 		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		$this->uriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_URIBuilder');
+		$this->uriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->uriBuilder->expects($this->any())->method('setArguments')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setSection')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setCreateAbsoluteUri')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setAddQueryString')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setArgumentsToBeExcludedFromQueryString')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setLinkAccessRestrictedPages')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setTargetPageUid')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setTargetPageType')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setNoCache')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
+		$this->request = $this->getMock('Tx_Extbase_MVC_Web_Request');
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
-		$this->controllerContext->expects($this->any())->method('getURIBuilder')->will($this->returnValue($this->uriBuilder));
+		$this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
+		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
 		$this->arguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
 	}

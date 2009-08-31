@@ -21,29 +21,40 @@
  *                                                                        */
 
 /**
- * Creates a submit button.
+ * View Helper which creates a simple radio button (<input type="radio">).
  *
  * = Examples =
  *
- * <code title="Defaults">
- * <f:submit value="Send Mail" />
+ * <code title="Example">
+ * <f:form.radio name="myRadioButton" value="someValue" />
  * </code>
  *
  * Output:
- * <input type="submit" />
+ * <input type="radio" name="myRadioButton" value="someValue" />
  *
- * <code title="Dummy content for template preview">
- * <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
+ * <code title="Preselect">
+ * <f:form.radio name="myRadioButton" value="someValue" checked="{object.value} == 5" />
  * </code>
  *
-  * Output:
- * <input type="submit" name="mySubmit" value="Send Mail" />
+ * Output:
+ * <input type="radio" name="myRadioButton" value="someValue" checked="checked" />
+ * (depending on $object)
  *
- * @version $Id: SubmitViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
+ * <code title="Bind to object property">
+ * <f:form.radio property="newsletter" value="1" /> yes
+ * <f:form.radio property="newsletter" value="0" /> no
+ * </code>
+ *
+ * Output:
+ * <input type="radio" name="user[newsletter]" value="1" checked="checked" /> yes
+ * <input type="radio" name="user[newsletter]" value="0" /> no
+ * (depending on property "newsletter")
+ *
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class Tx_Fluid_ViewHelpers_Form_RadioViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
 
 	/**
 	 * @var string
@@ -54,33 +65,44 @@ class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * Initialize the arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
+		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
+		$this->registerArgument('value', 'string', 'Value of input tag. Required for radio buttons', TRUE);
 		$this->registerUniversalTagAttributes();
 	}
 
 	/**
-	 * Renders the submit button.
+	 * Renders the checkbox.
 	 *
-	 * @param string name Name of submit tag
-	 * @param string value Value of submit tag
+	 * @param boolean $checked Specifies that the input element should be preselected
+	 *
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function render($name = '', $value = '') {
-		$this->tag->addAttribute('type', 'submit');
-		if ($name !== '') {
-			$this->tag->addAttribute('name', $name);
+	public function render($checked = NULL) {
+		$this->tag->addAttribute('type', 'radio');
+
+		$nameAttribute = $this->getName();
+		$valueAttribute = $this->getValue();
+		if ($checked === NULL && $this->isObjectAccessorMode()) {
+			$propertyValue = $this->getPropertyValue();
+			// no type-safe comparisation by intention
+			$checked = $propertyValue == $valueAttribute;
 		}
-		if ($value !== '') {
-			$this->tag->addAttribute('value', $value);
+
+		$this->tag->addAttribute('name', $nameAttribute);
+		$this->tag->addAttribute('value', $valueAttribute);
+		if ($checked) {
+			$this->tag->addAttribute('checked', 'checked');
 		}
+
+		$this->setErrorClassAttribute();
 
 		return $this->tag->render();
 	}

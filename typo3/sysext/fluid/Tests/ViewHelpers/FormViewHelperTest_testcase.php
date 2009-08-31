@@ -259,11 +259,69 @@ class Tx_Fluid_ViewHelpers_FormViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 
-		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array()));
-
 		$this->viewHelperVariableContainer->expects($this->once())->method('add')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix', $expectedPrefix);
 		$this->viewHelperVariableContainer->expects($this->once())->method('remove')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix');
 		$viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function setFormActionUriUsesUriBuilderToSetActionAttribute() {
+		$this->uriBuilder->expects($this->once())->method('reset')->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->once())->method('setTargetPageUid')->with(123)->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->once())->method('setTargetPageType')->with(2)->will($this->returnValue($this->uriBuilder));
+		$this->uriBuilder->expects($this->once())->method('uriFor')->with('someAction', array('foo' => 'bar'), 'someController', 'someExtensionName', 'somePluginName')->will($this->returnValue('someUri'));
+
+		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('action', 'someUri');
+
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($viewHelper);
+
+		$viewHelper->setArguments(
+			new Tx_Fluid_Core_ViewHelper_Arguments(
+				array(
+					'pageUid' => 123,
+					'pageType' => 2,
+					'action' => 'someAction',
+					'arguments' => array('foo' => 'bar'),
+					'controller' => 'someController',
+					'extensionName' => 'someExtensionName',
+					'pluginName' => 'somePluginName',
+				)
+			)
+		);
+
+		$viewHelper->_call('setFormActionUri');
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function setFormActionUriRespectsActionUriArgument() {
+		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('action', 'someOverwrittenUri');
+
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($viewHelper);
+
+		$viewHelper->setArguments(
+			new Tx_Fluid_Core_ViewHelper_Arguments(
+				array(
+					'pageUid' => 123,
+					'pageType' => 2,
+					'action' => 'someAction',
+					'arguments' => array('foo' => 'bar'),
+					'controller' => 'someController',
+					'extensionName' => 'someExtensionName',
+					'pluginName' => 'somePluginName',
+					'actionUri' => 'someOverwrittenUri',
+				)
+			)
+		);
+
+		$viewHelper->_call('setFormActionUri');
 	}
 }
 ?>

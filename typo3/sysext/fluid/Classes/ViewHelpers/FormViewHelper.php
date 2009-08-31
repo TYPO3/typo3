@@ -90,19 +90,18 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @param string $extensionName Target Extension Name (without "tx_" prefix and no underscores). If NULL the current extension name is used
 	 * @param string $pluginName Target plugin. If empty, the current plugin name is used
 	 * @param integer $pageUid Target page uid
-	 * @param array $options typolink options
 	 * @param mixed $object Object to use for the form. Use in conjunction with the "property" attribute on the sub tags
 	 * @param integer $pageType Target page type
 	 * @param string $fieldNamePrefix Prefix that will be added to all field names within this form. If not set the prefix will be tx_yourExtension_plugin
+	 * @param string $actionUri can be used to overwrite the "action" attribute of the form tag
 	 * @return string rendered form
 	 */
-	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, array $options = array(), $object = NULL, $pageType = 0, $prefix = NULL) {
+	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $object = NULL, $pageType = 0, $fieldNamePrefix = NULL, $actionUri = NULL) {
 		if ($pageUid === NULL) {
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
-		$URIBuilder = $this->controllerContext->getURIBuilder();
-		$formActionUrl = $URIBuilder->URIFor($pageUid, $action, $arguments, $controller, $extensionName, $pluginName, $options, $pageType);
-		$this->tag->addAttribute('action', $formActionUrl);
+
+		$this->setFormActionUri();
 
 		if (strtolower($this->arguments['method']) === 'get') {
 			$this->tag->addAttribute('method', 'get');
@@ -124,6 +123,25 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		$this->removeFormNameFromViewHelperVariableContainer();
 
 		return $this->tag->render();
+	}
+
+	/**
+	 * Sets the "action" attribute of the form tag
+	 *
+	 * @return void
+	 */
+	protected function setFormActionUri() {
+		if ($this->arguments->hasArgument('actionUri')) {
+			$formActionUri = $this->arguments['actionUri'];
+		} else {
+			$uriBuilder = $this->controllerContext->getUriBuilder();
+			$uriBuilder->reset();
+			$uriBuilder
+				->setTargetPageUid($this->arguments['pageUid'])
+				->setTargetPageType($this->arguments['pageType']);
+			$formActionUri = $uriBuilder->uriFor($this->arguments['action'], $this->arguments['arguments'], $this->arguments['controller'], $this->arguments['extensionName'], $this->arguments['pluginName']);
+		}
+		$this->tag->addAttribute('action', $formActionUri);
 	}
 
 	/**

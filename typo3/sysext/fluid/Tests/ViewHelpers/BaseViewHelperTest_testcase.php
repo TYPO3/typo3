@@ -22,7 +22,7 @@
 
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
- * @version $Id: BaseViewHelperTest.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: BaseViewHelperTest.php 3109 2009-08-31 17:22:46Z bwaidelich $
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
@@ -33,17 +33,14 @@ class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 	public function renderTakesBaseURIFromControllerContext() {
 		$baseURI = 'http://typo3.org/';
 
-		$request = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$request->expects($this->any())->method('getBaseURI')->will($this->returnValue($baseURI));
+		$this->request->expects($this->any())->method('getBaseURI')->will($this->returnValue($baseURI));
 
-		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($request));
-
-		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_BaseViewHelper'), array('dummy'), array(), '', FALSE);
+		$viewHelper = new Tx_Fluid_ViewHelpers_BaseViewHelper();
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 
-		$expected = '<base href="http://typo3.org/"></base>';
-		$actual = $viewHelper->render();
-		$this->assertSame($expected, $actual);
+		$expectedResult = '<base href="' . $baseURI . '"></base>';
+		$actualResult = $viewHelper->render();
+		$this->assertSame($expectedResult, $actualResult);
 	}
 }
 ?>

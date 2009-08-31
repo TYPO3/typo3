@@ -50,12 +50,27 @@ class Tx_Fluid_ViewHelpers_Uri_PageViewHelper extends Tx_Fluid_Core_ViewHelper_A
 	 * @param boolean $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section the anchor to be added to the URI
 	 * @param boolean $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
+	 * @param boolean $absolute If set, the URI of the rendered link is absolute
+	 * @param boolean $addQueryString If set, the current query parameters will be kept in the URI
+	 * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
 	 * @return string Rendered page URI
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE) {
-		$URIBuilder = $this->controllerContext->getURIBuilder();
-		$uri = $URIBuilder->typolinkURI($pageUid, $additionalParams, $pageType, $noCache, $noCacheHash, $section, $linkAccessRestrictedPages);
+	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
+		$uriBuilder = $this->controllerContext->getUriBuilder();
+		$uriBuilder
+			->setTargetPageUid($pageUid)
+			->setTargetPageType($pageType)
+			->setNoCache($noCache)
+			->setUseCacheHash(!$noCacheHash)
+			->setSection($section)
+			->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
+			->setArguments($additionalParams)
+			->setCreateAbsoluteUri($absolute)
+			->setAddQueryString($addQueryString)
+			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
+		$uri = $uriBuilder->build();
+
 		return $uri;
 	}
 }
