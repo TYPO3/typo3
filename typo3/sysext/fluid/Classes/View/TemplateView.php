@@ -23,7 +23,7 @@
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
- * @version $Id: TemplateView.php 2960 2009-08-01 10:13:10Z sebastian $
+ * @version $Id: TemplateView.php 3105 2009-08-31 10:55:15Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implements Tx_Fluid_View_TemplateViewInterface {
@@ -45,6 +45,11 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 */
 	protected $templateRootPathPattern = '@packageResources/Private';
 
+	/**
+	 * Path to the template root. If NULL, then $this->templateRootPathPattern will be used.
+	 */
+	protected $templateRootPath = NULL;
+	
 	/**
 	 * File pattern for resolving the template file
 	 * @var string
@@ -200,8 +205,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		throw new Tx_Fluid_Core_RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
-
-
 	/**
 	 * Renders a given section.
 	 *
@@ -333,12 +336,30 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	}
 
 	/**
+	 * Set the root path to the templates.
+	 * If set, overrides the one determined from $this->templateRootPathPattern
+	 * 
+	 * @param string $templateRootPath Root path to the templates. If set, overrides the one determined from $this->templateRootPathPattern
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @api
+	 */
+	public function setTemplateRootPath($templateRootPath) {
+		$this->templateRootPath = $templateRootPath;
+	}
+	
+	/**
 	 * Resolves the template root to be used inside other paths.
+	 * 
 	 * @return string Path to template root directory
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function getTemplateRootPath() {
-		return str_replace('@package', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()), $this->templateRootPathPattern);
+		if ($this->templateRootPath !== NULL) {
+			return $this->templateRootPath;
+		} else {
+			return str_replace('@package', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()), $this->templateRootPathPattern);
+		}
 	}
 
 	/**

@@ -436,6 +436,17 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_Base_testcase
 		$actual = $this->templateParser->parse($templateSource)->getRootNode();
 		$this->assertEquals($expected, $actual, 'Fixture 14 was not parsed correctly.');
 	}
+	
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function resolveViewHelperNameWorksWithMoreThanOneLevel() {
+		$mockTemplateParser = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_Parser_TemplateParser'), array('dummy'), array(), '', FALSE);
+		$actual = $mockTemplateParser->_call('resolveViewHelperName', 'f', 'my.multi.level');
+		$expected = 'Tx_Fluid_ViewHelpers_My_Multi_LevelViewHelper';
+		$this->assertEquals($expected, $actual, 'View Helper resolving does not support multiple nesting levels.');
+	}
 }
 
 ?>
