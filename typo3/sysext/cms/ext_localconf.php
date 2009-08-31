@@ -75,6 +75,14 @@ mod.wizards.newContentElement.wizardItems {
 				CType = multimedia
 			}
 		}
+		media {
+			icon = gfx/c_wiz/multimedia.gif
+			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
+			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_description
+			tt_content_defValues {
+				CType = media
+			}
+		}
 		menu {
 			icon = gfx/c_wiz/sitemap2.gif
 			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_sitemap_title
@@ -102,7 +110,7 @@ mod.wizards.newContentElement.wizardItems {
 		}
 
 	}
-	special.show = uploads,multimedia,menu,html,div
+	special.show = uploads,media,menu,html,div
 
 	forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
 	forms.elements {

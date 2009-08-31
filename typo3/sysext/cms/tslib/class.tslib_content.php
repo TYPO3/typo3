@@ -630,6 +630,15 @@ class tslib_cObj {
 						case 'MULTIMEDIA':
 							$content.=$this->MULTIMEDIA($conf);
 						break;
+						case 'MEDIA':
+							$content.=$this->MEDIA($conf);
+						break;
+						case 'SWFOBJECT':
+							$content.=$this->SWFOBJECT($conf);
+						break;
+						case 'QTOBJECT':
+							$content.=$this->QTOBJECT($conf);
+						break;
 						default:
 								// call hook functions for extra processing
 							if($name && is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault']))    {
@@ -2594,15 +2603,15 @@ class tslib_cObj {
 				if (t3lib_div::inList('au,wav,mp3',$fileinfo['fileext']))	{
 				}
 				if (t3lib_div::inList('avi,mov,mpg,asf,wmv',$fileinfo['fileext']))	{
-					$parArray['width'] = 'width="200"';
-					$parArray['height'] = 'height="200"';
+					$parArray['width'] = 'width="' . ($conf['width'] ? $conf['width'] : 200) . '"';
+					$parArray['height'] = 'height="' . ($conf['height'] ? $conf['height'] : 200) . '"';
 				}
 				if (t3lib_div::inList('swf,swa,dcr',$fileinfo['fileext']))	{
 					$parArray['quality'] = 'quality="high"';
 				}
 				if (t3lib_div::inList('class',$fileinfo['fileext']))	{
-					$parArray['width'] = 'width="200"';
-					$parArray['height'] = 'height="200"';
+					$parArray['width'] = 'width="' . ($conf['width'] ? $conf['width'] : 200) . '"';
+					$parArray['height'] = 'height="' . ($conf['height'] ? $conf['height'] : 200) . '"';
 				}
 
 					// fetching params
@@ -2635,13 +2644,303 @@ class tslib_cObj {
 		return $content;
 	}
 
+	/**
+	 * Rendering the cObject, SWFOBJECT
+	 *
+	 * @param	array		Array of TypoScript properties
+	 * @return	string		Output
+	 */
+	function MEDIA($conf) {
+		$content = '';	
+		$flexParams = $this->stdWrap($conf['flexParams'], $conf['flexParams.']);
+		if (substr($flexParams, 0, 1) === '<') {
+			// it is a content element
+			$this->readFlexformIntoConf($flexParams, $conf['parameter.']);
+			$url = $conf['parameter.']['mmFile'];
+		} else {
+			// it is a TS object
+			$url = $this->stdWrap($conf['file'], $conf['file.']);
+		}
 
 
+		$mode = @file_exists(PATH_site . $url) ? 'file' : 'url';
+		if ($mode === 'file') {
+			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
+			$fileinfo = t3lib_div::split_fileref($filename);
+			$conf['file'] = $url;
+		} else {
+			$conf['file'] = $url;
+			if ($conf['parameter.']['mmforcePlayer'] || $conf['forcePlayer']) {
+				$mode = 'file';
+			}
+		}
+
+		$conf['type'] = isset($conf['parameter.']['mmType']) ? $conf['parameter.']['mmType'] : $conf['type'];
+		$typeConf = $conf['mimeConf.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$conf['type'] . '.'] : array();
+		$conf['predefined'] = array();  
+
+		$renderType = 'auto';
+		if (isset($conf['parameter.']['mmRenderType'])) {
+			$renderType = $conf['parameter.']['mmRenderType'];	
+		}
+		$width = intval($conf['parameter.']['mmWidth']);
+		$height = intval($conf['parameter.']['mmHeight']);
+		if ($width) {
+			$conf['width'] = $width;
+		} else {
+			$conf['width'] = intval($conf['width']) ? $conf['width'] : $typeConf['defaultWidth'];
+		}
+		if ($height) {
+			$conf['height'] = $height;
+		} else {
+			$conf['height'] = intval($conf['height']) ? $conf['height'] : $typeConf['defaultHeight'];
+		}
+
+		if (is_array($conf['parameter.']['mmMediaOptions'])) { 
+			$params = array();
+			foreach ($conf['parameter.']['mmMediaOptions'] as $key => $value) {
+				if ($key == 'mmMediaCustomParameterContainer') {
+					foreach ($value as $val) {
+						//custom parameter entry
+						$rawTS = $val['mmParamCustomEntry'];
+						//read and merge
+						$tmp = t3lib_div::trimExplode(chr(10), $rawTS);
+						if (count($tmp)) {
+							foreach ($tmp as $tsLine) {
+								if (substr($tsLine, 0, 1) != '#' && $pos = strpos($tsLine, '.')) { 
+									$parts[0] = substr($tsLine, 0, $pos);
+									$parts[1] = substr($tsLine, $pos + 1);
+									$valueParts = t3lib_div::trimExplode('=', $parts[1], true);
+
+									switch (strtolower($parts[0])) {
+										case 'flashvars':
+											$conf['flashvars.'][$valueParts[0]] = $valueParts[1];
+										break;
+										case 'params':		
+											$conf['params.'][$valueParts[0]] = $valueParts[1];
+										break;
+										case 'attributes':
+											$conf['attributes.'][$valueParts[0]] = $valueParts[1];
+										break;
+									}
+								}
+							}
+						}
+					} 
+				} elseif ($key == 'mmMediaOptionsContainer') {
+					foreach ($value as $val) {
+						if (isset($val['mmParamSet'])) {
+							$pName = $val['mmParamName'];
+							$pSet = $val['mmParamSet'];
+							$pValue = $pSet == 2 ? $val['mmParamValue'] : ($pSet == 0 ? 'false' : 'true');
+							$conf['predefined'][$pName] = $pValue;
+						}
+					}
+				}
+			}
+		}
+
+		// render MEDIA	
+		if ($mode == 'url' && $url != '') {
+				// url is called direct, not with player
+			$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
+			$conf[$conf['type'] . '.']['player'] = strpos($url, '://') === false ? 'http://' . $url : $url;
+			$conf['file'] = '';
+			$conf['installUrl'] = 'null';
+			$conf['flashvars'] = array_merge((array) $conf['flashvars'], $conf['predefined']);
+			$content = $this->SWFOBJECT($conf);
+		} else {
+			if ($mode == 'url' && $url == '' && !$conf['allowEmptyUrl']) {
+				return '<p style="background-color: yellow;">' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xml:media.noFile', true) . '</p>';
+			}
+			if ($renderType === 'auto') {
+				$handler = array_keys($conf['fileExtHandler.']);
+				if (in_array($fileinfo['fileext'], $handler)) {
+					$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
+				} 
+			}     
+			switch ($renderType) {  
+				case 'swf':
+					$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
+					$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
+					unset($conf['mimeConf.']);
+					$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+					$content = $this->SWFOBJECT($conf);
+				break;
+				case 'qt':
+					$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
+					$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
+					unset($conf['mimeConf.']);
+					$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
+					$content = $this->QTOBJECT($conf);
+				break;
+				case 'media':
+					$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
+					$conf['params']= '';
+					foreach ($paramsArray as $key => $value) {
+						$conf['params'] .= $key . '=' . $value . chr(10);
+					}
+					$content = $this->MULTIMEDIA($conf);
+				break; 
+				default:
+					if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
+							$hookObj = &t3lib_div::getUserObj($classRef);
+							$conf['file'] = $url;
+							$conf['mode'] = $mode;
+							$content = $hookObj->customMediaRender($renderType, $conf);
+						}
+					}
+				}
+		}
+		return $content;
+	}
 
 
+	/**
+	 * Rendering the cObject, SWFOBJECT
+	 *
+	 * @param	array		Array of TypoScript properties
+	 * @return	string		Output
+	 */
+	function SWFOBJECT($conf) {
+		$content = '';
+		$flashvars = $params = $attributes = '';
 
+		$filename = $this->stdWrap($conf['file'], $conf['file.']);
 
+		$typeConf = $conf[$conf['type'] . '.'];
 
+		//add SWFobject js-file
+		$GLOBALS['TSFE']->additionalHeaderData['SWFobject'] = '<script src="' . $GLOBALS['TSFE']->absRefPrefix . 'typo3/contrib/flashmedia/swfobject/swfobject.js"></script>';
+
+		if ($filename) {
+			$conf['flashvars.']['file'] = strpos($filename, '://') !== FALSE ? $filename : $GLOBALS['TSFE']->absRefPrefix . $filename;
+		} 
+
+		// merge with default parameters
+		$conf['flashvars.'] = array_merge((array) $typeConf['default.']['flashvars.'], (array) $conf['flashvars.']);
+		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
+		$conf['attributes.'] = array_merge((array) $typeConf['default.']['attributes.'], (array) $conf['attributes.']);
+
+		if (is_array($conf['flashvars.'])) {
+			t3lib_div::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
+			foreach ($conf['flashvars.'] as $key => $value) {
+				$flashvars .= $key . ': "' . $value . '",';
+			}
+		}
+		$flashvars = 'var flashvars = {' . ($flashvars ? (substr($flashvars, -1) == ',' ? substr(trim($flashvars), 0, -1) : $flashvars) : '') . '};';
+
+		if (is_array($conf['params.'])) {
+			t3lib_div::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
+			foreach ($conf['params.'] as $key => $value) {
+				$params .= $key . ': "' . $value . '",';
+			}
+			$params = substr(trim($params), 0, -1);
+		} 
+		$params = 'var params = {' . ($params ? $params : '') . '};';
+
+		if (is_array($conf['attributes.'])) {
+			t3lib_div::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
+			foreach ($conf['attributes.'] as $key => $value) {
+				$attributes .= $key . ': "' . $value . '",';
+			}
+		} 
+		$attributes = 'var attributes = {' . ($attributes ? (substr($attributes, -1 === ',' ? substr($attributes, 0, -1) : $attributes)) : '') . '};';
+
+		$flashVersion = $this->stdWrap($conf['flashVersion'], $conf['flashVersion.']);
+		if (!$flashVersion) {
+		 	$flashVersion = '9';
+		}
+
+		$replaceElementIdString = uniqid('mmswf');
+		$GLOBALS['TSFE']->register['MMSWFID'] = $replaceElementIdString;
+
+		$alternativeContent = $this->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']);
+
+		$layout = $this->stdWrap($conf['layout'], $conf['layout.']);
+		$layout = str_replace('###ID###', $replaceElementIdString, $layout);
+		$layout = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $layout);
+
+		$width = $this->stdWrap($conf['width'], $conf['width.']);
+		$height = $this->stdWrap($conf['height'], $conf['height.']);
+
+		$width = $width ? $width : $conf[$conf['type'] . '.']['defaultWidth'];
+		$height = $height ? $height : $conf[$conf['type'] . '.']['defaultHeight']; 
+
+		$player = $this->stdWrap($conf[$conf['type'] . '.']['player'], $conf[$conf['type'] . '.']['player.']);
+		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $GLOBALS['TSFE']->absRefPrefix . 'typo3/contrib/flashmedia/swfobject/expressInstall.swf';
+
+		$embed = 'swfobject.embedSWF("' . $player . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
+		 		"' . $flashVersion . '", "' . $installUrl . '", flashvars, params, attributes);';
+
+		$content = $layout . '
+			<script type="text/javascript">
+				' . $flashvars . '
+				' . $params . '
+				' . $attributes . '
+				' . $embed . '
+			</script>';
+
+		return $content;
+	}
+
+	/**
+	 * Rendering the cObject, QTOBJECT
+	 *
+	 * @param	array		Array of TypoScript properties
+	 * @return	string		Output
+	 */
+	function QTOBJECT($conf) {
+		$content = '';	
+		$params = '';
+
+		$filename = $this->stdWrap($conf['file'],$conf['file.']);
+		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($filename);
+		if ($incFile)	{
+			$filename = $incFile;
+			$fileinfo = t3lib_div::split_fileref($filename);
+		}
+		 
+		$typeConf = $conf[$conf['type'] . '.'];
+		
+		//add QTobject js-file
+		$GLOBALS['TSFE']->additionalHeaderData['qtobject'] = '<script src="' . $GLOBALS['TSFE']->absRefPrefix . 'typo3/contrib/flashmedia/qtobject/qtobject.js"></script>';
+		$replaceElementIdString = uniqid('mmqt');
+		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
+		$qtObject = 'QTObject' . $replaceElementIdString;
+
+		// merge with default parameters
+		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
+
+		if (is_array($conf['params.'])) {
+			t3lib_div::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
+			foreach ($conf['params.'] as $key => $value) {
+				$params .= $qtObject . '.addParam("' .$key . '", "' . $value . '");' . chr(10);
+			}
+		} 
+		$params = ($params ? substr($params, 0, -2) : '') . chr(10) . $qtObject . '.write("' . $replaceElementIdString . '");';
+
+		$alternativeContent = $this->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']);
+		$layout = $this->stdWrap($conf['layout'], $conf['layout.']);
+		$layout = str_replace('###ID###', $replaceElementIdString, $layout);
+		$layout = str_replace('###QTOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $layout);
+
+		$width = $this->stdWrap($conf['width'], $conf['width.']);
+		$height = $this->stdWrap($conf['height'], $conf['height.']);
+		$width = $width ? $width : $conf[$conf['type'] . '.']['defaultWidth'];
+		$height = $height ? $height : $conf[$conf['type'] . '.']['defaultHeight'];
+
+		$embed = 'var ' . $qtObject . ' = new QTObject("' . $GLOBALS['TSFE']->absRefPrefix . $filename . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '");';
+
+		$content = $layout . '
+			<script type="text/javascript">
+				' . $embed . '
+				' . $params . '
+			</script>';
+
+		return $content;
+	}
 
 
 
@@ -2657,6 +2956,49 @@ class tslib_cObj {
 	 *
 	 ************************************/
 
+	 
+	/**
+	 * Converts a given config in Flexform to a conf-Array 
+	 * @param	string 		Flexform data
+	 * @param	array 		Array to write the data into, by reference
+	 * @param	boolean		is set if called recursive. Don't call function with this parameter, it's used inside the function only
+	 * @access 	public
+	 * 
+	 */
+	function readFlexformIntoConf($flexData, &$conf, $recursive=FALSE) {
+		if ($recursive === FALSE) {
+			$flexData = t3lib_div::xml2array($flexData, 'T3');
+		} 
+
+		if (is_array($flexData)) {
+			if (isset($flexData['data']['sDEF']['lDEF'])) {
+				$flexData = $flexData['data']['sDEF']['lDEF'];
+			}
+			
+			foreach ($flexData as $key => $value) {
+				if (is_array($value['el']) && count($value['el']) > 0) {
+					foreach ($value['el'] as $ekey => $element) {
+						if (isset($element['vDEF'])) {
+							$conf[$ekey] =  $element['vDEF'];
+						} else {
+							if(is_array($element)) {
+								$this->readFlexformIntoConf($element, $conf[$key][key($element)][$ekey], TRUE);							
+							} else {
+								$this->readFlexformIntoConf($element, $conf[$key][$ekey], TRUE);
+							}
+						}
+					}
+				} else {
+					$this->readFlexformIntoConf($value['el'], $conf[$key], TRUE);
+				}
+				if ($value['vDEF']) {
+					$conf[$key] = $value['vDEF'];
+				}
+			}
+		}
+	}
+
+	
 	/**
 	 * Returns all parents of the given PID (Page UID) list
 	 *

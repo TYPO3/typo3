@@ -24,6 +24,7 @@
 			<label index="CType.I.15">Script</label>
 			<label index="CType.I.16">Divider</label>
 			<label index="CType.I.17">HTML</label>
+			<label index="CType.I.18">Media</label>
 			<label index="CType.div.standard">Standard</label>
 			<label index="CType.div.lists">Lists</label>
 			<label index="CType.div.forms">Forms</label>
@@ -205,6 +206,39 @@
             <label index="tabs.text">Text</label>
             <label index="tabs.media">Media</label>
 			<label index="tabs.plugin">Plugin</label>
+			<label index="media.options">Media Options</label>
+			<label index="media.url">relative Path of Media File or URL</label>
+			<label index="media.browseUrlTitle">Select File or URL</label>
+			<label index="media.width">Media Width</label>
+			<label index="media.height">Media Height</label>
+			<label index="media.forcePlayer">Use Player</label>
+			<label index="media.type">Media Type</label>
+			<label index="media.type.video">Video</label>
+			<label index="media.type.audio">Audio</label>
+			<label index="media.renderType">Render Type</label>
+			<label index="media.renderType.auto">Auto</label>
+			<label index="media.renderType.swf">Shockwave Flash Browser Plugin</label>
+			<label index="media.renderType.qt">QuickTime Browser Plugin</label>
+			<label index="media.renderType.embed">HTML Embed Element</label>
+			<label index="media.additionalOptions">Additional Parameters</label>
+			<label index="media.params">Media Parameter</label>
+			<label index="media.params.option">Option</label>
+			<label index="media.params.setTo">Set to</label>
+			<label index="media.params.on">On</label>
+			<label index="media.params.off">Off</label>
+			<label index="media.params.valueEntry">Value Entry</label>
+			<label index="media.params.value">Value</label>
+			<label index="media.params.autoPlay">AutoPlay</label>
+			<label index="media.params.loop">Loop</label>
+			<label index="media.params.quality">Quality</label>
+			<label index="media.params.preview">Preview Video</label>
+			<label index="media.params.bgColor">Background Color</label>
+			<label index="media.params.allowScriptAccess">Allow ScriptAccess</label>
+			<label index="media.params.allowFullScreen">Allow Fullscreen</label>
+			<label index="media.alternativeContent">Alternative Content</label>
+			<label index="media.params.customEntry">Custom Parameters</label>
+			<label index="media.params.customEntryLabel">Enter flashvars, params or attributes</label>
+			<label index="media.noFile">ERROR: Missing URL or File!</label>
 		</languageKey>
 	</data>
 </T3locallang>

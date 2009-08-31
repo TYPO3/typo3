@@ -1953,6 +1953,23 @@ final class t3lib_div {
 	}
 
 	/**
+	* Rename Array keys with a given mapping table
+	* @param	array	Array by reference which should be remapped
+	* @param	array	Array with remap information, array/$oldKey => $newKey)
+	*/
+	function remapArrayKeys(&$array, $mappingTable) {
+		if (is_array($mappingTable)) {
+			foreach ($mappingTable as $old => $new) {
+				if ($new && isset($array[$old])) {
+					$array[$new] = $array[$old];
+					unset ($array[$old]);
+				}
+			}
+		}
+	}
+	
+	
+	/**
 	 * Merges two arrays recursively and "binary safe" (integer keys are
 	 * overridden as well), overruling similar values in the first array
 	 * ($arr0) with the values of the second array ($arr1)

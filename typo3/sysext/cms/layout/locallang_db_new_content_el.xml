@@ -24,6 +24,12 @@
 			<label index="special_filelinks_description">Makes a list of files for download.</label>
 			<label index="special_multimedia_title">Multimedia</label>
 			<label index="special_multimedia_description">Inserts a media element like a Flash animation, audio file or video clip.</label>
+			<label index="special_media_title">Media</label>
+			<label index="special_media_description">Inserts a media element like a Flash animation, audio file or video clip.</label>
+			<label index="special_swfobject_title">Inserts a Flash media element.</label>
+			<label index="special_swfobject_description">Inserts Flash media element, audio file or video clip.</label>
+			<label index="special_qtobject_title">Inserts a Quicktime element.</label>
+			<label index="special_qtobject_description">Inserts a Quicktime element like a Quicktime audio file or video clip (*.mov).</label>
 			<label index="special_sitemap_title">Sitemap</label>
 			<label index="special_sitemap_description">Creates a sitemap of the website.</label>
 			<label index="special_plainHTML_title">Plain HTML</label>

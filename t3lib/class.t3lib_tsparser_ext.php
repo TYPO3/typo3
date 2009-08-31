@@ -134,6 +134,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		'ctable' => Array('Content: \'Table\'', 'mf'),
 		'cuploads' => Array('Content: \'Filelinks\'', 'mg'),
 		'cmultimedia' => Array('Content: \'Multimedia\'', 'mh'),
+		'cmedia' => Array('Content: \'Media\'', 'mr'),
 		'cmailform' => Array('Content: \'Form\'', 'mi'),
 		'csearch' => Array('Content: \'Search\'', 'mj'),
 		'clogin' => Array('Content: \'Login\'', 'mk'),

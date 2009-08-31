@@ -106,6 +106,21 @@ styles.content.searchresult {
   target = {$PAGE_TARGET}
 }
 
+styles.content.media {
+    # cat=content/cMedia; type=int+; label= Video Media Width: define the default width for the media-object
+  videoPlayer = typo3/contrib/flashmedia/flvplayer.swf
+    # cat=content/cMedia; type=int+; label= Video Media Width: define the default width for the media-object
+  defaultVideoWidth = 600
+  	# cat=content/cMedia; type=int+; label= Video Media Height: define the default height for the media-object
+  defaultVideoHeight = 400
+    # cat=content/cMedia; type=int+; label= Audio Media Width: define the default width for the media-object
+  audioPlayer = typo3/contrib/flashmedia/player.swf	
+   	# cat=content/cMedia; type=int+; label= Video Media Width: define the default width for the media-object
+  defaultAudioWidth = 300
+    # cat=content/cMedia; type=int+; label= Audio Media Height: define the default height for the media-object
+  defaultAudioHeight = 30
+}
+
  # cat=advanced/links; type=small; label= Target for internal links: Should match the name of the content PAGE-object in TypoScript when used with frames. Most cases: set to "" (empty). If you have frames in the template set to "page"
 PAGE_TARGET =
 
