@@ -2650,7 +2650,7 @@ class tslib_cObj {
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
 	 */
-	function MEDIA($conf) {
+	public function MEDIA($conf) {
 		$content = '';	
 		$flexParams = $this->stdWrap($conf['flexParams'], $conf['flexParams.']);
 		if (substr($flexParams, 0, 1) === '<') {
@@ -2663,7 +2663,7 @@ class tslib_cObj {
 		}
 
 
-		$mode = @file_exists(PATH_site . $url) ? 'file' : 'url';
+		$mode = is_file(PATH_site . $url) ? 'file' : 'url';
 		if ($mode === 'file') {
 			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
 			$fileinfo = t3lib_div::split_fileref($filename);
@@ -2696,7 +2696,7 @@ class tslib_cObj {
 			$conf['height'] = intval($conf['height']) ? $conf['height'] : $typeConf['defaultHeight'];
 		}
 
-		if (is_array($conf['parameter.']['mmMediaOptions'])) { 
+		if (is_array($conf['parameter.']['mmMediaOptions'])) {
 			$params = array();
 			foreach ($conf['parameter.']['mmMediaOptions'] as $key => $value) {
 				if ($key == 'mmMediaCustomParameterContainer') {
@@ -2707,7 +2707,7 @@ class tslib_cObj {
 						$tmp = t3lib_div::trimExplode(chr(10), $rawTS);
 						if (count($tmp)) {
 							foreach ($tmp as $tsLine) {
-								if (substr($tsLine, 0, 1) != '#' && $pos = strpos($tsLine, '.')) { 
+								if (substr($tsLine, 0, 1) != '#' && $pos = strpos($tsLine, '.')) {
 									$parts[0] = substr($tsLine, 0, $pos);
 									$parts[1] = substr($tsLine, $pos + 1);
 									$valueParts = t3lib_div::trimExplode('=', $parts[1], true);
@@ -2716,7 +2716,7 @@ class tslib_cObj {
 										case 'flashvars':
 											$conf['flashvars.'][$valueParts[0]] = $valueParts[1];
 										break;
-										case 'params':		
+										case 'params':
 											$conf['params.'][$valueParts[0]] = $valueParts[1];
 										break;
 										case 'attributes':
@@ -2803,7 +2803,7 @@ class tslib_cObj {
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
 	 */
-	function SWFOBJECT($conf) {
+	public function SWFOBJECT($conf) {
 		$content = '';
 		$flashvars = $params = $attributes = '';
 
@@ -2891,7 +2891,7 @@ class tslib_cObj {
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
 	 */
-	function QTOBJECT($conf) {
+	public function QTOBJECT($conf) {
 		$content = '';	
 		$params = '';
 
@@ -2965,10 +2965,10 @@ class tslib_cObj {
 	 * @access 	public
 	 * 
 	 */
-	function readFlexformIntoConf($flexData, &$conf, $recursive=FALSE) {
+	public function readFlexformIntoConf($flexData, &$conf, $recursive=FALSE) {
 		if ($recursive === FALSE) {
 			$flexData = t3lib_div::xml2array($flexData, 'T3');
-		} 
+		}
 
 		if (is_array($flexData)) {
 			if (isset($flexData['data']['sDEF']['lDEF'])) {
@@ -2982,7 +2982,7 @@ class tslib_cObj {
 							$conf[$ekey] =  $element['vDEF'];
 						} else {
 							if(is_array($element)) {
-								$this->readFlexformIntoConf($element, $conf[$key][key($element)][$ekey], TRUE);							
+								$this->readFlexformIntoConf($element, $conf[$key][key($element)][$ekey], TRUE);
 							} else {
 								$this->readFlexformIntoConf($element, $conf[$key][$ekey], TRUE);
 							}
@@ -2998,7 +2998,7 @@ class tslib_cObj {
 		}
 	}
 
-	
+
 	/**
 	 * Returns all parents of the given PID (Page UID) list
 	 *

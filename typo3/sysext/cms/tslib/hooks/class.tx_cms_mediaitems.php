@@ -32,7 +32,7 @@
  * @subpackage cms 
  */
  
-class tx_cms_mediaItems {
+class tx_cms_mediaItems implements t3lib_Singleton {
 
 	/**
 	 * Load extra render types if they exist

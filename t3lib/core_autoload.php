@@ -124,6 +124,7 @@ return array(
 	'tslib_pibase' => PATH_tslib . 'class.tslib_pibase.php',
 	'tslib_search' => PATH_tslib . 'class.tslib_search.php',
 	'sc_tslib_showpic' => PATH_tslib . 'showpic.php',
+	'tx_cms_mediaitems' => PATH_tslib . 'hooks/class.tx_cms_mediaitems.php',
 	'tx_cms_treelistcacheupdate' => PATH_tslib . 'hooks/class.tx_cms_treelistcacheupdate.php',
 	'tslib_content_cobjgetsinglehook' => PATH_tslib . 'interfaces/interface.tslib_content_cobjgetsinglehook.php',
 	'tslib_content_getdatahook' => PATH_tslib . 'interfaces/interface.tslib_content_getdatahook.php',
