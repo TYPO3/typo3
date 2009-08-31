@@ -121,7 +121,10 @@ plugin.tx_' . strtolower($extensionName) . '.persistence {
 	# storagePid
 	classes {
 	}
-}');
+}
+plugin.tx_' . strtolower($extensionName) . '.view {
+	templateRootPath = 
+}'		);
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginTemplate);
@@ -137,6 +140,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	$switchableControllerActions . '
 
 	persistence =< plugin.tx_' . strtolower($extensionName) . '.persistence
+	view =< plugin.tx_' . strtolower($extensionName) . '.view
 }
 ' . $conditions);
 

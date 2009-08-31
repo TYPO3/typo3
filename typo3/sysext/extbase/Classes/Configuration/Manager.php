@@ -128,6 +128,9 @@ class Tx_Extbase_Configuration_Manager {
 		if (isset($pluginConfiguration['persistence'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
 		}
+		if (isset($pluginConfiguration['view'])) {
+			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'view');
+		}
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 		return $frameworkConfiguration;
 	}

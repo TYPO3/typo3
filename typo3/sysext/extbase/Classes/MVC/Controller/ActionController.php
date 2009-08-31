@@ -255,6 +255,13 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$view = $this->objectManager->getObject('Tx_Fluid_View_TemplateView');
 		$controllerContext = $this->buildControllerContext();
 		$view->setControllerContext($controllerContext);
+		
+		// Template Path Override
+		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && $extbaseFrameworkConfiguration['view']['templateRootPath']) {
+			$view->setTemplateRootPath($extbaseFrameworkConfiguration['view']['templateRootPath']);
+		}
+
 		if ($view->hasTemplate() === FALSE) {
 			$viewObjectName = $this->resolveViewObjectName();
 			if (class_exists($viewObjectName) === FALSE) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
