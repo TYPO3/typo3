@@ -123,6 +123,12 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected $cacheNeedsUpdate = FALSE;
 
 	/**
+	 * Local cache for Class schemata
+	 * @var array
+	 */
+	protected $classSchemata = array();
+
+	/**
 	 * Sets the cache.
 	 *
 	 * The cache must be set before initializing the Reflection Service.
@@ -144,10 +150,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if ($this->initialized) throw new Tx_Extbase_Reflection_Exception('The Reflection Service can only be initialized once.', 1232044696);
 
 		$this->loadFromCache();
-		
+
 		$this->initialized = TRUE;
-	
-		$this->buildClassSchemata();
 	}
 
 	/**
@@ -183,7 +187,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if ($this->initialized !== TRUE) throw new Tx_Extbase_Reflection_Exception('Reflection has not yet been initialized.', 1238667825);
 		return (isset($this->taggedClasses[$tag])) ? $this->taggedClasses[$tag] : array();
 	}
-	
+
 	/**
 	 * Returns the names of all properties of the specified class
 	 *
@@ -204,7 +208,12 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 */
 	public function getClassSchema($classNameOrObject) {
 		$className = is_object($classNameOrObject) ? get_class($classNameOrObject) : $classNameOrObject;
-		return isset($this->classSchemata[$className]) ? $this->classSchemata[$className] : NULL;
+		if (isset($this->classSchemata[$className])) {
+			return $this->classSchemata[$className];
+		} else {
+			return $this->buildClassSchema($className);
+		}
+
 	}
 
 	/**
@@ -259,7 +268,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if (!isset($this->propertyTagsValues[$className])) return array();
 		return (isset($this->propertyTagsValues[$className][$propertyName])) ? $this->propertyTagsValues[$className][$propertyName] : array();
 	}
-	
+
 	/**
 	 * Returns the values of the specified class property tag
 	 *
@@ -276,7 +285,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		if (!isset($this->propertyTagsValues[$className][$propertyName])) return array();
 		return (isset($this->propertyTagsValues[$className][$propertyName][$tag])) ? $this->propertyTagsValues[$className][$propertyName][$tag] : array();
 	}
-	
+
 	/**
 	 * Tells if the specified class is known to this reflection service and
 	 * reflection information is available.
@@ -289,7 +298,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	public function isClassReflected($className) {
 		return isset($this->reflectedClassNames[$className]);
 	}
-	
+
 	/**
 	 * Tells if the specified class is tagged with the given tag
 	 *
@@ -367,44 +376,41 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
 		$this->cacheNeedsUpdate = TRUE;
 	}
-	
+
 	/**
 	 * Builds class schemata from classes annotated as entities or value objects
 	 *
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	protected function buildClassSchemata() {
-		$this->classSchemata = array();
+	protected function buildClassSchema($className) {
+		$classSchema = new Tx_Extbase_Reflection_ClassSchema($className);
+		if (is_subclass_of($className, 'Tx_Extbase_DomainObject_AbstractEntity')) {
+			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_ENTITY);
 
-		$classNames = array_merge($this->getClassNamesByTag('entity'), $this->getClassNamesByTag('valueobject'));
-		foreach ($classNames as $className) {
-			$classSchema = new Tx_Extbase_Reflection_ClassSchema($className);
-			if ($this->isClassTaggedWith($className, 'entity')) {
-				$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_ENTITY);
-
-				$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
-				if ($this->isClassReflected($possibleRepositoryClassName)) {
-					$classSchema->setAggregateRoot(TRUE);
-				}
-			} elseif ($this->isClassTaggedWith($className, 'valueobject')) {
-				$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_VALUEOBJECT);
+			$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
+			if (class_exists($possibleRepositoryClassName)) {
+				$classSchema->setAggregateRoot(TRUE);
 			}
+		} elseif (is_subclass_of($className, 'Tx_Extbase_DomainObject_AbstractValueObject')) {
+			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_VALUEOBJECT);
+		} else {
+			return NULL;
 
-			foreach ($this->getClassPropertyNames($className) as $propertyName) {
-				if (!$this->isPropertyTaggedWith($className, $propertyName, 'transient') && $this->isPropertyTaggedWith($className, $propertyName, 'var')) {
-					$classSchema->addProperty($propertyName, implode(' ', $this->getPropertyTagValues($className, $propertyName, 'var')), $this->isPropertyTaggedWith($className, $propertyName, 'lazy'));
-				}
-				if ($this->isPropertyTaggedWith($className, $propertyName, 'uuid')) {
-					$classSchema->setUUIDPropertyName($propertyName);
-				}
-				if ($this->isPropertyTaggedWith($className, $propertyName, 'identity')) {
-					$classSchema->markAsIdentityProperty($propertyName);
-				}
-			}
-			$this->classSchemata[$className] = $classSchema;
 		}
+
+		foreach ($this->getClassPropertyNames($className) as $propertyName) {
+			if (!$this->isPropertyTaggedWith($className, $propertyName, 'transient') && $this->isPropertyTaggedWith($className, $propertyName, 'var')) {
+				$classSchema->addProperty($propertyName, implode(' ', $this->getPropertyTagValues($className, $propertyName, 'var')), $this->isPropertyTaggedWith($className, $propertyName, 'lazy'));
+			}
+			if ($this->isPropertyTaggedWith($className, $propertyName, 'uuid')) {
+				$classSchema->setUUIDPropertyName($propertyName);
+			}
+			if ($this->isPropertyTaggedWith($className, $propertyName, 'identity')) {
+				$classSchema->markAsIdentityProperty($propertyName);
+			}
+		}
+		$this->classSchemata[$className] = $classSchema;
+		return $classSchema;
 	}
 
 	/**
