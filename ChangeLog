@@ -1,6 +1,7 @@
 2009-09-01  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised extbase and fluid versions from 844 to 1181 (and pointing to a tag now instead of a revision)
+	* Changed sysext dbal to svn:externals. Thanks to Andreas Wolf for converting the Repositories! 
 
 2009-09-01  Christian Kuhn  <lolli@schwarzbu.ch>
 
