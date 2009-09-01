@@ -442,8 +442,7 @@ class t3lib_TCEforms	{
 					$fields = t3lib_div::trimExplode(',',$itemList,1);
 					$excludeElements = $this->excludeElements = $this->getExcludeElements($table,$row,$typeNum);
 
-					reset($fields);
-					while(list(,$fieldInfo)=each($fields))	{
+					foreach($fields as $fieldInfo) {
 						$parts = explode(';',$fieldInfo);
 
 						$theField = trim($parts[0]);
@@ -1593,6 +1592,7 @@ class t3lib_TCEforms	{
 
 			// Traverse the Array of selector box items:
 		$optGroupStart = array();
+		$optGroupOpen = FALSE;
 		foreach($selItems as $p)	{
 			$sM = (!strcmp($PA['itemFormElValue'],$p[1])?' selected="selected"':'');
 			if ($sM)	{
@@ -1730,6 +1730,7 @@ class t3lib_TCEforms	{
 		if (!$disabled) {
 			$sOnChange = implode('',$PA['fieldChangeFunc']);
 			$setAll = array();	// Used to accumulate the JS needed to restore the original selection.
+			$unSetAll = array();
 			foreach($selItems as $p)	{
 					// Non-selectable element:
 				if (!strcmp($p[1],'--div--'))	{
@@ -2814,7 +2815,8 @@ class t3lib_TCEforms	{
 								$theTitle= htmlspecialchars($fakePA['fieldConf']['label']);
 
 								if (!in_array('DEF',$rotateLang))	{
-									$defInfo = '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($editData[$key]['vDEF'], $fakePA['fieldConf']).'&nbsp;</div>';
+									$defInfo = '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 0) .
+												$this->previewFieldValue($editData[$key]['vDEF'], $fakePA['fieldConf'], $field) . '&nbsp;</div>';
 								} else {
 									$defInfo = '';
 								}
@@ -2822,7 +2824,8 @@ class t3lib_TCEforms	{
 								if (!$PA['_noEditDEF'])	{
 									$prLang = $this->getAdditionalPreviewLanguages();
 									foreach($prLang as $prL)	{
-										$defInfo.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,'v'.$prL['ISOcode']).$this->previewFieldValue($editData[$key]['v'.$prL['ISOcode']], $fakePA['fieldConf']).'&nbsp;</div>';
+										$defInfo.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table, $row, 'v' . $prL['ISOcode']) .
+													$this->previewFieldValue($editData[$key]['v' . $prL['ISOcode']], $fakePA['fieldConf'], $field) . '&nbsp;</div>';
 									}
 								}
 
@@ -3029,9 +3032,8 @@ class t3lib_TCEforms	{
 	 */
 	function rearrange($fields)	{
 		$fO = array_flip(t3lib_div::trimExplode(',',$this->fieldOrder,1));
-		reset($fields);
 		$newFields=array();
-		while(list($cc,$content)=each($fields))	{
+		foreach($fields as $cc => $content) {
 			$cP = t3lib_div::trimExplode(';',$content);
 			if (isset($fO[$cP[0]]))	{
 				$newFields[$fO[$cP[0]]] = $content;
@@ -3072,8 +3074,7 @@ class t3lib_TCEforms	{
 			$sTfield = $TCA[$table]['types'][$typeNum]['bitmask_value_field'];
 			$sTValue = t3lib_div::intInRange($row[$sTfield],0);
 			if (is_array($TCA[$table]['types'][$typeNum]['bitmask_excludelist_bits']))	{
-				reset($TCA[$table]['types'][$typeNum]['bitmask_excludelist_bits']);
-				while(list($bitKey,$eList)=each($TCA[$table]['types'][$typeNum]['bitmask_excludelist_bits']))	{
+				foreach($TCA[$table]['types'][$typeNum]['bitmask_excludelist_bits'] as $bitKey => $eList) {
 					$bit=substr($bitKey,1);
 					if (t3lib_div::testInt($bit))	{
 						$bit = t3lib_div::intInRange($bit,0,30);
@@ -3128,9 +3129,8 @@ class t3lib_TCEforms	{
 	 */
 	function mergeFieldsWithAddedFields($fields,$fieldsToAdd)	{
 		if (count($fieldsToAdd[0]))	{
-			reset($fields);
 			$c=0;
-			while(list(,$fieldInfo)=each($fields))	{
+			foreach($fields as $fieldInfo) {
 				$parts = explode(';',$fieldInfo);
 				if (!strcmp(trim($parts[0]),$fieldsToAdd[1]))	{
 					array_splice(
@@ -3381,7 +3381,8 @@ class t3lib_TCEforms	{
 				// Don't show content if it's for IRRE child records:
 			if ($fCfg['config']['type']!='inline') {
 				if (strcmp($dLVal,''))	{
-					$item.='<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table,$row,0).$this->previewFieldValue($dLVal,$fCfg).'&nbsp;</div>';
+					$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 0) .
+							$this->previewFieldValue($dLVal, $fCfg, $field) . '&nbsp;</div>';
 				}
 
 				$prLang = $this->getAdditionalPreviewLanguages();
@@ -3389,7 +3390,8 @@ class t3lib_TCEforms	{
 					$dlVal = t3lib_BEfunc::getProcessedValue($table,$field,$this->additionalPreviewLanguageData[$table.':'.$row['uid']][$prL['uid']][$field],0,1);
 
 					if(strcmp($dlVal, '')) {
-						$item.= '<div class="typo3-TCEforms-originalLanguageValue">'.$this->getLanguageIcon($table, $row, 'v'.$prL['ISOcode']).$this->previewFieldValue($dlVal, $fCfg).'&nbsp;</div>';
+						$item .= '<div class="typo3-TCEforms-originalLanguageValue">' . $this->getLanguageIcon($table, $row, 'v' . $prL['ISOcode']) .
+								$this->previewFieldValue($dlVal, $fCfg, $field) . '&nbsp;</div>';
 					}
 				}
 			}
@@ -3512,10 +3514,9 @@ class t3lib_TCEforms	{
 			// Creating <option> elements:
 		if (is_array($itemArray))	{
 			$itemArrayC=count($itemArray);
-			reset($itemArray);
 			switch($mode)	{
 				case 'db':
-					while(list(,$pp)=each($itemArray))	{
+					foreach ($itemArray as $pp) {
 						$pRec = t3lib_BEfunc::getRecordWSOL($pp['table'],$pp['id']);
 						if (is_array($pRec))	{
 							$pTitle = t3lib_BEfunc::getRecordTitle($pp['table'], $pRec, FALSE, TRUE);
@@ -3534,14 +3535,14 @@ class t3lib_TCEforms	{
 					}
 				break;
 				case 'folder':
-					while(list(,$pp)=each($itemArray))	{
+					foreach ($itemArray as $pp) {
 						$pParts = explode('|',$pp);
 						$uidList[]=$pUid=$pTitle = $pParts[0];
 						$opt[]='<option value="'.htmlspecialchars(rawurldecode($pParts[0])).'">'.htmlspecialchars(rawurldecode($pParts[0])).'</option>';
 					}
 				break;
 				default:
-					while(list(,$pp)=each($itemArray))	{
+					foreach ($itemArray as $pp) {
 						$pParts = explode('|',$pp, 2);
 						$uidList[]=$pUid=$pParts[0];
 						$pTitle = $pParts[1];
@@ -4308,8 +4309,7 @@ class t3lib_TCEforms	{
 	function initItemArray($fieldValue)	{
 		$items = array();
 		if (is_array($fieldValue['config']['items']))	{
-			reset ($fieldValue['config']['items']);
-			while (list($itemName,$itemValue) = each($fieldValue['config']['items']))	{
+			foreach ($fieldValue['config']['items'] as $itemValue) {
 				$items[] = array($this->sL($itemValue[0]), $itemValue[1], $itemValue[2]);
 			}
 		}
@@ -4326,8 +4326,7 @@ class t3lib_TCEforms	{
 	function addItems($items,$iArray)	{
 		global $TCA;
 		if (is_array($iArray))	{
-			reset($iArray);
-			while(list($value,$label)=each($iArray))	{
+			foreach ($iArray as $value => $label) {
 				$items[]=array($this->sl($label),$value);
 			}
 		}
@@ -4752,9 +4751,8 @@ class t3lib_TCEforms	{
 	function intoTemplate($inArr,$altTemplate='')	{
 				// Put into template_
 		$fieldTemplateParts = explode('###FIELD_',$this->rplColorScheme($altTemplate?$altTemplate:$this->fieldTemplate));
-		reset($fieldTemplateParts);
 		$out=current($fieldTemplateParts);
-		while(list(,$part)=each($fieldTemplateParts))	{
+		foreach ($fieldTemplateParts as $part) {
 			list($key,$val)=explode('###',$part,2);
 			$out.=$inArr[$key];
 			$out.=$val;
@@ -6033,9 +6031,10 @@ class t3lib_TCEforms	{
 	 *
 	 * @param	string		The value to output
 	 * @param	array		Configuration for field.
+	 * @param	string		Name of field.
 	 * @return 	string		HTML formatted output
 	 */
-	function previewFieldValue($value, $config)	{
+	function previewFieldValue($value, $config, $field = '') {
 		if ($config['config']['type']==='group' &&
 				($config['config']['internal_type'] === 'file' ||
 				$config['config']['internal_type'] === 'file_reference')) {
