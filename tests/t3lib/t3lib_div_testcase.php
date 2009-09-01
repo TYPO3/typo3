@@ -344,7 +344,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 * @test
 	 * @see t3lib_div::removeDotsFromTS()
 	 */
-	public function doesRemoveDotsFromTypoScriptCorrectlyOverridesWithArray() {
+	public function doesRemoveDotsFromTypoScriptCorrectlyOverrideWithArray() {
 		$typoScript = array(
 			'propertyA.' => array(
 				'keyA' => 'getsOverridden',
@@ -374,7 +374,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 * @test
 	 * @see t3lib_div::removeDotsFromTS()
 	 */
-	public function doesRemoveDotsFromTypoScriptCorrectlyOverridesWithScalar() {
+	public function doesRemoveDotsFromTypoScriptCorrectlyOverrideWithScalar() {
 		$typoScript = array(
 			'propertyA.' => array(
 				'keyA.' => array(
