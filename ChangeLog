@@ -3,6 +3,7 @@
 	* Follow-up to feature #9292: Fixed wrong disposal of global variables (thanks to Christian Kuhn)
 	* Added feature #10724: Provide a check that compares a given URL with the host, TYPO3 is running on (thanks to Marcus Krause)
 	* Follow-up to feature #10724: Added unit tests for isValidUrl() and isOnCurrentHost() in t3lib_div (thanks to Marcus Krause)
+	* Fixed bug #11845: Typo in a CLI error mesage: suue -> sure (thanks to Oliver Klee)
 
 2009-09-01  Sebastian Kurfuerst  <sebastian@typo3.org>
 
