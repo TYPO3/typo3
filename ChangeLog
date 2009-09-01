@@ -1,6 +1,6 @@
 2009-09-01  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #9049: Page ID is always 0 in export module for impexp (thanks to Christian Kuhn)
+	* Fixed bug #9049: Page ID is always 0 in export module for impexp (thanks to Jeff Segars)
 
 2009-09-01  Oliver Hader  <oliver@typo3.org>
 
