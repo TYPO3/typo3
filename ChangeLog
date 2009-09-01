@@ -1,3 +1,7 @@
+2009-09-01  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11845: Typo in a CLI error mesage: suue -> sure (thanks to Oliver Klee)
+
 2009-08-26  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #11731: ENABLE_INSTALL_TOOL file check in yellow box does not check the file age (thanks to Moreno Feltscher)
