@@ -407,8 +407,8 @@ class tslib_cObj {
 		if (!isset($this->getImgResourceHookObjects)) {
 			$this->getImgResourceHookObjects = array();
 
-			if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'])) {
-				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] as $classData) {
+			if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'])) {
+				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'] as $classData) {
 					$hookObject = t3lib_div::getUserObj($classData);
 
 					if(!($hookObject instanceof tslib_cObj_getImgResourceHook)) {

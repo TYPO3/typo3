@@ -1,3 +1,7 @@
+2009-09-01  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to feature #9292: Fixed wrong disposal of global variables (thanks to Christian Kuhn)
+
 2009-09-01  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raised extbase and fluid versions from 844 to 1181 (and pointing to a tag now instead of a revision)
