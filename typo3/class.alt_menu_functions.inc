@@ -357,7 +357,7 @@ class alt_menu_functions {
 						// For "About modules":
 					$moduleLabel = htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'label']);
 					$moduleLabelHtml = !empty($moduleLabel) ? '<strong>' . $moduleLabel . '</strong><br />' : '';
-					$moduleDescription = htmlspecialchars($LANG->moduleLabels['labels'][$subKey.'descr']);
+					$moduleDescription = $LANG->moduleLabels['labels'][$subKey.'descr'];
 
 					$descrCode.='
 							<tr class="c-subitem-row">
