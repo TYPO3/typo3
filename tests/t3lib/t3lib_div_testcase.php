@@ -200,6 +200,115 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 			)
 		);
 	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isValidUrl()
+	 */
+	public function checkisValidURLSucceedsWithWebRessource() {
+		$testUrl = 'http://www.example.org/';
+		$this->assertTrue(t3lib_div::isValidUrl($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isValidUrl()
+	 */
+	public function checkisValidURLSucceedsWithExtentedWebRessource() {
+		$testUrl = 'https://user:pw@www.example.org:80/path?arg=value#fragment';
+		$this->assertTrue(t3lib_div::isValidUrl($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isValidUrl()
+	 */
+	public function checkisValidURLSucceedsWithTelnetRessource() {
+		$testUrl = 'telnet://192.0.2.16:80/';
+		$this->assertTrue(t3lib_div::isValidUrl($testUrl));
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkisValidURLSucceedsWithLdapRessource() {
+		$testUrl = 'ldap://[2001:db8::7]/c=GB?objectClass?one';
+		$this->assertTrue(t3lib_div::isValidUrl($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isValidUrl()
+	 */
+	public function checkisValidURLSucceedsWithFileRessource() {
+		$testUrl = 'file:///etc/passwd';
+		$this->assertTrue(t3lib_div::isValidUrl($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isValidUrl()
+	 */
+	public function checkisValidURLFailsWithHostnameOnly() {
+		$testUrl = 'www.example.org/';
+		$this->assertFalse(t3lib_div::isValidUrl($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isOnCurrentHost()
+	 */
+	public function checkisOnCurrentHostFailsWithLocalhostIPOnly() {
+		$testUrl = '127.0.0.1';
+		$this->assertFalse(t3lib_div::isOnCurrentHost($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isOnCurrentHost()
+	 */
+	public function checkisOnCurrentHostFailsWithPathsOnly() {
+		$testUrl = './relpath/file.txt';
+		$this->assertFalse(t3lib_div::isOnCurrentHost($testUrl));
+		$testUrl = '/abspath/file.txt?arg=value';
+		$this->assertFalse(t3lib_div::isOnCurrentHost($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isOnCurrentHost()
+	 */
+	public function checkisOnCurrentHostFailsWithArbitraryString() {
+		$testUrl = 'arbitrary string';
+		$this->assertFalse(t3lib_div::isOnCurrentHost($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isOnCurrentHost()
+	 */
+	public function checkisOnCurrentHostFailsWithEmptyUrl() {
+		$testUrl = '';
+		$this->assertFalse(t3lib_div::isOnCurrentHost($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isOnCurrentHost()
+	 */
+	public function checkisOnCurrentHostFailsWithDifferentHost() {
+		$testUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '.example.org';
+		$this->assertFalse(t3lib_div::isOnCurrentHost($testUrl));
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::isOnCurrentHost()
+	 */
+	public function checkisOnCurrentHostSucceedsWithCurrentHost() {
+		$testUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
+		$this->assertTrue(t3lib_div::isOnCurrentHost($testUrl));
+	}
 }
 
 ?>
