@@ -309,6 +309,93 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 		$testUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
 		$this->assertTrue(t3lib_div::isOnCurrentHost($testUrl));
 	}
+
+	/**
+	 * Tests whether removeDotsFromTS() behaves correctly.
+	 * @test
+	 * @see t3lib_div::removeDotsFromTS()
+	 */
+	public function doesRemoveDotsFromTypoScriptSucceed() {
+		$typoScript = array(
+			'propertyA.' => array(
+				'keyA.' => array(
+					'valueA' => 1,
+				),
+				'keyB' => 2,
+			),
+			'propertyB' => 3,
+		);
+
+		$expectedResult = array(
+			'propertyA' => array(
+				'keyA' => array(
+					'valueA' => 1,
+				),
+				'keyB' => 2,
+			),
+			'propertyB' => 3,
+		);
+
+		$this->assertEquals($expectedResult, t3lib_div::removeDotsFromTS($typoScript));
+	}
+
+	/**
+	 * Tests whether removeDotsFromTS() behaves correctly.
+	 * @test
+	 * @see t3lib_div::removeDotsFromTS()
+	 */
+	public function doesRemoveDotsFromTypoScriptCorrectlyOverridesWithArray() {
+		$typoScript = array(
+			'propertyA.' => array(
+				'keyA' => 'getsOverridden',
+				'keyA.' => array(
+					'valueA' => 1,
+				),
+				'keyB' => 2,
+			),
+			'propertyB' => 3,
+		);
+
+		$expectedResult = array(
+			'propertyA' => array(
+				'keyA' => array(
+					'valueA' => 1,
+				),
+				'keyB' => 2,
+			),
+			'propertyB' => 3,
+		);
+
+		$this->assertEquals($expectedResult, t3lib_div::removeDotsFromTS($typoScript));
+	}
+
+	/**
+	 * Tests whether removeDotsFromTS() behaves correctly.
+	 * @test
+	 * @see t3lib_div::removeDotsFromTS()
+	 */
+	public function doesRemoveDotsFromTypoScriptCorrectlyOverridesWithScalar() {
+		$typoScript = array(
+			'propertyA.' => array(
+				'keyA.' => array(
+					'valueA' => 1,
+				),
+				'keyA' => 'willOverride',
+				'keyB' => 2,
+			),
+			'propertyB' => 3,
+		);
+
+		$expectedResult = array(
+			'propertyA' => array(
+				'keyA' => 'willOverride',
+				'keyB' => 2,
+			),
+			'propertyB' => 3,
+		);
+
+		$this->assertEquals($expectedResult, t3lib_div::removeDotsFromTS($typoScript));
+	}
 }
 
 ?>

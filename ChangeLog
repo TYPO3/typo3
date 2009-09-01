@@ -5,6 +5,7 @@
 	* Follow-up to feature #10724: Added unit tests for isValidUrl() and isOnCurrentHost() in t3lib_div (thanks to Marcus Krause)
 	* Fixed bug #11845: Typo in a CLI error mesage: suue -> sure (thanks to Oliver Klee)
 	* Fixed bug #11844: Description in about module uses htmlspecialchars which is wrong (thanks to Georg Ringer)
+	* Added test #11846: Add unit tests for t3lib_div::removeDotsFromTS()
 
 2009-09-01  Sebastian Kurfuerst  <sebastian@typo3.org>
 
