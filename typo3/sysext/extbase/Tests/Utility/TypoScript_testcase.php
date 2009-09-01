@@ -93,7 +93,7 @@ class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 		$extbaseTS = array(
 			'10' => array(
 				'value' => 'Hallo',
-				'_typoscriptNodeValue' => 'TEXT'
+				'_typoScriptNodeValue' => 'TEXT'
 			)
 		);
 

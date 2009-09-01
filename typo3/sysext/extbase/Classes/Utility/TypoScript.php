@@ -76,7 +76,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 * However, if you want to call legacy TypoScript objects, you somehow need the "old" syntax (because this is what TYPO3 is used to).
 	 * With this method, you can convert the extbase TypoScript to classical TYPO3 TypoScript which is understood by the rest of TYPO3.
 	 *
-	 * @param array $plainArray An Typoscript Array with Extbase Syntax (without dot but with _typoscriptNodeValue)
+	 * @param array $plainArray An Typoscript Array with Extbase Syntax (without dot but with _typoScriptNodeValue)
 	 * @return array array with Typoscript as usual (with dot)
 	 * @api
 	 */
@@ -85,9 +85,9 @@ class Tx_Extbase_Utility_TypoScript {
 		if (is_array($plainArray)) {
 			foreach ($plainArray as $key => $value) {
 				if (is_array($value)) {
-					if (isset($value['_typoscriptNodeValue'])) {
-						$typoScriptArray[$key] = $value['_typoscriptNodeValue'];
-						unset($value['_typoscriptNodeValue']);
+					if (isset($value['_typoScriptNodeValue'])) {
+						$typoScriptArray[$key] = $value['_typoScriptNodeValue'];
+						unset($value['_typoScriptNodeValue']);
 					}
 					$typoScriptArray[$key.'.'] = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($value);
 				} else {
