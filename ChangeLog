@@ -1,6 +1,7 @@
 2009-09-01  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to feature #9292: Fixed wrong disposal of global variables (thanks to Christian Kuhn)
+	* Added feature #10724: Provide a check that compares a given URL with the host, TYPO3 is running on (thanks to Marcus Krause)
 
 2009-09-01  Sebastian Kurfuerst  <sebastian@typo3.org>
 

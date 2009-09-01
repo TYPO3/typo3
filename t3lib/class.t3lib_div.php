@@ -932,6 +932,17 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Checks if a given URL matches the host that currently handles this HTTP request.
+	 * Scheme, hostname and (optional) port of the given URL are compared.
+	 *
+	 * @param	string		$url: URL to compare with the TYPO3 request host
+	 * @return	boolean		Whether the URL matches the TYPO3 request host
+	 */
+	public static function isOnCurrentHost($url) {
+		return (stripos($url . '/', self::getIndpEnv('TYPO3_REQUEST_HOST') . '/') === 0);
+	}
+
+	/**
 	 * Check for item in list
 	 * Check if an item exists in a comma-separated list of items.
 	 * Usage: 163
@@ -1611,6 +1622,16 @@ final class t3lib_div {
 	 */
 	public static function lcfirst($string) {
 		return self::strtolower(substr($string, 0, 1)) . substr($string, 1);
+	}
+
+	/**
+	 * Checks if a given string is a Uniform Resource Locator (URL).
+	 *
+	 * @param	string		$url: The URL to be validated
+	 * @return	boolean		Whether the given URL is valid
+	 */
+	public static function isValidUrl($url) {
+		return (filter_var($url, FILTER_VALIDATE_URL) !== false);
 	}
 
 
