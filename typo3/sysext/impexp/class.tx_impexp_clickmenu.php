@@ -84,7 +84,7 @@ class tx_impexp_clickmenu {
 
 			$LL = $this->includeLL();
 
-			$url = 'mod.php?M=xMOD_tximpexp&tx_impexp[action]=export';
+			$url = 'mod.php?M=xMOD_tximpexp&tx_impexp[action]=export&id=' . ($table == 'pages' ? $uid : $backRef->rec['pid']);
 			if ($table=='pages')	{
 				$url.='&tx_impexp[pagetree][id]='.$uid;
 				$url.='&tx_impexp[pagetree][levels]=0';
