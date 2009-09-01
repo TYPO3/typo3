@@ -2067,6 +2067,15 @@
 			// No cache
 		if ($this->config['config']['no_cache'])	{ $this->set_no_cache(); }		// Set $this->no_cache true if the config.no_cache value is set!
 
+			// merge GET with defaultGetVars
+		if (!empty($this->config['config']['defaultGetVars.'])) {
+			$modifiedGetVars = t3lib_div::array_merge_recursive_overrule(
+				t3lib_div::removeDotsFromTS($this->config['config']['defaultGetVars.']),
+				t3lib_div::_GET()
+			);
+
+			t3lib_div::_GETset($modifiedGetVars);
+		}
 
 			// Hook for postProcessing the configuration array
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['configArrayPostProc'])) {

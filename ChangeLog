@@ -1,3 +1,7 @@
+2009-09-01  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #10040: define Default GET-vars
+
 2009-09-01  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #9049: Page ID is always 0 in export module for impexp (thanks to Jeff Segars)
