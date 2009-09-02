@@ -931,7 +931,9 @@ class t3lib_DB {
 
 			// check if MySQL extension is loaded
 		if (!extension_loaded('mysql')) {
-			t3lib_BEfunc::typo3PrintError('Database Error', 'You don\'t seem to have MySQL-support for PHP installed!');
+			$header = 'Database Error';
+			$message = 'It seems that MySQL support for PHP is not installed!';
+			t3lib_timeTrack::debug_typo3PrintError($header, $message, false, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 			exit;
 		}
 
