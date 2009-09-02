@@ -257,7 +257,7 @@ class SC_index {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
 		} else {
 			$markers['LABEL_INTERFACE'] = $GLOBALS['LANG']->getLL('labels.interface', true);
-			$markers['VALUE_INTERFACE'] = $this->interfaceSelector_jump;
+			$markers['VALUE_INTERFACE'] = $this->interfaceSelector;
 		}
 
 		return t3lib_parsehtml::substituteMarkerArray($content, $markers, '###|###');
