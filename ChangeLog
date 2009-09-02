@@ -1,4 +1,4 @@
-2009-09-01  Steffen Kamper  <info@sk-typo3.de>
+2009-09-02  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11599: TYPO3 dies without an error message when the mysql-module for php is not loaded. (thanks to Michael Knabe)
 
