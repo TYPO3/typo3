@@ -134,7 +134,7 @@ class t3lib_timeTrack {
 	 *
 	 * @return	void
 	 */
-	function start()    {
+	public function start() {
 		$this->wrapError = array(
 			0 => array('',''),
 			1 => array('<strong>','</strong>'),
@@ -160,7 +160,7 @@ class t3lib_timeTrack {
 	 * @return	void
 	 * @see tslib_cObj::cObjGetSingle(), pull()
 	 */
-	function push($tslabel, $value='')  {
+	public function push($tslabel, $value = '') {
 		array_push($this->tsStack[$this->tsStackPointer], $tslabel);
 		array_push($this->currentHashPointer, 'timetracker_'.$this->uniqueCounter++);
 
@@ -185,7 +185,7 @@ class t3lib_timeTrack {
 	 * @return	void
 	 * @see tslib_cObj::cObjGetSingle(), push()
 	 */
-	function pull($content='')  {
+	public function pull($content = '') {
 		$k = end($this->currentHashPointer);
 		$this->tsStackLog[$k]['endtime'] =  microtime(true);
 		$this->tsStackLog[$k]['content'] = $content;
@@ -203,7 +203,7 @@ class t3lib_timeTrack {
 	 * @return	void
 	 * @see tslib_cObj::CONTENT()
 	 */
-	function setTSlogMessage($content,$num=0)   {
+	public function setTSlogMessage($content, $num = 0) {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 
@@ -220,7 +220,7 @@ class t3lib_timeTrack {
 	 * @param	string		Message/Label to attach
 	 * @return	void
 	 */
-	function setTSselectQuery(array $data,$msg='')  {
+	public function setTSselectQuery(array $data, $msg = '') {
 		end($this->currentHashPointer);
 		$k = current($this->currentHashPointer);
 
@@ -237,7 +237,7 @@ class t3lib_timeTrack {
 	 * @return	void
 	 * @see decStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
 	 */
-	function incStackPointer()  {
+	public function incStackPointer() {
 		$this->tsStackPointer++;
 		$this->tsStack[$this->tsStackPointer]=array();
 	}
@@ -248,7 +248,7 @@ class t3lib_timeTrack {
 	 * @return	void
 	 * @see incStackPointer(), TSpagegen::renderContent(), tslib_cObj::cObjGetSingle()
 	 */
-	function decStackPointer()  {
+	public function decStackPointer() {
 		unset($this->tsStack[$this->tsStackPointer]);
 		$this->tsStackPointer--;
 	}
@@ -259,7 +259,7 @@ class t3lib_timeTrack {
 	 * @return	integer
 	 * @deprecated	since TYPO3 4.3 - use getDifferenceToStarttime() instead
 	 */
-	function mtime() {
+	protected function mtime() {
 		return $this->getDifferenceToStarttime();
 	}
 
@@ -270,7 +270,7 @@ class t3lib_timeTrack {
 	 * @return	integer
 	 * @deprecated	since TYPO3 4.3 - use getMilliseconds() instead that expects microtime as float instead of a string
 	 */
-	function convertMicrotime($microtime) {
+	public function convertMicrotime($microtime) {
 		t3lib_div::logDeprecatedFunction();
 
 		$parts = explode(' ',$microtime);
@@ -328,7 +328,7 @@ class t3lib_timeTrack {
 	 * @return	string		HTML table with the information about parsing times.
 	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
 	 */
-	function printTSlog() {
+	public function printTSlog() {
 			// Calculate times and keys for the tsStackLog
 		foreach ($this->tsStackLog as $uniqueId => &$data) {
 			$data['endtime'] = $this->getDifferenceToStarttime($data['endtime']);
@@ -475,7 +475,7 @@ class t3lib_timeTrack {
 	 * @param	string		Seems to be the previous tsStackLog key
 	 * @return	string		Returns the $content string generated/modified. Also the $arr array is modified!
 	 */
-	function fixContent(&$arr, $content, $depthData='', $first=0, $vKey='') {
+	protected function fixContent(&$arr, $content, $depthData = '', $first = 0, $vKey = '') {
 		$ac=0;
 		$c=0;
 			// First, find number of entries
@@ -539,7 +539,7 @@ class t3lib_timeTrack {
 	 * @param	string		Command: If "FILE" then $this->printConf['contentLength_FILE'] is used for content length comparison, otherwise $this->printConf['contentLength']
 	 * @return	string
 	 */
-	function fixCLen($c,$v) {
+	protected function fixCLen($c, $v) {
 		$len = $v=='FILE'?$this->printConf['contentLength_FILE']:$this->printConf['contentLength'];
 		if (strlen($c)>$len) {
 			$c = '<span style="color:green;">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($c,$len)).'</span>';
@@ -555,7 +555,7 @@ class t3lib_timeTrack {
 	 * @param	string		The string to be wrapped
 	 * @return	string
 	 */
-	function fw($str) {
+	protected function fw($str) {
 		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black; vertical-align:top;">'.$str.'&nbsp;</span>';
 	}
 
@@ -569,7 +569,7 @@ class t3lib_timeTrack {
 	 * @access private
 	 * @see printTSlog()
 	 */
-	function createHierarchyArray(&$arr,$pointer,$uniqueId) {
+	protected function createHierarchyArray(&$arr, $pointer, $uniqueId) {
 		if (!is_array($arr)) {
 			$arr = array();
 		}
@@ -591,7 +591,7 @@ class t3lib_timeTrack {
 	 * @param	string		URL for the <base> tag (if you want it)
 	 * @return	string
 	 */
-	function debug_typo3PrintError($header,$text,$js,$baseUrl='') {
+	public function debug_typo3PrintError($header, $text, $js, $baseUrl = '') {
 		if ($js) {
 			$errorMessage = 'alert(\'' . t3lib_div::slashJS($header . '\n' . $text) . '\');';
 		} else {

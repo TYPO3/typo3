@@ -83,8 +83,14 @@ ob_start();
 // *********************
 // Timetracking started
 // *********************
-require_once(PATH_t3lib.'class.t3lib_timetrack.php');
-$TT = new t3lib_timeTrack;
+if ($_COOKIE['be_typo_user']) {
+	require_once(PATH_t3lib.'class.t3lib_timetrack.php');
+	$TT = new t3lib_timeTrack;
+} else {
+	require_once(PATH_t3lib.'class.t3lib_timetracknull.php');
+	$TT = new t3lib_timeTrackNull;
+}
+
 $TT->start();
 $TT->push('','Script start');
 
