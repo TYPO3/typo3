@@ -929,6 +929,12 @@ class t3lib_DB {
 		@ini_set('track_errors', 1);
 		@ini_set('html_errors', 0);
 
+			// check if MySQL extension is loaded
+		if (!extension_loaded('mysql')) {
+			t3lib_BEfunc::typo3PrintError('Database Error', 'You don\'t seem to have MySQL-support for PHP installed!');
+			exit;
+		}
+
 			// Check for client compression
 		$isLocalhost = ($TYPO3_db_host == 'localhost' || $TYPO3_db_host == '127.0.0.1');
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'])	{
