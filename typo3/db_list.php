@@ -285,7 +285,9 @@ class SC_db_list {
 			$dblist->setDispFields();
 
 				// Render versioning selector:
-			$dblist->HTMLcode.= $this->doc->getVersionSelector($this->id);
+			if (t3lib_extMgm::isLoaded('version')) {
+				$dblist->HTMLcode .= $this->doc->getVersionSelector($this->id);
+			}
 
 				// Render the list of tables:
 			$dblist->generateList();

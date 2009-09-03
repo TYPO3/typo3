@@ -68,10 +68,13 @@ class WorkspaceSelector implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-		$MCONF = array();
-		include('mod/user/ws/conf.php');
+		if (t3lib_extMgm::isLoaded('version')) {
+			$MCONF = array();
+			include('mod/user/ws/conf.php');
 
-		return ($GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false));
+			return ($GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false));
+		}
+		return FALSE;
 	}
 
 	/**

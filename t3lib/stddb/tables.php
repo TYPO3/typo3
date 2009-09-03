@@ -346,25 +346,6 @@ $TCA['sys_filemounts'] = array(
 	)
 );
 
-/**
- * Table "sys_filemounts":
- * Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
- * This is only the 'header' part (ctrl). The full configuration is found in t3lib/stddb/tbl_be.php
- */
-$TCA['sys_workspace'] = array(
-	'ctrl' => array(
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'title' => 'LLL:EXT:lang/locallang_tca.php:sys_workspace',
-		'adminOnly' => 1,
-		'rootLevel' => 1,
-		'delete' => 'deleted',
-		'iconfile' => 'sys_workspace.png',
-		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
-		'versioningWS_alwaysAllowLiveEdit' => true,
-		'dividers2tabs' => true
-	)
-);
 
 /**
  * Table "sys_languages":

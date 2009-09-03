@@ -384,6 +384,10 @@ class t3lib_loadModules {
 	 * @return	mixed		See description of function
 	 */
 	function checkMod($name, $fullpath)	{
+		if ($name == 'user_ws' && !t3lib_extMgm::isLoaded('version')) {
+			return FALSE;
+		}
+
 			// Check for own way of configuring module
 		if (is_array($GLOBALS['TBE_MODULES'][$name]['configureModuleFunction'])) {
 			$obj = $GLOBALS['TBE_MODULES'][$name]['configureModuleFunction'];

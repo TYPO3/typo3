@@ -3604,27 +3604,29 @@ final class t3lib_BEfunc {
 	public static function fixVersioningPid($table, &$rr, $ignoreWorkspaceMatch = FALSE) {
 		global $TCA;
 
-			// Check that the input record is an offline version from a table that supports versioning:
-		if (is_array($rr) && $rr['pid']==-1 && $TCA[$table]['ctrl']['versioningWS'])	{
+		if (t3lib_extMgm::isLoaded('version')) {
+				// Check that the input record is an offline version from a table that supports versioning:
+			if (is_array($rr) && $rr['pid'] == -1 && $TCA[$table]['ctrl']['versioningWS']) {
 
-				// Check values for t3ver_oid and t3ver_wsid:
-			if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid']))	{	// If "t3ver_oid" is already a field, just set this:
-				$oid = $rr['t3ver_oid'];
-				$wsid = $rr['t3ver_wsid'];
-			} else {	// Otherwise we have to expect "uid" to be in the record and look up based on this:
-				$newPidRec = t3lib_BEfunc::getRecord($table, $rr['uid'], 't3ver_oid,t3ver_wsid');
-				if (is_array($newPidRec)) {
-					$oid = $newPidRec['t3ver_oid'];
-					$wsid = $newPidRec['t3ver_wsid'];
+					// Check values for t3ver_oid and t3ver_wsid:
+				if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {	// If "t3ver_oid" is already a field, just set this:
+					$oid = $rr['t3ver_oid'];
+					$wsid = $rr['t3ver_wsid'];
+				} else {	// Otherwise we have to expect "uid" to be in the record and look up based on this:
+					$newPidRec = t3lib_BEfunc::getRecord($table, $rr['uid'], 't3ver_oid,t3ver_wsid');
+					if (is_array($newPidRec)) {
+						$oid = $newPidRec['t3ver_oid'];
+						$wsid = $newPidRec['t3ver_wsid'];
+					}
 				}
-			}
 
-				// If ID of current online version is found, look up the PID value of that:
-			if ($oid && ($ignoreWorkspaceMatch || !strcmp((int)$wsid, $GLOBALS['BE_USER']->workspace))) {
-				$oidRec = t3lib_BEfunc::getRecord($table, $oid, 'pid');
-				if (is_array($oidRec)) {
-					$rr['_ORIG_pid'] = $rr['pid'];
-					$rr['pid'] = $oidRec['pid'];
+					// If ID of current online version is found, look up the PID value of that:
+				if ($oid && ($ignoreWorkspaceMatch || !strcmp((int)$wsid, $GLOBALS['BE_USER']->workspace))) {
+					$oidRec = t3lib_BEfunc::getRecord($table, $oid, 'pid');
+					if (is_array($oidRec)) {
+						$rr['_ORIG_pid'] = $rr['pid'];
+						$rr['pid'] = $oidRec['pid'];
+					}
 				}
 			}
 		}
@@ -3644,76 +3646,78 @@ final class t3lib_BEfunc {
 	 */
 	public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = FALSE) {
 		global $TCA;
+		if (t3lib_extMgm::isLoaded('version')) {
 
-		$previewMovePlaceholders = TRUE;		// If this is false the placeholder is shown raw in the backend. I don't know if this move can be useful for users to toggle. Technically it can help debugging...
+			$previewMovePlaceholders = TRUE;		// If this is false the placeholder is shown raw in the backend. I don't know if this move can be useful for users to toggle. Technically it can help debugging...
 
-			// Initialize workspace ID:
-		if ($wsid == -99)	$wsid = $GLOBALS['BE_USER']->workspace;
+				// Initialize workspace ID:
+			if ($wsid == -99)	$wsid = $GLOBALS['BE_USER']->workspace;
 
-			// Check if workspace is different from zero and record is set:
-		if ($wsid!==0 && is_array($row))	{
+				// Check if workspace is different from zero and record is set:
+			if ($wsid !== 0 && is_array($row)) {
 
-				// Check if input record is a move-placeholder and if so, find the pointed-to live record:
-			if ($previewMovePlaceholders) {
-				$orig_uid = $row['uid'];
-				$orig_pid = $row['pid'];
-				$movePldSwap = t3lib_BEfunc::movePlhOL($table, $row);
-	#			if (!is_array($row)) return;
-			}
+					// Check if input record is a move-placeholder and if so, find the pointed-to live record:
+				if ($previewMovePlaceholders) {
+					$orig_uid = $row['uid'];
+					$orig_pid = $row['pid'];
+					$movePldSwap = t3lib_BEfunc::movePlhOL($table, $row);
+		#			if (!is_array($row)) return;
+				}
 
-			$wsAlt = t3lib_BEfunc::getWorkspaceVersionOfRecord($wsid, $table, $row['uid'], implode(',', array_keys($row)));
+				$wsAlt = t3lib_BEfunc::getWorkspaceVersionOfRecord($wsid, $table, $row['uid'], implode(',', array_keys($row)));
 
-				// If version was found, swap the default record with that one.
-			if (is_array($wsAlt))	{
+					// If version was found, swap the default record with that one.
+				if (is_array($wsAlt)) {
 
-					// Check if this is in move-state:
-				if ($previewMovePlaceholders && !$movePldSwap && ($table=='pages' || (int)$TCA[$table]['ctrl']['versioningWS']>=2) && $unsetMovePointers)	{	// Only for WS ver 2... (moving)
+						// Check if this is in move-state:
+					if ($previewMovePlaceholders && !$movePldSwap && ($table=='pages' || (int)$TCA[$table]['ctrl']['versioningWS']>=2) && $unsetMovePointers) {	// Only for WS ver 2... (moving)
 
-						// If t3ver_state is not found, then find it... (but we like best if it is here...)
-					if (!isset($wsAlt['t3ver_state'])) {
-						$stateRec = t3lib_BEfunc::getRecord($table, $wsAlt['uid'], 't3ver_state');
-						$state = $stateRec['t3ver_state'];
-					} else {
-						$state = $wsAlt['t3ver_state'];
+							// If t3ver_state is not found, then find it... (but we like best if it is here...)
+						if (!isset($wsAlt['t3ver_state'])) {
+							$stateRec = t3lib_BEfunc::getRecord($table, $wsAlt['uid'], 't3ver_state');
+							$state = $stateRec['t3ver_state'];
+						} else {
+							$state = $wsAlt['t3ver_state'];
+						}
+						if ((int)$state===4) {
+								// TODO: Same problem as frontend in versionOL(). See TODO point there.
+							$row = FALSE;
+							return;
+						}
 					}
-					if ((int)$state===4) {
-							// TODO: Same problem as frontend in versionOL(). See TODO point there.
-						$row = FALSE;
-						return;
+
+						// Always correct PID from -1 to what it should be:
+					if (isset($wsAlt['pid'])) {
+						$wsAlt['_ORIG_pid'] = $wsAlt['pid'];	// Keep the old (-1) - indicates it was a version...
+						$wsAlt['pid'] = $row['pid'];		// Set in the online versions PID.
 					}
+
+						// For versions of single elements or page+content, swap UID and PID:
+					if ($table!=='pages' || $wsAlt['t3ver_swapmode']<=0) {
+						$wsAlt['_ORIG_uid'] = $wsAlt['uid'];
+						$wsAlt['uid'] = $row['uid'];
+
+							// Backend css class:
+						$wsAlt['_CSSCLASS'] = $table==='pages' && $wsAlt['t3ver_swapmode']==0 ? 'ver-page' : 'ver-element';
+					} else {	// This is only for page-versions with BRANCH below!
+						$wsAlt['_ONLINE_uid'] = $row['uid'];
+
+							// Backend css class:
+						$wsAlt['_CSSCLASS'] = 'ver-branchpoint';
+						$wsAlt['_SUBCSSCLASS'] = 'ver-branch';
+					}
+
+						// Changing input record to the workspace version alternative:
+					$row = $wsAlt;
 				}
 
-					// Always correct PID from -1 to what it should be:
-				if (isset($wsAlt['pid'])) {
-					$wsAlt['_ORIG_pid'] = $wsAlt['pid'];	// Keep the old (-1) - indicates it was a version...
-					$wsAlt['pid'] = $row['pid'];		// Set in the online versions PID.
+					// If the original record was a move placeholder, the uid and pid of that is preserved here:
+				if ($movePldSwap) {
+					$row['_MOVE_PLH'] = TRUE;
+					$row['_MOVE_PLH_uid'] = $orig_uid;
+					$row['_MOVE_PLH_pid'] = $orig_pid;
+					$row['t3ver_state'] = 3;	// For display; To make the icon right for the placeholder vs. the original
 				}
-
-					// For versions of single elements or page+content, swap UID and PID:
-				if ($table!=='pages' || $wsAlt['t3ver_swapmode']<=0) {
-					$wsAlt['_ORIG_uid'] = $wsAlt['uid'];
-					$wsAlt['uid'] = $row['uid'];
-
-						// Backend css class:
-					$wsAlt['_CSSCLASS'] = $table==='pages' && $wsAlt['t3ver_swapmode']==0 ? 'ver-page' : 'ver-element';
-				} else {	// This is only for page-versions with BRANCH below!
-					$wsAlt['_ONLINE_uid'] = $row['uid'];
-
-						// Backend css class:
-					$wsAlt['_CSSCLASS'] = 'ver-branchpoint';
-					$wsAlt['_SUBCSSCLASS'] = 'ver-branch';
-				}
-
-					// Changing input record to the workspace version alternative:
-				$row = $wsAlt;
-			}
-
-				// If the original record was a move placeholder, the uid and pid of that is preserved here:
-			if ($movePldSwap) {
-				$row['_MOVE_PLH'] = TRUE;
-				$row['_MOVE_PLH_uid'] = $orig_uid;
-				$row['_MOVE_PLH_pid'] = $orig_pid;
-				$row['t3ver_state'] = 3;	// For display; To make the icon right for the placeholder vs. the original
 			}
 		}
 	}
@@ -3764,21 +3768,22 @@ final class t3lib_BEfunc {
 	public static function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*') {
 		global $TCA;
 
-		if ($workspace!==0 && $TCA[$table] && $TCA[$table]['ctrl']['versioningWS'])	{
+		if (t3lib_extMgm::isLoaded('version')) {
+			if ($workspace !== 0 && $TCA[$table] && $TCA[$table]['ctrl']['versioningWS']) {
 
-				// Select workspace version of record:
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				$fields,
-				$table,
-				'pid=-1 AND
-				 t3ver_oid='.intval($uid).' AND
-				 t3ver_wsid='.intval($workspace).
-					t3lib_BEfunc::deleteClause($table)
-			);
+					// Select workspace version of record:
+				$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					$fields,
+					$table,
+					'pid=-1 AND
+					 t3ver_oid=' . intval($uid) . ' AND
+					 t3ver_wsid=' . intval($workspace) .
+						t3lib_BEfunc::deleteClause($table)
+				);
 
-			if (is_array($rows[0]))	return $rows[0];
+				if (is_array($rows[0]))	return $rows[0];
+			}
 		}
-
 		return FALSE;
 	}
 

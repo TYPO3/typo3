@@ -1,6 +1,7 @@
 2009-09-03  Rupert Germann  <rupi@gmx.li>
 
-	* Added feature #0011773: Integrate an option to deactivate shortcuts completely  (thanks to Christopher Stelmaszyk)
+	* Added feature #11773: Integrate an option to deactivate shortcuts completely  (thanks to Christopher Stelmaszyk)
+	* Added feature #11828: There's no possibility to hide versioning and workspaces.
 
 2009-09-03  Stanislas Rolland  <typo3@sjbr.ca>
 
