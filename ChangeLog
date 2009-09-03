@@ -1,3 +1,7 @@
+2009-09-03  Martin Kutschker  <masi@typo3.org>
+
+	* Added feature #11865: AJAX error should send HTTP status 500
+
 2009-09-03  Rupert Germann  <rupi@gmx.li>
 
 	* Added feature #11773: Integrate an option to deactivate shortcuts completely  (thanks to Christopher Stelmaszyk)
