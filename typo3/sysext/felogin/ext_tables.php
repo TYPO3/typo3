@@ -17,17 +17,24 @@ $TCA['tt_content']['types']['login']['showitem']='CType;;4;;1-1-1, hidden, heade
 							--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime';
 
 	// Adds the redirect-field to the fe_group- and fe_users-table
-$tempColumns = Array (
-	"felogin_redirectPid" => Array (
+$tempColumns = array (
+	"felogin_redirectPid" => array (
 		"exclude" => 1,
 		"label" => "LLL:EXT:felogin/locallang_db.xml:felogin_redirectPid",
-		"config" => Array (
+		"config" => array (
 			"type" => "group",
 			"internal_type" => "db",
 			"allowed" => "pages",
 			"size" => 1,
 			"minitems" => 0,
 			"maxitems" => 1,
+		)
+	),
+	'felogin_forgotHash' => array (
+		'exclude' => 1,
+		'label' => 'LLL:EXT:felogin/locallang_db.xml:felogin_forgotHash',
+		'config' => array (
+			'type' => 'passthrough',
 		)
 	),
 );

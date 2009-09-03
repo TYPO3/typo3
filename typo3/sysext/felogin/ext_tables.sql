@@ -11,7 +11,8 @@ CREATE TABLE fe_groups (
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-	felogin_redirectPid  tinytext 
+	felogin_redirectPid  tinytext,
+	felogin_forgotHash  varchar(80) default '' 
 );
 
 

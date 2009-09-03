@@ -144,10 +144,13 @@
 
 <!-- ###FORGOT_FORM### -->
 <form action="###ACTION_URI###" method="post">
+    <div class="felogin-hidden">
+		<input type="hidden" name="tx_felogin_pi1[forgot_hash]" value="###FORGOTHASH###" />
+	</div>
 	<fieldset>
 	<legend>###LEGEND###</legend>
 	<div>
-		<label for="###FORGOT_EMAIL###">###EMAIL_LABEL###</label>
+		<label for="###FORGOT_EMAIL###">###DATA_LABEL###</label>
 		<input type="text" name="###FORGOT_EMAIL###" id="###FORGOT_EMAIL###" />
 	</div>
 	<div>
@@ -161,7 +164,33 @@
 
 
 
+<!--###TEMPLATE_CHANGEPASSWORD###-->
 
+###STATUS_HEADER###
+###STATUS_MESSAGE###
+
+
+<!-- ###CHANGEPASSWORD_FORM### -->
+<form action="###ACTION_URI###" method="post">
+	<fieldset>
+		<legend>###LEGEND###</legend>
+		<div>
+			<label for="###NEWPASSWORD1###">###NEWPASSWORD1_LABEL###</label>
+			<input type="password" name="###NEWPASSWORD1###" id="###NEWPASSWORD1###" />
+		</div>
+		<div>
+			<label for="###NEWPASSWORD2###">###NEWPASSWORD2_LABEL###</label>
+			<input type="password" name="###NEWPASSWORD2###" id="###NEWPASSWORD2###" />
+		</div>
+		<div>
+			<input type="submit" name="tx_felogin_pi1[changepasswordsubmit]" value="###SEND_PASSWORD###" />
+		 </div>
+	</fieldset>
+
+</form>
+<!-- ###CHANGEPASSWORD_FORM### -->
+###BACKLINK_LOGIN###
+<!--###TEMPLATE_CHANGEPASSWORD###--> 
 
 
 

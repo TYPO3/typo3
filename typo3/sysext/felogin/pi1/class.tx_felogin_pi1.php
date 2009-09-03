@@ -108,6 +108,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$content='';
 		if ($this->piVars['forgot']) {
 			$content .= $this->showForgot();
+		} elseif ($this->piVars['forgothash']) {  
+			$content .= $this->changePassword();
 		} else {
 			if($this->userIsLoggedIn && !$this->logintype) {
 				$content .= $this->showLogout();
@@ -139,62 +141,227 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 protected function showForgot() {
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_FORGOT###');
 		$subpartArray = $linkpartArray = array();
+		$postData =  t3lib_div::_POST($this->prefixId);
 
-		if ($this->piVars['forgot_email']) {
-			if (t3lib_div::validEmail($this->piVars['forgot_email'])) {
-					// look for user record and send the password
+		if ($postData['forgot_email']) {
+
+				// get hashes for compare
+			$postedHash = $postData['forgot_hash'];
+			$hashData = $GLOBALS['TSFE']->fe_user->getKey('ses', 'forgot_hash');
+
+
+			if ($postedHash === $hashData['forgot_hash']) {
+				$row = FALSE;
+
+					// look for user record
+				$data = $GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['forgot_email'], 'fe_users');
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'uid, username, password',
+					'uid, username, password, email',
 					'fe_users',
-					'email='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['forgot_email'], 'fe_users').' AND pid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->spid).') '.$this->cObj->enableFields('fe_users')
+					'(email=' . $data .' OR username=' . $data . ') AND pid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->spid).') '.$this->cObj->enableFields('fe_users')
 				);
 
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
 					$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-					$msg = sprintf($this->pi_getLL('ll_forgot_email_password', '', 0), $this->piVars['forgot_email'], $row['username'], $row['password']);
+				}
+
+				if ($row) {
+							// generate an email with the hashed link
+						$error = $this->generateAndSendHash($row);
+				}
+					// generate message
+				if ($error) {
+					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotMessage_stdWrap.']);	
 				} else {
-					$msg = sprintf($this->pi_getLL('ll_forgot_email_nopassword', '', 0), $this->piVars['forgot_email']);
+					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($this->pi_getLL('ll_forgot_reset_message_emailSent', '', 1), $this->conf['forgotMessage_stdWrap.']);
 				}
-
-
-					// Generate new password with md5 and save it in user record
-				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) && t3lib_extMgm::isLoaded('kb_md5fepw')) {
-					$newPass = $this->generatePassword(8);
-					$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-						'fe_users',
-						'uid=' . $row['uid'],
-						array('password' => md5($newPass))
-					);
-					$msg = sprintf($this->pi_getLL('ll_forgot_email_password', '', 0),$this->piVars['forgot_email'], $row['username'], $newPass);
-				}
-
-				$this->cObj->sendNotifyEmail($msg, $this->piVars['forgot_email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
-				$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap(sprintf($this->pi_getLL('ll_forgot_message_emailSent', '', 1), '<em>' . htmlspecialchars($this->piVars['forgot_email']) .'</em>'), $this->conf['forgotMessage_stdWrap.']);
 				$subpartArray['###FORGOT_FORM###'] = '';
 
 
 			} else {
 					//wrong email
-				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message', $this->conf['forgotMessage_stdWrap.']);
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_reset_message', $this->conf['forgotMessage_stdWrap.']);
 				$markerArray['###BACKLINK_LOGIN###'] = '';
 			}
 		} else {
-			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_message', $this->conf['forgotMessage_stdWrap.']);
+			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_reset_message', $this->conf['forgotMessage_stdWrap.']);
 			$markerArray['###BACKLINK_LOGIN###'] = '';
 		}
 
 		$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
 		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
 
-		$markerArray['###LEGEND###'] = $this->pi_getLL('send_password', '', 1);
+		$markerArray['###LEGEND###'] = $this->pi_getLL('reset_password', '', 1);
 		$markerArray['###ACTION_URI###'] = $this->getPageLink('', array($this->prefixId . '[forgot]'=>1), true);
 		$markerArray['###EMAIL_LABEL###'] = $this->pi_getLL('your_email', '', 1);
 		$markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = $this->pi_getLL('forgot_password_enterEmail', '', 1);
 		$markerArray['###FORGOT_EMAIL###'] = $this->prefixId.'[forgot_email]';
-		$markerArray['###SEND_PASSWORD###'] = $this->pi_getLL('send_password', '', 1);
+		$markerArray['###SEND_PASSWORD###'] = $this->pi_getLL('reset_password', '', 1);
+
+		$markerArray['###DATA_LABEL###'] = $this->pi_getLL('ll_enter_your_data', '', 1);
+
+
+
 		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
 
+			// generate hash
+		$hash = md5($this->generatePassword(3));
+		$markerArray['###FORGOTHASH###'] = $hash;
+			// set hash in feuser session
+		$GLOBALS['TSFE']->fe_user->setKey('ses', 'forgot_hash', array('forgot_hash' => $hash));
+
+
 		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
+	}
+
+	/**
+	 * This function checks the hash from link and checks the validity. If it's valid it shows the form for
+	 * changing the password and process the change of password after submit, if not valid it returns the error message
+	 *
+	 * @return	string		The content.
+	 */
+	protected function changePassword() {
+		
+		$subpartArray = $linkpartArray = array();
+		$done = false;	
+		
+		$minLength = intval($this->conf['newPasswordMinLength']) ? intval($this->conf['newPasswordMinLength']) : 6;
+		
+		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
+		
+		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('change_password_header', $this->conf['changePasswordHeader_stdWrap.']);	
+		$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);	
+		
+		$markerArray['###BACKLINK_LOGIN###'] = '';
+		$uid = $this->piVars['user'];
+		$piHash = $this->piVars['forgothash'];
+		
+		$hash = explode('|', $piHash);
+		if (intval($uid) == 0) {
+			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message', $this->conf['changePasswordMessage_stdWrap.']);
+			$subpartArray['###CHANGEPASSWORD_FORM###'] = '';         	
+		} else {
+			$user = $this->pi_getRecord('fe_users', intval($uid));
+			$userHash = $user['felogin_forgotHash'];
+			$compareHash = explode('|', $userHash);
+			
+			if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() ||  $hash[0] != $compareHash[0] ||  md5($hash[1]) != $compareHash[1]) {
+				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message',$this->conf['changePasswordMessage_stdWrap.']);
+				$subpartArray['###CHANGEPASSWORD_FORM###'] = '';         
+			} else {
+					// all is fine, continue with new password
+				$postData = t3lib_div::_POST($this->prefixId);
+
+				if ($postData['changepasswordsubmit']) {
+					if (strlen($postData['password1']) < $minLength) {
+			 			$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength); 
+					} elseif ($postData['password1'] != $postData['password2']) {
+						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_notequal_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);  
+					} else {
+						$newPass = $postData['password1']; 
+
+						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {
+							$_params = array(
+								'user' => $user,
+								'newPassword' => $newPass,
+							);
+							foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed'] as $_funcRef) {
+								if ($_funcRef) {
+									t3lib_div::callUserFunction($_funcRef, $_params, $this);
+								}
+							}
+							$newPass = $_params['newPassword'];
+						} 
+							
+							// save new password and clear DB-hash
+						$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+								'fe_users',
+								'uid=' . $user['uid'],
+								array('password' => $newPass, 'felogin_forgotHash' => '')
+							);
+						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordMessage_stdWrap.']); 
+						$done = true;
+						$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
+						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array()); 
+					}
+				} 
+
+				if (!$done) {
+					// Change password form
+					$markerArray['###ACTION_URI###'] = $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
+						$this->prefixId . '[user]' => $user['uid'],
+						$this->prefixId . '[forgothash]' => $piHash
+					));
+					$markerArray['###LEGEND###'] = $this->pi_getLL('change_password', '', 1);
+					$markerArray['###NEWPASSWORD1_LABEL###'] = $this->pi_getLL('newpassword_label1', '', 1);
+					$markerArray['###NEWPASSWORD2_LABEL###'] = $this->pi_getLL('newpassword_label2', '', 1);
+					$markerArray['###NEWPASSWORD1###'] = $this->prefixId . '[password1]';
+					$markerArray['###NEWPASSWORD2###'] = $this->prefixId . '[password2]';
+					$markerArray['###STORAGE_PID###'] = $this->spid;
+					$markerArray['###SEND_PASSWORD###'] = $this->pi_getLL('change_password', '', 1);
+					$markerArray['###FORGOTHASH###'] = $piHash;
+				}		        
+			}
+		}
+		
+		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);  
+	}
+	
+	/**
+	 * generates a hashed link and send it with email
+	 *
+	 * @param	array		$user   contains user data
+	 * @return	string		Empty string with success, error message with no success
+	 */
+	protected function generateAndSendHash($user) {
+		$hours = intval($this->conf['forgotLinkHashValidTime']) > 0 ? intval($this->conf['forgotLinkHashValidTime']) : 24;
+		$validEnd = time() + 3600 * $hours;		
+		$validEndString = date($this->conf['dateFormat'], $validEnd);
+
+		$hash =  md5(rand());
+		$randHash = $validEnd . '|' . $hash;
+		$randHashDB = $validEnd . '|' . md5($hash);
+
+		//write hash to DB
+		$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], array('felogin_forgotHash' => $randHashDB));
+
+		// send hashlink to user
+		$this->conf['linkPrefix'] = -1;
+		$isAbsRelPrefix = !empty($GLOBALS['TSFE']->absRefPrefix);
+		$isBaseURL  = !empty($GLOBALS['TSFE']->baseUrl);
+		$isFeloginBaseURL = !empty($this->conf['feloginBaseURL']);
+
+		if ($isFeloginBaseURL) {
+				// first priority
+			$this->conf['linkPrefix'] = $this->conf['feloginBaseURL'];
+		} else {
+			if ($isBaseURL) {
+					// 3rd priority
+				$this->conf['linkPrefix'] = $GLOBALS['TSFE']->baseUrl;
+			}
+		}
+
+		if ($this->conf['linkPrefix'] == -1 && !$isAbsRelPrefix) {   		
+				// no preix is set, return the error
+			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
+		}
+		
+		$link = ($isAbsRelPrefix ? '' : $this->conf['linkPrefix']) . $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
+			$this->prefixId . '[user]' => $user['uid'],
+			$this->prefixId . '[forgothash]' => $randHash
+		));
+
+		$msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password', '', 0), $user['username'], $link, $validEndString);
+
+			// no RDCT - Links for security reasons
+		$oldSetting = $GLOBALS['TSFE']->config['config']['notification_email_urlmode'];
+		$GLOBALS['TSFE']->config['config']['notification_email_urlmode'] = 0;
+			// send the email
+		$this->cObj->sendNotifyEmail($msg, $user['email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
+			// restore settings
+		$GLOBALS['TSFE']->config['config']['notification_email_urlmode'] = $oldSetting;  
+
+		return ''; 		
 	}
 
 	/**

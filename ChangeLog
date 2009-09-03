@@ -1,3 +1,7 @@
+2009-09-04  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #10017: [felogin] New Method for "forgotPassword"
+
 2009-09-03  Martin Kutschker  <masi@typo3.org>
 
 	* Added feature #11866: Greek transliteration
