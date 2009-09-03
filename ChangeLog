@@ -11,6 +11,7 @@
 2009-09-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.8.3 for TYPO3 4.3beta1
+	* Fixed bug #11863: htmlArea RTE: css syntax errors in language marks feature
 
 2009-09-02  Ingo Renner  <ingo@typo3.org>
 

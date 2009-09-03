@@ -143,11 +143,15 @@ Language = HTMLArea.Plugin.extend({
 			var options = select.options;
 			var rule, selector, style;
 			for (var i = options.length; --i >= 0;) {
-				selector = 'body.htmlarea-show-language-marks *[' + (this.useAttribute.lang ? 'lang=' : 'xml:lang=') + options[i].value + ']:before';
-				style = 'content: "' + options[i].value + ': "';
-				rule = selector + ' { ' + style + '; }';
+				selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + options[i].value + '"]:before';
+				style = 'content: "' + options[i].value + ': ";';
+				rule = selector + ' { ' + style + ' }';
 				if (HTMLArea.is_gecko) {
-					styleSheet.insertRule(rule, styleSheet.cssRules.length);
+					try {
+						styleSheet.insertRule(rule, styleSheet.cssRules.length);
+					} catch (e) {
+						this.appendToLog("onGenerate", "Error inserting css rule: " + rule + " Error text: " + e);
+					}
 				} else {
 					styleSheet.addRule(selector, style);
 				}
