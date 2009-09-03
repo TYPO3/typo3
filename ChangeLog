@@ -1,5 +1,6 @@
 2009-09-03  Martin Kutschker  <masi@typo3.org>
 
+	* Added feature #11866: Greek transliteration
 	* Added feature #11865: AJAX error should send HTTP status 500
 
 2009-09-03  Rupert Germann  <rupi@gmx.li>
