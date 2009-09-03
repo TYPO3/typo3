@@ -99,8 +99,10 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-			// Shortcut module is enabled for everybody
-		return true;
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShortcuts')) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

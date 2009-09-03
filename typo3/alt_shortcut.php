@@ -426,8 +426,12 @@ class SC_alt_shortcut {
 						-->
 						<table border="0" cellpadding="0" cellspacing="2" id="typo3-shortcuts">
 							<tr>
-							'.implode('
-							',$this->lines).$editIdCode.'
+							';
+							if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShortcuts')) {
+								$this->content .= implode('
+								', $this->lines);
+							}
+							$this->content .= $editIdCode . '
 							</tr>
 						</table>
 					</td>

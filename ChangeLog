@@ -1,3 +1,7 @@
+2009-09-03  Rupert Germann  <rupi@gmx.li>
+
+	* Added feature #0011773: Integrate an option to deactivate shortcuts completely  (thanks to Christopher Stelmaszyk)
+
 2009-09-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.8.3 for TYPO3 4.3beta1

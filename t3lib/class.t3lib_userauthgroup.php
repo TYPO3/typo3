@@ -656,7 +656,19 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean
 	 */
 	function mayMakeShortcut()	{
-		return $this->getTSConfigVal('options.shortcutFrame') && !$this->getTSConfigVal('options.mayNotCreateEditShortcuts');
+			// If the old BE is used (maybe with some parameters),
+			// check for options.enableShortcuts and options.shortcutFrame being set.
+		if (substr($this->getTSConfigVal('auth.BE.redirectToURL'), 0, 12) == 'alt_main.php') {
+			return $this->getTSConfigVal('options.enableShortcuts') &&
+				$this->getTSConfigVal('options.shortcutFrame') &&
+				!$this->getTSConfigVal('options.mayNotCreateEditShortcuts');
+		}
+			// If the new BE is used, don't check options.shortcutFrame,
+			// because this is not used there anymore.
+		else {
+			return $this->getTSConfigVal('options.enableShortcuts') &&
+				!$this->getTSConfigVal('options.mayNotCreateEditShortcuts');
+		}
 	}
 
 	/**
