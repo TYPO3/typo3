@@ -1,3 +1,7 @@
+2009-09-03  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 1.8.3 for TYPO3 4.3beta1
+
 2009-09-02  Ingo Renner  <ingo@typo3.org>
 
 	* Follow-up to #11438: Add a registry to t3lib - Limited the key field size to 128 chars to fit the UNIQUE key

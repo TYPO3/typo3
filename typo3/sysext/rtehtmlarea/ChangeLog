@@ -1,3 +1,7 @@
+2009-09-03  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 1.8.3 for TYPO3 4.3beta1
+
 2009-04-28  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #11003: htmlArea RTE: empty mutuallyExclusiveClasses array may cause js error
