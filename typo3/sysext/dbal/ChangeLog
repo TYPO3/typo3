@@ -1,6 +1,7 @@
 2009-09-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #11436: Unknown tables break Install-Tool (Thanks to David Bruchmann)
+	* Fixed bug #11108: DBAL wildly quotes fields and table names
 
 2008-02-04  Michael Stucki  <michael@typo3.org>
 

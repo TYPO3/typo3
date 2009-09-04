@@ -121,7 +121,9 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$query = 'DROP TABLE'.($components['ifExists']?' IF EXISTS':'').' '.$components['TABLE'];
 				break;
 			case 'adodb':
-				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->DropTableSQL('`'.$components['TABLE'].'`');
+				$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
+				$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], $handlerKey, TRUE);
+				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$handlerKey]->DataDictionary->DropTableSQL($tableName);
 				break;
 		}
 
@@ -147,8 +149,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$indexKeys = array();
 
 				foreach($components['FIELDS'] as $fN => $fCfg)	{
-						// the backticks get converted to the correct quote char automatically
-					$fieldsKeys[$fN] = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->nameQuote('`'.$fN.'`').' '.$this->compileFieldCfg($fCfg['definition']);
+					$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
+					$fieldsKeys[$fN] = $GLOBALS['TYPO3_DB']->quoteName($fN, $handlerKey, TRUE) . ' ' . $this->compileFieldCfg($fCfg['definition']);
 				}
 
 				if(isset($components['KEYS']) && is_array($components['KEYS'])) {
@@ -171,7 +173,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$tableOptions = array('postgres' => 'WITHOUT OIDS');
 
 					// Fetch table/index generation query:
-				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL('`'.$components['TABLE'].'`',implode(','.chr(10), $fieldsKeys), $tableOptions), $indexKeys);
+				$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], NULL, TRUE);
+				$query = array_merge($GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->CreateTableSQL($tableName, implode(',' . chr(10), $fieldsKeys), $tableOptions), $indexKeys);
 				break;
 		}
 
@@ -185,12 +188,14 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$query[] = parent::compileALTERTABLE($components);
 				break;
 			case 'adodb':
+				$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], NULL, TRUE);
+				$fieldName = $GLOBALS['TYPO3_DB']->quoteName($components['FIELD'], NULL, TRUE);
 				switch(strtoupper(str_replace(array(" ","\n","\r","\t"),'',$components['action'])))	{
 					case 'ADD':
-						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL('`'.$components['TABLE'].'`','`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
+						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
 						break;
 					case 'CHANGE':
-						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL('`'.$components['TABLE'].'`','`'.$components['FIELD'].'` '.$this->compileFieldCfg($components['definition']));
+						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
 						break;
 					case 'DROP':
 					case 'DROPKEY':

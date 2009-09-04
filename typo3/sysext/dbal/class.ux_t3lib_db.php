@@ -32,6 +32,7 @@
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
+ * @author	Xavier Perseguers <typo3@perseguers.ch>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -129,7 +130,8 @@ class ux_t3lib_DB extends t3lib_DB {
 				    'host' => '',	// Set by default (overridden)
 				    'database' => '',	// Set by default (overridden)
 				    'driver' => '',	// ONLY "adodb" type; eg. "mysql"
-				    'sequenceStart' => 1	// ONLY "adodb", first number in sequences/serials/...
+				    'sequenceStart' => 1,	// ONLY "adodb", first number in sequences/serials/...
+				    'useNameQuote' => 0	// ONLY "adodb", whether to use NameQuote() method from ADOdb to quote names
 				)
 	    ),
 	);
@@ -933,13 +935,13 @@ class ux_t3lib_DB extends t3lib_DB {
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
 		foreach($select_fields as $k => $v)	{
 			if($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*') {
-				$select_fields[$k]['field'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$select_fields[$k]['field'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+				$select_fields[$k]['field'] = $this->quoteName($select_fields[$k]['field']);
 			}
 			if($select_fields[$k]['table'] != '') {
-				$select_fields[$k]['table'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$select_fields[$k]['table'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+				$select_fields[$k]['table'] = $this->quoteName($select_fields[$k]['table']);
 			}
 			if($select_fields[$k]['as'] != '') {
-				$select_fields[$k]['as'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$select_fields[$k]['as'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+				$select_fields[$k]['as'] = $this->quoteName($select_fields[$k]['as']);
 			}
 			if(isset($select_fields[$k]['func_content.']) && $select_fields[$k]['func_content.'][0]['func_content'] != '*'){
 				$select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content.'][0]['func_content']);
@@ -962,16 +964,16 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		$from_table = $this->SQLparser->parseFromTables($from_table);
 		foreach($from_table as $k => $v)	{
-			$from_table[$k]['table'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$from_table[$k]['table'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+			$from_table[$k]['table'] = $this->quoteName($from_table[$k]['table']);
 			if($from_table[$k]['as'] != '') {
-				$from_table[$k]['as'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$from_table[$k]['as'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+				$from_table[$k]['as'] = $this->quoteName($from_table[$k]['as']);
 			}
 			if (is_array($v['JOIN']))	{
-				$from_table[$k]['JOIN']['withTable'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$from_table[$k]['JOIN']['withTable'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
-				$from_table[$k]['JOIN']['ON'][0]['table'] = ($from_table[$k]['JOIN']['ON'][0]['table']) ? $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$from_table[$k]['JOIN']['ON'][0]['table'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote : '';
-				$from_table[$k]['JOIN']['ON'][0]['field'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$from_table[$k]['JOIN']['ON'][0]['field'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
-				$from_table[$k]['JOIN']['ON'][1]['table'] = ($from_table[$k]['JOIN']['ON'][1]['table']) ? $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$from_table[$k]['JOIN']['ON'][1]['table'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote : '';
-				$from_table[$k]['JOIN']['ON'][1]['field'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$from_table[$k]['JOIN']['ON'][1]['field'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+				$from_table[$k]['JOIN']['withTable'] = $this->quoteName($from_table[$k]['JOIN']['withTable']);
+				$from_table[$k]['JOIN']['ON'][0]['table'] = ($from_table[$k]['JOIN']['ON'][0]['table']) ? $this->quoteName($from_table[$k]['JOIN']['ON'][0]['table']) : '';
+				$from_table[$k]['JOIN']['ON'][0]['field'] = $this->quoteName($from_table[$k]['JOIN']['ON'][0]['field']);
+				$from_table[$k]['JOIN']['ON'][1]['table'] = ($from_table[$k]['JOIN']['ON'][1]['table']) ? $this->quoteName($from_table[$k]['JOIN']['ON'][1]['table']) : '';
+				$from_table[$k]['JOIN']['ON'][1]['field'] = $this->quoteName($from_table[$k]['JOIN']['ON'][1]['field']);
 			}
 		}
 		return $this->SQLparser->compileFromTables($from_table);
@@ -1011,10 +1013,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$where_clause[$k]['sub'] = $this->_quoteWhereClause($where_clause[$k]['sub']);
 			} else {
 				if($where_clause[$k]['table'] != '') {
-					$where_clause[$k]['table'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$where_clause[$k]['table'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+					$where_clause[$k]['table'] = $this->quoteName($where_clause[$k]['table']);
 				}
 				if(!is_numeric($where_clause[$k]['field'])) {
-					$where_clause[$k]['field'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$where_clause[$k]['field'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+					$where_clause[$k]['field'] = $this->quoteName($where_clause[$k]['field']);
 				}
 			}
 			if ($where_clause[$k]['comparator'])	{
@@ -1040,9 +1042,9 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		$groupBy = $this->SQLparser->parseFieldList($groupBy);
 		foreach($groupBy as $k => $v)	{
-			$groupBy[$k]['field'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$groupBy[$k]['field'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+			$groupBy[$k]['field'] = $this->quoteName($groupBy[$k]['field']);
 			if($groupBy[$k]['table'] != '') {
-				$groupBy[$k]['table'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$groupBy[$k]['table'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+				$groupBy[$k]['table'] = $this->quoteName($groupBy[$k]['table']);
 			}
 		}
 		return $this->SQLparser->compileFieldList($groupBy);
@@ -1060,9 +1062,9 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		$orderBy = $this->SQLparser->parseFieldList($orderBy);
 		foreach($orderBy as $k => $v)	{
-			$orderBy[$k]['field'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$orderBy[$k]['field'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+			$orderBy[$k]['field'] = $this->quoteName($orderBy[$k]['field']);
 			if($orderBy[$k]['table'] != '') {
-				$orderBy[$k]['table'] = $this->handlerInstance[$this->lastHandlerKey]->nameQuote.$orderBy[$k]['table'].$this->handlerInstance[$this->lastHandlerKey]->nameQuote;
+				$orderBy[$k]['table'] = $this->quoteName($orderBy[$k]['table']);
 			}
 		}
 		return $this->SQLparser->compileFieldList($orderBy);
@@ -1117,6 +1119,24 @@ class ux_t3lib_DB extends t3lib_DB {
 		return $str;
 	}
 
+	/**
+	 * Quotes an object name (table name, field, ...)
+	 *
+	 * @param	string		Object's name
+	 * @param	string		Handler key
+	 * @param	boolean		If method NameQuote() is not used, whether to use backticks instead of driver-specific quotes
+	 * @return	string		Properly-quoted object's name
+	 */
+	function quoteName($name, $handlerKey = NULL, $useBackticks = FALSE) {
+		$handlerKey = $handlerKey ? $handlerKey : $this->lastHandlerKey;
+		$useNameQuote = isset($this->handlerCfg[$handlerKey]['config']['useNameQuote']) ? $this->handlerCfg[$handlerKey]['config']['useNameQuote'] : FALSE;
+		if ($useNameQuote) {
+			return $this->handlerInstance[$handlerKey]->DataDictionary->NameQuote($name);
+		} else {
+			$quote = $useBackticks ? '`' : $this->handlerInstance[$handlerKey]->nameQuote;
+			return $quote . $name . $quote;
+		}
+	}
 
 	/**
 	 * Return MetaType for native field type (ADOdb only!)
