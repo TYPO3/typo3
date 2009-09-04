@@ -75,7 +75,8 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 */
 	public function render($pageUid = NULL, array $additionalParams = array(), $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uriBuilder
+		$uri = $uriBuilder
+			->reset()
 			->setTargetPageUid($pageUid)
 			->setTargetPageType($pageType)
 			->setNoCache($noCache)
@@ -86,7 +87,7 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_
 			->setCreateAbsoluteUri($absolute)
 			->setAddQueryString($addQueryString)
 			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
-		$uri = $uriBuilder->build();
+			->build();
 
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());

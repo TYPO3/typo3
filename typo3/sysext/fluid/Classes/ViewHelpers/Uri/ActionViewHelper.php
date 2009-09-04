@@ -49,6 +49,7 @@ class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_ViewHelper
 	 * @param boolean $noCache set this to disable caching for the target page. You should not need this.
 	 * @param boolean $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
 	 * @param string $section the anchor to be added to the URI
+	 * @param string $format The requested format, e.g. ".html"
 	 * @param boolean $linkAccessRestrictedPages If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.
 	 * @param array $additionalParams additional query parameters that won't be prefixed like $arguments (overrule $arguments)
 	 * @param boolean $absolute If set, an absolute URI is rendered
@@ -58,20 +59,22 @@ class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_ViewHelper
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
+	public function render($action, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $format = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uriBuilder
+		$uri = $uriBuilder
+			->reset()
 			->setTargetPageUid($pageUid)
 			->setTargetPageType($pageType)
 			->setNoCache($noCache)
 			->setUseCacheHash(!$noCacheHash)
 			->setSection($section)
+			->setFormat($format)
 			->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
 			->setArguments($additionalParams)
 			->setCreateAbsoluteUri($absolute)
 			->setAddQueryString($addQueryString)
-			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
-		$uri = $uriBuilder->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
+			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
+			->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
 
 		return $uri;
 	}

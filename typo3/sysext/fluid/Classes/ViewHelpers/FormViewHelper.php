@@ -135,11 +135,11 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 			$formActionUri = $this->arguments['actionUri'];
 		} else {
 			$uriBuilder = $this->controllerContext->getUriBuilder();
-			$uriBuilder->reset();
-			$uriBuilder
+			$formActionUri = $uriBuilder
+				->reset()
 				->setTargetPageUid($this->arguments['pageUid'])
-				->setTargetPageType($this->arguments['pageType']);
-			$formActionUri = $uriBuilder->uriFor($this->arguments['action'], $this->arguments['arguments'], $this->arguments['controller'], $this->arguments['extensionName'], $this->arguments['pluginName']);
+				->setTargetPageType($this->arguments['pageType'])
+				->uriFor($this->arguments['action'], $this->arguments['arguments'], $this->arguments['controller'], $this->arguments['extensionName'], $this->arguments['pluginName']);
 		}
 		$this->tag->addAttribute('action', $formActionUri);
 	}
