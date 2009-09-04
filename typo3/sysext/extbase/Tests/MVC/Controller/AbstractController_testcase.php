@@ -104,7 +104,8 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_Web_Response');
 
 		$mockUriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder');
-		$mockUriBuilder->expects($this->once())->method('setTargetPageUid')->with(123);
+		$mockUriBuilder->expects($this->once())->method('reset')->will($this->returnValue($mockUriBuilder));
+		$mockUriBuilder->expects($this->once())->method('setTargetPageUid')->with(123)->will($this->returnValue($mockUriBuilder));
 		$mockUriBuilder->expects($this->once())->method('uriFor')->with('theActionName', $arguments, 'TheControllerName', 'TheExtensionName')->will($this->returnValue('the uri'));
 
 		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('redirectToURI'), array(), '', FALSE);

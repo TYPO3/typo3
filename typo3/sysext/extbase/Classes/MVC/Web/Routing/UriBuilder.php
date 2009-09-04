@@ -83,6 +83,10 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	protected $useCacheHash = TRUE;
 
+	/**
+	 * @var string
+	 */
+	protected $format = '';
 
 	/**
 	 * Constructs this URI Helper
@@ -127,7 +131,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 	/**
 	 * @return array
-	 * #@api
+	 * @api
 	 */
 	public function getArguments() {
 		return $this->arguments;
@@ -151,6 +155,26 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	public function getSection() {
 		return $this->section;
+	}
+
+	/**
+	 * Specifies the format of the target (e.g. "html" or "xml")
+	 *
+	 * @param string $section
+	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 * @api
+	 */
+	public function setFormat($format) {
+		$this->format = $format;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 * @api
+	 */
+	public function getFormat() {
+		return $this->format;
 	}
 
 	/**
@@ -322,16 +346,38 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	}
 
 	/**
-	 * Creates an URI by making use of the typolink mechanism.
+	 * Resets all UriBuilder options to their default value
 	 *
-	 * @param integer $pageUid uid of the target page
-	 * @param string $actionName Name of the action to be called
-	 * @param array $controllerArguments Additional query parameters, will be "namespaced"
-	 * @param string $controllerName Name of the target controller
-	 * @param string $extensionName Name of the target extension, without underscores. If NULL current ExtensionName is used.
-	 * @param string $pluginName Name of the target plugin.  If NULL current PluginName is used.
-	 * @return string the typolink URI
+	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
 	 * @api
+	 */
+	public function reset() {
+		$this->arguments = array();
+		$this->section = '';
+		$this->createAbsoluteUri = FALSE;
+		$this->addQueryString = FALSE;
+		$this->argumentsToBeExcludedFromQueryString = array();
+		$this->linkAccessRestrictedPages = FALSE;
+		$this->targetPageUid = NULL;
+		$this->targetPageType = 0;
+		$this->noCache = FALSE;
+		$this->useCacheHash = TRUE;
+
+		return $this;
+	}
+
+	/**
+	 * Creates an URI used for linking to an Extbase action.
+	 * Works in Frondend and Backend mode of TYPO3.
+	 *
+	 * @param string $actionName Name of the action to be called
+	 * @param array $controllerArguments Additional query parameters. Will be "namespaced" and merged with $this->arguments.
+	 * @param string $controllerName Name of the target controller. If not set, current ControllerName is used.
+	 * @param string $extensionName Name of the target extension, without underscores. If not set, current ExtensionName is used.
+	 * @param string $pluginName Name of the target plugin. If not set, current PluginName is used.
+	 * @return string the rendered URI
+	 * @api
+	 * @see build()
 	 */
 	public function uriFor($actionName = NULL, $controllerArguments = array(), $controllerName = NULL, $extensionName = NULL, $pluginName = NULL) {
 		if ($actionName !== NULL) {
@@ -348,8 +394,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($pluginName === NULL) {
 			$pluginName = $this->request->getPluginName();
 		}
+		if ($this->format !== '') {
+			$controllerArguments['format'] = $this->format;
+		}
 		$argumentPrefix = strtolower('tx_' . $extensionName . '_' . $pluginName);
-		$prefixedControllerArguments = (count($controllerArguments) > 0) ? array($argumentPrefix => $controllerArguments) : array();
+		$prefixedControllerArguments = array($argumentPrefix => $controllerArguments);
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
 
 		return $this->build();
@@ -417,24 +466,6 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		return $uri;
 	}
 
-	/**
-	 * Resets all UriBuilder options to their default value
-	 *
-	 * @return void
-	 * @api
-	 */
-	public function reset() {
-		$this->arguments = array();
-		$this->section = '';
-		$this->createAbsoluteUri = FALSE;
-		$this->addQueryString = FALSE;
-		$this->argumentsToBeExcludedFromQueryString = array();
-		$this->linkAccessRestrictedPages = FALSE;
-		$this->targetPageUid = NULL;
-		$this->targetPageType = 0;
-		$this->noCache = FALSE;
-		$this->useCacheHash = TRUE;
-	}
 
 	/**
 	 * Builds a TypoLink configuration array from the current settings

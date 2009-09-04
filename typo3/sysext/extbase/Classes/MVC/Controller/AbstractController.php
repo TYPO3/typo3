@@ -263,9 +263,10 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			$pageUid = $GLOBALS['TSFE']->id;
 		}
 
-		$this->uriBuilder->reset();
-		$this->uriBuilder->setTargetPageUid($pageUid);
-		$uri = $this->uriBuilder->uriFor($actionName, $arguments, $controllerName, $extensionName);
+		$uri = $this->uriBuilder
+			->reset()
+			->setTargetPageUid($pageUid)
+			->uriFor($actionName, $arguments, $controllerName, $extensionName);
 		$this->redirectToURI($uri, $delay, $statusCode);
 	}
 

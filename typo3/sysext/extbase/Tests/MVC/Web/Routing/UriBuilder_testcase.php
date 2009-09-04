@@ -75,8 +75,10 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Base_tes
 	 */
 	public function settersAndGettersWorkAsExpected() {
 		$this->uriBuilder
+			->reset()
 			->setArguments(array('test' => 'arguments'))
 			->setSection('testSection')
+			->setFormat('testFormat')
 			->setCreateAbsoluteUri(TRUE)
 			->setAddQueryString(TRUE)
 			->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))
@@ -88,6 +90,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Base_tes
 
 		$this->assertEquals(array('test' => 'arguments'), $this->uriBuilder->getArguments());
 		$this->assertEquals('testSection', $this->uriBuilder->getSection());
+		$this->assertEquals('testFormat', $this->uriBuilder->getFormat());
 		$this->assertEquals(TRUE, $this->uriBuilder->getCreateAbsoluteUri());
 		$this->assertEquals(TRUE, $this->uriBuilder->getAddQueryString());
 		$this->assertEquals(array('test' => 'addQueryStringExcludeArguments'), $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
