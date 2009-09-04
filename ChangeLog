@@ -1,6 +1,7 @@
 2009-09-04  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11868 (Follow-up to #11828): added forgotten file version/tca.php (thanks to Sven Jürgens)
+	* Fixed bug #11827: Update wizard adds _CACHEFILE to extList
 
 2009-09-04  Steffen Kamper  <info@sk-typo3.de>
 

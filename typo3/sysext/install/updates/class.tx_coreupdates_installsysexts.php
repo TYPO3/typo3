@@ -123,7 +123,12 @@ class tx_coreupdates_installsysexts {
 	 */
 	function addExtToList(array $extKeys) {
 			// Get list of installed extensions and add this one.
-		$listArr = array_keys($GLOBALS['TYPO3_LOADED_EXT']);
+		$tmpLoadedExt = $GLOBALS['TYPO3_LOADED_EXT'];
+		if (isset($tmpLoadedExt['_CACHEFILE'])) {
+			unset($tmpLoadedExt['_CACHEFILE']);
+		}
+
+		$listArr = array_keys($tmpLoadedExt);
 		$listArr = array_merge($listArr, $extKeys);
 
 			// Implode unique list of extensions to load and return:
