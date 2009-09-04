@@ -1127,13 +1127,16 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	function MetaType($type,$table,$max_length=-1)	{
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
+		$str = '';
 		switch((string)$this->handlerCfg[$this->lastHandlerKey]['type'])	{
 			case 'native':
 				$str = $type;
 				break;
 			case 'adodb':
-				$rs = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit('SELECT * FROM '.$this->quoteFromTables($table),1);
-				$str = $rs->MetaType($type, $max_length);
+				if (in_array($table, $this->cache_fieldType)) {
+					$rs = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit('SELECT * FROM ' . $this->quoteFromTables($table), 1);
+					$str = $rs->MetaType($type, $max_length);
+				}
 				break;
 			case 'userdefined':
 				$str = $this->handlerInstance[$this->lastHandlerKey]->MetaType($str,$table,$max_length);
