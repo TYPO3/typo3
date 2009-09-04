@@ -354,6 +354,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	public function reset() {
 		$this->arguments = array();
 		$this->section = '';
+		$this->format = '';
 		$this->createAbsoluteUri = FALSE;
 		$this->addQueryString = FALSE;
 		$this->argumentsToBeExcludedFromQueryString = array();

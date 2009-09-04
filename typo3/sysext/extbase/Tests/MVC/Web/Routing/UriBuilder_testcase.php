@@ -300,6 +300,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Base_tes
 		$this->uriBuilder
 			->setArguments(array('test' => 'arguments'))
 			->setSection('testSection')
+			->setFormat('someFormat')
 			->setCreateAbsoluteUri(TRUE)
 			->setAddQueryString(TRUE)
 			->setArgumentsToBeExcludedFromQueryString(array('test' => 'addQueryStringExcludeArguments'))
@@ -313,6 +314,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Base_tes
 
 		$this->assertEquals(array(), $this->uriBuilder->getArguments());
 		$this->assertEquals('', $this->uriBuilder->getSection());
+		$this->assertEquals('', $this->uriBuilder->getFormat());
 		$this->assertEquals(FALSE, $this->uriBuilder->getCreateAbsoluteUri());
 		$this->assertEquals(FALSE, $this->uriBuilder->getAddQueryString());
 		$this->assertEquals(array(), $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
