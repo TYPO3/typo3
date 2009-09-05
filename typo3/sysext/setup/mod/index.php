@@ -516,8 +516,7 @@ class SC_mod_user_setup_index {
 					}
 
 					if ($config['itemsProcFunc']) {
-						$parts = explode('->', $config['itemsProcFunc']);
-						$html = call_user_func(array($parts[0], $parts[1]));
+						$html = t3lib_div::callUserFunction($config['itemsProcFunc'], $config, $this, '');
 					} else {
 						$html = '<select id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . chr(10);
 						foreach ($config['items'] as $key => $value) {
@@ -528,6 +527,9 @@ class SC_mod_user_setup_index {
 						$html .= '</select>';
 					}
 
+				break;
+				case 'user':
+					$html = t3lib_div::callUserFunction($config['userFunc'], $config, $this, '');
 				break;
 				default:
 					$html = '';
@@ -587,7 +589,7 @@ class SC_mod_user_setup_index {
 	 *
 	* @return	string		complete select as HTML string or warning box if something went wrong.
 	 */
-	protected function renderLanguageSelect() {
+	public function renderLanguageSelect($params, $pObj) {
 
 			// compile the languages dropdown
 		$languageOptions = array(
@@ -636,13 +638,13 @@ class SC_mod_user_setup_index {
 	*
 	* @return	string		complete select as HTML string
 	*/
-	protected function renderStartModuleSelect() {
+	public function renderStartModuleSelect($params, $pObj) {
 			// start module select
 		if (empty($GLOBALS['BE_USER']->uc['startModule']))	{
 			$GLOBALS['BE_USER']->uc['startModule'] = $GLOBALS['BE_USER']->uc_default['startModule'];
 		}
 		$startModuleSelect .= '<option value=""></option>';
-		foreach ($this->loadModules->modules as $mainMod => $modData) {
+		foreach ($pObj->loadModules->modules as $mainMod => $modData) {
 			if (isset($modData['sub']) && is_array($modData['sub'])) {
 				$startModuleSelect .= '<option disabled="disabled">'.$GLOBALS['LANG']->moduleLabels['tabs'][$mainMod.'_tab'].'</option>';
 				foreach ($modData['sub'] as $subKey => $subData) {
@@ -665,7 +667,7 @@ class SC_mod_user_setup_index {
 	 *
 	 * @return	void
 	 */
-	function simulateUser()	{
+	public function simulateUser()	{
 		global $BE_USER,$LANG,$BACK_PATH;
 
 		// *******************************************************************************
@@ -708,8 +710,8 @@ class SC_mod_user_setup_index {
 	*
 	* @return	string		complete select as HTML string
 	*/
-	protected function renderSimulateUserSelect() {
-		return $this->simulateSelector;
+	public function renderSimulateUserSelect($params, $pObj) {
+		return $pObj->simulateSelector;
 	}
 
 	/**
