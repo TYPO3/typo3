@@ -149,6 +149,12 @@ class SC_mod_user_setup_index {
 			if ($d['setValuesToDefault']) {
 					// If every value should be default
 				$BE_USER->resetUC();
+			} elseif ($d['clearSessionVars']) {
+				foreach ($BE_USER->uc as $key => $value) {
+					if (!isset($columns[$key])) {
+						unset ($BE_USER->uc[$key]);
+					}
+				}
 			} else {
 					// save all submitted values if they are no array (arrays are with table=be_users) and exists in $GLOBALS['TYPO3_USER_SETTINGS'][columns]
 				foreach($columns as $field => $config) {
@@ -320,7 +326,8 @@ class SC_mod_user_setup_index {
 			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH) . '
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
 			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
-			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('setToStandard').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />'
+			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('resetConfiguration').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />
+			<input type="submit" name="data[clearSessionVars]" value="'.$LANG->getLL('clearSessionVars').'" />'
 		);
 
 			// Install Tool access file
