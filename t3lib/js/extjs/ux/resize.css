@@ -1,0 +1,68 @@
+.ux-resizable-handle-east, .ux-resizable-handle-east textarea {
+    cursor: e-resize;
+}
+
+.ux-resizable-handle-south, .ux-resizable-handle-south textarea {
+    cursor: s-resize;
+}
+
+.ux-resizable-handle-west, .ux-resizable-handle-west textarea {
+    cursor: w-resize;
+}
+
+.ux-resizable-handle-north, .ux-resizable-handle-north textarea {
+    cursor: n-resize;
+}
+
+.ux-resizable-handle-southeast, .ux-resizable-handle-southeast textarea {
+    cursor: se-resize;
+}
+
+.ux-resizable-handle-northwest, .ux-resizable-handle-northwest textarea {
+    cursor: nw-resize;
+}
+
+.ux-resizable-handle-northeast, .ux-resizable-handle-northeast textarea {
+    cursor: ne-resize;
+}
+
+.ux-resizable-handle-southwest, .ux-resizable-handle-southwest textarea {
+    cursor: sw-resize;
+}
+.ux-resizable-handle-east, .ux-resizable-handle-east textarea {
+    cursor: e-resize;
+}
+
+.ux-resizable-handle-south, .ux-resizable-handle-south textarea {
+    cursor: s-resize;
+}
+
+.ux-resizable-handle-west, .ux-resizable-handle-west textarea {
+    cursor: w-resize;
+}
+
+.ux-resizable-handle-north, .ux-resizable-handle-north textarea {
+    cursor: n-resize;
+}
+
+.ux-resizable-handle-southeast, .ux-resizable-handle-southeast textarea {
+    cursor: se-resize;
+}
+
+.ux-resizable-handle-northwest, .ux-resizable-handle-northwest textarea {
+    cursor: nw-resize;
+}
+
+.ux-resizable-handle-northeast, .ux-resizable-handle-northeast textarea {
+    cursor: ne-resize;
+}
+
+.ux-resizable-handle-southwest, .ux-resizable-handle-southwest textarea {
+    cursor: sw-resize;
+}
+
+textarea.resizable {
+	background-image: url(resize.gif);
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}

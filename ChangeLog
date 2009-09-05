@@ -1,5 +1,6 @@
 2009-09-05  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added feature #11812: Resizable Textareas for TCEforms
 	* Added feature #11407: Allow type="user" in user setup
 
 2009-09-04  Rupert Germann  <rupi@gmx.li>
