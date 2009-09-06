@@ -190,7 +190,7 @@
  * @package TYPO3
  * @subpackage tslib
  */
- class tslib_fe	{
+ class tslib_fe extends t3lib_pageRender {
 
 		// CURRENT PAGE:
 	var $id='';							// The page id (int)
@@ -457,6 +457,7 @@
 		}
 
 		$this->initCaches();
+		parent::__construct(TYPO3_mainDir . 'templates/pagerender_fe.html');
 	}
 
 	/**
@@ -2041,6 +2042,16 @@
 
 					$this->config['FEData'] = $this->tmpl->setup['FEData'];
 					$this->config['FEData.'] = $this->tmpl->setup['FEData.'];
+					
+						// class for render Header and Footer parts
+					$template = '';
+					if ($this->pSetup['pageHeaderFooterTemplateFile']) {
+						$file = $this->tmpl->getFileName($this->pSetup['pageHeaderFooterTemplateFile']);
+						if ($file) {
+							$this->setTemplateFile($file);
+						}
+					}
+					
 				}
 				$GLOBALS['TT']->pull();
 			} else {

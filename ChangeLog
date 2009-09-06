@@ -5,6 +5,7 @@
 
 2009-09-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added feature #11397: Add class for rendering HTML page in BE and FE
 	* Updated swfobjects from version 2.1 to version 2.2
 	* Added feature #11370: Inconsistent Login Screen doesn't show system required errors (thanks to Jens Hoffmann, Susanne Moog and Steffen Gebert)
 
