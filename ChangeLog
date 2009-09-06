@@ -1,3 +1,8 @@
+2009-09-06  Steffen Kamper  <info@sk-typo3.de>
+
+	* Updated swfobjects from version 2.1 to version 2.2
+	* Added feature #11370: Inconsistent Login Screen doesn't show system required errors (thanks to Jens Hoffmann, Susanne Moog and Steffen Gebert)
+
 2009-09-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #11242: Clear User Session Data
