@@ -213,3 +213,13 @@ TABLE.typo3-TCEforms td.thumbnails {
 .typo3-TCEforms-palette SELECT.select {
 	margin-top: 2px;
 }
+
+input.typo3-TCEforms-suggest-search {
+	width: 200px;
+	background-image: url(../icons/gfx/zoom.gif);
+	background-position: 2px center;
+	background-repeat: no-repeat;
+	padding-left: 20px;
+	vertical-align: middle;
+	
+}

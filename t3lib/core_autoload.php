@@ -63,6 +63,8 @@ return array(
 	't3lib_tceforms' => PATH_t3lib . 'class.t3lib_tceforms.php',
 	't3lib_tceforms_fe' => PATH_t3lib . 'class.t3lib_tceforms_fe.php',
 	't3lib_tceforms_inline' => PATH_t3lib . 'class.t3lib_tceforms_inline.php',
+	't3lib_tceforms_suggest' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_suggest.php',
+	't3lib_tceforms_suggest_defaultreceiver' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_suggest_defaultreceiver.php',
 	't3lib_tcemain' => PATH_t3lib . 'class.t3lib_tcemain.php',
 	't3lib_timetrack' => PATH_t3lib . 'class.t3lib_timetrack.php',
 	't3lib_transferdata' => PATH_t3lib . 'class.t3lib_transferdata.php',

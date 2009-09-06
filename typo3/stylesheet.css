@@ -1150,6 +1150,64 @@ table.typo3-TCEforms div.typo3-dyntabmenu-tabs {
 	margin-top: 10px;
 }
 
+div.typo3-TCEforms-suggest-position-right {
+	margin-left: 10px;
+	margin-top: 5px;
+}
+
+div.typo3-TCEforms-suggest label {
+	margin-right: 5px;
+}
+
+input.typo3-TCEforms-suggest-search {
+	width: 200px;
+	background-image: url(gfx/zoom.gif);
+	background-position: 2px center;
+	background-repeat: no-repeat;
+	padding: 1px 1px 1px 16px;
+	margin: 1px 10px 0 0;
+}
+
+div.typo3-TCEforms-suggest-choices {
+	position: absolute;
+	width: 250px;
+	background-color: white;
+	border: 1px solid #888;
+}
+div.typo3-TCEforms-suggest-choices UL {
+	list-style-type:none;
+	margin: 0;
+	padding: 0;
+}
+div.typo3-TCEforms-suggest-choices LI.selected { background-color: #ffb !important;}
+div.typo3-TCEforms-suggest-choices LI {
+	list-style-type:none;
+	display:block;
+	margin:0;
+	padding:4px 2px 4px 24px;
+	cursor:pointer;
+	background-color:#EFEFF4;
+	background-repeat:no-repeat;
+	background-position:4px center;
+}
+div.typo3-TCEforms-suggest-choices LI.suggest-noresults {
+	height: auto;
+}
+div.typo3-TCEforms-suggest-choices LI.pages {
+	background-color:#FCC;
+}
+div.typo3-TCEforms-suggest-choices SPAN.suggest-label {
+	font-weight:bold;
+}
+div.typo3-TCEforms-suggest-choices SPAN.suggest-uid {
+	font-size:0.9em;
+	margin-left:0.3em;
+}
+div.typo3-TCEforms-suggest-choices SPAN.suggest-path {
+	font-size:0.9em;
+	margin-top:0.3em;
+}
+
 
 /* - - - - - - - - - - - - - - - - - - - - -
 

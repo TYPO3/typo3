@@ -247,6 +247,7 @@ $TYPO3_CONF_VARS = Array(
 			't3lib_TCEforms_inline::createNewRecord'		    => 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
 			't3lib_TCEforms_inline::synchronizeLocalizeRecords'	=> 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
 			't3lib_TCEforms_inline::setExpandedCollapsedState'	=> 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
+			't3lib_TCEforms_suggest::searchRecord'              => 't3lib/tceforms/class.t3lib_tceforms_suggest.php:t3lib_TCEforms_suggest->processAjaxRequest',
 			'ShortcutMenu::getGroups'    => 'typo3/classes/class.shortcutmenu.php:ShortcutMenu->getAjaxShortcutGroups',
 			'ShortcutMenu::saveShortcut' => 'typo3/classes/class.shortcutmenu.php:ShortcutMenu->setAjaxShortcut',
 			'ShortcutMenu::render'       => 'typo3/classes/class.shortcutmenu.php:ShortcutMenu->renderAjax',

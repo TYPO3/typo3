@@ -361,6 +361,10 @@ class t3lib_TCEforms	{
 		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 't3lib_TCEforms_inline::')!==0) {
 			$this->inline = t3lib_div::makeInstance('t3lib_TCEforms_inline');
 		}
+			// Create instance of t3lib_TCEforms_suggest only if this a non-Suggest-AJAX call:
+		if (!isset($GLOBALS['ajaxID']) || strpos($GLOBALS['ajaxID'], 't3lib_TCEforms_suggest::')!==0) {
+			$this->suggest = t3lib_div::makeInstance('t3lib_TCEforms_suggest');
+		}
 
 			// Prepare user defined objects (if any) for hooks which extend this function:
 		$this->hookObjectsMainFields = array();
@@ -395,6 +399,7 @@ class t3lib_TCEforms	{
 		$this->titleLen = $BE_USER->uc['titleLen'];		// @deprecated since TYPO3 4.1
 
 		$this->inline->init($this);
+		$this->suggest->init($this);
 	}
 
 
@@ -3878,6 +3883,13 @@ class t3lib_TCEforms	{
 							$sOnChange = $assignValue.';this.blur();this.selectedIndex=0;'.implode('',$fieldChangeFunc);
 							$outArr[] = '<select id="' . uniqid('tceforms-select-') . '" class="tceforms-select tceforms-wizardselect" name="_WIZARD'.$fName.'" onchange="'.htmlspecialchars($sOnChange).'">'.implode('',$opt).'</select>';
 						break;
+						case 'suggest':
+							if (isset($PA['fieldTSConfig']['suggest.']['default.']['hide']) &&
+								((bool)$PA['fieldTSConfig']['suggest.']['default.']['hide'] == TRUE)) {
+								break;
+							}
+							$outArr[] = $this->suggest->renderSuggestSelector($PA['itemFormElName'], $table, $field, $row, $PA);
+						break;
 					}
 
 						// Color wizard colorbox:
@@ -5260,6 +5272,12 @@ class t3lib_TCEforms	{
 				inline.setPrependFormFieldNames("'.$this->inline->prependNaming.'");
 				inline.setNoTitleString("'.addslashes(t3lib_BEfunc::getNoRecordTitle(true)).'");
 				';
+			}
+
+				// if Suggest fields were processed, add the JS functions
+			if ($this->suggest->suggestCount > 0) {
+				$GLOBALS['SOBE']->doc->loadScriptaculous();
+				$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
 			}
 
 				// Toggle icons:
