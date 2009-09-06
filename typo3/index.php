@@ -316,12 +316,16 @@ class SC_index {
 				// the labels will be replaced later on, thus the other parts above
 				// can use these markers as well and it will be replaced
 			'HEADLINE'         => $GLOBALS['LANG']->getLL('headline', true),
-			'INFO'             => $GLOBALS['LANG']->getLL('info.jscookies', true),
+			'INFO_ABOUT'       => $GLOBALS['LANG']->getLL('info.about', true),
+			'INFO_RELOAD'      => $GLOBALS['LANG']->getLL('info.reset', true),
 			'ERROR_JAVASCRIPT' => $GLOBALS['LANG']->getLL('error.javascript', true),
 			'ERROR_COOKIES'    => $GLOBALS['LANG']->getLL('error.cookies', true),
+			'ERROR_CAPSLOCK'   => $GLOBALS['LANG']->getLL('error.capslock', true),
 			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', true),
 			'LABEL_USERNAME'   => $GLOBALS['LANG']->getLL('labels.username', true),
 			'LABEL_PASSWORD'   => $GLOBALS['LANG']->getLL('labels.password', true),
+			'CLEAR'            => $GLOBALS['LANG']->getLL('clear', true),
+			'SITELINK'         => '<a href="/">###SITENAME###</a>',
 
 				// global variables will now be replaced (at last)
 			'SITENAME'         => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
@@ -434,10 +438,10 @@ class SC_index {
 							<option value="'.htmlspecialchars($jumpScript[$valueStr]).'">'.htmlspecialchars($labels[$valueStr]).'</option>';
 				}
 				$this->interfaceSelector='
-						<select id="interfaceselector" name="interface" class="c-interfaceselector">'.$this->interfaceSelector.'
+						<select id="t3-interfaceselector" name="interface" class="c-interfaceselector" tabindex="3">'.$this->interfaceSelector.'
 						</select>';
 				$this->interfaceSelector_jump='
-						<select id="interfaceselector" name="interface" class="c-interfaceselector" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
+						<select id="t3-interfaceselector" name="interface" class="c-interfaceselector" tabindex="3" onchange="window.location.href=this.options[this.selectedIndex].value;">'.$this->interfaceSelector_jump.'
 						</select>';
 
 			} else {	// If there is only ONE interface value set:
@@ -477,7 +481,7 @@ class SC_index {
 					$GLOBALS['LANG']->getLL('typo3.cms') . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ' . $GLOBALS['LANG']->getLL('version.short') . ' ' . htmlspecialchars($GLOBALS['TYPO_VERSION']):'') .
 					'</a>. ' .
 					$GLOBALS['LANG']->getLL('copyright') . ' &copy; ' . TYPO3_copyright_year . ' Kasper Sk&#229;rh&#248;j. ' . $GLOBALS['LANG']->getLL('extension.copyright') . ' ' .
-					sprintf($GLOBALS['LANG']->getLL('details.link'), '<a href="http://typo3.com/" target="_blank">http://typo3.com/</a>') . ' ' .
+					sprintf($GLOBALS['LANG']->getLL('details.link'), '<a href="http://typo3.com/" target="_blank">http://typo3.com/</a>') . '<br /> ' .
 					$warrantyNote . ' ' .
 					sprintf($GLOBALS['LANG']->getLL('free.software'), '<a href="http://typo3.com/1316.0.html" target="_blank">', '</a> ') .
 					$GLOBALS['LANG']->getLL('keep.notice');
@@ -653,6 +657,43 @@ class SC_index {
 				} else if (document.loginform.p_field && document.loginform.p_field.type!="hidden") {
 					document.loginform.p_field.focus();
 				}
+			}
+
+				// This function shows a warning, if user has capslock enabled
+				// parameter showWarning: shows warning if true and capslock active, otherwise only hides warning, if capslock gets inactive
+			function checkCapslock(e, showWarning) {
+				if (!isCapslock(e)) {
+					document.getElementById(\'t3-capslock\').style.display = \'none\';
+				} else if (showWarning) {
+					document.getElementById(\'t3-capslock\').style.display = \'block\';
+				}
+			}
+
+				// Checks weather capslock is enabled (returns true if enabled, false otherwise)
+				// thanks to http://24ways.org/2007/capturing-caps-lock
+				
+			function isCapslock(e) {
+				var ev = e ? e : window.event;
+				if (!ev) {
+					return;
+				}
+				var targ = ev.target ? ev.target : ev.srcElement;
+				// get key pressed
+				var which = -1;
+				if (ev.which) {
+					which = ev.which;
+				} else if (ev.keyCode) {
+					which = ev.keyCode;
+				}
+				// get shift status
+				var shift_status = false;
+				if (ev.shiftKey) {
+					shift_status = ev.shiftKey;
+				} else if (ev.modifiers) {
+					shift_status = !!(ev.modifiers & 4);
+				}
+				return (((which >= 65 && which <= 90) && !shift_status) || 
+					((which >= 97 && which <= 122) && shift_status));
 			}
 			');
 

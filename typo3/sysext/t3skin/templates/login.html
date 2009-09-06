@@ -1,0 +1,140 @@
+<!-- ###PAGE### begin -->
+<div id="t3-login-form-outer">
+	<div id="t3-login-form">
+		<div id="t3-login-image">
+			###LOGO###
+		</div>
+		<div id="t3-login-form-inner" ###CSS_ERRORCLASS###>
+			<div class="t3-headline">
+				<h2>###HEADLINE###</h2>
+				<div class="t3-icons">
+					<div class="t3-helpicon">
+						<img src="sysext/t3skin/icons/login_help.gif" alt="help" />
+						<div class="t3-help">
+							###INFO_ABOUT###
+						</div>
+					</div>
+					<div class="t3-reloadicon">
+						<img src="sysext/t3skin/icons/login_reload.gif" alt="reload" onclick="document.loginform.reset(); checkFocus();" />
+						<div class="t3-help">
+							###INFO_RELOAD###
+						</div>
+					</div>
+				</div>
+			</div>###LOGINBOX_IMAGE###
+			<noscript>
+				<div id="t3-noscript-error">
+					<p>
+						###ERROR_JAVASCRIPT###
+					</p>
+				</div>
+			</noscript>
+			<div id="t3-nocookies-error" style="display:none">
+				<p>
+					###ERROR_COOKIES###
+				</p>
+			</div>
+			<div id="t3-login-form-fields">
+				###FORM###
+			</div>
+			<script type="text/javascript">
+			/*<![CDATA[*/
+				var cookieEnabled = (navigator.cookieEnabled) ? true : false;
+				
+				if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled) {
+					document.cookie = "testcookie";
+					cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
+				}
+				if (cookieEnabled) {
+					document.getElementById("t3-login-form-fields").style.display = 'block';
+				}
+				else {
+					document.getElementById("t3-nocookies-error").style.display = 'block';
+				}
+			/*]]>*/
+			</script>
+		</div>
+		###NEWS###
+	</div>
+</div>
+<div id="t3-footer">
+	<div id="t3-meta-links">
+		<a href="http://typo3.org" target="_blank">TYPO3.org</a>
+		<a href="http://typo3.org/donate/" target="_blank">###LABEL_DONATELINK###</a>
+	</div>
+	<div id="t3-copyright-notice">
+		###COPYRIGHT###
+	</div>
+</div>
+<!-- ###PAGE### end -->
+
+<!-- ###LOGIN_NEWS### begin -->
+<div id="t3-login-news-outer">
+	<div class="t3-headline">
+		<h2 class="t3-login-news-headline">###NEWS_HEADLINE###</h2>
+	</div>
+	<dl id="t3-login-news">
+		<!-- ###NEWS_ITEM### begin -->
+		<dt>
+			<span class="t3-news-title">###HEADER###</span>
+			<span class="t3-news-date">###DATE###</span>
+		</dt>
+		<dd>
+			###CONTENT###
+		</dd>
+		<!-- ###NEWS_ITEM### end -->
+	</dl>
+</div>
+<!-- ###LOGIN_NEWS### end -->
+
+<!-- ###LOGIN_FORM### begin -->
+
+<!-- ###LOGIN_ERROR### begin -->
+<div class="t3-login-error">
+	###ERROR_MESSAGE###
+</div>
+<!-- ###LOGIN_ERROR### end -->
+
+<div class="t3-login-username t3-login-field">
+	<label for="t3-username" class="t3-username">
+		###LABEL_USERNAME###:
+	</label>
+	<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" class="t3-username" tabindex="1" onkeypress="checkCapslock(event, false)" />
+	<a href="#" title="###CLEAR###" onclick="document.getElementById('t3-username').value = ''; checkFocus();" ><img src="sysext/t3skin/icons/login_clear.gif" alt="clear" title="###CLEAR###" /></a>
+</div>
+<div class="t3-login-password t3-login-field">
+	<label for="t3-password" class="t3-password">
+		###LABEL_PASSWORD###:
+	</label>
+	<input type="password" id="t3-password" name="p_field" value="###VALUE_PASSWORD###" class="t3-password" tabindex="2" onkeypress="checkCapslock(event, true);" />
+	<a href="#" title="###CLEAR###" onclick="document.getElementById('t3-password').value = ''; checkFocus();"><img src="sysext/t3skin/icons/login_clear.gif" alt="clear" title="###CLEAR###" /></a>
+</div>
+<div id="t3-capslock" style="display: none;"><img src="sysext/t3skin/icons/login_capslock.gif" alt="caps lock" /><span>###ERROR_CAPSLOCK###</span></div>
+<!-- ###INTERFACE_SELECTOR### begin -->
+<div class="t3-login-interface t3-login-field">
+	<label for="t3-interfaceselector" class="t3-interface-selector">
+		###LABEL_INTERFACE###:
+	</label>
+	###VALUE_INTERFACE###
+</div>
+<!-- ###INTERFACE_SELECTOR### end -->
+<input type="submit" name="commandLI" value="###VALUE_SUBMIT###" class="t3-login-submit" tabindex="4" /> 
+<!-- ###LOGIN_FORM### end -->
+
+<!-- ###LOGOUT_FORM### begin -->
+<h2>###HEADLINE###</h2>
+<p class="t3-username">
+	###LABEL_USERNAME###:
+</p>
+<p class="t3-username-current">
+	###VALUE_USERNAME###
+</p>
+<!-- ###INTERFACE_SELECTOR### begin -->
+<p class="t3-interface-selector">
+	###LABEL_INTERFACE###:
+</p>
+###VALUE_INTERFACE###
+<!-- ###INTERFACE_SELECTOR### end -->
+
+<input type="hidden" name="p_field" value="" /><input type="submit" name="commandLO" value="###VALUE_SUBMIT###" class="t3-submit" />
+<!-- ###LOGOUT_FORM### end -->

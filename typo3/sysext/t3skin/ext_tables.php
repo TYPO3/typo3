@@ -164,6 +164,9 @@ if (TYPO3_MODE=='BE')	{
 	
 	//print_a($TBE_STYLES,2);
 
+	// Adding HTML template for login screen
+	$TBE_STYLES['htmlTemplates']['templates/login.html'] = 'sysext/t3skin/templates/login.html';
+
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = t3lib_extMgm::extPath('t3skin').'registerIe6Stylesheet.php';
 
 }
