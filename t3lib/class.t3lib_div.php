@@ -624,7 +624,7 @@ final class t3lib_div {
 		if (is_object($GLOBALS['LANG'])) {
 			return $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $string, $chars, $appendString);
 		} elseif (is_object($GLOBALS['TSFE'])) {
-			return $GLOBALS['TSFE']->csConvObj->crop($GLOBALS['TSFE']->charSet, $string, $chars, $appendString);
+			return $GLOBALS['TSFE']->csConvObj->crop($GLOBALS['TSFE']->renderCharset, $string, $chars, $appendString);
 		} else {
 				// this case should not happen
 			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
