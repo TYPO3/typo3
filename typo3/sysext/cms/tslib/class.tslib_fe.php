@@ -1742,7 +1742,7 @@
 		$GET = t3lib_div::_GET();
 		if ($this->cHash && is_array($GET))	{
 			$this->cHash_array = t3lib_div::cHashParams(t3lib_div::implodeArrayForUrl('',$GET));
-			$cHash_calc = t3lib_div::shortMD5(serialize($this->cHash_array));
+			$cHash_calc = t3lib_div::calculateCHash($this->cHash_array);
 
 			if ($cHash_calc!=$this->cHash)	{
 				if ($this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {

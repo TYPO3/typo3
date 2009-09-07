@@ -331,7 +331,7 @@ class tx_indexedsearch_indexer {
 		$this->conf['gr_list'] = '0,-1';	// Group list (hardcoded for now...)
 
 			// cHash values:
-		$this->conf['cHash'] = $createCHash ? $this->makeCHash($cHash_array) : '';	// cHash string for additional parameters
+		$this->conf['cHash'] = $createCHash ? t3lib_div::generateCHash(t3lib_div::implodeArrayForUrl('', $cHash_array)) : '';	// cHash string for additional parameters
 		$this->conf['cHash_array'] = $cHash_array;		// Array of the additional parameters
 
 			// Set to defaults
@@ -1995,6 +1995,7 @@ class tx_indexedsearch_indexer {
 	 *
 	 * @param	array		Array of GET parameters to encode
 	 * @return	void
+	 * @deprecated since TYPO3 4.3 - use directly t3lib_div::calculateCHash()
 	 */
 	function makeCHash($paramArray)	{
 		$addQueryParams = t3lib_div::implodeArrayForUrl('', $paramArray);

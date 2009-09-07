@@ -4260,7 +4260,7 @@ final class t3lib_div {
 	 *
 	 * @param	string		Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return	array		Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
-	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink()
+	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), t3lib_div::calculateCHash()
 	 */
 	public static function cHashParams($addQueryParams) {
 		$params = explode('&',substr($addQueryParams,1));	// Splitting parameters up
@@ -4293,6 +4293,30 @@ final class t3lib_div {
 		ksort($pA);
 
 		return $pA;
+	}
+
+	/**
+	 * Returns the cHash based on provided query parameters and added values from internal call
+	 *
+	 * @param	string		Query-parameters: "&xxx=yyy&zzz=uuu"
+	 * @return	string		Hash of all the values
+	 * @see t3lib_div::cHashParams(), t3lib_div::calculateCHash()
+	 */
+	public static function generateCHash($addQueryParams) {
+		$cHashParams = t3lib_div::cHashParams($addQueryParams);
+		$cHash = t3lib_div::calculateCHash($cHashParams);
+		return $cHash;
+	}
+
+	/**
+	 * Calculates the cHash based on the provided parameters
+	 *
+	 * @param	array		Array of key-value pairs
+	 * @return	string		Hash of all the values
+	 */
+	public static function calculateCHash($params) {
+		$cHash = md5(serialize($params));
+		return $cHash;
 	}
 
 	/**

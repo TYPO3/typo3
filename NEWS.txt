@@ -139,6 +139,11 @@ Frontend
 	  This behaviour can be modified or disabled by changing [GFX][im_stripProfileCommand] in
 	  the install tool or by setting the TypoScript property "stripProfile" on IMAGE objects.
 
+	* cHashes now use the full md5 hash instead of the short hash previously calculated by
+	  t3lib_div::shortMD5(). This reduces the risk of duplicate hashes, which could happend
+	  in large web sites. However this may cause compatibility issues with some extensions
+	  (see Compatibility below).
+
 Compatibility
 =============
 
@@ -162,6 +167,10 @@ Compatibility
 	* As mentioned in "Frontend" CSS styled content has been split into several files.
 	  The update wizard can switch the versions of the static includes by refering to
 	  the TYPO3 compatibility version.
+
+	* As mentioned in "Frontend", cHash use full-length md5 now. This has an impact on extensions
+	  that make use of the cHash, like RealURL or the Crawler. Make sure to update those extensions
+	  to their latest version.
 
 Development
 ===========
