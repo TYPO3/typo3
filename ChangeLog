@@ -1,4 +1,4 @@
-2009-09-09  Tobias Liebig  <mail_typo3@etobi.de>
+2009-09-07  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #11841: Hardcoded labels in t3editor (thanks to Christopher Stelmaszyk)
 
