@@ -34,7 +34,7 @@
  * @subpackage t3lib
  * $Id:$
  */
-abstract class t3lib_pageRender implements t3lib_Singleton {
+abstract class t3lib_pageRenderer implements t3lib_Singleton {
 	
 	protected $compressJavascript = FALSE;
 	protected $compressCss = FALSE;
@@ -148,7 +148,7 @@ abstract class t3lib_pageRender implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function reset() {
-		$this->templateFile = TYPO3_mainDir . 'templates/pagerender_be.html';
+		$this->templateFile = TYPO3_mainDir . 'templates/page_be.html';
 		$this->jsFiles = array ();
 		$this->jsFooterFiles = array ();
 		$this->jsInline = array ();
@@ -934,11 +934,11 @@ abstract class t3lib_pageRender implements t3lib_Singleton {
 		$jsLibs = $this->renderJsLibraries();
 
 		if ($this->compressCss || $this->compressJavascript) {
-			// do the file compression
+				// do the file compression
 			$this->doCompress();
 		}
 		if ($this->concatenateFiles) {
-			// do the file concatenation
+				// do the file concatenation
 			$this->doConcatenate();
 		}
 
@@ -1044,7 +1044,7 @@ abstract class t3lib_pageRender implements t3lib_Singleton {
 		}
 
 
-		// get template
+			// get template
 		$templateFile = t3lib_div::getFileAbsFileName($this->templateFile, TRUE);
 		$template = t3lib_div::getURL($templateFile);
 
@@ -1162,7 +1162,7 @@ abstract class t3lib_pageRender implements t3lib_Singleton {
 			);
 		}
 		if ($this->addExtCore || $this->addExtJS) {
-			// set clear.gif, move it on top, add handler code
+				// set clear.gif, move it on top, add handler code
 			$code = '';
 			if (count($this->extOnReadyCode)) {
 				foreach ($this->extOnReadyCode as $block) {
@@ -1202,7 +1202,7 @@ abstract class t3lib_pageRender implements t3lib_Singleton {
 		// then remove concatenated files from array and add the concatenated file
 
 
-		// extern concatination
+			// extern concatination
 		if ($this->concatenateFiles && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler']) {
 			// use extern concatenate routine
 			$params = array (
@@ -1233,7 +1233,7 @@ abstract class t3lib_pageRender implements t3lib_Singleton {
 			);
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
 		} else {
-			// traverse the arrays, compress files
+				// traverse the arrays, compress files
 			$this->compressError = '';
 			
 			if ($this->compressJavascript) {
@@ -1252,7 +1252,7 @@ abstract class t3lib_pageRender implements t3lib_Singleton {
 		}
 
 		if ($this->compressCss && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler']) {
-			// use extern compress routine
+				// use extern compress routine
 			$params = array (
 				'cssInline' => &$this->cssInline
 			);

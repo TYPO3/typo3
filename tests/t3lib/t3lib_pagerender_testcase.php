@@ -22,12 +22,6 @@
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_t3lib . 'class.t3lib_pagerender.php');
-class foo extends t3lib_pageRender {
-	public function __construct() {
-		parent::__construct();
-	}		
-}
 
 /**
  * Testcase for the t3lib_pageIncludes class in the TYPO3 core.
@@ -37,7 +31,7 @@ class foo extends t3lib_pageRender {
  *
  * @author Steffen Kamper (info@sk-typo3.de)
  */
-class t3lib_pageRender_testcase extends tx_phpunit_testcase {
+class t3lib_pageRenderer_testcase extends tx_phpunit_testcase {
 	/**
 	 * @var t3lib_pageIncludes
 	 */
@@ -48,8 +42,12 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 	const PART_FOOTER = 2;
 
 	public function setUp() {
-		
-		$this->fixture = new foo;
+		$className = 't3lib_pageRenderer_' . uniqid('test');
+		eval('
+			class ' . $className . ' extends t3lib_pageRenderer {
+			}
+		');
+		$this->fixture = new $className();
 	}
 
 	public function tearDown() {
@@ -68,7 +66,7 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 	 */
 	public function fixtureCanBeCreated() {
 		$this->assertTrue(
-			$this->fixture instanceof t3lib_pageRender
+			$this->fixture instanceof t3lib_pageRenderer
 		);
 	}
 	
@@ -222,7 +220,7 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 
 		$this->assertContains(
 			$expectedReturnValue,
-			$out  
+			$out
 		);
 	}
 
@@ -238,7 +236,7 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 
 		$this->assertContains(
 			$expectedReturnValue,
-			$out      
+			$out
 		);
 	}
 	
@@ -255,7 +253,7 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 
 		$this->assertContains(
 			$expectedReturnValue,
-			$out      
+			$out
 		);
 	}
 
@@ -303,7 +301,7 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 
 		$this->assertContains(
 			$expectedReturnValue,
-			$out, '#' . nl2br($out) . '#'
+			$out
 		);
 	}
 
@@ -337,12 +335,12 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 
 		$this->assertContains(
 			$expectedReturnValue1,
-			$out, '#' . nl2br($out) . '#'
+			$out
 		);
 		
 		$this->assertContains(
 			$expectedReturnValue2,
-			$out, '#' . nl2br($out) . '#'
+			$out
 		);
 		
 	}
@@ -563,7 +561,7 @@ class t3lib_pageRender_testcase extends tx_phpunit_testcase {
 
 		$this->assertContains(
 			$expectedReturnValue,
-			$out, '#' . nl2br($out) . '#'      
+			$out
 		);
 	}
 	

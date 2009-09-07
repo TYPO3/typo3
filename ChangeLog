@@ -4,6 +4,7 @@
 
 2009-09-07  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to feature #11397: renamed t3lib_pageRenderer and templates (page_be.html, page_fe.html), cleaned unit test
 	* Follow-up to feature #11397: Added unit tests for t3lib_pageremder
 
 2009-09-06  Rupert Germann  <rupi@gmx.li>

@@ -40,7 +40,7 @@ return array(
 	't3lib_matchcondition' => PATH_t3lib . 'class.t3lib_matchcondition.php',
 	't3lib_modsettings' => PATH_t3lib . 'class.t3lib_modsettings.php',
 	't3lib_pageselect' => PATH_t3lib . 'class.t3lib_page.php',
-	't3lib_pagerender' => PATH_t3lib . 'class.t3lib_pagerender.php',
+	't3lib_pagerenderer' => PATH_t3lib . 'class.t3lib_pagerenderer.php',
 	't3lib_pageselect_getpagehook' => PATH_t3lib . 'interfaces/interface.t3lib_pageselect_getpagehook.php',
 	't3lib_pagetree' => PATH_t3lib . 'class.t3lib_pagetree.php',
 	't3lib_parsehtml' => PATH_t3lib . 'class.t3lib_parsehtml.php',
