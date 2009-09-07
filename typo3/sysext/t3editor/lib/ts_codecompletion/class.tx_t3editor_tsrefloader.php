@@ -33,6 +33,9 @@
  * @author Stephan Petzl <spetzl@gmx.at>
  * @author Christian Kartnig <office@hahnepeter.de>
  */
+
+$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
+
 class tx_t3editor_TSrefLoader {
 	/** @var DOMDocument */
 	protected $xmlDoc;
@@ -130,7 +133,7 @@ class tx_t3editor_TSrefLoader {
 	 */
 	protected function getDescription($typeId, $parameterName = '') {
 		if (!$typeId) {
-			$this->ajaxObj->setError('Syntax error: At least parameter typeId has to be supplied.');
+			$this->ajaxObj->setError($GLOBALS['LANG']->getLL('typeIDMissing'));
 			return '';
 		}
 

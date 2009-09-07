@@ -25,6 +25,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
+
 class tx_t3editor_codecompletion {
 	/** @var TYPO3AJAX */
 	protected $ajaxObj;
@@ -73,11 +75,11 @@ class tx_t3editor_codecompletion {
 				$templates = $this->getMergedTemplates($pageId);
 				// Otherwise, set an error:
 			} else {
-				$this->ajaxObj->setError('Syntax error: Parameter pageId must be a valid integer.');
+				$this->ajaxObj->setError($GLOBALS['LANG']->getLL('pageIDInteger'));
 			}
 			// Set an error if user has no access to sys_template records:
 		} else {
-			$this->ajaxObj->setError('Access denied: No permission to template records.');
+			$this->ajaxObj->setError($GLOBALS['LANG']->getLL('noPermission'));
 		}
 
 		return $templates;

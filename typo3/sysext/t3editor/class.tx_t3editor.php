@@ -44,6 +44,9 @@
  *
  * @author	Tobias Liebig <mail_typo3@etobi.de>
  */
+
+$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
+
 class tx_t3editor {
 
 	/**
@@ -196,7 +199,7 @@ class tx_t3editor {
 				'id="t3editor_disableEditor_' . $this->editorCounter.'_checkbox" ' .
 				$checked.' />&nbsp;' .
 				'<label for="t3editor_disableEditor_' . $this->editorCounter . '_checkbox">' .
-				'deactivate t3editor' .
+				$GLOBALS['LANG']->getLL('deactivate') .
 				'</label>' .
 				'<br /><br />';
 
@@ -268,7 +271,10 @@ class tx_t3editor {
 				'wrap="off" ' .
 				$pObj->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off');
 
-			$title = 'Template: ' . htmlspecialchars($parameters['tplRow']['title']) . ': Constants';
+			$title = $GLOBALS['LANG']->getLL('template') . ' ' .
+				htmlspecialchars($parameters['tplRow']['title']) .
+				$GLOBALS['LANG']->getLL('delimiter') . ' ' .
+				$GLOBALS['LANG']->getLL('constants');
 
 			$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
 						'data[constants]',
@@ -294,7 +300,10 @@ class tx_t3editor {
 				'wrap="off" ' .
 				$pObj->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off');
 
-			$title = 'Template: ' . htmlspecialchars($parameters['tplRow']['title']) . ': Setup';
+			$title = $GLOBALS['LANG']->getLL('template') . ' ' .
+				htmlspecialchars($parameters['tplRow']['title']) .
+				$GLOBALS['LANG']->getLL('delimiter') . ' ' .
+				$GLOBALS['LANG']->getLL('setup');
 
 			$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
 						'data[config]',
@@ -343,7 +352,7 @@ class tx_t3editor {
 				// TODO: fileadmin, extmng, TCEform, ...
 
 				default:
-					$ajaxObj->setError('Unknown content type: ' . $codeType);
+					$ajaxObj->setError($GLOBALS['LANG']->getLL('unknownContentType') . ' ' . $codeType);
 			}
 			$ajaxObj->setContent(array('result' => $savingsuccess));
 		}
