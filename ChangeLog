@@ -1,3 +1,7 @@
+2009-09-09  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11908: Wrong labels in Media section in constants of css_styled_content
+
 2009-09-07  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #10201: Changed cHashes to use full md5 values to reduce the probability of duplicate hashes (thanks to Dan Osipov)
