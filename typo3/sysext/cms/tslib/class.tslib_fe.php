@@ -190,7 +190,7 @@
  * @package TYPO3
  * @subpackage tslib
  */
- class tslib_fe extends t3lib_pageRenderer {
+ class tslib_fe extends t3lib_PageRenderer {
 
 		// CURRENT PAGE:
 	var $id='';							// The page id (int)
@@ -457,7 +457,7 @@
 		}
 
 		$this->initCaches();
-		parent::__construct(TYPO3_mainDir . 'templates/page_fe.html');
+		parent::__construct(PATH_tslib . 'templates/tslib_page_frontend.html');
 	}
 
 	/**

@@ -34,7 +34,7 @@
  * @subpackage t3lib
  * $Id:$
  */
-abstract class t3lib_pageRenderer implements t3lib_Singleton {
+abstract class t3lib_PageRenderer implements t3lib_Singleton {
 	
 	protected $compressJavascript = FALSE;
 	protected $compressCss = FALSE;
@@ -148,7 +148,7 @@ abstract class t3lib_pageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function reset() {
-		$this->templateFile = TYPO3_mainDir . 'templates/page_be.html';
+		$this->templateFile = TYPO3_mainDir . 'templates/template_page_backend.html';
 		$this->jsFiles = array ();
 		$this->jsFooterFiles = array ();
 		$this->jsInline = array ();
@@ -1266,7 +1266,7 @@ abstract class t3lib_pageRenderer implements t3lib_Singleton {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerender.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerender.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php']);
 }
 ?>

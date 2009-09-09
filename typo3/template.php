@@ -156,7 +156,7 @@ function fw($str)	{
  * @package TYPO3
  * @subpackage core
  */
-class template extends t3lib_pageRenderer {
+class template extends t3lib_PageRenderer {
 
 		// Vars you typically might want to/should set from outside after making instance of this class:
 	var $backPath = '';				// 'backPath' pointing back to the PATH_typo3
@@ -222,7 +222,7 @@ class template extends t3lib_pageRenderer {
 	 */
 	function template()	{
 		global $TBE_STYLES;
-		parent::__construct(TYPO3_mainDir . 'templates/page_be.html');
+		parent::__construct(TYPO3_mainDir . 'templates/template_page_backend.html');
 
 			// Setting default scriptID:
 		if (($temp_M = (string) t3lib_div::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {

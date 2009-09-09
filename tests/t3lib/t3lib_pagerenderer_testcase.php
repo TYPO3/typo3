@@ -31,7 +31,7 @@
  *
  * @author Steffen Kamper (info@sk-typo3.de)
  */
-class t3lib_pageRenderer_testcase extends tx_phpunit_testcase {
+class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	/**
 	 * @var t3lib_pageIncludes
 	 */
@@ -42,9 +42,9 @@ class t3lib_pageRenderer_testcase extends tx_phpunit_testcase {
 	const PART_FOOTER = 2;
 
 	public function setUp() {
-		$className = 't3lib_pageRenderer_' . uniqid('test');
+		$className = 't3lib_PageRenderer_' . uniqid('test');
 		eval('
-			class ' . $className . ' extends t3lib_pageRenderer {
+			class ' . $className . ' extends t3lib_PageRenderer {
 			}
 		');
 		$this->fixture = new $className();
@@ -66,7 +66,7 @@ class t3lib_pageRenderer_testcase extends tx_phpunit_testcase {
 	 */
 	public function fixtureCanBeCreated() {
 		$this->assertTrue(
-			$this->fixture instanceof t3lib_pageRenderer
+			$this->fixture instanceof t3lib_PageRenderer
 		);
 	}
 	

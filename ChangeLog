@@ -1,5 +1,6 @@
 2009-09-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* renamed t3lib_PageRenderer and the templates for backend/frontend
 	* Fixed bug #11908: Wrong labels in Media section in constants of css_styled_content
 
 2009-09-07  Francois Suter  <francois@typo3.org>
