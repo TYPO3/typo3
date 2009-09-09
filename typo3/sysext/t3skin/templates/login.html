@@ -33,18 +33,17 @@
 				<p>
 					###ERROR_COOKIES###
 				</p>
+				<p>
+					<a href="#" onclick="document.getElementById('t3-nocookies-error').style.display = 'none'; document.getElementById('t3-login-form-fields').style.display = 'block'; return false;">###ERROR_COOKIES_IGNORE###</a>
+				</p>
 			</div>
 			<div id="t3-login-form-fields">
 				###FORM###
 			</div>
 			<script type="text/javascript">
 			/*<![CDATA[*/
-				var cookieEnabled = (navigator.cookieEnabled) ? true : false;
-				
-				if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled) {
-					document.cookie = "testcookie";
-					cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
-				}
+				document.cookie = "testcookie";
+				cookieEnabled = (document.cookie.indexOf("testcookie") != -1) ? true : false;
 				if (cookieEnabled) {
 					document.getElementById("t3-login-form-fields").style.display = 'block';
 				}

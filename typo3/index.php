@@ -320,6 +320,7 @@ class SC_index {
 			'INFO_RELOAD'      => $GLOBALS['LANG']->getLL('info.reset', true),
 			'ERROR_JAVASCRIPT' => $GLOBALS['LANG']->getLL('error.javascript', true),
 			'ERROR_COOKIES'    => $GLOBALS['LANG']->getLL('error.cookies', true),
+			'ERROR_COOKIES_IGNORE' => $GLOBALS['LANG']->getLL('error.cookies_ignore', true),
 			'ERROR_CAPSLOCK'   => $GLOBALS['LANG']->getLL('error.capslock', true),
 			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', true),
 			'LABEL_USERNAME'   => $GLOBALS['LANG']->getLL('labels.username', true),

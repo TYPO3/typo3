@@ -1,5 +1,6 @@
 2009-09-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11895: Cookie detection in new t3skin login screen fails for certain cirumstances (thanks to Steffen Gebert)
 	* renamed t3lib_PageRenderer and the templates for backend/frontend
 	* Fixed bug #11908: Wrong labels in Media section in constants of css_styled_content
 

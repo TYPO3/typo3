@@ -21,6 +21,7 @@
 			<label index="error.login">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</label>
 			<label index="error.javascript">Activate JavaScript, please!</label>
 			<label index="error.cookies">Activate Cookies, please!</label>
+			<label index="error.cookies_ignore">Ignore!</label>
 			<label index="error.capslock">Attention: Caps lock enabled!</label>
 			<label index="warranty.by">Warranty is supplied by %s; %sclick for details.%s</label>
 			<label index="no.warranty">TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</label>
