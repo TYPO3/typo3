@@ -215,7 +215,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 				// if there are less records than we need, call this function again to get more records
 			if (count($rows) < $this->maxItems &&
 					$allRowsCount >= 50 && $recursionCounter < $this->maxItems) {
-				$tmp = self::queryTable($this->params['value'], ++$recursionCounter);
+				$tmp = self::queryTable($params, ++$recursionCounter);
 				$rows = array_merge($tmp, $rows);
 			}
 			return $rows;

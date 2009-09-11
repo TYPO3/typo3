@@ -1,3 +1,7 @@
+2009-09-11  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11925: Follow-up to feature #6872: TCEforms suggest fails with PHP fatal error (thanks to Steffen Gebert)
+
 2009-09-09  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11895: Cookie detection in new t3skin login screen fails for certain cirumstances (thanks to Steffen Gebert)
@@ -37,7 +41,7 @@
 
 2009-09-04  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #11868 (Follow-up to #11828): added forgotten file version/tca.php (thanks to Sven Jürgens)
+	* Fixed bug #11868 (Follow-up to #11828): added forgotten file version/tca.php (thanks to Sven Jï¿½rgens)
 	* Fixed bug #11827: Update wizard adds _CACHEFILE to extList
 
 2009-09-04  Steffen Kamper  <info@sk-typo3.de>
