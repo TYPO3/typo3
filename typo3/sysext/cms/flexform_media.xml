@@ -132,7 +132,7 @@
 											<items>
 												<numIndex index="0">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.autoPlay</numIndex>
-													<numIndex index="1">autoplay</numIndex>
+													<numIndex index="1">autoPlay</numIndex>
 												</numIndex>
 												<numIndex index="1">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.loop</numIndex>
@@ -148,7 +148,7 @@
 												</numIndex>
 												<numIndex index="4">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowScriptAccess</numIndex>
-													<numIndex index="1">allowscriptaccess</numIndex>                     
+													<numIndex index="1">allowScriptAccess</numIndex>                     
 												</numIndex>
 												<numIndex index="5">
 													<numIndex index="0">LLL:EXT:cms/locallang_ttc.xml:media.params.allowFullScreen</numIndex>

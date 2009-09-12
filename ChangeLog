@@ -1,5 +1,6 @@
 2009-09-12  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to feature #10853: Added camel case for default media params
 	* Follow-up to feature #6872: #11924: Use suggest feature in core
 
 2009-09-12  Rupert Germann  <rupi@gmx.li>
