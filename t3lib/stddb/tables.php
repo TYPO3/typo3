@@ -224,7 +224,12 @@ $TCA['pages'] = array(
 				'size' => '1',
 				'maxitems' => '1',
 				'minitems' => '0',
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
 			)
 		),
 		'tx_impexp_origuid' => array('config'=>array('type'=>'passthrough')),

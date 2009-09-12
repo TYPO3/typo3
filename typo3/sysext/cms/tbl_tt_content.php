@@ -664,12 +664,17 @@ $TCA['tt_content'] = Array (
 			'config' => Array (
 				'type' => 'group',
 				'internal_type' => 'db',
-					'allowed' => 'pages',
+				'allowed' => 'pages',
 				'size' => '3',
 				'maxitems' => '22',
 				'minitems' => '0',
-				'show_thumbs' => '1'
-			)
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
+			),
 		),
 		'recursive' => Array (
 			'exclude' => 1,
@@ -838,8 +843,13 @@ $TCA['tt_content'] = Array (
 				'size' => '5',
 				'maxitems' => '200',
 				'minitems' => '0',
-				'show_thumbs' => '1'
-			)
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
+			),
 		),
 		'spaceBefore' => Array (
 			'exclude' => 1,

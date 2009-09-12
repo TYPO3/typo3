@@ -636,8 +636,13 @@ $TCA['pages_language_overlay'] = array(
 				'size' => '3',
 				'maxitems' => '1',
 				'minitems' => '0',
-				'show_thumbs' => '1'
-			)
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
+			),
 		),
 		'shortcut_mode' => array (
 			'exclude' => 1,
@@ -812,7 +817,12 @@ $TCA['sys_template'] = array(
 				'size' => '1',
 				'maxitems' => '1',
 				'minitems' => '0',
-				'default' => ''
+				'default' => '',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
 			)
 		),
 		'include_static' => array(
@@ -852,6 +862,9 @@ $TCA['sys_template'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'_VERTICAL' => 1,
+					'suggest' => array(
+						'type' => 'suggest',
+					),
 					'edit' => array(
 						'type' => 'popup',
 						'title' => 'Edit template',

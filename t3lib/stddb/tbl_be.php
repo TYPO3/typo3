@@ -131,7 +131,12 @@ $TCA['be_users'] = array(
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
 			)
 		),
 		'file_mountpoints' => array(
@@ -439,7 +444,12 @@ $TCA['be_groups'] = array(
 				'size' => '3',
 				'maxitems' => 20,
 				'autoSizeMax' => 10,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					),
+				),
 			)
 		),
 		'file_mountpoints' => array(
