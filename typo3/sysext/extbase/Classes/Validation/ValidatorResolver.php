@@ -208,7 +208,8 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @return string Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if (class_exists($validatorName)) return $validatorName;
+		// @TODO: Quick and dirty:
+		if (class_exists($validatorName) && substr($validatorName, -9) === 'Validator') return $validatorName;
 
 		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;
