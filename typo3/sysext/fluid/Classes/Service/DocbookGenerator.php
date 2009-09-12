@@ -199,12 +199,21 @@ class Tx_Fluid_Service_DocbookGenerator {
 		$argumentsTable->addChild('title', 'Arguments');
 		$tgroup = $argumentsTable->addChild('tgroup');
 		$tgroup['cols'] = 4;
-		$this->addArgumentTableRow($tgroup->addChild('thead'), 'Name', 'Type', 'Required', 'Description', 'Default');
+		$this->addArgumentTableRow($tgroup->addChild('thead'), 'Name', 'Type', 'Description');
 
 		$tbody = $tgroup->addChild('tbody');
 
 		foreach ($argumentDefinitions as $argumentDefinition) {
-			$this->addArgumentTableRow($tbody, $argumentDefinition->getName(), $argumentDefinition->getType(), ($argumentDefinition->isRequired()?'yes':'no'), $argumentDefinition->getDescription(), $argumentDefinition->getDefaultValue());
+			$name = $argumentDefinition->getName();
+			if (!$argumentDefinition->isRequired()) {
+				$name .= ' (Optional)';
+			}
+			$description = $argumentDefinition->getDescription();
+			if ($argumentDefinition->getDefaultValue()) {
+				// TODO: Is this if-condition correct!?
+				$description .= 'Standardwert: ' . (string)$argumentDefinition->getDefaultValue();
+			}
+			$this->addArgumentTableRow($tbody, $name, $argumentDefinition->getType(), $description);
 		}
 	}
 
@@ -212,14 +221,12 @@ class Tx_Fluid_Service_DocbookGenerator {
 		return $this->objectManager->getObject($className);
 	}
 
-	private function addArgumentTableRow(SimpleXMLElement $parent, $name, $type, $required, $description, $default) {
+	private function addArgumentTableRow(SimpleXMLElement $parent, $name, $type, $description) {
 		$row = $parent->addChild('row');
 
 		$row->addChild('entry', $name);
 		$row->addChild('entry', $type);
-		$row->addChild('entry', $required);
 		$row->addChild('entry', $description);
-		$row->addChild('entry', (string)$default);
 	}
 
 	/**

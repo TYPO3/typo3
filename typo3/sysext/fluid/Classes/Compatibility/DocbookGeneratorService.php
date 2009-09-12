@@ -35,6 +35,12 @@ page.10.userFunc = Tx_Fluid_Compatibility_DocbookGeneratorService->userFunc
 class Tx_Fluid_Compatibility_DocbookGeneratorService extends Tx_Fluid_Service_DocbookGenerator {
 
 	public function userFunc() {
+		if (!class_exists('Tx_Extbase_Utility_ClassLoader')) {
+			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
+		}
+
+		$classLoader = new Tx_Extbase_Utility_ClassLoader();
+		spl_autoload_register(array($classLoader, 'loadClass'));
 		return $this->generateDocbook('Tx_Fluid_ViewHelpers');
 	}
 	protected function getClassNamesInNamespace($namespace) {

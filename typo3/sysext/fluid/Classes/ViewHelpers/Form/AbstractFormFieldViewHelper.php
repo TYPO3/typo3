@@ -36,7 +36,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Initialize arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Sebastian Kurfï¿½rst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -51,7 +51,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Either returns arguments['name'], or the correct name for Object Access.
 	 *
 	 * @return string Name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Sebastian Kurfï¿½rst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -70,7 +70,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		if ($this->arguments->hasArgument('value') && is_object($this->arguments['value'])) {
 			if (NULL !== $this->persistenceManager->getBackend()->getIdentifierByObject($this->arguments['value'])
 				&& (!$this->persistenceManager->getBackend()->isNewObject($this->arguments['value']))) {
-				$name .= '[uid]';
+				$name .= '[__identity]';
 			}
 		}
 		return $this->prefixFieldName($name);
@@ -81,7 +81,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *
 	 * @return mixed Value
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Sebastian Kurfï¿½rst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -120,7 +120,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Internal method which checks if we should evaluate a domain object or just output arguments['name'] and arguments['value']
 	 *
 	 * @return boolean TRUE if we should evaluate the domain object, FALSE otherwise.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Sebastian Kurfï¿½rst <sebastian@typo3.org>
 	 */
 	protected function isObjectAccessorMode() {
 		return $this->arguments->hasArgument('property')
