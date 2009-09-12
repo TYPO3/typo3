@@ -128,7 +128,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 *
 	 * @api
 	 */
-	public function __construct($username, $password) {
+	public function __construct($username = '', $password = '') {
 		$this->username = $username;
 		$this->password = $password;
 	}

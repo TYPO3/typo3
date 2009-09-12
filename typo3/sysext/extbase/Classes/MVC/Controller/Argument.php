@@ -46,6 +46,11 @@ class Tx_Extbase_MVC_Controller_Argument {
 	protected $propertyMapper;
 
 	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
 	 * Name of this argument
 	 * @var string
 	 */
@@ -62,6 +67,12 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @var string
 	 */
 	protected $dataType = 'Text';
+
+	/**
+	 * If the data type is an object, the class schema of the data type class is resolved
+	 * @var Tx_Extbase_Reflection_ClassSchema
+	 */
+	protected $dataTypeClassSchema;
 
 	/**
 	 * TRUE if this argument is required
@@ -108,12 +119,13 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @api
 	 */
 	public function __construct($name, $dataType = 'Text') {
+		$this->reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$this->propertyMapper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
 		if (is_array($dataType)) {
-			$this->setNewValidatorConjunction($dataType);
+			$this->setNewValidatorConjunction($dataType); // TODO: Does this really make sense? Should be "disjunction" (if we really really want to support this feature)
 		} else {
 			$this->setDataType($dataType);
 		}
@@ -182,6 +194,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = $dataType;
+		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($this->dataType);
 		return $this;
 	}
 
@@ -320,27 +333,19 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @throws Tx_Extbase_MVC_Exception_InvalidArgumentValue if the argument is not a valid object of type $dataType
 	 */
 	public function setValue($value) {
-		if (is_array($value)) {
-			if (isset($value['uid'])) {
-				$existingObject = $this->findObjectByUid($value['uid']);
-				if ($existingObject === FALSE) throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('Argument "' . $this->name . '": Querying the repository for the specified object was not sucessful.', 1237305720);
-				unset($value['uid']);
-				if (count($value) === 0) {
-					$value = $existingObject;
-				} elseif ($existingObject !== NULL) {
-					$newObject = clone $existingObject;
-					if ($this->propertyMapper->map(array_keys($value), $value, $newObject)) {
-						$value = $newObject;
-					}
-				}
-			} else {
-				$newObject = t3lib_div::makeInstance($this->dataType);
-				if ($this->propertyMapper->map(array_keys($value), $value, $newObject)) {
-					$value = $newObject;
-				}
+		if ($value !== NULL && $this->dataTypeClassSchema !== NULL) {
+			if (is_numeric($value)) {
+				$value = $this->findObjectByUid($value);
+			} elseif (is_array($value)) {
+				$value = $this->propertyMapper->map(array_keys($value), $value, $this->dataType);
+			}
+
+			if (!($value instanceof $this->dataType)) {
+				throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value must be of type "' . $this->dataType . '".', 1251730701);
 			}
 		}
 		$this->value = $value;
+
 		return $this;
 	}
 
@@ -356,8 +361,6 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
-			// TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration
-			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
 		}
 		return $object;
 	}

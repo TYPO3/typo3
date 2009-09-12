@@ -71,6 +71,11 @@ class Tx_Extbase_Property_Mapper {
 	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
 	protected $persistenceManager;
+	
+	/**
+	 * @var Tx_Extbase_Persistence_QueryFactory
+	 */
+	protected $queryFactory;
 
 	/**
 	 * Constructs the Property Mapper.
@@ -80,6 +85,7 @@ class Tx_Extbase_Property_Mapper {
 		$this->validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
 		$this->validatorResolver->injectObjectManager($objectManager);
 		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
+		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 	}
 
 	/**
@@ -160,65 +166,111 @@ class Tx_Extbase_Property_Mapper {
 	 */
 	public function map(array $propertyNames, $source, $target, $optionalPropertyNames = array()) {
 		if (!is_object($source) && !is_array($source)) throw new Tx_Extbase_Property_Exception_InvalidSource('The source object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
+
+		if (is_string($target) && strpos($target, '_') !== FALSE) {
+			return $this->transformToObject($source, $target, '--none--');
+		}
+
 		if (!is_object($target) && !is_array($target)) throw new Tx_Extbase_Property_Exception_InvalidTarget('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 
+		$this->mappingResults = new Tx_Extbase_Property_MappingResults();
 		if (is_object($target)) {
 			$targetClassSchema = $this->reflectionService->getClassSchema(get_class($target));
 		} else {
 			$targetClassSchema = NULL;
 		}
 		
-		$this->mappingResults = new Tx_Extbase_Property_MappingResults();
-		$propertyValues = array();
-
 		foreach ($propertyNames as $propertyName) {
+			$propertyValue = NULL;
 			if (is_array($source) || $source instanceof ArrayAccess) {
-				if (isset($source[$propertyName])) $propertyValues[$propertyName] = $source[$propertyName];
+				if (isset($source[$propertyName])) {
+					$propertyValue = $source[$propertyName];
+				}
 			} else {
-				$propertyValues[$propertyName] = Tx_Extbase_Reflection_ObjectAccess::getProperty($source, $propertyName);
+				$propertyValue = Tx_Extbase_Reflection_ObjectAccess::getProperty($source, $propertyName);
 			}
-		}
-		foreach ($propertyNames as $propertyName) {
-			if (isset($propertyValues[$propertyName])) {
 
-					// source is array with (seemingly) uid strings and we have a target knowing the property
-				if (is_array($propertyValues[$propertyName])
-						&& is_string(current($propertyValues[$propertyName]))
-						&& $targetClassSchema !== NULL
-						&& $targetClassSchema->hasProperty($propertyName)) {
-
+			if ($propertyValue === NULL && !in_array($propertyName, $optionalPropertyNames)) {
+				$this->mappingResults->addError(new Tx_Extbase_Error_Error("Required property '$propertyName' does not exist." , 1236785359), $propertyName);
+			} else {
+				if ($targetClassSchema !== NULL && $targetClassSchema->hasProperty($propertyName)) {
 					$propertyMetaData = $targetClassSchema->getProperty($propertyName);
-						// the target is array-like and the elementType is a class
-					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage')) && strpos($propertyMetaData['elementType'], '_') !== FALSE) {
-						foreach ($propertyValues[$propertyName] as $key => $value) {
-								// convert to object and override original value
-							$existingObject = $this->persistenceManager->getBackend()->getObjectByIdentifier($value, get_class($target));
-							if ($existingObject === FALSE) throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('Querying the repository for the specified object was not successful.', 1249379517);
-							$propertyValues[$propertyName][$key] = $existingObject;
+
+					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage')) && strpos($propertyMetaData['elementType'], '_') !== FALSE) {
+						$objects = array();
+						foreach ($propertyValue as $value) {
+							$objects[] = $this->transformToObject($value, $propertyMetaData['elementType'], $propertyName);
 						}
-					}
-						// make sure we hand out what is expected
-					if ($propertyMetaData['type'] === 'ArrayObject') {
-						$propertyValues[$propertyName] = new ArrayObject($propertyValues[$propertyName]);
-					} elseif ($propertyMetaData['type']=== 'SplObjectStorage') {
-						$objects = $propertyValues[$propertyName];
-						$propertyValues[$propertyName] = new Tx_Extbase_Persistence_ObjectStorage();
-						foreach ($objects as $object) {
-							$propertyValues[$propertyName]->attach($object);
+
+							// make sure we hand out what is expected
+						if ($propertyMetaData['type'] === 'ArrayObject') {
+							$propertyValue = new ArrayObject($objects);
+						} elseif ($propertyMetaData['type']=== 'Tx_Extbase_Persistence_ObjectStorage') {
+							$propertyValue = new Tx_Extbase_Persistence_ObjectStorage();
+							foreach ($objects as $object) {
+								$propertyValue->attach($object);
+							}
+						} else {
+							$propertyValue = $objects;
 						}
+					} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
+						$propertyValue = $this->transformToObject($propertyValue, $propertyMetaData['type'], $propertyName);
 					}
+				} elseif ($targetClassSchema !== NULL) {
+					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '$propertyName' does not exist in target class schema." , 1251813614), $propertyName);
 				}
 
 				if (is_array($target)) {
-					$target[$propertyName] = $source[$propertyName];
-				} elseif (Tx_Extbase_Reflection_ObjectAccess::setProperty($target, $propertyName, $propertyValues[$propertyName]) === FALSE) {
+					$target[$propertyName] = $propertyValue;
+				} elseif (Tx_Extbase_Reflection_ObjectAccess::setProperty($target, $propertyName, $propertyValue) === FALSE) {
 					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '$propertyName' could not be set." , 1236783102), $propertyName);
 				}
-			} elseif (!in_array($propertyName, $optionalPropertyNames)) {
-				$this->mappingResults->addError(new Tx_Extbase_Error_Error("Required property '$propertyName' does not exist." , 1236785359), $propertyName);
 			}
 		}
-		return (!$this->mappingResults->hasErrors() && !$this->mappingResults->hasWarnings());
+
+		return !$this->mappingResults->hasErrors();
+	}
+
+	/**
+	 * Transforms strings with UUIDs or arrays with UUIDs/identity properties
+	 * into the requested type, if possible.
+	 *
+	 * @param mixed $propertyValue The value to transform, string or array
+	 * @param string $targetType The type to transform to
+	 * @param string $propertyName In case of an error we add this to the error message
+	 * @return object
+	 */
+	protected function transformToObject($propertyValue, $targetType, $propertyName) {
+		var_dump(func_get_args());
+		if (is_numeric($propertyValue)) {
+			$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
+			if ($propertyValue === FALSE) {
+				$this->mappingResults->addError(new Tx_Extbase_Error_Error('Querying the repository for the specified object with UUID ' . $propertyValue . ' was not successful.' , 1249379517), $propertyName);
+			}
+		} elseif (is_array($propertyValue)) {
+			if (isset($propertyValue['__identity'])) {
+				$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
+				if ($existingObject === FALSE) throw new Tx_Extbase_Property_Exception_TargetNotFound('Querying the repository for the specified object was not successful.', 1237305720);
+				unset($propertyValue['__identity']);
+				if (count($propertyValue) === 0) {
+					$propertyValue = $existingObject;
+				} elseif ($existingObject !== NULL) {
+					$newObject = clone $existingObject;
+					if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
+						$propertyValue = $newObject;
+					}
+				}
+			} else {
+				$newObject = new $targetType;
+				if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
+					$propertyValue = $newObject;
+				}
+			}
+		} else {
+			throw new InvalidArgumentException('transformToObject() accepts only strings and arrays.', 1251814355);
+		}
+
+		return $propertyValue;
 	}
 
 	/**
@@ -229,6 +281,26 @@ class Tx_Extbase_Property_Mapper {
 	 */
 	public function getMappingResults() {
 		return $this->mappingResults;
+	}
+
+	/**
+	 * Finds an object from the repository by searching for its technical UID.
+	 *
+	 * @param string $dataType the data type to fetch
+	 * @param int $uid The object's uid
+	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
+	 */
+	protected function findObjectByUid($dataType, $uid) {
+		$query = $this->queryFactory->create($dataType);
+		$result = $query->matching($query->withUid($uid))->execute();
+		$object = NULL;
+		if (count($result) > 0) {
+			$object = current($result);
+			// TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration
+			// SK: Is this TODO still needed?
+			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
+		}
+		return $object;
 	}
 }
 

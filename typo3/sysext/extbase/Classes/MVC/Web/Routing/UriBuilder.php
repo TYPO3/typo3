@@ -523,7 +523,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected function convertDomainObjectsToIdentityArrays(array $arguments) {
 		foreach ($arguments as $argumentKey => $argumentValue) {
 			if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-				$arguments[$argumentKey] = array('uid' => $argumentValue->getUid());
+				$arguments[$argumentKey] = $argumentValue->getUid();
 			} elseif (is_array($argumentValue)) {
 				$arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);
 			}
