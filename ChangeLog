@@ -1,3 +1,7 @@
+2009-09-12  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11920: Follow-up to feature #6872: TCEforms suggest gives no results with custom TSconfig (thanks to Andreas Wolf)
+
 2009-09-11  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11925: Follow-up to feature #6872: TCEforms suggest fails with PHP fatal error (thanks to Steffen Gebert)

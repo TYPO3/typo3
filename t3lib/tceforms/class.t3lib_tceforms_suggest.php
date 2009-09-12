@@ -145,7 +145,7 @@ class t3lib_TCEforms_Suggest {
 			if (!is_array($GLOBALS['TCA'][$queryTable]) || !count($GLOBALS['TCA'][$queryTable])) {
 				continue;
 			}
-			$config = $wizardConfig['default'];
+			$config = (array)$wizardConfig['default'];
 
 			if (is_array($wizardConfig[$queryTable])) {
 				$config = t3lib_div::array_merge_recursive_overrule($config, $wizardConfig[$queryTable]);
