@@ -1,3 +1,8 @@
+
+2009-09-13  Martin Kutschker  <masi@typo3.org>
+
+	* Fixed bug #11943: TCEforms suggest classes lack final ?> and use round brackets around the uid
+
 2009-09-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to feature #10853: Added camel case for default media params
