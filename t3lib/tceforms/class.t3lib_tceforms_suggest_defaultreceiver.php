@@ -196,7 +196,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 
 				$label = $this->getLabel($row);
 				$entry = array(
-					'text'  => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">(' . $uid . ')</span><br />
+					'text'  => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
 					'table' => ($this->mmForeignTable ? $this->mmForeignTable : $this->table),
 					'label' => $label,
@@ -427,3 +427,5 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		return $entry;
 	}
 }
+
+?>
