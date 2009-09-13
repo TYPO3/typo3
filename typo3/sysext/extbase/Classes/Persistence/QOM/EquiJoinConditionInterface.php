@@ -36,7 +36,7 @@
  * @subpackage Persistence\QOM
  * @version $Id: ChildNodeJoinConditionInterface.php 1979 2009-03-09 15:44:15Z k-fish $
  */
-interface Tx_Extbase_Persistence_QOM_ChildNodeJoinConditionInterface extends Tx_Extbase_Persistence_QOM_JoinConditionInterface {
+interface Tx_Extbase_Persistence_QOM_EquiJoinConditionInterface extends Tx_Extbase_Persistence_QOM_JoinConditionInterface {
 
 	/**
 	 * Gets the name of the child selector.

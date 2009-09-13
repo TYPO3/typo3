@@ -241,7 +241,6 @@ class Tx_Extbase_Property_Mapper {
 	 * @return object
 	 */
 	protected function transformToObject($propertyValue, $targetType, $propertyName) {
-		var_dump(func_get_args());
 		if (is_numeric($propertyValue)) {
 			$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
 			if ($propertyValue === FALSE) {
@@ -296,9 +295,6 @@ class Tx_Extbase_Property_Mapper {
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
-			// TODO Check if the object is an Aggregate Root (this can be quite difficult because we have no Repository registration
-			// SK: Is this TODO still needed?
-			$this->persistenceManager->getSession()->registerReconstitutedObject($object);
 		}
 		return $object;
 	}

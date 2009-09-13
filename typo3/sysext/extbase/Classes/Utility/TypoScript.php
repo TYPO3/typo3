@@ -33,8 +33,12 @@ class Tx_Extbase_Utility_TypoScript {
 
 	/**
 	 * Removes all trailing dots recursively from TS settings array
-	 * TODO Explain why we remove the dots.
 	 *
+	 * Extbase converts the "classical" TypoScript (with trailing dot) to a format without trailing dot,
+	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
+	 *
+	 * This method performs this removal.
+	 * 
 	 * @param array $setup The settings array
 	 * @return void
 	 * @api

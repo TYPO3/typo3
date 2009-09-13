@@ -44,7 +44,6 @@ class Tx_Extbase_Utility_ClassLoader {
 	 */
 	public static function loadClass($className) {
 		// TODO Remove debug code
-		// TODO Make a registry for Extbase classes
 		//$starttime = microtime(true);
 		$classNameParts = explode('_', $className, 3);
 		$extensionKey = Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($classNameParts[1]);

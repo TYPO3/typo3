@@ -253,12 +253,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			if (isset($parentKeyFieldName)) {
 				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
 			} else {
-				// TODO Is it necessary to "normalize" and intval the list?
-				$uids = t3lib_div::trimExplode(',', $fieldValue);
-				$uidArray = array();
-				foreach ($uids as $uid) {
-					$uidArray[] = (int)$uid;
-				}
+				$uidArray = t3lib_div::intExplode(',', $fieldValue);
 				$uids = implode(',', $uidArray);
 				// FIXME Using statement() is only a preliminary solution
 				$objects = $query->statement('SELECT * FROM ' . $columnMap->getChildTableName() . ' WHERE uid IN (' . $uids . ')')->execute();

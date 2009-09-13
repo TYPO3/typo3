@@ -87,7 +87,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$fields = array();
 		$values = array();
 		$parameters = array();
-		unset($row['uid']); // TODO Check if the offset exists
+		if (isset($row['uid'])) {
+			unset($row['uid']);
+		}
 		foreach ($row as $columnName => $value) {
 			$fields[] = $columnName;
 			$values[] = '?';
@@ -528,7 +530,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function addPageIdStatement($tableName, array &$sql) {
-		// TODO We have to call the appropriate API method if we are in TYPO3BE mode
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', t3lib_div::intExplode(',', $extbaseFrameworkConfiguration['persistence']['storagePid'])) . ')';

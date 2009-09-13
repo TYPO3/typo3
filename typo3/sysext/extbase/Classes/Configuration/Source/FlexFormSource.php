@@ -78,7 +78,6 @@ class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Confi
 	 * @return void
 	 */
 	private function readFlexformIntoConf($flexFormContent, &$settings, $recursive = FALSE) {
-		// TODO Do we need the $recursive argument here?
 		if ($recursive === FALSE) {
 			$flexFormContent = t3lib_div::xml2array($flexFormContent, 'T3');
 		}

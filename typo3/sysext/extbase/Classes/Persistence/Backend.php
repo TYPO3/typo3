@@ -92,7 +92,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$this->storageBackend = $storageBackend;
 		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->persistenceBackend = $GLOBALS['TYPO3_DB']; // FIXME This is just an intermediate solution
 	}
 
 	/**
