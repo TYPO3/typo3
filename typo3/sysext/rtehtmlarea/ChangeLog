@@ -1,3 +1,7 @@
+2009-09-13  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #11847: htmlArea RTE displays empty editing area in Opera 10
+
 2009-04-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up for issue #10844: htmlArea RTE: IE8 creates erroneous ranges when selection is empty

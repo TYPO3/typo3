@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2007 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -875,7 +875,12 @@ HTMLArea.prototype.generate = function () {
 	this.sizeIframe(2);
 
 	HTMLArea._appendToLog("[HTMLArea::generate]: Editor iframe successfully created.");
-	this.initIframe();
+	if (HTMLArea.is_opera) {
+			// Opera 10 needs lots of time here...
+		window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 200);
+	} else {
+		this.initIframe();
+	}
 	return this;
 };
 
