@@ -86,7 +86,7 @@ class Tx_Fluid_ViewHelpers_Link_PageViewHelper extends Tx_Fluid_Core_ViewHelper_
 			->setArguments($additionalParams)
 			->setCreateAbsoluteUri($absolute)
 			->setAddQueryString($addQueryString)
-			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString);
+			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
 			->build();
 
 		$this->tag->addAttribute('href', $uri);

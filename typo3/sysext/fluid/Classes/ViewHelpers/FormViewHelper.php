@@ -162,7 +162,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		if ($identifier === NULL) {
 			return chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
 		}
-		return chr(10) . '<input type="hidden" name="'. $this->prefixFieldName($this->arguments['name']) . '[uid]" value="' . $identifier .'" />' . chr(10);
+		return chr(10) . '<input type="hidden" name="'. $this->prefixFieldName($this->arguments['name']) . '[__identity]" value="' . $identifier .'" />' . chr(10);
 	}
 
 	/**
