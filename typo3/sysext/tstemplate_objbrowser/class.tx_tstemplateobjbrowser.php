@@ -55,10 +55,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				'setup' => $GLOBALS['LANG']->getLL('setup')
 			),
 			'ts_browser_toplevel_setup' => array(
-				'0' => t3lib_div::strtoupper($GLOBALS['LANG']->getLL('all'))
+				'0' => $GLOBALS['LANG']->csConvObj->conv_case(
+					$GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('all'), 'toUpper'
+				)
 			),
 			'ts_browser_toplevel_const' => array(
-				'0' => t3lib_div::strtoupper($GLOBALS['LANG']->getLL('all'))
+				'0' => $GLOBALS['LANG']->csConvObj->conv_case(
+					$GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('all'), 'toUpper'
+				)
 			),
 			'ts_browser_const' => array(
 				'0' => $GLOBALS['LANG']->getLL('plainSubstitution'),
@@ -383,7 +387,10 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 					// clear
 				$out = '';
-				$out = $this->pObj->sObj." <b>" . t3lib_div::strtoupper($GLOBALS['LANG']->getLL('clear')) . "</b> &nbsp;&nbsp;";
+				$out = $this->pObj->sObj . " <b>" .
+					$GLOBALS['LANG']->csConvObj->conv_case(
+						$GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('clear'), 'toUpper'
+					) . "</b> &nbsp;&nbsp;";
 				$out .= '<input type="Checkbox" name="data[' . $this->pObj->sObj . '][clearValue]" value="1" />';
 				$out .= '<input type="Submit" name="clear_object" value="' . $GLOBALS['LANG']->getLL('clearButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
@@ -470,7 +477,11 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			} else {
 				$remove = '';
 			}
-			$label = $theKey ? $theKey : ($bType == 'setup' ? t3lib_div::strtoupper($GLOBALS['LANG']->getLL('setupRoot')) : t3lib_div::strtoupper($GLOBALS['LANG']->getLL('constantRoot')));
+			$label = $theKey ? $theKey :
+				($bType == 'setup' ?
+					$GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('setupRoot'), 'toUpper') :
+					$GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('constantRoot'), 'toUpper')
+				);
 			$theOutput .= $this->pObj->doc->spacer(15);
 			$theOutput .= $this->pObj->doc->sectionEnd();
 			$theOutput .= '<table border="0" cellpadding="1" cellspacing="0" id="typo3-objectBrowser" width="100%">

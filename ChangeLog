@@ -2,6 +2,7 @@
 2009-09-13  Martin Kutschker  <masi@typo3.org>
 
 	* Fixed bug #11943: TCEforms suggest classes lack final ?> and use round brackets around the uid
+	* Fixed bug #11945: TS objectbrowser converts labels to uppercase improperly (thanks to Christopher Stelmaszyk)
 
 2009-09-12  Steffen Kamper  <info@sk-typo3.de>
 
