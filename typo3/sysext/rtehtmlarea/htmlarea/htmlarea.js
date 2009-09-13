@@ -849,7 +849,12 @@ HTMLArea.prototype.generate = function () {
 	this.sizeIframe(2);
 
 	HTMLArea._appendToLog("[HTMLArea::generate]: Editor iframe successfully created.");
-	this.initIframe();
+	if (HTMLArea.is_opera) {
+			// Opera 10 needs lots of time here...
+		window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 200);
+	} else {
+		this.initIframe();
+	}
 	return this;
 };
 
