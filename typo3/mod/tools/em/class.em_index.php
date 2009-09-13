@@ -485,27 +485,27 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		// MENU-ITEMS:
 		$this->MOD_MENU = array(
 			'function' => array(
-				0 => 'Loaded extensions',
-				1 => 'Install extensions',
-				2 => 'Import extensions',
-				4 => 'Translation handling',
-				3 => 'Settings',
-				5 => 'Check for extension updates',
+				0 => $GLOBALS['LANG']->getLL('menu_loaded_extensions'),
+				1 => $GLOBALS['LANG']->getLL('menu_install_extensions'),
+				2 => $GLOBALS['LANG']->getLL('menu_import_extensions'),
+				4 => $GLOBALS['LANG']->getLL('menu_translation_handling'),
+				3 => $GLOBALS['LANG']->getLL('menu_settings'),
+				5 => $GLOBALS['LANG']->getLL('menu_extension_updates'),
 			),
 			'listOrder' => array(
-				'cat' => 'Category',
-				'author_company' => 'Author',
-				'state' => 'State',
-				'type' => 'Type'
+				'cat' => $GLOBALS['LANG']->getLL('list_order_category'),
+				'author_company' => $GLOBALS['LANG']->getLL('list_order_author'),
+				'state' => $GLOBALS['LANG']->getLL('list_order_state'),
+				'type' => $GLOBALS['LANG']->getLL('list_order_type'),
 			),
 			'display_details' => array(
-				1 => 'Details',
-				0 => 'Description',
-				2 => 'More details',
+				1 => $GLOBALS['LANG']->getLL('show_details'),
+				0 => $GLOBALS['LANG']->getLL('show_description'),
+				2 => $GLOBALS['LANG']->getLL('show_more_details'),
 
-				3 => 'Technical (takes time!)',
-				4 => 'Validating (takes time!)',
-				5 => 'Changed? (takes time!)',
+				3 => $GLOBALS['LANG']->getLL('show_technical'),
+				4 => $GLOBALS['LANG']->getLL('show_validating'),
+				5 => $GLOBALS['LANG']->getLL('show_changed'),
 			),
 			'display_shy' => '',
 			'display_own' => '',
@@ -516,12 +516,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 
 			'singleDetails' => array(
-				'info' => 'Information',
-				'edit' => 'Edit files',
-				'backup' => 'Backup/Delete',
-				'dump' => 'Dump DB',
-				'upload' => 'Upload to TER',
-				'updateModule' => 'UPDATE!',
+				'info' => $GLOBALS['LANG']->getLL('details_info'),
+				'edit' => $GLOBALS['LANG']->getLL('details_edit'),
+				'backup' => $GLOBALS['LANG']->getLL('details_backup_delete'),
+				'dump' => $GLOBALS['LANG']->getLL('details_dump_db'),
+				'upload' => $GLOBALS['LANG']->getLL('details_upload'),
+				'updateModule' => $GLOBALS['LANG']->getLL('details_update'),
 			),
 			'fe_u' => '',
 			'fe_p' => '',
@@ -569,10 +569,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if (empty($this->MOD_SETTINGS['mirrorListURL'])) $this->MOD_SETTINGS['mirrorListURL'] = $TYPO3_CONF_VARS['EXT']['em_mirrorListURL'];
 
 		// Starting page:
-		$this->content.=$this->doc->header('Extension Manager');
+		$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('header'));
 		$this->content.=$this->doc->spacer(5);
 
-		// Commands given which is executed regardless of main menu setting:
+		// Command given which is executed regardless of main menu setting:
 		if ($this->CMD['showExt'])	{	// Show details for a single extension
 			$this->showExtDetails($this->CMD['showExt']);
 		} elseif ($this->CMD['requestInstallExtensions'])	{	// Show details for a single extension
@@ -589,17 +589,17 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			$this->importExtInfo($this->CMD['importExtInfo'],$this->CMD['extVersion']);
 		} else {	// No command - we show what the menu setting tells us:
 			if (t3lib_div::inList('0,1,2',$this->MOD_SETTINGS['function']))	{
-				$menu.='&nbsp;Group by:&nbsp;'.t3lib_BEfunc::getFuncMenu(0,'SET[listOrder]',$this->MOD_SETTINGS['listOrder'],$this->MOD_MENU['listOrder']).
-				'&nbsp;&nbsp;Show:&nbsp;'.t3lib_BEfunc::getFuncMenu(0,'SET[display_details]',$this->MOD_SETTINGS['display_details'],$this->MOD_MENU['display_details']).'<br />';
+				$menu .= '&nbsp;' . $GLOBALS['LANG']->getLL('group_by') . '&nbsp;' . t3lib_BEfunc::getFuncMenu(0, 'SET[listOrder]', $this->MOD_SETTINGS['listOrder'], $this->MOD_MENU['listOrder']) .
+				'&nbsp;&nbsp;' . $GLOBALS['LANG']->getLL('show') . '&nbsp;' . t3lib_BEfunc::getFuncMenu(0, 'SET[display_details]', $this->MOD_SETTINGS['display_details'], $this->MOD_MENU['display_details']) . '<br />';
 			}
 			if (t3lib_div::inList('0,1,5',$this->MOD_SETTINGS['function']))	{
-				$menu.='<label for="checkDisplayShy">Display shy extensions:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_shy]',$this->MOD_SETTINGS['display_shy'],'','','id="checkDisplayShy"');
+				$menu.='<label for="checkDisplayShy">' . $GLOBALS['LANG']->getLL('display_shy') . '</label>&nbsp;&nbsp;' . t3lib_BEfunc::getFuncCheck(0, 'SET[display_shy]', $this->MOD_SETTINGS['display_shy'], '', '', 'id="checkDisplayShy"');
 			}
 			if (t3lib_div::inList('2',$this->MOD_SETTINGS['function']) && strlen($this->fe_user['username']))	{
-				$menu.='<label for="checkDisplayOwn">Only my extensions:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_own]',$this->MOD_SETTINGS['display_own'],'','','id="checkDisplayOwn"');
+				$menu.='<label for="checkDisplayOwn">' . $GLOBALS['LANG']->getLL('only_my_ext') . '</label>&nbsp;&nbsp;' . t3lib_BEfunc::getFuncCheck(0, 'SET[display_own]', $this->MOD_SETTINGS['display_own'], '', '', 'id="checkDisplayOwn"');
 			}
 			if (t3lib_div::inList('0,1,2',$this->MOD_SETTINGS['function']))	{
-				$menu.='&nbsp;&nbsp;<label for="checkDisplayObsolete">Show obsolete:</label>&nbsp;&nbsp;'.t3lib_BEfunc::getFuncCheck(0,'SET[display_obsolete]',$this->MOD_SETTINGS['display_obsolete'],'','','id="checkDisplayObsolete"');
+				$menu.='&nbsp;&nbsp;<label for="checkDisplayObsolete">' . $GLOBALS['LANG']->getLL('show_obsolete') . '</label>&nbsp;&nbsp;' . t3lib_BEfunc::getFuncCheck(0, 'SET[display_obsolete]', $this->MOD_SETTINGS['display_obsolete'], '', '', 'id="checkDisplayObsolete"');
 			}
 
 			$this->content.=$this->doc->section('','<form action="index.php" method="post" name="pageform"><span class="nobr">'.$menu.'</span></form>');
@@ -704,7 +704,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		}
 			// Back
 		if(($this->CMD['showExt'] && (!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone'))) || ($this->CMD['importExt'] || $this->CMD['uploadExt'] && (!$this->CMD['standAlone'])) || $this->CMD['importExtInfo']) {
-			$buttons['back'] = '<a href="index.php" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' title="Go back" class="absmiddle" alt="" /></a>';
+			$buttons['back'] = '<a href="index.php" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' title="' . $GLOBALS['LANG']->getLL('go_back') . '" class="absmiddle" alt="" /></a>';
 		}
 
 		return $buttons;
@@ -768,14 +768,14 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
 		$content.= '<form action="index.php" method="post" name="lookupform">';
-		$content.= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="Search" /><br /><br />';
+		$content.= '<label for="_lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /><br /><br />';
 
 		$content.= '</form>
 
 			<!-- Loaded Extensions List -->
 			<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
-		$this->content.=$this->doc->section('Loaded Extensions',$content,0,1);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('loaded_exts'),$content,0,1);
 	}
 
 	/**
@@ -839,15 +839,15 @@ EXTENSION KEYS:
 ';
 
 			$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'avail', $GLOBALS['BACK_PATH'], '|<br />');
-			$content.= 'If you want to use an extension in TYPO3, you should simply click the "plus" button '.$this->installButton().' . <br />
-						Installed extensions can also be removed again - just click the remove button '.$this->removeButton().' .<br /><br />';
+			$content.= sprintf($GLOBALS['LANG']->getLL('how_to_install'), $this->installButton()) . ' <br />' .
+						sprintf($GLOBALS['LANG']->getLL('how_to_uninstall'), $this->removeButton()). ' <br /><br />';
 			$content .= '<form action="index.php" method="post" name="lookupform">';
-			$content .= '<label for="_lookUp">Look up:</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="Search" /></form><br /><br />';
+			$content .= '<label for="_lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /></form><br /><br />';
 			$content.= $this->securityHint.'<br /><br />';
 
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
 
-			$this->content.=$this->doc->section('Available Extensions - Grouped by: '.$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']],$content,0,1);
+			$this->content.=$this->doc->section(sprintf($GLOBALS['LANG']->getLL('available_extensions'), $this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']]),$content,0,1);
 		}
 	}
 
@@ -5449,7 +5449,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					}
 				}
 				$content .= '<tr class="bgColor4"><td valign="top">'.$icon.'</td>'.
-'<td valign="top">' . ($data['EM_CONF']['state'] == 'excludeFromUpdates' ? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' (write-protected)</span>' : '<a href="?CMD[importExtInfo]='.$name.'">'.$data[EM_CONF][title].'</a>') . '</td>'.
+'<td valign="top">' . ($data['EM_CONF']['state'] == 'excludeFromUpdates' ? '<span style="color:#cf7307">' . $data['EM_CONF']['title'] . ' ' . $LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:write_protected') . '</span>' : '<a href="?CMD[importExtInfo]='.$name.'">'.$data[EM_CONF][title].'</a>') . '</td>'.
 '<td valign="top">'.$name.'</td>'.
 '<td valign="top" align="right">'.$data[EM_CONF][version].'</td>'.
 '<td valign="top" align="right">'.$lastversion.'</td>'.
