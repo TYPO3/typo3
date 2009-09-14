@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  Copyright (c) 2003 dynarch.com. Authored by Mihai Bazon. Sponsored by www.americanbible.org.
-*  Copyright (c) 2004, 2005 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  Copyright (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -177,10 +177,16 @@ ContextMenu.prototype.pushOperations = function(opcodes,elmenus,tbo) {
 	if (enabled && elmenus.length) elmenus.push(null);
 	for (i = opcodes.length; i > 0;) {
 		opcode = opcodes[--i];
-		if(opEnabled[opcode]) elmenus.push([i18n[opcode + "-title"],
+		if (opEnabled[opcode]) {
+			elmenus.push([
+				i18n[opcode + "-title"],
 				(tbo ? ContextMenu.tableOperationsHandler(editor, tbo, opcode) : ContextMenu.execCommandHandler(editor, opcode)),
 				i18n[opcode + "-tooltip"],
-				btnList[opcode][1], opcode]);
+				btnList[opcode][1],
+				opcode,
+				(opcode == "table-prop" || opcode == "row-prop" || opcode == "cell-prop")
+				]);
+		}
 	}
 };
 
@@ -349,9 +355,15 @@ ContextMenu.mouseDownHandler = function(item) {
 ContextMenu.mouseUpHandler = function(item,instance) {
 	return (function(ev) {
 		var timeStamp = (new Date()).getTime();
-		if (timeStamp - instance.timeStamp > 500) item.__msh.activate();
-		if (!HTMLArea.is_ie) HTMLArea._stopEvent(ev);
-		instance.editor.updateToolbar();
+		if (timeStamp - instance.timeStamp > 500) {
+			item.__msh.activate();
+		}
+		if (!HTMLArea.is_ie) {
+			HTMLArea._stopEvent(ev);
+		}
+		if (!item.__msh.dialog) {
+			instance.editor.updateToolbar();
+		}
 		return false;
 	});
 };
@@ -491,7 +503,8 @@ ContextMenu.prototype.popupMenu = function(ev,target) {
 				tooltip:	option[2] || null,
 				icon:		option[3] || null,
 				activate:	ContextMenu.activateHandler(item, this),
-				cmd:		option[4] || null
+				cmd:		option[4] || null,
+				dialog:		option[5] || null
 			};
 			label = label.replace(/_([a-zA-Z0-9])/, "<u>$1</u>");
 			if (label != option[0]) this.keys.push([ RegExp.$1, item ]);

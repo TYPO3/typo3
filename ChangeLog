@@ -1,6 +1,7 @@
 2009-09-13  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #11847: htmlArea RTE displays empty editing area in Opera 10
+	* Fixed bug #11946: htmlArea RTE: table properties editing dialogue windows loose focus after opening in IE8
 
 2009-08-28  Michael Stucki  <michael@typo3.org>
 
