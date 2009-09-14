@@ -157,6 +157,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			} elseif ($parameterInfo['array']) {
 				$dataType = 'array';
 			}
+			// TODO Exception here if type has not been determined!
 			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
 
 			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE), $defaultValue);

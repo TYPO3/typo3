@@ -380,9 +380,12 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	/**
 	 * Builds class schemata from classes annotated as entities or value objects
 	 *
-	 * @return void
+	 * @return Tx_Extbase_Reflection_ClassSchema The class schema
 	 */
 	protected function buildClassSchema($className) {
+		if (!class_exists($classSchema)) {
+			return NULL;
+		}
 		$classSchema = new Tx_Extbase_Reflection_ClassSchema($className);
 		if (is_subclass_of($className, 'Tx_Extbase_DomainObject_AbstractEntity')) {
 			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_ENTITY);
@@ -395,7 +398,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			$classSchema->setModelType(Tx_Extbase_Reflection_ClassSchema::MODELTYPE_VALUEOBJECT);
 		} else {
 			return NULL;
-
 		}
 
 		foreach ($this->getClassPropertyNames($className) as $propertyName) {
