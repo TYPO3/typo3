@@ -236,7 +236,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Base_tes
 
 		$this->uriBuilder->setArguments(array('somePrefix' => array('someDomainObject' => $mockDomainObject)));
 
-		$expectedResult = 'mod.php?M=moduleKey&somePrefix%5BsomeDomainObject%5D%5Buid%5D=123';
+		$expectedResult = 'mod.php?M=moduleKey&somePrefix%5BsomeDomainObject%5D=123';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 
 		$this->assertEquals($expectedResult, $actualResult);
@@ -376,7 +376,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Base_tes
 		$this->uriBuilder->setTargetPageUid(123);
 		$this->uriBuilder->setArguments(array('someDomainObject' => $mockDomainObject1, 'baz' => array('someOtherDomainObject' => $mockDomainObject2)));
 
-		$expectedConfiguration = array('parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&someDomainObject%5Buid%5D=123&baz%5BsomeOtherDomainObject%5D%5Buid%5D=321');
+		$expectedConfiguration = array('parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&someDomainObject=123&baz%5BsomeOtherDomainObject%5D=321');
 		$actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
 
 		$this->assertEquals($expectedConfiguration, $actualConfiguration);
@@ -457,7 +457,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_Base_tes
 		$mockDomainObject2 = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_DomainObject_AbstractEntity'), array('dummy'));
 		$mockDomainObject2->_set('uid', '321');
 
-		$expectedResult = array('foo' => array('bar' => 'baz'), 'domainObject1' => array('uid' => '123'), 'second' => array('domainObject2' => array('uid' => '321')));
+		$expectedResult = array('foo' => array('bar' => 'baz'), 'domainObject1' => '123', 'second' => array('domainObject2' =>'321'));
 		$actualResult = $this->uriBuilder->_call('convertDomainObjectsToIdentityArrays', array('foo' => array('bar' => 'baz'), 'domainObject1' => $mockDomainObject1, 'second' => array('domainObject2' => $mockDomainObject2)));
 
 		$this->assertEquals($expectedResult, $actualResult);

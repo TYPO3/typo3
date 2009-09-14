@@ -72,57 +72,19 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_Base_testca
 	/**
 	 * @test
 	 */
-	public function setValueTriesToConvertAnUIDIntoTheRealObject() {
+	public function setValueTriesToConvertAnUIDIntoTheRealObjectIfTheDataTypeClassSchemaIsSet() {
 		$object = new StdClass();
 		
 		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('findObjectByUid'), array(), '', FALSE);
 		$argument->expects($this->once())->method('findObjectByUid')->with('42')->will($this->returnValue($object));
-		$argument->setValue(array('uid' => '42'));
-	
-		$this->assertSame($object, $argument->_get('value'));
-	}
-	
-	/**
-	 * @test
-	 */
-	public function setValueTriesToConvertAnIdentityArrayContainingIdentifiersIntoTheRealObject() {
-		$object = new stdClass();
-			
-		// $mockQuery = $this->getMock('Tx_Extbase_Persistence_Query', array(), array(), '', FALSE);
-		# TODO Insert more expectations here
-		// $mockQuery->expects($this->once())->method('execute')->will($this->returnValue(array($object)));
-	
-		// $mockQueryFactory = $this->getMock('Tx_Extbase_Persistence_QueryFactory', array(), array(), '', FALSE);
-		// $mockQueryFactory->expects($this->once())->method('create')->with('MyClass')->will($this->returnValue($mockQuery));
-	
-		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('findObjectByUid'), array(), '', FALSE);
-		$argument->expects($this->once())->method('findObjectByUid')->with('42')->will($this->returnValue($object));
-		$argument->_set('dataType', 'MyClass');
+		$argument->_set('dataTypeClassSchema', 'stdClass');
+		$argument->_set('dataType', 'stdClass');
 		// $argument->_set('queryFactory', $mockQueryFactory);
-		$argument->setValue(array('uid' => '42'));
-	
+		$argument->setValue('42');
+
 		$this->assertSame($object, $argument->_get('value'));
 	}
-	
-	/**
-	 * @test
-	 */
-	public function setValueConvertsAnArrayIntoAFreshObjectWithThePropertiesSetToTheArrayValuesIfDataTypeIsAClassAndNoIdentityInformationIsFoundInTheValue() {
-		eval('class MyClass {}');		
-		$object = new MyClass;
-		
-		$theValue = array('property1' => 'value1', 'property2' => 'value2');
-	
-		$mockPropertyMapper = $this->getMock('Tx_Extbase_Property_Mapper', array('map'), array(), '', FALSE);
-		$mockPropertyMapper->expects($this->once())->method('map')->with(array('property1', 'property2'), $theValue, $object)->will($this->returnValue(TRUE));
-	
-		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
-		$argument->_set('dataType', 'MyClass');
-		$argument->_set('propertyMapper', $mockPropertyMapper);
-		$argument->setValue($theValue);
-	
-		$this->assertTrue($argument->_get('value') instanceof MyClass);
-	}
+
 		
 	/**
 	 * @test

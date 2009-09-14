@@ -49,7 +49,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Base_t
 	 */
 	public function resolveValidatorObjectNameReturnsTheGivenArgumentIfAnObjectOfThatNameIsRegistered() {
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
-		$validatorName = uniqid('FooValidator_');
+		$validatorName = uniqid('FooValidator_') . 'Validator';
 		eval('class ' . $validatorName . ' {}');
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
 		$validatorResolver->_set('objectManager', $mockObjectManager);
