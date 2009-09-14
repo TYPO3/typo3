@@ -272,7 +272,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$view->injectSettings($this->settings);
 		}
 		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely.
-		// $view->assign('flashMessages', $this->popFlashMessages());
+		$view->assign('flashMessages', $this->popFlashMessages());
 		return $view;
 	}
 
@@ -354,6 +354,18 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
 		}
 		return $message;
+	}
+	
+	/**
+	 * A template method for displaying custom error flash messages, or to
+	 * display no flash message at all on errors. Override this to customize
+	 * the flash message in your action controller.
+	 *
+	 * @return string|boolean The flash message or FALSE if no flash message should be set
+	 * @api
+	 */
+	protected function getErrorFlashMessage() {
+		return 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '()';
 	}
 
 	/**
