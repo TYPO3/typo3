@@ -435,6 +435,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap($className);
 		foreach ($queuedChildObjects as $propertyName => $childObjects) {
 			$columnMap = $dataMap->getColumnMap($propertyName);
+			$childPidArray = array();
 			foreach($childObjects as $childObject) {
 				$this->persistObject($childObject, $object, $propertyName);
 				if ($childObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
