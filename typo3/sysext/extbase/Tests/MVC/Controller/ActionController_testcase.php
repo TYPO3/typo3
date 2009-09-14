@@ -177,7 +177,7 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
 		$mockObjectManager->expects($this->at(0))->method('getObject')->with('Tx_Fluid_View_TemplateView')->will($this->returnValue($mockFluidTemplateView));
 
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext', 'resolveViewObjectName'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext', 'resolveViewObjectName', 'popFlashMessages'), array(), '', FALSE);
 		$mockController->expects($this->once())->method('buildControllerContext')->will($this->returnValue($mockControllerContext));
 		$mockController->_set('objectManager', $mockObjectManager);
 
@@ -200,15 +200,16 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockFluidTemplateView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface', array('setControllerContext', 'getViewHelper', 'assign', 'assignMultiple', 'render', 'hasTemplate', 'initializeView'));
 		$mockFluidTemplateView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
 		$mockFluidTemplateView->expects($this->once())->method('hasTemplate')->will($this->returnValue(FALSE));
-		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
+
+		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface', array('setControllerContext', 'getViewHelper', 'assign', 'assignMultiple', 'render', 'hasTemplate', 'initializeView'));
 		$mockView->expects($this->once())->method('setControllerContext')->with($mockControllerContext);
 		$mockView->expects($this->once())->method('initializeView');
 
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
+		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
 		$mockObjectManager->expects($this->at(0))->method('getObject')->with('Tx_Fluid_View_TemplateView')->will($this->returnValue($mockFluidTemplateView));
 		$mockObjectManager->expects($this->at(1))->method('getObject')->with('Tx_Extbase_MVC_View_EmptyView')->will($this->returnValue($mockView));
 
-		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext'), array(), '', FALSE);
+		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext', 'popFlashMessages'), array(), '', FALSE);
 		$mockController->expects($this->once())->method('buildControllerContext')->will($this->returnValue($mockControllerContext));
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('objectManager', $mockObjectManager);

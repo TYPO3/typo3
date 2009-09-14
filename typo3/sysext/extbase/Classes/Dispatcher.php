@@ -26,7 +26,7 @@
  * Creates a request an dispatches it to the controller which was specified
  * by TS Setup, Flexform and returns the content to the v4 framework.
  *
- * This class is the main entry point for extbase extensions in the frontend.
+ * This class is the main entry point for extbase extensions.
  *
  * @package Extbase
  * @version $ID:$
@@ -436,7 +436,7 @@ class Tx_Extbase_Dispatcher {
 			// directory containing the controller file. We are using mod.php dispatcher
 			// and thus we are already within typo3/ because we call typo3/mod.php
 		$GLOBALS['BACK_PATH'] = '';
-		return $this->dispatch('Here comes Extbase BE Module', $extbaseConfiguration);
+		return $this->dispatch('', $extbaseConfiguration);
 	}
 	
 }
