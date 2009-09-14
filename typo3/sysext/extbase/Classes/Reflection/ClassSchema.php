@@ -121,7 +121,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 			$type = ($matches['type'] === 'int') ? 'integer' : $matches['type'];
 			$elementType = isset($matches['elementType']) ? $matches['elementType'] : NULL;
 
-			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'SplObjectStorage'))) {
+			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage', 'Tx_Extbase_Persistence_LazyObjectStorage'))) {
 				throw new Tx_Extbase_Reflection_Exception_InvalidPropertyType('Property  of type "' . $type . '" must not have an element type hint (' . $elementType . ').', 1248103053);
 			}
 

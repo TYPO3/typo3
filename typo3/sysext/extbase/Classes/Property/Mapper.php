@@ -266,7 +266,7 @@ class Tx_Extbase_Property_Mapper {
 				}
 			}
 		} else {
-			throw new InvalidArgumentException('transformToObject() accepts only strings and arrays.', 1251814355);
+			throw new InvalidArgumentException('transformToObject() accepts only numeric values and arrays.', 1251814355);
 		}
 
 		return $propertyValue;

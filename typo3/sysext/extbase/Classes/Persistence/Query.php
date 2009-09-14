@@ -371,50 +371,28 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function equals($propertyName, $operand, $caseSensitive = TRUE) {
 		$uniqueVariableName = uniqid($propertyName);
 		if (is_object($operand) && !($operand instanceof DateTime)) {
-			// FIXME This branch of if-then-else is not fully backported and non functional by now
 			$operand = $this->persistenceManager->getBackend()->getIdentifierByObject($operand);
-			$left = $source;
-			$columnMap = $this->dataMapper->getDataMap($this->className)->getColumnMap($propertyName);
-			$childTableName = $columnMap->getChildTableName();
-			$right = $this->QOMFactory->selector($childClassName);
-			$joinCondition = $this->QOMFactory->childNodeJoinCondition($childTableName, $parentTableName);
-
-			$this->source = $this->QOMFactory->join(
-				$left,
-				$right,
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
-				$joinCondition
-				);
-
+		}
+		if ($caseSensitive) {
 			$comparison = $this->QOMFactory->comparison(
-				$this->QOMFactory->propertyValue($propertyName, $sourceSelectorName),
+				$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
 				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
 				$this->QOMFactory->bindVariable($uniqueVariableName)
 				);
-				
+		} else {
+			$comparison = $this->QOMFactory->comparison(
+				$this->QOMFactory->lowerCase(
+					$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName())
+				),
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
+				$this->QOMFactory->bindVariable($uniqueVariableName)
+				);
+		}
+
+		if ($caseSensitive) {
 			$this->operands[$uniqueVariableName] = $operand;
 		} else {
-			if ($caseSensitive) {
-				$comparison = $this->QOMFactory->comparison(
-					$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
-					Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-					$this->QOMFactory->bindVariable($uniqueVariableName)
-					);
-			} else {
-				$comparison = $this->QOMFactory->comparison(
-					$this->QOMFactory->lowerCase(
-						$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName())
-					),
-					Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-					$this->QOMFactory->bindVariable($uniqueVariableName)
-					);
-			}
-
-			if ($caseSensitive) {
-				$this->operands[$uniqueVariableName] = $operand;
-			} else {
-				$this->operands[$uniqueVariableName] = strtolower($operand);
-			}
+			$this->operands[$uniqueVariableName] = strtolower($operand);
 		}
 
 		return $comparison;

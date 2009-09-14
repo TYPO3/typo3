@@ -33,7 +33,7 @@
  * @subpackage Persistence
  * @version $Id: LazyLoadingProxy.php 2591 2009-06-09 19:23:47Z k-fish $
  */
-class Tx_Extbase_Persistence_LazyLoadingProxy implements Tx_Extbase_Persistence_LoadingStrategyInterface {
+class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage implements Tx_Extbase_Persistence_LoadingStrategyInterface {
 
 	/**
 	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
@@ -81,87 +81,58 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Tx_Extbase_Persistence_
 		$this->propertyName = $propertyName;
 		$this->fieldValue = $fieldValue;
 		$this->columnMap = $columnMap;
+		$this->storage = NULL; // TODO
 	}
-
+	
 	/**
-	 * Populate this proxy by asking the $population closure.
+	 * This is a function lazy load implementation. 
 	 *
-	 * @return object The instance (hopefully) returned
+	 * @return void
 	 */
-	public function _loadRealInstance() {
-		// this check safeguards against a proxy being activated multiple times
-		// usually that does not happen, but if the proxy is held from outside
-		// it's parent... the result would be weird.
-		if ($this->parentObject->_getProperty($this->propertyName) instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
+	protected function initializeStorage() {
+		if (is_null($this->storage)) {
 			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
 			$objects = $dataMapper->fetchRelatedObjects($this->parentObject, $this->propertyName, $this->fieldValue, $this->columnMap);
-			$realInstance = new Tx_Extbase_Persistence_ObjectStorage();
+			$storage = array();
 			foreach ($objects as $object) {
-				$realInstance->attach($object);
+				$storage[spl_object_hash($object)] = $object;
 			}
-			$this->parentObject->_setProperty($this->propertyName, $realInstance);
+			$this->storage = $storage;
 			$this->parentObject->_memorizeCleanState($this->propertyName);
-			return $realInstance;
-		} else {
-			return $this->parentObject->_getProperty($this->propertyName);
+		}
+		if (!is_array($this->storage)) {
+			throw new Tx_Extbase_Persistence_Exception('The storage could not be initialized.', 1252393014); // TODO
 		}
 	}
-
+	
 	/**
-	 * Magic method call implementation.
+	 * Counts the elements in the storage array
 	 *
-	 * @param string $methodName The name of the property to get
-	 * @param array $arguments The arguments given to the call
-	 * @return mixed
-	 */
-	public function __call($methodName, $arguments) {
-		$realInstance = $this->_loadRealInstance();
-		return call_user_func_array(array($realInstance, $methodName), $arguments);
-	}
-
-	/**
-	 * Magic get call implementation.
-	 *
-	 * @param string $propertyName The name of the property to get
-	 * @return mixed
-	 */
-	public function __get($propertyName) {
-		$realInstance = $this->_loadRealInstance();
-		return $realInstance->$propertyName;
-	}
-
-	/**
-	 * Magic set call implementation.
-	 *
-	 * @param string $propertyName The name of the property to set
-	 * @param mixed $value The value for the property to set
 	 * @return void
 	 */
-	public function __set($propertyName, $value) {
-		$realInstance = $this->_loadRealInstance();
-		$realInstance->$propertyName = $value;
+	public function count() {
+		$numberOfElements = NULL;
+		if ($this->columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+			if (isset($parentKeyFieldName)) {
+				$numberOfElements = $this->fieldValue;
+			} else {
+				if (empty($this->fieldValue)) {
+					$numberOfElements = 0;
+				}
+				$numberOfElements = count(explode(',', $this->fieldValue));
+			}
+		} elseif ($this->columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$numberOfElements = $this->fieldValue;			
+		} else {
+			$this->initializeStorage();
+			$numberOfElements = count($this->storage);			
+		}
+		if (is_null($numberOfElements)) {
+			throw new Tx_Extbase_Persistence_Exception('The number of elements could not be determined.', 1252514486);
+		}
+		return $numberOfElements;
 	}
 
-	/**
-	 * Magic isset call implementation.
-	 *
-	 * @param string $propertyName The name of the property to check
-	 * @return boolean
-	 */
-	public function __isset($propertyName) {
-		$realInstance = $this->_loadRealInstance();
-		return isset($realInstance->$propertyName);
-	}
 
-	/**
-	 * Magic unset call implementation.
-	 *
-	 * @param string $propertyName The name of the property to unset
-	 * @return void
-	 */
-	public function __unset($propertyName) {
-		$realInstance = $this->_loadRealInstance();
-		unset($realInstance->$propertyName);
-	}
 }
 ?>

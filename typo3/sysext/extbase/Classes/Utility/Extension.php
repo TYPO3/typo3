@@ -284,8 +284,8 @@ tt_content.list.20.' . $pluginSignature . ' {
 			$config['labels'] = '';
 			$config['extRelPath'] = $relPath;
 		}
-				
-		if ((strlen($main) > 0) && !isset($GLOBALS['TBE_MODULES'][$main])) {
+
+		if ((strlen($main) > 0) && !array_key_exists($main, $GLOBALS['TBE_MODULES'])) {
 			$main = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($main);
 		} else {
 			$main = (strlen($main) > 0) ? $main : 'web'; // TODO By now, $main must default to 'web'

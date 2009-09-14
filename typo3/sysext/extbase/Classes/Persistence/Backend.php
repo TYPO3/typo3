@@ -109,7 +109,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @param Tx_Extbase_Persistence_IdentityMap $identityMap
 	 * @return void
-
 	 */
 	public function injectIdentityMap(Tx_Extbase_Persistence_IdentityMap $identityMap) {
 		$this->identityMap = $identityMap;
@@ -381,10 +380,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					foreach ($propertyValue as $relatedObject) {
 						$queuedObjects[$propertyName][] = $relatedObject;
 					}
-					$row[$columnName] = count($propertyValue); // Will be overwritten if the related objects are referenced by a comma separated list
 					foreach ($this->getDeletedChildObjects($object, $propertyName) as $deletedObject) {
 						$this->deleteObject($deletedObject, $object, $propertyName, TRUE, FALSE);
 					}
+					$row[$columnName] = count($propertyValue); // Will be overwritten if the related objects are referenced by a comma separated list
 				}
 			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 				// TODO Handle Value Objects different
@@ -435,7 +434,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
 		foreach ($queuedChildObjects as $propertyName => $childObjects) {
-			$childPidArray = array();
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			foreach($childObjects as $childObject) {
 				$this->persistObject($childObject, $object, $propertyName);
@@ -444,7 +442,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				}
 			}
 			if ($columnMap->getParentKeyFieldName() === NULL) { // TRUE: We have to generate a comma separated list stored in the field
-				$row[$propertyName] = implode(',', $childPidArray);
+				if (count($childPidArray) > 0) {
+					$row[$propertyName] = implode(',', $childPidArray);
+				} else {
+					$row[$propertyName] = NULL;
+				}
 				$objectHasToBeUpdated = TRUE;
 			}
 		}

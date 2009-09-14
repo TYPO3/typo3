@@ -44,8 +44,9 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 * Constants reflecting the loading strategy
 	 */
 	const STRATEGY_EAGER = 'eager';
-	const STRATEGY_PROXY = 'proxy';
-
+	const STRATEGY_LAZY_PROXY = 'proxy';
+	const STRATEGY_LAZY_STORAGE = 'storage';
+	
 	/**
 	 * The property name corresponding to the table name
 	 *
@@ -210,8 +211,8 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	public function setLoadingStrategy($loadingStrategy) {
 		switch ($loadingStrategy) {
-			case self::STRATEGY_PROXY;
-			// Add more to check for allowed strategies, or-even better-use an interface
+			case self::STRATEGY_LAZY_PROXY;
+			case self::STRATEGY_LAZY_STORAGE;
 				$this->loadingStrategy = $loadingStrategy;
 				break;
 			default:

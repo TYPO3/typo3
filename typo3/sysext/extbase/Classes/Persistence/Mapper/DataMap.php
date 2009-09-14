@@ -126,7 +126,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				}
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 				$this->setPropertyType($columnMap, $columnConfiguration);
-				// TODO Check support for IRRE
 				$this->setRelations($columnMap, $columnConfiguration);
 				$this->addColumnMap($columnMap);
 			}
