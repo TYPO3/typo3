@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  Copyright (c) 2003 dynarch.com. Authored by Mihai Bazon. Sponsored by www.americanbible.org.
-*  Copyright (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  Copyright (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -126,7 +126,8 @@ ContextMenu = HTMLArea.Plugin.extend({
 					tooltip:	option[2] || null,
 					icon:		option[3] || null,
 					activate:	ContextMenu.activateHandler(item, this),
-					cmd:		option[4] || null
+					cmd:		option[4] || null,
+					dialog:		option[5] || null
 				};
 				label = label.replace(/_([a-zA-Z0-9])/, "<u>$1</u>");
 				if (label != option[0]) this.keys.push([ RegExp.$1, item ]);
@@ -213,10 +214,14 @@ ContextMenu = HTMLArea.Plugin.extend({
 			if (opEnabled[opcode]) {
 				switch (pluginId) {
 					case "TableOperations" :
-						elmenus.push([this.localize(opcode + "-title"),
+						elmenus.push([
+							this.localize(opcode + "-title"),
 							ContextMenu.tableOperationsHandler(editor, pluginInstance, opcode),
 							this.localize(opcode + "-tooltip"),
-							btnList[opcode][1], opcode]);
+							btnList[opcode][1],
+							opcode,
+							btnList[opcode][7]
+							]);
 						break;
 					case "BlockElements" :
 						elmenus.push([this.localize(opcode + "-title"),
@@ -543,9 +548,15 @@ ContextMenu.mouseDownHandler = function(item) {
 ContextMenu.mouseUpHandler = function(item,instance) {
 	return (function(ev) {
 		var timeStamp = (new Date()).getTime();
-		if (timeStamp - instance.timeStamp > 500) item.__msh.activate();
-		if (!HTMLArea.is_ie) HTMLArea._stopEvent(ev);
-		instance.editor.updateToolbar();
+		if (timeStamp - instance.timeStamp > 500) {
+			item.__msh.activate();
+		}
+		if (!HTMLArea.is_ie) {
+			HTMLArea._stopEvent(ev);
+		}
+		if (!item.__msh.dialog) {
+			instance.editor.updateToolbar();
+		}
 		return false;
 	});
 };
