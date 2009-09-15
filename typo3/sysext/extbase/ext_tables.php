@@ -3,10 +3,10 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 
 if (TYPO3_MODE == 'BE') {
-	// register the cache in BE so it will be cleared with "clear all cahces"
+	// register the cache in BE so it will be cleared with "clear all caches"
 	try {
 		$GLOBALS['typo3CacheFactory']->create(
-			'cache_extbase_reflection',
+			'tx_extbase_cache_reflection',
 			't3lib_cache_frontend_VariableFrontend',
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']

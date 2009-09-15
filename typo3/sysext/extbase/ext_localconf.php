@@ -8,7 +8,7 @@ require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Extension.php')
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection'] = array(
 	'backend' => 't3lib_cache_backend_DbBackend',
 	'options' => array(
-		'cacheTable' => 'cache_extbase_reflection'
+		'cacheTable' => 'tx_extbase_cache_reflection'
 	),
 );
 
