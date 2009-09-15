@@ -228,7 +228,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				// enableFields and storage page settings.
 				$query->getQuerySettings()->setRespectStoragePage(FALSE);
 				$result = current($query->matching($query->withUid((int)$fieldValue))->execute());
-			} else {
+			} elseif (($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) || ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
 				if ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_LAZY_STORAGE) {
 					$objectStorage = new Tx_Extbase_Persistence_LazyObjectStorage($parentObject, $propertyName, $fieldValue, $columnMap);
 				} else {
@@ -257,14 +257,17 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function fetchRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		$objects = NULL;
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$query = $queryFactory->create($columnMap->getChildClassName());
 			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 			if (isset($parentKeyFieldName)) {
 				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
 			} else {
+				$uidArray = t3lib_div::intExplode(',', $fieldValue);
+				$uids = implode(',', $uidArray);
 				// FIXME Using statement() is only a preliminary solution
-				$objects = $query->statement('SELECT * FROM ' . $columnMap->getChildTableName() . ' WHERE uid IN (' . $fieldValue . ')')->execute();
+				$objects = $query->statement('SELECT * FROM ' . $columnMap->getChildTableName() . ' WHERE uid IN (' . $uids . ')')->execute();
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$relationTableName = $columnMap->getRelationTableName();
@@ -281,6 +284,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				);
 			$query = $queryFactory->create($columnMap->getChildClassName());
 			$query->setSource($source);
+			$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);

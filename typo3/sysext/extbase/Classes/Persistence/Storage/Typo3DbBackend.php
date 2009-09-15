@@ -165,6 +165,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
 		$statement = $this->parseQuery($query);
+//		debug($statement, -2); // FIXME remove debug code
 		$result = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		if ($result) {
@@ -560,7 +561,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 					default:
 						throw new Tx_Extbase_Persistence_Exception('Unsupported order encountered.', 1242816074);
 				}
-				$columnName = $this->dataMapper->convertPropertyNameToColumnName($ordering->getOperand()->getPropertyName(), $source->getNodeTypeName());
+				if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+					$nodeTypeName = $source->getNodeTypeName();
+				} else {
+					$nodeTypeName = '';
+				}
+				$columnName = $this->dataMapper->convertPropertyNameToColumnName($ordering->getOperand()->getPropertyName(), $nodeTypeName);
 				$sql['orderings'][] = $columnName . ' ' . $order;
 			}
 		}
