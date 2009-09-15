@@ -49,16 +49,16 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	protected $description;
 
 	/**
-	 * @var string
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
 	 */
-	// FIXME Support for subgroups
-	//protected $subgroup;
+	protected $subgroups;
 
 	/**
 	 * Constructs a new Frontend User Group
 	 *
 	 */
 	public function __construct($title) {
+		$this->subgroups = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
 	/**
@@ -125,24 +125,47 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	}
 
 	/**
-	 * Sets the subgroup value
+	 * Sets the subgroups
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $subgroups An object storage containing the subgroups to add
+	 * @return void
+	 * @api
+	 */
+	public function setSubgroups(Tx_Extbase_Persistence_ObjectStorage $subgroups) {
+		$this->subgroups = $subgroups;
+	}
+
+	/**
+	 * Adds a subgroup to the frontend user
 	 *
 	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $subgroup
 	 * @return void
 	 * @api
 	 */
-	public function setSubgroup($subgroup) {
-		$this->subgroup = $subgroup;
+	public function addSubgroup(Tx_Extbase_Domain_Model_FrontendUserGroup $subgroup) {
+		$this->subgroups->attach($subgroup);
 	}
 
 	/**
-	 * Returns the subgroup value
+	 * Removes a subgroup from the frontend user group
 	 *
-	 * @return Tx_Extbase_Domain_Model_FrontendUserGroup
+	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $subgroup
+	 * @return void
 	 * @api
 	 */
-	public function getSubgroup() {
-		return $this->subgroup;
+	public function removeSubgroup(Tx_Extbase_Domain_Model_FrontendUserGroup $subgroup) {
+		$this->subgroups->detach($subgroup);
 	}
+
+	/**
+	 * Returns the subgroups
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the subgroups
+	 * @api
+	 */
+	public function getSubgroups() {
+		return $this->subgroups;
+	}
+
 }
 ?>

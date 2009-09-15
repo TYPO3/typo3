@@ -44,9 +44,9 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	protected $password;
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_FrontendUserGroup
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
 	 */
-	protected $usergroup;
+	protected $usergroups;
 
 	/**
 	 * @var string
@@ -131,6 +131,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	public function __construct($username = '', $password = '') {
 		$this->username = $username;
 		$this->password = $password;
+		$this->usergroups = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
 	/**
@@ -176,24 +177,46 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	}
 
 	/**
-	 * Sets the usergroup value
+	 * Sets the usergroups
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $usergroups An object storage containing the usergroups to add
+	 * @return void
+	 * @api
+	 */
+	public function setUsergroups(Tx_Extbase_Persistence_ObjectStorage $usergroups) {
+		$this->usergroups = $usergroups;
+	}
+
+	/**
+	 * Adds a usergroup to the frontend user
 	 *
 	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup
 	 * @return void
 	 * @api
 	 */
-	public function setUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
-		$this->usergroup = $usergroup;
+	public function addUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
+		$this->usergroups->attach($usergroup);
 	}
 
 	/**
-	 * Returns the usergroup value
+	 * Removes a usergroup from the frontend user
 	 *
-	 * @return Tx_Extbase_Domain_Model_FrontendUserGroup
+	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup
+	 * @return void
 	 * @api
 	 */
-	public function getUsergroup() {
-		return $this->usergroup;
+	public function removeUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
+		$this->usergroups->detach($usergroup);
+	}
+
+	/**
+	 * Returns the usergroups
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the usergroups
+	 * @api
+	 */
+	public function getUsergroups() {
+		return $this->usergroups;
 	}
 
 	/**

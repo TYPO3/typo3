@@ -232,10 +232,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				if ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_LAZY_STORAGE) {
 					$objectStorage = new Tx_Extbase_Persistence_LazyObjectStorage($parentObject, $propertyName, $fieldValue, $columnMap);
 				} else {
-					$objects = $this->fetchRelatedObjects($parentObject, $propertyName, $fieldValue, $columnMap);
 					$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-					foreach ($objects as $object) {
-						$objectStorage->attach($object);
+					if (!empty($fieldValue)) {
+						$objects = $this->fetchRelatedObjects($parentObject, $propertyName, $fieldValue, $columnMap);
+						foreach ($objects as $object) {
+							$objectStorage->attach($object);
+						}
 					}
 				}
 				$result = $objectStorage;
