@@ -41,7 +41,7 @@ class Tx_Extbase_Dispatcher {
 	/**
 	 * @var Tx_Extbase_Configuration_Manager
 	 */
-	protected $configurationManager;
+	protected static $configurationManager;
 
 	/**
 	 * @var Tx_Extbase_Reflection_Service
@@ -51,13 +51,13 @@ class Tx_Extbase_Dispatcher {
 	/**
 	 * @var Tx_Extbase_Persistence_Manager
 	 */
-	private static $persistenceManager;
+	protected static $persistenceManager;
 
 	/**
 	 * The configuration for the Extbase framework
 	 * @var array
 	 */
-	private static $extbaseFrameworkConfiguration;
+	protected static $extbaseFrameworkConfiguration;
 
 
 	/**
@@ -142,8 +142,8 @@ class Tx_Extbase_Dispatcher {
 			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
 			$configurationSources[] = $configurationSource;
 		}
-		$this->configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
-		self::$extbaseFrameworkConfiguration = $this->configurationManager->getFrameworkConfiguration($configuration, $this->cObj);
+		self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
+		self::$extbaseFrameworkConfiguration = self::$configurationManager->getFrameworkConfiguration($configuration, $this->cObj);
 	}
 
 	/**
@@ -162,7 +162,7 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
-		$controller->injectSettings($this->configurationManager->getSettings($request->getControllerExtensionName()));
+		$controller->injectSettings(self::$configurationManager->getSettings($request->getControllerExtensionName()));
 		$cacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
 		try {
 			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
@@ -225,6 +225,16 @@ class Tx_Extbase_Dispatcher {
 	}
 
 	/**
+	 * This function returns the Configuration Manager. It is instanciated for
+	 * each call to dispatch() only once.
+	 *
+	 * @return Tx_Extbase_Configuration_Manager An instance of the Configuration Manager
+	 */
+	public static function getConfigurationManager() {
+		return self::$configurationManager;
+	}
+	
+	/**
 	 * This function returns the settings of Extbase
 	 *
 	 * @return array The settings
@@ -233,7 +243,7 @@ class Tx_Extbase_Dispatcher {
 		return self::$extbaseFrameworkConfiguration;
 	}
 
-		/**
+	/**
 	 * Calls an Extbase Backend module.
 	 *
 	 * @param string $module The name of the module
