@@ -440,9 +440,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function lessThanOrEqual($propertyName, $operand) {
-		if ($this->source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-	  		$sourceSelectorName = $this->getSource()->getSelectorName();
-		}
 		$uniqueVariableName = uniqid($propertyName);
 		$this->operands[$uniqueVariableName] = $operand;
 		return $this->QOMFactory->comparison(
