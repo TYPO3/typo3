@@ -34,12 +34,20 @@
 class Tx_Extbase_Dispatcher {
 
 	/**
+	 * Back reference to the parent content object
+	 * This has to be public as it is set directly from TYPO3
+	 *
+	 * @var tslib_cObj
+	 */
+	public $cObj;
+
+	/**
 	 * @var Tx_Extbase_Utility_ClassLoader
 	 */
 	protected $classLoader;
-	
+
 	/**
-	 * @var Tx_Extbase_Configuration_Manager
+	 * @var Tx_Extbase_Configuration_AbstractConfigurationManager
 	 */
 	protected static $configurationManager;
 
@@ -71,7 +79,7 @@ class Tx_Extbase_Dispatcher {
 	 * Creates a request an dispatches it to a controller.
 	 *
 	 * @param string $content The content
-	 * @param array|NULL $configuration The TS configuration array
+	 * @param array $configuration The TS configuration array
 	 * @return string $content The processed content
 	 */
 	public function dispatch($content, $configuration) {
@@ -113,7 +121,7 @@ class Tx_Extbase_Dispatcher {
 		$response->sendHeaders();
 		return $response->getContent();
 	}
-	
+
 	/**
 	 * Initializes the autoload mechanism of Extbase. This is supplement to the core autoloader.
 	 *
@@ -137,13 +145,18 @@ class Tx_Extbase_Dispatcher {
 	protected function initializeConfigurationManagerAndFrameworkConfiguration($configuration) {
 		$configurationSources = array();
 		$configurationSources[] = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
-		if (!empty($this->cObj->data['pi_flexform'])) {
-			$configurationSource = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_FlexFormSource');
-			$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
-			$configurationSources[] = $configurationSource;
+		if (TYPO3_MODE === 'FE') {
+			if (!empty($this->cObj->data['pi_flexform'])) {
+				$configurationSource = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_FlexFormSource');
+				$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
+				$configurationSources[] = $configurationSource;
+			}
+			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager', $configurationSources);
+			self::$configurationManager->setContentObject($this->cObj);
+		} else {
+			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_BackendConfigurationManager', $configurationSources);
 		}
-		self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager', $configurationSources);
-		self::$extbaseFrameworkConfiguration = self::$configurationManager->getFrameworkConfiguration($configuration, $this->cObj);
+		self::$extbaseFrameworkConfiguration = self::$configurationManager->getFrameworkConfiguration($configuration);
 	}
 
 	/**
@@ -201,7 +214,7 @@ class Tx_Extbase_Dispatcher {
 			$storageBackend->injectDataMapper($dataMapper);
 
 			$qomFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend, $dataMapper);
-			
+
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 
 			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
@@ -212,12 +225,12 @@ class Tx_Extbase_Dispatcher {
 			$persistenceBackend->injectValueFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_ValueFactory'));
 
 			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager'); // singleton
-			
+
 			$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton
 			$persistenceManager->injectBackend($persistenceBackend);
 			$persistenceManager->injectSession($persistenceSession);
 			$persistenceManager->injectObjectManager($objectManager);
-			
+
 			self::$persistenceManager = $persistenceManager;
 		}
 
@@ -293,7 +306,7 @@ class Tx_Extbase_Dispatcher {
 		$dispatcherControllerAction = $this->getDispatcherControllerAction($configuration, $dispatcherParameters);
 
 			// Extract module function settings from request
-		$moduleFunctionControllerAction = $this->getModuleFunctionControllerAction($module, $fallbackControllerAction['controllerName']);	
+		$moduleFunctionControllerAction = $this->getModuleFunctionControllerAction($module, $fallbackControllerAction['controllerName']);
 
 			// Dispatcher controller/action has precedence over default controller/action
 		$controllerAction = t3lib_div::array_merge_recursive_overrule($fallbackControllerAction, $dispatcherControllerAction, FALSE, FALSE);
@@ -305,7 +318,7 @@ class Tx_Extbase_Dispatcher {
 
 	/**
 	 * Returns the fallback controller/action pair to be used when request does not contain
-	 * any controller/action to be used or the provided parameters are not valid. 
+	 * any controller/action to be used or the provided parameters are not valid.
 	 *
 	 * @param array $configuration The module configuration
 	 * @return array The controller/action pair
@@ -417,37 +430,39 @@ class Tx_Extbase_Dispatcher {
 	 * @return string The module rendered view
 	 */
 	protected function transfer($module, $controller, $action) {
-		 $config = $GLOBALS['TBE_MODULES'][$module];
-		 
-		 $extbaseConfiguration = array(
+		$config = $GLOBALS['TBE_MODULES'][$module];
+
+		$extbaseConfiguration = array(
 			'userFunc' => 'tx_extbase_dispatcher->dispatch',
 			'pluginName' => $module,
 			'extensionName' => $config['extensionName'],
 			'controller' => $controller,
 			'action' => $action,
 			'switchableControllerActions.' => array(),
-			'persistence' => '< plugin.tx_' . strtolower($config['extensionName']) . '.persistence',
+			'settings' => '< module.tx_' . strtolower($config['extensionName']) . '.settings',
+			'persistence' => '< module.tx_' . strtolower($config['extensionName']) . '.persistence',
+			'view' => '< module.tx_' . strtolower($config['extensionName']) . '.view',
 		);
-		
+
 		$i = 1;
 		foreach ($config['controllerActions'] as $controller => $actions) {
 				// Add an "extObj" action for the default controller to handle external
 				// SCbase modules which add function menu entries
 			if ($i == 1) {
-				$actions .= ',extObj'; 
+				$actions .= ',extObj';
 			}
 			$extbaseConfiguration['switchableControllerActions.'][$i++ . '.'] = array(
 				'controller' => $controller,
 				'actions' => $actions,
 			);
 		}
-				
+
 			// BACK_PATH is the path from the typo3/ directory from within the
 			// directory containing the controller file. We are using mod.php dispatcher
 			// and thus we are already within typo3/ because we call typo3/mod.php
 		$GLOBALS['BACK_PATH'] = '';
 		return $this->dispatch('', $extbaseConfiguration);
 	}
-	
+
 }
 ?>

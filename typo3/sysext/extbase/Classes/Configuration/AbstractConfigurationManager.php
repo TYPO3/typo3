@@ -23,15 +23,13 @@
 ***************************************************************/
 
 /**
- * A general purpose configuration manager
- *
- * Should NOT be singleton, as a new configuration manager is needed per plugin.
+ * Abstract base class for a general purpose configuration manager
  *
  * @package Extbase
  * @subpackage Configuration
  * @version $ID:$
  */
-class Tx_Extbase_Configuration_Manager {
+abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 
 	/**
 	 * Default backend storage PID
@@ -85,6 +83,68 @@ class Tx_Extbase_Configuration_Manager {
 	}
 
 	/**
+	 * Loads the Extbase Framework configuration.
+	 *
+	 * The Extbase framework configuration HAS TO be retrieved using this method, as they are come from different places than the normal settings.
+	 * Framework configuration is, in contrast to normal settings, needed for the Extbase framework to operate correctly.
+	 *
+	 * @param array $pluginConfiguration The current incoming extbase configuration
+	 * @return array the Extbase framework configuration
+	 */
+	public function getFrameworkConfiguration($pluginConfiguration) {
+		$frameworkConfiguration = array();
+		$frameworkConfiguration['persistence']['storagePid'] = self::DEFAULT_BACKEND_STORAGE_PID;
+
+		$setup = $this->loadTypoScriptSetup();
+		$extbaseConfiguration = $setup['config.']['tx_extbase.'];
+		if (is_array($extbaseConfiguration)) {
+			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($extbaseConfiguration);
+			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
+		}
+
+		if (isset($pluginConfiguration['settings'])) {
+			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'settings');
+		}
+		if (isset($pluginConfiguration['persistence'])) {
+			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
+		}
+		if (isset($pluginConfiguration['view'])) {
+			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'view');
+		}
+		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
+
+		return $frameworkConfiguration;
+	}
+
+	/**
+	 * Returns TypoScript Setup array from current Environment.
+	 *
+	 * @return array the TypoScript setup
+	 */
+	abstract public function loadTypoScriptSetup();
+
+	/**
+	 * Resolves the TypoScript reference for $pluginConfiguration[$setting].
+	 * In case the setting is a string and starts with "<", we know that this is a TypoScript reference which
+	 * needs to be resolved separately.
+	 *
+	 * @param array $pluginConfiguration The whole plugin configuration
+	 * @param string $setting The key inside the $pluginConfiguration to check
+	 * @return array The modified plugin configuration
+	 */
+	protected function resolveTyposcriptReference($pluginConfiguration, $setting) {
+		if (is_string($pluginConfiguration[$setting]) && substr($pluginConfiguration[$setting], 0, 1) === '<') {
+			$key = trim(substr($pluginConfiguration[$setting], 1));
+			$setup = $this->loadTypoScriptSetup();
+			list(, $newValue) = $this->typoScriptParser->getVal($key, $setup);
+
+			unset($pluginConfiguration[$setting]);
+			$pluginConfiguration[$setting . '.'] = $newValue;
+		}
+		return $pluginConfiguration;
+	}
+
+	/**
 	 * Loads the settings defined in the specified extensions and merges them with
 	 * those potentially existing in the global configuration folders.
 	 *
@@ -103,110 +163,6 @@ class Tx_Extbase_Configuration_Manager {
 		$this->settings[$extensionName] = $settings;
 	}
 
-	/**
-	 * Loads the Extbase Framework configuration.
-	 *
-	 * The Extbase framework configuration HAS TO be retrieved using this method, as they are come from different places than the normal settings.
-	 * Framework configuration is, in contrast to normal settings, needed for the Extbase framework to operate correctly.
-	 *
-	 * @param array $pluginConfiguration The current incoming extbase configuration
-	 * @param tslib_cObj $cObj The current Content Object
-	 * @return array the Extbase framework configuration
-	 */
-	public function getFrameworkConfiguration($pluginConfiguration, $cObj) {
-		$frameworkConfiguration = array();
-		$frameworkConfiguration['persistence']['storagePid'] = $this->getDefaultStoragePageId($cObj);
-		$frameworkConfiguration['contentObjectData'] = $cObj->data;
-
-		// TODO Support BE modules by parsing the file "manually" and all files EXT:myext/Configuration/Objects/setup.txt
-		$extbaseConfiguration = $GLOBALS['TSFE']->tmpl->setup['config.']['tx_extbase.'];
-		if (is_array($extbaseConfiguration)) {
-			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($extbaseConfiguration);
-			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
-		}
-
-		if (isset($pluginConfiguration['persistence'])) {
-			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
-		}
-		if (isset($pluginConfiguration['view'])) {
-			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'view');
-		}
-		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
-		return $frameworkConfiguration;
-	}
-
-	/**
-	 * Resolves the TypoScript reference for $pluginConfiguration[$setting].
-	 * In case the setting is a string and starts with "<", we know that this is a TypoScript reference which
-	 * needs to be resolved separately.
-	 *
-	 * @param array $pluginConfiguration The whole plugin configuration
-	 * @param string $setting The key inside the $pluginConfiguration to check
-	 * @return array The modified plugin configuration
-	 */
-	protected function resolveTyposcriptReference($pluginConfiguration, $setting) {
-		if (is_string($pluginConfiguration[$setting]) && substr($pluginConfiguration[$setting], 0, 1) === '<') {
-			$key = trim(substr($pluginConfiguration[$setting], 1));
-			list(, $newValue) = $this->typoScriptParser->getVal($key, $GLOBALS['TSFE']->tmpl->setup);
-
-			unset($pluginConfiguration[$setting]);
-			$pluginConfiguration[$setting . '.'] = $newValue;
-		}
-		return $pluginConfiguration;
-	}
-
-	/**
-	 * Extracts the default storage PID from $this->cObj->data['pages'].
-	 * If this one is empty, tries to use $this->cObj->data['storage_pid'].
-	 * If this one is empty, tries to use $this->cObj->parentRecord->data['storage_pid'].
-	 * If all three are empty, uses getStorageSiterootPids() in FE, and 0 in BE.
-	 *
-	 * @param tslib_cObj $cObj The current Content Object
-	 * @return string a comma separated list of integers to be used to fetch records from.
-	 */
-	protected function getDefaultStoragePageId($cObj) {
-		if (is_string($cObj->data['pages']) && strlen($cObj->data['pages']) > 0) {
-			return $cObj->data['pages'];
-		}
-
-		if ($cObj->data['storage_pid'] > 0) {
-			return $cObj->data['storage_pid'];
-		}
-
-		if ($cObj->parentRecord->data['storage_pid'] > 0) {
-			return $cObj->parentRecord->data['storage_pid'];
-		}
-		if (TYPO3_MODE === 'FE') {
-			$storageSiterootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
-			if (isset($storageSiterootPids['_STORAGE_PID'])) {
-				return $storageSiterootPids['_STORAGE_PID'];
-			}
-		}
-		return self::DEFAULT_BACKEND_STORAGE_PID;
-	}
-	
-//	/**
-//	 * Scans all configuration directories in the extension directories.
-//	 *
-//	 * @return void
-//	 */
-//	protected function scanAvailableTyposcriptConfigurations() {
-//		foreach (new DirectoryIterator(t3lib_extMgm::) as $parentFileInfo) {
-//			$parentFilename = $parentFileInfo->getFilename();
-//			if ($parentFilename[0] === '.' || !$parentFileInfo->isDir()) continue;
-//
-//			foreach (new DirectoryIterator($parentFileInfo->getPathname()) as $childFileInfo) {
-//				$childFilename = $childFileInfo->getFilename();
-//				if ($childFilename[0] !== '.' && $childFilename !== 'FLOW3') {
-//					$packagePath = \F3\FLOW3\Utility\Files::getUnixStylePath($childFileInfo->getPathName()) . '/';
-//					$this->packages[$childFilename] = $this->objectFactory->create('F3\FLOW3\Package\Package', $childFilename, $packagePath);
-//				}
-//			}
-//		}
-//		foreach (array_keys($this->packages) as $upperCamelCasedPackageKey) {
-//			$this->packageKeys[strtolower($upperCamelCasedPackageKey)] = $upperCamelCasedPackageKey;
-//		}
-//	}
 
 }
 ?>

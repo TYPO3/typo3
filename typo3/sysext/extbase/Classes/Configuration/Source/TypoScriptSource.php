@@ -32,7 +32,7 @@
  * @subpackage Configuration\Source
  * @version $ID:$
  */
-class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Configuration_SourceInterface {
+class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Configuration_Source_SourceInterface {
 
 	/**
 	 * Loads the specified TypoScript configuration file and returns its content in a
@@ -42,15 +42,40 @@ class Tx_Extbase_Configuration_Source_TypoScriptSource implements Tx_Extbase_Con
 	 * @param string $extensionName The extension name
 	 * @return array The settings as array without trailing dots
 	 */
-	 public function load($extensionName) {
-		// TODO Needs a FE (does actually not work with BE or CLI)
-		$settings = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.']['settings.'];
+	public function load($extensionName) {
+		if (TYPO3_MODE === 'FE') {
+			$settings = $this->loadFrontendSettings($extensionName);
+		} else {
+			$settings = $this->loadBackendSettings($extensionName);
+		}
 		if (is_array($settings)) {
 			$settings = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($settings);
 		} else {
 			$settings = array();
 		}
 		return $settings;
+	}
+
+	/**
+	 * Loads the specified TypoScript configuration.
+	 *
+	 * @param string $extensionName The extension name
+	 * @return array The settings as array without trailing dots
+	 */
+	protected function loadFrontendSettings($extensionName) {
+		return $GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_' . strtolower($extensionName) . '.']['settings.'];
+	}
+
+	/**
+	 * Loads the specified TypoScript configuration.
+	 *
+	 * @param string $extensionName The extension name
+	 * @return array The settings as array without trailing dots
+	 */
+	protected function loadBackendSettings($extensionName) {
+		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_BackendConfigurationManager');
+		$typoScriptSetup = $configurationManager->loadTypoScriptSetup();
+		return $typoScriptSetup['module.']['tx_' . strtolower($extensionName) . '.']['settings.'];
 	}
 
 }

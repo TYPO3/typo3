@@ -25,41 +25,38 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Extbase_Configuration_Manager_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Extbase_Configuration_FrontendConfigurationManager_testcase extends Tx_Extbase_Base_testcase {
 
+	/**
+	 * @var tslib_fe
+	 */
+	protected $tsfeBackup;
+
+	/**
+	 * @var Tx_Extbase_Configuration_FrontendConfigurationManager
+	 */
+	protected $frontendConfigurationManager;
+	/**
+	 * Sets up this testcase
+	 */
 	public function setUp() {
-		$this->settings = array(
-			'maxItems' => 3,
-			'Post' => array(
-				'singlePid' => 25,
-				'maxItems' => 8,
-				'index' => array(
-					'maxItems' => 5
-				),
-			),
-			'Comment' => array(
-				'content' => array(
-					'crop' => 100
-					)
-				)
-			);
+		$this->tsfeBackup = $GLOBALS['TSFE'];
+		$this->frontendConfigurationManager = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Configuration_FrontendConfigurationManager'), array('dummy'));
+	}
 
+	/**
+	 * Tears down this testcase
+	 */
+	public function tearDown() {
+		$GLOBALS['TSFE']->tmpl->setup;
 	}
 
 	/**
 	 * @test
 	 */
-	public function settingsCanBeLoaded() {
-		$configurationSource = $this->getMock('Tx_Extbase_Configuration_Source_TypoScriptSource', array('load'));
-		$configurationSource->expects($this->any())
-			->method('load')
-			->with('Tx_Extbase_Foo_Bar')
-			->will($this->returnValue($this->settings));
-		$configurationSources = array();
-		$configurationSources[] = $configurationSource;
-		$configurationManager = new Tx_Extbase_Configuration_Manager($configurationSources);
-		$settings = $configurationManager->getSettings('Tx_Extbase_Foo_Bar');
-		$this->assertEquals($this->settings, $settings, 'The retrieved settings differs from the retrieved settings.');
+	public function loadTypoScriptSetupReturnsSetupFromTSFE() {
+		$GLOBALS['TSFE']->tmpl->setup = array('foo' => 'bar');
+		$this->assertEquals(array('foo' => 'bar'), $this->frontendConfigurationManager->loadTypoScriptSetup());
 	}
 
 }

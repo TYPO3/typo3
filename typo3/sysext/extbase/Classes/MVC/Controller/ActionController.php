@@ -256,11 +256,11 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$view = $this->objectManager->getObject('Tx_Fluid_View_TemplateView');
 		$controllerContext = $this->buildControllerContext();
 		$view->setControllerContext($controllerContext);
-		
+
 		// Template Path Override
 		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && $extbaseFrameworkConfiguration['view']['templateRootPath']) {
-			$view->setTemplateRootPath($extbaseFrameworkConfiguration['view']['templateRootPath']);
+			$view->setTemplateRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']));
 		}
 
 		if ($view->hasTemplate() === FALSE) {
@@ -274,6 +274,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely.
 		$view->assign('flashMessages', $this->popFlashMessages());
+		$view->assign('settings', $this->settings);
 		return $view;
 	}
 
@@ -290,7 +291,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
 
-		$viewObjectName = str_replace('@format', ucfirst($this->request->getFormat()), $possibleViewName);		
+		$viewObjectName = str_replace('@format', ucfirst($this->request->getFormat()), $possibleViewName);
 		if (class_exists($viewObjectName) === FALSE) {
 			$viewObjectName = str_replace('@format', '', $possibleViewName);
 		}

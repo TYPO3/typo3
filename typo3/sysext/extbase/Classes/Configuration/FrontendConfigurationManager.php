@@ -5,9 +5,6 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
@@ -26,21 +23,36 @@
 ***************************************************************/
 
 /**
- * Contract for a configuration source
+ * A general purpose configuration manager used in frontend mode.
+ *
+ * Should NOT be singleton, as a new configuration manager is needed per plugin.
  *
  * @package Extbase
  * @subpackage Configuration
  * @version $ID:$
  */
-interface Tx_Extbase_Configuration_SourceInterface {
+class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_Configuration_AbstractConfigurationManager {
 
 	/**
-	 * Loads the specified configuration file and returns its content in a
-	 * configuration container
-	 *
-	 * @param string $extensionName The extension name
-	 * @return array
+	 * @var tslib_cObj
 	 */
-	public function load($extensionName);
+	protected $contentObject;
+
+	/**
+	 * @param tslib_cObj $contentObject
+	 * @return void
+	 */
+	public function setContentObject(tslib_cObj $contentObject) {
+		$this->contentObject = $contentObject;
+	}
+
+	/**
+	 * Returns TypoScript Setup array from current Environment.
+	 *
+	 * @return array the TypoScript setup
+	 */
+	public function loadTypoScriptSetup() {
+		return $GLOBALS['TSFE']->tmpl->setup;
+	}
 }
 ?>

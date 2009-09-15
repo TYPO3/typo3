@@ -32,7 +32,7 @@
  * @subpackage Configuration\Source
  * @version $ID:$
  */
-class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Configuration_SourceInterface {
+class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Configuration_Source_SourceInterface {
 
 	/**
 	 * XML FlexForm content

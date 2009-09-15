@@ -252,7 +252,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 		$fields[] = 'deleted!=1';
 		$fields[] = 'hidden!=1';
-		
+
 		$sqlString = 'SELECT * FROM ' . $dataMap->getTableName() .  ' WHERE ' . implode(' AND ', $fields);
 		$this->replacePlaceholders($sqlString, $parameters);
 		$res = $this->databaseHandle->sql_query($sqlString);
@@ -513,11 +513,13 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected function addEnableFieldsStatement($tableName, array &$sql) {
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			if (TYPO3_MODE === 'FE') {
-				$statement = substr($GLOBALS['TSFE']->sys_page->enableFields($tableName), 5);
+				$statement = $GLOBALS['TSFE']->sys_page->enableFields($tableName);
 			} else { // TYPO3_MODE === 'BE'
-				$statement = substr(t3lib_BEfunc::BEenableFields($tableName), 5);
+				$statement = t3lib_BEfunc::deleteClause($tableName);
+				$statement .= t3lib_BEfunc::BEenableFields($tableName);
 			}
 			if(!empty($statement)) {
+				$statement = substr($statement, 5);
 				$sql['additionalWhereClause'][] = $statement;
 			}
 		}

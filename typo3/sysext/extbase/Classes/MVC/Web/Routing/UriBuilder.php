@@ -448,6 +448,9 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($this->section !== '') {
 			$uri .= '#' . $this->section;
 		}
+		if ($this->createAbsoluteUri === TRUE) {
+			$uri = $this->request->getBaseURI() . TYPO3_mainDir . $uri;
+		}
 		return $uri;
 	}
 
