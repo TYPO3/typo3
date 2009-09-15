@@ -383,7 +383,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return Tx_Extbase_Reflection_ClassSchema The class schema
 	 */
 	protected function buildClassSchema($className) {
-		if (!class_exists($classSchema)) {
+		if (!class_exists($className)) {
 			return NULL;
 		}
 		$classSchema = new Tx_Extbase_Reflection_ClassSchema($className);
