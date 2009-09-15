@@ -51,14 +51,14 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	/**
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
 	 */
-	protected $subgroups;
+	protected $subgroup;
 
 	/**
 	 * Constructs a new Frontend User Group
 	 *
 	 */
 	public function __construct($title) {
-		$this->subgroups = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->subgroup = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
 	/**
@@ -125,14 +125,15 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	}
 
 	/**
-	 * Sets the subgroups
+	 * Sets the subgroups. Keep in mind that the property is called "subgroup"
+	 * although it can hold several subgroups.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $subgroups An object storage containing the subgroups to add
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $subgroup An object storage containing the subgroups to add
 	 * @return void
 	 * @api
 	 */
-	public function setSubgroups(Tx_Extbase_Persistence_ObjectStorage $subgroups) {
-		$this->subgroups = $subgroups;
+	public function setSubgroup(Tx_Extbase_Persistence_ObjectStorage $subgroup) {
+		$this->subgroup = $subgroups;
 	}
 
 	/**
@@ -143,7 +144,7 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 * @api
 	 */
 	public function addSubgroup(Tx_Extbase_Domain_Model_FrontendUserGroup $subgroup) {
-		$this->subgroups->attach($subgroup);
+		$this->subgroup->attach($subgroup);
 	}
 
 	/**
@@ -154,16 +155,17 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 * @api
 	 */
 	public function removeSubgroup(Tx_Extbase_Domain_Model_FrontendUserGroup $subgroup) {
-		$this->subgroups->detach($subgroup);
+		$this->subgroup->detach($subgroup);
 	}
 
 	/**
-	 * Returns the subgroups
+	 * Returns the subgroups. Keep in mind that the property is called "subgroup"
+	 * although it can hold several subgroups.
 	 *
 	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the subgroups
 	 * @api
 	 */
-	public function getSubgroups() {
+	public function getSubgroup() {
 		return $this->subgroups;
 	}
 

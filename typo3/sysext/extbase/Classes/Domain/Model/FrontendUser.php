@@ -46,7 +46,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	/**
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
 	 */
-	protected $usergroups;
+	protected $usergroup;
 
 	/**
 	 * @var string
@@ -131,7 +131,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	public function __construct($username = '', $password = '') {
 		$this->username = $username;
 		$this->password = $password;
-		$this->usergroups = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->usergroup = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
 	/**
@@ -177,14 +177,15 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	}
 
 	/**
-	 * Sets the usergroups
+	 * Sets the usergroups. Keep in mind that the property is called "usergroup"
+	 * although it can hold several usergroups.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $usergroups An object storage containing the usergroups to add
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $usergroup An object storage containing the usergroups to add
 	 * @return void
 	 * @api
 	 */
-	public function setUsergroups(Tx_Extbase_Persistence_ObjectStorage $usergroups) {
-		$this->usergroups = $usergroups;
+	public function setUsergroup(Tx_Extbase_Persistence_ObjectStorage $usergroup) {
+		$this->usergroup = $usergroup;
 	}
 
 	/**
@@ -195,7 +196,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * @api
 	 */
 	public function addUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
-		$this->usergroups->attach($usergroup);
+		$this->usergroup->attach($usergroup);
 	}
 
 	/**
@@ -206,17 +207,18 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * @api
 	 */
 	public function removeUsergroup(Tx_Extbase_Domain_Model_FrontendUserGroup $usergroup) {
-		$this->usergroups->detach($usergroup);
+		$this->usergroup->detach($usergroup);
 	}
 
 	/**
-	 * Returns the usergroups
+	 * Returns the usergroups. Keep in mind that the property is called "usergroup"
+	 * although it can hold several usergroups.
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the usergroups
+	 * @return Tx_Extbase_Persistence_ObjectStorage An object storage containing the usergroup
 	 * @api
 	 */
 	public function getUsergroups() {
-		return $this->usergroups;
+		return $this->usergroup;
 	}
 
 	/**
