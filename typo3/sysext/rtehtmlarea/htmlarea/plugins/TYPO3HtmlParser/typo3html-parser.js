@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -99,12 +99,14 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			editorNo : this.editorNumber,
 			content	 : editor._doc.body.innerHTML
 		};
+			// Invoke server-based synchronous pasted content cleaning
 		this.postData(	this.parseHtmlModulePath,
 				content,
 				function(response) {
 					editor.setHTML(response);
 					editor.selectRange(editor.moveToBookmark(bookmark));
-				}
+				},
+				false
 		);
 	}
 });
