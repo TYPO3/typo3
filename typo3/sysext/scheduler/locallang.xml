@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>General language labels for extension 'scheduler'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="testTask.name">Scheduler test task</label>
+			<label index="testTask.description">The Scheduler test task just sends a mail to a given email address. It is designed to be used for testing purposes.</label>
+			<label index="sleepTask.name">Scheduler sleep task</label>
+			<label index="sleepTask.description">This task does nothing but put PHP to sleep for a number of seconds. It is designed to test multiple executions.</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,2 @@
+# cat=basic//40; type=string; label=Maximum lifetime: Enter the maximum lifetime (in minutes) of a scheduler task. If a task is still running after that time, it will be dropped from the execution list (but not stopped).
+maxLifetime = 1440

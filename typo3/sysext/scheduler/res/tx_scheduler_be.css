@@ -1,0 +1,76 @@
+/* Scheduler BE-Styles */
+/* $Id: tx_scheduler_be.css 1146 2009-08-27 20:26:30Z francois $ */
+
+.tx_scheduler_mod1 a {
+	text-decoration: underline;
+}
+
+.tx_scheduler_mod1 #typo3-inner-docbody {
+	padding-right: 10px;
+}
+
+.tx_scheduler_mod1 a.typo3-csh-link {
+	text-decoration: none;
+}
+
+.tx_scheduler_mod1 .tx_scheduler_task_list {
+	width: 100%;
+}
+
+.tx_scheduler_mod1 td {
+	padding: 2px 4px;
+	vertical-align: middle;
+}
+.tx_scheduler_mod1 tr.disabled td {
+	color: #666;
+}
+.tx_scheduler_mod1 .bgColor2 td {
+	text-align: left;
+	font-weight: bold;
+	color: #fff;
+}
+.tx_scheduler_mod1 .late {
+	color: #f00;
+	font-weight: bold;
+}
+.tx_scheduler_mod1 label {
+	display: block;
+	width: 200px;
+}
+.tx_scheduler_mod1 input{}
+.tx_scheduler_mod1 select {
+	margin-bottom: 1.2em;
+	width: 200px;
+}
+.tx_scheduler_mod1 input.wide,
+.tx_scheduler_mod1 select.wide {
+	width: 400px;
+}
+.tx_scheduler_mod1 input.checkboxes {
+	width: auto;
+}
+
+.tx_scheduler_mod1 input.button {
+	padding: 1px 4px 1px 4px;
+	line-height: 14px;
+	margin: 5px 0px;
+}
+
+.tx_scheduler_mod1 .status-legend {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	font-weight: bold;
+}
+
+.tx_scheduler_mod1 th input,
+.tx_scheduler_mod1 td input {
+	margin-bottom: 2px;
+}
+
+/* Definition for BE function "Setup check" */
+.info-block {
+	margin: 25px 0px 0px 0px;
+}
+.info-block p {
+	margin: 8px 5px 8px 5px;
+}

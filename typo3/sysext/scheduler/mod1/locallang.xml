@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module 'tools_txschedulerM1'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="action.add">Add task</label>
+			<label index="action.edit">Edit task</label>
+			<label index="button.cancel">Cancel</label>
+			<label index="function.scheduler">Scheduled tasks</label>
+			<label index="function.check">Setup check</label>
+			<label index="function.info">Information</label>
+			<label index="hdg.cliScript">CLI script</label>
+			<label index="hdg.lastRun">Last run</label>
+			<label index="hdg.schedulerUser">TYPO3 Scheduler backend user</label>
+			<label index="label.automatically">automatically</label>
+			<label index="label.checkAll">Check/uncheck all</label>
+			<label index="label.class">Class</label>
+			<label index="label.cron">Cron</label>
+			<label index="label.defType">Definition type</label>
+			<label index="label.defType.interval">Interval</label>
+			<label index="label.defType.cron">Cron command</label>
+			<label index="label.description">Description</label>
+			<label index="label.email">Email</label>
+			<label index="label.end">End (HH:MM DD-MM-YYYY)</label>
+			<label index="label.executeSelected">Execute selected tasks</label>
+			<label index="label.extension">Extension</label>
+			<label index="label.frequency">Frequency</label>
+			<label index="label.frequency.long">Frequency (seconds or cron command)</label>
+			<label index="label.lastExecution">Last Execution</label>
+			<label index="label.manual">Manual</label>
+			<label index="label.manually">manually</label>
+			<label index="label.name">Name</label>
+			<label index="label.nextExecution">Next Execution</label>
+			<label index="label.parallel">Parallel Execution</label>
+			<label index="label.parallel.long">Allow Parallel Execution</label>
+			<label index="label.sleepTime">Sleep time</label>
+			<label index="label.start">Start (HH:MM DD-MM-YYYY)</label>
+			<label index="label.type">Type</label>
+			<label index="label.type.recurring">Recurring</label>
+			<label index="label.type.single">Single</label>
+			<label index="msg.addError">The task could not be added.</label>
+			<label index="msg.addSuccess">The task was added successfully.</label>
+			<label index="msg.cliScript">The script to execute to run the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</label>
+			<label index="msg.cliScriptExecutable">The webserver user is allowed execute this script.</label>
+			<label index="msg.cliScriptNotExecutable">The webserver user is not allowed execute this script.</label>
+			<label index="msg.delete">Are you sure you want to delete this task?</label>
+			<label index="msg.deleteError">The task could not be deleted.</label>
+			<label index="msg.deleteSuccess">The task was successfully deleted.</label>
+			<label index="msg.endDateSmallerThanStartDate">The end date is before the start date.</label>
+			<label index="msg.executed">Executed: %s</label>
+			<label index="msg.incompleteLastRun">The information about the last execution of the Scheduler is incomplete.</label>
+			<label index="msg.infoScreenIntro">This is the list of all available tasks in this TYPO3 installation. Click on the icon at the far right to directly create a new scheduled task of the chosen type.</label>
+			<label index="msg.noFrequency">No frequency was defined, either as an interval or as a cron command.</label>
+			<label index="msg.invalidFrequency">Invalid frequency. Please enter either a number of seconds or a valid cron command.</label>
+			<label index="msg.invalidSleepTime">Please enter a sleep time greater or equal to 0 (zero).</label>
+			<label index="msg.lastRun">The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</label>
+			<label index="msg.maynotDeleteRunningTask">A running task may not be deleted.</label>
+			<label index="msg.maynotEditRunningTask">A running task may not be edited.</label>
+			<label index="msg.noEmail">Please enter an email address</label>
+			<label index="msg.noLastRun">The Scheduler has never yet run or the information about the last run has been lost.</label>
+			<label index="msg.noTaskClassFound">The selected task class could not be found. You should probably contact the task's developers.</label>
+			<label index="msg.noTasks">No tasks defined yet.</label>
+			<label index="msg.notExecuted">Not executed: %s</label>
+			<label index="msg.executionFailed">Execution of task "%1$s" failed with the following message: %2$s</label>
+			<label index="msg.executionFailureReport">Execution failed: %1$d, %2$s</label>
+			<label index="msg.noStartDate">Please define a start date</label>
+			<label index="msg.invalidStartDate">Start date is invalid</label>
+			<label index="msg.invalidEndDate">End date is invalid</label>
+			<label index="msg.invalidTaskClass">The class of the registered task could not be found. Change class or consider deleting this task.</label>
+			<label index="msg.schedulerSetupCheck">This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</label>
+			<label index="msg.schedulerUser">The backend user "_cli_scheduler" is used by the CLI-script to log into TYPO3. This user may not have administrator privileges. The user's password is not important but should be set to a secure value for security reasons.</label>
+			<label index="msg.schedulerUserFound">The backend user "_cli_scheduler" was found.</label>
+			<label index="msg.schedulerUserFoundButDisabled">The backend user "_cli_scheduler" exists but is currently disabled.</label>
+			<label index="msg.schedulerUserMissing">The backend user "_cli_scheduler" was not found. &lt;a href="%s" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;.</label>
+			<label index="msg.singleExecutionMustBeInFuture">The execution time of single execution tasks has to be in the future.</label>
+			<label index="msg.taskNotFound">The requested task (UID: %d) was not found.</label>
+			<label index="msg.updateSuccess">The task was updated successfully.</label>
+			<label index="msg.updateError">The task could not be updated.</label>
+			<label index="msg.userCreated">The "_cli_scheduler" user was created successfully.</label>
+			<label index="msg.userExists">The "_cli_scheduler" user already exists. It was not created.</label>
+			<label index="msg.userNotCreated">The creation of the "_cli_scheduler" user failed.</label>
+			<label index="none">None</label>
+			<label index="status">Status</label>
+			<label index="status.legend">Status Legend</label>
+			<label index="status.legend.disabled">Disabled, will not be executed, except manually</label>
+			<label index="status.legend.failure">Failure! An error occured during the last execution (move over bullet for more details)</label>
+			<label index="status.legend.late">Late, will run with next execution</label>
+			<label index="status.legend.running">Currently running</label>
+			<label index="status.legend.scheduled">Scheduled, will run on next possible execution</label>
+			<label index="status.disabled">disabled</label>
+			<label index="status.failure">failure</label>
+			<label index="status.late">late</label>
+			<label index="status.running">running</label>
+			<label index="status.scheduled">scheduled</label>
+			<label index="task">Task</label>
+			<label index="title">TYPO3 Scheduler administration module</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -106,6 +106,13 @@ Backend
 	  and $TYPO3_CONF_VARS['BE']['XLLfile']['EXT:lang/locallang_login.xml']. These will only be used
 	  once you remove the altered "loginLabels" configuration option from typo3conf/localconf.php.
 
+	* The extension "gabriel" has been integrated into the TYPO3 core as system extension "scheduler".
+	  It provides a centralized way of defining scheduled, recurring tasks, with a convenient
+	  interface to manage them (BE module). The aim is to have a single cron job which just launches
+	  the Scheduler, which in turn takes care of executing all due tasks.
+	  Extension developers are strongly encouraged to turn their existing cron scripts
+	  into Scheduler tasks.
+
 Frontend
 ========
 
