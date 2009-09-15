@@ -124,11 +124,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$this->propertyMapper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
-		if (is_array($dataType)) {
-			$this->setNewValidatorConjunction($dataType); // TODO: Does this really make sense? Should be "disjunction" (if we really really want to support this feature)
-		} else {
-			$this->setDataType($dataType);
-		}
+		$this->setDataType($dataType);
 	}
 
 	/**
