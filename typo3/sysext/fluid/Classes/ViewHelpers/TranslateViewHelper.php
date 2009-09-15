@@ -154,7 +154,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function loadTypoScriptLabels() {
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_Manager');
+		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
 		$settings = $configurationManager->getSettings($this->extensionName);
 		if (!is_array($settings['_LOCAL_LANG'])) {
 			return;
@@ -206,6 +206,5 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 		return NULL;
 	}
 }
-
 
 ?>
