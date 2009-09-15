@@ -2379,11 +2379,15 @@ HTMLArea._colorToRgb = function(v) {
 	return null;
 };
 
-/** Use XML HTTPRequest to post some data back to the server and do something
- * with the response (asyncronously!), this is used by such things as the spellchecker update personal dict function
+/*
+ * Use XML HTTPRequest to post some data back to the server and do something
+ * with the response (asyncronously or syncronously); this is used by such things as the spellchecker update personal dict function
  */
-HTMLArea._postback = function(url, data, handler, addParams, charset) {
+HTMLArea._postback = function(url, data, handler, addParams, charset, asynchronous) {
 	if (typeof(charset) == "undefined") var charset = "utf-8";
+	if (typeof(asynchronous) == "undefined") {
+		var asynchronous = true;
+	}
 	var req = null;
 	if (window.XMLHttpRequest) req = new XMLHttpRequest();
 		else if (window.ActiveXObject) {
@@ -2410,24 +2414,38 @@ HTMLArea._postback = function(url, data, handler, addParams, charset) {
 		}
 
 		function callBack() {
-			if(req.readyState == 4) {
+			if (req.readyState == 4) {
 				if (req.status == 200) {
-					if (typeof(handler) == 'function') handler(req.responseText, req);
+					if (typeof(handler) == "function") handler(req.responseText, req);
 					HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
 				} else {
 					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + postUrl + " . Server reported " + req.statusText);
 				}
 			}
 		}
-		req.onreadystatechange = callBack;
+		if (asynchronous) {
+			req.onreadystatechange = callBack;
+		}
 		function sendRequest() {
 			HTMLArea._appendToLog("[HTMLArea::_postback]: Request: " + content);
 			req.send(content);
 		}
 
-		req.open('POST', postUrl, true);
+		req.open('POST', postUrl, asynchronous);
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		window.setTimeout(sendRequest, 500);
+		if (!asynchronous) {
+			sendRequest();
+			if (req.status == 200) {
+				if (typeof(handler) == "function") {
+					handler(req.responseText, req);
+				}
+				HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
+			} else {
+				HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + postUrl + " . Server reported " + req.statusText);
+			}
+		} else {
+			window.setTimeout(sendRequest, 500);
+		}
 	}
 };
 
@@ -3053,11 +3071,15 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @param	string		url: url to post data to
 	 * @param	object		data: data to be posted
 	 * @param	function	handler: function that will handle the response returned by the server
+	 * @param	boolean		asynchronous: flag indicating if the request should processed asynchronously or not
 	 *
 	 * @return	boolean		true on success
 	 */
-	 postData : function (url, data, handler) {
-		 HTMLArea._postback(url, data, handler, this.editorConfiguration.RTEtsConfigParams, (this.editorConfiguration.typo3ContentCharset ? this.editorConfiguration.typo3ContentCharset : "utf-8"));
+	 postData : function (url, data, handler, asynchronous) {
+	 	 if (typeof(asynchronous) == "undefined") {
+	 	 	 var asynchronous = true;
+	 	 }
+		 HTMLArea._postback(url, data, handler, this.editorConfiguration.RTEtsConfigParams, (this.editorConfiguration.typo3ContentCharset ? this.editorConfiguration.typo3ContentCharset : "utf-8"), asynchronous);
 	 },
 
 	/**

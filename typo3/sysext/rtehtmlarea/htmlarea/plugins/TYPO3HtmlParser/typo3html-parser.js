@@ -99,12 +99,14 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			editorNo : this.editorNumber,
 			content	 : this.getPluginInstance("EditorMode").getInnerHTML()
 		};
+			// Server-based synchronous pasted content cleaning
 		this.postData(	this.parseHtmlModulePath,
 				content,
 				function(response) {
 					editor.getPluginInstance("EditorMode").setHTML(response);
 					editor.selectRange(editor.moveToBookmark(bookmark));
-				}
+				},
+				false
 		);
 	}
 });
