@@ -108,7 +108,7 @@ class tx_indexedsearch_lexer {
 	 * @return	void
 	 */
 	function tx_indexedsearch_lexer() {
-		$this->csObj = &t3lib_div::makeInstance('t3lib_cs');
+		$this->csObj = t3lib_div::makeInstance('t3lib_cs');
 	}
 
 	/**

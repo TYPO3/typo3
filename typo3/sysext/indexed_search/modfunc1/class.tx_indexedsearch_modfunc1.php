@@ -164,7 +164,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			// Example configuration, see ext_localconf.php of this file!
 		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers']))	{
 			foreach($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef)	{
-				$this->external_parsers[$extension] = &t3lib_div::getUserObj($_objRef);
+				$this->external_parsers[$extension] = t3lib_div::getUserObj($_objRef);
 
 					// Init parser and if it returns false, unset its entry again:
 				if (!$this->external_parsers[$extension]->softInit($extension))	{
@@ -174,7 +174,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		}
 
 			// Initialize indexer if we need it (metaphone display does...)
-		$this->indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
+		$this->indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 
 			// Set CSS styles specific for this document:
 		$this->pObj->content = str_replace('/*###POSTCSSMARKER###*/','
@@ -1181,7 +1181,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			if ($resultRow['item_type'] && $resultRow['item_type']!=='0')	{
 
 					// (Re)-Indexing file on page.
-				$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
+				$indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 				$indexerObj->backend_initIndexer($pageId, 0, 0, '', $this->getUidRootLineForClosestTemplate($pageId));
 
 					// URL or local file:

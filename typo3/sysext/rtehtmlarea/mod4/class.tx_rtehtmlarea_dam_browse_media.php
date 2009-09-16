@@ -71,7 +71,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 * @return	boolean
 	 * @see SC_browse_links::main()
 	 */
-	function isValid($type, &$pObj)	{
+	function isValid($type, $pObj) {
 		$isValid = false;
 
 		$pArr = explode('|', t3lib_div::_GP('bparams'));
@@ -92,10 +92,10 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 	 * @return	string		Rendered content
 	 * @see SC_browse_links::main()
 	 */
-	function render($type, &$pObj)	{
+	function render($type, $pObj) {
 		global $LANG, $BE_USER, $BACK_PATH;
 
-		$this->pObj = &$pObj;
+		$this->pObj = $pObj;
 
 			// init class browse_links
 		$this->init();

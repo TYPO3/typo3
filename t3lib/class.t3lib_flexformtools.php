@@ -108,13 +108,13 @@ class t3lib_flexformtools {
 	 * @param	string		Method name of call back function in object for values
 	 * @return	boolean		If true, error happened (error string returned)
 	 */
-	function traverseFlexFormXMLData($table,$field,$row,&$callBackObj,$callBackMethod_value)	{
+	function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value) {
 
 		if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) 	{
 			return 'TCA table/field was not defined.';
 		}
 
-		$this->callBackObj = &$callBackObj;
+		$this->callBackObj = $callBackObj;
 
 			// Get Data Structure:
 		$dataStructArray = t3lib_BEfunc::getFlexFormDS($GLOBALS['TCA'][$table]['columns'][$field]['config'],$row,$table);
@@ -360,7 +360,7 @@ class t3lib_flexformtools {
 	 * @param	object		Object reference to caller
 	 * @return	void
 	 */
-	function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, &$pObj)	{
+	function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj) {
 		#debug(array($dsArr, $data, $PA),$path);
 			// Just setting value in our own result array, basically replicating the structure:
 		$pObj->setArrayValueByPath($path,$this->cleanFlexFormXML,$data);

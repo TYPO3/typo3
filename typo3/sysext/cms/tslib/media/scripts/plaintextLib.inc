@@ -597,7 +597,7 @@ class user_plaintext {
 	function userProcess($mConfKey,$passVar)	{
 		if ($this->conf[$mConfKey])	{
 			$funcConf = $this->conf[$mConfKey.'.'];
-			$funcConf['parentObj']=&$this;
+			$funcConf['parentObj'] = $this;
 			$passVar = $GLOBALS['TSFE']->cObj->callUserFunction($this->conf[$mConfKey], $funcConf, $passVar);
 		}
 		return $passVar;

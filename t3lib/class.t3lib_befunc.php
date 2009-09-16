@@ -1196,7 +1196,7 @@ final class t3lib_BEfunc {
 			// Hook for post-processing the Flexform DS. Introduces the possibility to configure Flexforms via TSConfig
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['getFlexFormDSClass'] as $classRef) {
-				$hookObj = &t3lib_div::getUserObj($classRef);
+				$hookObj = t3lib_div::getUserObj($classRef);
 				if (method_exists($hookObj, 'getFlexFormDS_postProcessDS')) {
 					$hookObj->getFlexFormDS_postProcessDS($dataStructArray, $conf, $row, $table, $fieldName);
 				}
@@ -3355,10 +3355,10 @@ final class t3lib_BEfunc {
 				// Traverse registered RTEs:
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'])) {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_reg'] as $extKey => $rteObjCfg) {
-					$rteObj = &t3lib_div::getUserObj($rteObjCfg['objRef']);
+					$rteObj = t3lib_div::getUserObj($rteObjCfg['objRef']);
 					if (is_object($rteObj)) {
 						if ($rteObj->isAvailable()) {
-							$GLOBALS['T3_VAR']['RTEobj'] = &$rteObj;
+							$GLOBALS['T3_VAR']['RTEobj'] = $rteObj;
 							break;
 						} else {
 							$GLOBALS['T3_VAR']['RTEobj'] = array_merge($GLOBALS['T3_VAR']['RTEobj'], $rteObj->errorLog);
@@ -3396,9 +3396,9 @@ final class t3lib_BEfunc {
 							$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey] :
 							$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser_GL'][$spKey];
 			if ($objRef) {
-				$softRefParserObj = &t3lib_div::getUserObj($objRef, '');
+				$softRefParserObj = t3lib_div::getUserObj($objRef, '');
 				if (is_object($softRefParserObj)) {
-					$GLOBALS['T3_VAR']['softRefParser'][$spKey] = &$softRefParserObj;
+					$GLOBALS['T3_VAR']['softRefParser'][$spKey] = $softRefParserObj;
 				}
 			}
 		}
@@ -4175,7 +4175,7 @@ final class t3lib_BEfunc {
 			// Hook for additional warnings
 			if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'] as $classRef) {
-					$hookObj = &t3lib_div::getUserObj($classRef);
+					$hookObj = t3lib_div::getUserObj($classRef);
 					if (method_exists($hookObj, 'displayWarningMessages_postProcess')) {
 						$hookObj->displayWarningMessages_postProcess($warnings);
 					}

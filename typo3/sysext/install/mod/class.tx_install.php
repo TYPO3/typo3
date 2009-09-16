@@ -4041,7 +4041,7 @@ From sub-directory:
 				foreach ($this->INSTALL['update']['extList'] as $identifier)	{
 					$className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];
 
-					$tmpObj = &$this->getUpgradeObjInstance($className, $identifier);
+					$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
 
 					$content = '<p class="innerWidth"><strong>'.$identifier.'</strong></p>';
 						// check user input if testing method is available
@@ -4086,7 +4086,7 @@ From sub-directory:
 	 * @return	object		newly instanciated upgrade object
 	 */
 	function getUpgradeObjInstance($className, $identifier)	{
-		$tmpObj = &t3lib_div::getUserObj($className);
+		$tmpObj = t3lib_div::getUserObj($className);
 		$tmpObj->versionNumber = t3lib_div::int_from_ver(TYPO3_version);
 		$tmpObj->pObj = $this;
 		$tmpObj->userInput = $this->INSTALL['update'][$identifier];

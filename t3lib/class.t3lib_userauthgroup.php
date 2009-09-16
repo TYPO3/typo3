@@ -422,7 +422,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 
 			// Acquire RTE object:
-		$RTE = &t3lib_BEfunc::RTEgetObj();
+		$RTE = t3lib_BEfunc::RTEgetObj();
 		if (!is_object($RTE))	{
 			$this->RTE_errors = array_merge($this->RTE_errors, $RTE);
 		}
@@ -1240,7 +1240,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $classRef) {
-			$hookObj = &t3lib_div::getUserObj($classRef);
+			$hookObj = t3lib_div::getUserObj($classRef);
 			if(method_exists($hookObj,'fetchGroupQuery_processQuery')){
 				$whereSQL = $hookObj->fetchGroupQuery_processQuery($this, $grList, $idList, $whereSQL);
 			}

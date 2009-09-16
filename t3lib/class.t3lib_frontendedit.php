@@ -101,7 +101,7 @@ class t3lib_frontendedit {
 		if ($GLOBALS['TSFE']->displayEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf) && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
-				$edit = &t3lib_div::getUserObj($editClass, false);
+				$edit = t3lib_div::getUserObj($editClass, false);
 				if (is_object($edit)) {
 					$allowedActions = $this->getAllowedEditActions($table, $conf, $dataArray['pid']);
 					$content = $edit->editPanel($content, $conf, $currentRecord, $dataArray, $table, $allowedActions, $newUid, $this->getHiddenFields($dataArray));
@@ -145,7 +145,7 @@ class t3lib_frontendedit {
 		if ($GLOBALS['TSFE']->displayFieldEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf) && $fieldList && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
-				$edit = &t3lib_div::getUserObj($editClass);
+				$edit = t3lib_div::getUserObj($editClass);
 				if (is_object($edit)) {
 					$content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addURLParamStr, $table, $editUid, $fieldList);
 				}

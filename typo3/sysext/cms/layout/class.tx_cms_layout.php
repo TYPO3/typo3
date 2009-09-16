@@ -1687,7 +1687,7 @@ class tx_cms_layout extends recordList {
 
 		if (is_array($drawItemHooks)) {
 			foreach($drawItemHooks as $hookClass)    {
-				$hookObject = &t3lib_div::getUserObj($hookClass);
+				$hookObject = t3lib_div::getUserObj($hookClass);
 
 				if(!($hookObject instanceof tx_cms_layout_tt_content_drawItemHook)) {
 					throw new UnexpectedValueException('$hookObject must implement interface tx_cms_layout_tt_content_drawItemHook', 1218547409);

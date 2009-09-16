@@ -157,7 +157,7 @@ class SC_wizard_rte {
 			$tceforms->colorScheme[0]=$this->doc->bgColor;	// SPECIAL: Setting background color of the RTE to ordinary background
 
 				// Initialize style for RTE object:
-			$RTEobj = &t3lib_BEfunc::RTEgetObj();	// Getting reference to the RTE object used to render the field!
+			$RTEobj = t3lib_BEfunc::RTEgetObj();	// Getting reference to the RTE object used to render the field!
 			if ($RTEobj->ID == 'rte')	{
 				$RTEobj->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border:solid 0px;';	// SPECIAL: Setting style for the RTE <DIV> layer containing the IFRAME
 			}

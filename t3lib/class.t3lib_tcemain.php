@@ -604,7 +604,7 @@ class t3lib_TCEmain	{
 		$hookObjectsArr = array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+				$hookObjectsArr[] = t3lib_div::getUserObj($classRef);
 			}
 		}
 
@@ -1138,7 +1138,7 @@ class t3lib_TCEmain	{
 								$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
 
 									// Get RTE object, draw form and set flag:
-								$RTEobj = &t3lib_BEfunc::RTEgetObj();
+								$RTEobj = t3lib_BEfunc::RTEgetObj();
 								if (is_object($RTEobj))	{
 									$fieldArray[$vconf['field']] = $RTEobj->transformContent('db',$fieldArray[$vconf['field']],$table,$vconf['field'],$currentRecord,$vconf['spec'],$thisConfig,$RTErelPath,$currentRecord['pid']);
 								} else {
@@ -2361,7 +2361,7 @@ class t3lib_TCEmain	{
 										$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$CVtable,$recFieldName,$theTypeString);
 
 											// Get RTE object, draw form and set flag:
-										$RTEobj = &t3lib_BEfunc::RTEgetObj();
+										$RTEobj = t3lib_BEfunc::RTEgetObj();
 										if (is_object($RTEobj))	{
 											$res['value'] = $RTEobj->transformContent('db',$res['value'],$CVtable,$recFieldName,$this->checkValue_currentRecord,$specConf,$thisConfig,'',$CVrealPid);
 										} else {
@@ -2499,7 +2499,7 @@ class t3lib_TCEmain	{
 		$hookObjectsArr = array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+				$hookObjectsArr[] = t3lib_div::getUserObj($classRef);
 			}
 		}
 #debug($this->cmdmap);
@@ -3556,7 +3556,7 @@ class t3lib_TCEmain	{
 		$hookObjectsArr = array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] as $classRef) {
-				$hookObjectsArr[] = &t3lib_div::getUserObj($classRef);
+				$hookObjectsArr[] = t3lib_div::getUserObj($classRef);
 			}
 		}
 
@@ -4176,7 +4176,7 @@ class t3lib_TCEmain	{
 	 * @param	[type]		$pObj: ...
 	 * @return	[type]		...
 	 */
-	function deleteRecord_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)	{
+	function deleteRecord_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
 
 			// Use reference index object to find files in fields:
 		$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');

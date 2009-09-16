@@ -162,7 +162,7 @@ Reports problems with RTE images';
 
 			// Now, ask for RTEmagic files inside uploads/ folder:
 		$cleanerModules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
-		$cleanerMode = &t3lib_div::getUserObj($cleanerModules['lost_files'][0]);
+		$cleanerMode = t3lib_div::getUserObj($cleanerModules['lost_files'][0]);
 		$resLostFiles = $cleanerMode->main(array(),FALSE,TRUE);
 		if (is_array($resLostFiles['RTEmagicFiles']))	{
 			foreach($resLostFiles['RTEmagicFiles'] as $fileName) {
@@ -220,7 +220,7 @@ Reports problems with RTE images';
 								if ($rteOrigName && t3lib_div::isFirstPartOfStr($dirPrefix,'uploads/') && @is_dir(PATH_site.$dirPrefix))	{	// RTE:
 
 										// From the "original" RTE filename, produce a new "original" destination filename which is unused.
-									$fileProcObj = &$this->getFileProcObj();
+									$fileProcObj = $this->getFileProcObj();
 									$origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site.$dirPrefix);
 
 										// Create copy file name:
@@ -290,7 +290,7 @@ Reports problems with RTE images';
 	 *
 	 * @return	object		File processor object
 	 */
-	function &getFileProcObj()	{
+	function getFileProcObj() {
 		if (!is_object($this->fileProcObj))	{
 			$this->fileProcObj = t3lib_div::makeInstance('t3lib_extFileFunctions');
 			$this->fileProcObj->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);

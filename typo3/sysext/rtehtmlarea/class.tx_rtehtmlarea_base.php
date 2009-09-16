@@ -194,8 +194,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function drawRTE($parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 		global $BE_USER, $LANG, $TYPO3_DB, $TYPO3_CONF_VARS;
 
-		$this->TCEform =& $parentObject;
-		$inline =& $this->TCEform->inline;
+		$this->TCEform = $parentObject;
+		$inline = $this->TCEform->inline;
 		$LANG->includeLLFile('EXT:' . $this->ID . '/locallang.xml');
 		$this->client = $this->clientInfo();
 		$this->typoVersion = t3lib_div::int_from_ver(TYPO3_version);
@@ -522,7 +522,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			foreach($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['plugins'] as $pluginId => $pluginObjectConfiguration) {
 				$plugin = false;
 				if (is_array($pluginObjectConfiguration) && count($pluginObjectConfiguration)) {
-					$plugin = &t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
+					$plugin = t3lib_div::getUserObj($pluginObjectConfiguration['objectReference']);
 				}
 				if (is_object($plugin)) {
 					if ($plugin->main($this)) {

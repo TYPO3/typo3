@@ -1676,7 +1676,7 @@ class tx_impexp {
 #	debug($currentValueArray['data'],'BE');
 											// Do recursive processing of the XML data:
 										$iteratorObj = t3lib_div::makeInstance('t3lib_TCEmain');
-										$iteratorObj->callBackObj = &$this;
+										$iteratorObj->callBackObj = $this;
 										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData(
 													$currentValueArray['data'],
 													array(),	// Not used.
@@ -1806,7 +1806,7 @@ class tx_impexp {
 
 											// Do recursive processing of the XML data:
 										$iteratorObj = t3lib_div::makeInstance('t3lib_TCEmain');
-										$iteratorObj->callBackObj = &$this;
+										$iteratorObj->callBackObj = $this;
 										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData(
 													$currentValueArray['data'],
 													array(),	// Not used.
@@ -1971,7 +1971,7 @@ class tx_impexp {
 				if (@is_dir(PATH_site.$dirPrefix))	{
 
 						// From the "original" RTE filename, produce a new "original" destination filename which is unused. Even if updated, the image should be unique. Currently the problem with this is that it leaves a lot of unused RTE images...
-					$fileProcObj = &$this->getFileProcObj();
+					$fileProcObj = $this->getFileProcObj();
 					$origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site.$dirPrefix);
 
 						// Create copy file name:
@@ -2036,7 +2036,7 @@ class tx_impexp {
 				$newName = PATH_site.$dirPrefix.$fileName;
 			} else {
 					// Create unique filename:
-				$fileProcObj = &$this->getFileProcObj();
+				$fileProcObj = $this->getFileProcObj();
 				$newName = $fileProcObj->getUniqueName($fileName, PATH_site.$dirPrefix);
 			}
 #debug($newName,'$newName');
@@ -2050,7 +2050,7 @@ class tx_impexp {
 					$tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
 					$tokenSubstituted = FALSE;
 
-					$fileProcObj = &$this->getFileProcObj();
+					$fileProcObj = $this->getFileProcObj();
 
 					if ($updMode)	{
 						foreach($fileHeaderInfo['EXT_RES_ID'] as $res_fileID)	{
@@ -2108,7 +2108,7 @@ class tx_impexp {
 	 * @return	boolean		Returns true if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
 	 */
 	function writeFileVerify($fileName, $fileID, $bypassMountCheck=FALSE)	{
-		$fileProcObj = &$this->getFileProcObj();
+		$fileProcObj = $this->getFileProcObj();
 
 		if ($fileProcObj->actionPerms['newFile'])	{
 			if ($fileProcObj->checkPathAgainstMounts($fileName) || $bypassMountCheck)	{	// Just for security, check again. Should actually not be necessary.
@@ -2168,7 +2168,7 @@ class tx_impexp {
 	 * @return	string		If a path is available that will be returned, otherwise false.
 	 */
 	function verifyFolderAccess($dirPrefix, $noAlternative=FALSE)	{
-		$fileProcObj = &$this->getFileProcObj();
+		$fileProcObj = $this->getFileProcObj();
 
 #$fileProcObj->mounts['1f390e42e1dc46f125310ead30c7bd9d']['path'] = '/var/www/typo3/dev/testsite-3.6.0/fileadmin/user_upload/';
 
@@ -2866,7 +2866,7 @@ class tx_impexp {
 				}
 
 					// Check extension:
-				$fileProcObj = &$this->getFileProcObj();
+				$fileProcObj = $this->getFileProcObj();
 				if ($fileProcObj->actionPerms['newFile'])	{
 					$testFI = t3lib_div::split_fileref(PATH_site.$fI['relFileName']);
 					if (!$this->allowPHPScripts && !$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file']))	{
@@ -3272,7 +3272,7 @@ class tx_impexp {
 	 *
 	 * @return	object		File processor object
 	 */
-	function &getFileProcObj()	{
+	function getFileProcObj() {
 		if (!is_object($this->fileProcObj))	{
 			$this->fileProcObj = t3lib_div::makeInstance('t3lib_extFileFunctions');
 			$this->fileProcObj->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);

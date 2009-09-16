@@ -93,7 +93,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 			// hook for manipulate cacheActions
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'] as $cacheAction) {
-				$hookObject = &t3lib_div::getUserObj($cacheAction);
+				$hookObject = t3lib_div::getUserObj($cacheAction);
 
 				if(!($hookObject instanceof backend_cacheActionsHook)) {
 					throw new UnexpectedValueException('$hookObject must implement interface backend_cacheActionsHook', 1228262000);

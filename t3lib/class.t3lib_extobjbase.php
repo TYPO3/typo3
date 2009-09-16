@@ -198,7 +198,7 @@ class t3lib_extobjbase {
 	function init(&$pObj,$conf)	{
 		global $LANG;
 
-		$this->pObj = &$pObj;
+		$this->pObj = $pObj;
 
 			// Path of this script:
 		$this->thisPath = dirname($conf['path']);

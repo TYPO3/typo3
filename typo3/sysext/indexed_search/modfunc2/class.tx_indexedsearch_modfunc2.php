@@ -98,7 +98,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 			.$this->note;
 
 			// Ask hook to include more on the page:
-		if ($hookObj = &$this->hookRequest('additionalSearchStat'))	{
+		if ($hookObj = $this->hookRequest('additionalSearchStat')) {
 			$content.= $hookObj->additionalSearchStat();
 		}
 
@@ -202,14 +202,14 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @return	object		Hook object, if any. Otherwise null.
 	 * @author Kasper Skaarhoj
 	 */
-	function &hookRequest($functionName)	{
+	function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;
 
 			// Hook: menuConfig_preProcessModMenu
 		if ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['be_hooks'][$functionName])	{
-			$hookObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['be_hooks'][$functionName]);
+			$hookObj = t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['be_hooks'][$functionName]);
 			if (method_exists ($hookObj, $functionName))	{
-				$hookObj->pObj = &$this;
+				$hookObj->pObj = $this;
 				return $hookObj;
 			}
 		}

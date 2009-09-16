@@ -122,7 +122,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 	 * @param	object		Parent object
 	 * @return	void
 	 */
-	function init($config, &$pObj)	{
+	function init($config, $pObj) {
 	}
 
 	/**

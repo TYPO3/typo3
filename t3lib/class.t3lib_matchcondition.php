@@ -97,7 +97,7 @@ class t3lib_matchCondition {
 		// 'EXT:my_ext/class.browserinfo.php:MyBrowserInfoClass';
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'] as $classRef) {
-				$this->hookObjectsArr[] = &t3lib_div::getUserObj($classRef, '');
+				$this->hookObjectsArr[] = t3lib_div::getUserObj($classRef, '');
 			}
 		}
 	}
@@ -468,7 +468,7 @@ class t3lib_matchCondition {
 		// deprecated, see above
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class']))	{
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['devices_class'] as $_classRef)	{
-				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj = t3lib_div::getUserObj($_classRef);
 				return $_procObj->whichDevice_ext($useragent);
 			}
 		}

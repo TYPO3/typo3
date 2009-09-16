@@ -60,7 +60,7 @@ abstract class tx_rtehtmlareaapi {
 	public function main($parentObject) {
 		global $TYPO3_CONF_VARS, $LANG, $TSFE;
 
-		$this->htmlAreaRTE =& $parentObject;
+		$this->htmlAreaRTE = $parentObject;
 		$this->rteExtensionKey =& $this->htmlAreaRTE->ID;
 		$this->thisConfig =& $this->htmlAreaRTE->thisConfig;
 		$this->toolbar =& $this->htmlAreaRTE->toolbar;

@@ -230,8 +230,8 @@ class tslib_menu {
 
 			// Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the sys_page object
 		if ($this->conf[$this->menuNumber.$objSuffix] && is_object($tmpl) && is_object($sys_page))	{
-			$this->tmpl = &$tmpl;
-			$this->sys_page = &$sys_page;
+			$this->tmpl = $tmpl;
+			$this->sys_page = $sys_page;
 
 				// alwaysActivePIDlist initialized:
 			if (trim($this->conf['alwaysActivePIDlist']) || isset($this->conf['alwaysActivePIDlist.'])) {
@@ -1332,7 +1332,7 @@ class tslib_menu {
 			}
 
 				// especially scripts that build the submenu needs the parent data
-			$submenu->parent_cObj = &$this->parent_cObj;
+			$submenu->parent_cObj = $this->parent_cObj;
 			$submenu->parentMenuArr = $this->menuArr;
 
 				// Setting alternativeMenuTempArray (will be effective only if an array)
@@ -1509,7 +1509,7 @@ class tslib_menu {
 	function userProcess($mConfKey,$passVar)	{
 		if ($this->mconf[$mConfKey])	{
 			$funcConf = $this->mconf[$mConfKey.'.'];
-			$funcConf['parentObj']=&$this;
+			$funcConf['parentObj'] = $this;
 			$passVar = $GLOBALS['TSFE']->cObj->callUserFunction($this->mconf[$mConfKey], $funcConf, $passVar);
 		}
 		return $passVar;

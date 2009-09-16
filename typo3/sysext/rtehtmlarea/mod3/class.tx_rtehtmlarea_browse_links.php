@@ -346,7 +346,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		global $TYPO3_CONF_VARS;
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS'][$hookKey]['browseLinksHook'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS'][$hookKey]['browseLinksHook'] as $classData) {
-				$processObject = &t3lib_div::getUserObj($classData);
+				$processObject = t3lib_div::getUserObj($classData);
 				if(!($processObject instanceof t3lib_browseLinksHook)) {
 					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);
 				}

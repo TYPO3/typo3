@@ -450,7 +450,7 @@ class t3lib_refindex {
 				if (strlen($value) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref']))	{
 					$softRefValue = $value;
 					foreach($softRefs as $spKey => $spParams)	{
-						$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
+						$softRefObj = t3lib_BEfunc::softRefParserObj($spKey);
 						if (is_object($softRefObj))	{
 							$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams);
 							if (is_array($resultArray))	{
@@ -483,7 +483,7 @@ class t3lib_refindex {
 	 * @return	void
 	 * @see t3lib_TCEmain::checkValue_flex_procInData_travDS()
 	 */
-	function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, &$pObj)	{
+	function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath, $pObj) {
 		$structurePath = substr($structurePath,5).'/';	// removing "data/" in the beginning of path (which points to location in data array)
 
 		$dsConf = $dsArr['TCEforms']['config'];
@@ -509,7 +509,7 @@ class t3lib_refindex {
 		if (strlen($dataValue) && $softRefs = t3lib_BEfunc::explodeSoftRefParserList($dsConf['softref']))	{
 			$softRefValue = $dataValue;
 			foreach($softRefs as $spKey => $spParams)	{
-				$softRefObj = &t3lib_BEfunc::softRefParserObj($spKey);
+				$softRefObj = t3lib_BEfunc::softRefParserObj($spKey);
 				if (is_object($softRefObj))	{
 					$resultArray = $softRefObj->findRef($table, $field, $uid, $softRefValue, $spKey, $spParams, $structurePath);
 					if (is_array($resultArray) && is_array($resultArray['elements']))	{

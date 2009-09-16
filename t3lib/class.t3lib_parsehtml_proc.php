@@ -289,8 +289,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			if ($direction=='db')	{
 					// Checking for user defined transformation:
 				if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])	{
-					$_procObj = &t3lib_div::getUserObj($_classRef);
-					$_procObj->pObj = &$this;
+					$_procObj = t3lib_div::getUserObj($_classRef);
+					$_procObj->pObj = $this;
 					$_procObj->transformationKey = $cmd;
 					$value = $_procObj->transform_db($value,$this);
 				} else {	// ... else use defaults:
@@ -325,8 +325,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			if ($direction=='rte')	{
 					// Checking for user defined transformation:
 				if ($_classRef = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])	{
-					$_procObj = &t3lib_div::getUserObj($_classRef);
-					$_procObj->pObj = &$this;
+					$_procObj = t3lib_div::getUserObj($_classRef);
+					$_procObj->pObj = $this;
 					$value = $_procObj->transform_rte($value,$this);
 				} else {	// ... else use defaults:
 					switch($cmd)	{

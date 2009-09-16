@@ -82,9 +82,9 @@ class tx_sv_authbase extends t3lib_svbase 	{
 	 * @param	object		Parent object
 	 * @return	void
 	 */
-	function initAuth($mode, $loginData, $authInfo, &$pObj)	{
+	function initAuth($mode, $loginData, $authInfo, $pObj) {
 
-		$this->pObj = &$pObj;
+		$this->pObj = $pObj;
 
 		$this->mode = $mode;	// sub type
 		$this->login = $loginData;

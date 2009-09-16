@@ -122,7 +122,7 @@ class t3lib_TCEforms_inline {
 	 * @return	void
 	 */
 	function init(&$tceForms) {
-		$this->fObj =& $tceForms;
+		$this->fObj = $tceForms;
 		$this->backPath =& $tceForms->backPath;
 		$this->prependFormFieldNames =& $this->fObj->prependFormFieldNames;
 		$this->prependCmdFieldNames =& $this->fObj->prependCmdFieldNames;
@@ -143,7 +143,7 @@ class t3lib_TCEforms_inline {
 			$tceformsInlineHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
 			if (is_array($tceformsInlineHook)) {
 				foreach($tceformsInlineHook as $classData) {
-					$processObject = &t3lib_div::getUserObj($classData);
+					$processObject = t3lib_div::getUserObj($classData);
 
 					if(!($processObject instanceof t3lib_tceformsInlineHook)) {
 						throw new UnexpectedValueException('$processObject must implement interface t3lib_tceformsInlineHook', 1202072000);
@@ -951,10 +951,10 @@ class t3lib_TCEforms_inline {
 	 * (called by typo3/ajax.php)
 	 *
 	 * @param	array		$params: additional parameters (not used here)
-	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
+	 * @param	TYPO3AJAX	$ajaxObj: the TYPO3AJAX object of this request
 	 * @return	void
 	 */
-	public function processAjaxRequest($params, &$ajaxObj) {
+	public function processAjaxRequest($params, $ajaxObj) {
 		$ajaxArguments = t3lib_div::_GP('ajax');
 		$ajaxIdParts = explode('::', $GLOBALS['ajaxID'], 2);
 
@@ -1020,7 +1020,7 @@ class t3lib_TCEforms_inline {
 		$SOBE->doc->backPath = $GLOBALS['BACK_PATH'];
 			// Initialize TCEforms (rendering the forms)
 		$SOBE->tceforms = t3lib_div::makeInstance('t3lib_TCEforms');
-		$SOBE->tceforms->inline =& $this;
+		$SOBE->tceforms->inline = $this;
 		$SOBE->tceforms->RTEcounter = intval(array_shift($ajaxArguments));
 		$SOBE->tceforms->initDefaultBEMode();
 		$SOBE->tceforms->palettesCollapsed = !$SOBE->MOD_SETTINGS['showPalettes'];
@@ -2302,10 +2302,10 @@ class t3lib_TCEforms_inline {
 	 * Update expanded/collapsed states on new inline records if any.
 	 *
 	 * @param	array		$uc: The uc array to be processed and saved (by reference)
-	 * @param	t3lib_TCEmain	$tce: Instance of TCEmain that saved data before (by reference)
+	 * @param	t3lib_TCEmain	$tce: Instance of TCEmain that saved data before
 	 * @return	void
 	 */
-	function updateInlineView(&$uc, &$tce) {
+	function updateInlineView(&$uc, $tce) {
 		if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
 			$inlineView = (array)unserialize($GLOBALS['BE_USER']->uc['inlineView']);
 

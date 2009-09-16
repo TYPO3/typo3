@@ -2405,7 +2405,7 @@
 			// Hook for processing data submission to extensions:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission']))	{
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['checkDataSubmission'] as $_classRef)	{
-				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj = t3lib_div::getUserObj($_classRef);
 				$_procObj->checkDataSubmission($this);
 			}
 		}
@@ -2484,7 +2484,7 @@
 			// Hook for preprocessing of the content for formmails:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass']))	{
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'] as $_classRef)	{
-				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj = t3lib_div::getUserObj($_classRef);
 				$EMAIL_VARS = $_procObj->sendFormmail_preProcessVariables($EMAIL_VARS,$this);
 			}
 		}
@@ -2733,7 +2733,7 @@
 			// Hook for cache post processing (eg. writing static files!)
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache']))	{
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'] as $_classRef)	{
-				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj = t3lib_div::getUserObj($_classRef);
 				$_procObj->insertPageIncache($this,$timeOutTime);
 			}
 		}
@@ -3018,7 +3018,7 @@
 			// Hook for indexing pages
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'])) {
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndexing'] as $_classRef) {
-				$_procObj = &t3lib_div::getUserObj($_classRef);
+				$_procObj = t3lib_div::getUserObj($_classRef);
 				$_procObj->hook_indexContent($this);
 			}
 		}
@@ -3651,7 +3651,7 @@ if (version == "n3") {
 						// Hook for preprocessing the list of fields to insert into sys_stat:
 					if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass']))    {
 						foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'] as $_classRef)    {
-							$_procObj = &t3lib_div::getUserObj($_classRef);
+							$_procObj = t3lib_div::getUserObj($_classRef);
 							$insertFields = $_procObj->sysstat_preProcessFields($insertFields,$this);
 						}
 					}

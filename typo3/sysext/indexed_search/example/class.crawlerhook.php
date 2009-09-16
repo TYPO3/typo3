@@ -123,7 +123,7 @@ class tx_indexedsearch_crawlerhook {
 					parse_str('&itemID='.rawurlencode($item['ID']), $GETparams);
 
 						// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-					$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
+					$indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 					$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, FALSE);
 					$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 					$indexerObj->forceIndexing = TRUE;
@@ -153,7 +153,7 @@ class tx_indexedsearch_crawlerhook {
 				$sys_language_uid = 0;
 
 					// Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
-				$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
+				$indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;	// To avoid phash_t3 being written to file sections (otherwise they are removed when page is reindexed!!!)
@@ -167,7 +167,7 @@ class tx_indexedsearch_crawlerhook {
 				$pObj->loadIndexerClass();
 
 					// Index external URL:
-				$indexerObj = &t3lib_div::makeInstance('tx_indexedsearch_indexer');
+				$indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 				$indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl);
 				$indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
 				$indexerObj->hash['phash'] = -1;	// To avoid phash_t3 being written to file sections (otherwise they are removed when page is reindexed!!!)

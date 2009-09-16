@@ -380,13 +380,13 @@ class tslib_cObj {
 		$this->parameters = Array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] as $classArr) {
-				$this->cObjHookObjectsArr[$classArr[0]] = &t3lib_div::getUserObj($classArr[1]);
+				$this->cObjHookObjectsArr[$classArr[0]] = t3lib_div::getUserObj($classArr[1]);
 			}
 		}
 
 		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'])) {
 			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
-				$hookObject = &t3lib_div::getUserObj($classData);
+				$hookObject = t3lib_div::getUserObj($classData);
 
 				if(!($hookObject instanceof tslib_content_stdWrapHook)) {
 					throw new UnexpectedValueException('$hookObject must implement interface tslib_content_stdWrapHook', 1195043965);
@@ -643,7 +643,7 @@ class tslib_cObj {
 								// call hook functions for extra processing
 							if($name && is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault']))    {
 								foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClassDefault'] as $classData)    {
-									$hookObject = &t3lib_div::getUserObj($classData);
+									$hookObject = t3lib_div::getUserObj($classData);
 
 									if(!($hookObject instanceof tslib_content_cObjGetSingleHook)) {
 										throw new UnexpectedValueException('$hookObject must implement interface tslib_content_cObjGetSingleHook', 1195043731);
@@ -2786,7 +2786,7 @@ class tslib_cObj {
 				default:
 					if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
-							$hookObj = &t3lib_div::getUserObj($classRef);
+							$hookObj = t3lib_div::getUserObj($classRef);
 							$conf['file'] = $url;
 							$conf['mode'] = $mode;
 							$content = $hookObj->customMediaRender($renderType, $conf, $this);
@@ -3343,7 +3343,7 @@ class tslib_cObj {
 		$out = '';
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']) {
-			$extLinkATagParamsHandler = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
+			$extLinkATagParamsHandler = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['extLinkATagParamsHandler']);
 
 			if(method_exists($extLinkATagParamsHandler, 'main')) {
 				$out.= trim($extLinkATagParamsHandler->main($URL, $TYPE, $this));
@@ -5640,7 +5640,7 @@ class tslib_cObj {
 
 			if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getData']))    {
 				foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getData'] as $classData)    {
-					$hookObject = &t3lib_div::getUserObj($classData);
+					$hookObject = t3lib_div::getUserObj($classData);
 
 					if(!($hookObject instanceof tslib_content_getDataHook)) {
 						throw new UnexpectedValueException('$hookObject must implement interface tslib_content_getDataHook', 1195044480);
@@ -5827,7 +5827,7 @@ class tslib_cObj {
 				// Check for link-handler keyword:
 			list($linkHandlerKeyword,$linkHandlerValue) = explode(':',trim($link_paramA[0]),2);
 			if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword] && strcmp($linkHandlerValue, '')) {
-				$linkHandlerObj = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
+				$linkHandlerObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][$linkHandlerKeyword]);
 
 				if(method_exists($linkHandlerObj, 'main')) {
 					return $linkHandlerObj->main($linktxt, $conf, $linkHandlerKeyword, $linkHandlerValue, $link_param, $this);
@@ -6566,7 +6566,7 @@ class tslib_cObj {
 			if ($this->isClassAvailable($parts[0], $conf)) {
 				$classObj = t3lib_div::makeInstance($parts[0]);
 				if (is_object($classObj) && method_exists($classObj, $parts[1])) {
-					$classObj->cObj = &$this;
+					$classObj->cObj = $this;
 				 	$content = call_user_func_array(array($classObj, $parts[1]), array($content, $conf));
 				} else {
 					$GLOBALS['TT']->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', 3);

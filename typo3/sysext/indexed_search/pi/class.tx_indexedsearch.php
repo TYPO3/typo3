@@ -213,7 +213,7 @@ class tx_indexedsearch extends tslib_pibase {
 			// Initialize external document parsers for icon display and other soft operations
 		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers']))	{
 			foreach ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef)	{
-				$this->external_parsers[$extension] = &t3lib_div::getUserObj($_objRef);
+				$this->external_parsers[$extension] = t3lib_div::getUserObj($_objRef);
 
 					// Init parser and if it returns false, unset its entry again:
 				if (!$this->external_parsers[$extension]->softInit($extension))	{
@@ -226,7 +226,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ?
 						$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] :
 						'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
-		$this->lexerObj = &t3lib_div::getUserObj($lexerObjRef);
+		$this->lexerObj = t3lib_div::getUserObj($lexerObjRef);
 
 			// If "_sections" is set, this value overrides any existing value.
 		if ($this->piVars['_sections'])		$this->piVars['sections'] = $this->piVars['_sections'];
@@ -379,7 +379,7 @@ class tx_indexedsearch extends tslib_pibase {
 		}
 
 			// Calling hook for modification of initialized content
-		if ($hookObj = &$this->hookRequest('initialize_postProc'))	{
+		if ($hookObj = $this->hookRequest('initialize_postProc')) {
 			$hookObj->initialize_postProc();
 		}
 
@@ -434,7 +434,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$inSW = $GLOBALS['TSFE']->csConvObj->utf8_encode($inSW, $GLOBALS['TSFE']->metaCharset);
 		$inSW = $GLOBALS['TSFE']->csConvObj->entities_to_utf8($inSW,TRUE);
 
-		if ($hookObj = &$this->hookRequest('getSearchWords'))	{
+		if ($hookObj = $this->hookRequest('getSearchWords')) {
 			return $hookObj->getSearchWords_splitSWords($inSW, $defOp);
 		} else {
 
@@ -518,7 +518,7 @@ class tx_indexedsearch extends tslib_pibase {
 		foreach ($indexCfgs as $freeIndexUid)	{
 				// Get result rows:
 			$pt1 = t3lib_div::milliseconds();
-			if ($hookObj = &$this->hookRequest('getResultRows'))	{
+			if ($hookObj = $this->hookRequest('getResultRows')) {
 				$resData = $hookObj->getResultRows($sWArr,$freeIndexUid);
 			} else {
 				$resData = $this->getResultRows($sWArr,$freeIndexUid);
@@ -526,7 +526,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 				// Display search results:
 			$pt2 = t3lib_div::milliseconds();
-			if ($hookObj = &$this->hookRequest('getDisplayResults'))	{
+			if ($hookObj = $this->hookRequest('getDisplayResults')) {
 				$content = $hookObj->getDisplayResults($sWArr, $resData, $freeIndexUid);
 			} else {
 				$content = $this->getDisplayResults($sWArr, $resData, $freeIndexUid);
@@ -1072,7 +1072,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$freeIndexUidClause = $this->freeIndexUidWhere($freeIndexUid);
 
 			// Calling hook for alternative creation of page ID list
-		if ($hookObj = &$this->hookRequest('execFinalQuery_idList'))	{
+		if ($hookObj = $this->hookRequest('execFinalQuery_idList')) {
 			$page_where = $hookObj->execFinalQuery_idList($list);
 		} elseif ($this->join_pages)	{	// Alternative to getting all page ids by ->getTreeList() where "excludeSubpages" is NOT respected.
 			$page_join = ',
@@ -1570,7 +1570,7 @@ class tx_indexedsearch extends tslib_pibase {
 			// Get template content:
 		$tmplContent = $this->prepareResultRowTemplateData($row, $headerOnly);
 
-		if ($hookObj = &$this->hookRequest('printResultRow'))	{
+		if ($hookObj = $this->hookRequest('printResultRow')) {
 			return $hookObj->printResultRow($row, $headerOnly, $tmplContent);
 		} else {
 
@@ -1763,7 +1763,7 @@ class tx_indexedsearch extends tslib_pibase {
 		$tmplContent['CSSsuffix'] = $CSSsuffix;
 
 			// Post processing with hook.
-		if ($hookObj = &$this->hookRequest('prepareResultRowTemplateData_postProc'))	{
+		if ($hookObj = $this->hookRequest('prepareResultRowTemplateData_postProc')) {
 			$tmplContent = $hookObj->prepareResultRowTemplateData_postProc($tmplContent, $row, $headerOnly);
 		}
 
@@ -2363,14 +2363,14 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	string		Name of the function you want to call / hook key
 	 * @return	object		Hook object, if any. Otherwise null.
 	 */
-	function &hookRequest($functionName)	{
+	function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;
 
 			// Hook: menuConfig_preProcessModMenu
 		if ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]) {
-			$hookObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
+			$hookObj = t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['pi1_hooks'][$functionName]);
 			if (method_exists ($hookObj, $functionName)) {
-				$hookObj->pObj = &$this;
+				$hookObj->pObj = $this;
 				return $hookObj;
 			}
 		}

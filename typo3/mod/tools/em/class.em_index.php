@@ -409,10 +409,10 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			// Initialize helper object
 		$this->terConnection = t3lib_div::makeInstance('SC_mod_tools_em_terconnection');
-		$this->terConnection->emObj =& $this;
+		$this->terConnection->emObj = $this;
 		$this->terConnection->wsdlURL = $TYPO3_CONF_VARS['EXT']['em_wsdlURL'];
 		$this->xmlhandler = t3lib_div::makeInstance('SC_mod_tools_em_xmlhandler');
-		$this->xmlhandler->emObj =& $this;
+		$this->xmlhandler->emObj = $this;
 		$this->xmlhandler->useUnchecked = $this->MOD_SETTINGS['display_unchecked'];
 		$this->xmlhandler->useObsolete = $this->MOD_SETTINGS['display_obsolete'];
 

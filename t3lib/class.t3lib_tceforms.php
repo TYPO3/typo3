@@ -370,13 +370,13 @@ class t3lib_TCEforms	{
 		$this->hookObjectsMainFields = array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass']))	{
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getMainFieldsClass'] as $classRef)	{
-				$this->hookObjectsMainFields[] = &t3lib_div::getUserObj($classRef);
+				$this->hookObjectsMainFields[] = t3lib_div::getUserObj($classRef);
 			}
 		}
 		$this->hookObjectsSingleField = array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass']))	{
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['getSingleFieldClass'] as $classRef)	{
-				$this->hookObjectsSingleField[] = &t3lib_div::getUserObj($classRef);
+				$this->hookObjectsSingleField[] = t3lib_div::getUserObj($classRef);
 			}
 		}
 
@@ -1268,7 +1268,7 @@ class t3lib_TCEforms	{
 							$RTErelPath = is_array($eFile) ? dirname($eFile['relEditFile']) : '';
 
 								// Get RTE object, draw form and set flag:
-							$RTEobj = &t3lib_BEfunc::RTEgetObj();
+							$RTEobj = t3lib_BEfunc::RTEgetObj();
 							$item = $RTEobj->drawRTE($this,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue);
 
 								// Wizard:

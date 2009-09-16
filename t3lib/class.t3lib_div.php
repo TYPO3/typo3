@@ -4384,9 +4384,9 @@ final class t3lib_div {
 	public static function readLLPHPfile($fileRef, $langKey, $charset='')	{
 
 		if (is_object($GLOBALS['LANG']))	{
-			$csConvObj = &$GLOBALS['LANG']->csConvObj;
+			$csConvObj = $GLOBALS['LANG']->csConvObj;
 		} elseif (is_object($GLOBALS['TSFE']))	{
-			$csConvObj = &$GLOBALS['TSFE']->csConvObj;
+			$csConvObj = $GLOBALS['TSFE']->csConvObj;
 		} else {
 			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		}
@@ -4459,9 +4459,9 @@ final class t3lib_div {
 	public static function readLLXMLfile($fileRef, $langKey, $charset='')	{
 
 		if (is_object($GLOBALS['LANG']))	{
-			$csConvObj = &$GLOBALS['LANG']->csConvObj;
+			$csConvObj = $GLOBALS['LANG']->csConvObj;
 		} elseif (is_object($GLOBALS['TSFE']))	{
-			$csConvObj = &$GLOBALS['TSFE']->csConvObj;
+			$csConvObj = $GLOBALS['TSFE']->csConvObj;
 		} else {
 			$csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		}
@@ -4790,11 +4790,11 @@ final class t3lib_div {
 					// Get/Create object of class:
 				if ($storePersistentObject)	{	// Get reference to current instance of class:
 					if (!is_object($GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]]))	{
-						$GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]] = &t3lib_div::makeInstance($parts[0]);
+						$GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]] = t3lib_div::makeInstance($parts[0]);
 					}
-					$classObj = &$GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]];
+					$classObj = $GLOBALS['T3_VAR']['callUserFunction_classPool'][$parts[0]];
 				} else {	// Create new object:
-					$classObj = &t3lib_div::makeInstance($parts[0]);
+					$classObj = t3lib_div::makeInstance($parts[0]);
 				}
 
 				if (method_exists($classObj, $parts[1]))	{
@@ -4853,7 +4853,7 @@ final class t3lib_div {
 	 * @return	object		The instance of the class asked for. Instance is created with t3lib_div::makeInstance
 	 * @see callUserFunction()
 	 */
-	public static function &getUserObj($classRef,$checkPrefix='user_',$silent=0)	{
+	public static function getUserObj($classRef, $checkPrefix='user_', $silent=false) {
 		global $TYPO3_CONF_VARS;
 			// Check persistent object and if found, call directly and exit.
 		if (is_object($GLOBALS['T3_VAR']['getUserObj'][$classRef]))	{
@@ -4888,11 +4888,11 @@ final class t3lib_div {
 
 				// Check if class exists:
 			if (class_exists($class))	{
-				$classObj = &t3lib_div::makeInstance($class);
+				$classObj = t3lib_div::makeInstance($class);
 
 					// If persistent object should be created, set reference:
 				if ($storePersistentObject)	{
-					$GLOBALS['T3_VAR']['getUserObj'][$classRef] = &$classObj;
+					$GLOBALS['T3_VAR']['getUserObj'][$classRef] = $classObj;
 				}
 
 				return $classObj;
@@ -4912,7 +4912,7 @@ final class t3lib_div {
 	 * @param	string		Class name to instantiate
 	 * @return	object		A reference to the object
 	 */
-	public static function &makeInstance($className) {
+	public static function makeInstance($className) {
 			// holds references of singletons
 		static $instances = array();
 
@@ -4980,7 +4980,7 @@ final class t3lib_div {
 	 * @return	object		The service object or an array with error info's.
 	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
-	public static function &makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array())	{
+	public static function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array()) {
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 
 		$error = FALSE;
@@ -5011,7 +5011,7 @@ final class t3lib_div {
 						if ($obj->init()) { // service available?
 
 								// create persistent object
-							$T3_VAR['makeInstanceService'][$info['className']] = &$obj;
+							$T3_VAR['makeInstanceService'][$info['className']] = $obj;
 
 								// needed to delete temp files
 							register_shutdown_function(array(&$obj, '__destruct'));

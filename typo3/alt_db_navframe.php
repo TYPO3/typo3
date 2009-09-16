@@ -382,10 +382,10 @@ class SC_alt_db_navframe {
 	 * Called by typo3/ajax.php
 	 *
 	 * @param	array		$params: additional parameters (not used here)
-	 * @param	TYPO3AJAX	&$ajaxObj: reference of the TYPO3AJAX object of this request
+	 * @param	TYPO3AJAX	$ajaxObj: The TYPO3AJAX object of this request
 	 * @return	void
 	 */
-	public function ajaxExpandCollapse($params, &$ajaxObj) {
+	public function ajaxExpandCollapse($params, $ajaxObj) {
 		global $LANG;
 
 		$this->init();

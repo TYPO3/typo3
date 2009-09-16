@@ -231,7 +231,7 @@ class tx_opendocs implements backend_toolbarItem {
 	 * @param	unknown_type		$ref
 	 * @return	string		list item HTML attibutes
 	 */
-	public function updateNumberOfOpenDocsHook(&$params, &$ref) {
+	public function updateNumberOfOpenDocsHook(&$params, $ref) {
 		$params['JScode'] = '
 			if (top && top.TYPO3BackendOpenDocs) {
 				top.TYPO3BackendOpenDocs.updateNumberOfDocs(' . count($this->openDocs) . ', true);

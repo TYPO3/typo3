@@ -829,7 +829,7 @@ class SC_view_help {
 	 */
 	function substituteGlossaryWords($code) {
 		$htmlParser = t3lib_div::makeInstance('local_t3lib_parsehtml');
-		$htmlParser->pObj = &$this;
+		$htmlParser->pObj = $this;
 		$code = $htmlParser->HTMLcleaner($code, array(), 1);
 
 		return $code;

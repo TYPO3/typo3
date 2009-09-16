@@ -88,7 +88,7 @@ class SC_alt_topmenu_dummy {
 			// Hook for adding content to the topmenu. Only works if noMenuMode is not set to "icons" in the users setup!
 		if (!$iconMenuMode && is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_topmenu_dummy.php']['fetchContentTopmenu']))	{
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_topmenu_dummy.php']['fetchContentTopmenu'] as $classRef)	{
-				$hookObj = &t3lib_div::getUserObj($classRef);
+				$hookObj = t3lib_div::getUserObj($classRef);
 				if (method_exists($hookObj,'fetchContentTopmenu_processContent'))	{
 					$tempContent = $hookObj->fetchContentTopmenu_processContent($this);
 

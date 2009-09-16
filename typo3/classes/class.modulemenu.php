@@ -115,7 +115,7 @@ class ModuleMenu {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	public function saveMenuState($params, &$ajaxObj) {
+	public function saveMenuState($params, $ajaxObj) {
 		$menuItem = t3lib_div::_POST('menuid');
 		$state    = t3lib_div::_POST('state') === 'true' ? 1 : 0;
 

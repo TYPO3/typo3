@@ -75,7 +75,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	 * @return	boolean
 	 * @see SC_browse_links::main()
 	 */
-	function isValid($type, &$pObj)	{
+	function isValid($type, $pObj) {
 		$isValid = false;
 
 		$pArr = explode('|', t3lib_div::_GP('bparams'));
@@ -96,10 +96,10 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 	 * @return	string		Rendered content
 	 * @see SC_browse_links::main()
 	 */
-	function render($type, &$pObj)	{
+	function render($type, $pObj) {
 		global $LANG, $BE_USER, $BACK_PATH;
 
-		$this->pObj = &$pObj;
+		$this->pObj = $pObj;
 
 			// init class browse_links
 		$this->init();
@@ -161,7 +161,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 		$this->hookObjects = array();
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'])) {
 			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['typo3/class.browse_links.php']['browseLinksHook'] as $classData) {
-				$processObject = &t3lib_div::getUserObj($classData);
+				$processObject = t3lib_div::getUserObj($classData);
 
 				if(!($processObject instanceof t3lib_browseLinksHook)) {
 					throw new UnexpectedValueException('$processObject must implement interface t3lib_browseLinksHook', 1195115652);

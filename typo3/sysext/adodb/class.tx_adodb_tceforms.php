@@ -29,7 +29,7 @@
  */
 class tx_adodb_tceforms {
 
-	function itemsProcFunc_dbtype(&$params, &$pObj)	{
+	function itemsProcFunc_dbtype(&$params, $pObj) {
 		if (is_callable('sybase_get_last_message')) $params['items'][] = array ('Sybase', 'sybase');
 		if (is_callable('odbc_error')) $params['items'][] = array ('ODBC', 'odbc');
 		if (is_callable('mysql_error')) $params['items'][] = array ('MySQL', 'mysql');

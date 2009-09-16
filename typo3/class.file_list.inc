@@ -713,7 +713,7 @@ class fileList extends t3lib_recordList {
 			// Hook for manipulating edit icons.
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['fileList']['editIconsHook'] as $classData) {
-				$hookObject = &t3lib_div::getUserObj($classData);
+				$hookObject = t3lib_div::getUserObj($classData);
 
 				if(!($hookObject instanceof fileList_editIconHook)) {
 					throw new UnexpectedValueException('$hookObject must implement interface fileList_editIconHook', 1235225797);

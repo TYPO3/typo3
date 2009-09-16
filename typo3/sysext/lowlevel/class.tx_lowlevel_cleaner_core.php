@@ -155,7 +155,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		switch((string)$analysisType)    {
 			default:
 				if (is_array($this->cleanerModules[$analysisType]))	{
-					$cleanerMode = &t3lib_div::getUserObj($this->cleanerModules[$analysisType][0]);
+					$cleanerMode = t3lib_div::getUserObj($this->cleanerModules[$analysisType][0]);
 					$cleanerMode->cli_validateArgs();
 
 					if ($this->cli_isArg('-r'))	{	// Run it...

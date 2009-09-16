@@ -458,18 +458,18 @@ class tx_indexedsearch_indexer {
 		$lexerObjRef = $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] ?
 						$TYPO3_CONF_VARS['EXTCONF']['indexed_search']['lexer'] :
 						'EXT:indexed_search/class.lexer.php:&tx_indexedsearch_lexer';
-		$this->lexerObj = &t3lib_div::getUserObj($lexerObjRef);
+		$this->lexerObj = t3lib_div::getUserObj($lexerObjRef);
 		$this->lexerObj->debug = $this->indexerConfig['debugMode'];
 
 			// Initialize metaphone hook:
 			// Example configuration (localconf.php) for this hook: $TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'] = 'EXT:indexed_search/class.doublemetaphone.php:&user_DoubleMetaPhone';
 		if ($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone'])	{
-			$this->metaphoneObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']);
-			$this->metaphoneObj->pObj = &$this;
+			$this->metaphoneObj = t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['metaphone']);
+			$this->metaphoneObj->pObj = $this;
 		}
 
 			// Init charset class:
-		$this->csObj = &t3lib_div::makeInstance('t3lib_cs');
+		$this->csObj = t3lib_div::makeInstance('t3lib_cs');
 	}
 
 	/**
@@ -484,8 +484,8 @@ class tx_indexedsearch_indexer {
 
 		if (is_array($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers']))	{
 			foreach($TYPO3_CONF_VARS['EXTCONF']['indexed_search']['external_parsers'] as $extension => $_objRef)	{
-				$this->external_parsers[$extension] = &t3lib_div::getUserObj($_objRef);
-				$this->external_parsers[$extension]->pObj = &$this;
+				$this->external_parsers[$extension] = t3lib_div::getUserObj($_objRef);
+				$this->external_parsers[$extension]->pObj = $this;
 
 					// Init parser and if it returns false, unset its entry again:
 				if (!$this->external_parsers[$extension]->initParser($extension))	{

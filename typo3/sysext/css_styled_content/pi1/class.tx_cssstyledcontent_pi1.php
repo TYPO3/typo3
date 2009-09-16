@@ -91,7 +91,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	function render_bullets($content,$conf)	{
 
 			// Look for hook before running default code for function
-		if ($hookObj = &$this->hookRequest('render_bullets'))	{
+		if ($hookObj = $this->hookRequest('render_bullets')) {
 			return $hookObj->render_bullets($content,$conf);
 		} else {
 
@@ -136,7 +136,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	function render_table($content,$conf)	{
 
 			// Look for hook before running default code for function
-		if ($hookObj = &$this->hookRequest('render_table'))	{
+		if ($hookObj = $this->hookRequest('render_table')) {
 			return $hookObj->render_table($content,$conf);
 		} else {
 				// Init FlexForm configuration
@@ -280,7 +280,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	function render_uploads($content,$conf)	{
 
 			// Look for hook before running default code for function
-		if ($hookObj = &$this->hookRequest('render_uploads'))	{
+		if ($hookObj = $this->hookRequest('render_uploads')) {
 			return $hookObj->render_uploads($content,$conf);
 		} else {
 
@@ -402,7 +402,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 */
 	 function render_textpic($content, $conf)	{
 			// Look for hook before running default code for function
-		if (method_exists($this, 'hookRequest') && $hookObj = &$this->hookRequest('render_textpic'))	{
+		if (method_exists($this, 'hookRequest') && $hookObj = $this->hookRequest('render_textpic')) {
 			return $hookObj->render_textpic($content,$conf);
 		}
 
@@ -909,14 +909,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @param	string		Name of the function you want to call / hook key
 	 * @return	object		Hook object, if any. Otherwise null.
 	 */
-	function &hookRequest($functionName)	{
+	function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;
 
 			// Hook: menuConfig_preProcessModMenu
 		if ($TYPO3_CONF_VARS['EXTCONF']['css_styled_content']['pi1_hooks'][$functionName]) {
-			$hookObj = &t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['css_styled_content']['pi1_hooks'][$functionName]);
+			$hookObj = t3lib_div::getUserObj($TYPO3_CONF_VARS['EXTCONF']['css_styled_content']['pi1_hooks'][$functionName]);
 			if (method_exists ($hookObj, $functionName)) {
-				$hookObj->pObj = &$this;
+				$hookObj->pObj = $this;
 				return $hookObj;
 			}
 		}

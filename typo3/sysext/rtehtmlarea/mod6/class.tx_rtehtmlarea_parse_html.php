@@ -132,7 +132,7 @@ class tx_rtehtmlarea_parse_html {
 
 		if (is_array ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'])) {
 			foreach  ($TYPO3_CONF_VARS['EXTCONF'][$this->extKey][$this->prefixId]['cleanPastedContent'] as $classRef) {
-				$hookObj = &t3lib_div::getUserObj($classRef);
+				$hookObj = t3lib_div::getUserObj($classRef);
 				if (method_exists($hookObj, 'cleanPastedContent_afterCleanWord')) {
 					$html = $hookObj->cleanPastedContent_afterCleanWord($html, $thisConfig);
 				}

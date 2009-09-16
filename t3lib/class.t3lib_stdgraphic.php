@@ -326,9 +326,9 @@ class t3lib_stdGraphic	{
 		}
 
 		if (TYPO3_MODE=='FE')	{
-			$this->csConvObj = &$GLOBALS['TSFE']->csConvObj;
+			$this->csConvObj = $GLOBALS['TSFE']->csConvObj;
 		} elseif(is_object($GLOBALS['LANG']))	{	// BE assumed:
-			$this->csConvObj = &$GLOBALS['LANG']->csConvObj;
+			$this->csConvObj = $GLOBALS['LANG']->csConvObj;
 		} else	{	// The object may not exist yet, so we need to create it now. Happens in the Install Tool for example.
 			$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 		}
