@@ -1,5 +1,6 @@
 2009-09-16  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #11905: Extension Manager is not translatable (part 3) (thanks to Christopher Stelmaszyk)
 	* Added feature #11927: Use suggest feature in system extensions
 	* Fixed bug #11967: allowSystemInstall should be a checkbox and not an input field (thanks to Georg Ringer)
 

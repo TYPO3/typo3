@@ -913,15 +913,15 @@ EXTENSION KEYS:
 										if ($inst_list[$extKey]['EM_CONF']['state'] != 'excludeFromUpdates') {
 											$loc= ($inst_list[$extKey]['type']=='G'?'G':'L');
 											$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]='.$loc;
-											$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import_update.gif" width="12" height="12" title="Update the extension in \''.($loc=='G'?'global':'local').'\' from online repository to server" alt="" /></a>';
+											$loadUnloadLink .= '<a href="' . htmlspecialchars($aUrl) . '"><img src="' . $GLOBALS['BACK_PATH'] . 'gfx/import_update.gif" width="12" height="12" title="' . sprintf($GLOBALS['LANG']->getLL('do_update'), ($loc == 'G' ? $GLOBALS['LANG']->getLL('global') : $GLOBALS['LANG']->getLL('local'))) . '" alt="" /></a>';
 										} else {
 												// extension is marked as "excludeFromUpdates"
-											$loadUnloadLink.= '<img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_warning.gif" width="18" height="16" title="The extension is excluded from any updates! You can change this in the appropriate ext_emconf.php file." alt="" />';
+											$loadUnloadLink .= '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/icon_warning.gif" width="18" height="16" title="' . $GLOBALS['LANG']->getLL('excluded_from_updates') . '" alt="" />';
 										}
 									} else {
 											// import
 										$aUrl = 'index.php?CMD[importExt]='.$extKey.'&CMD[extVersion]='.$version.'&CMD[loc]=L';
-										$loadUnloadLink.= '<a href="'.htmlspecialchars($aUrl).'"><img src="'.$GLOBALS['BACK_PATH'].'gfx/import.gif" width="12" height="12" title="Import this extension to \'local\' dir typo3conf/ext/ from online repository." alt="" /></a>';
+										$loadUnloadLink .= '<a href="' . htmlspecialchars($aUrl) . '"><img src="' . $GLOBALS['BACK_PATH'] . 'gfx/import.gif" width="12" height="12" title="' . $GLOBALS['LANG']->getLL('import_to_local_dir') . '" alt="" /></a>';
 									}
 								} else {
 									$loadUnloadLink = '&nbsp;';
@@ -943,8 +943,17 @@ EXTENSION KEYS:
 						// CSH:
 					$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'], '|<br />');
 					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-					$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
-							<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /></form><br /><br />';
+					$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
+							'"><label for="_lookUp">' .
+							sprintf($GLOBALS['LANG']->getLL('list_or_look_up'), 
+								($this->MOD_SETTINGS['display_unchecked'] ?
+									'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
+									: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
+								)
+							) .
+							'</label><br />
+							<input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->listRemote_search) .
+							'" /> <input type="submit" value="' . $GLOBALS['LANG']->getLL('look_up_button') . '" /></form><br /><br />';
 
  					$content .= $this->browseLinks();
 
@@ -954,9 +963,11 @@ EXTENSION KEYS:
 					<table border="0" cellpadding="2" cellspacing="1">'.implode(chr(10),$lines).'</table>';
  					$content .= '<br />'.$this->browseLinks();
 					$content.= '<br /><br />'.$this->securityHint;
-					$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
+					$content .= '<br /><br /><strong>' . $GLOBALS['LANG']->getLL('privacy_notice_header') .
+						'</strong><br /> ' . $this->privacyNotice;
 
-					$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository (online) - Grouped by: '.$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']],$content,0,1);
+					$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('extensions_repository_group_by') . ' ' .
+						$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']], $content, 0, 1);
 
 						// Plugins which are NOT uploaded to repository but present on this server.
 					$content='';
@@ -975,69 +986,98 @@ EXTENSION KEYS:
 						}
 					}
 					if(count($lines)) {
-						$content.= 'This is the list of extensions which are available locally, but not in the repository.<br />They might be user-defined and should be prepended user_ then.<br /><br />';
+						$content .= $GLOBALS['LANG']->getLL('list_of_local_extensions') .
+							'<br />' . $GLOBALS['LANG']->getLL('might_be_user_defined') . '<br /><br />';
 						$content.= '<table border="0" cellpadding="2" cellspacing="1">'.
 							$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>')).
 							implode('',$lines).'</table>';
 						$this->content.=$this->doc->spacer(20);
-						$this->content.=$this->doc->section('Extensions found only on this server',$content,0,1);
+						$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('only_on_this_server'), $content, 0, 1);
 					}
 				}
 			} else {
 				$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'], '|<br />');
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-				$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
-					<input type="text" id="_lookUp" name="_lookUp" value="'.htmlspecialchars($this->listRemote_search).'" /> <input type="submit" value="Look up" /></form><br /><br />';
+				$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
+					'"><label for="_lookUp">' .
+					sprintf($GLOBALS['LANG']->getLL('list_or_look_up'), 
+						($this->MOD_SETTINGS['display_unchecked'] ?
+							'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
+							: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
+						)
+					) .
+					'</label><br />
+					<input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->listRemote_search) .
+					'" /> <input type="submit" value="' . $GLOBALS['LANG']->getLL('look_up_button') . '" /></form><br /><br />';
 
-				$content.= '<p><strong>No matching extensions found.</strong></p>';
+				$content .= '<p><strong>' . $GLOBALS['LANG']->getLL('no_matching_extensions') . '</strong></p>';
 
-				$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br /> '.$this->privacyNotice;
-				$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository (online) - Grouped by: '.$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']],$content,0,1);
+				$content .= '<br /><br /><strong>' . $GLOBALS['LANG']->getLL('privacy_notice_header') .
+					'</strong><br /> ' . $this->privacyNotice;
+				$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('extensions_repository_group_by') . ' ' .
+					$this->MOD_MENU['listOrder'][$this->MOD_SETTINGS['listOrder']], $content, 0, 1);
 			}
 		} else {
 				// CSH
 			$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'], '|<br />');
 
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
-			$content.= '<form action="index.php" method="post" onsubmit="'.htmlspecialchars($onsubmit).'"><label for="_lookUp">List or look up <strong'.($this->MOD_SETTINGS['display_unchecked']?' style="color:#900;">all':' style="color:#090;">reviewed').'</strong> extensions</label><br />
-			<input type="text" id="_lookUp" name="_lookUp" value="" /> <input type="submit" value="Look up" /><br /><br />';
+			$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
+				'"><label for="_lookUp">' .
+				sprintf($GLOBALS['LANG']->getLL('list_or_look_up'), 
+					($this->MOD_SETTINGS['display_unchecked'] ?
+						'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
+						: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
+					)
+				) .
+				'</label><br />
+				<input type="text" id="_lookUp" name="_lookUp" value="" /> <input type="submit" value="' .
+				$GLOBALS['LANG']->getLL('look_up_button') . '" /><br /><br />';
 
 			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
 				$content .= $this->fetchMetaData($this->CMD['fetchMetaData']);
 			} else {
 				$onCLick = "window.location.href='index.php?CMD[fetchMetaData]=extensions';return false;";
-				$content.= 'Connect to the current mirror and retrieve the current list of available plugins from the TYPO3 Extension Repository.<br />
-				<input type="submit" value="Retrieve/Update" onclick="'.htmlspecialchars($onCLick).'" />';
+				$content .= $GLOBALS['LANG']->getLL('connect_to_ter') . '<br />
+					<input type="submit" value="' . $GLOBALS['LANG']->getLL('retrieve_update') .
+					'" onclick="' . htmlspecialchars($onCLick) . '" />';
 				if (is_file(PATH_site.'typo3temp/extensions.xml.gz'))	{
 					$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 					$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-					$content.= ' (last update: '.date($dateFormat.' '.$timeFormat,filemtime(PATH_site.'typo3temp/extensions.xml.gz')).')';
+					$content .= ' ' . sprintf($GLOBALS['LANG']->getLL('ext_list_last_updated') . ' ',
+						date(
+							$dateFormat . ', ' . $timeFormat,
+							filemtime(PATH_site . 'typo3temp/extensions.xml.gz')
+						)
+					);
 				}
 			}
 			$content.= '</form><br /><br />'.$this->securityHint;
-			$content.= '<br /><br /><strong>PRIVACY NOTICE:</strong><br />'.$this->privacyNotice;
+			$content .= '<br /><br /><strong>' . $GLOBALS['LANG']->getLL('privacy_notice_header') .
+				'</strong><br />' . $this->privacyNotice;
 
-			$this->content.=$this->doc->section('Extensions in TYPO3 Extension Repository',$content,0,1);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('in_repository'), $content, 0, 1);
 		}
 
 			// Upload:
 		if ($this->importAtAll())	{
 			$content= '<form action="index.php" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" method="post">
-			<label for="upload_ext_file">Upload extension file (.t3x):</label><br />
-				<input type="file" size="60" id="upload_ext_file" name="upload_ext_file" /><br />
-				... to location:<br />
+			<label for="upload_ext_file">' . $GLOBALS['LANG']->getLL('upload_t3x') . '</label><br />
+				<input type="file" size="60" id="upload_ext_file" name="upload_ext_file" /><br />' .
+				$GLOBALS['LANG']->getLL('upload_to_location') . '<br />
 				<select name="CMD[loc]">';
-			if ($this->importAsType('L'))	$content.='<option value="L">Local (../typo3conf/ext/)</option>';
-			if ($this->importAsType('G'))	$content.='<option value="G">Global (typo3/ext/)</option>';
-			if ($this->importAsType('S'))	$content.='<option value="S">System (typo3/sysext/)</option>';
+			if ($this->importAsType('L'))	$content .= '<option value="L">' . $GLOBALS['LANG']->getLL('local_folder') . '</option>';
+			if ($this->importAsType('G'))	$content .= '<option value="G">' . $GLOBALS['LANG']->getLL('global_folder') . '</option>';
+			if ($this->importAsType('S'))	$content .= '<option value="S">' . $GLOBALS['LANG']->getLL('system_folder') . '</option>';
 			$content.='</select><br />
-	<input type="checkbox" value="1" name="CMD[uploadOverwrite]" id="checkUploadOverwrite" /> <label for="checkUploadOverwrite">Overwrite any existing extension!</label><br />
-	<input type="submit" name="CMD[uploadExt]" value="Upload extension file" /></form><br />
+	<input type="checkbox" value="1" name="CMD[uploadOverwrite]" id="checkUploadOverwrite" /> <label for="checkUploadOverwrite">' .
+			$GLOBALS['LANG']->getLL('overwrite_ext') . '</label><br />
+	<input type="submit" name="CMD[uploadExt]" value="' . $GLOBALS['LANG']->getLL('upload_ext_file') . '" /></form><br />
 			';
 		} else $content=$this->noImportMsg();
 
 		$this->content.=$this->doc->spacer(20);
-		$this->content.=$this->doc->section('Upload extension file directly (.t3x):',$content,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('upload_ext_directly'), $content, 0, 1);
 	}
 
 	/**
@@ -1048,17 +1088,29 @@ EXTENSION KEYS:
 	function browseLinks()	{
 		$content = '';
 		if ($this->pointer)	{
-			$content .= '<a href="'.t3lib_div::linkThisScript(array('pointer' => $this->pointer-1)).'" class="typo3-prevPage"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/pilleft_n.gif','width="14" height="14"').' alt="Prev page" /> Prev page</a>';
+			$content .= '<a href="' . t3lib_div::linkThisScript(array('pointer' => $this->pointer-1)) .
+				'" class="typo3-prevPage"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],
+					'gfx/pilleft_n.gif', 'width="14" height="14"') .
+				' alt="' . $GLOBALS['LANG']->getLL('previous_page') . '" /> ' .
+				$GLOBALS['LANG']->getLL('previous_page') . '</a>';
 		}
 		if ($content) $content .= '&nbsp;&nbsp;&nbsp;';
 		if (intval($this->xmlhandler->matchingCount/$this->listingLimit)>$this->pointer)	{
-			$content .= '<a href="'.t3lib_div::linkThisScript(array('pointer' => $this->pointer+1)).'" class="typo3-nextPage"><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/pilright_n.gif','width="14" height="14"').' alt="Next page" /> Next page</a>';
+			$content .= '<a href="' . t3lib_div::linkThisScript(array('pointer' => $this->pointer+1)) .
+				'" class="typo3-nextPage"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],
+					'gfx/pilright_n.gif', 'width="14" height="14"') .
+				' alt="' . $GLOBALS['LANG']->getLL('next_page') . '" /> ' .
+				$GLOBALS['LANG']->getLL('next_page') . '</a>';
 		}
 		$upper = (($this->pointer+1)*$this->listingLimit);
 		if ($upper>$this->xmlhandler->matchingCount)	{
 			$upper = $this->xmlhandler->matchingCount;
 		}
-		if ($content) $content .= '<br /><br />Showing extensions <strong>'.($this->pointer*$this->listingLimit+1).'</strong> to <strong>'.$upper.'</strong>';
+		if ($content) $content .= '<br /><br />' .
+			sprintf($GLOBALS['LANG']->getLL('showing_extensions_from_to'),
+				'<strong>' . ($this->pointer*$this->listingLimit+1) . '</strong>',
+				'<strong>' . $upper . '</strong>'
+			);
 		if ($content) $content .= '<br /><br />';
 		return $content;
 	}
@@ -1074,57 +1126,67 @@ EXTENSION KEYS:
 		$content.= '
 			' . t3lib_BEfunc::cshItem('_MOD_tools_em', 'settings', $GLOBALS['BACK_PATH'], '|<br />') . '
 			<form action="index.php" method="post" name="altersettings">
-			<fieldset><legend>Security Settings</legend>
+			<fieldset><legend>' . $GLOBALS['LANG']->getLL('security_settings') . '</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td><label for="display_unchecked">Enable extensions without review (basic security check):</label></td>
+					<td><label for="display_unchecked">' . $GLOBALS['LANG']->getLL('show_exts_without_security_check') . '</label></td>
 					<td>'.t3lib_BEfunc::getFuncCheck(0,'SET[display_unchecked]',$this->MOD_SETTINGS['display_unchecked'],'','','id="display_unchecked"').'</td>
 				</tr>
 			</table>
-			<strong>Notice:</strong> Make sure you know what consequences enabling this checkbox might have. Check the <a href="http://typo3.org/extensions/what-are-reviews/" target="_blank">information on typo3.org about security reviewing</a>!
-			</fieldset>
+			<strong>' . $GLOBALS['LANG']->getLL('notice') . '</strong> ' .
+				sprintf($GLOBALS['LANG']->getLL('security_notice'),
+					'<a href="http://typo3.org/extensions/what-are-reviews/" target="_blank">', '</a>'
+				) .
+			'</fieldset>
 			<br />
 			<br />
-			<fieldset><legend>User Settings</legend>
+			<fieldset><legend>' . $GLOBALS['LANG']->getLL('user_settings') . '</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td><label for="set_fe_u">Enter repository username:</label></td>
+					<td><label for="set_fe_u">' . $GLOBALS['LANG']->getLL('enter_repository_username') . '</label></td>
 					<td><input type="text" id="set_fe_u" name="SET[fe_u]" value="'.htmlspecialchars($this->MOD_SETTINGS['fe_u']).'" /></td>
 				</tr>
 				<tr class="bgColor4">
-					<td><label for="set_fe_p">Enter repository password:</label></td>
+					<td><label for="set_fe_p">' . $GLOBALS['LANG']->getLL('enter_repository_password') . '</label></td>
 					<td><input type="password" id="set_fe_p" name="SET[fe_p]" value="'.htmlspecialchars($this->MOD_SETTINGS['fe_p']).'" /></td>
 				</tr>
 			</table>
-			<strong>Notice:</strong> This is <em>not</em> your password to the TYPO3 backend! This user information is what is needed to log in at typo3.org with your account there!
+			<strong>' . $GLOBALS['LANG']->getLL('notice') . '</strong> ' .
+				$GLOBALS['LANG']->getLL('repository_password_info') . '
 			</fieldset>
 			<br />
 			<br />
-			<fieldset><legend>Mirror selection</legend>
+			<fieldset><legend>' . $GLOBALS['LANG']->getLL('mirror_selection') . '</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td><label for="set_mirror_list_url">Enter mirror list URL:</label></a></td>
+					<td><label for="set_mirror_list_url">' . $GLOBALS['LANG']->getLL('mirror_list_url') . '</label></a></td>
 					<td><input type="text" size="50" id="set_mirror_list_url" name="SET[mirrorListURL]" value="'.htmlspecialchars($this->MOD_SETTINGS['mirrorListURL']).'" /></td>
 				</tr>
 			</table>
 			<br />
-			<p>Select a mirror from below. This list is built from the online mirror list retrieved from the URL above.<br /><br /></p>
-			<fieldset><legend>Mirror list</legend>';
+			<p>' . $GLOBALS['LANG']->getLL('mirror_select') . '<br /><br /></p>
+			<fieldset><legend>' . $GLOBALS['LANG']->getLL('mirror_list') . '</legend>';
 		if(!empty($this->MOD_SETTINGS['mirrorListURL'])) {
 			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
 				$content .= $this->fetchMetaData($this->CMD['fetchMetaData']);
 			} else {
-				$content.= '<a href="index.php?CMD[fetchMetaData]=mirrors">Click here to reload the list.</a>';
+				$content .= '<a href="index.php?CMD[fetchMetaData]=mirrors">' . $GLOBALS['LANG']->getLL('mirror_list_reload') . '</a>';
 			}
 		}
 		$content .= '<br />
 			<table cellspacing="4" style="text-align:left; vertical-alignment:top;">
-			<tr><td>Use</td><td>Name</td><td>URL</td><td>Country</td><td>Sponsored by</td></tr>
+			<tr>
+				<td>' . $GLOBALS['LANG']->getLL('mirror_use') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('mirror_name') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('mirror_url') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('mirror_country') . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('mirror_sponsored_by') . '</td>
+			</tr>
 		';
 
 		if (!strlen($this->MOD_SETTINGS['extMirrors'])) $this->fetchMetaData('mirrors');
 		$extMirrors = unserialize($this->MOD_SETTINGS['extMirrors']);
-		$extMirrors[''] = array('title'=>'Random (recommended!)');
+		$extMirrors[''] = array('title'=>$GLOBALS['LANG']->getLL('mirror_use_random'));
 		ksort($extMirrors);
 		if(is_array($extMirrors)) {
 			foreach($extMirrors as $k => $v) {
@@ -1142,19 +1204,19 @@ EXTENSION KEYS:
 			<br />
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td><label for="set_rep_url">Enter repository URL:</label></td>
+					<td><label for="set_rep_url">' . $GLOBALS['LANG']->getLL('enter_repository_url') . '</label></td>
 					<td><input type="text" size="50" id="set_rep_url" name="SET[rep_url]" value="'.htmlspecialchars($this->MOD_SETTINGS['rep_url']).'" /></td>
 				</tr>
 			</table>
 
-			If you set a repository URL, this overrides the use of a mirror. Use this to select a specific (private) repository.<br />
+			' . $GLOBALS['LANG']->getLL('repository_url_hint') . '<br />
 			</fieldset>
 			<br />
-			<input type="submit" value="Update" />
+			<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xml:update') . '" />
 			</form>
 		';
 
-		$this->content.=$this->doc->section('Repository settings',$content,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('repository_settings'), $content, 0, 1);
 	}
 
 	/**
