@@ -2657,6 +2657,7 @@ class tslib_cObj {
 			// it is a content element
 			$this->readFlexformIntoConf($flexParams, $conf['parameter.']);
 			$url = $conf['parameter.']['mmFile'];
+			$url = $this->stdWrap($url, $conf['file.']);
 		} else {
 			// it is a TS object
 			$url = $this->stdWrap($conf['file'], $conf['file.']);
