@@ -1,3 +1,7 @@
+2009-09-16  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11967: allowSystemInstall should be a checkbox and not an input field (thanks to Georg Ringer)
+
 2009-09-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11899: Make resizable and flexible textareas configurable, set default maxHeight to 600
