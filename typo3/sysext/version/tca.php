@@ -31,7 +31,12 @@ $TCA['sys_workspace'] = array(
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		'members' => array(
@@ -44,7 +49,12 @@ $TCA['sys_workspace'] = array(
 				'size' => '3',
 				'maxitems' => '100',
 				'autoSizeMax' => 10,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		'reviewers' => array(
@@ -57,7 +67,12 @@ $TCA['sys_workspace'] = array(
 				'size' => '3',
 				'maxitems' => '100',
 				'autoSizeMax' => 10,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		'db_mountpoints' => array(
@@ -69,7 +84,12 @@ $TCA['sys_workspace'] = array(
 				'size' => '3',
 				'maxitems' => '10',
 				'autoSizeMax' => 10,
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		'file_mountpoints' => array(

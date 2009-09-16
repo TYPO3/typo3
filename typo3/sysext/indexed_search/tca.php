@@ -93,6 +93,11 @@ $TCA['index_config'] = Array (
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
             )
         ),
         'indexcfgs' => Array (
@@ -104,6 +109,11 @@ $TCA['index_config'] = Array (
                 'size' => 5,
                 'minitems' => 0,
                 'maxitems' => 200,
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
             )
         ),
         'get_params' => Array (

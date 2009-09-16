@@ -92,7 +92,12 @@ $TCA['sys_action'] = Array (
 				'size' => '1',
 				'maxitems' => '1',
 				'minitems' => '1',
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		't3_listPid' => Array (
@@ -104,7 +109,12 @@ $TCA['sys_action'] = Array (
 				'size' => '1',
 				'maxitems' => '1',
 				'minitems' => '1',
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 		't3_tables' => Array (
@@ -127,7 +137,12 @@ $TCA['sys_action'] = Array (
 				'size' => '5',
 				'maxitems' => '50',
 				'minitems' => '1',
-				'show_thumbs' => '1'
+				'show_thumbs' => '1',
+				'wizards' => array(
+					'suggest' => array(
+						'type' => 'suggest',
+					)
+				)
 			)
 		),
 
