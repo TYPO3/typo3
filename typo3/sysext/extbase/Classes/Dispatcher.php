@@ -113,6 +113,9 @@ class Tx_Extbase_Dispatcher {
 			}
 		}
 
+		$flashMessages = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
+		$flashMessages->persist();
+
 		$persistenceManager->persistAll();
 		self::$reflectionService->shutdown();
 		if (count($response->getAdditionalHeaderData()) > 0) {
@@ -176,6 +179,11 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
 		$controller->injectSettings(self::$configurationManager->getSettings($request->getControllerExtensionName()));
+
+		$flashMessages = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
+		$flashMessages->reset();
+		$controller->injectFlashMessages($flashMessages);
+
 		$cacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
 		try {
 			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));

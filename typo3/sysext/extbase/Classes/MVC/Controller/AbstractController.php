@@ -104,6 +104,14 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Request');
 
 	/**
+	 * The flash messages. Use $this->flashMessages->add(...) to add a new Flash message.
+	 *
+	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @api
+	 */
+	protected $flashMessages;
+
+	/**
 	 * Constructs the controller.
 	 */
 	public function __construct() {
@@ -152,6 +160,16 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
 		$this->validatorResolver = $validatorResolver;
+	}
+
+	/**
+	 * Injects the flash messages container
+	 *
+	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessages
+	 * @return void
+	 */
+	public function injectFlashMessages(Tx_Extbase_MVC_Controller_FlashMessages $flashMessages) {
+		$this->flashMessages = $flashMessages;
 	}
 
 	/**
@@ -212,6 +230,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			$controllerContext->setArgumentsMappingResults($this->argumentsMappingResults);
 		}
 		$controllerContext->setUriBuilder($this->uriBuilder);
+		$controllerContext->setFlashMessages($this->flashMessages);
 		return $controllerContext;
 	}
 
@@ -347,62 +366,5 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->propertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
 		$this->argumentsMappingResults = $this->propertyMapper->getMappingResults();
 	}
-	
-	/**
-	 * Add a flash message to the queue. It will live until the next call to
-	 * popFlashMessages() in the current session.
-	 *
-	 * @param mixed $message anything serializable, should be "stringy"
-	 * @return void
-	 * @api
-	 */
-	protected function pushFlashMessage($message) {
-		if (!is_string($message)) throw new InvalidArgumentException('The flash message must be string, ' . gettype($message) . ' given.', 1243258395);
-
-		$queuedFlashMessages = $this->getFlashMessagesFromSession();
-		$queuedFlashMessages[] = $message;
-		if (isset($GLOBALS['TSFE'])) {
-			$GLOBALS['TSFE']->fe_user->setKey(
-				'ses',
-				'Extbase_AbstractController_flashMessages',
-				$queuedFlashMessages
-			);
-			$GLOBALS['TSFE']->fe_user->storeSessionData();
-		}
-		// TODO Support BE
-	}
-
-	/**
-	 * Returns queued flash messages and clear queue.
-	 *
-	 * @return array an array with flash messages or NULL if none available
-	 * @api
-	 */
-	protected function popFlashMessages() {
-		$queuedFlashMessages = $this->getFlashMessagesFromSession();
-		if (isset($GLOBALS['TSFE'])) {
-			$GLOBALS['TSFE']->fe_user->setKey(
-				'ses',
-				'Extbase_AbstractController_flashMessages',
-				NULL
-			);
-			$GLOBALS['TSFE']->fe_user->storeSessionData();
-		}
-		return $queuedFlashMessages;
-	}
-
-	/**
-	 * Returns current flash messages from the seesion, making sure to always
-	 * return an array.
-	 *
-	 * @return array
-	 */
-	protected function getFlashMessagesFromSession() {
-		if (is_object($GLOBALS['TSFE']->fe_user)) {
-			$flashMessages = $GLOBALS['TSFE']->fe_user->getKey('ses', 'Extbase_AbstractController_flashMessages');
-		}
-		return is_array($flashMessages) ? $flashMessages : array();
-	}
-	
 }
 ?>

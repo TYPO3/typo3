@@ -62,6 +62,11 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	protected $uriBuilder;
 
 	/**
+	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 */
+	protected $flashMessages;
+
+	/**
 	 * Set the request of the controller
 	 *
 	 * @param Tx_Extbase_MVC_Request $request
@@ -157,5 +162,24 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 		return $this->uriBuilder;
 	}
 
+	/**
+	 * Set the flash messages
+	 *
+	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessages
+	 * @return void
+	 */
+	public function setFlashMessages(Tx_Extbase_MVC_Controller_FlashMessages $flashMessages) {
+		$this->flashMessages = $flashMessages;
+	}
+
+	/**
+	 * Get the flash messages
+	 *
+	 * @return Tx_Extbase_MVC_Controller_FlashMessages
+	 * @api
+	 */
+	public function getFlashMessages() {
+		return $this->flashMessages;
+	}
 }
 ?>
