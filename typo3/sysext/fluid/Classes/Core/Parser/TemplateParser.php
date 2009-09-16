@@ -23,7 +23,7 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id: TemplateParser.php 3104 2009-08-31 08:36:13Z sebastian $
+ * @version $Id: TemplateParser.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_TemplateParser {
@@ -499,7 +499,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * Build up an argument object tree for the string in $argumentString.
 	 * This builds up the tree for a single argument value.
 	 *
-	 * @param string $argumentsString
+	 * @param string $argumentString
 	 * @return ArgumentObject the corresponding argument object tree.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -634,6 +634,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	/**
 	 * Text node handler
 	 *
+	 * @param Tx_Fluid_Core_Parser_ParsingState $state
 	 * @param string $text
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

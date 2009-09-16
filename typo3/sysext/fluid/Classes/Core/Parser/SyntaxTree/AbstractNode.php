@@ -23,7 +23,7 @@
 /**
  * Abstract node in the syntax tree which has been built.
  *
- * @version $Id: AbstractNode.php 2885 2009-07-24 15:34:35Z robert $
+ * @version $Id: AbstractNode.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -43,7 +43,7 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	protected $renderingContext;
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContext Rendering Context to be used for this evaluation
+	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext Rendering Context to be used for this evaluation
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -94,12 +94,12 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	/**
 	 * Appends a subnode to this node. Is used inside the parser to append children
 	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $subnode The subnode to add
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $childNode The subnode to add
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function addChildNode(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $subNode) {
-		$this->childNodes[] = $subNode;
+	public function addChildNode(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $childNode) {
+		$this->childNodes[] = $childNode;
 	}
 
 	/**

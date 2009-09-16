@@ -25,7 +25,7 @@
  * Is available inside every view helper as $this->arguments - and you use it as if it was an array.
  * However, you can only read, and not write to it.
  *
- * @version $Id: Arguments.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: Arguments.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -61,7 +61,7 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	/**
 	 * Returns the value to the given key.
 	 *
-	 * @param  $key Key to get.
+	 * @param string $key Key to get.
 	 * @return object associated value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -76,22 +76,22 @@ class Tx_Fluid_Core_ViewHelper_Arguments implements ArrayAccess {
 	/**
 	 * Throw exception if you try to set a value.
 	 *
-	 * @param string $name
+	 * @param string $key
 	 * @param object $value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function offsetSet($name, $value) {
-		throw new Tx_Fluid_Core_RuntimeException('Tried to set argument "' . $name . '", but setting arguments is forbidden.', 1236080693);
+	public function offsetSet($key, $value) {
+		throw new Tx_Fluid_Core_RuntimeException('Tried to set argument "' . $key . '", but setting arguments is forbidden.', 1236080693);
 	}
 
 	/**
 	 * Throw exception if you try to unset a value.
 	 *
-	 * @param string $name
+	 * @param string $key
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function offsetUnset($name) {
-		throw new Tx_Fluid_Core_RuntimeException('Tried to unset argument "' . $name . '", but setting arguments is forbidden.', 1236080702);
+	public function offsetUnset($key) {
+		throw new Tx_Fluid_Core_RuntimeException('Tried to unset argument "' . $key . '", but setting arguments is forbidden.', 1236080702);
 	}
 
 	/**

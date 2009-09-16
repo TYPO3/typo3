@@ -23,7 +23,7 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 3178 2009-09-16 08:13:30Z sebastian $
+ * @version $Id: AbstractViewHelper.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -93,7 +93,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	private $reflectionService;
 
 	/**
-	 * @param Tx_Fluid_Core_ViewHelper_Arguments
+	 * @param Tx_Fluid_Core_ViewHelper_Arguments $arguments
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */

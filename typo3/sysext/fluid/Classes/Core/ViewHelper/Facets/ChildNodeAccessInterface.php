@@ -28,7 +28,7 @@
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  *
- * @version $Id: ChildNodeAccessInterface.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ChildNodeAccessInterface.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  */
@@ -37,9 +37,8 @@ interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 	/**
 	 * Sets the direct child nodes of the current syntax tree node.
 	 *
-	 * @param array Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $childNodes
+	 * @param array<Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode> $childNodes
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setChildNodes(array $childNodes);
 
@@ -47,6 +46,7 @@ interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 	 * Sets the rendering context which needs to be passed on to child nodes
 	 *
 	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext the renderingcontext to use
+	 * @return void
 	 */
 	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext);
 

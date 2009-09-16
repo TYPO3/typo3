@@ -23,7 +23,7 @@
 /**
  *
  *
- * @version $Id: RenderingContext.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: RenderingContext.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  * @scope prototype
@@ -131,7 +131,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	/**
 	 * Set the rendering configuration for the current rendering process
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingConfiguration The Rendering Configuration to be set
+	 * @param Tx_Fluid_Core_Rendering_RenderingConfiguration $renderingConfiguration The Rendering Configuration to be set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setRenderingConfiguration(Tx_Fluid_Core_Rendering_RenderingConfiguration $renderingConfiguration) {
@@ -173,7 +173,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	/**
 	 * Set the ViewHelperVariableContainer
 	 *
-	 * @param Tx_Fluid_Core_ViewHelpers_ViewHelperVariableContainer $viewHelperVariableContainer
+	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -184,7 +184,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	/**
 	 * Get the ViewHelperVariableContainer
 	 *
-	 * @return Tx_Fluid_Core_ViewHelpers_ViewHelperVariableContainer
+	 * @return Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getViewHelperVariableContainer() {

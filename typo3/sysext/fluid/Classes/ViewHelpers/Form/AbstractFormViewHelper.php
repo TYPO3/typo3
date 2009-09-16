@@ -26,7 +26,7 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id: AbstractFormViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
+ * @version $Id: AbstractFormViewHelper.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -51,7 +51,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	/**
 	 * Prefixes / namespaces the given name with the form field prefix
 	 *
-	 * @param string $name field name to be prefixed
+	 * @param string $fieldName field name to be prefixed
 	 * @return string namespaced field name
 	 */
 	protected function prefixFieldName($fieldName) {

@@ -29,7 +29,7 @@
  *
  * Normally, this facet is not needed, except in really really rare cases.
  *
- * @version $Id: PostParseInterface.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: PostParseInterface.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  */
@@ -43,7 +43,7 @@ interface Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface {
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode The current node in the syntax tree corresponding to this view helper.
 	 * @param array $viewHelperArguments View helper arguments as an array of SyntaxTrees. If you really need an argument, make sure to call $viewHelperArguments[$argName]->render(...)!
-	 * @param VariableContainer $variableContainer Variable container you can use to pass on some variables to the view.
+	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer Variable container you can use to pass on some variables to the view.
 	 * @return void
 	 * @internal
 	 */
