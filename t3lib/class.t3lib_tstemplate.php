@@ -1383,10 +1383,11 @@ class t3lib_TStemplate	{
 	 * @param	array		Array with overriding values for the $page array.
 	 * @param	string		Additional URL parameters to set in the URL. Syntax is "&foo=bar&foo2=bar2" etc. Also used internally to add parameters if needed.
 	 * @param	string		If you set this value to something else than a blank string, then the typeNumber used in the link will be forced to this value. Normally the typeNum is based on the target set OR on $GLOBALS['TSFE']->config['config']['forceTypeValue'] if found.
+	 * @param	string		The target Doamin, if any was detected in typolink 
 	 * @return	array		Contains keys like "totalURL", "url", "sectionIndex", "linkVars", "no_cache", "type", "target" of which "totalURL" is normally the value you would use while the other keys contains various parts that was used to construct "totalURL"
 	 * @see tslib_frameset::frameParams(), tslib_cObj::typoLink(), tslib_cObj::SEARCHRESULT(), TSpagegen::pagegenInit(), tslib_menu::link()
 	 */
-	function linkData($page,$oTarget,$no_cache,$script,$overrideArray='',$addParams='',$typeOverride='')	{
+	function linkData($page, $oTarget, $no_cache, $script, $overrideArray='', $addParams='', $typeOverride='', $targetDomain='') {
 		global $TYPO3_CONF_VARS;
 
 		$LD = Array();
@@ -1461,7 +1462,7 @@ class t3lib_TStemplate	{
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc']))	{
 			$_params = array(
 							'LD' => &$LD,
-							'args' => array('page'=>$page, 'oTarget'=>$oTarget, 'no_cache'=>$no_cache, 'script'=>$script, 'overrideArray'=>$overrideArray, 'addParams'=>$addParams, 'typeOverride'=>$typeOverride),
+							'args' => array('page'=>$page, 'oTarget'=>$oTarget, 'no_cache'=>$no_cache, 'script'=>$script, 'overrideArray'=>$overrideArray, 'addParams'=>$addParams, 'typeOverride'=>$typeOverride,'targetDomain'=>$targetDomain),
 							'typeNum' => $typeNum
 						);
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'] as $_funcRef)	{

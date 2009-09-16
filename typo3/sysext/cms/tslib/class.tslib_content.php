@@ -6064,7 +6064,7 @@ class tslib_cObj {
 							if ($forceTarget) {
 								$target = $forceTarget;
 							}
-							$LD = $GLOBALS['TSFE']->tmpl->linkData($page,$target,$conf['no_cache'],'','',$addQueryParams,$theTypeP);
+							$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $theTypeP, $tCR_domain);
 							if (strlen($tCR_domain)) {
 								// We will add domain only if URL does not have it already.
 
