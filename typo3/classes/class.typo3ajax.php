@@ -252,9 +252,15 @@ class TYPO3AJAX {
 	 * @return	void
 	 */
 	protected function renderAsJSON() {
+			// if the backend does not run in UTF-8 then we need to convert it to unicode as
+			// the json_encode method will return empty otherwise
+		if ($this->charset != $this->requestCharset) {
+			$GLOBALS['LANG']->csConvObj->convArray($this->content, $this->charset, $this->requestCharset);
+		}
+
 		$content = json_encode($this->content);
 
-		header('Content-type: application/json; charset='.$this->charset);
+		header('Content-type: application/json; charset='.$this->requestCharset);
 		header('X-JSON: '.($this->contentFormat != 'jsonbody' ? $content : true));
 
 			// bring content in xhr.responseText except when in "json head only" mode
@@ -270,6 +276,12 @@ class TYPO3AJAX {
 	 * @return	 void
 	 */
 	protected function renderAsJavascript() {
+			// if the backend does not run in UTF-8 then we need to convert it to unicode as
+			// the json_encode method will return empty otherwise
+		if ($this->charset != $this->requestCharset) {
+			$GLOBALS['LANG']->csConvObj->convArray($this->content, $this->charset, $this->requestCharset);
+		}
+
 		$content = '<script type="text/javascript">
 					/*<![CDATA[*/
 
@@ -278,7 +290,7 @@ class TYPO3AJAX {
 					/*]]>*/
 					</script>';
 
-		header('Content-type: text/html; charset=' . $this->charset);
+		header('Content-type: text/html; charset=' . $this->requestCharset);
 		echo $content;
 	}
 }
