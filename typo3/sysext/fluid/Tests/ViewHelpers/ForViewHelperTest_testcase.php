@@ -93,7 +93,7 @@ class Tx_Fluid_ViewHelpers_ForViewHelperTest_testcase extends Tx_Fluid_ViewHelpe
 	 * @test
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function renderReturnsEmptyStringIfObjectIsEmtyArray() {
+	public function renderReturnsEmptyStringIfObjectIsEmptyArray() {
 		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
 
 		$this->assertEquals('', $viewHelper->render(array(), 'foo'));
