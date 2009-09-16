@@ -184,7 +184,7 @@ ContextMenu.prototype.pushOperations = function(opcodes,elmenus,tbo) {
 				i18n[opcode + "-tooltip"],
 				btnList[opcode][1],
 				opcode,
-				(opcode == "table-prop" || opcode == "row-prop" || opcode == "cell-prop")
+				(opcode == "TO-table-prop" || opcode == "TO-row-prop" || opcode == "TO-cell-prop")
 				]);
 		}
 	}
@@ -361,9 +361,6 @@ ContextMenu.mouseUpHandler = function(item,instance) {
 		if (!HTMLArea.is_ie) {
 			HTMLArea._stopEvent(ev);
 		}
-		if (!item.__msh.dialog) {
-			instance.editor.updateToolbar();
-		}
 		return false;
 	});
 };
@@ -371,6 +368,9 @@ ContextMenu.mouseUpHandler = function(item,instance) {
 ContextMenu.activateHandler = function(item,instance) {
 	return (function() {
 		item.__msh.action();
+		if (!item.__msh.dialog) {
+			instance.editor.updateToolbar();
+		}
 		instance.closeMenu();
 	});
 };

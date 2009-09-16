@@ -1,6 +1,7 @@
 2009-09-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.5.10
+	* Follow-up to bug #11946: htmlArea RTE: reference was made to context menu item after context menu was closed
 
 2009-09-13  Stanislas Rolland  <typo3@sjbr.ca>
 
