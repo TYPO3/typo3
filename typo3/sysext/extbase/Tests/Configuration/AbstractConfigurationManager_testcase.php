@@ -76,8 +76,9 @@ class Tx_Extbase_Configuration_AbstractConfigurationManager_testcase extends Tx_
 		);
 		$pluginConfiguration = array();
 
-		$configurationManager = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Configuration_AbstractConfigurationManager'), array('loadTypoScriptSetup'), array(), '', FALSE);
+		$configurationManager = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Configuration_AbstractConfigurationManager'), array('loadTypoScriptSetup', 'getContextSpecificFrameworkConfiguration'), array(), '', FALSE);
 		$configurationManager->expects($this->any())->method('loadTypoScriptSetup')->will($this->returnValue($typoScriptSetup));
+		$configurationManager->expects($this->any())->method('getContextSpecificFrameworkConfiguration')->will($this->returnValue(array()));
 		$expectedResult = array(
 			'persistence' => array(
 				'storagePid' => 'newStoragePid',
@@ -114,9 +115,10 @@ class Tx_Extbase_Configuration_AbstractConfigurationManager_testcase extends Tx_
 		$mockTypoScriptParser->expects($this->at(1))->method('getVal')->with('persistenceReference', $typoScriptSetup)->will($this->returnValue(array('', array('storagePid' => 'overwritten'))));
 		$mockTypoScriptParser->expects($this->at(2))->method('getVal')->with('viewReference', $typoScriptSetup)->will($this->returnValue(array('', array('resolved' => 'viewReference'))));
 
-		$configurationManager = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Configuration_AbstractConfigurationManager'), array('loadTypoScriptSetup'), array(), '', FALSE);
+		$configurationManager = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Configuration_AbstractConfigurationManager'), array('loadTypoScriptSetup', 'getContextSpecificFrameworkConfiguration'), array(), '', FALSE);
 		$configurationManager->_set('typoScriptParser', $mockTypoScriptParser);
 		$configurationManager->expects($this->any())->method('loadTypoScriptSetup')->will($this->returnValue($typoScriptSetup));
+		$configurationManager->expects($this->any())->method('getContextSpecificFrameworkConfiguration')->will($this->returnValue(array()));
 
 		$expectedResult = array(
 			'persistence' => array(
