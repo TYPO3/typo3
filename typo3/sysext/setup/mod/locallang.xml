@@ -79,6 +79,9 @@
 			<label index="edit_RTE">Enable Rich Text Editor (if available)</label>
 			<label index="edit_docModuleUpload">File upload directly in Doc-module</label>
 			<label index="enableFlashUploader">Enable Flash Uploader (requires Flash 9+)</label>
+			<label index="resizeTextareas">Make Textareas resizable</label>
+			<label index="resizeTextareas_MaxHeight">Maximal Height of resizable Textarea in Pixel</label>
+			<label index="resizeTextareas_Flexible">Make Textareas flexible</label>
 			<label index="editFunctionsTab">Edit &amp; Advanced functions</label>
 			<label index="edit_functions">Edit</label>
 			<label index="disableCMlayers">Disable Popup Context Menus</label>

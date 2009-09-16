@@ -73,6 +73,12 @@ The default module is &quot;About Modules&quot;.</label>
 			<label index="option_enableFlashUploader.alttitle">Enable Flash Uploader</label>
 			<label index="option_enableFlashUploader.description">This option will enable a flash-based uploader that allows you to select multiple files at once when uploading files. If you enable this option, make sure that your browser has the latest Flash plugin (Flash 9 or higher) installed in order to make this feature work.</label>
 			<label index="option_edit_showFieldHelp.alttitle">Context Sensitive Help mode</label>
+			<label index="option_resizeTextareas.alttitle">Make Textareas Resizable</label>
+			<label index="option_resizeTextareas.description">This option will make textareas resizable. You will see the resize mouse cursor if you move mouse to the outer border of textarea.</label>
+			<label index="option_resizeTextareas_MaxHeight.alttitle">Maximal Height of Textarea</label>
+			<label index="option_resizeTextareas_MaxHeight.description">Define the maximal height of textarea (in Pixel).</label>
+			<label index="option_resizeTextareas_Flexible.alttitle">Make Textareas Flexible</label>
+			<label index="option_resizeTextareas_Flexible.description">This option will make textareas flexible. The height will grow automatically while typing. Limit is the maximal height set (default 600).</label>
 			<label index="option_edit_showFieldHelp.description">Defines the mode of Context Sensitive Help (CSH) in TYPO3. The default is that small help icons are shown everywhere a help item is available. You can click the icon and help will appear in a window for you.</label>
 			<label index="option_edit_showFieldHelp.details">Alternatively you can select that descriptions are shown inline. This is useful for people who are still learning how TYPO3 works and want to browse the backend with descriptions shown directly.
 Finally experienced users will want to totally disable the help icons if they seem to just bloat the backend interface.

@@ -1,5 +1,6 @@
 2009-09-16  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11899: Make resizable and flexible textareas configurable, set default maxHeight to 600
 	* Fixed bug #11965: Content Element Media needs stdWrap to change path (e.g. for DAM) (thanks to Georg Ringer)
 	* Fixed bug #11902: [MediaCE] works only with absRefPrefix and doesn't support flowplayer
 

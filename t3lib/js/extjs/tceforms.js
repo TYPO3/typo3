@@ -75,15 +75,21 @@ TYPO3.TCEFORMS = {
 	convertTextareasResizable: function() {
 		var textAreas = Ext.select("*[id^=tceforms-textarea-]");
 		textAreas.each(function(element) {
-			element.addClass('resizable');
-			var elasticTextarea = new Ext.ux.elasticTextArea().applyTo(element.dom.id, {
-				minHeight: 50
-			});
-			var dwrapped = new Ext.Resizable(element.dom.id, {
-		        minWidth:  300,
-		        minHeight: 50,
-		        dynamic:   true
-		    });
+			if (TYPO3.settings.textareaFlexible) {
+				var elasticTextarea = new Ext.ux.elasticTextArea().applyTo(element.dom.id, {
+					minHeight: 50,
+					maxHeight: TYPO3.settings.textareaMaxHeight
+				});
+			}
+			if (TYPO3.settings.textareaResize) {
+				element.addClass('resizable');
+				var dwrapped = new Ext.Resizable(element.dom.id, {
+					minWidth:  300,
+					minHeight: 50,
+					maxHeight: TYPO3.settings.textareaMaxHeight,
+					dynamic:   true
+				});
+			}
 		});
 	}
 	

@@ -138,11 +138,27 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'type' => 'check',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:enableFlashUploader',
 			'csh' => 'enableFlashUploader',
-		)
+		),
+		'resizeTextareas' => array(
+			'type' => 'check',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas',
+			'csh' => 'resizeTextareas',
+		),
+		'resizeTextareas_MaxHeight' => array(
+			'type' => 'text',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas_MaxHeight',
+			'csh' => 'resizeTextareas_MaxHeight',
+			'default' => 600,
+		),
+		'resizeTextareas_Flexible' => array(
+			'type' => 'check',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas_Flexible',
+			'csh' => 'resizeTextareas_Flexible',
+		),
 	),
 	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 			--div--;LLL:EXT:setup/mod/locallang.xml:opening,condensedMode,noMenuMode,startModule,thumbnailsByDefault,helpText,edit_showFieldHelp,titleLen,
-			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,enableFlashUploader,disableCMlayers,copyLevels,recursiveDelete,
+			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,enableFlashUploader,resizeTextareas,resizeTextareas_MaxHeight,resizeTextareas_Flexible,disableCMlayers,copyLevels,recursiveDelete,
 			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate'
 
 );

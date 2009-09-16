@@ -956,7 +956,7 @@ Ext.ux.elasticTextArea = function(){
         return {
             minHeight : 0
             ,maxHeight : 0
-            ,growBy: 20
+            ,growBy: 12
         }
     }
     
@@ -1003,7 +1003,11 @@ Ext.ux.elasticTextArea = function(){
                                 .replace(/\n/g, '<br />&nbsp;') 
                     );
             
-            var textHeight = this.div.getHeight() + 12;
+			var growBy = parseInt(el.getStyle('line-height')) + 1;
+			if (growBy === 1) {
+				growBy = options.growBy;
+			}
+			var textHeight = this.div.getHeight() + growBy;
             
             if ( (textHeight > options.maxHeight ) && (options.maxHeight > 0) ){
                 textHeight = options.maxHeight ;
@@ -1014,7 +1018,7 @@ Ext.ux.elasticTextArea = function(){
                 el.setStyle('overflow', 'auto');
             }
             
-            el.setHeight(textHeight + options.growBy , true);
+            el.setHeight(textHeight , true);
         }
     }
 }
