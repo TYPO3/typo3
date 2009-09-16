@@ -20,6 +20,8 @@
  */
 class Tx_Fluid_Fluid {
 	const NAMESPACE_SEPARATOR = '_';
+
+	public static $debugMode = FALSE;
 }
 
 
