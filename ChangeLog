@@ -7,6 +7,7 @@
 	* Fixed bug #11915: htmlArea RTE: superfluous span tags in content after server-based cleaning on paste operation
 	* Follow-up to bug #11946: htmlArea RTE: reference was made to context menu item after context menu was closed
 	* Added feature #11966: htmlArea RTE: Restrict access to "Clear RTE Cache" option in clear cache menu
+	* Updated htmlArea RTE manual
 
 2009-09-13  Stanislas Rolland  <typo3@sjbr.ca>
 
