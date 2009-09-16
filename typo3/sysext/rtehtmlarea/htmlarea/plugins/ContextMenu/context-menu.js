@@ -554,9 +554,6 @@ ContextMenu.mouseUpHandler = function(item,instance) {
 		if (!HTMLArea.is_ie) {
 			HTMLArea._stopEvent(ev);
 		}
-		if (!item.__msh.dialog) {
-			instance.editor.updateToolbar();
-		}
 		return false;
 	});
 };
@@ -564,6 +561,9 @@ ContextMenu.mouseUpHandler = function(item,instance) {
 ContextMenu.activateHandler = function(item,instance) {
 	return (function() {
 		item.__msh.action();
+		if (!item.__msh.dialog) {
+			instance.editor.updateToolbar();
+		}
 		instance.closeMenu();
 	});
 };
