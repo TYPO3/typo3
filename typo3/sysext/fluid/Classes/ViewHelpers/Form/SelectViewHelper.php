@@ -46,7 +46,7 @@
  *
  * If you want to output domain objects, you can just pass them as array into the "options" parameter.
  * To define what domain object value should be used as option key, use the "optionValueField" variable. Same goes for optionLabelField.
- * If neither is given, the Identifier (UID) and the __toString() method are tried as fallbacks.
+ * If neither is given, the Identifier (UID/uid) and the __toString() method are tried as fallbacks.
  *
  * If the optionValueField variable is set, the getter named after that value is used to retrieve the option key.
  * If the optionLabelField variable is set, the getter named after that value is used to retrieve the option value.
@@ -60,7 +60,7 @@
  *
  * The "value" property now expects a domain object, and tests for object equivalence.
  *
- * @version $Id: SelectViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: SelectViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

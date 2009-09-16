@@ -23,7 +23,7 @@
 /**
  * Tag builder. Can be easily accessed in TagBasedViewHelper
  *
- * @version $Id: TagBuilder.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: TagBuilder.php 3119 2009-09-03 19:27:00Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -186,6 +186,20 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 */
 	public function removeAttribute($attributeName) {
 		unset($this->attributes[$attributeName]);
+	}
+
+	/**
+	 * Resets the TagBuilder by setting all members to their default value
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
+	 */
+	public function reset() {
+		$this->tagName = '';
+		$this->content = '';
+		$this->attributes = array();
+		$this->forceClosingTag = FALSE;
 	}
 
 	/**

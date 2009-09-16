@@ -40,7 +40,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 		$object->_set('uid', '123');
 		$object->expects($this->once())->method('_isNew')->will($this->returnValue(FALSE));
 
-		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][uid]" value="123" />' . chr(10);
+		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('prefixFieldName'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
@@ -61,7 +61,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 		$object->expects($this->once())->method('_isNew')->will($this->returnValue(TRUE));
 		$object->expects($this->once())->method('_isClone')->will($this->returnValue(TRUE));
 
-		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][uid]" value="123" />' . chr(10);
+		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_FormViewHelper'), array('prefixFieldName'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);

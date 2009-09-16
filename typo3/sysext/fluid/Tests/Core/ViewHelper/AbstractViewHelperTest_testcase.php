@@ -18,7 +18,7 @@ include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
 /**
  * Testcase for AbstractViewHelper
  *
- * @version $Id: AbstractViewHelperTest.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: AbstractViewHelperTest.php 3178 2009-09-16 08:13:30Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -44,6 +44,23 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception
+	 */
+	public function registeringTheSameArgumentNameAgainThrowsException() {
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render'), array(), '', FALSE);
+
+		$name = "shortName";
+		$description = "Example desc";
+		$type = "string";
+		$isRequired = TRUE;
+
+		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
+		$viewHelper->_call('registerArgument', $name, "integer", $isRequired, $description);
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function prepareArgumentsCallsInitializeArguments() {
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'initializeArguments'), array(), '', FALSE);
@@ -59,7 +76,9 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function prepareArgumentsRegistersAnnotationBasedArguments() {
+	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithDescriptionIfDebugModeIsEnabled() {
+
+		Tx_Fluid_Fluid::$debugMode = TRUE;
 
 		$availableClassNames = array(
 			'Tx_Fluid_Core_Fixtures_TestViewHelper',
@@ -79,7 +98,36 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 
 		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
 
+		Tx_Fluid_Fluid::$debugMode = FALSE;
 	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithoutDescriptionIfDebugModeIsDisabled() {
+
+		Tx_Fluid_Fluid::$debugMode = FALSE;
+
+		$availableClassNames = array(
+			'Tx_Fluid_Core_Fixtures_TestViewHelper',
+		);
+		$reflectionService = new Tx_Extbase_Reflection_Service();
+		// $reflectionService->setCache($this->getMock('Tx_Fluid_Cache_Frontend_VariableFrontend', array(), array(), '', FALSE));
+		// $reflectionService->initialize($availableClassNames);
+
+		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper();
+		$viewHelper->injectReflectionService($reflectionService);
+
+		$expected = array(
+			'param1' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param1', 'integer', '', TRUE, null, TRUE),
+			'param2' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param2', 'array', '', TRUE, null, TRUE),
+			'param3' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param3', 'string', '', FALSE, 'default', TRUE),
+		);
+
+		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
+	}
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

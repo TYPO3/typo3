@@ -18,7 +18,7 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the Abstract Form view helper
  *
- * @version $Id: AbstractFormViewHelperTest.php 2991 2009-08-06 12:09:58Z robert $
+ * @version $Id: AbstractFormViewHelperTest.php 3109 2009-08-31 17:22:46Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));

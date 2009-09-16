@@ -27,6 +27,19 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_Base_test
 	public function setUp() {
 		$this->viewHelper = new Tx_Fluid_Core_Fixtures_TestTagBasedViewHelper();
 	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function initializeResetsUnderlyingTagBuilder() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('reset'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->once())->method('reset');
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
+		$this->viewHelper->initialize();
+	}
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

@@ -18,7 +18,7 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the Abstract Form view helper
  *
- * @version $Id$
+ * @version $Id: AbstractFormFieldViewHelperTest.php 3109 2009-08-31 17:22:46Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
@@ -59,13 +59,13 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends
 		$formViewHelper->_set('arguments', $arguments);
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
 
-		$this->assertSame('foo[uid]', $formViewHelper->_call('getName'));
+		$this->assertSame('foo[__identity]', $formViewHelper->_call('getName'));
 		$this->assertSame('6f487e40-4483-11de-8a39-0800200c9a66', $formViewHelper->_call('getValue'));
 	}
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Sebastian KurfÃ¼rst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getNameBuildsNameFromFieldNamePrefixFormNameAndPropertyIfInObjectAccessorMode() {
@@ -125,7 +125,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Sebastian KurfÃ¼rst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getValueBuildsValueFromPropertyAndFormObjectIfInObjectAccessorMode() {
@@ -187,7 +187,7 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Sebastian KurfÃ¼rst <sebastian@typo3.org>
 	 */
 	public function isObjectAccessorModeReturnsTrueIfPropertyIsSetAndFormObjectIsGiven() {
 		$formViewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper'), array('dummy'), array(), '', FALSE);

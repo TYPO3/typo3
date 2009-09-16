@@ -21,63 +21,43 @@
  *                                                                        */
 
 /**
- * Creates a submit button.
+ * Formats a string using PHPs str_pad function.
+ * @See http://www.php.net/manual/en/function.str_pad.php
  *
  * = Examples =
  *
  * <code title="Defaults">
- * <f:submit value="Send Mail" />
+ * <f:format.padding padLength="10">TYPO3</f:format.padding>
  * </code>
  *
  * Output:
- * <input type="submit" />
+ * TYPO3     (note the trailing whitespace)
  *
- * <code title="Dummy content for template preview">
- * <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
+ * <code title="Specify padding string">
+ * <f:format.padding padLength="10" padString="-=">TYPO3</f:format.padding>
  * </code>
  *
-  * Output:
- * <input type="submit" name="mySubmit" value="Send Mail" />
+ * Output:
+ * TYPO3-=-=-
  *
- * @version $Id: SubmitViewHelper.php 3178 2009-09-16 08:13:30Z sebastian $
+ * @version $Id: PaddingViewHelper.php 3169 2009-09-10 12:52:22Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class Tx_Fluid_ViewHelpers_Format_PaddingViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
-
-	/**
-	 * Initialize the arguments.
+	 * Format the arguments with the given printf format string.
 	 *
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerUniversalTagAttributes();
-	}
-
-	/**
-	 * Renders the submit button.
-	 *
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param integer $padLength Length of the resulting string. If the value of pad_length is negative or less than the length of the input string, no padding takes place.
+	 * @param string $padString The padding string
+	 * @return string The formatted value
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function render() {
-		$this->tag->addAttribute('type', 'submit');
-		$this->tag->addAttribute('name', $this->getName());
-		$this->tag->addAttribute('value', $this->getValue());
-
-		return $this->tag->render();
+	public function render($padLength, $padString = ' ') {
+		$string = $this->renderChildren();
+		return str_pad($string, $padLength, $padString);
 	}
 }
-
 ?>

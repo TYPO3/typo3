@@ -21,63 +21,68 @@
  *                                                                        */
 
 /**
- * View Helper which creates a simple Text Box (<input type="text">).
+ * View helper which renders the flash messages (if there are any) as an unsorted list.
  *
-  * = Examples =
+ * In case you need custom Flash Message HTML output, please write your own ViewHelper for the moment.
  *
- * <code title="Example">
- * <f:textbox name="myTextBox" value="default value" />
+ *
+ * = Examples =
+ *
+ * <code title="Simple">
+ * <f:renderFlashMessages />
+ * </code>
+ * Renders an ul-list of flash messages.
+ *
+ * <code title="Output with css class">
+ * <f:renderFlashMessages class="specialClass" />
  * </code>
  *
  * Output:
- * <input type="text" name="myTextBox" value="default value" />
+ * <ul class="specialClass">
+ *  ...
+ * </ul>
  *
- * @version $Id: TextboxViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
+ * @version $Id: ForViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class Tx_Fluid_ViewHelpers_RenderFlashMessagesViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 
 	/**
 	 * @var string
 	 */
-	protected $tagName = 'input';
+	protected $tagName = 'ul';
 
 	/**
-	 * Initialize the arguments.
+	 * Initialize arguments
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerTagAttribute('maxlength', 'int', 'The maxlength attribute of the input field (will not be validated)');
-		$this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the input field');
-		$this->registerTagAttribute('size', 'int', 'The size of the input field');
-		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 		$this->registerUniversalTagAttributes();
 	}
 
 	/**
-	 * Renders the textbox.
+	 * Render method.
 	 *
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @return string rendered Flash Messages, if there are any.
+	 * @author Sebastian Kurfürst <sbastian@typo3.org>
 	 * @api
 	 */
 	public function render() {
-		$this->tag->addAttribute('type', 'text');
-		$this->tag->addAttribute('name', $this->getName());
-		$this->tag->addAttribute('value', $this->getValue());
-
-		$this->setErrorClassAttribute();
-
-		return $this->tag->render();
+		$flashMessages = $this->controllerContext->getFlashMessages()->getAllAndFlush();
+		if (count($flashMessages) > 0) {
+			$tagContent = '';
+			foreach ($flashMessages as $singleFlashMessage) {
+				$tagContent .=  '<li>' . htmlspecialchars($singleFlashMessage) . '</li>';
+			}
+			$this->tag->setContent($tagContent);
+			return $this->tag->render();
+		}
+		return '';
 	}
-
 }
 
 ?>

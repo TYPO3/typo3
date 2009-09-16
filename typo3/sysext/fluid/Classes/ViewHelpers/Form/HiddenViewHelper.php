@@ -35,7 +35,7 @@
  * You can also use the "property" attribute if you have bound an object to the form.
  * See <f:form> for more documentation.
  *
- * @version $Id: HiddenViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: HiddenViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

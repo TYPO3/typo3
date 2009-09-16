@@ -23,7 +23,7 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 2902 2009-07-27 21:41:23Z sebastian $
+ * @version $Id: AbstractViewHelper.php 3178 2009-09-16 08:13:30Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -172,6 +172,9 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 * @api
 	 */
 	protected function registerArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
+		if (array_key_exists($name, $this->argumentDefinitions)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Argument "' . $name . '" has already been defined, thus it should not be defined again.', 1253036401);
+		}
 		$this->argumentDefinitions[$name] = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $required, $defaultValue);
 		return $this;
 	}
@@ -240,11 +243,14 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 		if (count($methodParameters) === 0) {
 			return;
 		}
-		$methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
 
-		$paramAnnotations = array();
-		if (isset($methodTags['param'])) {
-			$paramAnnotations = $methodTags['param'];
+		if (Tx_Fluid_Fluid::$debugMode) {
+			$methodTags = $this->reflectionService->getMethodTagsValues(get_class($this), 'render');
+
+			$paramAnnotations = array();
+			if (isset($methodTags['param'])) {
+				$paramAnnotations = $methodTags['param'];
+			}
 		}
 
 		$i = 0;
@@ -260,7 +266,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 			}
 
 			$description = '';
-			if (isset($paramAnnotations[$i])) {
+			if (Tx_Fluid_Fluid::$debugMode && isset($paramAnnotations[$i])) {
 				$explodedAnnotation = explode(' ', $paramAnnotations[$i]);
 				array_shift($explodedAnnotation);
 				array_shift($explodedAnnotation);

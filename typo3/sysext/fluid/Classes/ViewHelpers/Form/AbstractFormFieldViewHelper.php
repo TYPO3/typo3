@@ -26,7 +26,7 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id$
+ * @version $Id: AbstractFormFieldViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -36,7 +36,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Initialize arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurf�rst <sebastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -51,7 +51,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Either returns arguments['name'], or the correct name for Object Access.
 	 *
 	 * @return string Name
-	 * @author Sebastian Kurf�rst <sebastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -81,7 +81,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Either returns arguments['value'], or the correct value for Object Access.
 	 *
 	 * @return mixed Value
-	 * @author Sebastian Kurf�rst <sebastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -120,7 +120,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Internal method which checks if we should evaluate a domain object or just output arguments['name'] and arguments['value']
 	 *
 	 * @return boolean TRUE if we should evaluate the domain object, FALSE otherwise.
-	 * @author Sebastian Kurf�rst <sebastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function isObjectAccessorMode() {
 		return $this->arguments->hasArgument('property')

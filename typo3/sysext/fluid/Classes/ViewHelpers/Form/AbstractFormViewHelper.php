@@ -26,7 +26,7 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id: AbstractFormViewHelper.php 2968 2009-08-03 10:45:13Z sebastian $
+ * @version $Id: AbstractFormViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
