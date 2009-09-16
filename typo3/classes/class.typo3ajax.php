@@ -142,7 +142,7 @@ class TYPO3AJAX {
 	 * @return	void
 	 */
 	public function setContentFormat($format) {
-		if (t3lib_div::inArray(array('plain', 'xml', 'json', 'jsonhead', 'jsonbody'), $format)) {
+		if (t3lib_div::inArray(array('plain', 'xml', 'json', 'jsonhead', 'jsonbody', 'javascript'), $format)) {
 			$this->contentFormat = $format;
 		}
 	}
@@ -185,6 +185,9 @@ class TYPO3AJAX {
 			case 'jsonbody':
 			case 'json':
 				$this->renderAsJSON();
+				break;
+			case 'javascript':
+				$this->renderAsJavascript();
 				break;
 			case 'xml':
 				$this->renderAsXML();
@@ -258,6 +261,25 @@ class TYPO3AJAX {
 		if ($this->contentFormat != 'jsonhead') {
 			echo $content;
 		}
+	}
+
+	/**
+	 * Renders the AJAX call as inline JSON inside a script tag. This is useful
+	 * when an iframe is used as the AJAX transport.
+	 *
+	 * @return	 void
+	 */
+	protected function renderAsJavascript() {
+		$content = '<script type="text/javascript">
+					/*<![CDATA[*/
+
+					response = ' . json_encode($this->content) . ';
+
+					/*]]>*/
+					</script>';
+
+		header('Content-type: text/html; charset=' . $this->charset);
+		echo $content;
 	}
 }
 
