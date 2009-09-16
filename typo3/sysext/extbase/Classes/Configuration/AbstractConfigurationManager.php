@@ -113,8 +113,21 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 		}
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 
+		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $this->getContextSpecificFrameworkConfiguration());
 		return $frameworkConfiguration;
 	}
+
+	/**
+	 * The context specific configuration returned by this method
+	 * will override the framework configuration which was
+	 * obtained from TypoScript. This can be used f.e. to override the storagePid
+	 * with the value set inside the Plugin Instance.
+	 *
+	 * WARNING: Make sure this method ALWAYS returns an array!
+	 *
+	 * @return array context specific configuration which will override the configuration obtained by TypoScript
+	 */
+	abstract protected function getContextSpecificFrameworkConfiguration();
 
 	/**
 	 * Returns TypoScript Setup array from current Environment.

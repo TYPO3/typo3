@@ -54,5 +54,23 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	public function loadTypoScriptSetup() {
 		return $GLOBALS['TSFE']->tmpl->setup;
 	}
+
+	/**
+	 * The storage PID should be determined by the "Startingpoint" setting
+	 * in the Plugin Configuration.
+	 *
+	 * @return array
+	 */
+	protected function getContextSpecificFrameworkConfiguration() {
+		if (is_string($this->contentObject->data['pages']) && strlen($this->contentObject->data['pages']) > 0) {
+			return array(
+				'persistence' => array(
+					'storagePid' => $this->contentObject->data['pages']
+				)
+			);
+		}
+		return array();
+	}
+
 }
 ?>

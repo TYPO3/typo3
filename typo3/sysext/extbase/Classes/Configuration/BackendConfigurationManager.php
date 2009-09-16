@@ -86,5 +86,13 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 			// fallback
 		return self::DEFAULT_BACKEND_STORAGE_PID;
 	}
+
+	/**
+	 * We do not want to override anything in the backend.
+	 * @return array
+	 */
+	protected function getContextSpecificFrameworkConfiguration() {
+		return array();
+	}
 }
 ?>
