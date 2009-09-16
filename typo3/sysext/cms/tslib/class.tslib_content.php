@@ -2740,7 +2740,7 @@ class tslib_cObj {
 			}
 		}
 
-		// render MEDIA	
+			// render MEDIA	
 		if ($mode == 'url' && $url != '') {
 				// url is called direct, not with player
 			$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
@@ -2758,7 +2758,7 @@ class tslib_cObj {
 				if (in_array($fileinfo['fileext'], $handler)) {
 					$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
 				} 
-			}     
+			}
 			switch ($renderType) {  
 				case 'swf':
 					$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
@@ -2788,7 +2788,7 @@ class tslib_cObj {
 							$hookObj = &t3lib_div::getUserObj($classRef);
 							$conf['file'] = $url;
 							$conf['mode'] = $mode;
-							$content = $hookObj->customMediaRender($renderType, $conf);
+							$content = $hookObj->customMediaRender($renderType, $conf, $this);
 						}
 					}
 				}
@@ -2806,47 +2806,66 @@ class tslib_cObj {
 	public function SWFOBJECT($conf) {
 		$content = '';
 		$flashvars = $params = $attributes = '';
-
-		$filename = $this->stdWrap($conf['file'], $conf['file.']);
+		$prefix = '';
+		if ($GLOBALS['TSFE']->baseUrl) {
+			$prefix = $GLOBALS['TSFE']->baseUrl;
+		}
+		if ($GLOBALS['TSFE']->absRefPrefix) {
+			$prefix = $GLOBALS['TSFE']->absRefPrefix;
+		};
 
 		$typeConf = $conf[$conf['type'] . '.'];
 
-		//add SWFobject js-file
-		$GLOBALS['TSFE']->additionalHeaderData['SWFobject'] = '<script src="' . $GLOBALS['TSFE']->absRefPrefix . 'typo3/contrib/flashmedia/swfobject/swfobject.js"></script>';
-
+			//add SWFobject js-file
+		$GLOBALS['TSFE']->addJsFile('typo3/contrib/flashmedia/swfobject/swfobject.js');
+		
+		$player = $this->stdWrap($conf[$conf['type'] . '.']['player'], $conf[$conf['type'] . '.']['player.']);
+		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $prefix . 'typo3/contrib/flashmedia/swfobject/expressInstall.swf';
+		$filename = $this->stdWrap($conf['file'], $conf['file.']);
 		if ($filename) {
-			$conf['flashvars.']['file'] = strpos($filename, '://') !== FALSE ? $filename : $GLOBALS['TSFE']->absRefPrefix . $filename;
+			if (strpos($filename, '://') !== FALSE) {
+				$conf['flashvars.']['file'] = $filename;
+			} else {
+				if ($prefix) {
+					$conf['flashvars.']['file'] = $prefix . $filename;
+				} else {
+					$conf['flashvars.']['file'] = str_repeat('../', substr_count($player, '/')) . $filename;
+				}
+				
+			}
 		} 
+			// Write calculated values in conf for the hook
+		$conf['player'] = $player;
+		$conf['installUrl'] = $installUrl;
+		$conf['filename'] = $filename;
+		$conf['prefix'] = $prefix;
 
-		// merge with default parameters
+			// merge with default parameters
 		$conf['flashvars.'] = array_merge((array) $typeConf['default.']['flashvars.'], (array) $conf['flashvars.']);
 		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
 		$conf['attributes.'] = array_merge((array) $typeConf['default.']['attributes.'], (array) $conf['attributes.']);
+		$conf['embedParams'] = 'flashvars, params, attributes';
 
-		if (is_array($conf['flashvars.'])) {
-			t3lib_div::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
-			foreach ($conf['flashvars.'] as $key => $value) {
-				$flashvars .= $key . ': "' . $value . '",';
+			// Hook for manipulating the conf array, it's needed for some players like flowplayer
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['swfParamTransform'] as $classRef) {
+				t3lib_div::callUserFunction($classRef, $conf, $this);
 			}
 		}
-		$flashvars = 'var flashvars = {' . ($flashvars ? (substr($flashvars, -1) == ',' ? substr(trim($flashvars), 0, -1) : $flashvars) : '') . '};';
+		if (is_array($conf['flashvars.'])) {
+			t3lib_div::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
+		}
+		$flashvars = 'var flashvars = ' . (count($conf['flashvars.']) ? json_encode($conf['flashvars.']) : '{}') . ';';
 
 		if (is_array($conf['params.'])) {
 			t3lib_div::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
-			foreach ($conf['params.'] as $key => $value) {
-				$params .= $key . ': "' . $value . '",';
-			}
-			$params = substr(trim($params), 0, -1);
 		} 
-		$params = 'var params = {' . ($params ? $params : '') . '};';
+		$params = 'var params = ' . (count($conf['params.']) ? json_encode($conf['params.']) : '{}') . ';';
 
 		if (is_array($conf['attributes.'])) {
 			t3lib_div::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
-			foreach ($conf['attributes.'] as $key => $value) {
-				$attributes .= $key . ': "' . $value . '",';
-			}
 		} 
-		$attributes = 'var attributes = {' . ($attributes ? (substr($attributes, -1 === ',' ? substr($attributes, 0, -1) : $attributes)) : '') . '};';
+		$attributes = 'var attributes = ' . (count($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}') . ';';
 
 		$flashVersion = $this->stdWrap($conf['flashVersion'], $conf['flashVersion.']);
 		if (!$flashVersion) {
@@ -2868,11 +2887,9 @@ class tslib_cObj {
 		$width = $width ? $width : $conf[$conf['type'] . '.']['defaultWidth'];
 		$height = $height ? $height : $conf[$conf['type'] . '.']['defaultHeight']; 
 
-		$player = $this->stdWrap($conf[$conf['type'] . '.']['player'], $conf[$conf['type'] . '.']['player.']);
-		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $GLOBALS['TSFE']->absRefPrefix . 'typo3/contrib/flashmedia/swfobject/expressInstall.swf';
 
-		$embed = 'swfobject.embedSWF("' . $player . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
-		 		"' . $flashVersion . '", "' . $installUrl . '", flashvars, params, attributes);';
+		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
+		 		"' . $flashVersion . '", "' . $installUrl . '", ' . $conf['embedParams'] . ');';
 
 		$content = $layout . '
 			<script type="text/javascript">
@@ -2895,22 +2912,25 @@ class tslib_cObj {
 		$content = '';	
 		$params = '';
 
-		$filename = $this->stdWrap($conf['file'],$conf['file.']);
-		$incFile = $GLOBALS['TSFE']->tmpl->getFileName($filename);
-		if ($incFile)	{
-			$filename = $incFile;
-			$fileinfo = t3lib_div::split_fileref($filename);
+		$prefix = '';
+		if ($GLOBALS['TSFE']->baseUrl) {
+			$prefix = $GLOBALS['TSFE']->baseUrl;
 		}
-		 
+		if ($GLOBALS['TSFE']->absRefPrefix) {
+			$prefix = $GLOBALS['TSFE']->absRefPrefix;
+		}
+
+		$filename = $this->stdWrap($conf['file'],$conf['file.']);
+
 		$typeConf = $conf[$conf['type'] . '.'];
-		
-		//add QTobject js-file
-		$GLOBALS['TSFE']->additionalHeaderData['qtobject'] = '<script src="' . $GLOBALS['TSFE']->absRefPrefix . 'typo3/contrib/flashmedia/qtobject/qtobject.js"></script>';
+
+			//add QTobject js-file
+		$GLOBALS['TSFE']->addJsFile('typo3/contrib/flashmedia/qtobject/qtobject.js');
 		$replaceElementIdString = uniqid('mmqt');
 		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
 		$qtObject = 'QTObject' . $replaceElementIdString;
 
-		// merge with default parameters
+			// merge with default parameters
 		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
 
 		if (is_array($conf['params.'])) {
@@ -2931,7 +2951,7 @@ class tslib_cObj {
 		$width = $width ? $width : $conf[$conf['type'] . '.']['defaultWidth'];
 		$height = $height ? $height : $conf[$conf['type'] . '.']['defaultHeight'];
 
-		$embed = 'var ' . $qtObject . ' = new QTObject("' . $GLOBALS['TSFE']->absRefPrefix . $filename . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '");';
+		$embed = 'var ' . $qtObject . ' = new QTObject("' . $prefix . $filename . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '");';
 
 		$content = $layout . '
 			<script type="text/javascript">

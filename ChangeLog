@@ -1,3 +1,7 @@
+2009-09-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11902: [MediaCE] works only with absRefPrefix and doesn't support flowplayer
+
 2009-09-15  Francois Suter  <francois@typo3.org>
 
 	* Feature #11555: Integrated extension "gabriel" into TYPO3 Core as sysext "scheduler"
