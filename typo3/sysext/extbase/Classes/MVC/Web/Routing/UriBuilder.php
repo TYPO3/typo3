@@ -425,7 +425,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	/**
 	 * Builds the URI, backend flavour
 	 * The resulting URI is relative and starts with "mod.php".
-	 * The settings pageUid, pageType, noCache, useCacheHash, linkAccessRestrictedPages, createAbsoluteUri
+	 * The settings pageUid, pageType, noCache, useCacheHash & linkAccessRestrictedPages
 	 * will be ignored in the backend.
 	 *
 	 * @return string The URI

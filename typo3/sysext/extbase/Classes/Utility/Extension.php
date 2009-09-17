@@ -123,7 +123,9 @@ plugin.tx_' . strtolower($extensionName) . '.persistence {
 	}
 }
 plugin.tx_' . strtolower($extensionName) . '.view {
-	templateRootPath = 
+	templateRootPath =
+	layoutRootPath =
+	parialRootPath =
 }'		);
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
