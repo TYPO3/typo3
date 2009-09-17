@@ -548,9 +548,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		Table name
 	 * @param	mixed		If integer, then this is the ID of the record. If Array this just represents fields in the record.
 	 * @param	boolean		Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
+	 * @param	boolean		Set, if testing a deleted record array.
 	 * @return	boolean		True if OK, otherwise false
 	 */
-	function recordEditAccessInternals($table,$idOrRow,$newRecord=FALSE)	{
+	function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE) {
 		global $TCA;
 
 		if (isset($TCA[$table]))	{
@@ -561,7 +562,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// Fetching the record if the $idOrRow variable was not an array on input:
 			if (!is_array($idOrRow))	{
-				$idOrRow = t3lib_BEfunc::getRecord($table, $idOrRow);
+				if ($deletedRecord) {
+					$idOrRow = t3lib_BEfunc::getRecord($table, $idOrRow, '*', '', FALSE);
+				} else {
+					$idOrRow = t3lib_BEfunc::getRecord($table, $idOrRow);
+				}
 				if (!is_array($idOrRow))	{
 					$this->errorMsg = 'ERROR: Record could not be fetched.';
 					return FALSE;
