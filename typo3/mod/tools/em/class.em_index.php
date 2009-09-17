@@ -1601,7 +1601,9 @@ EXTENSION KEYS:
 
 			// "Select version" box:
 		$onClick = 'window.location.href=\'index.php?CMD[importExtInfo]='.$extKey.'&CMD[extVersion]=\'+document.pageform.extVersion.options[document.pageform.extVersion.selectedIndex].value; return false;';
-		$select='<select name="extVersion">'.implode('',$opt).'</select> <input type="submit" value="Load details" onclick="'.htmlspecialchars($onClick).'" />';
+		$select = '<select name="extVersion">' . implode('', $opt) .
+			'</select> <input type="submit" value="' . $GLOBALS['LANG']->getLL('ext_load_details_button') .
+			'" onclick="' . htmlspecialchars($onClick) . '" />';
 
 		if ($this->importAtAll())	{
 			// Check for write-protected extension
@@ -1612,29 +1614,48 @@ EXTENSION KEYS:
 							+\'&CMD[extVersion]=\'+document.pageform.extVersion.options[document.pageform.extVersion.selectedIndex].value
 							+\'&CMD[loc]=\'+document.pageform.loc.options[document.pageform.loc.selectedIndex].value;
 							return false;';
-				$select .= ' or<br /><br />
-					<input type="submit" value="Import/Update" onclick="'.htmlspecialchars($onClick).'"> to:
+				$select .= ' ' . $GLOBALS['LANG']->getLL('ext_or') . '<br /><br />
+					<input type="submit" value="' . $GLOBALS['LANG']->getLL('ext_import_update_button') .
+					'" onclick="' . htmlspecialchars($onClick) . '"> ' . $GLOBALS['LANG']->getLL('ext_import_update_to') . '
 					<select name="loc">'.
-					($this->importAsType('G',$fetchData['emconf_lockType'])?'<option value="G">Global: '.$this->typePaths['G'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['G'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
-					($this->importAsType('L',$fetchData['emconf_lockType'])?'<option value="L">Local: '.$this->typePaths['L'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['L'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
-					($this->importAsType('S',$fetchData['emconf_lockType'])?'<option value="S">System: '.$this->typePaths['S'].$extKey.'/'.(@is_dir(PATH_site.$this->typePaths['S'].$extKey)?' (OVERWRITE)':' (empty)').'</option>':'').
+					($this->importAsType('G', $fetchData['emconf_lockType']) ?
+						'<option value="G">' . $GLOBALS['LANG']->getLL('ext_import_global') . ' ' . $this->typePaths['G'] . $extKey . '/' .
+						(@is_dir(PATH_site . $this->typePaths['G'] . $extKey) ?
+							' ' . $GLOBALS['LANG']->getLL('ext_import_overwrite') :
+							' ' . $GLOBALS['LANG']->getLL('ext_import_folder_empty')
+						) . '</option>' : ''
+					) .
+					($this->importAsType('L', $fetchData['emconf_lockType']) ?
+						'<option value="L">' . $GLOBALS['LANG']->getLL('ext_import_local') . ' ' . $this->typePaths['L'] . $extKey . '/' .
+						(@is_dir(PATH_site . $this->typePaths['L'] . $extKey) ?
+							' ' . $GLOBALS['LANG']->getLL('ext_import_overwrite') :
+							' ' . $GLOBALS['LANG']->getLL('ext_import_folder_empty')
+						) . '</option>' : ''
+					) .
+					($this->importAsType('S', $fetchData['emconf_lockType']) ?
+						'<option value="S">' . $GLOBALS['LANG']->getLL('ext_import_system') . ' ' . $this->typePaths['S'] . $extKey . '/' .
+						(@is_dir(PATH_site . $this->typePaths['S'] . $extKey) ?
+							' ' . $GLOBALS['LANG']->getLL('ext_import_overwrite') :
+							' ' . $GLOBALS['LANG']->getLL('ext_import_folder_empty')
+						) . '</option>' : ''
+					) .
 					'</select>
 					</form>';
 			} else {
-				$select .= '<br /><br />This extension is excluded from Updates! You can change this in the extensions\' ext_emconf.php file.';
+				$select .= '<br /><br />' . $GLOBALS['LANG']->getLL('ext_import_excluded_from_updates');
 			}
 		} else {
 			$select .= '<br /><br />' . $this->noImportMsg();
 		}
 		$content.= $select;
-		$this->content.= $this->doc->section('Select command',$content,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('ext_import_select_command'), $content, 0, 1);
 
 			// Details:
 		$eInfo = $fetchData[$extKey]['versions'][$version];
 		$content='<strong>'.$fetchData[$extKey]['_ICON'].' &nbsp;'.$eInfo['EM_CONF']['title'].' ('.$extKey.', '.$version.')</strong><br /><br />';
 		$content.=$this->extInformationArray($extKey,$eInfo,1);
 		$this->content.=$this->doc->spacer(10);
-		$this->content.=$this->doc->section('Remote Extension Details',$content,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('ext_import_remote_ext_details'), $content, 0, 1);
 	}
 
 	/**
@@ -1654,7 +1675,11 @@ EXTENSION KEYS:
 				$mirrorsFile = t3lib_div::getURL($this->MOD_SETTINGS['mirrorListURL'], 0, array(TYPO3_user_agent));
 				if($mirrorsFile===false) {
 					t3lib_div::unlink_tempfile($mfile);
-					$content = '<p>The mirror list was not updated, it could not be fetched from '.$this->MOD_SETTINGS['mirrorListURL'].'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
+					$content = '<p>' .
+						sprinft($GLOBALS['LANG']->getLL('ext_import_list_not_updated'),
+							$this->MOD_SETTINGS['mirrorListURL']
+						) . ' ' .
+						$GLOBALS['LANG']->getLL('translation_problems') . '</p>';
 				} else {
 					t3lib_div::writeFile($mfile, $mirrorsFile);
 					$mirrors = implode('',gzfile($mfile));
@@ -1664,10 +1689,13 @@ EXTENSION KEYS:
 					if(is_array($mirrors) && count($mirrors)) {
 						t3lib_BEfunc::getModuleData($this->MOD_MENU, array('extMirrors' => serialize($mirrors)), $this->MCONF['name'], '', 'extMirrors');
 						$this->MOD_SETTINGS['extMirrors'] = serialize($mirrors);
-						$content = '<p>The mirror list has been updated and now contains '.count($mirrors).' entries.</p>';
+						$content = '<p>' .
+							sprintf($GLOBALS['LANG']->getLL('ext_import_list_updated'),
+								count($mirrors)
+							) . '</p>';
 					}
 					else {
-						$content = '<p>'.$mirrors.'<br />The mirror list was not updated as it contained no entries.</p>';
+						$content = '<p>' . $mirrors . '<br />' . $GLOBALS['LANG']->getLL('ext_import_list_empty') . '</p>';
 					}
 				}
 				break;
@@ -1682,13 +1710,21 @@ EXTENSION KEYS:
 				}
 
 				if($extmd5 === false) {
-					$content .= '<p>Error: The extension MD5 sum could not be fetched from '.$mirror.'extensions.md5. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
+					$content .= '<p>' .
+						sprintf($GLOBALS['LANG']->getLL('ext_import_md5_not_updated'),
+							$mirror . 'extensions.md5'
+						) .
+						$GLOBALS['LANG']->getLL('translation_problems') . '</p>';
 				} elseif($extmd5 == $localmd5) {
-					$content .= '<p>The extension list has not changed remotely, it has thus not been fetched.</p>';
+					$content .= '<p>' . $GLOBALS['LANG']->getLL('ext_import_list_unchanged') . '</p>';
 				} else {
 					$extXML = t3lib_div::getURL($extfile, 0, array(TYPO3_user_agent));
 					if($extXML === false) {
-						$content .= '<p>Error: The extension list could not be fetched from '.$extfile.'. Possible reasons: network problems, allow_url_fopen is off, curl is not enabled in Install tool.</p>';
+						$content .= '<p>' .
+							sprintf($GLOBALS['LANG']->getLL('ext_import_list_unchanged'),
+								$extfile
+							) . ' ' .
+							$GLOBALS['LANG']->getLL('translation_problems') . '</p>';
 					} else {
 						t3lib_div::writeFile(PATH_site.'typo3temp/extensions.xml.gz', $extXML);
 						$content .= $this->xmlhandler->parseExtensionsXML(PATH_site.'typo3temp/extensions.xml.gz');
@@ -1751,29 +1787,29 @@ EXTENSION KEYS:
 
 			if(t3lib_extMgm::isLoaded($extKey)) {
 				if($version===null) {
-					return array(true, 'Extension already installed and loaded.');
+					return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 				} else {
 					switch($mode) {
 						case EM_INSTALL_VERSION_STRICT:
 							if ($currentVersion == $version)	{
-								return array(true, 'Extension already installed and loaded.');
+								return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 							}
 							break;
 						case EM_INSTALL_VERSION_MIN:
 							if (version_compare($currentVersion, $version, '>='))	{
-								return array(true, 'Extension already installed and loaded.');
+								return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 							}
 							break;
 						case EM_INSTALL_VERSION_MAX:
 							if (version_compare($currentVersion, $version, '<='))	{
-								return array(true, 'Extension already installed and loaded.');
+								return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_already_installed_loaded'));
 							}
 							break;
 					}
 				}
 			} else {
 				if (!t3lib_extMgm::isLocalconfWritable())	{
-					return array(false, 'localconf.php is not writable!');
+					return array(false, $GLOBALS['LANG']->getLL('ext_import_p_localconf'));
 				}
 				$newExtList = -1;
 				switch($mode) {
@@ -1797,14 +1833,14 @@ EXTENSION KEYS:
 					$this->writeNewExtensionList($newExtList);
 					$this->refreshGlobalExtList();
 					$this->forceDBupdates($extKey, $inst_list[$extKey]);
-					return array(true, 'Extension was already installed, it has been loaded.');
+					return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_loaded'));
 				}
 			}
 		}
 
 			// at this point we know we need to import (a matching version of) the extension from TER2
 
-			// see if we have an extensionlist at all
+			// see if we have an extension list at all
 		if (!$this->xmlhandler->countExtensions())	{
 			$this->fetchMetaData('extensions');
 		}
@@ -1817,14 +1853,14 @@ EXTENSION KEYS:
 			switch($mode) {
 				case EM_INSTALL_VERSION_STRICT:
 					if(!isset($this->xmlhandler->extensionsXML[$extKey]['versions'][$version])) {
-						return array(false, 'Extension not available in matching version');
+						return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
 					}
 					break;
 				case EM_INSTALL_VERSION_MIN:
 					if (version_compare($latestVersion, $version, '>='))	{
 						$version = $latestVersion;
 					} else {
-						return array(false, 'Extension not available in matching version');
+						return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
 					}
 					break;
 				case EM_INSTALL_VERSION_MAX:
@@ -1835,7 +1871,7 @@ EXTENSION KEYS:
 					if ($v !== null && version_compare($v, $version, '<='))	{
 						$version = $v;
 					} else {
-						return array(false, 'Extension not available in matching version');
+						return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a'));
 					}
 					break;
 			}
@@ -1846,12 +1882,12 @@ EXTENSION KEYS:
 				$this->refreshGlobalExtList();
 				$this->forceDBupdates($extKey, $inst_list[$extKey]);
 				$this->installTranslationsForExtension($extKey, $this->getMirrorURL());
-				return array(true, 'Extension has been imported from repository and loaded.');
+				return array(true, $GLOBALS['LANG']->getLL('ext_import_ext_imported'));
 			} else {
-				return array(false, 'Extension is in repository, but could not be loaded.');
+				return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_not_loaded'));
 			}
 		} else {
-			return array(false, 'Extension not available in repository');
+			return array(false, $GLOBALS['LANG']->getLL('ext_import_ext_n_a_rep'));
 		}
 	}
 
@@ -1907,14 +1943,14 @@ EXTENSION KEYS:
 					if (!is_uploaded_file($_FILES['upload_ext_file']['tmp_name'])) {
  						t3lib_div::sysLog('Possible file upload attack: '.$_FILES['upload_ext_file']['tmp_name'], 'Extension Manager', 3);
 
-						return 'File was not uploaded?!?';
+						return $GLOBALS['LANG']->getLL('ext_import_file_not_uploaded');
 					}
 
 					$uploadedTempFile = t3lib_div::upload_to_tempfile($_FILES['upload_ext_file']['tmp_name']);
 				}
 				$fileContent = t3lib_div::getUrl($uploadedTempFile);
 
-				if (!$fileContent)	return 'File is empty!';
+				if (!$fileContent)	return $GLOBALS['LANG']->getLL('ext_import_file_empty');
 
 					// Decode file data:
 				$fetchData = $this->terConnection->decodeExchangeData($fileContent);
@@ -1926,12 +1962,13 @@ EXTENSION KEYS:
 							$loc = ($loc==='G'||$loc==='S') ? $loc : 'L';
 							$comingExtPath = PATH_site.$this->typePaths[$loc].$extKey.'/';
 							if (@is_dir($comingExtPath))	{
-								return 'Extension was already present in "'.$comingExtPath.'" - and the overwrite flag was not set! So nothing done...';
+								return sprintf($GLOBALS['LANG']->getLL('ext_import_ext_present_no_overwrite'), $comingExtPath) .
+									'<br />' . $GLOBALS['LANG']->getLL('ext_import_ext_present_nothing_done');
 							}	// ... else go on, install...
 						}	// ... else go on, install...
-					} else return 'No extension key in file. Strange...';
-				} else return 'Wrong file format. No data recognized, '.$fetchData;
-			} else return 'No file uploaded! Probably the file was too large for PHPs internal limit for uploadable files.';
+					} else return $GLOBALS['LANG']->getLL('ext_import_no_key');
+				} else return sprintf($GLOBALS['LANG']->getLL('ext_import_wrong_file_format'), $fetchData);
+			} else return $GLOBALS['LANG']->getLL('ext_import_no_file');
 		} else {
 			$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true, true);
 
@@ -1978,15 +2015,18 @@ EXTENSION KEYS:
 										foreach($writeFiles as $theFile => $fileData)	{
 											t3lib_div::writeFile($extDirPath.$theFile,$fileData['content']);
 											if (!@is_file($extDirPath.$theFile))	{
-												$content.='Error: File "'.$extDirPath.$theFile.'" could not be created!!!<br />';
+												$content .= sprintf($GLOBALS['LANG']->getLL('ext_import_file_not_created'),
+													$extDirPath . $theFile) . '<br />';
 											} elseif (md5(t3lib_div::getUrl($extDirPath.$theFile)) != $fileData['content_md5']) {
-												$content.='Error: File "'.$extDirPath.$theFile.'" MD5 was different from the original files MD5 - so the file is corrupted!<br />';
+												$content .= sprintf($GLOBALS['LANG']->getLL('ext_import_file_corrupted'),
+													$extDirPath . $theFile) . '<br />';
 											}
 										}
 
 											// No content, no errors. Create success output here:
 										if (!$content)	{
-											$content='SUCCESS: '.$extDirPath.'<br />';
+											$content = $GLOBALS['LANG']->getLL('ext_import_success') . '<br /><br />' .
+												sprintf($GLOBALS['LANG']->getLL('ext_import_success_folder'), $extDirPath) . '<br />';
 
 											$uploadSucceed = true;
 
@@ -1997,7 +2037,8 @@ EXTENSION KEYS:
 													$confFileName = $extDirPath.$mD.'/conf.php';
 													if (@is_file($confFileName))	{
 														$content.= $this->writeTYPO3_MOD_PATH($confFileName,$loc,$extKey.'/'.$mD.'/').'<br />';
-													} else $content.='Error: Couldn\'t find "'.$confFileName.'"<br />';
+													} else $content .= sprintf($GLOBALS['LANG']->getLL('ext_import_no_conf_file'),
+														$confFileName) . '<br />';
 												}
 											}
 												// NOTICE: I used two hours trying to find out why a script, ext_emconf.php, written twice and in between included by PHP did not update correct the second time. Probably something with PHP-A cache and mtime-stamps.
@@ -2009,13 +2050,13 @@ EXTENSION KEYS:
 											$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
 											t3lib_div::writeFile($extDirPath.'ext_emconf.php',$emConfFile);
 
-											$content.='ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
-											$content.='Type: '.$loc.'<br />';
+											$content .= 'ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
+											$content .= $GLOBALS['LANG']->getLL('ext_import_ext_type') . ' ' . $loc . '<br />';
 
 												// Remove cache files:
 											if (t3lib_extMgm::isLoaded($extKey))	{
 												if ($this->removeCacheFiles())	{
-													$content.='Cache-files are removed and will be re-written upon next hit<br />';
+													$content .= $GLOBALS['LANG']->getLL('ext_import_cache_files_removed') . '<br />';
 												}
 
 												list($new_list)=$this->getInstalledExtensions();
@@ -2024,25 +2065,32 @@ EXTENSION KEYS:
 
 												// Install / Uninstall:
 											if(!$this->CMD['standAlone']) {
-												$content.='<h3>Install / Uninstall Extension:</h3>';
+												$content .= '<h3>' . $GLOBALS['LANG']->getLL('ext_import_install_uninstall') . '</h3>';
 												$content.= $new_list[$extKey] ?
-													'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->removeButton().' Uninstall extension</a>' :
-													'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info').'">'.$this->installButton().' Install extension</a>';
+													'<a href="' . htmlspecialchars('index.php?CMD[showExt]=' . $extKey .
+													'&CMD[remove]=1&CMD[clrCmd]=1&SET[singleDetails]=info') . '">' .
+													$this->removeButton() . ' ' . $GLOBALS['LANG']->getLL('ext_import_uninstall') . '</a>' :
+													'<a href="' . htmlspecialchars('index.php?CMD[showExt]=' . $extKey .
+													'&CMD[load]=1&CMD[clrCmd]=1&SET[singleDetails]=info') . '">' .
+													$this->installButton() . ' ' . $GLOBALS['LANG']->getLL('ext_import_install') . '</a>';
 											} else {
-												$content = 'Extension has been imported.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
+												$content = $GLOBALS['LANG']->getLL('ext_import_imported') .
+													'<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">' .
+													$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 											}
 
 										}
 									} else $content = $res;
-								} else $content = 'Error: The extension path "'.$extDirPath.'" was different than expected...';
+								} else $content = sprintf($GLOBALS['LANG']->getLL('ext_import_ext_path_different'), $extDirPath);
 							} else $content = $res;
 						}
-					} else $content = 'Error: The extension can only be installed in the path '.$this->typePaths[$EM_CONF['lockType']].' (lockType='.$EM_CONF['lockType'].')';
-				} else $content = 'Error: No extension key!!! Why? - nobody knows... (Or no files in the file-array...)';
-			}  else $content = 'Error: The datatransfer did not succeed. '.$fetchData;
-		}  else $content = 'Error: Installation is not allowed in this path ('.$this->typePaths[$loc].')';
+					} else $content = sprintf($GLOBALS['LANG']->getLL('ext_import_ext_only_here'),
+						$this->typePaths[$EM_CONF['lockType']], $EM_CONF['lockType']);
+				} else $content = $GLOBALS['LANG']->getLL('ext_import_no_ext_key_files');
+			}  else $content = sprintf($GLOBALS['LANG']->getLL('ext_import_data_transfer'), $fetchData);
+		}  else $content = sprintf($GLOBALS['LANG']->getLL('ext_import_no_install_here'), $this->typePaths[$loc]);
 
-		$this->content.=$this->doc->section('Extension import results',$content,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('ext_import_results'), $content, 0, 1);
 
 		if ($uploadSucceed && $uploadedTempFile)	{
 			t3lib_div::unlink_tempfile($uploadedTempFile);
