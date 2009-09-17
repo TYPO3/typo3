@@ -1,3 +1,7 @@
+2009-09-16  Sebastian Kurfürst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid Versions from 0.9.5 to 0.9.6
+
 2009-09-16  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11831: Remove reference operators for objects
