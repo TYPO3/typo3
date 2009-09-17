@@ -133,7 +133,7 @@ class SC_mod_user_setup_index {
 			// First check if something is submittet in the data-array from POST vars
 		$d = t3lib_div::_POST('data');
 		$columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
-		
+
 		if (is_array($d))	{
 
 				// UC hashed before applying changes
@@ -183,15 +183,33 @@ class SC_mod_user_setup_index {
 			$this->PASSWORD_UPDATED = strlen($be_user_data['password'].$be_user_data['password2'])>0 ? -1 : 0;
 			if ($be_user_data['email']!=$BE_USER->user['email']
 					|| $be_user_data['realName']!=$BE_USER->user['realName']
-					|| (strlen($be_user_data['password'])==32
+					|| ( (strlen($be_user_data['password'])==32 || (isset($columns['password']['eval']) && substr($columns['password']['eval'], 0, 3) == 'tx_'))
 							&& !strcmp($be_user_data['password'],$be_user_data['password2']))
 					)	{
 				$storeRec = array();
 				$BE_USER->user['realName'] = $storeRec['be_users'][$BE_USER->user['uid']]['realName'] = substr($be_user_data['realName'],0,80);
 				$BE_USER->user['email'] = $storeRec['be_users'][$BE_USER->user['uid']]['email'] = substr($be_user_data['email'],0,80);
-				if (strlen($be_user_data['password'])==32 && !strcmp($be_user_data['password'],$be_user_data['password2']))	{
-					$BE_USER->user['password'] = $storeRec['be_users'][$BE_USER->user['uid']]['password'] = $be_user_data['password2'];
-					$this->PASSWORD_UPDATED = 1;
+
+				if (isset($columns['password']['eval']) && substr($columns['password']['eval'], 0, 3) == 'tx_') {
+						// password encryption by external script (e.g. EXT:saltedpasswords)
+					$func = $columns['password']['eval'];
+					$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
+					if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue'))	{
+							// initialize vars. If method fails, $set will be set to false
+						$is_in = '';
+						$set = TRUE;
+						$newPassword = $evalObj->evaluateFieldValue($be_user_data['password2'], $is_in, $set);
+						if ($set === TRUE) {
+								// password was changed
+							$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $newPassword;
+							$this->PASSWORD_UPDATED = 1;
+						}
+					}
+				} else {
+					if (strlen($be_user_data['password'])==32 && !strcmp($be_user_data['password'],$be_user_data['password2']))	{
+						$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $be_user_data['password2'];
+						$this->PASSWORD_UPDATED = 1;
+					}
 				}
 
 					// Make instance of TCE for storing the changes.
@@ -237,8 +255,8 @@ class SC_mod_user_setup_index {
 			// ... and checking module access for the logged in user.
 		$scriptUser->modAccess($this->MCONF, 1);
 
-		$this->isAdmin = $scriptUser->isAdmin(); 
-		
+		$this->isAdmin = $scriptUser->isAdmin();
+
 			// Getting the 'override' values as set might be set in User TSconfig
 		$this->overrideConf = $GLOBALS['BE_USER']->getTSConfigProp('setup.override');
 			// Getting the disabled fields might be set in User TSconfig (eg setup.fields.password.disabled=1)
@@ -277,7 +295,7 @@ class SC_mod_user_setup_index {
 				touch(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
 			}
 		}
-		
+
 		if ($this->languageUpdate) {
 			$this->doc->JScodeArray['languageUpdate'] .=  '
 				if (top.refreshMenu) {
@@ -754,7 +772,7 @@ class SC_mod_user_setup_index {
 		if (isset($this->overrideConf[($key?$key:$str)]))	{
 			$out = '<span style="color:#999999">'.$out.'</span>';
 		}
-		
+
 		if($addLabelTag) {
 			$out = '<label for="' . ($altLabelTagId ? $altLabelTagId : 'field_' . $key) . '">' . $out . '</label>';
 		}

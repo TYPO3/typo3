@@ -5,6 +5,7 @@
 2009-09-17  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11906: Extension Manager is not translatable (part 4) (thanks to Christopher Stelmaszyk)
+	* Fixed bug #11564: Change Hardcoded MD5 Password Encryption in User->Setup. Needed for extension "saltedpasswords" (thanks to Steffen Ritter)
 
 2009-09-17  Oliver Hader  <oliver@typo3.org>
 
