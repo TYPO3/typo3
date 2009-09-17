@@ -4425,10 +4425,14 @@ if (version == "n3") {
 	/**
 	 * Sets the cache-flag to 1. Could be called from user-included php-files in order to ensure that a page is not cached.
 	 *
+	 * @param	string		$reason: An optional reason to be written to the syslog.
+	 *						If not set, debug_backtrace() will be used to track down the call.
 	 * @return	void
 	 */
-	function set_no_cache()	{
-		if (function_exists('debug_backtrace')) {
+	function set_no_cache($reason = '') {
+		if (strlen($reason)) {
+			$warning = '$TSFE->set_no_cache() was triggered. Reason: ' . $reason . '.';
+		} else {
 			$trace = debug_backtrace();
 				// This is a hack to work around ___FILE___ resolving symbolic links
 			$PATH_site_real = str_replace('t3lib','',realpath(PATH_site.'t3lib'));
@@ -4440,18 +4444,18 @@ if (version == "n3") {
 			}
 			$line = $trace[0]['line'];
 			$trigger = $file.' on line '.$line;
-		} else {
-			$trigger = '[unknown]';
+
+			$warning = '$TSFE->set_no_cache() was triggered by ' . $trigger.'.';
 		}
 
-		$warning = '$TSFE->set_no_cache() was triggered by '.$trigger.'. ';
 		if ($this->TYPO3_CONF_VARS['FE']['disableNoCacheParameter']) {
-			$warning.= 'However $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
+			$warning.= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
 			$GLOBALS['TT']->setTSlogMessage($warning,2);
 		} else {
-			$warning.= 'Caching is disabled!';
+			$warning.= ' Caching is disabled!';
 			$this->no_cache = 1;
 		}
+
 		t3lib_div::sysLog($warning, 'cms', 2);
 	}
 
