@@ -13,7 +13,7 @@
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'A Framework for Extensions',
 	'description' => 'A framework to build extensions in the style of FLOW3 by now.',
-	'category' => 'fe',
+	'category' => 'misc',
 	'author' => '',
 	'author_email' => '',
 	'shy' => '',
@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'conflicts' => '',
 	'priority' => 'top',
 	'module' => '',
-	'state' => 'alpha',
+	'state' => 'beta',
 	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',

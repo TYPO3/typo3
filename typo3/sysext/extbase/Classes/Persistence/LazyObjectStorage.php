@@ -113,14 +113,17 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	public function count() {
 		$numberOfElements = NULL;
 		if ($this->columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-			if (isset($parentKeyFieldName)) {
-				$numberOfElements = $this->fieldValue;
-			} else {
-				if (empty($this->fieldValue)) {
-					$numberOfElements = 0;
-				}
-				$numberOfElements = count(explode(',', $this->fieldValue));
-			}
+			$this->initializeStorage();
+			$numberOfElements = count($this->storage);
+			// FIXME Count on comma separated lists does not respect hidden objects
+//			if (isset($parentKeyFieldName)) {
+//				$numberOfElements = $this->fieldValue;
+//			} else {
+//				if (empty($this->fieldValue)) {
+//					$numberOfElements = 0;
+//				}
+//				$numberOfElements = count(explode(',', $this->fieldValue));
+//			}
 		} elseif ($this->columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$numberOfElements = $this->fieldValue;			
 		} else {

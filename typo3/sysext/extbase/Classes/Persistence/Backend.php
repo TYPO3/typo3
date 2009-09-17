@@ -381,7 +381,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 						$queuedObjects[$propertyName][] = $relatedObject;
 					}
 					foreach ($this->getDeletedChildObjects($object, $propertyName) as $deletedObject) {
-						$this->deleteObject($deletedObject, $object, $propertyName, TRUE, FALSE);
+						$this->deleteObject($deletedObject, $object, $propertyName);
 					}
 					$row[$columnName] = count($propertyValue); // Will be overwritten if the related objects are referenced by a comma separated list
 				}
@@ -414,9 +414,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
 				$propertyValue = $propertyValue->toArray();
 			}
-			$deletedObjects = array_diff($cleanPropertyValue, $propertyValue);
+			foreach ($cleanPropertyValue as $item) {
+				if (!in_array($item, $propertyValue)) {
+					$deletedObjects[] = $item;
+				}
+			}
 		}
-
 		return $deletedObjects;
 	}
 
