@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperBaseTestcase.php 3179 2009-09-16 08:51:02Z sebastian $
+ * @version $Id: ViewHelperBaseTestcase.php 3180 2009-09-16 10:01:51Z sebastian $
  */
 abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Base_testcase {
 

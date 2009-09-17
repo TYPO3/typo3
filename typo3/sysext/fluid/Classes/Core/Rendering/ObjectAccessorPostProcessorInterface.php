@@ -23,11 +23,12 @@
 /**
  *
  *
- * @version $Id: ObjectAccessorPostProcessorInterface.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ObjectAccessorPostProcessorInterface.php 3188 2009-09-16 13:03:59Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @internal
  */
 interface Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface {
+
 	/**
 	 * Post-Process an Object Accessor
 	 *
@@ -36,5 +37,6 @@ interface Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface {
 	 * @return mixed $object the original object. If not within arguments and of type string, the value is htmlspecialchar'ed
 	 */
 	public function process($object, $enabled);
+
 }
 ?>

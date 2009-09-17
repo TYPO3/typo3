@@ -23,7 +23,7 @@
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
- * @version $Id: TemplateView.php 3105 2009-08-31 10:55:15Z sebastian $
+ * @version $Id: TemplateView.php 3193 2009-09-17 10:15:29Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implements Tx_Fluid_View_TemplateViewInterface {
@@ -43,31 +43,53 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 * Pattern to be resolved for @templateRoot in the other patterns.
 	 * @var string
 	 */
-	protected $templateRootPathPattern = '@packageResources/Private';
+	protected $templateRootPathPattern = '@packageResources/Private/Templates';
+
+	/**
+	 * Pattern to be resolved for @partialRoot in the other patterns.
+	 * @var string
+	 */
+	protected $partialRootPathPattern = '@packageResources/Private/Partials';
+
+	/**
+	 * Pattern to be resolved for @layoutRoot in the other patterns.
+	 * @var string
+	 */
+	protected $layoutRootPathPattern = '@packageResources/Private/Layouts';
 
 	/**
 	 * Path to the template root. If NULL, then $this->templateRootPathPattern will be used.
 	 */
 	protected $templateRootPath = NULL;
-	
+
+	/**
+	 * Path to the partial root. If NULL, then $this->partialRootPathPattern will be used.
+	 */
+	protected $partialRootPath = NULL;
+
+	/**
+	 * Path to the layout root. If NULL, then $this->layoutRootPathPattern will be used.
+	 */
+	protected $layoutRootPath = NULL;
+
 	/**
 	 * File pattern for resolving the template file
 	 * @var string
 	 */
-	protected $templatePathAndFilenamePattern = '@templateRoot/Templates/@controller/@action.@format';
+	protected $templatePathAndFilenamePattern = '@templateRoot/@controller/@action.@format';
 
 	/**
 	 * Directory pattern for global partials. Not part of the public API, should not be changed for now.
 	 * @var string
 	 * @internal
 	 */
-	private $partialPathAndFilenamePattern = '@templateRoot/Partials/@partial.@format';
+	private $partialPathAndFilenamePattern = '@partialRoot/@partial.@format';
 
 	/**
 	 * File pattern for resolving the layout
 	 * @var string
 	 */
-	protected $layoutPathAndFilenamePattern = '@templateRoot/Layouts/@layout.@format';
+	protected $layoutPathAndFilenamePattern = '@layoutRoot/@layout.@format';
 
 	/**
 	 * Path and filename of the template file. If set,  overrides the templatePathAndFilenamePattern
@@ -363,6 +385,60 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	}
 
 	/**
+	 * Set the root path to the partials.
+	 * If set, overrides the one determined from $this->partialRootPathPattern
+	 *
+	 * @param string $partialRootPath Root path to the partials. If set, overrides the one determined from $this->partialRootPathPattern
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
+	 */
+	public function setPartialRootPath($partialRootPath) {
+		$this->partialRootPath = $partialRootPath;
+	}
+
+	/**
+	 * Resolves the partial root to be used inside other paths.
+	 *
+	 * @return string Path to partial root directory
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getPartialRootPath() {
+		if ($this->partialRootPath !== NULL) {
+			return $this->partialRootPath;
+		} else {
+			return str_replace('@package', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()), $this->partialRootPathPattern);
+		}
+	}
+
+	/**
+	 * Set the root path to the layouts.
+	 * If set, overrides the one determined from $this->layoutRootPathPattern
+	 *
+	 * @param string $layoutRootPath Root path to the layouts. If set, overrides the one determined from $this->layoutRootPathPattern
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
+	 */
+	public function setLayoutRootPath($layoutRootPath) {
+		$this->layoutRootPath = $layoutRootPath;
+	}
+
+	/**
+	 * Resolves the layout root to be used inside other paths.
+	 *
+	 * @return string Path to layout root directory
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getLayoutRootPath() {
+		if ($this->layoutRootPath !== NULL) {
+			return $this->layoutRootPath;
+		} else {
+			return str_replace('@package', t3lib_extMgm::extPath($this->controllerContext->getRequest()->getControllerExtensionKey()), $this->layoutRootPathPattern);
+		}
+	}
+
+	/**
 	 * Processes @templateRoot, @subpackage, @controller, and @format placeholders inside $pattern.
 	 * This method is used to generate "fallback chains" for file system locations where a certain Partial can reside.
 	 *
@@ -375,7 +451,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 * This continues until both @subpackage and @controller are empty.
 	 *
 	 * Example for $bubbleControllerAndSubpackage is TRUE, we have the Tx_Fluid_MySubPackage_Controller_MyController as Controller Object Name and the current format is "html"
-	 * If pattern is @templateRoot/Templates/@controller/@action.@format, then the resulting array is:
+	 * If pattern is @templateRoot/@controller/@action.@format, then the resulting array is:
 	 *  - Resources/Private/Templates/MySubPackage/My/@action.html
 	 *  - Resources/Private/Templates/MySubPackage/@action.html
 	 *  - Resources/Private/Templates/@action.html
@@ -391,6 +467,8 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 */
 	protected function expandGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional) {
 		$pattern = str_replace('@templateRoot', $this->getTemplateRootPath(), $pattern);
+		$pattern = str_replace('@partialRoot', $this->getPartialRootPath(), $pattern);
+		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
 
 		$this->PATTERN_CONTROLLER = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR), $this->PATTERN_CONTROLLER);
 		preg_match($this->PATTERN_CONTROLLER, $this->controllerContext->getRequest()->getControllerObjectName(), $matches);
