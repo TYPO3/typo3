@@ -4084,11 +4084,11 @@ class t3lib_TCEmain	{
 	 * @param	boolean		If TRUE, the "deleted" flag is set to 0 again and thus, the item is undeleted.
 	 * @return	void
 	 */
-	function deleteRecord($table,$uid, $noRecordCheck=FALSE, $forceHardDelete=FALSE,$undeleteRecord=FALSE)	{
+	function deleteRecord($table,$uid, $noRecordCheck = FALSE, $forceHardDelete = FALSE, $undeleteRecord = FALSE) {
 		global $TCA;
 
 			// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
-		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, $undeleteRecord);
 
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
