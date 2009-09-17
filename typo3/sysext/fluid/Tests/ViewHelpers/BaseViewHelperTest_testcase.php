@@ -38,7 +38,7 @@ class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 		$viewHelper = new Tx_Fluid_ViewHelpers_BaseViewHelper();
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 
-		$expectedResult = '<base href="' . $baseURI . '"></base>';
+		$expectedResult = '<base href="' . $baseURI . TYPO3_mainDir . '"></base>';
 		$actualResult = $viewHelper->render();
 		$this->assertSame($expectedResult, $actualResult);
 	}
