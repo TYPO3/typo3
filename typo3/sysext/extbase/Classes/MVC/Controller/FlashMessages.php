@@ -113,15 +113,26 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 		$frameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 		$this->flashMessageStorageKey = 'Tx_Extbase_MVC_Controller_FlashMessages_messages_' . $frameworkConfiguration['extensionName'] . $frameworkConfiguration['pluginName'];
 
-		$flashMessages = NULL;
-		if (is_object($GLOBALS['TSFE']->fe_user)) {
-			$flashMessages = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->flashMessageStorageKey);
-		}
+		$flashMessages = $this->loadFlashMessagesFromSession();
 		if (is_array($flashMessages)) {
 			$this->flashMessages = $flashMessages;
 		}
 
 		$this->initialized = TRUE;
+	}
+
+	/**
+	 * Loads the flash messages from the current user session.
+	 */
+	protected function loadFlashMessagesFromSession() {
+		$flashMessages = NULL;
+		if (TYPO3_MODE === 'FE') {
+			$flashMessages = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->flashMessageStorageKey);
+		} else {
+			$flashMessages = $GLOBALS['BE_USER']->uc[$this->flashMessageStorageKey];
+			$GLOBALS['BE_USER']->writeUC();
+		}
+		return $flashMessages;
 	}
 
 	/**
@@ -138,13 +149,19 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	 * Persist the flash messages in the session.
 	 */
 	public function persist() {
-		if ($this->initialized && isset($GLOBALS['TSFE'])) {
+		if (!$this->initialized) {
+			return;
+		}
+		if (TYPO3_MODE === 'FE') {
 			$GLOBALS['TSFE']->fe_user->setKey(
 				'ses',
 				$this->flashMessageStorageKey,
 				$this->flashMessages
 			);
 			$GLOBALS['TSFE']->fe_user->storeSessionData();
+		} else {
+			$GLOBALS['BE_USER']->uc[$this->flashMessageStorageKey] = $this->flashMessages;
+			$GLOBALS['BE_USER']->writeUc();
 		}
 	}
 }
