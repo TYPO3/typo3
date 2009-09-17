@@ -1,3 +1,7 @@
+2009-09-17  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Set SVN properties
+
 2009-09-17  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid Versions from 0.9.5 to 0.9.6
