@@ -353,6 +353,7 @@ class t3lib_TCEmain	{
 	var $autoVersioningUpdate = FALSE;			// A signal flag used to tell file processing that autoversioning has happend and hence certain action should be applied.
 
 	protected $disableDeleteClause = false;		// Disable delete clause
+	protected $checkModifyAccessListHookObjects;
 
 
 
@@ -564,6 +565,31 @@ class t3lib_TCEmain	{
 		}
 	}
 
+	/**
+	 * Gets the 'checkModifyAccessList' hook objects.
+	 * The first call initializes the accordant objects.
+	 *
+	 * @return	array		The 'checkModifyAccessList' hook objects (if any)
+	 */
+	protected function getCheckModifyAccessListHookObjects() {
+		if (!isset($this->checkModifyAccessListHookObjects)) {
+			$this->checkModifyAccessListHookObjects = array();
+
+			if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'])) {
+				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] as $classData) {
+					$hookObject = t3lib_div::getUserObj($classData);
+	
+					if(!($hookObject instanceof t3lib_TCEmain_checkModifyAccessListHook)) {
+						throw new UnexpectedValueException('$hookObject must implement interface t3lib_TCEmain_checkModifyAccessListHook', 1251892472);
+					}
+	
+					$this->checkModifyAccessListHookObjects[] = $hookObject;
+				}
+			}
+		}
+
+		return $this->checkModifyAccessListHookObjects;
+	}
 
 
 
@@ -5341,6 +5367,13 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 */
 	function checkModifyAccessList($table)	{
 		$res = ($this->admin || (!$this->tableAdminOnly($table) && t3lib_div::inList($this->BE_USER->groupData['tables_modify'],$table)));
+
+			// Hook 'checkModifyAccessList': Post-processing of the state of access
+		foreach($this->getCheckModifyAccessListHookObjects() as $hookObject) {
+			/* @var $hookObject t3lib_TCEmain_checkModifyAccessListHook */
+			$hookObject->checkModifyAccessList($res, $table, $this);
+		}
+
 		return $res;
 	}
 

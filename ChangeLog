@@ -12,6 +12,7 @@
 	* Cleanup: Set SVN properties
 	* Fixed bug #11985: Optimize disposal of t3lib_PageRenderer (thanks to Steffen Kamper)
 	* Added feature #11669: Provide a reason for why $TSFE->set_no_cache() has been triggered (thanks to Michael Stucki)
+	* Added feature #2278: Add hook to t3lib_TCEmain::checkModifyAccessList() (thanks to Michael Stucki)
 
 2009-09-17  Sebastian Kurfuerst  <sebastian@typo3.org>
 
