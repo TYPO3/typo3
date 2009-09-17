@@ -70,7 +70,9 @@ class t3lib_TCEforms_Suggest {
 		<div class="' . $containerCssClass . '" id="' . $suggestId . '">
 			<input type="text" id="' . $fieldname . 'Suggest" value="' .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.findRecord') . '" class="' . $this->cssClass . '-search" />
-			<div class="' . $this->cssClass . '-indicator" style="display: none;" id="' . $fieldname . 'SuggestIndicator"><img src="' . $GLOBALS['BACK_PATH'] . 'gfx/spinner.gif" alt="Searching..." /></div>
+			<div class="' . $this->cssClass . '-indicator" style="display: none;" id="' . $fieldname . 'SuggestIndicator">
+				<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/spinner.gif" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:alttext.suggestSearching') . '" />
+			</div>
 			<div class="' . $this->cssClass . '-choices" style="display: none;" id="' . $fieldname . 'SuggestChoices"></div>
 
 		</div>';

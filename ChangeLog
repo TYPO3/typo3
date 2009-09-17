@@ -1,6 +1,7 @@
 2009-09-17  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #11983: TCEforms suggest has no search indicator, credits Steffen Gebert
+	* Follow-up to bug #11983: label 'Searching...' was not translatable
 
 2009-09-17  Rupert Germann  <rupi@gmx.li>
 
