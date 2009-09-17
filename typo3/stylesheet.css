@@ -1180,36 +1180,46 @@ div.typo3-TCEforms-suggest-choices {
 	background-color: white;
 	border: 1px solid #888;
 }
-div.typo3-TCEforms-suggest-choices UL {
-	list-style-type:none;
+
+div.typo3-TCEforms-suggest-choices ul {
+	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
-div.typo3-TCEforms-suggest-choices LI.selected { background-color: #ffb !important;}
-div.typo3-TCEforms-suggest-choices LI {
-	list-style-type:none;
-	display:block;
-	margin:0;
-	padding:4px 2px 4px 24px;
-	cursor:pointer;
-	background-color:#EFEFF4;
-	background-repeat:no-repeat;
-	background-position:4px center;
+
+div.typo3-TCEforms-suggest-choices li.selected {
+	background-color: #ffb !important;
 }
-div.typo3-TCEforms-suggest-choices LI.suggest-noresults {
+
+div.typo3-TCEforms-suggest-choices li {
+	list-style-type: none;
+	display: block;
+	margin: 0;
+	padding: 4px 2px 4px 24px;
+	cursor: pointer;
+	background-color: #EFEFF4;
+	background-repeat: no-repeat;
+	background-position: 4px center;
+}
+
+div.typo3-TCEforms-suggest-choices li.suggest-noresults {
 	height: auto;
 }
-div.typo3-TCEforms-suggest-choices LI.pages {
+
+div.typo3-TCEforms-suggest-choices li.pages {
 	background-color:#FCC;
 }
-div.typo3-TCEforms-suggest-choices SPAN.suggest-label {
+
+div.typo3-TCEforms-suggest-choices span.suggest-label {
 	font-weight:bold;
 }
-div.typo3-TCEforms-suggest-choices SPAN.suggest-uid {
+
+div.typo3-TCEforms-suggest-choices span.suggest-uid {
 	font-size:0.9em;
 	margin-left:0.3em;
 }
-div.typo3-TCEforms-suggest-choices SPAN.suggest-path {
+
+div.typo3-TCEforms-suggest-choices span.suggest-path {
 	font-size:0.9em;
 	margin-top:0.3em;
 }

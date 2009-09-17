@@ -1,5 +1,6 @@
 2009-09-17  Steffen Kamper  <info@sk-typo3.de>
 
+	* Cleanup #11991: Cleanup TCEforms suggest CSS
 	* Fixed bug #11396: redirects not working for felogin on pages with access set
 	* Follow-up to bug #11985: corrected calls loadScriptaculous() in tceforms
 
