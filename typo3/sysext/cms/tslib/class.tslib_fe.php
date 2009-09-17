@@ -190,7 +190,7 @@
  * @package TYPO3
  * @subpackage tslib
  */
- class tslib_fe extends t3lib_PageRenderer {
+ class tslib_fe {
 
 		// CURRENT PAGE:
 	var $id='';							// The page id (int)
@@ -397,6 +397,11 @@
 	var $pages_lockObj;					// Locking object for accessing "cache_pages"
 
 	/**
+	 * @var t3lib_PageRenderer
+	 */
+	protected $pageRenderer;
+
+	/**
 	 * the page cache object, use this to save pages to the cache and to
 	 * retrieve them again
 	 *
@@ -457,7 +462,6 @@
 		}
 
 		$this->initCaches();
-		parent::__construct(PATH_tslib . 'templates/tslib_page_frontend.html');
 	}
 
 	/**
@@ -546,7 +550,18 @@
 		}
 	}
 
-
+	/**
+	 * Gets instance of PageRenderer
+	 * 
+	 * @return	t3lib_PageRenderer
+	 */
+	public function getPageRenderer() {
+		if (!isset($this->pageRenderer)) {
+			$this->pageRenderer = t3lib_div::makeInstance('t3lib_PageRenderer');
+			$this->pageRenderer->setTemplateFile(PATH_tslib . 'templates/tslib_page_frontend.html');
+		}
+		return $this->pageRenderer;
+	}
 
 
 

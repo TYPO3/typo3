@@ -5244,8 +5244,10 @@ class t3lib_TCEforms	{
 				$this->loadJavascriptLib('md5.js');
 			}
 
-			$GLOBALS['SOBE']->doc->loadPrototype();
-			$GLOBALS['SOBE']->doc->loadExtJS();
+			/** @var $pageRenderer t3lib_PageRenderer */
+			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
+			$pageRenderer->loadPrototype();
+			$pageRenderer->loadExtJS();
 
 				// make textareas resizable and flexible
 			if (!($GLOBALS['BE_USER']->uc['resizeTextareas'] == '0' && $GLOBALS['BE_USER']->uc['resizeTextareas_Flexible'] == '0')) {
@@ -5257,7 +5259,7 @@ class t3lib_TCEforms	{
 				'textareaFlexible' => (!$GLOBALS['BE_USER']->uc['resizeTextareas_Flexible'] == '0'),
 				'textareaResize' => (!$GLOBALS['BE_USER']->uc['resizeTextareas'] == '0'),
 			);
-			$GLOBALS['SOBE']->doc->addInlineSettingArray('', $resizableSettings);
+			$pageRenderer->addInlineSettingArray('', $resizableSettings);
 
 			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
 
@@ -5270,7 +5272,7 @@ class t3lib_TCEforms	{
 				'dateFormat'       => array('j-n-Y', 'G:i j-n-Y'),
 				'dateFormatUS'     => array('n-j-Y', 'G:i n-j-Y'),
 			);
-			$GLOBALS['SOBE']->doc->addInlineSettingArray('', $typo3Settings);
+			$pageRenderer->addInlineSettingArray('', $typo3Settings);
 
 			$this->loadJavascriptLib('../t3lib/js/extjs/tceforms.js');
 
@@ -5286,7 +5288,7 @@ class t3lib_TCEforms	{
 
 				// if Suggest fields were processed, add the JS functions
 			if ($this->suggest->suggestCount > 0) {
-				$GLOBALS['SOBE']->doc->loadScriptaculous();
+				$pageRenderer->loadScriptaculous();
 				$this->loadJavascriptLib('../t3lib/js/jsfunc.tceforms_suggest.js');
 			}
 

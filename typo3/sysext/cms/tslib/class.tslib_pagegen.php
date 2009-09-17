@@ -338,23 +338,26 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * @return	void
 	 */
 	public static function renderContentWithHeader($pageContent) {
+			// get instance of t3lib_PageRenderer
+		/** @var $pageRenderer t3lib_PageRenderer */
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		
-		$GLOBALS['TSFE']->backPath = 'typo3/';
+		$pageRenderer->backPath = 'typo3/';
 		
 		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
-			$GLOBALS['TSFE']->enableMoveJsFromHeaderToFooter();
+			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
 
 		if ($GLOBALS['TSFE']->config['config']['pageRenderTemplateFile']) {
 			$file = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->config['config']['pageRenderTemplateFile']);
 			if ($file) {
-				$GLOBALS['TSFE']->setTemplateFile($file);
+				$pageRenderer->setTemplateFile($file);
 			}
 		}
 
 		$customContent = $GLOBALS['TSFE']->config['config']['headerComment'];
 		if (trim($customContent)) {
-			$GLOBALS['TSFE']->addInlineComment($customContent);
+			$pageRenderer->addInlineComment($customContent);
 		}
 
 			// Setting charset:
@@ -449,7 +452,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 			// Adding doctype parts:
 		if (count($docTypeParts)) {
-			$GLOBALS['TSFE']->setXmlPrologAndDocType(implode(chr(10), $docTypeParts));
+			$pageRenderer->setXmlPrologAndDocType(implode(chr(10), $docTypeParts));
 		}
 
 			// Begin header section:
@@ -458,16 +461,16 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		} else {
 			$_attr = '';
 		}
-		$GLOBALS['TSFE']->setHtmlTag('<html' . ($_attr ? ' ' . $_attr : '') . '>');
+		$pageRenderer->setHtmlTag('<html' . ($_attr ? ' ' . $_attr : '') . '>');
 
 			// Head tag:
 		$headTag = $GLOBALS['TSFE']->pSetup['headTag'] ? $GLOBALS['TSFE']->pSetup['headTag'] : '<head>';
-		$GLOBALS['TSFE']->setHeadTag($headTag);
+		$pageRenderer->setHeadTag($headTag);
 
 			// Setting charset meta tag:
-		$GLOBALS['TSFE']->setCharSet($theCharset);
+		$pageRenderer->setCharSet($theCharset);
 
-		$GLOBALS['TSFE']->addInlineComment('
+		$pageRenderer->addInlineComment('
 	This website is powered by TYPO3 - inspiring people to share!
 	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
 	TYPO3 is copyright 1998-2009 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
@@ -475,7 +478,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 ');
 
 		if ($GLOBALS['TSFE']->baseUrl) {
-			$GLOBALS['TSFE']->setBaseUrl($GLOBALS['TSFE']->baseUrl);
+			$pageRenderer->setBaseUrl($GLOBALS['TSFE']->baseUrl);
 		}
 
 		if ($GLOBALS['TSFE']->pSetup['shortcutIcon']) {
@@ -485,10 +488,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 				if (($finfo = @finfo_open(FILEINFO_MIME))) {
 					$iconMimeType = ' type="' . finfo_file($finfo, $favIcon) . '"';
 					finfo_close($finfo);
-					$GLOBALS['TSFE']->setIconMimeType($iconMimeType);
+					$pageRenderer->setIconMimeType($iconMimeType);
 				}
 			}
-			$GLOBALS['TSFE']->setFavIcon($favIcon);
+			$pageRenderer->setFavIcon($favIcon);
 		
 		}
 
@@ -502,9 +505,9 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			}
 			if (count($temp_styleLines)) {
 				if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
-					$GLOBALS['TSFE']->addCssFile(TSpagegen::inline2TempFile(implode(chr(10), $temp_styleLines), 'css'));
+					$pageRenderer->addCssFile(TSpagegen::inline2TempFile(implode(chr(10), $temp_styleLines), 'css'));
 				} else {
-					$GLOBALS['TSFE']->addCssInlineBlock('TSFEinlineStyle', implode(chr(10), $temp_styleLines));
+					$pageRenderer->addCssInlineBlock('TSFEinlineStyle', implode(chr(10), $temp_styleLines));
 				}
 			}
 		}
@@ -512,7 +515,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if ($GLOBALS['TSFE']->pSetup['stylesheet']) {
 			$ss = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->pSetup['stylesheet']);
 			if ($ss) {
-				$GLOBALS['TSFE']->addCssFile($ss);
+				$pageRenderer->addCssFile($ss);
 			}
 		}
 
@@ -532,7 +535,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							if (! $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['external'] && substr($ss, 0, 1) != '/') { // To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
 								$ss = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}
-							$GLOBALS['TSFE']->addCssInlineBlock(
+							$pageRenderer->addCssInlineBlock(
 								'import_' . $key, 
 								'@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media']) . ';', 
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compressed'] ? TRUE : FALSE, 
@@ -540,7 +543,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 								''
 							);
 						} else {
-							$GLOBALS['TSFE']->addCssFile(
+							$pageRenderer->addCssFile(
 								htmlspecialchars($ss), 
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet',
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'screen', 
@@ -631,37 +634,37 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		if (trim($style)) {
 			if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
-				$GLOBALS['TSFE']->addCssFile(TSpagegen::inline2TempFile($style, 'css'));
+				$pageRenderer->addCssFile(TSpagegen::inline2TempFile($style, 'css'));
 			} else {
-				$GLOBALS['TSFE']->addCssInlineBlock('additionalTSFEInlineStyle', $style);
+				$pageRenderer->addCssInlineBlock('additionalTSFEInlineStyle', $style);
 			}
 		}
 
 			// Javascript Libraries
 		if (is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.'])) {
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['Prototype']) {
-				$GLOBALS['TSFE']->loadPrototype();
+				$pageRenderer->loadPrototype();
 			}
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous']) {
 				$modules = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] ? $GLOBALS['TSFE']->pSetup['javascriptLibs.']['Scriptaculous.']['modules'] : '';
-				$GLOBALS['TSFE']->loadScriptaculous($modules);
+				$pageRenderer->loadScriptaculous($modules);
 			}
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore']) {
-				$GLOBALS['TSFE']->loadExtCore();
+				$pageRenderer->loadExtCore();
 				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtCore.']['debug']) {
-					$GLOBALS['TSFE']->enableExtCoreDebug();
+					$pageRenderer->enableExtCoreDebug();
 				}
 			}
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs']) {
 				$css = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
 				$theme = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
 				$adapter = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['adapter'] ? $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['adapter'] : '';
-				$GLOBALS['TSFE']->loadExtJs($css, $theme, $adapter);
+				$pageRenderer->loadExtJs($css, $theme, $adapter);
 				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['debug']) {
-					$GLOBALS['TSFE']->enableExtJsDebug();
+					$pageRenderer->enableExtJsDebug();
 				}
 				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['quickTips']) {
-					$GLOBALS['TSFE']->enableExtJSQuickTips();
+					$pageRenderer->enableExtJSQuickTips();
 				}
 			}
 		}
@@ -675,7 +678,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 					if (! $type) {
 						$type = 'text/javascript';
 					}
-					$GLOBALS['TSFE']->addJsLibrary(
+					$pageRenderer->addJsLibrary(
 						htmlspecialchars($key), 
 						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 						htmlspecialchars($type), 
@@ -696,7 +699,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 					if (! $type) {
 						$type = 'text/javascript';
 					}
-					$GLOBALS['TSFE']->addJsFooterLibrary(
+					$pageRenderer->addJsFooterLibrary(
 						htmlspecialchars($key), 
 						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 						htmlspecialchars($type), 
@@ -719,7 +722,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						if (! $type) {
 							$type = 'text/javascript';
 						}
-						$GLOBALS['TSFE']->addJsFile(
+						$pageRenderer->addJsFile(
 							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 							htmlspecialchars($type), 
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['compressed'] ? TRUE : FALSE, 
@@ -740,7 +743,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						if (! $type) {
 							$type = 'text/javascript';
 						}
-						$GLOBALS['TSFE']->addJsFooterFile(
+						$pageRenderer->addJsFooterFile(
 							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 							htmlspecialchars($type), 
 							$GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['compressed'] ? TRUE : FALSE, 
@@ -754,12 +757,12 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 			// Headerdata
 		if (is_array($GLOBALS['TSFE']->pSetup['headerData.'])) {
-			$GLOBALS['TSFE']->addHeaderData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['headerData.'], 'headerData.'));
+			$pageRenderer->addHeaderData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['headerData.'], 'headerData.'));
 		}
 
 			// Footerdata
 		if (is_array($GLOBALS['TSFE']->pSetup['footerData.'])) {
-			$GLOBALS['TSFE']->addFooterData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['footerData.'], 'footerData.'));
+			$pageRenderer->addFooterData($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['footerData.'], 'footerData.'));
 		}
 
 			// Title
@@ -769,10 +772,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 		if (strlen($titleTagContent) && intval($GLOBALS['TSFE']->config['config']['noPageTitle']) !== 2) {
-			$GLOBALS['TSFE']->setTitle($titleTagContent);
+			$pageRenderer->setTitle($titleTagContent);
 		}
 
-		$GLOBALS['TSFE']->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS" />');
+		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS" />');
 
 		$conf = $GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf)) {
@@ -788,7 +791,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						if (strtolower($key) == 'refresh') {
 							$a = 'http-equiv';
 						}
-						$GLOBALS['TSFE']->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '" />');
+						$pageRenderer->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '" />');
 					}
 				}
 			}
@@ -888,7 +891,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 			// Should minify?
 		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
-			$GLOBALS['TSFE']->enableCompressJavascript();
+			$pageRenderer->enableCompressJavascript();
 			$minifyErrorScript = $minifyErrorInline = '';
 			$scriptJsCode = t3lib_div::minifyJavaScript($scriptJsCode, $minifyErrorScript);
 			if ($minifyErrorScript) {
@@ -912,62 +915,62 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if (! $GLOBALS['TSFE']->config['config']['removeDefaultJS']) {
 				// inlude default and inlineJS
 			if ($scriptJsCode) {
-				$GLOBALS['TSFE']->addJsInlineCode('_scriptCode', $scriptJsCode, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsInlineCode('_scriptCode', $scriptJsCode, $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 			if ($inlineJS) {
-				$GLOBALS['TSFE']->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 			if ($inlineFooterJs) {
-				$GLOBALS['TSFE']->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS'] === 'external') {
 				// put default and inlineJS in external file
-			$GLOBALS['TSFE']->addJsFile(TSpagegen::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
+			$pageRenderer->addJsFile(TSpagegen::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
 			if ($inlineFooterJs) {
-				$GLOBALS['TSFE']->addJsFooterFile(TSpagegen::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsFooterFile(TSpagegen::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 		} else {
 				// include only inlineJS
 			if ($inlineJS) {
-				$GLOBALS['TSFE']->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 			if ($inlineFooterJs) {
-				$GLOBALS['TSFE']->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 		}
 
 			// ExtJS specific code
 		if (is_array($GLOBALS['TSFE']->pSetup['inlineLanguageLabel.'])) {
-			$GLOBALS['TSFE']->addInlineLanguageLabelArray($GLOBALS['TSFE']->pSetup['inlineLanguageLabel.']);		
+			$pageRenderer->addInlineLanguageLabelArray($GLOBALS['TSFE']->pSetup['inlineLanguageLabel.']);
 		} 
 
 		if (is_array($GLOBALS['TSFE']->pSetup['inlineSettings.'])) {
-			$GLOBALS['TSFE']->addInlineSettingArray('TS', $GLOBALS['TSFE']->pSetup['inlineSettings.']);		
+			$pageRenderer->addInlineSettingArray('TS', $GLOBALS['TSFE']->pSetup['inlineSettings.']);
 		}
  
 		if (is_array($GLOBALS['TSFE']->pSetup['extOnReady.'])) {
-			$GLOBALS['TSFE']->addExtOnReadyCode($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['extOnReady.'], 'extOnReady.'));		
+			$pageRenderer->addExtOnReadyCode($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['extOnReady.'], 'extOnReady.'));
 		}
  
 			// compression and concatenate settings
 		if ($GLOBALS['TSFE']->config['config']['minifyCSS']) {
-			$GLOBALS['TSFE']->enableCompressCss();
+			$pageRenderer->enableCompressCss();
 		}
 		if ($GLOBALS['TSFE']->config['config']['minifyJS']) {
-			$GLOBALS['TSFE']->enableCompressJavascript();
+			$pageRenderer->enableCompressJavascript();
 		}
 		if ($GLOBALS['TSFE']->config['config']['concatenateJsAndCss']) {
-			$GLOBALS['TSFE']->enableConcatenateFiles();
+			$pageRenderer->enableConcatenateFiles();
 		}
 
 			// add header data block
 		if ($GLOBALS['TSFE']->additionalHeaderData) {
-			$GLOBALS['TSFE']->addHeaderData(implode(chr(10), $GLOBALS['TSFE']->additionalHeaderData));
+			$pageRenderer->addHeaderData(implode(chr(10), $GLOBALS['TSFE']->additionalHeaderData));
 		}
 
 			// add footer data block
 		if ($GLOBALS['TSFE']->additionalFooterData) {
-			$GLOBALS['TSFE']->addFooterData(implode(chr(10), $GLOBALS['TSFE']->additionalFooterData));
+			$pageRenderer->addFooterData(implode(chr(10), $GLOBALS['TSFE']->additionalFooterData));
 		}
 
 		// Header complete, now add content
@@ -1004,18 +1007,18 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if (count($JSef[1])) { // Event functions:
 			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
 		}
-		$GLOBALS['TSFE']->addBodyContent(chr(10) . $bodyTag);
+		$pageRenderer->addBodyContent(chr(10) . $bodyTag);
 
 			// Div-sections
 		if ($GLOBALS['TSFE']->divSection) {
-			$GLOBALS['TSFE']->addBodyContent(chr(10) . $GLOBALS['TSFE']->divSection);
+			$pageRenderer->addBodyContent(chr(10) . $GLOBALS['TSFE']->divSection);
 		}
 
 			// Page content
-		$GLOBALS['TSFE']->addBodyContent(chr(10) . $pageContent);
+		$pageRenderer->addBodyContent(chr(10) . $pageContent);
 
 			// Render complete page
-		$GLOBALS['TSFE']->content = $GLOBALS['TSFE']->render();
+		$GLOBALS['TSFE']->content = $pageRenderer->render();
 
 			// Ending page
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {

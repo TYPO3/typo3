@@ -137,7 +137,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			// Load CSS Stylesheets:
 		$this->loadStylesheet($this->relativePath . 'res/css/customExtJs.css');
 			// Load Ext JS:
-		$this->doc->loadExtJS();
+		$this->doc->getPageRenderer()->loadExtJS();
 			// Integrate dynamic JavaScript such as configuration or lables:
 		$this->doc->JScode.= t3lib_div::wrapJS('
 			Ext.namespace("Recycler");

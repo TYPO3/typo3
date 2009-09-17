@@ -156,7 +156,7 @@ function fw($str)	{
  * @package TYPO3
  * @subpackage core
  */
-class template extends t3lib_PageRenderer {
+class template {
 
 		// Vars you typically might want to/should set from outside after making instance of this class:
 	var $backPath = '';				// 'backPath' pointing back to the PATH_typo3
@@ -209,9 +209,11 @@ class template extends t3lib_PageRenderer {
 
 	var $hasDocheader = true;
 
-    	// class for render the header / footer
-
-    var $pageHeaderFooterTemplateFile = '';	// alternative template file
+	/**
+	 * @var t3lib_PageRenderer
+	 */
+	protected $pageRenderer;
+	protected $pageHeaderFooterTemplateFile = '';	// alternative template file
 
 
 	/**
@@ -222,7 +224,9 @@ class template extends t3lib_PageRenderer {
 	 */
 	function template()	{
 		global $TBE_STYLES;
-		parent::__construct(TYPO3_mainDir . 'templates/template_page_backend.html');
+
+			// Initializes the page rendering object:
+		$this->getPageRenderer();
 
 			// Setting default scriptID:
 		if (($temp_M = (string) t3lib_div::_GET('M')) && $GLOBALS['TBE_MODULES']['_PATHS'][$temp_M]) {
@@ -264,7 +268,20 @@ class template extends t3lib_PageRenderer {
 	}
 
 
-
+	/**
+	 * Gets instance of PageRenderer
+	 * 
+	 * @return	t3lib_PageRenderer
+	 */
+	public function getPageRenderer() {
+		if (!isset($this->pageRenderer)) {
+			$this->pageRenderer = t3lib_div::makeInstance('t3lib_PageRenderer');
+			$this->pageRenderer->setTemplateFile(
+				TYPO3_mainDir . 'templates/template_page_backend.html'
+			);
+		}
+		return $this->pageRenderer;
+	}
 
 
 
@@ -623,11 +640,13 @@ class template extends t3lib_PageRenderer {
 			}
 		}
 
+		$this->pageRenderer->backPath = $this->backPath;
+
 			// alternative template for Header and Footer
 		if ($this->pageHeaderFooterTemplateFile) {
 			$file =  t3lib_div::getFileAbsFileName($this->pageHeaderFooterTemplateFile, TRUE);
 			if ($file) {
-				$this->setAlternativeTemplateFile($file);
+				$this->pageRenderer->setTemplateFile($file);
 			}
 		}
 			// For debugging: If this outputs "QuirksMode"/"BackCompat" (IE) the browser runs in quirks-mode. Otherwise the value is "CSS1Compat"
@@ -638,7 +657,7 @@ class template extends t3lib_PageRenderer {
 		header ('Content-Type:text/html;charset='.$this->charset);
 
 			// Standard HTML tag
-		$this->setHtmlTag('<html xmlns="http://www.w3.org/1999/xhtml">');
+		$this->pageRenderer->setHtmlTag('<html xmlns="http://www.w3.org/1999/xhtml">');
 
 		switch($this->docType)	{
 			case 'html_3':
@@ -693,41 +712,41 @@ class template extends t3lib_PageRenderer {
 			}
 		}
 
-		$this->setXmlPrologAndDocType($headerStart);
-		$this->setHeadTag('<head>' . chr(10). '<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->');
-		$this->setCharSet($this->charset);	
-		$this->addMetaTag($this->generator());	
-		$this->setTitle($title);
+		$this->pageRenderer->setXmlPrologAndDocType($headerStart);
+		$this->pageRenderer->setHeadTag('<head>' . chr(10). '<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->');
+		$this->pageRenderer->setCharSet($this->charset);
+		$this->pageRenderer->addMetaTag($this->generator());
+		$this->pageRenderer->setTitle($title);
 		
 		// add docstyles
 		$this->docStyle();
 
 
 		// add jsCode - has to go to headerData as it may contain the script tags already
-		$this->addHeaderData($this->JScode);
+		$this->pageRenderer->addHeaderData($this->JScode);
 		
 		foreach ($this->JScodeArray as $name => $code) {
-			$this->addJsInlineCode($name, $code);	
+			$this->pageRenderer->addJsInlineCode($name, $code);	
 		}
 
 		if (count($this->JScodeLibArray)) {
 			foreach($this->JScodeLibArray as $library) {
-				$this->addHeaderData($library);
+				$this->pageRenderer->addHeaderData($library);
 			}
 		}
 
 		if ($this->extJScode) {
-			$this->addJsHandlerCode($this->extJScode, t3lib_pageIncludes::JSHANDLER_EXTONREADY);
+			$this->pageRenderer->addExtOnReadyCode($this->extJScode);
 		}
 
 			// Construct page header.
-		$str = $this->render(1);
+		$str = $this->pageRenderer->render(t3lib_PageRenderer::PART_HEADER);
 
 		$this->JScodeLibArray = array();
 		$this->JScode = $this->extJScode = '';
 		$this->JScodeArray = array();
 
-		$this->endOfPageJsBlock = $this->render(2);
+		$this->endOfPageJsBlock = $this->pageRenderer->render(t3lib_PageRenderer::PART_FOOTER);
 		
 		if ($this->docType=='xhtml_frames')	{
 			return $str;
@@ -968,15 +987,15 @@ $str.=$this->docBodyTagBegin().
 		$inDocStyles = implode(chr(10), $this->inDocStylesArray);
 
 		if ($this->styleSheetFile) {
-		   $this->addCssFile($this->backPath . $this->styleSheetFile);					
+			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile);
 		}
 		if ($this->styleSheetFile2) {
-			$this->addCssFile($this->backPath . $this->styleSheetFile2);					
+			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile2);
 		}
 
-		$this->addCssInlineBlock('inDocStyles', $inDocStyles . chr(10) . '/*###POSTCSSMARKER###*/');
+		$this->pageRenderer->addCssInlineBlock('inDocStyles', $inDocStyles . chr(10) . '/*###POSTCSSMARKER###*/');
 		if ($this->styleSheetFile_post) {
-			$this->addCssFile($this->backPath . $this->styleSheetFile_post);
+			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_post);
 	}
 
 	}
@@ -991,7 +1010,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	void
 	 */
 	function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
-		$this->addCssFile($this->backPath . $href, $relation, $title);
+		$this->pageRenderer->addCssFile($this->backPath . $href, $relation, $title);
 		}
 
 	/**
@@ -1318,8 +1337,8 @@ $str.=$this->docBodyTagBegin().
 	 * @return	void
 	 */
 	function loadJavascriptLib($lib)	{
-		$this->addJsFile($this->backPath . $lib);
-		}
+		$this->pageRenderer->addJsFile($this->backPath . $lib);
+	}
 
 
 
@@ -1330,7 +1349,7 @@ $str.=$this->docBodyTagBegin().
 	 *			Please just call this function without expecting a return value for future calls
 	 */
 	function getContextMenuCode()   {
-	       $this->loadPrototype();
+	       $this->pageRenderer->loadPrototype();
 	       $this->loadJavascriptLib('js/clickmenu.js');
 
 	       $this->JScodeArray['clickmenu'] = '
@@ -1349,7 +1368,7 @@ $str.=$this->docBodyTagBegin().
 	 * @return	array		If values are present: [0] = A <script> section for the HTML page header, [1] = onmousemove/onload handler for HTML tag or alike, [2] = One empty <div> layer for the follow-mouse drag element
 	 */
 	function getDragDropCode($table)	{
-		$this->loadPrototype();
+		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('js/common.js');
 		$this->loadJavascriptLib('js/tree.js');
 
@@ -1893,7 +1912,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	function setModuleTemplate($filename) {
 			// Load Prototype lib for IE event
-		$this->loadPrototype();
+		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('js/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}

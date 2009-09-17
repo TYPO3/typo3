@@ -34,7 +34,7 @@
  * @subpackage t3lib
  * $Id$
  */
-abstract class t3lib_PageRenderer implements t3lib_Singleton {
+class t3lib_PageRenderer implements t3lib_Singleton {
 	
 	protected $compressJavascript = FALSE;
 	protected $compressCss = FALSE;

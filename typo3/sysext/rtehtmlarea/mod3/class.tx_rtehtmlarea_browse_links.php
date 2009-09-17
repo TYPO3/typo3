@@ -229,7 +229,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			// Loading the Prototype library and browse_links.js
-		$this->doc->loadPrototype();
+		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->loadJavascriptLib('js/browse_links.js');
 			// Adding context menu code
 		$this->doc->getContextMenuCode();

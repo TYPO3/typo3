@@ -128,8 +128,10 @@ class tx_t3editor {
 			$path_t3e = t3lib_extmgm::extRelPath('t3editor');
 
 				// include needed javascript-frameworks
-			$doc->loadPrototype();
-			$doc->loadScriptaculous();
+			/** @var $pageRenderer t3lib_PageRenderer */
+			$pageRenderer = $doc->getPageRenderer();
+			$pageRenderer->loadPrototype();
+			$pageRenderer->loadScriptaculous();
 
 				// include editor-css
 			$code.= '<link href="' .

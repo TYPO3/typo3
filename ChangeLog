@@ -9,6 +9,7 @@
 2009-09-17  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Set SVN properties
+	* Fixed bug #11985: Optimize disposal of t3lib_PageRenderer (thanks to Steffen Kamper)
 
 2009-09-17  Sebastian Kurfuerst  <sebastian@typo3.org>
 

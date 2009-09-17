@@ -205,8 +205,10 @@ class TYPO3backend {
 		 * now put the complete backend document together
 		 ******************************************************/
 
-		$GLOBALS['TBE_TEMPLATE']->loadScriptaculous('builder,effects,controls,dragdrop');
-		$GLOBALS['TBE_TEMPLATE']->loadExtJS();
+		/** @var $pageRenderer t3lib_PageRenderer */
+		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
+		$pageRenderer->loadExtJS();
 		
 			// remove duplicate entries
 		$this->jsFiles = array_unique($this->jsFiles);

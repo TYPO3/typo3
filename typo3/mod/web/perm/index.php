@@ -215,7 +215,7 @@ class SC_mod_web_perm_index {
 		$this->doc->setModuleTemplate('templates/perm.html');
 		$this->doc->form = '<form action="'.$GLOBALS['BACK_PATH'].'tce_db.php" method="post" name="editform">';
 		$this->doc->loadJavascriptLib('../t3lib/jsfunc.updateform.js');
-		$this->doc->loadPrototype();
+		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->loadJavascriptLib(TYPO3_MOD_PATH . 'perm.js');
 
 			// Setting up the context sensitive menu:

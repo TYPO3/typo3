@@ -24,7 +24,7 @@
 
 
 /**
- * Testcase for the t3lib_pageIncludes class in the TYPO3 core.
+ * Testcase for the t3lib_PageRenderer class in the TYPO3 core.
  *
  * @package TYPO3
  * @subpackage t3lib
@@ -33,21 +33,12 @@
  */
 class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	/**
-	 * @var t3lib_pageIncludes
+	 * @var t3lib_PageRenderer
 	 */
 	private $fixture;
 
-	const PART_COMPLETE = 0;
-	const PART_HEADER = 1;
-	const PART_FOOTER = 2;
-
 	public function setUp() {
-		$className = 't3lib_PageRenderer_' . uniqid('test');
-		eval('
-			class ' . $className . ' extends t3lib_PageRenderer {
-			}
-		');
-		$this->fixture = new $className();
+		$this->fixture = new t3lib_PageRenderer();
 	}
 
 	public function tearDown() {
@@ -216,7 +207,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		
 		$expectedReturnValue = '<tag method="private" name="test" />';
 		$this->fixture->addFooterData('<tag method="private" name="test" />');
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -249,7 +240,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		
 		$expectedReturnValue = '<script src="fileadmin/test.js" type="text/javascript"></script>';
 		$this->fixture->addJsFooterLibrary('test', 'fileadmin/test.js');
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -281,7 +272,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		
 		$expectedReturnValue = '<script src="fileadmin/test.js" type="text/javascript"></script>';
 		$this->fixture->addJsFooterFile('fileadmin/test.js');
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -313,7 +304,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		
 		$expectedReturnValue = 'var x = "testvar"';
 		$this->fixture->addJsFooterInlineCode('test', 'var x = "testvar"');
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -502,7 +493,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineLanguageLabel('myKey', 'myValue');
 		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -520,7 +511,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineLanguageLabelArray(array('myKey1' => 'myValue1', 'myKey2' => 'myValue2',));
 		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -539,7 +530,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		$this->fixture->addInlineLanguageLabelArray(array('myKey1' => 'myValue1',));
 		$this->fixture->addInlineLanguageLabelArray(array('myKey2' => 'myValue2',));
 		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -557,7 +548,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineSetting('myApp', 'myKey', 'myValue');
 		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -575,7 +566,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineSettingArray('myApp', array('myKey1' => 'myValue1', 'myKey2' => 'myValue2',));
 		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,
@@ -594,7 +585,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		$this->fixture->addInlineSettingArray('myApp', array('myKey1' => 'myValue1',));
 		$this->fixture->addInlineSettingArray('myApp', array('myKey2' => 'myValue2',));
 		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
-		$out = $this->fixture->render(self::PART_FOOTER);
+		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
 		$this->assertContains(
 			$expectedReturnValue,

@@ -2818,7 +2818,7 @@ class tslib_cObj {
 		$typeConf = $conf[$conf['type'] . '.'];
 
 			//add SWFobject js-file
-		$GLOBALS['TSFE']->addJsFile('typo3/contrib/flashmedia/swfobject/swfobject.js');
+		$GLOBALS['TSFE']->getPageRenderer()->addJsFile('typo3/contrib/flashmedia/swfobject/swfobject.js');
 		
 		$player = $this->stdWrap($conf[$conf['type'] . '.']['player'], $conf[$conf['type'] . '.']['player.']);
 		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $prefix . 'typo3/contrib/flashmedia/swfobject/expressInstall.swf';
@@ -2926,7 +2926,7 @@ class tslib_cObj {
 		$typeConf = $conf[$conf['type'] . '.'];
 
 			//add QTobject js-file
-		$GLOBALS['TSFE']->addJsFile('typo3/contrib/flashmedia/qtobject/qtobject.js');
+		$GLOBALS['TSFE']->getPageRenderer()->addJsFile('typo3/contrib/flashmedia/qtobject/qtobject.js');
 		$replaceElementIdString = uniqid('mmqt');
 		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
 		$qtObject = 'QTObject' . $replaceElementIdString;

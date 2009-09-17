@@ -446,7 +446,7 @@ class SC_alt_doc {
 		$this->doc->setModuleTemplate('templates/alt_doc.html');
 		$this->doc->form = '<form action="'.htmlspecialchars($this->R_URI).'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="document.editform._scrollPosition.value=(document.documentElement.scrollTop || document.body.scrollTop); return TBE_EDITOR.checkSubmit(1);">';
 
-		$this->doc->loadPrototype();
+		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			function jumpToUrl(URL,formEl)	{	//
 				if (!TBE_EDITOR.isFormChanged())	{

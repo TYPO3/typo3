@@ -92,7 +92,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 		$this->doc->divClass = '';
 		$this->doc->form = '<form action="index.php" method="post" name="editform">';
 		$this->backPath = $this->doc->backPath = $BACK_PATH;
-		$this->doc->loadPrototype();
+		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->JScode = '  <script language="javascript" type="text/javascript">
 			script_ended = 0;
 			function jumpToUrl(URL) {
