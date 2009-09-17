@@ -24,25 +24,25 @@
  * Use this view helper to crop the text between its opening and closing tags.
  *
  * = Examples =
- * 
+ *
  * <code title="Defaults">
  * <f:format.crop maxCharacters="10">This is some very long text</f:format.crop>
  * </code>
  *
  * Output:
  * This is...
- * 
+ *
  * <code title="Custom suffix">
  * <f:format.crop maxCharacters="17" append="&nbsp;[more]">This is some very long text</f:format.crop>
  * </code>
- * 
+ *
  * Output:
  * This is some&nbsp;[more]
  *
  * <code title="Don't respect word boundaries">
  * <f:format.crop maxCharacters="10" respectWordBoundaries="false">This is some very long text</f:format.crop>
  * </code>
- * 
+ *
  * Output:
  * This is so...
  *
@@ -64,12 +64,12 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 
 	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
-	 * 
+	 *
 	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
 	 * @return void
 	 */
 	public function __construct($contentObject = NULL) {
-		$this->contentObject = $contentObject !== NULL ? $contentObject : $GLOBALS['TSFE']->cObj;
+		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
 	}
 
 	/**
@@ -85,6 +85,9 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 */
 	public function render($maxCharacters, $append = '...', $respectWordBoundaries = TRUE) {
 		$stringToTruncate = $this->renderChildren();
+		if (TYPO3_MODE === 'BE') {
+			return substr($stringToTruncate, $maxCharacters);
+		}
 
 		return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 	}

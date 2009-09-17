@@ -93,7 +93,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 */
 	public function render($key, $htmlEscape = TRUE) {
 		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
-			$value = $GLOBALS['TSFE']->sL($key);
+			$value = $GLOBALS['LANG']->sL($key);
 		} else {
 			$value = $this->translate($key);
 		}

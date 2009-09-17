@@ -51,7 +51,11 @@ class Tx_Fluid_ViewHelpers_BaseViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	 */
 	public function render() {
 		$currentRequest = $this->controllerContext->getRequest();
-		return '<base href="' . $currentRequest->getBaseURI() . '"></base>';
+		$baseUri = $currentRequest->getBaseURI();
+		if (TYPO3_MODE === 'BE') {
+			$baseUri.= TYPO3_mainDir;
+		}
+		return '<base href="' . $baseUri . '"></base>';
 	}
 }
 

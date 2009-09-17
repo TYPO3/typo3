@@ -28,16 +28,30 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	protected $contentObject;
 
 	/**
+	 * @var array
+	 */
+	protected $typoScriptSetup;
+
+	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
 	 *
 	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
-	 * @param array $typoscriptSetup global TypoScript setup (optional)
+	 * @param array $typoScriptSetup global TypoScript setup (optional)
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function __construct($contentObject = NULL, array $typoscriptSetup = NULL) {
+	public function __construct($contentObject = NULL, array $typoScriptSetup = NULL) {
 		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
-		$this->typoscriptSetup = $typoscriptSetup !== NULL ? $typoscriptSetup : $GLOBALS['TSFE']->tmpl->setup;
+		if ($typoScriptSetup !== NULL) {
+			$this->typoScriptSetup = $typoScriptSetup;
+		} else {
+			$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+			$this->typoScriptSetup = $configurationManager->loadTypoScriptSetup();
+		}
+		if (TYPO3_MODE === 'BE') {
+				// this is a hacky work around to enable this view helper for backend mode
+			$GLOBALS['TSFE']->cObjectDepthCounter = 100;
+		}
 	}
 
 	/**
@@ -67,10 +81,10 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 
 		$pathSegments = t3lib_div::trimExplode('.', $typoscriptObjectPath);
 		$lastSegment = array_pop($pathSegments);
-		$setup = $this->typoscriptSetup;
+		$setup = $this->typoScriptSetup;
 		foreach ($pathSegments as $segment) {
 			if (!array_key_exists($segment . '.', $setup)) {
-				return 'TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist';
+				throw new Tx_Fluid_Core_ViewHelper_Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist' , 1253191023);
 			}
 			$setup = $setup[$segment . '.'];
 		}

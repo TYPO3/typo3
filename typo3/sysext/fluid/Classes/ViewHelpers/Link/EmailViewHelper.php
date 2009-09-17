@@ -23,16 +23,16 @@
  * Email link view helper.
  * Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
- * = Examples 
+ * = Examples
  *
  * <code title="basic email link">
  * <f:link.email email="foo@bar.tld" />
  * </code>
- * 
+ *
  * Output:
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">foo(at)bar.tld</a>
  * (depending on your spamProtectEmailAddresses-settings)
- * 
+ *
  * <code title="Email link with custom linktext">
  * <f:link.email email="foo@bar.tld">some custom content</f:emaillink>
  * </code>
@@ -57,7 +57,12 @@ class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($email) {
-		list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
+		if (TYPO3_MODE === 'FE') {
+			list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
+		} else {
+			$linkHref = 'mailto:' . $email;
+			$linkText = $email;
+		}
 		$tagContent = $this->renderChildren();
 		if ($tagContent !== NULL) {
 			$linkText = $tagContent;

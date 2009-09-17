@@ -17,12 +17,12 @@
  * Email URI view helper.
  * Generates an email URI incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
- * = Examples 
+ * = Examples
  *
  * <code title="basic email URI">
  * <f:uri.email email="foo@bar.tld" />
  * </code>
- * 
+ *
  * Output:
  * javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');
  * (depending on your spamProtectEmailAddresses-settings)
@@ -39,8 +39,12 @@ class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($email) {
-		$emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
-		return reset($emailParts);
+		if (TYPO3_MODE === 'FE') {
+			$emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
+			return reset($emailParts);
+		} else {
+			return $email;
+		}
 	}
 }
 
