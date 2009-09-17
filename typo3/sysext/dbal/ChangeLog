@@ -1,3 +1,7 @@
+2009-09-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #11984: Remove reference operators for objects
+
 2009-09-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #11436: Unknown tables break Install-Tool (Thanks to David Bruchmann)

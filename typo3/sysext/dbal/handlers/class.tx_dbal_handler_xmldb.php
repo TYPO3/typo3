@@ -89,7 +89,7 @@ class tx_dbal_handler_xmldb extends t3lib_sqlengine {
 	 * @param	object		Parent object
 	 * @return	void
 	 */
-	function init($config, &$pObj)	{
+	function init($config, $pObj) {
 		$this->config = $config['config'];
 
 		$dbStorage = t3lib_div::getFileAbsFileName($this->config['DBstorageDir']);

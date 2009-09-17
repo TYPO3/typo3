@@ -99,7 +99,7 @@ class tx_dbal_handler_rawmysql extends t3lib_sqlengine {
 	 */
 	function init($config,&$pObj)	{
 		$this->config = $config['config'];
-		$this->pObj = &$pObj;
+		$this->pObj = $pObj;
 		$this->link = mysql_pconnect(
 							$this->config['host'],
 							$this->config['username'],

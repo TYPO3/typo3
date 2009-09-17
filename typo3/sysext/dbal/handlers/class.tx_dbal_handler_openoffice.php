@@ -86,7 +86,7 @@ class tx_dbal_handler_openoffice extends t3lib_sqlengine {
 	 * @param	object		Parent object
 	 * @return	boolean		True on success.
 	 */
-	function init($config, &$pObj)	{
+	function init($config, $pObj) {
 		$this->config = $config['config'];
 
 		if (t3lib_extMgm::isLoaded('libunzipped'))	{
