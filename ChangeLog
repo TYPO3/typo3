@@ -1,5 +1,6 @@
 2009-09-17  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11396: redirects not working for felogin on pages with access set
 	* Follow-up to bug #11985: corrected calls loadScriptaculous() in tceforms
 
 2009-09-17  Ingo Renner  <ingo@typo3.org>

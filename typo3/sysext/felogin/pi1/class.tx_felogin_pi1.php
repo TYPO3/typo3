@@ -488,6 +488,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 
 
+		if ($this->redirectUrl) {
+				// use redirectUrl for action tag because of possible access restricted pages
+			$markerArray['###ACTION_URI###'] = htmlspecialchars($this->redirectUrl);
+			$this->redirectUrl = '';
+		}
 		if (($this->conf['showPermaLogin']) && ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) && $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] > 0) {
 			$markerArray['###PERMALOGIN###'] = $this->pi_getLL('permalogin', '', 1);
 			if($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
@@ -584,6 +589,18 @@ class tx_felogin_pi1 extends tslib_pibase {
 							}
 						break;
 					}
+				} elseif (($this->logintype == '') && ($redirMethod == 'login') && $this->conf['redirectPageLogin']) { 
+						// if login and page not accessible
+					$this->cObj->typolink('', array(
+						'parameter' 				=> $this->conf['redirectPageLogin'],
+						'linkAccessRestrictedPages' => TRUE,
+					));
+					$redirect_url = $this->cObj->lastTypoLinkUrl;
+
+				} elseif (($this->logintype == '') && ($redirMethod == 'logout') && $this->conf['redirectPageLogout'] && $GLOBALS['TSFE']->loginUser) { 
+						// if logout and page not accessible
+					$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), TRUE);
+
 				} elseif ($this->logintype === 'logout') { // after logout
 
 					// Hook for general actions after after logout has been confirmed
