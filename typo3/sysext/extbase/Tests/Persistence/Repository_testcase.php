@@ -148,7 +148,7 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 	/**
 	 * @test
 	 */
-	public function findByUidCreatesQueryAndReturnsResultOfExecuteCall() {
+	public function findByUidCreatesQueryAndReturnsResultOfExecuteCallAndCachesTheObject() {
 		$fakeUid = 123;
 
 		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session');
@@ -158,8 +158,33 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_Base_testcas
 		$mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->will($this->returnValue($mockQuery));
 		$mockQuery->expects($this->once())->method('execute')->will($this->returnValue(array('one', 'two')));
 
+		$mockIdentityMap = $this->getMock('Tx_Extbase_Persistence_IdentityMap');
+		$mockIdentityMap->expects($this->once())->method('hasIdentifier')->will($this->returnValue(FALSE));
+		$mockIdentityMap->expects($this->once())->method('registerObject')->with('one', 123);
+
 		$mockRepository = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Repository'), array('createQuery'), array(), '', FALSE);
+		$mockRepository->_set('identityMap', $mockIdentityMap);
 		$mockRepository->expects($this->once())->method('createQuery')->will($this->returnValue($mockQuery));
+
+		$this->assertSame('one', $mockRepository->findByUid($fakeUid));
+	}
+
+	/**
+	 * @test
+	 */
+	public function findByUidReturnsAlreadyCachedObject() {
+		$fakeUid = 123;
+
+		$mockPersistenceSession = $this->getMock('Tx_Extbase_Persistence_Session');
+
+		$mockIdentityMap = $this->getMock('Tx_Extbase_Persistence_IdentityMap');
+		$mockIdentityMap->expects($this->once())->method('hasIdentifier')->will($this->returnValue(TRUE));
+		$mockIdentityMap->expects($this->once())->method('getObjectByIdentifier')->with(123, 'MyObjectType')->will($this->returnValue('one'));
+
+		$mockRepository = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Repository'), array('createQuery'), array(), '', FALSE);
+		$mockRepository->_set('identityMap', $mockIdentityMap);
+		$mockRepository->_set('objectType', 'MyObjectType');
+		$mockRepository->expects($this->never())->method('createQuery');
 
 		$this->assertSame('one', $mockRepository->findByUid($fakeUid));
 	}
