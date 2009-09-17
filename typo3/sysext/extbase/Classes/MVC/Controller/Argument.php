@@ -121,7 +121,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	public function __construct($name, $dataType = 'Text') {
 		$this->reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
-		$this->propertyMapper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
+		$this->propertyMapper->injectReflectionService($this->reflectionService);
 		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
 		$this->name = $name;
 		$this->setDataType($dataType);

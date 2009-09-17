@@ -217,12 +217,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			return $this->identityMap->getObjectByIdentifier($identifier, $className);
 		} else {
 			$query = $this->queryFactory->create($className);
-			$result = $query->matching($query->withUid($uid))->execute();
+			$result = $query->matching($query->withUid($identifier))->execute();
 			$object = NULL;
 			if (count($result) > 0) {
 				$object = current($result);
 			}
-			return $object;			
+			return $object;
 		}
 	}
 

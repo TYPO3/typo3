@@ -35,6 +35,11 @@
 class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
 
 	/**
+	 * @var Tx_Extbase_Persistence_IdentityMap
+	 **/
+	protected $identityMap;
+
+	/**
 	 * Objects of this repository
 	 *
 	 * @var Tx_Extbase_Persistence_ObjectStorage
@@ -68,6 +73,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 *
 	 */
 	public function __construct() {
+		$this->identityMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap');
 		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
@@ -211,11 +217,16 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function findByUid($uid) {
 		if (!is_int($uid) || $uid < 0) throw new InvalidArgumentException('The uid must be a positive integer', 1245071889);
-		$query = $this->createQuery();
-		$result = $query->matching($query->withUid($uid))->execute();
-		$object = NULL;
-		if (count($result) > 0) {
-			$object = current($result);
+		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
+			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
+		} else {
+			$query = $this->createQuery();
+			$result = $query->matching($query->withUid($uid))->execute();
+			$object = NULL;
+			if (count($result) > 0) {
+				$object = current($result);
+			}
+			$this->identityMap->registerObject($object, $uid);
 		}
 		return $object;
 	}
