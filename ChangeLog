@@ -1,3 +1,7 @@
+2009-09-17  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #9270: Editors can´t undelete records in history (thanks to Christian Hernmarck)
+
 2009-09-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.5.10
