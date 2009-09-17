@@ -28,7 +28,7 @@
 			<label index="setup">Setup:</label>
 			<label index="resources">Resources:</label>
 			<label index="editToView">(edit to view, %s lines)</label>
-			<label index="editTemplateRecord">Click here to edit the whole template record.</label>
+			<label index="editTemplateRecord">Edit the whole template record</label>
 		</languageKey>
 	</data>
 </T3locallang>

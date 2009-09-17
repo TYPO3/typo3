@@ -13,6 +13,7 @@
 	* Fixed bug #11987: Extension Manager is not translatable (part 5) (thanks to Christopher Stelmaszyk)
 	* Fixed bug #11564: Change Hardcoded MD5 Password Encryption in User->Setup. Needed for extension "saltedpasswords" (thanks to Steffen Ritter)
 	* Fixed bug #9270: Editors can´t undelete records in history (thanks to Christian Hernmarck)
+	* Added tweak #11881: Add pencil icon to "Edit the whole template record." in Template editor (thanks to Patrick Gaumond)
 
 2009-09-17  Oliver Hader  <oliver@typo3.org>
 

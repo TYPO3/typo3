@@ -499,8 +499,10 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			</table>';
 
 				// Edit all icon:
-			$outCode.= '<BR><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') . '&edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong>' . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
-
+			$outCode.= '<br /><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') .
+				'&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong><img ' .
+				t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif') .' width="11" height="12" hspace="3" border="0" title="' .
+				$GLOBALS['LANG']->getLL('editTemplateRecord') . '">' . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
 			$theOutput.= $this->pObj->doc->spacer(25);
 			$theOutput.= $this->pObj->doc->section('', $outCode);
 
