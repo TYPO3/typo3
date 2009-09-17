@@ -62,10 +62,11 @@ TCEForms.Suggest = Class.create({
 				paramName: 'value',
 				minChars: (minimumCharacters ? minimumCharacters : this.minimumCharacters),
 				updateElement: this.addElementToList.bind(this),
-				parameters: 'ajaxID=t3lib_TCEforms_suggest::searchRecord&table=' + table + '&field=' + field + '&uid=' + uid + '&pid=' + pid
+				parameters: 'ajaxID=t3lib_TCEforms_suggest::searchRecord&table=' + table + '&field=' + field + '&uid=' + uid + '&pid=' + pid,
+				indicator: objectId + 'SuggestIndicator'
 			}
 		);
-		
+
 		$(this.suggestField).observe('focus', this.checkDefaultValue.bind(this));
 		$(this.suggestField).observe('keydown', this.checkDefaultValue.bind(this));
 	},

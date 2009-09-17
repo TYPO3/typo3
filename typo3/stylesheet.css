@@ -1168,6 +1168,12 @@ input.typo3-TCEforms-suggest-search {
 	margin: 1px 10px 0 0;
 }
 
+div.typo3-TCEforms-suggest-indicator {
+	position: relative;
+	left: 230px;
+	top: -18px;
+}
+
 div.typo3-TCEforms-suggest-choices {
 	position: absolute;
 	width: 250px;
@@ -2966,13 +2972,3 @@ div {
 	border: 1px dotted #666;
 }
 */
-
-
-
-
-
-
-
-
-
-
