@@ -36,6 +36,11 @@ require_once(PATH_t3lib . 'class.t3lib_tcemain.php');
  */
 class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 	/**
+	 * @var	boolean
+	 */
+	protected $backupGlobals = true;
+
+	/**
 	 * @var t3lib_TCEmain
 	 */
 	private $fixture;
@@ -197,5 +202,58 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 		}
 	}
 
+	/**
+	 * Tests whether a wrong interface on the 'checkModifyAccessList' hook throws an exception.
+	 * @test
+	 * @expectedException UnexpectedValueException
+	 * @see t3lib_TCEmain::checkModifyAccessList()
+	 */
+	public function doesCheckModifyAccessListThrowExceptionOnWrongHookInterface() {
+		$hookClass = uniqid('tx_coretest');
+		eval('class ' . $hookClass . ' {}');
+
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
+
+		$this->fixture->checkModifyAccessList('tt_content');
+	}
+
+	/**
+	 * Tests whether the 'checkModifyAccessList' hook is called correctly.
+	 * @test
+	 * @see t3lib_TCEmain::checkModifyAccessList()
+	 */
+	public function doesCheckModifyAccessListHookGetsCalled() {
+		$hookClass = uniqid('tx_coretest');
+		$hookMock = $this->getMock(
+			't3lib_TCEmain_checkModifyAccessListHook',
+			array('checkModifyAccessList'),
+			array(),
+			$hookClass
+		);
+		$hookMock->expects($this->once())->method('checkModifyAccessList');
+
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
+		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
+
+		$this->fixture->checkModifyAccessList('tt_content');
+	}
+
+	/**
+	 * Tests whether the 'checkModifyAccessList' hook modifies the $accessAllowed variable.
+	 * @test
+	 * @see t3lib_TCEmain::checkModifyAccessList()
+	 */
+	public function doesCheckModifyAccessListHookModifyAccessAllowed() {
+		$hookClass = uniqid('tx_coretest');
+		eval('
+			class ' . $hookClass . ' implements t3lib_TCEmain_checkModifyAccessListHook {
+				public function checkModifyAccessList(&$accessAllowed, $table, t3lib_TCEmain $parent) { $accessAllowed = true; }
+			}
+		');
+
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
+
+		$this->assertTrue($this->fixture->checkModifyAccessList('tt_content'));
+	}
 }
 ?>
