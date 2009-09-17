@@ -2600,7 +2600,7 @@ class t3lib_TCEforms	{
 						if ($value['section'])	{
 
 								// Load script.aculo.us if flexform sections can be moved by drag'n'drop:
-							$GLOBALS['SOBE']->doc->loadScriptaculous();
+							$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
 								// Render header of section:
 							$output.= '<div class="bgColor2"><strong>'.$theTitle.'</strong></div>';
 
@@ -5278,7 +5278,7 @@ class t3lib_TCEforms	{
 
 				// if IRRE fields were processed, add the JavaScript functions:
 			if ($this->inline->inlineCount) {
-				$GLOBALS['SOBE']->doc->loadScriptaculous();
+				$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
 				$this->loadJavascriptLib('../t3lib/jsfunc.inline.js');
 				$out .= '
 				inline.setPrependFormFieldNames("'.$this->inline->prependNaming.'");
