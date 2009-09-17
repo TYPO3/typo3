@@ -364,6 +364,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 
 		$validator = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ArgumentsValidator');
 		$this->propertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
+
 		$this->argumentsMappingResults = $this->propertyMapper->getMappingResults();
 	}
 }

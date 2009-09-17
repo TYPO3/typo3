@@ -50,9 +50,6 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 
 		$result = TRUE;
 		foreach ($arguments->getArgumentNames() as $argumentName) {
-			if ($arguments[$argumentName]->isValidationDisabled()) {
-				continue;
-			}
 			if ($this->isPropertyValid($arguments, $argumentName) === FALSE) {
 				$result = FALSE;
 			}

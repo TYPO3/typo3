@@ -35,6 +35,12 @@
 class Tx_Extbase_Validation_ValidatorResolver {
 
 	/**
+	 * Match validator names and options
+	 * @var string
+	 */
+	const PATTERN_MATCH_VALIDATORS = '/(?:^|,\s*)(?P<validatorName>[a-z0-9_]+)\s*(?:\((?P<validatorOptions>.+)\))?/i';
+
+	/**
 	 * @var Tx_Extbase_Object_ManagerInterface
 	 */
 	protected $objectManager;
@@ -82,8 +88,12 @@ class Tx_Extbase_Validation_ValidatorResolver {
 		$validatorClassName = $this->resolveValidatorObjectName($validatorName);
 		if ($validatorClassName === FALSE) return NULL;
 		$validator = $this->objectManager->getObject($validatorClassName);
+		if (!($validator instanceof Tx_Extbase_Validation_Validator_ValidatorInterface)) {
+			return NULL;
+		}
+
 		$validator->setOptions($validatorOptions);
-		return ($validator instanceof Tx_Extbase_Validation_Validator_ValidatorInterface) ? $validator : NULL;
+		return $validator;
 	}
 
 	/**
@@ -103,40 +113,39 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	}
 
 	/**
-	 * Detects and registers any additional validators for arguments which were specified in the @validate
-	 * annotations of a method.
+	 * Detects and registers any validators for arguments:
+	 * - by the data type specified in the @param annotations
+	 * - additional validators specified in the @validate annotations of a method
 	 *
-	 * @return array Validator Conjunctions
+	 * @return array An Array of ValidatorConjunctions for each method parameters.
 	 */
 	public function buildMethodArgumentsValidatorConjunctions($className, $methodName) {
 		$validatorConjunctions = array();
 
+		$methodParameters = $this->reflectionService->getMethodParameters($className, $methodName);
 		$methodTagsValues = $this->reflectionService->getMethodTagsValues($className, $methodName);
+		if (!count($methodParameters)) {
+			// early return in case no parameters were found.
+			return $validatorConjunctions;
+		}
+		foreach ($methodParameters as $parameterName => $methodParameter) {
+			$validatorConjunction = $this->createValidator('Conjunction');
+			$typeValidator = $this->createValidator($methodParameter['type']);
+			if ($typeValidator !== NULL) $validatorConjunction->addValidator($typeValidator);
+			$validatorConjunctions[$parameterName] = $validatorConjunction;
+		}
+
 		if (isset($methodTagsValues['validate'])) {
 			foreach ($methodTagsValues['validate'] as $validateValue) {
-				$matches = array();
-				preg_match('/^\$(?P<argumentName>[a-zA-Z0-9]+)\s+(?P<validators>.*)$/', $validateValue, $matches);
-				$argumentName = $matches['argumentName'];
+				$parsedAnnotation = $this->parseValidatorAnnotation($validateValue);
+				foreach ($parsedAnnotation['validators'] as $validatorConfiguration) {
+					$newValidator = $this->createValidator($validatorConfiguration['validatorName'], $validatorConfiguration['validatorOptions']);
+					if ($newValidator === NULL) throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Invalid validate annotation in ' . $className . '->' . $methodName . '(): Could not resolve class name for  validator "' . $validatorConfiguration['validatorName'] . '".', 1239853109);
 
-				preg_match_all('/(?P<validatorName>[a-zA-Z0-9]+)(?:\((?P<validatorOptions>[^)]+)\))?/', $matches['validators'], $matches, PREG_SET_ORDER);
-				foreach ($matches as $match) {
-					$validatorName = $match['validatorName'];
-					$validatorOptions = array();
-					$rawValidatorOptions = isset($match['validatorOptions']) ? explode(',', $match['validatorOptions']) : array();
-					foreach ($rawValidatorOptions as $rawValidatorOption) {
-						if (strpos($rawValidatorOption, '=') !== FALSE) {
-							list($optionName, $optionValue) = explode('=', $rawValidatorOption);
-							$validatorOptions[trim($optionName)] = trim($optionValue);
-						}
-					}
-					$newValidator = $this->createValidator($validatorName, $validatorOptions);
-					if ($newValidator === NULL) throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Invalid validate annotation in ' . $className . '->' . $methodName . '(): Could not resolve class name for  validator "' . $validatorName . '".', 1239853109);
-
-					if  (isset($validatorConjunctions[$argumentName])) {
-						$validatorConjunctions[$argumentName]->addValidator($newValidator);
+					if  (isset($validatorConjunctions[$parsedAnnotation['argumentName']])) {
+						$validatorConjunctions[$parsedAnnotation['argumentName']]->addValidator($newValidator);
 					} else {
-						$validatorConjunctions[$argumentName] = $this->createValidator('Conjunction');
-						$validatorConjunctions[$argumentName]->addValidator($newValidator);
+						throw new Tx_Extbase_Validation_Exception_InvalidValidationConfiguration('Invalid validate annotation in ' . $className . '->' . $methodName . '(): Validator specified for argument name "' . $parsedAnnotation['argumentName'] . '", but this argument does not exist.', 1253172726);
 					}
 				}
 			}
@@ -148,18 +157,22 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * Builds a base validator conjunction for the given data type.
 	 *
 	 * The base validation rules are those which were declared directly in a class (typically
-	 * a model) through some @validate annotations.
+	 * a model) through some @validate annotations on properties.
 	 *
 	 * Additionally, if a custom validator was defined for the class in question, it will be added
 	 * to the end of the conjunction. A custom validator is found if it follows the naming convention
-	 * "[FullyqualifiedModelClassName]Validator".
+	 * "Replace '\Model\' by '\Validator\' and append "Validator".
 	 *
-	 * @param string $dataType The data type to build the validation conjunction for. Usually the fully qualified object name.
+	 * Example: $dataType is F3\Foo\Domain\Model\Quux, then the Validator will be found if it has the
+	 * name F3\Foo\Domain\Validator\QuuxValidator
+	 *
+	 * @param string $dataType The data type to build the validation conjunction for. Needs to be the fully qualified object name.
 	 * @return Tx_Extbase_Validation_Validator_ConjunctionValidator The validator conjunction or NULL
 	 */
 	protected function buildBaseValidatorConjunction($dataType) {
 		$validatorConjunction = $this->objectManager->getObject('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 
+		// Model based validator
 		if (class_exists($dataType)) {
 			$validatorCount = 0;
 			$objectValidator = $this->createValidator('GenericObject');
@@ -169,20 +182,12 @@ class Tx_Extbase_Validation_ValidatorResolver {
 				if (!isset($classPropertyTagsValues['validate'])) continue;
 
 				foreach ($classPropertyTagsValues['validate'] as $validateValue) {
-					$matches = array();
-					preg_match_all('/(?P<validatorName>[a-zA-Z0-9]+)(?:\((?P<validatorOptions>[^)]+)\))?/', $validateValue, $matches, PREG_SET_ORDER);
-					foreach ($matches as $match) {
-						$validatorName = $match['validatorName'];
-						$validatorOptions = array();
-						$rawValidatorOptions = isset($match['validatorOptions']) ? explode(',', $match['validatorOptions']) : array();
-						foreach ($rawValidatorOptions as $rawValidatorOption) {
-							if (strpos($rawValidatorOption, '=') !== FALSE) {
-								list($optionName, $optionValue) = explode('=', $rawValidatorOption);
-								$validatorOptions[trim($optionName)] = trim($optionValue);
-							}
+					$parsedAnnotation = $this->parseValidatorAnnotation($validateValue);
+					foreach ($parsedAnnotation['validators'] as $validatorConfiguration) {
+						$newValidator = $this->createValidator($validatorConfiguration['validatorName'], $validatorConfiguration['validatorOptions']);
+						if ($newValidator === NULL) {
+							throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Invalid validate annotation in ' . $dataType . '::' . $classPropertyName . ': Could not resolve class name for  validator "' . $validatorConfiguration['validatorName'] . '".', 1241098027);
 						}
-						$newValidator = $this->createValidator($validatorName, $validatorOptions);
-						if ($newValidator === NULL) throw new Tx_Extbase_Validation_Exception_NoSuchValidator('Invalid validate annotation in ' . $dataType . '::' . $classPropertyName . ': Could not resolve class name for  validator "' . $validatorName . '".', 1241098027);
 						$objectValidator->addPropertyValidator($classPropertyName, $newValidator);
 						$validatorCount ++;
 					}
@@ -191,16 +196,99 @@ class Tx_Extbase_Validation_ValidatorResolver {
 			if ($validatorCount > 0) $validatorConjunction->addValidator($objectValidator);
 		}
 
+		// Custom validator for the class
 		$possibleValidatorClassName = str_replace('_Model_', '_Validator_', $dataType) . 'Validator';
-		$customValidatorObjectName = $this->resolveValidatorObjectName($possibleValidatorClassName);
-		if ($customValidatorObjectName !== FALSE) {
-			$validatorConjunction->addValidator($this->objectManager->getObject($customValidatorObjectName));
+		$customValidator = $this->createValidator($possibleValidatorClassName);
+		if ($customValidator !== NULL) {
+			$validatorConjunction->addValidator($customValidator);
 		}
 
 		return $validatorConjunction;
 	}
 
 	/**
+	 * Parses the validator options given in @validate annotations.
+	 *
+	 * @return array
+	 */
+	protected function parseValidatorAnnotation($validateValue) {
+		$matches = array();
+		if ($validateValue[0] === '$') {
+			$parts = explode(' ', $validateValue, 2);
+			$validatorConfiguration = array('argumentName' => ltrim($parts[0], '$'), 'validators' => array());
+			preg_match_all(self::PATTERN_MATCH_VALIDATORS, $parts[1], $matches, PREG_SET_ORDER);
+		} else {
+			preg_match_all(self::PATTERN_MATCH_VALIDATORS, $validateValue, $matches, PREG_SET_ORDER);
+		}
+
+		foreach ($matches as $match) {
+			$validatorName = $match['validatorName'];
+			$validatorOptions = array();
+			if (isset($match['validatorOptions'])) {
+				if (strpos($match['validatorOptions'], '\'') === FALSE && strpos($match['validatorOptions'], '"') === FALSE) {
+					$validatorOptions = $this->parseSimpleValidatorOptions($match['validatorOptions']);
+				} else {
+					$validatorOptions = $this->parseComplexValidatorOptions($match['validatorOptions']);
+				}
+			}
+			$validatorConfiguration['validators'][] = array('validatorName' => $validatorName, 'validatorOptions' => $validatorOptions);
+		}
+
+		return $validatorConfiguration;
+	}
+
+	/**
+	 * Parses $rawValidatorOptions not containing quoted option values.
+	 * $rawValidatorOptions will be an empty string afterwards (pass by ref!).
+	 *
+	 * @param string &$rawValidatorOptions
+	 * @return array An array of optionName/optionValue pairs
+	 */
+	protected function parseSimpleValidatorOptions(&$rawValidatorOptions) {
+		$validatorOptions = array();
+
+		$rawValidatorOptions = explode(',', $rawValidatorOptions);
+		foreach ($rawValidatorOptions as $rawValidatorOption) {
+			if (strpos($rawValidatorOption, '=') !== FALSE) {
+				list($optionName, $optionValue) = explode('=', $rawValidatorOption, 2);
+				$validatorOptions[trim($optionName)] = trim($optionValue);
+			}
+		}
+
+		$rawValidatorOptions = '';
+		return $validatorOptions;
+	}
+
+	/**
+	 * Parses $rawValidatorOptions containing quoted option values.
+	 *
+	 * @param string $rawValidatorOptions
+	 * @return array An array of optionName/optionValue pairs
+	 */
+	protected function parseComplexValidatorOptions($rawValidatorOptions) {
+		$validatorOptions = array();
+
+		while (strlen($rawValidatorOptions) > 0) {
+			$parts = explode('=', $rawValidatorOptions, 2);
+			$optionName = trim($parts[0]);
+			$rawValidatorOptions = trim($parts[1]);
+
+			$matches = array();
+			preg_match('/(?:\'(.+)\'|"(.+)")(?:,|$)/', $rawValidatorOptions, $matches);
+			$validatorOptions[$optionName] = str_replace(array('\\\'', '\\"'), array('\'', '"'), (isset($matches[2]) ? $matches[2] : $matches[1]));
+
+			$rawValidatorOptions = ltrim(substr($rawValidatorOptions, strlen($matches[0])),', ');
+			if (strpos($rawValidatorOptions, '\'') === FALSE && strpos($rawValidatorOptions, '"') === FALSE) {
+				$validatorOptions = array_merge($validatorOptions, $this->parseSimpleValidatorOptions($rawValidatorOptions));
+			}
+		}
+
+		return $validatorOptions;
+	}
+
+	/**
+	 *
+	 *
 	 * Returns an object of an appropriate validator for the given class. If no validator is available
 	 * NULL is returned
 	 *
@@ -208,8 +296,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @return string Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		// @TODO: Quick and dirty:
-		if (class_exists($validatorName) && substr($validatorName, -9) === 'Validator') return $validatorName;
+		if (class_exists($validatorName)) return $validatorName;
 
 		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;
@@ -227,9 +314,6 @@ class Tx_Extbase_Validation_ValidatorResolver {
 		switch ($type) {
 			case 'int' :
 				$type = 'Integer';
-				break;
-			case 'string' :
-				$type = 'Text';
 				break;
 			case 'bool' :
 				$type = 'Boolean';

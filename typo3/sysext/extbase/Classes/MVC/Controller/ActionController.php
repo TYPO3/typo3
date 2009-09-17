@@ -124,7 +124,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$this->actionMethodName = $this->resolveActionMethodName();
 
 		$this->initializeActionMethodArguments();
-		$this->initializeControllerArgumentsBaseValidators();
 		$this->initializeActionMethodValidators();
 
 		$this->initializeAction();
@@ -150,14 +149,16 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function initializeActionMethodArguments() {
 		$methodParameters = $this->reflectionService->getMethodParameters(get_class($this), $this->actionMethodName);
+
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
-			$dataType = 'Text';
+			$dataType = NULL;
 			if (isset($parameterInfo['type'])) {
 				$dataType = $parameterInfo['type'];
 			} elseif ($parameterInfo['array']) {
 				$dataType = 'array';
 			}
-			// TODO Exception here if type has not been determined!
+			if ($dataType === NULL) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('The argument type for parameter "' . $parameterName . '" could not be detected.', 1253175643);
+
 			$defaultValue = (isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL);
 
 			$this->arguments->addNewArgument($parameterName, $dataType, ($parameterInfo['optional'] === FALSE), $defaultValue);
@@ -165,40 +166,36 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	}
 
 	/**
-	 * Detects and registers any additional validators for arguments which were
-	 * specified in the @validate annotations of an action method
+	 * Adds the needed valiators to the Arguments:
+	 * - Validators checking the data type from the @param annotation
+	 * - Custom validators specified with @validate.
+	 *
+	 * In case @dontvalidate is NOT set for an argument, the following two
+	 * validators are also added:
+	 * - Model-based validators (@validate annotations in the model)
+	 * - Custom model validator classes
 	 *
 	 * @return void
 	 */
 	protected function initializeActionMethodValidators() {
-		$validatorConjunctions = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
-		foreach ($validatorConjunctions as $argumentName => $validatorConjunction) {
-			if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('Found custom validation rule for non existing argument "' . $argumentName . '" in ' . get_class($this) . '->' . $this->actionMethodName . '().', 1239853108);
-			$argument = $this->arguments[$argumentName];
-			$existingValidator = $argument->getValidator();
-			if ($existingValidator !== NULL) {
-				$validatorConjunction->addValidator($existingValidator);
-			}
-			$argument->setValidator($validatorConjunction);
-		}
+		$parameterValidators = $this->validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($this), $this->actionMethodName);
 
-		$this->evaluateDontValidateAnnotations();
-	}
-
-	/**
-	 * Parses @dontvalidate annotations of an action method an disables validation for
-	 * the specified arguments.
-	 *
-	 * @return void
-	 */
-	protected function evaluateDontValidateAnnotations() {
+		$dontValidateAnnotations = array();
 		$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
 		if (isset($methodTagsValues['dontvalidate'])) {
-			foreach ($methodTagsValues['dontvalidate'] as $dontValidateValue) {
-				$argumentName = substr($dontValidateValue, 1);
-				if (!isset($this->arguments[$argumentName])) throw new Tx_Extbase_MVC_Exception_NoSuchArgument('Found @dontvalidate annotation for non existing argument "$' . $argumentName . '" in ' . get_class($this) . '->' . $this->actionMethodName . '().', 1249484908);
-				$this->arguments[$argumentName]->disableValidation();
+			$dontValidateAnnotations = $methodTagsValues['dontvalidate'];
+		}
+
+		foreach ($this->arguments as $argument) {
+			$validator = $parameterValidators[$argument->getName()];
+
+			if (array_search('$' . $argument->getName(), $dontValidateAnnotations) === FALSE) {
+				$baseValidatorConjunction = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
+				if ($baseValidatorConjunction !== NULL) {
+					$validator->addValidator($baseValidatorConjunction);
+				}
 			}
+			$argument->setValidator($validator);
 		}
 	}
 
@@ -348,6 +345,11 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$this->request->setErrors($this->argumentsMappingResults->getErrors());
 		$this->clearCacheOnError();
 
+		$errorFlashMessage = $this->getErrorFlashMessage();
+		if ($errorFlashMessage !== FALSE) {
+			$this->flashMessages->add($errorFlashMessage);
+		}
+		
 		if ($this->request->hasArgument('__referrer')) {
 			$referrer = $this->request->getArgument('__referrer');
 			$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
