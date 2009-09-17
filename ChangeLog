@@ -1,3 +1,8 @@
+
+2009-09-17  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11906: Extension Manager is not translatable (part 4) (thanks to Christopher Stelmaszyk)
+
 2009-09-17  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Set SVN properties

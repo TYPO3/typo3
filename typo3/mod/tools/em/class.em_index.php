@@ -1259,10 +1259,10 @@ EXTENSION KEYS:
 		$content.= '
 			' . t3lib_BEfunc::cshItem('_MOD_tools_em', 'translation', $GLOBALS['BACK_PATH'], '|<br />') . '
 			<form action="index.php" method="post" name="translationform">
-			<fieldset><legend>Translation Settings</legend>
+			<fieldset><legend>' . $GLOBALS['LANG']->getLL('translation_settings') . '</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td>Languages to fetch:</td>
+					<td>' . $GLOBALS['LANG']->getLL('languages_to_fetch') . '</td>
 					<td>
 					  <select name="SET[selectedLanguages][]" multiple="multiple" size="10">
 					  <option></option>'.
@@ -1272,27 +1272,31 @@ EXTENSION KEYS:
 				</tr>
 			</table>
 			<br />
-			<p>For the selected languages the EM tries to download and install translation files if available, whenever an extension is installed. (This replaces the <code>csh_*</code> extensions that were used to install core translations before TYPO3 version 4!)<br />
-			<br />To request an update/install for already loaded extensions, see below.</p>
+			<p>' . $GLOBALS['LANG']->getLL('translation_info') . '<br />
+			<br />' . $GLOBALS['LANG']->getLL('translation_loaded_exts') . '</p>
 			</fieldset>
 			<br />
-			<input type="submit" value="Save selection" />
+			<input type="submit" value="' . $GLOBALS['LANG']->getLL('translation_save_selection') . '" />
 			<br />
 			</fieldset>
 			</form>';
 
-		$this->content.=$this->doc->section('Translation settings',$content,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('translation_settings'), $content, 0, 1);
 
 		if(count($selectedLanguages)>0) {
 			$mirrorURL = $this->getMirrorURL();
-			$content = '<input type="button" value="Check status against repository" onclick="document.location.href=\''.t3lib_div::linkThisScript(array('l10n'=>'check')).'\'" />&nbsp;<input type="button" value="Update from repository" onclick="document.location.href=\''.t3lib_div::linkThisScript(array('l10n'=>'update')).'\'" />';
+			$content = '<input type="button" value="' . $GLOBALS['LANG']->getLL('translation_check_status_button') .
+				'" onclick="document.location.href=\'' . t3lib_div::linkThisScript(array('l10n'=>'check')) .
+				'\'" />&nbsp;<input type="button" value="' . $GLOBALS['LANG']->getLL('translation_update_button') .
+				'" onclick="document.location.href=\'' . t3lib_div::linkThisScript(array('l10n'=>'update')) .
+				'\'" />';
 
 			if(t3lib_div::_GET('l10n') == 'check') {
 				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
 				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
 
-					// Override content output - we now do that ourself:
-				$this->content .= $this->doc->section('Translation status',$content,0,1);
+					// Override content output - we now do that ourselves:
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('translation_status'), $content, 0, 1);
 					// Setting up the buttons and markers for docheader
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -1306,7 +1310,7 @@ EXTENSION KEYS:
 				<br />
 				<br />
 				<p id="progress-message">
-					Checking translation status, please wait ...
+					' . $GLOBALS['LANG']->getLL('translation_check_status') . '
 				</p>
 				<br />
 				<div style="width:100%; height:20px; border: 1px solid black;">
@@ -1314,9 +1318,9 @@ EXTENSION KEYS:
 					<div id="transparent-bar" style="float: left; width: 100%; height: 20px; background-color:'.$this->doc->bgColor2.';">&nbsp;</div>
 				</div>
 				<br />
-				<br /><p>This table shows the status of the loaded extension\'s translations.</p><br />
+				<br /><p>' . $GLOBALS['LANG']->getLL('translation_table_check') . '</p><br />
 				<table border="0" cellpadding="2" cellspacing="2">
-					<tr class="bgColor2"><td>Extension key</td>
+					<tr class="bgColor2"><td>' . $GLOBALS['LANG']->getLL('translation_extension_key') . '</td>
 				';
 
 				foreach($selectedLanguages as $lang) {
@@ -1332,7 +1336,8 @@ EXTENSION KEYS:
 					<script>
 						document.getElementById("progress-bar").style.width = "'.$percentDone.'%";
 						document.getElementById("transparent-bar").style.width = "'.(100-$percentDone).'%";
-						document.getElementById("progress-message").firstChild.data="Checking translation status for extension \"'.$extKey.'\" ...";
+						document.getElementById("progress-message").firstChild.data="' .
+							sprintf($GLOBALS['LANG']->getLL('translation_checking_extension'), $extKey) . '";
 					</script>
 					');
 
@@ -1341,24 +1346,31 @@ EXTENSION KEYS:
 
 					echo ('<tr class="bgColor4"><td>'.$extKey.'</td>');
 					foreach($selectedLanguages as $lang) {
-						// remote unknown -> keine l10n
+						// remote unknown -> no l10n available
 						if(!isset($translationStatusArr[$lang])) {
-							echo ('<td title="No translation available">N/A</td>');
+							echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_no_translation') . '">' .
+								$GLOBALS['LANG']->getLL('translation_n_a') . '</td>');
 							continue;
 						}
 							// determine local md5 from zip
 						if(is_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip')) {
 							$localmd5 = md5_file(PATH_site.'typo3temp/'.$extKey.'-l10n-'.$lang.'.zip');
 						} else {
-							echo ('<td title="Not installed / Unknown" style="background-color:#ff0">???</td>');
+							echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_not_installed') .
+								'" style="background-color:#ff0">' . $GLOBALS['LANG']->getLL('translation_status_unknown') .
+								'</td>');
 							continue;
 						}
 							// local!=remote -> needs update
 						if($localmd5 != $translationStatusArr[$lang]['md5']) {
-							echo ('<td title="Needs update" style="background-color:#ff0">UPD</td>');
+							echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_needs_update') .
+								'" style="background-color:#ff0">' . $GLOBALS['LANG']->getLL('translation_status_update') .
+								'</td>');
 							continue;
 						}
-						echo ('<td title="Is up to date" style="background-color:#69a550">OK</td>');
+						echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_is_ok') .
+							'" style="background-color:#69a550">' . $GLOBALS['LANG']->getLL('translation_status_ok') .
+							'</td>');
 					}
 					echo ('</tr>');
 
@@ -1366,7 +1378,8 @@ EXTENSION KEYS:
 				}
 				echo '</table>
 					<script>
-						document.getElementById("progress-message").firstChild.data="Check done.";
+						document.getElementById("progress-message").firstChild.data="' .
+							$GLOBALS['LANG']->getLL('translation_check_done') . '";
 					</script>
 				';
 				echo $contentParts[1] . $this->doc->endPage();
@@ -1376,8 +1389,8 @@ EXTENSION KEYS:
 				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
 				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
 
-					// Override content output - we now do that ourself:
-				$this->content .= $this->doc->section('Translation status',$content,0,1);
+					// Override content output - we now do that ourselves:
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('translation_status'), $content, 0, 1);
 					// Setting up the buttons and markers for docheader
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
@@ -1391,7 +1404,7 @@ EXTENSION KEYS:
 				<br />
 				<br />
 				<p id="progress-message">
-					Updating translations, please wait ...
+					' . $GLOBALS['LANG']->getLL('translation_update_status') . '
 				</p>
 				<br />
 				<div style="width:100%; height:20px; border: 1px solid black;">
@@ -1399,10 +1412,10 @@ EXTENSION KEYS:
 					<div id="transparent-bar" style="float: left; width: 100%; height: 20px; background-color:'.$this->doc->bgColor2.';">&nbsp;</div>
 				</div>
 				<br />
-				<br /><p>This table shows the update results of the loaded extension\'s translations.<br />
-				<em>If you want to force a full check/update, delete the l10n zip-files from the typo3temp folder.</em></p><br />
+				<br /><p>' . $GLOBALS['LANG']->getLL('translation_table_update') . '<br />
+				<em>' . $GLOBALS['LANG']->getLL('translation_full_check_update') . '</em></p><br />
 				<table border="0" cellpadding="2" cellspacing="2">
-					<tr class="bgColor2"><td>Extension key</td>
+					<tr class="bgColor2"><td>' . $GLOBALS['LANG']->getLL('translation_extension_key') . '</td>
 				');
 
 				foreach($selectedLanguages as $lang) {
@@ -1417,7 +1430,8 @@ EXTENSION KEYS:
 					<script>
 						document.getElementById("progress-bar").style.width = "'.$percentDone.'%";
 						document.getElementById("transparent-bar").style.width = "'.(100-$percentDone).'%";
-						document.getElementById("progress-message").firstChild.data="Updating translation for extension \"'.$extKey.'\" ...";
+						document.getElementById("progress-message").firstChild.data="' .
+							sprintf($GLOBALS['LANG']->getLL('translation_updating_extension'), $extKey) . '";
 					</script>
 					');
 
@@ -1429,7 +1443,8 @@ EXTENSION KEYS:
 						foreach($selectedLanguages as $lang) {
 								// remote unknown -> no l10n available
 							if(!isset($translationStatusArr[$lang])) {
-								echo ('<td title="No translation available">N/A</td>');
+								echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_no_translation') .
+									'">' . $GLOBALS['LANG']->getLL('translation_n_a') . '</td>');
 								continue;
 							}
 								// determine local md5 from zip
@@ -1442,30 +1457,38 @@ EXTENSION KEYS:
 							if($localmd5 != $translationStatusArr[$lang]['md5']) {
 								$ret = $this->updateTranslation($extKey, $lang, $mirrorURL);
 								if($ret === true) {
-									echo ('<td title="Has been updated" style="background-color:#69a550">UPD</td>');
+									echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_has_been_updated') .
+										'" style="background-color:#69a550">' . $GLOBALS['LANG']->getLL('translation_status_update') .
+										'</td>');
 								} else {
-									echo ('<td title="'.htmlspecialchars($ret).'" style="background-color:#cb3352">ERR</td>');
+									echo ('<td title="' . htmlspecialchars($ret) .
+										'" style="background-color:#cb3352">' . $GLOBALS['LANG']->getLL('translation_status_error') .
+										'</td>');
 								}
 								continue;
 							}
-							echo ('<td title="Is up to date" style="background-color:#69a550">OK</td>');
+							echo ('<td title="' . $GLOBALS['LANG']->getLL('translation_is_ok') .
+								'" style="background-color:#69a550">' . $GLOBALS['LANG']->getLL('translation_status_ok') . '</td>');
 						}
 					} else {
-						echo ('<td colspan="'.count($selectedLanguages).'" title="Possible reasons: network problems, allow_url_fopen off, curl not enabled in Install tool.">Could not fetch translation status</td>');
+						echo ('<td colspan="' . count($selectedLanguages) .
+							'" title="' . $GLOBALS['LANG']->getLL('translation_problems') .
+							'">' . $GLOBALS['LANG']->getLL('translation_status_could_not_fetch') . '</td>');
 					}
 					echo ('</tr>');
 					$counter++;
 				}
 				echo '</table>
 					<script>
-						document.getElementById("progress-message").firstChild.data="Update done.";
+						document.getElementById("progress-message").firstChild.data="' .
+							$GLOBALS['LANG']->getLL('translation_update_done') . '";
 					</script>
 				';
 				echo $contentParts[1] . $this->doc->endPage();
 				exit;
 			}
 
-			$this->content.=$this->doc->section('Translation status',$content,0,1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('translation_status'), $content, 0, 1);
 		}
 	}
 
@@ -1487,7 +1510,7 @@ EXTENSION KEYS:
 			if($this->unzip($file, PATH_typo3conf.$path)) {
 				return true;
 			} else {
-				return 'Unpacking the language pack failed!';
+				return $GLOBALS['LANG']->getLL('translation_unpacking_failed');
 			}
 		} else {
 			return $l10n;
@@ -1514,7 +1537,7 @@ EXTENSION KEYS:
 				if($this->unzip($file, PATH_typo3conf.$path)) {
 					return true;
 				} else {
-					return 'Unpacking the language pack failed!';
+					return $GLOBALS['LANG']->getLL('translation_unpacking_failed');
 				}
 			} else {
 				return $l10n;
