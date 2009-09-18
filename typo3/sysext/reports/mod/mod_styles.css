@@ -1,0 +1,83 @@
+
+body#ext-reports-mod-index-php {
+	margin: 0px;
+}
+
+#typo3-inner-docbody p.help {
+	font-size: 12px;
+}
+
+
+/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+/* overview */
+
+.report-list dt {
+	font-weight: bold;
+	font-size: 11px;
+	background-image: url("moduleicon.gif");
+	background-repeat: no-repeat;
+	padding: 0px 0px 2px 20px;
+}
+
+.report-list dd {
+	margin: 2px 0px 15px 20px;
+}
+
+/* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
+/* status report */
+
+table.system-status-report {
+	width: 100%;
+	margin: 10px 0px;
+	border-collapse: collapse;
+	border-top: 1px solid #595d66;
+}
+
+
+table.system-status-report th,
+table.system-status-report td {
+	border-width: 1px 0px;
+}
+
+table.system-status-report th,
+table.system-status-report td {
+	text-align: left;
+	padding: 6px;
+	font-size: 12px;
+}
+
+table.system-status-report th a,
+table.system-status-report td a {
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+table.system-status-report th a:hover,
+table.system-status-report td a:hover {
+	text-decoration: underline;
+}
+
+table.system-status-report th {
+	padding-left: 30px;
+	font-weight: bold;
+}
+
+table.system-status-report td.merge-down,
+table.system-status-report th.merge-down {
+	border-bottom-width: 0px !important;
+}
+
+table.system-status-report td.merge-up {
+	border-top-width: 0px !important;
+	background-image: none;
+	padding-left: 30px;
+}
+
+table.system-status-report tr td.typo3-message {
+	background-image: none;
+}
+
+
+
+

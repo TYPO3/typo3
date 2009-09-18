@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module 'tools_txreportsM1'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="status_report_title">Status Report</label>
+			<label index="status_report_description">Get a status report about your site's operation and any detected problems.</label>
+			<label index="status_report_explanation">Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</label>
+			<label index="status_ok">OK</label>
+			<label index="status_insecure">Insecure</label>
+			<label index="status_disabled">Disabled</label>
+			<label index="status_enabled">Enabled</label>
+		</languageKey>
+	</data>
+</T3locallang>

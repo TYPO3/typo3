@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module &quot;tools_txreportsM1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="mlang_tabs_tab">Reports</label>
+			<label index="mlang_labels_tabdescr">Collection of several system reports.</label>
+			<label index="mlang_labels_tablabel">System Reports</label>
+			<label index="title">Reports</label>
+			<label index="reports_overview">Overview</label>
+			<label index="choose_report">Report:</label>
+		</languageKey>
+	</data>
+</T3locallang>

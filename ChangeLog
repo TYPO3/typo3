@@ -1,3 +1,7 @@
+2009-09-18  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #11843: Add a reports module
+
 2009-09-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to bug #11985: Move ExtJs CSS-assignment to renderJsKibraries
