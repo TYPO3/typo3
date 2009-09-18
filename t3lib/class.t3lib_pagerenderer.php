@@ -104,7 +104,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	const EXTJS_ADAPTER_JQUERY = 'jquery';
 	const EXTJS_ADAPTER_PROTOTYPE = 'prototype';
 	const EXTJS_ADAPTER_YUI = 'yui';
-
+	
+	protected $extJStheme = TRUE;
+	protected $extJScss = TRUE;
+	
 	protected $enableExtJSQuickTips = false;
 
 	protected $inlineLanguageLabels = array ();
@@ -769,24 +772,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					break;
 			}
 		}
-		if (!$this->addExtJS) {
-			$this->addExtJS = TRUE;
-			if ($theme) {
-				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
-					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'screen', '', FALSE, TRUE);
-				} else {
-					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/xtheme-blue.css', 'stylesheet', 'screen', '', FALSE, TRUE);
-				}
-			}
-			if ($css) {
-				if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
-					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'screen', '', FALSE, TRUE);
-				} else {
-					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css', 'stylesheet', 'screen', '', FALSE, TRUE);
-				}
-			}
-		
-		}
+		$this->addExtJS = TRUE;
+		$this->extJStheme = $theme;
+		$this->extJScss = $css;
+
 	}
 
 	/**
@@ -1188,6 +1177,22 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				($this->enableExtJSQuickTips ? 'Ext.QuickTips.init();' . chr(10) : '') . $code .
 				' });' . $this->inlineJavascriptWrap[1];
 			unset ($this->extOnReadyCode);
+			
+			if ($this->extJStheme) {
+				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
+					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'screen', '', FALSE, TRUE);
+				} else {
+					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/xtheme-blue.css', 'stylesheet', 'screen', '', FALSE, TRUE);
+				}
+			}
+			if ($this->extJScss) {
+				if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
+					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'screen', '', FALSE, TRUE);
+				} else {
+					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css', 'stylesheet', 'screen', '', FALSE, TRUE);
+				}
+			}
+
 		}
 
 		return $out;
