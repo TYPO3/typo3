@@ -258,6 +258,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	public function setTemplateFile($file) {
 		$this->templateFile = $file;
 	}
+	
+	/**
+	 * Sets back path
+	 * 
+	 * @param string $backPath
+	 * @return void
+	 */
+	public function setBackPath($backPath) {
+		$this->backPath = $backPath;
+	}
 
 	/**
 	 * Sets Content for Body

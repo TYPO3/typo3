@@ -559,6 +559,7 @@
 		if (!isset($this->pageRenderer)) {
 			$this->pageRenderer = t3lib_div::makeInstance('t3lib_PageRenderer');
 			$this->pageRenderer->setTemplateFile(PATH_tslib . 'templates/tslib_page_frontend.html');
+			$this->pageRenderer->setBackPath(TYPO3_mainDir);
 		}
 		return $this->pageRenderer;
 	}
