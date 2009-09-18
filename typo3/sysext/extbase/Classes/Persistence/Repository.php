@@ -107,7 +107,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 */
 	public function remove($object) {
 		if (!($object instanceof $this->objectType)) {
-			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
+			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The object given to remove() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
 		}
 
 		if ($this->addedObjects->contains($object)) {
