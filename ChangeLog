@@ -1,3 +1,7 @@
+2009-09-18  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase version to 0.9.7 so it works with the caching framework adjustments.
+
 2009-09-18  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11990: Optimize output of TCEforms suggest results (thanks to Steffen Gebert)
