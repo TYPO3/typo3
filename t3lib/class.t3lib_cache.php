@@ -34,7 +34,7 @@ class t3lib_cache {
 	/**
 	 * @var	boolean
 	 */
-	protected static $isCachingFrameworkInitialized;
+	protected static $isCachingFrameworkInitialized = false;
 
 	/**
 	 * Initializes the caching framework by loading the cache manager and factory
@@ -43,10 +43,12 @@ class t3lib_cache {
 	 * @return	void
 	 */
 	public static function initializeCachingFramework() {
-		$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
-		$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
-		$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
-		self::$isCachingFrameworkInitialized = true;
+		if (!self::isCachingFrameworkInitialized()) {
+			$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
+			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
+			$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
+			self::$isCachingFrameworkInitialized = true;
+		}
 	}
 
 	/**
@@ -113,7 +115,14 @@ class t3lib_cache {
 	 * @return	boolean
 	 */
 	public function isCachingFrameworkInitialized() {
-		return (bool)self::$isCachingFrameworkInitialized;
+		if (!self::$isCachingFrameworkInitialized
+			&& isset($GLOBALS['typo3CacheManager']) && $GLOBALS['typo3CacheManager'] instanceof t3lib_cache_Manager
+			&& isset($GLOBALS['typo3CacheFactory']) && $GLOBALS['typo3CacheFactory'] instanceof t3lib_cache_Factory
+		) {
+			self::$isCachingFrameworkInitialized = true;
+		}
+
+		return self::$isCachingFrameworkInitialized;
 	}
 
 	/**
