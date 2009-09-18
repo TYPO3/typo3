@@ -312,7 +312,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function getDataMap($className) {
 		if (!is_string($className) || strlen($className) === 0) throw new Tx_Extbase_Persistence_Exception('No class name was given to retrieve the Data Map for.', 1251315965);
-		if (empty($this->dataMaps[$className])) {
+		if (!isset($this->dataMaps[$className])) {
 			// FIXME This is too expensive for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
 			$columnMapping = array();
 			$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
