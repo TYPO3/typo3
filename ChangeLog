@@ -12,6 +12,7 @@
 
 	* Follow-up to bug #11831: Removed reference operator from an object
 	* Follow-up to bug #11505: Extended the checks whether the caching framework was initialized before
+	* Raised DBAL version from 0.9.20 to 0.9.21
 
 2009-09-18  Ingo Renner  <ingo@typo3.org>
 
