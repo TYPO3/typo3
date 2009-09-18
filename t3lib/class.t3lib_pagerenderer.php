@@ -535,18 +535,18 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param string $name
 	 * @param string $file
 	 * @param string $type
-	 * @param boolean $compressed	flag if library is compressed
+	 * @param boolean $compress		flag if library should be compressed
 	 * @param boolean $forceOnTop	flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
 	 * @return void
 	 */
-	public function addJsLibrary($name, $file, $type = 'text/javascript', $compressed = TRUE, $forceOnTop = FALSE, $allWrap = '') {
+	public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '') {
 		if (!in_array(strtolower($name), $this->jsLibs)) {
 			$this->jsLibs[strtolower($name)] = array (
 				'file'        => $file, 
 				'type'        => $type, 
 				'section'     => self::PART_HEADER,
-				'compressed'  => $compressed, 
+				'compress'    => $compress, 
 				'forceOnTop'  => $forceOnTop,
 				'allWrap'     => $allWrap
 			);
@@ -560,18 +560,18 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param string $name
 	 * @param string $file
 	 * @param string $type
-	 * @param boolean $compressed	flag if library is compressed
+	 * @param boolean $compress	flag if library should be compressed
 	 * @param boolean $forceOnTop	flag if added library should be inserted at begin of this block
 	 * @param string $allWrap
 	 * @return void
 	 */
-	public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compressed = TRUE, $forceOnTop = FALSE, $allWrap = '') {
+	public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = FALSE, $forceOnTop = FALSE, $allWrap = '') {
 		if (!in_array(strtolower($name), $this->jsLibs)) {
 			$this->jsLibs[strtolower($name)] = array (
 				'file'        => $file, 
 				'type'        => $type, 
 				'section'     => self::PART_FOOTER,
-				'compressed'  => $compressed, 
+				'compress'    => $compress, 
 				'forceOnTop'  => $forceOnTop,
 				'allWrap'     => $allWrap
 			);
@@ -584,17 +584,17 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * @param string $file
 	 * @param string $type
-	 * @param boolean $compressed
+	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @param string $allWrap
 	 * @return void
 	 */
-	public function addJsFile($file, $type = 'text/javascript', $compressed = FALSE, $forceOnTop = FALSE, $allWrap = '') {
+	public function addJsFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '') {
 		if (!isset($this->jsFiles[$file])) {
 			$this->jsFiles[$file] = array (
 				'type'        => $type, 
 				'section'     => self::PART_HEADER, 
-				'compressed'  => $compressed, 
+				'compress'    => $compress, 
 				'forceOnTop'  => $forceOnTop, 
 				'allWrap'     => $allWrap
 			);
@@ -606,16 +606,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * @param string $file
 	 * @param string $type
-	 * @param boolean $compressed
+	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @return void
 	 */
-	public function addJsFooterFile($file, $type = 'text/javascript', $compressed = FALSE, $forceOnTop = FALSE, $allWrap = '') {
+	public function addJsFooterFile($file, $type = 'text/javascript', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '') {
 		if (!isset($this->jsFiles[$file])) {
 			$this->jsFiles[$file] = array (
 				'type'        => $type, 
 				'section'     => self::PART_FOOTER, 
-				'compressed'  => $compressed, 
+				'compress'    => $compress, 
 				'forceOnTop'  => $forceOnTop, 
 				'allWrap'     => $allWrap
 			);
@@ -629,16 +629,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * @param string $name
 	 * @param string $block
-	 * @param boolean $compressed
+	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @return void
 	 */
-	public function addJsInlineCode($name, $block, $compressed = FALSE, $forceOnTop = FALSE) {
+	public function addJsInlineCode($name, $block, $compress = TRUE, $forceOnTop = FALSE) {
 		if (!isset($this->jsInline[$name])) {
 			$this->jsInline[$name] = array (
 				'code'        => $block . chr(10),
 				'section'     => self::PART_HEADER, 
-				'compressed'  => $compressed,
+				'compress'    => $compress,
 				'forceOnTop'  => $forceOnTop
 			);
 		}
@@ -649,16 +649,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * @param string $name
 	 * @param string $block
-	 * @param boolean $compressed
+	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @return void
 	 */
-	public function addJsFooterInlineCode($name, $block, $compressed = FALSE, $forceOnTop = FALSE) {
+	public function addJsFooterInlineCode($name, $block, $compress = TRUE, $forceOnTop = FALSE) {
 		if (!isset($this->jsInline[$name])) {
 			$this->jsInline[$name] = array (
 				'code'        => $block . chr(10),
 				'section'     => self::PART_FOOTER,
-				'compressed'  => $compressed,
+				'compress'    => $compress,
 				'forceOnTop'  => $forceOnTop
 			);
 		}
@@ -685,13 +685,20 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param string $rel
 	 * @param string $media
 	 * @param string $title
-	 * @param boolean $compressed
+	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @return void
 	 */
-	public function addCssFile($file, $rel = 'stylesheet', $media = 'screen', $title = '', $compressed = FALSE, $forceOnTop = FALSE, $allWrap = '') {
+	public function addCssFile($file, $rel = 'stylesheet', $media = 'screen', $title = '', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '') {
 		if (!isset($this->cssFiles[$file])) {
-			$this->cssFiles[$file] = array ('rel' => $rel, 'media' => $media, 'title' => $title, 'compressed' => $compressed, 'forceOnTop' => $forceOnTop, 'allWrap' => $allWrap);
+			$this->cssFiles[$file] = array (
+				'rel'        => $rel, 
+				'media'      => $media, 
+				'title'      => $title, 
+				'compress'   => $compress, 
+				'forceOnTop' => $forceOnTop, 
+				'allWrap'    => $allWrap
+			);
 		}
 	}
 
@@ -702,13 +709,17 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * @param string $name
 	 * @param string $block
-	 * @param boolean $compressed
+	 * @param boolean $compress
 	 * @param boolean $forceOnTop
 	 * @return void
 	 */
 	public function addCssInlineBlock($name, $block, $compressed = FALSE, $forceOnTop = FALSE) {
 		if (!isset($this->cssInline[$name])) {
-			$this->cssInline[$name] = array ('code' => $block, 'compressed' => $compressed, 'forceOnTop' => $forceOnTop);
+			$this->cssInline[$name] = array (
+				'code'       => $block, 
+				'compress'   => $compress, 
+				'forceOnTop' => $forceOnTop
+			);
 		}
 	}
 
@@ -1254,7 +1265,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			if ($this->compressJavascript) {
 				if (count($this->jsInline)) {
 					foreach ($this->jsInline as $name => $properties) {
-						if (!$properties['compressed']) {
+						if ($properties['compress']) {
 							$error = '';
 							$this->jsInline[$name]['code'] = t3lib_div::minifyJavaScript($properties['code'], $error);
 							if ($error) {

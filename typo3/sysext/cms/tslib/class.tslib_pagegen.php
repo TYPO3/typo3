@@ -538,7 +538,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$pageRenderer->addCssInlineBlock(
 								'import_' . $key, 
 								'@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media']) . ';', 
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compressed'] ? TRUE : FALSE, 
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE, 
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
 								''
 							);
@@ -548,7 +548,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet',
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'screen', 
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '', 
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compressed'] ? TRUE : FALSE, 
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE, 
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap']);
 						
@@ -682,7 +682,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						htmlspecialchars($key), 
 						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 						htmlspecialchars($type), 
-						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['compressed'] ? TRUE : FALSE, 
+						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['compress'] ? TRUE : FALSE, 
 						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap']
 					);
@@ -703,7 +703,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						htmlspecialchars($key), 
 						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 						htmlspecialchars($type), 
-						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['compressed'] ? TRUE : FALSE, 
+						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['compress'] ? TRUE : FALSE, 
 						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap']
 					);
@@ -725,7 +725,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						$pageRenderer->addJsFile(
 							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 							htmlspecialchars($type), 
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['compressed'] ? TRUE : FALSE, 
+							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['compress'] ? TRUE : FALSE, 
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap']
 						);
@@ -746,7 +746,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						$pageRenderer->addJsFooterFile(
 							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
 							htmlspecialchars($type), 
-							$GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['compressed'] ? TRUE : FALSE, 
+							$GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['compress'] ? TRUE : FALSE, 
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap']
 						);
