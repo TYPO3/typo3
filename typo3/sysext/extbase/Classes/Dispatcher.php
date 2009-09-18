@@ -72,6 +72,7 @@ class Tx_Extbase_Dispatcher {
 	 * Constructs this Dispatcher and registers the autoloader
 	 */
 	public function __construct() {
+		t3lib_cache::initializeCachingFramework();
 		$this->initializeClassLoader();
 	}
 
@@ -184,7 +185,9 @@ class Tx_Extbase_Dispatcher {
 		$flashMessages->reset();
 		$controller->injectFlashMessages($flashMessages);
 
-		$cacheManager = t3lib_div::makeInstance('t3lib_cache_Manager');
+		/** @var $cacheManager t3lib_cache_Manager */
+		$cacheManager = $GLOBALS['typo3CacheManager'];
+
 		try {
 			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
 		} catch (t3lib_cache_exception_NoSuchCache $exception) {

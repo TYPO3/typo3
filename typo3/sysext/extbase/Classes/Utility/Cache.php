@@ -40,12 +40,55 @@ class Tx_Extbase_Utility_Cache {
 	 * @return void
 	 */
 	static public function clearPageCache(array $pageIdsToClear) {
-		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-		$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
+		self::flushPageCache($pageIdsToClear);
+		self::flushPageSectionCache($pageIdsToClear);
+	}
 
-		foreach ($pageIdsToClear as $pageIdToClear) {
-			$pageCache->flushByTag('pageId_' . $pageIdToClear);
-			$pageSectionCache->flushByTag('pageId_' . $pageIdToClear);
+	/**
+	 * Flushes cache_pages or cachinframework_cache_pages.
+	 *
+	 * @param	array		$pageIds: (optional) Ids of pages to be deleted
+	 * @return	void
+	 */
+	static protected function flushPageCache(array $pageIds = NULL) {
+		if (TYPO3_UseCachingFramework) {
+			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+
+			if (!is_null($pageIds)) {
+				foreach ($pageIds as $pageId) {
+					$pageCache->flushByTag('pageId_' . $pageId);
+				}
+			} else {
+				$pageCache->flush();
+			}
+		} elseif (!is_null($pageIds)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN (' . implode(',', $pageIds) . ')');
+		} else {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', '');
+		}
+	}
+
+	/**
+	 * Flushes cache_pagesection or cachingframework_cache_pagesection.
+	 *
+	 * @param	array	$pageIds: (optional) Ids of pages to be deleted
+	 * @return	void
+	 */
+	static protected function flushPageSectionCache(array $pageIds = NULL) {
+		if (TYPO3_UseCachingFramework) {
+			$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
+
+			if (!is_null($pageIds)) {
+				foreach ($pageIds as $pageId) {
+					$pageSectionCache->flushByTag('pageId_' . $pageId);
+				}
+			} else {
+				$pageSectionCache->flush();
+			}
+		} elseif (!is_null($pageIds)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', 'page_id IN (' . implode(',',$pageIds) . ')');
+		} else {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection', '');
 		}
 	}
 }
