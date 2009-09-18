@@ -419,7 +419,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$tableName = $operand->getSelectorName();
 			// FIXME Discuss the translation from propertyName to columnName
 			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-				 $className = $source->getNodeTypeName();
+				$className = $source->getNodeTypeName();
 			} else {
 				$className = '';
 			}

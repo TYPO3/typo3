@@ -104,13 +104,19 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @return array
 	 */
 	public function _getDirtyProperties() {
-		// FIXME: We persist more than we'd like to. See _isDirty for the correct check.
 		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
 		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		$dirtyProperties = array();
 		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-			if ($this->$propertyName !== $propertyValue) {
-				$dirtyProperties[$propertyName] = $this->$propertyName;
+			if (is_object($this->$propertyName)) {
+				// In case it is an object, we do a simple comparison (!=) as we want cloned objects to return the same values.
+				if ($this->$propertyName != $propertyValue) {
+					$dirtyProperties[$propertyName] = $this->$propertyName;
+				}
+			} else {
+				if ($this->$propertyName !== $propertyValue) {
+					$dirtyProperties[$propertyName] = $this->$propertyName;
+				}
 			}
 		}
 		return $dirtyProperties;

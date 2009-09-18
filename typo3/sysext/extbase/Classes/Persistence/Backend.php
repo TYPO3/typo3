@@ -360,6 +360,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			}
 		}
 
+		// TODO: We should only register the object if it was really updated.
 		$this->identityMap->registerObject($object, $object->getUid());
 		$object->_memorizeCleanState();
 	}

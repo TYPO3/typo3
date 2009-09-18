@@ -188,6 +188,7 @@ class Tx_Extbase_Dispatcher {
 		try {
 			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
 		} catch (t3lib_cache_exception_NoSuchCache $exception) {
+
 			$GLOBALS['typo3CacheFactory']->create(
 				'cache_extbase_reflection',
 				't3lib_cache_frontend_VariableFrontend',
