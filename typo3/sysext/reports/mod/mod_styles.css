@@ -78,6 +78,10 @@ table.system-status-report tr td.typo3-message {
 	background-image: none;
 }
 
+table.system-status-report tr td.typo3-message ul,
+table.system-status-report tr td.typo3-message ol {
+	margin-top: 0px;
+}
 
 
 

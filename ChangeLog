@@ -11,6 +11,7 @@
 2009-09-18  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #11843: Add a reports module
+	* Follow-up to #11843: Lists in statuses didn't look too good due to top margin
 
 2009-09-18  Steffen Kamper  <info@sk-typo3.de>
 
