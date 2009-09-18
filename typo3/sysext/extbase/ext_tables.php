@@ -16,6 +16,10 @@ if (TYPO3_MODE == 'BE') {
 	}
 	
 	$TBE_MODULES['_dispatcher'][] = t3lib_div::makeInstance('Tx_Extbase_Dispatcher');
+
+
+
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['extbase'] = 'tx_extbase_utility_extbaserequirementscheck';
 }
 
 ?>
