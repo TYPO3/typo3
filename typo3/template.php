@@ -1010,8 +1010,13 @@ $str.=$this->docBodyTagBegin().
 	 * @return	void
 	 */
 	function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
-		$this->pageRenderer->addCssFile($this->backPath . $href, $relation, $title);
+		if (strpos($href, '://') !== FALSE || substr($href, 0, 1) === '/') {
+			$file = $href;
+		} else {
+			$file = $this->backPath . $href;
 		}
+		$this->pageRenderer->addCssFile($file, $relation, $title);
+	}
 
 	/**
 	 * Insert post rendering document style into already rendered content

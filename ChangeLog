@@ -8,6 +8,7 @@
 
 2009-09-18  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11970: RTE in quickedit mode (page module) is broken
 	* Fixed bug #11996: Change compreed to compress with adding JS/CSS
 	* Follow-up to bug #11985: Move ExtJs CSS-assignment to renderJsKibraries
 	* Follow-up to bug #11985: backPath in FE is set too late

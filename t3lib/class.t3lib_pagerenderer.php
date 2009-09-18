@@ -125,14 +125,14 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param string $backPath	relative path to typo3-folder. It varies for BE modules, in FE it will be typo3/
 	 * @return void
 	 */
-	public function __construct($templateFile = '', $backPath = '') {
+	public function __construct($templateFile = '', $backPath = NULL) {
 
 		$this->reset();
 
 		if (strlen($templateFile)) {
 			$this->templateFile = $templateFile;
 		}
-		$this->backPath = $backPath;
+		$this->backPath = isset($backPath) ? $backPath : $GLOBALS['BACK_PATH'];
 		
 		$this->inlineJavascriptWrap = array(
 			'<script type="text/javascript">' . chr(10) . '/*<![CDATA[*/' . chr(10) . '<!-- ' . chr(10),
