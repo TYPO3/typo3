@@ -1,6 +1,8 @@
 2009-09-18  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11990: Optimize output of TCEforms suggest results (thanks to Steffen Gebert)
+	* Fixed bug #11505: TYPO3 4.3 is slower than 4.2 -> re-implement native db caching and make the
+		use of the caching framework configurable. !!! DB update required
 
 2009-09-18  Oliver Hader  <oliver@typo3.org>
 

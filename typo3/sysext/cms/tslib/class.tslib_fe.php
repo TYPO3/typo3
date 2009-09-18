@@ -461,7 +461,9 @@
 			}
 		}
 
-		$this->initCaches();
+		if (TYPO3_UseCachingFramework) {
+			$this->initCaches();
+		}
 	}
 
 	/**
@@ -591,28 +593,30 @@
 	 * @return	void
 	 */
 	protected function initCaches() {
-		$GLOBALS['TT']->push('Initializing the Caching System','');
+		if (TYPO3_UseCachingFramework) {
+			$GLOBALS['TT']->push('Initializing the Caching System','');
 
-		$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
-		$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
-		$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
+			$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
+			$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
+			$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
 
-		try {
-			$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
-				'cache_pages'
-			);
-		} catch(t3lib_cache_exception_NoSuchCache $e) {
-			t3lib_cache::initPageCache();
+			try {
+				$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
+					'cache_pages'
+				);
+			} catch(t3lib_cache_exception_NoSuchCache $e) {
+				t3lib_cache::initPageCache();
 
-			$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
-				'cache_pages'
-			);
+				$this->pageCache = $GLOBALS['typo3CacheManager']->getCache(
+					'cache_pages'
+				);
+			}
+
+			t3lib_cache::initPageSectionCache();
+			t3lib_cache::initContentHashCache();
+
+			$GLOBALS['TT']->pull();
 		}
-
-		t3lib_cache::initPageSectionCache();
-		t3lib_cache::initContentHashCache();
-
-		$GLOBALS['TT']->pull();
 	}
 
 	/**
@@ -1878,9 +1882,8 @@
 					if (is_array($row)) {
 							// Release this lock
 						$this->releasePageGenerationLock($this->pages_lockObj);
-
 						$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
-						$this->content = $row['HTML'];	// Getting the content
+						$this->content = (TYPO3_UseCachingFramework ? $row['content'] : $row['HTML']);	// Getting the content
 						$this->tempContent = $row['temp_content'];	// Flag for temp content
 						$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content has been loaded
 						$this->cacheExpires = $row['expires'];
@@ -1906,11 +1909,31 @@
 	 * @return	array		Cached row, if any. Otherwise void.
 	 */
 	function getFromCache_queryRow() {
-		$GLOBALS['TT']->push('Cache Query', '');
-		$cachedPage = $this->pageCache->get($this->newHash);
-		$GLOBALS['TT']->pull();
+		if (TYPO3_UseCachingFramework) {
+			$GLOBALS['TT']->push('Cache Query', '');
+			$row = $this->pageCache->get($this->newHash);
+			$GLOBALS['TT']->pull();
+		} else {
+			$GLOBALS['TT']->push('Cache Query','');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'S.*',
+				'cache_pages S,pages P',
+				'S.hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages').'
+					AND S.page_id=P.uid
+					AND S.expires > '.intval($GLOBALS['ACCESS_TIME']).'
+					AND P.deleted=0
+					AND P.hidden=0
+					AND P.starttime<='.intval($GLOBALS['ACCESS_TIME']).'
+					AND (P.endtime=0 OR P.endtime>'.intval($GLOBALS['ACCESS_TIME']).')'
+			);
+			$GLOBALS['TT']->pull();
 
-		return $cachedPage;
+			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+				$this->pageCachePostProcess($row,'get');
+			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		}
+		return $row;
 	}
 
 	/**
@@ -2765,33 +2788,55 @@
 	 * @see realPageCacheContent(), tempPageCacheContent()
 	 */
 	function setPageCacheContent($content, $data, $expirationTstamp) {
-		$cacheData = array(
-			'hash'         => $this->newHash,
-			'page_id'      => $this->id,
-			'HTML'         => $content,
-			'temp_content' => $this->tempContent,
-			'cache_data'   => serialize($data),
-			'expires'      => $expirationTstamp,
-			'tstamp'       => $GLOBALS['EXEC_TIME']
-		);
 
-		$this->cacheExpires = $expirationTstamp;
+		if (TYPO3_UseCachingFramework) {
+			$cacheData = array(
+				'identifier'	=> $this->newHash,
+				'page_id'		=> $this->id,
+				'content'			=> $content,
+				'temp_content'	=> $this->tempContent,
+				'cache_data'	=> serialize($data),
+				'expires'		=> $expirationTstamp,
+				'tstamp'		=> $GLOBALS['EXEC_TIME']
+			);
 
-		$this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
+			$this->cacheExpires = $expirationTstamp;
 
-		if ($this->page_cache_reg1) {
-			$reg1 = intval($this->page_cache_reg1);
+			$this->pageCacheTags[] = 'pageId_' . $cacheData['page_id'];
 
-			$cacheData['reg1']     = $reg1;
-			$this->pageCacheTags[] = 'reg1_' . $reg1;
+			if ($this->page_cache_reg1) {
+				$reg1 = intval($this->page_cache_reg1);
+
+				$cacheData['reg1']     = $reg1;
+				$this->pageCacheTags[] = 'reg1_' . $reg1;
+			}
+
+			$this->pageCache->set(
+				$this->newHash,
+				$cacheData,
+				$this->pageCacheTags,
+				$expirationTstamp - $GLOBALS['EXEC_TIME']
+			);
+		} else {
+			$this->clearPageCacheContent();
+			$insertFields = array(
+				'hash' => $this->newHash,
+				'page_id' => $this->id,
+				'HTML' => $content,
+				'temp_content' => $this->tempContent,
+				'cache_data' => serialize($data),
+				'expires' => $expirationTstamp,
+				'tstamp' => $GLOBALS['EXEC_TIME']
+			);
+
+			$this->cacheExpires = $expirationTstamp;
+
+			if ($this->page_cache_reg1)	{
+				$insertFields['reg1'] = intval($this->page_cache_reg1);
+			}
+			$this->pageCachePostProcess($insertFields,'set');
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_pages', $insertFields);
 		}
-
-		$this->pageCache->set(
-			$cacheData['hash'],
-			$cacheData,
-			$this->pageCacheTags,
-			$cacheData['expires'] - $GLOBALS['EXEC_TIME']
-		);
 	}
 
 	/**
@@ -2800,7 +2845,34 @@
 	 * @return	void
 	 */
 	function clearPageCacheContent() {
-		$this->pageCache->remove($this->newHash);
+		if (TYPO3_UseCachingFramework) {
+			$this->pageCache->remove($this->newHash);
+		} else {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages'));
+		}
+	}
+
+ 	/**
+	 * Post processing page cache rows for both get and set.
+	 *
+	 * @param	array		Input "cache_pages" row, passed by reference!
+	 * @param	string		Type of operation, either "get" or "set"
+	 * @return	void
+	 */
+	function pageCachePostProcess(&$row,$type)	{
+
+		if ($this->TYPO3_CONF_VARS['FE']['pageCacheToExternalFiles'])	{
+			$cacheFileName = PATH_site.'typo3temp/cache_pages/'.$row['hash']{0}.$row['hash']{1}.'/'.$row['hash'].'.html';
+			switch((string)$type)	{
+				case 'get':
+					$row['content'] = @is_file($cacheFileName) ? t3lib_div::getUrl($cacheFileName) : '<!-- CACHING ERROR, sorry -->';
+				break;
+				case 'set':
+					t3lib_div::writeFileToTypo3tempDir($cacheFileName,$row['content']);
+					$row['content'] = '';
+				break;
+			}
+		}
 	}
 
 	/**
@@ -2810,10 +2882,13 @@
 	 * @return	void
 	 */
 	function clearPageCacheContent_pidList($pidList) {
-		$pageIds = t3lib_div::trimExplode(',', $pidList);
-
-		foreach ($pageIds as $pageId) {
-			$this->pageCache->flushByTag('pageId_' . (int) $pageId);
+		if (!TYPO3_UseCachingFramework) {
+			$pageIds = t3lib_div::trimExplode(',', $pidList);
+			foreach ($pageIds as $pageId) {
+				$this->pageCache->flushByTag('pageId_' . (int) $pageId);
+			}
+		} else {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($pidList).')');
 		}
 	}
 

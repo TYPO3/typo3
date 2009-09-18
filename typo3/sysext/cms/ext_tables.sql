@@ -8,13 +8,17 @@
 #
 CREATE TABLE cache_pages (
   id int(11) unsigned NOT NULL auto_increment,
-  identifier varchar(250) DEFAULT '' NOT NULL,
-  crdate int(11) unsigned DEFAULT '0' NOT NULL,
-  content mediumtext,
-  tags mediumtext,
-  lifetime int(11) unsigned DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id),
-  KEY cache_id (identifier)
+  hash varchar(32) DEFAULT '' NOT NULL,
+  page_id int(11) unsigned DEFAULT '0' NOT NULL,
+  reg1 int(11) unsigned DEFAULT '0' NOT NULL,
+  HTML mediumtext,
+  temp_content int(1) DEFAULT '0' NOT NULL,
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  expires int(10) unsigned DEFAULT '0' NOT NULL,
+  cache_data mediumtext,
+  KEY page_id (page_id),
+  KEY sel (hash,page_id),
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
 
@@ -22,14 +26,53 @@ CREATE TABLE cache_pages (
 # Table structure for table 'cache_pagesection'
 #
 CREATE TABLE cache_pagesection (
+  page_id int(11) unsigned DEFAULT '0' NOT NULL,
+  mpvar_hash int(11) unsigned DEFAULT '0' NOT NULL,
+  content text,
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  PRIMARY KEY (page_id,mpvar_hash)
+) ENGINE=InnoDB;
+
+
+
+
+#
+# Table structure for table 'cachingframework_cache_pages'
+#
+CREATE TABLE cachingframework_cache_pages (
+  id int(11) unsigned NOT NULL auto_increment,
+  identifier varchar(250) DEFAULT '' NOT NULL,
+  crdate int(11) unsigned DEFAULT '0' NOT NULL,
+  page_id int(11) unsigned DEFAULT '0' NOT NULL,
+  reg1 int(11) unsigned DEFAULT '0' NOT NULL,
+  content mediumtext,
+  tags mediumtext,
+  lifetime int(11) unsigned DEFAULT '0' NOT NULL,
+  temp_content int(1) DEFAULT '0' NOT NULL,
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  expires int(10) unsigned DEFAULT '0' NOT NULL,
+  cache_data mediumblob,
+  KEY page_id (page_id),
+  KEY sel (identifier,page_id),
+  PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
+
+#
+# Table structure for table 'cachingframework_cache_pagesection'
+#
+CREATE TABLE cachingframework_cache_pagesection (
   id int(11) unsigned NOT NULL auto_increment,
   identifier varchar(250) DEFAULT '' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   content mediumtext,
   tags mediumtext,
   lifetime int(11) unsigned DEFAULT '0' NOT NULL,
+  page_id int(11) unsigned DEFAULT '0' NOT NULL,
+  mpvar_hash int(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (id),
-  KEY cache_id (identifier)
+  KEY cache_id (identifier),
+  KEY sel (page_id,mpvar_hash)
 ) ENGINE=InnoDB;
 
 

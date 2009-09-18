@@ -269,10 +269,12 @@ class tslib_feTCE	{
 		$cacheCmd = intval($cacheCmd);
 
 		if ($cacheCmd)	{
-
-			$GLOBALS['typo3CacheManager']->getCache('cache_pages')->flushByTag(
-				'pageId_' . $cacheCmd
-			);
+			if (TYPO3_UseCachingFramework) {
+				$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+				$pageCache->flushByTag('pageId_' . $cacheCmd);
+			} else {
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id = ' . $cacheCmd);
+			}
 
 			if ($cacheCmd == intval($GLOBALS['TSFE']->id)) {
 					// Setting no_cache true if the cleared-cache page is the current page!

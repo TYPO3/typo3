@@ -123,19 +123,19 @@ $TYPO3_CONF_VARS = Array(
 				'cache_hash' => array(
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
-						'cacheTable' => 'cache_hash'
+						'cacheTable' => 'cachingframework_cache_hash'
 					)
 				),
 				'cache_pages' => array(
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
-						'cacheTable' => 'cache_pages'
+						'cacheTable' => 'cachingframework_cache_pages'
 					)
 				),
 				'cache_pagesection' => array(
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
-						'cacheTable' => 'cache_pagesection'
+						'cacheTable' => 'cachingframework_cache_pagesection'
 					)
 				)
 				/*
@@ -151,7 +151,8 @@ $TYPO3_CONF_VARS = Array(
 				You need to have memcached installed as a daemon and also as a PHP extension!
 				*/
 			)
-		)
+		),
+		'useCachingFramework' => 0,				// Boolean: Enable this if you want to use the caching framework by default for the core caches cache_pages, cache_pagesection and cache_hash.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -522,6 +523,8 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 }
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->pull();
 
+	// Define disposal of caching framewor for core caches:
+define('TYPO3_UseCachingFramework', (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework']);
 	// Define "TYPO3_DLOG" constant
 define('TYPO3_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']);
 

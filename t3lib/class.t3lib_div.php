@@ -2518,11 +2518,12 @@ final class t3lib_div {
 			$array = $firstLevelCache[$identifier];
 		} else {
 				// look up in second level cache
-			$array = $GLOBALS['typo3CacheManager']->getCache('cache_hash')->get($identifier);
+			$cacheContent = t3lib_pageSelect::getHash($identifier, 0);
+			$array = unserialize($cacheContent);
+
 			if ($array === false) {
 				$array = self::xml2arrayProcess($string, $NSprefix, $reportDocTag);
-					// store content in second level cache
-				$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set($identifier, $array, array('ident_xml2array'), 0);
+				t3lib_pageSelect::storeHash($identifier, serialize($array), 'ident_xml2array');
 			}
 				// store content in first level cache
 			$firstLevelCache[$identifier] = $array;

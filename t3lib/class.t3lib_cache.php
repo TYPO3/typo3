@@ -31,6 +31,23 @@
  * @subpackage t3lib
  */
 class t3lib_cache {
+	/**
+	 * @var	boolean
+	 */
+	protected static $isCachingFrameworkInitialized;
+
+	/**
+	 * Initializes the caching framework by loading the cache manager and factory
+	 * into the global context.
+	 *
+	 * @return	void
+	 */
+	public static function initializeCachingFramework() {
+		$GLOBALS['typo3CacheManager'] = t3lib_div::makeInstance('t3lib_cache_Manager');
+		$GLOBALS['typo3CacheFactory'] = t3lib_div::makeInstance('t3lib_cache_Factory');
+		$GLOBALS['typo3CacheFactory']->setCacheManager($GLOBALS['typo3CacheManager']);
+		self::$isCachingFrameworkInitialized = true;
+	}
 
 	/**
 	 * initializes the cache_pages cache
@@ -86,6 +103,35 @@ class t3lib_cache {
 			);
 		} catch(t3lib_cache_exception_DuplicateIdentifier $e) {
 				// do nothing, a cache_hash cache already exists
+		}
+	}
+
+	/**
+	 * Determines whether the caching framework is initialized.
+	 * The caching framework could be disabled for the core but used by an extension.
+	 *
+	 * @return	boolean
+	 */
+	public function isCachingFrameworkInitialized() {
+		return (bool)self::$isCachingFrameworkInitialized;
+	}
+
+	/**
+	 * Enables the caching framework for the core caches like cache_pages, cache_pagesection and cache_hash.
+	 * This method can be called by extensions in their ext_localconf.php. Calling it later would not work,
+	 * since rendering is already started using the defined caches.
+	 *
+	 * @return	void
+	 */
+	public function enableCachingFramework() {
+		if (!defined('TYPO3_UseCachingFramework')) {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = 1;
+		} elseif (!TYPO3_UseCachingFramework) {
+			throw new RuntimeException(
+				'The caching framework was already defined to be disabled and cannot be changed. ' .
+				'Please put your call to t3lib_cache::enableCachingFramework() into ext_localconf.php.',
+				1253273131
+			);
 		}
 	}
 }

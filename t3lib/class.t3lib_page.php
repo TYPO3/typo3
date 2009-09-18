@@ -971,16 +971,28 @@ class t3lib_pageSelect {
 	 * @return	string		The "content" field of the "cache_hash" cache entry.
 	 * @see tslib_TStemplate::start(), storeHash()
 	 */
-	public static function getHash($hash)	{
+	public static function getHash($hash, $expTime = 0)	{
 		$hashContent = null;
 
-		$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-		$cacheEntry = $contentHashCache->get($hash);
+		if (TYPO3_UseCachingFramework) {
+			$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
+			$cacheEntry = $contentHashCache->get($hash);
 
-		if ($cacheEntry) {
-			$hashContent = $cacheEntry;
+			if ($cacheEntry) {
+				$hashContent = $cacheEntry;
+			}
+		} else {
+			$expTime = intval($expTime);
+			if ($expTime) {
+				$whereAdd = ' AND tstamp > '.($GLOBALS['ACCESS_TIME']-$expTime);
+			}
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($row)	{
+				$hashContent = $row['content'];
+			}
 		}
-
 		return $hashContent;
 	}
 
@@ -997,12 +1009,23 @@ class t3lib_pageSelect {
 	 * @see tslib_TStemplate::start(), getHash()
 	 */
 	public static function storeHash($hash, $data, $ident, $lifetime = 0) {
-		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
-			$hash,
-			$data,
-			array('ident_' . $ident),
-			$lifetime
-		);
+		if (TYPO3_UseCachingFramework) {
+			$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
+				$hash,
+				$data,
+				array('ident_' . $ident),
+				$lifetime
+			);
+		} else {
+			$insertFields = array(
+				'hash' => $hash,
+				'content' => $data,
+				'ident' => $ident,
+				'tstamp' => $GLOBALS['EXEC_TIME']
+			);
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash'));
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_hash', $insertFields);
+		}
 	}
 
 	/**

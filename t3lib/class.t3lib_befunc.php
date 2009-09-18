@@ -1241,12 +1241,23 @@ final class t3lib_BEfunc {
 	 * @return	void
 	 */
 	public static function storeHash($hash, $data, $ident) {
-		$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
-			$hash,
-			$data,
-			array('ident_' . $ident),
-			0 // unlimited lifetime
-		);
+		if (TYPO3_UseCachingFramework) {
+			$GLOBALS['typo3CacheManager']->getCache('cache_hash')->set(
+				$hash,
+				$data,
+				array('ident_' . $ident),
+				0 // unlimited lifetime
+			);
+		} else {
+			$insertFields = array(
+				'hash' => $hash,
+				'content' => $data,
+				'ident' => $ident,
+				'tstamp' => $GLOBALS['EXEC_TIME']
+			);
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash'));
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_hash', $insertFields);
+		}
 	}
 
 	/**
@@ -1258,16 +1269,26 @@ final class t3lib_BEfunc {
 	 * @param	string		The hash-string which was used to store the data value
 	 * @return	string
 	 */
-	public static function getHash($hash) {
+	public static function getHash($hash, $expTime = 0) {
 		$hashContent = null;
+		if (TYPO3_UseCachingFramework) {
+			$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
+			$cacheEntry = $contentHashCache->get($hash);
 
-		$contentHashCache = $GLOBALS['typo3CacheManager']->getCache('cache_hash');
-		$cacheEntry = $contentHashCache->get($hash);
+			if ($cacheEntry) {
+				$hashContent = $cacheEntry;
+			}
+		} else {
+			$expTime = intval($expTime);
+			if ($expTime) {
+				$whereAdd = ' AND tstamp > '.(time()-$expTime);
+			}
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('content', 'cache_hash', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($hash, 'cache_hash').$whereAdd);
+			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-		if ($cacheEntry) {
-			$hashContent = $cacheEntry;
+			$hashContent =  (is_array($row) ? $row['content'] : null);
 		}
-
 		return $hashContent;
 	}
 

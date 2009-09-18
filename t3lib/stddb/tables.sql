@@ -124,6 +124,20 @@ CREATE TABLE cache_extensions (
 #
 CREATE TABLE cache_hash (
   id int(11) unsigned NOT NULL auto_increment,
+  hash varchar(32) DEFAULT '' NOT NULL,
+  content mediumtext,
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  ident varchar(32) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+  KEY hash (hash)
+) ENGINE=InnoDB;
+
+
+#
+# Table structure for table 'cachingframework_cache_hash'
+#
+CREATE TABLE cachingframework_cache_hash (
+  id int(11) unsigned NOT NULL auto_increment,
   identifier varchar(250) DEFAULT '' NOT NULL,
   crdate int(11) unsigned DEFAULT '0' NOT NULL,
   content mediumtext,

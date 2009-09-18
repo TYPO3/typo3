@@ -373,10 +373,15 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	integer		The number of pages for this page in the table "cache_pages"
 	 */
 	public function extGetNumberOfCachedPages($pageId) {
-		$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-		$pageCacheEntries = $pageCache->getByTag('pageId_' . (int) $pageId);
-
-		return count($pageCacheEntries);
+		if (TYPO3_UseCachingFramework) {
+			$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+			$pageCacheEntries = $pageCache->getByTag('pageId_' . (int) $pageId);
+			$count = count($pageCacheEntries);
+		} else {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', 'cache_pages', 'page_id='.intval($pageId));
+			list($count) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
+		}
+		return $count;
 	}
 
 
