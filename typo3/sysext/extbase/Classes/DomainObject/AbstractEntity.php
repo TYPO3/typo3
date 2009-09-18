@@ -45,7 +45,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @return void
 	 */
 	public function _memorizeCleanState($propertyName = NULL) {
-		// TODO Remove dependency to $dataMapper
 		if ($propertyName !== NULL) {
 			$this->_memorizePropertyCleanState($propertyName);
 		} else {
@@ -74,6 +73,16 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 		}
 		if (is_object($propertyValue)) {
 			$this->_cleanProperties[$propertyName] = clone($propertyValue);
+
+			// We need to make sure the clone and the original object
+			// are identical when compared with == (see _isDirty()).
+			// After the cloning, the Domain Object will have the property
+			// "isClone" set to TRUE, so we manually have to set it to FALSE
+			// again. Possible fix: Somehow get rid of the "isClone" property,
+			// which is currently needed in Fluid.
+			if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+				$this->_cleanProperties[$propertyName]->_setClone(FALSE);
+			}
 		} else {
 			$this->_cleanProperties[$propertyName] = $propertyValue;
 		}
@@ -95,6 +104,7 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @return array
 	 */
 	public function _getDirtyProperties() {
+		// FIXME: We persist more than we'd like to. See _isDirty for the correct check.
 		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
 		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		$dirtyProperties = array();

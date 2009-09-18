@@ -174,6 +174,18 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	}
 
 	/**
+	 * Setter whether this Domain Object is a clone of another one.
+	 * NEVER SET THIS PROPERTY DIRECTLY. We currently need it to make the
+	 * _isDirty check inside AbstractEntity work, but it is just a work-
+	 * around right now.
+	 *
+	 * @param boolean $clone
+	 */
+	public function _setClone($clone) {
+		$this->isClone = (boolean)$clone;
+	}
+
+	/**
 	 * Clone method. Sets the _isClone property.
 	 *
 	 * @return void
