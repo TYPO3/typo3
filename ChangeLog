@@ -1,3 +1,7 @@
+2009-09-18  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11990: Optimize output of TCEforms suggest results (thanks to Steffen Gebert)
+
 2009-09-18  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bug #11831: Removed reference operator from an object

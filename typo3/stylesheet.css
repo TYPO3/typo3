@@ -1224,6 +1224,14 @@ div.typo3-TCEforms-suggest-choices span.suggest-path {
 	margin-top:0.3em;
 }
 
+div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
+	border-bottom: none;
+}
+
+div.typo3-TCEforms-suggest-choises a {
+	cursor: pointer;
+}
+
 
 /* - - - - - - - - - - - - - - - - - - - - -
 

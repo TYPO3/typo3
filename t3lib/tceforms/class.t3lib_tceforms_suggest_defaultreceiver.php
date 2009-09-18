@@ -188,10 +188,14 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 				$iconPath = $this->getIcon($row);
 				$uid = ($row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid']);
 
-				$croppedPath = $path = $this->getRecordPath($row, $uid);
-				if (strlen($croppedPath) > 30) {
-					$croppedPath = $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) .
-						'...' . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20);
+				$path = $this->getRecordPath($row, $uid);
+				if (strlen($path) > 30) {
+					$croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' .
+						htmlspecialchars($GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) .
+							'...' . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20)
+						) . '</abbr>';
+				} else {
+					$croppedPath = htmlspecialchars($path);
 				}
 
 				$label = $this->getLabel($row);
