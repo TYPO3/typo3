@@ -7316,11 +7316,7 @@ class tslib_cObj {
 
 				if (!empty($cacheEntry[0]['treelist'])) {
 						// cache hit
-					t3lib_div::devLog('Cache Treelist: HIT', 'tslib_cObj');
 					return $cacheEntry[0]['treelist'];
-				} else {
-						// cache miss
-					t3lib_div::devLog('Cache Treelist: MISS', 'tslib_cObj');
 				}
 
 					// If Id less than zero it means we should add the real id to list:
