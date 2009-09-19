@@ -449,11 +449,11 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			'table' => array ('<table border="0" cellspacing="1" cellpadding="2" style="width:auto;">', '</table>'),
 			'0' => array (
 				'tr' => array('<tr class="bgColor2" valign="top">', '</tr>'),
-				'defCol' => array('<td>', '</td>')
+				'defCol' => array('<td class="cell">', '</td>')
 			),
 			'defRow' => array (
 				'tr' => array('<tr class="bgColor3-20">', '</tr>'),
-				'defCol' => array('<td>', '</td>')
+				'defCol' => array('<td class="cell">', '</td>')
 			)
 		);
 		$table = array();
@@ -636,7 +636,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 		$table = array();
 		$tr = 0;
-		$defaultCell = array('<td class="bgColor5">', '</td>');
+		$defaultCell = array('<td class="bgColor5 cell">', '</td>');
 
 			// Disable checkbox
 		$table[$tr][] = t3lib_BEfunc::cshItem($this->cshKey, 'task_disable', $this->backPath, '|', false, 'margin-bottom:0px;');
@@ -846,17 +846,17 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				),
 				'0'     => array(
 					'tr'     => array('<tr class="bgColor2" valign="top">', '</tr>'),
-					'defCol' => array('<td>', '</td>'),
-					'1'      => array('<td style="width: 36px;">', '</td>')
+					'defCol' => array('<td class="cell">', '</td>'),
+					'1'      => array('<td style="width: 36px;" class="cell">', '</td>')
 				),
 				'defRow' => array(
 					'tr'     => array('<tr class="bgColor3-20">', '</tr>'),
-					'defCol' => array('<td>', '</td>')
+					'defCol' => array('<td class="cell">', '</td>')
 				)
 			);
 			$disabledTaskRow = array (
 				'tr'     => array('<tr class="bgColor3-20 disabled">', '</tr>'),
-				'defCol' => array('<td>', '</td>')
+				'defCol' => array('<td class="cell">', '</td>')
 			);
 			$table = array();
 			$tr = 0;

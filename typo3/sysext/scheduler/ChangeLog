@@ -1,3 +1,7 @@
+2009-09-19  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12011: Wrong layout of datepicker
+
 2009-09-15  Francois Suter  <francois@typo3.org>
 
 	* Replaced usage of t3lib_div::getUserObj() by t3lib_div::makeInstance() in the CLI script, resolves #4644

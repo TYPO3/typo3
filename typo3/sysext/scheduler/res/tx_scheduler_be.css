@@ -18,8 +18,10 @@
 }
 
 .tx_scheduler_mod1 td {
-	padding: 2px 4px;
 	vertical-align: middle;
+}
+.tx_scheduler_mod1 td.cell {
+	padding: 2px 4px;
 }
 .tx_scheduler_mod1 tr.disabled td {
 	color: #666;
