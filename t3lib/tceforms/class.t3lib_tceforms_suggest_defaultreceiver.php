@@ -243,18 +243,15 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 			$likeCondition = ' LIKE \'' . ($searchWholePhrase ? '%' : '') .
 				$GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table).'%\'';
 
-			$selectFields = array();
-			if (isset($GLOBALS['TCA'][$this->table]['ctrl']['label_alt'])) {
-					// Search in all fields given by label or label_alt
-				$selectFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$this->table]['ctrl']['label_alt']);
-			}
-			$selectFields[] = $GLOBALS['TCA'][$this->table]['ctrl']['label'];
+				// Search in all fields given by label or label_alt
+			$selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'];
+			$selectFields = t3lib_div::trimExplode(',', $selectFieldsList, TRUE);
 
 			$selectParts = array();
 			foreach ($selectFields as $field) {
 				$selectParts[] = $field . $likeCondition;
 			}
-			$this->selectClause = implode(' OR ', $selectParts);
+			$this->selectClause = '(' . implode(' OR ', $selectParts) . ')';
 
 			if ($searchUid > 0 && $searchUid == $searchString) {
 				$this->selectClause = '(' . $this->selectClause . ' OR uid = ' . $searchUid . ')';
