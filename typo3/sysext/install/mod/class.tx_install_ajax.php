@@ -95,6 +95,7 @@ class tx_install_ajax {
 			case 'encryptionKey':
 			default:
 				$this->content = $this->createEncryptionKey();
+				$this->addTempContentHttpHeaders();
 				break;
 		}
 	}
@@ -105,6 +106,9 @@ class tx_install_ajax {
 	 * @return	void
 	 */
 	function printContent()	{
+		if (!headers_sent()) {
+			header('Content-Length: ' . strlen($this->content));
+		}
 		echo $this->content;
 	}
 
@@ -115,9 +119,27 @@ class tx_install_ajax {
 	 * @return string
 	 */
 	function createEncryptionKey($keyLength = 96) {
+		if (!headers_sent()) {
+			header("Content-type: text/plain");
+		}
 
 		$bytes = t3lib_div::generateRandomBytes($keyLength);
 		return substr(bin2hex($bytes), -96);
+	}
+
+	/**
+	 * Sends cache control headers that prevent caching in user agents.
+	 *
+	 */
+	function addTempContentHttpHeaders() {
+		if (!headers_sent()) {
+				// see RFC 2616
+				// see Microsoft Knowledge Base #234067
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			header('Cache-Control: no-cache, must-revalidate');
+			header('Pragma: no-cache');
+			header('Expires: -1');
+		}
 	}
 }
 
