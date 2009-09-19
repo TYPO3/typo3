@@ -1,3 +1,7 @@
+2009-09-19  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11896: User Setup miss save of be_users fields and miss handling of default value
+
 2009-09-19  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #12005: Reports don't have a back reference to the reports module

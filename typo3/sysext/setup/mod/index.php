@@ -129,10 +129,10 @@ class SC_mod_user_setup_index {
 	function storeIncomingData()	{
 		global $BE_USER;
 
-
 			// First check if something is submittet in the data-array from POST vars
 		$d = t3lib_div::_POST('data');
 		$columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
+		$storeRec = array();
 
 		if (is_array($d))	{
 
@@ -159,8 +159,13 @@ class SC_mod_user_setup_index {
 					// save all submitted values if they are no array (arrays are with table=be_users) and exists in $GLOBALS['TYPO3_USER_SETTINGS'][columns]
 				foreach($columns as $field => $config) {
 					if ($config['table']) {
-						continue;
-			}
+						if ($config['table'] == 'be_users' && !in_array($field, array('password', 'password2', 'email', 'realName', 'admin'))) {
+							if (!isset($config['access']) || $this->checkAccess($config)) {
+								$storeRec['be_users'][$BE_USER->user['uid']][$field] = $d['be_users'][$field];
+								$BE_USER->user[$field] = $d['be_users'][$field];
+							}
+						}
+					}
 					if ($config['type'] == 'check') {
 						$BE_USER->uc[$field] = isset($d[$field]) ? 1 : 0;
 					} else {
@@ -186,7 +191,7 @@ class SC_mod_user_setup_index {
 					|| ( (strlen($be_user_data['password'])==32 || (isset($columns['password']['eval']) && substr($columns['password']['eval'], 0, 3) == 'tx_'))
 							&& !strcmp($be_user_data['password'],$be_user_data['password2']))
 					)	{
-				$storeRec = array();
+
 				$BE_USER->user['realName'] = $storeRec['be_users'][$BE_USER->user['uid']]['realName'] = substr($be_user_data['realName'],0,80);
 				$BE_USER->user['email'] = $storeRec['be_users'][$BE_USER->user['uid']]['email'] = substr($be_user_data['email'],0,80);
 
@@ -211,7 +216,8 @@ class SC_mod_user_setup_index {
 						$this->PASSWORD_UPDATED = 1;
 					}
 				}
-
+			}
+			if (count($storeRec)) {
 					// Make instance of TCE for storing the changes.
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values=0;
@@ -485,7 +491,7 @@ class SC_mod_user_setup_index {
 			if (isset($this->tsFieldConf[$fieldName . '.']['disabled']) && $this->tsFieldConf[$fieldName . '.']['disabled'] == 1) {
 				continue;
 			}
-			if (isset($config['access']) && !$this->checkAccess($config['access'])) {
+			if (isset($config['access']) && !$this->checkAccess($config)) {
 				continue;
 			}
 
@@ -503,15 +509,17 @@ class SC_mod_user_setup_index {
 				$more .= ' style="' . $style . '"';
 			}
 
+			$value = $config['table'] == 'be_users' ? $GLOBALS['BE_USER']->user[$fieldName] : $GLOBALS['BE_USER']->uc[$fieldName];
+			if (!$value && isset($config['default'])) {
+				$value = $config['default'];
+			}
+
 			switch ($type) {
 				case 'text':
 				case 'password':
 					$dataAdd = '';
 					if ($config['table'] == 'be_users') {
 						$dataAdd = '[be_users]';
-						$value = $GLOBALS['BE_USER']->user[$fieldName];
-					} else {
-						$value = $GLOBALS['BE_USER']->uc[$fieldName];
 					}
 					if ($eval == 'md5') {
 						$more .= ' onchange="this.value=this.value?MD5(this.value):\'\';"';
@@ -527,13 +535,13 @@ class SC_mod_user_setup_index {
 							value="' . htmlspecialchars($value) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . $more . ' />';
 				break;
 				case 'check':
-				if (!$class) {
+					if (!$class) {
 						$more .= ' class="check"';
 					}
 					$html = '<input id="field_' . $fieldName . '"
 									type="checkbox"
 									name="data[' . $fieldName . ']"' .
-									($GLOBALS['BE_USER']->uc[$fieldName] ? ' checked="checked"' : '') . $more . ' />';
+									($value ? ' checked="checked"' : '') . $more . ' />';
 				break;
 				case 'select':
 					if (!$class) {
@@ -546,7 +554,7 @@ class SC_mod_user_setup_index {
 						$html = '<select id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . chr(10);
 						foreach ($config['items'] as $key => $value) {
 							$html .= '<option value="' . $key . '"' .
-								($GLOBALS['BE_USER']->uc[$fieldName] == $key ? ' selected="selected"' : '') .
+								($value == $key ? ' selected="selected"' : '') .
 								'>' . $this->getLabel($value,'',false) . '</option>' . chr(10);
 						}
 						$html .= '</select>';
@@ -742,11 +750,19 @@ class SC_mod_user_setup_index {
 	/**
 	* Returns access check (currently only "admin" is supported)
 	*
-	* @param	$level	check against user level (currently only "admin")
-	* @return	boolean	true if same access level, else false
+	* @param	array		$config: Configuration of the field, access mode is defined in key 'access'
+	* @return	boolean		Whether it is allowed to modify the given field
 	*/
-	protected function checkAccess($level) {
-		if ($level == 'admin') {
+	protected function checkAccess(array $config) {
+		$access = $config['access'];
+			// check for hook
+		if (strpos($access, 'tx_') === 0) {
+			$accessObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
+			if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck'))	{
+					// initialize vars. If method fails, $set will be set to false
+				return $accessObject->accessLevelCheck($config);
+			}
+		} elseif ($access == 'admin') {
 			return $this->isAdmin;
 		}
 	}
