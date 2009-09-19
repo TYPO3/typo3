@@ -14,6 +14,7 @@
 	* Fixed bug #11988: Extension Manager is not translatable (part 6) (thanks to Christopher Stelmaszyk)
 	* Fixed bug #11986: dynamic update of translation status im EM is broken
 	* Fixed bug #11013: Generate Random Key still does not work (thanks to Marcus Krause)
+	* Fixed bug #11875: list module doesn't show '0' values (thanks to David Bruchmann and Bastian Waidelich)
 
 2009-09-18  Sebastian Kurfuerst  <sebastian@typo3.org>
 

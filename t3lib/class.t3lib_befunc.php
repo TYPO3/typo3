@@ -2218,7 +2218,7 @@ final class t3lib_BEfunc {
 				break;
 				case 'check':
 					if (!is_array($theColConf['items']) || count($theColConf['items'])==1) {
-						$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '';
+						$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 					} else {
 						reset($theColConf['items']);
 						$lA = Array();
@@ -2229,7 +2229,7 @@ final class t3lib_BEfunc {
 					}
 				break;
 				case 'input':
-					if ($value) {
+					if (isset($value)) {
 						if (t3lib_div::inList($theColConf['eval'], 'date')) {
 							$l = t3lib_BEfunc::date($value) .
 								' (' .
