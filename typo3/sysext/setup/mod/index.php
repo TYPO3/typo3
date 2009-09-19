@@ -354,22 +354,7 @@ class SC_mod_user_setup_index {
 			<input type="submit" name="data[clearSessionVars]" value="'.$LANG->getLL('clearSessionVars').'" />'
 		);
 
-			// Install Tool access file
-		if ($this->isAdmin) {
-			$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-			$installToolEnableButton = $installToolEnableFileExists ?
-				'<input type="submit" name="deleteInstallToolEnableFile" value="' . $LANG->getLL('enableInstallTool.deleteFile') . '" />' :
-				'<input type="submit" name="createInstallToolEnableFile" value="' . $LANG->getLL('enableInstallTool.createFile') . '" />';
 
-			$this->content .= $this->doc->spacer(30);
-			$this->content .= $this->doc->section($LANG->getLL('enableInstallTool.headerTitle'),
-				$LANG->getLL('enableInstallTool.description')
-			);
-			$this->content .= $this->doc->spacer(10);
-			$this->content .= $this->doc->section('',
-				$installToolEnableButton
-			);
-		}
 
 			// Notice
 		$this->content .= $this->doc->spacer(30);
@@ -692,7 +677,21 @@ class SC_mod_user_setup_index {
 		return '<select id="field_startModule" name="data[startModule]" class="select">' . $startModuleSelect . '</select>';
 		}
 
-
+ 	/**
+	 * 
+	 * @param array $params                    config of the field
+	 * @param SC_mod_user_setup_index $parent  this class as reference
+	 * @return string	                       html with description and button
+	 */
+	public function renderInstallToolEnableFileButton(array $params, SC_mod_user_setup_index $parent) {
+		// Install Tool access file
+		$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+		if ($installToolEnableFileExists) {
+			return '<input type="submit" name="deleteInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" />';
+		} else {
+			return '<input type="submit" name="createInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') . '" />';
+		}
+	}
 
 	/**
 	 * Will make the simulate-user selector if the logged in user is administrator.
@@ -805,7 +804,7 @@ class SC_mod_user_setup_index {
 		if (!t3lib_div::inList('language,simuser', $str)) {
 			$str = 'option_' . $str;
 		}
-		return t3lib_BEfunc::cshItem('_MOD_user_setup', $str, $GLOBALS['BACK_PATH'], '|', false, 'margin-bottom:0px;');
+		return t3lib_BEfunc::cshItem('_MOD_user_setup', $str, $this->doc->backPath, '|', false, 'margin-bottom:0px;');
 	}
 }
 

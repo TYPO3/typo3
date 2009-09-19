@@ -108,6 +108,8 @@ When &quot;Display full text message&quot; is selected you will see a short desc
 			<label index="reset.details">This does not apply to user name, email and password settings of course.</label>
 			<label index="simuser.alttitle">Simulate backend user</label>
 			<label index="simuser.description">This option allows &quot;admin&quot;-users to change settings for another backend user in the system.</label>
+			<label index="option_enableInstallTool.alttitle">Admin control for re-enabling Install Tool access</label>
+			<label index="option_enableInstallTool.description">By clicking this button, a file typo3conf/ENABLE_INSTALL_TOOL is created (or removed if it already exists). It unlocks the access to the Install Tool (password is still needed!) and will be removed automatically after 1 hour.</label>
 		</languageKey>
 	</data>
 </T3locallang>
