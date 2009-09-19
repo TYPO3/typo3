@@ -1,3 +1,7 @@
+2009-09-19  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12011: Wrong layout of datepicker in the Scheduler
+
 2009-09-19  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12003: EncryptionKey generation in install tool (1-2-3-mode) still uses old encryption
