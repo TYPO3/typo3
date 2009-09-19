@@ -128,7 +128,7 @@ CREATE TABLE cache_hash (
   content mediumtext,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   ident varchar(32) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
   KEY hash (hash)
 ) ENGINE=InnoDB;
 

@@ -20,6 +20,7 @@
 	* Fixed bug #11013: Generate Random Key still does not work (thanks to Marcus Krause)
 	* Fixed bug #11875: list module doesn't show '0' values (thanks to David Bruchmann and Bastian Waidelich)
 	* Fixed bug #11992: treelist cache fills devlog
+	* Follow-up to bug #11505: added a forgotten comma to table definition of cache_hash
 
 2009-09-18  Sebastian Kurfuerst  <sebastian@typo3.org>
 
