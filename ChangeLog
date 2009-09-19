@@ -1,3 +1,7 @@
+2009-09-19  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #12005: Reports don't have a back reference to the reports module
+
 2009-09-19  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11917: TCEforms suggest fails with empty label or label_alt field (thanks to Andreas Wolf)

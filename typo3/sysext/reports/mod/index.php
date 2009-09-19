@@ -179,7 +179,7 @@ class tx_reports_Module extends t3lib_SCbase {
 			$reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extKey][$reportName]['report'];
 			$title       = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extKey][$reportName]['title']);
 
-			$reportInstance = t3lib_div::makeInstance($reportClass);
+			$reportInstance = t3lib_div::makeInstance($reportClass, $this);
 
 			if ($reportInstance instanceof tx_reports_Report) {
 				$content = $reportInstance->getReport();
