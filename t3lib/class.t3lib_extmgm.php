@@ -372,6 +372,22 @@ final class t3lib_extMgm {
 	}
 
 	/**
+	 * 
+	 * @param	string	$addFields: List of fields to be added to the user settings
+	 * @param	string	$insertionPosition: Insert fields before (default) or after one
+	 * 					of this fields (commalist with "before:" or "after:" commands).
+	 * 					Example: "before:password,after:email".
+	 * @return void
+	 */
+	public function addFieldsToUserSettings($addFields, $insertionPosition = '') {
+		$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] = self::executePositionedStringInsertion(
+			$GLOBALS['TYPO3_USER_SETTINGS']['showitem'],
+			$addFields,
+			$insertionPosition
+		);
+	}
+
+	/**
 	 * Inserts as list of data into an existing list.
 	 * The insertion position can be defined accordant before of after existing list items.
 	 *
