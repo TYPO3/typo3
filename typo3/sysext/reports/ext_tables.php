@@ -18,7 +18,9 @@ if (TYPO3_MODE == 'BE') {
 		$statusReport
 	);
 
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['system'] = 'tx_reports_reports_status_SystemStatus';
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['_installtool'] = 'tx_reports_reports_status_InstallToolStatus';
+
 }
 
 ?>

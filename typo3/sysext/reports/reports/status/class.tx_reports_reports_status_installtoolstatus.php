@@ -138,7 +138,9 @@ class tx_reports_reports_status_InstallToolStatus implements tx_reports_StatusPr
 		$message  = '';
 		$severity = tx_reports_reports_status_Status::OK;
 
-		if (@is_file($enableInstallToolFile)) {
+		$enableInstallToolFileExists = is_file($enableInstallToolFile);
+
+		if ($enableInstallToolFileExists || ($enableInstallToolFileExists && trim(file_get_contents($enableInstallToolFile)) === 'KEEP_FILE')) {
 			$value    = $GLOBALS['LANG']->getLL('status_enabled');
 			$severity = tx_reports_reports_status_Status::WARNING;
 

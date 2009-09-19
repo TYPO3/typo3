@@ -13,6 +13,10 @@
 			<label index="status_insecure">Insecure</label>
 			<label index="status_disabled">Disabled</label>
 			<label index="status_enabled">Enabled</label>
+			<label index="status_empty">Empty</label>
+			<label index="status_connectionFailed">Connection Failed</label>
+			<label index="status_updateComplete">Update Complete</label>
+			<label index="status_updateIncomplete">Update Incomplete</label>
 		</languageKey>
 	</data>
 </T3locallang>

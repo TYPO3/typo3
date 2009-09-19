@@ -11,6 +11,7 @@
 2009-09-19  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #12005: Reports don't have a back reference to the reports module
+	* Follow-up to feature #12001: Add checks from t3lib_BEfunc::displayWarningMessages() to the status report
 
 2009-09-19  Rupert Germann  <rupi@gmx.li>
 
