@@ -686,7 +686,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					   		<td valign="top">
 								  '.$this->fontTag1.'<br />
 							   <input type="hidden" name="step" value="2">
-							   <input type="hidden" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="'.md5(uniqid(rand(),true)).'">
+							   <input type="hidden" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="' . $this->createEncryptionKey() . '">
 								 <input type="hidden" name="TYPO3_INSTALL[localconf.php][compat_version]" value="'.TYPO3_branch.'">
 								  <input type="submit" value="Continue"><br /><br /><strong>NOTICE: </strong>By clicking this button, typo3conf/localconf.php is updated with new values for the parameters listed above!</span><br />
 					   		</td>
@@ -5119,6 +5119,16 @@ $out="
 		return $backupFile;
 	}
 
+	/**
+	 * Returns a newly created TYPO3 encryption key with a given length.
+	 *
+	 * @param  integer  $keyLength  desired key length
+	 * @return string
+	 */
+	protected function createEncryptionKey($keyLength = 96) {
+		$bytes = t3lib_div::generateRandomBytes($keyLength);
+		return substr(bin2hex($bytes), -96);
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/install/mod/class.tx_install.php'])	{

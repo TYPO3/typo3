@@ -1,5 +1,6 @@
 2009-09-19  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12003: EncryptionKey generation in install tool (1-2-3-mode) still uses old encryption
 	* Fixed bug #11884: User setup: buttons for create/delete ENABLE_INSTALL_TOOL-file are not integrated in user setup
 	* Fixed bug #11896: User Setup miss save of be_users fields and miss handling of default value
 
