@@ -23,4 +23,6 @@ t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */,  'tx_openid_sv1' /* sv 
 // Register eID script that performs final FE user authentication. It will be called by the OpenID provider
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_openid'] = 'EXT:openid/class.tx_openid_eid.php';
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck']['tx_openid_mod_setup'] = 'EXT:openid/class.tx_openid_mod_setup.php';
+
 ?>

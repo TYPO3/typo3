@@ -25,18 +25,7 @@ t3lib_extMgm::addToAllTCAtypes('be_users','tx_openid_openid;;;;1-1-1', '', 'afte
 t3lib_extMgm::addLLrefForTCAdescr('be_users', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 
 // Prepare new columns for fe_users table
-$tempColumns = array (
-	'tx_openid_openid' => array (
-		'exclude' => 0,
-		'label' => 'LLL:EXT:openid/locallang_db.xml:fe_users.tx_openid_openid',
-		'config' => array (
-			'type' => 'input',
-			'size' => '30',
-			// Requirement: uniqueInPid (FE users are pid-specific)
-			'eval' => 'trim,nospace,uniqueInPid',
-		)
-	),
-);
+$tempColumns['tx_openid_openid']['config']['eval'] = 'trim,nospace,uniqueInPid';
 
 // Add new columns to fe_users table
 t3lib_div::loadTCA('fe_users');
@@ -44,4 +33,15 @@ t3lib_extMgm::addTCAcolumns('fe_users', $tempColumns, false);
 t3lib_extMgm::addFieldsToAllPalettesOfField('fe_users', 'username', 'tx_openid_openid');
 t3lib_extMgm::addLLrefForTCAdescr('fe_users', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 
+// Add field to setup module
+$GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
+	'type' => 'user',
+	'table' => 'be_users',
+	'label' => 'LLL:EXT:openid/locallang_db.xml:_MOD_user_setup.tx_openid_openid',
+	'csh' => 'tx_openid_openid',
+	'userFunc' => 'EXT:openid/class.tx_openid_mod_setup.php:tx_openid_mod_setup->renderOpenID',
+	'access' => 'tx_openid_mod_setup'
+);
+t3lib_extMgm::addFieldsToUserSettings('tx_openid_openid', 'after:password2');
+t3lib_extMgm::addLLrefForTCAdescr('_MOD_user_setup','EXT:openid/locallang_csh_mod.xml');
 ?>

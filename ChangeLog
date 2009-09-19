@@ -4,6 +4,7 @@
 
 2009-09-19  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added feature #10585: Enable BE-User to change their OpenID
 	* Added feature #12008: User setup misses a function for inserting fields at a position
 	* Fixed bug #12003: EncryptionKey generation in install tool (1-2-3-mode) still uses old encryption
 	* Fixed bug #11884: User setup: buttons for create/delete ENABLE_INSTALL_TOOL-file are not integrated in user setup

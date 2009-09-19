@@ -14,6 +14,7 @@
             <label index="tx_openid_openid.description">OpenID identifier</label>
             <label index="tx_openid_openid.details">This field contains option OpenID identifier. If the field is not empty, users can login to the system using their OpenID identifier.</label>
             <label index="tx_openid_openid.seeAlso">http://openid.net/</label>
+            <label index="tx_openid_change_allowed.description">If this setting is active, users can change their own OpenID identifier using the setup module.</label>
         </languageKey>
     </data>
 </T3locallang>

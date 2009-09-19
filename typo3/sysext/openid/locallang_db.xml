@@ -8,6 +8,8 @@
 		<languageKey index="default" type="array">
 			<label index="be_users.tx_openid_openid">OpenID identifier:</label>
 			<label index="fe_users.tx_openid_openid">OpenID identifier:</label>
+			<label index="be_groups.tx_openid_change_allowed">Change own OpenID:</label>
+			<label index="_MOD_user_setup.tx_openid_openid">OpenID identifier</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- $Id$ -->
+<T3locallang>
+    <meta type="array">
+        <description>CSH labels</description>
+        <type>CSH</type>
+        <csh_table>openid</csh_table>
+        <fileId>EXT:openid/locallang_csh_mod.xml</fileId>
+        <labelContext type="array">
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="option_tx_openid_openid.alttitle">OpenID identifier</label>
+            <label index="option_tx_openid_openid.description">Enter your OpenID identifier here, if you use want to use OpenID for backend logins.</label>
+            <label index="option_tx_openid_openid.details">OpenID is a free and open system to login to websites using only one single password (for your OpenID-provider). If you want to login to TYPO3 backend, enter your identifier here. Your identifier is an URL starting with http:// or https://.</label>
+            <label index="option_tx_openid_openid.seeAlso">http://openid.net | http://openid.net/</label>
+        </languageKey>
+    </data>
+</T3locallang>
