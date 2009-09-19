@@ -1216,6 +1216,7 @@ EXTENSION KEYS:
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
+				ob_end_flush();
 				echo $contentParts[0].$this->content;
 
 				$this->doPrintContent = FALSE;
@@ -1301,6 +1302,7 @@ EXTENSION KEYS:
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
+				ob_end_flush();
 				echo $contentParts[0].$this->content;
 
 				$this->doPrintContent = FALSE;

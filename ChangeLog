@@ -1,3 +1,7 @@
+2009-09-19  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11986: dynamic update of translation status im EM is broken
+
 2009-09-17  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #9270: Editors can´t undelete records in history (thanks to Christian Hernmarck)
