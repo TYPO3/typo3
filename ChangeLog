@@ -6,6 +6,7 @@
 
 	* Fixed bug #11917: TCEforms suggest fails with empty label or label_alt field (thanks to Andreas Wolf)
 	* Fixed bug #11988: Extension Manager is not translatable (part 6) (thanks to Christopher Stelmaszyk)
+	* Fixed bug #11986: dynamic update of translation status im EM is broken
 
 2009-09-18  Sebastian Kurfuerst  <sebastian@typo3.org>
 
