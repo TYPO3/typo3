@@ -1,6 +1,7 @@
 2009-09-19  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11917: TCEforms suggest fails with empty label or label_alt field (thanks to Andreas Wolf)
+	* Fixed bug #11988: Extension Manager is not translatable (part 6) (thanks to Christopher Stelmaszyk)
 
 2009-09-18  Sebastian Kurfuerst  <sebastian@typo3.org>
 

@@ -2128,7 +2128,8 @@ EXTENSION KEYS:
 
 			// Function menu here:
 		if(!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone')) {
-			$content = 'Extension:&nbsp;<strong>' . $this->extensionTitleIconHeader($extKey, $list[$extKey]) . '</strong> (' . $extKey . ')';
+			$content = $GLOBALS['LANG']->getLL('ext_details_ext') . '&nbsp;<strong>' .
+				$this->extensionTitleIconHeader($extKey, $list[$extKey]) . '</strong> (' . $extKey . ')';
 			$this->content.= $this->doc->section('', $content);
 		}
 
@@ -2151,7 +2152,7 @@ EXTENSION KEYS:
 						$newExtList = $this->addExtToList($extKey,$list);
 					}
 
-					// Success-installation:
+					// Successful installation:
 					if ($newExtList!=-1)	{
 						$updates = '';
 						if ($this->CMD['load'])	{
@@ -2171,20 +2172,44 @@ EXTENSION KEYS:
 							}
 							$updatesForm = $this->updatesForm($extKey,$list[$extKey],1,$script, $dependencyUpdates.$standaloneUpdates.'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
 							if ($updatesForm) {
-								$updates = 'Before the extension can be installed the database needs to be updated with new tables or fields. Please select which operations to perform:'.$updatesForm;
-								$this->content.=$this->doc->section('Installing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
+								$updates = $GLOBALS['LANG']->getLL('ext_details_new_tables_fields') . '<br />' .
+									$GLOBALS['LANG']->getLL('ext_details_new_tables_fields_select') . $updatesForm;
+								$labelDBUpdate = $GLOBALS['LANG']->csConvObj->conv_case(
+									$GLOBALS['LANG']->charSet,
+									$GLOBALS['LANG']->getLL('ext_details_db_needs_update'),
+									'toUpper'
+								);
+								$this->content .= $this->doc->section(
+									sprintf($GLOBALS['LANG']->getLL('ext_details_installing') . ' ',
+										$this->extensionTitleIconHeader($extKey, $list[$extKey])
+									) . ' ' .
+									$labelDBUpdate,
+									$updates, 1, 1, 1, 1
+								);
 							}
 						} elseif ($this->CMD['remove']) {
 							$updates.= $this->checkClearCache($list[$extKey]);
 							if ($updates)	{
 								$updates = '
 								<form action="'.t3lib_div::linkThisScript().'" method="post">'.$updates.'
-								<br /><input type="submit" name="write" value="Remove extension" />
+								<br /><input type="submit" name="write" value="' .
+									$GLOBALS['LANG']->getLL('ext_details_remove_ext') . '" />
 								<input type="hidden" name="_do_install" value="1" />
 								<input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />
 								<input type="hidden" name="standAlone" value="'.$this->CMD['standAlone'].'" />
 								</form>';
-								$this->content.=$this->doc->section('Removing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Database needs to be updated'),$updates,1,1,1,1);
+								$labelDBUpdate = $GLOBALS['LANG']->csConvObj->conv_case(
+									$GLOBALS['LANG']->charSet,
+									$GLOBALS['LANG']->getLL('ext_details_db_needs_update'),
+									'toUpper'
+								);
+								$this->content .= $this->doc->section(
+									sprintf($GLOBALS['LANG']->getLL('ext_details_removing') . ' ',
+										$this->extensionTitleIconHeader($extKey, $list[$extKey])
+									) . ' ' .
+									$labelDBUpdate,
+									$updates, 1, 1, 1, 1
+								);
 							}
 						}
 						if (!$updates || t3lib_div::_GP('_do_install')) {
@@ -2200,7 +2225,14 @@ EXTENSION KEYS:
 								$vA = array('CMD'=>Array('showExt'=>$extKey));
 							}
 							if($this->CMD['standAlone'] || t3lib_div::_GP('standAlone')) {
-								$this->content .= 'Extension has been '.($this->CMD['load'] ? 'installed' : 'removed').'.<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">Close window and recheck dependencies</a>';
+								$this->content .= sprintf($GLOBALS['LANG']->getLL('ext_details_ext_installed_removed'),
+										($this->CMD['load'] ?
+											$GLOBALS['LANG']->getLL('ext_details_installed') :
+											$GLOBALS['LANG']->getLL('ext_details_removed')
+										)
+									) .
+									'<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">' .
+									$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 							} else {
 									// Determine if new modules were installed:
 								$techInfo = $this->makeDetailedExtensionAnalysis($extKey, $list[$extKey]);
@@ -2212,7 +2244,19 @@ EXTENSION KEYS:
 						}
 					}
 				} else {
-					$this->content.=$this->doc->section('Installing '.$this->extensionTitleIconHeader($extKey,$list[$extKey]).strtoupper(': Write access error'),'typo3conf/localconf.php seems not to be writable, so the extension cannot be installed automatically!',1,1,2,1);
+					$writeAccessError = $GLOBALS['LANG']->csConvObj->conv_case(
+						$GLOBALS['LANG']->charSet,
+						$GLOBALS['LANG']->getLL('ext_details_write_access_error'),
+						'toUpper'
+					);
+					$this->content .= $this->doc->section(
+						sprintf($GLOBALS['LANG']->getLL('ext_details_installing') . ' ',
+							$this->extensionTitleIconHeader($extKey, $list[$extKey])
+						) . ' ' .
+						$writeAccessError,
+						$GLOBALS['LANG']->getLL('ext_details_write_error_localconf'),
+						1, 1, 2, 1
+					);
 				}
 
 			} elseif ($this->CMD['downloadFile'] && !in_array($extKey,$this->requiredExt))	{
@@ -2225,7 +2269,7 @@ EXTENSION KEYS:
 					Header('Content-Disposition: attachment; filename='.basename($dlFile));
 					echo t3lib_div::getUrl($dlFile);
 					exit;
-				} else die('Error while trying to download extension file...');
+				} else die($GLOBALS['LANG']->getLL('ext_details_error_downloading'));
 
 			} elseif ($this->CMD['editFile'] && !in_array($extKey,$this->requiredExt))	{
 
@@ -2245,24 +2289,45 @@ EXTENSION KEYS:
 								$oldFileContent = t3lib_div::getUrl($editFile);
 								if($oldFileContent != $submittedContent['file']) {
 									$oldMD5 = md5(str_replace(chr(13),'',$oldFileContent));
-									$info.= 'MD5: <b>'.$oldMD5.'</b> (Previous File)<br />';
+									$info .= sprintf(
+										$GLOBALS['LANG']->getLL('ext_details_md5_previous'),
+										'<b>' . $oldMD5 . '</b>'
+									) . '<br />';
 									t3lib_div::writeFile($editFile,$submittedContent['file']);
 									$saveFlag = 1;
 								} else {
-									$info .= 'No changes to the file detected!<br />';
+									$info .= $GLOBALS['LANG']->getLL('ext_details_no_changes') . '<br />';
 								}
 							}
 
 							$fileContent = t3lib_div::getUrl($editFile);
 
-							$outCode.= 'File: <b>'.substr($editFile,strlen($absPath)).'</b> ('.t3lib_div::formatSize(filesize($editFile)).')<br />';
+							$outCode.= sprintf(
+								$GLOBALS['LANG']->getLL('ext_details_file'),
+								'<b>' . substr($editFile, strlen($absPath)) . '</b> (' .
+									t3lib_div::formatSize(filesize($editFile)) . ')<br />'
+							);
 							$fileMD5 = md5(str_replace(chr(13),'',$fileContent));
-							$info.= 'MD5: <b>'.$fileMD5.'</b> (Current File)<br />';
+							$info .= sprintf(
+								$GLOBALS['LANG']->getLL('ext_details_md5_current'),
+								'<b>' . $fileMD5 . '</b>'
+							) . '<br />';
 							if($saveFlag)	{
 								$saveMD5 = md5(str_replace(chr(13),'',$submittedContent['file']));
-								$info.= 'MD5: <b>'.$saveMD5.'</b> (Submitted)<br />';
-								if($fileMD5!=$saveMD5) $info .= $GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>Saving failed, the content was not correctly written to disk. Changes have been lost!</strong>').'<br />';
-								else $info.= $GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>File saved.</strong>').'<br />';
+								$info .= sprintf(
+									$GLOBALS['LANG']->getLL('ext_details_md5_submitted'),
+									'<b>' . $saveMD5 . '</b>'
+								) . '<br />';
+								if ($fileMD5!=$saveMD5) {
+									$info .= $GLOBALS['TBE_TEMPLATE']->rfw(
+										'<br /><strong>' . $GLOBALS['LANG']->getLL('ext_details_saving_failed_changes_lost') . '</strong>'
+									) . '<br />';
+								}
+								else {
+									$info .= $GLOBALS['TBE_TEMPLATE']->rfw(
+										'<br /><strong>' . $GLOBALS['LANG']->getLL('ext_details_file_saved') . '</strong>'
+									) . '<br />';
+								}
 							}
 
 							$outCode.= '<textarea name="edit[file]" rows="35" wrap="off"'.$this->doc->formWidthText(48,'width:98%;height:70%','off').' class="fixed-font enable-tab">'.t3lib_div::formatForTextarea($fileContent).'</textarea>';
@@ -2272,22 +2337,44 @@ EXTENSION KEYS:
 							$outCode.= $info;
 
 							if (!$GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'])	{
-								$outCode.='<br /><input type="submit" name="save_file" value="Save file" />';
-							} else $outCode.=$GLOBALS['TBE_TEMPLATE']->rfw('<br />[SAVING IS DISABLED - can be enabled by the $TYPO3_CONF_VARS[\'EXT\'][\'noEdit\']-flag] ');
+								$outCode .= '<br /><input type="submit" name="save_file" value="' .
+									$GLOBALS['LANG']->getLL('ext_details_file_save_button') . '" />';
+							}
+							else {
+								$outCode .= $GLOBALS['TBE_TEMPLATE']->rfw(
+										'<br />' . $GLOBALS['LANG']->getLL('ext_details_saving_disabled') . ' '
+								);
+							}
 
 							$onClick = 'window.location.href=\'index.php?CMD[showExt]='.$extKey.'\';return false;';
-							$outCode.='<input type="submit" name="cancel" value="Cancel" onclick="'.htmlspecialchars($onClick).'" /></form>';
+							$outCode .= '<input type="submit" name="cancel" value="' .
+									$GLOBALS['LANG']->getLL('ext_details_cancel_button') . '" onclick="' .
+									htmlspecialchars($onClick) . '" /></form>';
 
 							$theOutput.=$this->doc->spacer(15);
-							$theOutput.=$this->doc->section('Edit file:','',0,1);
+							$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('ext_details_edit_file'), '', 0, 1);
 							$theOutput.=$this->doc->sectionEnd().$outCode;
 							$this->content.=$theOutput;
 						} else {
 							$theOutput.=$this->doc->spacer(15);
-							$theOutput.=$this->doc->section('Filesize exceeded '.$this->kbMax.' Kbytes','Files larger than '.$this->kbMax.' KBytes are not allowed to be edited.');
+							$theOutput .= $this->doc->section(
+								sprintf(
+									$GLOBALS['LANG']->getLL('ext_details_filesize_exceeded_kb'),
+									$this->kbMax
+								),
+								sprintf(
+									$GLOBALS['LANG']->getLL('ext_details_file_too_large'),
+									$this->kbMax
+								)
+							);
 						}
 					}
-				} else die('Fatal Edit error: File "'.$editFile.'" was not inside the correct path of the TYPO3 Extension!');
+				} else {
+					die (sprintf($GLOBALS['LANG']->getLL('ext_details_fatal_edit_error'),
+							$editFile
+						)
+					);
+				}
 			} else {
 
 				// MAIN:
@@ -2296,30 +2383,42 @@ EXTENSION KEYS:
 						// Loaded / Not loaded:
 						if (!in_array($extKey,$this->requiredExt))	{
 							if ($TYPO3_LOADED_EXT[$extKey])	{
-								$content = '<strong>The extension is installed (loaded and running)!</strong><br />'.
-								'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[remove]=1').'">Click here to remove the extension: '.$this->removeButton().'</a>';
+								$content = '<strong>' . $GLOBALS['LANG']->getLL('ext_details_loaded_and_running') . '</strong><br />' .
+									'<a href="' . htmlspecialchars('index.php?CMD[showExt]=' . $extKey . '&CMD[remove]=1') .
+									'">' . $GLOBALS['LANG']->getLL('ext_details_remove_button') . ' ' . $this->removeButton() . '</a>';
 							} else {
-								$content = 'The extension is <strong>not</strong> installed yet.<br />'.
-								'<a href="'.htmlspecialchars('index.php?CMD[showExt]='.$extKey.'&CMD[load]=1').'">Click here to install the extension: '.$this->installButton().'</a>';
+								$content = $GLOBALS['LANG']->getLL('ext_details_not_loaded') . '<br />'.
+									'<a href="' . htmlspecialchars('index.php?CMD[showExt]=' . $extKey . '&CMD[load]=1') .
+									'">' . $GLOBALS['LANG']->getLL('ext_details_install_button') . ' ' . $this->installButton() . '</a>';
 							}
 						} else {
-							$content = 'This extension is entered in the TYPO3_CONF_VARS[SYS][requiredExt] list and is therefore always loaded.';
+							$content = $GLOBALS['LANG']->getLL('ext_details_always_loaded');
 						}
 						$this->content.=$this->doc->spacer(10);
-						$this->content.=$this->doc->section('Active status:',$content,0,1);
+						$this->content .= $this->doc->section(
+							$GLOBALS['LANG']->getLL('ext_details_current_status'), $content, 0, 1
+						);
 
 						if (t3lib_extMgm::isLoaded($extKey))	{
 							$updates=$this->updatesForm($extKey,$list[$extKey]);
 							if ($updates)	{
 								$this->content.=$this->doc->spacer(10);
-								$this->content.=$this->doc->section('Update needed:',$updates.'<br /><br />Notice: "Static data" may not <em>need</em> to be updated. You will only have to import static data each time you upgrade the extension.',0,1);
+								$this->content .= $this->doc->section(
+									$GLOBALS['LANG']->getLL('ext_details_update_needed'),
+									$updates . '<br /><br />' . $GLOBALS['LANG']->getLL('ext_details_notice_static_data'),
+									0, 1
+								);
 							}
 						}
 
 						// Config:
 						if (@is_file($absPath.'ext_conf_template.txt'))	{
 							$this->content.=$this->doc->spacer(10);
-							$this->content.=$this->doc->section('Configuration:','(<em>Notice: You may need to clear the cache after configuration of the extension. This is required if the extension adds TypoScript depending on these settings.</em>)<br /><br />',0,1);
+							$this->content .= $this->doc->section(
+								$GLOBALS['LANG']->getLL('ext_details_configuration'),
+								$GLOBALS['LANG']->getLL('ext_details_notice_clear_cache') . '<br /><br />',
+								0, 1
+							);
 
 							$this->tsStyleConfigForm($extKey, $list[$extKey]);
 						}
@@ -2329,7 +2428,9 @@ EXTENSION KEYS:
 						$content.= $this->extInformationArray($extKey,$list[$extKey]);
 
 						$this->content.=$this->doc->spacer(10);
-						$this->content.=$this->doc->section('Details:',$content,0,1);
+						$this->content .= $this->doc->section(
+							$GLOBALS['LANG']->getLL('ext_details_details'), $content, 0, 1
+						);
 						break;
 					case 'upload':
 						$em = t3lib_div::_POST('em');
@@ -2349,29 +2450,49 @@ EXTENSION KEYS:
 								$content.= $this->getRepositoryUploadForm($extKey,$list[$extKey]);
 								$eC=0;
 							} else {
-								$content.='The extensions has an extension key prefixed "user_" which indicates that it is a user-defined extension with no official unique identification. Therefore it cannot be uploaded.';
+								$content .= $GLOBALS['LANG']->getLL('ext_details_no_unique_ext');
 								$eC=2;
 							}
 							if (!$this->fe_user['username'])	{
-								$content.= '<br /><br /><img src="'.$GLOBALS['BACK_PATH'].'gfx/icon_note.gif" width="18" height="16" align="top" alt="" />You have not configured a default username/password yet. <a href="index.php?SET[function]=3">Go to "Settings"</a> if you want to do that.<br />';
+								$content .= '<br /><br /><img src="' . $GLOBALS['BACK_PATH'] .
+									'gfx/icon_note.gif" width="18" height="16" align="top" alt="" />' .
+									sprintf($GLOBALS['LANG']->getLL('ext_details_no_username'),
+										'<a href="index.php?SET[function]=3">', '</a>'
+									) .
+									'<br />';
 							}
 						}
-						$this->content.=$this->doc->section('Upload extension to repository',$content,0,1,$eC);
+						$this->content .= $this->doc->section(
+							$GLOBALS['LANG']->getLL('ext_details_upload_to_ter'),
+							$content, 0, 1, $eC
+						);
 						break;
 					case 'backup':
 						if($this->CMD['doDelete']) {
 							$content = $this->extDelete($extKey,$list[$extKey]);
-							$this->content.=$this->doc->section('Delete',$content,0,1);
+							$this->content .= $this->doc->section(
+								$GLOBALS['LANG']->getLL('ext_details_delete'),
+								$content, 0, 1
+							);
 						} else {
 							$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'backup_delete', $GLOBALS['BACK_PATH'], '|<br />');
 							$content.= $this->extBackup($extKey,$list[$extKey]);
-							$this->content.=$this->doc->section('Backup',$content,0,1);
+							$this->content .= $this->doc->section(
+								$GLOBALS['LANG']->getLL('ext_details_backup'),
+								$content, 0, 1
+							);
 
 							$content = $this->extDelete($extKey,$list[$extKey]);
-							$this->content.=$this->doc->section('Delete',$content,0,1);
+							$this->content .= $this->doc->section(
+								$GLOBALS['LANG']->getLL('ext_details_delete'),
+								$content, 0, 1
+							);
 
 							$content = $this->extUpdateEMCONF($extKey,$list[$extKey]);
-							$this->content.=$this->doc->section('Update EM_CONF',$content,0,1);
+							$this->content .= $this->doc->section(
+								$GLOBALS['LANG']->getLL('ext_details_update_em_conf'),
+								$content, 0, 1
+							);
 						}
 						break;
 					case 'dump':
@@ -2381,10 +2502,19 @@ EXTENSION KEYS:
 						$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'editfiles', $GLOBALS['BACK_PATH'], '|<br />');
 						$content.= $this->getFileListOfExtension($extKey,$list[$extKey]);
 
-						$this->content.=$this->doc->section('Extension files',$content,0,1);
+						$this->content.=$this->doc->section(
+							$GLOBALS['LANG']->getLL('ext_details_ext_files'),
+							$content, 0, 1
+						);
 						break;
 					case 'updateModule':
-						$this->content.=$this->doc->section('Update:',is_object($updateObj) ? $updateObj->main() : 'No update object',0,1);
+						$this->content .= $this->doc->section(
+							$GLOBALS['LANG']->getLL('ext_details_update'),
+							is_object($updateObj) ?
+								$updateObj->main() :
+								$GLOBALS['LANG']->getLL('ext_details_no_update_object'),
+							0, 1
+						);
 						break;
 					default:
 						$this->extObjContent();
