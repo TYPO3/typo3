@@ -851,12 +851,14 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				),
 				'defRow' => array(
 					'tr'     => array('<tr class="bgColor3-20">', '</tr>'),
-					'defCol' => array('<td class="cell">', '</td>')
+					'defCol' => array('<td class="cell">', '</td>'),
+					'2'		 => array('<td class="cell right">', '</td>'),
 				)
 			);
 			$disabledTaskRow = array (
 				'tr'     => array('<tr class="bgColor3-20 disabled">', '</tr>'),
-				'defCol' => array('<td class="cell">', '</td>')
+				'defCol' => array('<td class="cell">', '</td>'),
+				'2'		 => array('<td class="cell right">', '</td>'),
 			);
 			$table = array();
 			$tr = 0;
@@ -864,6 +866,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Header row
 			$table[$tr][] = '<a href="#" onclick="toggleCheckboxes();" title="' . $GLOBALS['LANG']->getLL('label.checkAll') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/clip_select.gif') . ' alt="' . $GLOBALS['LANG']->getLL('label.checkAll') . '" /></a>';
 			$table[$tr][] = '&nbsp;';
+			$table[$tr][] = $GLOBALS['LANG']->getLL('label.id');
 			$table[$tr][] = $GLOBALS['LANG']->getLL('task');
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.type');
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.frequency');
@@ -977,6 +980,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 				$table[$tr][] = $startExecutionElement;
 				$table[$tr][] = $actions;
+				$table[$tr][] = $schedulerRecord['uid'];
 				$table[$tr][] = $executionStatus . ' ' . $name;
 				$table[$tr][] = $execType;
 				$table[$tr][] = $frequency;

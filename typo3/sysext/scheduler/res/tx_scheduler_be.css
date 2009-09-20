@@ -23,6 +23,9 @@
 .tx_scheduler_mod1 td.cell {
 	padding: 2px 4px;
 }
+.tx_scheduler_mod1 td.right {
+	text-align: right;
+}
 .tx_scheduler_mod1 tr.disabled td {
 	color: #666;
 }

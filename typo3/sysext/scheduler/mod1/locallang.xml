@@ -29,6 +29,7 @@
 			<label index="label.extension">Extension</label>
 			<label index="label.frequency">Frequency</label>
 			<label index="label.frequency.long">Frequency (seconds or cron command)</label>
+			<label index="label.id">ID</label>
 			<label index="label.lastExecution">Last Execution</label>
 			<label index="label.manual">Manual</label>
 			<label index="label.manually">manually</label>
