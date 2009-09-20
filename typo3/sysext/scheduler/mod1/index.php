@@ -95,7 +95,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// Initialize document
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('scheduler') . 'mod1/mod_template.html');
-		$this->doc->addStyleSheet('tx_scheduler', t3lib_extMgm::extRelPath('scheduler') . 'res/tx_scheduler_be.css');
+		$this->doc->getPageRenderer()->addCssFile(t3lib_extMgm::extRelPath('scheduler') . 'res/tx_scheduler_be.css');
 		$this->doc->backPath = $this->backPath;
 		$this->doc->bodyTagId = 'typo3-mod-php';
 		$this->doc->bodyTagAdditions = 'class="tx_scheduler_mod1"';
@@ -602,10 +602,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		}
 
 			// Load necessary JavaScript
-		/** @var $pageRenderer t3lib_PageRenderer */
+			/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $this->doc->getPageRenderer();
 		$pageRenderer->loadExtJS();
-		$this->doc->loadJavascriptLib(t3lib_extMgm::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
+		$pageRenderer->addJsFile(t3lib_extMgm::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
 		$pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/tceforms.js');
 
 			// Define settings for Date Picker
@@ -836,8 +836,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$registeredClasses = self::getRegisteredClasses();
 
 				// Load ExtJS framework and specific JS library
-			$this->doc->getPageRenderer()->loadExtJS();
-			$this->doc->loadJavascriptLib(t3lib_extMgm::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
+				/** @var $pageRenderer t3lib_PageRenderer */
+			$pageRenderer = $this->doc->getPageRenderer();
+			$pageRenderer->loadExtJS();
+			$pageRenderer->addJsFile(t3lib_extMgm::extRelPath('scheduler') . 'res/tx_scheduler_be.js');
 
 				// Initialise table layout
 			$tableLayout = array(
