@@ -322,13 +322,23 @@ class tslib_menu {
 
 				// Setting "nextActive": This is the page uid + MPvar of the NEXT page in rootline. Used to expand the menu if we are in the right branch of the tree
 				// Notice: The automatic expansion of a menu is designed to work only when no "special" modes (except "directory") are used.
-			$startLevel = $directoryLevel?$directoryLevel:$this->entryLevel;
-			if (is_array($this->tmpl->rootLine[$startLevel+$this->menuNumber]))	{
+			$startLevel = $directoryLevel ? $directoryLevel : $this->entryLevel;
+			$currentLevel = $startLevel + $this->menuNumber;
+			if (is_array($this->tmpl->rootLine[$currentLevel])) {
 				$nextMParray = $this->MP_array;
-				if ($this->tmpl->rootLine[$startLevel+$this->menuNumber]['_MOUNT_OL'])	{	// In overlay mode, add next level MPvars as well:
-					$nextMParray[] = $this->tmpl->rootLine[$startLevel+$this->menuNumber]['_MP_PARAM'];
+				if (!count($nextMParray) && !$this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] && $currentLevel > 0) {
+						// Make sure to slide-down any mount point information (_MP_PARAM) to children records in the rootline
+						// otherwise automatic expansion will not work
+					$parentRecord = $this->tmpl->rootLine[$currentLevel - 1];
+					if (isset($parentRecord['_MP_PARAM'])) {
+						$nextMParray[] = $parentRecord['_MP_PARAM'];
+					}
 				}
-				$this->nextActive = $this->tmpl->rootLine[$startLevel+$this->menuNumber]['uid'].(count($nextMParray)?':'.implode(',',$nextMParray):'');
+				
+				if ($this->tmpl->rootLine[$currentLevel]['_MOUNT_OL']) {	// In overlay mode, add next level MPvars as well:
+					$nextMParray[] = $this->tmpl->rootLine[$currentLevel]['_MP_PARAM'];
+				}
+				$this->nextActive = $this->tmpl->rootLine[$currentLevel]['uid'] . (count($nextMParray) ? ':' . implode(',', $nextMParray) : '');
 			} else {
 				$this->nextActive = '';
 			}
