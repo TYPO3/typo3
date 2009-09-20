@@ -4814,7 +4814,7 @@ $out="
 		while(list($header,$valArray)=each($this->sections))	{
 			$out.='
 			<tr><td>&nbsp;</td></tr>
-			<tr><td><div align="center"><strong>*'.$this->fw($header.':',2).'</strong></div></td></tr>
+			<tr><td><div align="center"><strong>'.$this->fw($header.':',2).'</strong></div></td></tr>
 			';
 			$out.=implode($valArray,chr(10));
 		}
