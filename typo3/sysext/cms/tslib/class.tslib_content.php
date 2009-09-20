@@ -4556,16 +4556,40 @@ class tslib_cObj {
 	 * @see stdWrap()
 	 */
 	function filelink($theValue, $conf)	{
-		$output = '';
-		$aTagParams = $this->getATagParams($conf);
-		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
-		$conf['path'] = $this->stdWrap($conf['path'],$conf['path.']);
-		$theFile = trim($conf['path']).$theValue;
+		$conf['path'] = $this->stdWrap($conf['path'], $conf['path.']);
+		$theFile = trim($conf['path']) . $theValue;
 		if (@is_file($theFile))	{
 			$theFileEnc = str_replace('%2F', '/', rawurlencode($theFile));
-			$locDataAdd = $conf['jumpurl.']['secure'] ? $this->locDataJU($theFileEnc,$conf['jumpurl.']['secure.']) : '';
-			$url = ($conf['jumpurl']) ? $GLOBALS['TSFE']->config['mainScript'].$initP.'&jumpurl='.rawurlencode($theFileEnc).$locDataAdd.$GLOBALS['TSFE']->getMethodUrlIdToken : $theFileEnc;		// && $GLOBALS['TSFE']->config['config']['jumpurl_enable']
-			$theLinkWrap = '<a href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.$url).'"'.($conf['target']?' target="'.$conf['target'].'"':'').$aTagParams.'>|</a>';
+			
+			// the jumpURL feature will be taken care of by typoLink, only "jumpurl.secure = 1" is applyable needed for special link creation
+			if ($conf['jumpurl.']['secure']) {
+				$typoLinkConf = array(
+					'parameter'  => $GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type,
+					'target'     => $conf['target'],
+					'ATagParams' => $this->getATagParams($conf),
+					'additionalParams' => '&jumpurl=' . rawurlencode($theFileEnc) . $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) . $GLOBALS['TSFE']->getMethodUrlIdToken
+				);
+			} else {
+				$typoLinkConf = array(
+					'parameter'  => $theFileEnc,
+					'target'     => $conf['target'],
+					'ATagParams' => $this->getATagParams($conf)
+				);
+			}
+
+				// if the global jumpURL feature is activated, but is disabled for this
+				// filelink, the global parameter needs to be disabled as well for this link creation
+			$globalJumpUrlEnabled = $GLOBALS['TSFE']->config['config']['jumpurl_enable'];
+			if ($globalJumpUrlEnabled && isset($conf['jumpurl']) && $conf['jumpurl'] == 0) {
+				$GLOBALS['TSFE']->config['config']['jumpurl_enable'] = 0;
+				// if the global jumpURL feature is deactivated, but is wanted for this link, then activate it for now
+			} else if (!$globalJumpUrlEnabled && $conf['jumpurl']) {
+				$GLOBALS['TSFE']->config['config']['jumpurl_enable'] = 1;
+			}
+			$theLinkWrap = $this->typoLink('|', $typoLinkConf);
+
+			// now the original value is set again
+			$GLOBALS['TSFE']->config['config']['jumpurl_enable'] = $globalJumpUrlEnabled;
 
 			$theSize = filesize($theFile);
 			$fI = t3lib_div::split_fileref($theFile);

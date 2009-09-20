@@ -1,3 +1,7 @@
+2009-09-20  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #11642: filelinks are now created via the typolink method
+
 2009-09-20  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Set SVN properties
