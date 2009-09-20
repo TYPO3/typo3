@@ -2149,7 +2149,6 @@ class mediumDoc extends template {
  * Extension class for "template" - used in the context of frontend editing.
  */
 class frontendDoc extends template {
-	var $backPath = 'typo3/';
 
 	/**
 	 * Used in the frontend context to insert header data via TSFE->additionalHeaderData.
@@ -2158,13 +2157,38 @@ class frontendDoc extends template {
 	 * @return	void
 	 */
 	public function insertHeaderData() {
-		$GLOBALS['TSFE']->additionalHeaderData['docStyle'] = $this->docStyle();
-		$GLOBALS['TSFE']->additionalHeaderData['JSLibraries'] = $this->renderJSlibraries();
-		$GLOBALS['TSFE']->additionalHeaderData['JScode'] = $this->JScode;
-		$GLOBALS['TSFE']->additionalHeaderData['JScodeArray'] = $this->wrapScriptTags(implode("\n", $this->JScodeArray));
 
-		if ($this->extJScode) {
-			$GLOBALS['TSFE']->additionalHeaderData['extJScode'] = $this->wrapScriptTags('Ext.onReady(function() {' . chr(10) . $this->extJScode . chr(10) . '});');
+		/** @var $pageRenderer t3lib_PageRenderer */
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+
+		$this->backPath = $GLOBALS['TSFE']->backPath = TYPO3_mainDir;
+		$this->pageRenderer->setBackPath($this->backPath);
+		$this->docStyle();
+
+			// add applied JS/CSS to $GLOBALS['TSFE']
+		if ($this->JScode) {
+			$pageRenderer->addHeaderData($this->JScode);
+		}
+		if (count($this->JScodeArray)) {
+			foreach ($this->JScodeArray as $name => $code) {
+				$pageRenderer->addJsInlineCode($name, $code);	
+	}
+}
+
+		if ($this->addPrototype) {
+			$pageRenderer->loadPrototype();
+		}
+		if ($this->addScriptaculous) {
+			$pageRenderer->loadScriptaculous();
+		}
+		if ($this->addExtJS) {
+			$pageRenderer->loadExtJs();
+		}
+		if ($this->inlineLanguageLabels) {
+			$pageRenderer->addInlineLanguageLabelArray($this->inlineLanguageLabels);
+		}
+		if ($this->inlineSettings) {
+			$pageRenderer->addInlineSettingArray($this->inlineSettings);
 		}
 	}
 }

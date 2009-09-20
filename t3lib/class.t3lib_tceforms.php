@@ -4281,6 +4281,7 @@ class t3lib_TCEforms	{
 	 */
 	function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
 		if (is_object($GLOBALS['TBE_TEMPLATE'])) {
+			$GLOBALS['TBE_TEMPLATE']->backPath = $this->backPath;
 			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, false, 50, 1, false, 1, $dividersToTabsBehaviour);
 		} else {
 			$output = '';
