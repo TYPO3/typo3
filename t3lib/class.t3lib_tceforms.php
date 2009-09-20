@@ -5263,9 +5263,7 @@ class t3lib_TCEforms	{
 			$pageRenderer->addInlineSettingArray('', $resizableSettings);
 
 			$this->loadJavascriptLib('../t3lib/jsfunc.evalfield.js');
-
-			// @TODO: Change to loadJavascriptLib(), but fix "TS = new typoScript()" issue first - see bug #9494
-			$jsFile[] = '<script type="text/javascript" src="'.$this->backPath.'jsfunc.tbe_editor.js"></script>';
+			$this->loadJavascriptLib('jsfunc.tbe_editor.js');
 
 				// needed for tceform manipulation (date picker)
 			$typo3Settings = array(
