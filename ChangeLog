@@ -1,3 +1,7 @@
+2009-09-20  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #11995: Prompt for keyboard input does not get displayed in CLI scripts
+
 2009-09-19  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11986: dynamic update of translation status im EM is broken
