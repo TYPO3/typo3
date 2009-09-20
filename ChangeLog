@@ -12,6 +12,7 @@
 
 	* Fixed bug #12010: Task uid should be displayed in Scheduler's BE module list view
 	* Follow-up to UI-Bug #F3282: Changed icon_warning.gif to match flash messages' warning icon
+	* Fixed bug #11995: Prompt for keyboard input does not get displayed in CLI scripts
 
 2009-09-20  Benjamin Mack  <benni@typo3.org>
 
