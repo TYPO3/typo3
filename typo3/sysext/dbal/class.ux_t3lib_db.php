@@ -1750,7 +1750,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		// Getting real list of tables:
 		switch($this->handlerCfg['_DEFAULT']['type'])	{
 			case 'native':
-				$tables_result = mysql_list_tables(TYPO3_db, $this->handlerInstance['_DEFAULT']['link']);
+				$tables_result = mysql_query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`', $this->handlerInstance['_DEFAULT']['link']);
 				if (!$this->sql_error())	{
 					while ($theTable = $this->sql_fetch_assoc($tables_result)) {
 						$whichTables[current($theTable)] = current($theTable);
