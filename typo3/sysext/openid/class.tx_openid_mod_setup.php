@@ -26,7 +26,7 @@
  */
 
 /**
- * This class is the OpenID return script for the TYPO3 Backend.
+ * This class is the OpenID return script for the TYPO3 Backend (used in the user-settings module).
  *
  * $Id$
  *
@@ -37,12 +37,12 @@ class tx_openid_mod_setup {
 	/**
 	 * Checks weather BE user has access to change its OpenID identifier
 	 *
-	 * @param $config	config of the field
-	 * @return boolean	TRUE if user has access, false if not
+	 * @param	array		$config: Configuration of the field
+	 * @return	boolean		Whether it is allowed to modify the given field
 	 */
-	public function accessLevelCheck($config) {
+	public function accessLevelCheck(array $config) {
 		$setupConfig = $GLOBALS['BE_USER']->getTSConfigProp('setup.fields');
-		if (isset($setupConfig['tx_openid_openid.']['disabled']) && $setupConfig['tx_openid_openid.']['disabled'] == 1) {
+		if (isset($setupConfig['tx_openid_openid.']['disabled']) && $setupConfig['tx_openid_openid.']['disabled']) {
 			return FALSE;
 		}
 		return TRUE;
@@ -51,13 +51,16 @@ class tx_openid_mod_setup {
 	/**
 	 * Render OpenID identifier field for user setup
 	 *
-	 * @param $params	config of the field
-	 * @param $ref		$class reference
-	 * @return	HTML code for input field or only OpenID if change not allowed
+	 * @param	array					$config: Configuration of the field
+	 * @param	SC_mod_user_setup_index	$parent: The calling parent object
+	 * @return	string					HTML input field to change the OpenId
 	 */
-	public function renderOpenID($params, $ref) {
+	public function renderOpenID(array $parameters, SC_mod_user_setup_index $parent) {
 		$openid = $GLOBALS['BE_USER']->user['tx_openid_openid'];
-		return '<input id="field_tx_openid_openid" type="text" name="data[be_users][tx_openid_openid]" value="' . $openid . '" style="width:192px;" />';
+		return '<input id="field_tx_openid_openid"' .
+			$GLOBALS['TBE_TEMPLATE']->formWidth(20) .
+			' type="text" name="data[be_users][tx_openid_openid]"' .
+			' value="' . htmlspecialchars($openid) . '" />';
 	}
 }
 

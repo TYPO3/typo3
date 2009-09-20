@@ -1,6 +1,7 @@
 2009-09-20  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Set SVN properties
+	* Follow-up to feature #10585: Fixed PHPdoc comments and field rendering
 
 2009-09-20  Francois Suter  <francois@typo3.org>
 
