@@ -6,6 +6,7 @@
 
 	* Cleanup: Set SVN properties
 	* Follow-up to feature #10585: Fixed PHPdoc comments and field rendering
+	* Fixed bug #11834: Field handling API in t3lib_extMgm does not check for duplicates on insertion and runs superflouos insertions
 
 2009-09-20  Francois Suter  <francois@typo3.org>
 

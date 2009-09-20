@@ -308,6 +308,7 @@ final class t3lib_extMgm {
 	 */
 	public static function addFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '') {
 		$generatedPalette = '';
+		$processedPalettes = array();
 		t3lib_div::loadTCA($table);
 
 		if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
@@ -320,7 +321,10 @@ final class t3lib_extMgm {
 							// If the field already has a palette, extend it:
 						if ($items[$field]['details']['palette']) {
 							$palette = $items[$field]['details']['palette'];
-							self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
+							if (!isset($processedPalettes[$palette])) {
+								self::addFieldsToPalette($table, $palette, $addFields, $insertionPosition);
+								$processedPalettes[$palette] = true;
+							}
 							// If there's not palette yet, create one:
 						} else {
 							if ($generatedPalette) {
@@ -366,7 +370,7 @@ final class t3lib_extMgm {
 				);
 				// If it's a new palette, just set the data:
 			} else {
-				$paletteData['showitem'] = $addFields;
+				$paletteData['showitem'] = self::removeDuplicatesForInsertion($addFields);
 			}
 		}
 	}
@@ -405,46 +409,48 @@ final class t3lib_extMgm {
 	 */
 	protected static function executePositionedStringInsertion($list, $insertionList, $insertionPosition = '') {
 		$list = trim($list);
-		$insertionList = self::removeDuplicatesForInsertion($list, $insertionList);
+		$insertionList = self::removeDuplicatesForInsertion($insertionList, $list);
 
-			// Append data to the end (default):
-		if ($insertionPosition === '') {
-			$list.= ($list ? ', ' : '') . $insertionList;
-			// Insert data before or after insertion points:
-		} else {
-			$positions = t3lib_div::trimExplode(',', $insertionPosition, true);
-			$items = self::explodeItemList($list);
-			$isInserted = false;
-				// Iterate through all fields an check whether it's possible to inserte there:
-			foreach ($items as $item => &$itemDetails) {
-				$needles = self::getInsertionNeedles($item, $itemDetails['details']);
-					// Insert data before:
-				foreach ($needles['before'] as $needle) {
-					if (in_array($needle, $positions)) {
-						$itemDetails['rawData'] = $insertionList . ', '  . $itemDetails['rawData'];
-						$isInserted = true;
-						break;
-					}
-				}
-					// Insert data after:
-				foreach ($needles['after'] as $needle) {
-					if (in_array($needle, $positions)) {
-						$itemDetails['rawData'] .= ', ' . $insertionList;
-						$isInserted = true;
-						break;
-					}
-				}
-					// Break if insertion was already done:
-				if ($isInserted) {
-					break;
-				}
-			}
-				// If insertion point could not be determined, append the data:
-			if (!$isInserted) {
+		if ($insertionList) {
+				// Append data to the end (default):
+			if ($insertionPosition === '') {
 				$list.= ($list ? ', ' : '') . $insertionList;
-				// If data was correctly inserted before or after existing items, recreate the list:
+				// Insert data before or after insertion points:
 			} else {
-				$list = self::generateItemList($items, true);
+				$positions = t3lib_div::trimExplode(',', $insertionPosition, true);
+				$items = self::explodeItemList($list);
+				$isInserted = false;
+					// Iterate through all fields an check whether it's possible to inserte there:
+				foreach ($items as $item => &$itemDetails) {
+					$needles = self::getInsertionNeedles($item, $itemDetails['details']);
+						// Insert data before:
+					foreach ($needles['before'] as $needle) {
+						if (in_array($needle, $positions)) {
+							$itemDetails['rawData'] = $insertionList . ', '  . $itemDetails['rawData'];
+							$isInserted = true;
+							break;
+						}
+					}
+						// Insert data after:
+					foreach ($needles['after'] as $needle) {
+						if (in_array($needle, $positions)) {
+							$itemDetails['rawData'] .= ', ' . $insertionList;
+							$isInserted = true;
+							break;
+						}
+					}
+						// Break if insertion was already done:
+					if ($isInserted) {
+						break;
+					}
+				}
+					// If insertion point could not be determined, append the data:
+				if (!$isInserted) {
+					$list.= ($list ? ', ' : '') . $insertionList;
+					// If data was correctly inserted before or after existing items, recreate the list:
+				} else {
+					$list = self::generateItemList($items, true);
+				}
 			}
 		}
 
@@ -460,26 +466,33 @@ final class t3lib_extMgm {
 	 *  + insertion: 'field_b, field_d, field_c;;;4-4-4'
 	 * -> new insertion: 'field_d'
 	 *
-	 * @param	string		$list: The list of items to be extended
 	 * @param	string		$insertionList: The list of items to inserted
+	 * @param	string		$list: The list of items to be extended (default: '')
 	 * @return	string		Duplicate-free list of items to be inserted
 	 */
-	protected static function removeDuplicatesForInsertion($list, $insertionList) {
+	protected static function removeDuplicatesForInsertion($insertionList, $list = '') {
 		$pattern = '/(^|,)\s*\b([^;,]+)\b[^,]*/';
+		$listItems = array();
 
 		if ($list && preg_match_all($pattern, $list, $listMatches)) {
-			if ($insertionList && preg_match_all($pattern, $insertionList, $insertionListMatches)) {
-				$duplicates = array_intersect($listMatches[2], $insertionListMatches[2]);
-				if ($duplicates) {
-					foreach ($duplicates as &$duplicate) {
-						$duplicate = preg_quote($duplicate, '/');
-					}
-					$insertionList = preg_replace(
-						array('/(^|,)\s*\b(' . implode('|', $duplicates) . ')\b[^,]*(,|$)/', '/,$/'),
-						array('\3', ''),
-						$insertionList
-					);
+			$listItems = $listMatches[2];
+		}
+
+		if ($insertionList && preg_match_all($pattern, $insertionList, $insertionListMatches)) {
+			$insertionItems = array();
+			$insertionDuplicates = false;
+
+			foreach ($insertionListMatches[2] as $insertionIndex => $insertionItem) {
+				if (!isset($insertionItems[$insertionItem]) && !in_array($insertionItem, $listItems)) {
+					$insertionItems[$insertionItem] = true;
+				} else {
+					unset($insertionListMatches[0][$insertionIndex]);
+					$insertionDuplicates = true;
 				}
+			}
+
+			if ($insertionDuplicates) {
+				$insertionList = implode('', $insertionListMatches[0]);
 			}
 		}
 
