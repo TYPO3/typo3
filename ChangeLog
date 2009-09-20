@@ -22,6 +22,7 @@
 
 2009-09-20  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12016: JS and CSS inclusion may contain path/../path2/file
 	* Fixed bug #11933: FrontendEditing (classic) does not work when editing forms on page
 
 2009-09-19  Francois Suter  <francois@typo3.org>

@@ -956,6 +956,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		if (count($this->cssFiles)) {
 			foreach ($this->cssFiles as $file => $properties) {
+				$file = t3lib_div::resolveBackPath($file);
 				$tag = '<link rel="' . $properties['rel'] . '" type="text/css" href="' . $file . '" media="' . $properties['media'] . '"' . ($properties['title'] ? ' title="' . $properties['title'] . '"' : '') . ' />';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
@@ -983,6 +984,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		if (count($this->jsLibs)) {
 			foreach ($this->jsLibs as $name => $properties) {
+				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
 				$tag = '<script src="' . $properties['file'] . '" type="' . $properties['type'] . '"></script>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
@@ -1006,6 +1008,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		if (count($this->jsFiles)) {
 			foreach ($this->jsFiles as $file => $properties) {
+					$file = t3lib_div::resolveBackPath($file);
 					$tag = '<script src="' . $file . '" type="' . $properties['type'] . '"></script>';
 					if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 						$tag = str_replace('|', $tag, $properties['allWrap']);
