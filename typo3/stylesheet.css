@@ -633,6 +633,7 @@ Flash Messages (template.php)
 }
 
 .message-notice {
+	background-image: url(gfx/notice.png);
 	background-color: #fff;
 	border-color: #dee0e1;
 }

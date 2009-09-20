@@ -1,3 +1,5 @@
+/* $Id: $ */
+
 body, p, td, a, span, input, .bodytext {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 1em;
@@ -130,6 +132,7 @@ textarea {
 	border: 1px solid;
 }
 .message-notice {
+	background-image: url("../../../gfx/notice.png");
 	background-color: #fff;
 	border-color: #dee0e1;
 }
