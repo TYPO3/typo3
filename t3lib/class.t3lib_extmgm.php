@@ -372,7 +372,10 @@ final class t3lib_extMgm {
 	}
 
 	/**
-	 * 
+	 * Adds a list of new fields to the TYPO3 USER SETTINGS configuration "showitem" list, the array with 
+	 * the new fields itself needs to be added additionally to show up in the user setup, like 
+	 * $GLOBALS['TYPO3_USER_SETTINGS']['columns'] += $tempColumns
+	 *
 	 * @param	string	$addFields: List of fields to be added to the user settings
 	 * @param	string	$insertionPosition: Insert fields before (default) or after one
 	 * 					of this fields (commalist with "before:" or "after:" commands).
