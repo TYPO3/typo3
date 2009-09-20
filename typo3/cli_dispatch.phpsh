@@ -90,6 +90,10 @@ define('TYPO3_cliKey', $_SERVER['argv'][1]);
 	// Include init file:
 require(dirname(PATH_thisScript).'/init.php');
 
+	// Make sure output is not buffered,
+	// so that command-line output and interaction can take place
+ob_end_flush();
+
 if (defined('TYPO3_cliInclude')) {
 	include(TYPO3_cliInclude);
 } else {
