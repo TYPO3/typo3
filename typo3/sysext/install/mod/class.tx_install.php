@@ -552,16 +552,16 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 
 					$headCode='Header legend';
+					$this->message($headCode, 'Notice!', '
+					Indicates that something is important to be aware of.
+					This does <em>not</em> indicate an error.
+					',1);
 					$this->message($headCode, 'Just information', '
 					This is a simple message with some information about something.
 					');
 					$this->message($headCode, 'Check was successful', '
 					Indicates that something was checked and returned an expected result.
 					',-1);
-					$this->message($headCode, 'Notice!', '
-					Indicates that something is important to be aware of.
-					This does <em>not</em> indicate an error.
-					',1);
 					$this->message($headCode, 'Warning!', '
 					Indicates that something may very well cause trouble and you should definitely look into it before proceeding.
 					This indicates a <em>potential</em> error.
@@ -3371,7 +3371,7 @@ From sub-directory:
 		$out='';
 		$out.='<tr>
 				<td nowrap="nowrap"><strong>'.$this->fw('Update required tables').'</strong></td>
-				<td'.($action_type=='cmpFile|CURRENT_TABLES'?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom').'"><strong>COMPARE</strong></a>').'</td>
+				<td' . ($action_type == 'cmpFile|CURRENT_TABLES' ? ' class="notice"' : '') . '>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom') . '"><strong>COMPARE</strong></a>') . '</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 			</tr>';
@@ -3379,7 +3379,7 @@ From sub-directory:
 		$out.='<tr>
 				<td nowrap="nowrap"><strong>'.$this->fw('Dump static data').'</strong></td>
 				<td>'.$this->fw('&nbsp;').'</td>
-				<td nowrap="nowrap"'.($action_type=='import|CURRENT_STATIC'?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC#bottom').'"><strong>IMPORT</strong></a>').'</td>
+				<td nowrap="nowrap"' . ($action_type == 'import|CURRENT_STATIC' ? ' class="notice"' : '').'>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=import|CURRENT_STATIC#bottom') . '"><strong>IMPORT</strong></a>') . '</td>
 				<td>'.$this->fw('&nbsp;').'</td>
 			</tr>';
 
@@ -3401,27 +3401,27 @@ From sub-directory:
 
 			$out.='<tr>
 				<td nowrap="nowrap">'.$this->fw($fShortName.' ('.t3lib_div::formatSize(filesize($file)).')').'</td>
-				<td'.($action_type=='cmpFile|'.$file?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpFile|'.rawurlencode($file).'#bottom').'"><strong>COMPARE</strong></a>').'</td>
-				<td nowrap="nowrap"'.($action_type=='import|'.$file?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=import|'.rawurlencode($file).'#bottom').'"><strong>IMPORT'.$spec1.$spec2.'</strong></a>').'</td>
-				<td nowrap="nowrap"'.($action_type=='view|'.$file?' class="note"':'').'>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=view|'.rawurlencode($file).'#bottom').'"><strong>VIEW'.$spec1.$spec2.'</strong></a>').'</td>
+				<td' . ($action_type == 'cmpFile|' . $file ? ' class="notice"' : '') . '>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=cmpFile|' . rawurlencode($file) . '#bottom') . '"><strong>COMPARE</strong></a>') . '</td>
+				<td nowrap="nowrap"' . ($action_type == 'import|' . $file ? ' class="notice"' : '') . '>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=import|' . rawurlencode($file) . '#bottom') . '"><strong>IMPORT' . $spec1 . $spec2 . '</strong></a>') . '</td>
+				<td nowrap="nowrap"' . ($action_type == 'view|' . $file ? ' class="notice"' : '') . '>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=view|' . rawurlencode($file) . '#bottom') . '"><strong>VIEW' . $spec1 . $spec2 . '</strong></a>') . '</td>
 			</tr>';
 		}
 			// TCA
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="cmpTCA|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cmpTCA|#bottom').'">Compare with $TCA</a>').'</strong></td>
+			<td colspan="3"' . ($action_type == "cmpTCA|" ? ' class="notice"' : '') . '><strong>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=cmpTCA|#bottom') . '">Compare with $TCA</a>') . '</strong></td>
 		</tr>';
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="adminUser|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=adminUser|#bottom').'">Create "admin" user</a>').'</strong></td>
+			<td colspan="3"' . ($action_type == "adminUser|" ? ' class="notice"' : '') . '><strong>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=adminUser|#bottom') . '">Create "admin" user</a>') . '</strong></td>
 		</tr>';
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="UC|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=UC|#bottom').'">Reset user preferences</a>').'</strong></td>
+			<td colspan="3"' . ($action_type == "UC|" ? ' class="notice"' : '') . '><strong>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=UC|#bottom') . '">Reset user preferences</a>') . '</strong></td>
 		</tr>';
 		$out.='<tr>
 			<td></td>
-			<td colspan="3"'.($action_type=="cache|"?' class="note"':'').'><strong>'.$this->fw('<a href="'.htmlspecialchars($this->action.'&TYPO3_INSTALL[database_type]=cache|#bottom').'">Clear tables</a>').'</strong></td>
+			<td colspan="3"' . ($action_type == "cache|" ? ' class="notice"' : '') . '><strong>' . $this->fw('<a href="' . htmlspecialchars($this->action . '&TYPO3_INSTALL[database_type]=cache|#bottom') . '">Clear tables</a>') . '</strong></td>
 		</tr>';
 
 		$theForm='<table border="0" cellpadding="2" cellspacing="2">'.$out.'</table>';
@@ -4731,30 +4731,29 @@ $out="
 	 * @return	void
 	 */
 	function printSection($head, $short_string, $long_string, $type)	{
-		$icon='';
-		$cssClass =' class="note"';
 		switch($type)	{
-			case '3':
-				$cssClass =' class="error"';
-				$icon = 'gfx/icon_fatalerror.gif';
+			case 3:
+				$cssClass = ' class="typo3-message message-error"';
 			break;
-			case '2':
-				$cssClass =' class="warning"';
-				$icon = 'gfx/icon_warning.gif';
+			case 2:
+				$cssClass = ' class="typo3-message message-warning"';
 			break;
-			case '1':
-				$icon = 'gfx/icon_note.gif';
-			break;
-			case '-1':
-				$cssClass =' class="success"';
-				$icon = 'gfx/icon_ok.gif';
+			case 1:
+				$cssClass =' class="typo3-message message-notice"';
+				break;
+			case 0:
+				$cssClass = ' class="typo3-message message-information"';
+				break;
+			case -1:
+				$cssClass = ' class="typo3-message message-ok"';
 			break;
 		}
+
 		if (!trim($short_string))	{
 			$this->sections[$head][]='';
 		} else {
 			$this->sections[$head][]='
-			<tr><td' . $cssClass . ' nowrap="nowrap">' . ($icon ? '<img src="' . $this->backPath . $icon . '" width="18" height="16" align="top" alt="">' : '') . '<strong>' . $this->fw($short_string) . '</strong></td></tr>' . (trim($long_string) ? '
+			<tr><td' . $cssClass . ' nowrap="nowrap">' . '<strong>' . $this->fw($short_string) . '</strong></td></tr>' . (trim($long_string) ? '
 			<tr><td>' . $this->fw($long_string) . '<br /><br /></td></tr>' : '');
 		}
 	}
@@ -4815,7 +4814,7 @@ $out="
 		while(list($header,$valArray)=each($this->sections))	{
 			$out.='
 			<tr><td>&nbsp;</td></tr>
-			<tr><td><div align="center"><strong>'.$this->fw($header.':',2).'</strong></div></td></tr>
+			<tr><td><div align="center"><strong>*'.$this->fw($header.':',2).'</strong></div></td></tr>
 			';
 			$out.=implode($valArray,chr(10));
 		}
@@ -4959,7 +4958,7 @@ $out="
 	function note123()	{
 		if ($this->mode=='123')	{
 			$c='<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr><td class="note" nowrap="nowrap"><img src="'.$this->backPath.'gfx/icon_note.gif" width="18" height="16" align="top" alt=""><strong>'.$this->fontTag1.'NOTICE: Install Tool is running in \'123\' mode. <a href="'.$this->scriptSelf.'">Click here to disable.</a></span></strong></td></tr>
+				<tr><td class="notice" nowrap="nowrap"><img src="' . $this->backPath . 'gfx/icon_note.gif" width="18" height="16" align="top" alt=""><strong>' . $this->fontTag1 . 'NOTICE: Install Tool is running in \'123\' mode. <a href="' . $this->scriptSelf . '">Click here to disable.</a></span></strong></td></tr>
 			</table>';
 			return $c;
 		}

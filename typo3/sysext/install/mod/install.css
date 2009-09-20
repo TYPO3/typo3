@@ -3,17 +3,17 @@ body, p, td, a, span, input, .bodytext {
 	font-size: 1em;
 	color: #000;
 	text-align: left;
-	word-wrap: break-word; 
+	word-wrap: break-word;
 }
 
-h1, 
-h2 { 
-	font-family: verdana, arial, helvetica, sans-serif; 
+h1,
+h2 {
+	font-family: verdana, arial, helvetica, sans-serif;
 	font-weight: bold;
 }
 
 h1 {
-	font-size: 14pt; 
+	font-size: 14pt;
 }
 
 h2 {
@@ -21,7 +21,7 @@ h2 {
 }
 
 a {
-	color: #600; 
+	color: #600;
 	text-decoration: none;
 }
 
@@ -30,7 +30,7 @@ a:active {
 }
 
 a:hover {
-	color: #006; 
+	color: #006;
 	text-decoration: underline;
 }
 
@@ -38,9 +38,9 @@ table {
 	width: 100%;
 }
 
-th { 
-	font-size: 10pt; 
-	font-weight: bold; 
+th {
+	font-size: 10pt;
+	font-weight: bold;
 }
 
 textarea {
@@ -93,13 +93,6 @@ textarea {
 	background-color: black;
 }
 
-.warning {
-	background-color: #ffc67f;
-}
-.success {
-	background-color: #af5;
-}
-
 .editFile {
 	text-align: center;
 	max-width: 900px;
@@ -111,21 +104,13 @@ textarea {
 	width: 900px;
 }
 
-.error {
-	background-color: #f66;
-}
-
 .siteInfo {
 	color: navy;
 }
 
-.note {
-	background-color: #d7dbe2;
-}
-
 .updateWizardBoxes {
-	border: 1px solid; 
-	margin: 10px; 
+	border: 1px solid;
+	margin: 10px;
 	padding: 0px 10px 10px;
 }
 
@@ -133,6 +118,49 @@ textarea {
 .tcaTableHeader {
 	background-color: #b3b7bd;
 }
+
+/* Styles for messages (matching flash messages) */
+
+.typo3-message {
+	padding: 6px;
+	padding-left: 26px;
+	margin-bottom: 4px;
+	background-repeat: no-repeat;
+	background-position: 5px 7px;
+	border: 1px solid;
+}
+.message-notice {
+	background-color: #fff;
+	border-color: #dee0e1;
+}
+.message-information {
+	background-image: url("../../../gfx/information.png");
+	background-color: #dfedf8;
+	border-color: #bccfe4;
+}
+.message-ok {
+	background-image: url("../../../gfx/ok.png");
+	background-color: #dfd;
+	border-color: #beb;
+}
+.message-warning {
+	background-image: url("../../../gfx/warning.png");
+	background-color: #ffd;
+	border-color: #f6ea68;
+}
+.message-error {
+	background-image: url("../../../gfx/error.png");
+	background-color: #fcc;
+	border-color: #ebb;
+}
+/* Colors to match above message styles, but without the icon in the background */
+.warning {
+	background-color: #ffd;
+}
+.notice {
+	background-color: #fff;
+}
+
 
 /* Menus */
 #imageMenu,
@@ -148,10 +176,10 @@ textarea {
 	text-decoration: none;
 }
 
-#imageMenu td.generalTableBackground a:hover,	
+#imageMenu td.generalTableBackground a:hover,
 #menu td.generalTableBackground a:hover {
 	display: block;
-	background-color: #fa8800;	
+	background-color: #fa8800;
 	text-decoration: none;
 }
 
@@ -172,7 +200,7 @@ textarea {
 
 /* phpinfo */
 pre {
-	margin: 0px; 
+	margin: 0px;
 	font-family: monospace;
 }
 .phpinfo table {
@@ -181,19 +209,19 @@ pre {
 .center {
 	text-align: center;
 }
-.center table { 
-	margin-left: auto; 
-	margin-right: auto; 
+.center table {
+	margin-left: auto;
+	margin-right: auto;
 	text-align: left;
 }
 
-.center th { 
-	text-align: center !important; 
+.center th {
+	text-align: center !important;
 }
-.phpinfo td, 
-.phpinfo th { 
-	border: 1px solid #000000; 
-	font-size: 75%; 
+.phpinfo td,
+.phpinfo th {
+	border: 1px solid #000000;
+	font-size: 75%;
 	vertical-align: baseline;
 }
 
@@ -210,37 +238,37 @@ h2 {
 }
 
 .e {
-	background-color: #ccf; 
-	font-weight: bold; 
+	background-color: #ccf;
+	font-weight: bold;
 	color: #000000;
 }
 
 .h {
-	background-color: #99c; 
-	font-weight: bold; 
+	background-color: #99c;
+	font-weight: bold;
 	color: #000000;
 }
 
 .v {
-	background-color: #ccc; 
+	background-color: #ccc;
 	color: #000000;
 }
 
 .vr {
-	background-color: #ccc; 
-	text-align: right; 
+	background-color: #ccc;
+	text-align: right;
 	color: #000000;
 }
 
 .phpinfo img {
-	float: right; 
+	float: right;
 	border: 0px;
 }
 
 .phpinfo hr {
-	width: 600px; 
-	background-color: #ccc; 
-	border: 0px; 
-	height: 1px; 
+	width: 600px;
+	background-color: #ccc;
+	border: 0px;
+	height: 1px;
 	color: #000000;
 }
