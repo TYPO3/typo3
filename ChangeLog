@@ -1,3 +1,7 @@
+2009-09-21  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised extbase version to 0.9.8. This is a follow-up to bug #11903 and additionally makes the reflection cache work.
+
 2009-09-21  Rupert Germann  <rupi@gmx.li>
 
 	* Follow-up to bug #11505: clearing page cache from adminpanel didn't work
