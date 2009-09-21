@@ -412,9 +412,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function parseDynamicOperand(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand, $operator, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, $valueFunction = NULL) {
 		if ($operand instanceof Tx_Extbase_Persistence_QOM_LowerCaseInterface) {
-			$this->parseDynamicOperand($operand->getOperand(), $operator, $sql, $parameters, 'LOWER');
+			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, $parameters, 'LOWER');
 		} elseif ($operand instanceof Tx_Extbase_Persistence_QOM_UpperCaseInterface) {
-			$this->parseDynamicOperand($operand->getOperand(), $operator, $sql, $parameters, 'UPPER');
+			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, $parameters, 'UPPER');
 		} elseif ($operand instanceof Tx_Extbase_Persistence_QOM_PropertyValueInterface) {
 			$tableName = $operand->getSelectorName();
 			// FIXME Discuss the translation from propertyName to columnName

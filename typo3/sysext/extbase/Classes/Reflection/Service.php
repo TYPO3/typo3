@@ -175,20 +175,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	}
 
 	/**
-	 * Searches for and returns all names of classes which are tagged by the specified tag.
-	 * If no classes were found, an empty array is returned.
-	 *
-	 * @param string $tag Tag to search for
-	 * @return array An array of class names tagged by the tag
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @api
-	 */
-	public function getClassNamesByTag($tag) {
-		if ($this->initialized !== TRUE) throw new Tx_Extbase_Reflection_Exception('Reflection has not yet been initialized.', 1238667825);
-		return (isset($this->taggedClasses[$tag])) ? $this->taggedClasses[$tag] : array();
-	}
-
-	/**
 	 * Returns the names of all properties of the specified class
 	 *
 	 * @param string $className Name of the class to return the property names of
@@ -412,6 +398,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			}
 		}
 		$this->classSchemata[$className] = $classSchema;
+		$this->cacheNeedsUpdate = TRUE;
 		return $classSchema;
 	}
 
@@ -474,8 +461,9 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
 	 */
 	protected function loadFromCache() {
-		if ($this->cache->has('ReflectionData')) {
-			$data = $this->cache->get('ReflectionData');
+		$cacheKey = $this->getCacheKey();
+		if ($this->cache->has($cacheKey)) {
+			$data = $this->cache->get($cacheKey);
 			foreach ($data as $propertyName => $propertyValue) {
 				$this->$propertyName = $propertyValue;
 			}
@@ -504,12 +492,25 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			'methodTagsValues',
 			'methodParameters',
 			'propertyTagsValues',
-			'taggedClasses'
+			'taggedClasses',
+			'classSchemata'
 		);
 		foreach ($propertyNames as $propertyName) {
 			$data[$propertyName] = $this->$propertyName;
 		}
-		$this->cache->set('ReflectionData', $data);
+		$this->cache->set($this->getCacheKey(), $data);
+	}
+
+	/**
+	 * Get the name of the cache row identifier. Incorporates the extension name
+	 * and the plugin name so that all information which is needed for a single
+	 * plugin can be found in one cache row.
+	 *
+	 * @return string
+	 */
+	protected function getCacheKey() {
+		$frameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		return $frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName'];
 	}
 }
 ?>

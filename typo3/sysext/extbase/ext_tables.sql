@@ -11,3 +11,16 @@ CREATE TABLE tx_extbase_cache_reflection (
   PRIMARY KEY (id),
   KEY cache_id (identifier)
 ) ENGINE=InnoDB;
+
+
+#
+# Table structure for table 'tx_extbase_cache_reflection_tags'
+#
+CREATE TABLE tx_extbase_cache_reflection_tags (
+  id int(11) unsigned NOT NULL auto_increment,
+  identifier varchar(128) DEFAULT '' NOT NULL,
+  tag varchar(128) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id),
+  KEY cache_id (identifier),
+  KEY cache_tag (tag)
+) ENGINE=InnoDB;
