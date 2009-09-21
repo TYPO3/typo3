@@ -1,3 +1,7 @@
+2009-09-21  Rupert Germann  <rupi@gmx.li>
+
+	* Follow-up to bug #11505: clearing page cache from adminpanel didn't work
+
 2009-09-21  Oliver Hader  <oliver@typo3.org>
 
 	* !!! Fixed bug #11903: Use separate tables for tags in the caching framework

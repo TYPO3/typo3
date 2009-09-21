@@ -2882,7 +2882,7 @@
 	 * @return	void
 	 */
 	function clearPageCacheContent_pidList($pidList) {
-		if (!TYPO3_UseCachingFramework) {
+		if (TYPO3_UseCachingFramework) {
 			$pageIds = t3lib_div::trimExplode(',', $pidList);
 			foreach ($pageIds as $pageId) {
 				$this->pageCache->flushByTag('pageId_' . (int) $pageId);
