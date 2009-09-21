@@ -5,6 +5,7 @@
 2009-09-21  Rupert Germann  <rupi@gmx.li>
 
 	* Follow-up to bug #11505: clearing page cache from adminpanel didn't work
+	* Fixed bug #12014: Extension Manager is not translatable (part 7) (thanks to Christopher Stelmaszyk)
 
 2009-09-21  Oliver Hader  <oliver@typo3.org>
 
