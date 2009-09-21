@@ -1174,6 +1174,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				$this->jsFiles[$this->backPath . 'contrib/extjs/ext-all.js'], $this->jsFiles[$this->backPath . 'contrib/extjs/ext-all-debug.js']
 			);
 		}
+		
+		$inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
+		$inlineSettings .= $this->inlineSettings ? 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' : '';
+		
 		if ($this->addExtCore || $this->addExtJS) {
 				// set clear.gif, move it on top, add handler code
 			$code = '';
@@ -1186,7 +1190,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$out .= $this->inlineJavascriptWrap[0] . '
 				Ext.ns("TYPO3");
 				Ext.BLANK_IMAGE_URL = "' . htmlspecialchars(t3lib_div::locationHeaderUrl($this->backPath . 'gfx/clear.gif')) . '";' . chr(10) . 
-				'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' . 'TYPO3.settings = ' . json_encode($this->inlineSettings) . ';' .
+				$inlineSettings .
 				'Ext.onReady(function() {' .
 				($this->enableExtJSQuickTips ? 'Ext.QuickTips.init();' . chr(10) : '') . $code .
 				' });' . $this->inlineJavascriptWrap[1];
@@ -1206,7 +1210,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css', 'stylesheet', 'screen', '', FALSE, TRUE);
 				}
 			}
-
+		} else {
+			if ($inlineSettings) {
+				$out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
+		}
 		}
 
 		return $out;
@@ -1258,7 +1265,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// use extern compress routine
 			$params = array (
 				'jsInline'        => &$this->jsInline, 
-				'jsFooterInline'  => &$this->jsFooterInline
+				'jsFooterInline'  => &$this->jsFooterInline,
+				'jsLibs'          => &$this->jsLibs, 
+				'jsFiles'         => &$this->jsFiles, 
+				'jsFooterFiles'   => &$this->jsFiles, 
 			);
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
 		} else {
@@ -1283,7 +1293,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if ($this->compressCss && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler']) {
 				// use extern compress routine
 			$params = array (
-				'cssInline' => &$this->cssInline
+				'cssInline' => &$this->cssInline,
+				'cssFiles'  => &$this->cssFiles,
 			);
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'], $params, $this);
 		} else {
