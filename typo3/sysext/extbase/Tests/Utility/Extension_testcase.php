@@ -74,7 +74,7 @@ class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 	 * @test
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
-	public function configurePluginAddsEnablesCacheClearingByDefault() {
+	public function configurePluginCreatesCorrectDefaultTypoScriptSetup() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
 		Tx_Extbase_Utility_Extension::configurePlugin(
@@ -86,8 +86,21 @@ class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 		$defaultTypoScript = $TYPO3_CONF_VARS['FE']['defaultTypoScript_setup'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
-plugin.tx_blogexample.persistence {
-	enableAutomaticCacheClearing = 1', $defaultTypoScript);
+plugin.tx_blogexample {
+	settings {
+	}
+	persistence {
+		storagePid =
+		enableAutomaticCacheClearing = 1
+		classes {
+		}
+	}
+	view {
+		templateRootPath =
+		layoutRootPath =
+		partialRootPath =
+	}
+}', $defaultTypoScript);
 	}
 
 	/**

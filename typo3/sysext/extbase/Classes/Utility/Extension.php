@@ -114,19 +114,21 @@ tt_content.list.20.' . $pluginSignature . ' = ' . ($contentObjectType === 'USER'
 			}
 		}
 
-		$pluginTemplate = trim('plugin.tx_' . strtolower($extensionName) . '.settings {
-}
-plugin.tx_' . strtolower($extensionName) . '.persistence {
-	enableAutomaticCacheClearing = 1
-	# storagePid
-	classes {
+		$pluginTemplate = 'plugin.tx_' . strtolower($extensionName) . ' {
+	settings {
 	}
-}
-plugin.tx_' . strtolower($extensionName) . '.view {
-	templateRootPath =
-	layoutRootPath =
-	parialRootPath =
-}'		);
+	persistence {
+		storagePid =
+		enableAutomaticCacheClearing = 1
+		classes {
+		}
+	}
+	view {
+		templateRootPath =
+		layoutRootPath =
+		partialRootPath =
+	}
+}';
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
 ' . $pluginTemplate);
