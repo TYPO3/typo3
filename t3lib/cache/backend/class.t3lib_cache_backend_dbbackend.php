@@ -33,6 +33,54 @@
 class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
 
 	protected $cacheTable;
+	protected $tagsTable;
+
+	protected $identifierField;
+	protected $creationField;
+	protected $lifetimeField;
+	protected $notExpiredStatement;
+	protected $tableList;
+	protected $tableJoin;
+
+	/**
+	 * Constructs this backend
+	 *
+	 * @param mixed Configuration options - depends on the actual backend
+	 */
+	public function __construct(array $options = array()) {
+		parent::__construct($options);
+
+		if (!$this->cacheTable) {
+			throw new t3lib_cache_Exception(
+				'No table to write data to has been set using the setting "cacheTable".',
+				1253534136
+			);
+		}
+
+		if (!$this->tagsTable) {
+			throw new t3lib_cache_Exception(
+				'No table to write tags to has been set using the setting "tagsTable".',
+				1253534137
+			);
+		}
+
+		$this->initializeCommonReferences();
+	}
+
+	/**
+	 * Initializes common references used in this backend.
+	 *
+	 * @return	void
+	 */
+	protected function initializeCommonReferences() {
+		$this->identifierField = $this->cacheTable . '.identifier';
+		$this->creationField = $this->cacheTable . '.crdate';
+		$this->lifetimeField = $this->cacheTable . '.lifetime';
+		$this->tableList = $this->cacheTable . ', ' . $this->tagsTable;
+		$this->tableJoin = $this->identifierField . ' = ' . $this->tagsTable . '.identifier';
+		$this->notExpiredStatement = '(' . $this->creationField . ' + ' . $this->lifetimeField .
+			' >= ' . $GLOBALS['EXEC_TIME'] . ' OR ' . $this->lifetimeField . ' = 0)';
+	}
 
 	/**
 	 * Saves data in a cache file.
@@ -73,10 +121,19 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 				'identifier' => $entryIdentifier,
 				'crdate'     => $GLOBALS['EXEC_TIME'],
 				'content'    => $data,
-				'tags'       => implode(',', $tags),
 				'lifetime'   => $lifetime
 			)
 		);
+
+		foreach ($tags as $tag) {
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+				$this->tagsTable,
+				array(
+					'identifier' => $entryIdentifier,
+					'tag'        => $tag,
+				)
+			);
+		}
 	}
 
 	/**
@@ -143,6 +200,11 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable)
 		);
 
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->tagsTable,
+			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->tagsTable)
+		);
+
 		if($GLOBALS['TYPO3_DB']->sql_affected_rows($res) == 1) {
 			$entryRemoved = true;
 		}
@@ -161,9 +223,12 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$cacheEntryIdentifiers = array();
 
 		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'identifier',
-			$this->cacheTable,
-			$this->getListQueryForTag($tag) . ' AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
+			$this->identifierField,
+			$this->tableList,
+			$this->getQueryForTag($tag) .
+				' AND ' . $this->tableJoin .
+				' AND ' . $this->notExpiredStatement,
+			$this->identifierField
 		);
 
 		foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
@@ -186,14 +251,17 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$whereClause  = array();
 
 		foreach ($tags as $tag) {
-			$whereClause[] = $this->getListQueryForTag($tag);
+			$whereClause[] = $this->getQueryForTag($tag);
 		}
-		$whereClause[] = '(crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)';
+
+		$whereClause[] = $this->tableJoin;
+		$whereClause[] = $this->notExpiredStatement;
 
 		$cacheEntryIdentifierRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'identifier',
-			$this->cacheTable,
-			implode(' AND ', $whereClause)
+			$this->identifierField,
+			$this->tableList,
+			implode(' AND ', $whereClause),
+			$this->identifierField
 		);
 
 		foreach ($cacheEntryIdentifierRows as $cacheEntryIdentifierRow) {
@@ -211,6 +279,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 */
 	public function flush() {
 		$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $this->cacheTable);
+		$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $this->tagsTable);
 	}
 
 	/**
@@ -220,9 +289,11 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	public function flushByTag($tag) {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-			$this->cacheTable,
-			$this->getListQueryForTag($tag)
+		$GLOBALS['TYPO3_DB']->exec_DELETEmultipleTablesQuery(
+			$this->tableList,
+			$this->tableList,
+			$this->tableJoin .
+				' AND ' . $this->getQueryForTag($tag)
 		);
 	}
 
@@ -233,16 +304,19 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	public function flushByTags(array $tags) {
-		$listQueryConditions = array();
-		foreach ($tags as $tag) {
-			$listQueryConditions[$tag] = $this->getListQueryForTag($tag);
+		if (count($tags)) {
+			$listQueryConditions = array();
+			foreach ($tags as $tag) {
+				$listQueryConditions[$tag] = $this->getQueryForTag($tag);
+			}
+	
+			$GLOBALS['TYPO3_DB']->exec_DELETEmultipleTablesQuery(
+				$this->tableList,
+				$this->tableList,
+				$this->tableJoin .
+					' AND (' . implode(' OR ', $listQueryConditions) . ')'
+			);
 		}
-
-		$listQuery = implode(' OR ', $listQueryConditions);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-			$this->cacheTable,
-			$listQuery
-		);
 	}
 
 	/**
@@ -252,6 +326,14 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbage() {
+		$GLOBALS['TYPO3_DB']->exec_DELETEmultipleTablesQuery(
+			$this->tableList,
+			$this->tableList,
+			$this->tableJoin .
+				' AND ' . $this->cacheTable . '.crdate + ' . $this->cacheTable . '.lifetime < ' . $GLOBALS['EXEC_TIME'] .
+				' AND ' . $this->cacheTable . '.lifetime > 0'
+		);
+
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
 			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
@@ -300,6 +382,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		}
 */
 		$this->cacheTable = $cacheTable;
+		$this->initializeCommonReferences();
 	}
 
 	/**
@@ -313,6 +396,26 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	}
 
 	/**
+	 * Sets the table where cache tags are stored.
+	 *
+	 * @param	string		$tagsTabls: Name of the table
+	 * @return	void
+	 */
+	public function setTagsTable($tagsTable) {
+		$this->tagsTable = $tagsTable;
+		$this->initializeCommonReferences();
+	}
+
+	/**
+	 * Gets the table where cache tags are stored.
+	 *
+	 * @return	string		Name of the table storing tags
+	 */
+	public function getTagsTable() {
+		return $this->tagsTable;
+	}
+
+	/**
 	 * Gets the query to be used for selecting entries by a tag. The asterisk ("*")
 	 * is allowed as a wildcard at the beginning and the end of a tag.
 	 *
@@ -320,8 +423,18 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return string the query to be used for selecting entries
 	 * @author Oliver Hader <oliver@typo3.org>
 	 */
-	protected function getListQueryForTag($tag) {
-		return str_replace('*', '%', $GLOBALS['TYPO3_DB']->listQuery('tags', $tag, $this->cacheTable));
+	protected function getQueryForTag($tag) {
+		if (strpos($tag, '*') === false) {
+			$query = $this->tagsTable . '.tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tag, $this->tagsTable);
+		} else {
+			$patternForLike = $GLOBALS['TYPO3_DB']->escapeStrForLike(
+				$GLOBALS['TYPO3_DB']->quoteStr($tag, $this->tagsTable),
+				$this->tagsTable
+			);
+			$query = $this->tagsTable . '.tag LIKE \'' . $patternForLike . '\'';
+		}
+
+		return $query;
 	}
 }
 

@@ -123,19 +123,22 @@ $TYPO3_CONF_VARS = Array(
 				'cache_hash' => array(
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
-						'cacheTable' => 'cachingframework_cache_hash'
+						'cacheTable' => 'cachingframework_cache_hash',
+						'tagsTable' => 'cachingframework_cache_hash_tags',
 					)
 				),
 				'cache_pages' => array(
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
-						'cacheTable' => 'cachingframework_cache_pages'
+						'cacheTable' => 'cachingframework_cache_pages',
+						'tagsTable' => 'cachingframework_cache_pages_tags',
 					)
 				),
 				'cache_pagesection' => array(
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
-						'cacheTable' => 'cachingframework_cache_pagesection'
+						'cacheTable' => 'cachingframework_cache_pagesection',
+						'tagsTable' => 'cachingframework_cache_pagesection_tags',
 					)
 				)
 				/*

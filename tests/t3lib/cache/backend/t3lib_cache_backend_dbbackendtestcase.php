@@ -63,6 +63,7 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 	protected $backend;
 
 	protected $testingCacheTable;
+	protected $testingTagsTable;
 
 	/**
 	 * Sets up this testcase
@@ -72,6 +73,7 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 	 */
 	public function setUp() {
 		$this->testingCacheTable = 'test_cache_dbbackend';
+		$this->testingTagsTable = 'test_cache_dbbackend_tags';
 
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
@@ -85,9 +87,22 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 		) ENGINE=InnoDB;
 		');
 
+		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingTagsTable . ' (
+			id int(11) unsigned NOT NULL auto_increment,
+			identifier varchar(128) DEFAULT \'\' NOT NULL,
+			tag varchar(128) DEFAULT \'\' NOT NULL,
+			PRIMARY KEY (id),
+			KEY cache_id (identifier),
+			KEY cache_tag (tag)
+		) ENGINE=InnoDB;
+		');
+
 		$this->backend = t3lib_div::makeInstance(
 			't3lib_cache_backend_DbBackend',
-			array('cacheTable' => $this->testingCacheTable)
+			array(
+				'cacheTable' => $this->testingCacheTable,
+				'tagsTable' => $this->testingTagsTable,
+			)
 		);
 	}
 
@@ -213,13 +228,17 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
-			$this->testingCacheTable,
+			$this->testingTagsTable,
 			'identifier = \'' . $entryIdentifier . '\''
 		);
 
-		$tags = explode(',', $entriesFound[0]['tags']);
+		$tags = array();
 
-		$this->assertTrue(is_array($tags) && count($entriesFound) > 0, 'The tags do not exist.');
+		foreach ($entriesFound as $entry) {
+			$tags[] = $entry['tag'];
+		}
+
+		$this->assertTrue(count($tags) > 0, 'The tags do not exist.');
 		$this->assertTrue(in_array('UnitTestTag%tag1', $tags), 'Tag UnitTestTag%tag1 does not exist.');
 		$this->assertTrue(in_array('UnitTestTag%tag2', $tags), 'Tag UnitTestTag%tag2 does not exist.');
 	}
@@ -336,6 +355,7 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 		$this->assertTrue(is_array($entriesFound) && count($entriesFound) > 0, 'The cache entry does not exist.');
 
 		sleep(2);
+		$GLOBALS['EXEC_TIME'] += 2;
 		$this->backend->collectGarbage();
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -377,6 +397,7 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 		$this->assertTrue(is_array($entriesFound) && count($entriesFound) > 0, 'The cache entries do not exist.');
 
 		sleep(2);
+		$GLOBALS['EXEC_TIME'] += 2;
 		$this->backend->collectGarbage();
 
 		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -495,6 +516,7 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 		$this->backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
 
 		sleep(2);
+		$GLOBALS['EXEC_TIME'] += 2;
 
 		$this->assertFalse($this->backend->has($expiredEntryIdentifier), 'has() did not return FALSE.');
 	}
@@ -522,6 +544,7 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 		$this->backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
 
 		sleep(2);
+		$GLOBALS['EXEC_TIME'] += 2;
 
 		$this->assertEquals($data, $this->backend->get($entryIdentifier), 'The original and the retrieved data don\'t match.');
 		$this->assertFalse($this->backend->get($expiredEntryIdentifier), 'The expired entry could be loaded.');
@@ -543,6 +566,9 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 		$this->backend->set('BackendDbTest', 'some data', array('UnitTestTag%special'), 1);
 
 		sleep(2);
+		$GLOBALS['EXEC_TIME'] += 2;
+			// Not required, but used to update the pre-calculated queries:
+		$this->backend->setTagsTable($this->testingTagsTable);
 
 		$this->assertEquals(array(), $this->backend->findIdentifiersByTag('UnitTestTag%special'));
 	}
@@ -579,12 +605,15 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 
 
 	/**
-	 * @test
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function tearDown() {
 		$GLOBALS['TYPO3_DB']->sql_query(
 			'DROP TABLE ' . $this->testingCacheTable . ';'
+		);
+
+		$GLOBALS['TYPO3_DB']->sql_query(
+			'DROP TABLE ' . $this->testingTagsTable . ';'
 		);
 	}
 
