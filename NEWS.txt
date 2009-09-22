@@ -72,6 +72,12 @@ Backend
 
 	* The workspace selector has been turned to an item in the toolbar menu.
 
+	* It is now possible to disable versioning and workspaces by un-installing the extension
+	  "version" which is no longer a required extension. If "version" is not installed all
+	  versioning and workspace related controls are removed from the backend user interface.
+	  Not installing "version" will improve the backend performance because a lot of database
+	  operations are not needed anymore.
+
 	* The elements shown when creating new content elements (like "regular text element" etc.)
 	  can be configured, modified and extended by Page TSconfig "mod.wizards.newContentElement".
 
@@ -161,8 +167,9 @@ Compatibility
 	  The install tool has a setting "enableDeprecationLog" that allows one to disable the logging of
 	  deprecation messages since the file might grow quite fast depending on the extensions installed.
 
-	* The caching system has been revamped. It is not possible to query the cache tables directly.
-	  Any compliant extension has to use the new caching framework.
+	* If you use the caching framework it is not possible anymore to query the cache tables directly.
+	  Any extension that needs the new caching framework has to make sure that it is initialized by
+	  calling t3lib_cache::initializeCachingFramework().
 
 	* The simulateStaticDocument functionality (URLs like "MyPage.13.0.html" instead of "index.php?id=13")
 	  was extracted and put to a separate system extension "simulatestatic".
@@ -179,6 +186,11 @@ Compatibility
 	  that make use of the cHash, like RealURL or the Crawler. Make sure to update those extensions
 	  to their latest version.
 
+	* As mentioned in "Backend", the extension "version" is no longer "required" and therefore it
+	  will not  be installed by default anymore if you update an existing site. If you use
+	  versioning and workspaces you have to re-enable it after the update by installing it with
+	  the extension manager or with the update wizard in install tool.
+
 Development
 ===========
 
@@ -187,6 +199,10 @@ Development
 
 	* A new caching framework has been added. It allows extensions to store temporary data
 	  transparently to different cache back ends (database, file system or memory).
+	  Due to its flexibility the caching framework is a bit slower than the native database
+	  caching, therefore it is disabled by default. If you use a multi-machine environment where
+	  you can distribute the caches over multiple servers the caching framework can be
+	  way faster than the native native database caching.
 
 	* Frontend plugins now can convert themselves from USER to USER_INT on the fly. This
 	  is useful for plugins who can disallow caching using a TSConfig option (for example,
@@ -257,6 +273,9 @@ Backend skin
 Speed improvements
 ==================
 
+	* TYPO3 4.3 is the first TYPO3 version that is faster than it's predecessor. This has
+	  achieved by constantly monitoring performance impacts of all changes in the core.
+
 	* PHP classes for frontend plugins are now loaded only if they are used to render
 	  content by enabling the "includeLibs" property also for USER objects in TypoScript.
 	  In the past, all available class files for frontend plugins were loaded so this new
@@ -276,6 +295,9 @@ Speed improvements
 	  than the list of all extensions this will result in 2 new temp_CACHED_FE* files which are
 	  smaller than the files containing all extensions settings. This can save some
 	  precious milliseconds when delivering content.
+
+	* The amount of database queries is reduced using the "treelist cache". Thus, the frontend
+	  renders a bit faster due to this optimization.
 
 
 Important bugfixes

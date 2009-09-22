@@ -2,6 +2,7 @@
 
 	* Reverted bugfix #9599: felogin - forget password action and logout action are still cached
 	* Fixed bug #12041: felogin - Checking for cHashes results in the whole page being uncached
+	* Cleanup: Updated NEWS.txt
 
 2009-09-22  Steffen Kamper  <info@sk-typo3.de>
 
