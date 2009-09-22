@@ -5,6 +5,7 @@
 
 2009-09-22  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11496: Text and headers are bad readable
 	* Follow-up to bug #12017: Added vars from tbe_editor.js to TS-object
 	* Fixed bug #11994: Add more Flexibility to PageRenderer
 

@@ -33,6 +33,7 @@ div {
 	font-size: 10px;
 	margin: 0px;
 	color: black;
+	line-height: 14px;
 }
 
 form {
@@ -46,7 +47,7 @@ h4 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	font-weight: bold;
-	margin: 3px 0px 3px 0px;
+	margin: 6px 0;
 }
 
 /* Occasionally used, eg. in About Modules: */
