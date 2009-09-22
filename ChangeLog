@@ -1,5 +1,6 @@
 2009-09-22  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #12017: Added vars from tbe_editor.js to TS-object
 	* Fixed bug #11994: Add more Flexibility to PageRenderer
 
 2009-09-21  Sebastian Kurfuerst  <sebastian@typo3.org>

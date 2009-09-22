@@ -456,8 +456,12 @@ class SC_alt_doc {
 				}
 			}
 				// Object: TS:
+				// passwordDummy and decimalSign are used by tbe_editor.js and have to be declared here as
+				// TS object overwrites the object declared in tbe_editor.js
 			function typoSetup	()	{	//
 				this.uniqueID = "";
+				this.passwordDummy = "********";
+				this.decimalSign = ".";
 			}
 			var TS = new typoSetup();
 
