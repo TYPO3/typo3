@@ -1,3 +1,7 @@
+2009-09-22  Oliver Hader  <oliver@typo3.org>
+
+	* Reverted bugfix #9599: felogin - forget password action and logout action are still cached
+
 2009-09-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to bug #12017: Added vars from tbe_editor.js to TS-object
