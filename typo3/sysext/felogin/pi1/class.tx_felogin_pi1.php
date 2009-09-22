@@ -36,7 +36,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 	var $prefixId      = 'tx_felogin_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_felogin_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'felogin';	// The extension key.
-	var $pi_checkCHash = true;
+	public $pi_checkCHash = false;
+	public $pi_USER_INT_obj = true;
 	var $userIsLoggedIn;	// Is user logged in?
 	var $template;
 	var $uploadDir;
