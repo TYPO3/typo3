@@ -52,12 +52,11 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
 	$isDispatched = TRUE;
 } else {	
 	if (is_array($TBE_MODULES['_dispatcher'])) {
-		foreach ($TBE_MODULES['_dispatcher'] as $dispatcher) {
-			if (is_object($dispatcher)) {
-				if ($dispatcher->callModule($temp_M) === TRUE) {
-					$isDispatched = TRUE;
-					break;
-				}
+		foreach ($TBE_MODULES['_dispatcher'] as $dispatcherClassName) {
+			$dispatcher = t3lib_div::makeInstance($dispatcherClassName);
+			if ($dispatcher->callModule($temp_M) === TRUE) {
+				$isDispatched = TRUE;
+				break;
 			}
 		}
 	}
