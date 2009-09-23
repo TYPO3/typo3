@@ -1,3 +1,7 @@
+2009-09-23  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up 2 to bug #12017: Respect full path of CSS inclusion (RTE)
+
 2009-09-22  Oliver Hader  <oliver@typo3.org>
 
 	* Reverted bugfix #9599: felogin - forget password action and logout action are still cached

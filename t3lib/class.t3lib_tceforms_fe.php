@@ -138,7 +138,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	public function loadJavascriptLib($lib) {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		$pageRenderer->addJsLibrary($lib, $this->backPath . $lib);
+		$pageRenderer->addJsLibrary($lib, $this->prependBackPath($lib));
 		
 	}
 
@@ -154,7 +154,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	public function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		$pageRenderer->addCssFile($this->backPath . $href, $relation, 'screen', $title);
+		$pageRenderer->addCssFile($this->prependBackPath($href), $relation, 'screen', $title);
 	 }
 
 	/**
@@ -169,6 +169,21 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 
 		$GLOBALS['SOBE'] = new stdClass();
 		$GLOBALS['SOBE']->doc = $GLOBALS['TBE_TEMPLATE'];
+	}
+
+	/**
+	 * Prepends backPath to given URL if it's not an absolute URL
+	 * 
+	 * @param string $url
+	 * @return string
+	 */
+	private function prependBackPath($url) {
+		if (strpos($url, '://') !== FALSE || substr($url, 0, 1) === '/') {
+			return $url;
+		} else {
+			return $this->backPath . $url;
+		}
+		
 	}
 }
 
