@@ -77,7 +77,7 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 *
 	 * @param integer $maxCharacters Place where to truncate the string
 	 * @param string $append What to append, if truncation happened
-	 * @param boolean $respectBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed
+	 * @param boolean $respectBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed. This is currently ignored in backend mode!
 	 * @return string cropped text
 	 * @author Andreas Pattynama <andreas.pattynama@innocube.ch>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -86,10 +86,13 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	public function render($maxCharacters, $append = '...', $respectWordBoundaries = TRUE) {
 		$stringToTruncate = $this->renderChildren();
 		if (TYPO3_MODE === 'BE') {
-			return substr($stringToTruncate, $maxCharacters);
+			if (strlen($stringToTruncate) > $maxCharacters) {
+				$stringToTruncate = substr($stringToTruncate, 0, ($maxCharacters - strlen($append))) . $append;
+			}
+			return $stringToTruncate;
+		} else {
+			return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		}
-
-		return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 	}
 }
 
