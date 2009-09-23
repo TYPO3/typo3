@@ -1680,7 +1680,7 @@ EXTENSION KEYS:
 				if($mirrorsFile===false) {
 					t3lib_div::unlink_tempfile($mfile);
 					$content = '<p>' .
-						sprinft($GLOBALS['LANG']->getLL('ext_import_list_not_updated'),
+						sprinf($GLOBALS['LANG']->getLL('ext_import_list_not_updated'),
 							$this->MOD_SETTINGS['mirrorListURL']
 						) . ' ' .
 						$GLOBALS['LANG']->getLL('translation_problems') . '</p>';
