@@ -45,10 +45,14 @@ class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper extends Tx_Fluid_Core_ViewHelp
 			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 		}
 		$resource = $this->renderChildren();
-		
+
 		$uri = 'EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $resource;
 		$uri = t3lib_div::getFileAbsFileName($uri);
 		$uri = substr($uri, strlen(PATH_site));
+
+		if (TYPO3_MODE === 'BE' && $absolute === FALSE) {
+			$uri = '../' . $uri;
+		}
 
 		if ($absolute === TRUE) {
 			$uri = $this->controllerContext->getRequest()->getBaseURI() . $uri;

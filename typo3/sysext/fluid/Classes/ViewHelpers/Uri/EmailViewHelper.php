@@ -43,7 +43,7 @@ class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_
 			$emailParts = $GLOBALS['TSFE']->cObj->getMailTo($email, $email);
 			return reset($emailParts);
 		} else {
-			return $email;
+			return 'mailto:' . $email;
 		}
 	}
 }

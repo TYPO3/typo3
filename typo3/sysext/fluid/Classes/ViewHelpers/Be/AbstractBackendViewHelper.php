@@ -1,5 +1,4 @@
 <?php
-
 /*                                                                        *
  * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
@@ -20,56 +19,37 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
-
 /**
- * Testcase for the email uri view helper
+ * The abstract base class for all backend view helpers
+ * Note: backend view helpers are still experimental!
  *
- * @version $Id: EmailViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id:
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
+ *
+ * @package     TYPO3
+ * @subpackage  tx_fluid
+ * @author      Steffen Kamper <info@sk-typo3.de>
+ * @author      Bastian Waidelich <bastian@typo3.org>
+ * @license     http://www.gnu.org/copyleft/gpl.html
+ * @version     SVN: $Id:
+ *
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Uri_EmailViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+abstract class Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Uri_EmailViewHelper
-	 */
-	protected $viewHelper;
-
-	/**
-	 * @var tslib_cObj
-	 */
-	protected $cObjBackup;
-
-	public function setUp() {
-		parent::setUp();
-
-		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
-		$GLOBALS['TSFE']->cObj = $this->getMock('tslib_cObj', array(), array(), '', FALSE);
-
-		$this->viewHelper = new Tx_Fluid_ViewHelpers_Uri_EmailViewHelper();
-		$this->injectDependenciesIntoViewHelper($this->viewHelper);
-		$this->viewHelper->initializeArguments();
+	* Gets instance of template if exists or create a new one.
+	* Saves instance in viewHelperVariableContainer
+	*
+	* @return template $doc
+	*/
+	public function getDocInstance() {
+		if (!isset($GLOBALS['SOBE']->doc)) {
+			$GLOBALS['SOBE']->doc = t3lib_div::makeInstance('template');
+			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
+		}
+		return $GLOBALS['SOBE']->doc;
 	}
 
-	public function tearDown() {
-		$GLOBALS['TSFE']->cObj = $this->cObjBackup;
-	}
-
-	/**
-	 * @test
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function renderReturnsFirstResultOfGetMailTo() {
-		#$GLOBALS['TSFE']->cObj->expects($this->once())->method('getMailTo')->with('some@email.tld', 'some@email.tld')->will($this->returnValue(array('mailto:some@email.tld', 'some@email.tld')));
-
-		$this->viewHelper->initialize();
-		$actualResult = $this->viewHelper->render('some@email.tld');
-
-		$this->assertEquals('mailto:some@email.tld', $actualResult);
-	}
 }
-
-
 ?>

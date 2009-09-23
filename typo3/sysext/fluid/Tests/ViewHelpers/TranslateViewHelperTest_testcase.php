@@ -29,15 +29,26 @@
 require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_TranslateViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
 
+	/**
+	 * @var tslib_fe
+	 */
 	protected $tsfeBackup;
+
+	/**
+	 * @var language
+	 */
+	protected $langBackup;
 
 	public function setUp() {
 		$this->tsfeBackup = $GLOBALS['TSFE'];
+		$this->langBackup = $GLOBALS['LANG'];
 		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array(), array(), '', FALSE);
+		$GLOBALS['LANG'] = $this->getMock('language', array(), array(), '', FALSE);
 	}
 
 	public function tearDown() {
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
+		$GLOBALS['LANG'] = $this->langBackup;
 	}
 
 	/**
@@ -45,7 +56,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelperTest_testcase extends Tx_Extbase_B
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderAcceptsLllFileReference() {
-		$GLOBALS['TSFE']->expects($this->once())->method('sL')->with('LLL:someExtension/locallang.xml')->will($this->returnValue('some translation'));
+		$GLOBALS['LANG']->expects($this->once())->method('sL')->with('LLL:someExtension/locallang.xml')->will($this->returnValue('some translation'));
 
 		$viewHelper = new Tx_Fluid_ViewHelpers_TranslateViewHelper();
 		$actualResult = $viewHelper->render('LLL:someExtension/locallang.xml');
@@ -57,7 +68,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelperTest_testcase extends Tx_Extbase_B
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function renderHtmlEscapesLllTranslationsByDefault() {
-		$GLOBALS['TSFE']->expects($this->once())->method('sL')->with('LLL:someExtension/locallang.xml')->will($this->returnValue('some translation with <strong>HTML tags</strong> and special chäracterß.'));
+		$GLOBALS['LANG']->expects($this->once())->method('sL')->with('LLL:someExtension/locallang.xml')->will($this->returnValue('some translation with <strong>HTML tags</strong> and special chäracterß.'));
 
 		$viewHelper = new Tx_Fluid_ViewHelpers_TranslateViewHelper();
 		$actualResult = $viewHelper->render('LLL:someExtension/locallang.xml');
@@ -69,7 +80,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelperTest_testcase extends Tx_Extbase_B
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function htmlEscapingCanBeDisabledForLllTranslations() {
-		$GLOBALS['TSFE']->expects($this->once())->method('sL')->with('LLL:someExtension/locallang.xml')->will($this->returnValue('some translation with <strong>HTML tags</strong> and special chäracterß.'));
+		$GLOBALS['LANG']->expects($this->once())->method('sL')->with('LLL:someExtension/locallang.xml')->will($this->returnValue('some translation with <strong>HTML tags</strong> and special chäracterß.'));
 
 		$viewHelper = new Tx_Fluid_ViewHelpers_TranslateViewHelper();
 		$actualResult = $viewHelper->render('LLL:someExtension/locallang.xml', FALSE);

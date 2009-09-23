@@ -117,7 +117,8 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 		$this->locallangPathAndFilename = t3lib_extMgm::extPath(t3lib_div::camelCaseToLowerCaseUnderscored($this->extensionName), $this->locallangPath . 'locallang.php');
 
 		$this->setLanguageKeys();
-		self::$LOCAL_LANG[$this->extensionName] = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$languageKey, $GLOBALS['TSFE']->renderCharset);
+		$renderCharset = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+		self::$LOCAL_LANG[$this->extensionName] = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$languageKey, $renderCharset);
 		if (self::$alternativeLanguageKey === '') {
 			$alternativeLocalLang = t3lib_div::readLLfile($this->locallangPathAndFilename, self::$alternativeLanguageKey);
 			self::$LOCAL_LANG[$this->extensionName] = array_merge(self::$LOCAL_LANG[$this->extensionName], $alternativeLocalLang);
@@ -136,11 +137,15 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	protected function setLanguageKeys() {
 		self::$languageKey = 'default';
 		self::$alternativeLanguageKey = '';
-		if (isset($GLOBALS['TSFE']->config['config']['language'])) {
-			self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
-			if (isset($GLOBALS['TSFE']->config['config']['language_alt'])) {
-				self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
+		if (TYPO3_MODE === 'FE') {
+			if (isset($GLOBALS['TSFE']->config['config']['language'])) {
+				self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
+				if (isset($GLOBALS['TSFE']->config['config']['language_alt'])) {
+					self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
+				}
 			}
+		} elseif (strlen($GLOBALS['BE_USER']->uc['lang']) > 0) {
+			self::$languageKey = $GLOBALS['BE_USER']->uc['lang'];
 		}
 	}
 
@@ -167,7 +172,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 				if (is_string($labelValue)) {
 					self::$LOCAL_LANG[$this->extensionName][$languageKey][$labelKey] = $labelValue;
 						// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
-					self::$LOCAL_LANG_charset[$this->extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];
+					self::$LOCAL_LANG_charset[$this->extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['LANG']->csConvObj->charSetArray[$languageKey];
 				}
 			}
 		}
@@ -187,7 +192,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 		if (isset(self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key])) {
 			$value = self::$LOCAL_LANG[$this->extensionName][self::$languageKey][$key];
 			if (isset(self::$LOCAL_LANG_charset[$this->extensionName][self::$languageKey][$key])) {
-				$value = $GLOBALS['TSFE']->csConv($value, self::$LOCAL_LANG_charset[$this->extensionName][self::$languageKey][$key]);
+				$value = $this->convertCharset($value, self::$LOCAL_LANG_charset[$this->extensionName][self::$languageKey][$key]);
 			}
 			return $value;
 		}
@@ -195,7 +200,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 		if (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key])) {
 			$value = self::$LOCAL_LANG[$this->extensionName][self::$alternativeLanguageKey][$key];
 			if (isset(self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key])) {
-				$value = $GLOBALS['TSFE']->csConv($value, self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key]);
+				$value = $this->convertCharset($value, self::$LOCAL_LANG_charset[$this->extensionName][self::$alternativeLanguageKey][$key]);
 			}
 		}
 
@@ -204,6 +209,22 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 		}
 
 		return NULL;
+	}
+
+	/**
+	 * Converts a string to the specified charset
+	 *
+	 * @param string $value string to be converted
+	 * @param string $charset charset
+	 * @return string converted string
+	 */
+	protected function convertCharset($value, $charset) {
+		if (TYPO3_MODE === 'FE') {
+			return $GLOBALS['TSFE']->csConv($value, $charset);
+		} else {
+			$covertedValue = $GLOBALS['LANG']->csConvObj->conv($value, $GLOBALS['LANG']->csConvObj->parse_charset($charset), $GLOBALS['LANG']->renderCharset, 1);
+			return $covertedValue !== NULL ? $covertedValue : $value;
+		}
 	}
 }
 
