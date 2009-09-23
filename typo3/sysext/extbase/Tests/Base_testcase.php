@@ -39,6 +39,9 @@ abstract class Tx_Extbase_Base_testcase extends tx_phpunit_testcase {
 	 * Constructs this TestCase and registers the autoloader
 	 */
 	public function __construct() {
+		if (!class_exists('Tx_Extbase_Utility_ClassLoader')) {
+			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
+		}
 		spl_autoload_register(array('Tx_Extbase_Utility_ClassLoader', 'loadClass'));
 	}
 
