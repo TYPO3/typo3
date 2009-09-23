@@ -4,7 +4,7 @@
 
 2009-09-23  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #12037: Fatal Error in Configuration > $TBE_MODULES
+	* Fixed bug #12037: Fatal Error in Configuration > $TBE_MODULES (thanks to Bastian Waidelich)
 	* Follow-up to bug #12014: Extension Manager is not translatable: corrected typo
 	* Follow-up 2 to bug #12017: Respect full path of CSS inclusion (RTE)
 
