@@ -250,7 +250,7 @@ if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preBeUser']))
 // *********
 // BE_USER
 // *********
-$BE_USER='';
+$BE_USER = NULL;
 if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and checks if a backend user is logged in.
 	$TYPO3_MISC['microtime_BE_USER_start'] = microtime(true);
 	$TT->push('Back End user initialized','');
@@ -267,7 +267,7 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 		}
 			// Unset the user initialization.
 		if (!$BE_USER->checkLockToIP() || !$BE_USER->checkBackendAccessSettingsFromInitPhp() || !$BE_USER->user['uid']) {
-			$BE_USER='';
+			$BE_USER = NULL;
 			$TSFE->beUserLogin=0;
 		}
 	$TT->pull();
@@ -284,7 +284,7 @@ if ($_COOKIE['be_typo_user']) {		// If the backend cookie is set, we proceed and
 		$BE_USER->fetchGroupData();
 		$TSFE->beUserLogin = 1;
 	} else {
-		$BE_USER = '';
+		$BE_USER = NULL;
 		$TSFE->beUserLogin = 0;
 	}
 }

@@ -88,7 +88,7 @@ class t3lib_loadModules {
 	 *
 	 * @var t3lib_beUserAuth
 	 */
-	var $BE_USER = '';
+	var $BE_USER;
 	var $observeWorkspaces = FALSE;		// If set true, workspace "permissions" will be observed so non-allowed modules will not be included in the array of modules.
 
 
