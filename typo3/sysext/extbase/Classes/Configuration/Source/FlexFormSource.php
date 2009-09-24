@@ -62,54 +62,38 @@ class Tx_Extbase_Configuration_Source_FlexFormSource implements Tx_Extbase_Confi
 	public function load($extensionName) {
 		$settings = array();
 		if (!empty($this->flexFormContent)) {
-			$this->readFlexformIntoConf($this->flexFormContent, $settings);
+			$settings = $this->convertFlexFormContentToArray($this->flexFormContent);
 		}
-
 
 		return $settings;
 	}
 
 	/**
-	 * Parses the FlexForm content recursivly and adds it to the configuration
+	 * Parses the FlexForm content recursivly and converts it to an array
+	 * The resulting array will be one-dimensional. So make sure not to use the same key multiple times
+	 * or it will be overwritten.
+	 * Note: multi-language FlexForms are not supported yet
 	 *
-	 * @param $flexFormContent
-	 * @param array $settings
-	 * @param boolean $recursive
-	 * @return void
+	 * @param string $flexFormContent FlexForm xml string
+	 * @return array
 	 */
-	private function readFlexformIntoConf($flexFormContent, &$settings, $recursive = FALSE) {
-		if ($recursive === FALSE) {
-			$flexFormContent = t3lib_div::xml2array($flexFormContent, 'T3');
-		}
+	protected function convertFlexFormContentToArray($flexFormContent) {
+		$settings = array();
+		$languagePointer = 'lDEF';
+		$valuePointer = 'vDEF';
 
-		if (is_array($flexFormContent)) {
-			if (isset($flexFormContent['data']['sDEF']['lDEF'])) {
-				$flexFormContent = $flexFormContent['data']['sDEF']['lDEF'];
+		$flexFormArray = t3lib_div::xml2array($flexFormContent);
+		$flexFormArray = isset($flexFormArray['data']) ? $flexFormArray['data'] : array();
+		foreach(array_values($flexFormArray) as $languages) {
+			if (!is_array($languages[$languagePointer])) {
+				continue;
 			}
-
-			foreach ($flexFormContent as $key => $value) {
-				if (is_array($value['el']) && count($value['el']) > 0) {
-					foreach ($value['el'] as $ekey => $element) {
-						if (isset($element['vDEF'])) {
-							$settings[$ekey] =  $element['vDEF'];
-						} else {
-							if(is_array($element)) {
-								$this->readFlexformIntoConf($element, $settings[$key][key($element)][$ekey], TRUE);
-							} else {
-								$this->readFlexformIntoConf($element, $settings[$key][$ekey], TRUE);
-							}
-						}
-					}
-				} else {
-					$this->readFlexformIntoConf($value['el'], $settings[$key], TRUE);
-				}
-				if ($value['vDEF']) {
-					$settings[$key] = $value['vDEF'];
-				}
+			foreach($languages[$languagePointer] as $valueKey => $valueDefinition) {
+				$settings[$valueKey] = $valueDefinition[$valuePointer];
 			}
 		}
+		return $settings;
 	}
-
 
 }
 ?>
