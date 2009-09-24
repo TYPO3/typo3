@@ -207,7 +207,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 			$statement = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
 
-			$this->parseConstraint($query->getConstraint(), $source, $sql, $parameters, $query->getBoundVariableValues());
+			$this->parseConstraint($constraint, $source, $sql, $parameters, $query->getBoundVariableValues());
 
 			if (!empty($sql['where'])) {
 				$statement .= ' WHERE ' . implode('', $sql['where']);
@@ -218,7 +218,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$statement .= ' WHERE ' . implode(' AND ', $sql['additionalWhereClause']);
 			}
 
-			$this->parseOrderings($query->getOrderings(), $source, $sql, $parameters, $query->getBoundVariableValues());
+			$this->parseOrderings($query->getOrderings(), $source, $sql);
 			if (!empty($sql['orderings'])) {
 				$statement .= ' ORDER BY ' . implode(', ', $sql['orderings']);
 			}
@@ -250,8 +250,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$parameters[] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
-		$fields[] = 'deleted!=1';
-		$fields[] = 'hidden!=1';
+		$fields[] = 'deleted != 1';
+		$fields[] = 'hidden != 1';
 
 		$sqlString = 'SELECT * FROM ' . $dataMap->getTableName() .  ' WHERE ' . implode(' AND ', $fields);
 		$this->replacePlaceholders($sqlString, $parameters);
@@ -289,20 +289,19 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				}
 			}
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
-			$this->parseJoin($query, $source, $sql, $parameters);
+			$this->parseJoin($query, $source, $sql);
 		}
 	}
 
 	/**
 	 * Transforms a Join into SQL and parameter arrays
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModel $query
-	 * @param Tx_Extbase_Persistence_QOM_JoinInterface $join
-	 * @param array &$sql
-	 * @param array &$parameters
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModel $query The Query Object Model
+	 * @param Tx_Extbase_Persistence_QOM_JoinInterface $join The join
+	 * @param array &$sql The query parts
 	 * @return void
 	 */
-	protected function parseJoin(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql, array &$parameters) {
+	protected function parseJoin(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql) {
 		$leftSource = $join->getLeft();
 		$leftTableName = $leftSource->getSelectorName();
 		$rightSource = $join->getRight();
@@ -317,6 +316,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$joinCondition = $join->getJoinCondition();
 		// TODO Check the parsing of the join
 		if ($joinCondition instanceof Tx_Extbase_Persistence_QOM_EquiJoinCondition) {
+			// TODO Discuss, if we should use $leftSource instead of $selector1Name
 			$column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftSource->getNodeTypeName());
 			$column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightSource->getNodeTypeName());
 			$sql['tables'][] = 'ON ' . $joinCondition->getSelector1Name() . '.' . $column1Name . ' = ' . $joinCondition->getSelector2Name() . '.' . $column2Name;
@@ -339,11 +339,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Transforms a constraint into SQL and parameter arrays
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint
+	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint The constraint
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source
-	 * @param array &$sql
-	 * @param array &$parameters
-	 * @param array $boundVariableValues
+	 * @param array &$sql The query parts
+	 * @param array &$parameters The parameters that will replace the markers
+	 * @param array $boundVariableValues The bound variables in the query (key) and their values (value)
 	 * @return void
 	 */
 	protected function parseConstraint(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint = NULL, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, array $boundVariableValues) {
@@ -405,9 +405,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand
 	 * @param string $operator One of the JCR_OPERATOR_* constants
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source
-	 * @param array &$sql SQL query parts to add to
-	 * @param array &$parameters
-	 * @param string $valueFunction an aoptional SQL function to apply to the operand value
+	 * @param array &$sql The query parts
+	 * @param array &$parameters The parameters that will replace the markers
+	 * @param string $valueFunction an optional SQL function to apply to the operand value
 	 * @return void
 	 */
 	protected function parseDynamicOperand(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand, $operator, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, $valueFunction = NULL) {
@@ -482,7 +482,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * Replace query placeholders in a query part by the given
 	 * parameters.
 	 *
-	 * @param string $queryPart The query part with placeholders
+	 * @param string $sqlString The query part with placeholders
 	 * @param array $parameters The parameters
 	 * @return string The query part with replaced placeholders
 	 */
@@ -540,15 +540,14 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	}
 
 	/**
-	 * Transforms orderings into SQL
+	 * Transforms orderings into SQL.
 	 *
-	 * @param array $orderings
-	 * @param array &$sql
-	 * @param array &$parameters
-	 * @param array $boundVariableValues
+	 * @param array $orderings Ann array of orderings (Tx_Extbase_Persistence_QOM_Ordering)
+	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source
+	 * @param array &$sql The query parts
 	 * @return void
 	 */
-	protected function parseOrderings(array $orderings, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, array $boundVariableValues) {
+	protected function parseOrderings(array $orderings, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
 		foreach ($orderings as $ordering) {
 			$operand = $ordering->getOperand();
 			$order = $ordering->getOrder();
@@ -561,15 +560,18 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 						$order = 'DESC';
 						break;
 					default:
-						throw new Tx_Extbase_Persistence_Exception('Unsupported order encountered.', 1242816074);
+						throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('Unsupported order encountered.', 1242816074);
 				}
-				if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-					$nodeTypeName = $source->getNodeTypeName();
+				$tableName = $operand->getSelectorName();
+				if ((strlen($tableName) == 0) && (source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface)) {
+					$tableName = $source->getSelectorName();
+				}
+				$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand->getPropertyName(), $tableName);
+				if (strlen($tableName) > 0) {
+					$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
 				} else {
-					$nodeTypeName = '';
+					$sql['orderings'][] = $columnName . ' ' . $order;
 				}
-				$columnName = $this->dataMapper->convertPropertyNameToColumnName($ordering->getOperand()->getPropertyName(), $nodeTypeName);
-				$sql['orderings'][] = $columnName . ' ' . $order;
 			}
 		}
 	}
@@ -595,7 +597,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * workspace overlay before.
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
-	 *
+	 * @param resource &$sql The resource
 	 * @return array The result as an array of rows (tuples)
 	 */
 	protected function getRowsFromResult(Tx_Extbase_Persistence_QOM_SourceInterface $source, $res) {

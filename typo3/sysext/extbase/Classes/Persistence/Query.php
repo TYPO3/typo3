@@ -223,6 +223,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
 	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	 * )
+	 * where 'foo' and 'bar' are property names.
 	 *
 	 * @param array $orderings The property names to order by
 	 * @return Tx_Extbase_Persistence_QueryInterface
@@ -233,8 +234,10 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		foreach ($orderings as $propertyName => $order) {
 			if ($order === Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING) {
 				$parsedOrderings[] = $this->QOMFactory->descending($this->QOMFactory->propertyValue($propertyName));
-			} else {
+			} elseif ($order === Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING) {
 				$parsedOrderings[] = $this->QOMFactory->ascending($this->QOMFactory->propertyValue($propertyName));
+			} else {
+				throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('The order you specified for your query is not supported.', 1253785630);
 			}
 		}
 		$this->orderings = $parsedOrderings;
