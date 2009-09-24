@@ -1,3 +1,7 @@
+2009-09-25  Benjamin Mack  <benni@typo3.org>
+
+	* Added feature #11793: Give CONTENT.table stdWrap properties (thanks to Sebastian Gebhard)
+
 2009-09-24  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12025: Make statuses in the status report sorted and grouped

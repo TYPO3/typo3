@@ -1310,6 +1310,7 @@ class tslib_cObj {
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
+		$conf['table'] = trim($this->stdWrap($conf['table'], $conf['table.']));
 		if ($conf['table']=='pages' || substr($conf['table'],0,3)=='tt_' || substr($conf['table'],0,3)=='fe_' || substr($conf['table'],0,3)=='tx_' || substr($conf['table'],0,4)=='ttx_' || substr($conf['table'],0,5)=='user_' || substr($conf['table'],0,7)=='static_')	{
 
 			$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<'.$conf['table'];
