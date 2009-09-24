@@ -1,3 +1,7 @@
+2009-09-24  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12021: Extension Manager is not translatable (part 8) (thanks to Christopher Stelmaszyk)
+
 2009-09-24  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raised extbase and fluid versions to 0.9.9
