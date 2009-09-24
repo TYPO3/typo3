@@ -4097,6 +4097,7 @@ EXTENSION KEYS:
 	function getClassIndexLocallangFiles($absPath,$table_class_prefix,$extKey)	{
 		$filesInside = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(),$absPath,'php,inc',0,99,$this->excludeForPackaging),$absPath);
 		$out = array();
+		$reg = array();
 
 		foreach($filesInside as $fileName)	{
 			if (substr($fileName,0,4)!='ext_' && substr($fileName,0,6)!='tests/')	{	// ignore supposed-to-be unit tests as well
@@ -4174,6 +4175,7 @@ EXTENSION KEYS:
 		$lines = explode(chr(10),t3lib_div::getUrl($confFilePath));
 		$confFileInfo = array();
 		$confFileInfo['lines'] = $lines;
+		$reg = array();
 
 		foreach($lines as $k => $l)	{
 			$line = trim($l);
@@ -4479,6 +4481,7 @@ EXTENSION KEYS:
 		$lines = explode(chr(10),t3lib_div::getUrl($confFilePath));
 		$confFileInfo = array();
 		$confFileInfo['lines'] = $lines;
+		$reg = array();
 
 		$flag_M = 0;
 		$flag_B = 0;
@@ -4757,8 +4760,9 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 	 * @return	array		Array with header/content as key 0/1
 	 * @see makeUploadArray()
 	 */
-	function getSerializedLocalLang($file,$content)	{
-		$returnParts = explode('$LOCAL_LANG',$content,2);
+	function getSerializedLocalLang($file, $content) {
+		$LOCAL_LANG = NULL;
+		$returnParts = explode('$LOCAL_LANG', $content, 2);
 
 		include($file);
 		if (is_array($LOCAL_LANG))	{
@@ -5947,7 +5951,8 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 	 * @param	string		Extension key.
 	 * @return	array		EMconf array values.
 	 */
-	function includeEMCONF($path,$_EXTKEY)	{
+	function includeEMCONF($path, $_EXTKEY)	{
+		$EM_CONF = NULL;
 		@include($path);
 		if(is_array($EM_CONF[$_EXTKEY])) {
 			return $this->fixEMCONF($EM_CONF[$_EXTKEY]);
@@ -6037,26 +6042,26 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				continue;
 			}
 
-			$v = $this->xmlhandler->extensionsXML[$name][versions];
+			$v = $this->xmlhandler->extensionsXML[$name]['versions'];
 			$versions = array_keys($v);
 			$lastversion = end($versions);
 
 			if ((t3lib_extMgm::isLoaded($name) || $this->MOD_SETTINGS['display_installed']) &&
-				($data[EM_CONF][shy] == 0 || $this->MOD_SETTINGS['display_shy']) &&
-				$this->versionDifference($lastversion, $data[EM_CONF][version], 1))	{
+				($data['EM_CONF']['shy'] == 0 || $this->MOD_SETTINGS['display_shy']) &&
+				$this->versionDifference($lastversion, $data['EM_CONF']['version'], 1))	{
 
-				$imgInfo = @getImageSize($this->getExtPath($name,$data['type']).'/ext_icon.gif');
+				$imgInfo = @getImageSize($this->getExtPath($name, $data['type']) . '/ext_icon.gif');
 				if (is_array($imgInfo)) {
 					$icon = '<img src="'.$GLOBALS['BACK_PATH'].$this->typeRelPaths[$data['type']].$name.'/ext_icon.gif'.'" '.$imgInfo[3].' alt="" />';
-				} elseif ($extInfo['_ICON']) {
-					$icon = $extInfo['_ICON'];
+				} elseif ($data['_ICON']) { //TODO: see if this can be removed, seems to be wrong in this context
+					$icon = $data['_ICON'];
 				} else {
 					$icon = '<img src="clear.gif" width="1" height="1" alt="" />';
 				}
 				$comment = '<table cellpadding="0" cellspacing="0" width="100%">';
 				foreach ($versions as $vk) {
 					$va = & $v[$vk];
-					if (t3lib_div::int_from_ver($vk) < t3lib_div::int_from_ver($data[EM_CONF][version]))	{
+					if (t3lib_div::int_from_ver($vk) < t3lib_div::int_from_ver($data['EM_CONF']['version']))	{
 						continue;
 					}
 					$comment .= '<tr><td valign="top" style="padding-right:2px;border-bottom:1px dotted gray">'.$vk.'</td>'.'<td valign="top" style="border-bottom:1px dotted gray">'.nl2br($va[uploadcomment]).'</td></tr>';

@@ -1,5 +1,6 @@
 2009-09-24  Steffen Kamper  <info@sk-typo3.de>
 
+	* Cleanup #12053: Cleanup of Extension Manager
 	* Fixed bug #12021: Extension Manager is not translatable (part 8) (thanks to Christopher Stelmaszyk)
 
 2009-09-24  Sebastian Kurfuerst  <sebastian@typo3.org>
