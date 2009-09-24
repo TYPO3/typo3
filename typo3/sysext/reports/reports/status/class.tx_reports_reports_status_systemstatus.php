@@ -39,251 +39,105 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	 */
 	public function getStatus() {
 		$statuses = array(
-			'encryptionKeyEmpty'  => $this->getEncryptionKeyStatus(),
-			'fileDenyPattern'     => $this->getFileDenyPatternStatus(),
-			'htaccessUpload'      => $this->getHtaccessUploadStatus(),
-			'remainingUdates'     => $this->getRemainingUpdatesStatus(),
-			'emptyReferenceIndex' => $this->getReferenceIndexStatus()
+			'Php'                 => $this->getPhpStatus(),
+			'PhpMemoryLimit'      => $this->getPhpMemoryLimitStatus(),
+			'PhpRegisterGlobals'  => $this->getPhpRegisterGlobalsStatus(),
+			'Webserver'           => $this->getWebserverStatus(),
 		);
-
-		if ($this->isMemcachedUsed()) {
-			$statuses['memcachedConnection'] = $this->getMemcachedConnectionStatus();
-		}
 
 		return $statuses;
 	}
 
+
 	/**
-	 * Checks whether the encryption key is empty.
+	 * Checks the current PHP version against a minimum required version.
 	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether the encryption key is empty or not
+	 * @return	tx_reports_reports_status_Status	A status of whether a minimum PHP version requirment is met
 	 */
-	protected function getEncryptionKeyStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_ok');
+	protected function getPhpStatus() {
 		$message  = '';
 		$severity = tx_reports_reports_status_Status::OK;
 
-		if (empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
-			$value    = $GLOBALS['LANG']->getLL('status_insecure');
+		if (version_compare(phpversion(), TYPO3_REQUIREMENTS_MINIMUM_PHP) < 0) {
+			$message  = 'Your PHP installation is too old.';
 			$severity = tx_reports_reports_status_Status::ERROR;
-
-			$url = 'install/index.php?redirect_url=index.php'
-				. urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
-
-			$message = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_encryption'),
-				'<a href="' . $url . '">',
-				'</a>'
-			);
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Encryption Key', $value, $message, $severity
+			'PHP',
+			phpversion(),
+			$message,
+			$severity
 		);
 	}
 
 	/**
-	 * Checks if fileDenyPattern was changed which is dangerous on Apache
+	 * Checks the current memory limit against a minimum required version.
 	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether the file deny pattern has changed
+	 * @return	tx_reports_reports_status_Status	A status of whether a minimum memory limit requirment is met
 	 */
-	protected function getFileDenyPatternStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_ok');
-		$message  = '';
-		$severity = tx_reports_reports_status_Status::OK;
+	protected function getPhpMemoryLimitStatus() {
+		$memoryLimit = ini_get('memory_limit');
+		$message     = '';
+		$severity    = tx_reports_reports_status_Status::OK;
 
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT) {
-			$value    = $GLOBALS['LANG']->getLL('status_insecure');
-			$severity = tx_reports_reports_status_Status::ERROR;
-
-			$url = 'install/index.php?redirect_url=index.php'
-				. urlencode('?TYPO3_INSTALL[type]=config#set_encryptionKey');
-
-			$message = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_pattern'),
-				'<br /><pre>'
-				. htmlspecialchars(FILE_DENY_PATTERN_DEFAULT)
-				. '</pre><br />'
-			);
-		}
-
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'File Deny Pattern', $value, $message, $severity
-		);
-	}
-
-	/**
-	 * Checks if fileDenyPattern allows to upload .htaccess files which is
-	 * dangerous on Apache.
-	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether it's possible to upload .htaccess files
-	 */
-	protected function getHtaccessUploadStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_ok');
-		$message  = '';
-		$severity = tx_reports_reports_status_Status::OK;
-
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT && t3lib_div::verifyFilenameAgainstDenyPattern('.htaccess')) {
-			$value    = $GLOBALS['LANG']->getLL('status_insecure');
-			$severity = tx_reports_reports_status_Status::ERROR;
-			$message  = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_deny_htaccess');
-		}
-
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'.htaccess Upload Protection', $value, $message, $severity
-		);
-	}
-
-	/**
-	 * Checks if there are still updates to perform
-	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether the installation is not completely updated yet
-	 */
-	protected function getRemainingUpdatesStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_updateComplete');
-		$message  = '';
-		$severity = tx_reports_reports_status_Status::OK;
-
-		if (!t3lib_div::compat_version(TYPO3_branch)) {
-			$value    = $GLOBALS['LANG']->getLL('status_updateIncomplete');
+		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
+			$message = 'Depending on your configuration, TYPO3 can run with a ' . $memoryLimit . ' PHP memory limit. However, a ' . TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT . ' PHP memory limit or above is recommended, especially if your site uses additional extensions.';
 			$severity = tx_reports_reports_status_Status::WARNING;
-
-			$url = 'install/index.php?redirect_url=index.php'
-				. urlencode('?TYPO3_INSTALL[type]=update');
-			$message  = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_update'),
-				'<a href="' . $url . '">',
-				'</a>'
-			);
 		}
 
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Remaining Updates', $value, $message, $severity
-		);
-	}
-
-	/**
-	 * Checks if sys_refindex is empty.
-	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether the reference index is empty or not
-	 */
-	protected function getReferenceIndexStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_ok');
-		$message  = '';
-		$severity = tx_reports_reports_status_Status::OK;
-
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex');
-
-		if (!$count) {
-			$value    = $GLOBALS['LANG']->getLL('status_empty');
-			$severity = tx_reports_reports_status_Status::WARNING;
-
-			$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
-			$message  = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference'),
-				'<a href="' . $url . '">',
-				'</a>'
-			);
+		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
+			$message = 'Depending on your configuration, TYPO3 can run with a ' . $memoryLimit . ' PHP memory limit. However, a ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . ' PHP memory limit or above is required, especially if your site uses additional extensions.';
+			$severity = tx_reports_reports_status_Status::ERROR;
 		}
 
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Reference Index', $value, $message, $severity
-		);
-	}
-
-	/**
-	 * Checks whether memcached is configured, if that's the case we asume it's also used.
-	 *
-	 * @return	boolean	True if memcached is used, false otherwise.
-	 */
-	protected function isMemcachedUsed() {
-		$memcachedUsed = false;
-
-		$memcachedServers = $this->getConfiguredMemcachedServers();
-		if (count($memcachedServers)) {
-			$memcachedUsed = true;
-		}
-
-		return $memcachedUsed;
-	}
-
-	/**
-	 * Gets the configured memcached server connections.
-	 *
-	 * @return	array 	An array of configured memcached server connections.
-	 */
-	protected function getConfiguredMemcachedServers() {
-		$memcachedServers = array();
-
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] as $table => $conf) {
-				if (is_array($conf)) {
-					foreach ($conf as $key => $value) {
-						if (!is_array($value) && $value === 't3lib_cache_backend_MemcachedBackend') {
-							$memcachedServers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$table]['options']['servers'];
-							break;
-						}
-					}
-				}
+		if ($severity > tx_reports_reports_status_Status::OK) {
+			if ($php_ini_path = get_cfg_var('cfg_file_path')) {
+				$message .= ' Increase the memory limit by editing the memory_limit parameter in the file ' . $php_ini_path . ' and then restart your web server (or contact your system administrator or hosting provider for assistance).';
+			} else {
+				$message .= ' Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.';
 			}
 		}
 
-		return $memcachedServers;
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			'PHP Memory Limit', $memoryLimit, $message, $severity
+		);
 	}
 
 	/**
-	 * Checks whether TYPO3 can connect to the configured memcached servers.
+	 * checks whether register globals is on or off.
 	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether TYPO3 can connect to the configured memcached servers
+	 * @return	tx_reports_reports_status_Status	A status of whether register globals is on or off
 	 */
-	protected function getMemcachedConnectionStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_ok');
+	protected function getPhpRegisterGlobalsStatus() {
+		$value    = $GLOBALS['LANG']->getLL('status_disabled');
 		$message  = '';
 		$severity = tx_reports_reports_status_Status::OK;
 
-		$failedConnections    = array();
-		$defaultMemcachedPort = ini_get('memcache.default_port');
-		$memcachedServers     = $this->getConfiguredMemcachedServers();
+		$registerGlobals = trim(ini_get('register_globals'));
 
-		if (function_exists('memcache_connect') && is_array($memcachedServers)) {
-			foreach ($memcachedServers as $testServer) {
-				$configuredServer = $testServer;
-				if (substr($testServer, 0, 7) == 'unix://') {
-					$host = $testServer;
-					$port = 0;
-				} else {
-					if (substr($testServer, 0, 6) === 'tcp://') {
-						$testServer = substr($testServer, 6);
-					}
-					if (strstr($testServer, ':') !== FALSE) {
-						list($host, $port) = explode(':', $testServer, 2);
-					} else {
-						$host = $testServer;
-						$port = $defaultPort;
-					}
-				}
-				$memcachedConnection = @memcache_connect($host, $port);
-				if ($memcachedConnection != null) {
-					memcache_close($memcachedConnection);
-				} else {
-					$failedConnections[] = $configuredServer;
-				}
-			}
-		}
-
-		if (count($failedConnections)) {
-			$value    = $GLOBALS['LANG']->getLL('status_connectionFailed');
-			$severity = tx_reports_reports_status_Status::WARNING;
-
-			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.memcache_not_usable')
-				. '<br /><br />'
-				. '<ul><li>'
-				. implode('</li><li>', $failedConnections)
-				. '</li></ul>';
+			// can't reliably check for 'on', therefore checking for the oposite 'off', '', or 0
+		if (!empty($registerGlobals) && strtolower($registerGlobals) != 'off') {
+			$message = '<em>register_globals</em> is enabled. TYPO3 requires this configuration directive to be disabled. Your site may not be secure when <em>register_globals</em> is enabled. The PHP manual has instructions for <a href="http://php.net/configuration.changes">how to change configuration settings</a>.';
+			$severity = tx_reports_reports_status_Status::ERROR;
+			$value = $GLOBALS['LANG']->getLL('status_enabled')
+				. ' (\'' . $registerGlobals . '\')';
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Memcached Configuration', $value, $message, $severity
+			'PHP Register Globals', $value, $message, $severity
+		);
+	}
+
+	/**
+	 * Reports the webserver TYPO3 is running on.
+	 *
+	 * @return	tx_reports_reports_status_Status	The server software as a status
+	 */
+	protected function getWebserverStatus() {
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			'Web Server',
+			$_SERVER['SERVER_SOFTWARE']
 		);
 	}
 }

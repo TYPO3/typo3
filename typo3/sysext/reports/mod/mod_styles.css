@@ -5,6 +5,7 @@ body#ext-reports-mod-index-php {
 
 #typo3-inner-docbody p.help {
 	font-size: 12px;
+	margin-bottom: 10px;
 }
 
 
@@ -45,7 +46,9 @@ table.system-status-report td {
 	padding: 6px;
 	font-size: 12px;
 }
-
+table.system-status-report th {
+	width: 300px;
+}
 table.system-status-report th a,
 table.system-status-report td a {
 	color: #000;

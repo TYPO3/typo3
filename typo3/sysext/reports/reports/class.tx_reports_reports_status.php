@@ -52,8 +52,15 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		$status  = array();
 		$content = '';
 
-		foreach ($this->statusProviders as $statusProvider) {
-			$status += $statusProvider->getStatus();
+		foreach ($this->statusProviders as $statusProviderId => $statusProvider) {
+			if (strcmp(substr($statusProviderId, 0, 4), 'LLL:')) {
+				$providerLabel = $GLOBALS['LANG']->getLL('status_' . $statusProviderId);
+			} else {
+					// label from extension
+				$providerLabel = $GLOBALS['LANG']->sL($statusProviderId);
+			}
+			$provider = $providerLabel ? $providerLabel : $statusProviderId;
+			$status[$provider] = $statusProvider->getStatus();
 		}
 
 		$content .= '<p class="help">'
@@ -69,8 +76,6 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 * @return	void
 	 */
 	protected function getStatusProviders() {
-		ksort($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']);
-
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status'] as $key => $statusProvider) {
 			if (t3lib_div::inList('title,description,report', $key)) {
 				continue; // skip (for this report) unneccessary data
@@ -84,34 +89,97 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	}
 
 	/**
-	 * Renders a the system's status
+	 * Renders the system's status
 	 *
 	 * @param	array	An array of statuses as returned by the available status providers
 	 * @return	string	The system status as an HTML table
 	 */
 	protected function renderStatus(array $statusCollection) {
-		$content = '<table class="system-status-report">';
-		$classes = array(
-			tx_reports_reports_status_Status::NOTICE  => 'notice',
-			tx_reports_reports_status_Status::INFO    => 'information',
-			tx_reports_reports_status_Status::OK      => 'ok',
-			tx_reports_reports_status_Status::WARNING => 'warning',
-			tx_reports_reports_status_Status::ERROR   => 'error',
+		$content = '';
+
+		$statuses = $this->sortStatusProviders($statusCollection);
+
+		foreach($statuses as $provider => $providerStatus) {
+			$providerState = $this->sortStatuses($providerStatus);
+
+			$content .= '<h2>' . $provider . '</h2>';
+			$content .= '<table class="system-status-report">';
+			$classes = array(
+				tx_reports_reports_status_Status::NOTICE  => 'notice',
+				tx_reports_reports_status_Status::INFO    => 'information',
+				tx_reports_reports_status_Status::OK      => 'ok',
+				tx_reports_reports_status_Status::WARNING => 'warning',
+				tx_reports_reports_status_Status::ERROR   => 'error',
+			);
+
+			foreach ($providerState as $status) {
+				$class = 'typo3-message message-' . $classes[$status->getSeverity()];
+				$description = $status->getMessage();
+	
+				if (empty($description)) {
+					$content .= '<tr><th class="'. $class .' statusTitle">'. $status->getTitle() .'</th><td class="'. $class .'">'. $status->getValue() .'</td></tr>';
+				} else {
+					$content .= '<tr><th class="'. $class .' merge-down">'. $status->getTitle() .'</th><td class="'. $class .' merge-down">'. $status->getValue() .'</td></tr>';
+					$content .= '<tr><td class="'. $class .' merge-up" colspan="2">'. $description .'</td></tr>';
+				}
+			}
+	
+			$content .= '</table>';
+		}
+		return $content;
+	}
+	
+	/**
+	 * sorts the status providers (alphabetically and adds "_install" provider at the beginning)
+	 *
+	 * @param   array   A collection of statuses (with providers)
+	 * @return  array   The collection of statuses sorted by provider (beginning with provider "_install")
+	 */
+	protected function sortStatusProviders(array $statusCollection) {
+		$systemStatus = array(
+			'TYPO3 System'  => $statusCollection['Installation'],
+			'System'        => $statusCollection['System'],
+			'Security'      => $statusCollection['security'],
+			'Configuration' => $statusCollection['configuration'],
 		);
+		unset(
+			$statusCollection['Installation'],
+			$statusCollection['System'],
+			$statusCollection['security'],
+			$statusCollection['configuration']
+		);
+		ksort($statusCollection);
+		$statusCollection = array_merge($systemStatus, $statusCollection);
+
+		return $statusCollection;
+	}
+	
+	/**
+	 * Sorts the statuses by severity
+	 *
+	 * @param   array   A collection of statuses per provider
+	 * @return  array   The collection of statuses sorted by severity
+	 */
+	protected function sortStatuses(array $statusCollection) {
+		$statuses  = array();
+		$sortTitle = array();
 
 		foreach ($statusCollection as $status) {
-			$class = 'typo3-message message-' . $classes[$status->getSeverity()];
-			$description = $status->getMessage();
-
-			if (empty($description)) {
-				$content .= '<tr><th class="'. $class .'">'. $status->getTitle() .'</th><td class="'. $class .'">'. $status->getValue() .'</td></tr>';
-			} else {
-				$content .= '<tr><th class="'. $class .' merge-down">'. $status->getTitle() .'</th><td class="'. $class .' merge-down">'. $status->getValue() .'</td></tr>';
-				$content .= '<tr><td class="'. $class .' merge-up" colspan="2">'. $description .'</td></tr>';
+			if ($status->getTitle() === 'TYPO3') {
+				$header = $status;
+				continue;
 			}
-		}
 
-		return $content . '</table>';
+			$statuses[] = $status;
+			$sortTitle[] = $status->getSeverity();
+		}
+		array_multisort($sortTitle, SORT_DESC, $statuses);
+
+			// making sure that the core version information is always on the top
+		if(is_object($header)) {
+			array_unshift($statuses, $header);
+		}
+		return $statuses;
 	}
 }
 

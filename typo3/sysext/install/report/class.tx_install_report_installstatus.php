@@ -35,7 +35,7 @@ require_once(t3lib_extMgm::extPath('install', 'requirements.php'));
  */
 class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 
-	protected $reportList = 'Typo3Version,FileSystem,Php,PhpMemoryLimit,PhpRegisterGlobals,Webserver';
+	protected $reportList = 'Typo3Version,FileSystem,RemainingUpdates';
 
 	/**
 	 * Compiles a collection of system status checks as a status report.
@@ -157,99 +157,34 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 	}
 
 	/**
-	 * Reports the webserver TYPO3 is running on.
+	 * Checks if there are still updates to perform
 	 *
-	 * @return	tx_reports_reports_status_Status	The server software as a status
+	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether the installation is not completely updated yet
 	 */
-	protected function getWebserverStatus() {
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Web Server',
-			$_SERVER['SERVER_SOFTWARE']
-		);
-	}
-
-	/**
-	 * Checks the current PHP version against a minimum required version.
-	 *
-	 * @return	tx_reports_reports_status_Status	A status of whether a minimum PHP version requirment is met
-	 */
-	protected function getPhpStatus() {
+	protected function getRemainingUpdatesStatus() {
+		$value    = $GLOBALS['LANG']->getLL('status_updateComplete');
 		$message  = '';
 		$severity = tx_reports_reports_status_Status::OK;
 
-		if (version_compare(phpversion(), TYPO3_REQUIREMENTS_MINIMUM_PHP) < 0) {
-			$message  = 'Your PHP installation is too old.';
-			$severity = tx_reports_reports_status_Status::ERROR;
-		}
-
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'PHP',
-			phpversion(),
-			$message,
-			$severity
-		);
-	}
-
-	/**
-	 * Checks the current memory limit against a minimum required version.
-	 *
-	 * @return	tx_reports_reports_status_Status	A status of whether a minimum memory limit requirment is met
-	 */
-	protected function getPhpMemoryLimitStatus() {
-		$memoryLimit = ini_get('memory_limit');
-		$message     = '';
-		$severity    = tx_reports_reports_status_Status::OK;
-
-		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
-			$message = 'Depending on your configuration, TYPO3 can run with a ' . $memoryLimit . ' PHP memory limit. However, a ' . TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT . ' PHP memory limit or above is recommended, especially if your site uses additional extensions.';
+		if (!t3lib_div::compat_version(TYPO3_branch)) {
+			$value    = $GLOBALS['LANG']->getLL('status_updateIncomplete');
 			$severity = tx_reports_reports_status_Status::WARNING;
-		}
 
-		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
-			$message = 'Depending on your configuration, TYPO3 can run with a ' . $memoryLimit . ' PHP memory limit. However, a ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . ' PHP memory limit or above is required, especially if your site uses additional extensions.';
-			$severity = tx_reports_reports_status_Status::ERROR;
-		}
-
-		if ($severity > tx_reports_reports_status_Status::OK) {
-			if ($php_ini_path = get_cfg_var('cfg_file_path')) {
-				$message .= ' Increase the memory limit by editing the memory_limit parameter in the file ' . $php_ini_path . ' and then restart your web server (or contact your system administrator or hosting provider for assistance).';
-			} else {
-				$message .= ' Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.';
-			}
+			$url = 'install/index.php?redirect_url=index.php'
+				. urlencode('?TYPO3_INSTALL[type]=update');
+			$message  = sprintf(
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_update'),
+				'<a href="' . $url . '">',
+				'</a>'
+			);
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'PHP Memory Limit', $memoryLimit, $message, $severity
-		);
-	}
-
-	/**
-	 * checks whether register globals is on or off.
-	 *
-	 * @return	tx_reports_reports_status_Status	A status of whether register globals is on or off
-	 */
-	protected function getPhpRegisterGlobalsStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_disabled');
-		$message  = '';
-		$severity = tx_reports_reports_status_Status::OK;
-
-		$registerGlobals = trim(ini_get('register_globals'));
-
-			// can't reliably check for 'on', therefore checking for the oposite 'off', '', or 0
-		if (!empty($registerGlobals) && strtolower($registerGlobals) != 'off') {
-			$message = '<em>register_globals</em> is enabled. TYPO3 requires this configuration directive to be disabled. Your site may not be secure when <em>register_globals</em> is enabled. The PHP manual has instructions for <a href="http://php.net/configuration.changes">how to change configuration settings</a>.';
-			$severity = tx_reports_reports_status_Status::ERROR;
-			$value = $GLOBALS['LANG']->getLL('status_enabled')
-				. ' (\'' . $registerGlobals . '\')';
-		}
-
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'PHP Register Globals', $value, $message, $severity
+			'Remaining Updates', $value, $message, $severity
 		);
 	}
 
 }
-
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/install/report/class.tx_install_report_installstatus.php'])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/install/report/class.tx_install_report_installstatus.php']);

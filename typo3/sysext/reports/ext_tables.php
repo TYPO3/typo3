@@ -19,7 +19,8 @@ if (TYPO3_MODE == 'BE') {
 	);
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['system'] = 'tx_reports_reports_status_SystemStatus';
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['_installtool'] = 'tx_reports_reports_status_InstallToolStatus';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['security'] = 'tx_reports_reports_status_SecurityStatus';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['configuration'] = 'tx_reports_reports_status_ConfigurationStatus';
 
 }
 
