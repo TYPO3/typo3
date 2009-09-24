@@ -164,12 +164,11 @@
 			<label index="ext_import_excluded_from_updates">This extension is excluded from updates! You can change this in the ext_emconf.php file in the extension folder.</label>
 			<label index="ext_import_select_command">Select command</label>
 			<label index="ext_import_remote_ext_details">Remote Extension Details</label>
-			<label index="ext_import_list_not_updated">The mirror list was not updated, it could not be fetched from %s.</label>
+			<label index="ext_import_list_not_updated">Error: The list could not be fetched from %s.</label>
 			<label index="ext_import_list_updated">The mirror list has been updated and now contains %s entries.</label>
 			<label index="ext_import_list_empty">The mirror list was not updated as it contained no entries.</label>
 			<label index="ext_import_md5_not_updated">Error: The extension MD5 sum could not be fetched from %s.</label>
 			<label index="ext_import_list_unchanged">The extension list has not changed remotely, it has thus not been fetched.</label>
-			<label index="ext_import_list_not_updated">Error: The extension list could not be fetched from %s.</label>
 			<label index="ext_import_ext_already_installed_loaded">Extension already installed and loaded.</label>
 			<label index="ext_import_p_localconf">localconf.php is not writable!</label>
 			<label index="ext_import_ext_loaded">Extension was already installed, it has been loaded.</label>
@@ -490,6 +489,7 @@
 			<label index="note_last_update">Last update of the list of extensions:</label>
 			<label index="note_last_update_new">Last update of the list of extensions: %s.</label>
 			<label index="note_last_update2">To get and update the list, go to the section "Import extensions" and use the button "Retrieve/Update".</label>
+			<label index="note_last_update2_new">To get and update the list, %sgo to the section "Import extensions" and use the button "Retrieve/Update"%s.</label>
 			<label index="double_inclusion">%1$s takes precedence over %2$s</label>
 			<label index="globalext">Globally installed extension</label>
 			<label index="localext">Locally installed extension</label>
