@@ -4,7 +4,7 @@
 
 2009-09-24  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #12025: Make statuses in the status report sorted and grouped
+	* Fixed bug #12025: Make statuses in the status report sorted and grouped (thanks also to Ingo Renner)
 	* Follow-up to bug #12021: Extension Manager is not translatable (part 8) (thanks to Christopher Stelmaszyk)
 	* Cleanup #12053: Cleanup of Extension Manager
 	* Fixed bug #12021: Extension Manager is not translatable (part 8) (thanks to Christopher Stelmaszyk)
