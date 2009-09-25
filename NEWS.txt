@@ -122,6 +122,10 @@ Backend
 Frontend
 ========
 
+	* A new content element "MEDIA" that allows one to easily handle audio and video data has been integrated.
+	  The element is delivered with default players which can be configured for specific demands. Besides that,
+	  theese players can be replaced by others if required.
+
 	* The message log of the admin panel will report failures to set the locale
 
 	* Integrated functionality of extension jb_status_code into core:
@@ -238,8 +242,16 @@ Development
 	* A random byte generator has been added to t3lib_div::generateRandomBytes() which can
 	  be used for cryptographic operations in the TYPO3 Core or in any other extension.
 
+	* A page rendering class (t3lib_PageRenderer), that relies on a template file, has been added for frontend and
+	  backend disposal. The rendering object allows one to manage JavaScript and stylesheet data inside a document
+	  structure. Besides that there are hooks to compress and concatenate JavaScript and stylesheet information.
+
 TypoScript changes
 ==================
+
+	* New properties to handle JavaScript and stylesheet data for rendering a page are available. It is possible to
+	  define the place inside a document for inclusion (e.g. header and footer), wrap them with conditional comments,
+	  and many more possibilites (see TSref PAGE.includeCSS and PAGE.includeJS for more details).
 
 	* Custom sub categories can be used in TypoScript constants like the following:
 		#customsubcategory=limits=LLL:EXT:devlog/locallang.xml:limits
