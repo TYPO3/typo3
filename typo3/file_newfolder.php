@@ -251,10 +251,18 @@ class SC_file_newfolder {
 		$pageContent.= $this->doc->sectionEnd();
 		$pageContent.= '</form><form action="tce_file.php" method="post" name="editform2">';
 
+			// Create a list of allowed file extensions with the nice format "*.jpg, *.gif" etc.
+		$fileExtList = array();
+		$textfileExt = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], TRUE);
+		foreach ($textfileExt as $fileExt) {
+			if (!preg_match('/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . '/i', '.' . $fileExt)) {
+				$fileExtList[] = '*.' . $fileExt;
+			}
+		}
 			// Add form fields for creation of a new, blank text file:
 		$code='
 			<div id="c-newFile">
-				<p>['.htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext']).']</p>
+				<p>[' . htmlspecialchars(implode(', ', $fileExtList)) . ']</p>
 				<input'.$this->doc->formWidth(20).' type="text" name="file[newfile][0][data]" onchange="changed=true;" />
 				<input type="hidden" name="file[newfile][0][target]" value="'.htmlspecialchars($this->target).'" />
 			</div>

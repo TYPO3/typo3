@@ -1,5 +1,6 @@
 2009-09-25  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed #8802: Fileadmin: extensions of new files should only show allowed extensions (Thanks to Steffen Gebert)
 	* Cleanup #11357: Make use of new t3lib_div::redirect function throughout the core
 
 2009-09-25  Oliver Hader  <oliver@typo3.org>
