@@ -384,8 +384,7 @@ class SC_index {
 
 				// If there is a redirect URL AND if loginRefresh is not set...
 			if (!$this->loginRefresh)	{
-				header('Location: '.t3lib_div::locationHeaderUrl($this->redirectToURL));
-				exit;
+				t3lib_div::redirect($this->redirectToURL);
 			} else {
 				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
 					if (parent.opener && parent.opener.busy)	{

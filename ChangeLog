@@ -1,3 +1,7 @@
+2009-09-25  Benjamin Mack  <benni@typo3.org>
+
+	* Cleanup #11357: Make use of new t3lib_div::redirect function throughout the core
+
 2009-09-25  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12046: Skinning possibilities are not available with frontend editing

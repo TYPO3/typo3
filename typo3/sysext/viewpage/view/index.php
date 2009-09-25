@@ -124,7 +124,7 @@ class SC_mod_web_view_index {
 	 * @return	void
 	 */
 	function printContent()	{
-		Header('Location: '.t3lib_div::locationHeaderUrl($this->url));
+		t3lib_div::redirect($this->url);
 	}
 }
 

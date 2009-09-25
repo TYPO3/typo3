@@ -400,9 +400,8 @@ class SC_wizard_forms {
 				$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
 
 					// If the save/close button was pressed, then redirect the screen:
-				if ($_POST['saveandclosedok_x'])	{
-					header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
-					exit;
+				if ($_POST['saveandclosedok_x']) {
+					t3lib_div::redirect($this->P['returnUrl']);
 				}
 			}
 		} else {	// If nothing has been submitted, load the $bodyText variable from the selected database row:

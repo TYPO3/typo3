@@ -126,8 +126,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			if (!$GLOBALS['TSFE']->fe_user->cookieId) {
 				$content .= '<p style="color:red; font-weight:bold;">' . $this->pi_getLL('cookie_warning', '', 1) . '</p>';
 			} else {
-				header('Location: '.t3lib_div::locationHeaderUrl($this->redirectUrl));
-				exit;
+				t3lib_div::redirect($this->redirectUrl);
 			}
 		}
 		return $this->conf['wrapContentInBaseClass'] ? $this->pi_wrapInBaseClass($content) : $content;

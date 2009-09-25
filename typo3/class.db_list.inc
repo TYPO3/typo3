@@ -819,8 +819,7 @@ class recordList extends t3lib_recordList {
 				$returnUrl = '&returnUrl='.rawurlencode($this->listURL());
 				$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
 
-				header('Location: '.t3lib_div::locationHeaderUrl($location));
-				exit;
+				t3lib_div::redirect($location);
 			}
 		}
 	}

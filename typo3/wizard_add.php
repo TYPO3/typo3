@@ -122,8 +122,7 @@ class SC_wizard_add {
 
 			// Return if new record as parent (not possibly/allowed)
 		if (!strcmp($this->pid,''))	{
-			header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
-			exit;
+			t3lib_div::redirect($this->P['returnUrl']);
 		}
 
 			// Else proceed:
@@ -215,10 +214,12 @@ class SC_wizard_add {
 				}
 			}
 				// Return to the parent alt_doc.php record editing session:
-			header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
+			t3lib_div::redirect($this->P['returnUrl']);
 		} else {
-				// Redirecting to alt_doc.php with instructions to create a new record AND when closing to return back with information about that records ID etc.
-			header('Location: '.t3lib_div::locationHeaderUrl('alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).'&returnEditConf=1&edit['.$this->P['params']['table'].']['.$this->pid.']=new'));
+				// Redirecting to alt_doc.php with instructions to create a new record 
+				// AND when closing to return back with information about that records ID etc.
+			$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '&returnEditConf=1&edit[' . $this->P['params']['table'] . '][' . $this->pid . ']=new';
+			t3lib_div::redirect($redirectUrl);
 		}
 	}
 }

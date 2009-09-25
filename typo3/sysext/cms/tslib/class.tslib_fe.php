@@ -1477,8 +1477,7 @@
 				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
 			}
 		} elseif (t3lib_div::isFirstPartOfStr($code,'REDIRECT:')) {
-			header('Location: '.t3lib_div::locationHeaderUrl(substr($code,9)));
-			exit;
+			t3lib_div::redirect(substr($code, 9));
 		} elseif (strlen($code))	{
 				// Check if URL is relative
 			$url_parts = parse_url($code);
@@ -1513,7 +1512,7 @@
 
 			if (false === $res) {
 					// Last chance -- redirect
-				header('Location: '.t3lib_div::locationHeaderUrl($code));
+				t3lib_div::redirect($code);
 			} else {
 
 				$forwardHeaders = array(	// Forward these response headers to the client

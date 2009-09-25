@@ -110,7 +110,7 @@ class tx_simulatestatic {
 					$parentObject->printError($message.'<br /><br /><a href="' . htmlspecialchars($redirectUrl) . '">Click here to get to the right page.</a>','Error: PATH_INFO not configured');
 				}
 			} else {
-				t3lib_div::redirect(t3lib_div::locationHeaderUrl($redirectUrl));
+				t3lib_div::redirect($redirectUrl);
 			}
 			exit;
 			// Set no_cache if PATH_INFO is NOT used as simulateStaticDoc.

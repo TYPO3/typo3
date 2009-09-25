@@ -95,8 +95,7 @@ class recordHistory {
 			$this->createChangeLog();
 			$completeDiff = $this->createMultipleDiff();
 			$this->performRollback($completeDiff);
-			Header ('Location: '.t3lib_div::locationHeaderUrl($this->returnUrl));
-			exit;
+			t3lib_div::redirect($this->returnUrl);
 		}
 
 			// save snapshot

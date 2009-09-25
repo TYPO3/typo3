@@ -117,10 +117,11 @@ class SC_wizard_list {
 
 			// Make redirect:
 		if (!strcmp($this->pid,'') || strcmp($this->id,''))	{	// If pid is blank OR if id is set, then return...
-			header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
+			$redirectUrl = $this->P['returnUrl'];
 		} else {	// Otherwise, show the list:
-			header('Location: '.t3lib_div::locationHeaderUrl('db_list.php?id='.$this->pid.'&table='.$this->P['params']['table'].'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))));
+			$redirectUrl = 'db_list.php?id=' . $this->pid . '&table=' . $this->P['params']['table'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 		}
+		t3lib_div::redirect($redirectUrl);
 	}
 }
 

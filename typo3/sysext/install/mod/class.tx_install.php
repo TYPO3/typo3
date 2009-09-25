@@ -2261,8 +2261,8 @@ From sub-directory:
 	 * @return	[type]		...
 	 */
 	function outputExitBasedOnStep($content)	{
-		if ($this->step)	{
-			Header('Location: '.t3lib_div::locationHeaderUrl($this->action));
+		if ($this->step) {
+			t3lib_div::redirect($this->action);
 		} else {
 			$this->output($this->outputWrapper($content));
 		}

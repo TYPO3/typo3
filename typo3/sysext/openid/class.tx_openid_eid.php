@@ -61,9 +61,7 @@ class tx_openid_eID {
 
 		// Redirect to the original location in any case (authenticated or not)
 		@ob_end_clean();
-		header(t3lib_div::HTTP_STATUS_303);
-		header('Location: ' . t3lib_div::locationHeaderUrl(t3lib_div::_GP('tx_openid_location')));
-		exit;
+		t3lib_div::redirect(t3lib_div::_GP('tx_openid_location'), t3lib_div::HTTP_STATUS_303);
 	}
 }
 

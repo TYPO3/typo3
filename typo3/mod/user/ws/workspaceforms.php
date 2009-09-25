@@ -193,8 +193,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 			// if 'Save&Close' was pressed, redirect to main module script
 			if (t3lib_div::_GP('_saveandclosedok_x')) {
 				// `n` below is to prevent caching
-				header('Location: ' . t3lib_div::locationHeaderUrl('index.php?n=' . uniqid('')));
-				exit();
+				t3lib_div::redirect('index.php?n=' . uniqid(''));
 			}
 		}
 

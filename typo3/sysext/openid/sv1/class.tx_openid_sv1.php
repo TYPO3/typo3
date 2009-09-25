@@ -371,8 +371,7 @@ class tx_openid_sv1 extends t3lib_svbase {
 			// requests without resending the form. This is exactly what we need here.
 			// See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.4
 			@ob_end_clean();
-			header(t3lib_div::HTTP_STATUS_303);
-			header('Location: ' . $redirectURL);
+			t3lib_div::redirect($redirectURL, t3lib_div::HTTP_STATUS_303);
 		} else {
 			$formHtml = $authenticationRequest->htmlMarkup($trustedRoot,
 							$returnURL, false, array('id' => 'openid_message'));
