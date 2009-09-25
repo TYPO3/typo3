@@ -190,8 +190,6 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		if (isset($this->extAdminConfig['enable.'])) {
 			foreach($this->extAdminConfig['enable.'] as $key => $value) {
 				if ($value) {
-					$GLOBALS['TSFE']->includeTCA();
-
 					$this->adminPanel = t3lib_div::makeInstance('tslib_AdminPanel');
 					$this->extAdmEnabled = true;
 

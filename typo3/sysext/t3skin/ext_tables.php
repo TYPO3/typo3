@@ -1,7 +1,8 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-if (TYPO3_MODE=='BE')	{
+if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->isFrontendEditingActive())) {
+	global $TBE_STYLES;
 
 		// Support for other extensions to add own icons...
 	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ?
