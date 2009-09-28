@@ -1349,7 +1349,7 @@ class t3lib_TStemplate	{
 		$setupArrKeys = array_keys($setupArr);
 		foreach ($setupArrKeys as $key) {
 			if ($acceptOnlyProperties || t3lib_div::testInt($key)) {
-				$keyArr[] = $key;
+				$keyArr[] = intval($key);
 			}
 		}
 		$keyArr = array_unique($keyArr);
