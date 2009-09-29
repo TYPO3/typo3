@@ -150,6 +150,11 @@ class tx_scheduler implements t3lib_Singleton {
 	 * @return	boolean				Whether the task was saved succesfully to the database or not
 	 */
 	public function executeTask(tx_scheduler_Task $task) {
+			// Trigger the saving of the task, as this will calculate its next execution time
+			// This should be calculated all the time, even if the execution is skipped
+			// (in case it is skipped, this pushes back execution to the next possible date)
+		$task->save();
+		$result = true;
 
 			// Task is already running and multiple executions are not allowed
 		if (!$task->areMultipleExecutionsAllowed() && $task->isExecutionRunning()) {
@@ -208,7 +213,6 @@ class tx_scheduler implements t3lib_Singleton {
 				'[scheduler]: Task executed. Class: ' . get_class($task). ', UID: ' . $task->getTaskUid(),
 				array()
 			);
-			$result = $task->save();
 
 				// Now that the result of the task execution has been handled,
 				// throw the exception again, if any
