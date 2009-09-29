@@ -316,7 +316,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 			$enableInstallToolFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
 			if (is_file ($enableInstallToolFile)) {
 					// Extend the age of the ENABLE_INSTALL_TOOL file by one hour
-				touch ($enableInstallToolFile);
+				@touch($enableInstallToolFile);
 			}
 
 			if($this->redirect_url)	{
