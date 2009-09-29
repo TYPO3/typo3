@@ -382,10 +382,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		);
 
 		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
-		$this->securityHint = '<strong>' . $GLOBALS['LANG']->getLL('security_header') . '</strong><br />' .
+		$this->securityHint = '<div class="typo3-message message-information">
+			<strong>' . $GLOBALS['LANG']->getLL('security_header') . '</strong><br />' .
 			sprintf($GLOBALS['LANG']->getLL('security_descr'),
 				'<a href="http://typo3.org/teams/security/" target="_blank">', '</a>'
 			);
+		$this->securityHint .= '</div>';
 
 		$this->excludeForPackaging = $GLOBALS['TYPO3_CONF_VARS']['EXT']['excludeForPackaging'];
 
