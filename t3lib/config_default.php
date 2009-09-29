@@ -91,7 +91,6 @@ $TYPO3_CONF_VARS = Array(
 		'dbClientCompress' => 0,				// Boolean: if true, data exchange between TYPO3 and database server will be compressed. This may improve performance if (1) database serever is on the different server and (2) network connection speed to database server is 100mbps or less. CPU usage will be higher if this option is used but database operations will be executed faster due to much less (up to 3 times) database network traffic. This option has no effect if MySQL server is localhost.
 		'setMemoryLimit' => 0,					// Integer, memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.
 		'forceReturnPath' => 0,					// Boolean: Force return path to be applied in mail() calls. If this is set, all calls to mail() done by t3lib_htmlmail will be called with '-f<return_path> as the 5th parameter. This will make the return path correct on almost all Unix systems. There is a known problem with Postfix below version 2: Mails are not sent if this option is set and Postfix is used. On Windows platforms, the return path is set via a call to ini_set. This has no effect if safe_mode in PHP is on.
-		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
 		'serverTimeZone' => 1,					// Integer, GMT offset of servers time (from time()). Default is "1" which is "GMT+1" (central european time). This value can be used in extensions that are GMT aware and wants to convert times to/from other timezones.
 		'systemLog' => '',						// String, semi-colon separated list: Defines one or more logging methods. Possible methods: file,<abs-path-to-file>[,<level>];mail,<to>[/<from>][,<level>];syslog,<facility>,[,<level>];error_log[,,<level>]. "file" logs to a file, "mail" sends the log entries via mail, "syslog" uses the operating system's log, "error_log" uses the PHP error log. The level is the individual logging level (see [SYS][systemLogLevel]. Facility may be one of LOCAL0..LOCAL7, USER (on Windows USER is the only valid type).
 		'systemLogLevel' => 0,					// Integer: Only messages with same or higher severity are logged; 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error.
@@ -156,6 +155,10 @@ $TYPO3_CONF_VARS = Array(
 			)
 		),
 		'useCachingFramework' => 0,				// Boolean: Enable this if you want to use the caching framework by default for the core caches cache_pages, cache_pagesection and cache_hash.
+		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
+		'exceptionHandler'  => 't3lib_error_ProductionExceptionHandler',	// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling, or set to t3lib_error_ProductionExceptionHandler for nice error messages when something wents wrong, or to t3lib_error_DebugExceptionHandler for a complete stack trace of any encountered exception. Note that if devIPmask matches, t3lib_error_DebugExceptionHandler will be used, regardless of this setting.
+		'errorHandler'      => 't3lib_error_ErrorHandler',	// String: Classname to handle PHP errors. The default will turn the error into an exception (to be handled by the exceptionHandler).
+		'exceptionalErrors' => E_ALL ^ E_NOTICE,	// Integer: The E_* constant that will be handled as an exception by t3lib_error_ErrorHandler. Default is "E_ALL ^ E_NOTICE" (6135) and "0" if displayError=0. Some values for errors: E_ALL=6143, E_ALL ^ E_NOTICE ^ E_WARNING=6133. See php documentation for more details on this integer.
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -478,17 +481,27 @@ function debugEnd() {
 	// Init services array:
 $T3_SERVICES = array();
 
+	// Error & exception handling
+$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS['SYS']['exceptionHandler'];
+$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = $TYPO3_CONF_VARS['SYS']['exceptionalErrors'];
 
 	// Turn error logging on/off.
 if (($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']))!='-1')	{
 	if ($displayErrors==2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
 		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
 			$displayErrors=1;
+			$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = 't3lib_error_DebugExceptionHandler';
 		} else {
 			$displayErrors=0;
 		}
 	}
+	if ($displayErrors == 0)	{
+		$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = 0;
+	}
 	@ini_set('display_errors', $displayErrors);
+} elseif (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
+		// with displayErrors = -1 (default), turn on debugging if devIPmask matches:
+	$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = 't3lib_error_DebugExceptionHandler';
 }
 
 	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]

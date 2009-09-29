@@ -127,6 +127,18 @@ $TT->push('Register Autoloader', '');
 $TT->pull();
 
 
+// *********************
+// Error & Exception handling
+// *********************
+if ($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] !== '') {
+	$TT->push('Register Exceptionhandler', '');
+		$errorHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SYS']['errorHandler']);
+			// register an error handler for the given exceptionalErrors
+		$errorHandler->setErrorHandlerForExceptionalErrors($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors']);
+		$exceptionHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler']);
+	$TT->pull();
+}
+
 $TYPO3_DB = t3lib_div::makeInstance('t3lib_DB');
 $TYPO3_DB->debugOutput = $TYPO3_CONF_VARS['SYS']['sqlDebug'];
 

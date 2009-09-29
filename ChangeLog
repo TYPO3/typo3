@@ -1,3 +1,7 @@
+2009-09-29  Rupert Germann  <rupi@gmx.li>
+
+	* Added feature #9355: Add an error and exception handler (backported from FLOW3) (thanks to Ingo Renner)
+
 2009-09-29  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11433: touch(): Utime failed in install tool (thanks to Steffen Gebert)
