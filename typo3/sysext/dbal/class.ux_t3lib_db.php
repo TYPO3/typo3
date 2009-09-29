@@ -970,6 +970,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			if (is_array($v['JOIN']))	{
 				$from_table[$k]['JOIN']['withTable'] = $this->quoteName($from_table[$k]['JOIN']['withTable']);
+				$from_table[$k]['JOIN']['as'] = ($from_table[$k]['JOIN']['as']) ? $this->quoteName($from_table[$k]['JOIN']['as']) : '';
 				$from_table[$k]['JOIN']['ON'][0]['table'] = ($from_table[$k]['JOIN']['ON'][0]['table']) ? $this->quoteName($from_table[$k]['JOIN']['ON'][0]['table']) : '';
 				$from_table[$k]['JOIN']['ON'][0]['field'] = $this->quoteName($from_table[$k]['JOIN']['ON'][0]['field']);
 				$from_table[$k]['JOIN']['ON'][1]['table'] = ($from_table[$k]['JOIN']['ON'][1]['table']) ? $this->quoteName($from_table[$k]['JOIN']['ON'][1]['table']) : '';

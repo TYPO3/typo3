@@ -1,3 +1,7 @@
+2009-09-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12071: t3lib_sqlparser is not able to parse alias of a joined table
+
 2009-09-20  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12012: admin_get_tables() method is using PHP5.3-deprecated function mysql_list_tables
