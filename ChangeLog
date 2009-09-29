@@ -6,6 +6,7 @@
 
 	* Added feature #9355: Add an error and exception handler (backported from FLOW3) (thanks to Ingo Renner)
 	* Added improvement #11855: security related links in EM are not marked as links.
+	* Fixed bug #12032: The message "The selected language is not available..." in EM tranlation handling wrong if no language can be chosen (Thanks to Georg Ringer)
 
 2009-09-29  Oliver Hader  <oliver@typo3.org>
 

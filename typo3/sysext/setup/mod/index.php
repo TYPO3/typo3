@@ -631,8 +631,10 @@ class SC_mod_user_setup_index {
 				<select id="field_lang" name="data[lang]" class="select">' .
 					implode('', $languageOptions) . '
 				</select>';
-		if ($GLOBALS['BE_USER']->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $GLOBALS['BE_USER']->uc['lang'])) {
-			$languageUnavailableWarning = 'The selected language is not available before the language pack is installed.<br />'
+		if ( $GLOBALS['BE_USER']->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $GLOBALS['BE_USER']->uc['lang'])) {
+			$languageUnavailableWarning = 'The selected language "' 
+				. $GLOBALS['LANG']->getLL('lang_' . $GLOBALS['BE_USER']->uc['lang'], 1) 
+				. '" is not available before the language pack is installed.<br />'
 				. ($GLOBALS['BE_USER']->isAdmin() ?
 					'You can use the Extension Manager to easily download and install new language packs.'
 				:	'Please ask your system administrator to do this.');
