@@ -1,3 +1,7 @@
+2009-09-30  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12080 (Follow-up to bug #11505): pageCacheToExternalFiles=1 breaks db-caching in 4.3
+
 2009-09-29  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12068: Scheduler: Improper skipping of running tasks in case multiple execution denied

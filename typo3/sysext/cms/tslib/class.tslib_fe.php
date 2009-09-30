@@ -2864,11 +2864,11 @@
 			$cacheFileName = PATH_site.'typo3temp/cache_pages/'.$row['hash']{0}.$row['hash']{1}.'/'.$row['hash'].'.html';
 			switch((string)$type)	{
 				case 'get':
-					$row['content'] = @is_file($cacheFileName) ? t3lib_div::getUrl($cacheFileName) : '<!-- CACHING ERROR, sorry -->';
+					$row['HTML'] = @is_file($cacheFileName) ? t3lib_div::getUrl($cacheFileName) : '<!-- CACHING ERROR, sorry -->';
 				break;
 				case 'set':
-					t3lib_div::writeFileToTypo3tempDir($cacheFileName,$row['content']);
-					$row['content'] = '';
+					t3lib_div::writeFileToTypo3tempDir($cacheFileName, $row['HTML']);
+					$row['HTML'] = '';
 				break;
 			}
 		}
