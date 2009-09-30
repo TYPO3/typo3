@@ -27,64 +27,30 @@ body#ext-reports-mod-index-php {
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* status report */
 
-table.system-status-report {
-	width: 100%;
-	margin: 10px 0px;
-	border-collapse: collapse;
-	border-top: 1px solid #595d66;
+#ext-reports-mod-index-php h2.section-header {
+	margin: 15px 0;
+	padding: 2px 0 0 20px;
+	cursor: pointer;
+}
+#ext-reports-mod-index-php h2.collapsed {
+	background-image:url(../../../gfx/arrowright.png);
+	background-repeat:no-repeat;
+}
+#ext-reports-mod-index-php h2.expanded {
+	background-image:url(../../../gfx/arrowdown.png);
+	background-repeat:no-repeat;
 }
 
-
-table.system-status-report th,
-table.system-status-report td {
-	border-width: 1px 0px;
+#ext-reports-mod-index-php .message-body {
+	clear: left;
 }
 
-table.system-status-report th,
-table.system-status-report td {
-	text-align: left;
-	padding: 6px;
-	font-size: 12px;
-}
-table.system-status-report th {
-	width: 300px;
-}
-table.system-status-report th a,
-table.system-status-report td a {
-	color: #000;
-	font-weight: bold;
-	text-decoration: none;
+#ext-reports-mod-index-php .message-left {
+	float: left;
+	width: 400px;
 }
 
-table.system-status-report th a:hover,
-table.system-status-report td a:hover {
-	text-decoration: underline;
+#ext-reports-mod-index-php .message-right {
+	float: left;
 }
-
-table.system-status-report th {
-	padding-left: 30px;
-	font-weight: bold;
-}
-
-table.system-status-report td.merge-down,
-table.system-status-report th.merge-down {
-	border-bottom-width: 0px !important;
-}
-
-table.system-status-report td.merge-up {
-	border-top-width: 0px !important;
-	background-image: none;
-	padding-left: 30px;
-}
-
-table.system-status-report tr td.typo3-message {
-	background-image: none;
-}
-
-table.system-status-report tr td.typo3-message ul,
-table.system-status-report tr td.typo3-message ol {
-	margin-top: 0px;
-}
-
-
 

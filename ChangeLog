@@ -1,3 +1,7 @@
+2009-09-24  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug 12089: Make messages in reports module collapsible
+
 2009-09-30  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12035: BE style must match t3skin in reports module and flash messages (thanks to Tom Ruether)

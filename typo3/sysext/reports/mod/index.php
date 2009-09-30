@@ -58,6 +58,7 @@ class tx_reports_Module extends t3lib_SCbase {
 			t3lib_extMgm::extPath('reports') . 'mod/mod_template.html'
 		);
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->getPageRenderer()->loadScriptaculous('effects');
 		$this->doc->addStyleSheet(
 			'tx_reports',
 			'../' . t3lib_extMgm::siteRelPath('reports') . 'mod/mod_styles.css'
@@ -107,7 +108,6 @@ class tx_reports_Module extends t3lib_SCbase {
 
 				// Draw the form
 			$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
-
 				// JavaScript
 			$this->doc->JScode = '
 				<script language="javascript" type="text/javascript">
@@ -115,6 +115,24 @@ class tx_reports_Module extends t3lib_SCbase {
 					function jumpToUrl(URL) {
 						document.location = URL;
 					}
+					var state;
+					Event.observe(document, "dom:loaded", function(){
+						$$(".section-header").invoke("observe", "click", function(event){
+							var item = Event.element(event);	
+							if (item.hasClassName("expanded")) {
+								item.removeClassName("expanded").addClassName("collapsed");
+								Effect.BlindUp(item.next("div"), {duration : 0.5});
+								state = 1;
+							} else {
+								item.removeClassName("collapsed").addClassName("expanded");
+								Effect.BlindDown(item.next("div"), {duration : 0.5});
+								state = 0;
+							}
+							new Ajax.Request("ajax.php", {
+								parameters : "ajaxID=Reports::saveCollapseState&item=" + item.id + "&state=" + state
+							});
+						}); 
+					});
 				</script>
 			';
 			$this->doc->postCode='
@@ -245,6 +263,7 @@ class tx_reports_Module extends t3lib_SCbase {
 
 		return $buttons;
 	}
+
 
 }
 

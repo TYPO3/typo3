@@ -96,14 +96,31 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 */
 	protected function renderStatus(array $statusCollection) {
 		$content = '';
+		$template = '
+		<div class="typo3-message message-###CLASS###">
+			<div class="header-container">
+				<div class="message-header message-left">###HEADER###</div>
+				<div class="message-header message-right">###STATUS###</div>
+			</div>
+			<div class="message-body">###CONTENT###</div>
+		</div>';
 
 		$statuses = $this->sortStatusProviders($statusCollection);
 
 		foreach($statuses as $provider => $providerStatus) {
 			$providerState = $this->sortStatuses($providerStatus);
 
-			$content .= '<h2>' . $provider . '</h2>';
-			$content .= '<table class="system-status-report">';
+			$id = str_replace(' ', '-', $provider);
+			if (isset($GLOBALS['BE_USER']->uc['reports']['states'][$id]) && $GLOBALS['BE_USER']->uc['reports']['states'][$id]) {
+				$collapsedStyle = 'style="display:none"';
+				$collapsedClass = 'collapsed';
+			} else {
+				$collapsedStyle = '';
+				$collapsedClass = 'expanded';
+			}
+
+			$content .= '<h2 id="' . $id . '" class="section-header ' . $collapsedClass . '">' . $provider . '</h2>
+				<div ' . $collapsedStyle . '>';
 			$classes = array(
 				tx_reports_reports_status_Status::NOTICE  => 'notice',
 				tx_reports_reports_status_Status::INFO    => 'information',
@@ -113,18 +130,14 @@ class tx_reports_reports_Status implements tx_reports_Report {
 			);
 
 			foreach ($providerState as $status) {
-				$class = 'typo3-message message-' . $classes[$status->getSeverity()];
-				$description = $status->getMessage();
-	
-				if (empty($description)) {
-					$content .= '<tr><th class="'. $class .' statusTitle">'. $status->getTitle() .'</th><td class="'. $class .'">'. $status->getValue() .'</td></tr>';
-				} else {
-					$content .= '<tr><th class="'. $class .' merge-down">'. $status->getTitle() .'</th><td class="'. $class .' merge-down">'. $status->getValue() .'</td></tr>';
-					$content .= '<tr><td class="'. $class .' merge-up" colspan="2">'. $description .'</td></tr>';
-				}
+				$content .= strtr($template, array(
+					'###CLASS###'   => $classes[$status->getSeverity()],
+					'###HEADER###'  => $status->getTitle(),
+					'###STATUS###'  => $status->getValue(),
+					'###CONTENT###' => $status->getMessage(),
+				));
 			}
-	
-			$content .= '</table>';
+			$content .= '</div>';
 		}
 		return $content;
 	}
@@ -180,6 +193,22 @@ class tx_reports_reports_Status implements tx_reports_Report {
 			array_unshift($statuses, $header);
 		}
 		return $statuses;
+	}
+
+	/**
+	 * saves the section toggle state in the backend user's uc
+	 *
+	 * @param	array		array of parameters from the AJAX interface, currently unused
+	 * @param	TYPO3AJAX	object of type TYPO3AJAX
+	 * @return	void
+	 */
+	
+	public function saveCollapseState(array $params, TYPO3AJAX $ajaxObj) {
+		$item = t3lib_div::_POST('item');
+		$state = (bool)t3lib_div::_POST('state');
+
+		$GLOBALS['BE_USER']->uc['reports']['states'][$item] = $state;
+		$GLOBALS['BE_USER']->writeUC();
 	}
 }
 
