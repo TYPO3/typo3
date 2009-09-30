@@ -978,8 +978,8 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
 			$fs = t3lib_div::makeInstance('tslib_frameset');
-			$GLOBALS['TSFE']->addBodyContent($fs->make($GLOBALS['TSFE']->pSetup['frameSet.']));
-			$GLOBALS['TSFE']->addBodyContent(chr(10) . '<noframes>' . chr(10));
+			$pageRenderer->addBodyContent($fs->make($GLOBALS['TSFE']->pSetup['frameSet.']));
+			$pageRenderer->addBodyContent(chr(10) . '<noframes>' . chr(10));
 		}
 
 			// Bodytag:
