@@ -1,6 +1,7 @@
 2009-09-30  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12035: BE style must match t3skin in reports module and flash messages (thanks to Tom Ruether)
+	* Fixed bug #12036: BE style must match t3skin in Install Tool (thanks to Tom Ruether)
 
 2009-09-30  Rupert Germann  <rupi@gmx.li>
 
