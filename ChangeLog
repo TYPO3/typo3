@@ -6,6 +6,7 @@
 
 	* Fixed bug #12035: BE style must match t3skin in reports module and flash messages (thanks to Tom Ruether)
 	* Fixed bug #12036: BE style must match t3skin in Install Tool (thanks to Tom Ruether)
+	* Added feature #7461: Transfer cookies via SSL only whenever possible
 
 2009-09-30  Rupert Germann  <rupi@gmx.li>
 

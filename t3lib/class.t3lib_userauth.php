@@ -274,41 +274,8 @@ class t3lib_userAuth {
 		if ($this->writeDevLog && !is_array($this->user)) t3lib_div::devLog('No user session found.', 't3lib_userAuth', 2);
 
 			// Setting cookies
-		if ($TYPO3_CONF_VARS['SYS']['cookieDomain'])	{
-			if ($TYPO3_CONF_VARS['SYS']['cookieDomain']{0} == '/')	{
-				$matchCnt = @preg_match($TYPO3_CONF_VARS['SYS']['cookieDomain'], t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'), $match);
-				if ($matchCnt === FALSE)	{
-					t3lib_div::sysLog('The regular expression of $TYPO3_CONF_VARS[SYS][cookieDomain] contains errors. The session is not shared across sub-domains.', 'Core', 3);
-				} elseif ($matchCnt)	{
-					$cookieDomain = $match[0];
-				}
-			} else {
-				$cookieDomain = $TYPO3_CONF_VARS['SYS']['cookieDomain'];
-			}
-		}
-
-			// If new session and the cookie is a sessioncookie, we need to set it only once!
-		if ($this->isSetSessionCookie())	{
-			if (!$this->dontSetCookie)	{
-				if ($cookieDomain)	{
-					SetCookie($this->name, $id, 0, '/', $cookieDomain);
-				} else {
-					SetCookie($this->name, $id, 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
-				}
-				if ($this->writeDevLog) 	t3lib_div::devLog('Set new Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
-			}
-		}
-
-			// If it is NOT a session-cookie, we need to refresh it.
-		if ($this->isRefreshTimeBasedCookie())	{
-			if (!$this->dontSetCookie)	{
-				if ($cookieDomain)	{
-					SetCookie($this->name, $id, $GLOBALS['EXEC_TIME'] + $this->lifetime, '/', $cookieDomain);
-				} else {
-					SetCookie($this->name, $id, $GLOBALS['EXEC_TIME'] + $this->lifetime, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
-				}
-				if ($this->writeDevLog) 	t3lib_div::devLog('Update Cookie: '.$id.($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
-			}
+		if (!$this->dontSetCookie)	{
+			$this->setSessionCookie();
 		}
 
 			// Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
@@ -342,6 +309,80 @@ class t3lib_userAuth {
 			$this->gc();
 		}
 
+	}
+
+	/**
+	 * Sets the session cookie for the current disposal.
+	 *
+	 * @return	void
+	 */
+	protected function setSessionCookie() {
+		$isSetSessionCookie = $this->isSetSessionCookie();
+		$isRefreshTimeBasedCookie = $this->isRefreshTimeBasedCookie();
+
+		if ($isSetSessionCookie || $isRefreshTimeBasedCookie) {
+			$settings = $GLOBALS['TYPO3_CONF_VARS']['SYS'];
+
+			// Get the domain to be used for the cookie (if any):
+			$cookieDomain = $this->getCookieDomain();
+			// If no cookie domain is set, use the base path:
+			$cookiePath = ($cookieDomain ? '/' : t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+			// If the cookie lifetime is set, use it:
+			$cookieExpire = ($isRefreshTimeBasedCookie ? $GLOBALS['EXEC_TIME'] + $this->lifetime : 0);
+			// Use the secure option when the current request is served by a secure connection:
+			$cookieSecure = (bool)$settings['cookieSecure'] && t3lib_div::getIndpEnv('TYPO3_SSL');
+			// Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
+			$cookieHttpOnly = (bool)$settings['cookieHttpOnly'];
+
+			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used: 
+			if ((int)$settings['cookieSecure'] !== 1 || t3lib_div::getIndpEnv('TYPO3_SSL')) {
+				setcookie(
+					$this->name,
+					$this->id,
+					$cookieExpire,
+					$cookiePath,
+					$cookieDomain,
+					$cookieSecure,
+					$cookieHttpOnly
+				);
+			} else {
+				throw new t3lib_exception(
+					'Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].',
+					1254325546
+				);
+			}
+
+			if ($this->writeDevLog) {
+				$devLogMessage = ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ') . $this->id;
+				t3lib_div::devLog($devLogMessage . ($cookieDomain ? ', '.$cookieDomain : ''), 't3lib_userAuth');
+			}
+		}
+	}
+
+	/**
+	 * Gets the domain to be used on setting cookies.
+	 * The information is taken from the value in $TYPO3_CONF_VARS[SYS][cookieDomain].
+	 * 
+	 * @return	string		The domain to be used on setting cookies
+	 */
+	protected function getCookieDomain() {
+		$result = '';
+		$cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'];
+
+		if ($cookieDomain) {
+			if ($cookieDomain{0} == '/') {
+				$matchCnt = @preg_match($cookieDomain, t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'), $match);
+				if ($matchCnt === FALSE) {
+					t3lib_div::sysLog('The regular expression of $TYPO3_CONF_VARS[SYS][cookieDomain] contains errors. The session is not shared across sub-domains.', 'Core', 3);
+				} elseif ($matchCnt) {
+					$result = $match[0];
+				}
+			} else {
+				$result = $TYPO3_CONF_VARS['SYS']['cookieDomain'];
+			}
+		}
+
+		return $result;
 	}
 
 	/**
