@@ -7,6 +7,7 @@
 
 	* Fixed bug #12080 (Follow-up to bug #11505): pageCacheToExternalFiles=1 breaks db-caching in 4.3
 	* Fixed bug #12082: PHP fatal error with frameset page
+	* Fixed bug #12085: Memcached Configuration status report is broken
 
 2009-09-29  Francois Suter  <francois@typo3.org>
 

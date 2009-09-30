@@ -40,7 +40,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	public function getStatus() {
 		$statuses = array(
 			'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
-			
+
 		);
 
 		if ($this->isMemcachedUsed()) {
@@ -147,7 +147,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 						list($host, $port) = explode(':', $testServer, 2);
 					} else {
 						$host = $testServer;
-						$port = $defaultPort;
+						$port = $defaultMemcachedPort;
 					}
 				}
 				$memcachedConnection = @memcache_connect($host, $port);
