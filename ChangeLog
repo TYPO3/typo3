@@ -4,6 +4,7 @@
 
 2009-10-01  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed typo in tslib_content::cImage (changed $this->stdwrap to $this->stdWrap)
 	* Follow-up to #12089: Cleanup: unescaped &
 	* Follow-up to #12089: Make messages in reports module collapsible: add error/warning icon to header
 	* Follow-up to #11843 Add a reports module: endPage was applied twice
