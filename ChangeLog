@@ -5,6 +5,7 @@
 2009-10-01  Rupert Germann  <rupi@gmx.li>
 
 	* Follow-up to bug #11357: fixed a parse error in index_re.php
+	* Fixed bug #11979: TCEforms suggest doesn't find everything on large sites and is slow  (thanks to Steffen Gebert)
 
 2009-09-30  Steffen Kamper  <info@sk-typo3.de>
 

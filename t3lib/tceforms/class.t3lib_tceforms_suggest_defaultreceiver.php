@@ -52,13 +52,6 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	protected $mmForeignTable = '';
 
 	/**
-	 * Counter to limit the recursions when querying the table; also needed to choose the range of records to select
-	 *
-	 * @var integer
-	 */
-	protected $recursionCounter = 0;
-
-	/**
 	 * The select-clause to use when selecting the records (is manipulated and used by different functions, so it has to
 	 * be a global var)
 	 *
@@ -156,7 +149,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		$rows = array();
 
 		$this->params = &$params;
-		$this->start  = $this->recursionCounter * 50;
+		$start  = $recursionCounter * 50;
 
 		$this->prepareSelectStatement();
 		$this->prepareOrderByStatement();
@@ -166,7 +159,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 				$this->selectClause,
 				'',
 				$this->orderByStatement,
-				$this->start . ', 50');
+				$start . ', 50');
 
 
 		$allRowsCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
