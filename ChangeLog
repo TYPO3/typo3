@@ -1,3 +1,7 @@
+2009-10-01  Rupert Germann  <rupi@gmx.li>
+
+	* Follow-up to bug #11357: fixed a parse error in index_re.php
+
 2009-09-30  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug 12089: Make messages in reports module collapsible

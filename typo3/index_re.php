@@ -42,5 +42,5 @@
 
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require ('init.php');
-t3lib_div::redirect(t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php'));
+t3lib_div::redirect(t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php');
 ?>
