@@ -1,3 +1,7 @@
+2009-10-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised version to 0.9.22
+
 2009-09-29  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12071: t3lib_sqlparser is not able to parse alias of a joined table
@@ -8,12 +12,20 @@
 
 2009-09-18  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Raised version to 0.9.21
+
+2009-09-18  Xavier Perseguers  <typo3@perseguers.ch>
+
 	* Fixed bug #11984: Remove reference operators for objects
 
 2009-09-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #11436: Unknown tables break Install-Tool (Thanks to David Bruchmann)
 	* Fixed bug #11108: DBAL wildly quotes fields and table names
+
+2009-09-04  Karsten Dambekalns <karsten@typo3.org>
+
+	* Raised version to 0.9.20
 
 2008-02-04  Michael Stucki  <michael@typo3.org>
 
