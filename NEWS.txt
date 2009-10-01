@@ -32,14 +32,26 @@ General
 	  that are really required for an accordant application. The performace improves
 	  dramatically. The PHP files are looked up using a registry file returns a simple array
 	  mapping PHP class names to accordant file names:
-	  	+ t3lib/core_autoload.php contains all classes in t3lib/tslib or the TYPO3 Core
-	  	+ [extension_key]/ext_autoload.php contains all classes of that TYPO3 extension
+		+ t3lib/core_autoload.php contains all classes in t3lib/tslib or the TYPO3 Core
+		+ [extension_key]/ext_autoload.php contains all classes of that TYPO3 extension
 
 	* Extbase and Fluid integration: Extbase and Fluid are backports from FLOW3 to bring MVC
 	  and a very flexible templating engine to TYPO3 4.x. Extbase can be used in TYPO3 4.3 for
 	  frontend extensions only. The techniques used by these two packages are the same as in
 	  FLOW3/TYPO3 5.0 - thus, it's possible to develop future-proof extensions now and migrate
 	  them easily when TYPO3 5.0 is released.
+
+	* Cookies of frontend and backend sessions can now be used with flags to protect the session id.
+	  These settings for 'cookieSecure' and 'cookieHttpOnly' can be defined in the Install Tool:
+		+ cookieSecure: Indicates that the cookie should only be transmitted over a secure HTTPS
+		  connection from the client. If set to 1 (force HTTPS), the cookie will only be set if
+		  a secure (HTTPS) connection exists - use this in combination with lockSSL since otherwise
+		  the application will fail and throw an exception! If set to 2, the cookie will be set in
+		  each case, but uses the secure flag if a secure (HTTPS) connection exists.
+		+ cookieHttpOnly: When enabled the cookie will be made accessible only through the HTTP
+		  protocol. This means that the cookie won't be accessible by scripting languages, such as
+		  JavaScript. This setting can effectively help to reduce identity theft through XSS attacks
+		  (although it is not supported by all browsers).
 
 Backend
 =======

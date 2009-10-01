@@ -8,6 +8,7 @@
 
 	* Fixed bug #12071: t3lib_sqlparser is not able to parse alias of a joined table (thanks to Xavier Perseguers)
 	* Raised DBAL version from 0.9.21 to 0.9.22
+	* Cleanup: Updated NEWS.txt
 
 2009-10-01  Rupert Germann  <rupi@gmx.li>
 
