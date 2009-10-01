@@ -119,8 +119,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 				$collapsedClass = 'expanded';
 			}
 
-			$content .= '<h2 id="' . $id . '" class="section-header ' . $collapsedClass . '">' . $provider . '</h2>
-				<div ' . $collapsedStyle . '>';
+			
 			$classes = array(
 				tx_reports_reports_status_Status::NOTICE  => 'notice',
 				tx_reports_reports_status_Status::INFO    => 'information',
@@ -129,15 +128,27 @@ class tx_reports_reports_Status implements tx_reports_Report {
 				tx_reports_reports_status_Status::ERROR   => 'error',
 			);
 
+			$icon[tx_reports_reports_status_Status::WARNING] = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/warning.png', 'width="16" height="16"') . ' />';
+			$icon[tx_reports_reports_status_Status::ERROR] = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/error.png', 'width="16" height="16"') . ' />';
+			$messages = '';
+			$headerIcon = '';
+			$sectionSeverity = 0;
+
 			foreach ($providerState as $status) {
-				$content .= strtr($template, array(
-					'###CLASS###'   => $classes[$status->getSeverity()],
+				$severity = $status->getSeverity();
+				$sectionSeverity = $severity > $sectionSeverity ? $severity : $sectionSeverity;
+				$messages .= strtr($template, array(
+					'###CLASS###'   => $classes[$severity],
 					'###HEADER###'  => $status->getTitle(),
 					'###STATUS###'  => $status->getValue(),
 					'###CONTENT###' => $status->getMessage(),
 				));
 			}
-			$content .= '</div>';
+			if ($sectionSeverity > 0) {
+				$headerIcon = $icon[$sectionSeverity];
+			}
+			$content .= '<h2 id="' . $id . '" class="section-header ' . $collapsedClass . '">' . $headerIcon . $provider . '</h2>
+				<div ' . $collapsedStyle . '>' . $messages . '</div>';
 		}
 		return $content;
 	}
