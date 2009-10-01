@@ -250,7 +250,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			$severity = tx_reports_reports_status_Status::WARNING;
 
 			$disableInstallToolUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')
-				. '&adminCmd=remove_ENABLE_INSTALL_TOOL';
+				. '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
 
 			$message = sprintf(
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled'),

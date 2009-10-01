@@ -1,5 +1,6 @@
 2009-10-01  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to #12089: Cleanup: unescaped &
 	* Follow-up to #12089: Make messages in reports module collapsible: add error/warning icon to header
 	* Follow-up to #11843 Add a reports module: endPage was applied twice
 
