@@ -378,7 +378,7 @@ class t3lib_userAuth {
 					$result = $match[0];
 				}
 			} else {
-				$result = $TYPO3_CONF_VARS['SYS']['cookieDomain'];
+				$result = $cookieDomain;
 			}
 		}
 
