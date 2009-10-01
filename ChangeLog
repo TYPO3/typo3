@@ -1,3 +1,7 @@
+2009-10-01  Oliver Hader  <oliver@typo3.org>
+
+	* Release of TYPO3 4.3.0beta1
+
 2009-10-01  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #11855: Use flash message API instead of custom markup for highlighting security link
