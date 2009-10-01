@@ -132,10 +132,12 @@ $TT->pull();
 // *********************
 if ($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] !== '') {
 	$TT->push('Register Exceptionhandler', '');
+	if ($TYPO3_CONF_VARS['SYS']['errorHandler'] !== '') {
 		$errorHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SYS']['errorHandler']);
 			// register an error handler for the given exceptionalErrors
 		$errorHandler->setErrorHandlerForExceptionalErrors($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors']);
-		$exceptionHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler']);
+	}
+	$exceptionHandler = t3lib_div::makeInstance($TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler']);
 	$TT->pull();
 }
 
