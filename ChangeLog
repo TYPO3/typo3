@@ -1,3 +1,7 @@
+2009-09-29  Francois Suter  <francois@typo3.org>
+
+	* Follow-up to #11855: Use flash message API instead of custom markup for highlighting security link
+
 2009-10-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #12089: Cleanup: unescaped &
