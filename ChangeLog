@@ -1,4 +1,4 @@
-2009-09-29  Francois Suter  <francois@typo3.org>
+2009-10-01  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #11855: Use flash message API instead of custom markup for highlighting security link
 
