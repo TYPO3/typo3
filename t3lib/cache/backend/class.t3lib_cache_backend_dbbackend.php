@@ -289,11 +289,20 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	public function flushByTag($tag) {
-		$GLOBALS['TYPO3_DB']->exec_DELETEmultipleTablesQuery(
-			$this->tableList,
-			$this->tableList,
-			$this->tableJoin .
-				' AND ' . $this->getQueryForTag($tag)
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->cacheTable,
+			'identifier IN (' .
+				$GLOBALS['TYPO3_DB']->SELECTquery(
+					'identifier',
+					$this->tagsTable,
+					$this->getQueryForTag($tag)
+				) .
+			')'
+		);
+
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->tagsTable,
+			$this->getQueryForTag($tag)
 		);
 	}
 
@@ -310,11 +319,20 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 				$listQueryConditions[$tag] = $this->getQueryForTag($tag);
 			}
 	
-			$GLOBALS['TYPO3_DB']->exec_DELETEmultipleTablesQuery(
-				$this->tableList,
-				$this->tableList,
-				$this->tableJoin .
-					' AND (' . implode(' OR ', $listQueryConditions) . ')'
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				$this->cacheTable,
+				'identifier IN (' .
+					$GLOBALS['TYPO3_DB']->SELECTquery(
+						'identifier',
+						$this->tagsTable,
+						implode(' OR ', $listQueryConditions)
+					) .
+				')'
+			);
+
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				$this->tagsTable,
+				implode(' OR ', $listQueryConditions)
 			);
 		}
 	}
@@ -326,12 +344,15 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbage() {
-		$GLOBALS['TYPO3_DB']->exec_DELETEmultipleTablesQuery(
-			$this->tableList,
-			$this->tableList,
-			$this->tableJoin .
-				' AND ' . $this->cacheTable . '.crdate + ' . $this->cacheTable . '.lifetime < ' . $GLOBALS['EXEC_TIME'] .
-				' AND ' . $this->cacheTable . '.lifetime > 0'
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+			$this->tagsTable,
+			'identifier IN (' .
+				$GLOBALS['TYPO3_DB']->SELECTquery(
+					'identifier',
+					$this->cacheTable,
+					'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
+				) .
+			')'
 		);
 
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(

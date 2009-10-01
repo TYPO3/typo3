@@ -216,22 +216,6 @@ class t3lib_DB {
 	}
 
 	/**
-	 * Creates and executes a DELETE SQL-statement for multiple tables.
-	 *
-	 * @param	string		$tablesToDeleteFrom: Name of the tables to delete from
-	 * @param	string		$tablesReference: Name of the tables references join the results
-	 * @param	string		$where: WHERE clause, eg. "uid=1". NOTICE: You must escape values in this argument with $this->fullQuoteStr() yourself!
-	 * @return	pointer		MySQL result pointer
-	 */
-	public function exec_DELETEmultipleTablesQuery($tablesToDeleteFrom, $tablesReference, $where) {
-		$res = mysql_query($this->DELETEmultipleTablesQuery($tablesToDeleteFrom, $tablesReference, $where), $this->link);
-		if ($this->debugOutput) {
-			$this->debug('exec_DELETEquery');
-		}
-		return $res;
-	}
-
-	/**
 	 * Creates and executes a SELECT SQL-statement
 	 * Using this function specifically allow us to handle the LIMIT feature independently of DB.
 	 * Usage count/core: 340
@@ -478,31 +462,6 @@ class t3lib_DB {
 			return $query;
 		} else {
 			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !');
-		}
-	}
-
-	/**
-	 * Creates a DELETE SQL-statement for multiple tables
-	 * Usage count/core: 3
-	 *
-	 * @param	string		See exec_DELETEmultipleTablesQuery()
-	 * @param	string		See exec_DELETEmultipleTablesQuery()
-	 * @param	string		See exec_DELETEmultipleTablesQuery()
-	 * @return	string		Full SQL query for DELETE from multiple tables
-	 */
-	public function DELETEmultipleTablesQuery($tablesToDeleteFrom, $tablesReference, $where) {
-		if (is_string($where)) {
-				// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-			$query = 'DELETE ' . $tablesToDeleteFrom . ' FROM ' . $tablesReference .
-				(strlen($where) > 0 ? ' WHERE ' . $where : '');
-
-			if ($this->debugOutput || $this->store_lastBuiltQuery) {
-				$this->debug_lastBuiltQuery = $query;
-			}
-
-			return $query;
-		} else {
-			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for DELETE query was not a string in $this->DELETEmultipleTablesQuery() !');
 		}
 	}
 

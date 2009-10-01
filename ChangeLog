@@ -15,6 +15,7 @@
 	* Raised DBAL version from 0.9.21 to 0.9.22
 	* Cleanup: Updated NEWS.txt
 	* Follow-up to feature #7461: Fixed bug in using the cookieDomain value (thanks to Xavier Perseguers)
+	* Follow-up to bug #11903: Use two queries to clean tags for DBAL reasons
 
 2009-10-01  Rupert Germann  <rupi@gmx.li>
 
