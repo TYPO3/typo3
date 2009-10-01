@@ -1,3 +1,7 @@
+2009-10-01  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up to #11843 Add a reports module: endPage was applied twice
+
 2009-10-01  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12071: t3lib_sqlparser is not able to parse alias of a joined table (thanks to Xavier Perseguers)
@@ -9,7 +13,7 @@
 
 2009-09-30  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug 12089: Make messages in reports module collapsible
+	* Fixed bug #12089: Make messages in reports module collapsible
 
 2009-09-30  Oliver Hader  <oliver@typo3.org>
 

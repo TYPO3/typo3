@@ -174,7 +174,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	 * @return	void
 	 */
 	public function printContent() {
-		echo $this->content . $this->doc->endPage();
+		echo $this->content;
 	}
 
 	/**
