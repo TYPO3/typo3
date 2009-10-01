@@ -1,3 +1,7 @@
+2009-10-01  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #12071: t3lib_sqlparser is not able to parse alias of a joined table (thanks to Xavier Perseguers)
+
 2009-10-01  Rupert Germann  <rupi@gmx.li>
 
 	* Follow-up to bug #11357: fixed a parse error in index_re.php

@@ -817,7 +817,14 @@ class t3lib_sqlparser {
 				// Looking for JOIN
 			if ($join = $this->nextPart($parseString,'^(LEFT[[:space:]]+JOIN|LEFT[[:space:]]+OUTER[[:space:]]+JOIN|JOIN)[[:space:]]+'))	{
 				$stack[$pnt]['JOIN']['type'] = $join;
-				if ($stack[$pnt]['JOIN']['withTable'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]+ON[[:space:]]+',1))	{
+				if ($stack[$pnt]['JOIN']['withTable'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+', 1)) {
+					if (!preg_match('/^ON[[:space:]]+/i', $parseString)) {
+						$stack[$pnt]['JOIN']['as_keyword'] = $this->nextPart($parseString, '^(AS[[:space:]]+)');
+						$stack[$pnt]['JOIN']['as'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+');
+					}
+					if (!$this->nextPart($parseString, '^(ON[[:space:]]+)')) {
+						return $this->parseError('No join condition found in parseFromTables()!', $parseString);
+					}
 					$field1 = $this->nextPart($parseString,'^([[:alnum:]_.]+)[[:space:]]*=[[:space:]]*',1);
 					$field2 = $this->nextPart($parseString,'^([[:alnum:]_.]+)[[:space:]]+');
 					if ($field1 && $field2)	{
@@ -1533,7 +1540,12 @@ return $str;
 				}
 
 				if (is_array($v['JOIN']))	{
-					$outputParts[$k] .= ' '.$v['JOIN']['type'].' '.$v['JOIN']['withTable'].' ON ';
+					$outputParts[$k] .= ' ' . $v['JOIN']['type'] . ' ' . $v['JOIN']['withTable'];
+						// Add alias AS if there:
+					if (isset($v['JOIN']['as']) && $v['JOIN']['as']) {
+						$outputParts[$k] .= ' ' . $v['JOIN']['as_keyword'] . ' ' . $v['JOIN']['as'];
+					}
+					$outputParts[$k] .= ' ON ';
 					$outputParts[$k] .= ($v['JOIN']['ON'][0]['table']) ? $v['JOIN']['ON'][0]['table'].'.' : '';
 					$outputParts[$k] .= $v['JOIN']['ON'][0]['field'];
 					$outputParts[$k] .= '=';
