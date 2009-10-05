@@ -111,6 +111,9 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 		if (isset($pluginConfiguration['view'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'view');
 		}
+		if (isset($pluginConfiguration['_LOCAL_LANG'])) {
+			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, '_LOCAL_LANG');
+		}
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $this->getContextSpecificFrameworkConfiguration());

@@ -145,6 +145,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 	persistence =< plugin.tx_' . strtolower($extensionName) . '.persistence
 	view =< plugin.tx_' . strtolower($extensionName) . '.view
+	_LOCAL_LANG =< plugin.tx_' . strtolower($extensionName) . '._LOCAL_LANG
 }
 ' . $conditions);
 
