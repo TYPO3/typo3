@@ -77,7 +77,11 @@ class Tx_Extbase_Utility_Localization {
 	 */
 	public function translate($key, $extensionName) {
 		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
-			return $GLOBALS['LANG']->sL($key);
+			if (is_object($GLOBALS['LANG'])) {
+				return $GLOBALS['LANG']->sL($key);
+			} else {
+				return $GLOBALS['TSFE']->sL($key);
+			}
 		}
 
 		self::initializeLocalization($extensionName);
@@ -175,7 +179,13 @@ class Tx_Extbase_Utility_Localization {
 				if (is_string($labelValue)) {
 					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey] = $labelValue;
 						// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
-					self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : $GLOBALS['LANG']->csConvObj->charSetArray[$languageKey];
+					if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) > 0) {
+						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+					} elseif (is_object($GLOBALS['LANG'])) {
+						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['LANG']->csConvObj->charSetArray[$languageKey];
+					} else {
+						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['TSFE']->csConvObj->charSetArray[$languageKey];
+					}
 				}
 			}
 		}
