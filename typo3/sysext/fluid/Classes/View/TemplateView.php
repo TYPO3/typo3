@@ -168,7 +168,9 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 		$renderingContext = $this->objectFactory->create('Tx_Fluid_Core_Rendering_RenderingContext');
 		$renderingContext->setTemplateVariableContainer($variableContainer);
-		$renderingContext->setControllerContext($this->controllerContext);
+		if ($this->controllerContext !== NULL) {
+			$renderingContext->setControllerContext($this->controllerContext);
+		}
 		$renderingContext->setRenderingConfiguration($renderingConfiguration);
 
 		$viewHelperVariableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
