@@ -34,7 +34,7 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 */
 	public function render($key, $htmlEscape = TRUE) {
 		$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
-		$value = Tx_Extbase_Localization::translate($key, $extensionName);
+		$value = Tx_Extbase_Utility_Localization::translate($key, $extensionName);
 		if ($value === NULL) {
 			$value = $this->renderChildren();
 		} elseif ($htmlEscape) {
