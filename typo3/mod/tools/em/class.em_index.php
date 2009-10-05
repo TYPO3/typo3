@@ -363,12 +363,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			'G' => $GLOBALS['LANG']->getLL('type_global'),
 			'L' => $GLOBALS['LANG']->getLL('type_local'),
 		);
-		$this->typeDescr = array(	
+		$this->typeDescr = array(
 			'S' => $GLOBALS['LANG']->getLL('descr_system'),
 			'G' => $GLOBALS['LANG']->getLL('descr_global'),
 			'L' => $GLOBALS['LANG']->getLL('descr_local'),
 		);
-	
+
 			// Setting paths of install scopes:
 		$this->typePaths = Array (
 			'S' => TYPO3_mainDir.'sysext/',
@@ -951,7 +951,7 @@ EXTENSION KEYS:
 					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 					$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
 							'"><label for="_lookUp">' .
-							sprintf($GLOBALS['LANG']->getLL('list_or_look_up'), 
+							sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
 								($this->MOD_SETTINGS['display_unchecked'] ?
 									'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
 									: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
@@ -1008,7 +1008,7 @@ EXTENSION KEYS:
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 				$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
 					'"><label for="_lookUp">' .
-					sprintf($GLOBALS['LANG']->getLL('list_or_look_up'), 
+					sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
 						($this->MOD_SETTINGS['display_unchecked'] ?
 							'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
 							: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
@@ -1032,7 +1032,7 @@ EXTENSION KEYS:
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
 			$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
 				'"><label for="_lookUp">' .
-				sprintf($GLOBALS['LANG']->getLL('list_or_look_up'), 
+				sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
 					($this->MOD_SETTINGS['display_unchecked'] ?
 						'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
 						: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'

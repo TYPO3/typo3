@@ -1,3 +1,7 @@
+2009-10-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* Cleanup: Whitespace cleanup in extension manager
+	
 2009-10-01  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.0beta1
