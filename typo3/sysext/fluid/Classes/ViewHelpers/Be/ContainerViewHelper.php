@@ -30,7 +30,7 @@
  * </code>
  *
  * Output:
- * "yout module content" wrapped with propper head & body tags.
+ * "your module content" wrapped with propper head & body tags.
  * Default backend CSS styles and JavaScript will be included
  *
  * <code title="All options">
@@ -38,7 +38,7 @@
  * </code>
  *
  * Output:
- * "yout module content" wrapped with propper head & body tags.
+ * "your module content" wrapped with propper head & body tags.
  * Custom CSS file EXT:your_extension/Resources/Public/styles/backend.css and JavaScript file EXT:your_extension/Resources/Public/scripts/main.js will be loaded
  *
  * @package     TYPO3
