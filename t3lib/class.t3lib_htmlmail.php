@@ -1386,7 +1386,7 @@ class t3lib_htmlmail {
 	 */
 	public function split_fileref($fileref) {
 		$info = array();
-		if (preg_match('/(.*/)(.*)$/', $fileref, $reg)) {
+		if (preg_match('/(.*\/)(.*)$/', $fileref, $reg)) {
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
 		} else	{

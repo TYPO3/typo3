@@ -1,3 +1,7 @@
+2009-10-07  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #11451: Wrong pattern modifier in t3lib_htmlmail
+
 2009-10-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Cleanup: Whitespace cleanup in extension manager
