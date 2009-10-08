@@ -84,6 +84,34 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether a faulty expression fails.
+	 * @test
+	 */
+	public function simulateDisabledMatchAllConditionsFailsOnFaultyExpression() {
+		$this->matchCondition->matchAll = false;
+		$this->assertFalse($this->matchCondition->match('[nullCondition = This expression would return false in general]'));
+	}
+
+	/**
+	 * Tests whether simulating positive matches for all conditions succeeds.
+	 * @test
+	 */
+	public function simulateEnabledMatchAllConditionsSucceeds() {
+		$this->matchCondition->matchAll = true;
+		$this->assertTrue($this->matchCondition->match('[nullCondition = This expression would return false in general]'));
+	}
+
+	/**
+	 * Tests whether simulating positive matches for specific conditions succeeds.
+	 * @test
+	 */
+	public function simulateEnabledMatchSpecificConditionsSucceeds() {
+		$testCondition = '[' . uniqid('test') . ' = Any condition to simulate a positive match]';
+		$this->matchCondition->matchAlternative = array($testCondition);
+		$this->assertTrue($this->matchCondition->match($testCondition));
+	}
+
+	/**
 	 * Tests whether a condition matches Internet Explorer 7 on Windows.
 	 * 
 	 * @return	void

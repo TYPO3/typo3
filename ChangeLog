@@ -1,6 +1,7 @@
 2009-10-08  Oliver Hader  <oliver@typo3.org>
 
 	* Added test #12153: Add more unit tests for t3lib_matchCondition
+	* Follow-up to test #12153: Added unit tests for simulated conditions via TypoScript object browser
 
 2009-10-07  Francois Suter  <francois@typo3.org>
 
