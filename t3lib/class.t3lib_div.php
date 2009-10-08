@@ -3090,18 +3090,20 @@ final class t3lib_div {
 	 * @return	array		Returns an array with the directory entries as values. If no path, the return value is nothing.
 	 */
 	public static function get_dirs($path)	{
-		if ($path)	{
-			$d = @dir($path);
-			if (is_object($d))	{
-				while(false !== ($entry=$d->read())) {
-					if (@is_dir($path.'/'.$entry) && $entry!= '..' && $entry!= '.')	{
-						$filearray[]=$entry;
+		if ($path) {
+			if (is_dir($path)) {
+				$dir = scandir($path);
+				$dirs = array();
+				foreach ($dir as $entry) {
+					if (is_dir($path . '/' . $entry) && $entry != '..' && $entry != '.') {
+						$dirs[] = $entry;
 					}
 				}
-				$d->close();
-			} else return 'error';
-			return $filearray;
+			} else {
+				$dirs = 'error';
+			}
 		}
+		return $dirs;
 	}
 
 	/**
