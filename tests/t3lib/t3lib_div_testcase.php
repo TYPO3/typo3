@@ -396,6 +396,31 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals($expectedResult, t3lib_div::removeDotsFromTS($typoScript));
 	}
+
+	/**
+	 * Tests whether getDirs() returns an array of diretories from a given path
+	 * @test
+	 * @see t3lib_div::getDirs($path)
+	 */
+	public function checkGetDirsReturnsArrayOfDirectoriesFromGivenDirectory() {
+		$path = PATH_t3lib;
+		$directories = t3lib_div::get_dirs($path);
+
+		$this->assertType('array', $directories);
+	}
+
+	/**
+	 * Tests whether getDirs() returns the string 'error' in case of problems reading from the given path
+	 * @test
+	 * @see t3lib_div::getDirs($path)
+	 */
+	public function checkGetDirsReturnsStringErrorOnPathFailure() {
+		$path = 'foo';
+		$result = t3lib_div::get_dirs($path);
+		$expectedResult = 'error';
+
+		$this->assertEquals($expectedResult, $result);
+	}
 }
 
 ?>

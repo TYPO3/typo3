@@ -2,6 +2,7 @@
 
 	* Fixed bug #12121: "Installation Type: L" - tell the user, what's "L" (thanks to Steffen Gebert)
 	* Fixed bug #12128: Performance improvement in t3lib_div::get_dirs() (thanks to Dan Osipov)
+	* Follow-up to #12128: Added unit tests for t3lib_div::get_dirs() (thanks to Peter Foerger)
 
 2009-10-08  Oliver Hader  <oliver@typo3.org>
 
