@@ -1,3 +1,7 @@
+2009-10-08  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12121: "Installation Type: L" - tell the user, what's "L" (thanks to Steffen Gebert)
+
 2009-10-08  Oliver Hader  <oliver@typo3.org>
 
 	* Added test #12153: Add more unit tests for t3lib_matchCondition

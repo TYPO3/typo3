@@ -2061,7 +2061,20 @@ EXTENSION KEYS:
 											t3lib_div::writeFile($extDirPath.'ext_emconf.php',$emConfFile);
 
 											$content .= 'ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
-											$content .= $GLOBALS['LANG']->getLL('ext_import_ext_type') . ' ' . $loc . '<br />';
+											$content .= $GLOBALS['LANG']->getLL('ext_import_ext_type') . ' ';
+
+											switch ($loc) {
+												case 'L':
+													$content .= $GLOBALS['LANG']->getLL('type_local');
+													break;
+												case 'G':
+													$content .= $GLOBALS['LANG']->getLL('type_global');
+													break;
+												case 'S':
+													$content .= $GLOBALS['LANG']->getLL('type_system');
+													break;
+											}
+											$content .= '<br />';
 
 												// Remove cache files:
 											if (t3lib_extMgm::isLoaded($extKey))	{
