@@ -2415,6 +2415,29 @@ class ux_t3lib_DB extends t3lib_DB {
 						$sqlPartArray[$k]['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']];
 					}
 
+						// Mapping field name in SQL-functions like MIN(), MAX() or SUM()
+					if ($this->mapping[$t]['mapFieldNames']) {
+						$fieldArray = explode('.', $sqlPartArray[$k]['func_content']);
+						if (count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
+							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
+							$sqlPartArray[$k]['func_content'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
+						}
+						elseif (count($fieldArray) == 2) {
+								// Map the external table
+							$table = $fieldArray[0];
+							if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
+								$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+							}
+								// Map the field itself
+							$field = $fieldArray[1];
+							if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
+								$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+							}
+							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $table . '.' . $field;
+							$sqlPartArray[$k]['func_content'] = $table . '.' . $field;
+						}
+					}
+
 						// do we have a field name in the value?
 						// this is a very simplistic check, beware
 					if (!is_numeric($sqlPartArray[$k]['value'][0]) && !isset($sqlPartArray[$k]['value'][1])) {
