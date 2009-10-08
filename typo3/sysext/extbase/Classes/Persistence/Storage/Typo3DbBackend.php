@@ -142,17 +142,24 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * Deletes a row in the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $uid The uid of the row to be deleted
+	 * @param array $identifyer An array of identifyer array('fieldname' => value). This array will be transformed to a WHERE clause
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return void
 	 */
-	public function removeRow($tableName, $uid, $isRelation = FALSE) {
-		$sqlString = 'DELETE FROM ' . $tableName . ' WHERE uid=?';
-		$this->replacePlaceholders($sqlString, array((int)$uid));
+	public function removeRow($tableName, array $identifyer, $isRelation = FALSE) {
+		$fieldNames = array_keys($identifyer);
+		$suffixedFieldNames = array();
+		foreach ($fieldNames as $fieldName) {
+			$suffixedFieldNames[] = $fieldName . '=?';
+		}
+		$parameters = array_values($identifyer);
+		$statement = 'DELETE FROM ' . $tableName;
+		$statement .= ' WHERE ' . implode(' AND ', $suffixedFieldNames);
+		$this->replacePlaceholders($statement, $parameters);
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid, $isRelation);
 		}
-		$returnValue = $this->databaseHandle->sql_query($sqlString);
+		$returnValue = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		return $returnValue;
 	}

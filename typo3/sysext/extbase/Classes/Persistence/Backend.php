@@ -369,7 +369,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * Persists a relation. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
 	 * gets persisted immediately. Objects which were removed from the property were deleted immediately, too.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be inserted
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object
 	 * @param string $propertyName The name of the property the related objects are stored in
 	 * @param mixed $propertyValue The property value (an array of Domain Objects, ObjectStorage holding Domain Objects or a Domain Object itself)
 	 * @return void
@@ -381,8 +381,13 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					foreach ($propertyValue as $relatedObject) {
 						$queuedObjects[$propertyName][] = $relatedObject;
 					}
-					foreach ($this->getDeletedChildObjects($object, $propertyName) as $deletedObject) {
-						$this->deleteObject($deletedObject, $object, $propertyName);
+					foreach ($this->getRemovedChildObjects($object, $propertyName) as $removedObject) {
+						// TODO The removed object should only be deleted automatically if it is not managed by a Repository
+						if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+							$this->deleteObject($removedObject, $object, $propertyName);
+						} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+							$this->deleteRelationFromRelationtable($removedObject, $object, $propertyName);
+						}
 					}
 					$row[$columnName] = count($propertyValue); // Will be overwritten if the related objects are referenced by a comma separated list
 				}
@@ -396,15 +401,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 	/**
-	 * Returns the deleted objects determined by a comparison of the clean property value
+	 * Returns the removed objects determined by a comparison of the clean property value
 	 * with the actual property value.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $object The object to be insterted in the storage
+	 * @param Tx_Extbase_DomainObject_AbstractEntity $object The object
 	 * @param string $parentPropertyName The name of the property
-	 * @return array An array of deleted objects
+	 * @return array An array of removed objects
 	 */
-	protected function getDeletedChildObjects(Tx_Extbase_DomainObject_AbstractEntity $object, $propertyName) {
-		$deletedObjects = array();
+	protected function getRemovedChildObjects(Tx_Extbase_DomainObject_AbstractEntity $object, $propertyName) {
+		$removedObjects = array();
 		if (!$object->_isNew()) {
 			$cleanProperties = $object->_getCleanProperties();
 			$cleanPropertyValue = $cleanProperties[$propertyName];
@@ -417,11 +422,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			}
 			foreach ($cleanPropertyValue as $item) {
 				if (!in_array($item, $propertyValue)) {
-					$deletedObjects[] = $item;
+					$removedObjects[] = $item;
 				}
 			}
 		}
-		return $deletedObjects;
+		return $removedObjects;
 	}
 
 	/**
@@ -508,13 +513,40 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$row = array(
 			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
 			$columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
-			'tablenames' => $columnMap->getChildTableName(),
 			'sorting' => 9999 // TODO sorting of mm table items
 			);
+		$relationTableName = $columnMap->getRelationTableName();
+		// FIXME Reenable support for tablenames
+		// $childTableName = $columnMap->getChildTableName();
+		// if (isset($childTableName)) {
+		// 	$row['tablenames'] = $childTableName;
+		// }
 		$res = $this->storageBackend->addRow(
-			$columnMap->getRelationTableName(),
+			$relationTableName,
 			$row,
 			TRUE);
+		return $res;
+	}
+
+	/**
+	 * Delete an mm-relation from a relation table
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject The related object
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
+	 * @return void
+	 */
+	protected function deleteRelationFromRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$columnMap = $dataMap->getColumnMap($parentPropertyName);
+		$relationTableName = $columnMap->getRelationTableName();
+		$res = $this->storageBackend->removeRow(
+			$relationTableName,
+			array(
+				$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
+				$columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
+				),
+			FALSE);
 		return $res;
 	}
 
@@ -639,7 +671,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} else {
 			$res = $this->storageBackend->removeRow(
 				$tableName,
-				$object->getUid()
+				array('uid' => $object->getUid())
 				);
 		}
 		$this->referenceIndex->updateRefIndexTable($tableName, $uid);

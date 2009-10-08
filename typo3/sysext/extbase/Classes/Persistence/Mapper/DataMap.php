@@ -202,7 +202,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
-		if (isset($columnConfiguration['config'])) {
+		if (isset($columnConfiguration['config']) && $columnConfiguration['config']['type'] !== 'passthrough') {
 			if (isset($columnConfiguration['config']['foreign_table']) && !isset($columnConfiguration['config']['MM'])) {
 				if ($columnConfiguration['config']['maxitems'] == 1) {
 					$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
