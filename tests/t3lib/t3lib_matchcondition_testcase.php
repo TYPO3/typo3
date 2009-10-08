@@ -32,14 +32,14 @@
  */
 class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	/**
-	 * @var	boolean
+	 * @var	array
 	 */
-	protected $backupGlobals = true;
+	private $backupGlobalVariables;
 
 	/**
 	 * @var	array
 	 */
-	private $backupServer;
+	private $rootline;
 
 	/**
 	 * @var	t3lib_matchCondition
@@ -47,13 +47,40 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	private $matchCondition;
 
 	public function setUp() {
-		$this->backupServer = $_SERVER;
+		$this->backupGlobalVariables = array(
+			'_ENV' => $_ENV,
+			'_GET' => $_GET,
+			'_POST' => $_POST,
+			'_SERVER' => $_SERVER,
+			'TYPO3_CONF_VARS' => $GLOBALS['TYPO3_CONF_VARS'],
+		);
+
+		$this->testGlobalNamespace = uniqid('TEST');
+		$GLOBALS[$this->testGlobalNamespace] = array();
+
+		$this->setUpTSFE();
 		$this->matchCondition = t3lib_div::makeInstance('t3lib_matchCondition');
 	}
 
 	public function tearDown() {
+		foreach ($this->backupGlobalVariables as $key => $data) {
+			$GLOBALS[$key] = $data;
+		}
+
 		unset($this->matchCondition);
-		$_SERVER = $this->backupServer;
+		unset($this->backupGlobalVariables);
+		unset($GLOBALS[$this->testGlobalNamespace]);
+	}
+
+	private function setUpTSFE() {
+		$this->rootline = array(
+			2 => array('uid' => 121, 'pid' => 111),
+			1 => array('uid' => 111, 'pid' => 101,),
+			0 => array('uid' => 101, 'pid' => 0,),
+		);
+
+		$GLOBALS['TSFE'] = $this->getMock('tslib_fe', array(), array(), '', FALSE);
+		$GLOBALS['TSFE']->tmpl = $this->getMock('t3lib_TStemplate');
 	}
 
 	/**
@@ -95,10 +122,109 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether the language comparison matches.
+	 * @test
+	 */
+	public function languageConditionMatchesSingleLanguageExpression() {
+		$_SERVER[] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
+		$this->assertTrue($this->matchCondition->match('[language = *de*]'));
+		$this->assertTrue($this->matchCondition->match('[language = *de-de*]'));
+	}
+
+	/**
+	 * Tests whether the language comparison matches.
+	 * @test
+	 */
+	public function languageConditionMatchesMultipleLanguagesExpression() {
+		$_SERVER[] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
+		$this->assertTrue($this->matchCondition->match('[language = *en*,*de*]'));
+		$this->assertTrue($this->matchCondition->match('[language = *en-us*,*de-de*]'));
+	}
+
+	/**
+	 * Tests whether the language comparison matches.
+	 * @test
+	 */
+	public function languageConditionMatchesCompleteLanguagesExpression() {
+		$this->markTestSkipped('This comparison seems to be incomplete in t3lib_matchCondition.');
+
+		$_SERVER[] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
+		$this->assertTrue($this->matchCondition->match('[language = de-de,de;q=0.8]'));
+	}
+
+	/**
+	 * Tests whether usergroup comparison matches.
+	 * @test
+	 */
+	public function usergroupConditionMatchesSingleGroupId() {
+		$GLOBALS['TSFE']->gr_list = '13,14,15';
+		$this->assertTrue($this->matchCondition->match('[usergroup = 13]'));
+	}
+
+	/**
+	 * Tests whether usergroup comparison matches.
+	 * @test
+	 */
+	public function usergroupConditionMatchesMultipleUserGroupId() {
+		$GLOBALS['TSFE']->gr_list = '13,14,15';
+		$this->assertTrue($this->matchCondition->match('[usergroup = 999,15,14,13]'));
+	}
+
+	/**
+	 * Tests whether usergroup comparison matches.
+	 * @test
+	 */
+	public function usergroupConditionDoesNotMatchDefaulUserGroupIds() {
+		$GLOBALS['TSFE']->gr_list = '0,-1';
+		$this->assertFalse($this->matchCondition->match('[usergroup = 0,-1]'));
+	}
+
+	/**
+	 * Tests whether user comparison matches.
+	 * @test
+	 */
+	public function loginUserConditionMatchesAnyLoggedInUser() {
+		$GLOBALS['TSFE']->loginUser = TRUE;
+		$GLOBALS['TSFE']->fe_user->user['uid'] = 13;
+		$this->assertTrue($this->matchCondition->match('[loginUser = *]'));
+	}
+
+	/**
+	 * Tests whether user comparison matches.
+	 * @test
+	 */
+	public function loginUserConditionMatchesSingleLoggedInUser() {
+		$GLOBALS['TSFE']->loginUser = TRUE;
+		$GLOBALS['TSFE']->fe_user->user['uid'] = 13;
+		$this->assertTrue($this->matchCondition->match('[loginUser = 13]'));
+	}
+
+	/**
+	 * Tests whether user comparison matches.
+	 * @test
+	 */
+	public function loginUserConditionMatchesMultipleLoggedInUsers() {
+		$GLOBALS['TSFE']->loginUser = TRUE;
+		$GLOBALS['TSFE']->fe_user->user['uid'] = 13;
+		$this->assertTrue($this->matchCondition->match('[loginUser = 999,13]'));
+	}
+
+	/**
+	 * Tests whether user comparison matches.
+	 * @test
+	 */
+	public function loginUserConditionDoesNotMatchIfNotUserIsLoggedId() {
+		$GLOBALS['TSFE']->loginUser = FALSE;
+		$GLOBALS['TSFE']->fe_user->user['uid'] = 13;
+		$this->assertFalse($this->matchCondition->match('[loginUser = *]'));
+		$this->assertFalse($this->matchCondition->match('[loginUser = 13]'));
+	}
+
+	/**
 	 * Tests whether numerical comparison matches.
 	 * @test
 	 */
-	public function conditionMatchesOnEqualExpression() {
+	public function globalVarConditionMatchesOnEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1]'));
 
@@ -110,7 +236,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * Tests whether numerical comparison matches.
 	 * @test
 	 */
-	public function conditionMatchesOnNotEqualExpression() {
+	public function globalVarConditionMatchesOnNotEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 != 20]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 != 10.2]'));
 	}
@@ -119,7 +245,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * Tests whether numerical comparison matches.
 	 * @test
 	 */
-	public function conditionMatchesOnLowerThanExpression() {
+	public function globalVarConditionMatchesOnLowerThanExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 < 20]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 < 10.2]'));
 	}
@@ -128,7 +254,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * Tests whether numerical comparison matches.
 	 * @test
 	 */
-	public function conditionMatchesOnLowerThanOrEqualExpression() {
+	public function globalVarConditionMatchesOnLowerThanOrEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 20]'));
 
@@ -140,7 +266,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * Tests whether numerical comparison matches.
 	 * @test
 	 */
-	public function conditionMatchesOnGreaterThanExpression() {
+	public function globalVarConditionMatchesOnGreaterThanExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 > 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.2 > 10.1]'));
 	}
@@ -149,12 +275,251 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * Tests whether numerical comparison matches.
 	 * @test
 	 */
-	public function conditionMatchesOnGreaterThanOrEqualExpression() {
+	public function globalVarConditionMatchesOnGreaterThanOrEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 >= 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 >= 10]'));
 
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 >= 10.1]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.2 >= 10.1]'));
+	}
+
+	/**
+	 * Tests whether string comparison matches.
+	 * @test
+	 */
+	public function globalStringConditionMatchesOnEqualExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.Test.Condition]'));
+		$this->assertFalse($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3]'));
+	}
+
+	/**
+	 * Tests whether string comparison matches.
+	 * @test
+	 */
+	public function globalStringConditionMatchesWildcardExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3?Test?Condition]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3.T*t.Condition]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = TYPO3?T*t?Condition]'));
+	}
+
+	/**
+	 * Tests whether string comparison matches.
+	 * @test
+	 */
+	public function globalStringConditionMatchesRegularExpression() {
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^[A-Za-z3.]+$/]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^TYPO3\..+Condition$/]'));
+		$this->assertFalse($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^FALSE/]'));
+	}
+
+	/**
+	 * Tests whether string comparison matches.
+	 * @test
+	 */
+	public function globalStringConditionMatchesEmptyRegularExpression() {
+		$testKey = uniqid('test');
+		$_SERVER[$testKey] = '';
+		$this->assertTrue($this->matchCondition->match('[globalString = _SERVER|' . $testKey . ' = /^$/]'));
+	}
+
+	/**
+	 * Tests whether treeLevel comparison matches.
+	 * @test
+	 */
+	public function treeLevelConditionMatchesSingleValue() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$this->assertTrue($this->matchCondition->match('[treeLevel = 2]'));
+	}
+
+	/**
+	 * Tests whether treeLevel comparison matches.
+	 * @test
+	 */
+	public function treeLevelConditionMatchesMultipleValues() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$this->assertTrue($this->matchCondition->match('[treeLevel = 999,998,2]'));
+	}
+
+	/**
+	 * Tests whether treeLevel comparison matches.
+	 * @test
+	 */
+	public function treeLevelConditionDoesNotMatchFaultyValue() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$this->assertFalse($this->matchCondition->match('[treeLevel = 999]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in the previous rootline entries.
+	 * @test
+	 */
+	public function PIDupinRootlineConditionMatchesSinglePageIdInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertTrue($this->matchCondition->match('[PIDupinRootline = 111]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in the previous rootline entries.
+	 * @test
+	 */
+	public function PIDupinRootlineConditionMatchesMultiplePageIdsInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertTrue($this->matchCondition->match('[PIDupinRootline = 999,111,101]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in the previous rootline entries.
+	 * @test
+	 */
+	public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertFalse($this->matchCondition->match('[PIDupinRootline = 999]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in the previous rootline entries.
+	 * @test
+	 */
+	public function PIDupinRootlineConditionDoesNotMatchLastPageIdInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertFalse($this->matchCondition->match('[PIDupinRootline = 121]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in all rootline entries.
+	 * @test
+	 */
+	public function PIDinRootlineConditionMatchesSinglePageIdInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertTrue($this->matchCondition->match('[PIDinRootline = 111]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in all rootline entries.
+	 * @test
+	 */
+	public function PIDinRootlineConditionMatchesMultiplePageIdsInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertTrue($this->matchCondition->match('[PIDinRootline = 999,111,101]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in all rootline entries.
+	 * @test
+	 */
+	public function PIDinRootlineConditionMatchesLastPageIdInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertTrue($this->matchCondition->match('[PIDinRootline = 121]'));
+	}
+
+	/**
+	 * Tests whether a page Id is found in all rootline entries.
+	 * @test
+	 */
+	public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline() {
+		$GLOBALS['TSFE']->tmpl->rootLine = $this->rootline;
+		$GLOBALS['TSFE']->id = 121;
+		$this->assertFalse($this->matchCondition->match('[PIDinRootline = 999]'));
+	}
+
+	/**
+	 * Tests whether the compatibility version can be evaluated.
+	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 * @test
+	 */
+	public function compatVersionConditionMatchesOlderRelease() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] = '4.9';
+		$this->assertTrue($this->matchCondition->match('[compatVersion = 4.0]'));
+	}
+
+	/**
+	 * Tests whether the compatibility version can be evaluated.
+	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 * @test
+	 */
+	public function compatVersionConditionMatchesSameRelease() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] = '4.9';
+		$this->assertTrue($this->matchCondition->match('[compatVersion = 4.9]'));
+	}
+
+	/**
+	 * Tests whether the compatibility version can be evaluated.
+	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 * @test
+	 */
+	public function compatVersionConditionDoesNotMatchNewerRelease() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'] = '4.9';
+		$this->assertFalse($this->matchCondition->match('[compatVersion = 5.0]'));
+	}
+
+	/**
+	 * Tests whether the gneric fetching of variables works with the namespace 'GP'.
+	 * @test
+	 */
+	public function genericGetVariablesSucceedsWithNamespaceGP() {
+		$_GET = array('testGet' => 'getTest');
+		$_POST = array('testPost' => 'postTest');
+
+		$this->assertTrue($this->matchCondition->match('[globalString = GP:testGet = getTest]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = GP:testPost = postTest]'));
+	}
+
+	/**
+	 * Tests whether the gneric fetching of variables works with the namespace 'TSFE'.
+	 * @test
+	 */
+	public function genericGetVariablesSucceedsWithNamespaceTSFE() {
+		$GLOBALS['TSFE']->id = 1234567;
+		$GLOBALS['TSFE']->testSimpleObject = new stdClass();
+		$GLOBALS['TSFE']->testSimpleObject->testSimpleVariable = 'testValue';
+
+		$this->assertTrue($this->matchCondition->match('[globalString = TSFE:id = 1234567]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = TSFE:testSimpleObject|testSimpleVariable = testValue]'));
+	}
+
+	/**
+	 * Tests whether the gneric fetching of variables works with the namespace 'ENV'.
+	 * @test
+	 */
+	public function genericGetVariablesSucceedsWithNamespaceENV() {
+		$testKey = uniqid('test');
+		putenv($testKey .'=testValue');
+
+		$this->assertTrue($this->matchCondition->match('[globalString = ENV:' . $testKey . ' = testValue]'));
+	}
+
+	/**
+	 * Tests whether the gneric fetching of variables works with the namespace 'IENV'.
+	 * @test
+	 */
+	public function genericGetVariablesSucceedsWithNamespaceIENV() {
+		$_SERVER['HTTP_HOST'] = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
+		$this->assertTrue($this->matchCondition->match('[globalString = IENV:TYPO3_PORT = 1234567]'));
+	}
+
+	/**
+	 * Tests whether the gneric fetching of variables works with any global namespace.
+	 * @test
+	 */
+	public function genericGetVariablesSucceedsWithAnyGlobalNamespace() {
+		$GLOBALS[$this->testGlobalNamespace] = array(
+			'first' => 'testFirst',
+			'second' => array('third' => 'testThird'),
+		);
+
+		$this->assertTrue($this->matchCondition->match(
+			'[globalString = ' . $this->testGlobalNamespace . '|first = testFirst]'
+		));
+		$this->assertTrue($this->matchCondition->match(
+			'[globalString = ' . $this->testGlobalNamespace . '|second|third = testThird]'
+		));
 	}
 }
 ?>

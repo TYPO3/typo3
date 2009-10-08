@@ -1,3 +1,7 @@
+2009-10-08  Oliver Hader  <oliver@typo3.org>
+
+	* Added test #12153: Add more unit tests for t3lib_matchCondition
+
 2009-10-07  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12078: Scheduler: Wrong example of cronjob configuration in the manual
