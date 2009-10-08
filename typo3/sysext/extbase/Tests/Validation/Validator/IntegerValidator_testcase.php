@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id$
  */
-class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * An array of valid floating point numbers addresses

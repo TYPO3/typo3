@@ -230,7 +230,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 
 		$this->replacePlaceholders($statement, $parameters);
-
+		// debug($statement,-2);
 		return $statement;
 	}
 
@@ -239,23 +239,31 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 *
 	 * @param array $properties The properties of the Value Object
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The Data Map
-	 * @return array The matching tuples
+	 * @return array The matching uid
 	 */
 	public function hasValueObject(array $properties, Tx_Extbase_Persistence_Mapper_DataMap $dataMap) {
 		$fields = array();
 		$parameters = array();
 		foreach ($properties as $propertyName => $propertyValue) {
-			if ($dataMap->isPersistableProperty($propertyName) && ($propertyName !== 'uid')) {
+			// FIXME We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
+			if ($dataMap->isPersistableProperty($propertyName) && ($propertyName !== 'uid')  && ($propertyName !== 'pid') && ($propertyName !== 'isClone')) {
 				$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
 				$parameters[] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
-		$fields[] = 'deleted != 1';
-		$fields[] = 'hidden != 1';
-
-		$sqlString = 'SELECT * FROM ' . $dataMap->getTableName() .  ' WHERE ' . implode(' AND ', $fields);
-		$this->replacePlaceholders($sqlString, $parameters);
-		$res = $this->databaseHandle->sql_query($sqlString);
+		$sql = array();
+		$sql['additionalWhereClause'] = array();
+		
+		$tableName = $dataMap->getTableName();
+		$this->addEnableFieldsStatement($tableName, $sql);
+		
+		$statement = 'SELECT * FROM ' . $tableName;
+		$statement .= ' WHERE ' . implode(' AND ', $fields);
+		if (!empty($sql['additionalWhereClause'])) {
+			$statement .= ' AND ' . implode(' AND ', $sql['additionalWhereClause']);
+		}
+		$this->replacePlaceholders($statement, $parameters);
+		$res = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {

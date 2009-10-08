@@ -166,7 +166,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
 			$propertyValue = NULL;
-			$propertyType = $columnMap->getPropertyType();
+			$propertyType = $columnMap->getPropertyType();			
 			switch ($propertyType) {
 				case Tx_Extbase_Persistence_PropertyType::STRING;
 				case Tx_Extbase_Persistence_PropertyType::DATE;
@@ -285,6 +285,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$query = $queryFactory->create($columnMap->getChildClassName());
 			$query->setSource($source);
 			$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
+			// enableFields and storage page settings.
+			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);

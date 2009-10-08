@@ -25,7 +25,7 @@
 /**
  * Some functional tests for the backport of the reflection service
  */
-class Tx_Extbase_Reflection_Service_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Extbase_Reflection_Service_testcase extends Tx_Extbase_BaseTestCase {
 	
 	/**
 	 * @param array $foo The foo parameter

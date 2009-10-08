@@ -25,9 +25,37 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Tx_Extbase_Persistence_Storage_Typo3DbBackend_testcase extends Tx_Extbase_Base_testcase {
-
-	public function setUp() {
+class Tx_Extbase_Persistence_Storage_Typo3DbBackend_testcase extends Tx_Extbase_BaseTestCase {
+	
+	/**
+	 * This is the data provider for the statement generation with a basic comparison
+	 *
+	 * @return array An array of data
+	 */
+	public function providerForBasicComparison() {
+		return array(
+			'equal' => array(
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
+				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo = 'baz'"
+				),
+			'less' => array(
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN,
+				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo < 'baz'"
+				),
+			'less or equal' => array(
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN_OR_EQUAL_TO,
+				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo <= 'baz'"
+				),
+			'greater' => array(
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN,
+				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo > 'baz'"
+				),
+			'greater or equal' => array(
+				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN_OR_EQUAL_TO,
+				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo >= 'baz'"
+				),
+			
+			);
 	}
 
 	/**

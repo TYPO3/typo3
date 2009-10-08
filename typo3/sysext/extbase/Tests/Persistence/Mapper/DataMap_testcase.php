@@ -27,7 +27,7 @@
 
 require_once(PATH_tslib . 'class.tslib_content.php');
 
-class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTestCase {
 	
 	public function setUp() {
 		require_once(t3lib_extMgm::extPath('blog_example') . 'Classes/Domain/Model/Blog.php');

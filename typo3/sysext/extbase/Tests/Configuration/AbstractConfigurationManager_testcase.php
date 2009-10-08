@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-class Tx_Extbase_Configuration_AbstractConfigurationManager_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Extbase_Configuration_AbstractConfigurationManager_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test

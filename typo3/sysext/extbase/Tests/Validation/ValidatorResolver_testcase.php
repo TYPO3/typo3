@@ -32,7 +32,7 @@
  * @subpackage extbase
  * @version $Id$
  */
-class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test
