@@ -14,7 +14,7 @@
 2009-10-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Cleanup: Whitespace cleanup in extension manager
-	
+
 2009-10-01  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.0beta1
@@ -76,9 +76,9 @@
 	* Fixed bug #11433: touch(): Utime failed in install tool (thanks to Steffen Gebert)
 	* Added feature #12076: Integration of saltedpasswords as system extension (thanks to Marcus Krause & Steffen Ritter)
 
-2009-09-28  Kasper Skårhøj <kasper@typo3.org>
+2009-09-28  Kasper Skaarhoj  <kasper@typo3.org>
 
-	* Fixed a bug introduced by patch from 1/1 09. This prevented the TypoScript FORM object to render forms...(! - and nobody discovered that for 9 months???)
+	* Fixed bug #12155: TypoScript FORM object does not render correctly anymore
 
 2009-09-28  Benjamin Mack  <benni@typo3.org>
 
