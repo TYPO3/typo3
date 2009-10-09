@@ -21,26 +21,30 @@
  *                                                                        */
 
 /**
- * Alias view helper
+ * Declares new variables which are aliases of other variables.
+ * Takes a "map"-Parameter which is an associative array which defines the shorthand mapping.
+ *
+ * The variables are only declared inside the <f:alias>...</f:alias>-tag. After the
+ * closing tag, all declared variables are removed again.
  *
  * = Examples =
  *
  * <code title="Single alias">
  * <f:alias map="{x: 'foo'}">{x}</f:alias>
  * </code>
- *
- * Output:
+ * <output>
  * foo
+ * </output>
  *
  * <code title="Multiple mappings">
  * <f:alias map="{x: foo.bar.baz, y: foo.bar.baz.name}">
  *   {x.name} or {y}
  * </f:alias>
  * </code>
- *
- * Output:
+ * <output>
  * [name] or [name]
  * depending on {foo.bar.baz}
+ * </output>
  *
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

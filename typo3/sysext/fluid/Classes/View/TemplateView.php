@@ -362,7 +362,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	/**
 	 * Set the root path to the templates.
 	 * If set, overrides the one determined from $this->templateRootPathPattern
-	 * 
+	 *
 	 * @param string $templateRootPath Root path to the templates. If set, overrides the one determined from $this->templateRootPathPattern
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -371,10 +371,10 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	public function setTemplateRootPath($templateRootPath) {
 		$this->templateRootPath = $templateRootPath;
 	}
-	
+
 	/**
 	 * Resolves the template root to be used inside other paths.
-	 * 
+	 *
 	 * @return string Path to template root directory
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

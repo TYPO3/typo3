@@ -24,6 +24,34 @@
  * This view helper implements an if/else condition.
  * @see Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode::convertArgumentValue() to find see how boolean arguments are evaluated
  *
+ * = Conditions =
+ *
+ * As a condition is a boolean value, you can just use a boolean argument.
+ * Alternatively, you can write a boolean expression there.
+ * Boolean expressions have the following form:
+ * XX Comparator YY
+ * Comparator is one of: ==, !=, <, <=, >, >= and %
+ * The % operator converts the result of the % operation to boolean.
+ *
+ * XX and YY can be one of:
+ * - number
+ * - Object Accessor
+ * - Array
+ * - a ViewHelper
+ * Note: Strings at XX/YY are NOT allowed.
+ *
+ * <code title="condition example">
+ * <f:if condition="{rank} > 100">
+ *   Will be shown if rank is > 100
+ * </f:if>
+ * <f:if condition="{rank} % 2">
+ *   Will be shown if rank % 2 != 0.
+ * </f:if>
+ * <f:if condition="{rank} == {k:bar()}">
+ *   Checks if rank is equal to the result of the ViewHelper "k:bar"
+ * </f:if>
+ * </code>
+ *
  * = Examples =
  *
  * <code title="Basic usage">

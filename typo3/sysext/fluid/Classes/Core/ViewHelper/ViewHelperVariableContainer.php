@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperVariableContainer.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ViewHelperVariableContainer.php 3296 2009-10-07 07:41:30Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -44,6 +44,8 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	/**
 	 * Add a variable to the Variable Container. Make sure that $viewHelperName is ALWAYS set
 	 * to your fully qualified ViewHelper Class Name
+	 * 
+	 * In case the value is already inside, an exception is thrown.
 	 *
 	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
 	 * @param string $key Key of the data
@@ -55,12 +57,27 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 */
 	public function add($viewHelperName, $key, $value) {
 		if ($this->exists($viewHelperName, $key)) throw new Tx_Fluid_Core_RuntimeException('The key "' . $viewHelperName . '->' . $key . '" was already stored and you cannot override it.', 1243352010);
+		$this->addOrUpdate($viewHelperName, $key, $value);
+	}
+
+	/**
+	 * Add a variable to the Variable Container. Make sure that $viewHelperName is ALWAYS set
+	 * to your fully qualified ViewHelper Class Name.
+	 * In case the value is already inside, it is silently overridden.
+	 *
+	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
+	 * @param string $key Key of the data
+	 * @param object $value The value to store
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function addOrUpdate($viewHelperName, $key, $value) {
 		if (!isset($this->objects[$viewHelperName])) {
 			$this->objects[$viewHelperName] = array();
 		}
 		$this->objects[$viewHelperName][$key] = $value;
 	}
-
+	
 	/**
 	 * Gets a variable which is stored
 	 *

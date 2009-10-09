@@ -24,7 +24,7 @@
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  *
- * @version $Id: DocbookGenerator.php 2909 2009-07-28 11:55:59Z k-fish $
+ * @version $Id: DocbookGenerator.php 3293 2009-10-05 10:16:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Service_DocbookGenerator {
@@ -56,6 +56,7 @@ class Tx_Fluid_Service_DocbookGenerator {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __construct() {
+		Tx_Fluid_Fluid::$debugMode = TRUE; // We want ViewHelper argument documentation
 		$this->abstractViewHelperReflectionClass = new Tx_Extbase_Reflection_ClassReflection('Tx_Fluid_Core_ViewHelper_AbstractViewHelper');
 		$this->docCommentParser = new Tx_Extbase_Reflection_DocCommentParser();
 	}
@@ -63,7 +64,7 @@ class Tx_Fluid_Service_DocbookGenerator {
 	/**
 	 * Inject the object manager.
 	 *
-	 * @param Tx_Fluid_Object_Manager $objectManager the object manager to inject
+	 * @param Tx_Fluid_Object_ManagerInterface $objectManager the object manager to inject
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -122,8 +123,8 @@ class Tx_Fluid_Service_DocbookGenerator {
 				$viewHelperClassNames[] = $registeredObjectName;
 			}
 		}
-		sort($registeredObjectNames);
-		return $registeredObjectNames;
+		sort($viewHelperClassNames);
+		return $viewHelperClassNames;
 	}
 
 	/**
@@ -183,7 +184,7 @@ class Tx_Fluid_Service_DocbookGenerator {
 	 * Initializes the view helper and its arguments, and then reads out the list of arguments.
 	 *
 	 * @param string $className Class name where to add the attribute descriptions
-	 * @param SimpleXMLElement $xsdElement XML element to add the attributes to.
+	 * @param SimpleXMLElement $docbookSection DocBook section to add the attributes to.
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -199,34 +200,42 @@ class Tx_Fluid_Service_DocbookGenerator {
 		$argumentsTable->addChild('title', 'Arguments');
 		$tgroup = $argumentsTable->addChild('tgroup');
 		$tgroup['cols'] = 4;
-		$this->addArgumentTableRow($tgroup->addChild('thead'), 'Name', 'Type', 'Description');
+		$this->addArgumentTableRow($tgroup->addChild('thead'), 'Name', 'Type', 'Required', 'Description', 'Default');
 
 		$tbody = $tgroup->addChild('tbody');
 
 		foreach ($argumentDefinitions as $argumentDefinition) {
-			$name = $argumentDefinition->getName();
-			if (!$argumentDefinition->isRequired()) {
-				$name .= ' (Optional)';
-			}
-			$description = $argumentDefinition->getDescription();
-			if ($argumentDefinition->getDefaultValue()) {
-				// TODO: Is this if-condition correct!?
-				$description .= 'Standardwert: ' . (string)$argumentDefinition->getDefaultValue();
-			}
-			$this->addArgumentTableRow($tbody, $name, $argumentDefinition->getType(), $description);
+			$this->addArgumentTableRow($tbody, $argumentDefinition->getName(), $argumentDefinition->getType(), ($argumentDefinition->isRequired()?'yes':'no'), $argumentDefinition->getDescription(), $argumentDefinition->getDefaultValue());
 		}
 	}
 
+	/**
+	 * Instantiate a view helper.
+	 *
+	 * @param string $className
+	 * @return object
+	 */
 	protected function instanciateViewHelper($className) {
 		return $this->objectManager->getObject($className);
 	}
 
-	private function addArgumentTableRow(SimpleXMLElement $parent, $name, $type, $description) {
+	/**
+	 * @param SimpleXMLElement $parent
+	 * @param string $name
+	 * @param string $type
+	 * @param boolean $required
+	 * @param string $description
+	 * @param string $default
+	 * @return void
+	 */
+	private function addArgumentTableRow(SimpleXMLElement $parent, $name, $type, $required, $description, $default) {
 		$row = $parent->addChild('row');
 
 		$row->addChild('entry', $name);
 		$row->addChild('entry', $type);
+		$row->addChild('entry', $required);
 		$row->addChild('entry', $description);
+		$row->addChild('entry', (string)$default);
 	}
 
 	/**
@@ -238,7 +247,7 @@ class Tx_Fluid_Service_DocbookGenerator {
 	 * CDATA block AND to replace the < and > with their XML entities. (This is IMHO not XML conformant).
 	 *
 	 * @param string $documentation Documentation string to add.
-	 * @param SimpleXMLElement $xsdParentNode Node to add the documentation to
+	 * @param SimpleXMLElement $docbookSection Node to add the documentation to
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -259,6 +268,10 @@ class Tx_Fluid_Service_DocbookGenerator {
 		}
 	}
 
+	/**
+	 * @param string $text
+	 * @param SimpleXMLElement $parentElement
+	 */
 	protected function addText($text, SimpleXMLElement $parentElement) {
 		$splitRegex = '/
 		(<code(?:.*?)>
@@ -297,7 +310,7 @@ class Tx_Fluid_Service_DocbookGenerator {
 	 *
 	 * @param SimpleXMLElement $parentXMLNode Parent XML Node to add the child to
 	 * @param string $childNodeName Name of the child node
-	 * @param string $nodeValue Value of the child node. Will be placed inside CDATA.
+	 * @param string $childNodeValue Value of the child node. Will be placed inside CDATA.
 	 * @return SimpleXMLElement the new element
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

@@ -21,16 +21,17 @@
  *                                                                        */
 
 /**
- * Loop view helper
+ * Loop view helper which can be used to interate over array.
+ * Implements what a basic foreach()-PHP-method does.
  *
  * = Examples =
  *
- * <code title="Simple">
+ * <code title="Simple Loop">
  * <f:for each="{0:1, 1:2, 2:3, 3:4}" as="foo">{foo}</f:for>
  * </code>
- *
- * Output:
+ * <output>
  * 1234
+ * </output>
  *
  * <code title="Output array key">
  * <ul>
@@ -39,16 +40,16 @@
  *   </f:for>
  * </ul>
  * </code>
- *
- * Output:
+ * <output>
  * <ul>
  *   <li>fruit1: apple</li>
  *   <li>fruit2: pear</li>
  *   <li>fruit3: banana</li>
  *   <li>fruit4: cherry</li>
  * </ul>
+ * </output>
  *
- * @version $Id: ForViewHelper.php 3190 2009-09-16 16:48:39Z bwaidelich $
+ * @version $Id: ForViewHelper.php 3199 2009-09-20 09:46:19Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

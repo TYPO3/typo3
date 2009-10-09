@@ -21,16 +21,17 @@
  *                                                                        */
 
 /**
- * Cycle view helper. Iterates through the specified values.
+ * This ViewHelper cycles through the specified values.
+ * This can be often used to specify CSS classes for example.
  *
  * = Examples =
  *
  * <code title="Simple">
  * <f:for each="{0:1, 1:2, 2:3, 3:4}" as="foo"><f:cycle values="{0: 'foo', 1: 'bar', 2: 'baz'}" as="cycle">{cycle}</f:cycle></f:for>
  * </code>
- *
- * Output:
+ * <output>
  * foobarbazfoo
+ * </output>
  *
  * <code title="Alternating CSS class">
  * <ul>
@@ -41,14 +42,14 @@
  *   </f:for>
  * </ul>
  * </code>
- *
- * Output:
+ * <output>
  * <ul>
  *   <li class="odd">1</li>
  *   <li class="even">2</li>
  *   <li class="odd">3</li>
  *   <li class="even">4</li>
  * </ul>
+ * </output>
  *
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

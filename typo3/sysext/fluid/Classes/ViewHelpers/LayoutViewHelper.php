@@ -21,9 +21,12 @@
  *                                                                        */
 
 /**
- * With this tag, you can select a layout to be used.
+ * With this tag, you can select a layout to be used..
+ * <code><f:layout name="main" /></code>
+ * 
  *
- * @version $Id: LayoutViewHelper.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ *
+ * @version $Id: LayoutViewHelper.php 3199 2009-09-20 09:46:19Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @todo refine documentation

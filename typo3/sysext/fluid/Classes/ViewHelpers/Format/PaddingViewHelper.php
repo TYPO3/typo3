@@ -40,7 +40,7 @@
  * Output:
  * TYPO3-=-=-
  *
- * @version $Id: $
+ * @version $Id: PaddingViewHelper.php 3169 2009-09-10 12:52:22Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
