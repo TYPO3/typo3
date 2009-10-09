@@ -113,7 +113,7 @@ class SC_wizard_add {
 		$this->table = $this->P['params']['table'];
 
 			// Get TSconfig for it.
-		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->table,is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
+		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->P['table'],is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
 
 			// Set [params][pid]
 		if (substr($this->P['params']['pid'],0,3)=='###' && substr($this->P['params']['pid'],-3)=='###')	{
@@ -137,6 +137,10 @@ class SC_wizard_add {
 
 					// ... and if everything seems OK we will register some classes for inclusion and instruct the object to perform processing later.
 				if ($this->P['params']['setValue'] && $cmd=='edit' && $this->id && $this->P['table'] && $this->P['field'] && $this->P['uid'])	{
+					
+					if ($LiveRec=t3lib_BEfunc::getLiveVersionOfRecord($this->table, $this->id, 'uid'))	{ $this->id=$LiveRec['uid'];}
+					
+					
 					$this->include_once[]=PATH_t3lib.'class.t3lib_loaddbgroup.php';
 					$this->include_once[]=PATH_t3lib.'class.t3lib_transferdata.php';
 					$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
