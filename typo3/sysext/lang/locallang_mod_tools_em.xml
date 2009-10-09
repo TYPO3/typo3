@@ -168,6 +168,9 @@
 			<label index="ext_import_list_updated">The mirror list has been updated and now contains %s entries.</label>
 			<label index="ext_import_list_empty">The mirror list was not updated as it contained no entries.</label>
 			<label index="ext_import_md5_not_updated">Error: The extension MD5 sum could not be fetched from %s.</label>
+			<label index="ext_import_extlist_updated_header">Extension list updated</label>
+			<label index="ext_import_extlist_updated">The extensions list has been updated and now contains %s extension entries.</label>
+			<label index="ext_import_list_unchanged_header">No updates available</label>
 			<label index="ext_import_list_unchanged">The extension list has not changed remotely, it has thus not been fetched.</label>
 			<label index="ext_import_ext_already_installed_loaded">Extension already installed and loaded.</label>
 			<label index="ext_import_p_localconf">localconf.php is not writable!</label>
@@ -185,7 +188,7 @@
 			<label index="ext_import_no_file">No file uploaded! Probably the file was too large for PHPs internal limit for uploadable files.</label>
 			<label index="ext_import_file_not_created">Error: File '%s' could not be created!!!</label>
 			<label index="ext_import_file_corrupted">Error: File '%s' MD5 was different from the md5 of the original file - so the file is corrupted!</label>
-			<label index="ext_import_success">SUCCESS!</label>
+			<label index="ext_import_success">Extension imported</label>
 			<label index="ext_import_success_folder">Folder created: %s</label>
 			<label index="ext_import_no_conf_file">Error: Could not find '%s'.</label>
 			<label index="ext_import_ext_type">Installation Type:</label>
@@ -276,6 +279,7 @@
 			<label index="extDelete_ext_active">This extension is currently installed (loaded and active) and so cannot be deleted!</label>
 			<label index="extDelete_wrong_scope">You cannot delete (and install/update) extensions in the %s scope.</label>
 			<label index="extDelete_remove_dir_failed">ERROR: Could not remove extension directory '%s'. The following errors occurred:</label>
+			<label index="extDelete_removed_header">Extension deleted</label>
 			<label index="extDelete_removed">Removed extension in path '%s'!</label>
 			<label index="extDelete_sure">Are you sure you want to delete this extension from the server?</label>
 			<label index="extDelete_from_server">DELETE EXTENSION FROM SERVER</label>

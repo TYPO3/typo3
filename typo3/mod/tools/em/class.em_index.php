@@ -1726,7 +1726,13 @@ EXTENSION KEYS:
 						) .
 						$GLOBALS['LANG']->getLL('translation_problems') . '</p>';
 				} elseif($extmd5 == $localmd5) {
-					$content .= '<p>' . $GLOBALS['LANG']->getLL('ext_import_list_unchanged') . '</p>';
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$GLOBALS['LANG']->getLL('ext_import_list_unchanged'),
+						$GLOBALS['LANG']->getLL('ext_import_list_unchanged_header'),
+						t3lib_FlashMessage::INFO
+					);
+					$content .= $flashMessage->render();
 				} else {
 					$extXML = t3lib_div::getURL($extfile, 0, array(TYPO3_user_agent));
 					if($extXML === false) {
@@ -1972,8 +1978,14 @@ EXTENSION KEYS:
 							$loc = ($loc==='G'||$loc==='S') ? $loc : 'L';
 							$comingExtPath = PATH_site.$this->typePaths[$loc].$extKey.'/';
 							if (@is_dir($comingExtPath))	{
-								return sprintf($GLOBALS['LANG']->getLL('ext_import_ext_present_no_overwrite'), $comingExtPath) .
-									'<br />' . $GLOBALS['LANG']->getLL('ext_import_ext_present_nothing_done');
+								$flashMessage = t3lib_div::makeInstance(
+									't3lib_FlashMessage',
+									sprintf($GLOBALS['LANG']->getLL('ext_import_ext_present_no_overwrite'), $comingExtPath) .
+										'<br />' . $GLOBALS['LANG']->getLL('ext_import_ext_present_nothing_done'),
+									'',
+									t3lib_FlashMessage::ERROR
+								);
+								return $flashMessage->render();
 							}	// ... else go on, install...
 						}	// ... else go on, install...
 					} else return $GLOBALS['LANG']->getLL('ext_import_no_key');
@@ -2035,8 +2047,7 @@ EXTENSION KEYS:
 
 											// No content, no errors. Create success output here:
 										if (!$content)	{
-											$content = $GLOBALS['LANG']->getLL('ext_import_success') . '<br /><br />' .
-												sprintf($GLOBALS['LANG']->getLL('ext_import_success_folder'), $extDirPath) . '<br />';
+											$content = sprintf($GLOBALS['LANG']->getLL('ext_import_success_folder'), $extDirPath) . '<br />';
 
 											$uploadSucceed = true;
 
@@ -2085,6 +2096,13 @@ EXTENSION KEYS:
 												list($new_list)=$this->getInstalledExtensions();
 												$content.=$this->updatesForm($extKey,$new_list[$extKey],1,'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info');
 											}
+											
+											$flashMessage = t3lib_div::makeInstance(
+												't3lib_FlashMessage',
+												$content,
+												$GLOBALS['LANG']->getLL('ext_import_success')
+												);
+											$content = $flashMessage->render();
 
 												// Install / Uninstall:
 											if(!$this->CMD['standAlone']) {
@@ -2101,7 +2119,6 @@ EXTENSION KEYS:
 													'<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">' .
 													$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 											}
-
 										}
 									} else $content = $res;
 								} else $content = sprintf($GLOBALS['LANG']->getLL('ext_import_ext_path_different'), $extDirPath);
@@ -2837,14 +2854,21 @@ EXTENSION KEYS:
 			if ($this->CMD['doDelete'] && !strcmp($absPath,$this->CMD['absPath'])) {
 				$res = $this->removeExtDirectory($absPath);
 				if ($res) {
-					return sprintf($GLOBALS['LANG']->getLL('extDelete_remove_dir_failed'),
-						$absPath
-					) . '<br /><br />' .
-					nl2br($res);
-				} else {
-					return sprintf($GLOBALS['LANG']->getLL('extDelete_removed'),
-						$absPath
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						nl2br($res),
+						sprintf($GLOBALS['LANG']->getLL('extDelete_remove_dir_failed'), $absPath),
+						t3lib_FlashMessage::ERROR
 					);
+					return $flashMessage->render();
+				} else {
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						sprintf($GLOBALS['LANG']->getLL('extDelete_removed'), $absPath),
+						$GLOBALS['LANG']->getLL('extDelete_removed_header'),
+						t3lib_FlashMessage::OK
+					);
+					return $flashMessage->render();
 				}
 			} else {
 				$areYouSure = $GLOBALS['LANG']->getLL('extDelete_sure');
@@ -4405,8 +4429,13 @@ EXTENSION KEYS:
 				if($dontDelete) return array($extDirPath);
 				$res = $this->removeExtDirectory($extDirPath);
 				if ($res) {
-					return sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'),
-						$extDirPath) . '<br /><br />' . nl2br($res);
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						nl2br($res),
+						sprintf($GLOBALS['LANG']->getLL('clearMakeExtDir_could_not_remove_dir'), $extDirPath),
+						t3lib_FlashMessage::ERROR
+					);
+					return $flashMessage->render();
 				}
 			}
 

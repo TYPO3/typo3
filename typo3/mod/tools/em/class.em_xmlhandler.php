@@ -402,7 +402,12 @@ class SC_mod_tools_em_xmlhandler {
 		gzclose($fp);
 
 		if(!$error) {
-			$content.= '<p>The extensions list has been updated and now contains '.$extcount.' extension entries.</p>';
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				sprintf($GLOBALS['LANG']->getLL('ext_import_extlist_updated'), $extcount),
+				$GLOBALS['LANG']->getLL('ext_import_extlist_updated_header')
+			);
+			$content .= $flashMessage->render();
 		}
 
 		return $content;
