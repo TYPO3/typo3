@@ -1,3 +1,14 @@
+2009-10-09  Kasper Skårhøj <kasper@typo3.org>
+	* Tiny bug with date function in t3lib_befunc. Casted timestamp to integer.
+	* Added User TSconfig option "options.checkPageLanguageOverlay" so flexforms only show language fields for languages available on the page.
+	* Fixed problem with notification emails to users when a workspace review rejection happens. Now it works
+	* Added possibility to reset the diff-information for localizations so translators or admins can click a button that will mark a record so it appears to be in need of translation again.
+	* Fixed problem with "Save and view" for new pages: Simply removed the button for new pages because it didn't choose the right PID anyway.
+	* Implemented an override of allowed language per workspace. This is an expert feature available as a USER TSconfig option "options.workspaces.allowed_languages" 
+	* Expanded the feature that disables/enables login in a branch so now you can allow a login but force the usergroups to be "0,-2" (basically, that no usergroups are set for the user). This can help to reduce multiple caching of similar pages in case of many usergroup combinations in a system. 
+	* Implemented a simple hook after retrieval of a page from cache.
+	* Fixed bug in Addwizard: It didn't work properly with wizard for other pages. Took the wrong table name. Thanks to Hassan AIT ABDELLAH, Dassault Systemes, for the fix.
+
 2009-10-08  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12121: "Installation Type: L" - tell the user, what's "L" (thanks to Steffen Gebert)
