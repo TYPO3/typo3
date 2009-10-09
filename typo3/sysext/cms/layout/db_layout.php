@@ -832,7 +832,7 @@ class SC_db_layout {
 						'',
 						t3lib_FlashMessage::WARNING
 					);
-					$this->doc->pushFlashMessage($lockedMessage);
+					t3lib_messageQueue::addMessage($lockedMessage);
 				}
 
 					// Add whole form as a document section:

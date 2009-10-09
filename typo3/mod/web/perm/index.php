@@ -397,7 +397,7 @@ class SC_mod_web_perm_index {
 				$LANG->getLL('WorkspaceWarning'),
 				t3lib_FlashMessage::WARNING
 			);
-			$this->doc->pushFlashMessage($lockedMessage);
+			t3lib_messageQueue::addMessage($lockedMessage);
 		}
 
 			// Get usernames and groupnames

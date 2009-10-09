@@ -27,6 +27,7 @@ return array(
 	't3lib_extmgm' => PATH_t3lib . 'class.t3lib_extmgm.php',
 	't3lib_extobjbase' => PATH_t3lib . 'class.t3lib_extobjbase.php',
 	't3lib_flashmessage' => PATH_t3lib . 'class.t3lib_flashmessage.php',
+	't3lib_messagequeue' => PATH_t3lib . 'class.t3lib_messagequeue.php',
 	't3lib_flexformtools' => PATH_t3lib . 'class.t3lib_flexformtools.php',
 	't3lib_foldertree' => PATH_t3lib . 'class.t3lib_foldertree.php',
 	't3lib_formmail' => PATH_t3lib . 'class.t3lib_formmail.php',

@@ -41,22 +41,49 @@ class t3lib_FlashMessage {
 	const WARNING = 1;
 	const ERROR   = 2;
 
-	protected $title    = '';
-	protected $message  = '';
+	/**
+	 * The message's title
+	 *
+	 * @var string
+	 */
+	protected $title = '';
+
+	/**
+	 * The message
+	 *
+	 * @var string
+	 */
+	protected $message = '';
+
+	/**
+	 * The message's severity
+	 *
+	 * @var integer
+	 */
 	protected $severity = self::OK;
+
+	/**
+	 * defines whether the message should be stored in the session (to survive redirects) or only for one request (default)
+	 *
+	 * @var bool
+	 */
+	protected $storeInSession = FALSE;
 
 	/**
 	 * Constructor for a flash message
 	 *
 	 * @param	string	The message.
 	 * @param	string	Optional message title.
-	 * @param	integer	Optional severity, must be either of t3lib_FlashMessage::INFO, t3lib_FlashMessage::OK, t3lib_FlashMessage::WARNING or t3lib_FlashMessage::ERROR. Default is t3lib_FlashMessage::OK.
+	 * @param	integer	Optional severity, must be either of t3lib_FlashMessage::INFO, t3lib_FlashMessage::OK,
+	 *                  t3lib_FlashMessage::WARNING or t3lib_FlashMessage::ERROR. Default is t3lib_FlashMessage::OK.
+	 * @param	bool    Optional, defines whether the message should be stored in the session or only for one request (default)
 	 * @return	void
 	 */
-	public function __construct($message, $title = '', $severity = self::OK) {
+	public function __construct($message, $title = '', $severity = self::OK, $storeInSession = FALSE) {
 		$this->setMessage($message);
 		$this->setTitle($title);
 		$this->setSeverity($severity);
+		$this->setStoreInSession($storeInSession);
 	}
 
 	/**
@@ -77,6 +104,27 @@ class t3lib_FlashMessage {
 	public function setTitle($title) {
 		$this->title = (string) $title;
 	}
+
+
+	/**
+	 * Gets the message's storeInSession flag.
+	 *
+	 * @return	bool	The persistence flag.
+	 */
+	public function getStoreInSession() {
+		return $this->storeInSession;
+	}
+
+	/**
+	 * Sets the message's storeInSession flag
+	 *
+	 * @param	bool	The persistence flag
+	 * @return	void
+	 */
+	public function setStoreInSession($storeInSession) {
+		$this->storeInSession = (bool) $storeInSession;
+	}
+
 
 	/**
 	 * Gets the message.

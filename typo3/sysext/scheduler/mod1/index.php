@@ -1280,7 +1280,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$severity
 		);
 
-		$this->doc->pushFlashMessage($message);
+		t3lib_messageQueue::addMessage($message);
 	}
 
 	/**
