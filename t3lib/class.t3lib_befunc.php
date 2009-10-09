@@ -1610,7 +1610,7 @@ final class t3lib_BEfunc {
 	 * @return	string		Formatted time
 	 */
 	public static function date($tstamp) {
-		return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $tstamp);
+		return date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], (int)$tstamp);
 	}
 
 	/**
