@@ -1472,6 +1472,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				$this->addFileMount($row['title'], $row['path'], $row['path'], $row['base']?1:0, '');
 			}
 		}
+
+		if ($allowed_languages = $this->getTSConfigVal('options.workspaces.allowed_languages.'.$this->workspace))	{
+			$this->groupData['allowed_languages'] = $allowed_languages;
+			$this->groupData['allowed_languages'] = t3lib_div::uniqueList($this->groupData['allowed_languages']);
+		}
 	}
 
 	/**
