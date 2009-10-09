@@ -115,7 +115,11 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	 * @api
 	 */
 	public function getBaseURI() {
-		return $this->baseURI;
+		if (TYPO3_MODE === 'BE') {
+			return $this->baseURI . TYPO3_mainDir;
+		} else {
+			return $this->baseURI;
+		}
 	}
 }
 ?>
