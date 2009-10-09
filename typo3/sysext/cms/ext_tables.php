@@ -483,7 +483,8 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'select',
 				'items' => array (
 					array('', 0),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disable', 1),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableall', 1),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disablegroups', 3),
 					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.enable', 2),
 				)
 			)

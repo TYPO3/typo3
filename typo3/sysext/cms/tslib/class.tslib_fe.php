@@ -231,6 +231,7 @@
 	var $beUserLogin='';				// Flag that indicates if a Backend user is logged in!
 	var $workspacePreview='';			// Integer, that indicates which workspace is being previewed.
 	var $loginAllowedInBranch = TRUE;	// Shows whether logins are allowed in branch
+	var $loginAllowedInBranch_mode = '';	// Shows specific mode (all or groups)
 	var $ADMCMD_preview_BEUSER_uid = 0;	// Integer, set to backend user ID to initialize when keyword-based preview is used.
 
 		// PREVIEW
@@ -697,7 +698,7 @@
 			// Clean up.
 		$gr_array = array_unique($gr_array);	// Make unique...
 		sort($gr_array);	// sort
-		if (count($gr_array))	{
+		if (count($gr_array) && !$this->loginAllowedInBranch_mode)	{
 			$this->gr_list.=','.implode(',',$gr_array);
 		}
 
@@ -852,10 +853,13 @@
 		$this->loginAllowedInBranch = $this->checkIfLoginAllowedInBranch();
 		if (!$this->loginAllowedInBranch)	{	// Logins are not allowed:
 			if ($this->isUserOrGroupSet())	{	// Only if there is a login will we run this...
-
-					// Clear out user and group:
-				unset($this->fe_user->user);
-				$this->gr_list = '0,-1';
+				if ($this->loginAllowedInBranch_mode=='all')	{
+						// Clear out user and group:
+					unset($this->fe_user->user);
+					$this->gr_list = '0,-1';
+				} else {
+					$this->gr_list = '0,-2';
+				}
 
 					// Fetching the id again, now with the preview settings reset.
 				$this->fetch_the_id();
@@ -1257,7 +1261,15 @@
 			if ($this->rootLine[$a]['fe_login_mode'] > 0)	{
 
 					// Determine state from value:
-				$disable = (int)$this->rootLine[$a]['fe_login_mode'] === 1 ? TRUE : FALSE;
+				if ((int)$this->rootLine[$a]['fe_login_mode'] === 1)	{
+					$disable = TRUE;
+					$this->loginAllowedInBranch_mode = 'all';
+				} elseif ((int)$this->rootLine[$a]['fe_login_mode'] === 3)	{
+					$disable = TRUE;
+					$this->loginAllowedInBranch_mode = 'groups';
+				} else {
+					$disable = FALSE;
+				}
 			}
 		}
 
@@ -1881,12 +1893,21 @@
 					if (is_array($row)) {
 							// Release this lock
 						$this->releasePageGenerationLock($this->pages_lockObj);
+
+							// Call hook when a page is retrieved from cache:
+						if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache']))	{
+							$_params = array('pObj' => &$this, 'cache_pages_row' => &$row);
+							foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'] as $_funcRef)	{
+								t3lib_div::callUserFunction($_funcRef,$_params,$this);
+							}
+						}
+
 						$this->config = (array)unserialize($row['cache_data']);		// Fetches the lowlevel config stored with the cached data
 						$this->content = (TYPO3_UseCachingFramework ? $row['content'] : $row['HTML']);	// Getting the content
 						$this->tempContent = $row['temp_content'];	// Flag for temp content
 						$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content has been loaded
 						$this->cacheExpires = $row['expires'];
-
+						
 						if ($this->TYPO3_CONF_VARS['FE']['debug'] || (isset($this->config['config']['debug']) && $this->config['config']['debug'])) {
 							$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 							$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
