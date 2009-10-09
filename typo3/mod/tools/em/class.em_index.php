@@ -3089,6 +3089,11 @@ EXTENSION KEYS:
 					<td>' . ($extInfo['EM_CONF']['lockType'] ?
 						$extInfo['EM_CONF']['lockType'] : '') . '</td>' .
 					$this->helpCol('lockType') . '</tr>';
+			$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_load_in_frontend') . '</td>
+					<td>' . ($extInfo['EM_CONF']['doNotLoadInFE'] ?
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no')
+						: $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes')) . '</td>' .
+					$this->helpCol('doNotLoadInFE') . '</tr>';
 			$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_modifies_tables') . '</td>
 					<td>' . $extInfo['EM_CONF']['modify_tables'] . '</td>' .
 					$this->helpCol('modify_tables') . '</tr>';

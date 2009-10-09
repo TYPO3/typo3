@@ -1,5 +1,6 @@
 2009-10-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12110: Show status of flag doNotLoadInFE in extension details (thanks to Steffen Gebert)
 	* Fixed bug #12119: PHP warning shown in EM, if webserver can't remove extension dir (thanks to Steffen Gebert)
 
 2009-10-09  Oliver Hader  <oliver@typo3.org>

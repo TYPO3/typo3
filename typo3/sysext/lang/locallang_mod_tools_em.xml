@@ -319,6 +319,7 @@
 			<label index="extInfoArray_clear_cache">Clear cache?</label>
 			<label index="extInfoArray_incl_modules">Includes modules:</label>
 			<label index="extInfoArray_lock_type">Lock Type?</label>
+			<label index="extInfoArray_load_in_frontend">Load in frontend:</label>
 			<label index="extInfoArray_modifies_tables">Modifies tables:</label>
 			<label index="extInfoArray_inst_status">Installation status:</label>
 			<label index="extInfoArray_inst_type">Type of installation:</label>
