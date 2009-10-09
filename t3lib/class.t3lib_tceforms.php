@@ -2419,10 +2419,26 @@ class t3lib_TCEforms	{
 			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
 
 			$editData['meta']['currentLangId']=array();
+
+				// Look up page overlays:
+			$checkPageLanguageOverlay = $GLOBALS['BE_USER']->getTSConfigVal('options.checkPageLanguageOverlay')?TRUE:FALSE;
+			if ($checkPageLanguageOverlay)	{
+				$pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'*',
+					'pages_language_overlay',
+					'pid='.intval($row['pid']).
+						t3lib_BEfunc::deleteClause('pages_language_overlay').
+						t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay'),
+					'',
+					'',
+					'',
+					'sys_language_uid'
+				);
+			}
 			$languages = $this->getAvailableLanguages();
 
 			foreach($languages as $lInfo)	{
-				if ($GLOBALS['BE_USER']->checkLanguageAccess($lInfo['uid']))	{
+				if ($GLOBALS['BE_USER']->checkLanguageAccess($lInfo['uid']) && (!$checkPageLanguageOverlay || $lInfo['uid']<=0 || is_array($pageOverlays[$lInfo['uid']])))	{
 					$editData['meta']['currentLangId'][] = 	$lInfo['ISOcode'];
 				}
 			}
