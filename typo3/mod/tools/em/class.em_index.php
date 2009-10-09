@@ -3057,11 +3057,13 @@ EXTENSION KEYS:
 				$this->helpCol('state') . '</tr>';
 		$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_shy') . '</td>
 				<td>' . ($extInfo['EM_CONF']['shy'] ?
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>' .
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes')
+					: $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no')) . '</td>' .
 				$this->helpCol('shy') . '</tr>';
 		$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_internal') . '</td>
 				<td>' . ($extInfo['EM_CONF']['internal'] ?
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>' .
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes')
+					: $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no')) . '</td>' .
 				$this->helpCol('internal') . '</tr>';
 
 
@@ -3080,7 +3082,8 @@ EXTENSION KEYS:
 					$this->helpCol('priority') . '</tr>';
 			$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_clear_cache') . '</td>
 					<td>' . ($extInfo['EM_CONF']['clearCacheOnLoad'] ?
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : '') . '</td>' .
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes')
+						: $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no')) . '</td>' .
 					$this->helpCol('clearCacheOnLoad') . '</tr>';
 			$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_incl_modules') . '</td>
 					<td>' . $extInfo['EM_CONF']['module'] . '</td>' .
