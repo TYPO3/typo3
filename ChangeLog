@@ -1,3 +1,7 @@
+2009-10-09  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to issue #12162: Reverted modification of existing locallang labels and introduced new labels instead
+
 2009-10-09  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12154: Improve API of flashmessages

@@ -483,9 +483,9 @@ if (TYPO3_MODE=='BE')	{
 				'type' => 'select',
 				'items' => array (
 					array('', 0),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableall', 1),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disablegroups', 3),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.enable', 2),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableAll', 1),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableGroups', 3),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.enableAgain', 2),
 				)
 			)
 		),
