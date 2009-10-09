@@ -10,6 +10,7 @@
 
 	* Fixed bug #12078: Scheduler: Check if additional fields indeed provide fields
 	* Fixed bug #12117: Added use of flash messages to the Extension Manager (thanks to Steffen Gebert)
+	* Fixed bug #12166: Scheduler: Gathered TODOs from Forge bug tracker into the Scheduler's manual
 
 2009-10-09  Kasper Skaarhoj  <kasper@typo3.org>
 	* Tiny bug with date function in t3lib_befunc. Casted timestamp to integer.
