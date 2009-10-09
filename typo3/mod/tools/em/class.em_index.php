@@ -4354,7 +4354,7 @@ EXTENSION KEYS:
 				foreach($remDirs as $removeRelDir)	{
 					$removeDir = $removePath.$removeRelDir;
 					if (@is_dir($removeDir))	{
-						rmdir($removeDir);
+						@rmdir($removeDir);
 						clearstatcache();
 						if (@is_dir($removeDir))	{
 							$errors[] = sprintf($GLOBALS['LANG']->getLL('rmExtDir_error_files_left'),
@@ -4368,7 +4368,7 @@ EXTENSION KEYS:
 
 				// If extension dir should also be removed:
 				if (!$removeContentOnly)	{
-					rmdir($removePath);
+					@rmdir($removePath);
 					clearstatcache();
 					if (@is_dir($removePath))	{
 						$errors[] = sprintf($GLOBALS['LANG']->getLL('rmExtDir_error_folders_left'),
