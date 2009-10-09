@@ -743,15 +743,18 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$additionalFieldsStyle = ' style="display: none"';
 			}
 
-			foreach ($fields as $fieldID => $fieldInfo) {
-				$table[$tr][] = t3lib_BEfunc::cshItem($fieldInfo['cshKey'], $fieldInfo['cshLabel'], $this->backPath, '|', false, 'margin-bottom:0px;');
-				$table[$tr][] = '<label for="' . $fieldID . '">' . $GLOBALS['LANG']->sL($fieldInfo['label']) . '</label>';
-				$table[$tr][] = $fieldInfo['code'];
-				$tableLayout[$tr] = array (
-					'tr'     => array('<tr id="' . $fieldID . '_row"' . $additionalFieldsStyle .' class="extraFields extra_fields_' . $class . '">', '</tr>'),
-					'defCol' => $defaultCell
-				);
-				$tr++;
+				// Add each field to the display, if there are indeed any
+			if (isset($fields) && is_array($fields)) {
+				foreach ($fields as $fieldID => $fieldInfo) {
+					$table[$tr][] = t3lib_BEfunc::cshItem($fieldInfo['cshKey'], $fieldInfo['cshLabel'], $this->backPath, '|', false, 'margin-bottom:0px;');
+					$table[$tr][] = '<label for="' . $fieldID . '">' . $GLOBALS['LANG']->sL($fieldInfo['label']) . '</label>';
+					$table[$tr][] = $fieldInfo['code'];
+					$tableLayout[$tr] = array (
+						'tr'     => array('<tr id="' . $fieldID . '_row"' . $additionalFieldsStyle .' class="extraFields extra_fields_' . $class . '">', '</tr>'),
+						'defCol' => $defaultCell
+					);
+					$tr++;
+				}
 			}
 		}
 
