@@ -249,6 +249,7 @@ class t3lib_TCEmain	{
 	var $dontProcessTransformations = FALSE;	// Boolean: If set, then transformations are NOT performed on the input.
 	var $clear_flexFormData_vDEFbase = FALSE;	// Boolean: If set, .vDEFbase values are unset in flexforms.
 	var $updateModeL10NdiffData = TRUE;		// Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
+	var $updateModeL10NdiffDataClear = FALSE;	// Boolean: If true, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.	
 	var $bypassWorkspaceRestrictions = FALSE;	// Boolean: If true, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
 	var $bypassFileHandling = FALSE;			// Boolean: If true, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
 	var $bypassAccessCheckForRecords = FALSE;	// Boolean: If true, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
@@ -1114,7 +1115,7 @@ class t3lib_TCEmain	{
 
 									// Add the value of the original record to the diff-storage content:
 								if ($this->updateModeL10NdiffData && $TCA[$table]['ctrl']['transOrigDiffSourceField'])	{
-									$originalLanguage_diffStorage[$field] = $originalLanguageRecord[$field];
+									$originalLanguage_diffStorage[$field] = $this->updateModeL10NdiffDataClear ? '' : $originalLanguageRecord[$field];
 									$diffStorageFlag = TRUE;
 								}
 
@@ -2415,7 +2416,7 @@ class t3lib_TCEmain	{
 										$diffValue = $dataValues_current[$key]['vDEF'];
 									}
 										// Setting the reference value for vDEF for this translation. This will be used for translation tools to make a diff between the vDEF and vDEFbase to see if an update would be fitting.
-									$dataValues[$key][$vKey.'.vDEFbase'] = $diffValue;
+									$dataValues[$key][$vKey.'.vDEFbase'] = $this->updateModeL10NdiffDataClear ? '' : $diffValue;
 								}
 							}
 						}
@@ -6895,8 +6896,8 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 								foreach($rows as $dat)	{
 									$data = unserialize($dat['log_data']);
 
-									debug($dat['userid'],'Adds user at stage: '.$data['stage']);
-									$emails = array_merge($emails,$this->notifyStageChange_getEmails($dat['userid']));
+									//debug($dat['userid'],'Adds user at stage: '.$data['stage']);
+									$emails = array_merge($emails,$this->notifyStageChange_getEmails($dat['userid'],TRUE));
 
 									if ($data['stage']==1)	{
 										break;
@@ -6967,6 +6968,8 @@ State was change by %s (username: %s)
 					sprintf($subject,$elementName),
 					trim($message)
 				);
+				
+				$this->newlog2('Notification email for stage change was sent to "'.implode(', ',$emails).'"',$table,$id);
 			}
 		}
 	}

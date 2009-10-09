@@ -246,7 +246,7 @@ class SC_alt_doc {
 	 * @return	boolean		True, then save the document (data submitted)
 	 */
 	function doProcessData()	{
-		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']);
+		$out = $this->doSave || isset($_POST['_savedok_x']) || isset($_POST['_saveandclosedok_x']) || isset($_POST['_savedokview_x']) || isset($_POST['_savedoknew_x']) || isset($_POST['_translation_savedok_x']) || isset($_POST['_translation_savedokclear_x']);
 		return $out;
 	}
 
@@ -272,8 +272,13 @@ class SC_alt_doc {
 			// Only options related to $this->data submission are included here.
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values=0;
+		
 		if (isset($_POST['_translation_savedok_x']))	{
 			$tce->updateModeL10NdiffData = 'FORCE_FFUPD';
+		}
+		if (isset($_POST['_translation_savedokclear_x']))	{
+			$tce->updateModeL10NdiffData = 'FORCE_FFUPD';
+			$tce->updateModeL10NdiffDataClear = TRUE;
 		}
 
 			// Setting default values specific for the user:
@@ -663,7 +668,8 @@ class SC_alt_doc {
 										$CALC_PERMS = $BE_USER->calcPerms($calcPRec);	// Permissions for the parent page
 										if ($table=='pages')	{	// If pages:
 											$hasAccess = $CALC_PERMS&8 ? 1 : 0;
-											$this->viewId = $calcPRec['pid'];
+											#$this->viewId = $calcPRec['pid'];
+											$this->viewId = 0;
 										} else {
 											$hasAccess = $CALC_PERMS&16 ? 1 : 0;
 											$this->viewId = $calcPRec['uid'];
@@ -811,7 +817,8 @@ class SC_alt_doc {
 			'history' => '',
 			'columns_only' => '',
 			'csh' => '',
-			'translation_save' => ''
+			'translation_save' => '',
+			'translation_saveclear' => ''
 		);
 
 			// Render SAVE type buttons:
@@ -837,6 +844,7 @@ class SC_alt_doc {
 				// FINISH TRANSLATION / SAVE / CLOSE
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['explicitConfirmationOfTranslation'])	{
 				$buttons['translation_save'] = '<input type="image" class="c-inputButton" name="_translation_savedok" src="' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/translationsavedok.gif', '', 1) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.translationSaveDoc', 1) . '" />';
+				$buttons['translation_saveclear'] = '<input type="image" class="c-inputButton" name="_translation_savedokclear" src="' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/translationsavedok_clear.gif', '', 1) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.translationSaveDocClear', 1) . '" />';
 			}
 		}
 
