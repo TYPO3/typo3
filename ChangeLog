@@ -1,3 +1,7 @@
+2009-10-10  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12129 (follow-up to bug #11986): Translation update broken with activated output compression (thanks to Steffen Gebert)
+
 2009-09-29  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11433: touch(): Utime failed in install tool (thanks to Steffen Gebert)

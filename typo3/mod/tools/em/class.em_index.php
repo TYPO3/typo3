@@ -1206,6 +1206,9 @@ EXTENSION KEYS:
 			$mirrorURL = $this->getMirrorURL();
 			$content = '<input type="button" value="Check status against repository" onclick="document.location.href=\''.t3lib_div::linkThisScript(array('l10n'=>'check')).'\'" />&nbsp;<input type="button" value="Update from repository" onclick="document.location.href=\''.t3lib_div::linkThisScript(array('l10n'=>'update')).'\'" />';
 
+				// as this page loads dynamically, quit output buffering caused by ob_gzhandler
+			$this->quitOutputBuffering();
+
 			if(t3lib_div::_GET('l10n') == 'check') {
 				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
 				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
@@ -1216,7 +1219,7 @@ EXTENSION KEYS:
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
-				ob_end_flush();
+
 				echo $contentParts[0].$this->content;
 
 				$this->doPrintContent = FALSE;
@@ -1302,7 +1305,7 @@ EXTENSION KEYS:
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
-				ob_end_flush();
+
 				echo $contentParts[0].$this->content;
 
 				$this->doPrintContent = FALSE;
@@ -5378,6 +5381,20 @@ $warn.
 		}
 
 		return $content.'</table><br/>';
+	}
+
+
+	/**
+	 *  Quit output buffering started by ob_gzhandler
+	 *
+	 *  @return	void
+	 */
+	private function quitOutputBuffering() {
+		while (ob_get_level()) {
+			ob_end_clean();
+		}
+
+		header('Content-Encoding: None', TRUE);
 	}
 
 }
