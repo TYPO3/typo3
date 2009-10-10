@@ -1,3 +1,7 @@
+2009-10-10  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12129 (follow-up to bug #11986): Translation update broken with activated output compression (thanks to Steffen Gebert)
+
 2009-10-09  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12111: Improve output of extension details (thanks to Steffen Gebert)

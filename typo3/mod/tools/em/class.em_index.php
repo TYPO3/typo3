@@ -1299,6 +1299,9 @@ EXTENSION KEYS:
 				'" onclick="document.location.href=\'' . t3lib_div::linkThisScript(array('l10n'=>'update')) .
 				'\'" />';
 
+				// as this page loads dynamically, quit output buffering caused by ob_gzhandler
+			$this->quitOutputBuffering();
+
 			if(t3lib_div::_GET('l10n') == 'check') {
 				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
 				$loadedExtensions = array_diff($loadedExtensions,array('_CACHEFILE'));
@@ -1309,7 +1312,7 @@ EXTENSION KEYS:
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
-				ob_end_flush();
+
 				echo $contentParts[0].$this->content;
 
 				$this->doPrintContent = FALSE;
@@ -1404,7 +1407,7 @@ EXTENSION KEYS:
 				$content = $this->doc->startPage('Extension Manager');
 				$content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				$contentParts=explode('###CONTENT###',$content);
-				ob_end_flush();
+
 				echo $contentParts[0].$this->content;
 
 				$this->doPrintContent = FALSE;
@@ -2096,7 +2099,7 @@ EXTENSION KEYS:
 												list($new_list)=$this->getInstalledExtensions();
 												$content.=$this->updatesForm($extKey,$new_list[$extKey],1,'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info');
 											}
-											
+
 											$flashMessage = t3lib_div::makeInstance(
 												't3lib_FlashMessage',
 												$content,
@@ -6158,6 +6161,19 @@ $warn.
 		return $content . '</table><br />';
 	}
 
+	/**
+	 *  Quit output buffering started by ob_gzhandler
+	 *
+	 *  @return	void
+	 */
+	private function quitOutputBuffering() {
+
+		while (ob_get_level()) {
+			ob_end_clean();
+		}
+
+		header('Content-Encoding: None', TRUE);
+	}
 }
 
 
