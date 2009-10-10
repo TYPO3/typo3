@@ -22,8 +22,7 @@
  * @version $Id: RenderingContextTest.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_Core_Rendering_RenderingContextTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * Parsing state

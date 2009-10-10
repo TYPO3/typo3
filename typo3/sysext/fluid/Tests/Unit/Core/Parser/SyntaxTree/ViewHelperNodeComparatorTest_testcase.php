@@ -22,8 +22,7 @@
  * @version $Id: ViewHelperNodeTest.php 2411 2009-05-26 22:00:04Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * Rendering Context

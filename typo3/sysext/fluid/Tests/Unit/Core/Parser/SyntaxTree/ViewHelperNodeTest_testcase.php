@@ -23,8 +23,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 include_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * Rendering Context

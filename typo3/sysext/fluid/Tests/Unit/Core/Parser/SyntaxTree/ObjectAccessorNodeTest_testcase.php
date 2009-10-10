@@ -21,8 +21,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/SomeEmptyClass.php');
  * @version $Id: ObjectAccessorNodeTest.php 2813 2009-07-16 14:02:34Z k-fish $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNodeTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	protected $mockTemplateVariableContainer;
 

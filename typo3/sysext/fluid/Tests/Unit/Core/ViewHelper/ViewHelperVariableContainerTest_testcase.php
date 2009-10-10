@@ -18,11 +18,10 @@ include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
 /**
  * Testcase for AbstractViewHelper
  *
- * @version $Id: ViewHelperVariableContainerTest.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ViewHelperVariableContainerTest.php 3296 2009-10-07 07:41:30Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 *
@@ -63,6 +62,16 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 	public function settingKeyWhichIsAlreadyStoredThrowsException() {
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value1');
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value2');
+	}
+	
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function addOrUpdateWorks() {
+		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value1');
+		$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value2');
+		$this->assertEquals($this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey'), 'value2');
 	}
 
 	/**
