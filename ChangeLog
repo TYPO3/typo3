@@ -1,3 +1,7 @@
+2009-10-11  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #10971: Fatal error in impexp module: Call to a member function includeLLFile() on a non-object (thanks to Andre Steiling)
+
 2009-09-29  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11433: touch(): Utime failed in install tool (thanks to Steffen Gebert)

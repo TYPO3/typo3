@@ -233,6 +233,11 @@ class localRecordList extends recordList {
 			$theData['up'][]='<a href="'.htmlspecialchars($this->backPath.'mod.php?M=xMOD_tximpexp&tx_impexp[action]=export&tx_impexp[list][]='.rawurlencode($this->table.':'.$this->id)).'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,t3lib_extMgm::extRelPath('impexp').'export.gif',' width="18" height="16"').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.export',1).'" alt="" />'.
 							'</a>';
+			$url = $this->backPath . t3lib_extMgm::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export';
+			$theData['up'][] = '<a href="' . htmlspecialchars($url . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id)) . '">' .
+								'<img' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('impexp') . 'export.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.export', 1) . '" alt="" />' .
+								'</a>';
+
 		}
 
 			// Add "refresh" link:
@@ -320,7 +325,7 @@ class localRecordList extends recordList {
 			$this->fieldArray[] = '_LOCALIZATION_b';
 			$addWhere.=' AND (
 				'.$TCA[$table]['ctrl']['languageField'].'<=0
-				OR 
+				OR
 				'.$TCA[$table]['ctrl']['transOrigPointerField'].' = 0
 			)';
 		}
@@ -1101,7 +1106,7 @@ class localRecordList extends recordList {
 			0 => '',
 			1 => '',
 		);
-		
+
 		$t8Tools = t3lib_div::makeInstance('t3lib_transl8tools');
 		$translations = $t8Tools->translationInfo($table,$row['uid']);
 
@@ -1125,12 +1130,12 @@ class localRecordList extends recordList {
 					$lNew.=$lC;
 				}
 			}
-			
+
 			if ($lNew)	$out[1].= $lNew;
 		} else {
 			$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[0];
 		}
-		
+
 
 		return $out;
 	}

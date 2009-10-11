@@ -108,10 +108,10 @@
  */
 
 
-#unset($MCONF);
-#require ('conf.php');
-#require ($BACK_PATH.'init.php');
-#require ($BACK_PATH.'template.php');
+unset($MCONF);
+require ('conf.php');
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
