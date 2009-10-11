@@ -334,7 +334,7 @@ class t3lib_userAuth {
 			// Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
 			$cookieHttpOnly = (bool)$settings['cookieHttpOnly'];
 
-			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used: 
+			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
 			if ((int)$settings['cookieSecure'] !== 1 || t3lib_div::getIndpEnv('TYPO3_SSL')) {
 				setcookie(
 					$this->name,
@@ -362,7 +362,7 @@ class t3lib_userAuth {
 	/**
 	 * Gets the domain to be used on setting cookies.
 	 * The information is taken from the value in $TYPO3_CONF_VARS[SYS][cookieDomain].
-	 * 
+	 *
 	 * @return	string		The domain to be used on setting cookies
 	 */
 	protected function getCookieDomain() {
@@ -652,7 +652,7 @@ class t3lib_userAuth {
 
 	/**
 	 * Creates a new session ID.
-	 * 
+	 *
 	 * @return	string		The new session ID
 	 */
 	public function createSessionId() {

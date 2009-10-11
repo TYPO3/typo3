@@ -139,7 +139,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$pageRenderer->addJsLibrary($lib, $this->prependBackPath($lib));
-		
+
 	}
 
 	/**
@@ -173,7 +173,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 
 	/**
 	 * Prepends backPath to given URL if it's not an absolute URL
-	 * 
+	 *
 	 * @param string $url
 	 * @return string
 	 */
@@ -183,7 +183,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 		} else {
 			return $this->backPath . $url;
 		}
-		
+
 	}
 }
 

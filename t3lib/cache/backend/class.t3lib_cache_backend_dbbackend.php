@@ -318,7 +318,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			foreach ($tags as $tag) {
 				$listQueryConditions[$tag] = $this->getQueryForTag($tag);
 			}
-	
+
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				$this->cacheTable,
 				'identifier IN (' .

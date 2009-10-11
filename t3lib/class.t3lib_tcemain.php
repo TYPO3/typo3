@@ -249,7 +249,7 @@ class t3lib_TCEmain	{
 	var $dontProcessTransformations = FALSE;	// Boolean: If set, then transformations are NOT performed on the input.
 	var $clear_flexFormData_vDEFbase = FALSE;	// Boolean: If set, .vDEFbase values are unset in flexforms.
 	var $updateModeL10NdiffData = TRUE;		// Boolean/Mixed: TRUE: (traditional) Updates when record is saved. For flexforms, updates if change is made to the localized value. FALSE: Will not update anything. "FORCE_FFUPD" (string): Like TRUE, but will force update to the FlexForm Field
-	var $updateModeL10NdiffDataClear = FALSE;	// Boolean: If true, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.	
+	var $updateModeL10NdiffDataClear = FALSE;	// Boolean: If true, the translation diff. fields will in fact be reset so that they indicate that all needs to change again! It's meant as the opposite of declaring the record translated.
 	var $bypassWorkspaceRestrictions = FALSE;	// Boolean: If true, workspace restrictions are bypassed on edit an create actions (process_datamap()). YOU MUST KNOW what you do if you use this feature!
 	var $bypassFileHandling = FALSE;			// Boolean: If true, file handling of attached files (addition, deletion etc) is bypassed - the value is saved straight away. YOU MUST KNOW what you are doing with this feature!
 	var $bypassAccessCheckForRecords = FALSE;	// Boolean: If true, access check, check for deleted etc. for records is bypassed. YOU MUST KNOW what you are doing if you use this feature!
@@ -262,7 +262,7 @@ class t3lib_TCEmain	{
 	var $defaultValues = array();			// Array [table][fields]=value: New records are created with default values and you can set this array on the form $defaultValues[$table][$field] = $value to override the default values fetched from TCA. If ->setDefaultsFromUserTS is called UserTSconfig default values will overrule existing values in this array (thus UserTSconfig overrules externally set defaults which overrules TCA defaults)
 	var $overrideValues = array();			// Array [table][fields]=value: You can set this array on the form $overrideValues[$table][$field] = $value to override the incoming data. You must set this externally. You must make sure the fields in this array are also found in the table, because it's not checked. All columns can be set by this array!
 	var $alternativeFileName = array();		// Array [filename]=alternative_filename: Use this array to force another name onto a file. Eg. if you set ['/tmp/blablabal'] = 'my_file.txt' and '/tmp/blablabal' is set for a certain file-field, then 'my_file.txt' will be used as the name instead.
-	var $alternativeFilePath = array();		// Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file 
+	var $alternativeFilePath = array();		// Array [filename]=alternative_filepath: Same as alternativeFileName but with relative path to the file
 	var $data_disableFields=array();		// If entries are set in this array corresponding to fields for update, they are ignored and thus NOT updated. You could set this array from a series of checkboxes with value=0 and hidden fields before the checkbox with 1. Then an empty checkbox will disable the field.
 	var $suggestedInsertUids=array();		// Use this array to validate suggested uids for tables by setting [table]:[uid]. This is a dangerous option since it will force the inserted record to have a certain UID. The value just have to be true, but if you set it to "DELETE" it will make sure any record with that UID will be deleted first (raw delete). The option is used for import of T3D files when synchronizing between two mirrored servers. As a security measure this feature is available only for Admin Users (for now)
 
@@ -579,11 +579,11 @@ class t3lib_TCEmain	{
 			if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'])) {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] as $classData) {
 					$hookObject = t3lib_div::getUserObj($classData);
-	
+
 					if(!($hookObject instanceof t3lib_TCEmain_checkModifyAccessListHook)) {
 						throw new UnexpectedValueException('$hookObject must implement interface t3lib_TCEmain_checkModifyAccessListHook', 1251892472);
 					}
-	
+
 					$this->checkModifyAccessListHookObjects[] = $hookObject;
 				}
 			}
@@ -1731,7 +1731,7 @@ class t3lib_TCEmain	{
 			if (count($valueArray)){
 				if (!$this->bypassFileHandling) {	// If filehandling should NOT be bypassed, do processing:
 					$propArr = $this->getRecordProperties($table, $id); // For logging..
-					foreach($valueArray as &$theFile){ 
+					foreach($valueArray as &$theFile){
 
 							// if alernative File Path is set for the file, then it was an import
 						if ($this->alternativeFilePath[$theFile]){
@@ -6968,7 +6968,7 @@ State was change by %s (username: %s)
 					sprintf($subject,$elementName),
 					trim($message)
 				);
-				
+
 				$this->newlog2('Notification email for stage change was sent to "'.implode(', ',$emails).'"',$table,$id);
 			}
 		}

@@ -441,7 +441,7 @@ class t3lib_frontendedit {
 		$this->doSave($table, $uid);
 	}
 
-	
+
 	/**
 	 * Stub for closing a record. No real functionality needed since content
 	 * element rendering will take care of everything.

@@ -448,7 +448,7 @@ class t3lib_loadModules {
 					if ($MCONF['extbase']) {
 						$modconf['script'] = 'mod.php?M=Tx_' . rawurlencode($name);
 					} else {
-						$modconf['script'] = 'mod.php?M=' . rawurlencode($name);	
+						$modconf['script'] = 'mod.php?M=' . rawurlencode($name);
 					}
 				} elseif ($MCONF['script'] && file_exists($path.'/'.$MCONF['script']))	{
 					$modconf['script'] = $this->getRelativePath(PATH_typo3,$fullpath.'/'.$MCONF['script']);

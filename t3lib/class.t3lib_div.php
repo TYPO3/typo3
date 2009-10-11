@@ -1988,8 +1988,8 @@ final class t3lib_div {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Merges two arrays recursively and "binary safe" (integer keys are
 	 * overridden as well), overruling similar values in the first array

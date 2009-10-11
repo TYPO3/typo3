@@ -1,3 +1,7 @@
+2009-10-10  Steffen Kamper  <info@sk-typo3.de>
+
+	* Whitespace cleaning of t3lib files
+
 2009-10-11  Rupert Germann  <rupi@gmx.li>
 
 	* Follow-up to bug #12154: renamed t3lib_MessageQueue to t3lib_FlashMessageQueue, changed some some function names
