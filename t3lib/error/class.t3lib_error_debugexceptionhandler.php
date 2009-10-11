@@ -153,10 +153,10 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 						if (is_object($argument)) {
 							$arguments .= '<span style="color:#FF8700;"><em>' . get_class($argument) . '</em></span>';
 						} elseif (is_string($argument)) {
-							$preparedArgument = (strlen($argument) < 100) ? $argument : substr($argument, 0, 50) . '…' . substr($argument, -50);
+							$preparedArgument = (strlen($argument) < 100) ? $argument : substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
 							$preparedArgument = htmlspecialchars($preparedArgument);
-							$preparedArgument = str_replace("…", '<span style="color:white;">…</span>', $preparedArgument);
-							$preparedArgument = str_replace("\n", '<span style="color:white;">⏎</span>', $preparedArgument);
+							$preparedArgument = str_replace('#tripleDot#', '<span style="color:white;">&hellip;</span>', $preparedArgument);
+							$preparedArgument = str_replace(chr(10), '<span style="color:white;">&crarr;</span>', $preparedArgument);
 							$arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">' . $preparedArgument . '</span>"';
 						} elseif (is_numeric($argument)) {
 							$arguments .= '<span style="color:#FF8700;">' . (string)$argument . '</span>';

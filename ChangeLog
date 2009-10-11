@@ -7,6 +7,7 @@
 
 	* Follow-up to bug #12154: renamed t3lib_MessageQueue to t3lib_FlashMessageQueue, changed some some function names
 	  in t3lib_flashmessages and t3lib_FlashMessageQueue.
+	* Follow-up to bug #9355: Fixed some broken utf-8 chars in class t3lib_error_debugexceptionhandler
 
 2009-10-10  Rupert Germann  <rupi@gmx.li>
 
