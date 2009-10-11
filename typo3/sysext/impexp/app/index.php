@@ -108,10 +108,10 @@
  */
 
 
-#unset($MCONF);
-#require ('conf.php');
-#require ($BACK_PATH.'init.php');
-#require ($BACK_PATH.'template.php');
+unset($MCONF);
+require ('conf.php');
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
 require_once (PATH_t3lib.'class.t3lib_scbase.php');
 require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
@@ -1098,10 +1098,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Make input selector:
 			$path = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];	// must have trailing slash.
 			$filesInDir = t3lib_div::getFilesInDir(PATH_site.$path, 't3d,xml', 1, 1);
-			
+
 			$userPath = $this->userSaveFolder(); //Files from User-Dir
 			$filesInUserDir = t3lib_div::getFilesInDir($userPath, 't3d,xml', 1, 1);
-			
+
 			$filesInDir = array_merge($filesInUserDir, $filesInDir);
 
 			if (is_dir(PATH_site.$path.'export/'))	{
