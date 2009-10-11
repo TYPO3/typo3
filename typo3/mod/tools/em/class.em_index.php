@@ -2283,6 +2283,7 @@ EXTENSION KEYS:
 									$vA['CMD']['refreshMenu'] = 1;
 								}
 								header('Location: '.t3lib_div::linkThisScript($vA));
+								exit;
 							}
 						}
 					}
