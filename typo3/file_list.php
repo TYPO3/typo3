@@ -332,7 +332,7 @@ class SC_file_list {
 					<div id="typo3-listOptions">
 				';
 
-			   		// Add "display bigControlPanel" checkbox:	
+			   		// Add "display bigControlPanel" checkbox:
 				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], 'file_list.php', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ' .$LANG->getLL('bigControlPanel', 1) . '</label><br />';
 
 					// Add "display thumbnails" checkbox:

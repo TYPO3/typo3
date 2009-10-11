@@ -270,7 +270,7 @@ class template {
 
 	/**
 	 * Gets instance of PageRenderer
-	 * 
+	 *
 	 * @return	t3lib_PageRenderer
 	 */
 	public function getPageRenderer() {
@@ -717,16 +717,16 @@ class template {
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
 		$this->pageRenderer->setTitle($title);
-		
+
 		// add docstyles
 		$this->docStyle();
 
 
 		// add jsCode - has to go to headerData as it may contain the script tags already
 		$this->pageRenderer->addHeaderData($this->JScode);
-		
+
 		foreach ($this->JScodeArray as $name => $code) {
-			$this->pageRenderer->addJsInlineCode($name, $code);	
+			$this->pageRenderer->addJsInlineCode($name, $code);
 		}
 
 		if (count($this->JScodeLibArray)) {
@@ -747,7 +747,7 @@ class template {
 		$this->JScodeArray = array();
 
 		$this->endOfPageJsBlock = $this->pageRenderer->render(t3lib_PageRenderer::PART_FOOTER);
-		
+
 		if ($this->docType=='xhtml_frames')	{
 			return $str;
 		} else
@@ -2100,7 +2100,7 @@ class frontendDoc extends template {
 		}
 		if (count($this->JScodeArray)) {
 			foreach ($this->JScodeArray as $name => $code) {
-				$pageRenderer->addJsInlineCode($name, $code);	
+				$pageRenderer->addJsInlineCode($name, $code);
 	}
 }
 

@@ -166,7 +166,7 @@ class SC_alt_shortcut {
 		$url = urldecode($this->URL);
 
 			// Lookup the title of this page and use it as default description
-		$page_id = $this->getLinkedPageId($url);         
+		$page_id = $this->getLinkedPageId($url);
 		if (t3lib_div::testInt($page_id))	{
 			if (preg_match('/\&edit\[(.*)\]\[(.*)\]=edit/',$url,$matches))	{
 					// Edit record

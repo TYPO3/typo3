@@ -272,7 +272,7 @@ class SC_alt_doc {
 			// Only options related to $this->data submission are included here.
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 		$tce->stripslashes_values=0;
-		
+
 		if (isset($_POST['_translation_savedok_x']))	{
 			$tce->updateModeL10NdiffData = 'FORCE_FFUPD';
 		}

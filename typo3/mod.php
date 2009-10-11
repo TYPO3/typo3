@@ -50,7 +50,7 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
 	$BACK_PATH = '';
 	require($temp_path . 'index.php');
 	$isDispatched = TRUE;
-} else {	
+} else {
 	if (is_array($TBE_MODULES['_dispatcher'])) {
 		foreach ($TBE_MODULES['_dispatcher'] as $dispatcherClassName) {
 			$dispatcher = t3lib_div::makeInstance($dispatcherClassName);
@@ -63,6 +63,6 @@ if ($temp_path = $TBE_MODULES['_PATHS'][$temp_M]) {
 }
 
 if ($isDispatched === FALSE) {
-	die('Value "' . htmlspecialchars($temp_M) . '" for "M" was not found as a module'); 
+	die('Value "' . htmlspecialchars($temp_M) . '" for "M" was not found as a module');
 }
 ?>

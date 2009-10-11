@@ -253,7 +253,7 @@ class fileList extends t3lib_recordList {
 
 			// Header line is drawn
 		$theData = Array();
-		
+
 		foreach ($this->fieldArray as $v)	{
 			if ($v == '_CLIPBOARD_' && $this->clipBoard) {
 				$cells=array();
@@ -676,7 +676,7 @@ class fileList extends t3lib_recordList {
 
 	/**
 	* Creates the edit control section
-	* 
+	*
 	* @param	array		Array with information about the file/directory for which to make the edit control section for the listing.
 	* @return	string		HTML-table
 	*/
@@ -684,25 +684,25 @@ class fileList extends t3lib_recordList {
 		$cells = array();
 		$fullIdent = $theData['path'].$theData['file'];
 		$canEdit = t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $theData['realFileext']);
-		
+
 			// prepare space icon
 		$iconWidth  = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeWidth']  : 12;
 		$iconHeight = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['iconSizeHeight'] : 12;
 		$spaceIcon = '<img src="' . $this->backPath . 'clear.gif" width="' . $iconWidth . '" height="' . $iconHeight . '" title="" alt="" />';
 
-		
+
 			//edit
 		if ($theData['type'] == 'dir' || !$canEdit) {
 			$cells['edit'] = $spaceIcon;
 		} else {
 			$editOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'file_edit.php?target=' .
-				rawurlencode($fullIdent) . 
+				rawurlencode($fullIdent) .
 				'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location);return false;';
 			$cells['edit'] = '<a href="#" onclick="' . $editOnClick . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/edit_file.gif', 'width="' . $iconWidth . '" height="' . $iconHeight . '"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.edit') . '" alt="" /></a>';
 		}
 			//rename
 		$renameOnClick = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'file_rename.php?target=' .
-			rawurlencode($fullIdent) . 
+			rawurlencode($fullIdent) .
 			'&returnUrl=\'+top.rawurlencode(top.content.list_frame.document.location);return false;';
 		$cells['rename'] = '<a href="#" onclick="' . $renameOnClick . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/rename.gif', 'width="' . $iconWidth . '" height="' . $iconHeight . '"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.rename') . '" alt="" /></a>';
 
@@ -722,7 +722,7 @@ class fileList extends t3lib_recordList {
 				$hookObject->manipulateEditIcons($cells, $this);
 			}
 		}
-		
+
 			// Compile items into a DIV-element:
 		return '							<!-- EDIT CONTROLS: -->
 											<div class="typo3-editCtrl">
@@ -730,7 +730,7 @@ class fileList extends t3lib_recordList {
 												', $cells).'
 											</div>';
 	}
-	
+
 	/**
 	 * Make reference count
 	 *

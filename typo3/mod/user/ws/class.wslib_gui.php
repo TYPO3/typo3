@@ -182,7 +182,7 @@ class wslib_gui {
 			$browse.= '<br />';
 		}
 		$browse.= '<br />';
-		
+
 		$workspaceOverviewList = $this->displayWorkspaceOverview_list($pArray);
 		if ($workspaceOverviewList || $this->alwaysDisplayHeader) {
 			// Make header of overview:
@@ -196,13 +196,13 @@ class wslib_gui {
 					<td nowrap="nowrap">' . $LANG->getLL('label_publish') . '</td>
 					<td><select name="_with_selected_do" onchange="if (confirm(\'' . $LANG->getLL('submit_apply_action_on_selected_elements') . '\')) {document.forms[0].submit();}">
 						<option value="_">' . $LANG->getLL('label_doaction_default') . '</option>';
-			
+
 			if ($this->publishAccess && !($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1))	{
 				$tableHeader .= '<option value="publish">' . $LANG->getLL('label_doaction_publish') . '</option>';
 				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 					$tableHeader .= '<option value="swap">' . $LANG->getLL('label_doaction_swap') . '</option>';
 				}
-			}						
+			}
 			if ($GLOBALS['BE_USER']->workspace !== 0) {
 				$tableHeader .= '<option value="release">' . $LANG->getLL('label_doaction_release') . '</option>';
 			}
@@ -210,14 +210,14 @@ class wslib_gui {
 			$tableHeader .= $GLOBALS['BE_USER']->workspaceCheckStageForCurrent('0') ? '<option value="stage_0">' . $LANG->getLL('label_doaction_stage_editing') . '</option>' : '';
 			$tableHeader .= $GLOBALS['BE_USER']->workspaceCheckStageForCurrent('1') ? '<option value="stage_1">' . $LANG->getLL('label_doaction_stage_review') . '</option>' : '';
 			$tableHeader .= $GLOBALS['BE_USER']->workspaceCheckStageForCurrent('10') ? '<option value="stage_10">' . $LANG->getLL('label_doaction_stage_publish') . '</option>' : '';
-			
+
 			$tableHeader .= '<option value="flush">' . $LANG->getLL('label_doaction_flush') . '</option>
 					</select></td>
 					<td>' . $LANG->getLL('label_lifecycle') . '</td>
 					'.($this->showWorkspaceCol ? '<td>' . $LANG->getLL('label_workspace') . '</td>' : '').'
 				</tr>';
 			$tableRows[] = $tableHeader;
-			
+
 			// Add lines from overview:
 			$tableRows = array_merge($tableRows, $workspaceOverviewList);
 

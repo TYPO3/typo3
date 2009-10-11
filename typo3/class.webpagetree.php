@@ -162,7 +162,7 @@ class webPageTree extends t3lib_browseTree {
 			}
 			unset($_params);
 		}
-		
+
 		$aOnClick = 'return jumpTo(\''.$this->getJumpToParam($row).'\',this,\''.$this->domIdPrefix.$this->getId($row).'\','.$bank.');';
 		$CSM = '';
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['useOnContextMenuHandler'])	{

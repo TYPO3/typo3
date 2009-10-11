@@ -209,7 +209,7 @@ class TYPO3backend {
 		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 		$pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
 		$pageRenderer->loadExtJS();
-		
+
 			// remove duplicate entries
 		$this->jsFiles = array_unique($this->jsFiles);
 
@@ -220,12 +220,12 @@ class TYPO3backend {
 		$GLOBALS['TBE_TEMPLATE']->JScode .= chr(10);
 		$this->generateJavascript();
 		$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->js) . chr(10);
-		
+
 		foreach($this->jsFilesAfterInline as $jsFile) {
 			$GLOBALS['TBE_TEMPLATE']->JScode .= '
 			<script type="text/javascript" src="' . $jsFile . '"></script>';
 		}
-		
+
 
 			// FIXME abusing the JS container to add CSS, need to fix template.php
 		foreach($this->cssFiles as $cssFileName => $cssFile) {
@@ -359,7 +359,7 @@ class TYPO3backend {
 				// t3lib_div::locationHeaderUrl() will include '/typo3/' in the URL
 				htmlspecialchars(t3lib_div::locationHeaderUrl('gfx/clear.gif')) .
 				'";
-	
+
 
 	TYPO3.configuration = ' . json_encode(array(
 		'siteUrl' => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
@@ -376,7 +376,7 @@ class TYPO3backend {
 		'veriCode' => $GLOBALS['BE_USER']->veriCode(),
 		'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
 	)) . ';
-	TYPO3.LLL = { 
+	TYPO3.LLL = {
 			core : ' . json_encode(array(
 		'waitTitle' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_logging_in') ,
 		'refresh_login_failed' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_failed'),
@@ -394,7 +394,7 @@ class TYPO3backend {
 		'login_about_to_expire' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.login_about_to_expire'),
 		'login_about_to_expire_title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.login_about_to_expire_title'),
 		'refresh_login_refresh_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_refresh_button'),
-		'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_direct_logout_button'),        
+		'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_direct_logout_button'),
 	)) . ',
 		fileUpload: ' . json_encode(array(
 			'windowTitle' => $GLOBALS['LANG']->getLL('fileUpload_windowTitle'),
@@ -441,7 +441,7 @@ class TYPO3backend {
 	var TS = new typoSetup();
 
 	var currentModuleLoaded = "";
-	var goToModule = ' . $goToModuleSwitch . '; 
+	var goToModule = ' . $goToModuleSwitch . ';
 
 	/**
 	 * Frameset Module object

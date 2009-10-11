@@ -153,7 +153,7 @@ class SC_index {
 		}
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_login.xml');
 
-			// check if labels from $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels'] were changed, 
+			// check if labels from $GLOBALS['TYPO3_CONF_VARS']['BE']['loginLabels'] were changed,
 			// and merge them to $GLOBALS['LOCAL_LANG'] if needed
 		$this->mergeOldLoginLabels();
 
@@ -549,7 +549,7 @@ class SC_index {
 			// Traverse news array IF there are records in it:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
 
-				// get the main news template, and replace the subpart after looped through 
+				// get the main news template, and replace the subpart after looped through
 			$newsContent      = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
 			$newsItemTemplate = t3lib_parsehtml::getSubpart($newsContent, '###NEWS_ITEM###');
 
@@ -671,7 +671,7 @@ class SC_index {
 
 				// Checks weather capslock is enabled (returns true if enabled, false otherwise)
 				// thanks to http://24ways.org/2007/capturing-caps-lock
-				
+
 			function isCapslock(e) {
 				var ev = e ? e : window.event;
 				if (!ev) {
@@ -692,7 +692,7 @@ class SC_index {
 				} else if (ev.modifiers) {
 					shift_status = !!(ev.modifiers & 4);
 				}
-				return (((which >= 65 && which <= 90) && !shift_status) || 
+				return (((which >= 65 && which <= 90) && !shift_status) ||
 					((which >= 97 && which <= 122) && shift_status));
 			}
 

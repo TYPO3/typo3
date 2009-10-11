@@ -199,7 +199,7 @@ class SC_file_upload {
 
 		$form = $this->renderUploadForm();
 
-		$pageContent = 
+		$pageContent =
 			$this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle')) .
 			$this->doc->section('', $form);
 

@@ -178,7 +178,7 @@ class recordList extends t3lib_recordList {
 		$this->counter=0;
 		$this->JScode='';
 		$this->HTMLcode='';
-        
+
 			// limits
 		if(isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
 			$this->itemsLimitPerTable = t3lib_div::intInRange(intval($this->modTSconfig['properties']['itemsLimitPerTable']), 1, 10000);
@@ -186,7 +186,7 @@ class recordList extends t3lib_recordList {
 		if(isset($this->modTSconfig['properties']['itemsLimitSingleTable'])) {
 			$this->itemsLimitSingleTable = t3lib_div::intInRange(intval($this->modTSconfig['properties']['itemsLimitSingleTable']), 1, 10000);
 		}
-		
+
 			// Set select levels:
 		$sL=intval($this->searchLevels);
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
