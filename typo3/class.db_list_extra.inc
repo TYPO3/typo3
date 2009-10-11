@@ -245,9 +245,9 @@ class localRecordList extends recordList {
 
 					// Export
 				if (t3lib_extMgm::isLoaded('impexp')) {
-					$buttons['export'] = '<a href="' . htmlspecialchars($this->backPath. 'mod.php?M=xMOD_tximpexp&tx_impexp[action]=export&id=' . $this->id . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id)) . '">' .
-									'<img' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('impexp') . 'export.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.export', 1) . '" alt="" />' .
-									'</a>';
+					$url = $this->backPath . t3lib_extMgm::extRelPath('impexp') . 'app/index.php?tx_impexp[action]=export';
+					$buttons['export'] = '<a href="' . htmlspecialchars($url . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id)) . '">' .									'<img' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('impexp') . 'export.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.export', 1) . '" alt="" />' .
+										'</a>';
 				}
 
 			}

@@ -8,6 +8,7 @@
 
 2009-10-11  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #10971: Fatal error in impexp module: Call to a member function includeLLFile() on a non-object (thanks to Andre Steiling)
 	* Follow-up to bug #12154: renamed t3lib_MessageQueue to t3lib_FlashMessageQueue, changed some some function names
 	  in t3lib_flashmessages and t3lib_FlashMessageQueue.
 	* Follow-up to bug #9355: Fixed some broken utf-8 chars in class t3lib_error_debugexceptionhandler
