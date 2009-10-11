@@ -284,61 +284,23 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 	}
 
 	/**
-	 * Print log error messages from the operations of this script instance
+	 * Adds log error messages from the operations of this script instance to the FlashMessageQueue
 	 *
 	 * @param	string		Redirect URL (for creating link in message)
-	 * @return	void		(Will exit on error)
+	 * @return	void
 	 */
 	function printLogErrorMessages($redirect = '') {
-			// fetch the error messages from the DB
-		$errorMessages = $this->getErrorMessages();
-
-			// only print error messages if there is an error
-		if (count($errorMessages)) {
-			$errorDoc = t3lib_div::makeInstance('template');
-			$errorDoc->backPath = '';
-
-			$content = $errorDoc->startPage('tce_db.php Error output');
-
-			$lines[] = '
-					<tr class="bgColor5">
-						<td colspan="2" align="center"><strong>Errors:</strong></td>
-					</tr>';
-
-			foreach ($errorMessages as $line) {
-				$lines[] = '
-					<tr class="bgColor4">
-						<td valign="top"><img' . t3lib_iconWorks::skinImg('', 'gfx/icon_fatalerror.gif', 'width="18" height="16"') . ' alt="" /></td>
-						<td>' . htmlspecialchars($line) . '</td>
-					</tr>';
-			}
-
-			$lines[] = '
-					<tr>
-						<td colspan="2" align="center"><br />'.
-						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('window.location.href=\'' . $redirect . '\';return false;').'" /></form>'.
-						'</td>
-					</tr>';
-
-			$content .= '
-				<br /><br />
-				<table border="0" cellpadding="1" cellspacing="1" width="300" align="center">
-					' . implode('', $lines) . '
-				</table>';
-
-			$content .= $errorDoc->endPage();
-			die($content);
-		}
+		$this->getErrorMessages();
 	}
 
 
 	/**
-	 * Returns log error messages from the previous file operations of this script instance
+	 * Adds log error messages from the previous file operations of this script instance
+	 * to the FlashMessageQueue
 	 *
-	 * @return	array	all errorMessages as a numerical array
+	 * @return	void
 	 */
 	function getErrorMessages() {
-		$errorMessages = array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*',
 				'sys_log',
@@ -348,10 +310,17 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$logData = unserialize($row['log_data']);
-			$errorMessages[] = $row['error'] . ': ' . sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4]);
+			$msg = $row['error'] . ': ' . sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4]);
+			$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$msg,
+					'',
+					t3lib_FlashMessage::ERROR,
+					TRUE
+			);
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		return $errorMessages;
 	}
 
 
