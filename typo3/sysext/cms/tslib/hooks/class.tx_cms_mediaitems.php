@@ -27,11 +27,11 @@
 
 /**
  * Adds extra fields into 'media' flexform
- * 
+ *
  * @package TYPO3
- * @subpackage cms 
+ * @subpackage cms
  */
- 
+
 class tx_cms_mediaItems implements t3lib_Singleton {
 
 	/**
@@ -47,10 +47,10 @@ class tx_cms_mediaItems implements t3lib_Singleton {
 				$hookObj->customMediaRenderTypes($params, $conf);
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Load extra predefined media params if they exist
 	 *
@@ -58,18 +58,18 @@ class tx_cms_mediaItems implements t3lib_Singleton {
 	 * @param 	array		$conf: config array
 	 */
 	public function customMediaParams(&$params, $conf) {
-		
+
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaParams'] as $classRef) {
 				$hookObj = t3lib_div::getUserObj($classRef);
 				$hookObj->customMediaParams($params, $conf);
 			}
 		}
-		
-		
+
+
 	}
-} 
- 
+}
+
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/hooks/class.tx_cms_mediaitems.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/hooks/class.tx_cms_mediaitems.php']);
 }

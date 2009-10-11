@@ -118,7 +118,7 @@ class tx_reports_Module extends t3lib_SCbase {
 					var state;
 					Event.observe(document, "dom:loaded", function(){
 						$$(".section-header").invoke("observe", "click", function(event){
-							var item = Event.element(event);	
+							var item = Event.element(event);
 							if (item.hasClassName("expanded")) {
 								item.removeClassName("expanded").addClassName("collapsed");
 								Effect.BlindUp(item.next("div"), {duration : 0.5});
@@ -131,7 +131,7 @@ class tx_reports_Module extends t3lib_SCbase {
 							new Ajax.Request("ajax.php", {
 								parameters : "ajaxID=Reports::saveCollapseState&item=" + item.id + "&state=" + state
 							});
-						}); 
+						});
 					});
 				</script>
 			';

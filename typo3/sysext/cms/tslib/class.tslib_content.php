@@ -336,7 +336,7 @@ class tslib_cObj {
 	var $recordRegister=array();	// Array that registers rendered content elements (or any table) to make sure they are not rendered recursively!
 	var $cObjHookObjectsArr = array();		// Containig hooks for userdefined cObjects
 	protected $stdWrapHookObjects = array();		// Containing hook objects for stdWrap
-	protected $getImgResourceHookObjects;			// Containing hook objects for getImgResource 
+	protected $getImgResourceHookObjects;			// Containing hook objects for getImgResource
 
 	/**
 	 * Set to true by doConvertToUserIntObject() if USER object wants to become USER_INT
@@ -2652,7 +2652,7 @@ class tslib_cObj {
 	 * @return	string		Output
 	 */
 	public function MEDIA($conf) {
-		$content = '';	
+		$content = '';
 		$flexParams = $this->stdWrap($conf['flexParams'], $conf['flexParams.']);
 		if (substr($flexParams, 0, 1) === '<') {
 			// it is a content element
@@ -2679,11 +2679,11 @@ class tslib_cObj {
 
 		$conf['type'] = isset($conf['parameter.']['mmType']) ? $conf['parameter.']['mmType'] : $conf['type'];
 		$typeConf = $conf['mimeConf.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$conf['type'] . '.'] : array();
-		$conf['predefined'] = array();  
+		$conf['predefined'] = array();
 
 		$renderType = 'auto';
 		if (isset($conf['parameter.']['mmRenderType'])) {
-			$renderType = $conf['parameter.']['mmRenderType'];	
+			$renderType = $conf['parameter.']['mmRenderType'];
 		}
 		$width = intval($conf['parameter.']['mmWidth']);
 		$height = intval($conf['parameter.']['mmHeight']);
@@ -2728,7 +2728,7 @@ class tslib_cObj {
 								}
 							}
 						}
-					} 
+					}
 				} elseif ($key == 'mmMediaOptionsContainer') {
 					foreach ($value as $val) {
 						if (isset($val['mmParamSet'])) {
@@ -2742,7 +2742,7 @@ class tslib_cObj {
 			}
 		}
 
-			// render MEDIA	
+			// render MEDIA
 		if ($mode == 'url' && $url != '') {
 				// url is called direct, not with player
 			$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
@@ -2759,9 +2759,9 @@ class tslib_cObj {
 				$handler = array_keys($conf['fileExtHandler.']);
 				if (in_array($fileinfo['fileext'], $handler)) {
 					$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
-				} 
+				}
 			}
-			switch ($renderType) {  
+			switch ($renderType) {
 				case 'swf':
 					$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
 					$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
@@ -2783,7 +2783,7 @@ class tslib_cObj {
 						$conf['params'] .= $key . '=' . $value . chr(10);
 					}
 					$content = $this->MULTIMEDIA($conf);
-				break; 
+				break;
 				default:
 					if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
@@ -2820,7 +2820,7 @@ class tslib_cObj {
 
 			//add SWFobject js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile('typo3/contrib/flashmedia/swfobject/swfobject.js');
-		
+
 		$player = $this->stdWrap($conf[$conf['type'] . '.']['player'], $conf[$conf['type'] . '.']['player.']);
 		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $prefix . 'typo3/contrib/flashmedia/swfobject/expressInstall.swf';
 		$filename = $this->stdWrap($conf['file'], $conf['file.']);
@@ -2833,9 +2833,9 @@ class tslib_cObj {
 				} else {
 					$conf['flashvars.']['file'] = str_repeat('../', substr_count($player, '/')) . $filename;
 				}
-				
+
 			}
-		} 
+		}
 			// Write calculated values in conf for the hook
 		$conf['player'] = $player;
 		$conf['installUrl'] = $installUrl;
@@ -2861,12 +2861,12 @@ class tslib_cObj {
 
 		if (is_array($conf['params.'])) {
 			t3lib_div::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
-		} 
+		}
 		$params = 'var params = ' . (count($conf['params.']) ? json_encode($conf['params.']) : '{}') . ';';
 
 		if (is_array($conf['attributes.'])) {
 			t3lib_div::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
-		} 
+		}
 		$attributes = 'var attributes = ' . (count($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}') . ';';
 
 		$flashVersion = $this->stdWrap($conf['flashVersion'], $conf['flashVersion.']);
@@ -2887,7 +2887,7 @@ class tslib_cObj {
 		$height = $this->stdWrap($conf['height'], $conf['height.']);
 
 		$width = $width ? $width : $conf[$conf['type'] . '.']['defaultWidth'];
-		$height = $height ? $height : $conf[$conf['type'] . '.']['defaultHeight']; 
+		$height = $height ? $height : $conf[$conf['type'] . '.']['defaultHeight'];
 
 
 		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
@@ -2911,7 +2911,7 @@ class tslib_cObj {
 	 * @return	string		Output
 	 */
 	public function QTOBJECT($conf) {
-		$content = '';	
+		$content = '';
 		$params = '';
 
 		$prefix = '';
@@ -2940,7 +2940,7 @@ class tslib_cObj {
 			foreach ($conf['params.'] as $key => $value) {
 				$params .= $qtObject . '.addParam("' .$key . '", "' . $value . '");' . chr(10);
 			}
-		} 
+		}
 		$params = ($params ? substr($params, 0, -2) : '') . chr(10) . $qtObject . '.write("' . $replaceElementIdString . '");';
 
 		$alternativeContent = $this->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']);
@@ -2978,14 +2978,14 @@ class tslib_cObj {
 	 *
 	 ************************************/
 
-	 
+
 	/**
-	 * Converts a given config in Flexform to a conf-Array 
+	 * Converts a given config in Flexform to a conf-Array
 	 * @param	string 		Flexform data
 	 * @param	array 		Array to write the data into, by reference
 	 * @param	boolean		is set if called recursive. Don't call function with this parameter, it's used inside the function only
 	 * @access 	public
-	 * 
+	 *
 	 */
 	public function readFlexformIntoConf($flexData, &$conf, $recursive=FALSE) {
 		if ($recursive === FALSE) {
@@ -2996,7 +2996,7 @@ class tslib_cObj {
 			if (isset($flexData['data']['sDEF']['lDEF'])) {
 				$flexData = $flexData['data']['sDEF']['lDEF'];
 			}
-			
+
 			foreach ($flexData as $key => $value) {
 				if (is_array($value['el']) && count($value['el']) > 0) {
 					foreach ($value['el'] as $ekey => $element) {
@@ -4226,10 +4226,10 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Implements the stdWrap property "cropHTML" which is a modified "substr" function allowing to limit a string length 
-	 * to a certain number of chars (from either start or end of string) and having a pre/postfix applied if the string 
+	 * Implements the stdWrap property "cropHTML" which is a modified "substr" function allowing to limit a string length
+	 * to a certain number of chars (from either start or end of string) and having a pre/postfix applied if the string
 	 * really was cropped.
-	 * 
+	 *
 	 * Compared to stdWrap.crop it respects HTML tags and entities.
 	 *
 	 * @param	string		The string to perform the operation on
@@ -4257,7 +4257,7 @@ class tslib_cObj {
 				</?(?:". $tags . ")+			# opening tag ('<tag') or closing tag ('</tag')
 				(?:
 					(?:
-						\s+\w+					# EITHER spaces, followed by word characters (attribute names) 
+						\s+\w+					# EITHER spaces, followed by word characters (attribute names)
 						(?:
 							\s*=?\s*			# equals
 							(?>
@@ -4561,7 +4561,7 @@ class tslib_cObj {
 		$theFile = trim($conf['path']) . $theValue;
 		if (@is_file($theFile))	{
 			$theFileEnc = str_replace('%2F', '/', rawurlencode($theFile));
-			
+
 			// the jumpURL feature will be taken care of by typoLink, only "jumpurl.secure = 1" is applyable needed for special link creation
 			if ($conf['jumpurl.']['secure']) {
 				$typoLinkConf = array(
@@ -5457,7 +5457,7 @@ class tslib_cObj {
 			$imageResource = $info;
 		}
 
-			// Hook 'getImgResource': Post-processing of image resources 
+			// Hook 'getImgResource': Post-processing of image resources
 		if (isset($imageResource)) {
 			foreach($this->getGetImgResourceHookObjects() as $hookObject) {
 				$imageResource = $hookObject->getImgResourcePostProcess($file, (array)$fileArray, $imageResource, $this);

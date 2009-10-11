@@ -226,7 +226,7 @@ class tx_scheduler implements t3lib_Singleton {
 
 	/**
 	 * This method stores information about the last run of the Scheduler into the system registry
-	 * 
+	 *
 	 * @param	string	$type: Type of run (manual or command-line (assumed to be cron))
 	 * @return	void
 	 */

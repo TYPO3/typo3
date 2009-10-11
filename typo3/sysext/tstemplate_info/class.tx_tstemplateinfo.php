@@ -45,7 +45,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
 
 /**
  * This class displays the Info/Modify screen of the Web > Template module
- * 
+ *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  *
  * $Id$
@@ -432,7 +432,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
 					} else {
 						$theOutput.= $this->pObj->doc->spacer(15);
-						$fileToBig = sprintf($GLOBALS['LANG']->getLL('filesizeExceeded'), $TCA['sys_template']['columns']['resources']['config']['max_size']); 
+						$fileToBig = sprintf($GLOBALS['LANG']->getLL('filesizeExceeded'), $TCA['sys_template']['columns']['resources']['config']['max_size']);
 						$filesizeNotAllowed = sprintf($GLOBALS['LANG']->getLL('notAllowed'), $TCA['sys_template']['columns']['resources']['config']['max_size']);
 						$theOutput.= $this->pObj->doc->section(
 							'<font color=red>' . $fileToBig . '</font>',

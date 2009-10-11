@@ -555,7 +555,7 @@
 
 	/**
 	 * Gets instance of PageRenderer
-	 * 
+	 *
 	 * @return	t3lib_PageRenderer
 	 */
 	public function getPageRenderer() {
@@ -1907,7 +1907,7 @@
 						$this->tempContent = $row['temp_content'];	// Flag for temp content
 						$this->cacheContentFlag = 1;	// Setting flag, so we know, that some cached content has been loaded
 						$this->cacheExpires = $row['expires'];
-						
+
 						if ($this->TYPO3_CONF_VARS['FE']['debug'] || (isset($this->config['config']['debug']) && $this->config['config']['debug'])) {
 							$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 							$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
@@ -2101,7 +2101,7 @@
 
 					$this->config['FEData'] = $this->tmpl->setup['FEData'];
 					$this->config['FEData.'] = $this->tmpl->setup['FEData.'];
-					
+
 						// class for render Header and Footer parts
 					$template = '';
 					if ($this->pSetup['pageHeaderFooterTemplateFile']) {
@@ -2110,7 +2110,7 @@
 							$this->setTemplateFile($file);
 						}
 					}
-					
+
 				}
 				$GLOBALS['TT']->pull();
 			} else {

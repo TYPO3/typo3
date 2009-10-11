@@ -39,7 +39,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 	 */
 	public function getStatus() {
 		$this->executeAdminCommand();
-		
+
 		$statuses = array(
 			'adminUserAccount'    => $this->getAdminAccountStatus(),
 			'encryptionKeyEmpty'  => $this->getEncryptionKeyStatus(),
@@ -230,7 +230,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		);
 	}
 
-	
+
 
 	/**
 	 * Checks for the existance of the ENABLE_INSTALL_TOOL file.

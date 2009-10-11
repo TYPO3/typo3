@@ -119,7 +119,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 				$collapsedClass = 'expanded';
 			}
 
-			
+
 			$classes = array(
 				tx_reports_reports_status_Status::NOTICE  => 'notice',
 				tx_reports_reports_status_Status::INFO    => 'information',
@@ -152,7 +152,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * sorts the status providers (alphabetically and adds "_install" provider at the beginning)
 	 *
@@ -177,7 +177,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 
 		return $statusCollection;
 	}
-	
+
 	/**
 	 * Sorts the statuses by severity
 	 *
@@ -213,7 +213,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 * @param	TYPO3AJAX	object of type TYPO3AJAX
 	 * @return	void
 	 */
-	
+
 	public function saveCollapseState(array $params, TYPO3AJAX $ajaxObj) {
 		$item = t3lib_div::_POST('item');
 		$state = (bool)t3lib_div::_POST('state');

@@ -162,7 +162,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 
 		// extJS theme
 	$TBE_STYLES['extJS']['theme'] =  $temp_eP . 'extjs/xtheme-t3skin.css';
-	
+
 	//print_a($TBE_STYLES,2);
 
 	// Adding HTML template for login screen

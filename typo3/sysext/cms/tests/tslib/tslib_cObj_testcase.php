@@ -29,14 +29,14 @@
  * @subpackage cms
  */
 class tslib_cObj_testcase extends tx_phpunit_testcase {
-	
+
 	/**
 	 * Holds the backed up $GLOBASL array()
 	 *
 	 * @var array
 	 **/
 	protected $backedUpGlobals;
-	
+
 	/**
 	 * The content object
 	 *
@@ -52,14 +52,14 @@ class tslib_cObj_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TSFE']->csConvObj = new t3lib_cs();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = 'mbstring';
 	}
-	
+
 	/**
 	 * Tears down this test case
 	 */
 	public function tearDown() {
 		$GLOBALS = $this->backedUpGlobals;
 	}
-	
+
 	/**
 	 * This is the data provider for the tests of crop and cropHTML below. It provides all combinations
 	 * of charset, text type, and configuration options to be tested.
@@ -119,11 +119,11 @@ class tslib_cObj_testcase extends tx_phpunit_testcase {
 				$charset . ' text with entities -58|...|1' => array('-58|...|1', $textWithEntities, '...implemented the original version of the crop function.', $charset)
 				));
 		}
-		return $data;		
+		return $data;
 	}
 
 	/**
-	 * Checks if stdWrap.cropHTML works with plain text cropping from left 
+	 * Checks if stdWrap.cropHTML works with plain text cropping from left
 	 *
 	 * @test
      * @dataProvider providerForCrop
@@ -132,9 +132,9 @@ class tslib_cObj_testcase extends tx_phpunit_testcase {
 		$this->handleCharset($charset, $subject, $expected);
 		$this->assertEquals($expected, $this->cObj->cropHTML($subject, $settings), 'cropHTML failed with settings: "' . $settings . '" and charset "' . $charset . '"');
 	}
-	
+
 	/**
-	 * Checks if stdWrap.cropHTML works with a complex content with many tags. Currently cropHTML 
+	 * Checks if stdWrap.cropHTML works with a complex content with many tags. Currently cropHTML
 	 * counts multiple invisible characters not as one (as the browser will output the content).
 	 *
 	 * @test
@@ -220,7 +220,7 @@ class tslib_cObj_testcase extends tx_phpunit_testcase {
 ';
 		$this->assertEquals($expected, $result);
 	}
-	
+
 	/**
 	 * Converts the subject and the expected result into the target charset.
 	 *

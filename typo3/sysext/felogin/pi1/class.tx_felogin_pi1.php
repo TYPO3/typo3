@@ -109,7 +109,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$content='';
 		if ($this->piVars['forgot']) {
 			$content .= $this->showForgot();
-		} elseif ($this->piVars['forgothash']) {  
+		} elseif ($this->piVars['forgothash']) {
 			$content .= $this->changePassword();
 		} else {
 			if($this->userIsLoggedIn && !$this->logintype) {
@@ -171,7 +171,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 				}
 					// generate message
 				if ($error) {
-					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotMessage_stdWrap.']);	
+					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotMessage_stdWrap.']);
 				} else {
 					$markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($this->pi_getLL('ll_forgot_reset_message_emailSent', '', 1), $this->conf['forgotMessage_stdWrap.']);
 				}
@@ -221,44 +221,44 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @return	string		The content.
 	 */
 	protected function changePassword() {
-		
+
 		$subpartArray = $linkpartArray = array();
-		$done = false;	
-		
+		$done = false;
+
 		$minLength = intval($this->conf['newPasswordMinLength']) ? intval($this->conf['newPasswordMinLength']) : 6;
-		
+
 		$subpart = $this->cObj->getSubpart($this->template, '###TEMPLATE_CHANGEPASSWORD###');
-		
-		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('change_password_header', $this->conf['changePasswordHeader_stdWrap.']);	
-		$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);	
-		
+
+		$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('change_password_header', $this->conf['changePasswordHeader_stdWrap.']);
+		$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);
+
 		$markerArray['###BACKLINK_LOGIN###'] = '';
 		$uid = $this->piVars['user'];
 		$piHash = $this->piVars['forgothash'];
-		
+
 		$hash = explode('|', $piHash);
 		if (intval($uid) == 0) {
 			$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message', $this->conf['changePasswordMessage_stdWrap.']);
-			$subpartArray['###CHANGEPASSWORD_FORM###'] = '';         	
+			$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
 		} else {
 			$user = $this->pi_getRecord('fe_users', intval($uid));
 			$userHash = $user['felogin_forgotHash'];
 			$compareHash = explode('|', $userHash);
-			
+
 			if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() ||  $hash[0] != $compareHash[0] ||  md5($hash[1]) != $compareHash[1]) {
 				$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_notvalid_message',$this->conf['changePasswordMessage_stdWrap.']);
-				$subpartArray['###CHANGEPASSWORD_FORM###'] = '';         
+				$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
 			} else {
 					// all is fine, continue with new password
 				$postData = t3lib_div::_POST($this->prefixId);
 
 				if ($postData['changepasswordsubmit']) {
 					if (strlen($postData['password1']) < $minLength) {
-			 			$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength); 
+			 			$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);
 					} elseif ($postData['password1'] != $postData['password2']) {
-						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_notequal_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);  
+						$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_notequal_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);
 					} else {
-						$newPass = $postData['password1']; 
+						$newPass = $postData['password1'];
 
 						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']) {
 							$_params = array(
@@ -271,20 +271,20 @@ class tx_felogin_pi1 extends tslib_pibase {
 								}
 							}
 							$newPass = $_params['newPassword'];
-						} 
-							
+						}
+
 							// save new password and clear DB-hash
 						$res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 								'fe_users',
 								'uid=' . $user['uid'],
 								array('password' => $newPass, 'felogin_forgotHash' => '')
 							);
-						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordMessage_stdWrap.']); 
+						$markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('change_password_done_message', $this->conf['changePasswordMessage_stdWrap.']);
 						$done = true;
 						$subpartArray['###CHANGEPASSWORD_FORM###'] = '';
-						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array()); 
+						$markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink($this->pi_getLL('ll_forgot_header_backToLogin', '', 1), array());
 					}
-				} 
+				}
 
 				if (!$done) {
 					// Change password form
@@ -300,13 +300,13 @@ class tx_felogin_pi1 extends tslib_pibase {
 					$markerArray['###STORAGE_PID###'] = $this->spid;
 					$markerArray['###SEND_PASSWORD###'] = $this->pi_getLL('change_password', '', 1);
 					$markerArray['###FORGOTHASH###'] = $piHash;
-				}		        
+				}
 			}
 		}
-		
-		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);  
+
+		return $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartArray, $linkpartArray);
 	}
-	
+
 	/**
 	 * generates a hashed link and send it with email
 	 *
@@ -315,7 +315,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 */
 	protected function generateAndSendHash($user) {
 		$hours = intval($this->conf['forgotLinkHashValidTime']) > 0 ? intval($this->conf['forgotLinkHashValidTime']) : 24;
-		$validEnd = time() + 3600 * $hours;		
+		$validEnd = time() + 3600 * $hours;
 		$validEndString = date($this->conf['dateFormat'], $validEnd);
 
 		$hash =  md5(rand());
@@ -341,11 +341,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 			}
 		}
 
-		if ($this->conf['linkPrefix'] == -1 && !$isAbsRelPrefix) {   		
+		if ($this->conf['linkPrefix'] == -1 && !$isAbsRelPrefix) {
 				// no preix is set, return the error
 			return $this->pi_getLL('ll_change_password_nolinkprefix_message');
 		}
-		
+
 		$link = ($isAbsRelPrefix ? '' : $this->conf['linkPrefix']) . $this->pi_getPageLink($GLOBALS['TSFE']->id, '', array(
 			$this->prefixId . '[user]' => $user['uid'],
 			$this->prefixId . '[forgothash]' => $randHash
@@ -359,9 +359,9 @@ class tx_felogin_pi1 extends tslib_pibase {
 			// send the email
 		$this->cObj->sendNotifyEmail($msg, $user['email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
 			// restore settings
-		$GLOBALS['TSFE']->config['config']['notification_email_urlmode'] = $oldSetting;  
+		$GLOBALS['TSFE']->config['config']['notification_email_urlmode'] = $oldSetting;
 
-		return ''; 		
+		return '';
 	}
 
 	/**
@@ -589,7 +589,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 							}
 						break;
 					}
-				} elseif (($this->logintype == '') && ($redirMethod == 'login') && $this->conf['redirectPageLogin']) { 
+				} elseif (($this->logintype == '') && ($redirMethod == 'login') && $this->conf['redirectPageLogin']) {
 						// if login and page not accessible
 					$this->cObj->typolink('', array(
 						'parameter' 				=> $this->conf['redirectPageLogin'],
@@ -597,7 +597,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					));
 					$redirect_url = $this->cObj->lastTypoLinkUrl;
 
-				} elseif (($this->logintype == '') && ($redirMethod == 'logout') && $this->conf['redirectPageLogout'] && $GLOBALS['TSFE']->loginUser) { 
+				} elseif (($this->logintype == '') && ($redirMethod == 'logout') && $this->conf['redirectPageLogout'] && $GLOBALS['TSFE']->loginUser) {
 						// if logout and page not accessible
 					$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), TRUE);
 

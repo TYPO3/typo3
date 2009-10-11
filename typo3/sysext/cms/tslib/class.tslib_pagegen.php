@@ -341,9 +341,9 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			// get instance of t3lib_PageRenderer
 		/** @var $pageRenderer t3lib_PageRenderer */
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		
+
 		$pageRenderer->backPath = 'typo3/';
-		
+
 		if ($GLOBALS['TSFE']->config['config']['moveJsFromHeaderToFooter']) {
 			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
@@ -436,7 +436,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 		if ($GLOBALS['TSFE']->xhtmlVersion) {
-			
+
 			// Setting <html> tag attributes:
 			$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
 			$htmlTagAttributes['xml:lang'] = $htmlLang;
@@ -492,7 +492,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 				}
 			}
 			$pageRenderer->setFavIcon($favIcon);
-		
+
 		}
 
 			// Including CSS files
@@ -520,9 +520,9 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 		/**********************************************************************/
-		/* includeCSS 
+		/* includeCSS
 		/* config.includeCSS {
-		/* 		
+		/*
 		/* }
 		/**********************************************************************/
 
@@ -536,22 +536,22 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 								$ss = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}
 							$pageRenderer->addCssInlineBlock(
-								'import_' . $key, 
-								'@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media']) . ';', 
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE, 
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
+								'import_' . $key,
+								'@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media']) . ';',
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE,
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 								''
 							);
 						} else {
 							$pageRenderer->addCssFile(
-								htmlspecialchars($ss), 
+								htmlspecialchars($ss),
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet',
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'screen', 
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '', 
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE, 
-								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'screen',
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '',
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['compress'] ? TRUE : FALSE,
+								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 								$GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap']);
-						
+
 						}
 					}
 				}
@@ -679,15 +679,15 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						$type = 'text/javascript';
 					}
 					$pageRenderer->addJsLibrary(
-						htmlspecialchars($key), 
-						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
-						htmlspecialchars($type), 
-						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['compress'] ? TRUE : FALSE, 
+						htmlspecialchars($key),
+						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
+						htmlspecialchars($type),
+						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
 						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap']
 					);
 				}
-			
+
 			}
 		}
 
@@ -700,22 +700,22 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						$type = 'text/javascript';
 					}
 					$pageRenderer->addJsFooterLibrary(
-						htmlspecialchars($key), 
-						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
-						htmlspecialchars($type), 
-						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['compress'] ? TRUE : FALSE, 
+						htmlspecialchars($key),
+						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
+						htmlspecialchars($type),
+						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
 						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap']
 					);
 				}
-			
+
 			}
 		}
 
 			// JavaScript files
 		if (is_array($GLOBALS['TSFE']->pSetup['includeJS.'])) {
 			foreach ($GLOBALS['TSFE']->pSetup['includeJS.'] as $key => $JSfile) {
-				if (!is_array($JSfile)) { 
+				if (!is_array($JSfile)) {
 					$ss = $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
 					if ($ss) {
 						$type = $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['type'];
@@ -723,10 +723,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFile(
-							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
-							htmlspecialchars($type), 
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['compress'] ? TRUE : FALSE, 
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
+							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
+							htmlspecialchars($type),
+							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['compress'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap']
 						);
 					}
@@ -736,7 +736,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		if (is_array($GLOBALS['TSFE']->pSetup['includeFooterJS.'])) {
 			foreach ($GLOBALS['TSFE']->pSetup['includeFooterJS.'] as $key => $JSfile) {
-				if (!is_array($JSfile)) { 
+				if (!is_array($JSfile)) {
 					$ss = $GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
 					if ($ss) {
 						$type = $GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['type'];
@@ -744,10 +744,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFooterFile(
-							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss), 
-							htmlspecialchars($type), 
-							$GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['compress'] ? TRUE : FALSE, 
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, 
+							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
+							htmlspecialchars($type),
+							$GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['compress'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap']
 						);
 					}
@@ -942,16 +942,16 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			// ExtJS specific code
 		if (is_array($GLOBALS['TSFE']->pSetup['inlineLanguageLabel.'])) {
 			$pageRenderer->addInlineLanguageLabelArray($GLOBALS['TSFE']->pSetup['inlineLanguageLabel.']);
-		} 
+		}
 
 		if (is_array($GLOBALS['TSFE']->pSetup['inlineSettings.'])) {
 			$pageRenderer->addInlineSettingArray('TS', $GLOBALS['TSFE']->pSetup['inlineSettings.']);
 		}
- 
+
 		if (is_array($GLOBALS['TSFE']->pSetup['extOnReady.'])) {
 			$pageRenderer->addExtOnReadyCode($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['extOnReady.'], 'extOnReady.'));
 		}
- 
+
 			// compression and concatenate settings
 		if ($GLOBALS['TSFE']->config['config']['minifyCSS']) {
 			$pageRenderer->enableCompressCss();

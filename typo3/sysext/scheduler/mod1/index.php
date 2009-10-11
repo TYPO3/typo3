@@ -295,7 +295,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 	/**
 	 * This method creates the "cli_scheduler" BE user if it doesn't exist
-	 * 
+	 *
 	 * @return	void
 	 */
 	protected function createSchedulerUser() {
@@ -311,7 +311,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
 				/**
 				 * Create an instance of TCEmain and execute user creation
-				 * 
+				 *
 				 * @var	t3lib_TCEmain
 				 */
 			$tcemain = t3lib_div::makeInstance('t3lib_TCEmain');

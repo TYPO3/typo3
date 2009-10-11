@@ -340,7 +340,7 @@ class tslib_menu {
 						$nextMParray[] = $parentRecord['_MP_PARAM'];
 					}
 				}
-				
+
 				if ($this->tmpl->rootLine[$currentLevel]['_MOUNT_OL']) {	// In overlay mode, add next level MPvars as well:
 					$nextMParray[] = $this->tmpl->rootLine[$currentLevel]['_MP_PARAM'];
 				}
