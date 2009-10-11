@@ -1,5 +1,6 @@
 2009-10-10  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added ext_icon for sysext version (thanks to Steffen Gebert)
 	* Whitespace cleaning of typo3 sysext files
 	* Whitespace cleaning of typo3 files
 	* Whitespace cleaning of t3lib files
