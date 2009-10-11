@@ -1893,7 +1893,7 @@ $str.=$this->docBodyTagBegin().
 		}
 
 			// adding flash messages
-		$flashMessages = t3lib_messageQueue::renderFlashMessages();
+		$flashMessages = t3lib_FlashMessageQueue::renderFlashMessages();
 		if (!empty($flashMessages)) {
 			$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
 		}

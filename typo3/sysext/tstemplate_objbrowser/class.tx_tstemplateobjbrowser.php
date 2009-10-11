@@ -249,7 +249,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 								$GLOBALS['LANG']->getLL('badProperty'),
 								t3lib_FlashMessage::ERROR
 							);
-							t3lib_messageQueue::addMessage($badPropertyMessage);
+							t3lib_FlashMessageQueue::addMessage($badPropertyMessage);
 						} else {
 							$pline = $name . '.' . $property . ' = '
 								. trim($POST['data'][$name]['propertyValue']);
@@ -259,7 +259,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 								htmlspecialchars($pline),
 								$GLOBALS['LANG']->getLL('propertyAdded')
 							);
-							t3lib_messageQueue::addMessage($propertyAddedMessage);
+							t3lib_FlashMessageQueue::addMessage($propertyAddedMessage);
 
 							$line.=chr(10).$pline;
 						}
@@ -271,7 +271,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 							htmlspecialchars($pline),
 							$GLOBALS['LANG']->getLL('valueUpdated')
 						);
-						t3lib_messageQueue::addMessage($updatedMessage);
+						t3lib_FlashMessageQueue::addMessage($updatedMessage);
 
 						$line .= chr(10) . $pline;
 					} elseif ($POST['clear_object']) {
@@ -283,7 +283,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 								htmlspecialchars($pline),
 								$GLOBALS['LANG']->getLL('objectCleared')
 							);
-							t3lib_messageQueue::addMessage($objectClearedMessage);
+							t3lib_FlashMessageQueue::addMessage($objectClearedMessage);
 
 							$line .= chr(10) . $pline;
 						}
@@ -405,7 +405,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					t3lib_FlashMessage::ERROR
 				);
 
-				t3lib_messageQueue::addMessage($noTemplateMessage);
+				t3lib_FlashMessageQueue::addMessage($noTemplateMessage);
 			}
 				// Links:
 			$out = '';

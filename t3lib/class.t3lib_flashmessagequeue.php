@@ -33,7 +33,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_MessageQueue {
+class t3lib_FlashMessageQueue {
 
 	static $messages = array();
 
@@ -51,7 +51,7 @@ class t3lib_MessageQueue {
 	 * @return 	void
 	 */
 	public static function addMessage(t3lib_FlashMessage $message) {
-		if ($message->getStoreInSession() === TRUE) {
+		if ($message->isSessionMessage() === TRUE) {
 			$queuedFlashMessages = self::getFlashMessagesFromSession();
 			$queuedFlashMessages[] = $message;
 
@@ -71,7 +71,7 @@ class t3lib_MessageQueue {
 	 *
 	 * @return 	array 	array of t3lib_FlashMessage objects
 	 */
-	public static function getMessages() {
+	public static function getAllMessagesAndFlush() {
 			// get messages from user session
 		$queuedFlashMessagesFromSession = self::getFlashMessagesFromSession();
 		if (!empty($queuedFlashMessagesFromSession)) {
@@ -108,7 +108,7 @@ class t3lib_MessageQueue {
 	 */
 	public static function renderFlashMessages() {
 		$content = '';
-		$flashMessages = self::getMessages();
+		$flashMessages = self::getAllMessagesAndFlush();
 
 		if (count($flashMessages)) {
 			foreach ($flashMessages as $flashMessage) {
@@ -122,7 +122,7 @@ class t3lib_MessageQueue {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_messagequeue.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_messagequeue.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_flashmessagequeue.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_flashmessagequeue.php']);
 }
 ?>

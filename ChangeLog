@@ -1,3 +1,8 @@
+2009-10-11  Rupert Germann  <rupi@gmx.li>
+
+	* Follow-up to bug #12154: renamed t3lib_MessageQueue to t3lib_FlashMessageQueue, changed some some function names
+	  in t3lib_flashmessages and t3lib_FlashMessageQueue.
+
 2009-10-10  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12129 (follow-up to bug #11986): Translation update broken with activated output compression (thanks to Steffen Gebert)

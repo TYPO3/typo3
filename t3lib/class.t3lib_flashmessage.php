@@ -109,9 +109,9 @@ class t3lib_FlashMessage {
 	/**
 	 * Gets the message's storeInSession flag.
 	 *
-	 * @return	bool	The persistence flag.
+	 * @return	bool	true if message should be stored in the session, otherwise false.
 	 */
-	public function getStoreInSession() {
+	public function isSessionMessage() {
 		return $this->storeInSession;
 	}
 

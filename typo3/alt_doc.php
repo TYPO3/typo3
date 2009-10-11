@@ -777,7 +777,7 @@ class SC_alt_doc {
 											'',
 											t3lib_FlashMessage::WARNING
 										);
-										t3lib_messageQueue::addMessage($lockedMessage);
+										t3lib_FlashMessageQueue::addMessage($lockedMessage);
 									}
 
 										// Combine it all:
