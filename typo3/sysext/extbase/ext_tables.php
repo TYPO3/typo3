@@ -4,10 +4,6 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 if (TYPO3_MODE == 'BE') {
 	
-	if (t3lib_extMgm::isLoaded('phpunit')) {
-		require_once(t3lib_extMgm::extPath('extbase') . 'Tests/BaseTestCase.php');
-	}
-			
 	// register the cache in BE so it will be cleared with "clear all caches"
 	try {
 		t3lib_cache::initializeCachingFramework();
