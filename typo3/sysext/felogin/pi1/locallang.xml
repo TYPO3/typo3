@@ -58,7 +58,7 @@ Dear %s,
 This email was sent in response to your request to reset your password. Please click on the link below. 
 %s
 
-For security reasons, this link is only active until 2009-09-01 02:55. If you do not visit the link before then, you will need to repeat the password reset steps.
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.
 			</label>
 			<label index="ll_forgot_message">Please enter the email address by which you registered your user account. Then press &quot;Send password&quot; and your password will immediately be emailed to you. Make sure to spell your email address correctly.</label>
 			<label index="ll_forgot_message_emailSent">Your password has now been sent to the email address %s</label>
