@@ -31,7 +31,7 @@ class Tx_Extbase_Configuration_Source_FlexFormSource_testcase extends Tx_Extbase
 	 * @test
 	 */
 	public function xy() {
-		$this->markTestSkipped('No test has been written for class Tx_Extbase_Configuration_Source_FlexFormSource');
+		$this->markTestIncomplete('No test has been written for class Tx_Extbase_Configuration_Source_FlexFormSource');
 	}
 }
 ?>

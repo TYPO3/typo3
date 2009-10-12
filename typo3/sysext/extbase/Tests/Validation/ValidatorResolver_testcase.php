@@ -48,11 +48,9 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 	 * @test
 	 */
 	public function resolveValidatorObjectNameReturnsTheGivenArgumentIfAnObjectOfThatNameIsRegistered() {
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
 		$validatorName = uniqid('FooValidator_') . 'Validator';
 		eval('class ' . $validatorName . ' {}');
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
-		$validatorResolver->_set('objectManager', $mockObjectManager);
 		$this->assertSame($validatorName, $validatorResolver->_call('resolveValidatorObjectName', $validatorName));
 	}
 
@@ -125,7 +123,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$mockReflectionService->expects($this->once())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
 		$mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodParameters));
 
-		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'), array(), '', FALSE);
+		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'));
 		$validatorResolver->injectReflectionService($mockReflectionService);
 
 		$result = $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockController), 'fooAction');
@@ -187,7 +185,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 
 		$mockArguments['arg2'] = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array(), '', FALSE);
 
-		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'), array(), '', FALSE);
+		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'));
 		$validatorResolver->expects($this->at(0))->method('createValidator')->with('Conjunction')->will($this->returnValue($conjunction1));
 		$validatorResolver->expects($this->at(1))->method('createValidator')->with('string')->will($this->returnValue($mockStringValidator));
 		$validatorResolver->expects($this->at(2))->method('createValidator')->with('Conjunction')->will($this->returnValue($conjunction2));
@@ -233,7 +231,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$conjunction1 = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator', array(), array(), '', FALSE);
 		$conjunction1->expects($this->at(0))->method('addValidator')->with($mockStringValidator);
 
-		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'), array(), '', FALSE);
+		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'));
 		$validatorResolver->expects($this->at(0))->method('createValidator')->with('Conjunction')->will($this->returnValue($conjunction1));
 		$validatorResolver->expects($this->at(1))->method('createValidator')->with('string')->will($this->returnValue($mockStringValidator));
 		$validatorResolver->expects($this->at(2))->method('createValidator')->with('F3_TestPackage_Quux')->will($this->returnValue($mockQuuxValidator));
@@ -281,7 +279,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
 		$mockObjectManager->expects($this->at(0))->method('getObject')->with('Tx_Extbase_Validation_Validator_ConjunctionValidator')->will($this->returnValue($mockConjunctionValidator));
 
-		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('resolveValidatorObjectName', 'createValidator'), array($mockObjectManager));
+		$validatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('resolveValidatorObjectName', 'createValidator'));
 		$validatorResolver->injectReflectionService($mockReflectionService);
 		$validatorResolver->injectObjectManager($mockObjectManager);
 
@@ -301,10 +299,9 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function resolveValidatorObjectNameCallsUnifyDataType() {
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
-		$mockValidator = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('unifyDataType'), array($mockObjectManager));
-		$mockValidator->expects($this->once())->method('unifyDataType')->with('someDataType');
-		$mockValidator->_call('resolveValidatorObjectName', 'someDataType');
+		$mockValidatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('unifyDataType'));
+		$mockValidatorResolver->expects($this->once())->method('unifyDataType')->with('someDataType');
+		$mockValidatorResolver->_call('resolveValidatorObjectName', 'someDataType');
 	}
 
 	/**
@@ -312,19 +309,18 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function unifyDataTypeCorrectlyRenamesPHPDataTypes() {
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
-		$mockValidator = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'), array($mockObjectManager), '', FALSE);
-		$this->assertEquals('Integer', $mockValidator->_call('unifyDataType', 'integer'));
-		$this->assertEquals('Integer', $mockValidator->_call('unifyDataType', 'int'));
-		$this->assertEquals('String', $mockValidator->_call('unifyDataType', 'string'));
-		$this->assertEquals('Array', $mockValidator->_call('unifyDataType', 'array'));
-		$this->assertEquals('Float', $mockValidator->_call('unifyDataType', 'float'));
-		$this->assertEquals('Float', $mockValidator->_call('unifyDataType', 'double'));
-		$this->assertEquals('Boolean', $mockValidator->_call('unifyDataType', 'boolean'));
-		$this->assertEquals('Boolean', $mockValidator->_call('unifyDataType', 'bool'));
-		$this->assertEquals('Boolean', $mockValidator->_call('unifyDataType', 'bool'));
-		$this->assertEquals('Number', $mockValidator->_call('unifyDataType', 'number'));
-		$this->assertEquals('Number', $mockValidator->_call('unifyDataType', 'numeric'));
+		$mockValidatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
+		$this->assertEquals('Integer', $mockValidatorResolver->_call('unifyDataType', 'integer'));
+		$this->assertEquals('Integer', $mockValidatorResolver->_call('unifyDataType', 'int'));
+		$this->assertEquals('String', $mockValidatorResolver->_call('unifyDataType', 'string'));
+		$this->assertEquals('Array', $mockValidatorResolver->_call('unifyDataType', 'array'));
+		$this->assertEquals('Float', $mockValidatorResolver->_call('unifyDataType', 'float'));
+		$this->assertEquals('Float', $mockValidatorResolver->_call('unifyDataType', 'double'));
+		$this->assertEquals('Boolean', $mockValidatorResolver->_call('unifyDataType', 'boolean'));
+		$this->assertEquals('Boolean', $mockValidatorResolver->_call('unifyDataType', 'bool'));
+		$this->assertEquals('Boolean', $mockValidatorResolver->_call('unifyDataType', 'bool'));
+		$this->assertEquals('Number', $mockValidatorResolver->_call('unifyDataType', 'number'));
+		$this->assertEquals('Number', $mockValidatorResolver->_call('unifyDataType', 'numeric'));
 	}
 
 	/**
@@ -332,8 +328,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function unifyDataTypeRenamesMixedToRaw() {
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface');
-		$mockValidator = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'), array($mockObjectManager), '', FALSE);
+		$mockValidator = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
 		$this->assertEquals('Raw', $mockValidator->_call('unifyDataType', 'mixed'));
 	}
 }

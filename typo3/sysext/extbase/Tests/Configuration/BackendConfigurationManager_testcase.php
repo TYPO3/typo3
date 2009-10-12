@@ -72,7 +72,7 @@ class Tx_Extbase_Configuration_BackendConfigurationManager_testcase extends Tx_E
 	 * @test
 	 */
 	public function loadTypoScriptSetupCantBeTested() {
-		$this->markTestSkipped('This method can\'t be tested with the current TYPO3 version, because we can\'t mock objects returned from t3lib_div::makeInstance().');
+		$this->markTestIncomplete('This method can\'t be tested with the current TYPO3 version, because we can\'t mock objects returned from t3lib_div::makeInstance().');
 	}
 
 	/**
