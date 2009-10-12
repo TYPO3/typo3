@@ -69,8 +69,11 @@ class Tx_Fluid_ViewHelpers_Form_PasswordViewHelper extends Tx_Fluid_ViewHelpers_
 	 * @api
 	 */
 	public function render() {
+		$name = $this->getName();
+		$this->registerFieldNameForFormTokenGeneration($name);
+
 		$this->tag->addAttribute('type', 'password');
-		$this->tag->addAttribute('name', $this->getName());
+		$this->tag->addAttribute('name', $name);
 		$this->tag->addAttribute('value', $this->getValue());
 
 		$this->setErrorClassAttribute();

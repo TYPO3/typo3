@@ -96,6 +96,7 @@ class Tx_Fluid_ViewHelpers_Form_RadioViewHelper extends Tx_Fluid_ViewHelpers_For
 			$checked = $propertyValue == $valueAttribute;
 		}
 
+		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
 		$this->tag->addAttribute('name', $nameAttribute);
 		$this->tag->addAttribute('value', $valueAttribute);
 		if ($checked) {

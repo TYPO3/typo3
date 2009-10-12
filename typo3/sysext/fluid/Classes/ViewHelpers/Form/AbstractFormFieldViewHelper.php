@@ -26,7 +26,7 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id: AbstractFormFieldViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
+ * @version $Id: AbstractFormFieldViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -50,6 +50,8 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 * Get the name of this form element.
 	 * Either returns arguments['name'], or the correct name for Object Access.
 	 *
+	 * In case property is something like bla.blubb (hierarchical), then [bla][blubb] is generated.
+	 *
 	 * @return string Name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
@@ -60,7 +62,12 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		if ($this->isObjectAccessorMode()) {
 			$formName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
 			if (!empty($formName)) {
-				$name = $formName . '[' . $this->arguments['property'] . ']';
+				$propertySegments = explode('.', $this->arguments['property']);
+				$properties = '';
+				foreach ($propertySegments as $segment) {
+					$properties .= '[' . $segment . ']';
+				}
+				$name = $formName . $properties;
 			} else {
 				$name = $this->arguments['property'];
 			}
@@ -90,6 +97,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 		if ($this->arguments->hasArgument('value')) {
 			$value = $this->arguments['value'];
 		} elseif ($this->isObjectAccessorMode() && $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject')) {
+			$this->addAdditionalIdentityPropertiesIfNeeded();
 			$value = $this->getPropertyValue();
 		}
 		if (is_object($value)) {
@@ -102,6 +110,34 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	}
 
 	/**
+	 * Add additional identity properties in case the current property is hierarchical (of the form "bla.blubb").
+	 * Then, [bla][__identity] has to be generated as well.
+	 *
+	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
+	 * @return void
+	 */
+	protected function addAdditionalIdentityPropertiesIfNeeded() {
+		$propertySegments = explode('.', $this->arguments['property']);
+		if (count($propertySegments) >= 2) {
+			// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
+			$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
+
+			$objectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+			// If Count == 2 -> we need to go through the for-loop exactly once
+			for ($i=1; $i < count($propertySegments); $i++) {
+				$object = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
+				$objectName .= '[' . $propertySegments[$i-1] . ']';
+				$hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
+
+				// Add the hidden identity field to the ViewHelperVariableContainer
+				$additionalIdentityProperties = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
+				$additionalIdentityProperties[$objectName] = $hiddenIdentityField;
+				$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties', $additionalIdentityProperties);
+			}
+		}
+	}
+
+	/**
 	 * Get the current property of the object bound to this form.
 	 *
 	 * @return mixed Value
@@ -110,10 +146,11 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	protected function getPropertyValue() {
 		$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 		$propertyName = $this->arguments['property'];
+
 		if (is_array($formObject)) {
 			return isset($formObject[$propertyName]) ? $formObject[$propertyName] : NULL;
 		}
-		return Tx_Extbase_Reflection_ObjectAccess::getProperty($formObject, $propertyName);
+		return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($formObject, $propertyName);
 	}
 
 	/**

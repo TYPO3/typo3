@@ -35,7 +35,7 @@
  * You can also use the "property" attribute if you have bound an object to the form.
  * See <f:form> for more documentation.
  *
- * @version $Id: HiddenViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
+ * @version $Id: HiddenViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -66,8 +66,11 @@ class Tx_Fluid_ViewHelpers_Form_HiddenViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @api
 	 */
 	public function render() {
+		$name = $this->getName();
+		$this->registerFieldNameForFormTokenGeneration($name);
+
 		$this->tag->addAttribute('type', 'hidden');
-		$this->tag->addAttribute('name', $this->getName());
+		$this->tag->addAttribute('name', $name);
 		$this->tag->addAttribute('value', $this->getValue());
 
 		return $this->tag->render();

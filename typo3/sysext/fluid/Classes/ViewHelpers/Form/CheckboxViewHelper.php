@@ -100,6 +100,7 @@ class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends Tx_Fluid_ViewHelpers_
 			}
 		}
 
+		$this->registerFieldNameForFormTokenGeneration($nameAttribute);
 		$this->tag->addAttribute('name', $nameAttribute);
 		$this->tag->addAttribute('value', $valueAttribute);
 		if ($checked) {

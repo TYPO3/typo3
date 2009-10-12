@@ -48,6 +48,9 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 		),
 		'Tx_Extbase_Validation_ValidatorResolver' => array(
 			'injectObjectManager' => 'Tx_Extbase_Object_Manager'
+		),
+		'Tx_Fluid_ViewHelpers_FormViewHelper' => array(
+			'injectRequestHashService' => 'Tx_Extbase_Security_Channel_RequestHashService'
 		)
 	);
 

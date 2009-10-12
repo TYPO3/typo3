@@ -21,7 +21,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_Form_RadioViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
@@ -31,7 +30,7 @@ class Tx_Fluid_ViewHelpers_Form_RadioViewHelperTest_testcase extends Tx_Fluid_Vi
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_RadioViewHelper'), array('setErrorClassAttribute', 'getName', 'getValue', 'isObjectAccessorMode', 'getPropertyValue'));
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_RadioViewHelper'), array('setErrorClassAttribute', 'getName', 'getValue', 'isObjectAccessorMode', 'getPropertyValue', 'registerFieldNameForFormTokenGeneration'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -45,6 +44,7 @@ class Tx_Fluid_ViewHelpers_Form_RadioViewHelperTest_testcase extends Tx_Fluid_Vi
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
@@ -63,6 +63,7 @@ class Tx_Fluid_ViewHelpers_Form_RadioViewHelperTest_testcase extends Tx_Fluid_Vi
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
 
@@ -103,6 +104,7 @@ class Tx_Fluid_ViewHelpers_Form_RadioViewHelperTest_testcase extends Tx_Fluid_Vi
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
 
@@ -124,6 +126,7 @@ class Tx_Fluid_ViewHelpers_Form_RadioViewHelperTest_testcase extends Tx_Fluid_Vi
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 
 		$this->viewHelper->expects($this->any())->method('getName')->will($this->returnValue('foo'));
@@ -144,6 +147,7 @@ class Tx_Fluid_ViewHelpers_Form_RadioViewHelperTest_testcase extends Tx_Fluid_Vi
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('setTagName', 'addAttribute'));
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'radio');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 		$mockTagBuilder->expects($this->at(4))->method('addAttribute')->with('checked', 'checked');
 

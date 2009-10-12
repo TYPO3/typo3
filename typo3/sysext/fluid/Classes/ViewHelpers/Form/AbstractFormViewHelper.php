@@ -26,7 +26,7 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id: AbstractFormViewHelper.php 3188 2009-09-16 13:03:59Z k-fish $
+ * @version $Id: AbstractFormViewHelper.php 3313 2009-10-12 05:57:02Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -68,6 +68,47 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 			$fieldName .= '[' . $fieldNameSegments[1];
 		}
 		return $fieldName;
+	}
+
+	/**
+	 * Renders a hidden form field containing the technical identity of the given object.
+	 *
+	 * @return string A hidden field containing the Identity (UID in FLOW3, uid in Extbase) of the given object or NULL if the object is unknown to the persistence framework
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
+	 */
+	protected function renderHiddenIdentityField($object, $name) {
+		if (!is_object($object)
+			|| !($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject)
+			|| ($object->_isNew() && !$object->_isClone())
+			){
+			return '';
+		}
+		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
+		// Using that one breaks re-submission of data in forms in case of an error.
+		$identifier = $object->getUid();
+		if ($identifier === NULL) {
+			return chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
+		}
+		$name = $this->prefixFieldName($name) . '[__identity]';
+		$this->registerFieldNameForFormTokenGeneration($name);
+
+		return chr(10) . '<input type="hidden" name="'. $name . '" value="' . $identifier .'" />' . chr(10);
+	}
+
+	/**
+	 * Register a field name for inclusion in the HMAC / Form Token generation
+	 *
+	 * @param string $fieldName name of the field to register
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function registerFieldNameForFormTokenGeneration($fieldName) {
+		$formFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
+		$formFieldNames[] = $fieldName;
+		$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames', $formFieldNames);
 	}
 }
 

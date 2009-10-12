@@ -39,7 +39,7 @@
   * Output:
  * <input type="submit" name="mySubmit" value="Send Mail" />
  *
- * @version $Id: SubmitViewHelper.php 3178 2009-09-16 08:13:30Z sebastian $
+ * @version $Id: SubmitViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -72,8 +72,11 @@ class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @api
 	 */
 	public function render() {
+		$name = $this->getName();
+		$this->registerFieldNameForFormTokenGeneration($name);
+
 		$this->tag->addAttribute('type', 'submit');
-		$this->tag->addAttribute('name', $this->getName());
+		$this->tag->addAttribute('name', $name);
 		$this->tag->addAttribute('value', $this->getValue());
 
 		return $this->tag->render();

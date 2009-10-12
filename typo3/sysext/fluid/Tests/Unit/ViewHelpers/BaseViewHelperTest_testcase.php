@@ -24,7 +24,6 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * @version $Id: BaseViewHelperTest.php 3109 2009-08-31 17:22:46Z bwaidelich $
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 	/**
 	 * @test
@@ -38,7 +37,7 @@ class Tx_Fluid_ViewHelpers_BaseViewHelperTest_testcase extends Tx_Fluid_ViewHelp
 		$viewHelper = new Tx_Fluid_ViewHelpers_BaseViewHelper();
 		$this->injectDependenciesIntoViewHelper($viewHelper);
 
-		$expectedResult = '<base href="' . $baseURI . TYPO3_mainDir . '"></base>';
+		$expectedResult = '<base href="' . $baseURI . '"></base>';
 		$actualResult = $viewHelper->render();
 		$this->assertSame($expectedResult, $actualResult);
 	}

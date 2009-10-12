@@ -20,10 +20,9 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the "Upload" Form view helper
  *
- * @version $Id: UploadViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: UploadViewHelperTest.php 3308 2009-10-09 12:59:02Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_Form_UploadViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
@@ -33,7 +32,7 @@ class Tx_Fluid_ViewHelpers_Form_UploadViewHelperTest_testcase extends Tx_Fluid_V
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_UploadViewHelper'), array('setErrorClassAttribute'));
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_UploadViewHelper'), array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -61,6 +60,7 @@ class Tx_Fluid_ViewHelpers_Form_UploadViewHelperTest_testcase extends Tx_Fluid_V
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'file');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'someName');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('someName');
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 

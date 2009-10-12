@@ -18,10 +18,9 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the "Hidden" Form view helper
  *
- * @version $Id: HiddenViewHelperTest.php 3109 2009-08-31 17:22:46Z bwaidelich $
+ * @version $Id: HiddenViewHelperTest.php 3308 2009-10-09 12:59:02Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_Form_HiddenViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
@@ -31,7 +30,7 @@ class Tx_Fluid_ViewHelpers_Form_HiddenViewHelperTest_testcase extends Tx_Fluid_V
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_HiddenViewHelper'), array('setErrorClassAttribute', 'getName', 'getValue'));
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_HiddenViewHelper'), array('setErrorClassAttribute', 'getName', 'getValue', 'registerFieldNameForFormTokenGeneration'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -45,6 +44,7 @@ class Tx_Fluid_ViewHelpers_Form_HiddenViewHelperTest_testcase extends Tx_Fluid_V
 		$mockTagBuilder->expects($this->once())->method('setTagName')->with('input');
 		$mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('type', 'hidden');
 		$mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('name', 'foo');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 		$mockTagBuilder->expects($this->at(3))->method('addAttribute')->with('value', 'bar');
 
 		$this->viewHelper->expects($this->once())->method('getName')->will($this->returnValue('foo'));

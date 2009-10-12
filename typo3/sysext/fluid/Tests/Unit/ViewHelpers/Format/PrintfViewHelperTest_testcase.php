@@ -23,8 +23,7 @@
 /**
  * @version $Id$
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Format_PrintfViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Format_PrintfViewHelperTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test

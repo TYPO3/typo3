@@ -21,7 +21,6 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_AliasViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**

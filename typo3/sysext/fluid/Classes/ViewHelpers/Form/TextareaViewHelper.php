@@ -33,7 +33,7 @@
  * Output:
  * <textarea name="myTextArea">This is shown inside the textarea</textarea>
  *
- * @version $Id: TextareaViewHelper.php 3109 2009-08-31 17:22:46Z bwaidelich $
+ * @version $Id: TextareaViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -69,8 +69,11 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelper extends Tx_Fluid_ViewHelpers_
 	 * @api
 	 */
 	public function render() {
+		$name = $this->getName();
+		$this->registerFieldNameForFormTokenGeneration($name);
+
 		$this->tag->forceClosingTag(TRUE);
-		$this->tag->addAttribute('name', $this->getName());
+		$this->tag->addAttribute('name', $name);
 		$this->tag->setContent($this->getValue());
 
 		$this->setErrorClassAttribute();

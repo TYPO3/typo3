@@ -67,6 +67,22 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected $tagName = 'form';
 
 	/**
+	 * @var Tx_Extbase_Security_Channel_RequestHashService
+	 */
+	protected $requestHashService;
+
+	/**
+	 * Inject a request hash service
+	 *
+	 * @param Tx_Extbase_Security_Channel_RequestHashService $requestHashService The request hash service
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function injectRequestHashService(Tx_Extbase_Security_Channel_RequestHashService $requestHashService) {
+		$this->requestHashService = $requestHashService;
+	}
+
+	/**
 	 * Initialize arguments.
 	 *
 	 * @return void
@@ -97,10 +113,6 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return string rendered form
 	 */
 	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $object = NULL, $pageType = 0, $fieldNamePrefix = NULL, $actionUri = NULL) {
-		if ($pageUid === NULL) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
-
 		$this->setFormActionUri();
 
 		if (strtolower($this->arguments['method']) === 'get') {
@@ -112,15 +124,22 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		$this->addFormNameToViewHelperVariableContainer();
 		$this->addFormObjectToViewHelperVariableContainer();
 		$this->addFieldNamePrefixToViewHelperVariableContainer();
+		$this->addFormFieldNamesToViewHelperVariableContainer();
 
-		$content = $this->renderHiddenIdentityField();
+		$formContent = $this->renderChildren();
+
+		$content = $this->renderHiddenIdentityField($this->arguments['object'], $this->arguments['name']);
+		$content .= $this->renderAdditionalIdentityFields();
 		$content .= $this->renderHiddenReferrerFields();
-		$content .= $this->renderChildren();
+		$content .= $this->renderRequestHashField(); // Render hmac after everything else has been rendered
+		$content .= $formContent;
+
 		$this->tag->setContent($content);
 
 		$this->removeFieldNamePrefixFromViewHelperVariableContainer();
 		$this->removeFormObjectFromViewHelperVariableContainer();
 		$this->removeFormNameFromViewHelperVariableContainer();
+		$this->removeFormFieldNamesFromViewHelperVariableContainer();
 
 		return $this->tag->render();
 	}
@@ -145,24 +164,22 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	}
 
 	/**
-	 * Renders a hidden form field containing the technical identity of the given object.
+	 * Render additional identity fields which were registered by form elements.
+	 * This happens if a form field is defined like property="bla.blubb" - then we might need an identity property for the sub-object "bla".
 	 *
-	 * @return string A hidden field containing the Identity (UUID in FLOW3, uid in Extbase) of the given object or NULL if the object is unknown to the persistence framework
+	 * @return string HTML-string for the additional identity properties
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function renderHiddenIdentityField() {
-		$object = $this->arguments['object'];
-		if (!is_object($object)
-			|| !($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject)
-			|| ($object->_isNew() && !$object->_isClone())) {
-			return '';
+	protected function renderAdditionalIdentityFields() {
+		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties')) {
+			$additionalIdentityProperties = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
+			$output = '';
+			foreach ($additionalIdentityProperties as $identity) {
+				$output .= chr(10) . $identity;
+			}
+			return $output;
 		}
-		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
-		// Using that one breaks re-submission of data in forms in case of an error.
-		$identifier = $object->getUid();
-		if ($identifier === NULL) {
-			return chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
-		}
-		return chr(10) . '<input type="hidden" name="'. $this->prefixFieldName($this->arguments['name']) . '[__identity]" value="' . $identifier .'" />' . chr(10);
+		return '';
 	}
 
 	/**
@@ -215,6 +232,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected function addFormObjectToViewHelperVariableContainer() {
 		if ($this->arguments->hasArgument('object')) {
 			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject', $this->arguments['object']);
+			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties', array());
 		}
 	}
 
@@ -226,6 +244,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected function removeFormObjectFromViewHelperVariableContainer() {
 		if ($this->arguments->hasArgument('object')) {
 			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
 		}
 	}
 
@@ -235,12 +254,21 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @return void
 	 */
 	protected function addFieldNamePrefixToViewHelperVariableContainer() {
-		if ($this->arguments->hasArgument('fieldNamePrefix')) {
-			$fieldNamePrefix = $this->arguments['fieldNamePrefix'];
-		} else {
-			$fieldNamePrefix = $this->getDefaultFieldNamePrefix();
-		}
+		$fieldNamePrefix = $this->getFieldNamePrefix();
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix', $fieldNamePrefix);
+	}
+
+	/**
+	 * Get the field name prefix
+	 *
+	 * @return string
+	 */
+	protected function getFieldNamePrefix() {
+		if ($this->arguments->hasArgument('fieldNamePrefix')) {
+			return $this->arguments['fieldNamePrefix'];
+		} else {
+			return $this->getDefaultFieldNamePrefix();
+		}
 	}
 
 	/**
@@ -250,6 +278,55 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	protected function removeFieldNamePrefixFromViewHelperVariableContainer() {
 		$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix');
+	}
+
+	/**
+	 * Adds a container for form field names to the ViewHelperVariableContainer
+	 *
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function addFormFieldNamesToViewHelperVariableContainer() {
+		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames', array());
+	}
+
+	/**
+	 * Removes the container for form field names from the ViewHelperVariableContainer
+	 *
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function removeFormFieldNamesFromViewHelperVariableContainer() {
+		$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
+	}
+
+	/**
+	 * Render the request hash field
+	 *
+	 * @return string the hmac field
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function renderRequestHashField() {
+		$formFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
+		$this->postProcessUriArgumentsForRequesthash($this->controllerContext->getUriBuilder()->getLastArguments(), $formFieldNames);
+		$requestHash = $this->requestHashService->generateRequestHash($formFieldNames, $this->getFieldNamePrefix());
+		// in v4, we need to prefix __hmac as well to make it show up in the request object.
+		return '<input type="hidden" name="' . $this->prefixFieldName('__hmac') . '" value="' . htmlspecialchars($requestHash) . '" />';
+	}
+
+	/**
+	 * Add the URI arguments after postprocessing to the request hash as well.
+	 */
+	protected function postProcessUriArgumentsForRequestHash($arguments, &$results, $currentPrefix = '', $level = 0) {
+		if (!count($arguments)) return;
+		foreach ($arguments as $argumentName => $argumentValue) {
+			if (is_array($argumentValue)) {
+				$prefix = ($level==0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']');
+				$this->postProcessUriArgumentsForRequestHash($argumentValue, $results, $prefix, $level+1);
+			} else {
+				$results[] = ($level==0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']');
+			}
+		}
 	}
 
 	/**

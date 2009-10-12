@@ -28,8 +28,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
-class Tx_Fluid_ViewHelpers_Link_ActionViewHelperTest_testcase extends Tx_Extbase_Base_testcase {
+class Tx_Fluid_ViewHelpers_Link_ActionViewHelperTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test

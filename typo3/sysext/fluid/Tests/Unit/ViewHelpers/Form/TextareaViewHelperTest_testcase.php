@@ -22,7 +22,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extMgm::extPath('extbase', 'Tests/Base_testcase.php'));
 class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
@@ -32,7 +31,7 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Fluid
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_TextareaViewHelper'), array('setErrorClassAttribute'));
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_ViewHelpers_Form_TextareaViewHelper'), array('setErrorClassAttribute', 'registerFieldNameForFormTokenGeneration'));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}
@@ -58,6 +57,7 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest_testcase extends Tx_Fluid
 	public function renderCorrectlySetsNameAttributeAndContent() {
 		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('name', 'NameOfTextarea');
+		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextarea');
 		$mockTagBuilder->expects($this->once())->method('setContent')->with('Current value');
 		$mockTagBuilder->expects($this->once())->method('render');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
