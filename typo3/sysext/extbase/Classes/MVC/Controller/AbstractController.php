@@ -305,9 +305,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
 		$baseUri = $this->request->getBaseURI();
-		if (TYPO3_MODE === 'BE') {
-			$baseUri .= TYPO3_mainDir;
-		}
+
 		$uri = $baseUri . (string)$uri;
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
