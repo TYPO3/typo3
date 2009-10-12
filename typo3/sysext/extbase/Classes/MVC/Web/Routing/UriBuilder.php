@@ -39,6 +39,12 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected $arguments = array();
 
 	/**
+	 * Arguments which have been used for building the last URI
+	 * @var array
+	 */
+	protected $lastArguments = array();
+
+	/**
 	 * @var string
 	 */
 	protected $section = '';
@@ -346,6 +352,17 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	}
 
 	/**
+	 * Returns the arguments being used for the last URI being built.
+	 * This is only set after build() / uriFor() has been called.
+	 *
+	 * @return array The last arguments
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function getLastArguments() {
+		return $this->lastArguments;
+	}
+
+	/**
 	 * Resets all UriBuilder options to their default value
 	 *
 	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
@@ -444,12 +461,13 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		}
 		$arguments = t3lib_div::array_merge_recursive_overrule($arguments, $this->arguments);
 		$arguments = $this->convertDomainObjectsToIdentityArrays($arguments);
+		$this->lastArguments = $arguments;
 		$uri = 'mod.php?' . http_build_query($arguments, NULL, '&');
 		if ($this->section !== '') {
 			$uri .= '#' . $this->section;
 		}
 		if ($this->createAbsoluteUri === TRUE) {
-			$uri = $this->request->getBaseURI() . TYPO3_mainDir . $uri;
+			$uri = $this->request->getBaseURI() . $uri;
 		}
 		return $uri;
 	}
@@ -487,6 +505,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 		if (count($this->arguments) > 0) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
+			$this->lastArguments = $arguments;
 			$typolinkConfiguration['additionalParams'] = '&' . http_build_query($arguments, NULL, '&');
 		}
 
@@ -497,6 +516,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 					'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
 				);
 			}
+			// TODO: Support for __hmac and addQueryString!
 		}
 
 		if ($this->noCache === TRUE) {

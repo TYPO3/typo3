@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
 ***************************************************************/
 
 class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCase {
-		
+
 	/**
 	 * @test
 	 * @expectedException InvalidArgumentException
@@ -34,7 +34,7 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 	public function constructingArgumentWithoutNameThrowsException() {
 		new Tx_Extbase_MVC_Controller_Argument(NULL, 'Text');
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException InvalidArgumentException
@@ -42,7 +42,7 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 	public function constructingArgumentWithInvalidNameThrowsException() {
 		new Tx_Extbase_MVC_Controller_Argument(new ArrayObject(), 'Text');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -50,7 +50,7 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Number');
 		$this->assertEquals('Number', $argument->getDataType(), 'The specified data type has not been set correctly.');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -59,7 +59,7 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 		$returnedArgument = $argument->setShortName('x');
 		$this->assertSame($argument, $returnedArgument, 'The returned argument is not the original argument.');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -68,13 +68,13 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 		$returnedArgument = $argument->setValue('x');
 		$this->assertSame($argument, $returnedArgument, 'The returned argument is not the original argument.');
 	}
-	
+
 	/**
 	 * @test
 	 */
 	public function setValueTriesToConvertAnUIDIntoTheRealObjectIfTheDataTypeClassSchemaIsSet() {
 		$object = new StdClass();
-		
+
 		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('findObjectByUid'), array(), '', FALSE);
 		$argument->expects($this->once())->method('findObjectByUid')->with('42')->will($this->returnValue($object));
 		$argument->_set('dataTypeClassSchema', 'stdClass');
@@ -83,20 +83,21 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 		$argument->setValue('42');
 
 		$this->assertSame($object, $argument->_get('value'));
+		$this->assertSame(Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE, $argument->getOrigin());
 	}
 
-		
+
 	/**
 	 * @test
 	 */
 	public function toStringReturnsTheStringVersionOfTheArgumentsValue() {
 		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
 		$argument->setValue(123);
-	
+
 		$this->assertSame((string)$argument, '123', 'The returned argument is not a string.');
 		$this->assertNotSame((string)$argument, 123, 'The returned argument is identical to the set value.');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -104,17 +105,17 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument');
 		$this->assertSame('Text', $argument->getDataType());
 	}
-	
+
 	/**
 	 * @test
 	 */
 	public function setNewValidatorConjunctionCreatesANewValidatorConjunctionObject() {
 		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
 		$argument->setNewValidatorConjunction(array());
-	
+
 		$this->assertType('Tx_Extbase_Validation_Validator_ConjunctionValidator', $argument->getValidator(), 'The returned validator is not a conjunction as expected.');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -129,28 +130,28 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 			public function setOptions(array $validationOptions) {}
 			public function getErrors() {}
 		}');
-		
+
 		$validator1 = new Validator1;
 		$validator2 = new Validator2;
-	
+
 		$mockValidatorConjunction = $this->getMock('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 		$mockValidatorConjunction->expects($this->at(0))->method('addValidator')->with($validator1);
 		$mockValidatorConjunction->expects($this->at(1))->method('addValidator')->with($validator2);
-		
+
 		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('dummy'), array(), '', FALSE);
 		$argument->_set('validator', $mockValidatorConjunction);
 		$argument->setNewValidatorConjunction(array('Validator1', 'Validator2'));
 	}
-	
+
 	/**
 	 * @test
 	 */
 	public function settingDefaultValueReallySetsDefaultValue() {
 		$argument = new Tx_Extbase_MVC_Controller_Argument('dummy', 'Text');
 		$argument->setDefaultValue(42);
-	
+
 		$this->assertEquals(42, $argument->getValue(), 'The default value was not stored in the Argument.');
 	}
-	
+
 }
 ?>

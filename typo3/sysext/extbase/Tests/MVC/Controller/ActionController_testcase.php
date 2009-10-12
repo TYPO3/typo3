@@ -40,7 +40,7 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockView = $this->getMock('Tx_Extbase_MVC_View_ViewInterface');
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array(
-			'initializeFooAction', 'initializeAction', 'resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'resolveView', 'initializeView', 'callActionMethod'),
+			'initializeFooAction', 'initializeAction', 'resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'mapRequestArgumentsToControllerArguments', 'resolveView', 'initializeView', 'callActionMethod', 'checkRequestHash'),
 			array(), '', FALSE);
 		$mockController->_set('objectFactory', $mockObjectFactory);
 		$mockController->expects($this->at(0))->method('resolveActionMethodName')->will($this->returnValue('fooAction'));
@@ -49,9 +49,10 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockController->expects($this->at(3))->method('initializeAction');
 		$mockController->expects($this->at(4))->method('initializeFooAction');
 		$mockController->expects($this->at(5))->method('mapRequestArgumentsToControllerArguments');
-		$mockController->expects($this->at(6))->method('resolveView')->will($this->returnValue($mockView));
-		$mockController->expects($this->at(7))->method('initializeView');
-		$mockController->expects($this->at(8))->method('callActionMethod');
+                $mockController->expects($this->at(6))->method('checkRequestHash');
+		$mockController->expects($this->at(7))->method('resolveView')->will($this->returnValue($mockView));
+		$mockController->expects($this->at(8))->method('initializeView');
+		$mockController->expects($this->at(9))->method('callActionMethod');
 
 		$mockController->processRequest($mockRequest, $mockResponse);
 		$this->assertSame($mockRequest, $mockController->_get('request'));
@@ -487,6 +488,81 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	 */
 	public function defaultErrorActionCallsGetErrorFlashMessageAndPutsFlashMessage() {
 		$this->markTestIncomplete('To be implemented');
+	}
+
+        /**
+	 * Data Provider for checkRequestHashDoesNotThrowExceptionInNormalOperations
+	 */
+	public function checkRequestHashInNormalOperation() {
+		return array(
+			// HMAC is verified
+			array(TRUE),
+			// HMAC not verified, but objects are directly fetched from persistence layer
+			array(FALSE, FALSE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE),
+			// HMAC not verified, objects new and modified, but dontverifyrequesthash-annotation set
+			array(FALSE, TRUE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE, Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED, array('dontverifyrequesthash' => ''))
+		);
+	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @dataProvider checkRequestHashInNormalOperation
+	 */
+	public function checkRequestHashDoesNotThrowExceptionInNormalOperations($hmacVerified, $reflectionServiceNeedsInitialization = FALSE, $argument1Origin = 3, $argument2Origin = 3, $methodTagsValues = array()) {
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array('isHmacVerified'), array(), '', FALSE);
+		$mockRequest->expects($this->once())->method('isHmacVerified')->will($this->returnValue($hmacVerified));
+
+		$argument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument1->expects($this->any())->method('getOrigin')->will($this->returnValue($argument1Origin));
+		$argument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument2->expects($this->any())->method('getOrigin')->will($this->returnValue($argument2Origin));
+
+		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
+
+		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getMethodTagsValues'), array(), '', FALSE);
+		if ($reflectionServiceNeedsInitialization) {
+			// Somehow this is needed, else I get "Mocked method does not exist."
+			$mockReflectionService->expects($this->any())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
+		}
+		$mockController->_set('arguments', array($argument1, $argument2));
+		$mockController->_set('request', $mockRequest);
+		$mockController->_set('actionMethodName', 'fooAction');
+		$mockController->injectReflectionService($mockReflectionService);
+
+		$mockController->_call('checkRequestHash');
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function checkRequestHashThrowsExceptionIfNeeded() {
+		$hmacVerified = FALSE;
+		$argument1Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED;
+		$argument2Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE;
+		$methodTagsValues = array();
+
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array('isHmacVerified'), array(), '', FALSE);
+		$mockRequest->expects($this->once())->method('isHmacVerified')->will($this->returnValue($hmacVerified));
+
+		$argument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument1->expects($this->any())->method('getOrigin')->will($this->returnValue($argument1Origin));
+		$argument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
+		$argument2->expects($this->any())->method('getOrigin')->will($this->returnValue($argument2Origin));
+
+		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
+
+		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getMethodTagsValues'), array(), '', FALSE);
+		$mockReflectionService->expects($this->any())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
+
+		$mockController->_set('arguments', array($argument1, $argument2));
+		$mockController->_set('request', $mockRequest);
+		$mockController->_set('actionMethodName', 'fooAction');
+		$mockController->injectReflectionService($mockReflectionService);
+
+		$mockController->_call('checkRequestHash');
 	}
 
 }

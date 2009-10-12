@@ -133,6 +133,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 
 		$this->mapRequestArgumentsToControllerArguments();
+		$this->checkRequestHash();
 		$this->view = $this->resolveView();
 		if ($this->view !== NULL) $this->initializeView($this->view);
 		$this->callActionMethod();
@@ -275,7 +276,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		if (method_exists($view, 'injectSettings')) {
 			$view->injectSettings($this->settings);
 		}
-		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely		
+		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely
 		$view->assign('settings', $this->settings); // same with settings injection.
 		return $view;
 	}
@@ -349,7 +350,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		if ($errorFlashMessage !== FALSE) {
 			$this->flashMessages->add($errorFlashMessage);
 		}
-		
+
 		if ($this->request->hasArgument('__referrer')) {
 			$referrer = $this->request->getArgument('__referrer');
 			$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
@@ -364,7 +365,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 		return $message;
 	}
-	
+
 	/**
 	 * A template method for displaying custom error flash messages, or to
 	 * display no flash message at all on errors. Override this to customize
@@ -375,6 +376,34 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 */
 	protected function getErrorFlashMessage() {
 		return 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '()';
+	}
+
+	/**
+	 * Checks the request hash (HMAC), if arguments have been touched by the property mapper.
+	 *
+	 * In case the @dontverifyrequesthash-Annotation has been set, this suppresses the exception.
+	 *
+	 * @return void
+	 * @throws Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash In case request hash checking failed
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function checkRequestHash() {
+		if (!($this->request instanceof Tx_Extbase_MVC_Web_Request)) return; // We only want to check it for now for web requests.
+		if ($this->request->isHmacVerified()) return; // all good
+
+		$verificationNeeded = FALSE;
+		foreach ($this->arguments as $argument) {
+			if ($argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_NEWLY_CREATED
+			 || $argument->getOrigin() == Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED) {
+				$verificationNeeded = TRUE;
+			}
+		}
+		if ($verificationNeeded) {
+			$methodTagsValues = $this->reflectionService->getMethodTagsValues(get_class($this), $this->actionMethodName);
+			if (!isset($methodTagsValues['dontverifyrequesthash'])) {
+				throw new Tx_Extbase_MVC_Exception_InvalidOrNoRequestHash('Request hash (HMAC) checking failed. The parameter __hmac was invalid or not set, and objects were modified.', 1255082824);
+			}
+		}
 	}
 
 	/**

@@ -68,6 +68,24 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	}
 
 	/**
+	 * Gets a property path from a given object.
+	 * If propertyPath is "bla.blubb", then we first call getProperty($object, 'bla'),
+	 * and on the resulting object we call getProperty(..., 'blubb')
+	 *
+	 * @param object $object
+	 * @param string $propertyPath
+	 * @return object Value of the property
+	 */
+	static public function getPropertyPath($object, $propertyPath) {
+		$propertyPathSegments = explode('.', $propertyPath);
+		foreach ($propertyPathSegments as $pathSegment) {
+			$object = self::getProperty($object, $pathSegment);
+			if ($object === NULL) return NULL;
+		}
+		return $object;
+	}
+
+	/**
 	 * Set a property for a given object.
 	 * Tries to set the property the following ways:
 	 * - if public setter method exists, call it.

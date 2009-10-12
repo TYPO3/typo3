@@ -57,6 +57,11 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	protected $baseURI;
 
 	/**
+	 * @var boolean TRUE if the HMAC of this request could be verified, FALSE otherwise.
+	 */
+	protected $hmacVerified = FALSE;
+
+	/**
 	 * Sets the request method
 	 *
 	 * @param string $method Name of the request method
@@ -120,6 +125,27 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 		} else {
 			return $this->baseURI;
 		}
+	}
+
+	/**
+	 * Could the request be verified via a HMAC?
+	 *
+	 * @param boolean $hmacVerified TRUE if request could be verified, FALSE otherwise.
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function setHmacVerified($hmacVerified) {
+		$this->hmacVerified = (boolean)$hmacVerified;
+	}
+
+	/**
+	 * Could the request be verified via a HMAC?
+	 *
+	 * @return boolean TRUE if request could be verified, FALSE otherwise.
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function isHmacVerified() {
+		return $this->hmacVerified;
 	}
 }
 ?>

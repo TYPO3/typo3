@@ -100,6 +100,10 @@ class Tx_Extbase_Dispatcher {
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
+		// Request hash service
+		$requestHashService = t3lib_div::makeInstance('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
+		$requestHashService->verifyRequest($request);
+
 		$persistenceManager = self::getPersistenceManager();
 
 		$dispatchLoopCount = 0;
@@ -109,8 +113,6 @@ class Tx_Extbase_Dispatcher {
 			try {
 				$controller->processRequest($request, $response);
 			} catch (Tx_Extbase_MVC_Exception_StopAction $ignoredException) {
-			} catch (Tx_Extbase_MVC_Exception_InvalidArgumentValue $exception) {
-				return '';
 			}
 		}
 
@@ -258,7 +260,7 @@ class Tx_Extbase_Dispatcher {
 	public static function getConfigurationManager() {
 		return self::$configurationManager;
 	}
-	
+
 	/**
 	 * This function returns the settings of Extbase
 	 *

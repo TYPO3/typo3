@@ -104,6 +104,19 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	protected $uid = NULL;
 
+	const ORIGIN_CLIENT = 0;
+	const ORIGIN_PERSISTENCE = 1;
+	const ORIGIN_PERSISTENCE_AND_MODIFIED = 2;
+	const ORIGIN_NEWLY_CREATED = 3;
+
+	/**
+	 * The origin of the argument value. This is only meaningful after argument mapping.
+	 *
+	 * One of the ORIGIN_* constants above
+	 * @var integer
+	 */
+	protected $origin = 0;
+
 	/**
 	 * Constructs this controller argument
 	 *
@@ -282,6 +295,16 @@ class Tx_Extbase_MVC_Controller_Argument {
 	}
 
 	/**
+	 * Get the origin of the argument value. This is only meaningful after argument mapping.
+	 *
+	 * @return integer one of the ORIGIN_* constants
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function getOrigin() {
+		return $this->origin;
+	}
+
+	/**
 	 * Sets the value of this argument.
 	 *
 	 * @param mixed $value: The value of this argument
@@ -313,21 +336,28 @@ class Tx_Extbase_MVC_Controller_Argument {
 		}
 		$transformedValue = NULL;
 		if ($this->dataTypeClassSchema !== NULL) {
-			// It is an Entity or ValueObject.
+			// The target object is an Entity or ValueObject.
 			if (is_numeric($value)) {
+				$this->origin = self::ORIGIN_PERSISTENCE;
 				$transformedValue = $this->findObjectByUid($value);
 			} elseif (is_array($value)) {
+				$this->origin = self::ORIGIN_PERSISTENCE_AND_MODIFIED;
 				$transformedValue = $this->propertyMapper->map(array_keys($value), $value, $this->dataType);
 			}
 		} else {
 			if (!is_array($value)) {
 				throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value was a simple type, so we could not map it to an object. Maybe the @entity or @valueobject annotations are missing?', 1251730701);
 			}
+			$this->origin = self::ORIGIN_NEWLY_CREATED;
 			$transformedValue = $this->propertyMapper->map(array_keys($value), $value, $this->dataType);
 		}
 
 		if (!($transformedValue instanceof $this->dataType)) {
-			throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value must be of type "' . $this->dataType . '", but was of type "' . get_class($transformedValue) . '".', 1251730701);
+			if (is_object($transformedValue)) {
+				throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value must be of type "' . $this->dataType . '", but was of type "' . get_class($transformedValue) . '".', 1251730701);
+			} else {
+				throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value must be of type "' . $this->dataType . '", but was of type "' . gettype($transformedValue) . '".', 1251730702);
+			}
 		}
 		return $transformedValue;
 	}

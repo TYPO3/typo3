@@ -262,7 +262,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 	public function buildBackendUriCreatesAbsoluteUrisIfSpecified() {
 		t3lib_div::_GETset(array('M' => 'moduleKey'));
 
-		$this->request->expects($this->any())->method('getBaseURI')->will($this->returnValue('http://baseuri/'));
+		$this->request->expects($this->any())->method('getBaseURI')->will($this->returnValue('http://baseuri/' . TYPO3_mainDir));
 		$this->uriBuilder->setCreateAbsoluteUri(TRUE);
 
 		$expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'mod.php?M=moduleKey';
