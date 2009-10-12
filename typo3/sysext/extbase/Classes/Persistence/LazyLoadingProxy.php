@@ -33,7 +33,7 @@
  * @subpackage Persistence
  * @version $Id: LazyLoadingProxy.php 2591 2009-06-09 19:23:47Z k-fish $
  */
-class Tx_Extbase_Persistence_LazyLoadingProxy implements Tx_Extbase_Persistence_LoadingStrategyInterface {
+class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Persistence_LoadingStrategyInterface {
 
 	/**
 	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
@@ -163,5 +163,57 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Tx_Extbase_Persistence_
 		$realInstance = $this->_loadRealInstance();
 		unset($realInstance->$propertyName);
 	}
+	
+	/**
+	 * Returns the current value of the storage array
+	 *
+	 * @return void
+	 */
+	public function current() {
+		$realInstance = $this->_loadRealInstance();
+		return current($realInstance);
+	}
+
+	/**
+	 * Returns the current key storage array
+	 *
+	 * @return void
+	 */
+	public function key() {
+		$realInstance = $this->_loadRealInstance();
+		return key($realInstance);
+	}
+
+	/**
+	 * Returns the next position of the storage array
+	 *
+	 * @return void
+	 */
+	public function next() {
+		$realInstance = $this->_loadRealInstance();
+		next($realInstance);
+	}
+	
+	/**
+	 * Resets the array pointer of the storage
+	 *
+	 * @return void
+	 */
+	public function rewind() {
+		$realInstance = $this->_loadRealInstance();
+		reset($realInstance);
+	}
+
+	/**
+	 * Checks if the array pointer of the storage points to a valid position
+	 *
+	 * @return void
+	 */
+	public function valid() {
+		return $this->current() !== FALSE;
+	}
+
+	
+	
 }
 ?>
