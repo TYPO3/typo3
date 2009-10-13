@@ -224,7 +224,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		if (!$this->arguments->hasArgument('optionValueField')) {
 			return $value;
 		}
-		if (!is_array($value)) {
+		if (!is_array($value) && !($value instanceof Iterator)) {
 			if (is_object($value)) {
 				return Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $this->arguments['optionValueField']);
 			} else {
