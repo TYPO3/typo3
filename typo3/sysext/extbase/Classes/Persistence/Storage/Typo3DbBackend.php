@@ -260,10 +260,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 		$sql = array();
 		$sql['additionalWhereClause'] = array();
-		
+
 		$tableName = $dataMap->getTableName();
 		$this->addEnableFieldsStatement($tableName, $sql);
-		
+
 		$statement = 'SELECT * FROM ' . $tableName;
 		$statement .= ' WHERE ' . implode(' AND ', $fields);
 		if (!empty($sql['additionalWhereClause'])) {
@@ -691,6 +691,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 	/**
 	 * Clear the TYPO3 page cache for the given record.
+	 * If the record lies on a page, then we clear the cache of this page.
+	 * If the record has no PID column, we clear the cache of the current page as best-effort.
+	 *
 	 * Much of this functionality is taken from t3lib_tcemain::clear_cache() which unfortunately only works with logged-in BE user.
 	 *
 	 * @param $tableName Table name of the record
@@ -705,14 +708,23 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			return;
 		}
 
-		$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
-
 		$pageIdsToClear = array();
-		if ($row = $this->databaseHandle->sql_fetch_assoc($result))	{
-			$storagePage = $row['pid'];
+		$storagePage = NULL;
+
+		if ($this->dataMapper->getDataMap($tableName)->hasPidColumn()) {
+			$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid)); {
+			if ($row = $this->databaseHandle->sql_fetch_assoc($result))	{
+				$storagePage = $row['pid'];
+				$pageIdsToClear[] = $storagePage;
+			}
+		} elseif(isset($GLOBALS['TSFE'])) {
+			// No PID column - we can do a best-effort to clear the cache of the current page if in FE
+			$storagePage = $GLOBALS['TSFE']->id;
 			$pageIdsToClear[] = $storagePage;
 		}
-		if (!$storagePage) {
+
+
+		if ($storagePage === NULL) {
 			return;
 		}
 
