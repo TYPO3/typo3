@@ -712,12 +712,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$storagePage = NULL;
 
 		if ($this->dataMapper->getDataMap($tableName)->hasPidColumn()) {
-			$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid)); {
+			$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
 			if ($row = $this->databaseHandle->sql_fetch_assoc($result))	{
 				$storagePage = $row['pid'];
 				$pageIdsToClear[] = $storagePage;
 			}
-		} elseif(isset($GLOBALS['TSFE'])) {
+		} elseif (isset($GLOBALS['TSFE'])) {
 			// No PID column - we can do a best-effort to clear the cache of the current page if in FE
 			$storagePage = $GLOBALS['TSFE']->id;
 			$pageIdsToClear[] = $storagePage;

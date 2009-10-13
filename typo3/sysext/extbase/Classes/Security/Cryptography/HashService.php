@@ -41,12 +41,12 @@ class Tx_Extbase_Security_Cryptography_HashService implements t3lib_singleton {
 	 * @return string The hash of the string
 	 * @throws F3\FLOW3\Security\Exception\InvalidArgumentForHashGeneration if something else than a string was given as parameter
 	 * @todo Mark as API once it is more stable
-	 * @todo encryption key has to come from somewhere else
 	 */
 	public function generateHash($string) {
 		if (!is_string($string)) throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration('A hash can only be generated for a string, but "' . gettype($string) . '" was given.', 1255069587);
-		$encryptionKey = '7nN5#n8guP/oA9Bq95x=e/x}.hL[:7yv1BJcWrB0AYQ5WJ!KGd'; // TODO
-		return sha1($string . $encryptionKey);
+		$encryptionKey = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+		if (!$encryptionKey) throw new Tx_Extbase_Security_Exception_InvalidArgumentForHashGeneration('Encryption Key was empty!', 1255069597);
+		return hash_hmac('sha1', $string, $encryptionKey);
 	}
 
 	/**
