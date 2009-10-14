@@ -111,6 +111,9 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function initialize(array $mapping) {
+		if (TYPO3_MODE === 'FE') {
+			$GLOBALS['TSFE']->includeTCA();
+		}
 		t3lib_div::loadTCA($this->getTableName());
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
 		$this->addCommonColumns();
