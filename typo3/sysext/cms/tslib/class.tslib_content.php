@@ -3036,7 +3036,7 @@ class tslib_cObj {
 		}
 		if (trim($pidList))	{
 			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$pidList));
-			$listArr = $this->checkPidArray($listArr, $table);
+			$listArr = $this->checkPidArray($listArr);
 		}
 		$pidList = array();
 		if (is_array($listArr)&&count($listArr))	{
@@ -7715,10 +7715,10 @@ class tslib_cObj {
 		if (substr($table,0,7)=='static_') {
 			$pid_uid_flag++;
 		}
-		if (strcmp(trim($conf['pidInList']), '')) {
+		if (trim($conf['pidInList'])) {
 			$listArr = t3lib_div::intExplode(',',str_replace('this',$GLOBALS['TSFE']->contentPid,$conf['pidInList']));
 				// removes all pages which are not visible for the user!
-			$listArr = $this->checkPidArray($listArr, $table);
+			$listArr = $this->checkPidArray($listArr);
 			if (count($listArr))	{
 				$query.=' AND '.$table.'.pid IN ('.implode(',',$GLOBALS['TYPO3_DB']->cleanIntArray($listArr)).')';
 				$pid_uid_flag++;
@@ -7782,18 +7782,13 @@ class tslib_cObj {
 	 * Removes Page UID numbers from the input array which are not available due to enableFields() or the list of bad doktype numbers ($this->checkPid_badDoktypeList)
 	 *
 	 * @param	array		Array of Page UID numbers for select and for which pages with enablefields and bad doktypes should be removed.
-	 * @param	string		Name of the table the UID numbers shall be used for
 	 * @return	array		Returns the array of remaining page UID numbers
 	 * @access private
 	 * @see getWhere(),checkPid()
 	 */
-	function checkPidArray($listArr, $table = '') {
+	function checkPidArray($listArr)	{
 		$outArr = Array();
 		if (is_array($listArr) && count($listArr))	{
-				// The root page cannot be checked since there is no page with uid=0:
-			if ($table == 'pages' && in_array(0, $listArr, true)) {
-				$outArr[] = 0;
-			}
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid IN ('.implode(',',$listArr).')'.$this->enableFields('pages').' AND doktype NOT IN ('.$this->checkPid_badDoktypeList.')');
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error())	{
 				$GLOBALS['TT']->setTSlogMessage($error.': '.$query,3);

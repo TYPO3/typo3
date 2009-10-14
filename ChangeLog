@@ -1,3 +1,7 @@
+2009-10-14  Oliver Hader  <oliver@typo3.org>
+
+	* Reverted bugfix #10050: Traversing back page records used in CONTENT object does not work on root page
+
 2009-10-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12209: [felogin] lang label for send change password link misses variable for valid end time
