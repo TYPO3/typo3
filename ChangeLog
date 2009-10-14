@@ -6,9 +6,9 @@
 
 	* Fixed bug #12186: EM sends Location-header without exit (thanks to Steffen Gebert)
 	* Added ext_icon for sysext version (thanks to Steffen Gebert)
-	* Whitespace cleaning of typo3 sysext files
-	* Whitespace cleaning of typo3 files
-	* Whitespace cleaning of t3lib files
+	* Cleanup: Whitespace cleaning of typo3 sysext files
+	* Cleanup: Whitespace cleaning of typo3 files
+	* Cleanup: Whitespace cleaning of t3lib files
 
 2009-10-11  Rupert Germann  <rupi@gmx.li>
 
@@ -43,6 +43,7 @@
 	* Fixed bug #12166: Scheduler: Gathered TODOs from Forge bug tracker into the Scheduler's manual
 
 2009-10-09  Kasper Skaarhoj  <kasper@typo3.org>
+
 	* Tiny bug with date function in t3lib_befunc. Casted timestamp to integer.
 	* Added User TSconfig option "options.checkPageLanguageOverlay" so flexforms only show language fields for languages available on the page.
 	* Fixed problem with notification emails to users when a workspace review rejection happens. Now it works
