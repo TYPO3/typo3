@@ -878,14 +878,17 @@ $str.=$this->docBodyTagBegin().
 	 * @param	string		Additional attributes to h-tag, eg. ' class=""'
 	 * @return	string		HTML content
 	 */
-	function sectionHeader($label,$sH=FALSE,$addAttrib='')	{
-		$tag = ($sH?'h3':'h4');
+	function sectionHeader($label, $sH=FALSE, $addAttrib='') {
+		$tag = ($sH ? 'h3' : 'h4');
+		if ($addAttrib && substr($addAttrib, 0, 1) !== ' ') {
+			$addAttrib = ' ' . $addAttrib;
+		}
 		$str='
 
 	<!-- Section header -->
-	<'.$tag.$addAttrib.'>'.$label.'</'.$tag.'>
+	<' . $tag . $addAttrib . '>' . $label . '</' . $tag . '>
 ';
-		return $this->sectionBegin().$str;
+		return $this->sectionBegin() . $str;
 	}
 
 	/**
