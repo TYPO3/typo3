@@ -1,3 +1,7 @@
+2009-10-15  Rupert Germann  <rupi@gmx.li>
+
+ 	* Fixed bug #8728: PHP Warning, if SQL error occurs in class t3lib_db in functions which depend on an existing resultset (thanks to Felix Oertel)
+
 2009-10-11  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #10971: Fatal error in impexp module: Call to a member function includeLLFile() on a non-object (thanks to Andre Steiling)
