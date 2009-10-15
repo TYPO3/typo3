@@ -6,6 +6,7 @@
 2009-10-15  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #8728: PHP Warning, if SQL error occurs in class t3lib_db in functions which depend on an existing resultset (thanks to Felix Oertel)
+	* Fixed bug #12196: PHP warning in FE with activated DLOG and mbstring set as t3lib_cs_utils
 
 2009-10-14  Oliver Hader  <oliver@typo3.org>
 
