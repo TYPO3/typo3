@@ -1,5 +1,6 @@
 2009-10-15  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11963: MEDIA.renderType in TypoScript is reset
 	* Fixed bug #12207: $this->doc->sectionHeader return wrong HTML
 
 2009-10-15  Rupert Germann  <rupi@gmx.li>

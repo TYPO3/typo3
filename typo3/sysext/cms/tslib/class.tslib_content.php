@@ -2681,7 +2681,7 @@ class tslib_cObj {
 		$typeConf = $conf['mimeConf.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$conf['type'] . '.'] : array();
 		$conf['predefined'] = array();
 
-		$renderType = 'auto';
+		$renderType = $conf['renderType'];
 		if (isset($conf['parameter.']['mmRenderType'])) {
 			$renderType = $conf['parameter.']['mmRenderType'];
 		}
