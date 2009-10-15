@@ -819,8 +819,11 @@ class t3lib_DB {
 	 * @return	integer		Number of resulting rows
 	 */
 	function sql_num_rows($res)	{
-		$this->debug_check_recordset($res);
-		return mysql_num_rows($res);
+		if ($this->debug_check_recordset($res)) {
+			return mysql_num_rows($res);
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -832,8 +835,11 @@ class t3lib_DB {
 	 * @return	array		Associative array of result row.
 	 */
 	function sql_fetch_assoc($res)	{
-		$this->debug_check_recordset($res);
-		return mysql_fetch_assoc($res);
+		if ($this->debug_check_recordset($res)) {
+			return mysql_fetch_assoc($res);
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -846,8 +852,11 @@ class t3lib_DB {
 	 * @return	array		Array with result rows.
 	 */
 	function sql_fetch_row($res)	{
-		$this->debug_check_recordset($res);
-		return mysql_fetch_row($res);
+		if ($this->debug_check_recordset($res)) {
+			return mysql_fetch_row($res);
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -859,8 +868,11 @@ class t3lib_DB {
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
 	function sql_free_result($res)	{
-		$this->debug_check_recordset($res);
-		return mysql_free_result($res);
+		if ($this->debug_check_recordset($res)) {
+			return mysql_free_result($res);
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -894,9 +906,12 @@ class t3lib_DB {
 	 * @param	integer		Seek result number.
 	 * @return	boolean		Returns TRUE on success or FALSE on failure.
 	 */
-	function sql_data_seek($res,$seek)	{
-		$this->debug_check_recordset($res);
-		return mysql_data_seek($res,$seek);
+	function sql_data_seek($res, $seek)	{
+		if ($this->debug_check_recordset($res)) {
+			return mysql_data_seek($res, $seek);
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -908,9 +923,12 @@ class t3lib_DB {
 	 * @param	integer		Field index.
 	 * @return	string		Returns the name of the specified field index
 	 */
-	function sql_field_type($res,$pointer)	{
-		$this->debug_check_recordset($res);
-		return mysql_field_type($res,$pointer);
+	function sql_field_type($res, $pointer)	{
+		if ($this->debug_check_recordset($res)) {
+			return mysql_field_type($res, $pointer);
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
