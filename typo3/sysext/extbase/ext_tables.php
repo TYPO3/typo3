@@ -3,7 +3,7 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 
 if (TYPO3_MODE == 'BE') {
-	
+
 	// register the cache in BE so it will be cleared with "clear all caches"
 	try {
 		t3lib_cache::initializeCachingFramework();
@@ -19,7 +19,7 @@ if (TYPO3_MODE == 'BE') {
 
 	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Dispatcher';
 
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['extbase'] = 'tx_extbase_utility_extbaserequirementscheck';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['extbase'] = 'tx_extbase_utility_extbaserequirementscheck';
 }
 
 ?>
