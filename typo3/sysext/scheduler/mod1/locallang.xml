@@ -44,9 +44,9 @@
 			<label index="label.type.single">Single</label>
 			<label index="msg.addError">The task could not be added.</label>
 			<label index="msg.addSuccess">The task was added successfully.</label>
-			<label index="msg.cliScript">The script to execute to run the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</label>
+			<label index="msg.cliScript">The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler"&lt;/strong&gt;.</label>
 			<label index="msg.cliScriptExecutable">The webserver user is allowed execute this script.</label>
-			<label index="msg.cliScriptNotExecutable">The webserver user is not allowed execute this script.</label>
+			<label index="msg.cliScriptNotExecutable">The webserver user is not allowed to execute this script.</label>
 			<label index="msg.delete">Are you sure you want to delete this task?</label>
 			<label index="msg.deleteError">The task could not be deleted.</label>
 			<label index="msg.deleteSuccess">The task was successfully deleted.</label>
