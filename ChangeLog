@@ -1,3 +1,7 @@
+2009-10-16  Bernhard Kraft  <bernhard@typo3.org>
+
+	* Fixed Bug #12218: Spaces in Webroot path break ImageMagick compose (thanks to Joerg Wagner)
+
 2009-10-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12246: Reports module: icon not clickable

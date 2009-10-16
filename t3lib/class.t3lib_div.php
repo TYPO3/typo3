@@ -5656,7 +5656,8 @@ final class t3lib_div {
 				$val = preg_replace('/(^"|"$)/','',$val);
 			}
 		}
-		return $paramsArr;
+		// return reindexed array
+		return array_values($paramsArr);
 	}
 
 
