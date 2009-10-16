@@ -2050,19 +2050,21 @@ EXTENSION KEYS:
 
 											// No content, no errors. Create success output here:
 										if (!$content)	{
-											$content = sprintf($GLOBALS['LANG']->getLL('ext_import_success_folder'), $extDirPath) . '<br />';
+											$messageContent = sprintf($GLOBALS['LANG']->getLL('ext_import_success_folder'), $extDirPath) . '<br />';
 
 											$uploadSucceed = true;
 
 												// Fix TYPO3_MOD_PATH for backend modules in extension:
-											$modules = t3lib_div::trimExplode(',',$EM_CONF['module'],1);
+											$modules = t3lib_div::trimExplode(',', $EM_CONF['module'], 1);
 											if (count($modules))	{
 												foreach($modules as $mD)	{
-													$confFileName = $extDirPath.$mD.'/conf.php';
-													if (@is_file($confFileName))	{
-														$content.= $this->writeTYPO3_MOD_PATH($confFileName,$loc,$extKey.'/'.$mD.'/').'<br />';
-													} else $content .= sprintf($GLOBALS['LANG']->getLL('ext_import_no_conf_file'),
+													$confFileName = $extDirPath . $mD . '/conf.php';
+													if (@is_file($confFileName)) {
+														$messageContent .= $this->writeTYPO3_MOD_PATH($confFileName, $loc, $extKey . '/' . $mD . '/') . '<br />';
+													} else {
+														$messageContent .= sprintf($GLOBALS['LANG']->getLL('ext_import_no_conf_file'),
 														$confFileName) . '<br />';
+													}
 												}
 											}
 												// NOTICE: I used two hours trying to find out why a script, ext_emconf.php, written twice and in between included by PHP did not update correct the second time. Probably something with PHP-A cache and mtime-stamps.
@@ -2071,41 +2073,32 @@ EXTENSION KEYS:
 												// Writing to ext_emconf.php:
 											$sEMD5A = $this->serverExtensionMD5Array($extKey,array('type' => $loc, 'EM_CONF' => array(), 'files' => array()));
 											$EM_CONF['_md5_values_when_last_written'] = serialize($sEMD5A);
-											$emConfFile = $this->construct_ext_emconf_file($extKey,$EM_CONF);
-											t3lib_div::writeFile($extDirPath.'ext_emconf.php',$emConfFile);
+											$emConfFile = $this->construct_ext_emconf_file($extKey, $EM_CONF);
+											t3lib_div::writeFile($extDirPath . 'ext_emconf.php', $emConfFile);
 
-											$content .= 'ext_emconf.php: '.$extDirPath.'ext_emconf.php<br />';
-											$content .= $GLOBALS['LANG']->getLL('ext_import_ext_type') . ' ';
-
-											switch ($loc) {
-												case 'L':
-													$content .= $GLOBALS['LANG']->getLL('type_local');
-													break;
-												case 'G':
-													$content .= $GLOBALS['LANG']->getLL('type_global');
-													break;
-												case 'S':
-													$content .= $GLOBALS['LANG']->getLL('type_system');
-													break;
-											}
-											$content .= '<br />';
+											$messageContent .= 'ext_emconf.php: ' . $extDirPath . 'ext_emconf.php<br />';
+											$messageContent .= $GLOBALS['LANG']->getLL('ext_import_ext_type') . ' ';
+											$messageContent .= $this->typeLabels[$loc] . '<br />';
+											$messageContent .= '<br />';
 
 												// Remove cache files:
-											if (t3lib_extMgm::isLoaded($extKey))	{
-												if ($this->removeCacheFiles())	{
-													$content .= $GLOBALS['LANG']->getLL('ext_import_cache_files_removed') . '<br />';
+											$updateContent = '';
+											if (t3lib_extMgm::isLoaded($extKey)) {
+												if ($this->removeCacheFiles()) {
+													$messageContent .= $GLOBALS['LANG']->getLL('ext_import_cache_files_removed') . '<br />';
 												}
 
-												list($new_list)=$this->getInstalledExtensions();
-												$content.=$this->updatesForm($extKey,$new_list[$extKey],1,'index.php?CMD[showExt]='.$extKey.'&SET[singleDetails]=info');
+												list($new_list) = $this->getInstalledExtensions();
+												$updateContent = $this->updatesForm($extKey, $new_list[$extKey], 1, 'index.php?CMD[showExt]=' . $extKey . '&SET[singleDetails]=info');
 											}
 
 											$flashMessage = t3lib_div::makeInstance(
 												't3lib_FlashMessage',
-												$content,
+												$messageContent,
 												$GLOBALS['LANG']->getLL('ext_import_success')
 												);
-											$content = $flashMessage->render();
+											$content = $flashMessage->render() . $updateContent;
+
 
 												// Install / Uninstall:
 											if(!$this->CMD['standAlone']) {

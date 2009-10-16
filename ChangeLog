@@ -10,6 +10,7 @@
 	* Cleanup #12249: Improved comments about service registration in EXT:sv/ext_tables.php and EXT:sv/ext_localconf.php
 	* Fixed bug #12132: Scheduler: Introduced proper handling of incomplete objects after unserialization from DB storage
 	* Cleanup #12211: Scheduler: Corrected a couple of labels and one code indent in BE module
+	* Follow-up to bug #12117: The flash messages sometimes contained content meant for the main screen and not the message
 
 2009-10-15  Steffen Kamper  <info@sk-typo3.de>
 
