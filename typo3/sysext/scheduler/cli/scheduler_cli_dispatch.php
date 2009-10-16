@@ -33,6 +33,7 @@
  * $Id: scheduler_cli_dispatch.php 1261 2009-09-15 20:22:45Z francois $
  */
 if (defined('TYPO3_cliMode') && TYPO3_cliMode && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
+	$hasTask = true;
 		// Create an instance of the scheduler object
 		/**
 		 * @var	tx_scheduler
@@ -58,8 +59,13 @@ if (defined('TYPO3_cliMode') && TYPO3_cliMode && basename(PATH_thisScript) == 'c
 				continue;
 			}
 		}
+			// There are no more tasks, quit the run
 		catch (OutOfBoundsException $e) {
 			$hasTask = false;
+		}
+			// A task could not be unserialized properly, skip to next task
+		catch (UnexpectedValueException $e) {
+			continue;
 		}
 	} while ($hasTask);
 		// Record the run in the system registry

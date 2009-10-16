@@ -507,7 +507,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				}
 			}
 		} catch (UnexpectedValueException $e) {
-				// The could not be unserialized properly, simply delete the database record
+				// The task could not be unserialized properly, simply delete the database record
 			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . intval($this->submittedData['uid']));
 			if ($result) {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteSuccess'));
@@ -822,6 +822,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					// The task was not found, for some reason
 				catch (OutOfBoundsException $e) {
 					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.taskNotFound'), $uid), t3lib_FlashMessage::ERROR);
+				}
+					// The task object was not valid
+				catch (UnexpectedValueException $e) {
+					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.executionFailed'), $name, $e->getMessage()), t3lib_FlashMessage::ERROR);
 				}
 			}
 				// Record the run in the system registry

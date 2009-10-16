@@ -299,6 +299,7 @@ class tx_scheduler implements t3lib_Singleton {
 	 * @return	tx_scheduler_Task	The fetched task object
 	 */
 	public function fetchTask($uid = 0) {
+		$whereClause = '';
 			// Define where clause
 			// If no uid is given, take any non-disabled task which has a next execution time in the past
 		if (empty($uid)) {
@@ -308,7 +309,7 @@ class tx_scheduler implements t3lib_Singleton {
 		}
 
 		$queryArray = array(
-			'SELECT'	=> 'serialized_task_object',
+			'SELECT'	=> 'uid, serialized_task_object',
 			'FROM'		=> 'tx_scheduler_task',
 			'WHERE'		=> $whereClause,
 			'LIMIT'		=> 1
@@ -323,15 +324,23 @@ class tx_scheduler implements t3lib_Singleton {
 		} else {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$task = unserialize($row['serialized_task_object']);
-				// Return the task only if valid, otherwise throw an exception
+
 			if ($this->isValidTaskObject($task)) {
+				// The task is valid, return it
+
 				$task->setScheduler();
-				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				return $task;
+
 			} else {
+				// Forcibly set the disable flag to 1 in the database,
+				// so that the task does not come up again and again for execution
+
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', "uid = '" . $row['uid'] . "'", array('disable' => 1));
+					// Throw an exception to raise the problem
 				throw new UnexpectedValueException('Could not unserialize task', 1255083671);
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
+		return $task;
 	}
 
 	 /**
