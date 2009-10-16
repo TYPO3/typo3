@@ -76,11 +76,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 * @return	void
 	 */
 	protected function getStatusProviders() {
-		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status'] as $key => $statusProvider) {
-			if (t3lib_div::inList('title,description,report', $key)) {
-				continue; // skip (for this report) unneccessary data
-			}
-
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvider) {
 			$statusProviderInstance = t3lib_div::makeInstance($statusProvider);
 			if ($statusProviderInstance instanceof tx_reports_StatusProvider) {
 				$this->statusProviders[$key] = $statusProviderInstance;
