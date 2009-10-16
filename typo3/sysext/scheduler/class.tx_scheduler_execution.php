@@ -243,7 +243,7 @@ class tx_scheduler_Execution {
 	 * @return	boolean		True if the schedule is not active anymore, false otherwise
 	 */
 	public function isEnded() {
-		if (empty($this->end))  {
+		if (empty($this->end)) {
 				// If no end is defined, the schedule never ends
 			$result = false;
 		} else {

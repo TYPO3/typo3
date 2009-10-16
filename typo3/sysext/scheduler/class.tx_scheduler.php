@@ -323,9 +323,14 @@ class tx_scheduler implements t3lib_Singleton {
 		} else {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$task = unserialize($row['serialized_task_object']);
-			$task->setScheduler();
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			return $task;
+				// Return the task only if valid, otherwise throw an exception
+			if ($this->isValidTaskObject($task)) {
+				$task->setScheduler();
+				$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				return $task;
+			} else {
+				throw new UnexpectedValueException('Could not unserialize task', 1255083671);
+			}
 		}
 	}
 
@@ -375,12 +380,31 @@ class tx_scheduler implements t3lib_Singleton {
 		if ($res) {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$task = unserialize($row['serialized_task_object']);
-				$task->setScheduler();
-				$tasks[] = $task;
+					// Add the task to the list only if it is valid
+				if ($this->isValidTaskObject($task)) {
+					$task->setScheduler();
+					$tasks[] = $task;
+				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $tasks;
+	}
+
+	/**
+	 * This method encapsulates a very simple test for the purpose of clarity.
+	 * Registered tasks are stored in the database along with a serialized task object.
+	 * When a registered task is fetched, its object is unserialized.
+	 * At that point, if the class corresponding to the object is not available anymore
+	 * (e.g. because the extension providing it has been uninstalled),
+	 * the unserialization will produce an incomplete object.
+	 * This test checks whether the unserialized object is of the right (parent) class or not.
+	 *
+	 * @param	object		The object to test
+	 * @return	boolean		True if object is a task, false otherwise
+	 */
+	public function isValidTaskObject($task) {
+		return $task instanceof tx_scheduler_Task;
 	}
 }
 

@@ -54,13 +54,13 @@
 			<label index="msg.executed">Executed: %s</label>
 			<label index="msg.incompleteLastRun">The information about the last execution of the Scheduler is incomplete.</label>
 			<label index="msg.infoScreenIntro">This is the list of all available tasks in this TYPO3 installation. Click on the icon at the far right to directly create a new scheduled task of the chosen type.</label>
-			<label index="msg.noFrequency">No frequency was defined, either as an interval or as a cron command.</label>
 			<label index="msg.invalidFrequency">Invalid frequency. Please enter either a number of seconds or a valid cron command.</label>
 			<label index="msg.invalidSleepTime">Please enter a sleep time greater or equal to 0 (zero).</label>
 			<label index="msg.lastRun">The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</label>
 			<label index="msg.maynotDeleteRunningTask">A running task may not be deleted.</label>
 			<label index="msg.maynotEditRunningTask">A running task may not be edited.</label>
 			<label index="msg.noEmail">Please enter an email address</label>
+			<label index="msg.noFrequency">No frequency was defined, either as an interval or as a cron command.</label>
 			<label index="msg.noLastRun">The Scheduler has never yet run or the information about the last run has been lost.</label>
 			<label index="msg.noTaskClassFound">The selected task class could not be found. You should probably contact the task's developers.</label>
 			<label index="msg.noTasks">No tasks defined yet.</label>
@@ -70,7 +70,8 @@
 			<label index="msg.noStartDate">Please define a start date</label>
 			<label index="msg.invalidStartDate">Start date is invalid</label>
 			<label index="msg.invalidEndDate">End date is invalid</label>
-			<label index="msg.invalidTaskClass">The class of the registered task could not be found. Change class or consider deleting this task.</label>
+			<label index="msg.invalidTaskClass">Class %s of the registered task could not be found. You should re-install the extension that provided it or simply delete this task.</label>
+			<label index="msg.invalidTaskClassEdit">The current class (%s) could not be found. Change it below or consider deleting this task altogether.</label>
 			<label index="msg.schedulerSetupCheck">This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</label>
 			<label index="msg.schedulerUser">The backend user "_cli_scheduler" is used by the CLI-script to log into TYPO3. This user may not have administrator privileges. The user's password is not important but should be set to a secure value for security reasons.</label>
 			<label index="msg.schedulerUserFound">The backend user "_cli_scheduler" was found.</label>

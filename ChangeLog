@@ -4,6 +4,7 @@
 	* Feature #12167: Reports: Enhanced report registration API to provide custom icons for reports
 	* Feature #12178: Provide a report for installed services in the new Reports module
 	* Cleanup #12249: Improved comments about service registration in EXT:sv/ext_tables.php and EXT:sv/ext_localconf.php
+	* Fixed bug #12132: Scheduler: Introduced proper handling of incomplete objects after unserialization from DB storage
 
 2009-10-15  Steffen Kamper  <info@sk-typo3.de>
 
