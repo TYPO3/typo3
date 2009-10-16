@@ -2,6 +2,7 @@
 
 	* Cleanup #12245: Reports: Cleaned up API for providers in status report
 	* Feature #12167: Reports: Enhanced report registration API to provide custom icons for reports
+	* Feature #12178: Provide a report for installed services in the new Reports module
 
 2009-10-15  Steffen Kamper  <info@sk-typo3.de>
 

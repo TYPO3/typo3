@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module 'tools_txreportsM1'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="report_title">Installed Services</label>
+			<label index="report_description">List of all installed services with information and status for each of them.</label>
+			<label index="report_explanation">This report displays a list of installed services, with detailed information about each of them. The services are ordered by type, priority and quality. Unavailable services are highlighted with an error status.</label>
+			<label index="externals_explanation">The "Externals" column shows which external programs a given service relies on. If such program is missing or not executable, the service will be unavailable. Search paths for executables are listed at the bottom of this report.</label>
+			<label index="service_type">Service type: %s</label>
+			<label index="service">Service</label>
+			<label index="priority">Priority</label>
+			<label index="quality">Quality</label>
+			<label index="subtypes">Subtypes</label>
+			<label index="os">OS</label>
+			<label index="externals">Externals</label>
+			<label index="available">Available</label>
+			<label index="any">Any</label>
+			<label index="search_paths">Configured search paths for external programs</label>
+			<label index="path">Path</label>
+			<label index="valid">Valid</label>
+			<label index="no_search_paths">No search paths configured.</label>
+		</languageKey>
+	</data>
+</T3locallang>
