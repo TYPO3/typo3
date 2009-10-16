@@ -1,6 +1,7 @@
 2009-10-16  Francois Suter  <francois@typo3.org>
 
 	* Cleanup #12245: Reports: Cleaned up API for providers in status report
+	* Feature #12167: Reports: Enhanced report registration API to provide custom icons for reports
 
 2009-10-15  Steffen Kamper  <info@sk-typo3.de>
 

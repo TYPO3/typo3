@@ -215,6 +215,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	 * @return	string	list of available reports
 	 */
 	protected function indexAction() {
+		$defaultIcon = t3lib_extMgm::extRelPath('reports') . 'mod/moduleicon.gif';
 		$content = '<dl class="report-list">';
 		$reports = array();
 
@@ -225,7 +226,17 @@ class tx_reports_Module extends t3lib_SCbase {
 
 				$reportTitle = $GLOBALS['LANG']->sL($report['title']);
 
-				$reportContent  = '<dt><a href="' . $link . '">' . $reportTitle. '</a></dt>';
+					// Set default report icon
+				$icon = $defaultIcon;
+					// Check for custom icon
+				if (!empty($report['icon'])) {
+					$absIconPath = t3lib_div::getFileAbsFilename($report['icon']);
+						// If the file indeed exists, assemble relative path to it
+					if (file_exists($absIconPath)) {
+						$icon = $GLOBALS['BACK_PATH'] . '../' . str_replace(PATH_site, '', $absIconPath);
+					}
+				}
+				$reportContent  = '<dt style="background-image: url(\'' . $icon . '\');"><a href="' . $link . '">' . $reportTitle . '</a></dt>';
 				$reportContent .= '<dd>' . $GLOBALS['LANG']->sL($report['description']) . '</dd>';
 
 				$reports[$reportTitle] = $reportContent;

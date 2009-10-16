@@ -15,7 +15,6 @@ body#ext-reports-mod-index-php {
 .report-list dt {
 	font-weight: bold;
 	font-size: 11px;
-	background-image: url("moduleicon.gif");
 	background-repeat: no-repeat;
 	padding: 0px 0px 2px 20px;
 }
