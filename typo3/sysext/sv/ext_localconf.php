@@ -1,8 +1,7 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-// auth services needs to be added here. ext_tables.php will be read after authentication.
-
+	// Register base authentication service
 t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_sv_auth' /* sv key */,
 		array(
 
@@ -23,7 +22,7 @@ t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_sv_auth' /* sv ke
 		)
 	);
 
-// Add hooks to the backend login form
+	// Add hooks to the backend login form
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/class.tx_sv_loginformhook.php:tx_sv_loginformhook->getLoginFormTag';
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginScriptHook'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/class.tx_sv_loginformhook.php:tx_sv_loginformhook->getLoginScripts';
 
