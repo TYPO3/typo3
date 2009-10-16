@@ -1,3 +1,7 @@
+2009-10-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12246: Reports module: icon not clickable
+
 2009-10-16  Francois Suter  <francois@typo3.org>
 
 	* Cleanup #12245: Reports: Cleaned up API for providers in status report

@@ -236,7 +236,8 @@ class tx_reports_Module extends t3lib_SCbase {
 						$icon = $GLOBALS['BACK_PATH'] . '../' . str_replace(PATH_site, '', $absIconPath);
 					}
 				}
-				$reportContent  = '<dt style="background-image: url(\'' . $icon . '\');"><a href="' . $link . '">' . $reportTitle . '</a></dt>';
+				$icon = '<img' . t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . $reportTitle . '" />';
+				$reportContent  = '<dt><a href="' . $link . '">' . $icon . $reportTitle . '</a></dt>';
 				$reportContent .= '<dd>' . $GLOBALS['LANG']->sL($report['description']) . '</dd>';
 
 				$reports[$reportTitle] = $reportContent;
