@@ -41,6 +41,7 @@
 							<label>LLL:EXT:cms/locallang_ttc.xml:media.forcePlayer</label>
 							<config>
 								<type>check</type>
+								<default>1</default>
 							</config>
 						</TCEforms>
 					</mmforcePlayer>

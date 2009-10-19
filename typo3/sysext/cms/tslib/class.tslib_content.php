@@ -2664,7 +2664,6 @@ class tslib_cObj {
 			$url = $this->stdWrap($conf['file'], $conf['file.']);
 		}
 
-
 		$mode = is_file(PATH_site . $url) ? 'file' : 'url';
 		if ($mode === 'file') {
 			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
@@ -2672,19 +2671,29 @@ class tslib_cObj {
 			$conf['file'] = $url;
 		} else {
 			$conf['file'] = $url;
-			if ($conf['parameter.']['mmforcePlayer'] || $conf['forcePlayer']) {
-				$mode = 'file';
+
+		}
+
+		$renderType = $conf['renderType'];
+		if (isset($conf['parameter.']['mmRenderType'])) {
+			$renderType = $conf['parameter.']['mmRenderType'];
+		}
+		if ($renderType === 'auto') {
+			$handler = array_keys($conf['fileExtHandler.']);
+			if (in_array($fileinfo['fileext'], $handler)) {
+				$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
 			}
+		}
+
+		$forcePlayer = isset($conf['parameter.']['mmFile']) ? intval($conf['parameter.']['mmforcePlayer']) :  $conf['forcePlayer'];
+		if (($renderType == 'swf')) {
+			$mode = 'file';
 		}
 
 		$conf['type'] = isset($conf['parameter.']['mmType']) ? $conf['parameter.']['mmType'] : $conf['type'];
 		$typeConf = $conf['mimeConf.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$conf['type'] . '.'] : array();
 		$conf['predefined'] = array();
 
-		$renderType = $conf['renderType'];
-		if (isset($conf['parameter.']['mmRenderType'])) {
-			$renderType = $conf['parameter.']['mmRenderType'];
-		}
 		$width = intval($conf['parameter.']['mmWidth']);
 		$height = intval($conf['parameter.']['mmHeight']);
 		if ($width) {
@@ -2743,24 +2752,32 @@ class tslib_cObj {
 		}
 
 			// render MEDIA
-		if ($mode == 'url' && $url != '') {
+		if ($mode == 'url' && $url != '' || !$forcePlayer) {
 				// url is called direct, not with player
 			$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
+			if ($mode == 'url') {
 			$conf[$conf['type'] . '.']['player'] = strpos($url, '://') === false ? 'http://' . $url : $url;
+			} else {
+				$conf[$conf['type'] . '.']['player'] = $url;
+			}
 			$conf['file'] = '';
 			$conf['installUrl'] = 'null';
 			$conf['flashvars'] = array_merge((array) $conf['flashvars'], $conf['predefined']);
+			if ($renderType == 'qt') {
+				$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
+				unset($conf['mimeConf.']);
+				$content = $this->QTOBJECT($conf);
+			} else {
+				$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
+				unset($conf['mimeConf.']);
 			$content = $this->SWFOBJECT($conf);
+			}
+
 		} else {
 			if ($mode == 'url' && $url == '' && !$conf['allowEmptyUrl']) {
 				return '<p style="background-color: yellow;">' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xml:media.noFile', true) . '</p>';
 			}
-			if ($renderType === 'auto') {
-				$handler = array_keys($conf['fileExtHandler.']);
-				if (in_array($fileinfo['fileext'], $handler)) {
-					$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
-				}
-			}
+
 			switch ($renderType) {
 				case 'swf':
 					$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
@@ -2913,7 +2930,6 @@ class tslib_cObj {
 	public function QTOBJECT($conf) {
 		$content = '';
 		$params = '';
-
 		$prefix = '';
 		if ($GLOBALS['TSFE']->baseUrl) {
 			$prefix = $GLOBALS['TSFE']->baseUrl;

@@ -13,6 +13,7 @@
 
 2009-10-19  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12240: [Media CE] using a flash video file doesn't work
 	* Fixed bug #12113: Setting default values for $BE_USER->uc doesn't work for multi-dimensional arrays (thanks to Steffen Gebert)
 	* Fixed bug #10897: typo3/db_new.php prompts to create records in hidden, static and readonly tables
 	* Fixed bug #12239: Record statistics use hidden tables and isn't formated well

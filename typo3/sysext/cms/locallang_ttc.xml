@@ -211,7 +211,7 @@
 			<label index="media.browseUrlTitle">Select File or URL</label>
 			<label index="media.width">Media Width</label>
 			<label index="media.height">Media Height</label>
-			<label index="media.forcePlayer">Use Player</label>
+			<label index="media.forcePlayer">Use Player (only for Shockwave Flash)</label>
 			<label index="media.type">Media Type</label>
 			<label index="media.type.video">Video</label>
 			<label index="media.type.audio">Audio</label>

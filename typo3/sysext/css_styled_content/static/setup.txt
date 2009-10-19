@@ -1035,6 +1035,7 @@ tt_content.media {
 		type = video
 		renderType = auto
 		allowEmptyUrl = 0
+		forcePlayer = 1
 		
 		fileExtHandler {
 			default = MEDIA
