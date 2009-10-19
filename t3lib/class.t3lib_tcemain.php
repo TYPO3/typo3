@@ -7390,49 +7390,19 @@ State was change by %s (username: %s)
 					'sys_log',
 					'type=1 AND userid='.intval($this->BE_USER->user['uid']).' AND tstamp='.intval($GLOBALS['EXEC_TIME']).'	AND error!=0'
 				);
-		$errorJS = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res_log)) {
 			$log_data = unserialize($row['log_data']);
-			$errorJS[] = $row['error'].': '.sprintf($row['details'], $log_data[0],$log_data[1],$log_data[2],$log_data[3],$log_data[4]);
+			$msg = $row['error'] . ': ' . sprintf($row['details'], $log_data[0], $log_data[1], $log_data[2], $log_data[3], $log_data[4]);
+			$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$msg,
+						'',
+						t3lib_FlashMessage::ERROR,
+						TRUE
+				);
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res_log);
-
-		if (count($errorJS))	{
-			$error_doc = t3lib_div::makeInstance('template');
-			$error_doc->backPath = $GLOBALS['BACK_PATH'];
-
-			$content.= $error_doc->startPage('tce_db.php Error output');
-
-			$lines[] = '
-					<tr class="bgColor5">
-						<td colspan="2" align="center"><strong>Errors:</strong></td>
-					</tr>';
-
-			foreach($errorJS as $line)	{
-				$lines[] = '
-					<tr class="bgColor4">
-						<td valign="top"><img'.t3lib_iconWorks::skinImg($error_doc->backPath,'gfx/icon_fatalerror.gif','width="18" height="16"').' alt="" /></td>
-						<td>'.htmlspecialchars($line).'</td>
-					</tr>';
-			}
-
-			$lines[] = '
-					<tr>
-						<td colspan="2" align="center"><br />'.
-						'<form action=""><input type="submit" value="Continue" onclick="'.htmlspecialchars('window.location.href=\''.$redirect.'\';return false;').'"></form>'.
-						'</td>
-					</tr>';
-
-			$content.= '
-				<br/><br/>
-				<table border="0" cellpadding="1" cellspacing="1" width="300" align="center">
-					'.implode('',$lines).'
-				</table>';
-
-			$content.= $error_doc->endPage();
-			echo $content;
-			exit;
-		}
 	}
 
 	/*****************************
