@@ -124,12 +124,17 @@ class SC_mod_tools_dbint_index {
 			}
 		</script>
 		';
+		$this->doc->table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" style="width:400px!important;">
+			<colgroup><col width="24"><col width="300"><col width="76"></colgroup>';
 
-		$this->doc->tableLayout = Array (
-			'defRow' => Array (
-				'0' => Array('<td valign="top">','</td>'),
-				'1' => Array('<td valign="top">','</td>'),
-				'defCol' => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="15" height="1" alt="" /></td><td valign="top">','</td>')
+		$this->doc->tableLayout = array (
+			'0' => array (
+				'defCol' => array('<td class="c-headLineTable"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="c-headLineTable"><b>', '</b></td>')
+			),
+			'defRow' => array (
+				'0' => array('<td valign="top">','</td>'),
+				'1' => array('<td valign="top">','</td>'),
+				'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="15" height="1" alt="" /></td><td valign="top">', '</td>')
 			)
 		);
 	}
@@ -457,7 +462,8 @@ class SC_mod_tools_dbint_index {
 		$this->content.= $this->doc->spacer(5);
 
 			// Pages stat
-		$codeArr=Array();
+		$codeArr=array();
+		$codeArr['tableheader'] = array('', $GLOBALS['LANG']->getLL('count'));
 		$i++;
 		$codeArr[$i][]='<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/pages.gif','width="18" height="16"') . ' hspace="4" align="top" alt="" />';
 		$codeArr[$i][]=$GLOBALS['LANG']->getLL('total_pages');
@@ -476,7 +482,8 @@ class SC_mod_tools_dbint_index {
 		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('pages'), $this->doc->table($codeArr), false, true);
 
 			// Doktype
-		$codeArr=Array();
+		$codeArr=array();
+		$codeArr['tableheader'] = array($GLOBALS['LANG']->getLL('doktype_value'), $GLOBALS['LANG']->getLL('count'));
 		$doktype= $TCA['pages']['columns']['doktype']['config']['items'];
 		if (is_array($doktype))	{
 			reset($doktype);
@@ -504,11 +511,24 @@ class SC_mod_tools_dbint_index {
 			$admin->lostRecords($id_list);
 		}
 
-		$codeArr = Array();
+		$this->doc->table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" style="width:700px!important;">';
+
+		$codeArr = array();
+		$codeArr['tableheader'] = array(
+			$GLOBALS['LANG']->getLL('label'),
+			$GLOBALS['LANG']->getLL('tablename'),
+			$GLOBALS['LANG']->getLL('total_lost'),
+			''
+		);
+
 		$countArr = $admin->countRecords($id_list);
 		if (is_array($TCA))	{
+
 			reset($TCA);
 			while(list($t)=each($TCA))	{
+				if ($TCA[$t]['ctrl']['hideTable']) {
+					continue;
+				}
 				$codeArr[$t][]=t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'hspace="4" align="top"');
 				$codeArr[$t][]=$LANG->sL($TCA[$t]['ctrl']['title']);
 				$codeArr[$t][]=$t;

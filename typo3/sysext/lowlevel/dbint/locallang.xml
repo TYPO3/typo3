@@ -54,10 +54,15 @@
 			<label index="searchingForFilenames">Searching for filenames:</label>
 			<label index="fixLostRecord">Click to move this lost record to rootlevel (pid=0)</label>
 			<label index="doktype">Document types:</label>
+			<label index="doktype_value">Document types (value)</label>
 			<label index="pages">Pages:</label>
 			<label index="total_pages">Total number of pages:</label>
 			<label index="deleted_pages">Marked-deleted pages:</label>
 			<label index="hidden_pages">Hidden pages:</label>
+			<label index="count">Count</label>
+			<label index="label">Label</label>
+			<label index="tablename">Table name</label>
+			<label index="total_lost">Records total / lost</label>
 			<label index="relations">Relations:</label>
 			<label index="relations_description">This will analyse the content of the tables and check if there are 'empty' relations between records or if files are missing from their expected position.</label>
 			<label index="files_many_ref">Files referenced from more than one record:</label>
