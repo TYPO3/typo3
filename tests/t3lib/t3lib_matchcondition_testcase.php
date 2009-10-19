@@ -53,6 +53,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 			'_POST' => $_POST,
 			'_SERVER' => $_SERVER,
 			'TYPO3_CONF_VARS' => $GLOBALS['TYPO3_CONF_VARS'],
+			'T3_VAR' => $GLOBALS['T3_VAR'],
 		);
 
 		$this->testGlobalNamespace = uniqid('TEST');
@@ -142,10 +143,14 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function browserInfoHookIsCalled() {
-		$browserInfoHookMock = $this->getMock(uniqid('tx_browserInfoHook'), array('browserInfo'));
+		$classRef = uniqid('tx_browserInfoHook');
+		$browserInfoHookMock = $this->getMock($classRef, array('browserInfo'));
 		$browserInfoHookMock->expects($this->atLeastOnce())->method('browserInfo');
-		$this->matchCondition->hookObjectsArr = array($browserInfoHookMock);
 
+		$GLOBALS['T3_VAR']['getUserObj'][$classRef] = $browserInfoHookMock;
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'][$classRef] = $classRef;
+
+		$this->matchCondition->__construct();
 		$this->matchCondition->match('[browser = msie] && [version = 7] && [system = winNT]');
 	}
 

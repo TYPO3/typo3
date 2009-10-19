@@ -1,6 +1,7 @@
 2009-10-19  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to test #12153: Fixed bug in language condition tests
+	* Follow-up to test #12153: Refactored browserInfoHookIsCalled() test case
 
 2009-10-19  Rupert Germann  <rupi@gmx.li>
 
