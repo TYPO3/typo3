@@ -437,7 +437,7 @@ class SC_db_new {
 
 
 			// New tables (but not pages) INSIDE this pages
-
+		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
 		$newContentIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_record.gif', 'width="16" height="12"') . ' alt="" />';
 		if ($this->newContentInto)	{
 			if (is_array($GLOBALS['TCA']))	{
@@ -481,6 +481,12 @@ class SC_db_new {
 							$rowContent.= '<br />' . $halfLine;
 						}  else {
 							// get the title
+							if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {
+								continue;
+							}
+							if ($v['ctrl']['adminOnly'] && !$isAdmin) {
+								continue;
+							}
 							$nameParts = explode('_', $table);
 							$thisTitle = '';
 							if ($nameParts[0] == 'tx' || $nameParts[0] == 'tt') {
