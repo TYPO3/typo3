@@ -1,3 +1,7 @@
+2009-10-19  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11853: PHP warning in file module when uploading files with the flashuploader (thanks to Georg Ringer)
+
 2009-10-19  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10897: typo3/db_new.php prompts to create records in hidden, static and readonly tables

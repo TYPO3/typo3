@@ -169,7 +169,7 @@ class SC_alt_file_navframe {
 
 				// do a reload of this frame once all uploads are done
 			flashUploader.on("totalcomplete", function() {
-				jumpTo(path, "", "", "");
+				jumpTo (top.rawurlencode(path), "", "", "");
 			});
 
 				// this is the callback function that delivers the additional post parameter to the flash application
