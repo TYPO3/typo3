@@ -2,6 +2,7 @@
 
 	* Follow-up to test #12153: Fixed bug in language condition tests
 	* Follow-up to test #12153: Refactored browserInfoHookIsCalled() test case
+	* Follow-up to test #12153: Added test cases for device condition
 
 2009-10-19  Rupert Germann  <rupi@gmx.li>
 

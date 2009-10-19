@@ -155,6 +155,44 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether a device type condition matches a crawler.
+	 * @test
+	 */
+	public function deviceConditionMatchesRobot() {
+		$_SERVER['HTTP_USER_AGENT'] = 'Googlebot/2.1 (+http://www.google.com/bot.html)';
+		$result = $this->matchCondition->match('[device = robot]');
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Tests whether a device type condition does not match a crawler.
+	 * @test
+	 */
+	public function deviceConditionDoesNotMatchRobot() {
+		$_SERVER['HTTP_USER_AGENT'] = md5('Some strange user agent');
+		$result = $this->matchCondition->match('[device = robot]');
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * Tests whether the whichDevice hook is called.
+	 *
+	 * @return	void
+	 * @test
+	 */
+	public function whichDeviceHookIsCalled() {
+		$classRef = uniqid('tx_whichDeviceHook');
+		$whichDeviceHookMock = $this->getMock($classRef, array('whichDevice'));
+		$whichDeviceHookMock->expects($this->atLeastOnce())->method('whichDevice');
+
+		$GLOBALS['T3_VAR']['getUserObj'][$classRef] = $whichDeviceHookMock;
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_matchcondition.php']['matchConditionClass'][$classRef] = $classRef;
+
+		$this->matchCondition->__construct();
+		$this->matchCondition->match('[device = robot]');
+	}
+
+	/**
 	 * Tests whether the language comparison matches.
 	 * @test
 	 */
