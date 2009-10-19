@@ -215,6 +215,12 @@ class template {
 	protected $pageRenderer;
 	protected $pageHeaderFooterTemplateFile = '';	// alternative template file
 
+	/**
+	 * Whether flashmessages should be rendered or not
+	 *
+	 * @var $showFlashMessages
+	 */
+	public $showFlashMessages = TRUE;
 
 	/**
 	 * Constructor
@@ -1895,26 +1901,28 @@ $str.=$this->docBodyTagBegin().
 			$moduleBody = t3lib_parsehtml::substituteSubpart($moduleBody, $marker, $content);
 		}
 
-			// adding flash messages
-		$flashMessages = t3lib_FlashMessageQueue::renderFlashMessages();
-		if (!empty($flashMessages)) {
-			$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
-		}
+		if ($this->showFlashMessages) {
+				// adding flash messages
+			$flashMessages = t3lib_FlashMessageQueue::renderFlashMessages();
+			if (!empty($flashMessages)) {
+				$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
+			}
 
-		if (strstr($moduleBody, '###FLASHMESSAGES###')) {
-				// either replace a dedicated marker for the messages if present
-			$moduleBody = str_replace(
-				'###FLASHMESSAGES###',
-				$flashMessages,
-				$moduleBody
-			);
-		} else {
-				// or force them to appear before the content
-			$moduleBody = str_replace(
-				'###CONTENT###',
-				$flashMessages . '###CONTENT###',
-				$moduleBody
-			);
+			if (strstr($moduleBody, '###FLASHMESSAGES###')) {
+					// either replace a dedicated marker for the messages if present
+				$moduleBody = str_replace(
+					'###FLASHMESSAGES###',
+					$flashMessages,
+					$moduleBody
+				);
+			} else {
+					// or force them to appear before the content
+				$moduleBody = str_replace(
+					'###CONTENT###',
+					$flashMessages . '###CONTENT###',
+					$moduleBody
+				);
+			}
 		}
 
 			// replacing all markers with the finished markers and return the HTML content

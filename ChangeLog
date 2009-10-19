@@ -1,5 +1,6 @@
 2009-10-19  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #12188: Double display of flashmessages
 	* Fixed bug #11694: Table sys_refindex / KEY lookup_string not UTF-8 compatible  (thanks to Morton Jonuschat)
 	* Fixed bug #11853: PHP warning in file module when uploading files with the flashuploader (thanks to Georg Ringer)
 

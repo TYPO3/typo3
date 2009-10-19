@@ -124,6 +124,7 @@ class SC_alt_file_navframe {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/alt_file_navframe.html');
+		$this->doc->showFlashMessages = FALSE;
 
 			// Adding javascript code for AJAX (prototype), drag&drop and the filetree as well as the click menu code
 		$this->doc->getDragDropCode('folders');

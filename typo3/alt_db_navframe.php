@@ -150,6 +150,7 @@ class SC_alt_db_navframe {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/alt_db_navframe.html');
+		$this->doc->showFlashMessages = FALSE;
 
 			// get HTML-Template
 
