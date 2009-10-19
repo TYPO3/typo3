@@ -258,7 +258,11 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		}
 			// Setting defaults if uc is empty
 		if (!is_array($this->uc))	{
-			$this->uc = array_merge($this->uc_default, (array)$TYPO3_CONF_VARS['BE']['defaultUC'], (array)$this->getTSConfigProp('setup.default'));	// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
+			$this->uc = array_merge(
+				$this->uc_default,
+				(array) $TYPO3_CONF_VARS['BE']['defaultUC'],
+				t3lib_div::removeDotsFromTS((array) $this->getTSConfigProp('setup.default'))
+			);
 			$this->overrideUC();
 			$U=1;
 		}
