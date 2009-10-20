@@ -1332,18 +1332,27 @@ final class t3lib_BEfunc {
 			return $TSdataArray;
 		}
 
-			// Parsing the user TS (or getting from cache)
-		$userTS = implode(chr(10) . '[GLOBAL]' . chr(10), $TSdataArray);
-		$hash = md5('pageTS:'.$userTS);
-		$cachedContent = t3lib_BEfunc::getHash($hash);
-		$TSconfig = array();
-		if (isset($cachedContent)) {
-			$TSconfig = unserialize($cachedContent);
+			// Parsing the page TS-Config (or getting from cache)
+		$pageTS = implode(chr(10) . '[GLOBAL]' . chr(10), $TSdataArray);
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions']) {
+			/* @var $parseObj t3lib_TSparser_TSconfig */
+			$parseObj = t3lib_div::makeInstance('t3lib_TSparser_TSconfig');
+			$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
+			if ($res) {
+				$TSconfig = $res['TSconfig'];
+			}
 		} else {
-			$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
-			$parseObj->parse($userTS);
-			$TSconfig = $parseObj->setup;
-			t3lib_BEfunc::storeHash($hash, serialize($TSconfig), 'PAGES_TSconfig');
+			$hash = md5('pageTS:' . $pageTS);
+			$cachedContent = t3lib_BEfunc::getHash($hash);
+			$TSconfig = array();
+			if (isset($cachedContent)) {
+				$TSconfig = unserialize($cachedContent);
+			} else {
+				$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
+				$parseObj->parse($pageTS);
+				$TSconfig = $parseObj->setup;
+				t3lib_BEfunc::storeHash($hash, serialize($TSconfig), 'PAGES_TSconfig');
+			}
 		}
 
 			// get User TSconfig overlay

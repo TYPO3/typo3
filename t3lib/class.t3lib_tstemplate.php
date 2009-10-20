@@ -293,8 +293,9 @@ class t3lib_TStemplate	{
 	 */
 	function matching($cc)	{
 		if (is_array($cc['all']))	{
-			$matchObj = t3lib_div::makeInstance('t3lib_matchCondition');
-			$matchObj->altRootLine=$cc['rootLine'];
+			/* @var $matchObj t3lib_matchCondition_frontend */
+			$matchObj = t3lib_div::makeInstance('t3lib_matchCondition_frontend');
+			$matchObj->setRootline((array)$cc['rootLine']);
 			foreach ($cc['all'] as $key => $pre) {
 				if ($matchObj->match($pre))	{
 					$sectionsMatch[$key]=$pre;
@@ -809,9 +810,11 @@ class t3lib_TStemplate	{
 		$constants->breakPointLN=intval($this->ext_constants_BRP);
 		$constants->setup = $this->const;
 		$constants->setup = $this->mergeConstantsFromPageTSconfig($constants->setup);
-		$matchObj = t3lib_div::makeInstance('t3lib_matchCondition');
-		$matchObj->matchAlternative = $this->matchAlternative;
-		$matchObj->matchAll = $this->matchAll;		// Matches ALL conditions in TypoScript
+
+		/* @var $matchObj t3lib_matchCondition_frontend */
+		$matchObj = t3lib_div::makeInstance('t3lib_matchCondition_frontend');
+		$matchObj->setSimulateMatchConditions($this->matchAlternative);
+		$matchObj->setSimulateMatchResult((bool)$this->matchAll);
 
 			// Traverse constants text fields and parse them
 		foreach($this->constants as $str)	{

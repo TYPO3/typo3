@@ -1160,19 +1160,30 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				// Check include lines.
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
 
-				// Parsing the user TSconfig (or getting from cache)
 			$this->userTS_text = implode(chr(10).'[GLOBAL]'.chr(10),$this->TSdataArray);	// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
-			$hash = md5('userTS:'.$this->userTS_text);
-			$cachedContent = t3lib_BEfunc::getHash($hash);
-			if (isset($cachedContent) && !$this->userTS_dontGetCached)	{
-				$this->userTS = unserialize($cachedContent);
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions'] && !$this->userTS_dontGetCached) {
+					// Perform TS-Config parsing with condition matching
+				$parseObj = t3lib_div::makeInstance('t3lib_TSparser_TSconfig');
+				$res = $parseObj->parseTSconfig($this->userTS_text, 'userTS');
+				if ($res) {
+					$this->userTS = $res['TSconfig'];
+					$this->userTSUpdated = ($res['cached'] ? 0 : 1);
+				}
 			} else {
-				$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
-				$parseObj->parse($this->userTS_text);
-				$this->userTS = $parseObj->setup;
-				t3lib_BEfunc::storeHash($hash,serialize($this->userTS),'BE_USER_TSconfig');
-					// Update UC:
-				$this->userTSUpdated=1;
+					// Parsing the user TSconfig (or getting from cache)
+				$hash = md5('userTS:' . $this->userTS_text);
+				$cachedContent = t3lib_BEfunc::getHash($hash);
+				if (isset($cachedContent) && !$this->userTS_dontGetCached) {
+					$this->userTS = unserialize($cachedContent);
+				} else {
+					$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
+					$parseObj->parse($this->userTS_text);
+					$this->userTS = $parseObj->setup;
+					t3lib_BEfunc::storeHash($hash, serialize($this->userTS), 'BE_USER_TSconfig');
+						// Update UC:
+					$this->userTSUpdated=1;
+				}
 			}
 
 				// Processing webmounts
