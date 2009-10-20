@@ -68,9 +68,9 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function checkTrimExplodeLimitsResultsToFirstXElementsWithPositiveParameter() {
+	public function checkTrimExplodeKeepsRemainingResultsWithEmptyItemsAfterReachingLimitWithPositiveParameter() {
 		$testString = ' a , b , c , , d,, ,e ';
-		$expectedArray = array('a', 'b', 'c'); // limiting returns the rest of the string as the last element
+		$expectedArray = array('a', 'b', 'c,,d,,,e'); // limiting returns the rest of the string as the last element
 		$actualArray = t3lib_div::trimExplode(',', $testString, false, 3);
 
 		$this->assertEquals($expectedArray, $actualArray);
@@ -79,10 +79,43 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function checkTrimExplodeLimitsResultsToLastXElementsWithNegativeParameter() {
+	public function checkTrimExplodeKeepsRemainingResultsWithoutEmptyItemsAfterReachingLimitWithPositiveParameter() {
+		$testString = ' a , b , c , , d,, ,e ';
+		$expectedArray = array('a', 'b', 'c,d,e'); // limiting returns the rest of the string as the last element
+		$actualArray = t3lib_div::trimExplode(',', $testString, true, 3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeKeepsRamainingResultsWithEmptyItemsAfterReachingLimitWithNegativeParameter() {
+		$testString = ' a , b , c , d, ,e, f , , ';
+		$expectedArray = array('a', 'b', 'c', 'd', '', 'e'); // limiting returns the rest of the string as the last element
+		$actualArray = t3lib_div::trimExplode(',', $testString, false, -3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeKeepsRamainingResultsWithoutEmptyItemsAfterReachingLimitWithNegativeParameter() {
 		$testString = ' a , b , c , d, ,e, f , , ';
 		$expectedArray = array('a', 'b', 'c'); // limiting returns the rest of the string as the last element
 		$actualArray = t3lib_div::trimExplode(',', $testString, true, -3);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkTrimExplodeReturnsExactResultsWithoutReachingLimitWithPositiveParameter() {
+		$testString = ' a , b , , c , , , ';
+		$expectedArray = array('a', 'b', 'c'); // limiting returns the rest of the string as the last element
+		$actualArray = t3lib_div::trimExplode(',', $testString, true, 4);
 
 		$this->assertEquals($expectedArray, $actualArray);
 	}

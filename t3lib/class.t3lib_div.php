@@ -1756,7 +1756,13 @@ final class t3lib_div {
 		}
 
 		if ($limit != 0) {
-			$result = array_slice($result, 0, $limit);
+			if ($limit < 0) {
+				$result = array_slice($result, 0, $limit);
+			} elseif (count($result) > $limit) {
+				$lastElements = array_slice($result, $limit - 1);
+				$result = array_slice($result, 0, $limit - 1);
+				$result[] = implode($delim, $lastElements);
+			}
 		}
 
 		return $result;

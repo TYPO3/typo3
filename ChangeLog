@@ -2,6 +2,7 @@
 
 	* Cleanup #12278: Move t3lib_matchCondition::whichDevice() to t3lib_utility_Client::getDeviceType()
 	* Follow-up to test #12153: Added test cases for empty comparison in globalVar condition
+	* Follow-up to bugfix #9779: Modified the limit argument in t3lib_div::trimExplode() to behave as the regular explode() function does
 
 2009-10-20  Rupert Germann  <rupi@gmx.li>
 
