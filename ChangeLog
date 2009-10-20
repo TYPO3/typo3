@@ -1,6 +1,7 @@
 2009-10-20  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup #12278: Move t3lib_matchCondition::whichDevice() to t3lib_utility_Client::getDeviceType()
+	* Follow-up to test #12153: Added test cases for empty comparison in globalVar condition
 
 2009-10-20  Rupert Germann  <rupi@gmx.li>
 

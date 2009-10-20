@@ -355,6 +355,30 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function globalVarConditionMatchesOnEmptyExpressionWithNoValueSet() {
+		$testKey = uniqid('test');
+		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function globalVarConditionDoesNotMatchOnEmptyExpressionWithValueSetToZero() {
+		$testKey = uniqid('test');
+
+		$_GET = array();
+		$_POST = array($testKey => 0);
+
+		$this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
+		$this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
+	}
+
+	/**
 	 * Tests whether string comparison matches.
 	 * @test
 	 */
