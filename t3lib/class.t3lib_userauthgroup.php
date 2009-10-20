@@ -540,7 +540,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Check if user has access to all existing localizations for a certain record
 	 *
-	 * @param array 	$record
+	 * @param string 	the table
+	 * @param array 	the current record
 	 * @return boolean
 	 */
 	function checkFullLanguagesAccess($table, $record) {
@@ -552,17 +553,19 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$recordLocalizations = t3lib_BEfunc::getRecordsByField(
 				$table,
 				$pointerField,
-				$record[$pointerField]>0 ? $record[$pointerField] : $record['uid'],
+				$record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'],
 				'',
 				'',
 				'',
 				'1'
 			);
 
-			if(is_array($recordLocalizations)) {
+			if (is_array($recordLocalizations)) {
 				foreach($recordLocalizations as $localization) {
-					$recordLocalizationAccess = $recordLocalizationAccess && $this->checkLanguageAccess( $localization[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
-					if (!$recordLocalizationAccess) break;
+					$recordLocalizationAccess = $recordLocalizationAccess && $this->checkLanguageAccess($localization[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+					if (!$recordLocalizationAccess) {
+						break;
+					}
 				}
 			}
 

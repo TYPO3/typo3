@@ -4492,7 +4492,9 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function deleteL10nOverlayRecords($table, $uid) {
-		if ($table == 'pages') return;
+		if (!empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
+			return;
+		}
 		t3lib_div::loadTCA($table);
 
 		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);

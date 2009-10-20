@@ -3539,10 +3539,10 @@ final class t3lib_BEfunc {
 	 * @return	string		Output string (or integer count value if no msg string specified)
 	 */
 	public static function translationCount($table, $ref, $msg = '') {
-		if ($table != 'pages' &&
+		if (empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) &&
 				$GLOBALS['TCA'][$table]['ctrl']['languageField'] &&
-				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-				&& !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
+				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] &&
+				!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 				'*',
 				$table,
