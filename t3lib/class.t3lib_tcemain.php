@@ -4495,7 +4495,6 @@ class t3lib_TCEmain	{
 		if (!empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
 			return;
 		}
-		t3lib_div::loadTCA($table);
 
 		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);
 		if (is_array($l10nRecords)) {
