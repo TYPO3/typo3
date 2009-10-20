@@ -267,6 +267,11 @@ class clickMenu {
 			$DBmount = TRUE;
 		}
 
+		$l10nOverlay = false;
+		if ($table != 'pages_language_overlay' && array_key_exists('transOrigPointerField', $TCA[$table]['ctrl'])) {
+			$l10nOverlay = intval($this->rec[$TCA[$table]['ctrl']['transOrigPointerField']]) != 0;
+		}
+
 			// If record found (or root), go ahead and fill the $menuItems array which will contain data for the elements to render.
 		if (is_array($this->rec) || $root)	{
 
@@ -297,9 +302,9 @@ class clickMenu {
 			$menuItems['spacer1']='spacer';
 
 				// Copy:
-			if(!in_array('copy',$this->disabledItems) && !$root && !$DBmount)	$menuItems['copy']=$this->DB_copycut($table,$uid,'copy');
+			if (!in_array('copy', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay)	$menuItems['copy'] = $this->DB_copycut($table, $uid, 'copy');
 				// Cut:
-			if(!in_array('cut',$this->disabledItems) && !$root && !$DBmount)	$menuItems['cut']=$this->DB_copycut($table,$uid,'cut');
+			if (!in_array('cut', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay)	$menuItems['cut'] = $this->DB_copycut($table, $uid, 'cut');
 
 				// Paste:
 			$elFromAllTables = count($this->clipObj->elFromTable(''));

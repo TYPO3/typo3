@@ -24,6 +24,7 @@
 
 2009-10-20  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #12271: List module and Clickmenu should not enable to create inconsistant record-relations (thanks to Tolleiv Nietsch)
 	* Fixed bug #12269: List module renders wrong data in localization view when record-overlay was moved in WS (thanks to Tolleiv Nietsch)
 	* Fixed bug #8817: Copying Content Elements does not copy Language Overlays (thanks to Tolleiv Nietsch)
 	* Fixed bug #2314: When moving records the translation do not move with it (thanks to Tolleiv Nietsch)
