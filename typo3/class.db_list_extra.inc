@@ -566,18 +566,30 @@ class localRecordList extends recordList {
 					$this->eCounter++;
 				}
 
-				// Record navigation is added to the beginning and end of the table if in single table mode
+					// Record navigation is added to the beginning and end of the table if in single table mode
 				if ($this->table) {
 					$pageNavigation = $this->renderListNavigation();
 					$iOut = $pageNavigation . $iOut . $pageNavigation;
+				} else {
+						// show that there are more records than shown
+					if ($this->totalItems > $this->itemsLimitPerTable) {
+						$countOnFirstPage = $this->totalItems > $this->itemsLimitSingleTable ? $this->itemsLimitSingleTable : $this->totalItems;
+						$hasMore = ($this->totalItems > $this->itemsLimitSingleTable);
+						$iOut .= '<tr><td colspan="' . count($this->fieldArray) . '" style="padding:5px;">
+								<a href="'.htmlspecialchars($this->listURL() . '&table=' . rawurlencode($table)) . '">' .
+								'<img' . t3lib_iconWorks::skinImg($this->backPath,'gfx/pildown.gif', 'width="14" height="14"') .' alt="" />'.
+								' <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
+								</td></tr>';
+						}
+
 				}
 
 					// The header row for the table is now created:
-				$out.=$this->renderListHeader($table,$currentIdList);
+				$out .= $this->renderListHeader($table,$currentIdList);
 			}
 
 				// The list of records is added after the header:
-			$out.=$iOut;
+			$out .= $iOut;
 			unset($iOut);
 
 				// ... and it is all wrapped in a table:

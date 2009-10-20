@@ -1,5 +1,6 @@
 2009-10-20  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12273: List view don't show if there are more records than displayed
 	* Follow-up to bug #10467: Added var "showRefreshLoginPopup" to config_default
 	* Fixed bug #10467: AJAX relogin does not work
 	* Added test #12286: Add unit tests for RemoveXSS
