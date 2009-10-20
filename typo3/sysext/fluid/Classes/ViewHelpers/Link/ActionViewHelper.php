@@ -51,13 +51,13 @@ class Tx_Fluid_ViewHelpers_Link_ActionViewHelper extends Tx_Fluid_Core_ViewHelpe
 		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
 	}
 
-		/**
+	/**
 	 * @param string $action Target action
 	 * @param array $arguments Arguments
 	 * @param string $controller Target controller. If NULL current controllerName is used
 	 * @param string $extensionName Target Extension Name (without "tx_" prefix and no underscores). If NULL the current extension name is used
 	 * @param string $pluginName Target plugin. If empty, the current plugin name is used
-	 * @param integer $page target page. See TypoLink destination
+	 * @param integer $pageUid target page. See TypoLink destination
 	 * @param integer $pageType type of the target page. See typolink.parameter
 	 * @param boolean $noCache set this to disable caching for the target page. You should not need this.
 	 * @param boolean $noCacheHash set this to supress the cHash query parameter created by TypoLink. You should not need this.
