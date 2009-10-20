@@ -1,3 +1,7 @@
+2009-10-20  Francois Suter  <francois@typo3.org>
+
+	* Added feature #12187: Added more usage of flashmessages to EM (thanks to Steffen Gebert)
+
 2009-10-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12273: List view don't show if there are more records than displayed

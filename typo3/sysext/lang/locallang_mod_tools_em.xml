@@ -212,6 +212,8 @@
 			<label index="ext_details_remove_ext">Remove extension</label>
 			<label index="ext_details_removing">Removing %s:</label>
 			<label index="ext_details_ext_installed_removed">The extension has been %s.</label>
+			<label index="ext_details_ext_installed_with_key">The extension "%s" has been installed.</label>
+			<label index="ext_details_ext_removed_with_key">The extension "%s" has been removed.</label>
 			<label index="ext_details_installed">installed</label>
 			<label index="ext_details_removed">removed</label>
 			<label index="ext_details_write_access_error">Write access error</label>

@@ -2250,7 +2250,19 @@ EXTENSION KEYS:
 						}
 						if (!$updates || t3lib_div::_GP('_do_install')) {
 							$this->writeNewExtensionList($newExtList);
-							$GLOBALS['BE_USER']->writelog(5,1,0,0,'Extension list has been changed, extension %s has been %s',array($extKey,($this->CMD['load']?'installed':'removed')));
+							$action = $this->CMD['load'] ? 'installed' : 'removed';
+							$GLOBALS['BE_USER']->writelog(5, 1, 0, 0, 'Extension list has been changed, extension %s has been %s', array($extKey, $action));
+
+							$messageLabel = 'ext_details_ext_' . $action . '_with_key';
+							$flashMessage = t3lib_div::makeInstance(
+								't3lib_FlashMessage',
+								sprintf($GLOBALS['LANG']->getLL($messageLabel), $extKey),
+								'',
+								t3lib_FlashMessage::OK,
+								TRUE
+							);
+							t3lib_FlashMessageQueue::addMessage($flashMessage);
+
 							if ($this->CMD['clrCmd'] || t3lib_div::_GP('_clrCmd'))	{
 								if ($this->CMD['load'] && @is_file($absPath.'ext_conf_template.txt')) {
 									$vA = array('CMD'=>Array('showExt'=>$extKey));
