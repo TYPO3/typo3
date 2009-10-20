@@ -1,4 +1,4 @@
-2009-10-19  Rupert Germann  <rupi@gmx.li>
+2009-10-20  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #10081: t3lib_div must not die if a locallang file is not found (thanks to Franz Holzinger)
 	* Fixed bug #12194: The filetree does not show whether a folder is write protected
