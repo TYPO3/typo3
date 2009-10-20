@@ -1,3 +1,7 @@
+2009-10-21  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Cleanup #11813: Refactoring t3lib_db to match CGL (thanks to Felix Oertel)
+
 2009-10-20  Francois Suter  <francois@typo3.org>
 
 	* Added feature #12187: Added more usage of flashmessages to EM (thanks to Steffen Gebert)
