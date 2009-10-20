@@ -21,6 +21,7 @@
 	* Added feature #5613: Enable/integrate conditions in Page TSconfig
 	* Follow-up to feature #5613: Added test cases for matching conditions
 	* Fixed bug #11610: t3lib_transl8tools::translationInfo() should return also CType of the element (thanks to Michael Klapper)
+	* Follow-up to feature #5613: Enabled evaluation of conditions in the backend by default
 
 2009-10-20  Rupert Germann  <rupi@gmx.li>
 
