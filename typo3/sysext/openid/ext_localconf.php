@@ -25,4 +25,6 @@ $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_openid'] = 'EXT:openid/clas
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck']['tx_openid_mod_setup'] = 'EXT:openid/class.tx_openid_mod_setup.php';
 
+// Use Popup for refresh login
+$TYPO3_CONF_VARS['BE']['showRefreshLoginPopup'] = 1;
 ?>

@@ -387,13 +387,16 @@ class SC_index {
 				t3lib_div::redirect($this->redirectToURL);
 			} else {
 				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
-					if (parent.opener && parent.opener.busy)	{
-						parent.opener.busy.loginRefreshed();
+					if (parent.opener && (parent.opener.busy || parent.opener.TYPO3.loginRefresh)) {
+						if (parent.opener.TYPO3.loginRefresh) {
+							parent.opener.TYPO3.loginRefresh.startTimer();
+						} else {
+							parent.opener.busy.loginRefreshed();
+						}
 						parent.close();
 					}
 				');
 			}
-
 		} elseif (!$BE_USER->user['uid'] && $this->commandLI) {
 			sleep(5);	// Wrong password, wait for 5 seconds
 		}

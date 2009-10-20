@@ -1,5 +1,6 @@
 2009-10-20  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10467: AJAX relogin does not work
 	* Added test #12286: Add unit tests for RemoveXSS
 
 2009-10-20  Oliver Hader  <oliver@typo3.org>

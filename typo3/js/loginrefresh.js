@@ -27,272 +27,288 @@
 /**
  * AJAX login refresh box
  */
+Ext.namespace('Ext.ux.TYPO3');  
 
-/**
- * Functions for session-expiry detection:
- */
-function busy()	{	//
-	this.loginRefreshed = busy_loginRefreshed;
-	this.openRefreshWindow = busy_OpenRefreshWindow;
-	this.openLockedWaitWindow = busy_openLockedWaitWindow;
-	this.busyloadTime=0;
-	this.openRefreshW=0;
-	this.reloginCancelled=0;
-	this.earlyRelogin=0;
-	this.locked=0;
+Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
+	locked: 0,
+	interval: 60,
+	
+	constructor: function(config) {
+		config = config || {};
+		Ext.apply(this, config);
+		this.initComponents();
+		this.loadingTask = {
+			run: function(){
+				// interval run
+				Ext.Ajax.request({
+					url: "ajax.php",
+					params: {
+						"ajaxID": "BackendLogin::isTimedOut",
+						"skipSessionUpdate": 1
+					},
+					method: "GET",
+					success: function(response, options) {
+						var result = Ext.util.JSON.decode(response.responseText);
+						if(result.login.locked) {
+							this.locked = 1;
+							Ext.MessageBox.show({
+								title: TYPO3.LLL.core.please_wait,
+								msg: TYPO3.LLL.core.be_locked,
+								width: 500,
+								icon: Ext.MessageBox.INFO,
+								closable: false
+							});
+						} else {
+							if (this.locked === 1) {
+								this.locked = 0;
+								Ext.MessageBox.hide();
+							}
+						}
+						if (result.login.timed_out && Ext.getCmp("loginformWindow")) {
+							Ext.getCmp("login_username").value = TYPO3.configuration.username;
+							this.stopTimer();
+							this.progressWindow.show();
+						}
+					},
+					failure: function() {
 
-	// starts the timer and resets the earlyRelogin variable so that
-	// the countdown works properly.
-	this.startTimer = function() {
-		this.earlyRelogin = 0;
-		this.timer.start();
-	}
+					},
+					scope: this
+				});
+			},
+			interval: this.interval * 1000,
+			scope: this
+		};
+		this.startTimer();
+		Ext.ux.TYPO3.loginRefresh.superclass.constructor.call(this, config);
+	},
+	
+	
+	initComponents: function() {
+		var loginPanel = new Ext.FormPanel({
+			url: "ajax.php",
+			id: "loginform",
+			title: TYPO3.LLL.core.refresh_login_title,
+			defaultType: 'textfield',
+			scope: this,
+			width: "100%",
+			bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
 
-	this.stopTimer = function() {
-		this.timer.stop();
-	}
-
-	// simple timer that polls the server to determine imminent timeout.
-	this.timer = new Ajax.PeriodicalUpdater("","ajax.php", {
-		method: "get",
-		frequency: 60,
-		decay: 1,
-		parameters: "ajaxID=BackendLogin::isTimedOut&skipSessionUpdate=1",
-		onSuccess: function(e) {
-			var login = e.responseJSON.login.evalJSON();
-			if(login.locked) {
-				busy.locked = 1;
-				busy.openLockedWaitWindow();
-			} else if(login.timed_out) {
- 				busy.openRefreshWindow();
- 			}
-			if (busy.locked && !login.locked && !login.timed_out) {
-				busy.locked = 0;
-				Ext.MessageBox.hide();
-			}
-		}
-	});
-
-	// this function runs the countdown and opens the login window
-	// as soon as the countdown expires.
-	this.countDown = function(progressControl, progressTextFormatPlural, progressTextFormatSingular, secondsRemaining, totalSeconds) {
-
-		if(busy.earlyRelogin == 0) {
-			if(secondsRemaining > 1) {
-				progressControl.updateText(String.format(progressTextFormatPlural, secondsRemaining));
-				progressControl.updateProgress(secondsRemaining/(1.0*totalSeconds));
-				setTimeout(function () {
-						busy.countDown(progressControl, progressTextFormatPlural, progressTextFormatSingular,secondsRemaining - 1, totalSeconds);
-					}, 1000);
-			} else if(secondsRemaining > 0) {
-				progressControl.updateText(String.format(progressTextFormatSingular, secondsRemaining));
-				progressControl.updateProgress(secondsRemaining/(1.0*totalSeconds));
-				setTimeout(function () {
-						busy.countDown(progressControl, progressTextFormatPlural, progressTextFormatSingular,secondsRemaining - 1, totalSeconds);
-					}, 1000);
-			} else {
-				busy.openRefreshW = 1;
-				busy.openLogin();
-			}
-		}
-	};
-
-	// Closes the countdown window and opens a new one with a login form.
-	this.openLogin = function() {
-		var login;
-		doChallengeResponse = function(superchallenged) {
-			password = $$("#loginform form")[0].p_field.value;
-
-			if (password)	{
-				if (superchallenged)	{
-					password = MD5(password);	// this makes it superchallenged!!
+			items: [{
+					xtype: "panel",
+					bodyStyle: "margin-bottom: 7px; border: none;",
+					html: TYPO3.LLL.core.login_expired
+				},{
+					fieldLabel: TYPO3.LLL.core.refresh_login_password,
+					name: "p_field",
+					width: 250,
+					id: "password",
+					inputType: "password"
+				},{
+					inputType: "hidden",
+					name: "username",
+					id: "login_username",
+					value: ""
+				},{
+					inputType: "hidden",
+					name: "userident",
+					id: "userident",
+					value: ""
+				}, {
+					inputType: "hidden",
+					name: "challenge",
+					id: "challenge",
+					value: TYPO3.configuration.challenge
 				}
-				str = $("login_username").value+":"+password+":"+$("challenge").value;
-				$("userident").value = MD5(str);
-				$("password").value = "";
+			],
+			keys:({
+				key: Ext.EventObject.ENTER,
+				fn: this.submitForm,
+				scope: this
+			}),
+			buttons: [{
+				text: TYPO3.LLL.core.refresh_login_button,
+				formBind: true,
+				handler: this.submitForm
+			}, {
+				text: TYPO3.LLL.core.refresh_logout_button,
+				formBind: true,
+				handler: function() {
+					top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + "logout.php";
+				}
+			}]
+		});
+		this.loginRefreshWindow = new Ext.Window({
+			id: "loginformWindow",
+			width: 450,
+			autoHeight: true,
+			closable: true,
+			resizable: false,
+			plain: true,
+			border: false,
+			modal: true,
+			draggable: false,
+			items: [loginPanel]
+		});
+		
+		var progressControl = new Ext.ProgressBar({
+			autoWidth: true,
+			autoHeight: true,
+			value: 30,
+		});
+		
+		this.progressWindow = new Ext.Window({
+			closable: false,
+			resizable: false,
+			draggable: false,
+			modal: true,
+			id: "loginRefreshWindow",
+			items: [{
+					xtype: "panel",
+					bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
+					bodyBorder: false,
+					autoHeight: true,
+					autoWidth: true,
+					html: TYPO3.LLL.core.login_about_to_expire
+				},
+				progressControl
+			],
+			title: TYPO3.LLL.core.login_about_to_expire_title,
+			width: 450,
 
-				return true;
-			}
-		}
+			buttons: [{
+				text: TYPO3.LLL.core.refresh_login_refresh_button,
+				handler: function() {
+					refresh = Ext.Ajax.request({
+						url: "ajax.php",
+						params: {
+							"ajaxID": "BackendLogin::isTimedOut"
+						},
+						method: "GET",
+						scope: this
+					});
+					TYPO3.loginRefresh.progressWindow.hide();
+					progressControl.reset();
+					TYPO3.loginRefresh.startTimer();					
+				}
+			}, {
+				text: TYPO3.LLL.core.refresh_direct_logout_button,
+				handler: function() {
+					top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + "logout.php";
+				}
+			}]
+		});
+		this.progressWindow.on('show', function(){
+			progressControl.wait({
+				interval: 1000,
+				duration: 30000,
+				increment: 32,
+				text: String.format(TYPO3.LLL.core.refresh_login_countdown, '30'),
+				fn: function(win){
+					if (TYPO3.configuration.showRefreshLoginPopup) {
+						//log off for sure
+						Ext.Ajax.request({
+							url: "ajax.php",
+							params: {
+								"ajaxID": "BackendLogin::logout"
+							},
+							method: "GET",
+							scope: this,
+							success: function(response, opts) {
+								TYPO3.loginRefresh.showLoginPopup();
+							},
+							failure: function(response, opts) {
+								alert("something went wrong");
+							}
+						});
+					} else {
+						Ext.getCmp("loginRefreshWindow").hide();
+						Ext.getCmp("loginformWindow").show();
+					}
+				}
+			});
 
-		submitForm = function() {
-			if(TS.securityLevel == "superchallenged") {
-				doChallengeResponse(1);
-			} else if (TS.securityLevel == "challenged") {
-				doChallengeResponse(0);
+		});
+		progressControl.on('update', function(control, value, text) {
+			var rest = 30-(parseInt(value*30));
+			if (rest === 1) {
+				control.updateText(String.format(TYPO3.LLL.core.refresh_login_countdown_singular, rest));
 			} else {
-				$("userident").value = $$("#loginform form")[0].p_field.value;
-				$("password").value= "";
+				control.updateText(String.format(TYPO3.LLL.core.refresh_login_countdown, rest));	
 			}
+		});
+		
+		this.loginRefreshWindow.on('close', function(){
+			TYPO3.loginRefresh.startTimer();
+		});
+	},
+	
+	showLoginPopup: function() {
+		Ext.getCmp("loginRefreshWindow").hide();
+		vHWin=window.open("login_frameset.php","relogin_"+TS.uniqueID,"height=450,width=700,status=0,menubar=0,location=1");
+		vHWin.focus();
+	},
+	
+	startTimer: function() {
+		Ext.TaskMgr.start(this.loadingTask);
+	},
+	
+	stopTimer: function() {
+		Ext.TaskMgr.stop(this.loadingTask);
+	},
+	
+	submitForm: function() {
+		var form = Ext.getCmp("loginform").getForm();
+		var fields = form.getValues();
+		if (fields.p_field === "") {
+			Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
+		} else {
+			if (TS.securityLevel == "superchallenged") {
+				fields.p_field = MD5(fields.p_field);
+			} 
+			if (TS.securityLevel == "superchallenged" || TS.securityLevel == "challenged") {
+				fields.userident = MD5(fields.username + ":" + fields.p_field + ":" + fields.challenge);
+			} else {
+				fields.userident = fields.p_field;
+			}
+			fields.p_field =  "";
+			form.setValues(fields);
 
-			login.getForm().submit({
-				method: "post",
+			form.submit({
+				method: "POST",
 				waitTitle: TYPO3.LLL.core.waitTitle,
 				waitMsg: " ",
-				params: "ajaxID=BackendLogin::login&login_status=login",
-				success: function() {
-					win.close();
-					setTimeout("busy.startTimer()", 2000);
-
+				params: {
+					"ajaxID": "BackendLogin::login",
+					"login_status": "login"
 				},
-
-				failure: function() {
-					// TODO: add failure to notification system instead of alert
-					// Ext.tip.msg("Login failed", "Username or Password incorrect!");
-					Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
+				success: function(form, action) {
+					// response object is "login" so real result will be available in failure handler
+					Ext.getCmp("loginformWindow").hide();
+					TYPO3.loginRefresh.startTimer();
+				},
+				failure: function(form, action) {
+					var result = Ext.util.JSON.decode(action.response.responseText).login;
+					if (result.success) {
+						// User is logged in
+						Ext.getCmp("loginformWindow").hide();
+						TYPO3.loginRefresh.startTimer();
+					} else {
+						// TODO: add failure to notification system instead of alert
+						Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
+					}
 				}
 			});
 		}
-
-		logout = new Ajax.Request("ajax.php", {
-			method: "get",
-			parameters: "ajaxID=BackendLogin::logout"
-		});
-
-		Ext.onReady(function(){
-			login = new Ext.FormPanel({
-				url: "ajax.php",
-				id: "loginform",
-				title: TYPO3.LLL.core.refresh_login_title,
-				defaultType: "textfield",
-				width: "100%",
-				bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
-
-				items: [{
-						xtype: "panel",
-						bodyStyle: "margin-bottom: 7px; border: none;",
-						html: TYPO3.LLL.core.login_expired
-					},{
-						fieldLabel: TYPO3.LLL.core.refresh_login_username,
-						name: "username",
-						id: "login_username",
-						allowBlank: false,
-						width: 250
-					},{
-						fieldLabel: TYPO3.LLL.core.refresh_login_password,
-						name: "p_field",
-						width: 250,
-						id: "password",
-						inputType: "password"
-					},{
-						xtype: "hidden",
-						name: "userident",
-						id: "userident",
-						value: ""
-					}, {
-						xtype: "hidden",
-						name: "challenge",
-						id: "challenge",
-						value: TYPO3.configuration.challenge
-					}
-				],
-				keys:({
-					key: Ext.EventObject.ENTER,
-					fn: submitForm,
-					scope: this
-				}),
-				buttons: [{
-					text: TYPO3.LLL.core.refresh_login_button,
-					formBind: true,
-					handler: submitForm
-				}, {
-					text: TYPO3.LLL.core.refresh_logout_button,
-					formBind: true,
-					handler: function() {
-						top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir;
-					}
-				}]
-			});
-			win.close();
-			win = new Ext.Window({
-				width: 450,
-				autoHeight: true,
-				closable: false,
-				resizable: false,
-				plain: true,
-				border: false,
-				modal: true,
-				draggable: false,
-				items: [login]
-			});
-			win.show();
-		});
 	}
-}
+	
+});
 
-function busy_loginRefreshed()	{	//
-	this.openRefreshW=0;
-	this.earlyRelogin=0;
-}
 
-function busy_openLockedWaitWindow() {
-	Ext.MessageBox.show({
-		title: TYPO3.LLL.core.please_wait,
-		msg: TYPO3.LLL.core.be_locked,
-		width: 500,
-		icon: Ext.MessageBox.INFO,
-		closable: false
-	});
-}
-
-function busy_OpenRefreshWindow() {
-	this.openRefreshW = 1;
-
-	busy.stopTimer();
-
-	var seconds = 30;
-	var progressTextFormatSingular = TYPO3.LLL.core.refresh_login_countdown_singular;
-	var progressTextFormatPlural = TYPO3.LLL.core.refresh_login_countdown;
-	var progressText = String.format(progressTextFormatPlural, seconds);
-	var progressControl = new Ext.ProgressBar({
-		autoWidth: true,
-		autoHeight: true,
-		value: 1,
-		text: progressText
-	});
-
-	win = new Ext.Window({
-		closable: false,
-		resizable: false,
-		draggable: false,
-		modal: true,
-		items: [{
-				xtype: "panel",
-				bodyStyle: "padding: 5px 5px 3px 5px; border-width: 0; margin-bottom: 7px;",
-				bodyBorder: false,
-				autoHeight: true,
-				autoWidth: true,
-				html: TYPO3.LLL.core.login_about_to_expire
-			},
-			progressControl
-		],
-		title: TYPO3.LLL.core.login_about_to_expire_title,
-		width: 450,
-
-		buttons: [{
-			text: TYPO3.LLL.core.refresh_login_refresh_button,
-			handler: function() {
-				refresh = new Ajax.Request("ajax.php", {
-					method: "get",
-					parameters: "ajaxID=BackendLogin::refreshLogin"
-				});
-				win.close();
-				busy.earlyRelogin = 1;
-				setTimeout("busy.startTimer()", 2000);
-			}
-		}, {
-			text: TYPO3.LLL.core.refresh_direct_logout_button,
-			handler: function() {
-				top.location.href = TYPO3.configuration.siteUrl + TYPO3.configuration.TYPO3_mainDir + "logout.php";
-			}
-		}]
-	});
-	win.show();
-	busy.countDown(progressControl, progressTextFormatPlural, progressTextFormatSingular, seconds, seconds);
-}
 
 /**
  * Initialize login expiration warning object
  */
-var busy = new busy();
-busy.loginRefreshed();
+Ext.onReady(function() {
+	TYPO3.loginRefresh = new Ext.ux.TYPO3.loginRefresh();
+});

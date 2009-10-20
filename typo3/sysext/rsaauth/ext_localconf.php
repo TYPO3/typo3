@@ -33,4 +33,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'][$_EX
 // Add a hook to show Backend warnings
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['displayWarningMessages'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/hooks/class.tx_rsaauth_backendwarnings.php:tx_rsaauth_backendwarnings';
 
+// Use Popup for refresh login
+$TYPO3_CONF_VARS['BE']['showRefreshLoginPopup'] = 1;
 ?>
