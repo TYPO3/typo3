@@ -1,3 +1,7 @@
+2009-10-20  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid versions to 0.9.10
+
 2009-10-19  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to test #12153: Fixed bug in language condition tests
