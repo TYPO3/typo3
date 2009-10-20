@@ -173,6 +173,7 @@ class t3lib_transl8tools	{
 							return array(
 								'table' => $table,
 								'uid' => $uid,
+								'CType' => $row['CType'],
 								'sys_language_uid' => $row[$TCA[$table]['ctrl']['languageField']],
 								'translation_table' => $trTable,
 								'translations' => $translations,
