@@ -1,6 +1,10 @@
+2009-10-20  Oliver Hader  <oliver@typo3.org>
+
+	* Set version to 0.9.23
+
 2009-10-08  Xavier Perseguers  <typo3@perseguers.ch>
 
-	Fixed bug #6953: Mapping of fieldnames in SQL-functions like MIN(), MAX() or SUM() does not work (Thanks to Christian and Michael Miousse)
+	* Fixed bug #6953: Mapping of fieldnames in SQL-functions like MIN(), MAX() or SUM() does not work (Thanks to Christian and Michael Miousse)
 
 2009-10-01  Xavier Perseguers  <typo3@perseguers.ch>
 
