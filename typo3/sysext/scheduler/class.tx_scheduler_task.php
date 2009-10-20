@@ -196,6 +196,7 @@ abstract class tx_scheduler_Task {
 		$execution->setEnd($timestamp);
 		$execution->setCronCmd('');
 		$execution->setMultiple(0);
+		$execution->setIsNewSingleExecution(TRUE);
 			// Replace existing execution object
 		$this->execution = $execution;
 	}

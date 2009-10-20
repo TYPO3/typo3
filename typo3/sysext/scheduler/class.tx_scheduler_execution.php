@@ -63,7 +63,7 @@ class tx_scheduler_Execution {
 	 *
 	 * @var	boolean	$multiple
 	 */
-	protected $multiple = false;
+	protected $multiple = FALSE;
 
 	/**
 	 * The cron command string of this task,
@@ -71,6 +71,15 @@ class tx_scheduler_Execution {
 	 * @var	string		$cronCmd
 	 */
 	protected $cronCmd;
+
+	/**
+	 * This flag is used to mark a new single execution
+	 * See explanations in method setIsNewSingleExecution()
+	 *
+	 * @var	boolean		$isNewSingleExecution
+	 * @see	tx_scheduler_Execution::setIsNewSingleExecution()
+	 */
+	protected $isNewSingleExecution = FALSE;
 
 
 	/**********************************
@@ -172,6 +181,32 @@ class tx_scheduler_Execution {
 		return $this->cronCmd;
 	}
 
+	/**
+	 * Set whether this is a newly created single execution.
+	 * This is necessary for the following reason: if a new single-running task
+	 * is created and its start date is in the past (even for only a few seconds),
+	 * the next run time calculation (which happens upon saving) will disable
+	 * that task, because it was meant to run only once and is in the past.
+	 * Setting this flag to true preserves this task for a single run.
+	 * Upon next execution, this flag is set to false.
+	 *
+	 * @param	boolean		Is newly created single execution?
+	 * @return	void
+	 * @see tx_scheduler_Execution::getNextExecution()
+	 */
+	public function setIsNewSingleExecution($isNewSingleExecution) {
+		$this->isNewSingleExecution = $isNewSingleExecution;
+	}
+
+	/**
+	 * Get whether this is a newly created single execution
+	 *
+	 * @return	boolean		Is newly created single execution?
+	 */
+	public function getIsNewSingleExecution() {
+		return $this->isNewSingleExecution;
+	}
+
 	/**********************************
 	 * Execution calculations and logic
 	 **********************************/
@@ -182,6 +217,11 @@ class tx_scheduler_Execution {
 	 * @return	integer		Timestamp of the next execution
 	 */
 	public function getNextExecution() {
+
+		if ($this->getIsNewSingleExecution()) {
+			$this->setIsNewSingleExecution(FALSE);
+			return $this->start;
+		}
 
 		if (!$this->isEnded()) {
 				// If the schedule has not yet run out, find out the next date
@@ -245,7 +285,7 @@ class tx_scheduler_Execution {
 	public function isEnded() {
 		if (empty($this->end)) {
 				// If no end is defined, the schedule never ends
-			$result = false;
+			$result = FALSE;
 		} else {
 				// Otherwise check if end is in the past
 			$result = $this->end < time();
