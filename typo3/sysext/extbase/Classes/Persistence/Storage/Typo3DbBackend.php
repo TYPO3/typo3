@@ -362,6 +362,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function parseConstraint(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint = NULL, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, array $boundVariableValues) {
+		if ($constraint === NULL) return;
 		if ($constraint instanceof Tx_Extbase_Persistence_QOM_AndInterface) {
 			$sql['where'][] = '(';
 			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters, $boundVariableValues);
@@ -578,10 +579,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 						throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('Unsupported order encountered.', 1242816074);
 				}
 				$tableName = $operand->getSelectorName();
-				if ((strlen($tableName) == 0) && (source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface)) {
-					$tableName = $source->getSelectorName();
-				}
-				$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand->getPropertyName(), $tableName);
+				$className = '';
+				if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+					$className = $source->getNodeTypeName();
+				}			
+				$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand->getPropertyName(), $className);
 				if (strlen($tableName) > 0) {
 					$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
 				} else {

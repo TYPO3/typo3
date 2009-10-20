@@ -66,7 +66,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * Data type of this argument's value
 	 * @var string
 	 */
-	protected $dataType = 'Text';
+	protected $dataType = NULL;
 
 	/**
 	 * If the data type is an object, the class schema of the data type class is resolved
@@ -125,13 +125,23 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 * @throws InvalidArgumentException if $name is not a string or empty
 	 * @api
 	 */
-	public function __construct($name, $dataType = 'Text') {
+	public function __construct($name, $dataType) {
+		if (!is_string($name)) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
+		if (strlen($name) === 0) throw new InvalidArgumentException('$name must be a non-empty string, ' . strlen($name) . ' characters given.', 1232551853);
+		$this->name = $name;
+		$this->dataType = $dataType;
+	}
+	
+	/**
+	 * Initializes this object
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
 		$this->reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$this->propertyMapper->injectReflectionService($this->reflectionService);
-		if (!is_string($name) || strlen($name) < 1) throw new InvalidArgumentException('$name must be of type string, ' . gettype($name) . ' given.', 1187951688);
-		$this->name = $name;
-		$this->setDataType($dataType);
+		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($this->dataType);
 	}
 
 	/**
@@ -197,7 +207,6 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = $dataType;
-		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($this->dataType);
 		return $this;
 	}
 

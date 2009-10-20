@@ -120,7 +120,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 * @param array $orderings
 	 * @param array $columns
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns) {
+	public function __construct(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings = array(), array $columns = array()) {
 		$this->source = $selectorOrSource;
 		$this->constraint = $constraint;
 		$this->orderings = $orderings;

@@ -118,14 +118,15 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		$columns = $GLOBALS['TCA'][$this->getTableName()]['columns'];
 		$this->addCommonColumns();
 		if (is_array($columns)) {
-			foreach ($columns as $columnName => $columnConfiguration) {
+			foreach ($columns as $columnName => $columnDefinition) {
+				$columnConfiguration = $columnDefinition['config'];
 				if (!empty($mapping[$columnName]['mapOnProperty'])) {
 					$propertyName = $mapping[$columnName]['mapOnProperty'];
 				} else {
 					$propertyName = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
 				}
-				if (isset($mapping[$columnName]['foreignClass']) && !isset($columnConfiguration['config']['foreign_class'])) {
-					$columnConfiguration['config']['foreign_class'] = $mapping[$columnName]['foreignClass'];
+				if (isset($mapping[$columnName]['foreignClass']) && !isset($columnConfiguration['foreign_class'])) {
+					$columnConfiguration['foreign_class'] = $mapping[$columnName]['foreignClass'];
 				}
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 				$this->setPropertyType($columnMap, $columnConfiguration);
@@ -173,19 +174,19 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function setPropertyType(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
-		$evalConfiguration = t3lib_div::trimExplode(',', $columnConfiguration['config']['eval']);
+		$evalConfiguration = t3lib_div::trimExplode(',', $columnConfiguration['eval']);
 		if (in_array('date', $evalConfiguration) || in_array('datetime', $evalConfiguration)) {
 			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::DATE);
-		} elseif ($columnConfiguration['config']['type'] === 'check' && empty($columnConfiguration['config']['items'])) {
+		} elseif ($columnConfiguration['type'] === 'check' && empty($columnConfiguration['items'])) {
 			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::BOOLEAN);
 		} elseif (in_array('int', $evalConfiguration)) {
 			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::LONG);
 		} elseif (in_array('double2', $evalConfiguration)) {
 			$columnMap->setPropertyType(Tx_Extbase_Persistence_PropertyType::DOUBLE);
 		} else {
-			if (isset($columnConfiguration['config']['foreign_table'])) {
-				if (isset($columnConfiguration['config']['loadingStrategy'])) {
-					$columnMap->setLoadingStrategy($columnConfiguration['config']['loadingStrategy']);
+			if (isset($columnConfiguration['foreign_table'])) {
+				if (isset($columnConfiguration['loadingStrategy'])) {
+					$columnMap->setLoadingStrategy($columnConfiguration['loadingStrategy']);
 				} else {
 					$columnMap->setLoadingStrategy(Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_EAGER);
 				}
@@ -205,43 +206,88 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
-		if (isset($columnConfiguration['config']) && $columnConfiguration['config']['type'] !== 'passthrough') {
-			if (isset($columnConfiguration['config']['foreign_table']) && !isset($columnConfiguration['config']['MM'])) {
-				if ($columnConfiguration['config']['maxitems'] == 1) {
-					$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
+		if (isset($columnConfiguration) && $columnConfiguration['type'] !== 'passthrough') {
+			if (isset($columnConfiguration['foreign_table']) && !isset($columnConfiguration['MM']) && !isset($columnConfiguration['foreign_label'])) {
+				if ($columnConfiguration['maxitems'] == 1) {
+					$this->setOneToOneRelation($columnMap, $columnConfiguration);
 				} else {
-					$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
+					$this->setOneToManyRelation($columnMap, $columnConfiguration);
 				}
-				$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
-				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
-				$columnMap->setChildTableWhereStatement($columnConfiguration['config']['foreign_table_where']);
-				$columnMap->setChildSortbyFieldName($columnConfiguration['config']['foreign_sortby']);
-				$columnMap->setDeleteChildObjectsState($columnConfiguration['config']['deleteRelationsWithParent']);
-				$columnMap->setParentKeyFieldName($columnConfiguration['config']['foreign_field']);
-				$columnMap->setParentTableFieldName($columnConfiguration['config']['foreign_table_field']);
-			} elseif (array_key_exists('MM', $columnConfiguration['config'])) {
+			} elseif ($columnConfiguration['type'] === 'inline' && isset($columnConfiguration['foreign_table']) && isset($columnConfiguration['foreign_label'])) {
+				$this->setManyToManyRelation($columnMap, $columnConfiguration);
+			} elseif ($columnConfiguration['type'] !== 'inline'  && isset($columnConfiguration['MM'])) {
 				// TODO support for MM_insert_fields and MM_match_fields
-				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
-				$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
-				$columnMap->setChildTableName($columnConfiguration['config']['foreign_table']);
-				$columnMap->setRelationTableName($columnConfiguration['config']['MM']);
-				if (is_array($columnConfiguration['config']['MM_match_fields'])) {
-					$columnMap->setRelationTableMatchFields($columnConfiguration['config']['MM_match_fields']);
-				}
-				$columnMap->setRelationTableWhereStatement($columnConfiguration['config']['MM_table_where']);
-				// TODO We currently do not support multi table relationships
-				if ($columnConfiguration['config']['MM_opposite_field']) {
-					$columnMap->setParentKeyFieldName('uid_foreign');
-					$columnMap->setChildKeyFieldName('uid_local');
-					$columnMap->setChildSortByFieldName('sorting_foreign');
-				} else {
-					$columnMap->setParentKeyFieldName('uid_local');
-					$columnMap->setChildKeyFieldName('uid_foreign');
-					$columnMap->setChildSortByFieldName('sorting');
-				}
+				$this->setManyToManyRelation($columnMap, $columnConfiguration);
 			} else {
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
 			}
+		}
+	}
+	
+	/**
+	 * This method sets the configuration for a 1:1 relation based on
+	 * the $TCA column configuration
+	 *
+	 * @param string $columnMap The column map
+	 * @param string $columnConfiguration The column configuration from $TCA
+	 * @return void
+	 */
+	protected function setOneToOneRelation(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
+		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
+		$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
+		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
+		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
+		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
+		$columnMap->setDeleteChildObjectsState($columnConfiguration['deleteRelationsWithParent']);
+		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
+		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
+	}
+	
+	/**
+	 * This method sets the configuration for a 1:n relation based on
+	 * the $TCA column configuration
+	 *
+	 * @param string $columnMap The column map
+	 * @param string $columnConfiguration The column configuration from $TCA
+	 * @return void
+	 */
+	protected function setOneToManyRelation(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
+		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
+		$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
+		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
+		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
+		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
+		$columnMap->setDeleteChildObjectsState($columnConfiguration['deleteRelationsWithParent']);
+		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
+		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
+	}
+	
+	/**
+	 * This method sets the configuration for a m:n relation based on
+	 * the $TCA column configuration
+	 *
+	 * @param string $columnMap The column map
+	 * @param string $columnConfiguration The column configuration from $TCA
+	 * @return void
+	 */
+	protected function setManyToManyRelation(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
+		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
+		$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
+		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
+		$columnMap->setRelationTableName($columnConfiguration['MM']);
+		if (is_array($columnConfiguration['MM_match_fields'])) {
+			$columnMap->setRelationTableMatchFields($columnConfiguration['MM_match_fields']);
+		}
+		$columnMap->setRelationTableWhereStatement($columnConfiguration['MM_table_where']);
+		// TODO We currently do not support multi table relationships
+		if ($columnConfiguration['MM_opposite_field']) {
+			$columnMap->setParentKeyFieldName('uid_foreign');
+			$columnMap->setChildKeyFieldName('uid_local');
+			$columnMap->setChildSortByFieldName('sorting_foreign');
+		} else {
+			$columnMap->setParentKeyFieldName('uid_local');
+			$columnMap->setChildKeyFieldName('uid_foreign');
+			$columnMap->setChildSortByFieldName('sorting');
 		}
 	}
 	
@@ -254,15 +300,17 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function determineChildClassName($columnConfiguration) {
 		$foreignClassName = '';
-		if (is_string($columnConfiguration['config']['foreign_class']) && (strlen($columnConfiguration['config']['foreign_class']) > 0)) {
-			$foreignClassName = $columnConfiguration['config']['foreign_class'];
+		if (is_string($columnConfiguration['foreign_class']) && (strlen($columnConfiguration['foreign_class']) > 0)) {
+			$foreignClassName = $columnConfiguration['foreign_class'];
 		} else {
 			$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 			// TODO Apply a cache to increase performance (profile first)
-			foreach	($extbaseSettings['persistence']['classes'] as $className => $classConfiguration) {
-				if ($classConfiguration['mapping']['tableName'] === $columnConfiguration['config']['foreign_table']) {
-					$foreignClassName = $className;
-					break;
+			if (is_array($extbaseSettings['persistence']['classes'])) {
+				foreach	($extbaseSettings['persistence']['classes'] as $className => $classConfiguration) {
+					if ($classConfiguration['mapping']['tableName'] === $columnConfiguration['foreign_table']) {
+						$foreignClassName = $className;
+						break;
+					}
 				}
 			}
 		}

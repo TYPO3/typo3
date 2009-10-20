@@ -161,25 +161,27 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend_testcase extends Tx_Extbase_
 	public function orderStatementGenerationWorks() {
 		$mockPropertyValue = $this->getMock('Tx_Extbase_Persistence_QOM_PropertyValue', array('getPropertyName', 'getSelectorname'), array(), '', FALSE);
 		$mockPropertyValue->expects($this->once())->method('getPropertyName')->will($this->returnValue('fooProperty'));
-		$mockPropertyValue->expects($this->once())->method('getSelectorName')->will($this->returnValue('tx_myext_bar'));
+		$mockPropertyValue->expects($this->once())->method('getSelectorName')->will($this->returnValue('tx_myext_tablenamefromproperty'));
 		
 		$mockOrdering1 = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_QOM_Ordering'), array('getOrder', 'getOperand'), array(), '', FALSE);
 		$mockOrdering1->expects($this->once())->method('getOrder')->will($this->returnValue(Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING));
 		$mockOrdering1->expects($this->once())->method('getOperand')->will($this->returnValue($mockPropertyValue));
 		$orderings = array($mockOrdering1);
 
-		$mockSource = $this->getMock('Tx_Extbase_Persistence_QOM_Selector', array(), array(), '', FALSE);
+		$mockSource = $this->getMock('Tx_Extbase_Persistence_QOM_Selector', array('getSelectorName', 'getNodeTypeName'), array(), '', FALSE);
+		$mockSource->expects($this->any())->method('getSelectorName')->will($this->returnValue('tx_myext_tablename'));
+		$mockSource->expects($this->any())->method('getNodeTypeName')->will($this->returnValue('Tx_MyExt_ClassName'));
 
 		$mockDataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('convertPropertyNameToColumnName'), array(), '', FALSE);
-		$mockDataMapper->expects($this->once())->method('convertPropertyNameToColumnName')->with('fooProperty', 'tx_myext_bar')->will($this->returnValue('bar_field'));
+		$mockDataMapper->expects($this->once())->method('convertPropertyNameToColumnName')->with('fooProperty', 'Tx_MyExt_ClassName')->will($this->returnValue('converted_fieldname'));
 		
 		$sql = array();
 		$mockTypo3DbBackend = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Storage_Typo3DbBackend'), array('parserOrderings'), array(), '', FALSE);		
 		$mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
 		$mockTypo3DbBackend->_callRef('parseOrderings', $orderings, $mockSource, $sql);
-		
-		$expecedSql = array('orderings' => array('tx_myext_bar.bar_field ASC'));
-		$this->assertEquals($expecedSql, $sql);
+			
+		$expecedSql = array('orderings' => array('tx_myext_tablenamefromproperty.converted_fieldname ASC'));
+		$this->assertSame($expecedSql, $sql);
 	}
 
 	/**
@@ -196,8 +198,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend_testcase extends Tx_Extbase_
 		$mockOrdering1->expects($this->once())->method('getOperand')->will($this->returnValue($mockPropertyValue));
 		$orderings = array($mockOrdering1);
 
-		$mockSource = $this->getMock('Tx_Extbase_Persistence_QOM_Selector', array(), array(), '', FALSE);
-
+		$mockSource = $this->getMock('Tx_Extbase_Persistence_QOM_Selector', array('getSelectorName', 'getNodeTypeName'), array(), '', FALSE);
+		$mockSource->expects($this->any())->method('getSelectorName')->will($this->returnValue('tx_myext_tablename'));
+		
 		$mockDataMapper = $this->getMock('Tx_Extbase_Persistence_Mapper_DataMapper', array('convertPropertyNameToColumnName'), array(), '', FALSE);
 		$mockDataMapper->expects($this->never())->method('convertPropertyNameToColumnName');
 		

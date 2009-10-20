@@ -133,7 +133,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return boolean TRUE if the given offset exists; otherwise FALSE
 	 */
 	public function offsetExists($offset) {
-		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
+		$this->isObject($offset);
 		$this->initializeStorage();
 		return isset($this->storage[spl_object_hash($offset)]);
 	}
@@ -145,7 +145,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function offsetUnset($offset) {
-		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
+		$this->isObject($offset);
 		$this->initializeStorage();
 		unset($this->storage[spl_object_hash($offset)]);
 	}
@@ -157,7 +157,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return Object The object
 	 */
 	public function offsetGet($offset) {
-		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
+		$this->isObject($offset);
 		$this->initializeStorage();
 		return isset($this->storage[spl_object_hash($offset)]) ? $this->storage[spl_object_hash($offset)] : NULL;
 	}
@@ -169,7 +169,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return boolean TRUE|FALSE Returns TRUE if the storage contains the object; otherwise FALSE
 	 */
 	public function contains($object) {
-		if (!is_object($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
+		$this->isObject($object);
 		$this->initializeStorage();
 		return array_key_exists(spl_object_hash($object), $this->storage);
 	}
@@ -181,7 +181,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function attach($object, $value = NULL) {
-		if (!is_object($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
+		$this->isObject($object);
 		$this->initializeStorage();
 		if (!$this->contains($object)) {
 			if ($value === NULL) {
@@ -199,7 +199,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function detach($object) {
-		if (!is_object($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($object) . ' given');
+		$this->isObject($object);
 		$this->initializeStorage();
 		unset($this->storage[spl_object_hash($object)]);
 	}
@@ -211,13 +211,11 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function addAll($objects) {
-		if (is_array($objects) || ($objects instanceof Tx_Extbase_Persistence_ObjectStorage)) {
+		if (is_array($objects) || $objects instanceof Iterator) {
 			$this->initializeStorage();
 			foreach ($objects as $object) {
 				$this->attach($object);
 			}
-		} else {
-		 throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
 		}
 	}
 
@@ -228,11 +226,25 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function removeAll($objects) {
-		if (!is_array($object)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an array, ' . gettype($object) . ' given');
-		$this->initializeStorage();
-		foreach ($objects as $object) {
-			$this->detach($object);
+		if (is_array($objects) || $objects instanceof Iterator) {
+			$this->initializeStorage();
+			foreach ($objects as $object) {
+				$this->detach($object);
+			}
 		}
+	}
+
+	/**
+	 * Checks, if the given value is an object and throws an exception if not
+	 *
+	 * @param string $value The value to be tested
+	 * @return bool TRUE, if the given value is an object
+	 */
+	protected function isObject($value) {
+		if (!is_object($value)) {
+			throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
+		}
+		return TRUE;
 	}
 
 	/**

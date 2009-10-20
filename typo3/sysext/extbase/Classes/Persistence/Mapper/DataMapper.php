@@ -37,6 +37,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected $identityMap;
 
 	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
 	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
 	 */
 	protected $QOMFactory;
@@ -99,6 +104,16 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
 		$this->QOMFactory = $persistenceManager->getBackend()->getQOMFactory();
 		$this->persistenceSession = $persistenceManager->getSession();
+	}
+	
+	/**
+	 * Injects the Reflection Service
+	 *
+	 * @param Tx_Extbase_Reflection_Service
+	 * @return void
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
 	}
 
 	/**
@@ -217,6 +232,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected function mapRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, Tx_Extbase_Persistence_RowInterface $row, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$dataMap = $this->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($propertyName);
+		$targetClassSchema = $this->reflectionService->getClassSchema(get_class($parentObject));
+		$propertyMetaData = $targetClassSchema->getProperty($propertyName);
 		$fieldValue = $row[$columnMap->getColumnName()];
 		if ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_LAZY_PROXY) {
 			$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyLoadingProxy', $parentObject, $propertyName, $fieldValue, $columnMap);
@@ -229,18 +246,21 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$query->getQuerySettings()->setRespectStoragePage(FALSE);
 				$result = current($query->matching($query->withUid((int)$fieldValue))->execute());
 			} elseif (($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) || ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
-				if ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_LAZY_STORAGE) {
-					$objectStorage = new Tx_Extbase_Persistence_LazyObjectStorage($parentObject, $propertyName, $fieldValue, $columnMap);
+				if ($propertyMetaData['lazy'] === TRUE || $columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_LAZY_STORAGE) {
+					$result = new Tx_Extbase_Persistence_LazyObjectStorage($parentObject, $propertyName, $fieldValue, $columnMap);
 				} else {
-					$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-					if (!empty($fieldValue)) {
-						$objects = $this->fetchRelatedObjects($parentObject, $propertyName, $fieldValue, $columnMap);
+					$objects = $this->fetchRelatedObjects($parentObject, $propertyName, $fieldValue, $columnMap);
+					if ($propertyMetaData['type'] === 'ArrayObject') {
+						$result = new ArrayObject($objects);
+					} elseif ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage' || $propertyMetaData['type'] === 'Tx_Extbase_Persistence_LazyObjectStorage') {
+						$result = new Tx_Extbase_Persistence_ObjectStorage();
 						foreach ($objects as $object) {
-							$objectStorage->attach($object);
+							$result->attach($object);
 						}
+					} else {
+						$result = $objects;
 					}
 				}
-				$result = $objectStorage;
 			}
 		}
 		return $result;

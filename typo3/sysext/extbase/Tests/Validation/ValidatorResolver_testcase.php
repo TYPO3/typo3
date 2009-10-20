@@ -180,10 +180,8 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$mockObjectFactory = $this->getMock('Tx_Extbase_Object_FactoryInterface');
 
 		$mockArguments = new Tx_Extbase_MVC_Controller_Arguments();
-		$mockArguments->addArgument(new Tx_Extbase_MVC_Controller_Argument('arg1'));
-		$mockArguments->addArgument(new Tx_Extbase_MVC_Controller_Argument('arg2'));
-
-		$mockArguments['arg2'] = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array(), '', FALSE);
+		$mockArguments->addArgument(new Tx_Extbase_MVC_Controller_Argument('arg1', 'dummyValue'));
+		$mockArguments->addArgument(new Tx_Extbase_MVC_Controller_Argument('arg2', 'dummyValue'));
 
 		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'));
 		$validatorResolver->expects($this->at(0))->method('createValidator')->with('Conjunction')->will($this->returnValue($conjunction1));

@@ -151,12 +151,25 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	 * @return Tx_Extbase_MVC_Controller_Argument The new argument
 	 */
 	public function addNewArgument($name, $dataType = 'Text', $isRequired = FALSE, $defaultValue = NULL) {
-		$argument = new Tx_Extbase_MVC_Controller_Argument($name, $dataType);
-		$argument->injectPersistenceManager($this->persistenceManager);
-		$argument->injectQueryFactory($this->queryFactory);
+		$argument = $this->createArgument($name, $dataType);
 		$argument->setRequired($isRequired);
 		$argument->setDefaultValue($defaultValue);
 		$this->addArgument($argument);
+		return $argument;
+	}
+	
+	/**
+	 * Creates a new argument. This is a replacement for $this->objectFactory->create() of FLOW3.
+	 *
+	 * @param string $name Name of the argument
+	 * @param string $dataType Name of one of the built-in data types
+	 * @return Tx_Extbase_MVC_Controller_Argument The created argument
+	 */
+	protected function createArgument($name, $dataType) {
+		$argument = new Tx_Extbase_MVC_Controller_Argument($name, $dataType);
+		$argument->injectPersistenceManager($this->persistenceManager);
+		$argument->injectQueryFactory($this->queryFactory);
+		$argument->initializeObject();
 		return $argument;
 	}
 

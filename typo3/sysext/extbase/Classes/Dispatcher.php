@@ -52,6 +52,11 @@ class Tx_Extbase_Dispatcher {
 	protected static $configurationManager;
 
 	/**
+	 * @var t3lib_cache_Manager
+	 */
+	protected $cacheManager;
+
+	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
 	protected static $reflectionService;
@@ -99,6 +104,9 @@ class Tx_Extbase_Dispatcher {
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
+
+		$this->initializeCache();
+		$this->initializeReflection();
 
 		// Request hash service
 		$requestHashService = t3lib_div::makeInstance('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
@@ -164,6 +172,37 @@ class Tx_Extbase_Dispatcher {
 		}
 		self::$extbaseFrameworkConfiguration = self::$configurationManager->getFrameworkConfiguration($configuration);
 	}
+	
+	/**
+	 * Initializes the cache framework
+	 *
+	 * @return void
+	 */
+	public function initializeCache() {
+		$this->cacheManager = $GLOBALS['typo3CacheManager'];
+		try {
+			$this->cacheManager->getCache('cache_extbase_reflection');
+		} catch (t3lib_cache_exception_NoSuchCache $exception) {
+			$GLOBALS['typo3CacheFactory']->create(
+				'cache_extbase_reflection',
+				't3lib_cache_frontend_VariableFrontend',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']
+			);
+		}
+	}
+
+	/**
+	 * Initializes the Reflection Service
+	 *
+	 * @return void
+	 * @see initialize()
+	 */
+	public function initializeReflection() {
+		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
+		self::$reflectionService->setCache($this->cacheManager->getCache('cache_extbase_reflection'));
+		self::$reflectionService->initialize($availableClassNames);
+	}
 
 	/**
 	 * Builds and returns a controller
@@ -177,7 +216,6 @@ class Tx_Extbase_Dispatcher {
 		if (!$controller instanceof Tx_Extbase_MVC_Controller_ControllerInterface) {
 			throw new Tx_Extbase_MVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
 		}
-		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
@@ -187,24 +225,6 @@ class Tx_Extbase_Dispatcher {
 		$flashMessages->reset();
 		$controller->injectFlashMessages($flashMessages);
 
-		/** @var $cacheManager t3lib_cache_Manager */
-		$cacheManager = $GLOBALS['typo3CacheManager'];
-
-		try {
-			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
-		} catch (t3lib_cache_exception_NoSuchCache $exception) {
-
-			$GLOBALS['typo3CacheFactory']->create(
-				'cache_extbase_reflection',
-				't3lib_cache_frontend_VariableFrontend',
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']
-			);
-			self::$reflectionService->setCache($cacheManager->getCache('cache_extbase_reflection'));
-		}
-		if (!self::$reflectionService->isInitialized()) {
-			self::$reflectionService->initialize();
-		}
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
 		$validatorResolver->injectObjectManager($objectManager);
@@ -223,6 +243,7 @@ class Tx_Extbase_Dispatcher {
 	public static function getPersistenceManager() {
 		if (self::$persistenceManager === NULL) {
 			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
+			$dataMapper->injectReflectionService(self::$reflectionService);
 
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);

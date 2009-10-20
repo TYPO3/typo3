@@ -115,11 +115,20 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * Constructs the controller.
 	 */
 	public function __construct() {
+		$this->initializeObjects();
+		list(, $this->extensionName) = explode('_', get_class($this));
+	}
+	
+	/**
+	 * Initializes objects this class depends on
+	 *
+	 * @return void
+	 */
+	protected function initializeObjects() {
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$this->arguments = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_Arguments');
 		$this->arguments->injectPersistenceManager(Tx_Extbase_Dispatcher::getPersistenceManager());
 		$this->arguments->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
-		list(, $this->extensionName) = explode('_', get_class($this));
 	}
 
 	/**

@@ -30,10 +30,10 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 	/**
 	 * @test
 	 */
-	public function initializeObjectSetsCurrentPackage() {
+	public function theExtensionNameIsInitialized() {
 		$extensionName = uniqid('Test');
-		$controller = $this->getMock('Tx_Extbase_MVC_Controller_AbstractController', array(), array(), 'Tx_' . $extensionName . '_Controller');
-		$this->assertSame($extensionName, $this->readAttribute($controller, 'extensionName'));
+		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('initializeObjects'), array(), 'Tx_' . $extensionName . '_Controller');
+		$this->assertSame($extensionName, $controller->_get('extensionName'));
 	}
 
 	/**
@@ -58,7 +58,7 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 
 		$mockResponse = $this->getMock('Tx_Extbase_MVC_Web_Response');
 
-		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('initializeArguments', 'initializeControllerArgumentsBaseValidators', 'mapRequestArgumentsToControllerArguments'), array());
+		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('initializeArguments', 'initializeControllerArgumentsBaseValidators', 'mapRequestArgumentsToControllerArguments'), array(), '', FALSE);
 		$controller->processRequest($mockRequest, $mockResponse);
 	}
 
@@ -144,18 +144,18 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 		$mockValidatorResolver->expects($this->at(0))->method('getBaseValidatorConjunction')->with('FooType')->will($this->returnValue($mockValidators['foo']));
 		$mockValidatorResolver->expects($this->at(1))->method('getBaseValidatorConjunction')->with('BarType')->will($this->returnValue(NULL));
 
-		$mockArgumentFoo = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('foo'));
+		$mockArgumentFoo = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('foo'), '', FALSE);
 		$mockArgumentFoo->expects($this->once())->method('getDataType')->will($this->returnValue('FooType'));
 		$mockArgumentFoo->expects($this->once())->method('setValidator')->with($mockValidators['foo']);
-
-		$mockArgumentBar = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('bar'));
+		
+		$mockArgumentBar = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('bar'), '', FALSE);
 		$mockArgumentBar->expects($this->once())->method('getDataType')->will($this->returnValue('BarType'));
 		$mockArgumentBar->expects($this->never())->method('setValidator');
-
+		
 		$mockArguments = new Tx_Extbase_MVC_Controller_Arguments();
 		$mockArguments->addArgument($mockArgumentFoo);
 		$mockArguments->addArgument($mockArgumentBar);
-
+		
 		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('dummy'), array(), '', FALSE);
 		$controller->_set('arguments', $mockArguments);
 		$controller->injectValidatorResolver($mockValidatorResolver);
@@ -168,9 +168,9 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 	public function mapRequestArgumentsToControllerArgumentsPreparesInformationAndValidatorsAndMapsAndValidates() {
 		$mockValidator = new Tx_Extbase_MVC_Controller_ArgumentsValidator(); // FIXME see original FLOW3 code
 
-		$mockArgumentFoo = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('foo'));
+		$mockArgumentFoo = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('foo'), '', FALSE);
 		$mockArgumentFoo->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-		$mockArgumentBar = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('bar'));
+		$mockArgumentBar = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('bar'), '', FALSE);
 		$mockArgumentBar->expects($this->any())->method('getName')->will($this->returnValue('bar'));
 
 		$mockArguments = new Tx_Extbase_MVC_Controller_Arguments();

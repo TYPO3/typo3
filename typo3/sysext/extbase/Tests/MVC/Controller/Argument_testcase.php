@@ -72,7 +72,7 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 	/**
 	 * @test
 	 */
-	public function setValueTriesToConvertAnUIDIntoTheRealObjectIfTheDataTypeClassSchemaIsSet() {
+	public function setValueTriesToConvertAnUidIntoTheRealObjectIfTheDataTypeClassSchemaIsSet() {
 		$object = new StdClass();
 
 		$argument = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_Argument'), array('findObjectByUid'), array(), '', FALSE);
@@ -101,9 +101,31 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 	/**
 	 * @test
 	 */
-	public function defaultDataTypeIsText() {
-		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument');
-		$this->assertSame('Text', $argument->getDataType());
+	public function dataTypeValidatorCanBeAFullClassName() {
+		$this->markTestIncomplete();
+
+		$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue(TRUE));
+		$this->mockObjectManager->expects($this->any())->method('getObject')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
+
+		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Tx_Extbase_Validation_Validator_TextValidator');
+		$argument->injectObjectManager($this->mockObjectManager);
+
+		$this->assertType('Tx_Extbase_Validation_Validator_TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
+	}
+
+	/**
+	 * @test
+	 */
+	public function dataTypeValidatorCanBeAShortName() {
+		$this->markTestIncomplete();
+
+		$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue(TRUE));
+		$this->mockObjectManager->expects($this->any())->method('getObject')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
+
+		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Text');
+		$argument->injectObjectManager($this->mockObjectManager);
+
+		$this->assertType('Tx_Extbase_Validation_Validator_TextValidator', $argument->getDatatypeValidator(), 'The returned datatype validator is not a text validator as expected.');
 	}
 
 	/**
