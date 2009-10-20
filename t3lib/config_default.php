@@ -157,10 +157,14 @@ $TYPO3_CONF_VARS = Array(
 			)
 		),
 		'useCachingFramework' => 0,				// Boolean: Enable this if you want to use the caching framework by default for the core caches cache_pages, cache_pagesection and cache_hash.
-		'displayErrors' => -1,					// Integer, -1,0,1,2. 0=Do not display any PHP error messages. 1=Display error messages. 2=Display only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. -1=Default setting. With this option, you can override the PHP setting "display_errors". It is suggested that you set this to "0" and enable the "error_log" option in php.ini instead.
-		'exceptionHandler'  => 't3lib_error_ProductionExceptionHandler',	// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling, or set to t3lib_error_ProductionExceptionHandler for nice error messages when something wents wrong, or to t3lib_error_DebugExceptionHandler for a complete stack trace of any encountered exception. Note that if devIPmask matches, t3lib_error_DebugExceptionHandler will be used, regardless of this setting.
-		'errorHandler'      => '',	// String: Classname to handle PHP errors. E.g.: t3lib_error_ErrorHandler.This class will turn the error into an exception (to be handled by the exceptionHandler).
-		'exceptionalErrors' => E_ALL ^ E_NOTICE,	// Integer: The E_* constant that will be handled as an exception by t3lib_error_ErrorHandler. Default is "E_ALL ^ E_NOTICE" (6135) and "0" if displayError=0. Some values for errors: E_ALL=6143, E_ALL ^ E_NOTICE ^ E_WARNING=6133. See php documentation for more details on this integer.
+		'displayErrors' => -1,					// Integer: -1,0,1,2. Configures whether PHP errors should be displayed. 0 = Do not display any PHP error messages. Overrides the value of “exceptionalErrors” and sets it to 0 (= no errors are turned into exceptions), the configured “productionExceptionHandler” is used as exception handler, 1 = Display error messages with the registered errorhandler. The configured “debugExceptionHandler” is used as exception handler. 2 = Display errors only if client matches TYPO3_CONF_VARS[SYS][devIPmask]. If devIPmask matches the users IP address  the configured “debugExceptionHandler” is used  for exceptions, if not  “productionExceptionHandler” will be used. -1 = Default setting. With this option, you can override the PHP setting "display_errors". If devIPmask matches the users IP address  the configured “debugExceptionHandler” is used  for exceptions, if not “productionExceptionHandler” will be used.
+		'productionExceptionHandler'  => 't3lib_error_ProductionExceptionHandler',	// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: “t3lib_error_ProductionExceptionHandler”. This exception handler displays a nice error message when something went wrong. The error message is logged to the configured logs. Note: The configured "productionExceptionHandler" is used if displayErrors is set to “0” or to “-1” and devIPmask doesn't match the users IP.
+		'debugExceptionHandler' => 't3lib_error_DebugExceptionHandler',				// String: Classname to handle exceptions that might happen in the TYPO3-code. Leave empty to disable exception handling. Default: “t3lib_error_DebugExceptionHandler”. This exception handler displays the complete stack trace of any encountered exception. The error message and the stack trace  is logged to the configured logs. Note: The configured "debugExceptionHandler" is used if displayErrors is set to “1” and if displayErrors is “-1”  or “2” and the devIPmask matches the users IP.
+		'errorHandler' => 't3lib_error_ErrorHandler',	// String: Classname to handle PHP errors. E.g.: t3lib_error_ErrorHandler. This class displays and logs all errors that are registered as "errorHandlerErrors" ([SYS][errorHandlerErrors]). Leave empty to disable error handling. Errors can be logged to syslog (see: [SYS][systemLog]) to the installed developer log and to the "syslog" table. If an error is registered in "exceptionalErrors" ([SYS][exceptionalErrors]) it will be turned into an exception to be handled by the configured exceptionHandler.
+		'errorHandlerErrors'=> E_ALL ^ E_NOTICE,	// Integer: The E_* constant that will be handled by the errorhandler. Default is "E_ALL ^ E_NOTICE".
+		'exceptionalErrors' => E_ALL ^ E_NOTICE ^ E_WARNING ^ E_USER_ERROR ^ E_USER_NOTICE ^ E_USER_WARNING,	// Integer: The E_* constant that will be handled as an exception by t3lib_error_ErrorHandler. Default is "E_ALL ^ E_NOTICE ^ E_WARNING ^ E_USER_ERROR ^ E_USER_NOTICE ^ E_USER_WARNING" (4341) and "0" if displayError=0. Some values for errors: E_ALL=6143, E_ALL ^ E_NOTICE ^ E_WARNING=6133. See php documentation for more details on this integer.
+		'enable_errorDLOG' => 0,				// Boolean: If set, errors are written to the developer log (requires an installed *devlog* extension).
+		'enable_exceptionDLOG' => 0,			// Boolean: If set, exceptions are written to the developer log (requires an installed *devlog* extension).
 	),
 	'EXT' => Array (	// Options related to the Extension Management
 		'noEdit' => 1,							// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -486,27 +490,33 @@ function debugEnd() {
 $T3_SERVICES = array();
 
 	// Error & exception handling
-$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS['SYS']['exceptionHandler'];
+$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS['SYS']['productionExceptionHandler'];
 $TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = $TYPO3_CONF_VARS['SYS']['exceptionalErrors'];
 
 	// Turn error logging on/off.
-if (($displayErrors=intval($TYPO3_CONF_VARS['SYS']['displayErrors']))!='-1')	{
-	if ($displayErrors==2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
+if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')	{
+	if ($displayErrors == 2)	{	// Special value "2" enables this feature only if $TYPO3_CONF_VARS[SYS][devIPmask] matches
 		if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
-			$displayErrors=1;
-			$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = 't3lib_error_DebugExceptionHandler';
+			$displayErrors = 1;
 		} else {
-			$displayErrors=0;
+			$displayErrors = 0;
 		}
 	}
 	if ($displayErrors == 0)	{
 		$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionalErrors'] = 0;
 	}
+	if ($displayErrors == 1) {
+		$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS['SYS']['debugExceptionHandler'];
+		define('TYPO3_ERRORHANDLER_MODE','debug');
+	}
+
 	@ini_set('display_errors', $displayErrors);
 } elseif (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	{
 		// with displayErrors = -1 (default), turn on debugging if devIPmask matches:
-	$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = 't3lib_error_DebugExceptionHandler';
+	$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS['SYS']['debugExceptionHandler'];
 }
+
+
 
 	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]
 if(intval($TYPO3_CONF_VARS["SYS"]["setMemoryLimit"])>16) {
@@ -547,6 +557,9 @@ if (TYPO3_MODE=='FE' && is_object($TT)) $TT->pull();
 define('TYPO3_UseCachingFramework', (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework']);
 	// Define "TYPO3_DLOG" constant
 define('TYPO3_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']);
+
+define('TYPO3_ERROR_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_errorDLOG']);
+define('TYPO3_EXCEPTION_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_exceptionDLOG']);
 
 	// Unsetting other reserved global variables:
 	// Those which are/can be set in "stddb/tables.php" files:

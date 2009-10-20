@@ -70,6 +70,8 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 //		$moreInformationLink = ($exceptionCodeNumber != '') ? '(<a href="http://typo3.org/go/exception/' . $exception->getCode() . '">More information</a>)' : '';
 		$backtraceCode = $this->getBacktraceCode($exception->getTrace());
 
+		$this->writeLogEntries($exception, self::CONTEXT_WEB);
+
 		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
 				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
@@ -125,8 +127,8 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 	 */
 	public function echoExceptionCLI(Exception $exception) {
 		$filePathAndName = $exception->getFile();
-
 		$exceptionCodeNumber = ($exception->getCode() > 0) ? '#' . $exception->getCode() . ': ' : '';
+		$this->writeLogEntries($exception, self::CONTEXT_CLI);
 
 		echo "\nUncaught TYPO3 Exception " . $exceptionCodeNumber . $exception->getMessage() . "\n";
 		echo "thrown in file " . $filePathAndName . "\n";

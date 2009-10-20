@@ -34,6 +34,8 @@
  * @version $Id: AbstractExceptionHandler.php 3189 2009-09-16 13:36:22Z k-fish $
  */
 abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_ExceptionHandlerInterface, t3lib_Singleton {
+	const CONTEXT_WEB = 'WEB';
+	const CONTEXT_CLI = 'CLI';
 
 	/**
 	 * Displays the given exception
@@ -50,6 +52,82 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 				$this->echoExceptionWeb($exception);
 		}
 	}
+
+
+	/**
+	 * Writes exception to different logs
+	 *
+	 * @param Exception $exception The exception
+	 * @param string 	the context where the exception was thrown, WEB or CLI
+	 * @return void
+	 * @see t3lib_div::sysLog(), t3lib_div::devLog()
+	 */
+	protected function writeLogEntries(Exception $exception, $context) {
+		$filePathAndName = $exception->getFile();
+		$exceptionCodeNumber = ($exception->getCode() > 0) ? '#' . $exception->getCode() . ': ' : '';
+		$logTitle = 'Core: Exception handler (' . $context . ')';
+		$logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | ' .
+			get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
+		$backtrace =  $exception->getTrace();
+
+			// write error message to the configured syslogs
+		t3lib_div::sysLog($logMessage, $logTitle, 4);
+
+			// In case an error occurs before a database connection exists, try
+			// to connect to the DB to be able to write the devlog/sys_log entry
+		if (isset($GLOBALS['TYPO3_DB']) && is_object($GLOBALS['TYPO3_DB']) && empty($GLOBALS['TYPO3_DB']->link)) {
+			$GLOBALS['TYPO3_DB']->connectDB();
+		}
+
+			// write error message to devlog
+			// see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
+		if (TYPO3_EXCEPTION_DLOG) {
+			t3lib_div::devLog($logMessage, $logTitle, 3, array(
+				'TYPO3_MODE' => TYPO3_MODE,
+				'backtrace' => $backtrace
+			));
+		}
+
+			// write error message to sys_log table
+		$this->writeLog($logTitle . ': ' . $logMessage);
+	}
+
+	/**
+	 * Writes an exception in the sys_log table
+	 *
+	 * @param	string		Default text that follows the message.
+	 * @return	void
+	 */
+	protected function writeLog($logMessage) {
+		if (is_object($GLOBALS['TYPO3_DB']) && !empty($GLOBALS['TYPO3_DB']->link)) {
+			$userId = 0;
+			$workspace = 0;
+			if (is_object($GLOBALS['BE_USER'])) {
+				if (isset($GLOBALS['BE_USER']->user['uid']))	{
+					$userId = $GLOBALS['BE_USER']->user['uid'];
+				}
+				if (isset($GLOBALS['BE_USER']->workspace))	{
+					$workspace = $GLOBALS['BE_USER']->workspace;
+				}
+			}
+
+			$fields_values = Array (
+				'userid' => $userId,
+				'type' => 5,
+				'action' => 0,
+				'error' => 2,
+				'details_nr' => 0,
+				'details' => $logMessage,
+				'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
+				'tstamp' => $GLOBALS['EXEC_TIME'],
+				'workspace' => $workspace
+			);
+
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_log', $fields_values);
+		}
+	}
+
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/error/class.t3lib_error_abstractexceptionhandler.php'])	{

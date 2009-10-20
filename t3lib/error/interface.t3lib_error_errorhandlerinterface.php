@@ -36,23 +36,35 @@
 interface t3lib_error_ErrorHandlerInterface {
 
 	/**
-	 * Defines which error levels result should result in an exception thrown.
 	 * Registers this class as default error handler
 	 *
-	 * @param integer $exceptionalErrors The integer representing the E_* error level to handle as exceptions
+	 * @param integer 	The integer representing the E_* error level which should be
+	 * 					handled by the registered error handler.
 	 * @return void
 	 */
-	public function setErrorHandlerForExceptionalErrors($exceptionalErrors);
+	public function __construct($errorHandlerErrors);
 
 	/**
-	 * Handles an error by converting it into an exception
+	 * Defines which error levels should result in an exception thrown.
 	 *
-	 * @param integer $errorLevel The error level - one of the E_* constants
-	 * @param string $errorMessage The error message
-	 * @param string $errorFile Name of the file the error occurred in
-	 * @param integer $errorLine Line number where the error occurred
+	 * @param integer 	The integer representing the E_* error level to handle as exceptions
 	 * @return void
-	 * @throws t3lib_error_Exception with the data passed to this method
+	 */
+	public function setExceptionalErrors($exceptionalErrors);
+
+	/**
+	 * Handles an error.
+	 * If the error is registered as exceptionalError it will by converted into an exception, to be handled
+	 * by the configured exceptionhandler. Additionall the error message is written to the configured logs.
+	 * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
+	 * is displayed in the admin panel (as TsLog message)
+	 *
+	 * @param integer 	The error level - one of the E_* constants
+	 * @param string 	The error message
+	 * @param string 	Name of the file the error occurred in
+	 * @param integer 	Line number where the error occurred
+	 * @return void
+	 * @throws t3lib_error_Exception with the data passed to this method if the error is registered as exceptionalError
 	 */
 	public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine);
 }
