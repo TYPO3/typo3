@@ -36,12 +36,11 @@ final class t3lib_utility_Client {
 
 	/**
 	 * Generates an array with abstracted browser information
-	 * This method is used in the function match() in this class
 	 *
 	 * @param	string		$userAgent: The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
 	 * @return	array		Contains keys "browser", "version", "system"
 	 */
-	static public function getBrowserInfo($userAgent) {
+	public static function getBrowserInfo($userAgent) {
 			// Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo']:
 		$getBrowserInfoHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo'];
 		if (is_array($getBrowserInfoHooks)) {
@@ -168,8 +167,73 @@ final class t3lib_utility_Client {
 	 * @param	string		$version: A string with version number, eg. "/7.32 blablabla"
 	 * @return	double		Returns double value, eg. "7.32"
 	 */
-	static public function getVersion($version) {
+	public static function getVersion($version) {
 		return doubleval(preg_replace('/^[^0-9]*/', '', $version));
+	}
+
+	/**
+	 * Gets a code for a browsing device based on the input useragent string.
+	 *
+	 * @param	string		$userAgent: The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @return	string		Code for the specific device type
+	 */
+	public static function getDeviceType($userAgent) {
+			// Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType']:
+		$getDeviceTypeHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType'];
+		if (is_array($getDeviceTypeHooks)) {
+			foreach ($getDeviceTypeHooks as $hookFunction) {
+				$returnResult = true;
+				$hookParameters = array(
+					'userAgent' => &$userAgent,
+					'returnResult' => &$returnResult,
+				);
+
+				$hookResult = t3lib_div::callUserFunction($hookFunction, $hookParameters, NULL);
+				if ($returnResult && is_string($hookResult) && !empty($hookResult)) {
+					return $hookResult;
+				}
+			}
+		}
+
+		$userAgent = strtolower(trim($userAgent));
+		$deviceType = '';
+
+			// pda
+		if(strstr($userAgent, 'avantgo')) {
+			$deviceType = 'pda';
+		}
+			// wap
+		$browser=substr($userAgent, 0, 4);
+		$wapviwer=substr(stristr($userAgent,'wap'), 0, 3);
+		if($wapviwer == 'wap' ||
+			$browser == 'noki' ||
+			$browser == 'eric' ||
+			$browser == 'r380' ||
+			$browser == 'up.b' ||
+			$browser == 'winw' ||
+			$browser == 'wapa') {
+			$deviceType = 'wap';
+		}
+			// grabber
+		if(strstr($userAgent, 'g.r.a.b.') ||
+			strstr($userAgent, 'utilmind httpget') ||
+			strstr($userAgent, 'webcapture') ||
+			strstr($userAgent, 'teleport') ||
+			strstr($userAgent, 'webcopier')) {
+			$deviceType = 'grabber';
+		}
+			// robots
+		if(strstr($userAgent, 'crawler') ||
+			strstr($userAgent, 'spider') ||
+			strstr($userAgent, 'googlebot') ||
+			strstr($userAgent, 'searchbot') ||
+			strstr($userAgent, 'infoseek') ||
+			strstr($userAgent, 'altavista') ||
+			strstr($userAgent, 'diibot')) {
+			$deviceType = 'robot';
+		}
+
+		return $deviceType;
 	}
 }
 ?>

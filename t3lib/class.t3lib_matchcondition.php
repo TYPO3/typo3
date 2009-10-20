@@ -474,45 +474,9 @@ class t3lib_matchCondition {
 		}
 		//
 
-		$agent=strtolower(trim($useragent));
-			// pda
-		if(	strstr($agent, 'avantgo'))	{
-			return 'pda';
-		}
+		$deviceType = t3lib_utility_Client::getDeviceType($useragent);
 
-			// wap
-		$browser=substr($agent,0,4);
-		$wapviwer=substr(stristr($agent,'wap'),0,3);
-		if(	$wapviwer=='wap' ||
-			$browser=='noki' ||
-			$browser== 'eric' ||
-			$browser== 'r380' ||
-			$browser== 'up.b' ||
-			$browser== 'winw' ||
-			$browser== 'wapa')	{
-				return 'wap';
-		}
-
-			// grabber
-		if(	strstr($agent, 'g.r.a.b.') ||
-			strstr($agent, 'utilmind httpget') ||
-			strstr($agent, 'webcapture') ||
-			strstr($agent, 'teleport') ||
-			strstr($agent, 'webcopier'))	{
-			return 'grabber';
-		}
-
-			// robots
-		if(	strstr($agent, 'crawler') ||
-			strstr($agent, 'spider') ||
-			strstr($agent, 'googlebot') ||
-			strstr($agent, 'searchbot') ||
-			strstr($agent, 'infoseek') ||
-			strstr($agent, 'altavista') ||
-			strstr($agent, 'diibot'))	{
-			return 'robot';
-		}
-
+		return $deviceType;
 	}
 
 	/**
