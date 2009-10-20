@@ -551,8 +551,13 @@ class localRecordList extends recordList {
 								// For each available translation, render the record:
 							if (is_array($this->translations)) {
 								foreach ($this->translations as $lRow) {
+										// $lRow isn't always what we want - if record was moved we've to work with the placeholder records otherwise the list is messed up a bit
+									if ($row['_MOVE_PLH_uid'] && $row['_MOVE_PLH_pid']) {
+										$tmpRow = t3lib_BEfunc::getRecordRaw($table, 't3ver_move_id="'.intval($lRow['uid']) . '" AND pid="' . $row['_MOVE_PLH_pid'] . '" AND t3ver_wsid=' . $row['t3ver_wsid'] . t3lib_beFunc::deleteClause($table), $selFieldList);
+										$lRow = is_array($tmpRow)?$tmpRow:$lRow;
+									}
 										// In offline workspace, look for alternative record:
-									t3lib_BEfunc::workspaceOL($table, $lRow, $GLOBALS['BE_USER']->workspace);
+									t3lib_BEfunc::workspaceOL($table, $lRow, $GLOBALS['BE_USER']->workspace, true);
 									if (is_array($lRow) && $GLOBALS['BE_USER']->checkLanguageAccess($lRow[$TCA[$table]['ctrl']['languageField']]))	{
 										$currentIdList[] = $lRow['uid'];
 										$iOut.=$this->renderListRow($table,$lRow,$cc,$titleCol,$thumbsCol,18);
