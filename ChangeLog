@@ -4,6 +4,7 @@
 	* Follow-up to test #12153: Added test cases for empty comparison in globalVar condition
 	* Follow-up to bugfix #9779: Modified the limit argument in t3lib_div::trimExplode() to behave as the regular explode() function does
 	* Raised saltedpasswords version from 0.9.0 to 0.9.1
+	* Raised DBAL version from 0.9.22 to 0.9.23
 
 2009-10-20  Rupert Germann  <rupi@gmx.li>
 
