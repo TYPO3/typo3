@@ -4014,6 +4014,7 @@ class t3lib_TCEmain	{
 			} else {
 				// Otherwise, try to delete by versioning:
 				$this->versionizeRecord($table,$id,'DELETED!',TRUE);
+				$this->deleteL10nOverlayRecords($table, $id);
 			}
 		}
 	}
@@ -4089,7 +4090,7 @@ class t3lib_TCEmain	{
 		global $TCA;
 
 			// Checking if there is anything else disallowing deleting the record by checking if editing is allowed
-		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, $undeleteRecord);
+		$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, FALSE, $undeleteRecord, TRUE);
 
 		$uid = intval($uid);
 		if ($TCA[$table] && $uid)	{
@@ -4119,6 +4120,11 @@ class t3lib_TCEmain	{
 							// before (un-)deleting this record, check for child records or references
 						$this->deleteRecord_procFields($table, $uid, $undeleteRecord);
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+
+							 // delete all l10n records aswell, impossible during undelete because it might bring too many records back to life
+						if (!$undeleteRecord) {
+							$this->deleteL10nOverlayRecords($table, $uid);
+						}
 					} else {
 
 							// Fetches all fields with flexforms and look for files to delete:
@@ -4150,6 +4156,8 @@ class t3lib_TCEmain	{
 
 							// Delete the hard way...:
 						$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 'uid='.intval($uid));
+
+						$this->deleteL10nOverlayRecords($table, $uid);
 					}
 
 					$state = $undeleteRecord ? 1 : 3;	// 1 means insert, 3 means delete
@@ -4414,7 +4422,24 @@ class t3lib_TCEmain	{
 		}
 	}
 
+	/**
+	 * Find l10n-overlay records and perform the requested delete action for these records.
+	 *
+	 * @param	string		$table: Record Table
+	 * @param	string		$uid: Record UID
+	 * @return	void
+	 */
+	function deleteL10nOverlayRecords($table, $uid) {
+		if ($table == 'pages') return;
+		t3lib_div::loadTCA($table);
 
+		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);
+		if (is_array($l10nRecords)) {
+			foreach($l10nRecords as $record) {
+				$this->deleteAction($table, intval($record['t3ver_oid']) > 0 ? intval($record['t3ver_oid']) : intval($record['uid']));
+			}
+		}
+	}
 
 
 

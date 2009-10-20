@@ -3530,7 +3530,30 @@ final class t3lib_BEfunc {
 	}
 
 
+	/**
+	 * Counting translations of records
+	 *
+	 * @param	string		Table name
+	 * @param	string		Reference: the record's uid
+	 * @param	string		Message with %s, eg. "This record has %s translation(s) which will be deleted, too!"
+	 * @return	string		Output string (or integer count value if no msg string specified)
+	 */
+	public static function translationCount($table, $ref, $msg = '') {
+		if ($table != 'pages' &&
+				$GLOBALS['TCA'][$table]['ctrl']['languageField'] &&
+				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+				&& !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
+				$table,
+				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($ref) .
+					' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '!=0' .
+					' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0'
+			);
+		}
 
+		return ($count ? ($msg ? sprintf($msg, $count) : $count) : '');
+	}
 
 
 

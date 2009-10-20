@@ -538,6 +538,39 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
+	 * Check if user has access to all existing localizations for a certain record
+	 *
+	 * @param array 	$record
+	 * @return boolean
+	 */
+	function checkFullLanguagesAccess($table, $record) {
+		$recordLocalizationAccess = $this->checkLanguageAccess(0);
+		if ($recordLocalizationAccess && t3lib_BEfunc::isTableLocalizable($table)) {
+
+			$pointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+
+			$recordLocalizations = t3lib_BEfunc::getRecordsByField(
+				$table,
+				$pointerField,
+				$record[$pointerField]>0 ? $record[$pointerField] : $record['uid'],
+				'',
+				'',
+				'',
+				'1'
+			);
+
+			if(is_array($recordLocalizations)) {
+				foreach($recordLocalizations as $localization) {
+					$recordLocalizationAccess = $recordLocalizationAccess && $this->checkLanguageAccess( $localization[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+					if (!$recordLocalizationAccess) break;
+				}
+			}
+
+		}
+		return $recordLocalizationAccess;
+	}
+
+	/**
 	 * Checking if a user has editing access to a record from a $TCA table.
 	 * The checks does not take page permissions and other "environmental" things into account. It only deal with record internals; If any values in the record fields disallows it.
 	 * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
@@ -548,9 +581,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	mixed		If integer, then this is the ID of the record. If Array this just represents fields in the record.
 	 * @param	boolean		Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
 	 * @param	boolean		Set, if testing a deleted record array.
+	 * @param	boolean		Set, whenever access to all translations of the record is required
 	 * @return	boolean		True if OK, otherwise false
 	 */
-	function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE) {
+	function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		global $TCA;
 
 		if (isset($TCA[$table]))	{
@@ -577,6 +611,9 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				if (isset($idOrRow[$TCA[$table]['ctrl']['languageField']]))	{	// Language field must be found in input row - otherwise it does not make sense.
 					if (!$this->checkLanguageAccess($idOrRow[$TCA[$table]['ctrl']['languageField']]))	{
 						$this->errorMsg = 'ERROR: Language was not allowed.';
+						return FALSE;
+					} elseif ($checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+						$this->errorMsg = 'ERROR: Related/affected language was not allowed.';
 						return FALSE;
 					}
 				} else {
