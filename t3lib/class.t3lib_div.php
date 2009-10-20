@@ -4343,10 +4343,13 @@ final class t3lib_div {
 	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.php' file containing a $LOCAL_LANG array (will be included!) or a 'locallang.xml' file conataining a valid XML TYPO3 language structure.
 	 * @param	string		Language key
 	 * @param	string		Character set (option); if not set, determined by the language key
-	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
+	 * @param	integer		Error mode (when file could not be found): 0 - call debug(), 1 - do nothing, 2 - throw an exception
+	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it  will returned.
+	 * 						Otherwise an empty array and it is FALSE in error case.
 	 */
-	public static function readLLfile($fileRef, $langKey, $charset='')	{
+	public static function readLLfile($fileRef, $langKey, $charset = '', $errorMode = 0)	{
 
+		$result = FALSE;
 		$file = t3lib_div::getFileAbsFileName($fileRef);
 		if ($file)	{
 			$baseFile = preg_replace('/\.(php|xml)$/', '', $file);
@@ -4362,7 +4365,13 @@ final class t3lib_div {
 						$LOCAL_LANG = array('default'=>$LOCAL_LANG['default'], $langKey=>$LOCAL_LANG[$langKey]); }
 				}
 			} else {
-				die('File "' . $fileRef. '" not found!');
+				$errorMsg = 'File "' . $fileRef. '" not found!';
+				if ($errorMode == 2) {
+					throw new t3lib_exception($errorMsg);
+				} elseif(!$errorMode)	{
+					debug($errorMsg, 1);
+				}
+				$fileNotFound = TRUE;
 			}
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['locallangXMLOverride'][$fileRef])) {
 				$languageOverrideFileName = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['EXT']['locallangXMLOverride'][$fileRef]);
@@ -4372,8 +4381,10 @@ final class t3lib_div {
 				}
 			}
 		}
-
-		return is_array($LOCAL_LANG) ? $LOCAL_LANG : array();
+		if ($fileNotFound !== TRUE)	{
+			$result = is_array($LOCAL_LANG) ? $LOCAL_LANG : array();
+		}
+		return $result;
 	}
 
 	/**
