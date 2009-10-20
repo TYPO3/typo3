@@ -1,3 +1,7 @@
+2009-10-19  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12194: The filetree does not show whether a folder is write protected
+
 2009-10-20  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid versions to 0.9.10
