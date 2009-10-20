@@ -3425,7 +3425,7 @@ class t3lib_TCEmain	{
 			}
 
 				// Checking if there is anything else disallowing moving the record by checking if editing is allowed
-			$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table,$uid);
+			$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, false, true);
 
 				// If moving is allowed, begin the processing:
 			if ($mayEditAccess)	{
@@ -3540,6 +3540,14 @@ class t3lib_TCEmain	{
 			$newVersion_placeholderFieldArray['t3ver_wsid'] = $this->BE_USER->workspace;	// Setting workspace - only so display of place holders can filter out those from other workspaces.
 			$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['label']] = '[MOVE-TO PLACEHOLDER for #'.$uid.', WS#'.$this->BE_USER->workspace.']';
 
+				// moving localized records requires to keep localization-settings for the placeholder too
+			if (array_key_exists('languageField', $GLOBALS['TCA'][$table]['ctrl']) && array_key_exists('transOrigPointerField', $GLOBALS['TCA'][$table]['ctrl'])) {
+				$l10nParentRec = t3lib_BEfunc::getRecord($table, $uid);
+				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+				unset($l10nParentRec);
+			}
+
 			$newVersion_placeholderFieldArray['pid'] = 0;	// Initially, create at root level.
 			$id = 'NEW_MOVE_PLH';
 			$this->insertDB($table,$id,$newVersion_placeholderFieldArray,FALSE);	// Saving placeholder as 'original'
@@ -3552,6 +3560,9 @@ class t3lib_TCEmain	{
 			$updateFields['t3ver_state'] = 4;	// Setting placeholder state value for version (so it can know it is currently a new version...)
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($wsUid), $updateFields);
 		}
+
+			//check for the localizations of that element and move them as well
+		$this->moveL10nOverlayRecords($table, $uid, $destPid);
 	}
 
 	/**
@@ -3609,6 +3620,8 @@ class t3lib_TCEmain	{
 				$this->moveRecord_procFields($table,$uid,$destPid);
 					// Create query for update:
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+					// check for the localizations of that element
+				$this->moveL10nOverlayRecords($table, $uid, $destPid);
 
 					// Call post processing hooks:
 				foreach($hookObjectsArr as $hookObj) {
@@ -3652,6 +3665,8 @@ class t3lib_TCEmain	{
 						$this->moveRecord_procFields($table,$uid,$destPid);
 							// Create query for update:
 						$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), $updateFields);
+							// check for the localizations of that element
+						$this->moveL10nOverlayRecords($table, $uid, $destPid);
 
 							// Call post processing hooks:
 						foreach($hookObjectsArr as $hookObj) {
@@ -3745,6 +3760,27 @@ class t3lib_TCEmain	{
 				// record at the beginning, thus the order is reversed here:
 			foreach (array_reverse($dbAnalysis->itemArray) as $v) {
 				$this->moveRecord($v['table'],$v['id'],$destPid);
+			}
+		}
+	}
+
+	/**
+	 * Find l10n-overlay records and perform the requested move action for these records.
+	 *
+	 * @param	string		$table: Record Table
+	 * @param	string		$uid: Record UID
+	 * @param	string		$destPid: Position to move to
+	 * @return	void
+	 */
+	function moveL10nOverlayRecords($table, $uid, $destPid) {
+			//there's no need to perform this for page-records
+		if ($table == 'pages') return;
+		t3lib_div::loadTCA($table);
+
+		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);
+		if (is_array($l10nRecords)) {
+			foreach ($l10nRecords as $record) {
+				$this->moveRecord($table, $record['uid'], $destPid);
 			}
 		}
 	}
@@ -4645,6 +4681,10 @@ class t3lib_TCEmain	{
 										$keepFields = $this->getUniqueFields($table);
 										if ($TCA[$table]['ctrl']['sortby'])	{
 											$keepFields[] = $TCA[$table]['ctrl']['sortby'];
+										}
+											// l10n-fields must be kept otherwise the localization will be lost during the publishing
+										if ($TCA[$table]['ctrl']['transOrigPointerField']) {
+											$keepFields[] = $TCA[$table]['ctrl']['transOrigPointerField'];
 										}
 
 											// Swap "keepfields"

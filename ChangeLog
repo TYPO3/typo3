@@ -23,6 +23,7 @@
 
 2009-10-20  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #2314: When moving records the translation do not move with it (thanks to Tolleiv Nietsch)
 	* Fixed bug #539: lang-children "get lost"(should be deleted) when deleting parent-record in default language (thanks to Tolleiv Nietsch)
 	* Fixed bug #10081: t3lib_div must not die if a locallang file is not found (thanks to Franz Holzinger)
 	* Fixed bug #12194: The filetree does not show whether a folder is write protected

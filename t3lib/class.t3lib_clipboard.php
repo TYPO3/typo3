@@ -466,6 +466,9 @@ class t3lib_clipboard {
 									'<a href="'.htmlspecialchars($this->removeUrl($table,$uid)).'#clip_head"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/close_12h.gif','width="11" height="12"').' border="0" title="'.$this->clLabel('removeItem').'" alt="" /></a>'.
 									'</td>
 								</tr>';
+
+							$lines[] = $this->getLocalisations($table, $rec, $bgColClass, $pad);
+
 						} else {
 							unset($this->clipData[$pad]['el'][$k]);
 							$this->changed=1;
@@ -485,6 +488,51 @@ class t3lib_clipboard {
 		$this->endClipboard();
 		return $lines;
 	}
+
+
+	/**
+	 * returns all localisations of the current record
+	 *
+	 * @param	string		the table
+	 * @param	array		the current record
+	 * @return	string		HTML table rows
+	 */
+	function getLocalisations($table, $parentRec, $bgColClass, $pad) {
+
+		$lines = array();
+		if ($table != 'pages' &&
+				$GLOBALS['TCA'][$table]['ctrl']['languageField'] &&
+				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
+				&& !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				$table,
+				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($parentRec['uid']) .
+					' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '!=0' .
+					' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0' .
+					' AND t3ver_wsid=' . $parentRec['t3ver_wsid']
+			);
+
+			foreach ($rows as $rec) {
+				$lines[]='
+				<tr>
+					<td class="' . $bgColClass . '">' .
+						t3lib_iconWorks::getIconImage($table, $rec, $this->backPath,' style="margin-left: 38px;"') . '</td>
+					<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . htmlspecialchars(
+							t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])) .
+							($pad == 'normal' ? (
+								' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') :
+								$this->clLabel('cut','cm')).')</strong>') :
+								''
+							) . '&nbsp;</td>
+					<td class="' . $bgColClass . '" align="center" nowrap="nowrap">&nbsp;</td>
+				</tr>';
+			}
+		}
+		return implode('',$lines);
+	}
+
+
 
 	/**
 	 * Wraps title of pad in bold-tags and maybe the number of elements if any.
