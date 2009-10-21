@@ -5692,6 +5692,32 @@ final class t3lib_div {
 		}
 		return '\''.$value.'\'';
 	}
+
+
+	/**
+	 * Ends and cleans all output buffers
+	 *
+	 * @return	void
+	 */
+	public static function cleanOutputBuffers() {
+		while (ob_get_level()) {
+			ob_end_clean();
+		}
+		header('Content-Encoding: None', TRUE);
+	}
+
+
+	/**
+	 *  Ends and flushes all output buffers
+	 *
+	 * @return	void
+	 */
+	public static function flushOutputBuffers() {
+		while (ob_get_level()) {
+			ob_end_flush();
+		}
+		header('Content-Encoding: None', TRUE);
+	}
 }
 
 ?>

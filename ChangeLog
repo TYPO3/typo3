@@ -6,6 +6,7 @@
 
 	* Fixed bug #12280: Error Message while creating empty Folders (thanks to Daniel Schmitzer)
 	* Fixed bug #11643: typoLink() sometimes wrongly drops url if link contains a section (thanks to Vladimir Podkovanov)
+	* Added feature #12189: Add API functions for cleaning and flushing output buffers
 
 2009-10-21  Oliver Hader  <oliver@typo3.org>
 

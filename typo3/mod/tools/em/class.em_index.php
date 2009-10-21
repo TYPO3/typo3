@@ -1300,7 +1300,7 @@ EXTENSION KEYS:
 				'\'" />';
 
 				// as this page loads dynamically, quit output buffering caused by ob_gzhandler
-			$this->quitOutputBuffering();
+			t3lib_div::cleanOutputBuffers();
 
 			if(t3lib_div::_GET('l10n') == 'check') {
 				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
@@ -6165,20 +6165,6 @@ $warn.
 		}
 
 		return $content . '</table><br />';
-	}
-
-	/**
-	 *  Quit output buffering started by ob_gzhandler
-	 *
-	 *  @return	void
-	 */
-	private function quitOutputBuffering() {
-
-		while (ob_get_level()) {
-			ob_end_clean();
-		}
-
-		header('Content-Encoding: None', TRUE);
 	}
 }
 
