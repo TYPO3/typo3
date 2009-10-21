@@ -54,10 +54,12 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	 * @return object Value of the property.
 	 */
 	static public function getProperty($object, $propertyName) {
-		if (!is_object($object)) throw new InvalidArgumentException('$object must be an object, ' . gettype($object). ' given.', 1237301367);
+		if (!is_object($object) && !is_array($object)) throw new InvalidArgumentException('$object must be an object or an array, ' . gettype($object). ' given.', 1237301367);
 		if (!is_string($propertyName)) throw new InvalidArgumentException('Given property name is not of type string.', 1231178303);
 
-		if (is_callable(array($object, $getterMethodName = self::buildGetterMethodName($propertyName)))) {
+		if (is_array($object) && array_key_exists($propertyName, $object)) {
+			return $object[$propertyName];
+		} elseif (is_callable(array($object, $getterMethodName = self::buildGetterMethodName($propertyName)))) {
 			return call_user_func(array($object, $getterMethodName));
 		} elseif ($object instanceof ArrayAccess && isset($object[$propertyName])) {
 			return $object[$propertyName];
