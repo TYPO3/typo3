@@ -136,6 +136,9 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		'disableCMlayers' => 0,
 		'navFrameWidth' => '',	// Default is 245 pixels
 		'navFrameResizable' => 0,
+		'resizeTextareas' => 1,
+		'resizeTextareas_MaxHeight' => 300,
+		'resizeTextareas_Flexible' => 1,
 	);
 
 

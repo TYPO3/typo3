@@ -148,7 +148,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'type' => 'text',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas_MaxHeight',
 			'csh' => 'resizeTextareas_MaxHeight',
-			'default' => 600,
 		),
 		'resizeTextareas_Flexible' => array(
 			'type' => 'check',

@@ -18,6 +18,7 @@
 
 2009-10-21  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12299: #12112: Enable resizable textareas by default (thanks to Steffen Gebert)
 	* Fixed bug #12299: EM tries to read from tables of not installed extensions
 	* Fixed bug #12075: Add COMPARE Link to update Wizard
 	* Fixed bug #12168: Empty line in general header comment
