@@ -6130,8 +6130,11 @@ class tslib_cObj {
 						$this->lastTypoLinkTarget = $LD['target'];
 						$targetPart = $LD['target'] ? ' target="'.$LD['target'].'"' : '';
 
-							// If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters and is not, drop the url.
-						if ($sectionMark && !trim($addQueryParams) && $page['uid']==$GLOBALS['TSFE']->id && !$GLOBALS['TSFE']->config['config']['baseURL'])	{
+							// If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters or addQueryString parameters and if not, drop the url.
+						if ($sectionMark && !$GLOBALS['TSFE']->config['config']['baseURL'] &&
+								$page['uid'] == $GLOBALS['TSFE']->id && !trim($addQueryParams) &&
+								!($conf['addQueryString'] && $conf['addQueryString.'])) {
+
 							list(,$URLparams) = explode('?',$this->lastTypoLinkUrl);
 							list($URLparams) = explode('#',$URLparams);
 							parse_str ($URLparams.$LD['orig_type'], $URLparamsArray);

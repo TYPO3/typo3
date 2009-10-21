@@ -1,3 +1,7 @@
+2009-10-21  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11643: typoLink() sometimes wrongly drops url if link contains a section (thanks to Vladimir Podkovanov)
+
 2009-10-21  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Updated ext_emconf.php files in system extensions
