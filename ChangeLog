@@ -1,3 +1,7 @@
+2009-10-21  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12280: Error Message while creating empty Folders (thanks to Daniel Schmitzer)
+
 2009-10-21  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12272: Steps disregarded in t3lib_lock (thanks to Dan Osipov)
