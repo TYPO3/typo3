@@ -449,7 +449,7 @@ final class t3lib_BEfunc {
 	 * @param	string		$andWhereClause: Optional additional WHERE clause (default: '')
 	 * @return	mixed		Multidimensional array with selected records; if none exist, false is returned
 	 */
-	public function getRecordLocalization($table, $uid, $language, $andWhereClause = '') {
+	public static function getRecordLocalization($table, $uid, $language, $andWhereClause = '') {
 		$recordLocalization = false;
 		if (self::isTableLocalizable($table)) {
 			$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
@@ -878,7 +878,7 @@ final class t3lib_BEfunc {
 	 * @param	string		$table: The table to check
 	 * @return	boolean		Whether a table is localizable
 	 */
-	public function isTableLocalizable($table) {
+	public static function isTableLocalizable($table) {
 		$isLocalizable = false;
 		if (isset($GLOBALS['TCA'][$table]['ctrl']) && is_array($GLOBALS['TCA'][$table]['ctrl'])) {
 			$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
@@ -896,7 +896,7 @@ final class t3lib_BEfunc {
 	 * @param	mixed		$fieldOrConfig: The fieldname (string) or the configuration of the field to check (array)
 	 * @return	mixed		If table is localizable, the set localizationMode is returned (if property is not set, 'select' is returned by default); if table is not localizable, false is returned
 	 */
-	public function getInlineLocalizationMode($table, $fieldOrConfig) {
+	public static function getInlineLocalizationMode($table, $fieldOrConfig) {
 		$localizationMode = false;
 		if (is_array($fieldOrConfig) && count($fieldOrConfig)) {
 			$config = $fieldOrConfig;
@@ -2827,7 +2827,7 @@ final class t3lib_BEfunc {
 	 * @return	void
 	 * @see	t3lib_BEfunc::getUpdateSignalCode()
 	 */
-	public function setUpdateSignal($set = '', $params = '') {
+	public static function setUpdateSignal($set = '', $params = '') {
 		global $BE_USER;
 		$modData = $BE_USER->getModuleData('t3lib_BEfunc::getUpdateSignal', 'ses');
 
@@ -2850,7 +2850,7 @@ final class t3lib_BEfunc {
 	 * @return	string		HTML javascript code
 	 * @see	t3lib_BEfunc::setUpdateSignal()
 	 */
-	public function getUpdateSignalCode() {
+	public static function getUpdateSignalCode() {
 		$signals = array();
 		$modData = $GLOBALS['BE_USER']->getModuleData('t3lib_BEfunc::getUpdateSignal', 'ses');
 		if (!count($modData)) {

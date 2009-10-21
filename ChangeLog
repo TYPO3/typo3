@@ -11,6 +11,7 @@
 
 	* Cleanup: Updated ext_emconf.php files in system extensions
 	* Follow-up to bugfix #539: Tables that cannot be localized at all produce a SQL error on deleting records
+	* Cleanup: Fixed non-static function declarations in t3lib_BEfunc
 
 2009-10-21  Steffen Kamper  <info@sk-typo3.de>
 
