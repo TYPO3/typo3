@@ -4492,7 +4492,8 @@ class t3lib_TCEmain	{
 	 * @return	void
 	 */
 	function deleteL10nOverlayRecords($table, $uid) {
-		if (!empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
+			// Check whether table can be localized or has a different table defined to store localizations:
+		if (!t3lib_BEfunc::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
 			return;
 		}
 
