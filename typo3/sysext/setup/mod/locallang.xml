@@ -99,7 +99,8 @@
 			<label index="save">Save Configuration</label>
 			<label index="newPassword">New password</label>
 			<label index="newPasswordAgain">New password, again</label>
-			<label index="newPassword_ok">Password was updated</label>
+			<label index="newPassword_ok">Password was updated.</label>
+			<label index="setupWasUpdated">User settings were updated.</label>
 			<label index="newPassword_failed">Password was NOT updated because you didn't enter the same password twice.</label>
 			<label index="adminFunctions">Admin functions</label>
 			<label index="enableInstallTool.label">Install Tool Access</label>

@@ -112,6 +112,8 @@ class SC_mod_user_setup_index {
 
 	protected $tsFieldConf;
 
+	protected $passwordIsUpdated = 0;
+	protected $setupIsUpdated = FALSE;
 
 
 	/******************************
@@ -178,14 +180,15 @@ class SC_mod_user_setup_index {
 			$save_after = md5(serialize($BE_USER->uc));
 			if ($save_before!=$save_after)	{	// If something in the uc-array of the user has changed, we save the array...
 				$BE_USER->writeUC($BE_USER->uc);
-				$BE_USER->writelog(254,1,0,1,'Personal settings changed',Array());
+				$BE_USER->writelog(254, 1, 0, 1, 'Personal settings changed', array());
+				$this->setupIsUpdated = TRUE;
 			}
 
 
 				// Personal data for the users be_user-record (email, name, password...)
 				// If email and name is changed, set it in the users record:
 			$be_user_data = $d['be_users'];
-			$this->PASSWORD_UPDATED = strlen($be_user_data['password'].$be_user_data['password2'])>0 ? -1 : 0;
+			$this->passwordIsUpdated = strlen($be_user_data['password'].$be_user_data['password2'])>0 ? -1 : 0;
 			if ($be_user_data['email']!=$BE_USER->user['email']
 					|| $be_user_data['realName']!=$BE_USER->user['realName']
 					|| ( (strlen($be_user_data['password'])==32 || (isset($columns['password']['eval']) && substr($columns['password']['eval'], 0, 3) == 'tx_'))
@@ -207,13 +210,13 @@ class SC_mod_user_setup_index {
 						if ($set === TRUE) {
 								// password was changed
 							$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $newPassword;
-							$this->PASSWORD_UPDATED = 1;
+							$this->passwordIsUpdated = 1;
 						}
 					}
 				} else {
 					if (strlen($be_user_data['password'])==32 && !strcmp($be_user_data['password'],$be_user_data['password2']))	{
 						$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $be_user_data['password2'];
-						$this->PASSWORD_UPDATED = 1;
+						$this->passwordIsUpdated = 1;
 					}
 				}
 			}
@@ -226,6 +229,7 @@ class SC_mod_user_setup_index {
 				$tce->bypassWorkspaceRestrictions = TRUE;	// This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
 				$tce->process_datamap();
 				unset($tce);
+				$this->setupIsUpdated = TRUE;
 			}
 		}
 	}
@@ -329,14 +333,34 @@ class SC_mod_user_setup_index {
 
 		$this->content .= $this->doc->header($LANG->getLL('UserSettings').' - '.$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']');
 
-			// If password is updated, output whether it failed or was OK.
-		if ($this->PASSWORD_UPDATED) {
-			if ($this->PASSWORD_UPDATED > 0) {
-				$this->content .= $this->doc->section($LANG->getLL('newPassword').':',$LANG->getLL('newPassword_ok'),1,0,1);
-			} else {
-				$this->content .= $this->doc->section($LANG->getLL('newPassword').':',$LANG->getLL('newPassword_failed'),1,0,2);
-			}
+			// show if setup was saved
+		if ($this->setupIsUpdated) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('setupWasUpdated'),
+				$LANG->getLL('UserSettings')
+			);
+			$this->content .= $flashMessage->render();
 		}
+			// If password is updated, output whether it failed or was OK.
+		if ($this->passwordIsUpdated) {
+			if ($this->passwordIsUpdated > 0) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$LANG->getLL('newPassword_ok'),
+					$LANG->getLL('newPassword')
+				);
+			} else {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$LANG->getLL('newPassword_failed'),
+					$LANG->getLL('newPassword'),
+					t3lib_FlashMessage::ERROR
+				);
+			}
+			$this->content .= $flashMessage->render();
+		}
+
 
 			// render the menu items
 		$menuItems = $this->renderUserSetup();
