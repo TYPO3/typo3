@@ -355,9 +355,9 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			}
 		}
 
-		$customContent = $GLOBALS['TSFE']->config['config']['headerComment'];
-		if (trim($customContent)) {
-			$pageRenderer->addInlineComment($customContent);
+		$headerComment = $GLOBALS['TSFE']->config['config']['headerComment'];
+		if (trim($headerComment)) {
+			$pageRenderer->addInlineComment("\t" . str_replace("\n", "\n\t", trim($headerComment)) . "\n");
 		}
 
 			// Setting charset:
@@ -470,8 +470,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			// Setting charset meta tag:
 		$pageRenderer->setCharSet($theCharset);
 
-		$pageRenderer->addInlineComment('
-	This website is powered by TYPO3 - inspiring people to share!
+		$pageRenderer->addInlineComment('	This website is powered by TYPO3 - inspiring people to share!
 	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
 	TYPO3 is copyright 1998-2009 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
 	Information and contribution at http://typo3.com/ and http://typo3.org/
