@@ -23,7 +23,7 @@
 /**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  *
- * @version $Id: ObjectAccessorNode.php 3333 2009-10-21 09:52:46Z sebastian $
+ * @version $Id: ObjectAccessorNode.php 3334 2009-10-21 10:08:17Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal

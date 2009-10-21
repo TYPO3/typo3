@@ -26,7 +26,7 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id: AbstractFormViewHelper.php 3313 2009-10-12 05:57:02Z sebastian $
+ * @version $Id: AbstractFormViewHelper.php 3336 2009-10-21 16:52:50Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -57,6 +57,9 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	protected function prefixFieldName($fieldName) {
 		if ($fieldName === NULL || $fieldName === '') {
 			return '';
+		}
+		if (!$this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')) {
+			return $fieldName;
 		}
 		$fieldNamePrefix = (string)$this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix');
 		if ($fieldNamePrefix === '') {
@@ -104,9 +107,14 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid
 	 * @param string $fieldName name of the field to register
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function registerFieldNameForFormTokenGeneration($fieldName) {
-		$formFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
+		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames')) {
+			$formFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
+		} else {
+			$formFieldNames = array();
+		}
 		$formFieldNames[] = $fieldName;
 		$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames', $formFieldNames);
 	}
