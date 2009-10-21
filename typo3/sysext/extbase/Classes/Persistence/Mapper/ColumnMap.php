@@ -104,13 +104,6 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	protected $childSortByFieldName;
 
 	/**
-	 * Flag, if related objects should be deleted with their parents
-	 *
-	 * @var boolean
-	 **/
-	protected $deleteChildObjects = FALSE;
-
-	/**
 	 * The name of the relation table
 	 *
 	 * @var string
@@ -120,10 +113,16 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	/**
 	 * An array of field => value pairs to both insert and match against when writing/reading MM relations
 	 *
-	 * @var string
+	 * @var array
 	 **/
 	protected $relationTableMatchFields;
 
+	/**
+	 * Array of field=>value pairs to insert when writing new MM relations
+	 *
+	 * @var array
+	 **/
+	protected $relationTableInsertFields;
 
 	/**
 	 * The where clause to narrow down the selected relation table records
@@ -273,14 +272,6 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 		return $this->childSortByFieldName;
 	}
 
-	public function setDeleteChildObjectsState($deleteChildObjects) {
-		$this->deleteChildObjects = (bool)$deleteChildObjects;
-	}
-
-	public function deleteChildObjects() {
-		return $this->deleteChildObjects;
-	}
-
 	public function setRelationTableName($relationTableName) {
 		$this->relationTableName = $relationTableName;
 	}
@@ -295,6 +286,14 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	public function getRelationTableMatchFields() {
 		return $this->relationTableMatchFields;
+	}
+
+	public function setRelationTableInsertFields(array $relationTableInsertFields) {
+		$this->relationTableInsertFields = $relationTableInsertFields;
+	}
+
+	public function getRelationTableInsertFields() {
+		return $this->relationTableInsertFields;
 	}
 
 	public function setRelationTableWhereStatement($relationTableWhereStatement) {

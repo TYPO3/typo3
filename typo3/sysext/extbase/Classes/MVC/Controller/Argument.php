@@ -207,6 +207,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	 */
 	public function setDataType($dataType) {
 		$this->dataType = $dataType;
+		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($dataType);
 		return $this;
 	}
 

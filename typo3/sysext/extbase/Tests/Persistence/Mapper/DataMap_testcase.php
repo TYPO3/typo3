@@ -110,7 +110,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 					'label'   => 'LLL:EXT:blog_example/Resources/Language/locallang_db.xml:tx_blogexample_domain_model_blog.posts',
 					'config' => array(
 						'type' => 'inline',
-						// TODO is 'foreign_class' in $TCA the best way?
 						'foreign_class' => 'Tx_BlogExample_Domain_Model_Post',
 						'foreign_table' => 'tx_blogexample_domain_model_post',
 						'foreign_field' => 'blog',
@@ -142,47 +141,234 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 		);
 	}
 
-	public function test_DataMapCanBeInitialized() {
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$columnMaps = $dataMap->getColumnMaps();
-		$this->assertEquals(10, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
+	// public function test_DataMapCanBeInitialized() {
+	// 	$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+	// 	$columnMaps = $dataMap->getColumnMaps();
+	// 	$this->assertEquals(10, count($columnMaps), 'The data map was not initialized (wrong number of column maps set).');
+	// }
+	// 
+	// public function test_DeletedColumnNameCanBeResolved() {
+	// 	$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+	// 	$deletedColumnName = $dataMap->getDeletedColumnName();
+	// 	$this->assertEquals($deletedColumnName, 'deleted', 'The deleted column name could not be resolved.');
+	// }
+	// 
+	// public function test_HiddenColumnNameCanBeResolved() {
+	// 	$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+	// 	$hiddenColumnName = $dataMap->getHiddenColumnName();
+	// 	$this->assertEquals($hiddenColumnName, 'hidden', 'The hidden column name could not be resolved.');
+	// }
+	// 
+	// public function test_ColumnCanBeAdded() {
+	// 	$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+	// 	$dataMap->addColumn('test_column');
+	// 	$columnMaps = $dataMap->getColumnMaps();
+	// 	$columnMap = array_pop($columnMaps);
+	// 	$this->assertType('Tx_Extbase_Persistence_Mapper_ColumnMap', $columnMap, 'The column could not be added.');
+	// }
+	// 
+	// public function test_PersistablePropertyCanBeChecked() {
+	// 	$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+	// 	$dataMap->addColumn('configured_property');
+	// 	$this->assertTrue($dataMap->isPersistableProperty('configuredProperty'), 'The persistable property was marked as unpersistable.');
+	// 	$this->assertFalse($dataMap->isPersistableProperty('unconfiguredProperty'), 'The unpersistable property was marked asersistable.');
+	// }
+	// 
+	// public function test_HasManyColumnIsRegisteredForForeignTable() {
+	// 	$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+	// 	$this->assertEquals(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
+	// }
+	// 
+	// public function test_HasOneColumnIsRegisteredForForeignTableWithMaxsizeOne() {
+	// 	$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
+	// 	$this->assertEquals(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
+	// }
+	
+	/**
+	 * @test
+	 */
+	public function setRelationsDetectsOneToOneRelationOfTypeSelect() {
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	    $columnConfiguration = array(
+			'type' => 'select',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable',
+			'maxitems' => '1'
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
+		$mockDataMap->expects($this->once())->method('setOneToOneRelation');
+		$mockDataMap->expects($this->never())->method('setOneToManyRelation');
+		$mockDataMap->expects($this->never())->method('setManyToManyRelation');
+		$mockDataMap->_callRef('setRelations', $mockColumnMap, $columnConfiguration);
 	}
 	
-	public function test_DeletedColumnNameCanBeResolved() {
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$deletedColumnName = $dataMap->getDeletedColumnName();
-		$this->assertEquals($deletedColumnName, 'deleted', 'The deleted column name could not be resolved.');
+	/**
+	 * @test
+	 */
+	public function setRelationsDetectsOneToOneRelationOfTypeInline() {
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	    $columnConfiguration = array(
+			'type' => 'inline',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable',
+			'maxitems' => '1'
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
+		$mockDataMap->expects($this->once())->method('setOneToOneRelation');
+		$mockDataMap->expects($this->never())->method('setOneToManyRelation');
+		$mockDataMap->expects($this->never())->method('setManyToManyRelation');
+		$mockDataMap->_callRef('setRelations', $mockColumnMap, $columnConfiguration);
 	}
 	
-	public function test_HiddenColumnNameCanBeResolved() {
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$hiddenColumnName = $dataMap->getHiddenColumnName();
-		$this->assertEquals($hiddenColumnName, 'hidden', 'The hidden column name could not be resolved.');
+	/**
+	 * @test
+	 */
+	public function setRelationsDetectsOneToManyRelationOfTypeSelect() {
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	    $columnConfiguration = array(
+			'type' => 'select',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable'
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
+		$mockDataMap->expects($this->never())->method('setOneToOneRelation');
+		$mockDataMap->expects($this->once())->method('setOneToManyRelation');
+		$mockDataMap->expects($this->never())->method('setManyToManyRelation');
+		$mockDataMap->_callRef('setRelations', $mockColumnMap, $columnConfiguration);
 	}
 	
-	public function test_ColumnCanBeAdded() {
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$dataMap->addColumn('test_column');
-		$columnMaps = $dataMap->getColumnMaps();
-		$columnMap = array_pop($columnMaps);
-		$this->assertType('Tx_Extbase_Persistence_Mapper_ColumnMap', $columnMap, 'The column could not be added.');
+	/**
+	 * @test
+	 */
+	public function setRelationsDetectsOneToManyRelationWitTypeInline() {
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	    $columnConfiguration = array(
+			'type' => 'inline',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable'
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
+		$mockDataMap->expects($this->never())->method('setOneToOneRelation');
+		$mockDataMap->expects($this->once())->method('setOneToManyRelation');
+		$mockDataMap->expects($this->never())->method('setManyToManyRelation');
+		$mockDataMap->_callRef('setRelations', $mockColumnMap, $columnConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setRelationsDetectsManyToManyRelationOfTypeSelect() {
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	    $columnConfiguration = array(
+			'type' => 'select',
+			'foreign_table' => 'tx_myextension_bar',
+			'MM' => 'tx_myextension_mm'
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
+		$mockDataMap->expects($this->never())->method('setOneToOneRelation');
+		$mockDataMap->expects($this->never())->method('setOneToManyRelation');
+		$mockDataMap->expects($this->once())->method('setManyToManyRelation');
+		$mockDataMap->_callRef('setRelations', $mockColumnMap, $columnConfiguration);
 	}
 	
-	public function test_PersistablePropertyCanBeChecked() {
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$dataMap->addColumn('configured_property');
-		$this->assertTrue($dataMap->isPersistableProperty('configuredProperty'), 'The persistable property was marked as unpersistable.');
-		$this->assertFalse($dataMap->isPersistableProperty('unconfiguredProperty'), 'The unpersistable property was marked asersistable.');
+	/**
+	 * @test
+	 */
+	public function setRelationsDetectsManyToManyRelationOfTypeInline() {
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	    $columnConfiguration = array(
+			'type' => 'inline',
+			'foreign_table' => 'tx_myextension_mm',
+			'foreign_field' => 'uid_local',
+			'foreign_label' => 'uid_foreign'
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
+		$mockDataMap->expects($this->never())->method('setOneToOneRelation');
+		$mockDataMap->expects($this->never())->method('setOneToManyRelation');
+		$mockDataMap->expects($this->once())->method('setManyToManyRelation');
+		$mockDataMap->_callRef('setRelations', $mockColumnMap, $columnConfiguration);
 	}
 	
-	public function test_HasManyColumnIsRegisteredForForeignTable() {
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$this->assertEquals(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY, $dataMap->getColumnMap('posts')->getTypeOfRelation(), 'The posts relation was not of type HAS_MANY.');
+	/**
+	 * @test
+	 */
+	public function columnMapIsInitializedWithManyToManyRelationOfTypeSelect() {
+	    $columnConfiguration = array(
+			'type' => 'select',
+			'foreign_class' => 'Tx_MyExtension_Class',
+			'foreign_table' => 'tx_myextension_table',
+			'foreign_table_where' => 'WHERE 1=1',
+			'MM' => 'tx_myextension_mm',
+			'MM_match_fields' => array('match_field' => 'value'),
+			// 'MM_insert_fields' => array('insert_field' => 'value'),
+			'MM_table_where' => 'WHERE 2=2',
+			// 'MM_opposite_field' => 'opposite_field'
+			);
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
+		$mockColumnMap->expects($this->once())->method('setChildClassName')->with($this->equalTo('Tx_MyExtension_Class'));
+		$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_table'));
+		$mockColumnMap->expects($this->once())->method('setChildTableWhereStatement')->with($this->equalTo('WHERE 1=1'));
+		$mockColumnMap->expects($this->once())->method('setChildSortbyFieldName')->with($this->equalTo('sorting'));
+		$mockColumnMap->expects($this->once())->method('setParentKeyFieldName')->with($this->equalTo('uid_local'));
+		$mockColumnMap->expects($this->never())->method('setParentTableFieldName');
+		$mockColumnMap->expects($this->once())->method('setRelationTableMatchFields')->with($this->equalTo(array('match_field' => 'value')));
+		$mockColumnMap->expects($this->never())->method('setRelationTableInsertFields');
+		
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('dummy'), array(), '', FALSE);
+		$mockDataMap->_callRef('setManyToManyRelation', $mockColumnMap, $columnConfiguration);
 	}
 	
-	public function test_HasOneColumnIsRegisteredForForeignTableWithMaxsizeOne() {
-		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap('Tx_BlogExample_Domain_Model_Blog');
-		$this->assertEquals(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE, $dataMap->getColumnMap('author')->getTypeOfRelation(), 'The author relation was not of type HAS_ONE.');
-	}
+	// /**
+	//  * @test
+	//  */
+	// public function columnMapIsInitializedWithManyToManyRelationOfTypeInline() {
+	//     $parentColumnConfiguration = array(
+	// 		'type' => 'inline',
+	// 		'foreign_table' => 'tx_myextension_mm',
+	// 		'foreign_field' => 'uid_local',
+	// 		'foreign_label' => 'uid_foreign'
+	// 		);
+	//     $relationTableColumnsDefiniton = array(
+	// 		'uid_local' => array(
+	// 			'foreign_class' => 'Tx_MyExtension_ParentClass',
+	// 			'foreign_table' => 'tx_myextension_parenttable'
+	// 			),
+	// 		'uid_foreign' => array(
+	// 			'foreign_class' => 'Tx_MyExtension_ChildClass',
+	// 			'foreign_table' => 'tx_myextension_childtable'
+	// 			)
+	// 		);
+	//     $childColumnsDefinition = array(
+	// 		array(
+	// 			'uid_local' => array(
+	// 				'type' => 'inline',
+	// 				'foreign_table' => 'tx_myextension_mm',
+	// 				'foreign_field' => 'uid_local',
+	// 				'foreign_label' => 'uid_foreign'
+	// 				)
+	// 			)
+	// 		);
+	// 	$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	// 	$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
+	// 	$mockColumnMap->expects($this->once())->method('setChildClassName')->with($this->equalTo('Tx_MyExtension_Class'));
+	// 	$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_table'));
+	// 	$mockColumnMap->expects($this->never())->method('setChildTableWhereStatement');
+	// 	$mockColumnMap->expects($this->once())->method('setChildSortbyFieldName')->with($this->equalTo('sorting'));
+	// 	$mockColumnMap->expects($this->once())->method('setParentKeyFieldName')->with($this->equalTo('uid_local'));
+	// 	$mockColumnMap->expects($this->never())->method('setParentTableFieldName');
+	// 	$mockColumnMap->expects($this->never())->method('setRelationTableMatchFields');
+	// 	$mockColumnMap->expects($this->never())->method('setRelationTableInsertFields');
+	// 	
+	// 	$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('getColumnsDefinition', 'determineChildClassName'), array(), '', FALSE);
+	// 	$mockDataMap->expects($this->once())->method('getColumnsDefinition')->with($this->equalTo('tx_myextension_mm'))->will($this->returnValue($relationTableColumnsDefiniton));
+	// 	$mockDataMap->expects($this->once())->method('determineChildClassName')->with($this->equalTo($relationTableColumnsDefiniton))->will($this->returnValue('Tx_MyExtension_Class'));
+	// 	$mockDataMap->_callRef('setManyToManyRelation', $mockColumnMap, $parentColumnConfiguration);
+	// }
+	
 }
 ?>
