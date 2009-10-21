@@ -1,3 +1,7 @@
+2009-10-21  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid version numbers to 0.9.11.
+
 2009-10-21  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11643: typoLink() sometimes wrongly drops url if link contains a section (thanks to Vladimir Podkovanov)
