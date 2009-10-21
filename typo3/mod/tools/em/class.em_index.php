@@ -2996,10 +2996,11 @@ EXTENSION KEYS:
 	function extBackup_dumpDataTablesLine($tablesArray,$extKey)	{
 		$tables = array();
 		$tablesNA = array();
+		$allTables = array_keys($GLOBALS['TYPO3_DB']->admin_get_tables());
 
 		foreach($tablesArray as $tN)	{
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $tN);
-			if (!$GLOBALS['TYPO3_DB']->sql_error())	{
+			if (in_array($tN, $allTables))	{
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $tN);
 				$tables[$tN] = '<tr><td>&nbsp;</td><td>
 					<a href="' . htmlspecialchars('index.php?CMD[dumpTables]=' . rawurlencode($tN) .
 					 '&CMD[showExt]=' . $extKey) .
