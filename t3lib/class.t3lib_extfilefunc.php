@@ -688,7 +688,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 		if (!$this->isInit) return FALSE;
 
 		$theFolder = $this->cleanFileName($cmds['data']);
-		if (isset($theFolder))	{
+		if (isset($theFolder) && trim($theFolder) != '') {
 			if ($this->checkFileNameLen($theFolder))	{
 				$theTarget = $this->is_directory($cmds['target']);	// Check the target dir
 				if ($theTarget)	{
