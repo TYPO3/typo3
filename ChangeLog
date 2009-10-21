@@ -17,6 +17,7 @@
 
 2009-10-21  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12075: Add COMPARE Link to update Wizard
 	* Fixed bug #12168: Empty line in general header comment
 	* Fixed bug #12175: User Setup don't check file time of ENABLE_INSTALL_TOOL
 	* Fixed bug #12237: Use flash-messages in user-settings (thanks to Georg Ringer)

@@ -4011,6 +4011,16 @@ From sub-directory:
 				} else {
 					$content = '<strong>No updates to perform!</strong>';
 				}
+				$content .= '<table><tbody><tr><td>
+				<div class="updateWizardBoxes">
+				<h3>Final Step</h3>
+				<p>When all updates are done you should check your database for required updates.<br />
+				Perform <strong>COMPARE DATABASE</strong> as often until no more changes are required.<br /><br />
+				<input type="button" onclick="document.location.href=\'index.php?TYPO3_INSTALL[type]=database&TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom\';"
+				value="COMPARE DATABASE" />
+				</p>
+				</div>
+				</td></tr></tbody></table>';
 			break;
 			case 'getUserInput':	// second step - get user input and ask for final confirmation
 				$title = 'Step 2 - Configuration of updates';
