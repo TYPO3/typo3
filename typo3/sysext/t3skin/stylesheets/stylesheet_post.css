@@ -44,6 +44,18 @@
 
 /* General style */
 
+h2 {
+	font-size: 14px !important;
+}
+h3 {
+	font-size: 13px;
+	padding: 2px 0;
+	margin: 8px 0 10px;
+}
+h4 {
+	font-size: 12px;
+}
+
 th,
 td {
 	vertical-align: top;
