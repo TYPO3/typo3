@@ -131,6 +131,15 @@ Backend
 	  Extension developers are strongly encouraged to turn their existing cron scripts
 	  into Scheduler tasks.
 
+	* The appearance and behavior of localized records in the backend on copy, move and deleting
+	  records has been improved. Actions performed to a record in the default language will now
+	  concern the accordant localization records as well.
+
+	* TypoScript conditions have been possible in the frontend for a long time. This release adds
+	  support for conditions in PageTSconfig and UserTSconfig so the same functionality is available
+	  in both the frontend and backend now. Due to performance reasons evaluation of TSconfig
+	  conditions can be disabled in the Install Tool with $TYPO3_CONF_VARS['BE']['TSconfigConditions].
+
 Frontend
 ========
 
