@@ -14,12 +14,12 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperNodeTest.php 2895 2009-07-27 15:45:24Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 3333 2009-10-21 09:52:46Z sebastian $
  */
 /**
  * Testcase for [insert classname here]
  *
- * @version $Id: ViewHelperNodeTest.php 2895 2009-07-27 15:45:24Z sebastian $
+ * @version $Id: ViewHelperNodeTest.php 3333 2009-10-21 09:52:46Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 if (!class_exists('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper')) {

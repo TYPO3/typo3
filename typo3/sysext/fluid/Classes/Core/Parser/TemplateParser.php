@@ -23,7 +23,7 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id: TemplateParser.php 3188 2009-09-16 13:03:59Z k-fish $
+ * @version $Id: TemplateParser.php 3333 2009-10-21 09:52:46Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_TemplateParser {

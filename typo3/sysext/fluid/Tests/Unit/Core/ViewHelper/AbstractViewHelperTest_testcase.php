@@ -18,7 +18,7 @@ if (!class_exists('Tx_Fluid_Core_Fixtures_TestViewHelper')) {
 /**
  * Testcase for AbstractViewHelper
  *
- * @version $Id: AbstractViewHelperTest.php 3178 2009-09-16 08:13:30Z sebastian $
+ * @version $Id: AbstractViewHelperTest.php 3333 2009-10-21 09:52:46Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbase_BaseTestCase {

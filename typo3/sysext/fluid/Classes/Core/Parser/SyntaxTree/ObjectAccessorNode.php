@@ -23,7 +23,7 @@
 /**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  *
- * @version $Id: ObjectAccessorNode.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ObjectAccessorNode.php 3333 2009-10-21 09:52:46Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -67,6 +67,9 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	public function evaluate() {
 		$objectPathParts = explode('.', $this->objectPath);
 		$variableName = array_shift($objectPathParts);
+		if (!$this->renderingContext->getTemplateVariableContainer()->exists($variableName)) {
+			return NULL;
+		}
 		$currentObject = $this->renderingContext->getTemplateVariableContainer()->get($variableName);
 		if (count($objectPathParts) > 0) {
 			return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($currentObject, implode('.', $objectPathParts));

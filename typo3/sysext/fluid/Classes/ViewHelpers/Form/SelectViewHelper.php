@@ -60,7 +60,7 @@
  *
  * The "value" property now expects a domain object, and tests for object equivalence.
  *
- * @version $Id: SelectViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
+ * @version $Id: SelectViewHelper.php 3333 2009-10-21 09:52:46Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

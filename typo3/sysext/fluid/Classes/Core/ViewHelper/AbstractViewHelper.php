@@ -23,7 +23,7 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 3331 2009-10-20 04:37:59Z sebastian $
+ * @version $Id: AbstractViewHelper.php 3333 2009-10-21 09:52:46Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
