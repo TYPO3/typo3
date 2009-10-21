@@ -711,7 +711,19 @@ class SC_mod_user_setup_index {
 	 */
 	public function renderInstallToolEnableFileButton(array $params, SC_mod_user_setup_index $parent) {
 		// Install Tool access file
-		$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+		$installToolEnableFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
+		$installToolEnableFileExists = is_file($installToolEnableFile);
+		if ($installToolEnableFileExists && (time() - filemtime($installToolEnableFile) > 3600)) {
+			$content = file_get_contents($installToolEnableFile);
+			$verifyString = 'KEEP_FILE';
+
+			if (trim($content) !== $verifyString) {
+					// Delete the file if it is older than 3600s (1 hour)
+				unlink($installToolEnableFile);
+				$installToolEnableFileExists = is_file($installToolEnableFile);
+			}
+		}
+
 		if ($installToolEnableFileExists) {
 			return '<input type="submit" name="deleteInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" />';
 		} else {
