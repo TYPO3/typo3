@@ -66,7 +66,7 @@ class t3lib_lock {
 	protected $isAcquired = false;
 
 	protected $loops = 150;	// Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
-	protected $milliSecondsForAcquire = 200;	// Milliseconds after lock acquire is retried. $loops * $milliSecondsForAcquire results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
+	protected $millisecondsForAcquire = 200;	// Milliseconds after lock acquire is retried. $loops * $millisecondsForAcquire results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
 
 
 
@@ -82,15 +82,15 @@ class t3lib_lock {
 	 * @param	integer		Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
 	 * @return	boolean		Returns true unless something went wrong
 	 */
-	public function __construct($id, $method='', $loops=0, $milliSecondsForAcquire=0)	{
+	public function __construct($id, $method='', $loops=0, $millisecondsForAcquire=0)	{
 
 			// Input checks
 		$id = (string)$id;	// Force ID to be string
 		if (intval($loops)) {
 			$this->loops = intval($loops);
 		}
-		if (intval($milliSecondsForAcquire)) {
-			$this->milliSecondsForAcquire = intval($milliSecondsForAcquire);
+		if (intval($millisecondsForAcquire)) {
+			$this->millisecondsForAcquire = intval($millisecondsForAcquire);
 		}
 
 			// Detect locking method
@@ -154,7 +154,7 @@ class t3lib_lock {
 					$i = 0;
 					while ($i<$this->loops) {
 						$i++;
-						usleep($this->milliSecondsForAcquire * 1000);
+						usleep($this->millisecondsForAcquire * 1000);
 						clearstatcache();
 						if (!is_file($this->resource)) {	// Lock became free, leave the loop
 							$this->sysLog('Different process released the lock');
