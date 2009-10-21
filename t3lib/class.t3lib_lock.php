@@ -90,8 +90,8 @@ class t3lib_lock {
 		if (intval($loops)) {
 			$this->loops = intval($loops);
 		}
-		if (intval($step)) {
-			$this->step = intval($step);
+		if (intval($steps)) {
+			$this->step = intval($steps);
 		}
 
 			// Detect locking method

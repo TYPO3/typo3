@@ -1,3 +1,7 @@
+2009-10-21  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12272: Steps disregarded in t3lib_lock (thanks to Dan Osipov)
+
 2009-10-15  Rupert Germann  <rupi@gmx.li>
 
  	* Fixed bug #8728: PHP Warning, if SQL error occurs in class t3lib_db in functions which depend on an existing resultset (thanks to Felix Oertel)
