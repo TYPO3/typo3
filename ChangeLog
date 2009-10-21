@@ -1,6 +1,7 @@
 2009-10-21  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12280: Error Message while creating empty Folders (thanks to Daniel Schmitzer)
+	* Fixed bug #12300 (Follow-up to 11995): Output compression breaks prompt for keyboard input in CLI scripts
 
 2009-10-21  Steffen Kamper  <info@sk-typo3.de>
 
