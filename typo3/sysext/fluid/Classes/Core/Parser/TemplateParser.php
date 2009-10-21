@@ -92,7 +92,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		(
 			{                                # Start of shorthand syntax
 				(?:                          # Shorthand syntax is either composed of...
-					[a-zA-Z0-9\-_:,.()=]     # Various characters
+					[a-zA-Z0-9\->_:,.()]     # Various characters
 					|"(?:\\\"|[^"])*"        # Double-quoted strings
 					|\'(?:\\\\\'|[^\'])*\'   # Single-quoted strings
 					|(?R)                    # Other shorthand syntaxes inside, albeit not in a quoted string
@@ -103,12 +103,67 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 	/**
 	 * Pattern which detects the object accessor syntax:
-	 * {object.some.value}
+	 * {object.some.value}, additionally it detects ViewHelpers like {f:for(param1:bla)} and chaining like
+	 * {object.some.value->f:bla.blubb()->f:bla.blubb2()}
 	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public static $SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS = '/^{(?P<Object>[a-zA-Z0-9\-_.]+)}$/';
+	// THIS IS ALMOST THE SAME AS IN $SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS
+	public static $SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS = '/
+		^{                                                      # Start of shorthand syntax
+			                                                 # A shorthand syntax is either...
+			(?P<Object>[a-zA-Z0-9\-_.]*)                                     # ... an object accessor (definition is below because of some strange behavior of PCRE...
+			(?:->)?
 
+			(?P<ViewHelper>                                 # ... a ViewHelper
+				[a-zA-Z0-9]+                                # Namespace prefix of ViewHelper (as in $SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG)
+				:
+				[a-zA-Z0-9\\.]+                             # Method Identifier (as in $SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG)
+				\(                                          # Opening parameter brackets of ViewHelper
+					(?P<ViewHelperArguments>                # Start submatch for ViewHelper arguments. This is taken from $SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS
+						(?:
+							\s*[a-zA-Z0-9\-_]+                  # The keys of the array
+							\s*:\s*                             # Key|Value delimiter :
+							(?:                                 # Possible value options:
+								"(?:\\\"|[^"])*"                # Double qouoted string
+								|\'(?:\\\\\'|[^\'])*\'          # Single quoted string
+								|[a-zA-Z0-9\-_.]+               # variable identifiers
+								|{(?P>ViewHelperArguments)}     # Another sub-array
+							)                                   # END possible value options
+							\s*,?                               # There might be a , to seperate different parts of the array
+						)*                                  # The above cycle is repeated for all array elements
+					)                                       # End ViewHelper Arguments submatch
+				\)                                          # Closing parameter brackets of ViewHelper
+			)?
+			(?P<AdditionalViewHelpers>                      # There can be more than one ViewHelper chained, by adding more -> and the ViewHelper (recursively)
+				(?:
+					->
+					(?P>ViewHelper)
+				)*
+			)
+		}$/x';
+	// THIS IS ALMOST THE SAME AS $SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS
+	public static $SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER = '/
+
+		(?P<NamespaceIdentifier>[a-zA-Z0-9]+)                               # Namespace prefix of ViewHelper (as in $SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG)
+		:
+		(?P<MethodIdentifier>[a-zA-Z0-9\\.]+)
+		\(                                          # Opening parameter brackets of ViewHelper
+			(?P<ViewHelperArguments>                # Start submatch for ViewHelper arguments. This is taken from $SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS
+				(?:
+					\s*[a-zA-Z0-9\-_]+                  # The keys of the array
+					\s*:\s*                             # Key|Value delimiter :
+					(?:                                 # Possible value options:
+						"(?:\\\"|[^"])*"                # Double qouoted string
+						|\'(?:\\\\\'|[^\'])*\'          # Single quoted string
+						|[a-zA-Z0-9\-_.]+               # variable identifiers
+						|{(?P>ViewHelperArguments)}     # Another sub-array
+					)                                   # END possible value options
+					\s*,?                               # There might be a , to seperate different parts of the array
+				)*                                  # The above cycle is repeated for all array elements
+			)                                       # End ViewHelper Arguments submatch
+		\)                                          # Closing parameter brackets of ViewHelper
+		/x';
 	/**
 	 * Pattern which detects the array/object syntax like in JavaScript, so it detects strings like:
 	 * {object: value, object2: {nested: array}, object3: "Some string"}
@@ -116,6 +171,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
+	// THIS IS ALMOST THE SAME AS IN SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS
 	public static $SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS = '/^
 		(?P<Recursion>                                  # Start the recursive part of the regular expression - describing the array syntax
 			{                                           # Each array needs to start with {
@@ -134,35 +190,6 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 				)                                       # End array submatch
 			}                                           # Each array ends with }
 		)$/x';
-
-	/**
-	 * If the string is a viewHelper in shorthand syntax, then this pattern matches.
-	 *
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public static $SCAN_PATTERN_SHORTHANDSYNTAX_VIEWHELPER = '/
-		^{                                                             # Each Inline ViewHelper should start with {
-			(?P<NamespaceIdentifier>NAMESPACE)                         # The namespace
-			:                                                          # :
-			(?P<MethodIdentifier>[a-zA-Z0-9\\.]+)                      # ViewHelper Identifier
-			\\(                                                        # Opening bracket for arguments
-				\s*(?P<UnnamedArgument>                                # Possible options for Unnamed Argument:
-					"(?P<ValueDoubleQuoted>(?:\\\"|[^"])*)"            # Double qouoted string
-					|\'(?P<ValueSingleQuoted>(?:\\\\\'|[^\'])*)\'      # Single quoted string
-				)?                                                     # The unnamed argument is optional
-				\s*(?P<Attributes>                                        # Named attributes
-					(?:\s*                                             # Start cycle for single argument
-						[a-zA-Z0-9:]+                                  # Identifier for argument
-						\s*=\s*                                        # Equals
-						(?:                                            # Correctly escaped argument
-							"(?:\\\"|[^"])*"                           # Either double quoted
-							|\'(?:\\\\\'|[^\'])*\'                     # or single quoted
-						)\s*                                           # End sub match of argument
-					)*                                                 # End cycle for single argument and repeat
-				)                                                      # End named attributes
-			\\)                                                        # Closing bracket for arguments
-		}$                                                             # Each VH ShorthandSyntax should end with }
-	/x';
 
 	/**
 	 * This pattern splits an array into its parts. It is quite similar to the pattern above.
@@ -349,11 +376,29 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function handler_openingViewHelperTag(Tx_Fluid_Core_Parser_ParsingState $state, $namespaceIdentifier, $methodIdentifier, $arguments, $selfclosing) {
+		$argumentsObjectTree = $this->parseArguments($arguments);
+		$this->initializeViewHelperAndAddItToStack($state, $namespaceIdentifier, $methodIdentifier, $argumentsObjectTree);
+
+		if ($selfclosing) {
+			$state->popNodeFromStack();
+		}
+	}
+
+	/**
+	 * Initialize the given ViewHelper and adds it to the current node and to the stack.
+	 *
+	 * @param Tx_Fluid_Core_Parser_ParsingState $state Current parsing state
+	 * @param string $namespaceIdentifier Namespace identifier - being looked up in $this->namespaces
+	 * @param string $methodIdentifier Method identifier
+	 * @param array $argumentsObjectTree Arguments object tree
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function initializeViewHelperAndAddItToStack(Tx_Fluid_Core_Parser_ParsingState $state, $namespaceIdentifier, $methodIdentifier, $argumentsObjectTree) {
 		if (!array_key_exists($namespaceIdentifier, $this->namespaces)) {
 			throw new Tx_Fluid_Core_Parser_Exception('Namespace could not be resolved. This exception should never be thrown!', 1224254792);
 		}
 
-		$argumentsObjectTree = $this->parseArguments($arguments);
 		$viewHelperName = $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier);
 
 		$viewHelper = $this->objectFactory->create($viewHelperName);
@@ -370,11 +415,8 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 			call_user_func(array($viewHelperName, 'postParseEvent'), $currentDynamicNode, $argumentsObjectTree, $state->getVariableContainer());
 		}
 
-		if (!$selfclosing) {
-			$state->pushNodeToStack($currentDynamicNode);
-		}
+		$state->pushNodeToStack($currentDynamicNode);
 	}
-
 	/**
 	 * Throw a ParsingException if there are arguments which were not registered before.
 	 *
@@ -460,14 +502,65 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * Handles the appearance of an object accessor (like {posts.author.email}).
 	 * Creates a new instance of Tx_Fluid_ObjectAccessorNode.
 	 *
+	 * Handles ViewHelpers as well which are in the shorthand syntax.
+	 *
 	 * @param Tx_Fluid_Core_Parser_ParsingState $state The current parsing state
 	 * @param string $objectAccessorString String which identifies which objects to fetch
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function handler_objectAccessor(Tx_Fluid_Core_Parser_ParsingState $state, $objectAccessorString) {
-		$node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
-		$state->getNodeFromStack()->addChildNode($node);
+	protected function handler_objectAccessor(Tx_Fluid_Core_Parser_ParsingState $state, $objectAccessorString, $viewHelperString, $additionalViewHelpersString) {
+		$viewHelperString .= $additionalViewHelpersString;
+		$numberOfViewHelpers = 0;
+
+		// ViewHelpers
+		if (strlen($viewHelperString) > 0 && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
+			$matches = array_reverse($matches); // The last ViewHelper has to be added first for correct chaining.
+			foreach ($matches as $singleMatch) {
+				$namespaceIdentifier = $singleMatch['NamespaceIdentifier'];
+				$methodIdentifier = $singleMatch['MethodIdentifier'];
+				if (strlen($singleMatch['ViewHelperArguments']) > 0) {
+					$arguments = $this->handler_array_recursively($singleMatch['ViewHelperArguments']);
+					$arguments = $this->postProcessArgumentsForObjectAccessor($arguments);
+				} else {
+					$arguments = array();
+				}
+				$this->initializeViewHelperAndAddItToStack($state, $namespaceIdentifier, $methodIdentifier, $arguments);
+				$numberOfViewHelpers++;
+			}
+		}
+
+		// Object Accessor
+		if (strlen($objectAccessorString) > 0) {
+			$node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
+			$state->getNodeFromStack()->addChildNode($node);
+		}
+
+		// Close ViewHelper Tags if needed.
+		for ($i=0; $i<$numberOfViewHelpers; $i++) {
+			$state->popNodeFromStack();
+		}
+	}
+
+	/**
+	 * Post process the arguments for the ViewHelpers in the object accessor syntax. We need to convert an array into an array of ViewHelper Nodes
+	 *
+	 * @param array $arguments The arguments to be processed
+	 * @return array the processed array
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @todo This method should become superflous once the rest has been refactored, so that this code is not needed.
+	 */
+	protected function postProcessArgumentsForObjectAccessor(array $arguments) {
+		$output = array();
+		foreach ($arguments as $argumentName => $argumentValue) {
+			$output[$argumentName] = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
+			if ($argumentValue instanceof Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode) {
+				$output[$argumentName]->addChildNode($argumentValue);
+			} else {
+				$output[$argumentName]->addChildNode($node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', (string)$argumentValue));
+			}
+		}
+		return $output;
 	}
 
 	/**
@@ -557,20 +650,9 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		foreach ($sections as $section) {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS, $section, $matchedVariables) > 0) {
-				$this->handler_objectAccessor($state, $matchedVariables['Object']);
+				$this->handler_objectAccessor($state, $matchedVariables['Object'], (isset($matchedVariables['ViewHelper'])?$matchedVariables['ViewHelper']:''), (isset($matchedVariables['AdditionalViewHelpers'])?$matchedVariables['AdditionalViewHelpers']:''));
 			} elseif (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS, $section, $matchedVariables) > 0) {
 				$this->handler_array($state, $matchedVariables['Array']);
-			} elseif (preg_match($this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_SHORTHANDSYNTAX_VIEWHELPER), $section, $matchedVariables) > 0) {
-				$namespaceIdentifier = $matchedVariables['NamespaceIdentifier'];
-				$methodIdentifier = $matchedVariables['MethodIdentifier'];
-				$selfclosing = ($matchedVariables['UnnamedArgument'] === '');
-				$arguments = $matchedVariables['Attributes'];
-
-				$this->handler_openingViewHelperTag($state, $namespaceIdentifier, $methodIdentifier, $arguments, $selfclosing);
-				if (!$selfclosing) {
-					$this->handler_textAndShorthandSyntax($state, $this->unquoteArgumentString($matchedVariables['ValueSingleQuoted'], $matchedVariables['ValueDoubleQuoted']));
-					$this->handler_closingViewHelperTag($state, $namespaceIdentifier, $methodIdentifier);
-				}
 			} else {
 				$this->handler_text($state, $section);
 			}
@@ -586,7 +668,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function handler_array(Tx_Fluid_Core_Parser_ParsingState $state, $arrayText) {
-		$node = $this->handler_array_recursively($arrayText);
+		$node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode', $this->handler_array_recursively($arrayText));
 		$state->getNodeFromStack()->addChildNode($node);
 	}
 
@@ -620,12 +702,12 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 					$arrayToBuild[$arrayKey] = $this->unquoteArgumentString($singleMatch['SingleQuotedString'], $singleMatch['DoubleQuotedString']);
 				} elseif ( array_key_exists('Subarray', $singleMatch) && !empty($singleMatch['Subarray'])) {
-					$arrayToBuild[$arrayKey] = $this->handler_array_recursively($singleMatch['Subarray']);
+					$arrayToBuild[$arrayKey] = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode', $this->handler_array_recursively($singleMatch['Subarray']));
 				} else {
 					throw new Tx_Fluid_Core_Parser_Exception('This exception should never be thrown, as the array value has to be of some type (Value given: "' . var_export($singleMatch, TRUE) . '"). Please post your template to the bugtracker at forge.typo3.org.', 1225136013);
 				}
 			}
-			return $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode', $arrayToBuild);
+			return $arrayToBuild;
 		} else {
 			throw new Tx_Fluid_Core_Parser_Exception('This exception should never be thrown, there is most likely some error in the regular expressions. Please post your template to the bugtracker at forge.typo3.org.', 1225136013);
 		}

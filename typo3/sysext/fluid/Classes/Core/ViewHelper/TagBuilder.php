@@ -23,7 +23,7 @@
 /**
  * Tag builder. Can be easily accessed in TagBasedViewHelper
  *
- * @version $Id: TagBuilder.php 3119 2009-09-03 19:27:00Z bwaidelich $
+ * @version $Id: TagBuilder.php 3331 2009-10-20 04:37:59Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -100,7 +100,6 @@ class Tx_Fluid_Core_ViewHelper_TagBuilder {
 	 * @param string $tagContent content of the tag to be rendered
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @todo remove $escapeSpecialCharacters
 	 * @api
 	 */
 	public function setContent($tagContent) {

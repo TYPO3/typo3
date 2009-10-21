@@ -23,7 +23,7 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 3188 2009-09-16 13:03:59Z k-fish $
+ * @version $Id: AbstractViewHelper.php 3331 2009-10-20 04:37:59Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -50,24 +50,28 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	/**
 	 * Arguments accessor.
 	 * @var Tx_Fluid_Core_ViewHelper_Arguments
+	 * @api
 	 */
 	protected $arguments;
 
 	/**
 	 * Current variable container reference.
 	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
+	 * @api
 	 */
 	protected $templateVariableContainer;
 
 	/**
 	 * Controller Context to use
 	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @api
 	 */
 	protected $controllerContext;
 
 	/**
 	 * ViewHelper Variable Container
 	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
+	 * @api
 	 */
 	protected $viewHelperVariableContainer;
 
@@ -181,13 +185,14 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 
 	/**
 	 * Sets all needed attributes needed for the rendering. Called by the
-	 * framework. Populates $this->viewHelperNode
+	 * framework. Populates $this->viewHelperNode.
+	 * This is PURELY INTERNAL! Never override this method!!
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node View Helper node to be set.
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	final public function setViewHelperNode(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node) {
+	public function setViewHelperNode(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $node) {
 		$this->viewHelperNode = $node;
 	}
 

@@ -25,7 +25,7 @@
  * Sould be used as the base class for all view helpers which output simple tags, as it provides some
  * convenience methods to register default attributes, ...
  *
- * @version $Id: TagBasedViewHelper.php 3119 2009-09-03 19:27:00Z bwaidelich $
+ * @version $Id: TagBasedViewHelper.php 3331 2009-10-20 04:37:59Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -41,6 +41,7 @@ abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core
 	 * Tag builder instance
 	 *
 	 * @var Tx_Fluid_Core_ViewHelper_TagBuilder
+	 * @api
 	 */
 	protected $tag = NULL;
 
@@ -48,6 +49,7 @@ abstract class Tx_Fluid_Core_ViewHelper_TagBasedViewHelper extends Tx_Fluid_Core
 	 * name of the tag to be created by this view helper
 	 *
 	 * @var string
+	 * @api
 	 */
 	protected $tagName = 'div';
 

@@ -177,21 +177,21 @@ class Tx_Fluid_Core_Parser_TemplateParserPatternTest_testcase extends Tx_Extbase
 		$expected = array('some ', '{f3:viewHelper()}',' as well');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example. (2)');
 
-		$source = '{f3:for("{post}")}';
-		$expected = array('{f3:for("{post}")}');
+		$source = 'abc {f3:for(arg1: post)} def';
+		$expected = array('abc ', '{f3:for(arg1: post)}', ' def');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(3)');
 
-		$source = '{f3:for("{post}" )}';
-		$expected = array('{f3:for("{post}" )}');
+		$source = 'abc {bla.blubb->f3:for(param:42)} def';
+		$expected = array('abc ', '{bla.blubb->f3:for(param:42)}', ' def');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(4)');
 
 
-		$source = '{f3:for(bla="post{{")}';
-		$expected = array('{f3:for(bla="post{{")}');
+		$source = 'abc {f3:for(bla:"post{{")} def';
+		$expected = array('abc ', '{f3:for(bla:"post{{")}', ' def');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(5)');
 
-		$source = '{f3:for("{post}" each="{posts}" as="post")}';
-		$expected = array('{f3:for("{post}" each="{posts}" as="post")}');
+		$source = 'abc {f3:for(param:"abc\"abc")} def';
+		$expected = array('abc ', '{f3:for(param:"abc\"abc")}', ' def');
 		$this->assertEquals(preg_split($pattern, $source, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY), $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX pattern did not split the input string correctly with an escaped example.(6)');
 	}
 
@@ -199,18 +199,47 @@ class Tx_Fluid_Core_Parser_TemplateParserPatternTest_testcase extends Tx_Extbase
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function testSCAN_PATTERN_SHORTHANDSYNTAX_VIEWHELPER() {
-		$pattern = $this->insertNamespaceIntoRegularExpression(Tx_Fluid_Core_Parser_TemplateParser::$SCAN_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, array('f'));
+	public function testSPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER() {
+		$pattern = Tx_Fluid_Core_Parser_TemplateParser::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER;
 
-		$this->assertEquals(preg_match($pattern, '{flow3}'), 0, 'Shorthand ViewHelper was identified, but should not.');
-		$this->assertEquals(preg_match($pattern, '{f:flow3}'), 0, 'Shorthand ViewHelper was identified, but should not.');
-		$this->assertEquals(preg_match($pattern, '{f:flow3()}'), 1, 'Shorthand ViewHelper was not identified (1).');
-		$this->assertEquals(preg_match($pattern, '{f:flow3(  )}'), 1, 'Shorthand ViewHelper was not identified (2).');
-		$this->assertEquals(preg_match($pattern, '{f:flow3( "argument" )}'), 1, 'Shorthand ViewHelper was not identified (3).');
-		$this->assertEquals(preg_match($pattern, '{f:flow3( \'argument\' )}'), 1, 'Shorthand ViewHelper was not identified (4).');
-		$this->assertEquals(preg_match($pattern, '{f:flow3( myArgument1 ="Hallo" )}'), 1, 'Shorthand ViewHelper was not identified (5).');
-		$this->assertEquals(preg_match($pattern, '{f:for("{post}" each="{posts}" as="post")}'), 1, 'Shorthand ViewHelper was not identified (6).');
+		$source = 'f:for(each: bla)';
+		$expected = array(
+			0 => array(
+				0 => 'f:for(each: bla)',
+				1 => 'f',
+				'NamespaceIdentifier' => 'f',
+				2 => 'for',
+				'MethodIdentifier' => 'for',
+				3 => 'each: bla',
+				'ViewHelperArguments' => 'each: bla'
+			)
+		);
+		preg_match_all($pattern, $source, $matches, PREG_SET_ORDER);
+		$this->assertEquals($matches, $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER');
 
+		$source = 'f:for(each: bla)->g:bla(a:"b\"->(f:a()", cd: {a:b})';
+		$expected = array(
+			0 => array(
+				0 => 'f:for(each: bla)',
+				1 => 'f',
+				'NamespaceIdentifier' => 'f',
+				2 => 'for',
+				'MethodIdentifier' => 'for',
+				3 => 'each: bla',
+				'ViewHelperArguments' => 'each: bla'
+			),
+			1 => array(
+				0 => 'g:bla(a:"b\"->(f:a()", cd: {a:b})',
+				1 => 'g',
+				'NamespaceIdentifier' => 'g',
+				2 => 'bla',
+				'MethodIdentifier' => 'bla',
+				3 => 'a:"b\"->(f:a()", cd: {a:b}',
+				'ViewHelperArguments' => 'a:"b\"->(f:a()", cd: {a:b}'
+			)
+		);
+		preg_match_all($pattern, $source, $matches, PREG_SET_ORDER);
+		$this->assertEquals($matches, $expected, 'The SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER');
 	}
 
 	/**
@@ -223,8 +252,13 @@ class Tx_Fluid_Core_Parser_TemplateParserPatternTest_testcase extends Tx_Extbase
 		$this->assertEquals(preg_match($pattern, '{oBject1}'), 1, 'Object accessor not identified if there is a number and capitals inside!');
 		$this->assertEquals(preg_match($pattern, '{object.recursive}'), 1, 'Object accessor not identified if there is a dot inside!');
 		$this->assertEquals(preg_match($pattern, '{object-with-dash.recursive_value}'), 1, 'Object accessor not identified if there is a _ or - inside!');
+		$this->assertEquals(preg_match($pattern, '{f:for()}'), 1, 'Object accessor not identified if it contains only of a ViewHelper.');
+		$this->assertEquals(preg_match($pattern, '{f:for()->f:for2()}'), 1, 'Object accessor not identified if it contains only of a ViewHelper (nested).');
+		$this->assertEquals(preg_match($pattern, '{abc->f:for()}'), 1, 'Object accessor not identified if there is a ViewHelper inside!');
+		$this->assertEquals(preg_match($pattern, '{bla-blubb.recursive_value->f:for()->f:for()}'), 1, 'Object accessor not identified if there is a recursive ViewHelper inside!');
+		$this->assertEquals(preg_match($pattern, '{f:for(arg1:arg1value, arg2: "bla\"blubb")}'), 1, 'Object accessor not identified if there is an argument inside!');
 		$this->assertEquals(preg_match($pattern, '{dash:value}'), 0, 'Object accessor identified, but was array!');
-		$this->assertEquals(preg_match($pattern, '{}'), 0, 'Object accessor identified, but it was empty!');
+		//$this->assertEquals(preg_match($pattern, '{}'), 0, 'Object accessor identified, and it was empty!');
 	}
 
 	/**

@@ -12,9 +12,9 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
-include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
-
+if (!class_exists('Tx_Fluid_Core_Fixtures_TestViewHelper')) {
+	require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
+}
 /**
  * Testcase for AbstractViewHelper
  *

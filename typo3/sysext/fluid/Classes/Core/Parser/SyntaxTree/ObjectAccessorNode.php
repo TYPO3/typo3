@@ -63,52 +63,16 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @todo Depending on the context, either fail or not!!!
-	 * @todo make use of FLOW3 reflection
 	 */
 	public function evaluate() {
-		try {
-			$objectPathParts = explode('.', $this->objectPath);
-			$variableName = array_shift($objectPathParts);
-			$currentObject = $this->renderingContext->getTemplateVariableContainer()->get($variableName);
-
-			if (count($objectPathParts) > 0) {
-				foreach ($objectPathParts as $currentObjectPath) {
-					if (is_object($currentObject)) {
-						$getterMethodName = 'get' . ucfirst($currentObjectPath);
-						if (method_exists($currentObject, $getterMethodName)) {
-							$currentObject = call_user_func(array($currentObject, $getterMethodName));
-							continue;
-						}
-
-						try {
-							$reflectionProperty = new ReflectionProperty($currentObject, $currentObjectPath);
-						} catch(ReflectionException $e) {
-							throw new Tx_Fluid_Core_RuntimeException($e->getMessage(), 1224611407);
-						}
-						if ($reflectionProperty->isPublic()) {
-							$currentObject = $reflectionProperty->getValue($currentObject);
-							continue;
-						} else {
-							throw new Tx_Fluid_Core_RuntimeException('Trying to resolve ' . $this->objectPath . ', but did not find public getters or variables.', 1224609559);
-						}
-					} elseif (is_array($currentObject)) {
-						if (key_exists($currentObjectPath, $currentObject)) {
-							$currentObject = $currentObject[$currentObjectPath];
-						} else {
-							throw new Tx_Fluid_Core_RuntimeException('Tried to read key "' . $currentObjectPath . '" from associative array, but did not find it.', 1225393852);
-						}
-					}
-				}
-			}
-			$postProcessor = $this->renderingContext->getRenderingConfiguration()->getObjectAccessorPostProcessor();
-			if ($postProcessor !== NULL) {
-				$currentObject = $postProcessor->process($currentObject, $this->renderingContext->isObjectAccessorPostProcessorEnabled());
-			}
+		$objectPathParts = explode('.', $this->objectPath);
+		$variableName = array_shift($objectPathParts);
+		$currentObject = $this->renderingContext->getTemplateVariableContainer()->get($variableName);
+		if (count($objectPathParts) > 0) {
+			return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($currentObject, implode('.', $objectPathParts));
+		} else {
 			return $currentObject;
-		} catch(Tx_Fluid_Core_RuntimeException $e) {
-			// DEPENDING ON THE CONTEXT / CONFIG, either fail silently or not. Currently we always fail silently.
 		}
-		return '';
 	}
 }
 ?>

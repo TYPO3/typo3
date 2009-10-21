@@ -12,8 +12,9 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
-
-include_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
+if (!class_exists('Tx_Fluid_Core_Fixtures_TestViewHelper')) {
+	require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
+}
 
 /**
  * Testcase for AbstractViewHelper
@@ -63,7 +64,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest_testcase extends 
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value1');
 		$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelper_NonExistent', 'nonExistentKey', 'value2');
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

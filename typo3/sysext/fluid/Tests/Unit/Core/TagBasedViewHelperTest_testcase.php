@@ -13,8 +13,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-include_once(dirname(__FILE__) . '/Fixtures/TestTagBasedViewHelper.php');
-
 /**
  * Testcase for TagBasedViewHelper
  *
@@ -24,7 +22,7 @@ include_once(dirname(__FILE__) . '/Fixtures/TestTagBasedViewHelper.php');
 class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	public function setUp() {
-		$this->viewHelper = new Tx_Fluid_Core_Fixtures_TestTagBasedViewHelper();
+		$this->viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_TagBasedViewHelper'), array('dummy'), array(), '', FALSE);
 	}
 
 	/**
@@ -49,7 +47,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_BaseTestC
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
-		$this->viewHelper->registerTagAttribute('foo', 'string', 'Description', FALSE);
+		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('foo' => 'bar'));
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
@@ -65,7 +63,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_BaseTestC
 		$mockTagBuilder->expects($this->once())->method('addAttribute')->with('foo', 'bar');
 		$this->viewHelper->injectTagBuilder($mockTagBuilder);
 
-		$this->viewHelper->registerTagAttribute('foo', 'string', 'Description', FALSE);
+		$this->viewHelper->_call('registerTagAttribute', 'foo', 'string', 'Description', FALSE);
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('additionalAttributes' => array('foo' => 'bar')));
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initialize();
@@ -99,6 +97,7 @@ class Tx_Fluid_Core_TagBasedViewHelperTest_testcase extends Tx_Extbase_BaseTestC
 				'tabindex' => 'tabindexAttribute'
 			)
 		);
+		$this->viewHelper->_call('registerUniversalTagAttributes');
 		$this->viewHelper->setArguments($arguments);
 		$this->viewHelper->initializeArguments();
 		$this->viewHelper->initialize();

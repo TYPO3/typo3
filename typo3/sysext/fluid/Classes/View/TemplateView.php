@@ -23,8 +23,9 @@
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
- * @version $Id: TemplateView.php 3313 2009-10-12 05:57:02Z sebastian $
+ * @version $Id: TemplateView.php 3318 2009-10-14 12:08:16Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @scope prototype
  */
 class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implements Tx_Fluid_View_TemplateViewInterface {
 

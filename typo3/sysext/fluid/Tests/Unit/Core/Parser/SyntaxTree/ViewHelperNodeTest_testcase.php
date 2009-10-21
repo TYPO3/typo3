@@ -22,7 +22,13 @@
  * @version $Id: ViewHelperNodeTest.php 2895 2009-07-27 15:45:24Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-include_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
+if (!class_exists('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper')) {
+	include_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
+}
+if (!class_exists('Tx_Fluid_Core_Fixtures_TestViewHelper')) {
+	include_once(dirname(__FILE__) . '/../../Fixtures/TestViewHelper.php');
+}
+
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
@@ -99,10 +105,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 
 		$mockViewHelperArguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
 
-		$this->mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_ViewHelpers_TestViewHelper')->will($this->returnValue($mockViewHelper));
+		$this->mockObjectFactory->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper')->will($this->returnValue($mockViewHelper));
 		$this->mockObjectFactory->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
 
-		$viewHelperNode = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_ViewHelpers_TestViewHelper', array());
+		$viewHelperNode = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper', array());
 		$viewHelperNode->addChildNode($childNode);
 
 		$mockViewHelper->expects($this->once())->method('setChildNodes')->with($this->equalTo(array($childNode)));
