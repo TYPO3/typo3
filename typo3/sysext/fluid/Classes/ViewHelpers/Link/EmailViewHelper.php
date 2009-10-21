@@ -52,6 +52,20 @@ class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper
 	protected $tagName = 'a';
 
 	/**
+	 * Arguments initialization
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function initializeArguments() {
+		$this->registerUniversalTagAttributes();
+		$this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
+		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
+		$this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
+		$this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
+	}
+
+	/**
 	 * @param string $email The email address to be turned into a link.
 	 * @return string Rendered email link
 	 * @author Bastian Waidelich <bastian@typo3.org>

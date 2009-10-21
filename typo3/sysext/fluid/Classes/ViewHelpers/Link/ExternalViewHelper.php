@@ -42,12 +42,14 @@ class Tx_Fluid_ViewHelpers_Link_ExternalViewHelper extends Tx_Fluid_Core_ViewHel
 	 * Arguments initialization
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function initializeArguments() {
 		$this->registerUniversalTagAttributes();
-		$this->registerTagAttribute('target', 'string', 'Target of link', FALSE);
-		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document', FALSE);
+		$this->registerTagAttribute('name', 'string', 'Specifies the name of an anchor');
+		$this->registerTagAttribute('rel', 'string', 'Specifies the relationship between the current document and the linked document');
+		$this->registerTagAttribute('rev', 'string', 'Specifies the relationship between the linked document and the current document');
+		$this->registerTagAttribute('target', 'string', 'Specifies where to open the linked document');
 	}
 
 	/**
