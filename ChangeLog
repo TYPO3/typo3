@@ -1,3 +1,7 @@
+2009-10-21  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12272: Steps disregarded in t3lib_lock
+
 2009-10-21  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Cleanup #11813: Refactoring t3lib_db to match CGL (thanks to Felix Oertel)

@@ -66,7 +66,7 @@ class t3lib_lock {
 	protected $isAcquired = false;
 
 	protected $loops = 150;	// Number of times a locked resource is tried to be acquired. This is only used by manual locks like the "simple" method.
-	protected $step = 200;	// Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
+	protected $milliSecondsForAcquire = 200;	// Milliseconds after lock acquire is retried. $loops * $milliSecondsForAcquire results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
 
 
 
@@ -82,44 +82,44 @@ class t3lib_lock {
 	 * @param	integer		Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used by manual locks like the "simple" method.
 	 * @return	boolean		Returns true unless something went wrong
 	 */
-	public function __construct($id, $method='', $loops=0, $steps=0)	{
+	public function __construct($id, $method='', $loops=0, $milliSecondsForAcquire=0)	{
 
 			// Input checks
 		$id = (string)$id;	// Force ID to be string
 		if (intval($loops)) {
 			$this->loops = intval($loops);
 		}
-		if (intval($step)) {
-			$this->step = intval($step);
+		if (intval($milliSecondsForAcquire)) {
+			$this->milliSecondsForAcquire = intval($milliSecondsForAcquire);
 		}
 
 			// Detect locking method
 		if (in_array($method, array('disable', 'simple', 'flock', 'semaphore'))) {
 			$this->method = $method;
 		} else {
-			throw new Exception('No such method "'.$method.'"');
+			throw new Exception('No such method "' . $method . '"');
 		}
 
-		$success = false;
+		$success = FALSE;
 		switch ($this->method) {
 			case 'simple':
 			case 'flock':
-				$path = PATH_site.'typo3temp/locks/';
+				$path = PATH_site . 'typo3temp/locks/';
 				if (!is_dir($path)) {
 					t3lib_div::mkdir($path);
 				}
 				$this->id = md5($id);
-				$this->resource = $path.$this->id;
-				$success = true;
+				$this->resource = $path . $this->id;
+				$success = TRUE;
 			break;
 			case 'semaphore':
 				$this->id = abs(crc32($id));
-				if (($this->resource = sem_get($this->id, 1))==true) {
-					$success = true;
+				if (($this->resource = sem_get($this->id, 1)) == TRUE) {
+					$success = TRUE;
 				}
 			break;
 			case 'disable':
-				return false;
+				return FALSE;
 			break;
 		}
 
@@ -144,8 +144,8 @@ class t3lib_lock {
 	 * @return	boolean		Returns true if lock could be acquired without waiting, false otherwise.
 	 */
 	public function acquire()	{
-		$noWait = true;	// Default is true, which means continue without caring for other clients. In the case of TYPO3s cache management, this has no negative effect except some resource overhead.
-		$isAcquired = true;
+		$noWait = TRUE;	// Default is TRUE, which means continue without caring for other clients. In the case of TYPO3s cache management, this has no negative effect except some resource overhead.
+		$isAcquired = TRUE;
 
 		switch ($this->method) {
 			case 'simple':
@@ -154,44 +154,44 @@ class t3lib_lock {
 					$i = 0;
 					while ($i<$this->loops) {
 						$i++;
-						usleep($this->step*1000);
+						usleep($this->milliSecondsForAcquire * 1000);
 						clearstatcache();
 						if (!is_file($this->resource)) {	// Lock became free, leave the loop
 							$this->sysLog('Different process released the lock');
-							$noWait = false;
+							$noWait = FALSE;
 							break;
 						}
 					}
 				} else {
-					$noWait = true;
+					$noWait = TRUE;
 				}
 
-				if (($this->filepointer = touch($this->resource)) == false) {
+				if (($this->filepointer = touch($this->resource)) == FALSE) {
 					throw new Exception('Lock file could not be created');
 				}
 			break;
 			case 'flock':
-				if (($this->filepointer = fopen($this->resource, 'w+')) == false) {
+				if (($this->filepointer = fopen($this->resource, 'w+')) == FALSE) {
 					throw new Exception('Lock file could not be opened');
 				}
 
-				if (flock($this->filepointer, LOCK_EX|LOCK_NB) == true) {	// Lock without blocking
-					$noWait = true;
-				} elseif (flock($this->filepointer, LOCK_EX) == true) {		// Lock with blocking (waiting for similar locks to become released)
-					$noWait = false;
+				if (flock($this->filepointer, LOCK_EX|LOCK_NB) == TRUE) {	// Lock without blocking
+					$noWait = TRUE;
+				} elseif (flock($this->filepointer, LOCK_EX) == TRUE) {		// Lock with blocking (waiting for similar locks to become released)
+					$noWait = FALSE;
 				} else {
 					throw new Exception('Could not lock file "'.$this->resource.'"');
 				}
 			break;
 			case 'semaphore':
 				if (sem_acquire($this->resource)) {
-						// Unfortunately it seems not possible to find out if the request was blocked, so we return false in any case to make sure the operation is tried again.
-					$noWait = false;
+						// Unfortunately it seems not possible to find out if the request was blocked, so we return FALSE in any case to make sure the operation is tried again.
+					$noWait = FALSE;
 				}
 			break;
 			case 'disable':
-				$noWait = false;
-				$isAcquired = false;
+				$noWait = FALSE;
+				$isAcquired = FALSE;
 			break;
 		}
 
@@ -202,23 +202,23 @@ class t3lib_lock {
 	/**
 	 * Release the lock
 	 *
-	 * @return	boolean		Returns true on success or false on failure
+	 * @return	boolean		Returns TRUE on success or FALSE on failure
 	 */
 	public function release()	{
 		if (!$this->isAcquired) {
-			return true;
+			return TRUE;
 		}
 
-		$success = true;
+		$success = TRUE;
 		switch ($this->method) {
 			case 'simple':
-				if (unlink($this->resource) == false) {
-					$success = false;
+				if (unlink($this->resource) == FALSE) {
+					$success = FALSE;
 				}
 			break;
 			case 'flock':
-				if (flock($this->filepointer, LOCK_UN) == false) {
-					$success = false;
+				if (flock($this->filepointer, LOCK_UN) == FALSE) {
+					$success = FALSE;
 				}
 				fclose($this->filepointer);
 				unlink($this->resource);
@@ -227,15 +227,15 @@ class t3lib_lock {
 				if (@sem_release($this->resource)) {
 					sem_remove($this->resource);
 				} else {
-					$success = false;
+					$success = FALSE;
 				}
 			break;
 			case 'disable':
-				$success = false;
+				$success = FALSE;
 			break;
 		}
 
-		$this->isAcquired = false;
+		$this->isAcquired = FALSE;
 		return $success;
 	}
 
@@ -270,7 +270,7 @@ class t3lib_lock {
 	/**
 	 * Return the status of a lock
 	 *
-	 * @return	string		Returns true if lock is acquired, false otherwise
+	 * @return	string		Returns TRUE if lock is acquired, FALSE otherwise
 	 */
 	public function getLockStatus()	{
 		return $this->isAcquired;
@@ -285,7 +285,7 @@ class t3lib_lock {
 	 * @return	void
 	 */
 	public function sysLog($message, $severity=0) {
-		t3lib_div::sysLog('Locking ['.$this->method.'::'.$this->id.']: '.trim($message), 'cms', $severity);
+		t3lib_div::sysLog('Locking [' . $this->method . '::' . $this->id.']: ' . trim($message), 'cms', $severity);
 	}
 }
 
