@@ -1,5 +1,6 @@
 2009-10-21  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #12272: reverted renaming of step
 	* Fixed bug #12272: Steps disregarded in t3lib_lock (thanks to Dan Osipov)
 
 2009-10-21  Christian Kuhn  <lolli@schwarzbu.ch>
