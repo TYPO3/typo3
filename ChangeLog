@@ -1,3 +1,7 @@
+2009-10-21  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12300 (Follow-up to 11995): Output compression breaks prompt for keyboard input in CLI scripts
+
 2009-10-11  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #10971: Fatal error in impexp module: Call to a member function includeLLFile() on a non-object (thanks to Andre Steiling)

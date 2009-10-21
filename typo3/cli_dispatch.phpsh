@@ -92,7 +92,10 @@ require(dirname(PATH_thisScript).'/init.php');
 
 	// Make sure output is not buffered,
 	// so that command-line output and interaction can take place
-ob_end_flush();
+while (ob_get_level()) {
+	ob_end_clean();
+}
+header('Content-Encoding: None', TRUE);
 
 if (defined('TYPO3_cliInclude')) {
 	include(TYPO3_cliInclude);
