@@ -1,3 +1,7 @@
+2009-10-21  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Updated ext_emconf.php files in system extensions
+
 2009-10-21  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12175: User Setup don't check file time of ENABLE_INSTALL_TOOL

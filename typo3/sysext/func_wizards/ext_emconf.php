@@ -1,13 +1,13 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "func_wizards"
+# Extension Manager/Repository config file for ext "func_wizards".
 #
-# Auto generated 11-03-2009 19:06
+# Auto generated 21-10-2009 11:09
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write.
-# "version" and "dependencies" must not be touched!
+# Only the data in the array - everything else is removed by next
+# writing. "version" and "dependencies" must not be touched!
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '0.2.0',
-	'_md5_values_when_last_written' => 'a:5:{s:32:"class.tx_funcwizards_webfunc.php";s:4:"4f37";s:12:"ext_icon.gif";s:4:"b4bf";s:14:"ext_tables.php";s:4:"17f9";s:13:"locallang.xml";s:4:"4654";s:17:"locallang_csh.xml";s:4:"fcd5";}',
+	'_md5_values_when_last_written' => 'a:5:{s:32:"class.tx_funcwizards_webfunc.php";s:4:"a083";s:12:"ext_icon.gif";s:4:"b4bf";s:14:"ext_tables.php";s:4:"17f9";s:13:"locallang.xml";s:4:"4654";s:17:"locallang_csh.xml";s:4:"fcd5";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',

@@ -1,13 +1,13 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "tstemplate_objbrowser"
+# Extension Manager/Repository config file for ext "tstemplate_objbrowser".
 #
-# Auto generated 11-03-2009 19:07
+# Auto generated 21-10-2009 11:27
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write.
-# "version" and "dependencies" must not be touched!
+# Only the data in the array - everything else is removed by next
+# writing. "version" and "dependencies" must not be touched!
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '0.1.0',
-	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"995d";s:12:"ext_icon.gif";s:4:"4226";s:14:"ext_tables.php";s:4:"7ff6";s:12:"doc/TODO.txt";s:4:"6bb0";}',
+	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"c7f1";s:12:"ext_icon.gif";s:4:"4226";s:14:"ext_tables.php";s:4:"a29f";s:13:"locallang.xml";s:4:"d28f";s:12:"doc/TODO.txt";s:4:"6bb0";}',
 	'constraints' => array(
 		'depends' => array(
 			'tstemplate' => '',

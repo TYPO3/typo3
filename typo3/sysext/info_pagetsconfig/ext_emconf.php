@@ -1,13 +1,13 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "info_pagetsconfig"
+# Extension Manager/Repository config file for ext "info_pagetsconfig".
 #
-# Auto generated 11-03-2009 19:07
+# Auto generated 21-10-2009 11:11
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write.
-# "version" and "dependencies" must not be touched!
+# Only the data in the array - everything else is removed by next
+# writing. "version" and "dependencies" must not be touched!
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '0.1.0',
-	'_md5_values_when_last_written' => 'a:11:{s:37:"class.tx_infopagetsconfig_webinfo.php";s:4:"e26c";s:12:"ext_icon.gif";s:4:"04b0";s:14:"ext_tables.php";s:4:"935e";s:13:"locallang.xml";s:4:"9750";s:25:"locallang_csh_webinfo.xml";s:4:"fd3b";s:19:"cshimages/img_1.png";s:4:"729d";s:19:"cshimages/img_2.png";s:4:"3b0c";s:19:"cshimages/img_3.png";s:4:"3f9a";s:19:"cshimages/img_4.png";s:4:"2718";s:19:"cshimages/img_5.png";s:4:"f5bf";s:12:"doc/TODO.txt";s:4:"418c";}',
+	'_md5_values_when_last_written' => 'a:11:{s:37:"class.tx_infopagetsconfig_webinfo.php";s:4:"0cb5";s:12:"ext_icon.gif";s:4:"04b0";s:14:"ext_tables.php";s:4:"935e";s:13:"locallang.xml";s:4:"9750";s:25:"locallang_csh_webinfo.xml";s:4:"fd3b";s:19:"cshimages/img_1.png";s:4:"729d";s:19:"cshimages/img_2.png";s:4:"3b0c";s:19:"cshimages/img_3.png";s:4:"3f9a";s:19:"cshimages/img_4.png";s:4:"2718";s:19:"cshimages/img_5.png";s:4:"f5bf";s:12:"doc/TODO.txt";s:4:"418c";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
