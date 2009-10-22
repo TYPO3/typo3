@@ -344,6 +344,77 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 		$this->assertTrue(t3lib_div::isOnCurrentHost($testUrl));
 	}
 
+
+	////////////////////////////////////////
+	// Tests concerning sanitizeBackEndUrl
+	////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function sanitizeBackEndUrlForEmptyStringReturnsEmptyString() {
+		$this->assertEquals(
+			'',
+			t3lib_div::sanitizeBackEndUrl('')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sanitizeBackEndUrlLeavesAbsoluteIntroUrlUnchanged() {
+		$this->assertEquals(
+			'/typo3/alt_intro.php',
+			t3lib_div::sanitizeBackEndUrl('/typo3/alt_intro.php')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sanitizeBackEndUrlLeavesRelativeIntroUrlUnchanged() {
+		$this->assertEquals(
+			'alt_intro.php',
+			t3lib_div::sanitizeBackEndUrl('alt_intro.php')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sanitizeBackEndUrlLeavesRelativeIntroUrlWithParameterUnchanged() {
+		$this->assertEquals(
+			'alt_intro.php?foo=1&bar=2',
+			t3lib_div::sanitizeBackEndUrl('alt_intro.php?foo=1&bar=2')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sanitizeBackEndUrlForFullUrlReturnsEmptyString() {
+		$this->assertEquals(
+			'',
+			t3lib_div::sanitizeBackEndUrl('http://www.google.de/')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function sanitizeBackEndUrlForRelativeIntroUrlWithEncodedCharacterReturnsEmptyString() {
+		$this->assertEquals(
+			'',
+			t3lib_div::sanitizeBackEndUrl('alt_intro.php?%20')
+		);
+	}
+
+
+
+	//////////////////////////////////////
+	// Tests concerning removeDotsFromTS
+	//////////////////////////////////////
+
 	/**
 	 * Tests whether removeDotsFromTS() behaves correctly.
 	 * @test

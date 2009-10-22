@@ -4160,6 +4160,24 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Checks if a given string is a valid frame URL to be loaded in the
+	 * backend.
+	 *
+	 * @param string $url potential URL to check
+	 *
+	 * @return string either $url if $url is considered to be harmless, or an
+	 *                empty string otherwise
+	 */
+	public static function sanitizeBackEndUrl($url = '') {
+		$whitelistPattern = '/^[a-zA-Z0-9_\/\.&=\?]+$/';
+		if (!preg_match($whitelistPattern, $url)) {
+			$url = '';
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Moves $source file to $destination if uploaded, otherwise try to make a copy
 	 * Usage: 4
 	 *
