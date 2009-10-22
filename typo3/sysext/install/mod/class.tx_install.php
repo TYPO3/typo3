@@ -39,7 +39,7 @@
  *
  *  162: class tx_install extends t3lib_install
  *  234:     function tx_install()
- *  318:     function checkPassword($uKey)
+ *  318:     function checkPassword()
  *  362:     function loginForm()
  *  396:     function init()
  *  574:     function stepOutput()
@@ -150,6 +150,7 @@
 
 require_once (PATH_t3lib.'class.t3lib_install.php');
 require_once (PATH_t3lib.'class.t3lib_stdgraphic.php');
+require_once (t3lib_extMgm::extPath('install') . 'mod/class.tx_install_session.php');
 
 // include update classes
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_compatversion.php');
@@ -211,6 +212,12 @@ class tx_install extends t3lib_install {
 		'no_database' => 0
 	);
 	var $typo3temp_path='';
+	/**
+	 * the session handling object
+	 *
+	 * @var tx_install_session
+	 */
+	protected $session = NULL;
 
 	var $menuitems = array(
 		'config' => 'Basic Configuration',
@@ -224,7 +231,6 @@ class tx_install extends t3lib_install {
 		'typo3conf_edit' => 'Edit files in typo3conf/',
 		'about' => 'About'
 	);
-	var $cookie_name = 'Typo3InstallTool';
 	var $JSmessage = '';
 
 
@@ -301,16 +307,17 @@ class tx_install extends t3lib_install {
 			($this->mode? '&mode=' . $this->mode : '') .
 			($this->step? '&step=' . $this->step : '');
 		$this->typo3temp_path = PATH_site.'typo3temp/';
+		if (!is_dir($this->typo3temp_path) || !is_writeable($this->typo3temp_path)) {
+			die('Install Tool needs to write to typo3temp/. Make sure this directory is writeable by your webserver: '. $this->typo3temp_path);
+		}
 
+		$this->session = t3lib_div::makeInstance('tx_install_session');
 
-			// ****************
-			// Check password
-			// ****************
-			// Getting a unique session key, used to encode the session-access cookie later...
-		$uKey = $_COOKIE[$this->cookie_name.'_key'];
-		if (!$uKey)	{
-			$uKey = md5(uniqid(microtime()));
-			SetCookie($this->cookie_name.'_key', $uKey, 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));	// Cookie is set
+			// *******************
+			// Check authorization
+			// *******************
+		if (!$this->session->hasSession()) {
+			$this->session->startSession();
 
 			$this->JSmessage='SECURITY:
 Make sure to protect the Install Tool with another password than "joh316".
@@ -323,13 +330,11 @@ On behalf of PHP we regret this inconvenience.
 
 BTW: This Install Tool will only work if cookies are accepted by your web browser. If this dialog pops up over and over again you didn\'t enable cookies.
 ';
-
 		}
-			// Check if the password from TYPO3_CONF_VARS combined with uKey matches the sKey cookie. If not, ask for password.
-		$sKey = $_COOKIE[$this->cookie_name];
 
-		if (md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$uKey) == $sKey || $this->checkPassword($uKey))	{
+		if ($this->session->isAuthorized() || $this->checkPassword())	{
 			$this->passwordOK=1;
+			$this->session->refreshSession();
 
 			$enableInstallToolFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
 			if (is_file ($enableInstallToolFile)) {
@@ -346,17 +351,18 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 	}
 
 	/**
-	 * Returns true if submitted password is ok. Else displays a form in which to enter password.
+	 * Returns true if submitted password is ok.
 	 *
-	 * @param	[type]		$uKey: ...
-	 * @return	bool		whether the submitted password is ok 
+	 * If password is ok, set session as "authorized".
+	 *
+	 * @return boolean true if the submitted password was ok and session was
+	 *                 authorized, false otherwise
 	 */
-	function checkPassword($uKey)	{
+	function checkPassword() {
 		$p = t3lib_div::_GP('password');
 
 		if ($p && md5($p)==$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])	{
-			$sKey = md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$uKey);
-			SetCookie($this->cookie_name, $sKey, 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+			$this->session->setAuthorized();
 
 				// Sending warning email
 			$wEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
@@ -419,7 +425,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			//-->
 			</script>';
 
-		$this->message('Password', 'Enter the Install Tool Password', $content,3);
+		if (!$this->session->isAuthorized() && $this->session->isExpired()) {
+			$this->message('Password', 'Your install tool session has expired', '', 3);
+		}
+		$this->message('Password', 'Enter the Install Tool Password', $content, 2);
 		$this->output($this->outputWrapper($this->printAll()));
 	}
 
