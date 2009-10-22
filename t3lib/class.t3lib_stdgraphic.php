@@ -2515,7 +2515,7 @@ class t3lib_stdGraphic	{
 			$this->IM_commands[] = array($output,$cmd);
 
 			$ret = exec($cmd);
-			t3lib_div::fixPermissions($this->wrapFileName($output));	// Change the permissions of the file
+			t3lib_div::fixPermissions($output);	// Change the permissions of the file
 
 			return $ret;
 		}
@@ -2546,7 +2546,7 @@ class t3lib_stdGraphic	{
 			$this->IM_commands[] = Array ($output,$cmd);
 
 			$ret = exec($cmd);
-			t3lib_div::fixPermissions($this->wrapFileName($output));	// Change the permissions of the file
+			t3lib_div::fixPermissions($output);	// Change the permissions of the file
 
 			if (is_file($theMask))	{
 				@unlink($theMask);
@@ -2557,17 +2557,14 @@ class t3lib_stdGraphic	{
 	}
 
 	/**
-	 * Wrapping the input filename in double-quotes
+	 * Escapes a file name so it can safely be used on the command line.
 	 *
-	 * @param	string		Input filename
-	 * @return	string		The output wrapped in "" (if there are spaces in the filepath)
-	 * @access private
+	 * @param string $inputName filename to safeguard, must not be empty
+	 *
+	 * @return string $inputName escaped as needed
 	 */
-	function wrapFileName($inputName)	{
-		if (strstr($inputName,' '))	{
-			$inputName='"'.$inputName.'"';
-		}
-		return $inputName;
+	protected function wrapFileName($inputName) {
+		return escapeshellarg($inputName);
 	}
 
 
