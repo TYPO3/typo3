@@ -1,6 +1,7 @@
 2009-10-22  Ernesto Baschny <ernst@cron-it.de>
 
 	* Security Issue #11664: Updated RemoveXSS code to the latest knowledge in this area (thanks to Jigal van Hemert)
+	* Fixed bug #11586: Potential SQL injection in frontend editing (thanks to Oliver Klee)
 
 2009-10-21  Rupert Germann  <rupi@gmx.li>
 

@@ -1085,6 +1085,7 @@ $query.'
 		global $TCA, $TYPO3_CONF_VARS;
 			// Commands:
 		list($table,$uid) = explode(':',$this->TSFE_EDIT['record']);
+		$uid = intval($uid);
 		if ($this->TSFE_EDIT['cmd'] && $table && $uid && isset($TCA[$table])) {
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
