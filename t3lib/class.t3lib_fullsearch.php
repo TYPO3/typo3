@@ -626,7 +626,7 @@ class t3lib_fullsearch {
 				if ($SET['search_result_labels'])	{
 					$fVnew = $this->getProcessedValueExtra($table, $fN, $fV, $conf, '<br />');
 				} else {
-					$fVnew = $fV;
+					$fVnew = htmlspecialchars($fV);
 				}
 				$out.='<td'.$TDparams.'>'.$fVnew.'</td>';
 			}
