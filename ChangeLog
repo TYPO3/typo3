@@ -1,3 +1,7 @@
+2009-10-22  Ernesto Baschny <ernst@cron-it.de>
+
+	* Fixed bug #11586: Potential SQL injection in frontend editing (thanks to Oliver Klee)
+
 2009-10-21  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12300 (Follow-up to 11995): Output compression breaks prompt for keyboard input in CLI scripts
