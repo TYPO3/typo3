@@ -1534,8 +1534,8 @@ final class t3lib_div {
 		return $output;
 	}
 
- 
-	
+
+
 
 
 
@@ -5207,21 +5207,27 @@ final class t3lib_div {
 		return $paramsArr;
 	}
 
-
 	/**
-	 * Quotes a string for usage as JS parameter. Depends wheter the value is used in script tags (it doesn't need/must not get htmlspecialchar'ed in this case)
+	 * Quotes a string for usage as JS parameter. Depends whether the value is
+	 * used in script tags (it doesn't need/must not get htmlspecialchar'ed in
+	 * this case).
 	 *
-	 * @param	string		The string to encode.
-	 * @param	boolean		If the values get's used in <script> tags.
-	 * @return	string		The encoded value already quoted
+	 * @param string $value the string to encode, may be empty
+	 * @param boolean $withinCData
+	 *        whether the escaped data is expected to be used as CDATA and thus
+	 *        does not need to be htmlspecialchared
+	 *
+	 * @return string the encoded value already quoted (with single quotes),
+	 *                will not be empty
 	 */
-	public static function quoteJSvalue($value, $inScriptTags = false)	{
-		$value = addcslashes($value, '\''.'"'.chr(10).chr(13));
-		if (!$inScriptTags)	{
-			$value = htmlspecialchars($value);
+	public static function quoteJSvalue($value, $withinCData = false)	{
+		$escapedValue = addcslashes(
+			$value, '\'' . '"' . '\\' . chr(9) . chr(10) . chr(13)
+		);
+		if (!$withinCData) {
+			$escapedValue = htmlspecialchars($escapedValue);
 		}
-		return '\''.$value.'\'';
+		return '\'' . $escapedValue . '\'';
 	}
 }
-
 ?>
