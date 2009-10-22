@@ -550,7 +550,7 @@ class TYPO3backend {
 			});
 		}
 
-		startInModule(\''.$startModule.'\', false, \''.$moduleParameters.'\');
+		startInModule(\''.$startModule.'\', false, '.t3lib_div::quoteJSvalue($moduleParameters).');
 			';
 		}
 	}

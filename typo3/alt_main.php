@@ -477,7 +477,7 @@ class SC_alt_main {
 		if ($module) {
 			$this->mainJScode.='
 		// open in module:
-	top.goToModule(\''.$module.'\',false,\''.$params.'\');
+	top.goToModule(\''.$module.'\',false,'.t3lib_div::quoteJSvalue($params).');
 			';
 		}
 	}
