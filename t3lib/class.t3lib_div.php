@@ -2743,10 +2743,12 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Setting file system mode & group ownership of file
+	 * Sets the file system mode and group ownership of file.
 	 *
-	 * @param	string		Filepath of newly created file
-	 * @return	void
+	 * @param string $file
+	 *               the path of an existing file, must not be escaped
+	 *
+	 * @return void
 	 */
 	public static function fixPermissions($file)	{
 		if (@is_file($file) && TYPO3_OS!='WIN')	{
