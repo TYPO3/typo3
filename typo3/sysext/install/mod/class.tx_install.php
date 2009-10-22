@@ -250,11 +250,26 @@ class tx_install extends t3lib_install {
 			// ****************************
 		$this->INSTALL = t3lib_div::_GP('TYPO3_INSTALL');
 		$this->mode = t3lib_div::_GP('mode');
-		$this->step = t3lib_div::_GP('step');
+		if ($this->mode !== '123') {
+			$this->mode = '';
+		}
+		if (t3lib_div::_GP('step') === 'go') {
+			$this->step = 'go';
+		} else {
+			$this->step = intval(t3lib_div::_GP('step'));
+		}
 		$this->redirect_url = t3lib_div::_GP('redirect_url');
 
-		if ($_GET['TYPO3_INSTALL']['type'])	{
-			$this->INSTALL['type'] = $_GET['TYPO3_INSTALL']['type'];
+		$this->INSTALL['type'] = '';
+		if ($_GET['TYPO3_INSTALL']['type']) {
+			$allowedTypes = array(
+				'config', 'database', 'update', 'images', 'extConfig',
+				'typo3temp', 'cleanup', 'phpinfo', 'typo3conf_edit', 'about'
+			);
+
+			if (in_array($_GET['TYPO3_INSTALL']['type'], $allowedTypes)) {
+				$this->INSTALL['type'] = $_GET['TYPO3_INSTALL']['type'];
+			}
 		}
 
 		if ($this->step == 3) {
@@ -276,7 +291,10 @@ class tx_install extends t3lib_install {
 			}
 		}
 
-		$this->action = $this->scriptSelf.'?TYPO3_INSTALL[type]='.$this->INSTALL['type'].($this->mode?'&mode='.rawurlencode($this->mode):'').($this->step?'&step='.rawurlencode($this->step):'');
+		$this->action = $this->scriptSelf .
+			'?TYPO3_INSTALL[type]=' . $this->INSTALL['type'] .
+			($this->mode? '&mode=' . $this->mode : '') .
+			($this->step? '&step=' . $this->step : '');
 		$this->typo3temp_path = PATH_site.'typo3temp/';
 
 
@@ -381,7 +399,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 		$content = '<form action="index.php" method="post" name="passwordForm">
 			<input type="password" name="password"><br />
-			<input type="hidden" name="redirect_url" value="'.$redirect_url.'">
+			<input type="hidden" name="redirect_url" value="'.htmlspecialchars($redirect_url).'">
 			<input type="submit" value="Log in"><br />
 			<br />
 
