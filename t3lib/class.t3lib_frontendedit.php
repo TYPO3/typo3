@@ -36,6 +36,12 @@
  * @subpackage t3lib
  */
 class t3lib_frontendedit {
+	/**
+	 * GET/POST parameters for the FE editing
+	 *
+	 * @var array
+	 */
+	protected $TSFE_EDIT;
 
 	/**
 	 * TCEmain object.
@@ -209,6 +215,7 @@ class t3lib_frontendedit {
 	public function editAction() {
 			// Commands:
 		list($table, $uid) = explode(':', $this->TSFE_EDIT['record']);
+		$uid = intval($uid);
 		$cmd = $this->TSFE_EDIT['cmd'];
 
 			// Look for some TSFE_EDIT data that indicates we should save.
