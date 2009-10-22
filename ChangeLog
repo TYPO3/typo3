@@ -1,3 +1,7 @@
+2009-10-22  Ernesto Baschny <ernst@cron-it.de>
+
+	* Security Issue #11664: Updated RemoveXSS code to the latest knowledge in this area (thanks to Jigal van Hemert)
+
 2009-10-21  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12280: Error Message while creating empty Folders (thanks to Daniel Schmitzer)
