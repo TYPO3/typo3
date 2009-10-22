@@ -3991,20 +3991,27 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Encrypts a strings by XOR'ing all characters with the ASCII value of a character in $this->TYPO3_CONF_VARS['SYS']['encryptionKey']
-	 * If $this->TYPO3_CONF_VARS['SYS']['encryptionKey'] is empty, 255 is used for XOR'ing. Using XOR means that the string can be decrypted by simply calling the function again - just like rot-13 works (but in this case for ANY byte value).
+	 * Encrypts a strings by XOR'ing all characters with a key derived from the
+	 * TYPO3 encryption key.
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * Using XOR means that the string can be decrypted by simply calling the
+	 * function again - just like rot-13 works (but in this case for ANY byte
+	 * value).
+	 *
+	 * @param string $string string to crypt, may be empty
+	 *
+	 * @return string binary crypt string, will have the same length as $string
 	 */
-	function roundTripCryptString($string)	{
+	protected function roundTripCryptString($string) {
 		$out = '';
-		$strLen = strlen($string);
-		$cryptLen = strlen($this->TYPO3_CONF_VARS['SYS']['encryptionKey']);
 
-		for ($a=0; $a < $strLen; $a++)	{
-			$xorVal = $cryptLen>0 ? ord($this->TYPO3_CONF_VARS['SYS']['encryptionKey']{($a%$cryptLen)}) : 255;
-			$out.= chr(ord($string{$a}) ^ $xorVal);
+		$cleartextLength = strlen($string);
+		$key = sha1($this->TYPO3_CONF_VARS['SYS']['encryptionKey']);
+		$keyLength = strlen($key);
+
+		for ($a = 0; $a < $cleartextLength; $a++) {
+			$xorVal = ord($key{($a % $keyLength)});
+			$out .= chr(ord($string{$a}) ^ $xorVal);
 		}
 
 		return $out;
