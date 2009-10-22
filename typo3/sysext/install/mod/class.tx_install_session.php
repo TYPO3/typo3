@@ -1,0 +1,363 @@
+<?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2009 Ernesto Baschny <ernst@cron-it.de>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+/**
+ * Secure session handling for the install tool.
+ *
+ * @author	Ernesto Baschny <ernst@cron-it.de>
+ *
+ * @package TYPO3
+ * @subpackage tx_install
+ *
+ * @version $Id$
+ */
+class tx_install_session {
+
+	/**
+	 * The path to our typo3temp (where we can write our sessions). Set in the
+	 * constructor.
+	 *
+	 * @var string
+	 */
+	var $typo3tempPath;
+
+	/**
+	 * Path where to store our session files in typo3temp. %s will be
+	 * non-guesseable.
+	 *
+	 * @var string
+	 */
+	var $sessionPath = 'sessions%s';
+
+	/**
+	 * the cookie to store the session ID of the install tool
+	 *
+	 * @var string
+	 */
+	var $cookieName = 'Typo3InstallTool';
+
+	/**
+	 * time (minutes) to expire an ununsed session
+	 *
+	 * @var integer
+	 */
+	var $expireTimeInMinutes = 60;
+
+	/**
+	 * time (minutes) to generate a new session id for our current session
+	 *
+	 * @var integer
+	 */
+	var $regenerateSessionIdTime = 5;
+
+	/**
+	 * Constructor. Starts PHP session handling in our own var store
+	 *
+	 * Side-effect: might set a cookie, so must be called before any other output.
+	 */
+	function tx_install_session() {
+		$this->typo3tempPath = PATH_site . 'typo3temp/';
+
+		// Start our PHP session early so that hasSession() works
+		$sessionSavePath = $this->getSessionSavePath();
+		if (!is_dir($sessionSavePath)) {
+			if (!t3lib_div::mkdir($sessionSavePath)) {
+				die('Could not create session folder in typo3temp/. Make sure it is writeable!');
+			}
+			t3lib_div::writeFile($sessionSavePath.'/.htaccess', 'Order deny, allow'."\n".'Deny from all'."\n");
+			$indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
+			$indexContent .= '<HTML><HEAD<TITLE></TITLE><META http-equiv=Refresh Content="0; Url=../../">';
+			$indexContent .= '</HEAD></HTML>';
+			t3lib_div::writeFile($sessionSavePath.'/index.html', $indexContent);
+		}
+		// Register our "save" session handler
+		session_set_save_handler(
+			array($this, 'open'),
+			array($this, 'close'),
+			array($this, 'read'),
+			array($this, 'write'),
+			array($this, 'destroy'),
+			array($this, 'gc')
+		);
+		session_save_path($sessionSavePath);
+		session_name($this->cookieName);
+		ini_set('session.cookie_path', t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+		// Always call the garbage collector to clean up stale session files
+		ini_set('session.gc_probability', 100);
+		ini_set('session.gc_divisor', 100);
+		ini_set('session.gc_maxlifetime', $this->expireTimeInMinutes*2*60);
+		if (version_compare(phpversion(), '5.2', '<')) {
+			ini_set('session.cookie_httponly', TRUE);
+		}
+		session_start();
+	}
+
+	/**
+	 * Returns the path where to store our session files
+	 */
+	function getSessionSavePath() {
+		return sprintf(
+			$this->typo3tempPath . '/' . $this->sessionPath,
+			md5(
+				'session:' .
+					$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']
+			)
+		);
+	}
+
+	/**
+	 * Starts a new session
+	 *
+	 * @return string The session ID
+	 */
+	function startSession() {
+		$_SESSION['created'] = time();
+		return session_id();
+	}
+
+	/**
+	 * Generates a new session ID and sends it to the client.
+	 *
+	 * Also moves session information from the old session to the new one
+	 * (in PHP 5.1 or later)
+	 *
+	 * @return string the new session ID
+	 */
+	function renewSession() {
+		if (version_compare(phpversion(), '5.1', '<')) {
+			session_regenerate_id(TRUE);
+		} else {
+			session_regenerate_id();
+		}
+		return session_id();
+	}
+
+	/**
+	 * Checks whether we already have an active session.
+	 *
+	 * @return boolean true if there is an active session, false otherwise
+	 */
+	function hasSession() {
+		return (isset($_SESSION['created']));
+	}
+
+	/**
+	 * Returns the session ID of the running session.
+	 *
+	 * @return string the session ID
+	 */
+	function getSessionId() {
+		return session_id();
+	}
+
+	/**
+	 * Returns a session hash, which can only be calculated by the server.
+	 * Used to store our session files without exposing the session ID.
+	 *
+	 * @param string An alternative session ID. Defaults to our current session ID
+	 *
+	 * @return string the session hash
+	 */
+	function getSessionHash($sessionId = '') {
+		if (!$sessionId) {
+			$sessionId = $this->getSessionId();
+		}
+		return md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'].'|'.$sessionId);
+	}
+
+	/**
+	 * Marks this session as an "authorized" one (login successful).
+	 * Should only be called if:
+	 * a) we have a valid session running
+	 * b) the "password" or some other authorization mechanism really matched
+	 *
+	 * @return void
+	 */
+	function setAuthorized() {
+		$_SESSION['authorized'] = TRUE;
+		$_SESSION['lastSessionId'] = time();
+		$_SESSION['tstamp'] = time();
+		$_SESSION['expires'] = (time() + ($this->expireTimeInMinutes*60));
+	}
+
+	/**
+	 * Check if we have an already authorized session
+	 *
+	 * @return boolean True if this session has been authorized before (by a correct password)
+	 */
+	function isAuthorized() {
+		if (!$_SESSION['authorized']) {
+			return FALSE;
+		}
+		if ($_SESSION['expires'] < time()) {
+			// This session has already expired
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
+	 * Check if our session is expired.
+	 * Useful only right after a false "isAuthorized" to see if this is the
+	 * reason for not being authorized anymore.
+	 *
+	 * @return boolean True if an authorized session exists, but is expired
+	 */
+	function isExpired() {
+		if (!$_SESSION['authorized']) {
+			// Session never existed, means it is not "expired"
+			return FALSE;
+		}
+		if ($_SESSION['expires'] < time()) {
+			// This session was authorized before, but has expired
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Refreshes our session information, rising the expire time.
+	 * Also generates a new session ID every 5 minutes to minimize the risk of
+	 * session hijacking.
+	 *
+	 * @return void
+	 */
+	function refreshSession() {
+		$_SESSION['tstamp'] = time();
+		$_SESSION['expires'] = time() + ($this->expireTimeInMinutes*60);
+		if (time() > $_SESSION['lastSessionId']+$this->regenerateSessionIdTime*60) {
+			// Renew our session ID
+			$_SESSION['lastSessionId'] = time();
+			$this->renewSession();
+		}
+	}
+
+
+	/*************************
+	 *
+	 * PHP session handling with "secure" session files (hashed session id)
+	 * see http://www.php.net/manual/en/function.session-set-save-handler.php
+	 *
+	 *************************/
+
+	/**
+	 * Returns the file where to store our session data
+	 *
+	 * @return string A filename
+	 */
+	function getSessionFile($id) {
+		$sessionSavePath = $this->getSessionSavePath();
+		return $sessionSavePath . '/hash_' . $this->getSessionHash($id);
+	}
+
+	/**
+	 * Open function. See @session_set_save_handler
+	 *
+	 * @param string $savePath
+	 * @param string $sessionName
+	 * @return boolean
+	 */
+	function open($savePath, $sessionName) {
+		return TRUE;
+	}
+
+	/**
+	 * Close function. See @session_set_save_handler
+	 *
+	 * @return boolean
+	 */
+	function close() {
+		return TRUE;
+	}
+
+	/**
+	 * Read session data. See @session_set_save_handler
+	 *
+	 * @param string The session id
+	 *
+	 * @return string
+	 */
+	function read($id) {
+		$sessionFile = $this->getSessionFile($id);
+		return (string) @file_get_contents($sessionFile);
+	}
+
+	/**
+	 * Write session data. See @session_set_save_handler
+	 *
+	 * @param string The session id
+	 * @param string The data to be stored
+	 *
+	 * @return boolean
+	 */
+	function write($id, $sessionData) {
+		$sessionFile = $this->getSessionFile($id);
+		if ($fp = @fopen($sessionFile, 'w')) {
+			$return = fwrite($fp, $sessionData);
+			fclose($fp);
+			return $return;
+		} else {
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Destroys one session. See @session_set_save_handler
+	 *
+	 * @param string The session id
+	 *
+	 * @return string
+	 */
+	function destroy($id) {
+		$sessionFile = $this->getSessionFile($id);
+		return(@unlink($sessionFile));
+	}
+
+	/**
+	 * Garbage collect session info. See @session_set_save_handler
+	 *
+	 * @param integer The setting of session.gc_maxlifetime
+	 *
+	 * @return string
+	 */
+	function gc($maxLifeTime) {
+		$sessionSavePath = $this->getSessionSavePath();
+		foreach (glob($sessionSavePath . '/hash_*') as $filename) {
+			if (filemtime($filename) + ($this->expireTimeInMinutes*60) < time()) {
+				@unlink($filename);
+			}
+		}
+		return TRUE;
+	}
+
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/install/mod/class.tx_install_session.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/install/mod/class.tx_install_session.php']);
+}
+
+?>
