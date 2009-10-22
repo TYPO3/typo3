@@ -445,7 +445,7 @@ class SC_alt_main {
 		if ($module) {
 			$this->mainJScode.='
 		// open in module:
-	window.setTimeout("top.goToModule(\''.$module.'\',false,\''.$params.'\');",500);
+	window.setTimeout("top.goToModule(\''.$module.'\',false,'.t3lib_div::quoteJSvalue($params).');",500);
 			';
 		}
 	}
