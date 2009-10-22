@@ -7,6 +7,7 @@
 	* Fixed bug #12306: XSS vulnerability in module dispatcher
 	* Fixed bug #12307: XSS vulnerability in alt_palette (thanks to Oliver Klee)
 	* Fixed bug #12308: XSS vulnerability in "DB > Full search" functionality
+	* Fixed bug #10501: XSS vulnerability in the install tool (thanks to Oliver Klee)
 
 2009-10-21  Rupert Germann  <rupi@gmx.li>
 
