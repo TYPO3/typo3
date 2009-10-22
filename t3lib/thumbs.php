@@ -372,17 +372,14 @@ class SC_t3lib_thumbs {
 	}
 
 	/**
-	 * Wrapping the input filename in double-quotes
+	 * Escapes a file name so it can safely be used on the command line.
 	 *
-	 * @param	string		Input filename
-	 * @return	string		The output wrapped in "" (if there are spaces in the filepath)
-	 * @access private
+	 * @param string $inputName filename to safeguard, must not be empty
+	 *
+	 * @return string $inputName escaped as needed
 	 */
-	function wrapFileName($inputName)	{
-		if (strstr($inputName,' '))	{
-			$inputName='"'.$inputName.'"';
-		}
-		return $inputName;
+	protected function wrapFileName($inputName) {
+		return escapeshellarg($inputName);
 	}
 }
 
