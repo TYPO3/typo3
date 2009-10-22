@@ -1,6 +1,7 @@
 2009-10-22  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed bug #11586: Potential SQL injection in frontend editing (thanks to Oliver Klee)
+	* Fixed bug #12303: XSS vulnerability due to not proper sanitizing in function t3lib_div::quoteJSvalue (thanks to Oliver Klee)
 
 2009-10-21  Sebastian Kurfuerst  <sebastian@typo3.org>
 

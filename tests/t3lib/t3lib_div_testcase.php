@@ -26,12 +26,13 @@
 /**
  * Testcase for class t3lib_div
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
+ * @author Oliver Klee <typo3-coding@oliverklee.de>
+ *
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_div_testcase extends tx_phpunit_testcase {
-
 	/**
 	 * @test
 	 */
@@ -453,6 +454,131 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 		$expectedResult = 'error';
 
 		$this->assertEquals($expectedResult, $result);
+	}
+
+
+	//////////////////////////////////
+	// Tests concerning quoteJSvalue
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueHtmlspecialcharsDataByDefault() {
+		$this->assertContains(
+			'&gt;',
+			t3lib_div::quoteJSvalue('>')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvaluetHtmlspecialcharsDataWithinCDataSetToFalse() {
+		$this->assertContains(
+			'&gt;',
+			t3lib_div::quoteJSvalue('>', false)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvaluetNotHtmlspecialcharsDataWithinCDataSetToTrue() {
+		$this->assertContains(
+			'>',
+			t3lib_div::quoteJSvalue('>', true)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueReturnsEmptyStringQuotedInSingleQuotes() {
+		$this->assertEquals(
+			"''",
+			t3lib_div::quoteJSvalue("", true)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueNotModifiesStringWithoutSpecialCharacters() {
+		$this->assertEquals(
+			"'Hello world!'",
+			t3lib_div::quoteJSvalue("Hello world!", true)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueEscapesSingleQuote() {
+		$this->assertEquals(
+			"'\\''",
+			t3lib_div::quoteJSvalue("'", true)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueEscapesDoubleQuoteWithinCDataSetToTrue() {
+		$this->assertEquals(
+			"'\\\"'",
+			t3lib_div::quoteJSvalue('"', true)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueEscapesAndHtmlspecialcharsDoubleQuoteWithinCDataSetToFalse() {
+		$this->assertEquals(
+			"'\\&quot;'",
+			t3lib_div::quoteJSvalue('"', false)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueEscapesTab() {
+		$this->assertEquals(
+			"'" . '\t' . "'",
+			t3lib_div::quoteJSvalue(chr(9))
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueEscapesLinefeed() {
+		$this->assertEquals(
+			"'" . '\n' . "'",
+			t3lib_div::quoteJSvalue(chr(10))
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueEscapesCarriageReturn() {
+		$this->assertEquals(
+			"'" . '\r' . "'",
+			t3lib_div::quoteJSvalue(chr(13))
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function quoteJSvalueEscapesBackslah() {
+		$this->assertEquals(
+			"'\\\\'",
+			t3lib_div::quoteJSvalue('\\')
+		);
 	}
 }
 
