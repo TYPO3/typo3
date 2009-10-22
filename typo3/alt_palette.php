@@ -247,15 +247,19 @@ class SC_alt_palette {
 	function init()	{
 
 			// Setting GPvars, etc.
-		$this->formName = t3lib_div::_GP('formName');
-		$this->GPbackref = t3lib_div::_GP('backRef');
+		$this->formName = $this->sanitizeHtmlName(t3lib_div::_GP('formName'));
+		$this->GPbackref = $this->sanitizeHtmlName(t3lib_div::_GP('backRef'));
 		$this->inData = t3lib_div::_GP('inData');
-		$this->prependFormFieldNames = t3lib_div::_GP('prependFormFieldNames');
+			// safeguards the input with whitelisting
+		if (!preg_match('/^[a-zA-Z0-9\-_\:]+$/', $this->inData)) {
+			$this->inData = '';
+		}
+		$this->prependFormFieldNames =
+			$this->sanitizeHtmlName(t3lib_div::_GP('prependFormFieldNames'));
 		$this->rec = t3lib_div::_GP('rec');
 
 			// Making references:
 		$this->backRef = $this->GPbackref ? $this->GPbackref : 'window.opener';
-#		$this->backRef = 'top.content.list_frame.view_frame';
 
 		$this->formRef = $this->backRef.'.document.'.$this->formName;
 
@@ -291,6 +295,24 @@ class SC_alt_palette {
 			timeout_func();
 			onBlur="alert();";
 		');
+	}
+
+	/**
+	 * Sanitizes HTML names, IDs, frame names etc.
+	 *
+	 * @param string $input the string to sanitize
+	 *
+	 * @return string the unchanged $input if $input is considered to be harmless,
+	 *                an empty string otherwise
+	 */
+	protected function sanitizeHtmlName($input) {
+		$result = $input;
+
+		if (!preg_match('/^[a-zA-Z][a-zA-Z0-9_\-\.]*$/', $result)) {
+			$result = '';
+		}
+
+		return $result;
 	}
 
 	/**
