@@ -3,6 +3,7 @@
 	* Fixed bug #11586: Potential SQL injection in frontend editing (thanks to Oliver Klee)
 	* Fixed bug #12309: It was possible to gain access to the Install Tool by only knowing the md5 hash of the password.
 	* Fixed bug #12310: Encryption key can be recalculated when using normal mailform when [FE][strictFormmail] == 0 (thanks to Oliver Klee)
+	* Fixed bug #12090: Filenames should be escaped with escapeshellarg before passing them to imagemagick
 	* Fixed bug #12303: XSS vulnerability due to not proper sanitizing in function t3lib_div::quoteJSvalue (thanks to Oliver Klee)
 	* Fixed bug #12304: Frame inclusion in the backend through alt_mod_frameset (thanks to Oliver Klee)
 	* Fixed bug #12305: XSS vulnerability in view_help.php / tfID parameter (thanks to Oliver Klee)
