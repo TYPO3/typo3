@@ -2563,7 +2563,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @return string $inputName escaped as needed
 	 */
-	protected function wrapFileName($inputName) {
+	function wrapFileName($inputName) {
 		return escapeshellarg($inputName);
 	}
 
