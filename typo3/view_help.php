@@ -149,6 +149,10 @@ class SC_view_help {
 
 			// Setting GPvars:
 		$this->tfID = t3lib_div::_GP('tfID');
+			// Sanitizes the tfID using whitelisting.
+		if (!preg_match('/^[a-zA-Z0-9_\-\.]*$/', $this->tfID)) {
+			$this->tfID = '';
+		}
 		if (!$this->tfID) {
 			if (($this->ffID = t3lib_div::_GP('ffID'))) {
 				$this->ffID = unserialize(base64_decode($this->ffID));
