@@ -15,11 +15,15 @@
 
 /**
  * @version $Id$
+ * @package Fluid
+ * @subpackage View\Fixture
  */
 /**
  * [Enter description here]
  *
  * @version $Id$
+ * @package Fluid
+ * @subpackage View\Fixture
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_View_Fixture_TemplateViewFixture extends Tx_Fluid_View_TemplateView {

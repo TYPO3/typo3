@@ -25,6 +25,8 @@
  * in schema-aware editors like Eclipse XML editor.
  *
  * @version $Id: DocbookGenerator.php 3293 2009-10-05 10:16:10Z k-fish $
+ * @package Fluid
+ * @subpackage Service
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Service_DocbookGenerator {

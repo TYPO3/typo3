@@ -15,11 +15,15 @@
 
 /**
  * @version $Id$
+ * @package Fluid
+ * @subpackage ViewHelpers\Fixtures
  */
 /**
  * [Enter description here]
  *
  * @version $Id$
+ * @package Fluid
+ * @subpackage ViewHelpers\Fixtures
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode {

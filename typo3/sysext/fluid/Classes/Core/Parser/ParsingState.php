@@ -25,6 +25,8 @@
  * and the current stack of open nodes (nodeStack) and a variable container used for PostParseFacets.
  *
  * @version $Id: ParsingState.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @package Fluid
+ * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal

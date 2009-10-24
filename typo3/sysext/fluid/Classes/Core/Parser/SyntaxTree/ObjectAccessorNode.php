@@ -24,6 +24,8 @@
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  *
  * @version $Id: ObjectAccessorNode.php 3334 2009-10-21 10:08:17Z sebastian $
+ * @package Fluid
+ * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal

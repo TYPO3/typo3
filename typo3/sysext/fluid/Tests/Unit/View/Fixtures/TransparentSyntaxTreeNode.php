@@ -15,11 +15,15 @@
 
 /**
  * @version $Id$
+ * @package Fluid
+ * @subpackage View\Fixture
  */
 /**
  * [Enter description here]
  *
  * @version $Id$
+ * @package Fluid
+ * @subpackage View\Fixture
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_View_Fixture_TransparentSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {

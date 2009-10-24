@@ -15,6 +15,8 @@
 
 /**
  * @version $Id$
+ * @package Fluid
+ * @subpackage Core\Fixtures
  */
 /**
  * Enter description here...

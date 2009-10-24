@@ -27,6 +27,8 @@
  * automatically set the name and value of a form element.
  *
  * @version $Id: AbstractFormViewHelper.php 3336 2009-10-21 16:52:50Z bwaidelich $
+ * @package Fluid
+ * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

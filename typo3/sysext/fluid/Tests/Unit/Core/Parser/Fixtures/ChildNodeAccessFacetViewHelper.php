@@ -17,6 +17,8 @@
  * Test fixture for the child node access facet.
  *
  * @version $Id: ChildNodeAccessFacetViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @package Fluid
+ * @subpackage Core\Parser\Fixtures
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 abstract class Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {

@@ -15,11 +15,15 @@
 
 /**
  * @version $Id$
+ * @package Fluid
+ * @subpackage ViewHelpers\Fixtures
  */
 /**
  * Example domain class which can be used to test different view helpers, e.g. the "select" view helper.
  *
  * @version $Id$
+ * @package Fluid
+ * @subpackage ViewHelpers\Fixtures
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass {

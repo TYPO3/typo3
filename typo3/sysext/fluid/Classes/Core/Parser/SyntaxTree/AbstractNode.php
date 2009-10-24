@@ -24,6 +24,8 @@
  * Abstract node in the syntax tree which has been built.
  *
  * @version $Id: AbstractNode.php 3188 2009-09-16 13:03:59Z k-fish $
+ * @package Fluid
+ * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal

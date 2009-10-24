@@ -28,6 +28,8 @@
  * 2) Holds variables being set during Parsing (set in view helpers implementing the PostParse facet)
  *
  * @version $Id: TemplateVariableContainer.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @package Fluid
+ * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
