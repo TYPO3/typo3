@@ -23,8 +23,9 @@
 /**
  * Tag builder. Can be easily accessed in TagBasedViewHelper
  *
- * @version $Id: TagBuilder.php 3331 2009-10-20 04:37:59Z sebastian $
+ * @version $Id: TagBuilder.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_Core_ViewHelper_TagBuilder {

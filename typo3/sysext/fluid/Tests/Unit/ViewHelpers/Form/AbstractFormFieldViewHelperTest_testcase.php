@@ -18,7 +18,7 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the Abstract Form view helper
  *
- * @version $Id: AbstractFormFieldViewHelperTest.php 3296 2009-10-07 07:41:30Z sebastian $
+ * @version $Id: AbstractFormFieldViewHelperTest.php 3337 2009-10-21 17:12:10Z bwaidelich $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
@@ -73,7 +73,8 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends
 
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelperVariableContainer->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName')->will($this->returnValue('myFormName'));
-		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
 
 			// TODO mock arguments
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('name' => 'fieldName', 'value' => 'fieldValue', 'property' => 'bla'));
@@ -94,7 +95,8 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends
 
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelperVariableContainer->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName')->will($this->returnValue('myFormName'));
-		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
 
 			// TODO mock arguments
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('name' => 'fieldName', 'value' => 'fieldValue', 'property' => 'bla.blubb'));
@@ -114,7 +116,8 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends
 
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(TRUE));
 		$this->viewHelperVariableContainer->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName')->will($this->returnValue(NULL));
-		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
 
 			// TODO mock arguments
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('name' => 'fieldName', 'value' => 'fieldValue', 'property' => 'bla'));
@@ -133,7 +136,8 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest_testcase extends
 		$this->injectDependenciesIntoViewHelper($formViewHelper);
 
 		$formViewHelper->expects($this->any())->method('isObjectAccessorMode')->will($this->returnValue(FALSE));
-		$this->viewHelperVariableContainer->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'fieldNamePrefix')->will($this->returnValue('formPrefix'));
 
 			// TODO mock arguments
 		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array('name' => 'fieldName', 'value' => 'fieldValue', 'property' => 'bla'));

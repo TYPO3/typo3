@@ -26,14 +26,15 @@
   * = Examples =
  *
  * <code title="Example">
- * <f:textbox name="myTextBox" value="default value" />
+ * <f:form.textbox name="myTextBox" value="default value" />
  * </code>
  *
  * Output:
  * <input type="text" name="myTextBox" value="default value" />
  *
- * @version $Id: TextboxViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
+ * @version $Id: TextboxViewHelper.php 3347 2009-10-22 19:59:09Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {

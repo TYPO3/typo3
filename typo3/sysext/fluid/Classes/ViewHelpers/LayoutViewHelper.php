@@ -26,8 +26,9 @@
  * 
  *
  *
- * @version $Id: LayoutViewHelper.php 3199 2009-09-20 09:46:19Z sebastian $
+ * @version $Id: LayoutViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  * @todo refine documentation
  */

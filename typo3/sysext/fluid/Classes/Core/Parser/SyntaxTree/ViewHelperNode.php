@@ -23,7 +23,7 @@
 /**
  * Node which will call a ViewHelper associated with this node.
  *
- * @version $Id: ViewHelperNode.php 2914 2009-07-28 18:26:38Z bwaidelich $
+ * @version $Id: ViewHelperNode.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @intenral
@@ -115,7 +115,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 */
 	public function evaluate() {
 		if ($this->renderingContext === NULL) {
-			throw new Tx_Fluid_Core_RuntimeException('RenderingContext is null in ViewHelperNode, but necessary. If this error appears, please report a bug!', 1242669031);
+			throw new RuntimeException('RenderingContext is null in ViewHelperNode, but necessary. If this error appears, please report a bug!', 1242669031);
 		}
 
 		// Store if the ObjectAccessorPostProcessor has been enabled before this ViewHelper, because we need to re-enable it if needed after this ViewHelper
@@ -183,7 +183,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			$endContextVariables = $this->renderingContext->getTemplateVariableContainer();
 			$diff = array_intersect($endContextVariables, $contextVariables);
 
-			throw new Tx_Fluid_Core_RuntimeException('The following context variable has been changed after the view helper "' . $this->viewHelperClassName . '" has been called: ' .implode(', ', $diff), 1236081302);
+			throw new RuntimeException('The following context variable has been changed after the view helper "' . $this->viewHelperClassName . '" has been called: ' .implode(', ', $diff), 1236081302);
 		}
 		return $output;
 	}
@@ -233,7 +233,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	protected function evaluateBooleanExpression(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode) {
 		$childNodes = $syntaxTreeNode->getChildNodes();
 		if (count($childNodes) > 3) {
-			throw new Tx_Fluid_Core_RuntimeException('The expression "' . $syntaxTreeNode->evaluate() . '" has more than tree parts.', 1244201848);
+			throw new RuntimeException('The expression "' . $syntaxTreeNode->evaluate() . '" has more than tree parts.', 1244201848);
 		}
 
 		$leftSide = NULL;
@@ -310,7 +310,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			case '<=':
 				return ($leftSide <= $rightSide);
 			default:
-				throw new Tx_Fluid_Core_RuntimeException('Comparator "' . $comparator . '" was not implemented. Please report a bug.', 1244234398);
+				throw new RuntimeException('Comparator "' . $comparator . '" was not implemented. Please report a bug.', 1244234398);
 		}
 	}
 

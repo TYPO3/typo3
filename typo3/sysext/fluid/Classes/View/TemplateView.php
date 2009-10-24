@@ -23,8 +23,9 @@
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
- * @version $Id: TemplateView.php 3318 2009-10-14 12:08:16Z robert $
+ * @version $Id: TemplateView.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implements Tx_Fluid_View_TemplateViewInterface {
@@ -227,7 +228,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 				return $path;
 			}
 		}
-		throw new Tx_Fluid_Core_RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -245,7 +246,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 		$sections = $parsedTemplate->getVariableContainer()->get('sections');
 		if(!array_key_exists($sectionName, $sections)) {
-			throw new Tx_Fluid_Core_RuntimeException('The given section does not exist!', 1227108982);
+			throw new RuntimeException('The given section does not exist!', 1227108982);
 		}
 		$section = $sections[$sectionName];
 
@@ -292,7 +293,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 				return $path;
 			}
 		}
-		throw new Tx_Fluid_Core_RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -325,7 +326,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 				return $path;
 			}
 		}
-		throw new Tx_Fluid_Core_RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -340,7 +341,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		try {
 			$this->resolveTemplatePathAndFilename();
 			return TRUE;
-		} catch (Tx_Fluid_Core_RuntimeException $e) {
+		} catch (RuntimeException $e) {
 			return FALSE;
 		}
 	}

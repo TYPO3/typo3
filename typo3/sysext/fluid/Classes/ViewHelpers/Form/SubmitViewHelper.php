@@ -39,8 +39,9 @@
   * Output:
  * <input type="submit" name="mySubmit" value="Send Mail" />
  *
- * @version $Id: SubmitViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
+ * @version $Id: SubmitViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {

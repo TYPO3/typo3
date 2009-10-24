@@ -35,8 +35,9 @@
  * You can also use the "property" attribute if you have bound an object to the form.
  * See <f:form> for more documentation.
  *
- * @version $Id: HiddenViewHelper.php 3308 2009-10-09 12:59:02Z sebastian $
+ * @version $Id: HiddenViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_HiddenViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {

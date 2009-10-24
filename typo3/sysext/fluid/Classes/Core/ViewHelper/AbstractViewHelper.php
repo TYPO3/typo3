@@ -23,8 +23,9 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 3333 2009-10-21 09:52:46Z sebastian $
+ * @version $Id: AbstractViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_ViewHelperInterface {
@@ -304,19 +305,19 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 
 				if ($type === 'array') {
 					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess && !$this->arguments[$argumentName] instanceof Traversable) {
-						throw new Tx_Fluid_Core_RuntimeException('The argument "' . $argumentName . '" was registered with type "array", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '". Value of argument: "' . strval($this->arguments[$argumentName]) . '"', 1237900529);
+						throw new RuntimeException('The argument "' . $argumentName . '" was registered with type "array", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '". Value of argument: "' . strval($this->arguments[$argumentName]) . '"', 1237900529);
 					}
 				} elseif ($type === 'boolean') {
 					if (!is_bool($this->arguments[$argumentName])) {
-						throw new Tx_Fluid_Core_RuntimeException('The argument "' . $argumentName . '" was registered with type "boolean", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1240227732);
+						throw new RuntimeException('The argument "' . $argumentName . '" was registered with type "boolean", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1240227732);
 					}
 				} else {
 					$validator = $this->validatorResolver->createValidator($type);
 					if (is_null($validator)) {
-						throw new Tx_Fluid_Core_RuntimeException('No validator found for argument name "' . $argumentName . '" with type "' . $type . '" in view helper "' . get_class($this) . '".', 1237900534);
+						throw new RuntimeException('No validator found for argument name "' . $argumentName . '" with type "' . $type . '" in view helper "' . get_class($this) . '".', 1237900534);
 					}
 					if (!$validator->isValid($this->arguments[$argumentName])) {
-						throw new Tx_Fluid_Core_RuntimeException('Validation for argument name "' . $argumentName . '" in view helper "' . get_class($this) . '" FAILED. Expected type: "' . $type . '"; Given: "' . gettype($this->arguments[$argumentName]) . '".', 1237900686);
+						throw new RuntimeException('Validation for argument name "' . $argumentName . '" in view helper "' . get_class($this) . '" FAILED. Expected type: "' . $type . '"; Given: "' . gettype($this->arguments[$argumentName]) . '".', 1237900686);
 					}
 				}
 			}

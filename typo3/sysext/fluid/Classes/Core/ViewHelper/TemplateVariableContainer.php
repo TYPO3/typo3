@@ -27,8 +27,9 @@
  * 1) Holds the current variables in the template
  * 2) Holds variables being set during Parsing (set in view helpers implementing the PostParse facet)
  *
- * @version $Id: TemplateVariableContainer.php 2896 2009-07-27 16:03:39Z sebastian $
+ * @version $Id: TemplateVariableContainer.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
@@ -47,7 +48,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function __construct($objectArray = array()) {
-		if (!is_array($objectArray)) throw new Tx_Fluid_Core_RuntimeException('Context has to be initialized with an array, ' . gettype($objectArray) . ' given.', 1224592343);
+		if (!is_array($objectArray)) throw new RuntimeException('Context has to be initialized with an array, ' . gettype($objectArray) . ' given.', 1224592343);
 		$this->objects = $objectArray;
 	}
 
@@ -61,7 +62,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function add($identifier, $object) {
-		if (array_key_exists($identifier, $this->objects)) throw new Tx_Fluid_Core_RuntimeException('Duplicate variable declarations!', 1224479063);
+		if (array_key_exists($identifier, $this->objects)) throw new RuntimeException('Duplicate variable declarations!', 1224479063);
 		$this->objects[$identifier] = $object;
 	}
 
@@ -74,7 +75,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function get($identifier) {
-		if (!array_key_exists($identifier, $this->objects)) throw new Tx_Fluid_Core_RuntimeException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
+		if (!array_key_exists($identifier, $this->objects)) throw new RuntimeException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
 		return $this->objects[$identifier];
 	}
 
@@ -87,7 +88,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function remove($identifier) {
-		if (!array_key_exists($identifier, $this->objects)) throw new Tx_Fluid_Core_RuntimeException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
+		if (!array_key_exists($identifier, $this->objects)) throw new RuntimeException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
 		unset($this->objects[$identifier]);
 	}
 

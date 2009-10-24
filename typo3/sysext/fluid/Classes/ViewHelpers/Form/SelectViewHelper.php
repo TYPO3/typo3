@@ -60,8 +60,9 @@
  *
  * The "value" property now expects a domain object, and tests for object equivalence.
  *
- * @version $Id: SelectViewHelper.php 3333 2009-10-21 09:52:46Z sebastian $
+ * @version $Id: SelectViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {

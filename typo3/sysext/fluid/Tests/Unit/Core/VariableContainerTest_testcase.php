@@ -68,7 +68,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_BaseTestCa
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_RuntimeException
+	 * @expectedException \RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function contextTakesOnlyArraysInConstructor() {
@@ -77,7 +77,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_BaseTestCa
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_RuntimeException
+	 * @expectedException \RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function duplicateIdentifiersThrowException() {
@@ -87,7 +87,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_BaseTestCa
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_RuntimeException
+	 * @expectedException \RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function gettingNonexistentValueThrowsException() {
@@ -96,7 +96,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_BaseTestCa
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Fluid_Core_RuntimeException
+	 * @expectedException \RuntimeException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function deletingNonexistentValueThrowsException() {
@@ -112,7 +112,7 @@ class Tx_Fluid_Core_VariableContainerTest_testcase extends Tx_Extbase_BaseTestCa
 		$this->variableContainer->remove('variable');
 		try {
 			$this->variableContainer->get('variable');
-		} catch (Tx_Fluid_Core_RuntimeException $e) {}
+		} catch (RuntimeException $e) {}
 	}
 }
 

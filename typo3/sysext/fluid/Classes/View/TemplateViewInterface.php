@@ -23,8 +23,9 @@
 /**
  * Interface of Fluids Template view
  *
- * @version $Id: TemplateViewInterface.php 2902 2009-07-27 21:41:23Z sebastian $
+ * @version $Id: TemplateViewInterface.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  */
 interface Tx_Fluid_View_TemplateViewInterface extends Tx_Extbase_MVC_View_ViewInterface {
 

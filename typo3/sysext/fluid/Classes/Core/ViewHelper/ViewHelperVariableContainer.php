@@ -21,8 +21,9 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperVariableContainer.php 3296 2009-10-07 07:41:30Z sebastian $
+ * @version $Id: ViewHelperVariableContainer.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
@@ -51,12 +52,12 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param string $key Key of the data
 	 * @param object $value The value to store
 	 * @return void
-	 * @throws Tx_Fluid_Core_RuntimeException if there was no key with the specified name
+	 * @throws RuntimeException if there was no key with the specified name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function add($viewHelperName, $key, $value) {
-		if ($this->exists($viewHelperName, $key)) throw new Tx_Fluid_Core_RuntimeException('The key "' . $viewHelperName . '->' . $key . '" was already stored and you cannot override it.', 1243352010);
+		if ($this->exists($viewHelperName, $key)) throw new RuntimeException('The key "' . $viewHelperName . '->' . $key . '" was already stored and you cannot override it.', 1243352010);
 		$this->addOrUpdate($viewHelperName, $key, $value);
 	}
 
@@ -84,12 +85,12 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
 	 * @param string $key Key of the data
 	 * @return object The object stored
-	 * @throws Tx_Fluid_Core_RuntimeException if there was no key with the specified name
+	 * @throws RuntimeException if there was no key with the specified name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function get($viewHelperName, $key) {
-		if (!$this->exists($viewHelperName, $key)) throw new Tx_Fluid_Core_RuntimeException('No value found for key "' . $viewHelperName . '->' . $key . '"', 1243325768);
+		if (!$this->exists($viewHelperName, $key)) throw new RuntimeException('No value found for key "' . $viewHelperName . '->' . $key . '"', 1243325768);
 		return $this->objects[$viewHelperName][$key];
 	}
 
@@ -112,12 +113,12 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 * @param string $viewHelperName The ViewHelper Class name (Fully qualified, like Tx_Fluid_ViewHelpers_ForViewHelper)
 	 * @param string $key Key of the data to remove
 	 * @return void
-	 * @throws Tx_Fluid_Core_RuntimeException if there was no key with the specified name
+	 * @throws RuntimeException if there was no key with the specified name
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function remove($viewHelperName, $key) {
-		if (!$this->exists($viewHelperName, $key)) throw new Tx_Fluid_Core_RuntimeException('No value found for key "' . $viewHelperName . '->' . $key . '", thus the key cannot be removed.', 1243352249);
+		if (!$this->exists($viewHelperName, $key)) throw new RuntimeException('No value found for key "' . $viewHelperName . '->' . $key . '", thus the key cannot be removed.', 1243352249);
 		unset($this->objects[$viewHelperName][$key]);
 	}
 

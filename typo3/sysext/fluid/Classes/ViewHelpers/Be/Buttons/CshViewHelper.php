@@ -36,17 +36,17 @@
  * CSH button as known from the TYPO3 backend.
  *
  *
- * @package     TYPO3
- * @subpackage  tx_fluid
+ * @package     Fluid
+ * @subpackage  ViewHelpers\Be\Buttons
  * @author		Steffen Kamper <info@sk-typo3.de>
  * @author		Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id: 
- * 
+ * @version     SVN: $Id:
+ *
  */
 class Tx_Fluid_ViewHelpers_Be_Buttons_CshViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 
-	
+
 	/**
 	 * Render context sensitive help (CSH) for the given table
 	 *

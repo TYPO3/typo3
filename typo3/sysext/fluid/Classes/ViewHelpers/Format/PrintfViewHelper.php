@@ -48,8 +48,9 @@
  * Output:
  * We love TYPO3
  *
- * @version $Id: PrintfViewHelper.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: PrintfViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
 class Tx_Fluid_ViewHelpers_Format_PrintfViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {

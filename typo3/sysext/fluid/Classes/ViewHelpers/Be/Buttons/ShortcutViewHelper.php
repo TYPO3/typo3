@@ -43,17 +43,17 @@
  * Note:
  * Normally you won't need to set getVars & setVars parameters in Extbase modules
  *
- * @package     TYPO3
- * @subpackage  tx_fluid
+ * @package     Fluid
+ * @subpackage  ViewHelpers\Be\Buttons
  * @author		Steffen Kamper <info@sk-typo3.de>
  * @author		Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id: 
- * 
+ * @version     SVN: $Id:
+ *
  */
 class Tx_Fluid_ViewHelpers_Be_Buttons_ShortcutViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 
-	
+
 	/**
 	 * Renders a shortcut button as known from the TYPO3 backend
 	 *

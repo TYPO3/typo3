@@ -33,17 +33,17 @@
  * Current page path, prefixed with "Path:" and wrapped in a span with the class "typo3-docheader-pagePath"
  *
  *
- * @package     TYPO3
- * @subpackage  tx_fluid
+ * @package     Fluid
+ * @subpackage  ViewHelpers\Be
  * @author      Steffen Kamper <info@sk-typo3.de>
  * @author      Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id: 
- * 
+ * @version     SVN: $Id:
+ *
  */
 class Tx_Fluid_ViewHelpers_Be_PagePathViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 
-	
+
 	/**
 	 * Renders the current page path
 	 *

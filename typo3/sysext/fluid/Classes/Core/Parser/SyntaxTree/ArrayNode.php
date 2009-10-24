@@ -23,7 +23,7 @@
 /**
  * Array Syntax Tree Node. Handles JSON-like arrays.
  *
- * @version $Id: ArrayNode.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ArrayNode.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @internal
@@ -55,7 +55,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	 */
 	public function evaluate() {
 		if ($this->renderingContext === NULL) {
-			throw new Tx_Fluid_Core_RuntimeException('Rendering Context is null in ArrayNode, but necessary. If this error appears, please report a bug!', 1242668976);
+			throw new RuntimeException('Rendering Context is null in ArrayNode, but necessary. If this error appears, please report a bug!', 1242668976);
 		}
 		$arrayToBuild = array();
 		foreach ($this->internalArray as $key => $value) {

@@ -23,8 +23,9 @@
 /**
  * The most general Fluid exception.
  *
- * @version $Id: Exception.php 2896 2009-07-27 16:03:39Z sebastian $
+ * @version $Id: Exception.php 3346 2009-10-22 17:26:10Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  */
 class Tx_Fluid_Core_Exception extends Tx_Fluid_Exception {
 }
