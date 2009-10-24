@@ -29,6 +29,7 @@
  * @package Extbase
  * @subpackage Reflection
  * @version $Id$
+ * @api
  */
 class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 

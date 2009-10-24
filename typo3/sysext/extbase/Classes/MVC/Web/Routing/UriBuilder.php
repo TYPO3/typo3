@@ -18,6 +18,7 @@
  * @package Extbase
  * @subpackage MVC\Web\Routing
  * @version $Id$
+ * @api
  */
 class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 

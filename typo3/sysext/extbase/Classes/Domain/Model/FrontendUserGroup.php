@@ -30,6 +30,7 @@
  * @version $Id: $
  * @scope prototype
  * @entity
+ * @api
  */
 class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_AbstractEntity {
 

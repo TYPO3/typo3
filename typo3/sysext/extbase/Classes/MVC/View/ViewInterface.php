@@ -31,6 +31,7 @@
  * @package Extbase
  * @subpackage MVC\View
  * @version $ID:$
+ * @api
  */
 interface Tx_Extbase_MVC_View_ViewInterface {
 

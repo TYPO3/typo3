@@ -32,6 +32,7 @@
  * @subpackage MVC
  * @version $ID:$
  * @scope prototype
+ * @api
  */
 class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 
@@ -83,7 +84,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @var array Errors that occured during this request
 	 */
 	protected $errors = array();
-	
+
 	/**
 	 * Sets the dispatched flag
 	 *

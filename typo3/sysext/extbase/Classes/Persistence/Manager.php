@@ -31,7 +31,7 @@
  * @package Extbase
  * @subpackage Persistence
  * @version $Id: Manager.php 2293 2009-05-20 18:14:45Z robert $
- *
+ * @api
  */
 class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerInterface, t3lib_Singleton {
 
@@ -79,7 +79,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	public function injectSession(Tx_Extbase_Persistence_Session $session) {
 		$this->session = $session;
 	}
-	
+
 	/**
 	 * Injects the object manager
 	 *
@@ -108,7 +108,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	public function getBackend() {
 		return $this->backend;
 	}
-	
+
 	/**
 	 * Registers a repository
 	 *
@@ -163,6 +163,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 			$this->session->unregisterReconstitutedObject($removedObject);
 		}
 	}
-		
+
 }
 ?>

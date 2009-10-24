@@ -31,6 +31,7 @@
  * @package Extbase
  * @subpackage Persistence
  * @version $ID:$
+ * @api
  */
 interface Tx_Extbase_Persistence_RepositoryInterface {
 

@@ -48,6 +48,7 @@
  * @package Extbase
  * @subpackage Property
  * @version $Id$
+ * @api
  */
 class Tx_Extbase_Property_Mapper {
 
@@ -61,7 +62,7 @@ class Tx_Extbase_Property_Mapper {
 	 * @var Tx_Extbase_Validation_ValidatorResolver
 	 */
 	protected $validatorResolver;
-	
+
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
@@ -71,7 +72,7 @@ class Tx_Extbase_Property_Mapper {
 	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
 	protected $persistenceManager;
-	
+
 	/**
 	 * @var Tx_Extbase_Persistence_QueryFactory
 	 */
@@ -97,7 +98,7 @@ class Tx_Extbase_Property_Mapper {
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
-	
+
 	/**
 	 * Maps the given properties to the target object and validates the properties according to the defined
 	 * validators. If the result object is not valid, the operation will be undone (the target object remains
@@ -179,7 +180,7 @@ class Tx_Extbase_Property_Mapper {
 		} else {
 			$targetClassSchema = NULL;
 		}
-		
+
 		foreach ($propertyNames as $propertyName) {
 			$propertyValue = NULL;
 			if (is_array($source) || $source instanceof ArrayAccess) {

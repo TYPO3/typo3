@@ -31,6 +31,7 @@
  * @package Extbase
  * @subpackage Persistence
  * @version $Id: ManagerInterface.php 2293 2009-05-20 18:14:45Z robert $
+ * @api
  */
 interface Tx_Extbase_Persistence_ManagerInterface {
 

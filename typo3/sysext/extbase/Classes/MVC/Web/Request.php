@@ -33,6 +33,7 @@
  * @version $ID:$
  *
  * @scope prototype
+ * @api
  */
 class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 

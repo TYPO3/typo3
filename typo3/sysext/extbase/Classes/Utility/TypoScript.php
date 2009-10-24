@@ -28,6 +28,7 @@
  * @package Extbase
  * @subpackage Utility
  * @version $ID:$
+ * @api
  */
 class Tx_Extbase_Utility_TypoScript {
 
@@ -38,7 +39,7 @@ class Tx_Extbase_Utility_TypoScript {
 	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
 	 *
 	 * This method performs this removal.
-	 * 
+	 *
 	 * @param array $setup The settings array
 	 * @return void
 	 * @api

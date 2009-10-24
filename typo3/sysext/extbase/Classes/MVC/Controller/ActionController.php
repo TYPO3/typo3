@@ -31,6 +31,7 @@
  * @package Extbase
  * @subpackage MVC\Controller
  * @version $ID:$
+ * @api
  */
 class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controller_AbstractController {
 

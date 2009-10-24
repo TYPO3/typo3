@@ -33,6 +33,7 @@
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope session
+ * @api
  */
 class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 

@@ -32,6 +32,7 @@
  * @subpackage MVC\Controller
  * @version $ID:$
  * @scope prototype
+ * @api
  */
 class Tx_Extbase_MVC_Controller_Argument {
 
@@ -131,7 +132,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$this->name = $name;
 		$this->dataType = $dataType;
 	}
-	
+
 	/**
 	 * Initializes this object
 	 *

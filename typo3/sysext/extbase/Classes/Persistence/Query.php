@@ -32,6 +32,7 @@
  * @subpackage Persistence
  * @version $Id: Query.php 658 2009-05-16 13:54:16Z jocrau $
  * @scope prototype
+ * @api
  */
 class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterface, Tx_Extbase_Persistence_QuerySettingsInterface {
 
@@ -95,14 +96,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @var int
 	 */
 	protected $offset;
-	
+
 	/**
 	 * The query settings.
-	 * 
+	 *
 	 * @var Tx_Extbase_Persistence_QuerySettingsInterface
 	 */
 	protected $querySettings;
-	
+
 	/**
 	 * Constructs a query object working on the given class name
 	 *
@@ -133,11 +134,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
 		$this->dataMapper = $dataMapper;
 	}
-	
+
 	/**
-	 * Sets the Query Settings. These Query settings must match the settings expected by 
+	 * Sets the Query Settings. These Query settings must match the settings expected by
 	 * the specific Storage Backend.
-	 * 
+	 *
 	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
 	 * @return void
 	 */
@@ -147,14 +148,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 
 	/**
 	 * Returns the Query Settings.
-	 * 
+	 *
 	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
 	 * @api
 	 */
 	public function getQuerySettings() {
 		return $this->querySettings;
 	}
-	
+
 	/**
 	 * Returns the class name the query handles
 	 *
@@ -197,14 +198,14 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 				$this->orderings,
 				$this->columns // TODO implement selection of columns
 			);
-					
+
 			if ($this->limit !== NULL) {
 				$query->setLimit($this->limit);
 			}
 			if ($this->offset !== NULL) {
-				$query->setOffset($this->offset);	
+				$query->setOffset($this->offset);
 			}
-			
+
 		}
 
 		foreach ($this->operands as $name => $value) {
@@ -291,7 +292,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 *
 	 * @param string $statement The statement
 	 * @param array $paramerters An array of parameters. These will be bound to placeholders '?' in the $statement.
-	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or 
+	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or
 	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
 	 */
 	public function statement($statement, array $parameters = array(), $language = Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
@@ -485,18 +486,18 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$this->QOMFactory->bindVariable($uniqueVariableName)
 			);
 	}
-	
+
 	/**
 	 * Returns a unique variable name for a given property name. This is necessary for storing
 	 * the variable values in an associative array without overwriting existing variables.
-	 * 
+	 *
 	 * @param string $propertyName The name of the property
 	 * @return string The postfixed property name
 	 */
 	protected function getUniqueVariableName($propertyName) {
 		return uniqid($propertyName);
 	}
-	
+
 	/**
 	 * Returns the selectorn name or an empty string, if the source is not a selector
 	 * // TODO This has to be checked at another place

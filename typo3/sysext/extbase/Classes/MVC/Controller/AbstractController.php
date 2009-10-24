@@ -31,6 +31,7 @@
  * @package Extbase
  * @subpackage MVC\Controller
  * @version $ID:$
+ * @api
  */
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
 
@@ -118,7 +119,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->initializeObjects();
 		list(, $this->extensionName) = explode('_', get_class($this));
 	}
-	
+
 	/**
 	 * Initializes objects this class depends on
 	 *

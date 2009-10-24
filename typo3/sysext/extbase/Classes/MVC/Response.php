@@ -32,6 +32,7 @@
  * @subpackage MVC
  * @version $ID:$
  * @scope prototype
+ * @api
  */
 class Tx_Extbase_MVC_Response {
 

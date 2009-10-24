@@ -31,6 +31,7 @@
  * @package Extbase
  * @subpackage Persistence
  * @version $ID:$
+ * @api
  */
 class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_RepositoryInterface, t3lib_Singleton {
 
@@ -132,7 +133,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		if (!($newObject instanceof $this->objectType)) {
 			throw new Tx_Extbase_Persistence_Exception_IllegalObjectType('The new object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363439);
 		}
-		
+
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
 		$uuid = $backend->getIdentifierByObject($existingObject);
@@ -151,7 +152,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "existing object" is unknown to the persistence backend.', 1238068475);
 		}
-		
+
 	}
 
 	/**
@@ -173,7 +174,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
 		}
 	}
-	
+
 	/**
 	 * Returns all addedObjects that have been added to this repository with add().
 	 *
