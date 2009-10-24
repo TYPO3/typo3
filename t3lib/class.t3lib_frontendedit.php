@@ -37,11 +37,12 @@
  */
 class t3lib_frontendedit {
 	/**
-	 * GET/POST parameters for the FE editing
+	 * GET/POST parameters for the FE editing.
+	 * Accessed as $GLOBALS['BE_USER']->frontendEdit->TSFE_EDIT, thus public
 	 *
 	 * @var array
 	 */
-	protected $TSFE_EDIT;
+	public $TSFE_EDIT;
 
 	/**
 	 * TCEmain object.
