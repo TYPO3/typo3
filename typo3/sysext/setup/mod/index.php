@@ -561,10 +561,10 @@ class SC_mod_user_setup_index {
 						$html = t3lib_div::callUserFunction($config['itemsProcFunc'], $config, $this, '');
 					} else {
 						$html = '<select id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . chr(10);
-						foreach ($config['items'] as $key => $value) {
+						foreach ($config['items'] as $key => $label) {
 							$html .= '<option value="' . $key . '"' .
 								($value == $key ? ' selected="selected"' : '') .
-								'>' . $this->getLabel($value,'',false) . '</option>' . chr(10);
+								'>' . $this->getLabel($label,'',false) . '</option>' . chr(10);
 						}
 						$html .= '</select>';
 					}
