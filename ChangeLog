@@ -1,6 +1,6 @@
 2009-10-27  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #12327: IRRE - DOM object identifier use invalid characters
+	* Fixed bug #12327: IRRE - DOM object identifiers use invalid characters
 
 2009-10-26  Rupert Germann  <rupi@gmx.li>
 
