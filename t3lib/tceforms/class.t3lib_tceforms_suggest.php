@@ -183,7 +183,7 @@ class t3lib_TCEforms_Suggest {
 			$params = array('value' => $search);
 			$rows = $receiverObj->queryTable($params);
 
-			if (!$rows) {
+			if (empty($rows)) {
 				continue;
 			}
 			$resultRows = t3lib_div::array_merge($resultRows, $rows);

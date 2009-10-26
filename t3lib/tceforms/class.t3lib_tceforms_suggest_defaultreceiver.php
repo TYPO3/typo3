@@ -143,7 +143,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 *
 	 * @param  array  $params
 	 * @param  object $ref	the parent object
-	 * @return mixed  array of rows or false if nothing found
+	 * @return array  array of rows
 	 */
 	public function queryTable(&$params, $recursionCounter = 0) {
 		$rows = array();
@@ -215,10 +215,8 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 				$tmp = self::queryTable($params, ++$recursionCounter);
 				$rows = array_merge($tmp, $rows);
 			}
-			return $rows;
-		} else {
-			return false;
 		}
+		return $rows;
 	}
 
 	/**

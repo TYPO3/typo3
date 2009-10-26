@@ -1,3 +1,7 @@
+2009-10-26  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11980: TCEforms suggest defaultreceiver returns array or boolean (thanks to Steffen Gebert)
+
 2009-10-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug RFC #12326: EXT:setup CSH mode setting gets lost (thanks to Steffen Gebert)
