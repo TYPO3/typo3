@@ -23,7 +23,7 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id: AbstractViewHelper.php 3349 2009-10-26 06:06:12Z sebastian $
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -88,12 +88,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	protected $objectAccessorPostProcessorEnabled = TRUE;
 
 	/**
-	 * Validator resolver
-	 * @var Tx_Extbase_Validation_ValidatorResolver
-	 */
-	private $validatorResolver;
-
-	/**
 	 * Reflection service
 	 * @var Tx_Extbase_Reflection_Service
 	 */
@@ -133,15 +127,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 */
 	public function setViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
 		$this->viewHelperVariableContainer = $viewHelperVariableContainer;
-	}
-
-	/**
-	 * Inject a validator resolver
-	 * @param Tx_Extbase_Validation_ValidatorResolver $validatorResolver Validator Resolver
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function injectValidatorResolver(Tx_Extbase_Validation_ValidatorResolver $validatorResolver) {
-		$this->validatorResolver = $validatorResolver;
 	}
 
 	/**
@@ -313,13 +298,13 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 					if (!is_bool($this->arguments[$argumentName])) {
 						throw new RuntimeException('The argument "' . $argumentName . '" was registered with type "boolean", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1240227732);
 					}
-				} else {
-					$validator = $this->validatorResolver->createValidator($type);
-					if (is_null($validator)) {
-						throw new RuntimeException('No validator found for argument name "' . $argumentName . '" with type "' . $type . '" in view helper "' . get_class($this) . '".', 1237900534);
-					}
-					if (!$validator->isValid($this->arguments[$argumentName])) {
-						throw new RuntimeException('Validation for argument name "' . $argumentName . '" in view helper "' . get_class($this) . '" FAILED. Expected type: "' . $type . '"; Given: "' . gettype($this->arguments[$argumentName]) . '".', 1237900686);
+				} elseif (class_exists($type)) {
+					if (! ($this->arguments[$argumentName] instanceof $type)) {
+						if (is_object($this->arguments[$argumentName])) {
+							throw new RuntimeException('The argument "' . $argumentName . '" was registered with type "' . $type . '", but is of type "' . get_class($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1256475114);
+						} else {
+							throw new RuntimeException('The argument "' . $argumentName . '" was registered with type "' . $type . '", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1256475113);
+						}
 					}
 				}
 			}

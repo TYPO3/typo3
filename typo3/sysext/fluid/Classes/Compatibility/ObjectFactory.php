@@ -31,7 +31,6 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 			'injectPersistenceManager' => 'Tx_Extbase_Persistence_Manager'
 		),
 		'Tx_Fluid_Core_ViewHelper_AbstractViewHelper' => array(
-			'injectValidatorResolver' => 'Tx_Extbase_Validation_ValidatorResolver',
 			'injectReflectionService' => 'Tx_Extbase_Reflection_Service'
 		),
 		'Tx_Fluid_Core_ViewHelper_TagBasedViewHelper' => array(

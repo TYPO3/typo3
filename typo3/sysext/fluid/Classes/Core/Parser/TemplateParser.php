@@ -23,7 +23,7 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id: TemplateParser.php 3333 2009-10-21 09:52:46Z sebastian $
+ * @version $Id: TemplateParser.php 3349 2009-10-26 06:06:12Z sebastian $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -114,8 +114,8 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	public static $SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS = '/
 		^{                                                      # Start of shorthand syntax
 			                                                 # A shorthand syntax is either...
-			(?P<Object>[a-zA-Z0-9\-_.]*)                                     # ... an object accessor (definition is below because of some strange behavior of PCRE...
-			(?:->)?
+			(?P<Object>[a-zA-Z0-9\-_.]*)                                     # ... an object accessor
+			\s*(?P<Delimiter>(?:->)?)\s*
 
 			(?P<ViewHelper>                                 # ... a ViewHelper
 				[a-zA-Z0-9]+                                # Namespace prefix of ViewHelper (as in $SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG)
@@ -511,9 +511,16 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function handler_objectAccessor(Tx_Fluid_Core_Parser_ParsingState $state, $objectAccessorString, $viewHelperString, $additionalViewHelpersString) {
+	protected function handler_objectAccessor(Tx_Fluid_Core_Parser_ParsingState $state, $objectAccessorString, $delimiter, $viewHelperString, $additionalViewHelpersString) {
 		$viewHelperString .= $additionalViewHelpersString;
 		$numberOfViewHelpers = 0;
+
+		// The following post-processing handles a case when there is only a ViewHelper, and no Object Accessor.
+		// Resolves bug #5107.
+		if (strlen($delimiter) == 0 && strlen($viewHelperString) > 0) {
+			$viewHelperString = $objectAccessorString . $viewHelperString;
+			$objectAccessorString = '';
+		}
 
 		// ViewHelpers
 		if (strlen($viewHelperString) > 0 && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
@@ -652,7 +659,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		foreach ($sections as $section) {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS, $section, $matchedVariables) > 0) {
-				$this->handler_objectAccessor($state, $matchedVariables['Object'], (isset($matchedVariables['ViewHelper'])?$matchedVariables['ViewHelper']:''), (isset($matchedVariables['AdditionalViewHelpers'])?$matchedVariables['AdditionalViewHelpers']:''));
+				$this->handler_objectAccessor($state, $matchedVariables['Object'], $matchedVariables['Delimiter'], (isset($matchedVariables['ViewHelper'])?$matchedVariables['ViewHelper']:''), (isset($matchedVariables['AdditionalViewHelpers'])?$matchedVariables['AdditionalViewHelpers']:''));
 			} elseif (preg_match(self::$SCAN_PATTERN_SHORTHANDSYNTAX_ARRAYS, $section, $matchedVariables) > 0) {
 				$this->handler_array($state, $matchedVariables['Array']);
 			} else {

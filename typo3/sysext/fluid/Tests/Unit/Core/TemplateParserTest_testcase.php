@@ -128,11 +128,9 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_BaseTestCase 
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode("\n"));
 		$dynamicNode = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_ViewHelpers_BaseViewHelper', array());
-		$dynamicNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode("Hallo"));
 		$rootNode->addChildNode($dynamicNode);
 		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode("\n"));
 		$dynamicNode = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_ViewHelpers_BaseViewHelper', array());
-		$dynamicNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode("Second"));
 		$rootNode->addChildNode($dynamicNode);
 
 		$expected = $rootNode;
@@ -145,7 +143,6 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_BaseTestCase 
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function fixture02ShorthandSyntaxReturnsCorrectObjectTree() {
-		$this->markTestSkipped("TODO");
 		$this->fixture02ReturnsCorrectObjectTree('/Fixtures/TemplateParserTestFixture02-shorthand.html');
 	}
 

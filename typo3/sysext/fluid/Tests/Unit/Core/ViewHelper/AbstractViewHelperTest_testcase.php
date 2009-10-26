@@ -18,7 +18,7 @@ if (!class_exists('Tx_Fluid_Core_Fixtures_TestViewHelper')) {
 /**
  * Testcase for AbstractViewHelper
  *
- * @version $Id: AbstractViewHelperTest.php 3333 2009-10-21 09:52:46Z sebastian $
+ * @version $Id: AbstractViewHelperTest.php 3349 2009-10-26 06:06:12Z sebastian $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbase_BaseTestCase {
@@ -163,17 +163,31 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 
 		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('test' => 'Value of argument')));
 
-		$validatorResolver = $this->getMock('Tx_Extbase_Validation_ValidatorResolver', array('createValidator'), array(), '', FALSE);
-		$validatorResolver->expects($this->once())->method('createValidator')->with('string')->will($this->returnValue(new Tx_Extbase_Validation_Validator_TextValidator()));
-
-		$viewHelper->injectValidatorResolver($validatorResolver);
-
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
 			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition("test", "string", FALSE, "documentation")
 		)));
 
 		$viewHelper->validateArguments();
 	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @expectedException \RuntimeException
+	 */
+	public function validateArgumentsCallsTheRightValidatorsAndThrowsExceptionIfValidationIsWrong() {
+		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
+		$viewHelper->injectReflectionService(t3lib_div::makeInstance('Tx_Extbase_Reflection_Service'));
+
+		$viewHelper->setArguments(new Tx_Fluid_Core_ViewHelper_Arguments(array('test' => "test")));
+
+		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
+			'test' => new Tx_Fluid_Core_ViewHelper_ArgumentDefinition("test", "stdClass", FALSE, "documentation")
+		)));
+
+		$viewHelper->validateArguments();
+	}
+
 
 	/**
 	 * @test
