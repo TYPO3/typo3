@@ -105,7 +105,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$this->QOMFactory = $persistenceManager->getBackend()->getQOMFactory();
 		$this->persistenceSession = $persistenceManager->getSession();
 	}
-	
+
 	/**
 	 * Injects the Reflection Service
 	 *
@@ -181,7 +181,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
 			$propertyValue = NULL;
-			$propertyType = $columnMap->getPropertyType();			
+			$propertyType = $columnMap->getPropertyType();
 			switch ($propertyType) {
 				case Tx_Extbase_Persistence_PropertyType::STRING;
 				case Tx_Extbase_Persistence_PropertyType::DATE;
@@ -273,7 +273,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
-	 * @return Tx_Extbase_Persistence_ObjectStorage An Object Storage containing the related objects 
+	 * @return Tx_Extbase_Persistence_ObjectStorage An Object Storage containing the related objects
 	 */
 	public function fetchRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
@@ -282,7 +282,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$query = $queryFactory->create($columnMap->getChildClassName());
 			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 			if (isset($parentKeyFieldName)) {
-				$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
+				$query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()));
+				if ($columnMap->getChildSortByFieldName()) {
+					$query->setOrderings(array($columnMap->getChildSortByFieldName() =>  Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING ) );
+				}
+				$objects = $query->execute();
 			} else {
 				$uidArray = t3lib_div::intExplode(',', $fieldValue);
 				$uids = implode(',', $uidArray);
