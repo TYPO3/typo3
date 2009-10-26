@@ -30,6 +30,7 @@
 ***************************************************************/
 
 var inline = {
+	structureSeparator: '-',
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
 	lockedAjaxMethod: {},
@@ -45,8 +46,8 @@ var inline = {
 	setNoTitleString: function(value) { this.noTitleString = value; },
 
 	expandCollapseRecord: function(objectId, expandSingle) {
-		var currentUid = this.parseFormElementName('none', objectId, 1);
-		var objectPrefix = this.parseFormElementName('full', objectId, 0, 1);
+		var currentUid = this.parseObjectId('none', objectId, 1);
+		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 
 		var currentState = '';
 		var collapse = new Array();
@@ -74,7 +75,7 @@ var inline = {
 
 	collapseAllRecords: function(objectId, objectPrefix, callingUid) {
 			// get the form field, where all records are stored
-		var objectName = this.prependFormFieldNames+this.parseFormElementName('parts', objectId, 3, 2);
+		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true);
 		var formObj = document.getElementsByName(objectName);
 		var collapse = [];
 
@@ -84,7 +85,7 @@ var inline = {
 
 			var records = formObj[0].value.split(',');
 			for (var i=0; i<records.length; i++) {
-				recObjectId = objectPrefix+'['+records[i]+']';
+				recObjectId = objectPrefix + this.structureSeparator + records[i];
 				if (records[i] != callingUid && Element.visible(recObjectId+'_fields')) {
 					Element.hide(recObjectId+'_fields');
 					if (this.isNewRecord(recObjectId)) this.updateExpandedCollapsedStateLocally(recObjectId, 0);
@@ -97,7 +98,7 @@ var inline = {
 	},
 
 	updateExpandedCollapsedStateLocally: function(objectId, value) {
-		var ucName = 'uc[inlineView]'+this.parseFormElementName('parts', objectId, 3, 2);
+		var ucName = 'uc[inlineView]'+this.parseObjectId('parts', objectId, 3, 2, true);
 		var ucFormObj = document.getElementsByName(ucName);
 		if (ucFormObj.length) {
 			ucFormObj[0].value = value;
@@ -107,7 +108,7 @@ var inline = {
 	createNewRecord: function(objectId, recordUid) {
 		if (this.isBelowMax(objectId)) {
 			if (recordUid) {
-				objectId += '['+recordUid+']';
+				objectId += this.structureSeparator + recordUid;
 			}
 			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true);
 		} else {
@@ -307,8 +308,7 @@ var inline = {
 			if (unique.type == 'select') {
 					// remove used items from each select-field of the child records
 				if (!(unique.selector && unique.max == -1)) {
-					var elName = this.parseFormElementName('full', objectId, 1)+'['+recordUid+']['+unique.field+']';
-					var formName = this.prependFormFieldNames+this.parseFormElementName('parts', objectId, 3, 1);
+					var formName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 1, true);
 
 					var fieldObj = document.getElementsByName(elName);
 					var values = $H(unique.used).values();
@@ -404,13 +404,13 @@ var inline = {
 	},
 
 	changeSorting: function(objectId, direction) {
-		var objectName = this.prependFormFieldNames+this.parseFormElementName('parts', objectId, 3, 2);
-		var objectPrefix = this.parseFormElementName('full', objectId, 0, 1);
+		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true);
+		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 		var formObj = document.getElementsByName(objectName);
 
 		if (formObj.length) {
 				// the uid of the calling object (last part in objectId)
-			var callingUid = this.parseFormElementName('none', objectId, 1);
+			var callingUid = this.parseObjectId('none', objectId, 1);
 			var records = formObj[0].value.split(',');
 			var current = records.indexOf(callingUid);
 			var changed = false;
@@ -432,8 +432,8 @@ var inline = {
 				formObj[0].value = records.join(',');
 				var cAdj = direction > 0 ? 1 : 0; // adjustment
 				$(objectId+'_div').parentNode.insertBefore(
-					$(objectPrefix+'['+records[current-cAdj]+']_div'),
-					$(objectPrefix+'['+records[current+1-cAdj]+']_div')
+					$(objectPrefix + this.structureSeparator + records[current-cAdj] + '_div'),
+					$(objectPrefix + this.structureSeparator + records[current+1-cAdj] + '_div')
 				);
 				this.redrawSortingButtons(objectPrefix, records);
 			}
@@ -444,7 +444,7 @@ var inline = {
 
 	dragAndDropSorting: function(element) {
 		var objectId = element.getAttribute('id').replace(/_records$/, '');
-		var objectName = inline.prependFormFieldNames+inline.parseFormElementName('parts', objectId, 3);
+		var objectName = inline.prependFormFieldNames+inline.parseObjectId('parts', objectId, 3, 0, true);
 		var formObj = document.getElementsByName(objectName);
 
 		if (formObj.length) {
@@ -464,7 +464,7 @@ var inline = {
 
 			if (inline.data.config && inline.data.config[objectId]) {
 				var table = inline.data.config[objectId].table;
-				inline.redrawSortingButtons(objectId+'['+table+']', checked);
+				inline.redrawSortingButtons(objectId + inline.structureSeparator + table, checked);
 			}
 		}
 	},
@@ -474,7 +474,7 @@ var inline = {
 		Sortable.create(
 			objectId,
 			{
-				format: /^[^_\-](?:[A-Za-z0-9\[\]\-\_]*)\[(.*)\]_div$/,
+				format: /^[^_\-](?:[A-Za-z0-9\-\_]*)-(.*)_div$/,
 				onUpdate: inline.dragAndDropSorting,
 				tag: 'div',
 				handle: 'sortableHandle',
@@ -496,7 +496,7 @@ var inline = {
 			// if no records were passed, fetch them from form field
 		if (typeof records == 'undefined') {
 			records = new Array();
-			var objectName = this.prependFormFieldNames+this.parseFormElementName('parts', objectPrefix, 3, 1);
+			var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
 			var formObj = document.getElementsByName(objectName);
 			if (formObj.length) records = formObj[0].value.split(',');
 		}
@@ -504,7 +504,7 @@ var inline = {
 		for (i=0; i<records.length; i++) {
 			if (!records[i].length) continue;
 
-			headerObj = $(objectPrefix+'['+records[i]+']_header');
+			headerObj = $(objectPrefix + this.structureSeparator + records[i] + '_header');
 			sortingObj[0] = Element.select(headerObj, '.sortingUp');
 			sortingObj[1] = Element.select(headerObj, '.sortingDown');
 
@@ -519,7 +519,7 @@ var inline = {
 
 	memorizeAddRecord: function(objectPrefix, newUid, afterUid, selectedValue) {
 		if (this.isBelowMax(objectPrefix)) {
-			var objectName = this.prependFormFieldNames+this.parseFormElementName('parts', objectPrefix, 3, 1);
+			var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
 			var formObj = document.getElementsByName(objectName);
 
 			if (formObj.length) {
@@ -549,7 +549,7 @@ var inline = {
 
 			// if we reached the maximum off possible records after this action, hide the new buttons
 		if (!this.isBelowMax(objectPrefix)) {
-			var objectParent = this.parseFormElementName('full', objectPrefix, 0 , 1);
+			var objectParent = this.parseObjectId('full', objectPrefix, 0 , 1);
 			var md5 = this.getObjectMD5(objectParent);
 			this.hideElementsWithClassName('.inlineNewButton'+(md5 ? '.'+md5 : ''), objectParent);
 		}
@@ -618,7 +618,7 @@ var inline = {
 					}
 
 					if (!(unique.selector && unique.max == -1)) {
-						var formName = this.prependFormFieldNames+this.parseFormElementName('parts', objectPrefix, 3, 1);
+						var formName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
 						var formObj = document.getElementsByName(formName);
 						if (formObj.length) {
 							var records = formObj[0].value.split(',');
@@ -639,7 +639,7 @@ var inline = {
 	},
 
 	enableDisableRecord: function(objectId) {
-		var elName = this.parseFormElementName('full', objectId, 2);
+		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 		var imageObj = $(objectId+'_disabled');
 		var valueObj = document.getElementsByName(elName+'[hidden]');
 		var formObj = document.getElementsByName(elName+'[hidden]_0');
@@ -656,10 +656,10 @@ var inline = {
 
 	deleteRecord: function(objectId, options) {
 		var i, j, inlineRecords, records, childObjectId, childTable;
-		var objectPrefix = this.parseFormElementName('full', objectId, 0 , 1);
-		var elName = this.parseFormElementName('full', objectId, 2);
-		var shortName = this.parseFormElementName('parts', objectId, 2);
-		var recordUid = this.parseFormElementName('none', objectId, 1);
+		var objectPrefix = this.parseObjectId('full', objectId, 0 , 1);
+		var elName = this.parseObjectId('full', objectId, 2, 0, true);
+		var shortName = this.parseObjectId('parts', objectId, 2, 0, true);
+		var recordUid = this.parseObjectId('none', objectId, 1);
 		var beforeDeleteIsBelowMax = this.isBelowMax(objectPrefix);
 
 			// revert the unique settings if available
@@ -694,18 +694,18 @@ var inline = {
 		}
 
 		var recordCount = this.memorizeRemoveRecord(
-			this.prependFormFieldNames+this.parseFormElementName('parts', objectId, 3, 2),
+			this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true),
 			recordUid
 		);
 
 		if (recordCount <= 1) {
-			this.destroyDragAndDropSorting(this.parseFormElementName('full', objectId, 0 , 2)+'_records');
+			this.destroyDragAndDropSorting(this.parseObjectId('full', objectId, 0 , 2)+'_records');
 		}
 		this.redrawSortingButtons(objectPrefix);
 
 			// if the NEW-button was hidden and now we can add again new children, show the button
 		if (!beforeDeleteIsBelowMax && this.isBelowMax(objectPrefix)) {
-			var objectParent = this.parseFormElementName('full', objectPrefix, 0 , 1);
+			var objectParent = this.parseObjectId('full', objectPrefix, 0 , 1);
 			var md5 = this.getObjectMD5(objectParent);
 			this.showElementsWithClassName('.inlineNewButton'+(md5 ? '.'+md5 : ''), objectParent);
 		}
@@ -726,16 +726,13 @@ var inline = {
 		return path;
 	},
 
-	parseFormElementName: function(wrap, objectId, rightCount, skipRight) {
-			// remove left and right side "data[...|...]" -> '...|...'
-		objectId = objectId.substr(0, objectId.lastIndexOf(']')).substr(objectId.indexOf('[')+1);
+	parseFormElementName: function(wrap, formElementName, rightCount, skipRight) {
+		var idParts = this.splitFormElementName(formElementName);
 
 		if (!wrap) wrap = 'full';
 		if (!skipRight) skipRight = 0;
 
-		var elReturn;
 		var elParts = new Array();
-		var idParts = objectId.split('][');
 		for (var i=0; i<skipRight; i++) idParts.pop();
 
 		if (rightCount > 0) {
@@ -745,12 +742,74 @@ var inline = {
 			elParts = idParts;
 		}
 
+		var elReturn = this.constructFormElementName(wrap, elParts);
+
+		return elReturn;
+	},
+
+	splitFormElementName: function(formElementName) {
+		// remove left and right side "data[...|...]" -> '...|...'
+		formElementName = formElementName.substr(0, formElementName.lastIndexOf(']')).substr(formElementName.indexOf('[')+1);
+		var parts = objectId.split('][');
+
+		return parts;
+	},
+
+	splitObjectId: function(objectId) {
+		objectId = objectId.substr(objectId.indexOf(this.structureSeparator)+1);
+		var parts = objectId.split(this.structureSeparator);
+
+		return parts;
+	},
+
+	constructFormElementName: function(wrap, parts) {
+		var elReturn;
+
 		if (wrap == 'full') {
-			elReturn = this.prependFormFieldNames+'['+elParts.join('][')+']';
+			elReturn = this.prependFormFieldNames+'['+parts.join('][')+']';
 		} else if (wrap == 'parts') {
-			elReturn = '['+elParts.join('][')+']';
+			elReturn = '['+parts.join('][')+']';
 		} else if (wrap == 'none') {
-			elReturn = elParts.length > 1 ? elParts : elParts.join('');
+			elReturn = parts.length > 1 ? parts : parts.join('');
+		}
+
+		return elReturn;
+	},
+
+	constructObjectId: function(wrap, parts) {
+		var elReturn;
+
+		if (wrap == 'full') {
+			elReturn = this.prependFormFieldNames+this.structureSeparator+parts.join(this.structureSeparator);
+		} else if (wrap == 'parts') {
+			elReturn = this.structureSeparator+parts.join(this.structureSeparator);
+		} else if (wrap == 'none') {
+			elReturn = parts.length > 1 ? parts : parts.join('');
+		}
+
+		return elReturn;
+	},
+
+	parseObjectId: function(wrap, objectId, rightCount, skipRight, returnAsFormElementName) {
+		var idParts = this.splitObjectId(objectId);
+
+		if (!wrap) wrap = 'full';
+		if (!skipRight) skipRight = 0;
+
+		var elParts = new Array();
+		for (var i=0; i<skipRight; i++) idParts.pop();
+
+		if (rightCount > 0) {
+			for (var i=0; i<rightCount; i++) elParts.unshift(idParts.pop());
+		} else {
+			for (var i=0; i<-rightCount; i++) idParts.shift();
+			elParts = idParts;
+		}
+
+		if (returnAsFormElementName) {
+			var elReturn = this.constructFormElementName(wrap, elParts);
+		} else {
+			var elReturn = this.constructObjectId(wrap, elParts);
 		}
 
 		return elReturn;
@@ -786,7 +845,7 @@ var inline = {
 
 	isBelowMax: function(objectPrefix) {
 		var isBelowMax = true;
-		var objectName = this.prependFormFieldNames+this.parseFormElementName('parts', objectPrefix, 3, 1);
+		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
 		var formObj = document.getElementsByName(objectName);
 
 		if (this.data.config && this.data.config[objectPrefix] && formObj.length) {

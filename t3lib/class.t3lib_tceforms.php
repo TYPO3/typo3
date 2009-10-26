@@ -894,7 +894,15 @@ class t3lib_TCEforms	{
 					$PA['fieldChangeFunc']['alert']=$alertMsgOnChange;
 						// if this is the child of an inline type and it is the field creating the label
 					if ($this->inline->isInlineChildAndLabelField($table, $field)) {
-						$PA['fieldChangeFunc']['inline'] = "inline.handleChangedField('".$PA['itemFormElName']."','".$this->inline->inlineNames['object']."[$table][".$row['uid']."]');";
+						$inlineObjectId = implode(
+							t3lib_TCEforms_inline::Structure_Separator,
+							array(
+								$this->inline->inlineNames['object'],
+								$table,
+								$row['uid']
+							)
+						);
+						$PA['fieldChangeFunc']['inline'] = "inline.handleChangedField('" . $PA['itemFormElName'] . "','" . $inlineObjectId . "');";
 					}
 
 						// Based on the type of the item, call a render function:
