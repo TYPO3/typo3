@@ -216,6 +216,10 @@ Compatibility
 	  versioning and workspaces you have to re-enable it after the update by installing it with
 	  the extension manager or with the update wizard in install tool.
 
+	* The DOM object identifiers in Inline Relational Record Editing (IRRE) have been changed
+		from "data[<pidOfParentRecord>][<parentTable>][<parentId>][<parentField>]..."
+		to "data-<pidOfParentRecord>-<parentTable>-<parentId>-<parentField>..."
+
 Development
 ===========
 
