@@ -549,7 +549,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function addPageIdStatement($tableName, array &$sql) {
-		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
+		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && $this->dataMapper->getDataMap($tableName)->hasPidColumn()) {
 			$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', t3lib_div::intExplode(',', $extbaseFrameworkConfiguration['persistence']['storagePid'])) . ')';
 		}
@@ -582,7 +582,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$className = '';
 				if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 					$className = $source->getNodeTypeName();
-				}			
+				}
 				$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand->getPropertyName(), $className);
 				if (strlen($tableName) > 0) {
 					$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
