@@ -338,7 +338,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 
 	/**
 	 * Returns a data map for a given class name
-	 *
+	 * 
+	 * @param string $className The class name you want to fetch the Data Map for
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function getDataMap($className) {
@@ -356,7 +357,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				if (is_array($persistenceSettings['mapping']['columns'])) {
 					$columnMapping = $persistenceSettings['mapping']['columns'];
 				}
-			} else {
+			} elseif (class_exists($className)) {
 				foreach (class_parents($className) as $parentClassName) {
 					$persistenceSettings = $extbaseSettings['persistence']['classes'][$parentClassName];
 					if (is_array($persistenceSettings)) {
@@ -369,8 +370,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					}
 					break;
 				}
+			} else {
+				throw new Tx_Extbase_Persistence_Exception('Could not determine a Data Map for given class name.', 1256067130);
 			}
-			if (strlen($className) === 0) throw new Tx_Extbase_Persistence_Exception('Could not determine table name for given class.', 1256067130);
 
 			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $columnMapping);
 			$this->dataMaps[$className] = $dataMap;

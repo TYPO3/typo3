@@ -549,7 +549,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function addPageIdStatement($tableName, array &$sql) {
-		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && $this->dataMapper->getDataMap($tableName)->hasPidColumn()) {
+		$columns = $this->databaseHandle->admin_get_fields($tableName);		
+		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $columns)) {
 			$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', t3lib_div::intExplode(',', $extbaseFrameworkConfiguration['persistence']['storagePid'])) . ')';
 		}
@@ -713,7 +714,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$pageIdsToClear = array();
 		$storagePage = NULL;
 
-		if ($this->dataMapper->getDataMap($tableName)->hasPidColumn()) {
+		$columns = $this->databaseHandle->admin_get_fields($tableName);
+		if (array_key_exists('pid', $columns)) {
 			$result = $this->databaseHandle->exec_SELECTquery('pid', $tableName, 'uid='.intval($uid));
 			if ($row = $this->databaseHandle->sql_fetch_assoc($result))	{
 				$storagePage = $row['pid'];
