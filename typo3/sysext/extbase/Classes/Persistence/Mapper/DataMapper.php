@@ -278,13 +278,15 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	public function fetchRelatedObjects(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$objects = NULL;
+		$childSortByFieldName = $columnMap->getChildSortByFieldName();
+		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$query = $queryFactory->create($columnMap->getChildClassName());
 			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 			if (isset($parentKeyFieldName)) {
-				$query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()));
-				if ($columnMap->getChildSortByFieldName()) {
-					$query->setOrderings(array($columnMap->getChildSortByFieldName() =>  Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING ) );
+				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
+				if (!empty($childSortByFieldName)) {
+					$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 				}
 				$objects = $query->execute();
 			} else {
@@ -308,11 +310,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				);
 			$query = $queryFactory->create($columnMap->getChildClassName());
 			$query->setSource($source);
-			$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+			if (!empty($childSortByFieldName)) {
+				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+			}
 			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
 			// enableFields and storage page settings.
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$objects = $query->matching($query->equals($columnMap->getParentKeyFieldName(), $parentObject->getUid()))->execute();
+			$objects = $query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()))->execute();
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);
 		}
