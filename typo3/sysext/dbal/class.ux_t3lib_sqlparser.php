@@ -94,7 +94,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	function compileINSERT($components)	{
 		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
-				parent::compileINSERT($components);
+				$query = parent::compileINSERT($components);
 				break;
 			case 'adodb':
 				if(isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
@@ -357,10 +357,11 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								}
 							} elseif ($v['calc'])	{
 								$output.=trim(($v['table']?$v['table'].'.':'').$v['field']).$v['calc'].$v['calc_value'][1].$this->compileAddslashes($v['calc_value'][0]).$v['calc_value'][1];
-							} else {
+							} elseif(!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator']==='LIKE' && $functionMapping)) {
 								$output.=trim(($v['table']?$v['table'].'.':'').$v['field']);
 							}
 
+							// Set comparator:
 							if ($v['comparator'])	{
 								switch(true) {
 									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator']==='LIKE' && $functionMapping):
@@ -382,7 +383,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 										}
 										break;
 								}
-							}						}
+							}
+						}
 					}
 				}
 				break;
