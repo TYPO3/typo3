@@ -280,15 +280,12 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 		if ($columnConfiguration['type'] === 'inline') {
 			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
-			var_dump($columns);
-			var_dump($columnConfiguration['foreign_label']);
 			$columnMap->setChildClassName($this->determineChildClassName($columns[$columnConfiguration['foreign_label']]));
 			$columnMap->setChildTableName($columns[$columnConfiguration['foreign_label']]['foreign_table']);
-			$columnMap->setChildTableWhereStatement($columns[$columnConfiguration['foreign_label']]['foreign_table_where']);
 			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
 			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 			$columnMap->setChildKeyFieldName($columnConfiguration['foreign_label']);
-			$columnMap->setChildSortByFieldName($columns[$columnConfiguration['foreign_label']]['foreign_table']);
+			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		} else {
 			$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
 			$columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -301,7 +298,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$columnMap->setRelationTableInsertFields($columnConfiguration['MM_insert_fields']);
 			}
 			$columnMap->setRelationTableWhereStatement($columnConfiguration['MM_table_where']);
-			if ($columnConfiguration['MM_opposite_field']) {
+			if (!empty($columnConfiguration['MM_opposite_field'])) {
 				$columnMap->setParentKeyFieldName('uid_foreign');
 				$columnMap->setChildKeyFieldName('uid_local');
 				$columnMap->setChildSortByFieldName('sorting_foreign');
