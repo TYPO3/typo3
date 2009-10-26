@@ -28,13 +28,15 @@ class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 *
 	 * @param string $key The locallang key
 	 * @param boolean $htmlEscape TRUE if the result should be htmlescaped
+	 * @param array $arguments Arguments to be replaced in the resulting string
 	 * @return string The translated key or tag body if key doesn't exist
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function render($key, $htmlEscape = TRUE) {
-		$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
-		$value = Tx_Extbase_Utility_Localization::translate($key, $extensionName);
+	public function render($key, $htmlEscape = TRUE, array $arguments = NULL) {
+		$request = $this->controllerContext->getRequest();
+		$extensionName = $request->getControllerExtensionName();
+		$value = Tx_Extbase_Utility_Localization::translate($key, $extensionName, $arguments);
 		if ($value === NULL) {
 			$value = $this->renderChildren();
 		} elseif ($htmlEscape) {
