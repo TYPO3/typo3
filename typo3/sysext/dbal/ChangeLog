@@ -1,6 +1,7 @@
 2009-10-26  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* RFC #12354: Included t3lib_sqlengine locally
+	* Fixed bug #12349: Clean-up SQL parser and SQL engine
 
 2009-10-20  Oliver Hader  <oliver@typo3.org>
 

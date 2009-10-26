@@ -58,9 +58,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @return	string		SQL query
 	 * @see parseSQL()
 	 */
-	function compileSQL($components)	{
-
-		switch($components['type'])	{
+	public function compileSQL($components) {
+		switch($components['type']) {
 			case 'SELECT':
 				$query = $this->compileSELECT($components);
 				break;
@@ -74,7 +73,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$query = $this->compileDELETE($components);
 				break;
 			case 'EXPLAIN':
-				$query = 'EXPLAIN '.$this->compileSELECT($components);
+				$query = 'EXPLAIN ' . $this->compileSELECT($components);
 				break;
 			case 'DROPTABLE':
 				$query = $this->compileDROPTABLE($components);
@@ -91,21 +90,28 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	}
 
 
-	function compileINSERT($components)	{
-		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
+	/**
+	 * Compiles an INSERT statement from components array
+	 *
+	 * @param array Array of SQL query components
+	 * @return string SQL INSERT query
+	 * @see parseINSERT()
+	 */
+	function compileINSERT($components) {
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$query = parent::compileINSERT($components);
 				break;
 			case 'adodb':
-				if(isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
+				if (isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
 					$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']];
 					$fc = 0;
-					foreach($fields as $fn => $fd) {
+					foreach ($fields as $fn => $fd) {
 						$query[$fn] = $components['VALUES_ONLY'][$fc++][0];
 					}
 				} else {
 						// Initialize:
-					foreach($components['FIELDS'] as $fN => $fV)	{
+					foreach ($components['FIELDS'] as $fN => $fV) {
 						$query[$fN]=$fV[0];
 					}
 				}
@@ -115,10 +121,17 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		return $query;
 	}
 
-	function compileDROPTABLE($components)	{
-		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
+	/**
+	 * Compiles a DROP TABLE statement from components array
+	 *
+	 * @param array Array of SQL query components
+	 * @return string SQL DROP TABLE query
+	 * @see compileSQL()
+	 */
+	private function compileDROPTABLE($components) {
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
 			case 'native':
-				$query = 'DROP TABLE'.($components['ifExists']?' IF EXISTS':'').' '.$components['TABLE'];
+				$query = 'DROP TABLE' . ($components['ifExists'] ? ' IF EXISTS' : '') . ' ' . $components['TABLE'];
 				break;
 			case 'adodb':
 				$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
@@ -137,9 +150,9 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @return	array		array with SQL CREATE TABLE/INDEX command(s)
 	 * @see parseCREATETABLE()
 	 */
-	function compileCREATETABLE($components)	{
+	protected function compileCREATETABLE($components) {
 			// Execute query (based on handler derived from the TABLE name which we actually know for once!)
-		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]['type'])	{
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]['type']) {
 			case 'native':
 				$query[] = parent::compileCREATETABLE($components);
 				break;
@@ -148,28 +161,28 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$fieldsKeys = array();
 				$indexKeys = array();
 
-				foreach($components['FIELDS'] as $fN => $fCfg)	{
+				foreach ($components['FIELDS'] as $fN => $fCfg) {
 					$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
 					$fieldsKeys[$fN] = $GLOBALS['TYPO3_DB']->quoteName($fN, $handlerKey, TRUE) . ' ' . $this->compileFieldCfg($fCfg['definition']);
 				}
 
-				if(isset($components['KEYS']) && is_array($components['KEYS'])) {
-					foreach($components['KEYS'] as $kN => $kCfg)	{
-						if ($kN == 'PRIMARYKEY')	{
-							foreach($kCfg as $n => $field)	{
+				if (isset($components['KEYS']) && is_array($components['KEYS'])) {
+					foreach($components['KEYS'] as $kN => $kCfg) {
+						if ($kN === 'PRIMARYKEY') {
+							foreach ($kCfg as $n => $field) {
 								$fieldsKeys[$field] .= ' PRIMARY';
 							}
-						} elseif ($kN == 'UNIQUE')	{
-							foreach($kCfg as $n => $field)	{
+						} elseif ($kN === 'UNIQUE') {
+							foreach ($kCfg as $n => $field) {
 								$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($n, $components['TABLE'], $field, array('UNIQUE')));
 							}
 						} else {
-							$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'].'_'.$kN, $components['TABLE'], $kCfg));
+							$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'] . '_' . $kN, $components['TABLE'], $kCfg));
 						}
 					}
 				}
 
-					// generally create without OID on PostgreSQL
+					// Generally create without OID on PostgreSQL
 				$tableOptions = array('postgres' => 'WITHOUT OIDS');
 
 					// Fetch table/index generation query:
@@ -181,16 +194,23 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		return $query;
 	}
 
-	function compileALTERTABLE($components)	{
+	/**
+	 * Compiles an ALTER TABLE statement from components array
+	 *
+	 * @param array Array of SQL query components
+	 * @return string SQL ALTER TABLE query
+	 * @see parseALTERTABLE()
+	 */
+	protected function compileALTERTABLE($components) {
 			// Execute query (based on handler derived from the TABLE name which we actually know for once!)
-		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$query[] = parent::compileALTERTABLE($components);
 				break;
 			case 'adodb':
 				$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], NULL, TRUE);
 				$fieldName = $GLOBALS['TYPO3_DB']->quoteName($components['FIELD'], NULL, TRUE);
-				switch(strtoupper(str_replace(array(" ","\n","\r","\t"),'',$components['action'])))	{
+				switch (strtoupper(str_replace(array(' ', "\n", "\r", "\t"), '', $components['action']))) {
 					case 'ADD':
 						$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
 						break;
@@ -202,7 +222,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 						break;
 					case 'ADDKEY':
 					case 'ADDPRIMARYKEY':
-						$query.=' ('.implode(',',$components['fields']).')';
+						$query .= ' (' . implode(',', $components['fields']) . ')';
 						break;
 				}
 				break;
@@ -217,9 +237,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @param	array		Field definition parts
 	 * @return	string		Field definition string
 	 */
-	function compileFieldCfg($fieldCfg)	{
-
-		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
+	protected function compileFieldCfg($fieldCfg) {
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$cfg = parent::compileFieldCfg($fieldCfg);
 				break;
@@ -229,51 +248,51 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$cfg = $type;
 
 					// Add value, if any:
-				if (strlen($fieldCfg['value']) && (in_array($type, array('C','C2'))))	{
+				if (strlen($fieldCfg['value']) && (in_array($type, array('C', 'C2')))) {
 					$cfg .= ' '.$fieldCfg['value'];
-				} elseif (!isset($fieldCfg['value']) && (in_array($type, array('C','C2')))) {
+				} elseif (!isset($fieldCfg['value']) && (in_array($type, array('C', 'C2')))) {
 					$cfg .= ' 255'; // add 255 as length for varchar without specified length (e.g. coming from tinytext, tinyblob)
 				}
 
 					// Add additional features:
-				if (is_array($fieldCfg['featureIndex']))	{
+				if (is_array($fieldCfg['featureIndex'])) {
 
 						// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
 						// numeric fields get 0 as default, other fields an empty string
-					if(isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
-						switch($type) {
+					if (isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
+						switch ($type) {
 							case 'I8':
 							case 'F':
 							case 'N':
-								$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('0',''));
+								$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('0', ''));
 								break;
 							default:
-								$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('','\''));
+								$fieldCfg['featureIndex']['DEFAULT'] = array('keyword' => 'DEFAULT', 'value' => array('', '\''));
 						}
 					}
 
-					foreach($fieldCfg['featureIndex'] as $feature => $featureDef)	{
-						switch(true) {
+					foreach ($fieldCfg['featureIndex'] as $feature => $featureDef) {
+						switch (TRUE) {
 								// unsigned only for mysql, as it is mysql specific
-							case ($feature == 'UNSIGNED' && !$GLOBALS['TYPO3_DB']->runningADOdbDriver('mysql')) :
+							case ($feature === 'UNSIGNED' && !$GLOBALS['TYPO3_DB']->runningADOdbDriver('mysql')):
 								// auto_increment is removed, it is handled by (emulated) sequences
-							case ($feature == 'AUTO_INCREMENT') :
+							case ($feature === 'AUTO_INCREMENT'):
 								// never add NOT NULL if running on Oracle and we have an empty string as default
-							case ($feature == 'NOTNULL' && $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8')) :
+							case ($feature === 'NOTNULL' && $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8')):
 								continue;
-							case ($feature == 'NOTNULL') :
-							$cfg.=' NOTNULL';
+							case ($feature === 'NOTNULL'):
+								$cfg .= ' NOTNULL';
 								break;
-							default :
-							$cfg.=' '.$featureDef['keyword'];
+							default:
+								$cfg .= ' ' . $featureDef['keyword'];
 						}
 
 							// Add value if found:
-						if (is_array($featureDef['value']))	{
-							if($featureDef['value'][0]==='') {
+						if (is_array($featureDef['value'])) {
+							if ($featureDef['value'][0] === '') {
 								$cfg .= ' "\'\'"';
 							} else {
-								$cfg.=' '.$featureDef['value'][1].$this->compileAddslashes($featureDef['value'][0]).$featureDef['value'][1];
+								$cfg .= ' ' . $featureDef['value'][1] . $this->compileAddslashes($featureDef['value'][0]) . $featureDef['value'][1];
 							}
 						}
 					}
@@ -293,15 +312,15 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @return boolean
 	 * @see t3lib_sqlparser::parseFieldDef()
 	 */
-	function checkEmptyDefaultValue($featureIndex) {
-		if (is_array($featureIndex['DEFAULT']['value']))	{
-			if(!is_numeric($featureIndex['DEFAULT']['value'][0]) && empty($featureIndex['DEFAULT']['value'][0])) {
-				return true;
+	public function checkEmptyDefaultValue($featureIndex) {
+		if (is_array($featureIndex['DEFAULT']['value'])) {
+			if (!is_numeric($featureIndex['DEFAULT']['value'][0]) && empty($featureIndex['DEFAULT']['value'][0])) {
+				return TRUE;
 			} else {
-				return false;
+				return FALSE;
 			}
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -315,71 +334,71 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * - the division (/)
 	 * - the modulo (%)
 	 *
-	 * @param	array		WHERE clause configuration
-	 * @return	string		WHERE clause as string.
+	 * @param array WHERE clause configuration
+	 * @return string WHERE clause as string.
 	 * @see	t3lib_sqlparser::parseWhereClause()
 	 */
-	function compileWhereClause($clauseArray, $functionMapping = true)	 {
-		switch((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type'])	{
+	function compileWhereClause($clauseArray, $functionMapping = TRUE) {
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$output = parent::compileWhereClause($clauseArray);
 				break;
 			case 'adodb':
-				// Prepare buffer variable:
-				$output='';
+					// Prepare buffer variable:
+				$output = '';
 
-				// Traverse clause array:
-				if (is_array($clauseArray))	{
-					foreach($clauseArray as $k => $v)	{
+					// Traverse clause array:
+				if (is_array($clauseArray)) {
+					foreach($clauseArray as $k => $v) {
 
-						// Set operator:
-						$output.=$v['operator'] ? ' '.$v['operator'] : '';
+							// Set operator:
+						$output .= $v['operator'] ? ' ' . $v['operator'] : '';
 
-						// Look for sublevel:
-						if (is_array($v['sub']))	{
-							$output.=' ('.trim($this->compileWhereClause($v['sub'], $functionMapping)).')';
+							// Look for sublevel:
+						if (is_array($v['sub'])) {
+							$output .= ' (' . trim($this->compileWhereClause($v['sub'], $functionMapping)) . ')';
 						} else {
 
-							// Set field/table with modifying prefix if any:
-							$output.=' '.trim($v['modifier']).' ';
+								// Set field/table with modifying prefix if any:
+							$output .= ' ' . trim($v['modifier']) . ' ';
 
-							// DBAL-specific: Set calculation, if any:
+								// DBAL-specific: Set calculation, if any:
 							if ($v['calc'] === '&' && $functionMapping) {
-								switch(true) {
+								switch(TRUE) {
 									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
 											// Oracle only knows BITAND(x,y) - sigh
-										$output.='BITAND('.trim(($v['table']?$v['table'].'.':'').$v['field']).','.$v['calc_value'][1].$this->compileAddslashes($v['calc_value'][0]).$v['calc_value'][1].')';
+										$output .= 'BITAND(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ',' . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1] . ')';
 										break;
 									default:
 											// MySQL, MS SQL Server, PostgreSQL support the &-syntax
-										$output.=trim(($v['table']?$v['table'].'.':'').$v['field']).$v['calc'].$v['calc_value'][1].$this->compileAddslashes($v['calc_value'][0]).$v['calc_value'][1];
+										$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 										break;
 								}
-							} elseif ($v['calc'])	{
-								$output.=trim(($v['table']?$v['table'].'.':'').$v['field']).$v['calc'].$v['calc_value'][1].$this->compileAddslashes($v['calc_value'][0]).$v['calc_value'][1];
-							} elseif(!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator']==='LIKE' && $functionMapping)) {
-								$output.=trim(($v['table']?$v['table'].'.':'').$v['field']);
+							} elseif ($v['calc']) {
+-								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+							} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping)) {
+								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 							}
 
-							// Set comparator:
-							if ($v['comparator'])	{
-								switch(true) {
-									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator']==='LIKE' && $functionMapping):
-											// Oracle cannot handle LIKE on CLOB fields - sigh
-											$output .= '(dbms_lob.instr('.trim(($v['table']?$v['table'].'.':'').$v['field']).', '.$v['value'][1].$this->compileAddslashes(trim($v['value'][0], '%')).$v['value'][1].',1,1) > 0)';
+								// Set comparator:
+							if ($v['comparator']) {
+								switch (TRUE) {
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping):
+												// Oracle cannot handle LIKE on CLOB fields - sigh
+											$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1] . ',1,1) > 0)';
 										break;
 									default:
-										$output.=' '.$v['comparator'];
+										$output .= ' ' . $v['comparator'];
 
-										// Detecting value type; list or plain:
-										if (t3lib_div::inList('NOTIN,IN',strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$v['comparator']))))	{
+											// Detecting value type; list or plain:
+										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
 											$valueBuffer = array();
-											foreach($v['value'] as $realValue)	{
-												$valueBuffer[]=$realValue[1].$this->compileAddslashes($realValue[0]).$realValue[1];
+											foreach ($v['value'] as $realValue) {
+												$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
 											}
-											$output.=' ('.trim(implode(',',$valueBuffer)).')';
+											$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 										} else {
-											$output.=' '.$v['value'][1].$this->compileAddslashes($v['value'][0]).$v['value'][1];
+											$output .= ' ' . $v['value'][1] . $this->compileAddslashes($v['value'][0]) . $v['value'][1];
 										}
 										break;
 								}
@@ -395,7 +414,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 }
 
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.ux_t3lib_sqlparser.php'])	{
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.ux_t3lib_sqlparser.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.ux_t3lib_sqlparser.php']);
 }
 
