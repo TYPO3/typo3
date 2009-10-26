@@ -69,45 +69,60 @@ class Tx_Extbase_Utility_Localization {
 	 * Returns the localized label of the LOCAL_LANG key, $key.
 	 *
 	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
+	 * @param string $extensionName The name of the extension
+	 * @param array $arguments the arguments of the extension, being passed over to vsprintf
 	 * @return string The value from LOCAL_LANG or NULL if no translation was found.
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
 	 * @api
+	 * @todo: If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
 	 */
-	public function translate($key, $extensionName) {
+	public function translate($key, $extensionName, $arguments = NULL) {
 		if (t3lib_div::isFirstPartOfStr($key, 'LLL:')) {
-			if (is_object($GLOBALS['LANG'])) {
-				return $GLOBALS['LANG']->sL($key);
-			} else {
-				return $GLOBALS['TSFE']->sL($key);
+			$value = self::translateFileReference($key);
+		} else {
+			self::initializeLocalization($extensionName);
+
+			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
+			if (isset(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key])) {
+				$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key];
+				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
+					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key]);
+				}
+			} elseif (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key])) {
+				$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key];
+				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key])) {
+					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key]);
+				}
+			} elseif (isset(self::$LOCAL_LANG[$extensionName]['default'][$key])) {
+				$value = self::$LOCAL_LANG[$extensionName]['default'][$key]; // No charset conversion because default is english and thereby ASCII
 			}
 		}
-
-		self::initializeLocalization($extensionName);
-
-		// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-		if (isset(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key])) {
-			$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key];
-			if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
-				$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key]);
-			}
+		if (is_array($arguments)) {
+			return vsprintf($value, $arguments);
+		} else {
 			return $value;
 		}
-
-		if (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key])) {
-			$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key];
-			if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key])) {
-				$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key]);
-			}
-		}
-
-		if (isset(self::$LOCAL_LANG[$extensionName]['default'][$key])) {
-			return self::$LOCAL_LANG[$extensionName]['default'][$key]; // No charset conversion because default is english and thereby ASCII
-		}
-
-		return NULL;
 	}
+
+	/**
+	 * Returns the localized label of the LOCAL_LANG key, $key.
+	 *
+	 * @param string $key The language key including the path to a custom locallang file ("LLL:path:key").
+	 * @return string The value from LOCAL_LANG or NULL if no translation was found.
+	 * @see language::sL()
+	 * @see tslib_fe::sL()
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function translateFileReference($key) {
+		if (is_object($GLOBALS['LANG'])) {
+			$value = $GLOBALS['LANG']->sL($key);
+			return $value !== '' ? $value : NULL;
+ 		}
+		return $GLOBALS['TSFE']->sL($key);
+ 	}
+
 
 	/**
 	 * Loads local-language values by looking for a "locallang.php" (or "locallang.xml") file in the plugin resources directory and if found includes it.
