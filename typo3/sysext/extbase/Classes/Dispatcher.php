@@ -79,6 +79,8 @@ class Tx_Extbase_Dispatcher {
 	public function __construct() {
 		t3lib_cache::initializeCachingFramework();
 		$this->initializeClassLoader();
+		$this->initializeCache();
+		$this->initializeReflection();
 	}
 
 	/**
@@ -104,9 +106,6 @@ class Tx_Extbase_Dispatcher {
 		$request = $requestBuilder->initialize($configuration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
-
-		$this->initializeCache();
-		$this->initializeReflection();
 
 		// Request hash service
 		$requestHashService = t3lib_div::makeInstance('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
@@ -178,7 +177,7 @@ class Tx_Extbase_Dispatcher {
 	 *
 	 * @return void
 	 */
-	public function initializeCache() {
+	protected function initializeCache() {
 		$this->cacheManager = $GLOBALS['typo3CacheManager'];
 		try {
 			$this->cacheManager->getCache('cache_extbase_reflection');
@@ -196,12 +195,13 @@ class Tx_Extbase_Dispatcher {
 	 * Initializes the Reflection Service
 	 *
 	 * @return void
-	 * @see initialize()
 	 */
-	public function initializeReflection() {
+	protected function initializeReflection() {
 		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		self::$reflectionService->setCache($this->cacheManager->getCache('cache_extbase_reflection'));
-		self::$reflectionService->initialize($availableClassNames);
+		if (!self::$reflectionService->isInitialized()) {
+			self::$reflectionService->initialize();
+		}
 	}
 
 	/**
