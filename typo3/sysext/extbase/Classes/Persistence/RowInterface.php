@@ -32,7 +32,7 @@
  * @subpackage Persistence
  * @version $Id: RowInterface.php 1811 2009-01-28 12:04:49Z robert $
  */
-interface Tx_Extbase_Persistence_RowInterface extends ArrayAccess {
+interface Tx_Extbase_Persistence_RowInterface {
 
 	/**
 	 * @return boolean TRUE if the columnName is set

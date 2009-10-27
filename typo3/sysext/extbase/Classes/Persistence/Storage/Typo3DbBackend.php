@@ -172,7 +172,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
 		$statement = $this->parseQuery($query);
-//		debug($statement, -2); // FIXME remove debug code
+		// debug($statement, -2); // FIXME remove debug code
 		$result = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		if ($result) {
@@ -235,9 +235,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$statement .= ' LIMIT ' . $sql['limit'];
 			}
 		}
-
 		$this->replacePlaceholders($statement, $parameters);
-		// debug($statement,-2);
 		return $statement;
 	}
 

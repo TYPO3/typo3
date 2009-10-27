@@ -138,8 +138,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return object
 	 */
 	protected function mapSingleRow($className, Tx_Extbase_Persistence_RowInterface $row) {
-		if ($this->identityMap->hasIdentifier($row['uid'], $className)) {
-			$object = $this->identityMap->getObjectByIdentifier($row['uid'], $className);
+		if ($this->identityMap->hasIdentifier($row->getValue('uid'), $className)) {
+			$object = $this->identityMap->getObjectByIdentifier($row->getValue('uid'), $className);
 		} else {
 			$object = $this->createEmptyObject($className);
 			$this->thawProperties($object, $row);
@@ -175,7 +175,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$className = get_class($object);
 		$dataMap = $this->getDataMap($className);
 		$properties = $object->_getProperties();
-		$object->_setProperty('uid', $row['uid']);
+		$object->_setProperty('uid', $row->getValue('uid'));
 		foreach ($properties as $propertyName => $propertyValue) {
 			if (!$dataMap->isPersistableProperty($propertyName)) continue;
 			$columnMap = $dataMap->getColumnMap($propertyName);
@@ -188,13 +188,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				case Tx_Extbase_Persistence_PropertyType::LONG;
 				case Tx_Extbase_Persistence_PropertyType::DOUBLE;
 				case Tx_Extbase_Persistence_PropertyType::BOOLEAN;
-				if (isset($row[$columnName])) {
-					$rawPropertyValue = $row[$columnName];
+				if ($row->hasValue($columnName)) {
+					$rawPropertyValue = $row->getValue($columnName);
 					$propertyValue = $dataMap->convertFieldValueToPropertyValue($propertyType, $rawPropertyValue);
 				}
 				break;
 				case (Tx_Extbase_Persistence_PropertyType::REFERENCE):
-					if (!is_null($row[$columnName])) {
+					if (!is_null($row->getValue($columnName))) {
 						$propertyValue = $this->mapRelatedObjects($object, $propertyName, $row, $columnMap);
 					} else {
 						$propertyValue = NULL;
@@ -203,8 +203,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					// FIXME we have an object to handle... -> exception
 				default:
 					// SK: We should throw an exception as this point as there was an undefined propertyType we can not handle.
-					if (isset($row[$columnName])) {
-						$property = $row[$columnName];
+					if ($row->hasValue($columnName)) {
+						$property = $row->getValue($columnName);
 						if (is_object($property)) {
 							$propertyValue = $this->mapObject($property);
 							// SK: THIS case can not happen I think. At least $this->mapObject() is not available.
@@ -234,7 +234,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$columnMap = $dataMap->getColumnMap($propertyName);
 		$targetClassSchema = $this->reflectionService->getClassSchema(get_class($parentObject));
 		$propertyMetaData = $targetClassSchema->getProperty($propertyName);
-		$fieldValue = $row[$columnMap->getColumnName()];
+		$fieldValue = $row->getValue($columnMap->getColumnName());
 		if ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_LAZY_PROXY) {
 			$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyLoadingProxy', $parentObject, $propertyName, $fieldValue, $columnMap);
 		} else {

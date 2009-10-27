@@ -63,7 +63,7 @@ class Tx_Extbase_Persistence_Row implements Tx_Extbase_Persistence_RowInterface 
 	 * @return array a Value array.
 	 */
 	public function getValues() {
-		return $this->tuple;
+		return array_values($this->tuple);
 	}
 
 	/**
