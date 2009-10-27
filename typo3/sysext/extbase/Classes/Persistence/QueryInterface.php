@@ -50,6 +50,14 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	public function execute();
 
 	/**
+	 * Executes the query against the database and returns the number of matching objects
+	 *
+	 * @return integer The number of matching objects
+	 * @api
+	 */
+	public function count();
+
+	/**
 	 * Sets the property names to order the result by. Expected like this:
 	 * array(
 	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
