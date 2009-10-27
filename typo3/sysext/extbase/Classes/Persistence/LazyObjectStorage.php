@@ -115,7 +115,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		if ($this->columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$parentKeyFieldName = $this->columnMap->getParentKeyFieldName();
 			if (!empty($parentKeyFieldName)) {
-				$numberOfElements = $this->fieldValue;
+				$numberOfElements = $this->fieldValue; // The field value in TYPO3 normally contains the number of related elements
 			} else {
 				$this->initializeStorage();
 				$numberOfElements = count($this->storage);

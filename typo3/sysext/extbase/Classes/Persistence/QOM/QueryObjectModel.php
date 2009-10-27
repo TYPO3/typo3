@@ -296,6 +296,15 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	}
 
 	/**
+	 * Executes this query and returns the number of tuples matching the query.
+	 *
+	 * @return int The number of tuples matching the query
+	 */
+	public function count() {
+		return $this->storageBackend->countRows($this);
+	}
+
+	/**
 	 * Returns the statement defined for this query.
 	 * If the language of this query is string-based (like JCR-SQL2), this method
 	 * will return the statement that was used to create this query.
@@ -309,7 +318,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 * @return string the query statement.
 	 */
 	public function getStatement() {
-		$this->storageBackend->parseQuery($this);
+		$this->storageBackend->getStatement($this);
 	}
 
 }

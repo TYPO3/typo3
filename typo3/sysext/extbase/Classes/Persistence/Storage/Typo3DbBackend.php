@@ -171,71 +171,103 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return array The matching tuples
 	 */
 	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
-		$statement = $this->parseQuery($query);
-		// debug($statement, -2); // FIXME remove debug code
-		$result = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
-		if ($result) {
-			$tuples = $this->getRowsFromResult($query->getSource(), $result);
-		}
-
-		return $tuples;
-	}
-
-	/**
-	 * Returns an array with tuples matching the query.
-	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
-	 * @return array The matching tuples
-	 */
-	public function parseQuery(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
-		$statement = '';
-		$parameters = array();
 		$constraint = $query->getConstraint();
 		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
 			if ($constraint->getLanguage() === Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
 				$statement = $constraint->getStatement();
-				$parameters= $query->getBoundVariableValues();
+				$parameters = $query->getBoundVariableValues();
 			} else {
 				throw new Tx_Extbase_Persistence_Exception('Unsupported query language.', 1248701951);
 			}
 		} else {
-			$sql = array();
-			$sql['tables'] = array();
-			$sql['fields'] = array();
-			$sql['where'] = array();
-			$sql['additionalWhereClause'] = array();
-			$sql['orderings'] = array();
-			$sql['limit'] = array();
-			$tuples = array();
-
-			$source = $query->getSource();
-			$this->parseSource($query, $source, $sql, $parameters);
-
-			$statement = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
-
-			$this->parseConstraint($constraint, $source, $sql, $parameters, $query->getBoundVariableValues());
-
-			if (!empty($sql['where'])) {
-				$statement .= ' WHERE ' . implode('', $sql['where']);
-				if (!empty($sql['additionalWhereClause'])) {
-					$statement .= ' AND ' . implode(' AND ', $sql['additionalWhereClause']);
-				}
-			} elseif (!empty($sql['additionalWhereClause'])) {
-				$statement .= ' WHERE ' . implode(' AND ', $sql['additionalWhereClause']);
-			}
-
-			$this->parseOrderings($query->getOrderings(), $source, $sql);
-			if (!empty($sql['orderings'])) {
-				$statement .= ' ORDER BY ' . implode(', ', $sql['orderings']);
-			}
-
-			$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
-			if (!empty($sql['limit'])) {
-				$statement .= ' LIMIT ' . $sql['limit'];
-			}
+			$parameters = array();
+			$statement = $this->getStatement($query, $parameters);
 		}
 		$this->replacePlaceholders($statement, $parameters);
+		$result = $this->databaseHandle->sql_query($statement);
+		$this->checkSqlErrors();
+		return $this->getRowsFromResult($query->getSource(), $result);
+	}
+
+	/**
+	 * Returns the number of tuples matching the query.
+	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
+	 * @return int The number of matching tuples
+	 */
+	public function countRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
+		$constraint = $query->getConstraint();
+		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) throw new Tx_Extbase_Persistence_Storage_Exception_BadConstraint('Could not execute count on queries with aconstraint of type Tx_Extbase_Persistence_QOM_StatementInterface', 1256661045);
+		$parameters = array();
+		$statementParts = $this->parseQuery($query, $parameters);
+		$statementParts['fields'] = array('COUNT(*)');
+		$statement = $this->buildStatement($statementParts, $parameters);
+		$this->replacePlaceholders($statement, $parameters);
+		$result = $this->databaseHandle->sql_query($statement);
+		$this->checkSqlErrors();
+		$tuples = $this->getRowsFromResult($query->getSource(), $result);
+		return current(current($tuples));
+	}
+	
+	/**
+	 * Returns the statement, ready to be executed.
+	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
+	 * @return string The SQL statement
+	 */
+	public function getStatement(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, array &$parameters) {
+		$statementParts = $this->parseQuery($query, $parameters);
+		$statement = $this->buildStatement($statementParts);
+		return $statement;
+	}
+	
+	/**
+	 * Parses the query and returns the SQL statement parts.
+	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
+	 * @return array The SQL statement parts
+	 */
+	public function parseQuery(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, array &$parameters) {
+		$sql = array();
+		$sql['tables'] = array();
+		$sql['fields'] = array();
+		$sql['where'] = array();
+		$sql['additionalWhereClause'] = array();
+		$sql['orderings'] = array();
+		$sql['limit'] = array();
+
+		$source = $query->getSource();
+		
+		$this->parseSource($query, $source, $sql, $parameters);
+		$this->parseConstraint($query->getConstraint(), $source, $sql, $parameters, $query->getBoundVariableValues());
+		$this->parseOrderings($query->getOrderings(), $source, $sql);
+		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
+
+		return $sql;
+	}
+
+	/**
+	 * Returns the statement, ready to be executed.
+	 *
+	 * @param array $sql The SQL statement parts
+	 * @return string The SQL statement
+	 */
+	public function buildStatement(array $sql) {
+		$statement = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
+		if (!empty($sql['where'])) {
+			$statement .= ' WHERE ' . implode('', $sql['where']);
+			if (!empty($sql['additionalWhereClause'])) {
+				$statement .= ' AND ' . implode(' AND ', $sql['additionalWhereClause']);
+			}
+		} elseif (!empty($sql['additionalWhereClause'])) {
+			$statement .= ' WHERE ' . implode(' AND ', $sql['additionalWhereClause']);
+		}
+		if (!empty($sql['orderings'])) {
+			$statement .= ' ORDER BY ' . implode(', ', $sql['orderings']);
+		}
+		if (!empty($sql['limit'])) {
+			$statement .= ' LIMIT ' . $sql['limit'];
+		}
 		return $statement;
 	}
 
@@ -613,12 +645,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * workspace overlay before.
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
-	 * @param resource &$sql The resource
+	 * @param resource $result The result
 	 * @return array The result as an array of rows (tuples)
 	 */
-	protected function getRowsFromResult(Tx_Extbase_Persistence_QOM_SourceInterface $source, $res) {
+	protected function getRowsFromResult(Tx_Extbase_Persistence_QOM_SourceInterface $source, $result) {
 		$rows = array();
-		while ($row = $this->databaseHandle->sql_fetch_assoc($res)) {
+		while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
 			if	($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 				// FIXME The overlay is only performed if we query a single table; no joins
 				$row = $this->doLanguageAndWorkspaceOverlay($source->getSelectorName(), $row);

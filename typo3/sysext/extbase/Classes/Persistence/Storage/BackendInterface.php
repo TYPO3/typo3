@@ -72,5 +72,13 @@ interface Tx_Extbase_Persistence_Storage_BackendInterface {
 	 */
 	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query);
 
+	/**
+	 * Returns the number of tuples matching the query.
+	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
+	 * @return int The number of matching tuples
+	 */
+	public function countRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query);
+
 }
 ?>

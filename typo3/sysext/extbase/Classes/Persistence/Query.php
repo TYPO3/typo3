@@ -181,6 +181,26 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function execute() {
+		$result = $this->getPreparedQueryObjectModel()->execute();
+		return $this->dataMapper->map($this->className, $result->getRows());
+	}
+	
+	/**
+	 * Executes the query against the database and returns the number of matching objects
+	 *
+	 * @return integer The number of matching objects
+	 * @api
+	 */
+	public function count() {
+		return $this->getPreparedQueryObjectModel()->count();
+	}
+	
+	/**
+	 * Prepares and returns a Query Object Model
+	 *
+	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelInterface The prepared query object
+	 */
+	protected function getPreparedQueryObjectModel() {
 		if ($this->source === NULL) {
 			$this->source = $this->QOMFactory->selector($this->className, $this->dataMapper->convertClassNameToTableName($this->className));
 		}
@@ -212,10 +232,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$query->bindValue($name, $this->valueFactory->createValue($value));
 		}
 		$query->setQuerySettings($this->getQuerySettings());
-
-		$result = $query->execute();
-
-		return $this->dataMapper->map($this->className, $result->getRows());
+		return $query;
 	}
 
 	/**
