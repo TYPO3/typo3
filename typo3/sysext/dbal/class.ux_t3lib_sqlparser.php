@@ -375,7 +375,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 										break;
 								}
 							} elseif ($v['calc']) {
--								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 							} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping)) {
 								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 							}
