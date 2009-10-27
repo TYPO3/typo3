@@ -399,13 +399,13 @@ class ux_t3lib_DB extends t3lib_DB {
 				if (isset($this->cache_autoIncFields[$table])) {
 					if (isset($fields_values[$this->cache_autoIncFields[$table]])) {
 						$new_id = $fields_values[$this->cache_autoIncFields[$table]];
-						if ($table !== 'tx_dbal_debuglog') {
+						if ($table != 'tx_dbal_debuglog') {
 							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
 						}
 					} else {
 						$new_id = $this->handlerInstance[$this->lastHandlerKey]->GenID($table.'_'.$this->cache_autoIncFields[$table], $this->handlerInstance[$this->lastHandlerKey]->sequenceStart);
 						$fields_values[$this->cache_autoIncFields[$table]] = $new_id;
-						if ($table !== 'tx_dbal_debuglog') {
+						if ($table != 'tx_dbal_debuglog') {
 							$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
 						}
 					}
@@ -677,7 +677,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$this->resourceIdToTableNameMap[(string)$sqlResult] = $ORIG_tableName;
 				break;
 			case 'adodb':
-				if ($limit !== '') {
+				if ($limit != '') {
 					$splitLimit = t3lib_div::intExplode(',', $limit);		// Splitting the limit values:
 					if ($splitLimit[1]) {	// If there are two parameters, do mapping differently than otherwise:
 						$numrows = $splitLimit[1];
@@ -756,17 +756,17 @@ class ux_t3lib_DB extends t3lib_DB {
 			$blobfields = array();
 			$nArr = array();
 			foreach ($fields_values as $k => $v) {
-				if (!$this->runningNative() && $this->sql_field_metatype($table, $k) === 'B') {
+				if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
 						// we skip the field in the regular INSERT statement, it is only in blobfields
 					$blobfields[$this->quoteFieldNames($k)] = $v;
-				} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) === 'XL') {
+				} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'XL') {
 						// we skip the field in the regular INSERT statement, it is only in clobfields
 					$clobfields[$this->quoteFieldNames($k)] = $v;
 				} else {
 						// Add slashes old-school:
 						// cast numerical values
 					$mt = $this->sql_field_metatype($table, $k);
-					$v = (($mt{0} === 'I') || ($mt{0} === 'F')) ? (int)$v : $v;
+					$v = (($mt{0} == 'I') || ($mt{0} == 'F')) ? (int)$v : $v;
 
 					$nArr[$this->quoteFieldNames($k)] = (!in_array($k,$no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v;
 				}
@@ -827,17 +827,17 @@ class ux_t3lib_DB extends t3lib_DB {
 				$blobfields = array();
 				$nArr = array();
 				foreach ($fields_values as $k => $v) {
-					if (!$this->runningNative() && $this->sql_field_metatype($table, $k) === 'B') {
+					if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
 							// we skip the field in the regular UPDATE statement, it is only in blobfields
 						$blobfields[$this->quoteFieldNames($k)] = $v;
-					} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) === 'XL') {
+					} elseif (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'XL') {
 								// we skip the field in the regular UPDATE statement, it is only in clobfields
 							$clobfields[$this->quoteFieldNames($k)] = $v;
 					} else {
 							// Add slashes old-school:
 							// cast numeric values
 						$mt = $this->sql_field_metatype($table, $k);
-						$v = (($mt{0} === 'I') || ($mt{0} === 'F')) ? (int)$v : $v;
+						$v = (($mt{0} == 'I') || ($mt{0} == 'F')) ? (int)$v : $v;
 						$nArr[] = $this->quoteFieldNames($k) . '=' . ((!in_array($k, $no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v);
 					}
 				}
@@ -949,21 +949,21 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Quoted list of fields to be in query to DB
 	 */
 	public function quoteFieldNames($select_fields) {
-		if ($select_fields === '') return '';
+		if ($select_fields == '') return '';
 		if ($this->runningNative()) return $select_fields;
 
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
 		foreach ($select_fields as $k => $v) {
-			if ($select_fields[$k]['field'] !== '' && $select_fields[$k]['field'] !== '*') {
+			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*') {
 				$select_fields[$k]['field'] = $this->quoteName($select_fields[$k]['field']);
 			}
-			if ($select_fields[$k]['table'] !== '') {
+			if ($select_fields[$k]['table'] != '') {
 				$select_fields[$k]['table'] = $this->quoteName($select_fields[$k]['table']);
 			}
-			if ($select_fields[$k]['as'] !== '') {
+			if ($select_fields[$k]['as'] != '') {
 				$select_fields[$k]['as'] = $this->quoteName($select_fields[$k]['as']);
 			}
-			if (isset($select_fields[$k]['func_content.']) && $select_fields[$k]['func_content.'][0]['func_content'] !== '*'){
+			if (isset($select_fields[$k]['func_content.']) && $select_fields[$k]['func_content.'][0]['func_content'] != '*'){
 				$select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content.'][0]['func_content']);
 				$select_fields[$k]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content']);
 			}
@@ -979,13 +979,13 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Quoted list of tables to be selected from DB
 	 */
 	public function quoteFromTables($from_table) {
-		if ($from_table === '') return '';
+		if ($from_table == '') return '';
 		if ($this->runningNative()) return $from_table;
 
 		$from_table = $this->SQLparser->parseFromTables($from_table);
 		foreach ($from_table as $k => $v) {
 			$from_table[$k]['table'] = $this->quoteName($from_table[$k]['table']);
-			if ($from_table[$k]['as'] !== '') {
+			if ($from_table[$k]['as'] != '') {
 				$from_table[$k]['as'] = $this->quoteName($from_table[$k]['as']);
 			}
 			if (is_array($v['JOIN'])) {
@@ -1033,7 +1033,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			if (is_array($where_clause[$k]['sub'])) {
 				$where_clause[$k]['sub'] = $this->_quoteWhereClause($where_clause[$k]['sub']);
 			} else {
-				if ($where_clause[$k]['table'] !== '') {
+				if ($where_clause[$k]['table'] != '') {
 					$where_clause[$k]['table'] = $this->quoteName($where_clause[$k]['table']);
 				}
 				if (!is_numeric($where_clause[$k]['field'])) {
@@ -1064,7 +1064,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$groupBy = $this->SQLparser->parseFieldList($groupBy);
 		foreach ($groupBy as $k => $v) {
 			$groupBy[$k]['field'] = $this->quoteName($groupBy[$k]['field']);
-			if ($groupBy[$k]['table'] !== '') {
+			if ($groupBy[$k]['table'] != '') {
 				$groupBy[$k]['table'] = $this->quoteName($groupBy[$k]['table']);
 			}
 		}
