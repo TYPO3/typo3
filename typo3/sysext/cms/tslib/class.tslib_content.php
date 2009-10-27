@@ -2664,14 +2664,15 @@ class tslib_cObj {
 			$url = $this->stdWrap($conf['file'], $conf['file.']);
 		}
 
+		$url = rawurldecode($url);
+
 		$mode = is_file(PATH_site . $url) ? 'file' : 'url';
 		if ($mode === 'file') {
 			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
 			$fileinfo = t3lib_div::split_fileref($filename);
-			$conf['file'] = $url;
+			$conf['file'] = rawurlencode($filename);
 		} else {
-			$conf['file'] = $url;
-
+			$conf['file'] = rawurlencode($url);
 		}
 
 		$renderType = $conf['renderType'];
@@ -2691,7 +2692,8 @@ class tslib_cObj {
 		}
 
 		$conf['type'] = isset($conf['parameter.']['mmType']) ? $conf['parameter.']['mmType'] : $conf['type'];
-		$typeConf = $conf['mimeConf.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$conf['type'] . '.'] : array();
+		$mime = $renderType . 'object';
+		$typeConf = $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] ? $conf['mimeConf.'][$mime . '.'][$conf['type'] . '.'] : array();
 		$conf['predefined'] = array();
 
 		$width = intval($conf['parameter.']['mmWidth']);
@@ -2752,8 +2754,11 @@ class tslib_cObj {
 		}
 
 			// render MEDIA
-		if ($mode == 'url' && $url != '' || !$forcePlayer) {
+		if ($mode == 'url' && !$forcePlayer) {
 				// url is called direct, not with player
+			if ($url == '' && !$conf['allowEmptyUrl']) {
+				return '<p style="background-color: yellow;">' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xml:media.noFile', true) . '</p>';
+			}
 			$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
 			if ($mode == 'url') {
 			$conf[$conf['type'] . '.']['player'] = strpos($url, '://') === false ? 'http://' . $url : $url;
@@ -2763,55 +2768,42 @@ class tslib_cObj {
 			$conf['file'] = '';
 			$conf['installUrl'] = 'null';
 			$conf['flashvars'] = array_merge((array) $conf['flashvars'], $conf['predefined']);
-			if ($renderType == 'qt') {
-				$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
-				unset($conf['mimeConf.']);
-				$content = $this->QTOBJECT($conf);
-			} else {
+		}
+
+		switch ($renderType) {
+			case 'swf':
+				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
 				$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
 				unset($conf['mimeConf.']);
-			$content = $this->SWFOBJECT($conf);
-			}
-
-		} else {
-			if ($mode == 'url' && $url == '' && !$conf['allowEmptyUrl']) {
-				return '<p style="background-color: yellow;">' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xml:media.noFile', true) . '</p>';
-			}
-
-			switch ($renderType) {
-				case 'swf':
-					$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
-					$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
-					unset($conf['mimeConf.']);
-					$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
-					$content = $this->SWFOBJECT($conf);
-				break;
-				case 'qt':
-					$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
-					$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
-					unset($conf['mimeConf.']);
-					$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
-					$content = $this->QTOBJECT($conf);
-				break;
-				case 'media':
-					$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
-					$conf['params']= '';
-					foreach ($paramsArray as $key => $value) {
-						$conf['params'] .= $key . '=' . $value . chr(10);
-					}
-					$content = $this->MULTIMEDIA($conf);
-				break;
-				default:
-					if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {
-						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
-							$hookObj = t3lib_div::getUserObj($classRef);
-							$conf['file'] = $url;
-							$conf['mode'] = $mode;
-							$content = $hookObj->customMediaRender($renderType, $conf, $this);
-						}
+				$conf['flashvars.'] = array_merge((array) $conf['flashvars.'], $conf['predefined']);
+				$content = $this->SWFOBJECT($conf);
+			break;
+			case 'qt':
+				$conf[$conf['type'] . '.'] = array_merge($conf['mimeConf.']['swfobject.'][$conf['type'] . '.'], $typeConf);
+				$conf = array_merge($conf['mimeConf.']['qtobject.'], $conf);
+				unset($conf['mimeConf.']);
+				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
+				$content = $this->QTOBJECT($conf);
+			break;
+			case 'media':
+				$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
+				$conf['params']= '';
+				foreach ($paramsArray as $key => $value) {
+					$conf['params'] .= $key . '=' . $value . chr(10);
+				}
+				$content = $this->MULTIMEDIA($conf);
+			break;
+			default:
+				if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'])) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRender'] as $classRef) {
+						$hookObj = t3lib_div::getUserObj($classRef);
+						$conf['file'] = $url;
+						$conf['mode'] = $mode;
+						$content = $hookObj->customMediaRender($renderType, $conf, $this);
 					}
 				}
 		}
+
 		return $content;
 	}
 
