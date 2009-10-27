@@ -1,3 +1,7 @@
+2009-10-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Cleanup: #12351: Clean-up SQL parser (thanks to Xavier Perseguers)
+
 2009-10-27  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12327: IRRE - DOM object identifiers use invalid characters
