@@ -31,6 +31,7 @@
  * $Id$
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @deprecated since TYPO3 4.3, this class will be removed in TYPO3 4.5, it has been integrated to extension DBAL.
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]

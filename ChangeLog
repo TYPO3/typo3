@@ -1,5 +1,6 @@
 2009-10-27  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12354: Remove t3lib_sqlengine from Core and move it to DBAL (thanks to Xavier Perseguers)
 	* Cleanup: #12351: Clean-up SQL parser (thanks to Xavier Perseguers)
 
 2009-10-27  Oliver Hader  <oliver@typo3.org>
