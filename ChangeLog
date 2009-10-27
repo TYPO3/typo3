@@ -1,3 +1,7 @@
+2009-10-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12252: htmlArea RTE: errors are raised when extension rtehtmlarea_definitionlist is installed with TYPO3 4.3
+
 2009-10-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Updated wpplayer to version 2.0beta6
