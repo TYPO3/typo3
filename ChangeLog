@@ -1,5 +1,6 @@
 2009-10-27  Steffen Kamper  <info@sk-typo3.de>
 
+	* Updated wpplayer to version 2.0beta6
 	* Fixed bug #12336: Little Flaws with MediaCE
 	* Follow-up to #12358: FE-user last-login field uses "date" instead of "datetime" (thanks to Christian Kuhn)
 	* Fixed bug #12358: BE-user last-login field uses "date" instead of "datetime" (thanks to Steffen Gebert)
