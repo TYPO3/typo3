@@ -1,3 +1,7 @@
+2009-10-27  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #12356: Remove exclude=1 from lastlogin field of be_user TCA
+
 2009-10-27  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12251: Scheduler: Don't show rights check on Windows

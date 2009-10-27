@@ -389,7 +389,6 @@ $TCA['be_users'] = array(
 			)
 		),
 		'lastlogin' => array(
-			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.lastlogin',
 			'config' => array(
 				'type' => 'input',
