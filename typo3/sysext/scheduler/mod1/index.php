@@ -339,6 +339,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * @return	string	further information
 	 */
 	protected function displayCheckScreen() {
+		$message = '';
+		$severity = t3lib_FlashMessage::OK;
+
 			// First, check if cli_sceduler user creation was requested
 		if ($this->CMD == 'user') {
 			$this->createSchedulerUser();
@@ -361,15 +364,13 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$message = $GLOBALS['LANG']->getLL('msg.incompleteLastRun');
 				$severity = t3lib_FlashMessage::WARNING;
 			} else {
-				$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 				$startDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $lastRun['start']);
 				$startTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $lastRun['start']);
 				$endDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $lastRun['end']);
 				$endTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $lastRun['end']);
+				$label = 'automatically';
 				if ($lastRun['type'] == 'manual') {
 					$label = 'manually';
-				} else {
-					$label = 'automatically';
 				}
 				$type = $GLOBALS['LANG']->getLL('label.' . $label);
 				$message = sprintf($GLOBALS['LANG']->getLL('msg.lastRun'), $type, $startDate, $startTime, $endDate, $endTime);
@@ -412,13 +413,21 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		);
 		$content .= $flashMessage->render() . '</div>';
 
-			// Check CLI script
+			// Check if CLI script is executable or not
 		$script = PATH_typo3 . 'cli_dispatch.phpsh';
+		$isExecutable = FALSE;
+			// Skip this check if running Windows, as rights do not work the same way on this platform
+			// (i.e. the script will always appear as *not* executable)
+		if (TYPO3_OS === 'WIN') {
+			$isExecutable = TRUE;
+		} else {
+			$isExecutable = is_executable($script);
+		}
 		$content .= '<div class="info-block">';
 		$content .= '<h3>' . $GLOBALS['LANG']->getLL('hdg.cliScript') . '</h3>';
 		$content .= '<p>' . sprintf($GLOBALS['LANG']->getLL('msg.cliScript'), $script) . '</p>';
 
-		if (is_executable($script)) {
+		if ($isExecutable) {
 			$message = $GLOBALS['LANG']->getLL('msg.cliScriptExecutable');
 			$severity = t3lib_FlashMessage::OK;
 		} else {
