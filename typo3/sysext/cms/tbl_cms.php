@@ -274,8 +274,8 @@ $TCA['fe_users'] = array(
 			'config' => array(
 				'type' => 'input',
 				'readOnly' => '1',
-				'size' => '8',
-				'eval' => 'date'
+				'size' => '12',
+				'eval' => 'datetime',
 			)
 		)
 	),
