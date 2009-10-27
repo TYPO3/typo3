@@ -1,6 +1,7 @@
 2009-10-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Follow-up of changeset 25876: Using tx_dbal_sqlengine instead of t3lib_sqlengine for sample handlers
+	* Created icons for extension and Debug module
 
 2009-10-26  Xavier Perseguers  <typo3@perseguers.ch>
 
