@@ -57,7 +57,7 @@ class Tx_Extbase_Persistence_ValueFactory implements Tx_Extbase_Persistence_Valu
 	 * @throws \IllegalArgumentException if the specified DateTime value cannot be expressed in the ISO 8601-based format defined in the JCR 2.0 specification and the implementation does not support dates incompatible with that format.
 	 */
 	public function createValue($value, $type = Tx_Extbase_Persistence_PropertyType::UNDEFINED, $weak = FALSE) {
-		if (is_array($value)) {
+		if (is_array($value) && array_key_exists('uid', $value)) {
 			$value = $value['uid'];
 		}
 

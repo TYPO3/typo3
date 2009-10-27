@@ -229,7 +229,15 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		}
 
 		foreach ($this->operands as $name => $value) {
-			$query->bindValue($name, $this->valueFactory->createValue($value));
+			if (is_array($value)) {
+				$newValue = array();
+				foreach ($value as $valueItem) {
+					$newValue[] = $this->valueFactory->createValue($valueItem);
+				}
+				$query->bindValue($name, $this->valueFactory->createValue($newValue));
+			} else {
+				$query->bindValue($name, $this->valueFactory->createValue($value));
+			}
 		}
 		$query->setQuerySettings($this->getQuerySettings());
 		return $query;
@@ -410,7 +418,8 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 				);
 		}
 
-		if ($caseSensitive) {
+		// TODO Implement case sensitivity for arrays (callback)
+		if ($caseSensitive || !is_string($operand)) {
 			$this->operands[$uniqueVariableName] = $operand;
 		} else {
 			$this->operands[$uniqueVariableName] = strtolower($operand);

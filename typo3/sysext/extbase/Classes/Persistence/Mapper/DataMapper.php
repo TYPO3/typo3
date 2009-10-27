@@ -282,18 +282,15 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$query = $queryFactory->create($columnMap->getChildClassName());
+			if (!empty($childSortByFieldName)) {
+				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+			}
 			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 			if (isset($parentKeyFieldName)) {
-				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
-				if (!empty($childSortByFieldName)) {
-					$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
-				}
-				$objects = $query->execute();
+				$objects = $query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()))->execute();
 			} else {
 				$uidArray = t3lib_div::intExplode(',', $fieldValue);
-				$uids = implode(',', $uidArray);
-				// FIXME Using statement() is only a preliminary solution
-				$objects = $query->statement('SELECT * FROM ' . $columnMap->getChildTableName() . ' WHERE uid IN (' . $uids . ')')->execute();
+				$objects = $query->matching($query->equals('uid', $uidArray))->execute();
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$relationTableName = $columnMap->getRelationTableName();

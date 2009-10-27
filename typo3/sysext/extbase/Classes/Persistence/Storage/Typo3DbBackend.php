@@ -36,6 +36,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 	const OPERATOR_EQUAL_TO_NULL = 'operatorEqualToNull';
 	const OPERATOR_NOT_EQUAL_TO_NULL = 'operatorNotEqualToNull';
+	const OPERATOR_IN = 'operatorIn';
+	const OPERATOR_NOT_IN = 'operatorNotIn';
 
 	/**
 	 * The TYPO3 database object
@@ -184,6 +186,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$statement = $this->getStatement($query, $parameters);
 		}
 		$this->replacePlaceholders($statement, $parameters);
+		// debug($statement,-2);
 		$result = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		return $this->getRowsFromResult($query->getSource(), $result);
@@ -436,9 +439,13 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$operator = self::OPERATOR_EQUAL_TO_NULL;
 			} elseif ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_NOT_EQUAL_TO) {
 				$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
-			} else {
-				// TODO Throw exception
 			}
+		} elseif (is_array($value)) {
+			if ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO) {
+				$operator = self::OPERATOR_IN;
+			} elseif ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_NOT_EQUAL_TO) {
+				$operator = self::OPERATOR_NOT_IN;
+			}			
 		}
 		$parameters[] = $value;
 
@@ -496,6 +503,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			case self::OPERATOR_NOT_EQUAL_TO_NULL:
 				$operator = 'IS NOT';
 				break;
+			case self::OPERATOR_IN:
+				$operator = 'IN';
+				break;
+			case self::OPERATOR_NOT_IN:
+				$operator = 'NOT IN';
+				break;		
 			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO:
 				$operator = '=';
 				break;
@@ -540,6 +553,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if ($markPosition !== FALSE) {
 				if ($parameter === NULL) {
 					$parameter = 'NULL';
+				} elseif (is_array($parameter)) {
+					$items = array();
+					foreach ($parameter as $item) {
+						$items[] = $this->databaseHandle->fullQuoteStr($item, 'foo');
+					}
+					$parameter = '(' . implode(',', $items) . ')';
 				} else {
 					$parameter = $this->databaseHandle->fullQuoteStr($parameter, 'foo'); // FIXME This may not work with DBAL; check this
 				}

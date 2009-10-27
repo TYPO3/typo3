@@ -66,6 +66,8 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	 */
 	public function getString() {
 		if ($this->value === NULL) return NULL;
+		if (is_array($this->value)) return $this->value;
+
 		switch ($this->type) {
 			case Tx_Extbase_Persistence_PropertyType::DATE:
 				if (is_a($this->value, 'DateTime')) {
