@@ -36,7 +36,7 @@
  *
  *
  *
- *   74: class tx_dbal_handler_xmldb extends t3lib_sqlengine
+ *   74: class tx_dbal_handler_xmldb extends tx_dbal_sqlengine
  *   91:     function init($config, &$pObj)
  *  128:     function readDataSource($table)
  *  157:     function saveDataSource($table)
@@ -71,7 +71,7 @@
  * @package TYPO3
  * @subpackage tx_dbal
  */
-class tx_dbal_handler_xmldb extends t3lib_sqlengine {
+class tx_dbal_handler_xmldb extends tx_dbal_sqlengine {
 
 	var $config = array();
 	var $pObj;	// Set from DBAL class.

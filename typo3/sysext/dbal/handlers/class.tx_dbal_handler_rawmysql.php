@@ -36,7 +36,7 @@
  *
  *
  *
- *   86: class tx_dbal_handler_rawmysql extends t3lib_sqlengine
+ *   86: class tx_dbal_handler_rawmysql extends tx_dbal_sqlengine
  *   99:     function init($config,&$pObj)
  *  123:     function exec_INSERTquery($table,$fields_values)
  *  135:     function exec_UPDATEquery($table,$where,$fields_values)
@@ -55,7 +55,7 @@
  *  290:     function admin_query($query)
  *
  *
- *  308: class tx_dbal_handler_rawmysql_sqlObj extends t3lib_sqlengine_resultobj
+ *  308: class tx_dbal_handler_rawmysql_sqlObj extends tx_dbal_sqlengine_resultobj
  *  317:     function sql_num_rows()
  *  326:     function sql_fetch_assoc()
  *  335:     function sql_fetch_row()
@@ -83,7 +83,7 @@
  * @package TYPO3
  * @subpackage tx_dbal
  */
-class tx_dbal_handler_rawmysql extends t3lib_sqlengine {
+class tx_dbal_handler_rawmysql extends tx_dbal_sqlengine {
 
 	var $config = array();
 	var $link;
@@ -307,7 +307,7 @@ class tx_dbal_handler_rawmysql extends t3lib_sqlengine {
  * @package TYPO3
  * @subpackage tx_dbal
  */
-class tx_dbal_handler_rawmysql_sqlObj extends t3lib_sqlengine_resultobj {
+class tx_dbal_handler_rawmysql_sqlObj extends tx_dbal_sqlengine_resultobj {
 
 	var $result = '';			// Not array here, but resource pointer.
 
