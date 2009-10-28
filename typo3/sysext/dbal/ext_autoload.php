@@ -5,7 +5,7 @@
 
 $extensionPath = t3lib_extMgm::extPath('dbal');
 return array(
-	'tx_dbal_sqlengine' => $extensionPath . 'class.tx_dbal_sqlengine.php',
+	'tx_dbal_sqlengine' => $extensionPath . 'lib/class.tx_dbal_sqlengine.php',
 	'ux_t3lib_sqlparser' => $extensionPath . 'class.ux_t3lib_sqlparser.php',
 );
 ?>
