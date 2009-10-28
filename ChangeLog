@@ -1,4 +1,4 @@
-009-10-27  Steffen Kamper  <info@sk-typo3.de>
+2009-10-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #11370: Inconsistent Login Screen doesn't show system required errors
 	* Fixed bug #12372: install: Login form message is shown as warning
