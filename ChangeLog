@@ -1,3 +1,7 @@
+2009-10-28  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #9795: Default values have no labels in the multiple select control inside the flexform
+
 2009-10-22  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.2.10
