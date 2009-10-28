@@ -1,3 +1,7 @@
+2009-10-28  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to #12326: $label is already used, rename new variable to $optionLabel
+
 2009-10-28  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #9795: Default values have no labels in the multiple select control inside the flexform
