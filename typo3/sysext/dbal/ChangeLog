@@ -1,5 +1,6 @@
 2009-10-28  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Added code to log all deprecated method calls
 	* Added compatibility operators for PostgreSQL as resource script (thanks to Ries van Twisk)
 	* Added message in Enterprise Manager to let users know compatibility scripts may need to be run
 
