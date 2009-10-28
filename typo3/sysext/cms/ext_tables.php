@@ -684,6 +684,7 @@ $TCA['tt_content'] = array (
 			'splash' => 'tt_content_news.gif',
 			'uploads' => 'tt_content_uploads.gif',
 			'multimedia' => 'tt_content_mm.gif',
+			'media' => 'tt_content_mm.gif',
 			'menu' => 'tt_content_menu.gif',
 			'list' => 'tt_content_list.gif',
 			'mailform' => 'tt_content_form.gif',
