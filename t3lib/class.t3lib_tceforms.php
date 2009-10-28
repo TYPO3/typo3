@@ -2033,6 +2033,15 @@ class t3lib_TCEforms	{
 			} elseif (isset($PA['fieldTSConfig']['altLabels.'][$evalValue])) {
 				$tvP[1] = rawurlencode($this->sL($PA['fieldTSConfig']['altLabels.'][$evalValue]));
 			}
+			if ($tvP[1] == '') {
+					// Case: flexform, default values supplied, no label provided (bug #9795)
+				foreach ($selItems as $selItem) {
+					if ($selItem[1] == $tvP[0]) {
+						$tvP[1] = $selItem[0];
+						break;
+					}
+				}
+			}
 			$itemArray[$tk] = implode('|',$tvP);
 		}
 		$itemsToSelect = '';
