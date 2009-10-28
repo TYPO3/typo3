@@ -13,7 +13,7 @@
 			<label index="labels.submitLogout">Log Out</label>
 			<label index="labels.donate">Donate</label>
 			<label index="availableInterfaces">Backend,Front End,Traditional Backend</label>
-			<label index="headline">Login into the TYPO3 Backend on ###SITENAME###</label>
+			<label index="headline">Login to the TYPO3 Backend on ###SITENAME###</label>
 			<label index="info.about">This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</label>
 			<label index="info.reset">Reset this form</label>
 			<label index="clear">Clear this field!</label>
