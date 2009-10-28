@@ -1,5 +1,6 @@
 009-10-27  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12372: install: Login form message is shown as warning
 	* Fixed bug #12355: Remove WIN-check in tsconfig_help::rebuild
 	* Fixed bug #12364: Icon for content element 'Media'
 

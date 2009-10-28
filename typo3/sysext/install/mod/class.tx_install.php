@@ -423,7 +423,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if (!$this->session->isAuthorized() && $this->session->isExpired()) {
 			$this->message('Password', 'Your install tool session has expired', '', 3);
 		}
-		$this->message('Password', 'Enter the Install Tool Password', $content, 2);
+		$this->message('Password', 'Enter the Install Tool Password', $content, 0);
 		$this->output($this->outputWrapper($this->printAll()));
 	}
 
