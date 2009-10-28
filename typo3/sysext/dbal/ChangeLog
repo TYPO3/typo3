@@ -1,3 +1,8 @@
+2009-10-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added compatibility operators for PostgreSQL as resource script (thanks to Ries van Twisk)
+	* Added message in Enterprise Manager to let users know compatibility scripts may need to be run
+
 2009-10-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Follow-up of changeset 25876: Using tx_dbal_sqlengine instead of t3lib_sqlengine for sample handlers
