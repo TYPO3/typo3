@@ -1,3 +1,7 @@
+2009-10-29  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #12371: Warning issued on first load of install tool with open_basedir set
+
 2009-10-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to #12326: $label is already used, rename new variable to $optionLabel
