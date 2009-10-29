@@ -1,34 +1,34 @@
 <?php
 
 /*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
+ * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-/**
- * @version $Id: ViewHelperNodeTest.php 3333 2009-10-21 09:52:46Z sebastian $
- */
+require_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
+require_once(dirname(__FILE__) . '/../../Fixtures/TestViewHelper.php');
+
 /**
  * Testcase for [insert classname here]
  *
- * @version $Id: ViewHelperNodeTest.php 3333 2009-10-21 09:52:46Z sebastian $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @version $Id: ViewHelperNodeTest.php 3350 2009-10-27 12:01:08Z k-fish $
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-if (!class_exists('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper')) {
-	include_once(dirname(__FILE__) . '/../Fixtures/ChildNodeAccessFacetViewHelper.php');
-}
-if (!class_exists('Tx_Fluid_Core_Fixtures_TestViewHelper')) {
-	include_once(dirname(__FILE__) . '/../../Fixtures/TestViewHelper.php');
-}
-
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**

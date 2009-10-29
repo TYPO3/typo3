@@ -76,6 +76,12 @@
  * Everything inside the "then" tag is displayed if the condition evaluates to TRUE.
  * Otherwise, everything inside the "else"-tag is displayed.
  *
+ * <code title="inline notation">
+ * {f:if(condition: someCondition, true: 'condition is met', false: 'condition is not met')}
+ * </code>
+ *
+ * The value of the "then" attribute is displayed if the condition evaluates to TRUE.
+ * Otherwise, everything the value of the "else"-attribute is displayed.
  *
  *
  * @version $Id$
@@ -123,12 +129,14 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.
 	 *
 	 * @param boolean $condition View helper condition
+	 * @param string $then String to be returned if the condition is met
+	 * @param string $else String to be returned if the condition is not met
 	 * @return string the rendered string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function render($condition) {
+	public function render($condition, $then = NULL, $else = NULL) {
 		if ($condition) {
 			return $this->renderThenChild();
 		} else {
@@ -137,14 +145,18 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	}
 
 	/**
-	 * Iterates through child nodes and renders ThenViewHelper.
-	 * If no ThenViewHelper is found, all child nodes are rendered
+	 * Returns value of "then" attribute.
+	 * If then attribute is not set, iterates through child nodes and renders ThenViewHelper.
+	 * If then attribute is not set and no ThenViewHelper is found, all child nodes are rendered
 	 *
 	 * @return string rendered ThenViewHelper or contents of <f:if> if no ThenViewHelper was found
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function renderThenChild() {
+		if ($this->arguments->hasArgument('then')) {
+			return $this->arguments['then'];
+		}
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode
 				&& $childNode->getViewHelperClassName() === 'Tx_Fluid_ViewHelpers_ThenViewHelper') {
@@ -157,7 +169,9 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 	}
 
 	/**
-	 * Iterates through child nodes and renders ElseViewHelper.
+	 * Returns value of "else" attribute.
+	 * If else attribute is not set, iterates through child nodes and renders ElseViewHelper.
+	 * If else attribute is not set and no ElseViewHelper is found, an empty string will be returned.
 	 *
 	 * @return string rendered ElseViewHelper or an empty string if no ThenViewHelper was found
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -170,6 +184,9 @@ class Tx_Fluid_ViewHelpers_IfViewHelper extends Tx_Fluid_Core_ViewHelper_Abstrac
 				$childNode->setRenderingContext($this->renderingContext);
 				return $childNode->evaluate();
 			}
+		}
+		if ($this->arguments->hasArgument('else')) {
+			return $this->arguments['else'];
 		}
 		return '';
 	}

@@ -27,7 +27,7 @@
  * 1) Holds the current variables in the template
  * 2) Holds variables being set during Parsing (set in view helpers implementing the PostParse facet)
  *
- * @version $Id: TemplateVariableContainer.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id: TemplateVariableContainer.php 3365 2009-10-28 15:16:33Z bwaidelich $
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -35,6 +35,12 @@
  * @scope prototype
  */
 class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
+
+	/**
+	 * List of reserved words that can't be used as object identifiers in Fluid templates
+	 * @var array
+	 */
+	static protected $reservedKeywords = array('true', 'false');
 
 	/**
 	 * Objects stored in context
@@ -61,10 +67,12 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @param object $object
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
 	public function add($identifier, $object) {
 		if (array_key_exists($identifier, $this->objects)) throw new RuntimeException('Duplicate variable declarations!', 1224479063);
+		if (in_array(strtolower($identifier), self::$reservedKeywords)) throw new RuntimeException('"' . $identifier . '" is a reserved keyword and can\'t be used as variable identifier.', 1256730379);
 		$this->objects[$identifier] = $object;
 	}
 

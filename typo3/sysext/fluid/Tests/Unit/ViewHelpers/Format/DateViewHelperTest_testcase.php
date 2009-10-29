@@ -30,9 +30,8 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function viewHelperFormatsDateCorrectly() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new DateTime('1980-12-13')));
-		$actualResult = $viewHelper->render();
+		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
+		$actualResult = $viewHelper->render(new DateTime('1980-12-13'));
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
 
@@ -41,9 +40,8 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function viewHelperFormatsDateStringCorrectly() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('1980-12-13'));
-		$actualResult = $viewHelper->render();
+		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
+		$actualResult = $viewHelper->render('1980-12-13');
 		$this->assertEquals('1980-12-13', $actualResult);
 	}
 
@@ -52,9 +50,8 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function viewHelperRespectsCustomFormat() {
-		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new DateTime('1980-02-01')));
-		$actualResult = $viewHelper->render('d.m.Y');
+		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
+		$actualResult = $viewHelper->render(new DateTime('1980-02-01'), 'd.m.Y');
 		$this->assertEquals('01.02.1980', $actualResult);
 	}
 
@@ -75,9 +72,30 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest_testcase extends Tx_Extbase
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function viewHelperThrowsExceptionIfDateStringCantBeParsed() {
+		$viewHelper = new Tx_Fluid_ViewHelpers_Format_DateViewHelper();
+		$viewHelper->render('foo');
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function viewHelperUsesChildNodesIfDateAttributeIsNotSpecified() {
 		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
-		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('foo'));
-		$viewHelper->render();
+		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue(new DateTime('1980-12-13')));
+		$actualResult = $viewHelper->render();
+		$this->assertEquals('1980-12-13', $actualResult);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function dateArgumentHasPriorityOverChildNodes() {
+		$viewHelper = $this->getMock('Tx_Fluid_ViewHelpers_Format_DateViewHelper', array('renderChildren'));
+		$viewHelper->expects($this->never())->method('renderChildren');
+		$actualResult = $viewHelper->render('1980-12-12');
+		$this->assertEquals('1980-12-12', $actualResult);
 	}
 }
 ?>

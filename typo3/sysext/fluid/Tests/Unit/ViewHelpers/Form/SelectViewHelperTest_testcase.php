@@ -1,27 +1,34 @@
 <?php
 
 /*                                                                        *
- * This script is part of the TYPO3 project - inspiring people to share!  *
+ * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
- * TYPO3 is free software; you can redistribute it and/or modify it under *
- * the terms of the GNU General Public License version 2 as published by  *
- * the Free Software Foundation.                                          *
+ * It is free software; you can redistribute it and/or modify it under    *
+ * the terms of the GNU Lesser General Public License as published by the *
+ * Free Software Foundation, either version 3 of the License, or (at your *
+ * option) any later version.                                             *
  *                                                                        *
  * This script is distributed in the hope that it will be useful, but     *
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
- * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
- * Public License for more details.                                       *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser       *
+ * General Public License for more details.                               *
+ *                                                                        *
+ * You should have received a copy of the GNU Lesser General Public       *
+ * License along with the script.                                         *
+ * If not, see http://www.gnu.org/licenses/lgpl.html                      *
+ *                                                                        *
+ * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-include_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
-include_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
+require_once(dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php');
+require_once(dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php');
 require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 
 /**
  * Test for the "Select" Form view helper
  *
  * @version $Id$
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 

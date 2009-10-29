@@ -49,7 +49,15 @@
  * 13.12.1980 - 21:03:42
  * (depending on the current time, see http://www.php.net/manual/en/function.strtotime.php)
  *
- * @version $Id: DateViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
+ * <code title="inline notation">
+ * {f:format.date(date: dateObject)}
+ * </code>
+ *
+ * Output:
+ * 1980-12-13
+ * (depending on the current date)
+ *
+ * @version $Id: DateViewHelper.php 3365 2009-10-28 15:16:33Z bwaidelich $
  * @package Fluid
  * @subpackage ViewHelpers\Format
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -61,24 +69,25 @@ class Tx_Fluid_ViewHelpers_Format_DateViewHelper extends Tx_Fluid_Core_ViewHelpe
 	/**
 	 * Render the supplied DateTime object as a formatted date.
 	 *
+	 * @param mixed $date either a DateTime object or a string that is accepted by DateTime constructor
 	 * @param string $format Format String which is taken to format the Date/Time
 	 * @return string Formatted date
 	 * @author Christopher Hlubek <hlubek@networkteam.com>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function render($format = 'Y-m-d') {
-		$stringToFormat = $this->renderChildren();
-		if ($stringToFormat instanceof DateTime) {
-			$date = $stringToFormat;
-		} else {
-			if ($stringToFormat === NULL) {
+	public function render($date = NULL, $format = 'Y-m-d') {
+		if ($date === NULL) {
+			$date = $this->renderChildren();
+			if ($date === NULL) {
 				return '';
 			}
+		}
+		if (!$date instanceof DateTime) {
 			try {
-				$date = new DateTime($stringToFormat);
+				$date = new DateTime($date);
 			} catch (Exception $exception) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $stringToFormat . '" could not be parsed by DateTime constructor.', 1241722579);
+				throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $date . '" could not be parsed by DateTime constructor.', 1241722579);
 			}
 		}
 		return $date->format($format);
