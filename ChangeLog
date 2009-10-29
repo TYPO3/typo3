@@ -1,3 +1,7 @@
+2009-10-29  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #12371: Warning issued on first load of install tool with open_basedir set
+
 2009-10-28  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #9795: Default values have no labels in the multiple select control inside the flexform

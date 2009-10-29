@@ -342,11 +342,15 @@ class tx_install_session {
 	 *
 	 * @param integer The setting of session.gc_maxlifetime
 	 *
-	 * @return string
+	 * @return boolean
 	 */
 	public function gc($maxLifeTime) {
 		$sessionSavePath = $this->getSessionSavePath();
-		foreach (glob($sessionSavePath . '/hash_*') as $filename) {
+		$files = glob($sessionSavePath . '/hash_*');
+		if (!is_array($files)) {
+			return TRUE;
+		}
+		foreach ($files as $filename) {
 			if (filemtime($filename) + ($this->expireTimeInMinutes*60) < time()) {
 				@unlink($filename);
 			}
