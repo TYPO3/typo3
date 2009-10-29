@@ -58,13 +58,16 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 	 * Renders the TypoScript object in the given TypoScript setup path.
 	 *
 	 * @param string $typoscriptObjectPath the TypoScript setup path of the TypoScript object to render
+	 * @param mixed $data the data to be used for rendering the cObject. Can be an object, array or string. If this argument is not set, child nodes will be used
 	 * @param string $currentValueKey
 	 * @return string the content of the rendered TypoScript object
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Niels Pardon <mail@niels-pardon.de>
 	 */
-	public function render($typoscriptObjectPath, $currentValueKey = NULL) {
-		$data = $this->renderChildren();
+	public function render($typoscriptObjectPath, $data = NULL, $currentValueKey = NULL) {
+		if ($data === NULL) {
+			$data = $this->renderChildren();
+		}
 		$currentValue = NULL;
 		if (is_object($data)) {
 			$data = Tx_Extbase_Reflection_ObjectAccess::getAccessibleProperties($data);
