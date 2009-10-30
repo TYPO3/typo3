@@ -1,3 +1,7 @@
+2009-10-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up to #12336: Little Flaws with MediaCE
+
 2009-10-29  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12381: Scheduler: Changed TEXT fields to BLOBS for storing serialized data (thanks to Michael Klapper)

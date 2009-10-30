@@ -2664,8 +2664,7 @@ class tslib_cObj {
 			$url = $this->stdWrap($conf['file'], $conf['file.']);
 		}
 
-		$url = rawurldecode($url);
-
+		$url = $this->typoLink_URL(array('parameter' => $url));
 		$mode = is_file(PATH_site . $url) ? 'file' : 'url';
 		if ($mode === 'file') {
 			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
@@ -2834,7 +2833,7 @@ class tslib_cObj {
 		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $prefix . 'typo3/contrib/flashmedia/swfobject/expressInstall.swf';
 		$filename = $this->stdWrap($conf['file'], $conf['file.']);
 		if ($filename) {
-			if (strpos($filename, '://') !== FALSE) {
+			if (strpos($filename, rawurlencode('://')) !== FALSE) {
 				$conf['flashvars.']['file'] = $filename;
 			} else {
 				if ($prefix) {
