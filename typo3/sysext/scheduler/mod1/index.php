@@ -176,6 +176,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 */
 	protected function getModuleContent() {
 		$content = '';
+		$sectionTitle = '';
 
 			// Get submitted data
 		$this->submittedData = t3lib_div::_GPmerged('tx_scheduler');
@@ -507,7 +508,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$task = $this->scheduler->fetchTask($this->submittedData['uid']);
 				// If the task is currently running, it may not be deleted
 			if ($task->isExecutionRunning()) {
-				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotDeleteRunningTask'), 3);
+				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotDeleteRunningTask'), t3lib_FlashMessage::ERROR);
 			} else {
 				if ($this->scheduler->removeTask($task)) {
 					$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteSuccess'));
@@ -546,7 +547,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$taskRecord = $this->scheduler->fetchTaskRecord($this->submittedData['uid']);
 					// If there's a registered execution, the task should not be edited
 				if (!empty($taskRecord['serialized_executions'])) {
-					$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotEditRunningTask'), 3);
+					$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotEditRunningTask'), t3lib_FlashMessage::ERROR);
 					throw new LogicException('Runnings tasks cannot not be edited', 1251232849);
 				}
 					// Get the task object
@@ -650,10 +651,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 			// Define a style for hiding
 			// Some fields will be hidden when the task is not recurring
+		$style = '';
 		if ($taskInfo['type'] == 1) {
 			$style = ' style="display: none"';
-		} else {
-			$style = '';
 		}
 
 			// Start rendering the add/edit form
@@ -1015,7 +1015,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					}
 
 						// Check the disable status
-					if ($schedulerRecord['disable'] == 1) {
+						// Row is shown dimmed if task is disabled, unless it is still running
+					if ($schedulerRecord['disable'] == 1 && !$isRunning) {
 						$tableLayout[$tr] = $disabledTaskRow;
 						$executionStatus  = 'disabled';
 					}
