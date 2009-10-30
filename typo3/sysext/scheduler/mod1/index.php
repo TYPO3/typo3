@@ -226,6 +226,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 						$this->deleteTask();
 						$content .= $this->listTasks();
 						break;
+					case 'stop':
+						$this->stopTask();
+						$content .= $this->listTasks();
+						break;
 					case 'list':
 					default:
 						$content .= $this->listTasks();
@@ -525,6 +529,41 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteError'), t3lib_FlashMessage::ERROR);
 			}
 		} catch (OutOfBoundsException $e) {
+				// The task was not found, for some reason
+			$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.taskNotFound'), $this->submittedData['uid']), t3lib_FlashMessage::ERROR);
+		}
+	}
+
+ 	/**
+	 * Clears the registered running executions from the task
+	 * Note that this doesn't actually stop the running script. It just unmarks
+	 * all executions.
+	 * TODO: find a way to really kill the running task
+	 *
+	 * @return	void
+	 */
+	protected function stopTask() {
+		try {
+				// Try to fetch the task and stop it
+				/**
+				 * @var	tx_scheduler_Task
+				 */
+			$task = $this->scheduler->fetchTask($this->submittedData['uid']);
+			if ($task->isExecutionRunning()) {
+				// If the task is indeed currently running, clear marked executions
+
+				$result = $task->unmarkAllExecutions();
+				if ($result) {
+					$this->addMessage($GLOBALS['LANG']->getLL('msg.stopSuccess'));
+				} else {
+					$this->addMessage($GLOBALS['LANG']->getLL('msg.stopError'), t3lib_FlashMessage::ERROR);
+				}
+			} else {
+				// The task is not running, nothing to unmark
+
+				$this->addMessage($GLOBALS['LANG']->getLL('msg.maynotStopNonRunningTask'), t3lib_FlashMessage::WARNING);
+			}
+		} catch (Exception $e) {
 				// The task was not found, for some reason
 			$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.taskNotFound'), $this->submittedData['uid']), t3lib_FlashMessage::ERROR);
 		}
@@ -925,6 +964,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					// Define action icons
 				$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit') . '" /></a> ';
 				$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/garbage.gif') . ' alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete') . '" /></a>';
+				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('scheduler') . '/res/gfx/stop.png') . ' alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
 					// Define some default values
 				$lastExecution = '-';
 				$isRunning = false;
@@ -1011,7 +1051,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 						// Show no action links (edit, delete) if task is running
 					$actions = $editAction . $deleteAction;
 					if ($isRunning) {
-						$actions = '&nbsp;';
+						$actions = $stopAction;
 					}
 
 						// Check the disable status

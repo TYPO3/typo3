@@ -405,6 +405,23 @@ abstract class tx_scheduler_Task {
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	}
 
+ 	/**
+	 * Clears all marked executions
+	 *
+	 * @return	boolean		True if the clearing succeeded, false otherwise
+	 */
+	public function unmarkAllExecutions() {
+			// Set the serialized executions field to empty
+		$result = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
+			'tx_scheduler_task',
+			'uid = ' . intval($this->taskUid),
+			array(
+				'serialized_executions' => ''
+			)
+		);
+		return $result;
+	}
+
 	/**
 	 * Saves the details of the task to the database.
 	 *

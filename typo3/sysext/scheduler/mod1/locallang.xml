@@ -59,6 +59,7 @@
 			<label index="msg.lastRun">The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</label>
 			<label index="msg.maynotDeleteRunningTask">A running task may not be deleted.</label>
 			<label index="msg.maynotEditRunningTask">A running task may not be edited.</label>
+			<label index="msg.maynotStopNonRunningTask">The task is not running. There are no executions to unmark.</label>
 			<label index="msg.noEmail">Please enter an email address</label>
 			<label index="msg.noFrequency">No frequency was defined, either as an interval or as a cron command.</label>
 			<label index="msg.noLastRun">The Scheduler has never yet run or the information about the last run has been lost.</label>
@@ -77,7 +78,9 @@
 			<label index="msg.schedulerUserFound">The backend user "_cli_scheduler" was found.</label>
 			<label index="msg.schedulerUserFoundButDisabled">The backend user "_cli_scheduler" exists but is currently disabled.</label>
 			<label index="msg.schedulerUserMissing">The backend user "_cli_scheduler" was not found. &lt;a href="%s" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;.</label>
-			<label index="msg.singleExecutionMustBeInFuture">The execution time of single execution tasks has to be in the future.</label>
+			<label index="msg.stop">Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</label>
+			<label index="msg.stopError">The task could not be marked as non-running.</label>
+			<label index="msg.stopSuccess">The task was successfully marked as non-running.</label>
 			<label index="msg.taskNotFound">The requested task (UID: %d) was not found.</label>
 			<label index="msg.updateSuccess">The task was updated successfully.</label>
 			<label index="msg.updateError">The task could not be updated.</label>

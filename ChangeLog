@@ -1,6 +1,7 @@
 2009-10-30  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12406: Scheduler: Performed some minor cleanups in the BE module
+	* Feature #12184: Scheduler: Added BE method to mark a stalled / died task as not running
 
 2009-10-30  Steffen Kamper  <info@sk-typo3.de>
 
