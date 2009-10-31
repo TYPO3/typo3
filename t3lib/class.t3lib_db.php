@@ -780,10 +780,12 @@ class t3lib_DB {
 	 * @param	string		Database name
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer / DBAL object
-	 * @deprecated since TYPO3 3.6
+	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.5
 	 * @see sql_query()
 	 */
 	function sql($db, $query) {
+		t3lib_div::logDeprecatedFunction();
+
 		$res = mysql_query($query, $this->link);
 		if ($this->debugOutput) {
 			$this->debug('sql', $query);

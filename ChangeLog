@@ -1,10 +1,11 @@
 2009-10-31  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #12387: Log deprecated method call in t3lib_befunc and remove the methods in 4.4 (thanks to Xavier Perseguers)
-	* Fixed bug #12388: Log deprecated method call in t3lib_beuserauth and remove the method in 4.4 (thanks to Xavier Perseguers)
-	* Fixed bug #12392: Log deprecated method call in t3lib_install and remove the method in 4.4 (thanks to Xavier Perseguers)
-	* Fixed bug #12393: Log deprecated method call in t3lib_stdgraphic and remove the method in 4.4 (thanks to Xavier Perseguers)
-	* Fixed bug #12394: Log deprecated method call in t3lib_tceforms_inline and remove the methods in 4.4 (thanks to Xavier Perseguers)
+	* Fixed bug #12386: Log deprecated method call in t3lib_db and remove the method in 4.5 (thanks to Xavier Perseguers)
+	* Fixed bug #12387: Log deprecated method call in t3lib_befunc and remove the methods in 4.5 (thanks to Xavier Perseguers)
+	* Fixed bug #12388: Log deprecated method call in t3lib_beuserauth and remove the method in 4.5 (thanks to Xavier Perseguers)
+	* Fixed bug #12392: Log deprecated method call in t3lib_install and remove the method in 4.5 (thanks to Xavier Perseguers)
+	* Fixed bug #12393: Log deprecated method call in t3lib_stdgraphic and remove the method in 4.5 (thanks to Xavier Perseguers)
+	* Fixed bug #12394: Log deprecated method call in t3lib_tceforms_inline and remove the methods in 4.5 (thanks to Xavier Perseguers)
 
 2009-10-30  Francois Suter  <francois@typo3.org>
 
