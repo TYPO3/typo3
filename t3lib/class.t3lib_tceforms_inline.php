@@ -922,9 +922,11 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$objectPrefix: The "path" to the child record to create (e.g. 'data-parentPageId-partenTable-parentUid-parentField-childTable')
 	 * @param	array		$conf: TCA configuration of the parent(!) field
 	 * @return	string		The HTML code for the new record link
-	 * @deprecated	since TYPO3 4.2.0-beta1
+	 * @deprecated	since TYPO3 4.2.0-beta1, this function will be removed in TYPO3 4.5.
 	 */
 	function getNewRecordLink($objectPrefix, $conf = array()) {
+		t3lib_div::logDeprecatedFunction();
+
 		return $this->getLevelInteractionLink('newRecord', $objectPrefix, $conf);
 	}
 
@@ -1071,9 +1073,11 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$method: Name of the method to be called
 	 * @param	array		$arguments: Arguments to be delivered to the method
 	 * @return	void
-	 * @deprecated	since TYPO3 4.2.0-alpha3
+	 * @deprecated	since TYPO3 4.2.0-alpha3, this function will be removed in TYPO3 4.5.
 	 */
 	function initForAJAX($method, &$arguments) {
+		t3lib_div::logDeprecatedFunction();
+
 			// Set t3lib_TCEforms::$RTEcounter to the given value:
 		if ($method == 'createNewRecord') {
 			$this->fObj->RTEcounter = intval(array_shift($arguments));
@@ -1840,6 +1844,7 @@ class t3lib_TCEforms_inline {
 		}
 			// 'newRecordLinkPosition' is deprecated since TYPO3 4.2.0-beta1, this is for backward compatibility:
 		if (!isset($config['appearance']['levelLinksPosition']) && isset($config['appearance']['newRecordLinkPosition']) && $config['appearance']['newRecordLinkPosition']) {
+			t3lib_div::deprecationLog('TCA contains a deprecated definition using "newRecordLinkPosition"');
 			$config['appearance']['levelLinksPosition'] = $config['appearance']['newRecordLinkPosition'];
 		}
 			// Set the position/appearance of the "Create new record" link:
@@ -2288,6 +2293,8 @@ class t3lib_TCEforms_inline {
 	 * @deprecated			Since TYPO3 4.2: Moved to t3lib_div::array2json, will be removed in TYPO3 4.4
 	 */
 	function getJSON($jsonArray) {
+		t3lib_div::logDeprecatedFunction();
+
 		return json_encode($jsonArray);
 	}
 

@@ -1,3 +1,7 @@
+2009-10-31  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12394: Log deprecated method call in t3lib_tceforms_inline and remove the methods in 4.4 (thanks to Xavier Perseguers)
+
 2009-10-30  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12406: Scheduler: Performed some minor cleanups in the BE module
