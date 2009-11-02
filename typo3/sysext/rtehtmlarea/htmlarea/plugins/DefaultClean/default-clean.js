@@ -172,7 +172,7 @@ DefaultClean = HTMLArea.Plugin.extend({
  */
 DefaultClean.cleanLater = function (editorNumber) {
 	var editor = RTEarea[editorNumber].editor;
-	editor.getPluginInstance("Default").clean();
+	editor.getPluginInstance("DefaultClean").clean();
 };
 
 /*
