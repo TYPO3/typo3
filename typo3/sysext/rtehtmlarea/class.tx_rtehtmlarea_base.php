@@ -341,9 +341,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 				// Loading JavaScript files and code
 			if ($this->TCEform->RTEcounter == 1) {
-				$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
 				$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 			}
+			$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
 
 			/* =======================================
 			 * DRAW THE EDITOR

@@ -1,6 +1,7 @@
 2009-11-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12439: htmlArea RTE: js error raised on paste by default word cleaning
+	* Fixed bug #12331: htmlArea RTE plugins may not be loaded for multiple RTEs
 
 2009-10-27  Stanislas Rolland  <typo3@sjbr.ca>
 
