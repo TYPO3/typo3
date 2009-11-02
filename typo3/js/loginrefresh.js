@@ -154,7 +154,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		var progressControl = new Ext.ProgressBar({
 			autoWidth: true,
 			autoHeight: true,
-			value: 30,
+			value: 30
 		});
 		
 		this.progressWindow = new Ext.Window({

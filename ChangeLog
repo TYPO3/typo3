@@ -1,3 +1,7 @@
+2009-11-02  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to #10467: Fixed JavaScript notation bug for IE8
+
 2009-10-31  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12386: Log deprecated method call in t3lib_db and remove the method in 4.5 (thanks to Xavier Perseguers)
