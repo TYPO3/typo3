@@ -69,6 +69,9 @@
 	text-align: right;
 	list-style-type: none;
 }
+.t3e_linenum dt {
+	height: 13px;
+}
 
 .t3e_linenum li {
 	padding: 0 3px 0 0;
