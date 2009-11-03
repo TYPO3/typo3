@@ -1041,6 +1041,14 @@ class ux_t3lib_DB extends t3lib_DB {
 				if (!is_numeric($where_clause[$k]['field'])) {
 					$where_clause[$k]['field'] = $this->quoteName($where_clause[$k]['field']);
 				}
+				if (isset($where_clause[$k]['calc_table'])) {
+					if ($where_clause[$k]['calc_table'] != '') {
+						$where_clause[$k]['calc_table'] = $this->quoteName($where_clause[$k]['calc_table']);
+					}
+					if ($where_clause[$k]['calc_field'] != '') {
+						$where_clause[$k]['calc_field'] = $this->quoteName($where_clause[$k]['calc_field']);
+					}
+				}
 			}
 			if ($where_clause[$k]['comparator']) {
 					// Detecting value type; list or plain:
