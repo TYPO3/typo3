@@ -1,3 +1,7 @@
+2009-11-03  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #11876 and #12342: stripSlashesOnArray creates references where you want copies (in some PHP versions). Affects usage of _GP (e.g. in the Install Tool and some frontend extensions).
+
 2009-11-03  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup #12440: Copy DBAL-only SQL parser methods from t3lib_sqlparser to ux_t3lib_sqlparser (thanks to Xavier Perseguers)
