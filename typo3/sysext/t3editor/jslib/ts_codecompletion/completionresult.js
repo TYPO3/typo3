@@ -67,7 +67,7 @@ var CompletionResult = function(tsRef,tsTreeNode) {
 		var value = currentTsTreeNode.getValue();
 		// first get the childNodes of the Node (=properties defined by the user)
 		for (key in childNodes) {
-			if (typeof(childNodes[key].value) != "undefined") {
+			if (typeof(childNodes[key].value) != "undefined" && childNodes[key].value != null) {
 				propObj = new Object();
 				propObj.word = key;
 				if(tsRef.typeHasProperty(value,childNodes[key].name)){
