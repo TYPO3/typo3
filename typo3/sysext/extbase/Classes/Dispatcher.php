@@ -103,7 +103,7 @@ class Tx_Extbase_Dispatcher {
 		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration);
 
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
-		$request = $requestBuilder->initialize($configuration);
+		$request = $requestBuilder->initialize(self::$extbaseFrameworkConfiguration);
 		$request = $requestBuilder->build();
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
@@ -156,22 +156,14 @@ class Tx_Extbase_Dispatcher {
 	 * @return void
 	 */
 	protected function initializeConfigurationManagerAndFrameworkConfiguration($configuration) {
-		$configurationSources = array();
-		$configurationSources[] = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_TypoScriptSource');
+		self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager', $configurationSources);
+
 		if (TYPO3_MODE === 'FE') {
-			if (!empty($this->cObj->data['pi_flexform'])) {
-				$configurationSource = t3lib_div::makeInstance('Tx_Extbase_Configuration_Source_FlexFormSource');
-				$configurationSource->setFlexFormContent($this->cObj->data['pi_flexform']);
-				$configurationSources[] = $configurationSource;
-			}
-			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager', $configurationSources);
 			self::$configurationManager->setContentObject($this->cObj);
-		} else {
-			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_BackendConfigurationManager', $configurationSources);
 		}
 		self::$extbaseFrameworkConfiguration = self::$configurationManager->getFrameworkConfiguration($configuration);
 	}
-	
+
 	/**
 	 * Initializes the cache framework
 	 *
@@ -219,7 +211,7 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
-		$controller->injectSettings(self::$configurationManager->getSettings($request->getControllerExtensionName()));
+		$controller->injectSettings(self::$extbaseFrameworkConfiguration['settings']);
 
 		$flashMessages = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
 		$flashMessages->reset();

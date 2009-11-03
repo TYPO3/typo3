@@ -80,19 +80,19 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		}
 		if (!empty($configuration['controller'])) {
 			$this->defaultControllerName = $configuration['controller'];
-		} elseif (is_array($configuration['switchableControllerActions.'])) {
-			$firstControllerActions = current($configuration['switchableControllerActions.']);
+		} elseif (is_array($configuration['switchableControllerActions'])) {
+			$firstControllerActions = current($configuration['switchableControllerActions']);
 			$this->defaultControllerName = $firstControllerActions['controller'];
 		}
 		if (!empty($configuration['action'])) {
 			$this->defaultActionName = $configuration['action'];
-		} elseif (is_array($configuration['switchableControllerActions.'])) {
-			$firstControllerActions = current($configuration['switchableControllerActions.']);
+		} elseif (is_array($configuration['switchableControllerActions'])) {
+			$firstControllerActions = current($configuration['switchableControllerActions']);
 			$this->defaultActionName = array_shift(t3lib_div::trimExplode(',', $firstControllerActions['actions'], TRUE));
 		}
 		$allowedControllerActions = array();
-		if (is_array($configuration['switchableControllerActions.'])) {
-			foreach ($configuration['switchableControllerActions.'] as $controllerConfiguration) {
+		if (is_array($configuration['switchableControllerActions'])) {
+			foreach ($configuration['switchableControllerActions'] as $controllerConfiguration) {
 				$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);
 				foreach ($controllerActions as $actionName) {
 					$allowedControllerActions[$controllerConfiguration['controller']][] = $actionName;

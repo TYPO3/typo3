@@ -51,35 +51,11 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 	protected $settings;
 
 	/**
-	 * The configuration source instances used for loading the raw configuration
-	 *
-	 * @var array
-	 */
-	protected $configurationSources = array();
-
-	/**
 	 * Constructs the configuration manager
 	 *
-	 * @param array $configurationSources An array of configuration sources
 	 */
-	public function __construct($configurationSources = NULL) {
+	public function __construct() {
 		$this->typoScriptParser = t3lib_div::makeInstance('t3lib_TSparser');
-		if (is_array($configurationSources)) {
-			$this->configurationSources = $configurationSources;
-		}
-	}
-
-	/**
-	 * Returns an array with the settings defined for the specified extension.
-	 *
-	 * @param string $extensionName Name of the extension to return the settings for
-	 * @return array The settings of the specified extension
-	 */
-	public function getSettings($extensionName) {
-		if (empty($this->settings[$extensionName])) {
-			$this->loadSettings($extensionName);
-		}
-		return $this->settings[$extensionName];
 	}
 
 	/**
@@ -104,6 +80,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 
 		if (isset($pluginConfiguration['settings'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'settings');
+			if (!is_array($pluginConfiguration['settings.'])) $pluginConfiguration['settings.'] = array(); // We expect that the settings are arrays on various places
 		}
 		if (isset($pluginConfiguration['persistence'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
@@ -114,9 +91,10 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 		if (isset($pluginConfiguration['_LOCAL_LANG'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, '_LOCAL_LANG');
 		}
+
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 
-		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $this->getContextSpecificFrameworkConfiguration());
+		$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);
 		return $frameworkConfiguration;
 	}
 
@@ -128,9 +106,10 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 	 *
 	 * WARNING: Make sure this method ALWAYS returns an array!
 	 *
+	 * @param array $frameworkConfiguration The framework configuration until now
 	 * @return array context specific configuration which will override the configuration obtained by TypoScript
 	 */
-	abstract protected function getContextSpecificFrameworkConfiguration();
+	abstract protected function getContextSpecificFrameworkConfiguration($frameworkConfiguration);
 
 	/**
 	 * Returns TypoScript Setup array from current Environment.
@@ -159,26 +138,5 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 		}
 		return $pluginConfiguration;
 	}
-
-	/**
-	 * Loads the settings defined in the specified extensions and merges them with
-	 * those potentially existing in the global configuration folders.
-	 *
-	 * The result is stored in the configuration manager's settings registry
-	 * and can be retrieved with the getSettings() method.
-	 *
-	 * @param string $extensionName
-	 * @return void
-	 * @see getSettings()
-	 */
-	protected function loadSettings($extensionName) {
-		$settings = array();
-		foreach ($this->configurationSources as $configurationSource) {
-			$settings = t3lib_div::array_merge_recursive_overrule($settings, $configurationSource->load($extensionName));
-		}
-		$this->settings[$extensionName] = $settings;
-	}
-
-
 }
 ?>

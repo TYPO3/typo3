@@ -91,8 +91,8 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 	 * We do not want to override anything in the backend.
 	 * @return array
 	 */
-	protected function getContextSpecificFrameworkConfiguration() {
-		return array();
+	protected function getContextSpecificFrameworkConfiguration($frameworkConfiguration) {
+		return $frameworkConfiguration;
 	}
 }
 ?>
