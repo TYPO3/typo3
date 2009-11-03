@@ -4946,6 +4946,11 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="titleText" type="stdWrap">
+			<description><![CDATA[If no titletext is specified, it will use the alttext instead. If no alttext is specified, it will use an empty alttext]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="linkWrap" type="wrap">
 			<description><![CDATA[(before ".wrap")]]></description>
 			<default><![CDATA[

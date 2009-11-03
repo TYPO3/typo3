@@ -8,6 +8,7 @@
 	* Fixed bug #12412: t3editor/codecompletion CONTENT->select is of type "string", should be "select" (thanks to Stephan Petzl)
 	* Cleanup: #12416: cleanup t3editor files
 	* Fixed bug #12413: t3editor should not be disabled in safari
+	* Fixed bug #12417: t3editor/codecompletion IMAGE.titleText attribute missing (thanks to Stephan Petzl)
 
 2009-11-03  Ernesto Baschny  <ernst@cron-it.de>
 
