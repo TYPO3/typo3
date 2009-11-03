@@ -1,3 +1,7 @@
+2009-11-03  Tobias Liebig <mail_typo3@etobi.de>
+
+	* Fixed bug #9513: t3editor bad line numbering
+
 2009-11-03  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #5120: SQL parse error in "Who is online" with DBAL (PostgreSQL / Oracle)
