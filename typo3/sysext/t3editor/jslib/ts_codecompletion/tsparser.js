@@ -196,8 +196,9 @@ var TsParser = function(tsRef,extTsObjTree){
 				if (node    == '(')stack.push('(');
 				if (node[0] == '/' && node[1]=='*')stack.push('/*');
 				if (node    == '{') {
+					// TODO: ignore whole block if wrong whitespaces in this line
 					stack.push('{');
-					prefixes.push(line);
+					prefixes.push(line.strip());
 					ignoreLine = true;
 				}
 				// TODO: conditions
@@ -252,7 +253,7 @@ var TsParser = function(tsRef,extTsObjTree){
 				if (currentNode.tagName == "BR") {
 					// ignore comments, ...
 					if(!stack.lastElementEquals('/*') && !stack.lastElementEquals('(') && !ignoreLine && !insideCondition) {
-						line = line.replace(/\s/g,"");
+						line = line.strip();
 						// check if there is any operator in this line
 						var op = getOperator(line);
 						if (op != -1) {
@@ -266,26 +267,40 @@ var TsParser = function(tsRef,extTsObjTree){
 							}
 							// the type or value should be right to the operator
 							var str = line.substring(pos+op.length, line.length);
-							path = path.replace(/\s/g,"");
-							str = str.replace(/\s/g,"");
+							path = path.strip();
+							str = str.strip();
 							switch(op) { // set a value or create a new object
 							case '=':
+								//ignore if path is empty or contains whitespace 
+								if (path.search(/\s/g) == -1 && path.length > 0) {
 								setTreeNodeValue(path, str);
+								}
 								break;
 							case '=<': // reference to another object in the tree
 								 // resolve relative path		
-								if ( prefixes.length > 0
-										&& str.substr(0, 1) == '.' ) {
+								if(prefixes.length > 0 && str.substr(0, 1) == '.') {
 									str = prefixes.join('.') + str;
 								}
+								//ignore if either path or str is empty or contains whitespace 
+								if (path.search(/\s/g) == -1 
+								 && path.length > 0 
+								 && str.search(/\s/g) == -1 
+								 && str.length > 0) {
 								setReference(path, str);
+								}
 								break;
 							case '<': // copy from another object in the tree
-								if ( prefixes.length > 0
-										&& str.substr(0, 1) == '.' ) {
+								// resolve relative path
+								if(prefixes.length > 0 && str.substr(0, 1) == '.') {
 									str = prefixes.join('.') + str;
 								}
+								//ignore if either path or str is empty or contains whitespace
+								if (path.search(/\s/g) == -1 
+								 && path.length > 0 
+								 && str.search(/\s/g) == -1 
+								 && str.length > 0) {
 								setCopy(path, str);
+								}
 								break;
 							case '>': // delete object value and properties
 								deleteTreeNodeValue(path);
@@ -322,7 +337,7 @@ var TsParser = function(tsRef,extTsObjTree){
 			var i = line.indexOf('<');
 			if (i != -1) {
 				var path = line.substring(i+1, line.length);
-				path = path.replace(/\s/g,"");
+				path = path.strip();
 				if ( prefixes.length > 0 && path.substr(0,1) == '.') {
 					path = prefixes.join('.') + path;
 				}
@@ -367,7 +382,7 @@ var TsParser = function(tsRef,extTsObjTree){
 	 * along the path, if necessary
 	 */
 	function getTreeNode(path){
-		var aPath = path.replace(/\s/g,"").split(".");
+		var aPath = path.strip().split(".");
 		if (aPath == "") {
 			return tsTree;
 		}
