@@ -4,6 +4,7 @@
 	* Fixed bug #12409: t3editor/codecompletion objects still showed up after deleting (thanks to Christian Kartnig)
 	* Fixed bug #12410: t3editor/codecompletion some properties got not listed (thanks to Stephan Petzl)
 	* Fixed bug #10959: t3editor/codecompletion CC triggers with spaces in TS path (thanks to Christian Kartnig)
+	* Fixed bug #12411: t3editor/codecompletion gifbuilder IMAGE type being treated as cObj IMAGE (thanks to Stephan Petzl)
 
 2009-11-03  Ernesto Baschny  <ernst@cron-it.de>
 

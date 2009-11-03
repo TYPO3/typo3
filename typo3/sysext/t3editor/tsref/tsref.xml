@@ -2009,7 +2009,7 @@ NOTE: You may experience that this doesn't work if you use reduceColors-option o
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_ADJUST" extends="GifBuilderObj">
+	<type id="ADJUST" extends="GifBuilderObj">
 		<property name="value" type="string">
 			<description><![CDATA[This lets you adjust the input-levels like in Photoshops "levels"-dialog. If you need to adjust gamma, look at the EFFECT-object.
 Example:
@@ -2027,7 +2027,7 @@ autoLevels: -
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_BOX" extends="GifBuilderObj">
+	<type id="BOX" extends="GifBuilderObj">
 		<property name="align" type="string">
 			<description><![CDATA[VHalign
 ]]></description>
@@ -2048,7 +2048,7 @@ w,h    is the dimensions. Dimensions of 1 will result in 1-pixel wide lines!]]
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_CROP" extends="GifBuilderObj">
+	<type id="CROP" extends="GifBuilderObj">
 		<property name="align" type="string">
 			<description><![CDATA[VHalign
 ]]></description>
@@ -2068,7 +2068,7 @@ v,h  is the dimensions]]></description>
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_EFFECT" extends="GifBuilderObj">
+	<type id="EFFECT" extends="GifBuilderObj">
 		<property name="value" type="string">
 			<description><![CDATA[.value = [Varnavn] = [value] | [Varnavn] = [value]
 
@@ -2098,7 +2098,7 @@ invert: - (invert the colors)
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_EMBOSS" extends="GifBuilderObj">
+	<type id="EMBOSS" extends="GifBuilderObj">
 		<property name="blur" type="int">
 			<description><![CDATA[posint (1-99)
 			Blurring of the shadow. Above 40 only values of 40,50,60,70,80,90 means something.]]></description>
@@ -2174,7 +2174,7 @@ Maximum times is 20 each direction. If you need more, use a larger image.]]></de
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_OUTLINE" extends="GifBuilderObj">
+	<type id="OUTLINE" extends="GifBuilderObj">
 		<property name="color" type="string">
 			<description><![CDATA[GraphicColor
 			Outline color]]></description>
@@ -2195,7 +2195,7 @@ If - on the other hand - the shadow is a property to a text-object, this propert
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_SCALE" extends="GifBuilderObj">
+	<type id="SCALE" extends="GifBuilderObj">
 		<property name="height" type="string">
 			<description><![CDATA[pixels + calc
 ]]></description>
@@ -2215,7 +2215,7 @@ If - on the other hand - the shadow is a property to a text-object, this propert
 ]]></default>
 		</property>
 	</type>
-	<type id="GB_SHADOW" extends="GifBuilderObj">
+	<type id="SHADOW" extends="GifBuilderObj">
 		<property name="blur" type="int">
 			<description><![CDATA[posint (1-99)
 			Blurring of the shadow. Above 40 only values of 40,50,60,70,80,90 means something.
@@ -2281,7 +2281,7 @@ Note: This option is not available if .niceText is enabled]]></description>
 			<description><![CDATA[If set, HTML-tags in the string inserted are NOT removed. Any other way HTML-code is removed by default!]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
-		<property name="emboss" type="GB_EMBOSS">
+		<property name="emboss" type="EMBOSS">
 			<description><![CDATA[
 ]]></description>
 			<default><![CDATA[
@@ -2352,13 +2352,13 @@ Some properties:
 			Offset of the text]]></description>
 			<default><![CDATA[0,0]]></default>
 		</property>
-		<property name="outline" type="GB_OUTLINE">
+		<property name="outline" type="OUTLINE">
 			<description><![CDATA[
 ]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="shadow" type="GB_SHADOW">
+		<property name="shadow" type="SHADOW">
 			<description><![CDATA[
 ]]></description>
 			<default><![CDATA[
@@ -2475,7 +2475,7 @@ The cObj->data-array is loaded with the page-record, if for example the GIFBUILD
 			<default><![CDATA[= ".spacing"*2]]></default>
 		</property>
 	</type>
-	<type id="GB_WORKAREA" extends="GifBuilderObj">
+	<type id="WORKAREA" extends="GifBuilderObj">
 		<property name="clear" type="string">(isset)
 			<description><![CDATA[
 ]]></description>

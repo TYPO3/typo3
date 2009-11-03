@@ -424,7 +424,10 @@ var TsParser = function(tsRef,extTsObjTree){
 		var treeNode = getTreeNode(path);
 		// if we are inside a GIFBUILDER Object
 		if(treeNode.parent != null && treeNode.parent.value == "GIFBUILDER" && value == "TEXT") {
-			value = "IMGTEXT";
+			value = "GB_TEXT";
+		}
+		if(treeNode.parent != null && treeNode.parent.value == "GIFBUILDER" && value == "IMAGE") {
+			value = "GB_IMAGE";
 		}
 		// just override if it is a real objecttype
 		if (tsRef.isType(value)) {
