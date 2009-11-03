@@ -1,7 +1,8 @@
 2009-11-03  Tobias Liebig <mail_typo3@etobi.de>
 
 	* Fixed bug #9513: t3editor bad line numbering
-	* Fixed bug #12409: t3editor/codecompletion objects still showed up after deleting
+	* Fixed bug #12409: t3editor/codecompletion objects still showed up after deleting (thanks to Christian Kartnig)
+	* Fixed bug #12410: t3editor/codecompletion some properties got not listed (thanks to Stephan Petzl)
 
 2009-11-03  Ernesto Baschny  <ernst@cron-it.de>
 
