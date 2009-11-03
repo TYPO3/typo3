@@ -1780,6 +1780,7 @@ final class t3lib_div {
 			} else {
 				$value = addslashes($value);
 			}
+			unset($value);
 		}
 		reset($theArray);
 	}
@@ -1801,6 +1802,7 @@ final class t3lib_div {
 			} else {
 				$value = stripslashes($value);
 			}
+			unset($value);
 		}
 		reset($theArray);
 	}
