@@ -1211,7 +1211,7 @@ Any other string is used as the XML prologue itself.]]></description>
 ]]></description>
 			<default><![CDATA[< [tablename]]]></default>
 		</property>
-		<property name="select" type="string">
+		<property name="select" type="select">
 			<description><![CDATA[The SQL-statement is set here!]]></description>
 			<default><![CDATA[
 ]]></default>
