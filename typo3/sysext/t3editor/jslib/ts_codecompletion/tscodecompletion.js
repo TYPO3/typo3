@@ -39,7 +39,7 @@
  * @param outerdiv div that contains the editor, for DOM manipulation
  * @return A new TsCodeCompletion instance
  */
-var TsCodeCompletion = function(codeMirror,outerdiv) {
+var TsCodeCompletion = function(codeMirror, outerdiv) {
 	// private Vars
 	var tsRef = new TsRef();
 	var mirror = codeMirror;
@@ -57,23 +57,22 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	var linefeedsPrepared = false;
 	var currentCursorPosition = null;
 
-	Event.observe(document,'mousemove',saveMousePos, false);
+	Event.observe(document, 'mousemove', saveMousePos, false);
 
 	// load the external templates ts-setup into extTsObjTree
 	var extTsObjTree = new Object();
-	var parser = new TsParser(tsRef,extTsObjTree);
+	var parser = new TsParser(tsRef, extTsObjTree);
 	loadExtTemplatesAsync();
 
-	//Event.observe(document, 'mousemove', setMousePos);
 
-	// TODO port pugin to t3editor.js
+	// TODO port plugin to t3editor.js
 
 	// plugin-array will be retrieved through AJAX from the conf array
 	// plugins can be attached by regular TYPO3-extensions
 	var plugins = [];
 
-//	we add the description plugin here because its packed with the codecompletion currently
-//	maybe we will swap it to an external plugin in future
+	//	we add the description plugin here because its packed with the codecompletion currently
+	//	maybe we will swap it to an external plugin in future
 	var plugin = new Object();
 	plugin.extpath = PATH_t3e;
 	plugin.classpath = 'jslib/ts_codecompletion/descriptionPlugin.js';
@@ -82,28 +81,23 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	plugins.push(plugin);
 
 
-//	TODO cleanup
-//	to roll back linebreaks inserted by hitting enter, the current node has to be stored before the codecompletion outside of the eventlistener
-//	var nodeBeforeInsert;
-
-
 	var codeCompleteBox = new Element("DIV", {
 		"class": "t3e_codeCompleteBox"
 	});
 	codeCompleteBox.hide();
 	outerdiv.appendChild(codeCompleteBox);
 
-//	TODO do we need this toolbar?
+	//	TODO do we need this toolbar?
 	var toolbardiv = new Element("DIV", {
 		"class": "t3e_toolbar"
 	});
 	toolbardiv.show();
 	outerdiv.appendChild(toolbardiv);
 
-//	load the external xml-reference
+	//	load the external xml-reference
 	tsRef.loadTsrefAsync();
 
-//	plugins will be provided with the pluginContext
+	//	plugins will be provided with the pluginContext
 	var pluginContext = new Object();
 	pluginContext.outerdiv = outerdiv;
 	pluginContext.codeCompleteBox = codeCompleteBox;
@@ -111,9 +105,10 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	pluginContext.tsRef = tsRef;
 	pluginContext.parser = parser;
 	pluginContext.plugins = plugins;
+	pluginContext.codeMirror = codeMirror;
 
-//	should we use a pluginmanager so no for loops are required on each hook?
-//	e.g. pluginmanager.call('afterKeyUp',....);
+	//	should we use a pluginmanager so no for loops are required on each hook?
+	//	e.g. pluginmanager.call('afterKeyUp',....);
 	loadPluginArray();
 
 
@@ -144,7 +139,7 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	}
 
 	/**
-	 * Instantiates all plugins and adds the instances to the plugin array
+	 * instantiates all plugins and adds the instances to the plugin array
 	 */
 	function loadPlugins() {
 		for (var i = 0; i < plugins.length ; i++) {
@@ -157,15 +152,15 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	}
 
 	/**
-	 * Makes a single plugin instance
+	 * makes a single plugin instance
 	 */
 	function makeInstance(plugin, i) {
 		try {
 			var localname = "plugins[" + i + "].obj";
-			eval(localname+' = new '+plugin.classname+'();');
+			eval(localname+' = new ' + plugin.classname + '();');
 			var obj = eval(localname);
 		} catch(e) {
-			throw("error occured while trying to make new instance of \""+plugin.classname+"\"! maybe syntax error or wrong filepath?");
+			throw("error occured while trying to make new instance of \"" + plugin.classname + "\"! maybe syntax error or wrong filepath?");
 			return;
 		}
 		obj.init(pluginContext,plugin);
@@ -199,7 +194,8 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 			var childNode;
 			// if the childnode has a value and there is a parto of a reference operator ('<')
 			// and it does not look like a html tag ('>')
-			if (childNodes[key].v && childNodes[key].v[0] == '<' && childNodes[key].v.indexOf('>') == -1 ){
+			if (childNodes[key].v && childNodes[key].v[0] == '<' 
+			 && childNodes[key].v.indexOf('>') == -1 ) {
 				var path = childNodes[key].v.replace(/</,"").strip();
 				// if there are still whitespaces its no path
 				if (path.indexOf(' ') == -1) {
@@ -224,8 +220,9 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 		var i;
 		for ( i=0 ; i < path.length; i++) {
 			pathSeg = path[i];
-			if(extTree.c == null || extTree.c[pathSeg] == null)
+			if(extTree.c == null || extTree.c[pathSeg] == null) {
 				return null;
+			}
 			extTree = extTree.c[pathSeg];
 		}
 		return extTree;
@@ -262,7 +259,7 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 		endAutoCompletion();
 	}
 
-	function getFilter(cursorNode){
+	function getFilter(cursorNode) {
 		if(cursorNode.currentText) {
 			var filter = cursorNode.currentText.replace('.','');
 			return filter.replace(/\s/g,"");
@@ -339,8 +336,9 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 				event.stop();
 				codeCompleteBoxMoveUpCursor();
 				for (var i=0; i<plugins.length; i++) {
-					if (plugins[i].obj && plugins[i].obj.afterKeyUp)
+					if (plugins[i].obj && plugins[i].obj.afterKeyUp) {
 						plugins[i].obj.afterKeyUp(proposals[currWord],compResult);
+					}
 				}
 
 			} else if (keycode == Event.KEY_DOWN) {
@@ -348,8 +346,9 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 				event.stop();
 				codeCompleteBoxMoveDownCursor();
 				for (var i=0; i<plugins.length; i++){
-					if (plugins[i].obj && plugins[i].obj.afterKeyDown)
+					if (plugins[i].obj && plugins[i].obj.afterKeyDown) {
 						plugins[i].obj.afterKeyDown(proposals[currWord],compResult);
+					}
 				}
 
 			} else if (keycode == Event.KEY_ESC || keycode == Event.KEY_LEFT || keycode== Event.KEY_RIGHT) {
@@ -450,8 +449,9 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 			// highlight first word in list
 			highlightCurrWord(0);
 			for (var i=0;i<plugins.length;i++) {
-				if (plugins[i].obj && plugins[i].obj.afterCCRefresh)
+				if (plugins[i].obj && plugins[i].obj.afterCCRefresh) {
 					plugins[i].obj.afterCCRefresh(proposals[currWord],compResult);
+			}
 			}
 		} else {
 			endAutoCompletion();
@@ -473,16 +473,19 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	function endAutoCompletion(){
 		cc = 0;
 		codeCompleteBox.hide();
-//		force full refresh
+		// force full refresh
 		compResult = null;
 		for (var i=0;i<plugins.length;i++) {
-			if (plugins[i].obj && plugins[i].obj.endCodeCompletion)
+			if (plugins[i].obj && plugins[i].obj.endCodeCompletion) {
 				plugins[i].obj.endCodeCompletion();
 		}
 	}
+	}
 
 
-//	move cursor in autcomplete box up
+	/**
+	 * move cursor in autcomplete box up
+	 */
 	function codeCompleteBoxMoveUpCursor() {
 		// if previous position was first or position not initialized - then move cursor to last word, else decrease position
 		if (currWord == 0 || currWord == -1) {
@@ -504,7 +507,9 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 		}
 	}
 
-//	move cursor in codecomplete box down
+	/**
+	 * move cursor in codecomplete box down
+	 */
 	function codeCompleteBoxMoveDownCursor() {
 		// if previous position was last word in list - then move cursor to first word if not than	position ++
 		if (currWord == proposals.length - 1) {
@@ -531,6 +536,7 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 		mousePos.x = event.clientX;
 		mousePos.y = event.clientY;
 	}
+	
 	/**
 	 * highlights entry in codecomplete box by id
 	 * @param {int} id
@@ -539,15 +545,19 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	this.onMouseOver = function(id,event){
 		highlightCurrWord(id,event);
 		for(var i=0;i<plugins.length;i++){
-			if(plugins[i].obj && plugins[i].obj.afterMouseOver) plugins[i].obj.afterMouseOver(proposals[currWord],compResult);
+			if(plugins[i].obj && plugins[i].obj.afterMouseOver) {
+				plugins[i].obj.afterMouseOver(proposals[currWord],compResult);
+			}
 		}
 	}
+	
 	function highlightCurrWord(id,event) {
-//		if it is a mouseover event
+		// if it is a mouseover event
 		if(event){
 			// if mousecoordinates haven't changed -> mouseover was triggered by scrolling of the result list -> don't highlight another word (return)
-			if(mousePos.x == event.clientX && mousePos.y == event.clientY)
+			if(mousePos.x == event.clientX && mousePos.y == event.clientY) {
 				return;
+			}
 			mousePos.x = event.clientX;
 			mousePos.y = event.clientY;
 		}
@@ -567,9 +577,13 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 	this.insertCurrWordAtCursor = function(){
 		insertCurrWordAtCursor();
 	}
-	// insert selected word into text from codecompletebox
+	
+	/**
+	 * insert selected word into text from codecompletebox
+	 */
 	function insertCurrWordAtCursor() {
 		var word = proposals[currWord].word;
+		// tokenize current line
 		mirror.editor.highlightAtCursor();
 		var cursorNode = getCursorNode();
 		if (cursorNode.currentText
@@ -583,47 +597,12 @@ var TsCodeCompletion = function(codeMirror,outerdiv) {
 		var select = mirror.editor.win.select;
 		var start = select.cursorPos(mirror.editor.container, true),
 			end = select.cursorPos(mirror.editor.container, false);
-		if (!start || !end) return;
+		if (!start || !end) {
+			return;
+		}
 		select.setCursorPos(mirror.editor.container, end, end);
 	}
 
-
-//	TODO remove if unneeded
-	/**
-	 * determines what kind of completion is possible and return a array of proposals
-	 * if we have no suggestions, the list will be empty
-	 */
-	/*
-function getCompletionResult(startNode, cursor) {
-var compResult;
-buildTsObjTree(startNode, cursor);
-
-// is there an operator left of the current curser Position (= in the currentLine)
-var op = getOperator(currentLine);
-if (op != -1) {
-	// is it a reference/copy operator?
-	if (op.indexOf("<") != -1) {
-		// show path completion
-		compResult = getPathCompletion(currentTsTreeNode);
-	} else {
-		// show what ?????
-		// biggest mystery!!
-		// think about!
-	}
-	// no operator in the line
-} else {
-
-	// whitespace after last characters? -> show operators
-	if(currentLine.substr(-1,1) == " ") {
-		compResult = getOperatorCompletion();
-		// no whitespace? we're in a path!
-	} else {
-		compResult = getPathCompletion(currentTsTreeNode);
-	}
-}
-
-return compResult;
-}*/
 
 	/**
 	 * retrieves the get-variable with the specified name
@@ -651,7 +630,7 @@ return compResult;
 			}
 		} while(name_index != -1);
 
-//		Restores all the blank spaces.
+		// Restores all the blank spaces.
 		var space = return_value.indexOf('+');
 		while(space != -1) {
 			return_value = return_value.substr(0, space) + ' ' +

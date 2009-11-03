@@ -87,10 +87,9 @@ var DescriptionPlugin = function() {
 			descriptionBox.hide();
 		}
 
-
 		descriptionBox.scrollTop = 0;
 		descriptionBox.style.overflowY = 'scroll';
-		descriptionBox.style.class = 'descriptionBox';
+		descriptionBox.addClassName('descriptionBox');
 		var leftOffset = parseInt(completionBox.getStyle('left').gsub('px','')) + parseInt(completionBox.getStyle('width').gsub('px','')) + 5;
 		leftOffset += 'px';
 		descriptionBox.setStyle({

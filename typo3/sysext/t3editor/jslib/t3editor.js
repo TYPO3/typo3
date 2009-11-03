@@ -70,14 +70,6 @@ function T3editor(textarea) {
 	});
 	this.outerdiv.appendChild(this.modalOverlay);
 
-/*
-		// wrapping the Toolbar
-	this.toolbar_wrap = new Element("DIV", {
-		"class": "t3e_toolbar_wrap"
-	});
-	this.outerdiv.appendChild(this.toolbar_wrap);
-*/
-	
 		// wrapping the linenumbers
 	this.linenum_wrap = new Element("DIV", {
 		"class": "t3e_linenum_wrap"
@@ -153,7 +145,9 @@ T3editor.prototype = {
 			// hide the textarea
 			this.textarea.hide();
 
-			this.saveButtons = $(this.textarea.form).getInputs('image', 'submit');
+			// get the form object (needed for Ajax saving)
+			var form = $(this.textarea.form);
+			this.saveButtons = form.getInputs('image', 'submit');
 
 			// initialize ajax saving events
 			this.saveFunctionEvent = this.saveFunction.bind(this);

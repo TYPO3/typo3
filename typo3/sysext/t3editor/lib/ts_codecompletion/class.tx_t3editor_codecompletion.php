@@ -25,6 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once(PATH_t3lib.'class.t3lib_page.php');
 $GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
 
 class tx_t3editor_codecompletion {

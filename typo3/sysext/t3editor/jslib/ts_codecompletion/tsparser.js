@@ -84,12 +84,13 @@ var TsParser = function(tsRef,extTsObjTree){
 					return node.v;
 				} else {
 					var type = this.getNodeTypeFromTsref();
-					if(type)
+					if(type) {
 						return type;
-					else
+					} else {
 						return '';
 				}
 			}
+		}
 		}
 
 		/**
@@ -125,7 +126,9 @@ var TsParser = function(tsRef,extTsObjTree){
 			var extTree = extTsObjTree;
 			var path = this.extPath.split('.');
 			var pathSeg;
-			if (path == "") return extTree;
+			if (path == "") {
+			return extTree;
+			}
 			var i;
 			for(i=0;i<path.length;i++){
 				pathSeg = path[i];
@@ -192,9 +195,15 @@ var TsParser = function(tsRef,extTsObjTree){
 		while(true) {
 			if(currentNode.hasChildNodes() && currentNode.firstChild.nodeType==3 && currentNode.currentText.length>0) {
 				node = currentNode.currentText;
-				if (node[0] == '#')stack.push('#');
-				if (node    == '(')stack.push('(');
-				if (node[0] == '/' && node[1]=='*')stack.push('/*');
+				if (node[0] == '#') {
+					stack.push('#');
+				}
+				if (node == '(') {
+					stack.push('(');
+				}
+				if (node[0] == '/' && node[1]=='*') {
+					stack.push('/*');
+				}
 				if (node    == '{') {
 					// TODO: ignore whole block if wrong whitespaces in this line
 					stack.push('{');
@@ -229,8 +238,6 @@ var TsParser = function(tsRef,extTsObjTree){
 					insideCondition = false;
 					ignoreLine = true;
 				}
-
-
 
 				if (node == ')') {
 					stack.popIfLastElementEquals('(');
@@ -393,12 +400,12 @@ var TsParser = function(tsRef,extTsObjTree){
 		// step through the path from left to right
 		for(i=0;i<aPath.length;i++){
 			pathSeg = aPath[i];
+
 			// if there isn't already a treenode
 			if(subTree[pathSeg] == null || subTree[pathSeg].childNodes == null){ // if this subpath is not defined in the code
 				// create a new treenode
 				subTree[pathSeg] = new TreeNode(pathSeg);
 				subTree[pathSeg].parent = parent;
-				//subTree[pathSeg].extTsObjTree = extTsObjTree;
 				// the extPath has to be set, so the TreeNode can retrieve the respecting node in the external templates
 				var extPath = parent.extPath;
 				if(extPath) {
@@ -504,6 +511,5 @@ var TsParser = function(tsRef,extTsObjTree){
 			tsTree.childNodes[lastNodeName] = this.clone(treeNode2);
 			//tsTree[lastNodeName].extTsObjTree = extTsObjTree;
 		}
-
 	}
 }
