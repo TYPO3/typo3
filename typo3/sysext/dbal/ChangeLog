@@ -1,5 +1,6 @@
 2009-11-03  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Added some general unit tests (without any engine-specific test nor mapping)
 	* Cleanup #12440: Copy DBAL-only SQL parser methods from t3lib_sqlparser to ux_t3lib_sqlparser
 	* Fixed bug #12231: New caching framework (4.3-dev) does not work with DBAL
 
