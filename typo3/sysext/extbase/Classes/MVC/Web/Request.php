@@ -58,9 +58,14 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	protected $baseURI;
 
 	/**
-	 * @var boolean TRUE if the HMAC of this request could be verified, FALSE otherwise.
+	 * @var boolean TRUE if the HMAC of this request could be verified, FALSE otherwise
 	 */
 	protected $hmacVerified = FALSE;
+
+	/**
+	 * @var array data of the current cObj
+	 */
+	protected $contentObjectData = array();
 
 	/**
 	 * Sets the request method
@@ -131,7 +136,7 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	/**
 	 * Could the request be verified via a HMAC?
 	 *
-	 * @param boolean $hmacVerified TRUE if request could be verified, FALSE otherwise.
+	 * @param boolean $hmacVerified TRUE if request could be verified, FALSE otherwise
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -142,11 +147,33 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	/**
 	 * Could the request be verified via a HMAC?
 	 *
-	 * @return boolean TRUE if request could be verified, FALSE otherwise.
+	 * @return boolean TRUE if request could be verified, FALSE otherwise
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function isHmacVerified() {
 		return $this->hmacVerified;
+	}
+
+	/**
+	 * Sets the data array of the current content object
+	 *
+	 * @param array $contentObjectData data of the current cObj
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function setContentObjectData(array $contentObjectData) {
+		$this->contentObjectData = $contentObjectData;
+	}
+
+	/**
+	 * Returns the data array of the current content object
+	 *
+	 * @return array data of the current cObj
+	 * @api (v4 only)
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function getContentObjectData() {
+		return $this->contentObjectData;
 	}
 }
 ?>

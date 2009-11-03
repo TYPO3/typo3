@@ -105,6 +105,7 @@ class Tx_Extbase_Dispatcher {
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize(self::$extbaseFrameworkConfiguration);
 		$request = $requestBuilder->build();
+		$request->setContentObjectData($this->cObj->data);
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
 		// Request hash service
