@@ -384,8 +384,7 @@ function t3editor_toggleEditor(checkbox, index) {
 // ------------------------------------------------------------------------
 
 
-if (!Prototype.Browser.MobileSafari
-	&& !Prototype.Browser.WebKit) {
+if (!Prototype.Browser.MobileSafari) {
 	
 	// everything ready: turn textarea's into fancy editors	
 	Event.observe(window, 'load',
