@@ -1,3 +1,7 @@
+2009-11-03  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #5120: SQL parse error in "Who is online" with DBAL (PostgreSQL / Oracle)
+
 2009-11-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12439: htmlArea RTE: js error raised on paste by default word cleaning

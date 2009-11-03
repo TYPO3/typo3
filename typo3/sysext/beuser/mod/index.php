@@ -1543,16 +1543,16 @@ class SC_mod_tools_be_user_index {
 	 */
 	function whoIsOnline()	{
 		$select_fields = 'ses_id, ses_tstamp, ses_iplock, u.uid,u.username, u.admin, u.realName, u.disable, u.starttime, u.endtime, u.deleted, bu.uid AS bu_uid,bu.username AS bu_username, bu.realName AS bu_realName';
-		$from_table = '(be_sessions, be_users u) LEFT OUTER JOIN be_users bu ON (ses_backuserid=bu.uid)';
-		$where_clause = 'ses_userid=u.uid';
+		$from_table = 'be_sessions INNER JOIN be_users u ON ses_userid=u.uid LEFT OUTER JOIN be_users bu ON ses_backuserid=bu.uid';
+		$where_clause = '';
 		$orderBy = 'u.username';
 
 		if (t3lib_div::testInt($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']))	{
-			$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+'.$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'].')';
+			$where_clause .= 'ses_tstamp+' . $GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] . ' > ' . $GLOBALS['EXEC_TIME'];
 		} else {
 			$timeout = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout']);
 			if ($timeout > 0)	{
-				$where_clause .= ' AND '.$GLOBALS['EXEC_TIME'].'<(ses_tstamp+'.$timeout.')';
+				$where_clause .= 'ses_tstamp+' . $timeout . ' > ' . $GLOBALS['EXEC_TIME'];
 			}
 		}
 			// Fetch active sessions of other users from storage:
