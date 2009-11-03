@@ -787,8 +787,10 @@ class t3lib_sqlparser {
 	 * @param	string		Regular expressing to STOP parsing, eg. '^(WHERE)([[:space:]]*)'
 	 * @return	array		If successful parsing, returns an array, otherwise an error string.
 	 * @see compileFromTables()
+	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.5, this is a DBAL-only method that was moved to ux_t3lib_sqlparser.
 	 */
 	public function parseFromTables(&$parseString, $stopRegex = '') {
+		t3lib_div::logDeprecatedFunction();
 
 			// Prepare variables:
 		$parseString = $this->trimSQL($parseString);
@@ -885,8 +887,10 @@ class t3lib_sqlparser {
 	 * @param	string		WHERE clause to parse. NOTICE: passed by reference!
 	 * @param	string		Regular expressing to STOP parsing, eg. '^(GROUP BY|ORDER BY|LIMIT)([[:space:]]*)'
 	 * @return	mixed		If successful parsing, returns an array, otherwise an error string.
+	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.5, this is a DBAL-only method that was moved to ux_t3lib_sqlparser.
 	 */
 	public function parseWhereClause(&$parseString, $stopRegex = '') {
+		t3lib_div::logDeprecatedFunction();
 
 			// Prepare variables:
 		$parseString = $this->trimSQL($parseString);
@@ -1521,8 +1525,10 @@ return $str;
 	 * @param	array		Array of table names, (made with ->parseFromTables())
 	 * @return	string		Table name string
 	 * @see parseFromTables()
+	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.5, this is a DBAL-only method that was moved to ux_t3lib_sqlparser.
 	 */
 	public function compileFromTables($tablesArray) {
+		t3lib_div::logDeprecatedFunction();
 
 			// Prepare buffer variable:
 		$outputParts = array();
@@ -1567,8 +1573,10 @@ return $str;
 	 * @param	array		WHERE clause configuration
 	 * @return	string		WHERE clause as string.
 	 * @see	explodeWhereClause()
+	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.5, this is a DBAL-only method that was moved to ux_t3lib_sqlparser.
 	 */
 	public function compileWhereClause($clauseArray) {
+		t3lib_div::logDeprecatedFunction();
 
 			// Prepare buffer variable:
 		$output='';

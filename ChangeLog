@@ -1,3 +1,7 @@
+2009-11-03  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup #12440: Copy DBAL-only SQL parser methods from t3lib_sqlparser to ux_t3lib_sqlparser (thanks to Xavier Perseguers)
+
 2009-11-03  Tobias Liebig <mail_typo3@etobi.de>
 
 	* Fixed bug #9513: t3editor bad line numbering
