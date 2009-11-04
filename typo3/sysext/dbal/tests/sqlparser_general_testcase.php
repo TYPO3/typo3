@@ -42,11 +42,17 @@ class sqlparser_general_testcase extends BaseTestCase {
 	 */
 	protected $fixture;
 
+	/**
+	 * Prepares the environment before running a test.
+	 */
 	public function setUp() {
 		$className = self::buildAccessibleProxy('ux_t3lib_sqlparser');
 		$this->fixture = new $className;
 	}
 
+	/**
+	 * Cleans up the environment after running a test.
+	 */
 	public function tearDown() {
 		unset($this->fixture);
 	}
