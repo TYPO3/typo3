@@ -1,5 +1,6 @@
 2009-11-05  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Set version to 0.9.24
 	* Follow-up of RFC #12452: Reflected change of visibility of method compileFieldCfg() in t3lib_sqlparser
 
 2009-11-04  Xavier Perseguers  <typo3@perseguers.ch>
