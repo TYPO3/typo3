@@ -566,7 +566,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @param	array		Field definition parts
 	 * @return	string		Field definition string
 	 */
-	protected function compileFieldCfg($fieldCfg) {
+	public function compileFieldCfg($fieldCfg) {
 		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$cfg = parent::compileFieldCfg($fieldCfg);
