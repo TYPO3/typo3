@@ -1,3 +1,7 @@
+2009-11-04  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12452: Fatal error in install tool DB-compare with multiplyDbFieldSize > 1
+
 2009-11-04  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #12381: Scheduler: BLOB database fields may not be NOT NULL (thanks to Tolleiv Nietsch)

@@ -1630,7 +1630,7 @@ return $str;
 	 * @param	array		Field definition parts
 	 * @return	string		Field definition string
 	 */
-	protected function compileFieldCfg($fieldCfg) {
+	public function compileFieldCfg($fieldCfg) {
 
 			// Set type:
 		$cfg = $fieldCfg['fieldType'];
