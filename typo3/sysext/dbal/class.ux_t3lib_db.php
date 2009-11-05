@@ -936,11 +936,9 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		List of fields to be selected from DB
 	 * @return	string		Quoted list of fields to be selected from DB
-	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.4
+	 * @deprecated since TYPO3 4.0
 	 */
 	public function quoteSelectFields($select_fields) {
-		t3lib_div::logDeprecatedFunction();
-
 		$this->quoteFieldNames($select_fields);
 	}
 
@@ -1632,8 +1630,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @deprecated since TYPO3 4.1
 	 */
 	public function sql($db,$query) {
-		t3lib_div::logDeprecatedFunction();
-
 		return $this->sql_query($query);
 	}
 
@@ -1648,8 +1644,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @deprecated since TYPO3 4.1
 	 */
 	public function sql_query($query) {
-		t3lib_div::logDeprecatedFunction();
-
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
 			case 'native':
 				$sqlResult = mysql_query($query, $this->handlerInstance['_DEFAULT']['link']);
@@ -1684,8 +1678,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @see handler_init()
 	 */
 	public function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
-		t3lib_div::logDeprecatedFunction();
-
 			// Overriding the _DEFAULT handler configuration of username, password, localhost and database name:
 		$this->handlerCfg['_DEFAULT']['config']['username'] = $TYPO3_db_username;
 		$this->handlerCfg['_DEFAULT']['config']['password'] = $TYPO3_db_password;
@@ -1705,8 +1697,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @deprecated since TYPO3 4.1
 	 */
 	public function sql_select_db($TYPO3_db) {
-		t3lib_div::logDeprecatedFunction();
-
 		return TRUE;
 	}
 
