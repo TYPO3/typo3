@@ -19,7 +19,7 @@
  * = Examples =
  *
  * <code title="Defaults">
- * <link href="{f:uri.resource('css/stylesheet.css')}" rel="stylesheet" />
+ * <link href="{f:uri.resource(path:'css/stylesheet.css')}" rel="stylesheet" />
  * </code>
  *
  * Output:
@@ -35,18 +35,17 @@ class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper extends Tx_Fluid_Core_ViewHelp
 	/**
 	 * Render the URI to the resource. The filename is used from child content.
 	 *
+	 * @param string $path The path and filename of the resource (relative to Public resource directory of the extension).
 	 * @param string $extensionName Target extension name. If not set, the current extension name will be used
 	 * @param boolean $absolute If set, an absolute URI is rendered
 	 * @return string The URI to the resource
 	 * @api
 	 */
-	public function render($extensionName = NULL, $absolute = FALSE) {
+	public function render($path, $extensionName = NULL, $absolute = FALSE) {
 		if ($extensionName === NULL) {
 			$extensionName = $this->controllerContext->getRequest()->getControllerExtensionName();
 		}
-		$resource = $this->renderChildren();
-
-		$uri = 'EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $resource;
+		$uri = 'EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName) . '/Resources/Public/' . $path;
 		$uri = t3lib_div::getFileAbsFileName($uri);
 		$uri = substr($uri, strlen(PATH_site));
 
