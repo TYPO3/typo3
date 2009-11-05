@@ -133,7 +133,7 @@ Recycler.grid = {
 				startUid: Recycler.statics.startUid,
 				pagingSizeDefault: Recycler.statics.pagingSize,
 				table: Recycler.statics.tableSelection
-		}
+		};
 		
 		
 
@@ -159,8 +159,7 @@ Recycler.grid = {
 
 		var rowAction = function(ob, confirmQuestion, cmd, confirmTitle, confirmText) {
 				// get the 'undeleted records' grid object
-			var grid = tabs.getComponent(0).getComponent(0);
-			recArray = grid.getSelectionModel().getSelections();
+			var recArray = gridContainer.getSelectionModel().getSelections();
 
 			if (recArray.length > 0) {
 
@@ -206,7 +205,7 @@ Recycler.grid = {
 						{
 							text: Recycler.lang.yes,
 							handler: function(cmp, e) {
-								tcemainData = new Array();
+								var tcemainData = [];
 
 								for (iterator=0; iterator < recArray.length; iterator++) {
 									tcemainData[iterator] = [recArray[iterator].data.table, recArray[iterator].data.uid];
@@ -217,7 +216,7 @@ Recycler.grid = {
 									callback: function(options, success, response) {
 										if (response.responseText === "1") {
 											// reload the records and the table selector
-											grid.getStore().reload();
+											gridDs.reload();
 											Ext.getCmp('tableSelector').store.reload();
 											if (arePagesAffected) {
 												Recycler.utility.updatePageTree();
@@ -255,37 +254,67 @@ Recycler.grid = {
 		};
 
 		/****************************************************
-		 * tab container
+		 * grid container
 		 ****************************************************/
-
-		var tabs = new Ext.TabPanel({
+		var gridContainer = new Ext.grid.GridPanel ({
+			layout: 'fit',
 			renderTo: Recycler.statics.renderTo,
-			layoutOnTabChange: true,
-			activeTab: 0,
-			width: '99%',
-			height: 600,
+			width: '98%',
+			height: parseInt(Recycler.statics.gridHeight),
 			frame: true,
-			border: false,
-			defaults: {autoScroll: true},
+			border: true,
+			defaults: {autoScroll: false},
 			plain: true,
-			buttons: [{
+			id: 'delRecordId',
+			loadMask: true,
+			stripeRows: true,
+			collapsible: false,
+			animCollapse: false,
+			store: gridDs,
+			cm: new Ext.grid.ColumnModel([
+				sm,
+				expander,
+				{header: "UID", width: 10, sortable: true, dataIndex: 'uid'},
+				{header: "PID", width: 10, sortable: true, dataIndex: 'pid'},
+				{id: 'record', header: Recycler.lang.records, width: 60, sortable: true, dataIndex: 'record', renderer: renderTopic},
+				{id: 'table', header: Recycler.lang.table, width: 20, sortable: true, dataIndex: 'tableTitle'}
+			]),
+			viewConfig: {
+				forceFit: true
+			},
+			sm: sm,
+			plugins: [expander, new Ext.ux.plugins.FitToParent()],
+			bbar: [
+				{
 
+					/****************************************************
+					 * Paging toolbar
+					 ****************************************************/
+					id: 'recordPaging',
+					xtype: 'paging',
+					store: gridDs,
+					pageSize: Recycler.statics.pagingSize,
+					displayInfo: true,
+					displayMsg: Recycler.lang.pagingMessage,
+					emptyMsg: Recycler.lang.pagingEmpty
+				}, '-', {
 					/****************************************************
 					 * Delete button
 					 ****************************************************/
-
+					xtype: 'button',
+					width: 80,
 					id: 'deleteButton',
 					text: Recycler.lang.deleteButton_text,
 					tooltip: Recycler.lang.deleteButton_tooltip,
 					iconCls: 'delete',
 					disabled: Recycler.statics.deleteDisable,
 					handler: function_delete
-				},{
-
+				}, {
 					/****************************************************
 					 * Undelete button
 					 ****************************************************/
-
+					xtype: 'button',
+					width: 80,
 					id: 'undeleteButton',
 					text: Recycler.lang.undeleteButton_text,
 					tooltip: Recycler.lang.undeleteButton_tooltip,
@@ -293,207 +322,134 @@ Recycler.grid = {
 					handler: function_undelete
 				}
 			],
-			buttonAlign:'left',
-			items:[
-				{
+
+			tbar: [
+				Recycler.lang.search, ' ',
+					new Ext.app.SearchField({
+					store: gridDs,
+					width: 200
+				}),
+				'-', {
+					xtype: 'tbtext',
+					text: Recycler.lang.depth + ':'
+				},{
 
 					/****************************************************
-					 * Deleted records Tab
+					 * Depth menu
 					 ****************************************************/
-
-					id: 'delRecordId',
-					title: Recycler.lang.deletedTab,
-					items: [
-						{
-
-							/****************************************************
-							 * Grid
-							 ****************************************************/
-
-							xtype: 'grid',
-							loadMask: true,
-							store: gridDs,
-							cm: new Ext.grid.ColumnModel([
-								sm,
-								expander,
-								{header: "UID", width: 10, sortable: true, dataIndex: 'uid'},
-								{header: "PID", width: 10, sortable: true, dataIndex: 'pid'},
-								{id:'record',header: "Records", width: 60, sortable: true, dataIndex: 'record', renderer: renderTopic},
-								{header: "Table", width: 20, sortable: true, dataIndex: 'tableTitle'}
-							]),
-
-							view: new Ext.grid.GridView({
-								forceFit:true
-							}),
-
-							bbar: [
-								{
-
-									/****************************************************
-									 * Paging toolbar
-									 ****************************************************/
-									id: 'recordPaging',
-									xtype: 'paging',
-									store: gridDs,
-									pageSize: Recycler.statics.pagingSize,
-									displayInfo: true,
-									displayMsg: Recycler.lang.pagingMessage,
-									emptyMsg: Recycler.lang.pagingEmpty
-								}
-							],
-
-							tbar: [
-									Recycler.lang.search, ' ',
-										new Ext.app.SearchField({
-										store: gridDs,
-										width: 200
-									}),
-									'->', {
-
-									/****************************************************
-									 * Depth menu
-									 ****************************************************/
-
-									xtype: 'combo',
-									lazyRender: true,
-									valueField: 'depth',
-									displayField: 'label',
-									id: 'depthSelector',
-									mode: 'local',
-									emptyText: Recycler.lang.depth,
-									selectOnFocus: true,
-									readOnly: true,
-									triggerAction: 'all',
-									editable: false,
-									forceSelection: true,
-									hidden: Recycler.lang.showDepthMenu,
-									store: new Ext.data.SimpleStore({
-										autoLoad: true,
-										fields: ['depth','label'],
-										data : [
-											['0', Recycler.lang.depth_0],
-											['1', Recycler.lang.depth_1],
-											['2', Recycler.lang.depth_2],
-											['3', Recycler.lang.depth_3],
-											['4', Recycler.lang.depth_4],
-											['999', Recycler.lang.depth_infi]
-										]
-									}),
-									value: Recycler.statics.depthSelection,
-									listeners: {
-										'select': {
-											fn: function(cmp, rec, index) {
-												var store = tabs.getComponent(0).getComponent(0).getStore();
-												var depth = rec.get('depth');
-												gridDs.setBaseParam('depth', depth);
-												store.load({
-													params: {
-														start: 0
-													}
-												});
-
-												Ext.getCmp('tableSelector').store.load({
-													params: {
-														depth: depth
-													}
-												});
-											}
-										}
+	
+					xtype: 'combo',
+					width: 150,
+					lazyRender: true,
+					valueField: 'depth',
+					displayField: 'label',
+					id: 'depthSelector',
+					mode: 'local',
+					emptyText: Recycler.lang.depth,
+					selectOnFocus: true,
+					readOnly: true,
+					triggerAction: 'all',
+					editable: false,
+					forceSelection: true,
+					hidden: Recycler.lang.showDepthMenu,
+					store: new Ext.data.SimpleStore({
+						autoLoad: true,
+						fields: ['depth','label'],
+						data : [
+							['0', Recycler.lang.depth_0],
+							['1', Recycler.lang.depth_1],
+							['2', Recycler.lang.depth_2],
+							['3', Recycler.lang.depth_3],
+							['4', Recycler.lang.depth_4],
+							['999', Recycler.lang.depth_infi]
+						]
+					}),
+					value: Recycler.statics.depthSelection,
+					listeners: {
+						'select': {
+							fn: function(cmp, rec, index) {
+								var depth = rec.get('depth');
+								gridDs.setBaseParam('depth', depth);
+								gridDs.load({
+									params: {
+										start: 0
 									}
-								},'->',{
-
-									/****************************************************
-									 * Table menu
-									 ****************************************************/
-
-									xtype: 'combo',
-									lazyRender: true,
-									valueField: 'valueField',
-									displayField: 'tableTitle',
-									id: 'tableSelector',
-									mode: 'local',
-									emptyText: Recycler.lang.tableMenu_emptyText,
-									selectOnFocus: true,
-									readOnly: true,
-									triggerAction: 'all',
-									editable: false,
-									forceSelection: true,
-
-									store: new Ext.data.Store({
-										autoLoad: true,
-										url: Recycler.statics.ajaxController + '&startUid=' + Recycler.statics.startUid + '&cmd=getTables' + '&depth=' + Recycler.statics.depthSelection,
-										reader: new Ext.data.ArrayReader({}, [
-											{name: 'table', type: 'string'},
-											{name: 'records', type: 'int'},
-											{name: 'valueField', type: 'string'},
-											{name: 'tableTitle', type: 'string'}
-										]),
-										listeners: {
-											'load': {
-												fn: function(store, records) {
-													Ext.getCmp('tableSelector').setValue(Recycler.statics.tableSelection);
-												},
-												single: true
-											}
-										}
-									}),
-									valueNotFoundText: String.format(Recycler.lang.noValueFound, Recycler.statics.tableSelection),
-									tpl: '<tpl for="."><tpl if="records &gt; 0"><div ext:qtip="{table} ({records})" class="x-combo-list-item">{tableTitle} ({records}) </div></tpl><tpl if="records &lt; 1"><div ext:qtip="{table} ({records})" class="x-combo-list-item x-item-disabled">{tableTitle} ({records}) </div></tpl></tpl>',
-									listeners: {
-										'select': {
-											fn: function(cmp, rec, index) {
-												var store = gridDs;
-												var table = rec.get('valueField');
-
-												// do not reload if the table selected has no deleted records - hide all records
-												if (rec.get('records') <= 0) {
-													store.filter('uid', '-1'); // never true
-													return false;
-												}
-												gridDs.setBaseParam('table', table);
-												store.load({
-													params: {
-														start: 0
-													}
-												});
-											}
-										}
+								});
+	
+								Ext.getCmp('tableSelector').store.load({
+									params: {
+										depth: depth
 									}
-								}
-							],
-
-							sm: sm,
-							plugins: expander,
-							loadMask: true,
-							stripeRows: true,
-							width: '100%',
-							height: 530,
-							collapsible: false,
-							animCollapse: false,
-							frame: false,
-							border: false,
-							listeners: {
-								'render': {
-									fn: function(cmp) {
-										cmp.getStore().load();
-									},
-									single: true
-								}
+								});
 							}
 						}
-					]
-				}//,{
+					}
+				},'-',{
+					xtype: 'tbtext',
+					text: Recycler.lang.tableMenu_label
+				},{
 
 					/****************************************************
-					 * Lost and found Tab
+					 * Table menu
 					 ****************************************************/
-					/*
-					id: 'lostAndFoundId',
-					title: Recycler.staticsRecycler.statics.lostFoundTab,
-					html:'Later'
-				}	*/
+
+					xtype: 'combo',
+					lazyRender: true,
+					valueField: 'valueField',
+					displayField: 'tableTitle',
+					id: 'tableSelector',
+					mode: 'local',
+					emptyText: Recycler.lang.tableMenu_emptyText,
+					selectOnFocus: true,
+					readOnly: true,
+					triggerAction: 'all',
+					editable: false,
+					forceSelection: true,
+
+					store: new Ext.data.Store({
+						autoLoad: true,
+						url: Recycler.statics.ajaxController + '&startUid=' + Recycler.statics.startUid + '&cmd=getTables' + '&depth=' + Recycler.statics.depthSelection,
+						reader: new Ext.data.ArrayReader({}, [
+							{name: 'table', type: 'string'},
+							{name: 'records', type: 'int'},
+							{name: 'valueField', type: 'string'},
+							{name: 'tableTitle', type: 'string'}
+						]),
+						listeners: {
+							'load': {
+								fn: function(store, records) {
+									Ext.getCmp('tableSelector').setValue(Recycler.statics.tableSelection);
+								},
+								single: true
+							}
+						}
+					}),
+					valueNotFoundText: String.format(Recycler.lang.noValueFound, Recycler.statics.tableSelection),
+					tpl: '<tpl for="."><tpl if="records &gt; 0"><div ext:qtip="{table} ({records})" class="x-combo-list-item">{tableTitle} ({records}) </div></tpl><tpl if="records &lt; 1"><div ext:qtip="{table} ({records})" class="x-combo-list-item x-item-disabled">{tableTitle} ({records}) </div></tpl></tpl>',
+					listeners: {
+						'select': {
+							fn: function(cmp, rec, index) {
+								var table = rec.get('valueField');
+
+								// do not reload if the table selected has no deleted records - hide all records
+								if (rec.get('records') <= 0) {
+									gridDs.filter('uid', '-1'); // never true
+									return false;
+								}
+								gridDs.setBaseParam('table', table);
+								gridDs.load({
+									params: {
+										start: 0
+									}
+								});
+							}
+						}
+					}
+				}
 			]
+
 		});
+		gridDs.load();
 	}
 };
 
@@ -505,3 +461,32 @@ Recycler.utility = {
 		}
 	}
 };
+
+/* plugin for resize of grid in single container */
+Ext.namespace('Ext.ux.plugins');
+Ext.ux.plugins.FitToParent = Ext.extend(Object, {
+	constructor : function(parent) {
+		this.parent = parent;
+	},
+	init : function(c) {
+		c.on('render', function(c) {
+			c.fitToElement = Ext.get(this.parent
+					|| c.getDomPositionEl().dom.parentNode);
+			if (!c.doLayout) {
+				this.fitSizeToParent();
+				Ext.EventManager.onWindowResize(this.fitSizeToParent, this);
+			}
+		}, this, {
+			single : true
+		});
+		if (c.doLayout) {
+			c.monitorResize = true;
+			c.doLayout = c.doLayout.createInterceptor(this.fitSizeToParent);
+		}
+	},
+	fitSizeToParent : function() {
+		var pos = this.getPosition(true), size = this.fitToElement
+				.getViewSize();
+		this.setSize(size.width - pos[0], size.height - pos[1]);
+	}
+});

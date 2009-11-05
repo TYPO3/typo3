@@ -1,4 +1,18 @@
+body#ext-recycler-mod1-index-php {
+	margin-left: 0;
+}
+#recyclerContent {
+	margin: 10px 0 0 4px;
+}
 body .x-panel { margin-bottom:20px; }
+
+.x-toolbar-ct .x-toolbar-left {
+	width: 400px;
+}
+
+.x-toolbar-ct .x-toolbar-right {
+	
+}
 
 .icon-grid { background-image:url('../icons/recycler2.gif') !important; }
 

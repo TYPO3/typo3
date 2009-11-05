@@ -88,13 +88,14 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	public function render() {
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('title'), $GLOBALS['LANG']->getLL('description'));
 		if ($this->isAccessibleForCurrentUser) {
 			$this->loadHeaderData();
 				// div container for renderTo
-			$this->content.= '<div id="recyclerContent"></div>';
+			$this->content .= '<div id="recyclerContent"></div>';
 		} else {
 			// If no access or if ID == zero
-			$this->content.= $this->doc->spacer(10);
+			$this->content .= $this->doc->spacer(10);
 		}
 	}
 
@@ -111,7 +112,6 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			$this->getTemplateMarkers()
 		);
 		$content.= $this->doc->endPage();
-		$content.= $this->doc->insertStylesAndJS($this->content);
 
 		$this->content = null;
 		$this->doc = null;
@@ -178,6 +178,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	 * @return	array		The JavaScript configuration
 	 */
 	protected function getJavaScriptConfiguration() {
+		$gridHeight = isset($GLOBALS['BE_USER']->uc['recyclerGridHeight']) && intval($GLOBALS['BE_USER']->uc['recyclerGridHeight']) ? intval($GLOBALS['BE_USER']->uc['recyclerGridHeight']) : 600;
 		$configuration = array(
 			'pagingSize' => $this->recordsPageLimit,
 			'showDepthMenu' => 1,
@@ -189,6 +190,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			'deleteDisable' => $this->allowDelete ? 0 : 1,
 			'depthSelection' => $this->getDataFromSession('depthSelection', 0),
 			'tableSelection' => $this->getDataFromSession('tableSelection', 'pages'),
+			'gridHeight' => $gridHeight,
 		);
 		return $configuration;
 	}
