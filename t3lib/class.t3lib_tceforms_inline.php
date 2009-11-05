@@ -1707,6 +1707,7 @@ class t3lib_TCEforms_inline {
 	 * Create a name/id for usage in HTML output of a level of the structure stack to be used in form names.
 	 *
 	 * @param	array		$levelData: Array of a level of the structure stack (containing the keys table, uid and field)
+	 * @param	string		$disposal: How the structure name is used (e.g. as <div id="..."> or <input name="..." />)
 	 * @return	string		The name/id of that level, to be used for HTML output
 	 */
 	function getStructureItemName($levelData, $disposal = self::Disposal_AttributeId) {
@@ -1756,7 +1757,10 @@ class t3lib_TCEforms_inline {
 	function getStructurePath($structureDepth = -1) {
 		$structureLevels = array();
 		$structureCount = count($this->inlineStructure['stable']);
-		if ($structureDepth < 0 || $structureDepth > $structureCount) $structureDepth = $structureCount;
+
+		if ($structureDepth < 0 || $structureDepth > $structureCount) {
+			$structureDepth = $structureCount;
+		}
 
 		for ($i = 1; $i <= $structureDepth; $i++) {
 			array_unshift(
