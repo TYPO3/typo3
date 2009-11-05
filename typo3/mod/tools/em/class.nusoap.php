@@ -188,7 +188,7 @@ class nusoap_base {
 	*
 	* @var      array
 	* @access   public
-	* @deprecated
+	* @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
 	* @see	expandEntities
 	*/
 	var $xmlEntities = array('quot' => '"','amp' => '&',
@@ -654,9 +654,11 @@ class nusoap_base {
 	 * @param string $str The string to format
 	 * @return string The formatted string
 	 * @access public
-	 * @deprecated
+	 * @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5
 	 */
     function formatDump($str){
+    	t3lib_div::logDeprecatedFunction();
+
 		$str = htmlspecialchars($str);
 		return nl2br($str);
     }
@@ -886,10 +888,12 @@ function iso8601_to_timestamp($datestr){
 *
 * @param    string $usec the number of microseconds to sleep
 * @access   public
-* @deprecated
+* @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
 */
 function usleepWindows($usec)
 {
+	t3lib_div::logDeprecatedFunction();
+
 	$start = gettimeofday();
 
 	do
@@ -1607,9 +1611,11 @@ class XMLSchema extends nusoap_base  {
     * @param string $ns, namespace of type
     * @return mixed
     * @access public
-    * @deprecated
+    * @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
     */
 	function getPHPType($type,$ns){
+		t3lib_div::logDeprecatedFunction();
+
 		if(isset($this->typemap[$ns][$type])){
 			//print "found type '$type' and ns $ns in typemap<br>";
 			return $this->typemap[$ns][$type];
@@ -1709,9 +1715,11 @@ class XMLSchema extends nusoap_base  {
     * @param string $type, name of type
     * @return mixed
     * @access public
-    * @deprecated
+    * @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
     */
     function serializeTypeDef($type){
+    	t3lib_div::logDeprecatedFunction();
+
     	//print "in sTD() for type $type<br>";
 	if($typeDef = $this->getTypeDef($type)){
 		$str .= '<'.$type;
@@ -1745,9 +1753,11 @@ class XMLSchema extends nusoap_base  {
     * @param string $type, name of type
     * @return string
     * @access public
-    * @deprecated
+    * @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
 	*/
 	function typeToForm($name,$type){
+		t3lib_div::logDeprecatedFunction();
+
 		// get typedef
 		if($typeDef = $this->getTypeDef($type)){
 			// if struct
@@ -2402,9 +2412,11 @@ class soap_transport_http extends nusoap_base {
 	* @param    string $lb
 	* @returns	string
 	* @access   public
-	* @deprecated
+	* @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
 	*/
 	function decodeChunked($buffer, $lb){
+		t3lib_div::logDeprecatedFunction();
+
 		// length := 0
 		$length = 0;
 		$new = '';
@@ -4039,10 +4051,12 @@ class wsdl extends nusoap_base {
 	 * @param mixed $ param value
 	 * @return mixed new param or false if initial value didn't validate
 	 * @access public
-	 * @deprecated
+	 * @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
 	 */
 	function serializeParameters($operation, $direction, $parameters)
 	{
+		t3lib_div::logDeprecatedFunction();
+
 		$this->debug("in serializeParameters: operation=$operation, direction=$direction, XMLSchemaVersion=$this->XMLSchemaVersion");
 		$this->appendDebug('parameters=' . $this->varDump($parameters));
 
@@ -5891,9 +5905,11 @@ class soapclient extends nusoap_base  {
 	*
 	* @return boolean
 	* @access public
-	* @deprecated
+	* @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
 	*/
 	function getDefaultRpcParams() {
+		t3lib_div::logDeprecatedFunction();
+
 		return $this->defaultRpcParams;
 	}
 
@@ -5906,9 +5922,11 @@ class soapclient extends nusoap_base  {
 	*
 	* @param    boolean $rpcParams
 	* @access public
-	* @deprecated
+	* @deprecated since at least TYPO3 4.3, will be removed in TYPO3 4.5.
 	*/
 	function setDefaultRpcParams($rpcParams) {
+		t3lib_div::logDeprecatedFunction();
+
 		$this->defaultRpcParams = $rpcParams;
 	}
 

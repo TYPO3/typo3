@@ -4117,9 +4117,11 @@ class t3lib_TCEforms	{
 	 * @param	string		The string which - if empty - will become the no-title string.
 	 * @param	array		Array with wrappin parts for the no-title output (in keys [0]/[1])
 	 * @return	string
-	 * @deprecated since TYPO3 4.1
+	 * @deprecated since TYPO3 4.1, this function will be removed in TYPO3 4.5.
 	 */
 	function noTitle($str,$wrapParts=array())	{
+		t3lib_div::logDeprecatedFunction();
+
 		return strcmp($str,'') ? $str : $wrapParts[0].'['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title').']'.$wrapParts[1];
 	}
 

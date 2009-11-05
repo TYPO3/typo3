@@ -784,11 +784,13 @@ class tslib_pibase {
 	 * @param	string		$data: CSS data
 	 * @param	string		If $selector is set to any CSS selector, eg 'P' or 'H1' or 'TABLE' then the style $data will regard those HTML-elements only
 	 * @return	void
-	 * @deprecated since TYPO3 3.6 - I think this function should not be used (and probably isn't used anywhere). It was a part of a concept which was left behind quite quickly.
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, I think this function should not be used (and probably isn't used anywhere). It was a part of a concept which was left behind quite quickly.
 	 * @obsolete
 	 * @private
 	 */
 	function pi_setClassStyle($class,$data,$selector='')	{
+		t3lib_div::logDeprecatedFunction();
+
 		$GLOBALS['TSFE']->setCSS($this->pi_getClassName($class).($selector?' '.$selector:''),'.'.$this->pi_getClassName($class).($selector?' '.$selector:'').' {'.$data.'}');
 	}
 
@@ -1042,7 +1044,7 @@ class tslib_pibase {
 	 * @param	boolean		If set, the function will return the query not as a string but array with the various parts.
 	 * @return	mixed		The query build.
 	 * @access private
-	 * @deprecated since TYPO3 3.6 - Use pi_exec_query() instead!
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use pi_exec_query() instead!
 	 */
 	function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)	{
 

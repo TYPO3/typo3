@@ -1215,11 +1215,13 @@ class t3lib_userAuth {
 	 * Redirect to somewhere (obsolete).
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 3.6
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5.
 	 * @obsolete
 	 * @ignore
 	 */
 	function redirect() {
+		t3lib_div::logDeprecatedFunction();
+
 		if (!$this->userid && $this->auth_url)	{	 // if no userid AND an include-document for login is given
 			include ($this->auth_include);
 			exit;
