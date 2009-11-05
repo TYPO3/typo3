@@ -114,9 +114,9 @@ class TYPO3AJAX {
 		if (array_key_exists($key, $this->content)) {
 			$oldcontent = $this->content[$key];
 		}
-		if (!isset($content) || !strlen($content)) {
+		if (!isset($content) || empty($content)) {
 			unset($this->content[$key]);
-		} elseif (!isset($key) || !strlen($key)) {
+		} elseif (!isset($key) || empty($key)) {
 			$this->content[] = $content;
 		} else {
 			$this->content[$key] = $content;
