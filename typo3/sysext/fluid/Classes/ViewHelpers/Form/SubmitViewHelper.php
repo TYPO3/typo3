@@ -26,14 +26,14 @@
  * = Examples =
  *
  * <code title="Defaults">
- * <f:submit value="Send Mail" />
+ * <f:form.submit value="Send Mail" />
  * </code>
  *
  * Output:
  * <input type="submit" />
  *
  * <code title="Dummy content for template preview">
- * <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
+ * <f:form.submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
  * </code>
  *
   * Output:

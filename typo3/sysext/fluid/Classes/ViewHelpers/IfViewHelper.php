@@ -77,7 +77,7 @@
  * Otherwise, everything inside the "else"-tag is displayed.
  *
  * <code title="inline notation">
- * {f:if(condition: someCondition, true: 'condition is met', false: 'condition is not met')}
+ * {f:if(condition: someCondition, then: 'condition is met', else: 'condition is not met')}
  * </code>
  *
  * The value of the "then" attribute is displayed if the condition evaluates to TRUE.

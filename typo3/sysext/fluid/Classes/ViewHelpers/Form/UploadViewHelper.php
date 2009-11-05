@@ -27,7 +27,7 @@
  * = Examples =
  *
  * <code title="Example">
- * <f:upload name="file" />
+ * <f:form.upload name="file" />
  * </code>
  *
  * Output:
