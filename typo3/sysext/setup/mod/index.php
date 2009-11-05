@@ -538,10 +538,12 @@ class SC_mod_user_setup_index {
 						$value = '';
 					}
 
+					$noAutocomplete = ($type == 'password' ? 'autocomplete="off" ' : '');
 					$html = '<input id="field_' . $fieldName . '"
 							type="' . $type . '"
-							name="data' . $dataAdd . '[' . $fieldName . ']"
-							value="' . htmlspecialchars($value) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . $more . ' />';
+							name="data' . $dataAdd . '[' . $fieldName . ']" ' .
+							$noAutocomplete .
+							'value="' . htmlspecialchars($value) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . $more . ' />';
 				break;
 				case 'check':
 					if (!$class) {

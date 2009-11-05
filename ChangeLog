@@ -5,6 +5,7 @@
 2009-11-05  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12466: PHP-5.3 Warning: strlen() expects parameter 1 to be string, array given
+	* Fixed bug #12236: Password-field in "User Settings" is prefilled, which does not make sense (thanks to Steffen Gebert)
 
 2009-11-05  Oliver Hader  <oliver@typo3.org>
 
