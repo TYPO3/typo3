@@ -11,6 +11,7 @@
 
 	* Fixed bug #12441: IRRE - Cannot add new elements on second level of nesting
 	* Follow-up to bugfix #12441: Code cleanup in t3lib_TCEforms_inline
+	* Fixed bug #12483: Call to deprecated method t3lib_beUserAuth::trackBeUser()
 
 2009-11-04  Steffen Kamper  <info@sk-typo3.de>
 
