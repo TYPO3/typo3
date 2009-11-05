@@ -222,9 +222,10 @@ T3editor.prototype = {
 			}
 
 			this.t3e_statusbar_status.update(
-				(this.textModified ? ' <span alt="document has been modified">*</span> ': '')
+				(this.textModified ? ' <span title="' + T3editor.lang.documentModified + '" alt="' + T3editor.lang.documentModified + '">*</span> ': '')
 				 + bodyContentLineCount
-				 + ' lines');
+				 + ' '
+				 + T3editor.lang.lines );
 		},
 		
 		updateTextarea: function(event) {
@@ -258,7 +259,7 @@ T3editor.prototype = {
 				this.textModified = false;
 				this.updateLinenum();
 			} else {
-				alert("An error occured while saving the data.");
+				alert(T3editor.lang.errorWhileSaving);
 			};
 			this.modalOverlay.hide();
 		},

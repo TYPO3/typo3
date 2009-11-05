@@ -1,3 +1,7 @@
+2009-11-05  Tobias Liebi <mail_typo3@etobi.de>
+
+	* Cleanup/Bugfix #11838: Hardcoded labels in t3editor
+
 2009-11-05  Francois Suter  <francois@typo3.org>
 
 	* Feature #12215: Scheduler: Added display and information about usage of timezone
