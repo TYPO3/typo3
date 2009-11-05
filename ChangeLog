@@ -1,3 +1,7 @@
+2009-11-05  Francois Suter  <francois@typo3.org>
+
+	* Feature #12215: Scheduler: Added display and information about usage of timezone
+
 2009-11-05  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12466: PHP-5.3 Warning: strlen() expects parameter 1 to be string, array given

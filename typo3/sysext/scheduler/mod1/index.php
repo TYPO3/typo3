@@ -499,6 +499,23 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	}
 
 	/**
+	 * Display the current server's time along with a help text about server time
+	 * usage in the Scheduler
+	 *
+	 * @return	string	HTML to display
+	 */
+	protected function displayServerTime() {
+			// Get the current time, formatted
+		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e)';
+		$now = date($dateFormat);
+			// Display the help text
+		$serverTime  = '<h4>' . $GLOBALS['LANG']->getLL('label.serverTime') . '</h4>';
+		$serverTime .= '<p>' . $GLOBALS['LANG']->getLL('msg.serverTimeHelp') . '</p>';
+		$serverTime .= '<p>' . sprintf($GLOBALS['LANG']->getLL('msg.serverTime'), $now) . '</p>';
+		return $serverTime;
+	}
+
+	/**
 	 * Delete a task from the execution queue
 	 *
 	 * @return	void
@@ -830,6 +847,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$content .= '<input type="submit" name="save" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save') . '" /> '
 			. '<input type="button" name="cancel" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:cancel') . '" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" />';
 
+			// Display information about server time usage
+		$content .= $this->displayServerTime();
+
 		return $content;
 	}
 
@@ -1117,8 +1137,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			. '" /> ' . $GLOBALS['LANG']->getLL('action.add') . '</a></p>';
 
 			// Display legend, if there's at least one registered task
+			// Also display information about the usage of server time
 		if ($numRows > 0) {
-			$content .= '<p class="status-legend">' . $GLOBALS['LANG']->getLL('status.legend') . ':</p>
+			$content .= '<h4>' . $GLOBALS['LANG']->getLL('status.legend') . '</h4>
 			<ul>
 				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.failure') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.failure') . '</li>
 				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_late.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.late') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.late') . '</li>
@@ -1126,6 +1147,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_scheduled.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.scheduled') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '</li>
 				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_disabled.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.disabled') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.disabled') . '</li>
 			</ul>';
+			$content .= $this->displayServerTime();
 		}
 
 

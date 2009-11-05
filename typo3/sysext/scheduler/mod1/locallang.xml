@@ -37,6 +37,7 @@
 			<label index="label.nextExecution">Next Execution</label>
 			<label index="label.parallel">Parallel Execution</label>
 			<label index="label.parallel.long">Allow Parallel Execution</label>
+			<label index="label.serverTime">Server time</label>
 			<label index="label.sleepTime">Sleep time</label>
 			<label index="label.start">Start (HH:MM DD-MM-YYYY)</label>
 			<label index="label.type">Type</label>
@@ -78,6 +79,8 @@
 			<label index="msg.schedulerUserFound">The backend user "_cli_scheduler" was found.</label>
 			<label index="msg.schedulerUserFoundButDisabled">The backend user "_cli_scheduler" exists but is currently disabled.</label>
 			<label index="msg.schedulerUserMissing">The backend user "_cli_scheduler" was not found. &lt;a href="%s" title="Click to create the missing user"&gt;Create the user now&lt;/a&gt;.</label>
+			<label index="msg.serverTime">Current server time is %s.</label>
+			<label index="msg.serverTimeHelp">All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</label>
 			<label index="msg.stop">Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</label>
 			<label index="msg.stopError">The task could not be marked as non-running.</label>
 			<label index="msg.stopSuccess">The task was successfully marked as non-running.</label>
