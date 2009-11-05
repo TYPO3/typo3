@@ -1754,15 +1754,21 @@ class t3lib_TCEforms_inline {
 	 * @return	string		The path of identifiers
 	 */
 	function getStructurePath($structureDepth = -1) {
+		$structureLevels = array();
 		$structureCount = count($this->inlineStructure['stable']);
 		if ($structureDepth < 0 || $structureDepth > $structureCount) $structureDepth = $structureCount;
 
 		for ($i = 1; $i <= $structureDepth; $i++) {
-			$current = $this->getStructureLevel(-$i);
-			$string = $this->getStructureItemName($current, self::Disposal_AttributeId) . $string;
+			array_unshift(
+				$structureLevels,
+				$this->getStructureItemName(
+					$this->getStructureLevel(-$i),
+					self::Disposal_AttributeId
+				)
+			);
 		}
 
-		return $string;
+		return implode(self::Structure_Separator, $structureLevels);
 	}
 
 
