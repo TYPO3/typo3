@@ -506,6 +506,9 @@ class SC_mod_user_setup_index {
 
 			$label = $this->getLabel($config['label'], $fieldName);
 			$csh = $this->getCSH($config['csh'] ? $config['csh'] : $fieldName);
+			if (!$csh) {
+				$csh = '<img class="csh-dummy" src="' . $this->doc->backPath . 'clear.gif" width="16" height="16" />';
+			}
 			$type = $config['type'];
 			$eval = $config['eval'];
 			$class = $config['class'];
