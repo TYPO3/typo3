@@ -38,7 +38,7 @@ require_once('BaseTestCase.php');
 class sqlparser_general_testcase extends BaseTestCase {
 
 	/**
-	 * @var t3lib_sqlparser (extended to make protected methods public)
+	 * @var ux_t3lib_sqlparser (extended to make protected methods public)
 	 */
 	protected $fixture;
 
