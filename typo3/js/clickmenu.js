@@ -70,8 +70,6 @@ var Clickmenu = {
 					this.populateData(data, level);
 				}.bind(this)
 			});
-		} else { // fallback with no AJAX, no isCMLayers
-			top.loadTopMenu(this.clickURL + '?' + params);
 		}
 	},
 

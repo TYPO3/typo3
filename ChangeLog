@@ -1,5 +1,6 @@
 2009-11-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12368: Context menu of page tree does not work anymore
 	* Fixed bug #12468: User setup: items without csh are not aligned
 
 2009-11-06  Oliver Hader  <oliver@typo3.org>
