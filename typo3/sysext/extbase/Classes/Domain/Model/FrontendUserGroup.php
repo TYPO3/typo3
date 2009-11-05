@@ -134,7 +134,7 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 * @api
 	 */
 	public function setSubgroup(Tx_Extbase_Persistence_ObjectStorage $subgroup) {
-		$this->subgroup = $subgroups;
+		$this->subgroup = $subgroup;
 	}
 
 	/**
