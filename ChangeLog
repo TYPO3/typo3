@@ -1,5 +1,6 @@
 2009-11-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12469: Pagerenderer miss headerData and footerData in hooks
 	* Fixed bug #12437: Recycler produces some scroll bars + visual cleanup + js fixes
 	* Fixed bug #12368: Context menu of page tree does not work anymore
 	* Fixed bug #12468: User setup: items without csh are not aligned

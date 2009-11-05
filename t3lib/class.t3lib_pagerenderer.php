@@ -1246,6 +1246,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'jsFiles'        => &$this->jsFiles,
 				'jsFooterFiles'  => &$this->jsFiles,
 				'cssFiles'       => &$this->cssFiles,
+				'headerData'     => &$this->headerData,
+				'footerData'     => &$this->footerData,
 			);
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler'], $params, $this);
 		} else {
@@ -1269,6 +1271,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'jsLibs'          => &$this->jsLibs,
 				'jsFiles'         => &$this->jsFiles,
 				'jsFooterFiles'   => &$this->jsFiles,
+				'headerData'      => &$this->headerData,
+				'footerData'      => &$this->footerData,
 			);
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
 		} else {
@@ -1293,8 +1297,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if ($this->compressCss && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler']) {
 				// use extern compress routine
 			$params = array (
-				'cssInline' => &$this->cssInline,
-				'cssFiles'  => &$this->cssFiles,
+				'cssInline'  => &$this->cssInline,
+				'cssFiles'   => &$this->cssFiles,
+				'headerData' => &$this->headerData,
+				'footerData' => &$this->footerData,
 			);
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'], $params, $this);
 		} else {
