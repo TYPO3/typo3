@@ -23,7 +23,7 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id: TemplateParser.php 3366 2009-10-28 15:20:45Z sebastian $
+ * @version $Id: TemplateParser.php 3438 2009-11-05 08:25:33Z sebastian $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -145,7 +145,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 			)?
 			(?P<AdditionalViewHelpers>                      # There can be more than one ViewHelper chained, by adding more -> and the ViewHelper (recursively)
 				(?:
-					->
+					\s*->\s*
 					(?P>ViewHelper)
 				)*
 			)

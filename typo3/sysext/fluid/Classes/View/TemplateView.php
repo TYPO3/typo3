@@ -23,7 +23,7 @@
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
- * @version $Id: TemplateView.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id: TemplateView.php 3431 2009-11-03 11:18:01Z robert $
  * @package Fluid
  * @subpackage View
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -355,11 +355,14 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 *
 	 * @param string $templatePathAndFilename absolute filename of the template to be parsed
 	 * @return Tx_Fluid_Core_Parser_ParsedTemplateInterface the parsed template tree
+	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResource
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function parseTemplate($templatePathAndFilename) {
 		$templateSource = file_get_contents($templatePathAndFilename);
-
+		if ($templateSource === FALSE) {
+			throw new Tx_Fluid_View_Exception_InvalidTemplateResource('"' . $templatePathAndFilename . '" is not a valid template resource URI.', 1257246929);
+		}
 		return $this->templateParser->parse($templateSource);
 	}
 

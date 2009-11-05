@@ -26,7 +26,7 @@ include_once(dirname(__FILE__) . '/Fixtures/TemplateViewFixture.php');
 /**
  * Testcase for the TemplateView
  *
- * @version $Id: TemplateViewTest.php 3350 2009-10-27 12:01:08Z k-fish $
+ * @version $Id: TemplateViewTest.php 3431 2009-11-03 11:18:01Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_TemplateViewTest_testcase extends Tx_Extbase_BaseTestCase {
@@ -152,7 +152,7 @@ class Tx_Fluid_View_TemplateViewTest_testcase extends Tx_Extbase_BaseTestCase {
 
 		return $mockControllerContext;
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -217,9 +217,32 @@ class Tx_Fluid_View_TemplateViewTest_testcase extends Tx_Extbase_BaseTestCase {
 		$parsedTemplate->expects($this->once())->method('render')->with($renderingContext)->will($this->returnValue('Hello World'));
 
 		$this->assertEquals('Hello World', $templateView->render(), 'The output of the ParsedTemplates render Method is not returned by the TemplateView');
-
 	}
 
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function parseTemplateReadsTheGivenTemplateAndReturnsTheParsedResult() {
+		$mockTemplateParser = $this->getMock('Tx_Fluid_Core_Parser_TemplateParser', array('parse'));
+		$mockTemplateParser->expects($this->once())->method('parse')->with('Unparsed Template')->will($this->returnValue('Parsed Template'));
+
+		$templateView = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_View_TemplateView'), array('dummy'), array(), '', FALSE);
+		$templateView->injectTemplateParser($mockTemplateParser);
+
+		$parsedTemplate = $templateView->_call('parseTemplate', dirname(__FILE__) . '/Fixtures/UnparsedTemplateFixture.html');
+		$this->assertSame('Parsed Template', $parsedTemplate);
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResource
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function parseTemplateThrowsAnExceptionIfTheSpecifiedTemplateResourceDoesNotExist() {
+		$templateView = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_View_TemplateView'), array('dummy'), array(), '', FALSE);
+		$templateView->_call('parseTemplate', 'foo');
+	}
 
 	/**
 	 * @test

@@ -21,69 +21,15 @@
  *                                                                        */
 
 /**
- * Creates a submit button.
+ * An "Invalid Template Resource" exception
  *
- * = Examples =
- *
- * <code title="Defaults">
- * <f:form.submit value="Send Mail" />
- * </code>
- *
- * Output:
- * <input type="submit" />
- *
- * <code title="Dummy content for template preview">
- * <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
- * </code>
- *
-  * Output:
- * <input type="submit" name="mySubmit" value="Send Mail" />
- *
- * @version $Id: SubmitViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id: InvalidTemplateResource.php 3431 2009-11-03 11:18:01Z robert $
  * @package Fluid
- * @subpackage ViewHelpers\Form
+ * @subpackage View\Exception
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
- * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_Form_SubmitViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
-
-	/**
-	 * @var string
-	 */
-	protected $tagName = 'input';
-
-	/**
-	 * Initialize the arguments.
-	 *
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @api
-	 */
-	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-		$this->registerUniversalTagAttributes();
-	}
-
-	/**
-	 * Renders the submit button.
-	 *
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @api
-	 */
-	public function render() {
-		$name = $this->getName();
-		$this->registerFieldNameForFormTokenGeneration($name);
-
-		$this->tag->addAttribute('type', 'submit');
-		$this->tag->addAttribute('name', $name);
-		$this->tag->addAttribute('value', $this->getValue());
-
-		return $this->tag->render();
-	}
+class Tx_Fluid_View_Exception_InvalidTemplateResource extends Tx_Fluid_View_Exception {
 }
 
 ?>

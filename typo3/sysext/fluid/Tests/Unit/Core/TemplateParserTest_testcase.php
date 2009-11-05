@@ -195,12 +195,16 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_BaseTestCase 
 		$templateSource = file_get_contents(dirname(__FILE__) . $file, FILE_TEXT);
 
 		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
+
+		$dynamicNode1 = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_ViewHelpers_Format_Nl2brViewHelper', array());
+		$rootNode->addChildNode($dynamicNode1);
+
 		$arguments = array(
 			'decimals' => new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('1')
 		);
-		$dynamicNode = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_ViewHelpers_Format_NumberViewHelper', $arguments);
-		$rootNode->addChildNode($dynamicNode);
-		$dynamicNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('number'));
+		$dynamicNode2 = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode('Tx_Fluid_ViewHelpers_Format_NumberViewHelper', $arguments);
+		$dynamicNode1->addChildNode($dynamicNode2);
+		$dynamicNode2->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode('number'));
 
 		$expected = $rootNode;
 		$actual = $this->templateParser->parse($templateSource)->getRootNode();
