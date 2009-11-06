@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="title">Recycler</label>
-			<label index="description">The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of element is deleted too.</label>
+			<label index="description">The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</label>
 			<label index="label_alltables">All tables</label>
 			<label index="js.label_lostandfound">Lost and found</label>
 			<label index="js.label_deletedTab">Deleted data</label>
