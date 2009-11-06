@@ -372,7 +372,7 @@ class TYPO3backend {
 		'TYPO3_mainDir' => TYPO3_mainDir,
 		'pageModule' => $pageModule,
 		'condensedMode' => $GLOBALS['BE_USER']->uc['condensedMode'] ? 1 : 0 ,
-		'workspaceFrontendPreviewEnabled' => (($GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview']) ? 'false' : 'true'),
+		'workspaceFrontendPreviewEnabled' => $GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview'] ? 0 : 1,
 		'veriCode' => $GLOBALS['BE_USER']->veriCode(),
 		'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
 		'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
