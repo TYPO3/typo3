@@ -288,8 +288,6 @@ class t3lib_userAuth {
 			}
 		}
 
-			// If any redirection (inclusion of file) then it will happen in this function
-		$this->redirect();
 
 			// Set all posible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders)	{

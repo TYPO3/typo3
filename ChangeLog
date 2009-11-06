@@ -1,3 +1,7 @@
+2009-11-06  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12499: Call to deprecated method t3lib_userAuth::redirect()
+
 2009-11-06  Tobias Liebig <mail_typo3@etobi.de>
 
 	* Fixed bug #9046: Nested domain linking
