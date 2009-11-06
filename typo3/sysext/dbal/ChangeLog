@@ -1,6 +1,7 @@
 2009-11-06  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug: tables and fields were not always properly mapped in INNER JOINs
+	* Added unit tests to test quoting and remapping of tables and fields when using Oracle
 
 2009-11-05  Xavier Perseguers  <typo3@perseguers.ch>
 
