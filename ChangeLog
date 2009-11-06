@@ -22,6 +22,7 @@
 
 2009-11-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Cleanup #11311: PHP casting causes workspace message to appear in Web/View (thanks to Niels Fröhling)
 	* Fixed bug #12347: Integrate check to the install tool and reports module concerning eAccelerator
 	* Fixed bug #12295: Cleaning config_default, exclude values from being listed in install tool, all configuration
 	* Fixed bug #11633: Enable Frontend Preview does not work until switched (thanks to Fabrizio Branca)
