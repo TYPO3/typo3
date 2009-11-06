@@ -76,7 +76,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"), '', $this->lastStopKeyWord));
 					return $stack;
 				}
-				if (!preg_match('/^(LEFT|JOIN)[[:space:]]+/i',$parseString)) {
+				if (!preg_match('/^(LEFT|JOIN|INNER)[[:space:]]+/i', $parseString)) {
 					$stack[$pnt]['as_keyword'] = $this->nextPart($parseString,'^(AS[[:space:]]+)');
 					$stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]*');
 				}
