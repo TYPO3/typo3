@@ -1,3 +1,7 @@
+2009-11-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12481: AllowClipboard Helper Firefox extension does not work with FF 3.5
+
 2009-09-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.5.10
