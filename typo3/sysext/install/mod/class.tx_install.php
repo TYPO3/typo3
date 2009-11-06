@@ -1330,8 +1330,9 @@ From sub-directory:
 					while(list($vk,$value)=each($va))	{
 						$description = trim($commentArr[1][$k][$vk]);
 						$isTextarea = preg_match('/^string \(textarea\)/i',$description) ? TRUE : FALSE;
+						$doNotRender = preg_match('/^string \(exclude\)/i', $description) ? TRUE : FALSE;
 
-						if (!is_array($value) && ($this->checkForBadString($value) || $isTextarea))	{
+						if (!is_array($value) && !$doNotRender && ($this->checkForBadString($value) || $isTextarea)) {
 							$k2 = '['.$vk.']';
 							$msg = htmlspecialchars($description).'<br /><br /><em>'.$ext.$k2.' = '.htmlspecialchars(t3lib_div::fixed_lgd_cs($value,60)).'</em><br />';
 
@@ -1341,7 +1342,7 @@ From sub-directory:
 								$form = '<input type="hidden" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="0">';
 								$form.= '<input type="checkbox" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']"'.($value?' checked="checked"':'').' value="'.($value&&strcmp($value,'0')?htmlspecialchars($value):1).'">';
 							} else {
-								$form = '<input type="text" size="40" name="TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']" value="'.htmlspecialchars($value).'">';
+								$form = '<input type="text" size="80" name="TYPO3_INSTALL[extConfig][' . $k . '][' . $vk . ']" value="' . htmlspecialchars($value) . '">';
 							}
 							$this->message($ext, $k2,$msg.$form);
 						}
@@ -1422,7 +1423,7 @@ From sub-directory:
 					}
 				}
 			}
-			if (!strcmp($lc,'$TYPO3_CONF_VARS = Array('))	{
+			if (!strcmp($lc, '$TYPO3_CONF_VARS = array(')) {
 				$in=1;
 			}
 		}

@@ -14,6 +14,7 @@
 
 2009-11-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12295: Cleaning config_default, exclude values from being listed in install tool, all configuration
 	* Fixed bug #11633: Enable Frontend Preview does not work until switched (thanks to Fabrizio Branca)
 	* Fixed bug #12469: Pagerenderer miss headerData and footerData in hooks
 	* Fixed bug #12437: Recycler produces some scroll bars + visual cleanup + js fixes
