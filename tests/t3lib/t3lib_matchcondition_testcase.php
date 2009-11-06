@@ -142,7 +142,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * @return	void
 	 * @test
 	 */
-	public function browserInfoHookIsCalled() {
+	public function deprecatedBrowserInfoHookIsCalled() {
 		$classRef = uniqid('tx_browserInfoHook');
 		$browserInfoHookMock = $this->getMock($classRef, array('browserInfo'));
 		$browserInfoHookMock->expects($this->atLeastOnce())->method('browserInfo');
@@ -180,7 +180,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 	 * @return	void
 	 * @test
 	 */
-	public function whichDeviceHookIsCalled() {
+	public function deprecatedWhichDeviceHookIsCalled() {
 		$classRef = uniqid('tx_whichDeviceHook');
 		$whichDeviceHookMock = $this->getMock($classRef, array('whichDevice'));
 		$whichDeviceHookMock->expects($this->atLeastOnce())->method('whichDevice');
