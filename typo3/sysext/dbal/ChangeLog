@@ -1,7 +1,6 @@
 2009-11-05  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 0.9.24
-	* Reverted changeset #25963: No more code to log deprecated method calls as they are still in use in Core
 	* Follow-up of RFC #12452: Reflected change of visibility of method compileFieldCfg() in t3lib_sqlparser
 
 2009-11-04  Xavier Perseguers  <typo3@perseguers.ch>
@@ -16,7 +15,6 @@
 
 2009-10-28  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* Added code to log all deprecated method calls
 	* Added compatibility operators for PostgreSQL as resource script (thanks to Ries van Twisk)
 	* Added message in Extension Manager to let users know compatibility scripts may need to be run
 
@@ -28,7 +26,7 @@
 
 2009-10-26  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* RFC #12354: Included t3lib_sqlengine locally
+	* Fixed bug #12354: Include t3lib_sqlengine from Core to DBAL
 	* Fixed bug #12349: Clean-up SQL parser and SQL engine
 
 2009-10-20  Oliver Hader  <oliver@typo3.org>
