@@ -1,3 +1,7 @@
+2009-11-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12481: AllowClipboard Helper Firefox extension does not work with FF 3.5
+
 2009-11-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12439: htmlArea RTE: js error raised on paste by default word cleaning

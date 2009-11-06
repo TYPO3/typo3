@@ -1,3 +1,7 @@
+2009-11-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12481: AllowClipboard Helper Firefox extension does not work with FF 3.5
+
 2009-11-06  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12469: Pagerenderer miss headerData and footerData in hooks
