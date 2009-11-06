@@ -989,12 +989,16 @@ class ux_t3lib_DB extends t3lib_DB {
 				$from_table[$k]['as'] = $this->quoteName($from_table[$k]['as']);
 			}
 			if (is_array($v['JOIN'])) {
-				$from_table[$k]['JOIN']['withTable'] = $this->quoteName($from_table[$k]['JOIN']['withTable']);
-				$from_table[$k]['JOIN']['as'] = ($from_table[$k]['JOIN']['as']) ? $this->quoteName($from_table[$k]['JOIN']['as']) : '';
-				$from_table[$k]['JOIN']['ON'][0]['table'] = ($from_table[$k]['JOIN']['ON'][0]['table']) ? $this->quoteName($from_table[$k]['JOIN']['ON'][0]['table']) : '';
-				$from_table[$k]['JOIN']['ON'][0]['field'] = $this->quoteName($from_table[$k]['JOIN']['ON'][0]['field']);
-				$from_table[$k]['JOIN']['ON'][1]['table'] = ($from_table[$k]['JOIN']['ON'][1]['table']) ? $this->quoteName($from_table[$k]['JOIN']['ON'][1]['table']) : '';
-				$from_table[$k]['JOIN']['ON'][1]['field'] = $this->quoteName($from_table[$k]['JOIN']['ON'][1]['field']);
+				$joinCnt = 0;
+				foreach ($v['JOIN'] as $join) {
+					$from_table[$k]['JOIN'][$joinCnt]['withTable'] = $this->quoteName($join['withTable']);
+					$from_table[$k]['JOIN'][$joinCnt]['as'] = ($join['as']) ? $this->quoteName($join['as']) : '';
+					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['table'] = ($join['ON'][0]['table']) ? $this->quoteName($join['ON'][0]['table']) : '';
+					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['field'] = $this->quoteName($join['ON'][0]['field']);
+					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['table'] = ($join['ON'][1]['table']) ? $this->quoteName($join['ON'][1]['table']) : '';
+					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['field'] = $this->quoteName($join['ON'][1]['field']);
+					$joinCnt++;
+				}
 			}
 		}
 		return $this->SQLparser->compileFromTables($from_table);
@@ -2384,6 +2388,28 @@ class ux_t3lib_DB extends t3lib_DB {
 		foreach ($tables as $k => $v) {
 			if ($this->mapping[$v['table']]['mapTableName']) {
 				$tables[$k]['table'] = $this->mapping[$v['table']]['mapTableName'];
+			}
+			if (is_array($v['JOIN'])) {
+				$joinCnt = 0;
+				foreach ($v['JOIN'] as $join) {
+						// Remap "with table"
+					if ($this->mapping[$join['withTable']]) {
+						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$join['withTable']]['mapTableName'];
+					}
+						// Remap join condition
+					foreach ($join['ON'] as $onK => $onV) {
+						if ($this->mapping[$onV['table']]) {
+							$tables[$k]['JOIN'][$joinCnt]['ON'][$onK]['table'] = $this->mapping[$onV['table']]['mapTableName'];
+							if (is_array($this->mapping[$onV['table']]['mapFieldNames'])) {
+								$mapFieldNames = $this->mapping[$onV['table']]['mapFieldNames'];
+								if ($mapFieldNames[$onV['field']]) {
+									$tables[$k]['JOIN'][$joinCnt]['ON'][$onK]['field'] = $mapFieldNames[$onV['field']]; 
+								}
+							}
+						}
+					}
+					$joinCnt++;
+				}
 			}
 		}
 		$from_table = $this->SQLparser->compileFromTables($tables);
