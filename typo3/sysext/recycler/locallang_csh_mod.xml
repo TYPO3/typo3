@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- $Id$ -->
+<T3locallang>
+    <meta type="array">
+        <description>CSH labels</description>
+        <type>CSH</type>
+        <csh_table>recycler</csh_table>
+        <fileId>EXT:recycler/locallang_csh_mod.xml</fileId>
+        <labelContext type="array">
+        </labelContext>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="option_tx_recycler_grid_height.alttitle">Height of Recycler Grid</label>
+            <label index="option_tx_recycler_grid_height.description">Define the height of the recycler grid (in pixels). If the recycler grid does not fit your screen size, try to use a smaller value.</label>
+        </languageKey>
+    </data>
+</T3locallang>
