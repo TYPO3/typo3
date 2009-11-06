@@ -1,3 +1,7 @@
+2009-11-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12481: AllowClipboard Helper Firefox extension does not work with FF 3.5
+
 2009-11-03  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #11876 and #12342: stripSlashesOnArray creates references where you want copies (in some PHP versions). Affects usage of _GP (e.g. in the Install Tool and some frontend extensions).
