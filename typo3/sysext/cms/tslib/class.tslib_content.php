@@ -6028,7 +6028,8 @@ class tslib_cObj {
 							$addQueryParams .= '&cHash=' . t3lib_div::generateCHash($addQueryParams . $GLOBALS['TSFE']->linkVars);
 						}
 
-						$tCR_domain = '';
+						$targetDomain = '';
+						$currentDomain = t3lib_div::getIndpEnv('HTTP_HOST');
 						// Mount pages are always local and never link to another domain
 						if (count($MPvarAcc))	{
 							// Add "&MP" var:
@@ -6056,33 +6057,56 @@ class tslib_cObj {
 								}
 							}
 
-							// This checks if the linked id is in the rootline of this site and if not it will find the domain for that ID and prefix it:
-							$tCR_rootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);	// Gets rootline of linked-to page
-							$tCR_flag = 0;
-							foreach ($tCR_rootline as $tCR_data)	{
-								if ($tCR_data['uid'] == $GLOBALS['TSFE']->tmpl->rootLine[0]['uid'])	{
-									$tCR_flag = 1;	// OK, it was in rootline!
-									break;
+							// Find all domain records in the rootline of the target page
+							$targetPageRootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);
+							$foundDomains = array();
+							$foundForcedDomains = array();
+							$targetPageRootlinePids = array();
+							foreach ($targetPageRootline as $data)	{
+								$targetPageRootlinePids[] = intval($data['uid']);
+							}
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+								'pid, domainName, forced',
+								'sys_domain',
+								'pid IN (' . implode(',', $targetPageRootlinePids) . ') ' .
+									' AND redirectTo=\'\' ' . $this->enableFields('sys_domain'),
+								'',
+								'sorting ASC'
+							);
+							// TODO maybe it makes sense to hold all sys_domain records in a cache to save additional DB querys on each typolink
+							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+								if (!isset($foundDomains[$row['pid']])) {
+									$foundDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
 								}
-								if ($tCR_data['is_siteroot']) {
-									// Possibly subdomain inside main domain. In any case we must stop now because site root is reached.
-									break;
+								if ($row['forced'] && !isset($foundForcedDomains[$row['pid']])) {
+									$foundForcedDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
 								}
 							}
-							if (!$tCR_flag)	{
-								foreach ($tCR_rootline as $tCR_data)	{
-									$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', 'pid='.intval($tCR_data['uid']).' AND redirectTo=\'\''.$this->enableFields('sys_domain'), '', 'sorting');
-									$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-									$GLOBALS['TYPO3_DB']->sql_free_result($res);
-									if ($row)	{
-										$tCR_domain = preg_replace('/\/$/','',$row['domainName']);
+							$GLOBALS['TYPO3_DB']->sql_free_result($res);
+							
+							// Set targetDomain to first found domain record if the target page cannot be reached within the current domain
+							if (count($foundDomains) > 0 
+							  && (!in_array($currentDomain, $foundDomains) || count($foundForcedDomains) > 0)) {
+								foreach ($targetPageRootlinePids as $pid) {
+									// Always use the 'forced' domain if we found one
+									if (isset($foundForcedDomains[$pid])) {
+										$targetDomain = $foundForcedDomains[$pid];
 										break;
 									}
+									// Use the first found domain record
+									if ($targetDomain === '' && isset($foundDomains[$pid])) {
+										$targetDomain = $foundDomains[$pid];
+									}
+								}
+								// Do not prepend the domain if its the current hostname
+								if ($targetDomain === $currentDomain) {
+									$targetDomain = '';
 								}
 							}
 						}
-							// If other domain, overwrite
-						if (strlen($tCR_domain) && !$enableLinksAcrossDomains) {
+						
+						// If target page has a different domain and the current domain's linking scheme (e.g. simulateStaticDocuments/RealURL/...) should not be used
+						if (strlen($targetDomain) && !$enableLinksAcrossDomains) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.']) {
 								$target = $this->stdWrap($target, $conf['extTarget.']);
@@ -6091,13 +6115,13 @@ class tslib_cObj {
 								$target = $forceTarget;
 							}
 							$LD['target'] = $target;
-							$this->lastTypoLinkUrl = $this->URLqMark('http://'.$tCR_domain.'/index.php?id='.$page['uid'],$addQueryParams).$sectionMark;
-						} else {	// Internal link:
+							$this->lastTypoLinkUrl = $this->URLqMark('http://' . $targetDomain . '/index.php?id=' . $page['uid'], $addQueryParams) . $sectionMark;
+						} else {	// Internal link or current domain's linking scheme should be used
 							if ($forceTarget) {
 								$target = $forceTarget;
 							}
-							$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $theTypeP, $tCR_domain);
-							if (strlen($tCR_domain)) {
+							$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $target, $conf['no_cache'], '', '', $addQueryParams, $theTypeP, $targetDomain);
+							if (strlen($targetDomain)) {
 								// We will add domain only if URL does not have it already.
 
 								if ($enableLinksAcrossDomains) {
@@ -6112,7 +6136,7 @@ class tslib_cObj {
 								}
 								$urlParts = parse_url($LD['totalURL']);
 								if ($urlParts['host'] == '') {
-									$LD['totalURL'] = 'http://' . $tCR_domain . ($LD['totalURL']{0} == '/' ? '' : '/') . $LD['totalURL'];
+									$LD['totalURL'] = 'http://' . $targetDomain . ($LD['totalURL']{0} == '/' ? '' : '/') . $LD['totalURL'];
 								}
 							}
 							$this->lastTypoLinkUrl = $this->URLqMark($LD['totalURL'],'').$sectionMark;

@@ -453,10 +453,18 @@ $TCA['sys_domain'] = array(
 				'type' => 'check',
 				'default' => '0'
 			)
+		),
+		'forced' => array(
+			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.forced',
+			'exclude' => 1,
+			'config' => array(
+				'type' => 'check',
+				'default' => '1'
+			)
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;3-3-3,prepend_params')
+		'1' => array('showitem' => 'hidden;;;;1-1-1,domainName;;1;;3-3-3,prepend_params,forced;;;;4-4-4')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'redirectTo, redirectHttpStatusCode')

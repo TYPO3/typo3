@@ -1,3 +1,7 @@
+2009-11-06  Tobias Liebig <mail_typo3@etobi.de>
+
+	* Fixed bug #9046: Nested domain linking
+
 2009-11-06  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #12215: Scheduler: Added GMT time difference to server time display for improved clarity
@@ -32,7 +36,7 @@
 
 	* Fixed bug #12420: Log deprecated method calls (to be removed in TYPO3 4.5) (thanks to Xavier Perseguers)
 
-2009-11-05  Tobias Liebi <mail_typo3@etobi.de>
+2009-11-05  Tobias Liebig <mail_typo3@etobi.de>
 
 	* Cleanup/Bugfix #11838: Hardcoded labels in t3editor
 

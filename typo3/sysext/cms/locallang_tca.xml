@@ -103,6 +103,7 @@
 			<label index="sys_domain.redirectHttpStatusCode.303">See other (303)</label>
 			<label index="sys_domain.redirectHttpStatusCode.307">Moved temporarily (307)</label>
 			<label index="sys_domain.prepend_params">Transfer parameters to Redirect URL:</label>
+			<label index="sys_domain.forced">Always prepend this domain in links:</label>
 			<label index="sys_template">Template</label>
 			<label index="sys_template.title">Template title:</label>
 			<label index="sys_template.root">Rootlevel:</label>

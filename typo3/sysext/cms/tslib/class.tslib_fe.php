@@ -2004,7 +2004,8 @@
 				'type' => intval($this->type),
 				'gr_list' => (string)$this->gr_list,
 				'MP' => (string)$this->MP,
-				'cHash' => $this->cHash_array
+				'cHash' => $this->cHash_array,
+				'domainStartPage' => $this->domainStartPage,
 			)
 		);
 
@@ -2026,7 +2027,8 @@
 				'type' => intval($this->type),
 				'gr_list' => (string)$this->gr_list,
 				'MP' => (string)$this->MP,
-				'cHash' => $this->cHash_array
+				'cHash' => $this->cHash_array,
+				'domainStartPage' => $this->domainStartPage,
 			)
 		);
 
