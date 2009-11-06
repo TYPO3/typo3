@@ -94,6 +94,19 @@ class tx_openid_sv1 extends t3lib_svbase {
 	protected static $openIDLibrariesIncluded = false;
 
 	/**
+	 * Contructs the OpenID authentication service.
+	 */
+	public function __construct() {
+		// Auth_Yadis_Yadis::getHTTPFetcher() will use a cURL fetcher if the functionality
+		// is available in PHP, however the TYPO3 setting is not considered here:
+		if (!defined('Auth_Yadis_CURL_OVERRIDE')) {
+			if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse']) {
+				define('Auth_Yadis_CURL_OVERRIDE', true);
+			}
+		}
+	}
+
+	/**
 	 * Checks if service is available,. In case of this service we check that
 	 * prerequesties for "PHP OpenID" libraries are fulfilled:
 	 * - GMP or BCMATH PHP extensions are installed and functional

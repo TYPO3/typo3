@@ -26,6 +26,7 @@
 	* Raised DBAL version from 0.9.23 to 0.9.24
 	* Raised saltedpasswords version from 0.9.1 to 0.9.2
 	* Fixed bug #12488: Remove redundant code from t3lib_matchCondition in favour of using t3lib_matchCondition_frontend
+	* Fixed bug #11932: OpenID login does uses cURL even if was not defined in TYPO3_CONF_VARS
 
 2009-11-05  Martin Kutschker  <masi@typo3.org>
 
