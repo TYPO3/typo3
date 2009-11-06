@@ -1,3 +1,7 @@
+2009-11-06  Francois Suter  <francois@typo3.org>
+
+	* Follow-up to #12215: Scheduler: Added GMT time difference to server time display for improved clarity
+
 2009-11-06  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raising Extbase and Fluid versions to 0.9.12

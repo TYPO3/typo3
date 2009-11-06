@@ -506,8 +506,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 */
 	protected function displayServerTime() {
 			// Get the current time, formatted
-		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e)';
-		$now = date($dateFormat);
+		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ' T (e';
+		$now = date($dateFormat) . ', GMT ' . date('P') . ')';
 			// Display the help text
 		$serverTime  = '<h4>' . $GLOBALS['LANG']->getLL('label.serverTime') . '</h4>';
 		$serverTime .= '<p>' . $GLOBALS['LANG']->getLL('msg.serverTimeHelp') . '</p>';
