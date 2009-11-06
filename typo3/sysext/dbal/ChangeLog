@@ -1,5 +1,6 @@
 2009-11-06  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Set version to 0.9.25
 	* Fixed bug: tables and fields were not always properly mapped in INNER JOINs
 	* Added unit tests to test quoting and remapping of tables and fields when using Oracle
 
