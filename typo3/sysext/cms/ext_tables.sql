@@ -310,7 +310,7 @@ CREATE TABLE sys_domain (
   redirectHttpStatusCode int(4) unsigned DEFAULT '301' NOT NULL,
   sorting int(10) unsigned DEFAULT '0' NOT NULL,
   prepend_params int(10) DEFAULT '0' NOT NULL,
-  forced int(10) DEFAULT '0' NOT NULL,
+  forced tinyint(3) unsigned DEFAULT '0' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (pid)
