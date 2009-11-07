@@ -1,3 +1,7 @@
+2009-11-07  Rupert Germann  <rupi@gmx.li>
+
+	* Follow-up to bug #12499: re-added the removed function call and moved the deprecationLog call
+
 2009-11-07  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #12244: Improve locallangXMLOverride feature (Thanks to Steffen Gebert), this changes the LLoverride feature to $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] as an array
@@ -41,7 +45,7 @@
 
 2009-11-06  Steffen Kamper  <info@sk-typo3.de>
 
-	* Cleanup #11311: PHP casting causes workspace message to appear in Web/View (thanks to Niels Fröhling)
+	* Cleanup #11311: PHP casting causes workspace message to appear in Web/View (thanks to Niels Froehling)
 	* Fixed bug #12347: Integrate check to the install tool and reports module concerning eAccelerator
 	* Fixed bug #12295: Cleaning config_default, exclude values from being listed in install tool, all configuration
 	* Fixed bug #11633: Enable Frontend Preview does not work until switched (thanks to Fabrizio Branca)
