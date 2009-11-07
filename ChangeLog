@@ -1,3 +1,7 @@
+2009-11-07   Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12503: Help extensions shouldn't be shy
+
 2009-11-07  Oliver Hader  <oliver@typo3.org>
 
 	* Raised DBAL version from 0.9.24 to 0.9.25
