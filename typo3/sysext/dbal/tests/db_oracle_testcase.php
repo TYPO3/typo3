@@ -172,10 +172,10 @@ class db_oracle_testcase extends BaseTestCase {
 	 */
 	public function tablesAndFieldsAreRemappedInMultipleJoins() {
 		$selectFields = '*';
-		$fromTables = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local';
-		$whereClause = '1=1';
-		$groupBy = '';
-		$orderBy = '';
+		$fromTables   = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local';
+		$whereClause  = '1=1';
+		$groupBy      = '';
+		$orderBy      = '';
 
 		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
@@ -199,6 +199,44 @@ class db_oracle_testcase extends BaseTestCase {
 		));
 		$expected = 'SELECT COUNT(DISTINCT "tx_dam"."uid") AS "count" FROM "tx_dam"';
 		$expected .= ' WHERE "tx_dam"."pid" IN (1) AND "tx_dam"."file_type" IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND "tx_dam"."deleted" = 0';
-		$this->assertEquals($query, $expected);
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6953
+	 */
+	public function fieldWithinSqlFunctionIsRemapped() {
+		$selectFields = 'tstamp, script, SUM(exec_time) AS calc_sum, COUNT(*) AS qrycount, MAX(errorFlag) AS error';
+		$fromTables   = 'tx_dbal_debuglog';
+		$whereClause  = '1=1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "tstamp", "script", SUM("exec_time") AS "calc_sum", COUNT(*) AS "qrycount", MAX("errorflag") AS "error" FROM "tx_dbal_debuglog" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6953
+	 */
+	public function tableAndfieldWithinSqlFunctionIsRemapped() {
+		$selectFields = 'MAX(tt_news_cat.uid) AS biggest_id';
+		$fromTables   = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign';
+		$whereClause  = 'tt_news_cat_mm.uid_local > 50';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT MAX("ext_tt_news_cat"."cat_uid") AS "biggest_id" FROM "ext_tt_news_cat"';
+		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
+		$expected .= ' WHERE "ext_tt_news_cat_mm"."local_uid" > 50';
+		$this->assertEquals($expected, $query);
 	}
 }

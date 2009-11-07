@@ -42,6 +42,11 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 			'uid_local' => 'local_uid',
 		),
 	),
+	'tx_dbal_debuglog' => array(
+		'mapFieldNames' => array(
+			'errorFlag' => 'errorflag',
+		),
+	),
 	'tx_templavoila_datastructure' => array(
 		'mapTableName' => 'tx_templavoila_ds',
 	),

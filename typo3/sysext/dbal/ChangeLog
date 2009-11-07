@@ -1,6 +1,7 @@
 2009-11-07  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added unit test for RFC #6198: Problem with strings in IN
+	* Added unit test for RFC #6953: Mapping of fieldnames in SQL-functions like MIN(), MAX() or SUM() does not work
 
 2009-11-06  Xavier Perseguers  <typo3@perseguers.ch>
 
