@@ -180,9 +180,9 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
-		$expected = 'SELECT * FROM "XP_tt_news_cat"';
-		$expected .= ' INNER JOIN "XP_tt_news_cat_mm" ON "XP_tt_news_cat"."XP_uid"="XP_tt_news_cat_mm"."XP_uid_foreign"';
-		$expected .= ' INNER JOIN "XP_tt_news" ON "XP_tt_news"."XP_uid"="XP_tt_news_cat_mm"."XP_uid_local"';
+		$expected = 'SELECT * FROM "ext_tt_news_cat"';
+		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
+		$expected .= ' INNER JOIN "ext_tt_news" ON "ext_tt_news"."news_uid"="ext_tt_news_cat_mm"."local_uid"';
 		$expected .= ' WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}

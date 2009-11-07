@@ -24,31 +24,26 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 	'cachingframework_cache_hash' => array(
 		'mapTableName' => 'cf_cache_hash',
 	),
-	'tx_templavoila_datastructure' => array(
-		'mapTableName' => 'tx_templavoila_ds',
-		'mapFieldNames' => array(
-			'dataprot' => 'my_dataprot',
-			'title' => 'my_title',
-		),
-	),
 	'tt_news' => array(
-		'mapTableName' => 'XP_tt_news',
+		'mapTableName' => 'ext_tt_news',
 		'mapFieldNames' => array(
-			'uid' => 'XP_uid',
+			'uid' => 'news_uid',
 		),
 	),
 	'tt_news_cat' => array(
-		'mapTableName' => 'XP_tt_news_cat',
+		'mapTableName' => 'ext_tt_news_cat',
 		'mapFieldNames' => array(
-			'uid' => 'XP_uid',
+			'uid' => 'cat_uid',
 		),
 	),
 	'tt_news_cat_mm' => array(
-		'mapTableName' => 'XP_tt_news_cat_mm',
+		'mapTableName' => 'ext_tt_news_cat_mm',
 		'mapFieldNames' => array(
-			'uid_local' => 'XP_uid_local',
-			'uid_foreign' => 'XP_uid_foreign',
+			'uid_local' => 'local_uid',
 		),
+	),
+	'tx_templavoila_datastructure' => array(
+		'mapTableName' => 'tx_templavoila_ds',
 	),
 );
 ?>
