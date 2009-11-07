@@ -1722,13 +1722,16 @@ EXTENSION KEYS:
 					$localmd5 = md5_file(PATH_site.'typo3temp/extensions.xml.gz');
 				}
 
+					// count cached extensions. If cache is empty re-fill it
+				$cacheCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('extkey', 'cache_extensions');
+
 				if($extmd5 === false) {
 					$content .= '<p>' .
 						sprintf($GLOBALS['LANG']->getLL('ext_import_md5_not_updated'),
 							$mirror . 'extensions.md5'
 						) .
 						$GLOBALS['LANG']->getLL('translation_problems') . '</p>';
-				} elseif($extmd5 == $localmd5) {
+				} elseif($extmd5 == $localmd5 && $cacheCount) {
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						$GLOBALS['LANG']->getLL('ext_import_list_unchanged'),

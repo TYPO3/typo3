@@ -1,5 +1,6 @@
 2009-11-07  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #10792: Extensions cannot be looked up, when cache_extensions table is empty
 	* Follow-up to bug #12499: re-added the removed function call and moved the deprecationLog call
 
 2009-11-07  Benjamin Mack  <benni@typo3.org>
