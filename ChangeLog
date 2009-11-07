@@ -1,5 +1,6 @@
 2009-11-07  Rupert Germann  <rupi@gmx.li>
 
+	* Fixed bug #12436: Integrate checks concerning Suhosin/Hardened PHP in Install Tool (thanks to Oliver Hader)
 	* Fixed bug #10792: Extensions cannot be looked up, when cache_extensions table is empty
 	* Follow-up to bug #12499: re-added the removed function call and moved the deprecationLog call
 

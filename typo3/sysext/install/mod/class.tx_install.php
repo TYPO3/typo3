@@ -1856,6 +1856,26 @@ From sub-directory:
 				}
 			}
 		}
+
+			// Suhosin/Hardened PHP:
+		$suhosinDescription = 'Suhosin limits the number of elements that can be submitted in forms to the server. ' .
+			'This will affect for example the "All configuration" section in the Install Tool or Inline Relational ' .
+			'Record Editing (IRRE) with many child records.';
+		if (extension_loaded('suhosin')) {
+			$suhosinSuggestion = 'At least a value of 400 is suggested.';
+
+			$suhosinRequestMaxVars = ini_get('suhosin.request.max_vars');
+			$suhosinPostMaxVars = ini_get('suhosin.post.max_vars');
+			$suhosinRequestMaxVarsType = ($suhosinRequestMaxVars < 400 ? 2 : -1);
+			$suhosinPostMaxVarsType = ($suhosinPostMaxVars < 400 ? 2 : -1);
+			$suhosinType = ($suhosinRequestMaxVars < 400 || $suhosinPostMaxVars < 400 ? 2 : -1);
+
+			$this->message($ext, 'Suhosin/Hardened PHP is loaded', $suhosinDescription, $suhosinType);
+			$this->message($ext, 'suhosin.request.max_vars: ' . $suhosinRequestMaxVars, $suhosinSuggestion, $suhosinRequestMaxVarsType);
+			$this->message($ext, 'suhosin.post.max_vars: ' . $suhosinPostMaxVars, $suhosinSuggestion, $suhosinPostMaxVarsType);
+		} else {
+			$this->message($ext, 'Suhosin/Hardened PHP is not loaded', $suhosinDescription, 0);
+		}
 	}
 
 	/**
