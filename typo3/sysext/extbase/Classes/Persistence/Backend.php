@@ -456,8 +456,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 	
 	/**
-	 * Tests, if the given Value Object already exists in the storage backend. If so, it maps the uid
-	 * to the given object.
+	 * Tests, if the given Value Object already exists in the storage backend and if so, it returns the uid.
 	 *
 	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The object to be tested
 	 */

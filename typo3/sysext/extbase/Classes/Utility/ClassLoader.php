@@ -43,8 +43,6 @@ class Tx_Extbase_Utility_ClassLoader {
 	 * @return void
 	 */
 	public static function loadClass($className) {
-		// TODO Remove debug code
-		//$starttime = microtime(true);
 		$classNameParts = explode('_', $className, 3);
 		$extensionKey = Tx_Extbase_Utility_Extension::convertCamelCaseToLowerCaseUnderscored($classNameParts[1]);
 		if (t3lib_extMgm::isLoaded($extensionKey)) {
@@ -53,8 +51,6 @@ class Tx_Extbase_Utility_ClassLoader {
 				require($classFilePathAndName);
 			}
 		}
-		//$endtime = microtime(true);
-		//debug(($endtime - $starttime) * 10000, $className);
 	}
 	
 }

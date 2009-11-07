@@ -272,6 +272,17 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 		return $this->storage;
 	}
 
+	public function __clone() {
+		if ($this->isInitialized()) {
+			$clonedStorage = array();
+			foreach ($this->storage as $object) {
+				if ($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+					$clonedStorage[] = clone $object;
+				}
+			}
+			$this->storage = $clonedStorage;
+		}
+	}
 }
 
 ?>
