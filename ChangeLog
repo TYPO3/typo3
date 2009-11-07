@@ -18,6 +18,7 @@
 
 	* Raised DBAL version from 0.9.24 to 0.9.25
 	* Raised Extbase version from 0.9.12 to 0.9.13
+	* Raised Extbase version from 0.9.13 to 0.9.16
 
 2009-11-07  Bernhard Kraft  <bernhard@typo3.org>
 
