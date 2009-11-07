@@ -4401,11 +4401,13 @@ final class t3lib_div {
 				}
 				$fileNotFound = TRUE;
 			}
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['locallangXMLOverride'][$fileRef])) {
-				$languageOverrideFileName = t3lib_div::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['EXT']['locallangXMLOverride'][$fileRef]);
-				if (@is_file($languageOverrideFileName)) {
-					$languageOverrideArray = t3lib_div::readLLXMLfile($languageOverrideFileName, $langKey, $charset);
-					$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG, $languageOverrideArray);
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRef])) {
+				foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRef] as $overrideFile) {
+					$languageOverrideFileName = t3lib_div::getFileAbsFileName($overrideFile);
+					if (@is_file($languageOverrideFileName)) {
+						$languageOverrideArray = t3lib_div::readLLXMLfile($languageOverrideFileName, $langKey, $charset);
+						$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG, $languageOverrideArray);
+					}
 				}
 			}
 		}

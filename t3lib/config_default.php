@@ -165,6 +165,7 @@ $TYPO3_CONF_VARS = array(
 		'exceptionalErrors' => E_ALL ^ E_NOTICE ^ E_WARNING ^ E_USER_ERROR ^ E_USER_NOTICE ^ E_USER_WARNING,	// Integer: The E_* constant that will be handled as an exception by t3lib_error_ErrorHandler. Default is "E_ALL ^ E_NOTICE ^ E_WARNING ^ E_USER_ERROR ^ E_USER_NOTICE ^ E_USER_WARNING" (4341) and "0" if displayError=0. Some values for errors: E_ALL=6143, E_ALL ^ E_NOTICE ^ E_WARNING=6133. See php documentation for more details on this integer.
 		'enable_errorDLOG' => 0,				// Boolean: If set, errors are written to the developer log (requires an installed *devlog* extension).
 		'enable_exceptionDLOG' => 0,			// Boolean: If set, exceptions are written to the developer log (requires an installed *devlog* extension).
+		'locallangXMLOverride' => array(),				// For extension/overriding of the arrays in 'locallang' files in frontend and backend. See 'Inside TYPO3' for more information.
 	),
 	'EXT' => array (	// Options related to the Extension Management
 		'noEdit' => TRUE,						// Boolean: If set, the Extension Manager does NOT allow extension files to be edited! (Otherwise both local and global extensions can be edited.)
@@ -182,7 +183,6 @@ $TYPO3_CONF_VARS = array(
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()
 		),
-		'locallangXMLOverride' => array(),					// For extension/overriding of the arrays in 'locallang' files in frontend and backend. See 'Inside TYPO3' for more information.
 	),
 	'BE' => array(		// Backend Configuration.
 		'unzip_path' => '',						// Path to "unzip".

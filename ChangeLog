@@ -1,3 +1,7 @@
+2009-11-07  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #12244: Improve locallangXMLOverride feature (Thanks to Steffen Gebert), this changes the LLoverride feature to $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] as an array
+
 2009-11-07  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12013: tslib_pagegen fails to read mime type of the shortcut icon (thanks to Xavier Perseguers)

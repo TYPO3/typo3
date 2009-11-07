@@ -412,6 +412,8 @@ class language {
 			}
 
 				// Overriding file?
+				// @deprecated since TYPO3 4.3, remove in TYPO3 4.5, please use the generic method in
+				// t3lib_div::readLLfile and the global array $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$fileRef]))	{
 				$ORarray = $this->readLLfile($GLOBALS['TYPO3_CONF_VARS']['BE']['XLLfile'][$fileRef]);
 				$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG,$ORarray);
