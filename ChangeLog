@@ -1,5 +1,6 @@
 2009-11-07  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12013: tslib_pagegen fails to read mime type of the shortcut icon (thanks to Xavier Perseguers)
 	* Fixed bug #12503: Help extensions shouldn't be shy
 
 2009-11-07  Oliver Hader  <oliver@typo3.org>
