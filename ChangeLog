@@ -4,6 +4,7 @@
 
 2009-11-07  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to #12483: Call to deprecated method t3lib_beUserAuth::trackBeUser()
 	* Fixed bug #12013: tslib_pagegen fails to read mime type of the shortcut icon (thanks to Xavier Perseguers)
 	* Fixed bug #12503: Help extensions shouldn't be shy
 

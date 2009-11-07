@@ -217,7 +217,6 @@ $TYPO3_CONF_VARS = array(
 		'maxFileSize' => '10240',				// Integer. If set this is the max filesize in KB's for file operations in the backend. Can be overridden through $TCA per table field separately.
 		'forceCharset' => '',					// String. Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value.
 		'installToolPassword' => '',			// String. This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
-		'trackBeUser' => FALSE,					// Boolean. If set, every invokation of a backend script is logged in sys_trackbeuser. This is used to get a view of the backend users behaviour. Mostly for debugging, support and user interaction analysis. Requires 'beuser_tracking' extension.
  		'defaultUserTSconfig' => 'options.shortcutFrame=1
 			options.enableShortcuts=1',			// String (exclude). Enter lines of default backend user/group TSconfig.
 		'defaultPageTSconfig' => '',			// String (exclude).Enter lines of default Page TSconfig.
