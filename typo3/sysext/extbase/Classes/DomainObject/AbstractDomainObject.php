@@ -134,7 +134,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return boolean
 	 */
 	public function _isNew() {
-		return ($this->uid === NULL) || $this->_isClone();
+		return $this->uid === NULL;
 	}
 
 	/**

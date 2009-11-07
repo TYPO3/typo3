@@ -277,6 +277,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 			$clonedStorage = array();
 			foreach ($this->storage as $object) {
 				if ($object instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+					$object->_setProperty('uid', NULL);
 					$clonedStorage[] = clone $object;
 				}
 			}
