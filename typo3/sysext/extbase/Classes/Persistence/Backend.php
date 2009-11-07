@@ -357,7 +357,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$propertyType = $propertyMetaData['type'];
 			// FIXME enable property-type check
 			// $this->checkPropertyType($propertyType, $propertyValue);
-			if ($propertyType === 'Tx_Extbase_Persistence_ObjectStorage') {	
+			if (($propertyValue !== NULL) && ($propertyType === 'Tx_Extbase_Persistence_ObjectStorage')) {
 				if ($object->_isDirty($propertyName)) {
 					$row[$columnMap->getColumnName()] = $this->persistObjectStorage($propertyValue, $object, $propertyName, $queue);
 				} else {
@@ -439,7 +439,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 
 			$properties = $object->_getProperties();
 			foreach ($properties as $propertyName => $propertyValue) {
-				if (!$dataMap->isPersistableProperty($propertyName) || $this->isLazyValue($propertyValue)) {
+				if (!$dataMap->isPersistableProperty($propertyName)) continue;
+				if (($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) || ((get_class($propertyValue) === 'Tx_Extbase_Persistence_LazyObjectStorage') && ($propertyValue->isInitialized() === FALSE))) {
 					continue;
 				}
 
@@ -530,9 +531,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
 			$propertyValue = $propertyValue->toArray();
 		}
-		foreach ($cleanPropertyValue as $hash => $item) {
-			if (!array_key_exists($hash, $propertyValue)) {
-				$removedObjects[] = $item;
+		if ($cleanPropertyValue instanceof Iterator) {
+			foreach ($cleanPropertyValue as $hash => $item) {
+				if (!array_key_exists($hash, $propertyValue)) {
+					$removedObjects[] = $item;
+				}
 			}
 		}
 		return $removedObjects;
