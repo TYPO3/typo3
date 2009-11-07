@@ -5,6 +5,7 @@
 2009-11-07  Oliver Hader  <oliver@typo3.org>
 
 	* Raised DBAL version from 0.9.24 to 0.9.25
+	* Raised Extbase version from 0.9.12 to 0.9.13
 
 2009-11-07  Bernhard Kraft  <bernhard@typo3.org>
 
