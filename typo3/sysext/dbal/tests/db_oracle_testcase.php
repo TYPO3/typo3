@@ -186,4 +186,19 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ' WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}
+
+	/** 
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6198
+	 */
+	public function stringsWithinInClauseAreProperlyQuoted() {
+		$query = $this->cleanSql($this->fixture->SELECTquery(
+			'COUNT(DISTINCT tx_dam.uid) AS count',
+			'tx_dam',
+			'tx_dam.pid IN (1) AND tx_dam.file_type IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND tx_dam.deleted = 0'
+		));
+		$expected = 'SELECT COUNT(DISTINCT "tx_dam"."uid") AS "count" FROM "tx_dam"';
+		$expected .= ' WHERE "tx_dam"."pid" IN (1) AND "tx_dam"."file_type" IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND "tx_dam"."deleted" = 0';
+		$this->assertEquals($query, $expected);
+	}
 }

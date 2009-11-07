@@ -1,3 +1,7 @@
+2009-11-07  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for RFC #6198: Problem with strings in IN
+
 2009-11-06  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 0.9.25
