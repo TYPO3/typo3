@@ -510,6 +510,7 @@ class t3lib_TStemplate	{
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
+		$this->procesIncludes();
 	}
 
 	/**

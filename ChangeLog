@@ -1,3 +1,7 @@
+2009-11-07  Bernhard Kraft  <bernhard@typo3.org>
+
+	* Fixed bug #12428: slow t3lib_TSparser::parseSub
+
 2009-11-06  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12499: Call to deprecated method t3lib_userAuth::redirect()
