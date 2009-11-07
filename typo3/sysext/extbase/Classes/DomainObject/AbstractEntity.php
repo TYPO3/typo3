@@ -35,7 +35,7 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	/**
 	 * @var An array holding the clean property values. Set right after reconstitution of the object
 	 */
-	private $_cleanProperties = NULL;
+	private $_cleanProperties = array();
 
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
@@ -68,9 +68,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 */
 	public function _memorizePropertyCleanState($propertyName) {
 		$propertyValue = $this->$propertyName;
-		if (!is_array($this->_cleanProperties)) {
-			$this->_cleanProperties = array();
-		}
 		if (is_object($propertyValue)) {
 			$this->_cleanProperties[$propertyName] = clone($propertyValue);
 
@@ -94,41 +91,32 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @return array
 	 */
 	public function _getCleanProperties() {
-		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before calling _isDirty().', 1233309106);
 		return $this->_cleanProperties;
 	}
 
 	/**
-	 * Returns a hash map of dirty properties and $values
+	 * Returns the clean value of the given property. The returned value will be NULL if the clean state was not memorized before, or
+	 * if the clean value is NULL.
 	 *
-	 * @return array
+	 * @param string $propertyName The name of the property to be memorized. If omittet all persistable properties are memorized.
+	 * @return mixed The clean property value or NULL
 	 */
-	public function _getDirtyProperties() {
-		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
-		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
-		$dirtyProperties = array();
-		foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-			if (is_object($this->$propertyName)) {
-				// In case it is an object, we do a simple comparison (!=) as we want cloned objects to return the same values.
-				if ($this->$propertyName != $propertyValue) {
-					$dirtyProperties[$propertyName] = $this->$propertyName;
-				}
-			} else {
-				if ($this->$propertyName !== $propertyValue) {
-					$dirtyProperties[$propertyName] = $this->$propertyName;
-				}
-			}
+	public function _getCleanProperty($propertyName) {
+		if (is_array($this->_cleanProperties)) {
+			return isset($this->_cleanProperties[$propertyName]) ? $this->_cleanProperties[$propertyName] : NULL;
+		} else {
+			return NULL;
 		}
-		return $dirtyProperties;
 	}
-
+	
 	/**
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
 	 */
 	public function _isDirty($propertyName = NULL) {
-		if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
+		if (empty($this->_cleanProperties)) return TRUE;
+		// if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
 		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		$result = FALSE;
 		if ($propertyName !== NULL) {

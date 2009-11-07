@@ -197,7 +197,7 @@ class Tx_Extbase_Property_Mapper {
 				if ($targetClassSchema !== NULL && $targetClassSchema->hasProperty($propertyName)) {
 					$propertyMetaData = $targetClassSchema->getProperty($propertyName);
 
-					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage', 'Tx_Extbase_Persistence_LazyObjectStorage')) && strpos($propertyMetaData['elementType'], '_') !== FALSE) {
+					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage')) && strpos($propertyMetaData['elementType'], '_') !== FALSE) {
 						$objects = array();
 						foreach ($propertyValue as $value) {
 							$objects[] = $this->transformToObject($value, $propertyMetaData['elementType'], $propertyName);
@@ -206,7 +206,7 @@ class Tx_Extbase_Property_Mapper {
 							// make sure we hand out what is expected
 						if ($propertyMetaData['type'] === 'ArrayObject') {
 							$propertyValue = new ArrayObject($objects);
-						} elseif ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage' || $propertyMetaData['type'] === 'Tx_Extbase_Persistence_LazyObjectStorage') {
+						} elseif ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage') {
 							$propertyValue = new Tx_Extbase_Persistence_ObjectStorage();
 							foreach ($objects as $object) {
 								$propertyValue->attach($object);

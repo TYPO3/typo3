@@ -262,7 +262,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @param string $className Name of the class containing the property
 	 * @param string $propertyName Name of the tagged property
 	 * @param string $tag Tag to return the values of
-		if (!isset($this->propertyTagsValues[$className])) return array();
 	 * @return array An array of values or an empty array if the tag was not found
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
@@ -389,7 +388,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
 		foreach ($this->getClassPropertyNames($className) as $propertyName) {
 			if (!$this->isPropertyTaggedWith($className, $propertyName, 'transient') && $this->isPropertyTaggedWith($className, $propertyName, 'var')) {
-				$classSchema->addProperty($propertyName, implode(' ', $this->getPropertyTagValues($className, $propertyName, 'var')), $this->isPropertyTaggedWith($className, $propertyName, 'lazy'));
+				$cascadeTagValues = $this->getPropertyTagValues($className, $propertyName, 'cascade');
+				$classSchema->addProperty($propertyName, implode(' ', $this->getPropertyTagValues($className, $propertyName, 'var')), $this->isPropertyTaggedWith($className, $propertyName, 'lazy'), $cascadeTagValues[0]);
 			}
 			if ($this->isPropertyTaggedWith($className, $propertyName, 'uuid')) {
 				$classSchema->setUUIDPropertyName($propertyName);
@@ -459,7 +459,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Tries to load the reflection data from this service's cache.
 	 *
 	 * @return void
-
 	 */
 	protected function loadFromCache() {
 		$cacheKey = $this->getCacheKey();
@@ -475,7 +474,6 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * Exports the internal reflection data into the ReflectionData cache.
 	 *
 	 * @return void
-
 	 */
 	protected function saveToCache() {
 		if (!is_object($this->cache)) {

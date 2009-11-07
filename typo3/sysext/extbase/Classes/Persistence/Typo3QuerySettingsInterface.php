@@ -54,5 +54,19 @@ interface Tx_Extbase_Persistence_Typo3QuerySettingsInterface extends Tx_Extbase_
 	 */
 	public function setRespectEnableFields($respectEnableFields);
 
+	/**
+	 * Sets the state, if the QueryResult should be returned unmapped.
+	 *
+	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 */
+	public function setReturnRawQueryResult($returnRawQueryResult);
+	
+	/**
+	 * Returns the state, if the QueryResult should be returned unmapped.
+	 *
+	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 */
+	public function getReturnRawQueryResult();
+	
 }
 ?>

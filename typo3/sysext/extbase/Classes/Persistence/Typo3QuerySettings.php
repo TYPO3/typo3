@@ -49,6 +49,12 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	protected $respectEnableFields = TRUE;
 
 	/**
+	 * Flag if the the query result should be returned as raw QueryResult.
+	 * @var boolean
+	 */
+	protected $returnRawQueryResult = FALSE;
+
+	/**
 	 * Sets the flag if the storage page should be respected for the query.
 	 *
 	 * @param $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
@@ -89,6 +95,25 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	public function getRespectEnableFields() {
 		return $this->respectEnableFields;
 	}
+	
+	/**
+	 * Sets the state, if the QueryResult should be returned unmapped.
+	 *
+	 * @var boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @return void
+	 */
+	public function setReturnRawQueryResult($returnRawQueryResult) {
+		$this->returnRawQueryResult = $returnRawQueryResult;
+	}
+	
+	/**
+	 * Returns the state, if the QueryResult should be returned unmapped.
+	 *
+	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 */
+	public function getReturnRawQueryResult() {
+		return $this->returnRawQueryResult;
+	}	
 
 }
 ?>

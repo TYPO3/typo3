@@ -39,7 +39,6 @@ class Tx_Extbase_Persistence_Repository_testcase extends Tx_Extbase_BaseTestCase
 			public function _setProperty($propertyName, $propertyValue) {}
 			public function _getProperty($propertyName) {}
 			public function _getProperties() {}
-			public function _getDirtyProperties() {}
 			public function getUid() { return 123; }
 		}');
 	}

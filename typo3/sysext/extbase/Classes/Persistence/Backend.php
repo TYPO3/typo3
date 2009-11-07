@@ -51,6 +51,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $identityMap;
 
 	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
 	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
 	 */
 	protected $queryFactory;
@@ -83,6 +88,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $referenceIndex;
 
 	/**
+	 * @var array
+	 **/
+	protected $extbaseSettings;
+
+	/**
 	 * Constructs the backend
 	 *
 	 * @param Tx_Extbase_Persistence_Session $session The persistence session used to persist data
@@ -90,7 +100,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	public function __construct(Tx_Extbase_Persistence_Session $session, Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
 		$this->session = $session;
 		$this->storageBackend = $storageBackend;
-		$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
+		$this->extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+			$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
+		}
 		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
@@ -112,6 +125,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	public function injectIdentityMap(Tx_Extbase_Persistence_IdentityMap $identityMap) {
 		$this->identityMap = $identityMap;
+	}
+
+	/**
+	 * Injects the Reflection Service
+	 *
+	 * @param Tx_Extbase_Reflection_Service
+	 * @return void
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
 	}
 
 	/**
@@ -296,6 +319,13 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	protected function persistObjects() {
 		foreach ($this->aggregateRootObjects as $object) {
+			// if (!$this->identityMap->hasObject($object)) { // TODO Must be enabled to allow other identity properties than $uid
+			if ($object->_isNew()) {
+				$this->insertObject($object);
+			}
+		}
+		
+		foreach ($this->aggregateRootObjects as $object) {
 			$this->persistObject($object);
 		}
 	}
@@ -308,98 +338,180 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param string $parentPropertyName The name of the property the object is stored in
 	 * @return void
 	 */
-	protected function persistObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL) {
+	protected function persistObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
 		$row = array();
-		$queuedObjects = array();
+		$queue = array();
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
-
-		if ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
-			$this->mapAlreadyPersistedValueObject($object);
-		}
-
+		$classSchema = $this->reflectionService->getClassSchema($className);
+		
 		$properties = $object->_getProperties();
-		// Fill up $row[$columnName] array with changed values which need to be stored
 		foreach ($properties as $propertyName => $propertyValue) {
-			if (!$dataMap->isPersistableProperty($propertyName) || ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy)) {
+			if (!$dataMap->isPersistableProperty($propertyName)) continue;
+			if (($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) || ((get_class($propertyValue) === 'Tx_Extbase_Persistence_LazyObjectStorage') && ($propertyValue->isInitialized() === FALSE))) {
 				continue;
 			}
 
 			$columnMap = $dataMap->getColumnMap($propertyName);
-			if ($object->_isNew() || $object->_isDirty($propertyName)) {
-				if ($columnMap->isRelation()) {
-					$this->persistRelations($object, $propertyName, $propertyValue, $columnMap, $queuedObjects, $row);
+			$propertyMetaData = $classSchema->getProperty($propertyName);
+			$propertyType = $propertyMetaData['type'];
+			// FIXME enable property-type check
+			// $this->checkPropertyType($propertyType, $propertyValue);
+			if ($propertyType === 'Tx_Extbase_Persistence_ObjectStorage') {	
+				if ($object->_isDirty($propertyName)) {
+					$row[$columnMap->getColumnName()] = $this->persistObjectStorage($propertyValue, $object, $propertyName, $queue);
 				} else {
-					// We have not a relation, this means it is a scalar (like a string or interger value) or an object
+					foreach ($propertyValue as $containedObject) {
+						$queue[] = $containedObject;
+					}
+				}
+			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {				
+				if ($object->_isDirty($propertyName)) {
+					if ($propertyValue->_isNew()) {
+						if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+							$this->insertObject($propertyValue, $object, $propertyName);
+							$queue[] = $propertyValue;
+						} else {
+							$this->persistValueObject($propertyValue, $object, $propertyName);
+						}
+					}
 					$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 				}
-			}
-		} // end property iteration for loop
-
-		// The state of the Object has to be stored in a local variable because $object->_isNew() will return FALSE after
-		// the object was inserted. We need the initial state here.
-		$objectIsNew = $object->_isNew();
-		if ($objectIsNew === TRUE) {
-			$this->insertObject($object, $parentObject, $parentPropertyName, $row);
-		} elseif ($object->_isDirty()) {
-			$this->updateObject($object, $parentObject, $parentPropertyName, $row);
-		}
-
-		$objectHasToBeUpdated = $this->processQueuedChildObjects($object, $queuedObjects, $row);
-		if ($objectHasToBeUpdated === TRUE) {
-			// TODO Check if this can be merged with the first update
-			$this->updateObject($object, $parentObject, $parentPropertyName, $row);
-		}
-
-		// SK: I need to check the code below more thoroughly
-		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
-			$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
-			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-			if (($parentColumnMap->getTypeOfRelation()  === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
-				$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName);
+			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || $object->_isNew() || $object->_isDirty($propertyName)) {
+				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
+		
+		if (count($row) > 0) {
+			$this->updateObject($object, $row);
+		}
+		
+		if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+			$object->_memorizeCleanState();
+		}
 
-		// TODO: We should only register the object if it was really updated.
-		$this->identityMap->registerObject($object, $object->getUid());
-		$object->_memorizeCleanState();
+		foreach ($queue as $object) {
+			$this->persistObject($object);
+		}
+		
 	}
 
 	/**
+	 * Checks a value given against the expected type. If not matching, an
+	 * UnexpectedTypeException is thrown. NULL is always considered valid.
+	 *
+	 * @param string $expectedType The expected type
+	 * @param mixed $value The value to check
+	 * @return void
+	 * @throws Tx_Extbase_Persistence_Exception_UnexpectedType
+	 */
+	protected function checkPropertyType($expectedType, $value) {
+		if ($value === NULL) {
+			return;
+		}
+
+		if (is_object($value)) {
+			if (!($value instanceof $expectedType)) {
+				throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Expected property of type ' . $expectedType . ', but got ' . get_class($value), 1244465558);				
+			}
+		} elseif ($expectedType !== gettype($value)) {			
+			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Expected property of type ' . $expectedType . ', but got ' . gettype($value), 1244465558);
+		}
+	}
+	
+	/**
+	 * Persists the given value object.
+	 *
+	 * @return void
+	 */
+	protected function persistValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 1) {
+		$result = $this->getUidOfAlreadyPersistedValueObject($object);
+		if ($result !== FALSE) {
+			$object->_setProperty('uid', (int)$result);
+			if($this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+				$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
+			}
+		} else {
+			$row = array();
+			$className = get_class($object);
+			$dataMap = $this->dataMapper->getDataMap($className);
+			$classSchema = $this->reflectionService->getClassSchema($className);
+
+			$properties = $object->_getProperties();
+			foreach ($properties as $propertyName => $propertyValue) {
+				if (!$dataMap->isPersistableProperty($propertyName) || $this->isLazyValue($propertyValue)) {
+					continue;
+				}
+
+				$columnMap = $dataMap->getColumnMap($propertyName);
+				$propertyMetaData = $classSchema->getProperty($propertyName);
+				$propertyType = $propertyMetaData['type'];
+				// FIXME enable property-type check
+				// $this->checkPropertyType($propertyType, $propertyValue);
+				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+			}
+			$this->insertObject($object, $parentObject, $parentPropertyName, $sortingPosition, $row);
+		}
+	}
+	
+	/**
+	 * Tests, if the given Value Object already exists in the storage backend. If so, it maps the uid
+	 * to the given object.
+	 *
+	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The object to be tested
+	 */
+	protected function getUidOfAlreadyPersistedValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object) {
+		return $this->storageBackend->getUidOfAlreadyPersistedValueObject($object);
+	}
+	
+	/**
 	 * Persists a relation. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
-	 * gets persisted immediately. Objects which were removed from the property were deleted immediately, too.
+	 * gets persisted immediately. Objects which were removed from the property were detached from the parent object. They will not be
+	 * deleted by default. You have to annotate the property with "@cascade remove" if you want them to be deleted as well.
 	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object
 	 * @param string $propertyName The name of the property the related objects are stored in
-	 * @param mixed $propertyValue The property value (an array of Domain Objects, ObjectStorage holding Domain Objects or a Domain Object itself)
+	 * @param mixed $propertyValue The property value 
 	 * @return void
 	 */
-	protected function persistRelations(Tx_Extbase_DomainObject_DomainObjectInterface $object, $propertyName, $propertyValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap, &$queuedObjects, &$row) {
-			$columnName = $columnMap->getColumnName();
-			if (($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) || ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY)) {
-				if (is_array($propertyValue) || $propertyValue instanceof ArrayAccess) {
-					foreach ($propertyValue as $relatedObject) {
-						$queuedObjects[$propertyName][] = $relatedObject;
-					}
-					foreach ($this->getRemovedChildObjects($object, $propertyName) as $removedObject) {
-						// TODO The removed object should only be deleted automatically if it is not managed by a Repository
-						if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-							$this->deleteObject($removedObject, $object, $propertyName);
-						} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-							$this->deleteRelationFromRelationtable($removedObject, $object, $propertyName);
-						}
-					}
-					$row[$columnName] = count($propertyValue); // Will be overwritten if the related objects are referenced by a comma separated list
-				}
-			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
-				// TODO Handle Value Objects different
-				if ($propertyValue->_isNew() || $propertyValue->_isDirty()) {
-					$this->persistObject($propertyValue);
-				}
-				$row[$columnName] = $propertyValue->getUid();
+	protected function persistObjectStorage(Tx_Extbase_Persistence_ObjectStorage $objectStorage, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, &$queue) {
+		$className = get_class($parentObject);
+		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
+		$columnName = $columnMap->getColumnName();		
+		$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+		
+		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
+			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
+				$this->removeObject($removedObject);
+			} else {
+				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 			}
-	}
+		}
 
+		$childPidArray = array();
+		$sortingPosition = 1;
+		foreach ($objectStorage as $object) {
+			if ($object->_isNew()) {
+				if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+					$this->insertObject($object, $parentObject, $propertyName, $sortingPosition);
+					$queue[] = $object;
+				} else {
+					$this->persistValueObject($object, $parentObject, $propertyName, $sortingPosition);
+				}
+			}
+			$childPidArray[] = $object->getUid(); // FIXME This won't work for partly loaded storages
+			$sortingPosition++;
+		}
+		
+		if ($columnMap->getParentKeyFieldName() === NULL) {
+			$newParentPropertyValue = implode(',', $childPidArray);
+		} else {
+			$newParentPropertyValue = count($objectStorage); // TODO check for limited queries
+		}
+		
+		return $newParentPropertyValue;
+	}
+	
 	/**
 	 * Returns the removed objects determined by a comparison of the clean property value
 	 * with the actual property value.
@@ -410,110 +522,101 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	protected function getRemovedChildObjects(Tx_Extbase_DomainObject_AbstractEntity $object, $propertyName) {
 		$removedObjects = array();
-		if (!$object->_isNew()) {
-			$cleanProperties = $object->_getCleanProperties();
-			$cleanPropertyValue = $cleanProperties[$propertyName];
-			$propertyValue = $object->_getProperty($propertyName);
-			if ($cleanPropertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
-				$cleanPropertyValue = $cleanPropertyValue->toArray();
-			}
-			if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
-				$propertyValue = $propertyValue->toArray();
-			}
-			foreach ($cleanPropertyValue as $item) {
-				if (!in_array($item, $propertyValue)) {
-					$removedObjects[] = $item;
-				}
+		$cleanPropertyValue = $object->_getCleanProperty($propertyName);
+		$propertyValue = $object->_getProperty($propertyName);
+		if ($cleanPropertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
+			$cleanPropertyValue = $cleanPropertyValue->toArray();
+		}
+		if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
+			$propertyValue = $propertyValue->toArray();
+		}
+		foreach ($cleanPropertyValue as $hash => $item) {
+			if (!array_key_exists($hash, $propertyValue)) {
+				$removedObjects[] = $item;
 			}
 		}
 		return $removedObjects;
 	}
-
+	
 	/**
-	 * This function processes the queued child objects to be persisted. The queue is build while looping over the
-	 * collection of Domain Objects stored in a object property.
+	 * Updates the fields defining the relation between the object and the parent object.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object holding the collection
-	 * @param array $queuedObjects The queued child objects
-	 * @param array $row The row to be inseted or updated in the database. Passed as reference.
-	 * @return boolean TRUE if the object holding the collection has to be updated; otherwise FALSE
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object 
+	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject 
+	 * @param string $parentPropertyName 
+	 * @return void
 	 */
-	protected function processQueuedChildObjects(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $queuedChildObjects, array &$row) {
-		$objectHasToBeUpdated = FALSE;
-		$className = get_class($object);
-		$dataMap = $this->dataMapper->getDataMap($className);
-		foreach ($queuedChildObjects as $propertyName => $childObjects) {
-			$columnMap = $dataMap->getColumnMap($propertyName);
-			$childPidArray = array();
-			foreach($childObjects as $childObject) {
-				$this->persistObject($childObject, $object, $propertyName);
-				if ($childObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
-					$childPidArray[] = (int)$childObject->getUid();
+	protected function detachObjectFromParentObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_AbstractEntity $parentObject, $parentPropertyName) {
+		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
+		if ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+			$row = array();
+			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
+			if ($parentKeyFieldName !== NULL) {
+				$row[$parentKeyFieldName] = '';
+				$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
+				if ($parentTableFieldName !== NULL) {
+					$row[$parentTableFieldName] = '';
 				}
 			}
-			if ($columnMap->getParentKeyFieldName() === NULL) { // TRUE: We have to generate a comma separated list stored in the field
-				if (count($childPidArray) > 0) {
-					$row[$propertyName] = implode(',', $childPidArray);
-				} else {
-					$row[$propertyName] = NULL;
-				}
-				$objectHasToBeUpdated = TRUE;
+			if (count($row) > 0) {
+				$this->updateObject($object, $row);
 			}
-		}
-		return $objectHasToBeUpdated;
+		} elseif ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$this->deleteRelationFromRelationtable($object, $parentObject, $parentPropertyName);
+		}		
 	}
-
-	/**
-	 * Tests, if the given Value Object already exists in the storage backend. If so, it maps the uid
-	 * to the given object.
-	 *
-	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The object to be tested
-	 */
-	protected function mapAlreadyPersistedValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object) {
-		$dataMap = $this->dataMapper->getDataMap(get_class($object));
-		$properties = $object->_getProperties();
-		$result = $this->storageBackend->hasValueObject($properties, $dataMap);
-		if ($result !== FALSE) {
-			$object->_setProperty('uid', $result);
-		}
-	}
-
+	
 	/**
 	 * Inserts an object in the storage
 	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
-	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
-	 * @param string|NULL $parentPropertyName The name of the property
-	 * @param array $row The $row
+	 * @param array $row The tuple to be inserted
+	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The parent object (if any)
+	 * @param string $parentPropertyName The name of the property
 	 */
-	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_AbstractEntity $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
-		$className = get_class($object);
-		$dataMap = $this->dataMapper->getDataMap($className);
-		$tableName = $dataMap->getTableName();
-		$this->addCommonFieldsToRow($object, $parentObject, $parentPropertyName, $row);
-		$uid = $this->storageBackend->addRow(
-			$tableName,
-			$row
-			);
-		$object->_setProperty('uid', $uid);
-		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
+	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_AbstractEntity $parentObject = NULL, $propertyName = NULL, $sortingPosition = NULL, array $row = array()) {
+		$tableName = $this->dataMapper->getDataMap(get_class($object))->getTableName();
+		$this->addCommonFieldsToRow($object, $row);
+		if ($parentObject !== NULL) {
+			$parentColumnMap = $this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+			if ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $parentColumnMap->getParentKeyFieldName() !== NULL) {
+				$row[$parentColumnMap->getParentKeyFieldName()] = $parentObject->getUid();
+			}
+		}
+		if ($object->_isNew()) {
+			$uid = $this->storageBackend->addRow(
+				$tableName,
+				$row
+				);
+			$object->_setProperty('uid', (int)$uid);
+		}
+		if ($parentObject !== NULL) {
+			if($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+				$this->insertRelationInRelationtable($object, $parentObject, $propertyName, $sortingPosition);
+			}
+		}
+		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+			$this->referenceIndex->updateRefIndexTable($tableName, $uid);
+		}
+		$this->identityMap->registerObject($object, $uid);
 	}
-
+	
 	/**
 	 * Inserts mm-relation into a relation table
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject The related object
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The related object
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
-	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
+	 * @param string $propertyName The name of the parent object's property where the related objects are stored in
 	 * @return void
 	 */
-	protected function insertRelationInRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $relatedObject, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+	protected function insertRelationInRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $sortingPosition = NULL) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
-		$columnMap = $dataMap->getColumnMap($parentPropertyName);
+		$columnMap = $dataMap->getColumnMap($propertyName);
 		$row = array(
 			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-			$columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
-			'sorting' => 9999 // TODO sorting of mm table items
+			$columnMap->getChildKeyFieldName() => (int)$object->getUid(),
+			$columnMap->getChildSortByFieldName() => !is_null($sortingPosition) ? (int)$sortingPosition : 0
 			);
 		$relationTableName = $columnMap->getRelationTableName();
 		// FIXME Reenable support for tablenames
@@ -558,18 +661,21 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param string|NULL $parentPropertyName The name of the property
 	 * @param array $row The $row
 	 */
-	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
-		$className = get_class($object);
-		$dataMap = $this->dataMapper->getDataMap($className);
-		$tableName = $dataMap->getTableName();
-		$this->addCommonFieldsToRow($object, $parentObject, $parentPropertyName, $row);
+	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
+		$tableName = $this->dataMapper->getDataMap(get_class($object))->getTableName();
+		$this->addCommonFieldsToRow($object, $row);
 		$uid = $object->getUid();
 		$row['uid'] = $uid;
 		$res = $this->storageBackend->updateRow(
 			$tableName,
 			$row
 			);
-		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
+		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+			$this->referenceIndex->updateRefIndexTable($tableName, $uid);
+		}
+		if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+			$object->_memorizeCleanState();
+		}	
 		return $res;
 	}
 
@@ -580,7 +686,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param array $properties The properties of the object
 	 * @return array A single row to be inserted in the database
 	 */
-	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, array &$row) {
+	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
 		if ($dataMap->hasCreationDateColumn() && $object->_isNew()) {
@@ -589,28 +695,97 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($dataMap->hasTimestampColumn()) {
 			$row[$dataMap->getTimestampColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
-
 		if ($object->_isNew() && $dataMap->hasPidColumn() && !isset($row['pid'])) {
 			$row['pid'] = $this->determineStoragePageIdForNewRecord($object);
 		}
+	}
 
-		if ($parentObject instanceof Tx_Extbase_DomainObject_DomainObjectInterface && !empty($parentPropertyName)) {
-			$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
-			$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-			// FIXME This is a hacky solution
-			if ($parentColumnMap->getTypeOfRelation() !== Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
-				if ($parentKeyFieldName !== NULL) {
-					$row[$parentKeyFieldName] = $parentObject->getUid();
-				}
-				$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
-				if ($parentTableFieldName !== NULL) {
-					$row[$parentTableFieldName] = $parentDataMap->getTableName();
+	/**
+	 * Iterate over deleted aggregate root objects and process them
+	 *
+	 * @return void
+	 */
+	protected function processDeletedObjects() {
+		foreach ($this->deletedObjects as $object) {
+			$this->removeObject($object);
+			$this->identityMap->unregisterObject($object);
+		}
+		$this->deletedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+	}
+
+	/**
+	 * Deletes an object
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
+	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
+	 * @param string|NULL $parentPropertyName The name of the property
+	 * @param bool $markAsDeleted Shold we only mark the row as deleted instead of deleting (TRUE by default)?
+	 * @return void
+	 */
+	protected function removeObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $markAsDeleted = TRUE) {
+		$dataMap = $this->dataMapper->getDataMap(get_class($object));
+		$tableName = $dataMap->getTableName();
+		if (($markAsDeleted === TRUE) && $dataMap->hasDeletedColumn()) {
+			$deletedColumnName = $dataMap->getDeletedColumnName();
+			$res = $this->storageBackend->updateRow(
+				$tableName,
+				array(
+					'uid' => $object->getUid(),
+					$deletedColumnName => 1
+					)
+				);
+		} else {
+			$res = $this->storageBackend->removeRow(
+				$tableName,
+				array('uid' => $object->getUid())
+				);
+		}
+		$this->removeRelatedObjects($object);
+		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+			$this->referenceIndex->updateRefIndexTable($tableName, $object->getUid());
+		}		
+	}
+	
+	/**
+	 * Remove related objects
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to scanned for related objects
+	 * @return void
+	 */
+	protected function removeRelatedObjects(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+		$className = get_class($object);
+		$dataMap = $this->dataMapper->getDataMap($className);
+		$classSchema = $this->reflectionService->getClassSchema($className);
+				
+		$properties = $object->_getProperties();
+		foreach ($properties as $propertyName => $propertyValue) {
+			$columnMap = $dataMap->getColumnMap($propertyName);
+			$propertyMetaData = $classSchema->getProperty($propertyName);
+			if ($propertyMetaData['cascade'] === 'remove') {
+				if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+					foreach ($propertyValue as $containedObject) {
+						$this->removeObject($containedObject);
+					}
+				} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {				
+					$this->removeObject($propertyValue);
 				}
 			}
 		}
 	}
 
+	/**
+	 * Delegates the call to the Data Map.
+	 * Returns TRUE if the property is persistable (configured in $TCA)
+	 *
+	 * @param string $className The property name
+	 * @param string $propertyName The property name
+	 * @return boolean TRUE if the property is persistable (configured in $TCA)
+	 */
+	public function isPersistableProperty($className, $propertyName) {
+		$dataMap = $this->dataMapper->getDataMap($className);
+		return $dataMap->isPersistableProperty($propertyName);
+	}
+	
 	/**
 	 * Determine the storage page ID for a given NEW record
 	 *
@@ -631,63 +806,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['persistence']['storagePid']);
 			return (int) $storagePidList[0];
 		}
-	}
-
-	/**
-	 * Iterate over deleted aggregate root objects and process them
-	 *
-	 * @return void
-	 */
-	protected function processDeletedObjects() {
-		foreach ($this->deletedObjects as $object) {
-			$this->deleteObject($object);
-			$this->identityMap->unregisterObject($object);
-		}
-		$this->deletedObjects = new Tx_Extbase_Persistence_ObjectStorage();
-	}
-
-	/**
-	 * Deletes an object, it's 1:n related objects, and the m:n relations in relation tables (but not the m:n related objects!)
-	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
-	 * @param Tx_Extbase_DomainObject_AbstractEntity|NULL $parentObject The parent object (if any)
-	 * @param string|NULL $parentPropertyName The name of the property
-	 * @param bool $markAsDeleted Shold we only mark the row as deleted instead of deleting (TRUE by default)?
-	 * @return void
-	 */
-	protected function deleteObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $parentObject = NULL, $parentPropertyName = NULL, $markAsDeleted = TRUE) {
-		// TODO Implement recursive deletions
-		$dataMap = $this->dataMapper->getDataMap(get_class($object));
-		$tableName = $dataMap->getTableName();
-		if (($markAsDeleted === TRUE) && $dataMap->hasDeletedColumn()) {
-			$deletedColumnName = $dataMap->getDeletedColumnName();
-			$res = $this->storageBackend->updateRow(
-				$tableName,
-				array(
-					'uid' => $object->getUid(),
-					$deletedColumnName => 1
-					)
-				);
-		} else {
-			$res = $this->storageBackend->removeRow(
-				$tableName,
-				array('uid' => $object->getUid())
-				);
-		}
-		$this->referenceIndex->updateRefIndexTable($tableName, $uid);
-	}
-
-	/**
-	 * Delegates the call to the Data Map.
-	 * Returns TRUE if the property is persistable (configured in $TCA)
-	 *
-	 * @param string $className The property name
-	 * @param string $propertyName The property name
-	 * @return boolean TRUE if the property is persistable (configured in $TCA)
-	 */
-	public function isPersistableProperty($className, $propertyName) {
-		$dataMap = $this->dataMapper->getDataMap($className);
-		return $dataMap->isPersistableProperty($propertyName);
 	}
 
 }

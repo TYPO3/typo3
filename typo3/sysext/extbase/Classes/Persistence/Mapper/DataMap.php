@@ -210,7 +210,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * This method tries to determine the type of type of relation to other tables and sets it based on
 	 * the $TCA column configuration
 	 *
-	 * @param string $columnMap The column map
+	 * @param Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap The column map
 	 * @param string $columnConfiguration The column configuration from $TCA
 	 * @return void
 	 */

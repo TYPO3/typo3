@@ -111,11 +111,12 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * @param string $name Name of the property
 	 * @param string $type Type of the property (see ALLOWED_TYPES_PATTERN)
 	 * @param boolean $lazy Whether the property should be lazy-loaded when reconstituting
+	 * @param string $cascade Strategy to cascade the object graph.
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function addProperty($name, $type, $lazy = FALSE) {
+	public function addProperty($name, $type, $lazy = FALSE, $cascade = '') {
 		$matches = array();
 		if (preg_match(self::ALLOWED_TYPES_PATTERN, $type, $matches)) {
 			$type = ($matches['type'] === 'int') ? 'integer' : $matches['type'];
@@ -128,7 +129,8 @@ class Tx_Extbase_Reflection_ClassSchema {
 			$this->properties[$name] = array(
 				'type' => $type,
 				'elementType' => $elementType,
-				'lazy' => $lazy
+				'lazy' => $lazy,
+				'cascade' => $cascade
 			);
 		} else {
 			throw new Tx_Extbase_Reflection_Exception_InvalidPropertyType('Invalid property type encountered: ' . $type, 1220387528);
@@ -143,7 +145,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getProperty($propertyName) {
-		return $this->properties[$propertyName];
+		return is_array($this->properties[$propertyName]) ? $this->properties[$propertyName] : array();
 	}
 
 	/**

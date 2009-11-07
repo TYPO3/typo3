@@ -212,10 +212,8 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 		switch ($loadingStrategy) {
 			case self::STRATEGY_LAZY_PROXY;
 			case self::STRATEGY_LAZY_STORAGE;
+			case self::STRATEGY_EAGER;
 				$this->loadingStrategy = $loadingStrategy;
-				break;
-			default:
-				$this->loadingStrategy = self::STRATEGY_EAGER;
 				break;
 		}
 	}

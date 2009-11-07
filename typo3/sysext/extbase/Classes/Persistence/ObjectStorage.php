@@ -40,12 +40,27 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	protected $storage = array();
 
 	/**
+	 *
+	 * @var bool
+	 */
+	protected $isInitialized = TRUE;
+
+	/**
 	 * This is a template function to be overwritten by a concrete implementation. It enables you to implement
 	 * a lazy load implementation. 
 	 *
 	 * @return void
 	 */
 	protected function initializeStorage() {
+	}
+	
+	/**
+	 * Returns the state of the initialization
+	 *
+	 * @return void
+	 */
+	public function isInitialized() {
+		return $this->isInitialized;
 	}
 	
 	/**

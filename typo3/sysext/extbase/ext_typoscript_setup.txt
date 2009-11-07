@@ -1,5 +1,7 @@
 config.tx_extbase {
 	persistence{
+		enableAutomaticCacheClearing = 1
+		updateReferenceIndex = 0
 		classes {
 			Tx_Extbase_Domain_Model_FrontendUser {
 				mapping {

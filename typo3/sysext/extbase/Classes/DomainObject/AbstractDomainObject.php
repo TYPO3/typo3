@@ -34,7 +34,7 @@
 abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbase_DomainObject_DomainObjectInterface {
 
 	/**
-	 * @var string The uid
+	 * @var int The uid
 	 */
 	protected $uid;
 
@@ -145,16 +145,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function _memorizeCleanState() {
 	}
-
-	/**
-	 * Returns a hash map of dirty properties and $values. This is always the empty array for ValueObjects, because ValueObjects never change.
-	 *
-	 * @return array
-	 */
-	public function _getDirtyProperties() {
-		return array();
-	}
-
+	
 	/**
 	 * Returns TRUE if the properties were modified after reconstitution. However, value objects can be never updated.
 	 *

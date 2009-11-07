@@ -81,12 +81,5 @@ interface Tx_Extbase_DomainObject_DomainObjectInterface {
 	 */
 	public function _getProperties();
 
-	/**
-	 * Returns a hash map of dirty properties and $values
-	 *
-	 * @return boolean
-	 */
-	public function _getDirtyProperties();
-
 }
 ?>

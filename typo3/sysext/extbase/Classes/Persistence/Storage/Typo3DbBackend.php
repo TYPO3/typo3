@@ -59,6 +59,20 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected $pageSelectObject;
 
 	/**
+	 * The TypoScript Configuration of the page
+	 *
+	 * @var array
+	 */
+	protected $pageTSConfig;
+
+	/**
+	 * Caches information about tables (esp. the existing column names)
+	 *
+	 * @var array
+	 */
+	protected $tableInformationCache = array();
+
+	/**
 	 * Constructs this Storage Backend instance
 	 *
 	 * @param t3lib_db $databaseHandle The database handle
@@ -100,13 +114,14 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$sqlString = 'INSERT INTO ' . $tableName . ' (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $values) . ')';
 		$this->replacePlaceholders($sqlString, $parameters);
+		// debug($sqlString,2);
 		$this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors();
 		$uid = $this->databaseHandle->sql_insert_id();
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
 		}
-		return $uid;
+		return (int)$uid;
 	}
 
 	/**
@@ -131,7 +146,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid=?';
 		$this->replacePlaceholders($sqlString, $parameters);
-
+		// debug($sqlString,2);
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors();
 		if (!$isRelation) {
@@ -164,6 +179,28 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$returnValue = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		return $returnValue;
+	}
+
+	/**
+	 * Fetches row data from the database
+	 *
+	 * @param string $identifier The Identifier of the row to fetch
+	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The Data Map
+	 * @return array|FALSE
+	 */
+	public function getRowByIdentifier($identifier, Tx_Extbase_Persistence_Mapper_DataMap $dataMap) {
+		$tableName = $dataMap->getTableName();
+		$statement = 'SELECT * FROM ' . $tableName . ' WHERE uid=?';
+		$this->replacePlaceholders($statement, array($identifier));
+		// debug($statement,-2);
+		$res = $this->databaseHandle->sql_query($statement);
+		$this->checkSqlErrors();
+		$row = $this->databaseHandle->sql_fetch_assoc($res);
+		if ($row !== FALSE) {
+			return $row;
+		} else {
+			return FALSE;
+		}
 	}
 
 	/**
@@ -200,7 +237,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function countRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
 		$constraint = $query->getConstraint();
-		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) throw new Tx_Extbase_Persistence_Storage_Exception_BadConstraint('Could not execute count on queries with aconstraint of type Tx_Extbase_Persistence_QOM_StatementInterface', 1256661045);
+		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) throw new Tx_Extbase_Persistence_Storage_Exception_BadConstraint('Could not execute count on queries with a constraint of type Tx_Extbase_Persistence_QOM_StatementInterface', 1256661045);
 		$parameters = array();
 		$statementParts = $this->parseQuery($query, $parameters);
 		$statementParts['fields'] = array('COUNT(*)');
@@ -277,13 +314,14 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Checks if a Value Object equal to the given Object exists in the data base
 	 *
-	 * @param array $properties The properties of the Value Object
-	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The Data Map
+	 * @param Tx_Extbase_DomainObject_AbstractValueObject $object The Value Object
 	 * @return array The matching uid
 	 */
-	public function hasValueObject(array $properties, Tx_Extbase_Persistence_Mapper_DataMap $dataMap) {
+	public function getUidOfAlreadyPersistedValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object) {
 		$fields = array();
 		$parameters = array();
+		$dataMap = $this->dataMapper->getDataMap(get_class($object));
+		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
 			// FIXME We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
 			if ($dataMap->isPersistableProperty($propertyName) && ($propertyName !== 'uid')  && ($propertyName !== 'pid') && ($propertyName !== 'isClone')) {
@@ -303,11 +341,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$statement .= ' AND ' . implode(' AND ', $sql['additionalWhereClause']);
 		}
 		$this->replacePlaceholders($statement, $parameters);
+		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {
-			return $row['uid'];
+			return (int)$row['uid'];
 		} else {
 			return FALSE;
 		}
@@ -546,6 +585,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return string The query part with replaced placeholders
 	 */
 	protected function replacePlaceholders(&$sqlString, array $parameters) {
+		// TODO profile this method again
 		if (substr_count($sqlString, '?') !== count($parameters)) throw new Tx_Extbase_Persistence_Exception('The number of question marks to replace must be equal to the number of parameters.', 1242816074);
 		$offset = 0;
 		foreach ($parameters as $parameter) {
@@ -598,8 +638,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function addPageIdStatement($tableName, array &$sql) {
-		$columns = $this->databaseHandle->admin_get_fields($tableName);		
-		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $columns)) {
+		if (empty($this->tableInformationCache[$tableName]['columnNames'])) {
+			$this->tableInformationCache[$tableName]['columnNames'] = $this->databaseHandle->admin_get_fields($tableName);
+		}
+		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $this->tableInformationCache[$tableName]['columnNames'])) {
 			$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', t3lib_div::intExplode(',', $extbaseFrameworkConfiguration['persistence']['storagePid'])) . ')';
 		}
@@ -759,7 +801,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			// if disabled, return
 			return;
 		}
-
+		
 		$pageIdsToClear = array();
 		$storagePage = NULL;
 
@@ -776,14 +818,15 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$pageIdsToClear[] = $storagePage;
 		}
 
-
 		if ($storagePage === NULL) {
 			return;
 		}
 
-		$pageTSConfig = t3lib_BEfunc::getPagesTSconfig($storagePage);
-		if (isset($pageTSConfig['TCEMAIN.']['clearCacheCmd']))	{
-			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($pageTSConfig['TCEMAIN.']['clearCacheCmd']),1);
+		if (empty($this->pageTSConfig)) {
+			$this->pageTSConfig = t3lib_BEfunc::getPagesTSconfig($storagePage);
+		}
+		if (isset($this->pageTSConfig['TCEMAIN.']['clearCacheCmd']))	{
+			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($this->pageTSConfig['TCEMAIN.']['clearCacheCmd']),1);
 			$clearCacheCommands = array_unique($clearCacheCommands);
 			foreach ($clearCacheCommands as $clearCacheCommand)	{
 				if (t3lib_div::testInt($clearCacheCommand))	{
@@ -791,7 +834,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				}
 			}
 		}
-
+		
+		// TODO check if we can hand this over to the Dispatcher to clear the page only once
 		Tx_Extbase_Utility_Cache::clearPageCache($pageIdsToClear);
 	}
 }

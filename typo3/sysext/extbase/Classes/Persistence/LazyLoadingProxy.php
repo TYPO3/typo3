@@ -36,11 +36,6 @@
 class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Persistence_LoadingStrategyInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
-	 */
-	protected $queryFactory;
-
-	/**
 	 * The object this property is contained in.
 	 *
 	 * @var object
@@ -62,25 +57,16 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	private $fieldValue;
 
 	/**
-	 *
-	 * @var Tx_Extbase_Persistence_Mapper_ColumnMap
-	 */
-	private $columnMap;
-
-	/**
 	 * Constructs this proxy instance.
 	 *
 	 * @param object $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
-	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
 	 */
-	public function __construct($parentObject, $propertyName, $fieldValue, Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap) {
-		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+	public function __construct($parentObject, $propertyName, $fieldValue) {
 		$this->parentObject = $parentObject;
 		$this->propertyName = $propertyName;
 		$this->fieldValue = $fieldValue;
-		$this->columnMap = $columnMap;
 	}
 
 	/**
@@ -94,14 +80,11 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 		// it's parent... the result would be weird.
 		if ($this->parentObject->_getProperty($this->propertyName) instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
 			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
-			$objects = $dataMapper->fetchRelatedObjects($this->parentObject, $this->propertyName, $this->fieldValue, $this->columnMap);
-			$realInstance = new Tx_Extbase_Persistence_ObjectStorage();
-			foreach ($objects as $object) {
-				$realInstance->attach($object);
-			}
-			$this->parentObject->_setProperty($this->propertyName, $realInstance);
+			$objects = $dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE);
+			$propertyValue = $dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
+			$this->parentObject->_setProperty($this->propertyName, $propertyValue);
 			$this->parentObject->_memorizeCleanState($this->propertyName);
-			return $realInstance;
+			return $propertyValue;
 		} else {
 			return $this->parentObject->_getProperty($this->propertyName);
 		}

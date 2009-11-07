@@ -119,7 +119,6 @@ tt_content.list.20.' . $pluginSignature . ' = ' . ($contentObjectType === 'USER'
 	}
 	persistence {
 		storagePid =
-		enableAutomaticCacheClearing = 1
 		classes {
 		}
 	}

@@ -59,9 +59,6 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 		$domainObject->_memorizePropertyCleanState('bar');
 		$domainObject->bar = 'Now it is sunny.';
 		$this->assertTrue($domainObject->_isDirty());
-
-		// We can check here that _getDirtyProperties returns the correct values as well.
-		$this->assertSame(array('bar' => 'Now it is sunny.'), $domainObject->_getDirtyProperties());
 	}
 
 	/**
@@ -80,23 +77,6 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 		$domainObject->_memorizePropertyCleanState('foo');
 		$domainObject->_memorizePropertyCleanState('bar');
 		$this->assertFalse($domainObject->_isDirty());
-	}
-
-	/**
-	 * @test
-	 */
-	public function getDirtyPropertiesReturnsNoPropertiesIfObjectWithObjectPropertiesIsClean() {
-		$domainObjectName = uniqid('DomainObject_');
-		eval('class ' . $domainObjectName . ' extends Tx_Extbase_DomainObject_AbstractEntity {
-			public $foo;
-			public $bar;
-		}');
-		$domainObject = new $domainObjectName();
-		$domainObject->foo = new DateTime();
-		$domainObject->bar = 'It is raining outside';
-		$domainObject->_memorizePropertyCleanState('foo');
-		$domainObject->_memorizePropertyCleanState('bar');
-		$this->assertEquals(array(), $domainObject->_getDirtyProperties());
 	}
 
 	/**

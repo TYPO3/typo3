@@ -182,7 +182,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function execute() {
 		$result = $this->getPreparedQueryObjectModel()->execute();
-		return $this->dataMapper->map($this->className, $result->getRows());
+		if ($this->getQuerySettings()->getReturnRawQueryResult() === TRUE) {
+			return $result;
+		} else {
+			return $this->dataMapper->map($this->className, $result->getRows());
+		}
 	}
 	
 	/**

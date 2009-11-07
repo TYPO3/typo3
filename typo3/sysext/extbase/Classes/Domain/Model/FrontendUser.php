@@ -502,7 +502,7 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * @return void
 	 * @api
 	 */
-	public function setLastLogin($lastLogin) {
+	public function setLastLogin(DateTime $lastLogin) {
 		$this->lastLogin = $lastLogin;
 	}
 
