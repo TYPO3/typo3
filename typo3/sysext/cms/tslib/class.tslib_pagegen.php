@@ -527,7 +527,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		if (is_array($GLOBALS['TSFE']->pSetup['includeCSS.'])) {
 			foreach ($GLOBALS['TSFE']->pSetup['includeCSS.'] as $key => $CSSfile) {
-				if (! is_array($CSSfile)) {
+				if (!is_array($CSSfile)) {
 					$ss = $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['external'] ? $CSSfile : $GLOBALS['TSFE']->tmpl->getFileName($CSSfile);
 					if ($ss) {
 						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['import']) {
@@ -671,43 +671,45 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			// JavaScript library files
 		if (is_array($GLOBALS['TSFE']->pSetup['includeJSlibs.'])) {
 			foreach ($GLOBALS['TSFE']->pSetup['includeJSlibs.'] as $key => $JSfile) {
-				$ss = $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
-				if ($ss) {
-					$type = $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['type'];
-					if (! $type) {
-						$type = 'text/javascript';
+				if (!is_array($JSfile)) {
+					$ss = $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					if ($ss) {
+						$type = $GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['type'];
+						if (! $type) {
+							$type = 'text/javascript';
+						}
+						$pageRenderer->addJsLibrary(
+							htmlspecialchars($key),
+							htmlspecialchars($ss),
+							htmlspecialchars($type),
+							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap']
+						);
 					}
-					$pageRenderer->addJsLibrary(
-						htmlspecialchars($key),
-						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
-						htmlspecialchars($type),
-						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
-						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-						$GLOBALS['TSFE']->pSetup['includeJSlibs.'][$key . '.']['allWrap']
-					);
 				}
-
 			}
 		}
 
 		if (is_array($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'])) {
 			foreach ($GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'] as $key => $JSfile) {
-				$ss = $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
-				if ($ss) {
-					$type = $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['type'];
-					if (! $type) {
-						$type = 'text/javascript';
+				if (!is_array($JSfile)) {
+					$ss = $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					if ($ss) {
+						$type = $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['type'];
+						if (! $type) {
+							$type = 'text/javascript';
+						}
+						$pageRenderer->addJsFooterLibrary(
+							htmlspecialchars($key),
+							htmlspecialchars($ss),
+							htmlspecialchars($type),
+							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap']
+						);
 					}
-					$pageRenderer->addJsFooterLibrary(
-						htmlspecialchars($key),
-						htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
-						htmlspecialchars($type),
-						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['compress'] ? TRUE : FALSE,
-						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-						$GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['allWrap']
-					);
 				}
-
 			}
 		}
 
@@ -722,7 +724,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFile(
-							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
+							htmlspecialchars($ss),
 							htmlspecialchars($type),
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['compress'] ? TRUE : FALSE,
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
@@ -743,7 +745,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFooterFile(
-							htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $ss),
+							htmlspecialchars($ss),
 							htmlspecialchars($type),
 							$GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['compress'] ? TRUE : FALSE,
 							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
