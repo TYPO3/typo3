@@ -101,7 +101,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 			$content .= '</tr>';
 			foreach ($installedServices as $serviceKey => $serviceInfo) {
 				$content .= '<tr class="bgColor3-20">';
-				$cellContent = '<p class="service-header"><span class="service-title">' . $serviceInfo['title'] . '</span> (' . $serviceKey . ')</p>';
+				$cellContent = '<p class="service-header"><span class="service-title">' . $serviceInfo['title'] . '</span> (' . $serviceInfo['extKey'] . ': ' . $serviceKey . ')</p>';
 				if (!empty($serviceInfo['description'])) {
 					$cellContent .= '<p class="service-description">' . $serviceInfo['description']. '</p>';
 				}
