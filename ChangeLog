@@ -1,3 +1,7 @@
+2009-11-08  Oliver Hader  <oliver@typo3.org>
+
+	* Release of TYPO3 4.3.0beta3
+
 2009-11-08  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12019: Added missing style definition to Install Tool CSS file
