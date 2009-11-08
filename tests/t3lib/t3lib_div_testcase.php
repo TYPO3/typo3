@@ -346,70 +346,77 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 
 	////////////////////////////////////////
-	// Tests concerning sanitizeBackEndUrl
+	// Tests concerning sanitizeLocalUrl
 	////////////////////////////////////////
 
 	/**
-	 * @test
+	 * Data provider for valid URLs.
+	 * @see	sanitizeLocalUrlAcceptsValidUrls
 	 */
-	public function sanitizeBackEndUrlForEmptyStringReturnsEmptyString() {
-		$this->assertEquals(
-			'',
-			t3lib_div::sanitizeBackEndUrl('')
+	public function validLocalUrlDataProvider() {
+		return array(
+			array('alt_intro.php'),
+			array('alt_intro.php?foo=1&bar=2'),
+			array('/typo3/alt_intro.php'),
+			array('/index.php'),
+			array('../index.php'),
+			array('../typo3/alt_intro.php'),
+			array('../~userDirectory/index.php'),
+			array('../typo3/mod.php?var1=test-case&var2=~user'),
+			array(PATH_site . 'typo3/alt_intro.php'),
+			array(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/alt_intro.php'),
+			array(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/index.php'),
 		);
 	}
 
 	/**
-	 * @test
+	 * Data provider for invalid URLs.
+	 * @see	sanitizeLocalUrlDeniesInvalidUrls
 	 */
-	public function sanitizeBackEndUrlLeavesAbsoluteIntroUrlUnchanged() {
-		$this->assertEquals(
-			'/typo3/alt_intro.php',
-			t3lib_div::sanitizeBackEndUrl('/typo3/alt_intro.php')
+	public function invalidLocalUrlDataProvider() {
+		return array(
+			array(''),
+			array('http://www.google.de/'),
+			array('https://www.google.de/'),
+			array('../typo3/whatever.php?argument=javascript:alert(0)'),
 		);
 	}
 
 	/**
+	 * Tests whether valid local URLs are handled correctly.
+	 * @dataProvider	validLocalUrlDataProvider
 	 * @test
 	 */
-	public function sanitizeBackEndUrlLeavesRelativeIntroUrlUnchanged() {
-		$this->assertEquals(
-			'alt_intro.php',
-			t3lib_div::sanitizeBackEndUrl('alt_intro.php')
-		);
+	public function sanitizeLocalUrlAcceptsPlainValidUrls($url) {
+		$this->assertEquals($url, t3lib_div::sanitizeBackEndUrl($url));
 	}
 
 	/**
+	 * Tests whether valid local URLs are handled correctly.
+	 * @dataProvider	validLocalUrlDataProvider
 	 * @test
 	 */
-	public function sanitizeBackEndUrlLeavesRelativeIntroUrlWithParameterUnchanged() {
-		$this->assertEquals(
-			'alt_intro.php?foo=1&bar=2',
-			t3lib_div::sanitizeBackEndUrl('alt_intro.php?foo=1&bar=2')
-		);
+	public function sanitizeLocalUrlAcceptsEncodedValidUrls($url) {
+		$this->assertEquals(rawurlencode($url), t3lib_div::sanitizeBackEndUrl(rawurlencode($url)));
 	}
 
 	/**
+	 * Tests whether valid local URLs are handled correctly.
+	 * @dataProvider	invalidLocalUrlDataProvider
 	 * @test
 	 */
-	public function sanitizeBackEndUrlForFullUrlReturnsEmptyString() {
-		$this->assertEquals(
-			'',
-			t3lib_div::sanitizeBackEndUrl('http://www.google.de/')
-		);
+	public function sanitizeLocalUrlDeniesPlainInvalidUrls($url) {
+		$this->assertEquals('', t3lib_div::sanitizeBackEndUrl($url));
 	}
 
 	/**
+	 * Tests whether valid local URLs are handled correctly.
+	 * @dataProvider	invalidLocalUrlDataProvider
 	 * @test
 	 */
-	public function sanitizeBackEndUrlForRelativeIntroUrlWithEncodedCharacterReturnsEmptyString() {
-		$this->assertEquals(
-			'',
-			t3lib_div::sanitizeBackEndUrl('alt_intro.php?%20')
-		);
+	public function sanitizeLocalUrlDeniesEncodedInvalidUrls($url) {
+		$this->assertEquals('', t3lib_div::sanitizeBackEndUrl(rawurlencode($url)));
 	}
-
-
 
 	//////////////////////////////////////
 	// Tests concerning removeDotsFromTS

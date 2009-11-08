@@ -4173,12 +4173,37 @@ final class t3lib_div {
 	 *                empty string otherwise
 	 */
 	public static function sanitizeBackEndUrl($url = '') {
-		$whitelistPattern = '/^[a-zA-Z0-9_\/\.&=\?]+$/';
-		if (!preg_match($whitelistPattern, $url)) {
-			$url = '';
+		$sanitizedUrl = '';
+		$decodedUrl = rawurldecode($url);
+
+		if (!empty($url) && self::removeXSS($decodedUrl) === $decodedUrl) {
+			$testAbsoluteUrl = self::resolveBackPath($decodedUrl);
+			$testRelativeUrl = self::resolveBackPath(
+				t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl
+			);
+
+				// Pass if URL is on the current host:
+			if (self::isValidUrl($decodedUrl)) {
+				if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL')) === 0) {
+					$sanitizedUrl = $url;
+				}
+				// Pass if URL is an absolute file path:
+			} elseif (self::isAbsPath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
+				$sanitizedUrl = $url;
+				// Pass if URL is absolute and below TYPO3 base directory:
+			} elseif (strpos($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) === '/') {
+				$sanitizedUrl = $url;
+				// Pass if URL is relative and below TYPO3 base directory:
+			} elseif (strpos($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) !== '/') {
+				$sanitizedUrl = $url;
+			}
 		}
 
-		return $url;
+		if (!empty($url) && empty($sanitizedUrl)) {
+			self::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'Core', self::SYSLOG_SEVERITY_NOTICE);
+		}
+
+		return $sanitizedUrl;
 	}
 
 	/**
