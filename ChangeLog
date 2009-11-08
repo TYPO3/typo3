@@ -13,6 +13,7 @@
 
 	* Raised feeditadvanced from 0.1.1 to 0.8.0
 	* Fixed bug #12324: Page tree will not be shown in the TYPO3 backend
+	* Follow-up to bugfix #12324: Renamed sanitizeBackEndUrl() to sanitizeLocalUrl() in t3lib_div
 
 2009-11-08  Sebastian Kurfuerst  <sebastian@typo3.org>
 

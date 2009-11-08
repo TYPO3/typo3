@@ -87,7 +87,7 @@ class SC_alt_mod_frameset {
 		global $BE_USER,$TBE_TEMPLATE,$TBE_STYLES;
 
 			// GPvars:
-		$this->exScript = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('exScript'));
+		$this->exScript = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('exScript'));
 		$this->id = intval(t3lib_div::_GP('id'));
 		$this->fW = t3lib_div::_GP('fW');
 
@@ -103,8 +103,8 @@ class SC_alt_mod_frameset {
 		}
 
 			// Navigation frame URL:
-		$script = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('script'));
-		$nav = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('nav'));
+		$script = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('script'));
+		$nav = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('nav'));
 		$URL_nav = htmlspecialchars($nav.'&currentSubScript='.rawurlencode($script));
 
 			// List frame URL:

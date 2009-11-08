@@ -388,7 +388,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function sanitizeLocalUrlAcceptsPlainValidUrls($url) {
-		$this->assertEquals($url, t3lib_div::sanitizeBackEndUrl($url));
+		$this->assertEquals($url, t3lib_div::sanitizeLocalUrl($url));
 	}
 
 	/**
@@ -397,7 +397,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function sanitizeLocalUrlAcceptsEncodedValidUrls($url) {
-		$this->assertEquals(rawurlencode($url), t3lib_div::sanitizeBackEndUrl(rawurlencode($url)));
+		$this->assertEquals(rawurlencode($url), t3lib_div::sanitizeLocalUrl(rawurlencode($url)));
 	}
 
 	/**
@@ -406,7 +406,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function sanitizeLocalUrlDeniesPlainInvalidUrls($url) {
-		$this->assertEquals('', t3lib_div::sanitizeBackEndUrl($url));
+		$this->assertEquals('', t3lib_div::sanitizeLocalUrl($url));
 	}
 
 	/**
@@ -415,7 +415,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function sanitizeLocalUrlDeniesEncodedInvalidUrls($url) {
-		$this->assertEquals('', t3lib_div::sanitizeBackEndUrl(rawurlencode($url)));
+		$this->assertEquals('', t3lib_div::sanitizeLocalUrl(rawurlencode($url)));
 	}
 
 	//////////////////////////////////////
