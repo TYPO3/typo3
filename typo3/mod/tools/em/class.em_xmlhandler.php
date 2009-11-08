@@ -73,8 +73,13 @@ class SC_mod_tools_em_xmlhandler {
 		$where = '1=1';
 		if ($search && $exactMatch)	{
 			$where.= ' AND extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($search, 'cache_extensions');
-		} elseif($search) {
-			$where.= ' AND extkey LIKE \'%'.$GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($search, 'cache_extensions'), 'cache_extensions').'%\'';
+		} elseif ($search) {
+			$quotedSearch = $GLOBALS['TYPO3_DB']->quoteStr(
+				$GLOBALS['TYPO3_DB']->escapeStrForLike($search, 'cache_extensions'),
+				'cache_extensions'
+			);
+			$where .= ' AND (extkey LIKE \'%' . $quotedSearch . '%\' OR title LIKE \'%' . $quotedSearch . '%\')';
+
 		}
 		if ($owner)	{
 			$where.= ' AND ownerusername='.$GLOBALS['TYPO3_DB']->fullQuoteStr($owner, 'cache_extensions');
