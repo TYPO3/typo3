@@ -22,14 +22,14 @@
 
 /**
  * Stores all information relevant for one parsing pass - that is, the root node,
- * and the current stack of open nodes (nodeStack) and a variable container used for PostParseFacets.
+ * and the current stack of open nodes (nodeStack) and a variable container used
+ * for PostParseFacets.
  *
- * @version $Id: ParsingState.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ParsingState.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
- * @internal
  */
 class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTemplateInterface {
 
@@ -46,13 +46,15 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	protected $nodeStack = array();
 
 	/**
-	 * Variable container where ViewHelpers implementing the PostParseFacet can store things in.
+	 * Variable container where ViewHelpers implementing the PostParseFacet can
+	 * store things in.
 	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
 	 */
 	protected $variableContainer;
 
 	/**
-	 * Injects a variable container. ViewHelpers implementing the PostParse Facet can store information inside this variableContainer.
+	 * Injects a variable container. ViewHelpers implementing the PostParse
+	 * Facet can store information inside this variableContainer.
 	 *
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
 	 * @return void
@@ -95,7 +97,8 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	}
 
 	/**
-	 * Push a node to the node stack. The node stack holds all currently open templating tags.
+	 * Push a node to the node stack. The node stack holds all currently open
+	 * templating tags.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $node Node to push to node stack
 	 * @return void

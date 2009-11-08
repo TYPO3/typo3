@@ -23,11 +23,10 @@
 /**
  *
  *
- * @version $Id: RenderingContext.php 3188 2009-09-16 13:03:59Z k-fish $
+ * @version $Id: RenderingContext.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\Rendering
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @internal
  * @scope prototype
  */
 class Tx_Fluid_Core_Rendering_RenderingContext {

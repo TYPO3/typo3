@@ -25,7 +25,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
 /**
  * Testcase for AbstractViewHelper
  *
- * @version $Id: AbstractViewHelperTest.php 3350 2009-10-27 12:01:08Z k-fish $
+ * @version $Id: AbstractViewHelperTest.php 3443 2009-11-05 11:21:34Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbase_BaseTestCase {
@@ -201,7 +201,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbas
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function setControllerContextSetsTheControllerContext() {
-		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
+		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$viewHelper = $this->getMock($this->buildAccessibleProxy('Tx_Fluid_Core_ViewHelper_AbstractViewHelper'), array('render', 'prepareArguments'), array(), '', FALSE);
 
 		$viewHelper->setControllerContext($controllerContext);

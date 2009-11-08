@@ -24,55 +24,12 @@
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  *
- * @version $Id: DocbookGenerator.php 3293 2009-10-05 10:16:10Z k-fish $
+ * @version $Id: DocbookGenerator.php 3449 2009-11-05 13:41:57Z k-fish $
  * @package Fluid
  * @subpackage Service
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Service_DocbookGenerator {
-
-	/**
-	 * Object manager.
-	 *
-	 * @var Tx_Fluid_Object_Manager
-	 */
-	protected $objectManager;
-
-	/**
-	 * The reflection class for AbstractViewHelper. Is needed quite often, that's why we use a pre-initialized one.
-	 *
-	 * @var \Tx_Extbase_Reflection_ClassReflection
-	 */
-	protected $abstractViewHelperReflectionClass;
-
-	/**
-	 * The doc comment parser.
-	 *
-	 * @var \Tx_Extbase_Reflection_DocCommentParser
-	 */
-	protected $docCommentParser;
-
-	/**
-	 * Constructor. Sets $this->abstractViewHelperReflectionClass
-	 *
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function __construct() {
-		Tx_Fluid_Fluid::$debugMode = TRUE; // We want ViewHelper argument documentation
-		$this->abstractViewHelperReflectionClass = new Tx_Extbase_Reflection_ClassReflection('Tx_Fluid_Core_ViewHelper_AbstractViewHelper');
-		$this->docCommentParser = new Tx_Extbase_Reflection_DocCommentParser();
-	}
-
-	/**
-	 * Inject the object manager.
-	 *
-	 * @param Tx_Fluid_Object_ManagerInterface $objectManager the object manager to inject
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function injectObjectManager(Tx_Fluid_Object_ManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {
 
 	/**
 	 * Generate the XML Schema definition for a given namespace.
@@ -103,30 +60,10 @@ class Tx_Fluid_Service_DocbookGenerator {
 </section>');
 
 		foreach ($classNames as $className) {
-			$this->generateXMLForClassName($className, $namespace, $xmlRootNode);
+			$this->generateXmlForClassName($className, $namespace, $xmlRootNode);
 		}
 
 		return $xmlRootNode->asXML();
-	}
-
-	/**
-	 * Get all class names inside this namespace and return them as array.
-	 *
-	 * @param string $namespace
-	 * @return array Array of all class names inside a given namespace.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	protected function getClassNamesInNamespace($namespace) {
-		$viewHelperClassNames = array();
-
-		$registeredObjectNames = array_keys($this->objectManager->getRegisteredObjects());
-		foreach ($registeredObjectNames as $registeredObjectName) {
-			if (strncmp($namespace, $registeredObjectName, strlen($namespace)) === 0) {
-				$viewHelperClassNames[] = $registeredObjectName;
-			}
-		}
-		sort($viewHelperClassNames);
-		return $viewHelperClassNames;
 	}
 
 	/**
@@ -138,7 +75,7 @@ class Tx_Fluid_Service_DocbookGenerator {
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function generateXMLForClassName($className, $namespace, SimpleXMLElement $xmlRootNode) {
+	protected function generateXmlForClassName($className, $namespace, SimpleXMLElement $xmlRootNode) {
 		$reflectionClass = new Tx_Extbase_Reflection_ClassReflection($className);
 		if (!$reflectionClass->isSubclassOf($this->abstractViewHelperReflectionClass)) {
 			return;
@@ -157,28 +94,6 @@ class Tx_Fluid_Service_DocbookGenerator {
 		$this->addArguments($className, $argumentsSection);
 
 		return $docbookSection;
-	}
-
-	/**
-	 * Get a tag name for a given ViewHelper class.
-	 * Example: For the View Helper Tx_Fluid_ViewHelpers_Form_SelectViewHelper, and the
-	 * namespace prefix Tx_Fluid_ViewHelpers\, this method returns "form.select".
-	 *
-	 * @param string $className Class name
-	 * @param string $namespace Base namespace to use
-	 * @return string Tag name
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	protected function getTagNameForClass($className, $namespace) {
-		$strippedClassName = substr($className, strlen($namespace));
-		$classNameParts = explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $strippedClassName);
-
-		if (count($classNameParts) == 1) {
-			$tagName = lcfirst(substr($classNameParts[0], 0, -10)); // strip the "ViewHelper" ending
-		} else {
-			$tagName = lcfirst($classNameParts[0]) . '.' . lcfirst(substr($classNameParts[1], 0, -10));
-		}
-		return $tagName;
 	}
 
 	/**
@@ -306,26 +221,5 @@ class Tx_Fluid_Service_DocbookGenerator {
 			}
 		}
 	}
-
-	/**
-	 * Add a child node to $parentXMLNode, and wrap the contents inside a CDATA section.
-	 *
-	 * @param SimpleXMLElement $parentXMLNode Parent XML Node to add the child to
-	 * @param string $childNodeName Name of the child node
-	 * @param string $childNodeValue Value of the child node. Will be placed inside CDATA.
-	 * @return SimpleXMLElement the new element
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	protected function addChildWithCData(SimpleXMLElement $parentXMLNode, $childNodeName, $childNodeValue) {
-		$parentDomNode = dom_import_simplexml($parentXMLNode);
-		$domDocument = new DOMDocument();
-
-		$childNode = $domDocument->appendChild($domDocument->createElement($childNodeName));
-		$childNode->appendChild($domDocument->createCDATASection($childNodeValue));
-		$childNodeTarget = $parentDomNode->ownerDocument->importNode($childNode, true);
-		$parentDomNode->appendChild($childNodeTarget);
-		return simplexml_import_dom($childNodeTarget);
-	}
-
 }
 ?>

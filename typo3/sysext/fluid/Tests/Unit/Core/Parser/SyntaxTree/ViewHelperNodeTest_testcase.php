@@ -26,7 +26,7 @@ require_once(dirname(__FILE__) . '/../../Fixtures/TestViewHelper.php');
 /**
  * Testcase for [insert classname here]
  *
- * @version $Id: ViewHelperNodeTest.php 3350 2009-10-27 12:01:08Z k-fish $
+ * @version $Id: ViewHelperNodeTest.php 3443 2009-11-05 11:21:34Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Extbase_BaseTestCase {
@@ -73,7 +73,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest_testcase extends Tx_Ext
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
 		$this->renderingContext->setTemplateVariableContainer($this->templateVariableContainer);
 
-		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
+		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$this->renderingContext->setControllerContext($this->controllerContext);
 
 		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');

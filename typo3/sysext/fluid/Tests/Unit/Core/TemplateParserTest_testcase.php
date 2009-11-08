@@ -48,7 +48,7 @@ class Tx_Fluid_Core_TemplateParserTest_testcase extends Tx_Extbase_BaseTestCase 
 
 		$this->renderingContext = new Tx_Fluid_Core_Rendering_RenderingContext();
 		$this->renderingContext->injectObjectFactory(new Tx_Fluid_Compatibility_ObjectFactory());
-		$this->renderingContext->setControllerContext(new Tx_Extbase_MVC_Controller_ControllerContext());
+		$this->renderingContext->setControllerContext($this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE));
 		$this->renderingContext->setRenderingConfiguration(new Tx_Fluid_Core_Rendering_RenderingConfiguration());
 		$this->renderingContext->setViewHelperVariableContainer(new Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer());
 	}

@@ -23,12 +23,11 @@
 /**
  * Node which will call a ViewHelper associated with this node.
  *
- * @version $Id: ViewHelperNode.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id: ViewHelperNode.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
- * @intenral
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
@@ -45,7 +44,8 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	protected $arguments = array();
 
 	/**
-	 * The cached ViewHelper, to make sure every SyntaxTreeNode has exactly one ViewHelper associated to it.
+	 * The cached ViewHelper, to make sure every SyntaxTreeNode has exactly one
+	 * ViewHelper associated to it.
 	 * @var Tx_Fluid_Core_ViewHelper_AbstractViewHelper
 	 */
 	protected $cachedViewHelper = NULL;
@@ -59,7 +59,8 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	/**
 	 * List of comparators which are supported in the boolean expression language.
 	 *
-	 * Make sure that if one string is contained in one another, the longer string is listed BEFORE the shorter one.
+	 * Make sure that if one string is contained in one another, the longer
+	 * string is listed BEFORE the shorter one.
 	 * Example: put ">=" before ">"
 	 * @var array of comparators
 	 */
@@ -120,10 +121,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			throw new RuntimeException('RenderingContext is null in ViewHelperNode, but necessary. If this error appears, please report a bug!', 1242669031);
 		}
 
-		// Store if the ObjectAccessorPostProcessor has been enabled before this ViewHelper, because we need to re-enable it if needed after this ViewHelper
+			// Store if the ObjectAccessorPostProcessor has been enabled before this ViewHelper, because we need to re-enable it if needed after this ViewHelper
 		$hasObjectAccessorPostProcessorBeenEnabledBeforeThisViewHelper = $this->renderingContext->isObjectAccessorPostProcessorEnabled();
 
-		// Caching of ViewHelper and Argument Definitions
+			// Caching of ViewHelper and Argument Definitions
 		$objectFactory = $this->renderingContext->getObjectFactory();
 		if ($this->cachedViewHelper !== NULL) {
 			$viewHelper = $this->cachedViewHelper;

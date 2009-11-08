@@ -21,18 +21,19 @@
  *                                                                        */
 
 /**
- * Child Node Access Facet. View Helpers should implement this interface if they need access to the direct children in the Syntax Tree at rendering-time.
- * This might happen if you only want to selectively render a part of the syntax tree depending on some conditions.
+ * Child Node Access Facet. View Helpers should implement this interface if they
+ * need access to the direct children in the Syntax Tree at rendering-time.
+ * This might happen if you only want to selectively render a part of the syntax
+ * tree depending on some conditions.
  *
  * In most cases, you will not need this view helper.
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  *
- * @version $Id: ChildNodeAccessInterface.php 3188 2009-09-16 13:03:59Z k-fish $
+ * @version $Id: ChildNodeAccessInterface.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\ViewHelper\Facets
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @internal
  */
 interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 

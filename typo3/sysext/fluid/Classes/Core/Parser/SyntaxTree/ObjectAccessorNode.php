@@ -23,12 +23,11 @@
 /**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  *
- * @version $Id: ObjectAccessorNode.php 3334 2009-10-21 10:08:17Z sebastian $
+ * @version $Id: ObjectAccessorNode.php 3461 2009-11-08 08:35:20Z sebastian $
  * @package Fluid
  * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
- * @internal
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 
@@ -74,10 +73,17 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 		}
 		$currentObject = $this->renderingContext->getTemplateVariableContainer()->get($variableName);
 		if (count($objectPathParts) > 0) {
-			return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($currentObject, implode('.', $objectPathParts));
+			$output = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($currentObject, implode('.', $objectPathParts));
 		} else {
-			return $currentObject;
+			$output = $currentObject;
 		}
+
+		$postProcessor = $this->renderingContext->getRenderingConfiguration()->getObjectAccessorPostProcessor();
+		if ($postProcessor !== NULL) {
+			$output = $postProcessor->process($output, $this->renderingContext->isObjectAccessorPostProcessorEnabled());
+		}
+
+		return $output;
 	}
 }
 ?>

@@ -23,12 +23,11 @@
 /**
  * Abstract node in the syntax tree which has been built.
  *
- * @version $Id: AbstractNode.php 3188 2009-09-16 13:03:59Z k-fish $
+ * @version $Id: AbstractNode.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
- * @internal
  */
 abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 

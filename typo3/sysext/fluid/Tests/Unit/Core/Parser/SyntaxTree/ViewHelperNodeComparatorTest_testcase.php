@@ -85,7 +85,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase exte
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', array('dummy'));
 		$this->renderingContext->setTemplateVariableContainer($this->templateVariableContainer);
 
-		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
+		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$this->renderingContext->setControllerContext($this->controllerContext);
 
 		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');

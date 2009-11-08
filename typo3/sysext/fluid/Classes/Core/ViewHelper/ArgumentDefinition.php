@@ -23,11 +23,10 @@
 /**
  * Argument definition of each view helper argument
  *
- * @version $Id: ArgumentDefinition.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: ArgumentDefinition.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @internal
  */
 class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {
 

@@ -21,12 +21,12 @@
  *                                                                        */
 
 /**
- * Testcase for HTMLSPecialChartPostProcessor
+ * Testcase for HtmlSPecialChartPostProcessor
  *
- * @version $Id: HTMLSpecialCharsPostProcessorTest.php 3350 2009-10-27 12:01:08Z k-fish $
+ * @version $Id: HtmlSpecialCharsPostProcessorTest.php 3449 2009-11-05 13:41:57Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessorTest_testcase extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Core_Rendering_HtmlSpecialCharsPostProcessorTest_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * RenderingConfiguration
@@ -35,7 +35,7 @@ class Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessorTest_testcase extends
 	protected $htmlSpecialCharsPostProcessor;
 
 	public function setUp() {
-		$this->htmlSpecialCharsPostProcessor = new Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessor();
+		$this->htmlSpecialCharsPostProcessor = new Tx_Fluid_Core_Rendering_HtmlSpecialCharsPostProcessor();
 	}
 
 	/**

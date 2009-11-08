@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperBaseTestcase.php 3180 2009-09-16 10:01:51Z sebastian $
+ * @version $Id: ViewHelperBaseTestcase.php 3443 2009-11-05 11:21:34Z robert $
  * @package Fluid
  * @subpackage ViewHelpers
  */
@@ -83,7 +83,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 		$this->uriBuilder->expects($this->any())->method('setNoCache')->will($this->returnValue($this->uriBuilder));
 		$this->uriBuilder->expects($this->any())->method('setUseCacheHash')->will($this->returnValue($this->uriBuilder));
 		$this->request = $this->getMock('Tx_Extbase_MVC_Web_Request');
-		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext');
+		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$this->controllerContext->expects($this->any())->method('getUriBuilder')->will($this->returnValue($this->uriBuilder));
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');

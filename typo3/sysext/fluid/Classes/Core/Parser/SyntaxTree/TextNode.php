@@ -23,12 +23,11 @@
 /**
  * Text Syntax Tree Node - is a container for strings.
  *
- * @version $Id: TextNode.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id: TextNode.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
- * @internal
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 

@@ -45,7 +45,7 @@
 class Tx_Fluid_ViewHelpers_BaseViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Render the "Base" tag by outputting $request->getBaseURI()
+	 * Render the "Base" tag by outputting $request->getBaseUri()
 	 *
 	 * Note: renders as <base></base>, because IE6 will else refuse to display
 	 * the page...
@@ -56,7 +56,7 @@ class Tx_Fluid_ViewHelpers_BaseViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	 */
 	public function render() {
 		$currentRequest = $this->controllerContext->getRequest();
-		return '<base href="' . $currentRequest->getBaseURI() . '"></base>';
+		return '<base href="' . $currentRequest->getBaseUri() . '"></base>';
 	}
 }
 

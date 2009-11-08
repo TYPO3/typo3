@@ -23,7 +23,7 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id: TemplateParser.php 3438 2009-11-05 08:25:33Z sebastian $
+ * @version $Id: TemplateParser.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -347,7 +347,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function buildMainObjectTree($splittedTemplate) {
-		$regularExpression_viewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG);
+		$regularExpression_openingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG);
 		$regularExpression_closingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG);
 
 		$state = $this->objectFactory->create('Tx_Fluid_Core_Parser_ParsingState');
@@ -359,7 +359,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_CDATA, $templateElement, $matchedVariables) > 0) {
 				$this->textHandler($state, $matchedVariables[1]);
-			} elseif (preg_match($regularExpression_viewHelperTag, $templateElement, $matchedVariables) > 0) {
+			} elseif (preg_match($regularExpression_openingViewHelperTag, $templateElement, $matchedVariables) > 0) {
 				$namespaceIdentifier = $matchedVariables['NamespaceIdentifier'];
 				$methodIdentifier = $matchedVariables['MethodIdentifier'];
 				$selfclosing = $matchedVariables['Selfclosing'] === '' ? FALSE : TRUE;
@@ -430,12 +430,13 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		$state->getNodeFromStack()->addChildNode($currentDynamicNode);
 
 			// PostParse Facet
-		if (in_array('Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface',class_implements($viewHelperName))) {
+		if (in_array('Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface', class_implements($viewHelperName))) {
 			call_user_func(array($viewHelperName, 'postParseEvent'), $currentDynamicNode, $argumentsObjectTree, $state->getVariableContainer());
 		}
 
 		$state->pushNodeToStack($currentDynamicNode);
 	}
+
 	/**
 	 * Throw a ParsingException if there are arguments which were not registered
 	 * before.
@@ -540,9 +541,11 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 			$objectAccessorString = '';
 		}
 
-		// ViewHelpers
+			// ViewHelpers
+		$matches = array();
 		if (strlen($viewHelperString) > 0 && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
-			$matches = array_reverse($matches); // The last ViewHelper has to be added first for correct chaining.
+				// The last ViewHelper has to be added first for correct chaining.
+			$matches = array_reverse($matches);
 			foreach ($matches as $singleMatch) {
 				$namespaceIdentifier = $singleMatch['NamespaceIdentifier'];
 				$methodIdentifier = $singleMatch['MethodIdentifier'];
@@ -557,13 +560,13 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 			}
 		}
 
-		// Object Accessor
+			// Object Accessor
 		if (strlen($objectAccessorString) > 0) {
 			$node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
 			$state->getNodeFromStack()->addChildNode($node);
 		}
 
-		// Close ViewHelper Tags if needed.
+			// Close ViewHelper Tags if needed.
 		for ($i=0; $i<$numberOfViewHelpers; $i++) {
 			$state->popNodeFromStack();
 		}

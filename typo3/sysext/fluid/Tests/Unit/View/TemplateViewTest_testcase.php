@@ -26,7 +26,7 @@ include_once(dirname(__FILE__) . '/Fixtures/TemplateViewFixture.php');
 /**
  * Testcase for the TemplateView
  *
- * @version $Id: TemplateViewTest.php 3431 2009-11-03 11:18:01Z robert $
+ * @version $Id: TemplateViewTest.php 3449 2009-11-05 13:41:57Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_TemplateViewTest_testcase extends Tx_Extbase_BaseTestCase {
@@ -147,7 +147,7 @@ class Tx_Fluid_View_TemplateViewTest_testcase extends Tx_Extbase_BaseTestCase {
 		$mockRequest->expects($this->any())->method('getControllerObjectName')->will($this->returnValue($controllerObjectName));
 		$mockRequest->expects($this->any())->method('getFormat')->will($this->returnValue($format));
 
-		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array('getRequest'));
+		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array('getRequest'), array(), '', FALSE);
 		$mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
 
 		return $mockControllerContext;
@@ -204,7 +204,7 @@ class Tx_Fluid_View_TemplateViewTest_testcase extends Tx_Extbase_BaseTestCase {
 
 		$renderingConfiguration = $this->getMock('Tx_Fluid_Core_Rendering_RenderingConfiguration');
 
-		$objectAccessorPostProcessor = $this->getMock('Tx_Fluid_Core_Rendering_HTMLSpecialCharsPostProcessor');
+		$objectAccessorPostProcessor = $this->getMock('Tx_Fluid_Core_Rendering_HtmlSpecialCharsPostProcessor');
 		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$objectFactory->expects($this->exactly(5))->method('create')->will($this->onConsecutiveCalls($variableContainer, $renderingConfiguration, $objectAccessorPostProcessor, $renderingContext, $viewHelperVariableContainer));
 

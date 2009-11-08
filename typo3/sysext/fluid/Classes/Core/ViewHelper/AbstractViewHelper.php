@@ -23,7 +23,7 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 3349 2009-10-26 06:06:12Z sebastian $
+ * @version $Id: AbstractViewHelper.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -83,7 +83,6 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 * This is internal and NO part of the API. It is very likely to change.
 	 *
 	 * @var boolean
-	 * @internal
 	 */
 	protected $objectAccessorPostProcessorEnabled = TRUE;
 

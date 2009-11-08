@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperVariableContainer.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id: ViewHelperVariableContainer.php 3460 2009-11-06 14:58:53Z k-fish $
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -40,7 +40,6 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	/**
 	 *
 	 * @var Tx_Extbase_MVC_View_ViewInterface
-	 * @internal
 	 */
 	protected $view;
 
