@@ -1,5 +1,6 @@
 2009-11-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12487: Inform if page use content_from_pid
 	* Fixed bug #12247: absRefPrefix is prefixed with external js files
 
 2009-11-08  Oliver Hader  <oliver@typo3.org>

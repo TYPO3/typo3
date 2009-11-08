@@ -522,6 +522,20 @@ class SC_db_layout {
 				$body = $this->renderListContent();	// All other listings
 			}
 
+
+			if ($this->pageinfo['content_from_pid']) {
+				$contentPage = t3lib_BEfunc::getRecord('pages', intval($this->pageinfo['content_from_pid']));
+				$linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
+				$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($contentPage['title']) . ' (PID ' . intval($this->pageinfo['content_from_pid']) . ')</a>';
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					'',
+					sprintf($GLOBALS['LANG']->getLL('content_from_pid_title'), $link),
+					t3lib_FlashMessage::INFO
+				);
+				$body = $flashMessage->render() . $body;
+			}
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons($this->MOD_SETTINGS['function']==0 ? 'quickEdit' : '');
 			$markers = array(
