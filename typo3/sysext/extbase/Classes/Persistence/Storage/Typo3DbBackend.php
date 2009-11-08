@@ -59,11 +59,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected $pageSelectObject;
 
 	/**
-	 * The TypoScript Configuration of the page
+	 * A first-level TypoScript configuration cache
 	 *
 	 * @var array
 	 */
-	protected $pageTSConfig;
+	protected $pageTSConfigCache = array();
 
 	/**
 	 * Caches information about tables (esp. the existing column names)
@@ -821,12 +821,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if ($storagePage === NULL) {
 			return;
 		}
-
-		if (empty($this->pageTSConfig)) {
-			$this->pageTSConfig = t3lib_BEfunc::getPagesTSconfig($storagePage);
+		if (!isset($this->pageTSConfigCache[$storagePage])) {
+			$this->pageTSConfigCache[$storagePage] = t3lib_BEfunc::getPagesTSconfig($storagePage);
 		}
-		if (isset($this->pageTSConfig['TCEMAIN.']['clearCacheCmd']))	{
-			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($this->pageTSConfig['TCEMAIN.']['clearCacheCmd']),1);
+		if (isset($this->pageTSConfigConfig[$storagePage]['TCEMAIN.']['clearCacheCmd']))	{
+			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']),1);
 			$clearCacheCommands = array_unique($clearCacheCommands);
 			foreach ($clearCacheCommands as $clearCacheCommand)	{
 				if (t3lib_div::testInt($clearCacheCommand))	{
