@@ -170,10 +170,11 @@ class Tx_Extbase_Dispatcher {
 	 * @return void
 	 */
 	protected function initializeConfigurationManagerAndFrameworkConfiguration($configuration) {
-		self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager', $configurationSources);
-
 		if (TYPO3_MODE === 'FE') {
+			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager');
 			self::$configurationManager->setContentObject($this->cObj);
+		} else {
+			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_BackendConfigurationManager');
 		}
 		self::$extbaseFrameworkConfiguration = self::$configurationManager->getFrameworkConfiguration($configuration);
 	}
