@@ -824,7 +824,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if (!isset($this->pageTSConfigCache[$storagePage])) {
 			$this->pageTSConfigCache[$storagePage] = t3lib_BEfunc::getPagesTSconfig($storagePage);
 		}
-		if (isset($this->pageTSConfigConfig[$storagePage]['TCEMAIN.']['clearCacheCmd']))	{
+		if (isset($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd'])) {
 			$clearCacheCommands = t3lib_div::trimExplode(',',strtolower($this->pageTSConfigCache[$storagePage]['TCEMAIN.']['clearCacheCmd']),1);
 			$clearCacheCommands = array_unique($clearCacheCommands);
 			foreach ($clearCacheCommands as $clearCacheCommand)	{
@@ -833,8 +833,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				}
 			}
 		}
-		
-		// TODO check if we can hand this over to the Dispatcher to clear the page only once
+
+		// TODO check if we can hand this over to the Dispatcher to clear the page only once, this will save around 10% time while inserting and updating 
 		Tx_Extbase_Utility_Cache::clearPageCache($pageIdsToClear);
 	}
 }
