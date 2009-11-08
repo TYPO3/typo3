@@ -95,9 +95,10 @@ class Tx_Extbase_Dispatcher {
 		//$extutil = new Tx_Extbase_Utility_Extension;
 		//$extutil->createAutoloadRegistryForExtension('extbase', t3lib_extMgm::extPath('extbase'));
 		//$extutil->createAutoloadRegistryForExtension('fluid', t3lib_extMgm::extPath('fluid'));
-		
-		$GLOBALS['TT']->push('Extbase is called.','');
-		$GLOBALS['TT']->push('Extbase gets initialized.','');
+
+		$this->timeTrackPush('Extbase is called.','');
+		$this->timeTrackPush('Extbase gets initialized.','');
+
 		if (!is_array($configuration)) {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
@@ -118,9 +119,10 @@ class Tx_Extbase_Dispatcher {
 		$requestHashService->verifyRequest($request);
 
 		$persistenceManager = self::getPersistenceManager();
-		$GLOBALS['TT']->pull();
 
-		$GLOBALS['TT']->push('Extbase dispatches request.','');
+		$this->timeTrackPull();
+
+		$this->timeTrackPush('Extbase dispatches request.','');
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
 			if ($dispatchLoopCount++ > 99) throw new Tx_Extbase_MVC_Exception_InfiniteLoop('Could not ultimately dispatch the request after '  . $dispatchLoopCount . ' iterations.', 1217839467);
@@ -130,20 +132,20 @@ class Tx_Extbase_Dispatcher {
 			} catch (Tx_Extbase_MVC_Exception_StopAction $ignoredException) {
 			}
 		}
-		$GLOBALS['TT']->pull();
+		$this->timeTrackPull();
 
-		$GLOBALS['TT']->push('Extbase persists all changes.','');
+		$this->timeTrackPush('Extbase persists all changes.','');
 		$flashMessages = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
-		$flashMessages->persist();		
+		$flashMessages->persist();
 		$persistenceManager->persistAll();
-		$GLOBALS['TT']->pull();
-		
+		$this->timeTrackPull();
+
 		self::$reflectionService->shutdown();
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		$response->sendHeaders();
-		$GLOBALS['TT']->pull();
+		$this->timeTrackPull();
 		return $response->getContent();
 	}
 
@@ -247,11 +249,11 @@ class Tx_Extbase_Dispatcher {
 	public static function getPersistenceManager() {
 		if (self::$persistenceManager === NULL) {
 			$identityMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap');
-			
+
 			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 			$dataMapper->injectIdentityMap($identityMap);
 			$dataMapper->injectReflectionService(self::$reflectionService);
-			
+
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);
 
@@ -505,6 +507,29 @@ class Tx_Extbase_Dispatcher {
 			// and thus we are already within typo3/ because we call typo3/mod.php
 		$GLOBALS['BACK_PATH'] = '';
 		return $this->dispatch('', $extbaseConfiguration);
+	}
+
+	/**
+	 * Push some information to time tracking if in Frontend
+	 *
+	 * @param string $name
+	 * @todo correct variable names
+	 * @return void
+	 */
+	protected function timeTrackPush($name, $param2) {
+		if (isset($GLOBALS['TT'])) {
+			$GLOBALS['TT']->push($name, $param2);
+		}
+	}
+
+	/**
+	 * Time track pull
+	 * @todo complete documentation of this method.
+	 */
+	protected function timeTrackPull() {
+		if (isset($GLOBALS['TT'])) {
+			$GLOBALS['TT']->pull();
+		}
 	}
 
 }
