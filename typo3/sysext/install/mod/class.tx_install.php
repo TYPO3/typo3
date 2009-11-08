@@ -3596,7 +3596,7 @@ From sub-directory:
 						',-1);
 					} else {
 						$this->message($tLabel,'Invalid table and field definitions in $TCA!','
-						There are some tables and/or fields configured in the \$TCA array which does not exist in the database!
+						There are some tables and/or fields configured in the $TCA array which do not exist in the database!
 						This will most likely cause you trouble with the TYPO3 backend interface!
 						',3);
 						while(list($tableName, $conf)=each($cmpTCA_DB['extra']))	{
@@ -4293,7 +4293,7 @@ From sub-directory:
 				$out.='<tr><td class="tcaTableBackground">'.$this->fw($fieldname).'</td><td class="tcaTableBackground">'.$fieldContent.'</td></tr>';
 			}
 		}
-		$out= '<table border="0" cellpadding="0" cellspacing="0">'.$out.'</table>';
+		$out = '<table border="0" cellpadding="0" cellspacing="1">' . $out . '</table>';
 		return $out;
 	}
 

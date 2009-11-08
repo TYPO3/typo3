@@ -1,3 +1,7 @@
+2009-11-08  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12019: Added missing style definition to Install Tool CSS file
+
 2009-11-08  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12487: Inform if page use content_from_pid

@@ -119,6 +119,11 @@ textarea {
 
 .tcaTableHeader {
 	background-color: #b3b7bd;
+	padding: 2px;
+}
+.tcaTableBackground {
+	background-color: #e4e5f0;
+	padding: 2px;
 }
 
 /* Styles for messages (matching flash messages) */
