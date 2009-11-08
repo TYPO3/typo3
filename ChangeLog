@@ -1,3 +1,7 @@
+2009-11-08  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid versions from 0.9.16 to 0.9.17
+
 2009-11-07  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12436: Integrate checks concerning Suhosin/Hardened PHP in Install Tool (thanks to Oliver Hader)
