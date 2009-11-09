@@ -42,6 +42,12 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 			'uid_local' => 'local_uid',
 		),
 	),
+	'tx_dam_file_tracking' => array(
+		'mapFieldNames' => array(
+			'file_name' => 'filename',
+			'file_path' => 'path',
+		),
+	),
 	'tx_dbal_debuglog' => array(
 		'mapFieldNames' => array(
 			'errorFlag' => 'errorflag',

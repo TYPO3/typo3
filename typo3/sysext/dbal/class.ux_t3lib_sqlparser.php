@@ -217,10 +217,36 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					// Find "comparator":
 				$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS)');
 				if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
-						// Finding value for comparator:
-					$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString, $stack[$level][$pnt[$level]]['comparator']);
-					if ($this->parse_error)	{
-						return $this->parse_error;
+					if (preg_match('/^CONCAT[[:space:]]*\(/i', $parseString)) {
+						$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');
+						$values = array(
+							'operator' => 'CONCAT',
+							'args' => array(),
+						);
+						$cnt = 0;
+						while ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)')) {
+								// Parse field name into field and table:
+							$tableField = explode('.', $fieldName, 2);
+							if (count($tableField) == 2) {
+								$values['args'][$cnt]['table'] = $tableField[0];
+								$values['args'][$cnt]['field'] = $tableField[1];
+							} else {
+								$values['args'][$cnt]['table'] = '';
+								$values['args'][$cnt]['field'] = $tableField[0];
+							}
+								// Looking for comma:
+							$this->nextPart($parseString, '^(,)');
+							$cnt++;
+						}
+							// Look for ending parenthese:
+						$this->nextPart($parseString, '([)])');
+						$stack[$level][$pnt[$level]]['value'] = $values;
+					} else {
+							// Finding value for comparator:
+						$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString, $stack[$level][$pnt[$level]]['comparator']);
+						if ($this->parse_error)	{
+							return $this->parse_error;
+						}
 					}
 				}
 
@@ -360,6 +386,12 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
 							}
 							$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
+						} else if (isset($v['value']['operator'])) {
+							$values = array();
+							foreach ($v['value']['args'] as $fieldDef) {
+								$values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
+							}
+							$output .= ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 						} else {
 							$output .= ' ' . $v['value'][1] . $this->compileAddslashes($v['value'][0]) . $v['value'][1];
 						}
@@ -731,6 +763,12 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
 											}
 											$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
+										} else if (isset($v['value']['operator'])) {
+											$values = array();
+											foreach ($v['value']['args'] as $fieldDef) {
+												$values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
+											}
+											$output .= ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 										} else {
 											$output .= ' ' . $v['value'][1] . $this->compileAddslashes($v['value'][0]) . $v['value'][1];
 										}

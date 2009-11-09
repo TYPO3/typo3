@@ -1051,9 +1051,16 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 			}
 			if ($where_clause[$k]['comparator']) {
-					// Detecting value type; list or plain:
-				if ((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.') && !t3lib_div::inList('NOTIN,IN',strtoupper(str_replace(array(" ","\n","\r","\t"),'',$where_clause[$k]['comparator'])))) {
-					$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
+				if (isset($v['value']['operator'])) {
+					foreach ($where_clause[$k]['value']['args'] as $argK => $fieldDef) {
+						$where_clause[$k]['value']['args'][$argK]['table'] = $this->quoteName($fieldDef['table']);
+						$where_clause[$k]['value']['args'][$argK]['field'] = $this->quoteName($fieldDef['field']);
+					}
+				} else {
+						// Detecting value type; list or plain:
+					if ((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.') && !t3lib_div::inList('NOTIN,IN',strtoupper(str_replace(array(" ","\n","\r","\t"),'',$where_clause[$k]['comparator'])))) {
+						$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
+					}
 				}
 			}
 		}
@@ -2494,6 +2501,18 @@ class ux_t3lib_DB extends t3lib_DB {
 							}
 							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $table . '.' . $field;
 							$sqlPartArray[$k]['func_content'] = $table . '.' . $field;
+						}
+					}
+
+						// Do we have a function (e.g., CONCAT)
+					if (isset($v['value']['operator'])) {
+						foreach ($sqlPartArray[$k]['value']['args'] as $argK => $fieldDef) {
+							if (isset($this->mapping[$fieldDef['table']]['mapTableName'])) {
+								$sqlPartArray[$k]['value']['args'][$argK]['table'] = $this->mapping[$fieldDef['table']]['mapTableName'];
+							}
+							if (is_array($this->mapping[$fieldDef['table']]['mapFieldNames']) && isset($this->mapping[$fieldDef['table']]['mapFieldNames'][$fieldDef['field']])) {
+								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$fieldDef['table']]['mapFieldNames'][$fieldDef['field']];	
+							}
 						}
 					}
 

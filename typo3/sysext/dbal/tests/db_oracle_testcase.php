@@ -239,4 +239,42 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ' WHERE "ext_tt_news_cat_mm"."local_uid" > 50';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12515
+	 * @remark Remapping is not expected here
+	 */
+	public function concatAfterLikeOperatorIsProperlyQuoted() {
+		$query = $this->cleanSql($this->fixture->SELECTquery(
+			'*',
+			'sys_refindex, tx_dam_file_tracking',
+			'sys_refindex.tablename = \'tx_dam_file_tracking\''
+			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
+		));
+		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
+		$expected .= ' AND "sys_refindex"."ref_string" LIKE CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name")';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12515
+	 * @remark Remapping is expected here
+	 */
+	public function concatAfterLikeOperatorIsRemapped() {
+		$selectFields = '*';
+		$fromTables   = 'sys_refindex, tx_dam_file_tracking';
+		$whereClause  = 'sys_refindex.tablename = \'tx_dam_file_tracking\''
+							. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
+		$expected .= ' AND "sys_refindex"."ref_string" LIKE CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename")';
+		$this->assertEquals($expected, $query);
+	}
 }
