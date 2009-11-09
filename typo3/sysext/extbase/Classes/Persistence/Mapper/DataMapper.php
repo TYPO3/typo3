@@ -290,7 +290,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				);
 			$query->setSource($source);
 			if (!empty($childSortByFieldName)) {
-				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+				$query->setOrderings(array($relationTableName . '.' . $childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
 			$result = $query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
 		} else {
