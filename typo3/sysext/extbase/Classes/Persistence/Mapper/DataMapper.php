@@ -219,7 +219,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
 	 * @return mixed The result
 	 */
-	public function fetchRelated(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue, $enableLazyLoading = TRUE) {
+	public function fetchRelated(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && ($propertyMetaData['lazy'] || ($columnMap->getLoadingStrategy() !== Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_EAGER))) {
@@ -242,7 +242,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param mixed $fieldValue The raw field value.
 	 * @return void
 	 */
-	protected function fetchRelatedEager(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue) {
+	protected function fetchRelatedEager(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '') {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->execute();
 	}
@@ -255,7 +255,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $fieldValue 
 	 * @return void
 	 */
-	protected function getPreparedQuery(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue) {
+	protected function getPreparedQuery(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$query = $queryFactory->create($columnMap->getChildClassName());
@@ -341,7 +341,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 */
-	public function countRelated(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue) {
+	public function countRelated(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '') {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->count();
 	}

@@ -112,6 +112,7 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	/**
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
+	 * @param string $propertyName An optional name of a property to be checked if its value is dirty
 	 * @return boolean
 	 */
 	public function _isDirty($propertyName = NULL) {

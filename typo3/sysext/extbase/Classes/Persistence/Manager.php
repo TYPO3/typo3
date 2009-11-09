@@ -62,7 +62,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 *
 	 * @param Tx_Extbase_Persistence_BackendInterface $backend The persistence backend
 	 * @return void
-
 	 */
 	public function injectBackend(Tx_Extbase_Persistence_BackendInterface $backend) {
 		$this->backend = $backend;
@@ -74,7 +73,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 *
 	 * @param Tx_Extbase_Persistence_Session $session The persistence session
 	 * @return void
-
 	 */
 	public function injectSession(Tx_Extbase_Persistence_Session $session) {
 		$this->session = $session;
@@ -94,7 +92,6 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	 * Returns the current persistence session
 	 *
 	 * @return Tx_Extbase_Persistence_Session
-
 	 */
 	public function getSession() {
 		return $this->session;
@@ -147,7 +144,11 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 			$removedObjects->addAll($repository->getRemovedObjects());
 		}
 
-		$aggregateRootObjects->addAll($this->session->getReconstitutedObjects());
+		foreach ($this->session->getReconstitutedObjects() as $reconstitutedObject) {
+			if (class_exists(str_replace('_Model_', '_Repository_', get_class($reconstitutedObject)) . 'Repository')) {
+				$aggregateRootObjects->attach($reconstitutedObject);
+			}
+		}
 
 			// hand in only aggregate roots, leaving handling of subobjects to
 			// the underlying storage layer

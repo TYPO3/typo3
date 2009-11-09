@@ -151,7 +151,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 *
 	 * @return boolean
 	 */
-	public function _isDirty() {
+	public function _isDirty($propertyName = NULL) {
 		return FALSE;
 	}
 

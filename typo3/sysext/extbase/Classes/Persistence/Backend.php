@@ -351,15 +351,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if (($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) || ((get_class($propertyValue) === 'Tx_Extbase_Persistence_LazyObjectStorage') && ($propertyValue->isInitialized() === FALSE))) {
 				continue;
 			}
-
+			
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$propertyMetaData = $classSchema->getProperty($propertyName);
 			$propertyType = $propertyMetaData['type'];
 			// FIXME enable property-type check
 			// $this->checkPropertyType($propertyType, $propertyValue);
-			if (($propertyValue !== NULL) && ($propertyType === 'Tx_Extbase_Persistence_ObjectStorage')) {
-				if ($object->_isDirty($propertyName)) {
-					$row[$columnMap->getColumnName()] = $this->persistObjectStorage($propertyValue, $object, $propertyName, $queue);
+			if (($propertyValue !== NULL) && $propertyType === 'Tx_Extbase_Persistence_ObjectStorage') {
+				if ($object->_isNew() || $object->_isDirty($propertyName)) {
+					$this->persistObjectStorage($propertyValue, $object, $propertyName, $queue, $row);
 				} else {
 					foreach ($propertyValue as $containedObject) {
 						$queue[] = $containedObject;
@@ -377,7 +377,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					}
 					$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 				}
-			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || $object->_isNew() || $object->_isDirty($propertyName)) {
+			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || ($object->_isNew() || $object->_isDirty($propertyName))) {
 				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
@@ -431,7 +431,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if($this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 				$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
 			}
-		} else {
+		} elseif ($object->_isNew()) {
 			$row = array();
 			$className = get_class($object);
 			$dataMap = $this->dataMapper->getDataMap($className);
@@ -474,21 +474,22 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param mixed $propertyValue The property value 
 	 * @return void
 	 */
-	protected function persistObjectStorage(Tx_Extbase_Persistence_ObjectStorage $objectStorage, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, &$queue) {
+	protected function persistObjectStorage(Tx_Extbase_Persistence_ObjectStorage $objectStorage, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, array &$queue, array &$row) {
 		$className = get_class($parentObject);
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 		$columnName = $columnMap->getColumnName();		
 		$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
-		
+
+		$updateParent = FALSE;		
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
 			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
 				$this->removeObject($removedObject);
 			} else {
 				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 			}
+			$updateParent = TRUE;
 		}
-
-		$childPidArray = array();
+		
 		$sortingPosition = 1;
 		foreach ($objectStorage as $object) {
 			if ($object->_isNew()) {
@@ -498,18 +499,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				} else {
 					$this->persistValueObject($object, $parentObject, $propertyName, $sortingPosition);
 				}
+				$updateParent = TRUE;
 			}
-			$childPidArray[] = $object->getUid(); // FIXME This won't work for partly loaded storages
 			$sortingPosition++;
 		}
 		
-		if ($columnMap->getParentKeyFieldName() === NULL) {
-			$newParentPropertyValue = implode(',', $childPidArray);
-		} else {
-			$newParentPropertyValue = count($objectStorage); // TODO check for limited queries
+		if ($updateParent === TRUE && $columnMap->getParentKeyFieldName() !== NULL) {
+			$row[$columnMap->getColumnName()] = $this->dataMapper->countRelated($parentObject, $propertyName);			
 		}
-		
-		return $newParentPropertyValue;
 	}
 	
 	/**

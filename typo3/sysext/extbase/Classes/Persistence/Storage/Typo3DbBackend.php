@@ -114,7 +114,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$sqlString = 'INSERT INTO ' . $tableName . ' (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $values) . ')';
 		$this->replacePlaceholders($sqlString, $parameters);
-		// debug($sqlString,2);
+		// debug($sqlString,-2);
 		$this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors();
 		$uid = $this->databaseHandle->sql_insert_id();
@@ -146,7 +146,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid=?';
 		$this->replacePlaceholders($sqlString, $parameters);
-		// debug($sqlString,2);
+		// debug($sqlString,-2);
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
 		$this->checkSqlErrors();
 		if (!$isRelation) {
@@ -334,7 +334,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$tableName = $dataMap->getTableName();
 		$this->addEnableFieldsStatement($tableName, $sql);
-
+		
 		$statement = 'SELECT * FROM ' . $tableName;
 		$statement .= ' WHERE ' . implode(' AND ', $fields);
 		if (!empty($sql['additionalWhereClause'])) {
