@@ -480,16 +480,27 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$columnName = $columnMap->getColumnName();		
 		$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 
-		$updateParent = FALSE;		
+		$currentUids = array();
+		if ($columnMap->getParentKeyFieldName() === NULL) {
+			$currentFieldValue = $this->getCurrentFieldValue($parentObject, $propertyName);
+			if (!empty($currentFieldValue)) {
+				$currentUids = t3lib_div::intExplode(',', $currentFieldValue);
+			}
+		}
+		
+		$updateParent = FALSE;
+		$detachedUids = array();
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
 			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
 				$this->removeObject($removedObject);
 			} else {
 				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
+				$detachedUids[] = $removedObject->getUid();
 			}
 			$updateParent = TRUE;
 		}
 		
+		$insertedUids = array();
 		$sortingPosition = 1;
 		foreach ($objectStorage as $object) {
 			if ($object->_isNew()) {
@@ -499,14 +510,40 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				} else {
 					$this->persistValueObject($object, $parentObject, $propertyName, $sortingPosition);
 				}
+				$insertedUids[] = $object->getUid();
 				$updateParent = TRUE;
 			}
 			$sortingPosition++;
 		}
 		
-		if ($updateParent === TRUE && $columnMap->getParentKeyFieldName() !== NULL) {
-			$row[$columnMap->getColumnName()] = $this->dataMapper->countRelated($parentObject, $propertyName);			
+		if ($updateParent === TRUE) {
+			if ($columnMap->getParentKeyFieldName() === NULL) {
+				$newUids = array_diff($currentUids, $detachedUids);
+				$newUids = array_merge($newUids, $insertedUids);
+				$row[$columnMap->getColumnName()] = implode(',', $newUids);
+			} else {
+				$row[$columnMap->getColumnName()] = $this->dataMapper->countRelated($parentObject, $propertyName);			
+			}
 		}
+	}
+	
+	/**
+	 * Returns the current field value of the given object property from the storage backend.
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object
+	 * @param string $propertyName The property name
+	 * @return mixed The field value
+	 */
+	protected function getCurrentFieldValue(Tx_Extbase_DomainObject_DomainObjectInterface $object, $propertyName) {
+		$className = get_class($object);
+		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
+		$query = $this->queryFactory->create($className);
+		$query->getQuerySettings()->setReturnRawQueryResult(TRUE);
+		$result = $query->matching($query->withUid($object->getUid()))->execute();
+		$rows = $result->getRows();
+		$currentRow = current(current($rows));
+		$fieldValue = $currentRow->getValue($columnMap->getColumnName());
+		return $fieldValue;
 	}
 	
 	/**
