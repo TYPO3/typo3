@@ -224,7 +224,7 @@ class db_oracle_testcase extends BaseTestCase {
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=6953
 	 */
-	public function tableAndfieldWithinSqlFunctionIsRemapped() {
+	public function tableAndFieldWithinSqlFunctionIsRemapped() {
 		$selectFields = 'MAX(tt_news_cat.uid) AS biggest_id';
 		$fromTables   = 'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign';
 		$whereClause  = 'tt_news_cat_mm.uid_local > 50';
