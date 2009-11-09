@@ -119,7 +119,9 @@ var ModuleMenu = Class.create({
 		$$('#typo3-menu .highlighted').invoke('removeClassName', 'highlighted');
 
 			// highlight the new one
-		$(moduleId).addClassName('highlighted');
+		if ($(moduleId)) {
+			$(moduleId).addClassName('highlighted');
+		}
 
 		if(undefined != mainModule) {
 			this.currentlyHighLightedMainModule = mainModule;

@@ -1,3 +1,7 @@
+2009-11-09  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10128: JavaScript error upon login
+
 2009-11-08  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.0beta3
