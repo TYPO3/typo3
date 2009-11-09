@@ -876,8 +876,8 @@ HTMLArea.prototype.generate = function () {
 
 	HTMLArea._appendToLog("[HTMLArea::generate]: Editor iframe successfully created.");
 	if (HTMLArea.is_opera) {
-			// Opera 10 needs lots of time here...
-		window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 200);
+		var self = this;
+		this._iframe.onload = function() { self.initIframe(); };
 	} else {
 		this.initIframe();
 	}
@@ -1101,10 +1101,17 @@ HTMLArea.prototype.stylesLoaded = function() {
 	var stylesAreLoaded = true;
 	var errorText = '';
 	var rules;
-	for (var rule = 0; rule < doc.styleSheets.length; rule++) {
-		if (HTMLArea.is_gecko) try { rules = doc.styleSheets[rule].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-		if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-		if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
+	if (HTMLArea.is_opera) {
+		if (doc.readyState != "complete") {
+			stylesAreLoaded = false;
+			errorText = "Stylesheets not yet loaded";
+		}
+	} else {
+		for (var rule = 0; rule < doc.styleSheets.length; rule++) {
+			if (HTMLArea.is_gecko) try { rules = doc.styleSheets[rule].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
+		}
 	}
 	if (!stylesAreLoaded && !HTMLArea.is_wamcom) {
 		HTMLArea._appendToLog("[HTMLArea::initIframe]: Failed attempt at loading stylesheets: " + errorText + " Retrying...");
