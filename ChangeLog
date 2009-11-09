@@ -1,3 +1,7 @@
+2009-11-09  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12345: TCA feature _VALIGN for wizards is broken (Thanks to Tolleiv Nietsch)
+
 2009-11-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to #11847: htmlArea RTE displays empty editing area in Opera 10
