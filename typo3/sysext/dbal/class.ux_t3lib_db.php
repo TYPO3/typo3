@@ -766,7 +766,11 @@ class ux_t3lib_DB extends t3lib_DB {
 						// Add slashes old-school:
 						// cast numerical values
 					$mt = $this->sql_field_metatype($table, $k);
-					$v = (($mt{0} == 'I') || ($mt{0} == 'F')) ? (int)$v : $v;
+					if ($mt{0} == 'I') {
+						$v = (int)$v;
+					} else if ($mt{0} == 'F') {
+						$v = (double)$v;
+					}
 
 					$nArr[$this->quoteFieldNames($k)] = (!in_array($k,$no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v;
 				}
@@ -837,7 +841,11 @@ class ux_t3lib_DB extends t3lib_DB {
 							// Add slashes old-school:
 							// cast numeric values
 						$mt = $this->sql_field_metatype($table, $k);
-						$v = (($mt{0} == 'I') || ($mt{0} == 'F')) ? (int)$v : $v;
+						if ($mt{0} == 'I') {
+							$v = (int)$v;
+						} else if ($mt{0} == 'F') {
+							$v = (double)$v;
+						}
 						$nArr[] = $this->quoteFieldNames($k) . '=' . ((!in_array($k, $no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v);
 					}
 				}

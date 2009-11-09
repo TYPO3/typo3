@@ -100,5 +100,39 @@ class db_general_testcase extends BaseTestCase {
 		$expected .= ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path,tx_dam_file_tracking.file_name)';
 		$this->assertEquals($expected, $query);
 	}
+
+	/** 
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=10965
+	 */
+	public function floatNumberCanBeStoredInDatabase() {
+			// Prepare a fake extension configuration
+		$ext_tables = t3lib_div::tempnam('ext_tables');
+		t3lib_div::writeFile($ext_tables, '
+			CREATE TABLE tx_test_dbal (
+				foo double default \'0\',
+				foobar integer default \'0\'
+			);
+		');
+
+		$GLOBALS['TYPO3_LOADED_EXT']['test_dbal'] = array(
+			'ext_tables.sql' => $ext_tables
+		);
+
+			// Append our test table to the list of existing tables
+		$this->fixture->clearCachedFieldInfo();
+		$this->fixture->_call('initInternalVariables');
+
+		$data = array(
+			'foo'    => 99.12,
+			'foobar' => -120,
+		);
+		$query = $this->cleanSql($this->fixture->INSERTquery('tx_test_dbal', $data));
+		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'99.12\', \'-120\' )';
+		$this->assertEquals($expected, $query);
+
+			// Remove temporary file
+		unlink($ext_tables);
+	}
 }
 ?>

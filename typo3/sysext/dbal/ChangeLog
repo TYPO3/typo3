@@ -1,5 +1,6 @@
 2009-11-09  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #10965: Float database field gets converted to integer on insert (thanks to Christian Ducrot)
 	* Fixed bug #12515: DAM-related: CONCAT operator cannot be used after LIKE
 	* Fixed bug #10411: Applied missing chunks of patch
 
