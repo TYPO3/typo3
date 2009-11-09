@@ -1,3 +1,7 @@
+2009-11-09  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug RFC #10411: Applied missing chunks of patch
+
 2009-11-07  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added unit test for RFC #6198: Problem with strings in IN

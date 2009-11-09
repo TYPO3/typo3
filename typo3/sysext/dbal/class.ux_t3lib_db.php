@@ -989,15 +989,13 @@ class ux_t3lib_DB extends t3lib_DB {
 				$from_table[$k]['as'] = $this->quoteName($from_table[$k]['as']);
 			}
 			if (is_array($v['JOIN'])) {
-				$joinCnt = 0;
-				foreach ($v['JOIN'] as $join) {
+				foreach ($v['JOIN'] as $joinCnt => $join) {
 					$from_table[$k]['JOIN'][$joinCnt]['withTable'] = $this->quoteName($join['withTable']);
 					$from_table[$k]['JOIN'][$joinCnt]['as'] = ($join['as']) ? $this->quoteName($join['as']) : '';
 					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['table'] = ($join['ON'][0]['table']) ? $this->quoteName($join['ON'][0]['table']) : '';
 					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['field'] = $this->quoteName($join['ON'][0]['field']);
 					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['table'] = ($join['ON'][1]['table']) ? $this->quoteName($join['ON'][1]['table']) : '';
 					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['field'] = $this->quoteName($join['ON'][1]['field']);
-					$joinCnt++;
 				}
 			}
 		}
@@ -2309,11 +2307,25 @@ class ux_t3lib_DB extends t3lib_DB {
 					if ($fieldMappingOnly) {
 						if (is_array($this->mapping[$tableCfg['table']]['mapFieldNames'])) {
 							$this->cache_mappingFromTableList[$key] = $tables;
-						}
+						} elseif (is_array($tableCfg['JOIN'])) {
+							foreach ($tableCfg['JOIN'] as $join) {
+								if (is_array($this->mapping[$join['withTable']]['mapFieldNames'])) {
+									$this->cache_mappingFromTableList[$key] = $tables;
+									break;
+								}
+							}
+ 						}
 					} else {
 						if (is_array($this->mapping[$tableCfg['table']])) {
 							$this->cache_mappingFromTableList[$key] = $tables;
-						}
+						} elseif (is_array($tableCfg['JOIN'])) {
+							foreach ($tableCfg['JOIN'] as $join) {
+								if (is_array($this->mapping[$join['withTable']])) {
+									$this->cache_mappingFromTableList[$key] = $tables;
+									break;
+								}
+							}
+ 						}
 					}
 				}
 			}
@@ -2389,26 +2401,27 @@ class ux_t3lib_DB extends t3lib_DB {
 			if ($this->mapping[$v['table']]['mapTableName']) {
 				$tables[$k]['table'] = $this->mapping[$v['table']]['mapTableName'];
 			}
+				// Mapping JOINS
 			if (is_array($v['JOIN'])) {
-				$joinCnt = 0;
-				foreach ($v['JOIN'] as $join) {
-						// Remap "with table"
-					if ($this->mapping[$join['withTable']]) {
-						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$join['withTable']]['mapTableName'];
+				foreach($v['JOIN'] as $joinCnt => $join) {
+						// Mapping withTable of the JOIN
+					if ($this->mapping[$join['withTable']]['mapTableName']) {
+						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$join['withTable']]['mapTableName'];					
 					}
-						// Remap join condition
-					foreach ($join['ON'] as $onK => $onV) {
-						if ($this->mapping[$onV['table']]) {
-							$tables[$k]['JOIN'][$joinCnt]['ON'][$onK]['table'] = $this->mapping[$onV['table']]['mapTableName'];
-							if (is_array($this->mapping[$onV['table']]['mapFieldNames'])) {
-								$mapFieldNames = $this->mapping[$onV['table']]['mapFieldNames'];
-								if ($mapFieldNames[$onV['field']]) {
-									$tables[$k]['JOIN'][$joinCnt]['ON'][$onK]['field'] = $mapFieldNames[$onV['field']]; 
-								}
+					$onPartsArray = array();
+						// Mapping ON parts of the JOIN
+					if (is_array($join['ON'])) {
+						foreach ($join['ON'] as $onParts) {
+							if (isset($this->mapping[$onParts['table']]['mapFieldNames'][$onParts['field']])) {
+								$onParts['field'] = $this->mapping[$onParts['table']]['mapFieldNames'][$onParts['field']];
 							}
+							if (isset($this->mapping[$onParts['table']]['mapTableName'])) {
+								$onParts['table'] = $this->mapping[$onParts['table']]['mapTableName'];
+							}
+							$onPartsArray[]	= $onParts;
 						}
+						$tables[$k]['JOIN'][$joinCnt]['ON'] = $onPartsArray;
 					}
-					$joinCnt++;
 				}
 			}
 		}
