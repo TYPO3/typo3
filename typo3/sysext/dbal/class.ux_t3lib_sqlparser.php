@@ -37,7 +37,6 @@
 
 /**
  * PHP SQL engine / server
- * Some parts are experimental for now.
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @package TYPO3
@@ -343,8 +342,6 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 	/**
 	 * Implodes an array of WHERE clause configuration into a WHERE clause.
-	 * NOTICE: MIGHT BY A TEMPORARY FUNCTION. Use for debugging only!
-	 * BUT IT IS NEEDED FOR DBAL - MAKE IT PERMANENT?!?!
 	 *
 	 * @param	array		WHERE clause configuration
 	 * @return	string		WHERE clause as string.

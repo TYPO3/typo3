@@ -1,5 +1,6 @@
 2009-11-10  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Removed comments stating that SQL parser is experimental
 	* Follow-up of revision 26334: LIKE on Oracle should use dbms_lob.instr() function
 	* Updated Oracle unit tests to use $GLOBALS['TYPO3_DB'] instead of a fixture to avoid side-effects on SQL rewriting
 
