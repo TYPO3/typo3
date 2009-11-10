@@ -2144,7 +2144,7 @@ HTMLArea._editorEvent = function(ev) {
 				case 38: // UP arrow key
 				case 39: // RIGHT arrow key
 				case 40: // DOWN arrow key
-					if (HTMLArea.is_ie) {
+					if (HTMLArea.is_ie || HTMLArea.is_safari) {
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
 						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 10);
 						return true;
