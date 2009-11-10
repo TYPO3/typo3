@@ -1,3 +1,7 @@
+2009-11-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12115: htmlArea RTE "Create link" button doesn't become clickable when using keyboard to select text in Safari/Chrome
+
 2009-11-10  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #12487: Inform if page use content_from_pid
