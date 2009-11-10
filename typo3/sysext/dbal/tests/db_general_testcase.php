@@ -47,12 +47,18 @@ class db_general_testcase extends BaseTestCase {
 	 */
 	protected $loadedExtensions;
 
+	/** 
+	 * @var array
+	 */
+	protected $temporaryFiles;
+
 	/**
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
 			// Backup list of loaded extensions
 		$this->loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
+		$this->temporaryFiles = array();
 
 		$className =  self::buildAccessibleProxy('ux_t3lib_db');
 		$this->fixture = new $className;
@@ -64,6 +70,8 @@ class db_general_testcase extends BaseTestCase {
 	public function tearDown() {
 			// Clear DBAL-generated cache files
 		$this->fixture->clearCachedFieldInfo();
+			// Delete temporary files
+		foreach ($this->temporaryFiles as $filename) unlink($filename);
 		unset($this->fixture);
 			// Restore list of loaded extensions
 		$GLOBALS['TYPO3_LOADED_EXT'] = $this->loadedExtensions;
@@ -83,6 +91,27 @@ class db_general_testcase extends BaseTestCase {
 		$sql = str_replace("\n", ' ', $sql);
 		$sql = preg_replace('/\s+/', ' ', $sql);
 		return $sql;
+	}
+
+	/**
+	 * Creates a fake extension with a given table definition.
+	 * 
+	 * @param string $tableDefinition SQL script to create the extension's tables
+	 * @return void
+	 */
+	protected function createFakeExtension($tableDefinition) {
+			// Prepare a fake extension configuration
+		$ext_tables = t3lib_div::tempnam('ext_tables');
+		t3lib_div::writeFile($ext_tables, $tableDefinition);
+		$this->temporaryFiles[] = $ext_tables;
+
+		$GLOBALS['TYPO3_LOADED_EXT']['test_dbal'] = array(
+			'ext_tables.sql' => $ext_tables
+		);
+
+			// Append our test table to the list of existing tables
+		$this->fixture->clearCachedFieldInfo();
+		$this->fixture->_call('initInternalVariables');
 	}
 
 	/**
@@ -106,23 +135,12 @@ class db_general_testcase extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=10965
 	 */
 	public function floatNumberCanBeStoredInDatabase() {
-			// Prepare a fake extension configuration
-		$ext_tables = t3lib_div::tempnam('ext_tables');
-		t3lib_div::writeFile($ext_tables, '
+		$this->createFakeExtension('
 			CREATE TABLE tx_test_dbal (
 				foo double default \'0\',
 				foobar integer default \'0\'
 			);
 		');
-
-		$GLOBALS['TYPO3_LOADED_EXT']['test_dbal'] = array(
-			'ext_tables.sql' => $ext_tables
-		);
-
-			// Append our test table to the list of existing tables
-		$this->fixture->clearCachedFieldInfo();
-		$this->fixture->_call('initInternalVariables');
-
 		$data = array(
 			'foo'    => 99.12,
 			'foobar' => -120,
@@ -130,9 +148,6 @@ class db_general_testcase extends BaseTestCase {
 		$query = $this->cleanSql($this->fixture->INSERTquery('tx_test_dbal', $data));
 		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'99.12\', \'-120\' )';
 		$this->assertEquals($expected, $query);
-
-			// Remove temporary file
-		unlink($ext_tables);
 	}
 }
 ?>
