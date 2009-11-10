@@ -5,6 +5,7 @@
 2009-11-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to #11847: htmlArea RTE displays empty editing area in Opera 10
+	* Fixed bug #12534: htmlArea RTE: list creation looses text in Safari
 
 2009-11-09  Steffen Kamper  <info@sk-typo3.de>
 

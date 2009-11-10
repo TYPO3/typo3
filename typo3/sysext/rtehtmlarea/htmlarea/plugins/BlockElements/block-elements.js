@@ -819,7 +819,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		var spans = element.getElementsByTagName("span");
 		for (var i = spans.length; --i >= 0;) {
 			if (HTMLArea._hasClass(spans[i], "Apple-style-span")) {
-				HTMLArea.removeFromParent(spans[i]);
+				this.editor.removeMarkup(spans[i]);
 			}
 		}
 	},
