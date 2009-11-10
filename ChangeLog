@@ -1,3 +1,7 @@
+2009-11-10  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up to #12487: Inform if page use content_from_pid
+
 2009-11-09  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12345: TCA feature _VALIGN for wizards is broken (Thanks to Tolleiv Nietsch)

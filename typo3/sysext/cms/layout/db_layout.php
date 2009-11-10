@@ -525,8 +525,9 @@ class SC_db_layout {
 
 			if ($this->pageinfo['content_from_pid']) {
 				$contentPage = t3lib_BEfunc::getRecord('pages', intval($this->pageinfo['content_from_pid']));
+				$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
 				$linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
-				$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($contentPage['title']) . ' (PID ' . intval($this->pageinfo['content_from_pid']) . ')</a>';
+				$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->pageinfo['content_from_pid']) . ')</a>';
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					'',
