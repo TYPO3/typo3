@@ -751,7 +751,16 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								switch (TRUE) {
 									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping):
 												// Oracle cannot handle LIKE on CLOB fields - sigh
-											$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1] . ',1,1) > 0)';
+											if (isset($v['value']['operator'])) {
+												$values = array();
+												foreach ($v['value']['args'] as $fieldDef) {
+													$values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
+												}
+												$compareValue = ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
+											} else {
+												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1]; 
+											}
+											$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
 										break;
 									default:
 										$output .= ' ' . $v['comparator'];

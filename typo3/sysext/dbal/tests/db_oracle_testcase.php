@@ -39,9 +39,9 @@ require_once('FakeDbConnection.php');
 class db_oracle_testcase extends BaseTestCase {
 
 	/**
-	 * @var ux_t3lib_db (extended to make protected methods public)
+	 * @var t3lib_db
 	 */
-	protected $fixture;
+	protected $db;
 
 	/**
 	 * @var array
@@ -54,15 +54,17 @@ class db_oracle_testcase extends BaseTestCase {
 	public function setUp() {
 			// Backup DBAL configuration
 		$this->dbalConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
+			// Backup database connection
+		$this->db = $GLOBALS['TYPO3_DB'];
 			// Reconfigure DBAL to use Oracle
 		require('fixtures/oci8.config.php');
 
 		$className =  self::buildAccessibleProxy('ux_t3lib_db');
-		$this->fixture = new $className;
+		$GLOBALS['TYPO3_DB'] = new $className;
 
 			// Initialize a fake Oracle connection
-		FakeDbConnection::connect($this->fixture, 'oci8');
-		$this->assertTrue($this->fixture->handlerInstance['_DEFAULT']->isConnected());
+		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
+		$this->assertTrue($GLOBALS['TYPO3_DB']->handlerInstance['_DEFAULT']->isConnected());
 	}
 
 	/**
@@ -70,10 +72,11 @@ class db_oracle_testcase extends BaseTestCase {
 	 */
 	public function tearDown() {
 			// Clear DBAL-generated cache files
-		$this->fixture->clearCachedFieldInfo();
-		unset($this->fixture);
+		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 			// Restore DBAL configuration
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'] = $this->dbalConfig;
+			// Restore DB connection
+		$GLOBALS['TYPO3_DB'] = $this->db;
 	}
 
 	/**
@@ -95,10 +98,11 @@ class db_oracle_testcase extends BaseTestCase {
 	/**
 	 * @test 
 	 */
-	public function configurationIsUsingAdodb() {
-		$configuration = $this->fixture->conf['handlerCfg'];
-		self::assertTrue(is_array($configuration) && count($configuration) > 0, 'No configuration found');
-		self::assertEquals('adodb', $configuration['_DEFAULT']['type']);
+	public function configurationIsUsingAdodbAndDriverOci8() {
+		$configuration = $GLOBALS['TYPO3_DB']->conf['handlerCfg'];
+		$this->assertTrue(is_array($configuration) && count($configuration) > 0, 'No configuration found');
+		$this->assertEquals('adodb', $configuration['_DEFAULT']['type']);
+		$this->assertTrue($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') !== FALSE, 'Not using oci8 driver');
 	}
 
 	/** 
@@ -107,8 +111,8 @@ class db_oracle_testcase extends BaseTestCase {
 	public function tablesWithMappingAreDetected() {
 		$tablesWithMapping = array_keys($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['mapping']);
 
-		foreach ($this->fixture->cache_fieldType as $table => $fieldTypes) {
-			$tableDef = $this->fixture->_call('map_needMapping', $table);
+		foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fieldTypes) {
+			$tableDef = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table);
 
 			if (in_array($table, $tablesWithMapping)) {
 				self::assertTrue(is_array($tableDef), 'Table ' . $table . ' was expected to need mapping');
@@ -122,7 +126,7 @@ class db_oracle_testcase extends BaseTestCase {
 	 * @test
 	 */
 	public function selectQueryIsProperlyQuoted() {
-		$query = $this->cleanSql($this->fixture->SELECTquery(
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'uid',					// select fields
 			'tt_content',			// from table
 			'pid=1',				// where clause
@@ -138,7 +142,7 @@ class db_oracle_testcase extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=2438
 	 */
 	public function distinctFieldIsProperlyQuoted() {
-		$query = $this->cleanSql($this->fixture->SELECTquery(
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'COUNT(DISTINCT pid)',	// select fields
 			'tt_content',			// from table
 			'1=1'					// where clause
@@ -153,7 +157,7 @@ class db_oracle_testcase extends BaseTestCase {
 	 * @remark Remapping is not expected here
 	 */
 	public function multipleInnerJoinsAreProperlyQuoted() {
-		$query = $this->cleanSql($this->fixture->SELECTquery(
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local',
 			'1=1'
@@ -177,8 +181,8 @@ class db_oracle_testcase extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
 		$expected = 'SELECT * FROM "ext_tt_news_cat"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
@@ -192,7 +196,7 @@ class db_oracle_testcase extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=6198
 	 */
 	public function stringsWithinInClauseAreProperlyQuoted() {
-		$query = $this->cleanSql($this->fixture->SELECTquery(
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'COUNT(DISTINCT tx_dam.uid) AS count',
 			'tx_dam',
 			'tx_dam.pid IN (1) AND tx_dam.file_type IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND tx_dam.deleted = 0'
@@ -213,8 +217,8 @@ class db_oracle_testcase extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
 		$expected = 'SELECT "tstamp", "script", SUM("exec_time") AS "calc_sum", COUNT(*) AS "qrycount", MAX("errorflag") AS "error" FROM "tx_dbal_debuglog" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
@@ -231,8 +235,8 @@ class db_oracle_testcase extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
 		$expected = 'SELECT MAX("ext_tt_news_cat"."cat_uid") AS "biggest_id" FROM "ext_tt_news_cat"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
@@ -246,14 +250,14 @@ class db_oracle_testcase extends BaseTestCase {
 	 * @remark Remapping is not expected here
 	 */
 	public function concatAfterLikeOperatorIsProperlyQuoted() {
-		$query = $this->cleanSql($this->fixture->SELECTquery(
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'sys_refindex, tx_dam_file_tracking',
 			'sys_refindex.tablename = \'tx_dam_file_tracking\''
 			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
 		));
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND "sys_refindex"."ref_string" LIKE CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name")';
+		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -270,11 +274,11 @@ class db_oracle_testcase extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$this->fixture->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($this->fixture->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND "sys_refindex"."ref_string" LIKE CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename")';
+		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 }
