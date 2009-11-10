@@ -807,9 +807,22 @@ BlockElements = HTMLArea.Plugin.extend({
 		var spans = element.getElementsByTagName("span");
 		for (var i = spans.length; --i >= 0;) {
 			if (HTMLArea._hasClass(spans[i], "Apple-style-span")) {
-				HTMLArea.removeFromParent(spans[i]);
+				this.removeMarkup(spans[i]);
 			}
 		}
+	},
+
+	/*
+	 * This function removes the given markup element
+	 */
+	removeMarkup : function(element) {
+		var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		var parent = element.parentNode;
+		while (element.firstChild) {
+			parent.insertBefore(element.firstChild, element);
+		}
+		parent.removeChild(element);
+		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 	},
 	
 	/*
