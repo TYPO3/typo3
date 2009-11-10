@@ -38,9 +38,9 @@ require_once('BaseTestCase.php');
 class db_general_testcase extends BaseTestCase {
 
 	/**
-	 * @var ux_t3lib_db (extended to make protected methods public)
+	 * @var t3lib_db
 	 */
-	protected $fixture;
+	protected $db;
 
 	/**
 	 * @var array
@@ -58,10 +58,13 @@ class db_general_testcase extends BaseTestCase {
 	public function setUp() {
 			// Backup list of loaded extensions
 		$this->loadedExtensions = $GLOBALS['TYPO3_LOADED_EXT'];
+			// Backup database connection
+		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->temporaryFiles = array();
 
 		$className =  self::buildAccessibleProxy('ux_t3lib_db');
-		$this->fixture = new $className;
+		$GLOBALS['TYPO3_DB'] = new $className;
+		$GLOBALS['TYPO3_DB']->lastHandlerKey = '_DEFAULT';
 	}
 
 	/**
@@ -69,10 +72,11 @@ class db_general_testcase extends BaseTestCase {
 	 */
 	public function tearDown() {
 			// Clear DBAL-generated cache files
-		$this->fixture->clearCachedFieldInfo();
+		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 			// Delete temporary files
 		foreach ($this->temporaryFiles as $filename) unlink($filename);
-		unset($this->fixture);
+			// Restore DB connection
+		$GLOBALS['TYPO3_DB'] = $this->db;
 			// Restore list of loaded extensions
 		$GLOBALS['TYPO3_LOADED_EXT'] = $this->loadedExtensions;
 	}
@@ -110,8 +114,8 @@ class db_general_testcase extends BaseTestCase {
 		);
 
 			// Append our test table to the list of existing tables
-		$this->fixture->clearCachedFieldInfo();
-		$this->fixture->_call('initInternalVariables');
+		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
+		$GLOBALS['TYPO3_DB']->_call('initInternalVariables');
 	}
 
 	/**
@@ -119,18 +123,18 @@ class db_general_testcase extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=12515
 	 */
 	public function concatCanBeParsedAfterLikeOperator() {
-		$query = $this->cleanSql($this->fixture->SELECTquery(
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*',
 			'sys_refindex, tx_dam_file_tracking',
 			'sys_refindex.tablename = \'tx_dam_file_tracking\''
 			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
 		));
 		$expected = 'SELECT * FROM sys_refindex, tx_dam_file_tracking WHERE sys_refindex.tablename = \'tx_dam_file_tracking\'';
-		$expected .= ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path,tx_dam_file_tracking.file_name)';
+		$expected .= ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)';
 		$this->assertEquals($expected, $query);
 	}
 
-	/** 
+	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=10965
 	 */
@@ -145,7 +149,7 @@ class db_general_testcase extends BaseTestCase {
 			'foo'    => 99.12,
 			'foobar' => -120,
 		);
-		$query = $this->cleanSql($this->fixture->INSERTquery('tx_test_dbal', $data));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTquery('tx_test_dbal', $data));
 		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'99.12\', \'-120\' )';
 		$this->assertEquals($expected, $query);
 	}
