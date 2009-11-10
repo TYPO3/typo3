@@ -153,5 +153,45 @@ class db_general_testcase extends BaseTestCase {
 		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'99.12\', \'-120\' )';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=11093
+	 */
+	public function positive64BitIntegerIsSupported() {
+		$this->createFakeExtension('
+			CREATE TABLE tx_test_dbal (
+				foo int default \'0\',
+				foobar bigint default \'0\'
+			);
+		');
+		$data = array(
+			'foo'    => 9223372036854775807,
+			'foobar' => 9223372036854775807,
+		);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTquery('tx_test_dbal', $data));
+		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'9223372036854775807\', \'9223372036854775807\' )';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=11093
+	 */
+	public function negative64BitIntegerIsSupported() {
+		$this->createFakeExtension('
+			CREATE TABLE tx_test_dbal (
+				foo int default \'0\',
+				foobar bigint default \'0\'
+			);
+		');
+		$data = array(
+			'foo'    => -9223372036854775808,
+			'foobar' => -9223372036854775808,
+		);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTquery('tx_test_dbal', $data));
+		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'-9223372036854775808\', \'-9223372036854775808\' )';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>

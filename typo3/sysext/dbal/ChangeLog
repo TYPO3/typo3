@@ -1,3 +1,7 @@
+2009-11-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #11093: bigint (int8) values get converted to int4 by int-cast 
+
 2009-11-10  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Removed comments stating that SQL parser is experimental
