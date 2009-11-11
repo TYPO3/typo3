@@ -178,10 +178,9 @@ StatusBar = HTMLArea.Plugin.extend({
 				element.href = "#";
 				element.ancestor = ancestor;
 				element.editor = this.editor;
+				HTMLArea._addEvent(element, (HTMLArea.is_ie ? "click" : "mousedown"), this.statusBarHandlerFunctRef);
 				if (!HTMLArea.is_opera) {
-					HTMLArea._addEvents(element, ["click", "contextmenu"], this.statusBarHandlerFunctRef);
-				} else {
-					HTMLArea._addEvents(element, ["mousedown", "click"], this.statusBarHandlerFunctRef);
+					HTMLArea._addEvent(element, "contextmenu", this.statusBarHandlerFunctRef);
 				}
 				element.title = ancestor.style.cssText;
 				text = ancestor.nodeName.toLowerCase();
