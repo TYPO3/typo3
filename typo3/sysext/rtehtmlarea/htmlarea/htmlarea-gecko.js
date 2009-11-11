@@ -445,6 +445,37 @@ HTMLArea.prototype.insertHTML = function(html) {
 	this.insertNodeAtSelection(fragment);
 };
 
+/*
+ * Clean Apple wrapping span and font tags under the specified node
+ *
+ * @param	object	node: the node in the subtree of which cleaning is performed
+ *
+ * @return	void
+ */
+HTMLArea.prototype.cleanAppleStyleSpans = function(node) {
+	if (HTMLArea.is_safari) {
+		if (node.getElementsByClassName) {
+			var spans = node.getElementsByClassName("Apple-style-span");
+			for (var i = spans.length; --i >= 0;) {
+				this.removeMarkup(spans[i]);
+			}
+		} else {
+			var spans = node.getElementsByTagName("span");
+			for (var i = spans.length; --i >= 0;) {
+				if (HTMLArea._hasClass(spans[i], "Apple-style-span")) {
+					this.removeMarkup(spans[i]);
+				}
+			}
+			var fonts = node.getElementsByTagName("font");
+			for (i = fonts.length; --i >= 0;) {
+				if (HTMLArea._hasClass(fonts[i], "Apple-style-span")) {
+					this.removeMarkup(fonts[i]);
+				}
+			}
+		}
+	}
+};
+
 /***************************************************
  *  EVENTS HANDLERS
  ***************************************************/

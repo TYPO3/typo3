@@ -94,6 +94,9 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 	
 	clean : function() {
 		var editor = this.editor;
+		if (HTMLArea.is_safari) {
+			editor.cleanAppleStyleSpans(editor._doc.body);
+		}
 		var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
 		var content = {
 			editorNo : this.editorNumber,

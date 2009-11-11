@@ -1881,6 +1881,23 @@ HTMLArea.getElementObject = function(el,tagName) {
 	return oEl;
 };
 
+/*
+ * This function removes the given markup element
+ *
+ * @param	object	element: the inline element to be removed, content being preserved
+ *
+ * @return	void
+ */
+HTMLArea.prototype.removeMarkup = function(element) {
+	var bookmark = this.getBookmark(this._createRange(this._getSelection()));
+	var parent = element.parentNode;
+	while (element.firstChild) {
+		parent.insertBefore(element.firstChild, element);
+	}
+	parent.removeChild(element);
+	this.selectRange(this.moveToBookmark(bookmark));
+};
+
 /***************************************************
  *  SELECTIONS AND RANGES
  ***************************************************/
@@ -2061,7 +2078,7 @@ HTMLArea._editorEvent = function(ev) {
 						return false;
 						break;
 					case "Paste"	:
-						if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 20080514)) {
+						if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 20080514) || HTMLArea.is_safari) {
 							if (editor._toolbarObjects.CleanWord) {
 								var cleanLaterFunctRef = editor.plugins.DefaultClean ? editor.plugins.DefaultClean.instance.cleanLaterFunctRef : (editor.plugins.TYPO3HtmlParser ? editor.plugins.TYPO3HtmlParser.instance.cleanLaterFunctRef : null);
 								if (cleanLaterFunctRef) {

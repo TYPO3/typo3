@@ -164,6 +164,9 @@ DefaultClean = HTMLArea.Plugin.extend({
 			}
 		}
 		parseTree(this.editor._doc.body);
+		if (HTMLArea.is_safari) {
+			this.editor.cleanAppleStyleSpans(this.editor._doc.body);
+		}
 	}
 });
 
