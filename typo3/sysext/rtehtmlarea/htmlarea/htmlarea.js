@@ -1294,7 +1294,7 @@ HTMLArea.cleanup = function (editor) {
 	if (editor._statusBarTree.hasChildNodes()) {
 		for (var i = editor._statusBarTree.firstChild; i; i = i.nextSibling) {
 			if (i.nodeName.toLowerCase() == "a") {
-				HTMLArea._removeEvents(i, ["click", "contextmenu"], HTMLArea.statusBarHandler);
+				HTMLArea._removeEvents(i, ["click", "mousedown", "contextmenu"], HTMLArea.statusBarHandler);
 				i.el = null;
 				i.editor = null;
 			}
@@ -1707,7 +1707,7 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 			if(this._statusBarTree.hasChildNodes()) {
 				for (i = this._statusBarTree.firstChild; i; i = i.nextSibling) {
 					if(i.nodeName.toLowerCase() == "a") {
-						HTMLArea._removeEvents(i,["click", "contextmenu, mousedown"], HTMLArea.statusBarHandler);
+						HTMLArea._removeEvents(i,["click", "contextmenu", "mousedown"], HTMLArea.statusBarHandler);
 						i.el = null;
 						i.editor = null;
 					}
@@ -1723,10 +1723,9 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
 				a.href = "#";
 				a.el = el;
 				a.editor = this;
+				HTMLArea._addEvent(a, (HTMLArea.is_ie ? "click" : "mousedown"), HTMLArea.statusBarHandler);
 				if (!HTMLArea.is_opera) {
-					HTMLArea._addEvents(a, ["click", "contextmenu"], HTMLArea.statusBarHandler);
-				} else {
-					HTMLArea._addEvents(a, ["mousedown", "click"], HTMLArea.statusBarHandler);
+					HTMLArea._addEvent(a, "contextmenu", HTMLArea.statusBarHandler);
 				}
 				txt = el.tagName.toLowerCase();
 				a.title = el.style.cssText;

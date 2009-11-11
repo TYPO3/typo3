@@ -1,3 +1,7 @@
+2009-11-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12566: htmlArea RTE: Selecting element from status bar does not work in Safari
+
 2009-11-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12115: htmlArea RTE "Create link" button doesn't become clickable when using keyboard to select text in Safari/Chrome
