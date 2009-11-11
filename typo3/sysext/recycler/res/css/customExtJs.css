@@ -27,7 +27,7 @@ body .x-panel { margin-bottom:20px; }
 
 .ext-el-mask-msg div {
 	height:30px;
-	background-image: url('../extJS/resources/images/default/shared/large-loading.gif');
+	background-image: url('../icons/loading.gif');
 	background-position: 155px 3px;
 	background-repeat: no-repeat;
 }

@@ -422,7 +422,7 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 .ext-el-mask-msg {
 	border-color:#8f8f8f;
 	background-color:#d7d7d7;
-	background-image:url(images/box/tb-typo3be.gif);
+	background-image:url(images/box/tb-gray.gif);
 }
 .ext-el-mask-msg div {
 	background-color: #eee;
@@ -437,11 +437,11 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 }
 
 .x-item-disabled {
-	color: typo3be;
+	color: gray;
 }
 
 .x-item-disabled * {
-	color: typo3be !important;
+	color: gray !important;
 }
 
 .x-splitbar-proxy {
@@ -687,7 +687,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-form-empty-field {
-	color:typo3be;
+	color:gray;
 }
 
 .x-small-editor .x-form-field {
@@ -734,7 +734,7 @@ ul.x-tab-strip-bottom{
 }
 
 .x-btn-disabled *{
-	color:typo3be !important;
+	color:gray !important;
 }
 
 .x-btn-mc em.x-btn-arrow {
@@ -810,11 +810,11 @@ ul.x-tab-strip-bottom{
 }
 
 .x-toolbar .x-item-disabled {
-	color:typo3be;
+	color:gray;
 }
 
 .x-toolbar .x-item-disabled * {
-	color:typo3be;
+	color:gray;
 }
 
 .x-toolbar .x-btn-mc em.x-btn-split {
@@ -1187,7 +1187,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 }
 
 .x-grid-empty {
-	color:typo3be;
+	color:gray;
 	font:normal 11px arial, tahoma, helvetica, sans-serif;
 }
 
@@ -1333,7 +1333,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 }
 
 .x-tree-node .x-tree-node-disabled a span{
-	color:typo3be !important;
+	color:gray !important;
 }
 
 .x-tree-node div.x-tree-drag-insert-below{
@@ -1354,7 +1354,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 
 .x-tree-node .x-tree-drag-append a span{
 	 background-color:#ddd;
-	 border-color:typo3be;
+	 border-color:gray;
 }
 
 .x-tree-node .x-tree-node-over {
@@ -1675,11 +1675,11 @@ a.x-menu-item {
 }
 
 .x-box-blue .x-box-bl, .x-box-blue .x-box-br, .x-box-blue .x-box-tl, .x-box-blue .x-box-tr {
-	background-image: url(images/box/corners-typo3be.gif);
+	background-image: url(images/box/corners-gray.gif);
 }
 
 .x-box-blue .x-box-bc, .x-box-blue .x-box-mc, .x-box-blue .x-box-tc {
-	background-image: url(images/box/tb-typo3be.gif);
+	background-image: url(images/box/tb-gray.gif);
 }
 
 .x-box-blue .x-box-mc {
@@ -1691,11 +1691,11 @@ a.x-menu-item {
 }
 
 .x-box-blue .x-box-ml {
-	background-image: url(images/box/l-typo3be.gif);
+	background-image: url(images/box/l-gray.gif);
 }
 
 .x-box-blue .x-box-mr {
-	background-image: url(images/box/r-typo3be.gif);
+	background-image: url(images/box/r-gray.gif);
 }
 #x-debug-browser .x-tree .x-tree-node a span {
 	color:#333333;
