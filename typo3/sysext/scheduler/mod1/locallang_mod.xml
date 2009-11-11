@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_tabs_tab">Scheduler</label>
-			<label index="mlang_labels_tabdescr">Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.</label>
+			<label index="mlang_labels_tabdescr">Scheduler administration module. Check all registered tasks. Add, modify or delete tasks.&lt;br /&gt;&lt;em&gt;Access for 'admin' users only!&lt;/em&gt;</label>
 			<label index="mlang_labels_tablabel">TYPO3 Scheduler</label>
 		</languageKey>
 	</data>
