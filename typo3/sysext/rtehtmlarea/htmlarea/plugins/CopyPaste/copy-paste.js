@@ -125,8 +125,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 						this.applyBrowserCommand(buttonId);
 					}
 						// In FF3, the paste operation will indeed trigger the onPaste event not in FF2; nor in Opera
-						// Safari does not support the paste operation
-					if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 20080514)) {
+					if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 20080514) || HTMLArea.is_safari) {
 						var cleanLaterFunctRef = this.getPluginInstance("DefaultClean") ? this.getPluginInstance("DefaultClean").cleanLaterFunctRef : (this.getPluginInstance("TYPO3HtmlParser") ? this.getPluginInstance("TYPO3HtmlParser").cleanLaterFunctRef : null);
 						if (cleanLaterFunctRef) {
 							window.setTimeout(cleanLaterFunctRef, 50);

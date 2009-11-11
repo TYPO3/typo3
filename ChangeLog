@@ -1,6 +1,7 @@
 2009-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12566: htmlArea RTE: Selecting element from status bar does not work in Safari
+	* Fixed bug #12568: htmlArea RTE: Text pasted by Safari is wrapped in span or font tags
 
 2009-11-11  Francois Suter  <francois@typo3.org>
 
