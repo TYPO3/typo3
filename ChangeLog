@@ -1,3 +1,7 @@
+2009-11-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #4670: htmlArea RTE: Problem when cutting pasting links within table cells or list items
+
 2009-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12566: htmlArea RTE: Selecting element from status bar does not work in Safari

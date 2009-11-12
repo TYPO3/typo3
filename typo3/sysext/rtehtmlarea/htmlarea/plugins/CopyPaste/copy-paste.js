@@ -117,6 +117,10 @@ CopyPaste = HTMLArea.Plugin.extend({
 					if (buttonId == id) {
 							// If we are handling a button, not a hotkey
 						this.applyBrowserCommand(buttonId);
+					} else if (buttonId == "Cut") {
+							// If we are handling the cut hotkey
+						var removeEmpyLinkLaterFunctRef = this.makeFunctionReference("removeEmptyLinkLater");
+						window.setTimeout(removeEmpyLinkLaterFunctRef, 50);
 					}
 					break;
 				case "Paste":
@@ -150,6 +154,52 @@ CopyPaste = HTMLArea.Plugin.extend({
 				this.mozillaClipboardAccessException();
 			}
 		}
+		if (buttonId == "Cut") {
+			this.removeEmptyLink();
+		}
+	},
+	
+	/*
+	 * This function unlinks any empty link left over by the cut operation
+	 */
+	removeEmptyLink : function() {
+		var selection = this.editor._getSelection();
+		var range = this.editor._createRange(selection);
+		var parent = this.editor.getParentElement(selection, range);
+		if (parent.firstChild && /^(a)$/i.test(parent.firstChild.nodeName)) {
+			parent = parent.firstChild;
+		}
+		if (/^(a)$/i.test(parent.nodeName)) {
+			parent.normalize();
+			if (!parent.innerHTML || (parent.childNodes.length == 1 && /^(br)$/i.test(parent.firstChild.nodeName))) {
+				if (HTMLArea.is_gecko) {
+					var container = parent.parentNode;
+					this.editor.removeMarkup(parent);
+						// Opera does not render empty list items
+					if (HTMLArea.is_opera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
+						container.innerHTML = "<br />";
+						this.editor.selectNodeContents(container, true);
+					}
+				} else {
+					HTMLArea.removeFromParent(parent);
+				}
+			}
+		}
+		if (HTMLArea.is_safari) {
+				// Remove Apple's span and font tags
+			this.editor.cleanAppleStyleSpans(this.editor._doc.body);
+				// Reset Safari selection in order to prevent insertion of span and/or font tags on next text input
+			var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+		}
+	},
+	
+	/*
+	 * This function removes any link left over by the cut operation triggered by hotkey
+	 */
+	removeEmptyLinkLater : function() {
+		this.removeEmptyLink();
+		this.editor.updateToolbar();
 	},
 	
 	/*
