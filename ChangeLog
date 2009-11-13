@@ -1,6 +1,7 @@
 2009-11-13  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12324: Page tree will not be shown in the TYPO3 backend
+	* Follow-up to bugfix #12324: Renamed sanitizeBackEndUrl() to sanitizeLocalUrl() in t3lib_div
 
 2009-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 

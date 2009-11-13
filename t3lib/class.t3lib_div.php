@@ -3897,7 +3897,7 @@ final class t3lib_div {
 	 * @return string either $url if $url is considered to be harmless, or an
 	 *                empty string otherwise
 	 */
-	public static function sanitizeBackEndUrl($url = '') {
+	public static function sanitizeLocalUrl($url = '') {
 		$sanitizedUrl = '';
 		$decodedUrl = rawurldecode($url);
 
