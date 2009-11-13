@@ -1139,6 +1139,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// Display legend, if there's at least one registered task
 			// Also display information about the usage of server time
 		if ($numRows > 0) {
+			$content .= $this->doc->spacer(20);
 			$content .= '<h4>' . $GLOBALS['LANG']->getLL('status.legend') . '</h4>
 			<ul>
 				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.failure') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.failure') . '</li>
@@ -1147,6 +1148,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_scheduled.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.scheduled') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '</li>
 				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_disabled.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.disabled') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.disabled') . '</li>
 			</ul>';
+			$content .= $this->doc->spacer(10);
 			$content .= $this->displayServerTime();
 		}
 

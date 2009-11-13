@@ -1,3 +1,7 @@
+2009-11-13  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12550: Scheduler: Added some space between the sections of the "scheduled tasks"-screen
+
 2009-11-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #4670: htmlArea RTE: Problem when cutting pasting links within table cells or list items
@@ -9,7 +13,7 @@
 
 2009-11-11  Francois Suter  <francois@typo3.org>
 
-	* Cleanup #12552: Scheduler: Code cleanup: Corrected inconsistent use of full stops in language labels
+	* Cleanup #12552: Scheduler: Corrected inconsistent use of full stops in language labels
 
 2009-11-11  Steffen Kamper  <info@sk-typo3.de>
 
