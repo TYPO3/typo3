@@ -44,7 +44,7 @@
 
 	* Fixed bug #12019: Added missing style definition to Install Tool CSS file
 	* Fixed bug #12423: Reports: Services overview does not provide extension key
-	* Fixed bug #12482: Extension manager does not search in extension titles when in "import extension" section (thanks to Steffen Müller)
+	* Fixed bug #12482: Extension manager does not search in extension titles when in "import extension" section (thanks to Steffen Mueller)
 
 2009-11-08  Steffen Kamper  <info@sk-typo3.de>
 
