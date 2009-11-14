@@ -90,7 +90,7 @@ var CompletionResult = function(tsRef,tsTreeNode) {
 		var props = tsRef.getPropertiesFromTypeId(currentTsTreeNode.getValue());
 		for (key in props) {
 			// show just the TSREF properties - no properties of the array-prototype and no properties which have been defined by the user
-			if (props[key].value != null && defined[key]!=false) {
+			if (props[key].value != null && defined[key]!=true) {
 				propObj = new Object();
 				propObj.word = key;
 				propObj.cssClass = 'undefinedTSREFProperty';

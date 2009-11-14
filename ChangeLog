@@ -1,3 +1,7 @@
+2009-11-14  Tobias Liebig <mail_typo3@etobi.de>
+
+	* Fixed bug #12522: t3editor/codecompletion: tsref properties get listed twice when they are defined
+
 2009-11-13  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12550: Scheduler: Added some space between the sections of the "scheduled tasks"-screen
