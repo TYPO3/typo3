@@ -247,9 +247,13 @@ var TsParser = function(tsRef,extTsObjTree){
 					ignoreLine = true;
 				}
 				if (node == '}') {
-					stack.popIfLastElementEquals('{');
-					if (prefixes.length>0) prefixes.pop();
-					ignoreLine = true;
+					//no characters except whitespace allowed before closing bracket
+					trimmedLine = line.replace(/\s/g,"");
+					if (trimmedLine=="") {
+						stack.popIfLastElementEquals('{');
+						if (prefixes.length>0) prefixes.pop();
+						ignoreLine = true;
+					}
 				}
 				if (!stack.lastElementEquals('#')) {
 					line += node;

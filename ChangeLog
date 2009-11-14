@@ -2,6 +2,7 @@
 
 	* Fixed bug #12522: t3editor/codecompletion: tsref properties get listed twice when they are defined
 	* Fixed bug #12523: t3editor/codecompletion: Gifbuilder TEXT and Gifbuilder IMAGE inside of GMENU_itemState
+	* Fixed bug #12527: t3editor/codecompletion: parser error on brackets on the right side of an operator
 
 2009-11-13  Francois Suter  <francois@typo3.org>
 
