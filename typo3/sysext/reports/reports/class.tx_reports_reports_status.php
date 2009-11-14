@@ -53,14 +53,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		$content = '';
 
 		foreach ($this->statusProviders as $statusProviderId => $statusProvider) {
-			if (strcmp(substr($statusProviderId, 0, 4), 'LLL:')) {
-				$providerLabel = $GLOBALS['LANG']->getLL('status_' . $statusProviderId);
-			} else {
-					// label from extension
-				$providerLabel = $GLOBALS['LANG']->sL($statusProviderId);
-			}
-			$provider = $providerLabel ? $providerLabel : $statusProviderId;
-			$status[$provider] = $statusProvider->getStatus();
+			$status[$statusProviderId] = $statusProvider->getStatus();
 		}
 
 		$content .= '<p class="help">'
@@ -150,28 +143,47 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	}
 
 	/**
-	 * sorts the status providers (alphabetically and adds "_install" provider at the beginning)
+	 * Sorts the status providers (alphabetically and puts primary status providers at the beginning)
 	 *
 	 * @param   array   A collection of statuses (with providers)
 	 * @return  array   The collection of statuses sorted by provider (beginning with provider "_install")
 	 */
 	protected function sortStatusProviders(array $statusCollection) {
-		$systemStatus = array(
-			'TYPO3 System'  => $statusCollection['Installation'],
-			'System'        => $statusCollection['System'],
-			'Security'      => $statusCollection['security'],
-			'Configuration' => $statusCollection['configuration'],
+			// Extract the primary status collections, i.e. the status groups
+			// that must appear on top of the status report
+			// Change their keys to localized collection titles
+		$primaryStatuses = array(
+			$GLOBALS['LANG']->getLL('status_typo3')         => $statusCollection['typo3'],
+			$GLOBALS['LANG']->getLL('status_system')        => $statusCollection['system'],
+			$GLOBALS['LANG']->getLL('status_security')      => $statusCollection['security'],
+			$GLOBALS['LANG']->getLL('status_configuration') => $statusCollection['configuration']
 		);
 		unset(
-			$statusCollection['Installation'],
-			$statusCollection['System'],
+			$statusCollection['typo3'],
+			$statusCollection['system'],
 			$statusCollection['security'],
 			$statusCollection['configuration']
 		);
-		ksort($statusCollection);
-		$statusCollection = array_merge($systemStatus, $statusCollection);
+			// Assemble list of secondary status collections with left-over collections
+			// Change their keys using localized labels if available
+		$secondaryStatuses = array();
+		foreach ($statusCollection as $statusProviderId => $collection) {
+			$label = '';
+			if (strpos($statusProviderId, 'LLL:') === 0) {
+					// Label provided by extension
+				$label = $GLOBALS['LANG']->sL($statusProviderId);
+			} else {
+					// Generic label
+				$label = $GLOBALS['LANG']->getLL('status_' . $statusProviderId);
+			}
+			$providerLabel = (empty($label)) ? $statusProviderId : $label;
+			$secondaryStatuses[$providerLabel] = $collection;
+		}
+			// Sort the secondary status collections alphabetically
+		ksort($secondaryStatuses);
+		$orderedStatusCollection = array_merge($primaryStatuses, $secondaryStatuses);
 
-		return $statusCollection;
+		return $orderedStatusCollection;
 	}
 
 	/**
