@@ -4980,6 +4980,16 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 ]]></default>
 		</property>
 	</type>
+	<type id="IMG_RESOURCE">
+		<property name="file" type="imgResource">
+			<description><![CDATA[ ]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+		<property name="stdWrap" type="stdWrap">
+			<description><![CDATA[ ]]></description>
+			<default><![CDATA[]]></default>
+		</property>
+	</type>
 	<type id="IMGMAP">
 		<property name="altText" type="string">
 			<description><![CDATA[Value of the alt-attribute.
