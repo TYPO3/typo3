@@ -1,3 +1,7 @@
+2009-11-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12597: htmlArea RTE: cursor position is not restored by undo/redo operations in Opera
+
 2009-11-14  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12464: Reports: Sorting of status collections wrongly relied on localized strings

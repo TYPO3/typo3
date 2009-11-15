@@ -1,3 +1,7 @@
+2009-11-15  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12597: htmlArea RTE: cursor position is not restored by undo/redo operations in Opera
+
 2009-11-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #4670: htmlArea RTE: Problem when cutting pasting links within table cells or list items

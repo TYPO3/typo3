@@ -168,7 +168,7 @@ UndoRedo = HTMLArea.Plugin.extend({
 			// Insert a bookmark
 		if (this.editor.getMode() == "wysiwyg" && this.editor.isEditable()) {
 			var selection = this.editor._getSelection();
-			if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
+			if ((HTMLArea.is_gecko && !HTMLArea.is_opera9) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
 					// Catch error in FF when the selection contains no usable range
 				try {
 						// Work around IE8 bug: can't create a range correctly if the selection is empty and the focus is not on the editor window
