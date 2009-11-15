@@ -118,6 +118,7 @@ class t3lib_recordList {
 		if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
 			$this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
+		$this->translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
 	}
 
 
