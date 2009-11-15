@@ -4780,6 +4780,10 @@ class t3lib_TCEmain	{
 											// Registering and swapping MM relations in current and swap records:
 										$this->version_remapMMForVersionSwap($table,$id,$swapWith);
 
+											// Generating proper history data to prepare logging
+										$this->compareFieldArrayWithCurrentAndUnset($table, $id, $swapVersion);
+										$this->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);
+
 											// Execute swapping:
 										$sqlErrors = array();
 										$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($id),$swapVersion);
@@ -4813,9 +4817,29 @@ class t3lib_TCEmain	{
 
 											$this->newlog2(($swapIntoWS ? 'Swapping' : 'Publishing').' successful for table "'.$table.'" uid '.$id.'=>'.$swapWith, $table, $id, $swapVersion['pid']);
 
-												// Update reference index:
+												// Update reference index of the live record:
 											$this->updateRefIndex($table,$id);
+												// Set log entry for live record:
+											$propArr = $this->getRecordPropertiesFromRow($table, $swapVersion);
+											if ( $propArr['_ORIG_pid'] == -1) {
+												$label = $GLOBALS['LANG']->sL ('LLL:EXT:lang/locallang_tcemain.xml:version_swap.offline_record_updated');
+											} else {
+												$label = $GLOBALS['LANG']->sL ('LLL:EXT:lang/locallang_tcemain.xml:version_swap.online_record_updated');
+											}
+											$theLogId = $this->log($table, $id, 2, $propArr['pid'], 0, $label , 10, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
+											$this->setHistory($table, $id, $theLogId);
+
+												// Update reference index of the offline record:
 											$this->updateRefIndex($table,$swapWith);
+												// Set log entry for offline record:
+											$propArr = $this->getRecordPropertiesFromRow($table, $curVersion);
+											if ( $propArr['_ORIG_pid'] == -1) {
+												$label = $GLOBALS['LANG']->sL ('LLL:EXT:lang/locallang_tcemain.xml:version_swap.offline_record_updated');
+											} else {
+												$label = $GLOBALS['LANG']->sL ('LLL:EXT:lang/locallang_tcemain.xml:version_swap.online_record_updated');
+											}
+											$theLogId = $this->log($table, $swapWith, 2, $propArr['pid'], 0, $label , 10, array($propArr['header'], $table . ':'. $swapWith), $propArr['event_pid']);
+											$this->setHistory($table, $swapWith, $theLogId);
 
 												// SWAPPING pids for subrecords:
 											if ($table=='pages' && $swapVersion['t3ver_swapmode']>=0)	{
