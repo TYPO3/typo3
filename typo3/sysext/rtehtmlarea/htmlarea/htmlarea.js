@@ -65,6 +65,8 @@ HTMLArea = function(textarea, config) {
  */
 HTMLArea.agt = navigator.userAgent.toLowerCase();
 HTMLArea.is_opera  = (HTMLArea.agt.indexOf("opera") != -1);
+// Some operations require bug fixes provided by Opera 10 (Presto 2.2)
+HTMLArea.is_opera9 = HTMLArea.is_opera && HTMLArea.agt.indexOf("Presto/2.1") != -1;
 HTMLArea.is_ie = (HTMLArea.agt.indexOf("msie") != -1) && !HTMLArea.is_opera;
 HTMLArea.is_safari = (HTMLArea.agt.indexOf("webkit") != -1);
 HTMLArea.is_gecko  = (navigator.product == "Gecko") || HTMLArea.is_opera;
@@ -1603,7 +1605,7 @@ HTMLArea.prototype.buildUndoSnapshot = function () {
 		// Insert a bookmark
 	if (this.getMode() == "wysiwyg" && this.isEditable()) {
 		var selection = this._getSelection();
-		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
+		if ((HTMLArea.is_gecko && !HTMLArea.is_opera9) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
 				// catch error in FF when the selection contains no usable range
 			try {
 					// Work around IE8 bug: can't create a range correctly if the selection is empty and the focus is not on the editor window
