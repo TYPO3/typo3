@@ -1,3 +1,7 @@
+2009-11-15  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12588: Bugfix: db_list_extra->makeLocalizationPanel doesn't consider the backPath (Thanks to Tolleiv Nietsch)
+
 2009-11-15  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12438: Bugfix - tt_content bodytext wizard icons aren't aligned properly (Thanks to Tolleiv Nietsch)

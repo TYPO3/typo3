@@ -1461,7 +1461,7 @@ class localRecordList extends recordList {
 			$lNew = '';
 			foreach($this->pageOverlays as $lUid_OnPage => $lsysRec)	{
 				if (!isset($translations['translations'][$lUid_OnPage]) && $GLOBALS['BE_USER']->checkLanguageAccess($lUid_OnPage))	{
-					$href = $GLOBALS['TBE_TEMPLATE']->issueCommand(
+					$href = $this->backPath . $GLOBALS['TBE_TEMPLATE']->issueCommand(
 						'&cmd['.$table.']['.$row['uid'].'][localize]='.$lUid_OnPage,
 						$this->listURL().'&justLocalized='.rawurlencode($table.':'.$row['uid'].':'.$lUid_OnPage)
 					);
