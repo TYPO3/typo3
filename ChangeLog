@@ -1,3 +1,7 @@
+2009-11-15  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12438: Bugfix - tt_content bodytext wizard icons aren't aligned properly (Thanks to Tolleiv Nietsch)
+
 2009-11-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12597: htmlArea RTE: cursor position is not restored by undo/redo operations in Opera

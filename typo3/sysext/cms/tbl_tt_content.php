@@ -277,6 +277,7 @@ $TCA['tt_content'] = Array (
 				'rows' => '5',
 				'wizards' => Array(
 					'_PADDING' => 4,
+					'_VALIGN' => 'middle',
 					'RTE' => Array(
 						'notNewRecords' => 1,
 						'RTEonly' => 1,
