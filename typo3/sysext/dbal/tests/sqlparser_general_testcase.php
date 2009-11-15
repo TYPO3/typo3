@@ -167,9 +167,33 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 	/**
 	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12596
+	 */
+	public function parseFromTablesWithRightOuterJoinReturnsArray() {
+		$parseString = 'tx_powermail_fieldsets RIGHT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid';
+		$tables = $this->fixture->parseFromTables($parseString);
+
+		$this->assertTrue(is_array($tables), $tables);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
 	 */
 	public function parseFromTablesWithMultipleJoinsReturnsArray() {
 		$parseString = 'be_users LEFT OUTER JOIN pages ON be_users.uid = pages.cruser_id INNER JOIN cache_pages cp ON cp.page_id = pages.uid';
+		$tables = $this->fixture->parseFromTables($parseString);
+
+		$this->assertTrue(is_array($tables), $tables);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12596
+	 */
+	public function parseFromTablesWithMultipleJoinsAndParenthesesReturnsArray() {
+		$parseString = 'tx_powermail_fieldsets RIGHT JOIN tt_content ON tx_powermail_fieldsets.tt_content = tt_content.uid LEFT JOIN tx_powermail_fields ON tx_powermail_fieldsets.uid = tx_powermail_fields.fieldset';
 		$tables = $this->fixture->parseFromTables($parseString);
 
 		$this->assertTrue(is_array($tables), $tables);

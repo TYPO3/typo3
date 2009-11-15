@@ -1,3 +1,7 @@
+2009-11-15  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12596: RIGHT OUTER JOIN is not supported
+
 2009-11-11  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added unit test for bug #11093: bigint (int8) values get converted to int4 by int-cast 

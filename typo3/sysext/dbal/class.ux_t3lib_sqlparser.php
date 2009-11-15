@@ -75,7 +75,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"), '', $this->lastStopKeyWord));
 					return $stack;
 				}
-				if (!preg_match('/^(LEFT|JOIN|INNER)[[:space:]]+/i', $parseString)) {
+				if (!preg_match('/^(LEFT|RIGHT|JOIN|INNER)[[:space:]]+/i', $parseString)) {
 					$stack[$pnt]['as_keyword'] = $this->nextPart($parseString,'^(AS[[:space:]]+)');
 					$stack[$pnt]['as'] = $this->nextPart($parseString,'^([[:alnum:]_]+)[[:space:]]*');
 				}
@@ -83,7 +83,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 				// Looking for JOIN
 			$joinCnt = 0;
-			while ($join = $this->nextPart($parseString,'^(LEFT[[:space:]]+JOIN|LEFT[[:space:]]+OUTER[[:space:]]+JOIN|INNER[[:space:]]+JOIN|JOIN)[[:space:]]+')) {
+			while ($join = $this->nextPart($parseString,'^(LEFT[[:space:]]+JOIN|LEFT[[:space:]]+OUTER[[:space:]]+JOIN|RIGHT[[:space:]]+JOIN|RIGHT[[:space:]]+OUTER[[:space:]]+JOIN|INNER[[:space:]]+JOIN|JOIN)[[:space:]]+')) {
 				$stack[$pnt]['JOIN'][$joinCnt]['type'] = $join;
 				if ($stack[$pnt]['JOIN'][$joinCnt]['withTable'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+', 1)) {
 					if (!preg_match('/^ON[[:space:]]+/i', $parseString)) {
