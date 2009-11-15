@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for all messages which are passed around within the tcemain-processing..</description>
+		<type>database</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="version_swap.online_record_updated">Record '%s' (%s) was updated. (Online version)</label>
+			<label index="version_swap.offline_record_updated">Record '%s' (%s) was updated. (Offline version)</label>
+		</languageKey>
+	</data>
+</T3locallang>
