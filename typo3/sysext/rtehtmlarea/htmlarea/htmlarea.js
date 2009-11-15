@@ -204,6 +204,8 @@ HTMLArea.init = function() {
 		HTMLArea.editorCSS = _editor_CSS;
 			// Initialize event cache
 		HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
+			// Initialize pending request flag
+		HTMLArea.pendingSynchronousXMLHttpRequest = false;
 			// Set troubleshooting mode
 		HTMLArea._debugMode = false;
 		if (typeof(_editor_debug_mode) != "undefined") HTMLArea._debugMode = _editor_debug_mode;
@@ -1806,7 +1808,12 @@ HTMLArea._editorEvent = function(ev) {
 	editor.focusEditor();
 
 	if(keyEvent) {
-		if(editor._hasPluginWithOnKeyPressHandler) {
+			// In Opera, inhibit key events while synchronous XMLHttpRequest is being processed
+		if (HTMLArea.is_opera && HTMLArea.pendingSynchronousXMLHttpRequest) {
+			HTMLArea._stopEvent(ev);
+			return false;
+		}
+		if (editor._hasPluginWithOnKeyPressHandler) {
 			for (var pluginId in editor.plugins) {
 				if (editor.plugins.hasOwnProperty(pluginId)) {
 					var pluginInstance = editor.plugins[pluginId].instance;
@@ -2443,6 +2450,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset, asynchrono
 		req.open('POST', postUrl, asynchronous);
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		if (!asynchronous) {
+			HTMLArea.pendingSynchronousXMLHttpRequest = true;
 			sendRequest();
 			if (req.status == 200) {
 				if (typeof(handler) == "function") {
@@ -2452,6 +2460,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset, asynchrono
 			} else {
 				HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + postUrl + " . Server reported " + req.statusText);
 			}
+			HTMLArea.pendingSynchronousXMLHttpRequest = false;
 		} else {
 			window.setTimeout(sendRequest, 500);
 		}
