@@ -163,7 +163,7 @@ class SC_mod_tools_config_index {
 
 		$this->content .= '<div id="lowlevel-config">
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', true) . '</label>
-						<input type="text" id="search_field" name="search_field" value="'.htmlspecialchars($search_field).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).'>
+						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
 						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', true) . '" />';
 		$this->content .= t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch'],'','','id="checkRegexsearch"') .
 						'<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', true) . '</label>';
