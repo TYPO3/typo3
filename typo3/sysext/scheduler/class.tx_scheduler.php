@@ -113,14 +113,8 @@ class tx_scheduler implements t3lib_Singleton {
 					if (($tstamp - $task) < $maxDuration) {
 						$executions[] = $task;
 					} else {
-						$GLOBALS['BE_USER']->writelog(
-							4,
-							0,
-							0,
-							'scheduler',
-							'[scheduler]: Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname'] . '\' (UID: ' . $row['uid']. ') was started at '.date('Y-m-d H:i:s', $task),
-							array()
-						);
+						$logMessage = 'Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname'] . '\' (UID: ' . $row['uid']. ') was started at '.date('Y-m-d H:i:s', $task);
+						$this->log($logMessage);
 					}
 				}
 			}
@@ -154,33 +148,24 @@ class tx_scheduler implements t3lib_Singleton {
 			// This should be calculated all the time, even if the execution is skipped
 			// (in case it is skipped, this pushes back execution to the next possible date)
 		$task->save();
+			// Set a scheduler object for the task again,
+			// as it was removed during the save operation
+		$task->setScheduler();
 		$result = true;
 
 			// Task is already running and multiple executions are not allowed
 		if (!$task->areMultipleExecutionsAllowed() && $task->isExecutionRunning()) {
 				// Log multiple execution error
-			$GLOBALS['BE_USER']->writelog(
-				4,
-				0,
-				0,
-				'scheduler',
-				'[scheduler]: Task is already running and multiple executions are not allowed, skipping! Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(),
-				array()
-			);
+			$logMessage = 'Task is already running and multiple executions are not allowed, skipping! Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
+			$this->log($logMessage);
 
 			$result = false;
 
 			// Task isn't running or multiple executions are allowed
 		} else {
 				// Log scheduler invocation
-			$GLOBALS['BE_USER']->writelog(
-				4,
-				0,
-				0,
-				'scheduler',
-				'[scheduler]: Start execution. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(),
-				array()
-			);
+			$logMessage = 'Start execution. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
+			$this->log($logMessage);
 
 				// Register execution
 			$executionID = $task->markExecution();
@@ -205,14 +190,8 @@ class tx_scheduler implements t3lib_Singleton {
 			$task->unmarkExecution($executionID, $failure);
 
 				// Log completion of execution
-			$GLOBALS['BE_USER']->writelog(
-				4,
-				0,
-				0,
-				'scheduler',
-				'[scheduler]: Task executed. Class: ' . get_class($task). ', UID: ' . $task->getTaskUid(),
-				array()
-			);
+			$logMessage = 'Task executed. Class: ' . get_class($task). ', UID: ' . $task->getTaskUid();
+			$this->log($logMessage);
 
 				// Now that the result of the task execution has been handled,
 				// throw the exception again, if any
@@ -414,6 +393,29 @@ class tx_scheduler implements t3lib_Singleton {
 	 */
 	public function isValidTaskObject($task) {
 		return $task instanceof tx_scheduler_Task;
+	}
+
+	/**
+	 * This is a utility method that writes some message to the BE Log
+	 * It could be expanded to write to some other log
+	 * 
+	 * @param	string		The message to write to the log
+	 * @param	integer		Status (0 = message, 1 = error)
+	 * @param	mixed		Key for the message
+	 * @return	void
+	 */
+	public function log($message, $status = 0, $code = 'scheduler') {
+			// Log only if enabled
+		if ($this->extConf['enableBELog']) {
+			$GLOBALS['BE_USER']->writelog(
+				4,
+				0,
+				$status,
+				$code,
+				'[scheduler]: ' . $message,
+				array()
+			);
+		}
 	}
 }
 

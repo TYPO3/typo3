@@ -374,17 +374,11 @@ abstract class tx_scheduler_Task {
 
 				if ($failure instanceof Exception) {
 						// Log failed execution
-					$GLOBALS['BE_USER']->writelog(
-						4,
-						0,
-						1,
-						$failure->getCode(),
-						'[scheduler]: Task failed to execute successfully. Class: '
+					$logMessage = 'Task failed to execute successfully. Class: '
 							. get_class($this) . ', UID: '
 							. $this->taskUid . '. '
-							. $failure->getMessage(),
-						array()
-					);
+							. $failure->getMessage();
+					$this->scheduler->log($logMessage, 1, $failure->getCode());
 
 					$failure = serialize($failure);
 				} else {
