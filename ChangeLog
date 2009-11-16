@@ -167,7 +167,6 @@
 	* Fixed bug #12488: Remove redundant code from t3lib_matchCondition in favour of using t3lib_matchCondition_frontend
 	* Fixed bug #11932: OpenID login does uses cURL even if was not defined in TYPO3_CONF_VARS
 	* Follow-up to bugfix #9046: Modified type of new field sys_domain.forced
-	* Fixed bug #12231: Caching framework does not work with DBAL on Oracle (thanks to Xavier Perseguers)
 
 2009-11-05  Martin Kutschker  <masi@typo3.org>
 
