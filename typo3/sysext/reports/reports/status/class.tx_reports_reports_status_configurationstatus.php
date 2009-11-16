@@ -75,7 +75,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Reference Index', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity
 		);
 	}
 
@@ -171,7 +171,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Memcached Configuration', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_memcachedConfiguration'), $value, $message, $severity
 		);
 	}
 

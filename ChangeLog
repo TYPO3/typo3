@@ -1,6 +1,7 @@
 2009-11-16  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12565: Scheduler: Added option to turn off logging, which could be too verbose
+	* Cleanup #12426: Reports: Localized all hard-coded strings in status reports
 
 2009-11-16  Oliver Hader  <oliver@typo3.org>
 

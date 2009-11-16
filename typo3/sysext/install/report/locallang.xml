@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the Install Tool status reports</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="status_fileSystem">File System</label>
+			<label index="status_writable">Writable</label>
+			<label index="status_missingDirectory">Required Directory Missing</label>
+			<label index="status_nonExistingDirectory">Directory not existing</label>
+			<label index="status_recommendedWritableDirectory">Directory should be writable</label>
+			<label index="status_requiredWritableDirectory">Directory not writable</label>
+			<label index="status_directoryDoesNotExist">%s does not exist.</label>
+			<label index="status_directoryDoesNotExistCouldNotCreate">%s does not exist and could not be created.</label>
+			<label index="status_directoryShouldAlsoBeWritable">Also note that it should be writable, if it did exist.</label>
+			<label index="status_directoryShouldBeWritable">%s should be writable.</label>
+			<label index="status_directoryMustBeWritable">%s must be writable.</label>
+			<label index="status_remainingUpdates">Remaining Updates</label>
+		</languageKey>
+	</data>
+</T3locallang>

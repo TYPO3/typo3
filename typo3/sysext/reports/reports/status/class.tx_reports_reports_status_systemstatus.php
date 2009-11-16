@@ -59,12 +59,12 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 		$severity = tx_reports_reports_status_Status::OK;
 
 		if (version_compare(phpversion(), TYPO3_REQUIREMENTS_MINIMUM_PHP) < 0) {
-			$message  = 'Your PHP installation is too old.';
+			$message  = $GLOBALS['LANG']->getLL('status_phpTooOld');
 			$severity = tx_reports_reports_status_Status::ERROR;
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'PHP',
+			$GLOBALS['LANG']->getLL('status_phpVersion'),
 			phpversion(),
 			$message,
 			$severity
@@ -82,25 +82,25 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 		$severity    = tx_reports_reports_status_Status::OK;
 
 		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
-			$message = 'Depending on your configuration, TYPO3 can run with a ' . $memoryLimit . ' PHP memory limit. However, a ' . TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT . ' PHP memory limit or above is recommended, especially if your site uses additional extensions.';
+			$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRecommendation'), $memoryLimit, TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT);
 			$severity = tx_reports_reports_status_Status::WARNING;
 		}
 
 		if ($memoryLimit && t3lib_div::getBytesFromSizeMeasurement($memoryLimit) < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
-			$message = 'Depending on your configuration, TYPO3 can run with a ' . $memoryLimit . ' PHP memory limit. However, a ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . ' PHP memory limit or above is required, especially if your site uses additional extensions.';
+			$message = sprintf($GLOBALS['LANG']->getLL('status_phpMemoryRequirement'), $memoryLimit, TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT);
 			$severity = tx_reports_reports_status_Status::ERROR;
 		}
 
 		if ($severity > tx_reports_reports_status_Status::OK) {
 			if ($php_ini_path = get_cfg_var('cfg_file_path')) {
-				$message .= ' Increase the memory limit by editing the memory_limit parameter in the file ' . $php_ini_path . ' and then restart your web server (or contact your system administrator or hosting provider for assistance).';
+				$message .= ' ' . sprintf($GLOBALS['LANG']->getLL('status_phpMemoryEditLimit'), $php_ini_path);
 			} else {
-				$message .= ' Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.';
+				$message .= ' ' . $GLOBALS['LANG']->getLL('status_phpMemoryContactAdmin');
 			}
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'PHP Memory Limit', $memoryLimit, $message, $severity
+			$GLOBALS['LANG']->getLL('status_phpMemory'), $memoryLimit, $message, $severity
 		);
 	}
 
@@ -118,14 +118,18 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 
 			// can't reliably check for 'on', therefore checking for the oposite 'off', '', or 0
 		if (!empty($registerGlobals) && strtolower($registerGlobals) != 'off') {
-			$message = '<em>register_globals</em> is enabled. TYPO3 requires this configuration directive to be disabled. Your site may not be secure when <em>register_globals</em> is enabled. The PHP manual has instructions for <a href="http://php.net/configuration.changes">how to change configuration settings</a>.';
+			$registerGlobalsHighlight = '<em>register_globals</em>';
+			$phpManualLink .= '<a href="http://php.net/configuration.changes">' . $GLOBALS['LANG']->getLL('status_phpRegisterGlobalsHowToChange') . '</a>';
+			$message  = sprintf($GLOBALS['LANG']->getLL('status_phpRegisterGlobalsEnabled'), $registerGlobalsHighlight);
+			$message .= ' ' . sprintf($GLOBALS['LANG']->getLL('status_phpRegisterGlobalsSecurity'), $registerGlobalsHighlight);
+			$message .= ' ' . sprintf($GLOBALS['LANG']->getLL('status_phpRegisterGlobalsPHPManual'), $phpManualLink);
 			$severity = tx_reports_reports_status_Status::ERROR;
 			$value = $GLOBALS['LANG']->getLL('status_enabled')
 				. ' (\'' . $registerGlobals . '\')';
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'PHP Register Globals', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_phpRegisterGlobals'), $value, $message, $severity
 		);
 	}
 
@@ -136,7 +140,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	 */
 	protected function getWebserverStatus() {
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Web Server',
+			$GLOBALS['LANG']->getLL('status_webServer'),
 			$_SERVER['SERVER_SOFTWARE']
 		);
 	}

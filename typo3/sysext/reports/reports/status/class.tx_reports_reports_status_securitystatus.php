@@ -84,7 +84,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Admin User Account', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_adminUserAccount'), $value, $message, $severity
 		);
 	}
 
@@ -113,7 +113,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Encryption Key', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_encryptionKey'), $value, $message, $severity
 		);
 	}
 
@@ -143,7 +143,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'File Deny Pattern', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_fileDenyPattern'), $value, $message, $severity
 		);
 	}
 
@@ -165,7 +165,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'.htaccess Upload Protection', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_htaccessUploadProtection'), $value, $message, $severity
 		);
 	}
 
@@ -226,7 +226,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Install Tool Password', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_installToolPassword'), $value, $message, $severity
 		);
 	}
 
@@ -261,7 +261,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Install Tool', $value, $message, $severity
+			$GLOBALS['LANG']->getLL('status_installTool'), $value, $message, $severity
 		);
 	}
 

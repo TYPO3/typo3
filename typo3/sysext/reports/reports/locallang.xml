@@ -2,7 +2,7 @@
 <T3locallang>
 	<meta type="array">
 		<type>module</type>
-		<description>Language labels for module 'tools_txreportsM1'</description>
+		<description>Language labels for the status reports</description>
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
@@ -21,6 +21,27 @@
 			<label index="status_system">System</label>
 			<label index="status_security">Security</label>
 			<label index="status_configuration">Configuration</label>
+ 			<label index="status_referenceIndex">Reference Index</label>
+ 			<label index="status_memcachedConfiguration">Memcached Configuration</label>
+ 			<label index="status_adminUserAccount">Admin User Account</label>
+ 			<label index="status_encryptionKey">Encryption Key</label>
+ 			<label index="status_fileDenyPattern">File Deny Pattern</label>
+ 			<label index="status_htaccessUploadProtection">.htaccess Upload Protection</label>
+ 			<label index="status_installToolPassword">Install Tool Password</label>
+ 			<label index="status_installTool">Install Tool</label>
+ 			<label index="status_phpVersion">PHP Version</label>
+ 			<label index="status_phpTooOld">Your PHP installation is too old.</label>
+ 			<label index="status_phpMemory">PHP Memory Limit</label>
+ 			<label index="status_phpMemoryRecommendation">Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</label>
+ 			<label index="status_phpMemoryRequirement">Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</label>
+ 			<label index="status_phpMemoryEditLimit">Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</label>
+ 			<label index="status_phpMemoryContactAdmin">Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</label>
+ 			<label index="status_phpRegisterGlobals">PHP Register Globals</label>
+ 			<label index="status_phpRegisterGlobalsEnabled">%s is enabled. TYPO3 requires this configuration directive to be disabled.</label>
+ 			<label index="status_phpRegisterGlobalsSecurity">Your site may not be secure when %s is enabled.</label>
+ 			<label index="status_phpRegisterGlobalsHowToChange">how to change configuration settings</label>
+ 			<label index="status_phpRegisterGlobalsPHPManual">The PHP manual has instructions for %s.</label>
+ 			<label index="status_webServer">Web Server</label>
 		</languageKey>
 	</data>
 </T3locallang>

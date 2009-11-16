@@ -73,7 +73,7 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 	 * @return unknown_type
 	 */
 	protected function getFileSystemStatus() {
-		$value    = 'Writable';
+		$value    = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_writable');
 		$message  = '';
 		$severity = tx_reports_reports_status_Status::OK;
 
@@ -112,18 +112,18 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 			if (!@is_dir(PATH_site . $relPath)) {
 				if ($requirementLevel > 0) {
 						// directory is required
-					$value = 'Required Directory Missing';
-					$message .= $relPath . ' does not exist and could not be created.<br />';
+					$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_missingDirectory');
+					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryDoesNotExistCouldNotCreate'), $relPath) . '<br />';
 					$severity = tx_reports_reports_status_Status::ERROR;
 				} else {
+					$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryDoesNotExist'), $relPath);
 					if ($requirementLevel == 0) {
-						$message .= $relPath . ' does not exist but should be writable if it does exist.<br />';
-					} else {
-						$message .= $relPath . ' does not exist.<br />';
+						$message .= ' ' . $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryShouldAlsoBeWritable');
 					}
+					$message .= '<br />';
 
 					if ($severity < tx_reports_reports_status_Status::WARNING) {
-						$value = 'Directory not existing';
+						$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_nonExistingDirectory');
 						$severity = tx_reports_reports_status_Status::WARNING;
 					}
 				}
@@ -131,16 +131,16 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 				if (!is_writable(PATH_site . $relPath)) {
 					switch ($requirementLevel) {
 						case 0:
-							$message .= PATH_site . $relPath . ' should be writable.<br />';
+							$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryShouldBeWritable'), PATH_site . $relPath) . '<br />';
 
 							if ($severity < tx_reports_reports_status_Status::WARNING) {
-								$value = 'Directory should be writable';
+								$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_recommendedWritableDirectory');
 								$severity = tx_reports_reports_status_Status::WARNING;
 							}
 							break;
 						case 2:
-							$value = 'Directory not writable';
-							$message .= PATH_site . $relPath . ' must be writable.<br />';
+							$value = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_requiredWritableDirectory');
+							$message .= sprintf($GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_directoryMustBeWritable'), PATH_site . $relPath) . '<br />';
 							$severity = tx_reports_reports_status_Status::ERROR;
 							break;
 					}
@@ -149,7 +149,7 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'File System',
+			$GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_fileSystem'),
 			$value,
 			$message,
 			$severity
@@ -180,7 +180,7 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'Remaining Updates', $value, $message, $severity
+			$GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_remainingUpdates'), $value, $message, $severity
 		);
 	}
 
