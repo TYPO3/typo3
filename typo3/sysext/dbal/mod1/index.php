@@ -44,6 +44,11 @@ $BE_USER->modAccess($MCONF, 1);
 class tx_dbal_module1 extends t3lib_SCbase {
 
 	/**
+	 * @var string
+	 */
+	protected $thisScript;
+
+	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
 	 * @return	void
@@ -65,6 +70,8 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	 * @return	void
 	 */
 	public function main() {
+
+		$this->thisScript = 'mod.php?M=' . $this->MCONF['name'];
 
 			// Clean up settings:
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
@@ -129,7 +136,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$input = t3lib_div::_GP('tx_dbal');
 
 		$out = '
-			<form name="sql_check" action="index.php" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
+			<form name="sql_check" action="' . $this->thisScript . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
 			<script type="text/javascript">
 /*<![CDATA[*/
 function updateQryForm(s) {
@@ -358,7 +365,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
   F:  Floating point number
   N:  Numeric or decimal number</pre>';
 
-		$menu = '<a href="index.php?cmd=clear">CLEAR DATA</a><hr />';
+		$menu = '<a href="' . $this->thisScript . '&amp;cmd=clear">CLEAR DATA</a><hr />';
 		$menu .= '<a href="#autoincrement">auto_increment</a> | <a href="#primarykeys">Primary keys</a> | <a href="#fieldtypes">Field types</a> | <a href="#metatypes">Metatype explanation</a><hr />';
 
 		return $menu . $out;
@@ -555,7 +562,7 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 								<td>' . htmlspecialchars($row['qrycount']) . '</td>
 								<td>' . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '') . '</td>
 								<td>' . htmlspecialchars($row['calc_sum']) . '</td>
-								<td><a href="index.php?specTime=' . intval($row['tstamp']) . '">' . htmlspecialchars($row['script']) . '</a></td>
+								<td><a href="' . $this->thisScript . '&amp;specTime=' . intval($row['tstamp']) . '">' . htmlspecialchars($row['script']) . '</a></td>
 							</tr>';
 					}
 				}
@@ -567,12 +574,12 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 		}
 
 		$menu = '
-					<a href="index.php?cmd=flush">FLUSH LOG</a> -
-					<a href="index.php?cmd=joins">JOINS</a> -
-					<a href="index.php?cmd=errors">ERRORS</a> -
-					<a href="index.php?cmd=parsing">PARSING</a> -
-					<a href="index.php">LOG</a> -
-					<a href="index.php?cmd=where">WHERE</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=flush">FLUSH LOG</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=joins">JOINS</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=errors">ERRORS</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=parsing">PARSING</a> -
+					<a href="' . $this->thisScript . '">LOG</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=where">WHERE</a> -
 
 					<a href="' . htmlspecialchars(t3lib_div::linkThisScript()) . '" target="tx_debuglog">[New window]</a>
 					<hr />

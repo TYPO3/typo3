@@ -220,7 +220,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * 
 	 * @return void
 	 */
-	protected function cacheFieldInfo() {
+	public function cacheFieldInfo() {
 		$extSQL = '';
 		$parsedExtSQL = array();
 
