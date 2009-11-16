@@ -701,7 +701,16 @@ HTMLArea.prototype._checkInsertP = function() {
 				// Remove any anchor created empty
 			if (p.previousSibling) {
 				var a = p.previousSibling.lastChild;
-				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
+				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
+					if (HTMLArea.is_opera) {
+						this.removeMarkup(a);
+					} else {
+						HTMLArea.removeFromParent(a);
+					}
+				}
+				if (!/\S/.test(p.previousSibling.textContent) && !HTMLArea.is_opera) {
+					p.previousSibling.innerHTML = "<br />";
+				}
 			}
 			if (/^br$/i.test(p.nodeName)) {
 				p = p.parentNode.insertBefore(this._doc.createTextNode("\x20"), p);
