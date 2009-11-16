@@ -67,7 +67,7 @@ function recheckClicked() {
 
 function saveClicked() {
 	if (modified) {
-		dialog.plugin.editor.setHTML(makeCleanDoc(false));
+		dialog.plugin.editor.getPluginInstance("EditorMode").setHTML(makeCleanDoc(false));
 	}
 	if ((to_p_dict.length || to_r_list.length) && dialog.plugin.enablePersonalDicts) {
 		var data = {};
