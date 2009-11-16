@@ -5773,7 +5773,6 @@ final class t3lib_div {
 		while (ob_get_level()) {
 			ob_end_flush();
 		}
-		header('Content-Encoding: None', TRUE);
 	}
 }
 

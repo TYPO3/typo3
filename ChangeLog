@@ -12,6 +12,7 @@
 
 	* Fixed bug #12565: Scheduler: Added option to turn off logging, which could be too verbose
 	* Cleanup #12426: Reports: Localized all hard-coded strings in status reports
+	* Fixed bug #12396: Warning produced by t3lib_div::flushOutputBuffers() (Thanks to Michael Klapper)
 
 2009-11-16  Oliver Hader  <oliver@typo3.org>
 
