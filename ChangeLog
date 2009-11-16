@@ -1,3 +1,7 @@
+2009-11-15  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12546: Paths look weird on Windows
+
 2009-11-16  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12565: Scheduler: Added option to turn off logging, which could be too verbose

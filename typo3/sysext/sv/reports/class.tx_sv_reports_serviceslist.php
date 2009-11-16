@@ -36,7 +36,7 @@
 class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * Back-reference to the calling reports module
-	 * 
+	 *
 	 * @var	tx_reports_Module	$reportObject
 	 */
 	protected $reportObject;
@@ -146,7 +146,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 			$content .= '<tbody>';
 			foreach ($searchPaths as $path => $isValid) {
 				$content .= '<tr class="bgColor3-20">';
-				$content .= '<td class="cell">' . $path . '</td>';
+				$content .= '<td class="cell">' . t3lib_div::fixWindowsFilePath($path) . '</td>';
 				$class = 'typo3-message message-error';
 				$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 				if ($isValid) {
@@ -165,11 +165,11 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * This method filters the $T3_SERVICES global array to return a relevant,
 	 * ordered list of installed services
-	 * 
+	 *
 	 * Every installed service appears twice in $T3_SERVICES: once as a service key
 	 * for a given service type, and once a service type all by itself
 	 * The list of services to display must avoid these duplicates
-	 * 
+	 *
 	 * Furthermore, inside each service type, installed services must be
 	 * ordered by priority and quality
 	 *
