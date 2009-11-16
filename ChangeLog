@@ -17,6 +17,7 @@
 	* Fixed bug #12421: htmlArea RTE: Paste is erratic in Opera 10 when server-based cleaning is enabled
 	* Fixed bug #11362: htmlArea RTE: Cursor may not be put in list elements newly created in front of links
 	* Fixed issue #12601: htmlArea RTE: Update list of supported browsers
+	* Updated htmlArea RTE version to 1.8.5
 
 2009-11-14  Francois Suter  <francois@typo3.org>
 
