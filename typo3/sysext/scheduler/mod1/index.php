@@ -257,8 +257,6 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 * @return	void
 	 */
 	public function render() {
-		$this->content .= $this->doc->endPage();
-
 		echo $this->content;
 	}
 

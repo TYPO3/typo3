@@ -4,6 +4,7 @@
 
 2009-11-16  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #12621: Validation issue in sysext scheduler: endPage is called twice
 	* Fixed bug #12620: Validation issue in web functions wizard new page: End tag for input omitted
 	* Fixed bug #12617: Validation issue in sysext lowlevel: End tag for input omitted
 
