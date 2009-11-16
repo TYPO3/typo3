@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Recycler',
-	'description' => 'The recycler offers the possibilities of cleaning up the garbage collection or to restore data again. Based on an ExtJS interface its possible to get a quick overview of the accordant records, filter the resultset and execute the required actions. This new feature is the modernized and core-specific version of the kj_recycler extension, that has been available in the TER for years now.',
+	'description' => 'The recycler offers the possibility to restore deleted records or remove them from the database permanently. These actions can be applied to a single record, multiple records, and recursively to child records (ex. restoring a page can restore all content elements on that page). Filtering by page and by table provides a quick overview of deleted records before taking action on them.',
 	'category' => 'module',
 	'author' => 'Julian Kleinhans',
 	'author_email' => 'typo3@kj187.de',
@@ -22,7 +22,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'priority' => '',
 	'module' => 'mod1',
 	'doNotLoadInFE' => 1,
-	'state' => 'alpha',
+	'state' => 'stable',
 	'internal' => '',
 	'uploadfolder' => 0,
 	'createDirs' => '',
