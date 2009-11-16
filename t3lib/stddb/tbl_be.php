@@ -394,7 +394,8 @@ $TCA['be_users'] = array(
 				'type' => 'input',
 				'readOnly' => '1',
 				'size' => '12',
-				'eval' => 'datetime'
+				'eval' => 'datetime',
+				'default' => 0,
 			)
 		)
 	),

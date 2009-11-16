@@ -1,3 +1,7 @@
+2009-11-16  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #12594: "LastLogin"-Field creates PHP error on create (date)
+
 2009-11-15  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #6954: Bug: History/undo information disappears after publication (Thanks to Tolleiv Nietsch)
