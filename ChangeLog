@@ -1,5 +1,6 @@
 2009-11-15  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12605: Flash Message for "extension provides additional configuration" (Thanks to Georg Ringer)
 	* Fixed bug #12472: Recycler is missing title + description in the about module (Thanks to Georg Ringer)
 	* Fixed bug #12546: Paths look weird on Windows
 

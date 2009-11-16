@@ -5569,16 +5569,21 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					</tr>
 				</table>';
 		} else {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$GLOBALS['LANG']->getLL('tsStyleConfigForm_additional_config'),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+
 			$form = '
 				<table border="0" cellpadding="0" cellspacing="0" width="600">
 					<tr>
 						<td>
-							<form action="'.htmlspecialchars($script).'" method="post">'.
-								$addFields.'
-								<p><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_note.gif', ' width="18" height="16"') .
-									' alt="' . $GLOBALS['LANG']->getLL('tsStyleConfigForm_note') .
-									'" align="absmiddle" /> ' . $GLOBALS['LANG']->getLL('tsStyleConfigForm_additional_config') . '</p><br />
-								<input type="submit" name="write" value="' . $GLOBALS['LANG']->getLL('updatesForm_make_updates') . '" />
+							<form action="' . htmlspecialchars($script) . '" method="post">' .
+								$addFields .
+								$flashMessage->render() . 
+								'<br /><input type="submit" name="write" value="' . $GLOBALS['LANG']->getLL('updatesForm_make_updates') . '" />
 							</form>
 						</td>
 					</tr>
