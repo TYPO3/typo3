@@ -1,3 +1,7 @@
+2009-11-16  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Now using Core dispatcher for backend module (thanks to Oliver Hader)
+
 2009-11-15  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12596: RIGHT OUTER JOIN is not supported

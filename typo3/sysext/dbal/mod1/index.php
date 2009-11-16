@@ -29,10 +29,6 @@
  * @author	Karsten Dambekalns <karsten@typo3.org>
  */
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH . 'init.php');
-require($BACK_PATH . 'template.php');
 $LANG->includeLLFile('EXT:dbal/mod1/locallang.xml');
 $BE_USER->modAccess($MCONF, 1);
 
