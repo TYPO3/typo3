@@ -2,6 +2,7 @@
 
 	* Fixed bug #12597: htmlArea RTE: cursor position is not restored by undo/redo operations in Opera
 	* Fixed bug #12421: htmlArea RTE: Paste is erratic in Opera 10 when server-based cleaning is enabled
+	* Fixed bug #11362: htmlArea RTE: Cursor may not be put in list elements newly created in front of links
 
 2009-11-11  Stanislas Rolland  <typo3@sjbr.ca>
 

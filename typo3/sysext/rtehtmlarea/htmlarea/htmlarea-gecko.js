@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004, interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2008 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -728,7 +728,16 @@ HTMLArea.prototype._checkInsertP = function() {
 				// Remove any anchor created empty
 			if (p.previousSibling) {
 				var a = p.previousSibling.lastChild;
-				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) HTMLArea.removeFromParent(a);
+				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
+					if (HTMLArea.is_opera) {
+						this.removeMarkup(a);
+					} else {
+						HTMLArea.removeFromParent(a);
+					}
+				}
+				if (!/\S/.test(p.previousSibling.textContent) && !HTMLArea.is_opera) {
+					p.previousSibling.innerHTML = "<br />";
+				}
 			}
 			if (/^br$/i.test(p.nodeName)) {
 				p = p.parentNode.insertBefore(this._doc.createTextNode("\x20"), p);
