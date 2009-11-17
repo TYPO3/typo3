@@ -27,12 +27,12 @@
 /**
  * AJAX login refresh box
  */
-Ext.namespace('Ext.ux.TYPO3');  
+Ext.namespace('Ext.ux.TYPO3');
 
 Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 	locked: 0,
 	interval: 60,
-	
+
 	constructor: function(config) {
 		config = config || {};
 		Ext.apply(this, config);
@@ -82,8 +82,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		this.startTimer();
 		Ext.ux.TYPO3.loginRefresh.superclass.constructor.call(this, config);
 	},
-	
-	
+
 	initComponents: function() {
 		var loginPanel = new Ext.FormPanel({
 			url: "ajax.php",
@@ -150,13 +149,13 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			draggable: false,
 			items: [loginPanel]
 		});
-		
+
 		var progressControl = new Ext.ProgressBar({
 			autoWidth: true,
 			autoHeight: true,
 			value: 30
 		});
-		
+
 		this.progressWindow = new Ext.Window({
 			closable: false,
 			resizable: false,
@@ -189,7 +188,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 					});
 					TYPO3.loginRefresh.progressWindow.hide();
 					progressControl.reset();
-					TYPO3.loginRefresh.startTimer();					
+					TYPO3.loginRefresh.startTimer();
 				}
 			}, {
 				text: TYPO3.LLL.core.refresh_direct_logout_button,
@@ -234,29 +233,29 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			if (rest === 1) {
 				control.updateText(String.format(TYPO3.LLL.core.refresh_login_countdown_singular, rest));
 			} else {
-				control.updateText(String.format(TYPO3.LLL.core.refresh_login_countdown, rest));	
+				control.updateText(String.format(TYPO3.LLL.core.refresh_login_countdown, rest));
 			}
 		});
-		
+
 		this.loginRefreshWindow.on('close', function(){
 			TYPO3.loginRefresh.startTimer();
 		});
 	},
-	
+
 	showLoginPopup: function() {
 		Ext.getCmp("loginRefreshWindow").hide();
 		vHWin=window.open("login_frameset.php","relogin_"+TS.uniqueID,"height=450,width=700,status=0,menubar=0,location=1");
 		vHWin.focus();
 	},
-	
+
 	startTimer: function() {
 		Ext.TaskMgr.start(this.loadingTask);
 	},
-	
+
 	stopTimer: function() {
 		Ext.TaskMgr.stop(this.loadingTask);
 	},
-	
+
 	submitForm: function(challenge) {
 		var form = Ext.getCmp("loginform").getForm();
 		var fields = form.getValues();
@@ -265,7 +264,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		} else {
 			if (TS.securityLevel == "superchallenged") {
 				fields.p_field = MD5(fields.p_field);
-			} 
+			}
 			if (TS.securityLevel == "superchallenged" || TS.securityLevel == "challenged") {
 				fields.challenge = challenge;
 				fields.userident = MD5(fields.username + ":" + fields.p_field + ":" + challenge);

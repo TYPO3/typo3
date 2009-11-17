@@ -38,11 +38,11 @@ class AjaxLogin {
 	 * a BE user and reset the timer and hide the login window.
 	 * If it was unsuccessful, we display that and show the login box again.
 	 *
-	 * @param string $params 	Always empty.
-	 * @param string $ajaxObj	The Ajax object used to return content and set content types
-	 * @return void
+	 * @param	array		$parameters: Parameters (not used)
+	 * @param	TYPO3AJAX	$ajaxObj: The calling parent AJAX object
+	 * @return	void
 	 */
-	public function login($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function login(array $parameters, TYPO3AJAX $ajaxObj) {
 		if ($GLOBALS['BE_USER']->user['uid']) {
 			$json = array('success' => TRUE);
 		} else {
@@ -55,11 +55,11 @@ class AjaxLogin {
 	/**
 	 * Logs out the current BE user
 	 *
-	 * @param string $params 		Always empty.
-	 * @param string $TYPO3AJAX     The Ajax object used to return content and set content types
-	 * @return void
+	 * @param	array		$parameters: Parameters (not used)
+	 * @param	TYPO3AJAX	$ajaxObj: The calling parent AJAX object
+	 * @return	void
 	 */
-	public function logout($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function logout(array $parameters, TYPO3AJAX $ajaxObj) {
 		$GLOBALS['BE_USER']->logoff();
 		if($GLOBALS['BE_USER']->user['uid']) {
 			$ajaxObj->addContent('logout', array('success' => FALSE));
@@ -73,11 +73,11 @@ class AjaxLogin {
 	 * Refreshes the login without needing login information. We just refresh the session.
 	 *
 	 *
-	 * @param string $params		Always empty.
-	 * @param string $ajaxObj       The Ajax object used to return content and set content types
-	 * @return void
+	 * @param	array		$parameters: Parameters (not used)
+	 * @param	TYPO3AJAX	$ajaxObj: The calling parent AJAX object
+	 * @return	void
 	 */
-	public function refreshLogin($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	public function refreshLogin(array $parameters, TYPO3AJAX $ajaxObj) {
 		$GLOBALS['BE_USER']->checkAuthentication();
 		$ajaxObj->addContent('refresh', array('success' => TRUE));
 		$ajaxObj->setContentFormat('json');
@@ -87,11 +87,11 @@ class AjaxLogin {
 	/**
 	 * Checks if the user session is expired yet
 	 *
-	 * @param string $params 		Always empty.
-	 * @param string $TYPO3AJAX     The Ajax object used to return content and set content types
-	 * @return void
+	 * @param	array		$parameters: Parameters (not used)
+	 * @param	TYPO3AJAX	$ajaxObj: The calling parent AJAX object
+	 * @return	void
 	 */
-	function isTimedOut($params = array(), TYPO3AJAX &$ajaxObj = null) {
+	function isTimedOut(array $parameters, TYPO3AJAX $ajaxObj) {
 		if(is_object($GLOBALS['BE_USER'])) {
 			$ajaxObj->setContentFormat('json');
 			if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
