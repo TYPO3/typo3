@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "dbal".
 #
-# Auto generated 06-11-2009 18:37
+# Auto generated 17-11-2009 20:52
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'priority' => '',
 	'loadOrder' => '',
 	'module' => 'mod1',
-	'state' => 'beta',
+	'state' => 'stable',
 	'internal' => 0,
 	'uploadfolder' => 0,
 	'createDirs' => '',
@@ -32,8 +32,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '0.9.25',
-	'_md5_values_when_last_written' => 'a:30:{s:9:"ChangeLog";s:4:"3df0";s:26:"class.ux_db_list_extra.php";s:4:"7b9e";s:21:"class.ux_t3lib_db.php";s:4:"bdbb";s:28:"class.ux_t3lib_sqlparser.php";s:4:"d98c";s:16:"ext_autoload.php";s:4:"821a";s:21:"ext_conf_template.txt";s:4:"f5cf";s:12:"ext_icon.gif";s:4:"c9ba";s:17:"ext_localconf.php";s:4:"5280";s:14:"ext_tables.php";s:4:"8414";s:14:"ext_tables.sql";s:4:"1f95";s:27:"doc/class.tslib_fe.php.diff";s:4:"0083";s:14:"doc/manual.sxw";s:4:"17d4";s:45:"handlers/class.tx_dbal_handler_openoffice.php";s:4:"d6c1";s:43:"handlers/class.tx_dbal_handler_rawmysql.php";s:4:"2f1b";s:40:"handlers/class.tx_dbal_handler_xmldb.php";s:4:"e363";s:31:"lib/class.tx_dbal_sqlengine.php";s:4:"94d3";s:33:"lib/class.tx_dbal_tsparserext.php";s:4:"cef2";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"e53a";s:14:"mod1/index.php";s:4:"2527";s:18:"mod1/locallang.xml";s:4:"0b57";s:22:"mod1/locallang_mod.xml";s:4:"86ef";s:19:"mod1/moduleicon.gif";s:4:"2b8f";s:10:"res/README";s:4:"be19";s:43:"res/postgresql/postgresql-compatibility.sql";s:4:"5299";s:22:"tests/BaseTestCase.php";s:4:"0324";s:26:"tests/FakeDbConnection.php";s:4:"6972";s:28:"tests/db_oracle_testcase.php";s:4:"c30a";s:36:"tests/sqlparser_general_testcase.php";s:4:"2bdb";s:30:"tests/fixtures/oci8.config.php";s:4:"ad99";}',
+	'version' => '1.0.0',
+	'_md5_values_when_last_written' => 'a:31:{s:9:"ChangeLog";s:4:"c16a";s:26:"class.ux_db_list_extra.php";s:4:"7b9e";s:21:"class.ux_t3lib_db.php";s:4:"9317";s:28:"class.ux_t3lib_sqlparser.php";s:4:"137f";s:16:"ext_autoload.php";s:4:"821a";s:21:"ext_conf_template.txt";s:4:"f5cf";s:12:"ext_icon.gif";s:4:"c9ba";s:17:"ext_localconf.php";s:4:"5280";s:14:"ext_tables.php";s:4:"8414";s:14:"ext_tables.sql";s:4:"1f95";s:27:"doc/class.tslib_fe.php.diff";s:4:"0083";s:14:"doc/manual.sxw";s:4:"3d96";s:45:"handlers/class.tx_dbal_handler_openoffice.php";s:4:"d6c1";s:43:"handlers/class.tx_dbal_handler_rawmysql.php";s:4:"2f1b";s:40:"handlers/class.tx_dbal_handler_xmldb.php";s:4:"e363";s:31:"lib/class.tx_dbal_sqlengine.php";s:4:"94d3";s:33:"lib/class.tx_dbal_tsparserext.php";s:4:"cef2";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"6e63";s:14:"mod1/index.php";s:4:"6944";s:18:"mod1/locallang.xml";s:4:"0b57";s:22:"mod1/locallang_mod.xml";s:4:"86ef";s:19:"mod1/moduleicon.gif";s:4:"2b8f";s:10:"res/README";s:4:"be19";s:43:"res/postgresql/postgresql-compatibility.sql";s:4:"5299";s:22:"tests/BaseTestCase.php";s:4:"0324";s:26:"tests/FakeDbConnection.php";s:4:"6972";s:29:"tests/db_general_testcase.php";s:4:"681e";s:28:"tests/db_oracle_testcase.php";s:4:"d56f";s:36:"tests/sqlparser_general_testcase.php";s:4:"2ec6";s:30:"tests/fixtures/oci8.config.php";s:4:"583a";}',
 	'constraints' => array(
 		'depends' => array(
 			'adodb' => '5.8.1-',

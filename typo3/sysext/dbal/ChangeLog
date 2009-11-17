@@ -1,5 +1,6 @@
 2009-11-17  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Set version to 1.0.0 (stable)
 	* Updated documentation: updated copyright and refreshed TOC
 	* Added unit-test for bug #4466: Index on tx_realurl_uniqalias breaks with DBAL
 
