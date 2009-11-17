@@ -1800,6 +1800,17 @@ final class t3lib_BEfunc {
 					$theFile_abs = PATH_site.($uploaddir?$uploaddir.'/':'').trim($theFile);
 					$theFile = ($abs?'':'../').($uploaddir?$uploaddir.'/':'').trim($theFile);
 
+					if (!is_readable($theFile_abs)) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_missing_text') . ' <abbr title="' . $theFile_abs . '">' . $theFile . '</abbr>',
+							$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.file_missing'),
+							t3lib_FlashMessage::ERROR
+						);
+						$thumbData .= $flashMessage->render();
+						continue;
+					}
+
 					$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 					$params = '&file='.rawurlencode($theFile);
 					$params.= $size?'&size='.$size:'';

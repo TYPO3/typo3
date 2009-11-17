@@ -3,6 +3,7 @@
 	* Fixed bug #12455: OpenID authentication does not work with PHP 5.3
 	* Fixed bug #12054: PHP5.3-Warning about strcmp() parameters in view_help.php (thanks to Stefan Geith)
 	* Fixed bug #12195: Renaming write protected file issues a php warning
+	* Fixed bug #12099: Replace "Warning: filemtime(): stat failed" with a nice error message (thanks to Steffen Gebert)
 
 2009-11-17  Oliver Hader  <oliver@typo3.org>
 
