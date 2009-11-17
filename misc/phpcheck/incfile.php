@@ -8,7 +8,11 @@ include('../../t3lib/class.t3lib_div.php');
 
 SetCookie('test_script_cookie', 'Cookie Value!', 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 
-error_reporting (E_ALL ^ E_NOTICE);
+if (defined('E_DEPRECATED')) {
+	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+} else {
+	error_reporting(E_ALL ^ E_NOTICE);
+}
 
 define("TYPO3_OS", stristr(PHP_OS,"win")&&!stristr(PHP_OS,"darwin")?"WIN":"");
 /*
