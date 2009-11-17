@@ -4,7 +4,8 @@
 
 2009-11-17  Benjamin Mack  <benni@typo3.org>
 
-	* Commited test case for #12244: Improve locallangXMLOverride feature (Thanks to Steffen Gebert), this changes the LLoverride feature to $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] as an array
+	* Commited test case for #12244: Improve locallangXMLOverride feature (Thanks to Steffen Gebert)
+	  This changes the LLoverride feature to $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] as an array
 
 2009-11-17  Steffen Kamper  <info@sk-typo3.de>
 
