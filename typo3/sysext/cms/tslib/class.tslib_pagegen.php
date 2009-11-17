@@ -735,21 +735,21 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			}
 		}
 
-		if (is_array($GLOBALS['TSFE']->pSetup['includeFooterJS.'])) {
-			foreach ($GLOBALS['TSFE']->pSetup['includeFooterJS.'] as $key => $JSfile) {
+		if (is_array($GLOBALS['TSFE']->pSetup['includeJSFooter.'])) {
+			foreach ($GLOBALS['TSFE']->pSetup['includeJSFooter.'] as $key => $JSfile) {
 				if (!is_array($JSfile)) {
-					$ss = $GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
+					$ss = $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
 					if ($ss) {
-						$type = $GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['type'];
+						$type = $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['type'];
 						if (! $type) {
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFooterFile(
 							htmlspecialchars($ss),
 							htmlspecialchars($type),
-							$GLOBALS['TSFE']->pSetup['includeFooterJS.'][$key . '.']['compress'] ? TRUE : FALSE,
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
-							$GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['allWrap']
+							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['compress'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['forceOnTop'] ? TRUE : FALSE,
+							$GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['allWrap']
 						);
 					}
 				}
