@@ -448,7 +448,9 @@ class SC_view_help {
 				}
 			}
 
-			if (!strcmp($parts,''))	unset($parts[0]);
+			if (!$parts[0])	{
+				unset($parts[0]);
+			}
 			$output.= implode('<br />',$parts);
 		}
 
