@@ -112,7 +112,8 @@ class SC_mod_user_setup_index {
 
 	protected $tsFieldConf;
 
-	protected $passwordIsUpdated = 0;
+	protected $passwordIsUpdated = FALSE;
+	protected $passwordIsSubmitted = FALSE;
 	protected $setupIsUpdated = FALSE;
 
 
@@ -134,6 +135,7 @@ class SC_mod_user_setup_index {
 			// First check if something is submittet in the data-array from POST vars
 		$d = t3lib_div::_POST('data');
 		$columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
+		$beUserId = $BE_USER->user['uid'];
 		$storeRec = array();
 
 		if (is_array($d))	{
@@ -162,8 +164,8 @@ class SC_mod_user_setup_index {
 				foreach($columns as $field => $config) {
 					if ($config['table']) {
 						if ($config['table'] == 'be_users' && !in_array($field, array('password', 'password2', 'email', 'realName', 'admin'))) {
-							if (!isset($config['access']) || $this->checkAccess($config)) {
-								$storeRec['be_users'][$BE_USER->user['uid']][$field] = $d['be_users'][$field];
+							if (!isset($config['access']) || $this->checkAccess($config) && $BE_USER->user[$field] !== $d['be_users'][$field]) {
+								$storeRec['be_users'][$beUserId][$field] = $d['be_users'][$field];
 								$BE_USER->user[$field] = $d['be_users'][$field];
 							}
 						}
@@ -188,23 +190,25 @@ class SC_mod_user_setup_index {
 				// Personal data for the users be_user-record (email, name, password...)
 				// If email and name is changed, set it in the users record:
 			$be_user_data = $d['be_users'];
-			$this->passwordIsUpdated = strlen($be_user_data['password'].$be_user_data['password2'])>0 ? -1 : 0;
 
-			$passwordIsConfirmed = ($this->passwordIsUpdated && $be_user_data['password'] === $be_user_data['password2']);
+			$this->passwordIsSubmitted = (strlen($be_user_data['password']) > 0);
+			$passwordIsConfirmed = ($this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2']);
 
-			if ($be_user_data['email']!=$BE_USER->user['email']
-					|| $be_user_data['realName']!=$BE_USER->user['realName']
-					|| $passwordIsConfirmed
-					)	{
-
-				$BE_USER->user['realName'] = $storeRec['be_users'][$BE_USER->user['uid']]['realName'] = substr($be_user_data['realName'],0,80);
-				$BE_USER->user['email'] = $storeRec['be_users'][$BE_USER->user['uid']]['email'] = substr($be_user_data['email'],0,80);
-
-				if ($passwordIsConfirmed) {
-					$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $be_user_data['password2'];
-					$this->passwordIsUpdated = 1;
-				}
+				// Update the real name:
+			if ($be_user_data['realName'] !== $BE_USER->user['realName']) {
+				$BE_USER->user['realName'] = $storeRec['be_users'][$beUserId]['realName'] = substr($be_user_data['realName'], 0, 80);
 			}
+				// Update the email address:
+			if ($be_user_data['email'] !== $BE_USER->user['email']) {
+				$BE_USER->user['email'] = $storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 80);
+			}
+				// Update the password:
+			if ($passwordIsConfirmed) {
+				$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
+				$this->passwordIsUpdated = TRUE;
+			}
+
+				// Persist data if something has changed:
 			if (count($storeRec)) {
 					// Make instance of TCE for storing the changes.
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -214,7 +218,10 @@ class SC_mod_user_setup_index {
 				$tce->bypassWorkspaceRestrictions = TRUE;	// This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
 				$tce->process_datamap();
 				unset($tce);
-				$this->setupIsUpdated = TRUE;
+
+				if (!$this->passwordIsUpdated || count($storeRec['be_users'][$beUserId]) > 1) {
+					$this->setupIsUpdated = TRUE;
+				}
 			}
 		}
 	}
@@ -328,8 +335,8 @@ class SC_mod_user_setup_index {
 			$this->content .= $flashMessage->render();
 		}
 			// If password is updated, output whether it failed or was OK.
-		if ($this->passwordIsUpdated) {
-			if ($this->passwordIsUpdated > 0) {
+		if ($this->passwordIsSubmitted) {
+			if ($this->passwordIsUpdated) {
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					$LANG->getLL('newPassword_ok'),
