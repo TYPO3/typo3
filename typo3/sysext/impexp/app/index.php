@@ -1301,7 +1301,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 							$import->importData($this->id);
 							t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
 						} else {
-							t3lib_div::redirect($emURL);
+							t3lib_utility_Http::redirect($emURL);
 						}
 					}
 

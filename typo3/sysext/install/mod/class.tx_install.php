@@ -2326,7 +2326,7 @@ From sub-directory:
 	 */
 	function outputExitBasedOnStep($content)	{
 		if ($this->step) {
-			t3lib_div::redirect($this->action);
+			t3lib_utility_Http::redirect($this->action);
 		} else {
 			$this->output($this->outputWrapper($content));
 		}

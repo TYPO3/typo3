@@ -120,6 +120,7 @@ return array(
 	't3lib_tceformsinlinehook' => PATH_t3lib . 'interfaces/interface.t3lib_tceformsinlinehook.php',
 	't3lib_tcemain_checkmodifyaccesslisthook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_checkmodifyaccesslisthook.php',
 	't3lib_utility_client' => PATH_t3lib . 'utility/class.t3lib_utility_client.php',
+	't3lib_utility_http' => PATH_t3lib . 'utility/class.t3lib_utility_http.php',
 	'tslib_adminpanel' => PATH_tslib . 'class.tslib_adminpanel.php',
 	'tslib_cobj' => PATH_tslib . 'class.tslib_content.php',
 	'tslib_frameset' => PATH_tslib . 'class.tslib_content.php',

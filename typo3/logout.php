@@ -73,7 +73,7 @@ class SC_logout {
 		$BE_USER->logoff();
 
 		$redirectUrl = (t3lib_div::_GP('redirect') ? t3lib_div::_GP('redirect') : 'index.php');
-		t3lib_div::redirect($redirectUrl);
+		t3lib_utility_Http::redirect($redirectUrl);
 	}
 }
 

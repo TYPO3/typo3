@@ -227,7 +227,7 @@ class SC_tce_db {
 		}
 
 		if ($this->redirect && !$this->tce->debug) {
-			t3lib_div::redirect($this->redirect);
+			t3lib_utility_Http::redirect($this->redirect);
 		}
 	}
 }

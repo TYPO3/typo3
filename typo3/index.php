@@ -165,7 +165,7 @@ class SC_index {
 		if ($this->L == 'OUT' && is_object($GLOBALS['BE_USER'])) {
 			$GLOBALS['BE_USER']->logoff();
 			if ($this->redirect_url) {
-				t3lib_div::redirect($this->redirect_url);
+				t3lib_utility_Http::redirect($this->redirect_url);
 			}
 			exit;
 		}
@@ -385,7 +385,7 @@ class SC_index {
 
 				// If there is a redirect URL AND if loginRefresh is not set...
 			if (!$this->loginRefresh)	{
-				t3lib_div::redirect($this->redirectToURL);
+				t3lib_utility_Http::redirect($this->redirectToURL);
 			} else {
 				$TBE_TEMPLATE->JScode.=$TBE_TEMPLATE->wrapScriptTags('
 					if (parent.opener && (parent.opener.busy || parent.opener.TYPO3.loginRefresh)) {

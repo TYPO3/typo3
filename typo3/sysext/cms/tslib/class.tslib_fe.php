@@ -1491,7 +1491,7 @@
 				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
 			}
 		} elseif (t3lib_div::isFirstPartOfStr($code,'REDIRECT:')) {
-			t3lib_div::redirect(substr($code, 9));
+			t3lib_utility_Http::redirect(substr($code, 9));
 		} elseif (strlen($code))	{
 				// Check if URL is relative
 			$url_parts = parse_url($code);
@@ -1526,7 +1526,7 @@
 
 			if (false === $res) {
 					// Last chance -- redirect
-				t3lib_div::redirect($code);
+				t3lib_utility_Http::redirect($code);
 			} else {
 
 				$forwardHeaders = array(	// Forward these response headers to the client
@@ -2646,16 +2646,16 @@
 				if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
 					switch (intval($TSConf['TSFE.']['jumpURL_HTTPStatusCode'])){
 						case 301:
-							header(t3lib_div::HTTP_STATUS_301);
+							header(t3lib_utility_Http::HTTP_STATUS_301);
 							break;
 						case 302:
-							header(t3lib_div::HTTP_STATUS_302);
+							header(t3lib_utility_Http::HTTP_STATUS_302);
 							break;
 						case 303:
-							header(t3lib_div::HTTP_STATUS_303);
+							header(t3lib_utility_Http::HTTP_STATUS_303);
 							break;
 						case 307:
-							header(t3lib_div::HTTP_STATUS_307);
+							header(t3lib_utility_Http::HTTP_STATUS_307);
 							break;
 						default:
 							break;

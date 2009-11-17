@@ -637,7 +637,7 @@ class SC_db_layout {
 			}
 
 			$url = $BACK_PATH.'alt_doc.php?edit[tt_content]['.implode(',',$idListA).']=edit&returnUrl='.rawurlencode($this->local_linkThisScript(array('edit_record'=>'')));
-			t3lib_div::redirect($url);
+			t3lib_utility_Http::redirect($url);
 		}
 
 			// If the former record edited was the creation of a NEW record, this will look up the created records uid:

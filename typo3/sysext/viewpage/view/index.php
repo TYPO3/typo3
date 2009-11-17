@@ -124,7 +124,7 @@ class SC_mod_web_view_index {
 	 * @return	void
 	 */
 	function printContent()	{
-		t3lib_div::redirect($this->url);
+		t3lib_utility_Http::redirect($this->url);
 	}
 }
 

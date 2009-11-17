@@ -2637,7 +2637,7 @@ EXTENSION KEYS:
 				$GLOBALS['LANG']->getLL('reqInstExt_imp_inst_ext'), $content, 0, 1
 			);
 		} else {
-			t3lib_div::redirect($returnUrl);
+			t3lib_utility_Http::redirect($returnUrl);
 		}
 	}
 

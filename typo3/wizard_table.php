@@ -319,7 +319,7 @@ class SC_wizard_table {
 
 					// If the save/close button was pressed, then redirect the screen:
 				if ($_POST['saveandclosedok_x']) {
-					t3lib_div::redirect($this->P['returnUrl']);
+					t3lib_utility_Http::redirect($this->P['returnUrl']);
 				}
 			}
 		} else {	// If nothing has been submitted, load the $bodyText variable from the selected database row:

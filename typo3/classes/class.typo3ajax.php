@@ -206,7 +206,7 @@ class TYPO3AJAX {
 	 * @return	void
 	 */
 	protected function renderAsError() {
-		header(t3lib_div::HTTP_STATUS_500 . ' (AJAX)');
+		header(t3lib_utility_Http::HTTP_STATUS_500 . ' (AJAX)');
 		header('Content-type: text/xml; charset='.$this->charset);
 		header('X-JSON: false');
 		die('<t3err>'.htmlspecialchars($this->errorMessage).'</t3err>');

@@ -61,7 +61,7 @@ class tx_openid_return {
 				@ob_end_clean();
 			}
 			$backendURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
-			t3lib_div::redirect($backendURL);
+			t3lib_utility_Http::redirect($backendURL);
 		}
 	}
 }

@@ -1170,7 +1170,7 @@ class SC_alt_doc {
 				$returnUrl = '&returnUrl='.rawurlencode(t3lib_div::_GP('returnUrl'));
 				$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
 
-				t3lib_div::redirect($location);
+				t3lib_utility_Http::redirect($location);
 			}
 		}
 	}
@@ -1420,7 +1420,7 @@ class SC_alt_doc {
 
 			// If code is NOT set OR set to 1, then make a header location redirect to $this->retUrl
 		if (!$code || $code==1)	{
-			t3lib_div::redirect($this->retUrl);
+			t3lib_utility_Http::redirect($this->retUrl);
 		} else {
 			$this->setDocument('',$this->retUrl);
 		}
@@ -1449,7 +1449,7 @@ class SC_alt_doc {
 				$retUrl = $sParts['path'].'?'.$setupArr[2].'&returnUrl='.rawurlencode($retUrl);
 			}
 		}
-		t3lib_div::redirect($retUrl);
+		t3lib_utility_Http::redirect($retUrl);
 	}
 }
 

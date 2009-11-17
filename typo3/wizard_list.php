@@ -121,7 +121,7 @@ class SC_wizard_list {
 		} else {	// Otherwise, show the list:
 			$redirectUrl = 'db_list.php?id=' . $this->pid . '&table=' . $this->P['params']['table'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 		}
-		t3lib_div::redirect($redirectUrl);
+		t3lib_utility_Http::redirect($redirectUrl);
 	}
 }
 

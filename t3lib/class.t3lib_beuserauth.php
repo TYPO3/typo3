@@ -205,7 +205,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	function backendCheckLogin()	{
 		if (!$this->user['uid'])	{
 			if (!defined('TYPO3_PROCEED_IF_NO_USER') || !TYPO3_PROCEED_IF_NO_USER)	{
-				t3lib_div::redirect($GLOBALS['BACK_PATH']);
+				t3lib_utility_Http::redirect($GLOBALS['BACK_PATH']);
 			}
 		} else {	// ...and if that's the case, call these functions
 			$this->fetchGroupData();	//	The groups are fetched and ready for permission checking in this initialization.	Tables.php must be read before this because stuff like the modules has impact in this

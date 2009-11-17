@@ -212,7 +212,7 @@ class recordList extends t3lib_recordList {
 			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
 			if (t3lib_div::_GP('returnUrl')) {
 				$location = t3lib_div::_GP('returnUrl');
-				t3lib_div::redirect($location);
+				t3lib_utility_Http::redirect($location);
 			}
 		}
 
@@ -819,7 +819,7 @@ class recordList extends t3lib_recordList {
 				$returnUrl = '&returnUrl='.rawurlencode($this->listURL());
 				$location = $GLOBALS['BACK_PATH'].'alt_doc.php?'.$params.$returnUrl;
 
-				t3lib_div::redirect($location);
+				t3lib_utility_Http::redirect($location);
 			}
 		}
 	}
