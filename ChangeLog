@@ -6,6 +6,7 @@
 
 	* Fixed bug #12612: Backend Login-Popup not working
 	* Follow-up to bugfix #12612: Removed reference operators for objects and code cleanup
+	* Fixed bug #12517: Password change in User tools -> User setup impossible if rsaauth and saltedpassword are installed
 
 2009-11-17  Benjamin Mack  <benni@typo3.org>
 

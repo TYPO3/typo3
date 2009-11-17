@@ -189,35 +189,20 @@ class SC_mod_user_setup_index {
 				// If email and name is changed, set it in the users record:
 			$be_user_data = $d['be_users'];
 			$this->passwordIsUpdated = strlen($be_user_data['password'].$be_user_data['password2'])>0 ? -1 : 0;
+
+			$passwordIsConfirmed = ($this->passwordIsUpdated && $be_user_data['password'] === $be_user_data['password2']);
+
 			if ($be_user_data['email']!=$BE_USER->user['email']
 					|| $be_user_data['realName']!=$BE_USER->user['realName']
-					|| ( (strlen($be_user_data['password'])==32 || (isset($columns['password']['eval']) && substr($columns['password']['eval'], 0, 3) == 'tx_'))
-							&& !strcmp($be_user_data['password'],$be_user_data['password2']))
+					|| $passwordIsConfirmed
 					)	{
 
 				$BE_USER->user['realName'] = $storeRec['be_users'][$BE_USER->user['uid']]['realName'] = substr($be_user_data['realName'],0,80);
 				$BE_USER->user['email'] = $storeRec['be_users'][$BE_USER->user['uid']]['email'] = substr($be_user_data['email'],0,80);
 
-				if (isset($columns['password']['eval']) && substr($columns['password']['eval'], 0, 3) == 'tx_') {
-						// password encryption by external script (e.g. EXT:saltedpasswords)
-					$func = $columns['password']['eval'];
-					$evalObj = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][$func].':&'.$func);
-					if (is_object($evalObj) && method_exists($evalObj, 'evaluateFieldValue'))	{
-							// initialize vars. If method fails, $set will be set to false
-						$is_in = '';
-						$set = TRUE;
-						$newPassword = $evalObj->evaluateFieldValue($be_user_data['password2'], $is_in, $set);
-						if ($set === TRUE) {
-								// password was changed
-							$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $newPassword;
-							$this->passwordIsUpdated = 1;
-						}
-					}
-				} else {
-					if (strlen($be_user_data['password'])==32 && !strcmp($be_user_data['password'],$be_user_data['password2']))	{
-						$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $be_user_data['password2'];
-						$this->passwordIsUpdated = 1;
-					}
+				if ($passwordIsConfirmed) {
+					$storeRec['be_users'][$BE_USER->user['uid']]['password'] = $be_user_data['password2'];
+					$this->passwordIsUpdated = 1;
 				}
 			}
 			if (count($storeRec)) {
