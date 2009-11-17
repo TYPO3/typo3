@@ -47,7 +47,6 @@ abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_Do
 	 * @return void
 	 */
 	public function __clone() {
-		$this->isClone = TRUE;
 		$this->uid = NULL;
 	}
 

@@ -214,7 +214,7 @@ class Tx_Extbase_Property_Mapper {
 						} else {
 							$propertyValue = $objects;
 						}
-					} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
+					} elseif ($propertyMetaData['type'] === 'DateTime' || strpos($propertyMetaData['type'], '_') !== FALSE) {
 						$propertyValue = $this->transformToObject($propertyValue, $propertyMetaData['type'], $propertyName);
 					}
 				} elseif ($targetClassSchema !== NULL) {
@@ -242,32 +242,40 @@ class Tx_Extbase_Property_Mapper {
 	 * @return object
 	 */
 	protected function transformToObject($propertyValue, $targetType, $propertyName) {
-		if (is_numeric($propertyValue)) {
-			$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
-			if ($propertyValue === FALSE) {
-				$this->mappingResults->addError(new Tx_Extbase_Error_Error('Querying the repository for the specified object with UUID ' . $propertyValue . ' was not successful.' , 1249379517), $propertyName);
+		if ($targetType === 'DateTime' || in_array('DateTime', class_parents($targetType)) ) {
+			try {
+				return new $targetType($propertyValue);
+			} catch (Exception $e) {
+				throw new InvalidArgumentException('Conversion to a ' . $targetType . ' object is not possible. Cause: ' . $e->getMessage(), 1190034628);
 			}
-		} elseif (is_array($propertyValue)) {
-			if (isset($propertyValue['__identity'])) {
-				$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
-				if ($existingObject === FALSE) throw new Tx_Extbase_Property_Exception_TargetNotFound('Querying the repository for the specified object was not successful.', 1237305720);
-				unset($propertyValue['__identity']);
-				if (count($propertyValue) === 0) {
-					$propertyValue = $existingObject;
-				} elseif ($existingObject !== NULL) {
-					$newObject = clone $existingObject;
+		} else {
+			if (is_numeric($propertyValue)) {
+				$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
+				if ($propertyValue === FALSE) {
+					$this->mappingResults->addError(new Tx_Extbase_Error_Error('Querying the repository for the specified object with UUID ' . $propertyValue . ' was not successful.' , 1249379517), $propertyName);
+				}
+			} elseif (is_array($propertyValue)) {
+				if (isset($propertyValue['__identity'])) {
+					$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
+					if ($existingObject === FALSE) throw new Tx_Extbase_Property_Exception_TargetNotFound('Querying the repository for the specified object was not successful.', 1237305720);
+					unset($propertyValue['__identity']);
+					if (count($propertyValue) === 0) {
+						$propertyValue = $existingObject;
+					} elseif ($existingObject !== NULL) {
+						$newObject = clone $existingObject;
+						if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
+							$propertyValue = $newObject;
+						}
+					}
+				} else {
+					$newObject = new $targetType;
 					if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
 						$propertyValue = $newObject;
 					}
 				}
 			} else {
-				$newObject = new $targetType;
-				if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
-					$propertyValue = $newObject;
-				}
+				throw new InvalidArgumentException('transformToObject() accepts only numeric values and arrays.', 1251814355);
 			}
-		} else {
-			throw new InvalidArgumentException('transformToObject() accepts only numeric values and arrays.', 1251814355);
 		}
 
 		return $propertyValue;

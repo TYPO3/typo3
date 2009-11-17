@@ -319,12 +319,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	protected function persistObjects() {
 		foreach ($this->aggregateRootObjects as $object) {
-			// if (!$this->identityMap->hasObject($object)) { // TODO Must be enabled to allow other identity properties than $uid
-			if ($object->_isNew()) {
+			if (!$this->identityMap->hasObject($object)) {
 				$this->insertObject($object);
 			}
 		}
-		
 		foreach ($this->aggregateRootObjects as $object) {
 			$this->persistObject($object);
 		}
@@ -360,8 +358,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if (($propertyValue !== NULL) && $propertyType === 'Tx_Extbase_Persistence_ObjectStorage') {
 				if ($object->_isNew() || $object->_isDirty($propertyName)) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $queue, $row);
-				} else {
-					foreach ($propertyValue as $containedObject) {
+				}
+				foreach ($propertyValue as $containedObject) {
+					if ($containedObject instanceof Tx_Extbase_DomainObject_AbstractEntity) {
 						$queue[] = $containedObject;
 					}
 				}
@@ -369,7 +368,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				if ($object->_isDirty($propertyName)) {
 					if ($propertyValue->_isNew()) {
 						if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-							$this->insertObject($propertyValue, $object, $propertyName);
+							$this->insertObject($propertyValue);
 							$queue[] = $propertyValue;
 						} else {
 							$this->persistValueObject($propertyValue, $object, $propertyName);
@@ -377,7 +376,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					}
 					$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 				}
-			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || ($object->_isNew() || $object->_isDirty($propertyName))) {
+			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || $object->_isNew() || $object->_isDirty($propertyName)) {
 				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
@@ -390,8 +389,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$object->_memorizeCleanState();
 		}
 
-		foreach ($queue as $object) {
-			$this->persistObject($object);
+		foreach ($queue as $queuedObject) {
+			$this->persistObject($queuedObject);
 		}
 		
 	}
@@ -424,12 +423,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @return void
 	 */
-	protected function persistValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 1) {
+	protected function persistValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject = NULL, $parentPropertyName = NULL, $sortingPosition = 1) {
 		$result = $this->getUidOfAlreadyPersistedValueObject($object);
 		if ($result !== FALSE) {
 			$object->_setProperty('uid', (int)$result);
-			if($this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
+			if (!is_null($parentObject) && is_string($parentPropertyName) && strlen($parentPropertyName) > 0) {
+				if($this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+					$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
+				}
 			}
 		} elseif ($object->_isNew()) {
 			$row = array();
@@ -451,7 +452,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				// $this->checkPropertyType($propertyType, $propertyValue);
 				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
-			$this->insertObject($object, $parentObject, $parentPropertyName, $sortingPosition, $row);
+			$this->insertObject($object, $row);
 		}
 	}
 	
@@ -489,37 +490,37 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		}
 		
 		$updateParent = FALSE;
-		$detachedUids = array();
+		$removedObjectUids = array();
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
 			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
 				$this->removeObject($removedObject);
 			} else {
 				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
-				$detachedUids[] = $removedObject->getUid();
+				$removedObjectUids[] = $removedObject->getUid();
 			}
 			$updateParent = TRUE;
 		}
 		
-		$insertedUids = array();
+		$insertedObjectUids = array();
 		$sortingPosition = 1;
 		foreach ($objectStorage as $object) {
 			if ($object->_isNew()) {
 				if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-					$this->insertObject($object, $parentObject, $propertyName, $sortingPosition);
-					$queue[] = $object;
+					$this->insertObject($object);
 				} else {
 					$this->persistValueObject($object, $parentObject, $propertyName, $sortingPosition);
 				}
-				$insertedUids[] = $object->getUid();
 				$updateParent = TRUE;
+				$insertedObjectUids[] = $object->getUid();
 			}
+			$this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
 			$sortingPosition++;
 		}
 		
 		if ($updateParent === TRUE) {
 			if ($columnMap->getParentKeyFieldName() === NULL) {
-				$newUids = array_diff($currentUids, $detachedUids);
-				$newUids = array_merge($newUids, $insertedUids);
+				$newUids = array_diff($currentUids, $removedObjectUids);
+				$newUids = array_merge($newUids, $insertedObjectUids);
 				$row[$columnMap->getColumnName()] = implode(',', $newUids);
 			} else {
 				$row[$columnMap->getColumnName()] = $this->dataMapper->countRelated($parentObject, $propertyName);			
@@ -557,21 +558,48 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function getRemovedChildObjects(Tx_Extbase_DomainObject_AbstractEntity $object, $propertyName) {
 		$removedObjects = array();
 		$cleanPropertyValue = $object->_getCleanProperty($propertyName);
-		$propertyValue = $object->_getProperty($propertyName);
-		if ($cleanPropertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			$cleanPropertyValue = $cleanPropertyValue->toArray();
-		}
-		if ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage) {
-			$propertyValue = $propertyValue->toArray();
-		}
-		if ($cleanPropertyValue instanceof Iterator) {
-			foreach ($cleanPropertyValue as $hash => $item) {
-				if (!array_key_exists($hash, $propertyValue)) {
-					$removedObjects[] = $item;
+		if (is_array($cleanPropertyValue) || $cleanPropertyValue instanceof Iterator) {
+			$propertyValue = $object->_getProperty($propertyName);
+			foreach ($cleanPropertyValue as $containedObject) {
+				if (!$propertyValue->contains($containedObject)) {
+					$removedObjects[] = $containedObject;
 				}
 			}
 		}
 		return $removedObjects;
+	}
+	
+	/**
+	 * Updates the fields defining the relation between the object and the parent object.
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object 
+	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject 
+	 * @param string $parentPropertyName 
+	 * @return void
+	 */
+	protected function attachObjectToParentObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0) {
+		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
+		if ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+			$row = array();
+			$parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
+			if ($parentKeyFieldName !== NULL) {
+				$row[$parentKeyFieldName] = $parentObject->getUid();
+				$parentTableFieldName = $parentColumnMap->getParentTableFieldName();
+				if ($parentTableFieldName !== NULL) {
+					$row[$parentTableFieldName] = $parentDataMap->getTableName();
+				}
+			}
+			$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
+			if (!empty($childSortByFieldName)) {
+				$row[$childSortByFieldName] = $sortingPosition;
+			}
+			if (count($row) > 0) {
+				$this->updateObject($object, $row);
+			}			
+		} elseif ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
+		}
 	}
 	
 	/**
@@ -595,12 +623,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					$row[$parentTableFieldName] = '';
 				}
 			}
+			$childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
+			if (!empty($childSortByFieldName)) {
+				$row[$childSortByFieldName] = 0;
+			}
 			if (count($row) > 0) {
 				$this->updateObject($object, $row);
 			}
 		} elseif ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$this->deleteRelationFromRelationtable($object, $parentObject, $parentPropertyName);
-		}		
+		}
 	}
 	
 	/**
@@ -611,27 +643,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The parent object (if any)
 	 * @param string $parentPropertyName The name of the property
 	 */
-	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_DomainObject_AbstractEntity $parentObject = NULL, $propertyName = NULL, $sortingPosition = NULL, array $row = array()) {
+	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row = array()) {
 		$tableName = $this->dataMapper->getDataMap(get_class($object))->getTableName();
 		$this->addCommonFieldsToRow($object, $row);
-		if ($parentObject !== NULL) {
-			$parentColumnMap = $this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-			if ($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $parentColumnMap->getParentKeyFieldName() !== NULL) {
-				$row[$parentColumnMap->getParentKeyFieldName()] = $parentObject->getUid();
-			}
-		}
-		if ($object->_isNew()) {
-			$uid = $this->storageBackend->addRow(
-				$tableName,
-				$row
-				);
-			$object->_setProperty('uid', (int)$uid);
-		}
-		if ($parentObject !== NULL) {
-			if($parentColumnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$this->insertRelationInRelationtable($object, $parentObject, $propertyName, $sortingPosition);
-			}
-		}
+		$uid = $this->storageBackend->addRow(
+			$tableName,
+			$row
+			);
+		$object->_setProperty('uid', (int)$uid);
 		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($tableName, $uid);
 		}
@@ -709,9 +728,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($tableName, $uid);
 		}
-		if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-			$object->_memorizeCleanState();
-		}	
 		return $res;
 	}
 

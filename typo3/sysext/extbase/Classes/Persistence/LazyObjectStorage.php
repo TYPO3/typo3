@@ -117,6 +117,5 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		return $numberOfElements;
 	}
 
-
 }
 ?>
