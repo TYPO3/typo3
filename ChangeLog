@@ -1,3 +1,7 @@
+2009-11-17  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #11937: Do not show PHP 5.3 E_DEPRECATED messages on productive systems
+
 2009-11-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12622: htmlArea RTE: Incorrect behaviour of last item of list in gecko browsers

@@ -36,8 +36,11 @@
 // Set error reporting
 // *******************************
 
-error_reporting (E_ALL ^ E_NOTICE);
-
+if (defined('E_DEPRECATED')) {
+	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+} else {
+	error_reporting(E_ALL ^ E_NOTICE);
+}
 
 define('PATH_thisScript',str_replace('//','/', str_replace('\\','/', (php_sapi_name()=='cgi'||php_sapi_name()=='isapi' ||php_sapi_name()=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME']))));
 define('PATH_site', substr(dirname(PATH_thisScript).'/',0,-strlen('typo3/')));	// Abs. path to directory with the frontend (one above the admin-dir)
