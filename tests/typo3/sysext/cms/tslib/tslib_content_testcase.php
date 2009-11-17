@@ -22,12 +22,15 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * Testcase for class tslib_cObj.
+ * Testcase for the "tslib_cObj" in the TYPO3 Core.
  *
- * @author	Oliver Hader <oliver@typo3.org>
  * @package TYPO3
+ * @subpackage tslib
+ *
+ * @author Oliver Hader <oliver@typo3.org>
+ * @author Oliver Klee <typo3-coding@oliverklee.de>
+ *
  */
 class tslib_content_testcase extends tx_phpunit_testcase {
 	/**
@@ -56,10 +59,13 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	private $typoScriptImage;
 
 	public function setUp() {
-		$this->template = $this->getMock('t3lib_TStemplate', array('getFileName'));
+		$this->template = $this->getMock(
+			't3lib_TStemplate', array('getFileName', 'linkData')
+		);
 		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', false);
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
+		$GLOBALS['TSFE'] = $this->tsfe;
 
 		$className = 'tslib_cObj_' . uniqid('test');
 		eval('
@@ -78,19 +84,17 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	}
 
 	public function tearDown() {
-		unset($this->cObj);
-		unset($this->tsfe);
-		unset($this->template);
-		unset($this->typoScriptImage);
+		$GLOBALS['TSFE'] = null;
+
+		unset($this->cObj, $this->tsfe, $this->template,$this->typoScriptImage);
 	}
 
 	/**
 	 * Tests whether the getImgResource hook is called correctly.
-	 * 
+	 *
 	 * @test
 	 */
 	public function isGetImgResourceHookCalled() {
-		$GLOBALS['TSFE'] = $this->tsfe;
 		$this->template->expects($this->atLeastOnce())->method('getFileName')
 			->with('typo3/clear.gif')->will($this->returnValue('typo3/clear.gif'));
 
@@ -123,6 +127,41 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 		$this->assertTrue($parent instanceof tslib_cObj);
 
 		return $imageResource;
+	}
+
+
+	//////////////////////////
+	// Tests concerning FORM
+	//////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function formWithSecureFormMailEnabledDoesNotContainRecipientField() {
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = TRUE;
+
+		$this->assertNotContains(
+			'name="recipient',
+			$this->cObj->FORM(
+				array('recipient' => 'foo@bar.com', 'recipient.' => array()),
+				array()
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function formWithSecureFormMailDisabledDoesNotContainRecipientField() {
+		$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail'] = FALSE;
+
+		$this->assertContains(
+			'name="recipient',
+			$this->cObj->FORM(
+				array('recipient' => 'foo@bar.com', 'recipient.' => array()),
+				array()
+			)
+		);
 	}
 }
 ?>

@@ -95,6 +95,20 @@ class t3lib_pageselect_testcase extends tx_phpunit_testcase {
 		$this->assertFalse($disableGroupAccessCheck);
 		$this->assertTrue($parent instanceof t3lib_pageSelect);
 	}
-}
 
+
+	/////////////////////////////////////////
+	// Tests concerning getPathFromRootline
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getPathFromRootLineForEmptyRootLineReturnsEmptyString() {
+		$this->assertEquals(
+			'',
+			$this->pageSelectObject->getPathFromRootline(array())
+		);
+	}
+}
 ?>

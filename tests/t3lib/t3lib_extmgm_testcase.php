@@ -40,6 +40,7 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 	public function setUp() {
 		$this->globals = array(
 			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT']),
+			'TCA' => serialize($GLOBALS['TCA']),
 		);
 	}
 

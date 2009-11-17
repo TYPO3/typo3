@@ -25,6 +25,7 @@
 
 2009-11-17  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added tests #12382: Feature/Code cleanup: Add some more unit tests (Thanks to Oliver Klee)
 	* Fixed bug #12611: Add preRenderHook in pageRenderer
 	* Fixed bug #12610: Inconsistent naming of "includeFooterJS"
 	* Fixed bug #10119: Broken fe_adminLib.inc

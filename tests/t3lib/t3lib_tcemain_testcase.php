@@ -46,12 +46,12 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 	private $fixture;
 
 	/**
-	 * @var t3lib_beUserAuth a simulated logged-in back-end user
+	 * @var t3lib_beUserAuth a mock logged-in back-end user
 	 */
 	private $backEndUser;
 
 	public function setUp() {
-		$this->backEndUser = $this->createBackEndUser();
+		$this->backEndUser = $this->getMock('t3lib_beUserAuth');
 
 		$this->fixture = new t3lib_TCEmain();
 		$this->fixture->start(array(), '', $this->backEndUser);
@@ -60,37 +60,6 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 	public function tearDown() {
 		unset(
 			$this->fixture->BE_USER, $this->fixture, $this->backEndUser
-		);
-	}
-
-
-	//////////////////////
-	// Utility functions
-	//////////////////////
-
-	/**
-	 * Creates a back-end user.
-	 *
-	 * @return t3lib_beUserAuth a back-end user
-	 */
-	private function createBackEndUser() {
-		$user = new t3lib_beUserAuth();
-		$user->user = array();
-
-		return $user;
-	}
-
-
-	////////////////////////////////////
-	// Tests for the utility functions
-	////////////////////////////////////
-
-	/**
-	 * @test
-	 */
-	public function createBackEndUserCreatesBeUserAuthInstance() {
-		$this->assertTrue(
-			$this->createBackEndUser() instanceof t3lib_beUserAuth
 		);
 	}
 
@@ -201,6 +170,11 @@ class t3lib_tcemain_testcase extends tx_phpunit_testcase {
 			);
 		}
 	}
+
+
+	///////////////////////////////////////////
+	// Tests concerning checkModifyAccessList
+	///////////////////////////////////////////
 
 	/**
 	 * Tests whether a wrong interface on the 'checkModifyAccessList' hook throws an exception.
