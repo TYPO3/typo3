@@ -118,18 +118,18 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 					inputType: "hidden",
 					name: "challenge",
 					id: "challenge",
-					value: TYPO3.configuration.challenge
+					value: ''
 				}
 			],
 			keys:({
 				key: Ext.EventObject.ENTER,
-				fn: this.submitForm,
+				fn: this.triggerSubmitForm,
 				scope: this
 			}),
 			buttons: [{
 				text: TYPO3.LLL.core.refresh_login_button,
 				formBind: true,
-				handler: this.submitForm
+				handler: this.triggerSubmitForm
 			}, {
 				text: TYPO3.LLL.core.refresh_logout_button,
 				formBind: true,
@@ -257,7 +257,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		Ext.TaskMgr.stop(this.loadingTask);
 	},
 	
-	submitForm: function() {
+	submitForm: function(challenge) {
 		var form = Ext.getCmp("loginform").getForm();
 		var fields = form.getValues();
 		if (fields.p_field === "") {
@@ -267,7 +267,8 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				fields.p_field = MD5(fields.p_field);
 			} 
 			if (TS.securityLevel == "superchallenged" || TS.securityLevel == "challenged") {
-				fields.userident = MD5(fields.username + ":" + fields.p_field + ":" + fields.challenge);
+				fields.challenge = challenge;
+				fields.userident = MD5(fields.username + ":" + fields.p_field + ":" + challenge);
 			} else {
 				fields.userident = fields.p_field;
 			}
@@ -300,8 +301,30 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 				}
 			});
 		}
+	},
+
+	triggerSubmitForm: function() {
+		if (TS.securityLevel == 'superchallenged' || TS.securityLevel == 'challenged') {
+			Ext.Ajax.request({
+				url: 'ajax.php',
+				params: {
+					'ajaxID': 'BackendLogin::getChallenge',
+					'skipSessionUpdate': 1
+				},
+				method: 'GET',
+				success: function(response) {
+					var result = Ext.util.JSON.decode(response.responseText);
+					if (result.challenge) {
+						Ext.getCmp('challenge').value = result.challenge;
+						TYPO3.loginRefresh.submitForm(result.challenge);
+					}
+				},
+				scope: this
+			});
+		} else {
+			this.submitForm();
+		}
 	}
-	
 });
 
 

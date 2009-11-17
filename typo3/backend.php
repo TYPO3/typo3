@@ -342,11 +342,6 @@ class TYPO3backend {
 			$menuFrameName = 'topmenuFrame';
 		}
 
-		// create challenge for the (re)login form and save it in the session.
-		$challenge = md5(uniqid('').getmypid());
-		session_start();
-		$_SESSION['login_challenge'] = $challenge;
-
 		// determine security level from conf vars and default to super challenged
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
@@ -368,7 +363,6 @@ class TYPO3backend {
 		'username' => htmlspecialchars($GLOBALS['BE_USER']->user['username']),
 		'uniqueID' => t3lib_div::shortMD5(uniqid('')),
 		'securityLevel' => $this->loginSecurityLevel,
-		'challenge' => $challenge,
 		'TYPO3_mainDir' => TYPO3_mainDir,
 		'pageModule' => $pageModule,
 		'condensedMode' => $GLOBALS['BE_USER']->uc['condensedMode'] ? 1 : 0 ,

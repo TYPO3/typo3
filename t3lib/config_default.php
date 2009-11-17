@@ -275,6 +275,7 @@ $TYPO3_CONF_VARS = array(
 			'BackendLogin::logout'			 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->logout',
 			'BackendLogin::refreshLogin'		=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->refreshLogin',
 			'BackendLogin::isTimedOut'		 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->isTimedOut',
+			'BackendLogin::getChallenge'	 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->getChallenge',
 			'WorkspaceMenu::toggleWorkspacePreview' => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->toggleWorkspacePreview',
 			'WorkspaceMenu::setWorkspace'           => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->setWorkspace'
 		),

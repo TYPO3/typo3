@@ -1,3 +1,7 @@
+2009-11-17  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #12612: Backend Login-Popup not working
+
 2009-11-17  Benjamin Mack  <benni@typo3.org>
 
 	* Commited test case for #12244: Improve locallangXMLOverride feature (Thanks to Steffen Gebert), this changes the LLoverride feature to $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] as an array

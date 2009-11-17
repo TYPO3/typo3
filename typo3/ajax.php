@@ -43,7 +43,8 @@ $noUserAjaxIDs = array(
 	'BackendLogin::login',
 	'BackendLogin::logout',
 	'BackendLogin::refreshLogin',
-	'BackendLogin::isTimedOut'
+	'BackendLogin::isTimedOut',
+	'BackendLogin::getChallenge',
 );
 
 // if we're trying to do an ajax login, don't require a user.

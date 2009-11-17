@@ -114,6 +114,24 @@ class AjaxLogin {
 			$ajaxObj->addContent('login', array('success' => FALSE, 'error' => 'No BE_USER object'));
 		}
 	}
+
+	/**
+	 * Gets a MD5 challenge.
+	 *
+	 * @param	array		$parameters: Parameters (not used)
+	 * @param	TYPO3AJAX	$parent: The calling parent AJAX object
+	 * @return	void
+	 */
+	public function getChallenge(array $parameters, TYPO3AJAX $parent) {
+		session_start();
+
+		$_SESSION['login_challenge'] = md5(uniqid('') . getmypid());
+
+		session_commit();
+
+		$parent->addContent('challenge', $_SESSION['login_challenge']);
+		$parent->setContentFormat('json');
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/classes/class.ajaxlogin.php'])	{
