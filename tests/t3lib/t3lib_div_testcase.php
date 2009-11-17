@@ -658,6 +658,41 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 			t3lib_div::quoteJSvalue('\\')
 		);
 	}
+
+	/**
+	 * Tests the locallangXMLOverride feature of readLLfile()
+	 * @test
+	 */
+	public function readLLfileLocallangXMLOverride() {
+		$unique = uniqid('locallangXMLOverrideTest');
+		
+		$xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+			<T3locallang>
+				<data type="array">
+					<languageKey index="default" type="array">
+						<label index="buttons.logout">EXIT</label>
+					</languageKey>
+				</data>
+			</T3locallang>';
+
+		$file = PATH_site . 'typo3temp/' . $unique . '.xml';
+		t3lib_div::writeFileToTypo3tempDir($file, $xml);
+
+			// get default value
+		$defaultLL = t3lib_div::readLLfile('EXT:lang/locallang_core.xml', 'default');
+
+			// set override file
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:lang/locallang_core.xml'][$unique] = $file;
+
+			// get override value
+		$overrideLL = t3lib_div::readLLfile('EXT:lang/locallang_core.xml', 'default');
+
+		$this->assertNotEquals($overrideLL['default']['buttons.logout'], '');
+		$this->assertNotEquals($defaultLL['default']['buttons.logout'], $overrideLL['default']['buttons.logout']);
+		$this->assertEquals($overrideLL['default']['buttons.logout'], 'EXIT');
+
+		unlink($file);
+	}
 }
 
 ?>
