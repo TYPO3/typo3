@@ -327,7 +327,7 @@ class Auth_OpenID_Association {
      *
      * @access private
      */
-    function _makePairs(&$message)
+    function _makePairs($message)
     {
         $signed = $message->getArg(Auth_OpenID_OPENID_NS, 'signed');
         if (!$signed || Auth_OpenID::isFailure($signed)) {
@@ -352,7 +352,7 @@ class Auth_OpenID_Association {
      *
      * @access private
      */
-    function getMessageSignature(&$message)
+    function getMessageSignature($message)
     {
         $pairs = $this->_makePairs($message);
         return base64_encode($this->sign($pairs));
@@ -364,7 +364,7 @@ class Auth_OpenID_Association {
      *
      * @access private
      */
-    function checkMessageSignature(&$message)
+    function checkMessageSignature($message)
     {
         $sig = $message->getArg(Auth_OpenID_OPENID_NS,
                                 'sig');

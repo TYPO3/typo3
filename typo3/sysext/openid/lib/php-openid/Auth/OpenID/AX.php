@@ -235,7 +235,7 @@ class Auth_OpenID_AX_AttrInfo {
  * return null If an alias is present in the list of aliases but
  * is not present in the namespace map.
  */
-function Auth_OpenID_AX_toTypeURIs(&$namespace_map, $alias_list_s)
+function Auth_OpenID_AX_toTypeURIs($namespace_map, $alias_list_s)
 {
     $uris = array();
 
@@ -573,7 +573,7 @@ class Auth_OpenID_AX_KeyValueMessage extends Auth_OpenID_AX_Message {
      * @param type_uri: The URI for the attribute
      * @param values: A list of values to send for this attribute.
      */
-    function setValues($type_uri, &$values)
+    function setValues($type_uri, $values)
     {
         $this->data[$type_uri] =& $values;
     }
@@ -587,7 +587,7 @@ class Auth_OpenID_AX_KeyValueMessage extends Auth_OpenID_AX_Message {
      *
      * @access private
      */
-    function _getExtensionKVArgs(&$aliases)
+    function _getExtensionKVArgs($aliases)
     {
         if ($aliases === null) {
             $aliases = new Auth_OpenID_NamespaceMap();
@@ -888,7 +888,7 @@ class Auth_OpenID_AX_FetchResponse extends Auth_OpenID_AX_KeyValueMessage {
             $ax_args['update_url'] = $update_url;
         }
 
-        Auth_OpenID::update(&$ax_args, $kv_args);
+        Auth_OpenID::update($ax_args, $kv_args);
 
         return $ax_args;
     }
@@ -960,7 +960,7 @@ class Auth_OpenID_AX_StoreRequest extends Auth_OpenID_AX_KeyValueMessage {
     {
         $ax_args = $this->_newArgs();
         $kv_args = $this->_getExtensionKVArgs($aliases);
-        Auth_OpenID::update(&$ax_args, $kv_args);
+        Auth_OpenID::update($ax_args, $kv_args);
         return $ax_args;
     }
 }

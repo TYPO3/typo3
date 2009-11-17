@@ -322,7 +322,8 @@ class tx_openid_sv1 extends t3lib_svbase {
 		// TODO Change this to a TYPO3-specific database-based store in future.
 		// File-based store is ineffective and insecure. After changing
 		// get rid of the FileStore include in includePHPOpenIDLibrary()
-		$openIDStorePath = PATH_site . 'typo3temp/tx_openid';
+		$openIDStorePath = PATH_site . 'typo3temp' . PATH_SEPARATOR . 'tx_openid';
+
 		// For now we just prevent any web access to these files
 		if (!file_exists($openIDStorePath . '/.htaccess')) {
 			file_put_contents($openIDStorePath . '/.htaccess', 'deny from all');

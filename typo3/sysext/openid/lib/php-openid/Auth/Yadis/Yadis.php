@@ -317,7 +317,7 @@ class Auth_Yadis_Yadis {
      * Auth_Yadis_Yadis, depending on whether the discovery
      * succeeded.
      */
-    function discover($uri, &$fetcher,
+    function discover($uri, $fetcher,
                       $extra_ns_map = null, $timeout = 20)
     {
         $result = new Auth_Yadis_DiscoveryResult($uri);

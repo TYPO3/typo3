@@ -305,7 +305,7 @@ function Auth_OpenID_findOPLocalIdentifier($service, $type_uris)
     return $local_id;
 }
 
-function filter_MatchesAnyOpenIDType(&$service)
+function filter_MatchesAnyOpenIDType($service)
 {
     $uris = $service->getTypes();
 
@@ -415,7 +415,7 @@ function Auth_OpenID_makeOpenIDEndpoints($uri, $yadis_services)
     return $s;
 }
 
-function Auth_OpenID_discoverWithYadis($uri, &$fetcher,
+function Auth_OpenID_discoverWithYadis($uri, $fetcher,
               $endpoint_filter='Auth_OpenID_getOPOrUserServices',
               $discover_function=null)
 {
@@ -433,7 +433,7 @@ function Auth_OpenID_discoverWithYadis($uri, &$fetcher,
     $openid_services = array();
 
     $response = call_user_func_array($discover_function,
-                                     array($uri, &$fetcher));
+                                     array($uri, $fetcher));
 
     $yadis_url = $response->normalized_uri;
     $yadis_services = array();
@@ -460,18 +460,18 @@ function Auth_OpenID_discoverWithYadis($uri, &$fetcher,
     }
 
     $openid_services = call_user_func_array($endpoint_filter,
-                                            array(&$openid_services));
+                                            array($openid_services));
 
     return array($yadis_url, $openid_services);
 }
 
-function Auth_OpenID_discoverURI($uri, &$fetcher)
+function Auth_OpenID_discoverURI($uri, $fetcher)
 {
     $uri = Auth_OpenID::normalizeUrl($uri);
     return Auth_OpenID_discoverWithYadis($uri, $fetcher);
 }
 
-function Auth_OpenID_discoverWithoutYadis($uri, &$fetcher)
+function Auth_OpenID_discoverWithoutYadis($uri, $fetcher)
 {
     $http_resp = @$fetcher->get($uri);
 
@@ -490,7 +490,7 @@ function Auth_OpenID_discoverWithoutYadis($uri, &$fetcher)
     return array($identity_url, $openid_services);
 }
 
-function Auth_OpenID_discoverXRI($iname, &$fetcher)
+function Auth_OpenID_discoverXRI($iname, $fetcher)
 {
     $resolver = new Auth_Yadis_ProxyResolver($fetcher);
     list($canonicalID, $yadis_services) =
@@ -513,7 +513,7 @@ function Auth_OpenID_discoverXRI($iname, &$fetcher)
     return array($iname, $openid_services);
 }
 
-function Auth_OpenID_discover($uri, &$fetcher)
+function Auth_OpenID_discover($uri, $fetcher)
 {
     // If the fetcher (i.e., PHP) doesn't support SSL, we can't do
     // discovery on an HTTPS URL.
