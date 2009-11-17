@@ -13,6 +13,7 @@
 	* Fixed bug #12517: Password change in User tools -> User setup impossible if rsaauth and saltedpassword are installed
 	* Fixed bug #12608: User settings module reports changed password and settings if there was no change at all
 	* Fixed bug #4466: Index on tx_realurl_uniqalias breaks with DBAL (thanks to Xavier Perseguers)
+	* Raised DBAL version from 0.9.25 to 1.0.0
 
 2009-11-17  Benjamin Mack  <benni@typo3.org>
 
