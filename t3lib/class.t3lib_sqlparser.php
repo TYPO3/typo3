@@ -466,7 +466,7 @@ class t3lib_sqlparser {
 						break;
 						case 'KEY':
 							if ($keyName = $this->nextPart($parseString, '^([[:alnum:]_]+)([[:space:]]+|\()'))	{
-								$result['KEYS'][$keyName] = $this->getValue($parseString,'_LIST');
+								$result['KEYS'][$keyName] = $this->getValue($parseString, '_LIST', 'INDEX');
 								if ($this->parse_error)	{ return $this->parse_error; }
 							} else return $this->parseError('No keyname found',$parseString);
 						break;
@@ -1085,9 +1085,10 @@ class t3lib_sqlparser {
 	 *
 	 * @param	string		The parseString, eg. "(0,1,2,3) ..." or "('asdf','qwer') ..." or "1234 ..." or "'My string value here' ..."
 	 * @param	string		The comparator used before. If "NOT IN" or "IN" then the value is expected to be a list of values. Otherwise just an integer (un-quoted) or string (quoted)
+	 * @param	string		The mode, eg. "INDEX"
 	 * @return	mixed		The value (string/integer). Otherwise an array with error message in first key (0)
 	 */
-	protected function getValue(&$parseString, $comparator = '') {
+	protected function getValue(&$parseString, $comparator = '', $mode = '') {
 		$value = '';
 
 		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(str_replace(array(' ',"\n","\r","\t"),'',$comparator))))	{	// List of values:
@@ -1097,6 +1098,10 @@ class t3lib_sqlparser {
 
 				while($comma==',')	{
 					$listValues[] = $this->getValue($parseString);
+					if ($mode === 'INDEX') {
+							// Remove any length restriction on INDEX definition
+						$this->nextPart($parseString, '^([(]\d+[)])');
+					}
 					$comma = $this->nextPart($parseString,'^([,])');
 				}
 
