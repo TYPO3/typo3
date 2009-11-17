@@ -1,3 +1,7 @@
+2009-11-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit-test for bug #4466: Index on tx_realurl_uniqalias breaks with DBAL
+
 2009-11-16  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Now using Core dispatcher for backend module (thanks to Oliver Hader)

@@ -244,5 +244,32 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
+	/** 
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=4466
+	 */
+	public function indexMayContainALengthRestriction() {
+		$parseString = '
+			CREATE TABLE tx_realurl_uniqalias (
+				uid int(11) NOT NULL auto_increment,
+				tstamp int(11) DEFAULT \'0\' NOT NULL,
+				tablename varchar(60) DEFAULT \'\' NOT NULL,
+				field_alias varchar(255) DEFAULT \'\' NOT NULL,
+				field_id varchar(60) DEFAULT \'\' NOT NULL,
+				value_alias varchar(255) DEFAULT \'\' NOT NULL,
+				value_id int(11) DEFAULT \'0\' NOT NULL,
+				lang int(11) DEFAULT \'0\' NOT NULL,
+				expire int(11) DEFAULT \'0\' NOT NULL,
+
+				PRIMARY KEY (uid),
+				KEY tablename (tablename),
+				KEY bk_realurl01 (field_alias,field_id,value_id,lang,expire),
+				KEY bk_realurl02 (tablename,field_alias,field_id,value_alias(220),expire)
+			);
+		';
+
+		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
+		$this->assertTrue(is_array($createTables), $createTables);
+	}
 }
 ?>
