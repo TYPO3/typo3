@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for extension 'saltedpasswords'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="ext.saltedpasswords.title.tx_saltedpasswords_salts_phpass">Portable PHP password hashing (phpass)</label>
+			<label index="ext.saltedpasswords.title.tx_saltedpasswords_salts_md5">MD5 salted hashing (secure)</label>
+			<label index="ext.saltedpasswords.title.tx_saltedpasswords_salts_blowfish">Blowfish salted hashing (advanced)</label>
+		</languageKey>
+	</data>
+</T3locallang>

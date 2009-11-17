@@ -16,6 +16,7 @@
 	* Raised DBAL version from 0.9.25 to 1.0.0
 	* Raised Extbase and Fluid versions from 0.9.17 to 1.0.0
 	* !!! Moved Advanced Frontend Editing to TER
+	* Integrated saltedpasswords completely instead of using svn:externals
 
 2009-11-17  Benjamin Mack  <benni@typo3.org>
 
