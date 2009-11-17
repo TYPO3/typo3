@@ -574,7 +574,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 						if ($this->checkIfAllowed($fI['fileext'], $theDest, $fI['file'])) {
 							if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile))	{
 								if ($this->PHPFileFunctions)	{
-									rename($theFile, $theDestFile);
+									@rename($theFile, $theDestFile);
 								} else {
 									$cmd = 'mv "'.$theFile.'" "'.$theDestFile.'"';
 									exec($cmd);
@@ -607,7 +607,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 							if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile)==$this->is_webPath($theFile))	{	// // no moving of folders between spaces
 								if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile))	{
 									if ($this->PHPFileFunctions)	{
-										rename($theFile, $theDestFile);
+										@rename($theFile, $theDestFile);
 									} else {
 										$cmd = 'mv "'.$theFile.'" "'.$theDestFile.'"';
 										$errArr = array();
