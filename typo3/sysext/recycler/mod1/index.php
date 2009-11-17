@@ -178,7 +178,6 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	 * @return	array		The JavaScript configuration
 	 */
 	protected function getJavaScriptConfiguration() {
-		$gridHeight = isset($GLOBALS['BE_USER']->uc['recyclerGridHeight']) && intval($GLOBALS['BE_USER']->uc['recyclerGridHeight']) ? intval($GLOBALS['BE_USER']->uc['recyclerGridHeight']) : 600;
 		$configuration = array(
 			'pagingSize' => $this->recordsPageLimit,
 			'showDepthMenu' => 1,
@@ -190,7 +189,6 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			'deleteDisable' => $this->allowDelete ? 0 : 1,
 			'depthSelection' => $this->getDataFromSession('depthSelection', 0),
 			'tableSelection' => $this->getDataFromSession('tableSelection', 'pages'),
-			'gridHeight' => $gridHeight,
 		);
 		return $configuration;
 	}

@@ -7,7 +7,6 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="moduleFunction.tx_recycler_modfunc1">Recycler</label>
-			<label index="userSettings.RecyclerHeight">Height of Recycler Grid</label>
 		</languageKey>
 	</data>
 </T3locallang>

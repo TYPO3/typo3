@@ -260,7 +260,6 @@ Recycler.grid = {
 			layout: 'fit',
 			renderTo: Recycler.statics.renderTo,
 			width: '98%',
-			height: parseInt(Recycler.statics.gridHeight),
 			frame: true,
 			border: true,
 			defaults: {autoScroll: false},
@@ -485,6 +484,9 @@ Ext.ux.plugins.FitToParent = Ext.extend(Object, {
 		}
 	},
 	fitSizeToParent : function() {
+		// Uses the dimension of the current viewport, but removes the document header
+		// and an addtional margin of 40 pixels (e.g. Safari needs this addition)
+		this.fitToElement.setHeight(document.viewport.getHeight() - this.fitToElement.getTop() - 40);
 		var pos = this.getPosition(true), size = this.fitToElement
 				.getViewSize();
 		this.setSize(size.width - pos[0], size.height - pos[1]);
