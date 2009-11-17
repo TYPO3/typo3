@@ -99,7 +99,12 @@
 // *******************************
 // Set error reporting
 // *******************************
-error_reporting (E_ALL ^ E_NOTICE);
+if (defined('E_DEPRECATED')) {
+	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+} else {
+	error_reporting(E_ALL ^ E_NOTICE);
+}
+
 define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend administration for the sites of this TYPO3 installation.
 
 

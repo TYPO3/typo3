@@ -261,7 +261,11 @@ class t3lib_div {
 
 
 
-	error_reporting (E_ALL ^ E_NOTICE);
+if (defined('E_DEPRECATED')) {
+	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+} else {
+	error_reporting(E_ALL ^ E_NOTICE);
+}
 
 define("TYPO3_OS", stristr(PHP_OS,"win")&&!stristr(PHP_OS,"darwin")?"WIN":"");
 /*
