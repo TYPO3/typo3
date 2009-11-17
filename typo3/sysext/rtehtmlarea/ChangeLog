@@ -1,6 +1,7 @@
 2009-11-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12619: htmlArea RTE: JS error raised by spell checker
+	* Fixed bug #12622: htmlArea RTE: Incorrect behaviour of last item of list in gecko browsers
 
 2009-11-15  Stanislas Rolland  <typo3@sjbr.ca>
 

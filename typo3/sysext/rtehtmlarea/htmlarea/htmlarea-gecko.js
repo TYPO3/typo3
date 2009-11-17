@@ -689,13 +689,13 @@ HTMLArea.prototype._checkInsertP = function() {
 				if (!HTMLArea.is_opera) {
 					p.innerHTML = "<br />";
 				}
-			}
-			if(/^li$/i.test(p.nodeName) && left_empty && !block.nextSibling) {
-				left = block.parentNode;
-				left.removeChild(block);
-				range.setEndAfter(left);
-				range.collapse(false);
-				p = this.convertNode(p, /^(li|dd|td|th)$/i.test(left.parentNode.nodeName) ? "br" : "p");
+				if(/^li$/i.test(p.nodeName) && left_empty && !block.nextSibling) {
+					left = block.parentNode;
+					left.removeChild(block);
+					range.setEndAfter(left);
+					range.collapse(false);
+					p = this.convertNode(p, /^(li|dd|td|th)$/i.test(left.parentNode.nodeName) ? "br" : "p");
+				}
 			}
 			range.insertNode(df);
 				// Remove any anchor created empty
