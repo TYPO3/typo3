@@ -16,6 +16,7 @@
 
 2009-11-17  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #10119: Broken fe_adminLib.inc
 	* Fixed bug #12616: Set recycler height dynamic
 	* Fixed bug #12624: Unreplaced marker in login screen of classic skin
 

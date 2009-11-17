@@ -996,6 +996,10 @@ class user_feAdmin	{
 			$templateCode = $this->removeRequired($templateCode,$failure);
 			$this->setCObjects($templateCode);
 
+			if (!is_array($this->dataArr)) {
+				$this->dataArr = array();
+			}
+			
 			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->dataArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 			if ($this->conf['create.']['preview'] && !$this->previewLabel)	{$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="preview" value="1" />';}
 			$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
