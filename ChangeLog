@@ -15,6 +15,7 @@
 	* Fixed bug #4466: Index on tx_realurl_uniqalias breaks with DBAL (thanks to Xavier Perseguers)
 	* Raised DBAL version from 0.9.25 to 1.0.0
 	* Raised Extbase and Fluid versions from 0.9.17 to 1.0.0
+	* !!! Moved Advanced Frontend Editing to TER
 
 2009-11-17  Benjamin Mack  <benni@typo3.org>
 
