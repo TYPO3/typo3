@@ -943,6 +943,24 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		$jsLibs = $this->renderJsLibraries();
 
+		// preRenderHook for possible manuipulation
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
+			$params = array (
+				'jsLibsCore'     => &$jsLibs,
+				'jsLibs'         => &$this->jsLibs,
+				'jsFiles'        => &$this->jsFiles,
+				'jsFooterFiles'  => &$this->jsFiles,
+				'cssFiles'       => &$this->cssFiles,
+				'headerData'     => &$this->headerData,
+				'footerData'     => &$this->footerData,
+				'jsInline'       => &$this->jsInline,
+				'cssInline'      => &$this->cssInline,
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'] as $hook) {
+				t3lib_div::callUserFunction($hook, $params, $this);
+			}
+		}
+
 		if ($this->compressCss || $this->compressJavascript) {
 				// do the file compression
 			$this->doCompress();
