@@ -16,6 +16,7 @@
 			<label index="headline">Login to the TYPO3 Backend on ###SITENAME###</label>
 			<label index="info.about">This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</label>
 			<label index="info.reset">Reset this form</label>
+			<label index="info.cookies_and_js">(Note: Cookies and JavaScript must be enabled!)</label>
 			<label index="clear">Clear this field!</label>
 			<label index="newsheadline">Important Messages:</label>
 			<label index="error.login">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</label>

@@ -318,6 +318,7 @@ class SC_index {
 			'HEADLINE'         => $GLOBALS['LANG']->getLL('headline', true),
 			'INFO_ABOUT'       => $GLOBALS['LANG']->getLL('info.about', true),
 			'INFO_RELOAD'      => $GLOBALS['LANG']->getLL('info.reset', true),
+			'INFO'             => $GLOBALS['LANG']->getLL('info.cookies_and_js', true),
 			'ERROR_JAVASCRIPT' => $GLOBALS['LANG']->getLL('error.javascript', true),
 			'ERROR_COOKIES'    => $GLOBALS['LANG']->getLL('error.cookies', true),
 			'ERROR_COOKIES_IGNORE' => $GLOBALS['LANG']->getLL('error.cookies_ignore', true),
