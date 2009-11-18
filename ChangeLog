@@ -1,3 +1,7 @@
+2009-11-18  Oliver Hader  <oliver@typo3.org>
+
+	* Release of TYPO3 4.3.0RC1
+
 2009-11-18  Benjamin Mack  <benni@typo3.org>
 
 	* !!! Fixed bug #12648: Introduce t3lib_utility_Http for all related constants and make the core aware of these changes (patch by Ingo Renner)
