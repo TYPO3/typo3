@@ -21,6 +21,7 @@
 	* Raised Extbase and Fluid versions from 0.9.17 to 1.0.0
 	* !!! Moved Advanced Frontend Editing to TER
 	* Integrated saltedpasswords completely instead of using svn:externals
+	* Follow-up to bugfix #12648: PHP class file of t3lib_utility_Http is missing
 
 2009-11-17  Benjamin Mack  <benni@typo3.org>
 
