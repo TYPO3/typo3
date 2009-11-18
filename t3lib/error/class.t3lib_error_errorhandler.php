@@ -119,7 +119,9 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 
 				// Write error message to the configured syslogs,
 				// see: $TYPO3_CONF_VARS['SYS']['systemLog']
-			t3lib_div::sysLog($message, $logTitle, $severity);
+			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['syslogErrorReporting']) {
+				t3lib_div::sysLog($message, $logTitle, $severity);
+			}
 
 				// In case an error occurs before a database connection exists, try
 				// to connect to the DB to be able to write an entry to devlog/sys_log
@@ -137,7 +139,9 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 				$GLOBALS['TT']->setTSlogMessage($logTitle . ': ' . $message, $severity + 1);
 			}
 				// Write error message to sys_log table (ext: belog, Tools->Log)
-			$this->writeLog($logTitle . ': ' . $message, $severity);
+			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
+				$this->writeLog($logTitle . ': ' . $message, $severity);
+			}
 
 				// Add error message to the flashmessageQueue
 			if (TYPO3_ERRORHANDLER_MODE == 'debug') {

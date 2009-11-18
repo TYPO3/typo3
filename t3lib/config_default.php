@@ -165,6 +165,8 @@ $TYPO3_CONF_VARS = array(
 		'exceptionalErrors' => E_ALL ^ E_NOTICE ^ E_WARNING ^ E_USER_ERROR ^ E_USER_NOTICE ^ E_USER_WARNING,	// Integer: The E_* constant that will be handled as an exception by t3lib_error_ErrorHandler. Default is "E_ALL ^ E_NOTICE ^ E_WARNING ^ E_USER_ERROR ^ E_USER_NOTICE ^ E_USER_WARNING" (4341) and "0" if displayError=0. Some values for errors: E_ALL=6143, E_ALL ^ E_NOTICE ^ E_WARNING=6133. See php documentation for more details on this integer.
 		'enable_errorDLOG' => 0,				// Boolean: If set, errors are written to the developer log (requires an installed *devlog* extension).
 		'enable_exceptionDLOG' => 0,			// Boolean: If set, exceptions are written to the developer log (requires an installed *devlog* extension).
+		'syslogErrorReporting' => E_ALL ^ E_NOTICE,	// Integer: Configures which PHP errors should be logged to the configured syslogs (see: [SYS][systemLog]). If set to "0" no PHP errors are logged to the syslog. Default is "E_ALL ^ E_NOTICE" (6135).
+		'belogErrorReporting' => E_ALL ^ E_NOTICE,	// Integer: Configures which PHP errors should be logged to the "syslog" table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is "E_ALL ^ E_NOTICE" (6135).
 		'locallangXMLOverride' => array(),				// For extension/overriding of the arrays in 'locallang' files in frontend and backend. See 'Inside TYPO3' for more information.
 	),
 	'EXT' => array (	// Options related to the Extension Management
