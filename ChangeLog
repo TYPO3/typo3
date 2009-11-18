@@ -1,3 +1,7 @@
+2009-11-18  Francois Suter  <francois@typo3.org>
+
+	* Follow-up to bugfix #12426: Reports: One localized label wrongfully contained a copy of another label
+
 2009-11-18  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.0RC1
