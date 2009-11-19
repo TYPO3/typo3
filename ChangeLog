@@ -1,3 +1,7 @@
+2009-11-20  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #12676: Validation issue in sysext opendocs: Missing htmlspecialchars of href parameter
+
 2009-11-18  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to bugfix #12426: Reports: One localized label wrongfully contained a copy of another label

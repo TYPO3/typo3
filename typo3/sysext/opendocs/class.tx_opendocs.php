@@ -160,7 +160,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$record = t3lib_BEfunc::getRecordWSOL($table, $uid);
 		$label  = htmlspecialchars(strip_tags(t3lib_div::htmlspecialchars_decode($document[0])));
 		$icon   = t3lib_iconWorks::getIconImage($table, $record, $GLOBALS['BACK_PATH']);
-		$link   = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $document[2];
+		$link   = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . htmlspecialchars($document[2]);
 
 		$firstRow = '';
 		if ($isFirstDoc) {
