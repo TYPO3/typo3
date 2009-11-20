@@ -1,5 +1,6 @@
 2009-11-20  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bugs #5044/#11142: Column's default value is not properly quoted in CREATE TABLE
 	* Added unit-test for bug #12670: Columns with NOT NULL are created as NULLable
 
 2009-11-17  Xavier Perseguers  <typo3@perseguers.ch>

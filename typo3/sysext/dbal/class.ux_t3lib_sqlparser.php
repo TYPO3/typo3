@@ -613,6 +613,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				}
 
 					// Add additional features:
+				$noQuote = TRUE;
 				if (is_array($fieldCfg['featureIndex'])) {
 
 						// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
@@ -651,11 +652,16 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								$cfg .= ' "\'\'"';
 							} else {
 								$cfg .= ' ' . $featureDef['value'][1] . $this->compileAddslashes($featureDef['value'][0]) . $featureDef['value'][1];
+								if (!is_numeric($featureDef['value'][0])) {
+									$noQuote = FALSE;
+								}
 							}
 						}
 					}
 				}
-				$cfg .= ' NOQUOTE';
+				if ($noQuote) {
+					$cfg .= ' NOQUOTE';
+				}
 				break;
 		}
 
