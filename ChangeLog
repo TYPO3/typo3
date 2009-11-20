@@ -1,3 +1,7 @@
+2009-11-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12677: htmlArea RTE: Incorrect cursor position after backspace/delete in Firefox
+
 2009-11-17  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11937: Do not show PHP 5.3 E_DEPRECATED messages on productive systems
