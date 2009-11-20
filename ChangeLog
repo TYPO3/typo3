@@ -1,3 +1,7 @@
+2009-11-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12684: htmlArea RTE: Repeated character / backspacing is slow in Firefox
+
 2009-11-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #12676: Validation issue in sysext opendocs: Missing htmlspecialchars of href parameter
