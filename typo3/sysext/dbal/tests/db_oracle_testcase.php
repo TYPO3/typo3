@@ -61,9 +61,12 @@ class db_oracle_testcase extends BaseTestCase {
 
 		$className =  self::buildAccessibleProxy('ux_t3lib_db');
 		$GLOBALS['TYPO3_DB'] = new $className;
+		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
+		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName;
 
 			// Initialize a fake Oracle connection
 		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
+
 		$this->assertTrue($GLOBALS['TYPO3_DB']->handlerInstance['_DEFAULT']->isConnected());
 	}
 
@@ -92,7 +95,7 @@ class db_oracle_testcase extends BaseTestCase {
 
 		$sql = str_replace("\n", ' ', $sql);
 		$sql = preg_replace('/\s+/', ' ', $sql);
-		return $sql;
+		return trim($sql);
 	}
 
 	/**
@@ -281,4 +284,53 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12670
+	 */
+	public function notNullableColumnsWithDefaultEmptyStringAreCreatedAsNullable() {
+		$parseString = '
+			CREATE TABLE tx_realurl_uniqalias (
+				uid int(11) NOT NULL auto_increment,
+				tstamp int(11) DEFAULT \'0\' NOT NULL,
+				tablename varchar(60) DEFAULT \'\' NOT NULL,
+				field_alias varchar(255) DEFAULT \'\' NOT NULL,
+				field_id varchar(60) DEFAULT \'\' NOT NULL,
+				value_alias varchar(255) DEFAULT \'\' NOT NULL,
+				value_id int(11) DEFAULT \'0\' NOT NULL,
+				lang int(11) DEFAULT \'0\' NOT NULL,
+				expire int(11) DEFAULT \'0\' NOT NULL,
+
+				PRIMARY KEY (uid),
+				KEY tablename (tablename),
+				KEY bk_realurl01 (field_alias,field_id,value_id,lang,expire),
+				KEY bk_realurl02 (tablename,field_alias,field_id,value_alias(220),expire)
+			);
+		';
+
+		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseCREATETABLE', $parseString);
+		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
+
+		$sqlCommands = $GLOBALS['TYPO3_DB']->SQLparser->_call('compileCREATETABLE', $components);
+		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
+		$this->assertEquals(4, count($sqlCommands));
+
+		$expected = $this->cleanSql('
+			CREATE TABLE "tx_realurl_uniqalias" (
+				"uid" NUMBER(20) NOT NULL,
+				"tstamp" NUMBER(20) DEFAULT 0,
+				"tablename" VARCHAR(60) DEFAULT \'\',
+				"field_alias" VARCHAR(255) DEFAULT \'\',
+				"field_id" VARCHAR(60) DEFAULT \'\',
+				"value_alias" VARCHAR(255) DEFAULT \'\',
+				"value_id" NUMBER(20) DEFAULT 0,
+				"lang" NUMBER(20) DEFAULT 0,
+				"expire" NUMBER(20) DEFAULT 0,
+				PRIMARY KEY ("uid")
+			)
+		');
+		$this->assertEquals($expected, $this->cleanSql($sqlCommands[0]));
+	}
 }
+?>

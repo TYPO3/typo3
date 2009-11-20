@@ -53,6 +53,11 @@ class FakeDbConnection {
 		$handlerKey = '_DEFAULT';
 		$db->lastHandlerKey = $handlerKey;
 		$db->handlerInstance[$handlerKey] = t3lib_div::makeInstance('ADODB_' . $driver);
+
+			// From method handler_init()
+		$db->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($db->handlerInstance[$handlerKey]);
+
+			// DataDictionary being set, a connectionID may be arbitrarily chosen
 		$db->handlerInstance[$handlerKey]->_connectionID = rand(1, 1000);
 	}
 

@@ -94,7 +94,7 @@ class db_general_testcase extends BaseTestCase {
 
 		$sql = str_replace("\n", ' ', $sql);
 		$sql = preg_replace('/\s+/', ' ', $sql);
-		return $sql;
+		return trim($sql);
 	}
 
 	/**
