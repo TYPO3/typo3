@@ -1,3 +1,7 @@
+2009-11-20  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit-test for bug #12670: Columns with NOT NULL are created as NULLable
+
 2009-11-17  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.0.0 (stable)
