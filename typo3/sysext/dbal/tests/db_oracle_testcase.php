@@ -332,5 +332,44 @@ class db_oracle_testcase extends BaseTestCase {
 		');
 		$this->assertEquals($expected, $this->cleanSql($sqlCommands[0]));
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=11142
+	 * @see http://bugs.typo3.org/view.php?id=12670
+	 */
+	public function defaultValueIsProperlyQuotedInCreateTable() {
+		$parseString = '
+			CREATE TABLE tx_test (
+				uid int(11) NOT NULL auto_increment,
+				lastname varchar(60) DEFAULT \'unknown\' NOT NULL,
+				firstname varchar(60) DEFAULT \'\' NOT NULL,
+				language varchar(2) NOT NULL,
+				tstamp int(11) DEFAULT \'0\' NOT NULL,
+				
+				PRIMARY KEY (uid),
+				KEY name (name)
+			);
+		';
+
+		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseCREATETABLE', $parseString);
+		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
+	
+		$sqlCommands = $GLOBALS['TYPO3_DB']->SQLparser->_call('compileCREATETABLE', $components);
+		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
+		$this->assertEquals(2, count($sqlCommands));
+
+		$expected = $this->cleanSql('
+			CREATE TABLE "tx_test" (
+				"uid" NUMBER(20) NOT NULL,
+				"lastname" VARCHAR(60) DEFAULT \'unknown\',
+				"firstname" VARCHAR(60) DEFAULT \'\',
+				"language" VARCHAR(2) NOT NULL,
+				"tstamp" NUMBER(20) DEFAULT 0,
+				PRIMARY KEY ("uid")
+			)
+		');
+		$this->assertEquals($expected, $this->cleanSql($sqlCommands[0]));
+	}
 }
 ?>
