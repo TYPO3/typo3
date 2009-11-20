@@ -2,6 +2,10 @@
 
 	* Fixed bug #12676: Validation issue in sysext opendocs: Missing htmlspecialchars of href parameter
 
+2009-11-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12677: htmlArea RTE: Incorrect cursor position after backspace/delete in Firefox
+
 2009-11-18  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to bugfix #12426: Reports: One localized label wrongfully contained a copy of another label

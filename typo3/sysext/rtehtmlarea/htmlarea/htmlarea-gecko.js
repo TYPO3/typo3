@@ -569,39 +569,40 @@ HTMLArea.NestedHandler = function(ev,editor,nestedObj,noOpenCloseAction) {
  * Backspace event handler
  */
 HTMLArea.prototype._checkBackspace = function() {
-	var self = this;
-	self.focusEditor();
-	var sel = self._getSelection();
-	var range = self._createRange(sel);
-	var SC = range.startContainer;
-	var SO = range.startOffset;
-	var EC = range.endContainer;
-	var EO = range.endOffset;
-	var newr = SC.nextSibling;
-	while (SC.nodeType == 3 || /^a$/i.test(SC.tagName)) SC = SC.parentNode;
-	if (!self.config.disableEnterParagraphs && /^td$/i.test(SC.parentNode.tagName) && SC.parentNode.firstChild == SC && SO == 0 && range.collapsed) return true;
-	window.setTimeout(function() {
-			// Remove br tag inserted by Mozilla
-		if (!self.config.disableEnterParagraphs && (/^p$/i.test(SC.tagName) || !/\S/.test(SC.tagName)) && SO == 0) {
-			if (SC.firstChild && /^br$/i.test(SC.firstChild.tagName)) {
-				HTMLArea.removeFromParent(SC.firstChild);
-				return true;
+	if (!HTMLArea.is_safari && !HTMLArea.is_opera) {
+		var self = this;
+		window.setTimeout(function() {
+			var selection = self._getSelection();
+			var range = self._createRange(selection);
+			var startContainer = range.startContainer;
+			var startOffset = range.startOffset;
+			if (self._selectionEmpty()) {
+				if (/^(body)$/i.test(startContainer.nodeName)) {
+					var node = startContainer.childNodes[startOffset];
+				} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
+					var node = startContainer;
+				} else {
+					return false;
+				}
+				if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
+					var previousSibling = node.previousSibling;
+					while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
+						previousSibling = previousSibling.previousSibling;
+					}
+					HTMLArea.removeFromParent(node);
+					if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
+						self.selectNodeContents(previousSibling.lastChild, false);
+					} else if (/^(table)$/i.test(previousSibling.nodeName)) {
+						self.selectNodeContents(previousSibling.rows[previousSibling.rows.length-1].cells[previousSibling.rows[previousSibling.rows.length-1].cells.length-1], false);
+					} else if (!/\S/.test(previousSibling.textContent) && previousSibling.firstChild) {
+						self.selectNode(previousSibling.firstChild, true);
+					} else {
+						self.selectNodeContents(previousSibling, false);
+					}
+				}
 			}
-		}
-		if (!/\S/.test(SC.tagName)) {
-			var p = document.createElement("p");
-			while (SC.firstChild) p.appendChild(SC.firstChild);
-			SC.parentNode.insertBefore(p, SC);
-			HTMLArea.removeFromParent(SC);
-			var r = range.cloneRange();
-			r.setStartBefore(newr);
-			r.setEndAfter(newr);
-			r.extractContents();
-			this.emptySelection(sel);
-			this.addRangeToSelection(sel, r);
-			return true;
-		}
-	},10);
+		}, 10);
+	}
 	return false;
 };
 
