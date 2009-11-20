@@ -364,12 +364,31 @@ class db_oracle_testcase extends BaseTestCase {
 				"uid" NUMBER(20) NOT NULL,
 				"lastname" VARCHAR(60) DEFAULT \'unknown\',
 				"firstname" VARCHAR(60) DEFAULT \'\',
-				"language" VARCHAR(2) NOT NULL,
+				"language" VARCHAR(2) DEFAULT \'\',
 				"tstamp" NUMBER(20) DEFAULT 0,
 				PRIMARY KEY ("uid")
 			)
 		');
 		$this->assertEquals($expected, $this->cleanSql($sqlCommands[0]));
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=5708
+	 */
+	public function fieldIsMappedOnRightSideOfAJoinCondition() {
+		$selectFields = 'cpg_categories.uid, cpg_categories.name';
+		$fromTables   = 'cpg_categories, pages';
+		$whereClause  = 'pages.uid = cpg_categories.pid AND pages.deleted = 0 AND 1 = 1';
+		$groupBy      = '';
+		$orderBy      = 'cpg_categories.pos';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "pages" WHERE "pages"."uid" = "cpg_categories"."page_id"';
+		$expected .= ' AND "pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
+		$this->assertEquals($expected, $query);
 	}
 }
 ?>

@@ -1,5 +1,6 @@
 2009-11-20  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Added unit-test for bug #5708: Fieldmapping doesn't work on the "right side" in where clause with table.field
 	* Fixed bugs #5044/#11142: Column's default value is not properly quoted in CREATE TABLE
 	* Added unit-test for bug #12670: Columns with NOT NULL are created as NULLable
 
