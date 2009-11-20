@@ -24,6 +24,11 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 	'cachingframework_cache_hash' => array(
 		'mapTableName' => 'cf_cache_hash',
 	),
+	'cpg_categories' => array(
+		'mapFieldNames' => array(
+			'pid' => 'page_id',
+		),
+	),
 	'tt_news' => array(
 		'mapTableName' => 'ext_tt_news',
 		'mapFieldNames' => array(
