@@ -2043,6 +2043,7 @@ HTMLArea._editorEvent = function(ev) {
 	}
 	var editor = RTEarea[owner._editorNo]["editor"];
 	var keyEvent = ((HTMLArea.is_ie || HTMLArea.is_safari) && ev.type == "keydown") || (HTMLArea.is_gecko && ev.type == "keypress");
+	var mouseEvent = (ev.type == "mousedown" || ev.type == "mouseup");
 	editor.focusEditor();
 
 	if(keyEvent) {
@@ -2143,7 +2144,7 @@ HTMLArea._editorEvent = function(ev) {
 						}
 							// update the toolbar state after some time
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 100);
+						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 200);
 						return false;
 					}
 					break;
@@ -2154,7 +2155,7 @@ HTMLArea._editorEvent = function(ev) {
 					}
 						// update the toolbar state after some time
 					if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-					editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 50);
+					editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 200);
 					break;
 				case 9: // KEY horizontal tab
 					var newkey = (ev.shiftKey ? "SHIFT-" : "") + "TAB";
@@ -2171,7 +2172,7 @@ HTMLArea._editorEvent = function(ev) {
 				case 40: // DOWN arrow key
 					if (HTMLArea.is_ie || HTMLArea.is_safari) {
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 10);
+						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 200);
 						return true;
 					}
 					break;
@@ -2193,7 +2194,7 @@ HTMLArea._editorEvent = function(ev) {
 			}
 			return true;
 		}
-	} else {
+	} else if (mouseEvent) {
 			// mouse event
 		if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
 		if (ev.type == "mouseup") editor.updateToolbar();
