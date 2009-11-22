@@ -2619,50 +2619,50 @@ final class t3lib_BEfunc {
 	 * @return	string
 	 */
 	public static function viewOnClick($id, $backPath = '', $rootLine = '', $anchor = '', $altUrl = '', $addGetVars = '', $switchFocus = TRUE) {
+
+		$viewScriptPreviewEnabled  = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
+		$viewScriptPreviewDisabled = '/index.php?id=';
+
 		if ($altUrl) {
-			$url = $altUrl;
-		} else {
-
-			$viewScriptPreviewEnabled  = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
-			$viewScriptPreviewDisabled = '/index.php?id=';
-
-				// check alternate Domains
-			if ($rootLine)  {
-				$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-				if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path']))    {
-					$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
-				}
+			$viewScriptPreviewEnabled = $viewScriptPreviewDisabled = $altUrl;
+		}
+			// check alternate Domains
+		if ($rootLine)  {
+			$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+			if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path']))    {
+				$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
 			}
-			$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
+		}
+		$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
 
-				// Look if a fixed preview language should be added:
-			$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
-			if (strlen($viewLanguageOrder))	{
-				$suffix = '';
+			// Look if a fixed preview language should be added:
+		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
+		if (strlen($viewLanguageOrder))	{
+			$suffix = '';
 
-					// Find allowed languages (if none, all are allowed!)
-				if (!$GLOBALS['BE_USER']->user['admin'] &&
-					strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
-					$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
-				}
+				// Find allowed languages (if none, all are allowed!)
+			if (!$GLOBALS['BE_USER']->user['admin'] &&
+				strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
+				$allowed_languages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
+			}
 
-					// Traverse the view order, match first occurence:
-				$lOrder = t3lib_div::intExplode(',',$viewLanguageOrder);
-				foreach($lOrder as $langUid)	{
-					if (is_array($allowed_languages) && count($allowed_languages)) {
-						if (isset($allowed_languages[$langUid])) {	// Choose if set.
-							$suffix = '&L='.$langUid;
-							break;
-						}
-					} else {	// All allowed since no lang. are listed.
+				// Traverse the view order, match first occurence:
+			$lOrder = t3lib_div::intExplode(',',$viewLanguageOrder);
+			foreach($lOrder as $langUid)	{
+				if (is_array($allowed_languages) && count($allowed_languages)) {
+					if (isset($allowed_languages[$langUid])) {	// Choose if set.
 						$suffix = '&L='.$langUid;
 						break;
 					}
+				} else {	// All allowed since no lang. are listed.
+					$suffix = '&L='.$langUid;
+					break;
 				}
-
-					// Add it:
-				$addGetVars.= $suffix;
 			}
+
+				// Add it:
+			$addGetVars.= $suffix;
+
 
 			$urlPreviewEnabled  = $preUrl . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
 			$urlPreviewDisabled = $preUrl . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
