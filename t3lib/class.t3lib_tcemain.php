@@ -3385,7 +3385,9 @@ class t3lib_TCEmain	{
 	 */
 	function copyL10nOverlayRecords($table, $uid, $destPid, $first=0, $overrideValues=array(), $excludeFields='') {
 			//there's no need to perform this for page-records
-		if ($table == 'pages') return;
+		if (!t3lib_BEfunc::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
+			return;
+		}
 		t3lib_div::loadTCA($table);
 
 		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);
