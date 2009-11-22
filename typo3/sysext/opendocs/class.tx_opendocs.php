@@ -160,7 +160,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$record = t3lib_BEfunc::getRecordWSOL($table, $uid);
 		$label  = htmlspecialchars(strip_tags(t3lib_div::htmlspecialchars_decode($document[0])));
 		$icon   = t3lib_iconWorks::getIconImage($table, $record, $GLOBALS['BACK_PATH']);
-		$link   = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . htmlspecialchars($document[2]);
+		$link   = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $document[2];
 
 		$firstRow = '';
 		if ($isFirstDoc) {
@@ -174,17 +174,17 @@ class tx_opendocs implements backend_toolbarItem {
 			$closeIcon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
 
 			$entry = '
-				<tr id="opendocs-' . $table . '-' . $uid . '" class="opendoc' . $firstRow . '">
+				<tr id="opendocs-open-' . $table . '-' . $uid . '" class="opendoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
-					<td class="label"><a href="' . $link . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
+					<td class="label"><a href="' . htmlspecialchars($link) . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
 					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
 				</tr>';
 		} else {
 				// recently used document
 			$entry = '
-				<tr id="opendocs-' . $table . '-' . $uid . '" class="recentdoc' . $firstRow . '">
+				<tr id="opendocs-recent-' . $table . '-' . $uid . '" class="recentdoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
-					<td class="label" colspan="2"><a href="' . $link . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
+					<td class="label" colspan="2"><a href="' . htmlspecialchars($link) . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
 				</tr>';
 		}
 

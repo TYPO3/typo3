@@ -1,3 +1,7 @@
+2009-11-17  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12548: opendocs produce invalid HTML
+
 2009-11-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12684: htmlArea RTE: Repeated character / backspacing is slow in Firefox
