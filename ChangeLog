@@ -1,5 +1,6 @@
 2009-11-22  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bugfix #2314 - moving records doesn't move translations (Thanks to Tolleiv Nietsch)
 	* Fixed bug #12680: final adjustments to MediaCE
 	* Fixed bug #11468: $altUrl parameter has no effect in t3lib_BEfunc::viewOnClick() (Thanks to Fabrizio Branca)
 	* Fixed bug #12548: opendocs produce invalid HTML
