@@ -2664,14 +2664,13 @@ class tslib_cObj {
 			$url = $this->stdWrap($conf['file'], $conf['file.']);
 		}
 
-		$url = $this->typoLink_URL(array('parameter' => $url));
 		$mode = is_file(PATH_site . $url) ? 'file' : 'url';
 		if ($mode === 'file') {
 			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
 			$fileinfo = t3lib_div::split_fileref($filename);
-			$conf['file'] = rawurlencode($filename);
+			$conf['file'] = $filename;
 		} else {
-			$conf['file'] = rawurlencode($url);
+			$conf['file'] = $this->typoLink_URL(array('parameter' => $url));
 		}
 
 		$renderType = $conf['renderType'];
@@ -2679,6 +2678,8 @@ class tslib_cObj {
 			$renderType = $conf['parameter.']['mmRenderType'];
 		}
 		if ($renderType === 'auto') {
+				// default renderType is swf
+			$renderType = 'swf';
 			$handler = array_keys($conf['fileExtHandler.']);
 			if (in_array($fileinfo['fileext'], $handler)) {
 				$renderType = strtolower($conf['fileExtHandler.'][$fileinfo['fileext']]);
@@ -2686,9 +2687,7 @@ class tslib_cObj {
 		}
 
 		$forcePlayer = isset($conf['parameter.']['mmFile']) ? intval($conf['parameter.']['mmforcePlayer']) :  $conf['forcePlayer'];
-		if (($renderType == 'swf')) {
-			$mode = 'file';
-		}
+		$conf['forcePlayer'] = $forcePlayer;
 
 		$conf['type'] = isset($conf['parameter.']['mmType']) ? $conf['parameter.']['mmType'] : $conf['type'];
 		$mime = $renderType . 'object';
@@ -2759,12 +2758,7 @@ class tslib_cObj {
 				return '<p style="background-color: yellow;">' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xml:media.noFile', true) . '</p>';
 			}
 			$conf = array_merge($conf['mimeConf.']['swfobject.'], $conf);
-			if ($mode == 'url') {
 			$conf[$conf['type'] . '.']['player'] = strpos($url, '://') === false ? 'http://' . $url : $url;
-			} else {
-				$conf[$conf['type'] . '.']['player'] = $url;
-			}
-			$conf['file'] = '';
 			$conf['installUrl'] = 'null';
 			$conf['flashvars'] = array_merge((array) $conf['flashvars'], $conf['predefined']);
 		}
@@ -2832,8 +2826,8 @@ class tslib_cObj {
 		$player = $this->stdWrap($conf[$conf['type'] . '.']['player'], $conf[$conf['type'] . '.']['player.']);
 		$installUrl = $conf['installUrl'] ? $conf['installUrl'] : $prefix . 'typo3/contrib/flashmedia/swfobject/expressInstall.swf';
 		$filename = $this->stdWrap($conf['file'], $conf['file.']);
-		if ($filename) {
-			if (strpos($filename, rawurlencode('://')) !== FALSE) {
+		if ($filename && $conf['forcePlayer']) {
+			if (strpos($filename, '://') !== FALSE) {
 				$conf['flashvars.']['file'] = $filename;
 			} else {
 				if ($prefix) {
@@ -2843,6 +2837,8 @@ class tslib_cObj {
 				}
 
 			}
+		} else {
+			$player = $filename;
 		}
 			// Write calculated values in conf for the hook
 		$conf['player'] = $player;
@@ -6083,9 +6079,9 @@ class tslib_cObj {
 								}
 							}
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
-							
+
 							// Set targetDomain to first found domain record if the target page cannot be reached within the current domain
-							if (count($foundDomains) > 0 
+							if (count($foundDomains) > 0
 							  && (!in_array($currentDomain, $foundDomains) || count($foundForcedDomains) > 0)) {
 								foreach ($targetPageRootlinePids as $pid) {
 									// Always use the 'forced' domain if we found one
@@ -6104,7 +6100,7 @@ class tslib_cObj {
 								}
 							}
 						}
-						
+
 						// If target page has a different domain and the current domain's linking scheme (e.g. simulateStaticDocuments/RealURL/...) should not be used
 						if (strlen($targetDomain) && !$enableLinksAcrossDomains) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
