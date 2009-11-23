@@ -4935,10 +4935,10 @@ class t3lib_TCEforms	{
 	 * Returns divider.
 	 * Currently not implemented and returns only blank value.
 	 *
-	 * @return	string
+	 * @return	string		Empty string
 	 */
-	function getDivider()	{
-		//return "<hr />";
+	function getDivider() {
+		return '';
 	}
 
 	/**
