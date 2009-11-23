@@ -1,3 +1,7 @@
+2009-11-23  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #12699: Upgrade backend login to match t3skin (thanks to T3UXW09 participants)
+
 2009-11-23  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to bugfix #11468: $altUrl parameter has no effect in t3lib_BEfunc::viewOnClick()
