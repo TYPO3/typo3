@@ -1,3 +1,7 @@
+2009-11-23  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #12500: Object does not support method calls - PHP 5.3 (thanks to Dan Osipov)
+
 2009-11-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12684: htmlArea RTE: Repeated character / backspacing is slow in Firefox
