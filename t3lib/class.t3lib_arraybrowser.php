@@ -105,7 +105,7 @@ class t3lib_arrayBrowser	{
 		while (list($key,)=each($arr))	{
 			$a++;
 			$depth = $depth_in.$key;
-			$goto = substr(md5($depth),0,6);
+			$goto = 'a' . substr(md5($depth), 0, 6);
 
 			$deeper = (is_array($arr[$key]) && ($this->depthKeys[$depth] || $this->expAll)) ? 1 : 0;
 			$PM = 'join';
@@ -120,7 +120,7 @@ class t3lib_arrayBrowser	{
 				$HTML.=$theIcon;
 			} else {
 				$HTML.=
-					($this->expAll ? '' : '<a name="'.$goto.'" href="'.htmlspecialchars('index.php?node['.$depth.']='.($deeper?0:1).'#'.$goto).'">').
+					($this->expAll ? '' : '<a id="' . $goto . '" href="' . htmlspecialchars('index.php?node[' . $depth . ']=' . ($deeper ? 0 : 1) . '#' . $goto) . '">') .
 					$theIcon.
 					($this->expAll ? '' : '</a>');
 			}
@@ -159,7 +159,11 @@ class t3lib_arrayBrowser	{
 	 * @return	string		Title string, htmlspecialchars()'ed
 	 */
 	function wrapValue($theValue,$depth)	{
-		return '<b>'.htmlspecialchars($theValue).'</b>';
+		$wrappedValue = '';
+		if (strlen($theValue) > 0) {
+			$wrappedValue = '<b>' . htmlspecialchars($theValue) . '</b>';
+		}
+		return $wrappedValue;
 	}
 
 	/**
@@ -178,7 +182,7 @@ class t3lib_arrayBrowser	{
 			// If varname is set:
 		if ($this->varName && !$this->dontLinkVar) {
 			$variableName = $this->varName.'[\''.str_replace('.','\'][\'',$depth).'\'] = '.(!t3lib_div::testInt($theValue) ? '\''.addslashes($theValue).'\'' : $theValue).'; ';
-			$label = '<a href="'.htmlspecialchars('index.php?varname='.$variableName.'#varname').'">'.$label.'</a>';
+			$label = '<a href="index.php?varname=' . urlencode($variableName) . '#varname">' . $label . '</a>';
 		}
 
 			// Return:
