@@ -170,20 +170,19 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 
 		$content='';
 		$content.='
-		<script language="javascript" type="text/javascript">
+		<script language="javascript" type="text/javascript"><![CDATA[
 			function uFormUrl(aname)	{
 				document.'.$this->ext_CEformName.'.action = "'.t3lib_div::linkThisScript().'#"+aname;
 			}
-		</script>
+		]]</script>
 		';
-		$content .= '<form action="' . ($script ? $script : t3lib_div::linkThisScript()) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
+		$content .= '<form action="' . htmlspecialchars($script ? $script : t3lib_div::linkThisScript()) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		$content.= $addFields;
-#		$content.= '<input type="Submit" name="submit" value="Update"><BR>';
 		$content.= $printFields;
-		$content.= '<input type="Submit" name="submit" value="Update">';
+		$content.= '<input type="Submit" name="submit" value="Update" />';
 
 		$example = $this->ext_displayExample();
-		$content.= $example?'<HR>'.$example:"";
+		$content.= $example?'<hr/>'.$example:"";
 
 		return $content;
 	}

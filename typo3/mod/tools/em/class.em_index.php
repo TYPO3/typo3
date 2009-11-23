@@ -400,7 +400,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			// Setting GPvars:
 		$this->CMD = is_array(t3lib_div::_GP('CMD')) ? t3lib_div::_GP('CMD') : array();
-		$this->lookUpStr = trim(t3lib_div::_GP('_lookUp'));
+		$this->lookUpStr = trim(t3lib_div::_GP('lookUp'));
 		$this->listRemote = t3lib_div::_GP('ter_connect');
 		$this->listRemote_search = trim(t3lib_div::_GP('ter_search'));
 
@@ -608,7 +608,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$menu.='&nbsp;&nbsp;<label for="checkDisplayObsolete">' . $GLOBALS['LANG']->getLL('show_obsolete') . '</label>&nbsp;&nbsp;' . t3lib_BEfunc::getFuncCheck(0, 'SET[display_obsolete]', $this->MOD_SETTINGS['display_obsolete'], '', '', 'id="checkDisplayObsolete"');
 			}
 
-			$this->content.=$this->doc->section('','<form action="index.php" method="post" name="pageform"><span class="nobr">'.$menu.'</span></form>');
+			$this->content.=$this->doc->section('','<form action="index.php" method="post" name="pageform"><span class="nobr">' . ($menu ? $menu : '&nbsp;') . '</span></form>');
 			$this->content.=$this->doc->spacer(10);
 
 			switch((string)$this->MOD_SETTINGS['function'])	{
@@ -766,7 +766,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				}
 				if(count($extensions)) {
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
-					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').' align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
+					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif', 'width="18" height="16"').' align="top" alt="" /><strong>'.htmlspecialchars($this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName)).'</strong></td></tr>';
 					$lines[] = implode(chr(10),$extensions);
 				}
 			}
@@ -774,7 +774,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		$content.= t3lib_BEfunc::cshItem('_MOD_tools_em', 'loaded', $GLOBALS['BACK_PATH'],'');
 		$content.= '<form action="index.php" method="post" name="lookupform">';
-		$content.= '<label for="_lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /><br /><br />';
+		$content.= '<label for="lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /><br /><br />';
 
 		$content.= '</form>
 
@@ -827,7 +827,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				}
 				if(count($extensions)) {
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
-					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').'align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
+					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif', 'width="18" height="16"').'align="top" alt="" /><strong>'.htmlspecialchars($this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName)).'</strong></td></tr>';
 					$lines[] = implode(chr(10),$extensions);
 				}
 			}
@@ -848,7 +848,7 @@ EXTENSION KEYS:
 			$content.= sprintf($GLOBALS['LANG']->getLL('how_to_install'), $this->installButton()) . ' <br />' .
 						sprintf($GLOBALS['LANG']->getLL('how_to_uninstall'), $this->removeButton()). ' <br /><br />';
 			$content .= '<form action="index.php" method="post" name="lookupform">';
-			$content .= '<label for="_lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /></form><br /><br />';
+			$content .= '<label for="lookUp">' . $GLOBALS['LANG']->getLL('look_up') . '</label> <input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->lookUpStr) . '" /><input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:search') . '" /></form><br /><br />';
 			$content.= $this->securityHint.'<br /><br />';
 
 			$content.= '<table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
@@ -902,7 +902,7 @@ EXTENSION KEYS:
 					foreach($cat[$this->MOD_SETTINGS['listOrder']] as $catName => $extEkeys)	{
 						if (count($extEkeys))	{
 							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
-							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif"', 'width="18" height="16"').'align="top" alt="" /><strong>'.$this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName).'</strong></td></tr>';
+							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif', 'width="18" height="16"').'align="top" alt="" /><strong>'.htmlspecialchars($this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName)).'</strong></td></tr>';
 
 							natcasesort($extEkeys);
 							reset($extEkeys);
@@ -948,9 +948,9 @@ EXTENSION KEYS:
 
 						// CSH:
 					$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'], '|<br />');
-					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
+					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['lookUp'].value);return false;";
 					$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
-							'"><label for="_lookUp">' .
+							'"><label for="lookUp">' .
 							sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
 								($this->MOD_SETTINGS['display_unchecked'] ?
 									'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
@@ -958,7 +958,7 @@ EXTENSION KEYS:
 								)
 							) .
 							'</label><br />
-							<input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->listRemote_search) .
+							<input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->listRemote_search) .
 							'" /> <input type="submit" value="' . $GLOBALS['LANG']->getLL('look_up_button') . '" /></form><br /><br />';
 
  					$content .= $this->browseLinks();
@@ -1005,9 +1005,9 @@ EXTENSION KEYS:
 				}
 			} else {
 				$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'], '|<br />');
-				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
+				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['lookUp'].value);return false;";
 				$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
-					'"><label for="_lookUp">' .
+					'"><label for="lookUp">' .
 					sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
 						($this->MOD_SETTINGS['display_unchecked'] ?
 							'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
@@ -1015,7 +1015,7 @@ EXTENSION KEYS:
 						)
 					) .
 					'</label><br />
-					<input type="text" id="_lookUp" name="_lookUp" value="' . htmlspecialchars($this->listRemote_search) .
+					<input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->listRemote_search) .
 					'" /> <input type="submit" value="' . $GLOBALS['LANG']->getLL('look_up_button') . '" /></form><br /><br />';
 
 				$content .= '<p><strong>' . $GLOBALS['LANG']->getLL('no_matching_extensions') . '</strong></p>';
@@ -1029,9 +1029,9 @@ EXTENSION KEYS:
 				// CSH
 			$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import', $GLOBALS['BACK_PATH'], '|<br />');
 
-			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['_lookUp'].value);return false;";
+			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['lookUp'].value);return false;";
 			$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
-				'"><label for="_lookUp">' .
+				'"><label for="lookUp">' .
 				sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
 					($this->MOD_SETTINGS['display_unchecked'] ?
 						'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
@@ -1039,7 +1039,7 @@ EXTENSION KEYS:
 					)
 				) .
 				'</label><br />
-				<input type="text" id="_lookUp" name="_lookUp" value="" /> <input type="submit" value="' .
+				<input type="text" id="lookUp" name="lookUp" value="" /> <input type="submit" value="' .
 				$GLOBALS['LANG']->getLL('look_up_button') . '" /><br /><br />';
 
 			if ($this->CMD['fetchMetaData'])	{	// fetches mirror/extension data from online rep.
@@ -1167,10 +1167,11 @@ EXTENSION KEYS:
 			<fieldset><legend>' . $GLOBALS['LANG']->getLL('mirror_selection') . '</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
-					<td><label for="set_mirror_list_url">' . $GLOBALS['LANG']->getLL('mirror_list_url') . '</label></a></td>
+					<td><label for="set_mirror_list_url">' . $GLOBALS['LANG']->getLL('mirror_list_url') . '</label></td>
 					<td><input type="text" size="50" id="set_mirror_list_url" name="SET[mirrorListURL]" value="'.htmlspecialchars($this->MOD_SETTINGS['mirrorListURL']).'" /></td>
 				</tr>
 			</table>
+			</fieldset>
 			<br />
 			<p>' . $GLOBALS['LANG']->getLL('mirror_select') . '<br /><br /></p>
 			<fieldset><legend>' . $GLOBALS['LANG']->getLL('mirror_list') . '</legend>';
@@ -1199,7 +1200,7 @@ EXTENSION KEYS:
 		if(is_array($extMirrors)) {
 			foreach($extMirrors as $k => $v) {
 				if(isset($v['sponsor'])) {
-					$sponsor = '<a href="'.htmlspecialchars($v['sponsor']['link']).'" target="_new"><img src="'.$v['sponsor']['logo'].'" title="'.htmlspecialchars($v['sponsor']['name']).'" alt="'.htmlspecialchars($v['sponsor']['name']).'" /></a>';
+					$sponsor = '<a href="'.htmlspecialchars($v['sponsor']['link']).'" target="_blank"><img src="'.$v['sponsor']['logo'].'" title="'.htmlspecialchars($v['sponsor']['name']).'" alt="'.htmlspecialchars($v['sponsor']['name']).'" /></a>';
 				}
 				$selected = ($this->MOD_SETTINGS['selectedMirror']==$k) ? 'checked="checked"' : '';
 				$content.='<tr class="bgColor4">
@@ -1209,6 +1210,7 @@ EXTENSION KEYS:
 		$content.= '
 			</table>
 			</fieldset>
+			<fieldset>
 			<br />
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
@@ -1273,7 +1275,7 @@ EXTENSION KEYS:
 					<td>' . $GLOBALS['LANG']->getLL('languages_to_fetch') . '</td>
 					<td>
 					  <select name="SET[selectedLanguages][]" multiple="multiple" size="10">
-					  <option></option>'.
+					  <option>&nbsp;</option>'.
 			implode('',$opt).'
 			</select>
 		  </td>
@@ -1286,7 +1288,6 @@ EXTENSION KEYS:
 			<br />
 			<input type="submit" value="' . $GLOBALS['LANG']->getLL('translation_save_selection') . '" />
 			<br />
-			</fieldset>
 			</form>';
 
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('translation_settings'), $content, 0, 1);
@@ -1294,9 +1295,9 @@ EXTENSION KEYS:
 		if(count($selectedLanguages)>0) {
 			$mirrorURL = $this->getMirrorURL();
 			$content = '<input type="button" value="' . $GLOBALS['LANG']->getLL('translation_check_status_button') .
-				'" onclick="document.location.href=\'' . t3lib_div::linkThisScript(array('l10n'=>'check')) .
+				'" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('l10n'=>'check'))) .
 				'\'" />&nbsp;<input type="button" value="' . $GLOBALS['LANG']->getLL('translation_update_button') .
-				'" onclick="document.location.href=\'' . t3lib_div::linkThisScript(array('l10n'=>'update')) .
+				'" onclick="document.location.href=\'' . htmlspecialchars(t3lib_div::linkThisScript(array('l10n'=>'update'))) .
 				'\'" />';
 
 				// as this page loads dynamically, quit output buffering caused by ob_gzhandler
@@ -1345,7 +1346,7 @@ EXTENSION KEYS:
 
 					$percentDone = intval (($counter / count($loadedExtensions)) * 100);
 					echo ('
-					<script>
+					<script type="text/javascript">
 						document.getElementById("progress-bar").style.width = "'.$percentDone.'%";
 						document.getElementById("transparent-bar").style.width = "'.(100-$percentDone).'%";
 						document.getElementById("progress-message").firstChild.data="' .
@@ -1389,7 +1390,7 @@ EXTENSION KEYS:
 					$counter ++;
 				}
 				echo '</table>
-					<script>
+					<script type="text/javascript">
 						document.getElementById("progress-message").firstChild.data="' .
 							$GLOBALS['LANG']->getLL('translation_check_done') . '";
 					</script>
@@ -1440,7 +1441,7 @@ EXTENSION KEYS:
 				foreach($loadedExtensions as $extKey) {
 					$percentDone = intval (($counter / count($loadedExtensions)) * 100);
 					echo ('
-					<script>
+					<script type="text/javascript">
 						document.getElementById("progress-bar").style.width = "'.$percentDone.'%";
 						document.getElementById("transparent-bar").style.width = "'.(100-$percentDone).'%";
 						document.getElementById("progress-message").firstChild.data="' .
@@ -1492,7 +1493,7 @@ EXTENSION KEYS:
 					$counter++;
 				}
 				echo '</table>
-					<script>
+					<script type="text/javascript">
 						document.getElementById("progress-message").firstChild.data="' .
 							$GLOBALS['LANG']->getLL('translation_update_done') . '";
 					</script>
@@ -1629,7 +1630,7 @@ EXTENSION KEYS:
 							return false;';
 				$select .= ' ' . $GLOBALS['LANG']->getLL('ext_or') . '<br /><br />
 					<input type="submit" value="' . $GLOBALS['LANG']->getLL('ext_import_update_button') .
-					'" onclick="' . htmlspecialchars($onClick) . '"> ' . $GLOBALS['LANG']->getLL('ext_import_update_to') . '
+					'" onclick="' . htmlspecialchars($onClick) . '" /> ' . $GLOBALS['LANG']->getLL('ext_import_update_to') . '
 					<select name="loc">'.
 					($this->importAsType('G', $fetchData['emconf_lockType']) ?
 						'<option value="G">' . $GLOBALS['LANG']->getLL('ext_import_global') . ' ' . $this->typePaths['G'] . $extKey . '/' .
@@ -2209,7 +2210,7 @@ EXTENSION KEYS:
 									$dependencyUpdates .= '<input type="hidden" name="depsolver[ignore]['.$depK.']" value="1" />';
 								}
 							}
-							$updatesForm = $this->updatesForm($extKey,$list[$extKey],1,$script, $dependencyUpdates.$standaloneUpdates.'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />');
+							$updatesForm = $this->updatesForm($extKey,$list[$extKey],1,$script, $dependencyUpdates.$standaloneUpdates.'<input type="hidden" name="_do_install" value="1" /><input type="hidden" name="_clrCmd" value="'.$this->CMD['clrCmd'].'" />', TRUE);
 							if ($updatesForm) {
 								$updates = $GLOBALS['LANG']->getLL('ext_details_new_tables_fields') . '<br />' .
 									$GLOBALS['LANG']->getLL('ext_details_new_tables_fields_select') . $updatesForm;
@@ -2679,7 +2680,7 @@ EXTENSION KEYS:
 
 		if ($updates || $configForm) {
 			if ($configForm) {
-				$updates = '</form>'.$configForm.'<form>';
+				$updates = '</form>'.$configForm.'<form action="'.htmlspecialchars($script).'">';
 			} else {
 				$updates = '</form><form action="'.htmlspecialchars($script).'" method="post">'.$updates.$addFields.'
 					<br /><input type="submit" name="write" value="' . $GLOBALS['LANG']->getLL('updatesForm_make_updates') . '" />
@@ -3420,12 +3421,12 @@ EXTENSION KEYS:
 		}
 
 			// Extension title:
-		$cells[] = '<td nowrap="nowrap"><a href="' . htmlspecialchars($altLinkUrl ? $altLinkUrl : 'index.php?CMD[showExt]=' . $extKey . '&SET[singleDetails]=info') . '" title="' . htmlspecialchars($extInfo['EM_CONF']['description']) . '">' . t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title'] ? $extInfo['EM_CONF']['title'] : '<em>' . $extKey . '</em>', 40) . '</a></td>';
+		$cells[] = '<td nowrap="nowrap"><a href="' . htmlspecialchars($altLinkUrl ? $altLinkUrl : 'index.php?CMD[showExt]=' . $extKey . '&SET[singleDetails]=info') . '" title="' . htmlspecialchars($extInfo['EM_CONF']['description']) . '">' . t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['title'] ? htmlspecialchars($extInfo['EM_CONF']['title']) : '<em>' . $extKey . '</em>', 40) . '</a></td>';
 
 			// Based on the display mode you will see more or less details:
 		if (!$this->MOD_SETTINGS['display_details'])	{
 			$cells[] = '<td>'.htmlspecialchars(t3lib_div::fixed_lgd_cs($extInfo['EM_CONF']['description'],400)).'<br /><img src="clear.gif" width="300" height="1" alt="" /></td>';
-			$cells[] = '<td nowrap="nowrap">'.($extInfo['EM_CONF']['author_email'] ? '<a href="mailto:'.htmlspecialchars($extInfo['EM_CONF']['author_email']).'">' : '').htmlspecialchars($extInfo['EM_CONF']['author']).($extInfo['EM_CONF']['author_email'] ? '</a>' : '').($extInfo['EM_CONF']['author_company'] ? '<br />'.htmlspecialchars($extInfo['EM_CONF']['author_company']) : '').'</td>';
+			$cells[] = '<td nowrap="nowrap">'.($extInfo['EM_CONF']['author_email'] ? '<a href="mailto:'.htmlspecialchars($extInfo['EM_CONF']['author_email']).'">' : '').htmlspecialchars($extInfo['EM_CONF']['author']).(htmlspecialchars($extInfo['EM_CONF']['author_email']) ? '</a>' : '').($extInfo['EM_CONF']['author_company'] ? '<br />'.htmlspecialchars($extInfo['EM_CONF']['author_company']) : '').'</td>';
 		} elseif ($this->MOD_SETTINGS['display_details']==2)	{
 			$cells[] = '<td nowrap="nowrap">'.$extInfo['EM_CONF']['priority'].'</td>';
 			$cells[] = '<td nowrap="nowrap">'.implode('<br />',t3lib_div::trimExplode(',',$extInfo['EM_CONF']['modify_tables'],1)).'</td>';

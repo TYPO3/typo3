@@ -9,7 +9,8 @@
 
 2009-11-23  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug  #12508: Log usage of XLLfile to deprecation log (thanks to Steffen Gebert)
+	* Fixed bug #12544: Clean markup in Extension Manager
+	* Fixed bug #12508: Log usage of XLLfile to deprecation log (thanks to Steffen Gebert)
 	* Follow-up to bugfix #11468: $altUrl parameter has no effect in t3lib_BEfunc::viewOnClick()
 
 2009-11-22  Steffen Kamper  <info@sk-typo3.de>
