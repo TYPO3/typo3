@@ -312,6 +312,7 @@ class SC_index {
 			'NEWS'             => $this->makeLoginNews(),
 			'COPYRIGHT'        => $this->makeCopyrightNotice(),
 			'CSS_ERRORCLASS'   => ($this->commandLI ? ' class="error"' : ''),
+			'CSS_OPENIDCLASS'  => 't3-login-openid-' . (t3lib_extMgm::isLoaded('openid') ? 'enabled' : 'disabled'),
 
 				// the labels will be replaced later on, thus the other parts above
 				// can use these markers as well and it will be replaced
@@ -325,7 +326,11 @@ class SC_index {
 			'ERROR_CAPSLOCK'   => $GLOBALS['LANG']->getLL('error.capslock', true),
 			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', true),
 			'LABEL_USERNAME'   => $GLOBALS['LANG']->getLL('labels.username', true),
+			'LABEL_OPENID'     => $GLOBALS['LANG']->getLL('labels.openId', true),
 			'LABEL_PASSWORD'   => $GLOBALS['LANG']->getLL('labels.password', true),
+			'LABEL_WHATISOPENID' => $GLOBALS['LANG']->getLL('labels.whatIsOpenId', true),
+			'LABEL_SWITCHOPENID' => $GLOBALS['LANG']->getLL('labels.switchToOpenId', true),
+			'LABEL_SWITCHDEFAULT' => $GLOBALS['LANG']->getLL('labels.switchToDefault', true),
 			'CLEAR'            => $GLOBALS['LANG']->getLL('clear', true),
 			'SITELINK'         => '<a href="/">###SITENAME###</a>',
 
@@ -422,12 +427,11 @@ class SC_index {
 			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
 
 					// Initialize:
-				$tempLabels = t3lib_div::trimExplode(',', $GLOBALS['LANG']->getLL('availableInterfaces'));
 				$labels=array();
 
-				$labels['backend']     = $tempLabels[0];
-				$labels['backend_old'] = $tempLabels[2];
-				$labels['frontend']    = $tempLabels[1];
+				$labels['backend']     = $GLOBALS['LANG']->getLL('interface.backend');
+				$labels['backend_old'] = $GLOBALS['LANG']->getLL('interface.backend_old');
+				$labels['frontend']    = $GLOBALS['LANG']->getLL('interface.frontend');
 
 				$jumpScript=array();
 				$jumpScript['backend']     = 'backend.php';

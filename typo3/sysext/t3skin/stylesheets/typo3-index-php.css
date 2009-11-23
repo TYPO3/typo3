@@ -6,38 +6,52 @@
  
  */
 body#typo3-index-php {
-	background: #fefefe url(../backgrounds/login_grid.png);
+	background: #fff;
 	margin: 0;
-	overflow: hidden;
 }
 
 body#typo3-index-php #t3-login-form-outer {
-	height: 87%;
-	overflow: auto;
 	width: 100%;
-	position: absolute;
 }
 
 body#typo3-index-php #t3-login-form {
 	margin: 30px auto 10px;
-	width: 504px;
+	width: 426px;
 	text-align: left;
+	font-size: 11px;
 }
 
-body#typo3-index-php #t3-login-news-outer h2, body#typo3-index-php .t3-headline {
-	background: #b7bec8 url(../backgrounds/login_headline_bg.gif) repeat-x;
+body#typo3-index-php .t3-headline {
+	background: #b5bbc7 url('../backgrounds/login-box-header.png') repeat-x;
 	padding-bottom: 2px;
-	margin: 0 0 1px;
+	margin: 0;
 	width: auto;
+	height: 24px;
+	border-bottom: 1px solid #d6d9df;
 }
- 
+
 body#typo3-index-php .t3-headline h2 {
+	background: url('../icons/login-icon-key.gif') no-repeat 10px center;
 	background-color: transparent;
 	margin: 0;
-	padding: 2px 0 0 4px;
+	padding: 0 0 0 40px;
 	float: left;
-	color: #000;
-	width: 450px;
+	color: #fff;
+	font-size: 11px !important;
+	vertical-align: middle;
+	line-height: 24px;
+}
+
+body#typo3-index-php .t3-headline .t3-login-news-headline {
+	background: url('../icons/login-icon-news.gif') no-repeat 10px center;
+	background-color: transparent;
+	margin: 0;
+	padding: 0 0 0 40px;
+	float: left;
+	color: #fff;
+	font-size: 11px !important;
+	vertical-align: middle;
+	line-height: 24px;
 }
 
 body#typo3-index-php .t3-headline:after {
@@ -49,130 +63,99 @@ body#typo3-index-php .t3-headline:after {
 }
 
 body#typo3-index-php .t3-icons {
-	float: right;
+	float: left;
 	padding: 3px 5px 0 0;
-}
-
-body#typo3-index-php .t3-icons .t3-help {
-	display: none;
-	position: absolute;
-	border: 1px solid #b2b3b7;
-	padding: 5px;
-	background-color: #fff;
-	max-width: 300px;
-}
-
-body#typo3-index-php .t3-icons .t3-help a {
-	text-decoration: underline;
-}
-
-body#typo3-index-php .t3-helpicon {
-	float: left;
-	padding-right: 5px;
-	cursor: help;
-}
-
-body#typo3-index-php .t3-helpicon:hover .t3-help,
-body#typo3-index-php .t3-reloadicon:hover .t3-help {
-	display: block;
-}
-
-body#typo3-index-php .t3-reloadicon {
-	float: left;
-	cursor: pointer;
 }
 
 body#typo3-index-php .t3-login-username {
 	margin-top: 15px;
 }
 
-body#typo3-index-php .t3-login-username input {
-	background: #fefefe url(../icons/login_user.png) no-repeat 5px 4px;
-}
-
-body#typo3-index-php .t3-login-password input {
-	background: #fefefe url(../icons/login_padlock.png) no-repeat 7px 4px;
-}
-
 body#typo3-index-php .t3-login-username input,
 body#typo3-index-php .t3-login-password input {
-	box-shadow: 2px 2px 2px #8e8b88 inset;
-	-moz-box-shadow: 2px 2px 2px #8e8b88 inset;
-	-webkit-box-shadow: 2px 2px 2px #8e8b88 inset;
 }
 
 body#typo3-index-php .t3-login-field {
-	height: 25px;
-	padding-top: 15px;
+	height: 21px;
+	padding: 0;
+	margin: 5px 0 0;
+	line-height: 21px;
+	position: relative;
+}
+
+body#typo3-index-php .t3-login-field .t3-login-clearInputField {
+	position: absolute;
+	left: 255px;
+	top: 5px;
 }
 
 body#typo3-index-php .t3-login-field label {
 	color: #7f8083;
-	display: block;
 	float: left;
-	font-size: 16px;
 	padding-right: 10px;
-	text-align: right;
-	text-transform: uppercase;
-	width: 150px;
+	width: 65px;
 }
 
 body#typo3-index-php .t3-login-field input {
-	color: #555;
-	background-color: #bbc0b8;
-	font-size: 14px;
-	height: 20px;
-	width: 270px;
-	padding-left: 25px;
-}
-
-body#typo3-index-php .t3-login-field input:focus {
-	border-color: #f88f24;
-	background-color: #fff;
-}
-
-body#typo3-index-php #t3-login-form-inner {
-	border: 1px solid #737373;
-	padding: 1px;
-	background: #dfe0e5;
+	color: #000;
+	height: 19px;
+	line-height: 19px;
+	width: 168px;
+	margin: 0;
+	padding: 2px 23px 0 5px;
+	border: 1px solid #7c7c7c;
+	background: #ffffff url('../backgrounds/login-field-input.gif') repeat-x;
 }
 
 body#typo3-index-php #t3-login-form-fields {
-	padding-bottom: 30px;
+	padding: 14px 0 0 30px;
+	margin: 0;
 	display: none;
 }
 
-body#typo3-index-php #t3-capslock {
-	margin: 10px 0 0 160px;
-	border: 2px solid #be0027;
-	background-color: #ffd6cf;
-	color: #be0027;
-	font-weight: bold;
-	padding: 3px;
-	width: 288px;
-}
-
-body#typo3-index-php #t3-capslock * {
-	vertical-align: middle;
-}
-
-body#typo3-index-php #t3-capslock img {
-	margin-right: 5px;
-}
-
 body#typo3-index-php #t3-interfaceselector {
-	margin-top: 3px;
+	width: 198px;
+	font-size: 11px;
+}
+
+body#typo3-index-php #t3-interfaceselector option {
+	height: 19px;
+}
+
+body#typo3-index-php .t3-login-form-footer {
+	text-align: right;
+	vertical-align: middle;
+	margin: 10px 0 0;
+}
+
+body#typo3-index-php .t3-login-form-footer a {
+	cursor: pointer;
+}
+	
+body#typo3-index-php #t3-login-openIdLogo {
+	position: absolute;
+	top: -4px;
+	right: 0;
+}
+
+body#typo3-index-php .t3-login-form-footer,
+body#typo3-index-php .t3-login-form-footer a.switchToOpenId {
+	color: #777d7d;
+	font-size: 10px;
+}
+
+body#typo3-index-php .t3-login-openid-disabled .t3-login-form-footer,
+body#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
+	display: none;
 }
 
 body#typo3-index-php .t3-login-submit {
-	border-color: #b2b3b7;
-	font-size: 14px;
-	font-weight: bold;
-	margin-left: 160px;
-	margin-top: 15px;
-	padding: 0 25px;
+	font-size: 11px;
+	border-color: #7c7c7c;
+	margin: 15px 0 0 75px;
+	padding: 3px 16px;
 	text-align: left;
-	background: #fff url(../backgrounds/login_submit_bg.gif) repeat-x;
+	background: #d6d6d6 url(../backgrounds/login_submit_bg.gif) repeat-x;
 }
 
 body#typo3-index-php .t3-login-error {
@@ -185,46 +168,10 @@ body#typo3-index-php .t3-login-error {
 	padding: 10px;
 }
 
-body#typo3-index-php #t3-noscript-error {
-	background: #ffd6cf url(../backgrounds/login_noscript.gif) no-repeat left bottom;
-	border: 3px solid #be0027;
-	margin: 2px;
-	padding: 10px 10px 10px 80px;
-	height: 130px;
-}
-
-body#typo3-index-php #t3-noscript-error p {
-	padding-top: 20px;
-	color: #be0027;
-	font-size: 20px;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-
-body#typo3-index-php #t3-nocookies-error p {
-	padding-top: 20px;
-	color: #ff8700;
-	font-size: 20px;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-
-body#typo3-index-php #t3-nocookies-error {
-	background: #ffe7cc url(../backgrounds/login_nocookies.gif) no-repeat left bottom;
-	border: 3px solid #FF8700;
-	margin: 2px;
-	padding: 10px 10px 10px 130px;
-	height: 130px;
-}
-
 body#typo3-index-php div#t3-copyright-notice {
-	background: url(../icons/login_logo_sw.gif) no-repeat top left;
-	text-align: left;
-	margin-top: 25px;
-	padding-left: 48px;
+	margin-top: 15px;
 	font-weight: normal;
-	color: #838383;
-	min-height: 35px;
+	color: #b0b0b0;
 }
 
 * html body#typo3-index-php div#t3-copyright-notice {
@@ -232,7 +179,7 @@ body#typo3-index-php div#t3-copyright-notice {
 }
 
 body#typo3-index-php div#t3-copyright-notice a {
-	color: #838383;
+	color: #b0b0b0;
 	text-decoration: underline;
 }
 body#typo3-index-php div#t3-copyright-notice a:hover {
@@ -245,73 +192,133 @@ body#typo3-index-php div#t3-copyright-notice img {
 
 body#typo3-index-php div#t3-login-image {
 	text-align: left;
-	width: 500px;
 	height: auto;
 	padding: 0;
-	margin: 0;
+	margin: 0 0 30px;
 }
 
 body#typo3-index-php #t3-footer {
-	position: absolute;
-	bottom: 0;
-	padding-bottom: 20px;
-	height: 10%;
-	width: 100%;
-	background: #f8f8f9 url(../backgrounds/login_footer.png) 0 -1px repeat-x;
+	border-top: 1px solid #d1d2d3;
+	margin: 40px auto 10px;
+	width: 426px;
 }
 
 body#typo3-index-php #t3-meta-links {
-	float: right;
-	margin-top: 20px;
-	margin-left: 100px;
-	width: 135px;
-	text-align: center;
+	margin-top: 15px;
+	color: #b0b0b0;
 }
 
 body#typo3-index-php #t3-meta-links a {
-	display: block;
-	width: 100px;
-	border: 1px solid #b2b3b7;
-	padding: 5px;
-	margin-bottom: 3px;
-	font-size: 9px;
-	font-weight: bold;
-	color: #999;
+	color: #b0b0b0;
+	text-decoration: underline;
 }
 
 body#typo3-index-php #t3-meta-links a:hover {
-	background-color: #ededf0;
+	color: #000;
 }
 
 /**
  * @section login news
  */
 body#typo3-index-php #t3-login-news-outer {
-	width: 500px;
-	border: 1px solid #737373;
-	margin-top: 30px;
-	padding: 1px;
-	background: #fff;
+	margin-top: 35px;
+}
+
+body#typo3-index-php #t3-login-news-outer .t3-login-box-body {
+	padding-top: 0;
+	padding-bottom: 20px;
 }
 
 body#typo3-index-php #t3-login-news-outer #t3-login-news {
-	margin: 12px;
+	margin: 0 30px;
 	clear: both;
 }
 
+body#typo3-index-php #t3-login-news-outer #t3-login-news .t3-login-news-item {
+	padding-top: 20px;
+}
+
 body#typo3-index-php #t3-login-news-outer #t3-login-news dt {
-	font-size: 12px;
+	font-weight: bold;
 }
 
 body#typo3-index-php #t3-login-news-outer #t3-login-news dd {
 	margin-left: 0;
 	border: 0;
 	padding: 0;
-	font-size: 10px;
 	clear: both;
-	padding-bottom: 15px;
 }
 
-body#typo3-index-php #t3-login-news-outer .t3-news-date {
-	float: right;
+/**
+ * @section logout
+ */
+
+body#typo3-index-php .t3-login-logout-form .t3-username-current {
+	color: #7f8083;
+	float: left;
+	line-height: 21px;
+	height: 21px;
+	vertical-align: middle;
+}
+
+body#typo3-index-php .t3-login-logout-form div.t3-login-label {
+	color: #7f8083;
+	float: left;
+	padding-right: 10px;
+	width: 65px;
+	line-height: 21px;
+}
+
+/**
+ * @section erros/warnings
+ */
+
+.t3-login-alert {
+	padding: 15px;
+}
+
+.t3-login-alert p {
+	padding: 0 10px 0 30px;
+	font-size: 14px;
+	line-height: 18px;
+	font-weight: bold;
+}
+
+.t3-login-alert-error {
+	background: #f6d3cf;
+	border: 1px solid #d66c68;
+}
+
+.t3-login-alert-error p {
+	background: url('../icons/login-alert-error.gif') no-repeat left 2px;
+	color: #be0027;
+}
+
+.t3-login-alert-warning {
+	background: #fbf6de;
+	border: 1px solid #b1905c;
+}
+
+.t3-login-alert-warning p {
+	background: url('../icons/login-alert-warning.gif') no-repeat left 2px;
+	color: #9e7d4a;
+}
+
+/**
+ * @section box layout
+ */
+
+.t3-login-box {
+	border: 1px solid #d6d9df;
+	border-bottom: none;
+}
+
+.t3-login-box-body {
+	background: #e3e5ea url('../backgrounds/login-box-body.gif') repeat-x;
+	padding: 10px;
+}
+
+.t3-login-box-border-bottom {
+	height: 6px;
+	background: url('../backgrounds/login-border-bottom.png') top left no-repeat;
 }
