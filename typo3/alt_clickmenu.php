@@ -266,9 +266,10 @@ class clickMenu {
 		if ($table=='pages' && in_array($uid,$GLOBALS['BE_USER']->returnWebmounts()))	{	// DB mount
 			$DBmount = TRUE;
 		}
-
+			// used to hide cut,copy icons for l10n-records
 		$l10nOverlay = false;
-		if ($table != 'pages_language_overlay' && array_key_exists('transOrigPointerField', $TCA[$table]['ctrl'])) {
+			// should only be performed for overlay-records within the same table
+		if (t3lib_BEfunc::isTableLocalizable($table) && !isset($TCA[$table]['ctrl']['transOrigPointerTable'])) {
 			$l10nOverlay = intval($this->rec[$TCA[$table]['ctrl']['transOrigPointerField']]) != 0;
 		}
 

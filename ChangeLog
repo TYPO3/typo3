@@ -9,6 +9,7 @@
 
 2009-11-23  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bugfix #12271: List module and Clickmenu should not enable to create inconsistant record-relations (thanks to Tolleiv Nietsch)
 	* Fixed bug #12544: Clean markup in Extension Manager
 	* Fixed bug #12508: Log usage of XLLfile to deprecation log (thanks to Steffen Gebert)
 	* Follow-up to bugfix #11468: $altUrl parameter has no effect in t3lib_BEfunc::viewOnClick()
