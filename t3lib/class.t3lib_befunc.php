@@ -2622,18 +2622,18 @@ final class t3lib_BEfunc {
 
 		$viewScriptPreviewEnabled  = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
 		$viewScriptPreviewDisabled = '/index.php?id=';
-
 		if ($altUrl) {
 			$viewScriptPreviewEnabled = $viewScriptPreviewDisabled = $altUrl;
 		}
+
 			// check alternate Domains
 		if ($rootLine)  {
 			$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-			if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path']))    {
+			if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path'])) {
 				$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
 			}
 		}
-		$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
+		$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://') . $preUrl_temp : $backPath . '..';
 
 			// Look if a fixed preview language should be added:
 		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
@@ -2647,26 +2647,26 @@ final class t3lib_BEfunc {
 			}
 
 				// Traverse the view order, match first occurence:
-			$lOrder = t3lib_div::intExplode(',',$viewLanguageOrder);
-			foreach($lOrder as $langUid)	{
+			$lOrder = t3lib_div::intExplode(',', $viewLanguageOrder);
+			foreach($lOrder as $langUid) {
 				if (is_array($allowed_languages) && count($allowed_languages)) {
 					if (isset($allowed_languages[$langUid])) {	// Choose if set.
-						$suffix = '&L='.$langUid;
+						$suffix = '&L=' . $langUid;
 						break;
 					}
 				} else {	// All allowed since no lang. are listed.
-					$suffix = '&L='.$langUid;
+					$suffix = '&L=' . $langUid;
 					break;
 				}
 			}
 
 				// Add it:
-			$addGetVars.= $suffix;
-
-
-			$urlPreviewEnabled  = $preUrl . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
-			$urlPreviewDisabled = $preUrl . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
+			$addGetVars .= $suffix;
 		}
+
+		$urlPreviewEnabled  = $preUrl . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
+		$urlPreviewDisabled = $preUrl . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
+
 
 		return "previewWin=window.open(top.WorkspaceFrontendPreviewEnabled?'" .
 			$urlPreviewDisabled . "':'" . $urlPreviewEnabled .
