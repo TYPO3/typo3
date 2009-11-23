@@ -121,8 +121,9 @@ Backend
 	  user-defined language is available yet is detected by the preferred browser language. If you
 	  have previously changed the login labels via $TYPO3_CONF_VARS['BE']['loginLabels'] then
 	  these will be used, however it is recommended to overload the XML file with your own XML file
-	  and $TYPO3_CONF_VARS['BE']['XLLfile']['EXT:lang/locallang_login.xml']. These will only be used
-	  once you remove the altered "loginLabels" configuration option from typo3conf/localconf.php.
+	  and $TYPO3_CONF_VARS['SYS']['locallangXMLOverride']['EXT:lang/locallang_login.xml']. These will
+	  only be used once you remove the altered "loginLabels" configuration option from
+	  typo3conf/localconf.php.
 
 	* The extension "gabriel" has been integrated into the TYPO3 core as system extension "scheduler".
 	  It provides a centralized way of defining scheduled, recurring tasks, with a convenient
