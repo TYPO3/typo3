@@ -3388,9 +3388,13 @@ class t3lib_TCEmain	{
 		if (!t3lib_BEfunc::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
 			return;
 		}
-		t3lib_div::loadTCA($table);
 
-		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);
+		$where = '';
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+			$where = ' AND t3ver_oid=0';
+		}
+
+		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
 			foreach ($l10nRecords as $record) {
 				$this->copyRecord($table, $record['uid'], $destPid, $first, $overrideValues, $excludeFields, $record[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
@@ -3805,9 +3809,12 @@ class t3lib_TCEmain	{
 		if (!t3lib_BEfunc::isTableLocalizable($table) || !empty($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
 			return;
 		}
-		t3lib_div::loadTCA($table);
 
-		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);
+		$where = '';
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+			$where = ' AND t3ver_oid=0';
+		}
+		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
 			foreach ($l10nRecords as $record) {
 				$this->moveRecord($table, $record['uid'], $destPid);
@@ -4501,7 +4508,12 @@ class t3lib_TCEmain	{
 			return;
 		}
 
-		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid);
+		$where = '';
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+			$where = ' AND t3ver_oid=0';
+		}
+
+		$l10nRecords = t3lib_BEfunc::getRecordsByField($table, $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'], $uid, $where);
 		if (is_array($l10nRecords)) {
 			foreach($l10nRecords as $record) {
 				$this->deleteAction($table, intval($record['t3ver_oid']) > 0 ? intval($record['t3ver_oid']) : intval($record['uid']));
