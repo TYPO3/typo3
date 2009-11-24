@@ -399,7 +399,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$checkUser = $this->checkSchedulerUser();
 		if ($checkUser == -1) {
 			$link = $GLOBALS['MCONF']['_'] . '&SET[function]=check&CMD=user';
-			$message = sprintf($GLOBALS['LANG']->getLL('msg.schedulerUserMissing'), $link);
+			$message = sprintf($GLOBALS['LANG']->getLL('msg.schedulerUserMissing'), htmlspecialchars($link));
 			$severity = t3lib_FlashMessage::ERROR;
 		} elseif ($checkUser == 0) {
 			$message = $GLOBALS['LANG']->getLL('msg.schedulerUserFoundButDisabled');
@@ -484,12 +484,12 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$table[$tr][] = $classInfo['extension'];
 			$table[$tr][] = $classInfo['description'];
 			$link = $GLOBALS['MCONF']['_'] . '&SET[function]=list&CMD=add&tx_scheduler[class]=' . $class;
-			$table[$tr][] = '<a href="' . $link . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new') . '" /></a>';
+			$table[$tr][] = '<a href="' . htmlspecialchars($link) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '" /></a>';
 			$tr++;
 		}
 
 			// Render the table and return it
-		$content  = '<div>' . $GLOBALS['LANG']->getLL('msg.infoScreenIntro') . '<div>';
+		$content  = '<div>' . $GLOBALS['LANG']->getLL('msg.infoScreenIntro') . '</div>';
 		$content .= $this->doc->spacer(5);
 		$content .= $this->doc->table($table, $tableLayout);
 
@@ -721,7 +721,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 			// Disable checkbox
 		$table[$tr][] = t3lib_BEfunc::cshItem($this->cshKey, 'task_disable', $this->backPath, '|', false, 'margin-bottom:0px;');
-		$table[$tr][] = '<label for="task_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disable') . '</lang>';
+		$table[$tr][] = '<label for="task_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disable') . '</label>';
 		$table[$tr][] =
 			'<input type="hidden"   name="tx_scheduler[disable]" value="0" />
 			 <input type="checkbox" name="tx_scheduler[disable]" value="1" id="task_disable"' . ($taskInfo['disable'] == 1 ? ' checked="checked"' : '') . ' />';
@@ -772,7 +772,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// Start date/time field
 			// NOTE: datetime fields need a special id naming scheme
 		$table[$tr][] = t3lib_BEfunc::cshItem($this->cshKey, 'task_start', $this->backPath, '|', false, 'margin-bottom:0px;');
-		$table[$tr][] = '<label for="task_start">' . $GLOBALS['LANG']->getLL('label.start') . '</lang>';
+		$table[$tr][] = '<label for="tceforms-datetimefield-task_start">' . $GLOBALS['LANG']->getLL('label.start') . '</label>';
 		$table[$tr][] = '<input name="tx_scheduler[start]" type="text" id="tceforms-datetimefield-task_start" value="' . strftime('%H:%M %d-%m-%Y', $taskInfo['start']) . '" />' .
 			'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt=""' . ' id="picker-tceforms-datetimefield-task_start" />';;
 		$tableLayout[$tr] = array (
@@ -784,7 +784,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// End date/time field
 			// NOTE: datetime fields need a special id naming scheme
 		$table[$tr][] = t3lib_BEfunc::cshItem($this->cshKey, 'task_end', $this->backPath, '|', false, 'margin-bottom:0px;');
-		$table[$tr][] = '<label for="task_end">' . $GLOBALS['LANG']->getLL('label.end') . '</lang>';
+		$table[$tr][] = '<label for="tceforms-datetimefield-task_end">' . $GLOBALS['LANG']->getLL('label.end') . '</label>';
 		$table[$tr][] = '<input name="tx_scheduler[end]" type="text" id="tceforms-datetimefield-task_end" value="' . ((empty($taskInfo['end'])) ? '' : strftime('%H:%M %d-%m-%Y', $taskInfo['end'])) . '" />' .
 			'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt=""' . ' id="picker-tceforms-datetimefield-task_end" />';
 		$tableLayout[$tr] = array (
@@ -806,7 +806,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 			// Multiple execution selector
 		$table[$tr][] = t3lib_BEfunc::cshItem($this->cshKey, 'task_multiple', $this->backPath, '|', false, 'margin-bottom:0px;');
-		$table[$tr][] = '<label for="task_multiple">' . $GLOBALS['LANG']->getLL('label.parallel.long') . '</lang>';
+		$table[$tr][] = '<label for="task_multiple">' . $GLOBALS['LANG']->getLL('label.parallel.long') . '</label>';
 		$table[$tr][] =
 			'<input type="hidden"   name="tx_scheduler[multiple]" value="0" />
 			 <input type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple"' . ($taskInfo['multiple'] == 1 ? ' checked="checked"' : '') . ' />';
@@ -842,8 +842,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			// Render the add/edit task form
 		$content .= $this->doc->table($table, $tableLayout);
 
-		$content .= '<input type="submit" name="save" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save') . '" /> '
-			. '<input type="button" name="cancel" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:cancel') . '" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" />';
+		$content .= '<input type="submit" name="save" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save', TRUE) . '" /> '
+			. '<input type="button" name="cancel" class="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:cancel', TRUE) . '" onclick="document.location=\'' . $GLOBALS['MCONF']['_'] . '\'" />';
 
 			// Display information about server time usage
 		$content .= $this->displayServerTime();
@@ -966,7 +966,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$tr = 0;
 
 				// Header row
-			$table[$tr][] = '<a href="#" onclick="toggleCheckboxes();" title="' . $GLOBALS['LANG']->getLL('label.checkAll') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/clip_select.gif') . ' alt="' . $GLOBALS['LANG']->getLL('label.checkAll') . '" /></a>';
+			$table[$tr][] = '<a href="#" onclick="toggleCheckboxes();" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('label.checkAll')) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/clip_select.gif') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('label.checkAll')) . '" /></a>';
 			$table[$tr][] = '&nbsp;';
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.id');
 			$table[$tr][] = $GLOBALS['LANG']->getLL('task');
@@ -980,9 +980,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Loop on all tasks
 			while (($schedulerRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 					// Define action icons
-				$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit') . '" /></a> ';
-				$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/garbage.gif') . ' alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete') . '" /></a>';
-				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('scheduler') . '/res/gfx/stop.png') . ' alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
+				$editAction = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '" /></a> ';
+				$deleteAction = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(\'' . htmlspecialchars($GLOBALS['LANG']->getLL('msg.delete')) . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/garbage.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '" /></a>';
+				$stopAction = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(\'' . htmlspecialchars($GLOBALS['LANG']->getLL('msg.stop')) . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('scheduler') . 'res/gfx/stop.png') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '" /></a>';
 					// Define some default values
 				$lastExecution = '-';
 				$isRunning = false;
@@ -1015,7 +1015,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					// The task object is valid
 
 					$name = $registeredClasses[$schedulerRecord['classname']]['title']. ' (' . $registeredClasses[$schedulerRecord['classname']]['extension'] . ')';
-					$additionalInformation = $task->getAdditionalInformation();
+					$additionalInformation = htmlspecialchars($task->getAdditionalInformation());
 					if (!empty($additionalInformation)) {
 						$name .= ' [' . $additionalInformation . ']';
 					}
@@ -1088,7 +1088,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					}
 
 						// Format the execution status
-					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.' . $executionStatus) . '" title="' . $executionStatusDetail . '" />' . ' ' . $name;
+					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($executionStatusDetail) . '" />' . ' ' . $name;
 
 					$table[$tr][] = $startExecutionElement;
 					$table[$tr][] = $actions;
@@ -1129,9 +1129,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 			// Display add new task link
 		$link = $GLOBALS['MCONF']['_'] . '&CMD=add';
-		$content .= '<p><a href="' . $link .'"><img '
+		$content .= '<p><a href="' . htmlspecialchars($link) .'"><img '
 			. t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif')
-			. ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new')
+			. ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE)
 			. '" /> ' . $GLOBALS['LANG']->getLL('action.add') . '</a></p>';
 
 			// Display legend, if there's at least one registered task
@@ -1140,11 +1140,11 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$content .= $this->doc->spacer(20);
 			$content .= '<h4>' . $GLOBALS['LANG']->getLL('status.legend') . '</h4>
 			<ul>
-				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.failure') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.failure') . '</li>
-				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_late.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.late') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.late') . '</li>
-				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_running.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.running') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.running') . '</li>
-				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_scheduled.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.scheduled') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '</li>
-				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_disabled.png') . ' alt="' . $GLOBALS['LANG']->getLL('status.disabled') . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.disabled') . '</li>
+				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.failure') . '</li>
+				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_late.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.late')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.late') . '</li>
+				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_running.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.running')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.running') . '</li>
+				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_scheduled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.scheduled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.scheduled') . '</li>
+				<li><img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_disabled.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.disabled')) . '" /> ' . $GLOBALS['LANG']->getLL('status.legend.disabled') . '</li>
 			</ul>';
 			$content .= $this->doc->spacer(10);
 			$content .= $this->displayServerTime();
@@ -1497,8 +1497,8 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		);
 
 		if (empty($this->CMD) || $this->CMD == 'list') {
-			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '">' .
-				'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', 1) . '" alt="" />' .
+			$buttons['reload'] = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_']) . '">' .
+				'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '" alt="" />' .
 				'</a>';
 		}
 

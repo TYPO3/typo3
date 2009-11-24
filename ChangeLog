@@ -1,3 +1,7 @@
+2009-11-24  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #12623: Validation issues in sysext scheduler: Fix several errors
+
 2009-11-23  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #12618: Validation issue in sysext lowlevel: Fix some warnings
