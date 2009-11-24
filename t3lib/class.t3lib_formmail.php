@@ -165,9 +165,14 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 			for ($a=0;$a<10;$a++)	{
 				$varname = 'attachment'.(($a)?$a:'');
-				if (!is_uploaded_file($_FILES[$varname]['tmp_name']))	{
-					t3lib_div::sysLog('Possible abuse of t3lib_formmail: temporary file "'.$_FILES[$varname]['tmp_name'].'" ("'.$_FILES[$varname]['name'].'") was not an uploaded file.', 'Core', 3);
+				if (!isset($_FILES[$varname])) {
 					continue;
+				}
+				if (!is_uploaded_file($_FILES[$varname]['tmp_name'])) {
+					t3lib_div::sysLog('Possible abuse of t3lib_formmail: temporary file "'.$_FILES[$varname]['tmp_name'].'" ("'.$_FILES[$varname]['name'].'") was not an uploaded file.', 'Core', 3);
+				}
+				if ($_FILES[$varname]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
+					t3lib_div::sysLog('Error in uploaded file in t3lib_formmail: temporary file "'.$_FILES[$varname]['tmp_name'].'" ("'.$_FILES[$varname]['name'].'") Error code: '.$_FILES[$varname]['tmp_name']['error'], 'Core', 3);
 				}
 				$theFile = t3lib_div::upload_to_tempfile($_FILES[$varname]['tmp_name']);
 				$theName = $_FILES[$varname]['name'];

@@ -2,6 +2,7 @@
 
 	* Follow-up to bugfix #12699: Fixed remaining styling issues in the backend login
 	* Fixed bug #12669: Fatal error: Call to a member function getSystemLanguages()
+	* Fixed bug #11577: t3lib_formmail floods syslog with "Possible abuse of t3lib_formmail..." messages (thanks to Fabrizio Branca)
 
 2009-11-24  Steffen Kamper  <info@sk-typo3.de>
 
