@@ -1,3 +1,7 @@
+2009-11-24  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12695: Added some space between sections of the "Installed services" report
+
 2009-11-24  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #12623: Validation issues in sysext scheduler: Fix several errors

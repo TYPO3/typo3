@@ -72,6 +72,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 			// Get list of installed services
 		$content .= $this->displayServiceList();
 			// Get list of binaries search paths
+		$content .= $this->reportObject->doc->spacer(10);
 		$content .= $this->displaySearchPaths();
 
 		return $content;
