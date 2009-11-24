@@ -28,6 +28,11 @@ TYPO3BackendLogin = {
 					['focus', 'blur', 'keypress'],
 					function() { TYPO3BackendLogin.setVisibilityOfClearIcon($(value), $(value + '-clearIcon')); }
 			);
+			Event.observe(
+				$(value),
+				'keypress',
+				function(event) { TYPO3BackendLogin.showCapsLockWarning($(value + '-alert-capslock'), event); }
+			);
 		})
 	},
 
@@ -46,6 +51,14 @@ TYPO3BackendLogin = {
 			clearIcon.show();
 		} else {
 			clearIcon.hide();
+		}
+	},
+
+	showCapsLockWarning: function(alertIcon, event) {
+		if (isCapslock(event)) {
+			alertIcon.show();
+		} else {
+			alertIcon.hide();
 		}
 	},
 

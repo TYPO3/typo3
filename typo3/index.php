@@ -249,6 +249,8 @@ class SC_index {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###LOGIN_ERROR###', '');
 		} else {
 			$markers['ERROR_MESSAGE'] = $GLOBALS['LANG']->getLL('error.login', true);
+			$markers['ERROR_LOGIN_TITLE'] = $GLOBALS['LANG']->getLL('error.login.title', true);
+			$markers['ERROR_LOGIN_DESCRIPTION'] = $GLOBALS['LANG']->getLL('error.login.description', true);
 		}
 
 
@@ -324,6 +326,7 @@ class SC_index {
 			'ERROR_COOKIES'    => $GLOBALS['LANG']->getLL('error.cookies', true),
 			'ERROR_COOKIES_IGNORE' => $GLOBALS['LANG']->getLL('error.cookies_ignore', true),
 			'ERROR_CAPSLOCK'   => $GLOBALS['LANG']->getLL('error.capslock', true),
+			'ERROR_FURTHERHELP' => $GLOBALS['LANG']->getLL('error.furtherInformation', true),
 			'LABEL_DONATELINK' => $GLOBALS['LANG']->getLL('labels.donate', true),
 			'LABEL_USERNAME'   => $GLOBALS['LANG']->getLL('labels.username', true),
 			'LABEL_OPENID'     => $GLOBALS['LANG']->getLL('labels.openId', true),

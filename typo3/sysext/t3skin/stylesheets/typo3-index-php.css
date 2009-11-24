@@ -15,8 +15,8 @@ body#typo3-index-php #t3-login-form-outer {
 }
 
 body#typo3-index-php #t3-login-form {
-	margin: 30px auto 10px;
-	width: 426px;
+	margin: 30px 16% 10px;
+	width: 456px;
 	text-align: left;
 	font-size: 11px;
 }
@@ -26,12 +26,12 @@ body#typo3-index-php .t3-headline {
 	padding-bottom: 2px;
 	margin: 0;
 	width: auto;
-	height: 24px;
 	border-bottom: 1px solid #d6d9df;
+	min-height: 24px;
 }
 
 body#typo3-index-php .t3-headline h2 {
-	background: url('../icons/login-icon-key.gif') no-repeat 10px center;
+	background: url('../icons/login-icon-key.gif') no-repeat 10px 5px;
 	background-color: transparent;
 	margin: 0;
 	padding: 0 0 0 40px;
@@ -71,10 +71,6 @@ body#typo3-index-php .t3-login-username {
 	margin-top: 15px;
 }
 
-body#typo3-index-php .t3-login-username input,
-body#typo3-index-php .t3-login-password input {
-}
-
 body#typo3-index-php .t3-login-field {
 	height: 21px;
 	padding: 0;
@@ -85,26 +81,34 @@ body#typo3-index-php .t3-login-field {
 
 body#typo3-index-php .t3-login-field .t3-login-clearInputField {
 	position: absolute;
-	left: 255px;
+	left: 275px;
 	top: 5px;
+}
+
+body#typo3-index-php .t3-login-field .t3-login-alert-capslock {
+	position: absolute;
+	left: 297px;
+	top: 2px;
 }
 
 body#typo3-index-php .t3-login-field label {
 	color: #7f8083;
 	float: left;
 	padding-right: 10px;
-	width: 65px;
+	width: 85px;
 }
 
 body#typo3-index-php .t3-login-field input {
 	color: #000;
 	height: 19px;
 	line-height: 19px;
+	font-size: 11px;
 	width: 168px;
 	margin: 0;
 	padding: 2px 23px 0 5px;
 	border: 1px solid #7c7c7c;
 	background: #ffffff url('../backgrounds/login-field-input.gif') repeat-x;
+	-webkit-appearance: textfield;
 }
 
 body#typo3-index-php #t3-login-form-fields {
@@ -152,7 +156,7 @@ body#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
 body#typo3-index-php .t3-login-submit {
 	font-size: 11px;
 	border-color: #7c7c7c;
-	margin: 15px 0 0 75px;
+	margin: 15px 0 0 95px;
 	padding: 3px 16px;
 	text-align: left;
 	background: #d6d6d6 url(../backgrounds/login_submit_bg.gif) repeat-x;
@@ -199,8 +203,8 @@ body#typo3-index-php div#t3-login-image {
 
 body#typo3-index-php #t3-footer {
 	border-top: 1px solid #d1d2d3;
-	margin: 40px auto 10px;
-	width: 426px;
+	margin: 40px 16% 10px;
+	width: 456px;
 }
 
 body#typo3-index-php #t3-meta-links {
@@ -211,6 +215,10 @@ body#typo3-index-php #t3-meta-links {
 body#typo3-index-php #t3-meta-links a {
 	color: #b0b0b0;
 	text-decoration: underline;
+}
+
+body#typo3-index-php #t3-meta-links a.t3-login-link-donate {
+	font-weight: bold;
 }
 
 body#typo3-index-php #t3-meta-links a:hover {
@@ -265,7 +273,7 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 	color: #7f8083;
 	float: left;
 	padding-right: 10px;
-	width: 65px;
+	width: 85px;
 	line-height: 21px;
 }
 
@@ -277,11 +285,23 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 	padding: 15px;
 }
 
-.t3-login-alert p {
-	padding: 0 10px 0 30px;
+.t3-login-alert h2 {
+	margin: 0;
+	background: none;
 	font-size: 14px;
 	line-height: 18px;
-	font-weight: bold;
+	padding: 0 10px 0 30px;
+}
+
+.t3-login-alert p {
+	margin: 10px 0 0 0;
+	padding: 0 10px 0 30px;
+	font-size: 11px;
+	line-height: 15px;
+}
+
+.t3-login-alert a {
+	text-decoration: underline;
 }
 
 .t3-login-alert-error {
@@ -289,8 +309,13 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 	border: 1px solid #d66c68;
 }
 
-.t3-login-alert-error p {
+.t3-login-alert-error h2 {
 	background: url('../icons/login-alert-error.gif') no-repeat left 2px;
+	color: #be0027;
+}
+
+.t3-login-alert-error p,
+.t3-login-alert-error a {
 	color: #be0027;
 }
 
@@ -299,8 +324,13 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 	border: 1px solid #b1905c;
 }
 
-.t3-login-alert-warning p {
+.t3-login-alert-warning h2 {
 	background: url('../icons/login-alert-warning.gif') no-repeat left 2px;
+	color: #9e7d4a;
+}
+
+.t3-login-alert-warning p,
+.t3-login-alert-warning a {
 	color: #9e7d4a;
 }
 
@@ -314,7 +344,7 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 }
 
 .t3-login-box-body {
-	background: #e3e5ea url('../backgrounds/login-box-body.gif') repeat-x;
+	background: #e3e5ea url('../backgrounds/login-box-body.png') repeat-x;
 	padding: 10px;
 }
 

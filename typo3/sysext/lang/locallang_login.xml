@@ -27,10 +27,13 @@
 			<label index="clear">Clear this field!</label>
 			<label index="newsheadline">Important Messages:</label>
 			<label index="error.login">Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</label>
+			<label index="error.login.title">Your login attempt did not succeed</label>
+			<label index="error.login.description">Make sure to spell your username and password correctly, including upper/lowercase characters.</label>
 			<label index="error.javascript">Activate JavaScript, please!</label>
 			<label index="error.cookies">Activate Cookies, please!</label>
 			<label index="error.cookies_ignore">Ignore!</label>
 			<label index="error.capslock">Attention: Caps lock enabled!</label>
+			<label index="error.furtherInformation">For more information or further help click here</label>
 			<label index="warranty.by">Warranty is supplied by %s; %sclick for details.%s</label>
 			<label index="no.warranty">TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</label>
 			<label index="typo3.logo">TYPO3 logo</label>

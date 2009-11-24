@@ -1,3 +1,7 @@
+2009-11-24  Oliver Hader  <oliver@typo3.org>
+
+	* Follow-up to bugfix #12699: Fixed remaining styling issues in the backend login
+
 2009-11-24  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12700: pageInfo shows wrong info on root page

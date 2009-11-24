@@ -11,15 +11,11 @@
 			<div class="t3-login-box-body">
 				<noscript>
 					<div id="t3-noscript-error" class="t3-login-alert t3-login-alert-error">
-						<p>
-							###ERROR_JAVASCRIPT###
-						</p>
+						<h2>###ERROR_JAVASCRIPT###</h2>
 					</div>
 				</noscript>
 				<div id="t3-nocookies-error" class="t3-login-alert t3-login-alert-warning" style="display:none">
-					<p>
-						###ERROR_COOKIES###
-					</p>
+					<h2>###ERROR_COOKIES###</h2>
 				</div>
 				###FORM###
 				<div class="t3-login-bottomBorder"></div>
@@ -48,9 +44,9 @@
 		###COPYRIGHT###
 	</div>
 	<div id="t3-meta-links">
-		<a href="http://typo3.org" target="_blank">TYPO3.org</a>
+		<a href="http://typo3.org" target="_blank" class="t3-login-link-typo3">TYPO3.org</a>
 		&#124;
-		<a href="http://typo3.org/donate/" target="_blank">###LABEL_DONATELINK###</a>
+		<a href="http://typo3.org/donate/" target="_blank" class="t3-login-link-donate">###LABEL_DONATELINK###</a>
 	</div>
 </div>
 <!-- ###PAGE### end -->
@@ -83,13 +79,10 @@
 
 <!-- ###LOGIN_ERROR### begin -->
 <div id="t3-login-error" class="t3-login-alert t3-login-alert-error">
-	<p>###ERROR_MESSAGE###</p>
+	<h2>###ERROR_LOGIN_TITLE###</h2>
+	<p>###ERROR_LOGIN_DESCRIPTION###</p>
 </div>
 <!-- ###LOGIN_ERROR### end -->
-
-<div id="t3-capslock" class="t3-login-alert t3-login-alert-warning" style="display: none">
-	<p>###ERROR_CAPSLOCK###</p>
-</div>
 
 <div id="t3-login-form-fields" class="###CSS_OPENIDCLASS###">
 	<div class="t3-login-username t3-login-field">
@@ -99,25 +92,31 @@
 		<label for="t3-username" class="t3-username" id="t3-login-label-openId" style="display: none">
 			###LABEL_OPENID###
 		</label>
-		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" class="t3-username" tabindex="1" onkeypress="checkCapslock(event, false)" />
+		<input type="text" id="t3-username" name="username" value="###VALUE_USERNAME###" class="t3-username" tabindex="1" />
 		<div class="t3-login-clearInputField">
 			<a id="t3-username-clearIcon" style="display: none;">
-				<img src="sysext/t3skin/icons/common-input-clear.png" alt="clear" title="clear" />
+				<img src="sysext/t3skin/icons/common-input-clear.png" alt="###CLEAR###" title="###CLEAR###" />
 			</a>
 		</div>
 		<div id="t3-login-openIdLogo" style="display: none">
 			<img src="sysext/t3skin/icons/logo-openid.png" alt="OpenID" title="OpenID" />
+		</div>
+		<div class="t3-login-alert-capslock" id="t3-username-alert-capslock" style="display: none">
+			<img src="sysext/t3skin/icons/login_capslock.gif" alt="###ERROR_CAPSLOCK###" title="###ERROR_CAPSLOCK###" />
 		</div>
 	</div>
 	<div class="t3-login-password t3-login-field" id="t3-login-password-section">
 		<label for="t3-password" class="t3-password">
 			###LABEL_PASSWORD###
 		</label>
-		<input type="password" id="t3-password" name="p_field" value="###VALUE_PASSWORD###" class="t3-password" tabindex="2" onkeypress="checkCapslock(event, true);" />
+		<input type="password" id="t3-password" name="p_field" value="###VALUE_PASSWORD###" class="t3-password" tabindex="2" />
 		<div class="t3-login-clearInputField">
 			<a id="t3-password-clearIcon" style="display: none;">
-				<img src="sysext/t3skin/icons/common-input-clear.png" alt="clear" title="clear" />
+				<img src="sysext/t3skin/icons/common-input-clear.png" alt="###CLEAR###" title="###CLEAR###" />
 			</a>
+		</div>
+		<div class="t3-login-alert-capslock" id="t3-password-alert-capslock" style="display: none">
+			<img src="sysext/t3skin/icons/login_capslock.gif" alt="###ERROR_CAPSLOCK###" title="###ERROR_CAPSLOCK###" />
 		</div>
 	</div>
 	<!-- ###INTERFACE_SELECTOR### begin -->
@@ -134,7 +133,7 @@
 			<a id="t3-login-switchToOpenId" class="switchToOpenId">###LABEL_SWITCHOPENID###</a>
 		</div>
 		<div id="t3-login-form-footer-openId" style="display: none">
-			<a id="t3-login-whatIsOpenId" class="switchToOpenId">###LABEL_WHATISOPENID###</a>
+			<a href="http://openid.net/" id="t3-login-whatIsOpenId" target="_blank" class="switchToOpenId">###LABEL_WHATISOPENID###</a>
 			&#124;
 			<a id="t3-login-switchToDefault" class="switchToOpenId">###LABEL_SWITCHDEFAULT###</a>
 		</div>
