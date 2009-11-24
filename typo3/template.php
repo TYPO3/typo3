@@ -2019,6 +2019,7 @@ $str.=$this->docBodyTagBegin().
 			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');
 				// Make Icon:
 			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
+			$pid = $pageRecord['uid'];
 		} else {	// On root-level of page tree
 				// Make Icon
 			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" />';
@@ -2027,10 +2028,11 @@ $str.=$this->docBodyTagBegin().
 			} else {
 				$theIcon = $iconImg;
 			}
+			$pid = '0 (root)';
 		}
 
 			// Setting icon with clickmenu + uid
-		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
+		$pageInfo = $theIcon . '<em>[pid: ' . $pid . ']</em>';
 		return $pageInfo;
 	}
 
