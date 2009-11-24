@@ -13,6 +13,7 @@
 	* Fixed bug #12669: Fatal error: Call to a member function getSystemLanguages()
 	* Fixed bug #11577: t3lib_formmail floods syslog with "Possible abuse of t3lib_formmail..." messages (thanks to Fabrizio Branca)
 	* Fixed bug #12728: Upgrade ExtJS skin to match t3skin (thanks to T3UXW09 participants)
+	* Fixed bug #12581: Pagetree frame shows HTTP 404 error
 
 2009-11-24  Steffen Kamper  <info@sk-typo3.de>
 
