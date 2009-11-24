@@ -3908,7 +3908,7 @@ final class t3lib_div {
 			);
 
 				// Pass if URL is on the current host:
-			if (self::isValidUrl($decodedUrl)) {
+			if (self::isValidUrl($decodedUrl) && preg_match('#^[a-z0-9]+://#', $decodedUrl)) {
 				if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL')) === 0) {
 					$sanitizedUrl = $url;
 				}
