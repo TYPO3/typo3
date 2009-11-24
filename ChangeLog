@@ -6,6 +6,7 @@
 
 2009-11-24  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12710: "Paste after" function destroys l10n-overlay relations (thanks to Tolleiv Nietsch)
 	* Fixed bug #12700: pageInfo shows wrong info on root page
 
 2009-11-24  Francois Suter  <francois@typo3.org>

@@ -2827,7 +2827,7 @@ class t3lib_TCEmain	{
 						if($language == 0) {
 								//repointing the new translation records to the parent record we just created
 							$overrideValues[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $theNewSQLID;
-							$this->copyL10nOverlayRecords($table, $uid, $destPid, $first, $overrideValues, $excludeFields);
+							$this->copyL10nOverlayRecords($table, $uid, $destPid<0 ? $tscPID : $destPid , $first, $overrideValues, $excludeFields);
 						}
 
 						return $theNewSQLID;
