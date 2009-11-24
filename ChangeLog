@@ -16,6 +16,7 @@
 
 2009-11-24  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12735: BE-Login: show login process
 	* Fixed bug #12719: Bugfix - tcemain copy/move/deleteL10nOverlayRecords is not fully versioning-aware (thanks to Tolleiv Nietsch)
 	* Fixed bug #12710: "Paste after" function destroys l10n-overlay relations (thanks to Tolleiv Nietsch)
 	* Fixed bug #12700: pageInfo shows wrong info on root page

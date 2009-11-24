@@ -16,6 +16,11 @@ TYPO3BackendLogin = {
 			'click',
 			TYPO3BackendLogin.switchToDefault
 		);
+		Event.observe(
+			$('t3-login-submit'),
+			'click',
+			TYPO3BackendLogin.showLoginProcess
+		);
 
 		$A(['t3-username', 't3-password']).each(function(value) {
 			Event.observe(
@@ -93,6 +98,16 @@ TYPO3BackendLogin = {
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').show();
 		}
+	},
+	
+	showLoginProcess: function() {
+		if ($('t3-login-error')) {
+			$('t3-login-error').hide();
+		}
+
+		$('t3-login-form-fields').hide();
+		$('t3-nocookies-error').hide();
+		$('t3-login-process').show();
 	}
 };
 

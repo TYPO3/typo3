@@ -335,6 +335,7 @@ class SC_index {
 			'LABEL_SWITCHOPENID' => $GLOBALS['LANG']->getLL('labels.switchToOpenId', true),
 			'LABEL_SWITCHDEFAULT' => $GLOBALS['LANG']->getLL('labels.switchToDefault', true),
 			'CLEAR'            => $GLOBALS['LANG']->getLL('clear', true),
+			'LOGIN_PROCESS'    => $GLOBALS['LANG']->getLL('login_process', true),
 			'SITELINK'         => '<a href="/">###SITENAME###</a>',
 
 				// global variables will now be replaced (at last)

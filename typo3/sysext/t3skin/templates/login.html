@@ -17,6 +17,9 @@
 				<div id="t3-nocookies-error" class="t3-login-alert t3-login-alert-warning" style="display:none">
 					<h2>###ERROR_COOKIES###</h2>
 				</div>
+				<div id="t3-login-process" style="display: none">
+					<h2>###LOGIN_PROCESS###</h2>
+				</div>
 				###FORM###
 				<div class="t3-login-bottomBorder"></div>
 				<script type="text/javascript">
@@ -127,7 +130,7 @@
 		###VALUE_INTERFACE###
 	</div>
 	<!-- ###INTERFACE_SELECTOR### end -->
-	<input type="submit" name="commandLI" value="###VALUE_SUBMIT###" class="t3-login-submit" tabindex="4" /> 
+	<input type="submit" name="commandLI" id="t3-login-submit" value="###VALUE_SUBMIT###" class="t3-login-submit" tabindex="4" />  
 	<div class="t3-login-form-footer">
 		<div id="t3-login-form-footer-default">
 			<a id="t3-login-switchToOpenId" class="switchToOpenId">###LABEL_SWITCHOPENID###</a>
