@@ -26,11 +26,19 @@ Description : styles the TYPO3 backend
 /* ----- Logout ----- */
 
 #logout-button input {
-	background-color: #a2aab8;
-	color: #fff;
-	border: 1px solid #888;
+	background: #c3c7ce url('../icons/gfx/bg_input_button.gif') repeat-x;
+	color: #333;
+	border: 1px solid #ACB3BE;
 	height: 18px;
 	line-height: 14px;
 	vertical-align: baseline;
 	text-align: center;
+	padding: 0;
+	cursor: pointer;
+}
+
+#logout-button input:hover {
+	background: #c3c7ce url('../icons/gfx/bg_input_button_hover.gif') repeat-x;
+	color: #000;
+	border: 1px solid #737F91;
 }

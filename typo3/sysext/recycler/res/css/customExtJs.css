@@ -1,17 +1,77 @@
 body#ext-recycler-mod1-index-php {
 	margin-left: 0;
 }
+
 #recyclerContent {
-	margin: 10px 0 0 4px;
+	margin: 10px 0 0 0;
 }
-body .x-panel { margin-bottom:20px; }
+
+.x-panel .x-grid-panel {
+	padding: 0;
+	margin: 0;
+	background-image: none;
+	background: none;
+	border: none;
+}
+
+body .x-panel {
+	margin-bottom:20px;
+}
+
+.x-toolbar-left, .x-toolbar-right, .x-panel-mc, x-panel-tbar, .x-toolbar .x-small-editor .x-toolbar-layout-ct, x-toolbar-ct,
+.x-panel-nofooter .x-panel-bc, .x-panel-nofooter .x-window-bc,
+.x-toolbar,
+.x-small-editor,
+.x-toolbar-layout-ct,
+.x-panel-mr, .x-panel-ml, .x-panel-tr, .x-panel-tl, .x-panel-br, .x-panel-bl, .x-panel-ml, .x-panel-mr, .x-panel-tm, .x-panel-tc {
+	background-image: none;
+	background: none;
+	padding: 0;
+	margin: 0;
+	border: none;
+}
+
+.x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
+	padding: 2px;
+	margin: 0;
+	border: 0;
+}
+
+.x-panel-mr, .x-panel-ml {
+	padding: 0;
+	margin: 0;
+}
+
+.x-toolbar {
+	padding: 0;
+	margin: 0;
+}
+
+.x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar,
+.x-panel-tbar-noheader .x-toolbar, .x-panel-mc .x-panel-tbar .x-toolbar {
+	background-color:#B8BEC9;
+	background-image:url('../icons/x_toolbar_bg.gif');
+	background-position:left top;
+	background-repeat:repeat-x;
+}
 
 .x-toolbar-ct .x-toolbar-left {
 	width: 400px;
+	background-color:#B8BEC9;
+	background-image:url('../icons/x_toolbar_bg.gif');
+	background-position:left top;
+	background-repeat:repeat-x;
 }
 
-.x-toolbar-ct .x-toolbar-right {
-	
+.x-toolbar-ct .x-toolbar-right, .x-toolbar-cell {
+	background-color:#B8BEC9;
+	background-image:url('../icons/x_toolbar_bg.gif');
+	background-position:left top;
+	background-repeat:repeat-x;
+}
+
+.x-toolbar-ct .xtb-text {
+	color: #fff;
 }
 
 .icon-grid { background-image:url('../icons/recycler2.gif') !important; }
@@ -48,3 +108,61 @@ body .x-panel { margin-bottom:20px; }
 .x-window-body { padding: 5px; }
 .x-window-body label { display: block; margin: 5px 0; }
 .x-window-body .x-form-cb-label { margin-left: 5px; }
+
+/*  Single rows and elements */
+.x-grid3-body .x-grid3-td-expander {
+	background-image: none;
+}
+
+.x-grid3-row {
+	background-image:none;
+}
+
+.x-grid3-row-selected {
+	background-color:#fff !important;
+	background-image:none;
+}
+
+/* Flyout Menus */
+.x-menu-sep {
+	display: none;
+}
+
+.x-menu {
+	background-image: none;
+}
+
+.x-menu-item-active a.x-menu-item {
+	border: 1px solid #adb5c1;
+	background-color: #adb5c1;
+	color: #fff;
+}
+
+.x-menu-list {
+	padding:0;
+}
+
+/* Flyout Menu Shadows */
+.x-shadow .xstl, .x-shadow .xstc, .x-shadow .xstr, .x-shadow .xsbl, 
+.x-shadow .xsbc, .x-shadow .xsbr, .x-shadow .xstl, .x-shadow .xstr, .x-shadow .xsml, .x-shadow .xsmr {
+	background-image: none;
+}
+
+.x-grid3-body .x-grid3-td-checker {
+	background-image: none;
+	background-color: none;
+}
+
+.x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer,
+.x-grid3-body .x-grid3-row-selected .x-grid3-td-checker,
+.x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
+	background-image: none;
+	background-color: none;
+}
+
+.x-grid3-row-body,
+.x-grid3-row-body-tr,
+.x-grid3-row-body-td,
+.x-grid3-body-cell {
+	background-color: none;
+}
