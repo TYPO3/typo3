@@ -1,3 +1,7 @@
+2009-11-23  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 1.8.6
+
 2009-11-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12684: htmlArea RTE: Repeated character / backspacing is slow in Firefox
