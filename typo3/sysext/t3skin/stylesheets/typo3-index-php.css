@@ -28,6 +28,8 @@ body#typo3-index-php .t3-headline {
 	width: auto;
 	border-bottom: 1px solid #d6d9df;
 	min-height: 24px;
+	height: auto !important;
+	height: 24px;
 }
 
 body#typo3-index-php .t3-headline h2 {

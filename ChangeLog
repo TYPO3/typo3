@@ -5,6 +5,7 @@
 2009-11-24  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bugfix #12699: Fixed remaining styling issues in the backend login
+	* Follow-up to bugfix #12669: Headers in backend login looked strange in IE6
 	* Fixed bug #12669: Fatal error: Call to a member function getSystemLanguages()
 	* Fixed bug #11577: t3lib_formmail floods syslog with "Possible abuse of t3lib_formmail..." messages (thanks to Fabrizio Branca)
 	* Fixed bug #12728: Upgrade ExtJS skin to match t3skin (thanks to T3UXW09 participants)
