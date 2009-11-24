@@ -1,6 +1,7 @@
 2009-11-24  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bugfix #12699: Fixed remaining styling issues in the backend login
+	* Fixed bug #12669: Fatal error: Call to a member function getSystemLanguages()
 
 2009-11-24  Steffen Kamper  <info@sk-typo3.de>
 

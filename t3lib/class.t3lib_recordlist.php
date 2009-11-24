@@ -118,7 +118,7 @@ class t3lib_recordList {
 		if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
 			$this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
-		$this->translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
+		$this->getTranslateTools();
 	}
 
 
@@ -380,7 +380,7 @@ class t3lib_recordList {
 			'sys_language_uid'
 		);
 
-		$this->languageIconTitles = $this->translateTools->getSystemLanguages($this->id, $this->backPath);
+		$this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id, $this->backPath);
 	}
 
 	/**
@@ -392,6 +392,18 @@ class t3lib_recordList {
 	function languageFlag($sys_language_uid)	{
 		return ($this->languageIconTitles[$sys_language_uid]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$sys_language_uid]['flagIcon'].'" class="absmiddle" alt="" />&nbsp;' : '').
 				htmlspecialchars($this->languageIconTitles[$sys_language_uid]['title']);
+	}
+
+	/**
+	 * Gets an instance of t3lib_transl8tools.
+	 *
+	 * @return	t3lib_transl8tools
+	 */
+	protected function getTranslateTools() {
+		if (!isset($this->translateTools)) {
+			$this->translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
+		}
+		return $this->translateTools;
 	}
 }
 
