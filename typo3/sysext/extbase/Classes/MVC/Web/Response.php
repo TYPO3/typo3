@@ -169,7 +169,8 @@ class Tx_Extbase_MVC_Web_Response extends Tx_Extbase_MVC_Response {
 	 */
 	public function getHeaders() {
 		$preparedHeaders = array();
-		$statusHeader = 'HTTP/1.1 ' . $this->statusCode . ' ' . $this->statusMessage;
+		$protocolVersion = (isset($_SERVER['SERVER_PROTOCOL'])) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
+		$statusHeader = $protocolVersion . ' ' . $this->statusCode . ' ' . $this->statusMessage;
 
 		$preparedHeaders[] = $statusHeader;
 		foreach ($this->headers as $name => $values) {

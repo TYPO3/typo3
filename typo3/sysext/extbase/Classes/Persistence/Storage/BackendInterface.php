@@ -58,11 +58,11 @@ interface Tx_Extbase_Persistence_Storage_BackendInterface {
 	 * Deletes a row in the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $identifyer An array of identifyer array('fieldname' => value). This array will be transformed to a WHERE clause
+	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
 	 * @return void
 	 */
-	public function removeRow($tableName, array $identifyer, $isRelation = FALSE);
+	public function removeRow($tableName, array $identifier, $isRelation = FALSE);
 
 	/**
 	 * Returns an array with rows matching the query.

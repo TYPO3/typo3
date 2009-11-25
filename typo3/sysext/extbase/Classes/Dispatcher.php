@@ -141,10 +141,15 @@ class Tx_Extbase_Dispatcher {
 		$this->timeTrackPull();
 
 		self::$reflectionService->shutdown();
+		
+		if (substr($response->getStatus(), 0, 3) === '303') {
+			$response->sendHeaders();
+			exit;
+		}
+
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
-		$response->sendHeaders();
 		$this->timeTrackPull();
 		return $response->getContent();
 	}

@@ -351,8 +351,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			}
 			
 			$columnMap = $dataMap->getColumnMap($propertyName);
+			$childClassName = $columnMap->getChildClassName();
 			$propertyMetaData = $classSchema->getProperty($propertyName);
-			$propertyType = $propertyMetaData['type'];
+			if (!empty($childClassName)) {
+				$propertyType = $childClassName;
+			} elseif (!empty($propertyMetaData['type'])) {
+				$propertyType = $propertyMetaData['type'];
+			} else {
+				throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Could not determine the class of the child objects.', 1251315965);
+			}
+			
 			// FIXME enable property-type check
 			// $this->checkPropertyType($propertyType, $propertyValue);
 			if (($propertyValue !== NULL) && $propertyType === 'Tx_Extbase_Persistence_ObjectStorage') {
@@ -371,7 +379,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 							$this->insertObject($propertyValue);
 							$queue[] = $propertyValue;
 						} else {
-							$this->persistValueObject($propertyValue, $object, $propertyName);
+							$this->persistValueObject($propertyValue);
 						}
 					}
 					$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
@@ -423,15 +431,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @return void
 	 */
-	protected function persistValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject = NULL, $parentPropertyName = NULL, $sortingPosition = 1) {
+	protected function persistValueObject(Tx_Extbase_DomainObject_AbstractValueObject $object, $sortingPosition = 1) {
 		$result = $this->getUidOfAlreadyPersistedValueObject($object);
 		if ($result !== FALSE) {
 			$object->_setProperty('uid', (int)$result);
-			if (!is_null($parentObject) && is_string($parentPropertyName) && strlen($parentPropertyName) > 0) {
-				if($this->dataMapper->getDataMap(get_class($parentObject))->getColumnMap($parentPropertyName)->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-					$this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
-				}
-			}
 		} elseif ($object->_isNew()) {
 			$row = array();
 			$className = get_class($object);
@@ -466,7 +469,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 	
 	/**
-	 * Persists a relation. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
+	 * Persists a an object storage. Objects of a 1:n or m:n relation are queued and processed with the parent object. A 1:1 relation
 	 * gets persisted immediately. Objects which were removed from the property were detached from the parent object. They will not be
 	 * deleted by default. You have to annotate the property with "@cascade remove" if you want them to be deleted as well.
 	 *
@@ -488,8 +491,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$currentUids = t3lib_div::intExplode(',', $currentFieldValue);
 			}
 		}
-		
-		$updateParent = FALSE;
+
 		$removedObjectUids = array();
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
 			if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
@@ -498,9 +500,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
 				$removedObjectUids[] = $removedObject->getUid();
 			}
-			$updateParent = TRUE;
 		}
-		
+
+		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$this->deleteAllRelationsFromRelationtable($parentObject, $propertyName);
+		}
+
 		$insertedObjectUids = array();
 		$sortingPosition = 1;
 		foreach ($objectStorage as $object) {
@@ -508,23 +513,20 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				if ($object instanceof Tx_Extbase_DomainObject_AbstractEntity) {
 					$this->insertObject($object);
 				} else {
-					$this->persistValueObject($object, $parentObject, $propertyName, $sortingPosition);
+					$this->persistValueObject($object, $sortingPosition);
 				}
-				$updateParent = TRUE;
 				$insertedObjectUids[] = $object->getUid();
 			}
 			$this->attachObjectToParentObject($object, $parentObject, $propertyName, $sortingPosition);
 			$sortingPosition++;
 		}
 		
-		if ($updateParent === TRUE) {
-			if ($columnMap->getParentKeyFieldName() === NULL) {
-				$newUids = array_diff($currentUids, $removedObjectUids);
-				$newUids = array_merge($newUids, $insertedObjectUids);
-				$row[$columnMap->getColumnName()] = implode(',', $newUids);
-			} else {
-				$row[$columnMap->getColumnName()] = $this->dataMapper->countRelated($parentObject, $propertyName);			
-			}
+		if ($columnMap->getParentKeyFieldName() === NULL) {
+			$newUids = array_diff($currentUids, $removedObjectUids);
+			$newUids = array_merge($newUids, $insertedObjectUids);
+			$row[$columnMap->getColumnName()] = implode(',', $newUids);
+		} else {
+			$row[$columnMap->getColumnName()] = $this->dataMapper->countRelated($parentObject, $propertyName);
 		}
 	}
 	
@@ -683,6 +685,26 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$relationTableName,
 			$row,
 			TRUE);
+		return $res;
+	}
+
+	/**
+	 * Delete all mm-relations of a parent from a relation table
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The parent object
+	 * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
+	 * @return void
+	 */
+	protected function deleteAllRelationsFromRelationtable(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $parentPropertyName) {
+		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
+		$columnMap = $dataMap->getColumnMap($parentPropertyName);
+		$relationTableName = $columnMap->getRelationTableName();
+		$res = $this->storageBackend->removeRow(
+			$relationTableName,
+			array(
+				$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
+				),
+			FALSE);
 		return $res;
 	}
 

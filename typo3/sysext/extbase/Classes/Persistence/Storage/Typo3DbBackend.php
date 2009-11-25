@@ -159,20 +159,13 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * Deletes a row in the storage
 	 *
 	 * @param string $tableName The database table name
-	 * @param array $identifyer An array of identifyer array('fieldname' => value). This array will be transformed to a WHERE clause
-	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
+	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
+	 * @param boolean $isRelation TRUE if we are currently manipulating a relation table, FALSE by default
 	 * @return void
 	 */
-	public function removeRow($tableName, array $identifyer, $isRelation = FALSE) {
-		$fieldNames = array_keys($identifyer);
-		$suffixedFieldNames = array();
-		foreach ($fieldNames as $fieldName) {
-			$suffixedFieldNames[] = $fieldName . '=?';
-		}
-		$parameters = array_values($identifyer);
-		$statement = 'DELETE FROM ' . $tableName;
-		$statement .= ' WHERE ' . implode(' AND ', $suffixedFieldNames);
-		$this->replacePlaceholders($statement, $parameters);
+	public function removeRow($tableName, array $identifier, $isRelation = FALSE) {
+		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
+		$this->replacePlaceholders($statement, $identifier);
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid, $isRelation);
 		}
@@ -188,10 +181,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The Data Map
 	 * @return array|FALSE
 	 */
-	public function getRowByIdentifier($identifier, Tx_Extbase_Persistence_Mapper_DataMap $dataMap) {
-		$tableName = $dataMap->getTableName();
-		$statement = 'SELECT * FROM ' . $tableName . ' WHERE uid=?';
-		$this->replacePlaceholders($statement, array($identifier));
+	public function getRowByIdentifier($tableName, array $identifier) {
+		$statement = 'SELECT * FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
+		$this->replacePlaceholders($statement, $identifier);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
@@ -201,6 +193,15 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		} else {
 			return FALSE;
 		}
+	}
+	
+	protected function parseIdentifier(array $identifier) {
+		$fieldNames = array_keys($identifier);
+		$suffixedFieldNames = array();
+		foreach ($fieldNames as $fieldName) {
+			$suffixedFieldNames[] = $fieldName . '=?';
+		}
+		return implode(' AND ', $suffixedFieldNames);
 	}
 
 	/**
