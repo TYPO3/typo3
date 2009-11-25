@@ -1053,7 +1053,37 @@ ul.tree li.active ul, ul.tree ul li.active ul {
 TCEforms
 
 - - - - - - - - - - - - - - - - - - - - - */
+img.t3-TCEforms-reqImg {
+	display:inline-block;
+	margin-right:3px;
+	margin-top:4px;
+	margin-left:3px;
+	width:16px;
+	height:16px;
 
+}
+img.t3-TCEforms-reqTabImg {
+	margin-left:4px;
+	margin-bottom:-3px;
+	width:16px;
+	height:16px;
+
+}
+img.t3-TCEforms-contentchangedImg {
+	display:inline-block;
+	margin-bottom:2px;
+	width: 7px;
+}
+img.t3-TCEforms-reqPaletteImg {
+	display:inline-block;
+	margin-right:2px;
+	width:16px;
+	height:16px;
+
+}
+img.t3-TCEforms-contentchangedPaletteImg {
+	width: 7px;
+}
 table.typo3-TCEforms {
 	width: 93%;
 	border-collapse: collapse;
@@ -1068,6 +1098,7 @@ table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow,
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
 	border: 0;
 }
+
 
 table.typo3-TCEforms span.typo3-TCEforms-newToken {
 	font-weight: bold;

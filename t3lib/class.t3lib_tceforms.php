@@ -4766,7 +4766,7 @@ class t3lib_TCEforms	{
 				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><b>###FIELD_NAME###</b></span>###FIELD_HELP_TEXT###</td>
 			</tr>
 			<tr ###BGCOLOR######CLASSATTR_1###>
-				<td nowrap="nowrap"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="10" height="10" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="7" height="10" alt="" /></td>
+				<td nowrap="nowrap"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-reqImg" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" /></td>
 				<td valign="top">###FIELD_ITEM######FIELD_PAL_LINK_ICON###</td>
 			</tr>';
 
@@ -4975,8 +4975,8 @@ class t3lib_TCEforms	{
 						'</span>'.
 					'</td>';
 				$iRow[$row][] = '<td valign="top">' .
-						'<img name="req_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="10" height="10" vspace="4" alt="" />'.
-						'<img name="cm_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" width="7" height="10" vspace="4" alt="" />'.
+						'<img name="req_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" class="t3-TCEforms-reqPaletteImg"alt="" />'.
+						'<img name="cm_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" class="t3-TCEforms-contentchangedPaletteImg" alt="" />'.
 					'</td>
 					<td nowrap="nowrap" valign="top">'.
 						$content['ITEM'].

@@ -34,6 +34,7 @@
 	* Follow-up to bugfix #12420: Removed deprecation logging from methods that are still used in the TYPO3 Core
 	* Fixed bug #12755: Update to ADOdb 5.10
 	* Fixed bug #12629: XSS in sysext scheduler possible (thanks to Georg Ringer)
+	* Follow-up to bugfix #12728: Fixed size of icon indicating required fields (thanks to Steffen Ritter)
 
 2009-11-24  Stanislas Rolland  <typo3@sjbr.ca>
 
