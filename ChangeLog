@@ -1,3 +1,7 @@
+2009-11-26  Oliver Hader  <oliver@typo3.org>
+
+	* Release of TYPO3 4.3.0RC2
+
 2009-11-25  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12133: autoloaders registered by extensions slow down the core autoloader
