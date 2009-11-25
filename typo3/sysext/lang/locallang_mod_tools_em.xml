@@ -427,6 +427,7 @@
 			<label index="clearMakeExtDir_could_not_create_dir">ERROR: Could not create extension directory "%s"!</label>
 			<label index="clearMakeExtDir_no_dir">ERROR: The extension install path "%s" was no directory!</label>
 			<label index="writeModPath_ok">TYPO3_MOD_PATH and $BACK_PATH were updated in "%s"!</label>
+			<label index="writeModPath_notRequired">Notice: Module "%s" uses module-API to register module, TYPO3_MOD_PATH and $BACK_PATH not required.</label>
 			<label index="writeModPath_error">Error: Either TYPO3_MOD_PATH or $BACK_PATH was not found in the "%s" file. You must manually configure that!</label>
 			<label index="updateLocalEM_CONF_ok">The file "%s" was updated with a cleaned up EM_CONF array.</label>
 			<label index="updateLocalEM_CONF_not_writable">Error: "%s" was not writable!</label>

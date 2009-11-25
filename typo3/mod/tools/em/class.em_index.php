@@ -4555,6 +4555,7 @@ EXTENSION KEYS:
 
 		$flag_M = 0;
 		$flag_B = 0;
+		$flag_Dispatch = 0;
 
 		foreach($lines as $k => $l)	{
 			$line = trim($l);
@@ -4566,16 +4567,29 @@ EXTENSION KEYS:
 			}
 
 			unset($reg);
-			if (preg_match('/^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;/',$line,$reg))	{
-				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\''.$this->typeBackPaths[$type].'\';', $lines[$k]);
-				$flag_B = $k+1;
+			if (preg_match('/^\$BACK_PATH[[:space:]]*=[[:space:]]*["\']([[:alnum:]_\/\.]+)["\'][[:space:]]*;/', $line, $reg)) {
+				$lines[$k] = str_replace($reg[0], '$BACK_PATH=\'' . $this->typeBackPaths[$type] . '\';', $lines[$k]);
+				$flag_B = $k + 1;
 			}
+
+				// Check if this module uses new API (see http://bugs.typo3.org/view.php?id=5278)
+				// where TYPO3_MOD_PATH and BACK_PATH are not required
+			unset($reg);
+			if (preg_match('/^\$MCONF\[["\']script["\']\][[:space:]]*=[[:space:]]*["\']_DISPATCH["\'][[:space:]]*;/', $line, $reg)) {
+				$flag_Dispatch = $k+1;
+			}
+
 		}
 
 		if ($flag_B && $flag_M)	{
 			t3lib_div::writeFile($confFilePath,implode(chr(10),$lines));
 			return sprintf($GLOBALS['LANG']->getLL('writeModPath_ok'),
 				substr($confFilePath, strlen(PATH_site)));
+		} elseif ($flag_Dispatch){
+			return sprintf(
+				$GLOBALS['LANG']->getLL('writeModPath_notRequired'),
+				substr($confFilePath, strlen(PATH_site))
+			);
 		} else return $GLOBALS["TBE_TEMPLATE"]->rfw(
 			sprintf($GLOBALS['LANG']->getLL('writeModPath_error'),
 			$confFilePath)

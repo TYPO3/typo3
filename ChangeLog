@@ -1,6 +1,7 @@
 2009-11-25  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bugfix #12436: Move Suhosin part to php.ini section in the install tool
+	* Fixed bug #9981: EM does not test for usage of mod.php-API and spuriously displays an error (thanks to Andreas Kundoch)
 
 2009-11-24  Stanislas Rolland  <typo3@sjbr.ca>
 
