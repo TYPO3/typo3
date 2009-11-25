@@ -329,6 +329,60 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$mockValidator = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
 		$this->assertEquals('Raw', $mockValidator->_call('unifyDataType', 'mixed'));
 	}
+	
+	/**
+	 * dataProvider for parseValidatorAnnotationCanParseAnnotations
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 */
+	public function validatorAnnotations() {
+		return array(
+			array('$var Bar', array('argumentName' => 'var', 'validators' => array(
+						array('validatorName' => 'Bar', 'validatorOptions' => array())))),
+			array('$var Bar, Foo', array('argumentName' => 'var', 'validators' => array(
+						array('validatorName' => 'Bar', 'validatorOptions' => array()),
+						array('validatorName' => 'Foo', 'validatorOptions' => array())
+						))),
+			array('$var Baz (Foo=Bar)', array('argumentName' => 'var', 'validators' => array(
+						array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => 'Bar'))))),
+			array('$var Buzz (Foo="B=a, r", Baz=1)', array('argumentName' => 'var', 'validators' => array(
+						array('validatorName' => 'Buzz', 'validatorOptions' => array('Foo' => 'B=a, r', 'Baz' => '1'))))),
+			array('$var Foo(Baz=1, Bar=Quux)', array('argumentName' => 'var', 'validators' => array(
+						array('validatorName' => 'Foo', 'validatorOptions' => array('Baz' => '1', 'Bar' => 'Quux'))))),
+			array('$var Pax, Foo(Baz = \'1\', Bar = Quux)', array('argumentName' => 'var', 'validators' => array(
+							array('validatorName' => 'Pax', 'validatorOptions' => array()),
+							array('validatorName' => 'Foo', 'validatorOptions' => array('Baz' => '1', 'Bar' => 'Quux'))
+						))),
+			array('$var Reg (P="[at]*(h|g)"), Quux', array('argumentName' => 'var', 'validators' => array(
+							array('validatorName' => 'Reg', 'validatorOptions' => array('P' => '[at]*(h|g)')),
+							array('validatorName' => 'Quux', 'validatorOptions' => array())
+						))),
+			array('$var Baz (Foo="B\"ar")', array('argumentName' => 'var', 'validators' => array(
+						array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => 'B"ar'))))),
+			array('$var F3_TestPackage_Quux', array('argumentName' => 'var', 'validators' => array(
+						array('validatorName' => 'F3_TestPackage_Quux', 'validatorOptions' => array())))),
+			array('$var Baz(Foo="5"), Bar(Quux="123")', array('argumentName' => 'var', 'validators' => array(
+							array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => '5')),
+							array('validatorName' => 'Bar', 'validatorOptions' => array('Quux' => '123'))))),
+			array('$var Baz(Foo="2"), Bar(Quux=123, Pax="a weird \"string\" with *freaky* \\stuff")', array('argumentName' => 'var', 'validators' => array(
+							array('validatorName' => 'Baz', 'validatorOptions' => array('Foo' => '2')),
+							array('validatorName' => 'Bar', 'validatorOptions' => array('Quux' => '123', 'Pax' => 'a weird "string" with *freaky* \\stuff'))))),
+		);
+	}
+
+	/**
+	 *
+	 * @test
+	 * @dataProvider validatorAnnotations
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	public function parseValidatorAnnotationCanParseAnnotations($annotation, $expectedResult) {
+		$mockValidatorResolver = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
+		$result = $mockValidatorResolver->_call('parseValidatorAnnotation', $annotation);
+
+		$this->assertEquals($result, $expectedResult);
+	}
+	
 }
 
 ?>

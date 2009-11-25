@@ -38,7 +38,33 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * Match validator names and options
 	 * @var string
 	 */
-	const PATTERN_MATCH_VALIDATORS = '/(?:^|,\s*)(?P<validatorName>[a-z0-9_]+)\s*(?:\((?P<validatorOptions>.+)\))?/i';
+	const PATTERN_MATCH_VALIDATORS = '/
+			(?:^|,\s*)
+			(?P<validatorName>[a-z0-9_]+)
+			\s*
+			(?:\(
+				(?P<validatorOptions>(?:\s*[a-z0-9]+\s*=\s*(?:
+					"(?:\\\\"|[^"])*"
+					|\'(?:\\\\\'|[^\'])*\'
+					|(?:\s|[^,"\']*)
+				)(?:\s|,)*)*)
+			\))?
+		/ixS';
+
+	/**
+	 * Match validator options (to parse actual options)
+	 * @var string
+	 */
+	const PATTERN_MATCH_VALIDATOROPTIONS = '/
+			\s*
+			(?P<optionName>[a-z0-9]+)
+			\s*=\s*
+			(?P<optionValue>
+				"(?:\\\\"|[^"])*"
+				|\'(?:\\\\\'|[^\'])*\'
+				|(?:\s|[^,"\']*)
+			)
+		/ixS';
 
 	/**
 	 * @var Tx_Extbase_Object_ManagerInterface
@@ -218,20 +244,16 @@ class Tx_Extbase_Validation_ValidatorResolver {
 			$validatorConfiguration = array('argumentName' => ltrim($parts[0], '$'), 'validators' => array());
 			preg_match_all(self::PATTERN_MATCH_VALIDATORS, $parts[1], $matches, PREG_SET_ORDER);
 		} else {
+			$validatorConfiguration = array('validators' => array());
 			preg_match_all(self::PATTERN_MATCH_VALIDATORS, $validateValue, $matches, PREG_SET_ORDER);
 		}
 
 		foreach ($matches as $match) {
-			$validatorName = $match['validatorName'];
 			$validatorOptions = array();
 			if (isset($match['validatorOptions'])) {
-				if (strpos($match['validatorOptions'], '\'') === FALSE && strpos($match['validatorOptions'], '"') === FALSE) {
-					$validatorOptions = $this->parseSimpleValidatorOptions($match['validatorOptions']);
-				} else {
-					$validatorOptions = $this->parseComplexValidatorOptions($match['validatorOptions']);
-				}
+				$validatorOptions = $this->parseValidatorOptions($match['validatorOptions']);
 			}
-			$validatorConfiguration['validators'][] = array('validatorName' => $validatorName, 'validatorOptions' => $validatorOptions);
+			$validatorConfiguration['validators'][] = array('validatorName' => $match['validatorName'], 'validatorOptions' => $validatorOptions);
 		}
 
 		return $validatorConfiguration;
@@ -244,46 +266,35 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @param string &$rawValidatorOptions
 	 * @return array An array of optionName/optionValue pairs
 	 */
-	protected function parseSimpleValidatorOptions(&$rawValidatorOptions) {
+	protected function parseValidatorOptions($rawValidatorOptions) {
 		$validatorOptions = array();
-
-		$rawValidatorOptions = explode(',', $rawValidatorOptions);
-		foreach ($rawValidatorOptions as $rawValidatorOption) {
-			if (strpos($rawValidatorOption, '=') !== FALSE) {
-				list($optionName, $optionValue) = explode('=', $rawValidatorOption, 2);
-				$validatorOptions[trim($optionName)] = trim($optionValue);
-			}
+		$parsedValidatorOptions = array();
+		preg_match_all(self::PATTERN_MATCH_VALIDATOROPTIONS, $rawValidatorOptions, $validatorOptions, PREG_SET_ORDER);
+		foreach ($validatorOptions as $validatorOption) {
+			$parsedValidatorOptions[trim($validatorOption['optionName'])] = trim($validatorOption['optionValue']);
 		}
-
-		$rawValidatorOptions = '';
-		return $validatorOptions;
+		array_walk($parsedValidatorOptions, array($this, 'unquoteString'));
+		return $parsedValidatorOptions;
 	}
 
 	/**
-	 * Parses $rawValidatorOptions containing quoted option values.
+	 * Removes escapings from a given argument string and trims the outermost
+	 * quotes.
+	 * 
+	 * This method is meant as a helper for regular expression results.
 	 *
-	 * @param string $rawValidatorOptions
-	 * @return array An array of optionName/optionValue pairs
+	 * @param string &$quotedValue Value to unquote
 	 */
-	protected function parseComplexValidatorOptions($rawValidatorOptions) {
-		$validatorOptions = array();
-
-		while (strlen($rawValidatorOptions) > 0) {
-			$parts = explode('=', $rawValidatorOptions, 2);
-			$optionName = trim($parts[0]);
-			$rawValidatorOptions = trim($parts[1]);
-
-			$matches = array();
-			preg_match('/(?:\'(.+)\'|"(.+)")(?:,|$)/', $rawValidatorOptions, $matches);
-			$validatorOptions[$optionName] = str_replace(array('\\\'', '\\"'), array('\'', '"'), (isset($matches[2]) ? $matches[2] : $matches[1]));
-
-			$rawValidatorOptions = ltrim(substr($rawValidatorOptions, strlen($matches[0])),', ');
-			if (strpos($rawValidatorOptions, '\'') === FALSE && strpos($rawValidatorOptions, '"') === FALSE) {
-				$validatorOptions = array_merge($validatorOptions, $this->parseSimpleValidatorOptions($rawValidatorOptions));
-			}
+	protected function unquoteString(&$quotedValue) {
+		switch ($quotedValue[0]) {
+			case '"':
+				$quotedValue = str_replace('\"', '"', trim($quotedValue, '"'));
+			break;
+			case '\'':
+				$quotedValue = str_replace('\\\'', '\'', trim($quotedValue, '\''));
+			break;
 		}
-
-		return $validatorOptions;
+		$quotedValue = str_replace('\\\\', '\\', $quotedValue);
 	}
 
 	/**
