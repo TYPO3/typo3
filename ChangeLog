@@ -36,6 +36,7 @@
 	* Fixed bug #12629: XSS in sysext scheduler possible (thanks to Georg Ringer)
 	* Follow-up to bugfix #12728: Fixed size of icon indicating required fields (thanks to Steffen Ritter)
 	* Cleanup: Updated ext_emconf.php files in system extensions
+	* Follow-up to bugfix #12755: Added missing database driver classes
 
 2009-11-24  Stanislas Rolland  <typo3@sjbr.ca>
 
