@@ -11,11 +11,11 @@ CREATE TABLE cache_pages (
   hash varchar(32) DEFAULT '' NOT NULL,
   page_id int(11) unsigned DEFAULT '0' NOT NULL,
   reg1 int(11) unsigned DEFAULT '0' NOT NULL,
-  HTML mediumtext,
+  HTML mediumblob,
   temp_content int(1) DEFAULT '0' NOT NULL,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   expires int(10) unsigned DEFAULT '0' NOT NULL,
-  cache_data mediumtext,
+  cache_data mediumblob,
   KEY page_id (page_id),
   KEY sel (hash,page_id),
   PRIMARY KEY (id)
@@ -28,7 +28,7 @@ CREATE TABLE cache_pages (
 CREATE TABLE cache_pagesection (
   page_id int(11) unsigned DEFAULT '0' NOT NULL,
   mpvar_hash int(11) unsigned DEFAULT '0' NOT NULL,
-  content text,
+  content blob,
   tstamp int(11) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (page_id,mpvar_hash)
 ) ENGINE=InnoDB;
