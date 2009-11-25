@@ -1015,7 +1015,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					// The task object is valid
 
 					$name = $registeredClasses[$schedulerRecord['classname']]['title']. ' (' . $registeredClasses[$schedulerRecord['classname']]['extension'] . ')';
-					$additionalInformation = htmlspecialchars($task->getAdditionalInformation());
+					$additionalInformation = $task->getAdditionalInformation();
 					if (!empty($additionalInformation)) {
 						$name .= ' [' . $additionalInformation . ']';
 					}
@@ -1088,7 +1088,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					}
 
 						// Format the execution status
-					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($executionStatusDetail) . '" />' . ' ' . $name;
+					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($executionStatusDetail) . '" />' . ' ' . htmlspecialchars($name);
 
 					$table[$tr][] = $startExecutionElement;
 					$table[$tr][] = $actions;
