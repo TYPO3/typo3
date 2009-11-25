@@ -33,7 +33,7 @@
  * Output:
  * <input type="file" name="file" />
  *
- * @version $Id: UploadViewHelper.php 3440 2009-11-05 10:33:37Z sebastian $
+ * @version $Id$
  * @package Fluid
  * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

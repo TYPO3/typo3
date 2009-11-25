@@ -23,7 +23,7 @@
 /**
  * Text Syntax Tree Node - is a container for strings.
  *
- * @version $Id: TextNode.php 3460 2009-11-06 14:58:53Z k-fish $
+ * @version $Id$
  * @package Fluid
  * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

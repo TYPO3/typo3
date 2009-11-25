@@ -27,7 +27,7 @@ include_once(dirname(__FILE__) . '/../Fixtures/ConstraintSyntaxTreeNode.php');
 require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 
 /**
- * @version $Id:$
+ * @version $Id$
  */
 class Tx_Fluid_ViewHelpers_Form_ErrorsViewHelperTest_testcase extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 	/**

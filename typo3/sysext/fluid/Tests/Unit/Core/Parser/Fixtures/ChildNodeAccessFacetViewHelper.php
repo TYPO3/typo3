@@ -23,7 +23,7 @@
 /**
  * Test fixture for the child node access facet.
  *
- * @version $Id: ChildNodeAccessFacetViewHelper.php 3350 2009-10-27 12:01:08Z k-fish $
+ * @version $Id$
  * @package Fluid
  * @subpackage Core\Parser\Fixtures
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
