@@ -26,9 +26,11 @@
 /**
  * A class representing a certain status
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
+ * @subpackage	reports
+ *
+ * $Id$
  */
 class tx_reports_reports_status_Status {
 

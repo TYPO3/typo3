@@ -26,21 +26,23 @@
 /**
  * Performs some checks about the install tool protection status
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
+ * @subpackage	reports
+ *
+ * $Id$
  */
 class tx_reports_reports_status_ConfigurationStatus implements tx_reports_StatusProvider {
 
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
+	 * @return	array	List of statuses
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
 		$statuses = array(
 			'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
-
 		);
 
 		if ($this->isMemcachedUsed()) {
@@ -85,11 +87,11 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	 * @return	boolean	True if memcached is used, false otherwise.
 	 */
 	protected function isMemcachedUsed() {
-		$memcachedUsed = false;
+		$memcachedUsed = FALSE;
 
 		$memcachedServers = $this->getConfiguredMemcachedServers();
 		if (count($memcachedServers)) {
-			$memcachedUsed = true;
+			$memcachedUsed = TRUE;
 		}
 
 		return $memcachedUsed;

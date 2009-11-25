@@ -26,15 +26,16 @@
 /**
  * Performs several checks about the system's health
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
+ * @subpackage	reports
  */
 class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvider {
 
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
+	 * @return	array	List of statuses
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {

@@ -29,9 +29,11 @@
 /**
  * Interface for classes which provide a report.
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage tx_reports
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
+ * @subpackage	tx_reports
+ *
+ * $Id$
  */
 interface tx_reports_Report {
 

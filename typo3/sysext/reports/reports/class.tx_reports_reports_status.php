@@ -26,9 +26,11 @@
 /**
  * The status report
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
+ * @subpackage	reports
+ *
+ * $Id$
  */
 class tx_reports_reports_Status implements tx_reports_Report {
 
@@ -215,7 +217,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		array_multisort($sortTitle, SORT_DESC, $statuses);
 
 			// making sure that the core version information is always on the top
-		if(is_object($header)) {
+		if (is_object($header)) {
 			array_unshift($statuses, $header);
 		}
 		return $statuses;

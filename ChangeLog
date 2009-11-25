@@ -11,6 +11,7 @@
 
 	* Fixed bug #12547: Removed wrong default binary search paths for Windows
 	* Feature #12491: Reports: Allow multiple providers for each status collection
+	* Cleanup #12492: Reports: Made some CGL improvements and added missing SVN markers
 
 2009-11-25  Oliver Hader  <oliver@typo3.org>
 

@@ -21,11 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
 
 
 $LANG->includeLLFile('EXT:reports/mod/locallang.xml');
@@ -36,9 +31,11 @@ $BE_USER->modAccess($MCONF, 1);
 /**
  * Module 'Reports' for the 'reports' extension.
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package	TYPO3
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
  * @subpackage	tx_reports
+ *
+ * $Id$
  */
 class tx_reports_Module extends t3lib_SCbase {
 

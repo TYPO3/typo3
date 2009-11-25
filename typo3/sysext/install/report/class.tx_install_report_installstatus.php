@@ -29,9 +29,11 @@ require_once(t3lib_extMgm::extPath('install', 'requirements.php'));
 /**
  * Provides an installation status report
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage tx_install
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
+ * @subpackage	tx_install
+ *
+ * $Id$
  */
 class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 
@@ -40,6 +42,7 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 	/**
 	 * Compiles a collection of system status checks as a status report.
 	 *
+	 * @return	array	List of statuses
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
@@ -54,9 +57,9 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 	}
 
 	/**
-	 * Checks for several directoris being writable.
+	 * Checks for several directories being writable.
 	 *
-	 * @return unknown_type
+	 * @return tx_reports_reports_status_Status	An tx_reports_reports_status_Status object indicating the status of the file system
 	 */
 	protected function getFileSystemStatus() {
 		$value    = $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_writable');

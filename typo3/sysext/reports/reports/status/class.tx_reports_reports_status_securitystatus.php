@@ -26,15 +26,18 @@
 /**
  * Performs several checks about the system's health
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package TYPO3
- * @subpackage reports
+ * @author		Ingo Renner <ingo@typo3.org>
+ * @package		TYPO3
+ * @subpackage	reports
+ *
+ * $Id$
  */
 class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvider {
 
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
+	 * @return	array	List of statuses
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
@@ -175,11 +178,11 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 	 * @return	boolean	True if memcached is used, false otherwise.
 	 */
 	protected function isMemcachedUsed() {
-		$memcachedUsed = false;
+		$memcachedUsed = FALSE;
 
 		$memcachedServers = $this->getConfiguredMemcachedServers();
 		if (count($memcachedServers)) {
-			$memcachedUsed = true;
+			$memcachedUsed = TRUE;
 		}
 
 		return $memcachedUsed;
@@ -194,7 +197,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 	protected function executeAdminCommand() {
 		$command = t3lib_div::_GET('adminCmd');
 
-		switch($command) {
+		switch ($command) {
 			case 'remove_ENABLE_INSTALL_TOOL':
 				unlink(PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL');
 			break;
