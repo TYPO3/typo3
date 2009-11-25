@@ -23,7 +23,7 @@
 /**
  * A generic Fluid Core exception.
  *
- * @version $Id: Exception.php 3431 2009-11-03 11:18:01Z robert $
+ * @version $Id$
  * @package Fluid
  * @subpackage Core
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

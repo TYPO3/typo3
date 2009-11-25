@@ -16,7 +16,7 @@
 /**
  * @package
  * @subpackage
- * @version $Id:$
+ * @version $Id$
  */
 /**
  * Class emulating the object factory for Fluid v4.

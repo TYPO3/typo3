@@ -23,7 +23,7 @@
 /**
  * Testcase for HtmlSPecialChartPostProcessor
  *
- * @version $Id: HtmlSpecialCharsPostProcessorTest.php 3449 2009-11-05 13:41:57Z k-fish $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Rendering_HtmlSpecialCharsPostProcessorTest_testcase extends Tx_Extbase_BaseTestCase {

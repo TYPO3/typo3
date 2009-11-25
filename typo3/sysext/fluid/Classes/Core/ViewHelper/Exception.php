@@ -23,7 +23,7 @@
 /**
  * A ViewHelper Exception
  *
- * @version $Id: Exception.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id$
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperInterface.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id$
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

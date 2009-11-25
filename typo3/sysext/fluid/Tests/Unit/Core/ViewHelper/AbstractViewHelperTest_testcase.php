@@ -25,7 +25,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
 /**
  * Testcase for AbstractViewHelper
  *
- * @version $Id: AbstractViewHelperTest.php 3443 2009-11-05 11:21:34Z robert $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest_testcase extends Tx_Extbase_BaseTestCase {

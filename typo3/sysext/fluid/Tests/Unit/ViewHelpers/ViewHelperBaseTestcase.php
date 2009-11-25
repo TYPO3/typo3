@@ -21,7 +21,7 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperBaseTestcase.php 3443 2009-11-05 11:21:34Z robert $
+ * @version $Id$
  * @package Fluid
  * @subpackage ViewHelpers
  */

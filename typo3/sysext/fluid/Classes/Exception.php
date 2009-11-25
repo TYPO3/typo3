@@ -15,7 +15,7 @@
 /**
  * @package
  * @subpackage
- * @version $Id:$
+ * @version $Id$
  */
 class Tx_Fluid_Exception extends Exception {
 

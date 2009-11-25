@@ -57,7 +57,7 @@
  * 1980-12-13
  * (depending on the current date)
  *
- * @version $Id: DateViewHelper.php 3365 2009-10-28 15:16:33Z bwaidelich $
+ * @version $Id$
  * @package Fluid
  * @subpackage ViewHelpers\Format
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

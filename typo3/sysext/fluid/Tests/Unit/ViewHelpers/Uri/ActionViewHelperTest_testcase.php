@@ -16,7 +16,7 @@
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: ActionViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
+ * @version $Id$
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id: ActionViewHelperTest.php 2463 2009-05-29 10:22:26Z bwaidelich $
+ * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */

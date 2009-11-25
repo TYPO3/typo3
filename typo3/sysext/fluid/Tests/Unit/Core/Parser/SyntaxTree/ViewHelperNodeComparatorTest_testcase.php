@@ -23,7 +23,7 @@
 /**
  * Testcase for [insert classname here]
  *
- * @version $Id: ViewHelperNodeTest.php 2411 2009-05-26 22:00:04Z sebastian $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest_testcase extends Tx_Extbase_BaseTestCase {

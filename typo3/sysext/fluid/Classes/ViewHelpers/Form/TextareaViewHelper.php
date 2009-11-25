@@ -33,7 +33,7 @@
  * Output:
  * <textarea name="myTextArea">This is shown inside the textarea</textarea>
  *
- * @version $Id: TextareaViewHelper.php 3346 2009-10-22 17:26:10Z k-fish $
+ * @version $Id$
  * @package Fluid
  * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
