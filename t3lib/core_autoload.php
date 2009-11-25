@@ -152,6 +152,5 @@ return array(
 	'tslib_gmenu_foldout' => PATH_tslib . 'media/scripts/gmenu_foldout.php',
 	'tslib_gmenu_layers' => PATH_tslib . 'media/scripts/gmenu_layers.php',
 	'tslib_tmenu_layers' => PATH_tslib . 'media/scripts/tmenu_layers.php',
-	'language' => t3lib_extMgm::extPath('lang') . 'lang.php',
 );
 ?>

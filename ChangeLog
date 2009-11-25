@@ -1,3 +1,7 @@
+2009-11-25  Rupert Germann  <rupi@gmx.li>
+
+	* Fixed bug #12133: autoloaders registered by extensions slow down the core autoloader
+
 2009-11-25  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #12675: Validation issues in sysext reports: Fix several errors

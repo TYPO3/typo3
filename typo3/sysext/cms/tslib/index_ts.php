@@ -122,13 +122,6 @@ if (!defined('PATH_tslib')) {
 }
 
 
-// *********************
-// Autoloader
-// *********************
-$TT->push('Register Autoloader', '');
-	require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
-	t3lib_autoloader::registerAutoloader();
-$TT->pull();
 
 
 // *********************

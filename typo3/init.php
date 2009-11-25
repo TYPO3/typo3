@@ -181,11 +181,6 @@ require(PATH_t3lib.'config_default.php');
 if (!defined ('TYPO3_db')) 	die ('The configuration file was not included.');
 
 
-// *********************
-// Autoloader
-// *********************
-require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
-t3lib_autoloader::registerAutoloader();
 
 
 // *********************

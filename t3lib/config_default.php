@@ -539,6 +539,15 @@ define('TYPO3_REQUESTTYPE',
 	($TYPO3_AJAX ? TYPO3_REQUESTTYPE_AJAX : 0)
 );
 
+
+
+// *********************
+// Autoloader
+// *********************
+require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
+t3lib_autoloader::registerAutoloader();
+
+
 // Load extensions:
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->push('Loading localconf.php extensions','');
 $TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
@@ -555,6 +564,8 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 	}
 }
 if (TYPO3_MODE=='FE' && is_object($TT)) $TT->pull();
+
+require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
 
 	// Define disposal of caching framewor for core caches:
 define('TYPO3_UseCachingFramework', (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework']);
