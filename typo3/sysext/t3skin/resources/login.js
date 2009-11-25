@@ -1,8 +1,16 @@
+var isWebKit = document.childNodes && !document.all && !navigator.taintEnabled;
+
 TYPO3BackendLogin = {
 	start: function() {
+		TYPO3BackendLogin.preloadImages();
 		TYPO3BackendLogin.registerEventListeners();
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-username'), $('t3-username-clearIcon'));
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-password'), $('t3-password-clearIcon'));
+	},
+
+	preloadImages: function() {
+		var image = new Image();
+		image.src = 'sysext/t3skin/icons/login-submit-progress.gif';
 	},
 
 	registerEventListeners: function() {
@@ -33,11 +41,13 @@ TYPO3BackendLogin = {
 					['focus', 'blur', 'keypress'],
 					function() { TYPO3BackendLogin.setVisibilityOfClearIcon($(value), $(value + '-clearIcon')); }
 			);
-			Event.observe(
-				$(value),
-				'keypress',
-				function(event) { TYPO3BackendLogin.showCapsLockWarning($(value + '-alert-capslock'), event); }
-			);
+			if (!isWebKit) {
+				Event.observe(
+					$(value),
+					'keypress',
+					function(event) { TYPO3BackendLogin.showCapsLockWarning($(value + '-alert-capslock'), event); }
+				);
+			}
 		})
 	},
 
