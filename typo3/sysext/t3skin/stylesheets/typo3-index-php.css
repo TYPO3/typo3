@@ -175,12 +175,9 @@ body#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
 }
 
 body#typo3-index-php .t3-login-submit {
-	font-size: 11px;
-	border-color: #7c7c7c;
 	margin: 15px 0 0 95px;
 	padding: 3px 16px;
 	text-align: left;
-	background: #d6d6d6 url(../backgrounds/login_submit_bg.gif) repeat-x;
 }
 
 body#typo3-index-php .t3-login-error {

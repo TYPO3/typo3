@@ -88,7 +88,7 @@ input, select, textarea {
 }
 
 /* Format input elements */
-textarea, input[type="submit"] {
+textarea, input[type="submit"], input[type="reset"], input[type="button"] {
 	border-top: 1px solid #838EA0;
 	border-left: 1px solid #838EA0;
 	border-right: 1px solid #545861;
@@ -96,14 +96,14 @@ textarea, input[type="submit"] {
 	background-color: #FEFEFE;
 }
 
-textarea:hover, input[type="submit"]:hover {
+textarea:hover, input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover {
 	border-top: 1px solid #AAAAAA;
 	border-left: 1px solid #AAAAAA;
 	border-right: 1px solid #888888;
 	border-bottom: 1px solid #888888;
 }
 
-textarea:focus, input[type="submit"]:focus {
+textarea:focus, input[type="submit"]:focus, input[type="reset"]:focus, input[type="button"]:focus {
 	border-top: 1px solid #999999;
 	border-left: 1px solid #999999;
 	border-right: 1px solid #777777;
@@ -111,14 +111,14 @@ textarea:focus, input[type="submit"]:focus {
 }
 
 /* Reformatting of the submit buttons */
-input[type="submit"] {
+input[type="submit"], input[type="reset"], input[type="button"] {
 	border-top: none;
 	border-left: none;
 	border-right: none;
 	border-bottom: none;
 }
 
-input[type="submit"] {
+input[type="submit"], input[type="reset"], input[type="button"] {
 	background-color: #c3c7ce;
 	background: url('../icons/gfx/bg_input_button.gif') repeat-x;
 	color: #333;
@@ -127,7 +127,7 @@ input[type="submit"] {
 	cursor: pointer;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover {
 	background: #c3c7ce url('../icons/gfx/bg_input_button_hover.gif') repeat-x;
 	color: #000;
 	border: 1px solid #737F91;
