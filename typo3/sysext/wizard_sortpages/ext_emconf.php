@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "wizard_sortpages".
 #
-# Auto generated 21-10-2009 11:28
+# Auto generated 25-11-2009 22:15
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
