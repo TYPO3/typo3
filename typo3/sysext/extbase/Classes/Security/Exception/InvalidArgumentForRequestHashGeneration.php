@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Security\Exception
- * @version $Id: InfiniteLoop.php 1052 2009-08-05 21:51:32Z sebastian $
+ * @version $Id$
  */
 class Tx_Extbase_Security_Exception_InvalidArgumentForRequestHashGeneration extends Tx_Extbase_Security_Exception {
 }

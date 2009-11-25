@@ -33,7 +33,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\Exception
- * @version $Id: ValueFormatException.php 1811 2009-01-28 12:04:49Z robert $
+ * @version $Id$
  */
 class Tx_Extbase_Persistence_Exception_ValueFormatException extends Tx_Extbase_Persistence_Exception {
 }

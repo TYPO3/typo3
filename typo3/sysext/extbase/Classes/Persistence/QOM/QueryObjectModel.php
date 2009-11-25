@@ -56,7 +56,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: QueryObjectModel.php 1877 2009-02-05 11:29:07Z k-fish $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persistence_QOM_QueryObjectModelInterface {

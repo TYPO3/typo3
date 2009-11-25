@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @version $Id: $
+ * @version $Id$
  */
 class Tx_Extbase_Utility_ClassLoader {
 	

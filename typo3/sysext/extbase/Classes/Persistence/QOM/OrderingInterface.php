@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: OrderingInterface.php 2191 2009-05-07 19:49:06Z k-fish $
+ * @version $Id$
  */
 interface Tx_Extbase_Persistence_QOM_OrderingInterface {
 

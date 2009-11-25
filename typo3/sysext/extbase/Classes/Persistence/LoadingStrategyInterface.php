@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: LazyLoadingProxy.php 2591 2009-06-09 19:23:47Z k-fish $
+ * @version $Id$
  */
 interface Tx_Extbase_Persistence_LoadingStrategyInterface {
 

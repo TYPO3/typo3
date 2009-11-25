@@ -36,7 +36,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: LowerCaseInterface.php 1995 2009-03-14 19:57:47Z k-fish $
+ * @version $Id$
  */
 interface Tx_Extbase_Persistence_QOM_LowerCaseInterface extends Tx_Extbase_Persistence_QOM_DynamicOperandInterface {
 

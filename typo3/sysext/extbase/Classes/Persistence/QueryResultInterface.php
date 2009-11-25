@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: $
+ * @version $Id$
  */
 interface Tx_Extbase_Persistence_QueryResultInterface {
 

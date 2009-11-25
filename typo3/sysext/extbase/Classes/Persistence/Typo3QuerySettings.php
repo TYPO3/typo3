@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: QueryInterface.php 658 2009-05-16 13:54:16Z jocrau $
+ * @version $Id$
  * @api
  */
 class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistence_Typo3QuerySettingsInterface {

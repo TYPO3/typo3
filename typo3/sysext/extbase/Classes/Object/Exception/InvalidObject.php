@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Object\Exception
- * @version $Id: InvalidObject.php 1811 2009-01-28 12:04:49Z robert $
+ * @version $Id$
  */
 class Tx_Extbase_Object_InvalidObject extends Tx_Extbase_Object_Exception {
 

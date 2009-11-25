@@ -28,7 +28,7 @@
 /**
  * A class schema
  *
- * @version $Id: ClassSchema.php 2984 2009-08-04 13:04:35Z k-fish $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Extbase_Reflection_ClassSchema {

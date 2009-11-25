@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @version $Id: Arrays.php 1951 2009-03-02 10:51:15Z k-fish $
+ * @version $Id$
  */
 class Tx_Extbase_Utility_Cache {
 	/**

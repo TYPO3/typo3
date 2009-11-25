@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: QueryResult.php 2069 2009-03-26 11:59:53Z k-fish $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QueryResult implements Tx_Extbase_Persistence_QueryResultInterface {

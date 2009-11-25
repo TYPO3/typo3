@@ -33,7 +33,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: ConstraintInterface.php 1811 2009-01-28 12:04:49Z robert $
+ * @version $Id$
  */
 interface Tx_Extbase_Persistence_QOM_ConstraintInterface {
 }

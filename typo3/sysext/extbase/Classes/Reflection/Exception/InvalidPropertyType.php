@@ -28,7 +28,7 @@
 /**
  * An "Invalid Property Type" exception
  *
- * @version $Id: InvalidPropertyType.php 2835 2009-07-20 11:36:13Z k-fish $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Extbase_Reflection_Exception_InvalidPropertyType extends Tx_Extbase_Reflection_Exception {

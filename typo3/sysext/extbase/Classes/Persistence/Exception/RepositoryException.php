@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\Exception
- * @version $Id: RepositoryException.php 1811 2009-01-28 12:04:49Z robert $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Extbase_Persistence_Exception_RepositoryException extends RuntimeException {

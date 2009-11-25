@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: StaticOperand.php 1811 2009-01-28 12:04:49Z robert $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_StaticOperand extends Tx_Extbase_Persistence_QOM_Operand implements Tx_Extbase_Persistence_QOM_StaticOperandInterface {

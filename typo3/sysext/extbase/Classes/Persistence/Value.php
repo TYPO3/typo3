@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: Value.php 2191 2009-05-07 19:49:06Z k-fish $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterface {

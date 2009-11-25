@@ -25,7 +25,7 @@
 /**
  * Testcase for the Hash Service
  *
- * @version $Id: RSAWalletServicePHPTest.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
 class Tx_Extbase_Security_Cryptography_HashService_testcase extends Tx_Extbase_BaseTestCase {

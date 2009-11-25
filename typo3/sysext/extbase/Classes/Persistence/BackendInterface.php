@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: BackendInterface.php 2087 2009-03-26 16:46:14Z sebastian $
+ * @version $Id$
  */
 interface Tx_Extbase_Persistence_BackendInterface {
 

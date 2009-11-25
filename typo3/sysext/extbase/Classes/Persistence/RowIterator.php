@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: RowIterator.php 1811 2009-01-28 12:04:49Z robert $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_RowIterator extends Tx_Extbase_Persistence_RangeIterator implements Tx_Extbase_Persistence_RowIteratorInterface {

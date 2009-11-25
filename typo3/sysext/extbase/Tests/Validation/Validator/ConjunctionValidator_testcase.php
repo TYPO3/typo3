@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage extbase
- * @version $Id: ConjunctionValidator_testcase.php -1   $
+ * @version $Id$
  */
 class Tx_Extbase_Validation_Validator_ConjunctionValidator_testcase extends Tx_Extbase_BaseTestCase {
 

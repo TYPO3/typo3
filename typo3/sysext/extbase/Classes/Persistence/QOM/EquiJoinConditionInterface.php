@@ -34,7 +34,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: ChildNodeJoinConditionInterface.php 1979 2009-03-09 15:44:15Z k-fish $
+ * @version $Id$
  */
 interface Tx_Extbase_Persistence_QOM_EquiJoinConditionInterface extends Tx_Extbase_Persistence_QOM_JoinConditionInterface {
 

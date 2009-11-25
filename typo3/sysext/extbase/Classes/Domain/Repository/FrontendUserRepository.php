@@ -27,7 +27,7 @@
  *
  * @package Extbase
  * @subpackage Domain\Repository
- * @version $Id: $
+ * @version $Id$
  * @api
  */
 class Tx_Extbase_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Persistence_Repository {

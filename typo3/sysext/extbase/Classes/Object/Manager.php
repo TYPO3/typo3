@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Object
- * @version $Id: Manager.php 2123 2009-04-03 15:04:14Z robert $
+ * @version $Id$
  */
 class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t3lib_Singleton {
 

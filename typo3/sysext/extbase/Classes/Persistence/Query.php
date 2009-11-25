@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: Query.php 658 2009-05-16 13:54:16Z jocrau $
+ * @version $Id$
  * @scope prototype
  * @api
  */

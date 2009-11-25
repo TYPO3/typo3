@@ -36,7 +36,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: UpperCase.php 2011 2009-03-18 14:22:24Z k-fish $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

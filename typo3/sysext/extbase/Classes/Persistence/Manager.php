@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: Manager.php 2293 2009-05-20 18:14:45Z robert $
+ * @version $Id$
  * @api
  */
 class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerInterface, t3lib_Singleton {

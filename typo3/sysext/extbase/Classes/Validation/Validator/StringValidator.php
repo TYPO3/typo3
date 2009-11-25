@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Validation\Validator
- * @version $Id: StringLengthValidator.php 1052 2009-08-05 21:51:32Z sebastian $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Validation_Validator_StringValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {

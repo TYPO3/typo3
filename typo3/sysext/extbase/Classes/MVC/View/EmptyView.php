@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage MVC\View
- * @version $Id: EmptyView.php 2293 2009-05-20 18:14:45Z robert $
+ * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 final class Tx_Extbase_MVC_View_EmptyView extends Tx_Extbase_MVC_View_AbstractView {

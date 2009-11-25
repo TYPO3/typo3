@@ -36,7 +36,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: LowerCase.php 2011 2009-03-18 14:22:24Z k-fish $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_LowerCase implements Tx_Extbase_Persistence_QOM_LowerCaseInterface {

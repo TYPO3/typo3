@@ -27,7 +27,7 @@
  *
  * @package Extbase
  * @subpackage Domain\Model
- * @version $Id: $
+ * @version $Id$
  * @scope prototype
  * @entity
  * @api

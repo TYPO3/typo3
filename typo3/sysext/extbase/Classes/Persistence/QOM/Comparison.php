@@ -70,7 +70,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: Comparison.php 2191 2009-05-07 19:49:06Z k-fish $
+ * @version $Id$
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QOM_ComparisonInterface {
