@@ -33,7 +33,7 @@
  * @author		Benjamin Mack <www.xnos.org>
  * @package		TYPO3
  * @subpackage	core
- * @version 	$Id: index.php 3074 2008-02-05 16:46:59Z patrickbroens $
+ * @version 	$Id$
  */
 
 // TYPO3 code extracted from index.php

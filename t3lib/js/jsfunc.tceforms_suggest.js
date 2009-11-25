@@ -1,7 +1,7 @@
 /***************************************************************
 *  AJAX selectors for TCEforms
 *
-* $Id:$
+* $Id$
 *
 *  Copyright notice
 *
