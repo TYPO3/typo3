@@ -1,0 +1,39 @@
+Index: typo3/sysext/cms/tslib/class.tslib_fe.php
+===================================================================
+RCS file: /cvsroot/typo3/TYPO3core/typo3/sysext/cms/tslib/class.tslib_fe.php,v
+retrieving revision 1.104.2.25
+diff -u -w -r1.104.2.25 class.tslib_fe.php
+--- typo3/sysext/cms/tslib/class.tslib_fe.php	7 Jun 2006 10:02:10 -0000	1.104.2.25
++++ typo3/sysext/cms/tslib/class.tslib_fe.php	27 Jun 2006 19:36:14 -0000
+@@ -1579,16 +1579,22 @@
+ 
+ 		$GLOBALS['TT']->push('Cache Query','');
+ 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+-				'S.*',
+-				'cache_pages S,pages P',
+-				'S.hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages').'
+-					AND S.page_id=P.uid
+-					AND S.expires > '.intval($GLOBALS['EXEC_TIME']).'
+-					AND P.deleted=0
+-					AND P.hidden=0
+-					AND P.starttime<='.intval($GLOBALS['EXEC_TIME']).'
+-					AND (P.endtime=0 OR P.endtime>'.intval($GLOBALS['EXEC_TIME']).')'
++						'*',
++						'cache_pages',
++						'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->newHash, 'cache_pages').'
++							AND expires > '.intval($GLOBALS['EXEC_TIME'])
+ 			);
++		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
++			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
++						'uid',
++						'pages',
++						'uid='.$row['page_id'].'
++							AND deleted=0
++							AND hidden=0
++							AND starttime<='.intval($GLOBALS['EXEC_TIME']).'
++							AND (endtime=0 OR endtime>'.intval($GLOBALS['EXEC_TIME']).')'
++					);
++		}
+ 		$GLOBALS['TT']->pull();
+ 
+ 		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
