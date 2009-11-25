@@ -86,12 +86,11 @@ class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 		$defaultTypoScript = $TYPO3_CONF_VARS['FE']['defaultTypoScript_setup'];
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
-plugin.tx_blogexample {
+plugin.tx_myextension {
 	settings {
 	}
 	persistence {
 		storagePid =
-		enableAutomaticCacheClearing = 1
 		classes {
 		}
 	}

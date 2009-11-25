@@ -51,7 +51,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 			'switchableControllerActions.' => array(
 				'1.' => array(
 					'controller' => 'TheFirstController',
-					'actions' => ',show,index, ,new,create,delete,edit,update,setup,test'
+					'actions' => 'show,index, ,new,create,delete,edit,update,setup,test'
 					),
 				'2.' => array(
 					'controller' => 'TheSecondController',
@@ -118,14 +118,13 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 	 */
 	public function buildWithMissingActionsReturnsAWebRequestObjectWithDefaultControllerSettings() {
 		$configuration = $this->configuration;
-		unset($configuration['controller']);
 		unset($configuration['action']);
 		$this->builder->initialize($configuration);
 		$request = $this->builder->build();
 		$this->assertEquals('pi1', $request->getPluginName());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('TheFirstController', $request->getControllerName());
-		$this->assertEquals('show', $request->getControllerActionName());
+		$this->assertEquals('index', $request->getControllerActionName());
 	}
 
 	/**
