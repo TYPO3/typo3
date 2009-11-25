@@ -370,19 +370,13 @@ class t3lib_exec {
 			}
 		}
 
-		if (TYPO3_OS=='WIN') {
-// TODO: add the most common paths for WIN
-			$sysPathArr = array_merge($sysPathArr, array (
-				'/usr/bin/' => '/usr/bin/',
-				'/perl/bin/' => '/perl/bin/',
-			));
-		} else { // UNIX
-			$sysPathArr = array_merge($sysPathArr, array (
+			// Set common paths for Unix (only)
+		if (TYPO3_OS !== 'WIN') {
+			$sysPathArr = array_merge($sysPathArr, array(
 				'/usr/bin/' => '/usr/bin/',
 				'/usr/local/bin/' => '/usr/local/bin/',
 			));
 		}
-
 
 		$pathsArr = array_merge($pathsArr, $sysPathArr);
 
