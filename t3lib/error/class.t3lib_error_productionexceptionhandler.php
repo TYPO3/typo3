@@ -31,7 +31,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_error
- * @version $Id: ProductionExceptionHandler.php 3189 2009-09-16 13:36:22Z k-fish $
+ * @version $Id$
  */
 class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExceptionHandler {
 

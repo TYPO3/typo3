@@ -2,7 +2,7 @@
 /*
  * Register necessary class names with autoloader
  *
- * $Id: $
+ * $Id$
  */
 $extensionPath = t3lib_extMgm::extPath('sv');
 return array(

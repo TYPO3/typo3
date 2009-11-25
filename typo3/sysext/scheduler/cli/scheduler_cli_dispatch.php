@@ -30,7 +30,7 @@
  * @package		TYPO3
  * @subpackage	tx_scheduler
  *
- * $Id: scheduler_cli_dispatch.php 1261 2009-09-15 20:22:45Z francois $
+ * $Id$
  */
 if (defined('TYPO3_cliMode') && TYPO3_cliMode && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
 	$hasTask = true;

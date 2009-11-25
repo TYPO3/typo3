@@ -2,7 +2,7 @@
 /*
  * Register necessary class names with autoloader
  *
- * $Id: ext_autoload.php 1190 2009-09-03 18:01:00Z francois $
+ * $Id$
  */
 // TODO: document necessity of providing autoloader information
 return array(

@@ -34,7 +34,7 @@
  * @package		TYPO3
  * @subpackage	tx_scheduler
  *
- * $Id: class.tx_scheduler_task.php 1262 2009-09-15 21:04:22Z francois $
+ * $Id$
  */
 abstract class tx_scheduler_Task {
 

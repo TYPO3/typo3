@@ -107,5 +107,5 @@ styles.content.searchresult {
 PAGE_TARGET =
 
 
-# TYPO3 SVN ID: $Id: constants.txt 4493 2008-11-27 21:06:50Z steffenk $
+# TYPO3 SVN ID: $Id$
 

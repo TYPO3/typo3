@@ -27,7 +27,7 @@
 /**
  * Core functions for admin
  *
- * $Id: class.tx_lowlevel_admin_core.php 4875 2009-01-27 15:22:12 +0000 (Tue, 27 Jan 2009) kasper $
+ * $Id$
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */

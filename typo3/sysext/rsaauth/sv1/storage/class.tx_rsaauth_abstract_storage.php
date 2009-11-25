@@ -25,7 +25,7 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- * $Id: class.tx_rsaauth_abstract_storage.php 17901 2009-03-16 16:58:22Z dmitry $
+ * $Id$
  */
 
 

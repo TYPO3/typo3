@@ -31,7 +31,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_error
- * @version $Id: ErrorHandlerInterface.php 3195 2009-09-17 11:27:14Z k-fish $
+ * @version $Id$
  */
 interface t3lib_error_ErrorHandlerInterface {
 

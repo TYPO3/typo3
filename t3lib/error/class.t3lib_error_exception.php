@@ -31,7 +31,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_error
- * @version $Id: Exception.php 2813 2009-07-16 14:02:34Z k-fish $
+ * @version $Id$
  */
 class t3lib_error_Exception extends t3lib_exception {
 

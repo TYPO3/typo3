@@ -1761,4 +1761,4 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul {padding-left: 40px; overflow: auto; height: 1%; }
 )
 
-# TYPO3 SVN ID: $Id: setup.txt 4493 2008-11-27 21:06:50Z steffenk $
+# TYPO3 SVN ID: $Id$

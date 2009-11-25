@@ -25,7 +25,7 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- * $Id: class.tx_rsaauth_keypair.php 19610 2009-04-28 12:53:15Z dmitry $
+ * $Id$
  */
 
 

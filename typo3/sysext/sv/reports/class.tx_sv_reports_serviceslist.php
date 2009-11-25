@@ -31,7 +31,7 @@
  * @package		TYPO3
  * @subpackage	sv
  *
- * $Id: $
+ * $Id$
  */
 class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
