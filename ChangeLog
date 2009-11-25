@@ -1,5 +1,6 @@
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (wrong refresh gif in grid)
 	* Follow-up to bugfix #12735: BE-Login: show login process (Safari fixes)
 
 2009-11-24  Francois Suter  <francois@typo3.org>
