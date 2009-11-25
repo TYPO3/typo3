@@ -1603,10 +1603,9 @@
 	 * @return	void
 	 * @access private
 	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @todo	Deprecated but still used in the Core!
 	 */
 	function idPartsAnalyze($str)	{
-		t3lib_div::logDeprecatedFunction();
-
 		$GET_VARS = '';
 		switch(substr($str,0,2))	{
 			case 'B6':
@@ -3933,10 +3932,9 @@ if (version == "n3") {
 	 * @return	string		The body of the filename.
 	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams()
 	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @todo	Deprecated but still used in the Core!
 	 */
 	function makeSimulFileName($inTitle, $page, $type, $addParams = '', $no_cache = false) {
-		t3lib_div::logDeprecatedFunction();
-
 		if (t3lib_extMgm::isLoaded('simulatestatic')) {
 			$parameters = array(
 				'inTitle' => $inTitle,
@@ -3983,10 +3981,9 @@ if (version == "n3") {
 	 * @return	string		The filename (without path)
 	 * @see makeSimulFileName(), publish.php
 	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @todo	Deprecated but still used in the Core!
 	 */
 	function getSimulFileName()	{
-		t3lib_div::logDeprecatedFunction();
-
 		return $this->makeSimulFileName(
 			$this->page['title'],
 			($this->page['alias'] ? $this->page['alias'] : $this->id),
@@ -4022,10 +4019,9 @@ if (version == "n3") {
 	 * @param	string		Character to put in the end of string to merge it with the next value.
 	 * @return	string		String
 	 * @deprecated since TYPO3, 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @todo	Deprecated but still used in the Core!
 	 */
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
-		t3lib_div::logDeprecatedFunction();
-
 		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
 			// Get replacement character
 		$replacementChar = $this->config['config']['simulateStaticDocuments_replacementChar'];
