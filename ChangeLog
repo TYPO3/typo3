@@ -7,11 +7,12 @@
 	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (wrong refresh gif in grid)
 	* Follow-up to bugfix #12735: BE-Login: show login process (Safari fixes)
 
-2009-11-24  Francois Suter  <francois@typo3.org>
+2009-11-25  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12547: Removed wrong default binary search paths for Windows
 	* Feature #12491: Reports: Allow multiple providers for each status collection
 	* Cleanup #12492: Reports: Made some CGL improvements and added missing SVN markers
+	* Fixed bug #12748: Recycler: BE module's body has a margin (thanks to Steffen Gebert)
 
 2009-11-25  Oliver Hader  <oliver@typo3.org>
 
