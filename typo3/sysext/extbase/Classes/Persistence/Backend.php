@@ -353,17 +353,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$childClassName = $columnMap->getChildClassName();
 			$propertyMetaData = $classSchema->getProperty($propertyName);
-			if (!empty($childClassName)) {
-				$propertyType = $childClassName;
-			} elseif (!empty($propertyMetaData['type'])) {
-				$propertyType = $propertyMetaData['type'];
-			} else {
-				throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Could not determine the class of the child objects.', 1251315965);
-			}
-			
+			$propertyType = $propertyMetaData['type'];
 			// FIXME enable property-type check
 			// $this->checkPropertyType($propertyType, $propertyValue);
-			if (($propertyValue !== NULL) && $propertyType === 'Tx_Extbase_Persistence_ObjectStorage') {
+			if (($propertyValue !== NULL) && ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage || $propertyType === 'Tx_Extbase_Persistence_ObjectStorage')) {
 				if ($object->_isNew() || $object->_isDirty($propertyName)) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $queue, $row);
 				}

@@ -243,6 +243,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function fetchRelatedEager(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '') {
+		if ($fieldValue === '') return array();
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->execute();
 	}
@@ -262,7 +263,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$childSortByFieldName = $columnMap->getChildSortByFieldName();
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 			$query = $queryFactory->create($this->getType($parentObject, $propertyName));
-			$result = $query->matching($query->withUid(intval($fieldValue)));
+			$query->matching($query->withUid(intval($fieldValue)));
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$query = $queryFactory->create($this->getElementType($parentObject, $propertyName));
 			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
@@ -272,9 +273,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
 			if (isset($parentKeyFieldName)) {
-				$result = $query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
+				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
 			} else {
-				$result = $query->matching($query->equals('uid', t3lib_div::intExplode(',', $fieldValue)));					
+				$query->matching($query->equals('uid', t3lib_div::intExplode(',', $fieldValue)));					
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$query = $queryFactory->create($this->getElementType($parentObject, $propertyName));
@@ -297,7 +298,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			if (!empty($childSortByFieldName)) {
 				$query->setOrderings(array($relationTableName . '.' . $childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
-			$result = $query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
+			$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);
 		}
