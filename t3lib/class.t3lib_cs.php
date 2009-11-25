@@ -1473,7 +1473,7 @@ class t3lib_cs {
 	 * @see mb_strlen(), mb_substr()
 	 */
 	protected function cropMbstring($charset, $string, $len, $crop = '') {
-		if (intval($len) == 0 || mb_strlen($string) < $len) {
+		if (intval($len) === 0 || mb_strlen($string, $charset) <= abs($len)) {
 			return $string;
 		}
 

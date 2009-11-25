@@ -1,5 +1,6 @@
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12297: t3lib_cs::cropMbstring has problems with negative length (Thanks to Steffen Gebert)
 	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (Thanks to Andreas Kundoch)
 	* Follow-up to bugfix #12699: Upgrade backend login to match t3skin
 	* Fixed bug #12613: Wrong character encoding in cache tables breaks frontend rendering
@@ -22,7 +23,7 @@
 
 2009-11-24  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen MÃ¼ller)
+	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen Müller)
 
 2009-11-24  Oliver Hader  <oliver@typo3.org>
 
