@@ -4,6 +4,7 @@
 
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #9058: Hook objects for stdWrap in class.tslib_content.php get executed multiple times. (thanks to Steffen Müller)
 	* Fixed bug #12467: TYPO3 Inline User Manual is broken
 	* Fixed bug #12297: t3lib_cs::cropMbstring has problems with negative length (Thanks to Steffen Gebert)
 	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (Thanks to Andreas Kundoch)

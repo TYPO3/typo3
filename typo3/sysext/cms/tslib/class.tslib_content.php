@@ -384,6 +384,7 @@ class tslib_cObj {
 			}
 		}
 
+		$this->stdWrapHookObjects = array();
 		if(is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'])) {
 			foreach($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['stdWrap'] as $classData) {
 				$hookObject = t3lib_div::getUserObj($classData);
