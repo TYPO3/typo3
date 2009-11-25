@@ -82,7 +82,13 @@ select, textarea, input, td, body, .defstyle, p, div {
 	color: #212424;
 }
 
-textarea, input {
+/* Set cursor type */
+input, select, textarea {
+	cursor: default;
+}
+
+/* Format input elements */
+textarea, input[type="submit"] {
 	border-top: 1px solid #838EA0;
 	border-left: 1px solid #838EA0;
 	border-right: 1px solid #545861;
@@ -90,14 +96,14 @@ textarea, input {
 	background-color: #FEFEFE;
 }
 
-textarea:hover, input:hover {
+textarea:hover, input[type="submit"]:hover {
 	border-top: 1px solid #AAAAAA;
 	border-left: 1px solid #AAAAAA;
 	border-right: 1px solid #888888;
 	border-bottom: 1px solid #888888;
 }
 
-textarea:focus, input:focus {
+textarea:focus, input[type="submit"]:focus {
 	border-top: 1px solid #999999;
 	border-left: 1px solid #999999;
 	border-right: 1px solid #777777;

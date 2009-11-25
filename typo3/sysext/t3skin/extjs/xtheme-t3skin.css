@@ -115,9 +115,6 @@
 .x-btn-center{
 	background-image:url(images/button/btn-sprite.gif);
 }
-.x-btn-noicon, .x-btn-small, .x-btn-text {
-	height:26px;
-}
 
 /* Layout classes */
 .x-border-layout-ct {
@@ -135,7 +132,6 @@
 .x-layout-collapsed-over{
 	 background-color:#EFEFF4;
 }
-
 
 /* qtips */
 .x-tip .x-tip-top {
@@ -2155,18 +2151,40 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	background-color: #0f0;
 }
 
+/* Relogin progress bar and relogin dialog */
+#loginRefreshWindow .x-window-body,
+#loginformWindow .x-window-body,
+#loginRefreshWindow .x-window-mc,
+#loginRefreshWindow .x-panel-bwrap,
+#loginformWindow .x-panel-bwrap,
+#loginRefreshWindow  .x-panel-body,
+#loginformWindow .x-panel-body {
+	background-color: #E4E4E4;
+	border: none;
+}
 
+#loginRefreshWindow .x-panel-body.x-panel-body-noheader.x-panel-body-noborder,
+#loginRefreshWindow .x-panel-header.x-unselectable,
+#loginformWindow .x-panel-header.x-unselectable {
+	background-image: none;
+	background-color: transparent;
+	color: #000;
+	border: none;
+}
 
+#loginRefreshWindow .x-panel-footer,
+#loginformWindow .x-panel-footer {
+	background-image: none;
+	background-color: #E4E4E4;
+	color: #000;
+	border: none;
+}
 
+#loginRefreshWindow button.x-btn-text,
+#loginformWindow button.x-btn-text {
+	color: #000;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+#loginformWindow .x-window-ml {
+	background-color: #E4E4E4;
+}

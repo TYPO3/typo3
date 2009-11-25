@@ -20,7 +20,7 @@ Description : fixes the stupid Internet Explorer
 }
 
 /* Input/submit should at least have a background color in IE6 */
-#typo3-inner-docbody table.typo3-page-buttons INPUT,  
+#typo3-inner-docbody table.typo3-page-buttons INPUT,
 #typo3-inner-docbody table.typo3-page-cols INPUT {
 	background-color: #C3C6CB;
 	border-bottom: 2px solid #8B93A0;
