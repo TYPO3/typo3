@@ -1,3 +1,7 @@
+2009-11-25  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #12675: Validation issues in sysext reports: Fix several errors
+
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12297: t3lib_cs::cropMbstring has problems with negative length (Thanks to Steffen Gebert)

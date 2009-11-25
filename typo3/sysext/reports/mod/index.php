@@ -106,31 +106,29 @@ class tx_reports_Module extends t3lib_SCbase {
 				// Draw the form
 			$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
 				// JavaScript
-			$this->doc->JScode = '
-				<script language="javascript" type="text/javascript">
-					script_ended = 0;
-					function jumpToUrl(URL) {
-						document.location = URL;
-					}
-					var state;
-					Event.observe(document, "dom:loaded", function(){
-						$$(".section-header").invoke("observe", "click", function(event){
-							var item = Event.element(event);
-							if (item.hasClassName("expanded")) {
-								item.removeClassName("expanded").addClassName("collapsed");
-								Effect.BlindUp(item.next("div"), {duration : 0.5});
-								state = 1;
-							} else {
-								item.removeClassName("collapsed").addClassName("expanded");
-								Effect.BlindDown(item.next("div"), {duration : 0.5});
-								state = 0;
-							}
-							new Ajax.Request("ajax.php", {
-								parameters : "ajaxID=Reports::saveCollapseState&item=" + item.id + "&state=" + state
-							});
+			$this->doc->JScodeArray[] = '
+				script_ended = 0;
+				function jumpToUrl(URL) {
+					document.location = URL;
+				}
+				var state;
+				Event.observe(document, "dom:loaded", function(){
+					$$(".section-header").invoke("observe", "click", function(event){
+						var item = Event.element(event);
+						if (item.hasClassName("expanded")) {
+							item.removeClassName("expanded").addClassName("collapsed");
+							Effect.BlindUp(item.next("div"), {duration : 0.5});
+							state = 1;
+						} else {
+							item.removeClassName("collapsed").addClassName("expanded");
+							Effect.BlindDown(item.next("div"), {duration : 0.5});
+							state = 0;
+						}
+						new Ajax.Request("ajax.php", {
+							parameters : "ajaxID=Reports::saveCollapseState&item=" + item.id + "&state=" + state
 						});
 					});
-				</script>
+				});
 			';
 			$this->doc->postCode='
 				<script language="javascript" type="text/javascript">
@@ -219,7 +217,7 @@ class tx_reports_Module extends t3lib_SCbase {
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] as $extKey => $extensionReports) {
 			foreach ($extensionReports as $reportName => $report) {
 				$action = $extKey . '.' . $reportName;
-				$link = 'mod.php?M=tools_txreportsM1&SET[function]=' . $action;
+				$link = 'mod.php?M=tools_txreportsM1' . htmlspecialchars('&SET[function]=') . $action;
 
 				$reportTitle = $GLOBALS['LANG']->sL($report['title']);
 
@@ -233,7 +231,7 @@ class tx_reports_Module extends t3lib_SCbase {
 						$icon = $GLOBALS['BACK_PATH'] . '../' . str_replace(PATH_site, '', $absIconPath);
 					}
 				}
-				$icon = '<img' . t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . $reportTitle . '" />';
+				$icon = '<img' . t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . $reportTitle . '" alt="' . $reportTitle . '" />';
 				$reportContent  = '<dt><a href="' . $link . '">' . $icon . $reportTitle . '</a></dt>';
 				$reportContent .= '<dd>' . $GLOBALS['LANG']->sL($report['description']) . '</dd>';
 

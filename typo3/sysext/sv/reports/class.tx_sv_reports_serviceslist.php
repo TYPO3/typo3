@@ -88,7 +88,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 		$services = $this->getInstalledServices();
 		$content .= '<table cellspacing="1" cellpadding="2" border="0" class="tx_sv_reportlist">';
 		foreach ($services as $serviceType => $installedServices) {
-			$content .= '<tr><td colspans="7">';
+			$content .= '<tr><td colspan="7">';
 			$content .= '<h4>' . sprintf($GLOBALS['LANG']->getLL('service_type'), $serviceType) . '</h4>';
 			$content .= '</td></tr>';
 			$content .= '<tr class="bgColor2">';
