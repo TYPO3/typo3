@@ -18,9 +18,10 @@ if (TYPO3_MODE == 'BE') {
 		$statusReport
 	);
 
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'] = 'tx_reports_reports_status_SystemStatus';
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'] = 'tx_reports_reports_status_SecurityStatus';
-	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['configuration'] = 'tx_reports_reports_status_ConfigurationStatus';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['typo3'][] = 'tx_reports_reports_status_Typo3Status';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['system'][] = 'tx_reports_reports_status_SystemStatus';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['security'][] = 'tx_reports_reports_status_SecurityStatus';
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['configuration'][] = 'tx_reports_reports_status_ConfigurationStatus';
 
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['Reports::saveCollapseState'] = 'EXT:reports/reports/class.tx_reports_reports_status.php:tx_reports_reports_Status->saveCollapseState';
 }

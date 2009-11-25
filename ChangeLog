@@ -1,6 +1,7 @@
 2009-11-24  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12547: Removed wrong default binary search paths for Windows
+	* Feature #12491: Reports: Allow multiple providers for each status collection
 
 2009-11-25  Oliver Hader  <oliver@typo3.org>
 

@@ -52,8 +52,12 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		$status  = array();
 		$content = '';
 
-		foreach ($this->statusProviders as $statusProviderId => $statusProvider) {
-			$status[$statusProviderId] = $statusProvider->getStatus();
+		foreach ($this->statusProviders as $statusProviderId => $statusProvidersList) {
+			$status[$statusProviderId] = array();
+			foreach ($statusProvidersList as $statusProvider) {
+				$statuses = $statusProvider->getStatus();
+				$status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
+			}
 		}
 
 		$content .= '<p class="help">'
@@ -69,10 +73,13 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	 * @return	void
 	 */
 	protected function getStatusProviders() {
-		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvider) {
-			$statusProviderInstance = t3lib_div::makeInstance($statusProvider);
-			if ($statusProviderInstance instanceof tx_reports_StatusProvider) {
-				$this->statusProviders[$key] = $statusProviderInstance;
+		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvidersList) {
+			$this->statusProviders[$key] = array();
+			foreach ($statusProvidersList as $statusProvider) {
+				$statusProviderInstance = t3lib_div::makeInstance($statusProvider);
+				if ($statusProviderInstance instanceof tx_reports_StatusProvider) {
+					$this->statusProviders[$key][] = $statusProviderInstance;
+				}
 			}
 		}
 	}

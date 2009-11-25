@@ -35,7 +35,7 @@ require_once(t3lib_extMgm::extPath('install', 'requirements.php'));
  */
 class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 
-	protected $reportList = 'Typo3Version,FileSystem,RemainingUpdates';
+	protected $reportList = 'FileSystem,RemainingUpdates';
 
 	/**
 	 * Compiles a collection of system status checks as a status report.
@@ -51,20 +51,6 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 		}
 
 		return $reports;
-	}
-
-	/**
-	 * Simply gets the current TYPO3 version.
-	 *
-	 * @return	tx_reports_reports_status_Status
-	 */
-	protected function getTypo3VersionStatus() {
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			'TYPO3',
-			TYPO3_version,
-			'',
-			tx_reports_reports_status_Status::NOTICE
-		);
 	}
 
 	/**
