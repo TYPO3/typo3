@@ -1,6 +1,7 @@
 2009-11-25  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #12133: autoloaders registered by extensions slow down the core autoloader
+	* Fixed bug #12109: Call to getCache() on a non-object in some extensions
 
 2009-11-25  Christian Kuhn  <lolli@schwarzbu.ch>
 
