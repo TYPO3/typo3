@@ -281,7 +281,7 @@ class t3lib_TStemplate	{
 			}
 		}
 
-		return $currentPageData;	// 2008-02-03 / Stucki: Notice that $this->currentPageData is not used anymore!
+		return $currentPageData;
 	}
 
 	/**

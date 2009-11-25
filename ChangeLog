@@ -1156,19 +1156,19 @@
 
 2009-08-28  Ingo Renner  <ingo@typo3.org>
 
-	* Added feature #11784: Change existing messages in the Template Object Browser top use flash messages
+	* Added feature #11784: Change existing messages in the template object browser to use flash messages
 	* Added feature #11783: Change existing warning boxes to use flash messages
 
 2009-08-28  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #11710: Remove local loopback bypass in Install Tool Login (thanks to Mario Rimann)
+	* Fixed bug #11710: Remove local loopback bypass in Install Tool login (thanks to Mario Rimann)
 
 2009-08-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #11651: Allow Extbase as framework for backend modules
 	* Fixed bug #11803: sysext opendocs is shy (thanks to Steffen Gebert)
 	* Follow-up to #11652: Modern integration of module into backend using Extbase - general approach without naming of Extbase
-	* Fixed bug #11511: Resources -> Files missing in doktype Sysfolder (thanks to Steffen Gebert)
+	* Fixed bug #11511: Resources -> Files missing in doktype "sysfolder" (thanks to Steffen Gebert)
 
 2009-08-27  Oliver Hader  <oliver@typo3.org>
 
@@ -1190,7 +1190,7 @@
 2009-08-25  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11212: Turning off the admin-panel results in error
-	* Follow-up 2 to #11764: fixed bug that occured when localizing records via tceforms
+	* Follow-up to #11764: Fixed bug that occured when localizing records via TCEforms
 
 2009-08-25  Oliver Hader  <oliver@typo3.org>
 
@@ -1207,16 +1207,16 @@
 2009-08-24  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11764: Performance improvement: speed up list module by improving internal handling of localisations
-	* Follow-up to #11764: $this->translateTools was not initialized in the page module.
+	* Follow-up to #11764: $this->translateTools was not initialized in the page module
 
 2009-08-23  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #11769: publish function in adminPanel is broken
+	* Fixed bug #11769: Publish function in adminPanel is broken
 
 2009-08-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11744: Usage of $BACK_PATH without globals
-	* Fixed bug #11528: JS Error in Recycler - refactored the store handling
+	* Fixed bug #11528: JS error in the recycler module / refactored the store handling
 
 2009-08-21  Rupert Germann  <rupi@gmx.li>
 
@@ -1568,7 +1568,7 @@
 2009-06-15  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11275: Bring back the divider CE
-	* Fixed bug #11052: Show Warning if memcache is configured but not installed / working on the server
+	* Fixed bug #11052: Show warning if memcache is configured but not installed / working on the server
 
 2009-06-14  Steffen Kamper  <info@sk-typo3.de>
 
@@ -1580,7 +1580,7 @@
 2009-06-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10617: Collapse in list module doesn't process returnPath
-	* Fixed bug #8875: typo3 logo in backend on top left looks not perfect because it has white background on gradient background (thanks to Johannes Feustel)
+	* Fixed bug #8875: TYPO3 backend logo on top left looks not perfect because it has white background on gradient background (thanks to Johannes Feustel)
 
 2009-06-12  Steffen Kamper  <info@sk-typo3.de>
 
@@ -1897,7 +1897,7 @@
 
 2009-05-14  Benjamin Mack  <benni@typo3.org>
 
-	* Feature #10673: CSS-Styled-Content "uploads" - the filelist can now be  manipulated by TS, added a new property "tt_content.uploads.20.filePath" with stdWrap properties to dynamically fetch all files from a filePath
+	* Feature #10673: CSS-Styled-Content "uploads" - the filelist can now be manipulated by TS, added a new property "tt_content.uploads.20.filePath" with stdWrap properties to dynamically fetch all files from a filePath
 
 2009-05-13  Benjamin Mack  <benni@typo3.org>
 
@@ -2035,7 +2035,7 @@
 
 2009-04-22  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #10947: It's not possible to add buttons to docheader (added hook in template.php)
+	* Fixed bug #10947: It is not possible to add buttons to the docheader (added hook in template.php)
 
 2009-04-22  Patrick Broens  <patrick@patrickbroens.nl>
 

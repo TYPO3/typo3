@@ -48,7 +48,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:language',
 			'csh' => 'language',
 		),
-
 		'condensedMode' => array(
 			'type' => 'check',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:condensedMode',
@@ -126,7 +125,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:recursiveDelete',
 			'csh' => 'recursiveDelete',
 		),
-
 		'simulate' => array(
 			'type' => 'select',
 			'itemsProcFunc' => 'SC_mod_user_setup_index->renderSimulateUserSelect',

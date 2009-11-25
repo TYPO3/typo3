@@ -245,7 +245,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 	 * @return	string.
 	 */
 	public function displayAdminPanel() {
-		$content =  $this->adminPanel->display();
+		$content = $this->adminPanel->display();
 
 		return $content;
 	}
