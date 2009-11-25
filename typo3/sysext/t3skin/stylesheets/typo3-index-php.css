@@ -127,6 +127,7 @@ body#typo3-index-php #t3-login-form-fields {
 	padding: 14px 0 0 30px;
 	margin: 0;
 	display: none;
+	font-size: 11px;
 }
 
 body#typo3-index-php #t3-interfaceselector {
@@ -158,6 +159,14 @@ body#typo3-index-php .t3-login-form-footer,
 body#typo3-index-php .t3-login-form-footer a.switchToOpenId {
 	color: #777d7d;
 	font-size: 10px;
+}
+
+body#typo3-index-php .t3-login-form-footer a.switchToOpenId {
+	text-decoration: underline;
+}
+
+body#typo3-index-php .t3-login-form-footer a.switchToOpenId:hover {
+	color: #333;
 }
 
 body#typo3-index-php .t3-login-openid-disabled .t3-login-form-footer,
@@ -199,7 +208,7 @@ body#typo3-index-php div#t3-copyright-notice a {
 	text-decoration: underline;
 }
 body#typo3-index-php div#t3-copyright-notice a:hover {
-	color: #000;
+	color: #333;
 }
 
 body#typo3-index-php div#t3-copyright-notice img {

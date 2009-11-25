@@ -1,5 +1,6 @@
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bugfix #12699: Upgrade backend login to match t3skin
 	* Fixed bug #12613: Wrong character encoding in cache tables breaks frontend rendering
 	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (wrong refresh gif in grid)
 	* Follow-up to bugfix #12735: BE-Login: show login process (Safari fixes)
