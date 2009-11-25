@@ -25,6 +25,7 @@
 	* Fixed bug #9981: EM does not test for usage of mod.php-API and spuriously displays an error (thanks to Andreas Kundoch)
 	* Follow-up to bugfix #12581: Use FILTER_FLAG_SCHEME_REQUIRED constant in t3lib_div::isValidUrl()
 	* Follow-up to bugfix #12420: Removed deprecation logging from methods that are still used in the TYPO3 Core
+	* Fixed bug #12755: Update to ADOdb 5.10
 
 2009-11-24  Stanislas Rolland  <typo3@sjbr.ca>
 

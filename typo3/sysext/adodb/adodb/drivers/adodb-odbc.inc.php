@@ -1,6 +1,6 @@
 <?php
 /* 
-V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
+V5.10 10 Nov 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -370,7 +370,7 @@ See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/od
 		}
 	}
 	
-	function MetaColumns($table)
+	function MetaColumns($table, $normalize=true)
 	{
 	global $ADODB_FETCH_MODE;
 	
@@ -513,6 +513,11 @@ See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/od
 					$this->_errorMsg = odbc_errormsg();
 					$this->_errorCode = odbc_error();
 				}
+				if($this->_errorCode == '00000') {	// MS SQL Server sometimes returns this in combination with the FreeTDS
+					$this->_errorMsg = '';		// driver and UnixODBC under Linux. This fixes the bogus "error"
+					$this->_errorCode = 0;		// <karsten@typo3.org>
+					return true;
+				}
 				return false;
 			}
 		
@@ -523,6 +528,11 @@ See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/odbc/htm/od
 				if ($this->_haserrorfunctions) {
 					$this->_errorMsg = odbc_errormsg();
 					$this->_errorCode = odbc_error();
+				}
+				if($this->_errorCode == '00000') {	// MS SQL Server sometimes returns this in combination with the FreeTDS
+					$this->_errorMsg = '';		// driver and UnixODBC under Linux. This fixes the bogus "error"
+					$this->_errorCode = 0;		// <karsten@typo3.org>
+					return true;
 				}
 				return false;
 			}
