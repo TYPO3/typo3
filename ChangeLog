@@ -1,3 +1,7 @@
+2009-11-26  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12077: Scheduler: Missing documentation for setting up cron jobs on Windows (thanks to Patrick Gaumond)
+
 2009-11-26  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.0RC2
