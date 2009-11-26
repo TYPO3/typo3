@@ -102,3 +102,19 @@ For the 3.7.0 launch the RC2 event will be a feature freeze. Therefore the branc
 - Final fixes (and future hotfixes) is done in that branch
 - Development for 3.8.0 could go on in HEAD
 At the same time the tag "TYPO3_3-7-0RC2" was applied basically because the branch-point coincided with the RC2. If an RC3 would come that would be tagged in the "TYPO3_3-7-0RC3" branch. The final release gets the tag "TYPO3_3-7-0" to indicate the point of release.
+
+
+[G] Modifying / maintaining external projects which are merged into TYPO3core
+The following directories are merged from other sources and MUST NOT be modified unless there is a very good reason to do so:
+- typo3/sysext/dbal/
+- typo3/sysext/extbase/
+- typo3/sysext/fluid/
+
+In order to modify these extensions, contact the development team of the relevant extension.
+
+How to merge changes from external sources (only for maintainers!)
+1. Check the last synched version (noted in extname/last_synched_target)
+2. Merge from this target and the new version:
+   $ svn merge [last_synched_target] [new_target] typo3/sysext/extbase/
+3. Before committing, update extname/last_synched_target
+4. Commit the changes. Commit message must be "Merge with [extension] [version]"
