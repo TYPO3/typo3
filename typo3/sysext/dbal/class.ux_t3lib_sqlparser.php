@@ -216,7 +216,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					// Find "comparator":
 				$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS)');
 				if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
-					if (preg_match('/^CONCAT[[:space:]]*\(/i', $parseString)) {
+					if (preg_match('/^CONCAT[[:space:]]*\(/', $parseString)) {
 						$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');
 						$values = array(
 							'operator' => 'CONCAT',
@@ -237,7 +237,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 							$this->nextPart($parseString, '^(,)');
 							$cnt++;
 						}
-							// Look for ending parenthese:
+							// Look for ending parenthesis:
 						$this->nextPart($parseString, '([)])');
 						$stack[$level][$pnt[$level]]['value'] = $values;
 					} else {
