@@ -146,6 +146,32 @@ class sqlparser_general_testcase extends BaseTestCase {
 	/**
 	 * @test
 	 */
+	public function parseWhereClauseReturnsArray() {
+		$parseString = 'uid IN (1,2) AND (starttime < ' . time() . ' OR cruser_id + 10 < 20)';
+		$where = $this->fixture->parseWhereClause($parseString);
+
+		$this->assertTrue(is_array($where), $where);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 */
+	public function canSelectAllFieldsFromPages() {
+		$sql = 'SELECT * FROM pages';
+		$expected = $sql;
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	///////////////////////////////////////
+	// Tests concerning JOINs
+	///////////////////////////////////////
+
+	/**
+	 * @test
+	 */
 	public function parseFromTablesWithInnerJoinReturnsArray() {
 		$parseString = 'be_users INNER JOIN pages ON pages.cruser_id = be_users.uid';
 		$tables = $this->fixture->parseFromTables($parseString);
@@ -203,28 +229,6 @@ class sqlparser_general_testcase extends BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function parseWhereClauseReturnsArray() {
-		$parseString = 'uid IN (1,2) AND (starttime < ' . time() . ' OR cruser_id + 10 < 20)';
-		$where = $this->fixture->parseWhereClause($parseString);
-
-		$this->assertTrue(is_array($where), $where);
-		$this->assertTrue(empty($parseString), 'parseString is not empty');
-	}
-
-	/**
-	 * @test
-	 */
-	public function canSelectAllFieldsFromPages() {
-		$sql = 'SELECT * FROM pages';
-		$expected = $sql;
-		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
-
-		$this->assertEquals($expected, $actual);
-	}
-
-	/**
-	 * @test
-	 */
 	public function canUseInnerJoinInSelect() {
 		$sql = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id = be_users.uid';
 		$expected = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id=be_users.uid';
@@ -243,6 +247,10 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	///////////////////////////////////////
+	// Tests concerning DB management
+	///////////////////////////////////////
 
 	/** 
 	 * @test
