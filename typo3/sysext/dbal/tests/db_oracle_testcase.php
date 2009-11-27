@@ -125,6 +125,10 @@ class db_oracle_testcase extends BaseTestCase {
 		}
 	}
 
+	///////////////////////////////////////
+	// Tests concerning quoting
+	///////////////////////////////////////
+
 	/**
 	 * @test
 	 */
@@ -172,6 +176,42 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/** 
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6198
+	 */
+	public function stringsWithinInClauseAreProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'COUNT(DISTINCT tx_dam.uid) AS count',
+			'tx_dam',
+			'tx_dam.pid IN (1) AND tx_dam.file_type IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND tx_dam.deleted = 0'
+		));
+		$expected = 'SELECT COUNT(DISTINCT "tx_dam"."uid") AS "count" FROM "tx_dam"';
+		$expected .= ' WHERE "tx_dam"."pid" IN (1) AND "tx_dam"."file_type" IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND "tx_dam"."deleted" = 0';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12515
+	 * @remark Remapping is not expected here
+	 */
+	public function concatAfterLikeOperatorIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'sys_refindex, tx_dam_file_tracking',
+			'sys_refindex.tablename = \'tx_dam_file_tracking\''
+			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
+		));
+		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
+		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
+		$this->assertEquals($expected, $query);
+	}
+
+	///////////////////////////////////////
+	// Tests concerning remapping
+	///////////////////////////////////////
+
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=10411
@@ -191,21 +231,6 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
 		$expected .= ' INNER JOIN "ext_tt_news" ON "ext_tt_news"."news_uid"="ext_tt_news_cat_mm"."local_uid"';
 		$expected .= ' WHERE 1 = 1';
-		$this->assertEquals($expected, $query);
-	}
-
-	/** 
-	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6198
-	 */
-	public function stringsWithinInClauseAreProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
-			'COUNT(DISTINCT tx_dam.uid) AS count',
-			'tx_dam',
-			'tx_dam.pid IN (1) AND tx_dam.file_type IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND tx_dam.deleted = 0'
-		));
-		$expected = 'SELECT COUNT(DISTINCT "tx_dam"."uid") AS "count" FROM "tx_dam"';
-		$expected .= ' WHERE "tx_dam"."pid" IN (1) AND "tx_dam"."file_type" IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND "tx_dam"."deleted" = 0';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -250,23 +275,6 @@ class db_oracle_testcase extends BaseTestCase {
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=12515
-	 * @remark Remapping is not expected here
-	 */
-	public function concatAfterLikeOperatorIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
-			'*',
-			'sys_refindex, tx_dam_file_tracking',
-			'sys_refindex.tablename = \'tx_dam_file_tracking\''
-			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
-		));
-		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
-		$this->assertEquals($expected, $query);
-	}
-
-	/**
-	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12515
 	 * @remark Remapping is expected here
 	 */
 	public function concatAfterLikeOperatorIsRemapped() {
@@ -284,6 +292,29 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=5708
+	 */
+	public function fieldIsMappedOnRightSideOfAJoinCondition() {
+		$selectFields = 'cpg_categories.uid, cpg_categories.name';
+		$fromTables   = 'cpg_categories, pages';
+		$whereClause  = 'pages.uid = cpg_categories.pid AND pages.deleted = 0 AND 1 = 1';
+		$groupBy      = '';
+		$orderBy      = 'cpg_categories.pos';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "pages" WHERE "pages"."uid" = "cpg_categories"."page_id"';
+		$expected .= ' AND "pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
+		$this->assertEquals($expected, $query);
+	}
+
+	///////////////////////////////////////
+	// Tests concerning DB management
+	///////////////////////////////////////
 
 	/**
 	 * @test
@@ -370,25 +401,6 @@ class db_oracle_testcase extends BaseTestCase {
 			)
 		');
 		$this->assertEquals($expected, $this->cleanSql($sqlCommands[0]));
-	}
-
-	/**
-	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=5708
-	 */
-	public function fieldIsMappedOnRightSideOfAJoinCondition() {
-		$selectFields = 'cpg_categories.uid, cpg_categories.name';
-		$fromTables   = 'cpg_categories, pages';
-		$whereClause  = 'pages.uid = cpg_categories.pid AND pages.deleted = 0 AND 1 = 1';
-		$groupBy      = '';
-		$orderBy      = 'cpg_categories.pos';
-
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
-
-		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "pages" WHERE "pages"."uid" = "cpg_categories"."page_id"';
-		$expected .= ' AND "pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
-		$this->assertEquals($expected, $query);
-	}
+	}	
 }
 ?>
