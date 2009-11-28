@@ -203,6 +203,7 @@ class t3lib_install {
 	 */
 	function writeToLocalconf_control($inlines='',$absFullPath='')	{
 		$tmpExt = '.TMP.php';
+		$writeToLocalconf_dat = array();
 		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf.'localconf.php';
 		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'].$tmpExt;
 
