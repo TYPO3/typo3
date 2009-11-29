@@ -4,6 +4,7 @@
 
 2009-11-29  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12827: Core labels need to be utf-8 before json_encode
 	* Fixed bug #12828: change language .js for ExtJS according to BE language (thanks to Stefano Cecere)
 
 2009-11-29  Francois Suter  <francois@typo3.org>
