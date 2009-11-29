@@ -142,6 +142,9 @@
  *
  */
 
+// include requirements definition:
+require_once(t3lib_extMgm::extPath('install') . 'requirements.php');
+
 // include update classes
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_compatversion.php');
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_cscsplit.php');
@@ -1504,11 +1507,12 @@ From sub-directory:
 			// Memory and functions
 			// *****************
 		$memory_limit_value = $this->convertByteSize(ini_get('memory_limit'));
-		if ($memory_limit_value && $memory_limit_value < 16*1024*1024)	{
-			$this->message($ext, 'Memory limit below 16 MB',"
-				<i>memory_limit=".ini_get('memory_limit')."</i>
-				Your system is configured to enforce a memory limit of PHP scripts lower than 16 MB. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over 25 MB.
-			",3);
+		
+		if ($memory_limit_value && $memory_limit_value < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
+			$this->message($ext, 'Memory limit below ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT,'
+				<i>memory_limit=' . ini_get('memory_limit') . '</i>
+				Your system is configured to enforce a memory limit of PHP scripts lower than ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.
+			',3);
 		} elseif(!$memory_limit_value) {
 			$this->message($ext, 'Memory limit',"<i>No memory limit in effect.</i>",-1);
 		} else $this->message($ext, 'Memory limit',"<i>memory_limit=".ini_get('memory_limit')."</i>",-1);

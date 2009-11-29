@@ -23,6 +23,7 @@
 	* Fixed bug #12788: Recycler does not show up
 	* Fixed bug #12825: Wrong encoding of labels in t3editor
 	* Fixed bug #12766: CSS in "User Settings" broken (thanks to Georg Ringer)
+	* Fixed bug #9766: Use correct memory limit definition in Install Tool (thanks to Steffen Mueller)
 
 2009-11-26  Francois Suter  <francois@typo3.org>
 
