@@ -170,10 +170,14 @@ class tx_t3editor {
 	 * @return	array		The labels to be used in JavaScript
 	 */
 	protected function getJavaScriptLabels() {
-		$coreLabels = array(
-		);
-		$extensionLabels = $this->getJavaScriptLabelsFromLocallang('js.', 'label_');
-		return array_merge($coreLabels, $extensionLabels);
+		$javaScriptLabels = $this->getJavaScriptLabelsFromLocallang('js.', 'label_');
+
+			// Convert labels back to UTF-8 since json_encode() only works with UTF-8:
+		if ($GLOBALS['LANG']->charSet !== 'utf-8') {
+			$GLOBALS['LANG']->csConvObj->convArray($javaScriptLabels, $GLOBALS['LANG']->charSet, 'utf-8');
+		}
+
+		return $javaScriptLabels;
 	}
 
 	/**
