@@ -5876,7 +5876,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 	function listOrderTitle($listOrder,$key)	{
 		switch($listOrder)	{
 			case 'cat':
-				return isset($this->categories[$key])?$this->categories[$key]:'<em>['.$key.']</em>';
+				return isset($this->categories[$key]) ? $this->categories[$key] : '[' . $key . ']';
 				break;
 			case 'author_company':
 				return $key;
