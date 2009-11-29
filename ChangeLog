@@ -27,6 +27,7 @@
 	* Fixed bug #12830: Wrong encoding of JSON data in t3lib_PageRenderer
 	* Fixed bug #11395: TCAdefaults in Page TSConfig without effect on creating new element after existing one (thanks to Tolleiv Nietsch)
 	* Fixed bug #12800: Add functionality to work with caching framework and DBAL (thanks to Xavier Perseguers)
+	* Fixed bug #12781: The type in t3lib_TCEforms does not work if the type field shall be excluded when translating (thanks to Fabrizio Branca)
 
 2009-11-26  Francois Suter  <francois@typo3.org>
 

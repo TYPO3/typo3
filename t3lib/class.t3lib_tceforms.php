@@ -3047,7 +3047,13 @@ class t3lib_TCEforms	{
 			// If there is a "type" field configured...
 		if ($TCA[$table]['ctrl']['type'])	{
 			$typeFieldName = $TCA[$table]['ctrl']['type'];
-			$typeNum=$row[$typeFieldName];	// Get value of the row from the record which contains the type value.
+			$typeFieldConfig = $TCA[$table]['columns'][$typeFieldName];
+			if (isset($typeFieldConfig['l10n_mode']) && $typeFieldConfig['l10n_mode'] == 'exclude') {
+					// retrieve the typeNum from the original records's type field
+				$typeNum = $this->defaultLanguageData[$table . ':' . $row['uid']][$typeFieldName];
+			} else {
+				$typeNum = $row[$typeFieldName];	// Get value of the row from the record which contains the type value.
+			}
 			if (!strcmp($typeNum,''))	$typeNum=0;			// If that value is an empty string, set it to "0" (zero)
 		} else {
 			$typeNum = 0;	// If no "type" field, then set to "0" (zero)
