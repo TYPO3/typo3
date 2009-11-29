@@ -35,7 +35,7 @@
 				Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
 				Date and time must correspond to the server's time zone.
 			</label>
-			<label index="task_end.alttitle">Start of task</label>
+			<label index="task_end.alttitle">End of task</label>
 			<label index="task_end.description">Enter an end date and time for the task, can be blank</label>
 			<label index="task_end.details">
 				Date must be entered in a standard format like HH:mm dd-mm-YYYY or YYYY-mm-dd HH:mm. Natural keywords can also be used, like "now" or "tomorrow".
