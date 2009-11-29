@@ -53,6 +53,8 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_LOADED_EXT']['tt_news' . $uniqueSuffix] = array();
 		$GLOBALS['TYPO3_LOADED_EXT']['kickstarter' . $uniqueSuffix] = array();
 
+		t3lib_extMgm::clearExtensionKeyMap();
+
 		$this->assertEquals(
 			'tt_news' . $uniqueSuffix,
 			t3lib_extMgm::getExtensionKeyByPrefix('tx_ttnews' . $uniqueSuffix)

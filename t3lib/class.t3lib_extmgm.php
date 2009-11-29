@@ -220,6 +220,15 @@ final class t3lib_extMgm {
 		return $result;
 	}
 
+	/**
+	 * Clears the extension key map.
+	 *
+	 * @return	void
+	 */
+	public static function clearExtensionKeyMap() {
+		self::$extensionKeyMap = NULL;
+	}
+
 
 
 
