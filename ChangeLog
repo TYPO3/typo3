@@ -1,3 +1,7 @@
+2009-11-30  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Updated ext_emconf.php files in system extensions
+
 2009-11-29  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #9683: Store OpenID information in database	instead of using the filesystem
