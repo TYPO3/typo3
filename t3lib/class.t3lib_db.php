@@ -514,6 +514,29 @@ class t3lib_DB {
 	}
 
 	/**
+	 * Creates a SELECT SQL-statement to be used as subquery within another query.
+	 * BEWARE: This method should not be overriden within DBAL to prevent quoting from happening.
+	 * 
+	 * @param	string		$select_fields: List of fields to select from the table.
+	 * @param	string		$from_table: Table from which to select.
+	 * @param	string		$where_clause: Conditional WHERE statement
+	 * @return	string		Full SQL query for SELECT
+	 */
+	public function SELECTsubquery($select_fields, $from_table, $where_clause) {
+			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
+			// Build basic query:
+		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table .
+			(strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+
+			// Return query:
+		if ($this->debugOutput || $this->store_lastBuiltQuery) {
+			$this->debug_lastBuiltQuery = $query;
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Returns a WHERE clause that can find a value ($value) in a list field ($field)
 	 * For instance a record in the database might contain a list of numbers,
 	 * "34,234,5" (with no spaces between). This query would be able to select that

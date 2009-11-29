@@ -247,6 +247,9 @@ class t3lib_sqlparser {
 			}
 		} else return $this->parseError('No table to select from!',$parseString);
 
+			// Store current parseString in the result array for possible further processing (e.g., subquery support by DBAL)
+		$result['parseString'] = $parseString;
+
 			// Return result:
 		return $result;
 	}

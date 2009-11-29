@@ -292,7 +292,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
 			'identifier IN (' .
-				$GLOBALS['TYPO3_DB']->SELECTquery(
+				$GLOBALS['TYPO3_DB']->SELECTsubquery(
 					'identifier',
 					$this->tagsTable,
 					$this->getQueryForTag($tag)
@@ -322,7 +322,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				$this->cacheTable,
 				'identifier IN (' .
-					$GLOBALS['TYPO3_DB']->SELECTquery(
+					$GLOBALS['TYPO3_DB']->SELECTsubquery(
 						'identifier',
 						$this->tagsTable,
 						implode(' OR ', $listQueryConditions)
@@ -347,7 +347,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->tagsTable,
 			'identifier IN (' .
-				$GLOBALS['TYPO3_DB']->SELECTquery(
+				$GLOBALS['TYPO3_DB']->SELECTsubquery(
 					'identifier',
 					$this->cacheTable,
 					'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
