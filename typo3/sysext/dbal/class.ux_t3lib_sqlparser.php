@@ -210,7 +210,19 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
 				if (strlen($stack[$level][$pnt[$level]]['calc'])) {
 						// Finding value for calculation:
-					$stack[$level][$pnt[$level]]['calc_value'] = $this->getValue($parseString);
+					$calc_value = $this->getValue($parseString);
+					$stack[$level][$pnt[$level]]['calc_value'] = $calc_value;
+					if (count($calc_value) == 1 && is_string($calc_value[0])) {
+							// Value is a field, store it to allow DBAL to post-process it (quoting, remapping)
+						$tableField = explode('.', $calc_value[0], 2);
+						if (count($tableField) == 2) {
+							$stack[$level][$pnt[$level]]['calc_table'] = $tableField[0];
+							$stack[$level][$pnt[$level]]['calc_field'] = $tableField[1];
+						} else {
+							$stack[$level][$pnt[$level]]['calc_table'] = '';
+							$stack[$level][$pnt[$level]]['calc_field'] = $tableField[0];
+						}
+					}
 				}
 
 					// Find "comparator":

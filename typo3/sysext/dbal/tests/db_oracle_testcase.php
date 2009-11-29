@@ -208,6 +208,37 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12231
+	 */
+	public function cachingFrameworkQueryIsProperlyQuoted() {
+		$currentTime = time();
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'content',
+			'cache_hash',
+			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('abbbabaf2d4b3f9a63e8dde781f1c106', 'cache_hash') .
+				' AND (crdate + lifetime >= ' . $currentTime . ' OR lifetime = 0)'
+		));
+		$expected = 'SELECT "content" FROM "cache_hash" WHERE "identifier" = \'abbbabaf2d4b3f9a63e8dde781f1c106\' AND ("crdate"+"lifetime" >= ' . $currentTime . ' OR "lifetime" = 0)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12231
+	 */
+	public function calculatedFieldsAreProperlyQuoted() {
+		$currentTime = time();
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'identifier',
+			'cachingframework_cache_pages',
+			'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
+		));
+		$expected = 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
+		$this->assertEquals($expected, $query);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning remapping
 	///////////////////////////////////////
