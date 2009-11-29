@@ -211,8 +211,16 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			'depth_4'		=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_4'),
 			'depth_infi'	=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi'),
 		);
+
 		$extensionLabels = $this->getJavaScriptLabelsFromLocallang('js.', 'label_');
-		return array_merge($coreLabels, $extensionLabels);
+		$javaScriptLabels = array_merge($coreLabels, $extensionLabels);
+
+			// Convert labels back to UTF-8 since json_encode() only works with UTF-8:
+		if ($GLOBALS['LANG']->charSet !== 'utf-8') {
+			$GLOBALS['LANG']->csConvObj->convArray($javaScriptLabels, $GLOBALS['LANG']->charSet, 'utf-8');
+		}
+
+		return $javaScriptLabels;
 	}
 
 	/**

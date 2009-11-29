@@ -19,6 +19,7 @@
 	* Fixed bug #11326: Memcached backend does not work well if cache of a page shall expire after 30 days (thanks to Vladimir Podkovanov)
 	* Fixed bug #11345: Uncaught exception InvalidArgumentException on creating graphical menus
 	* Fixed bug #12489: IRRE - Problem with clearing of floated elements in IE
+	* Fixed bug #12788: Recycler does not show up
 
 2009-11-26  Francois Suter  <francois@typo3.org>
 
