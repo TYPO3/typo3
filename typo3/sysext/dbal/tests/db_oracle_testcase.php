@@ -496,7 +496,7 @@ class db_oracle_testcase extends BaseTestCase {
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=12800
 	 */
-	public function cachingFrameworkQueriesIsRemapped() {
+	public function cachingFrameworkQueryIsRemapped() {
 		$currentTime = time();
 		$table = 'cachingframework_cache_hash_tags';
 		$where = 'identifier IN (' .

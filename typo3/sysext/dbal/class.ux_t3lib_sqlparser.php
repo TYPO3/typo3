@@ -180,7 +180,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$stack[$level] = array();	// Reset stack for this level
 			} else {	// If no new level is started, just parse the current level:
 
-					// Find "modifyer", eg. "NOT or !"
+					// Find "modifier", eg. "NOT or !"
 				$stack[$level][$pnt[$level]]['modifier'] = trim($this->nextPart($parseString, '^(!|NOT[[:space:]]+)'));
 
 					// Support calculated value only for:
