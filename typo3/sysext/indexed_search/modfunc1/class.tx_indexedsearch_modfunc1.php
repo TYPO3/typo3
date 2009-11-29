@@ -1282,13 +1282,16 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
 						$idList = array();
 						while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-							$idList[] = $row['page_id'];
+							$idList[] = (int)$row['page_id'];
 						}
 
-						$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
-
-						foreach ($idList as $pageId) {
-							$pageCache->flushByTag('pageId_' . (int) $pageId);
+						if (TYPO3_UseCachingFramework) {
+							$pageCache = $GLOBALS['typo3CacheManager']->getCache('cache_pages');
+							foreach ($idList as $pageId) {
+								$pageCache->flushByTag('pageId_' . $pageId);
+							}
+						} else {
+							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages', 'page_id IN (' . implode(',', $idList) . ')');
 						}
 					}
 				}

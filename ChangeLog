@@ -28,6 +28,7 @@
 	* Fixed bug #11395: TCAdefaults in Page TSConfig without effect on creating new element after existing one (thanks to Tolleiv Nietsch)
 	* Fixed bug #12800: Add functionality to work with caching framework and DBAL (thanks to Xavier Perseguers)
 	* Fixed bug #12781: The type in t3lib_TCEforms does not work if the type field shall be excluded when translating (thanks to Fabrizio Branca)
+	* Fixed bug #12835: Caching error when clearing indexed search elements in info module (thanks to Steffen Kamper)
 	* Raised DBAL version from 1.0.1 to 1.0.2
 	* Raised Extbase and Fluid versions from 1.0.1 to 1.0.2
 
