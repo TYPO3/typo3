@@ -194,12 +194,22 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Sets meta charset
-	 * @return void
 	 *
 	 * @param string $charSet	used charset
+	 * @return void
 	 */
 	public function setCharSet($charSet) {
 		$this->charSet = $charSet;
+	}
+
+	/**
+	 * Sets language
+	 *
+	 * @param string $lang	used language
+	 * @return void
+	 */
+	public function setLanguage($lang) {
+		$this->lang = $lang;
 	}
 
 	/**
@@ -362,6 +372,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function getCharSet() {
 		return $this->charSet;
+	}
+
+	/**
+	 * Gets the language
+	 *
+	 * @return string $lang
+	 */
+	public function getLanguage() {
+		return $this->lang;
 	}
 
 	/**

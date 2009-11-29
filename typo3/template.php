@@ -285,6 +285,7 @@ class template {
 			$this->pageRenderer->setTemplateFile(
 				TYPO3_mainDir . 'templates/template_page_backend.html'
 			);
+			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
 		}
 		return $this->pageRenderer;
 	}

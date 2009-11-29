@@ -4738,6 +4738,7 @@ if (version == "n3") {
 
 			// Setting language key and split index:
 		$this->lang = $this->config['config']['language'] ? $this->config['config']['language'] : 'default';
+		$this->getPageRenderer()->setLanguage($this->lang);
 
 		$ls = explode('|',TYPO3_languages);
 		while(list($i,$v)=each($ls))	{
