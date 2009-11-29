@@ -224,6 +224,12 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 		$tags[] = '%MEMCACHEBE%' . $this->cache->getIdentifier();
 		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;
 
+			// Memcached consideres values over 2592000 sec (30 days) as UNIX timestamp
+			// thus $expiration should be converted from lifetime to UNIX timestamp
+		if ($expiration > 2592000) {
+			$expiration += $GLOBALS['EXEC_TIME'];
+		}
+
 		try {
 			if(strlen($data) > self::MAX_BUCKET_SIZE) {
 				$data = str_split($data, 1024 * 1000);

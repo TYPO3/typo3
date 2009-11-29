@@ -11,6 +11,7 @@
 
 	* Fixed bug #12786: Wrong mouseover cursor at icon of docheader (thanks to Georg Ringer)
 	* Fixed bug #12792: Unit test checkGetExtensionKeyByPrefix of the t3lib_extmgm_testcase fails
+	* Fixed bug #11326: Memcached backend does not work well if cache of a page shall expire after 30 days (thanks to Vladimir Podkovanov)
 
 2009-11-26  Francois Suter  <francois@typo3.org>
 
