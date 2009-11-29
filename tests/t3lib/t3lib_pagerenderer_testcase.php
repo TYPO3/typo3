@@ -634,8 +634,22 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 			$out
 		);
 	}
-	
-  
 
+	/**
+	 * Tests whether labels are delivered in a non-UTF-8 context.
+	 * (background: json_encode() requires UTF-8 to work properly)
+	 *
+	 * @test
+	 */
+	public function isInlineLanguageLabelDeliveredWithNonUTF8() {
+		$testPrefix = uniqid('test');
+		$this->fixture->loadExtCore();
+		$this->fixture->setCharSet('iso-8859-1');
+		$this->fixture->addInlineLanguageLabel($testPrefix, $testPrefix . "_\xd8");
+
+		$out = $this->fixture->render();
+
+		$this->assertContains($testPrefix . '_\\u00d8', $out);
+	}
 }
 ?>

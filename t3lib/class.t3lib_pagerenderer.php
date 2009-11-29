@@ -128,6 +128,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	public function __construct($templateFile = '', $backPath = NULL) {
 
 		$this->reset();
+		$this->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 
 		if (strlen($templateFile)) {
 			$this->templateFile = $templateFile;
@@ -1210,6 +1211,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			unset(
 				$this->jsFiles[$this->backPath . 'contrib/extjs/ext-all.js'], $this->jsFiles[$this->backPath . 'contrib/extjs/ext-all-debug.js']
 			);
+		}
+
+			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
+		if ($this->getCharSet() !== 'utf-8') {
+			if ($this->inlineLanguageLabels) {
+				$this->csConvObj->convArray($this->inlineLanguageLabels, $this->getCharSet(), 'utf-8');
+			}
+			if ($this->inlineSettings) {
+				$this->csConvObj->convArray($this->inlineSettings, $this->getCharSet(), 'utf-8');
+			}
 		}
 
 		$inlineSettings = $this->inlineLanguageLabels ? 'TYPO3.lang = ' . json_encode($this->inlineLanguageLabels) . ';' : '';
