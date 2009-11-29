@@ -183,100 +183,121 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					// Find "modifier", eg. "NOT or !"
 				$stack[$level][$pnt[$level]]['modifier'] = trim($this->nextPart($parseString, '^(!|NOT[[:space:]]+)'));
 
-					// Support calculated value only for:
-					// - "&" (boolean AND)
-					// - "+" (addition)
-					// - "-" (substraction)
-					// - "*" (multiplication)
-					// - "/" (division)
-					// - "%" (modulo)
-				$calcOperators = '&|\+|-|\*|\/|%';
+					// See if condition is EXISTS with a subquery
+				if (preg_match('/^EXISTS[[:space:]]*[(]/', $parseString)) {
+					$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(EXISTS)');
+					$this->nextPart($parseString, '^([(])');
+					$stack[$level][$pnt[$level]]['func']['subquery'] = $this->parseSELECT($parseString);
+						// Seek to new position in parseString after parsing of the subquery
+					$parseString = $stack[$level][$pnt[$level]]['func']['subquery']['parseString'];
+					unset($stack[$level][$pnt[$level]]['func']['subquery']['parseString']);
+					if (!$this->nextPart($parseString, '^([)])')) {
+						return 'No ) parenthesis at end of subquery';
+ 					}
+ 				} else {
 
-					// Fieldname:
-				if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) {
-
-						// Parse field name into field and table:
-					$tableField = explode('.', $fieldName, 2);
-					if (count($tableField) == 2) {
-						$stack[$level][$pnt[$level]]['table'] = $tableField[0];
-						$stack[$level][$pnt[$level]]['field'] = $tableField[1];
-					} else {
-						$stack[$level][$pnt[$level]]['table'] = '';
-						$stack[$level][$pnt[$level]]['field'] = $tableField[0];
-					}
-				} else {
-					return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
-				}
-
-					// See if the value is calculated:
-				$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
-				if (strlen($stack[$level][$pnt[$level]]['calc'])) {
-						// Finding value for calculation:
-					$calc_value = $this->getValue($parseString);
-					$stack[$level][$pnt[$level]]['calc_value'] = $calc_value;
-					if (count($calc_value) == 1 && is_string($calc_value[0])) {
-							// Value is a field, store it to allow DBAL to post-process it (quoting, remapping)
-						$tableField = explode('.', $calc_value[0], 2);
+	 					// Support calculated value only for:
+						// - "&" (boolean AND)
+						// - "+" (addition)
+						// - "-" (substraction)
+						// - "*" (multiplication)
+						// - "/" (division)
+						// - "%" (modulo)
+					$calcOperators = '&|\+|-|\*|\/|%';
+	
+						// Fieldname:
+					if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) {
+	
+							// Parse field name into field and table:
+						$tableField = explode('.', $fieldName, 2);
 						if (count($tableField) == 2) {
-							$stack[$level][$pnt[$level]]['calc_table'] = $tableField[0];
-							$stack[$level][$pnt[$level]]['calc_field'] = $tableField[1];
+							$stack[$level][$pnt[$level]]['table'] = $tableField[0];
+							$stack[$level][$pnt[$level]]['field'] = $tableField[1];
 						} else {
-							$stack[$level][$pnt[$level]]['calc_table'] = '';
-							$stack[$level][$pnt[$level]]['calc_field'] = $tableField[0];
-						}
-					}
-				}
-
-					// Find "comparator":
-				$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS)');
-				if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
-					if (preg_match('/^CONCAT[[:space:]]*\(/', $parseString)) {
-						$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');
-						$values = array(
-							'operator' => 'CONCAT',
-							'args' => array(),
-						);
-						$cnt = 0;
-						while ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)')) {
-								// Parse field name into field and table:
-							$tableField = explode('.', $fieldName, 2);
-							if (count($tableField) == 2) {
-								$values['args'][$cnt]['table'] = $tableField[0];
-								$values['args'][$cnt]['field'] = $tableField[1];
-							} else {
-								$values['args'][$cnt]['table'] = '';
-								$values['args'][$cnt]['field'] = $tableField[0];
-							}
-								// Looking for comma:
-							$this->nextPart($parseString, '^(,)');
-							$cnt++;
-						}
-							// Look for ending parenthesis:
-						$this->nextPart($parseString, '([)])');
-						$stack[$level][$pnt[$level]]['value'] = $values;
-					} else if (t3lib_div::inList('IN,NOT IN', $stack[$level][$pnt[$level]]['comparator']) && preg_match('/^[(][[:space:]]*SELECT[[:space:]]+/', $parseString)) {
-						$this->nextPart($parseString, '^([(])');
-						$stack[$level][$pnt[$level]]['subquery'] = $this->parseSELECT($parseString);
-							// Seek to new position in parseString after parsing of the subquery
-						$parseString = $stack[$level][$pnt[$level]]['subquery']['parseString'];
-						unset($stack[$level][$pnt[$level]]['subquery']['parseString']);
-						if (!$this->nextPart($parseString, '^([)])')) {
-							return 'No ) parenthesis at end of subquery';
+							$stack[$level][$pnt[$level]]['table'] = '';
+							$stack[$level][$pnt[$level]]['field'] = $tableField[0];
 						}
 					} else {
-							// Finding value for comparator:
-						$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString, $stack[$level][$pnt[$level]]['comparator']);
-						if ($this->parse_error)	{
-							return $this->parse_error;
+						return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
+					}
+	
+						// See if the value is calculated:
+					$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
+					if (strlen($stack[$level][$pnt[$level]]['calc'])) {
+							// Finding value for calculation:
+						$calc_value = $this->getValue($parseString);
+						$stack[$level][$pnt[$level]]['calc_value'] = $calc_value;
+						if (count($calc_value) == 1 && is_string($calc_value[0])) {
+								// Value is a field, store it to allow DBAL to post-process it (quoting, remapping)
+							$tableField = explode('.', $calc_value[0], 2);
+							if (count($tableField) == 2) {
+								$stack[$level][$pnt[$level]]['calc_table'] = $tableField[0];
+								$stack[$level][$pnt[$level]]['calc_field'] = $tableField[1];
+							} else {
+								$stack[$level][$pnt[$level]]['calc_table'] = '';
+								$stack[$level][$pnt[$level]]['calc_field'] = $tableField[0];
+							}
 						}
 					}
-				}
+	
+						// Find "comparator":
+					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS)');
+					if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
+						if (preg_match('/^CONCAT[[:space:]]*\(/', $parseString)) {
+							$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');
+							$values = array(
+								'operator' => 'CONCAT',
+								'args' => array(),
+							);
+							$cnt = 0;
+							while ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)')) {
+									// Parse field name into field and table:
+								$tableField = explode('.', $fieldName, 2);
+								if (count($tableField) == 2) {
+									$values['args'][$cnt]['table'] = $tableField[0];
+									$values['args'][$cnt]['field'] = $tableField[1];
+								} else {
+									$values['args'][$cnt]['table'] = '';
+									$values['args'][$cnt]['field'] = $tableField[0];
+								}
+									// Looking for comma:
+								$this->nextPart($parseString, '^(,)');
+								$cnt++;
+							}
+								// Look for ending parenthesis:
+							$this->nextPart($parseString, '([)])');
+							$stack[$level][$pnt[$level]]['value'] = $values;
+						} else if (t3lib_div::inList('IN,NOT IN', $stack[$level][$pnt[$level]]['comparator']) && preg_match('/^[(][[:space:]]*SELECT[[:space:]]+/', $parseString)) {
+							$this->nextPart($parseString, '^([(])');
+							$stack[$level][$pnt[$level]]['subquery'] = $this->parseSELECT($parseString);
+								// Seek to new position in parseString after parsing of the subquery
+							$parseString = $stack[$level][$pnt[$level]]['subquery']['parseString'];
+							unset($stack[$level][$pnt[$level]]['subquery']['parseString']);
+							if (!$this->nextPart($parseString, '^([)])')) {
+								return 'No ) parenthesis at end of subquery';
+							}
+						} else {
+								// Finding value for comparator:
+							$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString, $stack[$level][$pnt[$level]]['comparator']);
+							if ($this->parse_error)	{
+								return $this->parse_error;
+							}
+						}
+					}
+ 				}
 
 					// Finished, increase pointer:
 				$pnt[$level]++;
 
 					// Checking if we are back to level 0 and we should still decrease level,
 					// meaning we were probably parsing as subquery and should return here:
+				if ($level === 0 && preg_match('/^[)]/', $parseString)) {
+						// Return the stacks lowest level:
+					return $stack[0];
+				}
+
+					// Checking if we are back to level 0 and we should still decrease level,
+					// meaning we were probably parsing a subquery and should return here:
 				if ($level === 0 && preg_match('/^[)]/', $parseString)) {
 						// Return the stacks lowest level:
 					return $stack[0];
@@ -392,6 +413,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					// Look for sublevel:
 				if (is_array($v['sub'])) {
 					$output .= ' (' . trim($this->nativeCompileWhereClause($v['sub'])) . ')';
+				} elseif (isset($v['func'])) {
+					$output .= ' ' . trim($v['modifier']) . ' ' . $v['func']['type'] . ' (' . $this->compileSELECT($v['func']['subquery']) . ')';
 				} else {
 
 						// Set field/table with modifying prefix if any:
@@ -755,6 +778,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 							// Look for sublevel:
 						if (is_array($v['sub'])) {
 							$output .= ' (' . trim($this->compileWhereClause($v['sub'], $functionMapping)) . ')';
+						} elseif (isset($v['func'])) {
+							$output .= ' ' . trim($v['modifier']) . ' ' . $v['func']['type'] . ' (' . $this->compileSELECT($v['func']['subquery']) . ')';
 						} else {
 
 								// Set field/table with modifying prefix if any:

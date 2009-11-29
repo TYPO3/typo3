@@ -1082,6 +1082,8 @@ class ux_t3lib_DB extends t3lib_DB {
 				// Look for sublevel:
 			if (is_array($where_clause[$k]['sub'])) {
 				$where_clause[$k]['sub'] = $this->_quoteWhereClause($where_clause[$k]['sub']);
+			} elseif (isset($v['func'])) {
+				$where_clause[$k]['func']['subquery'] = $this->quoteSELECTsubquery($v['func']['subquery']);
 			} else {
 				if ($where_clause[$k]['table'] != '') {
 					$where_clause[$k]['table'] = $this->quoteName($where_clause[$k]['table']);
@@ -2526,6 +2528,11 @@ class ux_t3lib_DB extends t3lib_DB {
 					// Look for sublevel (WHERE parts only)
 				if (is_array($sqlPartArray[$k]['sub'])) {
 					$this->map_sqlParts($sqlPartArray[$k]['sub'], $defaultTable);	// Call recursively!
+				} elseif (isset($sqlPartArray[$k]['func'])) {
+					$subqueryDefaultTable = $sqlPartArray[$k]['func']['subquery']['FROM'][0]['table'];
+					$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['SELECT'], $subqueryDefaultTable);
+					$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['FROM'], $subqueryDefaultTable);
+					$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['WHERE'], $subqueryDefaultTable);
 				} else {
 						// For the field, look for table mapping (generic):
 					$t = $sqlPartArray[$k]['table'] ? $sqlPartArray[$k]['table'] : $defaultTable;

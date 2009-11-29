@@ -307,5 +307,29 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function whereClauseSupportsExistsKeyword() {
+		$parseString = 'EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
+		$whereParts = $this->fixture->parseWhereClause($parseString);
+
+		$this->assertTrue(is_array($whereParts), $whereParts);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function existsClauseIsProperlyCompiled() {
+		$sql = 'SELECT * FROM tx_crawler_process WHERE active = 0 AND NOT EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
+		$expected = 'SELECT * FROM tx_crawler_process WHERE active = 0 AND NOT EXISTS (SELECT * FROM tx_crawler_queue WHERE tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
 }
 ?>

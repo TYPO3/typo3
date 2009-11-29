@@ -526,5 +526,53 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ')';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function existsWhereClauseIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tx_crawler_process',
+			'active = 0 AND NOT EXISTS (' .
+				$GLOBALS['TYPO3_DB']->SELECTsubquery(
+					'*',
+					'tx_crawler_queue',
+					'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)'
+				) .
+			')'
+		));
+		$expected = 'SELECT * FROM "tx_crawler_process" WHERE "active" = 0 AND NOT EXISTS (';
+		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_process"."process_id" AND "tx_crawler_queue"."exec_time" = 0';
+		$expected .= ')';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function subqueryIsRemappedForExistsWhereClause() {
+		$selectFields = '*';
+		$fromTables   = 'tx_crawler_process';
+		$whereClause  = 'active = 0 AND NOT EXISTS (' .
+			$GLOBALS['TYPO3_DB']->SELECTsubquery(
+				'*',
+				'tx_crawler_queue',
+				'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0'
+			) .
+		')';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT * FROM "tx_crawler_ps" WHERE "is_active" = 0 AND NOT EXISTS (';
+		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_ps"."ps_id" AND "tx_crawler_queue"."exec_time" = 0';
+		$expected .= ')';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>
