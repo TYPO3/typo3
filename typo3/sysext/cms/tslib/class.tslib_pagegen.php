@@ -348,8 +348,8 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$pageRenderer->enableMoveJsFromHeaderToFooter();
 		}
 
-		if ($GLOBALS['TSFE']->config['config']['pageRenderTemplateFile']) {
-			$file = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->config['config']['pageRenderTemplateFile']);
+		if ($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']) {
+			$file = $GLOBALS['TSFE']->tmpl->getFileName($GLOBALS['TSFE']->config['config']['pageRendererTemplateFile']);
 			if ($file) {
 				$pageRenderer->setTemplateFile($file);
 			}
