@@ -125,6 +125,10 @@ class db_oracle_testcase extends BaseTestCase {
 		}
 	}
 
+	///////////////////////////////////////
+	// Tests concerning quoting
+	///////////////////////////////////////
+
 	/**
 	 * @test
 	 */
@@ -172,6 +176,73 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/** 
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6198
+	 */
+	public function stringsWithinInClauseAreProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'COUNT(DISTINCT tx_dam.uid) AS count',
+			'tx_dam',
+			'tx_dam.pid IN (1) AND tx_dam.file_type IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND tx_dam.deleted = 0'
+		));
+		$expected = 'SELECT COUNT(DISTINCT "tx_dam"."uid") AS "count" FROM "tx_dam"';
+		$expected .= ' WHERE "tx_dam"."pid" IN (1) AND "tx_dam"."file_type" IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND "tx_dam"."deleted" = 0';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12515
+	 * @remark Remapping is not expected here
+	 */
+	public function concatAfterLikeOperatorIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'sys_refindex, tx_dam_file_tracking',
+			'sys_refindex.tablename = \'tx_dam_file_tracking\''
+			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
+		));
+		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
+		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12231
+	 */
+	public function cachingFrameworkQueryIsProperlyQuoted() {
+		$currentTime = time();
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'content',
+			'cache_hash',
+			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('abbbabaf2d4b3f9a63e8dde781f1c106', 'cache_hash') .
+				' AND (crdate + lifetime >= ' . $currentTime . ' OR lifetime = 0)'
+		));
+		$expected = 'SELECT "content" FROM "cache_hash" WHERE "identifier" = \'abbbabaf2d4b3f9a63e8dde781f1c106\' AND ("crdate"+"lifetime" >= ' . $currentTime . ' OR "lifetime" = 0)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12231
+	 */
+	public function calculatedFieldsAreProperlyQuoted() {
+		$currentTime = time();
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'identifier',
+			'cachingframework_cache_pages',
+			'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
+		));
+		$expected = 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
+		$this->assertEquals($expected, $query);
+	}
+
+	///////////////////////////////////////
+	// Tests concerning remapping
+	///////////////////////////////////////
+
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=10411
@@ -191,21 +262,6 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
 		$expected .= ' INNER JOIN "ext_tt_news" ON "ext_tt_news"."news_uid"="ext_tt_news_cat_mm"."local_uid"';
 		$expected .= ' WHERE 1 = 1';
-		$this->assertEquals($expected, $query);
-	}
-
-	/** 
-	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=6198
-	 */
-	public function stringsWithinInClauseAreProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
-			'COUNT(DISTINCT tx_dam.uid) AS count',
-			'tx_dam',
-			'tx_dam.pid IN (1) AND tx_dam.file_type IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND tx_dam.deleted = 0'
-		));
-		$expected = 'SELECT COUNT(DISTINCT "tx_dam"."uid") AS "count" FROM "tx_dam"';
-		$expected .= ' WHERE "tx_dam"."pid" IN (1) AND "tx_dam"."file_type" IN (\'gif\',\'png\',\'jpg\',\'jpeg\') AND "tx_dam"."deleted" = 0';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -250,23 +306,6 @@ class db_oracle_testcase extends BaseTestCase {
 	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=12515
-	 * @remark Remapping is not expected here
-	 */
-	public function concatAfterLikeOperatorIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
-			'*',
-			'sys_refindex, tx_dam_file_tracking',
-			'sys_refindex.tablename = \'tx_dam_file_tracking\''
-			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
-		));
-		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
-		$this->assertEquals($expected, $query);
-	}
-
-	/**
-	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=12515
 	 * @remark Remapping is expected here
 	 */
 	public function concatAfterLikeOperatorIsRemapped() {
@@ -284,6 +323,29 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=5708
+	 */
+	public function fieldIsMappedOnRightSideOfAJoinCondition() {
+		$selectFields = 'cpg_categories.uid, cpg_categories.name';
+		$fromTables   = 'cpg_categories, pages';
+		$whereClause  = 'pages.uid = cpg_categories.pid AND pages.deleted = 0 AND 1 = 1';
+		$groupBy      = '';
+		$orderBy      = 'cpg_categories.pos';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "pages" WHERE "pages"."uid" = "cpg_categories"."page_id"';
+		$expected .= ' AND "pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
+		$this->assertEquals($expected, $query);
+	}
+
+	///////////////////////////////////////
+	// Tests concerning DB management
+	///////////////////////////////////////
 
 	/**
 	 * @test
@@ -372,22 +434,96 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $this->cleanSql($sqlCommands[0]));
 	}
 
+	///////////////////////////////////////
+	// Tests concerning subqueries
+	///////////////////////////////////////
+
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=5708
+	 * @see http://bugs.typo3.org/view.php?id=12758
 	 */
-	public function fieldIsMappedOnRightSideOfAJoinCondition() {
-		$selectFields = 'cpg_categories.uid, cpg_categories.name';
-		$fromTables   = 'cpg_categories, pages';
-		$whereClause  = 'pages.uid = cpg_categories.pid AND pages.deleted = 0 AND 1 = 1';
+	public function inWhereClauseWithSubqueryIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tx_crawler_queue',
+			'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)'
+		));
+		$expected = 'SELECT * FROM "tx_crawler_queue" WHERE "process_id" IN (SELECT "process_id" FROM "tx_crawler_process" WHERE "active" = 0 AND "deleted" = 0)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function subqueryIsRemappedForInWhereClause() {
+		$selectFields = '*';
+		$fromTables   = 'tx_crawler_queue';
+		$whereClause  = 'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
 		$groupBy      = '';
-		$orderBy      = 'cpg_categories.pos';
+		$orderBy      = '';
 
 		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
-		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "pages" WHERE "pages"."uid" = "cpg_categories"."page_id"';
-		$expected .= ' AND "pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
+		$expected = 'SELECT * FROM "tx_crawler_queue" WHERE "process_id" IN (SELECT "ps_id" FROM "tx_crawler_ps" WHERE "is_active" = 0 AND "deleted" = 0)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12800
+	 */
+	public function cachingFrameworkQueryIsSupported() {
+		$currentTime = time();
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery(
+			'cachingframework_cache_hash_tags',
+			'identifier IN (' .
+				$GLOBALS['TYPO3_DB']->SELECTsubquery(
+					'identifier',
+					'cachingframework_cache_pages',
+					'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
+				) .
+			')'
+		));
+		$expected = 'DELETE FROM "cachingframework_cache_hash_tags" WHERE "identifier" IN (';
+		$expected .= 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
+		$expected .= ')';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12800
+	 */
+	public function cachingFrameworkQueryIsRemapped() {
+		$currentTime = time();
+		$table = 'cachingframework_cache_hash_tags';
+		$where = 'identifier IN (' .
+				$GLOBALS['TYPO3_DB']->SELECTsubquery(
+					'identifier',
+					'cachingframework_cache_pages',
+					'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
+				) .
+			')';
+
+			// Perform remapping (as in method exec_DELETEquery)
+		if ($tableArray = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table)) {
+				// Where clause:
+			$whereParts = $GLOBALS['TYPO3_DB']->SQLparser->parseWhereClause($where);
+			$GLOBALS['TYPO3_DB']->_callRef('map_sqlParts', $whereParts, $tableArray[0]['table']);
+			$where = $GLOBALS['TYPO3_DB']->SQLparser->compileWhereClause($whereParts, FALSE);
+
+				// Table name:
+			if ($GLOBALS['TYPO3_DB']->mapping[$table]['mapTableName']) {
+				$table = $GLOBALS['TYPO3_DB']->mapping[$table]['mapTableName'];
+			}
+		}
+		
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery($table, $where));
+		$expected = 'DELETE FROM "cf_cache_hash_tags" WHERE "identifier" IN (';
+		$expected .= 'SELECT "identifier" FROM "cf_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
+		$expected .= ')';
 		$this->assertEquals($expected, $query);
 	}
 }

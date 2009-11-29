@@ -24,6 +24,12 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 	'cachingframework_cache_hash' => array(
 		'mapTableName' => 'cf_cache_hash',
 	),
+	'cachingframework_cache_hash_tags' => array(
+		'mapTableName' => 'cf_cache_hash_tags',
+	),
+	'cachingframework_cache_pages' => array(
+		'mapTableName' => 'cf_cache_pages',
+	),
 	'cpg_categories' => array(
 		'mapFieldNames' => array(
 			'pid' => 'page_id',
@@ -45,6 +51,13 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 		'mapTableName' => 'ext_tt_news_cat_mm',
 		'mapFieldNames' => array(
 			'uid_local' => 'local_uid',
+		),
+	),
+	'tx_crawler_process' => array(
+		'mapTableName' => 'tx_crawler_ps',
+		'mapFieldNames' => array(
+			'process_id' => 'ps_id',
+			'active' => 'is_active',
 		),
 	),
 	'tx_dam_file_tracking' => array(
