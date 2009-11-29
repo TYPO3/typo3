@@ -160,7 +160,16 @@ class t3lib_transferData {
 							}
 						}
 
-						$pageTS = t3lib_beFunc::getPagesTSconfig($id, true);
+						if ($id < 0) {
+							$record = t3lib_beFunc::getRecord ($table, abs($id), 'pid');
+							$pid = $record['pid'];
+							unset($record);
+						} else {
+							$pid = intval($id);
+						}
+
+						$pageTS = t3lib_beFunc::getPagesTSconfig($pid);
+
 						if (isset($pageTS['TCAdefaults.'])) {
 							$TCAPageTSOverride  = $pageTS['TCAdefaults.'];
 							if (is_array($TCAPageTSOverride[$table.'.']))	{
