@@ -1,6 +1,7 @@
 2009-11-29  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12727: Wrong htmlspecialchars() usage in Extension Manager (thanks to Andreas Kundoch)
+	* Fixed bug #12498: t3lib_div::flushOutputBuffers() can't work (thanks to Steffen Gebert)
 
 2009-11-29  Oliver Hader  <oliver@typo3.org>
 

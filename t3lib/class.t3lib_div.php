@@ -5707,9 +5707,26 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function flushOutputBuffers() {
+		$obContent = '';
+		
 		while (ob_get_level()) {
-			ob_end_flush();
+			$obContent .= ob_get_clean();
 		}
+
+			// if previously a "Content-Encoding: whatever" has been set, we have to unset it
+		if (!headers_sent()) {
+			$headersList = headers_list();
+			foreach ($headersList as $header) {
+					// split it up at the :
+				list($key, $value) = t3lib_div::trimExplode(':', $header, TRUE);
+					// check if we have a Content-Encoding other than 'None'
+				if (strtolower($key) === 'content-encoding' && strtolower($value) !== 'none') {
+					header('Content-Encoding: None');
+					break;
+				}
+			}
+		}
+		echo $obContent;
 	}
 }
 
