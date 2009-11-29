@@ -4,6 +4,7 @@
 *
 *  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,6 +33,7 @@
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
+ * @author	Xavier Perseguers <typo3@perseguers.ch>
  */
 
 
@@ -252,6 +254,15 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 							// Look for ending parenthesis:
 						$this->nextPart($parseString, '([)])');
 						$stack[$level][$pnt[$level]]['value'] = $values;
+					} else if (t3lib_div::inList('IN,NOT IN', $stack[$level][$pnt[$level]]['comparator']) && preg_match('/^[(][[:space:]]*SELECT[[:space:]]+/', $parseString)) {
+						$this->nextPart($parseString, '^([(])');
+						$stack[$level][$pnt[$level]]['subquery'] = $this->parseSELECT($parseString);
+							// Seek to new position in parseString after parsing of the subquery
+						$parseString = $stack[$level][$pnt[$level]]['subquery']['parseString'];
+						unset($stack[$level][$pnt[$level]]['subquery']['parseString']);
+						if (!$this->nextPart($parseString, '^([)])')) {
+							return 'No ) parenthesis at end of subquery';
+						}
 					} else {
 							// Finding value for comparator:
 						$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString, $stack[$level][$pnt[$level]]['comparator']);
@@ -263,6 +274,13 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 					// Finished, increase pointer:
 				$pnt[$level]++;
+
+					// Checking if we are back to level 0 and we should still decrease level,
+					// meaning we were probably parsing as subquery and should return here:
+				if ($level === 0 && preg_match('/^[)]/', $parseString)) {
+						// Return the stacks lowest level:
+					return $stack[0];
+				}
 
 					// Checking if the current level is ended, in that case do stack management:
 				while ($this->nextPart($parseString,'^([)])')) {
@@ -390,11 +408,15 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 							// Detecting value type; list or plain:
 						if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
-							$valueBuffer = array();
-							foreach ($v['value'] as $realValue) {
-								$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
+							if (isset($v['subquery'])) {
+								$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
+							} else {
+								$valueBuffer = array();
+								foreach ($v['value'] as $realValue) {
+									$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
+								}
+								$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 							}
-							$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 						} else if (isset($v['value']['operator'])) {
 							$values = array();
 							foreach ($v['value']['args'] as $fieldDef) {
@@ -782,11 +804,15 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 											// Detecting value type; list or plain:
 										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
-											$valueBuffer = array();
-											foreach ($v['value'] as $realValue) {
-												$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
+											if (isset($v['subquery'])) {
+												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
+											} else {
+												$valueBuffer = array();
+												foreach ($v['value'] as $realValue) {
+													$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
+												}
+												$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 											}
-											$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 										} else if (isset($v['value']['operator'])) {
 											$values = array();
 											foreach ($v['value']['args'] as $fieldDef) {

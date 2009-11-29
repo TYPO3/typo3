@@ -279,5 +279,33 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($createTables), $createTables);
 	}
+
+	///////////////////////////////////////
+	// Tests concerning subqueries
+	///////////////////////////////////////
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function inWhereClauseSupportsSubquery() {
+		$parseString = 'process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
+		$whereParts = $this->fixture->parseWhereClause($parseString);
+
+		$this->assertTrue(is_array($whereParts), $whereParts);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function inWhereClauseWithSubqueryIsProperlyCompiled() {
+		$sql = 'SELECT * FROM tx_crawler_queue WHERE process_id IN (SELECT process_id FROM tx_crawler_process WHERE active=0 AND deleted=0)';
+		$expected = 'SELECT * FROM tx_crawler_queue WHERE process_id IN (SELECT process_id FROM tx_crawler_process WHERE active = 0 AND deleted = 0)';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
 }
 ?>
