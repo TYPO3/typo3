@@ -4,6 +4,7 @@
 *
 *  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -939,6 +940,19 @@ class ux_t3lib_DB extends t3lib_DB {
 	**************************************/
 
 	/**
+	 * Quotes components of a SELECT subquery.
+	 * 
+	 * @param array $components	Array of SQL query components
+	 * @return array
+	 */
+	protected function quoteSELECTsubquery(array $components) {
+		$components['SELECT'] = $this->_quoteFieldNames($components['SELECT']);
+		$components['FROM'] = $this->_quoteFromTables($components['FROM']);
+		$components['WHERE'] = $this->_quoteWhereClause($components['WHERE']);
+		return $components;
+	}
+
+	/**
 	 * Quotes field (and table) names with the quote character suitable for the DB being used
 	 * Use quoteFieldNames instead!
 	 *
@@ -961,6 +975,19 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->runningNative()) return $select_fields;
 
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
+		$select_fields = $this->_quoteFieldNames($select_fields);
+
+		return $this->SQLparser->compileFieldList($select_fields);
+	}
+
+	/**
+	 * Quotes field (and table) names in a SQL SELECT clause acccording to DB rules
+	 *
+	 * @param array $select_fields The parsed fields to quote
+	 * @return array
+	 * @see quoteFieldNames()
+	 */
+	protected function _quoteFieldNames(array $select_fields) {
 		foreach ($select_fields as $k => $v) {
 			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*') {
 				$select_fields[$k]['field'] = $this->quoteName($select_fields[$k]['field']);
@@ -977,7 +1004,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 		}
 
-		return $this->SQLparser->compileFieldList($select_fields);
+		return $select_fields;
 	}
 
 	/**
@@ -991,6 +1018,18 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->runningNative()) return $from_table;
 
 		$from_table = $this->SQLparser->parseFromTables($from_table);
+		$from_table = $this->_quoteFromTables($from_table);
+		return $this->SQLparser->compileFromTables($from_table);
+	}
+
+	/**
+	 * Quotes table names in a SQL FROM clause acccording to DB rules
+	 *
+	 * @param array $from_table The parsed FROM clause to quote
+	 * @return array
+	 * @see quoteFromTables()
+	 */
+	protected function _quoteFromTables(array $from_table) {
 		foreach ($from_table as $k => $v) {
 			$from_table[$k]['table'] = $this->quoteName($from_table[$k]['table']);
 			if ($from_table[$k]['as'] != '') {
@@ -1007,7 +1046,8 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 			}
 		}
-		return $this->SQLparser->compileFromTables($from_table);
+
+		return $from_table;
 	}
 
 	/**
@@ -1037,7 +1077,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	array
 	 * @see quoteWhereClause()
 	 */
-	protected function _quoteWhereClause($where_clause) {
+	protected function _quoteWhereClause(array $where_clause) {
 		foreach ($where_clause as $k => $v) {
 				// Look for sublevel:
 			if (is_array($where_clause[$k]['sub'])) {
@@ -1066,8 +1106,14 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 				} else {
 						// Detecting value type; list or plain:
-					if ((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.') && !t3lib_div::inList('NOTIN,IN',strtoupper(str_replace(array(" ","\n","\r","\t"),'',$where_clause[$k]['comparator'])))) {
-						$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
+					if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ',"\n", "\r", "\t"), '', $where_clause[$k]['comparator'])))) {
+						if (isset($v['subquery'])) {
+							$where_clause[$k]['subquery'] = $this->quoteSELECTsubquery($v['subquery']);
+						}
+					} else {
+						if ((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.')) {
+							$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
+						}
 					}
 				}
 			}
@@ -2522,6 +2568,14 @@ class ux_t3lib_DB extends t3lib_DB {
 								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$fieldDef['table']]['mapFieldNames'][$fieldDef['field']];	
 							}
 						}
+					}
+
+						// Do we have a subquery (WHERE parts only)?
+					if (isset($sqlPartArray[$k]['subquery'])) {
+						$subqueryDefaultTable = $sqlPartArray[$k]['subquery']['FROM'][0]['table'];
+						$this->map_sqlParts($sqlPartArray[$k]['subquery']['SELECT'], $subqueryDefaultTable);
+						$this->map_sqlParts($sqlPartArray[$k]['subquery']['FROM'], $subqueryDefaultTable);
+						$this->map_sqlParts($sqlPartArray[$k]['subquery']['WHERE'], $subqueryDefaultTable);
 					}
 
 						// do we have a field name in the value?

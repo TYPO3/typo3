@@ -1,6 +1,7 @@
 2009-11-29  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.0.2 [TYPO3 4.3.0]
+	* Fixed bug #12800: Add functionality to work with caching framework (support for "IN (subquery)" in where clause)
 	* Follow-up of changeset 26118: parts of initial patch for RFC 12231 had actually not been integrated
 
 2009-11-27  Xavier Perseguers  <typo3@perseguers.ch>
