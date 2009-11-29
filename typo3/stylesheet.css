@@ -1552,6 +1552,7 @@ div#typo3-docheader div.buttonsright {
 div#typo3-docheader img, div#typo3-docheader input {
 	margin: 2px 3px 0;
 	vertical-align: top;
+	cursor: pointer;
 }
 
 div#typo3-docheader img.typo3-csh-icon {
