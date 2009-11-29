@@ -677,6 +677,7 @@ table.typo3-usersettings td {
 table.typo3-usersettings td.td-label label {
 	float: left;
 	margin-left: 3px;
+	width: 275px;
 }
 table.typo3-usersettings a.typo3-csh-link {
 	float: left;
