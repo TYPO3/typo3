@@ -2743,7 +2743,7 @@ class tslib_imgmenu extends tslib_menu {
 					$gifCreator->output($gifFileName);
 					$gifCreator->destroy();
 					$imgMap=$gifCreator->map;
-					$this->sys_page->storeHash($imgHash, $imgMap, 'MENU IMAGEMAP');
+					$this->sys_page->storeHash($imgHash, $imgMap, 'MENUIMAGEMAP');
 				}
 				$imgMap.=$this->mconf['imgMapExtras'];
 
