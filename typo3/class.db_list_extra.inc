@@ -481,7 +481,7 @@ class localRecordList extends recordList {
 				// Render collapse button if in multi table mode
 				$collapseIcon = '';
 				if (!$this->table) {
-					$collapseIcon = '<a href="' . htmlspecialchars($this->listURL()) . '&collapse[' . $table . ']=' . ($tableCollapsed ? '0' : '1') . '"><img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/arrow' . ($tableCollapsed ? 'right' : 'down') . '.png') . ' class="collapseIcon" alt="" title="' . ($tableCollapsed ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.expandTable',1) : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.collapseTable',1)) . '" /></a>';
+					$collapseIcon = '<a href="' . htmlspecialchars($this->listURL() . '&collapse[' . $table . ']=' . ($tableCollapsed ? '0' : '1')) . '"><img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/arrow' . ($tableCollapsed ? 'right' : 'down') . '.png') . ' class="collapseIcon" alt="" title="' . ($tableCollapsed ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.expandTable',1) : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.collapseTable',1)) . '" /></a>';
 				}
 				$out .= $this->addelement(1, $collapseIcon, $theData, ' class="c-headLineTable"', '');
 			}
@@ -1168,7 +1168,7 @@ class localRecordList extends recordList {
 							$lab = 'V';
 						}
 
-						$cells['version']='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version')).'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid']).'" title="'.$LANG->getLL('displayVersions',1).'" class="typo3-ctrl-versioning ' . $class . '">'.
+						$cells['version']='<a href="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table='.rawurlencode($table).'&uid='.rawurlencode($row['uid'])).'" title="'.$LANG->getLL('displayVersions',1).'" class="typo3-ctrl-versioning ' . $class . '">'.
 								$lab.
 								'</a>';
 					} elseif(!$this->table) {
