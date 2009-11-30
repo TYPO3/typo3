@@ -1,3 +1,7 @@
+2009-11-30  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12541: Unescaped & in urls of list module
+
 2009-11-30  Oliver Hader  <oliver@typo3.org>
 
 	* Branching TYPO3 4.3.0 to TYPO3_4-3
