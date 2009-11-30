@@ -1,3 +1,7 @@
+2009-11-30  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12467: TYPO3 Inline User Manual is broken
+
 2009-11-25  Oliver Hader  <oliver@typo3.org>
 
 	* Follow-up to bugfix #12581: Use FILTER_FLAG_SCHEME_REQUIRED constant in t3lib_div::isValidUrl()
