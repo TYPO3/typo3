@@ -1,3 +1,7 @@
+2009-11-30  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12467: TYPO3 Inline User Manual is broken
+
 2009-11-17  Rupert Germann  <rupi@gmx.li>
 
 	* Fixed bug #11937: Do not show PHP 5.3 E_DEPRECATED messages on productive systems
