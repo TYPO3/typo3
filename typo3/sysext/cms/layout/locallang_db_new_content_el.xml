@@ -9,6 +9,8 @@
 			<label index="sel1">Please select the type of page content you wish to create:</label>
 			<label index="sel2">Now, click the position where you wish to place the element on the page:</label>
 			<label index="common">Typical page content</label>
+			<label index="common_headerOnly_title">Header only</label>
+			<label index="common_headerOnly_description">Adds a header only.</label>
 			<label index="common_regularText_title">Regular text element</label>
 			<label index="common_regularText_description">A regular text element with header and bodytext fields.</label>
 			<label index="common_textImage_title">Text with image</label>
