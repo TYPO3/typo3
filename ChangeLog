@@ -1,3 +1,7 @@
+2009-12-02  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12847: 4.3.0 install tool incorrectly reports memory limit problem
+
 2009-11-30  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12843: Mulitple tests of the t3lib_PageRenderer_testcase fail

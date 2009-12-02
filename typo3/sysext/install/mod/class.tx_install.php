@@ -1507,8 +1507,8 @@ From sub-directory:
 			// Memory and functions
 			// *****************
 		$memory_limit_value = $this->convertByteSize(ini_get('memory_limit'));
-		
-		if ($memory_limit_value && $memory_limit_value < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_RECOMMENDED_PHP_MEMORY_LIMIT)) {
+
+		if ($memory_limit_value && $memory_limit_value < t3lib_div::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
 			$this->message($ext, 'Memory limit below ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT,'
 				<i>memory_limit=' . ini_get('memory_limit') . '</i>
 				Your system is configured to enforce a memory limit of PHP scripts lower than ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '. The Extension Manager needs to include more PHP-classes than will fit into this memory space. There is nothing else to do than raise the limit. To be safe, ask the system administrator of the webserver to raise the limit to over ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.
