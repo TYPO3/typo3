@@ -646,7 +646,7 @@ class t3lib_cs {
 	}
 
 	/**
-	 * Convert all elements in ARRAY from one charset to another charset.
+	 * Convert all elements in ARRAY with type string from one charset to another charset.
 	 * NOTICE: Array is passed by reference!
 	 *
 	 * @param	string		Input array, possibly multidimensional
@@ -660,7 +660,7 @@ class t3lib_cs {
 		foreach($array as $key => $value)	{
 			if (is_array($array[$key]))	{
 				$this->convArray($array[$key],$fromCS,$toCS,$useEntityForNoChar);
-			} else {
+			} elseif (is_string($array[$key])) {
 				$array[$key] = $this->conv($array[$key],$fromCS,$toCS,$useEntityForNoChar);
 			}
 		}
