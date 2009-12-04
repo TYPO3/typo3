@@ -169,13 +169,11 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 		$printFields = trim($this->ext_printFields($theConstants,$cat));
 
 		$content='';
-		$content.='
-		<script language="javascript" type="text/javascript"><![CDATA[
-			function uFormUrl(aname)	{
-				document.'.$this->ext_CEformName.'.action = "'.t3lib_div::linkThisScript().'#"+aname;
+		$content .= t3lib_div::wrapJS('
+			function uFormUrl(aname) {
+				document.' . $this->ext_CEformName . '.action = "' . t3lib_div::linkThisScript() . '#"+aname;
 			}
-		]]</script>
-		';
+		');
 		$content .= '<form action="' . htmlspecialchars($script ? $script : t3lib_div::linkThisScript()) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		$content.= $addFields;
 		$content.= $printFields;
