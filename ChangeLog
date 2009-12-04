@@ -1,5 +1,6 @@
 2009-12-02  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12899: Wrong usage of CDATA raise javascript error
 	* Fixed bug #12863: t3lib_cs::convArray converts integers to string
 
 2009-12-02  Steffen Kamper  <info@sk-typo3.de>
