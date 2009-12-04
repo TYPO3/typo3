@@ -1,5 +1,9 @@
 2009-12-02  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12863: t3lib_cs::convArray converts integers to string
+
+2009-12-02  Steffen Kamper  <info@sk-typo3.de>
+
 	* Fixed bug #12852: Missing labels for CType header in New Content Wizard (Thanks to Uschi Renziehausen)
 	* Fixed bug #12847: 4.3.0 install tool incorrectly reports memory limit problem
 
