@@ -217,14 +217,24 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * LOAD JS, CSS and more
 		 * =======================================
 		 */
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+		$pageRenderer->setBackPath(TYPO3_mainDir);
 			// Preloading the pageStyle and including RTE skin stylesheets
 		$this->addPageStyle();
 		$this->addSkin();
+		$pageRenderer->addCssFile($this->hostURL . '/t3lib/js/extjs/ux/resize.css');
 			// Loading JavaScript files and code
+		$pageRenderer->loadExtJs();
+		$pageRenderer->addJsFile($this->hostURL . '/t3lib/js/extjs/ux/ext.resizable.js');
 		if ($this->TCEform->RTEcounter == 1) {
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 		}
 		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
+		$resizableSettings = array(
+			'textareaResize' => true,
+			'textareaMaxHeight' => '600'
+		);
+		$pageRenderer->addInlineSettingArray('', $resizableSettings);
 
 		/* =======================================
 		 * DRAW THE EDITOR

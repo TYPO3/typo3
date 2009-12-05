@@ -4,6 +4,14 @@
 	background-color:#fff;
  	margin:0;padding:0;
 }
+.resizable {
+	background-color:transparent;
+	padding-right:7px;
+	padding-bottom:6px;
+	background-image: url("images/resize.gif");
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
 .pleasewait {
  	position:relative;top:0px;text-align:left;
  	font-size:10px;

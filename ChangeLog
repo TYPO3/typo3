@@ -1,3 +1,7 @@
+2009-12-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #12930: htmlArea: Resizable RTE area
+
 2009-12-02  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12899: Wrong usage of CDATA raise javascript error

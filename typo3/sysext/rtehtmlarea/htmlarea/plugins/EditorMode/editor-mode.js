@@ -158,6 +158,9 @@ EditorMode = HTMLArea.Plugin.extend({
 			case "docnotwellformedmode":
 				this.textArea.value = this.getHTML();
 				editor._iframe.style.display = "none";
+				var dimensions = editor.getDimensions();
+				editor.htmlArea.setStyle('height', (dimensions.toolbar.height + dimensions.statusbar.height) + 'px');
+				editor.htmlArea.removeClass('resizable');
 				this.textArea.style.display = "block";
 				this.editorMode = "textmode";
 				break;
@@ -173,6 +176,9 @@ EditorMode = HTMLArea.Plugin.extend({
 				}
 				this.textArea.style.display = "none";
 				editor._iframe.style.display = "block";
+				var dimensions = editor.getDimensions();
+				editor.htmlArea.setStyle('height', (parseInt(editor.iframe.getStyle('height')) + dimensions.toolbar.height + dimensions.statusbar.height) + 'px');
+				editor.htmlArea.addClass('resizable');
 				if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
 					editor._doc.designMode = "on";
 				}

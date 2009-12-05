@@ -794,21 +794,30 @@ HTMLArea.toolBarButtonHandler = function(ev) {
  * Create the htmlArea iframe and replace the textarea with it.
  */
 HTMLArea.prototype.generate = function () {
+	var self = this;
+		// Get the textarea, hide it and make it resizable
+	this.textArea = Ext.get(this._textArea).setVisibilityMode(2).setVisible(false);
+	if (TYPO3.settings.textareaResize) {
+		this.textArea.addClass('resizable');
+		this.textAreaResizer = new Ext.Resizable(this.textArea, {
+			minWidth:  300,
+			minHeight: 200,
+			maxHeight: TYPO3.settings.textareaMaxHeight,
+			dynamic:   true
+		});
+		this.textAreaResizer.on('resize', function(ev) { self.resizeOnTextAreaChange(2); });
+	}
 
-		// get the textarea and hide it
-	var textarea = this._textArea;
-	textarea.style.display = "none";
+		// Create the editor framework and insert it before the textarea
+	this.htmlArea = Ext.DomHelper.insertBefore(this.textArea, {
+		tag: 'div',
+		cls: 'htmlarea'
+	}, true).setWidth(this.textArea.getStyle('width'));
+	this._htmlArea = this.htmlArea.dom;
 
-		// create the editor framework and insert the editor before the textarea
-	var htmlarea = document.createElement("div");
-	htmlarea.className = "htmlarea";
-	htmlarea.style.width = textarea.style.width;
-	this._htmlArea = htmlarea;
-	textarea.parentNode.insertBefore(htmlarea, textarea);
-
-	if(textarea.form) {
-			// we have a form, on reset, re-initialize the HTMLArea content and update the toolbar
-		var f = textarea.form;
+		// If we have a form, on reset, re-initialize the HTMLArea content and update the toolbar
+	if (this.textArea.dom.form) {
+		var f = this.textArea.dom.form;
 		if (typeof(f.onreset) == "function") {
 			var funcref = f.onreset;
 			if (typeof(f.__msh_prevOnReset) == "undefined") f.__msh_prevOnReset = [];
@@ -818,31 +827,89 @@ HTMLArea.prototype.generate = function () {
 		HTMLArea._addEvent(f, "reset", HTMLArea.resetHandler);
 	}
 
-		// create & append the toolbar
+		// Create & append the toolbar
 	this._createToolbar();
 	HTMLArea._appendToLog("[HTMLArea::generate]: Toolbar successfully created.");
 
-		// create and append the IFRAME
-	var iframe = document.createElement("iframe");
-	if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-		iframe.setAttribute("src", "javascript:void(0);");
-	} else {
-		iframe.setAttribute("src", (HTMLArea.is_opera?_typo3_host_url:"") + _editor_url + "popups/blank.html");
+		// Create the editor iframe and append it to the toolbar
+	this.iframe = Ext.DomHelper.append(this.htmlArea, {
+			tag: 'iframe',
+			cls: 'editorIframe',
+			src: (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) ? 'javascript:void(0);' : (HTMLArea.is_opera?_typo3_host_url:'') + _editor_url + 'popups/blank.html'
+	}, true);
+	if (!this.getPluginInstance('StatusBar')) {
+		this.iframe.addClass('noStatusBar');
 	}
-	iframe.className = "editorIframe";
-	if (!this.getPluginInstance("StatusBar")) {
-		iframe.className += " noStatusBar";
-	}
-	htmlarea.appendChild(iframe);
-	this._iframe = iframe;
+	this._iframe = this.iframe.dom;
 	HTMLArea._appendToLog("[HTMLArea::generate]: Editor iframe successfully created.");
+		// Make the editor framework resizable
+	if (TYPO3.settings.textareaResize) {
+		this.htmlArea.addClass('resizable');
+		var dimensions = this.getDimensions();
+		this.htmlAreaResizer = new Ext.Resizable(this.htmlArea, {
+			maxHeight: parseInt(TYPO3.settings.textareaMaxHeight) + dimensions.toolbar.height + dimensions.statusbar.height,
+			dynamic:   false
+		});
+		this.htmlAreaResizer.on('resize', function(ev) { self.resizeOnHtmlAreaChange(2); });
+	}
 	if (HTMLArea.is_opera) {
-		var self = this;
-		this._iframe.onload = function() { self.initIframe(); };
+		this.iframe.on('load', function() { self.initIframe(); } , this);
 	} else {
 		this.initIframe();
 	}
 	return this;
+};
+
+/*
+ * Resize the editor framework and the iframe when the textarea was resized
+ */
+HTMLArea.prototype.resizeOnTextAreaChange = function(diff) {
+		// Set width first as it may change the height of the toolbar and of the statusbar
+	var width = this.textArea.getStyle('width');
+	if (width.indexOf('%') == -1) {
+		width = (parseInt(width) + diff) + 'px';
+	}
+	this.iframe.setStyle('width', HTMLArea.is_opera ? width : '100%');
+	this.htmlArea.setStyle('width', width);
+		// Set height
+	var dimensions = this.getDimensions();
+	var height = this.textArea.getStyle('height');
+	if (height.indexOf('%') == -1) {
+		height = (parseInt(height) + diff) + 'px';
+	}
+	this.iframe.setStyle('height', height);
+	this.htmlArea.setStyle('height', (dimensions.toolbar.height + dimensions.statusbar.height) + 'px');
+};
+
+/*
+ * Resize the textarea and iframe when the htmlArea was resized
+ */
+HTMLArea.prototype.resizeOnHtmlAreaChange = function(diff) {
+		// Set width first as it may change the height of the toolbar and of the statusbar
+	var width = this.htmlArea.getStyle('width');
+		// Do not shrink narrower than configured textarea
+	if (parseInt(width) < this.textAreaResizer.minWidth + diff) {
+		width = (this.textAreaResizer.minWidth + diff) + 'px';
+		this.htmlArea.setStyle('width', width);
+	}
+	if (width.indexOf('%') == -1) {
+		width = (parseInt(width) - diff) + 'px';
+	}
+	this.textArea.setStyle('width', width);
+		// Set height
+	var height = this.iframe.getStyle('height');
+	if (height.indexOf('%') == -1) {
+		var dimensions = this.getDimensions();
+		height = parseInt(this.htmlArea.getStyle('height')) - dimensions.toolbar.height - dimensions.statusbar.height;
+			// Do not shrink shorter than configured textarea
+		if (height < this.textAreaResizer.minHeight + diff) {
+			height = this.textAreaResizer.minHeight + diff;
+			this.htmlArea.setStyle('height', (height + dimensions.toolbar.height + dimensions.statusbar.height) + 'px');
+		}
+		this.iframe.setStyle('height', height + 'px');
+		height = (height - diff) + 'px';
+	}
+	this.textArea.setStyle('height', height);
 };
 
 /*
@@ -857,7 +924,8 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 	this.config.height = (this.config.height == "auto") ? this._textArea.style.height : this.config.height;
 	var iframeHeight = this.config.height;
 	var textareaHeight = this.config.height;
-	if (textareaHeight.indexOf("%") == -1) {
+	var htmlAreaHeight = this.config.height;
+	if (this.config.height.indexOf("%") == -1) {
 		iframeHeight = parseInt(iframeHeight) - diff;
 		if (this.config.sizeIncludesToolbar) {
 			this._initialToolbarOffsetHeight = this._initialToolbarOffsetHeight ? this._initialToolbarOffsetHeight : dimensions.toolbar.height;
@@ -867,6 +935,7 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 		if (iframeHeight < 0) {
 			iframeHeight = 0;
 		}
+		htmlAreaHeight = (iframeHeight + dimensions.toolbar.height + dimensions.statusbar.height) + 'px';
 		textareaHeight = (iframeHeight - 4);
 		if (textareaHeight < 0) {
 			textareaHeight = 0;
@@ -876,6 +945,7 @@ HTMLArea.prototype.sizeIframe = function(diff) {
 	}
 	this._iframe.style.height = iframeHeight;
 	this._textArea.style.height = textareaHeight;
+	this.htmlArea.setStyle('height', htmlAreaHeight);
 		// Set width
 	this.config.width = (this.config.width == "auto") ? this._textArea.style.width : this.config.width;
 	var textareaWidth = this.config.width;
