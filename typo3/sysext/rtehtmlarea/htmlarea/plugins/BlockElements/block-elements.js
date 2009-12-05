@@ -74,12 +74,39 @@ BlockElements = HTMLArea.Plugin.extend({
 			this.addAllowedAttribute("className");
 		}
 		this.indentedList = null;
+			// Standard block formating items
+		var standardElements = new Array("address", "blockquote", "div", "h1", "h2", "h3", "h4", "h5", "h6", "p", "pre");
+		this.standardBlockElements = new RegExp( "^(" + standardElements.join("|") + ")$", "i");
+			// Process block formating customization configuration
+		this.formatBlockItems = {};
+		if (this.buttonsConfiguration
+			&& this.buttonsConfiguration.formatblock
+			&& this.buttonsConfiguration.formatblock.items) {
+				this.formatBlockItems = this.buttonsConfiguration.formatblock.items;
+		}
+			// Build lists of mutually exclusive class names
+		for (var tagName in this.formatBlockItems) {
+			if (this.formatBlockItems.hasOwnProperty(tagName) && this.formatBlockItems[tagName].tagName && this.formatBlockItems[tagName].addClass) {
+				if (!this.formatBlockItems[this.formatBlockItems[tagName].tagName]) {
+					this.formatBlockItems[this.formatBlockItems[tagName].tagName] = {};
+				}
+				if (!this.formatBlockItems[this.formatBlockItems[tagName].tagName].classList) {
+					this.formatBlockItems[this.formatBlockItems[tagName].tagName].classList = new Array();
+				}
+				this.formatBlockItems[this.formatBlockItems[tagName].tagName].classList.push(this.formatBlockItems[tagName].addClass);
+			}
+		}
+		for (var tagName in this.formatBlockItems) {
+			if (this.formatBlockItems.hasOwnProperty(tagName) && this.formatBlockItems[tagName].classList) {
+				this.formatBlockItems[tagName].classList = new RegExp( "^(" + this.formatBlockItems[tagName].classList.join("|") + ")$");
+			}
+		}
 		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.2",
+			version		: "1.3",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -214,29 +241,42 @@ BlockElements = HTMLArea.Plugin.extend({
 	},
 	
 	applyBlockElement : function(buttonId, blockElement) {
-		switch (blockElement) {
-			case "blockquote" :
-				this.onButtonPress(this.editor, "Blockquote");
-				break;
-			case "div"     :
-			case "address" :
-			case "none"    :
-				this.onButtonPress(this.editor, blockElement);
-				break;
-			default	:
-				var element = blockElement;
-				if (HTMLArea.is_ie) {
-					element = "<" + element + ">";
-				}
-				this.editor.focusEditor();
-				if (HTMLArea.is_safari && !this.editor._doc.body.hasChildNodes()) {
-					this.editor._doc.body.appendChild((this.editor._doc.createElement("br")));
-				}
-				try {
-					this.editor._doc.execCommand(buttonId, false, element);
-				} catch(e) {
-					this.appendToLog("applyBlockElement", e + "\n\nby execCommand(" + buttonId + ");");
-				}
+		var tagName = blockElement;
+		var className = null;
+		if (this.formatBlockItems[tagName]) {
+			if (this.formatBlockItems[tagName].addClass) {
+				className = this.formatBlockItems[tagName].addClass;
+			}
+			if (this.formatBlockItems[tagName].tagName) {
+				tagName = this.formatBlockItems[tagName].tagName;
+			}
+		}
+		if (this.standardBlockElements.test(tagName) || tagName == "none") {
+			switch (tagName) {
+				case "blockquote" :
+					this.onButtonPress(this.editor, "Blockquote", null, className);
+					break;
+				case "div"     :
+				case "address" :
+				case "none"    :
+					this.onButtonPress(this.editor, tagName, null, className);
+					break;
+				default	:
+					var element = tagName;
+					if (HTMLArea.is_ie) {
+						element = "<" + element + ">";
+					}
+					this.editor.focusEditor();
+					if (HTMLArea.is_safari && !this.editor._doc.body.hasChildNodes()) {
+						this.editor._doc.body.appendChild((this.editor._doc.createElement("br")));
+					}
+					try {
+						this.editor._doc.execCommand(buttonId, false, element);
+					} catch(e) {
+						this.appendToLog("applyBlockElement", e + "\n\nby execCommand(" + buttonId + ");");
+					}
+					this.addClassOnBlockElements(tagName, className);
+			}
 		}
 	},
 	
@@ -246,10 +286,11 @@ BlockElements = HTMLArea.Plugin.extend({
 	 * @param	object		editor: the editor instance
 	 * @param	string		id: the button id or the key
 	 * @param	object		target: the target element of the contextmenu event, when invoked from the context menu
+	 * @param	string		className: the className to be assigned to the element
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id, target) {
+	onButtonPress : function (editor, id, target, className) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
@@ -466,14 +507,14 @@ BlockElements = HTMLArea.Plugin.extend({
 				}
 				if (!commandState) {
 					var bookmark = this.editor.getBookmark(range);
-					var newBlock = this.wrapSelectionInBlockElement("blockquote", null, null, true);
+					var newBlock = this.wrapSelectionInBlockElement("blockquote", className, null, true);
 					this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				}
 				break;
 			case "address" :
 			case "div"     :
 				var bookmark = this.editor.getBookmark(range);
-				var newBlock = this.wrapSelectionInBlockElement(buttonId, null, null, true);
+				var newBlock = this.wrapSelectionInBlockElement(buttonId, className, null, true);
 				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				break;
 			case "JustifyLeft"   :
@@ -595,7 +636,7 @@ BlockElements = HTMLArea.Plugin.extend({
 	/*
 	 * This function adds a class attribute on blocks sibling of the block containing the start container of the selection
 	 */
-	addClassOnBlockElements : function(buttonId) {
+	addClassOnBlockElements : function(buttonId, className) {
 		var selection = this.editor._getSelection();
 		var endBlocks = this.editor.getEndBlocks(selection);
 		var startAncestors = this.getBlockAncestors(endBlocks.start);
@@ -627,6 +668,12 @@ BlockElements = HTMLArea.Plugin.extend({
 						this.toggleAlignmentClass(block, buttonId);
 						break;
 					default :
+						if (this.standardBlockElements.test(buttonId.toLowerCase()) && buttonId.toLowerCase() == block.nodeName.toLowerCase()) {
+							this.cleanClasses(block);
+							if (className) {
+								HTMLArea._addClass(block, className);
+							}
+						}
 						break;
 				}
 			}
@@ -921,6 +968,30 @@ BlockElements = HTMLArea.Plugin.extend({
 	},
 	
 	/*
+	 * This function removes any disallowed class or mutually exclusive classes from the class attribute of the node
+	 */
+	cleanClasses : function(node) {
+		var classNames = node.className.trim().split(" ");
+		var nodeName = node.nodeName.toLowerCase();
+		for (var i = classNames.length; --i >= 0;) {
+			if (!HTMLArea.reservedClassNames.test(classNames[i])) {
+				if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
+					if (!this.tags[nodeName].allowedClasses.test(classNames[i])) {
+						HTMLArea._removeClass(node, classNames[i]);
+					}
+				} else if (this.tags && this.tags.all && this.tags.all.allowedClasses) {
+					if (!this.tags.all.allowedClasses.test(classNames[i])) {
+						HTMLArea._removeClass(node, classNames[i]);
+					}
+				}
+				if (this.formatBlockItems[nodeName] && this.formatBlockItems[nodeName].classList && this.formatBlockItems[nodeName].classList.test(classNames[i])) {
+					HTMLArea._removeClass(node, classNames[i]);
+				}
+			}
+		}
+	},
+	
+	/*
 	 * This function gets called when the toolbar is updated
 	 */
 	onUpdateToolbar : function () {
@@ -1034,8 +1105,8 @@ BlockElements = HTMLArea.Plugin.extend({
 	},
 	
 	/*
-	* This function updates the drop-down list of block elemenents
-	*/
+	 * This function updates the drop-down list of block elements
+	 */
 	updateDropDown : function(dropDownConfiguration, deepestBlockAncestor, startAncestor) {
 		
 		var select = document.getElementById(this.editor._toolbarObjects[dropDownConfiguration.id].elementId);
@@ -1051,11 +1122,22 @@ BlockElements = HTMLArea.Plugin.extend({
 		if (deepestBlockAncestor) {
 			var nodeName = deepestBlockAncestor.nodeName.toLowerCase();
 			for (i = options.length; --i >= 0;) {
-				if (nodeName === options[i].value.toLowerCase()) {
+				var item = this.formatBlockItems[options[i].value];
+				if (item && item.tagName == nodeName && item.addClass && HTMLArea._hasClass(deepestBlockAncestor, item.addClass)) {
 					options[i].selected = true;
 					select.selectedIndex = i;
 					options[0].text = this.localize("Remove block");
 					break;
+				}
+			}
+			if (!select.selectedIndex) {
+				for (i = options.length; --i >= 0;) {
+					if (nodeName === options[i].value.toLowerCase()) {
+						options[i].selected = true;
+						select.selectedIndex = i;
+						options[0].text = this.localize("Remove block");
+						break;
+					}
 				}
 			}
 		}

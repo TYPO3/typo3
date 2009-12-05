@@ -51,12 +51,14 @@ DefinitionList = BlockElements.extend({
 		this.useAlignAttribute = parentPlugin.useAlignAttribute;
 		this.allowedBlockElements = parentPlugin.allowedBlockElements;
 		this.indentedList = null;
+		this.standardBlockElements = parentPlugin.standardBlockElements;
+		this.formatBlockItems = parentPlugin.formatBlockItems;
 		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "0.4",
+			version		: "1.0",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -102,10 +104,11 @@ DefinitionList = BlockElements.extend({
 	 * @param	object		editor: the editor instance
 	 * @param	string		id: the button id or the key
 	 * @param	object		target: the target element of the contextmenu event, when invoked from the context menu
+	 * @param	string		className: the className to be assigned to the element
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id, target) {
+	onButtonPress : function (editor, id, target, className) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
@@ -126,14 +129,14 @@ DefinitionList = BlockElements.extend({
 				if (/^(dd|dt)$/i.test(parentElement.nodeName) && this.indentDefinitionList(parentElement, range)) {
 					break;
 				} else {
-					this.base(editor, id, target);
+					this.base(editor, id, target, className);
 				}
 				break;
 			case "Outdent" :
 				if (/^(dt)$/i.test(parentElement.nodeName) && this.outdentDefinitionList(selection, range)) {
 					break;
 				} else {
-					this.base(editor, id, target);
+					this.base(editor, id, target, className);
 				}
 				break;
 			case "DefinitionList":
@@ -147,7 +150,7 @@ DefinitionList = BlockElements.extend({
 				this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 				break;
 			default:
-				this.base(editor, id, target);
+				this.base(editor, id, target, className);
 		}
 		return false;
 	},

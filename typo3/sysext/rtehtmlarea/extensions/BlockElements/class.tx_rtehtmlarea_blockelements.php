@@ -98,6 +98,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			}
 				// Default block elements
 			$hideItems = array();
+			$addItems = array();
 			$restrictTo = array('*');
 			$blockElementsOrder = $this->defaultBlockElementsOrder;
 			$prefixLabelWithTag = false;
@@ -108,6 +109,10 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 					// Removing elements
 				if ($this->thisConfig['buttons.']['formatblock.']['removeItems']) {
 					$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['removeItems'])), 1);
+				}
+					// Adding elements
+				if ($this->thisConfig['buttons.']['formatblock.']['addItems']) {
+					$addItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['buttons.']['formatblock.']['addItems'])), 1);
 				}
 					// Restriction clause
 				if ($this->thisConfig['buttons.']['formatblock.']['restrictToItems']) {
@@ -124,8 +129,10 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			if ($this->thisConfig['hidePStyleItems']) {
 				$hideItems = array_merge($hideItems, t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['hidePStyleItems'])), 1));
 			}
+				// Adding custom items
+			$blockElementsOrder = array_merge(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), 1), $addItems);
 				// Applying User TSConfig restriction
-			$blockElementsOrder = array_diff(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), 1), $hideItems);
+			$blockElementsOrder = array_diff($blockElementsOrder, $hideItems);
 			if (!in_array('*', $restrictTo)) {
 				$blockElementsOrder = array_intersect($blockElementsOrder, $restrictTo);
 			}
