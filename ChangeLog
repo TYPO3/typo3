@@ -2,6 +2,7 @@
 
 	* Added feature #12930: htmlArea: Resizable RTE area
 	* Added feature #12943: htmlArea RTE: Configuring custom items in the block formatting drop-down list
+	* Fixed bug #12926: RTE floods BE Log with error messages from json_encode()
 
 2009-12-02  Steffen Kamper  <info@sk-typo3.de>
 
