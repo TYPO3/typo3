@@ -2788,7 +2788,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			HTMLArea.I18N[this.name] = eval(this.name + "_langArray");
 			this.I18N = HTMLArea.I18N[this.name];
 		} catch(e) {
-			this.I18N = new Array();
+			this.I18N = new Object();
 		}
 		return this.configurePlugin(editor);
 	},

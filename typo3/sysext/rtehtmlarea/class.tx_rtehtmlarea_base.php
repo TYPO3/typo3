@@ -1198,18 +1198,17 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 
 	function buildJSLangArray($plugin) {
-
+		$LOCAL_LANG = FALSE;
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
+		$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8', 1);
 		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
-		$JSLanguageArray = '';
-		$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8');
+		$JSLanguageArray = 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 		if (is_array($LOCAL_LANG)) {
 			if (!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'],$LOCAL_LANG[$this->language]);
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
-			$JSLanguageArray .= 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 			$JSLanguageArray .= $plugin . '_langArray = ' . json_encode($LOCAL_LANG[$this->language]) . ';'. chr(10);
 		}
 		return $JSLanguageArray;
