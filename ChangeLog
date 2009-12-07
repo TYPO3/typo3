@@ -1,3 +1,7 @@
+2009-12-07  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #10327: [felogin] redirect does not work
+
 2009-12-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #12926: RTE floods BE Log with error messages from json_encode()

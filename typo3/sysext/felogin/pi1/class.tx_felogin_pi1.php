@@ -38,11 +38,13 @@ class tx_felogin_pi1 extends tslib_pibase {
 	var $extKey        = 'felogin';	// The extension key.
 	public $pi_checkCHash = false;
 	public $pi_USER_INT_obj = true;
-	var $userIsLoggedIn;	// Is user logged in?
-	var $template;
-	var $uploadDir;
-	var $redirectUrl;
-	protected $noRedirect = false;
+
+	protected $userIsLoggedIn;	// Is user logged in?
+	protected $template;	// holds the template for FE rendering
+	protected $uploadDir;	// upload dir, used for flexform template files
+	protected $redirectUrl;	// URL for the redirect
+	protected $noRedirect = false;	// flag for disable the redirect
+	protected $logintype;	// logintype (given as GPvar), possible: login, logout
 
 	/**
 	 * The main method of the plugin
@@ -83,13 +85,15 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 			// GPvars:
 		$this->logintype = t3lib_div::_GP('logintype');
-		$this->redirectUrl = t3lib_div::_GP('redirect_url');
+		$this->referer = t3lib_div::_GP('referer');
 		$this->noRedirect = ($this->piVars['noredirect'] || $this->conf['redirectDisable']);
 
 			// if config.typolinkLinkAccessRestrictedPages is set, the var is return_url
 		$returnUrl =  t3lib_div::_GP('return_url');
 		if ($returnUrl) {
 			$this->redirectUrl = $returnUrl;
+		} else {
+			$this->redirectUrl = t3lib_div::_GP('redirect_url');
 		}
 
 			// Get Template
@@ -101,9 +105,13 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 			// Redirect
 		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable'] && !$this->noRedirect) {
-			$this->redirectUrl = $this->processRedirect();
+			$redirectUrl = $this->processRedirect();
+			if (count($redirectUrl)) {
+				$this->redirectUrl = $this->conf['redirectFirstMethod'] ? array_shift($redirectUrl) : array_pop($redirectUrl);
+			} else {
+				$this->redirectUrl = '';
 		}
-
+		}
 
 			// What to display
 		$content='';
@@ -450,10 +458,19 @@ class tx_felogin_pi1 extends tslib_pibase {
 			// The methods should also set the required JS functions to get included
 		$onSubmit = '';
 		$extraHidden = '';
+		$onSubmitAr = array();
+		$extraHiddenAr = array();
+
+	 		// check for referer redirect method. if present, save referer in form field
+		if (t3lib_div::inList($this->conf['redirectMode'], 'referer') || t3lib_div::inList($this->conf['redirectMode'], 'refererDomains')) {
+			$referer = $this->referer ? $this->referer : t3lib_div::getIndpEnv('HTTP_REFERER');
+			if ($referer) {
+				$extraHiddenAr[] = '<input type="hidden" name="referer" value="' . rawurlencode($referer) . '" />';
+			}
+		}
+
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
 			$_params = array();
-			$onSubmitAr = array();
-			$extraHiddenAr = array();
 			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] as $funcRef) {
 				list($onSub, $hid) = t3lib_div::callUserFunction($funcRef, $_params, $this);
 				$onSubmitAr[] = $onSub;
@@ -462,7 +479,13 @@ class tx_felogin_pi1 extends tslib_pibase {
 		}
 		if (count($onSubmitAr)) {
 			$onSubmit = implode('; ', $onSubmitAr).'; return true;';
+		}
+		if (count($extraHiddenAr)) {
 			$extraHidden = implode(chr(10), $extraHiddenAr);
+		}
+
+		if (!$gpRedirectUrl && $this->redirectUrl && $this->logintype === 'login') {
+			$gpRedirectUrl = $this->redirectUrl;
 		}
 
 			// Login form
@@ -474,7 +497,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$markerArray['###PASSWORD_LABEL###'] = $this->pi_getLL('password', '', 1);
 		$markerArray['###STORAGE_PID###'] = $this->spid;
 		$markerArray['###USERNAME_LABEL###'] = $this->pi_getLL('username', '', 1);
-		$markerArray['###REDIRECT_URL###'] = $gpRedirectUrl ? htmlspecialchars($gpRedirectUrl) : htmlspecialchars($this->redirectUrl);
+		$markerArray['###REDIRECT_URL###'] = htmlspecialchars($gpRedirectUrl);
 		$markerArray['###NOREDIRECT###'] = $this->noRedirect ? '1' : '0';
 		$markerArray['###PREFIXID###'] = $this->prefixId;
 		$markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
@@ -487,12 +510,6 @@ class tx_felogin_pi1 extends tslib_pibase {
 		}
 
 
-
-		if ($this->redirectUrl) {
-				// use redirectUrl for action tag because of possible access restricted pages
-			$markerArray['###ACTION_URI###'] = htmlspecialchars($this->redirectUrl);
-			$this->redirectUrl = '';
-		}
 		if (($this->conf['showPermaLogin']) && ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) && $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] > 0) {
 			$markerArray['###PERMALOGIN###'] = $this->pi_getLL('permalogin', '', 1);
 			if($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
@@ -514,8 +531,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @return	string		redirect url
 	 */
 	 protected function processRedirect() {
+	 	$redirect_url = array();
 		if ($this->conf['redirectMode']) {
-			foreach (t3lib_div::trimExplode(',', $this->conf['redirectMode'],1) as $redirMethod) {
+			$redirectMethods = t3lib_div::trimExplode(',', $this->conf['redirectMode'], TRUE);
+			foreach ($redirectMethods as $redirMethod) {
 				if ($GLOBALS['TSFE']->loginUser && $this->logintype === 'login') {
 						// logintype is needed because the login-page wouldn't be accessible anymore after a login (would always redirect)
 					switch ($redirMethod) {
@@ -527,7 +546,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								'felogin_redirectPid!="" AND uid IN (' . implode(',', $groupData['uid']) . ')'
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
-								$redirect_url = $this->pi_getPageLink($row[0],array(),true); // take the first group with a redirect page
+								$redirect_url[] = $this->pi_getPageLink($row[0], array(), TRUE); // take the first group with a redirect page
 							}
 						break;
 						case 'userLogin':
@@ -537,32 +556,31 @@ class tx_felogin_pi1 extends tslib_pibase {
 								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid!=""'
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
-								$redirect_url = $this->pi_getPageLink($row[0], array(), true);
+								$redirect_url[] = $this->pi_getPageLink($row[0], array(), TRUE);
 							}
 						break;
 						case 'login':
 							if ($this->conf['redirectPageLogin']) {
-								$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']), array(), true);
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']), array(), TRUE);
 							}
 						break;
 						case 'getpost':
-							$redirect_url = $this->redirectUrl;
+							$redirect_url[] = $this->redirectUrl;
 						break;
 						case 'referer':
-							$redirect_url = t3lib_div::getIndpEnv('HTTP_REFERER');
 								// avoid forced logout, when trying to login immediatly after a logout
-							$redirect_url = preg_replace('/[&?]logintype=[a-z]+/', '', $redirect_url);
+							$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $this->referer);
 						break;
 						case 'refererDomains':
 								// Auto redirect.
 								// Feature to redirect to the page where the user came from (HTTP_REFERER).
 								// Allowed domains to redirect to, can be configured with plugin.tx_felogin_pi1.domains
 								// Thanks to plan2.net / Martin Kutschker for implementing this feature.
-							if (!$redirect_url && $this->conf['domains']) {
-								$redirect_url = t3lib_div::getIndpEnv('HTTP_REFERER');
+							if ($this->conf['domains']) {
+								$url = $this->referer;
 									// is referring url allowed to redirect?
 								$match = array();
-								if (preg_match('/^http://([[:alnum:]._-]+)//', $redirect_url, $match)) {
+								if (preg_match('/^http://([[:alnum:]._-]+)//', $url, $match)) {
 									$redirect_domain = $match[1];
 									$found = false;
 									foreach(split(',', $this->conf['domains']) as $d) {
@@ -572,12 +590,14 @@ class tx_felogin_pi1 extends tslib_pibase {
 										}
 									}
 									if (!$found) {
-										$redirect_url = '';
+										$url = '';
 									}
 								}
 
 									// Avoid forced logout, when trying to login immediatly after a logout
-								$redirect_url = preg_replace('/[&?]logintype=[a-z]+/', '', $redirect_url);
+								if ($url) {
+									$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $url);
+							}
 							}
 						break;
 					}
@@ -585,7 +605,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					switch ($redirMethod) {
 						case 'loginError':
 							if ($this->conf['redirectPageLoginError']) {
-								$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLoginError']), array(), true);
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLoginError']), array(), TRUE);
 							}
 						break;
 					}
@@ -595,11 +615,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 						'parameter' 				=> $this->conf['redirectPageLogin'],
 						'linkAccessRestrictedPages' => TRUE,
 					));
-					$redirect_url = $this->cObj->lastTypoLinkUrl;
+					$redirect_url[] = $this->cObj->lastTypoLinkUrl;
 
 				} elseif (($this->logintype == '') && ($redirMethod == 'logout') && $this->conf['redirectPageLogout'] && $GLOBALS['TSFE']->loginUser) {
 						// if logout and page not accessible
-					$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), TRUE);
+					$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), TRUE);
 
 				} elseif ($this->logintype === 'logout') { // after logout
 
@@ -616,7 +636,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					switch ($redirMethod) {
 						case 'logout':
 							if ($this->conf['redirectPageLogout']) {
-								$redirect_url = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), true);
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), TRUE);
 							}
 						break;
 					}
@@ -625,17 +645,19 @@ class tx_felogin_pi1 extends tslib_pibase {
 					switch ($redirMethod) {
 						case 'getpost':
 							// preserve the get/post value
-							$redirect_url = $this->redirectUrl;
+							$redirect_url[] = $this->redirectUrl;
 						break;
 					}
 				}
 
-				if ($redirect_url && $this->conf['redirectFirstMethod']) {
-					break;
 				}
 			}
+				// remove empty values
+			if (count($redirect_url)) {
+				return t3lib_div::trimExplode(',', implode(',', $redirect_url), TRUE);
+			} else {
+				return array();
 		}
-		return $redirect_url;
 	}
 
 	/**
