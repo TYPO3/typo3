@@ -5964,18 +5964,18 @@ class tslib_cObj {
 					}
 	 			} else {	// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to definition in $TCA!)
 					if ($conf['no_cache.'])	$conf['no_cache']=$this->stdWrap($conf['no_cache'], $conf['no_cache.']);
-					$link_params_parts=explode('#',$link_param);
+						// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
+					$pairParts = t3lib_div::trimExplode(',', $link_param, TRUE);
+					$link_param = $pairParts[0];
+					$link_params_parts = explode('#', $link_param);
 					$link_param = trim($link_params_parts[0]);		// Link-data del
 					if (!strcmp($link_param,''))	{$link_param=$GLOBALS['TSFE']->id;}	// If no id or alias is given
 					if ($link_params_parts[1] && !$sectionMark)	{
 						$sectionMark = trim($link_params_parts[1]);
 						$sectionMark = (t3lib_div::testInt($sectionMark)?'#c':'#').$sectionMark;
 					}
-						// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
 					unset($theTypeP);
-					$pairParts = t3lib_div::trimExplode(',',$link_param);
 					if (count($pairParts)>1)	{
-						$link_param = $pairParts[0];
 						$theTypeP = isset($pairParts[1]) ? $pairParts[1] : 0;		// Overruling 'type'
 						$conf['additionalParams'].= isset($pairParts[2]) ? $pairParts[2] : '';
 					}
