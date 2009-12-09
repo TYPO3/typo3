@@ -518,8 +518,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// Link setting functions
 		$JScode.='
 			function link_typo3Page(id,anchor) {
-				var parameters = document.ltargetform.query_parameters ? (document.ltargetform.query_parameters.value.charAt(0) == "&"?"":"&") + document.ltargetform.query_parameters.value : "";
-				var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"")+parameters;
+				var parameters = (document.ltargetform.query_parameters && document.ltargetform.query_parameters.value) ? (document.ltargetform.query_parameters.value.charAt(0) == "&" ? "" : "&") + document.ltargetform.query_parameters.value : "";
+				var theLink = \'' . $this->siteURL . '?id=\' + id + parameters + (anchor ? anchor : "");
 				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);
@@ -542,7 +542,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				return false;
 			}
 			function link_current()	{
-				var parameters = document.ltargetform.query_parameters ? (document.ltargetform.query_parameters.value.charAt(0) == "&"?"":"&") + document.ltargetform.query_parameters.value : "";
+				var parameters = (document.ltargetform.query_parameters && document.ltargetform.query_parameters.value) ? (document.ltargetform.query_parameters.value.charAt(0) == "&" ? "" : "&") + document.ltargetform.query_parameters.value : "";
 				if (document.ltargetform.anchor_title) browse_links_setTitle(document.ltargetform.anchor_title.value);
 				if (document.ltargetform.anchor_class) browse_links_setClass(document.ltargetform.anchor_class.value);
 				if (document.ltargetform.ltarget) browse_links_setTarget(document.ltargetform.ltarget.value);

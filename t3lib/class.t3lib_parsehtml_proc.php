@@ -709,21 +709,13 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					} elseif($fileChar)	{	// file (internal)
 						$href = $siteUrl.$link_param;
 					} else {	// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
-						$link_params_parts = explode('#',$link_param);
-						$idPart = trim($link_params_parts[0]);		// Link-data del
+							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
+						$pairParts = t3lib_div::trimExplode(',', $link_param, TRUE);
+						$idPart = $pairParts[0];
+						$link_params_parts = explode('#', $idPart);
+						$idPart = trim($link_params_parts[0]);
+						$sectionMark = trim($link_params_parts[1]);
 						if (!strcmp($idPart,''))	{ $idPart=$this->recPid; }	// If no id or alias is given, set it to class record pid
-
-// FIXME commented because useless - what is it for?
-//						if ($link_params_parts[1] && !$sectionMark)	{
-//							$sectionMark = '#'.trim($link_params_parts[1]);
-//						}
-
-							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
-						$pairParts = t3lib_div::trimExplode(',',$idPart);
-						if (count($pairParts)>1)	{
-							$idPart = $pairParts[0];
-							// Type ? future support for?
-						}
 							// Checking if the id-parameter is an alias.
 						if (!t3lib_div::testInt($idPart))	{
 							list($idPartR) = t3lib_BEfunc::getRecordsByField('pages','alias',$idPart);
@@ -731,8 +723,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 						$page = t3lib_BEfunc::getRecord('pages', $idPart);
 						if (is_array($page))	{	// Page must exist...
-							$pairParts = t3lib_div::trimExplode(',',$link_param);
-							$href = $siteUrl.'?id='.$pairParts[0].($pairParts[2]?$pairParts[2]:'');
+							$href = $siteUrl .'?id=' . $idPart . ($pairParts[2] ? $pairParts[2] : '') . ($sectionMark ? '#' . $sectionMark : '');
 							// linkHandler - allowing links to start with registerd linkHandler e.g.. "record:"
 						} elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][array_shift(explode(':', $link_param))])) {
 							$href = $link_param;
