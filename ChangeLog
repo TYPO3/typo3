@@ -1,3 +1,7 @@
+2009-12-10  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #12959: cHashParams in index_phash is too small
+
 2009-12-10  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12072: Permanent login checkbox is not shown as expected
