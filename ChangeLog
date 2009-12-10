@@ -1,3 +1,7 @@
+2009-12-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13004: htmlArea RTE: buttons.table.disableEnterParagraphs not honoured in Opera
+
 2009-12-10  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12072: Permanent login checkbox is not shown as expected
