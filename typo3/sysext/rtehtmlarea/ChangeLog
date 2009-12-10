@@ -1,3 +1,7 @@
+2009-12-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13004: htmlArea RTE: buttons.table.disableEnterParagraphs not honoured in Opera
+
 2009-12-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12682: Section links coming from RTE broken in FE

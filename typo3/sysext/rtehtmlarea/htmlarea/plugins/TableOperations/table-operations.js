@@ -1839,10 +1839,10 @@ TableOperations = HTMLArea.Plugin.extend({
 	
 	/*
 	 * This function gets called by the main editor event handler when a key was pressed.
-	 * It will process the enter key for IE when buttons.table.disableEnterParagraphs is set in the editor configuration
+	 * It will process the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
 	 */
 	onKeyPress : function (ev) {
-		if (HTMLArea.is_ie && ev.keyCode == 13 && !ev.shiftKey && this.disableEnterParagraphs) {
+		if ((HTMLArea.is_ie || HTMLArea.is_opera) && ev.keyCode == 13 && !ev.shiftKey && this.disableEnterParagraphs) {
 			var selection = this.editor._getSelection();
 			var range = this.editor._createRange(selection);
 			var parentElement = this.editor.getParentElement(selection, range);
@@ -1850,7 +1850,13 @@ TableOperations = HTMLArea.Plugin.extend({
 				parentElement = parentElement.parentNode;
 			}
 			if (/^(td|th)$/i.test(parentElement.nodeName)) {
-				range.pasteHTML("<br />");
+				if (HTMLArea.is_ie) {
+					range.pasteHTML("<br />");
+				} else {
+					var brNode = this.editor._doc.createElement("br");
+					this.editor.insertNodeAtSelection(brNode);
+					this.editor.selectNode(brNode, false);
+				}
 				return false;
 			}
 		}
