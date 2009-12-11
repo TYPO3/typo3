@@ -1,3 +1,7 @@
+2009-12-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12897: Cannot parse SQL hints
+
 2009-12-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13004: htmlArea RTE: buttons.table.disableEnterParagraphs not honoured in Opera
