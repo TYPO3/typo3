@@ -737,13 +737,15 @@ BlockElements = HTMLArea.Plugin.extend({
 			first.innerHTML = "<br />";
 			this.editor.selectNodeContents(first,true);
 		} else {
+				// parentElement may be removed by following command
+			var parentNode = parentElement.parentNode;
 			try {
 				this.editor._doc.execCommand(buttonId, false, null);
 			} catch(e) {
 				this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
 			}
 			if (HTMLArea.is_safari) {
-				this.cleanAppleSpanTags(parentElement);
+				this.editor.cleanAppleStyleSpans(parentNode);
 			}
 		}
 	},
@@ -857,18 +859,6 @@ BlockElements = HTMLArea.Plugin.extend({
 			list.parentNode.removeChild(list);
 		} 
 		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
-	},
-	
-	/*
-	 * Clean Apple span tags
-	 */
-	cleanAppleSpanTags : function(element) {
-		var spans = element.getElementsByTagName("span");
-		for (var i = spans.length; --i >= 0;) {
-			if (HTMLArea._hasClass(spans[i], "Apple-style-span")) {
-				this.editor.removeMarkup(spans[i]);
-			}
-		}
 	},
 	
 	/*

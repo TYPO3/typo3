@@ -1,6 +1,7 @@
 2009-12-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13004: htmlArea RTE: buttons.table.disableEnterParagraphs not honoured in Opera
+	* Fixed bug #13007: htmlArea RTE: Toggling insertlist buttons may freeze Safari/Chrome browsers
 
 2009-12-10  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
