@@ -685,6 +685,9 @@ class t3lib_sqlparser {
 		$this->lastStopKeyWord = '';
 		$this->parse_error = '';
 
+			// Parse any SQL hint / comments
+		$stack[$pnt]['comments'] = $this->nextPart($parseString, '^(\/\*.*\*\/)');
+
 			// $parseString is continously shortend by the process and we keep parsing it till it is zero:
 		while (strlen($parseString)) {
 
@@ -1489,16 +1492,18 @@ return $str;
 	 * Can also compile field lists for ORDER BY and GROUP BY.
 	 *
 	 * @param	array		Array of select fields, (made with ->parseFieldList())
+	 * @param	boolean		Whether comments should be compiled
 	 * @return	string		Select field string
 	 * @see parseFieldList()
 	 */
-	public function compileFieldList($selectFields) {
+	public function compileFieldList($selectFields, $compileComments = TRUE) {
 
 			// Prepare buffer variable:
-		$outputParts = array();
+		$fields = '';
 
 			// Traverse the selectFields if any:
 		if (is_array($selectFields))	{
+			$outputParts = array();
 			foreach($selectFields as $k => $v)	{
 
 					// Detecting type:
@@ -1521,10 +1526,13 @@ return $str;
 					$outputParts[$k].= ' '.$v['sortDir'];
 				}
 			}
+			if ($compileComments && $selectFields[0]['comments']) {
+				$fields = $selectFields[0]['comments'] . ' ';
+			}
+			$fields .= implode(', ', $outputParts);
 		}
 
-			// Return imploded buffer:
-		return implode(', ',$outputParts);
+		return $fields;
 	}
 
 	/**
