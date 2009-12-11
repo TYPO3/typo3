@@ -1,3 +1,7 @@
+2009-12-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12897: Cannot parse SQL hints
+
 2009-11-29  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12758: Added support for EXISTS (subquery)

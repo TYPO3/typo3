@@ -346,6 +346,20 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	}
 
 	/**
+	 * Compiles a "SELECT [output] FROM..:" field list based on input array (made with ->parseFieldList())
+	 * Can also compile field lists for ORDER BY and GROUP BY.
+	 *
+	 * @param	array		Array of select fields, (made with ->parseFieldList())
+	 * @param	boolean		Whether comments should be compiled
+	 * @return	string		Select field string
+	 * @see parseFieldList()
+	 */
+	public function compileFieldList($selectFields, $compileComments = TRUE) {
+			// TODO: Handle SQL hints in comments according to current DBMS
+		return parent::compileFieldList($selectFields, FALSE);
+	}
+
+	/**
 	 * Compiles a "FROM [output] WHERE..:" table list based on input array (made with ->parseFromTables())
 	 *
 	 * @param	array		Array of table names, (made with ->parseFromTables())
