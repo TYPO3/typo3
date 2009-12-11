@@ -695,7 +695,7 @@ HTMLArea.prototype._checkInsertP = function() {
 					left.removeChild(block);
 					range.setEndAfter(left);
 					range.collapse(false);
-					p = this.convertNode(p, /^(li|dd|td|th)$/i.test(left.parentNode.nodeName) ? "br" : "p");
+					p = this.convertNode(p, /^(li|dd|td|th|p|h[1-6])$/i.test(left.parentNode.nodeName) ? "br" : "p");
 				}
 			}
 			range.insertNode(df);
