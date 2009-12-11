@@ -125,6 +125,20 @@ class db_oracle_testcase extends BaseTestCase {
 		}
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12897
+	 */
+	public function sqlHintIsRemoved() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'/*! SQL_NO_CACHE */ content',
+			'tx_realurl_urlencodecache',
+			'1=1'
+		));
+		$expected = 'SELECT "content" FROM "tx_realurl_urlencodecache" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning quoting
 	///////////////////////////////////////
