@@ -159,7 +159,12 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		if (HTMLArea.is_gecko && node != null && /^a$/i.test(node.nodeName)) {
 				// If the class attribute is not removed, UnLink folowed by CreateLink will create a span element inside the new link
 			node.removeAttribute("class");
+				// Moreover, the selection is sometimes lost after the unlink operation
+			selection = this.editor._getSelection();
+			range = this.editor._createRange(selection);
+			var bookmark = this.editor.getBookmark(range);
 			this.editor._doc.execCommand("UnLink", false, null);
+			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 		}
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
 			this.editor._doc.execCommand("CreateLink", false, encodeURI(theLink));
