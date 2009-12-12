@@ -1,3 +1,7 @@
+2009-12-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12782: htmlArea RTE: Editing a link title or target with Firefox 3 sometimes simply unlinks the link
+
 2009-12-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13004: htmlArea RTE: buttons.table.disableEnterParagraphs not honoured in Opera
