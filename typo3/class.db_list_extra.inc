@@ -1520,7 +1520,7 @@ class localRecordList extends recordList {
 		$csvRow = array();
 		foreach ($this->fieldArray as $fN) {
 			switch ($fN) {
-				case '_PATH':
+				case '_PATH_':
 					$csvRow[] = $this->recPath($row['pid']);
 					break;
 

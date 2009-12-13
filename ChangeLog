@@ -1,3 +1,7 @@
+2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13021: Mistyping prevents the CSV-export of the _PATH_field in List-View (thanks to Mathias Gisch)
+
 2009-12-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12782: htmlArea RTE: Editing a link title or target with Firefox 3 sometimes simply unlinks the link
