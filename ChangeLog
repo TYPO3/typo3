@@ -1,5 +1,6 @@
 2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #12072: Permanent login checkbox is not shown as expected
 	* Fixed bug #13021: Mistyping prevents the CSV-export of the _PATH_field in List-View (thanks to Mathias Gisch)
 
 2009-12-11  Stanislas Rolland  <typo3@sjbr.ca>
