@@ -1,5 +1,6 @@
 2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #13015: Available languages are ordered by name in english and not in selected language (thanks to Georg Ringer)
 	* Fixed bug #13003: Move back methods belonging to t3lib_sqlparser
 
 2009-12-12  Xavier Perseguers  <typo3@perseguers.ch>

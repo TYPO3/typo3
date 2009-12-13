@@ -1259,7 +1259,7 @@ EXTENSION KEYS:
 			if ($val!='default')    {
 				$localLabel = '  -  ['.htmlspecialchars($GLOBALS['LOCAL_LANG']['default']['lang_'.$val]).']';
 				$selected = (is_array($selectedLanguages) && in_array($val, $selectedLanguages)) ? ' selected="selected"' : '';
-				$opt[$GLOBALS['LOCAL_LANG']['default']['lang_'.$val].'--'.$val]='
+				$opt[$GLOBALS['LANG']->getLL('lang_' . $val, 1) . '--' . $val] = '
 			 <option value="'.$val.'"'.$selected.'>'.$LANG->getLL('lang_'.$val,1).$localLabel.'</option>';
 			}
 		}
