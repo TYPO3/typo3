@@ -1,3 +1,7 @@
+2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13003: Move back methods belonging to t3lib_sqlparser
+
 2009-12-11  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12897: Cannot parse SQL hints
