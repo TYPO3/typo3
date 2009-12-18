@@ -158,7 +158,7 @@ Change permissions and ownership of the directories. This usually requires the
 "sudo" command. Assuming that the web server user is in the group named
 "apache", execute the following commands in the web site root directory:
 	sudo chgrp -R apache fileadmin typo3temp typo3conf uploads
-	sudo chmod g+rwX,o-w fileadmin typo3temp typo3conf uploads
+	sudo chmod -R g+rwX,o-w fileadmin typo3temp typo3conf uploads
 
 If "sudo" is not available, ask your hosting company to change the permissions.
 

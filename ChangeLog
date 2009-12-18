@@ -1,3 +1,7 @@
+2009-11-29  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12955: Missing -R option in chmod command in INSTALL.txt (thanks to Patrick Nussbaumer)
+
 2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13003: Move back methods belonging to t3lib_sqlparser
