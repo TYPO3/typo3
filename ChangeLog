@@ -1,3 +1,7 @@
+2009-12-18  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12955: Missing -R option in chmod command in INSTALL.txt (thanks to Patrick Nussbaumer)
+
 2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13015: Available languages are ordered by name in english and not in selected language (thanks to Georg Ringer)
