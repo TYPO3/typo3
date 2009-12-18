@@ -1,4 +1,4 @@
-2009-11-29  Francois Suter  <francois@typo3.org>
+2009-12-18  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12955: Missing -R option in chmod command in INSTALL.txt (thanks to Patrick Nussbaumer)
 
