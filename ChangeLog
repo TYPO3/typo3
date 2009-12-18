@@ -1,3 +1,7 @@
+2009-12-18  Tobias Liebig <mail_typo3@etobi.de>
+
+        * Fixed bug #12703: t3editor/codecompletion: parser error on opening brackets on the right side of an operator
+
 2009-12-18  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #12955: Missing -R option in chmod command in INSTALL.txt (thanks to Patrick Nussbaumer)

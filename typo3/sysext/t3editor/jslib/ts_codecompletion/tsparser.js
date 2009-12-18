@@ -204,11 +204,13 @@ var TsParser = function(tsRef,extTsObjTree){
 				if (node[0] == '/' && node[1]=='*') {
 					stack.push('/*');
 				}
-				if (node    == '{') {
+				if (node == '{') {
 					// TODO: ignore whole block if wrong whitespaces in this line
-					stack.push('{');
-					prefixes.push(line.strip());
-					ignoreLine = true;
+					if (getOperator(line)==-1) {
+						stack.push('{');
+						prefixes.push(line.strip());
+						ignoreLine = true;
+					}
 				}
 				// TODO: conditions
 				// if condition starts -> ignore everything until end of condition
