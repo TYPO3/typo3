@@ -1067,7 +1067,7 @@ class tslib_pibase {
 		}
 
 			// Split the "FROM ... WHERE" string so we get the WHERE part and TABLE names separated...:
-		list($TABLENAMES,$WHERE) = spliti('WHERE', trim($query), 2);
+		list($TABLENAMES, $WHERE) = preg_split('/WHERE/i', trim($query), 2);
 		$TABLENAMES = trim(substr(trim($TABLENAMES),5));
 		$WHERE = trim($WHERE);
 
