@@ -1,4 +1,8 @@
-2009-12-18  Tobias Liebig <mail_typo3@etobi.de>
+2009-12-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13064: Deprecated function spliti for PHP5.3
+
+2009-12-18  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #12703: t3editor/codecompletion: parser error on opening brackets on the right side of an operator
 
