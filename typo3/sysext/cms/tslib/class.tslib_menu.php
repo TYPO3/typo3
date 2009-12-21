@@ -2895,7 +2895,7 @@ class tslib_jsmenu extends tslib_menu {
 					}
 					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, true).",".t3lib_div::quoteJSvalue($url, true).",".t3lib_div::quoteJSvalue($target, true).");";
 						// If the active one should be chosen...
-					$active = ($levelConf['showActive'] && $data['uid'] == $this->tmpl->rootLine[$count]['uid']);
+					$active = ($levelConf['showActive'] && $this->isActive($data['uid'], $MP_var));
 						// If the first item should be shown
 					$first = (!$c && $levelConf['showFirst']);
 						// do it...
