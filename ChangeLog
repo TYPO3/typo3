@@ -1,5 +1,6 @@
 2009-12-23  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #12987: List module: delete confirmation has extra ")" (Thanks to Steffen Gebert)
 	* Fixed bug #13059: overriden user settings are not visible to the user (Thanks to Georg Ringer)
 
 2009-12-21  Benjamin Mack  <benni@typo3.org>
