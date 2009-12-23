@@ -1,3 +1,7 @@
+2009-12-23  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13059: overriden user settings are not visible to the user (Thanks to Georg Ringer)
+
 2009-12-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12505: JSMENU's showActive is broken (Thanks to Joerg Wagner)

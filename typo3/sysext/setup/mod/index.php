@@ -512,6 +512,9 @@ class SC_mod_user_setup_index {
 			if ($style) {
 				$more .= ' style="' . $style . '"';
 			}
+			if ($this->overrideConf[$fieldName]) {
+				$more .= ' disabled="disabled"';
+			}
 
 			$value = $config['table'] == 'be_users' ? $GLOBALS['BE_USER']->user[$fieldName] : $GLOBALS['BE_USER']->uc[$fieldName];
 			if (!$value && isset($config['default'])) {
