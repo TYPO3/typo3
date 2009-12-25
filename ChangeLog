@@ -1,3 +1,7 @@
+2009-12-25  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #5260: Function linkWrapFile() in file class.file_list.inc uses wrong PATH prefix
+
 2009-12-23  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12987: List module: delete confirmation has extra ")" (Thanks to Steffen Gebert)
