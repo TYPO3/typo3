@@ -395,8 +395,8 @@ class fileList extends t3lib_recordList {
 	 */
 	function linkWrapFile($code,$path)	{
 
-		if (t3lib_div::isFirstPartOfStr($path,t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')))	{
-			$href = substr($path,strlen(t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT')));
+		if (t3lib_div::isFirstPartOfStr($path, PATH_site)) {
+			$href = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . substr($path, strlen(PATH_site));
 			$aOnClick = "return top.openUrlInWindow('".$href."','WebFile');";
 			$code = '<a href="#" title="'.htmlspecialchars($code).'" onclick="'.htmlspecialchars($aOnClick).'">'.t3lib_div::fixed_lgd($code,$this->fixedL).'</a>';
 		}
