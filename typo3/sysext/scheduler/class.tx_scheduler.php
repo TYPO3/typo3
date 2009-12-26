@@ -406,7 +406,7 @@ class tx_scheduler implements t3lib_Singleton {
 	 */
 	public function log($message, $status = 0, $code = 'scheduler') {
 			// Log only if enabled
-		if ($this->extConf['enableBELog']) {
+		if (!empty($this->extConf['enableBELog'])) {
 			$GLOBALS['BE_USER']->writelog(
 				4,
 				0,
