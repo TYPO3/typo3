@@ -371,6 +371,46 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 	background-color: #EFEFF4;
 }
 
+/*
+ * re-add the button background for all toolbar buttons within windows,
+ * currently used within the mass uploader
+ */
+.x-window-tbar .x-btn-tl {
+	background-position: 0 0;
+}
+.x-window-tbar .x-btn-tr {
+	background-position: -3px 0;
+}
+.x-window-tbar .x-btn-tc {
+	background-position: 0 -6px;
+}
+
+.x-window-tbar .x-btn-ml {
+	background-position: 0 -24px;
+}
+.x-window-tbar .x-btn-mr {
+	background-position: -3px -24px;
+}
+
+.x-window-tbar .x-btn-mc {
+	background-position: 0 -1096px;
+}
+
+.x-window-tbar .x-btn-bl {
+	background-position: 0 -3px;
+}
+
+.x-window-tbar .x-btn-br {
+	background-position: -3px -3px;
+}
+
+.x-window-tbar .x-btn-bc {
+	background-position: 0 -15px;
+}
+
+.x-window-tbar .x-btn button {
+	color: #333;
+}
 
 /* misc */
 .x-html-editor-wrap {
