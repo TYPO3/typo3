@@ -1,3 +1,7 @@
+2009-12-26  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13080: Uncheck function in tceforms unchecks too many items (Thanks to Georg Ringer)
+
 2009-12-25  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #5260: Function linkWrapFile() in file class.file_list.inc uses wrong PATH prefix
