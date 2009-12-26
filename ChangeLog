@@ -1,3 +1,7 @@
+2009-12-26  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12807: Bug: CSS issues with buttons (Recycler / File Mass Uploader) (Thanks to Andreas Kundoch and Helmut Hummel)
+
 2009-12-26  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13080: Uncheck function in tceforms unchecks too many items (Thanks to Georg Ringer)
