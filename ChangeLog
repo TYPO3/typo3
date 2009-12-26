@@ -1,3 +1,7 @@
+2009-12-26  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #13100: Scheduler: Undefined enableBELog configuration option causes warnings
+
 2009-12-26  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12807: Bug: CSS issues with buttons (Recycler / File Mass Uploader) (Thanks to Andreas Kundoch and Helmut Hummel)
