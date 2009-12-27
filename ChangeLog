@@ -1,3 +1,7 @@
+2009-12-28  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #12909: Cleanup alt_intro and remove "You are logged in as user .." (Thanks to Georg Ringer)
+
 2009-12-26  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #13100: Scheduler: Undefined enableBELog configuration option causes warnings

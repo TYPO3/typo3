@@ -126,18 +126,7 @@ class SC_alt_intro {
 
 			// end text: 'Features may vary depending on your website and permissions'
 		$this->content.='<p class="c-features"><em>('.$LANG->getLL('endText').')</em></p>';
-		$this->content.='<hr />';
-
-			// Logged in user, eg: 'You're logged in as user: admin (John Doe, john@doe.email)'
-		$this->content.='<p class="c-user">'.
-				htmlspecialchars($LANG->getLL('userInfo')).
-				sprintf(' <strong>%s</strong> (%s)',
-						htmlspecialchars($BE_USER->user['username']),
-						htmlspecialchars(implode(', ',array($BE_USER->user['realName'],$BE_USER->user['email'])))
-						).
-				'</p>
-				<br />
-				<br />';
+		$this->content .= '<br />';
 
 			// End page
 		$this->content.= $TBE_TEMPLATE->endPage();
