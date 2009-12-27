@@ -1,3 +1,7 @@
+2009-12-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated documentation (removed obsolete information, added small cookbook for extension developers, added tutorials for Oracle and PostgreSQL)
+
 2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13003: Move back methods belonging to t3lib_sqlparser
