@@ -727,6 +727,57 @@ class ux_t3lib_DB extends t3lib_DB {
 		return $sqlResult;
 	}
 
+	/**
+	 * Executes a query.
+	 * EXPERIMENTAL since TYPO3 4.4.
+	 * 
+	 * @param array $queryParts SQL parsed by method parseSQL() of t3lib_sqlparser
+	 * @return pointer Result pointer / DBAL object
+	 * @see ux_t3lib_db::sql_query()
+	 */
+	protected function exec_query(array $queryParts) {
+		switch ($queryParts['type']) {
+			case 'SELECT':
+				$selectFields = $this->SQLparser->compileFieldList($queryParts['SELECT']);
+				$fromTables = $this->SQLparser->compileFromTables($queryParts['FROM']);
+				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
+				$groupBy = isset($queryParts['GROUPBY']) ? $this->SQLparser->compileWhereClause($queryParts['GROUPBY']) : '';
+				$orderBy = isset($queryParts['GROUPBY']) ? $this->SQLparser->compileWhereClause($queryParts['ORDERBY']) : '';
+				$limit = isset($queryParts['LIMIT']) ? $this->SQLparser->compileWhereClause($queryParts['LIMIT']) : '';
+				return $this->exec_SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy, $limit);
+
+			case 'UPDATE':
+				$table = $queryParts['TABLE'];
+				$fields = array();
+				foreach ($components['FIELDS'] as $fN => $fV) {
+					$fields[$fN] = $fV[0];
+				}
+				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
+				return $this->exec_UPDATEquery($table, $whereClause, $fields);
+
+			case 'INSERT':
+				$table = $queryParts['TABLE'];
+				$values = array();
+				if (isset($queryParts['VALUES_ONLY']) && is_array($queryParts['VALUES_ONLY'])) {
+					$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$table];
+					$fc = 0;
+					foreach ($fields as $fn => $fd) {
+						$values[$fn] = $queryParts['VALUES_ONLY'][$fc++][0];
+					}
+				} else {
+					foreach ($queryParts['FIELDS'] as $fN => $fV) {
+						$values[$fN] = $fV[0];
+					}
+				}
+				return $this->exec_INSERTquery($table, $values);
+				
+			case 'DELETE':
+				$table = $queryParts['TABLE'];
+				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
+				return $this->exec_DELETEquery($table, $whereClause);
+		}
+	}
+
 
 
 	/**************************************
@@ -1681,7 +1732,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**********
 	*
 	* Legacy functions, bound to _DEFAULT handler. (Overriding parent methods)
-	* Deprecated.
+	* Deprecated or still experimental.
 	*
 	**********/
 
@@ -1699,16 +1750,26 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * Executes query (on DEFAULT handler!)
-	 * DEPRECATED - use exec_* functions from this class instead!
+	 * Executes a query
+	 * EXPERIMENTAL - This method will make its best to handle the query correctly
+	 * but if it cannot, it will simply pass the query to DEFAULT handler.
 	 *
-	 * If you don't, anything that uses not the _DEFAULT handler will break!
+	 * You should use exec_* function from this class instead!
+	 * If you don't, anything that does not use the _DEFAULT handler will probably break!
+	 * 
+	 * This method was deprecated in TYPO3 4.1 but is considered experimental since TYPO3 4.4
+	 * as it tries to handle the query correctly anyway.
 	 *
 	 * @param	string		Query to execute
 	 * @return	pointer		Result pointer / DBAL object
-	 * @deprecated since TYPO3 4.1
 	 */
 	public function sql_query($query) {
+			// This method is heavily used by Extbase, try to handle it with DBAL-native methods
+		$queryParts = $this->SQLparser->parseSQL($query);
+		if (is_array($queryParts) && t3lib_div::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
+			return $this->exec_query($queryParts);
+		}
+
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
 			case 'native':
 				$sqlResult = mysql_query($query, $this->handlerInstance['_DEFAULT']['link']);

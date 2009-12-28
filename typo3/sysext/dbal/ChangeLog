@@ -1,5 +1,6 @@
 2009-12-28  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #12603: sql_query does not respect "mapping"
 	* Fixed bug #13104: SQL parser cannot parse escaped single quote in INSERT statement
 
 2009-12-27  Xavier Perseguers  <typo3@perseguers.ch>
