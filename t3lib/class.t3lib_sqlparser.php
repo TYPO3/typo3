@@ -1239,7 +1239,7 @@ class t3lib_sqlparser {
 			$buffer.=$v;
 
 			$reg = array();
-			preg_match('/\\*$/',$v,$reg);
+			preg_match('/\\\\$/', $v, $reg);
 			if ($reg AND strlen($reg[0])%2)	{
 				$buffer.=$quote;
 			} else {
@@ -1271,7 +1271,6 @@ class t3lib_sqlparser {
 	 * @return	string		Output string
 	 */
 	protected function compileAddslashes($str) {
-return $str;
 		$search = array('\\', '\'', '"', "\x00", "\x0a", "\x0d", "\x1a");
 		$replace = array('\\\\', '\\\'', '\\"', '\0', '\n', '\r', '\Z');
 
