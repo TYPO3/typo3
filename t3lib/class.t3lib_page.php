@@ -143,11 +143,11 @@ class t3lib_pageSelect {
 		if (!$show_hidden)	{
 			$this->where_hid_del.= 'AND pages.hidden=0 ';
 		}
-		$this->where_hid_del.= 'AND (pages.starttime<='.$GLOBALS['SIM_ACCESS_TIME'].') AND (pages.endtime=0 OR pages.endtime>'.$GLOBALS['SIM_ACCESS_TIME'].') ';
+		$this->where_hid_del .= 'AND pages.starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ' AND (pages.endtime=0 OR pages.endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ') ';
 
 			// Filter out new/deleted place-holder pages in case we are NOT in a versioning preview (that means we are online!)
 		if (!$this->versioningPreview)	{
-			$this->where_hid_del.= ' AND NOT (pages.t3ver_state>0)';
+			$this->where_hid_del .= ' AND NOT pages.t3ver_state>0';
 		} else {
 				// For version previewing, make sure that enable-fields are not de-selecting hidden pages - we need versionOL() to unset them only if the overlay record instructs us to.
 			$this->versioningPreview_where_hid_del = $this->where_hid_del;	// Copy where_hid_del to other variable (used in relation to versionOL())
@@ -1090,7 +1090,7 @@ class t3lib_pageSelect {
 					}
 					if ($ctrl['enablecolumns']['starttime'] && !$ignore_array['starttime']) {
 						$field = $table.'.'.$ctrl['enablecolumns']['starttime'];
-						$query.=' AND ('.$field.'<='.$GLOBALS['SIM_ACCESS_TIME'].')';
+						$query .= ' AND ' . $field . '<=' . $GLOBALS['SIM_ACCESS_TIME'];
 					}
 					if ($ctrl['enablecolumns']['endtime'] && !$ignore_array['endtime']) {
 						$field = $table.'.'.$ctrl['enablecolumns']['endtime'];
