@@ -117,11 +117,36 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 	/**
 	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13104
 	 */
 	public function canGetStringValue() {
-		$parseString = '"some owner\\\' string"';
+		$parseString = '"some owner\\\'s string"';
 		$value = $this->fixture->_callRef('getValue', $parseString);
-		$expected = array('some owner\' string', '"');
+		$expected = array('some owner\'s string', '"');
+
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13104
+	 */
+	public function canGetStringValueWithSingleQuote() {
+		$parseString = "'some owner\'s string'";
+		$value = $this->fixture->_callRef('getValue', $parseString);
+		$expected = array('some owner\'s string', "'");
+
+		$this->assertEquals($expected, $value);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13104
+	 */
+	public function canGetStringValueWithDoubleQuote() {
+		$parseString = '"the \"owner\" is here"';
+		$value = $this->fixture->_callRef('getValue', $parseString);
+		$expected = array('the "owner" is here', '"');
 
 		$this->assertEquals($expected, $value);
 	}
