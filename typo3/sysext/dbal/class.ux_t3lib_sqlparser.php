@@ -60,6 +60,18 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 		return parent::compileFieldList($selectFields, FALSE);
 	}
 
+	/**
+	 * Add slashes function used for compiling queries
+	 * This method overrides the method from t3lib_sqlparser because
+	 * the input string is already properly escaped.
+	 *
+	 * @param	string		Input string
+	 * @return	string		Output string
+	 */
+	protected function compileAddslashes($str) {
+		return $str;
+	}
+	
 	/*************************
 	 *
 	 * Compiling queries
