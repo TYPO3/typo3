@@ -29,7 +29,7 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id: class.ux_t3lib_db.php 26617 2009-11-16 22:57:47Z xperseguers $
+ * $Id: class.ux_t3lib_db.php 27126 2009-11-29 17:28:15Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>

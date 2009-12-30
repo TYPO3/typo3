@@ -2,7 +2,7 @@
 /**
  * Oracle configuration
  * 
- * $Id: oci8.config.php 26966 2009-11-25 15:20:04Z stucki $
+ * $Id: oci8.config.php 27126 2009-11-29 17:28:15Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

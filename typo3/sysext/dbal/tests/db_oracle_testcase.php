@@ -29,7 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
  * 
- * $Id: db_oracle_testcase.php 26966 2009-11-25 15:20:04Z stucki $
+ * $Id: db_oracle_testcase.php 27624 2009-12-11 13:41:46Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -123,6 +123,20 @@ class db_oracle_testcase extends BaseTestCase {
 				self::assertFalse($tableDef, 'Table ' . $table . ' was not expected to need mapping');
 			}
 		}
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12897
+	 */
+	public function sqlHintIsRemoved() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'/*! SQL_NO_CACHE */ content',
+			'tx_realurl_urlencodecache',
+			'1=1'
+		));
+		$expected = 'SELECT "content" FROM "tx_realurl_urlencodecache" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
 	}
 
 	///////////////////////////////////////
