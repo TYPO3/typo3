@@ -1,3 +1,7 @@
+2009-12-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.0
+
 2009-12-28  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12603: sql_query does not respect "mapping"
