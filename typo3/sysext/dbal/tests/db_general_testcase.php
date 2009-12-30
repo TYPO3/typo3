@@ -28,7 +28,7 @@ require_once('BaseTestCase.php');
 /**
  * Testcase for class ux_t3lib_db.
  * 
- * $Id: db_general_testcase.php 26966 2009-11-25 15:20:04Z stucki $
+ * $Id: db_general_testcase.php 27006 2009-11-25 22:08:07Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

@@ -30,7 +30,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.tx_dbal_sqlengine.php 26966 2009-11-25 15:20:04Z stucki $
+ * $Id: class.tx_dbal_sqlengine.php 27006 2009-11-25 22:08:07Z xperseguers $
  *
  * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author Xavier Perseguers <typo3@perseguers.ch>

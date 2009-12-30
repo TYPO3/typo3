@@ -1,3 +1,29 @@
+2009-12-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.0
+
+2009-12-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12603: sql_query does not respect "mapping"
+	* Fixed bug #13104: SQL parser cannot parse escaped single quote in INSERT statement
+
+2009-12-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated documentation: now using new documentation template
+	* Updated documentation: removed obsolete information, added small cookbook for extension developers, added tutorials for Oracle and PostgreSQL
+
+2009-12-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13003: Move back methods belonging to t3lib_sqlparser
+
+2009-12-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12897: Cannot parse SQL hints
+
+2009-11-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12758: Added support for EXISTS (subquery)
+
 2009-11-29  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.0.2 [TYPO3 4.3.0]

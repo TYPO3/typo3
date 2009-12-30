@@ -29,7 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
  * 
- * $Id: db_oracle_testcase.php 26966 2009-11-25 15:20:04Z stucki $
+ * $Id: db_oracle_testcase.php 27623 2009-12-11 13:40:50Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -123,6 +123,20 @@ class db_oracle_testcase extends BaseTestCase {
 				self::assertFalse($tableDef, 'Table ' . $table . ' was not expected to need mapping');
 			}
 		}
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12897
+	 */
+	public function sqlHintIsRemoved() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'/*! SQL_NO_CACHE */ content',
+			'tx_realurl_urlencodecache',
+			'1=1'
+		));
+		$expected = 'SELECT "content" FROM "tx_realurl_urlencodecache" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
 	}
 
 	///////////////////////////////////////
@@ -523,6 +537,54 @@ class db_oracle_testcase extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery($table, $where));
 		$expected = 'DELETE FROM "cf_cache_hash_tags" WHERE "identifier" IN (';
 		$expected .= 'SELECT "identifier" FROM "cf_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
+		$expected .= ')';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function existsWhereClauseIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tx_crawler_process',
+			'active = 0 AND NOT EXISTS (' .
+				$GLOBALS['TYPO3_DB']->SELECTsubquery(
+					'*',
+					'tx_crawler_queue',
+					'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)'
+				) .
+			')'
+		));
+		$expected = 'SELECT * FROM "tx_crawler_process" WHERE "active" = 0 AND NOT EXISTS (';
+		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_process"."process_id" AND "tx_crawler_queue"."exec_time" = 0';
+		$expected .= ')';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12758
+	 */
+	public function subqueryIsRemappedForExistsWhereClause() {
+		$selectFields = '*';
+		$fromTables   = 'tx_crawler_process';
+		$whereClause  = 'active = 0 AND NOT EXISTS (' .
+			$GLOBALS['TYPO3_DB']->SELECTsubquery(
+				'*',
+				'tx_crawler_queue',
+				'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0'
+			) .
+		')';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT * FROM "tx_crawler_ps" WHERE "is_active" = 0 AND NOT EXISTS (';
+		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_ps"."ps_id" AND "tx_crawler_queue"."exec_time" = 0';
 		$expected .= ')';
 		$this->assertEquals($expected, $query);
 	}
