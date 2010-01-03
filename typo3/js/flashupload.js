@@ -232,7 +232,7 @@ Ext.onReady(function() {
 			// add some info to the dialog
 			// you can replace this by adding your own component with this ID in the constructor
 			if (!this.getComponent('t3-upload-window-infopanel')) {
-				var maxFileSize = (swfConfig.file_size_limit.toString().indexOf('B') > 0 ? swfConfig.file_size_limit : swfConfig.file_size_limit + ' KB');
+				var maxFileSize = (swfConfig.file_size_limit.toString().indexOf('B') > 0 ? swfConfig.file_size_limit : (swfConfig.file_size_limit / 1024) + ' MB');
 				var txt = String.format(TYPO3.LLL.fileUpload.infoComponentMaxFileSize, maxFileSize) + '<br/>';
 				if (swfConfig.file_upload_limit) {
 					txt += String.format(TYPO3.LLL.fileUpload.infoComponentFileUploadLimit, swfConfig.file_upload_limit) + '<br/>';

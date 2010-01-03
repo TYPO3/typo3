@@ -1,3 +1,7 @@
+2010-01-03  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13095: Massuploader: Max file size is shown in KB (THanks to Steffen Gebert)
+
 2009-12-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Raised DBAL version from 1.0.2 to 1.1.0
