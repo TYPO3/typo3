@@ -588,5 +588,73 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ')';
 		$this->assertEquals($expected, $query);
 	}
+
+	///////////////////////////////////////
+	// Tests concerning advanced operators
+	///////////////////////////////////////
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseStatementIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'process_id, CASE active' .
+				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
+				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . 
+			' END AS number',
+			'tx_crawler_process',
+			'1=1'
+		));
+		$expected = 'SELECT "process_id", CASE "active" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" FROM "tx_crawler_process" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseStatementIsProperlyRemapped() {
+		$selectFields = 'process_id, CASE active' .
+				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
+				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . 
+			' END AS number';
+		$fromTables   = 'tx_crawler_process';
+		$whereClause  = '1=1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "ps_id", CASE "is_active" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" ';
+		$expected .= 'FROM "tx_crawler_ps" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseStatementWithExternalTableIsProperlyRemapped() {
+		$selectFields = 'process_id, CASE tt_news.uid' .
+				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tt_news') .
+				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tt_news') .
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news') . 
+			' END AS number';
+		$fromTables   = 'tx_crawler_process, tt_news';
+		$whereClause  = '1=1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "ps_id", CASE "ext_tt_news"."news_uid" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" ';
+		$expected .= 'FROM "tx_crawler_ps", "ext_tt_news" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>

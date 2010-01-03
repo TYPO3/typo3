@@ -356,5 +356,57 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	///////////////////////////////////////
+	// Tests concerning advanced operators
+	///////////////////////////////////////
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseWithBooleanConditionIsSupportedInFields() {
+		$parseString = 'CASE WHEN 1>0 THEN 2 ELSE 1 END AS foo, other_column';
+		$fieldList = $this->fixture->parseFieldList($parseString);
+
+		$this->assertTrue(is_array($fieldList), $fieldList);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseWithBooleanConditionIsProperlyCompiled() {
+		$sql = 'SELECT CASE WHEN 1>0 THEN 2 ELSE 1 END AS foo, other_column FROM mytable';
+		$expected = 'SELECT CASE WHEN 1 > 0 THEN 2 ELSE 1 END AS foo, other_column FROM mytable';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseWithMultipleWhenIsSupportedInFields() {
+		$parseString = 'CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number';
+		$fieldList = $this->fixture->parseFieldList($parseString);
+
+		$this->assertTrue(is_array($fieldList), $fieldList);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseWithMultipleWhenIsProperlyCompiled() {
+		$sql = 'SELECT CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number FROM mytable';
+		$expected = 'SELECT CASE column WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS number FROM mytable';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
 }
 ?>

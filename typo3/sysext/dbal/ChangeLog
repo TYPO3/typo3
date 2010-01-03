@@ -1,3 +1,7 @@
+2010-01-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13135: Support for CASE WHEN flow control
+
 2009-12-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.1.0

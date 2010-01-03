@@ -1053,6 +1053,12 @@ class ux_t3lib_DB extends t3lib_DB {
 				$select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content.'][0]['func_content']);
 				$select_fields[$k]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content']);
 			}
+			if (isset($select_fields[$k]['flow-control'])) {
+					// Quoting flow-control statements
+				if ($select_fields[$k]['flow-control']['type'] === 'CASE' && isset($select_fields[$k]['flow-control']['case_field'])) {
+					$select_fields[$k]['flow-control']['case_field'] = $this->quoteFieldNames($select_fields[$k]['flow-control']['case_field']); 
+				}
+			}
 		}
 
 		return $select_fields;
@@ -2623,6 +2629,29 @@ class ux_t3lib_DB extends t3lib_DB {
 							}
 							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $table . '.' . $field;
 							$sqlPartArray[$k]['func_content'] = $table . '.' . $field;
+						}
+
+							// Mapping flow-control statements
+						if (isset($sqlPartArray[$k]['flow-control'])) {							
+							if ($sqlPartArray[$k]['flow-control']['type'] === 'CASE' && isset($sqlPartArray[$k]['flow-control']['case_field'])) {
+								$fieldArray = explode('.', $sqlPartArray[$k]['flow-control']['case_field']);
+								if (count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
+									$sqlPartArray[$k]['flow-control']['case_field'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
+								}
+								elseif (count($fieldArray) == 2) {
+										// Map the external table
+									$table = $fieldArray[0];
+									if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
+										$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+									}
+										// Map the field itself
+									$field = $fieldArray[1];
+									if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
+										$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+									}
+									$sqlPartArray[$k]['flow-control']['case_field'] = $table . '.' . $field;
+								}
+							}
 						}
 					}
 
