@@ -1,3 +1,7 @@
+2010-01-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13135: Support for CASE WHEN flow control
+
 2010-01-03  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #13095: Massuploader: Max file size is shown in KB (THanks to Steffen Gebert)

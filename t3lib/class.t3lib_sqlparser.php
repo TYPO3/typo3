@@ -717,30 +717,41 @@ class t3lib_sqlparser {
 				}
 			} else {	// Outside parenthesis, looking for next field:
 
-					// Looking for a known function (only known functions supported)
-				$func = $this->nextPart($parseString,'^(count|max|min|floor|sum|avg)[[:space:]]*\(');
-				if ($func)	{
-					$parseString = trim(substr($parseString,1));	// Strip of "("
-					$stack[$pnt]['type'] = 'function';
-					$stack[$pnt]['function'] = $func;
-					$level++;	// increse parenthesis level counter.
+					// Looking for a flow-control construct (only known constructs supported)
+				if (preg_match('/^case([[:space:]][[:alnum:]\*._]+)?[[:space:]]when/i', $parseString)) {
+					$stack[$pnt]['type'] = 'flow-control';
+					$stack[$pnt]['flow-control'] = $this->parseCaseStatement($parseString);
+						// Looking for "AS" alias:
+					if ($as = $this->nextPart($parseString, '^(AS)[[:space:]]+')) {
+						$stack[$pnt]['as'] = $this->nextPart($parseString, '^([[:alnum:]_]+)(,|[[:space:]]+)');
+						$stack[$pnt]['as_keyword'] = $as;
+					}
 				} else {
-					$stack[$pnt]['distinct'] = $this->nextPart($parseString,'^(distinct[[:space:]]+)');
-						// Otherwise, look for regular fieldname:
-					if ($fieldName = $this->nextPart($parseString,'^([[:alnum:]\*._]+)(,|[[:space:]]+)'))	{
-						$stack[$pnt]['type'] = 'field';
-
-							// Explode fieldname into field and table:
-						$tableField = explode('.',$fieldName,2);
-						if (count($tableField)==2)	{
-							$stack[$pnt]['table'] = $tableField[0];
-							$stack[$pnt]['field'] = $tableField[1];
-						} else {
-							$stack[$pnt]['table'] = '';
-							$stack[$pnt]['field'] = $tableField[0];
-						}
+						// Looking for a known function (only known functions supported)
+					$func = $this->nextPart($parseString,'^(count|max|min|floor|sum|avg)[[:space:]]*\(');
+					if ($func)	{
+						$parseString = trim(substr($parseString,1));	// Strip of "("
+						$stack[$pnt]['type'] = 'function';
+						$stack[$pnt]['function'] = $func;
+						$level++;	// increse parenthesis level counter.
 					} else {
-						return $this->parseError('No field name found as expected in parseFieldList()',$parseString);
+						$stack[$pnt]['distinct'] = $this->nextPart($parseString,'^(distinct[[:space:]]+)');
+							// Otherwise, look for regular fieldname:
+						if ($fieldName = $this->nextPart($parseString,'^([[:alnum:]\*._]+)(,|[[:space:]]+)'))	{
+							$stack[$pnt]['type'] = 'field';
+	
+								// Explode fieldname into field and table:
+							$tableField = explode('.',$fieldName,2);
+							if (count($tableField)==2)	{
+								$stack[$pnt]['table'] = $tableField[0];
+								$stack[$pnt]['field'] = $tableField[1];
+							} else {
+								$stack[$pnt]['table'] = '';
+								$stack[$pnt]['field'] = $tableField[0];
+							}
+						} else {
+							return $this->parseError('No field name found as expected in parseFieldList()',$parseString);
+						}
 					}
 				}
 			}
@@ -783,6 +794,41 @@ class t3lib_sqlparser {
 
 			// Return result array:
 		return $stack;
+	}
+
+	/**
+	 * Parsing a CASE ... WHEN flow-control construct.
+	 * The output from this function can be compiled back with ->compileCaseStatement()
+	 *
+	 * @param	string		The string with the CASE ... WHEN construct, eg. "CASE field WHEN 1 THEN 0 ELSE ..." etc. NOTICE: passed by reference!
+	 * @return	array		If successful parsing, returns an array, otherwise an error string.
+	 * @see compileCaseConstruct()
+	 */
+	protected function parseCaseStatement(&$parseString) {
+		$result = array();
+		$result['type'] = $this->nextPart($parseString, '^(case)[[:space:]]+');
+		if (!preg_match('/^when[[:space:]]+/i', $parseString)) {
+			$value = $this->getValue($parseString);
+			if (!(isset($value[1]) || is_numeric($value[0]))) {
+				$result['case_field'] = $value[0]; 
+			} else {
+				$result['case_value'] = $value;
+			}
+		}
+		$result['when'] = array();
+		while ($this->nextPart($parseString, '^(when)[[:space:]]')) {
+			$when = array();
+			$when['when_value'] = $this->parseWhereClause($parseString, '^(then)[[:space:]]+');
+			$when['then_value'] = $this->getValue($parseString);
+			$result['when'][] = $when;
+		}
+		if ($this->nextPart($parseString, '^(else)[[:space:]]+')) {
+			$result['else'] = $this->getValue($parseString);
+		}
+		if (!$this->nextPart($parseString, '^(end)[[:space:]]+')) {
+			return $this->parseError('No "end" keyword found as expected in parseCaseStatement()', $parseString);
+		}
+		return $result;
 	}
 
 	/**
@@ -1585,6 +1631,11 @@ class t3lib_sqlparser {
 					case 'function':
 						$outputParts[$k] = $v['function'].'('.$v['func_content'].')';
 					break;
+					case 'flow-control':
+						if ($v['flow-control']['type'] === 'CASE') {
+							$outputParts[$k] = $this->compileCaseStatement($v['flow-control']);
+						}
+					break;
 					case 'field':
 						$outputParts[$k] = ($v['distinct']?$v['distinct']:'').($v['table']?$v['table'].'.':'').$v['field'];
 					break;
@@ -1607,6 +1658,34 @@ class t3lib_sqlparser {
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
+	 *
+	 * @param	array		Array of case components, (made with ->parseCaseStatement())
+	 * @return	string		case when string
+	 * @see parseCaseStatement()
+	 */
+	protected function compileCaseStatement(array $components) {
+		$statement = 'CASE';
+		if (isset($components['case_field'])) {
+			$statement .= ' ' . $components['case_field'];
+		} elseif (isset($components['case_value'])) {
+			$statement .= ' ' . $components['case_value'][1] . $components['case_value'][0] . $components['case_value'][1];
+		}
+		foreach ($components['when'] as $when) {
+			$statement .= ' WHEN ';
+			$statement .= $this->compileWhereClause($when['when_value']);
+			$statement .= ' THEN ';
+			$statement .= $when['then_value'][1] . $when['then_value'][0] . $when['then_value'][1];
+		}
+		if (isset($components['else'])) {
+			$statement .= ' ELSE ';
+			$statement .= $components['else'][1] . $components['else'][0] . $components['else'][1];
+		}
+		$statement .= ' END';
+		return $statement;
 	}
 
 	/**
