@@ -4333,7 +4333,7 @@ final class t3lib_div {
 	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.php' file containing a $LOCAL_LANG array (will be included!) or a 'locallang.xml' file conataining a valid XML TYPO3 language structure.
 	 * @param	string		Language key
 	 * @param	string		Character set (option); if not set, determined by the language key
-	 * @param	integer		Error mode (when file could not be found): 0 - call debug(), 1 - do nothing, 2 - throw an exception
+	 * @param	integer		Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
 	 * @return	array		Value of $LOCAL_LANG found in the included file. If that array is found it  will returned.
 	 * 						Otherwise an empty array and it is FALSE in error case.
 	 */
@@ -4358,8 +4358,8 @@ final class t3lib_div {
 				$errorMsg = 'File "' . $fileRef. '" not found!';
 				if ($errorMode == 2) {
 					throw new t3lib_exception($errorMsg);
-				} elseif(!$errorMode)	{
-					debug($errorMsg, 1);
+				} elseif(!$errorMode) {
+					self::sysLog($errorMsg, 'Core', self::SYSLOG_SEVERITY_ERROR);
 				}
 				$fileNotFound = TRUE;
 			}
@@ -5708,7 +5708,7 @@ final class t3lib_div {
 	 */
 	public static function flushOutputBuffers() {
 		$obContent = '';
-		
+
 		while (ob_get_level()) {
 			$obContent .= ob_get_clean();
 		}
