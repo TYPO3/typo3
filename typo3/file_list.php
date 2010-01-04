@@ -237,7 +237,12 @@ class SC_file_list {
 				// Create filelisting object
 			$this->filelist = t3lib_div::makeInstance('fileList');
 			$this->filelist->backPath = $BACK_PATH;
-			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs']?1:$BE_USER->uc['thumbnailsByDefault'];
+
+				// if user never opened the list module, set the value for displayThumbs
+			if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
+				$this->MOD_SETTINGS['displayThumbs'] = $BE_USER->uc['thumbnailsByDefault'];
+			}
+			$this->filelist->thumbs = $this->MOD_SETTINGS['displayThumbs'];
 
 				// Create clipboard object and initialize that
 			$this->filelist->clipObj = t3lib_div::makeInstance('t3lib_clipboard');
