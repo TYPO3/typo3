@@ -1,5 +1,6 @@
 2010-01-04  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13118: Toggle empty tree produces JS error (Thanks to Felix Oertel)
 	* Fixed bug #12946: t3lib_div::readLLfile use debug output
 
 2010-01-04  Benjamin Mack  <benni@typo3.org>
