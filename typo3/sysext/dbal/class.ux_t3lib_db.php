@@ -1055,8 +1055,13 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			if (isset($select_fields[$k]['flow-control'])) {
 					// Quoting flow-control statements
-				if ($select_fields[$k]['flow-control']['type'] === 'CASE' && isset($select_fields[$k]['flow-control']['case_field'])) {
-					$select_fields[$k]['flow-control']['case_field'] = $this->quoteFieldNames($select_fields[$k]['flow-control']['case_field']); 
+				if ($select_fields[$k]['flow-control']['type'] === 'CASE') {
+					if (isset($select_fields[$k]['flow-control']['case_field'])) {
+						$select_fields[$k]['flow-control']['case_field'] = $this->quoteFieldNames($select_fields[$k]['flow-control']['case_field']);
+					}
+					foreach ($select_fields[$k]['flow-control']['when'] as $key => $when) {
+						$select_fields[$k]['flow-control']['when'][$key]['when_value'] = $this->_quoteWhereClause($when['when_value']);
+					} 
 				}
 			}
 		}
