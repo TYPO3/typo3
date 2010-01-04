@@ -50,7 +50,9 @@ var Tree = {
 		// without waiting for the response
 		if (!isExpand) {
 			var ul = obj.parentNode.parentNode.getElementsByTagName('ul')[0];
-			obj.parentNode.parentNode.removeChild(ul); // no remove() directly because of IE 5.5
+			if (ul) {
+				obj.parentNode.parentNode.removeChild(ul); // no remove() directly because of IE 5.5
+			}
 			var pm = Selector.findChildElements(obj.parentNode, ['.pm'])[0]; // Getting pm object by CSS selector (because document.getElementsByClassName() doesn't seem to work on Konqueror)
 			if (pm) {
 				pm.onclick = null;
