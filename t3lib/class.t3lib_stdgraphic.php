@@ -2165,7 +2165,7 @@ class t3lib_stdGraphic	{
 				$info[0]=$data[0];
 				$info[1]=$data[1];
 
-				$frame = $this->noFramePrepended ? '' : '['.intval($frame).']';
+				$frame = $this->noFramePrepended ? '' : intval($frame);
 
 				if (!$params)	{
 					$params = $this->cmds[$newExt];
@@ -2184,9 +2184,9 @@ class t3lib_stdGraphic	{
 				$cropscale = ($data['crs'] ? 'crs-V'.$data['cropV'].'H'.$data['cropH'] : '');
 
 				if ($this->alternativeOutputKey)	{
-					$theOutputName = t3lib_div::shortMD5($command.$cropscale.basename($imagefile).$this->alternativeOutputKey.$frame);
+					$theOutputName = t3lib_div::shortMD5($command.$cropscale.basename($imagefile).$this->alternativeOutputKey.'['.$frame.']');
 				} else {
-					$theOutputName = t3lib_div::shortMD5($command.$cropscale.$imagefile.filemtime($imagefile).$frame);
+					$theOutputName = t3lib_div::shortMD5($command.$cropscale.$imagefile.filemtime($imagefile).'['.$frame.']');
 				}
 				if ($this->imageMagickConvert_forceFileNameBody)	{
 					$theOutputName = $this->imageMagickConvert_forceFileNameBody;
@@ -2201,7 +2201,7 @@ class t3lib_stdGraphic	{
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 
 				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile))	{
-					$this->imageMagickExec($imagefile.$frame, $output, $command);
+					$this->imageMagickExec($imagefile, $output, $command, $frame);
 				}
 				if (@file_exists($output))	{
 					$info[3] = $output;
@@ -2511,11 +2511,13 @@ class t3lib_stdGraphic	{
 	 * @param	string		The relative (to PATH_site) image filepath, input file (read from)
 	 * @param	string		The relative (to PATH_site) image filepath, output filename (written to)
 	 * @param	string		ImageMagick parameters
+	 * @param	string		Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
 	 * @return	string		The result of a call to PHP function "exec()"
 	 */
-	function imageMagickExec($input,$output,$params)	{
+	function imageMagickExec($input,$output,$params,$frame = 0)	{
 		if (!$this->NO_IMAGE_MAGICK)	{
-			$cmd = t3lib_div::imageMagickCommand('convert', $params.' '.$this->wrapFileName($input).' '.$this->wrapFileName($output));
+			$frame = $frame ? '['.intval($frame).']' : '';
+			$cmd = t3lib_div::imageMagickCommand('convert', $params.' '.$this->wrapFileName($input).$frame.' '.$this->wrapFileName($output));
 			$this->IM_commands[] = array($output,$cmd);
 
 			$ret = exec($cmd);

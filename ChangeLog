@@ -1,3 +1,7 @@
+2010-01-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12341: Image generation broken with PHPs safe_mode activated and GraphicsMagick (Thanks to Marcus Krause, Helmut Hummel and Bernhard Kraft)
+
 2010-01-04  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12506: JSMENU does not respect mount point overlays (Thanks to Joerg Wagner)
