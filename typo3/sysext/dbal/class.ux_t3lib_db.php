@@ -1149,6 +1149,14 @@ class ux_t3lib_DB extends t3lib_DB {
 					case 'EXISTS':
 						$where_clause[$k]['func']['subquery'] = $this->quoteSELECTsubquery($v['func']['subquery']);
 						break;
+					case 'LOCATE':
+						if ($where_clause[$k]['func']['table'] != '') {
+							$where_clause[$k]['func']['table'] = $this->quoteName($v['func']['table']);
+						}
+						if ($where_clause[$k]['func']['field'] != '') {
+							$where_clause[$k]['func']['field'] = $this->quoteName($v['func']['field']);
+						}
+					break;
 				}
 			} else {
 				if ($where_clause[$k]['table'] != '') {
@@ -2574,7 +2582,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			// Select fields:
 		$expFields = $this->SQLparser->parseFieldList($select_fields);
 		$this->map_sqlParts($expFields,$defaultTable);
-		$select_fields = $this->SQLparser->compileFieldList($expFields);
+		$select_fields = $this->SQLparser->compileFieldList($expFields, FALSE, FALSE);
 
 			// Group By fields
 		$expFields = $this->SQLparser->parseFieldList($groupBy);
@@ -2601,6 +2609,40 @@ class ux_t3lib_DB extends t3lib_DB {
 		if (is_array($sqlPartArray)) {
 			foreach ($sqlPartArray as $k => $v) {
 
+				if (isset($sqlPartArray[$k]['type'])) {
+					switch ($sqlPartArray[$k]['type']) {
+						case 'flow-control':
+							$temp = array($sqlPartArray[$k]['flow-control']);
+							$this->map_sqlParts($temp, $defaultTable);	// Call recursively!
+							$sqlPartArray[$k]['flow-control'] = $temp[0];
+							break;
+						case 'CASE':
+							if (isset($sqlPartArray[$k]['case_field'])) {
+								$fieldArray = explode('.', $sqlPartArray[$k]['case_field']);
+								if (count($fieldArray) == 1 && is_array($this->mapping[$defaultTable]['mapFieldNames']) && isset($this->mapping[$defaultTable]['mapFieldNames'][$fieldArray[0]])) {
+									$sqlPartArray[$k]['case_field'] = $this->mapping[$defaultTable]['mapFieldNames'][$fieldArray[0]];
+								}
+								elseif (count($fieldArray) == 2) {
+										// Map the external table
+									$table = $fieldArray[0];
+									if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
+										$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+									}
+										// Map the field itself
+									$field = $fieldArray[1];
+									if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
+										$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+									}
+									$sqlPartArray[$k]['case_field'] = $table . '.' . $field;
+								}
+							}
+							foreach ($sqlPartArray[$k]['when'] as $key => $when) {
+								$this->map_sqlParts($sqlPartArray[$k]['when'][$key]['when_value'], $defaultTable);
+							}
+							break;
+					}
+				}
+
 					// Look for sublevel (WHERE parts only)
 				if (is_array($sqlPartArray[$k]['sub'])) {
 					$this->map_sqlParts($sqlPartArray[$k]['sub'], $defaultTable);	// Call recursively!
@@ -2611,6 +2653,16 @@ class ux_t3lib_DB extends t3lib_DB {
 							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['SELECT'], $subqueryDefaultTable);
 							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['FROM'], $subqueryDefaultTable);
 							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['WHERE'], $subqueryDefaultTable);
+							break;
+						case 'LOCATE':
+								// For the field, look for table mapping (generic):
+							$t = $sqlPartArray[$k]['func']['table'] ? $sqlPartArray[$k]['func']['table'] : $defaultTable;
+							if (is_array($this->mapping[$t]['mapFieldNames']) && $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['func']['field']]) {
+								$sqlPartArray[$k]['func']['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['func']['field']];
+							}
+							if ($this->mapping[$t]['mapTableName']) {
+								$sqlPartArray[$k]['func']['table'] = $this->mapping[$t]['mapTableName'];
+							}
 							break;
 					}
 				} else {
@@ -2646,25 +2698,11 @@ class ux_t3lib_DB extends t3lib_DB {
 
 							// Mapping flow-control statements
 						if (isset($sqlPartArray[$k]['flow-control'])) {							
-							if ($sqlPartArray[$k]['flow-control']['type'] === 'CASE' && isset($sqlPartArray[$k]['flow-control']['case_field'])) {
-								$fieldArray = explode('.', $sqlPartArray[$k]['flow-control']['case_field']);
-								if (count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
-									$sqlPartArray[$k]['flow-control']['case_field'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
-								}
-								elseif (count($fieldArray) == 2) {
-										// Map the external table
-									$table = $fieldArray[0];
-									if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
-										$table = $this->mapping[$fieldArray[0]]['mapTableName'];
-									}
-										// Map the field itself
-									$field = $fieldArray[1];
-									if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
-										$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
-									}
-									$sqlPartArray[$k]['flow-control']['case_field'] = $table . '.' . $field;
-								}
-							}
+							if (isset($sqlPartArray[$k]['flow-control']['type'])) {
+								$temp = array($sqlPartArray[$k]['flow-control']);
+								$this->map_sqlParts($temp, $t);	// Call recursively!
+								$sqlPartArray[$k]['flow-control'] = $temp[0];
+ 							}
 						}
 					}
 

@@ -408,5 +408,42 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13134
+	 */
+	public function locateIsSupported() {
+		$sql = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\', datastructure)>0';
+		$expected = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\', datastructure) > 0';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13134
+	 */
+	public function locateWithPositionIsSupported() {
+		$sql = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\'  , datastructure  ,10)>0';
+		$expected = 'SELECT * FROM tx_templavoila_tmplobj WHERE LOCATE(\'(fce)\', datastructure, 10) > 0';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13134
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function locateWithinCaseIsSupported() {
+		$sql = 'SELECT *, CASE WHEN LOCATE(\'(fce)\', datastructure)>0 THEN 2 ELSE 1 END AS scope FROM tx_templavoila_tmplobj';
+		$expected = 'SELECT *, CASE WHEN LOCATE(\'(fce)\', datastructure) > 0 THEN 2 ELSE 1 END AS scope FROM tx_templavoila_tmplobj';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
 }
 ?>

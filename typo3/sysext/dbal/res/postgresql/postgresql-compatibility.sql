@@ -57,6 +57,16 @@ CREATE OPERATOR ~~ (PROCEDURE = t3compat_operator_like, LEFTARG = text, RIGHTARG
 CREATE OPERATOR = (PROCEDURE = t3compat_operator_eq, LEFTARG = integer, RIGHTARG = text);
 CREATE OPERATOR = (PROCEDURE = t3compat_operator_eq, LEFTARG = text, RIGHTARG = integer);
 
+-- LOCATE()
+CREATE OR REPLACE FUNCTION locate(text, text, integer)
+RETURNS integer AS $$
+SELECT POSITION($1 IN SUBSTRING ($2 FROM $3)) + $3 - 1
+$$ IMMUTABLE STRICT LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION locate(text, text)
+RETURNS integer AS $$
+SELECT locate($1, $2, 1)
+$$ IMMUTABLE STRICT LANGUAGE SQL;
 
 -- Remove Compatibility operators
 --
@@ -68,4 +78,6 @@ CREATE OPERATOR = (PROCEDURE = t3compat_operator_eq, LEFTARG = text, RIGHTARG = 
 --DROP FUNCTION t3compat_operator_like(text, integer);
 --DROP FUNCTION t3compat_operator_eq(integer, text);
 --DROP FUNCTION t3compat_operator_eq(text, integer);
+--DROP FUNCTION locate(text, text);
+--DROP FUNCTION locate(text, text, integer);
 

@@ -656,5 +656,39 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= 'FROM "tx_crawler_ps", "ext_tt_news" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13134
+	 */
+	public function locateStatementIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*, CASE WHEN' .
+				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' .
+				' ELSE 1' . 
+			' END AS scope',
+			'tx_templavoila_tmplobj',
+			'1=1'
+		));
+		$expected = 'SELECT *, CASE WHEN INSTR("datastructure", \'(fce)\') > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13134
+	 */
+	public function locateStatementWithPositionIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*, CASE WHEN' .
+				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' .
+				' ELSE 1' . 
+			' END AS scope',
+			'tx_templavoila_tmplobj',
+			'1=1'
+		));
+		$expected = 'SELECT *, CASE WHEN INSTR("datastructure", \'(fce)\', 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>
