@@ -1,3 +1,7 @@
+2010-01-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13134: Support of SQL LOCATE function
+
 2010-01-05  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12341: Image generation broken with PHPs safe_mode activated and GraphicsMagick (Thanks to Marcus Krause, Helmut Hummel and Bernhard Kraft)

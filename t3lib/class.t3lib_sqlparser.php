@@ -967,9 +967,9 @@ class t3lib_sqlparser {
 				$stack[$level][$pnt[$level]]['modifier'] = trim($this->nextPart($parseString, '^(!|NOT[[:space:]]+)'));
 
 					// See if condition is EXISTS with a subquery
-				if (preg_match('/^EXISTS[[:space:]]*[(]/', $parseString)) {
-					$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(EXISTS)');
-					$this->nextPart($parseString, '^([(])');
+				if (preg_match('/^EXISTS[[:space:]]*[(]/i', $parseString)) {
+					$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(EXISTS)[[:space:]]*');
+					$parseString = trim(substr($parseString, 1));	// Strip of "("
 					$stack[$level][$pnt[$level]]['func']['subquery'] = $this->parseSELECT($parseString);
 						// Seek to new position in parseString after parsing of the subquery
 					$parseString = $stack[$level][$pnt[$level]]['func']['subquery']['parseString'];
@@ -1756,8 +1756,8 @@ class t3lib_sqlparser {
 					// Look for sublevel:
 				if (is_array($v['sub'])) {
 					$output .= ' (' . trim($this->compileWhereClause($v['sub'])) . ')';
-				} elseif (isset($v['func'])) {
-					$output .= ' ' . trim($v['modifier']) . ' ' . $v['func']['type'] . ' (' . $this->compileSELECT($v['func']['subquery']) . ')';
+				} elseif (isset($v['func']) && $v['func']['type'] === 'EXISTS') {
+					$output .= ' ' . trim($v['modifier']) . ' EXISTS (' . $this->compileSELECT($v['func']['subquery']) . ')';
 				} else {
 
 						// Set field/table with modifying prefix if any:
