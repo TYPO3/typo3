@@ -979,51 +979,82 @@ class t3lib_sqlparser {
  					}
  				} else {
 
-	 					// Support calculated value only for:
-						// - "&" (boolean AND)
-						// - "+" (addition)
-						// - "-" (substraction)
-						// - "*" (multiplication)
-						// - "/" (division)
-						// - "%" (modulo)
-					$calcOperators = '&|\+|-|\*|\/|%';
-	
-						// Fieldname:
-					if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) {
-	
-							// Parse field name into field and table:
-						$tableField = explode('.', $fieldName, 2);
-						if (count($tableField) == 2) {
-							$stack[$level][$pnt[$level]]['table'] = $tableField[0];
-							$stack[$level][$pnt[$level]]['field'] = $tableField[1];
-						} else {
-							$stack[$level][$pnt[$level]]['table'] = '';
-							$stack[$level][$pnt[$level]]['field'] = $tableField[0];
+ 						// See if LOCATE function is found
+					if (preg_match('/^LOCATE[[:space:]]*[(]/i', $parseString)) {
+						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(LOCATE)[[:space:]]*');
+						$parseString = trim(substr($parseString, 1));	// Strip of "("
+						$stack[$level][$pnt[$level]]['func']['substr'] = $this->getValue($parseString);
+						if (!$this->nextPart($parseString, '^(,)')) {
+							return $this->parseError('No comma found as expected in parseWhereClause()');
 						}
-					} else {
-						return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
-					}
-	
-						// See if the value is calculated:
-					$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
-					if (strlen($stack[$level][$pnt[$level]]['calc'])) {
-							// Finding value for calculation:
-						$calc_value = $this->getValue($parseString);
-						$stack[$level][$pnt[$level]]['calc_value'] = $calc_value;
-						if (count($calc_value) == 1 && is_string($calc_value[0])) {
-								// Value is a field, store it to allow DBAL to post-process it (quoting, remapping)
-							$tableField = explode('.', $calc_value[0], 2);
+						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\*._]+)[[:space:]]*')) {
+ 
+								// Parse field name into field and table:
+							$tableField = explode('.', $fieldName, 2);
 							if (count($tableField) == 2) {
-								$stack[$level][$pnt[$level]]['calc_table'] = $tableField[0];
-								$stack[$level][$pnt[$level]]['calc_field'] = $tableField[1];
+								$stack[$level][$pnt[$level]]['func']['table'] = $tableField[0];
+								$stack[$level][$pnt[$level]]['func']['field'] = $tableField[1];
 							} else {
-								$stack[$level][$pnt[$level]]['calc_table'] = '';
-								$stack[$level][$pnt[$level]]['calc_field'] = $tableField[0];
+								$stack[$level][$pnt[$level]]['func']['table'] = '';
+								$stack[$level][$pnt[$level]]['func']['field'] = $tableField[0];
+							}
+ 						} else {
+							return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
+ 						}
+						if ($this->nextPart($parseString, '^(,)')) {
+							$stack[$level][$pnt[$level]]['func']['pos'] = $this->getValue($parseString); 
+						}
+						if (!$this->nextPart($parseString, '^([)])')) {
+							return $this->parseError('No ) parenthesis at end of function');
+	 					}						
+ 					} else {
+
+		 					// Support calculated value only for:
+							// - "&" (boolean AND)
+							// - "+" (addition)
+							// - "-" (substraction)
+							// - "*" (multiplication)
+							// - "/" (division)
+							// - "%" (modulo)
+						$calcOperators = '&|\+|-|\*|\/|%';
+		
+							// Fieldname:
+						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) {
+		
+								// Parse field name into field and table:
+							$tableField = explode('.', $fieldName, 2);
+ 							if (count($tableField) == 2) {
+								$stack[$level][$pnt[$level]]['table'] = $tableField[0];
+								$stack[$level][$pnt[$level]]['field'] = $tableField[1];
+ 							} else {
+								$stack[$level][$pnt[$level]]['table'] = '';
+								$stack[$level][$pnt[$level]]['field'] = $tableField[0];
+ 							}
+						} else {
+							return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
+ 						}
+		
+							// See if the value is calculated:
+						$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
+						if (strlen($stack[$level][$pnt[$level]]['calc'])) {
+								// Finding value for calculation:
+							$calc_value = $this->getValue($parseString);
+							$stack[$level][$pnt[$level]]['calc_value'] = $calc_value;
+							if (count($calc_value) == 1 && is_string($calc_value[0])) {
+									// Value is a field, store it to allow DBAL to post-process it (quoting, remapping)
+								$tableField = explode('.', $calc_value[0], 2);
+								if (count($tableField) == 2) {
+									$stack[$level][$pnt[$level]]['calc_table'] = $tableField[0];
+									$stack[$level][$pnt[$level]]['calc_field'] = $tableField[1];
+								} else {
+									$stack[$level][$pnt[$level]]['calc_table'] = '';
+									$stack[$level][$pnt[$level]]['calc_field'] = $tableField[0];
+								}
 							}
 						}
-					}
-	
-						// Find "comparator":
+ 					}
+ 	
+ 						// Find "comparator":
 					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS)');
 					if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
 						if (preg_match('/^CONCAT[[:space:]]*\(/', $parseString)) {
@@ -1760,12 +1791,21 @@ class t3lib_sqlparser {
 					$output .= ' ' . trim($v['modifier']) . ' EXISTS (' . $this->compileSELECT($v['func']['subquery']) . ')';
 				} else {
 
-						// Set field/table with modifying prefix if any:
-					$output .= ' ' . trim($v['modifier'] . ' ' . ($v['table'] ? $v['table'] . '.' : '') . $v['field']);
-
-						// Set calculation, if any:
-					if ($v['calc']) {
-						$output .= $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+					if (isset($v['func']) && $v['func']['type'] === 'LOCATE') {
+						$output .= ' ' . trim($v['modifier']) . ' LOCATE('; 
+						$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
+						$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+						$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
+						$output .= ')';
+					} else {
+						
+							// Set field/table with modifying prefix if any:
+						$output .= ' ' . trim($v['modifier'] . ' ' . ($v['table'] ? $v['table'] . '.' : '') . $v['field']);
+	
+							// Set calculation, if any:
+						if ($v['calc']) {
+							$output .= $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+						}
 					}
 
 						// Set comparator:
