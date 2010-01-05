@@ -1,3 +1,7 @@
+2010-01-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12341: Image generation broken with PHPs safe_mode activated and GraphicsMagick (Thanks to Marcus Krause, Helmut Hummel and Bernhard Kraft)
+
 2010-01-04  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13096: Unable to disable thumbnails with thumbnailsByDefault (Thanks to Steffen Gebert)
