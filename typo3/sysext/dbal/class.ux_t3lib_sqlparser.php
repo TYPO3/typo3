@@ -351,8 +351,8 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 							// Look for sublevel:
 						if (is_array($v['sub'])) {
 							$output .= ' (' . trim($this->compileWhereClause($v['sub'], $functionMapping)) . ')';
-						} elseif (isset($v['func'])) {
-							$output .= ' ' . trim($v['modifier']) . ' ' . $v['func']['type'] . ' (' . $this->compileSELECT($v['func']['subquery']) . ')';
+						} elseif (isset($v['func']) && $v['func']['type'] === 'EXISTS') {
+							$output .= ' ' . trim($v['modifier']) . ' EXISTS (' . $this->compileSELECT($v['func']['subquery']) . ')';
 						} else {
 
 								// Set field/table with modifying prefix if any:

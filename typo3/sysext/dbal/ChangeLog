@@ -1,3 +1,7 @@
+2010-01-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13134: Support of SQL LOCATE function
+
 2010-01-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #13135: Support for CASE WHEN flow control
