@@ -1,3 +1,7 @@
+2010-01-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 1.8.7
+
 2010-01-05  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12341: Image generation broken with PHPs safe_mode activated and GraphicsMagick (Thanks to Marcus Krause, Helmut Hummel and Bernhard Kraft)
