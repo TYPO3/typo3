@@ -1,5 +1,6 @@
 2010-01-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13098: DB list: layout looks weird with thumbnails (Thanks to Steffen Gebert)
 	* Fixed bug #13097: File list: Alternating row colors are weird with thumbnails (Thanks to Steffen Gebert)
 
 2010-01-08  Benjamin Mack  <benni@typo3.org>

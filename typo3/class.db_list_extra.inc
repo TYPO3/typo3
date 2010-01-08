@@ -679,6 +679,11 @@ class localRecordList extends recordList {
 							'</a>';
 					}
 					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
+					
+						// Render thumbsnails if a thumbnail column exists and there is content in it:
+					if ($this->thumbs && trim($row[$thumbsCol])) {
+						$theData[$fCol] .= '<br />' . $this->thumbCode($row,$table,$thumbsCol);
+					}
 
 					$localizationMarkerClass = '';
 					if (isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])
@@ -731,14 +736,8 @@ class localRecordList extends recordList {
 			$this->addElement_tdCssClass['_LOCALIZATION_']  = 'col-localizationa';
 			$this->addElement_tdCssClass['_LOCALIZATION_b'] = 'col-localizationb';
 
-
 				// Create element in table cells:
 			$iOut.=$this->addelement(1,$theIcon,$theData,$row_bgColor);
-
-				// Render thumbsnails if a thumbnail column exists and there is content in it:
-			if ($this->thumbs && trim($row[$thumbsCol]))	{
-				$iOut.=$this->addelement(4,'', Array($titleCol=>$this->thumbCode($row,$table,$thumbsCol)),$row_bgColor);
-			}
 
 				// Finally, return table row element:
 			return $iOut;
