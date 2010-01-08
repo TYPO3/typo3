@@ -509,6 +509,20 @@ class fileList extends t3lib_recordList {
 							break;
 							case 'file':
 								$theData[$field] = $this->linkWrapFile($theFile[$field],$theFile['path'].$theFile['file']);
+									// Thumbsnails?
+								if ($this->thumbs && $this->isImage($theFile['fileext']))	{
+									$thumbData = array();
+									$theFile_R = rawurlencode($theFile['path'].$theFile['file']);
+									$titleCol = $this->fieldArray[0];
+			
+									$theFile_abs = $theFile['path'].$theFile['file'];
+									$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+									$params = '&file='.$theFile_R;
+									$params.= '&md5sum='.t3lib_div::shortMD5($check);
+									$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
+			
+									$theData[$field] .= '<br /><img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="'.htmlspecialchars(trim($theFile['file'])).'" />';
+								}
 							break;
 							default:
 								$theData[$field]=t3lib_div::fixed_lgd_cs($theFile[$field],$this->fixedL);
@@ -522,22 +536,6 @@ class fileList extends t3lib_recordList {
 					}
 
 					$out .= $this->addelement(1, $theIcon, $theData, $altRows);
-
-						// Thumbsnails?
-					if ($this->thumbs && $this->isImage($theFile['fileext']))	{
-						$thumbData = array();
-						$theFile_R = rawurlencode($theFile['path'].$theFile['file']);
-						$titleCol = $this->fieldArray[0];
-
-						$theFile_abs = $theFile['path'].$theFile['file'];
-						$check = basename($theFile_abs).':'.filemtime($theFile_abs).':'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
-						$params = '&file='.$theFile_R;
-						$params.= '&md5sum='.t3lib_div::shortMD5($check);
-						$href = $this->backPath.$this->thumbScript.'?&dummy='.$GLOBALS['EXEC_TIME'].$params;
-
-						$thumbData[$titleCol]='<img src="'.htmlspecialchars($href).'" hspace="2" title="'.htmlspecialchars(trim($theFile['file'])).'" alt="'.htmlspecialchars(trim($theFile['file'])).'" />';
-						$out.= $this->addelement(4,'',$thumbData);
-					}
 				}
 				$this->eCounter++;
 			}

@@ -1,3 +1,7 @@
+2010-01-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13097: File list: Alternating row colors are weird with thumbnails (Thanks to Steffen Gebert)
+
 2010-01-08  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12779: Previously selected type of backend login is now stored in a cookie (Thanks to Sebastian Gebhard)
