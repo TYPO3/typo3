@@ -1,18 +1,30 @@
 var isWebKit = document.childNodes && !document.all && !navigator.taintEnabled;
 
 TYPO3BackendLogin = {
+
+	/**
+	 *  Initializing the Login Interface
+	 */
 	start: function() {
 		TYPO3BackendLogin.preloadImages();
 		TYPO3BackendLogin.registerEventListeners();
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-username'), $('t3-username-clearIcon'));
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-password'), $('t3-password-clearIcon'));
+		TYPO3BackendLogin.checkForLogintypeCookie();
+		TYPO3BackendLogin.checkForInterfaceCookie();
 	},
 
+	/**
+	 * Preload the login process image, so it can show up immediatelly after submitting
+	 */
 	preloadImages: function() {
 		var image = new Image();
 		image.src = 'sysext/t3skin/icons/login-submit-progress.gif';
 	},
 
+	/**
+	 * Registers listeners for the Login Interface (e.g. to toggle OpenID and Default login)
+	 */
 	registerEventListeners: function() {
 		Event.observe(
 				$('t3-login-switchToOpenId'),
@@ -29,6 +41,15 @@ TYPO3BackendLogin = {
 			'click',
 			TYPO3BackendLogin.showLoginProcess
 		);
+		
+			// The Interface selector is not always present, so this check is needed
+		if (Object.isElement($('t3-interfaceselector'))) {
+			TYPO3BackendLogin.observeEvents(
+				$('t3-interfaceselector'),
+				['change', 'blur'],
+				TYPO3BackendLogin.interfaceSelectorChanged
+			);
+		}
 
 		$A(['t3-username', 't3-password']).each(function(value) {
 			Event.observe(
@@ -51,6 +72,9 @@ TYPO3BackendLogin = {
 		})
 	},
 
+	/**
+	 * Wrapper for Event.observe that takes an array with events, instead of only one event
+	 */
 	observeEvents: function(element, events, handler) {
 		events.each(function(event) {
 			Event.observe(
@@ -61,6 +85,9 @@ TYPO3BackendLogin = {
 		});
 	},
 
+	/**
+	 * Shows up the clear icon for a field which is not empty, and hides it otherwise
+	 */
 	setVisibilityOfClearIcon: function(formField, clearIcon) {
 		if (formField.value) {
 			clearIcon.show();
@@ -69,6 +96,9 @@ TYPO3BackendLogin = {
 		}
 	},
 
+	/**
+	 * To prevent its unintented use when typing the password, the user is warned when Capslock is on
+	 */
 	showCapsLockWarning: function(alertIcon, event) {
 		if (isCapslock(event)) {
 			alertIcon.show();
@@ -77,11 +107,17 @@ TYPO3BackendLogin = {
 		}
 	},
 
+	/**
+	 * Clears an input field and sets focus to it
+	 */
 	clearInputField: function(formField) {
 		formField.value = '';
 		formField.focus();
 	},
 
+	/**
+	 * Change to Interface for OpenId login and save the selection to a cookie
+	 */
 	switchToOpenId: function() {
 		$('t3-login-label-username').hide();
 		$('t3-login-label-openId').show();
@@ -94,8 +130,13 @@ TYPO3BackendLogin = {
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').hide();
 		}
+		
+		TYPO3BackendLogin.setLogintypeCookie('openid');
 	},
 
+	/**
+	 * Change to Interface for default login and save the selection to a cookie
+	 */
 	switchToDefault: function() {
 		$('t3-login-label-username').show();
 		$('t3-login-label-openId').hide();
@@ -108,8 +149,55 @@ TYPO3BackendLogin = {
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').show();
 		}
+		
+		TYPO3BackendLogin.setLogintypeCookie('username');
 	},
 	
+	/**
+	 * Store a login type in a cookie to save it for future visits
+	 * Login type means wether you login by username/password or OpenID
+	 */
+	setLogintypeCookie: function(type) {
+		var now = new Date();
+		var expires = new Date(now.getTime() + 1000*60*60*24*365); // cookie expires in one year
+		document.cookie = 'typo3-login-method=' + type + '; expires=' + expires.toGMTString() + ';';
+	},
+	
+	/**
+	 * Check if a login type was stored in a cookie and change the Interface accordingly
+	 */
+	checkForLogintypeCookie: function() {
+		if(document.cookie.indexOf('typo3-login-method=openid') >- 1) {
+			TYPO3BackendLogin.switchToOpenId();
+		}
+	},
+	
+	/**
+	 * Store the new selected Interface in a cookie to save it for future visits
+	 */
+	interfaceSelectorChanged: function(event) {
+		var now = new Date();
+		var expires = new Date(now.getTime() + 1000*60*60*24*365); // cookie expires in one year
+		document.cookie = 'typo3-login-interface=' + $('t3-interfaceselector').getValue() + '; expires=' + expires.toGMTString() + ';'; 
+	},
+	
+	/**
+	 * Check if an interface was stored in a cookie and preselect it in the select box
+	 */
+	checkForInterfaceCookie: function() {
+		if (Object.isElement($('t3-interfaceselector'))) {
+			var posStart = document.cookie.indexOf('typo3-login-interface=');
+			if (posStart != -1) {
+				var selectedInterface = document.cookie.substr(posStart + 22);
+				selectedInterface = selectedInterface.substr(0, selectedInterface.indexOf(';'));
+			}
+			$('t3-interfaceselector').setValue(selectedInterface);
+		}
+	},
+	
+	/**
+	 * Hide all form fields and show a progress message and icon
+	 */
 	showLoginProcess: function() {
 		if ($('t3-login-error')) {
 			$('t3-login-error').hide();
