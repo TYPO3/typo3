@@ -2158,6 +2158,9 @@ body#typo3-mod-tools-em-index-php tr td.extstate {
 	text-align: center;
 }
 
+body#typo3-mod-tools-em-index-php a {
+	display: inline-block;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - -
 
