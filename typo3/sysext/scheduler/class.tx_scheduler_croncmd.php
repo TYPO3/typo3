@@ -246,7 +246,7 @@ class tx_scheduler_CronCmd {
 				// Get list for range definitions
 
 				// Get list definition parts
-			list($def_min, $def_max) = t3lib::trimExplode('-', $definition);
+			list($def_min, $def_max) = t3lib_div::trimExplode('-', $definition);
 
 			if ($def_min < $min) {
 				$def_min = $min;
