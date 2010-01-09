@@ -3568,12 +3568,18 @@ final class t3lib_BEfunc {
 				$GLOBALS['TCA'][$table]['ctrl']['languageField'] &&
 				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] &&
 				!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
+
+			$where = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($ref) .
+				' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '!=0';
+
+			if (!empty($GLOBALS['TCA'][$table]['ctrl']['delete'])) {
+				$where .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0';
+			}
+
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 				'*',
 				$table,
-				$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($ref) .
-					' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '!=0' .
-					' AND ' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0'
+				$where
 			);
 		}
 

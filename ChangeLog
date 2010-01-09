@@ -1,5 +1,6 @@
 2010-01-09  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #12928: SQL error in translationCount() if table does not provide deleted field (Thanks to Georg Ringer)
 	* Fixed bug #12507: (Un)Install icon points to wrong extension in Opera (Thanks to Steffen Gebert)
 
 2010-01-08  Steffen Kamper  <info@sk-typo3.de>
