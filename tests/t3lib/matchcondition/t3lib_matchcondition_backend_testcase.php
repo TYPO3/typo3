@@ -447,6 +447,57 @@ class t3lib_matchCondition_backend_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether treeLevel comparison matches when creating new pages.
+	 * @test
+	 */
+	public function treeLevelConditionMatchesCurrentPageIdWhileEditingNewPage() {
+		$GLOBALS['SOBE'] = $this->getMock('SC_alt_doc', array());
+		$GLOBALS['SOBE']->elementsData = array(
+			array(
+				'table' => 'pages',
+				'uid' => 'NEW4adc6021e37e7',
+				'pid' => 121,
+				'cmd' => 'new',
+				'deleteAccess' => 0,
+			),
+		);
+		$GLOBALS['SOBE']->data = array();
+
+		$this->matchCondition->setRootline($this->rootline);
+		$this->matchCondition->setPageId(121);
+		$this->assertTrue($this->matchCondition->match('[treeLevel = 3]'));
+	}
+
+	/**
+	 * Tests whether treeLevel comparison matches when creating new pages.
+	 * @test
+	 */
+	public function treeLevelConditionMatchesCurrentPageIdWhileSavingNewPage() {
+		$GLOBALS['SOBE'] = $this->getMock('SC_alt_doc', array());
+		$GLOBALS['SOBE']->elementsData = array(
+			array(
+				'table' => 'pages',
+				/// 999 is the uid of the page that was just created
+				'uid' => 999,
+				'pid' => 121,
+				'cmd' => 'edit',
+				'deleteAccess' => 1,
+			),
+		);
+		$GLOBALS['SOBE']->data = array(
+			'pages' => array(
+				'NEW4adc6021e37e7' => array(
+					'pid' => 121,
+				),
+			),
+		);
+
+		$this->matchCondition->setRootline($this->rootline);
+		$this->matchCondition->setPageId(121);
+		$this->assertTrue($this->matchCondition->match('[treeLevel = 3]'));
+	}
+
+	/**
 	 * Tests whether a page Id is found in the previous rootline entries.
 	 * @test
 	 */
