@@ -1,3 +1,7 @@
+2010-01-10  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #12977: treeLevel in TSconfig conditions should consider the creation of new pages
+
 2010-01-09  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13191: Scheduler fails with fatal error if using intervals in cron command

@@ -76,9 +76,12 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 					}
 					break;
 				case 'treeLevel':
-					// @todo: Behaviour when new page is being created...
 					$values = t3lib_div::trimExplode(',', $value, true);
 					$treeLevel = count($this->rootline) - 1;
+					// If a new page is being edited or saved the treeLevel is higher by one:
+					if ($this->isNewPageWithPageId($this->pageId)) {
+						$treeLevel++;
+					}
 					foreach ($values as $test) {
 						if ($test == $treeLevel) {
 							return true;
