@@ -463,8 +463,16 @@ class recordHistory {
 		if ($this->lastSyslogId)	{
 			$theCode .= '<br />' .  $this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/group_tobottom.gif').' alt="'.$LANG->getLL('fullView',1).'" title="'.$LANG->getLL('fullView',1).'" />',array('diff' => ''));
 		}
+
 			// Add message about the difference view.
-		$theCode .= '<br /><img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.$LANG->getLL('differenceMsg').'<br /><br />';
+		$flashMessage = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$GLOBALS['LANG']->getLL('differenceMsg'),
+			'',
+			t3lib_FlashMessage::INFO
+		);
+
+		$theCode .= '<br /><br />' . $flashMessage->render() . '<br />';
 
 			// Add CSH:
 		$theCode .= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'history_'.($this->sumUp ? 'sum' : 'log'), $GLOBALS['BACK_PATH'],'');

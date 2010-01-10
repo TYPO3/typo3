@@ -1,3 +1,7 @@
+2010-01-10  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #12631: Flash Message to the history / changelog (Thanks to Georg Ringer)
+
 2010-01-10  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12977: treeLevel in TSconfig conditions should consider the creation of new pages
