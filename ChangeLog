@@ -1,3 +1,7 @@
+2010-01-11  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13092: Massuploader button is too small (Thanks to Steffen Gebert)
+
 2010-01-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #12631: Flash Message to the history / changelog (Thanks to Georg Ringer)
