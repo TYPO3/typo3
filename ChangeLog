@@ -1,3 +1,7 @@
+2010-01-11  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13092: Massuploader button is too small (Thanks to Steffen Gebert)
+
 2010-01-10  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #12977: treeLevel in TSconfig conditions should consider the creation of new pages

@@ -225,6 +225,8 @@ Ext.onReady(function() {
 			if (!Ext.fly(swfConfig.button_placeholder_id)) {
 				var button = Ext.DomQuery.selectNode('#t3-file-upload-window-button-selectfiles button');
 				Ext.DomHelper.insertBefore(button, '<div id="' + swfConfig.button_placeholder_id + '"></div>');
+				// set the width of the swf-button in background according to the user-visible button
+				swfConfig.button_width = button.clientWidth;
 			}
 			this.swf = new SWFUpload(swfConfig);
 			this.swf.fileUploadWindow = this;
