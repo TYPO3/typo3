@@ -615,7 +615,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					if (!$this->checkLanguageAccess($idOrRow[$TCA[$table]['ctrl']['languageField']]))	{
 						$this->errorMsg = 'ERROR: Language was not allowed.';
 						return FALSE;
-					} elseif ($checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+					} elseif ($checkFullLanguageAccess && $idOrRow[$TCA[$table]['ctrl']['languageField']]==0 && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
 						$this->errorMsg = 'ERROR: Related/affected language was not allowed.';
 						return FALSE;
 					}
