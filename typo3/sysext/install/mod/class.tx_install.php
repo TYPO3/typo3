@@ -2638,9 +2638,10 @@ From sub-directory:
 	 */
 	function getGDSoftwareInfo()	{
 		return trim('
-		You can get GDLib in the PNG version from '.$this->linkIt('http://www.boutell.com/gd/').'.<br />FreeType is for download at '.$this->linkIt('http://www.freetype.org/').'.
-		Generally, software for TYPO3 is found at '.$this->linkIt('http://typo3.sunsite.dk/software/').' and packages listed at '.$this->linkIt('http://typo3.org/1274.0.html').'.
-		');
+		You can get GDLib in the PNG version from ' . $this->linkIt('http://www.libgd.org/') . 
+		'. <br />FreeType is for download at ' . $this->linkIt('http://www.freetype.org/') . 
+		'. <br />Generally, TYPO3 packages are listed at ' . $this->linkIt('http://typo3.org/download/packages/') . '.'
+		);
 	}
 
 	/**
