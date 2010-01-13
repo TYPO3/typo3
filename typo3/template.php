@@ -723,6 +723,7 @@ class template {
 		$this->pageRenderer->setHeadTag('<head>' . chr(10). '<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->');
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
+		$this->pageRenderer->addMetaTag($this->xUaCompatible());
 		$this->pageRenderer->setTitle($title);
 
 		// add docstyles
@@ -1072,6 +1073,16 @@ $str.=$this->docBodyTagBegin().
 		return '<meta name="generator" content="'.$str .'" />';
 	}
 
+	/**
+	 * Returns X-UA-Compatible meta tag
+	 *
+	 * @return	string		<meta http-equiv="X-UA-Compatible" content="???" />
+	 */
+	function xUaCompatible() {
+			// the most recent version if Internet Explorer, in which the Backend works
+		$str = "IE=8";
+		return '<meta http-equiv="X-UA-Compatible" content="' . $str . '" />';
+	}
 
 
 
