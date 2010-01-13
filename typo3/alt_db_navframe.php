@@ -209,15 +209,25 @@ class SC_alt_db_navframe {
 
 			// Outputting Temporary DB mount notice:
 		if ($this->active_tempMountPoint)	{
-			$this->content.= '
-	<div class="bgColor4 c-notice">
-		<img'.t3lib_iconWorks::skinImg('','gfx/icon_note.gif','width="18" height="16"').' align="top" alt="" />'.
-		'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))).'">'.
-		$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount',1).
-		'</a><br />
-		'.$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.path',1).': <span title="'.htmlspecialchars($this->active_tempMountPoint['_thePathFull']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).'</span>
-	</div>
+			$flashText = '
+				<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))) . '">' .
+				$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount',1) .
+				'</a>		<br />' . 
+				$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.path',1) . ': <span title="' .
+				htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . 
+				htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).
+				'</span>
 			';
+
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$flashText,
+				'',
+				t3lib_FlashMessage::INFO
+			);
+
+		
+			$this->content.= $flashMessage->render();
 		}
 
 			// Outputting page tree:
