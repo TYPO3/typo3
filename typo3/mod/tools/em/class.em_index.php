@@ -2507,12 +2507,16 @@ EXTENSION KEYS:
 								$eC=2;
 							}
 							if (!$this->fe_user['username'])	{
-								$content .= '<br /><br /><img src="' . $GLOBALS['BACK_PATH'] .
-									'gfx/icon_note.gif" width="18" height="16" align="top" alt="" />' .
+								$flashMessage = t3lib_div::makeInstance(
+									't3lib_FlashMessage',
 									sprintf($GLOBALS['LANG']->getLL('ext_details_no_username'),
 										'<a href="index.php?SET[function]=3">', '</a>'
-									) .
-									'<br />';
+									),
+									'',
+									t3lib_FlashMessage::INFO
+								);
+								$content .= '<br />' . $flashMessage->render();
+
 							}
 						}
 						$this->content .= $this->doc->section(

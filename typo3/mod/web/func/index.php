@@ -143,8 +143,14 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			$markers['CONTENT'] = $this->content;
 		} else {
 				// If no access or if ID == zero
-			$this->content = $this->doc->section($LANG->getLL('title'), $LANG->getLL('clickAPage_content'), 0, 1);
-
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('clickAPage_content'),
+				$LANG->getLL('title'),
+				t3lib_FlashMessage::INFO
+			);
+			$this->content = $flashMessage->render();
+			
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];

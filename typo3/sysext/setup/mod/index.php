@@ -374,7 +374,13 @@ class SC_mod_user_setup_index {
 
 			// Notice
 		$this->content .= $this->doc->spacer(30);
-		$this->content .= $this->doc->section('', $LANG->getLL('activateChanges'));
+		$flashMessage = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$LANG->getLL('activateChanges'),
+			'',
+			t3lib_FlashMessage::INFO
+		);
+		$this->content .= $flashMessage->render();
 
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();

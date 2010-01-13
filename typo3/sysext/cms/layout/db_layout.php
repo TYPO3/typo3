@@ -563,7 +563,13 @@ class SC_db_layout {
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 			');
 
-			$body = $this->doc->section($LANG->getLL('clickAPage_header'), $LANG->getLL('clickAPage_content'), 0, 1);
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('clickAPage_content'),
+				$LANG->getLL('clickAPage_header'),
+				t3lib_FlashMessage::INFO
+			);
+			$body = $flashMessage->render();
 
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = array(

@@ -1,5 +1,6 @@
 2010-01-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12709: Forgotten flash message in user setup (Thanks to Georg Ringer)
 	* Fixed bug #11968: Sporadic random Backend Logoffs / Add X-UA-Compatible flag (Thanks to Steffen Gebert)
 	* Fixed bug #12924: Bugfix: t3lib_tcemain checkFullLanguageAccess is too restrictive (Thanks to Tolleiv Nietsch)
 	* Fixed bug #13211: Change focus to login field when OpenId is selected at login (Thanks to Steffen Gebert)
