@@ -1820,8 +1820,8 @@ From sub-directory:
 			'uploads/pics/' => array('Typical location for uploaded files (images especially).',0),
 			'uploads/media/' => array('Typical location for uploaded files (non-images especially).',0),
 			'uploads/tf/' => array('Typical location for uploaded files (TS template resources).',0),
-			'fileadmin/' => array('Location for local files such as templates, independent uploads etc.',-1),
-			'fileadmin/_temp_/' => array('Typical temporary location for default upload of files by administrators.',0),
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => array('Location for local files such as templates, independent uploads etc.',-1),
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/' => array('Typical temporary location for default upload of files by administrators.',0),
 		);
 
 		foreach ($checkWrite as $relpath => $descr)	{

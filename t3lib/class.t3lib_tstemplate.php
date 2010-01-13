@@ -225,7 +225,7 @@ class t3lib_TStemplate	{
 			// Sets the paths from where TypoScript resources are allowed to be used:
 		$this->allowedPaths = Array(
 			'media/',
-			'fileadmin/',
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],	// fileadmin/ path
 			'uploads/',
 			'typo3temp/',
 			't3lib/fonts/',
