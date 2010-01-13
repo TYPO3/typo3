@@ -1,3 +1,7 @@
+2010-01-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11968: Sporadic random Backend Logoffs / Add X-UA-Compatible flag (Thanks to Steffen Gebert)
+
 2010-01-09  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #12507: (Un)Install icon points to wrong extension in Opera (Thanks to Steffen Gebert)
