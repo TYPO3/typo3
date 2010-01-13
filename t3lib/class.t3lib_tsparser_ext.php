@@ -1076,10 +1076,10 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_readDirResources($path)	{
-		$path=trim($path);
-		if ($path && substr($path,0,10)=='fileadmin/')	{
+		$path = trim($path);
+		if ($path && strstr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']))	{
 			$path = rtrim($path, '/');
-			$this->readDirectory(PATH_site.$path);
+			$this->readDirectory(PATH_site . $path);
 		}
 	}
 
@@ -1277,7 +1277,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								$val=trim($val);
 								$fI=t3lib_div::split_fileref($val);
 								if ($val && (!$extList || t3lib_div::inList($extList,$fI['fileext'])))	{
-									if ($onlineResourceFlag<=0 && substr($fI['path'],0,10)=='fileadmin/')	{
+									if ($onlineResourceFlag <= 0 && strstr($fI['path'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'])) {
 										if ($onlineResourceFlag<0)	{
 											$p_field.='<option value=""></option>';
 										}
