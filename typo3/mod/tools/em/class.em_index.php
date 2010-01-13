@@ -4350,7 +4350,7 @@ EXTENSION KEYS:
 		t3lib_div::isFirstPartOfStr($removePath,PATH_site.$this->typePaths['G']) ||
 		t3lib_div::isFirstPartOfStr($removePath,PATH_site.$this->typePaths['L']) ||
 		(t3lib_div::isFirstPartOfStr($removePath,PATH_site.$this->typePaths['S']) && $this->systemInstall) ||
-		t3lib_div::isFirstPartOfStr($removePath,PATH_site.'fileadmin/_temp_/'))		// Playing-around directory...
+		t3lib_div::isFirstPartOfStr($removePath, PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/'))		// Playing-around directory...
 		) {
 
 			// All files in extension directory:
@@ -4438,7 +4438,7 @@ EXTENSION KEYS:
 					$path = PATH_site.$this->typePaths[$type];
 					$suffix = '';
 				} else {
-					$path = PATH_site.'fileadmin/_temp_/';
+					$path = PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/';
 					$suffix = '_'.date('dmy-His');
 				}
 				break;

@@ -88,8 +88,8 @@ class tx_install_report_InstallStatus implements tx_reports_StatusProvider {
 			'uploads/pics/'        => 0,
 			'uploads/media/'       => 0,
 			'uploads/tf/'          => 0,
-			'fileadmin/'           => -1,
-			'fileadmin/_temp_/'    => 0,
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . '_temp_/'    => 0,
 		);
 
 		foreach ($checkWritable as $relPath => $requirementLevel) {

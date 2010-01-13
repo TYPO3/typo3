@@ -1,5 +1,6 @@
 2010-01-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13199: Cleanup: fileadminDir is hardcoded in several places (Thanks to Susanne Moog)
 	* Fixed bug #5716: Install tool doesn't take the fileadminDir into account (Thanks to Benjamin Mack)
 	* Fixed bug #12709: Forgotten flash message in user setup (Thanks to Georg Ringer)
 	* Fixed bug #11968: Sporadic random Backend Logoffs / Add X-UA-Compatible flag (Thanks to Steffen Gebert)
