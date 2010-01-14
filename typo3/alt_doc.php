@@ -1371,9 +1371,6 @@ class SC_alt_doc {
 	function getNewIconMode($table, $key = 'saveDocNew') {
 		$TSconfig = $GLOBALS['BE_USER']->getTSConfig('options.'.$key);
 		$output = trim(isset($TSconfig['properties'][$table]) ? $TSconfig['properties'][$table] : $TSconfig['value']);
-		if (($key == 'saveDocNew' || $key == 'saveDocView') && $TSconfig['value'] != '0') {
-			$output = !(isset($TSconfig['properties'][$table]) && $TSconfig['properties'][$table] == '0');
-		}
 		return $output;
 	}
 

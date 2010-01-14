@@ -1,3 +1,7 @@
+2010-01-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #12947: saveDocNew saves on top instead of after (Thanks to Steffen Gebert)
+
 2010-01-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13200: Text change: Links for additional software in install tool wrong / non-working (Thanks to Susanne Moog)

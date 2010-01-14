@@ -3,6 +3,8 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 t3lib_extMgm::addUserTSConfig('
+	options.saveDocView = 1
+	options.saveDocNew = 1
 	options.saveDocNew.pages = 0
 	options.saveDocNew.pages_language_overlay = 0
 ');
