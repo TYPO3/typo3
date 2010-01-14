@@ -1,3 +1,7 @@
+2010-01-14  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.11
+
 2010-01-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11968: Sporadic random Backend Logoffs / Add X-UA-Compatible flag (Thanks to Steffen Gebert)
