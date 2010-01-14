@@ -1,3 +1,7 @@
+2010-01-14  Oliver Hader  <oliver@typo3.org>
+
+	* Release of TYPO3 4.3.1
+
 2010-01-14  Dmitry Dulepov  <dmitry.dulepov+typo3svn@gmail.com>
 
 	* Fixed bug #13146: Authentication Bypass in TYPO3 Core (OpenID)
