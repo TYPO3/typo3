@@ -1,3 +1,7 @@
+2010-01-14  Dmitry Dulepov  <dmitry.dulepov+typo3svn@gmail.com>
+
+	* Fixed bug #13146: Authentication Bypass in TYPO3 Core (OpenID)
+
 2010-01-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12947: saveDocNew saves on top instead of after (Thanks to Steffen Gebert)

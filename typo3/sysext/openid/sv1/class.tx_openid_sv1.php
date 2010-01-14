@@ -166,17 +166,23 @@ class tx_openid_sv1 extends t3lib_svbase {
 		$userRecord = null;
 		if ($this->loginData['status'] == 'login') {
 			if ($this->openIDResponse instanceof Auth_OpenID_ConsumerResponse) {
+				$GLOBALS['BACK_PATH'] = $this->getBackPath();
 				// We are running inside the OpenID return script
 				// Note: we cannot use $this->openIDResponse->getDisplayIdentifier()
 				// because it may return a different identifier. For example,
 				// LiveJournal server converts all underscore characters in the
 				// original identfier to dashes.
 				if ($this->openIDResponse->status == Auth_OpenID_SUCCESS) {
-					$claimedOpenIDIdentifier = t3lib_div::_GP('tx_openid_claimed');
-					if ($claimedOpenIDIdentifier) {
-						$userRecord = $this->getUserRecord($claimedOpenIDIdentifier);
-						$this->writeLog('User \'%s\' logged in with OpenID \'%s\'',
-							$userRecord[$this->parentObject->formfield_uname], $claimedOpenIDIdentifier);
+					$openIDIdentifier = $this->getFinalOpenIDIdentifier();
+					if ($openIDIdentifier) {
+						$userRecord = $this->getUserRecord($openIDIdentifier);
+						if ($userRecord != null) {
+							$this->writeLog('User \'%s\' logged in with OpenID \'%s\'',
+								$userRecord[$this->parentObject->formfield_uname], $openIDIdentifier);
+						} else {
+							$this->writeLog('Failed to login user using OpenID \'%s\'',
+								$openIDIdentifier);
+						}
 					}
 				}
 			} else {
@@ -432,8 +438,106 @@ class tx_openid_sv1 extends t3lib_svbase {
 		}
 		$returnURL .= 'tx_openid_location=' . rawurlencode($requestURL) . '&' .
 						'tx_openid_mode=finish&' .
-						'tx_openid_claimed=' . rawurlencode($claimedIdentifier);
+						'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' .
+						'tx_openid_signature=' . $this->getSignature($claimedIdentifier);
 		return t3lib_div::locationHeaderUrl($returnURL);
+	}
+
+	/**
+	 * Signs claimed id.
+	 *
+	 * @return void
+	 */
+	protected function getSignature($claimedIdentifier) {
+		// You can also increase security by using sha1 (beware of too long URLs!)
+		return md5(implode('/', array(
+			$claimedIdentifier,
+			strval(strlen($claimedIdentifier)),
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
+		)));
+	}
+
+	/**
+	 * Calculates the path to the TYPO3 directory from the current directory
+	 *
+	 * @return string
+	 */
+	protected function getBackPath() {
+		$extPath = t3lib_extMgm::siteRelPath('openid');
+		$segmentCount = count(explode('/', $extPath));
+		$path = str_pad('', $segmentCount*3, '../') . TYPO3_mainDir;
+
+		return $path;
+	}
+
+	/**
+	 * Obtains a real identifier for the user
+	 *
+	 * @return string
+	 */
+	protected function getFinalOpenIDIdentifier() {
+		$result = $this->getSignedParameter('openid_identity');
+		if (!$result) {
+			$result = $this->getSignedParameter('openid_claimed_id');
+		}
+		if (!$result) {
+			$result = $this->getSignedClaimedOpenIDIdentifier();
+		}
+		$result = $this->getAdjustedOpenIDIdentifier($result);
+		return $result;
+	}
+
+	/**
+	 * Gets the signed OpenID that was sent back to this service.
+	 *
+	 * @return string The signed OpenID, if signature did not match this is empty
+	 */
+	protected function getSignedClaimedOpenIDIdentifier() {
+		$result = t3lib_div::_GP('tx_openid_claimed');
+		$signature = $this->getSignature($result);
+		if ($signature !== t3lib_div::_GP('tx_openid_signature')) {
+			$result = '';
+		}
+		return $result;
+	}
+
+	/**
+	 * Adjusts the OpenID identifier to to claimed OpenID, if the only difference
+	 * is in normalizing the URLs. Example:
+	 *	+ OpenID returned from provider: https://account.provider.net/
+	 *	+ OpenID used in TYPO3: https://account.provider.net (not normalized)
+	 *
+	 * @param string $openIDIdentifier The OpenID returned by the OpenID provider
+	 * @return string Adjusted OpenID identifier
+	 */
+	protected function getAdjustedOpenIDIdentifier($openIDIdentifier) {
+		$result = '';
+
+		$claimedOpenIDIdentifier = $this->getSignedClaimedOpenIDIdentifier();
+		$pattern = '#^' . preg_quote($claimedOpenIDIdentifier, '#') . '/?$#';
+
+		if (preg_match($pattern, $openIDIdentifier)) {
+			$result = $claimedOpenIDIdentifier;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Obtains a value of the parameter if it is signed. If not signed, then
+	 * empty string is returned.
+	 *
+	 * @param string $parameterName Must start with 'openid_'
+	 * @return string
+	 */
+	protected function getSignedParameter($parameterName) {
+		$signedParametersList = t3lib_div::_GP('openid_signed');
+		if (t3lib_div::inList($signedParametersList, substr($parameterName, 7))) {
+			$result = t3lib_div::_GP($parameterName);
+		} else {
+			$result = '';
+		}
+		return $result;
 	}
 
 	/**
