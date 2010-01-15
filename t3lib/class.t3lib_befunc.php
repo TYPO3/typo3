@@ -2939,11 +2939,23 @@ final class t3lib_BEfunc {
 			}
 			if (is_array($MOD_MENU)) {
 				foreach ($MOD_MENU as $key=>$var) {
+
 						// If a global var is set before entering here. eg if submitted, then it's substituting the current value the array.
-					if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key]) && strcmp($settings[$key], $CHANGED_SETTINGS[$key])) {
-						$settings[$key] = (string)$CHANGED_SETTINGS[$key];
-						$changed = 1;
-					}
+					if (is_array($CHANGED_SETTINGS) && isset($CHANGED_SETTINGS[$key])) {
+						if (is_array($CHANGED_SETTINGS[$key])) {
+							$serializedSettings = serialize($CHANGED_SETTINGS[$key]);
+							if (strcmp($settings[$key], $serializedSettings)) {
+								$settings[$key] = $serializedSettings;
+								$changed = 1;
+							}
+						} else {
+							if (strcmp($settings[$key], $CHANGED_SETTINGS[$key]) ) {
+								$settings[$key] = $CHANGED_SETTINGS[$key];
+								$changed = 1;
+							}
+						}
+ 					}
+
 						// If the $var is an array, which denotes the existence of a menu, we check if the value is permitted
 					if (is_array($var) && (!$dontValidateList || !t3lib_div::inList($dontValidateList, $key))) {
 							// If the setting is an array or not present in the menu-array, MOD_MENU, then the default value is inserted.
