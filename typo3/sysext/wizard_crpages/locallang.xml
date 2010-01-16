@@ -17,7 +17,7 @@
 			<label index="wiz_newPages_hidePages">Hide new pages</label>
 			<label index="wiz_newPages_lCreate_msg1">You're about to create many new pages. Are you sure you want to continue?</label>
 			<label index="wiz_newPages_lReset">Clear fields</label>
-			<label index="wiz_newPages_noCreate">No pages was created!</label>
+			<label index="wiz_newPages_noCreate">No pages were created!</label>
 		</languageKey>
 	</data>
 </T3locallang>
