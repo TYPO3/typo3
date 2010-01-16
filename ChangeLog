@@ -1,5 +1,6 @@
 2010-01-16  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #12681: Select/Deselect all should be visible as link (Thanks to Georg Ringer)
 	* Fixed bug #12553: Text "A simple table with up to 8 columns" is wrong (Thanks to Georg Ringer)
 	* Fixed bug #13255: Wrong text in wizard "create multiple pages" (Thanks to Georg Ringer)
 

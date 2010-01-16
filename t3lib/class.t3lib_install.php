@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -968,7 +968,7 @@ class t3lib_install {
 							<input type="checkbox" id="' . $tableId . '-checkbox"' . ($checked ? ' checked="checked"' : '') . '
 							 onclick="$(\'' . $tableId . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
 						</td>
-						<td nowrap="nowrap"><label for="' . $tableId . '-checkbox"><strong>select/deselect all</strong></label></td>
+						<td nowrap="nowrap"><label for="' . $tableId . '-checkbox" style="cursor:pointer"><strong>select/deselect all</strong></label></td>
 					</tr>';
 			}
 			foreach($arr as $key => $string)	{
@@ -996,7 +996,7 @@ class t3lib_install {
 					$out[]='
 					<tr>
 						<td valign="top"></td>
-						<td nowrap="nowrap" style="color : #666666;">'.nl2br((!$cVfullMsg?"Current value: ":"").'<em>'.$currentValue[$key].'</em>').'</td>
+						<td nowrap="nowrap" style="color:#666666;">'.nl2br((!$cVfullMsg?"Current value: ":"").'<em>'.$currentValue[$key].'</em>').'</td>
 					</tr>';
 				}
 			}
@@ -1004,7 +1004,7 @@ class t3lib_install {
 				$out[] = '
 					<tr>
 						<td valign="top"></td>
-						<td style="color : #666666;"><em>' . implode('<br />',$warnings) . '</em></td>
+						<td style="color:#666666;"><em>' . implode('<br />',$warnings) . '</em></td>
 					</tr>';
 			}
 
