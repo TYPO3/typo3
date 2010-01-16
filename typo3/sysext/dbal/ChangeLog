@@ -1,3 +1,7 @@
+2010-01-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13199: fileadminDir is hardcoded in several places (Thanks to Susanne Moog)
+
 2010-01-08  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Updated copyright year

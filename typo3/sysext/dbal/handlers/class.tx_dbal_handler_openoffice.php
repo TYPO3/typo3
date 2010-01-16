@@ -134,7 +134,7 @@ class tx_dbal_handler_openoffice extends tx_dbal_sqlengine {
 		$this->unzip->putFileToArchive('content.xml', $content_xml['content']);
 
 			// Writing ZIP content back to zip-archive file:
-		$result = $this->unzip->compileZipFile('fileadmin/dbtest_output.sxc');
+		$result = $this->unzip->compileZipFile($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . 'dbtest_output.sxc');
 
 		debug($result);
 
