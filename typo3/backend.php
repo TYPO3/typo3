@@ -401,7 +401,7 @@ class TYPO3backend {
 			'errorQueueFileSizeLimit' => $GLOBALS['LANG']->getLL('fileUpload_errorQueueFileSizeLimit'),
 			'errorQueueZeroByteFile' =>  $GLOBALS['LANG']->getLL('fileUpload_errorQueueZeroByteFile'),
 			'errorQueueInvalidFiletype' => $GLOBALS['LANG']->getLL('fileUpload_errorQueueInvalidFiletype'),
-			'errorUploadHttp' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadHttp'),
+			'errorUploadHttp' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadHttpError'),
 			'errorUploadMissingUrl' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadMissingUrl'),
 			'errorUploadIO' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadIO'),
 			'errorUploadSecurityError' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadSecurityError'),
@@ -411,6 +411,10 @@ class TYPO3backend {
 			'errorUploadFileValidation' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadFileValidation'),
 			'errorUploadFileCancelled' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadFileCancelled'),
 			'errorUploadStopped' => $GLOBALS['LANG']->getLL('fileUpload_errorUploadStopped'),
+			'allErrorMessageTitle' => $GLOBALS['LANG']->getLL('fileUpload_allErrorMessageTitle'),
+			'allErrorMessageText' => $GLOBALS['LANG']->getLL('fileUpload_allErrorMessageText'),
+			'allError401' => $GLOBALS['LANG']->getLL('fileUpload_allError401'),
+			'allError2038' => $GLOBALS['LANG']->getLL('fileUpload_allError2038'),
 		);
 
 			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
