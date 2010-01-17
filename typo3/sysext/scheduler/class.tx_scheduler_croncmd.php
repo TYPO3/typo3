@@ -73,15 +73,18 @@ class tx_scheduler_CronCmd {
 	 * Constructor
 	 *
 	 * @param	string		$cmd: the cron command
+	 * @param	integer		$tstamp: optional start time
 	 * @return	void
 	 */
-	public function __construct($cmd) {
+	public function __construct($cmd, $tstamp = FALSE) {
 			// Explode cmd in sections
 		$this->cmd_sections = t3lib_div::trimExplode(' ', $cmd);
 
 			// Initialize the values with the starting time
 			// This takes care that the calculated time is always in the future
-		$tstamp = strtotime('+1 minute');
+		if ($tstamp === FALSE) {
+			$tstamp = strtotime('+1 minute');
+		}
 		$this->values = array(
 				// Minute
 			intval(date('i', $tstamp)),
