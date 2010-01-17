@@ -93,6 +93,14 @@ Ext.onReady(function() {
 			}
 		},
 
+		/**
+		 * actions which are executed when the uploader window should be closed (actually, it's hidden)
+		 */
+		closeWindow: function() {
+			this.cleanup();
+			this.hide();
+		},
+
 		// component constructor
 		// private
 		initComponent: function() {
@@ -104,7 +112,6 @@ Ext.onReady(function() {
 				modal: true,
 				tools: [],
 				id: 't3-upload-window',
-				closeAction: 'hide',
 				title: String.format(TYPO3.LLL.fileUpload.windowTitle),
 				shadow: false,
 				hideBorders: true,
@@ -117,10 +124,7 @@ Ext.onReady(function() {
 					}, {
 						id: 't3-file-upload-window-button-cancel',
 						text: String.format(TYPO3.LLL.fileUpload.buttonCancelAll),
-						handler: function() {
-							this.cleanup();
-							this.hide();
-						},
+						handler: this.closeWindow,
 						scope: this,
 						iconCls: 't3icon-ext-cancel'
 					}
@@ -131,7 +135,8 @@ Ext.onReady(function() {
 
 			// set default options that cannot be overriden from outside
 			var staticConfig = {
-				closable: false,
+				closable: true,
+				closeAction: 'closeWindow',
 				resizable: false
 			};
 			Ext.apply(this, staticConfig);
@@ -232,6 +237,9 @@ Ext.onReady(function() {
 			this.swf = new SWFUpload(swfConfig);
 			this.swf.fileUploadWindow = this;
 
+			// disable the "Cancel all uploads" button
+			Ext.getCmp('t3-file-upload-window-button-cancel').disable();
+
 			// add some info to the dialog
 			// you can replace this by adding your own component with this ID in the constructor
 			if (!this.getComponent('t3-upload-window-infopanel')) {
@@ -322,7 +330,6 @@ Ext.onReady(function() {
 				this.setupFlash();
 				this.doLayout();
 			}.bind(this));
-			
 			// show the window, and disable the cancel button (only gets enabled when files are selected)
 			this.show();
 		},
@@ -345,6 +352,11 @@ Ext.onReady(function() {
 		// they also provide basic functionality for the file upload process
 		// private
 		uploadSelectFiles: function(numFilesSelected, numFilesQueued, numFilesInQueue) {
+			if (numFilesSelected > 0) {
+				// enable the "Cancel all uploads" button
+				Ext.getCmp('t3-file-upload-window-button-cancel').enable();
+			}
+
 			this.swf.startUpload();
 			this.fireEvent('uploadSelectFiles', this, [numFilesSelected, numFilesQueued, numFilesInQueue]);
 		},
@@ -406,6 +418,9 @@ Ext.onReady(function() {
 
 		// private
 		totalComplete: function() {
+			// disable the "Cancel all uploads" button (for the next use)
+			Ext.getCmp('t3-file-upload-window-button-cancel').disable();
+
 			if (this.completedUploads > 0) {
 				this.fireEvent('totalComplete', this);
 			} else {

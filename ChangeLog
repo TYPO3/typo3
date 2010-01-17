@@ -1,5 +1,6 @@
 2010-01-17  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #13093: Massuploader: Window is not closable (Thanks to Steffen Gebert)
 	* Fixed bug #12742: BE-login screen: Login box with spinner becomes to small and label not centered (Thanks to Steffen Gebert)
 	* Fixed bug #13167: Flash Uploader error messages should be more descriptive / Improve error handling of massuploader (Thanks to Steffen Gebert)
 
