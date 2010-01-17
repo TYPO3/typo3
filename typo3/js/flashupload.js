@@ -34,6 +34,7 @@ Ext.onReady(function() {
 	TYPO3.FileUploadWindow = Ext.extend(Ext.Window, {
 		completedUploads: 0,	// number of successfully completed uploads in this current instance, could be useful for some applications
 		activeUploads: {},		// holds all TYPO3.FileUpload instances currently uploading or in queue
+		lastError: null,	// last error occured
 		swf: null,	// holds the SWFUpload instance
 		deniedFileTypes: '',	// internal, local check to see if the uploading file is not allowed
 		swfDefaultConfig: {	// includes all default options the SWFUpload needs
@@ -385,6 +386,7 @@ Ext.onReady(function() {
 		// private
 		uploadError: function(fileObj, errorCode, message) {
 			this.activeUploads[fileObj.id].error(errorCode, message);
+			this.lastError = {'errorCode': errorCode, 'message': message};
 			this.fireEvent('uploadError', this, [this.activeUploads[fileObj.id], errorCode, message]);
 			delete this.activeUploads[fileObj.id];
 		},
@@ -406,9 +408,45 @@ Ext.onReady(function() {
 		totalComplete: function() {
 			if (this.completedUploads > 0) {
 				this.fireEvent('totalComplete', this);
+			} else {
+					// if all our uploads fail, we try to provide some reasons
+				this.totalError();
 			}
 			this.cleanup();
 			this.hide();
+		},
+
+		// private
+		// this handler is only called by totalComplete, not by swfupload itself
+		totalError: function() {
+			if (this.lastError == null) {
+				return;
+			}
+
+			var errorCode = this.lastError.errorCode;
+			var message = this.lastError.message;
+			var messageText = null;
+
+				// provide a more detailed problem description for the well known bugs
+			switch (errorCode) {
+				case SWFUpload.UPLOAD_ERROR.HTTP_ERROR:
+					if (message == '401') {
+						messageText = String.format(TYPO3.LLL.fileUpload.allError401);
+					}
+				break;
+
+				case SWFUpload.UPLOAD_ERROR.IO_ERROR:
+					if (message == 'Error #2038') {
+						messageText = String.format(TYPO3.LLL.fileUpload.allError2038);
+					}
+				break;
+			}
+			Ext.MessageBox.show({
+				title: String.format(TYPO3.LLL.fileUpload.allErrorMessageTitle),
+				msg: String.format(TYPO3.LLL.fileUpload.allErrorMessageText + (messageText ? messageText : message)),
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.ERROR
+			});
 		},
 		
 		/**
@@ -570,7 +608,7 @@ Ext.onReady(function() {
 				break;
 
 				case SWFUpload.UPLOAD_ERROR.HTTP_ERROR:
-					txt = String.format(TYPO3.LLL.fileUpload.errorUploadHttp);
+					txt = String.format(TYPO3.LLL.fileUpload.errorUploadHttp, message);
 				break;
 				case SWFUpload.UPLOAD_ERROR.MISSING_UPLOAD_URL:
 					txt = String.format(TYPO3.LLL.fileUpload.errorUploadMissingUrl);

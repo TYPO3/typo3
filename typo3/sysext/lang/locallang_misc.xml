@@ -89,6 +89,7 @@
 			<label index="fileUpload_errorQueueZeroByteFile">{0} is empty</label>
 			<label index="fileUpload_errorQueueInvalidFiletype">Filetype not allowed for {0}</label>
 			<label index="fileUpload_errorUploadHttp">Too many files selected</label>
+			<label index="fileUpload_errorUploadHttpError">A HTTP error occured: {0}</label>
 			<label index="fileUpload_errorUploadMissingUrl">Internal error: No Upload URL set</label>
 			<label index="fileUpload_errorUploadIO">Internal error: Problems while reading/writing the file</label>
 			<label index="fileUpload_errorUploadSecurityError">Internal error: {0}</label>
@@ -98,6 +99,10 @@
 			<label index="fileUpload_errorUploadFileValidation">Internal error while validating the file</label>
 			<label index="fileUpload_errorUploadFileCancelled">Upload of {0} canceled</label>
 			<label index="fileUpload_errorUploadStopped">Upload of {0} stopped</label>
+			<label index="fileUpload_allErrorMessageTitle">All uploads failed</label>
+			<label index="fileUpload_allErrorMessageText"><![CDATA[All of your uploads failed.<br /><br />If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.<br /><br />Detailed problem description:<br />]]></label>
+			<label index="fileUpload_allError401">The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</label>
+			<label index="fileUpload_allError2038">An input/output error occured (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</label>
 		</languageKey>
 	</data>
 </T3locallang>
