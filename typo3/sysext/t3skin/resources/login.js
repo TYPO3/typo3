@@ -210,7 +210,11 @@ TYPO3BackendLogin = {
 
 		$('t3-login-form-fields').hide();
 		$('t3-nocookies-error').hide();
-		$('t3-login-process').show();
+
+		// setting a fixed height (based on the current, calculated height of the browser) for 
+		// the box with the login form, so it doesn't jump around when the spinner is shown
+		var loginBoxHeight = $('t3-login-form-fields').getHeight();
+		$('t3-login-process').setStyle({height: loginBoxHeight + 'px'}).show();
 	}
 };
 
