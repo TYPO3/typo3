@@ -44,14 +44,19 @@ body#typo3-index-php .t3-headline h2 {
 	line-height: 24px;
 }
 
+body#typo3-index-php #t3-login-process {
+	text-align: center;
+}
+
 body#typo3-index-php #t3-login-process h2 {
 	background: url('../icons/login-submit-progress.gif') no-repeat 10px center;
 	font-size: 11px !important;
 	vertical-align: middle;
-	line-height: 32px;
 	color: #7F8083;
-	padding: 0 0 0 50px;
-	margin: 20px 0 20px 115px;
+	padding: 20px 0 20px 50px;
+	display: inline;
+	position: relative;
+	top: 45%;
 }
 
 body#typo3-index-php .t3-headline .t3-login-news-headline {
