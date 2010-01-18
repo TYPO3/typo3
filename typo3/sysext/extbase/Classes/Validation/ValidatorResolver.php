@@ -301,13 +301,13 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 *
 	 *
 	 * Returns an object of an appropriate validator for the given class. If no validator is available
-	 * NULL is returned
+	 * FALSE is returned
 	 *
 	 * @param string $validatorName Either the fully qualified class name of the validator or the short name of a built-in validator
 	 * @return string Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if (is_object($validatorName) && class_exists($validatorName)) return $validatorName;
+		if (strstr($validatorName, '_') !== FALSE && class_exists($validatorName)) return $validatorName;
 
 		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;
