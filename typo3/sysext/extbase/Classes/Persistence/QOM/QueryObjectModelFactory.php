@@ -46,9 +46,8 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_Storage_BackendInterfasce $storageBackend
 	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
 	 */
-	public function __construct(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend, Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
+	public function __construct(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
 		$this->storageBackend = $storageBackend;
-		$this->dataMapper = $dataMapper;
 	}
 
 	/**
@@ -71,7 +70,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	public function createQuery(Tx_Extbase_Persistence_QOM_SourceInterface $selectorOrSource, $constraint, array $orderings, array $columns) {
 		$query =  new Tx_Extbase_Persistence_QOM_QueryObjectModel($selectorOrSource, $constraint, $orderings, $columns);
 		$query->injectStorageBackend($this->storageBackend);
-		$query->injectDataMapper($this->dataMapper);
 		return $query;
 	}
 

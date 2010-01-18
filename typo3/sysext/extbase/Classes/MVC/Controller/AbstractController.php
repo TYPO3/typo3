@@ -314,14 +314,26 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected function redirectToURI($uri, $delay = 0, $statusCode = 303) {
 		if (!$this->request instanceof Tx_Extbase_MVC_Web_Request) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType('redirect() only supports web requests.', 1220539734);
 
-		$baseUri = $this->request->getBaseURI();
-
-		$uri = $baseUri . (string)$uri;
+		$uri = $this->addBaseUriIfNecessary($uri);
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
 		$this->response->setStatus($statusCode);
 		$this->response->setHeader('Location', (string)$uri);
 		throw new Tx_Extbase_MVC_Exception_StopAction();
+	}
+	
+	/**
+	 * Adds the base uri if not already in place.
+	 *
+	 * @param string $uri The URI
+	 * @return void
+	 */
+	protected function addBaseUriIfNecessary($uri) {
+		$baseUri = $this->request->getBaseURI();
+		if(stripos($uri, $baseUri) !== 0) {
+			$uri = $baseUri . (string)$uri;
+		}
+		return $uri;
 	}
 
 	/**

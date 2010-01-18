@@ -62,11 +62,6 @@
 class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persistence_QOM_QueryObjectModelInterface {
 
 	/**
-	 * @var Tx_Extbase_Persistence_DataMapper
-	 */
-	protected $dataMapper;
-
-	/**
 	 * @var Tx_Extbase_Persistence_QOM_SourceInterface
 	 */
 	protected $source;
@@ -139,16 +134,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModel implements Tx_Extbase_Persiste
 	 */
 	public function injectStorageBackend(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
 		$this->storageBackend = $storageBackend;
-	}
-
-	/**
-	 * Injects the Data Mapper to map nodes to objects
-	 *
-	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
-	 * @return void
-	 */
-	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
-		$this->dataMapper = $dataMapper;
 	}
 
 	/**

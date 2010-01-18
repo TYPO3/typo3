@@ -25,6 +25,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once (t3lib_extMgm::extPath('extbase') . 'Tests/Fixtures/Entity.php');
+
 class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTestCase {
 
 	/**
@@ -307,7 +309,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
-		/**
+	/**
 	 * @test
 	 */
 	public function resetSetsAllOptionsToTheirDefaultValue() {
@@ -476,6 +478,85 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+	
+	/**
+	 * @test
+	 */
+	public function conversionOfTansientObjectsIsInvoked() {
+		$className = uniqid('Tx_Extbase_Tests_Fixtures_Object');
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractValueObject { public $name; public $uid; }');
+		$mockValueObject = new $className;
+		$mockValueObject->name = 'foo';
+
+		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('convertTransientObjectToArray'));
+		$mockUriBuilder->expects($this->once())->method('convertTransientObjectToArray')->will($this->returnValue(array('foo' => 'bar')));
+		$actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', array('object' => $mockValueObject));
+
+		$expectedResult = array('object' => array('foo' => 'bar'));
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+	
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentValue
+	 */
+	public function conversionOfTansientObjectsThrowsExceptionForOtherThanValueObjects() {
+		$className = uniqid('Tx_Extbase_Tests_Fixtures_Object');
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractEntity { public $name; public $uid; }');
+		$mockEntity = new $className;
+		$mockEntity->name = 'foo';
+
+		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'));
+		$actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', array('object' => $mockEntity));
+	}
+		
+	/**
+	 * @test
+	 */
+	public function tansientObjectsAreConvertedToAnArrayOfProperties() {
+		$className = uniqid('Tx_Extbase_Tests_Fixtures_Object');
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractValueObject { public $name; public $uid; }');
+		$mockValueObject = new $className;
+		$mockValueObject->name = 'foo';
+		
+		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'));
+		$actualResult = $mockUriBuilder->_call('convertTransientObjectToArray', $mockValueObject);
+
+		$expectedResult = array('name' => 'foo', 'uid' => NULL);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+		
+	/**
+	 * @test
+	 */
+	public function tansientObjectsAreRecursivelyConverted() {
+		$className = uniqid('Tx_Extbase_Tests_Fixtures_Object');
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractValueObject { public $name; public $uid; }');
+		$mockInnerValueObject2 = new $className;
+		$mockInnerValueObject2->name = 'foo';
+		$mockInnerValueObject2->uid = 99;
+
+		$className = uniqid('Tx_Extbase_Tests_Fixtures_Object');
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractValueObject { public $object; public $uid; }');
+		$mockInnerValueObject1 = new $className;
+		$mockInnerValueObject1->object = $mockInnerValueObject2;
+
+		$className = uniqid('Tx_Extbase_Tests_Fixtures_Object');
+		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractValueObject { public $object; public $uid; }');
+		$mockValueObject = new $className;
+		$mockValueObject->object = $mockInnerValueObject1;
+
+		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'));
+		$actualResult = $mockUriBuilder->_call('convertTransientObjectToArray', $mockValueObject);
+
+		$expectedResult = array(
+			'object' => array(
+				'object' => 99,
+				'uid' => NULL),
+			'uid' => NULL);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+		
 
 }
 ?>

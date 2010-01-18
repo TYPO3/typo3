@@ -199,7 +199,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 		$validatorConjunction = $this->objectManager->getObject('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 
 		// Model based validator
-		if (class_exists($dataType)) {
+		if (strstr($dataType, '_') !== FALSE && class_exists($dataType)) {
 			$validatorCount = 0;
 			$objectValidator = $this->createValidator('GenericObject');
 
@@ -307,7 +307,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 * @return string Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if (class_exists($validatorName)) return $validatorName;
+		if (is_object($validatorName) && class_exists($validatorName)) return $validatorName;
 
 		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;

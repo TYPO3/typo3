@@ -354,8 +354,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 				}
 			}
 
-			foreach ($method->getParameters() as $parameter) {
-				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $method);
+			foreach ($method->getParameters() as $parameterPosition => $parameter) {
+				$this->methodParameters[$className][$methodName][$parameter->getName()] = $this->convertParameterReflectionToArray($parameter, $parameterPosition, $method);
 			}
 		}
 		ksort($this->reflectedClassNames);

@@ -33,7 +33,7 @@
  * @version $ID:$
  * @entity
  */
-class Tx_Extbase_Tests_Fixtures_Entity extends Tx_Extbase_DomainObject_Entity {
+class Tx_Extbase_Tests_Fixtures_Entity extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
 	 * The entity's name
@@ -72,13 +72,5 @@ class Tx_Extbase_Tests_Fixtures_Entity extends Tx_Extbase_DomainObject_Entity {
 		return $this->name;
 	}
 	
-	// /**
-	//  * Mock method
-	//  *
-	//  * @return void
-	//  */
-	// public function _memorizeCleanState() {
-	// }
-
 }
 ?>

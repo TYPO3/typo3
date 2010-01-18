@@ -142,7 +142,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$this->reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
 		$this->propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$this->propertyMapper->injectReflectionService($this->reflectionService);
-		$this->dataTypeClassSchema = $this->reflectionService->getClassSchema($this->dataType);
+		$this->dataTypeClassSchema = (strstr($this->dataType, '_') !== FALSE) ? $this->reflectionService->getClassSchema($this->dataType) : NULL;
 	}
 
 	/**

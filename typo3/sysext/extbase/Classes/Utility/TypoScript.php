@@ -46,7 +46,6 @@ class Tx_Extbase_Utility_TypoScript {
 	 */
 	public static function convertTypoScriptArrayToPlainArray(array $settings) {
 		$processedSettings = array();
-		// TODO Check if the t3lib_div::removeDotsFromTS() fits for this purpose (using rtrim() for removing trailing dots)
 		foreach ($settings as $key => $value) {
 			if (substr($key, -1) === '.') {
 				$keyWithoutDot = substr($key, 0, -1);

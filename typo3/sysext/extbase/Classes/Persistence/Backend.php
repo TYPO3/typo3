@@ -63,7 +63,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
 	 */
-	protected $QOMFactory;
+	protected $qomFactory;
 
 	/**
 	 * @var Tx_Extbase_Persistence_ValueFactoryInterface
@@ -150,11 +150,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Injects the QueryObjectModelFactory
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface $dataMapper
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface $qomFactory
 	 * @return void
 	 */
-	public function injectQOMFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface $QOMFactory) {
-		$this->QOMFactory = $QOMFactory;
+	public function injectQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface $qomFactory) {
+		$this->qomFactory = $qomFactory;
 	}
 
 	/**
@@ -190,8 +190,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 *
 	 * @return Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
 	 */
-	public function getQOMFactory() {
-		return $this->QOMFactory;
+	public function getQomFactory() {
+		return $this->qomFactory;
 	}
 
 	/**
@@ -210,6 +210,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	public function getIdentityMap() {
 		return $this->identityMap;
+	}
+
+	/**
+	 * Returns the reflection service
+	 *
+	 * @return Tx_Extbase_Reflection_Service
+	 */
+	public function getReflectionService() {
+		return $this->reflectionService;
 	}
 
 	/**
@@ -345,10 +354,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
-			if (!$dataMap->isPersistableProperty($propertyName)) continue;
-			if (($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) || ((get_class($propertyValue) === 'Tx_Extbase_Persistence_LazyObjectStorage') && ($propertyValue->isInitialized() === FALSE))) {
-				continue;
-			}
+			if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) continue;
 			
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$childClassName = $columnMap->getChildClassName();
@@ -381,7 +387,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
 			}
 		}
-		
+
 		if (count($row) > 0) {
 			$this->updateObject($object, $row);
 		}
@@ -417,6 +423,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} elseif ($expectedType !== gettype($value)) {			
 			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Expected property of type ' . $expectedType . ', but got ' . gettype($value), 1244465558);
 		}
+	}
+	
+	public function propertyValueIsLazyLoaded($propertyValue) {
+		if ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) return TRUE;
+		if (is_object($propertyValue) && get_class($propertyValue) === 'Tx_Extbase_Persistence_LazyObjectStorage') {
+			if ($propertyValue->isInitialized() === FALSE) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 	
 	/**

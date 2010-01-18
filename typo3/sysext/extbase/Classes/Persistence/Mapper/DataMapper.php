@@ -44,7 +44,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
 	 */
-	protected $QOMFactory;
+	protected $QomFactory;
 
 	/**
 	 * @var Tx_Extbase_Persistence_Session
@@ -96,14 +96,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	}
 
 	/**
-	 * Injects the persistence manager
+	 * Injects the persistence session
 	 *
-	 * @param Tx_Extbase_Persistence_ManagerInterface $persistenceManager
+	 * @param Tx_Extbase_Persistence_Session $persistenceSession
 	 * @return void
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
-		$this->QOMFactory = $persistenceManager->getBackend()->getQOMFactory();
-		$this->persistenceSession = $persistenceManager->getSession();
+	public function injectSession(Tx_Extbase_Persistence_Session $persistenceSession) {
+		$this->persistenceSession = $persistenceSession;
 	}
 
 	/**
@@ -114,6 +113,16 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
+	}
+	
+	/**
+	 * Sets the query object model factory
+	 *
+	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory
+	 * @return void
+	 */
+	public function setQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory) {
+		$this->qomFactory = $qomFactory;
 	}
 
 	/**
@@ -283,12 +292,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			// enableFields and storage page settings.
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			$relationTableName = $columnMap->getRelationTableName();
-			$left = $this->QOMFactory->selector(NULL, $relationTableName);
+			$left = $this->qomFactory->selector(NULL, $relationTableName);
 			$childClassName = $this->getElementType($parentObject, $propertyName);
 			$childTableName = $columnMap->getChildTableName();
-			$right = $this->QOMFactory->selector($childClassName, $childTableName);
-			$joinCondition = $this->QOMFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
-			$source = $this->QOMFactory->join(
+			$right = $this->qomFactory->selector($childClassName, $childTableName);
+			$joinCondition = $this->qomFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
+			$source = $this->qomFactory->join(
 				$left,
 				$right,
 				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,

@@ -112,22 +112,19 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function initialize(array $mapping) {
-		foreach ($this->getColumnsDefinition() as $columnName => $columnDefinition) {
-			$columnConfiguration = $columnDefinition['config'];
-			if (!empty($mapping[$columnName]['mapOnProperty'])) {
-				$propertyName = $mapping[$columnName]['mapOnProperty'];
-			} else {
-				$propertyName = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
-			}
-			if (isset($mapping[$columnName]['foreignClass']) && !isset($columnConfiguration['foreign_class'])) {
-				$columnConfiguration['foreign_class'] = $mapping[$columnName]['foreignClass'];
-			}
-			$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
+		$this->addCommonColumns();
+		$columnConfigurations = array();
+		foreach ($this->getColumnsDefinitions() as $columnName => $columnDefinition) {
+			$columnConfigurations[$columnName] = $columnDefinition['config'];
+			$columnConfigurations[$columnName]['mapOnProperty'] = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
+		}
+		$columnConfigurations = t3lib_div::array_merge_recursive_overrule($columnConfigurations, $mapping);
+		foreach ($columnConfigurations as $columnName => $columnConfiguration) {
+			$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $columnConfiguration['mapOnProperty']);
 			$this->setPropertyType($columnMap, $columnConfiguration);
 			$this->setRelations($columnMap, $columnConfiguration);
 			$this->addColumnMap($columnMap);
 		}
-		$this->addCommonColumns();
 	}
 
 	/**
@@ -136,7 +133,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param string $tableName An optional table name to fetch the columns definition from
 	 * @return array The TCA columns definition
 	 */
-	public function getColumnsDefinition($tableName = '') {
+	public function getColumnsDefinitions($tableName = '') {
 		$tableName = strlen($tableName) > 0 ? $tableName : $this->getTableName();
 		if (TYPO3_MODE === 'FE') {
 			$GLOBALS['TSFE']->includeTCA();
