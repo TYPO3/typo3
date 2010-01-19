@@ -203,10 +203,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				}
 				break;
 				case (Tx_Extbase_Persistence_PropertyType::REFERENCE):
-					if (is_null($row->getValue($columnName))) {
-						$propertyValue = NULL;
-					} else {
-						$fieldValue = $row->getValue($columnMap->getColumnName());
+					$propertyValue = $row->getValue($columnName);
+					if (!is_null($propertyValue)) {
+						$fieldValue = $row->getValue($columnName);
 						$result = $this->fetchRelated($object, $propertyName, $fieldValue);
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $result);
 					}
