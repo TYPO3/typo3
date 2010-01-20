@@ -77,10 +77,9 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
-			identifier varchar(250) DEFAULT \'\' NOT NULL,
+			identifier varchar(128) DEFAULT \'\' NOT NULL,
 			crdate int(11) unsigned DEFAULT \'0\' NOT NULL,
 			content mediumtext,
-			tags mediumtext,
 			lifetime int(11) unsigned DEFAULT \'0\' NOT NULL,
 			PRIMARY KEY (id),
 			KEY cache_id (identifier)
