@@ -14,7 +14,7 @@
 
 2010-01-17  Andreas Otto  <andreas@otto-hanika.de>
 
-        * Fixed bug #13254: Flash Messages in wizard "create multiple pages" (Thanks to Georg Ringer)
+	* Fixed bug #13254: Flash Messages in wizard "create multiple pages" (Thanks to Georg Ringer)
 
 2010-01-16  Xavier Perseguers  <typo3@perseguers.ch>
 
