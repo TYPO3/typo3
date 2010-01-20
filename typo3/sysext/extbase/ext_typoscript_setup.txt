@@ -24,10 +24,3 @@ config.tx_extbase {
 		}
 	}
 }
-
-plugin.tx_extbase._CSS_DEFAULT_STYLE (
-	input.f3-form-error {
-		background-color:#FF9F9F;
-		border: 1px #FF0000 solid;
-	}
-)
