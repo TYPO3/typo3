@@ -483,6 +483,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		$typolinkConfiguration = $this->buildTypolinkConfiguration();
 
 		$uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
+		$uri = ltrim($uri, '/');
 		if ($this->createAbsoluteUri === TRUE) {
 			$uri = $this->request->getBaseURI() . $uri;
 		}

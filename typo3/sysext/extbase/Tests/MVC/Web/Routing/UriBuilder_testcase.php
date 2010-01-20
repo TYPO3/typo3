@@ -295,7 +295,19 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 
 		$this->assertSame($expectedResult, $actualResult);
 	}
+	
+	/**
+	 * @test
+	 */
+	public function buildFrontendUriStripsLeadingSlashesFromRelativeUris() {
+		$this->contentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('/relative/uri'));
 
+		$expectedResult = 'relative/uri';
+		$actualResult = $this->uriBuilder->buildFrontendUri();
+
+		$this->assertSame($expectedResult, $actualResult);
+	}
+	
 	/**
 	 * @test
 	 */
