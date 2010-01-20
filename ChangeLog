@@ -1,3 +1,7 @@
+2010-01-20  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13270: t3lib_cache_backend_dbbackendtestcase does not reflect current db backend table definitions
+
 2010-01-18  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #11089: Fixing the built-in shopping basket (Thanks to Mathias Schreiber)
