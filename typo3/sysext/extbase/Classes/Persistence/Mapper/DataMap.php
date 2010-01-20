@@ -275,7 +275,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		// TODO support multi table relationships
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 		if ($columnConfiguration['type'] === 'inline') {
-			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
+			$columns = $this->getColumnsDefinitions($columnConfiguration['foreign_table']);
 			$columnMap->setChildClassName($this->determineChildClassName($columns[$columnConfiguration['foreign_label']]));
 			$columnMap->setChildTableName($columns[$columnConfiguration['foreign_label']]['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
