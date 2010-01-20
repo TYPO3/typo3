@@ -272,7 +272,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @return void
 	 */
 	protected function setManyToManyRelation(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
-		// TODO support for MM_insert_fields and MM_match_fields
 		// TODO support multi table relationships
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 		if ($columnConfiguration['type'] === 'inline') {
