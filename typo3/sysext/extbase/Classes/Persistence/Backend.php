@@ -366,9 +366,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				if ($object->_isNew() || $object->_isDirty($propertyName)) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $queue, $row);
 				}
-				foreach ($propertyValue as $containedObject) {
-					if ($containedObject instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-						$queue[] = $containedObject;
+				if (is_array($propertyValue)) {
+					foreach ($propertyValue as $containedObject) {
+						if ($containedObject instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+							$queue[] = $containedObject;
+						}
 					}
 				}
 			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {				
