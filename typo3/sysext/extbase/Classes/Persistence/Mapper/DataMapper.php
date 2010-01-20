@@ -302,11 +302,24 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
 				$joinCondition
 				);
+
 			$query->setSource($source);
 			if (!empty($childSortByFieldName)) {
 				$query->setOrderings(array($relationTableName . '.' . $childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
-			$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
+			
+			// attempt to support MM_match_fields
+			$conditions = $query->equals($parentKeyFieldName, $parentObject->getUid());
+
+			$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
+			if (count($relationTableMatchFields)) {
+				foreach($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
+					$relationMatchCondition = $query->equals($relationTableMatchFieldName, $relationTableMatchFieldValue);
+					$conditions = $query->logicalAnd($conditions, $relationMatchCondition);
+				}
+			}
+			$query->matching($conditions);
+			
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);
 		}

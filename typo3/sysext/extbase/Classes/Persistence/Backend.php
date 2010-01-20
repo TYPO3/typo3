@@ -692,6 +692,15 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		// if (isset($childTableName)) {
 		// 	$row['tablenames'] = $childTableName;
 		// }
+		
+		// attempt to support MM_insert_fields
+		$relationTableInsertFields = $columnMap->getRelationTableInsertFields();
+		if (count($relationTableInsertFields)) {
+			foreach($relationTableInsertFields as $insertField => $insertValue) {
+				$row[$insertField] = $insertValue;
+			}
+		}
+
 		$res = $this->storageBackend->addRow(
 			$relationTableName,
 			$row,
@@ -710,11 +719,20 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$columnMap = $dataMap->getColumnMap($parentPropertyName);
 		$relationTableName = $columnMap->getRelationTableName();
+
+		$relationMatchFields = array(
+			$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
+		);
+
+		// attempt to support MM_match_fields
+		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
+		if (count($relationTableMatchFields)) {
+			$relationMatchFields = array_merge($relationTableMatchFields,$relationMatchFields);
+		}
+
 		$res = $this->storageBackend->removeRow(
 			$relationTableName,
-			array(
-				$columnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
-				),
+			$relationMatchFields,
 			FALSE);
 		return $res;
 	}
