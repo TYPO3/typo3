@@ -1,3 +1,7 @@
+2010-01-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Update #13327: Update ExtJS to version 3.1
+
 2010-01-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13270: t3lib_cache_backend_dbbackendtestcase does not reflect current db backend table definitions

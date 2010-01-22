@@ -270,6 +270,7 @@ Recycler.grid = {
 			collapsible: false,
 			animCollapse: false,
 			store: gridDs,
+			autoHeight: true,
 			cm: new Ext.grid.ColumnModel([
 				sm,
 				expander,
@@ -346,7 +347,6 @@ Recycler.grid = {
 					mode: 'local',
 					emptyText: Recycler.lang.depth,
 					selectOnFocus: true,
-					readOnly: true,
 					triggerAction: 'all',
 					editable: false,
 					forceSelection: true,
@@ -400,11 +400,10 @@ Recycler.grid = {
 					mode: 'local',
 					emptyText: Recycler.lang.tableMenu_emptyText,
 					selectOnFocus: true,
-					readOnly: true,
 					triggerAction: 'all',
 					editable: false,
 					forceSelection: true,
-
+					
 					store: new Ext.data.Store({
 						autoLoad: true,
 						url: Recycler.statics.ajaxController + '&startUid=' + Recycler.statics.startUid + '&cmd=getTables' + '&depth=' + Recycler.statics.depthSelection,
@@ -470,7 +469,7 @@ Ext.ux.plugins.FitToParent = Ext.extend(Object, {
 	init : function(c) {
 		c.on('render', function(c) {
 			c.fitToElement = Ext.get(this.parent
-					|| c.getDomPositionEl().dom.parentNode);
+					|| c.getPositionEl().dom.parentNode);
 			if (!c.doLayout) {
 				this.fitSizeToParent();
 				Ext.EventManager.onWindowResize(this.fitSizeToParent, this);
@@ -486,9 +485,11 @@ Ext.ux.plugins.FitToParent = Ext.extend(Object, {
 	fitSizeToParent : function() {
 		// Uses the dimension of the current viewport, but removes the document header
 		// and an addtional margin of 40 pixels (e.g. Safari needs this addition)
+		
 		this.fitToElement.setHeight(document.viewport.getHeight() - this.fitToElement.getTop() - 40);
-		var pos = this.getPosition(true), size = this.fitToElement
-				.getViewSize();
+		var pos = this.getPosition(true), size = this.fitToElement.getViewSize();
+		//why doesn't it resize anymore in 3.1?
 		this.setSize(size.width - pos[0], size.height - pos[1]);
+		
 	}
 });

@@ -1201,7 +1201,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 			$extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
 				// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
-			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '-min.js';
+			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
 				$out .= '<script src="' . $this->backPath . $extJsLocaleFile . '" type="text/javascript" charset="utf-8"></script>' . chr(10);
 			}
