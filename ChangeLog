@@ -1,3 +1,7 @@
+2010-01-23  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13230: Using TYPO3_version with "xxx-dev" won't be parsed correct in EM
+
 2010-01-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13270: t3lib_cache_backend_dbbackendtestcase does not reflect current db backend table definitions
