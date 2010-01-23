@@ -1,5 +1,6 @@
 2010-01-23  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13230: Using TYPO3_version with "xxx-dev" won't be parsed correct in EM
 	* Follow-up to #13327: Fix Recycler resize plugin
 	* Update #13327: Update ExtCore to version 3.1
 

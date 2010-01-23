@@ -4955,17 +4955,28 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				} elseif ($depK == 'typo3')	{
 					if (!$depV) continue;
 
+						// if the current TYPO3 version is a development version (like TYPO3 4.4-dev),
+						// then it should behave like TYPO3 4.4.0
+					$t3version = TYPO3_version;
+					if (stripos($t3version, '-dev')
+						|| stripos($t3version, '-alpha')
+						|| stripos($t3version, '-beta')
+						|| stripos($t3version, '-RC')) {
+							// find the last occurence of "-" and replace that part with a ".0"
+						$t3version = substr($t3version, 0, strrpos($t3version, '-')) . '.0';
+					}
+
 					$versionRange = $this->splitVersionRange($depV);
-					if ($versionRange[0]!='0.0.0' && version_compare(TYPO3_version,$versionRange[0],'<'))	{
+					if ($versionRange[0]!='0.0.0' && version_compare($t3version, $versionRange[0], '<')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_typo3_too_low'),
-							TYPO3_version, $versionRange[0]);
+							$t3version, $versionRange[0]);
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
 							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = true;
 						continue;
-					} elseif ($versionRange[1]!='0.0.0' && version_compare(TYPO3_version,$versionRange[1],'>'))	{
+					} elseif ($versionRange[1]!='0.0.0' && version_compare($t3version, $versionRange[1], '>')) {
 						$msg[] = '<br />' . sprintf($GLOBALS['LANG']->getLL('checkDependencies_typo3_too_high'),
-							TYPO3_version, $versionRange[1]);
+							$t3version, $versionRange[1]);
 						$msg[] = '&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" value="1" name="depsolver[ignore][' . $depK . ']" id="checkIgnore_' . $depK . '" />
 							<label for="checkIgnore_' . $depK . '">' . $GLOBALS['LANG']->getLL('checkDependencies_ignore_requirement') . '</label>';
 						$depError = true;
@@ -5601,7 +5612,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 						<td>
 							<form action="' . htmlspecialchars($script) . '" method="post">' .
 								$addFields .
-								$flashMessage->render() . 
+								$flashMessage->render() .
 								'<br /><input type="submit" name="write" value="' . $GLOBALS['LANG']->getLL('updatesForm_make_updates') . '" />
 							</form>
 						</td>
