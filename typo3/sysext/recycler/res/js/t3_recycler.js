@@ -270,7 +270,6 @@ Recycler.grid = {
 			collapsible: false,
 			animCollapse: false,
 			store: gridDs,
-			autoHeight: true,
 			cm: new Ext.grid.ColumnModel([
 				sm,
 				expander,
@@ -488,7 +487,6 @@ Ext.ux.plugins.FitToParent = Ext.extend(Object, {
 		
 		this.fitToElement.setHeight(document.viewport.getHeight() - this.fitToElement.getTop() - 40);
 		var pos = this.getPosition(true), size = this.fitToElement.getViewSize();
-		//why doesn't it resize anymore in 3.1?
 		this.setSize(size.width - pos[0], size.height - pos[1]);
 		
 	}
