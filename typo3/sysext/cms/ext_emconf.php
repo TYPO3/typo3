@@ -38,7 +38,7 @@ This should probably not be disabled. But the point is that Typo3 is able to wor
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.3.0-4.3.99',
+			'typo3' => '4.3.0-',
 		),
 		'conflicts' => array(
 		),
