@@ -102,11 +102,13 @@ class TYPO3backend {
 			'js/modulemenu.js',
 			'js/iecompatibility.js',
 			'js/flashupload.js',
-			'../t3lib/jsfunc.evalfield.js'
+			'../t3lib/jsfunc.evalfield.js',
+			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend'
 		);
+
 		$this->jsFilesAfterInline = array(
 			'js/backend.js',
-				'js/loginrefresh.js',
+			'js/loginrefresh.js',
 		);
 			// add default BE css
 		$this->css      = '';
@@ -209,6 +211,16 @@ class TYPO3backend {
 		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 		$pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
 		$pageRenderer->loadExtJS();
+
+			// register the extDirect API providers
+			// Note: we need to iterate thru the object, because the addProvider method
+			// does this only with multiple arguments
+		$pageRenderer->addExtOnReadyCode(
+			'for (var api in Ext.app.ExtDirectAPI) {
+				Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
+			}',
+			TRUE
+		);
 
 			// remove duplicate entries
 		$this->jsFiles = array_unique($this->jsFiles);

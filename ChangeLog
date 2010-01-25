@@ -1,3 +1,7 @@
+2010-01-25  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #13313: ExtDirect API (thanks to Stefan Galinski and the T3UXW09 team)
+
 2010-01-24  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13090: 4.4.0 trunk: version warning with CSS styled content

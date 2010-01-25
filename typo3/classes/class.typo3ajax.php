@@ -41,6 +41,13 @@ class TYPO3AJAX {
 	protected $contentFormat = 'plain';
 	protected $charset       = 'utf-8';
 	protected $requestCharset = 'utf-8';
+	protected $javascriptCallbackWrap = '
+		<script type="text/javascript">
+			/*<![CDATA[*/
+			response = |;
+			/*]]>*/
+		</script>
+	';
 
 	/**
 	 * sets the charset and the ID for the AJAX call
@@ -138,7 +145,7 @@ class TYPO3AJAX {
 	/**
 	 * sets the content format for the ajax call
 	 *
-	 * @param	string		can be one of 'plain' (default), 'xml', 'json', 'jsonbody' or 'jsonhead'
+	 * @param	string		can be one of 'plain' (default), 'xml', 'json', 'javascript', 'jsonbody' or 'jsonhead'
 	 * @return	void
 	 */
 	public function setContentFormat($format) {
@@ -147,6 +154,17 @@ class TYPO3AJAX {
 		}
 	}
 
+	/**
+	 * Specifies the wrap to be used if contentFormat is "javascript".
+	 * The wrap used by default stores the results in a variable "response" and
+	 * adds <script>-Tags around it.
+	 *
+	 * @param string $javascriptCallbackWrap the javascript callback wrap to be used
+	 * @return void
+	 */
+	public function setJavascriptCallbackWrap($javascriptCallbackWrap) {
+		$this->javascriptCallbackWrap = $javascriptCallbackWrap;
+	}
 
 	/**
 	 * sets an error message and the error flag
@@ -282,13 +300,7 @@ class TYPO3AJAX {
 			$GLOBALS['LANG']->csConvObj->convArray($this->content, $this->charset, $this->requestCharset);
 		}
 
-		$content = '<script type="text/javascript">
-					/*<![CDATA[*/
-
-					response = ' . json_encode($this->content) . ';
-
-					/*]]>*/
-					</script>';
+		$content = str_replace('|', json_encode($this->content), $this->javascriptCallbackWrap);
 
 		header('Content-type: text/html; charset=' . $this->requestCharset);
 		echo $content;
