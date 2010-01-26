@@ -1,9 +1,10 @@
 /*
- * Ext JS Library 3.0 RC2
+ * Ext Core Library 3.0
+ * http://extjs.com/
  * Copyright(c) 2006-2009, Ext JS, LLC.
- * licensing@extjs.com
  * 
- * http://extjs.com/license
+ * MIT Licensed - http://extjs.com/license/mit.txt
+ * 
  */
 
 
@@ -20,7 +21,9 @@ Ext = {
 
 Ext.apply = function(o, c, defaults){
     // no "this" reference for friendly out of scope calls
-    if (defaults) Ext.apply(o, defaults);
+    if(defaults){
+        Ext.apply(o, defaults);
+    }
     if(o && c && typeof c == 'object'){
         for(var p in c){
             o[p] = c[p];
@@ -45,6 +48,7 @@ Ext.apply = function(o, c, defaults){
         isIE = !isOpera && check(/msie/),
         isIE7 = isIE && check(/msie 7/),
         isIE8 = isIE && check(/msie 8/),
+        isIE6 = isIE && !isIE7 && !isIE8,
         isGecko = !isWebKit && check(/gecko/),
         isGecko3 = isGecko && check(/rv:1\.9/),
         isBorderBox = isIE && !isStrict,
@@ -55,7 +59,7 @@ Ext.apply = function(o, c, defaults){
         isSecure = /^https/i.test(window.location.protocol);
 
     // remove css image flicker
-    if(isIE && !(isIE7 || isIE8)){
+    if(isIE6){
         try{
             document.execCommand("BackgroundImageCache", false, true);
         }catch(e){}
@@ -84,7 +88,9 @@ Ext.apply = function(o, c, defaults){
         applyIf : function(o, c){
             if(o){
                 for(var p in c){
-                    if(Ext.isEmpty(o[p])){ o[p] = c[p]; }
+                    if(Ext.isEmpty(o[p])){ 
+                        o[p] = c[p]; 
+                    }
                 }
             }
             return o;
@@ -295,7 +301,7 @@ Ext.apply = function(o, c, defaults){
         
         isIE : isIE,
         
-        isIE6 : isIE && !isIE7 && !isIE8,
+        isIE6 : isIE6,
         
         isIE7 : isIE7,
         
@@ -737,8 +743,9 @@ Ext.lib.Event = function() {
             return ret;
         }();        
 
-    var isXUL = Ext.isGecko ? 
-        function(node) { return Object.prototype.toString.call(node) == '[object XULElement]'; } : Ext.emptyFn;
+    var isXUL = Ext.isGecko ? function(node){ 
+        return Object.prototype.toString.call(node) == '[object XULElement]';
+    } : function(){};
         
     var isTextNode = Ext.isGecko ? function(node){
         try{
@@ -834,7 +841,7 @@ Ext.lib.Event = function() {
             var callback = function() {
                 _tryPreloadAttach();
             };
-            _interval = setInterval(callback, pub.POLL_INTERVAL);
+            _interval = setInterval(callback, POLL_INTERVAL);
         }
     }
     
@@ -868,7 +875,7 @@ Ext.lib.Event = function() {
                 override:   p_override,
                 checkReady: false });
 
-            retryCount = this.POLL_RETRYS;
+            retryCount = POLL_RETRYS;
             startInterval();
         },
 
@@ -1345,7 +1352,7 @@ Ext.lib.Event = function() {
 		            
 		            if(xmlData || jsonData){
 			            initHeader('Content-Type', xmlData ? 'text/xml' : 'application/json');
-			            data = xmlData || Ext.encode(jsonData);
+			            data = xmlData || (Ext.isObject(jsonData) ? Ext.encode(jsonData) : jsonData);
 			        }
 			    }		    		    
 			    return asyncRequest(method || options.method || "POST", uri, cb, data);
@@ -3858,7 +3865,7 @@ Ext.EventObject = function(){
                 me.type = e.type;
                 me.shiftKey = e.shiftKey;
                 // mac metaKey behaves like ctrlKey
-                me.ctrlKey = e.ctrlKey || e.metaKey;
+                me.ctrlKey = e.ctrlKey || e.metaKey || false;
                 me.altKey = e.altKey;
                 // in getKey these will be normalized for the mac
                 me.keyCode = e.keyCode;
@@ -3988,7 +3995,7 @@ var DOC = document;
 Ext.Element = function(element, forceNew){
     var dom = typeof element == "string" ?
               DOC.getElementById(element) : element,
-    	id;
+        id;
 
     if(!dom) return null;
 
@@ -4005,28 +4012,28 @@ Ext.Element = function(element, forceNew){
     this.id = id || Ext.id(dom);
 };
 
-var	D = Ext.lib.Dom,
-	DH = Ext.DomHelper,
-	E = Ext.lib.Event,
-	A = Ext.lib.Anim,
-	El = Ext.Element;
+var D = Ext.lib.Dom,
+    DH = Ext.DomHelper,
+    E = Ext.lib.Event,
+    A = Ext.lib.Anim,
+    El = Ext.Element;
 
 El.prototype = {
-	
+    
     set : function(o, useSet){
         var el = this.dom,
-        	attr,
-        	val;       	
+            attr,
+            val;        
        
         for(attr in o){
-	        val = o[attr];
+            val = o[attr];
             if (attr != "style" && !Ext.isFunction(val)) {
-	            if (attr == "cls" ) {
-	                el.className = val;
-	            } else if (o.hasOwnProperty(attr)) {
-	                if (useSet || !!el.setAttribute) el.setAttribute(attr, val);
-	                else el[attr] = val;
-	            }
+                if (attr == "cls" ) {
+                    el.className = val;
+                } else if (o.hasOwnProperty(attr)) {
+                    if (useSet || !!el.setAttribute) el.setAttribute(attr, val);
+                    else el[attr] = val;
+                }
             }
         }
         if(o.style){
@@ -4034,7 +4041,7 @@ El.prototype = {
         }
         return this;
     },
-	
+    
 //  Mouse events
     
     
@@ -4114,7 +4121,7 @@ El.prototype = {
 
     
     getValue : function(asNumber){
-	    var val = this.dom.value;
+        var val = this.dom.value;
         return asNumber ? parseInt(val, 10) : val;
     },
 
@@ -4139,11 +4146,11 @@ El.prototype = {
     
     addUnits : function(size){
         if(size === "" || size == "auto" || size === undefined){
-	        size = size || '';
-	    } else if(!isNaN(size) || !unitPattern.test(size)){
-	        size = size + (this.defaultUnit || 'px');
-	    }
-	    return size;
+            size = size || '';
+        } else if(!isNaN(size) || !unitPattern.test(size)){
+            size = size + (this.defaultUnit || 'px');
+        }
+        return size;
     },
 
     
@@ -4165,11 +4172,13 @@ El.prototype = {
 
     
     remove : function(){
-        var me = this;
+        var me = this,
+            dom = me.dom;
         
         me.removeAllListeners();
-        delete El.cache[me.dom.id];
-        Ext.removeNode(me.dom);
+        delete El.cache[dom.id];
+        delete El.dataCache[dom.id]
+        Ext.removeNode(dom);
     },
 
     
@@ -4180,7 +4189,7 @@ El.prototype = {
         return me;
     },
 
-	
+    
     contains : function(el){
         return !el ? false : Ext.lib.Dom.isAncestor(this.dom, el.dom ? el.dom : el);
     },
@@ -4195,7 +4204,7 @@ El.prototype = {
         var d = this.dom,
             type = typeof d[ns + ":" + name];
 
-        if(!Ext.isEmpty(type) && type != 'unknown'){
+        if(['undefined', 'unknown'].indexOf(type) == -1){
             return d[ns + ":" + name];
         }
         return d[name];
@@ -4205,7 +4214,7 @@ El.prototype = {
     },
     
     update : function(html) {
-	    this.dom.innerHTML = html;
+        this.dom.innerHTML = html;
     }
 };
 
@@ -4226,16 +4235,17 @@ ep.autoBoxAdjust = true;
 
 // private
 var unitPattern = /\d+(px|em|%|en|ex|pt|in|cm|mm|pc)$/i,
-	docEl;
+    docEl;
 
 
 El.cache = {};
+El.dataCache = {};
 
 
 El.get = function(el){
     var ex,
-     	elm,
-     	id;
+        elm,
+        id;
     if(!el){ return null; }
     if (typeof el == "string") { // element id
         if (!(elm = DOC.getElementById(el))) {
@@ -4281,6 +4291,19 @@ El.get = function(el){
     return null;
 };
 
+// private method for getting and setting element data
+El.data = function(el, key, value){
+    var c = El.dataCache[el.id];
+    if(!c){
+        c = El.dataCache[el.id] = {};
+    }
+    if(arguments.length == 2){
+        return c[key];    
+    }else{
+        c[key] = value;
+    }
+};
+
 // private
 // Garbage collection - uncache elements/purge listeners on orphaned elements
 // so we don't hold a reference and cause the browser to retain them
@@ -4288,37 +4311,37 @@ function garbageCollect(){
     if(!Ext.enableGarbageCollector){
         clearInterval(El.collectorThread);
     } else {
-	    var eid,
-	    	el,
-	    	d;
+        var eid,
+            el,
+            d;
 
-	    for(eid in El.cache){
-	        el = El.cache[eid];
-	        d = el.dom;
-	        // -------------------------------------------------------
-	        // Determining what is garbage:
-	        // -------------------------------------------------------
-	        // !d
-	        // dom node is null, definitely garbage
-	        // -------------------------------------------------------
-	        // !d.parentNode
-	        // no parentNode == direct orphan, definitely garbage
-	        // -------------------------------------------------------
-	        // !d.offsetParent && !document.getElementById(eid)
-	        // display none elements have no offsetParent so we will
-	        // also try to look it up by it's id. However, check
-	        // offsetParent first so we don't do unneeded lookups.
-	        // This enables collection of elements that are not orphans
-	        // directly, but somewhere up the line they have an orphan
-	        // parent.
-	        // -------------------------------------------------------
-	        if(!d || !d.parentNode || (!d.offsetParent && !DOC.getElementById(eid))){
-	            delete El.cache[eid];
-	            if(d && Ext.enableListenerCollection){
-	                Ext.EventManager.removeAll(d);
-	            }
-	        }
-	    }
+        for(eid in El.cache){
+            el = El.cache[eid];
+            d = el.dom;
+            // -------------------------------------------------------
+            // Determining what is garbage:
+            // -------------------------------------------------------
+            // !d
+            // dom node is null, definitely garbage
+            // -------------------------------------------------------
+            // !d.parentNode
+            // no parentNode == direct orphan, definitely garbage
+            // -------------------------------------------------------
+            // !d.offsetParent && !document.getElementById(eid)
+            // display none elements have no offsetParent so we will
+            // also try to look it up by it's id. However, check
+            // offsetParent first so we don't do unneeded lookups.
+            // This enables collection of elements that are not orphans
+            // directly, but somewhere up the line they have an orphan
+            // parent.
+            // -------------------------------------------------------
+            if(!d || !d.parentNode || (!d.offsetParent && !DOC.getElementById(eid))){
+                delete El.cache[eid];
+                if(d && Ext.enableListenerCollection){
+                    Ext.EventManager.removeAll(d);
+                }
+            }
+        }
     }
 }
 El.collectorThreadId = setInterval(garbageCollect, 30000);
@@ -4338,13 +4361,13 @@ El._flyweights = {};
 
 El.fly = function(el, named){
     var ret = null;
-	named = named || '_global';
+    named = named || '_global';
 
     if (el = Ext.getDom(el)) {
-    	(El._flyweights[named] = El._flyweights[named] || new El.Flyweight()).dom = el;
-    	ret = El._flyweights[named];
-	}
-	return ret;
+        (El._flyweights[named] = El._flyweights[named] || new El.Flyweight()).dom = el;
+        ret = El._flyweights[named];
+    }
+    return ret;
 };
 
 
@@ -4366,6 +4389,7 @@ if(Ext.isIE || Ext.isGecko){
 
 Ext.EventManager.on(window, 'unload', function(){
     delete El.cache;
+    delete El.dataCache;
     delete El._flyweights;
 });
 })();
@@ -4576,6 +4600,7 @@ Ext.Element.addMethods(function(){
         view = document.defaultView,
         propFloat = Ext.isIE ? 'styleFloat' : 'cssFloat',
         opacityRe = /alpha\(opacity=(.*)\)/i,
+        trimRe = /^\s+|\s+$/g,
         EL = Ext.Element,   
         PADDING = "padding",
         MARGIN = "margin",
@@ -4588,7 +4613,8 @@ Ext.Element.addMethods(function(){
         // special markup used throughout Ext when box wrapping elements    
         borders = {l: BORDER + LEFT + WIDTH, r: BORDER + RIGHT + WIDTH, t: BORDER + TOP + WIDTH, b: BORDER + BOTTOM + WIDTH},
         paddings = {l: PADDING + LEFT, r: PADDING + RIGHT, t: PADDING + TOP, b: PADDING + BOTTOM},
-        margins = {l: MARGIN + LEFT, r: MARGIN + RIGHT, t: MARGIN + TOP, b: MARGIN + BOTTOM};
+        margins = {l: MARGIN + LEFT, r: MARGIN + RIGHT, t: MARGIN + TOP, b: MARGIN + BOTTOM},
+        data = Ext.Element.data;
         
     
     // private  
@@ -4763,13 +4789,16 @@ Ext.Element.addMethods(function(){
         
          setOpacity : function(opacity, animate){
             var me = this,
-                s = me.dom.style; 
+                s = me.dom.style;
+                
             if(!animate || !me.anim){            
-                if (Ext.isIE) {
+                if(Ext.isIE){
+                    var opac = opacity < 1 ? 'alpha(opacity=' + opacity * 100 + ')' : '', 
+                    val = s.filter.replace(opacityRe, '').replace(trimRe, '');
+
                     s.zoom = 1;
-                    s.filter = (s.filter || '').replace(/alpha\([^\)]*\)/gi,"") +
-                               (opacity == 1 ? "" : " alpha(opacity=" + opacity * 100 + ")");
-                } else {
+                    s.filter = val + (val.length > 0 ? ' ' : '') + opac;
+                }else{
                     s.opacity = opacity;
                 }
             }else{
@@ -4781,14 +4810,12 @@ Ext.Element.addMethods(function(){
         
         clearOpacity : function(){
             var style = this.dom.style;
-            if (window.ActiveXObject) {
-                if(typeof style.filter == 'string' && (/alpha/i).test(style.filter)){
-                    style.filter = "";
+            if(Ext.isIE){
+                if(!Ext.isEmpty(style.filter)){
+                    style.filter = style.filter.replace(opacityRe, '').replace(trimRe, '');
                 }
-            } else {
-                style.opacity = "";
-                style["-moz-opacity"] = "";
-                style["-khtml-opacity"] = "";
+            }else{
+                style.opacity = style['-moz-opacity'] = style['-khtml-opacity'] = '';
             }
             return this;
         },
@@ -4839,30 +4866,40 @@ Ext.Element.addMethods(function(){
     
         
         clip : function(){
-            var me = this;
-            if(!me.isClipped){
-               me.isClipped = true;
-               me.originalClip = {
-                   o: me.getStyle("overflow"),
-                   x: me.getStyle("overflow-x"),
-                   y: me.getStyle("overflow-y")
-               };
-               me.setStyle("overflow", "hidden");
-               me.setStyle("overflow-x", "hidden");
-               me.setStyle("overflow-y", "hidden");
+            var me = this
+                dom = me.dom;
+                
+            if(!data(dom, 'isClipped')){
+                data(dom, 'isClipped', true);
+                data(dom, 'originalClip,', {
+                    o: me.getStyle("overflow"),
+                    x: me.getStyle("overflow-x"),
+                    y: me.getStyle("overflow-y")
+                });
+                me.setStyle("overflow", "hidden");
+                me.setStyle("overflow-x", "hidden");
+                me.setStyle("overflow-y", "hidden");
             }
             return me;
         },
     
         
         unclip : function(){
-            var me = this;
-            if(me.isClipped){
-                me.isClipped = false;
-                var o = me.originalClip;
-                if(o.o){me.setStyle("overflow", o.o);}
-                if(o.x){me.setStyle("overflow-x", o.x);}
-                if(o.y){me.setStyle("overflow-y", o.y);}
+            var me = this,
+                dom = me.dom;
+                
+            if(data(dom, 'isClipped')){
+                data(dom, 'isClipped', false);
+                var o = data(dom, 'originalClip');
+                if(o.o){
+                    me.setStyle("overflow", o.o);
+                }
+                if(o.x){
+                    me.setStyle("overflow-x", o.x);
+                }
+                if(o.y){
+                    me.setStyle("overflow-y", o.y);
+                }
             }
             return me;
         },
@@ -5114,64 +5151,81 @@ Ext.Element.VISIBILITY = 1;
 Ext.Element.DISPLAY = 2;
 
 Ext.Element.addMethods(function(){
-	var VISIBILITY = "visibility",
-		DISPLAY = "display",
-		HIDDEN = "hidden",
-		NONE = "none",		
-		ELDISPLAY = Ext.Element.DISPLAY;
-	
-	return {
-		
-	    originalDisplay : "",
-	    visibilityMode : 1,
-	    
-	    
-	    setVisibilityMode : function(visMode){	  
-	        this.visibilityMode = visMode;
-	        return this;
-	    },
-	    
-	    
-	    animate : function(args, duration, onComplete, easing, animType){	    
-	        this.anim(args, {duration: duration, callback: onComplete, easing: easing}, animType);
-	        return this;
-	    },
-	
-	    
-	    anim : function(args, opt, animType, defaultDur, defaultEase, cb){
-	        animType = animType || 'run';
-	        opt = opt || {};
-	        var me = this,	        	
-	        	anim = Ext.lib.Anim[animType](
-		            me.dom, 
-		            args,
-		            (opt.duration || defaultDur) || .35,
-		            (opt.easing || defaultEase) || 'easeOut',
-		            function(){
-			            if(cb) cb.call(me);
-			            if(opt.callback) opt.callback.call(opt.scope || me, me, opt);
-		            },
-		            me
-		        );
-	        opt.anim = anim;
-	        return anim;
-	    },
-	
-	    // private legacy anim prep
-	    preanim : function(a, i){
-	        return !a[i] ? false : (Ext.isObject(a[i]) ? a[i]: {duration: a[i+1], callback: a[i+2], easing: a[i+3]});
-	    },
-	    
-	    
-	    isVisible : function() {
-	        return !this.isStyle(VISIBILITY, HIDDEN) && !this.isStyle(DISPLAY, NONE);
-	    },
-	    
-	    
-	     setVisible : function(visible, animate){
-		    var me = this,
+    var VISIBILITY = "visibility",
+        DISPLAY = "display",
+        HIDDEN = "hidden",
+        NONE = "none",      
+        ORIGINALDISPLAY = 'originalDisplay',
+        VISMODE = 'visibilityMode',
+        ELDISPLAY = Ext.Element.DISPLAY,
+        data = Ext.Element.data,
+        getDisplay = function(dom){
+            var d = data(dom, ORIGINALDISPLAY);
+            if(d === undefined){
+                data(dom, ORIGINALDISPLAY, d = '');
+            }
+            return d;
+        },
+        getVisMode = function(dom){
+            var m = data(dom, VISMODE);
+            if(m === undefined){
+                data(dom, VISMODE, m = 1)
+            }
+            return m;
+        };
+    
+    return {
+        
+        originalDisplay : "",
+        visibilityMode : 1,
+        
+        
+        setVisibilityMode : function(visMode){  
+            data(this.dom, VISMODE, visMode);
+            return this;
+        },
+        
+        
+        animate : function(args, duration, onComplete, easing, animType){       
+            this.anim(args, {duration: duration, callback: onComplete, easing: easing}, animType);
+            return this;
+        },
+    
+        
+        anim : function(args, opt, animType, defaultDur, defaultEase, cb){
+            animType = animType || 'run';
+            opt = opt || {};
+            var me = this,              
+                anim = Ext.lib.Anim[animType](
+                    me.dom, 
+                    args,
+                    (opt.duration || defaultDur) || .35,
+                    (opt.easing || defaultEase) || 'easeOut',
+                    function(){
+                        if(cb) cb.call(me);
+                        if(opt.callback) opt.callback.call(opt.scope || me, me, opt);
+                    },
+                    me
+                );
+            opt.anim = anim;
+            return anim;
+        },
+    
+        // private legacy anim prep
+        preanim : function(a, i){
+            return !a[i] ? false : (Ext.isObject(a[i]) ? a[i]: {duration: a[i+1], callback: a[i+2], easing: a[i+3]});
+        },
+        
+        
+        isVisible : function() {
+            return !this.isStyle(VISIBILITY, HIDDEN) && !this.isStyle(DISPLAY, NONE);
+        },
+        
+        
+         setVisible : function(visible, animate){
+            var me = this,
                 dom = me.dom,
-                isDisplay = (me.visibilityMode == ELDISPLAY);
+                isDisplay = getVisMode(this.dom) == ELDISPLAY;
                 
             if (!animate || !me.anim) {
                 if(isDisplay){
@@ -5199,163 +5253,191 @@ Ext.Element.addMethods(function(){
                         });
             }
             return me;
-	    },
-	
-	    
-	    toggle : function(animate){
-		    var me = this;
-	        me.setVisible(!me.isVisible(), me.preanim(arguments, 0));
-	        return me;
-	    },
-	
-	    
-	    setDisplayed : function(value) {		    
-		    if(typeof value == "boolean"){
-	           value = value ? this.originalDisplay : NONE;
-	        }
-	        this.setStyle(DISPLAY, value);
-	        return this;
-	    },
-	    
-	    // private
-	    fixDisplay : function(){
-		    var me = this;
-	        if(me.isStyle(DISPLAY, NONE)){
-	            me.setStyle(VISIBILITY, HIDDEN);
-	            me.setStyle(DISPLAY, me.originalDisplay); // first try reverting to default
-	            if(me.isStyle(DISPLAY, NONE)){ // if that fails, default to block
-	                me.setStyle(DISPLAY, "block");
-	            }
-	        }
-	    },
-	
-	    
-	    hide : function(animate){
-		    this.setVisible(false, this.preanim(arguments, 0));
-	        return this;
-	    },
-	
-	    
-	    show : function(animate){
-		    this.setVisible(true, this.preanim(arguments, 0));
-	        return this;
-	    }
-	}
+        },
+    
+        
+        toggle : function(animate){
+            var me = this;
+            me.setVisible(!me.isVisible(), me.preanim(arguments, 0));
+            return me;
+        },
+    
+        
+        setDisplayed : function(value) {            
+            if(typeof value == "boolean"){
+               value = value ? getDisplay(this.dom) : NONE;
+            }
+            this.setStyle(DISPLAY, value);
+            return this;
+        },
+        
+        // private
+        fixDisplay : function(){
+            var me = this;
+            if(me.isStyle(DISPLAY, NONE)){
+                me.setStyle(VISIBILITY, HIDDEN);
+                me.setStyle(DISPLAY, getDisplay(this.dom)); // first try reverting to default
+                if(me.isStyle(DISPLAY, NONE)){ // if that fails, default to block
+                    me.setStyle(DISPLAY, "block");
+                }
+            }
+        },
+    
+        
+        hide : function(animate){
+            this.setVisible(false, this.preanim(arguments, 0));
+            return this;
+        },
+    
+        
+        show : function(animate){
+            this.setVisible(true, this.preanim(arguments, 0));
+            return this;
+        }
+    }
 }());
 (function(){
-	// contants
-	var NULL = null,
-		UNDEFINED = undefined,
-		TRUE = true,
-		FALSE = false,
-    	SETX = "setX",
-    	SETY = "setY",
-    	SETXY = "setXY",
-    	LEFT = "left",
-    	BOTTOM = "bottom",
-    	TOP = "top",
-    	RIGHT = "right",
-    	HEIGHT = "height",
-    	WIDTH = "width",
-    	POINTS = "points",
-    	HIDDEN = "hidden",
-    	ABSOLUTE = "absolute",
-    	VISIBLE = "visible",
-    	MOTION = "motion",
-    	POSITION = "position",
-    	EASEOUT = "easeOut";
-    	
+    // contants
+    var NULL = null,
+        UNDEFINED = undefined,
+        TRUE = true,
+        FALSE = false,
+        SETX = "setX",
+        SETY = "setY",
+        SETXY = "setXY",
+        LEFT = "left",
+        BOTTOM = "bottom",
+        TOP = "top",
+        RIGHT = "right",
+        HEIGHT = "height",
+        WIDTH = "width",
+        POINTS = "points",
+        HIDDEN = "hidden",
+        ABSOLUTE = "absolute",
+        VISIBLE = "visible",
+        MOTION = "motion",
+        POSITION = "position",
+        EASEOUT = "easeOut",
+        
+        flyEl = new Ext.Element.Flyweight(),
+        queues = {},
+        getObject = function(o){
+            return o || {};
+        },
+        fly = function(dom){
+            flyEl.dom = dom;
+            flyEl.id = Ext.id(dom);
+            return flyEl;
+        },
+        
+        getQueue = function(id){
+            if(!queues[id]){
+                queues[id] = [];
+            }
+            return queues[id];
+        },
+        setQueue = function(id, value){
+            queues[id] = value;
+        };
+        
 //Notifies Element that fx methods are available
 Ext.enableFx = TRUE;
 
 
 Ext.Fx = {
-	
-	// private - calls the function taking arguments from the argHash based on the key.  Returns the return value of the function.
-	// 			 this is useful for replacing switch statements (for example).
-	switchStatements : function(key, fn, argHash){
-		return fn.apply(this, argHash[key]);
-	},
-	
-	
-    slideIn : function(anchor, o){        
-	    var me = this,
-        	el = me.getFxEl(),
-        	r,
-			b,				
-			wrap,				
-			after,
-			st,
-        	args, 
-        	pt,
-        	bw,
-        	bh,
-        	xy = me.getXY(),
-            dom = me.dom;
-        	
-        o = o || {};
-		anchor = anchor || "t";
+    
+    // private - calls the function taking arguments from the argHash based on the key.  Returns the return value of the function.
+    //           this is useful for replacing switch statements (for example).
+    switchStatements : function(key, fn, argHash){
+        return fn.apply(this, argHash[key]);
+    },
+    
+    
+    slideIn : function(anchor, o){ 
+        o = getObject(o);
+        var me = this,
+            dom = me.dom,
+            st = dom.style,
+            xy,
+            r,
+            b,              
+            wrap,               
+            after,
+            st,
+            args, 
+            pt,
+            bw,
+            bh;
+            
+        anchor = anchor || "t";
 
-        el.queueFx(o, function(){			
-			st = me.dom.style;				
-            	
+        me.queueFx(o, function(){            
+            xy = fly(dom).getXY();
             // fix display to visibility
-            me.fixDisplay();            
+            fly(dom).fixDisplay();            
             
             // restore values after effect
-			r = me.getFxRestore();		
+            r = fly(dom).getFxRestore();      
             b = {x: xy[0], y: xy[1], 0: xy[0], 1: xy[1], width: dom.offsetWidth, height: dom.offsetHeight};
             b.right = b.x + b.width;
             b.bottom = b.y + b.height;
             
             // fixed size for slide
-            me.setWidth(b.width).setHeight(b.height);            
+            fly(dom).setWidth(b.width).setHeight(b.height);            
             
             // wrap if needed
-            wrap = me.fxWrap(r.pos, o, HIDDEN);
+            wrap = fly(dom).fxWrap(r.pos, o, HIDDEN);
             
             st.visibility = VISIBLE;
             st.position = ABSOLUTE;
             
-        	// clear out temp styles after slide and unwrap
-        	function after(){
-                 el.fxUnwrap(wrap, r.pos, o);
+            // clear out temp styles after slide and unwrap
+            function after(){
+                 fly(dom).fxUnwrap(wrap, r.pos, o);
                  st.width = r.width;
                  st.height = r.height;
-                 el.afterFx(o);
+                 fly(dom).afterFx(o);
             }
             
             // time to calculate the positions        
-        	pt = {to: [b.x, b.y]}; 
-        	bw = {to: b.width};
-        	bh = {to: b.height};
-            	
-			function argCalc(wrap, style, ww, wh, sXY, sXYval, s1, s2, w, h, p){	            	
-				var ret = {};
-            	wrap.setWidth(ww).setHeight(wh);
-            	if( wrap[sXY] )	wrap[sXY](sXYval);            		
-            	style[s1] = style[s2] = "0";	            	
-            	if(w) ret.width = w;
-            	if(h) ret.height = h;
-            	if(p) ret.points = p;
-            	return ret;
-        	};
+            pt = {to: [b.x, b.y]}; 
+            bw = {to: b.width};
+            bh = {to: b.height};
+                
+            function argCalc(wrap, style, ww, wh, sXY, sXYval, s1, s2, w, h, p){                    
+                var ret = {};
+                fly(wrap).setWidth(ww).setHeight(wh);
+                if(fly(wrap)[sXY]){
+                    fly(wrap)[sXY](sXYval);                  
+                }
+                style[s1] = style[s2] = "0";                    
+                if(w){
+                    ret.width = w
+                };
+                if(h){
+                    ret.height = h;
+                }
+                if(p){
+                    ret.points = p;
+                }
+                return ret;
+            };
 
-            args = me.switchStatements(anchor.toLowerCase(), argCalc, {
-		            t  : [wrap, st, b.width, 0, NULL, NULL, LEFT, BOTTOM, NULL, bh, NULL],
-		            l  : [wrap, st, 0, b.height, NULL, NULL, RIGHT, TOP, bw, NULL, NULL],
-		            r  : [wrap, st, b.width, b.height, SETX, b.right, LEFT, TOP, NULL, NULL, pt],
-		            b  : [wrap, st, b.width, b.height, SETY, b.bottom, LEFT, TOP, NULL, bh, pt],
-		            tl : [wrap, st, 0, 0, NULL, NULL, RIGHT, BOTTOM, bw, bh, pt],
-		            bl : [wrap, st, 0, 0, SETY, b.y + b.height, RIGHT, TOP, bw, bh, pt],
-		            br : [wrap, st, 0, 0, SETXY, [b.right, b.bottom], LEFT, TOP, bw, bh, pt],
-		            tr : [wrap, st, 0, 0, SETX, b.x + b.width, LEFT, BOTTOM, bw, bh, pt]
-            	});
+            args = fly(dom).switchStatements(anchor.toLowerCase(), argCalc, {
+                    t  : [wrap, st, b.width, 0, NULL, NULL, LEFT, BOTTOM, NULL, bh, NULL],
+                    l  : [wrap, st, 0, b.height, NULL, NULL, RIGHT, TOP, bw, NULL, NULL],
+                    r  : [wrap, st, b.width, b.height, SETX, b.right, LEFT, TOP, NULL, NULL, pt],
+                    b  : [wrap, st, b.width, b.height, SETY, b.bottom, LEFT, TOP, NULL, bh, pt],
+                    tl : [wrap, st, 0, 0, NULL, NULL, RIGHT, BOTTOM, bw, bh, pt],
+                    bl : [wrap, st, 0, 0, SETY, b.y + b.height, RIGHT, TOP, bw, bh, pt],
+                    br : [wrap, st, 0, 0, SETXY, [b.right, b.bottom], LEFT, TOP, bw, bh, pt],
+                    tr : [wrap, st, 0, 0, SETX, b.x + b.width, LEFT, BOTTOM, bw, bh, pt]
+                });
             
             st.visibility = VISIBLE;
-            wrap.show();
+            fly(wrap).show();
 
-            arguments.callee.anim = wrap.fxanim(args,
+            arguments.callee.anim = fly(wrap).fxanim(args,
                 o,
                 MOTION,
                 .5,
@@ -5365,71 +5447,74 @@ Ext.Fx = {
         return me;
     },
     
-	
+    
     slideOut : function(anchor, o){
-	    var me = this,
-	    	el = me.getFxEl(),
-	    	xy = me.getXY(),
+        o = getObject(o);
+        var me = this,
             dom = me.dom,
-	    	wrap,
-	    	st,
-	    	r,
-	    	b,
-	    	a,
-	    	zero = {to: 0}; 
-	    		    
-        o = o || {};
+            st = dom.style,
+            xy = me.getXY(),
+            wrap,
+            r,
+            b,
+            a,
+            zero = {to: 0}; 
+                    
         anchor = anchor || "t";
 
-        el.queueFx(o, function(){
-	        // restore values after effect
-            r = me.getFxRestore(); 
+        me.queueFx(o, function(){
+            
+            // restore values after effect
+            r = fly(dom).getFxRestore(); 
             b = {x: xy[0], y: xy[1], 0: xy[0], 1: xy[1], width: dom.offsetWidth, height: dom.offsetHeight};
             b.right = b.x + b.width;
             b.bottom = b.y + b.height;
-            	
-            // fixed size for slide            
-            me.setWidth(b.width).setHeight(b.height);
+                
+            // fixed size for slide   
+            fly(dom).setWidth(b.width).setHeight(b.height);
 
             // wrap if needed
-            wrap = me.fxWrap(r.pos, o, VISIBLE);
-           	st = me.dom.style;
-           		
+            wrap = fly(dom).fxWrap(r.pos, o, VISIBLE);
+                
             st.visibility = VISIBLE;
             st.position = ABSOLUTE;
-            wrap.setWidth(b.width).setHeight(b.height);            
+            fly(wrap).setWidth(b.width).setHeight(b.height);            
 
             function after(){
-	            o.useDisplay ? el.setDisplayed(FALSE) : el.hide();                
-                el.fxUnwrap(wrap, r.pos, o);
+                o.useDisplay ? fly(dom).setDisplayed(FALSE) : fly(dom).hide();                
+                fly(dom).fxUnwrap(wrap, r.pos, o);
                 st.width = r.width;
                 st.height = r.height;
-                el.afterFx(o);
+                fly(dom).afterFx(o);
             }            
             
-            function argCalc(style, s1, s2, p1, v1, p2, v2, p3, v3){	            	
-	            var ret = {};
-	            
-            	style[s1] = style[s2] = "0";
-            	ret[p1] = v1;            	
-            	if(p2) ret[p2] = v2;            	
-            	if(p3) ret[p3] = v3;
-            	
-            	return ret;
-       		};
-       		
-       		a = me.switchStatements(anchor.toLowerCase(), argCalc, {
-	            t  : [st, LEFT, BOTTOM, HEIGHT, zero],
-	            l  : [st, RIGHT, TOP, WIDTH, zero],
-	            r  : [st, LEFT, TOP, WIDTH, zero, POINTS, {to : [b.right, b.y]}],
-	            b  : [st, LEFT, TOP, HEIGHT, zero, POINTS, {to : [b.x, b.bottom]}],
-	            tl : [st, RIGHT, BOTTOM, WIDTH, zero, HEIGHT, zero],
-	            bl : [st, RIGHT, TOP, WIDTH, zero, HEIGHT, zero, POINTS, {to : [b.x, b.bottom]}],
-	            br : [st, LEFT, TOP, WIDTH, zero, HEIGHT, zero, POINTS, {to : [b.x + b.width, b.bottom]}],
-	            tr : [st, LEFT, BOTTOM, WIDTH, zero, HEIGHT, zero, POINTS, {to : [b.right, b.y]}]
+            function argCalc(style, s1, s2, p1, v1, p2, v2, p3, v3){                    
+                var ret = {};
+                
+                style[s1] = style[s2] = "0";
+                ret[p1] = v1;               
+                if(p2){
+                    ret[p2] = v2;               
+                }
+                if(p3){
+                    ret[p3] = v3;
+                }
+                
+                return ret;
+            };
+            
+            a = fly(dom).switchStatements(anchor.toLowerCase(), argCalc, {
+                t  : [st, LEFT, BOTTOM, HEIGHT, zero],
+                l  : [st, RIGHT, TOP, WIDTH, zero],
+                r  : [st, LEFT, TOP, WIDTH, zero, POINTS, {to : [b.right, b.y]}],
+                b  : [st, LEFT, TOP, HEIGHT, zero, POINTS, {to : [b.x, b.bottom]}],
+                tl : [st, RIGHT, BOTTOM, WIDTH, zero, HEIGHT, zero],
+                bl : [st, RIGHT, TOP, WIDTH, zero, HEIGHT, zero, POINTS, {to : [b.x, b.bottom]}],
+                br : [st, LEFT, TOP, WIDTH, zero, HEIGHT, zero, POINTS, {to : [b.x + b.width, b.bottom]}],
+                tr : [st, LEFT, BOTTOM, WIDTH, zero, HEIGHT, zero, POINTS, {to : [b.right, b.y]}]
             });
             
-            arguments.callee.anim = wrap.fxanim(a,
+            arguments.callee.anim = fly(wrap).fxanim(a,
                 o,
                 MOTION,
                 .5,
@@ -5439,37 +5524,38 @@ Ext.Fx = {
         return me;
     },
 
-	
+    
     puff : function(o){
-	    o = o || {};
-	    
+        o = getObject(o);
         var me = this,
-        	el = me.getFxEl(),
-        	r, 
-        	st = me.dom.style,
-        	width = me.getWidth(),
-        	height = me.getHeight();        	        
+            dom = me.dom,
+            st = dom.style,
+            width,
+            height,
+            r;
 
-        el.queueFx(o, function(){	        
-            me.clearOpacity();
-            me.show();
+        me.queueFx(o, function(){
+            width = fly(dom).getWidth();
+            height = fly(dom).getHeight();
+            fly(dom).clearOpacity();
+            fly(dom).show();
 
             // restore values after effect
-            r = me.getFxRestore();        	       	 
-        	
+            r = fly(dom).getFxRestore();                   
+            
             function after(){
-            	o.useDisplay ? el.setDisplayed(FALSE) : el.hide();	                
-                el.clearOpacity();	
-                el.setPositioning(r.pos);
+                o.useDisplay ? fly(dom).setDisplayed(FALSE) : fly(dom).hide();                  
+                fly(dom).clearOpacity();  
+                fly(dom).setPositioning(r.pos);
                 st.width = r.width;
                 st.height = r.height;
                 st.fontSize = '';
-                el.afterFx(o);
-            }	
+                fly(dom).afterFx(o);
+            }   
 
-            arguments.callee.anim = me.fxanim({
-                    width : {to : me.adjustWidth(width * 2)},
-                    height : {to : me.adjustHeight(height * 2)},
+            arguments.callee.anim = fly(dom).fxanim({
+                    width : {to : fly(dom).adjustWidth(width * 2)},
+                    height : {to : fly(dom).adjustHeight(height * 2)},
                     points : {by : [-width * .5, -height * .5]},
                     opacity : {to : 0},
                     fontSize: {to : 200, unit: "%"}
@@ -5483,72 +5569,73 @@ Ext.Fx = {
         return me;
     },
 
-	
+    
     switchOff : function(o){
-	    o = o || {};
-	    
+        o = getObject(o);
         var me = this,
-        	el = me.getFxEl();        
+            dom = me.dom,
+            st = dom.style,
+            r;
 
-        el.queueFx(o, function(){
-	        me.clearOpacity();
-            me.clip();
+        me.queueFx(o, function(){
+            fly(dom).clearOpacity();
+            fly(dom).clip();
 
             // restore values after effect
-            var r = me.getFxRestore(),
-            	st = me.dom.style,
-            	after = function(){
-	                o.useDisplay ? el.setDisplayed(FALSE) : el.hide();	
-	                el.clearOpacity();
-	                el.setPositioning(r.pos);
-	                st.width = r.width;
-	                st.height = r.height;	
-	                el.afterFx(o);
-	            };
+            r = fly(dom).getFxRestore();
+                
+            function after(){
+                o.useDisplay ? fly(dom).setDisplayed(FALSE) : fly(dom).hide();  
+                fly(dom).clearOpacity();
+                fly(dom).setPositioning(r.pos);
+                st.width = r.width;
+                st.height = r.height;   
+                fly(dom).afterFx(o);
+            };
 
-            me.fxanim({opacity : {to : 0.3}}, 
-            	NULL, 
-            	NULL, 
-            	.1, 
-            	NULL, 
-            	function(){	            		            
-	                me.clearOpacity();
-		                (function(){			                
-		                    me.fxanim({
-		                        height : {to : 1},
-		                        points : {by : [0, me.getHeight() * .5]}
-		                    }, 
-		                    o, 
-		                    MOTION, 
-		                    0.3, 
-		                    'easeIn', 
-		                    after);
-		                }).defer(100);
-	            });
+            fly(dom).fxanim({opacity : {to : 0.3}}, 
+                NULL, 
+                NULL, 
+                .1, 
+                NULL, 
+                function(){                                 
+                    fly(dom).clearOpacity();
+                        (function(){                            
+                            fly(dom).fxanim({
+                                height : {to : 1},
+                                points : {by : [0, fly(dom).getHeight() * .5]}
+                            }, 
+                            o, 
+                            MOTION, 
+                            0.3, 
+                            'easeIn', 
+                            after);
+                        }).defer(100);
+                });
         });
         return me;
     },
 
-    	
+     
     highlight : function(color, o){
-	    o = o || {};
-	    
+        o = getObject(o);
         var me = this,
-        	el = me.getFxEl(),
-        	attr = o.attr || "backgroundColor",
-        	a = {};
+            dom = me.dom,
+            attr = o.attr || "backgroundColor",
+            a = {},
+            restore;
 
-        el.queueFx(o, function(){
-            me.clearOpacity();
-            me.show();
+        me.queueFx(o, function(){
+            fly(dom).clearOpacity();
+            fly(dom).show();
 
             function after(){
-                el.dom.style[attr] = me.dom.style[attr];
-                el.afterFx(o);
+                dom.style[attr] = restore;
+                fly(dom).afterFx(o);
             }            
-            	
-            a[attr] = {from: color || "ffff9c", to: o.endColor || me.getColor(attr) || "ffffff"};
-            arguments.callee.anim = me.fxanim(a,
+            restore = dom.style[attr];
+            a[attr] = {from: color || "ffff9c", to: o.endColor || fly(dom).getColor(attr) || "ffffff"};
+            arguments.callee.anim = fly(dom).fxanim(a,
                 o,
                 'color',
                 1,
@@ -5560,27 +5647,24 @@ Ext.Fx = {
 
    
     frame : function(color, count, o){
+        o = getObject(o);
         var me = this,
-            el = me.getFxEl(),
+            dom = me.dom,
             proxy,
             active;
-            
-        o = o || {};
 
-        el.queueFx(o, function(){
+        me.queueFx(o, function(){
             color = color || "#C3DAF9"
             if(color.length == 6){
                 color = "#" + color;
             }            
             count = count || 1;
-            me.show();
+            fly(dom).show();
 
-            var xy = me.getXY(),
-                dom = me.dom,
+            var xy = fly(dom).getXY(),
                 b = {x: xy[0], y: xy[1], 0: xy[0], 1: xy[1], width: dom.offsetWidth, height: dom.offsetHeight},
-                proxy,
                 queue = function(){
-                    proxy = Ext.get(document.body || document.documentElement).createChild({
+                    proxy = fly(document.body || document.documentElement).createChild({
                         style:{
                             visbility: HIDDEN,
                             position : ABSOLUTE,
@@ -5613,7 +5697,7 @@ Ext.Fx = {
                     duration: o.duration || 1,
                     callback: function() {
                         proxy.remove();
-                        --count > 0 ? queue() : el.afterFx(o);
+                        --count > 0 ? queue() : fly(dom).afterFx(o);
                     }
                 });
                 arguments.callee.anim = {
@@ -5630,18 +5714,18 @@ Ext.Fx = {
 
    
     pause : function(seconds){        
-        var el = this.getFxEl(),
+        var dom = this.dom,
             t;
 
-        el.queueFx({}, function(){
+        this.queueFx({}, function(){
             t = setTimeout(function(){
-                el.afterFx({});
+                fly(dom).afterFx({});
             }, seconds * 1000);
             arguments.callee.anim = {
                 isAnimated: true,
                 stop: function(){
                     clearTimeout(t);
-                    el.afterFx({});
+                    fly(dom).afterFx({});
                 }
             };
         });
@@ -5650,21 +5734,21 @@ Ext.Fx = {
 
    
     fadeIn : function(o){
+        o = getObject(o);
         var me = this,
-        	el = me.getFxEl();        
-        o = o || {};
+            dom = me.dom,
+            to = o.endOpacity || 1;
         
-        el.queueFx(o, function(){	        
-            me.setOpacity(0);
-            me.fixDisplay();
-            me.dom.style.visibility = VISIBLE;
-            var to = o.endOpacity || 1;
-            arguments.callee.anim = me.fxanim({opacity:{to:to}},
+        me.queueFx(o, function(){
+            fly(dom).setOpacity(0);
+            fly(dom).fixDisplay();
+            dom.style.visibility = VISIBLE;
+            arguments.callee.anim = fly(dom).fxanim({opacity:{to:to}},
                 o, NULL, .5, EASEOUT, function(){
                 if(to == 1){
-                    this.clearOpacity();
+                    fly(dom).clearOpacity();
                 }
-                el.afterFx(o);
+                fly(dom).afterFx(o);
             });
         });
         return me;
@@ -5672,29 +5756,28 @@ Ext.Fx = {
 
    
     fadeOut : function(o){
-	    o = o || {};
-	    
+        o = getObject(o);
         var me = this,
-        	style = me.dom.style,
-        	el = me.getFxEl(),
-        	to = o.endOpacity || 0;        	
+            dom = me.dom,
+            style = dom.style,
+            to = o.endOpacity || 0;         
         
-        el.queueFx(o, function(){                       
-            arguments.callee.anim = me.fxanim({ 
-	            opacity : {to : to}},
+        me.queueFx(o, function(){  
+            arguments.callee.anim = fly(dom).fxanim({ 
+                opacity : {to : to}},
                 o, 
                 NULL, 
                 .5, 
                 EASEOUT, 
                 function(){
-	                if(to == 0){
-		               me.visibilityMode == Ext.Element.DISPLAY || o.useDisplay ? 
-		                	style.display = "none" :
-		                	style.visibility = HIDDEN;
-		                	
-	                    me.clearOpacity();
-                	}
-                	el.afterFx(o);
+                    if(to == 0){
+                        Ext.Element.data(dom, 'visibilityMode') == Ext.Element.DISPLAY || o.useDisplay ? 
+                            style.display = "none" :
+                            style.visibility = HIDDEN;
+                            
+                        fly(dom).clearOpacity();
+                    }
+                    fly(dom).afterFx(o);
             });
         });
         return me;
@@ -5702,94 +5785,88 @@ Ext.Fx = {
 
    
     scale : function(w, h, o){
-	    var me = this;
-        me.shift(Ext.apply({}, o, {
+        this.shift(Ext.apply({}, o, {
             width: w,
             height: h
         }));
-        return me;
+        return this;
     },
 
    
     shift : function(o){
-	    var me = this;
-	    o = o || {};
-        
-	    var	el = me.getFxEl();       	
-        el.queueFx(o, function(){
-	        var a = {};	
-	        
+        o = getObject(o);
+        var dom = this.dom,
+            a = {};
+                
+        this.queueFx(o, function(){
             for (var prop in o) {
-	            if (o[prop] != UNDEFINED) {		            			                    
-		            a[prop] = {to : o[prop]};	            	
-	            }
+                if (o[prop] != UNDEFINED) {                                                 
+                    a[prop] = {to : o[prop]};                   
+                }
             } 
             
-         	a.width ? a.width.to = me.adjustWidth(o.width) : a;
-         	a.height ? a.height.to = me.adjustWidth(o.height) : a;   
+            a.width ? a.width.to = fly(dom).adjustWidth(o.width) : a;
+            a.height ? a.height.to = fly(dom).adjustWidth(o.height) : a;   
             
             if (a.x || a.y || a.xy) {
-	            a.points = a.xy || 
-	            		   {to : [ a.x ? a.x.to : me.getX(),
-	            				   a.y ? a.y.to : me.getY()]};	            	
+                a.points = a.xy || 
+                           {to : [ a.x ? a.x.to : fly(dom).getX(),
+                                   a.y ? a.y.to : fly(dom).getY()]};                  
             }
 
-            arguments.callee.anim = me.fxanim(a,
+            arguments.callee.anim = fly(dom).fxanim(a,
                 o, 
                 MOTION, 
                 .35, 
                 EASEOUT, 
                 function(){
-                	el.afterFx(o);
-            	});
+                    fly(dom).afterFx(o);
+                });
         });
-        return me;
+        return this;
     },
 
-	
+    
     ghost : function(anchor, o){
+        o = getObject(o);
         var me = this,
-        	el = me.getFxEl();
-        	
-        o = o || {};
+            dom = me.dom,
+            st = dom.style,
+            a = {opacity: {to: 0}, points: {}},
+            pt = a.points,
+            r,
+            w,
+            h;
+            
         anchor = anchor || "b";
 
-        el.queueFx(o, function(){
+        me.queueFx(o, function(){
             // restore values after effect
-            var r = me.getFxRestore(),
-            	w = me.getWidth(),
-                h = me.getHeight(),
-            	st = me.dom.style,
-            	after = function(){
-	                if(o.useDisplay){
-	                    el.setDisplayed(FALSE);
-	                }else{
-	                    el.hide();
-                	}
-                	
-	                el.clearOpacity();
-	                el.setPositioning(r.pos);
-	                st.width = r.width;
-	                st.width = r.width;
-	
-	                el.afterFx(o);
-	            },
-            	a = {opacity: {to: 0}, 
-            		 points: {}}, 
-            	pt = a.points;
-            	
-            	pt.by = me.switchStatements(anchor.toLowerCase(), function(v1,v2){ return [v1, v2];}, {
-	            	t  : [0, -h],
-	            	l  : [-w, 0],
-	            	r  : [w, 0],
-	            	b  : [0, h],
-	            	tl : [-w, -h],
-	            	bl : [-w, h],
-	            	br : [w, h],
-	            	tr : [w, -h]	
-            	});
-            	
-            arguments.callee.anim = me.fxanim(a,
+            r = fly(dom).getFxRestore();
+            w = fly(dom).getWidth();
+            h = fly(dom).getHeight();
+            
+            function after(){
+                o.useDisplay ? fly(dom).setDisplayed(FALSE) : fly(dom).hide();   
+                fly(dom).clearOpacity();
+                fly(dom).setPositioning(r.pos);
+                st.width = r.width;
+                st.height = r.height;
+                fly(dom).afterFx(o);
+            }
+                
+            pt.by = fly(dom).switchStatements(anchor.toLowerCase(), function(v1,v2){ return [v1, v2];}, {
+               t  : [0, -h],
+               l  : [-w, 0],
+               r  : [w, 0],
+               b  : [0, h],
+               tl : [-w, -h],
+               bl : [-w, h],
+               br : [w, h],
+               tr : [w, -h] 
+            });
+                
+            arguments.callee.anim = fly(dom).fxanim(a,
                 o,
                 MOTION,
                 .5,
@@ -5798,9 +5875,9 @@ Ext.Fx = {
         return me;
     },
 
-	
+    
     syncFx : function(){
-	    var me = this;
+        var me = this;
         me.fxDefaults = Ext.apply(me.fxDefaults || {}, {
             block : FALSE,
             concurrent : TRUE,
@@ -5809,9 +5886,9 @@ Ext.Fx = {
         return me;
     },
 
-	
+    
     sequenceFx : function(){
-	    var me = this;
+        var me = this;
         me.fxDefaults = Ext.apply(me.fxDefaults || {}, {
             block : FALSE,
             concurrent : FALSE,
@@ -5820,37 +5897,38 @@ Ext.Fx = {
         return me;
     },
 
-	
-    nextFx : function(){	    
-        var ef = this.fxQueue[0];
+    
+    nextFx : function(){        
+        var ef = getQueue(this.dom.id)[0];
         if(ef){
             ef.call(this);
         }
     },
 
-	
-    hasActiveFx : function(){	    
-        return this.fxQueue && this.fxQueue[0];
+    
+    hasActiveFx : function(){
+        return getQueue(this.dom.id)[0];
     },
 
-	
+    
     stopFx : function(finish){
-	    var me = this;
+        var me = this,
+            id = me.dom.id;
         if(me.hasActiveFx()){
-            var cur = me.fxQueue[0];
+            var cur = getQueue(id)[0];
             if(cur && cur.anim){
                 if(cur.anim.isAnimated){
-                    me.fxQueue = [cur]; // clear out others
+                    setQueue(id, [cur]); //clear
                     cur.anim.stop(finish !== undefined ? finish : TRUE);
                 }else{
-                    me.fxQueue = [];
+                    setQueue(id, []);
                 }
             }
         }
         return me;
     },
 
-	
+    
     beforeFx : function(o){
         if(this.hasActiveFx() && !o.concurrent){
            if(o.stopFx){
@@ -5862,24 +5940,21 @@ Ext.Fx = {
         return TRUE;
     },
 
-	
+    
     hasFxBlock : function(){
-        var q = this.fxQueue;
+        var q = getQueue(this.dom.id);
         return q && q[0] && q[0].block;
     },
 
-	
+    
     queueFx : function(o, fn){
-	    var me = this;
-        if(!me.fxQueue){
-            me.fxQueue = [];
-        }
+        var me = this;
         if(!me.hasFxBlock()){
             Ext.applyIf(o, me.fxDefaults);
             if(!o.concurrent){
                 var run = me.beforeFx(o);
                 fn.block = o.block;
-                me.fxQueue.push(fn);
+                getQueue(me.dom.id).push(fn);
                 if(run){
                     me.nextFx();
                 }
@@ -5890,85 +5965,83 @@ Ext.Fx = {
         return me;
     },
 
-	
-    fxWrap : function(pos, o, vis){	
-        var me = this,
-        	wrap,
-        	wrapXY;
-        if(!o.wrap || !(wrap = Ext.get(o.wrap))){            
+    
+    fxWrap : function(pos, o, vis){ 
+        var dom = this.dom,
+            wrap,
+            wrapXY;
+        if(!o.wrap || !(wrap = Ext.getDom(o.wrap))){            
             if(o.fixPosition){
-                wrapXY = me.getXY();
+                wrapXY = fly(dom).getXY();
             }
             var div = document.createElement("div");
             div.style.visibility = vis;
-            wrap = Ext.get(me.dom.parentNode.insertBefore(div, me.dom));
-            wrap.setPositioning(pos);
-            if(wrap.isStyle(POSITION, "static")){
-                wrap.position("relative");
+            wrap = dom.parentNode.insertBefore(div, dom);
+            fly(wrap).setPositioning(pos);
+            if(fly(wrap).isStyle(POSITION, "static")){
+                fly(wrap).position("relative");
             }
-            me.clearPositioning('auto');
-            wrap.clip();
-            wrap.dom.appendChild(me.dom);
+            fly(dom).clearPositioning('auto');
+            fly(wrap).clip();
+            wrap.appendChild(dom);
             if(wrapXY){
-                wrap.setXY(wrapXY);
+                fly(wrap).setXY(wrapXY);
             }
         }
         return wrap;
     },
 
-	
-    fxUnwrap : function(wrap, pos, o){	    
-	    var me = this;
-        me.clearPositioning();
-        me.setPositioning(pos);
+    
+    fxUnwrap : function(wrap, pos, o){      
+        var dom = this.dom;
+        fly(dom).clearPositioning();
+        fly(dom).setPositioning(pos);
         if(!o.wrap){
-            wrap.dom.parentNode.insertBefore(me.dom, wrap.dom);
-            wrap.remove();
+            wrap.parentNode.insertBefore(dom, wrap);
+            fly(wrap).remove();
         }
     },
 
-	
+    
     getFxRestore : function(){
-        var	st = this.dom.style;
+        var st = this.dom.style;
         return {pos: this.getPositioning(), width: st.width, height : st.height};
     },
 
-	
+    
     afterFx : function(o){
-	    var me = this;
+        var dom = this.dom,
+            id = dom.id;
         if(o.afterStyle){
-	        me.setStyle(o.afterStyle);            
+            fly(dom).setStyle(o.afterStyle);            
         }
         if(o.afterCls){
-            me.addClass(o.afterCls);
+            fly(dom).addClass(o.afterCls);
         }
         if(o.remove == TRUE){
-            me.remove();
+            fly(dom).remove();
         }
-        if(o.callback) o.callback.call(o.scope, me);
+        if(o.callback){
+            o.callback.call(o.scope, fly(dom));
+        }
         if(!o.concurrent){
-            me.fxQueue.shift();
-            me.nextFx();
+            getQueue(id).shift();
+            fly(dom).nextFx();
         }
     },
 
-	
-    getFxEl : function(){ // support for composite element fx
-        return Ext.get(this.dom);
-    },
-
-	
+    
     fxanim : function(args, opt, animType, defaultDur, defaultEase, cb){
         animType = animType || 'run';
         opt = opt || {};
         var anim = Ext.lib.Anim[animType](
-	            this.dom, 
-	            args,
-	            (opt.duration || defaultDur) || .35,
-	            (opt.easing || defaultEase) || EASEOUT,
-	            cb,	           
-	            this
-	        );
+                this.dom, 
+                args,
+                (opt.duration || defaultDur) || .35,
+                (opt.easing || defaultEase) || EASEOUT,
+                cb,            
+                this
+            );
         opt.anim = anim;
         return anim;
     }
