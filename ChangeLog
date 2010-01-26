@@ -1,5 +1,6 @@
 2010-01-26  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #12688: MM relations: rollback not working / sys_history wrong (thanks to Ralf Hettinger)
 	* Update #13327: Update ExtCore to version 3.0.0
 
 2010-01-23  Steffen Kamper  <info@sk-typo3.de>
