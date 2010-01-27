@@ -99,6 +99,36 @@ $TCA['fe_users'] = array(
 				'max' => '80'
 			)
 		),
+		'first_name' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.first_name',
+			'config' => array(
+				'type' => 'input',
+				'size' => '25',
+				'eval' => 'trim',
+				'max' => '50'
+			)
+		),
+		'middle_name' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.middle_name',
+			'config' => array(
+				'type' => 'input',
+				'size' => '25',
+				'eval' => 'trim',
+				'max' => '50'
+			)
+		),
+		'last_name' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.last_name',
+			'config' => array(
+				'type' => 'input',
+				'size' => '25',
+				'eval' => 'trim',
+				'max' => '50'
+			)
+		),
 		'address' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.address',
@@ -283,7 +313,7 @@ $TCA['fe_users'] = array(
 	'types' => array(
 		'0' => array('showitem' => '
 			disable,username;;;;1-1-1, password, usergroup, lastlogin;;;;1-1-1,
-			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.personelData, name;;1;;1-1-1, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
+			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.personelData, company;;1;;1-1-1, name;;2;;2-2-2, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.access, starttime, endtime,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.extended
@@ -291,7 +321,8 @@ $TCA['fe_users'] = array(
 		')
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'title,company')
+		'1' => array('showitem' => 'title'),
+		'2' => array('showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name')
 	)
 );
 

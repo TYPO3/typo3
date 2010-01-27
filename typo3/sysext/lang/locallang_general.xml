@@ -29,6 +29,9 @@
 			<label index="LGL.subheader">Subheader:</label>
 			<label index="LGL.text">Text:</label>
 			<label index="LGL.name">Name:</label>
+			<label index="LGL.first_name">First name:</label>
+			<label index="LGL.middle_name">Middle name:</label>
+			<label index="LGL.last_name">Last name:</label>
 			<label index="LGL.title">Title:</label>
 			<label index="LGL.title_person">Title:</label>
 			<label index="LGL.address">Address:</label>

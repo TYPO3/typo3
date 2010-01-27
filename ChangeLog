@@ -1,3 +1,7 @@
+2010-01-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Added feature #11221 : Separate first-, middle- and lastname columns in fe_users table (thanks to Ismaël Bidau)
+
 2010-01-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #13313: ExtDirect API (thanks to Stefan Galinski and the T3UXW09 team)
