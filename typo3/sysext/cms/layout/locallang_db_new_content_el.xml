@@ -18,7 +18,7 @@
 			<label index="common_bulletList_title">Bullet list</label>
 			<label index="common_bulletList_description">A single bullet list.</label>
 			<label index="common_table_title">Table</label>
-			<label index="common_table_description">A simple table with up to 8 columns.</label>
+			<label index="common_table_description">A simple table.</label>
 			<label index="special">Special elements</label>
 			<label index="special_filelinks_title">Filelinks</label>
 			<label index="special_filelinks_description">Makes a list of files for download.</label>

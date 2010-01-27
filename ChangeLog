@@ -1,3 +1,7 @@
+2010-01-27  Xavier Perseguers  <typo3@perseguers.ch
+
+	* Fixed bug #12553: Text "A simple table with up to 8 columns" is wrong (Thanks to Georg Ringer)
+
 2010-01-18  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #11089: Fixing the built-in shopping basket (Thanks to Mathias Schreiber)
