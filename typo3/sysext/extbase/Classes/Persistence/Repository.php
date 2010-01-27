@@ -208,6 +208,20 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		$result = $this->createQuery()->execute();
 		return $result;
 	}
+	
+	/**
+	 * Removes all objects of this repository as if remove() was called for
+	 * all of them.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function removeAll() {
+		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		foreach ($this->findAll() as $object) {
+			$this->remove($object);
+		}
+	}
 
 	/**
 	 * Finds an object matching the given identifier.
