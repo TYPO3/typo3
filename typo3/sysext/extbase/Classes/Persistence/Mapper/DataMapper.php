@@ -314,7 +314,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
 			if (count($relationTableMatchFields)) {
 				foreach($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
-					$relationMatchCondition = $query->equals($relationTableMatchFieldName, $relationTableMatchFieldValue);
+					$relationMatchCondition = $query->equals($relationTableName . '.' . $relationTableMatchFieldName, $relationTableMatchFieldValue);
 					$conditions = $query->logicalAnd($conditions, $relationMatchCondition);
 				}
 			}
