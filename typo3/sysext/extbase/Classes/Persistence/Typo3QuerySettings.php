@@ -63,7 +63,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 */
 	public function setRespectStoragePage($respectStoragePage) {
 		$this->respectStoragePage = $respectStoragePage;
-		return this;
+		return $this;
 	}
 
 	/**
@@ -84,7 +84,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 */
 	public function setRespectEnableFields($respectEnableFields) {
 		$this->respectEnableFields = $respectEnableFields;
-		return this;
+		return $this;
 	}
 
 	/**
