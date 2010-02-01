@@ -1,3 +1,7 @@
+2010-02-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13388: Missing colon in locallang for DB and File mount (thanks to Georg Ringer)
+
 2010-01-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added feature #11221 : Separate first-, middle- and lastname columns in fe_users table (thanks to Ismaël Bidau)

@@ -29,8 +29,8 @@
 			<label index="be_users.disableIPlock">Disable IP lock for user:</label>
 			<label index="be_users.admin">Admin(!):</label>
 			<label index="be_users.options">Mount from groups:</label>
-			<label index="be_users.options_db_mounts">DB Mounts</label>
-			<label index="be_users.options_file_mounts">File Mounts</label>
+			<label index="be_users.options_db_mounts">DB Mounts:</label>
+			<label index="be_users.options_file_mounts">File Mounts:</label>
 			<label index="be_users.fileoper_perms">Fileoperation permissions:</label>
 			<label index="be_users.fileoper_perms_general">Files: Upload,Copy,Move,Delete,Rename,New,Edit</label>
 			<label index="be_users.fileoper_perms_unzip">Files: Unzip</label>
