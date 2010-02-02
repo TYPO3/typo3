@@ -1,3 +1,7 @@
+2010-02-02  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12903: ORA-00918: column ambiguously defined [indexed_search]
+
 2010-02-02  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #13313: ExtDirect API
