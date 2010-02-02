@@ -32,7 +32,7 @@
  * @author	Stefan Galinski <stefan.galinski@gmail.com>
  * @package	TYPO3
  */
-class t3lib_ExtJs_ExtDirectAPI {
+class t3lib_extjs_ExtDirectApi {
 	/**
 	 * Parses the ExtDirect configuration array "$GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect']"
 	 * and feeds the given typo3ajax instance with the resulting informations. The get parameter
@@ -50,8 +50,8 @@ class t3lib_ExtJs_ExtDirectAPI {
 		$filterNamespace = t3lib_div::_GET('namespace');
 
 		$javascriptNamespaces = array();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect'] as $javascriptName => $className) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'] as $javascriptName => $className) {
 				$splittedJavascriptName = explode('.', $javascriptName);
 				$javascriptObjectName = array_pop($splittedJavascriptName);
 				$javascriptNamespace = implode('.', $splittedJavascriptName);
@@ -79,7 +79,7 @@ class t3lib_ExtJs_ExtDirectAPI {
 					$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName][] = array(
 						'name' => $methodName,
 						'len' => $numberOfParameters
-					);	
+					);
 				}
 			}
 		}
@@ -88,6 +88,16 @@ class t3lib_ExtJs_ExtDirectAPI {
 			$setup = '
 				if (typeof Ext.app.ExtDirectAPI != "object") {
 					Ext.app.ExtDirectAPI = {};
+				}
+
+
+				if (typeof Object.extend != "function") {
+					Object.extend = function(destination, source) {
+						for (var property in source) {
+							destination[property] = source[property];
+						}
+						return destination;
+					}
 				}
 			';
 

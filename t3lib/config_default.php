@@ -280,10 +280,9 @@ $TYPO3_CONF_VARS = array(
 			'BackendLogin::getChallenge'	 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->getChallenge',
 			'WorkspaceMenu::toggleWorkspacePreview' => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->toggleWorkspacePreview',
 			'WorkspaceMenu::setWorkspace'           => 'typo3/classes/class.workspaceselector.php:WorkspaceSelector->setWorkspace',
-			'ExtDirect::getAPI' => 't3lib/extjs/class.t3lib_extjs_extdirectapi.php:t3lib_ExtJs_ExtDirectAPI->getAPI',
-			'ExtDirect::route' => 't3lib/extjs/class.t3lib_extjs_extdirectrouter.php:t3lib_ExtJs_ExtDirectRouter->route',
+			'ExtDirect::getAPI' => 't3lib/extjs/class.t3lib_extjs_extdirectapi.php:t3lib_extjs_ExtDirectApi->getAPI',
+			'ExtDirect::route' => 't3lib/extjs/class.t3lib_extjs_extdirectrouter.php:t3lib_extjs_ExtDirectRouter->route',
 		),
-		'ExtDirect' => array(),					// array of key value pairs (provider -> location:className) that holds the classes for the ExtDirect functionality
 		'XCLASS' => array(),					// See 'Inside TYPO3' document for more information.
 	),
 	'FE' => array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
@@ -366,7 +365,8 @@ $TYPO3_CONF_VARS = array(
 			'frontendEditingController' => array(
 				'default' => 't3lib/class.t3lib_frontendedit.php:t3lib_frontendedit'
 			)
-		)
+		),
+		'ExtDirect' => array(),					// array of key value pairs (provider -> location:className) that holds the classes for the ExtDirect functionality
 	),
 	'EXTCONF' => array(		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
 //		'--key--' => array()

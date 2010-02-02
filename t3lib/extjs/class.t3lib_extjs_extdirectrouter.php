@@ -32,7 +32,7 @@
  * @author	Stefan Galinski <stefan.galinski@gmail.com>
  * @package	TYPO3
  */
-class t3lib_ExtJs_ExtDirectRouter {
+class t3lib_extjs_ExtDirectRouter {
 	/**
 	 * Dispatches the incoming calls to methods about the ExtDirect API.
 	 *
@@ -88,10 +88,10 @@ class t3lib_ExtJs_ExtDirectRouter {
 	protected function processRpc($singleRequest, $namespace) {
 		try {
 			$endpointName = $namespace . '.' . $singleRequest->action;
-			
+
 			// theoretically this can never happen, because of an javascript error on
 			// the client side due the missing namespace/endpoint
-			if (!isset($GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect'][$endpointName])) {
+			if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
 				throw new t3lib_error_Exception('ExtDirect: Call to undefined endpoint: ' . $endpointName);
 			}
 
@@ -103,10 +103,10 @@ class t3lib_ExtJs_ExtDirectRouter {
 			);
 
 			$endpointObject = t3lib_div::getUserObj(
-				$GLOBALS['TYPO3_CONF_VARS']['BE']['ExtDirect'][$endpointName],
+				$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName],
 				FALSE
 			);
-			
+
 			$response['result'] = call_user_func_array(
 				array($endpointObject, $singleRequest->method),
 				is_array($singleRequest->data) ? $singleRequest->data : array()
