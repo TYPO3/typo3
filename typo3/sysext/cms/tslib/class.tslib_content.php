@@ -4570,14 +4570,14 @@ class tslib_cObj {
 			if ($conf['jumpurl.']['secure']) {
 				$typoLinkConf = array(
 					'parameter'  => $GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type,
-					'target'     => $conf['target'],
+					'fileTarget' => $conf['target'],
 					'ATagParams' => $this->getATagParams($conf),
 					'additionalParams' => '&jumpurl=' . rawurlencode($theFileEnc) . $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) . $GLOBALS['TSFE']->getMethodUrlIdToken
 				);
 			} else {
 				$typoLinkConf = array(
 					'parameter'  => $theFileEnc,
-					'target'     => $conf['target'],
+					'fileTarget' => $conf['target'],
 					'ATagParams' => $this->getATagParams($conf)
 				);
 			}
