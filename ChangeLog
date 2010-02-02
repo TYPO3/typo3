@@ -1,5 +1,6 @@
 2010-02-02  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #13368: Method filelink of tslib_content uses 'target' instead of 'fileTarget'
 	* Fixed bug #12903: ORA-00918: column ambiguously defined [indexed_search]
 
 2010-02-01  Xavier Perseguers  <typo3@perseguers.ch>
