@@ -1,3 +1,7 @@
+2010-02-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13412: BETWEEN operator is not supported
+
 2010-02-02  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13368: Method filelink of tslib_content uses 'target' instead of 'fileTarget'

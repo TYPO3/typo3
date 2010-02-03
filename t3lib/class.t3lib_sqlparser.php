@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -1055,7 +1055,7 @@ class t3lib_sqlparser {
  					}
  	
  						// Find "comparator":
-					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS)');
+					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS|BETWEEN|NOT[[:space]]+BETWEEN)');
 					if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
 						if (preg_match('/^CONCAT[[:space:]]*\(/', $parseString)) {
 							$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');
@@ -1090,6 +1090,13 @@ class t3lib_sqlparser {
 							if (!$this->nextPart($parseString, '^([)])')) {
 								return 'No ) parenthesis at end of subquery';
 							}
+						} else if (t3lib_div::inList('BETWEEN,NOT BETWEEN', $stack[$level][$pnt[$level]]['comparator'])) {
+							$stack[$level][$pnt[$level]]['values'] = array();
+							$stack[$level][$pnt[$level]]['values'][0] = $this->getValue($parseString);
+							if (!$this->nextPart($parseString, '^(AND)')) {
+								return $this->parseError('No AND operator found as expected in parseWhereClause()', $parseString);
+							}
+							$stack[$level][$pnt[$level]]['values'][1] = $this->getValue($parseString);
 						} else {
 								// Finding value for comparator:
 							$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString, $stack[$level][$pnt[$level]]['comparator']);
@@ -1823,6 +1830,12 @@ class t3lib_sqlparser {
 								}
 								$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 							}
+						} else if (t3lib_div::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
+							$lbound = $v['values'][0];
+							$ubound = $v['values'][1];
+							$output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
+							$output .= ' AND ';
+							$output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
 						} else if (isset($v['value']['operator'])) {
 							$values = array();
 							foreach ($v['value']['args'] as $fieldDef) {
