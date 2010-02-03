@@ -190,6 +190,22 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13412
+	 */
+	public function canParseAndCompileBetweenOperator() {
+		$parseString = '((scheduled BETWEEN 1265068628 AND 1265068828 ) OR scheduled <= 1265068728) AND NOT exec_time AND NOT process_id AND page_id=1 AND parameters_hash = \'854e9a2a77\'';
+		$where = $this->fixture->parseWhereClause($parseString);
+
+		$this->assertTrue(is_array($where), $where);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+
+		$whereClause = $this->cleanSql($this->fixture->compileWhereClause($where));
+		$expected = '((scheduled BETWEEN 1265068628 AND 1265068828) OR scheduled <= 1265068728) AND NOT exec_time AND NOT process_id AND page_id = 1 AND parameters_hash = \'854e9a2a77\'';
+		$this->assertEquals($expected, $whereClause);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////
