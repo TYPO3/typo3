@@ -1,5 +1,5 @@
 ************************************************************************
-CHANGES & IMPROVEMENTS between TYPO3 4.2 and 4.3
+CHANGES & IMPROVEMENTS between TYPO3 4.3 and 4.4
 (for technical details see ChangeLog)
 ************************************************************************
 
@@ -8,293 +8,42 @@ General
 
 	* TYPO3 requires PHP 5.2 now
 
-	* Support for OpenID auhentication with a new system extension for both FE and BE.
-	  Any user with a valid OpenID identifier may log in when the OpenID authentication
-	  is successful.
-
-	* The JavaScript framework ExtJS was integrated as common widget library. This
-	  collection offers developers an easy but powerful option to create nice looking
-	  user interfaces by reusing predefined objects. For example, ExtJS supports grid
-	  views, dialog windows and dynamic panels. It is currently used in the TYPO3 Core
-	  for the dialog showing that a session in the backend has expired and for the
-	  new recycler.
-
-	* The JavaScript libraries are updated to prototype 1.6.0.3 and script.aculo.us 1.8.2.
-
-	* Integration of RSA Authentication Service: Using a the public-key cryptography allows
-	  to transfer sensitive data over a secure channel, even if the website does not support
-	  HTTPS. This feature allows to store password data as salted hash value. The RSA
-	  authentication service can be used in frontend and backend by enabling the system
-	  extension rsaauth.
-	  Note: The service requires either the openssl PHP extension, or the openssl binary.
-
-	* Integration of PHP Autoloader:  This feature allows to have only those files in memory
-	  that are really required for an accordant application. The performace improves
-	  dramatically. The PHP files are looked up using a registry file returns a simple array
-	  mapping PHP class names to accordant file names:
-		+ t3lib/core_autoload.php contains all classes in t3lib/tslib or the TYPO3 Core
-		+ [extension_key]/ext_autoload.php contains all classes of that TYPO3 extension
-
-	* Extbase and Fluid integration: Extbase and Fluid are backports from FLOW3 to bring MVC
-	  and a very flexible templating engine to TYPO3 4.x. Extbase can be used in TYPO3 4.3 for
-	  frontend extensions only. The techniques used by these two packages are the same as in
-	  FLOW3/TYPO3 5.0 - thus, it's possible to develop future-proof extensions now and migrate
-	  them easily when TYPO3 5.0 is released.
-
-	* Cookies of frontend and backend sessions can now be used with flags to protect the session id.
-	  These settings for 'cookieSecure' and 'cookieHttpOnly' can be defined in the Install Tool:
-		+ cookieSecure: Indicates that the cookie should only be transmitted over a secure HTTPS
-		  connection from the client. If set to 1 (force HTTPS), the cookie will only be set if
-		  a secure (HTTPS) connection exists - use this in combination with lockSSL since otherwise
-		  the application will fail and throw an exception! If set to 2, the cookie will be set in
-		  each case, but uses the secure flag if a secure (HTTPS) connection exists.
-		+ cookieHttpOnly: When enabled the cookie will be made accessible only through the HTTP
-		  protocol. This means that the cookie won't be accessible by scripting languages, such as
-		  JavaScript. This setting can effectively help to reduce identity theft through XSS attacks
-		  (although it is not supported by all browsers).
 
 Backend
 =======
 
-	* Extension Manager: You can now set a new option "excludeFromUpdates" in every
-	  extensions' ext_emconf.php array. This way, it is a) not shown in the
-	  list of extensions to updated and b) is shown an exclamation mark in order to
-	  prevent updates for this extension. This is very useful if you made local changes
-	  to an extension and don't want any admin to overwrite them.
+	* ...
 
-	* The TypoScript editor "t3editor" was enhanced with code-completion. Now you get
-	  context-sensitive suggestions about possible properties while entering TypoScript.
-
-	* The recycling of deleted records is improved since most elements were not removed
-	  physically in TYPO3. The recycler offers the possibilities of cleaning up the garbage
-	  collection and to restore data again. Based on an ExtJS interface it's possible to
-	  get a quick overview of the accordant elements, filter the resultset and execute the
-	  desired actions. This new feature is the modernized and core-specific version of the
-	  kj_recycler extension, that has been available in the TER for years now.
-
-	* The permissions on file operations can now be set on a per-group basis. New back-end
-	  users now don't have any file permissions by default, since this has moved to back-end
-	  user groups and will apply automatically for each new group being created.
-	  The default settings for new groups are the following:
-		+ Move, delete, rename and create new directories
-		+ Upload, copy, move, delete and rename files
-		+ Unzip files
-
-	* The popup telling an user that his session has expired was replaced by a dialog window.
-
-	* The workspace selector has been turned to an item in the toolbar menu.
-
-	* It is now possible to disable versioning and workspaces by un-installing the extension
-	  "version" which is no longer a required extension. If "version" is not installed all
-	  versioning and workspace related controls are removed from the backend user interface.
-	  Not installing "version" will improve the backend performance because a lot of database
-	  operations are not needed anymore.
-
-	* The elements shown when creating new content elements (like "regular text element" etc.)
-	  can be configured, modified and extended by Page TSconfig "mod.wizards.newContentElement".
-
-	* The tables shown when creating new records in the Web>List module are grouped by their scope
-	  or extension now. The order can be modified by Page TSconfig "mod.wizards.newRecord.order".
-
-	* Elements on each table in the Web>List module can be collapsed or expanded now.
-	  In the view showing a single table with many elements, a pagination helps to
-	  get through them.
-
-	* Uploading files is now available with an optional Flash Uploader which shows a 
-	  nice widget with information on the upload progress. It makes it possible to select
-	  multiple files at once. Enable the Flash Uploader by checking the appropriate checkbox 
-	  in the User Setup, reload the Backend and make sure that your browser has the 
-	  latest version of Flash (Flash v9+) installed.
-
-	* It is possible now to temporarily lock down the backend for system maintenance. Editors
-	  will see an overlay with an message notifying them that the backend is locked. When the
-	  lock is removed, editors can continue without having to re-login.
-	  The lock is enabled by placing this file:
-		typo3conf/LOCK_BACKEND
-
-	* The backend gateway for manipulating files (uploading, renaming, copying) TCEfile is now
-	  separated from the file typo3/tce_file.php and put in a new file and class in
-	  typo3/classes/class.typo3_tcefile.php. There is now also a new AJAXid (TYPO3_tcefile::process)
-	  to use this functionality in AJAX-based environments as well.
-
-	* The backend login page is now localized. The language for the login page where no
-	  user-defined language is available yet is detected by the preferred browser language. If you
-	  have previously changed the login labels via $TYPO3_CONF_VARS['BE']['loginLabels'] then
-	  these will be used, however it is recommended to overload the XML file with your own XML file
-	  and $TYPO3_CONF_VARS['SYS']['locallangXMLOverride']['EXT:lang/locallang_login.xml']. These will
-	  only be used once you remove the altered "loginLabels" configuration option from
-	  typo3conf/localconf.php.
-
-	* The extension "gabriel" has been integrated into the TYPO3 core as system extension "scheduler".
-	  It provides a centralized way of defining scheduled, recurring tasks, with a convenient
-	  interface to manage them (BE module). The aim is to have a single cron job which just launches
-	  the Scheduler, which in turn takes care of executing all due tasks.
-	  Extension developers are strongly encouraged to turn their existing cron scripts
-	  into Scheduler tasks.
-
-	* The appearance and behavior of localized records in the backend on copy, move and deleting
-	  records has been improved. Actions performed to a record in the default language will now
-	  concern the accordant localization records as well.
-
-	* TypoScript conditions have been possible in the frontend for a long time. This release adds
-	  support for conditions in PageTSconfig and UserTSconfig so the same functionality is available
-	  in both the frontend and backend now. Due to performance reasons evaluation of TSconfig
-	  conditions can be disabled in the Install Tool with $TYPO3_CONF_VARS['BE']['TSconfigConditions].
 
 Frontend
 ========
 
-	* A new content element "MEDIA" that allows one to easily handle audio and video data has been integrated.
-	  The element is delivered with default players which can be configured for specific demands. Besides that,
-	  theese players can be replaced by others if required.
+	* ...
 
-	* The message log of the admin panel will report failures to set the locale
-
-	* Integrated functionality of extension jb_status_code into core:
-	  It is now possible to specify a redirection code (301, 302, 303 or
-	  307) together with a domain redirection in a sys_domain record.
-
-	* Added option named "additionalAbsRefPrefixDirectories" for Frontend in the Install tool.
-	  This option is useful if the installation uses non-TYPO3 applications and links to
-	  them from extensions. Earlier TYPO3 prepended only media/, typo3conf/ext/ and
-	  fileadmin/ directories automatically with config.absRefPrefix. Using the new variable
-	  administrators can tell TYPO3 to prepend also other directories inside the site root
-	  with config.absRefPrefix.
-
-	* Added new Install tool option named "dbClientCompress". This option will
-	  enable MySQL compression for network traffic. This is useful if
-	  MySQl is not on the same host as the web server. Do not use this option if MySQL
-	  is on the same host because it will only slow down the process. However if MySQL
-	  is on another host, this option may improve performance significally.
-
-	* CSS styled content was split into separate files for each compatibility versions of TYPO3
-	  (3.8, 3.9, 4.2 and current). When including the static template of css_styled_content,
-	  a specific version must be chosen (also see Compatibility below).
-
-	* The GIFBUILDER now supports automatic line breaks by defining a maximum width of the
-	  element to be rendered. The new TypoScript properties are "breakWidth" and "breakSpace".
-
-	* Image rendering now cuts off the profile data of images by default to reduce file sizes.
-	  This behaviour can be modified or disabled by changing [GFX][im_stripProfileCommand] in
-	  the install tool or by setting the TypoScript property "stripProfile" on IMAGE objects.
-
-	* cHashes now use the full md5 hash instead of the short hash previously calculated by
-	  t3lib_div::shortMD5(). This reduces the risk of duplicate hashes, which could happen
-	  in large web sites. However this may cause compatibility issues with some extensions
-	  (see Compatibility below).
 
 Compatibility
 =============
 
-	* A deprecation log has been introduced to track calls to deprecated/outdated methods
-	  in the TYPO3 Core. Developers have to make sure to adjust their code to avoid using
-	  this old functionality since deprecated methods will be removed in future TYPO3 releases!
-	  The information can be found in /typo3conf/deprecation_[hash-value].log
-	  The install tool has a setting "enableDeprecationLog" that allows one to disable the logging of
-	  deprecation messages since the file might grow quite fast depending on the extensions installed.
+	* ...
 
-	* If you use the caching framework it is not possible anymore to query the cache tables directly.
-	  Any extension that needs the new caching framework has to make sure that it is initialized by
-	  calling t3lib_cache::initializeCachingFramework().
-
-	* The simulateStaticDocument functionality (URLs like "MyPage.13.0.html" instead of "index.php?id=13")
-	  was extracted and put to a separate system extension "simulatestatic".
-
-	* The frontend editing functionality was extracted into a separate system extension "feedit".
-
-	* The help modules "about" and "cshmanual" were extracted into separate system extensions with the same name.
-
-	* As mentioned in "Frontend" CSS styled content has been split into several files.
-	  The update wizard can switch the versions of the static includes by refering to
-	  the TYPO3 compatibility version.
-
-	* As mentioned in "Frontend", cHash use full-length md5 now. This has an impact on extensions
-	  that make use of the cHash, like RealURL or the Crawler. Make sure to update those extensions
-	  to their latest version.
-
-	* As mentioned in "Backend", the extension "version" is no longer "required" and therefore it
-	  will not  be installed by default anymore if you update an existing site. If you use
-	  versioning and workspaces you have to re-enable it after the update by installing it with
-	  the extension manager or with the update wizard in install tool.
-
-	* The DOM object identifiers in Inline Relational Record Editing (IRRE) have been changed
-		from "data[<pidOfParentRecord>][<parentTable>][<parentId>][<parentField>]..."
-		to "data-<pidOfParentRecord>-<parentTable>-<parentId>-<parentField>..."
 
 Development
 ===========
 
-	* t3lib_div::makeInstance now supports singletons. To mark a class as a
-	  singleton it must implement the t3lib_singleton interface.
+	* ...
 
-	* A new caching framework has been added. It allows extensions to store temporary data
-	  transparently to different cache back ends (database, file system or memory).
-	  Due to its flexibility the caching framework is a bit slower than the native database
-	  caching, therefore it is disabled by default. If you use a multi-machine environment where
-	  you can distribute the caches over multiple servers the caching framework can be
-	  way faster than the native native database caching.
-
-	* Frontend plugins now can convert themselves from USER to USER_INT on the fly. This
-	  is useful for plugins who can disallow caching using a TSConfig option (for example,
-	  tt_news). Earlier plugins had to use $GLOBALS['TSFE']->set_no_cache(), which caused
-	  huge performance problems. Now plugin simply need to call
-	  $this->cObj->convertToUserIntObject() and return immediately without generating any
-	  content.
-	  Objects can find their current execution mode by calling $this->cObj->getUserObjectType().
-	  This function can return either tslib_cObj::OBJECTTYPE_USER (if object runs as USER)
-	  or tslib_cObj::OBJECTTYPE_USER_INT (if object is running as USER_INT). Here the code
-	  example:
-		function main() {
-			....
-			if (!$this->conf['allowCaching'] && $this->cObj->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER) {
-				$this->cObj->convertToUserIntObject();
-				return '';
-			}
-
-	* Class tslib_eidtools is enhanced with new methods for eID/AJAX applications:
-		static function initLanguage($language = 'default');
-			Creates $GLOBALS['LANG'] for the given language
-		static function initTCA();
-			Loads 'ctrl' sections for TCA tables from all installed extensions
-		static function initExtensionTCA($extensionKey);
-			Similar to initTCA() but loads the table only for the given extension
-
-	* Class t3lib_extMgm has new methods to enhance palettes:
-		t3lib_extMgm::addFieldsToAllPalettesOfField($table, $field, $addFields, $insertionPosition = '');
-			Adds new fields to all palettes of an existing field.
-		t3lib_extMgm::addFieldsToPalette($table, $palette, $addFields, $insertionPosition = '');
-			Adds new fields to a palette.
-
-	* A random byte generator has been added to t3lib_div::generateRandomBytes() which can
-	  be used for cryptographic operations in the TYPO3 Core or in any other extension.
-
-	* A page rendering class (t3lib_PageRenderer), that relies on a template file, has been added for frontend and
-	  backend disposal. The rendering object allows one to manage JavaScript and stylesheet data inside a document
-	  structure. Besides that there are hooks to compress and concatenate JavaScript and stylesheet information.
 
 TypoScript changes
 ==================
 
-	* New properties to handle JavaScript and stylesheet data for rendering a page are available. It is possible to
-	  define the place inside a document for inclusion (e.g. header and footer), wrap them with conditional comments,
-	  and many more possibilites (see TSref PAGE.includeCSS and PAGE.includeJS for more details).
+	* ...
 
-	* Custom sub categories can be used in TypoScript constants like the following:
-		#customsubcategory=limits=LLL:EXT:devlog/locallang.xml:limits
 
 Database changes
 ================
 
-	* The database tables cache_hash, cache_pagesections and cache_pages have been
-	  changed due to a move to the new caching framework.
+	* ...
 
-	* Reference indexes storing table names have been extended from 40 to 255 chars
-
-	* The database table pages_language_overlay was extended by several fields to
-	  support an alternative URL or a shortcut dependent on localization.
-
-	* The field t3ver_label has been extended from 40 to 255 chars in the tables
-	  pages, pages_language_overlay, sys_template and tt_content.
 
 DBAL
 ====
@@ -311,31 +60,7 @@ Backend skin
 Speed improvements
 ==================
 
-	* TYPO3 4.3 is the first TYPO3 version that is faster than it's predecessor. This has
-	  achieved by constantly monitoring performance impacts of all changes in the core.
-
-	* PHP classes for frontend plugins are now loaded only if they are used to render
-	  content by enabling the "includeLibs" property also for USER objects in TypoScript.
-	  In the past, all available class files for frontend plugins were loaded so this new
-	  feature increases performance by reducing memory consumption.
-
-	* TYPO3 now enables client caching of JavaScript, CSS and image files by using .htaccess
-	  files in various directories. This may cause problems if mod_expires is not enabled
-	  in the Apache configuration. See the FAQ section in the INSTALL.txt about disabling
-	  these files if necessary.
-
-	* There's a new $EM_CONF parameter called "doNotLoadInFE". When set it will prevent
-	  TYPO3 from adding the extension's ext_localconf.php and ext_tables.php to the
-	  temp_CACHED files when rendering frontend content. Technically this is done by
-	  adding an additional list of extensions to localconf.php ($TYPO3_CONF_VARS['extListFE'])
-	  which contains only a subset of all installed extensions. This list is only used
-	  when rendering frontend content. Since this list is shorter
-	  than the list of all extensions this will result in 2 new temp_CACHED_FE* files which are
-	  smaller than the files containing all extensions settings. This can save some
-	  precious milliseconds when delivering content.
-
-	* The amount of database queries is reduced using the "treelist cache". Thus, the frontend
-	  renders a bit faster due to this optimization.
+	* ...
 
 
 Important bugfixes

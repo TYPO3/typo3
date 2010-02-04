@@ -1,3 +1,7 @@
+2010-02-04  Benjamin Mack  <benni@typo3.org>
+
+	* Updated NEWS.txt for TYPO3 v4.4
+
 2010-02-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13412: BETWEEN operator is not supported
