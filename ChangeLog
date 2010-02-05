@@ -1,5 +1,6 @@
 2010-02-05  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13391: JS-error in common.js crashes flash uploader
 	* Fixed bug #13348: Datepicker is brocken with ExtJS 3.1
 	* Converted t3lib/extjs files to unix format.
 
