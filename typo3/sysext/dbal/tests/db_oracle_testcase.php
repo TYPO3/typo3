@@ -253,6 +253,20 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13422
+	 */
+	public function numericColumnsAreNotQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'1',
+			'be_users',
+			'username = \'_cli_scheduler\' AND admin = 0 AND be_users.deleted = 0'
+		));
+		$expected = 'SELECT 1 FROM "be_users" WHERE "username" = \'_cli_scheduler\' AND "admin" = 0 AND "be_users"."deleted" = 0';
+		$this->assertEquals($expected, $query);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning remapping
 	///////////////////////////////////////
