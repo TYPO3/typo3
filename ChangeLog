@@ -1,3 +1,7 @@
+2010-02-05  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #13323: "Allow preview of whole workspace" misses checkbox
+
 2010-02-02  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13368: Method filelink of tslib_content uses 'target' instead of 'fileTarget'
