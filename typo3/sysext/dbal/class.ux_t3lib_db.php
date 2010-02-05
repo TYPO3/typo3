@@ -1040,10 +1040,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	protected function _quoteFieldNames(array $select_fields) {
 		foreach ($select_fields as $k => $v) {
-			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*') {
+			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*' && !is_numeric($select_fields[$k]['field'])) {
 				$select_fields[$k]['field'] = $this->quoteName($select_fields[$k]['field']);
 			}
-			if ($select_fields[$k]['table'] != '') {
+			if ($select_fields[$k]['table'] != '' && !is_numeric($select_fields[$k]['table'])) {
 				$select_fields[$k]['table'] = $this->quoteName($select_fields[$k]['table']);
 			}
 			if ($select_fields[$k]['as'] != '') {
