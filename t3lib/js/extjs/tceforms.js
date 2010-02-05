@@ -50,17 +50,17 @@ TYPO3.TCEFORMS = {
 				format:		format[index],
 				value:		Date.parseDate(element.dom.value, format[index]),
 				handler: 	function(picker, date){
-					var relElement = Ext.getDom(picker.id.substring(1));
+					var relElement = Ext.getDom(picker.ownerCt.id.substring(1));
 					relElement.value = date.format(format[index]);
 					if (Ext.isFunction(relElement.onchange)) {
 						relElement.onchange.call(relElement);
 					}
 				},
 				listeners:	{
-					beforeshow:	function(picker) {
-						var relElement = Ext.getDom(picker.id.substring(1));
+					beforeshow:	function(obj) {
+						var relElement = Ext.getDom(obj.picker.ownerCt.id.substring(1));
 						if (relElement.value) {
-							Ext.getCmp('p' + relElement.id).setValue(Date.parseDate(relElement.value, format[index]));
+							obj.picker.setValue(Date.parseDate(relElement.value, format[index]));
 						}
 					}
 				}
