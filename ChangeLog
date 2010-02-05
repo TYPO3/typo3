@@ -1,3 +1,7 @@
+2010-02-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* converted t3lib/extjs files to unix format.
+
 2010-02-05  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #13323: "Allow preview of whole workspace" misses checkbox
