@@ -1,7 +1,7 @@
 2010-02-05  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #13323: "Allow preview of whole workspace" misses checkbox
-	* Cleanup #13377: Provide a manual for system extension saltedpasswords (thanks to Markus Krause)
+	* Cleanup #13377: Provide a manual for system extension saltedpasswords (thanks to Marcus Krause)
 
 2010-02-04  Benjamin Mack  <benni@typo3.org>
 
