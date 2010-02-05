@@ -1,3 +1,7 @@
+2010-02-05  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #13323: "Allow preview of whole workspace" misses checkbox
+
 2010-02-04  Benjamin Mack  <benni@typo3.org>
 
 	* Updated NEWS.txt for TYPO3 v4.4
