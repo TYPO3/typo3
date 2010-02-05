@@ -1,3 +1,7 @@
+2010-02-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13391: JS-error in common.js crashes flash uploader
+
 2010-02-05  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #13323: "Allow preview of whole workspace" misses checkbox

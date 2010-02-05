@@ -96,7 +96,6 @@ var TYPO3 = {
 				res.push(str.substr(0, str.indexOf(delim)));
 				str = str.substr(str.indexOf(delim) + delim.length);
 			}
-			res.push(allow);
 			return res;
 		}
 	}
