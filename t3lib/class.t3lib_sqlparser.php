@@ -330,7 +330,7 @@ class t3lib_sqlparser {
 
 		if ($result['TABLE'])	{
 
-			if ($this->nextPart($parseString,'^(VALUES)[[:space:]]+'))	{	// In this case there are no field names mentioned in the SQL!
+			if ($this->nextPart($parseString,'^(VALUES)([[:space:]]+|\()')) {	// In this case there are no field names mentioned in the SQL!
 					// Get values/fieldnames (depending...)
 				$result['VALUES_ONLY'] = $this->getValue($parseString,'IN');
 				if ($this->parse_error)	{ return $this->parse_error; }
