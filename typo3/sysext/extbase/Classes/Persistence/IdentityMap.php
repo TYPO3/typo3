@@ -100,7 +100,7 @@ class Tx_Extbase_Persistence_IdentityMap {
 	public function getIdentifierByObject($object) {
 		if (!is_object($object)) throw new InvalidArgumentException('Object expected, ' . gettype($object) . ' given.', 1246892972);
 		if (!isset($this->objectMap[$object])) {
-			throw new Tx_Extbase_Persisitence_Exception_UnknownObjectException('The given object (class: ' . get_class($object) . ') is not registered in this Identity Map.', 1246892970);
+			throw new Tx_Extbase_Persistence_Exception_UnknownObjectException('The given object (class: ' . get_class($object) . ') is not registered in this Identity Map.', 1246892970);
 		}
 		return $this->objectMap[$object];
 	}

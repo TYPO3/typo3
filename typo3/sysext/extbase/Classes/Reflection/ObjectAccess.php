@@ -63,7 +63,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 			return call_user_func(array($object, $getterMethodName));
 		} elseif ($object instanceof ArrayAccess && isset($object[$propertyName])) {
 			return $object[$propertyName];
-		} elseif (array_key_exists($propertyName, get_object_vars($object))) {
+		} elseif (is_object($object) && array_key_exists($propertyName, get_object_vars($object))) {
 			return $object->$propertyName;
 		}
 		return NULL;
