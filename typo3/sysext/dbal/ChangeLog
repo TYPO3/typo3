@@ -1,3 +1,7 @@
+2010-02-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for bug #13430: Cannot parse INSERT when VALUES has no space before left parenthesis
+
 2010-02-05  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13422: Invalid quoting of numeric column names

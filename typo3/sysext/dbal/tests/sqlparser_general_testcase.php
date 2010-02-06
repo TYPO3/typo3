@@ -206,6 +206,34 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $whereClause);
 	}
 
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13430
+	 */
+	public function canParseInsertWithoutSpaceAfterValues() {
+		$parseString = "INSERT INTO static_country_zones VALUES('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->compileINSERT($components));
+		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13430
+	 */
+	public function canParseInsertWithSpaceAfterValues() {
+		$parseString = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->compileINSERT($components));
+		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
+		$this->assertEquals($expected, $insert);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////
