@@ -338,7 +338,7 @@ class t3lib_sqlparser {
 				$fieldNames = $this->getValue($parseString,'_LIST');
 				if ($this->parse_error)	{ return $this->parse_error; }
 
-				if ($this->nextPart($parseString,'^(VALUES)[[:space:]]+'))	{	// "VALUES" keyword binds the fieldnames to values:
+				if ($this->nextPart($parseString,'^(VALUES)([[:space:]]+|\()')) {	// "VALUES" keyword binds the fieldnames to values:
 
 					$values = $this->getValue($parseString,'IN');	// Using the "getValue" function to get the field list...
 					if ($this->parse_error)	{ return $this->parse_error; }
