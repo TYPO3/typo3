@@ -214,6 +214,7 @@ class SC_db_layout {
 	var $MOD_MENU=array();		// Menu configuration
 	var $MOD_SETTINGS=array();	// Module settings (session variable)
 	var $include_once=array();	// Array, where files to include is accumulated in the init() function
+	var $externalTables = array();	// Array of tables to be listed by the Web > Page module in addition to the default tables
 
 		// Internal, dynamic:
 	var $content;				// Module output accumulation
@@ -250,6 +251,7 @@ class SC_db_layout {
 		$this->search_levels = t3lib_div::_GP('search_levels');
 		$this->showLimit = t3lib_div::_GP('showLimit');
 		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
 
 			// Load page info array:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
@@ -317,8 +319,8 @@ class SC_db_layout {
 			'showDescriptions' => '',
 			'disableRTE' => '',
 			'function' => array(
-				1 => $LANG->getLL('m_function_1'),
 				0 => $LANG->getLL('m_function_0'),
+				1 => $LANG->getLL('m_function_1'),
 				2 => $LANG->getLL('m_function_2'),
 				3 => $LANG->getLL('pageInformation')
 			),
@@ -326,6 +328,26 @@ class SC_db_layout {
 				0 => $LANG->getLL('m_default')
 			)
 		);
+
+		// example settings:
+		// 	$TYPO3_CONF_VARS['EXTCONF']['cms']['db_layout']['addTables']['tx_myext'] =
+		//		array ('default' => array(
+		//				'MENU' => 'LLL:EXT:tx_myext/locallang_db.xml:menuDefault',
+		//				'fList' =>  'title,description,image',
+		//				'icon' => TRUE),
+		if (is_array($this->externalTables)) {
+			foreach ($this->externalTables as $table => $tableSettings) {
+				// delete the default settings from above
+				if (is_array($this->MOD_MENU[$table])) {
+					unset ($this->MOD_MENU[$table]);
+				}
+				if (is_array($tableSettings)) {
+					foreach ($tableSettings as $key => $settings) {
+						$this->MOD_MENU[$table][$key] = $LANG->sL($settings['MENU']);
+					}
+				}
+			}
+		}
 
 			 // First, select all pages_language_overlay records on the current page. Each represents a possibility for a language on the page. Add these to language selector.
 		$res = $this->exec_languageQuery($this->id);
@@ -950,8 +972,7 @@ class SC_db_layout {
 		$dblist->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;
 		if (!$dblist->nextThree)	$dblist->nextThree = 1;
 
-		$dblist->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
-
+		$dblist->externalTables = $this->externalTables;
 
 			// Create menu for selecting a table to jump to (this is, if more than just pages/tt_content elements are found on the page!)
 		$h_menu = $dblist->getTableMenu($this->id);
@@ -1032,8 +1053,12 @@ class SC_db_layout {
 					break;
 				}
 			} else {
+				if (isset($this->MOD_SETTINGS) && isset($this->MOD_MENU)) {
+					$h_func = t3lib_BEfunc::getFuncMenu($this->id, 'SET[' . $table . ']', $this->MOD_SETTINGS[$table], $this->MOD_MENU[$table], 'db_layout.php', '');
+				} else {
 				$h_func = '';
 			}
+ 			}
 
 				// Start the dblist object:
 			$dblist->itemsLimitSingleTable = 1000;

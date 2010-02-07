@@ -128,7 +128,7 @@ class tx_cms_layout extends recordList {
 	var $ext_function=0;					// If set to "1", will link a big button to content element wizard.
 	var $doEdit=1;							// If true, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
 	var $agePrefixes = ' min| hrs| days| yrs';	// Age prefixes for displaying times. May be set externally to localized values.
-	var $externalTables = array();			// Array of tables which is configured to be listed by the Web > Page module in addition to the default tables.
+	var $externalTables = array();			// Array of tables to be listed by the Web > Page module in addition to the default tables.
 	var $descrTable;						// "Pseudo" Description -table name
 	var $defLangBinding=FALSE;				// If set true, the language mode of tt_content elements will be rendered with hard binding between default language content elements and their translations!
 
@@ -183,12 +183,7 @@ class tx_cms_layout extends recordList {
 		t3lib_div::loadTCA($table);
 
 		if (isset($this->externalTables[$table]))	{
-			$fList = $this->externalTables[$table][0]['fList'];	// eg. "name;title;email;company,image"
-			$icon = $this->externalTables[$table][0]['icon'];	// Boolean,
-
-				// Create listing
-			$out = $this->makeOrdinaryList($table, $id, $fList, $icon);
-			return $out;
+			return $this->getExternalTables($id, $table);
 		} else {
 				// Branch out based on table name:
 				// Notice: Most of these tables belongs to other extensions than 'cms'. Each of these tables can be rendered only if the extensions they belong to is loaded.
@@ -229,6 +224,33 @@ class tx_cms_layout extends recordList {
 			}
 		}
 	}
+
+
+	/**
+	 * Renders an external table from page id
+	 *
+	 * @param	integer		Page id
+	 * @param	string		name of the table
+	 * @return	string		HTML for the listing
+	 */
+	function getExternalTables($id, $table)	{
+ 
+		$type = $GLOBALS['SOBE']->MOD_SETTINGS[$table];
+		if (!isset($type)) {
+			$type = 0;
+		}
+		
+		$fList = $this->externalTables[$table][$type]['fList'];	// eg. "name;title;email;company,image" 
+															// The columns are separeted by comma ','.
+															// Values separated by semicolon ';' are shown in the same column. 
+		$icon = $this->externalTables[$table][$type]['icon'];
+		$addWhere = $this->externalTables[$table][$type]['addWhere'];
+		
+			// Create listing
+		$out = $this->makeOrdinaryList($table, $id, $fList, $icon, $addWhere);
+		return $out;
+	}
+
 
 	/**
 	 * Renders records from the pages table from page id

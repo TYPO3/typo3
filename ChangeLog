@@ -1,3 +1,7 @@
+2010-02-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #1822: There is no API to list tables in theWeb->Page module (thanks to Franz Holzinger)
+
 2010-02-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to #13448: Unset another variable
