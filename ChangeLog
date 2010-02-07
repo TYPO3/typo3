@@ -284,7 +284,7 @@
 	* Fixed bug #11369: jumpUrl should only allow files matching fileDenyPattern (thanks to Ingmar Schlecht)
 	* Fixed bug #11368: Ignore ENABLE_INSTALL_TOOL file if it is older than one hour
 
-2009-05-18  Oliver Hader  <oliver@typo3.org>
+2009-06-18  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11009: External Links get prepended with http://typo3 in the RTEhtmlarea in Firefox 3.0.11/3.5b4
 
