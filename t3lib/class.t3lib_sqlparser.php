@@ -333,27 +333,51 @@ class t3lib_sqlparser {
 			if ($this->nextPart($parseString,'^(VALUES)([[:space:]]+|\()')) {	// In this case there are no field names mentioned in the SQL!
 					// Get values/fieldnames (depending...)
 				$result['VALUES_ONLY'] = $this->getValue($parseString,'IN');
-				if ($this->parse_error)	{ return $this->parse_error; }
+				if ($this->parse_error)	{
+					return $this->parse_error;
+				}
+				if (preg_match('/^,/', $parseString)) {
+					$result['VALUES_ONLY'] = array($result['VALUES_ONLY']);
+					$result['EXTENDED'] = '1';
+					while ($this->nextPart($parseString, '^(,)') === ',') {
+						$result['VALUES_ONLY'][] = $this->getValue($parseString, 'IN');
+						if ($this->parse_error)	{
+							return $this->parse_error;
+						}
+					}
+				}
 			} else {	// There are apparently fieldnames listed:
 				$fieldNames = $this->getValue($parseString,'_LIST');
 				if ($this->parse_error)	{ return $this->parse_error; }
 
 				if ($this->nextPart($parseString,'^(VALUES)([[:space:]]+|\()')) {	// "VALUES" keyword binds the fieldnames to values:
+					$result['FIELDS'] = array();
+					do {
+						$values = $this->getValue($parseString, 'IN');	// Using the "getValue" function to get the field list...
+						if ($this->parse_error)	{
+							return $this->parse_error;
+						}
 
-					$values = $this->getValue($parseString,'IN');	// Using the "getValue" function to get the field list...
-					if ($this->parse_error)	{ return $this->parse_error; }
+						$insertValues = array();
+						foreach ($fieldNames as $k => $fN) {
+							if (preg_match('/^[[:alnum:]_]+$/', $fN)) {
+								if (isset($values[$k]))	{
+									if (!isset($insertValues[$fN])) {
+										$insertValues[$fN] = $values[$k];
+									} else return $this->parseError('Fieldname ("' . $fN . '") already found in list!', $parseString);
+								} else return $this->parseError('No value set!', $parseString);
+							} else return $this->parseError('Invalid fieldname ("' . $fN . '")', $parseString);
+						}
+						if (isset($values[$k + 1])) {
+							return $this->parseError('Too many values in list!', $parseString);
+						}
+						$result['FIELDS'][] = $insertValues;
+					} while ($this->nextPart($parseString, '^(,)') === ',');
 
-					foreach($fieldNames as $k => $fN)	{
-						if (preg_match('/^[[:alnum:]_]+$/',$fN))	{
-							if (isset($values[$k]))	{
-								if (!isset($result['FIELDS'][$fN]))	{
-									$result['FIELDS'][$fN] = $values[$k];
-								} else return $this->parseError('Fieldname ("'.$fN.'") already found in list!',$parseString);
-							} else return $this->parseError('No value set!',$parseString);
-						} else return $this->parseError('Invalid fieldname ("'.$fN.'")',$parseString);
-					}
-					if (isset($values[$k+1]))	{
-						return $this->parseError('Too many values in list!',$parseString);
+					if (count($result['FIELDS']) === 1) {
+						$result['FIELDS'] = $result['FIELDS'][0];
+					} else {
+						$result['EXTENDED'] = '1';
 					}
 				} else return $this->parseError('VALUES keyword expected',$parseString);
 			}
@@ -1508,34 +1532,36 @@ class t3lib_sqlparser {
 	 * @see parseINSERT()
 	 */
 	protected function compileINSERT($components) {
+		$values = array();
 
-		if ($components['VALUES_ONLY'])	{
-				// Initialize:
-			$fields = array();
-			foreach($components['VALUES_ONLY'] as $fV)	{
-				$fields[]=$fV[1].$this->compileAddslashes($fV[0]).$fV[1];
-			}
-
-				// Make query:
-			$query = 'INSERT INTO '.$components['TABLE'].'
-					VALUES
-					('.implode(',
-					',$fields).')';
+		if (isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
+			$valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : array($components['VALUES_ONLY']);
+			$tableFields = array();
 		} else {
-				// Initialize:
-			$fields = array();
-			foreach($components['FIELDS'] as $fN => $fV)	{
-				$fields[$fN]=$fV[1].$this->compileAddslashes($fV[0]).$fV[1];
-			}
-
-				// Make query:
-			$query = 'INSERT INTO '.$components['TABLE'].'
-					('.implode(',
-					',array_keys($fields)).')
-					VALUES
-					('.implode(',
-					',$fields).')';
+			$valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : array($components['FIELDS']);
+			$tableFields = array_keys($valuesComponents[0]);
 		}
+
+		foreach ($valuesComponents as $valuesComponent) {
+			$fields = array();
+			foreach ($valuesComponent as $fV) {
+				$fields[] = $fV[1] . $this->compileAddslashes($fV[0]) . $fV[1];
+			}
+			$values[] = '(' . implode(',
+				', $fields) . ')';
+		}
+
+			// Make query:
+		$query = 'INSERT INTO ' . $components['TABLE'];
+		if (count($tableFields)) {
+			$query .= '
+				(' . implode(',
+				', $tableFields) . ')';
+		}
+		$query .= '
+			VALUES
+			' . implode(',
+			', $values);
 
 		return $query;
 	}
