@@ -1023,34 +1023,43 @@ class t3lib_fullsearch {
 		return $out;
 	}
 
-	 /**
- * [Describe function...]
- *
- * @param	[type]		$row: ...
- * @param	[type]		$conf: ...
- * @param	[type]		$table: ...
- * @return	[type]		...
- */
-	function resultRowTitles($row,$conf,$table)	{
+	/**
+	 * Render table header
+	 *
+	 * @param	array		row: Table columns
+	 * @param	array		conf: Table TCA
+	 * @param	string		table: Table name
+	 * @return	string		HTML of table header
+	 */
+	function resultRowTitles($row, $conf, $table) {
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
-		$out='<tr class="bgColor5">';
-		reset($row);
-		while(list($fN,$fV)=each($row))	{
-			if (t3lib_div::inList($SET['queryFields'], $fN) || (!$SET['queryFields'] && $fN!='pid' && $fN!='deleted'))	{
-				if (strlen($fV) < 50)	$TDparams = ' nowrap';
-				else $TDparams = '';
 
-				if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'])	{
- 					$out.='<td'.$TDparams.'><strong>'.$GLOBALS['LANG']->sL($conf['columns'][$fN]['label']?$conf['columns'][$fN]['label']:$fN,1).'</strong></td>';
+		$tableHeader = array();
+
+			// Start header row
+		$tableHeader[] = '<thead><tr class="bgColor5">';
+
+			// Iterate over given columns
+		foreach ($row as $fieldName => $fieldValue) {
+			if (t3lib_div::inList($SET['queryFields'], $fieldName) || (!$SET['queryFields'] && $fieldName != 'pid' && $fieldName != 'deleted')) {
+				$THparams = (strlen($fieldValue) < 50) ? ' style="white-space:nowrap;"' : '';
+
+				if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
+					$title = $GLOBALS['LANG']->sL($conf['columns'][$fieldName]['label'] ? $conf['columns'][$fieldName]['label'] : $fieldName, 1);
 				} else {
-					$out.='<td'.$TDparams.'><strong>'.$GLOBALS['LANG']->sL($fN, 1).'</strong></td>';
+					$title = $GLOBALS['LANG']->sL($fieldName, 1);
 				}
+
+				$tableHeader[] = '<th' . $THparams . '>' . $title . '</th>';
 			}
 		}
-		$out.='<td nowrap></td>
-		</tr>
-		';
-		return $out;
+
+			// Add empty icon column
+		$tableHeader[] = '<th style="white-space:nowrap;"></th>';
+			// Close header row
+		$tableHeader[] = '</tr></thead>';
+
+		return implode($tableHeader, chr(10));
 	}
 
 	/**
