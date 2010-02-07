@@ -85,7 +85,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @return string SQL INSERT query
 	 * @see parseINSERT()
 	 */
-	function compileINSERT($components) {
+	protected function compileINSERT($components) {
 		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$query = parent::compileINSERT($components);

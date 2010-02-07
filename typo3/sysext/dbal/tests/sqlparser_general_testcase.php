@@ -199,7 +199,7 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
 
 		$this->assertTrue(is_array($components), $components);
-		$insert = $this->cleanSql($this->fixture->compileINSERT($components));
+		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
 		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
 		$this->assertEquals($expected, $insert);
 	}
@@ -213,8 +213,23 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$components = $this->fixture->_callRef('parseINSERT', $parseString);
 
 		$this->assertTrue(is_array($components), $components);
-		$insert = $this->cleanSql($this->fixture->compileINSERT($components));
+		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
 		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseInsertWithFields() {
+		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
+		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$expected .= "VALUES ('1', '0', '2', '0', 'Africa')";
 		$this->assertEquals($expected, $insert);
 	}
 
