@@ -1,3 +1,7 @@
+2010-02-08  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13257: PHP warning stristr() in Configuration -> Search under PHP 5.3 (thanks to Steffen Gebert)
+
 2010-02-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to #13448: Unset another variable
