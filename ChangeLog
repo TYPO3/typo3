@@ -1,3 +1,7 @@
+2010-02-07  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Added feature #12859: caching framework db backend: Use t3lib_db to insert all tags in one run
+
 2010-02-07  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #12858: Provide an API to insert multiple rows at once

@@ -125,13 +125,23 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			)
 		);
 
-		foreach ($tags as $tag) {
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+		if (count($tags)) {
+			$fields = array();
+			$fields[] = 'identifier';
+			$fields[] = 'tag';
+
+			$tagRows = array();
+			foreach ($tags as $tag) {
+				$tagRow = array();
+				$tagRow[] = $entryIdentifier;
+				$tagRow[] = $tag;
+				$tagRows[] = $tagRow;
+			}
+
+			$GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows(
 				$this->tagsTable,
-				array(
-					'identifier' => $entryIdentifier,
-					'tag'        => $tag,
-				)
+				$fields,
+				$tagRows
 			);
 		}
 	}
