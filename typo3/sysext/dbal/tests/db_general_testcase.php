@@ -193,5 +193,30 @@ class db_general_testcase extends BaseTestCase {
 		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'-9223372036854775808\', \'-9223372036854775808\' )';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=12858
+	 */
+	public function sqlForInsertWithMultipleRowsIsValid() {
+		$fields = array('uid', 'pid', 'title', 'body');
+		$rows = array(
+			array('1', '2', 'Title #1', 'Content #1'),
+			array('3', '4', 'Title #2', 'Content #2'),
+			array('5', '6', 'Title #3', 'Content #3'),
+		);
+		$query = $GLOBALS['TYPO3_DB']->INSERTmultipleRows('tt_content', $fields, $rows);
+
+		$expected[0] = "INSERT INTO tt_content ( uid, pid, title, body ) VALUES ( '1', '2', 'Title #1', 'Content #1' )";
+		$expected[1] = "INSERT INTO tt_content ( uid, pid, title, body ) VALUES ( '3', '4', 'Title #2', 'Content #2' )";
+		$expected[2] = "INSERT INTO tt_content ( uid, pid, title, body ) VALUES ( '5', '6', 'Title #3', 'Content #3' )";
+
+		$this->assertEquals(count($expected), count($query));
+		for ($i = 0; $i < count($query); $i++) {
+			$this->assertTrue(is_array($query[$i]), 'Expected array: ' . $query[$i]);
+			$this->assertEquals(1, count($query[$i]));
+			$this->assertEquals($expected[$i], $this->cleanSql($query[$i][0]));
+		}
+	}
 }
 ?>

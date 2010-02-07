@@ -490,6 +490,32 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
+	 * Creates and executes an INSERT SQL-statement for $table with multiple rows.
+	 * This method uses exec_INSERTquery() and is just a syntax wrapper to it.
+	 *
+	 * @param	string		Table name
+	 * @param	array		Field names
+	 * @param	array		Table rows. Each row should be an array with field values mapping to $fields
+	 * @param	string/array		See fullQuoteArray()
+	 * @return	mixed		Result from last handler, usually TRUE when success and FALSE on failure
+	 */
+	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+			return parent::exec_INSERTmultipleRows($table, $fields, $rows, $no_quote_fields);
+		}
+
+		foreach ($rows as $row) {
+			$fields_values = array();
+			foreach ($fields as $key => $value) {
+				$fields_values[$value] = $row[$key];
+			}
+			$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
+		}
+
+		return $res;
+	}
+
+	/**
 	 * Updates a record from $table
 	 *
 	 * @param	string		Database tablename
@@ -857,6 +883,35 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			return $query;
 		}
+	}
+
+	/**
+	 * Creates an INSERT SQL-statement for $table with multiple rows.
+	 * This method will create multiple INSERT queries concatenated with ';'
+	 *
+	 * @param	string		Table name
+	 * @param	array		Field names
+	 * @param	array		Table rows. Each row should be an array with field values mapping to $fields
+	 * @param	string/array		See fullQuoteArray()
+	 * @return	array		Full SQL query for INSERT as array of strings (unless $fields_values does not contain any elements in which case it will be FALSE). If BLOB fields will be affected and one is not running the native type, an array will be returned for each row, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields.
+	 */
+	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
+		$result = array();
+
+		foreach ($rows as $row) {
+			$fields_values = array();
+			foreach ($fields as $key => $value) {
+				$fields_values[$value] = $row[$key];
+			}
+			$rowQuery = $this->INSERTquery($table, $fields_values, $no_quote_fields);
+			if (is_array($rowQuery)) {
+				$result[] = $rowQuery;
+			} else {
+				$result[][0] = $rowQuery;
+			}
+		}
+
+		return $result;
 	}
 
 	/**

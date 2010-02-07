@@ -1,5 +1,6 @@
 2010-02-07  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Added feature #12858: Provide an API to insert multiple rows at once
 	* Fixed bug #13453: Method compileINSERT of ux_t3lib_sqlparser should be protected
 	* Added feature #13209: MySQL extended INSERT statements cannot be parsed
 
