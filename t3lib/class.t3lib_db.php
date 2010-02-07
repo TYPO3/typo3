@@ -444,16 +444,16 @@ class t3lib_DB {
 		if (count($rows)) {
 				// Build query:
 			$query = 'INSERT INTO ' . $table .
-				'(' . implode(',', $fields) . ') VALUES ';
+				' (' . implode(', ', $fields) . ') VALUES ';
 
 			$rowSQL = array();
 			foreach ($rows as $row) {
 					// quote and escape values
 				$row = $this->fullQuoteArray($row, $table, $no_quote_fields);
-				$rowSQL[] = '( ' . implode(',', $row) . ') ';
+				$rowSQL[] = '(' . implode(', ', $row) . ')';
 			}
 
-			$query .= implode(',', $rowSQL);
+			$query .= implode(', ', $rowSQL);
 
 				// Return query:
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
