@@ -896,6 +896,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	array		Full SQL query for INSERT as array of strings (unless $fields_values does not contain any elements in which case it will be FALSE). If BLOB fields will be affected and one is not running the native type, an array will be returned for each row, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields.
 	 */
 	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+			return parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields);
+		}
+
 		$result = array();
 
 		foreach ($rows as $row) {
