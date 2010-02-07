@@ -1,5 +1,6 @@
 2010-02-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to #13193: Added tests for tx_scheduler_croncmd
 	* Fixed bug #13193: Day of week in scheduler cron command is not calculated correctly
 	* Added feature #12859: caching framework db backend: Use t3lib_db to insert all tags in one run
 
