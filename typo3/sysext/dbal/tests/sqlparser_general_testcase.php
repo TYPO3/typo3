@@ -234,6 +234,53 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $insert);
 	}
 
+	/**
+	 * @test
+	 */
+	public function canParseInsertWithFields() {
+		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->compileINSERT($components));
+		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$expected .= "VALUES ('1', '0', '2', '0', 'Africa')";
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13209
+	 */
+	public function canParseExtendedInsert() {
+		$parseString = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania')," .
+			"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->compileINSERT($components));
+		$expected = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'), ('2', '0', '9', '0', 'Oceania'), " .
+			"('3', '0', '19', '0', 'Americas'), ('4', '0', '142', '0', 'Asia')";
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13209
+	 */
+	public function canParseExtendedInsertWithFields() {
+		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->compileINSERT($components));
+		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$expected .= "VALUES ('1', '0', '2', '0', 'Africa'), ('2', '0', '9', '0', 'Oceania')";
+		$this->assertEquals($expected, $insert);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////

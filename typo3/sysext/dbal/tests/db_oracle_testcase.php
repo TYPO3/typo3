@@ -139,6 +139,48 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/**
+	 * @test
+	 */
+	public function canCompileInsertWithFields() {
+		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa');";
+		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('compileINSERT', $components);
+
+		$expected = array(
+			'uid' => '1',
+			'pid' => '0',
+			'tr_iso_nr' => '2',
+			'tr_parent_iso_nr' => '0',
+			'tr_name_en' => 'Africa',
+		);
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13209
+	 */
+	public function canCompileExtendedInsert() {
+		$parseString = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania')," .
+			"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
+		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('compileINSERT', $components);
+
+		$this->assertEquals(4, count($insert));
+
+		for ($i = 0; $i < count($insert); $i++) {
+			foreach (t3lib_div::trimExplode(',', 'uid,pid,tr_iso_nr,tr_parent_iso_nr,tr_name_en') as $field) {
+				$this->assertTrue(isset($insert[$i][$field]), 'Could not find ' . $field . ' column');
+			}
+		}
+	}
+
 	///////////////////////////////////////
 	// Tests concerning quoting
 	///////////////////////////////////////

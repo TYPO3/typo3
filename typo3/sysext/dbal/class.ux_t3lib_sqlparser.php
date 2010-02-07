@@ -163,7 +163,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * Compiles an INSERT statement from components array
 	 *
 	 * @param array Array of SQL query components
-	 * @return string SQL INSERT query
+	 * @return string SQL INSERT query / array
 	 * @see parseINSERT()
 	 */
 	function compileINSERT($components) {
@@ -172,18 +172,25 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				$query = parent::compileINSERT($components);
 				break;
 			case 'adodb':
+				$values = array();
+
 				if (isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
-					$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']];
-					$fc = 0;
-					foreach ($fields as $fn => $fd) {
-						$query[$fn] = $components['VALUES_ONLY'][$fc++][0];
-					}
+					$valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : array($components['VALUES_ONLY']);
+					$tableFields = array_keys($GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']]);
 				} else {
-						// Initialize:
-					foreach ($components['FIELDS'] as $fN => $fV) {
-						$query[$fN]=$fV[0];
-					}
+					$valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : array($components['FIELDS']);
+					$tableFields = array_keys($valuesComponents[0]);
 				}
+
+				foreach ($valuesComponents as $valuesComponent) {
+					$fields = array();
+					$fc = 0;
+					foreach ($valuesComponent as $fV) {
+						$fields[$tableFields[$fc++]] = $fV[0];
+					}
+					$values[] = $fields;
+				}
+				$query = count($values) === 1 ? $values[0] : $values;
 				break;
 		}
 
