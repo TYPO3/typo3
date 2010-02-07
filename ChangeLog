@@ -1,4 +1,8 @@
-2010-02-05  Steffen Kamper  <info@sk-typo3.de>
+2010-02-08  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13257: PHP warning stristr() in Configuration -> Search under PHP 5.3
+
+2010-02-07  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #1822: There is no API to list tables in theWeb->Page module (thanks to Franz Holzinger)
 
