@@ -1,5 +1,6 @@
 2010-02-07  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #13453: Method compileINSERT of ux_t3lib_sqlparser should be protected
 	* Added feature #13209: MySQL extended INSERT statements cannot be parsed
 
 2010-02-06  Xavier Perseguers  <typo3@perseguers.ch>
