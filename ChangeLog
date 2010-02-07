@@ -1916,11 +1916,11 @@
 
 	* Fixed bug #11358: typoLink() perfomance improvement (thanks to Vladimir Podkovanov)
 
-2009-05-18  Benjamin Mack  <benni@typo3.org>
+2009-06-18  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug / Feature #11293: Login page is not translatable
 
-2009-05-18  Oliver Hader  <oliver@typo3.org>
+2009-06-18  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #11009: External Links get prepended with http://typo3 in the RTEhtmlarea in Firefox 3.0.11/3.5b4
 
