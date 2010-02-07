@@ -1,5 +1,6 @@
 2010-02-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #13365: Table headers in t3lib_fullsearch (thanks to Georg Ringer)
 	* Fixed bug #13448: Typo in BE cache init section
 	* Fixed bug #13193: Day of week in scheduler cron command is not calculated correctly
 
