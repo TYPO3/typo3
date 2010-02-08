@@ -116,7 +116,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	function listSeveralStats($title,$addwhere,$conf)	{
 		global $LANG;
 
-		$queryParts['SELECT']= '*, COUNT(*) AS c';
+		$queryParts['SELECT'] = 'word, COUNT(*) AS c';
 		$queryParts['FROM']='index_stat_word';
 		$queryParts['WHERE']=sprintf('pageid= %d '.$addwhere, $conf['bid']);
 		$queryParts['GROUPBY']='word';
@@ -146,7 +146,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 			$secureaddwhere = ' AND pageid IN ('.($this->extGetTreeList($conf['bid'],100,0,'1')).$conf['bid'].') ';
 			$this->note = $LANG->getLL('allpages');
 
-	 		$queryParts['WHERE']= '1 '.$addwhere.$secureaddwhere;
+	 		$queryParts['WHERE'] = '1=1 ' . $addwhere . $secureaddwhere;
 		}
 
 			// make real query

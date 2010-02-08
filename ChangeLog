@@ -1,3 +1,7 @@
+2010-02-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13463: Modfunc2 (statistics) is not compatible with DBAL [indexed_search]
+
 2010-02-08  Steffen Kamper  <info@sk-typo3.de>
 
 	* Reverted Follow-up to #13448: Unset another variable
