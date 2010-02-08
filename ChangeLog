@@ -1,3 +1,7 @@
+2010-02-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Reverted Follow-up to #13448: Unset another variable
+
 2010-02-08  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13456: Typo in rsaauth ext_tables.sql
