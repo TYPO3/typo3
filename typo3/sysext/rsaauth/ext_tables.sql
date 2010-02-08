@@ -1,5 +1,5 @@
 #
-# Table structure for table 'tx_rsauth_keys'
+# Table structure for table 'tx_rsaauth_keys'
 #
 CREATE TABLE tx_rsaauth_keys (
 	uid int(11) NOT NULL auto_increment,

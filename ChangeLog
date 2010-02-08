@@ -1,5 +1,6 @@
 2010-02-08  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #13456: Typo in rsaauth ext_tables.sql
 	* Fixed bug #13257: PHP warning stristr() in Configuration -> Search under PHP 5.3 (thanks to Steffen Gebert)
 
 2010-02-07  Steffen Kamper  <info@sk-typo3.de>
