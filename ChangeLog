@@ -1,3 +1,7 @@
+2010-02-09  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13490: Where clause 0=0 cannot be parsed
+
 2010-02-08  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13464: ORA-00920: invalid relational operator in module statistics [indexed_search]

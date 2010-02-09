@@ -930,7 +930,7 @@ class t3lib_sqlparser {
 				$calcOperators = '&|\+|-|\*|\/|%';
 
 					// Fieldname:
-				if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) {
+				if (($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) !== '') {
 
 						// Parse field name into field and table:
 					$tableField = explode('.', $fieldName, 2);
