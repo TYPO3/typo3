@@ -1,3 +1,7 @@
+2010-02-09  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #13490: Where clause 0=0 cannot be parsed
+
 2010-02-07  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #12858: Provide an API to insert multiple rows at once

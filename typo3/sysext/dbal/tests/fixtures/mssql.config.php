@@ -27,5 +27,12 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 			'datastructure' => 'ds',
 		),
 	),
+	'Members' => array(
+		'mapFieldNames' => array(
+			'pid' => '0',
+			'cruser_id' => '1',
+			'uid' => 'MemberID',
+		),
+	),
 );
 ?>

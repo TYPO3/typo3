@@ -126,6 +126,29 @@ class db_mssql_testcase extends BaseTestCase {
 	}
 
 	///////////////////////////////////////
+	// Tests concerning remapping with
+	// external (non-TYPO3) databases
+	///////////////////////////////////////
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13490
+	 */
+	public function canRemapPidToZero() {
+		$selectFields = 'uid, FirstName, LastName';
+		$fromTables   = 'Members';
+		$whereClause  = 'pid=0 AND cruser_id=1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "MemberID", "FirstName", "LastName" FROM "Members" WHERE 0 = 0 AND 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	///////////////////////////////////////
 	// Tests concerning advanced operators
 	///////////////////////////////////////
 
