@@ -727,7 +727,7 @@ class t3lib_sqlparser {
 				} else {
 					$stack[$pnt]['distinct'] = $this->nextPart($parseString,'^(distinct[[:space:]]+)');
 						// Otherwise, look for regular fieldname:
-					if ($fieldName = $this->nextPart($parseString,'^([[:alnum:]\*._]+)(,|[[:space:]]+)'))	{
+					if (($fieldName = $this->nextPart($parseString, '^([[:alnum:]\*._]+)(,|[[:space:]]+)')) !== '') {
 						$stack[$pnt]['type'] = 'field';
 
 							// Explode fieldname into field and table:
