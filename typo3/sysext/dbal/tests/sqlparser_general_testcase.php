@@ -192,6 +192,18 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 	/**
 	 * @test
+	 * http://bugs.typo3.org/view.php?id=13504
+	 */
+	public function canParseTruncateTable() {
+		$sql = 'TRUNCATE TABLE be_users';
+		$expected = $sql;
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=13412
 	 */
 	public function canParseAndCompileBetweenOperator() {

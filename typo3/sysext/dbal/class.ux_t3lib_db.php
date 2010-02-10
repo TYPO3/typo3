@@ -754,6 +754,62 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
+	 * Truncates a table.
+	 * 
+	 * @param	string		Database tablename
+	 * @return	mixed		Result from handler
+	 */
+	public function exec_TRUNCATETABLEquery($table) {
+		if ($this->debug) {
+			$pt = t3lib_div::milliseconds();
+		}
+
+			// Do table/field mapping:
+		$ORIG_tableName = $table;
+		if ($tableArray = $this->map_needMapping($table)) {
+				// Table name:
+			if ($this->mapping[$table]['mapTableName']) {
+				$table = $this->mapping[$table]['mapTableName'];
+			}
+		}
+
+			// Select API
+		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+			case 'native':
+				$this->lastQuery = $this->TRUNCATETABLEquery($table);
+				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				break;
+			case 'adodb':
+				$this->lastQuery = $this->TRUNCATETABLEquery($table);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
+				break;
+			case 'userdefined':
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_TRUNCATETABLEquery($table,$where);
+				break;
+		}
+
+		if ($this->printErrors && $this->sql_error()) {
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
+
+		if ($this->debug) {
+			$this->debugHandler(
+				'exec_TRUNCATETABLEquery',
+				t3lib_div::milliseconds() - $pt,
+				array(
+					'handlerType' => $hType,
+					'args' => array($table),
+					'ORIG_from_table' => $ORIG_tableName
+				)
+			);
+		}
+
+			// Return result:
+		return $sqlResult;
+	}
+
+	/**
 	 * Executes a query.
 	 * EXPERIMENTAL since TYPO3 4.4.
 	 * 
@@ -801,6 +857,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$table = $queryParts['TABLE'];
 				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
 				return $this->exec_DELETEquery($table, $whereClause);
+
+			case 'TRUNCATETABLE':
+				$table = $queryParts['TABLE'];
+				return $this->exec_TRUNCATETABLEquery($table);
 		}
 	}
 
@@ -1038,6 +1098,25 @@ class ux_t3lib_DB extends t3lib_DB {
 		$query = parent::SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
 
 		if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
+
+		return $query;
+	}
+
+	/**
+	 * Creates a TRUNCATE TABLE SQL-statement
+	 * 
+	 * @param	string		See exec_TRUNCATETABLEquery()
+	 * @return	string		Full SQL query for TRUNCATE TABLE
+	 */
+	public function TRUNCATETABLEquery($table) {
+		$table = $this->quoteFromTables($table);
+
+			// Call parent method to build actual query
+		$query = parent::TRUNCATETABLEquery($table);
+
+		if ($this->debugOutput || $this->store_lastBuiltQuery) {
+			$this->debug_lastBuiltQuery = $query;
+		}
 
 		return $query;
 	}
@@ -2238,6 +2317,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$this->map_genericQueryParsed($parsedQuery);
 					break;
 				case 'INSERT':
+				case 'TRUNCATETABLE':
 					$this->map_genericQueryParsed($parsedQuery);
 					break;
 				case 'CREATEDATABASE':
@@ -2266,8 +2346,11 @@ class ux_t3lib_DB extends t3lib_DB {
 				case 'adodb':
 						// Compiling query:
 					$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
-					if ($this->lastParsedAndMappedQueryArray['type']=='INSERT') {
-						return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'],$compiledQuery);
+					switch ($this->lastParsedAndMappedQueryArray['type']) {
+						case 'INSERT':
+							return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'], $compiledQuery);
+						case 'TRUNCATETABLE':
+							return $this->exec_TRUNCATETABLEquery($this->lastParsedAndMappedQueryArray['TABLE']);
 					}
 					return $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
 					break;
@@ -2729,7 +2812,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$t = $sqlPartArray[$k]['table'] ? $sqlPartArray[$k]['table'] : $defaultTable;
 
 						// Mapping field name, if set:
-					if (is_array($this->mapping[$t]['mapFieldNames']) && $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']]) {
+					if (is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']])) {
 						$sqlPartArray[$k]['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']];
 					}
 

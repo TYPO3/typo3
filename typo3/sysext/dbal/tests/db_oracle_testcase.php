@@ -227,6 +227,16 @@ class db_oracle_testcase extends BaseTestCase {
 
 	/**
 	 * @test
+	 * http://bugs.typo3.org/view.php?id=13504
+	 */
+	public function truncateTableQueryIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->TRUNCATETABLEquery('be_users'));
+		$expected = 'TRUNCATE TABLE "be_users"';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=2438
 	 */
 	public function distinctFieldIsProperlyQuoted() {
