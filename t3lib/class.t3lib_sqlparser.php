@@ -134,7 +134,7 @@ class t3lib_sqlparser {
 
 			// Finding starting keyword of string:
 		$_parseString = $parseString;	// Protecting original string...
-		$keyword = $this->nextPart($_parseString, '^(SELECT|UPDATE|INSERT[[:space:]]+INTO|DELETE[[:space:]]+FROM|EXPLAIN|DROP[[:space:]]+TABLE|CREATE[[:space:]]+TABLE|CREATE[[:space:]]+DATABASE|ALTER[[:space:]]+TABLE)[[:space:]]+');
+		$keyword = $this->nextPart($_parseString, '^(SELECT|UPDATE|INSERT[[:space:]]+INTO|DELETE[[:space:]]+FROM|EXPLAIN|DROP[[:space:]]+TABLE|CREATE[[:space:]]+TABLE|CREATE[[:space:]]+DATABASE|ALTER[[:space:]]+TABLE|TRUNCATE[[:space:]]+TABLE)[[:space:]]+');
 		$keyword = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$keyword));
 
 		switch($keyword)	{
@@ -173,6 +173,10 @@ class t3lib_sqlparser {
 			case 'CREATEDATABASE':
 					// Parsing CREATE DATABASE query:
 				$result = $this->parseCREATEDATABASE($parseString);
+			break;
+			case 'TRUNCATETABLE':
+					// Parsing TRUNCATE TABLE query:
+				$result = $this->parseTRUNCATETABLE($parseString);
 			break;
 			default:
 				$result = $this->parseError('"'.$keyword.'" is not a keyword',$parseString);
@@ -662,6 +666,38 @@ class t3lib_sqlparser {
 
 			return $result;
 		} else return $this->parseError('No database found!',$parseString);
+	}
+
+	/**
+	 * Parsing TRUNCATE TABLE query
+	 * 
+	 * @param	string		SQL string starting with TRUNCATE TABLE
+	 * @return	mixed		Returns array with components of TRUNCATE TABLE query on success, otherwise an error message string.
+	 */
+	protected function parseTRUNCATETABLE($parseString) {
+
+			// Removing TRUNCATE TABLE
+		$parseString = $this->trimSQL($parseString);
+		$parseString = ltrim(substr(ltrim(substr($parseString, 8)), 5));
+
+			// Init output variable:
+		$result = array();
+		$result['type'] = 'TRUNCATETABLE';
+
+			// Get table:
+		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+');
+
+		if ($result['TABLE']) {
+
+				// Should be no more content now:
+			if ($parseString) {
+				return $this->parseError('Still content in clause after parsing!', $parseString);
+			}
+
+			return $result;
+		} else {
+			return $this->parseError('No table found!', $parseString);
+		}
 	}
 
 
@@ -1460,6 +1496,9 @@ class t3lib_sqlparser {
 			case 'ALTERTABLE':
 				$query = $this->compileALTERTABLE($components);
 			break;
+			case 'TRUNCATETABLE':
+				$query = $this->compileTRUNCATETABLE($components);
+			break;
 		}
 
 		return $query;
@@ -1647,6 +1686,22 @@ class t3lib_sqlparser {
 				$query.=' ('.implode(',',$components['fields']).')';
 			break;
 		}
+
+			// Return query
+		return $query;
+	}
+
+	/**
+	 * Compiles a TRUNCATE TABLE statement from components array
+	 * 
+	 * @param	array		Array of SQL query components
+	 * @return	string		SQL TRUNCATE TABLE query
+	 * @see parseTRUNCATETABLE()
+	 */
+	protected function compileTRUNCATETABLE(array $components) {
+
+			// Make query:
+		$query = 'TRUNCATE TABLE ' . $components['TABLE'];
 
 			// Return query
 		return $query;

@@ -382,6 +382,20 @@ class t3lib_DB {
 		return $count;
 	}
 
+	/**
+	 * Truncates a table.
+	 * 
+	 * @param	string		Database tablename
+	 * @return	mixed		Result from handler
+	 */
+	public function exec_TRUNCATETABLEquery($table) {
+		$res = mysql_query($this->TRUNCATETABLEquery($table), $this->link);
+		if ($this->debugOutput) {
+			$this->debug('exec_TRUNCATETABLEquery');
+		}
+		return $res;
+	}
+
 
 
 
@@ -579,6 +593,25 @@ class t3lib_DB {
 			// Build basic query:
 		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table .
 			(strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+
+			// Return query:
+		if ($this->debugOutput || $this->store_lastBuiltQuery) {
+			$this->debug_lastBuiltQuery = $query;
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Creates a TRUNCATE TABLE SQL-statement
+	 * 
+	 * @param	string		See exec_TRUNCATETABLEquery()
+	 * @return	string		Full SQL query for TRUNCATE TABLE
+	 */
+	public function TRUNCATETABLEquery($table) {
+			// Table should be "SQL-injection-safe" when supplied to this function
+			// Build basic query:
+		$query = 'TRUNCATE TABLE ' . $table;
 
 			// Return query:
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
