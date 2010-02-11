@@ -1,3 +1,7 @@
+2010-02-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Follow-up of #13504: Using TRUNCATE instead of TRUNCATETABLE as public DB API
+
 2010-02-10  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13504: Cannot parse TRUNCATE TABLE in install tool
