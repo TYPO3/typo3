@@ -759,7 +759,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		Database tablename
 	 * @return	mixed		Result from handler
 	 */
-	public function exec_TRUNCATETABLEquery($table) {
+	public function exec_TRUNCATEquery($table) {
 		if ($this->debug) {
 			$pt = t3lib_div::milliseconds();
 		}
@@ -777,15 +777,15 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
 		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$this->lastQuery = $this->TRUNCATETABLEquery($table);
+				$this->lastQuery = $this->TRUNCATEquery($table);
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				break;
 			case 'adodb':
-				$this->lastQuery = $this->TRUNCATETABLEquery($table);
+				$this->lastQuery = $this->TRUNCATEquery($table);
 				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
 				break;
 			case 'userdefined':
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_TRUNCATETABLEquery($table,$where);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_TRUNCATEquery($table,$where);
 				break;
 		}
 
@@ -795,7 +795,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 		if ($this->debug) {
 			$this->debugHandler(
-				'exec_TRUNCATETABLEquery',
+				'exec_TRUNCATEquery',
 				t3lib_div::milliseconds() - $pt,
 				array(
 					'handlerType' => $hType,
@@ -860,7 +860,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			case 'TRUNCATETABLE':
 				$table = $queryParts['TABLE'];
-				return $this->exec_TRUNCATETABLEquery($table);
+				return $this->exec_TRUNCATEquery($table);
 		}
 	}
 
@@ -1105,14 +1105,14 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Creates a TRUNCATE TABLE SQL-statement
 	 * 
-	 * @param	string		See exec_TRUNCATETABLEquery()
+	 * @param	string		See exec_TRUNCATEquery()
 	 * @return	string		Full SQL query for TRUNCATE TABLE
 	 */
-	public function TRUNCATETABLEquery($table) {
+	public function TRUNCATEquery($table) {
 		$table = $this->quoteFromTables($table);
 
 			// Call parent method to build actual query
-		$query = parent::TRUNCATETABLEquery($table);
+		$query = parent::TRUNCATEquery($table);
 
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;
@@ -2350,7 +2350,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						case 'INSERT':
 							return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'], $compiledQuery);
 						case 'TRUNCATETABLE':
-							return $this->exec_TRUNCATETABLEquery($this->lastParsedAndMappedQueryArray['TABLE']);
+							return $this->exec_TRUNCATEquery($this->lastParsedAndMappedQueryArray['TABLE']);
 					}
 					return $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
 					break;
