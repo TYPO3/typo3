@@ -7615,7 +7615,7 @@ State was change by %s (username: %s)
 	 */
 	function findPageIdsForVersionStateChange($table, $idList, $workspaceId, &$pageIdList, &$elementList) {
 		if ($workspaceId != 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT(B.pid)',
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT B.pid',
 				$table . ' A,' . $table . ' B',
 				'A.pid=-1' .		// Offline version
 				' AND A.t3ver_wsid=' . $workspaceId .
@@ -7654,7 +7654,7 @@ State was change by %s (username: %s)
 			foreach($TCA as $table => $cfg)	{
 				if ($TCA[$table]['ctrl']['versioningWS'] && $table != 'pages')	{
 					// Using SELECTquery for better debugging
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT(A.uid)',
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT A.uid',
 						$table . ' A,' . $table . ' B',
 						'A.pid=-1' .		// Offline version
 						' AND A.t3ver_wsid=' . $workspaceId .
