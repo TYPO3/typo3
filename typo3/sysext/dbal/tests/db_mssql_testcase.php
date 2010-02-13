@@ -227,5 +227,19 @@ class db_mssql_testcase extends BaseTestCase {
 		$expected = 'SELECT *, CASE WHEN CHARINDEX(\'(fce)\', "tx_templavoila_tmplobj"."ds", 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6196
+	 */
+	public function IfNullIsProperlyRemapped() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_news_cat_mm',
+			'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)'
+		));
+		$expected = 'SELECT * FROM "tt_news_cat_mm" WHERE ISNULL("tt_news_cat_mm"."uid_foreign", 0) IN (21,22)';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>

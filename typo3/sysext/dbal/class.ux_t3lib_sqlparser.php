@@ -467,7 +467,24 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 										$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
 										$output .= ')';
  										break;
-								} 
+								}
+							} elseif (isset($v['func']) && $v['func']['type'] === 'IFNULL') {
+								$output .= ' ' . trim($v['modifier']) . ' ';
+								switch (TRUE) {
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') && $functionMapping):
+										$output .= 'ISNULL';
+										break;
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $functionMapping):
+										$output .= 'NVL';
+										break;
+									default:
+										$output .= 'IFNULL';
+										break;
+								}
+								$output .= '(';
+								$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+								$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
+								$output .= ')';
 							} else {
 
 									// Set field/table with modifying prefix if any:

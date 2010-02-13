@@ -293,6 +293,50 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $insert);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6196
+	 */
+	public function canParseIfNullOperator() {
+		$parseString = 'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)';
+		$whereParts = $this->fixture->parseWhereClause($parseString);
+
+		$this->assertTrue(is_array($whereParts), $whereParts);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6196
+	 */
+	public function canParseIfNullOperatorWithAdditionalClauses() {
+		$parseString = '1=1 AND IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22) AND tt_news.sys_language_uid IN (0,-1) ';
+		$parseString .= 'AND tt_news.pid > 0 AND tt_news.pid IN (61) AND tt_news.deleted=0 AND tt_news.t3ver_state<=0 ';
+		$parseString .= 'AND tt_news.hidden=0 AND tt_news.starttime<=1266065460 AND (tt_news.endtime=0 OR tt_news.endtime>1266065460) ';
+		$parseString .= 'AND (tt_news.fe_group=\'\' OR tt_news.fe_group IS NULL OR tt_news.fe_group=\'0\' ';
+		$parseString .= 'OR (tt_news.fe_group LIKE \'%,0,%\' OR tt_news.fe_group LIKE \'0,%\' OR tt_news.fe_group LIKE \'%,0\' ';
+		$parseString .= 'OR tt_news.fe_group=\'0\') OR (tt_news.fe_group LIKE \'%,-1,%\' OR tt_news.fe_group LIKE \'-1,%\' ';
+		$parseString .= 'OR tt_news.fe_group LIKE \'%,-1\' OR tt_news.fe_group=\'-1\'))';
+		$whereParts = $this->fixture->parseWhereClause($parseString);
+
+		$this->assertTrue(is_array($whereParts), $whereParts);
+		$this->assertTrue(empty($parseString), 'parseString is not empty');
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6196
+	 */
+	public function canCompileIfNullOperator() {
+		$parseString = 'SELECT * FROM tx_irfaq_q_cat_mm WHERE IFNULL(tx_irfaq_q_cat_mm.uid_foreign,0) = 1';
+		$components = $this->fixture->_callRef('parseSELECT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$select = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
+		$expected = 'SELECT * FROM tx_irfaq_q_cat_mm WHERE IFNULL(tx_irfaq_q_cat_mm.uid_foreign, 0) = 1';
+		$this->assertEquals($expected, $select);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////

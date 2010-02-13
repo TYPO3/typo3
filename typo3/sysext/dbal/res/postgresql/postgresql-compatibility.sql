@@ -10,6 +10,9 @@
 -- 
 -- The functions add compatibility operators for PostgreSQL to make sure comparison is possible and the SQL doesn't return an error.
 --
+-- Note: You may consider having a look at project mysqlcompat on http://pgfoundry.org/projects/mysqlcompat
+--       and report in DBAL bugtracker if you need another compatibility operator added.
+--
 -- $Id$
 -- R. van Twisk <typo3@rvt.dds.nl>
 
@@ -68,6 +71,12 @@ RETURNS integer AS $$
 SELECT locate($1, $2, 1)
 $$ IMMUTABLE STRICT LANGUAGE SQL;
 
+-- IFNULL
+CREATE OR REPLACE FUNCTION ifnull(anyelement, anyelement)
+RETURNS anyelement AS $$
+SELECT COALESCE($1, $2)
+$$ IMMUTABLE STRICT LANGUAGE SQL;
+
 -- Remove Compatibility operators
 --
 --DROP OPERATOR ~~ (integer,text);
@@ -80,4 +89,5 @@ $$ IMMUTABLE STRICT LANGUAGE SQL;
 --DROP FUNCTION t3compat_operator_eq(text, integer);
 --DROP FUNCTION locate(text, text);
 --DROP FUNCTION locate(text, text, integer);
+--DROP FUNCTION ifnull(anyelement, anyelement);
 

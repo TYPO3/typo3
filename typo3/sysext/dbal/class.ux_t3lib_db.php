@@ -1290,6 +1290,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					case 'EXISTS':
 						$where_clause[$k]['func']['subquery'] = $this->quoteSELECTsubquery($v['func']['subquery']);
 						break;
+					case 'IFNULL':
 					case 'LOCATE':
 						if ($where_clause[$k]['func']['table'] != '') {
 							$where_clause[$k]['func']['table'] = $this->quoteName($v['func']['table']);
@@ -2799,6 +2800,7 @@ class ux_t3lib_DB extends t3lib_DB {
 							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['FROM'], $subqueryDefaultTable);
 							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['WHERE'], $subqueryDefaultTable);
 							break;
+						case 'IFNULL':
 						case 'LOCATE':
 								// For the field, look for table mapping (generic):
 							$t = $sqlPartArray[$k]['func']['table'] ? $sqlPartArray[$k]['func']['table'] : $defaultTable;
