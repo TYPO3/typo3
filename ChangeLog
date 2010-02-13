@@ -1,5 +1,6 @@
 2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #6196: IFNULL operator cannot be parsed
 	* Fixed bug #13529: DISTINCT should not be used as a function
 
 2010-02-11  Xavier Perseguers  <typo3@perseguers.ch>

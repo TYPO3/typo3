@@ -1066,7 +1066,30 @@ class t3lib_sqlparser {
 						}
 						if (!$this->nextPart($parseString, '^([)])')) {
 							return $this->parseError('No ) parenthesis at end of function');
-	 					}						
+	 					}
+					} elseif (preg_match('/^IFNULL[[:space:]]*[(]/i', $parseString)) {
+						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(IFNULL)[[:space:]]*');
+						$parseString = trim(substr($parseString, 1));	// Strip of "("
+						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\*._]+)[[:space:]]*')) {
+ 
+								// Parse field name into field and table:
+							$tableField = explode('.', $fieldName, 2);
+							if (count($tableField) == 2) {
+								$stack[$level][$pnt[$level]]['func']['table'] = $tableField[0];
+								$stack[$level][$pnt[$level]]['func']['field'] = $tableField[1];
+							} else {
+								$stack[$level][$pnt[$level]]['func']['table'] = '';
+								$stack[$level][$pnt[$level]]['func']['field'] = $tableField[0];
+							}
+ 						} else {
+							return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
+ 						}
+						if ($this->nextPart($parseString, '^(,)')) {
+							$stack[$level][$pnt[$level]]['func']['default'] = $this->getValue($parseString);
+						}
+						if (!$this->nextPart($parseString, '^([)])')) {
+							return $this->parseError('No ) parenthesis at end of function');
+	 					}
  					} else {
 
 		 					// Support calculated value only for:
@@ -1884,6 +1907,11 @@ class t3lib_sqlparser {
 						$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
 						$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
+						$output .= ')';
+					} elseif (isset($v['func']) && $v['func']['type'] === 'IFNULL') {
+						$output = ' ' . trim($v['modifier']) . ' IFNULL(';
+						$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+						$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
 						$output .= ')';
 					} else {
 						
