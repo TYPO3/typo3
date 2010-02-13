@@ -1,3 +1,7 @@
+2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13529: DISTINCT should not be used as a function
+
 2010-02-09  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13490: Where clause 0=0 cannot be parsed
