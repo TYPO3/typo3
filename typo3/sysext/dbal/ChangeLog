@@ -1,3 +1,7 @@
+2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13528: Argument 1 passed to ux_t3lib_DB::_quoteFieldNames() must be an array, string given
+
 2010-02-11  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Follow-up of #13504: Using TRUNCATE instead of TRUNCATETABLE as public DB API

@@ -1164,6 +1164,9 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->runningNative()) return $select_fields;
 
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
+		if ($this->SQLparser->parse_error) {
+			die($this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__);
+		}
 		$select_fields = $this->_quoteFieldNames($select_fields);
 
 		return $this->SQLparser->compileFieldList($select_fields);
