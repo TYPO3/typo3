@@ -1,5 +1,6 @@
 2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Added unit tests for #4493: WHERE func(expr) IN (n,...m) is broken
 	* Fixed bug #6196: IFNULL operator cannot be parsed
 	* Fixed bug #13528: Argument 1 passed to ux_t3lib_DB::_quoteFieldNames() must be an array, string given
 

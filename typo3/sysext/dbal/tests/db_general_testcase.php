@@ -214,5 +214,33 @@ class db_general_testcase extends BaseTestCase {
 
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=4493
+	 */
+	public function minFunctionAndInOperatorCanBeParsed() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'pages',
+			'MIN(uid) IN (1,2,3,4)'
+		));
+		$expected = 'SELECT * FROM pages WHERE MIN(uid) IN (1,2,3,4)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=4493
+	 */
+	public function maxFunctionAndInOperatorCanBeParsed() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'pages',
+			'MAX(uid) IN (1,2,3,4)'
+		));
+		$expected = 'SELECT * FROM pages WHERE MAX(uid) IN (1,2,3,4)';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>
