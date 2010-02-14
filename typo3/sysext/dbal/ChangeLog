@@ -1,5 +1,9 @@
 2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Set version to 1.1.1
+
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
 	* Added unit test for #12829: ALTER TABLE is not able to parse length restriction in index creation
 
 2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
