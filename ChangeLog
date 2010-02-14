@@ -1,4 +1,8 @@
-2010-02-14 Andreas Otto <andreas@otto-hanika.de>
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12829: ALTER TABLE is not able to parse length restriction in index creation
+
+2010-02-14  Andreas Otto  <andreas@otto-hanika.de>
 
 	* Fixed bug #13380: Recursive deletion of alternative page languages
 
