@@ -4,7 +4,7 @@
 *
 *  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id: class.ux_t3lib_db.php 28106 2009-12-28 01:01:12Z xperseguers $
+ * $Id: class.ux_t3lib_db.php 29977 2010-02-13 13:18:32Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -490,6 +490,32 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
+	 * Creates and executes an INSERT SQL-statement for $table with multiple rows.
+	 * This method uses exec_INSERTquery() and is just a syntax wrapper to it.
+	 *
+	 * @param	string		Table name
+	 * @param	array		Field names
+	 * @param	array		Table rows. Each row should be an array with field values mapping to $fields
+	 * @param	string/array		See fullQuoteArray()
+	 * @return	mixed		Result from last handler, usually TRUE when success and FALSE on failure
+	 */
+	public function exec_INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+			return parent::exec_INSERTmultipleRows($table, $fields, $rows, $no_quote_fields);
+		}
+
+		foreach ($rows as $row) {
+			$fields_values = array();
+			foreach ($fields as $key => $value) {
+				$fields_values[$value] = $row[$key];
+			}
+			$res = $this->exec_INSERTquery($table, $fields_values, $no_quote_fields);
+		}
+
+		return $res;
+	}
+
+	/**
 	 * Updates a record from $table
 	 *
 	 * @param	string		Database tablename
@@ -728,6 +754,62 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
+	 * Truncates a table.
+	 * 
+	 * @param	string		Database tablename
+	 * @return	mixed		Result from handler
+	 */
+	public function exec_TRUNCATEquery($table) {
+		if ($this->debug) {
+			$pt = t3lib_div::milliseconds();
+		}
+
+			// Do table/field mapping:
+		$ORIG_tableName = $table;
+		if ($tableArray = $this->map_needMapping($table)) {
+				// Table name:
+			if ($this->mapping[$table]['mapTableName']) {
+				$table = $this->mapping[$table]['mapTableName'];
+			}
+		}
+
+			// Select API
+		$this->lastHandlerKey = $this->handler_getFromTableList($ORIG_tableName);
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+			case 'native':
+				$this->lastQuery = $this->TRUNCATEquery($table);
+				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				break;
+			case 'adodb':
+				$this->lastQuery = $this->TRUNCATEquery($table);
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_query($this->lastQuery, FALSE);
+				break;
+			case 'userdefined':
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_TRUNCATEquery($table,$where);
+				break;
+		}
+
+		if ($this->printErrors && $this->sql_error()) {
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
+
+		if ($this->debug) {
+			$this->debugHandler(
+				'exec_TRUNCATEquery',
+				t3lib_div::milliseconds() - $pt,
+				array(
+					'handlerType' => $hType,
+					'args' => array($table),
+					'ORIG_from_table' => $ORIG_tableName
+				)
+			);
+		}
+
+			// Return result:
+		return $sqlResult;
+	}
+
+	/**
 	 * Executes a query.
 	 * EXPERIMENTAL since TYPO3 4.4.
 	 * 
@@ -775,6 +857,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$table = $queryParts['TABLE'];
 				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
 				return $this->exec_DELETEquery($table, $whereClause);
+
+			case 'TRUNCATETABLE':
+				$table = $queryParts['TABLE'];
+				return $this->exec_TRUNCATEquery($table);
 		}
 	}
 
@@ -857,6 +943,39 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			return $query;
 		}
+	}
+
+	/**
+	 * Creates an INSERT SQL-statement for $table with multiple rows.
+	 * This method will create multiple INSERT queries concatenated with ';'
+	 *
+	 * @param	string		Table name
+	 * @param	array		Field names
+	 * @param	array		Table rows. Each row should be an array with field values mapping to $fields
+	 * @param	string/array		See fullQuoteArray()
+	 * @return	array		Full SQL query for INSERT as array of strings (unless $fields_values does not contain any elements in which case it will be FALSE). If BLOB fields will be affected and one is not running the native type, an array will be returned for each row, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields.
+	 */
+	public function INSERTmultipleRows($table, array $fields, array $rows, $no_quote_fields = FALSE) {
+		if ((string)$this->handlerCfg[$this->lastHandlerKey]['type'] === 'native') {
+			return parent::INSERTmultipleRows($table, $fields, $rows, $no_quote_fields);
+		}
+
+		$result = array();
+
+		foreach ($rows as $row) {
+			$fields_values = array();
+			foreach ($fields as $key => $value) {
+				$fields_values[$value] = $row[$key];
+			}
+			$rowQuery = $this->INSERTquery($table, $fields_values, $no_quote_fields);
+			if (is_array($rowQuery)) {
+				$result[] = $rowQuery;
+			} else {
+				$result[][0] = $rowQuery;
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -983,6 +1102,25 @@ class ux_t3lib_DB extends t3lib_DB {
 		return $query;
 	}
 
+	/**
+	 * Creates a TRUNCATE TABLE SQL-statement
+	 * 
+	 * @param	string		See exec_TRUNCATEquery()
+	 * @return	string		Full SQL query for TRUNCATE TABLE
+	 */
+	public function TRUNCATEquery($table) {
+		$table = $this->quoteFromTables($table);
+
+			// Call parent method to build actual query
+		$query = parent::TRUNCATEquery($table);
+
+		if ($this->debugOutput || $this->store_lastBuiltQuery) {
+			$this->debug_lastBuiltQuery = $query;
+		}
+
+		return $query;
+	}
+
 
 	/**************************************
 	*
@@ -1026,6 +1164,9 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->runningNative()) return $select_fields;
 
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
+		if ($this->SQLparser->parse_error) {
+			die($this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__);
+		}
 		$select_fields = $this->_quoteFieldNames($select_fields);
 
 		return $this->SQLparser->compileFieldList($select_fields);
@@ -1040,10 +1181,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	protected function _quoteFieldNames(array $select_fields) {
 		foreach ($select_fields as $k => $v) {
-			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*') {
+			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*' && !is_numeric($select_fields[$k]['field'])) {
 				$select_fields[$k]['field'] = $this->quoteName($select_fields[$k]['field']);
 			}
-			if ($select_fields[$k]['table'] != '') {
+			if ($select_fields[$k]['table'] != '' && !is_numeric($select_fields[$k]['table'])) {
 				$select_fields[$k]['table'] = $this->quoteName($select_fields[$k]['table']);
 			}
 			if ($select_fields[$k]['as'] != '') {
@@ -1052,6 +1193,17 @@ class ux_t3lib_DB extends t3lib_DB {
 			if (isset($select_fields[$k]['func_content.']) && $select_fields[$k]['func_content.'][0]['func_content'] != '*'){
 				$select_fields[$k]['func_content.'][0]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content.'][0]['func_content']);
 				$select_fields[$k]['func_content'] = $this->quoteFieldNames($select_fields[$k]['func_content']);
+			}
+			if (isset($select_fields[$k]['flow-control'])) {
+					// Quoting flow-control statements
+				if ($select_fields[$k]['flow-control']['type'] === 'CASE') {
+					if (isset($select_fields[$k]['flow-control']['case_field'])) {
+						$select_fields[$k]['flow-control']['case_field'] = $this->quoteFieldNames($select_fields[$k]['flow-control']['case_field']);
+					}
+					foreach ($select_fields[$k]['flow-control']['when'] as $key => $when) {
+						$select_fields[$k]['flow-control']['when'][$key]['when_value'] = $this->_quoteWhereClause($when['when_value']);
+					} 
+				}
 			}
 		}
 
@@ -1134,7 +1286,20 @@ class ux_t3lib_DB extends t3lib_DB {
 			if (is_array($where_clause[$k]['sub'])) {
 				$where_clause[$k]['sub'] = $this->_quoteWhereClause($where_clause[$k]['sub']);
 			} elseif (isset($v['func'])) {
-				$where_clause[$k]['func']['subquery'] = $this->quoteSELECTsubquery($v['func']['subquery']);
+				switch ($where_clause[$k]['func']['type']) {
+					case 'EXISTS':
+						$where_clause[$k]['func']['subquery'] = $this->quoteSELECTsubquery($v['func']['subquery']);
+						break;
+					case 'IFNULL':
+					case 'LOCATE':
+						if ($where_clause[$k]['func']['table'] != '') {
+							$where_clause[$k]['func']['table'] = $this->quoteName($v['func']['table']);
+						}
+						if ($where_clause[$k]['func']['field'] != '') {
+							$where_clause[$k]['func']['field'] = $this->quoteName($v['func']['field']);
+						}
+					break;
+				}
 			} else {
 				if ($where_clause[$k]['table'] != '') {
 					$where_clause[$k]['table'] = $this->quoteName($where_clause[$k]['table']);
@@ -2156,6 +2321,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$this->map_genericQueryParsed($parsedQuery);
 					break;
 				case 'INSERT':
+				case 'TRUNCATETABLE':
 					$this->map_genericQueryParsed($parsedQuery);
 					break;
 				case 'CREATEDATABASE':
@@ -2184,8 +2350,11 @@ class ux_t3lib_DB extends t3lib_DB {
 				case 'adodb':
 						// Compiling query:
 					$compiledQuery =  $this->SQLparser->compileSQL($this->lastParsedAndMappedQueryArray);
-					if ($this->lastParsedAndMappedQueryArray['type']=='INSERT') {
-						return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'],$compiledQuery);
+					switch ($this->lastParsedAndMappedQueryArray['type']) {
+						case 'INSERT':
+							return $this->exec_INSERTquery($this->lastParsedAndMappedQueryArray['TABLE'], $compiledQuery);
+						case 'TRUNCATETABLE':
+							return $this->exec_TRUNCATEquery($this->lastParsedAndMappedQueryArray['TABLE']);
 					}
 					return $this->handlerInstance[$this->lastHandlerKey]->DataDictionary->ExecuteSQLArray($compiledQuery);
 					break;
@@ -2559,7 +2728,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			// Select fields:
 		$expFields = $this->SQLparser->parseFieldList($select_fields);
 		$this->map_sqlParts($expFields,$defaultTable);
-		$select_fields = $this->SQLparser->compileFieldList($expFields);
+		$select_fields = $this->SQLparser->compileFieldList($expFields, FALSE, FALSE);
 
 			// Group By fields
 		$expFields = $this->SQLparser->parseFieldList($groupBy);
@@ -2586,20 +2755,69 @@ class ux_t3lib_DB extends t3lib_DB {
 		if (is_array($sqlPartArray)) {
 			foreach ($sqlPartArray as $k => $v) {
 
+				if (isset($sqlPartArray[$k]['type'])) {
+					switch ($sqlPartArray[$k]['type']) {
+						case 'flow-control':
+							$temp = array($sqlPartArray[$k]['flow-control']);
+							$this->map_sqlParts($temp, $defaultTable);	// Call recursively!
+							$sqlPartArray[$k]['flow-control'] = $temp[0];
+							break;
+						case 'CASE':
+							if (isset($sqlPartArray[$k]['case_field'])) {
+								$fieldArray = explode('.', $sqlPartArray[$k]['case_field']);
+								if (count($fieldArray) == 1 && is_array($this->mapping[$defaultTable]['mapFieldNames']) && isset($this->mapping[$defaultTable]['mapFieldNames'][$fieldArray[0]])) {
+									$sqlPartArray[$k]['case_field'] = $this->mapping[$defaultTable]['mapFieldNames'][$fieldArray[0]];
+								}
+								elseif (count($fieldArray) == 2) {
+										// Map the external table
+									$table = $fieldArray[0];
+									if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
+										$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+									}
+										// Map the field itself
+									$field = $fieldArray[1];
+									if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
+										$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+									}
+									$sqlPartArray[$k]['case_field'] = $table . '.' . $field;
+								}
+							}
+							foreach ($sqlPartArray[$k]['when'] as $key => $when) {
+								$this->map_sqlParts($sqlPartArray[$k]['when'][$key]['when_value'], $defaultTable);
+							}
+							break;
+					}
+				}
+
 					// Look for sublevel (WHERE parts only)
 				if (is_array($sqlPartArray[$k]['sub'])) {
 					$this->map_sqlParts($sqlPartArray[$k]['sub'], $defaultTable);	// Call recursively!
 				} elseif (isset($sqlPartArray[$k]['func'])) {
-					$subqueryDefaultTable = $sqlPartArray[$k]['func']['subquery']['FROM'][0]['table'];
-					$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['SELECT'], $subqueryDefaultTable);
-					$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['FROM'], $subqueryDefaultTable);
-					$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['WHERE'], $subqueryDefaultTable);
+					switch ($sqlPartArray[$k]['func']['type']) {
+						case 'EXISTS':
+							$subqueryDefaultTable = $sqlPartArray[$k]['func']['subquery']['FROM'][0]['table'];
+							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['SELECT'], $subqueryDefaultTable);
+							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['FROM'], $subqueryDefaultTable);
+							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['WHERE'], $subqueryDefaultTable);
+							break;
+						case 'IFNULL':
+						case 'LOCATE':
+								// For the field, look for table mapping (generic):
+							$t = $sqlPartArray[$k]['func']['table'] ? $sqlPartArray[$k]['func']['table'] : $defaultTable;
+							if (is_array($this->mapping[$t]['mapFieldNames']) && $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['func']['field']]) {
+								$sqlPartArray[$k]['func']['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['func']['field']];
+							}
+							if ($this->mapping[$t]['mapTableName']) {
+								$sqlPartArray[$k]['func']['table'] = $this->mapping[$t]['mapTableName'];
+							}
+							break;
+					}
 				} else {
 						// For the field, look for table mapping (generic):
 					$t = $sqlPartArray[$k]['table'] ? $sqlPartArray[$k]['table'] : $defaultTable;
 
 						// Mapping field name, if set:
-					if (is_array($this->mapping[$t]['mapFieldNames']) && $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']]) {
+					if (is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']])) {
 						$sqlPartArray[$k]['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']];
 					}
 
@@ -2623,6 +2841,15 @@ class ux_t3lib_DB extends t3lib_DB {
 							}
 							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $table . '.' . $field;
 							$sqlPartArray[$k]['func_content'] = $table . '.' . $field;
+						}
+
+							// Mapping flow-control statements
+						if (isset($sqlPartArray[$k]['flow-control'])) {							
+							if (isset($sqlPartArray[$k]['flow-control']['type'])) {
+								$temp = array($sqlPartArray[$k]['flow-control']);
+								$this->map_sqlParts($temp, $t);	// Call recursively!
+								$sqlPartArray[$k]['flow-control'] = $temp[0];
+ 							}
 						}
 					}
 

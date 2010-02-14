@@ -4,7 +4,7 @@
 *
 *  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.ux_t3lib_sqlparser.php 28103 2009-12-28 00:40:06Z xperseguers $
+ * $Id: class.ux_t3lib_sqlparser.php 29977 2010-02-13 13:18:32Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -52,12 +52,93 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 *
 	 * @param	array		Array of select fields, (made with ->parseFieldList())
 	 * @param	boolean		Whether comments should be compiled
+	 * @param	boolean		Whether function mapping should take place
 	 * @return	string		Select field string
 	 * @see parseFieldList()
 	 */
-	public function compileFieldList($selectFields, $compileComments = TRUE) {
-			// TODO: Handle SQL hints in comments according to current DBMS
-		return parent::compileFieldList($selectFields, FALSE);
+	public function compileFieldList($selectFields, $compileComments = TRUE, $functionMapping = TRUE) {
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+			case 'native':
+				$output = parent::compileFieldList($selectFields, $compileComments);
+				break;
+			case 'adodb':
+				$output = '';
+					// Traverse the selectFields if any:
+				if (is_array($selectFields)) {
+					$outputParts = array();
+					foreach ($selectFields as $k => $v) {
+		
+							// Detecting type:
+						switch($v['type'])	{
+							case 'function':
+								$outputParts[$k] = $v['function'] . '(' . $v['func_content'] . ')';
+								break;
+							case 'flow-control':
+								if ($v['flow-control']['type'] === 'CASE') {
+									$outputParts[$k] = $this->compileCaseStatement($v['flow-control'], $functionMapping);
+								}
+								break;
+							case 'field':
+								$outputParts[$k] = ($v['distinct'] ? $v['distinct'] : '') . ($v['table'] ? $v['table'] . '.' : '') . $v['field'];
+								break;
+						}
+		
+							// Alias:
+						if ($v['as']) {
+							$outputParts[$k] .= ' ' . $v['as_keyword'] . ' ' . $v['as'];
+						}
+		
+							// Specifically for ORDER BY and GROUP BY field lists:
+						if ($v['sortDir']) {
+							$outputParts[$k] .= ' ' . $v['sortDir'];
+						}
+					}
+						// TODO: Handle SQL hints in comments according to current DBMS
+					if (/* $compileComments */ FALSE && $selectFields[0]['comments']) {
+						$output = $selectFields[0]['comments'] . ' ';
+					}
+					$output .= implode(', ', $outputParts);
+				}
+				break;
+		}	
+		return $output;
+	}
+ 
+ 	/**
+	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
+	 *
+	 * @param	array		Array of case components, (made with ->parseCaseStatement())
+	 * @param	boolean		Whether function mapping should take place
+	 * @return	string		case when string
+	 * @see parseCaseStatement()
+	 */
+	protected function compileCaseStatement(array $components, $functionMapping = TRUE) {
+		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
+			case 'native':
+				$output = parent::compileCaseStatement($components);
+				break;
+			case 'adodb':
+				$statement = 'CASE';
+				if (isset($components['case_field'])) {
+					$statement .= ' ' . $components['case_field'];
+				} elseif (isset($components['case_value'])) {
+					$statement .= ' ' . $components['case_value'][1] . $components['case_value'][0] . $components['case_value'][1];
+				}
+				foreach ($components['when'] as $when) {
+					$statement .= ' WHEN ';
+					$statement .= $this->compileWhereClause($when['when_value'], $functionMapping);
+					$statement .= ' THEN ';
+					$statement .= $when['then_value'][1] . $when['then_value'][0] . $when['then_value'][1];
+				}
+				if (isset($components['else'])) {
+					$statement .= ' ELSE ';
+					$statement .= $components['else'][1] . $components['else'][0] . $components['else'][1];
+				}
+				$statement .= ' END';
+				$output = $statement;
+				break;
+		}
+		return $output;
 	}
 
 	/**
@@ -82,27 +163,34 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * Compiles an INSERT statement from components array
 	 *
 	 * @param array Array of SQL query components
-	 * @return string SQL INSERT query
+	 * @return string SQL INSERT query / array
 	 * @see parseINSERT()
 	 */
-	function compileINSERT($components) {
+	protected function compileINSERT($components) {
 		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$query = parent::compileINSERT($components);
 				break;
 			case 'adodb':
+				$values = array();
+
 				if (isset($components['VALUES_ONLY']) && is_array($components['VALUES_ONLY'])) {
-					$fields = $GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']];
-					$fc = 0;
-					foreach ($fields as $fn => $fd) {
-						$query[$fn] = $components['VALUES_ONLY'][$fc++][0];
-					}
+					$valuesComponents = $components['EXTENDED'] === '1' ? $components['VALUES_ONLY'] : array($components['VALUES_ONLY']);
+					$tableFields = array_keys($GLOBALS['TYPO3_DB']->cache_fieldType[$components['TABLE']]);
 				} else {
-						// Initialize:
-					foreach ($components['FIELDS'] as $fN => $fV) {
-						$query[$fN]=$fV[0];
-					}
+					$valuesComponents = $components['EXTENDED'] === '1' ? $components['FIELDS'] : array($components['FIELDS']);
+					$tableFields = array_keys($valuesComponents[0]);
 				}
+
+				foreach ($valuesComponents as $valuesComponent) {
+					$fields = array();
+					$fc = 0;
+					foreach ($valuesComponent as $fV) {
+						$fields[$tableFields[$fc++]] = $fV[0];
+					}
+					$values[] = $fields;
+				}
+				$query = count($values) === 1 ? $values[0] : $values;
 				break;
 		}
 
@@ -351,34 +439,79 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 							// Look for sublevel:
 						if (is_array($v['sub'])) {
 							$output .= ' (' . trim($this->compileWhereClause($v['sub'], $functionMapping)) . ')';
-						} elseif (isset($v['func'])) {
-							$output .= ' ' . trim($v['modifier']) . ' ' . $v['func']['type'] . ' (' . $this->compileSELECT($v['func']['subquery']) . ')';
+						} elseif (isset($v['func']) && $v['func']['type'] === 'EXISTS') {
+							$output .= ' ' . trim($v['modifier']) . ' EXISTS (' . $this->compileSELECT($v['func']['subquery']) . ')';
 						} else {
 
-								// Set field/table with modifying prefix if any:
-							$output .= ' ' . trim($v['modifier']) . ' ';
-
-								// DBAL-specific: Set calculation, if any:
-							if ($v['calc'] === '&' && $functionMapping) {
-								switch(TRUE) {
-									case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
-											// Oracle only knows BITAND(x,y) - sigh
-										$output .= 'BITAND(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ',' . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1] . ')';
+							if (isset($v['func']) && $v['func']['type'] === 'LOCATE') {
+								$output .= ' ' . trim($v['modifier']);
+								switch (TRUE) {
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') && $functionMapping):
+										$output .= ' CHARINDEX(';
+										$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
+										$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+										$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
+										$output .= ')';
+ 										break;
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $functionMapping):
+										$output .= ' INSTR(';
+										$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+										$output .= ', ' . $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
+										$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
+										$output .= ')';
+										break;
+ 									default:
+										$output .= ' LOCATE(';
+										$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
+										$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+										$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
+										$output .= ')';
+ 										break;
+								}
+							} elseif (isset($v['func']) && $v['func']['type'] === 'IFNULL') {
+								$output .= ' ' . trim($v['modifier']) . ' ';
+								switch (TRUE) {
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') && $functionMapping):
+										$output .= 'ISNULL';
+										break;
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $functionMapping):
+										$output .= 'NVL';
 										break;
 									default:
-											// MySQL, MS SQL Server, PostgreSQL support the &-syntax
-										$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+										$output .= 'IFNULL';
 										break;
 								}
-							} elseif ($v['calc']) {
-								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'];
-								if (isset($v['calc_table'])) {
-									$output .= trim(($v['calc_table'] ? $v['calc_table'] . '.' : '') . $v['calc_field']);
-								} else {
-									$output .= $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+								$output .= '(';
+								$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+								$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
+								$output .= ')';
+							} else {
+
+									// Set field/table with modifying prefix if any:
+								$output .= ' ' . trim($v['modifier']) . ' ';
+	
+									// DBAL-specific: Set calculation, if any:
+								if ($v['calc'] === '&' && $functionMapping) {
+									switch(TRUE) {
+										case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
+												// Oracle only knows BITAND(x,y) - sigh
+											$output .= 'BITAND(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ',' . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1] . ')';
+											break;
+										default:
+												// MySQL, MS SQL Server, PostgreSQL support the &-syntax
+											$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+											break;
+									}
+								} elseif ($v['calc']) {
+									$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . $v['calc'];
+									if (isset($v['calc_table'])) {
+										$output .= trim(($v['calc_table'] ? $v['calc_table'] . '.' : '') . $v['calc_field']);
+									} else {
+										$output .= $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
+									}
+								} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping)) {
+									$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 								}
-							} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping)) {
-								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 							}
 
 								// Set comparator:

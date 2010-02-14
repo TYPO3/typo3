@@ -29,7 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
  * 
- * $Id: db_oracle_testcase.php 27623 2009-12-11 13:40:50Z xperseguers $
+ * $Id: db_oracle_testcase.php 29977 2010-02-13 13:18:32Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -139,6 +139,73 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/**
+	 * @test
+	 */
+	public function canCompileInsertWithFields() {
+		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa');";
+		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('compileINSERT', $components);
+
+		$expected = array(
+			'uid' => '1',
+			'pid' => '0',
+			'tr_iso_nr' => '2',
+			'tr_parent_iso_nr' => '0',
+			'tr_name_en' => 'Africa',
+		);
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13209
+	 */
+	public function canCompileExtendedInsert() {
+		$parseString = "INSERT INTO static_territories VALUES ('1', '0', '2', '0', 'Africa'),('2', '0', '9', '0', 'Oceania')," .
+			"('3', '0', '19', '0', 'Americas'),('4', '0', '142', '0', 'Asia');";
+		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('compileINSERT', $components);
+
+		$this->assertEquals(4, count($insert));
+
+		for ($i = 0; $i < count($insert); $i++) {
+			foreach (t3lib_div::trimExplode(',', 'uid,pid,tr_iso_nr,tr_parent_iso_nr,tr_name_en') as $field) {
+				$this->assertTrue(isset($insert[$i][$field]), 'Could not find ' . $field . ' column');
+			}
+		}
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=12858
+	 */
+	public function sqlForInsertWithMultipleRowsIsValid() {
+		$fields = array('uid', 'pid', 'title', 'body');
+		$rows = array(
+			array('1', '2', 'Title #1', 'Content #1'),
+			array('3', '4', 'Title #2', 'Content #2'),
+			array('5', '6', 'Title #3', 'Content #3'),
+		);
+		$query = $GLOBALS['TYPO3_DB']->INSERTmultipleRows('tt_content', $fields, $rows);
+
+		$expected[0] = 'INSERT INTO "tt_content" ( "uid", "pid", "title", "body" ) VALUES ( \'1\', \'2\', \'Title #1\', \'Content #1\' )';
+		$expected[1] = 'INSERT INTO "tt_content" ( "uid", "pid", "title", "body" ) VALUES ( \'3\', \'4\', \'Title #2\', \'Content #2\' )';
+		$expected[2] = 'INSERT INTO "tt_content" ( "uid", "pid", "title", "body" ) VALUES ( \'5\', \'6\', \'Title #3\', \'Content #3\' )';
+
+		$this->assertEquals(count($expected), count($query));
+		for ($i = 0; $i < count($query); $i++) {
+			$this->assertTrue(is_array($query[$i]), 'Expected array: ' . $query[$i]);
+			$this->assertEquals(1, count($query[$i]));
+			$this->assertEquals($expected[$i], $this->cleanSql($query[$i][0]));
+		}
+	}
+
 	///////////////////////////////////////
 	// Tests concerning quoting
 	///////////////////////////////////////
@@ -155,6 +222,16 @@ class db_oracle_testcase extends BaseTestCase {
 			'tstamp'				// order by
 		));
 		$expected = 'SELECT "uid" FROM "tt_content" WHERE "pid" = 1 GROUP BY "cruser_id" ORDER BY "tstamp"';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13504
+	 */
+	public function truncateQueryIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->TRUNCATEquery('be_users'));
+		$expected = 'TRUNCATE TABLE "be_users"';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -250,6 +327,20 @@ class db_oracle_testcase extends BaseTestCase {
 			'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
 		));
 		$expected = 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13422
+	 */
+	public function numericColumnsAreNotQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'1',
+			'be_users',
+			'username = \'_cli_scheduler\' AND admin = 0 AND be_users.deleted = 0'
+		));
+		$expected = 'SELECT 1 FROM "be_users" WHERE "username" = \'_cli_scheduler\' AND "admin" = 0 AND "be_users"."deleted" = 0';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -586,6 +677,122 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected = 'SELECT * FROM "tx_crawler_ps" WHERE "is_active" = 0 AND NOT EXISTS (';
 		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_ps"."ps_id" AND "tx_crawler_queue"."exec_time" = 0';
 		$expected .= ')';
+		$this->assertEquals($expected, $query);
+	}
+
+	///////////////////////////////////////
+	// Tests concerning advanced operators
+	///////////////////////////////////////
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseStatementIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'process_id, CASE active' .
+				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
+				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . 
+			' END AS number',
+			'tx_crawler_process',
+			'1=1'
+		));
+		$expected = 'SELECT "process_id", CASE "active" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" FROM "tx_crawler_process" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseStatementIsProperlyRemapped() {
+		$selectFields = 'process_id, CASE active' .
+				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
+				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . 
+			' END AS number';
+		$fromTables   = 'tx_crawler_process';
+		$whereClause  = '1=1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "ps_id", CASE "is_active" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" ';
+		$expected .= 'FROM "tx_crawler_ps" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13135
+	 */
+	public function caseStatementWithExternalTableIsProperlyRemapped() {
+		$selectFields = 'process_id, CASE tt_news.uid' .
+				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tt_news') .
+				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tt_news') .
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news') . 
+			' END AS number';
+		$fromTables   = 'tx_crawler_process, tt_news';
+		$whereClause  = '1=1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "ps_id", CASE "ext_tt_news"."news_uid" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" ';
+		$expected .= 'FROM "tx_crawler_ps", "ext_tt_news" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13134
+	 */
+	public function locateStatementIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*, CASE WHEN' .
+				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' .
+				' ELSE 1' . 
+			' END AS scope',
+			'tx_templavoila_tmplobj',
+			'1=1'
+		));
+		$expected = 'SELECT *, CASE WHEN INSTR("datastructure", \'(fce)\') > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=13134
+	 */
+	public function locateStatementWithPositionIsProperlyQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*, CASE WHEN' .
+				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' .
+				' ELSE 1' . 
+			' END AS scope',
+			'tx_templavoila_tmplobj',
+			'1=1'
+		));
+		$expected = 'SELECT *, CASE WHEN INSTR("datastructure", \'(fce)\', 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=6196
+	 */
+	public function IfNullIsProperlyRemapped() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_news_cat_mm',
+			'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)'
+		));
+		$expected = 'SELECT * FROM "tt_news_cat_mm" WHERE NVL("tt_news_cat_mm"."uid_foreign", 0) IN (21,22)';
 		$this->assertEquals($expected, $query);
 	}
 }

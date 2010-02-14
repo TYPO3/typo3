@@ -10,7 +10,10 @@
 -- 
 -- The functions add compatibility operators for PostgreSQL to make sure comparison is possible and the SQL doesn't return an error.
 --
--- $Id: postgresql-compatibility.sql 25943 2009-10-28 13:26:30Z xperseguers $
+-- Note: You may consider having a look at project mysqlcompat on http://pgfoundry.org/projects/mysqlcompat
+--       and report in DBAL bugtracker if you need another compatibility operator added.
+--
+-- $Id: postgresql-compatibility.sql 29977 2010-02-13 13:18:32Z xperseguers $
 -- R. van Twisk <typo3@rvt.dds.nl>
 
 
@@ -57,6 +60,22 @@ CREATE OPERATOR ~~ (PROCEDURE = t3compat_operator_like, LEFTARG = text, RIGHTARG
 CREATE OPERATOR = (PROCEDURE = t3compat_operator_eq, LEFTARG = integer, RIGHTARG = text);
 CREATE OPERATOR = (PROCEDURE = t3compat_operator_eq, LEFTARG = text, RIGHTARG = integer);
 
+-- LOCATE()
+CREATE OR REPLACE FUNCTION locate(text, text, integer)
+RETURNS integer AS $$
+SELECT POSITION($1 IN SUBSTRING ($2 FROM $3)) + $3 - 1
+$$ IMMUTABLE STRICT LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION locate(text, text)
+RETURNS integer AS $$
+SELECT locate($1, $2, 1)
+$$ IMMUTABLE STRICT LANGUAGE SQL;
+
+-- IFNULL
+CREATE OR REPLACE FUNCTION ifnull(anyelement, anyelement)
+RETURNS anyelement AS $$
+SELECT COALESCE($1, $2)
+$$ IMMUTABLE STRICT LANGUAGE SQL;
 
 -- Remove Compatibility operators
 --
@@ -68,4 +87,7 @@ CREATE OPERATOR = (PROCEDURE = t3compat_operator_eq, LEFTARG = text, RIGHTARG = 
 --DROP FUNCTION t3compat_operator_like(text, integer);
 --DROP FUNCTION t3compat_operator_eq(integer, text);
 --DROP FUNCTION t3compat_operator_eq(text, integer);
+--DROP FUNCTION locate(text, text);
+--DROP FUNCTION locate(text, text, integer);
+--DROP FUNCTION ifnull(anyelement, anyelement);
 

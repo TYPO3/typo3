@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
 /**
  * Class that renders fields for the Extension Manager configuration.
  *
- * $Id: class.tx_dbal_tsparserext.php 27006 2009-11-25 22:08:07Z xperseguers $
+ * $Id: class.tx_dbal_tsparserext.php 28572 2010-01-08 17:13:29Z xperseguers $
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3

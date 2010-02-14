@@ -1,3 +1,67 @@
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.1
+
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for #12829: ALTER TABLE is not able to parse length restriction in index creation
+
+2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for #4493: WHERE func(expr) IN (n,...m) is broken
+	* Fixed bug #6196: IFNULL operator cannot be parsed
+	* Fixed bug #13528: Argument 1 passed to ux_t3lib_DB::_quoteFieldNames() must be an array, string given
+
+2010-02-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Follow-up of #13504: Using TRUNCATE instead of TRUNCATETABLE as public DB API
+
+2010-02-10  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13504: Cannot parse TRUNCATE TABLE in install tool
+
+2010-02-09  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #13490: Where clause 0=0 cannot be parsed
+
+2010-02-07  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #12858: Provide an API to insert multiple rows at once
+	* Fixed bug #13453: Method compileINSERT of ux_t3lib_sqlparser should be protected
+	* Added feature #13209: MySQL extended INSERT statements cannot be parsed
+
+2010-02-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for bug #13430: Cannot parse INSERT when VALUES has no space before left parenthesis
+
+2010-02-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13422: Invalid quoting of numeric column names
+
+2010-02-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for bug #13412: BETWEEN operator is not supported
+
+2010-01-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13090: version warning with CSS styled content
+
+2010-01-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13199: fileadminDir is hardcoded in several places (Thanks to Susanne Moog)
+
+2010-01-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated copyright year
+
+2010-01-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13134: Support of SQL LOCATE function
+
+2010-01-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13135: Support for CASE WHEN flow control
+
 2009-12-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.1.0

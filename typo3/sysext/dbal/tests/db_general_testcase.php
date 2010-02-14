@@ -28,7 +28,7 @@ require_once('BaseTestCase.php');
 /**
  * Testcase for class ux_t3lib_db.
  * 
- * $Id: db_general_testcase.php 27006 2009-11-25 22:08:07Z xperseguers $
+ * $Id: db_general_testcase.php 29978 2010-02-13 13:45:56Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -191,6 +191,55 @@ class db_general_testcase extends BaseTestCase {
 		);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTquery('tx_test_dbal', $data));
 		$expected = 'INSERT INTO tx_test_dbal ( foo, foobar ) VALUES ( \'-9223372036854775808\', \'-9223372036854775808\' )';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=12858
+	 */
+	public function sqlForInsertWithMultipleRowsIsValid() {
+		$fields = array('uid', 'pid', 'title', 'body');
+		$rows = array(
+			array('1', '2', 'Title #1', 'Content #1'),
+			array('3', '4', 'Title #2', 'Content #2'),
+			array('5', '6', 'Title #3', 'Content #3'),
+		);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->INSERTmultipleRows('tt_content', $fields, $rows));
+
+		$expected = 'INSERT INTO tt_content (uid, pid, title, body) VALUES ';
+		$expected .= "('1', '2', 'Title #1', 'Content #1'), ";
+		$expected .= "('3', '4', 'Title #2', 'Content #2'), ";
+		$expected .= "('5', '6', 'Title #3', 'Content #3')";
+
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=4493
+	 */
+	public function minFunctionAndInOperatorCanBeParsed() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'pages',
+			'MIN(uid) IN (1,2,3,4)'
+		));
+		$expected = 'SELECT * FROM pages WHERE MIN(uid) IN (1,2,3,4)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=4493
+	 */
+	public function maxFunctionAndInOperatorCanBeParsed() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'pages',
+			'MAX(uid) IN (1,2,3,4)'
+		));
+		$expected = 'SELECT * FROM pages WHERE MAX(uid) IN (1,2,3,4)';
 		$this->assertEquals($expected, $query);
 	}
 }
