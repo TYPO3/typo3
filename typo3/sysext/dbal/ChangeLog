@@ -1,3 +1,7 @@
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for #12829: ALTER TABLE is not able to parse length restriction in index creation
+
 2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added unit tests for #4493: WHERE func(expr) IN (n,...m) is broken

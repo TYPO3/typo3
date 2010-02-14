@@ -428,7 +428,7 @@ class sqlparser_general_testcase extends BaseTestCase {
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=4466
 	 */
-	public function indexMayContainALengthRestriction() {
+	public function indexMayContainALengthRestrictionInCreateTable() {
 		$parseString = '
 			CREATE TABLE tx_realurl_uniqalias (
 				uid int(11) NOT NULL auto_increment,
@@ -450,6 +450,16 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($createTables), $createTables);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12829
+	 */
+	public function indexMayContainALengthRestrictionInAlterTable() {
+		$parseString = 'ALTER TABLE tx_realurl_uniqalias ADD KEY bk_realurl02 (tablename,field_alias,field_id,value_alias(220),expire)';
+		$alterTables = $this->fixture->_callRef('parseALTERTABLE', $parseString);
+		$this->assertTrue(is_array($alterTables), $alterTables);
 	}
 
 	///////////////////////////////////////
