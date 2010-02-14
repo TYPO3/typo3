@@ -215,7 +215,6 @@ if (TYPO3_UseCachingFramework) {
 	t3lib_cache::initPageCache();
 	t3lib_cache::initPageSectionCache();
 	t3lib_cache::initContentHashCache();
-	unset($typo3CacheFactory);
 }
 // *************************
 // CLI dispatch processing
