@@ -1,3 +1,7 @@
+2010-02-14 Andreas Otto <andreas@otto-hanika.de>
+
+	* Fixed bug #13380: Recursive deletion of alternative page languages
+
 2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13529: DISTINCT should not be used as a function
