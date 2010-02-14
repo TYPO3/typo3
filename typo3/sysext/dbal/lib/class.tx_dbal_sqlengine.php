@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
 *  (c) 2004-2009 Kasper Skaarhoj <kasperYYYY@typo3.com>
 *  All rights reserved
 *
@@ -30,7 +30,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.tx_dbal_sqlengine.php 26966 2009-11-25 15:20:04Z stucki $
+ * $Id: class.tx_dbal_sqlengine.php 28574 2010-01-08 17:16:16Z xperseguers $
  *
  * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author Xavier Perseguers <typo3@perseguers.ch>

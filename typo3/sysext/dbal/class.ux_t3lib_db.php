@@ -4,7 +4,7 @@
 *
 *  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id: class.ux_t3lib_db.php 27126 2009-11-29 17:28:15Z xperseguers $
+ * $Id: class.ux_t3lib_db.php 29974 2010-02-13 09:32:39Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -975,6 +975,9 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->runningNative()) return $select_fields;
 
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
+		if ($this->SQLparser->parse_error) {
+			die($this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__);
+		}
 		$select_fields = $this->_quoteFieldNames($select_fields);
 
 		return $this->SQLparser->compileFieldList($select_fields);
@@ -989,10 +992,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	protected function _quoteFieldNames(array $select_fields) {
 		foreach ($select_fields as $k => $v) {
-			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*') {
+			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*' && !is_numeric($select_fields[$k]['field'])) {
 				$select_fields[$k]['field'] = $this->quoteName($select_fields[$k]['field']);
 			}
-			if ($select_fields[$k]['table'] != '') {
+			if ($select_fields[$k]['table'] != '' && !is_numeric($select_fields[$k]['table'])) {
 				$select_fields[$k]['table'] = $this->quoteName($select_fields[$k]['table']);
 			}
 			if ($select_fields[$k]['as'] != '') {
@@ -2531,7 +2534,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$t = $sqlPartArray[$k]['table'] ? $sqlPartArray[$k]['table'] : $defaultTable;
 
 						// Mapping field name, if set:
-					if (is_array($this->mapping[$t]['mapFieldNames']) && $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']]) {
+					if (is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']])) {
 						$sqlPartArray[$k]['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']];
 					}
 

@@ -4,7 +4,7 @@
 *
 *  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
-*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.ux_t3lib_sqlparser.php 28105 2009-12-28 00:46:30Z xperseguers $
+ * $Id: class.ux_t3lib_sqlparser.php 29767 2010-02-07 13:26:29Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -85,7 +85,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	 * @return string SQL INSERT query
 	 * @see parseINSERT()
 	 */
-	function compileINSERT($components) {
+	protected function compileINSERT($components) {
 		switch ((string)$GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 			case 'native':
 				$query = parent::compileINSERT($components);

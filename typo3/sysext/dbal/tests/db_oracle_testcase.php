@@ -29,7 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
  * 
- * $Id: db_oracle_testcase.php 27624 2009-12-11 13:41:46Z xperseguers $
+ * $Id: db_oracle_testcase.php 29689 2010-02-05 08:30:02Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -250,6 +250,20 @@ class db_oracle_testcase extends BaseTestCase {
 			'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'
 		));
 		$expected = 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13422
+	 */
+	public function numericColumnsAreNotQuoted() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'1',
+			'be_users',
+			'username = \'_cli_scheduler\' AND admin = 0 AND be_users.deleted = 0'
+		));
+		$expected = 'SELECT 1 FROM "be_users" WHERE "username" = \'_cli_scheduler\' AND "admin" = 0 AND "be_users"."deleted" = 0';
 		$this->assertEquals($expected, $query);
 	}
 

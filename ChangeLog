@@ -1,5 +1,6 @@
 2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Raised DBAL version from 1.0.3 to 1.0.4
 	* Fixed bug #12829: ALTER TABLE is not able to parse length restriction in index creation
 
 2010-02-14  Andreas Otto  <andreas@otto-hanika.de>

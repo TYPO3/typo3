@@ -1,3 +1,39 @@
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.0.4
+
+2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for #12829: ALTER TABLE is not able to parse length restriction in index creation
+
+2010-02-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13528: Argument 1 passed to ux_t3lib_DB::_quoteFieldNames() must be an array, string given
+
+2010-02-09  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #13490: Where clause 0=0 cannot be parsed
+
+2010-02-07  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13453: Method compileINSERT of ux_t3lib_sqlparser should be protected
+
+2010-02-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit tests for bug #13430: Cannot parse INSERT when VALUES has no space before left parenthesis
+
+2010-02-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13422: Invalid quoting of numeric column names
+
+2010-01-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13199: fileadminDir is hardcoded in several places (Thanks to Susanne Moog)
+
+2010-01-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated copyright year
+
 2009-12-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.0.3

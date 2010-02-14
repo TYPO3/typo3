@@ -28,7 +28,7 @@ require_once('BaseTestCase.php');
 /**
  * Testcase for class ux_t3lib_sqlparser
  * 
- * $Id: sqlparser_general_testcase.php 28105 2009-12-28 00:46:30Z xperseguers $
+ * $Id: sqlparser_general_testcase.php 30010 2010-02-14 17:46:31Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -190,6 +190,49 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13430
+	 */
+	public function canParseInsertWithoutSpaceAfterValues() {
+		$parseString = "INSERT INTO static_country_zones VALUES('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
+		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 * http://bugs.typo3.org/view.php?id=13430
+	 */
+	public function canParseInsertWithSpaceAfterValues() {
+		$parseString = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
+		$expected = "INSERT INTO static_country_zones VALUES ('483', '0', 'NL', 'NLD', '528', 'DR', 'Drenthe', '')";
+		$this->assertEquals($expected, $insert);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseInsertWithFields() {
+		$parseString = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$parseString .= "VALUES ('1', '0', '2', '0', 'Africa');";
+		$components = $this->fixture->_callRef('parseINSERT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$insert = $this->cleanSql($this->fixture->_callRef('compileINSERT', $components));
+		$expected = 'INSERT INTO static_territories (uid, pid, tr_iso_nr, tr_parent_iso_nr, tr_name_en) ';
+		$expected .= "VALUES ('1', '0', '2', '0', 'Africa')";
+		$this->assertEquals($expected, $insert);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////
@@ -281,7 +324,7 @@ class sqlparser_general_testcase extends BaseTestCase {
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=4466
 	 */
-	public function indexMayContainALengthRestriction() {
+	public function indexMayContainALengthRestrictionInCreateTable() {
 		$parseString = '
 			CREATE TABLE tx_realurl_uniqalias (
 				uid int(11) NOT NULL auto_increment,
@@ -303,6 +346,16 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 		$createTables = $this->fixture->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($createTables), $createTables);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12829
+	 */
+	public function indexMayContainALengthRestrictionInAlterTable() {
+		$parseString = 'ALTER TABLE tx_realurl_uniqalias ADD KEY bk_realurl02 (tablename,field_alias,field_id,value_alias(220),expire)';
+		$alterTables = $this->fixture->_callRef('parseALTERTABLE', $parseString);
+		$this->assertTrue(is_array($alterTables), $alterTables);
 	}
 
 	///////////////////////////////////////
