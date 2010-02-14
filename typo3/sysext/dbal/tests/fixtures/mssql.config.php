@@ -2,7 +2,7 @@
 /**
  * MS SQL configuration
  * 
- * $Id$
+ * $Id: mssql.config.php 29886 2010-02-09 21:39:29Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

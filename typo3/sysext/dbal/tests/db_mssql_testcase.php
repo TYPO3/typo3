@@ -29,7 +29,7 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing MS SQL database handling.
  * 
- * $Id$
+ * $Id: db_mssql_testcase.php 29977 2010-02-13 13:18:32Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
