@@ -555,7 +555,7 @@ class t3lib_sqlparser {
 						case 'ADDKEY':
 						case 'ADDPRIMARYKEY':
 							$result['KEY'] = $fieldKey;
-							$result['fields'] = $this->getValue($parseString,'_LIST');
+							$result['fields'] = $this->getValue($parseString, '_LIST', 'INDEX');
 							if ($this->parse_error)	{ return $this->parse_error; }
 						break;
 						case 'DROPKEY':
