@@ -1,3 +1,7 @@
+2010-02-14  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to #13448: Do not unset $typo3CacheFactory singleton
+
 2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Raised DBAL version from 1.0.3 to 1.0.4
