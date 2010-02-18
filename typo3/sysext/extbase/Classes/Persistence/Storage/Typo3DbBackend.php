@@ -326,8 +326,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		foreach ($properties as $propertyName => $propertyValue) {
 			// FIXME We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
 			if ($dataMap->isPersistableProperty($propertyName) && ($propertyName !== 'uid')  && ($propertyName !== 'pid') && ($propertyName !== 'isClone')) {
-				$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
-				$parameters[] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+				if ($propertyValue === NULL) {
+					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . ' IS NULL';
+				} else {
+					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
+					$parameters[] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+				}
 			}
 		}
 		$sql = array();
