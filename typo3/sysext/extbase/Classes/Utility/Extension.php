@@ -318,6 +318,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 	// TODO PHPdoc
 	public static function convertCamelCaseToLowerCaseUnderscored($string) {
+		// FIXME The cache doesn't work IMO as it is static (did I really implemented this? ;-))
 		static $conversionMap = array();
 		if (!isset($conversionMap[$string])) {
 			$conversionMap[$string] = strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
