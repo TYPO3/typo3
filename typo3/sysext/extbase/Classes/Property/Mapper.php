@@ -243,10 +243,15 @@ class Tx_Extbase_Property_Mapper {
 	 */
 	protected function transformToObject($propertyValue, $targetType, $propertyName) {
 		if ($targetType === 'DateTime' || in_array('DateTime', class_parents($targetType)) ) {
-			try {
-				return new $targetType($propertyValue);
-			} catch (Exception $e) {
-				throw new InvalidArgumentException('Conversion to a ' . $targetType . ' object is not possible. Cause: ' . $e->getMessage(), 1190034628);
+			// TODO replace this with converter implementation of FLOW3
+			if ($propertyValue === '') {
+				$propertyValue = NULL;
+			} else {
+				try {
+					$propertyValue = new $targetType($propertyValue);
+				} catch (Exception $e) {
+					throw new InvalidArgumentException('Conversion to a ' . $targetType . ' object is not possible. Cause: ' . $e->getMessage(), 1190034628);
+				}
 			}
 		} else {
 			if (is_numeric($propertyValue)) {
