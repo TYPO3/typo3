@@ -491,7 +491,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Could not determine the child object object type.', 1251315967);
 		}
-		return $elementType;		
+		return $elementType;	
 	}
 
 	/**

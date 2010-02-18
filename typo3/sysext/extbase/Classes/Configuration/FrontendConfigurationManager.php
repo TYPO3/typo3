@@ -79,11 +79,18 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @return array the framework configuration with overriden storagePid
 	 */
 	protected function overrideStoragePidIfStartingPointIsSet($frameworkConfiguration) {
-		if (is_string($this->contentObject->data['pages'])
-		    && strlen($this->contentObject->data['pages']) > 0) {
+		$pages = $this->contentObject->data['pages'];
+		if (is_string($pages) && strlen($pages) > 0) {
+			$list = array();
+			if($this->contentObject->data['recursive'] > 0) {
+				$explodedPages = t3lib_div::trimExplode(',', $pages);
+				foreach($explodedPages as $pid) {
+					$list[] = trim($this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']), ',');
+				}
+			}
 			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, array(
 				'persistence' => array(
-					'storagePid' => $this->contentObject->data['pages']
+					'storagePid' => $pages . implode(',', $list)
 				)
 			));
 		}
