@@ -42,7 +42,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	/**
 	 * Specifies the allowed property types.
 	 */
-	const ALLOWED_TYPES_PATTERN = '/^(?P<type>integer|int|float|boolean|string|DateTime|Tx_[a-zA-Z0-9_]+|array|ArrayObject|Tx_Extbase_Persistence_ObjectStorage)(?:<(?P<elementType>[a-zA-Z0-9_]+)>)?/';
+	const ALLOWED_TYPES_PATTERN = '/^(?P<type>integer|int|float|boolean|string|DateTime|Tx_[a-zA-Z0-9_]+|array|ArrayObject)(?:<(?P<elementType>[a-zA-Z0-9_]+)>)?/';
 
 	/**
 	 * Name of the class this schema is referring to
