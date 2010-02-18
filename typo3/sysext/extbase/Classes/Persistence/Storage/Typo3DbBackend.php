@@ -632,9 +632,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$statement = substr($statement, 5);
 				$sql['additionalWhereClause'][] = $statement;
 			}
-			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] != '') {
-				$sql['additionalWhereClause'][] =  $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (0,-1) ';
-			}
 		}
 	}
 
