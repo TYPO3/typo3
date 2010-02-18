@@ -271,7 +271,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$childSortByFieldName = $columnMap->getChildSortByFieldName();
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 			$query = $queryFactory->create($this->getType($parentObject, $propertyName));
-			$query->matching($query->withUid(intval($fieldValue)));
+			if (isset($parentKeyFieldName)) {
+				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
+			} else {
+				$query->matching($query->withUid(intval($fieldValue)));
+			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$query = $queryFactory->create($this->getElementType($parentObject, $propertyName));
 			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
