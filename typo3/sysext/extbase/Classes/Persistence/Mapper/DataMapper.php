@@ -190,7 +190,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
 			$propertyValue = NULL;
-			$propertyType = $columnMap->getPropertyType();
+			
+			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+			$propertyType = Tx_Extbase_Persistence_PropertyType::valueFromType($propertyMetaData['type']);
+
+			if ($propertyType == Tx_Extbase_Persistence_PropertyType::UNDEFINED) {
+				$propertyType = $columnMap->getPropertyType();
+			}
+
 			switch ($propertyType) {
 				case Tx_Extbase_Persistence_PropertyType::STRING;
 				case Tx_Extbase_Persistence_PropertyType::DATE;
