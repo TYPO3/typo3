@@ -607,7 +607,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			case Tx_Extbase_Persistence_PropertyType::DECIMAL:
 				return (float) $string;
 			case Tx_Extbase_Persistence_PropertyType::DATE:
-				return new DateTime(strftime('%Y-%m-%d %H:%M:%S', $string)); // TODO Check for Time Zone issues. Encode the time zone as well, and use the format defined by ISO used by TYPO3CR as well
+				return new DateTime(date('r', $string));
 			case Tx_Extbase_Persistence_PropertyType::BOOLEAN:
 				return (boolean) $string;
 			default:
