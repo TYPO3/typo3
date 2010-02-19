@@ -53,12 +53,12 @@ class t3lib_TCEforms_Suggest {
 	/**
 	 * Renders an ajax-enabled text field. Also adds required JS
 	 *
-	 * @param  string  $fieldname   The fieldname in the form
-	 * @param  string  $table       The table we render this selector for
-	 * @param  string  $field       The field we render this selector for
-	 * @param  array   $row         The row which is currently edited
-	 * @param  array   $config      The TSconfig of the field
-	 * @return string  The HTML code for the selector
+	 * @param string $fieldname The fieldname in the form
+	 * @param string $table The table we render this selector for
+	 * @param string $field The field we render this selector for
+	 * @param array $row The row which is currently edited
+	 * @param array $config The TSconfig of the field
+	 * @return string The HTML code for the selector
 	 */
 	public function renderSuggestSelector($fieldname, $table, $field, array $row, array $config) {
 		$this->suggestCount++;
@@ -99,18 +99,13 @@ class t3lib_TCEforms_Suggest {
 	}
 
 	/**
-	 * Ajax handler for the "suggest" feature in TCEforms
-	 * compiles together the different results from
+	 * Ajax handler for the "suggest" feature in TCEforms.
 	 *
-	 * @param  string  $search    The string to search for in the database
-	 * @param  string  $table     The table which is currently edited
-	 * @param  string  $field     The field which is currently edited
-	 * @param  integer $uid       The uid of the record which is currently edited (may be NEWxxxxxx)
-	 * @param  integer $pid       The pid of the record which is currently edited (always numeric
-	 * @param  string  $formfield The field which is edited
+	 * @param array $params The parameters from the AJAX call
+	 * @param TYPO3AJAX $ajaxObj The AJAX object representing the AJAX call
 	 * @return void
 	 */
-	public function processAjaxRequest($params,  &$ajaxObj) {
+	public function processAjaxRequest($params, &$ajaxObj) {
 
 			// get parameters from $_GET/$_POST
 		$search = t3lib_div::_GP('value');

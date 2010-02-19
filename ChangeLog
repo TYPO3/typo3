@@ -1,5 +1,6 @@
 2010-02-19  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #12007: Docblock comments in TCEforms suggest class are wrong (Thanks to Andreas Wolf)
 	* Fixed bug #12870: Login News missing styling for links (Thanks to Steffen Gebert)
 	* Added feature #13131: Add API to add stylesheet directories (Thanks to Steffen Gebert)
 
