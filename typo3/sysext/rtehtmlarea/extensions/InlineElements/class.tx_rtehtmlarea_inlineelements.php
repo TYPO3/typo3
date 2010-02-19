@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2009 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * InlineElements plugin for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -161,8 +161,10 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 					$hideItems =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig['buttons.']['formattext.']['removeItems']), 1);
 				}
 					// Restriction clause
-				if ($this->thisConfig['buttons.']['formattext.']['restrictToItems']) {
-					$restrictTo =  t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.$this->thisConfig['buttons.']['formattext.']['restrictTo']), 1);
+				if ($this->thisConfig['buttons.']['formattext.']['restrictTo']) {
+					$restrictTo = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.$this->thisConfig['buttons.']['formattext.']['restrictTo']), 1);
+				} else if ($this->thisConfig['buttons.']['formattext.']['restrictToItems']) {
+					$restrictTo = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList('none,'.$this->thisConfig['buttons.']['formattext.']['restrictToItems']), 1);
 				}
 					// Elements order
 				if ($this->thisConfig['buttons.']['formattext.']['orderItems']) {

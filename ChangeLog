@@ -4,6 +4,7 @@
 	* Fixed bug #13205: RTE 1.8.6 not focusing correctly with IE8
 	* Fixed bug #13478: htmlArea RTE: Inline styles not available if text marked with keyboard
 	* Fixed bug #13480: htmlArea RTE: Automatic linking ignores/replaces protocol
+	* Fixed bug #13282: htmlArea RTE: buttons.formattext.restrictTo not evaluated correctly (Thanks to Jörg Wagner)
 
 2010-02-19  Benjamin Mack  <benni@typo3.org>
 
