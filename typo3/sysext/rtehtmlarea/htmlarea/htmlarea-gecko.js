@@ -800,7 +800,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 						var midText   = leftText.splitText(midStart);
 						var midEnd = midText.data.search(/[^a-zA-Z0-9\._\-\/\&\?=:@]/);
 						if (midEnd != -1) var endText = midText.splitText(midEnd);
-						autoWrap(midText, 'a').href = (m[1] ? m[1] : 'http://') + m[2];
+						autoWrap(midText, 'a').href = (m[1] ? m[1] : 'http://') + m[3];
 						break;
 					}
 				}
@@ -833,7 +833,7 @@ HTMLArea.prototype._detectURL = function(ev) {
 								var textNode = s.anchorNode;
 								var fn = function() {
 									var m = textNode.data.match(HTMLArea.RE_url);
-									a.href = (m[1] ? m[1] : 'http://') + m[2];
+									a.href = (m[1] ? m[1] : 'http://') + m[3];
 									a._updateAnchTimeout = setTimeout(fn, 250);
 								}
 								a._updateAnchTimeout = setTimeout(fn, 250);
