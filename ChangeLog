@@ -1,5 +1,6 @@
 2010-02-19  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #12870: Login News missing styling for links (Thanks to Steffen Gebert)
 	* Added feature #13131: Add API to add stylesheet directories (Thanks to Steffen Gebert)
 
 2010-02-14  Christian Kuhn  <lolli@schwarzbu.ch>
