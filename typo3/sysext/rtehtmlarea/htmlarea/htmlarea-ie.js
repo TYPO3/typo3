@@ -136,6 +136,9 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
 		case "text":
 		case "none":
 			var el = range.parentElement();
+			if (el.nodeName.toLowerCase() == 'form') {
+				return this._doc.body;
+			}
 			if(el.nodeName.toLowerCase() == "li" && range.htmlText.replace(/\s/g,"") == el.parentNode.outerHTML.replace(/\s/g,"")) return el.parentNode;
 			return el;
 		case "control": return range.item(0);

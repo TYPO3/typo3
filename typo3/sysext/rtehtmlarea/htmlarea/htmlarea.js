@@ -1122,7 +1122,7 @@ HTMLArea.prototype.stylesLoaded = function() {
 	if (HTMLArea.is_ie) doc.documentElement._editorNo = this._editorNumber;
 
 		// intercept events for updating the toolbar & for keyboard handlers
-	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
+	HTMLArea._addEvents(doc, ["keydown","keypress","mouseup","click","drag"], HTMLArea._editorEvent, true);
 
 	HTMLArea._addEvent(window, "resize", HTMLArea.resizeIframes);
 
@@ -1805,7 +1805,7 @@ HTMLArea._editorEvent = function(ev) {
 	}
 	var editor = RTEarea[owner._editorNo]["editor"];
 	var keyEvent = ((HTMLArea.is_ie || HTMLArea.is_safari) && ev.type == "keydown") || (HTMLArea.is_gecko && ev.type == "keypress");
-	var mouseEvent = (ev.type == "mousedown" || ev.type == "mouseup");
+	var mouseEvent = (ev.type == "mousedown" || ev.type == "mouseup" || ev.type == "click");
 	editor.focusEditor();
 
 	if(keyEvent) {
@@ -1947,8 +1947,7 @@ HTMLArea._editorEvent = function(ev) {
 	} else if (mouseEvent) {
 			// mouse event
 		if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-		if (ev.type == "mouseup") editor.updateToolbar();
-			else editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 50);
+		editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 50);
 	}
 };
 
