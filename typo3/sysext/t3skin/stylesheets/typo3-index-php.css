@@ -161,16 +161,19 @@ body#typo3-index-php #t3-login-openIdLogo {
 }
 
 body#typo3-index-php .t3-login-form-footer,
-body#typo3-index-php .t3-login-form-footer a.switchToOpenId {
+body#typo3-index-php .t3-login-form-footer a.switchToOpenId,
+body#typo3-index-php dl#t3-login-news a {
 	color: #777d7d;
 	font-size: 10px;
 }
 
-body#typo3-index-php .t3-login-form-footer a.switchToOpenId {
+body#typo3-index-php .t3-login-form-footer a.switchToOpenId,
+body#typo3-index-php dl#t3-login-news a {
 	text-decoration: underline;
 }
 
-body#typo3-index-php .t3-login-form-footer a.switchToOpenId:hover {
+body#typo3-index-php .t3-login-form-footer a.switchToOpenId:hover,
+body#typo3-index-php dl#t3-login-news a:hover {
 	color: #333;
 }
 

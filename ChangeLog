@@ -1,3 +1,7 @@
+2010-02-19  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12870: Login News missing styling for links (Thanks to Steffen Gebert)
+
 2010-02-14  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to #13448: Do not unset $typo3CacheFactory singleton
