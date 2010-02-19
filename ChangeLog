@@ -1,5 +1,6 @@
 2010-02-19  Stanislas Rolland  <typo3@sjbr.ca>
 
+	* Fixed bug #12007: Docblock comments in TCEforms suggest class are wrong (Thanks to Andreas Wolf)
 	* Fixed bug #13205: RTE 1.8.6 not focusing correctly with IE8
 	* Fixed bug #13478: htmlArea RTE: Inline styles not available if text marked with keyboard
 

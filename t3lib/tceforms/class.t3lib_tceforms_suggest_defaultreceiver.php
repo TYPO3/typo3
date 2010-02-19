@@ -98,8 +98,8 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	/**
 	 * The constructor of this class
 	 *
-	 * @param  string $table
-	 * @param  array  $config  The configuration (TCA overlayed with TSconfig) to use for this selector
+	 * @param string $table The table to query
+	 * @param array $config The configuration (TCA overlayed with TSconfig) to use for this selector
 	 * @return void
 	 */
 	public function __construct($table, $config) {
@@ -141,9 +141,9 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 * If you subclass this class, you will most likely only want to overwrite the functions called from here, but not
 	 * this function itself
 	 *
-	 * @param  array  $params
-	 * @param  object $ref	the parent object
-	 * @return array  array of rows
+	 * @param array $params
+	 * @param object $ref The parent object
+	 * @return mixed array of rows or false if nothing found
 	 */
 	public function queryTable(&$params, $recursionCounter = 0) {
 		$rows = array();
@@ -223,7 +223,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 * Prepare the statement for selecting the records which will be returned to the selector. May also return some
 	 * other records (e.g. from a mm-table) which will be used later on to select the real records
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	protected function prepareSelectStatement() {
 		$searchWholePhrase = $this->config['searchWholePhrase'];
@@ -271,8 +271,8 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	/**
 	 * Selects all subpages of one page, optionally only upto a certain level
 	 *
-	 * @param  integer $uid
-	 * @param  integer $depth
+	 * @param integer $uid The uid of the page
+	 * @param integer $depth The depth to select upto. Defaults to 99
 	 * @return array of page IDs
 	 */
 	protected function getAllSubpagesOfPage($uid, $depth = 99) {
@@ -314,7 +314,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	/**
 	 * Manipulate a record before using it to render the selector; may be used to replace a MM-relation etc.
 	 *
-	 * @param  array $row
+	 * @param array $row
 	 */
 	protected function manipulateRecord(&$row) {
 	}
@@ -340,8 +340,8 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	/**
 	 * Overlay the given record with its workspace-version, if any
 	 *
-	 * @param	array 	the record to get the workspace version for
-	 * @return  void (passed by reference)
+	 * @param array The record to get the workspace version for
+	 * @return void (passed by reference)
 	 */
 	protected function makeWorkspaceOverlay(&$row) {
 			// check for workspace-versions
@@ -353,7 +353,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	/**
 	 * Return the icon for a record - just a wrapper for two functions from t3lib_iconWorks
 	 *
-	 * @param  array  $row The record to get the icon for
+	 * @param array $row The record to get the icon for
 	 * @return string The path to the icon
 	 */
 	protected function getIcon($row) {
@@ -367,9 +367,9 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	 *
 	 * The path is returned uncut, cutting has to be done by calling function.
 	 *
-	 * @param  array   $row The row
-	 * @param  integer $uid The records uid
-	 * @return string  The record-path
+	 * @param  array	$row The row
+	 * @param  array	$record The record
+	 * @return string The record-path
 	 */
 	protected function getRecordPath(&$row, $uid) {
 		$titleLimit = max($this->config['maxPathTitleLength'], 0);
@@ -388,8 +388,8 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	/**
 	 * Returns a label for a given record; usually only a wrapper for t3lib_BEfunc::getRecordTitle
 	 *
-	 * @param  array $row
-	 * @return The label for the record
+	 * @param array $row The record to get the label for
+	 * @return string The label
 	 */
 	protected function getLabel($row) {
 		return t3lib_BEfunc::getRecordTitle(($this->mmForeignTable ? $this->mmForeignTable : $this->table), $row, true);
@@ -398,10 +398,10 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 	/**
 	 * Calls a user function for rendering the page.
 	 *
-	 * This user function should manipulate $entry, especially $entry['text']
+	 * This user function should manipulate $entry, especially $entry['text'].
 	 *
-	 * @param  array $row   The row
-	 * @param  array $entry The entry to render
+	 * @param array $row The row
+	 * @param array $entry The entry to render
 	 * @return array The rendered entry (will be put into a <li> later on
 	 */
 	protected function renderRecord($row, $entry) {
