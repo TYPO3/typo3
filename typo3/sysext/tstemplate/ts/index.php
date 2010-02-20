@@ -358,18 +358,24 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 			// New standard?
 		if ($newStandardTemplate) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'static_template', '', '', 'title');
-			$opt = '';
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				if (substr(trim($row['title']), 0, 8) == 'template') {
-					$opt .= '<option value="' . $row['uid'] . '">' . htmlspecialchars($row['title']) . '</option>';
-				}
-			}
-			$selector = '<select name="createStandard"><option></option>' . $opt . '</select>';
+			if (t3lib_extMgm::isLoaded('statictemplates')) { // check wether statictemplates are supported
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'static_template', '', '', 'title');
+				$opt = '';
+				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+					if (substr(trim($row['title']), 0, 8) == 'template') {
+						$opt .= '<option value="' . $row['uid'] . '">' . htmlspecialchars($row['title']) . '</option>';
+					}
+ 				}
+				$selector = '<select name="createStandard"><option></option>' . $opt . '</select>';
+				$staticsText = ', optionally based on one of the standard templates';
+			} else {
+				$selector = '<input type="hidden" name="createStandard" value="" />';
+				$staticsText = '';
+ 			}
 
 				// Extension?
 			$theOutput .= $this->doc->spacer(10);
-			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite'), $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br />
+			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br />
 			<br />' .
 			$selector . '<br />
 			<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') . ' hspace="5" align="top">

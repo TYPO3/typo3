@@ -1,0 +1,448 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Untitled</title>
+</head>
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###TEMPLATE_CREATE### begin
+	Form til at oprette en ny bruger.
+-->
+	<form name="tt_address_form" method="post" action="###FORM_URL###">
+      <table width="90%" border="0" cellspacing="2" cellpadding="0">
+        <tr> 
+          <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><font size="3" color="#666666">Tilmeld mig til nyhedsbrev</font></font></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+      </table>
+      <br>
+      <table width="90%" border="0" cellspacing="2" cellpadding="2">
+        <tr> 
+          <td> 
+            <table width='80%' border='0'>
+              <tr> 
+                <td><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b>Navn:</b></font></td>
+                <td><!--###SUB_REQUIRED_FIELD_name###-->
+					<font face="Verdana, Arial, Helvetica, sans-serif" size="1" color=red>
+						<strong>Du skal udfylde dette felt!</strong><BR>
+					</font>
+					<!--###SUB_REQUIRED_FIELD_name###-->
+	                 <input type="text" name="FE[tt_address][name]">
+                  </td>
+              </tr>
+              <tr> 
+                <td><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><b>Email:</b></font></td>
+                <td><!--###SUB_REQUIRED_FIELD_email###-->
+					<font face="Verdana, Arial, Helvetica, sans-serif" size="1" color=red>
+						<strong>Du skal indtaste en korrekt email-adresse!</strong><BR>
+						###EVAL_ERROR_FIELD_email###<BR>
+					</font>
+					<!--###SUB_REQUIRED_FIELD_email###-->
+	                 <input type="text" name="FE[tt_address][email]">
+                  </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr> 
+          <td> 
+            <input type="submit" name="Submit22" value="Tilmeld">
+            <input type="submit" name="Submit3" value="Annuller" onClick="document.forms[0].action='###BACK_URL###';">
+			###HIDDENFIELDS###
+          </td>
+        </tr>
+      </table>
+	</form>
+<!-- ###TEMPLATE_CREATE### end-->
+
+
+
+
+
+
+
+
+<!-- ###TEMPLATE_AUTH### begin
+
+-->
+<strong>Log in first!</strong>
+<br>
+<br>
+<!-- ###TEMPLATE_AUTH### end-->
+
+
+
+
+
+<!-- ###TEMPLATE_INFOMAIL### begin
+
+-->
+      <table width="90%" border="0" cellspacing="2" cellpadding="0">
+        <tr> 
+          <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><font size="3" color="#666666">Vil du redigere din tilmelding?</font></font></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+      </table>
+      <br>
+      <table width="90%" border="0" cellspacing="2" cellpadding="2">
+        <tr> 
+          <td> 
+		  <font face="Verdana, Arial, Helvetica, sans-serif" size="1">Indtast den email-adresse <u>du er registreret med</u> her:</font><br>
+          </td>
+        </tr>
+      </table>
+
+<FORM name="tt_address_form" method="post" action="###FORM_URL###">
+<input type="text" name="fetch"><br>
+<input type="submit" name="Submit22" value="Send">
+	###HIDDENFIELDS###
+</FORM>
+
+
+<!-- ###TEMPLATE_INFOMAIL### end-->
+
+
+
+<!-- ###TEMPLATE_DELETE_PREVIEW### begin-->
+
+<FORM name="tt_address_form" method="post" action="###FORM_URL###">
+###FIELD_name###
+<input type="submit" name="Submit22" value="Delete">
+	###HIDDENFIELDS###
+</FORM>
+<!-- ###TEMPLATE_DELETE_PREVIEW### -->
+
+
+
+
+
+
+
+<!-- ###TEMPLATE_INFOMAIL_SENT### begin
+
+-->
+      <table width="90%" border="0" cellspacing="2" cellpadding="0">
+        <tr> 
+          <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><font size="3" color="#666666">Rediger profil</font></font></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+      </table>
+      <br>
+      <table width="90%" border="0" cellspacing="2" cellpadding="2">
+        <tr> 
+          <td> 
+		  <font face="Verdana, Arial, Helvetica, sans-serif" size="1">Der er nu sendt en mail til dig hvori der er et link, som giver dig adgang til at ændre dine data.<br>
+		  <br>
+		  <a href="###BACK_URL###"><strong>Tilbage &gt;</strong></a>
+		  </font><br>
+          </td>
+        </tr>
+      </table>
+<!-- ###TEMPLATE_INFOMAIL_SENT### end-->
+
+
+
+<!-- ###TEMPLATE_SETFIXED_OK### begin
+
+-->
+<strong>Updated!</strong>
+<br>
+
+
+<!-- ###TEMPLATE_SETFIXED_OK### end-->
+
+<!-- ###TEMPLATE_SETFIXED_FAILED### begin
+
+-->
+<strong>Failed!</strong>
+Reasons could be that the data-array fD was not an array.
+But the most obvious reason would be that the record has been updated in the meantime between the authorization code was send to your email box and you clicked the link<br>
+<br>
+
+
+<br>
+
+
+<!-- ###TEMPLATE_SETFIXED_FAILED### end-->
+
+
+
+
+
+
+
+
+<!-- ###TEMPLATE_EDIT_SAVED### begin
+	You can use the newly updated record as markers on the format ###FIELD_[fieldname]###
+-->
+<strong>Record edited</strong>
+<br>
+<br>
+<!-- ###TEMPLATE_EDIT_SAVED### end-->
+
+
+
+<!-- ###TEMPLATE_DELETE_SAVED### begin
+	You can use the newly updated record as markers on the format ###FIELD_[fieldname]###
+-->
+<strong>Record deleted</strong>
+<br>
+###FIELD_name###
+<br>
+<!-- ###TEMPLATE_DELETE_SAVED### end-->
+
+
+
+
+
+<!-- ###TEMPLATE_CREATE_SAVED### begin
+	You can use the newly created record as markers on the format ###FIELD_[fieldname]###
+-->
+
+
+	<form name="tt_address_form" method="post" action="###BACK_URL###">
+      <table width="90%" border="0" cellspacing="2" cellpadding="0">
+        <tr> 
+          <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif"><font size="3" color="#666666">Tilmelding til nyhedsbrev</font></font></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+        <tr> 
+          <td bgcolor="#D6D3CE"><img src="fileadmin/skabelon/images/clear.gif" width="1" height="1"></td>
+        </tr>
+      </table>
+      <br>
+      <table width="90%" border="0" cellspacing="2" cellpadding="2">
+        <tr> 
+          <td> 
+		  <font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+		  <b>Du er nu tilmeldt barneguidens nyhedsbrev. </b>
+		  <br>
+		  Der er sendt en email til dig med et link, som du kan bruge til at ændre dine bruger-oplysninger.<br>
+		  <br>
+		  </font>
+          </td>
+        </tr>
+      </table>
+	</form>
+<!-- ###TEMPLATE_CREATE_SAVED### end-->
+
+
+
+
+<!-- ###EMAIL_TEMPLATE_CREATE_SAVED### begin
+	You can use the newly created record as markers on the format ###FIELD_[fieldname]###
+-->
+<!--###SUB_RECORD###-->
+Barneguidens nyhedsbrev
+
+Kære ###FIELD_name###
+
+Du er nu tilmeldt barneguidens nyhedsbrev
+
+Dit navn er
+###FIELD_name###
+
+
+<!--###SUB_RECORD###-->
+<!-- ###EMAIL_TEMPLATE_CREATE_SAVED### end-->
+
+
+
+
+<!-- ###EMAIL_TEMPLATE_CREATE_SAVED-ADMIN### begin
+	You can use the newly created record as markers on the format ###FIELD_[fieldname]###
+-->
+<!--###SUB_RECORD###-->
+Admin: Ny barneguide tilmelding
+
+Navn: ###FIELD_name###
+Email: ###FIELD_email###
+
+<!--###SUB_RECORD###-->
+
+<!-- ###EMAIL_TEMPLATE_CREATE_SAVED-ADMIN### end-->
+
+
+
+
+
+
+
+
+
+<!-- ###EMAIL_TEMPLATE_FORGOTPASSWORD### begin-->
+<!--###SUB_RECORD###-->
+Barneguidens nyhedsbrev, administrationslink
+
+Kære ###FIELD_name###
+
+Her er dine stamdata:
+
+###FIELD_name###
+
+http://markus.oh-my-god.dk/typo3/dev/barneguiden/index.php?id=3&amp;cmd=edit&aC=###SYS_AUTHCODE###&rU=###FIELD_uid###
+
+
+<!--###SUB_RECORD###-->
+<!-- ###EMAIL_TEMPLATE_FORGOTPASSWORD### end-->
+
+
+<!-- ###EMAIL_TEMPLATE_NORECORD### begin-->
+Record not found.
+
+Du har anmodet om information, men der fandtes ikke noget
+
+
+
+
+<!-- ###EMAIL_TEMPLATE_NORECORD### end-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ###TEMPLATE_NO_PERMISSIONS### begin
+
+-->
+<strong>You did not have permissions to edit the record</strong>
+<br>
+<br>
+<!-- ###TEMPLATE_NO_PERMISSIONS### end-->
+
+
+
+
+
+
+
+<!-- ###TEMPLATE_EDIT### begin
+
+You can only edit records if you're logged in as the user, who created them. Therefore TEMPLATE_EDIT should work as a warning for this fact and perhaps display a login dialog.
+
+-->
+<strong>Edit user:</strong>
+<br>
+<br>
+<!-- ###SUB_REQUIRED_FIELDS_WARNING### begin -->
+Some of the required fields are not correctly filled in! Please do that!<br>
+<br>
+<!-- ###SUB_REQUIRED_FIELDS_WARNING### end -->
+			<FORM name="tt_address_form" method="post" action="###FORM_URL###">
+			name:	<input type="text" name="FE[tt_address][name]"><br>
+			email:	<input type="text" name="FE[tt_address][email]"><br>
+
+			###HIDDENFIELDS###
+				<input type="Submit" name="order" value="Send">
+			</FORM>
+			
+			
+
+<br>
+<!-- ###TEMPLATE_EDIT### end-->
+
+
+
+
+
+
+<!-- ###TEMPLATE_EDITMENU### begin
+	This template is used to generate a menu that displays the items from the actual table that the user has administration access to
+	For each item you can use the regular record markers formatted like this: ###FIELD_[fielname]### plus ###FORM_URL###
+-->
+	Select a record to edit:
+	
+	<HR>
+		<!-- ###ALLITEMS### begin -->
+			<!-- ###ITEM### begin -->
+				<a href="###FORM_URL###&rU=###FIELD_uid###">###FIELD_firm_name###</a><br>
+			<!-- ###ITEM### end -->
+				###FIELD_firm_name###<br>
+				###FIELD_firm_name###<br>
+				###FIELD_firm_name###<br>
+				###FIELD_firm_name###<br>
+		<!-- ###ALLITEMS### end -->
+	<HR>
+<a href="###FORM_URL###&cmd=create">Create a new record...</a><br>
+<!-- ###TEMPLATE_EDITMENU### -->
+
+
+
+
+<!-- ###TEMPLATE_EDITMENU_NOITEMS### begin
+	This is shown if the user has no items!
+-->
+	You have currently no editable items.
+<a href="###FORM_URL###&cmd=create">Create a new record...</a><br>
+<!-- ###TEMPLATE_EDITMENU_NOITEMS### -->
+
+
+
+
+
+
+
+
+
+</body>
+</html>

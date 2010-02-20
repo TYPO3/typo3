@@ -1,0 +1,257 @@
+/*  Default stylesheet use in the static template record "cSet stylesheet" */
+/* TYPO3 SVN ID: $Id: defaultstylesheet.css 3437 2008-03-16 16:22:11Z flyguide $ */
+
+A:link {
+	background-color : transparent;
+	color : navy;
+	text-decoration : none;
+	font-weight : bold;
+}
+A:visited {
+	background-color : transparent;
+	color : navy;
+	font-weight : bold;
+	text-decoration : none;
+}
+A:hover {
+	background-color : transparent;
+	color : #FF0000;
+	text-decoration : none;
+}
+A:active {
+	background-color : transparent;
+	color : navy;
+	font-weight : bold;
+	text-decoration : none;
+}
+
+
+SELECT {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px
+}
+TEXTAREA {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px
+}
+INPUT {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px
+}
+
+
+H1 {
+	font-family : Verdana, sans-serif;
+	font-size : 18px;
+	color : black;
+	margin-bottom : 0px;
+	margin-top : 10px;
+}
+H2 {
+	font-family : Verdana, sans-serif;
+	font-size : 15px;
+	color : #666666;
+	margin-bottom : 10px;
+	margin-top : 20px;
+}
+H3 {
+	font-family : Verdana, sans-serif;
+	font-size : 12px;
+	color : #666666;
+	margin-bottom : 0px;
+	margin-top : 10px;
+}
+H4 {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : black;
+	margin-bottom : 0px;
+	margin-top : 10px;
+}
+.subhead1 {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : black;
+}
+.subhead2 {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : green;
+}
+.subhead3 {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : red;
+}
+.headerdate {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : Green;
+	font-weight: normal;
+}
+
+
+
+
+
+
+
+P {
+	font-family : Verdana, sans-serif;
+	font-size : 11px;
+	line-height : 180%;
+	color: #333333;
+	margin-top : 1px;
+	margin-bottom : 1px;
+	padding-bottom : 0px;
+	text-indent : 20px;
+}
+.caption {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : #FF9966;
+}
+.bulletlist {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : #6600CC;
+}
+.table {
+	font-family : Verdana, sans-serif;
+	font-size : 11px;
+	color : #CC3366;
+}
+
+
+
+
+
+
+
+.searchform {
+	font-family : Verdana, sans-serif;
+	font-size : 12px;
+	color : #6600CC;
+	font-weight : normal;
+}
+.searchresultpagetitle {
+	font-family : Verdana, sans-serif;
+	font-size : 15px;
+	color : #333333;
+	font-weight : bold;
+}
+.searchresultcontent {
+	font-family : Verdana, sans-serif;
+	font-size : 11px;
+	color : #6600CC;
+	font-weight : normal;
+}
+.searchresultheader {
+	font-family : Verdana, sans-serif;
+	font-size : 14px;
+	color : #333366;
+	font-weight : bolder;
+}
+.searchmarkup {
+	color : #FF0066;
+}
+
+
+
+
+.loginform {
+	font-family : Verdana, sans-serif;
+	font-size : 14px;
+	color : #CC0000;
+	font-weight : normal;
+}
+
+
+
+
+.mailform {
+	font-family : Verdana, sans-serif;
+	font-size : 12px;
+	color : #003366;
+	font-weight : normal;
+}
+.mailformrequired {
+	font-family : Verdana, sans-serif;
+	font-size : 12px;
+	color : #003366;
+	font-weight : bolder;
+}
+.mailformcomment {
+	font-family : Verdana, sans-serif;
+	font-size : 12px;
+	color : #CC0000;
+	font-weight : bolder;
+}
+.mailformradio {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : #003366;
+	font-weight : normal;
+}
+
+
+
+
+
+
+.filelinks {
+	font-family : Verdana, sans-serif;
+	font-size : 14px;
+	color : #990000;
+}
+.filelinkssize {
+	font-family : Verdana, sans-serif;
+	font-size : 14px;
+	color : Green;
+}
+
+
+
+.sitemap1 {
+	font-family : Verdana, sans-serif;
+	font-size : 12px;
+	color : #CC6600;
+}
+.sitemap2 {
+	font-family : Verdana, sans-serif;
+	font-size : 11px;
+	color : #990000;
+	margin-left : 20px;
+}
+.sitemap3 {
+	font-family : Verdana, sans-serif;
+	font-size : 10px;
+	color : #333399;
+	margin-left : 40px;
+}
+.sitemap4 {
+	font-family : Verdana, sans-serif;
+	font-size : 9px;
+	color : #003333;
+	margin-left : 60px;
+}
+
+
+
+
+.celmenu {
+	font-family : Verdana, sans-serif;
+	font-size : 12px;
+	color : olive;
+	margin-top : 10px;
+}
+.celsubmenu {
+	font-family : Verdana, sans-serif;
+	font-size : 11px;
+	color : #666699;
+	margin-left : 20px;
+	margin-top : 3px;
+}
+
+
+

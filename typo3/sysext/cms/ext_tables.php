@@ -833,23 +833,5 @@ $TCA['sys_template'] = array (
 	)
 );
 
-// ******************************************************************
-// static_template
-// ******************************************************************
-$TCA['static_template'] = array (
-	'ctrl' => array (
-		'label' => 'title',
-		'tstamp' => 'tstamp',
-		'title' => 'LLL:EXT:cms/locallang_tca.xml:static_template',
-		'readOnly' => 1,	// This should always be true, as it prevents the static templates from being altered
-		'adminOnly' => 1,	// Only admin, if any
-		'rootLevel' => 1,
-		'is_static' => 1,
-		'default_sortby' => 'ORDER BY title',
-		'crdate' => 'crdate',
-		'iconfile' => 'template_standard.gif',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
-	)
-);
 
 ?>

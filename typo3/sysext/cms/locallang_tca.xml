@@ -112,7 +112,6 @@
 			<label index="sys_template.constants">Constants:</label>
 			<label index="sys_template.resources">Resources:</label>
 			<label index="sys_template.nextLevel">Template on next level:</label>
-			<label index="sys_template.include_static">Include static:</label>
 			<label index="sys_template.include_static_file">Include static (from extensions):</label>
 			<label index="sys_template.basedOn">Include basis template:</label>
 			<label index="sys_template.includeStaticAfterBasedOn">Include static AFTER basedOn:</label>
@@ -129,7 +128,6 @@
 			<label index="sys_template.tabs.options">Options</label>
 			<label index="sys_template.tabs.access">Access</label>
 			<label index="pages_language_overlay">Alternative Page Language</label>
-			<label index="static_template">Static templates</label>
 		</languageKey>
 	</data>
 </T3locallang>

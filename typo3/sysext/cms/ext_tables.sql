@@ -280,25 +280,6 @@ CREATE TABLE pages_language_overlay (
 
 
 #
-# Table structure for table 'static_template'
-#
-CREATE TABLE static_template (
-  uid int(11) unsigned NOT NULL auto_increment,
-  pid int(11) unsigned DEFAULT '0' NOT NULL,
-  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-  crdate int(11) unsigned DEFAULT '0' NOT NULL,
-  title varchar(255) DEFAULT '' NOT NULL,
-  include_static tinytext,
-  constants text,
-  config text,
-  editorcfg text,
-  description text,
-  PRIMARY KEY (uid),
-  KEY parent (pid)
-);
-
-
-#
 # Table structure for table 'sys_domain'
 #
 CREATE TABLE sys_domain (
@@ -347,7 +328,6 @@ CREATE TABLE sys_template (
   endtime int(11) unsigned DEFAULT '0' NOT NULL,
   root tinyint(4) unsigned DEFAULT '0' NOT NULL,
   clear tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  include_static tinytext,
   include_static_file text,
   constants text,
   config text,

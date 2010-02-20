@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for all static_templates related fields and tables.</description>
+		<type>database</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="static_template">Static templates</label>
+			<label index="static_template.title">Template title:</label>
+			<label index="static_template.constants">Constants:</label>
+			<label index="static_template.include_static">Include static:</label>
+			<label index="static_template.config">Setup:</label>
+			<label index="static_template.editorcfg">Backend Editor Configuration:</label>
+			<label index="static_template.description">Description:</label>
+			<label index="include_static">Include static:</label>
+		</languageKey>
+	</data>
+</T3locallang>

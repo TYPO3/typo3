@@ -750,7 +750,7 @@ $TCA['pages_language_overlay'] = array(
 $TCA['sys_template'] = array(
 	'ctrl' => $TCA['sys_template']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'title,clear,root,include_static,basedOn,nextLevel,resources,sitetitle,description,hidden,starttime,endtime'
+		'showRecordFieldList' => 'title,clear,root,basedOn,nextLevel,resources,sitetitle,description,hidden,starttime,endtime'
 	),
 	'columns' => array(
 		'title' => array(
@@ -864,17 +864,6 @@ $TCA['sys_template'] = array(
 					),
 				),
 			)
-		),
-		'include_static' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.include_static',
-			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'static_template',
-				'foreign_table_where' => 'ORDER BY static_template.title DESC',
-				'size' => 10,
-				'maxitems' => 20,
-				'default' => '',
-			),
 		),
 		'include_static_file' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_template.include_static_file',
@@ -1000,90 +989,12 @@ $TCA['sys_template'] = array(
 		'1' => array('showitem' => '
 			hidden,title;;1;;2-2-2, sitetitle, constants;;;;3-3-3, config, description;;;;4-4-4,
 			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.options, clear, root, nextLevel, editorcfg;;;;5-5-5,
-			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.include, include_static,includeStaticAfterBasedOn,6-6-6, include_static_file, basedOn, static_file_mode,
+			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.include, includeStaticAfterBasedOn,6-6-6, include_static_file, basedOn, static_file_mode,
 			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.files, resources,
 			--div--;LLL:EXT:cms/locallang_tca.xml:sys_template.tabs.access, starttime, endtime'
 		)
 	)
 );
-
-
-
-
-
-// ******************************************************************
-// static_template
-// ******************************************************************
-$TCA['static_template'] = array(
-	'ctrl' => $TCA['static_template']['ctrl'],
-	'interface' => array(
-		'showRecordFieldList' => 'title,include_static,description'
-	),
-	'columns' => array(
-		'title' => array(
-			'label' => 'Template title:',
-			'config' => array(
-				'type' => 'input',
-				'size' => '25',
-				'max' => '256',
-				'eval' => 'required'
-			)
-		),
-		'constants' => array(
-			'label' => 'Constants:',
-			'config' => array(
-				'type' => 'text',
-				'cols' => '48',
-				'rows' => '10',
-				'wrap' => 'OFF'
-			),
-			'defaultExtras' => 'fixed-font : enable-tab',
-		),
-		'include_static' => array(
-			'label' => 'Include static:',
-			'config' => array(
-				'type' => 'select',
-				'foreign_table' => 'static_template',
-				'foreign_table_where' => 'ORDER BY static_template.title',
-				'size' => 10,
-				'maxitems' => 20,
-				'default' => ''
-			)
-		),
-		'config' => array(
-			'label' => 'Setup:',
-			'config' => array(
-				'type' => 'text',
-				'rows' => 10,
-				'cols' => 48,
-				'wrap' => 'OFF'
-			),
-			'defaultExtras' => 'fixed-font : enable-tab',
-		),
-		'editorcfg' => array(
-			'label' => 'Backend Editor Configuration:',
-			'config' => array(
-				'type' => 'text',
-				'rows' => 4,
-				'cols' => 48,
-				'wrap' => 'OFF'
-			),
-			'defaultExtras' => 'fixed-font : enable-tab',
-		),
-		'description' => array(
-			'label' => 'Description:',
-			'config' => array(
-				'type' => 'text',
-				'rows' => 10,
-				'cols' => 48
-			)
-		)
-	),
-	'types' => array(
-		'1' => array('showitem' => 'title;;;;2-2-2, constants;;;;3-3-3, config, include_static;;;;5-5-5, description;;;;5-5-5, editorcfg')
-	)
-);
-
 
 
 ?>

@@ -548,7 +548,8 @@ class t3lib_TStemplate	{
 		}
 
 			// Include static records (static_template) or files (from extensions) (#1/2)
-		if (!$row['includeStaticAfterBasedOn'])		{		// NORMAL inclusion, The EXACT same code is found below the basedOn inclusion!!!
+			// NORMAL inclusion, The EXACT same code is found below the basedOn inclusion!!!
+		if (!$row['includeStaticAfterBasedOn'])		{
 			$this->includeStaticTypoScriptSources($idList,$templateID,$pid,$row);
 		}
 
@@ -637,7 +638,7 @@ class t3lib_TStemplate	{
 	}
 
 	/**
-	 * Includes static template records (from static_template table) and static template files (from extensions) for the input template record row.
+	 * Includes static template records (from static_template table, loaded through a hook) and static template files (from extensions) for the input template record row.
 	 *
 	 * @param	string		A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
 	 * @param	string		The id of the current template. Same syntax as $idList ids, eg. "sys_123"
@@ -648,17 +649,16 @@ class t3lib_TStemplate	{
 	 */
 	function includeStaticTypoScriptSources($idList,$templateID,$pid,$row)	{
 			// Static Template Records (static_template): include_static is a list of static templates to include
-		if (trim($row['include_static']))	{
-			$include_staticArr = t3lib_div::intExplode(',', $row['include_static']);
-			foreach ($include_staticArr as $id) { // traversing list
-				if (!t3lib_div::inList($idList,'static_'.$id))	{	// if $id is not allready included ...
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'static_template', 'uid='.intval($id));
-					if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{	// there was a template, then we fetch that
-						$subrow = $this->prependStaticExtra($subrow);
-						$this->processTemplate($subrow,$idList.',static_'.$id,$pid,'static_'.$id,$templateID);
-					}
-					$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				}
+			// Call function for link rendering:
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'])) {
+			$_params = array(
+					'idList' => &$idList,
+					'templateId' => &$templateID,
+					'pid' => &$pid,
+					'row' => &$row
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSources'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
 

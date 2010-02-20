@@ -8,6 +8,8 @@ General
 
 	* TYPO3 requires PHP 5.2 now
 
+	* The static templates for some basic designs that were part of the TYPO3 Core since TYPO3 3.5 are now moved to a system extension that is not included by default. If you are using one of these templates (GLUECK, GREEN, CANDIDATE etc) or one of the old table-based layouts for rendering content (like content (default) or plaintext rendering), make sure to install the system extension via the TYPO3 Installer.
+
 
 Backend
 =======
