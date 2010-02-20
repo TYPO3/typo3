@@ -166,7 +166,7 @@
 	background:#EFEFF4 url(images/toolbar/bg.gif) repeat-x top left;
 }
 .x-toolbar button {
-	color:#fff;
+	color:#333;
 }
 .x-toolbar .x-btn-menu-arrow-wrap .x-btn-center button {
 	background-image:url(images/toolbar/btn-arrow.gif);
@@ -782,7 +782,7 @@ ul.x-tab-strip-bottom{
 
 .x-btn button{
 	font:normal 10px verdana, arial,tahoma,verdana,helvetica;
-	color:#fff;
+	color:#333;
 	font-weight: bold;
 }
 

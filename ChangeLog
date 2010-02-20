@@ -1,3 +1,7 @@
+2010-02-20  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13333: Datepicker button color is wrong
+
 2010-02-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12007: Docblock comments in TCEforms suggest class are wrong (Thanks to Andreas Wolf)
