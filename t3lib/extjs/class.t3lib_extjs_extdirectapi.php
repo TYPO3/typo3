@@ -128,7 +128,7 @@ class t3lib_extjs_ExtDirectApi {
 
 				if (!isset($javascriptNamespaces[$javascriptNamespace])) {
 					$javascriptNamespaces[$javascriptNamespace] = array(
-						'url' => 'ajax.php?ajaxID=ExtDirect::route&namespace=' . rawurlencode($javascriptNamespace),
+						'url' => t3lib_div::locationHeaderUrl('ajax.php?ajaxID=ExtDirect::route&namespace=') . rawurlencode($javascriptNamespace),
 						'type' => 'remoting',
 						'actions' => array(),
 						'namespace' => $javascriptNamespace
