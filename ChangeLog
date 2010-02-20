@@ -1,3 +1,7 @@
+2010-02-20  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13333: Datepicker button color is wrong
+
 2010-02-20  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #7501: Remove Static-Templates from standard installation (Thanks to Steffen Ritter)

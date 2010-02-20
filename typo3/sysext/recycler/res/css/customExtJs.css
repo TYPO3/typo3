@@ -92,6 +92,10 @@ body .x-panel {
 	background-repeat: no-repeat;
 }
 
+.x-toolbar button {
+	color: #fff;
+}
+
 .delete { background-image: url('../icons/delete.gif') !important; }
 .undelete {	background-image: url('../icons/arrow_rotate_anticlockwise.png') !important; }
 .backup { background-image: url('../icons/database_save.png') !important; }
