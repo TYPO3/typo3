@@ -34,6 +34,20 @@
  */
 class t3lib_extjs_ExtDirectApi {
 	/**
+	 * @var array
+	 */
+	protected $settings = array();
+
+	/**
+	 * Constructs this object.
+	 */
+	public function __construct() {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
+			$this->settings = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'];
+		}
+	}
+
+	/**
 	 * Parses the ExtDirect configuration array "$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']"
 	 * and feeds the given typo3ajax instance with the resulting information. The get parameter
 	 * "namespace" will be used to filter the configuration.
@@ -52,7 +66,7 @@ class t3lib_extjs_ExtDirectApi {
 
 		// look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
-		$cacheHash = md5($cacheIdentifier . $filterNamespace);
+		$cacheHash = md5($cacheIdentifier . $filterNamespace . serialize($this->settings));
 		$cacheContent = t3lib_pageSelect::getHash($cacheHash);
 
 		// generate the javascript content if it wasn't found inside the cache and cache it!
@@ -101,8 +115,8 @@ class t3lib_extjs_ExtDirectApi {
 	 */
 	protected function generateAPI($filterNamespace) {
 		$javascriptNamespaces = array();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'] as $javascriptName => $className) {
+		if (is_array($this->settings)) {
+			foreach ($this->settings as $javascriptName => $className) {
 				$splittedJavascriptName = explode('.', $javascriptName);
 				$javascriptObjectName = array_pop($splittedJavascriptName);
 				$javascriptNamespace = implode('.', $splittedJavascriptName);
