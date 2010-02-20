@@ -11,6 +11,7 @@
 
 	* Added feature #13428: Caching of the ExtDirect API configuration (Thanks to Stefan Galinski)
 	* Follow-up to feature #13428: Extended generation of the caching hash
+	* Added feature #13164: CLI processes cannot be executed when adminOnly mode is enabled
 
 2010-02-19  Benjamin Mack  <benni@typo3.org>
 

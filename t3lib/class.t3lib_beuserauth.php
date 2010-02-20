@@ -210,7 +210,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 		} else {	// ...and if that's the case, call these functions
 			$this->fetchGroupData();	//	The groups are fetched and ready for permission checking in this initialization.	Tables.php must be read before this because stuff like the modules has impact in this
 			if ($this->checkLockToIP())	{
-				if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] || $this->isAdmin())	{
+				if ($this->isUserAllowedToLogin()) {
 					$this->backendSetUC();		// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
 					$this->emailAtLogin();		// email at login - if option set.
 				} else {
@@ -406,6 +406,31 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 			$dbres = parent::fetchUserSessionFromDB();
 		}
 		return $dbres;
+	}
+
+	/**
+	 * Determines whether a backend user is allowed to access the backend.
+	 *
+	 * The conditions are:
+	 *	+ backend user is a regular user and adminOnly is not defined
+	 *	+ backend user is an admin user
+	 *	+ backend user is used in CLI context and adminOnly is explicitely set to "2"
+	 * 
+	 * @return	boolean		Whether a backend user is allowed to access the backend
+	 */
+	protected function isUserAllowedToLogin() {
+		$isUserAllowedToLogin = FALSE;
+		$adminOnlyMode = $GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'];
+
+			// Backend user is allowed if adminOnly is not set or user is an admin:
+		if (!$adminOnlyMode || $this->isAdmin()) {
+			$isUserAllowedToLogin = TRUE;
+			// Backend user is allowed if adminOnly is set to 2 (CLI) and a CLI process is running:
+		} elseif ($adminOnlyMode == 2 && defined('TYPO3_cliMode') && TYPO3_cliMode) {
+			$isUserAllowedToLogin = TRUE;
+		}
+
+		return $isUserAllowedToLogin;
 	}
 }
 

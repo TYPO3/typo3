@@ -302,7 +302,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 		}
 
 			// Finally a check from t3lib_beuserauth::backendCheckLogin()
-		if (!$TYPO3_CONF_VARS['BE']['adminOnly'] || $this->isAdmin()) {
+		if ($this->isUserAllowedToLogin()) {
 			return true;
 		} else {
 			return false;
