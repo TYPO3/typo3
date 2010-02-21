@@ -311,7 +311,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 */
 	initializeDropDown : function (dropDown) {
 		var store = dropDown.getStore();
-		store.removeAll(true);
+		store.removeAll(false);
 		store.insert(0, new store.recordType({
 			text: this.localize('No style'),
 			value: 'none'

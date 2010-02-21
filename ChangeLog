@@ -17,6 +17,7 @@
 2010-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13580: htmlArea RTE: Extjize the RTE
+	* Fixed bug #13596: htmlArea RTE: Styling dropdowns grow on every use
 
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
