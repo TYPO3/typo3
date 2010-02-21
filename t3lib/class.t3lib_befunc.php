@@ -724,31 +724,24 @@ final class t3lib_BEfunc {
 
 		$loopCheck = 100;
 		$output = $fullOutput = '/';
-		while ($uid!=0 && $loopCheck>0) {
-			$loopCheck--;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'uid,pid,title,t3ver_oid,t3ver_wsid,t3ver_swapmode',
-						'pages',
-						'uid='.intval($uid).
-							t3lib_BEfunc::deleteClause('pages').
-							(strlen(trim($clause)) ? ' AND '.$clause : '')
-					);
-			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				t3lib_BEfunc::workspaceOL('pages', $row);
-				if (is_array($row)) {
-					t3lib_BEfunc::fixVersioningPid('pages', $row);
 
-					if ($row['_ORIG_pid'] && $row['t3ver_swapmode']>0)	{	// Branch points
-						$output = ' [#VEP#]'.$output;		// Adding visual token - Versioning Entry Point - that tells that THIS position was where the versionized branch got connected to the main tree. I will have to find a better name or something...
-					}
-					$uid = $row['pid'];
-					$output = '/'.t3lib_div::fixed_lgd_cs(strip_tags($row['title']), $titleLimit).$output;
-					if ($fullTitleLimit)	$fullOutput = '/'.t3lib_div::fixed_lgd_cs(strip_tags($row['title']), $fullTitleLimit).$fullOutput;
-				} else break;
-			} else {
-				break;
+		$clause = trim($clause);
+		if ($clause !== '' && substr($clause, 0, 3) !== 'AND') {
+			$clause = 'AND ' . $clause;
+		}
+		$data = self::BEgetRootLine($uid, $clause);
+
+		foreach ($data as $record) {
+			if ($record['uid'] === 0) {
+				continue;
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			if ($record['_ORIG_pid'] && $record['t3ver_swapmode'] > 0) {		// Branch points
+				$output = ' [#VEP#]' . $output;		// Adding visual token - Versioning Entry Point - that tells that THIS position was where the versionized branch got connected to the main tree. I will have to find a better name or something...
+			}
+			$output = '/' . t3lib_div::fixed_lgd_cs(strip_tags($record['title']), $titleLimit) . $output;
+			if ($fullTitleLimit) {
+				$fullOutput = '/' . t3lib_div::fixed_lgd_cs(strip_tags($record['title']), $fullTitleLimit) . $fullOutput;
+			}
 		}
 
 		if ($fullTitleLimit) {
