@@ -139,28 +139,30 @@ class ModuleMenu {
 		$rawModuleData = $this->getRawModuleData();
 
 		foreach($rawModuleData as $moduleKey => $moduleData) {
-			$menuState   = $GLOBALS['BE_USER']->uc['moduleData']['menuState'][$moduleKey];
-			$moduleLabel = $moduleData['title'];
+			if($moduleData['link'] != 'dummy.php' || ($moduleData['link'] == 'dummy.php' && is_array($moduleData['subitems'])) ) {
+				$menuState   = $GLOBALS['BE_USER']->uc['moduleData']['menuState'][$moduleKey];
+				$moduleLabel = $moduleData['title'];
 
-			if($moduleData['link'] && $this->linkModules) {
-				$moduleLabel = '<a href="#" onclick="top.goToModule(\''.$moduleData['name'].'\');'.$onBlur.'return false;">'.$moduleLabel.'</a>';
+				if($moduleData['link'] && $this->linkModules) {
+					$moduleLabel = '<a href="#" onclick="top.goToModule(\'' . $moduleData['name'] . '\');'.$onBlur . 'return false;">' . $moduleLabel . '</a>';
+				}
+
+				$menu .= '<li id="modmenu_' . $moduleData['name'] . '" '.
+					($collapsable ? 'class="menuSection"' : '') .
+					' title="' . $moduleData['description'] . '">
+					<div class="' . ($menuState ? 'collapsed' : 'expanded') . '">' .
+					$moduleData['icon']['html'] . ' ' . $moduleLabel . '</div>';
+
+					// traverse submodules
+				if (is_array($moduleData['subitems'])) {
+					$menu .= $this->renderSubModules($moduleData['subitems'], $menuState);
+				}
+
+				$menu .= '</li>' . "\n";
 			}
-
-			$menu .= '<li id="modmenu_' . $moduleData['name'] . '" '.
-				($collapsable ? 'class="menuSection"' : '') .
-				' title="' . $moduleData['description'] . '">
-				<div class="' . ($menuState ? 'collapsed' : 'expanded') . '">' .
-				$moduleData['icon']['html'] . ' ' . $moduleLabel . '</div>';
-
-				// traverse submodules
-			if(is_array($moduleData['subitems'])) {
-				$menu .= $this->renderSubModules($moduleData['subitems'], $menuState);
-			}
-
-			$menu .= '</li>'."\n";
 		}
 
-		return ($wrapInUl ? '<ul id="typo3-menu">'."\n".$menu.'</ul>'."\n" : $menu);
+		return ($wrapInUl ? '<ul id="typo3-menu">' . "\n".$menu.'</ul>' . "\n" : $menu);
 	}
 
 	/**
