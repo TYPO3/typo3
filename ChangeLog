@@ -22,6 +22,7 @@
 
 	* Added feature #13580: htmlArea RTE: Extjize the RTE
 	* Fixed bug #13596: htmlArea RTE: Styling dropdowns grow on every use
+	* Fixed bug #13597: htmlArea RTE: Toolbar select box does not close on click in editing area
 
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 

@@ -605,9 +605,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 			// Monitor toolbar updates in order to refresh the state of the combo
 		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
 			// Monitor framework becoming ready
-		if (Ext.isIE) {
-			this.mon(this.getToolbar().ownerCt, 'frameworkready', this.onFrameworkReady, this);
-		}
+		this.mon(this.getToolbar().ownerCt, 'frameworkready', this.onFrameworkReady, this);
 	},
 	/*
 	 * Get a reference to the editor
@@ -720,14 +718,20 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 		}
 	},
 	/*
-	 * Special handling for combo stealing focus in IE
 	 * The iframe must have been rendered
 	 */
 	onFrameworkReady: function () {
-			// Take a bookmark in case the editor looses focus by activation of this combo
-		this.mon(this.getEditor().iframe.getEl(), 'mouseleave', this.saveSelection, this);
-			// Restore the selection if combo was triggered
-		this.mon(this.getEditor().iframe.getEl(), 'focus', this.restoreSelection, this);
+		var iframe = this.getEditor().iframe;
+			// Close the combo on a click in the iframe
+			// Note: ExtJS is monitoring events only on the parent window
+		this.mon(Ext.get(iframe.document.documentElement), 'click', this.collapse, this);
+			// Special handling for combo stealing focus in IE
+		if (Ext.isIE) {
+				// Take a bookmark in case the editor looses focus by activation of this combo
+			this.mon(iframe.getEl(), 'mouseleave', this.saveSelection, this);
+				// Restore the selection if combo was triggered
+			this.mon(iframe.getEl(), 'focus', this.restoreSelection, this);
+		}
 	}
 });
 Ext.reg('htmlareacombo', Ext.ux.form.HTMLAreaCombo);
@@ -1176,7 +1180,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Start listening to things happening in the iframe
 	 */
 	startListening: function () {
-		var documentElement = Ext.get(Ext.isIE ? this.document.body : this.document.documentElement);
+		var documentElement = Ext.get(this.document.documentElement);
 			// Create keyMap so that plugins may bind key handlers
 		this.keyMap = new Ext.KeyMap(documentElement, [], (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress');
 			// Special keys map
