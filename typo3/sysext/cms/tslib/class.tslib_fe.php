@@ -2645,23 +2645,21 @@
 				if ($TSConf['TSFE.']['jumpURL_HTTPStatusCode']) {
 					switch (intval($TSConf['TSFE.']['jumpURL_HTTPStatusCode'])){
 						case 301:
-							header(t3lib_utility_Http::HTTP_STATUS_301);
+							$statusCode = t3lib_utility_Http::HTTP_STATUS_301;
 							break;
 						case 302:
-							header(t3lib_utility_Http::HTTP_STATUS_302);
-							break;
-						case 303:
-							header(t3lib_utility_Http::HTTP_STATUS_303);
+							$statusCode = t3lib_utility_Http::HTTP_STATUS_302;
 							break;
 						case 307:
-							header(t3lib_utility_Http::HTTP_STATUS_307);
+							$statusCode = t3lib_utility_Http::HTTP_STATUS_307;
 							break;
+						case 303:
 						default:
+							$statusCode = t3lib_utility_Http::HTTP_STATUS_303;
 							break;
 					}
 				}
-				header('Location: '.$this->jumpurl);
-				exit;
+				t3lib_utility_Http::redirect($this->jumpurl, $statusCode);
 			}
 		}
 	}

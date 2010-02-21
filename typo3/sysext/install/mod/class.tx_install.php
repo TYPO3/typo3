@@ -342,7 +342,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 			}
 
 			if($this->redirect_url)	{
-				header('Location: '.$this->redirect_url);
+				t3lib_utility_Http::redirect($this->redirect_url);
 			}
 		} else {
 			$this->loginForm();
@@ -3764,8 +3764,7 @@ From sub-directory:
 							",1,1);
 							if (t3lib_div::_GP('goto_step'))	{
 								$this->action.='&step='.t3lib_div::_GP('goto_step');
-								Header('Location: '.t3lib_div::locationHeaderUrl($this->action));
-								exit;
+								t3lib_utility_Http::redirect($this->action);
 							}
 						} elseif (is_array($this->INSTALL['database_import']))	{
 								// Traverse the tables

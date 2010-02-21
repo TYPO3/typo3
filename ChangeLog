@@ -1,3 +1,7 @@
+2010-02-21  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #12201: Replace header(Location:) with t3lib_div::redirect() (Thanks to Steffen Gebert)
+
 2010-02-21  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12220: String literals quoted as identifiers

@@ -2291,8 +2291,7 @@ EXTENSION KEYS:
 								if (($this->CMD['load'] || $this->CMD['remove']) && is_array($techInfo['flags']) && in_array('Module', $techInfo['flags'], true)) {
 									$vA['CMD']['refreshMenu'] = 1;
 								}
-								header('Location: '.t3lib_div::linkThisScript($vA));
-								exit;
+								t3lib_utility_Http::redirect(t3lib_div::linkThisScript($vA));
 							}
 						}
 					}

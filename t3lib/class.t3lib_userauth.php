@@ -629,8 +629,7 @@ class t3lib_userAuth {
 						$sslPortSuffix = ':'.intval($TYPO3_CONF_VARS['BE']['lockSSLPort']);
 						$server = str_replace($sslPortSuffix,'',$server);	// strip port from server
 					}
-					header('Location: http://'.$server.'/'.$address.TYPO3_mainDir.$backendScript);
-					exit;
+					t3lib_utility_Http::redirect('http://' . $server . '/' . $address . TYPO3_mainDir . $backendScript);
 				}
 			}
 

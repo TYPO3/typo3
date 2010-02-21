@@ -195,7 +195,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		$newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
 		if($newId) {
 			// switch to new template
-			header('location: index.php?id=' . $this->pObj->id. '&SET[templatesOnPage]=' . $newId);
+			t3lib_utility_Http::redirect('index.php?id=' . $this->pObj->id. '&SET[templatesOnPage]=' . $newId);
 		}
 
 		if ($existTemplate)	{
