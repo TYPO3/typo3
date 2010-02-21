@@ -2626,15 +2626,6 @@ final class t3lib_BEfunc {
 			$viewScriptPreviewEnabled = $viewScriptPreviewDisabled = $altUrl;
 		}
 
-			// check alternate Domains
-		if ($rootLine)  {
-			$parts = parse_url(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-			if (t3lib_BEfunc::getDomainStartPage($parts['host'],$parts['path'])) {
-				$preUrl_temp = t3lib_BEfunc::firstDomainRecord($rootLine);
-			}
-		}
-		$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://') . $preUrl_temp : $backPath . '..';
-
 			// Look if a fixed preview language should be added:
 		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
 		if (strlen($viewLanguageOrder))	{
@@ -2659,20 +2650,49 @@ final class t3lib_BEfunc {
 					break;
 				}
 			}
-
 				// Add it:
 			$addGetVars .= $suffix;
 		}
 
-		$urlPreviewEnabled  = $preUrl . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
-		$urlPreviewDisabled = $preUrl . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
-
+		$viewDomain = t3lib_BEfunc::getViewDomain($id, $rootLine);
+		$urlPreviewEnabled  = $viewDomain . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
+		$urlPreviewDisabled = $viewDomain . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;		
 
 		return "previewWin=window.open(top.WorkspaceFrontendPreviewEnabled?'" .
 			$urlPreviewDisabled . "':'" . $urlPreviewEnabled .
 			"','newTYPO3frontendWindow');" . ( $switchFocus ? 'previewWin.focus();' : '');
 	}
 
+	/**
+	 * Builds the frontend view domain for a given page ID with a given root
+	 * line.
+	 *
+	 * @param integer $pageId the page ID to use, must be > 0
+	 * @param array $rootLine the root line structure to use
+	 *
+	 * @return string the full domain including the protocol http:// or https://
+	 *
+	 * @author Michael Klapper <michael.klapper@aoemedia.de>
+	 */
+	public static function getViewDomain($pageId, $rootLine = null) {
+		$domain = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+
+		if (!is_array($rootLine)) {
+			$rootLine = t3lib_BEfunc::BEgetRootLine($pageId);
+		}
+		
+			// checks alternate domains
+		if (count($rootLine) > 0) {
+			$urlParts = parse_url($domain);
+			if (t3lib_BEfunc::getDomainStartPage($urlParts['host'], $urlParts['path'])) {
+				$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+				$domain = $protocol . t3lib_BEfunc::firstDomainRecord($rootLine);
+			}
+		}
+
+		return $domain;
+	}	
+	
 	/**
 	 * Returns the merged User/Page TSconfig for page id, $id.
 	 * Please read details about module programming elsewhere!
