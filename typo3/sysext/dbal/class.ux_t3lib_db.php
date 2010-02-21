@@ -1088,6 +1088,18 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Full SQL query for SELECT
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
+		$this->lastHandlerKey = $this->handler_getFromTableList($from_table);
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
+				// Possibly rewrite the LIMIT to be PostgreSQL-compatible
+			$splitLimit = t3lib_div::intExplode(',', $limit);		// Splitting the limit values:
+			if ($splitLimit[1]) {	// If there are two parameters, do mapping differently than otherwise:
+				$numrows = $splitLimit[1];
+				$offset = $splitLimit[0];
+				$limit = $numrows . ' OFFSET ' . $offset;
+			}
+		}
+		
 		$select_fields = $this->quoteFieldNames($select_fields);
 		$from_table = $this->quoteFromTables($from_table);
 		$where_clause = $this->quoteWhereClause($where_clause);
