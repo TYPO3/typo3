@@ -1,5 +1,6 @@
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed #12343: Installer - Missing message when creation of admin user fails due to missing data (Thanks to Marcus Krause)
 	* Fixed #13423: Bug/Feature: Make ext_tables.sql syntax parsing more compliable (Thanks to Joachim Mathes)
 	* Fixed #13201: Repots module - Use same install tool check for reports as used in About module (Thanks to Moreno Feltscher)
 

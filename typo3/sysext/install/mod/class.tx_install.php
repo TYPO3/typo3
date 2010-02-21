@@ -3856,9 +3856,10 @@ From sub-directory:
 					if ($whichTables['be_users'])	{
 						if (is_array($this->INSTALL['database_adminUser']))	{
 							$username = preg_replace('/[^\da-z._-]/i', '', trim($this->INSTALL['database_adminUser']['username']));
-							$pass = trim($this->INSTALL['database_adminUser']['password2']);
-							if ($username && $pass)	{
-								if ($pass != trim($this->INSTALL['database_adminUser']['password'])) {
+							$pass = trim($this->INSTALL['database_adminUser']['password']);
+							$pass2 = trim($this->INSTALL['database_adminUser']['password2']);
+							if ($username && $pass && $pass2)	{
+								if ($pass != $pass2) {
 									$this->message($headCode, 'Passwords are not equal!', '
 										The passwords entered twice are not equal.',2,1);
 								} else {
@@ -3893,6 +3894,9 @@ From sub-directory:
 									The username, <strong>'.htmlspecialchars($username).'</strong>, was not unique.',2,1);
 								}
 							}
+						} else {
+							$this->message($headCode,'Missing data!','
+								Not all required form fields have been filled.',2,1);
 						}
 						}
 						$content = '
