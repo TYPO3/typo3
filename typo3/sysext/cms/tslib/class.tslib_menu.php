@@ -2822,8 +2822,9 @@ class tslib_jsmenu extends tslib_menu {
 				// Making levels:
 			$levels = t3lib_div::intInRange($this->mconf['levels'],1,5);
 			$this->levels = $levels;
-			$this->JSVarName='eid';
-			$this->JSMenuName= $this->mconf['menuName'] ? $this->mconf['menuName'] : 'JSmenu';
+			$uniqueParam = t3lib_div::shortMD5(microtime(), 5);
+			$this->JSVarName = 'eid' . $uniqueParam;
+			$this->JSMenuName = ($this->mconf['menuName'] ? $this->mconf['menuName'] : 'JSmenu' . $uniqueParam);
 
 			$JScode="\n var ".$this->JSMenuName." = new JSmenu(".$levels.",'".$this->JSMenuName."Form');";
 
