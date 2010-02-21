@@ -324,8 +324,8 @@ class t3lib_install {
 			}
 
 			if (!strlen($table)) {
-				$parts = explode(' ',$value);
-				if ($parts[0]=='CREATE' && $parts[1]=='TABLE')	{
+				$parts = t3lib_div::trimExplode(' ', $value, TRUE);
+				if (strtoupper($parts[0]) === 'CREATE' && strtoupper($parts[1]) === 'TABLE') {
 					$table = str_replace( '`', '', $parts[2]);
 					if (TYPO3_OS=='WIN') { 	// tablenames are always lowercase on windows!
 						$table = strtolower($table);
