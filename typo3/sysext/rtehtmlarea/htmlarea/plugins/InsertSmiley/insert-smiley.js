@@ -2,7 +2,7 @@
 *  Copyright notice
 *
 *  (c) 2004 Ki Master George <kimastergeorge@gmail.com>
-*  (c) 2005-2009 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,32 +34,31 @@
  */
 
 InsertSmiley = HTMLArea.Plugin.extend({
-
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-
 		this.pageTSConfiguration = this.editorConfiguration.buttons.emoticon;
-
+		this.editor_url = _typo3_host_url + _editor_url;
+		if (this.editor_url == '../') {
+			this.editor_url = document.URL.replace(/^(.*\/).*\/.*$/g, "$1");
+		}
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.2",
+			version		: "2.0",
 			developer	: "Ki Master George & Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Ki Master George & Stanislas Rolland",
-			sponsor		: "Ki Master George & Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "Ki Master George & SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-
 		/*
 		 * Registering the button
 		 */
@@ -72,10 +71,8 @@ InsertSmiley = HTMLArea.Plugin.extend({
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-
 		return true;
 	},
-
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -84,31 +81,77 @@ InsertSmiley = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id) {
-
-		var sel = this.editor.getSelectedHTML().replace(/(<[^>]*>|&nbsp;|\n|\r)/g,"");
-		var param = new Object();
-		param.editor_url = _typo3_host_url + _editor_url;
-		if (param.editor_url == "../") {
-			param.editor_url = document.URL;
-			param.editor_url = param.editor_url.replace(/^(.*\/).*\/.*$/g, "$1");
-		}
-		this.dialog = this.openDialog("InsertSmiley", this.makeUrlFromPopupName("insertsmiley"), "insertImageTag", param, {width:250, height:230});
+	onButtonPress: function (editor, id) {
+			// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
+		var dimensions = this.getWindowDimensions({width:175, height:230}, buttonId);
+		this.dialog = new Ext.Window({
+			title: this.localize('Insert Smiley'),
+			cls: 'htmlarea-window',
+			border: false,
+			width: dimensions.width,
+			height: 'auto',
+			iconCls: buttonId,
+			listeners: {
+				close: {
+					fn: this.onClose,
+					scope: this
+				}
+			},
+			items: {
+				xtype: 'box',
+				cls: 'emoticon-array',
+				tpl: new Ext.XTemplate(
+					'<tpl for="."><a href="#" class="emoticon" hidefocus="on"><img alt="" title="" src="{.}" /></a></tpl>'
+				),
+				listeners: {
+					render: {
+						fn: this.render,
+						scope: this
+					}
+				}
+			},
+			buttons: [this.buildButtonConfig('Cancel', this.onCancel)]
+		});
+		this.show();
 	},
-
 	/*
-	 * Insert the selected smiley
+	 * Render the array of emoticon
 	 *
-	 * @param	object		param: the selected smiley
+	 * @param	object		component: the box containing the emoticons
 	 *
-	 * @return	boolean		false
+	 * @return	void
 	 */
-	insertImageTag : function (param) {
-		if (param && typeof(param.imgURL) != "undefined") {
-			this.editor.focusEditor();
-			this.editor.insertHTML('<img src="' + param.imgURL + '" alt="Smiley" />');
+	render: function (component) {
+		this.icons = [];
+		var numberOfIcons = 20, inum;
+		for (var i = 1; i <= numberOfIcons; i++) {
+			inum = i;
+			if (i < 10) {
+				inum = '000' + i;
+			} else if (i < 100) {
+				inum = '00' + i;
+			} else if (i < 1000) {
+				inum = '0' + i;
+			}
+			this.icons.push(this.editor_url + 'plugins/InsertSmiley/smileys/' + inum + '.gif');
 		}
-		return false;
+		component.tpl.overwrite(component.el, this.icons);
+		component.mon(component.el, 'click', this.insertImageTag, this, {delegate: 'a'});
+	},
+	/*
+	 * Insert the selected emoticon
+	 *
+	 * @param	object		event: the Ext event
+	 * @param	HTMLelement	target: the html element target
+	 *
+	 * @return	void
+	 */
+	insertImageTag: function (event, target) {
+		this.editor.focus();
+		this.restoreSelection();
+		this.editor.insertHTML('<img src="' + Ext.get(target).first().getAttribute('src') + '" alt="" />');
+		this.close();
 	}
 });
-

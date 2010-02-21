@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<!-- TYPO3 SVN ID: $Id:$ -->
+<!-- TYPO3 SVN ID: $Id$ -->
 <T3locallang>
 	<meta type="array">
 		<description>Labels for Acronym plugin of htmlArea RTE</description>
@@ -8,6 +8,24 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="Insert/Modify Acronym">Insert/Modify Acronym or Abbreviation</label>
+			<label index="Acronym-contextMenuTitle">Insert/modify abbreviation</label>
+			<label index="Term_to_abridge">Term to abridge</label>
+			<label index="Defined_acronym">Pre-defined acronyms</label>
+			<label index="Defined_abbr">Pre-defined abbreviations</label>
+			<label index="Term">Term</label>
+			<label index="Unabridged_term">Unabridged Term</label>
+			<label index="Select_a_term">Select a term</label>
+			<label index="Abridged_term">Abridged Term</label>
+			<label index="Acronym">Acronym</label>
+			<label index="Abbreviation">Abbreviation</label>
+			<label index="Select_an_acronym">Select an acronym</label>
+			<label index="Select_an_abbr">Select an abbreviation</label>
+			<label index="Use_this_term">Use this term</label>
+			<label index="Use_this_term_explain">Associate this term to the current selection</label>
+			<label index="Delete">Delete</label>
+			<label index="Select_a_language">Select a language</label>
+			<label index="Language_abbr_helpText">This is the language for which the abbreviation is defined</label>
+			<label index="Language_acronym_helpText">This is the language for which the acronym is defined</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

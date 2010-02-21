@@ -1,0 +1,9 @@
+/* Selectors for the TextIndicator plugin of htmlArea RTE */
+/* TYPO3 SVN ID: $Id $ */
+.htmlarea .toolbar .indicator {
+	background-color:white;cursor:default;
+	width:20px;overflow:hidden;
+	text-align:center;
+	border:1px solid ButtonShadow;margin:4px 1px 0px 1px;padding:0px 3px;
+	float:left;
+}

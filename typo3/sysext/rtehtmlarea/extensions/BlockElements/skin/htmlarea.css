@@ -11,3 +11,4 @@
 .htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/justifyFull.gif");}
 .htmlarea .toolbar .InsertOrderedList, .htmlarea-context-menu .InsertOrderedList {background-image:url("images/insertOrderedList.gif");}
 .htmlarea .toolbar .InsertUnorderedList, .htmlarea-context-menu .InsertUnorderedList {background-image:url("images/insertUnorderedList.gif");}
+.htmlarea .toolbar .InsertHorinzontalRule, .htmlarea-context-menu .InsertHorinzontalRule {background-image:url("images/insertHorizontalRule.gif");}

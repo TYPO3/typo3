@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -133,13 +133,11 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 			// Initializing the items array
 		$items = array();
 		if ($this->htmlAreaRTE->is_FE()) {
-			$items['none'] = '
-			"' . $GLOBALS['TSFE']->getLLL((($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $this->LOCAL_LANG) . '" : ""';
+			$items['none'] = array($GLOBALS['TSFE']->getLLL((($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $this->LOCAL_LANG), 'none');
 		} else {
-			$items['none'] = '
-			"' . ($this->htmlAreaRTE->TCEform->inline->isAjaxCall
+			$items['none'] = array(($this->htmlAreaRTE->TCEform->inline->isAjaxCall
 					? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $GLOBALS['LANG']->charSet)
-					: $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size')) . '" : ""';
+					: $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size')), 'none');
 		}
 			// Inserting and localizing default items
 		if ($hideItems != '*') {
@@ -155,8 +153,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 						}
 						$label = $this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
 					}
-					$items[$name] = '
-				"' . $label . '" : "' . $this->htmlAreaRTE->cleanList($value) . '"';
+					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($value));
 				}
 				$index++;
 			}
@@ -168,35 +165,29 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 				if (in_array($name, $addItems)) {
 					$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'],0);
 					$label = (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
-					$items[$name] = '
-				"' . $label . '" : "' . $this->htmlAreaRTE->cleanList($conf['value']) . '"';
+					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($conf['value']));
 				}
 			}
 		}
 			// Seting default item
 		if ($this->thisConfig['buttons.'][$buttonId . '.']['defaultItem'] && $items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']]) {
-			$items['none'] = $items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']];
+			$items['none'] = array($items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']][0], 'none');
 			unset($items[$this->thisConfig['buttons.'][$buttonId . '.']['defaultItem']]);
 		}
 			// Setting the JS list of options
-		$JSOptions = '';
-		$index = 0;
+		$itemsJSArray = array();
 		foreach ($items as $option) {
-			$JSOptions .= ($index ? ',' : '') . $option;
-			$index++;
+			$itemsJSArray[] = $option;
 		}
-		$JSOptions = '{'
-			. $JSOptions . '
-		};';
-
+		$itemsJSArray = 'var options = ' . json_encode($itemsJSArray) . ';';
+		
 			// Adding to button JS configuration
 		if (!is_array( $this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$buttonId . '.'])) {
 			$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $buttonId .' = new Object();';
 		}
 		$configureRTEInJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $buttonId .'.options = '. $JSOptions;
-
+			RTEarea['.$RTEcounter.'].buttons.'. $buttonId . '.dataUrl = \'' . $this->htmlAreaRTE->writeTemporaryFile('', $buttonId . '_'. $this->htmlAreaRTE->contentLanguageUid, 'js', $itemsJSArray) . '\';';
 		return $configureRTEInJavascriptString;
 	}
 } // end of class

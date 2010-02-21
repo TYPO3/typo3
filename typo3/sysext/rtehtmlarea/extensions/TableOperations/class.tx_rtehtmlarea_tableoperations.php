@@ -111,18 +111,20 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 			$disabledFieldsets = strtolower(implode(',', $disabledFieldsets));
 
 				// Dialogue fieldsets removal configuration
-			$dialogues = array('table', 'tableproperties', 'rowproperties', 'columnproperties', 'cellproperties');
-			foreach ($dialogues as $dialogue) {
-				if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$dialogue.'.'])) {
-					$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.' = new Object();
-			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = "' . $disabledFieldsets . '";';
-				} else if ($this->thisConfig['buttons.'][$dialogue.'.']['removeFieldsets']) {
-					$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets += ",' . $disabledFieldsets . '";';
-				} else {
-					$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = ",' . $disabledFieldsets . '";';
+			if ($disabledFieldsets) {
+				$dialogues = array('table', 'tableproperties', 'rowproperties', 'columnproperties', 'cellproperties');
+				foreach ($dialogues as $dialogue) {
+					if (!is_array( $this->thisConfig['buttons.']) || !is_array( $this->thisConfig['buttons.'][$dialogue.'.'])) {
+						$registerRTEinJavascriptString .= '
+				RTEarea['.$RTEcounter.'].buttons.'.$dialogue.' = new Object();
+				RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = "' . $disabledFieldsets . '";';
+					} else if ($this->thisConfig['buttons.'][$dialogue.'.']['removeFieldsets']) {
+						$registerRTEinJavascriptString .= '
+				RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets += ",' . $disabledFieldsets . '";';
+					} else {
+						$registerRTEinJavascriptString .= '
+				RTEarea['.$RTEcounter.'].buttons.'.$dialogue.'.removeFieldsets = ",' . $disabledFieldsets . '";';
+					}
 				}
 			}
 

@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -40,35 +40,22 @@ SelectFont = HTMLArea.Plugin.extend({
 	 */
 	configurePlugin : function (editor) {
 
-		this.options = new Object();
-		this.defaultValue = new Object();
-		if (this.editorConfiguration.buttons.fontstyle) {
-			this.options.FontName = this.editorConfiguration.buttons.fontstyle.options;
-			if (this.editorConfiguration.buttons.fontstyle.defaultItem) {
-				this.defaultValue.FontName = this.editorConfiguration.buttons.fontstyle.options[this.editorConfiguration.buttons.fontstyle.defaultItem];
-			}
-		}
-		if (this.editorConfiguration.buttons.fontsize) {
-			this.options.FontSize = this.editorConfiguration.buttons.fontsize.options;
-			if (this.editorConfiguration.buttons.fontsize.defaultItem) {
-				this.defaultValue.FontSize = this.editorConfiguration.buttons.fontsize.options[this.editorConfiguration.buttons.fontsize.defaultItem];
-			}
-		}
+		this.buttonsConfiguration = this.editorConfiguration.buttons;
 		this.disablePCexamples = this.editorConfiguration.disablePCexamples;
 
 			// Font formating will use the style attribute
-		if (this.editor.getPluginInstance("TextStyle")) {
-			this.editor.getPluginInstance("TextStyle").addAllowedAttribute("style");
-			this.allowedAttributes = this.editor.getPluginInstance("TextStyle").allowedAttributes;
+		if (this.getPluginInstance("TextStyle")) {
+			this.getPluginInstance("TextStyle").addAllowedAttribute("style");
+			this.allowedAttributes = this.getPluginInstance("TextStyle").allowedAttributes;
 		}
-		if (this.editor.getPluginInstance("InlineElements")) {
-			this.editor.getPluginInstance("InlineElements").addAllowedAttribute("style");
+		if (this.getPluginInstance("InlineElements")) {
+			this.getPluginInstance("InlineElements").addAllowedAttribute("style");
 			if (!this.allowedAllowedAttributes) {
-				this.allowedAttributes = this.editor.getPluginInstance("InlineElements").allowedAttributes;
+				this.allowedAttributes = this.getPluginInstance("InlineElements").allowedAttributes;
 			}
 		}
-		if (this.editor.getPluginInstance("BlockElements")) {
-			this.editor.getPluginInstance("BlockElements").addAllowedAttribute("style");
+		if (this.getPluginInstance("BlockElements")) {
+			this.getPluginInstance("BlockElements").addAllowedAttribute("style");
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class", "style");
@@ -94,19 +81,25 @@ SelectFont = HTMLArea.Plugin.extend({
 		/*
 		 * Registering the dropdowns
 		 */
-		var buttonId;
-		for (var i = 0, n = this.dropDownList.length; i < n; ++i) {
-			var dropDown = this.dropDownList[i];
-			buttonId = dropDown[0];
+		Ext.each(this.dropDownList, function (dropDown) {
+			var buttonId = dropDown[0];
+				// Load the options var
+			if (this.buttonsConfiguration[dropDown[2]] && this.buttonsConfiguration[dropDown[2]].dataUrl) {
+				var optionsData = this.getJavascriptFile(this.buttonsConfiguration[dropDown[2]].dataUrl, "noEval");
+				if (optionsData) {
+					eval(optionsData);
+				}
+			}
 			var dropDownConfiguration = {
-				id		: buttonId,
-				tooltip		: this.localize(buttonId.toLowerCase()),
-				options		: this.options[buttonId],
-				action		: "onChange",
-				context		: null
+				id: buttonId,
+				tooltip: this.localize(buttonId.toLowerCase()),
+				options: options,
+				action: "onChange",
+				tpl: this.disablePCexamples ? '' : '<tpl for="."><div ext:qtip="{value}" style="' + dropDown[3] + '" class="x-combo-list-item">{text}</div></tpl>'
 			};
 			this.registerDropDown(dropDownConfiguration);
-		}
+			return true;
+		}, this);
 		return true;
 	 },
 	 
@@ -114,8 +107,8 @@ SelectFont = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	dropDownList : [
-		["FontName", null],
-		["FontSize", null]
+		['FontName', null, 'fontstyle', 'font-family:{value};text-align:left;font-size:11px;'],
+		['FontSize', null, 'fontsize', 'text-align:left;font-size:{value};']
 	],
 	
 	/*
@@ -137,21 +130,17 @@ SelectFont = HTMLArea.Plugin.extend({
 	/*
 	 * This function gets called when some font style or font size was selected from the dropdown lists
 	 */
-	onChange : function (editor, buttonId) {
-		var select = document.getElementById(this.editor._toolbarObjects[buttonId].elementId),
-			param = select.value;
-		if (!select.selectedIndex) {
-			param = "";
-		}
+	onChange : function (editor, combo, record, index) {
+		var param = combo.getValue();
 		editor.focusEditor();
 		var selection = editor._getSelection(),
 			range = editor._createRange(selection),
-			statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null,
+			statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null,
 			element;
 		if (editor._selectionEmpty(selection)) {
 			element = editor.getParentElement(selection, range);
 				// Set the style attribute
-			this.setStyle(element, buttonId, param);
+			this.setStyle(element, combo.itemId, param);
 				// Remove the span tag if it has no more attribute
 			if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
 				editor.removeMarkup(element);
@@ -159,7 +148,7 @@ SelectFont = HTMLArea.Plugin.extend({
 		} else if (statusBarSelection) {
 			element = statusBarSelection;
 				// Set the style attribute
-			this.setStyle(element, buttonId, param);
+			this.setStyle(element, combo.itemId, param);
 				// Remove the span tag if it has no more attribute
 			if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
 				editor.removeMarkup(element);
@@ -167,7 +156,7 @@ SelectFont = HTMLArea.Plugin.extend({
 		} else if (editor.endPointsInSameBlock()) {
 			element = editor._doc.createElement("span");
 				// Set the style attribute
-			this.setStyle(element, buttonId, param);
+			this.setStyle(element, combo.itemId, param);
 				// Wrap the selection with span tag with the style attribute
 			editor.wrapWithInlineElement(element, selection, range);
 			if (HTMLArea.is_gecko) {
@@ -187,9 +176,9 @@ SelectFont = HTMLArea.Plugin.extend({
 	 * @return	void
 	 */
 	setStyle : function (element, buttonId, value) {
-		element.style[this.styleProperty[buttonId]] = value;
+		element.style[this.styleProperty[buttonId]] = (value && value !== 'none') ? value : '';
 			// In IE, we need to remove the empty attribute in order to unset it
-		if (HTMLArea.is_ie && !value) {
+		if (HTMLArea.is_ie && (!value || value == 'none')) {
 			element.style.removeAttribute(this.styleProperty[buttonId], false);
 		}
 		if (HTMLArea.is_opera) {
@@ -207,62 +196,36 @@ SelectFont = HTMLArea.Plugin.extend({
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
-	onUpdateToolbar : function () {
+	onUpdateToolbar: function (select, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 		var editor = this.editor;
-		if (editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
-			var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
-			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement(),
-				enabled = editor.endPointsInSameBlock() && !(editor._selectionEmpty(editor._getSelection()) && parentElement.nodeName.toLowerCase() == "body"),
-				buttonId, value, k;
-			for (var i = this.dropDownList.length; --i >= 0;) {
-				buttonId = this.dropDownList[i][0];
-				if (this.isButtonInToolbar(buttonId)) {
-					var select = document.getElementById(editor._toolbarObjects[buttonId].elementId);
-					value = parentElement.style[this.styleProperty[buttonId]];
-					if (!value) {
-						if (HTMLArea.is_gecko) {
-							if (editor._doc.defaultView.getComputedStyle(parentElement, null)) {
-								value = editor._doc.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[buttonId]);
-							}
-						} else {
-							value = parentElement.currentStyle[this.styleProperty[buttonId]];
-						}
+		if (mode === 'wysiwyg' && editor.isEditable()) {
+			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
+			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();
+			var value = parentElement.style[this.styleProperty[select.itemId]];
+			if (!value) {
+				if (HTMLArea.is_gecko) {
+					if (editor._doc.defaultView.getComputedStyle(parentElement, null)) {
+						value = editor._doc.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
 					}
-					select.selectedIndex = 0;
-					if (value) {
-						var options = this.options[buttonId];
-						k = 0;
-						for (var option in options) {
-							if (options.hasOwnProperty(option)) {
-								if (options[option] == value
-										|| options[option].replace(/[\'\"]/g, "") == value.replace(/, /g, ",").replace(/[\'\"]/g, "")) {
-									select.selectedIndex = k;
-									break;
-								}
-								++k;
-							}
-						}
-					}
-					select.disabled = !enabled;
-					select.className = "";
-					if (select.disabled) {
-						select.className = "buttonDisabled";
-					}
+				} else {
+					value = parentElement.currentStyle[this.styleProperty[select.itemId]];
 				}
 			}
-		}
-	},
-	
-	/*
-	 * This function gets called when the plugin is generated
-	 */
-	onGenerate : function () {
-		if (!this.disablePCexamples && this.isButtonInToolbar("FontName")) {
-			var select = document.getElementById(this.editor._toolbarObjects.FontName.elementId);
-			for (var i = select.options.length; --i >= 0;) {
-				if (HTMLArea.is_gecko) select.options[i].setAttribute("style", "font-family:" + select.options[i].value + ";");
-					else select.options[i].style.cssText = "font-family:" + select.options[i].value + ";";
+			var store = select.getStore();
+			var index = -1;
+			if (value) {
+				index = store.findBy(
+					function (record, id) {
+						return record.get('value').replace(/[\"\']/g, "") == value.replace(/, /g, ",").replace(/[\"\']/g, "");
+					}
+				);
 			}
+			if (index != -1) {
+				select.setValue(store.getAt(index).get('value'));
+			} else {
+				select.setValue('none');
+			}
+			select.setDisabled(!endPointsInSameBlock || (selectionEmpty && /^body$/i.test(parentElement.nodeName)));
 		}
 	}
 });

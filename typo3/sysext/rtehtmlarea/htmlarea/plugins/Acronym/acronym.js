@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,25 +30,28 @@
  * TYPO3 SVN ID: $Id$
  */
 Acronym = HTMLArea.Plugin.extend({
-	
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-		
 		this.pageTSConfiguration = this.editorConfiguration.buttons.acronym;
 		this.acronymUrl = this.pageTSConfiguration.acronymUrl;
-		this.acronymModulePath = this.pageTSConfiguration.pathAcronymModule;
-		
+		this.data = this.getJavascriptFile(this.acronymUrl, 'noEval');
+		if (this.data) {
+			eval(this.data);
+		};
+		this.data = {
+			acronym: acronyms,
+			abbr: abbreviations
+		};
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.7",
+			version		: "2.0",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -67,13 +70,26 @@ Acronym = HTMLArea.Plugin.extend({
 			tooltip		: this.localize("Insert/Modify Acronym"),
 			action		: "onButtonPress",
 			hide		: (this.pageTSConfiguration.noAcronym && this.pageTSConfiguration.noAbbr),
-			dialog		: true
+			dialog		: true,
+			contextMenuTitle: this.localize(buttonId + '-contextMenuTitle')
 		};
 		this.registerButton(buttonConfiguration);
 		
 		return true;
 	 },
-	 
+	/*
+	 * Sets of default configuration values for dialogue form fields
+	 */
+	configDefaults: {
+		combo: {
+			editable: true,
+			typeAhead: true,
+			triggerAction: 'all',
+			forceSelection: true,
+			mode: 'local',
+			helpIcon: true
+		}
+	},
 	/*
 	 * This function gets called when the button was pressed
 	 *
@@ -82,58 +98,434 @@ Acronym = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function(editor, id) {
+	onButtonPress: function(editor, id) {
+			// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
 		var selection = editor._getSelection();
-		var html = editor.getSelectedHTML();
-		this.abbr = editor._activeElement(selection);
-		this.abbrType = null;
+		var abbr = editor._activeElement(selection);
 			// Working around Safari issue
-		if (!this.abbr && this.getPluginInstance("StatusBar") && this.getPluginInstance("StatusBar").getSelection()) {
-			this.abbr = this.getPluginInstance("StatusBar").getSelection();
+		if (!abbr && this.editor.statusBar && this.editor.statusBar.getSelection()) {
+			abbr = this.editor.statusBar.getSelection();
 		}
-		if (!(this.abbr != null && /^(acronym|abbr)$/i.test(this.abbr.nodeName))) {
-			this.abbr = editor._getFirstAncestor(selection, ["acronym", "abbr"]);
+		if (!abbr || !/^(acronym|abbr)$/i.test(abbr.nodeName)) {
+			abbr = editor._getFirstAncestor(selection, ['acronym', 'abbr']);
 		}
-		if (this.abbr != null && /^(acronym|abbr)$/i.test(this.abbr.nodeName)) {
-			this.param = { title : this.abbr.title, text : this.abbr.innerHTML};
-			this.abbrType = this.abbr.nodeName.toLowerCase();
-		} else {
-			this.param = { title : "", text : html};
-		}
-		this.dialog = this.openDialog("Acronym", this.makeUrlFromModulePath(this.acronymModulePath), null, null, {width:580, height:280});
+		var type = !Ext.isEmpty(abbr) ? abbr.nodeName.toLowerCase() : '';
+		this.params = {
+			abbr: abbr,
+			title: !Ext.isEmpty(abbr) ? abbr.title : '',
+			text: !Ext.isEmpty(abbr) ? abbr.innerHTML : this.editor.getSelectedHTML()
+		};
+			// Open the dialogue window
+		this.openDialogue(
+			'Insert/Modify Acronym',
+			buttonId,
+			this.getWindowDimensions({ width: 580}, buttonId),
+			this.buildTabItemsConfig(abbr),
+			this.buildButtonsConfig(abbr, this.okHandler, this.deleteHandler),
+			(type == 'acronym') ? 1 : 0
+		);
 		return false;
 	},
-	
 	/*
-	 * This function removes the given markup element
+	 * Open the dialogue window
+	 *
+	 * @param	string		title: the window title
+	 * @param	string		buttonId: the itemId of the button that was pressed
+	 * @param	integer		dimensions: the opening width of the window
+	 * @param	object		tabItems: the configuration of the tabbed panel
+	 * @param	object		buttonsConfig: the configuration of the buttons
+	 * @param	number		activeTab: index of the opening tab
+	 *
+	 * @return	void
 	 */
-	removeMarkup : function(element) {
-		var bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
-		var parent = element.parentNode;
-		while (element.firstChild) {
-			parent.insertBefore(element.firstChild, element);
-		}
-		parent.removeChild(element);
-		this.editor.selectRange(this.editor.moveToBookmark(bookmark));
+	openDialogue: function (title, buttonId, dimensions, tabItems, buttonsConfig, activeTab) {
+		this.dialog = new Ext.Window({
+			title: this.localize(title),
+			cls: 'htmlarea-window',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
+			border: false,
+			width: dimensions.width,
+			height: 'auto',
+			iconCls: buttonId,
+			listeners: {
+				close: {
+					fn: this.onClose,
+					scope: this
+				}
+			},
+			items: {
+				xtype: 'tabpanel',
+				activeTab: activeTab ? activeTab : 0,
+				defaults: {
+					xtype: 'container',
+					layout: 'form',
+					defaults: {
+						labelWidth: 150
+					}
+				},
+				listeners: {
+					tabchange: {
+						fn: this.syncHeight,
+						scope: this
+					}
+				},
+				items: tabItems
+			},
+			buttons: buttonsConfig
+		});
+		this.show();
 	},
-	
+	/*
+	 * Build the dialogue tab items config
+	 *
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the tab items configuration
+	 */
+	buildTabItemsConfig: function (element) {
+		var type = !Ext.isEmpty(element) ? element.nodeName.toLowerCase() : '';
+		var tabItems = [];
+		var abbrTabItems = [];
+			// abbr tab not shown if the current selection is an acronym
+		if (type !== 'acronym') {
+			if (!this.pageTSConfiguration.noAbbr) {
+				this.addConfigElement(this.buildDefinedTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), abbrTabItems);
+			}
+			this.addConfigElement(this.buildUseTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), abbrTabItems);
+		}
+		if (!Ext.isEmpty(abbrTabItems)) {
+			tabItems.push({
+				title: this.localize('Abbreviation'),
+				itemId: 'abbr',
+				items: abbrTabItems
+			});
+		}
+		var acronymTabItems = [];
+			// acronym tab not shown if the current selection is an abbr
+		if (type !== 'abbr') {
+			if (!this.pageTSConfiguration.noAcronym) {
+				this.addConfigElement(this.buildDefinedTermFieldsetConfig((type == 'acronym') ? element : null, 'acronym'), acronymTabItems);
+			}
+			this.addConfigElement(this.buildUseTermFieldsetConfig((type == 'abbr') ? element : null, 'abbr'), acronymTabItems);
+		}
+		if (!Ext.isEmpty(acronymTabItems)) {
+			tabItems.push({
+				title: this.localize('Acronym'),
+				itemId: 'acronym',
+				items: acronymTabItems
+			});
+		}
+		return tabItems;
+	},
+	/*
+	 * Build the dialogue buttons config
+	 *
+	 * @param	object		element: the element being edited, if any
+	 * @param	function	okHandler: the handler for the ok button
+	 * @param	function	deleteHandler: the handler for the delete button
+	 *
+	 * @return	object		the buttons configuration
+	 */
+	buildButtonsConfig: function (element, okHandler, deleteHandler) {
+		var buttonsConfig = [this.buildButtonConfig('Cancel', this.onCancel)];
+		if (element) {
+			buttonsConfig.push(this.buildButtonConfig('Delete', deleteHandler));
+		}
+		buttonsConfig.push(this.buildButtonConfig('OK', okHandler));
+		return buttonsConfig;
+	},
+	/*
+	 * This function builds the configuration object for the defined Abbreviation or Acronym fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildDefinedTermFieldsetConfig: function (element, type) {
+		var itemsConfig = [];
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
+			displayField: 'term',
+			valueField: 'term',
+			fieldLabel: this.localize('Unabridged_term'),
+			itemId: 'termSelector',
+			helpTitle: this.localize('Select_a_term'),
+			tpl: '<tpl for="."><div ext:qtip="{abbr}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{term}</div></tpl>',
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
+				data: this.data[type]
+			}),
+			width: 350,
+			listeners: {
+				beforerender: {
+					fn: this.onSelectorRender,
+					scope: this
+				},
+				select: {
+					fn: this.onTermSelect,
+					scope: this
+				}
+			}
+		}, this.configDefaults['combo']));
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
+			displayField: 'abbr',
+			valueField: 'abbr',
+			tpl: '<tpl for="."><div ext:qtip="{language}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{abbr}</div></tpl>',
+			fieldLabel: this.localize('Abridged_term'),
+			itemId: 'abbrSelector',
+			helpTitle: this.localize('Select_an_' + type),
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
+				data: this.data[type]
+			}),
+			width: 100,
+			listeners: {
+				beforerender: {
+					fn: this.onSelectorRender,
+					scope: this
+				},
+				select: {
+					fn: this.onAbbrSelect,
+					scope: this
+				}
+			}
+		}, this.configDefaults['combo']));
+		var languageObject = this.getPluginInstance('Language');
+		if (this.getButton('Language')) {
+			var languageStore = new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'} ],
+				data: this.getDropDownConfiguration('Language').options
+			});
+			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
+			if (selectedLanguage !== 'none') {
+				languageStore.removeAt(0);
+				languageStore.insert(0, new languageStore.recordType({
+					text: languageObject.localize('Remove language mark'),
+					value: 'none'
+				}));
+			}
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Language'),
+				itemId: 'language',
+				helpTitle: this.localize('Select_a_language'),
+				helpText: this.localize('Language_' + type + '_helpText'),
+				valueField: 'value',
+				displayField: 'text',
+				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>',
+				store: languageStore,
+				width: 200,
+				value: selectedLanguage
+			}, this.configDefaults['combo']));
+		}
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Defined_' + type),
+			items: itemsConfig,
+			listeners: {
+				render: {
+					fn: this.onDefinedTermFieldsetRender,
+					scope: this
+				}
+			}
+		};
+	},
+	/*
+	 * Handler on rendering the defined abbreviation fieldset
+	 * If an abbr is selected but no term is selected, select any corresponding term with the correct language value, if any
+	 */
+	onDefinedTermFieldsetRender: function (fieldset) {
+		var termSelector = fieldset.find('itemId', 'termSelector')[0];
+		var term = termSelector.getValue();
+		var abbrSelector = fieldset.find('itemId', 'abbrSelector')[0];
+		var abbr = abbrSelector.getValue();
+		var language = '';
+		var languageSelector = fieldset.find('itemId', 'language')[0];
+		if (languageSelector) {
+			var language = languageSelector.getValue();
+			if (language == 'none') {
+				language = '';
+			}
+		}
+		if (abbr && !term) {
+			var abbrStore = abbrSelector.getStore();
+			var index = abbrStore.findBy(function (record) {
+				return record.get('abbr') == abbr && (!languageSelector || record.get('language') == language);
+			}, this);
+			if (index !== -1) {
+				term = abbrStore.getAt(index).get('term');
+				termSelector.setValue(term);
+				fieldset.ownerCt.find('itemId', 'useTerm')[0].setValue(term);
+			}
+		}
+	},
+	/*
+	 * Filter the term and abbr selector lists
+	 * Set initial values
+	 * If there is already an abbr and the filtered list has only one or no element, hide the fieldset
+	 */
+	onSelectorRender: function (combo) {
+		var store = combo.getStore();
+		store.filterBy(function (record) {
+			return !this.params.text || !this.params.title || this.params.text == record.get('term') || this.params.title == record.get('term') || this.params.title == record.get('abbr');
+		}, this);
+			// Make sure the combo list is filtered
+		store.snapshot = store.data;
+		var store = combo.getStore();
+		if (combo.getItemId() == 'termSelector' && this.params.title) {
+			var index = store.findExact('term', this.params.title);
+			if (index !== -1) {
+				combo.setValue(store.getAt(index).get('term'));
+			}
+		} else if (combo.getItemId() == 'abbrSelector' && this.params.text) {
+			var index = store.findExact('abbr', this.params.text);
+			if (index !== -1) {
+				combo.setValue(store.getAt(index).get('abbr'));
+			}
+		}
+		if (this.params.abbr && store.getCount() < 2) {
+			combo.ownerCt.hide();
+		}
+	},
+	/*
+	 * Handler when a term is selected
+	 */
+	onTermSelect: function (combo, record, index) {
+		var tab = combo.findParentByType('container');
+		var term = record.get('term');
+		var abbr = record.get('abbr');
+		var language = record.get('language');
+			// Update the abbreviation selector
+		var abbrSelector = tab.find('itemId', 'abbrSelector')[0];
+		abbrSelector.setValue(abbr);
+			// Update the language selector
+		var languageSelector = tab.find('itemId', 'language');
+		if (!Ext.isEmpty(languageSelector)) {
+			if (language) {
+				languageSelector[0].setValue(language);
+			} else {
+				languageSelector[0].setValue('none');
+			}
+		}
+			// Update the term to use
+		tab.find('itemId', 'useTerm')[0].setValue(term);
+	},
+	/*
+	 * Handler when an abbreviation or acronym is selected
+	 */
+	onAbbrSelect: function (combo, record, index) {
+		var tab = combo.findParentByType('container');
+		var term = record.get('term');
+		var language = record.get('language');
+			// Update the term selector
+		var termSelector = tab.find('itemId', 'termSelector')[0];
+		termSelector.setValue(term);
+			// Update the language selector
+		var languageSelector = tab.find('itemId', 'language');
+		if (!Ext.isEmpty(languageSelector)) {
+			if (language) {
+				languageSelector[0].setValue(language);
+			} else {
+				languageSelector[0].setValue('none');
+			}
+		}
+			// Update the term to use
+		tab.find('itemId', 'useTerm')[0].setValue(term);
+	},
+	/*
+	 * This function builds the configuration object for the Abbreviation or Acronym to use fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildUseTermFieldsetConfig: function (element, type) {
+		var itemsConfig = [];
+		itemsConfig.push({
+			fieldLabel: this.localize('Use_this_term'),
+			labelSeparator: '',
+			itemId: 'useTerm',
+			value: element ? element.title : '',
+			width: 300,
+			helpTitle: this.localize('Use_this_term_explain')
+		});
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Term_to_abridge'),
+			defaultType: 'textfield',
+			defaults: {
+				helpIcon: true
+			},
+			items: itemsConfig
+		};
+	},
+	/*
+	 * Handler when the ok button is pressed
+	 */
+	okHandler: function (button, event) {
+		this.restoreSelection();
+		var tab = this.dialog.findByType('tabpanel')[0].getActiveTab();
+		var type = tab.getItemId();
+		var languageSelector = tab.find('itemId', 'language');
+		var language = !Ext.isEmpty(languageSelector) ? languageSelector[0].getValue() : '';
+		var term = tab.find('itemId', 'termSelector')[0].getValue();
+		if (!this.params.abbr) {
+			var abbr = this.editor.document.createElement(type);
+			abbr.title = tab.find('itemId', 'useTerm')[0].getValue();
+			if (term == abbr.title) {
+				abbr.innerHTML = tab.find('itemId', 'abbrSelector')[0].getValue();
+			} else {
+				abbr.innerHTML = this.params.text;
+			}
+			if (language) {
+				this.getPluginInstance('Language').setLanguageAttributes(abbr, language);
+			}
+			this.editor.insertNodeAtSelection(abbr);
+		} else {
+			var abbr = this.params.abbr;
+			abbr.title = tab.find('itemId', 'useTerm')[0].getValue();
+			if (language) {
+				this.getPluginInstance('Language').setLanguageAttributes(abbr, language);
+			}
+			if (term == abbr.title) {
+				abbr.innerHTML = tab.find('itemId', 'abbrSelector')[0].getValue();
+			}
+		}
+		this.close();
+		event.stopEvent();
+	},
+	/*
+	 * Handler when the delete button is pressed
+	 */
+	deleteHandler: function (button, event) {
+		this.restoreSelection();
+		var abbr = this.params.abbr;
+		if (abbr) {
+			this.editor.removeMarkup(abbr);
+		}
+		this.close();
+		event.stopEvent();
+	},
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
-	onUpdateToolbar : function () {
-		if (this.editor.getMode() === "wysiwyg" && this.editor.isEditable()) {
-			var buttonId = "Acronym";
-			if (this.isButtonInToolbar(buttonId)) {
-				var el = this.editor.getParentElement();
-				if (el) {
-					this.editor._toolbarObjects[buttonId].state("enabled", !((el.nodeName.toLowerCase() == "acronym" && this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == "abbr" && this.pageTSConfiguration.noAbbr)));
-					this.editor._toolbarObjects[buttonId].state("active", ((el.nodeName.toLowerCase() == "acronym" && !this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == "abbr" && !this.pageTSConfiguration.noAbbr)));
-				}
-				if (this.dialog) {
-					this.dialog.focus();
-				}
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if ((mode === 'wysiwyg') && this.editor.isEditable()) {
+			var el = this.editor.getParentElement();
+			if (el) {
+				button.setDisabled(((el.nodeName.toLowerCase() == 'acronym' && this.pageTSConfiguration.noAcronym) || (el.nodeName.toLowerCase() == 'abbr' && this.pageTSConfiguration.noAbbr)));
+				button.setInactive(!(el.nodeName.toLowerCase() == 'acronym' && !this.pageTSConfiguration.noAcronym) && !(el.nodeName.toLowerCase() == 'abbr' && !this.pageTSConfiguration.noAbbr));
+			}
+			if (this.dialog) {
+				this.dialog.focus();
 			}
 		}
 	}
 });
-

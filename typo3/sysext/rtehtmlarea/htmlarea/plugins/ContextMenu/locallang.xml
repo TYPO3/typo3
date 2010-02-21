@@ -44,7 +44,7 @@
 			<label index="Remove the">Remove the</label>
 			<label index="Element">Element</label>
 			<label index="Please confirm remove">Please confirm that you want to remove this element:</label>
-			<label index="Remove this node from the document">Remove this node from the document</label>
+			<label index="Remove this node from the document">Removes this node from the document</label>
 			<label index="How did you get here? (Please report!)">How did you get here? (Please report!)</label>
 			<label index="Show the image properties dialog">Show the image properties dialog</label>
 			<label index="Modify URL">Modify URL</label>

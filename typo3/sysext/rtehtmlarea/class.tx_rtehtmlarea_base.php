@@ -4,7 +4,7 @@
 *
 *  (c) 2004-2009 Kasper Skaarhoj (kasper@typo3.com)
 *  (c) 2004-2009 Philipp Borgmann <philipp.borgmann@gmx.de>
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,18 +36,17 @@
  */
 
 class tx_rtehtmlarea_base extends t3lib_rteapi {
-
 		// Configuration of supported browsers
 	var $conf_supported_browser = array (
 			'msie' => array (
 				1 => array (
-					'version' => 5.5,
+					'version' => 6.0,
 					'system' => 'win'
 				)
 			),
 			'gecko' => array (
 				1 => array (
-					'version' => 1.3
+					'version' => 1.8
 				)
 			),
 			'safari' => array (
@@ -72,9 +71,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 		// Conversion array: TYPO3 button names to htmlArea button names
 	var $convertToolbarForHtmlAreaArray = array (
-		'line'			=> 'InsertHorizontalRule',
 		'showhelp'		=> 'ShowHelp',
-		'textindicator'		=> 'TextIndicator',
 		'space'			=> 'space',
 		'bar'			=> 'separator',
 		'linebreak'		=> 'linebreak',
@@ -120,11 +117,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $editorCSS;
 	var $specConf;
 	var $toolbar = array();					// Save the buttons for the toolbar
-	var $toolbar_level_size;				// The size for each level in the toolbar:
 	var $toolbarOrderArray = array();
 	protected $pluginEnabledArray = array();		// Array of plugin id's enabled in the current RTE editing area
 	protected $pluginEnabledCumulativeArray = array();	// Cumulative array of plugin id's enabled so far in any of the RTE editing areas of the form
 	public $registeredPlugins = array();			// Array of registered plugins indexed by their plugin Id's
+	protected $fullScreen = false;
 
 	/**
 	 * Returns true if the RTE is available. Here you check if the browser requirements are met.
@@ -338,13 +335,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				// Preloading the pageStyle and including RTE skin stylesheets
 			$this->addPageStyle();
 			$this->addSkin();
-
 				// Loading JavaScript files and code
 			if ($this->TCEform->RTEcounter == 1) {
 				$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 			}
 			$this->TCEform->additionalCode_pre['rtehtmlarea-loadJSfiles'] = $this->loadJSfiles($this->TCEform->RTEcounter);
-
+			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
+			$pageRenderer->enableExtJSQuickTips();
+			if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
+				$pageRenderer->enableExtJsDebug();
+			}
 			/* =======================================
 			 * DRAW THE EDITOR
 			 * =======================================
@@ -365,20 +365,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
 			if (basename(PATH_thisScript) == 'wizard_rte.php') {
-				$height = 'window.innerHeight';
-				$width = 'window.innerWidth';
-				if ($this->client['BROWSER'] == 'msie') {
-					$height = 'document.body.offsetHeight';
-					$width = 'document.body.offsetWidth';
-				}
-
-					// Subtract the docheader height from the calculated window height
-				$height .= ' - document.getElementById("typo3-docheader").offsetHeight';
-
+				$this->fullScreen = true;
 				$editorWrapWidth = '100%';
 				$editorWrapHeight = '100%';
 				$this->RTEdivStyle = 'position:relative; left:0px; top:0px; height:100%; width:100%; border: 1px solid black; padding: 2px 0px 2px 2px;';
-				$this->TCEform->additionalJS_post[] = $this->setRTEsizeByJS('RTEarea' . $textAreaId, $height, $width);
 			}
 
 				// Register RTE in JS:
@@ -426,9 +416,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	protected function addSkin() {
 			// Get skin file name from Page TSConfig if any
 		$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
-		if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3' && substr($skinFilename,0,4) == 'EXT:')  {
-			$skinFilename = 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
-		}
 			// Skin provided by some extension
 		if (substr($skinFilename,0,4) == 'EXT:') {
 			list($extKey,$local) = explode('/',substr($skinFilename,4),2);
@@ -561,43 +548,21 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function setToolbar() {
 		global $BE_USER;
 
-		if ($this->client['BROWSER'] == 'msie' || $this->client['BROWSER'] == 'opera' || ($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')) {
+		if ($this->client['BROWSER'] == 'msie' || $this->client['BROWSER'] == 'opera') {
 			$this->thisConfig['keepButtonGroupTogether'] = 0;
 		}
 
 		$this->defaultToolbarOrder = 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
 			bar, formattext, bold,  strong, italic, emphasis, big, small, insertedtext, deletedtext, citation, code, definition, keyboard, monospaced, quotation, sample, variable, bidioverride, strikethrough, subscript, superscript, underline, span,
-			bar, fontstyle, space, fontsize, bar, formatblock, insertparagraphbefore, insertparagraphafter, blockquote,
+			bar, fontstyle, space, fontsize, bar, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, line,
 			bar, left, center, right, justifyfull,
 			bar, orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent,  bar, lefttoright, righttoleft, language, showlanguagemarks,
 			bar, textcolor, bgcolor, textindicator,
-			bar, emoticon, insertcharacter, line, link, unlink, image, table,' . (($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
+			bar, emoticon, insertcharacter, link, unlink, image, table,' . (($this->thisConfig['hideTableOperationsInToolbar'] && is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['toggleborders.']) && $this->thisConfig['buttons.']['toggleborders.']['keepInToolbar']) ? ' toggleborders,': '') . ' user, acronym, bar, findreplace, spellcheck,
 			bar, chMode, inserttag, removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
 			' . ($this->thisConfig['hideTableOperationsInToolbar'] ? '': 'bar, toggleborders,') . ' bar, tableproperties, tablerestyle, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
 			columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
 			cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
-
-			// Special toolbar for Mozilla Wamcom on Mac OS 9
-		if($this->client['BROWSER'] == 'gecko' && $this->client['VERSION'] == '1.3')  {
-			$this->defaultToolbarOrder = $this->TCEform->docLarge ? 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
-				bar, fontstyle, space, fontsize, space, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, bar, bold, italic, underline, strikethrough,
-				subscript, superscript, lefttoright, righttoleft, language, showlanguagemarks, bar, left, center, right, justifyfull, linebreak,
-				bar, orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
-				insertcharacter, line, link, unlink, image, table, user, acronym, bar, findreplace, spellcheck, bar, chMode, inserttag,
-				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
-				bar, toggleborders, bar, tableproperties, tablerestyle, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
-				columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
-				cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge'
-				: 'bar, blockstylelabel, blockstyle, space, textstylelabel, textstyle, linebreak,
-				bar, fontstyle, space, fontsize, space, formatblock, insertparagraphbefore, insertparagraphafter, blockquote, bar, bold, italic, underline, strikethrough,
-				subscript, superscript, linebreak, bar, lefttoright, righttoleft, language, showlanguagemarks, bar, left, center, right, justifyfull,
-				orderedlist, unorderedlist, definitionlist, definitionitem, outdent, indent, bar, textcolor, bgcolor, textindicator, bar, emoticon,
-				insertcharacter, line, link, unlink, image, table, user, acronym, linebreak, bar, findreplace, spellcheck, bar, chMode, inserttag,
-				removeformat, bar, copy, cut, paste, bar, undo, redo, bar, showhelp, about, linebreak,
-				bar, toggleborders, bar, tableproperties, tablerestyle, bar, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit, bar,
-				columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit, bar,
-				cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
-		}
 
 			// Additional buttons from registered plugins
 		foreach($this->registeredPlugins as $pluginId => $plugin) {
@@ -738,21 +703,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 function convertToolbarForHTMLArea($button) {
  		return $this->convertToolbarForHtmlAreaArray[$button];
 	 }
-
-	/**
-	 * Return the JS-function for setting the RTE size.
-	 *
-	 * @param	string		DivID-Name
-	 * @param	int			the height for the RTE
-	 * @param	int			the width for the RTE
-	 * @return string		Loader function in JS
-	 */
-	function setRTEsizeByJS($divId, $height, $width) {
-		return '
-			setRTEsizeByJS(\''.$divId.'\','.$height.', '.$width.');
-		';
-	}
-
 	/**
 	 * Return the HTML code for loading the Javascript files
 	 *
@@ -777,7 +727,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if (typeof(RTEarea) == "undefined") {
 				RTEarea = new Object();
 				RTEarea.init = function() {
-					if (typeof(HTMLArea) == "undefined") {
+					if (typeof(HTMLArea) == "undefined" || !Ext.isReady) {
 						window.setTimeout("RTEarea.init();", 40);
 					} else {'
 						. $loadPluginCode . '
@@ -859,6 +809,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[editornumber].deleted = false;
 			RTEarea[editornumber].textAreaId = "' . $textAreaId . '";
 			RTEarea[editornumber].id = "RTEarea" + editornumber;
+			RTEarea[editornumber].RTEWidthOverride = "' . trim($this->thisConfig['RTEWidthOverride']) . '";
+			RTEarea[editornumber].RTEHeightOverride = "' . trim($this->thisConfig['RTEHeightOverride']) . '";
+			RTEarea[editornumber].fullScreen = ' . ($this->fullScreen ? 'true' : 'false') . ';
+			RTEarea[editornumber].showStatusBar = ' . (trim($this->thisConfig['showStatusBar'])?'true':'false') . ';
 			RTEarea[editornumber].enableWordClean = ' . (trim($this->thisConfig['enableWordClean'])?'true':'false') . ';
 			RTEarea[editornumber]["htmlRemoveComments"] = ' . (trim($this->thisConfig['removeComments'])?'true':'false') . ';
 			RTEarea[editornumber].disableEnterParagraphs = ' . (trim($this->thisConfig['disableEnterParagraphs'])?'true':'false') . ';
@@ -1215,64 +1169,62 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 
 	/**
-	 * Return the JS-Code for the Toolbar-Config-Array for HTML-Area
+	 * Return the JS code of the toolbar configuration for the HTMLArea editor
 	 *
-	 * @return string		the JS-Code as an JS-Array
+	 * @return string	the JS code as nested JS arrays
 	 */
-
-	function getJSToolbarArray() {
-		$toolbar = '';			// The JS-Code for the toolbar
-		$group = '';			// The TS-Code for the group in the moment, each group are between "bar"s
-		$group_has_button = false;	// True if the group has any enabled buttons
-		$group_needs_starting_bar = false;
-		$previous_is_space = false;
-
-			// process each button in the order list
-		foreach ($this->toolbarOrderArray as $button) {
-			// check if a new group starts
-			if (($button == 'bar' || $button == 'linebreak') && $group_has_button) {
-					// New line
-				if ($button == 'linebreak') {
-					$convertButton = '"' . $this->convertToolbarForHTMLArea('linebreak') . '"';
-					$group = ($group!='') ? ($group . ', ' . $convertButton) : $convertButton;
-				}
-					// New group
-				$toolbar .= $toolbar ? (', ' . $group) : ('[[' . $group);
-				$group = '';
-				$previous_is_space = false;
-				$group_has_button = false;
-				$group_needs_starting_bar = ($button == 'bar');
-			} elseif ($toolbar && $button == 'linebreak' && !$group_has_button) {
-					// Insert linebreak if no group is opened
-				$group = '';
-				$previous_is_space = false;
-				$group_needs_starting_bar = false;
-				$toolbar .= ', "' . $this->convertToolbarForHTMLArea($button) . '"';
-			} elseif ($button == 'bar' && !$group_has_button) {
-				$group_needs_starting_bar = true;
-			} elseif ($button == 'space' && $group_has_button && !$previous_is_space) {
-				$convertButton = $this->convertToolbarForHTMLArea($button);
-				$convertButton = '"' . $convertButton . '"';
-				$group .= $group ? (', ' . $convertButton) : ($group_needs_starting_bar ? ('"' . $this->convertToolbarForHTMLArea('bar') . '", ' . $convertButton) : $convertButton);
-				$group_needs_starting_bar = false;
-				$previous_is_space = true;
-			} elseif (in_array($button, $this->toolbar)) {
-					// Add the button to the group
-				$convertButton = $this->convertToolbarForHTMLArea($button);
-				if ($convertButton) {
-					$convertButton = '"' . $convertButton . '"';
-					$group .= $group ? (', ' . $convertButton) : ($group_needs_starting_bar ? ('"' . $this->convertToolbarForHTMLArea('bar') . '", ' . $convertButton) : $convertButton);
-					$group_has_button = true;
-					$group_needs_starting_bar = false;
-					$previous_is_space = false;
-				}
+	protected function getJSToolbarArray() {
+			// The toolbar array
+		$toolbar = array();
+			// The current row;  a "linebreak" ends the current row
+		$row = array();
+			// The current group; each group is between "bar"s; a "linebreak" ends the current group
+		$group = array();
+			// Process each toolbar item in the toolbar order list
+		foreach ($this->toolbarOrderArray as $item) {
+			switch ($item) {
+				case 'linebreak':
+						// Add row to toolbar if not empty
+					if (!empty($group)) {
+						$row[] = $group;
+						$group = array();
+					}
+					if (!empty($row)) {
+						$toolbar[] = $row;
+						$row = array();
+					}
+					break;
+				case 'bar':
+						// Add group to row if not empty
+					if (!empty($group)) {
+						$row[] = $group;
+						$group = array();
+					}
+					break;
+				case 'space':
+					if (end($group) != $this->convertToolbarForHTMLArea($item)) {
+						$group[] = $this->convertToolbarForHTMLArea($item);
+					}
+					break;
+				default:
+					if (in_array($item, $this->toolbar)) {
+							// Add the item to the group
+						$convertedItem = $this->convertToolbarForHTMLArea($item);
+						if ($convertedItem) {
+							$group[] = $convertedItem;
+						}
+					}
+					break;
 			}
-			// else ignore
 		}
-			// add the last group
-		if($group_has_button) $toolbar .= $toolbar ? (', ' . $group) : ('[[' . $group);
-		$toolbar = $toolbar . ']]';
-		return $toolbar;
+			// Add the last group and last line, if not empty
+		if (!empty($group)) {
+			$row[] = $group;
+		}
+		if (!empty($row)) {
+			$toolbar[] = $row;
+		}
+		return json_encode($toolbar);
 	}
 
 	public function getLLContent($string) {
@@ -1347,7 +1299,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript code
 	 */
 	function setSaveRTE($RTEcounter, $formName, $textareaId) {
-		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaId . '"].value = RTEarea["' . $textareaId . '"].editor.getPluginInstance("EditorMode").getHTML(); } else { OK = 0; };';
+		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaId . '"].value = RTEarea["' . $textareaId . '"].editor.getHTML(); } else { OK = 0; };';
 	}
 
 	/**

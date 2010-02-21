@@ -67,6 +67,7 @@
 			<label index="Character">Character</label>
 			<label index="Align on this character">Align text relative to this character</label>
 			<label index="Collapsed borders">Collapsed borders</label>
+			<label index="Detached borders">Detached borders</label>
 			<label index="Color:">Color:</label>
 			<label index="Description">Description</label>
 			<label index="FG Color:">FG Color:</label>

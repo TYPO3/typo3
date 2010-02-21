@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -63,7 +63,7 @@ InlineElements = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.1",
+			version		: "2.0",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -80,9 +80,8 @@ InlineElements = HTMLArea.Plugin.extend({
 		var dropDownConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + "-Tooltip"),
-			options		: (this.editorConfiguration.buttons[buttonId.toLowerCase()]?this.editorConfiguration.buttons[buttonId.toLowerCase()]["dropDownOptions"]:null),
-			action		: "onChange",
-			refresh		: null
+			options		: (this.editorConfiguration.buttons[buttonId.toLowerCase()] ? this.editorConfiguration.buttons[buttonId.toLowerCase()].data : null),
+			action		: "onChange"
 		};
 		this.registerDropDown(dropDownConfiguration);
 		
@@ -193,7 +192,6 @@ InlineElements = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		var obj = editor._toolbarObjects[buttonId];
 		var element = this.convertBtn[buttonId];
 		if (element) {
 			this.applyInlineElement(editor, element);
@@ -206,9 +204,8 @@ InlineElements = HTMLArea.Plugin.extend({
 	/*
 	 * This function gets called when some inline element was selected in the drop-down list
 	 */
-	onChange : function (editor, buttonId) {
-		var tbobj = editor._toolbarObjects[buttonId];
-		var element = document.getElementById(tbobj.elementId).value;
+	onChange : function (editor, combo, record, index) {
+		var element = combo.getValue();
 		this.applyInlineElement(editor, element, false);
 	},
 	
@@ -235,7 +232,7 @@ InlineElements = HTMLArea.Plugin.extend({
 			}
 		}
 		if (!selectionEmpty) {
-			var statusBarSelection = (editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null);
+			var statusBarSelection = (editor.statusBar ? editor.statusBar.getSelection() : null);
 				// The selection is not empty.
 			for (var i = 0; i < ancestors.length; ++i) {
 				fullNodeSelected = (HTMLArea.is_ie && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text)))
@@ -374,22 +371,19 @@ InlineElements = HTMLArea.Plugin.extend({
 	/*
 	* This function gets called when the toolbar is updated
 	*/
-	onUpdateToolbar : function () {
+	onUpdateToolbar : function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 		var editor = this.editor;
-		if (this.getEditorMode() === "wysiwyg" && editor.isEditable()) {
-			var id, activeButton;
-			var tagName = false, endPointsInSameBlock = true, fullNodeSelected = false;
+		if (mode === "wysiwyg" && editor.isEditable()) {
+			var tagName = false, fullNodeSelected = false;
 			var sel = editor._getSelection();
 			var range = editor._createRange(sel);
 			var parent = editor.getParentElement(sel);
 			if (parent && !HTMLArea.isBlockElement(parent)) {
 				tagName = parent.nodeName.toLowerCase();
 			}
-			var selectionEmpty = editor._selectionEmpty(sel);
 			if (!selectionEmpty) {
-				var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
-				var ancestors = editor.getAllAncestors();
-				for (var i = 0; i < ancestors.length; ++i) {
+				var statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null;
+				for (var i = 0, n = ancestors.length; i < n; ++i) {
 					fullNodeSelected = (statusBarSelection === ancestors[i])
 						&& ((HTMLArea.is_gecko && ancestors[i].textContent === range.toString()) || (HTMLArea.is_ie && ((sel.type !== "Control" && ancestors[i].innerText === range.text) || (sel.type === "Control" && ancestors[i].innerText === range.item(0).text))));
 					if (fullNodeSelected) {
@@ -406,31 +400,24 @@ InlineElements = HTMLArea.Plugin.extend({
 				}
 			}
 			var selectionInInlineElement = tagName && this.REInlineElements.test(tagName);
-			var disabled = !editor.endPointsInSameBlock() || (fullNodeSelected && !tagName) || (selectionEmpty && !selectionInInlineElement);
-			
-			var obj = editor.config.customSelects["FormatText"];
-			if ((typeof(obj) !== "undefined") && (typeof(editor._toolbarObjects[obj.id]) !== "undefined")) {
-				this.updateValue(editor, obj, tagName, selectionEmpty, fullNodeSelected, disabled);
-			}
-			
-			var ancestors = editor.getAllAncestors();
-			var bl = this.buttonList;
-			for (var i = 0; i < bl.length; ++i) {
-				var btn = bl[i];
-				id = btn[0];
-				var obj = editor._toolbarObjects[id];
-				if ((typeof(obj) !== "undefined")) {
-					activeButton = false;
-					for (var j = ancestors.length; --j >= 0;) {
-						var el = ancestors[j];
-						if (!el) { continue; }
-						if (this.convertBtn[id] === el.nodeName.toLowerCase()) {
+			var disabled = !endPointsInSameBlock || (fullNodeSelected && !tagName) || (selectionEmpty && !selectionInInlineElement);
+			switch (button.itemId) {
+				case 'FormatText':
+					this.updateValue(editor, button, tagName, selectionEmpty, fullNodeSelected, disabled);
+					break;
+				default:
+					var activeButton = false;
+					Ext.each(ancestors, function (ancestor) {
+						if (ancestor && this.convertBtn[button.itemId] === ancestor.nodeName.toLowerCase()) {
 							activeButton = true;
+							return false;
+						} else {
+							return true;
 						}
-					}
-					obj.state("active", activeButton);
-					obj.state("enabled", !disabled);
-				}
+					}, this);
+					button.setInactive(!activeButton);
+					button.setDisabled(disabled);
+					break;
 			}
 		}
 	},
@@ -438,31 +425,23 @@ InlineElements = HTMLArea.Plugin.extend({
 	/*
 	* This function updates the drop-down list of inline elemenents
 	*/
-	updateValue : function (editor, obj, tagName, selectionEmpty, fullNodeSelected, disabled) {
-		var select = document.getElementById(editor._toolbarObjects[obj.id]["elementId"]);
-		var options = select.options;
-		for (var i = options.length; --i >= 0;) {
-			options[i].selected = false;
+	updateValue: function (editor, select, tagName, selectionEmpty, fullNodeSelected, disabled) {
+		var store = select.getStore();
+		store.removeAt(0);
+		if ((store.findExact('value', tagName) != -1) && (selectionEmpty || fullNodeSelected)) {
+			select.setValue(tagName);
+			store.insert(0, new store.recordType({
+				text: this.localize('Remove markup'),
+				value: 'none'
+			}));
+		} else {
+			store.insert(0, new store.recordType({
+				text: this.localize('No markup'),
+				value: 'none'
+			}));
+			select.setValue('none');
 		}
-		select.selectedIndex = 0;
-		options[0].selected = true;
-		select.options[0].text = this.localize("No markup");
-		for (i = options.length; --i >= 0;) {
-			if (tagName === options[i].value) {
-				if (selectionEmpty || fullNodeSelected) {
-					options[i].selected = true;
-					select.selectedIndex = i;
-					select.options[0].text = this.localize("Remove markup");
-				}
-				break;
-			}
-		}
-		
-		select.disabled = !(options.length>1) || disabled;
-		select.className = "";
-		if (select.disabled) {
-			select.className = "buttonDisabled";
-		}
+		select.setDisabled(!(store.getCount()>1) || disabled);
 	}
 });
 

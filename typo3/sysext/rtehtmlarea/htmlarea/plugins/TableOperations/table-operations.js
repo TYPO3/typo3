@@ -3,7 +3,7 @@
 *
 *  (c) 2002 interactivetools.com, inc. Authored by Mihai Bazon, sponsored by http://www.bloki.com.
 *  (c) 2005 Xinha, http://xinha.gogo.co.nz/ for the original toggle borders function.
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -66,11 +66,9 @@ TableOperations = HTMLArea.Plugin.extend({
 				this.defaultClass = this.buttonsConfiguration.table.properties.tableClass.defaultValue;
 			}
 		}
-		
 		if (this.buttonsConfiguration.blockstyle) {
 			this.tags = this.editorConfiguration.buttons.blockstyle.tags;
 		}
-		
 		this.tableParts = ["tfoot", "thead", "tbody"];
 		this.convertAlignment = { "not set" : "none", "left" : "JustifyLeft", "center" : "JustifyCenter", "right" : "JustifyRight", "justify" : "JustifyFull" };
 		
@@ -78,7 +76,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "4.2",
+			version		: "5.0",
 			developer	: "Mihai Bazon & Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
@@ -114,7 +112,7 @@ TableOperations = HTMLArea.Plugin.extend({
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : [
+	buttonList: [
 		["InsertTable",		null,				"table", true],
 		["toggle-borders",	null, 				"toggleborders", false],
 		["table-prop",		"table",			"tableproperties", true],
@@ -136,222 +134,430 @@ TableOperations = HTMLArea.Plugin.extend({
 		["cell-merge",		"tr",				"cellmerge", false],
 		["cell-split",		"td,th[colSpan!=1,rowSpan!=1]",	"cellsplit", false]
 	],
-	
+	/*
+	 * Sets of default configuration values for dialogue form fields
+	 */
+	configDefaults: {
+		combo: {
+			editable: true,
+			typeAhead: true,
+			triggerAction: 'all',
+			forceSelection: true,
+			mode: 'local',
+			valueField: 'value',
+			displayField: 'text',
+			helpIcon: true,
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+		}
+	},
 	/*
 	 * Retrieve the closest element having the specified nodeName in the list of
 	 * ancestors of the current selection/caret.
 	 */
-	getClosest : function (nodeName) {
-		var editor = this.editor;
-		var ancestors = editor.getAllAncestors();
-		var ret = null;
-		nodeName = ("" + nodeName).toLowerCase();
-		for (var i=0; i < ancestors.length; ++i) {
-			var el = ancestors[i];
-			if (el.nodeName.toLowerCase() == nodeName) {
-				ret = el;
+	getClosest: function (nodeName) {
+		var ancestors = this.editor.getAllAncestors();
+		var element = null;
+		Ext.each(ancestors, function (ancestor) {
+			if (ancestor.nodeName.toLowerCase() === nodeName) {
+				element = ancestor;
+				return false;
+			}
+		});
+		return element;
+	},
+	/*
+	 * Get the integer value of a string or '' if the string is not a number
+	 *
+	 * @param	string		string: the input value
+	 *
+	 * @return	mixed		a number or ''
+	 */
+	getLength: function (string) {
+		var length = parseInt(string);
+		if (isNaN(length)) {
+			length = '';
+		}
+		return length;
+	},
+	/*
+	 * Open properties dialogue
+	 *
+	 * @param	string		type: 'cell', 'column', 'row' or 'table'
+	 * @param	string		buttonId: the buttonId of the button that was pressed
+	 *
+	 * @return 	void
+	 */
+	openPropertiesDialogue: function (type, buttonId) {
+			// Retrieve the element being edited and set configuration according to type
+		switch (type) {
+			case 'cell':
+			case 'column':
+				var element = this.getClosest('td');
+				if (!element) {
+					var element = this.getClosest('th');
+				}
+				this.properties = this.buttonsConfiguration.cellproperties.properties;
+				var title = (type == 'column') ? 'Column Properties' : 'Cell Properties';
 				break;
-			}
+			case 'row':
+				var element = this.getClosest('tr');
+				this.properties = this.buttonsConfiguration.rowproperties.properties;
+				var title = 'Row Properties';
+				break;
+			case 'table':
+				var insert = (buttonId === 'InsertTable');
+				var element = insert ? null : this.getClosest('table');
+				this.properties = this.buttonsConfiguration.table.properties;
+				var title = insert ? 'Insert Table' : 'Table Properties';
+				break;
 		}
-		return ret;
+		var propertySet = element ? type + 'properties' : 'table';
+		this.removedFieldsets = (this.buttonsConfiguration[propertySet] && this.buttonsConfiguration[propertySet].removeFieldsets) ? this.buttonsConfiguration[propertySet].removeFieldsets : '';
+		this.removedProperties = (this.properties && this.properties.removed) ? this.properties.removed : '';
+			// Open the dialogue window
+		this.openDialogue(
+			title,
+			{
+				element: element,
+				cell: type == 'cell',
+				column: type == 'column',
+				buttonId: buttonId
+			},
+			type == 'table' ? this.getWindowDimensions({ width: 600}, buttonId) : this.getWindowDimensions({ width: 600}, buttonId),
+			this.buildTabItemsConfig(element, type, buttonId),
+			type == 'table' ? this.tablePropertiesUpdate : this.rowCellPropertiesUpdate
+		);
 	},
-	
 	/*
-	 * Open the table properties dialogue
+	 * Build the dialogue tab items config
+	 *
+	 * @param	object		element: the element being edited, if any
+	 * @param	string		type: 'cell', 'column', 'row' or 'table'
+	 * @param	string		buttonId: the buttonId of the button that was pressed
+	 *
+	 * @return	object		the tab items configuration
 	 */
-	dialogTableProperties : function (buttonId) {
-		var tablePropertiesInitFunctRef = this.makeFunctionReference("tablePropertiesInit");
-		var insert = (buttonId === "InsertTable");
-		var arguments = {
-			buttonId	: buttonId,
-			title 		: (insert ? "Insert Table" : "Table Properties"),
-			initialize	: tablePropertiesInitFunctRef,
-			element		: (insert ? null : this.getClosest("table"))
-		};
-		var dimensions = {
-			width	: 860,
-			height	: 620
-		};
-		this.dialog = this.openDialog((insert ? "InsertTable" : "TO-table-prop"), "", "tablePropertiesUpdate", arguments, dimensions);
-	},
-	
-	/*
-	 * Initialize the table insertion or table properties dialog
-	 */
-	tablePropertiesInit : function(dialog) {
-		var doc = dialog.document;
-		var content = dialog.content;
-		var table = dialog.arguments.element;
-		this.removedFieldsets = this.buttonsConfiguration[table?"tableproperties":"table"].removeFieldsets ? this.buttonsConfiguration[table?"tableproperties":"table"].removeFieldsets : "";
-		this.properties = this.buttonsConfiguration.table.properties;
-		this.removedProperties = (this.properties && this.properties.removed) ? this.properties.removed : "";
-		TableOperations.buildTitle(doc, content, dialog.arguments.title);
-		TableOperations.insertSpace(doc, content);
-		if (this.removedFieldsets.indexOf("description") == -1) {
-			TableOperations.buildDescriptionFieldset(doc, table, content, "floating");
+	buildTabItemsConfig: function (element, type, buttonId) {
+		var tabItems = [];
+		var generalTabItems = [];
+		switch (type) {
+			case 'table':
+				if (this.removedFieldsets.indexOf('description') === -1) {
+					this.addConfigElement(this.buildDescriptionFieldsetConfig(element), generalTabItems);
+				}
+				if (Ext.isEmpty(element) || this.removedProperties.indexOf('headers') === -1) {
+					this.addConfigElement(this.buildSizeAndHeadersFieldsetConfig(element), generalTabItems);
+				}
+				break;
+			case 'column':
+				if (this.removedFieldsets.indexOf('columntype') == -1) {
+					this.addConfigElement(this.buildCellTypeFieldsetConfig(element, true), generalTabItems);
+				}
+				break;
+			case 'cell':
+				if (this.removedFieldsets.indexOf('celltype') == -1) {
+					this.addConfigElement(this.buildCellTypeFieldsetConfig(element, false), generalTabItems);
+				}
+				break;
+			case 'row':
+				if (this.removedFieldsets.indexOf('rowgroup') == -1) {
+					this.addConfigElement(this.buildRowGroupFieldsetConfig(element), generalTabItems);
+				}
+				break;
 		}
-		if (this.removedFieldsets.indexOf("spacing") == -1) TableOperations.buildSpacingFieldset(doc, table, content);
-		TableOperations.insertSpace(doc, content);
-		this.buildSizeAndHeadersFieldset(doc, table, content, "floating");
-		if (this.removedFieldsets.indexOf("style") == -1 && dialog.editor.config.customSelects.BlockStyle) {
-			var blockStyle = dialog.editor.plugins.BlockStyle.instance;
+		if (this.removedFieldsets.indexOf('style') == -1 && this.getButton('BlockStyle')) {
+			var blockStyle = this.getPluginInstance('BlockStyle');
 			if (blockStyle && blockStyle.cssLoaded) {
-				this.buildStylingFieldset(doc, table, content, null, dialog.arguments.buttonId);
-				TableOperations.insertSpace(doc, content);
+				this.addConfigElement(this.buildStylingFieldsetConfig(element, buttonId), generalTabItems);
 			}
 		}
-		this.buildLanguageFieldset(doc, table, content, "floating");
-		if (this.removedFieldsets.indexOf("layout") == -1) this.buildLayoutFieldset(doc, table, content, "floating");
-		if (this.removedFieldsets.indexOf("alignment") == -1) this.buildAlignmentFieldset(doc, table, content);
-		TableOperations.insertSpace(doc, content);
-		if (this.removedFieldsets.indexOf("borders") == -1) this.buildBordersFieldset(dialog.dialogWindow, doc, dialog.editor, table, content);
-		if (this.removedFieldsets.indexOf("color") == -1) TableOperations.buildColorsFieldset(dialog.dialogWindow, doc, dialog.editor, table, content);
-		dialog.addButtons("ok", "cancel");
+		if (!Ext.isEmpty(generalTabItems)) {
+			tabItems.push({
+				title: this.localize('General'),
+				items: generalTabItems
+			});
+		}
+		var layoutTabItems = [];
+		if (type === 'table' && this.removedFieldsets.indexOf('spacing') === -1) {
+			this.addConfigElement(this.buildSpacingFieldsetConfig(element), layoutTabItems);
+		}
+		if (this.removedFieldsets.indexOf('layout') == -1) {
+			this.addConfigElement(this.buildLayoutFieldsetConfig(element), layoutTabItems);
+		}
+		if (!Ext.isEmpty(layoutTabItems)) {
+			tabItems.push({
+				title: this.localize('Layout'),
+				items: layoutTabItems
+			});
+		}
+		var languageTabItems = [];
+		if (this.removedFieldsets.indexOf('language') === -1 && (this.removedProperties.indexOf('language') === -1 || this.removedProperties.indexOf('direction') === -1) && (this.getButton('Language') || this.getButton('LeftToRight') || this.getButton('RightToLeft'))) {
+			this.addConfigElement(this.buildLanguageFieldsetConfig(element), languageTabItems);
+		}
+		if (!Ext.isEmpty(languageTabItems)) {
+			tabItems.push({
+				title: this.localize('Language'),
+				items: languageTabItems
+			});
+		}
+		var alignmentAndBordersTabItems = [];
+		if (this.removedFieldsets.indexOf('alignment') === -1) {
+			this.addConfigElement(this.buildAlignmentFieldsetConfig(element), alignmentAndBordersTabItems);
+		}
+		if (this.removedFieldsets.indexOf('borders') === -1) {
+			this.addConfigElement(this.buildBordersFieldsetConfig(element), alignmentAndBordersTabItems);
+		}
+		if (!Ext.isEmpty(alignmentAndBordersTabItems)) {
+			tabItems.push({
+				title: this.localize('Alignment') + '/' + this.localize('Border'),
+				items: alignmentAndBordersTabItems
+			});
+		}
+		var colorTabItems = [];
+		if (this.removedFieldsets.indexOf('color') === -1) {
+			this.addConfigElement(this.buildColorsFieldsetConfig(element), colorTabItems);
+		}
+		if (!Ext.isEmpty(colorTabItems)) {
+			tabItems.push({
+				title: this.localize('Background and colors'),
+				items: colorTabItems
+			});
+		}
+		return tabItems;
 	},
-	
+	/*
+	 * Open the dialogue window
+	 *
+	 * @param	string		title: the window title
+	 * @param	object		arguments: some arguments for the handler
+	 * @param	integer		dimensions: the opening width of the window
+	 * @param	object		tabItems: the configuration of the tabbed panel
+	 * @param	function	handler: handler when the OK button if clicked
+	 *
+	 * @return	void
+	 */
+	openDialogue: function (title, arguments, dimensions, tabItems, handler) {
+		if (this.dialog) {
+			this.dialog.close();
+		}
+		this.dialog = new Ext.Window({
+			title: this.localize(title),
+			arguments: arguments,
+			cls: 'htmlarea-window',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
+			border: false,
+			width: dimensions.width,
+			height: 'auto',
+			iconCls: arguments.buttonId,
+			listeners: {
+				close: {
+					fn: this.onClose,
+					scope: this
+				}
+			},
+			items: {
+				xtype: 'tabpanel',
+				activeTab: 0,
+				defaults: {
+					xtype: 'container',
+					layout: 'form',
+					defaults: {
+						labelWidth: 150
+					}
+				},
+				listeners: {
+					tabchange: {
+						fn: this.syncHeight,
+						scope: this
+					}
+				},
+				items: tabItems
+			},
+			buttons: [
+				this.buildButtonConfig('Cancel', this.onCancel),
+				this.buildButtonConfig('OK', handler)
+			]
+		});
+		this.show();
+	},
 	/*
 	 * Insert the table or update the table properties and close the dialogue
 	 */
-	tablePropertiesUpdate : function(dialog, params) {
+	tablePropertiesUpdate: function () {
+		this.restoreSelection()
+		var params = {};
+		var fieldTypes = ['combo', 'textfield', 'numberfield', 'checkbox', 'colorpalettefield'];
+		this.dialog.findBy(function (item) {
+			if (fieldTypes.indexOf(item.getXType()) !== -1) {
+				params[item.getItemId()] = item.getValue();
+				return true;
+			}
+			return false;
+		});
+		var errorFlag = false;
 		if (this.buttonsConfiguration.table.properties && this.buttonsConfiguration.table.properties.required) {
-			if (this.buttonsConfiguration.table.properties.required.indexOf("captionOrSummary") != -1) {
+			if (this.buttonsConfiguration.table.properties.required.indexOf('captionOrSummary') != -1) {
 				if (!/\S/.test(params.f_caption) && !/\S/.test(params.f_summary)) {
-					dialog.dialogWindow.alert(this.localize("captionOrSummary" + "-required"));
-					var el = dialog.document.getElementById("f_caption");
-					el.focus();
+					Ext.MessageBox.alert(this.localize('Error'), this.localize('captionOrSummary' + '-required'));
+					var field = this.dialog.find('itemId', 'f_caption')[0];
+					var tab = field.findParentByType('container');
+					tab.ownerCt.activate(tab);
+					field.focus();
 					return false;
 				}
 			} else {
-				var required = { "f_caption": "caption", "f_summary": "summary" };
-				for (var i in required) {
-					if (required.hasOwnProperty(i)) {
-						var el = dialog.document.getElementById(i);
-						if (!el.value && this.buttonsConfiguration.table.properties.required.indexOf(required[i]) != -1) {
-							dialog.dialogWindow.alert(this.localize(required[i] + "-required"));
-							el.focus();
-							return false;
-						}
+				var required = {
+					f_caption: 'caption',
+					f_summary: 'summary'
+				};
+				Ext.iterate(required, function (item) {
+					if (!params[item] && this.buttonsConfiguration.table.properties.required.indexOf(required[item]) != -1) {
+						Ext.MessageBox.alert(this.localize('Error'), this.localize(required[item] + '-required'));
+						var field = this.dialog.find('itemId', item)[0];
+						var tab = field.findParentByType('container');
+						tab.ownerCt.activate(tab);
+						field.focus();
+						errorFlag = true;
+						return false;
 					}
+				}, this);
+				if (errorFlag) {
+					return false;
 				}
 			}
 		}
-		var doc = dialog.editor._doc;
-		if (dialog.buttonId === "InsertTable") {
-			var required = { "f_rows": "You must enter a number of rows", "f_cols": "You must enter a number of columns" };
-			for (var i in required) {
-				if (required.hasOwnProperty(i)) {
-					var el = dialog.document.getElementById(i);
-					if (!el.value) {
-						dialog.dialogWindow.alert(this.localize(required[i]));
-						el.focus();
-						return false;
-					}
+		var doc = this.editor._doc;
+		if (this.dialog.arguments.buttonId === 'InsertTable') {
+			var required = {
+				f_rows: 'You must enter a number of rows',
+				f_cols: 'You must enter a number of columns'
+			};
+			Ext.iterate(required, function (item) {
+				if (!params[item]) {
+					Ext.MessageBox.alert(this.localize('Error'), this.localize(required[item]));
+					var field = this.dialog.find('itemId', item)[0];
+					var tab = field.findParentByType('container');
+					tab.ownerCt.activate(tab);
+					field.focus();
+					errorFlag = true;
+					return false;
 				}
+			}, this);
+			if (errorFlag) {
+				return false;
 			}
-			var table = doc.createElement("table");
-			var tbody = doc.createElement("tbody");
+			var table = doc.createElement('table');
+			var tbody = doc.createElement('tbody');
 			table.appendChild(tbody);
 			for (var i = params.f_rows; --i >= 0;) {
-				var tr = doc.createElement("tr");
+				var tr = doc.createElement('tr');
 				tbody.appendChild(tr);
 				for (var j = params.f_cols; --j >= 0;) {
-					var td = doc.createElement("td");
-					if (HTMLArea.is_gecko) td.innerHTML = "<br />";
+					var td = doc.createElement('td');
+					if (HTMLArea.is_gecko) td.innerHTML = '<br />';
 					tr.appendChild(td);
 				}
 			}
 		} else {
-			var table = dialog.arguments.element;
+			var table = this.dialog.arguments.element;
 		}
-		table = this.setHeaders(table, params);
-		table = this.processStyle(table, params);
-		table.removeAttribute("border");
-		for (var i in params) {
-			if (params.hasOwnProperty(i)) {
-				var val = params[i];
-				switch (i) {
-				    case "f_caption":
-					if (/\S/.test(val)) {
-						// contains non white-space characters
-						var caption = table.getElementsByTagName("caption");
-						if (caption) {
-							caption = caption[0];
-						}
-						if (!caption) {
-							var caption = doc.createElement("caption");
-							table.insertBefore(caption, table.firstChild);
-						}
-						caption.innerHTML = val;
-					} else {
-						// delete the caption if found
-						if (table.caption) table.deleteCaption();
+		this.setHeaders(table, params);
+		this.processStyle(table, params);
+		table.removeAttribute('border');
+		Ext.iterate(params, function (item) {
+			var val = params[item];
+			switch (item) {
+			    case "f_caption":
+				if (/\S/.test(val)) {
+					// contains non white-space characters
+					var caption = table.getElementsByTagName("caption");
+					if (caption) {
+						caption = caption[0];
 					}
-					break;
-				    case "f_summary":
-					table.summary = val;
-					break;
-				    case "f_width":
-					table.style.width = ("" + val) + params.f_unit;
-					break;
-				    case "f_align":
-					table.align = val;
-					break;
-				    case "f_spacing":
-					table.cellSpacing = val;
-					break;
-				    case "f_padding":
-					table.cellPadding = val;
-					break;
-				    case "f_frames":
-					table.frame = (val != "not set") ? val : "";
-					break;
-				    case "f_rules":
-					if (val != "not set") table.rules = val;
-						else table.removeAttribute("rules");
-					break;
-				    case "f_st_float":
-					switch (val) {
-					    case "not set":
-						HTMLArea._removeClass(table, this.floatRight);
-						HTMLArea._removeClass(table, this.floatLeft);
-						break;
-					    case "right":
-						HTMLArea._removeClass(table, this.floatLeft);
-						HTMLArea._addClass(table, this.floatRight);
-						break;
-					    case "left":
-						HTMLArea._removeClass(table, this.floatRight);
-						HTMLArea._addClass(table, this.floatLeft);
-						break;
+					if (!caption) {
+						var caption = doc.createElement("caption");
+						table.insertBefore(caption, table.firstChild);
 					}
+					caption.innerHTML = val;
+				} else {
+					// delete the caption if found
+					if (table.caption) table.deleteCaption();
+				}
+				break;
+			    case "f_summary":
+				table.summary = val;
+				break;
+			    case "f_width":
+				table.style.width = ("" + val) + params.f_unit;
+				break;
+			    case "f_align":
+				table.align = val;
+				break;
+			    case "f_spacing":
+				table.cellSpacing = val;
+				break;
+			    case "f_padding":
+				table.cellPadding = val;
+				break;
+			    case "f_frames":
+			    	    if (val !== 'not set' && table.style.borderStyle !== 'none') {
+			    	    	    table.frame = val;
+			    	    } else {
+			    	    	    table.removeAttribute('rules');
+			    	    }
+				break;
+			    case "f_rules":
+			    	    if (val !== 'not set') {
+			    	    	    table.rules = val;
+			    	    } else {
+			    	    	    table.removeAttribute('rules');
+			    	    }
+				break;
+			    case "f_st_float":
+				switch (val) {
+				    case "not set":
+					HTMLArea._removeClass(table, this.floatRight);
+					HTMLArea._removeClass(table, this.floatLeft);
 					break;
-				    case "f_st_textAlign":
-					if (this.editor.plugins.BlockElements) {
-						this.editor.plugins.BlockElements.instance.toggleAlignmentClass(table, this.convertAlignment[val]);
-						table.style.textAlign = "";
-					}
+				    case "right":
+					HTMLArea._removeClass(table, this.floatLeft);
+					HTMLArea._addClass(table, this.floatRight);
 					break;
-				    case "f_class":
-				    case "f_class_tbody":
-				    case "f_class_thead":
-				    case "f_class_tfoot":
-					var tpart = table;
-					if (i.length > 7) tpart = table.getElementsByTagName(i.substring(8,13))[0];
-					if (tpart) {
-						this.editor.plugins.BlockStyle.instance.applyClassChange(tpart, val);
-					}
-					break;
-				    case "f_lang":
-					this.getPluginInstance("Language").setLanguageAttributes(table, val);
-					break;
-				    case "f_dir":
-					table.dir = (val != "not set") ? val : "";
+				    case "left":
+					HTMLArea._removeClass(table, this.floatRight);
+					HTMLArea._addClass(table, this.floatLeft);
 					break;
 				}
+				break;
+			    case "f_st_textAlign":
+				if (this.getPluginInstance('BlockElements')) {
+					this.getPluginInstance('BlockElements').toggleAlignmentClass(table, this.convertAlignment[val]);
+					table.style.textAlign = "";
+				}
+				break;
+			    case "f_class":
+			    case "f_class_tbody":
+			    case "f_class_thead":
+			    case "f_class_tfoot":
+				var tpart = table;
+				if (item.length > 7) {
+					tpart = table.getElementsByTagName(item.substring(8,13))[0];
+				}
+				if (tpart) {
+					this.getPluginInstance('BlockStyle').applyClassChange(tpart, val);
+				}
+				break;
+			    case "f_lang":
+				this.getPluginInstance('Language').setLanguageAttributes(table, val);
+				break;
+			    case "f_dir":
+				table.dir = (val != "not set") ? val : "";
+				break;
 			}
-		}
-		if (dialog.buttonId === "InsertTable") {
-			if (HTMLArea.is_gecko) {
+		}, this);
+		if (this.dialog.arguments.buttonId === "InsertTable") {
+			if (!Ext.isIE) {
 				this.editor.insertNodeAtSelection(table);
 			} else {
 				table.id = "htmlarea_table_insert";
@@ -364,94 +570,38 @@ TableOperations = HTMLArea.Plugin.extend({
 				this.toggleBorders(true);
 			}
 		}
-		dialog.close();
+		this.close();
 	},
-	
-	/*
-	 * Open the row/column/cell properties dialogue
-	 */
-	dialogRowCellProperties : function (cell, column) {
-			// retrieve existing values
-		if (cell) {
-			var element = this.getClosest("td");
-			if (!element) var element = this.getClosest("th");
-		} else {
-			var element = this.getClosest("tr");
-		}
-		if (element) {
-			var rowCellPropertiesInitFunctRef = this.makeFunctionReference("rowCellPropertiesInit");
-			var arguments = {
-				title 		: (cell ? (column ? "Column Properties" : "Cell Properties") : "Row Properties"),
-				initialize	: rowCellPropertiesInitFunctRef,
-				element		: element,
-				cell		: cell,
-				column		: column
-			};
-			this.dialog = this.openDialog("TO-" + (cell ? (column ? "col-prop" : "cell-prop") :"row-prop"), "", "rowCellPropertiesUpdate", arguments, { width : 660, height : 460 });
-		}
-	},
-	
-	/*
-	 * Initialize the row/column/cell properties dialogue
-	 */
-	rowCellPropertiesInit : function(dialog) {
-		var doc = dialog.document;
-		var content = dialog.content;
-		var element = dialog.arguments.element;
-		var cell = dialog.arguments.cell;
-		var column = dialog.arguments.column;
-		this.removedFieldsets = this.buttonsConfiguration[cell?(column?"columnproperties":"cellproperties"):"rowproperties"].removeFieldsets ? this.buttonsConfiguration[cell?(column?"columnproperties":"cellproperties"):"rowproperties"].removeFieldsets : "";
-		this.properties = this.buttonsConfiguration[(cell ||column)?"cellproperties":"rowproperties"].properties;
-		this.removedProperties = (this.properties && this.properties.removed) ? this.properties.removed : "";
-		TableOperations.buildTitle(doc, content, (cell ? (column ? "Column Properties" : "Cell Properties") : "Row Properties"));
-		TableOperations.insertSpace(doc, content);
-		if (column) {
-			if (this.removedFieldsets.indexOf("columntype") == -1) this.buildCellTypeFieldset(doc, element, content, true);
-		} else if (cell) {
-			if (this.removedFieldsets.indexOf("celltype") == -1) this.buildCellTypeFieldset(doc, element, content, false);
-		} else {
-			if (this.removedFieldsets.indexOf("rowgroup") == -1) TableOperations.buildRowGroupFieldset(dialog.dialogWindow, doc, dialog.editor, element, content);
-		}
-		if (this.removedFieldsets.indexOf("style") == -1 && this.editor.config.customSelects.BlockStyle) {
-			var blockStyle = this.editor.plugins.BlockStyle.instance;
-			if (blockStyle && blockStyle.cssLoaded) {
-				this.buildStylingFieldset(doc, element, content);
-				TableOperations.insertSpace(doc, content);
-			} else {
-				TableOperations.insertSpace(doc, content);
-			}
-		} else {
-			TableOperations.insertSpace(doc, content);
-		}
-		this.buildLanguageFieldset(doc, element, content, "floating");
-		if (this.removedFieldsets.indexOf("layout") == -1) this.buildLayoutFieldset(doc, element, content, "floating");
-		if (this.removedFieldsets.indexOf("alignment") == -1) this.buildAlignmentFieldset(doc, element, content);
-		if (this.removedFieldsets.indexOf("borders") == -1) this.buildBordersFieldset(dialog.dialogWindow, doc, dialog.editor, element, content);
-		if (this.removedFieldsets.indexOf("color") == -1) TableOperations.buildColorsFieldset(dialog.dialogWindow, doc, dialog.editor, element, content);
-		dialog.addButtons("ok", "cancel");
-	},
-	
 	/*
 	 * Update the row/column/cell properties
 	 */
-	rowCellPropertiesUpdate : function(dialog, params) {
-		var element = dialog.arguments.element;
-		var cell = dialog.arguments.cell;
-		var column = dialog.arguments.column;
-		var section = (cell || column) ? element.parentNode.parentNode : element.parentNode;
+	rowCellPropertiesUpdate: function() {
+		this.restoreSelection()
+			// Collect values from each form field
+		var params = {};
+		var fieldTypes = ['combo', 'textfield', 'numberfield', 'checkbox', 'colorpalettefield'];
+		this.dialog.findBy(function (item) {
+			if (fieldTypes.indexOf(item.getXType()) !== -1) {
+				params[item.getItemId()] = item.getValue();
+				return true;
+			}
+			return false;
+		});
+		var cell = this.dialog.arguments.cell;
+		var column = this.dialog.arguments.column;
+		var section = (cell || column) ? this.dialog.arguments.element.parentNode.parentNode : this.dialog.arguments.element.parentNode;
 		var table = section.parentNode;
-		var elements = new Array();
+		var elements = [];
 		if (column) {
-			elements = this.getColumnCells(dialog.arguments.element);
+			elements = this.getColumnCells(this.dialog.arguments.element);
 		} else {
-			elements.push(dialog.arguments.element);
+			elements.push(this.dialog.arguments.element);
 		}
-		for (var k = elements.length; --k >= 0;) {
-			var element = elements[k];
-			element = this.processStyle(element, params);
-			for (var i in params) {
-				var val = params[i];
-				switch (i) {
+		Ext.each(elements, function (element) {
+			this.processStyle(element, params);
+			Ext.iterate(params, function (item) {
+				var val = params[item];
+				switch (item) {
 				    case "f_cell_type":
 					if (val.substring(0,2) != element.nodeName.toLowerCase()) {
 						element = this.remapCell(element, val.substring(0,2));
@@ -465,7 +615,7 @@ TableOperations = HTMLArea.Plugin.extend({
 					var nodeName = section.nodeName.toLowerCase();
 					if (val != nodeName) {
 						var newSection = table.getElementsByTagName(val)[0];
-						if (!newSection) var newSection = table.insertBefore(dialog.editor._doc.createElement(val), table.getElementsByTagName("tbody")[0]);
+						if (!newSection) var newSection = table.insertBefore(this.editor._doc.createElement(val), table.getElementsByTagName("tbody")[0]);
 						if (nodeName == "thead" && val == "tbody") var newElement = newSection.insertBefore(element, newSection.firstChild);
 							else var newElement = newSection.appendChild(element);
 						if (!section.hasChildNodes()) table.removeChild(section);
@@ -479,46 +629,52 @@ TableOperations = HTMLArea.Plugin.extend({
 					}
 					break;
 				    case "f_st_textAlign":
-					if (this.editor.plugins.BlockElements) {
-						this.editor.plugins.BlockElements.instance.toggleAlignmentClass(element, this.convertAlignment[val]);
+					if (this.getPluginInstance('BlockElements')) {
+						this.getPluginInstance('BlockElements').toggleAlignmentClass(element, this.convertAlignment[val]);
 						element.style.textAlign = "";
 					}
 					break;
 				    case "f_class":
-					this.editor.plugins.BlockStyle.instance.applyClassChange(element, val);
+					this.getPluginInstance('BlockStyle').applyClassChange(element, val);
 					break;
 				    case "f_lang":
-					this.getPluginInstance("Language").setLanguageAttributes(element, val);
+					this.getPluginInstance('Language').setLanguageAttributes(element, val);
 					break;
 				    case "f_dir":
 					element.dir = (val != "not set") ? val : "";
 					break;
 				}
-			}
-		}
+			}, this);
+		}, this);
 		this.reStyleTable(table);
-		dialog.close();
+		this.close();
 	},
-	
 	/*
 	 * This function gets called when the plugin is generated
-	 * Set table borders if requested by configuration
 	 */
-	onGenerate : function() {
+	onGenerate: function () {
+			// Set table borders if requested by configuration
 		if (this.buttonsConfiguration.toggleborders && this.buttonsConfiguration.toggleborders.setOnRTEOpen) {
 			this.toggleBorders(true);
 		}
+			// Register handler for the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
+		if ((Ext.isIE || Ext.isOpera) && this.disableEnterParagraphs) {
+			this.editor.iframe.keyMap.addBinding({
+				key: Ext.EventObject.ENTER,
+				shift: false,
+				handler: this.onKey,
+				scope: this
+			});
+		}
 	},
-	
 	/*
 	 * This function gets called when the toolbar is being updated
 	 */
-	onUpdateToolbar : function() {
-		if (this.getEditorMode() === "wysiwyg" && this.editor.isEditable() && this.isButtonInToolbar("TO-toggle-borders")) {
-			this.editor._toolbarObjects["TO-toggle-borders"].state("active", HTMLArea._hasClass(this.editor._doc.body, 'htmlarea-showtableborders'));
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'TO-toggle-borders') {
+			button.setInactive(!HTMLArea._hasClass(this.editor._doc.body, 'htmlarea-showtableborders'));
 		}
 	},
-	
 	/*
 	 * This function gets called when a Table Operations button was pressed.
 	 *
@@ -527,7 +683,7 @@ TableOperations = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id, target) {
+	onButtonPress: function (editor, id, target) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
@@ -858,7 +1014,7 @@ TableOperations = HTMLArea.Plugin.extend({
 			for (var k = tableParts.length; --k >= 0;) rows[k] = [];
 			var row = null;
 			var cells = null;
-			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+			if (Ext.isGecko) {
 				try {
 					while (range = sel.getRangeAt(i++)) {
 						var td = range.startContainer.childNodes[range.startOffset];
@@ -878,7 +1034,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				var cell = this.getClosest("td");
 				if (!cell) var cell = this.getClosest("th");
 				if (!cell) {
-					alert(this.localize("Please click into some cell"));
+					Ext.MessageBox.alert('', this.localize("Please click into some cell"));
 					break;
 				}
 				var tr = cell.parentElement;
@@ -956,19 +1112,19 @@ TableOperations = HTMLArea.Plugin.extend({
 			// CREATION AND PROPERTIES
 		    case "InsertTable":
 		    case "TO-table-prop":
-			this.dialogTableProperties(buttonId);
+		    	this.openPropertiesDialogue('table', buttonId);
 			break;
 		    case "TO-table-restyle":
-			this.reStyleTable(this.getClosest("table"));
+			this.reStyleTable(this.getClosest('table'));
 			break;
 		    case "TO-row-prop":
-			this.dialogRowCellProperties(false, false);
+		    	this.openPropertiesDialogue('row', buttonId);
 			break;
 		    case "TO-col-prop":
-			this.dialogRowCellProperties(true, true);
+		    	this.openPropertiesDialogue('column', buttonId);
 			break;
 		    case "TO-cell-prop":
-			this.dialogRowCellProperties(true, false);
+		    	this.openPropertiesDialogue('cell', buttonId);
 			break;
 		    case "TO-toggle-borders":
 			this.toggleBorders();
@@ -977,7 +1133,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			alert("Button [" + buttonId + "] not yet implemented");
 		}
 	},
-	
 	/*
 	 * Returns an array of all cells in the column containing the given cell
 	 *
@@ -1002,7 +1157,6 @@ TableOperations = HTMLArea.Plugin.extend({
 		}
 		return cells;
 	},
-	
 	/*
 	 * Toggles the display of borders on tables and table cells
 	 *
@@ -1018,7 +1172,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			HTMLArea._removeClass(body,'htmlarea-showtableborders');
 		}
 	},
-	
 	/*
 	 * Applies to rows/cells the alternating and counting classes of an alternating or counting style scheme
 	 *
@@ -1058,7 +1211,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
 	/*
 	 * Removes from rows/cells the alternating classes of an alternating style scheme
 	 *
@@ -1083,7 +1235,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
 	/*
 	 * Applies/removes the alternating classes of an alternating rows style scheme
 	 *
@@ -1124,7 +1275,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
 	/*
 	 * Applies/removes the alternating classes of an alternating columns style scheme
 	 *
@@ -1168,8 +1318,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-	},
-	
+	},	
 	/*
 	 * Removes from rows/cells the counting classes of an counting style scheme
 	 *
@@ -1194,7 +1343,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-
 	/*
 	 * Applies/removes the counting classes of an counting rows style scheme
 	 *
@@ -1241,7 +1389,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-
 	/*
 	 * Applies/removes the counting classes of a counting columns style scheme
 	 *
@@ -1292,16 +1439,15 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-
 	/*
 	 * This function sets the headers cells on the table (top, left, both or none)
 	 *
 	 * @param	object		table: the table being edited
 	 * @param	object		params: the field values entered in the form
 	 *
-	 * @return	object		the modified table
+	 * @return	void
 	 */
-	setHeaders : function (table, params) {
+	setHeaders: function (table, params) {
 		var headers = params.f_headers;
 		var doc = this.editor._doc;
 		var tbody = table.tBodies[0];
@@ -1371,7 +1517,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 		this.reStyleTable(table);
-		return table;
 	},
 	
 	/*
@@ -1442,9 +1587,9 @@ TableOperations = HTMLArea.Plugin.extend({
 	 * @param	object		element: the element
 	 * @param	object		params: the properties
 	 *
-	 * @return	object		the modified element
+	 * @return	void
 	 */
-	processStyle : function (element, params) {
+	processStyle: function (element, params) {
 		var style = element.style;
 		if (HTMLArea.is_ie) {
 			style.styleFloat = "";
@@ -1457,10 +1602,10 @@ TableOperations = HTMLArea.Plugin.extend({
 				var val = params[i];
 				switch (i) {
 				    case "f_st_backgroundColor":
-					style.backgroundColor = val;
+				    	style.backgroundColor = ((val.charAt(0) === '#') ? '' : '#') + val;
 					break;
 				    case "f_st_color":
-					style.color = val;
+					style.color = ((val.charAt(0) === '#') ? '' : '#') + val;
 					break;
 				    case "f_st_backgroundImage":
 					if (/\S/.test(val)) {
@@ -1482,10 +1627,16 @@ TableOperations = HTMLArea.Plugin.extend({
 					style.borderStyle = (val != "not set") ? val : "";
 					break;
 				    case "f_st_borderColor":
-					style.borderColor = val;
+					style.borderColor = ((val.charAt(0) === '#') ? '' : '#') + val;
+					if (params.f_st_borderStyle === 'none') {
+						style.borderColor = '';
+					}
 					break;
 				    case "f_st_borderCollapse":
-					style.borderCollapse = val ? "collapse" : "";
+					style.borderCollapse = (val !== 'not set') ? val : '';
+					if (params.f_st_borderStyle === 'none') {
+						style.borderCollapse = '';
+					}
 					break;
 				    case "f_st_width":
 					if (/\S/.test(val)) {
@@ -1510,610 +1661,888 @@ TableOperations = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		return element;
 	},
-	
 	/*
-	 * This function creates a Size and Headers fieldset to be added to the form
+	 * This function builds the configuration object for the table Description fieldset
 	 *
-	 * @param	object		doc: the dialog document
-	 * @param	object		table: the table being edited
-	 * @param	object		content: the content div of the dialog window
+	 * @param	object		table: the table being edited, if any
 	 *
-	 * @return	void
+	 * @return	object		the fieldset configuration object
 	 */
-	buildSizeAndHeadersFieldset : function (doc, table, content, fieldsetClass) {
-		if (!table || this.removedProperties.indexOf("headers") == -1) {
-			var fieldset = doc.createElement("fieldset");
-			if (fieldsetClass) fieldset.className = fieldsetClass;
-			if (!table) {
-				TableOperations.insertLegend(doc, fieldset, "Size and Headers");
-				TableOperations.buildInput(doc, fieldset, "f_rows", "Rows:", "Number of rows", "", "5", ((this.properties && this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : "2"), "fr");
-				TableOperations.insertSpace(doc, fieldset);
-				TableOperations.buildInput(doc, fieldset, "f_cols", "Cols:", "Number of columns", "", "5", ((this.properties && this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : "4"), "fr");
+	buildDescriptionFieldsetConfig: function (table) {
+		if (!Ext.isEmpty(table)) {
+			var caption = table.getElementsByTagName('caption')[0];
+		}
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Description'),
+			defaultType: 'textfield',
+			defaults: {
+				labelSeparator: '',
+				helpIcon: true
+			},
+			items: [{
+				fieldLabel: this.localize('Caption:'),
+				itemId: 'f_caption',
+				value: Ext.isDefined(caption) ? caption.innerHTML : '',
+				width: 300,
+				helpTitle: this.localize('Description of the nature of the table')
+			    	},{
+				fieldLabel: this.localize('Summary:'),
+				itemId: 'f_summary',
+				value: !Ext.isEmpty(table) ? table.summary : '',
+				width: 300,
+				helpTitle: this.localize('Summary of the table purpose and structure')
+			}]
+		};
+	},
+	/*
+	 * This function builds the configuration object for the table Size and Headers fieldset
+	 *
+	 * @param	object		table: the table being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildSizeAndHeadersFieldsetConfig: function (table) {
+		var itemsConfig = [];
+		if (Ext.isEmpty(table)) {
+			itemsConfig.push({
+				fieldLabel: this.localize('Rows:'),
+				labelSeparator: '',
+				itemId: 'f_rows',
+				value: (this.properties && this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : '2',
+				width: 30,
+				minValue: 1,
+				helpTitle: this.localize('Number of rows')
+			});
+			itemsConfig.push({
+				fieldLabel: this.localize('Cols:'),
+				labelSeparator: '',
+				itemId: 'f_cols',
+				value: (this.properties && this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : '4',
+				width: 30,
+				minValue: 1,
+				helpTitle: this.localize('Number of columns')
+			});
+		}
+		if (this.removedProperties.indexOf('headers') == -1) {
+				// Create combo store
+			var store = new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: [
+					[this.localize('No header cells'), 'none'],
+					[this.localize('Header cells on top'), 'top'],
+					[this.localize('Header cells on left'), 'left'],
+					[this.localize('Header cells on top and left'), 'both']
+				]
+			});
+			this.removeOptions(store, 'headers');
+			if (Ext.isEmpty(table)) {
+				var selected = (this.properties && this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : 'top';
 			} else {
-				TableOperations.insertLegend(doc, fieldset, "Headers");
-			}
-			if (this.removedProperties.indexOf("headers") == -1) {
-				var ul = doc.createElement("ul");
-				fieldset.appendChild(ul);
-				var li = doc.createElement("li");
-				ul.appendChild(li);
-				if (!table) {
-					var selected = (this.properties && this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : "top";
-				} else {
-					var selected = "none";
-					var thead = table.getElementsByTagName("thead");
-					var tbody = table.getElementsByTagName("tbody");
-					if (thead.length && thead[0].rows.length) {
-						selected = "top";
-					} else if (tbody.length && tbody[0].rows.length) {
-						if (HTMLArea._hasClass(tbody[0].rows[0], this.useHeaderClass)) {
-							selected = "both";
-						} else if (tbody[0].rows[0].cells.length && tbody[0].rows[0].cells[0].nodeName.toLowerCase() == "th") {
-							selected = "left";
-						}
+				var selected = 'none';
+				var thead = table.getElementsByTagName('thead');
+				var tbody = table.getElementsByTagName('tbody');
+				if (thead.length && thead[0].rows.length) {
+					selected = 'top';
+				} else if (tbody.length && tbody[0].rows.length) {
+					if (HTMLArea._hasClass(tbody[0].rows[0], this.useHeaderClass)) {
+						selected = 'both';
+					} else if (tbody[0].rows[0].cells.length && tbody[0].rows[0].cells[0].nodeName.toLowerCase() == 'th') {
+						selected = 'left';
 					}
 				}
-				var selectHeaders = TableOperations.buildSelectField(doc, li, "f_headers", "Headers:", "fr", "floating", "Table headers", ["No header cells", "Header cells on top", "Header cells on left", "Header cells on top and left"], ["none", "top", "left", "both"],  new RegExp((selected ? selected : "top"), "i"));
-				this.removeOptions(selectHeaders, "headers");
 			}
-			TableOperations.insertSpace(doc, fieldset);
-			content.appendChild(fieldset);
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Headers:'),
+				itemId: 'f_headers',
+				helpTitle: this.localize('Table headers'),
+				store: store,
+				width: (this.properties && this.properties['headers'] && this.properties['headers'].width) ? this.properties['headers'].width : 200,
+				value: selected
+			}, this.configDefaults['combo']));
 		}
+		return {
+			xtype: 'fieldset',
+			title: this.localize(Ext.isEmpty(table) ? 'Size and Headers' : 'Headers'),
+			defaultType: 'numberfield',
+			defaults: {
+				helpIcon: true
+			},
+			items: itemsConfig
+		};
 	},
-	
-	buildLayoutFieldset : function(doc, el, content, fieldsetClass) {
-		var select, selected;
-		var fieldset = doc.createElement("fieldset");
-		if (fieldsetClass) fieldset.className = fieldsetClass;
-		TableOperations.insertLegend(doc, fieldset, "Layout");
-		var f_st_width = el ? TableOperations.getLength(el.style.width) : ((this.properties && this.properties.width && this.properties.width.defaultValue) ? this.properties.width.defaultValue : "");
-		var f_st_height = el ? TableOperations.getLength(el.style.height) : ((this.properties && this.properties.height && this.properties.height.defaultValue) ? this.properties.height.defaultValue : "");
-		var selectedWidthUnit = el ? (/%/.test(el.style.width) ? '%' : (/px/.test(el.style.width) ? 'px' : 'em')) : ((this.properties && this.properties.widthUnit &&this.properties.widthUnit.defaultValue) ? this.properties.widthUnit.defaultValue : "%");
-		var selectedHeightUnit = el ? (/%/.test(el.style.height) ? '%' : (/px/.test(el.style.height) ? 'px' : 'em')) : ((this.properties && this.properties.heightUnit &&this.properties.heightUnit.defaultValue) ? this.properties.heightUnit.defaultValue : "%");
-		var nodeName = el ? el.nodeName.toLowerCase() : "table";
-		var ul = doc.createElement("ul");
-		fieldset.appendChild(ul);
-		switch(nodeName) {
-			case "table" :
-				var widthTitle = "Table width";
-				var heightTitle = "Table height";
-				break;
-			case "tr" :
-				var widthTitle = "Row width";
-				var heightTitle = "Row height";
-				break;
-			case "td" :
-			case "th" :
-				var widthTitle = "Cell width";
-				var heightTitle = "Cell height";
+	/*
+	 * This function builds the configuration object for the Style fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 * @param	string		buttonId: the id of the button that was pressed
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildStylingFieldsetConfig: function (element, buttonId) {
+		var itemsConfig = [];
+		var nodeName = element ? element.nodeName.toLowerCase() : 'table';
+		var table = (nodeName == 'table');
+		var select = this.buildStylingFieldConfig('f_class', (table ? 'Table class:' : 'Class:'), (table ? 'Table class selector' : 'Class selector'));
+		this.setStyleOptions(select, element, nodeName, (buttonId === 'InsertTable') ? this.defaultClass : null);
+		itemsConfig.push(select);
+		if (element && table) {
+			var tbody = element.getElementsByTagName('tbody')[0];
+			if (tbody) {
+				var tbodyStyleSelect = this.buildStylingFieldConfig('f_class_tbody', 'Table body class:', 'Table body class selector');
+				this.setStyleOptions(tbodyStyleSelect, tbody, 'tbody');
+				itemsConfig.push(tbodyStyleSelect);
+			}
+			var thead = element.getElementsByTagName('thead')[0];
+			if (thead) {
+				var theadStyleSelect = this.buildStylingFieldConfig('f_class_thead', 'Table header class:', 'Table header class selector');
+				this.setStyleOptions(theadStyleSelect, thead, 'thead');
+				itemsConfig.push(theadStyleSelect);
+			}
+			var tfoot = element.getElementsByTagName('tfoot')[0];
+			if (tfoot) {
+				var tfootStyleSelect = this.buildStylingFieldConfig('f_class_tfoot', 'Table footer class:', 'Table footer class selector');
+				this.setStyleOptions(tfootStyleSelect, tfoot, 'tfoot');
+				itemsConfig.push(tfootStyleSelect);
+			}
 		}
-		if (this.removedProperties.indexOf("width") == -1) {
-			var li = doc.createElement("li");
-			ul.appendChild(li);
-			TableOperations.buildInput(doc, li, "f_st_width", "Width:", widthTitle, "", "5", f_st_width, "fr");
-			select = TableOperations.buildSelectField(doc, li, "f_st_widthUnit", "", "", "", "Width unit", ["percent", "pixels", "em"], ["%", "px", "em"], new RegExp((selectedWidthUnit ? selectedWidthUnit : "%"), "i"));
-			this.removeOptions(select, "widthUnit");
-		}
-		if (this.removedProperties.indexOf("height") == -1) {
-			var li = doc.createElement("li");
-			ul.appendChild(li);
-			TableOperations.buildInput(doc, li, "f_st_height", "Height:", heightTitle, "", "5", f_st_height, "fr");
-			select = TableOperations.buildSelectField(doc, li, "f_st_heightUnit", "", "", "", "Height unit", ["percent", "pixels", "em"], ["%", "px", "em"], new RegExp((selectedHeightUnit ? selectedHeightUnit : "%"), "i"));
-			this.removeOptions(select, "heightUnit");
-		}
-		if (nodeName == "table" && this.removedProperties.indexOf("float") == -1) {
-			selected = el ? (HTMLArea._hasClass(el, this.floatLeft) ? "left" : (HTMLArea._hasClass(el, this.floatRight) ? "right" : "not set")) : this.floatDefault;
-			select = TableOperations.buildSelectField(doc, li, "f_st_float", "Float:", "", "", "Specifies where the table should float", ["Not set", "Left", "Right"], ["not set", "left", "right"], new RegExp((selected ? selected : "not set"), "i"));
-			this.removeOptions(select, "float");
-		}
-		content.appendChild(fieldset);
+		return {
+			xtype: 'fieldset',
+			defaults: {
+				labelSeparator: ''
+			},
+			title: this.localize('CSS Style'),
+			items: itemsConfig
+		};
 	},
-	
-	setStyleOptions : function (doc, dropDown, el, nodeName, defaultClass) {
-		if (!dropDown) return false;
-		if (this.editor.config.customSelects.BlockStyle) {
-			var blockStyle = this.editor.plugins.BlockStyle.instance;
-			if (!blockStyle || !blockStyle.cssLoaded) return false;
+	/*
+	 * This function builds a style selection field
+	 *
+	 * @param	string		fieldName: the name of the field
+	 * @param	string		fieldLabel: the label for the field
+	 * @param	string		fieldTitle: the title for the field tooltip
+	 *
+	 * @return	object		the style selection field object
+	 */
+	buildStylingFieldConfig: function(fieldName, fieldLabel, fieldTitle) {
+		return new Ext.form.ComboBox(Ext.apply({
+			xtype: 'combo',
+			itemId: fieldName,
+			fieldLabel: this.localize(fieldLabel),
+			helpTitle: this.localize(fieldTitle),
+			width: (this.properties && this.properties['style'] && this.properties['style'].width) ? this.properties['style'].width : 300,
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
+				data: [[this.localize('No block style'), 'none']]
+			}),
+			}, {
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+			}, this.configDefaults['combo']
+		));
+	},
+	/*
+	 * This function populates the style store and sets the selected option
+	 *
+	 * @param	object:		dropDown: the combobox object
+	 * @param	object		element: the element being edited, if any
+	 * @param	string		nodeName: the type of element ('table' on table insertion)
+	 * @param	string		defaultClass: default class, if any is configured
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	setStyleOptions: function (dropDown, element, nodeName, defaultClass) {
+		var blockStyle = this.getPluginInstance('BlockStyle');
+		if (dropDown && blockStyle && blockStyle.cssLoaded) {
 			if (defaultClass) {
 				var classNames = new Array();
 				classNames.push(defaultClass);
 			} else {
-				var classNames = blockStyle.getClassNames(el);
+				var classNames = blockStyle.getClassNames(element);
 			}
 			blockStyle.buildDropDownOptions(dropDown, nodeName);
-			blockStyle.setSelectedOption(dropDown, classNames, "noUnknown", defaultClass);
+			blockStyle.setSelectedOption(dropDown, classNames, 'noUnknown', defaultClass);
 		}
 	},
-	
-	buildStylingFieldset : function (doc, el, content, fieldsetClass, buttonId) {
-		var nodeName = el ? el.nodeName.toLowerCase() : "table";
-		var table = (nodeName == "table");
-		var fieldset = doc.createElement("fieldset");
-		if (fieldsetClass) fieldset.className = fieldsetClass;
-		TableOperations.insertLegend(doc, fieldset, "CSS Style");
-		TableOperations.insertSpace(doc, fieldset);
-		var ul = doc.createElement("ul");
-		ul.className = "floating";
-		fieldset.appendChild(ul);
-		var li = doc.createElement("li");
-		ul.appendChild(li);
-		var select = TableOperations.buildSelectField(doc, li, "f_class", (table ? "Table class:" : "Class:"), "fr", "", (table ? "Table class selector" : "Class selector"), new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-		this.setStyleOptions(doc, select, el, nodeName, (buttonId === "InsertTable") ? this.defaultClass : null);
-		if (el && table) {
-			var tbody = el.getElementsByTagName("tbody")[0];
-			if (tbody) {
-				var li = doc.createElement("li");
-				ul.appendChild(li);
-				var select = TableOperations.buildSelectField(doc, li, "f_class_tbody", "Table body class:", "fr", "", "Table body class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-				this.setStyleOptions(doc, select, tbody, "tbody");
+	/*
+	 * This function builds the configuration object for the Language fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildLanguageFieldsetConfig: function (element) {
+		var itemsConfig = [];
+		var languageObject = this.getPluginInstance('Language');
+		if (this.removedProperties.indexOf('language') == -1 && this.getButton('Language')) {
+			var languageStore = new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'} ],
+				data: this.getDropDownConfiguration('Language').options
+			});
+			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
+			if (selectedLanguage !== 'none') {
+				languageStore.removeAt(0);
+				languageStore.insert(0, new languageStore.recordType({
+					text: languageObject.localize('Remove language mark'),
+					value: 'none'
+				}));
 			}
-			var thead = el.getElementsByTagName("thead")[0];
-			if (thead) {
-				var li = doc.createElement("li");
-				ul.appendChild(li);
-				var select = TableOperations.buildSelectField(doc, li, "f_class_thead", "Table header class:", "fr", "", "Table header class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-				this.setStyleOptions(doc, select, thead, "thead");
-			}
-			var tfoot = el.getElementsByTagName("tfoot")[0];
-			if (tfoot) {
-				var li = doc.createElement("li");
-				ul.appendChild(li);
-				var select = TableOperations.buildSelectField(doc, li, "f_class_tfoot", "Table footer class:", "fr", "", "Table footer class selector", new Array("undefined"), new Array("none"), new RegExp("none", "i"), "", false);
-				this.setStyleOptions(doc, select, tfoot, "tfoot");
-			}
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Language'),
+				itemId: 'f_lang',
+				helpTitle: this.localize('Language'),
+				store: languageStore,
+				width: (this.properties && this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 200,
+				value: selectedLanguage
+			}, this.configDefaults['combo']));
 		}
-		TableOperations.insertSpace(doc, fieldset);
-		content.appendChild(fieldset);
-	},
-	
-	buildLanguageFieldset : function (doc, el, content, fieldsetClass) {
-		if (this.removedFieldsets.indexOf("language") == -1 && (this.removedProperties.indexOf("language") == -1 || this.removedProperties.indexOf("direction") == -1) && this.getPluginInstance("Language") && (this.isButtonInToolbar("Language") || this.isButtonInToolbar("LeftToRight") || this.isButtonInToolbar("RightToLeft"))) {
-			var languageObject = this.getPluginInstance("Language");
-			var fieldset = doc.createElement("fieldset");
-			if (fieldsetClass) {
-				fieldset.className = fieldsetClass;
-			}
-			TableOperations.insertLegend(doc, fieldset, "Language");
-			var ul = doc.createElement("ul");
-			fieldset.appendChild(ul);
-			if (this.removedProperties.indexOf("language") == -1 && this.isButtonInToolbar("Language")) {
-				var languageOptions = this.getDropDownConfiguration("Language").options;
-				var select,
-					selected = "",
-					options = new Array(),
-					values = new Array();
-				for (var option in languageOptions) {
-					if (languageOptions.hasOwnProperty(option)) {
-						options.push(option);
-						values.push(languageOptions[option]);
-					}
-				}
-				selected = el ? languageObject.getLanguageAttribute(el) : "none";
-				if (selected != "none") {
-					options[0] = languageObject.localize("Remove language mark");
-				}
-				(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-				var li = doc.createElement("li");
-				ul.appendChild(li);
-				select = TableOperations.buildSelectField(doc, li, "f_lang", "Language:", "fr", "", "Language", options, values, new RegExp((selected ? selected : "none"), "i"));
-			}
-			if (this.removedProperties.indexOf("direction") == -1 && (this.isButtonInToolbar("LeftToRight") || this.isButtonInToolbar("RightToLeft"))) {
-				var li = doc.createElement("li");
-				ul.appendChild(li);
-				selected = el ? el.dir : "";
-				(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-				select = TableOperations.buildSelectField(doc, li, "f_dir", "Text direction:", "fr", "", "Text direction", ["Not set", "Right to left", "Left to right"], ["not set", "rtl", "ltr"], new RegExp((selected ? selected : "not set"), "i"));
-			}
-			content.appendChild(fieldset);
+		if (this.removedProperties.indexOf('direction') == -1 && (this.getButton('LeftToRight') || this.getButton('RightToLeft'))) {
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Text direction'),
+				itemId: 'f_dir',
+				helpTitle: this.localize('Text direction'),
+				store: new Ext.data.ArrayStore({
+					autoDestroy:  true,
+					fields: [ { name: 'text'}, { name: 'value'}],
+					data: [
+						[this.localize('Not set'), 'not set'],
+						[this.localize('RightToLeft'), 'rtl'],
+						[this.localize('LeftToRight'), 'ltr']
+					]
+				}),
+				width: (this.properties && this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200,
+				value: !Ext.isEmpty(element) && element.dir ? element.dir : 'not set'
+			}, this.configDefaults['combo']));
 		}
-	},
-	
-	buildCellTypeFieldset : function (doc, el, content, column, fieldsetClass) {
-		var fieldset = doc.createElement("fieldset");
-		if (fieldsetClass) fieldset.className = fieldsetClass;
-		TableOperations.insertLegend(doc, fieldset, column ? "Type of cells" : "Cell Type and Scope");
-		TableOperations.insertSpace(doc, fieldset);
-		var ul = doc.createElement("ul");
-		fieldset.appendChild(ul);
-		var li = doc.createElement("li");
-		ul.appendChild(li);
-		if (column) {
-			var selectType = TableOperations.buildSelectField(doc, li, "f_cell_type", "Type of cells of the column", "fl", "", "Specifies the type of cells", ["Data cells", "Headers for rows", "Headers for row groups"], ["td", "throw", "throwgroup"], new RegExp(el.nodeName.toLowerCase()+el.scope.toLowerCase()+"$", "i"));
-		} else {
-			var selectType = TableOperations.buildSelectField(doc, li, "f_cell_type", "Type of cell", "fr", "", "Specifies the type of cell", ["Normal", "Header for column", "Header for row", "Header for row group"], ["td", "thcol", "throw", "throwgroup"], new RegExp(el.nodeName.toLowerCase()+el.scope.toLowerCase()+"$", "i"));
-		}
-		var self = this;
-		selectType.onchange = function() { self.setStyleOptions(doc, doc.getElementById("f_class"), el, this.value.substring(0,2)); };
-		TableOperations.insertSpace(doc, fieldset);
-		content.appendChild(fieldset);
-	},
-	
-	buildAlignmentFieldset : function (doc, el, content, fieldsetClass) {
-		var select;
-		var nodeName = el ? el.nodeName.toLowerCase() : "table";
-		var fieldset = doc.createElement("fieldset");
-		if (fieldsetClass) fieldset.className = fieldsetClass;
-		TableOperations.insertLegend(doc, fieldset, "Alignment");
-		var options = ["Not set", "Left", "Center", "Right", "Justify"];
-		var values = ["not set", "left", "center", "right", "justify"];
-		var selected = "";
-		if (el && this.editor.plugins.BlockElements) {
-			var blockElements = this.editor.plugins.BlockElements.instance;
-			for (var value in this.convertAlignment) {
-				if (this.convertAlignment.hasOwnProperty(value) && HTMLArea._hasClass(el, blockElements.useClass[this.convertAlignment[value]])) {
-					selected = value;
-					break;
-				}
-			}
-		} else {
-			selected = el ? el.style.verticalAlign : "";
-		}
-		(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-		var ul = doc.createElement("ul");
-		fieldset.appendChild(ul);
-		var li = doc.createElement("li");
-		ul.appendChild(li);
-		select = TableOperations.buildSelectField(doc, li, "f_st_textAlign", "Text alignment:", "fr", "", "Horizontal alignment of text within cell", options, values, new RegExp((selected ? selected : "not set"), "i"));
-		
-		var li = doc.createElement("li");
-		ul.appendChild(li);
-		selected = el ? el.style.verticalAlign : "";
-		(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-		select = TableOperations.buildSelectField(doc, li, "f_st_vertAlign", "Vertical alignment:", "fr", "", "Vertical alignment of content within cell", ["Not set", "Top", "Middle", "Bottom", "Baseline"], ["not set", "top", "middle", "bottom", "baseline"], new RegExp((selected ? selected : "not set"), "i"));
-		content.appendChild(fieldset);
-	},
-	
-	buildBordersFieldset : function (w, doc, editor, el, content, fieldsetClass) {
-		var nodeName = el ? el.nodeName.toLowerCase() : "table";
-		var select;
-		var selected;
-		var borderFields = [];
-		function setBorderFieldsVisibility(value) {
-			for (var i = 0; i < borderFields.length; ++i) {
-				var borderFieldElement = borderFields[i];
-				borderFieldElement.style.visibility = value ? "hidden" : "visible";
-				if (!value && (borderFieldElement.nodeName.toLowerCase() == "input")) {
-					borderFieldElement.focus();
-					borderFieldElement.select();
-				}
-			}
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Language'),
+			items: itemsConfig
 		};
-		var fieldset = doc.createElement("fieldset");
-		fieldset.className = fieldsetClass;
-		TableOperations.insertLegend(doc, fieldset, "Frame and borders");
-		TableOperations.insertSpace(doc, fieldset);
+	},
+	/*
+	 * This function builds the configuration object for the spacing fieldset
+	 *
+	 * @param	object		table: the table being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildSpacingFieldsetConfig: function (table) {
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Spacing and padding'),
+			defaultType: 'numberfield',
+			defaults: {
+				labelSeparator: '',
+				helpIcon: true
+			},
+			items: [{
+				fieldLabel: this.localize('Cell spacing:'),
+				itemId: 'f_spacing',
+				value: !Ext.isEmpty(table) ? table.cellSpacing : '',
+				width: 30,
+				minValue: 0,
+				helpTitle: this.localize('Space between adjacent cells')
+				},{
+				fieldLabel: this.localize('Cell padding:'),
+				itemId: 'f_padding',
+				value: !Ext.isEmpty(table) ? table.cellPadding : '',
+				width: 30,
+				minValue: 0,
+				helpTitle: this.localize('Space between content and border in cell')
+			}]
+		};
+	},
+	/*
+	 * This function builds the configuration object for the Layout fieldset
+	 *
+	 * @param	object		table: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildLayoutFieldsetConfig: function(element) {
+		var itemsConfig = [];
+		var nodeName = element ? element.nodeName.toLowerCase() : 'table';
+		switch(nodeName) {
+			case 'table' :
+				var widthTitle = 'Table width';
+				var heightTitle = 'Table height';
+				break;
+			case 'tr' :
+				var widthTitle = 'Row width';
+				var heightTitle = 'Row height';
+				break;
+			case 'td' :
+			case 'th' :
+				var widthTitle = 'Cell width';
+				var heightTitle = 'Cell height';
+		}
+		if (this.removedProperties.indexOf('width') === -1) {
+			var widthUnitStore = new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: [
+					[this.localize('percent'), '%'],
+					[this.localize('pixels'), 'px'],
+					[this.localize('em'), 'em']
+				]
+			});
+			this.removeOptions(widthUnitStore, 'widthUnit');
+			itemsConfig.push({
+				fieldLabel: this.localize('Width:'),
+				labelSeparator: '',
+				itemId: 'f_st_width',
+				value: element ? this.getLength(element.style.width) : ((this.properties && this.properties.width && this.properties.width.defaultValue) ? this.properties.width.defaultValue : ''),
+				width: 30,
+				helpTitle: this.localize(widthTitle)
+			});
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Width unit'),
+				itemId: 'f_st_widthUnit',
+				helpTitle: this.localize('Width unit'),
+				store: widthUnitStore,
+				width: (this.properties && this.properties['widthUnit'] && this.properties['widthUnit'].width) ? this.properties['widthUnit'].width : 60,
+				value: element ? (/%/.test(element.style.width) ? '%' : (/px/.test(element.style.width) ? 'px' : 'em')) : ((this.properties && this.properties.widthUnit &&this.properties.widthUnit.defaultValue) ? this.properties.widthUnit.defaultValue : '%')
+			}, this.configDefaults['combo']));
+		}
+		if (this.removedProperties.indexOf('height') === -1) {
+			var heightUnitStore = new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: [
+					[this.localize('percent'), '%'],
+					[this.localize('pixels'), 'px'],
+					[this.localize('em'), 'em']
+				]
+			});
+			this.removeOptions(heightUnitStore, 'heightUnit');
+			itemsConfig.push({
+				fieldLabel: this.localize('Height:'),
+				labelSeparator: '',
+				itemId: 'f_st_height',
+				value: element ? this.getLength(element.style.height) : ((this.properties && this.properties.height && this.properties.height.defaultValue) ? this.properties.height.defaultValue : ''),
+				width: 30,
+				helpTitle: this.localize(heightTitle)
+			});
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Height unit'),
+				itemId: 'f_st_heightUnit',
+				helpTitle: this.localize('Height unit'),
+				store: heightUnitStore,
+				width: (this.properties && this.properties['heightUnit'] && this.properties['heightUnit'].width) ? this.properties['heightUnit'].width : 60,
+				value: element ? (/%/.test(element.style.height) ? '%' : (/px/.test(element.style.height) ? 'px' : 'em')) : ((this.properties && this.properties.heightUnit &&this.properties.heightUnit.defaultValue) ? this.properties.heightUnit.defaultValue : '%')
+			}, this.configDefaults['combo']));
+		}
+		if (nodeName == 'table' && this.removedProperties.indexOf('float') === -1) {
+			var floatStore = new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: [
+					[this.localize('Not set'), 'not set'],
+					[this.localize('Left'), 'left'],
+					[this.localize('Right'), 'right']
+				]
+			});
+			this.removeOptions(floatStore, 'float');
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Float:'),
+				labelSeparator: '',
+				itemId: 'f_st_float',
+				helpTitle: this.localize('Specifies where the table should float'),
+				store: floatStore,
+				width: (this.properties && this.properties['float'] && this.properties['float'].width) ? this.properties['float'].width : 120,
+				value: element ? (Ext.get(element).hasClass(this.floatLeft) ? 'left' : (Ext.get(element).hasClass(this.floatRight) ? 'right' : 'not set')) : this.floatDefault
+			}, this.configDefaults['combo']));
+		}
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Layout'),
+			defaultType: 'numberfield',
+			defaults: {
+				helpIcon: true
+			},
+			items: itemsConfig
+		};
+	},
+	/*
+	 * This function builds the configuration object for the Layout fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildAlignmentFieldsetConfig: function (element) {
+		var itemsConfig = [];
+			// Text alignment
+		var selectedTextAlign = 'not set';
+		var blockElements = this.getPluginInstance('BlockElements');
+		if (element && blockElements) {
+			Ext.iterate(this.convertAlignment, function (value) {
+				if (Ext.get(element).hasClass(blockElements.useClass[this.convertAlignment[value]])) {
+					selectedTextAlign = value;
+					return false;
+				}
+				return true;
+			}, this);
+		} else {
+			selectedTextAlign = (element && element.style.textAlign) ? element.style.textAlign : 'not set';
+		}
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
+			fieldLabel: this.localize('Text alignment:'),
+			itemId: 'f_st_textAlign',
+			helpTitle: this.localize('Horizontal alignment of text within cell'),
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: [
+					[this.localize('Not set'), 'not set'],
+					[this.localize('Left'), 'left'],
+					[this.localize('Center'), 'center'],
+					[this.localize('Right'), 'right'],
+					[this.localize('Justify'), 'justify']
+				]
+			}),
+			width: (this.properties && this.properties['textAlign'] && this.properties['textAlign'].width) ? this.properties['textAlign'].width : 100,
+			value: selectedTextAlign
+		}, this.configDefaults['combo']));
+			// Vertical alignment
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
+			fieldLabel: this.localize('Vertical alignment:'),
+			itemId: 'f_st_vertAlign',
+			helpTitle: this.localize('Vertical alignment of content within cell'),
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: [
+					[this.localize('Not set'), 'not set'],
+					[this.localize('Top'), 'top'],
+					[this.localize('Middle'), 'middle'],
+					[this.localize('Bottom'), 'bottom'],
+					[this.localize('Baseline'), 'baseline']
+				]
+			}),
+			width: (this.properties && this.properties['verticalAlign'] && this.properties['verticalAlign'].width) ? this.properties['verticalAlign'].width : 100,
+			value: (element && element.style.verticalAlign) ? element.style.verticalAlign : 'not set'
+		}, this.configDefaults['combo']));
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Alignment'),
+			defaults: {
+				labelSeparator: ''
+			},
+			items: itemsConfig
+		};
+	},
+	/*
+	 * This function builds the configuration object for the Borders fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildBordersFieldsetConfig: function (element) {
+		var itemsConfig = [];
+		var nodeName = element ? element.nodeName.toLowerCase() : 'table';
+			// Border style
+		var borderStyleStore = new Ext.data.ArrayStore({
+			autoDestroy:  true,
+			fields: [ { name: 'text'}, { name: 'value'}],
+			data: [
+				[this.localize('Not set'), 'not set'],
+				[this.localize('No border'), 'none'],
+				[this.localize('Dotted'), 'dotted'],
+				[this.localize('Dashed'), 'dashed'],
+				[this.localize('Solid'), 'solid'],
+				[this.localize('Double'), 'double'],
+				[this.localize('Groove'), 'groove'],
+				[this.localize('Ridge'), 'ridge'],
+				[this.localize('Inset'), 'inset'],
+				[this.localize('Outset'), 'outset']
+			]
+		});
+		this.removeOptions(borderStyleStore, 'borderStyle');
 			// Gecko reports "solid solid solid solid" for "border-style: solid".
 			// That is, "top right bottom left" -- we only consider the first value.
-		var f_st_borderWidth = el ? TableOperations.getLength(el.style.borderWidth) : ((this.properties && this.properties.borderWidth && this.properties.borderWidth.defaultValue) ? this.properties.borderWidth.defaultValue : "");
-		selected = el ? el.style.borderStyle : ((this.properties && this.properties.borderWidth) ? ((this.properties.borderStyle && this.properties.borderStyle.defaultValue) ? this.properties.borderStyle.defaultValue : "solid") : "");
-		(selected.match(/([^\s]*)\s/)) && (selected = RegExp.$1);
-		selectBorderStyle = TableOperations.buildSelectField(doc, fieldset, "f_st_borderStyle", "Border style:", "fr", "floating", "Border style", ["Not set", "No border", "Dotted", "Dashed", "Solid", "Double", "Groove", "Ridge", "Inset", "Outset"], ["not set", "none", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"], new RegExp((selected ? selected : "not set"), "i"));
-		selectBorderStyle.onchange = function() { setBorderFieldsVisibility(this.value == "none"); };
-		this.removeOptions(selectBorderStyle, "borderStyle");
-		TableOperations.buildInput(doc, fieldset, "f_st_borderWidth", "Border width:", "Border width", "pixels", "5", f_st_borderWidth, "fr", "floating", "postlabel", borderFields);
-		TableOperations.insertSpace(doc, fieldset, borderFields);
-		
-		if (nodeName == "table") {
-			TableOperations.buildColorField(w, doc, editor, fieldset, "", "Color:", "fr", "colorButton", (el ? el.style.borderColor : ""), "borderColor", borderFields);
-			var label = doc.createElement("label");
-			label.className = "fl-borderCollapse";
-			label.htmlFor = "f_st_borderCollapse";
-			label.innerHTML = "Collapsed borders";
-			fieldset.appendChild(label);
-			borderFields.push(label);
-			var input = doc.createElement("input");
-			input.className = "checkbox";
-			input.type = "checkbox";
-			input.name = "f_st_borderCollapse";
-			input.id = "f_st_borderCollapse";
-			input.defaultChecked = el ? /collapse/i.test(el.style.borderCollapse) : false;
-			input.checked = input.defaultChecked;
-			fieldset.appendChild(input);
-			borderFields.push(input);
-			TableOperations.insertSpace(doc, fieldset, borderFields);
-			select = TableOperations.buildSelectField(doc, fieldset, "f_frames", "Frames:", "fr", "floating", "Specifies which sides should have a border", ["Not set", "No sides", "The top side only", "The bottom side only", "The top and bottom sides only", "The right and left sides only", "The left-hand side only", "The right-hand side only", "All four sides"], ["not set", "void", "above", "below", "hsides", "vsides", "lhs", "rhs", "box"], new RegExp(((el && el.frame) ? el.frame : "not set"), "i"), borderFields);
-			TableOperations.insertSpace(doc, fieldset, borderFields);
-			select = TableOperations.buildSelectField(doc, fieldset, "f_rules", "Rules:", "fr", "floating", "Specifies where rules should be displayed", ["Not set", "No rules", "Rules will appear between rows only", "Rules will appear between columns only", "Rules will appear between all rows and columns"], ["not set", "none", "rows", "cols", "all"], new RegExp(((el && el.rules) ? el.rules : "not set"), "i"), borderFields);
-		} else {
-			TableOperations.insertSpace(doc, fieldset, borderFields);
-			TableOperations.buildColorField(w, doc, editor, fieldset, "", "Color:", "fr", "colorButton", (el ? el.style.borderColor : ""), "borderColor", borderFields);
-		}
-		setBorderFieldsVisibility(selectBorderStyle.value == "none");
-		TableOperations.insertSpace(doc, fieldset);
-		content.appendChild(fieldset);
-	},
-	
-	removeOptions : function(select, property) {
-		if (this.properties && this.properties[property] && this.properties[property].removeItems) {
-			for (var i = select.options.length; --i >= 0;) {
-				if (this.properties[property].removeItems.indexOf(select.options[i].value) != -1) {
-					if (select.options[i].value != select.value) {
-						select.options[i] = null;
-					}
+		var selectedBorderStyle = element && element.style.borderStyle ? element.style.borderStyle : ((this.properties && this.properties.borderWidth) ? ((this.properties.borderStyle && this.properties.borderStyle.defaultValue) ? this.properties.borderStyle.defaultValue : 'solid') : 'not set');
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
+			fieldLabel: this.localize('Border style:'),
+			itemId: 'f_st_borderStyle',
+			helpTitle: this.localize('Border style'),
+			store: borderStyleStore,
+			width: (this.properties && this.properties.borderStyle && this.properties.borderStyle.width) ? this.properties.borderStyle.width : 150,
+			value: selectedBorderStyle,
+			listeners: {
+				change: {
+					fn: this.setBorderFieldsDisabled
 				}
 			}
+		}, this.configDefaults['combo']));
+			// Border width
+		itemsConfig.push({
+			fieldLabel: this.localize('Border width:'),
+			itemId: 'f_st_borderWidth',
+			value: element ? this.getLength(element.style.borderWidth) : ((this.properties && this.properties.borderWidth && this.properties.borderWidth.defaultValue) ? this.properties.borderWidth.defaultValue : ''),
+			width: 30,
+			minValue: 0,
+			helpTitle: this.localize('Border width'),
+			helpText: this.localize('pixels'),
+			disabled: (selectedBorderStyle === 'none')
+		});
+			// Border color
+		itemsConfig.push({
+			xtype: 'colorpalettefield',
+			fieldLabel: this.localize('Color:'),
+			itemId: 'f_st_borderColor',
+			colorsConfiguration: this.editorConfiguration.colors,
+			value: HTMLArea.util.Color.colorToHex(element && element.style.borderColor ? element.style.borderColor : ((this.properties && this.properties.borderColor && this.properties.borderColor.defaultValue) ? this.properties.borderColor.defaultValue : '')).substr(1, 6),
+			helpTitle: this.localize('Border color'),
+			disabled: (selectedBorderStyle === 'none')
+		});
+		if (nodeName === 'table') {
+				// Collapsed borders
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Collapsed borders'),
+				labelSeparator: ':',
+				itemId: 'f_st_borderCollapse',
+				helpTitle: this.localize('Collapsed borders'),
+				store: new Ext.data.ArrayStore({
+					autoDestroy:  true,
+					fields: [ { name: 'text'}, { name: 'value'}],
+					data: [
+						[this.localize('Not set'), 'not set'],
+						[this.localize('Collapsed borders'), 'collapse'],
+						[this.localize('Detached borders'), 'separate']
+					]
+				}),
+				width: (this.properties && this.properties.borderCollapse && this.properties.borderCollapse.width) ? this.properties.borderCollapse.width : 150,
+				value: element && element.style.borderCollapse ? element.style.borderCollapse : 'not set',
+				disabled: (selectedBorderStyle === 'none')
+			}, this.configDefaults['combo']));
+				// Frame
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Frames:'),
+				itemId: 'f_frames',
+				helpTitle: this.localize('Specifies which sides should have a border'),
+				store: new Ext.data.ArrayStore({
+					autoDestroy:  true,
+					fields: [ { name: 'text'}, { name: 'value'}],
+					data: [
+						[this.localize('Not set'), 'not set'],
+						[this.localize('No sides'), 'void'],
+						[this.localize('The top side only'), 'above'],
+						[this.localize('The bottom side only'), 'below'],
+						[this.localize('The top and bottom sides only'), 'hsides'],
+						[this.localize('The right and left sides only'), 'vsides'],
+						[this.localize('The left-hand side only'), 'lhs'],
+						[this.localize('The right-hand side only'), 'rhs'],
+						[this.localize('All four sides'), 'box']
+					]
+				}),
+				width: (this.properties && this.properties.frame && this.properties.frame.width) ? this.properties.frame.width : 250,
+				value: (element && element.frame) ? element.frame : 'not set',
+				disabled: (selectedBorderStyle === 'none')
+			}, this.configDefaults['combo']));
+				// Rules
+			itemsConfig.push(Ext.apply({
+				xtype: 'combo',
+				fieldLabel: this.localize('Rules:'),
+				itemId: 'f_rules',
+				helpTitle: this.localize('Specifies where rules should be displayed'),
+				store: new Ext.data.ArrayStore({
+					autoDestroy:  true,
+					fields: [ { name: 'text'}, { name: 'value'}],
+					data: [
+						[this.localize('Not set'), 'not set'],
+						[this.localize('No rules'), 'none'],
+						[this.localize('Rules will appear between rows only'), 'rows'],
+						[this.localize('Rules will appear between columns only'), 'cols'],
+						[this.localize('Rules will appear between all rows and columns'), 'all']
+					]
+				}),
+				width: (this.properties && this.properties.rules && this.properties.rules.width) ? this.properties.rules.width : 360,
+				value: (element && element.rules) ? element.rules : 'not set'
+			}, this.configDefaults['combo']));
 		}
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Frame and borders'),
+			defaultType: 'numberfield',
+			defaults: {
+				labelSeparator: '',
+				helpIcon: true
+			},
+			items: itemsConfig
+		};
 	},
-	
 	/*
-	 * This function gets called by the main editor event handler when a key was pressed.
-	 * It will process the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
+	 * onChange handler: enable/disable other fields of the same fieldset
 	 */
-	onKeyPress : function (ev) {
-		if ((HTMLArea.is_ie || HTMLArea.is_opera) && ev.keyCode == 13 && !ev.shiftKey && this.disableEnterParagraphs) {
-			var selection = this.editor._getSelection();
-			var range = this.editor._createRange(selection);
-			var parentElement = this.editor.getParentElement(selection, range);
-			while (parentElement && !HTMLArea.isBlockElement(parentElement)) {
-				parentElement = parentElement.parentNode;
-			}
-			if (/^(td|th)$/i.test(parentElement.nodeName)) {
-				if (HTMLArea.is_ie) {
-					range.pasteHTML("<br />");
-				} else {
-					var brNode = this.editor._doc.createElement("br");
-					this.editor.insertNodeAtSelection(brNode);
-					this.editor.selectNode(brNode, false);
-				}
+	setBorderFieldsDisabled: function (field, value) {
+		field.ownerCt.findBy(function (item) {
+			var itemId = item.getItemId();
+			if (itemId == 'f_st_borderStyle' || itemId == 'f_rules') {
 				return false;
+			} else if (value === 'none') {
+				switch (item.getXType()) {
+					case 'numberfield':
+						item.setValue(0);
+						break;
+					case 'colorpalettefield':
+						item.setValue('');
+						break;
+					default:
+						item.setValue('not set');
+						break;
+				}
+				item.setDisabled(true);
+			} else {
+				item.setDisabled(false);
 			}
+			return true;
+		});
+	},
+	/*
+	 * This function builds the configuration object for the Colors fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildColorsFieldsetConfig: function (element) {
+		var itemsConfig = [];
+			// Text color
+		itemsConfig.push({
+			xtype: 'colorpalettefield',
+			fieldLabel: this.localize('FG Color:'),
+			itemId: 'f_st_color',
+			colorsConfiguration: this.editorConfiguration.colors,
+			value: HTMLArea.util.Color.colorToHex(element && element.style.color ? element.style.color : ((this.properties && this.properties.color && this.properties.color.defaultValue) ? this.properties.color.defaultValue : '')).substr(1, 6)
+		});
+			// Background color
+		itemsConfig.push({
+			xtype: 'colorpalettefield',
+			fieldLabel: this.localize('Background:'),
+			itemId: 'f_st_backgroundColor',
+			colorsConfiguration: this.editorConfiguration.colors,
+			value: HTMLArea.util.Color.colorToHex(element && element.style.backgroundColor ? element.style.backgroundColor : ((this.properties && this.properties.backgroundColor && this.properties.backgroundColor.defaultValue) ? this.properties.backgroundColor.defaultValue : '')).substr(1, 6)
+		});
+			// Background image
+		itemsConfig.push({
+			fieldLabel: this.localize('Image URL:'),
+			itemId: 'f_st_backgroundImage',
+			value: element && element.style.backgroundImage.match(/url\(\s*(.*?)\s*\)/) ? RegExp.$1 : '',
+			width: (this.properties && this.properties.backgroundImage && this.properties.backgroundImage.width) ? this.properties.backgroundImage.width : 300,
+			helpTitle: this.localize('URL of the background image'),
+			helpIcon: true
+		});
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Background and colors'),
+			defaultType: 'textfield',
+			defaults: {
+				labelSeparator: ''
+			},
+			items: itemsConfig
+		};
+	},
+	/*
+	 * This function builds the configuration object for the Cell Type fieldset
+	 *
+	 * @param	object		element: the element being edited, if any
+	 * @param	boolean		column: true if the element is a column, false if the element is a cell
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildCellTypeFieldsetConfig: function (element, column) {
+		var itemsConfig = [];
+		if (column) {
+			var data = [
+				[this.localize('Data cells'), 'td'],
+				[this.localize('Headers for rows'), 'throw'],
+				[this.localize('Headers for row groups'), 'throwgroup']
+			];
+		} else {
+			var data = [
+				[this.localize('Normal'), 'td'],
+				[this.localize('Header for column'), 'thcol'],
+				[this.localize('Header for row'), 'throw'],
+				[this.localize('Header for row group'), 'throwgroup']
+			];
+		}
+			// onChange handler: reset the CSS class dropdown when the cell type changes
+			// @param	object		cellTypeField: the combo object
+			// @param	string		value: the value of the cell type field
+			// @return	void
+		var self = this;
+		function resetStyleOptions(cellTypeField, value) {
+			self.setStyleOptions(self.dialog.find('itemId', 'f_class'), element, value.substring(0,2));
+		}
+		var selected = element.nodeName.toLowerCase() + element.scope.toLowerCase();
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
+			fieldLabel: this.localize(column ? 'Type of cells of the column' : 'Type of cell'),
+			itemId: 'f_cell_type',
+			helpTitle: this.localize(column ? 'Specifies the type of cells' : 'Specifies the type of cell'),
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: data
+			}),
+			width: (this.properties && this.properties.cellType && this.properties.cellType.width) ? this.properties.cellType.width : 250,
+			value: (column && selected == 'thcol') ? 'td' : selected,
+			listeners: {
+				change: {
+					fn: resetStyleOptions,
+					scope: this
+				}
+			}
+		}, this.configDefaults['combo']));
+		return {
+			xtype: 'fieldset',
+			title: this.localize(column ? 'Type of cells' : 'Cell Type and Scope'),
+			defaults: {
+				labelSeparator: '',
+				helpIcon: true
+			},
+			items: itemsConfig
+		};
+	},
+	/*
+	 * This function builds the configuration object for the Row Group fieldset
+	 *
+	 * @param	object		element: the row being edited, if any
+	 *
+	 * @return	object		the fieldset configuration object
+	 */
+	buildRowGroupFieldsetConfig: function (element) {
+		var itemsConfig = [];
+		var current = element.parentNode.nodeName.toLowerCase();
+			// onChange handler: show/hide cell conversion checkbox with appropriate label
+			// @param	object		field: the combo object
+			// @param	object		record: the selected record
+			// @return	void
+		function displayCheckbox(field, record, index) {
+			var checkBox = field.ownerCt.getComponent('f_convertCells');
+			var value = record.get('value');
+			if (current !== value && (current === 'thead' || value === 'thead')) {
+				checkBox.label.dom.innerHTML = (value === 'thead') ? this.localize('Make cells header cells') : this.localize('Make cells data cells');
+				checkBox.show();
+				checkBox.label.show();
+				checkBox.setValue(true);
+			} else {
+				checkBox.setValue(false);
+				checkBox.hide();
+				checkBox.label.hide();
+			}
+		}
+		itemsConfig.push(Ext.apply({
+			xtype: 'combo',
+			fieldLabel: this.localize('Row group:'),
+			itemId: 'f_rowgroup',
+			helpTitle: this.localize('Table section'),
+			store: new Ext.data.ArrayStore({
+				autoDestroy:  true,
+				fields: [ { name: 'text'}, { name: 'value'}],
+				data: [
+					[this.localize('Table body'), 'tbody'],
+					[this.localize('Table header'), 'thead'],
+					[this.localize('Table footer'), 'tfoot']
+				]
+			}),
+			width: (this.properties && this.properties.rowGroup && this.properties.rowGroup.width) ? this.properties.rowGroup.width : 150,
+			value: current,
+			labelSeparator: '',
+			listeners: {
+				select: {
+					fn: displayCheckbox,
+					scope: this
+				}
+			}
+		}, this.configDefaults['combo']));
+			// Cell conversion checkbox
+		itemsConfig.push({
+			xtype: 'checkbox',
+			fieldLabel: this.localize('Make cells header cells'),
+			labelSeparator: ':',
+			itemId: 'f_convertCells',
+			helpTitle: this.localize('Make cells header cells'),
+			value: false,
+			hideMode: 'visibility',
+			hidden: true,
+			hideLabel: true
+		});
+		return {
+			xtype: 'fieldset',
+			title: this.localize('Row group'),
+			defaults: {
+				helpIcon: true
+			},
+			items: itemsConfig
+		};
+	},
+	/*
+	 * This function removes some items from a data store for the specified property
+	 *
+	 */
+	removeOptions: function (store, property) {
+		if (this.properties && this.properties[property] && this.properties[property].removeItems) {
+			var items = this.properties[property].removeItems.split(',');
+			var index = -1;
+			Ext.each(items, function (item) {
+				index = store.findExact('value', item.trim());
+				if (index !== -1) {
+					store.removeAt(index);
+				}
+				return true;
+			});
+		}
+	},
+	/*
+	 * This function gets called by the editor key map when a key was pressed.
+	 * It will process the enter key for IE and Opera when buttons.table.disableEnterParagraphs is set in the editor configuration
+	 *
+	 * @param	string		key: the key code
+	 * @param	object		event: the Ext event object (keydown)
+	 *
+	 * @return	boolean		false, if the event was taken care of
+	 */
+	onKey: function (key, event) {
+		var selection = this.editor._getSelection();
+		var range = this.editor._createRange(selection);
+		var parentElement = this.editor.getParentElement(selection, range);
+		while (parentElement && !HTMLArea.isBlockElement(parentElement)) {
+			parentElement = parentElement.parentNode;
+		}
+		if (/^(td|th)$/i.test(parentElement.nodeName)) {
+			if (Ext.isIE) {
+				range.pasteHTML('<br />');
+				range.select();
+			} else {
+				var brNode = this.editor._doc.createElement('br');
+				this.editor.insertNodeAtSelection(brNode);
+				if (brNode.nextSibling) {
+					this.editor.selectNodeContents(brNode.nextSibling, true);
+				} else {
+					this.editor.selectNodeContents(brNode, false);
+				}
+			}
+			event.stopEvent();
+			return false;
 		}
 		return true;
 	}
 });
-
-TableOperations.getLength = function(value) {
-	var len = parseInt(value);
-	if (isNaN(len)) len = "";
-	return len;
-};
-
-// Returns an HTML element for a widget that allows color selection.  That is,
-// a button that contains the given color, if any, and when pressed will popup
-// the sooner-or-later-to-be-rewritten select_color.html dialog allowing user
-// to select some color.  If a color is selected, an input field with the name
-// "f_st_"+name will be updated with the color value in #123456 format.
-TableOperations.createColorButton = function(w, doc, editor, color, name) {
-	if (!color) {
-		color = "";
-	} else if (!/#/.test(color)) {
-		color = HTMLArea._colorToRgb(color);
-	}
-
-	var df = doc.createElement("span");
- 	var field = doc.createElement("input");
-	field.type = "hidden";
-	df.appendChild(field);
- 	field.name = "f_st_" + name;
- 	field.id = "f_st_" + name;
-	field.value = color;
-	var button = doc.createElement("span");
-	button.className = "buttonColor";
-	df.appendChild(button);
-	var span = doc.createElement("span");
-	span.className = "chooser";
-	span.style.backgroundColor = color;
-	var space = doc.createTextNode("\xA0");
-	span.appendChild(space);
-	button.appendChild(span);
-	button.onmouseover = function() { if (!this.disabled) this.className += " buttonColor-hilite"; };
-	button.onmouseout = function() { if (!this.disabled) this.className = "buttonColor"; };
-	span.onclick = function() {
-		if (this.parentNode.disabled) return false;
-		var colorPlugin = editor.plugins.TYPO3Color;
-		if (colorPlugin) {
-			colorPlugin.instance.dialogSelectColor("color", span, field, w);
-		} else {
-			colorPlugin = editor.plugins.DefaultColor;
-			if (colorPlugin) {
-				w.insertColor = function (color) {
-					if (color) {
-						span.style.backgroundColor = color;
-						field.value = color;
-					}
-				};
-				colorPlugin.instance.onButtonPress(editor, "TableOperations");
-			}
-		}
-	};
-	var span2 = doc.createElement("span");
-	span2.innerHTML = "&#x00d7;";
-	span2.className = "nocolor";
-	span2.title = "Unset color";
-	button.appendChild(span2);
-	span2.onmouseover = function() { if (!this.parentNode.disabled) this.className += " nocolor-hilite"; };
-	span2.onmouseout = function() { if (!this.parentNode.disabled) this.className = "nocolor"; };
-	span2.onclick = function() {
-		span.style.backgroundColor = "";
-		field.value = "";
-	};
-	return df;
-};
-TableOperations.buildTitle = function(doc, content, title) {
-	var div = doc.createElement("div");
-	div.className = "title";
-	div.innerHTML = title;
-	content.appendChild(div);
-	doc.title = title;
-};
-TableOperations.buildDescriptionFieldset = function(doc, el, content, fieldsetClass) {
-	var fieldset = doc.createElement("fieldset");
-	if (fieldsetClass) fieldset.className = fieldsetClass;
-	TableOperations.insertLegend(doc, fieldset, "Description");
-	TableOperations.insertSpace(doc, fieldset);
-	var f_caption = "";
-	if (el) {
-		var capel = el.getElementsByTagName("caption")[0];
-		if (capel) f_caption = capel.innerHTML;
-	}
-	TableOperations.buildInput(doc, fieldset, "f_caption", "Caption:", "Description of the nature of the table", "", "", f_caption, "fr", "value", "");
-	TableOperations.insertSpace(doc, fieldset);
-	TableOperations.buildInput(doc, fieldset, "f_summary", "Summary:", "Summary of the table purpose and structure", "", "", (el ? el.summary : ""), "fr", "value", "");
-	TableOperations.insertSpace(doc, fieldset);
-	content.appendChild(fieldset);
-};
-TableOperations.buildRowGroupFieldset = function(w, doc, editor, el, content, fieldsetClass) {
-	var fieldset = doc.createElement("fieldset");
-	if (fieldsetClass) fieldset.className = fieldsetClass;
-	TableOperations.insertLegend(doc, fieldset, "Row group");
-	TableOperations.insertSpace(doc, fieldset);
-	TableOperations.insertSpace(doc, fieldset);
-	selected = el.parentNode.nodeName.toLowerCase();
-	var selectScope = TableOperations.buildSelectField(doc, fieldset, "f_rowgroup", "Row group:", "fr", "floating", "Table section", ["Table body", "Table header", "Table footer"], ["tbody", "thead", "tfoot"], new RegExp((selected ? selected : "tbody"), "i"));
-	function displayCheckbox(current, value) {
-		if (current !== "thead" && value === "thead") {
-			label1.style.display = "inline";
-			label2.style.display = "none";
-			input.style.display = "inline";
-			input.checked = true;
-		} else if (current === "thead" && value !== "thead") {
-			label1.style.display = "none";
-			label2.style.display = "inline";
-			input.style.display = "inline";
-			input.checked = true;
-		} else {
-			label1.style.display = "none";
-			label2.style.display = "none";
-			input.style.display = "none";
-			input.checked = false;
-		}
-	}
-	selectScope.onchange = function() { displayCheckbox(selected, this.value); };
-	var label1 = doc.createElement("label");
-	label1.className = "fl";
-	label1.htmlFor = "f_convertCells";
-	label1.innerHTML = "Make cells header cells";
-	label1.style.display = "none";
-	fieldset.appendChild(label1);
-	var label2 = doc.createElement("label");
-	label2.className = "fl";
-	label2.htmlFor = "f_convertCells";
-	label2.innerHTML = "Make cells data cells";
-	label2.style.display = "none";
-	fieldset.appendChild(label2);
-	var input = doc.createElement("input");
-	input.className = "checkbox";
-	input.type = "checkbox";
-	input.name = "f_convertCells";
-	input.id = "f_convertCells";
-	input.checked = false;
-	input.style.display = "none";
-	fieldset.appendChild(input);
-	TableOperations.insertSpace(doc, fieldset);
-	content.appendChild(fieldset);
-};
-TableOperations.buildSpacingFieldset = function(doc, el, content) {
-	var fieldset = doc.createElement("fieldset");
-	TableOperations.insertLegend(doc, fieldset, "Spacing and padding");
-	TableOperations.buildInput(doc, fieldset, "f_spacing", "Cell spacing:", "Space between adjacent cells", "pixels", "5", (el ? el.cellSpacing : ""), "fr", "", "postlabel");
-	TableOperations.insertSpace(doc, fieldset);
-	TableOperations.buildInput(doc, fieldset, "f_padding", "Cell padding:", "Space between content and border in cell", "pixels", "5", (el ? el.cellPadding : ""), "fr", "", "postlabel");
-	content.appendChild(fieldset);
-};
-TableOperations.buildColorsFieldset = function(w, doc, editor, el, content) {
-	var fieldset = doc.createElement("fieldset");
-	TableOperations.insertLegend(doc, fieldset, "Background and colors");
-	var ul = doc.createElement("ul");
-	fieldset.appendChild(ul);
-	var li = doc.createElement("li");
-	ul.appendChild(li);
-	TableOperations.buildColorField(w, doc, editor, li, "", "FG Color:", "fr", "colorButtonNoFloat", (el ? el.style.color : ""), "color");
-	var li = doc.createElement("li");
-	ul.appendChild(li);
-	TableOperations.buildColorField(w, doc, editor, li, "", "Background:", "fr", "colorButtonNoFloat", (el ? el.style.backgroundColor : ""), "backgroundColor");
-	var url;
-	if (el && el.style.backgroundImage.match(/url\(\s*(.*?)\s*\)/)) url = RegExp.$1;
-	TableOperations.buildInput(doc, li, "f_st_backgroundImage", "Image URL:", "URL of the background image", "", "", url, "", "shorter-value");
-	content.appendChild(fieldset);
-};
-TableOperations.insertLegend = function(doc, fieldset, legend) {
-	var legendNode = doc.createElement("legend");
-	legendNode.innerHTML = legend;
-	fieldset.appendChild(legendNode);
-};
-TableOperations.insertSpace =	function(doc,fieldset,fields) {
-	var space = doc.createElement("div");
-	space.className = "space";
-	fieldset.appendChild(space);
-	if(fields) fields.push(space);
-};
-TableOperations.buildInput = function(doc, fieldset,fieldName,fieldLabel,fieldTitle,postLabel,fieldSize,fieldValue,labelClass,inputClass,postClass,fields) {
-	var label;
-		// Field label
-	if(fieldLabel) {
-		label = doc.createElement("label");
-		if(labelClass) label.className = labelClass;
-		label.innerHTML = fieldLabel;
-		label.htmlFor = fieldName;
-		fieldset.appendChild(label);
-		if(fields) fields.push(label);
-	}
-		// Input field
-	var input = doc.createElement("input");
-	input.type = "text";
-	input.id = fieldName;
-	input.name =  fieldName;
-	if(inputClass) input.className = inputClass;
-	if(fieldTitle) input.title = fieldTitle;
-	if(fieldSize) input.size = fieldSize;
-	if(fieldValue) input.value = fieldValue;
-	fieldset.appendChild(input);
-	if(fields) fields.push(input);
-		// Field post label
-	if(postLabel) {
-		label = doc.createElement("span");
-		if(postClass) label.className = postClass;
-		label.innerHTML = postLabel;
-		fieldset.appendChild(label);
-		if(fields) fields.push(label);
-	}
-	return input;
-};
-TableOperations.buildSelectField = function(doc, fieldset,fieldName,fieldLabel,labelClass,selectClass,fieldTitle,options,values,selected,fields,translateOptions) {
-	if(typeof(translateOptions) == "undefined") var translateOptions = true;
-		// Field Label
-	if(fieldLabel) {
-		var label = doc.createElement("label");
-		if(labelClass) label.className = labelClass;
-		label.innerHTML = fieldLabel;
-		label.htmlFor = fieldName;
-		fieldset.appendChild(label);
-		if(fields) fields.push(label);
-	}
-		// Text Alignment Select Box
-	var select = doc.createElement("select");
-	if (selectClass) select.className = selectClass;
-	select.id = fieldName;
-	select.name =  fieldName;
-	select.title= fieldTitle;
-	select.selectedIndex = 0;
-	var option;
-	for (var i = 0; i < options.length; ++i) {
-		option = doc.createElement("option");
-		select.appendChild(option);
-		option.value = values[i];
-		option.innerHTML = options[i];
-		option.selected = selected.test(option.value);
-	}
-	if (select.options.length>1) select.disabled = false;
-		else select.disabled = true;
-	fieldset.appendChild(select);
-	if(fields) fields.push(select);
-	return select;
-};
-TableOperations.buildColorField = function(w, doc, editor, fieldset,fieldName,fieldLabel,labelClass, buttonClass, fieldValue,fieldType,fields) {
-		// Field Label
-	if(fieldLabel) {
-		var label = doc.createElement("label");
-		if(labelClass) label.className = labelClass;
-		label.innerHTML = fieldLabel;
-		fieldset.appendChild(label);
-		if(fields) fields.push(label);
-	}
-	var colorButton = TableOperations.createColorButton(w, doc, editor, fieldValue, fieldType);
-	colorButton.className = buttonClass;
-	fieldset.appendChild(colorButton);
-	if(fields) fields.push(colorButton);
-};

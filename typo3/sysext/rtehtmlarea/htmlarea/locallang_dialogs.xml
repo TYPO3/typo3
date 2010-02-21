@@ -10,6 +10,7 @@
 			<label index="Cancel">Cancel</label>
 			<label index="Close">Close</label>
 			<label index="Not set">Not set</label>
+			<label index="General">General</label>
 			<label index="Alignment:">Text alignment:</label>
 			<label index="Alignment not set">Not set</label>
 			<label index="Left">Left</label>
@@ -86,7 +87,7 @@
 			<label index="About HTMLArea">About htmlArea RTE</label>
 			<label index="About">About</label>
 			<label index="free_editor">A free and open-source editor for &lt;textarea&gt; fields, featuring integration with TYPO3.</label>
-			<label index="Mozilla_or_IE">For Firefox 0.8+, Mozilla 1.3.1+, Netscape 7.1+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 5.5+ on Windows.</label>
+			<label index="Mozilla_or_IE">For Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 6.0+ on Windows.</label>
 			<label index="product_documentation">For more information, please visit:</label>
 			<label index="All rights reserved.">All Rights Reserved.</label>
 			<label index="License">License</label>
@@ -101,14 +102,15 @@
 			<label index="style">Paragraph:</label>
 			<label index="Block style label">Block style:</label>
 			<label index="text_style">Text style:</label>
-			<label index="LeftToRight">Left to right1</label>
-			<label index="RightToLeft">Right to left1</label>
+			<label index="LeftToRight">Left to right</label>
+			<label index="RightToLeft">Right to left</label>
 			<label index="Language">Language</label>
 			<label index="Text direction">Text direction</label>
 			<label index="Language:">Language:</label>
 			<label index="Text direction:">Text direction:</label>
 			<label index="No language mark">No language</label>
 			<label index="Remove language mark">Remove language</label>
+			<label index="statusBarStyle">Style</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

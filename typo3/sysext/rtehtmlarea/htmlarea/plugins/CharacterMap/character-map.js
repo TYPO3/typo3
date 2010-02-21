@@ -3,7 +3,7 @@
 *
 *  (c) 2004 Bernhard Pfeifer novocaine@gmx.net
 *  (c) 2004 systemconcept.de. Authored by Holger Hees based on HTMLArea XTD 1.5 (http://mosforge.net/projects/htmlarea3xtd/).
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -106,7 +106,7 @@ CharacterMap = HTMLArea.Plugin.extend({
 	 *
 	 * @return	void
 	 */
-	onUpdateToolbar : function () {
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 			// Reclaim focus
 		if (this.dialog) {
 			this.dialog.focus();

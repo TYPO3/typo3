@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,14 +25,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /*
- * EditorMode Plugin for TYPO3 htmlArea RTE
+ * TextIndicator Plugin for TYPO3 htmlArea RTE
  *
- * TYPO3 SVN ID: $Id$
+ * TYPO3 SVN ID: $Id: text-indicator.js 6539 2009-11-25 14:49:14Z stucki $
  */
-EditorMode = HTMLArea.Plugin.extend({
+TextIndicator = HTMLArea.Plugin.extend({
+		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
+	
 	/*
 	 * This function gets called by the class constructor
 	 */
@@ -41,7 +43,7 @@ EditorMode = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "2.0",
+			version		: "1.0",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -50,51 +52,52 @@ EditorMode = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
+		
 		/*
-		 * Registering the buttons
+		 * Registering the indicator
 		 */
-		var buttonList = this.buttonList, buttonId;
-		for (var i = 0, n = buttonList.length; i < n; ++i) {
-			var button = buttonList[i];
-			buttonId = button[0];
-			var buttonConfiguration = {
-				id		: buttonId,
-				tooltip		: this.localize(buttonId + "-Tooltip"),
-				action		: "onButtonPress",
-				context		: button[1],
-				textMode	: (buttonId == "TextMode")
-			};
-			this.registerButton(buttonConfiguration);
-		}
+		var buttonId = 'TextIndicator';
+		var textConfiguration = {
+			id: buttonId,
+			cls: 'indicator',
+			text: 'A',
+			tooltip: this.localize(buttonId.toLowerCase())
+		};
+		this.registerText(textConfiguration);
 		return true;
-	},
-	/**
-	 * The list of buttons added by this plugin
-	 */
-	buttonList: [
-		['TextMode', null]
-	],
-	/*
-	 * This function gets called when a button was pressed.
-	 *
-	 * @param	object		editor: the editor instance
-	 * @param	string		id: the button id or the key
-	 *
-	 * @return	boolean		false if action is completed
-	 */
-	onButtonPress: function (editor, id, target) {
-			// Could be a button or its hotkey
-		var buttonId = this.translateHotKey(id);
-		buttonId = buttonId ? buttonId : id;
-		this.editor.setMode((this.editor.getMode() == buttonId.toLowerCase()) ? 'wysiwyg' : buttonId.toLowerCase());
-		return false;
-	},
+	 },
+
 	/*
 	 * This function gets called when the toolbar is updated
-	 *
-	 * @return	void
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		button.setInactive(mode !== button.itemId.toLowerCase());
+		var editor = this.editor;
+		if (mode === 'wysiwyg' && editor.isEditable()) {
+			var doc = editor._doc;
+			try {
+				var style = {
+					backgroundColor: HTMLArea._makeColor(doc.queryCommandValue((HTMLArea.is_ie || HTMLArea.is_safari) ? 'BackColor' : 'HiliteColor')),
+					color: HTMLArea._makeColor(doc.queryCommandValue('ForeColor')),
+					fontFamily: doc.queryCommandValue('FontName'),
+					fontWeight: 'normal',
+					fontStyle: 'normal'
+				};
+					// Mozilla
+				if (/transparent/i.test(style.backgroundColor)) {
+					style.backgroundColor = HTMLArea._makeColor(doc.queryCommandValue('BackColor'));
+				}
+				try {
+					style.fontWeight = doc.queryCommandState('Bold') ? 'bold' : 'normal';
+				} catch(e) {
+					style.fontWeight = 'normal';
+				}
+				try {
+					style.fontStyle = doc.queryCommandState('Italic') ? 'italic' : 'normal';
+				} catch(e) {
+					style.fontStyle = 'normal';
+				}
+				button.getEl().setStyle(style);
+			} catch (e) { }
+		}
 	}
 });

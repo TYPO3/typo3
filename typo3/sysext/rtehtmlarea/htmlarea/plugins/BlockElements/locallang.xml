@@ -13,6 +13,8 @@
 			<label index="FormatBlock-Tooltip">Type of block</label>
 			<label index="InsertParagraphBefore-Tooltip">Insert a paragraph before the current block</label>
 			<label index="InsertParagraphAfter-Tooltip">Insert a paragraph after the current block</label>
+			<label index="InsertParagraphBefore-contextMenuTitle">Insert paragraph before</label>
+			<label index="InsertParagraphAfter-contextMenuTitle">Insert paragraph after</label>
 			<label index="JustifyLeft-Tooltip">Justify left</label>
 			<label index="JustifyCenter-Tooltip">Center</label>
 			<label index="JustifyRight-Tooltip">Justify right</label>

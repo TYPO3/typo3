@@ -228,7 +228,7 @@ RTE.default {
 
 		## Configuration specific to the inserttag button or QuickTag feature (htmlArea RTE only)
 		## Do not allow insertion of the following tags
-	buttons.inserttag.denyTags = font, underline, strike, table
+	buttons.inserttag.denyTags = font, u, strike, table
 
 		## Configuration specific to the bold and italic buttons (htmlArea RTE only)
 		## Add hotkeys associated with bold, italic, strikethrough and underline buttons

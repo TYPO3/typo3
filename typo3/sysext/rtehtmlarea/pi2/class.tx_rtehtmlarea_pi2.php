@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -225,6 +225,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$pageRenderer->addCssFile($this->hostURL . '/t3lib/js/extjs/ux/resize.css');
 			// Loading JavaScript files and code
 		$pageRenderer->loadExtJs();
+		$pageRenderer->enableExtJSQuickTips();
+		if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
+			$pageRenderer->enableExtJsDebug();
+		}
 		$pageRenderer->addJsFile($this->hostURL . '/t3lib/js/extjs/ux/ext.resizable.js');
 		if ($this->TCEform->RTEcounter == 1) {
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);

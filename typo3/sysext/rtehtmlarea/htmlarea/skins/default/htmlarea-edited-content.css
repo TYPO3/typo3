@@ -5,6 +5,7 @@
 	margin:0;
 	padding:3px;
 	background-color:#ffffff;
+	border-width:0;
 }
 
 /* Selectors for the Table Operations plugin */
@@ -16,7 +17,7 @@ body.htmlarea-showtableborders table, body.htmlarea-showtableborders td, body.ht
 
 /* Make language marks visible */
 body.htmlarea-show-language-marks *[lang] {
-	background: url("images/language-marker.gif") left bottom no-repeat; padding-left: 14px; text-decoration: underline;
+	background: url("images/language-marker.gif") left top no-repeat; padding-left: 14px; text-decoration: underline;
 }
 
 /* Selectors for the Abbreviation plugin */

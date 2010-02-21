@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -49,7 +49,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
+			version		: "2.0",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -70,14 +70,14 @@ CopyPaste = HTMLArea.Plugin.extend({
 					tooltip		: this.localize(buttonId.toLowerCase()),
 					action		: "onButtonPress",
 					context		: button[0],
+					selection	: button[3],
 					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
 				};
 				this.registerButton(buttonConfiguration);
 				if (!this.isButtonInToolbar(buttonId)) {
 					var hotKeyConfiguration = {
 						id	: buttonConfiguration.hotKey,
-						cmd	: buttonConfiguration.id,
-						action	: buttonConfiguration.action
+						cmd	: buttonConfiguration.id
 					};
 					this.registerHotKey(hotKeyConfiguration);
 				}
@@ -90,9 +90,9 @@ CopyPaste = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList : {
-		Copy	: [null, "c", "copy"],
-		Cut	: [null, "x", "cut"],
-		Paste	: [null, "v", "paste"]
+		Copy	: [null, "c", "copy", true],
+		Cut	: [null, "x", "cut", true],
+		Paste	: [null, "v", "paste", false]
 	},
 	
 	/*
@@ -119,8 +119,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 						this.applyBrowserCommand(buttonId);
 					} else if (buttonId == "Cut") {
 							// If we are handling the cut hotkey
-						var removeEmpyLinkLaterFunctRef = this.makeFunctionReference("removeEmptyLinkLater");
-						window.setTimeout(removeEmpyLinkLaterFunctRef, 50);
+						this.removeEmptyLinkLater.defer(50, this);
 					}
 					break;
 				case "Paste":
@@ -129,10 +128,13 @@ CopyPaste = HTMLArea.Plugin.extend({
 						this.applyBrowserCommand(buttonId);
 					}
 						// In FF3, the paste operation will indeed trigger the onPaste event not in FF2; nor in Opera
-					if (HTMLArea.is_opera || (HTMLArea.is_gecko && navigator.productSub < 20080514) || HTMLArea.is_safari) {
-						var cleanLaterFunctRef = this.getPluginInstance("DefaultClean") ? this.getPluginInstance("DefaultClean").cleanLaterFunctRef : (this.getPluginInstance("TYPO3HtmlParser") ? this.getPluginInstance("TYPO3HtmlParser").cleanLaterFunctRef : null);
-						if (cleanLaterFunctRef) {
-							window.setTimeout(cleanLaterFunctRef, 50);
+					if (Ext.isOpera || Ext.isGecko2 || Ext.isWebKit) {
+						var cleaner = this.getPluginInstance('DefaultClean');
+						if (!cleaner) {
+							cleaner = this.getPluginInstance('TYPO3HtmlParser');
+						}
+						if (cleaner) {
+							cleaner.clean.defer(50, cleaner);
 						}
 					}
 					break;
@@ -150,7 +152,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 		try {
 			this.editor._doc.execCommand(buttonId, false, null);
 		} catch (e) {
-			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+			if (Ext.isGecko) {
 				this.mozillaClipboardAccessException();
 			}
 		}
@@ -172,11 +174,11 @@ CopyPaste = HTMLArea.Plugin.extend({
 		if (/^(a)$/i.test(parent.nodeName)) {
 			parent.normalize();
 			if (!parent.innerHTML || (parent.childNodes.length == 1 && /^(br)$/i.test(parent.firstChild.nodeName))) {
-				if (HTMLArea.is_gecko) {
+				if (!Ext.isIE) {
 					var container = parent.parentNode;
 					this.editor.removeMarkup(parent);
 						// Opera does not render empty list items
-					if (HTMLArea.is_opera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
+					if (Ext.isOpera && /^(li)$/i.test(container.nodeName) && !container.firstChild) {
 						container.innerHTML = "<br />";
 						this.editor.selectNodeContents(container, true);
 					}
@@ -185,7 +187,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		if (HTMLArea.is_safari) {
+		if (Ext.isWebKit) {
 				// Remove Apple's span and font tags
 			this.editor.cleanAppleStyleSpans(this.editor._doc.body);
 				// Reset Safari selection in order to prevent insertion of span and/or font tags on next text input
@@ -215,7 +217,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 			case "Cut" :
 				HTMLArea.copiedCells = null;
 				var endBlocks = this.editor.getEndBlocks(selection);
-				if ((/^(tr)$/i.test(parent.nodeName) && HTMLArea.is_gecko) || (/^(td|th)$/i.test(endBlocks.start.nodeName) && /^(td|th)$/i.test(endBlocks.end.nodeName) && (HTMLArea.is_ie || HTMLArea.is_safari || HTMLArea.is_opera) && endBlocks.start != endBlocks.end)) {
+				if ((/^(tr)$/i.test(parent.nodeName) && !Ext.isIE) || (/^(td|th)$/i.test(endBlocks.start.nodeName) && /^(td|th)$/i.test(endBlocks.end.nodeName) && !Ext.isGecko && endBlocks.start != endBlocks.end)) {
 					HTMLArea.copiedCells = this.collectCells(buttonId, selection, endBlocks);
 					if (buttonId === "Cut") return true;
 				}
@@ -231,7 +233,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 	
 	pasteCells : function (selection, endBlocks) {
 		var cell = null;
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+		if (Ext.isGecko) {
 			range = selection.getRangeAt(0);
 			cell = range.startContainer.childNodes[range.startOffset];
 			while (cell && !HTMLArea.isBlockElement(cell)) {
@@ -289,7 +291,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 		}
 		var row = null;
 		var cutRows = [];
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {  // Firefox
+		if (Ext.isGecko) {
 			if (selection.rangeCount == 1) { // Collect the cells in the selected row
 				cells = [];
 				for (var i = 0, n = endBlocks.start.cells.length; i < n; ++i) {
@@ -389,19 +391,16 @@ CopyPaste = HTMLArea.Plugin.extend({
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
-	onUpdateToolbar : function () {
-		if (this.getEditorMode() === "wysiwyg" || this.editor.isEditable()) {
-			var buttonId = "Paste";
-			if (typeof(this.editor._toolbarObjects[buttonId]) !== "undefined") {
-				try {
-					this.editor._toolbarObjects[buttonId].state("enabled", this.editor._doc.queryCommandEnabled(buttonId));
-				} catch(e) {
-					this.editor._toolbarObjects[buttonId].state("enabled", false);
-				}
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'Paste') {
+			try {
+				button.setDisabled(!this.editor._doc.queryCommandEnabled(button.itemId));
+			} catch(e) {
+				button.setDisabled(true);
 			}
 		}
 	},
-
+	
 	/*
 	 * Mozilla clipboard access exception handler
 	 */

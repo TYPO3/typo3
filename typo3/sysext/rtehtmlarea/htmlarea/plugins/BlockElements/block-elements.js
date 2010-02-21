@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -106,7 +106,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.3",
+			version		: "1.4",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -121,48 +121,48 @@ BlockElements = HTMLArea.Plugin.extend({
 		 */
 		var buttonId = "FormatBlock";
 		var dropDownConfiguration = {
-			id		: buttonId,
-			tooltip		: this.localize(buttonId + "-Tooltip"),
-			options		: ((this.editorConfiguration.buttons.formatblock && this.editorConfiguration.buttons.formatblock.dropDownOptions) ? this.editorConfiguration.buttons.formatblock.dropDownOptions : null),
-			action		: "onChange",
-			refresh		: null,
-			context		: null
+			id: buttonId,
+			tooltip: this.localize(buttonId + "-Tooltip"),
+			width: (this.buttonsConfiguration.formatblock && this.buttonsConfiguration.formatblock.width) ? this.buttonsConfiguration.formatblock.width : 200,
+			listWidth:  (this.buttonsConfiguration.formatblock && this.buttonsConfiguration.formatblock.listWidth) ? this.buttonsConfiguration.formatblock.listWidth : 200,
+			maxHeight: (this.buttonsConfiguration.formatblock && this.buttonsConfiguration.formatblock.maxHeight) ? this.buttonsConfiguration.formatblock.maxHeight : 300,
+			options: (this.buttonsConfiguration.formatblock ? this.buttonsConfiguration.formatblock.data : null),
+			action: "onChange"
 		};
 		this.registerDropDown(dropDownConfiguration);
-		
+
 		/*
 		 * Establishing the list of allowed block elements
 		 */
 		var blockElements = new Array();
-		for (var option in dropDownConfiguration.options) {
-			if (dropDownConfiguration.options.hasOwnProperty(option)) {
-				blockElements.push(dropDownConfiguration.options[option]);
+		Ext.each(dropDownConfiguration.options, function (option) {
+			if (option[1] != 'none') {
+				blockElements.push(option[1]);
 			}
-		}
+		});
 		this.allowedBlockElements = new RegExp( "^(" + blockElements.join("|") + ")$", "i");
-		
+
 		/*
-		 * Registering hot keys
+		 * Registering hot keys for the dropdown list items
 		 */
-		for (var i = 0; i < blockElements.length; ++i) {
-			var configuredHotKey = this.defaultHotKeys[blockElements[i]];
+		Ext.each(blockElements, function (blockElement) {
+			var configuredHotKey = this.defaultHotKeys[blockElement];
 			if (this.editorConfiguration.buttons.formatblock
 					&& this.editorConfiguration.buttons.formatblock.items
-					&& this.editorConfiguration.buttons.formatblock.items[blockElements[i]]
-					&& this.editorConfiguration.buttons.formatblock.items[blockElements[i]].hotKey) {
-				configuredHotKey = this.editorConfiguration.buttons.formatblock.items[blockElements[i]].hotKey;
+					&& this.editorConfiguration.buttons.formatblock.items[blockElement]
+					&& this.editorConfiguration.buttons.formatblock.items[blockElement].hotKey) {
+				configuredHotKey = this.editorConfiguration.buttons.formatblock.items[blockElement].hotKey;
 			}
 			if (configuredHotKey) {
 				var hotKeyConfiguration = {
 					id		: configuredHotKey,
 					cmd		: buttonId,
-					action		: "onHotKey",
-					element		: blockElements[i]
+					element		: blockElement
 				};
 				this.registerHotKey(hotKeyConfiguration);
 			}
-		}
-		
+		}, this);
+
 		/*
 		 * Registering the buttons
 		 */
@@ -171,22 +171,21 @@ BlockElements = HTMLArea.Plugin.extend({
 				var button = this.buttonList[buttonId];
 				var buttonConfiguration = {
 					id		: buttonId,
-					tooltip		: this.localize(buttonId + "-Tooltip"),
+					tooltip		: this.localize(buttonId + '-Tooltip') || this.localize(button[2]),
+					contextMenuTitle: this.localize(buttonId + '-contextMenuTitle'),
 					action		: "onButtonPress",
-					context		: button[0],
 					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
 				};
 				this.registerButton(buttonConfiguration);
 			}
 		}
-		
 		return true;
 	 },
 	 
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : {
+	buttonList: {
 		Indent			: [null, "TAB", "indent"],
 		Outdent			: [null, "SHIFT-TAB", "outdent"],
 		Blockquote		: [null, null, "blockquote"],
@@ -197,7 +196,8 @@ BlockElements = HTMLArea.Plugin.extend({
 		JustifyRight		: [null, "r", "right"],
 		JustifyFull		: [null, "j", "justifyfull"],
 		InsertOrderedList	: [null, null, "orderedlist"],
-		InsertUnorderedList	: [null, null, "unorderedlist"]
+		InsertUnorderedList	: [null, null, "unorderedlist"],
+		InsertHorizontalRule	: [null, null, "inserthorizontalrule"]
 	},
 	
 	/*
@@ -234,10 +234,8 @@ BlockElements = HTMLArea.Plugin.extend({
 	/*
 	 * This function gets called when some block element was selected in the drop-down list
 	 */
-	onChange : function (editor, buttonId) {
-		var tbobj = this.editor._toolbarObjects[buttonId];
-		var blockElement = document.getElementById(tbobj.elementId).value;
-		this.applyBlockElement(buttonId, blockElement);
+	onChange : function (editor, combo, record, index) {
+		this.applyBlockElement(combo.itemId, combo.getValue());
 	},
 	
 	applyBlockElement : function(buttonId, blockElement) {
@@ -297,7 +295,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		this.editor.focusEditor();
 		var selection = editor._getSelection();
 		var range = editor._createRange(selection);
-		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
+		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement(selection, range);
 		if (target) {
 			parentElement = target;
@@ -307,7 +305,6 @@ BlockElements = HTMLArea.Plugin.extend({
 		}
 		var blockAncestors = this.getBlockAncestors(parentElement);
 		var tableCell = null;
-		
 		if (id === "TAB" || id === "SHIFT-TAB") {
 			for (var i = blockAncestors.length; --i >= 0;) {
 				if (/^(td|th)$/i.test(blockAncestors[i].nodeName)) {
@@ -317,7 +314,6 @@ BlockElements = HTMLArea.Plugin.extend({
 			}
 		}
 		var fullNodeTextSelected = (HTMLArea.is_gecko && parentElement.textContent === range.toString()) || (HTMLArea.is_ie && parentElement.innerText === range.text);
-
 		switch (buttonId) {
 			case "Indent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !(fullNodeTextSelected && !/^(li)$/i.test(parentElement.parentNode.nodeName))) {
@@ -334,6 +330,7 @@ BlockElements = HTMLArea.Plugin.extend({
 						this.indentSelectedListElements(parentElement, range);
 					}
 				} else if (tableCell) {
+	
 					var tablePart = tableCell.parentNode.parentNode;
 						// Get next cell in same table part
 					var nextCell = tableCell.nextSibling ? tableCell.nextSibling : (tableCell.parentNode.nextSibling ? tableCell.parentNode.nextSibling.cells[0] : null);
@@ -349,7 +346,6 @@ BlockElements = HTMLArea.Plugin.extend({
 						    case "tfoot":
 							this.editor.selectNodeContents(tablePart.parentNode.lastChild.lastChild.lastChild, true);
 						}
-	
 					}
 					if (!nextCell) {
 						if (this.editor.plugins.TableOperations) {
@@ -359,6 +355,9 @@ BlockElements = HTMLArea.Plugin.extend({
 						}
 					}
 					if (nextCell) {
+						if (Ext.isOpera && !nextCell.hasChildNodes()) {
+							nextCell.appendChild(this.editor.document.createElement('br'));
+						}
 						this.editor.selectNodeContents(nextCell, true);
 					}
 				} else  if (this.useBlockquote) {
@@ -415,6 +414,9 @@ BlockElements = HTMLArea.Plugin.extend({
 						}
 					}
 					if (previousCell) {
+						if (Ext.isOpera && !previousCell.hasChildNodes()) {
+							previousCell.appendChild(this.editor.document.createElement('br'));
+						}
 						this.editor.selectNodeContents(previousCell, true);
 					}
 				} else  if (this.useBlockquote) {
@@ -534,6 +536,9 @@ BlockElements = HTMLArea.Plugin.extend({
 			case "InsertOrderedList":
 			case "InsertUnorderedList":
 				this.insertList(buttonId, parentElement);
+				break;
+			case "InsertHorizontalRule":
+				this.editor.execCommand('InsertHorizontalRule');
 				break;
 			case "none" :
 				if (this.isAllowedBlockElement(parentElement.nodeName)) {
@@ -919,44 +924,61 @@ BlockElements = HTMLArea.Plugin.extend({
 			this.editor.selectNodeContents(paragraph, true);
 		}
 	},
-	
 	/*
-	 * This function gets called by the main editor event handler when a key was pressed.
-	 * It will process the enter key for IE when the cursor is at the end of a dt or a dd element
+	 * This function gets called when the plugin is generated
 	 */
-	onKeyPress : function (ev) {
-		if (HTMLArea.is_ie && ev.keyCode == 13 && !ev.shiftKey) {
-			var selection = this.editor._getSelection();
-			if (this.editor._selectionEmpty(selection)) {
-				var range = this.editor._createRange(selection);
-				var parentElement = this.editor.getParentElement(selection, range);
-				while (parentElement && !HTMLArea.isBlockElement(parentElement)) {
-					parentElement = parentElement.parentNode;
-				}
-				if (/^(dt|dd)$/i.test(parentElement.nodeName)) {
-					var nodeRange = this.editor._createRange();
-					nodeRange.moveToElementText(parentElement);
-					range.setEndPoint("EndToEnd", nodeRange);
-					if (!range.text || range.text == "\x20") {
-						var item = parentElement.parentNode.insertBefore(this.editor._doc.createElement((parentElement.nodeName.toLowerCase() === "dt") ? "dd" : "dt"), parentElement.nextSibling);
-						item.innerHTML = "\x20";
-						this.editor.selectNodeContents(item, true);
-						return false;
-					}
-				} else if (/^(li)$/i.test(parentElement.nodeName)
-						&& !parentElement.innerText
-						&& parentElement.parentNode.parentNode
-						&& /^(dd|td|th)$/i.test(parentElement.parentNode.parentNode.nodeName)) {
-					var item = parentElement.parentNode.parentNode.insertBefore(this.editor._doc.createTextNode("\x20"), parentElement.parentNode.nextSibling);
-					this.editor.selectNodeContents(parentElement.parentNode.parentNode, false);
-					parentElement.parentNode.removeChild(parentElement);
+	onGenerate: function () {
+			// Register the enter key handler for IE when the cursor is at the end of a dt or a dd element
+		if (Ext.isIE) {
+			this.editor.iframe.keyMap.addBinding({
+				key: Ext.EventObject.ENTER,
+				shift: false,
+				handler: this.onKey,
+				scope: this
+			});
+		}
+	},
+	/*
+	 * This function gets called when the enter key was pressed in IE
+	 * It will process the enter key for IE when the cursor is at the end of a dt or a dd element
+	 *
+	 * @param	string		key: the key code
+	 * @param	object		event: the Ext event object (keydown)
+	 *
+	 * @return	boolean		false, if the event was taken care of
+	 */
+	onKey: function (key, event) {
+		var selection = this.editor._getSelection();
+		if (this.editor._selectionEmpty(selection)) {
+			var range = this.editor._createRange(selection);
+			var parentElement = this.editor.getParentElement(selection, range);
+			while (parentElement && !HTMLArea.isBlockElement(parentElement)) {
+				parentElement = parentElement.parentNode;
+			}
+			if (/^(dt|dd)$/i.test(parentElement.nodeName)) {
+				var nodeRange = this.editor._createRange();
+				nodeRange.moveToElementText(parentElement);
+				range.setEndPoint("EndToEnd", nodeRange);
+				if (!range.text || range.text == "\x20") {
+					var item = parentElement.parentNode.insertBefore(this.editor._doc.createElement((parentElement.nodeName.toLowerCase() === "dt") ? "dd" : "dt"), parentElement.nextSibling);
+					item.innerHTML = "\x20";
+					this.editor.selectNodeContents(item, true);
+					event.stopEvent();
 					return false;
 				}
+			} else if (/^(li)$/i.test(parentElement.nodeName)
+					&& !parentElement.innerText
+					&& parentElement.parentNode.parentNode
+					&& /^(dd|td|th)$/i.test(parentElement.parentNode.parentNode.nodeName)) {
+				var item = parentElement.parentNode.parentNode.insertBefore(this.editor._doc.createTextNode("\x20"), parentElement.parentNode.nextSibling);
+				this.editor.selectNodeContents(parentElement.parentNode.parentNode, false);
+				parentElement.parentNode.removeChild(parentElement);
+				event.stopEvent();
+				return false;
 			}
 		}
 		return true;
 	},
-	
 	/*
 	 * This function removes any disallowed class or mutually exclusive classes from the class attribute of the node
 	 */
@@ -984,39 +1006,30 @@ BlockElements = HTMLArea.Plugin.extend({
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
-	onUpdateToolbar : function () {
-		if (this.getEditorMode() === "textmode" || !this.editor.isEditable()) {
-			return false;
-		}
-		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
-		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
-		if (parentElement.nodeName.toLowerCase() === "body") return false;
-		while (parentElement && !HTMLArea.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName)) {
-			parentElement = parentElement.parentNode;
-		}
-		var blockAncestors = this.getBlockAncestors(parentElement);
-		
-		var selection = this.editor._getSelection();
-		var endBlocks = this.editor.getEndBlocks(selection);
-		var startAncestors = this.getBlockAncestors(endBlocks.start);
-		var endAncestors = this.getBlockAncestors(endBlocks.end);
-		var index = 0;
-		while (index < startAncestors.length && index < endAncestors.length && startAncestors[index] === endAncestors[index]) {
-			++index;
-		}
-		if (endBlocks.start === endBlocks.end || !startAncestors[index]) {
-			--index;
-		}
-		var dropDownConfiguration = this.getDropDownConfiguration("FormatBlock");
-		if ((typeof(dropDownConfiguration) !== "undefined") && this.isButtonInToolbar(dropDownConfiguration.id)) {
-			this.updateDropDown(dropDownConfiguration, blockAncestors[blockAncestors.length-1], startAncestors[index]);
-		}
-		
-		var commandState;
-		for (var buttonId in this.buttonList) {
-			commandState = false;
-			if (this.buttonList.hasOwnProperty(buttonId) && this.isButtonInToolbar(buttonId)) {
-				switch (buttonId) {
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
+		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
+			var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
+			if (!/^body$/i.test(parentElement.nodeName)) {
+				while (parentElement && !HTMLArea.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName)) {
+					parentElement = parentElement.parentNode;
+				}
+				var blockAncestors = this.getBlockAncestors(parentElement);
+				var endBlocks = this.editor.getEndBlocks(this.editor._getSelection());
+				var startAncestors = this.getBlockAncestors(endBlocks.start);
+				var endAncestors = this.getBlockAncestors(endBlocks.end);
+				var index = 0;
+				while (index < startAncestors.length && index < endAncestors.length && startAncestors[index] === endAncestors[index]) {
+					++index;
+				}
+				if (endBlocks.start === endBlocks.end || !startAncestors[index]) {
+					--index;
+				}
+				var commandState = false;
+				switch (button.itemId) {
+					case 'FormatBlock':
+						this.updateDropDown(button, blockAncestors[blockAncestors.length-1], startAncestors[index]);
+						break;
 					case "Outdent" :
 						if (this.useBlockquote) {
 							for (var j = blockAncestors.length; --j >= 0;) {
@@ -1029,19 +1042,19 @@ BlockElements = HTMLArea.Plugin.extend({
 							commandState = true;
 						} else {
 							for (var j = blockAncestors.length; --j >= 0;) {
-								if (HTMLArea._hasClass(blockAncestors[j], this.useClass.Indent)) {
+								if (HTMLArea._hasClass(blockAncestors[j], this.useClass.Indent) || /^(td|th)$/i.test(blockAncestors[j].nodeName)) {
 									commandState = true;
 									break;
 								}
 							}
 						}
-						this.editor._toolbarObjects[buttonId].state("enabled", commandState);
+						button.setDisabled(!commandState);
 						break;
 					case "Indent" :
 						break;
 					case "InsertParagraphBefore" :
 					case "InsertParagraphAfter"  :
-						this.editor._toolbarObjects[buttonId].state("enabled", !(/^(body)$/i.test(startAncestors[index].nodeName)));
+						button.setDisabled(/^(body)$/i.test(startAncestors[index].nodeName));
 						break;
 					case "Blockquote" :
 						for (var j = blockAncestors.length; --j >= 0;) {
@@ -1050,7 +1063,7 @@ BlockElements = HTMLArea.Plugin.extend({
 								break;
 							}
 						}
-						this.editor._toolbarObjects[buttonId].state("active", commandState);
+						button.setInactive(!commandState);
 						break;
 					case "JustifyLeft"   :
 					case "JustifyCenter" :
@@ -1058,37 +1071,38 @@ BlockElements = HTMLArea.Plugin.extend({
 					case "JustifyFull"   :
 						if (this.useAlignAttribute) {
 							try {
-								commandState = this.editor._doc.queryCommandState(buttonId);
+								commandState = this.editor._doc.queryCommandState(button.itemId);
 							} catch(e) {
 								commandState = false;
 							}
 						} else {
 							if (/^(body)$/i.test(startAncestors[index].nodeName)) {
-								this.editor._toolbarObjects[buttonId].state("enabled", false);
+								button.setDisabled(true);
 							} else {
-								this.editor._toolbarObjects[buttonId].state("enabled", true);
+								button.setDisabled(false);
 								commandState = true;
 								for (var block = startAncestors[index]; block; block = block.nextSibling) {
-									commandState = commandState && HTMLArea._hasClass(block, this.useClass[buttonId]);
+									commandState = commandState && HTMLArea._hasClass(block, this.useClass[button.itemId]);
 									if (block == endAncestors[index]) {
 										break;
 									}
 								}
 							}
 						}
-						this.editor._toolbarObjects[buttonId].state("active", commandState);
+						button.setInactive(!commandState);
 						break;
 					case "InsertOrderedList":
 					case "InsertUnorderedList":
 						try {
-							commandState = this.editor._doc.queryCommandState(buttonId);
+							commandState = this.editor._doc.queryCommandState(button.itemId);
 						} catch(e) {
 							commandState = false;
 						}
-						this.editor._toolbarObjects[buttonId].state("active", commandState);
+						button.setInactive(!commandState);
 						break;
 					default	:
 						break;
+		
 				}
 			}
 		}
@@ -1097,39 +1111,34 @@ BlockElements = HTMLArea.Plugin.extend({
 	/*
 	 * This function updates the drop-down list of block elements
 	 */
-	updateDropDown : function(dropDownConfiguration, deepestBlockAncestor, startAncestor) {
-		
-		var select = document.getElementById(this.editor._toolbarObjects[dropDownConfiguration.id].elementId);
-		var options = select.options;
-		for (var i = options.length; --i >= 0;) {
-			options[i].selected = false;
-		}
-		select.selectedIndex = 0;
-		options[0].selected = true;
-		options[0].style.display = "list-item";
-		options[0].text = this.localize("No block");
-		
+	updateDropDown : function(select, deepestBlockAncestor, startAncestor) {
+		var store = select.getStore();
+		store.removeAt(0);
+		var index = -1;
 		if (deepestBlockAncestor) {
 			var nodeName = deepestBlockAncestor.nodeName.toLowerCase();
-			for (i = options.length; --i >= 0;) {
-				var item = this.formatBlockItems[options[i].value];
-				if (item && item.tagName == nodeName && item.addClass && HTMLArea._hasClass(deepestBlockAncestor, item.addClass)) {
-					options[i].selected = true;
-					select.selectedIndex = i;
-					options[0].text = this.localize("Remove block");
-					break;
-				}
+				// Could be a custom item ...
+			index = store.findBy(function(record, id) {
+				var item = this.formatBlockItems[record.get('value')];
+				return item && item.tagName == nodeName && item.addClass && HTMLArea._hasClass(deepestBlockAncestor, item.addClass);
+			}, this);
+			if (index == -1) {
+					// ... or a standard one
+				index = store.findExact('value', nodeName);
 			}
-			if (!select.selectedIndex) {
-				for (i = options.length; --i >= 0;) {
-					if (nodeName === options[i].value.toLowerCase()) {
-						options[i].selected = true;
-						select.selectedIndex = i;
-						options[0].text = this.localize("Remove block");
-						break;
-					}
-				}
-			}
+		}
+		if (index == -1) {
+			store.insert(0, new store.recordType({
+				text: this.localize('No block'),
+				value: 'none'
+			}));
+			select.setValue('none');
+		} else {
+			store.insert(0, new store.recordType({
+				text: this.localize('Remove block'),
+				value: 'none'
+			}));
+			select.setValue(store.getAt(index+1).get('value'));
 		}
 	},
 	

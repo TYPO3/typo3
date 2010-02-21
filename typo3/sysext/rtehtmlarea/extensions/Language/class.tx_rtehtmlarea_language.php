@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -85,10 +85,14 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 				$first = $GLOBALS['LANG']->getLL('No language mark');
 			}
 			$languages = array('none' => $first);
-			$languages = array_merge($languages, $this->getLanguages());
-			$languagesJSArray = 'HTMLArea.languageOptions = ' . json_encode(array_flip($languages));
+			$languages = array_flip(array_merge($languages, $this->getLanguages()));
+			$languagesJSArray = array();
+			foreach ($languages as $key => $value) {
+				$languagesJSArray[] = array($key, $value);
+			}
+			$languagesJSArray = 'var options = ' . json_encode($languagesJSArray) . ';';
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.languagesUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', 'languages_'.$this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.dataUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', $button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

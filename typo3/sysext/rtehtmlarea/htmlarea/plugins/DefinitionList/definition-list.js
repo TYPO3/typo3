@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -71,33 +71,35 @@ DefinitionList = BlockElements.extend({
 		/*
 		 * Registering the buttons
 		 */
-		for (var buttonId in this.buttonList) {
-			if (this.buttonList.hasOwnProperty(buttonId)) {
-				var button = this.buttonList[buttonId];
-				var buttonConfiguration = {
-					id		: buttonId,
-					tooltip		: this.localize(buttonId + "-Tooltip"),
-					action		: "onButtonPress",
-					context		: button[0],
-					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
-				};
-				this.registerButton(buttonConfiguration);
-			}
-		}
-		
+		Ext.each(this.buttonList, function (button) {
+			var buttonId = button[0];
+			var buttonConfiguration = {
+				id		: buttonId,
+				tooltip		: this.localize(buttonId + "-Tooltip"),
+				action		: "onButtonPress",
+				context		: button[1],
+				hotKey		: (this.buttonsConfiguration[button[3]] ? this.buttonsConfiguration[button[3]].hotKey : (button[2] ? button[2] : null)),
+				noAutoUpdate	: button[4]
+			};
+			this.registerButton(buttonConfiguration);
+		}, this);
 		return true;
 	 },
 	 
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : {
-		Indent			: [null, "TAB", "indent"],
-		Outdent			: [null, "SHIFT-TAB", "outdent"],
-		DefinitionList		: [null, null, "definitionlist"],
-		DefinitionItem		: ["dd,dt", null, "definitionitem"]
-	},
-	
+	buttonList : [
+		['Indent', null, 'TAB', 'indent', false],
+		['Outdent', null, 'SHIFT-TAB', 'outdent', false],
+		['DefinitionList', null, null, 'definitionlist', true],
+		['DefinitionItem', 'dd,dt', null, 'definitionitem', false]
+	 ],
+	/*
+	 * This function gets called when the plugin is generated
+	 * Avoid re-execution of the base function
+	 */
+	onGenerate: Ext.emptyFn,
 	/*
 	 * This function gets called when a button was pressed.
 	 *
@@ -115,7 +117,7 @@ DefinitionList = BlockElements.extend({
 		this.editor.focusEditor();
 		var selection = editor._getSelection();
 		var range = editor._createRange(selection);
-		var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
+		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement(selection, range);
 		if (target) {
 			parentElement = target;
@@ -311,36 +313,27 @@ DefinitionList = BlockElements.extend({
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
-	onUpdateToolbar : function () {
-		if (this.getEditorMode() === "textmode" || !this.editor.isEditable()) {
-			return false;
-		}
-		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
-		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
-		if (parentElement.nodeName.toLowerCase() === "body") return false;
-		while (parentElement && (!HTMLArea.isBlockElement(parentElement) || /^(li)$/i.test(parentElement.nodeName))) {
-			parentElement = parentElement.parentNode;
-		}
-		var blockAncestors = this.getBlockAncestors(parentElement);
-		var selection = this.editor._getSelection();
-		var endBlocks = this.editor.getEndBlocks(selection);
-		for (var buttonId in this.buttonList) {
-			commandState = false;
-			if (this.buttonList.hasOwnProperty(buttonId) && this.isButtonInToolbar(buttonId)) {
-				switch (buttonId) {
-					case "Outdent" :
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		var editor = this.editor;
+		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
+			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();
+			if (!/^(body)$/i.test(parentElement.nodeName)) {
+				var endBlocks = editor.getEndBlocks(editor._getSelection());
+				switch (button.itemId) {
+					case 'Outdent':
 						if (/^(dt)$/i.test(endBlocks.start.nodeName)
 								&& /^(dl)$/i.test(endBlocks.start.parentNode.nodeName)
 								&& /^(dd)$/i.test(endBlocks.start.parentNode.parentNode.nodeName)
 								&& !endBlocks.end.nextSibling) {
-							this.editor._toolbarObjects[buttonId].state("enabled", true);
+							button.setDisabled(false);
 						} else {
-							this.base();
+							this.base(button, mode, selectionEmpty, ancestors);
 						}
 						break;
-					case "DefinitionList" :
-						this.editor._toolbarObjects[buttonId].state("enabled", (this.editor._selectionEmpty() && /^(p|div|address|pre|blockquote|h[1-6]|li|td|dd)$/i.test(endBlocks.start.nodeName))
-													|| (endBlocks.start != endBlocks.end && /^(p|h[1-6])$/i.test(endBlocks.start.nodeName)));
+					case 'DefinitionList':
+						button.setDisabled(!(selectionEmpty && /^(p|div|address|pre|blockquote|h[1-6]|li|td|dd)$/i.test(endBlocks.start.nodeName))
+													&& !(endBlocks.start != endBlocks.end && /^(p|h[1-6])$/i.test(endBlocks.start.nodeName)));
 						break;
 				}
 			}

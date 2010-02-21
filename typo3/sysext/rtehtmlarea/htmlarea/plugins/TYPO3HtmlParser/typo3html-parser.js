@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -64,7 +64,8 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + "-Tooltip"),
 			action		: "onButtonPress",
-			hide		: true
+			hide		: true,
+			hideInContextMenu: true
 		};
 		this.registerButton(buttonConfiguration);
 	},
@@ -84,61 +85,45 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 		this.clean();
 		return false;
 	},
-	
-	onGenerate : function () {
-		var doc = this.editor._doc;
-			// Function reference used on paste with older versions of Mozilla/Firefox in which onPaste is not fired
-		this.cleanLaterFunctRef = this.makeFunctionReference("clean");
-		HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["paste","dragdrop","drop"], TYPO3HtmlParser.wordCleanHandler, true);
+	/*
+	 * This function gets called when the editor is generated
+	 */
+	onGenerate: function () {
+		var documentElement = Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement);
+		this.editor.iframe.mon(documentElement, 'paste', this.wordCleanHandler, this);
+		this.editor.iframe.mon(documentElement, 'dragdrop', this.wordCleanHandler, this);
+		this.editor.iframe.mon(documentElement, 'drop', this.wordCleanHandler, this);
 	},
 	
-	clean : function() {
+	clean: function() {
 		var editor = this.editor;
-		if (HTMLArea.is_safari) {
+		if (Ext.isWebKit) {
 			editor.cleanAppleStyleSpans(editor._doc.body);
 		}
 		var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
 		var content = {
 			editorNo : this.editorNumber,
-			content	 : this.getPluginInstance("EditorMode").getInnerHTML()
+			content	 : editor.getInnerHTML()
 		};
 			// Server-based synchronous pasted content cleaning
 		this.postData(	this.parseHtmlModulePath,
 				content,
 				function(response) {
-					editor.getPluginInstance("EditorMode").setHTML(response);
+					editor.setHTML(response);
 					editor.selectRange(editor.moveToBookmark(bookmark));
 				},
 				false
 		);
+	},
+	/*
+	 * Handler for paste, dragdrop and drop events
+	 */
+	wordCleanHandler: function (event) {
+			// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
+		if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
+			HTMLArea.Dialog.TYPO3Image.close();
+		} else {
+			this.clean.defer(250, this);
+		}
 	}
 });
-
-/*
- * Closure avoidance for IE
- */
-TYPO3HtmlParser.cleanLater = function (editorNumber) {
-	var editor = RTEarea[editorNumber].editor;
-	editor.getPluginInstance("TYPO3HtmlParser").clean();
-};
-
-/*
- * Handler for paste, dragdrop and drop events
- */
-TYPO3HtmlParser.wordCleanHandler = function (ev) {
-	if (!ev) var ev = window.event;
-	var target = ev.target ? ev.target : ev.srcElement;
-	var owner = target.ownerDocument ? target.ownerDocument : target;
-	if (HTMLArea.is_ie) { // IE5.5 does not report any ownerDocument
-		while (owner.parentElement) { owner = owner.parentElement; }
-	}
-	var editor = RTEarea[owner._editorNo].editor;
-	
-		// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
-	if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
-		HTMLArea.Dialog.TYPO3Image.close();
-	} else {
-		window.setTimeout("TYPO3HtmlParser.cleanLater(\'" + editor._editorNumber + "\');", 250);
-	}
-};
-

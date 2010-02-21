@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-* (c) 2007-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+* (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -100,7 +100,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.3",
+			version		: "1.4",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -111,30 +111,34 @@ BlockStyle = HTMLArea.Plugin.extend({
 		this.registerPluginInformation(pluginInformation);
 		
 		/*
-		 * Registeringthe drop-down list
+		 * Registering the drop-down list
 		 */
-		var dropDownId = "BlockStyle";
+		var dropDownId = 'BlockStyle';
+		var fieldLabel = this.pageTSconfiguration.fieldLabel;
+		if (Ext.isEmpty(fieldLabel) && this.isButtonInToolbar('I[Block style label]')) {
+			fieldLabel = this.localize('Block style label');
+		}
 		var dropDownConfiguration = {
-			id		: dropDownId,
-			tooltip		: this.localize(dropDownId + "-Tooltip"),
-			textMode	: false,
-			options		: {"":""},
-			action		: "onChange",
-			refresh		: "generate",
-			context		: null
+			id: dropDownId,
+			tooltip: this.localize(dropDownId + '-Tooltip'),
+			fieldLabel: fieldLabel,
+			width: this.pageTSconfiguration.width ? this.pageTSconfiguration.width : 'auto',
+			listWidth:  this.pageTSconfiguration.listWidth ? this.pageTSconfiguration.listWidth : 250,
+			maxHeight: this.pageTSconfiguration.maxHeight ? this.pageTSconfiguration.maxHeight : 300,
+			options: [[this.localize('No style'), 'none']],
+			action: 'onChange',
+			storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 		};
 		this.registerDropDown(dropDownConfiguration);
-		
 		return true;
 	},
 	
 	/*
 	 * This function gets called when some block style was selected in the drop-down list
 	 */
-	onChange : function(editor, dropDownId) {
-		var dropDown = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
-		var className = dropDown.value;
-		
+	onChange : function (editor, combo, record, index) {
+		var className = combo.getValue();
 		this.editor.focusEditor();
 		var blocks = this.getSelectedBlocks();
 		for (var k = 0; k < blocks.length; ++k) {
@@ -160,9 +164,9 @@ BlockStyle = HTMLArea.Plugin.extend({
 			for (var i = classNames.length; --i >= 0;) {
 				if (!HTMLArea.reservedClassNames.test(classNames[i])) {
 					HTMLArea._removeClass(node, classNames[i]);
-					if (node.nodeName.toLowerCase() === "table" && this.editor.plugins.TableOperations) {
-						this.editor.plugins.TableOperations.instance.removeAlternatingClasses(node, classNames[i]);
-						this.editor.plugins.TableOperations.instance.removeCountingClasses(node, classNames[i]);
+					if (node.nodeName.toLowerCase() === "table" && this.getPluginInstance('TableOperations')) {
+						this.getPluginInstance('TableOperations').removeAlternatingClasses(node, classNames[i]);
+						this.getPluginInstance('TableOperations').removeCountingClasses(node, classNames[i]);
 					}
 					break;
 				}
@@ -180,8 +184,8 @@ BlockStyle = HTMLArea.Plugin.extend({
 			} else {
 				HTMLArea._addClass(node, className);
 			}
-			if (nodeName === "table" && this.editor.plugins.TableOperations) {
-				this.editor.plugins.TableOperations.instance.reStyleTable(node);
+			if (nodeName === "table" && this.getPluginInstance('TableOperations')) {
+				this.getPluginInstance('TableOperations').reStyleTable(node);
 			}
 		}
 	},
@@ -191,7 +195,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 */
 	getSelectedBlocks : function() {
 		var block, range, i = 0, blocks = [];
-		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
+		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
 			var selection = this.editor._getSelection();
 			try {
@@ -207,34 +211,32 @@ BlockStyle = HTMLArea.Plugin.extend({
 		}
 		return blocks;
 	},
-	
 	/*
 	 * This function gets called when the editor is generated
 	 */
-	onGenerate : function() {
+	onGenerate: function() {
+			// Monitor editor changing mode
+		this.editor.iframe.mon(this.editor, 'modeChange', this.onModeChange, this);
 		if (HTMLArea.is_gecko) {
-			this.generate(this.editor, "BlockStyle");
+			this.generate(this.editor, 'BlockStyle');
 		}
 	},
-	
 	/*
 	 * This function gets called when the toolbar is being updated
 	 */
-	onUpdateToolbar : function() {
-		if (this.getEditorMode() === "wysiwyg") {
-			this.generate(this.editor, "BlockStyle");
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if (mode === 'wysiwyg') {
+			this.generate(this.editor, button.itemId);
 		}
 	},
-	
 	/*
 	 * This function gets called when the editor has changed its mode to "wysiwyg"
 	 */
-	onMode : function(mode) {
+	onModeChange: function(mode) {
 		if (this.getEditorMode() === "wysiwyg") {
 			this.generate(this.editor, "BlockStyle");
 		}
 	},
-	
 	/*
 	 * This function gets called on plugin generation, on toolbar update and on change mode
 	 * Re-initiate the parsing of the style sheets, if not yet completed, and refresh our toolbar components
@@ -244,11 +246,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 			this.updateValue(dropDownId);
 		} else {
 			if (this.cssTimeout) {
-				if (this.editor._iframe.contentWindow) {
-					this.editor._iframe.contentWindow.clearTimeout(this.cssTimeout);
-				} else {
-					window.clearTimeout(this.cssTimeout);
-				}
+				window.clearTimeout(this.cssTimeout);
 				this.cssTimeout = null;
 			}
 			if (this.classesUrl && (typeof(HTMLArea.classesLabels) === "undefined")) {
@@ -262,29 +260,26 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function updates the current value of the dropdown list
 	 */
 	updateValue : function(dropDownId) {
-		var dropDown = document.getElementById(this.editor._toolbarObjects[dropDownId].elementId);
-		dropDown.disabled = true;
-		
-		var classNames = new Array();
-		var tagName = null;
-		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
-		var parent = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
-		while (parent && !HTMLArea.isBlockElement(parent) && parent.nodeName.toLowerCase() != "img") {
-			parent = parent.parentNode;
-		}
-		if (parent) {
-			tagName = parent.nodeName.toLowerCase();
-			classNames = this.getClassNames(parent);
-		}
-		if (tagName && tagName !== "body"){
-			this.buildDropDownOptions(dropDown, tagName);
-			this.setSelectedOption(dropDown, classNames);
-		} else {
-			this.initializeDropDown(dropDown);
-		}
-		dropDown.className = "";
-		if (dropDown.disabled) {
-			dropDown.className = "buttonDisabled";
+		var dropDown = this.getButton(dropDownId);
+		if (dropDown) {
+			var classNames = new Array();
+			var tagName = null;
+			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
+			var parent = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
+			while (parent && !HTMLArea.isBlockElement(parent) && parent.nodeName.toLowerCase() != "img") {
+				parent = parent.parentNode;
+			}
+			if (parent) {
+				tagName = parent.nodeName.toLowerCase();
+				classNames = this.getClassNames(parent);
+			}
+			if (tagName && tagName !== "body"){
+				this.buildDropDownOptions(dropDown, tagName);
+				this.setSelectedOption(dropDown, classNames);
+			} else {
+				this.initializeDropDown(dropDown);
+				dropDown.setDisabled(true);
+			}
 		}
 	},
 	
@@ -315,29 +310,20 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function reinitializes the options of the dropdown
 	 */
 	initializeDropDown : function (dropDown) {
-		if (HTMLArea.is_gecko) {
-			while (dropDown.options.length > 0) {
-				dropDown.remove(dropDown.options.length-1);
-			}
-		} else {
-			while (dropDown.firstChild) {
-				dropDown.removeChild(dropDown.firstChild);
-			}
-		}
-		var owner = dropDown.ownerDocument;
-		if (!owner) { // IE5.5 does not report any ownerDocument
-			owner = window.document;
-		}
-		var styleOption = owner.createElement("option");
-		styleOption = dropDown.appendChild(styleOption);
-		styleOption.value = "none";
-		styleOption.text = this.localize("No style");
+		var store = dropDown.getStore();
+		store.removeAll(true);
+		store.insert(0, new store.recordType({
+			text: this.localize('No style'),
+			value: 'none'
+		}));
+		dropDown.setValue('none');
 	},
 	
 	/*
 	 * This function builds the options to be displayed in the dropDown box
 	 */
 	buildDropDownOptions : function (dropDown, tagName) {
+		var store = dropDown.getStore();
 		var cssArray = new Array();
 		this.initializeDropDown(dropDown);
 			// Get classes allowed for all tags
@@ -393,22 +379,16 @@ BlockStyle = HTMLArea.Plugin.extend({
 			}
 			cssArray = sortedCssArray;
 		}
-		var doc = dropDown.ownerDocument;
-		if (!doc) { // IE5.5 does not report any ownerDocument
-			doc = window.document;
-		}
 		for (var cssClass in cssArray) {
 			if (cssArray.hasOwnProperty(cssClass) && cssArray[cssClass]) {
-				if (cssClass == "none") {
-					dropDown.options[0].text = cssArray[cssClass];
+				if (cssClass == 'none') {
+					store.getAt(0).set('text', cssArray[cssClass]);
 				} else {
-					var styleOption = doc.createElement("option");
-					styleOption = dropDown.appendChild(styleOption);
-					styleOption.value = cssClass;
-					styleOption.text = cssArray[cssClass];
-					if (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
-						dropDown.options[dropDown.options.length-1].setAttribute("style", HTMLArea.classesValues[cssClass]);
-					}
+					store.add(new store.recordType({
+						text: cssArray[cssClass],
+						value: cssClass,
+						style: (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
+					}));
 				}
 			}
 		}
@@ -418,36 +398,35 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 * This function sets the selected option of the dropDown box
 	 */
 	setSelectedOption : function (dropDown, classNames, noUnknown, defaultClass) {
-		dropDown.selectedIndex = 0;
+		var store = dropDown.getStore();
+		dropDown.setValue('none');
 		if (classNames.length) {
-			for (var i = dropDown.options.length; --i >= 0;) {
-				if (classNames[classNames.length-1] == dropDown.options[i].value) {
-					dropDown.options[i].selected = true;
-					dropDown.selectedIndex = i;
-					if (!defaultClass) {
-						dropDown.options[0].text = this.localize("Remove style");
-					}
-					break;
+			var index = store.findExact('value', classNames[classNames.length-1]);
+			if (index != -1) {
+				dropDown.setValue(classNames[classNames.length-1]);
+				if (!defaultClass) {
+					store.getAt(0).set('text', this.localize('Remove style'));
 				}
 			}
-			if (dropDown.selectedIndex == 0 && !noUnknown) {
-				dropDown.options[dropDown.options.length] = new Option(this.localize("Unknown style"), classNames[classNames.length-1]);
-				dropDown.options[dropDown.options.length-1].selected = true;
-				dropDown.selectedIndex = dropDown.options.length-1;
-			}
-			for (var i = dropDown.options.length; --i >= 0;) {
-				if (("," + classNames.join(",") + ",").indexOf("," + dropDown.options[i].value + ",") !== -1) {
-					if (dropDown.selectedIndex != i) {
-						dropDown.options[i] = null;
-					}
+			if (index == -1 && !noUnknown) {
+				store.add(new store.recordType({
+					text: this.localize('Unknown style'),
+					value: classNames[classNames.length-1]
+				}));
+				index = store.getCount()-1;
+				dropDown.setValue(classNames[classNames.length-1]);
+				if (!defaultClass) {
+					store.getAt(0).set('text', this.localize('Remove style'));
 				}
 			}
+			store.each(function (option) {
+				if (store.indexOf(option) != index && (',' + classNames.join(',') + ',').indexOf(',' + option.get('value') + ',') != -1) {
+					store.removeAt(store.indexOf(option));
+				}
+				return true;
+			});
 		}
-		if (dropDown.options.length > 1) {
-			dropDown.disabled = false;
-		} else {
-			dropDown.disabled = true;
-		}
+		dropDown.setDisabled(!(store.getCount()>1));
 	},
 	
 	/*
@@ -456,8 +435,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	buildCssArray : function(editor, dropDownId) {
 		this.cssArray = this.parseStyleSheet();
 		if (!this.cssLoaded && (this.cssParseCount < 17)) {
-			var buildCssArrayLaterFunctRef = this.makeFunctionReference("buildCssArray");
-			this.cssTimeout = editor._iframe.contentWindow ? editor._iframe.contentWindow.setTimeout(buildCssArrayLaterFunctRef, 200) : window.setTimeout(buildCssArrayLaterFunctRef, 200);
+			this.cssTimeout = this.buildCssArray.defer(200, this, [editor, dropDownId]);
 			this.cssParseCount++;
 		} else {
 			this.cssTimeout = null;

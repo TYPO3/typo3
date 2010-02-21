@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004 interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -35,7 +35,7 @@
 /***************************************************
  *  IE-SPECIFIC FUNCTIONS
  ***************************************************/
-HTMLArea.prototype.isEditable = function() {
+HTMLArea.Editor.prototype.isEditable = function() {
 	return this._doc.body.contentEditable;
 };
 
@@ -45,14 +45,14 @@ HTMLArea.prototype.isEditable = function() {
 /*
  * Get the current selection object
  */
-HTMLArea.prototype._getSelection = function() {
+HTMLArea.Editor.prototype._getSelection = function() {
 	return this._doc.selection;
 };
 
 /*
  * Create a range for the current selection
  */
-HTMLArea.prototype._createRange = function(sel) {
+HTMLArea.Editor.prototype._createRange = function(sel) {
 	if (typeof(sel) == "undefined") {
 		var sel = this._getSelection();
 	}
@@ -65,7 +65,7 @@ HTMLArea.prototype._createRange = function(sel) {
 /*
  * Select a node AND the contents inside the node
  */
-HTMLArea.prototype.selectNode = function(node) {
+HTMLArea.Editor.prototype.selectNode = function(node) {
 	this.focusEditor();
 	this.forceRedraw();
 	var range = this._doc.body.createTextRange();
@@ -76,7 +76,7 @@ HTMLArea.prototype.selectNode = function(node) {
 /*
  * Select ONLY the contents inside the given node
  */
-HTMLArea.prototype.selectNodeContents = function(node, endPoint) {
+HTMLArea.Editor.prototype.selectNodeContents = function(node, endPoint) {
 	this.focusEditor();
 	this.forceRedraw();
 	var range = this._doc.body.createTextRange();
@@ -90,7 +90,7 @@ HTMLArea.prototype.selectNodeContents = function(node, endPoint) {
 /*
  * Determine whether the node intersects the range
  */
-HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
+HTMLArea.Editor.prototype.rangeIntersectsNode = function(range, node) {
 	this.focusEditor();
 	var nodeRange = this._doc.body.createTextRange();
 	nodeRange.moveToElementText(node);
@@ -101,7 +101,7 @@ HTMLArea.prototype.rangeIntersectsNode = function(range, node) {
 /*
  * Retrieve the HTML contents of selected block
  */
-HTMLArea.prototype.getSelectedHTML = function() {
+HTMLArea.Editor.prototype.getSelectedHTML = function() {
 	var sel = this._getSelection();
 	var range = this._createRange(sel);
 	if (sel.type.toLowerCase() == "control") {
@@ -116,7 +116,7 @@ HTMLArea.prototype.getSelectedHTML = function() {
 /*
  * Retrieve simply HTML contents of the selected block, IE ignoring control ranges
  */
-HTMLArea.prototype.getSelectedHTMLContents = function() {
+HTMLArea.Editor.prototype.getSelectedHTMLContents = function() {
 	var sel = this._getSelection();
 	var range = this._createRange(sel);
 	return range.htmlText;
@@ -125,7 +125,7 @@ HTMLArea.prototype.getSelectedHTMLContents = function() {
 /*
  * Get the deepest node that contains both endpoints of the current selection.
  */
-HTMLArea.prototype.getParentElement = function(selection, range) {
+HTMLArea.Editor.prototype.getParentElement = function(selection, range) {
 	if (!selection) {
 		var selection = this._getSelection();
 	}
@@ -136,7 +136,12 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
 		case "text":
 		case "none":
 			var el = range.parentElement();
-			if(el.nodeName.toLowerCase() == "li" && range.htmlText.replace(/\s/g,"") == el.parentNode.outerHTML.replace(/\s/g,"")) return el.parentNode;
+			if (el.nodeName.toLowerCase() == 'form') {
+				return this._doc.body;
+			}
+			if (el.nodeName.toLowerCase() == "li" && range.htmlText.replace(/\s/g,"") == el.parentNode.outerHTML.replace(/\s/g,"")) {
+				return el.parentNode;
+			}
 			return el;
 		case "control": return range.item(0);
 		default: return this._doc.body;
@@ -150,7 +155,7 @@ HTMLArea.prototype.getParentElement = function(selection, range) {
  * @returns null | element
  * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
  */
-HTMLArea.prototype._activeElement = function(sel) {
+HTMLArea.Editor.prototype._activeElement = function(sel) {
 	if (sel == null) {
 		return null;
 	}
@@ -172,7 +177,7 @@ HTMLArea.prototype._activeElement = function(sel) {
 /*
  * Determine if the current selection is empty or not.
  */
-HTMLArea.prototype._selectionEmpty = function(selection) {
+HTMLArea.Editor.prototype._selectionEmpty = function(selection) {
 	if (!selection || selection.type.toLowerCase() === "none") return true;
 	if (selection.type.toLowerCase() === "text") {
 		return !this._createRange(selection).text;
@@ -183,14 +188,14 @@ HTMLArea.prototype._selectionEmpty = function(selection) {
 /*
  * Get a bookmark
  */
-HTMLArea.prototype.getBookmark = function (range) {
+HTMLArea.Editor.prototype.getBookmark = function (range) {
 	return range.getBookmark();
 };
 
 /*
  * Move the range to the bookmark
  */
-HTMLArea.prototype.moveToBookmark = function (bookmark) {
+HTMLArea.Editor.prototype.moveToBookmark = function (bookmark) {
 	var range = this._createRange();
 	range.moveToBookmark(bookmark);
 	return range;
@@ -199,7 +204,7 @@ HTMLArea.prototype.moveToBookmark = function (bookmark) {
 /*
  * Select range
  */
-HTMLArea.prototype.selectRange = function (range) {
+HTMLArea.Editor.prototype.selectRange = function (range) {
 	range.select();
 };
 /***************************************************
@@ -211,7 +216,7 @@ HTMLArea.prototype.selectRange = function (range) {
  * Delete the current selection, if any.
  * Split the text node, if needed.
  */
-HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
+HTMLArea.Editor.prototype.insertNodeAtSelection = function(toBeInserted) {
 	this.insertHTML(toBeInserted.outerHTML);
 };
 
@@ -219,7 +224,7 @@ HTMLArea.prototype.insertNodeAtSelection = function(toBeInserted) {
  * Insert HTML source code at the current position.
  * Delete the current selection, if any.
  */
-HTMLArea.prototype.insertHTML = function(html) {
+HTMLArea.Editor.prototype.insertHTML = function(html) {
 	var sel = this._getSelection();
 	if (sel.type.toLowerCase() == "control") {
 		sel.clear();
@@ -238,7 +243,7 @@ HTMLArea.prototype.insertHTML = function(html) {
  *
  * @return	void
  */
-HTMLArea.prototype.wrapWithInlineElement = function(element, selection, range) {
+HTMLArea.Editor.prototype.wrapWithInlineElement = function(element, selection, range) {
 	var nodeName = element.nodeName;
 	var parent = this.getParentElement(selection, range);
 	var bookmark = this.getBookmark(range);
@@ -312,7 +317,7 @@ HTMLArea.prototype.wrapWithInlineElement = function(element, selection, range) {
 /*
  * Handle the backspace event in IE browsers
  */
-HTMLArea.prototype._checkBackspace = function() {
+HTMLArea.Editor.prototype._checkBackspace = function() {
 	var selection = this._getSelection();
 	var range = this._createRange(selection);
 	if (selection.type == "Control"){ // Deleting or backspacing on a control selection : delete the element

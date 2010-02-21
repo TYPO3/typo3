@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -48,7 +48,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.1",
+			version		: "1.2",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -84,7 +84,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList : [
-		["CreateLink", "a,img", true, true],
+		["CreateLink", "a,img", false, true],
 		["UnLink", "a", false, false]
 	],
 	 
@@ -370,6 +370,14 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			for (var i = node.firstChild;i;i = i.nextSibling) {
 				if (i.nodeType == 1 || i.nodeType == 11) this.cleanAllLinks(i, range, keepLinks);
 			}
+		}
+	},
+	/*
+	 * This function gets called when the toolbar is updated
+	 */
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'CreateLink') {
+			button.setDisabled(selectionEmpty && !button.isInContext(mode, selectionEmpty, ancestors));
 		}
 	}
 });

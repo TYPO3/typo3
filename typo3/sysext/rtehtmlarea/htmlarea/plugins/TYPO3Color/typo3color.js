@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -64,12 +64,11 @@ TYPO3Color = HTMLArea.Plugin.extend({
 				this.allowedAttributes.push("className");
 			}
 		}
-
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "3.0",
+			version		: "4.0",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -78,7 +77,6 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-
 		/*
 		 * Registering the buttons
 		 */
@@ -95,26 +93,33 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			};
 			this.registerButton(buttonConfiguration);
 		}
-		
 		return true;
 	 },
-
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : [
-		["ForeColor", "textcolor"],
-		["HiliteColor", "bgcolor"]
+	buttonList: [
+		['ForeColor', 'textcolor'],
+		['HiliteColor', 'bgcolor']
 	],
-
 	/*
 	 * Conversion object: button name to corresponding style property name
 	 */
-	styleProperty : {
-		ForeColor	: "color",
-		HiliteColor	: "backgroundColor"
+	styleProperty: {
+		ForeColor	: 'color',
+		HiliteColor	: 'backgroundColor'
 	},
-
+	colors: [
+		'000000', '222222', '444444', '666666', '999999', 'BBBBBB', 'DDDDDD', 'FFFFFF',
+		'660000', '663300', '996633', '003300', '003399', '000066', '330066', '660066',
+		'990000', '993300', 'CC9900', '006600', '0033FF', '000099', '660099', '990066',
+		'CC0000', 'CC3300', 'FFCC00', '009900', '0066FF', '0000CC', '663399', 'CC0099',
+		'FF0000', 'FF3300', 'FFFF00', '00CC00', '0099FF', '0000FF', '9900CC', 'FF0099',
+		'CC3333', 'FF6600', 'FFFF33', '00FF00', '00CCFF', '3366FF', '9933FF', 'FF00FF',
+		'FF6666', 'FF6633', 'FFFF66', '66FF66', '00FFFF', '3399FF', '9966FF', 'FF66FF',
+		'FF9999', 'FF9966', 'FFFF99', '99FF99', '99FFFF', '66CCFF', '9999FF', 'FF99FF',
+		'FFCCCC', 'FFCC99', 'FFFFCC', 'CCFFCC', 'CCFFFF', '99CCFF', 'CCCCFF', 'FFCCFF'
+	],
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -124,275 +129,258 @@ TYPO3Color = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id, target) {
+	onButtonPress: function (editor, id, target) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.dialogSelectColor(buttonId,"","");
+		var element = this.editor.getParentElement();
+		this.openDialogue(
+			buttonId + '_title',
+			{
+				element: element,
+				buttonId: buttonId
+			},
+			this.getWindowDimensions({ width: 350}, buttonId),
+			this.buildItemsConfig(element, buttonId),
+			this.setColor
+		);
 	},
-
-	dialogSelectColor : function (buttonId, element, field, dialogOpener) {
-		var dimensions = {
-			width	: 440,
-			height	: 300
-		};
-		var arguments = {
-			title 		: buttonId + "_title",
-			buttonId	: buttonId,
-			element		: element,
-			field		: field
-		};
-			// buttonId's  "color" and "tag" are not registered but used to interface with the Table Operations and QuickTag plugins
-		switch (buttonId) {
-			case "ForeColor"	:
-			case "HiliteColor"	:
-				var selectColorWithButtonInitFunctRef = this.makeFunctionReference("selectColorWithButtonInit");
-				arguments.initialize = selectColorWithButtonInitFunctRef;
-				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions, "yes");
-				break;
-			case "color"		:
-				var selectColorCodeInitFunctRef = this.makeFunctionReference("selectColorCodeInit");
-				arguments.initialize = selectColorCodeInitFunctRef;
-				this.dialog = this.openDialog(buttonId, "", "setColor", arguments, dimensions, "yes", dialogOpener);
-				break;
-			case "tag"		:
-				var selectColorCodeInitFunctRef = this.makeFunctionReference("selectColorCodeInit");
-				arguments.initialize = selectColorCodeInitFunctRef;
-				arguments.title = "color_title";
-				this.dialog = this.openDialog(buttonId, "", "setColorInTag", arguments, dimensions, "yes", dialogOpener);
-		}
-	},
-	
 	/*
-	 * Initialize the forecolor and the hilitecolor select color dialogues
+	 * Build the window items config
 	 */
-	selectColorWithButtonInit : function(dialog) {
-		var editor = dialog.editor;
-		var doc = editor._doc;
-		var buttonId = dialog.arguments.buttonId;
-		var initialValue;
-		var parentElement = editor.getParentElement();
-		initialValue = HTMLArea._colorToRgb(parentElement.style[this.styleProperty[buttonId]]);
-		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, dialog.arguments.title, initialValue);
-		var colorTable = dialog.document.getElementById("colorTable");
-		colorTable.onclick = function(e) {
-			dialog.callFormInputHandler();
-			return false;
-		};
-		var colorForm = dialog.document.getElementById("HA-color-select-form");
-		colorForm.onsubmit = function (e) {
-			dialog.callFormInputHandler();
-			return false;
-		};
-		var colorUnset = dialog.document.getElementById("colorUnset");
-		colorUnset.onclick = function(e) {
-			dialog.document.getElementById(buttonId).value="";
-			dialog.callFormInputHandler();
-			return false;
-		};
-		dialog.document.getElementById(buttonId+"Current").style.backgroundColor = initialValue;
-		dialog.addButtons("ok", "cancel");
-	},
-	
-	/*
-	 * Set the color and close the ForeColor and the HiliteColor select color dialogues
-	 */
-	setColor : function(dialog, params) {
-		var editor = this.editor, element;
-		switch (dialog.arguments.buttonId) {
-			case "ForeColor":
-			case "HiliteColor":
-				var selection = editor._getSelection();
-				var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
-				var range = editor._createRange(selection);
-				if (editor._selectionEmpty(selection)) {
-					element = editor.getParentElement(selection, range);
-						// Set the color in the style attribute
-					this.processStyle(dialog, params, element, dialog.arguments.field);
-						// Remove the span tag if it has no more attribute
-					if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
-						editor.removeMarkup(element);
-					}
-				} else if (statusBarSelection) {
-					element = statusBarSelection;
-						// Set the color in the style attribute
-					this.processStyle(dialog, params, element, dialog.arguments.field);
-						// Remove the span tag if it has no more attribute
-					if ((element.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
-						editor.removeMarkup(element);
-					}
-				} else if (editor.endPointsInSameBlock()) {
-					element = editor._doc.createElement("span");
-						// Set the color in the style attribute
-					this.processStyle(dialog, params, element, dialog.arguments.field);
-					editor.wrapWithInlineElement(element, selection, range);
-					if (HTMLArea.is_gecko) {
-						range.detach();
-					}
-				}
-				break;
-			case "color":
-			default:
-				element = dialog.arguments.element;
-					// Set the color in the style attribute
-				this.processStyle(dialog, params, element, dialog.arguments.field);
-				break;
-		}
-		dialog.close();
-	},
-	
-	/*
-	 * Initialize the case=color select color dialogue
-	 * This case is used by the Table Operations and QuickTag plugins
-	 */
-	selectColorCodeInit : function(dialog) {
-		var buttonId = dialog.arguments.buttonId;
-		var field = dialog.arguments.field;
-		dialog.content.innerHTML = this.renderPopupSelectColor(buttonId, dialog, this.localize(dialog.arguments.title), (field.value ? field.value : ""));
-		var colorTable = dialog.document.getElementById("colorTable");
-		colorTable.onclick = function(e) {
-			if(!e) var e = dialog.dialogWindow.event;
-			var target = e.target ? e.target : e.srcElement;
-			if (target.nodeType == 3) target = target.parentNode;
-			dialog.document.getElementById(buttonId).value = target.bgColor;
-			dialog.callFormInputHandler();
-			return false;
-		};
-		var colorUnset = dialog.document.getElementById("colorUnset");
-		colorUnset.onclick = function(e) {
-			dialog.document.getElementById(buttonId).value = "";
-			dialog.callFormInputHandler();
-			return false;
-		};
-		var colorForm = dialog.document.getElementById("HA-color-select-form");
-		colorForm.onsubmit = function(e) {
-			dialog.callFormInputHandler();
-			return false;
-		};
-		if (buttonId === "color") {
-			dialog.document.getElementById(buttonId+"Current").style.backgroundColor = field.value;
-		} else if (buttonId === "tag"){
-			dialog.document.getElementById(buttonId+"Current").style.backgroundColor = "";
-		}
-		dialog.addButtons("ok", "cancel");
-	},
-	
-	/*
-	* Sets the color
-	*/
-	setColorInTag : function(dialog, params) {
-		dialog.arguments.field.insertColor(params.tag);
-		dialog.close();
-	},
-	
-	/*
-	* Applies the style found in "params" to the given element
-	*/
-	processStyle : function (dialog, params, element, field) {
-		if (element) {
-			for (var i in params) {
-				var val = params[i];
-				if (val && val.charAt(0) != "#") {
-					val = "#" + val;
-				}
-				switch (i) {
-					case "ForeColor":
-					case "HiliteColor":
-						element.style[this.styleProperty[i]] = val;
-						break;
-					case "color":
-						element.style.backgroundColor = val;
-						field.value = val;
-						break;
-				}
-			}
-		}
-	},
-	
-	/**
-	 * Making color selector table
-	 */
-	renderPopupSelectColor : function (sID,dialog,title,initialValue) {
-		var editor = this.editor;
-		var cfgColors = this.colorsConfiguration;
-		var colorDef;
-		var szID = sID + "Current";
-		var sz;
-		var cPick = new Array("00","33","66","99","CC","FF");
-		var iColors = cPick.length;
-		var szColor = "";
-		var szColorId = "";
-		
-		sz = '<div class="title">' + title + '</div>';
-		sz += '<form id="HA-color-select-form"><fieldset>';
-		sz += '<div class="colorTableWrapper"><table class="colorTable" cellspacing="0" cellpadding="0" id="colorTable">';
-		var onMouseOut = ' onMouseout="document.getElementById(\'' + szID + '\').style.backgroundColor=\'\'; document.getElementById(\'' + sID + '\').value=\'\';"';
-		var onMouseOver = ' onMouseover="if(' + HTMLArea.is_ie + '){ if (event.srcElement.bgColor) { document.getElementById(\'' + szID + '\').style.backgroundColor = event.srcElement.bgColor; document.getElementById(\'' + sID + '\').value = event.srcElement.bgColor;} } else { if (event.target.bgColor) { document.getElementById(\'' + szID + '\').style.backgroundColor=event.target.bgColor; document.getElementById(\'' + sID + '\').value=event.target.bgColor;} };" ';
-			// Making colorPicker
+	buildItemsConfig: function (element, buttonId) {
+		var itemsConfig = [];
+		var paletteItems = [];
+			// Standard colors palette (boxed)
 		if (!this.disableColorPicker) {
-			for ( var r = 0; r < iColors; r++) {
-				sz+='<tr>';
-				for (var g = iColors-1; g >= 0; g--) {
-					for (var b=iColors-1;b>=0;b--) {
-						szColor = cPick[r]+cPick[g]+cPick[b];
-						sz+='<td bgcolor="#'+szColor+'" title="#'+szColor+'"' + onMouseOut + onMouseOver +'>&nbsp;</td>';
+			paletteItems.push({
+				xtype: 'container',
+				items: {
+					xtype: 'colorpalette',
+					itemId: 'color-palette',
+					colors: this.colors,
+					cls: 'color-palette',
+					value: (element && element.style[this.styleProperty[buttonId]]) ? HTMLArea.util.Color.colorToHex(element.style[this.styleProperty[buttonId]]).substr(1, 6) : '',
+					allowReselect: true,
+					listeners: {
+						select: {
+							fn: this.onSelect,
+							scope: this
+						}
 					}
 				}
-				sz+='</tr>';
-			}
+			});
 		}
-		
-			// Making specific color selector:
-		if (cfgColors) {
-			var iCfgColors = cfgColors.length;
-			if (iCfgColors && !this.disableColorPicker) {
-				sz += '<tr><td colspan="36"></td></tr>';
-			}
-			onMouseOverTitle = ' onMouseover="if(' + HTMLArea.is_ie + '){ if (document.getElementById(event.srcElement.id+\'Value\')) { document.getElementById(\'' + szID + '\').style.backgroundColor = document.getElementById(event.srcElement.id+\'Value\').bgColor; document.getElementById(\'' + sID + '\').value = document.getElementById(event.srcElement.id+\'Value\').bgColor;} } else { if (document.getElementById(event.target.id+\'Value\')) { document.getElementById(\'' + szID + '\').style.backgroundColor=document.getElementById(event.target.id+\'Value\').bgColor; document.getElementById(\'' + sID + '\').value=document.getElementById(event.target.id+\'Value\').bgColor;} };" ';
-			for (var theColor = 0; theColor < iCfgColors; theColor++) {
-				colorDef = cfgColors[theColor];
-				szColor = colorDef[1];
-				sz += '<tr' + onMouseOut + '>';
-				sz += '<td id="colorDef' + theColor + 'Value"' + onMouseOver + ' style="width:36px;" colspan="6" bgcolor="'+szColor+'" title="'+szColor+'">&nbsp;</td>';
-				sz += '<td class="colorTitle" id="colorDef' + theColor + '"title="' + szColor + '"' + onMouseOverTitle + 'colspan="30">'+colorDef[0]+'</td>';
-				sz += '</tr>';
-			}
+			// Custom colors palette (boxed)
+		if (this.colorsConfiguration) {
+			paletteItems.push({
+				xtype: 'container',
+				items: {
+					xtype: 'colorpalette',
+					itemId: 'custom-colors',
+					cls: 'htmlarea-custom-colors',
+					colors: this.colorsConfiguration,
+					value: (element && element.style[this.styleProperty[buttonId]]) ? HTMLArea.util.Color.colorToHex(element.style[this.styleProperty[buttonId]]).substr(1, 6) : '',
+					tpl: new Ext.XTemplate(
+						'<tpl for="."><a href="#" class="color-{1}" hidefocus="on"><em><span style="background:#{1}" unselectable="on">&#160;</span></em><span unselectable="on">{0}<span></a></tpl>'
+					),
+					allowReselect: true,
+					listeners: {
+						select: {
+							fn: this.onSelect,
+							scope: this
+						}
+					}
+				}
+			});
 		}
-		sz += '</table>';
-		sz += '<div class="space"></div>';
-		sz += '<label for="' + sID + '" class="fr">Color:</label>';
-		sz += '<div class="buttonColor" ';
-		sz += '		onMouseover="className += \' buttonColor-hilite\';" ';
-		sz += '		onMouseout="className = \'buttonColor\';">';
-		sz += '	<span id="' + szID + '" class="chooser">&nbsp;</span>';
-		sz += '	<span id="colorUnset" class="nocolor" title="' + "no_color" + '" ';
-		sz += '		onMouseover="className += \' nocolor-hilite\';" ';
-		sz += '		onMouseout="className = \'nocolor\';"';
-		sz += '	>&#x00d7;</span></div>';
-		sz += '<input type="text" name="' + sID + '" id="' + sID + '" value="' + initialValue + '" />';
-		sz += '</fieldset></form>';
-		return sz;
+		itemsConfig.push({
+			xtype: 'container',
+			layout: 'hbox',
+			items: paletteItems
+		});
+		itemsConfig.push({
+			xtype: 'displayfield',
+			itemId: 'show-color',
+			cls: 'show-color',
+			width: 60,
+			height: 22,
+			helpTitle: this.localize(buttonId)
+		});
+		itemsConfig.push({
+			itemId: 'color',
+			cls: 'color',
+			width: 60,
+			minValue: 0,
+			value: (element && element.style[this.styleProperty[buttonId]]) ? HTMLArea.util.Color.colorToHex(element.style[this.styleProperty[buttonId]]).substr(1, 6) : '',
+			enableKeyEvents: true,
+			fieldLabel: this.localize(buttonId),
+			helpTitle: this.localize(buttonId),
+			listeners: {
+				change: {
+					fn: this.onChange,
+					scope: this
+				},
+				afterrender: {
+					fn: this.onAfterRender,
+					scope: this
+				}
+			}
+		});
+	 	return {
+			xtype: 'fieldset',
+			title: this.localize('color_title'),
+			defaultType: 'textfield',
+			labelWidth: 175,
+			defaults: {
+				helpIcon: false
+			},
+			items: itemsConfig
+		};
 	},
-	
+	/*
+	 * On select handler: set the value of the color field, display the new color and update the other palette
+	 */
+	onSelect: function (palette, color) {
+		this.dialog.find('itemId', 'color')[0].setValue(color);
+		this.showColor(color);
+		if (palette.getItemId() == 'color-palette') {
+			var customPalette = this.dialog.find('itemId', 'custom-colors')[0];
+			if (customPalette) {
+				customPalette.deSelect();
+			}
+		} else {
+			var standardPalette = this.dialog.find('itemId', 'color-palette')[0];
+			if (standardPalette) {
+				standardPalette.deSelect();
+			}
+		}
+	},
+	/*
+	 * Display the selected color
+	 */
+	showColor: function (color) {
+		if (color) {
+			this.dialog.find('itemId', 'show-color')[0].el.setStyle('backgroundColor', '#' + color);
+		}
+	},
+	/*
+	 * On change handler: display the new color and select it in the palettes, if it exists
+	 */
+	onChange: function (field, value) {
+		if (value) {
+			var color = value.toUpperCase();
+			this.showColor(color);
+			var standardPalette = this.dialog.find('itemId', 'color-palette')[0];
+			if (standardPalette) {
+				standardPalette.select(color);
+			}
+			var customPalette = this.dialog.find('itemId', 'custom-colors')[0];
+			if (customPalette) {
+				customPalette.select(color);
+			}
+		}
+	},
+	/*
+	 * On after render handler: display the color
+	 */
+	onAfterRender: function (field) {
+		if (!Ext.isEmpty(field.getValue())) {
+			this.showColor(field.getValue());
+		}
+	},
+	/*
+	 * Open the dialogue window
+	 *
+	 * @param	string		title: the window title
+	 * @param	object		arguments: some arguments for the handler
+	 * @param	integer		dimensions: the opening width of the window
+	 * @param	object		tabItems: the configuration of the tabbed panel
+	 * @param	function	handler: handler when the OK button if clicked
+	 *
+	 * @return	void
+	 */
+	openDialogue: function (title, arguments, dimensions, items, handler) {
+		if (this.dialog) {
+			this.dialog.close();
+		}
+		this.dialog = new Ext.Window({
+			title: this.localize(title),
+			arguments: arguments,
+			cls: 'htmlarea-window',
+			border: false,
+			width: dimensions.width,
+			height: 'auto',
+			iconCls: arguments.buttonId,
+			listeners: {
+				close: {
+					fn: this.onClose,
+					scope: this
+				}
+			},
+			items: {
+				xtype: 'container',
+				layout: 'form',
+				defaults: {
+					labelWidth: 150
+				},
+				items: items
+			},
+			buttons: [
+				this.buildButtonConfig('Cancel', this.onCancel),
+				this.buildButtonConfig('OK', handler)
+			]
+		});
+		this.show();
+	},
+	/*
+	 * Set the color and close the dialogue
+	 */
+	setColor: function(button, event) {
+		this.restoreSelection();
+		var buttonId = this.dialog.arguments.buttonId;
+		var color = '#' + this.dialog.find('itemId', 'color')[0].getValue();
+		var selection = this.editor._getSelection();
+		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
+		var range = this.editor._createRange(selection);
+		if (this.editor._selectionEmpty(selection)) {
+			var element = this.editor.getParentElement(selection, range);
+				// Set the color in the style attribute
+			element.style[this.styleProperty[buttonId]] = color;
+				// Remove the span tag if it has no more attribute
+			if ((element.nodeName.toLowerCase() === 'span') && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
+				this.editor.removeMarkup(element);
+			}
+		} else if (statusBarSelection) {
+			var element = statusBarSelection;
+				// Set the color in the style attribute
+			element.style[this.styleProperty[buttonId]] = color;
+				// Remove the span tag if it has no more attribute
+			if ((element.nodeName.toLowerCase() === 'span') && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
+				this.editor.removeMarkup(element);
+			}
+		} else if (this.editor.endPointsInSameBlock()) {
+			var element = this.editor._doc.createElement('span');
+				// Set the color in the style attribute
+			element.style[this.styleProperty[buttonId]] = color;
+			this.editor.wrapWithInlineElement(element, selection, range);
+			if (HTMLArea.is_gecko) {
+				range.detach();
+			}
+		}
+		this.close();
+		event.stopEvent();
+	},
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
-	onUpdateToolbar : function () {
-		var editor = this.editor;
-		if (this.getEditorMode() === "wysiwyg" && editor.isEditable()) {
-			var buttonId;
-			var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
-			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();
-			var enabled = editor.endPointsInSameBlock() && !(editor._selectionEmpty(editor._getSelection()) && parentElement.nodeName.toLowerCase() == "body");
-			for (var i = 0, n = this.buttonList.length; i < n; ++i) {
-				buttonId = this.buttonList[i][0];
-				var obj = editor._toolbarObjects[buttonId];
-				if ((typeof(obj) !== "undefined")) {
-					obj.state("active", parentElement.style[this.styleProperty[buttonId]]);
-					obj.state("enabled", enabled);
-				}
-			}
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
+		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+			var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null,
+				parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement(),
+				disabled = !endPointsInSameBlock || (selectionEmpty && /^body$/i.test(parentElement.nodeName));
+			button.setInactive(!parentElement.style[this.styleProperty[button.itemId]]);
+			button.setDisabled(disabled);
 		}
 	}
 });
-

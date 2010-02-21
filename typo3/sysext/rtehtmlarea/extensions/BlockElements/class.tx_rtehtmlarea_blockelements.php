@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2208 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2007-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -43,7 +43,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
 
-	protected $pluginButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull, orderedlist, unorderedlist';
+	protected $pluginButtons = 'formatblock, indent, outdent, blockquote, insertparagraphbefore, insertparagraphafter, left, center, right, justifyfull, orderedlist, unorderedlist, line';
 	protected $convertToolbarForHtmlAreaArray = array (
 		'formatblock'		=> 'FormatBlock',
 		'indent'		=> 'Indent',
@@ -57,6 +57,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 		'justifyfull'		=> 'JustifyFull',
 		'orderedlist'		=> 'InsertOrderedList',
 		'unorderedlist'		=> 'InsertUnorderedList',
+		'line'			=> 'InsertHorizontalRule',
 		);
 
 	protected $defaultBlockElements = array(
@@ -171,16 +172,13 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 				}
 			}
 				// Generating the javascript options
-			$JSBlockElements = '{
-			"'. $first.'" : "none"';
+			$JSBlockElements = array();
+			$JSBlockElements[] = array($first, 'none');
 			foreach ($blockElementsOptions as $item => $label) {
-				$JSBlockElements .= ',
-			"' . $label . '" : "' . $item . '"';
+				$JSBlockElements[] = array($label, $item);
 			}
-			$JSBlockElements .= '};';
-
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.formatblock.dropDownOptions = '. $JSBlockElements;
+			RTEarea['.$RTEcounter.'].buttons.formatblock.data = ' . json_encode($JSBlockElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

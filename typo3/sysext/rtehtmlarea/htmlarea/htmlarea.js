@@ -3,7 +3,7 @@
 *
 *  (c) 2002-2004 interactivetools.com, inc.
 *  (c) 2003-2004 dynarch.com
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,46 +33,22 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-
-/***************************************************
- *  EDITOR INITIALIZATION AND CONFIGURATION
- ***************************************************/
 	// Avoid re-starting on Ajax request
-if (typeof(HTMLArea) != "function") {
-
-/*
- * HTMLArea object constructor.
- */
-HTMLArea = function(textarea, config) {
-	if (HTMLArea.checkSupportedBrowser()) {
-		if (typeof(config) == "undefined") this.config = new HTMLArea.Config();
-			else this.config = config;
-		this._htmlArea = null;
-		this._textArea = textarea;
-		if (typeof(this._textArea) == "string") {
-			this._textArea = HTMLArea.getElementById("textarea", this._textArea);
-		}
-		this.plugins = {};
-		this._timerToolbar = null;
-		this.doctype = '';
-		this.eventHandlers = {};
-	}
-};
-
-/*
- * Browser identification
- */
+if (typeof(HTMLArea) == 'undefined') {
+	// Establish HTMLArea name space
+Ext.namespace('HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color', 'Ext.ux.form', 'Ext.ux.menu', 'Ext.ux.Toolbar');
+/***************************************************
+ *  BROWSER IDENTIFICATION
+ ***************************************************/
 HTMLArea.agt = navigator.userAgent.toLowerCase();
-HTMLArea.is_opera  = (HTMLArea.agt.indexOf("opera") != -1);
+HTMLArea.is_opera  = Ext.isOpera;
 // Some operations require bug fixes provided by Opera 10 (Presto 2.2)
-HTMLArea.is_opera9 = HTMLArea.is_opera && HTMLArea.agt.indexOf("Presto/2.1") != -1;
-HTMLArea.is_ie = (HTMLArea.agt.indexOf("msie") != -1) && !HTMLArea.is_opera;
-HTMLArea.is_safari = (HTMLArea.agt.indexOf("webkit") != -1);
-HTMLArea.is_gecko  = (navigator.product == "Gecko") || HTMLArea.is_opera;
-HTMLArea.is_ff2 = (HTMLArea.agt.indexOf("firefox/2") != -1);
-HTMLArea.is_chrome = HTMLArea.is_safari && (HTMLArea.agt.indexOf("chrome") != -1);
-// Check on MacOS Wamcom version 1.3, if Mozilla will check earliest supported build in checkSupportedBrowser()
-HTMLArea.is_wamcom = (HTMLArea.agt.indexOf("wamcom") != -1) || (HTMLArea.is_gecko && HTMLArea.agt.indexOf("rv:1.3") != -1);
+HTMLArea.is_opera9 = Ext.isOpera && HTMLArea.agt.indexOf("Presto/2.1") != -1;
+HTMLArea.is_ie = Ext.isIE;
+HTMLArea.is_safari = Ext.isWebKit;
+HTMLArea.is_gecko  = Ext.isGecko || Ext.isOpera || Ext.isWebKit;
+HTMLArea.is_ff2 = Ext.isGecko2;
+HTMLArea.is_chrome = Ext.isChrome;
 
 /*
  * A log for troubleshooting
@@ -86,7 +62,9 @@ HTMLArea._appendToLog = function(str){
 		}
 	}
 };
-
+/***************************************************
+ *  SCRIPTS LOADING PROCESS
+ ***************************************************/
 /*
  * Build stack of scripts to be loaded
  */
@@ -97,7 +75,7 @@ HTMLArea.loadScript = function(url, pluginName, asynchronous) {
 	if (typeof(asynchronous) == "undefined") {
 		var asynchronous = true;
 	}
-	if (HTMLArea.is_opera) url = _typo3_host_url + url;
+	if (Ext.isOpera) url = _typo3_host_url + url;
 	if (HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "_compressed.js");
 	var scriptInfo = {
 		pluginName	: pluginName,
@@ -202,8 +180,6 @@ HTMLArea.init = function() {
 		if (typeof(_editor_edited_content_CSS) != "string") _editor_edited_content_CSS = _editor_skin + "htmlarea-edited-content.css";
 		if (typeof(_editor_lang) == "string") _editor_lang = _editor_lang ? _editor_lang.toLowerCase() : "en";
 		HTMLArea.editorCSS = _editor_CSS;
-			// Initialize event cache
-		HTMLArea._eventCache = HTMLArea._eventCacheConstructor();
 			// Initialize pending request flag
 		HTMLArea.pendingSynchronousXMLHttpRequest = false;
 			// Set troubleshooting mode
@@ -220,8 +196,8 @@ HTMLArea.init = function() {
 		HTMLArea._scripts = [];
 		HTMLArea._scriptLoaded = [];
 		HTMLArea._request = [];
-		if (HTMLArea.is_gecko) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
-		if (HTMLArea.is_ie) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
+		if (!Ext.isIE) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
+		if (Ext.isIE) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
 		for (var i = 0, n = HTMLArea_plugins.length; i < n; i++) {
 			HTMLArea.loadScript(HTMLArea_plugins[i].url, "", HTMLArea_plugins[i].asynchronous);
 		}
@@ -247,10 +223,10 @@ HTMLArea.init = function() {
 			if (success) {
 				HTMLArea.checkInitialLoad();
 			} else {
-				if (HTMLArea.is_ie) window.setTimeout('alert(HTMLArea.I18N.msg["ActiveX-required"]);', 200);
+				if (Ext.isIE) window.setTimeout('alert(HTMLArea.I18N.msg["ActiveX-required"]);', 200);
 			}
 		} else {
-			if (HTMLArea.is_ie) alert(HTMLArea.I18N.msg["ActiveX-required"]);
+			if (Ext.isIE) alert(HTMLArea.I18N.msg["ActiveX-required"]);
 		}
 	}
 };
@@ -259,25 +235,17 @@ HTMLArea.init = function() {
  * Compile some regular expressions
  */
 HTMLArea.RE_tagName = /(<\/|<)\s*([^ \t\n>]+)/ig;
-HTMLArea.RE_doctype = /(<!doctype((.|\n)*?)>)\n?/i;
 HTMLArea.RE_head    = /<head>((.|\n)*?)<\/head>/i;
 HTMLArea.RE_body    = /<body>((.|\n)*?)<\/body>/i;
 HTMLArea.Reg_body = new RegExp("<\/?(body)[^>]*>", "gi");
 HTMLArea.reservedClassNames = /htmlarea/;
 HTMLArea.RE_email    = /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i;
-HTMLArea.RE_url      = /(https?:\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i;
-
-/*
- * Editor configuration object constructor
- */
-
-HTMLArea.Config = function () {
-	this.width = "auto";
-	this.height = "auto";
-		// whether the toolbar should be included in the size or not.
-	this.sizeIncludesToolbar = true;
-		// if true then HTMLArea will retrieve the full HTML, starting with the <HTML> tag.
-	this.fullPage = false;
+HTMLArea.RE_url      = /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i;
+/***************************************************
+ *  EDITOR CONFIGURATION
+ ***************************************************/
+HTMLArea.Config = function (editorId) {
+	this.editorId = editorId;
 		// if the site is secure, create a secure iframe
 	this.useHTTPS = false;
 		// for Mozilla
@@ -300,7 +268,9 @@ HTMLArea.Config = function () {
 	this.customTags = null;
 		// BaseURL included in the iframe document
 	this.baseURL = document.baseURI || document.URL;
-	if(this.baseURL && this.baseURL.match(/(.*)\/([^\/]+)/)) this.baseURL = RegExp.$1 + "/";
+	if (this.baseURL && this.baseURL.match(/(.*)\/([^\/]+)/)) {
+		this.baseURL = RegExp.$1 + "/";
+	}
 		// URL-s
 	this.imgURL = "images/";
 	this.popupURL = "popups/";
@@ -308,1089 +278,2038 @@ HTMLArea.Config = function () {
 	this.documentType = '<!DOCTYPE html\r'
 			+ '    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"\r'
 			+ '    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r';
-
-	this.btnList = {
-		InsertHorizontalRule:	["Horizontal Rule", "ed_hr.gif",false, function(editor) {editor.execCommand("InsertHorizontalRule");}],
-		SelectAll:		["SelectAll", "", true, function(editor) {editor.execCommand("SelectAll");}, null, true, false]
+	this.resizable = TYPO3.settings.textareaResize;
+	this.maxHeight = TYPO3.settings.textareaMaxHeight;
+		// Hold the configuration of buttons and hot keys registered by plugins
+	this.buttonsConfig = {};
+	this.hotKeyList = {};
+		// Default configurations for toolbar items
+	this.configDefaults = {
+		all: {
+			xtype: 'htmlareabutton',
+			disabledClass: 'buttonDisabled',
+			textMode: false,
+			selection: false,
+			dialog: false,
+			hidden: false,
+			hideMode: 'display'
+		},
+		htmlareabutton: {
+			cls: 'button',
+			overCls: 'buttonHover'
+		},
+		htmlareacombo: {
+			cls: 'select',
+			typeAhead: true,
+			triggerAction: 'all',
+			editable: !Ext.isIE,
+			validationEvent: false,
+			validateOnBlur: false,
+			submitValue: false,
+			forceSelection: true,
+			mode: 'local',
+			storeFields: [ { name: 'text'}, { name: 'value'}],
+			valueField: 'value',
+			displayField: 'text',
+			labelSeparator: '',
+			hideLabel: true,
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+		}
 	};
-		// Default hotkeys
-	this.hotKeyList = {
-		a:	{ cmd:	"SelectAll", 	action:	null}
-	};
-
-		// Initialize tooltips from the I18N module, generate correct image path
-	for (var buttonId in this.btnList) {
-		if (this.btnList.hasOwnProperty(buttonId)) {
-			var btn = this.btnList[buttonId];
-			if (typeof(HTMLArea.I18N.tooltips[buttonId.toLowerCase()]) !== "undefined") {
-				btn[0] = HTMLArea.I18N.tooltips[buttonId.toLowerCase()];
+};
+HTMLArea.Config = Ext.extend(HTMLArea.Config, {
+	/**
+	 * Registers a button for inclusion in the toolbar, adding some standard configuration properties for the ExtJS widgets
+	 *
+	 * @param	object		buttonConfiguration: the configuration object of the button:
+	 *					id		: unique id for the button
+	 *					tooltip		: tooltip for the button
+	 *					textMode	: enable in text mode
+	 *					context		: disable if not inside one of listed elements
+	 *					hidden		: hide in menu and show only in context menu
+	 *					selection	: disable if there is no selection
+	 *					hotkey		: hotkey character
+	 *					dialog		: if true, the button opens a dialogue
+	 *					dimensions	: the opening dimensions object of the dialogue window: { width: nn, height: mm }
+	 *					and potentially other ExtJS config properties (will be forwarded)
+	 *
+	 * @return	boolean		true if the button was successfully registered
+	 */
+	registerButton: function (config) {
+		config.itemId = config.id;
+		if (Ext.type(this.buttonsConfig[config.id])) {
+			HTMLArea._appendToLog('[HTMLArea.Config::registerButton]: A toolbar item with the same Id: ' + config.id + ' already exists and will be overidden.');
+		}
+			// Apply defaults
+		config = Ext.applyIf(config, this.configDefaults['all']);
+		config = Ext.applyIf(config, this.configDefaults[config.xtype]);
+			// Set some additional properties
+		switch (config.xtype) {
+			case 'htmlareacombo':
+					// Create combo store
+				config.store = new Ext.data.ArrayStore({
+					autoDestroy:  true,
+					fields: config.storeFields,
+					data: config.options
+				});
+				config.hideLabel = Ext.isEmpty(config.fieldLabel);
+				config.helpTitle = config.tooltip;
+				break;
+			default:
+				config.iconCls = config.id;
+				break;
+		}
+		config.cmd = config.id;
+		config.tooltip = { title: config.tooltip };
+		this.buttonsConfig[config.id] = config;
+		return true;
+	},
+	/*
+	 * Register a hotkey with the editor configuration.
+	 */
+	registerHotKey: function (hotKeyConfiguration) {
+		if (Ext.isDefined(this.hotKeyList[hotKeyConfiguration.id])) {
+			HTMLArea._appendToLog('[HTMLArea.Config::registerHotKey]: A hotkey with the same key ' + hotKeyConfiguration.id + ' already exists and will be overidden.');
+		}
+		if (Ext.isDefined(hotKeyConfiguration.cmd) && !Ext.isEmpty(hotKeyConfiguration.cmd) && Ext.isDefined(this.buttonsConfig[hotKeyConfiguration.cmd])) {
+			this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
+			HTMLArea._appendToLog('[HTMLArea.Config::registerHotKey]: A hotkey with key ' + hotKeyConfiguration.id + ' was registered for toolbar item ' + hotKeyConfiguration.cmd + '.');
+			return true;
+		} else {
+			HTMLArea._appendToLog('[HTMLArea.Config::registerHotKey]: A hotkey with key ' + hotKeyConfiguration.id + ' could not be registered because toolbar item with id ' + hotKeyConfiguration.cmd + ' was not registered.');
+			return false;
+		}
+	},
+	/*
+	 * Get the configured document type for dialogue windows
+	 */
+	getDocumentType: function () {
+		return this.documentType;
+	}
+});
+/***************************************************
+ *  TOOLBAR COMPONENTS
+ ***************************************************/
+/*
+ * Ext.ux.HTMLAreaButton extends Ext.Button
+ */
+Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
+	/*
+	 * Component initialization
+	 */
+	initComponent: function () {
+		Ext.ux.HTMLAreaButton.superclass.initComponent.call(this);
+		this.addEvents(
+			/*
+			 * @event hotkey
+			 * Fires when the button hotkey is pressed
+			 */
+			'hotkey'
+		);
+		this.addListener({
+			afterrender: {
+				fn: this.initEventListeners,
+				single: true
 			}
-			if (typeof(btn[1]) === "string") {
-				btn[1] = _editor_skin + this.imgURL + btn[1];
+		});
+	},
+	/*
+	 * Initialize listeners
+	 */
+	initEventListeners: function () {
+		this.addListener({
+			click: {
+				fn: this.onButtonClick
+			},
+			hotkey: {
+				fn: this.onHotKey
+			}
+		});
+			// Monitor toolbar updates in order to refresh the state of the button
+		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
+	},
+	/*
+	 * Get a reference to the editor
+	 */
+	getEditor: function() {
+		return RTEarea[this.ownerCt.editorId].editor;
+	},
+	/*
+	 * Get a reference to the toolbar
+	 */
+	getToolbar: function() {
+		return this.ownerCt;
+	},
+	/*
+	 * Add properties and function to set button active or not depending on current selection
+	 */
+	inactive: true,
+	activeClass: 'buttonActive',
+	setInactive: function (inactive) {
+		this.inactive = inactive;
+		return inactive ? this.removeClass(this.activeClass) : this.addClass(this.activeClass);
+	},
+	/*
+	 * Determine if the button should be enabled based on the current selection and context configuration property
+	 */
+	isInContext: function (mode, selectionEmpty, ancestors) {
+		var editor = this.getEditor();
+		var inContext = true;
+		if (mode === 'wysiwyg' && this.context) {
+			var attributes = [],
+				contexts = [];
+			if (/(.*)\[(.*?)\]/.test(this.context)) {
+				contexts = RegExp.$1.split(',');
+				attributes = RegExp.$2.split(',');
 			} else {
-				btn[1][0] = _editor_skin + this.imgURL + btn[1][0];
+				contexts = this.context.split(',');
+			}
+			contexts = new RegExp( '^(' + contexts.join('|') + ')$', 'i');
+			var matchAny = contexts.test('*');
+			Ext.each(ancestors, function (ancestor) {
+				inContext = matchAny || contexts.test(ancestor.nodeName);
+				if (inContext) {
+					Ext.each(attributes, function (attribute) {
+						inContext = eval("ancestor." + attribute);
+						return inContext;
+					});
+				}
+				return !inContext;
+			});
+		}
+		return inContext && (!this.selection || !selectionEmpty);
+	},
+	/*
+	 * Handler invoked when the button is clicked
+	 */
+	onButtonClick: function (button, event, key) {
+		if (!this.disabled) {
+			if (!this.plugins[this.action](this.getEditor(), key || this.itemId) && event) {
+				event.stopEvent();
+			}
+			if (Ext.isOpera) {
+				this.getEditor().focus();
+			}
+			if (this.dialog) {
+				this.setDisabled(true);
+			} else {
+				this.getToolbar().update();
 			}
 		}
-	}
-	this.customSelects = {};
-};
-
-/*
- * Register a new button with the configuration.
- * It can be called with all arguments, or with only one (first one).  When called with
- * only one argument it must be an object with the following properties:
- * id, tooltip, image, textMode, action, context.  Examples:
- *
- * 1. config.registerButton("my-hilite", "Hilite text", "my-hilite.gif", false, function(editor) {...}, context);
- * 2. config.registerButton({
- *	id		: "my-hilite",		// Unique id for the button
- *	tooltip		: "Hilite text",	// the tooltip
- *	image		: "my-hilite.gif",	// image to be displayed in the toolbar
- *	textMode	: false,		// disabled in text mode
- *	action		: function(editor) {	// called when the button is clicked
- *				editor.surroundHTML('<span class="hilite">', '</span>');
- *				},
- *	context		: "p"			// will be disabled if not inside a <p> element
- *	hide		: false			// hide in menu and show only in context menu
- *	selection	: false			// will be disabled if there is no selection
- *	dialog		: true			// the button opens a dialogue
- *	dimensions	: { width: nn, height: mm } // opening dimensions of the dialogue window
- *    });
- */
-HTMLArea.Config.prototype.registerButton = function(id,tooltip,image,textMode,action,context,hide,selection, dialog, dimensions) {
-	var buttonId;
-	switch (typeof(id)) {
-		case "string": buttonId = id; break;
-		case "object": buttonId = id.id; break;
-		default: HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: invalid arguments");
-			 return false;
-	}
-	if (typeof(this.customSelects[buttonId]) !== "undefined") {
-		HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: A dropdown with the same Id: " + buttonId + " already exists.");
 		return false;
+	},
+	/*
+	 * Handler invoked when the hotkey configured for this button is pressed
+	 */
+	onHotKey: function (key, event) {
+		return this.onButtonClick(this, event, key);
+	},
+	/*
+	 * Handler invoked when the toolbar is updated
+	 */
+	onUpdateToolbar: function (mode, selectionEmpty, ancestors, endPointsInSameBlock) {
+		this.setDisabled(mode === 'textmode' && !this.textMode);
+		if (!this.disabled) {
+			if (!this.noAutoUpdate) {
+				this.setDisabled(!this.isInContext(mode, selectionEmpty, ancestors));
+			}
+			this.plugins['onUpdateToolbar'](this, mode, selectionEmpty, ancestors, endPointsInSameBlock);
+		}
 	}
-	if (typeof(this.btnList[buttonId]) !== "undefined") {
-		HTMLArea._appendToLog("[HTMLArea.Config::registerButton]: A button with the same Id: " + buttonId + " already exists and will be overidden.");
-	}
-	switch (typeof(id)) {
-		case "string":
-			if (typeof(hide) === "undefined") var hide = false;
-			if (typeof(selection) === "undefined") var selection = false;
-			if (typeof(dialog) === "undefined") var dialog = true;
-			this.btnList[id] = [tooltip, image, textMode, action, context, hide, selection, dialog, dimensions];
-			break;
-		case "object":
-			if (typeof(id.hide) === "undefined") id.hide = false;
-			if (typeof(id.selection) === "undefined") id.selection = false;
-			if (typeof(id.dialog) === "undefined") id.dialog = true;
-			this.btnList[id.id] = [id.tooltip, id.image, id.textMode, id.action, id.context, id.hide, id.selection, id.dialog, id.dimensions];
-			break;
-	}
-	return true;
-};
-
+});
+Ext.reg('htmlareabutton', Ext.ux.HTMLAreaButton);
 /*
- * Register a dropdown box with the editor configuration.
+ * Ext.ux.Toolbar.HTMLAreaToolbarText extends Ext.Toolbar.TextItem
  */
-HTMLArea.Config.prototype.registerDropdown = function(dropDownConfiguration) {
-	if (typeof(this.customSelects[dropDownConfiguration.id]) != "undefined") {
-		HTMLArea._appendToLog("[HTMLArea.Config::registerDropdown]: A dropdown with the same ID " + dropDownConfiguration.id + " already exists and will be overidden.");
+Ext.ux.Toolbar.HTMLAreaToolbarText = Ext.extend(Ext.Toolbar.TextItem, {
+	/*
+	 * Constructor
+	 */
+	initComponent: function () {
+		Ext.ux.Toolbar.HTMLAreaToolbarText.superclass.initComponent.call(this);
+		this.addListener({
+			afterrender: {
+				fn: this.initEventListeners,
+				single: true
+			}
+		});
+	},
+	/*
+	 * Initialize listeners
+	 */
+	initEventListeners: function () {
+			// Monitor toolbar updates in order to refresh the state of the button
+		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
+	},
+	/*
+	 * Get a reference to the editor
+	 */
+	getEditor: function() {
+		return RTEarea[this.ownerCt.editorId].editor;
+	},
+	/*
+	 * Get a reference to the toolbar
+	 */
+	getToolbar: function() {
+		return this.ownerCt;
+	},
+	/*
+	 * Handler invoked when the toolbar is updated
+	 */
+	onUpdateToolbar: function (mode, selectionEmpty, ancestors, endPointsInSameBlock) {
+		this.setDisabled(mode === 'textmode' && !this.textMode);
+		if (!this.disabled) {
+			this.plugins['onUpdateToolbar'](this, mode, selectionEmpty, ancestors, endPointsInSameBlock);
+		}
 	}
-	if (typeof(this.btnList[dropDownConfiguration.id]) != "undefined") {
-		HTMLArea._appendToLog("ERROR [HTMLArea.Config::registerDropdown]: A button with the same ID " + dropDownConfiguration.id + " already exists.");
+});
+Ext.reg('htmlareatoolbartext', Ext.ux.Toolbar.HTMLAreaToolbarText);
+/*
+ * Ext.ux.form.HTMLAreaCombo extends Ext.form.ComboBox
+ */
+Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
+	/*
+	 * Constructor
+	 */
+	initComponent: function () {
+		Ext.ux.form.HTMLAreaCombo.superclass.initComponent.call(this);
+		this.addEvents(
+			/*
+			 * @event hotkey
+			 * Fires when a hotkey configured for the combo is pressed
+			 */
+			'hotkey'
+		);
+		this.addListener({
+			afterrender: {
+				fn: this.initEventListeners,
+				single: true
+			}
+		});
+	},
+	/*
+	 * Initialize listeners
+	 */
+	initEventListeners: function () {
+		this.addListener({
+			select: {
+				fn: this.onComboSelect
+			},
+			specialkey: {
+				fn: this.onSpecialKey
+			},
+			hotkey: {
+				fn: this.onHotKey
+			}
+		});
+			// Monitor toolbar updates in order to refresh the state of the combo
+		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
+			// Monitor framework becoming ready
+		if (Ext.isIE) {
+			this.mon(this.getToolbar().ownerCt, 'frameworkready', this.onFrameworkReady, this);
+		}
+	},
+	/*
+	 * Get a reference to the editor
+	 */
+	getEditor: function() {
+		return RTEarea[this.ownerCt.editorId].editor;
+	},
+	/*
+	 * Get a reference to the toolbar
+	 */
+	getToolbar: function() {
+		return this.ownerCt;
+	},
+	/*
+	 * Handler invoked when an item is selected in the dropdown list
+	 */
+	onComboSelect: function (combo, record, index) {
+		if (!combo.disabled) {
+			var editor = this.getEditor();
+				// In IE, reclaim lost focus on the editor iframe and restore the bookmarked selection
+			if (Ext.isIE) {
+				editor.focus();
+				if (!Ext.isEmpty(this.bookmark)) {
+					editor.selectRange(editor.moveToBookmark(this.bookmark));
+					this.bookmark = null;
+				}
+			}
+				// Invoke the plugin onChange handler
+			this.plugins[this.action](editor, combo, record, index);
+				// In IE, bookmark the updated selection as the editor will be loosing focus
+			if (Ext.isIE) { 
+				editor.focus();
+				this.bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
+				this.triggered = true;
+			}
+			if (Ext.isOpera) {
+				editor.focus();
+			}
+			this.getToolbar().update();
+		}
 		return false;
+	},
+	/*
+	 * Handler invoked when the trigger element is clicked
+	 * In IE, need to reclaim lost focus for the editor in order to restore the selection
+	 */
+	onTriggerClick: function () {
+		Ext.ux.form.HTMLAreaCombo.superclass.onTriggerClick.call(this);
+			// In IE, avoid focus being stolen and selection being lost
+		if (Ext.isIE) {
+			this.triggered = true;
+			this.getEditor().focus();
+		}
+	},
+	/*
+	 * Handler invoked when the list of options is clicked in
+	 */
+	onViewClick: function (doFocus) {
+			// Avoid stealing focus from the editor
+		Ext.ux.form.HTMLAreaCombo.superclass.onViewClick.call(this, false);
+	},
+	/*
+	 * Handler invoked in IE when the mouse moves out of the editor iframe
+	 */
+	saveSelection: function (event) {
+		var editor = this.getEditor();
+		if (editor.document.hasFocus()) {
+			this.bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
+		}
+	},
+	/*
+	 * Handler invoked in IE when the editor gets the focus back
+	 */
+	restoreSelection: function (event) {
+		if (!Ext.isEmpty(this.bookmark) && this.triggered) {
+			var editor = this.getEditor();
+			editor.selectRange(editor.moveToBookmark(this.bookmark));
+			this.triggered = false;
+		}
+	},
+	/*
+	 * Handler invoked when the enter key is pressed while the combo has focus
+	 */
+	onSpecialKey: function (combo, event) {
+		if (event.getKey() == event.ENTER) {
+			event.stopEvent();
+                }
+		return false;
+	},
+	/*
+	 * Handler invoked when a hot key configured for this dropdown list is pressed
+	 */
+	onHotKey: function (key) {
+		if (!this.disabled) {
+			this.plugins.onHotKey(this.getEditor(), key);
+			if (Ext.isOpera) {
+				this.getEditor().focus();
+			}
+			this.getToolbar().update();
+		}
+		return false;
+	},
+	/*
+	 * Handler invoked when the toolbar is updated
+	 */
+	onUpdateToolbar: function (mode, selectionEmpty, ancestors, endPointsInSameBlock) {
+		this.setDisabled(mode === 'textmode' && !this.textMode);
+		if (!this.disabled) {
+			this.plugins['onUpdateToolbar'](this, mode, selectionEmpty, ancestors, endPointsInSameBlock);
+		}
+	},
+	/*
+	 * Special handling for combo stealing focus in IE
+	 * The iframe must have been rendered
+	 */
+	onFrameworkReady: function () {
+			// Take a bookmark in case the editor looses focus by activation of this combo
+		this.mon(this.getEditor().iframe.getEl(), 'mouseleave', this.saveSelection, this);
+			// Restore the selection if combo was triggered
+		this.mon(this.getEditor().iframe.getEl(), 'focus', this.restoreSelection, this);
 	}
-	this.customSelects[dropDownConfiguration.id] = dropDownConfiguration;
-	return true;
-};
-
-/*
- * Register a hotkey with the editor configuration.
- */
-HTMLArea.Config.prototype.registerHotKey = function(hotKeyConfiguration) {
-	if (typeof(this.hotKeyList[hotKeyConfiguration.id]) != "undefined") {
-		HTMLArea._appendToLog("[HTMLArea.Config::registerHotKey]: A hotkey with the same key " + hotKeyConfiguration.id + " already exists and will be overidden.");
-	}
-	this.hotKeyList[hotKeyConfiguration.id] = hotKeyConfiguration;
-	return true;
-};
-
-HTMLArea.Config.prototype.getDocumentType = function () {
-	return this.documentType;
-};
-
+});
+Ext.reg('htmlareacombo', Ext.ux.form.HTMLAreaCombo);
 /***************************************************
  *  EDITOR FRAMEWORK
  ***************************************************/
 /*
- * Update the state of a toolbar element.
- * This function is member of a toolbar element object, unnamed object created by createButton or createSelect functions.
+ * HTMLArea.Toolbar extends Ext.Container
  */
-HTMLArea.setButtonStatus = function(id,newval) {
-	var oldval = this[id];
-	var el = document.getElementById(this.elementId);
-	if (oldval != newval) {
-		switch (id) {
-			case "enabled":
-				if (newval) {
-					if (!HTMLArea.is_wamcom) {
-						HTMLArea._removeClass(el, "buttonDisabled");
-						HTMLArea._removeClass(el.parentNode, "buttonDisabled");
-					}
-					el.disabled = false;
-				} else {
-					if (!HTMLArea.is_wamcom) {
-						HTMLArea._addClass(el, "buttonDisabled");
-						HTMLArea._addClass(el.parentNode, "buttonDisabled");
-					}
-					el.disabled = true;
-				}
-				break;
-			    case "active":
-				if (newval) {
-					HTMLArea._addClass(el, "buttonPressed");
-					HTMLArea._addClass(el.parentNode, "buttonPressed");
-					el.active = true;
-				} else {
-					HTMLArea._removeClass(el, "buttonPressed");
-					HTMLArea._removeClass(el.parentNode, "buttonPressed");
-					el.active = false;
-				}
-				break;
-		}
-		this[id] = newval;
-	}
-};
-
-/*
- * Create a new line in the toolbar
- */
-HTMLArea.newLine = function(toolbar) {
-	tb_line = document.createElement("ul");
-	tb_line.className = "tb-line";
-	toolbar.appendChild(tb_line);
-	return tb_line;
-};
-
-/*
- * Add a toolbar element to the current line or group
- */
-HTMLArea.addTbElement = function(element, tb_line, first_cell_on_line) {
-	var tb_cell = document.createElement("li");
-	if (first_cell_on_line) tb_cell.className = "tb-first-cell";
-		else tb_cell.className = "tb-cell";
-	HTMLArea._addClass(tb_cell, element.className);
-	tb_line.appendChild(tb_cell);
-	tb_cell.appendChild(element);
-	if(element.style.display == "none") {
-		tb_cell.style.display = "none";
-		if(HTMLArea._hasClass(tb_cell.previousSibling, "separator")) tb_cell.previousSibling.style.display = "none";
-	}
-	return false;
-};
-
-/*
- * Create a new group on the current line
- */
-HTMLArea.addTbGroup = function(tb_line, first_cell_on_line) {
-	var tb_group = document.createElement("ul");
-	tb_group.className = "tb-group";
-	HTMLArea.addTbElement(tb_group, tb_line, first_cell_on_line);
-	return tb_group;
-};
-
-/*
- * Create a combo box and add it to the toolbar
- */
-HTMLArea.prototype.createSelect = function(txt,tb_line,first_cell_on_line,labelObj) {
-	var options = null,
-		cmd = null,
-		context = null,
-		tooltip = "",
-		newObj = {
-			created : false,
-			el : null,
-			first : first_cell_on_line,
-			labelUsed : false
-		};
-
-	cmd = txt;
-	var dropdown = this.config.customSelects[cmd];
-	if (typeof(dropdown) != "undefined") {
-		options = dropdown.options;
-		context = dropdown.context;
-		if (typeof(dropdown.tooltip) != "undefined") tooltip = dropdown.tooltip;
-	}
-	if (options) {
-		newObj["el"] = document.createElement("select");
-		newObj["el"].className = "select";
-		newObj["el"].title = tooltip;
-		newObj["el"].id = this._editorNumber + "-" + txt;
-		newObj["first"] = HTMLArea.addTbElement(newObj["el"], tb_line, first_cell_on_line);
-		var obj = {
-			name 		: txt,				// field name
-			elementId 	: newObj["el"].id,		// unique id for the UI element
-			enabled 	: true,				// is it enabled?
-			text 		: false,			// enabled in text mode?
-			cmd 		: cmd,				// command ID
-			state		: HTMLArea.setButtonStatus,	// for changing state
-			context 	: context,
-			editorNumber	: this._editorNumber
-		};
-		this._toolbarObjects[txt] = obj;
-		newObj["el"]._obj = obj;
-		if (labelObj["labelRef"]) {
-			labelObj["el"].htmlFor = newObj["el"].id;
-			newObj["labelUsed"] = true;
-		}
-		HTMLArea._addEvent(newObj["el"], "change", HTMLArea.toolBarButtonHandler);
-
-		for (var i in options) {
-			if (options.hasOwnProperty(i)) {
-				var op = document.createElement("option");
-				op.innerHTML = i;
-				op.value = options[i];
-				newObj["el"].appendChild(op);
+HTMLArea.Toolbar = Ext.extend(Ext.Container, {
+	/*
+	 * Constructor
+	 */
+	initComponent: function () {
+		HTMLArea.Toolbar.superclass.initComponent.call(this);
+		this.addEvents(
+			/*
+			 * @event update
+			 * Fires when the toolbar is updated
+			 */
+			'update'
+		);
+			// Build the deferred toolbar update task
+		this.updateLater = new Ext.util.DelayedTask(this.update, this);
+			// Add the toolbar items
+		this.addItems();
+		this.addListener({
+			afterrender: {
+				fn: this.initEventListeners,
+				single: true
 			}
+		});
+	},
+	/*
+	 * Initialize listeners
+	 */
+	initEventListeners: function () {
+			// Monitor editor becoming ready
+		this.mon(this.getEditor(), 'editorready', this.update, this, {single: true});
+	},
+	/*
+	 * editorId should be set in config
+	 */
+	editorId: null,
+	/*
+	 * Get a reference to the editor
+	 */
+	getEditor: function() {
+		return RTEarea[this.editorId].editor;
+	},
+	/*
+	 * Create the toolbar items based on editor toolbar configuration
+	 */
+	addItems: function () {
+		var editor = this.getEditor();
+			// Walk through the editor toolbar configuration nested arrays: [ toolbar [ row [ group ] ] ]
+		var firstOnRow = true;
+		var firstInGroup = true;
+		Ext.each(editor.config.toolbar, function (row) {
+			if (!firstOnRow) {
+					// If a visible item was added to the previous line
+				this.add({
+					xtype: 'tbspacer',
+					cls: 'x-form-clear-left'
+				});
+			}
+			firstOnRow = true;
+				// Add the groups
+			Ext.each(row, function (group) {
+					// To do: this.config.keepButtonGroupTogether ...
+				if (!firstOnRow && !firstInGroup) {
+						// If a visible item was added to the line
+					this.add({
+						xtype: 'tbseparator',
+						cls: 'separator'
+					});
+				}
+				firstInGroup = true;
+					// Add each item
+				Ext.each(group, function (item) {
+					if (item == 'space') {
+						this.add({
+							xtype: 'tbspacer',
+							cls: 'space'
+						});
+					} else {
+							// Get the item's config as registered by some plugin
+						var itemConfig = editor.config.buttonsConfig[item];
+						if (!Ext.isEmpty(itemConfig)) {
+							itemConfig.id = this.editorId + '-' + itemConfig.id;
+							this.add(itemConfig);
+							firstInGroup = firstInGroup && itemConfig.hidden;
+							firstOnRow = firstOnRow && firstInGroup;
+						}
+					}
+					return true;
+				}, this);
+				return true;
+			}, this);
+			return true;
+		}, this);
+		this.add({
+			xtype: 'tbspacer',
+			cls: 'x-form-clear-left'
+		});
+	},
+	/*
+	 * Retrieve a toolbar item by itemId
+	 */
+	getButton: function (buttonId) {
+		return this.find('itemId', buttonId)[0];
+	},
+	/*
+	 * Update the state of the toolbar
+	 */
+	update: function() {
+		var editor = this.getEditor(),
+			mode = editor.getMode(),
+			selectionEmpty = true,
+			ancestors = null,
+			endPointsInSameBlock = true;
+		if (editor.getMode() === 'wysiwyg') {
+			selectionEmpty = editor._selectionEmpty(editor._getSelection());
+			ancestors = editor.getAllAncestors();
+			endPointsInSameBlock = editor.endPointsInSameBlock();
 		}
-
-		newObj["created"] = true;
+		this.fireEvent('update', mode, selectionEmpty, ancestors, endPointsInSameBlock);
 	}
-
-	return newObj;
-};
-
+});
+Ext.reg('htmlareatoolbar', HTMLArea.Toolbar);
 /*
- * Create a button and add it to the toolbar
+ * HTMLArea.Iframe extends Ext.BoxComponent
  */
-HTMLArea.prototype.createButton = function (txt,tb_line,first_cell_on_line,labelObj) {
-	var btn = null,
-		newObj = {
-			created : false,
-			el : null,
-			first : first_cell_on_line,
-			labelUsed : false
-		};
-
-	switch (txt) {
-		case "separator":
-			newObj["el"] = document.createElement("div");
-			newObj["el"].className = "separator";
-			newObj["first"] = HTMLArea.addTbElement(newObj["el"], tb_line, first_cell_on_line);
-			newObj["created"] = true;
-			break;
-		case "space":
-			newObj["el"] = document.createElement("div");
-			newObj["el"].className = "space";
-			newObj["el"].innerHTML = "&nbsp;";
-			newObj["first"] = HTMLArea.addTbElement(newObj["el"], tb_line, first_cell_on_line);
-			newObj["created"] = true;
-			break;
-		case "TextIndicator":
-			newObj["el"] = document.createElement("div");
-			newObj["el"].appendChild(document.createTextNode("A"));
-			newObj["el"].className = "indicator";
-			newObj["el"].title = HTMLArea.I18N.tooltips.textindicator;
-			newObj["el"].id = this._editorNumber + "-" + txt;
-			newObj["first"] = HTMLArea.addTbElement(newObj["el"], tb_line, first_cell_on_line);
-			var obj = {
-				name		: txt,
-				elementId	: newObj["el"].id,
-				enabled		: true,
-				active		: false,
-				text		: false,
-				cmd		: "TextIndicator",
-				state		: HTMLArea.setButtonStatus
-			};
-			this._toolbarObjects[txt] = obj;
-			newObj["created"] = true;
-			break;
-		default:
-			btn = this.config.btnList[txt];
-	}
-	if(!newObj["created"] && btn) {
-		newObj["el"] = document.createElement("button");
-		newObj["el"].title = btn[0];
-		newObj["el"].className = "button";
-		newObj["el"].id = this._editorNumber + "-" + txt;
-		if (btn[5]) newObj["el"].style.display = "none";
-		newObj["first"] = HTMLArea.addTbElement(newObj["el"], tb_line, first_cell_on_line);
-		var obj = {
-			name 		: txt, 				// the button name
-			elementId	: newObj["el"].id, 		// unique id for the UI element
-			enabled 	: true,				// is it enabled?
-			active		: false,			// is it pressed?
-			text 		: btn[2],			// enabled in text mode?
-			cmd 		: btn[3],			// the function to be invoked
-			state		: HTMLArea.setButtonStatus,	// for changing state
-			context 	: btn[4] || null,		// enabled in a certain context?
-			selection	: btn[6],			// disabled when no selection?
-			editorNumber	: this._editorNumber
-		};
-		this._toolbarObjects[txt] = obj;
-		newObj["el"]._obj = obj;
-		if (labelObj["labelRef"]) {
-			labelObj["el"].htmlFor = newObj["el"].id;
-			newObj["labelUsed"] = true;
+HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
+	/*
+	 * Constructor
+	 */
+	initComponent: function () {
+		HTMLArea.Iframe.superclass.initComponent.call(this);
+		this.addEvents(
+			/*
+			 * @event iframeready
+			 * Fires when the iframe style sheets become accessible
+			 */
+			'iframeready'
+		);
+		this.addListener({
+			afterrender: {
+				fn: this.initEventListeners,
+				single: true
+			},
+			beforeDestroy: {
+				fn: this.onBeforeDestroy,
+				single: true
+			}
+		});
+		this.config = this.getEditor().config;
+		if (!this.config.showStatusBar) {
+			this.addClass('noStatusBar');
 		}
-		HTMLArea._addEvents(newObj["el"],["mouseover", "mouseout", "mousedown", "click"], HTMLArea.toolBarButtonHandler);
-		newObj["el"].className += " " + txt;
-		newObj["created"] = true;
-	}
-	return newObj;
-};
-
-/*
- * Create a label and add it to the toolbar
- */
-HTMLArea.createLabel = function(txt,tb_line,first_cell_on_line) {
-	var newObj = {
-		created : false,
-		el : null,
-		labelRef : false,
-		first : first_cell_on_line
-	};
-	if (/^([IT])\[(.*?)\]/.test(txt)) {
-		var l7ed = RegExp.$1 == "I"; // localized?
-		var label = RegExp.$2;
-		if (l7ed) label = HTMLArea.I18N.dialogs[label];
-		newObj["el"] = document.createElement("label");
-		newObj["el"].className = "label";
-		newObj["el"].innerHTML = label;
-		newObj["labelRef"] = true;
-		newObj["created"] = true;
-		newObj["first"] = HTMLArea.addTbElement(newObj["el"], tb_line, first_cell_on_line);
-	}
-	return newObj;
-};
-
-/*
- * Create the toolbar and append it to the _htmlarea.
- */
-HTMLArea.prototype._createToolbar = function () {
-	var j, k, code, n = this.config.toolbar.length, m,
-		tb_line = null, tb_group = null,
-		first_cell_on_line = true,
-		labelObj = new Object(),
-		tbObj = new Object();
-
-	var toolbar = document.createElement("div");
-	this._toolbar = toolbar;
-	toolbar.className = "toolbar";
-	toolbar.unselectable = "1";
-	this._toolbarObjects = new Object();
-
-	for (j = 0; j < n; ++j) {
-		tb_line = HTMLArea.newLine(toolbar);
-		if(!this.config.keepButtonGroupTogether) HTMLArea._addClass(tb_line, "free-float");
-		first_cell_on_line = true;
-		tb_group = null;
-		var group = this.config.toolbar[j];
-		m = group.length;
-		for (k = 0; k < m; ++k) {
-			code = group[k];
-			if (code == "linebreak") {
-				tb_line = HTMLArea.newLine(toolbar);
-				if(!this.config.keepButtonGroupTogether) HTMLArea._addClass(tb_line, "free-float");
-				first_cell_on_line = true;
-				tb_group = null;
+	},
+	/*
+	 * Initialize event listeners and the document after the iframe has rendered
+	 */
+	initEventListeners: function () {
+			// The editor iframe may become hidden with style.display = "none"
+			// This breaks the editor in Firefox: the designMode attribute needs to be reset after the style.display of the containing div is reset to "block"
+		if (Ext.isGecko && this.isNested) {
+			Ext.each(this.nestedParentElements.sorted, function (nested) {
+				this.mon(Ext.get(nested), 'DOMAttrModified', this.onNestedShow, this, {delay: 100});
+			}, this);
+		}
+		if (Ext.isOpera) {
+			this.mon(this.getEl(), 'load', this.initializeIframe , this, {single: true});
+		} else {
+			this.initializeIframe();
+		}
+	},
+	/*
+	 * editorId should be set in config
+	 */
+	editorId: null,
+	/*
+	 * Get a reference to the editor
+	 */
+	getEditor: function() {
+		return RTEarea[this.editorId].editor;
+	},
+	/*
+	 * Get a reference to the toolbar
+	 */
+	getToolbar: function () {
+		return this.ownerCt.getTopToolbar();
+	},
+	/*
+	 * Get a reference to a button
+	 */
+	getButton: function (buttonId) {
+		return this.getToolbar().getButton(buttonId);
+	},
+	/*
+	 * Flag set to true when the iframe becomes usable for editing
+	 */
+	ready: false,
+	/*
+	 * Create the iframe element at rendering time
+	 */
+	onRender: function (ct, position){
+			// from Ext.Component
+		if (!this.el && this.autoEl) {
+			if (Ext.isString(this.autoEl)) {
+				this.el = document.createElement(this.autoEl);
 			} else {
-				if ((code == "separator" || first_cell_on_line) && this.config.keepButtonGroupTogether) {
-					tb_group = HTMLArea.addTbGroup(tb_line, first_cell_on_line);
-					first_cell_on_line = false;
-				}
-				created = false;
-				if (/^([IT])\[(.*?)\]/.test(code)) {
-					labelObj = HTMLArea.createLabel(code, (tb_group?tb_group:tb_line), first_cell_on_line);
-					created = labelObj["created"] ;
-					first_cell_on_line = labelObj["first"];
-				}
-				if (!created) {
-					tbObj = this.createButton(code, (tb_group?tb_group:tb_line), first_cell_on_line, labelObj);
-					created = tbObj["created"];
-					first_cell_on_line = tbObj["first"];
-					if(tbObj["labelUsed"]) labelObj["labelRef"] = false;
-				}
-				if (!created) {
-					tbObj = this.createSelect(code, (tb_group?tb_group:tb_line), first_cell_on_line, labelObj);
-					created = tbObj["created"];
-					first_cell_on_line = tbObj["first"];
-					if(tbObj["labelUsed"]) labelObj["labelRef"] = false;
-				}
-				if (!created) HTMLArea._appendToLog("ERROR [HTMLArea::createToolbar]: Unknown toolbar item: " + code);
+					// ExtJS Default method will not work with iframe element
+				this.el = Ext.DomHelper.append(ct, this.autoEl, true);
+			}
+			if (!this.el.id) {
+				this.el.id = this.getId();
 			}
 		}
-	}
-
-	tb_line = HTMLArea.newLine(toolbar);
-	this._htmlArea.appendChild(toolbar);
-};
-
-/*
- * Handle toolbar element events handler
- */
-HTMLArea.toolBarButtonHandler = function(ev) {
-	if(!ev) var ev = window.event;
-	var target = (ev.target) ? ev.target : ev.srcElement;
-	while (target.tagName.toLowerCase() == "img" || target.tagName.toLowerCase() == "div") target = target.parentNode;
-	var obj = target._obj;
-	var editorNumber = obj["editorNumber"];
-	var editor = RTEarea[editorNumber]["editor"];
-	if (obj.enabled) {
-		switch (ev.type) {
-			case "mouseover":
-				HTMLArea._addClass(target, "buttonHover");
-				HTMLArea._addClass(target.parentNode, "buttonHover");
-				break;
-			case "mouseout":
-				HTMLArea._removeClass(target, "buttonHover");
-				HTMLArea._removeClass(target.parentNode, "buttonHover");
-				HTMLArea._removeClass(target, "buttonActive");
-				HTMLArea._removeClass(target.parentNode, "buttonActive");
-				if (obj.active) {
-					HTMLArea._addClass(target, "buttonPressed");
-					HTMLArea._addClass(target.parentNode, "buttonPressed");
-				}
-				break;
-			case "mousedown":
-				HTMLArea._addClass(target, "buttonActive");
-				HTMLArea._addClass(target.parentNode, "buttonActive");
-				HTMLArea._removeClass(target, "buttonPressed");
-				HTMLArea._removeClass(target.parentNode, "buttonPressed");
-				HTMLArea._stopEvent(ev);
-				break;
-			case "click":
-				HTMLArea._removeClass(target, "buttonActive");
-				HTMLArea._removeClass(target.parentNode, "buttonActive");
-				HTMLArea._removeClass(target, "buttonHover");
-				HTMLArea._removeClass(target.parentNode, "buttonHover");
-				obj.cmd(editor, obj.name);
-				HTMLArea._stopEvent(ev);
-				if (HTMLArea.is_opera) {
-					editor._iframe.focus();
-				}
-				if (!editor.config.btnList[obj.name][7]) {
-					editor.updateToolbar();
-				}
-				break;
-			case "change":
-				editor.focusEditor();
-				var dropdown = editor.config.customSelects[obj.name];
-				if (typeof(dropdown) !== "undefined") {
-					dropdown.action(editor, obj.name);
-					HTMLArea._stopEvent(ev);
-					if (HTMLArea.is_opera) {
-						editor._iframe.focus();
-					}
-					editor.updateToolbar();
-				} else {
-					HTMLArea._appendToLog("ERROR [HTMLArea::toolBarButtonHandler]: Combo box " + obj.name + " not registered.");
-				}
+			// from Ext.BoxComponent
+		if (this.resizeEl){
+			this.resizeEl = Ext.get(this.resizeEl);
 		}
-	}
-};
-
-/*
- * Create the htmlArea iframe and replace the textarea with it.
- */
-HTMLArea.prototype.generate = function () {
-	var self = this;
-		// Get the textarea, hide it and make it resizable
-	this.textArea = Ext.get(this._textArea).setVisibilityMode(2).setVisible(false);
-	if (TYPO3.settings.textareaResize) {
-		this.textArea.addClass('resizable');
-		this.textAreaResizer = new Ext.Resizable(this.textArea, {
-			minWidth:  300,
-			minHeight: 200,
-			maxHeight: TYPO3.settings.textareaMaxHeight,
-			dynamic:   true
-		});
-		this.textAreaResizer.on('resize', function(ev) { self.resizeOnTextAreaChange(2); });
-	}
-
-		// Create the editor framework and insert it before the textarea
-	this.htmlArea = Ext.DomHelper.insertBefore(this.textArea, {
-		tag: 'div',
-		cls: 'htmlarea'
-	}, true).setWidth(this.textArea.getStyle('width'));
-	this._htmlArea = this.htmlArea.dom;
-
-		// If we have a form, on reset, re-initialize the HTMLArea content and update the toolbar
-	if (this.textArea.dom.form) {
-		var f = this.textArea.dom.form;
-		if (typeof(f.onreset) == "function") {
-			var funcref = f.onreset;
-			if (typeof(f.__msh_prevOnReset) == "undefined") f.__msh_prevOnReset = [];
-			f.__msh_prevOnReset.push(funcref);
+		if (this.positionEl){
+			this.positionEl = Ext.get(this.positionEl);
 		}
-		f._editorNumber = this._editorNumber;
-		HTMLArea._addEvent(f, "reset", HTMLArea.resetHandler);
-	}
-
-		// Create & append the toolbar
-	this._createToolbar();
-	HTMLArea._appendToLog("[HTMLArea::generate]: Toolbar successfully created.");
-
-		// Create the editor iframe and append it to the toolbar
-	this.iframe = Ext.DomHelper.append(this.htmlArea, {
-			tag: 'iframe',
-			cls: 'editorIframe',
-			src: (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) ? 'javascript:void(0);' : (HTMLArea.is_opera?_typo3_host_url:'') + _editor_url + 'popups/blank.html'
-	}, true);
-	if (!this.getPluginInstance('StatusBar')) {
-		this.iframe.addClass('noStatusBar');
-	}
-	this._iframe = this.iframe.dom;
-	HTMLArea._appendToLog("[HTMLArea::generate]: Editor iframe successfully created.");
-		// Make the editor framework resizable
-	if (TYPO3.settings.textareaResize) {
-		this.htmlArea.addClass('resizable');
-		var dimensions = this.getDimensions();
-		this.htmlAreaResizer = new Ext.Resizable(this.htmlArea, {
-			maxHeight: parseInt(TYPO3.settings.textareaMaxHeight) + dimensions.toolbar.height + dimensions.statusbar.height,
-			dynamic:   false
-		});
-		this.htmlAreaResizer.on('resize', function(ev) { self.resizeOnHtmlAreaChange(2); });
-	}
-	if (HTMLArea.is_opera) {
-		this.iframe.on('load', function() { self.initIframe(); } , this);
-	} else {
-		this.initIframe();
-	}
-	return this;
-};
-
-/*
- * Resize the editor framework and the iframe when the textarea was resized
- */
-HTMLArea.prototype.resizeOnTextAreaChange = function(diff) {
-		// Set width first as it may change the height of the toolbar and of the statusbar
-	var width = this.textArea.getStyle('width');
-	if (width.indexOf('%') == -1) {
-		width = (parseInt(width) + diff) + 'px';
-	}
-	this.iframe.setStyle('width', HTMLArea.is_opera ? width : '100%');
-	this.htmlArea.setStyle('width', width);
-		// Set height
-	var dimensions = this.getDimensions();
-	var height = this.textArea.getStyle('height');
-	if (height.indexOf('%') == -1) {
-		height = (parseInt(height) + diff) + 'px';
-	}
-	this.iframe.setStyle('height', height);
-	this.htmlArea.setStyle('height', (dimensions.toolbar.height + dimensions.statusbar.height) + 'px');
-};
-
-/*
- * Resize the textarea and iframe when the htmlArea was resized
- */
-HTMLArea.prototype.resizeOnHtmlAreaChange = function(diff) {
-		// Set width first as it may change the height of the toolbar and of the statusbar
-	var width = this.htmlArea.getStyle('width');
-		// Do not shrink narrower than configured textarea
-	if (parseInt(width) < this.textAreaResizer.minWidth + diff) {
-		width = (this.textAreaResizer.minWidth + diff) + 'px';
-		this.htmlArea.setStyle('width', width);
-	}
-	if (width.indexOf('%') == -1) {
-		width = (parseInt(width) - diff) + 'px';
-	}
-	this.textArea.setStyle('width', width);
-		// Set height
-	var height = this.iframe.getStyle('height');
-	if (height.indexOf('%') == -1) {
-		var dimensions = this.getDimensions();
-		height = parseInt(this.htmlArea.getStyle('height')) - dimensions.toolbar.height - dimensions.statusbar.height;
-			// Do not shrink shorter than configured textarea
-		if (height < this.textAreaResizer.minHeight + diff) {
-			height = this.textAreaResizer.minHeight + diff;
-			this.htmlArea.setStyle('height', (height + dimensions.toolbar.height + dimensions.statusbar.height) + 'px');
+	},
+	/*
+	 * Proceed to build the iframe document head and ensure style sheets are available after the iframe document becomes available
+	 */
+	initializeIframe: function () {
+		var iframe = this.getEl().dom;
+			// All browsers
+		if (!iframe || (!iframe.contentWindow && !iframe.contentDocument)) {
+			this.initializeIframe.defer(50, this);
+			// All except Safari
+		} else if (iframe.contentWindow && !Ext.isWebKit && (!iframe.contentWindow.document || !iframe.contentWindow.document.documentElement)) {
+			this.initializeIframe.defer(50, this);
+			// Safari
+		} else if (!iframe.contentDocument.documentElement || !iframe.contentDocument.body) {
+			this.initializeIframe.defer(50, this);
+		} else {
+			this.document = iframe.contentWindow ? iframe.contentWindow.document : iframe.contentDocument;
+			this.getEditor().document = this.document;
+			this.getEditor()._doc = this.document;
+			this.getEditor()._iframe = iframe;
+			this.createHead();
+			this.getStyleSheets();
 		}
-		this.iframe.setStyle('height', height + 'px');
-		height = (height - diff) + 'px';
-	}
-	this.textArea.setStyle('height', height);
-};
-
-/*
- * Size the iframe according to user's prefs or initial textarea
- */
-HTMLArea.prototype.sizeIframe = function(diff) {
-		// Clone the array of nested tabs and inline levels instead of using a reference (this.accessParentElements will change the array):
-	var parentElements = (this.nested.sorted && this.nested.sorted.length ? [].concat(this.nested.sorted) : []);
-		// Walk through all nested tabs and inline levels to make a correct positioning:
-	var dimensions = this.accessParentElements(parentElements, 'this.getDimensions()');
-		// Set height
-	this.config.height = (this.config.height == "auto") ? this._textArea.style.height : this.config.height;
-	var iframeHeight = this.config.height;
-	var textareaHeight = this.config.height;
-	var htmlAreaHeight = this.config.height;
-	if (this.config.height.indexOf("%") == -1) {
-		iframeHeight = parseInt(iframeHeight) - diff;
-		if (this.config.sizeIncludesToolbar) {
-			this._initialToolbarOffsetHeight = this._initialToolbarOffsetHeight ? this._initialToolbarOffsetHeight : dimensions.toolbar.height;
-			iframeHeight -= dimensions.toolbar.height;
-			iframeHeight -= dimensions.statusbar.height;
-		}
-		if (iframeHeight < 0) {
-			iframeHeight = 0;
-		}
-		htmlAreaHeight = (iframeHeight + dimensions.toolbar.height + dimensions.statusbar.height) + 'px';
-		textareaHeight = (iframeHeight - 4);
-		if (textareaHeight < 0) {
-			textareaHeight = 0;
-		}
-		iframeHeight += "px";
-		textareaHeight += "px";
-	}
-	this._iframe.style.height = iframeHeight;
-	this._textArea.style.height = textareaHeight;
-	this.htmlArea.setStyle('height', htmlAreaHeight);
-		// Set width
-	this.config.width = (this.config.width == "auto") ? this._textArea.style.width : this.config.width;
-	var textareaWidth = this.config.width;
-	var iframeWidth = this.config.width;
-	if (textareaWidth.indexOf("%") == -1) {
-		iframeWidth = parseInt(textareaWidth) + "px";
-		textareaWidth = parseInt(textareaWidth) - diff;
-		if (textareaWidth < 0) {
-			textareaWidth = 0;
-		}
-		textareaWidth += "px";
-	}
-	this._iframe.style.width = "100%";
-	if (HTMLArea.is_opera) {
-		this._iframe.style.width = iframeWidth;
-	}
-	this._textArea.style.width = textareaWidth;
-};
-
-/*
- * Resize the iframes
- */
-HTMLArea.resizeIframes = function(ev) {
-	if (!ev) var ev = window.event;
-	HTMLArea._stopEvent(ev);
-	for (var editorNumber in RTEarea) {
-		if (RTEarea.hasOwnProperty(editorNumber)) {
-			var editor = RTEarea[editorNumber].editor;
-			if (editor) {
-				editor.sizeIframe(2);
-			}
-		}
-	}
-};
-
-/**
- * Get the dimensions of the toolbar and statusbar.
- *
- * @return	object		An object with width/height pairs for statusbar and toolbar.
- * @author	Oliver Hader <oh@inpublica.de>
- */
-HTMLArea.prototype.getDimensions = function() {
-	return {
-		toolbar: {width: this._toolbar.offsetWidth, height: this._toolbar.offsetHeight},
-		statusbar: {width: ((this.getPluginInstance("StatusBar") && this.getPluginInstance("StatusBar").statusBar) ? this.getPluginInstance("StatusBar").statusBar.offsetWidth : 0), height: ((this.getPluginInstance("StatusBar") && this.getPluginInstance("StatusBar").statusBar) ? this.getPluginInstance("StatusBar").statusBar.offsetHeight : 0)}
-	};
-};
-
-/**
- * Access an inline relational element or tab menu and make it "accessible".
- * If a parent object has the style "display: none", offsetWidth & offsetHeight are '0'.
- *
- * @params	object		callbackFunc: A function to be called, when the embedded objects are "accessible".
- * @return	object		An object returned by the callbackFunc.
- * @author	Oliver Hader <oh@inpublica.de>
- */
-HTMLArea.prototype.accessParentElements = function(parentElements, callbackFunc) {
-	var result = {};
-
-	if (parentElements.length) {
-		var currentElement = parentElements.pop();
-		var elementStyle = document.getElementById(currentElement).style;
-		var actionRequired = (elementStyle.display == 'none' ? true : false);
-
-		if (actionRequired) {
-			var originalVisibility = elementStyle.visibility;
-			var originalPosition = elementStyle.position;
-			elementStyle.visibility = 'hidden';
-			elementStyle.position = 'absolute';
-			elementStyle.display = '';
-		}
-
-		result = this.accessParentElements(parentElements, callbackFunc);
-
-		if (actionRequired) {
-			elementStyle.display = 'none';
-			elementStyle.position = originalPosition;
-			elementStyle.visibility = originalVisibility;
-		}
-
-	} else {
-		result = eval(callbackFunc);
-
-	}
-
-	return result;
-};
-
-/**
- * Simplify the array of nested levels. Create an indexed array with the correct names of the elements.
- *
- * @param	object		nested: The array with the nested levels
- * @return	object		The simplified array
- * @author	Oliver Hader <oh@inpublica.de>
- */
-HTMLArea.simplifyNested = function(nested) {
-	var i, type, level, max, simplifiedNested=[];
-	if (nested && nested.length) {
-		if (nested[0][0]=='inline') {
-			nested = inline.findContinuedNestedLevel(nested, nested[0][1]);
-		}
-		for (i=0, max=nested.length; i<max; i++) {
-			type = nested[i][0];
-			level = nested[i][1];
-			if (type=='tab') {
-				simplifiedNested.push(level+'-DIV');
-			} else if (type=='inline') {
-				simplifiedNested.push(level+'_fields');
-			}
-		}
-	}
-	return simplifiedNested;
-};
-
-/*
- * Initialize the iframe
- */
-HTMLArea.initIframe = function(editorNumber) {
-	var editor = RTEarea[editorNumber]["editor"];
-	editor.initIframe();
-};
-
-HTMLArea.prototype.initIframe = function() {
-	if (this._initIframeTimer) window.clearTimeout(this._initIframeTimer);
-	if (!this._iframe || (!this._iframe.contentWindow && !this._iframe.contentDocument)) {
-		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 50);
-		return false;
-	} else if (this._iframe.contentWindow && !HTMLArea.is_safari) {
-		if (!this._iframe.contentWindow.document || !this._iframe.contentWindow.document.documentElement) {
-			this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 50);
-			return false;
-		}
-	} else if (!this._iframe.contentDocument.documentElement || !this._iframe.contentDocument.body) {
-		this._initIframeTimer = window.setTimeout("HTMLArea.initIframe(\'" + this._editorNumber + "\');", 50);
-		return false;
-	}
-	var doc = this._iframe.contentWindow ? this._iframe.contentWindow.document : this._iframe.contentDocument;
-	this._doc = doc;
-		// Set Doc Type in Firefox (doctype is readonly in DOM 2)
-		// After adding doctype in Firefox, baseURL is set to the url of the parent document,
-		// base element is ignored, and all created links, including external, are prepended with incorrect base
-	/*if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-		this._doc.open();
-		this._doc.write(this.config.getDocumentType());
-		this._doc.close();
-	}*/
-	if (!this.config.fullPage) {
-		var head = doc.getElementsByTagName("head")[0];
+	},
+	/*
+	 * Build the iframe document head
+	 */
+	createHead: function () {
+		var head = this.document.getElementsByTagName('head')[0];
 		if (!head) {
-			head = doc.createElement("head");
-			doc.documentElement.appendChild(head);
+			head = this.document.createElement('head');
+			this.document.documentElement.appendChild(head);
 		}
-		if (this.config.baseURL && !HTMLArea.is_opera) {
-			var base = doc.getElementsByTagName("base")[0];
+		if (this.config.baseURL && !Ext.isOpera) {
+			var base = this.document.getElementsByTagName('base')[0];
 			if (!base) {
-				base = doc.createElement("base");
+				base = this.document.createElement('base');
 				base.href = this.config.baseURL;
 				head.appendChild(base);
 			}
-			HTMLArea._appendToLog("[HTMLArea::initIframe]: Iframe baseURL set to: " + this.config.baseURL);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Iframe baseURL set to: ' + this.config.baseURL);
 		}
-		var link0 = doc.getElementsByTagName("link")[0];
+		var link0 = this.document.getElementsByTagName('link')[0];
 		if (!link0) {
- 			link0 = doc.createElement("link");
-			link0.rel = "stylesheet";
+			link0 = this.document.createElement('link');
+			link0.rel = 'stylesheet';
 			link0.href = this.config.editedContentStyle;
 			head.appendChild(link0);
-			HTMLArea._appendToLog("[HTMLArea::initIframe]: Skin CSS set to: " + this.config.editedContentStyle);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Skin CSS set to: ' + this.config.editedContentStyle);
 		}
 		if (this.config.defaultPageStyle) {
-			var link = doc.getElementsByTagName("link")[1];
+			var link = this.document.getElementsByTagName('link')[1];
 			if (!link) {
- 				link = doc.createElement("link");
-				link.rel = "stylesheet";
+				link = this.document.createElement('link');
+				link.rel = 'stylesheet';
 				link.href = this.config.defaultPageStyle;
 				head.appendChild(link);
 			}
-			HTMLArea._appendToLog("[HTMLArea::initIframe]: Override CSS set to: " + this.config.defaultPageStyle);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Override CSS set to: ' + this.config.defaultPageStyle);
 		}
 		if (this.config.pageStyle) {
-			var link = doc.getElementsByTagName("link")[2];
+			var link = this.document.getElementsByTagName('link')[2];
 			if (!link) {
- 				link = doc.createElement("link");
-				link.rel = "stylesheet";
+				link = this.document.createElement('link');
+				link.rel = 'stylesheet';
 				link.href = this.config.pageStyle;
 				head.appendChild(link);
 			}
-			HTMLArea._appendToLog("[HTMLArea::initIframe]: Content CSS set to: " + this.config.pageStyle);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Content CSS set to: ' + this.config.pageStyle);
 		}
-	} else {
-		var html = this._textArea.value;
-		this.setFullHTML(html);
-	}
-	HTMLArea._appendToLog("[HTMLArea::initIframe]: Editor iframe head successfully initialized.");
-
-	this.stylesLoaded();
-};
-
-/*
- * Finalize editor Iframe initialization after loading the style sheets
- */
-HTMLArea.stylesLoaded = function(editorNumber) {
-	var editor = RTEarea[editorNumber]["editor"];
-	editor.stylesLoaded();
-};
-
-HTMLArea.prototype.stylesLoaded = function() {
-	var doc = this._doc;
-
-		// check if the stylesheets have been loaded
-	if (this._stylesLoadedTimer) window.clearTimeout(this._stylesLoadedTimer);
-	var stylesAreLoaded = true;
-	var errorText = '';
-	var rules;
-	if (HTMLArea.is_opera) {
-		if (doc.readyState != "complete") {
-			stylesAreLoaded = false;
-			errorText = "Stylesheets not yet loaded";
-		}
-	} else {
-		for (var rule = 0; rule < doc.styleSheets.length; rule++) {
-			if (HTMLArea.is_gecko) try { rules = doc.styleSheets[rule].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
-		}
-	}
-	if (!stylesAreLoaded && !HTMLArea.is_wamcom) {
-		HTMLArea._appendToLog("[HTMLArea::initIframe]: Failed attempt at loading stylesheets: " + errorText + " Retrying...");
-		this._stylesLoadedTimer = window.setTimeout("HTMLArea.stylesLoaded(\'" + this._editorNumber + "\');", 100);
-		return false;
-	}
-	HTMLArea._appendToLog("[HTMLArea::initIframe]: Stylesheets successfully loaded.");
-
-	doc.body.style.borderWidth = "0px";
-	doc.body.className = "htmlarea-content-body";
-
-		// Initialize editor mode
-	if (!this.getPluginInstance("EditorMode").init()) {
-		return false;
-	}
-
-		// set editor number in iframe and document for retrieval in event handlers
-	doc._editorNo = this._editorNumber;
-	if (HTMLArea.is_ie) doc.documentElement._editorNo = this._editorNumber;
-
-		// intercept events for updating the toolbar & for keyboard handlers
-	HTMLArea._addEvents((HTMLArea.is_ie ? doc.body : doc), ["keydown","keypress","mousedown","mouseup","drag"], HTMLArea._editorEvent, true);
-
-	HTMLArea._addEvent(window, "resize", HTMLArea.resizeIframes);
-
-		// add unload handler
-	if (!HTMLArea.hasUnloadHandler) {
-		HTMLArea.hasUnloadHandler = true;
-		HTMLArea._addEvent((this._iframe.contentWindow ? this._iframe.contentWindow : this._iframe.contentDocument), "unload", HTMLArea.removeEditorEvents);
-	}
-
-	window.setTimeout("HTMLArea.generatePlugins(\'" + this._editorNumber + "\');", 100);
-};
-
-HTMLArea.generatePlugins = function(editorNumber) {
-	var editor = RTEarea[editorNumber]["editor"];
-		// check if any plugins have registered generate handlers
-		// check also if any plugin has a onKeyPress handler
-	editor._hasPluginWithOnKeyPressHandler = false;
-	for (var pluginId in editor.plugins) {
-		if (editor.plugins.hasOwnProperty(pluginId)) {
-			var pluginInstance = editor.plugins[pluginId].instance;
-			if (typeof(pluginInstance.onGenerate) === "function") {
-				pluginInstance.onGenerate();
+		HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Editor iframe document head successfully built.');
+	},
+	/*
+	 * Fire event 'iframeready' when the iframe style sheets become accessible
+	 */
+	getStyleSheets: function () {
+		var stylesAreLoaded = true;
+		var errorText = '';
+		var rules;
+		if (Ext.isOpera) {
+			if (this.document.readyState != 'complete') {
+				stylesAreLoaded = false;
+				errorText = 'Stylesheets not yet loaded';
 			}
-			if (typeof(pluginInstance.onGenerateOnce) === "function") {
-				pluginInstance.onGenerateOnce();
-				pluginInstance.onGenerateOnce = null;
-			}
-			if (typeof(pluginInstance.onKeyPress) === "function") {
-				editor._hasPluginWithOnKeyPressHandler = true;
-			}
+		} else {
+			Ext.each(this.document.styleSheets, function (styleSheet) {
+				if (!Ext.isIE) try { rules = styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+				if (Ext.isIE) try { rules = styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+				if (Ext.isIE) try { rules = styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			});
 		}
-	}
-	if (typeof(editor.onGenerate) === "function") {
-		editor.onGenerate();
-		editor.onGenerate = null;
-	}
-	HTMLArea._appendToLog("[HTMLArea::initIframe]: All plugins successfully generated.");
-		// Size the iframe
-	editor.sizeIframe(2);
-		// Focus on the first editor instance
-	for (var editorId in RTEarea) {
-		if (RTEarea.hasOwnProperty(editorId)) {
-			if (RTEarea[editorId].editor) {
-				if (editorNumber == editorId) {
-					editor.focusEditor();
+		if (!stylesAreLoaded) {
+			this.getStyleSheets.defer(100, this);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::getStyleSheets]: Stylesheets not yet loaded (' + errorText + '). Retrying...');
+		} else {
+			HTMLArea._appendToLog('[HTMLArea.Iframe::getStyleSheets]: Stylesheets successfully accessed.');
+				// Style the document body
+			Ext.get(this.document.body).addClass('htmlarea-content-body');
+				// Start listening to things happening in the iframe
+				// For some unknown reason, this is too early for Opera
+			if (!Ext.isOpera) {
+				this.startListening();
+			}
+				// Hide the iframe
+			this.hide();
+				// Set iframe ready
+			this.ready = true;
+			this.fireEvent('iframeready');
+		}
+	},
+	/*
+	 * Focus on the iframe
+	 */
+	focus: function () {
+		try {
+			if (Ext.isWebKit) {
+				this.getEl().dom.focus();
+			} else {
+				this.getEl().dom.contentWindow.focus();
+			}
+		} catch(e) { }
+	},
+	/*
+	 * Flag indicating whether the framework is inside a tab or inline element that may be hidden
+	 * Should be set in config
+	 */
+	isNested: false,
+	/*
+	 * All nested tabs and inline levels in the sorting order they were applied
+	 * Should be set in config
+	 */
+	nestedParentElements: {},
+	/*
+	 * Set designMode
+	 *
+	 * @param	boolean		on: if true set designMode to on, otherwise set to off
+	 *
+	 * @rturn	void
+	 */
+	setDesignMode: function (on) {
+		if (on) {
+	 		if (!Ext.isIE) {
+				if (Ext.isGecko) {
+						// In Firefox, we can't set designMode when we are in a hidden TYPO3 tab or inline element
+					if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+						this.document.designMode = 'on';
+						this.setOptions();
+					}
+				} else {
+					this.document.designMode = 'on';
+					this.setOptions();
 				}
-				break;
+			}
+			if (Ext.isIE || Ext.isWebKit) {
+				this.document.body.contentEditable = true;
+			}
+		} else {
+	 		if (!Ext.isIE) {
+	 			this.document.designMode = 'off';
+	 		}
+	 		if (Ext.isIE || Ext.isWebKit) {
+	 			this.document.body.contentEditable = false;
+	 		}
+	 	}
+	},
+	/*
+	 * Set editing mode options (if we can... raises exception in Firefox 3)
+	 *
+	 * @return	void
+	 */
+	setOptions: function () {
+		if (!Ext.isIE) {
+			try {
+				if (this.document.queryCommandEnabled('insertbronreturn')) {
+					this.document.execCommand('insertbronreturn', false, this.config.disableEnterParagraphs);
+				}
+				if (this.document.queryCommandEnabled('styleWithCSS')) {
+					this.document.execCommand('styleWithCSS', false, this.config.useCSS);
+				} else if (Ext.isGecko && this.document.queryCommandEnabled('useCSS')) {
+					this.document.execCommand('useCSS', false, !this.config.useCSS);
+				}
+				if (Ext.isGecko) {
+					if (this.document.queryCommandEnabled('enableObjectResizing')) {
+						this.document.execCommand('enableObjectResizing', false, !this.config.disableObjectResizing);
+					}
+					if (this.document.queryCommandEnabled('enableInlineTableEditing')) {
+						this.document.execCommand('enableInlineTableEditing', false, (this.config.buttons.table && this.config.buttons.table.enableHandles) ? true : false);
+					}
+				}
+			} catch(e) {}
+		}
+	},
+	/*
+	 * Handler invoked when an hidden TYPO3 hidden nested tab or inline element is shown
+	 */
+	onNestedShow: function (event, target) {
+		var styleEvent = true;
+			// In older versions of Mozilla ev.attrName is not yet set and refering to it causes a non-catchable crash
+			// We are assuming that this was fixed in Firefox 2.0.0.11
+		if (navigator.productSub > 20071127) {
+			styleEvent = (event.browserEvent.attrName == 'style');
+		}
+		if (styleEvent && this.nestedParentElements.sorted.indexOf(target.id) != -1 && this.getEditor().getMode() === 'wysiwyg' && (target.style.display == '' || target.style.display == 'block')) {
+				// Check if all affected nested elements are displayed (style.display!='none'):
+			if (HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+				this.setDesignMode(true);
+				this.getEditor().updateToolbar();
 			}
 		}
-	}
-	editor.updateToolbar();
-};
-
-/*
- * When we have a form, on reset, re-initialize the HTMLArea content and update the toolbar
- */
-HTMLArea.resetHandler = function(ev) {
-	if(!ev) var ev = window.event;
-	var form = (ev.target) ? ev.target : ev.srcElement;
-	var editor = RTEarea[form._editorNumber]["editor"];
-	editor.getPluginInstance("EditorMode").setHTML(editor._textArea.value);
-	editor.updateToolbar();
-	var a = form.__msh_prevOnReset;
-		// call previous reset methods if they were there.
-	if (typeof(a) != "undefined") {
-		for (var i=a.length; --i >= 0; ) { a[i](); }
-	}
-};
-
-/*
- * Clean up event handlers and object references, undo/redo snapshots, update the textarea for submission
- */
-HTMLArea.removeEditorEvents = function(ev) {
-	if (!ev) var ev = window.event;
-	HTMLArea._stopEvent(ev);
-	if (HTMLArea._eventCache) {
-		HTMLArea._eventCache.flush();
-	}
-	for (var editorNumber in RTEarea) {
-		if (RTEarea.hasOwnProperty(editorNumber)) {
-			var editor = RTEarea[editorNumber].editor;
-			if (editor) {
-				RTEarea[editorNumber].editor = null;
-					// save the HTML content into the original textarea for submit, back/forward, etc.
-				editor._textArea.value = editor.getPluginInstance("EditorMode").getHTML();
-					// do final cleanup
-				HTMLArea.cleanup(editor);
+		event.stopEvent();
+	},
+	/*
+	 * Get the HTML content of the iframe
+	 */
+	getHTML: function () {
+		return HTMLArea.getHTML(this.document.body, false, this.getEditor());
+	},
+	/*
+	 * Start listening to things happening in the iframe
+	 */
+	startListening: function () {
+		var documentElement = Ext.get(Ext.isIE ? this.document.body : this.document.documentElement);
+			// Create keyMap so that plugins may bind key handlers
+		this.keyMap = new Ext.KeyMap(documentElement, [], (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress');
+			// Special keys map
+		this.keyMap.addBinding([
+			{
+				key: [Ext.EventObject.DOWN, Ext.EventObject.UP, Ext.EventObject.LEFT, Ext.EventObject.RIGHT],
+				alt: false,
+				handler: this.onArrow,
+				scope: this
+			},
+			{
+				key: Ext.EventObject.TAB,
+				ctrl: false,
+				alt: false,
+				handler: this.onTab,
+				scope: this
+			},
+			{
+				key: Ext.EventObject.SPACE,
+				ctrl: true,
+				shift: false,
+				alt: false,
+				handler: this.onCtrlSpace,
+				scope: this
+			}
+		]);
+		if (Ext.isGecko || Ext.isIE) {
+			this.keyMap.addBinding(
+			{
+				key: [Ext.EventObject.BACKSPACE, Ext.EventObject.DELETE],
+				alt: false,
+				handler: this.onBackSpace,
+				scope: this
+			});
+		}
+		if (!Ext.isIE && !this.config.disableEnterParagraphs) {
+			this.keyMap.addBinding(
+			{
+				key: Ext.EventObject.ENTER,
+				shift: false,
+				handler: this.onEnter,
+				scope: this
+			});
+		}
+		if (Ext.isWebKit) {
+			this.keyMap.addBinding(
+			{
+				key: Ext.EventObject.ENTER,
+				alt: false,
+				handler: this.onWebKitEnter,
+				scope: this
+			});
+		}
+			// Hot key map (on keydown for all brwosers)
+		var hotKeys = '';
+		Ext.iterate(this.config.hotKeyList, function (key) {
+			if (key.length == 1) {
+				hotKeys += key.toUpperCase();
+			}
+		});
+		if (!Ext.isEmpty(hotKeys)) {
+			this.hotKeyMap = new Ext.KeyMap(documentElement,
+			{
+				key: hotKeys,
+				ctrl: true,
+				shift: false,
+				alt: false,
+				handler: this.onHotKey,
+				scope: this
+			});
+		}
+		this.mon(documentElement, (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
+		this.mon(documentElement, 'mouseup', this.onMouse, this);
+		this.mon(documentElement, 'click', this.onMouse, this);
+		this.mon(documentElement, 'drag', this.onMouse, this);
+	},
+	/*
+	 * Handler for other key events
+	 */
+	onAnyKey: function(event) {
+			// In Opera, inhibit key events while synchronous XMLHttpRequest is being processed
+		if (Ext.isOpera && HTMLArea.pendingSynchronousXMLHttpRequest) {
+			event.stopEvent();
+			return false;
+		}
+			// onKeyPress deprecated as of TYPO3 4.4
+		if (this.getEditor().hasPluginWithOnKeyPressHandler) {
+			var letBubble = true;
+			Ext.iterate(this.getEditor().plugins, function (pluginId) {
+				var plugin = this.getEditor().getPlugin(pluginId);
+				if (Ext.isFunction(plugin.onKeyPress)) {
+					if (!plugin.onKeyPress(event.browserEvent)) {
+						event.stopEvent();
+						letBubble = false;
+					}
+				}
+				return letBubble;
+			}, this);
+			if (!letBubble) {
+				return letBubble;
 			}
 		}
-	}
-};
-
-/*
- * Clean up a bunch of references in order to avoid memory leakages mainly in IE, but also in Firefox and Opera
- */
-HTMLArea.cleanup = function (editor) {
-		// nullify envent handlers
-	for (var handler in editor.eventHandlers) {
-		if (editor.eventHandlers.hasOwnProperty(handler)) {
-			editor.eventHandlers[handler] = null;
-		}
-	}
-	for (var button in editor.btnList) {
-		if (editor.btnList.hasOwnProperty(button)) {
-			editor.btnList[button][3] = null;
-		}
-	}
-	for (var dropdown in editor.config.customSelects) {
-		if (editor.config.customSelects.hasOwnProperty(dropdown)) {
-			editor.config.customSelects[dropdown].action = null;
-			editor.config.customSelects[dropdown].refresh = null;
-		}
-	}
-	for (var hotKey in editor.config.hotKeyList) {
-		if (editor.config.customSelects.hasOwnProperty(hotKey)) {
-			editor.config.hotKeyList[hotKey].action = null;
-		}
-	}
-	editor.onGenerate = null;
-	if(editor._textArea.form) {
-		editor._textArea.form.__msh_prevOnReset = null;
-		editor._textArea.form._editorNumber = null;
-	}
-
-		// cleaning plugins
-	for (var plugin in editor.plugins) {
-		if (editor.plugins.hasOwnProperty(plugin)) {
-			var pluginInstance = editor.plugins[plugin].instance;
-			if (typeof(pluginInstance.onClose) === "function") {
-				pluginInstance.onClose();
+		if (!event.altKey && !event.ctrlKey) {
+				// Detect URL in non-IE browsers
+			if (!Ext.isIE) {
+				this.getEditor()._detectURL(event);
 			}
-			pluginInstance.onClose = null;
-			pluginInstance.onChange = null;
-			pluginInstance.onButtonPress = null;
-			pluginInstance.onGenerate = null;
-			pluginInstance.onGenerateOnce = null;
-			pluginInstance.onMode = null;
-			pluginInstance.onHotKey = null;
-			pluginInstance.onKeyPress = null;
-			pluginInstance.onSelect = null;
-			pluginInstance.onUpdateTolbar = null;
-		}
-	}
-		// cleaning the toolbar elements
-	for (var txt in editor._toolbarObjects) {
-		if (editor._toolbarObjects.hasOwnProperty(txt)) {
-			var obj = editor._toolbarObjects[txt];
-			obj.state = null;
-			obj.cmd = null;
-			var element = document.getElementById(obj.elementId);
-			if (element) {
-				element._obj = null;
+				// Handle option+SPACE for Mac users
+			if (Ext.isMac && event.browserEvent.charCode == 160) {
+				return this.onOptionSpace(event.browserEvent.charCode, event);
 			}
-			editor._toolbarObjects[txt] = null;
 		}
-	}
-		// final cleanup
-	editor._toolbar = null;
-	editor._htmlArea = null;
-	editor._iframe = null;
-};
-
-/*
- * Get editor mode
- */
-HTMLArea.prototype.getMode = function() {
-	return this.getPluginInstance("EditorMode").getEditorMode();
-};
-
-/*
- * Initialize iframe content when in full page mode
- */
-HTMLArea.prototype.setFullHTML = function(html) {
-	var save_multiline = RegExp.multiline;
-	RegExp.multiline = true;
-	if(html.match(HTMLArea.RE_doctype)) {
-		this.setDoctype(RegExp.$1);
-		html = html.replace(HTMLArea.RE_doctype, "");
-	};
-	RegExp.multiline = save_multiline;
-	if(!HTMLArea.is_ie) {
-		if(html.match(HTMLArea.RE_head)) this._doc.getElementsByTagName("head")[0].innerHTML = RegExp.$1;
-		if(html.match(HTMLArea.RE_body)) this._doc.getElementsByTagName("body")[0].innerHTML = RegExp.$1;
-	} else {
-		var html_re = /<html>((.|\n)*?)<\/html>/i;
-		html = html.replace(html_re, "$1");
-		this._doc.open();
-		this._doc.write(html);
-		this._doc.close();
-		this._doc.body.contentEditable = true;
 		return true;
-	};
-};
-
+	},
+	/*
+	 * Handler for mouse events
+	 */
+	onMouse: function () {
+		this.getToolbar().updateLater.delay(100);
+		return true;
+	},
+	/*
+	 * Handler for UP, DOWN, LEFT and RIGHT keys
+	 */
+	onArrow: function () {
+		this.getToolbar().updateLater.delay(100);
+		return true;
+	},
+	/*
+	 * Handler for TAB and SHIFT-TAB keys
+	 *
+	 * If available, BlockElements plugin will handle the TAB key
+	 */
+	onTab: function (key, event) {
+		var keyName = (event.shiftKey ? 'SHIFT-' : '') + 'TAB';
+		if (this.config.hotKeyList[keyName] && this.config.hotKeyList[keyName].cmd) {
+			var button = this.getButton(this.config.hotKeyList[keyName].cmd);
+			if (button) {
+				event.stopEvent();
+				button.fireEvent('hotkey', keyName, event);
+				return false;
+			}
+		}
+		return true;
+	},
+	/*
+	 * Handler for BACKSPACE and DELETE keys
+	 */
+	onBackSpace: function (key, event) {
+		if ((!Ext.isIE && !event.shiftKey) || Ext.isIE) {
+			if (this.getEditor()._checkBackspace()) {
+				event.stopEvent();
+			}
+		}
+			// Update the toolbar state after some time
+		this.getToolbar().updateLater.delay(200);
+		return false;
+	},
+	/*
+	 * Handler for ENTER key in non-IE browsers
+	 */
+	onEnter: function (key, event) {
+		if (!event.shiftKey) {
+			if (this.getEditor()._checkInsertP()) {
+				event.stopEvent();
+			}
+		}
+			// Update the toolbar state after some time
+		this.getToolbar().updateLater.delay(200);
+		return false;
+	},
+	/*
+	 * Handler for ENTER key in WebKit browsers
+	 */
+	onWebKitEnter: function (key, event) {
+		if (event.shiftKey || this.config.disableEnterParagraphs) {
+			var brNode = this.document.createElement('br');
+			this.getEditor().insertNodeAtSelection(brNode);
+			if (!brNode.nextSibling || !HTMLArea.getInnerText(brNode.nextSibling)) {
+				var secondBrNode = this.document.createElement('br');
+				secondBrNode = brNode.parentNode.appendChild(secondBrNode);
+				this.getEditor().selectNode(secondBrNode, false);
+			}
+			event.stopEvent();
+		}
+			// Update the toolbar state after some time
+		this.getToolbar().updateLater.delay(200);
+		return false;
+	},
+	/*
+	 * Handler for CTRL-SPACE keys
+	 */
+	onCtrlSpace: function (key, event) {
+		this.getEditor().insertHTML('&nbsp;');
+		event.stopEvent();
+		return false;
+	},
+	/*
+	 * Handler for OPTION-SPACE keys on Mac
+	 */
+	onOptionSpace: function (key, event) {
+		this.getEditor().insertHTML('&nbsp;');
+		event.stopEvent();
+		return false;
+	},
+	/*
+	 * Handler for configured hotkeys
+	 */
+	onHotKey: function (key, event) {
+		var hotKey = String.fromCharCode(key).toLowerCase();
+		this.getButton(this.config.hotKeyList[hotKey].cmd).fireEvent('hotkey', hotKey, event);
+		return false;
+	},
+	/*
+	 * Cleanup
+	 */
+	onBeforeDestroy: function () {
+		this.keyMap.disable();
+		this.hotKeyMap.disable();
+	}
+});
+Ext.reg('htmlareaiframe', HTMLArea.Iframe);
+/*
+ * HTMLArea.StatusBar extends Ext.Container
+ */
+HTMLArea.StatusBar = Ext.extend(Ext.Container, {
+	/*
+	 * Constructor
+	 */
+	initComponent: function () {
+		HTMLArea.StatusBar.superclass.initComponent.call(this);
+		this.addListener({
+			render: {
+				fn: this.addComponents,
+				single: true
+			},
+			afterrender: {
+				fn: this.initEventListeners,
+				single: true
+			}
+		});
+	},
+	/*
+	 * Initialize listeners
+	 */
+	initEventListeners: function () {
+		this.addListener({
+			beforedestroy: {
+				fn: this.clear,
+				single: true
+			}
+		});
+			// Monitor toolbar updates in order to refresh the contents of the statusbar
+			// The toolbar must have been rendered
+		this.mon(this.ownerCt.toolbar, 'update', this.onUpdateToolbar, this);
+			// Monitor editor changing mode
+		this.mon(this.getEditor(), 'modeChange', this.onModeChange, this);
+	},
+	/*
+	 * editorId should be set in config
+	 */
+	editorId: null,
+	/*
+	 * Get a reference to the editor
+	 */
+	getEditor: function() {
+		return RTEarea[this.editorId].editor;
+	},
+	/*
+	 * Create span elements to display when the status bar tree or a message when the editor is in text mode
+	 */
+	addComponents: function () {
+		this.statusBarTree = Ext.DomHelper.append(this.getEl(), {
+			id: this.editorId + '-statusBarTree',
+			tag: 'span',
+			cls: 'statusBarTree',
+			html: HTMLArea.I18N.msg['Path'] + ': '
+		}, true).setVisibilityMode(Ext.Element.DISPLAY).setVisible(true);
+		this.statusBarTextMode = Ext.DomHelper.append(this.getEl(), {
+			id: this.editorId + '-statusBarTextMode',
+			tag: 'span',
+			cls: 'statusBarTextMode',
+			html: HTMLArea.I18N.msg['TEXT_MODE']
+		}, true).setVisibilityMode(Ext.Element.DISPLAY).setVisible(false);
+	},
+	/*
+	 * Clear the status bar tree
+	 */
+	clear: function () {
+		this.statusBarTree.removeAllListeners();
+		Ext.each(this.statusBarTree.query('a'), function (node) {
+			Ext.QuickTips.unregister(node);
+		});
+		this.statusBarTree.update('');
+		this.setSelection(null);
+	},
+	/*
+	 * Flag indicating that the status bar should not be updated on this toolbar update
+	 */
+	noUpdate: false,
+	/*
+	 * Update the status bar
+	 */
+	onUpdateToolbar: function (mode, selectionEmpty, ancestors, endPointsInSameBlock) {
+		if (mode === 'wysiwyg' && !this.noUpdate) {
+			var text,
+				language,
+				languageObject = this.getEditor().getPlugin('Language'),
+				classes = new Array(),
+				classText;
+			this.clear();
+			var path = Ext.DomHelper.append(this.statusBarTree, {
+				tag: 'span',
+				html: HTMLArea.I18N.msg['Path'] + ': '
+			},true);
+			Ext.each(ancestors, function (ancestor, index) {
+				if (!ancestor) {
+					return true;
+				}
+				text = ancestor.nodeName.toLowerCase();
+					// Do not show any id generated by ExtJS
+				if (ancestor.id && text !== 'body' && ancestor.id.substr(0, 7) !== 'ext-gen') {
+					text += '#' + ancestor.id;
+				}
+				if (languageObject && languageObject.getLanguageAttribute) {
+					language = languageObject.getLanguageAttribute(ancestor);
+					if (language != 'none') {
+						text += '[' + language + ']';
+					}
+				}
+				if (ancestor.className) {
+					classText = '';
+					classes = ancestor.className.trim().split(' ');
+					for (var j = 0, n = classes.length; j < n; ++j) {
+						if (!HTMLArea.reservedClassNames.test(classes[j])) {
+							classText += '.' + classes[j];
+						}
+					}
+					text += classText;
+				}
+				var element = Ext.DomHelper.insertAfter(path, {
+					tag: 'a',
+					href: '#',
+					'ext:qtitle': HTMLArea.I18N.dialogs['statusBarStyle'],
+					'ext:qtip': ancestor.style.cssText.split(';').join('<br />'),
+					html: text
+				}, true);
+					// Ext.DomHelper does not honour the custom attribute
+				element.dom.ancestor = ancestor;
+				if (Ext.isIE) {
+					element.on('click', this.onClick, this);
+				} else {
+					element.on('mousedown', this.onMouseDown, this);
+				}
+				if (!Ext.isOpera) {
+					element.on('contextmenu', this.onContextMenu, this);
+				}
+				if (index) {
+					Ext.DomHelper.insertAfter(element, {
+						tag: 'span',
+						html: String.fromCharCode(0xbb)
+					});
+				}
+			}, this);
+		}
+		this.noUpdate = false;
+	},
+	/*
+	 * Adapt status bar to current editor mode
+	 *
+	 * @param	string	mode: the mode to which the editor got switched to
+	 */
+	onModeChange: function (mode) {
+		switch (mode) {
+			case 'wysiwyg':
+				this.statusBarTextMode.setVisible(false);
+				this.statusBarTree.setVisible(true);
+				break;
+			case 'textmode':
+			default:
+				this.statusBarTree.setVisible(false);
+				this.statusBarTextMode.setVisible(true);
+				break;
+		}
+	},
+	/*
+	 * Refrence to the element last selected on the status bar
+	 */
+	selected: null,
+	/*
+	 * Get the status bar selection
+	 */
+	getSelection: function() {
+		return this.selected;
+	},
+	/*
+	 * Set the status bar selection
+	 *
+	 * @param	object	element: set the status bar selection to the given element
+	 */
+	setSelection: function(element) {
+		this.selected = element ? element : null;
+	},
+	/*
+	 * Select the element that was clicked in the status bar and set the status bar selection
+	 */
+	selectElement: function (element) {
+		var editor = this.getEditor();
+		element.blur();
+		if (!Ext.isIE) {
+			editor.selectNodeContents(element.ancestor);
+		} else {
+			var nodeName = element.ancestor.nodeName.toLowerCase();
+			if (nodeName == 'table' || nodeName == 'img') {
+				var range = editor.document.body.createControlRange();
+				range.addElement(element.ancestor);
+				range.select();
+			} else {
+				editor.selectNode(element.ancestor);
+			}
+		}
+		this.setSelection(element.ancestor);
+		this.noUpdate = true;
+		editor.toolbar.update();
+	},
+	/*
+	 * Click handler
+	 */
+	onClick: function (event, element) {
+		this.selectElement(element);
+		event.stopEvent();
+		return false;
+	},
+	/*
+	 * MouseDown handler
+	 */
+	onMouseDown: function (event, element) {
+		this.selectElement(element);
+		if (Ext.isIE) {
+			return true;
+		} else {
+			event.stopEvent();
+			return false;
+		}
+	},
+	/*
+	 * ContextMenu handler
+	 */
+	onContextMenu: function (event, target) {
+		this.selectElement(target);
+		return this.getEditor().getPlugin('ContextMenu') ? this.getEditor().getPlugin('ContextMenu').show(event, target.ancestor) : false;
+	}
+});
+Ext.reg('htmlareastatusbar', HTMLArea.StatusBar);
+/*
+ * HTMLArea.Framework extends Ext.Panel
+ */
+HTMLArea.Framework = Ext.extend(Ext.Panel, {
+	/*
+	 * Constructor
+	 */
+	initComponent: function () {
+		HTMLArea.Framework.superclass.initComponent.call(this);
+			// Set some references
+		this.toolbar = this.getTopToolbar();
+		this.statusBar = this.getBottomToolbar();
+		this.iframe = this.getComponent('iframe');
+		this.textAreaContainer = this.getComponent('textAreaContainer');
+		this.addEvents(
+			/*
+			 * @event frameworkready
+			 * Fires when the iframe is ready and all components are rendered
+			 */
+			'frameworkready'
+		);
+		this.addListener({
+			afterrender: {
+				fn: this.initEventListeners,
+				single: true
+			}
+		});
+			// Let the framefork render itself, but it will fail to do so if inside a hidden tab or inline element
+		if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+			this.render(this.textArea.parent(), this.textArea.id);
+		} else {
+				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
+			var parentElements = [].concat(this.nestedParentElements.sorted);
+				// Walk through all nested tabs and inline levels to get correct sizes
+			HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].render(args[0].textArea.parent(), args[0].textArea.id)', [this]);
+		}
+	},
+	/*
+	 * Initiate events monitoring
+	 */
+	initEventListeners: function () {
+			// Monitor iframe becoming ready
+		this.mon(this.iframe, 'iframeready', this.onIframeReady, this, {single: true});
+			// Make the framework resizable, if configured by the user
+		this.makeResizable();
+			// Monitor textArea container becoming shown or hidden as it may change the height of the status bar
+		this.mon(this.textAreaContainer, 'show', this.onTextAreaShow, this);
+		if (this.resizable) {
+				// Monitor iframe becoming shown or hidden as it may change the height of the status bar
+			this.mon(this.iframe, 'show', this.onIframeShow, this);
+		}
+			// Monitor window resizing
+		if (this.resizable || this.textAreaInitialSize.width.indexOf('%') !== -1) {
+			Ext.EventManager.onWindowResize(this.onWindowResize, this);
+		}
+			// If the textarea is inside a form, on reset, re-initialize the HTMLArea content and update the toolbar
+		var form = this.textArea.dom.form;
+		if (form) {
+			if (Ext.isFunction(form.onsubmit)) {
+				if (typeof(form.htmlAreaPreviousOnReset) == 'undefined') {
+					form.htmlAreaPreviousOnReset = [];
+				}
+				form.htmlAreaPreviousOnReset.push(form.onreset);
+			}
+			this.mon(Ext.get(form), 'reset', this.onReset, this);
+		}
+		this.addListener({
+			beforedestroy: {
+				fn: this.onBeforeDestroy
+			}
+		});
+	},
+	/*
+	 * editorId should be set in config
+	 */
+	editorId: null,
+	/*
+	 * Get a reference to the editor
+	 */
+	getEditor: function() {
+		return RTEarea[this.editorId].editor;
+	},
+	/*
+	 * Flag indicating whether the framework is inside a tab or inline element that may be hidden
+	 * Should be set in config
+	 */
+	isNested: false,
+	/*
+	 * All nested tabs and inline levels in the sorting order they were applied
+	 * Should be set in config
+	 */
+	nestedParentElements: {},
+	/*
+	 * Flag set to true when the framework is ready
+	 */
+	ready: false,
+	/*
+	 * All nested tabs and inline levels in the sorting order they were applied
+	 * Should be set in config
+	 */
+	nestedParentElements: {},
+	/*
+	 * Whether the framework should be made resizable
+	 * May be set in config
+	 */
+	resizable: false,
+	/*
+	 * Maximum height to which the framework may resized (in pixels)
+	 * May be set in config
+	 */
+	maxHeight: 2000,
+	/*
+	 * Initial textArea dimensions
+	 * Should be set in config
+	 */
+	textAreaInitialSize: {
+		width: 0,
+		contextWidth: 0,
+		height: 0
+	},
+	/*
+	 * Make the framework resizable, if configured
+	 */
+	makeResizable: function () {
+		if (this.resizable) {
+			this.addClass('resizable');
+			this.resizer = new Ext.Resizable(this.getEl(), {
+				minWidth: 300,
+				maxHeight: this.maxHeight,
+				dynamic: false
+			});
+			this.resizer.on('resize', this.onHtmlAreaResize, this);
+		}
+	},
+	/*
+	 * Size the iframe according to initial textarea size as set by Page and User TSConfig
+	 */
+	onWindowResize: function(width, height) {
+		if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+			this.resizeFramework(width, height);
+		} else {
+				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
+			var parentElements = [].concat(this.nestedParentElements.sorted);
+				// Walk through all nested tabs and inline levels to get correct sizes
+			HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].resizeFramework(args[1], args[2])', [this, width, height]);
+		}
+	},
+	/*
+	 * Resize the framework to its initial size
+	 */
+	resizeFramework: function (width, height) {
+		var frameworkHeight = this.fullScreen ? HTMLArea.util.TYPO3.getWindowSize().height - 20 : parseInt(this.textAreaInitialSize.height);
+		if (this.textAreaInitialSize.width.indexOf('%') === -1) {
+				// Width is specified in pixels
+			var frameworkWidth = parseInt(this.textAreaInitialSize.width) - this.getFrameWidth();
+		} else {
+				// Width is specified in %
+			if (Ext.isDefined(width)) {
+					// Framework sizing on actual window resize
+				var frameworkWidth = parseInt(((width - this.textAreaInitialSize.nextSiblingWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
+			} else {
+					// Initial framework sizing
+				var frameworkWidth = parseInt(((HTMLArea.util.TYPO3.getWindowSize().width - this.textAreaInitialSize.nextSiblingWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
+			}
+		}
+		if (this.resizable) {
+			this.resizer.resizeTo(frameworkWidth, frameworkHeight);
+		} else {
+			this.setSize(frameworkWidth, frameworkHeight);
+				// Adjust height of iframe and textarea to height of toolbar and statusbar
+			this.iframe.setSize(this.getInnerWidth(), this.getInnerHeight());
+			this.textArea.setSize(this.getInnerWidth(), this.getInnerHeight());
+		}
+	},
+	/*
+	 * Resize the components when the editor framework was resized
+	 */
+	onHtmlAreaResize: function (resizer, width, height, event) {
+			// Set width first as it may change the height of the toolbar and of the statusBar
+		this.setWidth(width);
+			// Set height of iframe and textarea
+		this.iframe.setHeight(this.getInnerHeight());
+		this.textArea.setSize(this.getInnerWidth(), this.getInnerHeight());
+	},
+	/*
+	 * Adjust the height to the changing size of the statusbar when the textarea is shown
+	 */
+	onTextAreaShow: function () {
+		this.iframe.setHeight(this.getInnerHeight());
+		this.textArea.setHeight(this.getInnerHeight());
+	},
+	/*
+	 * Adjust the height to the changing size of the statusbar when the iframe is shown
+	 */
+	onIframeShow: function () {
+		this.iframe.setHeight(this.getInnerHeight());
+		this.textArea.setHeight(this.getInnerHeight());
+	},
+	/*
+	 * Fire the editor when all components of the framework are rendered and ready
+	 */
+	onIframeReady: function () {
+		this.ready = this.toolbar.rendered && this.statusBar.rendered && this.textAreaContainer.rendered;
+		if (this.ready) {
+			this.textAreaContainer.show();
+			if (!this.getEditor().config.showStatusBar) {
+				this.statusBar.hide();
+			}
+				// Set the initial size of the framework
+			this.onWindowResize();
+			this.fireEvent('frameworkready');
+		} else {
+			this.onIframeReady.defer(50, this);
+		}
+	},
+	/*
+	 * Handler invoked if we are inside a form and the form is reset
+	 * On reset, re-initialize the HTMLArea content and update the toolbar
+	 */
+	onReset: function (event) {
+		this.getEditor().setHTML(this.textArea.getValue());
+		this.toolbar.update();
+			// Invoke previous reset handlers, if any
+		var htmlAreaPreviousOnReset = event.getTarget().dom.htmlAreaPreviousOnReset;
+		if (typeof(htmlAreaPreviousOnReset) != 'undefined') {
+			Ext.each(htmlAreaPreviousOnReset, function (onReset) {
+				onReset();
+				return true;
+			});
+		}
+	},
+	/*
+	 * Cleanup on framework destruction
+	 */
+	onBeforeDestroy: function () {
+		if (this.resizable) {
+			Ext.EventManager.removeResizeListener(this.onWindowResize, this);
+		}
+		var form = this.textArea.dom.form;
+		if (form) {
+			form.htmlAreaPreviousOnReset = null;
+		}
+	}
+});
+Ext.reg('htmlareaframework', HTMLArea.Framework);
+/***************************************************
+ *  HTMLArea.Editor extends Ext.util.Observable
+ ***************************************************/
+HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
+	/*
+	 * HTMLArea.Editor constructor
+	 */
+	constructor: function (config) {
+		HTMLArea.Editor.superclass.constructor.call(this, {});
+			// Save the config
+		this.config = config;
+			// Establish references to this editor
+		this.editorId = this.config.editorId;
+		RTEarea[this.editorId].editor = this;
+			// Get textarea size and wizard context
+		this.textArea = Ext.get(this.config.id);
+		this.textAreaInitialSize = {
+			width: this.config.RTEWidthOverride ? this.config.RTEWidthOverride : this.textArea.getStyle('width'),
+			height: this.config.fullScreen ? HTMLArea.util.TYPO3.getWindowSize().height - 20 : this.textArea.getStyle('height'),
+			nextSiblingWidth: 0
+		};
+			// TYPO3 Inline elements and tabs
+		this.nestedParentElements = {
+			all: this.config.tceformsNested,
+			sorted: HTMLArea.util.TYPO3.simplifyNested(this.config.tceformsNested)
+		};
+		this.isNested = !Ext.isEmpty(this.nestedParentElements.sorted);
+			// Get width of wizards
+		var nextSibling = this.textArea.parent().parent().next();
+		if (nextSibling) {
+			if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+				this.textAreaInitialSize.nextSiblingWidth = nextSibling.getWidth();
+			} else {
+					// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
+				var parentElements = [].concat(this.nestedParentElements.sorted);
+					// Walk through all nested tabs and inline levels to get correct size
+					this.textAreaInitialSize.nextSiblingWidth = HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].getWidth()', [nextSibling]);
+			}
+		}
+			// Plugins register
+		this.plugins = {};
+			// Register the plugins included in the configuration
+		Ext.iterate(this.config.plugin, function (plugin) {
+			if (this.config.plugin[plugin]) {
+				this.registerPlugin(plugin);
+			}
+		}, this);
+		this.addEvents(
+			/*
+			 * @event editorready
+			 * Fires when initializatio of the editor is complete
+			 */
+			'editorready',
+			/*
+			 * @event modeChange
+			 * Fires when the editor changes mode
+			 */
+			'modeChange'
+		);
+	},
+	/*
+	 * Flag set to true when the editor initialization has completed
+	 */
+	ready: false,
+	/*
+	 * The current mode of the editor: 'wysiwyg' or 'textmode'
+	 */
+	mode: 'textmode',
+	/*
+	 * Create the htmlArea framework
+	 */
+	generate: function () {
+			// Create the editor framework
+		this.htmlArea = new HTMLArea.Framework({
+			id: this.editorId + '-htmlArea',
+			layout: 'anchor',
+			baseCls: 'htmlarea',
+			editorId: this.editorId,
+			textArea: this.textArea,
+			textAreaInitialSize: this.textAreaInitialSize,
+			fullScreen: this.config.fullScreen,
+			resizable: this.config.resizable,
+			maxHeight: this.config.maxHeight,
+			isNested: this.isNested,
+			nestedParentElements: this.nestedParentElements,
+				// The toolbar
+			tbar: {
+				xtype: 'htmlareatoolbar',
+				id: this.editorId + '-toolbar',
+				anchor: '100%',
+				layout: 'form',
+				cls: 'toolbar',
+				editorId: this.editorId
+			},
+			items: [{
+						// The iframe
+					xtype: 'htmlareaiframe',
+					itemId: 'iframe',
+					anchor: '100%',
+					width: (this.textAreaInitialSize.width.indexOf('%') === -1) ? parseInt(this.textAreaInitialSize.width) : 300,
+					height: parseInt(this.textAreaInitialSize.height),
+					autoEl: {
+						id: this.editorId + '-iframe',
+						tag: 'iframe',
+						cls: 'editorIframe',
+						src: Ext.isGecko ? 'javascript:void(0);' : (Ext.isOpera ? _typo3_host_url : '') + _editor_url + 'popups/blank.html'
+					},
+					isNested: this.isNested,
+					nestedParentElements: this.nestedParentElements,
+					editorId: this.editorId
+				},{
+						// Box container for the textarea
+					xtype: 'box',
+					itemId: 'textAreaContainer',
+					anchor: '100%',
+					width: (this.textAreaInitialSize.width.indexOf('%') === -1) ? parseInt(this.textAreaInitialSize.width) : 300,
+						// Let the framework swallow the textarea
+					listeners: {
+						afterRender: {
+							fn: function (textAreaContainer) { textAreaContainer.getEl().appendChild(this.textArea); },
+							single: true,
+							scope: this
+						}
+					}
+				}
+			],
+				// The status bar
+			bbar: {
+				xtype: 'htmlareastatusbar',
+				anchor: '100%',
+				cls: 'statusBar',
+				editorId: this.editorId
+			}
+		});
+			// Set some references
+		this.toolbar = this.htmlArea.getTopToolbar();
+		this.statusBar = this.htmlArea.getBottomToolbar();
+		this.iframe = this.htmlArea.getComponent('iframe');
+		this.textAreaContainer = this.htmlArea.getComponent('textAreaContainer');
+			// Get triggered when the framework becomes ready
+		this.relayEvents(this.htmlArea, 'frameworkready');
+		this.on('frameworkready', this.onFrameworkReady, this, {single: true});
+	},
+	/*
+	 * Initialize the editor
+	 */
+	onFrameworkReady: function () {
+			// Initialize editor mode
+		this.setMode('wysiwyg');
+			// Initiate events listening
+		this.initEventsListening();
+			// Generate plugins
+		this.generatePlugins();
+			// Make the editor visible
+		this.show();
+			// Focus on the first editor that is not hidden
+		Ext.iterate(RTEarea, function (editorId, RTE) {
+			if (!Ext.isDefined(RTE.editor) || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
+				return true;
+			} else {
+				RTE.editor.focus();
+				return false;
+			}
+		}, this);
+		this.ready = true;
+		this.fireEvent('editorready');
+		HTMLArea._appendToLog('[HTMLArea.Editor::start]: Editor ready.');
+	},
+	/*
+	 * Set editor mode
+	 *
+	 * @param	string		mode: 'textmode' or 'wysiwyg'
+	 *
+	 * @return	void
+	 */
+	setMode: function (mode) {
+		switch (mode) {
+			case 'textmode':
+				this.textArea.set({ value: this.getHTML() }, false);
+				this.iframe.setDesignMode(false);
+				this.iframe.hide();
+				this.textAreaContainer.show();
+				this.mode = mode;
+				break;
+			case 'wysiwyg':
+				try {
+					this.document.body.innerHTML = this.getHTML();
+				} catch(e) {
+					HTMLArea._appendToLog('[HTMLArea.Editor::setMode]: The HTML document is not well-formed.');
+					alert(HTMLArea.I18N.msg['HTML-document-not-well-formed']);
+					break;
+				}
+				this.textAreaContainer.hide();
+				this.iframe.show();
+				this.iframe.setDesignMode(true);
+				this.mode = mode;
+				break;
+		}
+		this.fireEvent('modeChange', this.mode);
+		this.focus();
+		Ext.iterate(this.plugins, function(pluginId) {
+			this.getPlugin(pluginId).onMode(this.mode);
+		}, this);
+	},
+	/*
+	 * Get current editor mode
+	 */
+	getMode: function () {
+		return this.mode;
+	},
+	/*
+	 * Retrieve the HTML
+	 * In the case of the wysiwyg mode, the html content is parsed
+	 *
+	 * @return	string		the textual html content from the current editing mode
+	 */
+	getHTML: function () {
+		switch (this.mode) {
+			case 'wysiwyg':
+				return this.iframe.getHTML();
+			case 'textmode':
+				return this.textArea.getValue();
+			default:
+				return '';
+		}
+	},
+	/*
+	 * Retrieve raw HTML
+	 *
+	 * @return	string	the textual html content from the current editing mode
+	 */
+	getInnerHTML: function () {
+		switch (this.mode) {
+			case 'wysiwyg':
+				return this.document.body.innerHTML;
+			case 'textmode':
+				return this.textArea.getValue();
+			default:
+				return '';
+		}
+	},
+	/*
+	 * Replace the html content
+	 *
+	 * @param	string		html: the textual html
+	 *
+	 * @return	void
+	 */
+	setHTML: function (html) {
+		switch (this.mode) {
+			case 'wysiwyg':
+				this.document.body.innerHTML = html;
+				break;
+			case 'textmode':
+				this.textArea.set({ value: html }, false);;
+				break;
+		}
+	},
+	/*
+	 * Generate registered plugins
+	 */
+	generatePlugins: function () {
+		this.hasPluginWithOnKeyPressHandler = false;
+		Ext.iterate(this.plugins, function (pluginId) {
+			var plugin = this.getPlugin(pluginId);
+			plugin.onGenerate();
+				// onKeyPress deprecated as of TYPO3 4.4
+			if (Ext.isFunction(plugin.onKeyPress)) {
+				this.hasPluginWithOnKeyPressHandler = true;
+				HTMLArea._appendToLog('[HTMLArea.Editor::generatePlugins]: Deprecated use of onKeyPress function by plugin ' + pluginId + '. Use keyMap instead.');
+			}
+		}, this);
+		HTMLArea._appendToLog('[HTMLArea.Editor::generatePlugins]: All plugins successfully generated.');
+	},
+	/*
+	 * Get the instance of the specified plugin, if it exists
+	 *
+	 * @param	string		pluginName: the name of the plugin
+	 * @return	object		the plugin instance or null
+	 */
+	getPlugin: function(pluginName) {
+		return (this.plugins[pluginName] ? this.plugins[pluginName].instance : null);
+	},
+	/*
+	 * Focus on the editor
+	 */
+	focus: function () {
+		switch (this.getMode()) {
+			case 'wysiwyg':
+				this.iframe.focus();
+				break;
+			case 'textmode':
+				this.textArea.focus();
+				break;
+		}
+	},
+	/*
+	 * Add listeners
+	 */
+	initEventsListening: function () {
+		if (Ext.isOpera) {
+			this.iframe.startListening();
+		}
+			// Add unload handler
+		var iframe = this.iframe.getEl().dom;
+		Ext.EventManager.on(iframe.contentWindow ? iframe.contentWindow : iframe.contentDocument, 'unload', this.onUnload, this, {single: true});
+	},
+	/*
+	 * Make the editor framework visible
+	 */
+	show: function () {
+		document.getElementById('pleasewait' + this.editorId).style.display = 'none';
+		document.getElementById('editorWrap' + this.editorId).style.visibility = 'visible';
+	},
+	/*
+	 * Iframe unload handler: Update the textarea for submission and cleanup
+	 */
+	onUnload: function (event) {;
+			// Save the HTML content into the original textarea for submit, back/forward, etc.
+		if (this.ready) {
+			this.textArea.set({
+				value: this.getHTML()
+			}, false);
+		}
+			// Cleanup
+		Ext.TaskMgr.stopAll();
+		this.htmlArea.destroy();
+		RTEarea[this.editorId].editor = null;
+	}
+});
+/***************************************************
+ * HTMLArea.util.TYPO3: Utility functions for dealing with tabs and inline elements in TYPO3 forms
+ ***************************************************/
+HTMLArea.util.TYPO3 = function () {
+	return {
+		/*
+		 * Simplify the array of nested levels. Create an indexed array with the correct names of the elements.
+		 *
+		 * @param	object		nested: The array with the nested levels
+		 * @return	object		The simplified array
+		 * @author	Oliver Hader <oh@inpublica.de>
+		 */
+		simplifyNested: function(nested) {
+			var i, type, level, max, simplifiedNested=[];
+			if (nested && nested.length) {
+				if (nested[0][0]=='inline') {
+					nested = inline.findContinuedNestedLevel(nested, nested[0][1]);
+				}
+				for (i=0, max=nested.length; i<max; i++) {
+					type = nested[i][0];
+					level = nested[i][1];
+					if (type=='tab') {
+						simplifiedNested.push(level+'-DIV');
+					} else if (type=='inline') {
+						simplifiedNested.push(level+'_fields');
+					}
+				}
+			}
+			return simplifiedNested;
+		},
+		/*
+		 * Access an inline relational element or tab menu and make it "accessible".
+		 * If a parent or ancestor object has the style "display: none", offsetWidth & offsetHeight are '0'.
+		 *
+		 * @params	arry		parentElements: array of parent elements id's; note that this input array will be modified
+		 * @params	object		callbackFunc: A function to be called, when the embedded objects are "accessible".
+		 * @params	array		args: array of arguments
+		 * @return	object		An object returned by the callbackFunc.
+		 * @author	Oliver Hader <oh@inpublica.de>
+		 */
+		accessParentElements: function (parentElements, callbackFunc, args) {
+			var result = {};
+			if (parentElements.length) {
+				var currentElement = parentElements.pop();
+				var elementStyle = document.getElementById(currentElement).style;
+				var actionRequired = (elementStyle.display == 'none' ? true : false);
+				if (actionRequired) {
+					var originalVisibility = elementStyle.visibility;
+					var originalPosition = elementStyle.position;
+					elementStyle.visibility = 'hidden';
+					elementStyle.position = 'absolute';
+					elementStyle.display = '';
+				}
+				result = this.accessParentElements(parentElements, callbackFunc, args);
+				if (actionRequired) {
+					elementStyle.display = 'none';
+					elementStyle.position = originalPosition;
+					elementStyle.visibility = originalVisibility;
+				}
+			} else {
+				result = eval(callbackFunc);
+			}
+			return result;
+		},
+		/*
+		 * Check if all elements in input array are currently displayed
+		 *
+		 * @param	array		elements: array of element id's
+		 * @return	boolean		true if all elements are displayed
+		 */
+		allElementsAreDisplayed: function(elements) {
+			var allDisplayed = true;
+			Ext.each(elements, function (element) {
+				allDisplayed = Ext.get(element).getStyle('display') != 'none';
+				return allDisplayed;
+			});
+			return allDisplayed;
+		},
+		/*
+		 * Get current size of window
+		 *
+		 * @return	object		width and height of window
+		 */
+		getWindowSize: function () {
+			if (Ext.isIE) {
+				var size = Ext.getBody().getSize();
+			} else {
+				var size = {
+					width: window.innerWidth,
+					height: window.innerHeight
+				};
+			}
+				// Subtract the docheader height from the calculated window height
+			var docHeader = Ext.get('typo3-docheader');
+			if (docHeader) {
+				size.height -= docHeader.getHeight();
+			}
+			return size;
+		}
+	}
+}();
 /***************************************************
  *  PLUGINS, STYLESHEETS, AND IMAGE AND POPUP URL'S
  ***************************************************/
-
 /*
  * Instantiate the specified plugin and register it with the editor
  *
@@ -1398,7 +2317,7 @@ HTMLArea.prototype.setFullHTML = function(html) {
  *
  * @return	boolean		true if the plugin was successfully registered
  */
-HTMLArea.prototype.registerPlugin = function(plugin) {
+HTMLArea.Editor.prototype.registerPlugin = function(plugin) {
 	var pluginName = plugin;
 	if (typeof(plugin) === "string") {
 		try {
@@ -1426,16 +2345,6 @@ HTMLArea.prototype.registerPlugin = function(plugin) {
 		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register plugin " + pluginName + ".");
 		return false;
 	}
-};
-
-/*
- * Get the instance of the specified plugin, if it exists
- *
- * @param	string		pluginName: the name of the plugin
- * @return	object		the plugin instance or null
- */
-HTMLArea.prototype.getPluginInstance = function(pluginName) {
-	return (this.plugins[pluginName] ? this.plugins[pluginName].instance : null);
 };
 
 /*
@@ -1468,7 +2377,7 @@ HTMLArea.loadStyle = function(style, plugin, url) {
 /*
  * Get the url of some image
  */
-HTMLArea.prototype.imgURL = function(file, plugin) {
+HTMLArea.Editor.prototype.imgURL = function(file, plugin) {
 	if (typeof(plugin) == "undefined") return _editor_skin + this.config.imgURL + file;
 		else return _editor_skin + this.config.imgURL + plugin + "/" + file;
 };
@@ -1476,7 +2385,7 @@ HTMLArea.prototype.imgURL = function(file, plugin) {
 /*
  * Get the url of some popup
  */
-HTMLArea.prototype.popupURL = function(file) {
+HTMLArea.Editor.prototype.popupURL = function(file) {
 	var url = "";
 	if(file.match(/^plugin:\/\/(.*?)\/(.*)/)) {
 		var pluginId = RegExp.$1;
@@ -1509,36 +2418,22 @@ HTMLArea.getInnerText = function(el) {
 	return txt;
 };
 
-HTMLArea.prototype.forceRedraw = function() {
-	this._doc.body.style.visibility = "hidden";
-	this._doc.body.style.visibility = "visible";
+HTMLArea.Editor.prototype.forceRedraw = function() {
+	this.htmlArea.doLayout();
 };
 
 /*
- * Focus the editor iframe document or the textarea.
+ * Focus the editor iframe window or the textarea.
  */
-HTMLArea.prototype.focusEditor = function() {
-	switch (this.getMode()) {
-		case "wysiwyg" :
-			try {
-				if (HTMLArea.is_safari) {
-					this._iframe.focus();
-				} else {
-					this._iframe.contentWindow.focus();
-				}
-			} catch(e) { }
-			break;
-		case "textmode":
-			this._textArea.focus();
-			break;
-	}
-	return this._doc;
+HTMLArea.Editor.prototype.focusEditor = function() {
+	this.focus();
+	return this.document;
 };
 
 /*
  * Check if any plugin has an opened window
  */
-HTMLArea.prototype.hasOpenedWindow = function () {
+HTMLArea.Editor.prototype.hasOpenedWindow = function () {
 	for (var plugin in this.plugins) {
 		if (this.plugins.hasOwnProperty(plugin)) {
 			if (HTMLArea.Dialog[plugin.name] && HTMLArea.Dialog[plugin.name].hasOpenedWindow && HTMLArea.Dialog[plugin.name].hasOpenedWindow()) {
@@ -1548,111 +2443,9 @@ HTMLArea.prototype.hasOpenedWindow = function () {
 	}
 	return false
 };
-
-/*
- * Update the enabled/disabled/active state of the toolbar elements
- */
-HTMLArea.updateToolbar = function(editorNumber) {
-	var editor = RTEarea[editorNumber]["editor"];
-	editor.updateToolbar();
-	editor._timerToolbar = null;
+HTMLArea.Editor.prototype.updateToolbar = function(noStatus) {
+	this.toolbar.update(noStatus);
 };
-
-HTMLArea.prototype.updateToolbar = function(noStatus) {
-	var doc = this._doc,
-		initialToolbarHeight = this.getDimensions().toolbar.height,
-		text = (this.getMode() == "textmode"),
-		selection = false,
-		ancestors = null,
-		inContext, match, matchAny, k, j, n, commandState;
-	if (!text) {
-		selection = !this._selectionEmpty(this._getSelection());
-		ancestors = this.getAllAncestors();
-	}
-	for (var cmd in this._toolbarObjects) {
-		if (this._toolbarObjects.hasOwnProperty(cmd)) {
-			var btn = this._toolbarObjects[cmd];
-				// Determine if the button should be enabled
-			inContext = true;
-			if (btn.context && !text) {
-				inContext = false;
-				var attrs = [];
-				var contexts = [];
-				if (/(.*)\[(.*?)\]/.test(btn.context)) {
-					contexts = RegExp.$1.split(",");
-					attrs = RegExp.$2.split(",");
-				} else {
-					contexts = btn.context.split(",");
-				}
-				for (j = contexts.length; --j >= 0;) contexts[j] = contexts[j].toLowerCase();
-				matchAny = (contexts[0] == "*");
-				for (k = 0; k < ancestors.length; ++k) {
-					if (!ancestors[k]) continue;
-					match = false;
-					for (j = contexts.length; --j >= 0;) match = match || (ancestors[k].tagName.toLowerCase() == contexts[j]);
-					if (matchAny || match) {
-						inContext = true;
-						for (j = attrs.length; --j >= 0;) {
-							if (!eval("ancestors[k]." + attrs[j])) {
-								inContext = false;
-								break;
-							}
-						}
-						if (inContext) break;
-					}
-				}
-			}
-
-			if (cmd == "CreateLink") {
-				btn.state("enabled", (!text || btn.text) && (inContext || selection));
-			} else {
-				btn.state("enabled", (!text || btn.text) && inContext && (selection || !btn.selection));
-			}
-			if (typeof(cmd) == "function") { continue; };
-				// look-it-up in the custom dropdown boxes
-			var dropdown = this.config.customSelects[cmd];
-			if ((!text || btn.text) && (typeof(dropdown) !== "undefined") && (typeof(dropdown.refresh) === "function")) {
-				dropdown.refresh(this, cmd);
-				continue;
-			}
-			switch (cmd) {
-				case "TextIndicator":
-					if(!text) {
-						try {with (document.getElementById(btn.elementId).style) {
-							backgroundColor = HTMLArea._makeColor(doc.queryCommandValue((HTMLArea.is_ie || HTMLArea.is_safari) ? "BackColor" : "HiliteColor"));
-								// Mozilla
-							if(/transparent/i.test(backgroundColor)) { backgroundColor = HTMLArea._makeColor(doc.queryCommandValue("BackColor")); }
-							color = HTMLArea._makeColor(doc.queryCommandValue("ForeColor"));
-							fontFamily = doc.queryCommandValue("FontName");
-								// Check if queryCommandState is available
-							fontWeight = "normal";
-							fontStyle = "normal";
-							try { fontWeight = doc.queryCommandState("Bold") ? "bold" : "normal"; } catch(ex) { fontWeight = "normal"; };
-							try { fontStyle = doc.queryCommandState("Italic") ? "italic" : "normal"; } catch(ex) { fontStyle = "normal"; };
-						}} catch (e) {
-							// alert(e + "\n\n" + cmd);
-						}
-					}
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	
-	for (var pluginId in this.plugins) {
-		if (this.plugins.hasOwnProperty(pluginId)) {
-			var pluginInstance = this.plugins[pluginId].instance;
-			if (typeof(pluginInstance.onUpdateToolbar) === "function") {
-				pluginInstance.onUpdateToolbar();
-			}
-		}
-	}
-	if (this.getDimensions().toolbar.height != initialToolbarHeight) {
-		this.sizeIframe(2);
-	}
-};
-
 /***************************************************
  *  DOM TREE MANIPULATION
  ***************************************************/
@@ -1661,15 +2454,15 @@ HTMLArea.prototype.updateToolbar = function(noStatus) {
  * Surround the currently selected HTML source code with the given tags.
  * Delete the selection, if any.
  */
-HTMLArea.prototype.surroundHTML = function(startTag,endTag) {
+HTMLArea.Editor.prototype.surroundHTML = function(startTag,endTag) {
 	this.insertHTML(startTag + this.getSelectedHTML().replace(HTMLArea.Reg_body, "") + endTag);
 };
 
 /*
  * Change the tag name of a node.
  */
-HTMLArea.prototype.convertNode = function(el,newTagName) {
-	var newel = this._doc.createElement(newTagName), p = el.parentNode;
+HTMLArea.Editor.prototype.convertNode = function(el,newTagName) {
+	var newel = this.document.createElement(newTagName), p = el.parentNode;
 	while (el.firstChild) newel.appendChild(el.firstChild);
 	p.insertBefore(newel, el);
 	p.removeChild(el);
@@ -1692,7 +2485,7 @@ HTMLArea.getElementObject = function(el,tagName) {
  *
  * @return	void
  */
-HTMLArea.prototype.removeMarkup = function(element) {
+HTMLArea.Editor.prototype.removeMarkup = function(element) {
 	var bookmark = this.getBookmark(this._createRange(this._getSelection()));
 	var parent = element.parentNode;
 	while (element.firstChild) {
@@ -1732,28 +2525,28 @@ HTMLArea.hasAllowedAttributes = function(element,allowedAttributes) {
 /*
  * Return true if we have some selected content
  */
-HTMLArea.prototype.hasSelectedText = function() {
+HTMLArea.Editor.prototype.hasSelectedText = function() {
 	return this.getSelectedHTML() != "";
 };
 
 /*
  * Get an array with all the ancestor nodes of the selection.
  */
-HTMLArea.prototype.getAllAncestors = function() {
+HTMLArea.Editor.prototype.getAllAncestors = function() {
 	var p = this.getParentElement();
 	var a = [];
 	while (p && (p.nodeType === 1) && (p.nodeName.toLowerCase() !== "body")) {
 		a.push(p);
 		p = p.parentNode;
 	}
-	a.push(this._doc.body);
+	a.push(this.document.body);
 	return a;
 };
 
 /*
  * Get the block ancestors of an element within a given block
  */
-HTMLArea.prototype.getBlockAncestors = function(element, withinBlock) {
+HTMLArea.Editor.prototype.getBlockAncestors = function(element, withinBlock) {
 	var ancestors = new Array();
 	var ancestor = element;
 	while (ancestor && (ancestor.nodeType === 1) && !/^(body)$/i.test(ancestor.nodeName) && ancestor != withinBlock) {
@@ -1769,9 +2562,9 @@ HTMLArea.prototype.getBlockAncestors = function(element, withinBlock) {
 /*
  * Get the block elements containing the start and the end points of the selection
  */
-HTMLArea.prototype.getEndBlocks = function(selection) {
+HTMLArea.Editor.prototype.getEndBlocks = function(selection) {
 	var range = this._createRange(selection);
-	if (HTMLArea.is_gecko) {
+	if (!Ext.isIE) {
 		var parentStart = range.startContainer;
 		var parentEnd = range.endContainer;
 	} else {
@@ -1802,7 +2595,7 @@ HTMLArea.prototype.getEndBlocks = function(selection) {
  *
  * @return	boolean	true if the end points of the current selection are inside the same block element
  */
-HTMLArea.prototype.endPointsInSameBlock = function() {
+HTMLArea.Editor.prototype.endPointsInSameBlock = function() {
 	var selection = this._getSelection();
 	if (this._selectionEmpty(selection)) {
 		return true;
@@ -1817,11 +2610,11 @@ HTMLArea.prototype.endPointsInSameBlock = function() {
  * Get the deepest ancestor of the selection that is of the specified type
  * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
  */
-HTMLArea.prototype._getFirstAncestor = function(sel,types) {
+HTMLArea.Editor.prototype._getFirstAncestor = function(sel,types) {
 	var prnt = this._activeElement(sel);
 	if (prnt == null) {
 		try {
-			prnt = (HTMLArea.is_ie ? this._createRange(sel).parentElement() : this._createRange(sel).commonAncestorContainer);
+			prnt = (Ext.isIE ? this._createRange(sel).parentElement() : this._createRange(sel).commonAncestorContainer);
 		} catch(e) {
 			return null;
 		}
@@ -1847,208 +2640,34 @@ HTMLArea.prototype._getFirstAncestor = function(sel,types) {
  ***************************************************/
 
 /*
- * Intercept some commands and replace them with our own implementation
+ * Intercept some native execCommand commands
  */
-HTMLArea.prototype.execCommand = function(cmdID, UI, param) {
-	this.focusEditor();
+HTMLArea.Editor.prototype.execCommand = function(cmdID, UI, param) {
+	this.focus();
 	switch (cmdID) {
 		default:
 			try {
-				this._doc.execCommand(cmdID, UI, param);
+				this.document.execCommand(cmdID, UI, param);
 			} catch(e) {
 				if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");");
 			}
 	}
-	this.updateToolbar();
+	this.toolbar.update();
 	return false;
 };
 
-/*
-* A generic event handler for things that happen in the IFRAME's document.
-*/
-HTMLArea._editorEvent = function(ev) {
-	if(!ev) var ev = window.event;
-	var target = (ev.target) ? ev.target : ev.srcElement;
-	var owner = (target.ownerDocument) ? target.ownerDocument : target;
-	if(HTMLArea.is_ie) { // IE5.5 does not report any ownerDocument
-		while (owner.parentElement) { owner = owner.parentElement; }
-	}
-	var editor = RTEarea[owner._editorNo]["editor"];
-	var keyEvent = ((HTMLArea.is_ie || HTMLArea.is_safari) && ev.type == "keydown") || (HTMLArea.is_gecko && ev.type == "keypress");
-	var mouseEvent = (ev.type == "mousedown" || ev.type == "mouseup");
-	editor.focusEditor();
-
-	if(keyEvent) {
-			// In Opera, inhibit key events while synchronous XMLHttpRequest is being processed
-		if (HTMLArea.is_opera && HTMLArea.pendingSynchronousXMLHttpRequest) {
-			HTMLArea._stopEvent(ev);
-			return false;
-		}
-		if (editor._hasPluginWithOnKeyPressHandler) {
-			for (var pluginId in editor.plugins) {
-				if (editor.plugins.hasOwnProperty(pluginId)) {
-					var pluginInstance = editor.plugins[pluginId].instance;
-					if (typeof(pluginInstance.onKeyPress) === "function") {
-						if (!pluginInstance.onKeyPress(ev)) {
-							HTMLArea._stopEvent(ev);
-							return false;
-						}
-					}
-				}
-			}
-		}
-		if (ev.ctrlKey && !ev.shiftKey) {
-			if (!ev.altKey) {
-					// Execute hotkey command
-				var key = String.fromCharCode((HTMLArea.is_ie || HTMLArea.is_safari || HTMLArea.is_opera) ? ev.keyCode : ev.charCode).toLowerCase();
-				if (key == " " || ev.keyCode == 32) {
-					editor.insertHTML("&nbsp;");
-					editor.updateToolbar();
-					HTMLArea._stopEvent(ev);
-					return false;
-				}
-				if (!editor.config.hotKeyList[key]) return true;
-				var cmd = editor.config.hotKeyList[key].cmd;
-				if (!cmd) return true;
-				switch (cmd) {
-					case "SelectAll":
-						cmd = editor.config.hotKeyList[key].cmd;
-						editor.execCommand(cmd, false, null);
-						HTMLArea._stopEvent(ev);
-						return false;
-						break;
-					default:
-						if (editor.config.hotKeyList[key] && editor.config.hotKeyList[key].action) {
-							if (!editor.config.hotKeyList[key].action(editor, key)) {
-								HTMLArea._stopEvent(ev);
-								return false;
-							}
-						}
-				}
-				return true;
-			}
-		} else if (ev.altKey) {
-				// check if context menu is already handling this event
-			if(editor.plugins["ContextMenu"] && editor.plugins["ContextMenu"].instance) {
-				var keys = editor.plugins["ContextMenu"].instance.keys;
-				if (keys.length > 0) {
-					var k;
-					for (var i = keys.length; --i >= 0;) {
-						k = keys[i];
-						if (k[0].toLowerCase() == key) {
-							HTMLArea._stopEvent(ev);
-							return false;
-						}
-					}
-				}
-			}
-			return true;
-		} else if (keyEvent) {
-			if (HTMLArea.is_gecko) editor._detectURL(ev);
-			switch (ev.keyCode) {
-				case 13	: // KEY enter
-					if (HTMLArea.is_gecko) {
-						if (!ev.shiftKey && !editor.config.disableEnterParagraphs) {
-							if (editor._checkInsertP()) {
-								HTMLArea._stopEvent(ev);
-							}
-						} else if (HTMLArea.is_safari) {
-							var brNode = editor._doc.createElement("br");
-							editor.insertNodeAtSelection(brNode);
-							if (!brNode.nextSibling || !HTMLArea.getInnerText(brNode.nextSibling)) {
-								var secondBrNode = editor._doc.createElement("br");
-								secondBrNode = brNode.parentNode.appendChild(secondBrNode);
-								editor.selectNode(secondBrNode, false);
-							}
-							HTMLArea._stopEvent(ev);
-						}
-							// update the toolbar state after some time
-						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 200);
-						return false;
-					}
-					break;
-				case 8	: // KEY backspace
-				case 46	: // KEY delete
-					if ((HTMLArea.is_gecko && !ev.shiftKey) || HTMLArea.is_ie) {
-						if (editor._checkBackspace()) HTMLArea._stopEvent(ev);
-					}
-						// update the toolbar state after some time
-					if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-					editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 200);
-					break;
-				case 9: // KEY horizontal tab
-					var newkey = (ev.shiftKey ? "SHIFT-" : "") + "TAB";
-					if (editor.config.hotKeyList[newkey] && editor.config.hotKeyList[newkey].action) {
-						if (!editor.config.hotKeyList[newkey].action(editor, newkey)) {
-							HTMLArea._stopEvent(ev);
-							return false;
-						}
-					}
-					break;
-				case 37: // LEFT arrow key
-				case 38: // UP arrow key
-				case 39: // RIGHT arrow key
-				case 40: // DOWN arrow key
-					if (HTMLArea.is_ie || HTMLArea.is_safari) {
-						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-						editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 200);
-						return true;
-					}
-					break;
-				default:
-					break;
-			}
-			switch (ev.charCode) {
-				case 160:
-						// Handle option+SPACE for Mac users
-					if (navigator.platform.indexOf("Mac") != -1) {
-						editor.insertHTML("&nbsp;");
-						editor.updateToolbar();
-						HTMLArea._stopEvent(ev);
-						return false;
-					}
-					break;
-				default:
-					break;
-			}
-			return true;
-		}
-	} else if (mouseEvent) {
-			// mouse event
-		if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
-		if (ev.type == "mouseup") editor.updateToolbar();
-			else editor._timerToolbar = window.setTimeout("HTMLArea.updateToolbar(\'" + editor._editorNumber + "\');", 50);
-	}
-};
-
-HTMLArea.prototype.scrollToCaret = function() {
-	if (HTMLArea.is_gecko) {
+HTMLArea.Editor.prototype.scrollToCaret = function() {
+	if (!Ext.isIE) {
 		var e = this.getParentElement(),
 			w = this._iframe.contentWindow ? this._iframe.contentWindow : window,
 			h = w.innerHeight || w.height,
-			d = this._doc,
+			d = this.document,
 			t = d.documentElement.scrollTop || d.body.scrollTop;
 		if (e.offsetTop > h+t || e.offsetTop < t) {
 			this.getParentElement().scrollIntoView();
 		}
 	}
 };
-
-/*
- * Get the html content of the current editing mode
- */
-HTMLArea.prototype.getHTML = function() {
-	return this.getPluginInstance("EditorMode").getHTML();
-};
-
-/*
- * Set the given doctype when config.fullPage is true
- */
-HTMLArea.prototype.setDoctype = function(doctype) {
-	this.doctype = doctype;
-};
-
 /***************************************************
  *  UTILITY FUNCTIONS
  ***************************************************/
@@ -2060,115 +2679,7 @@ HTMLArea._object = null;
  * Check if the client agent is supported
  */
 HTMLArea.checkSupportedBrowser = function() {
-	if(HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-		if(navigator.productSub < 20030210) return false;
-	}
-	return HTMLArea.is_gecko || HTMLArea.is_ie;
-};
-
-/*	EventCache Version 1.0
- *	Copyright 2005 Mark Wubben
- *	Adaptation by Stanislas Rolland
- *	Provides a way for automatically removing events from nodes and thus preventing memory leakage.
- *	See <http://novemberborn.net/javascript/event-cache> for more information.
- *	This software is licensed under the CC-GNU LGPL <http://creativecommons.org/licenses/LGPL/2.1/>
- *	Event Cache uses an anonymous function to create a hidden scope chain. This is to prevent scoping issues.
- */
-HTMLArea._eventCacheConstructor = function() {
-	var listEvents = [];
-
-	return ({
-		listEvents : listEvents,
-
-		add : function(node, sEventName, fHandler) {
-			listEvents.push(arguments);
-		},
-
-		flush : function() {
-			var item;
-			for (var i = listEvents.length; --i >= 0;) {
-				item = listEvents[i];
-				try {
-					HTMLArea._removeEvent(item[0], item[1], item[2]);
-					item[0][item[1]] = null;
-					item[0] = null;
-					item[2] = null;
-				} catch(e) { }
-			}
-			listEvents.length = 0;
-		}
-	});
-};
-
-/*
- * Register an event
- */
-HTMLArea._addEvent = function(el,evname,func,useCapture) {
-	if (typeof(useCapture) == "undefined") {
-		var useCapture = false;
-	}
-	if (HTMLArea.is_gecko) {
-		el.addEventListener(evname, func, !HTMLArea.is_opera || useCapture);
-	} else {
-		el.attachEvent("on" + evname, func);
-	}
-	HTMLArea._eventCache.add(el, evname, func);
-};
-
-/*
- * Register a list of events
- */
-HTMLArea._addEvents = function(el,evs,func,useCapture) {
-	if (typeof(useCapture) == "undefined") {
-		var useCapture = false;
-	}
-	for (var i = evs.length; --i >= 0;) {
-		HTMLArea._addEvent(el,evs[i], func, useCapture);
-	}
-};
-
-/*
- * Remove an event listener
- */
-HTMLArea._removeEvent = function(el,evname,func) {
-	if (HTMLArea.is_gecko) {
-			// Avoid Safari crash when removing events on some orphan documents
-		if (!HTMLArea.is_safari || HTMLArea.is_chrome) {
-			try {
-				el.removeEventListener(evname, func, true);
-				el.removeEventListener(evname, func, false);
-			} catch(e) { }
-		} else if (el.nodeType != 9 || el.defaultView) {
-			try {
-				el.removeEventListener(evname, func, true);
-				el.removeEventListener(evname, func, false);
-			} catch(e) { }
-		}
-	} else {
-		try {
-			el.detachEvent("on" + evname, func);
-		} catch(e) { }
-	}
-};
-
-/*
- * Remove a list of events
- */
-HTMLArea._removeEvents = function(el,evs,func) {
-	for (var i = evs.length; --i >= 0;) { HTMLArea._removeEvent(el, evs[i], func); }
-};
-
-/*
- * Stop event propagation
- */
-HTMLArea._stopEvent = function(ev) {
-	if(HTMLArea.is_gecko) {
-		ev.stopPropagation();
-		ev.preventDefault();
-	} else {
-		ev.cancelBubble = true;
-		ev.returnValue = false;
-	}
+	return Ext.isGecko || Ext.isWebKit || Ext.isOpera || Ext.isIE;
 };
 
 /*
@@ -2193,9 +2704,9 @@ HTMLArea._removeClass = function(el, className, substring) {
 		}
 	}
 	if (newClasses.length == 0) {
-		if (!HTMLArea.is_opera) {
+		if (!Ext.isOpera) {
 			el.removeAttribute("class");
-			if (HTMLArea.is_ie) {
+			if (Ext.isIE) {
 				el.removeAttribute("className");
 			}
 		} else {
@@ -2240,22 +2751,6 @@ HTMLArea._hasClass = function(el, className, substring) {
 	return false;
 };
 
-/*
- * Select a value in a select element
- *
- * @param	object		select: the select object
- * @param	string		value: the value
- * @return	void
- */
-HTMLArea.selectValue = function(select, value) {
-	var options = select.getElementsByTagName("option");
-	for (var i = options.length; --i >= 0;) {
-		var option = options[i];
-		option.selected = (option.value == value);
-		select.selectedIndex = i;
-	}
-};
-
 HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
 HTMLArea.RE_closingTags = /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/;
@@ -2295,7 +2790,7 @@ HTMLArea.getHTML = function(root, outputRoot, editor){
 		HTMLArea._appendToLog("The HTML document is not well-formed.");
 		if(!HTMLArea._debugMode) alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
 			else return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
-		return editor._doc.body.innerHTML;
+		return editor.document.body.innerHTML;
 	}
 };
 
@@ -2315,19 +2810,8 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 		if (config.htmlRemoveTagsAndContents && config.htmlRemoveTagsAndContents.test(root_tag)) break;
 		var custom_tag = (config.customTags && config.customTags.test(root_tag));
 		if (outputRoot) outputRoot = !(config.htmlRemoveTags && config.htmlRemoveTags.test(root_tag));
-		if ((HTMLArea.is_ie || HTMLArea.is_safari) && root_tag == "head") {
-			if(outputRoot) html += "<head>";
-			var save_multiline = RegExp.multiline;
-			RegExp.multiline = true;
-			var txt = root.innerHTML.replace(HTMLArea.RE_tagName, function(str, p1, p2) {
-				return p1 + p2.toLowerCase();
-			});
-			RegExp.multiline = save_multiline;
-			html += txt;
-			if(outputRoot) html += "</head>";
-			break;
-		} else if (outputRoot) {
-			if (HTMLArea.is_gecko && root.hasAttribute('_moz_editor_bogus_node')) break;
+		if (outputRoot) {
+			if (Ext.isGecko && root.hasAttribute('_moz_editor_bogus_node')) break;
 			closed = (!(root.hasChildNodes() || HTMLArea.needsClosingTag(root) || custom_tag));
 			html = "<" + root_tag;
 			var a, name, value, attrs = root.attributes;
@@ -2336,14 +2820,14 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 				a = attrs.item(i);
 				name = a.nodeName.toLowerCase();
 				if ((!a.specified && name != 'value') || /_moz|contenteditable|_msh|complete/.test(name)) continue;
-				if (!HTMLArea.is_ie || name != "style") {
+				if (!Ext.isIE || name != "style") {
 						// IE5.5 reports wrong values. For this reason we extract the values directly from the root node.
 						// Using Gecko the values of href and src are converted to absolute links unless we get them using nodeValue()
 					if (typeof(root[a.nodeName]) != "undefined" && name != "href" && name != "src" && name != "style" && !/^on/.test(name)) {
 						value = root[a.nodeName];
 					} else {
 						value = a.nodeValue;
-						if (HTMLArea.is_ie && (name == "href" || name == "src") && editor.plugins.link && editor.plugins.link.instance && editor.plugins.link.instance.stripBaseURL) {
+						if (Ext.isIE && (name == "href" || name == "src") && editor.plugins.link && editor.plugins.link.instance && editor.plugins.link.instance.stripBaseURL) {
 							value = editor.plugins.link.instance.stripBaseURL(value);
 						}
 					}
@@ -2353,7 +2837,11 @@ HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
 					// Mozilla reports some special values; we don't need them.
 				if(/(_moz|^$)/.test(value)) continue;
 					// Strip value="0" reported by IE on all li tags
-				if(HTMLArea.is_ie && root_tag == "li" && name == "value" && a.nodeValue == 0) continue;
+				if(Ext.isIE && root_tag == "li" && name == "value" && value == 0) continue;
+					// Strip id generated by ExtJS
+				if (name === 'id' && value.substr(0, 7) === 'ext-gen') {
+					continue;
+				}
 				html += " " + name + '="' + HTMLArea.htmlEncode(value) + '"';
 			}
 			if (html != "") html += closed ? " />" : ">";
@@ -2407,65 +2895,321 @@ HTMLArea.removeFromParent = function(el) {
 	pN.removeChild(el);
 	return el;
 };
-
-String.prototype.trim = function() {
-	return this.replace(/^\s+/, '').replace(/\s+$/, '');
-};
-
-// creates a rgb-style color from a number
-HTMLArea._makeColor = function(v) {
-	if (typeof(v) != "number") {
-		// already in rgb (hopefully); IE doesn't get here.
-		return v;
-	}
-	// IE sends number; convert to rgb.
-	var r = v & 0xFF;
-	var g = (v >> 8) & 0xFF;
-	var b = (v >> 16) & 0xFF;
-	return "rgb(" + r + "," + g + "," + b + ")";
-};
-
-// returns hexadecimal color representation from a number or a rgb-style color.
-HTMLArea._colorToRgb = function(v) {
-	if (!v)
-		return '';
-
-	// returns the hex representation of one byte (2 digits)
-	function hex(d) {
-		return (d < 16) ? ("0" + d.toString(16)) : d.toString(16);
-	};
-
-	if (typeof(v) == "number") {
-		// we're talking to IE here
-		var r = v & 0xFF;
-		var g = (v >> 8) & 0xFF;
-		var b = (v >> 16) & 0xFF;
-		return "#" + hex(r) + hex(g) + hex(b);
-	}
-
-	if (v.substr(0, 3) == "rgb") {
-		// in rgb(...) form -- Mozilla
-		var re = /rgb\s*\(\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*\)/;
-		if (v.match(re)) {
-			var r = parseInt(RegExp.$1);
-			var g = parseInt(RegExp.$2);
-			var b = parseInt(RegExp.$3);
-			return "#" + hex(r) + hex(g) + hex(b);
+/***************************************************
+ *  TIPS ON FORM FIELDS AND MENU ITEMS
+ ***************************************************/
+/*
+ * Intercept Ext.form.Field.afterRender in order to provide tips on form fields and menu items
+ * Adapted from: http://www.extjs.com/forum/showthread.php?t=36642
+ */
+HTMLArea.util.Tips = function () {
+	return {
+		tipsOnFormFields: function () {
+			if (this.helpText || this.helpTitle) {
+				if (!this.helpDisplay) {
+					this.helpDisplay = 'both';
+				}
+				var label = this.label;
+					// IE has problems with img inside label tag
+				if (label && this.helpIcon && !Ext.isIE) {
+					var helpImage = label.insertFirst({
+						tag: 'img',
+						src: _editor_skin + 'images/helpbubble.gif',
+						style: 'vertical-align: middle; padding-right: 2px;'
+					});
+					if (this.helpDisplay == 'image' || this.helpDisplay == 'both'){
+						Ext.QuickTips.register({
+							target: helpImage,
+							title: this.helpTitle,
+							text: this.helpText
+						});
+					}
+				}
+				if (this.helpDisplay == 'field' || this.helpDisplay == 'both'){
+					Ext.QuickTips.register({
+						target: this,
+						title: this.helpTitle,
+						text: this.helpText
+					});
+				}
+			}
+		},
+		tipsOnMenuItems: function () {
+			if (this.helpText || this.helpTitle) {
+				Ext.QuickTips.register({
+					target: this,
+					title: this.helpTitle,
+					text: this.helpText
+				});
+			}
 		}
-		// doesn't match RE?!  maybe uses percentages or float numbers
-		// -- FIXME: not yet implemented.
-		return null;
 	}
-
-	if (v.substr(0, 1) == "#") {
-		// already hex rgb (hopefully :D )
-		return v;
+}();
+Ext.form.Field.prototype.afterRender = Ext.form.Field.prototype.afterRender.createInterceptor(HTMLArea.util.Tips.tipsOnFormFields);
+Ext.menu.BaseItem.prototype.afterRender = Ext.menu.BaseItem.prototype.afterRender.createInterceptor(HTMLArea.util.Tips.tipsOnMenuItems);
+/***************************************************
+ *  COLOR WIDGETS AND UTILITIES
+ ***************************************************/
+HTMLArea.util.Color = function () {
+	return {
+		/*
+		 * Returns a rgb-style color from a number
+		 */
+		colorToRgb: function(v) {
+			if (typeof(v) != 'number') {
+				return v;
+			}
+			var r = v & 0xFF;
+			var g = (v >> 8) & 0xFF;
+			var b = (v >> 16) & 0xFF;
+			return 'rgb(' + r + ',' + g + ',' + b + ')';
+		},
+		/*
+		 * Returns hexadecimal color representation from a number or a rgb-style color.
+		 */
+		colorToHex: function(v) {
+			if (!v) {
+				return '';
+			}
+			function hex(d) {
+				return (d < 16) ? ('0' + d.toString(16)) : d.toString(16);
+			};
+			if (typeof(v) == 'number') {
+				var r = v & 0xFF;
+				var g = (v >> 8) & 0xFF;
+				var b = (v >> 16) & 0xFF;
+				return '#' + hex(r) + hex(g) + hex(b);
+			}
+			if (v.substr(0, 3) === 'rgb') {
+				var re = /rgb\s*\(\s*([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\s*\)/;
+				if (v.match(re)) {
+					var r = parseInt(RegExp.$1);
+					var g = parseInt(RegExp.$2);
+					var b = parseInt(RegExp.$3);
+					return ('#' + hex(r) + hex(g) + hex(b)).toUpperCase();
+				}
+				return null;
+			}
+			if (v.substr(0, 1) === '#') {
+				return v;
+			}
+			return null;
+		},
+		/*
+		 * Select interceptor to ensure that the color exists in the palette before trying to select
+		 */
+		checkIfColorInPalette: function (color) {
+				// Do not continue if the new color is not in the palette
+			if (this.el && !this.el.child('a.color-' + color)) {
+					// Remove any previous selection
+				this.deSelect();
+				return false;
+			}
+		}
 	}
-
-	// if everything else fails ;)
-	return null;
-};
-
+}();
+/*
+ * Interim backward compatibility
+ */
+HTMLArea._makeColor = HTMLArea.util.Color.colorToRgb;
+HTMLArea._colorToRgb = HTMLArea.util.Color.colorToHex;
+/*
+ * Intercept Ext.ColorPalette.prototype.select
+ */
+Ext.ColorPalette.prototype.select = Ext.ColorPalette.prototype.select.createInterceptor(HTMLArea.util.Color.checkIfColorInPalette);
+/*
+ * Add deSelect method to Ext.ColorPalette
+ */
+Ext.override(Ext.ColorPalette, {
+	deSelect: function () {
+		if (this.el && this.value){
+			this.el.child('a.color-' + this.value).removeClass('x-color-palette-sel');
+			this.value = null;
+		}
+	}
+});
+Ext.ux.menu.HTMLAreaColorMenu = Ext.extend(Ext.menu.Menu, {
+	enableScrolling: false,
+	hideOnClick: true,
+	cls: 'x-color-menu',
+	colorPaletteValue: '',
+	customColorsValue: '',
+	plain: true,
+	showSeparator: false,
+	initComponent: function () {
+		var paletteItems = [];
+		var width = 'auto';
+		if (this.colorsConfiguration) {
+			paletteItems.push({
+				xtype: 'container',
+				layout: 'anchor',
+				width: 160,
+				style: { float: 'right' },
+				items: {
+					xtype: 'colorpalette',
+					itemId: 'custom-colors',
+					cls: 'htmlarea-custom-colors',
+					colors: this.colorsConfiguration,
+					value: this.value,
+					allowReselect: true,
+					tpl: new Ext.XTemplate(
+						'<tpl for="."><a href="#" class="color-{1}" hidefocus="on"><em><span style="background:#{1}" unselectable="on">&#160;</span></em><span unselectable="on">{0}<span></a></tpl>'
+					)
+				}
+			});
+			width = 350;
+		}
+		paletteItems.push({
+			xtype: 'container',
+			layout: 'anchor',
+			items: {
+				xtype: 'colorpalette',
+				itemId: 'color-palette',
+				cls: 'color-palette',
+				colors: this.colors,
+				value: this.value,
+				allowReselect: true
+			}
+		});
+		Ext.apply(this, {
+			layout: 'menu',
+			width: width,
+			items: paletteItems
+		});
+		Ext.ux.menu.HTMLAreaColorMenu.superclass.initComponent.call(this);
+		this.standardPalette = this.find('itemId', 'color-palette')[0];
+		this.customPalette = this.find('itemId', 'custom-colors')[0];
+		if (this.standardPalette) {
+			this.standardPalette.purgeListeners();
+			this.relayEvents(this.standardPalette, ['select']);
+		}
+		if (this.customPalette) {
+			this.customPalette.purgeListeners();
+			this.relayEvents(this.customPalette, ['select']);
+		}
+		this.on('select', this.menuHide, this);
+		if (this.handler){
+			this.on('select', this.handler, this.scope || this);
+		}
+	},
+	menuHide: function() {
+		if (this.hideOnClick){
+			this.hide(true);
+		}
+	}
+});
+Ext.reg('htmlareacolormenu', Ext.ux.menu.HTMLAreaColorMenu);
+/*
+ * Color palette trigger field
+ * Based on http://www.extjs.com/forum/showthread.php?t=89312
+ */
+Ext.ux.form.ColorPaletteField = Ext.extend(Ext.form.TriggerField, {
+	triggerClass : 'x-form-color-trigger',
+	colors : [
+		'000000', '222222', '444444', '666666', '999999', 'BBBBBB', 'DDDDDD', 'FFFFFF',
+		'660000', '663300', '996633', '003300', '003399', '000066', '330066', '660066',
+		'990000', '993300', 'CC9900', '006600', '0033FF', '000099', '660099', '990066',
+		'CC0000', 'CC3300', 'FFCC00', '009900', '0066FF', '0000CC', '663399', 'CC0099',
+		'FF0000', 'FF3300', 'FFFF00', '00CC00', '0099FF', '0000FF', '9900CC', 'FF0099',
+		'CC3333', 'FF6600', 'FFFF33', '00FF00', '00CCFF', '3366FF', '9933FF', 'FF00FF',
+		'FF6666', 'FF6633', 'FFFF66', '66FF66', '00FFFF', '3399FF', '9966FF', 'FF66FF',
+		'FF9999', 'FF9966', 'FFFF99', '99FF99', '99FFFF', '66CCFF', '9999FF', 'FF99FF',
+		'FFCCCC', 'FFCC99', 'FFFFCC', 'CCFFCC', 'CCFFFF', '99CCFF', 'CCCCFF', 'FFCCFF'
+	],
+		// Whether or not the field background, text, or triggerbackgroud are set to the selected color
+	colorizeFieldBackgroud: true,
+	colorizeFieldText: true,
+	colorizeTrigger: false,
+	editable: true,
+	initComponent: function () {
+		Ext.ux.form.ColorPaletteField.superclass.initComponent.call(this);
+		this.addEvents(            
+			'select'
+		);
+	},
+		// private
+	validateBlur: function () {
+		return !this.menu || !this.menu.isVisible();
+	},
+	setValue: function (color) {
+		if (color) {
+			if (this.colorizeFieldBackgroud) {
+				this.el.applyStyles('background: #' + color  + ';');
+			}
+			if (this.colorizeFieldText) {
+				this.el.applyStyles('color: #' + this.rgbToHex(this.invert(this.hexToRgb(color)))  + ';');
+			}
+			if (this.colorizeTrigger) {
+				this.trigger.applyStyles('background-color: #' + color  + ';');
+			}
+		}
+		return Ext.ux.form.ColorPaletteField.superclass.setValue.call(this, color);
+	},
+		// private
+	onDestroy: function () {
+		Ext.destroy(this.menu);
+		Ext.ux.form.ColorPaletteField.superclass.onDestroy.call(this);
+	},
+		// private
+	onTriggerClick: function () {
+		if (this.disabled) {
+			return;
+		}
+		if (this.menu == null) {
+			this.menu = new Ext.ux.menu.HTMLAreaColorMenu({
+				hideOnClick: false,
+				colors: this.colors,
+				colorsConfiguration: this.colorsConfiguration,
+				value: this.getValue()
+			});
+		}
+		this.onFocus();
+		this.menu.show(this.el, "tl-bl?");
+		this.menuEvents('on');
+	},
+		//private
+	menuEvents: function (method) {
+		this.menu[method]('select', this.onSelect, this);
+		this.menu[method]('hide', this.onMenuHide, this);
+		this.menu[method]('show', this.onFocus, this);
+	},
+	onSelect: function (m, d) {
+		this.setValue(d);
+		this.fireEvent('select', this, d);
+		this.menu.hide();
+	},
+	onMenuHide: function () {
+		this.focus(false, 60);
+		this.menuEvents('un');
+	},
+	invert: function ( r, g, b ) {
+		if( r instanceof Array ) { return this.invert.call( this, r[0], r[1], r[2] ); }
+		return [255-r,255-g,255-b];
+	},
+	hexToRgb: function ( hex ) {
+		return [ this.hexToDec( hex.substr(0, 2) ), this.hexToDec( hex.substr(2, 2) ), this.hexToDec( hex.substr(4, 2) ) ];
+	},
+	hexToDec: function( hex ) {
+		var s = hex.split('');
+		return ( ( this.getHCharPos( s[0] ) * 16 ) + this.getHCharPos( s[1] ) );
+	},
+	getHCharPos: function( c ) {
+		var HCHARS = '0123456789ABCDEF';
+		return HCHARS.indexOf( c.toUpperCase() );
+	},
+	rgbToHex: function( r, g, b ) {
+		if( r instanceof Array ) { return this.rgbToHex.call( this, r[0], r[1], r[2] ); }
+		return this.decToHex( r ) + this.decToHex( g ) + this.decToHex( b );
+	},
+	decToHex: function( n ) {
+		var HCHARS = '0123456789ABCDEF';
+		n = parseInt(n, 10);
+		n = ( !isNaN( n )) ? n : 0;
+		n = (n > 255 || n < 0) ? 0 : n;
+		return HCHARS.charAt( ( n - n % 16 ) / 16 ) + HCHARS.charAt( n % 16 );
+	}
+});
+Ext.reg('colorpalettefield', Ext.ux.form.ColorPaletteField);
 /*
  * Use XML HTTPRequest to post some data back to the server and do something
  * with the response (asyncronously or syncronously); this is used by such things as the spellchecker update personal dict function
@@ -2555,105 +3299,37 @@ HTMLArea.getElementById = function(tag, id) {
  * TYPO3-SPECIFIC FUNCTIONS
  ***************************************************/
 /*
- * Set the size of textarea with the RTE. It's called, if we are in fullscreen-mode.
- */
-var setRTEsizeByJS = function(divId, height, width) {
-	if (HTMLArea.is_gecko) height = height - 25;
-		else height = height - 60;
-	if (height > 0) document.getElementById(divId).style.height =  height + "px";
-	if (HTMLArea.is_gecko) width = "99%";
-		else width = "97%";
-	document.getElementById(divId).style.width = width;
-};
-
-/*
  * Extending the TYPO3 Lorem Ipsum extension
  */
 var lorem_ipsum = function(element,text) {
 	if (element.tagName.toLowerCase() == "textarea" && element.id && element.id.substr(0,7) == "RTEarea") {
 		var editor = RTEarea[element.id.substr(7, element.id.length)]["editor"];
 		editor.insertHTML(text);
-		editor.updateToolbar();
+		editor.toolbar.update();
 	}
 };
-
 /*
- * Initialize the editor, configure the toolbar, setup the plugins, etc.
+ * Create the editor when HTMLArea is loaded and when Ext is ready
  */
-HTMLArea.initTimer = new Object();
-
-HTMLArea.onGenerateHandler = function(editorNumber) {
-	return (function() {
-		document.getElementById('pleasewait' + editorNumber).style.display = 'none';
-		document.getElementById('editorWrap' + editorNumber).style.visibility = 'visible';
-		editorNumber = null;
-	});
-};
-
 HTMLArea.initEditor = function(editorNumber) {
-	if (document.getElementById('pleasewait' + editorNumber))	{
-	if(HTMLArea.checkSupportedBrowser()) {
-		document.getElementById('pleasewait' + editorNumber).style.display = 'block';
-		document.getElementById('editorWrap' + editorNumber).style.visibility = 'hidden';
-		if(HTMLArea.initTimer[editorNumber]) window.clearTimeout(HTMLArea.initTimer[editorNumber]);
-		if(!HTMLArea.is_loaded) {
-			HTMLArea.initTimer[editorNumber] = window.setTimeout("HTMLArea.initEditor(\'" + editorNumber + "\');", 150);
+	if (document.getElementById('pleasewait' + editorNumber)) {
+		if (HTMLArea.checkSupportedBrowser()) {
+			document.getElementById('pleasewait' + editorNumber).style.display = 'block';
+			document.getElementById('editorWrap' + editorNumber).style.visibility = 'hidden';
+			if (!HTMLArea.is_loaded) {
+				HTMLArea.initEditor.defer(150, null, [editorNumber]);
+			} else {
+					// Create an editor for the textarea
+				HTMLArea._appendToLog("[HTMLArea::initEditor]: Initializing editor with editor Id: " + editorNumber + ".");
+				var editor = new HTMLArea.Editor(Ext.apply(new HTMLArea.Config(editorNumber), RTEarea[editorNumber]));
+				editor.generate();
+				return false;
+			}
 		} else {
-			var RTE = RTEarea[editorNumber];
-			HTMLArea._appendToLog("[HTMLArea::initEditor]: Initializing editor with editor Id: " + editorNumber + ".");
-
-				// Get the configuration properties
-			var config = new HTMLArea.Config();
-			for (var property in RTE) {
-				if (RTE.hasOwnProperty(property)) {
-					config[property] = RTE[property] ? RTE[property] : false;
-				}
-			}
-				// Create an editor for the textarea
-			var editor = new HTMLArea(RTE.id, config);
-			RTE.editor = editor;
-
-				// Save the editornumber in the object
-			editor._typo3EditerNumber = editorNumber;
-			editor._editorNumber = editorNumber;
-
-				// Override these settings if they were ever modified
-			editor.config.width = "auto";
-			editor.config.height = "auto";
-			editor.config.sizeIncludesToolbar = true;
-			editor.config.fullPage = false;
-
-				// All nested tabs and inline levels in the sorting order they were applied
-			editor.nested = {};
-			editor.nested.all = RTEarea[editorNumber].tceformsNested;
-			editor.nested.sorted = HTMLArea.simplifyNested(editor.nested.all);
-
-				// Register the plugins included in the configuration
-			for (var plugin in editor.config.plugin) {
-				if (editor.config.plugin.hasOwnProperty(plugin) && editor.config.plugin[plugin]) {
-					editor.registerPlugin(plugin);
-				}
-			}
-
-			editor.onGenerate = HTMLArea.onGenerateHandler(editorNumber);
-
-			editor.generate();
-			return false;
-		}
-	} else {
-		document.getElementById('pleasewait' + editorNumber).style.display = 'none';
-		document.getElementById('editorWrap' + editorNumber).style.visibility = 'visible';
-	}
-	}
-};
-
-HTMLArea.allElementsAreDisplayed = function(elements) {
-	for (var i=0, length=elements.length; i < length; i++) {
-		if (document.getElementById(elements[i]).style.display == "none") {
-			return false;
+			document.getElementById('pleasewait' + editorNumber).style.display = 'none';
+			document.getElementById('editorWrap' + editorNumber).style.visibility = 'visible';
 		}
 	}
-	return true;
 };
 
 /**
@@ -2754,7 +3430,7 @@ HTMLArea.Base.extend = function(_instance, _static) {
 	// single instance
 	var object = constructor ? klass : _prototype;
 	// class initialisation
-	if (object.init instanceof Function) object.init();
+	//if (object.init instanceof Function) object.init();
 	return object;
 };
 
@@ -2781,7 +3457,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	constructor : function(editor, pluginName) {
 		this.editor = editor;
-		this.editorNumber = editor._editorNumber;
+		this.editorNumber = editor.editorId;
 		this.editorConfiguration = editor.config;
 		this.name = pluginName;
 		try {
@@ -2854,7 +3530,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	object		the plugin object or null
 	 */
 	getPluginInstance : function(pluginName) {
-		return this.editor.getPluginInstance(pluginName);
+		return this.editor.getPlugin(pluginName);
 	},
 
 	/**
@@ -2863,7 +3539,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		editor mode
 	 */
 	getEditorMode : function() {
-		return this.getPluginInstance("EditorMode").getEditorMode();
+		return this.editor.getMode();
 	},
 
 	/**
@@ -2874,19 +3550,38 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean		true if the button is enabled in the toolbar configuration
 	 */
 	isButtonInToolbar : function(buttonId) {
-		var toolbar = this.editorConfiguration.toolbar;
-		var n = toolbar.length;
-		for ( var i = 0; i < n; ++i ) {
-			var buttonInToolbar = new RegExp( "^(" + toolbar[i].join("|") + ")$", "i");
-			if (buttonInToolbar.test(buttonId)) {
-				return true;
-			}
-		}
-		return false;
+		var index = -1;
+		Ext.each(this.editorConfiguration.toolbar, function (row) {
+			Ext.each(row, function (group) {
+				index = group.indexOf(buttonId);
+				return index === -1;
+			});
+			return index === -1;
+		});
+		return index !== -1;
 	},
 
 	/**
-	 * Registors a button for inclusion in the toolbar
+	 * Returns the button object from the toolbar
+	 *
+	 * @param	string		buttonId: identification of the button
+	 *
+	 * @return	object		the toolbar button object
+	 */
+	getButton: function(buttonId) {
+		return this.editor.toolbar.getButton(buttonId);
+	},
+
+	/**
+	 * Arrays of ExtJS config properties that may be used on a button or dropdown in Page TSConfig
+	 */
+	ExtJSProperties: {
+		htmlareabutton: [],
+		htmlareacombo: ['width', 'listWidth', 'maxHeight' ]
+	},
+
+	/**
+	 * Registers a button for inclusion in the toolbar
 	 *
 	 * @param	object		buttonConfiguration: the configuration object of the button:
 	 *					id		: unique id for the button
@@ -2894,31 +3589,30 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *					textMode	: enable in text mode
 	 *					action		: name of the function invoked when the button is pressed
 	 *					context		: will be disabled if not inside one of listed elements
-	 *					hide		: hide in menu and show only in context menu?
-	 *					selection	: will be disabled if there is no selection?
+	 *					hide		: hide in menu and show only in context menu (deprecated, use hidden)
+	 *					hidden		: synonym of hide
+	 *					selection	: will be disabled if there is no selection
 	 *					hotkey		: hotkey character
 	 *					dialog		: if true, the button opens a dialogue
 	 *					dimensions	: the opening dimensions object of the dialogue window
 	 *
 	 * @return	boolean		true if the button was successfully registered
 	 */
-	registerButton : function (buttonConfiguration) {
+	registerButton: function (buttonConfiguration) {
 		if (this.isButtonInToolbar(buttonConfiguration.id)) {
-			if ((typeof(buttonConfiguration.action) === "string") && (typeof(this[buttonConfiguration.action]) === "function")) {
-				var hotKeyAction = buttonConfiguration.action;
-				var actionFunctionReference = this.makeFunctionReference(buttonConfiguration.action);
-				buttonConfiguration.action = actionFunctionReference;
-				if (!buttonConfiguration.textMode) {
-					buttonConfiguration.textMode = false;
-				}
+			if (Ext.isString(buttonConfiguration.action) && Ext.isFunction(this[buttonConfiguration.action])) {
+				buttonConfiguration.plugins = this;
 				if (buttonConfiguration.dialog) {
 					if (!buttonConfiguration.dimensions) {
 						buttonConfiguration.dimensions = { width: 250, height: 250};
 					}
 					buttonConfiguration.dimensions.top = buttonConfiguration.dimensions.top ?  buttonConfiguration.dimensions.top : this.editorConfiguration.dialogueWindows.defaultPositionFromTop;
 					buttonConfiguration.dimensions.left = buttonConfiguration.dimensions.left ?  buttonConfiguration.dimensions.left : this.editorConfiguration.dialogueWindows.defaultPositionFromLeft;
-				} else {
-					buttonConfiguration.dialog = false;
+				}
+				buttonConfiguration.hidden = buttonConfiguration.hide;
+					// Copy ExtJS properties for the button
+				if (this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]]) {
+					buttonConfiguration = Ext.copyTo(buttonConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]], this.ExtJSProperties['htmlareabutton']);
 				}
 				if (this.editorConfiguration.registerButton(buttonConfiguration)) {
 					var hotKey = buttonConfiguration.hotKey ? buttonConfiguration.hotKey :
@@ -2932,8 +3626,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 					if (hotKey || hotKey == "0") {
 						var hotKeyConfiguration = {
 							id	: hotKey,
-							cmd	: buttonConfiguration.id,
-							action	: hotKeyAction
+							cmd	: buttonConfiguration.id
 						};
 						return this.registerHotKey(hotKeyConfiguration);
 					}
@@ -2945,41 +3638,49 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		}
 		return false;
 	},
-
 	/**
-	 * Registors a drop-down list for inclusion in the toolbar
+	 * Registers a drop-down list for inclusion in the toolbar
 	 *
 	 * @param	object		dropDownConfiguration: the configuration object of the drop-down:
 	 *					id		: unique id for the drop-down
 	 *					tooltip		: tooltip for the drop-down
+	 *					action		: name of function to invoke when an option is selected
 	 *					textMode	: enable in text mode
-	 *					action		: name of the function invoked when a new option is selected
-	 *					refresh		: name of the function invoked in order to refresh the drop-down when the toolbar is updated
-	 *					context		: will be disabled if not inside one of listed elements
 	 *
 	 * @return	boolean		true if the drop-down list was successfully registered
 	 */
-	registerDropDown : function (dropDownConfiguration) {
+	registerDropDown: function (dropDownConfiguration) {
 		if (this.isButtonInToolbar(dropDownConfiguration.id)) {
-			if (typeof((dropDownConfiguration.action) === "string") && (typeof(this[dropDownConfiguration.action]) === "function")) {
-				var actionFunctionReference = this.makeFunctionReference(dropDownConfiguration.action);
-				dropDownConfiguration.action = actionFunctionReference;
-				if (!dropDownConfiguration.textMode) {
-					dropDownConfiguration.textMode = false;
+			if (Ext.isString(dropDownConfiguration.action) && Ext.isFunction(this[dropDownConfiguration.action])) {
+				dropDownConfiguration.plugins = this;
+				dropDownConfiguration.hidden = dropDownConfiguration.hide;
+				dropDownConfiguration.xtype = 'htmlareacombo';
+				if (this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]]) {
+					dropDownConfiguration = Ext.copyTo(dropDownConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]], this.ExtJSProperties['htmlareacombo']);
 				}
-				if (typeof(dropDownConfiguration.refresh) === "string") {
-					if (typeof(this[dropDownConfiguration.refresh]) === "function") {
-						var refreshFunctionReference = this.makeFunctionReference(dropDownConfiguration.refresh);
-						dropDownConfiguration.refresh = refreshFunctionReference;
-					} else {
-						this.appendToLog("registerDropDown", "Function " + dropDownConfiguration.refresh + " was not defined when registering drop-down " + dropDownConfiguration.id);
-						return false;
-					}
-				}
-				return this.editorConfiguration.registerDropdown(dropDownConfiguration);
+				return this.editorConfiguration.registerButton(dropDownConfiguration);
 			} else {
-				this.appendToLog("registerDropDown", "Function " + dropDownConfiguration.action + " was not defined when registering drop-down " + dropDownConfiguration.id);
+				this.appendToLog('registerDropDown', 'Function ' + dropDownConfiguration.action + ' was not defined when registering drop-down ' + dropDownConfiguration.id);
 			}
+		}
+		return false;
+	},
+	/**
+	 * Registers a text element for inclusion in the toolbar
+	 *
+	 * @param	object		textConfiguration: the configuration object of the text element:
+	 *					id		: unique id for the text item
+	 *					text		: the text litteral
+	 *					tooltip		: tooltip for the text item
+	 *					cls		: a css class to be assigned to the text element
+	 *
+	 * @return	boolean		true if the drop-down list was successfully registered
+	 */
+	registerText: function (textConfiguration) {
+		if (this.isButtonInToolbar(textConfiguration.id)) {
+			textConfiguration.plugins = this;
+			textConfiguration.xtype = 'htmlareatoolbartext';
+			return this.editorConfiguration.registerButton(textConfiguration);
 		}
 		return false;
 	},
@@ -2992,7 +3693,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	object		the drop-down configuration object
 	 */
 	getDropDownConfiguration : function(dropDownId) {
-		return this.editorConfiguration.customSelects[dropDownId];
+		return this.editorConfiguration.buttonsConfig[dropDownId];
 	},
 
 	/**
@@ -3000,19 +3701,13 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @param	object		hotKeyConfiguration: the configuration object of the hotkey:
 	 *					id		: the key
-	 *					action		: name of the function invoked when a hotkey is pressed
+	 *					cmd		: name of the button corresponding to the hot key
+	 *					element		: value of the record to be selected in the dropDown item
 	 *
 	 * @return	boolean		true if the hotkey was successfully registered
 	 */
 	registerHotKey : function (hotKeyConfiguration) {
-		if (typeof((hotKeyConfiguration.action) === "string") && (typeof(this[hotKeyConfiguration.action]) === "function")) {
-			var actionFunctionReference = this.makeFunctionReference(hotKeyConfiguration.action);
-			hotKeyConfiguration.action = actionFunctionReference;
-			return this.editorConfiguration.registerHotKey(hotKeyConfiguration);
-		} else {
-			this.appendToLog("registerHotKey", "Function " + hotKeyConfiguration.action + " was not defined when registering hotkey " + hotKeyConfiguration.id);
-			return false;
-		}
+		return this.editorConfiguration.registerHotKey(hotKeyConfiguration);
 	},
 
 	/**
@@ -3041,14 +3736,22 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	object		the hotkey configuration object
 	 */
-	getHotKeyConfiguration : function(key) {
-		if (typeof(this.editorConfiguration.hotKeyList[key]) !== "undefined") {
+	getHotKeyConfiguration: function(key) {
+		if (Ext.isDefined(this.editorConfiguration.hotKeyList[key])) {
 			return this.editorConfiguration.hotKeyList[key];
 		} else {
 			return null;
 		}
 	},
-
+	/**
+	 * Initializes the plugin
+	 * Is invoked when the toolbar component is created (subclass of Ext.ux.HTMLAreaButton or Ext.ux.form.HTMLAreaCombo)
+	 *
+	 * @param	object		button: the component
+	 *
+	 * @return	void
+	 */
+	init: Ext.emptyFn,
 	/**
 	 * The toolbar refresh handler of the plugin
 	 * This function may be defined by the plugin subclass.
@@ -3056,9 +3759,10 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean
 	 */
-	onUpdateToolbar : null,
-
+	onUpdateToolbar: Ext.emptyFn,
 	/**
+	 * Deprecated as of TYPO3 4.4
+	 * Register the key handler to the editor keyMap in onGenerate function
 	 * The keyPress event handler
 	 * This function may be defined by the plugin subclass.
 	 * If defined, the function is invoked whenever a key is pressed.
@@ -3067,19 +3771,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean
 	 */
-	onKeyPress : null,
-
-	/**
-	 * The hotKey event handler
-	 * This function may be defined by the plugin subclass.
-	 * If defined, the function is invoked whenever a hot key is pressed.
-	 *
-	 * @param	event		key: the hot key that was pressed
-	 *
-	 * @return	boolean
-	 */
-	onHotKey : null,
-
+	onKeyPress: null,
 	/**
 	 * The onMode event handler
 	 * This function may be redefined by the plugin subclass.
@@ -3089,21 +3781,19 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean
 	 */
-	onMode : function(mode) {
-		if (mode === "textmode" && this.dialog && HTMLArea.Dialog[this.name] == this.dialog && !(this.dialog.buttonId && this.editorConfiguration.btnList[this.dialog.buttonId] && this.editorConfiguration.btnList[this.dialog.buttonId].textMode)) {
+	onMode: function(mode) {
+		if (mode === "textmode" && this.dialog && HTMLArea.Dialog[this.name] == this.dialog && !(this.dialog.buttonId && this.editorConfiguration.buttons[this.dialog.buttonId] && this.editorConfiguration.buttons[this.dialog.buttonId].textMode)) {
 			this.dialog.close();
 		}
 	},
-
 	/**
 	 * The onGenerate event handler
 	 * This function may be defined by the plugin subclass.
-	 * If defined, the function is invoked when the editor is initialized
+	 * The function is invoked when the editor is initialized
 	 *
 	 * @return	boolean
 	 */
-	onGenerate : null,
-
+	onGenerate: Ext.emptyFn,
 	/**
 	 * Make function reference in order to avoid memory leakage in IE
 	 *
@@ -3113,8 +3803,8 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	makeFunctionReference : function (functionName) {
 		var self = this;
-		return (function(arg1, arg2) {
-			return (self[functionName](arg1, arg2));});
+		return (function(arg1, arg2, arg3) {
+			return (self[functionName](arg1, arg2, arg3));});
 	},
 
 	/**
@@ -3197,44 +3887,44 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 					this.appendToLog("openDialog", "Function " + action + " was not defined when opening dialog for " + buttonId);
 				}
 			}
-				// Window dimensions as per call or button registration
-			var dialogueWindowDimensions = {
-				width:	((dimensions && dimensions.width) ? dimensions.width :
-						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].width : 250)),
-				height:	((dimensions && dimensions.height) ? dimensions.height :
-						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].height : 250)),
-				top:	((dimensions && dimensions.top) ? dimensions.top :
-						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].top : this.editorConfiguration.dialogueWindows.defaultPositionFromTop)),
-				left:	((dimensions && dimensions.left) ? dimensions.left :
-						(this.editorConfiguration.btnList[buttonId] ? this.editorConfiguration.btnList[buttonId][8].left : this.editorConfiguration.dialogueWindows.defaultPositionFromLeft))
-			};
-				// Overrride window dimensions as per PageTSConfig
-			var buttonConfiguration = this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonId]];
-			if (buttonConfiguration && buttonConfiguration.dialogueWindow) {
-				if (buttonConfiguration.dialogueWindow.width) {
-					dialogueWindowDimensions.width = buttonConfiguration.dialogueWindow.width;
-				}
-				if (buttonConfiguration.dialogueWindow.height) {
-					dialogueWindowDimensions.height = buttonConfiguration.dialogueWindow.height;
-				}
-				if (buttonConfiguration.dialogueWindow.top) {
-					dialogueWindowDimensions.top = buttonConfiguration.dialogueWindow.positionFromTop;
-				}
-				if (buttonConfiguration.dialogueWindow.left) {
-					dialogueWindowDimensions.left = buttonConfiguration.dialogueWindow.positionFromLeft;
-				}
-			}
 			return new HTMLArea.Dialog(
 					this,
 					buttonId,
 					url,
 					actionFunctionReference,
 					arguments,
-					dialogueWindowDimensions,
+					this.getWindowDimensions(dimensions, buttonId),
 					(showScrollbars?showScrollbars:"no"),
 					dialogOpener
 				);
 		}
+	},
+	getWindowDimensions: function (dimensions, buttonId) {
+			// Apply default dimensions
+		var dialogueWindowDimensions = {
+			width: 250,
+			height: 250,
+			top: this.editorConfiguration.dialogueWindows.defaultPositionFromTop,
+			left: this.editorConfiguration.dialogueWindows.defaultPositionFromLeft
+		};
+			// Apply dimensions as per button registration
+		if (this.editorConfiguration.buttonsConfig[buttonId]) {
+			Ext.apply(dialogueWindowDimensions, this.editorConfiguration.buttonsConfig[buttonId].dimensions);
+		}
+			// Apply dimensions as per call
+		Ext.apply(dialogueWindowDimensions, dimensions);
+			// Overrride dimensions as per PageTSConfig
+		var buttonConfiguration = this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonId]];
+		if (buttonConfiguration && buttonConfiguration.dialogueWindow) {
+			Ext.apply(dialogueWindowDimensions, buttonConfiguration.dialogueWindow);
+			if (buttonConfiguration.dialogueWindow.top) {
+				dialogueWindowDimensions.top = buttonConfiguration.dialogueWindow.positionFromTop;
+			}
+			if (buttonConfiguration.dialogueWindow.left) {
+				dialogueWindowDimensions.left = buttonConfiguration.dialogueWindow.positionFromLeft;
+			}
+		}
+		return dialogueWindowDimensions;
 	},
 
 	/**
@@ -3270,6 +3960,100 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	appendToLog : function (functionName, text) {
 		HTMLArea._appendToLog("[" + this.name + "::" + functionName + "]: " + text);
+	},
+	/*
+	 * Add a config element to config array if not empty
+	 *
+	 * @param	object		configElement: the config element
+	 * @param	array		configArray: the config array
+	 *
+	 * @return	void
+	 */
+	addConfigElement: function (configElement, configArray) {
+		if (!Ext.isEmpty(configElement)) {
+			configArray.push(configElement);
+		}
+	},
+	/*
+	 * Handler for Ext.TabPanel tabchange event
+	 * Force window ghost height synchronization
+	 * Working around ExtJS 3.1 bug
+	 */
+	syncHeight: function (tabPanel, tab) {
+		var position = this.dialog.getPosition();
+		if (position[0] > 0) {
+			this.dialog.setPosition(position);
+		}
+	},
+	/*
+	 * Show the dialogue window
+	 */
+	show: function () {
+			// Close the window if the editor changes mode
+		this.dialog.mon(this.editor, 'modeChange', this.close, this, {single: true });
+		this.saveSelection();
+		this.dialog.show();
+		this.restoreSelection();
+	},
+	/*
+	 * Close the dialogue window (after saving the selection, if IE)
+	 */
+	close: function () {
+		this.saveSelection();
+		this.dialog.close();
+	},
+	/*
+	 * Dialogue window onClose handler
+	 */
+	onClose: function () {
+		this.restoreSelection();
+	 	this.editor.updateToolbar();
+	},
+	/*
+	 * Handler for window cancel
+	 */
+	onCancel: function () {
+		this.dialog.close();
+	},
+	/*
+	 * Save selection
+	 * Should be called after processing button other than Cancel
+	 */
+	saveSelection: function () {
+			// If IE, save the current selection
+		if (Ext.isIE) {
+			this.bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+		}
+	},
+	/*
+	 * Restore selection
+	 * Should be called before processing dialogue button or result
+	 */
+	restoreSelection: function () {
+			// If IE, restore the selection saved when the window was shown
+		if (Ext.isIE) {
+			this.editor.selectRange(this.editor.moveToBookmark(this.bookmark));
+		}
+	},
+	/*
+	 * Build the configuration object of a button
+	 *
+	 * @param	string		button: the text of the button
+	 * @param	function	handler: button handler
+	 * 
+	 * @return	object		the button configuration object
+	 */
+	buildButtonConfig: function (button, handler) {
+		return {
+			xtype: 'button',
+			text: this.localize(button),
+			listeners: {
+				click: {
+					fn: handler,
+					scope: this
+				}
+			}
+		};
 	}
 });
 
@@ -3310,7 +4094,6 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		HTMLArea.Dialog[this.plugin.name] = this;
 		this.dialogWindow = window.open(url, this.plugin.name + "Dialog", "toolbar=no,location=no,directories=no,menubar=no,resizable=yes,top=" + dimensions.top + ",left=" + dimensions.left + ",dependent=yes,dialog=yes,chrome=no,width=" + dimensions.width + ",height=" + dimensions.height + ",scrollbars=" + showScrollbars);
-
 		if (!this.dialogWindow) {
 			this.plugin.appendToLog("openDialog", "Dialog window could not be opened with url " + url);
 			return false;
@@ -3323,66 +4106,8 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		if (!this.dialogWindow.opener) {
 			this.dialogWindow.opener = this.window;
 		}
-
-		if (!url) this.createForm();
 		return true;
 	},
-
-	/**
-	 * Creates the document and the dialogue form of the dialogue window
-	 *
-	 * @return	void
-	 */
-	createForm : function () {
-
-		this.document = this.dialogWindow.document;
-		this.editor = this.plugin.editor;
-
-		this.document.open();
-		var html = this.plugin.editorConfiguration.getDocumentType()
-			+ '<html><head></head><body></body></html>\n';
-		this.document.write(html);
-		this.document.close();
-			// IE needs the stylesheets to be loaded before we create the form
-		if (HTMLArea.is_ie) {
-			this.loadStyle();
-		}
-		var head = this.document.getElementsByTagName("head")[0];
-		var title = this.document.getElementsByTagName("title")[0];
-		if (!title) {
-			var title = this.document.createElement("title");
-			head.appendChild(title);
-		}
-		this.document.title = this.arguments.title;
-		var body = this.document.body;
-		body.className = "popupwin dialog";
-		body.id = "--HA-body";
-		var content = this.document.createElement("div");
-		content.className = "content";
-		content.id = "content";
-		this.content = content;
-		body.appendChild(content);
-			// Create the form
-			// Localize, resize and initiate capture of events
-		if (HTMLArea.is_ie) {
-				// Catch errors for IE loosing control in case the window is closed while being initialized
-			try {
-				this.arguments.initialize(this);
-				this.initialize(false, false, "noStyle");
-				this.focus();
-			} catch(e) { }
-		} else {
-			this.arguments.initialize(this);
-				// Firefox needs a delay defore we resize
-			this.initialize(false, (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera));
-			this.focus();
-			if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
-				var self = this;
-				setTimeout( function() { self.resize(); }, 100);
-			}
-		}
-	},
-
 	/**
 	 * Adds OK and Cancel buttons to the dialogue window
 	 *
@@ -3473,7 +4198,6 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			// Resize the dialog window to its contents
 		if (!noResize) this.resize(noResize);
 	},
-
 	/**
 	 * Load the stylesheets in the dialog window
 	 *
@@ -3485,7 +4209,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		link.rel = "stylesheet";
 		link.type = "text/css";
 		link.href = HTMLArea.editorCSS;
-		if (link.href.indexOf("http") == -1 && HTMLArea.is_gecko) link.href = _typo3_host_url + link.href;
+		if (link.href.indexOf("http") == -1 && !Ext.isIE) link.href = _typo3_host_url + link.href;
 		head.appendChild(link);
 	},
 
@@ -3536,8 +4260,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			var doc = dialogWindow.document;
 			var content = doc.getElementById("content");
 				// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
-			if ((HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari)
-					|| ((HTMLArea.is_ie || HTMLArea.is_opera || (HTMLArea.is_safari && !HTMLArea.is_chrome)) && content)) {
+			if (Ext.isGecko || ((Ext.isIE || Ext.isOpera || (Ext.isWebKit && !Ext.isChrome)) && content)) {
 				var self = this;
 				setTimeout( function() {
 					if (!noResize) {
@@ -3551,7 +4274,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				}, 75);
 			} else if (!noResize) {
 				var body = doc.body;
-				if (HTMLArea.is_ie) {
+				if (Ext.isIE) {
 					var innerX = (doc.documentElement && doc.documentElement.clientWidth) ? doc.documentElement.clientWidth : body.clientWidth;
 					var innerY = (doc.documentElement && doc.documentElement.clientHeight) ? doc.documentElement.clientHeight : body.clientHeight;
 					var pageY = Math.max(body.scrollHeight, body.offsetHeight);
@@ -3561,7 +4284,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 						dialogWindow.resizeBy((innerX < body.scrollWidth) ? (Math.max(body.scrollWidth, body.offsetWidth) - innerX) : 0, (body.scrollHeight - body.offsetHeight));
 					}
 					// As of Google Chrome build 1798, window resizeTo and resizeBy are completely erratic: do nothing
-				} else if ((HTMLArea.is_safari && !HTMLArea.is_chrome) || HTMLArea.is_opera) {
+				} else if (Ext.isSafari || Ext.isOpera) {
 					dialogWindow.resizeTo(dialogWindow.innerWidth, body.offsetHeight + 10);
 					if (dialogWindow.innerHeight < body.scrollHeight) {
 						dialogWindow.resizeBy(0, (body.scrollHeight - dialogWindow.innerHeight) + 10);
@@ -3592,8 +4315,8 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 
 		var contentWidth = content.offsetWidth;
 		var contentHeight = content.offsetHeight;
-		if (HTMLArea.is_gecko && !HTMLArea.is_opera) {
-			dialogWindow.resizeTo(contentWidth, contentHeight + (HTMLArea.is_safari ? 40 : (HTMLArea.is_ff2 ? 75 : 95)));
+		if (Ext.isGecko || Ext.isWebKit) {
+			dialogWindow.resizeTo(contentWidth, contentHeight + (Ext.isWebKit ? 40 : (Ext.isGecko2 ? 75 : 95)));
 		} else {
 			dialogWindow.resizeTo(contentWidth + 200, contentHeight + 200);
 			if (dialogWindow.innerWidth) {
@@ -3622,7 +4345,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			var doc = dialogWindow.document;
 			var body = doc.body;
 				// Center on parent if allowed
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				var x = dialogWindow.opener.screenX + (dialogWindow.opener.outerWidth - dialogWindow.outerWidth) / 2;
 				var y = dialogWindow.opener.screenY + (dialogWindow.opener.outerHeight - dialogWindow.outerHeight) / 2;
 			} else {
@@ -3632,7 +4355,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 				var y = (screen.availHeight - H) / 2;
 			}
 				// As of build 1798, Google Chrome moveTo breaks the window dimensions: do nothing
-			if (!HTMLArea.is_chrome) {
+			if (!Ext.isChrome) {
 				try {
 					dialogWindow.moveTo(x, y);
 				} catch(e) { }
@@ -3661,21 +4384,6 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			this.dialogWindow.focus();
 		}
 	},
-
-	/**
-	 * Recover focus from the parent window
-	 *
-	 * @return	void
-	 */
-	recoverFocus : function(ev) {
-		if (this.dialogWindow && !this.dialogWindow.closed) {
-			if (!ev) var ev = window.event;
-			HTMLArea._stopEvent(ev);
-			this.focus();
-		}
-		return false;
-	},
-
 	/**
 	 * Close the dialog window
 	 *
@@ -3688,11 +4396,10 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 					this.dialogWindow.openedDialog.close();
 				}
 			} catch(e) { }
-			this.releaseEvents();
 			HTMLArea.Dialog[this.plugin.name] = null;
 			if (!this.dialogWindow.closed) {
 				this.dialogWindow.dialog = null;
-				if (HTMLArea.is_safari || HTMLArea.is_ie) {
+				if (Ext.isWebKit || Ext.isIE) {
 					this.dialogWindow.blur();
 				}
 				this.dialogWindow.close();
@@ -3703,7 +4410,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 			}
 				// Opera unload event may be triggered after the editor iframe is gone
 			if (this.plugin.editor._iframe) {
-				this.plugin.editor.updateToolbar();
+				this.plugin.editor.toolbar.update();
 			}
 		}
 		return false;
@@ -3729,10 +4436,10 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean		false if the event was handled
 	 */
-	closeOnEscape : function(ev) {
-		if (!ev) var ev = window.event;
+	closeOnEscape : function(event) {
+		var ev = event.browserEvent;
 		if (ev.keyCode == 27) {
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				var parentWindow = ev.currentTarget.defaultView;
 			} else {
 				var parentWindow = ev.srcElement.parentNode.parentNode.parentWindow;
@@ -3750,81 +4457,21 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		}
 		return true;
 	},
-
 	/**
-	 * Capture unload, escape and focus events
+	 * Capture unload and escape events
 	 *
 	 * @return	void
 	 */
 	captureEvents : function (skipUnload) {
-			// Capture unload events on the dialogue window, the opener window and the editor frame
-		this.unloadFunctionReference = this.makeFunctionReference("close");
-		HTMLArea._addEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
-		if (HTMLArea.is_gecko && this.plugin.editor._iframe.contentWindow) {
-			HTMLArea._addEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
+			// Capture unload events on the dialogue window and the editor frame
+		if (!Ext.isIE && this.plugin.editor._iframe.contentWindow) {
+			Ext.EventManager.on(this.plugin.editor._iframe.contentWindow, 'unload', this.close, this, {single: true});
 		}
-		if (!skipUnload) HTMLArea._addEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
+		if (!skipUnload) {
+			Ext.EventManager.on(this.dialogWindow, 'unload', this.close, this, {single: true});
+		}
 			// Capture escape key on the dialogue window
-		this.escapeFunctionReference = this.makeFunctionReference("closeOnEscape");
-		HTMLArea._addEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
-			// Capture focus events on the opener window and its frames
-		this.recoverFocusFunctionReference = this.makeFunctionReference("recoverFocus");
-		this.captureFocus(this.dialogWindow.opener);
-	 },
-
-	/**
-	 * Capture focus events
-	 *
-	 * @return	void
-	 */
-	captureFocus : function (w) {
-		if (HTMLArea.is_gecko) {
-			w.addEventListener("focus", this.recoverFocusFunctionReference, true);
-		} else {
-			HTMLArea._addEvent(w, "focus", this.recoverFocusFunctionReference);
-		}
-		for (var i = w.frames.length; --i >= 0;) {
-			this.captureFocus(w.frames[i]);
-		}
-	},
-
-	/**
-	 * Release all event handlers that were set when the dialogue window was opened
-	 *
-	 * @return	void
-	 */
-	releaseEvents : function() {
-		if (this.dialogWindow) {
-			HTMLArea._removeEvent(this.dialogWindow, "unload", this.unloadFunctionReference);
-			try {
-				if (this.dialogWindow.document) {
-					HTMLArea._removeEvent(this.dialogWindow.document, "keypress", this.escapeFunctionReference);
-				}
-			} catch(e) { }
-			try {
-				if (this.dialogWindow.opener && !this.dialogWindow.opener.closed) {
-					HTMLArea._removeEvent(this.dialogWindow.opener, "unload", this.unloadFunctionReference);
-					if (HTMLArea.is_gecko) {
-						this.releaseFocus(this.dialogWindow.opener);
-					}
-				}
-			} catch(e) { }
-		}
-		if ((HTMLArea.is_gecko && !HTMLArea.is_opera) && this.plugin.editor._iframe.contentWindow) {
-			HTMLArea._removeEvent(this.plugin.editor._iframe.contentWindow, "unload", this.unloadFunctionReference);
-		}
-	},
-
-	/**
-	 * Release focus capturing events that were set when the dialogue window was opened
-	 *
-	 * @return	void
-	 */
-	releaseFocus : function(w) {
-		HTMLArea._removeEvent(w, "focus", this.recoverFocusFunctionReference);
-		for (var i = w.frames.length; --i >= 0;) {
-			this.releaseFocus(w.frames[i]);
-		}
-	}
+		Ext.EventManager.on(this.dialogWindow.document, 'keypress', this.closeOnEscape, this, {single: true});
+	 }
 });
 };

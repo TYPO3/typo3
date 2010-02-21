@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -44,12 +44,12 @@ RemoveFormat = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.6",
+			version		: "1.7",
 			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
+			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
+			sponsor		: "SJBR",
+			sponsorUrl	: "http://www.sjbr.ca/",
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
@@ -172,7 +172,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 				}
 
 				if (param["cleaning_area"] == "all") {
-					editor._doc.body.innerHTML = html;
+					editor.setHTML(html);
 				} else {
 					editor.insertHTML(html);
 				}
@@ -182,4 +182,3 @@ RemoveFormat = HTMLArea.Plugin.extend({
 		}
 	}
 });
-

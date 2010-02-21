@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -118,22 +118,18 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 
 		$charset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] : 'iso-8859-1';
 		$button = 'acronym';
-
-		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : chr(10);
-		$JSAcronymArray .= 'acronyms = { ' . $linebreak;
-		$JSAcronymLanguageArray .= 'acronymLanguage = { ' . $linebreak;
-		$JSAbbreviationArray .= 'abbreviations = { ' . $linebreak;
-		$JSAbbreviationLanguageArray .= 'abbreviationLanguage = { ' . $linebreak;
+		$acronymArray = array();
+		$abbrArray = array();
 
 		$tableA = 'tx_rtehtmlarea_acronym';
 		$tableB = 'static_languages';
-		$fields = $tableA.'.type,' . $tableA . '.term,' . $tableA . '.acronym,' . $tableB . '.lg_iso_2';
+		$fields = $tableA.'.type,' . $tableA . '.term,' . $tableA . '.acronym,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
 		$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 		$whereClause = '1=1';
 			// Get all acronyms on pages to which the user has access
 		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts']) ? $this->thisConfig['buttons.'][$button.'.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
 		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
-                // Temporarily setting alternative web browsing mounts
+				// Temporarily setting alternative web browsing mounts
 			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
 			if ($altMountPoints) {
 				$savedGroupDataWebmounts = $GLOBALS['BE_USER']->groupData['webmounts'];
@@ -182,21 +178,16 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 		$whereClause .= t3lib_BEfunc::deleteClause($tableB);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $tableAB, $whereClause);
 		while ($acronymRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			if( $acronymRow['type'] == 1) {
-				$JSAcronymArray .= (($this->acronymIndex++)?',':'') . '"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset) . '":"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset) . '"' . $linebreak;
-				$JSAcronymLanguageArray .= (($this->acronymIndex-1)?',':'') . '"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset) . '":"' . $GLOBALS['LANG']->csConvObj->utf8_encode(strtolower($acronymRow['lg_iso_2']), $charset) . '"' . $linebreak;
-			}
-			if ($acronymRow['type'] == 2) {
-				$JSAbbreviationArray .= (($this->abbreviationIndex++)?',':'') . '"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset) . '":"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset) . '"' . $linebreak;
-				$JSAbbreviationLanguageArray .= (($this->abbreviationIndex-1)?',':'') . '"' . $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset) . '":"' . $GLOBALS['LANG']->csConvObj->utf8_encode(strtolower($acronymRow['lg_iso_2']), $charset) . '"' . $linebreak;
+			$item = array($GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset), $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset), $GLOBALS['LANG']->csConvObj->utf8_encode(strtolower($acronymRow['lg_iso_2']), $charset) . ($acronymRow['lg_country_iso_2'] ? ('-' . $acronymRow['lg_country_iso_2']) : ''));
+			if ($acronymRow['type'] == 1) {
+				$acronymArray[] = $item;
+			} else if ($acronymRow['type'] == 2) {
+				$abbrArray[] = $item;
 			}
 		}
-		$JSAcronymArray .= '};' . $linebreak;
-		$JSAcronymLanguageArray .= '};' . $linebreak;
-		$JSAbbreviationArray .= '};' . $linebreak;
-		$JSAbbreviationLanguageArray .= '};' . $linebreak;
-
-		return $JSAcronymArray . $JSAcronymLanguageArray . $JSAbbreviationArray . $JSAbbreviationLanguageArray;
+		$this->acronymIndex = count($acronymArray);
+		$this->abbreviationIndex = count($abbrArray);
+		return 'var acronyms = ' . json_encode($acronymArray) . ';' . 'var abbreviations = ' . json_encode($abbrArray) . ';';
 	}
 }
 

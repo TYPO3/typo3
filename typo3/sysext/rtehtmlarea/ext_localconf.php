@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -68,6 +68,7 @@ require_once(t3lib_extMgm::extPath('rtehtmlarea').'hooks/clearrtecache/ext_local
 	// Troubleshooting and experimentation
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = $_EXTCONF['enableDebugMode'] ? $_EXTCONF['enableDebugMode'] : 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = $_EXTCONF['enableCompressedScripts'] ? $_EXTCONF['enableCompressedScripts'] : 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] && !$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'];
 
 	// Integrating with DAM
 	// DAM browser may be enabled here only for DAM version lower than 1.1
@@ -95,9 +96,6 @@ if (t3lib_extMgm::isLoaded('lorem_ipsum') && (TYPO3_MODE == 'BE')) {
 
 	// Initialize plugin registration array
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] = array();
-	// Status Bar configuration
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['StatusBar'] = array();
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['StatusBar']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/StatusBar/class.tx_rtehtmlarea_statusbar.php:&tx_rtehtmlarea_statusbar';
 	// Editor Mode configuration
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['EditorMode'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['EditorMode']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/EditorMode/class.tx_rtehtmlarea_editormode.php:&tx_rtehtmlarea_editormode';
@@ -186,10 +184,6 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons']) {
 	// Register features that use the style attribute
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['allowStyleAttribute'] = $_EXTCONF['allowStyleAttribute'] ? $_EXTCONF['allowStyleAttribute'] : 0;
 if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['allowStyleAttribute']) {
-	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultColor'] = array();
-	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultColor']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/DefaultColor/class.tx_rtehtmlarea_defaultcolor.php:&tx_rtehtmlarea_defaultcolor';
-	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultColor']['addIconsToSkin'] = 0;
-	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['DefaultColor']['disableInFE'] = 0;
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color'] = array();
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Color/class.tx_rtehtmlarea_typo3color.php:&tx_rtehtmlarea_typo3color';
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color']['addIconsToSkin'] = 0;
@@ -200,6 +194,10 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['allowStyleAttribute']) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['SelectFont']['disableInFE'] = 0;
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/style/pageTSConfig.txt">');
 }
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TextIndicator'] = array();
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TextIndicator']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TextIndicator/class.tx_rtehtmlarea_textindicator.php:&tx_rtehtmlarea_textindicator';
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TextIndicator']['addIconsToSkin'] = 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TextIndicator']['disableInFE'] = 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['InsertSmiley'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['InsertSmiley']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/InsertSmiley/class.tx_rtehtmlarea_insertsmiley.php:&tx_rtehtmlarea_insertsmiley';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['InsertSmiley']['addIconsToSkin'] = 0;
