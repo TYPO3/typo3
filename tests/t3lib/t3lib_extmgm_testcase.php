@@ -22,17 +22,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Testcase for class t3lib_extMgm
  *
- * @author	Oliver Hader <oliver@typo3.org>
+ * @author Oliver Hader <oliver@typo3.org>
+ * @author Oliver Klee <typo3-coding@oliverklee.de>
+ *
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 	/**
-	 * Contains backup of defined GLOBALS
+	 * backup of defined GLOBALS
+	 *
 	 * @var array
 	 */
 	protected $globals = array();
@@ -44,29 +46,110 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 		);
 	}
 
+	public function tearDown() {
+		t3lib_extMgm::clearExtensionKeyMap();
+
+		foreach ($this->globals as $key => $value) {
+			$GLOBALS[$key] = unserialize($value);
+		}
+	}
+
+
+	//////////////////////
+	// Utility functions
+	//////////////////////
+
+	/**
+	 * Generates a basic TCA for a given table.
+	 *
+	 * @param string $table name of the table, must not be empty
+	 * @return array generated TCA for the given table, will not be empty
+	 */
+	private function generateTCAForTable($table) {
+		$tca = array();
+		$tca[$table] = array();
+		$tca[$table]['columns'] = array(
+			'fieldA' => array(),
+			'fieldC' => array(),
+		);
+		$tca[$table]['types'] = array(
+			'typeA' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
+			'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
+			'typeC' => array('showitem' => 'fieldC;;paletteD'),
+		);
+		$tca[$table]['palettes'] = array(
+			'paletteA' => array('showitem' => 'fieldX, fieldY'),
+			'paletteB' => array('showitem' => 'fieldX, fieldY'),
+			'paletteC' => array('showitem' => 'fieldX, fieldY'),
+			'paletteD' => array('showitem' => 'fieldX, fieldY'),
+		);
+
+		return $tca;
+	}
+
+
+	/////////////////////////////////////////////
+	// Tests concerning getExtensionKeyByPrefix
+	/////////////////////////////////////////////
+
 	/**
 	 * @test
 	 * @see t3lib_extMgm::getExtensionKeyByPrefix
 	 */
-	public function checkGetExtensionKeyByPrefix() {
-		$uniqueSuffix = uniqid('test');
-		$GLOBALS['TYPO3_LOADED_EXT']['tt_news' . $uniqueSuffix] = array();
-		$GLOBALS['TYPO3_LOADED_EXT']['kickstarter' . $uniqueSuffix] = array();
-
+	public function getExtensionKeyByPrefixForLoadedExtensionWithUnderscoresReturnsExtensionKey() {
 		t3lib_extMgm::clearExtensionKeyMap();
 
+		$uniqueSuffix = uniqid('test');
+		$extensionKey = 'tt_news' . $uniqueSuffix;
+		$extensionPrefix = 'tx_ttnews' . $uniqueSuffix;
+
+		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array();
+
 		$this->assertEquals(
-			'tt_news' . $uniqueSuffix,
-			t3lib_extMgm::getExtensionKeyByPrefix('tx_ttnews' . $uniqueSuffix)
-		);
-		$this->assertEquals(
-			'kickstarter' . $uniqueSuffix,
-			t3lib_extMgm::getExtensionKeyByPrefix('tx_kickstarter' . $uniqueSuffix)
-		);
-		$this->assertFalse(
-			t3lib_extMgm::getExtensionKeyByPrefix('tx_unloadedextension' . $uniqueSuffix)
+			$extensionKey,
+			t3lib_extMgm::getExtensionKeyByPrefix($extensionPrefix)
 		);
 	}
+
+	/**
+	 * @test
+	 * @see t3lib_extMgm::getExtensionKeyByPrefix
+	 */
+	public function getExtensionKeyByPrefixForLoadedExtensionWithoutUnderscoresReturnsExtensionKey() {
+		t3lib_extMgm::clearExtensionKeyMap();
+
+		$uniqueSuffix = uniqid('test');
+		$extensionKey = 'kickstarter' . $uniqueSuffix;
+		$extensionPrefix = 'tx_kickstarter' . $uniqueSuffix;
+
+		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array();
+
+		$this->assertEquals(
+			$extensionKey,
+			t3lib_extMgm::getExtensionKeyByPrefix($extensionPrefix)
+		);
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_extMgm::getExtensionKeyByPrefix
+	 */
+	public function getExtensionKeyByPrefixForNotLoadedExtensionReturnsFalse(){
+		t3lib_extMgm::clearExtensionKeyMap();
+
+		$uniqueSuffix = uniqid('test');
+		$extensionKey = 'unloadedextension' . $uniqueSuffix;
+		$extensionPrefix = 'tx_unloadedextension' . $uniqueSuffix;
+
+		$this->assertFalse(
+			t3lib_extMgm::getExtensionKeyByPrefix($extensionPrefix)
+		);
+	}
+
+
+	//////////////////////////////////////
+	// Tests concerning addToAllTCAtypes
+	//////////////////////////////////////
 
 	/**
 	 * Tests whether fields can be add to all TCA types and duplicate fields are considered.
@@ -159,6 +242,11 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 			$GLOBALS['TCA'][$table]['types']['typeB']['showitem']
 		);
 	}
+
+
+	///////////////////////////////////////////////////
+	// Tests concerning addFieldsToAllPalettesOfField
+	///////////////////////////////////////////////////
 
 	/**
 	 * Tests whether fields can be added to a palette before existing elements.
@@ -313,40 +401,5 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 			'newA, newB, fieldX', $GLOBALS['TCA'][$table]['palettes']['generatedFor-fieldA']['showitem']
 		);
 	}
-
-	public function tearDown() {
-		foreach ($this->globals as $key => $value) {
-			$GLOBALS[$key] = unserialize($value);
-		}
-	}
-
-	/**
-	 * Generates a basic TCA for a given table.
-	 *
-	 * @param	string		$table: Name of the table
-	 * @return	array		Generated TCA for the given table
-	 */
-	private function generateTCAForTable($table) {
-		$tca = array();
-		$tca[$table] = array();
-		$tca[$table]['columns'] = array(
-			'fieldA' => array(),
-			'fieldC' => array(),
-		);
-		$tca[$table]['types'] = array(
-			'typeA' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
-			'typeB' => array('showitem' => 'fieldA, fieldB, fieldC;labelC;paletteC;specialC, fieldD'),
-			'typeC' => array('showitem' => 'fieldC;;paletteD'),
-		);
-		$tca[$table]['palettes'] = array(
-			'paletteA' => array('showitem' => 'fieldX, fieldY'),
-			'paletteB' => array('showitem' => 'fieldX, fieldY'),
-			'paletteC' => array('showitem' => 'fieldX, fieldY'),
-			'paletteD' => array('showitem' => 'fieldX, fieldY'),
-		);
-
-		return $tca;
-	}
 }
-
 ?>
