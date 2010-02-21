@@ -1048,7 +1048,7 @@ $str.=$this->docBodyTagBegin().
 		} else {
 			$file = $this->backPath . $href;
 		}
-		$this->pageRenderer->addCssFile($file, $relation, $title);
+		$this->pageRenderer->addCssFile($file, $relation, 'screen', $title);
 	}
 
 	/**

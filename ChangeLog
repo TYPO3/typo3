@@ -4,6 +4,7 @@
 
 2010-02-21  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13252: default CSS only loadable for media screen / changed behaviour in 4.3 (Thanks to Ralf Hettinger)
 	* Fixed bug #12179: Section "Help" is shown even with no subelements (Thanks to Georg Ringer)
 	* Fixed bug #13570: Bug: HTML validation error in the BE with the ajax.php inclusion (Thanks to Oliver Klee)
 	* Fixed bug #13289: Usage of deprecated method - getSetUpdateSignal() (Thanks to Stefan Galinski)
