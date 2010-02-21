@@ -1,5 +1,6 @@
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed #12625: JSMENU's fallback menu name is not unique
 	* Fixed #12259: Use labels in the page wizard for the page title fields (Thanks to Georg Ringer)
 	* Fixed #11206: Cleaned up test "t3lib_extmgm_testcase" (Thanks to Oliver Klee)
 	* Fixed #11608: t3lib_beFunc::viewOnClick - Extract logic to find the right frontend domain (Thanks to Michael Klapper)
