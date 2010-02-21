@@ -336,6 +336,7 @@ $TCA['sys_filemounts'] = array(
 	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
+		'sortby' => 'sorting',
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 		'title' => 'LLL:EXT:lang/locallang_tca.php:sys_filemounts',
 		'adminOnly' => 1,

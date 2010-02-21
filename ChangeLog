@@ -1,3 +1,7 @@
+2010-02-21  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13444: Filemounts are unsorted
+
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #12052: Restructure output of module "DB check" -> "Reference Index" (Thanks to Steffen Gebert)
