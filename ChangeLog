@@ -1,3 +1,7 @@
+2010-02-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12220: String literals quoted as identifiers
+
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #7501: Remove Static-Templates from standard installation (Update class was declared twice, thanks to Susanne Moog)
