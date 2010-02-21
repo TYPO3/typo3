@@ -709,7 +709,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param boolean $forceOnTop
 	 * @return void
 	 */
-	public function addCssFile($file, $rel = 'stylesheet', $media = 'screen', $title = '', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '') {
+	public function addCssFile($file, $rel = 'stylesheet', $media = 'all', $title = '', $compress = TRUE, $forceOnTop = FALSE, $allWrap = '') {
 		if (!isset($this->cssFiles[$file])) {
 			$this->cssFiles[$file] = array (
 				'rel'        => $rel,
