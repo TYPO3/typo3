@@ -1424,7 +1424,7 @@ class SC_mod_tools_be_user_index {
 				$TDparams=' nowrap="nowrap" class="'.($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6').'" valign="top"';
 			}
 			$outTable='<table border="0" cellpadding="2" cellspacing="2">' . $outTable . '</table>';
-			$outTable.=fw('<br /><br />' . $GLOBALS['LANG']->getLL('cachedGrouplistsUpdated', true) . '');
+			$outTable .= '<br /><br />' . $GLOBALS['LANG']->getLL('cachedGrouplistsUpdated', true);
 			$outTable.=$tooManyUsers?'<br /><br /><strong><span class="typo3-red">' . $tooManyUsers . '</span></strong>':'';
 			$content.= $this->doc->spacer(10);
 			$content.= $this->doc->section($GLOBALS['LANG']->getLL('result', true),$outTable,0,1);

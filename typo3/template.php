@@ -132,7 +132,8 @@ if (!defined('TYPO3_MODE'))	die("Can't include this file directly.");
  * @return	string		Output string (in the old days this was wrapped in <font> tags)
  * @deprecated since TYPO3 3.6
  */
-function fw($str)	{
+function fw($str) {
+	t3lib_div::logDeprecatedFunction();
 	return $str;
 }
 

@@ -626,8 +626,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap>' . $HTML . '</td>
 							<td align="center" class="bgColor5">' . ($row['root'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : '') . '&nbsp;&nbsp;</td>
-							<td align="center">' . fw(($row['clConf'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' :'') . '&nbsp;&nbsp;') . '</td>
-							<td align="center" class="bgColor5">' . fw(($row['clConst'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : '') . '&nbsp;&nbsp;') . '</td>
+							<td align="center">' . ($row['clConf'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' :'') . '&nbsp;&nbsp;' . '</td>
+							<td align="center" class="bgColor5">' . ($row['clConst'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : '') . '&nbsp;&nbsp;' . '</td>
 							<td align="center">' . ($row['pid'] ? $row['pid'] : '') . '</td>
 							<td align="center" class="bgColor5">' . (strcmp($RL, '') ? $RL : '') . '</td>
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
