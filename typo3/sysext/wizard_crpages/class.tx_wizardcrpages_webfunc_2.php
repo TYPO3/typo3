@@ -165,10 +165,10 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 				}
 					// Display create form
 				$lines = array();
-				for ($a=0;$a<9;$a++)	{
-					$lines[] = $LANG->getLL('wiz_newPages_page').' '.($a+1).
-						': <input type="text" name="data[pages][NEW'.$a.'][title]"'.$this->pObj->doc->formWidth(35).' />'.
-						(is_object($loremIpsumObj) ? '<a href="#" onclick="'.htmlspecialchars($loremIpsumObj->getHeaderTitleJS('document.forms[0][\'data[pages][NEW'.$a.'][title]\'].value', 'title')).'">'.$loremIpsumObj->getIcon('',$this->pObj->doc->backPath).'</a>' : '');
+				for ($a = 0; $a < 9; $a++) {
+					$lines[] = '<label for="page_new_' . $a . '"> ' . $LANG->getLL('wiz_newPages_page') .' '. ($a+1) .
+						':</label><input type="text" id="page_new_' . $a . '" name="data[pages][NEW' . $a . '][title]"' . $this->pObj->doc->formWidth(35) . ' />'.
+						(is_object($loremIpsumObj) ? '<a href="#" onclick="' . htmlspecialchars($loremIpsumObj->getHeaderTitleJS('document.forms[0][\'data[pages][NEW' . $a . '][title]\'].value', 'title')) . '">' . $loremIpsumObj->getIcon('', $this->pObj->doc->backPath) . '</a>' : '');
 				}
 
 				$theCode.= '<b>'.$LANG->getLL('wiz_newPages').':</b><br /><br />'.implode('<br />',$lines).
