@@ -1,3 +1,7 @@
+2010-02-21  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13406: thumbs.php: Thumbnails for images with transparent background look ugly (Thanks to Andreas Wolf and Steffen Ritter)
+
 2010-02-21  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12220: String literals quoted as identifiers
