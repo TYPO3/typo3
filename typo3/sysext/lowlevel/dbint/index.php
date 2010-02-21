@@ -370,14 +370,17 @@ class SC_mod_tools_dbint_index {
 		}
 
 			// Output content:
-		$content = $GLOBALS['LANG']->getLL('clickToUpdateRefIndex') . ' <input type="submit" name="_update" value="' . $GLOBALS['LANG']->getLL('updateNow') . '" /><br/>';
-		$content.= $GLOBALS['LANG']->getLL('clickToTestRefIndex') . ' <input type="submit" name="_check" value="' . $GLOBALS['LANG']->getLL('checkNow') . '" /><br/><br/>';
-		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript') . '</p><br />';
-		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_check_description') . '<br />' .
-					$GLOBALS['LANG']->getLL('checkScript_check_example') . '</p><br />';
-		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_update_description') . '<br />' .
-					$GLOBALS['LANG']->getLL('checkScript_update_example') . '</p><br />';
-		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_more') . '</p>';
+		$content = '<p>' . $GLOBALS['LANG']->getLL('referenceIndex_description') . '</p><br />';
+		$content .= '<input type="submit" name="_check" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonCheck') . '" /> <input type="submit" name="_update" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonUpdate') . '" /><br /><br />';
+		$content .= '<h3>' . $GLOBALS['LANG']->getLL('checkScript_headline') . '</h3>';
+		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript') . '</p>';
+		$content.= '<h4>' . $GLOBALS['LANG']->getLL('checkScript_check_description') . '</h4>' .
+					'<code>php ' . PATH_typo3 . 'cli_dispatch.phpsh lowlevel_refindex -c</code><br />';
+		$content.= '<h4>' . $GLOBALS['LANG']->getLL('checkScript_update_description') . '</h4>' .
+					'<code>php ' . PATH_typo3 . 'cli_dispatch.phpsh lowlevel_refindex -e</code><br /><br />';
+		$content.= '<div class="typo3-message message-information"><div class="message-body">' . $GLOBALS['LANG']->getLL('checkScript_information') . '</div></div>';
+		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_moreDetails') . '<br /><a href="' . $GLOBALS['BACK_PATH'] . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt" target="_new">' . PATH_typo3 . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</a></p>';
+		
 		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('updateRefIndex'), $content, false, true);
 	}
 

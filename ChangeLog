@@ -1,5 +1,6 @@
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed #12052: Restructure output of module "DB check" -> "Reference Index" (Thanks to Steffen Gebert)
 	* Fixed #13204: Flash can now use the session veriCode in the FE as well (Thanks to Stephan Lucas and Steffen Ritter)
 	* Fixed #12343: Installer - Missing message when creation of admin user fails due to missing data (Thanks to Marcus Krause)
 	* Fixed #13423: Bug/Feature: Make ext_tables.sql syntax parsing more compliable (Thanks to Joachim Mathes)
