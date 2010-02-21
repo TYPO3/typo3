@@ -103,7 +103,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 					}
 					$tce->start(array(),$cmd);
 					$tce->process_cmdmap();
-					t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+					t3lib_BEfunc::setUpdateSignal('updatePageTree');
 				}
 			}
 

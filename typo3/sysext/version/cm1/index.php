@@ -1811,7 +1811,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$tce->start(array(), $cmd);
 				$tce->process_cmdmap();
 
-				t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+				t3lib_BEfunc::setUpdateSignal('updatePageTree');
 
 				return $tce->errorLog;
 			}
