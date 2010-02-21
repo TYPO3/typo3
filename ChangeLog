@@ -1,5 +1,6 @@
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed #13201: Repots module - Use same install tool check for reports as used in About module (Thanks to Moreno Feltscher)
 	* Fixed #13574: html warning, because a plain & inside an url (Thanks to Stefan Galinski)
 	* Fixed #12625: JSMENU's fallback menu name is not unique
 

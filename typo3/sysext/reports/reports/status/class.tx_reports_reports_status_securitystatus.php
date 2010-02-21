@@ -248,7 +248,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 
 		$enableInstallToolFileExists = is_file($enableInstallToolFile);
 
-		if ($enableInstallToolFileExists || ($enableInstallToolFileExists && trim(file_get_contents($enableInstallToolFile)) === 'KEEP_FILE')) {
+		if ($enableInstallToolFileExists && trim(file_get_contents($enableInstallToolFile)) === 'KEEP_FILE') {
 			$value    = $GLOBALS['LANG']->getLL('status_enabled');
 			$severity = tx_reports_reports_status_Status::WARNING;
 
