@@ -145,7 +145,7 @@ class TYPO3_tcefile {
 	public function finish() {
 			// Prints errors, if there are any
 		$this->fileProcessor->printLogErrorMessages($this->redirect);
-		t3lib_BEfunc::getSetUpdateSignal('updateFolderTree');
+		t3lib_BEfunc::setUpdateSignal('updateFolderTree');
 		if ($this->redirect) {
 			t3lib_utility_Http::redirect($this->redirect);
 		}

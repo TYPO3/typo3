@@ -1299,7 +1299,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					if ($inData['import_file'])	{
 						if (!count($extKeysToInstall))	{
 							$import->importData($this->id);
-							t3lib_BEfunc::getSetUpdateSignal('updatePageTree');
+							t3lib_BEfunc::setUpdateSignal('updatePageTree');
 						} else {
 							t3lib_utility_Http::redirect($emURL);
 						}
