@@ -1,3 +1,7 @@
+2010-02-21  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #7501: Remove Static-Templates from standard installation (Update class was declared twice, thanks to Susanne Moog)
+
 2010-02-20  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13568: ExtDirect - API generator should built absolute links (Thanks to Stefan Galinski)
