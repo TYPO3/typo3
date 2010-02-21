@@ -227,16 +227,7 @@ class SC_t3lib_thumbs {
 			if ($TYPO3_CONF_VARS['GFX']['im'])	{
 					// If thumbnail does not exist, we generate it
 				if (!file_exists($this->output))	{
-/*					if (strstr($this->input,' ') || strstr($this->output,' '))	{
-						$this->errorGif('Spaces in','filepath',basename($this->input));
-					}
-*/						// 16 colors for small (56) thumbs, 64 for bigger and all for jpegs
-					if ($outext=='jpg')	{
-						$colors = '';
-					} else {
-						$colors = ($sizeMax>56)?'-colors 64':'-colors 16';
-					}
-					$parameters = '-sample '.$this->size.' '.$colors.' '.$this->wrapFileName($this->input).'[0] '.$this->wrapFileName($this->output);
+					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->input) . '[0] ' . $this->wrapFileName($this->output);
 					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
 					exec($cmd);
 					if (!file_exists($this->output))	{
