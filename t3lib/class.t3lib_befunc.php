@@ -4175,7 +4175,7 @@ final class t3lib_BEfunc {
 				$url = "alt_doc.php?returnUrl=index.php&edit[be_users][".$row['uid']."]=edit";
 				$warnings["backend_admin"] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_admin'),
-					'<a href="'.$url.'">',
+					'<a href="' . htmlspecialchars($url) . '">',
 					'</a>');
 
 			}

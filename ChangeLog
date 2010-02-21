@@ -1,5 +1,6 @@
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed #13574: html warning, because a plain & inside an url (Thanks to Stefan Galinski)
 	* Fixed #12180: Speedup t3lib_BEfunc::getRecordPath by using rootline cache (Thanks to Steffen Gebert)
 	* Fixed #13593: Remove calls to and log usage of deprecated global function fw() (Thanks to Steffen Gebert)
 	* Fixed #12625: JSMENU's fallback menu name is not unique
