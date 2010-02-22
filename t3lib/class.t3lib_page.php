@@ -850,8 +850,8 @@ class t3lib_pageSelect {
 	function checkRecord($table,$uid,$checkPage=0)	{
 		global $TCA;
 		$uid = intval($uid);
-		if (is_array($TCA[$table]))	{
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid='.intval($uid).$this->enableFields($table));
+		if (is_array($TCA[$table]) && $uid > 0) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid = ' . $uid . $this->enableFields($table));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row)	{
@@ -887,8 +887,9 @@ class t3lib_pageSelect {
 	function getRawRecord($table,$uid,$fields='*',$noWSOL=FALSE)	{
 		global $TCA;
 		$uid = intval($uid);
-		if (is_array($TCA[$table]) || $table=='pages') {	// Excluding pages here so we can ask the function BEFORE TCA gets initialized. Support for this is followed up in deleteClause()...
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid='.intval($uid).$this->deleteClause($table));
+			// Excluding pages here so we can ask the function BEFORE TCA gets initialized. Support for this is followed up in deleteClause()...
+		if ((is_array($TCA[$table]) || $table == 'pages') && $uid > 0) {
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid = ' . $uid . $this->deleteClause($table));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row) {

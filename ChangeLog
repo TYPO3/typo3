@@ -1,3 +1,7 @@
+2010-02-22  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13243: Small speedup improvements to t3lib_page by removing superfluous intval() statements (Thanks to Georg Ringer)
+
 2010-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13608: htmlArea RTE: Make height of the context menu configurable
