@@ -24,6 +24,7 @@
 	* Fixed bug #13596: htmlArea RTE: Styling dropdowns grow on every use
 	* Fixed bug #13597: htmlArea RTE: Toolbar select box does not close on click in editing area
 	* Fixed bug #13310: htmlArea RTE: Additional Inline Elements issue with overlapping ranges
+	* Fixed bug #13599: htmlArea RTE: Annoying mouse-over effect on context menu items
 
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
