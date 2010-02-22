@@ -58,6 +58,7 @@
 			<label index="LGL.l18n_parent">Transl.Orig:</label>
 			<label index="LGL.allLanguages">[All]</label>
 			<label index="LGL.versionLabel">Versioning Label:</label>
+			<label index="LGL.error">Error!</label>
 		</languageKey>
 	</data>
 </T3locallang>
