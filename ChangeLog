@@ -1,3 +1,7 @@
+2010-02-22  Dmitry Dulepov <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #12958: Catchable fatal error in indexed_search
+
 2010-02-22  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #11950: Support for SSL and absolute links
