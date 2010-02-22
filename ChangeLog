@@ -5,6 +5,7 @@
 2010-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13608: htmlArea RTE: Make height of the context menu configurable
+	* Updated NEWS.txt as follow-up to #13580: htmlArea RTE: Extjize the RTE
 
 2010-02-22  Dmitry Dulepov <dmitry.dulepov@gmail.com>
 
