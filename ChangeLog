@@ -10,10 +10,6 @@
 
 	* Added feature #11950: Support for SSL and absolute links
 
-2010-02-21  Benjamin Mack  <benni@typo3.org>
-
-	* Fixed bug #13406: thumbs.php: Thumbnails for images with transparent background look ugly (Thanks to Andreas Wolf and Steffen Ritter)
-
 2010-02-21  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13252: default CSS only loadable for media screen / changed behaviour in 4.3 (Thanks to Ralf Hettinger)
@@ -21,14 +17,6 @@
 	* Fixed bug #13570: Bug: HTML validation error in the BE with the ajax.php inclusion (Thanks to Oliver Klee)
 	* Fixed bug #13289: Usage of deprecated method - getSetUpdateSignal() (Thanks to Stefan Galinski)
 	* Fixed bug #13444: Filemounts are unsorted
-
-2010-02-21  Benjamin Mack  <benni@typo3.org>
-
-	* Fixed #12052: Restructure output of module "DB check" -> "Reference Index" (Thanks to Steffen Gebert)
-	* Fixed #13204: Flash can now use the session veriCode in the FE as well (Thanks to Stephan Lucas and Steffen Ritter)
-	* Fixed #12343: Installer - Missing message when creation of admin user fails due to missing data (Thanks to Marcus Krause)
-	* Fixed #13423: Bug/Feature: Make ext_tables.sql syntax parsing more compliable (Thanks to Joachim Mathes)
-	* Fixed #13201: Repots module - Use same install tool check for reports as used in About module (Thanks to Moreno Feltscher)
 
 2010-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -40,22 +28,25 @@
 
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed #13574: html warning, because a plain & inside an url (Thanks to Stefan Galinski)
-	* Fixed #12180: Speedup t3lib_BEfunc::getRecordPath by using rootline cache (Thanks to Steffen Gebert)
-	* Fixed #13593: Remove calls to and log usage of deprecated global function fw() (Thanks to Steffen Gebert)
-	* Fixed #12625: JSMENU's fallback menu name is not unique
-	* Fixed #12259: Use labels in the page wizard for the page title fields (Thanks to Georg Ringer)
-	* Fixed #11206: Cleaned up test "t3lib_extmgm_testcase" (Thanks to Oliver Klee)
-	* Fixed #11608: t3lib_beFunc::viewOnClick - Extract logic to find the right frontend domain (Thanks to Michael Klapper)
-	* Fixed #12201: Replace header(Location:) with t3lib_div::redirect() (Thanks to Steffen Gebert)
+	* Fixed bug #13406: thumbs.php: Thumbnails for images with transparent background look ugly (Thanks to Andreas Wolf and Steffen Ritter)
+	* Fixed bug / Cleanup #12052: Restructure output of module "DB check" -> "Reference Index" (Thanks to Steffen Gebert)
+	* Added feature #13204: Flash can now use the session veriCode in the FE as well (Thanks to Stephan Lucas and Steffen Ritter)
+	* Fixed bug #12343: Installer - Missing message when creation of admin user fails due to missing data (Thanks to Marcus Krause)
+	* Fixed bug #13423: Bug/Feature: Make ext_tables.sql syntax parsing more compliable (Thanks to Joachim Mathes)
+	* Fixed bug #13201: Repots module - Use same install tool check for reports as used in About module (Thanks to Moreno Feltscher)
+	* Fixed bug #13574: html warning, because a plain & inside an url (Thanks to Stefan Galinski)
+	* Added feature #12180: Speedup t3lib_BEfunc::getRecordPath by using rootline cache (Thanks to Steffen Gebert)
+	* Fixed bug #13593: Remove calls to and log usage of deprecated global function fw() (Thanks to Steffen Gebert)
+	* Fixed bug #12625: JSMENU's fallback menu name is not unique
+	* Fixed bug #12259: Use labels in the page wizard for the page title fields (Thanks to Georg Ringer)
+	* Fixed bug / Cleanup #11206: Cleaned up test "t3lib_extmgm_testcase" (Thanks to Oliver Klee)
+	* Fixed bug / Cleanup #11608: t3lib_beFunc::viewOnClick - Extract logic to find the right frontend domain (Thanks to Michael Klapper)
+	* Fixed bug / Cleanup #12201: Replace header(Location:) with t3lib_div::redirect() (Thanks to Steffen Gebert)
+	* Followup to cleanup #7501: Remove Static-Templates from standard installation (Update class was declared twice, thanks to Susanne Moog)
 
 2010-02-21  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #12220: String literals quoted as identifiers
-
-2010-02-21  Benjamin Mack  <benni@typo3.org>
-
-	* Followup to #7501: Remove Static-Templates from standard installation (Update class was declared twice, thanks to Susanne Moog)
 
 2010-02-20  Steffen Kamper  <info@sk-typo3.de>
 
@@ -64,7 +55,7 @@
 
 2010-02-20  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed #7501: Remove Static-Templates from standard installation (Thanks to Steffen Ritter)
+	* Removed dependency / Cleanup #7501: Remove Static-Templates from standard installation (Thanks to Steffen Ritter)
 
 2010-02-20  Oliver Hader  <oliver@typo3.org>
 
