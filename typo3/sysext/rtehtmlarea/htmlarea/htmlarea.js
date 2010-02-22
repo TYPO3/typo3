@@ -1165,6 +1165,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				// Check if all affected nested elements are displayed (style.display!='none'):
 			if (HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 				this.setDesignMode(true);
+				this.fireEvent('show');
 				this.getEditor().updateToolbar();
 			}
 		}

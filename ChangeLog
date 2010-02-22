@@ -6,6 +6,7 @@
 
 	* Added feature #13608: htmlArea RTE: Make height of the context menu configurable
 	* Updated NEWS.txt as follow-up to #13580: htmlArea RTE: Extjize the RTE
+	* Fixed bug #13618: htmlArea RTE: RTE iframe is sometimes collapsed
 
 2010-02-22  Dmitry Dulepov <dmitry.dulepov@gmail.com>
 
