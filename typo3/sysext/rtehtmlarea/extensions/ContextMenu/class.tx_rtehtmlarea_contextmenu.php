@@ -62,9 +62,9 @@ class tx_rtehtmlarea_contextmenu extends tx_rtehtmlareaapi {
 	 */
 	public function buildJavascriptConfiguration($editorId) {
 		$registerRTEinJavascriptString = '';
-		if (is_array( $this->thisConfig['contextMenu.'])) {
+		if (is_array($this->thisConfig['contextMenu.'])) {
 			$registerRTEinJavascriptString .= '
-	RTEarea['.$editorId.'].contextMenu = new Object();';
+	RTEarea['.$editorId.'].contextMenu =  ' . $this->htmlAreaRTE->buildNestedJSArray($this->thisConfig['contextMenu.']) . ';';
 			if ($this->thisConfig['contextMenu.']['showButtons']) {
 				$registerRTEinJavascriptString .= '
 	RTEarea['.$editorId.'].contextMenu.showButtons = ' . json_encode(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['contextMenu.']['showButtons'])), 1)) . ';';

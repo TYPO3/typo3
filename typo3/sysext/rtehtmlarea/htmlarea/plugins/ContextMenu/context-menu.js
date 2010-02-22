@@ -41,13 +41,14 @@ ContextMenu = HTMLArea.Plugin.extend({
 	 */
 	configurePlugin : function(editor) {
 		this.pageTSConfiguration = this.editorConfiguration.contextMenu;
-		if (this.pageTSConfiguration) {
-			if (this.pageTSConfiguration.showButtons) {
-				this.showButtons = this.pageTSConfiguration.showButtons;
-			}
-			if (this.pageTSConfiguration.hideButtons) {
-				this.hideButtons = this.pageTSConfiguration.hideButtons;
-			}
+		if (!this.pageTSConfiguration) {
+			this.pageTSConfiguration = {};
+		}
+		if (this.pageTSConfiguration.showButtons) {
+			this.showButtons = this.pageTSConfiguration.showButtons;
+		}
+		if (this.pageTSConfiguration.hideButtons) {
+			this.hideButtons = this.pageTSConfiguration.hideButtons;
 		}
 		/*
 		 * Registering plugin "About" information
@@ -69,9 +70,8 @@ ContextMenu = HTMLArea.Plugin.extend({
 	 */
 	onGenerate: function() {
 			// Build the context menu
-		this.menu = new Ext.menu.Menu({
+		this.menu = new Ext.menu.Menu(Ext.applyIf({
 			cls: 'htmlarea-context-menu',
-			height: 800,
 			defaultType: 'menuitem',
 			listeners: {
 				itemClick: {
@@ -88,9 +88,9 @@ ContextMenu = HTMLArea.Plugin.extend({
 				}
 			},
 			items: this.buildItemsConfig()
-		});
+		}, this.pageTSConfiguration));
 			// Monitor contextmenu clicks on the iframe
-		this.menu.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'contextmenu', this.show, this, {single: true});
+		this.menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this, {single: true});
 	},
 	/*
 	 * Create the menu items config
@@ -159,15 +159,15 @@ ContextMenu = HTMLArea.Plugin.extend({
 	 * Handler when the menu gets shown
 	 */
 	onShow: function () {
-		this.menu.mun(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'contextmenu', this.show, this);
-		this.menu.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu, {single: true});
+		this.menu.mun(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this);
+		this.menu.mon(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu, {single: true});
 	},
 	/*
 	 * Handler when the menu gets hidden
 	 */
 	onHide: function () {
-		this.menu.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'contextmenu', this.show, this);
-		this.menu.mun(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu);
+		this.menu.mon(Ext.get(this.editor.document.documentElement), 'contextmenu', this.show, this);
+		this.menu.mun(Ext.get(this.editor.document.documentElement), 'mousedown', this.menu.hide, this.menu);
 	},
 	/*
 	 * Handler to show the context menu
