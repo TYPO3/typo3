@@ -381,7 +381,7 @@ HTMLArea.prototype.moveToBookmark = function (bookmark) {
 	var endSpan    = this.getBookmarkNode(bookmark, false);
 
 	var range = this._createRange();
-		// If the previous sibling is a text node, let the anchor have it as parent
+		// If the previous sibling is a text node, let the anchorNode have it as parent
 	if (startSpan.previousSibling && startSpan.previousSibling.nodeType == 3) {
 		range.setStart(startSpan.previousSibling, startSpan.previousSibling.data.length);
 	} else {
@@ -390,7 +390,7 @@ HTMLArea.prototype.moveToBookmark = function (bookmark) {
 	HTMLArea.removeFromParent(startSpan);
 		// If the bookmarked range was collapsed, the end span will not be available
 	if (endSpan) {
-			// If the next sibling is a text node, let the anchor have it as parent
+			// If the next sibling is a text node, let the focusNode have it as parent
 		if (endSpan.nextSibling && endSpan.nextSibling.nodeType == 3) {
 			range.setEnd(endSpan.nextSibling, 0);
 		} else {
@@ -455,18 +455,9 @@ HTMLArea.prototype.insertHTML = function(html) {
  * @return	void
  */
 HTMLArea.prototype.wrapWithInlineElement = function(element, selection, range) {
-		// Sometimes Opera raises a bad boundary points error
-	if (HTMLArea.is_opera) {
-		try {
-			range.surroundContents(element);
-		} catch(e) {
-			element.appendChild(range.extractContents());
-			range.insertNode(element);
-		}
-	} else {
-		range.surroundContents(element);
-		element.normalize();
-	}
+	element.appendChild(range.extractContents());
+	range.insertNode(element);
+	element.normalize();
 		// Sometimes Firefox inserts empty elements just outside the boundaries of the range
 	var neighbour = element.previousSibling;
 	if (neighbour && (neighbour.nodeType != 3) && !/\S/.test(neighbour.textContent)) {

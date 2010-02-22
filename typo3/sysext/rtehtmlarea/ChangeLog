@@ -1,3 +1,7 @@
+2010-02-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13310: htmlArea RTE: Additional Inline Elements issue with overlapping ranges
+
 2010-02-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13205: RTE 1.8.6 not focusing correctly with IE8
