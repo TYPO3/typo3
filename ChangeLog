@@ -1,6 +1,7 @@
 2010-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13310: htmlArea RTE: Additional Inline Elements issue with overlapping ranges
+	* Updated htmlArea RTE version to 1.8.8
 
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
