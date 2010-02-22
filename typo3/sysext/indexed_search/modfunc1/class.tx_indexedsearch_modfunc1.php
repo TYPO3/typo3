@@ -441,10 +441,13 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 
 					// cHash parameters:
 				$arr = unserialize($row['cHashParams']);
-				if (is_array($arr))		{
-					$theCHash = $arr['cHash'];
-					unset($arr['cHash']);
+				if (!is_array($arr)) {
+					$arr = array(
+						'cHash' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.error', true)
+					);
 				}
+				$theCHash = $arr['cHash'];
+				unset($arr['cHash']);
 
 				if ($row['item_type'])	{	// pdf...
 					$lines[] = '<td>'.($arr['key'] ? 'Page '.$arr['key'] : '').'&nbsp;</td>';
