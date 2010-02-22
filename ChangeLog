@@ -7,10 +7,6 @@
 	* Fixed bug #13310: htmlArea RTE: Additional Inline Elements issue with overlapping ranges
 	* Updated htmlArea RTE version to 1.8.8
 
-2010-02-21  Benjamin Mack  <benni@typo3.org>
-
-	* Fixed bug #13406: thumbs.php: Thumbnails for images with transparent background look ugly (Thanks to Andreas Wolf and Steffen Ritter)
-
 2010-02-21  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13252: default CSS only loadable for media screen / changed behaviour in 4.3 (Thanks to Ralf Hettinger)
@@ -20,10 +16,11 @@
 
 2010-02-21  Benjamin Mack  <benni@typo3.org>
 
-	* Fixed #13423: Make ext_tables.sql syntax parsing more compliable (Thanks to Joachim Mathes)
-	* Fixed #13201: Repots module - Use same install tool check for reports as used in About module (Thanks to Moreno Feltscher)
-	* Fixed #13574: html warning, because a plain & inside an url (Thanks to Stefan Galinski)
-	* Fixed #12625: JSMENU's fallback menu name is not unique
+	* Fixed bug #13406: thumbs.php: Thumbnails for images with transparent background look ugly (Thanks to Andreas Wolf and Steffen Ritter)
+	* Fixed bug #13423: Make ext_tables.sql syntax parsing more compliable (Thanks to Joachim Mathes)
+	* Fixed bug #13201: Reports module - Use same install tool check for reports as used in About module (Thanks to Moreno Feltscher)
+	* Fixed bug #13574: html warning, because a plain & inside an url (Thanks to Stefan Galinski)
+	* Fixed bug #12625: JSMENU's fallback menu name is not unique
 
 2010-02-21  Xavier Perseguers  <typo3@perseguers.ch>
 
