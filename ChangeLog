@@ -1,5 +1,9 @@
 2010-02-23  Oliver Hader  <oliver@typo3.org>
 
+	* Release of TYPO3 4.2.12
+
+2010-02-23  Oliver Hader  <oliver@typo3.org>
+
 	* Fixed bug #13394: Information disclosure in sysext:sys_actions (thanks to Georg Ringer)
 	* Fixed bug #13042: XSS in index.php (thanks to Georg Ringer)
 	* Fixed bug #11617: XSS in template module (thanks to Georg Ringer)
