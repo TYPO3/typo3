@@ -103,7 +103,7 @@ class tx_sysaction extends mod_user_task {
 								$userRecord=t3lib_BEfunc::getRecord("be_users",$nId);
 							}
 							if (t3lib_div::_GP("be_users_uid"))	{
-								$userRecord=t3lib_BEfunc::getRecord("be_users",t3lib_div::_GP("be_users_uid"));
+								$userRecord = t3lib_BEfunc::getRecord('be_users', t3lib_div::_GP('be_users_uid'), '*', ' AND cruser_id='.intval($this->BE_USER->user['uid']).' AND createdByAction='.intval($actionRow['uid']));
 							}
 							if (!is_array($userRecord))	{
 								$userRecord=array();
