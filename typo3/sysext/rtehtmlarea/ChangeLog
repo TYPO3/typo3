@@ -2,6 +2,7 @@
 
 	* Added feature #13608: htmlArea RTE: Make height of the context menu configurable
 	* Fixed bug #13618: htmlArea RTE: RTE iframe is sometimes collapsed
+	* Fixed bug #13619: htmlArea RTE: url not detected on enter
 
 2010-02-21  Stanislas Rolland  <typo3@sjbr.ca>
 

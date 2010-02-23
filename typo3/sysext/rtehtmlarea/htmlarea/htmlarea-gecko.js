@@ -645,9 +645,8 @@ HTMLArea.Editor.prototype._detectURL = function(event) {
 			var a = textNode.parentNode.insertBefore(tag, rightText);
 			HTMLArea.removeFromParent(textNode);
 			a.appendChild(textNode);
-			rightText.data += " ";
-			s.collapse(rightText, rightText.data.length);
-			event.stopEvent();
+			s.collapse(rightText, 0);
+			rightText.parentNode.normalize();
 	
 			editor._unLink = function() {
 				var t = a.firstChild;
@@ -665,9 +664,7 @@ HTMLArea.Editor.prototype._detectURL = function(event) {
 	
 		switch(ev.which) {
 				// Space or Enter or >, see if the text just typed looks like a URL, or email address and link it accordingly
-			case 13:	// Enter
-				if(ev.shiftKey || editor.config.disableEnterParagraphs) break;
-					//Space
+			case 13:
 			case 32:
 				if(s && s.isCollapsed && s.anchorNode.nodeType == 3 && s.anchorNode.data.length > 3 && s.anchorNode.data.indexOf('.') >= 0) {
 					var midStart = s.anchorNode.data.substring(0,s.anchorOffset).search(/[a-zA-Z0-9]+\S{3,}$/);

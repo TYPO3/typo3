@@ -1286,7 +1286,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		}
 		if (!event.altKey && !event.ctrlKey) {
 				// Detect URL in non-IE browsers
-			if (!Ext.isIE) {
+			if (!Ext.isIE && (event.getKey() != Ext.EventObject.ENTER || event.shiftKey)) {
 				this.getEditor()._detectURL(event);
 			}
 				// Handle option+SPACE for Mac users
@@ -1344,6 +1344,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for ENTER key in non-IE browsers
 	 */
 	onEnter: function (key, event) {
+		this.getEditor()._detectURL(event);
 		if (!event.shiftKey) {
 			if (this.getEditor()._checkInsertP()) {
 				event.stopEvent();
