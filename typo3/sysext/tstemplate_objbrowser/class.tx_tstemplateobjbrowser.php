@@ -362,8 +362,8 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			if ($existTemplate)	{
 					// Value
 				$out = '';
-				$out.= $this->pObj->sObj.' =<br />';
-				$out .= '<input type="Text" name="data[' . $this->pObj->sObj . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
+				$out.= htmlspecialchars($this->pObj->sObj) . ' =<br />';
+				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][value]" value="' . htmlspecialchars($theSetupValue) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
 				$out .= '<input type="Submit" name="update_value" value="' . $GLOBALS['LANG']->getLL('updateButton') . '" />';
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editProperty'), $out, 0, 0);
 
@@ -372,14 +372,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					$url=$BACK_PATH."wizard_tsconfig.php?mode=tsref&onlyProperty=1";
 					$params=array();
 					$params["formName"]="editForm";
-					$params["itemName"]="data[".$this->pObj->sObj."][name]";
-					$params["itemValue"]="data[".$this->pObj->sObj."][propertyValue]";
+					$params["itemName"]="data[" . htmlspecialchars($this->pObj->sObj) . "][name]";
+					$params["itemValue"]="data[" . htmlspecialchars($this->pObj->sObj) . "][propertyValue]";
 					$TSicon = '<a href="#" onClick="vHWin=window.open(\'' . $url . t3lib_div::implodeArrayForUrl("", array("P"=>$params)) . '\',\'popUp' . $md5ID . '\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img src="' . $BACK_PATH . 'gfx/wizard_tsconfig_s.gif" width="22" height="16" border="0" class="absmiddle" hspace=2 title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef') . '"></a>';
 				} else $TSicon="";
 				$out = '';
-				$out = '<nobr>' . $this->pObj->sObj . '.';
-				$out .= '<input type="Text" name="data[' . $this->pObj->sObj . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />' . $TSicon . ' = </nobr><br />';
-				$out .= '<input type="Text" name="data[' . $this->pObj->sObj . '][propertyValue]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
+				$out = '<nobr>' . htmlspecialchars($this->pObj->sObj) . '.';
+				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />' . $TSicon . ' = </nobr><br />';
+				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />';
 				$out .= '<input type="Submit" name="add_property" value="' . $GLOBALS['LANG']->getLL('addButton') . '" />';
 
 				$theOutput .= $this->pObj->doc->spacer(20);
@@ -387,11 +387,11 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 					// clear
 				$out = '';
-				$out = $this->pObj->sObj . " <b>" .
+				$out = htmlspecialchars($this->pObj->sObj) . " <b>" .
 					$GLOBALS['LANG']->csConvObj->conv_case(
 						$GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('clear'), 'toUpper'
 					) . "</b> &nbsp;&nbsp;";
-				$out .= '<input type="Checkbox" name="data[' . $this->pObj->sObj . '][clearValue]" value="1" />';
+				$out .= '<input type="Checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
 				$out .= '<input type="Submit" name="clear_object" value="' . $GLOBALS['LANG']->getLL('clearButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('clearObject'), $out, 0, 0);
@@ -411,12 +411,12 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$out = '';
 			if (!$this->pObj->MOD_SETTINGS['ts_browser_TLKeys_'.$bType][$this->pObj->sObj])	{
 				if (count($theSetup))	{
-					$out = '<a href="index.php?id=' . $this->pObj->id . '&addKey[' . $this->pObj->sObj . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj) . '">';
-					$out .= sprintf($GLOBALS['LANG']->getLL('addKey'), $this->pObj->sObj);
+					$out = '<a href="index.php?id=' . $this->pObj->id . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=1&SET[ts_browser_toplevel_' . $bType . ']=' . rawurlencode($this->pObj->sObj) . '">';
+					$out .= sprintf($GLOBALS['LANG']->getLL('addKey'), htmlspecialchars($this->pObj->sObj));
 				}
 			} else {
-				$out = '<a href="index.php?id=' . $this->pObj->id . '&addKey[' . $this->pObj->sObj . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0">';
-				$out .= sprintf($GLOBALS['LANG']->getLL('removeKey'), $this->pObj->sObj);
+				$out = '<a href="index.php?id=' . $this->pObj->id . '&addKey[' . rawurlencode($this->pObj->sObj) . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0">';
+				$out .= sprintf($GLOBALS['LANG']->getLL('removeKey'), htmlspecialchars($this->pObj->sObj));
 			}
 			if ($out)	{
 				$theOutput.=$this->pObj->doc->divider(5);
