@@ -743,10 +743,9 @@ HTMLArea.prototype._detectURL = function(ev) {
 			var a = textNode.parentNode.insertBefore(tag, rightText);
 			HTMLArea.removeFromParent(textNode);
 			a.appendChild(textNode);
-			rightText.data += " ";
-			s.collapse(rightText, rightText.data.length);
-			HTMLArea._stopEvent(ev);
-	
+			s.collapse(rightText, 0);
+			rightText.parentNode.normalize();
+
 			editor._unLink = function() {
 				var t = a.firstChild;
 				a.removeChild(t);
