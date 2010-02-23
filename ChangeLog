@@ -5,6 +5,7 @@
 	* Fixed bug #11617: XSS in template module (thanks to Georg Ringer)
 	* Fixed bug #13249: XSS in TS Object Browser (thanks to Marcus Krause)
 	* Fixed bug #11621: XSS vulnerabilities in workspace module (thanks to Georg Ringer)
+	* Fixed bug #11620: XSS vulnerability in task center module (thanks to Georg Ringer)
 
 2010-02-22  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
