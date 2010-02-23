@@ -352,7 +352,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$first = $tmpl->ext_prevPageWithTemplate($this->id,$this->perms_clause);
 		if ($first)	{
 			$theOutput.=$this->doc->spacer(10);
-			$theOutput.=$this->doc->section("Go to closest page with template",sprintf("Closest template is on page '%s' (uid %s).<BR><BR>%s<strong>Click here to go.</strong>%s",$first["title"],$first["uid"],'<a href="index.php?id='.$first["uid"].'">','</a>'),0,1);
+			$theOutput.=$this->doc->section("Go to closest page with template",sprintf("Closest template is on page '%s' (uid %s).<BR><BR>%s<strong>Click here to go.</strong>%s",htmlspecialchars($first["title"]),$first["uid"],'<a href="index.php?id='.$first["uid"].'">','</a>'),0,1);
 		}
 		return $theOutput;
 	}
@@ -431,7 +431,7 @@ page.10.value = HELLO WORLD!
 		if (!$rlArr[0]["uid"])		array_shift($rlArr);
 
 		$cEl = current($rlArr);
-		$pArray[$cEl["uid"]]=$cEl["title"];
+		$pArray[$cEl["uid"]]=htmlspecialchars($cEl["title"]);
 		array_shift($rlArr);
 		if (count($rlArr))	{
 			if (!isset($pArray[$cEl["uid"]."."]))	$pArray[$cEl["uid"]."."]=array();
