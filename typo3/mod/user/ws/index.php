@@ -613,8 +613,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			$content .= '</td>';
 
 				// row #1, column #4 and 5: title and description
-			$content .= '<td nowrap="nowrap">' . $wksp['title'] . '</td>' .
-						'<td>' . nl2br($wksp['description']) . '</td>';
+			$content .= '<td nowrap="nowrap">' . htmlspecialchars($wksp['title']) . '</td>' .
+						'<td>' . nl2br(htmlspecialchars($wksp['description'])) . '</td>';
 			$content .= '</tr>';
 
 				// row #2, column #1 and #2
@@ -887,7 +887,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 					$tag0 = $tag1 = '';
 				}
 				$content_array[] = $this->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage('be_users', $uid, $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $uid . '"'), 'be_users', $uid, 2).
-					$tag0 . $user['username'] . $tag1;
+					$tag0 . htmlspecialchars($user['username']) . $tag1;
 			}
 		}
 		return implode('<br />', $content_array);
@@ -926,7 +926,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 							$tag0 = $tag1 = '';
 						}
 						$content_array[] = $this->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage($table, $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"'), $table, $id, 2) .
-											$tag0 . $this->be_user_Array_full[$id]['username'] . $tag1;
+											$tag0 . htmlspecialchars($this->be_user_Array_full[$id]['username']) . $tag1;
 					}
 					else {
 						// group
@@ -948,7 +948,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 						$tag0 = $tag1 = '';
 					}
 					$content_array[] = t3lib_iconWorks::getIconImage('be_users', $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ' align="middle" alt="UID: ' . $id . '"') .
-										$tag0 . $this->be_user_Array_full[$userUID]['username'] . $tag1;
+										$tag0 . htmlspecialchars($this->be_user_Array_full[$userUID]['username']) . $tag1;
 				}
 			}
 			sort($content_array);
