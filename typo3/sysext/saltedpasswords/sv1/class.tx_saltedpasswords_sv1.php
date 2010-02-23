@@ -79,6 +79,15 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	 */
 	protected $objInstanceSaltedPW = NULL;
 
+	/**
+	 * Indicates whether the salted password authentication has failed.
+	 *
+	 * Prevents authentication bypass. See vulnerability report:
+	 * { @link http://bugs.typo3.org/view.php?id=13372 }
+	 *
+	 * @var boolean
+	 */
+	protected $authenticationFailed = FALSE;
 
 	/**
 	 * Checks if service is available. In case of this service we check that
@@ -123,6 +132,12 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 		if (is_object($this->objInstanceSaltedPW)) {
 			$validPasswd = $this->objInstanceSaltedPW->checkPassword($password,$user['password']);
 
+				// record is in format of Salted Hash password but authentication failed
+				// skip further authentication methods
+			if (!$validPasswd) {
+				$this->authenticationFailed = TRUE;
+			}
+
 			$defaultHashingClassName = tx_saltedpasswords_div::getDefaultSaltingHashingMethod();
 			$skip = FALSE;
 
@@ -158,9 +173,19 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 					$validPasswd = $this->objInstanceSaltedPW->checkPassword(md5($password), substr($user['password'], 1));
 				}
 
+					// skip further authentication methods
+				if (!$validPasswd) {
+					$this->authenticationFailed = TRUE;
+				}
+
 				// password is stored as md5
 			} else if (preg_match('/[0-9abcdef]{32,32}/', $user['password'])) {
 				$validPasswd = (!strcmp(md5($password), $user['password']) ? TRUE : FALSE);
+
+					// skip further authentication methods
+				if (!$validPasswd) {
+					$this->authenticationFailed = TRUE;
+				}
 
 				// password is stored plain or unrecognized format
 			} else {
@@ -219,7 +244,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 				);
 			}
 
-			if (!$validPasswd && intval($this->extConf['onlyAuthService'])) {
+			if (!$validPasswd && (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed)) {
 					// Failed login attempt (wrong password) - no delegation to further services
 				$this->writeLog(
 					TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'',
