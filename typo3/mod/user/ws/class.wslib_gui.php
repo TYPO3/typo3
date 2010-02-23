@@ -838,7 +838,7 @@ class wslib_gui {
 					$text = $LANG->getLL('stage_undefined');
 					break;
 			}
-			$text = t3lib_BEfunc::datetime($dat['tstamp']).': ' . sprintf($text, $username);
+			$text = t3lib_BEfunc::datetime($dat['tstamp']).': ' . sprintf($text, htmlspecialchars($username));
 			$text.= ($data['comment']?'<br/>' . $LANG->getLL('stage_label_user_comment'). ' <em>'.htmlspecialchars($data['comment']).'</em>':'');
 
 			$entry[] = $text;
