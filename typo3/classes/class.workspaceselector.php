@@ -163,7 +163,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 		if(count($customWorkspaces)) {
 			foreach($customWorkspaces as $workspace) {
 				if($GLOBALS['BE_USER']->checkWorkspace($workspace)) {
-					$availableWorkspaces[$workspace['uid']] = $workspace['uid'].': '.$workspace['title'];
+					$availableWorkspaces[$workspace['uid']] = $workspace['uid'] . ': ' . htmlspecialchars($workspace['title']);
 				}
 			}
 		}
