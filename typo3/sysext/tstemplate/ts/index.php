@@ -384,7 +384,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		if ($first) {
 			$theOutput .= $this->doc->spacer(10);
 			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('goToClosest'),
-					sprintf($GLOBALS['LANG']->getLL('goToClosestDescription') . '<br /><br />%s<strong>' . $GLOBALS['LANG']->getLL('goToClosestAction') . '</strong>%s', $first['title'], $first['uid'],
+					sprintf($GLOBALS['LANG']->getLL('goToClosestDescription') . '<br /><br />%s<strong>' . $GLOBALS['LANG']->getLL('goToClosestAction') . '</strong>%s', htmlspecialchars($first['title']), $first['uid'],
 					'<a href="index.php?id=' . $first['uid'] . '">', '</a>'), 0, 1);
 		}
 		return $theOutput;
@@ -473,7 +473,7 @@ page.10.value = HELLO WORLD!
 		}
 
 		$cEl = current($rlArr);
-		$pArray[$cEl['uid']] = $cEl['title'];
+		$pArray[$cEl['uid']] = htmlspecialchars($cEl['title']);
 		array_shift($rlArr);
 		if (count($rlArr)) {
 			if (!isset($pArray[$cEl['uid'] . '.'])) {
