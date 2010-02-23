@@ -159,9 +159,8 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 * @return	string		header in the left side (HTML)
 	 */
 	function getleftHeader() {
-		$name = $GLOBALS['BE_USER']->user['realName']?$GLOBALS['BE_USER']->user['realName']:
-		$GLOBALS['BE_USER']->user['username'];
-		return '<h1>TYPO3 taskcenter <br />'.$name.'</h1>';
+		$name = $GLOBALS['BE_USER']->user['realName'] ? $GLOBALS['BE_USER']->user['realName'] : $GLOBALS['BE_USER']->user['username'];
+		return '<h1>TYPO3 taskcenter <br />' . htmlspecialchars($name) . '</h1>';
 	}
 
 	/**
