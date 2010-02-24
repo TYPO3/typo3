@@ -1,3 +1,7 @@
+2010-02-24  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13637: [EM] Upload to TER is broken
+
 2010-02-23  Benjamin Mack  <benni@typo3.org>
 
 	* Release of TYPO3 4.4.0alpha1

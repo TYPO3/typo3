@@ -300,7 +300,7 @@ class SC_mod_tools_em_terconnection {
 		foreach ($uArr['FILES'] as $filename => $infoArr) {
 				// Avoid autoloading "soapclient", since it's only a strategy check here:
 			$content = (!defined('SOAP_1_2') && class_exists('soapclient', false)) ? base64_encode($infoArr['content']) : $infoArr['content']; // bug in NuSOAP - no automatic encoding
-			$filesData['fileData'][] = array (
+			$filesData[] = array (
 				'name' => utf8_encode($infoArr['name']),
 				'size' => intval($infoArr['size']),
 				'modificationTime' => intval($infoArr['mtime']),
