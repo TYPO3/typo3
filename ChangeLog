@@ -1,6 +1,7 @@
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13258: Make TYPO3 v4.2 work again with PHP 5.1 (was broke since the case since 4.2.11)
+	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 
 
 2010-02-24  Steffen Kamper  <info@sk-typo3.de>
 
