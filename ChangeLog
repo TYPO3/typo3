@@ -1,3 +1,7 @@
+2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 
+
 2009-11-30  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12467: TYPO3 Inline User Manual is broken
