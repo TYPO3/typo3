@@ -1552,7 +1552,28 @@ final class t3lib_div {
 	 * @return	boolean		Whether the given URL is valid
 	 */
 	public static function isValidUrl($url) {
-		return (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== false);
+		if (function_exists('filter_var')) {
+			return (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED) !== FALSE);
+		} else {
+			// See PHP's ext/filter/logical_filters.c php_filter_validate_url()
+			$parsed = @parse_url($url);
+			if (!is_array($parsed) || !isset($parsed['scheme'])) {
+				return FALSE;
+			}
+			$scheme = $parsed['scheme'];
+			if ($scheme == 'http' || $scheme == 'https') {
+				if (!isset($parsed['host']) || $parsed['host'] == '') {
+					return FALSE;
+				}
+				if (!preg_match('/^[\w\._]+$/', $parsed['host']) || preg_match('/\.$/', $parsed['host']) ) {
+					return FALSE;
+				}
+			}
+			if (!isset($parsed['host']) && !in_array($scheme, array('mailto', 'news', 'file'))) {
+				return FALSE;
+			}
+			return TRUE;
+		}
 	}
 
 
