@@ -236,6 +236,63 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Data provider for valid URLs, like PHP's source code test cases
+	 */
+	public function validUrlDataProvider() {
+		return array(
+			array('http://example.com/index.html'),
+			array('http://www.example.com/index.php'),
+			array('http://www.example/img/test.png'),
+			array('http://www.example/img/dir/'),
+			array('http://www.example/img/dir'),
+			array('file:///tmp/test.c'),
+			array('ftp://ftp.example.com/tmp/'),
+			array('mailto:foo@bar.com'),
+			array('news:news.php.net'),
+			array('file://foo/bar'),
+			array('http://qwe'),
+		);
+	}
+
+	/**
+	 * Data provider for invalid URLs, like PHP's source code test cases
+	 */
+	public function invalidUrlDataProvider() {
+		return array(
+			array('http//www.example/wrong/url/'),
+			array('http:/www.example'),
+			array('/tmp/test.c'),
+			array('/'),
+			array('http://'),
+			array('http:/'),
+			array('http:'),
+			array('http'),
+			array(''),
+			array('-1'),
+			array('array()'),
+			array('qwe'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider validUrlDataProvider
+	 * @see	t3lib_div::isValidUrl()
+	 */
+	public function checkisValidURL($url) {
+		$this->assertTrue(t3lib_div::isValidUrl($url));
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidUrlDataProvider
+	 * @see	t3lib_div::isValidUrl()
+	 */
+	public function checkisInValidURL($url) {
+		$this->assertFalse(t3lib_div::isValidUrl($url));
+	}
+
+	/**
 	 * @test
 	 * @see t3lib_div::isValidUrl()
 	 */
