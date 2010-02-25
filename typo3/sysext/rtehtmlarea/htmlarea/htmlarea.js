@@ -3577,15 +3577,6 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	getButton: function(buttonId) {
 		return this.editor.toolbar.getButton(buttonId);
 	},
-
-	/**
-	 * Arrays of ExtJS config properties that may be used on a button or dropdown in Page TSConfig
-	 */
-	ExtJSProperties: {
-		htmlareabutton: [],
-		htmlareacombo: ['width', 'listWidth', 'maxHeight' ]
-	},
-
 	/**
 	 * Registers a button for inclusion in the toolbar
 	 *
@@ -3616,9 +3607,10 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 					buttonConfiguration.dimensions.left = buttonConfiguration.dimensions.left ?  buttonConfiguration.dimensions.left : this.editorConfiguration.dialogueWindows.defaultPositionFromLeft;
 				}
 				buttonConfiguration.hidden = buttonConfiguration.hide;
-					// Copy ExtJS properties for the button
+					// Apply additional ExtJS config properties set in Page TSConfig
+					// May not always work for values that must be integers
 				if (this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]]) {
-					buttonConfiguration = Ext.copyTo(buttonConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]], this.ExtJSProperties['htmlareabutton']);
+					Ext.applyIf(buttonConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[buttonConfiguration.id]]);
 				}
 				if (this.editorConfiguration.registerButton(buttonConfiguration)) {
 					var hotKey = buttonConfiguration.hotKey ? buttonConfiguration.hotKey :
@@ -3661,8 +3653,10 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 				dropDownConfiguration.plugins = this;
 				dropDownConfiguration.hidden = dropDownConfiguration.hide;
 				dropDownConfiguration.xtype = 'htmlareacombo';
+					// Apply additional ExtJS config properties set in Page TSConfig
+					// May not always work for values that must be integers
 				if (this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]]) {
-					dropDownConfiguration = Ext.copyTo(dropDownConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]], this.ExtJSProperties['htmlareacombo']);
+					Ext.applyIf(dropDownConfiguration, this.editorConfiguration.buttons[this.editorConfiguration.convertButtonId[dropDownConfiguration.id]]);
 				}
 				return this.editorConfiguration.registerButton(dropDownConfiguration);
 			} else {

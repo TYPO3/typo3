@@ -113,11 +113,18 @@ Language = HTMLArea.Plugin.extend({
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + "-Tooltip"),
 			options		: options,
-			action		: "onChange",
-			listWidth	: 200
+			action		: "onChange"
 		};
+		if (this.buttonsConfiguration.language) {
+			dropDownConfiguration.width = this.buttonsConfiguration.language.width ? parseInt(this.buttonsConfiguration.language.width, 10) : 200;
+			if (this.buttonsConfiguration.language.listWidth) {
+				dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.language.listWidth, 10);
+			}
+			if (this.buttonsConfiguration.language.maxHeight) {
+				dropDownConfiguration.maxHeight = parseInt(this.buttonsConfiguration.language.maxHeight, 10);
+			}
+		}
 		this.registerDropDown(dropDownConfiguration);
-
 		return true;
 	 },
 

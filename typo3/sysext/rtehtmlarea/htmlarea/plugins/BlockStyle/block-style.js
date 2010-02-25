@@ -122,14 +122,20 @@ BlockStyle = HTMLArea.Plugin.extend({
 			id: dropDownId,
 			tooltip: this.localize(dropDownId + '-Tooltip'),
 			fieldLabel: fieldLabel,
-			width: this.pageTSconfiguration.width ? this.pageTSconfiguration.width : 'auto',
-			listWidth:  this.pageTSconfiguration.listWidth ? this.pageTSconfiguration.listWidth : 250,
-			maxHeight: this.pageTSconfiguration.maxHeight ? this.pageTSconfiguration.maxHeight : 300,
 			options: [[this.localize('No style'), 'none']],
 			action: 'onChange',
 			storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
 			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 		};
+		if (this.pageTSconfiguration.width) {
+			dropDownConfiguration.width = parseInt(this.pageTSconfiguration.width, 10);
+		}
+		if (this.pageTSconfiguration.listWidth) {
+			dropDownConfiguration.listWidth = parseInt(this.pageTSconfiguration.listWidth, 10);
+		}
+		if (this.pageTSconfiguration.maxHeight) {
+			dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
+		}
 		this.registerDropDown(dropDownConfiguration);
 		return true;
 	},

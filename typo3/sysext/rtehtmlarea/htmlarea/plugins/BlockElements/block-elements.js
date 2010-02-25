@@ -123,14 +123,19 @@ BlockElements = HTMLArea.Plugin.extend({
 		var dropDownConfiguration = {
 			id: buttonId,
 			tooltip: this.localize(buttonId + "-Tooltip"),
-			width: (this.buttonsConfiguration.formatblock && this.buttonsConfiguration.formatblock.width) ? this.buttonsConfiguration.formatblock.width : 200,
-			listWidth:  (this.buttonsConfiguration.formatblock && this.buttonsConfiguration.formatblock.listWidth) ? this.buttonsConfiguration.formatblock.listWidth : 200,
-			maxHeight: (this.buttonsConfiguration.formatblock && this.buttonsConfiguration.formatblock.maxHeight) ? this.buttonsConfiguration.formatblock.maxHeight : 300,
 			options: (this.buttonsConfiguration.formatblock ? this.buttonsConfiguration.formatblock.data : null),
 			action: "onChange"
 		};
+		if (this.buttonsConfiguration.formatblock) {
+			dropDownConfiguration.width = this.buttonsConfiguration.formatblock.width ? parseInt(this.buttonsConfiguration.formatblock.width, 10) : 200;
+			if (this.buttonsConfiguration.formatblock.listWidth) {
+				dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.formatblock.listWidth, 10);
+			}
+			if (this.buttonsConfiguration.formatblock.maxHeight) {
+				dropDownConfiguration.maxHeight = parseInt(this.buttonsConfiguration.formatblock.maxHeight, 10);
+			}
+		}
 		this.registerDropDown(dropDownConfiguration);
-
 		/*
 		 * Establishing the list of allowed block elements
 		 */

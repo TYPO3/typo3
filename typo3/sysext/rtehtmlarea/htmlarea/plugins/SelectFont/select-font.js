@@ -97,6 +97,17 @@ SelectFont = HTMLArea.Plugin.extend({
 				action: "onChange",
 				tpl: this.disablePCexamples ? '' : '<tpl for="."><div ext:qtip="{value}" style="' + dropDown[3] + '" class="x-combo-list-item">{text}</div></tpl>'
 			};
+			if (this.buttonsConfiguration[dropDown[2]]) {
+				if (this.editorConfiguration.buttons[dropDown[2]].width) {
+					dropDownConfiguration.width = parseInt(this.editorConfiguration.buttons[dropDown[2]].width, 10);
+				}
+				if (this.editorConfiguration.buttons[dropDown[2]].listWidth) {
+					dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons[dropDown[2]].listWidth, 10);
+				}
+				if (this.editorConfiguration.buttons[dropDown[2]].maxHeight) {
+					dropDownConfiguration.maxHeight = parseInt(this.editorConfiguration.buttons[dropDown[2]].maxHeight, 10);
+				}
+			}
 			this.registerDropDown(dropDownConfiguration);
 			return true;
 		}, this);
