@@ -1,3 +1,7 @@
+2010-02-25  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #12841: Menu Update broken in EM when Using translated Backend (thanks to Steffen Ritter)
+
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 

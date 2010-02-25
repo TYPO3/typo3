@@ -4090,11 +4090,11 @@ EXTENSION KEYS:
 		// ext_tables.php:
 		if (@is_file($absPath.'ext_tables.php'))	{
 			$content = t3lib_div::getUrl($absPath.'ext_tables.php');
-			if (stristr($content, 't3lib_extMgm::addModule'))	$infoArray['flags'][] = $GLOBALS['LANG']->getLL('detailedExtAnalysis_module');
-			if (stristr($content, 't3lib_extMgm::insertModuleFunction'))	$infoArray['flags'][] = $GLOBALS['LANG']->getLL('detailedExtAnalysis_module_and_more');
-			if (stristr($content, 't3lib_div::loadTCA'))	$infoArray['flags'][] = $GLOBALS['LANG']->getLL('detailedExtAnalysis_loadTCA');
-			if (stristr($content, '$TCA['))	$infoArray['flags'][] = $GLOBALS['LANG']->getLL('detailedExtAnalysis_TCA');
-			if (stristr($content, 't3lib_extMgm::addPlugin'))	$infoArray['flags'][] = $GLOBALS['LANG']->getLL('detailedExtAnalysis_plugin');
+			if (stristr($content, 't3lib_extMgm::addModule'))	$infoArray['flags'][] = 'Module';
+			if (stristr($content, 't3lib_extMgm::insertModuleFunction'))	$infoArray['flags'][] = 'Module+';
+			if (stristr($content, 't3lib_div::loadTCA'))	$infoArray['flags'][] = 'loadTCA';
+			if (stristr($content, '$TCA['))	$infoArray['flags'][] = 'TCA';
+			if (stristr($content, 't3lib_extMgm::addPlugin'))	$infoArray['flags'][] = 'Plugin';
 		}
 
 		// ext_localconf.php:
