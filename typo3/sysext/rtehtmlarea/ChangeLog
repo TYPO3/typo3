@@ -2,6 +2,7 @@
 
 	* Fixed bug #13651: htmlArea RTE: Table insertion is broken in IE8
 	* Added feature #13667: htmlArea RTE: Make toolbar dropdown size configurable in Page TSConfig
+	* Cleanup #13668: htmlArea RTE: Cleanup some unused code (acronym, color, font)
 
 2010-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
