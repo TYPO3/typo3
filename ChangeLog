@@ -1,3 +1,7 @@
+2010-02-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13651: htmlArea RTE: Table insertion is broken in IE8
+
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 

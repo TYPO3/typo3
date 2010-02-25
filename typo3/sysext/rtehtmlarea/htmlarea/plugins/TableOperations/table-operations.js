@@ -1602,10 +1602,18 @@ TableOperations = HTMLArea.Plugin.extend({
 				var val = params[i];
 				switch (i) {
 				    case "f_st_backgroundColor":
-				    	style.backgroundColor = ((val.charAt(0) === '#') ? '' : '#') + val;
+				    	if (/\S/.test(val)) {
+				    		style.backgroundColor = ((val.charAt(0) === '#') ? '' : '#') + val;
+				    	} else {
+				    		style.backgroundColor = '';
+				    	}
 					break;
 				    case "f_st_color":
-					style.color = ((val.charAt(0) === '#') ? '' : '#') + val;
+				    	if (/\S/.test(val)) {
+				    		style.color = ((val.charAt(0) === '#') ? '' : '#') + val;
+				    	} else {
+				    		style.color = '';
+				    	}
 					break;
 				    case "f_st_backgroundImage":
 					if (/\S/.test(val)) {
@@ -1627,7 +1635,11 @@ TableOperations = HTMLArea.Plugin.extend({
 					style.borderStyle = (val != "not set") ? val : "";
 					break;
 				    case "f_st_borderColor":
-					style.borderColor = ((val.charAt(0) === '#') ? '' : '#') + val;
+				    	if (/\S/.test(val)) {
+				    		style.borderColor = ((val.charAt(0) === '#') ? '' : '#') + val;
+					} else {
+						style.borderColor = '';
+					}
 					if (params.f_st_borderStyle === 'none') {
 						style.borderColor = '';
 					}

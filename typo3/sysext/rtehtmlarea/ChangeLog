@@ -1,3 +1,7 @@
+2010-02-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13651: htmlArea RTE: Table insertion is broken in IE8
+
 2010-02-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13608: htmlArea RTE: Make height of the context menu configurable
