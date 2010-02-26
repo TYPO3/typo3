@@ -1,5 +1,6 @@
 2010-02-26  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #12849: Element wizard & web_list.allowedNewTables doesn't respect hiding pages (Thanks to Georg Ringer)
 	* Fixed bug #13611: Replace calls to t3lib_div:: within t3lib_div to self:: due to performance reasons (Thanks to Georg Ringer)
 
 2010-02-25  Francois Suter  <francois@typo3.org>

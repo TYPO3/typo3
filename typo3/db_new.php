@@ -427,13 +427,16 @@ class SC_db_new {
 			// Half-line:
 		$rowContent.= '<br />' . $halfLine;
 
-			// Compile table row:
-		$startRows[]='
-			<tr>
-				<td nowrap="nowrap">' . $rowContent . '</td>
-				<td>' . t3lib_BEfunc::cshItem($table, '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
-			</tr>
-		';
+			// Compile table row to show the icon for "new page (select position)"
+		$startRows = array();
+		if ($this->showNewRecLink('pages')) {
+			$startRows[] = '
+				<tr>
+					<td nowrap="nowrap">' . $rowContent . '</td>
+					<td>' . t3lib_BEfunc::cshItem($table, '', $this->doc->backPath, '', $doNotShowFullDescr) . '</td>
+				</tr>
+			';
+		}
 
 
 			// New tables (but not pages) INSIDE this pages
