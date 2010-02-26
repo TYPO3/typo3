@@ -444,12 +444,13 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		String to search for in the groupData-list
 	 * @return	boolean		True if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
 	 */
-	function check($type,$value)	{
-		if (isset($this->groupData[$type]))	{
-			if ($this->isAdmin() || $this->inList($this->groupData[$type],$value)) {
-				return 1;
+	function check($type, $value) {
+		if (isset($this->groupData[$type])) {
+			if ($this->isAdmin() || $this->inList($this->groupData[$type], $value)) {
+				return TRUE;
 			}
 		}
+		return FALSE;
 	}
 
 	/**
