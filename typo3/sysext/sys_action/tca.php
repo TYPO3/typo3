@@ -137,12 +137,7 @@ $TCA['sys_action'] = Array (
 				'size' => '5',
 				'maxitems' => '50',
 				'minitems' => '1',
-				'show_thumbs' => '1',
-				'wizards' => array(
-					'suggest' => array(
-						'type' => 'suggest',
-					)
-				)
+				'show_thumbs' => '1'
 			)
 		),
 
