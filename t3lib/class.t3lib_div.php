@@ -1650,8 +1650,7 @@ final class t3lib_div {
 	 */
 	public static function intExplode($delimiter, $string, $onlyNonEmptyValues = FALSE, $limit = 0) {
 		$explodedValues = self::trimExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
-		array_walk($explodedValues, 'intval');
-		return $explodedValues;
+		return array_map('intval', $explodedValues);
 	}
 
 	/**

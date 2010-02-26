@@ -1,5 +1,6 @@
 2010-02-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to #13675: Use array_map() instead of array_walk()
 	* Fixed bug #13675: Performance improvement: Use array_walk() for t3lib_div::intExplode (Thanks to Georg Ringer)
 
 2010-02-26  Benjamin Mack  <benni@typo3.org>
