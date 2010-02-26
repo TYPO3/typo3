@@ -84,6 +84,7 @@ SelectFont = HTMLArea.Plugin.extend({
 		Ext.each(this.dropDownList, function (dropDown) {
 			var buttonId = dropDown[0];
 				// Load the options var
+			var options = [];
 			if (this.buttonsConfiguration[dropDown[2]] && this.buttonsConfiguration[dropDown[2]].dataUrl) {
 				var optionsData = this.getJavascriptFile(this.buttonsConfiguration[dropDown[2]].dataUrl, "noEval");
 				if (optionsData) {
