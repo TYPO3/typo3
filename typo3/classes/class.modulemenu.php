@@ -452,6 +452,12 @@ class ModuleMenu {
 				top.currentSubScript = "'.$subModuleData['originalLink'].'";
 				if (top.content.list_frame && top.fsMod.currentMainLoaded == mainModName) {
 					modScriptURL = "'.$this->appendQuestionmarkToLink($subModuleData['originalLink']).'"'.$additionalJavascript.';
+					';
+								// Change link to navigation frame if submodule has it's own navigation
+							if ($submoduleNavigationFrameScript) {
+								$javascriptCommand .= 'navFrames["' . $parentModuleName . '"] = "'. $submoduleNavigationFrameScript . '";';
+							}
+							$javascriptCommand .= '
 				} else if (top.nextLoadModuleUrl) {
 					modScriptURL = "'.($subModuleData['prefix'] ? $this->appendQuestionmarkToLink($subModuleData['link']) . '&exScript=' : '') . 'listframe_loader.php";
 				} else {
@@ -480,7 +486,16 @@ class ModuleMenu {
 		var additionalGetVariables = "";
 		if (addGetVars)	{
 			additionalGetVariables = addGetVars;
+		}';
+
+		$javascriptCode .= '
+		var navFrames = {};';
+		foreach ($navFrameScripts as $mainMod => $frameScript) {
+			$javascriptCode .= '
+				navFrames["'.$mainMod.'"] = "'.$frameScript.'";';
 		}
+
+		$javascriptCode .= '
 
 		var cMR = (cMR_flag ? 1 : 0);
 		var modScriptURL = "";
@@ -488,12 +503,8 @@ class ModuleMenu {
 		switch(modName)	{'
 			."\n".implode("\n", $moduleJavascriptCommands)."\n".'
 		}
+		';
 
-		var navFrames = {};';
-		foreach ($navFrameScripts as $mainMod => $frameScript) {
-			$javascriptCode .= '
-		navFrames["'.$mainMod.'"] = "'.$frameScript.'";';
-		}
 		$javascriptCode .= '
 
 		if (!useCondensedMode && navFrames[mainModName]) {

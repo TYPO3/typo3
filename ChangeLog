@@ -1,5 +1,6 @@
 2010-02-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #11562: Main module does not load different navFrames in submodules (Thanks to Erik Frister)
 	* Follow-up to #13675: Added testcase for t3lib_div::intExplode()
 	* Follow-up to #13675: Use array_map() instead of array_walk()
 	* Fixed bug #13675: Performance improvement: Use array_walk() for t3lib_div::intExplode (Thanks to Georg Ringer)
