@@ -114,7 +114,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	protected function initialize(array $mapping) {
 		$this->addCommonColumns();
 		$columnConfigurations = array();
-		foreach ($this->getColumnsDefinitions() as $columnName => $columnDefinition) {
+		foreach ($this->getColumnsDefinition() as $columnName => $columnDefinition) {
 			$columnConfigurations[$columnName] = $columnDefinition['config'];
 			$columnConfigurations[$columnName]['mapOnProperty'] = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
 		}
@@ -133,7 +133,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param string $tableName An optional table name to fetch the columns definition from
 	 * @return array The TCA columns definition
 	 */
-	public function getColumnsDefinitions($tableName = '') {
+	public function getColumnsDefinition($tableName = '') {
 		$tableName = strlen($tableName) > 0 ? $tableName : $this->getTableName();
 		if (TYPO3_MODE === 'FE') {
 			$GLOBALS['TSFE']->includeTCA();
@@ -213,13 +213,13 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		if (isset($columnConfiguration) && $columnConfiguration['type'] !== 'passthrough') {
-			if (isset($columnConfiguration['foreign_table']) && !isset($columnConfiguration['MM']) && !isset($columnConfiguration['foreign_label'])) {
+			if (isset($columnConfiguration['foreign_table']) && !isset($columnConfiguration['MM']) && !(isset($columnConfiguration['foreign_label']) || isset($columnConfiguration['foreign_selector']))) {
 				if ($columnConfiguration['maxitems'] == 1) {
 					$this->setOneToOneRelation($columnMap, $columnConfiguration);
 				} else {
 					$this->setOneToManyRelation($columnMap, $columnConfiguration);
 				}
-			} elseif (isset($columnConfiguration['foreign_label']) || isset($columnConfiguration['MM'])) {
+			} elseif (isset($columnConfiguration['MM']) || (isset($columnConfiguration['foreign_label']) || isset($columnConfiguration['foreign_selector']))) {
 				$this->setManyToManyRelation($columnMap, $columnConfiguration);
 			} else {
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
@@ -275,12 +275,13 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		// TODO support multi table relationships
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
 		if ($columnConfiguration['type'] === 'inline') {
-			$columns = $this->getColumnsDefinitions($columnConfiguration['foreign_table']);
-			$columnMap->setChildClassName($this->determineChildClassName($columns[$columnConfiguration['foreign_label']]));
-			$columnMap->setChildTableName($columns[$columnConfiguration['foreign_label']]['foreign_table']);
+			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
+			$childKeyFieldName = $this->determineChildKeyFieldName($columnConfiguration);
+			$columnMap->setChildClassName($this->determineChildClassName($columns[$childKeyFieldName]['config']));
+			$columnMap->setChildTableName($columns[$childKeyFieldName]['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
 			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
-			$columnMap->setChildKeyFieldName($columnConfiguration['foreign_label']);
+			$columnMap->setChildKeyFieldName($childKeyFieldName);
 			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		} else {
 			$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
@@ -304,6 +305,24 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$columnMap->setChildSortByFieldName('sorting');
 			}
 		}
+	}
+	
+	/**
+	 * This method returns the foreign key field name in the relation table. For IRRE setups it will return
+	 * the foreign_label; if not present the foreign_selector. Default is uid_foreign.
+	 *
+	 * @param string $columnConfiguration The column configuration of the parent table relation field
+	 * @return string The foreign key field name of the relation table
+	 */
+	public function determineChildKeyFieldName($columnConfiguration) {
+		if (isset($columnConfiguration['foreign_label'])) {
+			$childKeyFieldName = $columnConfiguration['foreign_label'];
+		} elseif (isset($columnConfiguration['foreign_selector'])) {
+			$childKeyFieldName = $columnConfiguration['foreign_selector'];
+		} else {
+			$childKeyFieldName = 'uid_foreign';
+		}
+		return $childKeyFieldName;
 	}
 	
 	/**

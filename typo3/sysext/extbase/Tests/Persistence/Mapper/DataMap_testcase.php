@@ -300,7 +300,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 		$leftColumnsDefinition = array(
 			'rights' => array(
 				'type' => 'select',
-				'foreign_class' => 'Tx_MyExtension_RightClass',
 				'foreign_table' => 'tx_myextension_righttable',
 				'foreign_table_where' => 'WHERE 1=1',
 				'MM' => 'tx_myextension_mm',
@@ -309,7 +308,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 			);
 		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
 		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
-		$mockColumnMap->expects($this->once())->method('setChildClassName')->with($this->equalTo('Tx_MyExtension_RightClass'));
 		$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_righttable'));
 		$mockColumnMap->expects($this->once())->method('setChildTableWhereStatement')->with($this->equalTo('WHERE 1=1'));
 		$mockColumnMap->expects($this->once())->method('setChildSortbyFieldName')->with($this->equalTo('sorting'));
@@ -329,7 +327,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 		$rightColumnsDefinition = array(
 			'lefts' => array(
 				'type' => 'select',
-				'foreign_class' => 'Tx_MyExtension_LeftClass',
 				'foreign_table' => 'tx_myextension_lefttable',
 				'MM' => 'tx_myextension_mm',
 				'MM_opposite_field' => 'rights'
@@ -338,7 +335,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 		$leftColumnsDefinition['rights']['MM_opposite_field'] = 'opposite_field';		
 		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
 		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
-		$mockColumnMap->expects($this->once())->method('setChildClassName')->with($this->equalTo('Tx_MyExtension_LeftClass'));
 		$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_lefttable'));
 		$mockColumnMap->expects($this->once())->method('setChildTableWhereStatement')->with(NULL);
 		$mockColumnMap->expects($this->once())->method('setChildSortbyFieldName')->with($this->equalTo('sorting_foreign'));
@@ -349,6 +345,56 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 		
 		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('dummy'), array(), '', FALSE);
 		$mockDataMap->_callRef('setManyToManyRelation', $mockColumnMap, $rightColumnsDefinition['lefts']);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function uid_foreignIsReturnedAsDefaultForChildKeyFieldName() {
+	    $leftColumnsDefinition = array(
+			'rights' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_myextension_mm',
+				'foreign_field' => 'uid_local',
+				)
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('dummy'), array(), '', FALSE);
+		$result = $mockDataMap->_callRef('determineChildKeyFieldName', $leftColumnsDefinition['rights']);
+		$this->assertEquals('uid_foreign', $result);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function theChildKeyFieldNameIsReturnedForForeignLabel() {
+	    $leftColumnsDefinition = array(
+			'rights' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_myextension_mm',
+				'foreign_field' => 'uid_local',
+				'foreign_label' => 'the_child_key_field_name',
+				)
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('dummy'), array(), '', FALSE);
+		$result = $mockDataMap->_callRef('determineChildKeyFieldName', $leftColumnsDefinition['rights']);
+		$this->assertEquals('the_child_key_field_name', $result);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function theChildKeyFieldNameIsReturnedForForeignSelector() {
+	    $leftColumnsDefinition = array(
+			'rights' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_myextension_mm',
+				'foreign_field' => 'uid_local',
+				'foreign_selector' => 'the_child_key_field_name',
+				)
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('dummy'), array(), '', FALSE);
+		$result = $mockDataMap->_callRef('determineChildKeyFieldName', $leftColumnsDefinition['rights']);
+		$this->assertEquals('the_child_key_field_name', $result);
 	}
 	
 	/**
@@ -366,12 +412,10 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 			);
 	    $relationTableColumnsDefiniton = array(
 			'uid_local' => array(
-				'foreign_class' => 'Tx_MyExtension_LocalClass',
-				'foreign_table' => 'tx_myextension_localtable'
+				'config' => array('foreign_table' => 'tx_myextension_localtable')
 				),
 			'uid_foreign' => array(
-				'foreign_class' => 'Tx_MyExtension_RightClass',
-				'foreign_table' => 'tx_myextension_righttable'
+				'config' => array('foreign_table' => 'tx_myextension_righttable')
 				)
 			);
 	    $rightColumnsDefinition = array(
@@ -385,7 +429,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 			);
 		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
 		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
-		$mockColumnMap->expects($this->once())->method('setChildClassName')->with($this->equalTo('Tx_MyExtension_RightClass'));
 		$mockColumnMap->expects($this->once())->method('setChildTableName')->with($this->equalTo('tx_myextension_righttable'));
 		$mockColumnMap->expects($this->never())->method('setChildTableWhereStatement');
 		$mockColumnMap->expects($this->once())->method('setChildSortbyFieldName')->with($this->equalTo('sorting'));
@@ -396,7 +439,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap_testcase extends Tx_Extbase_BaseTest
 		
 		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMap'), array('getColumnsDefinition', 'determineChildClassName'), array(), '', FALSE);
 		$mockDataMap->expects($this->once())->method('getColumnsDefinition')->with($this->equalTo('tx_myextension_mm'))->will($this->returnValue($relationTableColumnsDefiniton));
-		$mockDataMap->expects($this->once())->method('determineChildClassName')->with($this->equalTo($relationTableColumnsDefiniton['uid_foreign']))->will($this->returnValue('Tx_MyExtension_RightClass'));
 		$mockDataMap->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
 	}
 	
