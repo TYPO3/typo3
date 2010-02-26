@@ -1,3 +1,7 @@
+2010-02-26  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13675: Performance improvement: Use array_walk() for t3lib_div::intExplode (Thanks to Georg Ringer)
+
 2010-02-26  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #13262: replace hardcoded typo3/ with TYPO3_mainDir (Thanks to Georg Ringer)

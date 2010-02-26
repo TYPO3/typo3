@@ -1648,13 +1648,10 @@ final class t3lib_div {
 	 * 						if zero (default), the result is not limited at all
 	 * @return	array		Exploded values, all converted to integers
 	 */
-	public static function intExplode($delim, $string, $onlyNonEmptyValues = false, $limit = 0)	{
-		$temp = self::trimExplode($delim, $string, $onlyNonEmptyValues, $limit);
-		foreach ($temp as &$val) {
-			$val = intval($val);
-		}
-		reset($temp);
-		return $temp;
+	public static function intExplode($delimiter, $string, $onlyNonEmptyValues = FALSE, $limit = 0) {
+		$explodedValues = self::trimExplode($delimiter, $string, $onlyNonEmptyValues, $limit);
+		array_walk($explodedValues, 'intval');
+		return $explodedValues;
 	}
 
 	/**
