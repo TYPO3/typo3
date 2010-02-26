@@ -94,7 +94,6 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.']["buttons"]["'. $button .'"] = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathAcronymModule = "../../mod2/acronym.php";
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.acronymUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', 'acronym_'.$this->htmlAreaRTE->contentLanguageUid, 'js', $this->buildJSAcronymArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
 
 				// <abbr> was not supported by IE before version 7

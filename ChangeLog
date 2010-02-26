@@ -5,6 +5,7 @@
 	* Cleanup #13668: htmlArea RTE: Cleanup some unused code (acronym, color, font)
 	* Fixed bug #13671: htmlArea RTE: Invalid reference to font options in WebKit browsers
 	* Fixed bug #13672: htmlArea RTE: Conflicting configuration property name
+	* Cleanup #13673: htmlArea RTE: url to acronym module is not used anymore
 
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
