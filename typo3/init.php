@@ -88,6 +88,16 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
 
 
 // *******************************
+// Fix BACK_PATH, if the TYPO3_mainDir is set to something else than 
+// typo3/, this is a workaround because the conf.php of the old modules
+// still have "typo3/" hardcoded. Can be removed once we don't have to worry about
+// legacy modules (with conf.php and $BACK_PATH) anymore. See RFC / Bug #13262 for more details.
+// *******************************
+if (isset($BACK_PATH) && strlen($BACK_PATH) > 0 && TYPO3_mainDir != 'typo3/' && substr($BACK_PATH, -7) == '/typo3/') {
+	$BACK_PATH = substr($BACK_PATH, 0, -6) . TYPO3_mainDir;
+}
+
+// *******************************
 // Checking path
 // *******************************
 $temp_path = str_replace('\\','/',dirname(PATH_thisScript).'/');
