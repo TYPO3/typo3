@@ -1,5 +1,6 @@
 2010-02-26  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #13262: replace hardcoded typo3/ with TYPO3_mainDir (Thanks to Georg Ringer)
 	* Fixed bug #11507: tt_content's TCA spaceBefore and spaceAfter got a hardcoded limit of 50 (Thanks to Georg Ringer)
 	* Fixed bug #13591: Full search causes error if TCA has tables without any columns (Thanks to Fabrizio Branca)
 	* Fixed bug #13493: Cleanup return value in t3lib_userauthgroup check() (Thanks to Georg Ringer)
