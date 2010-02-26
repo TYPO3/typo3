@@ -208,16 +208,12 @@ class tx_rtehtmlarea_inlineelements extends tx_rtehtmlareaapi {
 				$JSInlineElements[] = array($label, $item);
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.formattext.data = ' . json_encode($JSInlineElements) . ';';
+			RTEarea['.$RTEcounter.'].buttons.formattext.options = ' . json_encode($JSInlineElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	 }
-
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/InlineElements/class.tx_rtehtmlarea_inlineelements.php']);
 }
-
 ?>

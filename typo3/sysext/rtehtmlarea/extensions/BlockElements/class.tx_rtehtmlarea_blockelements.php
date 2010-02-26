@@ -178,7 +178,7 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 				$JSBlockElements[] = array($label, $item);
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.formatblock.data = ' . json_encode($JSBlockElements) . ';';
+			RTEarea['.$RTEcounter.'].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

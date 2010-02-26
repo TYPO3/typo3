@@ -80,9 +80,20 @@ InlineElements = HTMLArea.Plugin.extend({
 		var dropDownConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + "-Tooltip"),
-			options		: (this.editorConfiguration.buttons[buttonId.toLowerCase()] ? this.editorConfiguration.buttons[buttonId.toLowerCase()].data : null),
+			options		: (this.editorConfiguration.buttons[buttonId.toLowerCase()] ? this.editorConfiguration.buttons[buttonId.toLowerCase()].options : []),
 			action		: "onChange"
 		};
+		if (this.editorConfiguration.buttons.formattext) {
+			if (this.editorConfiguration.buttons.formattext.width) {
+				dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons.formattext.width, 10);
+			}
+			if (this.editorConfiguration.buttons.formattext.listWidth) {
+				dropDownConfiguration.listWidth = parseInt(this.editorConfiguration.buttons.formattext.listWidth, 10);
+			}
+			if (this.editorConfiguration.buttons.formattext.maxHeight) {
+				dropDownConfiguration.maxHeight = parseInt(this.editorConfiguration.buttons.formattext.maxHeight, 10);
+			}
+		}
 		this.registerDropDown(dropDownConfiguration);
 		
 		/*

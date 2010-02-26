@@ -123,7 +123,7 @@ BlockElements = HTMLArea.Plugin.extend({
 		var dropDownConfiguration = {
 			id: buttonId,
 			tooltip: this.localize(buttonId + "-Tooltip"),
-			options: (this.buttonsConfiguration.formatblock ? this.buttonsConfiguration.formatblock.data : null),
+			options: this.buttonsConfiguration.formatblock ? this.buttonsConfiguration.formatblock.options : [],
 			action: "onChange"
 		};
 		if (this.buttonsConfiguration.formatblock) {
