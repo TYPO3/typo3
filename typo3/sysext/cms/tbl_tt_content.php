@@ -862,7 +862,6 @@ $TCA['tt_content'] = Array (
 				'eval' => 'int',
 				'checkbox' => '0',
 				'range' => Array (
-					'upper' => '50',
 					'lower' => '0'
 				),
 				'default' => 0
@@ -878,7 +877,6 @@ $TCA['tt_content'] = Array (
 				'eval' => 'int',
 				'checkbox' => '0',
 				'range' => Array (
-					'upper' => '50',
 					'lower' => '0'
 				),
 				'default' => 0
