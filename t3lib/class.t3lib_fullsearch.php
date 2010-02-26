@@ -574,6 +574,11 @@ class t3lib_fullsearch {
 					// Get fields list
 				t3lib_div::loadTCA($table);
 				$conf=$TCA[$table];
+				
+					// avoid querying tables with no columns
+				if (empty($conf['columns'])) {
+					continue;
+				}
 
 				reset($conf['columns']);
 				$list=array();
