@@ -2126,8 +2126,8 @@ class frontendDoc extends template {
 		if (count($this->JScodeArray)) {
 			foreach ($this->JScodeArray as $name => $code) {
 				$pageRenderer->addJsInlineCode($name, $code);
-	}
-}
+			}
+		}
 
 		if ($this->addPrototype) {
 			$pageRenderer->loadPrototype();
