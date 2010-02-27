@@ -1,3 +1,7 @@
+2010-02-27  Andreas Otto  <andreas@otto-hanika.de>
+
+	* Fixed bug #13685: Recursive copy and move of alternative page languages (thanks to Albrecht Köhnlein)
+
 2010-02-27  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8191: IRRE - Storing data crashes somehow with MM tables (thanks to Peter Kuehn & Franz Koch)
