@@ -1,3 +1,7 @@
+2010-02-27  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8191: IRRE - Storing data crashes somehow with MM tables (thanks to Peter Kuehn & Franz Koch)
+
 2010-02-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #11562: Main module does not load different navFrames in submodules (Thanks to Erik Frister)
