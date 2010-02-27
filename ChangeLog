@@ -37,10 +37,6 @@
 
 	* Release of TYPO3 4.4.0alpha1
 
-2010-02-23  Benjamin Mack  <benni@typo3.org>
-
-	* Release of TYPO3 4.4.0alpha1
-
 2010-02-23  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #13372: saltedpasswords - Authentication Bypass in frontend user authentication (thanks to Marcus Krause & Dmitry Dulepov)
