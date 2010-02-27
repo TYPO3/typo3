@@ -20,6 +20,8 @@
 			<label index="lastMonth">Last month</label>
 			<label index="last31Days">Last 31 days</label>
 			<label index="noLimit">No limit</label>
+			<label index="userdefined">User defined</label>
+			<label index="set">Set</label>
 			<label index="20">20</label>
 			<label index="50">50</label>
 			<label index="100">100</label>
