@@ -1,3 +1,7 @@
+2010-02-27  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8191: IRRE - Storing data crashes somehow with MM tables (thanks to Peter Kuehn & Franz Koch)
+
 2010-02-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #7896: Hide the page browser if not enough entries are available (Thanks to Stefan Galinski)
