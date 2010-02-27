@@ -2395,6 +2395,11 @@ class t3lib_TCEmain	{
 				// update record in intermediate table (sorting & pointer uid to parent record)
 			$dbAnalysis->writeForeignField($tcaFieldConf, $id, 0, $skipSorting);
 			$newValue = ($keepTranslation ? 0 : $dbAnalysis->countItems(false));
+			// IRRE with MM relation:
+		} else if ($this->getInlineFieldType($tcaFieldConf) == 'mm') {
+				// in order to fully support all the MM stuff, directly call checkValue_group_select_processDBdata instead of repeating the needed code here
+			$valueArray = $this->checkValue_group_select_processDBdata($valueArray, $tcaFieldConf, $id, $status, 'select', $table, $field);
+			$newValue = ($keepTranslation ? 0 : $valueArray[0]);
 			// IRRE with comma separated values:
 		} else {
 			$valueArray = $dbAnalysis->getValueArray();
@@ -6354,7 +6359,10 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	function dbAnalysisStoreExec()	{
 		reset($this->dbAnalysisStore);
 		while(list($k,$v)=each($this->dbAnalysisStore))	{
-			$id = t3lib_BEfunc::wsMapId($v[4],$this->substNEWwithIDs[$v[2]]);
+			$id = t3lib_BEfunc::wsMapId(
+				$v[4],
+				(t3lib_div::testInt($v[2]) ? $v[2] : $this->substNEWwithIDs[$v[2]])
+			);
 			if ($id)	{
 				$v[2] = $id;
 				$v[0]->writeMM($v[1],$v[2],$v[3]);
