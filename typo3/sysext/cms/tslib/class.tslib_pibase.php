@@ -443,9 +443,10 @@ class tslib_pibase {
 	 * @param	array		Array with elements to overwrite the default $wrapper-array.
 	 * @param	string		varname for the pointer.
 	 * @param	boolean		enable htmlspecialchars() for the pi_getLL function (set this to FALSE if you want f.e use images instead of text for links like 'previous' and 'next').
-	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
+	 * @param   boolean     forces the output of the page browser if you set this option to "true" (otherwise it's only drawn if enough entries are available)
+ 	 * @return	string		Output HTML-Table, wrapped in <div>-tags with a class attribute (if $wrapArr is not passed,
 	 */
-	function pi_list_browseresults($showResultCount=1, $tableParams='', $wrapArr=array(), $pointerName='pointer', $hscText=TRUE)	{
+	function pi_list_browseresults($showResultCount=1, $tableParams='', $wrapArr=array(), $pointerName='pointer', $hscText=TRUE, $forceOutput=FALSE) {
 
 		// example $wrapArr-array how it could be traversed from an extension
 		/* $wrapArr = array(
@@ -465,6 +466,10 @@ class tslib_pibase {
 		$totalPages = ceil($count/$results_at_a_time);
 		$maxPages = t3lib_div::intInRange($this->internal['maxPages'],1,100);
 		$pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields);
+
+		if (!$forceOutput && $count <= $results_at_a_time) {
+			return '';
+		}
 
 			// $showResultCount determines how the results of the pagerowser will be shown.
 			// If set to 0: only the result-browser will be shown
