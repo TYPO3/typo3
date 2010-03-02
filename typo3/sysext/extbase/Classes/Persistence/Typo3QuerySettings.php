@@ -49,6 +49,12 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	protected $respectEnableFields = TRUE;
 
 	/**
+	 * Flag if the sys_language_uid should be respected (default is TRUE).
+	 * @var boolean
+	 */
+	protected $respectSysLanguage = TRUE;
+
+	/**
 	 * Flag if the the query result should be returned as raw QueryResult.
 	 * @var boolean
 	 */
@@ -75,6 +81,27 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 		return $this->respectStoragePage;
 	}
 
+	/**
+	 * Sets the flag if a  and language overlay should be performed.
+	 *
+	 * @param $respectEnableFields TRUE if a  and language overlay should be performed.
+	 * @return $this (fluent interface)
+	 * @api
+	 */
+	public function setRespectSysLanguage($respectSysLanguage) {
+		$this->respectSysLanguage = $respectSysLanguage;
+		return $this;
+	}
+
+	/**
+	 * Returns the state, if a  and language overlay should be performed.
+	 *
+	 * @return boolean TRUE, if a  and language overlay should be performed; otherwise FALSE.
+	 */
+	public function getRespectSysLanguage() {
+		return $this->respectSysLanguage;
+	}
+	
 	/**
 	 * Sets the flag if the visibility in the frontend should be respected.
 	 *

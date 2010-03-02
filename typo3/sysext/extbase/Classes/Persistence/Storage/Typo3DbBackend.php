@@ -227,7 +227,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		// debug($statement,-2);
 		$result = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
-		return $this->getRowsFromResult($query->getSource(), $result);
+		$rows = $this->getRowsFromResult($query->getSource(), $result);
+		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows);
+		return $rows;
 	}
 
 	/**
@@ -246,8 +248,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($statement, $parameters);
 		$result = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
-		$tuples = $this->getRowsFromResult($query->getSource(), $result);
-		return current(current($tuples));
+		$rows = $this->getRowsFromResult($query->getSource(), $result);
+		return current(current($rows));
 	}
 	
 	/**
@@ -376,6 +378,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				if ($querySettings->getRespectEnableFields()) {
 					$this->addEnableFieldsStatement($tableName, $sql);
 				}
+				if ($querySettings->getRespectSysLanguage()) {
+					$this->addSysLanguageStatement($tableName, $sql);
+				}
 				if ($querySettings->getRespectStoragePage()) {
 					$this->addPageIdStatement($tableName, $sql);
 				}
@@ -420,6 +425,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if ($querySettings->getRespectEnableFields()) {
 				$this->addEnableFieldsStatement($leftTableName, $sql);
 				$this->addEnableFieldsStatement($rightTableName, $sql);
+			}
+			if ($querySettings->getRespectSysLanguage()) {
+				$this->addSysLanguageStatement($leftTableName, $sql);
+				$this->addSysLanguageStatement($rightTableName, $sql);
 			}
 			if ($querySettings->getRespectStoragePage()) {
 				$this->addPageIdStatement($leftTableName, $sql);
@@ -634,7 +643,22 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			}
 		}
 	}
-
+	
+	/**
+	 * Builds the language field statement
+	 *
+	 * @param string $tableName The database table name
+	 * @param array &$sql The query parts
+	 * @return void
+	 */
+	protected function addSysLanguageStatement($tableName, array &$sql) {
+		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
+			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
+				$sql['additionalWhereClause'][] = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (0,-1)';
+			}
+		}
+	}
+	
 	/**
 	 * Builds the page ID checking statement
 	 *
@@ -707,8 +731,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	}
 
 	/**
-	 * Transforms a Resource from a database query to an array of rows. Performs the language and
-	 * workspace overlay before.
+	 * Transforms a Resource from a database query to an array of rows.
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
 	 * @param resource $result The result
@@ -717,14 +740,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected function getRowsFromResult(Tx_Extbase_Persistence_QOM_SourceInterface $source, $result) {
 		$rows = array();
 		while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
-			if	($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-				$row = $this->doLanguageAndWorkspaceOverlay($source->getSelectorName(), $row);
-			} else if ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
-				$row = $this->doLanguageAndWorkspaceOverlay($source->getLeft()->getSelectorName(), $row);
-			}
 			if (is_array($row)) {
 				// TODO Check if this is necessary, maybe the last line is enough
-				$arrayKeys = range(0,count($row));
+				$arrayKeys = range(0, count($row));
 				array_fill_keys($arrayKeys, $row);
 				$rows[] = $row;
 			}
@@ -736,46 +754,58 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * Performs workspace and language overlay on the given row array. The language and workspace id is automatically
 	 * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
 	 *
-	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap
+	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
 	 * @param array $row The row array (as reference)
 	 * @param string $languageUid The language id
 	 * @param string $workspaceUidUid The workspace id
 	 * @return void
 	 */
-	protected function doLanguageAndWorkspaceOverlay($tableName, array $row, $languageUid = NULL, $workspaceUid = NULL) {
-		if (!($this->pageSelectObject instanceof t3lib_pageSelect)) {
-			if (TYPO3_MODE == 'FE') {
-				if (is_object($GLOBALS['TSFE'])) {
-					$this->pageSelectObject = $GLOBALS['TSFE']->sys_page;
+	protected function doLanguageAndWorkspaceOverlay(Tx_Extbase_Persistence_QOM_SourceInterface $source, array $rows, $languageUid = NULL, $workspaceUid = NULL) {
+		$overlayedRows = array();
+		foreach ($rows as $row) {
+			if (!($this->pageSelectObject instanceof t3lib_pageSelect)) {
+				if (TYPO3_MODE == 'FE') {
+					if (is_object($GLOBALS['TSFE'])) {
+						$this->pageSelectObject = $GLOBALS['TSFE']->sys_page;
+					} else {
+						require_once(PATH_t3lib . 'class.t3lib_page.php');
+						$this->pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
+					}
 				} else {
 					require_once(PATH_t3lib . 'class.t3lib_page.php');
-					$this->pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
+					$this->pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
+				}
+			}
+			if (is_object($GLOBALS['TSFE'])) {
+				if ($languageUid === NULL) {
+					$languageUid = $GLOBALS['TSFE']->sys_language_uid;
+				}
+				if ($workspaceUid !== NULL) {
+					$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
 				}
 			} else {
-				require_once(PATH_t3lib . 'class.t3lib_page.php');
-				$this->pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
-			}
-		}
-		if (is_object($GLOBALS['TSFE'])) {
-			if ($languageUid === NULL) {
-				$languageUid = $GLOBALS['TSFE']->sys_language_uid;
-			}
-			if ($workspaceUid !== NULL) {
+				if ($languageUid === NULL) {
+					$languageUid = intval(t3lib_div::_GP('L'));
+				}
+				if ($workspaceUid === NULL) {
+					$workspaceUid = $GLOBALS['BE_USER']->workspace;
+				}
 				$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
 			}
-		} else {
-			if ($languageUid === NULL) {
-				$languageUid = intval(t3lib_div::_GP('L'));
+			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+				$tableName = $source->getSelectorName();
+			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+				$tableName = $source->getLeft()->getSelectorName();
 			}
-			if ($workspaceUid === NULL) {
-				$workspaceUid = $GLOBALS['BE_USER']->workspace;
+			$this->pageSelectObject->versionOL($tableName, $row, TRUE);
+			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
+				if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1,0))) {
+					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid);
+				}
 			}
-			$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
+			$overlayedRows[] = $row;
 		}
-		$this->pageSelectObject->versionOL($tableName, $row, TRUE);
-		$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, ''); //'hideNonTranslated'
-		// TODO Skip if empty languageoverlay (languagevisibility)
-		return $row;
+		return $overlayedRows;
 	}
 
 	/**

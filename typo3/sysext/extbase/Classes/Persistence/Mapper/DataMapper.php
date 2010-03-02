@@ -184,7 +184,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$className = get_class($object);
 		$dataMap = $this->getDataMap($className);
 		$properties = $object->_getProperties();
-		$object->_setProperty('uid', $row->getValue('uid'));
+		$localizedUid = $row->getValue('_LOCALIZED_UID');
+		if ($localizedUid !== NULL) {
+			$object->_setProperty('uid', $localizedUid);
+			$object->_setProperty('_localizationParentUid', $row->getValue('uid'));
+		} else {
+			$object->_setProperty('uid', $row->getValue('uid'));
+		}
+		unset($properties['uid']);
 		foreach ($properties as $propertyName => $propertyValue) {
 			if (!$dataMap->isPersistableProperty($propertyName)) continue;
 			$columnMap = $dataMap->getColumnMap($propertyName);
@@ -228,13 +235,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Fetches a collection of objects related to a property of a parent object
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The object instance this proxy is part of
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
-	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap The corresponding Data Map of the property
+	 * @param bool $enableLazyLoading A flag indication if the related objects should be lazy loaded
+	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
 	 * @return mixed The result
 	 */
-	public function fetchRelated(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
+	public function fetchRelated(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE, $performLanguageOverlay = TRUE) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && ($propertyMetaData['lazy'] || ($columnMap->getLoadingStrategy() !== Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_EAGER))) {
@@ -244,7 +252,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyLoadingProxy', $parentObject, $propertyName, $fieldValue);
 			}
 		} else {
-			$result = $this->fetchRelatedEager($parentObject, $propertyName, $fieldValue);
+			$result = $this->fetchRelatedEager($parentObject, $propertyName, $fieldValue, $performLanguageOverlay);
 		}
 		return $result;
 	}
@@ -252,26 +260,28 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Fetches the related objects from the storage backend.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The object instance this proxy is part of
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
+	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
 	 * @return void
 	 */
-	protected function fetchRelatedEager(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '') {
+	protected function fetchRelatedEager(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $performLanguageOverlay = TRUE) {
 		if ($fieldValue === '') return array();
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
+		$query->getQuerySettings()->setRespectSysLanguage($performLanguageOverlay);
 		return $query->execute();
 	}
 	
 	/**
 	 * Builds and returns the prepared query, ready to be executed.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject 
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject 
 	 * @param string $propertyName 
 	 * @param string $fieldValue 
 	 * @return void
 	 */
-	protected function getPreparedQuery(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '') {
+	protected function getPreparedQuery(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
@@ -344,7 +354,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param array $propertyMetaData The property meta data
 	 * @return void
 	 */
-	public function mapResultToPropertyValue(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $result) {
+	public function mapResultToPropertyValue(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $result) {
 		if ($result instanceof Tx_Extbase_Persistence_LoadingStrategyInterface) {
 			$propertyValue = $result;
 		} else {
@@ -377,11 +387,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Counts the number of related objects assigned to a property of a parent object
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The object instance this proxy is part of
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 */
-	public function countRelated(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName, $fieldValue = '') {
+	public function countRelated(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->count();
 	}
@@ -476,11 +486,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Returns the type of a child object.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The object instance this proxy is part of
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @return string The class name of the child object
 	 */
-	protected function getType(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName) {
+	protected function getType(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$childClassName = $columnMap->getChildClassName();
@@ -497,11 +507,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Returns the type of the elements inside an ObjectStorage or array.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The object instance this proxy is part of
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @return string The class name of the elements inside an ObjectStorage
 	 */
-	protected function getElementType(Tx_Extbase_DomainObject_AbstractEntity $parentObject, $propertyName) {
+	protected function getElementType(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$childClassName = $columnMap->getChildClassName();

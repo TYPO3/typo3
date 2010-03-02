@@ -39,6 +39,11 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	protected $uid;
 
 	/**
+	 * @var int The uid of the localization parent
+	 */
+	protected $_localizationParentUid;
+
+	/**
 	 * TRUE if the object is a clone
 	 * @var boolean
 	 */
@@ -80,9 +85,13 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return int the uid or NULL if none set yet.
 	 */
 	final public function getUid() {
-		return ($this->uid === NULL ? NULL : (int)$this->uid);
+		if ($this->uid !== NULL) {
+			return (int)$this->uid;
+		} else {
+			return NULL;
+		}
 	}
-
+	
 	/**
 	 * Reconstitutes a property. Only for internal use.
 	 *

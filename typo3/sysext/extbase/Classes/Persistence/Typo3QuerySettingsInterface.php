@@ -55,9 +55,27 @@ interface Tx_Extbase_Persistence_Typo3QuerySettingsInterface extends Tx_Extbase_
 	public function setRespectEnableFields($respectEnableFields);
 
 	/**
+	 * Sets the flag if if the sys language should be respected.
+	 *
+	 * @param $respectSysLanguage TRUE if the sys language should be respected.
+	 * @return $this (fluent interface)
+	 * @api
+	 */
+	public function setRespectSysLanguage($respectSysLanguage);
+	
+	/**
+	 * Returns the state, if the sys language should be respected.
+	 *
+	 * @return boolean TRUE, if the sys language should be respected; otherwise FALSE.
+	 */
+	public function getRespectSysLanguage();
+	
+
+	/**
 	 * Sets the state, if the QueryResult should be returned unmapped.
 	 *
 	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @api
 	 */
 	public function setReturnRawQueryResult($returnRawQueryResult);
 	
@@ -65,6 +83,7 @@ interface Tx_Extbase_Persistence_Typo3QuerySettingsInterface extends Tx_Extbase_
 	 * Returns the state, if the QueryResult should be returned unmapped.
 	 *
 	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @api
 	 */
 	public function getReturnRawQueryResult();
 	

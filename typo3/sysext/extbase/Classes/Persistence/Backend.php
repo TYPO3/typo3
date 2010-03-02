@@ -768,8 +768,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
 		$tableName = $this->dataMapper->getDataMap(get_class($object))->getTableName();
 		$this->addCommonFieldsToRow($object, $row);
-		$uid = $object->getUid();
-		$row['uid'] = $uid;
+		$row['uid'] = $object->getUid();
 		$res = $this->storageBackend->updateRow(
 			$tableName,
 			$row
@@ -779,7 +778,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		}
 		return $res;
 	}
-
+	
 	/**
 	 * Returns a table row to be inserted or updated in the database
 	 *
