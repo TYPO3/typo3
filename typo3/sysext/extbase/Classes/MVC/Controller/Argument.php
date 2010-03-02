@@ -364,11 +364,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 		}
 
 		if (!($transformedValue instanceof $this->dataType)) {
-			if (is_object($transformedValue)) {
-				throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value must be of type "' . $this->dataType . '", but was of type "' . get_class($transformedValue) . '".', 1251730701);
-			} else {
-				throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('The value must be of type "' . $this->dataType . '", but was of type "' . gettype($transformedValue) . '".', 1251730702);
-			}
+			throw new Tx_Extbase_MVC_Exception_InvalidArgumentValueException('The value must be of type "' . $this->dataType . '", but was of type "' . (is_object($transformedValue) ? get_class($transformedValue) : gettype($transformedValue)) . '".', 1251730701);
 		}
 		return $transformedValue;
 	}

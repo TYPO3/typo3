@@ -216,6 +216,9 @@ class Tx_Extbase_Property_Mapper {
 						}
 					} elseif ($propertyMetaData['type'] === 'DateTime' || strpos($propertyMetaData['type'], '_') !== FALSE) {
 						$propertyValue = $this->transformToObject($propertyValue, $propertyMetaData['type'], $propertyName);
+						if ($propertyValue === NULL) {
+							continue;
+						}
 					}
 				} elseif ($targetClassSchema !== NULL) {
 					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '$propertyName' does not exist in target class schema." , 1251813614), $propertyName);
@@ -239,7 +242,7 @@ class Tx_Extbase_Property_Mapper {
 	 * @param mixed $propertyValue The value to transform, string or array
 	 * @param string $targetType The type to transform to
 	 * @param string $propertyName In case of an error we add this to the error message
-	 * @return object
+	 * @return object The object, when no transformation was possible this may return NULL as well
 	 */
 	protected function transformToObject($propertyValue, $targetType, $propertyName) {
 		if ($targetType === 'DateTime' || in_array('DateTime', class_parents($targetType)) ) {
@@ -270,12 +273,16 @@ class Tx_Extbase_Property_Mapper {
 						$newObject = clone $existingObject;
 						if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
 							$propertyValue = $newObject;
+						} else {
+							$propertyValue = NULL;
 						}
 					}
 				} else {
 					$newObject = new $targetType;
 					if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
 						$propertyValue = $newObject;
+					} else {
+						$propertyValue = NULL;
 					}
 				}
 			} else {
