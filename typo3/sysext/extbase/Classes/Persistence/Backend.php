@@ -365,11 +365,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if (($propertyValue !== NULL) && ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage || $propertyType === 'Tx_Extbase_Persistence_ObjectStorage')) {
 				if ($object->_isNew() || $object->_isDirty($propertyName)) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $queue, $row);
-				}
-				if (is_array($propertyValue) || $propertyValue instanceof Iterator) {
-					foreach ($propertyValue as $containedObject) {
-						if ($containedObject instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-							$queue[] = $containedObject;
+					if (is_array($propertyValue) || $propertyValue instanceof Iterator) {
+						foreach ($propertyValue as $containedObject) {
+							if ($containedObject instanceof Tx_Extbase_DomainObject_AbstractEntity) {
+								$queue[] = $containedObject;
+							}
 						}
 					}
 				}
@@ -768,7 +768,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
 		$tableName = $this->dataMapper->getDataMap(get_class($object))->getTableName();
 		$this->addCommonFieldsToRow($object, $row);
-		$row['uid'] = $object->getUid();
+		$uid = $object->getUid();
+		$row['uid'] = $uid;
 		$res = $this->storageBackend->updateRow(
 			$tableName,
 			$row

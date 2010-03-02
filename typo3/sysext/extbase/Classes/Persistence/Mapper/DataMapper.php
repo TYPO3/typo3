@@ -151,8 +151,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$object = $this->identityMap->getObjectByIdentifier($row->getValue('uid'), $className);
 		} else {
 			$object = $this->createEmptyObject($className);
+			$this->identityMap->registerObject($object, $row->getValue('uid'));
 			$this->thawProperties($object, $row);
-			$this->identityMap->registerObject($object, $object->getUid());
 			$object->_memorizeCleanState();
 			$this->persistenceSession->registerReconstitutedObject($object);
 		}
