@@ -1,3 +1,7 @@
+2010-03-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #10003: t3lib_db explainOutput does not work with table alias (thanks to Dan Osipov)
+
 2010-02-27  Andreas Otto  <andreas@otto-hanika.de>
 
 	* Fixed bug #13685: Recursive copy and move of alternative page languages (thanks to Albrecht Köhnlein)
