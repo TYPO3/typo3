@@ -210,6 +210,16 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	}
 	
 	/**
+	 * Returns the total number objects of this repository.
+	 *
+	 * @return integer The object count
+	 * @api
+	 */
+	public function countAll() {
+		return $this->createQuery()->count();
+	}
+	
+	/**
 	 * Removes all objects of this repository as if remove() was called for
 	 * all of them.
 	 *
@@ -285,6 +295,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 				$object = current($result);
 			}
 			return $object;
+		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
+			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1) ) . substr(substr($methodName, 7), 1);
+			$query = $this->createQuery();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+				->count();
+			return $result;
 		}
 		throw new Tx_Extbase_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}
