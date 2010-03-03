@@ -1459,13 +1459,18 @@ class t3lib_DB {
 			$debug = true;
 
 			foreach ($explain_tables as $table) {
-				$res = $this->sql_query('SHOW INDEX FROM ' . $table, $this->link);
-				if (is_resource($res)) {
-					while ($tempRow = $this->sql_fetch_assoc($res)) {
-						$indices_output[] = $tempRow;
+				$tableRes = $this->sql_query('SHOW TABLE STATUS LIKE \'' . $table . '\'');
+				$isTable = $this->sql_num_rows($tableRes);
+				if ($isTable) {
+					$res = $this->sql_query('SHOW INDEX FROM ' . $table, $this->link);
+					if (is_resource($res)) {
+						while ($tempRow = $this->sql_fetch_assoc($res)) {
+							$indices_output[] = $tempRow;
+						}
+						$this->sql_free_result($res);
 					}
-					$this->sql_free_result($res);
 				}
+				$this->sql_free_result($tableRes);
 			}
 		} else {
 			$debug = false;
