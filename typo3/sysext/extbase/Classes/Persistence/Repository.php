@@ -251,8 +251,8 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 			$object = NULL;
 			if (count($result) > 0) {
 				$object = current($result);
+				$this->identityMap->registerObject($object, $uid);
 			}
-			$this->identityMap->registerObject($object, $uid);
 		}
 		return $object;
 	}
