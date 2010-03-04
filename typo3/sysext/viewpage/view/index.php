@@ -115,8 +115,15 @@ class SC_mod_web_view_index {
 						t3lib_BEfunc::firstDomainRecord(t3lib_BEfunc::BEgetRootLine($this->id)):
 						'';
 
+			// preview of mount pages
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$sys_page->init();
+		if ($mountPointInfo = $sys_page->getMountPointInfo($this->id)) {
+			$this->id = $mountPointInfo['mount_pid'];
+			$addCmd .= '&MP=' . $mountPointInfo['MPvar'];
+		}
+
 		$this->url.= ($dName?(t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$dName:$BACK_PATH.'..').'/index.php?id='.$this->id.($this->type?'&type='.$this->type:'').$addCmd;
-		//debug($this->url);
 	}
 
 	/**
