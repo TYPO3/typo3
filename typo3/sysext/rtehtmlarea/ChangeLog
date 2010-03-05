@@ -1,3 +1,7 @@
+2010-03-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13748: htmlArea RTE: Extjize character map
+
 2010-02-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13651: htmlArea RTE: Table insertion is broken in IE8

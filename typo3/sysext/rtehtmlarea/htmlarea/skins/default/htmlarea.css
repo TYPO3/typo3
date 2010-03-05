@@ -457,12 +457,12 @@
 	width: 150px;
 }
 .htmlarea-window .emoticon {
-    display: block;
-    float: left;
-    padding: 5px;
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
+	display: block;
+	float: left;
+	padding: 5px;
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
 }
 /* Selectors for the FindReplace dialogue */
 .htmlarea-find-replace .long-label {
@@ -470,28 +470,19 @@
 	width:30em;
 }
 /* Selectors for the CharacterMap dialogue */
-.htmlarea-character-map #selectedCharacter {
-	margin:5px 5px 10px 5px;
-	white-space:nowrap;
+.htmlarea-window .character-map .character {
+	display: block;
+	float: left;
+	width: 20px;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px 3px;
+	border: 1px solid transparent;
 }
-.htmlarea-character-map #selectedCharacter div {
-	display:inline;
-}
-.htmlarea-character-map #showcharacter {
-	background-color:#FFF;
-}
-.htmlarea-character-map table {
-	cursor:pointer;
-	background-color:#ADAD9C;
-	border:1px inset;
-}
-.htmlarea-character-map td.character {
-	font-size:14px;font-weight:bold;
-	text-align:center;
-	background-color:#FFF;
-}
-.htmlarea-character-map td.character-hilite {
-	background-color:Highlight;color:HighlightText;
+.htmlarea-window .character-map .character:hover {
+	background-color: #FFFFFF;
+	border: 1px solid #A2AAB8;
 }
 /* Selectors for the SpellChecker dialogue */
 .htmlarea-spell-check .dictionaries {

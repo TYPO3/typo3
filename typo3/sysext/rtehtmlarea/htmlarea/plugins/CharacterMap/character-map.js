@@ -34,45 +34,295 @@
  * TYPO3 SVN ID: $Id$
  */
 CharacterMap = HTMLArea.Plugin.extend({
-
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-
 	/*
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin : function(editor) {
-
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.3",
-			developer	: "Holger Hees, Bernhard Pfeifer, Stanislas Rolland",
-			developerUrl	: "http://www.fructifor.ca/",
-			copyrightOwner	: "Holger Hees, Bernhard Pfeifer, Stanislas Rolland",
-			sponsor		: "System Concept GmbH, Bernhard Pfeifer, Fructifor Inc.",
-			sponsorUrl	: "http://www.fructifor.ca/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Holger Hees, Bernhard Pfeifer, Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Holger Hees, Bernhard Pfeifer, Stanislas Rolland',
+			sponsor		: 'System Concept GmbH, Bernhard Pfeifer, SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-
 		/*
 		 * Registering the button
 		 */
-		var buttonId = "InsertCharacter";
+		var buttonId = 'InsertCharacter';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize(buttonId + "-Tooltip"),
-			action		: "onButtonPress",
+			tooltip		: this.localize(buttonId + '-Tooltip'),
+			action		: 'onButtonPress',
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
 
 		return true;
 	 },
-
+	/*
+	 * Character maps
+	 */
+	maps: {
+		general: [
+			['&nbsp;', '&amp;nbsp;'],
+			['&Agrave;', '&amp;Agrave;'],
+			['&agrave;', '&amp;agrave;'],
+			['&Aacute;', '&amp;Aacute;'],
+			['&aacute;', '&amp;aacute;'],
+			['&Acirc;', '&amp;Acirc;'],
+			['&acirc;', '&amp;acirc;'],
+			['&Atilde;', '&amp;Atilde;'],
+			['&atilde;', '&amp;atilde;'],
+			['&Auml;', '&amp;Auml;'],
+			['&auml;', '&amp;auml;'],
+			['&Aring;', '&amp;Aring;'],
+			['&aring;', '&amp;aring;'],
+			['&AElig;', '&amp;AElig;'],
+			['&aelig;', '&amp;aelig;'],
+			['&ordf;', '&amp;ordf;'],
+			['&Ccedil;', '&amp;Ccedil;'],
+			['&ccedil;', '&amp;ccedil;'],
+			['&ETH;', '&amp;ETH;'],
+			['&eth;', '&amp;eth;'],
+			['&Egrave;', '&amp;Egrave;'],
+			['&egrave;', '&amp;egrave;'],
+			['&Eacute;', '&amp;Eacute;'],
+			['&eacute;', '&amp;eacute;'],
+			['&Ecirc;', '&amp;Ecirc;'],
+			['&ecirc;', '&amp;ecirc;'],
+			['&Euml;', '&amp;Euml;'],
+			['&euml;', '&amp;euml;'],
+			['&Igrave;', '&amp;Igrave;'],
+			['&igrave;', '&amp;igrave;'],
+			['&Iacute;', '&amp;Iacute;'],
+			['&iacute;', '&amp;iacute;'],
+			['&Icirc;', '&amp;Icirc;'],
+			['&icirc;', '&amp;icirc;'],
+			['&Iuml;', '&amp;Iuml;'],
+			['&iuml;', '&amp;iuml;'],
+			['&Ntilde;', '&amp;Ntilde;'],
+			['&ntilde;', '&amp;ntilde;'],
+			['&Ograve;', '&amp;Ograve;'],
+			['&ograve;', '&amp;ograve;'],
+			['&Oacute;', '&amp;Oacute;'],
+			['&oacute;', '&amp;oacute;'],
+			['&Ocirc;', '&amp;Ocirc;'],
+			['&ocirc;', '&amp;ocirc;'],
+			['&Otilde;', '&amp;Otilde;'],
+			['&otilde;', '&amp;otilde;'],
+			['&Ouml;', '&amp;Ouml;'],
+			['&ouml;', '&amp;ouml;'],
+			['&Oslash;', '&amp;Oslash;'],
+			['&oslash;', '&amp;oslash;'],
+			['&OElig;', '&amp;OElig;'],
+			['&oelig;', '&amp;oelig;'],
+			['&ordm;', '&amp;ordm;'],
+			['&Scaron;', '&amp;Scaron;'],
+			['&scaron;', '&amp;scaron;'],
+			['&szlig;', '&amp;szlig;'],
+			['&THORN;', '&amp;THORN;'],
+			['&thorn;', '&amp;thorn;'],
+			['&Ugrave;', '&amp;Ugrave;'],
+			['&ugrave;', '&amp;ugrave;'],
+			['&Uacute;', '&amp;Uacute;'],
+			['&uacute;', '&amp;uacute;'],
+			['&Ucirc;', '&amp;Ucirc;'],
+			['&ucirc;', '&amp;ucirc;'],
+			['&Uuml;', '&amp;Uuml;'],
+			['&uuml;', '&amp;uuml;'],
+			['&Yacute;', '&amp;Yacute;'],
+			['&yacute;', '&amp;yacute;'],
+			['&Yuml;', '&amp;Yuml;'],
+			['&yuml;', '&amp;yuml;'],
+			['&acute;', '&amp;acute;'],
+			['&circ;', '&amp;circ;'],
+			['&tilde;', '&amp;tilde;'],
+			['&uml;', '&amp;uml;'],
+			['&cedil;', '&amp;cedil;'],
+			['&ndash;', '&amp;ndash;'],
+			['&mdash;', '&amp;mdash;'],
+			['&lsquo;', '&amp;lsquo;'],
+			['&rsquo;', '&amp;rsquo;'],
+			['&sbquo;', '&amp;sbquo;'],
+			['&ldquo;', '&amp;ldquo;'],
+			['&rdquo;', '&amp;rdquo;'],
+			['&bdquo;', '&amp;bdquo;'],
+			['&lsaquo;', '&amp;lsaquo;'],
+			['&rsaquo;', '&amp;rsaquo;'],
+			['&laquo;', '&amp;laquo;'],
+			['&raquo;', '&amp;raquo;'],
+			['&quot;', '&amp;quot;'],
+			['&hellip;', '&amp;hellip;'],
+			['&iquest;', '&amp;iquest;'],
+			['&iexcl;', '&amp;iexcl;'],
+			['&bull;', '&amp;bull;'],
+			['&dagger;', '&amp;dagger;'],
+			['&Dagger;', '&amp;Dagger;'],
+			['&brvbar;', '&amp;brvbar;'],
+			['&para;', '&amp;para;'],
+			['&sect;', '&amp;sect;'],
+			['&loz;', '&amp;loz;'],
+			['&#064;', '&amp;#064;'],
+			['&copy;', '&amp;copy;'],
+			['&reg;', '&amp;reg;'],
+			['&trade;', '&amp;trade;'],
+			['&curren;', '&amp;curren;'],
+			['&cent;', '&amp;cent;'],
+			['&euro;', '&amp;euro;'],
+			['&pound;', '&amp;pound;'],
+			['&yen;', '&amp;yen;'],
+			['&emsp;', '&amp;emsp;'],
+			['&ensp;', '&amp;ensp;'],
+			['&thinsp;', '&amp;thinsp;'],
+			['&zwj;', '&amp;zwj;'],
+			['&zwnj;', '&amp;zwnj;']
+		],
+		mathematical: [
+			['&minus;', '&amp;minus;'],
+			['&plusmn;', '&amp;plusmn;'],
+			['&times;', '&amp;times;'],
+			['&divide;', '&amp;divide;'],
+			['&radic;', '&amp;radic;'],
+			['&sdot;', '&amp;sdot;'],
+			['&otimes;', '&amp;otimes;'],
+			['&lowast;', '&amp;lowast;'],
+			['&ge;', '&amp;ge;'],
+			['&le;', '&amp;le;'],
+			['&ne;', '&amp;ne;'],
+			['&asymp;', '&amp;asymp;'],
+			['&sim;', '&amp;sim;'],
+			['&prop;', '&amp;prop;'],
+			['&deg;', '&amp;deg;'],
+			['&prime;', '&amp;prime;'],
+			['&Prime;', '&amp;Prime;'],
+			['&micro;', '&amp;micro;'],
+			['&ang;', '&amp;ang;'],
+			['&perp;', '&amp;perp;'],
+			['&permil;', '&amp;permil;'],
+			['&frasl;', '&amp;frasl;'],
+			['&frac14;', '&amp;frac14;'],
+			['&frac12;', '&amp;frac12;'],
+			['&frac34;', '&amp;frac34;'],
+			['&sup1;', '&amp;sup1;'],
+			['&sup2;', '&amp;sup2;'],
+			['&sup3;', '&amp;sup3;'],
+			['&not;', '&amp;not;'],
+			['&and;', '&amp;and;'],
+			['&or;', '&amp;or;'],
+			['&there4;', '&amp;there4;'],
+			['&cong;', '&amp;cong;'],
+			['&isin;', '&amp;isin;'],
+			['&ni;', '&amp;ni;'],
+			['&notin;', '&amp;notin;'],
+			['&sub;', '&amp;sub;'],
+			['&sube;', '&amp;sube;'],
+			['&nsub;', '&amp;nsub;'],
+			['&sup;', '&amp;sup;'],
+			['&supe;', '&amp;supe;'],
+			['&cap;', '&amp;cap;'],
+			['&cup;', '&amp;cup;'],
+			['&oplus;', '&amp;oplus;'],
+			['&nabla;', '&amp;nabla;'],
+			['&empty;', '&amp;empty;'],
+			['&equiv;', '&amp;equiv;'],
+			['&sum;', '&amp;sum;'],
+			['&prod;', '&amp;prod;'],
+			['&weierp;', '&amp;weierp;'],
+			['&exist;', '&amp;exist;'],
+			['&forall;', '&amp;forall;'],
+			['&infin;', '&amp;infin;'],
+			['&alefsym;', '&amp;alefsym;'],
+			['&real;', '&amp;real;'],
+			['&image;', '&amp;image;'],
+			['&fnof;', '&amp;fnof;'],
+			['&int;', '&amp;int;'],
+			['&part;', '&amp;part;'],
+			['&Alpha;', '&amp;Alpha;'],
+			['&alpha;', '&amp;alpha;'],
+			['&Beta;', '&amp;Beta;'],
+			['&beta;', '&amp;beta;'],
+			['&Gamma;', '&amp;Gamma;'],
+			['&gamma;', '&amp;gamma;'],
+			['&Delta;', '&amp;Delta;'],
+			['&delta;', '&amp;delta;'],
+			['&Epsilon;', '&amp;Epsilon;'],
+			['&epsilon;', '&amp;epsilon;'],
+			['&Zeta;', '&amp;Zeta;'],
+			['&zeta;', '&amp;zeta;'],
+			['&Eta;', '&amp;Eta;'],
+			['&eta;', '&amp;eta;'],
+			['&Theta;', '&amp;Theta;'],
+			['&theta;', '&amp;theta;'],
+			['&thetasym;', '&amp;thetasym;'],
+			['&Iota;', '&amp;Iota;'],
+			['&iota;', '&amp;iota;'],
+			['&Kappa;', '&amp;Kappa;'],
+			['&kappa;', '&amp;kappa;'],
+			['&Lambda;', '&amp;Lambda;'],
+			['&lambda;', '&amp;lambda;'],
+			['&Mu;', '&amp;Mu;'],
+			['&mu;', '&amp;mu;'],
+			['&Nu;', '&amp;Nu;'],
+			['&nu;', '&amp;nu;'],
+			['&Xi;', '&amp;Xi;'],
+			['&xi;', '&amp;xi;'],
+			['&Omicron;', '&amp;Omicron;'],
+			['&omicron;', '&amp;omicron;'],
+			['&Pi;', '&amp;Pi;'],
+			['&pi;', '&amp;pi;'],
+			['&piv;', '&amp;piv;'],
+			['&Rho;', '&amp;Rho;'],
+			['&rho;', '&amp;rho;'],
+			['&Sigma;', '&amp;Sigma;'],
+			['&sigma;', '&amp;sigma;'],
+			['&sigmaf;', '&amp;sigmaf;'],
+			['&Tau;', '&amp;Tau;'],
+			['&tau;', '&amp;tau;'],
+			['&Upsilon;', '&amp;Upsilon;'],
+			['&upsih;', '&amp;upsih;'],
+			['&upsilon;', '&amp;upsilon;'],
+			['&Phi;', '&amp;Phi;'],
+			['&phi;', '&amp;phi;'],
+			['&Chi;', '&amp;Chi;'],
+			['&chi;', '&amp;chi;'],
+			['&Psi;', '&amp;Psi;'],
+			['&psi;', '&amp;psi;'],
+			['&Omega;', '&amp;Omega;'],
+			['&omega;', '&amp;omega;'],
+			['&nbsp;', '&amp;nbsp;']
+		],
+		graphical: [
+			['&crarr;', '&amp;crarr;'],
+			['&uarr;', '&amp;uarr;'],
+			['&darr;', '&amp;darr;'],
+			['&larr;', '&amp;larr;'],
+			['&rarr;', '&amp;rarr;'],
+			['&harr;', '&amp;harr;'],
+			['&uArr;', '&amp;uArr;'],
+			['&dArr;', '&amp;dArr;'],
+			['&lArr;', '&amp;lArr;'],
+			['&rArr;', '&amp;rArr;'],
+			['&hArr;', '&amp;hArr;'],
+			['&nbsp;', '&amp;nbsp;'],
+			['&nbsp;', '&amp;nbsp;'],
+			['&nbsp;', '&amp;nbsp;'],
+			['&nbsp;', '&amp;nbsp;'],
+			['&nbsp;', '&amp;nbsp;'],
+			['&clubs;', '&amp;clubs;'],
+			['&diams;', '&amp;diams;'],
+			['&hearts;', '&amp;hearts;'],
+			['&spades;', '&amp;spades;']
+		]
+	},
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -81,36 +331,128 @@ CharacterMap = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function(editor, id) {
-		this.dialog = this.openDialog("InsertCharacter", this.makeUrlFromPopupName("select_character"), "insertCharacter", null, {width:485, height:330});
+	onButtonPress: function (editor, id) {
+			// Could be a button or its hotkey
+		var buttonId = this.translateHotKey(id);
+		buttonId = buttonId ? buttonId : id;
+		this.openDialogue(
+			buttonId,
+			'Insert special character',
+			this.getWindowDimensions({width:462, height:330}, buttonId),
+			this.buildTabItems()
+		);
 		return false;
 	},
-
 	/*
-	 * Insert the selected entity
+	 * Open the dialogue window
 	 *
-	 * @param	object		entity: the chosen entity
-	 *
-	 * @return	boolean		false
-	 */
-	insertCharacter : function(entity) {
-		if (typeof(entity) != "undefined") {
-			this.editor.insertHTML(entity);
-			this.dialog.focus();
-		}
-		return false;
-	},
-
-	/*
-	 * This function gets called when the toolbar is updated
+	 * @param	string		buttonId: the button id
+	 * @param	string		title: the window title
+	 * @param	integer		dimensions: the opening width of the window
+	 * @param	object		tabItems: the configuration of the tabbed panel
+	 * @param	function	handler: handler when the OK button if clicked
 	 *
 	 * @return	void
 	 */
-	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-			// Reclaim focus
-		if (this.dialog) {
-			this.dialog.focus();
+	openDialogue: function (buttonId, title, dimensions, tabItems, handler) {
+		this.dialog = new Ext.Window({
+			title: this.localize(title),
+			cls: 'htmlarea-window',
+			border: false,
+			width: dimensions.width,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
+			iconCls: buttonId,
+			listeners: {
+				close: {
+					fn: this.onClose,
+					scope: this
+				}
+			},
+			items: {
+				xtype: 'tabpanel',
+				activeTab: 0,
+				listeners: {
+					activate: {
+						fn: this.resetFocus,
+						scope: this
+					},
+					tabchange: {
+						fn: this.syncHeight,
+						scope: this
+					}
+				},
+				items: tabItems
+			},
+			buttons: [
+				this.buildButtonConfig('Cancel', this.onCancel)
+			]
+		});
+		this.show();
+	},
+	/*
+	 * Build the configuration of the the tab items
+	 *
+	 * @return	array	the configuration array of tab items
+	 */
+	buildTabItems: function () {
+		var tabItems = [];
+		Ext.iterate(this.maps, function (id, map) {
+			tabItems.push({
+				xtype: 'box',
+				cls: 'character-map',
+				title: this.localize(id),
+				itemId: id,
+				tpl: new Ext.XTemplate(
+					'<tpl for="."><a href="#" title="{1}" class="character" hidefocus="on" ext:qtitle"{1}">{0}</a></tpl>'
+				),
+				listeners: {
+					render: {
+						fn: this.renderMap,
+						scope: this
+					}
+				}
+			});
+		}, this);
+		return tabItems;
+	},
+	/*
+	 * Render an array of characters
+	 *
+	 * @param	object		component: the box containing the characters
+	 *
+	 * @return	void
+	 */
+	renderMap: function (component) {
+		component.tpl.overwrite(component.el, this.maps[component.itemId]);
+		component.mon(component.el, 'click', this.insertCharacter, this, {delegate: 'a'});
+	},
+	/*
+	 * Insert the selected entity
+	 *
+	 * @param	object		event: the Ext event
+	 * @param	HTMLelement	target: the html element target
+	 *
+	 * @return	void
+	 */
+	insertCharacter: function (event, target) {
+		this.editor.focus();
+		this.restoreSelection();
+		var entity = Ext.get(target).dom.innerHTML;
+		if (Ext.isIE) {
+			this.editor.insertHTML(entity);
+			this.saveSelection();
+		} else {
+			this.editor.insertNodeAtSelection(this.editor.document.createTextNode(entity));
 		}
+	},
+	/*
+	 * Reset focus on the the current selection, if at all possible
+	 *
+	 */
+	resetFocus: function () {
+		this.editor.focus();
+		this.restoreSelection();
 	}
 });
-

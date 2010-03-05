@@ -9,6 +9,9 @@
 			<label index="CharacterMapTooltip">Insert special character</label>
 			<label index="InsertCharacter-Tooltip">Insert special character</label>
 			<label index="Insert special character">Insert special character</label>
+			<label index="general">General</label>
+			<label index="mathematical">Mathematical</label>
+			<label index="graphical">Shapes and arrows</label>
 			<label index="HTML value:">HTML value:</label>
 			<label index="Close">Close</label>
 		</languageKey>
