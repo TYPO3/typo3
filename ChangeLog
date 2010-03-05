@@ -1,3 +1,7 @@
+2010-03-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to #13668: htmlArea RTE: Cleanup some unused code (statusbar)
+
 2010-03-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13748: htmlArea RTE: Extjize character map
