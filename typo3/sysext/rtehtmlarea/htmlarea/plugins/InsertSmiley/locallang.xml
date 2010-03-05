@@ -9,6 +9,22 @@
 			<label index="Insert Smiley">Insert Smiley</label>
 			<label index="Smiley">Smiley</label>
 			<label index="Cancel">Cancel</label>
+			<label index="mozilla_smile">Smile</label>
+			<label index="mozilla_frown">Frown</label>
+			<label index="mozilla_wink">Wink</label>
+			<label index="mozilla_tongueout">Tongue out</label>
+			<label index="mozilla_laughing">Laughing</label>
+			<label index="mozilla_embarassed">Embarassed</label>
+			<label index="mozilla_undecided">Undecided</label>
+			<label index="mozilla_surprised">Surprise</label>
+			<label index="mozilla_kiss">Kiss</label>
+			<label index="mozilla_yell">Yell</label>
+			<label index="mozilla_cool">Cool</label>
+			<label index="mozilla_moneyinmouth">Money Mouth</label>
+			<label index="mozilla_footinmouth">Foot in mouth</label>
+			<label index="mozilla_innocent">Innocent</label>
+			<label index="mozilla_cry">Cry</label>
+			<label index="mozilla_sealed">Lips are sealed</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

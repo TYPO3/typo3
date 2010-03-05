@@ -1,6 +1,7 @@
 2010-03-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13748: htmlArea RTE: Extjize character map
+	* Fixed bug #9056: htmlArea RTE: Accessibility problem with smileys
 
 2010-03-04  Ernesto Baschny  <ernst@cron-it.de>
 

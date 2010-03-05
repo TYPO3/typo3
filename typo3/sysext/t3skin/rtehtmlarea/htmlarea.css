@@ -461,7 +461,6 @@
 /* Selectors for the InsertSmiley plugin */
 .htmlarea-window .emoticon-array {
 	padding: 10px;
-	width: 150px;
 }
 .htmlarea-window .emoticon {
 	display: block;

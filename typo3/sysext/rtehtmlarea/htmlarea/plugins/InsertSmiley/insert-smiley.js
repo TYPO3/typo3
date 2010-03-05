@@ -46,27 +46,46 @@ InsertSmiley = HTMLArea.Plugin.extend({
 		if (this.editor_url == '../') {
 			this.editor_url = document.URL.replace(/^(.*\/).*\/.*$/g, "$1");
 		}
+			// Default set of imoticons from Mozilla Thunderbird
+		this.icons = [
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_smile' + '.png', alt: ':-)', title: this.localize('mozilla_smile')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_frown' + '.png', alt: ':-(', title: this.localize('mozilla_frown')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_wink' + '.png', alt: ';-)', title: this.localize('mozilla_wink')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_tongueout' + '.png', alt: ':-P', title: this.localize('mozilla_tongueout')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_laughing' + '.png', alt: ':-D', title: this.localize('mozilla_laughing')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_embarassed' + '.png', alt: ':-[', title: this.localize('mozilla_embarassed')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_undecided' + '.png', alt: ':-\\', title: this.localize('mozilla_undecided')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_surprised' + '.png', alt: '=-O', title: this.localize('mozilla_surprised')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_kiss' + '.png', alt: ':-*', title: this.localize('mozilla_kiss')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_yell' + '.png', alt: '>:o', title: this.localize('mozilla_yell')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_cool' + '.png', alt: '8-)', title: this.localize('mozilla_cool')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_moneyinmouth' + '.png', alt: ':-$', title: this.localize('mozilla_moneyinmouth')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_footinmouth' + '.png', alt: ':-!', title: this.localize('mozilla_footinmouth')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_innocent' + '.png', alt: 'O:-)', title: this.localize('mozilla_innocent')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_cry' + '.png', alt: ':\'(', title: this.localize('mozilla_cry')},
+			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_sealed' + '.png', alt: ':-X', title: this.localize('mozilla_sealed')}
+		 ];
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "2.0",
-			developer	: "Ki Master George & Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Ki Master George & Stanislas Rolland",
-			sponsor		: "Ki Master George & SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Ki Master George & Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Ki Master George & Stanislas Rolland',
+			sponsor		: 'Ki Master George & SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*
 		 * Registering the button
 		 */
-		var buttonId = "InsertSmiley";
+		var buttonId = 'InsertSmiley';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize("Insert Smiley"),
-			action		: "onButtonPress",
+			tooltip		: this.localize('Insert Smiley'),
+			action		: 'onButtonPress',
 			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			dialog		: true
 		};
@@ -85,13 +104,15 @@ InsertSmiley = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		var dimensions = this.getWindowDimensions({width:175, height:230}, buttonId);
+		var dimensions = this.getWindowDimensions({width:216, height:230}, buttonId);
 		this.dialog = new Ext.Window({
 			title: this.localize('Insert Smiley'),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
 			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
 			iconCls: buttonId,
 			listeners: {
 				close: {
@@ -103,7 +124,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 				xtype: 'box',
 				cls: 'emoticon-array',
 				tpl: new Ext.XTemplate(
-					'<tpl for="."><a href="#" class="emoticon" hidefocus="on"><img alt="" title="" src="{.}" /></a></tpl>'
+					'<tpl for="."><a href="#" class="emoticon" hidefocus="on"><img alt="{alt}" title="{title}" src="{file}" /></a></tpl>'
 				),
 				listeners: {
 					render: {
@@ -124,19 +145,6 @@ InsertSmiley = HTMLArea.Plugin.extend({
 	 * @return	void
 	 */
 	render: function (component) {
-		this.icons = [];
-		var numberOfIcons = 20, inum;
-		for (var i = 1; i <= numberOfIcons; i++) {
-			inum = i;
-			if (i < 10) {
-				inum = '000' + i;
-			} else if (i < 100) {
-				inum = '00' + i;
-			} else if (i < 1000) {
-				inum = '0' + i;
-			}
-			this.icons.push(this.editor_url + 'plugins/InsertSmiley/smileys/' + inum + '.gif');
-		}
 		component.tpl.overwrite(component.el, this.icons);
 		component.mon(component.el, 'click', this.insertImageTag, this, {delegate: 'a'});
 	},
@@ -151,7 +159,15 @@ InsertSmiley = HTMLArea.Plugin.extend({
 	insertImageTag: function (event, target) {
 		this.editor.focus();
 		this.restoreSelection();
-		this.editor.insertHTML('<img src="' + Ext.get(target).first().getAttribute('src') + '" alt="" />');
+		var icon = Ext.get(target).first();
+		var imgTag = this.editor.document.createElement('img');
+		imgTag.setAttribute('src', icon.getAttribute('src'));
+		imgTag.setAttribute('alt', icon.getAttribute('alt'));
+		imgTag.setAttribute('title', icon.getAttribute('title'));
+		this.editor.insertNodeAtSelection(imgTag);
+		if (!Ext.isIE) {
+			this.editor.selectNode(imgTag, false);
+		}
 		this.close();
 	}
 });
