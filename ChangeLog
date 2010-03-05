@@ -1,3 +1,7 @@
+2010-03-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13057: htmlArea RTE sometimes deletes contents
+
 2010-03-04  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13554: Web>View on mount pages via backend (thanks to Georg Ringer)

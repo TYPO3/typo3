@@ -57,6 +57,7 @@ HTMLArea = function(textarea, config) {
 		this._customUndo = true;
 		this.doctype = '';
 		this.eventHandlers = {};
+		this.ready = false;
 	}
 };
 
@@ -1187,6 +1188,7 @@ HTMLArea.generatePlugins = function(editorNumber) {
 		}
 	}
 	editor.updateToolbar();
+	editor.ready = true;
 };
 
 /*
@@ -1220,7 +1222,9 @@ HTMLArea.removeEditorEvents = function(ev) {
 			if (editor) {
 				RTEarea[editorNumber].editor = null;
 					// save the HTML content into the original textarea for submit, back/forward, etc.
-				editor._textArea.value = editor.getHTML();
+				if (editor.ready) {
+					editor._textArea.value = editor.getHTML();
+				}
 					// release undo/redo snapshots
 				window.clearInterval(editor._timerUndo);
 				editor._undoQueue = null;
