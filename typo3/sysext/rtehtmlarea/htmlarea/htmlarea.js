@@ -56,6 +56,7 @@ HTMLArea = function(textarea, config) {
 		this._timerToolbar = null;
 		this.doctype = '';
 		this.eventHandlers = {};
+		this.ready = false;
 	}
 };
 
@@ -1174,6 +1175,7 @@ HTMLArea.generatePlugins = function(editorNumber) {
 		}
 	}
 	editor.updateToolbar();
+	editor.ready = true;
 };
 
 /*
@@ -1207,7 +1209,9 @@ HTMLArea.removeEditorEvents = function(ev) {
 			if (editor) {
 				RTEarea[editorNumber].editor = null;
 					// save the HTML content into the original textarea for submit, back/forward, etc.
-				editor._textArea.value = editor.getPluginInstance("EditorMode").getHTML();
+				if (editor.ready) {
+					editor._textArea.value = editor.getPluginInstance("EditorMode").getHTML();
+				}
 					// do final cleanup
 				HTMLArea.cleanup(editor);
 			}

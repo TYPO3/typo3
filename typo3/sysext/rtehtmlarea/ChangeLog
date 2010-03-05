@@ -1,3 +1,7 @@
+2010-03-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13057: htmlArea RTE sometimes deletes contents
+
 2010-02-23  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13479: Jump to end of text when inserting paragraph
