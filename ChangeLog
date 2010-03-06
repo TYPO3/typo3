@@ -1,3 +1,7 @@
+2010-03-06  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #1104: Setting file fields in TCA to "required" makes it impossible to save the record (thanks to Ingmar Schlecht & Tobias Liebig)
+
 2010-03-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13057: htmlArea RTE sometimes deletes contents
