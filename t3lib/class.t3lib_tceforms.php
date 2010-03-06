@@ -2080,7 +2080,9 @@ class t3lib_TCEforms	{
 
 				if(!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
 						// Adding the upload field:
-					if ($this->edit_docModuleUpload)	$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" />';
+					if ($this->edit_docModuleUpload) {
+						$item.='<input type="file" name="'.$PA['itemFormElName_file'].'"'.$this->formWidth().' size="60" onchange="' . implode('', $PA['fieldChangeFunc']) . '" />';
+					}
 				}
 			break;
 			case 'folder':	// If the element is of the internal type "folder":

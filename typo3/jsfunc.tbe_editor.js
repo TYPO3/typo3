@@ -213,8 +213,18 @@ var TBE_EDITOR = {
 					if (tempObj && Element.hasClassName(tempObj, 'inlineRecord')) {
 						form = tempObj.value ? tempObj.value.split(',') : [];
 					}
+
+				} else {
+						// special treatment for file uploads
+					var tempObj = document[TBE_EDITOR.formname][elementName.replace(/^data/, 'data_files')];
+					var numberOfElements = form.length;
+
+					if (tempObj && tempObj.type == 'file' && tempObj.value) {
+						numberOfElements++; // Add new uploaded file to the number of elements
+					}
 				}
-				if (!TBE_EDITOR.checkRange(form, elementData.range[0], elementData.range[1])) {
+
+				if (!TBE_EDITOR.checkRange(numberOfElements, elementData.range[0], elementData.range[1])) {
 					result = 0;
 					if (autoNotify) {
 						TBE_EDITOR.setImage('req_'+elementData.rangeImg, TBE_EDITOR.images.req);
@@ -432,8 +442,13 @@ var TBE_EDITOR = {
 			return false;
 		}
 	},
-	checkRange: function(el,lower,upper) {
-		if (el && el.length>=lower && el.length<=upper) {
+	checkRange: function(numberOfElements, lower, upper) {
+			// for backwards compatibility, check if we're dealing with an element as first parameter
+		if(typeof numberOfElements == 'object') {
+			numberOfElements = numberOfElements.length;
+		}
+
+		if (numberOfElements >= lower && numberOfElements <= upper) {
 			return true;
 		} else {
 			return false;
