@@ -1,3 +1,7 @@
+2010-03-07  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13738: Unit test failure: t3lib_PageRenderer_testcase::testAddCssFile (Thanks to Susanne Moog)
+
 2010-03-07  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #13669: Performance: Inefficient fetch of templates from table sys_template (Thanks to Alexander Weggerle)

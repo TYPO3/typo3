@@ -343,7 +343,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddCssFile() {
 
-		$expectedReturnValue = '<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="screen" />';
+		$expectedReturnValue = '<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="all" />';
 		$this->fixture->addCssFile('fileadmin/test.css');
 		$out = $this->fixture->render();
 
