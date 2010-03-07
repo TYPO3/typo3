@@ -1,6 +1,6 @@
 /*!
- * Ext JS Library 3.1.0
- * Copyright(c) 2006-2009 Ext JS, LLC
+ * Ext JS Library 3.1.1
+ * Copyright(c) 2006-2010 Ext JS, LLC
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
@@ -19,7 +19,7 @@ Ext = {
      * The version of the framework
      * @type String
      */
-    version : '3.1.0'
+    version : '3.1.1'
 };
 
 /**
@@ -53,7 +53,7 @@ Ext.apply = function(o, c, defaults){
         DOC = document,
         isStrict = DOC.compatMode == "CSS1Compat",
         isOpera = check(/opera/),
-        isChrome = check(/chrome/),
+        isChrome = check(/\bchrome\b/),
         isWebKit = check(/webkit/),
         isSafari = !isChrome && check(/safari/),
         isSafari2 = isSafari && check(/applewebkit\/4/), // unique to Safari 2
@@ -161,7 +161,11 @@ Ext.apply = function(o, c, defaults){
          * @return {String} The generated Id.
          */
         id : function(el, prefix){
-            return (el = Ext.getDom(el) || {}).id = el.id || (prefix || "ext-gen") + (++idSeed);
+            el = Ext.getDom(el, true) || {};
+            if (!el.id) {
+                el.id = (prefix || "ext-gen") + (++idSeed);
+            }
+            return el.id;
         },
 
         /**
@@ -404,7 +408,7 @@ Ext.urlDecode("foo=1&bar=2&bar=3&bar=4", false); // returns {foo: "1", bar: ["2"
             }
             //NodeList has an item and length property
             //IXMLDOMNodeList has nextNode method, needs to be checked first.
-            return ((v.nextNode || v.item) && Ext.isNumber(v.length));
+            return ((typeof v.nextNode != 'undefined' || v.item) && Ext.isNumber(v.length));
         },
 
         /**
@@ -484,6 +488,8 @@ Ext.urlDecode("foo=1&bar=2&bar=3&bar=4", false); // returns {foo: "1", bar: ["2"
 
         /**
          * Return the dom node for the passed String (id), dom node, or Ext.Element.
+         * Optional 'strict' flag is needed for IE since it can return 'name' and
+         * 'id' elements by using getElementById.
          * Here are some examples:
          * <pre><code>
 // gets dom node based on id
@@ -503,11 +509,29 @@ function(el){
          * @param {Mixed} el
          * @return HTMLElement
          */
-        getDom : function(el){
+        getDom : function(el, strict){
             if(!el || !DOC){
                 return null;
             }
-            return el.dom ? el.dom : (Ext.isString(el) ? DOC.getElementById(el) : el);
+            if (el.dom){
+                return el.dom;
+            } else {
+                if (Ext.isString(el)) {
+                    var e = DOC.getElementById(el);
+                    // IE returns elements with the 'name' and 'id' attribute.
+                    // we do a strict check to return the element with only the id attribute
+                    if (e && isIE && strict) {
+                        if (el == e.getAttribute('id')) {
+                            return e;
+                        } else {
+                            return null;
+                        }
+                    }
+                    return e;
+                } else {
+                    return el;
+                }
+            }
         },
 
         /**
@@ -1050,7 +1074,7 @@ Ext.apply(Ext, function(){
          * @return {Number} Value, if numeric, else defaultValue
          */
         num : function(v, defaultValue){
-            v = Number(Ext.isEmpty(v) || Ext.isBoolean(v) ? NaN : v);
+            v = Number(Ext.isEmpty(v) || Ext.isArray(v) || Ext.isBoolean(v) || (Ext.isString(v) && v.trim().length == 0) ? NaN : v);
             return isNaN(v) ? defaultValue : v;
         },
 
@@ -1324,7 +1348,7 @@ ImageComponent = Ext.extend(Ext.BoxComponent, {
          * @return {Number} The mean.
          */
         mean : function(arr){
-           return Ext.sum(arr) / arr.length;
+           return arr.length > 0 ? Ext.sum(arr) / arr.length : undefined;
         },
 
         /**
@@ -1852,12 +1876,12 @@ var libFlyweight,
     mouseEnterSupported = (parseInt(version[0]) >= 2) || (parseInt(version[1]) >= 7) || (parseInt(version[2]) >= 1),
     mouseCache = {},
     elContains = function(parent, child) {
-       if(parent && parent.firstChild){  
+       if(parent && parent.firstChild){
          while(child) {
             if(child === parent) {
                 return true;
             }
-            child = child.parentNode;               
+            child = child.parentNode;
             if(child && (child.nodeType != 1)) {
                 child = null;
             }
@@ -1866,7 +1890,7 @@ var libFlyweight,
         return false;
     },
     checkRelatedTarget = function(e) {
-        return !elContains(e.currentTarget, pub.getRelatedTarget(e));
+        return !elContains(e.currentTarget, Ext.lib.Event.getRelatedTarget(e));
     };
 
 Ext.lib.Dom = {
@@ -1915,7 +1939,7 @@ Ext.lib.Dom = {
 
     isAncestor : function(p, c){ // missing from prototype?
         var ret = false;
-            
+
         p = Ext.getDom(p);
         c = Ext.getDom(c);
         if (p && c) {
@@ -1925,10 +1949,10 @@ Ext.lib.Dom = {
                 return !!(p.compareDocumentPosition(c) & 16);
             } else {
                 while (c = c.parentNode) {
-                    ret = c == p || ret;                        
+                    ret = c == p || ret;
                 }
-            }               
-        }   
+            }
+        }
         return ret;
     },
 
@@ -2091,7 +2115,7 @@ Ext.lib.Event = {
 
     un : function(el, eventName, fn){
         if((eventName == 'mouseenter' || eventName == 'mouseleave') && !mouseEnterSupported){
-            var item = mouseCache[el.id], 
+            var item = mouseCache[el.id],
                 ev = item && item[eventName];
 
             if(ev){
@@ -2158,12 +2182,12 @@ Ext.lib.Ajax = function(){
     };
     var createResponse = function(cb, xhr){
         var headerObj = {},
-            headerStr,              
+            headerStr,
             t,
             s;
 
         try {
-            headerStr = xhr.getAllResponseHeaders();   
+            headerStr = xhr.getAllResponseHeaders();
             Ext.each(headerStr.replace(/\r\n/g, '\n').split('\n'), function(v){
                 t = v.indexOf(':');
                 if(t >= 0){
@@ -2175,7 +2199,7 @@ Ext.lib.Ajax = function(){
                 }
             });
         } catch(e) {}
-        
+
         return {
             responseText: xhr.responseText,
             responseXML : xhr.responseXML,
@@ -2237,7 +2261,7 @@ Ext.lib.Ajax = function(){
         abort : function(trans){
             return false;
         },
-        
+
         serializeForm : function(form){
             return Form.serialize(form.dom||form);
         }
@@ -2246,7 +2270,7 @@ Ext.lib.Ajax = function(){
 
 
 Ext.lib.Anim = function(){
-    
+
     var easings = {
         easeOut: function(pos) {
             return 1-Math.pow(1-pos,2);
@@ -2344,7 +2368,7 @@ function fly(el){
     libFlyweight.dom = el;
     return libFlyweight;
 }
-    
+
 Ext.lib.Region = function(t, r, b, l) {
     this.top = t;
     this[1] = t;

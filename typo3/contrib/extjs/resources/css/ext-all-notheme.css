@@ -1,6 +1,6 @@
 /*!
- * Ext JS Library 3.0.0
- * Copyright(c) 2006-2009 Ext JS, LLC
+ * Ext JS Library 3.1.1
+ * Copyright(c) 2006-2010 Ext JS, LLC
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
@@ -97,6 +97,7 @@ html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,bloc
     zoom: 1;
     background-color: transparent;
     -moz-outline: none;
+    outline: none;
 }
 
 .x-item-disabled {
@@ -637,9 +638,20 @@ ul.x-tab-strip li.x-tab-edge {
 /*
  * Horrible hack for IE8 in quirks mode
  */
-.ext-border-box .ext-ie8 .x-tab-strip .x-tab-right{
+.ext-ie8 ul.x-tab-strip li {
+    position: relative;
+}
+.ext-ie8 .x-tab-strip .x-tab-right{
+    margin-bottom: 0 !important;
     top: 1px;
 }
+.ext-ie8 ul.x-tab-strip-top {
+    padding-top: 0;
+}
+.ext-ie8 .x-tab-strip .x-tab-strip-closable a.x-tab-strip-close {
+    top:4px;
+}
+
 
 .x-tab-strip-top .x-tab-strip-active .x-tab-right span.x-tab-strip-text {
     padding-bottom:5px;
@@ -700,14 +712,15 @@ ul.x-tab-strip li.x-tab-edge {
 }
 
 .x-tab-strip-bottom .x-tab-strip-active .x-tab-right {
-	background: no-repeat bottom left;
-}
-
-.x-tab-strip-bottom .x-tab-strip-active .x-tab-left {
 	background: no-repeat bottom right;
 }
 
+.x-tab-strip-bottom .x-tab-strip-active .x-tab-left {
+	background: no-repeat bottom left;
+}
+
 .x-tab-strip-bottom .x-tab-left {
+    margin-right: 3px;
     padding:0 10px;
 }
 
@@ -904,11 +917,16 @@ textarea {
 /* 2.0.2 style */
 .x-form-check-wrap {
     line-height:18px;
+    height: 22px;
 }
 
 .ext-ie .x-form-check-wrap input {
     width:15px;
     height:15px;
+}
+
+.x-form-check-wrap input{
+    vertical-align: bottom;
 }
 
 .x-editor .x-form-check-wrap {
@@ -942,7 +960,7 @@ textarea {
     cursor:pointer;
 }
 
-.ext-safari .x-form-field-wrap .x-form-trigger{
+.ext-webkit .x-form-field-wrap .x-form-trigger{
     right:0;
 }
 
@@ -1008,7 +1026,7 @@ textarea {
 	border: 1px solid;
 }
 
-.ext-safari .x-form-invalid{
+.ext-webkit .x-form-invalid{
 	border: 1px solid;
 }
 
@@ -1021,23 +1039,6 @@ textarea {
     visibility:hidden;
     padding:0;
     margin:0;
-}
-.x-form-check-wrap {
-    height: 22px;
-    line-height:18px;
-}
-
-.ext-ie .x-form-check-wrap input {
-    width:15px;
-    height:15px;
-}
-
-.x-editor .x-form-check-wrap {
-    padding:3px;
-}
-
-.x-editor .x-form-checkbox {
-    height:13px;
 }
 
 .x-form-grow-sizer {
@@ -1068,7 +1069,7 @@ textarea {
     zoom:1;
 }
 
-.x-form-item label {
+.x-form-item label.x-form-item-label {
     display:block;
     float:left;
     width:100px;
@@ -1092,15 +1093,15 @@ textarea {
     width:200px;
 }
 
-.x-form-label-left label {
+.x-form-label-left label.x-form-item-label {
    text-align:left;
 }
 
-.x-form-label-right label {
+.x-form-label-right label.x-form-item-label {
    text-align:right;
 }
 
-.x-form-label-top .x-form-item label {
+.x-form-label-top .x-form-item label.x-form-item-label {
     width:auto;
     float:none;
     clear:none;
@@ -1176,30 +1177,38 @@ textarea {
     font-size:0;
 }
 
+.ext-ie6 .x-form-check-wrap input, .ext-border-box .x-form-check-wrap input{
+   margin-top: 3px; 
+}
+
 .x-form-cb-label {
-    width:auto !important;
-    float:none !important;
-    clear:none !important;
-    display:inline !important;
-    margin-left:4px;
-    top: -2px;
-}
-
-.ext-gecko2 .x-form-cb-label{
-    top: -1px;
-}
-
-.ext-ie8 .x-form-cb-label{
-    position: static;
-}
-
-.ext-strict .ext-ie8 .x-form-cb-label {
-    top: -3px;
     position: relative;
+    margin-left:4px;
+    top: 2px;
 }
 
-.ext-opera .x-form-cb-label, .ext-safari3 .x-form-cb-label, .ext-ie7 .x-form-cb-label, .ext-ie6 .x-form-cb-label {
-    top: 0;
+.ext-ie .x-form-cb-label{
+    top: 1px;
+}
+
+.ext-ie6 .x-form-cb-label, .ext-border-box .x-form-cb-label{
+    top: 3px;
+}
+
+.x-form-display-field{
+    padding-top: 2px;
+}
+
+.ext-gecko .x-form-display-field, .ext-strict .ext-ie7 .x-form-display-field{
+    padding-top: 1px;
+}
+
+.ext-ie .x-form-display-field{
+    padding-top: 3px;
+}
+
+.ext-strict .ext-ie8 .x-form-display-field{
+    padding-top: 0;
 }
 
 .x-form-column {
@@ -1347,7 +1356,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
     margin-left:-3px;
 }
 
-/* IE legend positioing bug */
+/* IE legend positioning bug */
 .ext-ie .x-fieldset-noborder legend {
     position: relative;
     margin-bottom:23px;
@@ -1359,11 +1368,13 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
         
 .ext-gecko .x-window-body .x-form-item {
     -moz-outline: none;
+    outline: none;
     overflow: auto;
 }
 
 .ext-gecko .x-form-item {
     -moz-outline: none;
+    outline: none;
 }
 
 .x-hide-label label.x-form-item-label {
@@ -1372,6 +1383,10 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 
 .x-hide-label .x-form-element {
      padding-left: 0 !important;
+}
+
+.x-form-label-top .x-hide-label label.x-form-item-label{
+    display: none;
 }
 
 .x-fieldset {
@@ -1596,6 +1611,11 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 	padding:0 5px;
 	cursor:pointer;
 	white-space:nowrap;
+}
+
+/* Fixes an issue with the button height */
+.ext-strict .ext-ie6 .x-btn-mc, .ext-strict .ext-ie7 .x-btn-mc {
+    height: 100%;
 }
 
 .x-btn-bl{
@@ -1834,6 +1854,10 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
     overflow:hidden;
 }
 
+.x-toolbar-left {
+    width: 100%;
+}
+
 .x-toolbar .x-item-disabled .x-btn-icon {
     opacity: .35;
     -moz-opacity: .35;
@@ -1863,7 +1887,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
     vertical-align:middle;
 }
 
-.x-toolbar .x-btn-tl, .x-toolbar .x-btn-tr, .x-toolbar .x-btn-tc, .x-toolbar .x-btn-ml, .x-toolbar .x-btn-mr, 
+.x-toolbar .x-btn-tl, .x-toolbar .x-btn-tr, .x-toolbar .x-btn-tc, .x-toolbar .x-btn-ml, .x-toolbar .x-btn-mr,
 .x-toolbar .x-btn-mc, .x-toolbar .x-btn-bl, .x-toolbar .x-btn-br, .x-toolbar .x-btn-bc
 {
 	background-position: 500px 500px;
@@ -2042,290 +2066,22 @@ div.x-toolbar-no-items {
 }
 
 .x-toolbar-cell .x-form-checkbox, .x-toolbar-cell .x-form-radio{
-    vertical-align: top;
     margin-top: 5px;
+}
+
+.x-toolbar-cell .x-form-cb-label{
+    vertical-align: bottom;
+    top: 1px;
 }
 
 .ext-ie .x-toolbar-cell .x-form-checkbox, .ext-ie .x-toolbar-cell .x-form-radio{
     margin-top: 4px;
 }
 
-.x-toolbar-cell .x-form-check-wrap label{
-    vertical-align: bottom;
+.ext-ie .x-toolbar-cell .x-form-cb-label{
+    top: 0;
 }
-
-/* StatusBar */
-.x-statusbar .x-status-text {
-    height: 21px;
-    line-height: 21px;
-    padding: 0 4px;
-    cursor: default;
-}
-
-.x-statusbar .x-status-busy {
-    padding-left: 25px;
-    background: transparent no-repeat 3px 3px;
-}
-
-.x-statusbar .x-status-text-panel {
-    border-top: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-left: 1px solid;
-    padding: 2px 8px 2px 5px;
-}.x-toolbar{
-    border-style:solid;
-    border-width:0 0 1px 0;
-    display: block;
-	padding:2px;
-    background:repeat-x top left;
-    position:relative;
-    left:0;
-    top:0;
-    zoom:1;
-    overflow:hidden;
-}
-
-.x-toolbar .x-item-disabled .x-btn-icon {
-    opacity: .35;
-    -moz-opacity: .35;
-    filter: alpha(opacity=35);
-}
-
-.x-toolbar td {
-	vertical-align:middle;
-}
-
-.x-toolbar td,.x-toolbar span,.x-toolbar input,.x-toolbar div,.x-toolbar select,.x-toolbar label{
-	white-space: nowrap;
-}
-
-.x-toolbar .x-item-disabled {
-	cursor:default;
-	opacity:.6;
-	-moz-opacity:.6;
-	filter:alpha(opacity=60);
-}
-
-.x-toolbar .x-item-disabled * {
-	cursor:default;
-}
-
-.x-toolbar .x-toolbar-cell {
-    vertical-align:middle;
-}
-
-.x-toolbar .x-btn-tl, .x-toolbar .x-btn-tr, .x-toolbar .x-btn-tc, .x-toolbar .x-btn-ml, .x-toolbar .x-btn-mr, 
-.x-toolbar .x-btn-mc, .x-toolbar .x-btn-bl, .x-toolbar .x-btn-br, .x-toolbar .x-btn-bc
-{
-	background-position: 500px 500px;
-}
-
-/* These rules are duplicated from button.css to give priority of x-toolbar rules above */
-.x-toolbar .x-btn-over .x-btn-tl{
-	background-position: -6px 0;
-}
-
-.x-toolbar .x-btn-over .x-btn-tr{
-	background-position: -9px 0;
-}
-
-.x-toolbar .x-btn-over .x-btn-tc{
-	background-position: 0 -9px;
-}
-
-.x-toolbar .x-btn-over .x-btn-ml{
-	background-position: -6px -24px;
-}
-
-.x-toolbar .x-btn-over .x-btn-mr{
-	background-position: -9px -24px;
-}
-
-.x-toolbar .x-btn-over .x-btn-mc{
-	background-position: 0 -2168px;
-}
-
-.x-toolbar .x-btn-over .x-btn-bl{
-	background-position: -6px -3px;
-}
-
-.x-toolbar .x-btn-over .x-btn-br{
-	background-position: -9px -3px;
-}
-
-.x-toolbar .x-btn-over .x-btn-bc{
-	background-position: 0 -18px;
-}
-
-.x-toolbar .x-btn-click .x-btn-tl, .x-toolbar .x-btn-menu-active .x-btn-tl, .x-toolbar .x-btn-pressed .x-btn-tl{
-	background-position: -12px 0;
-}
-
-.x-toolbar .x-btn-click .x-btn-tr, .x-toolbar .x-btn-menu-active .x-btn-tr, .x-toolbar .x-btn-pressed .x-btn-tr{
-	background-position: -15px 0;
-}
-
-.x-toolbar .x-btn-click .x-btn-tc, .x-toolbar .x-btn-menu-active .x-btn-tc, .x-toolbar .x-btn-pressed .x-btn-tc{
-	background-position: 0 -12px;
-}
-
-.x-toolbar .x-btn-click .x-btn-ml, .x-toolbar .x-btn-menu-active .x-btn-ml, .x-toolbar .x-btn-pressed .x-btn-ml{
-	background-position: -12px -24px;
-}
-
-.x-toolbar .x-btn-click .x-btn-mr, .x-toolbar .x-btn-menu-active .x-btn-mr, .x-toolbar .x-btn-pressed .x-btn-mr{
-	background-position: -15px -24px;
-}
-
-.x-toolbar .x-btn-click .x-btn-mc, .x-toolbar .x-btn-menu-active .x-btn-mc, .x-toolbar .x-btn-pressed .x-btn-mc{
-	background-position: 0 -3240px;
-}
-
-.x-toolbar .x-btn-click .x-btn-bl, .x-toolbar .x-btn-menu-active .x-btn-bl, .x-toolbar .x-btn-pressed .x-btn-bl{
-	background-position: -12px -3px;
-}
-
-.x-toolbar .x-btn-click .x-btn-br, .x-toolbar .x-btn-menu-active .x-btn-br, .x-toolbar .x-btn-pressed .x-btn-br{
-	background-position: -15px -3px;
-}
-
-.x-toolbar .x-btn-click .x-btn-bc, .x-toolbar .x-btn-menu-active .x-btn-bc, .x-toolbar .x-btn-pressed .x-btn-bc{
-	background-position: 0 -21px;
-}
-
-.x-toolbar div.xtb-text{
-    padding:2px 2px 0;
-    line-height:16px;
-    display:block;
-}
-
-.x-toolbar .xtb-sep {
-	background-position: center;
-	background-repeat: no-repeat;
-	display: block;
-	font-size: 1px;
-	height: 16px;
-	width:4px;
-	overflow: hidden;
-	cursor:default;
-	margin: 0 2px 0;
-	border:0;
-}
-
-.x-toolbar .xtb-spacer {
-    width:2px;
-}
-
-/* Paging Toolbar */
-.x-tbar-page-number{
-	width:30px;
-	height:14px;
-}
-
-.ext-ie .x-tbar-page-number{
-    margin-top: 2px;
-}
-
-.x-paging-info {
-    position:absolute;
-    top:5px;
-    right: 8px;
-}
-
-/* floating */
-.x-toolbar-ct {
-    width:100%;
-}
-
-.x-toolbar-right td {
-    text-align: center;
-}
-
-.x-panel-tbar, .x-panel-bbar, .x-window-tbar, .x-window-bbar, .x-tab-panel-tbar, .x-tab-panel-bbar, .x-plain-tbar, .x-plain-bbar {
-    overflow:hidden;
-    zoom:1;
-}
-
-.x-toolbar-more .x-btn-small .x-btn-text{
-	height: 16px;
-	width: 12px;
-}
-
-.x-toolbar-more em.x-btn-arrow {
-    display:inline;
-    background:transparent;
-	padding-right:0;
-}
-
-.x-toolbar-more .x-btn-mc em.x-btn-arrow {
-    background-image: none;
-}
-
-div.x-toolbar-no-items {
-    color:gray !important;
-    padding:5px 10px !important;
-}
-
-/* fix ie toolbar form items */
-.ext-border-box .x-toolbar-cell .x-form-text {
-    margin-bottom:-1px !important;
-}
-
-.ext-border-box .x-toolbar-cell .x-form-field-wrap .x-form-text {
-    margin:0 !important;
-}
-
-.ext-ie .x-toolbar-cell .x-form-field-wrap {
-    height:21px;
-}
-
-.ext-ie .x-toolbar-cell .x-form-text {
-    position:relative;
-    top:-1px;
-}
-
-.ext-strict .ext-ie8 .x-toolbar-cell .x-form-field-trigger-wrap .x-form-text, .ext-strict .ext-ie .x-toolbar-cell .x-form-text {
-    top: 0px;
-}
-
-.x-toolbar-right td .x-form-field-trigger-wrap{
-    text-align: left;
-}
-
-.x-toolbar-cell .x-form-checkbox, .x-toolbar-cell .x-form-radio{
-    vertical-align: top;
-    margin-top: 5px;
-}
-
-.ext-ie .x-toolbar-cell .x-form-checkbox, .ext-ie .x-toolbar-cell .x-form-radio{
-    margin-top: 4px;
-}
-
-.x-toolbar-cell .x-form-check-wrap label{
-    vertical-align: bottom;
-}
-
-/* StatusBar */
-.x-statusbar .x-status-text {
-    height: 21px;
-    line-height: 21px;
-    padding: 0 4px;
-    cursor: default;
-}
-
-.x-statusbar .x-status-busy {
-    padding-left: 25px;
-    background: transparent no-repeat 3px 3px;
-}
-
-.x-statusbar .x-status-text-panel {
-    border-top: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-left: 1px solid;
-    padding: 2px 8px 2px 5px;
-}/* Grid3 styles */
+/* Grid3 styles */
 .x-grid3 {
 	position:relative;
 	overflow:hidden;
@@ -2349,6 +2105,7 @@ div.x-toolbar-no-items {
 
 .x-grid3-hd-row td, .x-grid3-row td, .x-grid3-summary-row td{
     -moz-outline: none;
+    outline: none;
 	-moz-user-focus: normal;
 }
 
@@ -2761,10 +2518,18 @@ a.x-grid3-hd-btn:hover {
 }
 
 .x-grid3-hd-checker {
+    background-position:2px 1px;
+}
+
+.ext-border-box .x-grid3-hd-checker {
     background-position:2px 3px;
 }
 
 .x-grid3-hd-checker-on .x-grid3-hd-checker {
+    background-position:-23px 1px;
+}
+
+.ext-border-box .x-grid3-hd-checker-on .x-grid3-hd-checker {
     background-position:-23px 3px;
 }
 
@@ -2862,6 +2627,15 @@ a.x-grid3-hd-btn:hover {
     position:relative;
 }
 
+
+/* Reset position to static when Grid Panel has been framed */
+/* to resolve 'snapping' from top to bottom behavior. */
+/* @forumThread 86656 */
+.ext-ie7 .x-grid-panel .x-panel-mc .x-panel-bbar {
+    position: static;
+}
+
+
 .ext-ie6 .x-grid3-header {
     position: relative;
 }
@@ -2952,31 +2726,46 @@ a.x-grid3-hd-btn:hover {
 }
 
 .ext-ie .x-tree-node-indent img, .ext-ie .x-tree-node-icon, .ext-ie .x-tree-ec-icon {
-    vertical-align:middle !important;
+    vertical-align: middle !important;
+}
+
+.ext-strict .ext-ie8 .x-tree-node-indent img, .ext-strict .ext-ie8 .x-tree-node-icon, .ext-strict .ext-ie8 .x-tree-ec-icon {
+    vertical-align: top !important;
 }
 
 /* checkboxes */
-.ext-ie input.x-tree-node-cb {
-    width:15px;
-    height:15px;
-}
 
 input.x-tree-node-cb {
     margin-left:1px;
+    height: 19px;
+	vertical-align: bottom;
 }
 
 .ext-ie input.x-tree-node-cb {
     margin-left:0;
+    margin-top: 1px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.ext-strict .ext-ie8 input.x-tree-node-cb{
+    margin: 1px 1px;
+    height: 14px;
+    vertical-align: bottom;
+}
+
+.ext-strict .ext-ie8 input.x-tree-node-cb + a{
+    vertical-align: bottom;
+}
+
+.ext-opera input.x-tree-node-cb {
+    height: 14px;
+    vertical-align: middle;
 }
 
 .x-tree-noicon .x-tree-node-icon{
 	width:0; height:0;
-}
-
-/* loading icon */
-.ext-ie .x-tree-node-el input {
-    width:15px;
-    height:15px;
 }
 
 /* No line styles */
@@ -3202,9 +2991,15 @@ input.x-tree-node-cb {
 }
 
 table.x-date-inner {
-    width:100%;
+    width: 100%;
     table-layout:fixed;
 }
+
+.ext-webkit table.x-date-inner{
+    /* Fix for webkit browsers */
+    width: 175px;
+}
+
 
 .x-date-inner th {
     width:25px;
@@ -3385,7 +3180,7 @@ td.x-date-mp-sep {
 	top: 0;
     left:0;
     visibility: hidden;
-	z-index: 20000;
+	z-index: 20002;
     border:0 none;
 }
 
@@ -3568,11 +3363,14 @@ td.x-date-mp-sep {
 
 .x-menu-list-item{
     white-space: nowrap;
+	display:block;
+	padding:1px;
+}
+
+.x-menu-item{
     -moz-user-select: none;
     -khtml-user-select:none;
     -webkit-user-select:ignore;
-	display:block;
-	padding:1px;
 }
 
 .x-menu-item-arrow{
@@ -3701,6 +3499,36 @@ a.x-menu-item {
    padding:0 !important;
 }
 
+/*
+ * fixes separator visibility problem in IE 6
+ */
+.ext-strict .ext-ie6 .x-menu-sep-li {
+    padding: 3px 4px;
+}
+.ext-strict .ext-ie6 .x-menu-sep {
+    margin: 0;
+    height: 1px;
+}
+
+/*
+ * Ugly mess to remove the white border under the picker
+ */
+.ext-ie .x-date-menu{
+    height: 199px;
+}
+
+.ext-strict .ext-ie .x-date-menu, .ext-border-box .ext-ie8 .x-date-menu{
+    height: 197px;
+}
+
+.ext-strict .ext-ie7 .x-date-menu{
+    height: 195px;
+}
+
+.ext-strict .ext-ie8 .x-date-menu{
+    height: auto;
+}
+
 .x-cycle-menu .x-menu-item-checked {
     border:1px dotted !important;
 	padding:0;
@@ -3724,8 +3552,7 @@ a.x-menu-item {
 
 .x-menu-list-item-indent{
     padding-left: 27px;
-}
-/*
+}/*
  Creates rounded, raised boxes like on the Ext website - the markup isn't pretty:
   <div class="x-box-blue">
         <div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>
@@ -3798,25 +3625,6 @@ a.x-menu-item {
 .x-box-tr, .x-box-br {
 	padding-right: 8px;
 	overflow: hidden;
-}#x-debug-browser .x-tree .x-tree-node a span {
-    padding-top:2px;
-    line-height:18px;
-}
-
-#x-debug-browser  .x-tool-toggle {
-    background-position:0 -75px;
-}
-
-#x-debug-browser  .x-tool-toggle-over {
-    background-position:-15px -75px;
-}
-
-#x-debug-browser.x-panel-collapsed .x-tool-toggle {
-    background-position:0 -60px;
-}
-
-#x-debug-browser.x-panel-collapsed .x-tool-toggle-over {
-    background-position:-15px -60px;
 }.x-combo-list {
     border:1px solid;
     zoom:1;
@@ -4251,29 +4059,6 @@ a.x-menu-item {
     overflow:hidden;
 }
 
-.x-panel-btns-right .x-panel-fbar {
-	float:right;
-	clear:none;
-}
-
-.x-panel-btns-left .x-panel-fbar {
-	clear:none;
-}
-
-.x-panel-btns-center{
-	text-align:center; /*ie*/
-}
-
-.x-panel-btns-center .x-toolbar-ct {
-	margin:0 auto; /*everyone else*/
-    text-align:left;
-    width:auto;
-}
-
-.ext-gecko2 .x-panel-btns-right .x-toolbar-ct {
-    width:auto;
-}
-
 .x-panel-btns td.x-toolbar-cell{
 	padding:3px;
 }
@@ -4445,7 +4230,7 @@ a.x-menu-item {
     zoom:1;
 }
 
-.x-window .x-resizable-handle {
+.x-window .x-window-handle {
     opacity:0;
     -moz-opacity:0;
     filter:alpha(opacity=0);
@@ -4606,7 +4391,7 @@ a.x-menu-item {
     overflow:hidden;
 }
 
-.x-window-maximized .x-resizable-handle {
+.x-window-maximized .x-window-handle {
     display:none;
 }
 
@@ -5112,7 +4897,12 @@ body.ext-ie6.x-body-masked .x-window select {
 
 .ext-ie .x-progress-text-back {
     line-height:15px;
-}.x-list-header{
+}
+
+.ext-strict .ext-ie7 .x-progress-text-back{
+    width: 100%;
+}
+.x-list-header{
 	background: repeat-x 0 bottom;
 	cursor:default;
     zoom:1;
@@ -5191,6 +4981,7 @@ body.ext-ie6.x-body-masked .x-window select {
     border-width: 0 1px 1px;
     padding-bottom:3px;
 }
+
 /* Shared styles */
 .x-slider {
     zoom:1;

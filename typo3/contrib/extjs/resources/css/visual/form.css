@@ -1,6 +1,6 @@
 /*!
- * Ext JS Library 3.0.0
- * Copyright(c) 2006-2009 Ext JS, LLC
+ * Ext JS Library 3.1.1
+ * Copyright(c) 2006-2010 Ext JS, LLC
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
@@ -67,7 +67,7 @@
 	border-color:#c30;
 }
 
-.ext-safari .x-form-invalid{
+.ext-webkit .x-form-invalid{
 	background-color:#fee;
 	border-color:#ff7870;
 }
@@ -99,8 +99,8 @@
     font:normal 11px arial, tahoma, helvetica, sans-serif;
 }
 
-.ext-safari .x-small-editor .x-form-field {
-    font:normal 12px arial, tahoma, helvetica, sans-serif;
+.ext-webkit .x-small-editor .x-form-field {
+    font:normal 11px arial, tahoma, helvetica, sans-serif;
 }
 
 .x-form-invalid-icon {

@@ -1,6 +1,6 @@
 /*!
- * Ext JS Library 3.0.0
- * Copyright(c) 2006-2009 Ext JS, LLC
+ * Ext JS Library 3.1.1
+ * Copyright(c) 2006-2010 Ext JS, LLC
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
@@ -76,11 +76,16 @@ textarea {
 /* 2.0.2 style */
 .x-form-check-wrap {
     line-height:18px;
+    height: 22px;
 }
 
 .ext-ie .x-form-check-wrap input {
     width:15px;
     height:15px;
+}
+
+.x-form-check-wrap input{
+    vertical-align: bottom;
 }
 
 .x-editor .x-form-check-wrap {
@@ -114,7 +119,7 @@ textarea {
     cursor:pointer;
 }
 
-.ext-safari .x-form-field-wrap .x-form-trigger{
+.ext-webkit .x-form-field-wrap .x-form-trigger{
     right:0;
 }
 
@@ -180,7 +185,7 @@ textarea {
 	border: 1px solid;
 }
 
-.ext-safari .x-form-invalid{
+.ext-webkit .x-form-invalid{
 	border: 1px solid;
 }
 
@@ -193,23 +198,6 @@ textarea {
     visibility:hidden;
     padding:0;
     margin:0;
-}
-.x-form-check-wrap {
-    height: 22px;
-    line-height:18px;
-}
-
-.ext-ie .x-form-check-wrap input {
-    width:15px;
-    height:15px;
-}
-
-.x-editor .x-form-check-wrap {
-    padding:3px;
-}
-
-.x-editor .x-form-checkbox {
-    height:13px;
 }
 
 .x-form-grow-sizer {
@@ -240,7 +228,7 @@ textarea {
     zoom:1;
 }
 
-.x-form-item label {
+.x-form-item label.x-form-item-label {
     display:block;
     float:left;
     width:100px;
@@ -264,15 +252,15 @@ textarea {
     width:200px;
 }
 
-.x-form-label-left label {
+.x-form-label-left label.x-form-item-label {
    text-align:left;
 }
 
-.x-form-label-right label {
+.x-form-label-right label.x-form-item-label {
    text-align:right;
 }
 
-.x-form-label-top .x-form-item label {
+.x-form-label-top .x-form-item label.x-form-item-label {
     width:auto;
     float:none;
     clear:none;
@@ -348,30 +336,38 @@ textarea {
     font-size:0;
 }
 
+.ext-ie6 .x-form-check-wrap input, .ext-border-box .x-form-check-wrap input{
+   margin-top: 3px; 
+}
+
 .x-form-cb-label {
-    width:auto !important;
-    float:none !important;
-    clear:none !important;
-    display:inline !important;
-    margin-left:4px;
-    top: -2px;
-}
-
-.ext-gecko2 .x-form-cb-label{
-    top: -1px;
-}
-
-.ext-ie8 .x-form-cb-label{
-    position: static;
-}
-
-.ext-strict .ext-ie8 .x-form-cb-label {
-    top: -3px;
     position: relative;
+    margin-left:4px;
+    top: 2px;
 }
 
-.ext-opera .x-form-cb-label, .ext-safari3 .x-form-cb-label, .ext-ie7 .x-form-cb-label, .ext-ie6 .x-form-cb-label {
-    top: 0;
+.ext-ie .x-form-cb-label{
+    top: 1px;
+}
+
+.ext-ie6 .x-form-cb-label, .ext-border-box .x-form-cb-label{
+    top: 3px;
+}
+
+.x-form-display-field{
+    padding-top: 2px;
+}
+
+.ext-gecko .x-form-display-field, .ext-strict .ext-ie7 .x-form-display-field{
+    padding-top: 1px;
+}
+
+.ext-ie .x-form-display-field{
+    padding-top: 3px;
+}
+
+.ext-strict .ext-ie8 .x-form-display-field{
+    padding-top: 0;
 }
 
 .x-form-column {
@@ -519,7 +515,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
     margin-left:-3px;
 }
 
-/* IE legend positioing bug */
+/* IE legend positioning bug */
 .ext-ie .x-fieldset-noborder legend {
     position: relative;
     margin-bottom:23px;
@@ -531,11 +527,13 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
         
 .ext-gecko .x-window-body .x-form-item {
     -moz-outline: none;
+    outline: none;
     overflow: auto;
 }
 
 .ext-gecko .x-form-item {
     -moz-outline: none;
+    outline: none;
 }
 
 .x-hide-label label.x-form-item-label {
@@ -544,6 +542,10 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 
 .x-hide-label .x-form-element {
      padding-left: 0 !important;
+}
+
+.x-form-label-top .x-hide-label label.x-form-item-label{
+    display: none;
 }
 
 .x-fieldset {
