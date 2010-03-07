@@ -571,18 +571,30 @@ class t3lib_TStemplate	{
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
-			} else {	// NORMAL OPERATION:
-				$basedOnArr = t3lib_div::intExplode(',', $row['basedOn']);
-				foreach ($basedOnArr as $id) { // traversing list
-					if (!t3lib_div::inList($idList,'sys_'.$id))	{	// if $id is not allready included ...
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid='.intval($id).' '.$this->whereClause);
-						if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{	// there was a template, then we fetch that
-							$this->versionOL($subrow);
-							if (is_array($subrow))	{
-								$this->processTemplate($subrow,$idList.',sys_'.$id,$pid, 'sys_'.$id,$templateID);
-							}
-						}
-						$GLOBALS['TYPO3_DB']->sql_free_result($res);
+			} else {
+					// Normal Operation, which is to include the "based-on" sys_templates, 
+					// if they are not already included, and maintaining the sorting of the templates
+				$basedOnIds = t3lib_div::intExplode(',', $row['basedOn']);
+
+					// skip template if it's already included
+				foreach ($basedOnIds as $key => $basedOnId) {
+					if (t3lib_div::inList($idList, 'sys_' . $basedOnId)) {
+						unset($basedOnIds[$key]);
+					}
+				}
+
+				$subTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'*', 'sys_template',
+					'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause,
+					'', '', '',
+					'uid'	// the associative array that is returned will contain this field as key
+				);
+
+					// traversing list again to ensure the sorting of the templates
+				foreach ($basedOnIds as $id) { 
+					if (is_array($subTemplates[$id])) {
+						$this->versionOL($subTemplates[$id]);
+						$this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
 					}
 				}
 			}

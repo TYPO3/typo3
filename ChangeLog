@@ -1,3 +1,7 @@
+2010-03-07  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13669: Performance: Inefficient fetch of templates from table sys_template (Thanks to Alexander Weggerle)
+
 2010-03-06  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #1104: Setting file fields in TCA to "required" makes it impossible to save the record (thanks to Ingmar Schlecht & Tobias Liebig)
