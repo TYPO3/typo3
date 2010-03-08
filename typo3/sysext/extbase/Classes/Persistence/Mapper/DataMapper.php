@@ -126,13 +126,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	}
 
 	/**
-	 * Maps the (aggregate root) rows and registers them as reconstituted
-	 * with the session.
+	 * Maps the given rows on objects of the given class
 	 *
-	 * @param Tx_Extbase_Persistence_RowIteratorInterface $rows
-	 * @return array
+	 * @param string $className The name of the target class
+	 * @param array $rows An array of arrays with field_name => value pairs
+	 * @return array An array of objects of the given class
 	 */
-	public function map($className, ARRAY $rows) {
+	public function map($className, array $rows) {
 		$objects = array();
 		foreach ($rows as $row) {
 			$objects[] = $this->mapSingleRow($className, $row);
@@ -141,10 +141,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	}
 
 	/**
-	 * Maps a single node into the object it represents
+	 * Maps a single row on an object of the given class
 	 *
-	 * @param Tx_Extbase_Persistence_RowInterface $node
-	 * @return object
+	 * @param string $className The name of the target class
+	 * @param array $row A single array with field_name => value pairs
+	 * @return object An object of the given class
 	 */
 	protected function mapSingleRow($className, array $row) {
 		if ($this->identityMap->hasIdentifier($row['uid'], $className)) {

@@ -66,11 +66,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $qomFactory;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ValueFactoryInterface
-	 */
-	protected $valueFactory;
-
-	/**
 	 * @var Tx_Extbase_Persistence_Storage_BackendInterface
 	 */
 	protected $storageBackend;
@@ -193,16 +188,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	public function getQomFactory() {
 		return $this->qomFactory;
 	}
-
-	/**
-	 * Returns the current value factory
-	 *
-	 * @return Tx_Extbase_Persistence_ValueFactoryInterface
-	 */
-	public function getValueFactory() {
-		return $this->valueFactory;
-	}
-
+	
 	/**
 	 * Returns the current identityMap
 	 *

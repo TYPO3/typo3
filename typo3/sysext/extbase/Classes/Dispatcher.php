@@ -276,7 +276,6 @@ class Tx_Extbase_Dispatcher {
 			$persistenceBackend->injectReflectionService(self::$reflectionService);
 			$persistenceBackend->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
 			$persistenceBackend->injectQomFactory($qomFactory);
-			$persistenceBackend->injectValueFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_ValueFactory'));
 
 			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager'); // singleton
 

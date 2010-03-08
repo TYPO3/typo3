@@ -32,6 +32,8 @@
  * @api
  * @scope prototype
  */
-class Constraint {}
+class Tx_Extbase_Persistence_QOM_Constraint {
+	
+}
 
 ?>

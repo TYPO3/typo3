@@ -36,9 +36,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 	const OPERATOR_EQUAL_TO_NULL = 'operatorEqualToNull';
 	const OPERATOR_NOT_EQUAL_TO_NULL = 'operatorNotEqualToNull';
-	const OPERATOR_IN = 'operatorIn';
-	const OPERATOR_NOT_IN = 'operatorNotIn';
-
+	
 	/**
 	 * The TYPO3 database object
 	 *
@@ -370,7 +368,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$sql['fields'][] = $tableName . '.*';
 			$sql['tables'][] = $tableName;
 			$querySettings = $query->getQuerySettings();
-			if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettingsInterface) {
+			if ($querySettings instanceof Tx_Extbase_Persistence_QuerySettingsInterface) {
 				if ($querySettings->getRespectEnableFields()) {
 					$this->addEnableFieldsStatement($tableName, $sql);
 				}
@@ -444,7 +442,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return void
 	 */
 	protected function parseConstraint(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint = NULL, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters) {
-		if ($constraint === NULL) return;
 		if ($constraint instanceof Tx_Extbase_Persistence_QOM_AndInterface) {
 			$sql['where'][] = '(';
 			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters);
@@ -463,8 +460,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_ComparisonInterface) {
 			$this->parseComparison($constraint, $source, $sql, $parameters);
-		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_RelatedInterface) {
-			$this->parseRelated($constraint, $sql, $parameters);
 		}
 	}
 
@@ -486,48 +481,64 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			// FIXME this else branch enables equals() to behave like in(). This behavior is deprecated and will be removed in future. Use in() instead.
 			$operator = Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN;
 		}
-		
-		if ($operand2 === NULL) {
-			if ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO) {
-				$operator = self::OPERATOR_EQUAL_TO_NULL;
-			} elseif ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_NOT_EQUAL_TO) {
-				$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
-			}
-		}
-
+				
 		if ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN) {
-			$this->parseDynamicOperand($operand1, $operator, $source, $sql, $parameters, NULL, $operand2);
 			$items = array();
+			$hasValue = FALSE;
 			foreach ($operand2 as $value) {
-				$items[] = $this->getPlainValue($value);
-			}
-			$parameters[] = $items;
-		} elseif ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS) {
-			$dataMap = $this->dataMapper->getDataMap($source->getNodeTypeName());
-			$columnMap = $dataMap->getColumnMap($operand1->getPropertyName());
-			$typeOfRelation = $columnMap->getTypeOfRelation();
-			if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-				$relationTableName = $columnMap->getRelationTableName();
-				$sql['where'][] = 'uid IN (SELECT uid_local FROM ' . $relationTableName . ' WHERE uid_foreign=' . $this->getPlainValue($operand2) . ')';
-			} elseif ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-				$parentKeyFieldName = $columnMap->getParentKeyFieldName();
-				if (isset($parentKeyFieldName)) {
-					$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand1->getPropertyName(), $source->getNodeTypeName());
-					$childTableName = $columnMap->getChildTableName();
-					$sql['where'][] = 'uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
-				} else {
-					$tableName = $operand1->getSelectorName();
-					$statement = '(' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . ',%\'';
-					$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . '\'';
-					$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'' . $this->getPlainValue($operand2) . ',%\')';
-					$sql['where'][] = $statement;
+				$value = $this->getPlainValue($value);
+				if ($value !== NULL) {
+					$items[] = $value;
+					$hasValue = TRUE;
 				}
+			}
+			if ($hasValue === FALSE) {
+				$sql['where'][] = '1<>1';
 			} else {
-				throw new Tx_Extbase_Persistence_Exception_RepositoryException('Unsupported relation for contains().', 1267832524);
+				$this->parseDynamicOperand($operand1, $operator, $source, $sql, $parameters, NULL, $operand2);
+				$items = array();
+				foreach ($operand2 as $value) {
+					$items[] = $this->getPlainValue($value);
+				}
+				$parameters[] = $items;
+			}
+		} elseif ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS) {
+			if ($operand2 === NULL) {
+				$sql['where'][] = '1<>1';
+			} else {
+				$dataMap = $this->dataMapper->getDataMap($source->getNodeTypeName());
+				$columnMap = $dataMap->getColumnMap($operand1->getPropertyName());
+				$typeOfRelation = $columnMap->getTypeOfRelation();
+				if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+					$relationTableName = $columnMap->getRelationTableName();
+					$sql['where'][] = 'uid IN (SELECT uid_local FROM ' . $relationTableName . ' WHERE uid_foreign=' . $this->getPlainValue($operand2) . ')';
+				} elseif ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
+					if (isset($parentKeyFieldName)) {
+						$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand1->getPropertyName(), $source->getNodeTypeName());
+						$childTableName = $columnMap->getChildTableName();
+						$sql['where'][] = 'uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
+					} else {
+						$tableName = $operand1->getSelectorName();
+						$statement = '(' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . ',%\'';
+						$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . '\'';
+						$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'' . $this->getPlainValue($operand2) . ',%\')';
+						$sql['where'][] = $statement;
+					}
+				} else {
+					throw new Tx_Extbase_Persistence_Exception_RepositoryException('Unsupported relation for contains().', 1267832524);
+				}
 			}
 		} else {
+			if ($operand2 === NULL) {
+				if ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO) {
+					$operator = self::OPERATOR_EQUAL_TO_NULL;
+				} elseif ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_NOT_EQUAL_TO) {
+					$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
+				}
+			}
 			$this->parseDynamicOperand($operand1, $operator, $source, $sql, $parameters);
-			$parameters[] = $this->getPlainValue($operand2);
+			$parameters[] = $this->getPlainValue($operand2);			
 		}
 	}
 	
@@ -540,8 +551,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected function getPlainValue($input) {
 		if ($input instanceof DateTime) {
 			return $input->getTimestamp();
-		} elseif ($input instanceof Tx_Extbase_DomainObject_DomainObjectinterface) {
+		} elseif ($input instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 			return $input->getUid();
+		} elseif (is_bool($input)) {
+			return $input === TRUE ? 1 : 0;
 		} else {
 			return $input;
 		}

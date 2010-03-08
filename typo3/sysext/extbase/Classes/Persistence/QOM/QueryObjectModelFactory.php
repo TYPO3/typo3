@@ -79,7 +79,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $nodeTypeName the name of the required node type; non-null
 	 * @param string $selectorName the selector name; optional
 	 * @return Tx_Extbase_Persistence_QOM_SelectorInterface the selector
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function selector($nodeTypeName, $selectorName = '') {
@@ -108,7 +107,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $joinType one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
 	 * @param Tx_Extbase_Persistence_QOM_JoinConditionInterface $join Condition the join condition; non-null
 	 * @return Tx_Extbase_Persistence_QOM_JoinInterface the join; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function join(Tx_Extbase_Persistence_QOM_SourceInterface $left, Tx_Extbase_Persistence_QOM_SourceInterface $right, $joinType, Tx_Extbase_Persistence_QOM_JoinConditionInterface $joinCondition) {
@@ -123,7 +121,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $selector2Name the name of the second selector; non-null
 	 * @param string $property2Name the property name in the second selector; non-null
 	 * @return Tx_Extbase_Persistence_QOM_EquiJoinConditionInterface the constraint; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function equiJoinCondition($selector1Name, $property1Name, $selector2Name, $property2Name) {
@@ -136,7 +133,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1 the first constraint; non-null
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2 the second constraint; non-null
 	 * @return Tx_Extbase_Persistence_QOM_AndInterface the And constraint; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _and(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
@@ -149,7 +145,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1 the first constraint; non-null
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2 the second constraint; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrInterface the Or constraint; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _or(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
@@ -161,7 +156,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint the constraint to be negated; non-null
 	 * @return Tx_Extbase_Persistence_QOM_NotInterface the Not constraint; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function not(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint) {
@@ -175,7 +169,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $operator the operator; one of QueryObjectModelConstants.JCR_OPERATOR_*
 	 * @param Tx_Extbase_Persistence_QOM_StaticOperandInterface $operand2 the second operand; non-null
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface the constraint; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function comparison(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, $operand2) {
@@ -188,7 +181,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @param string $propertyName the property name; non-null
 	 * @param string $selectorName the selector name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_PropertyValueInterface the operand; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function propertyValue($propertyName, $selectorName = '') {
@@ -200,7 +192,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand whose value is converted to a lower-case string; non-null
 	 * @return Tx_Extbase_Persistence_QOM_LowerCaseInterface the operand; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function lowerCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
@@ -212,7 +203,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand whose value is converted to a upper-case string; non-null
 	 * @return Tx_Extbase_Persistence_QOM_UpperCaseInterface the operand; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function upperCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
@@ -226,7 +216,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand by which to order; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrderingInterface the ordering
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function ascending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
@@ -240,7 +229,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand the operand by which to order; non-null
 	 * @return Tx_Extbase_Persistence_QOM_OrderingInterface the ordering
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
@@ -252,7 +240,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 *
 	 * @param string $bindVariableName the bind variable name; non-null
 	 * @return Tx_Extbase_Persistence_QOM_BindVariableValueInterface the operand; non-null
-	 * @throws \F3\PHPCR\Query\InvalidQueryException if the query is invalid
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function bindVariable($bindVariableName) {

@@ -34,7 +34,7 @@
  * @version $Id$
  * @api
  */
-class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistence_Typo3QuerySettingsInterface {
+class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistence_QuerySettingsInterface {
 
 	/**
 	 * Flag if the storage page should be respected for the query.
