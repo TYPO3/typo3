@@ -1,3 +1,7 @@
+2010-03-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13766: Auto-increment does not work with driver odbc_mssql [adodb]
+
 2010-03-06  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #1104: Setting file fields in TCA to "required" makes it impossible to save the record (thanks to Ingmar Schlecht & Tobias Liebig)
