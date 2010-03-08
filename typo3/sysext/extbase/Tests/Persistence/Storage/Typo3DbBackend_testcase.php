@@ -35,23 +35,23 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend_testcase extends Tx_Extbase_
 	public function providerForBasicComparison() {
 		return array(
 			'equal' => array(
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
+				Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
 				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo = 'baz'"
 				),
 			'less' => array(
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN,
+				Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN,
 				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo < 'baz'"
 				),
 			'less or equal' => array(
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN_OR_EQUAL_TO,
+				Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO,
 				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo <= 'baz'"
 				),
 			'greater' => array(
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN,
+				Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN,
 				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo > 'baz'"
 				),
 			'greater or equal' => array(
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN_OR_EQUAL_TO,
+				Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO,
 				"SELECT table_name_from_selector.* FROM table_name_from_selector WHERE table_name_from_property.foo >= 'baz'"
 				),
 			

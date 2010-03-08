@@ -132,7 +132,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param Tx_Extbase_Persistence_RowIteratorInterface $rows
 	 * @return array
 	 */
-	public function map($className, Tx_Extbase_Persistence_RowIteratorInterface $rows) {
+	public function map($className, ARRAY $rows) {
 		$objects = array();
 		foreach ($rows as $row) {
 			$objects[] = $this->mapSingleRow($className, $row);
@@ -146,12 +146,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param Tx_Extbase_Persistence_RowInterface $node
 	 * @return object
 	 */
-	protected function mapSingleRow($className, Tx_Extbase_Persistence_RowInterface $row) {
-		if ($this->identityMap->hasIdentifier($row->getValue('uid'), $className)) {
-			$object = $this->identityMap->getObjectByIdentifier($row->getValue('uid'), $className);
+	protected function mapSingleRow($className, array $row) {
+		if ($this->identityMap->hasIdentifier($row['uid'], $className)) {
+			$object = $this->identityMap->getObjectByIdentifier($row['uid'], $className);
 		} else {
 			$object = $this->createEmptyObject($className);
-			$this->identityMap->registerObject($object, $row->getValue('uid'));
+			$this->identityMap->registerObject($object, $row['uid']);
 			$this->thawProperties($object, $row);
 			$object->_memorizeCleanState();
 			$this->persistenceSession->registerReconstitutedObject($object);
@@ -180,16 +180,16 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param Tx_Extbase_Persistence_RowInterface $row
 	 * @return void
 	 */
-	protected function thawProperties(Tx_Extbase_DomainObject_DomainObjectInterface $object, Tx_Extbase_Persistence_RowInterface $row) {
+	protected function thawProperties(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row) {
 		$className = get_class($object);
 		$dataMap = $this->getDataMap($className);
 		$properties = $object->_getProperties();
-		$localizedUid = $row->getValue('_LOCALIZED_UID');
+		$localizedUid = $row['_LOCALIZED_UID'];
 		if ($localizedUid !== NULL) {
 			$object->_setProperty('uid', $localizedUid);
-			$object->_setProperty('_localizationParentUid', $row->getValue('uid'));
+			$object->_setProperty('_localizationParentUid', $row['uid']);
 		} else {
-			$object->_setProperty('uid', $row->getValue('uid'));
+			$object->_setProperty('uid', $row['uid']);
 		}
 		unset($properties['uid']);
 		foreach ($properties as $propertyName => $propertyValue) {
@@ -211,15 +211,15 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				case Tx_Extbase_Persistence_PropertyType::LONG;
 				case Tx_Extbase_Persistence_PropertyType::DOUBLE;
 				case Tx_Extbase_Persistence_PropertyType::BOOLEAN;
-				if ($row->hasValue($columnName)) {
-					$rawPropertyValue = $row->getValue($columnName);
+				if (isset($row[$columnName])) {
+					$rawPropertyValue = $row[$columnName];
 					$propertyValue = $dataMap->convertFieldValueToPropertyValue($propertyType, $rawPropertyValue);
 				}
 				break;
 				case (Tx_Extbase_Persistence_PropertyType::REFERENCE):
-					$propertyValue = $row->getValue($columnName);
+					$propertyValue = $row[$columnName];
 					if (!is_null($propertyValue)) {
-						$fieldValue = $row->getValue($columnName);
+						$fieldValue = $row[$columnName];
 						$result = $this->fetchRelated($object, $propertyName, $fieldValue);
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $result);
 					}
@@ -308,7 +308,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			if (isset($parentKeyFieldName)) {
 				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
 			} else {
-				$query->matching($query->equals('uid', t3lib_div::intExplode(',', $fieldValue)));					
+				$query->matching($query->in('uid', t3lib_div::intExplode(',', $fieldValue)));					
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$query = $queryFactory->create($this->getElementType($parentObject, $propertyName));
@@ -324,7 +324,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$source = $this->qomFactory->join(
 				$left,
 				$right,
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_JOIN_TYPE_INNER,
+				Tx_Extbase_Persistence_QueryInterface::JCR_JOIN_TYPE_INNER,
 				$joinCondition
 				);
 

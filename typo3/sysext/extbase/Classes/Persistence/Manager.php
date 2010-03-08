@@ -124,6 +124,28 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	public function getRepositoryClassNames() {
 		return $this->repositoryClassNames;
 	}
+	
+	/**
+	 * Returns the number of records matching the query.
+	 *
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return integer
+	 * @api
+	 */
+	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+		return $this->backend->getObjectCountByQuery($query);
+	}
+
+	/**
+	 * Returns the object data matching the $query.
+	 *
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return array
+	 * @api
+	 */
+	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+		return $this->backend->getObjectDataByQuery($query);
+	}
 
 	/**
 	 * Commits new objects and changes to objects in the current persistence

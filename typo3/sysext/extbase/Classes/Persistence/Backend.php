@@ -222,6 +222,28 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 	/**
+	 * Returns the number of records matching the query.
+	 *
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return integer
+	 * @api
+	 */
+	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+		return $this->storageBackend->getObjectCountByQuery($query);
+	}
+
+	/**
+	 * Returns the object data matching the $query.
+	 *
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return array
+	 * @api
+	 */
+	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+		return $this->storageBackend->getObjectDataByQuery($query);
+	}
+
+	/**
 	 * Returns the (internal) identifier for the object, if it is known to the
 	 * backend. Otherwise NULL is returned.
 	 *
@@ -553,10 +575,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
 		$query = $this->queryFactory->create($className);
 		$query->getQuerySettings()->setReturnRawQueryResult(TRUE);
-		$result = $query->matching($query->withUid($object->getUid()))->execute();
-		$rows = $result->getRows();
-		$currentRow = current(current($rows));
-		$fieldValue = $currentRow->getValue($columnMap->getColumnName());
+		$rows = $query->matching($query->withUid($object->getUid()))->execute();
+		$currentRow = current($rows);
+		$fieldValue = $currentRow[$columnMap->getColumnName()];
 		return $fieldValue;
 	}
 	

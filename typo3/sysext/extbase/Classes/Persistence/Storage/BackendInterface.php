@@ -65,20 +65,22 @@ interface Tx_Extbase_Persistence_Storage_BackendInterface {
 	public function removeRow($tableName, array $identifier, $isRelation = FALSE);
 
 	/**
-	 * Returns an array with rows matching the query.
+	 * Returns the number of items matching the query.
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
-	 * @return array
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return integer
+	 * @api
 	 */
-	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query);
+	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query);
 
 	/**
-	 * Returns the number of tuples matching the query.
+	 * Returns the object data matching the $query.
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
-	 * @return int The number of matching tuples
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return array
+	 * @api
 	 */
-	public function countRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query);
-
+	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query);
+	
 }
 ?>

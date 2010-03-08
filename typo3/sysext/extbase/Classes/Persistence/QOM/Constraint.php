@@ -26,17 +26,12 @@
 ***************************************************************/
 
 /**
- * A QueryObjectModelFactory creates instances of the JCR query object model.
+ * Base class for constraints in the QOM.
  *
- * Refer to QueryObjectModelInterface for a description of the query object model.
- *
- * @package Extbase
- * @subpackage Persistence\QOM
- * @version $Id$
+ * @version $Id: Constraint.php 3616 2010-01-13 16:30:32Z k-fish $
+ * @api
+ * @scope prototype
  */
-interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface {
-
-
-}
+class Constraint {}
 
 ?>

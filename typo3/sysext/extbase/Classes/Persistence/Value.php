@@ -67,6 +67,9 @@ class Tx_Extbase_Persistence_Value implements Tx_Extbase_Persistence_ValueInterf
 	public function getString() {
 		if ($this->value === NULL) return NULL;
 		if (is_array($this->value)) return $this->value;
+		if ($this->value instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+			return (string)$this->value->getUid();
+		}
 
 		switch ($this->type) {
 			case Tx_Extbase_Persistence_PropertyType::DATE:

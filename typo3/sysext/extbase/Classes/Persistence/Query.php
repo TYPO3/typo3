@@ -47,19 +47,19 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	protected $dataMapper;
 
 	/**
+	 * @var Tx_Extbase_Persistence_Manager
+	 */
+	protected $persistenceManager;
+
+	/**
 	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface
 	 */
-	protected $QOMFactory;
+	protected $qomFactory;
 
 	/**
 	 * @var Tx_Extbase_Persistence_ValueFactoryInterface
 	 */
 	protected $valueFactory;
-
-	/**
-	 * @var Tx_Extbase_Persistence_ManagerInterface
-	 */
-	protected $persistenceManager;
 
 	/**
 	 * @var Tx_Extbase_Persistence_QOM_SourceInterface
@@ -121,7 +121,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	public function injectPersistenceManager(Tx_Extbase_Persistence_ManagerInterface $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
-		$this->QOMFactory = $this->persistenceManager->getBackend()->getQOMFactory();
+		$this->qomFactory = $this->persistenceManager->getBackend()->getQomFactory();
 		$this->valueFactory = $this->persistenceManager->getBackend()->getValueFactory();
 	}
 
@@ -148,11 +148,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 
 	/**
 	 * Returns the Query Settings.
-	 *
+	 * 
 	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
-	 * @api
 	 */
 	public function getQuerySettings() {
+		if (!($this->querySettings instanceof Tx_Extbase_Persistence_QuerySettingsInterface)) throw new Tx_Extbase_Persistence_Exception('Tried to get the query settings without seting them before.', 1248689115);
 		return $this->querySettings;
 	}
 
@@ -173,6 +173,31 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function setSource(Tx_Extbase_Persistence_QOM_SourceInterface $source) {
 		$this->source = $source;
 	}
+	
+	/**
+	 * Returns the selectorn name or an empty string, if the source is not a selector
+	 * // TODO This has to be checked at another place
+	 * @return string The selector name
+	 */
+	protected function getSelectorName() {
+		if ($this->getSource() instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+			return $this->source->getSelectorName();
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Gets the node-tuple source for this query.
+	 *
+	 * @return Tx_Extbase_Persistence_QOM_SourceInterface the node-tuple source; non-null
+	*/
+	public function getSource() {
+		if ($this->source === NULL) {
+			$this->source = $this->qomFactory->selector($this->className, $this->dataMapper->convertClassNameToTableName($this->className));
+		}
+		return $this->source;
+	}
 
 	/**
 	 * Executes the query against the database and returns the result
@@ -181,22 +206,22 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function execute() {
-		$result = $this->getPreparedQueryObjectModel()->execute();
+		$rows = $this->persistenceManager->getObjectDataByQuery($this);
 		if ($this->getQuerySettings()->getReturnRawQueryResult() === TRUE) {
-			return $result;
+			return $rows;
 		} else {
-			return $this->dataMapper->map($this->className, $result->getRows());
+			return $this->dataMapper->map($this->className, $rows);
 		}
 	}
 	
 	/**
-	 * Executes the query against the database and returns the number of matching objects
+	 * Executes the number of matching objects for the query
 	 *
 	 * @return integer The number of matching objects
 	 * @api
 	 */
 	public function count() {
-		return $this->getPreparedQueryObjectModel()->count();
+		return $this->persistenceManager->getObjectCountByQuery($this);
 	}
 	
 	/**
@@ -206,17 +231,17 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 */
 	protected function getPreparedQueryObjectModel() {
 		if ($this->source === NULL) {
-			$this->source = $this->QOMFactory->selector($this->className, $this->dataMapper->convertClassNameToTableName($this->className));
+			$this->source = $this->qomFactory->selector($this->className, $this->dataMapper->convertClassNameToTableName($this->className));
 		}
 		if ($this->constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
-			$query = $this->QOMFactory->createQuery(
+			$query = $this->qomFactory->createQuery(
 				$this->source,
 				$this->constraint,
 				array(),
 				array()
 			);
 		} else {
-			$query = $this->QOMFactory->createQuery(
+			$query = $this->qomFactory->createQuery(
 				$this->source,
 				$this->constraint,
 				$this->orderings,
@@ -263,15 +288,29 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		$parsedOrderings = array();
 		foreach ($orderings as $propertyName => $order) {
 			if ($order === Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING) {
-				$parsedOrderings[] = $this->QOMFactory->descending($this->QOMFactory->propertyValue($propertyName));
+				$parsedOrderings[] = $this->qomFactory->descending($this->qomFactory->propertyValue($propertyName));
 			} elseif ($order === Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING) {
-				$parsedOrderings[] = $this->QOMFactory->ascending($this->QOMFactory->propertyValue($propertyName));
+				$parsedOrderings[] = $this->qomFactory->ascending($this->qomFactory->propertyValue($propertyName));
 			} else {
 				throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('The order you specified for your query is not supported.', 1253785630);
 			}
 		}
 		$this->orderings = $parsedOrderings;
 		return $this;
+	}
+	
+	/**
+	 * Returns the property names to order the result by. Like this:
+	 * array(
+	 *  'foo' => \F3\FLOW3\Persistence\QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => \F3\FLOW3\Persistence\QueryInterface::ORDER_DESCENDING
+	 * )
+	 *
+	 * @return array
+	 * @api
+	 */
+	public function getOrderings() {
+		return $this->orderings;
 	}
 
 	/**
@@ -289,6 +328,16 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
+	 * Returns the maximum size of the result set to limit.
+	 *
+	 * @param integer
+	 * @api
+	 */
+	public function getLimit() {
+		return $this->limit;
+	}
+
+	/**
 	 * Sets the start offset of the result set to offset. Returns $this to
 	 * allow for chaining (fluid interface)
 	 *
@@ -302,6 +351,16 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		return $this;
 	}
 
+	/**
+	 * Returns the start offset of the result set.
+	 *
+	 * @return integer
+	 * @api
+	 */
+	public function getOffset() {
+		return $this->offset;
+	}
+	
 	/**
 	 * The constraint used to limit the result set. Returns $this to allow
 	 * for chaining (fluid interface)
@@ -325,14 +384,19 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
 	 */
 	public function statement($statement, array $parameters = array(), $language = Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
-		$boundVariables = array();
-		foreach ($parameters as $parameter) {
-			$uniqueVariableName = uniqid();
-			$this->operands[$uniqueVariableName] = $parameter;
-			$boundVariables[$uniqueVariableName] = $this->QOMFactory->bindVariable($uniqueVariableName);
-		}
-		$this->constraint = $this->QOMFactory->statement($statement, $boundVariables, $language);
+		$this->constraint = $this->qomFactory->statement($statement, $parameters, $language);
 		return $this;
+	}
+	
+	/**
+	 * Gets the constraint for this query.
+	 *
+	 * @return Tx_Extbase_Persistence_QOM_Constraint the constraint, or null if none
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
+	*/
+	public function getConstraint() {
+		return $this->constraint;
 	}
 
 	/**
@@ -344,7 +408,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function logicalAnd($constraint1, $constraint2) {
-		return $this->QOMFactory->_and(
+		return $this->qomFactory->_and(
 			$constraint1,
 			$constraint2
 			);
@@ -359,7 +423,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function logicalOr($constraint1, $constraint2) {
-		return $this->QOMFactory->_or(
+		return $this->qomFactory->_or(
 			$constraint1,
 			$constraint2
 			);
@@ -373,7 +437,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function logicalNot($constraint) {
-		return $this->QOMFactory->not($constraint);
+		return $this->qomFactory->not($constraint);
 	}
 
 	/**
@@ -383,13 +447,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 * @api
 	 */
-	public function withUid($uid) {
-		$uniqueVariableName = $this->getUniqueVariableName('uid');
-		$this->operands[$uniqueVariableName] = $uid;
-		return $this->QOMFactory->comparison(
-			$this->QOMFactory->propertyValue('uid', $this->getSelectorName()),
-			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-			$this->QOMFactory->bindVariable($uniqueVariableName)
+	public function withUid($operand) {
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue('uid', $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
+			$operand
 			);
 	}
 
@@ -402,31 +464,20 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function equals($propertyName, $operand, $caseSensitive = TRUE) {
-		$uniqueVariableName = uniqid($propertyName);
-		if (is_object($operand) && !($operand instanceof DateTime)) {
-			$operand = $this->persistenceManager->getBackend()->getIdentifierByObject($operand);
-		}
-		if ($caseSensitive) {
-			$comparison = $this->QOMFactory->comparison(
-				$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-				$this->QOMFactory->bindVariable($uniqueVariableName)
-				);
+		if (is_object($operand) || $caseSensitive) {
+			$comparison = $this->qomFactory->comparison(
+				$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+				Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
+				$operand
+			);
 		} else {
-			$comparison = $this->QOMFactory->comparison(
-				$this->QOMFactory->lowerCase(
-					$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName())
+			$comparison = $this->qomFactory->comparison(
+				$this->qomFactory->lowerCase(
+					$this->qomFactory->propertyValue($propertyName, $this->getSelectorName())
 				),
-				Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO,
-				$this->QOMFactory->bindVariable($uniqueVariableName)
-				);
-		}
-
-		// TODO Implement case sensitivity for arrays (callback)
-		if ($caseSensitive || !is_string($operand)) {
-			$this->operands[$uniqueVariableName] = $operand;
-		} else {
-			$this->operands[$uniqueVariableName] = strtolower($operand);
+				Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO,
+				strtolower($operand)
+			);
 		}
 
 		return $comparison;
@@ -440,13 +491,49 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function like($propertyName, $operand) {
-		$uniqueVariableName = uniqid($propertyName);
-		$this->operands[$uniqueVariableName] = $operand;
-		return $this->QOMFactory->comparison(
-			$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LIKE,
-			$this->QOMFactory->bindVariable($uniqueVariableName)
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LIKE,
+			$operand
 			);
+	}
+	
+	/**
+	 * Returns a "contains" criterion used for matching objects against a query.
+	 * It matches if the multivalued property contains the given operand.
+	 *
+	 * @param string $propertyName The name of the (multivalued) property to compare against
+	 * @param mixed $operand The value to compare with
+	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
+	 * @api
+	 */
+	public function contains($propertyName, $operand){
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS,
+			$operand
+		);
+	}
+
+	/**
+	 * Returns an "in" criterion used for matching objects against a query. It
+	 * matches if the property's value is contained in the multivalued operand.
+	 *
+	 * @param string $propertyName The name of the property to compare against
+	 * @param mixed $operand The value to compare with, multivalued
+	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
+	 * @api
+	 */
+	public function in($propertyName, $operand) {
+		if (!is_array($operand) && (!$operand instanceof ArrayAccess) && (!$operand instanceof Traversable)) {
+			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('The "in" operator must be given a mutlivalued operand (array, ArrayAccess, Traversable).', 1264678095);
+		}
+		
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN,
+			$operand
+		);
 	}
 
 	/**
@@ -457,12 +544,10 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function lessThan($propertyName, $operand) {
-		$uniqueVariableName = uniqid($propertyName);
-		$this->operands[$uniqueVariableName] = $operand;
-		return $this->QOMFactory->comparison(
-			$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN,
-			$this->QOMFactory->bindVariable($uniqueVariableName)
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN,
+			$operand
 			);
 	}
 
@@ -474,12 +559,10 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function lessThanOrEqual($propertyName, $operand) {
-		$uniqueVariableName = uniqid($propertyName);
-		$this->operands[$uniqueVariableName] = $operand;
-		return $this->QOMFactory->comparison(
-			$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN_OR_EQUAL_TO,
-			$this->QOMFactory->bindVariable($uniqueVariableName)
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO,
+			$operand
 			);
 	}
 
@@ -491,12 +574,10 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function greaterThan($propertyName, $operand) {
-		$uniqueVariableName = uniqid($propertyName);
-		$this->operands[$uniqueVariableName] = $operand;
-		return $this->QOMFactory->comparison(
-			$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN,
-			$this->QOMFactory->bindVariable($uniqueVariableName)
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN,
+			$operand
 			);
 	}
 
@@ -508,41 +589,12 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 */
 	public function greaterThanOrEqual($propertyName, $operand) {
-		$uniqueVariableName = uniqid($propertyName);
-		$this->operands[$uniqueVariableName] = $operand;
-		return $this->QOMFactory->comparison(
-			$this->QOMFactory->propertyValue($propertyName, $this->getSelectorName()),
-			Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN_OR_EQUAL_TO,
-			$this->QOMFactory->bindVariable($uniqueVariableName)
+		return $this->qomFactory->comparison(
+			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
+			Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO,
+			$operand
 			);
 	}
-
-	/**
-	 * Returns a unique variable name for a given property name. This is necessary for storing
-	 * the variable values in an associative array without overwriting existing variables.
-	 *
-	 * @param string $propertyName The name of the property
-	 * @return string The postfixed property name
-	 */
-	protected function getUniqueVariableName($propertyName) {
-		return uniqid($propertyName);
-	}
-
-	/**
-	 * Returns the selectorn name or an empty string, if the source is not a selector
-	 * // TODO This has to be checked at another place
-	 * @return string The selector name
-	 */
-	protected function getSelectorName() {
-		if ($this->source === NULL) {
-			$this->source = $this->QOMFactory->selector($this->className, $this->dataMapper->convertClassNameToTableName($this->className));
-		}
-		if ($this->source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-			return $this->source->getSelectorName();
-		} else {
-			return '';
-		}
-	}
-
+		
 }
 ?>
