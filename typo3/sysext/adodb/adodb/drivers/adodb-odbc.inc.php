@@ -161,6 +161,12 @@ class ADODB_odbc extends ADOConnection {
 				$num += 1;
 				$this->genID = $num;
 				return $num;
+			} elseif ($this->affected_rows() == 0) {
+				// some drivers do not return a valid value => try with another method
+				$value = $this->GetOne("select id from $seq");
+				if ($value == $num + 1) {
+					return $value;
+				}
 			}
 		}
 		if ($fn = $this->raiseErrorFn) {

@@ -1,3 +1,7 @@
+2010-03-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13766: Auto-increment does not work with driver odbc_mssql [adodb]
+
 2010-03-07  Steffen Kamper  <info@sk-typo3.de>
 
 	* Updated ExtJs library from 3.1.0 to 3.1.1
