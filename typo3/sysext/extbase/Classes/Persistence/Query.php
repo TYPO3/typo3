@@ -67,6 +67,11 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	protected $constraint;
 
 	/**
+	 * @var Tx_Extbase_Persistence_QOM_Statement
+	 */
+	protected $statement;
+
+	/**
 	 * @var int
 	 */
 	protected $orderings = array();
@@ -318,12 +323,20 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 *
 	 * @param string $statement The statement
 	 * @param array $paramerters An array of parameters. These will be bound to placeholders '?' in the $statement.
-	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or
-	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
+	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
-	public function statement($statement, array $parameters = array(), $language = Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
-		$this->constraint = $this->qomFactory->statement($statement, $parameters, $language);
+	public function statement($statement, array $parameters = array()) {
+		$this->statement = $this->qomFactory->statement($statement, $parameters);
 		return $this;
+	}
+	
+	/**
+	 * Returns the statement of this query.
+	 *
+	 * @return Tx_Extbase_Persistence_QOM_Statement
+	 */
+	public function getStatement() {
+		return $this->statement;
 	}
 	
 	/**

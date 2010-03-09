@@ -211,16 +211,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
 		$parameters = array();
-		// $this->knownRecords = array();
 
-		$constraint = $query->getConstraint();
-		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
-			if ($constraint->getLanguage() === Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
-				$sql = $constraint->getStatement();
-				$parameters = $query->getBoundVariableValues();
-			} else {
-				throw new Tx_Extbase_Persistence_Exception('Unsupported query language.', 1248701951);
-			}
+		$statement = $query->getStatement();
+		if($statement instanceof Tx_Extbase_Persistence_QOM_Statement) {
+			$sql = $statement->getStatement();
+			$parameters = $statement->getBoundVariables();
 		} else {
 			$parameters = array();
 			$statementParts = $this->parseQuery($query, $parameters);			
