@@ -47,10 +47,9 @@ class Tx_Extbase_Utility_Arrays {
 	 */
 	static public function integerExplode($delimiter, $string) {
 		$chunksArr = explode($delimiter, $string);
-		while (list($key, $value) = each($chunksArr)) {
+		foreach ($chunksArr as $key => $value) {
 			$chunks[$key] = intval($value);
 		}
-		reset($chunks);
 		return $chunks;
 	}
 
@@ -88,8 +87,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @api
 	 */
 	static public function arrayMergeRecursiveOverrule(array $firstArray, array $secondArray, $dontAddNewKeys = FALSE, $emptyValuesOverride = TRUE) {
-		reset($secondArray);
-		while (list($key, $value) = each($secondArray)) {
+		foreach ($secondArray as $key => $value) {
 			if (array_key_exists($key, $firstArray) && is_array($firstArray[$key])) {
 				if (is_array($secondArray[$key])) {
 					$firstArray[$key] = self::arrayMergeRecursiveOverrule($firstArray[$key], $secondArray[$key], $dontAddNewKeys, $emptyValuesOverride);

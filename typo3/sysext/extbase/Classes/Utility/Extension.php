@@ -472,7 +472,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 		$returnValue = false;
 		// Iterate with while since we need the current array position:
-		while (list(,$token) = each($tokenList)) {
+		foreach ($tokenList as $token) {
 			// parse token (see http://www.php.net/manual/en/function.token-get-all.php for format of token list)
 			if (is_array($token)) {
 				list($id, $text) = $token;
