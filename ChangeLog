@@ -1,3 +1,7 @@
+2010-03-10  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11576: Colorpicker has no usable icon (Thanks to Stefan Geith)
+
 2010-03-08  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13766: Auto-increment does not work with driver odbc_mssql [adodb]
