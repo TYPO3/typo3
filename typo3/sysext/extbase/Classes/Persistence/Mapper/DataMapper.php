@@ -299,7 +299,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$query->matching($query->withUid(intval($fieldValue)));
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-			$query = $queryFactory->create($this->getElementType($parentObject, $propertyName));
+			$query = $queryFactory->create($this->getElementType(get_class($parentObject), $propertyName));
 			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
 			// enableFields and storage page settings.
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
@@ -312,13 +312,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$query->matching($query->in('uid', t3lib_div::intExplode(',', $fieldValue)));					
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-			$query = $queryFactory->create($this->getElementType($parentObject, $propertyName));
+			$query = $queryFactory->create($this->getElementType(get_class($parentObject), $propertyName));
 			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
 			// enableFields and storage page settings.
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			$relationTableName = $columnMap->getRelationTableName();
 			$left = $this->qomFactory->selector(NULL, $relationTableName);
-			$childClassName = $this->getElementType($parentObject, $propertyName);
+			$childClassName = $this->getElementType(get_class($parentObject), $propertyName);
 			$childTableName = $columnMap->getChildTableName();
 			$right = $this->qomFactory->selector($childClassName, $childTableName);
 			$joinCondition = $this->qomFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
@@ -366,7 +366,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 			$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage'))) {
-				$elementType = $this->getElementType($parentObject, $propertyName);
+				$elementType = $this->getElementType(get_class($parentObject), $propertyName);
 				$objects = array();
 				foreach ($result as $value) {
 					$objects[] = $value;
@@ -464,8 +464,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $className
 	 * @return string The selector name
 	 */
-	public function convertClassNameToTableName($className) {
-		return $this->getDataMap($className)->getTableName();
+	public function convertClassNameToTableName($className = NULL) {
+		if (!empty($className)) {
+			return $this->getDataMap($className)->getTableName();
+		}
+		return strtolower($className);
 	}
 
 	/**
@@ -475,7 +478,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param string $propertyName
 	 * @return string The column name
 	 */
-	public function convertPropertyNameToColumnName($propertyName, $className = '') {
+	public function convertPropertyNameToColumnName($propertyName, $className = NULL) {
 		if (!empty($className)) {
 			$dataMap = $this->getDataMap($className);
 			if ($dataMap !== NULL) {
@@ -512,13 +515,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Returns the type of the elements inside an ObjectStorage or array.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The object instance this proxy is part of
+	 * @param string $parentClassName The class name of the object this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @return string The class name of the elements inside an ObjectStorage
 	 */
-	protected function getElementType(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
-		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+	public function getElementType($parentClassName, $propertyName) {
+		$propertyMetaData = $this->reflectionService->getClassSchema($parentClassName)->getProperty($propertyName);
+		$columnMap = $this->getDataMap($parentClassName)->getColumnMap($propertyName);
 		$childClassName = $columnMap->getChildClassName();
 		if (!empty($childClassName)) {
 			$elementType = $childClassName;
