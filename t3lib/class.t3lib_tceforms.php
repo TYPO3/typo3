@@ -3938,9 +3938,11 @@ class t3lib_TCEforms	{
 						$outArr[] = '<table border="0" cellpadding="0" cellspacing="0" id="'.$md5ID.'"'.$color.' style="'.htmlspecialchars($wConf['tableStyle']).'">
 									<tr>
 										<td>'.
-											$colorBoxLinks[0].
-											'<img src="clear.gif" width="'.$dX.'" height="'.$dY.'"'.t3lib_BEfunc::titleAltAttrib(trim($iTitle.' '.$PA['itemFormElValue'])).' border="0" />'.
-											$colorBoxLinks[1].
+											$colorBoxLinks[0].'<img '.
+											t3lib_iconWorks::skinImg($this->backPath,
+																(strlen(trim($color))==0 || strcmp(trim($color),'0')==0) ? 'gfx/colorpicker_empty.png' : 'gfx/colorpicker.png', 
+																'width="'.$dX.'" height="'.$dY.'"'.t3lib_BEfunc::titleAltAttrib(trim($iTitle.' '.$PA['itemFormElValue'])).' border="0"').
+											'>'.$colorBoxLinks[1].
 											'</td>
 									</tr>
 								</table>';
