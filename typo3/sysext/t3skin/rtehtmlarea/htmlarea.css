@@ -438,6 +438,11 @@
 .popupwin input.shorter-value {
 	width:17em;
 }
+/* Selectors for the About dialogue */
+.htmlarea-window .about-plugins .x-list-body dt {
+    overflow: auto;
+    white-space: normal;
+}
 /* Selectors for the Default Image dialogue */
 .htmlarea-default-image #image, .htmlarea-default-image #alt {
 	white-space:nowrap;

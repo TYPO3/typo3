@@ -87,6 +87,7 @@
 			<label index="About HTMLArea">About htmlArea RTE</label>
 			<label index="About">About</label>
 			<label index="free_editor">A free and open-source editor for &lt;textarea&gt; fields, featuring integration with TYPO3.</label>
+			<label index="Browser support">Browser support</label>
 			<label index="Mozilla_or_IE">For Firefox 1.5+, SeaMonkey 1.0+, Safari 3.0.4+, Google Chrome 1.0+ and Opera 9.62+ on any platform, and for Internet Explorer 6.0+ on Windows.</label>
 			<label index="product_documentation">For more information, please visit:</label>
 			<label index="All rights reserved.">All Rights Reserved.</label>
