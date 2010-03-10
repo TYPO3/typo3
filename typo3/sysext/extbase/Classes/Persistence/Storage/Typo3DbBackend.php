@@ -480,10 +480,16 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if ($operand2 === NULL) {
 				$sql['where'][] = '1<>1';
 			} else {
-				$dataMap = $this->dataMapper->getDataMap($source->getNodeTypeName());
-				$columnMap = $dataMap->getColumnMap($operand1->getPropertyName());
+				$className = $source->getNodeTypeName();
+				$propertyName = $operand1->getPropertyName();
+				while (strpos($propertyName, '.') !== FALSE) {
+					$this->addUnionStatement($className, $propertyName, $sql);
+				}
+				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
+				$dataMap = $this->dataMapper->getDataMap($className);
+				$columnMap = $dataMap->getColumnMap($propertyName);
 				$typeOfRelation = $columnMap->getTypeOfRelation();
-				$tableName = $operand1->getSelectorName();
 				if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
 					$sql['where'][] = $tableName . '.uid IN (SELECT uid_local FROM ' . $relationTableName . ' WHERE uid_foreign=' . $this->getPlainValue($operand2) . ')';
