@@ -545,7 +545,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function getPlainValue($input) {
 		if ($input instanceof DateTime) {
-			return $input->getTimestamp();
+			return $input->format('U');
 		} elseif ($input instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 			return $input->getUid();
 		} elseif (is_bool($input)) {
