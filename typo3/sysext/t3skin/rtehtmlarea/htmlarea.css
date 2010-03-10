@@ -246,15 +246,14 @@
 }
 .htmlarea-window .x-form-item-label {
 	text-align: right;
-	vertical-align: middle;
-	padding: 4px 5px 0 5px;
+	padding: 3px 5px 0 5px;
 }
 .htmlarea-window .x-btn-text {
 	font-weight: normal;
 	color: #000000;
 }
-.htmlarea-window .x-form-check-wrap input {
-	vertical-align: middle;
+.htmlarea-window .x-form-check-wrap {
+	padding-top: 3px;
 }
 .htmlarea-window .show-color {
 	margin-top: 10px;
@@ -469,11 +468,6 @@
 	width: 20px;
 	height: 20px;
 	vertical-align: middle;
-}
-/* Selectors for the FindReplace dialogue */
-.htmlarea-find-replace .long-label {
-	text-align:left;
-	width:30em;
 }
 /* Selectors for the CharacterMap dialogue */
 .htmlarea-window .character-map .character {

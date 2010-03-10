@@ -15,13 +15,13 @@
 			<label index="replaced item">item replaced</label>
 			<label index="not found">not found</label>
 			<label index="Find and Replace">Find And Replace</label>
-			<label index="Options">Options:</label>
+			<label index="Options">Options</label>
 			<label index="Whole words only">Whole words only</label>
 			<label index="Case sensitive search">Case sensitive search</label>
 			<label index="Substitute all occurrences">Substitute all occurrences</label>
 			<label index="Search for:">Search for:</label>
 			<label index="Replace with:">Replace with:</label>
-			<label index="Actions">Actions:</label>
+			<label index="Actions">Actions</label>
 			<label index="Clear">Clear</label>
 			<label index="Highlight">Highlight</label>
 			<label index="Undo">Undo</label>

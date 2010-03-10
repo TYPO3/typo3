@@ -32,16 +32,13 @@
  * TYPO3 SVN ID: $Id$
  */
 UndoRedo = HTMLArea.Plugin.extend({
-	
-	constructor : function (editor, pluginName) {
+	constructor: function (editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function (editor) {
-		
+	configurePlugin: function (editor) {
 		this.pageTSconfiguration = this.editorConfiguration.buttons.undo;
 		this.customUndo = true;
 		this.undoQueue = new Array();
@@ -50,21 +47,19 @@ UndoRedo = HTMLArea.Plugin.extend({
 		this.undoSteps = 25;
 			// The time interval at which undo samples are taken: 1/2 sec.
 		this.undoTimeout = 500;
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.1",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the buttons
 		 */
@@ -75,42 +70,55 @@ UndoRedo = HTMLArea.Plugin.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId.toLowerCase()),
-				action		: "onButtonPress",
+				action		: 'onButtonPress',
 				hotKey		: (this.editorConfiguration.buttons[buttonId.toLowerCase()]?this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey:button[2]),
 				noAutoUpdate	: true
 			};
 			this.registerButton(buttonConfiguration);
 		}
-		
 		return true;
 	},
-	
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : [
-		["Undo", null, "z"],
-		["Redo", null, "y"]
+	buttonList: [
+		['Undo', null, 'z'],
+		['Redo', null, 'y']
 	],
-	
 	/*
 	 * This function gets called when the editor is generated
 	 */
 	onGenerate: function () {
 			// Start undo snapshots
 		if (this.customUndo) {
-			Ext.TaskMgr.start({
+			this.task = {
 				run: this.takeSnapshot,
 				scope: this,
 				interval: this.undoTimeout
-			});
+			};
+			this.start();
 		}
 	},
-	
+	/*
+	 * Start the undo/redo snapshot task
+	 */
+	start: function () {
+		if (this.customUndo) {
+			Ext.TaskMgr.start(this.task);
+		}
+	},
+	/*
+	 * Start the undo/redo snapshot task
+	 */
+	stop: function () {
+		if (this.customUndo) {
+			Ext.TaskMgr.stop(this.task);
+		}
+	},
 	/*
 	 * Take a snapshot of the current contents for undo
 	 */
-	takeSnapshot : function () {
+	takeSnapshot: function () {
 		var currentTime = (new Date()).getTime();
 		var newSnapshot = false;
 		if (this.undoPosition >= this.undoSteps) {
@@ -146,7 +154,6 @@ UndoRedo = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-
 	/*
 	 * Build the snapshot entry
 	 *
@@ -155,17 +162,17 @@ UndoRedo = HTMLArea.Plugin.extend({
 	 *				- bookmark (the bookmark),
 	 *				- bookmarkedText (the content of the RTE including the bookmark)
 	 */
-	buildSnapshot : function () {
+	buildSnapshot: function () {
 		var bookmark = null, bookmarkedText = null;
 			// Insert a bookmark
-		if (this.editor.getMode() == "wysiwyg" && this.editor.isEditable()) {
+		if (this.editor.getMode() == 'wysiwyg' && this.editor.isEditable()) {
 			var selection = this.editor._getSelection();
-			if ((HTMLArea.is_gecko && !HTMLArea.is_opera9) || (HTMLArea.is_ie && selection.type.toLowerCase() != "control")) {
+			if ((HTMLArea.is_gecko && !HTMLArea.is_opera9) || (HTMLArea.is_ie && selection.type.toLowerCase() != 'control')) {
 					// Catch error in FF when the selection contains no usable range
 				try {
 						// Work around IE8 bug: can't create a range correctly if the selection is empty and the focus is not on the editor window
 						// But we cannot grab focus from an opened window just for the sake of taking this bookmark
-					if (!HTMLArea.is_ie || !this.editor.hasOpenedWindow() || selection.type.toLowerCase() != "none") {
+					if (!HTMLArea.is_ie || !this.editor.hasOpenedWindow() || selection.type.toLowerCase() != 'none') {
 						bookmark = this.editor.getBookmark(this.editor._createRange(selection));
 					}
 				} catch (e) {
@@ -189,11 +196,10 @@ UndoRedo = HTMLArea.Plugin.extend({
 			bookmarkedText	: bookmarkedText
 		};
 	},
-	
 	/*
 	 * Execute the undo request
 	 */
-	undo : function () {
+	undo: function () {
 		if (this.undoPosition > 0) {
 				// Make sure we would not loose any changes
 			this.takeSnapshot();
@@ -201,11 +207,10 @@ UndoRedo = HTMLArea.Plugin.extend({
 			this.updateButtonsState();
 		}
 	},
-	
 	/*
 	 * Execute the redo request
 	 */
-	redo : function () {
+	redo: function () {
 		if (this.undoPosition < this.undoQueue.length - 1) {
 				// Make sure we would not loose any changes
 			this.takeSnapshot();
@@ -216,11 +221,10 @@ UndoRedo = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-	
 	/*
 	 * Set content using undo queue position
 	 */
-	setContent : function (undoPosition) {
+	setContent: function (undoPosition) {
 		var bookmark = this.undoQueue[undoPosition].bookmark;
 		if (bookmark) {
 			this.editor.setHTML(this.undoQueue[undoPosition].bookmarkedText);
@@ -231,7 +235,6 @@ UndoRedo = HTMLArea.Plugin.extend({
 			this.editor.setHTML(this.undoQueue[undoPosition].text);
 		}
 	},
-	
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
@@ -257,7 +260,6 @@ UndoRedo = HTMLArea.Plugin.extend({
 			button.setDisabled(!button.textMode);
 		}
 	},
-	
 	/*
 	 * Update the state of the undo/redo buttons
 	 */
@@ -278,7 +280,6 @@ UndoRedo = HTMLArea.Plugin.extend({
 			this.onUpdateToolbar(button, mode, selectionEmpty, ancestors)
 		}
 	},
-	
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -287,7 +288,7 @@ UndoRedo = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id) {
+	onButtonPress: function (editor, id) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;

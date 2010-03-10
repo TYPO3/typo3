@@ -33,88 +33,461 @@
  * TYPO3 SVN ID: $Id$
  */
 FindReplace = HTMLArea.Plugin.extend({
-
-	constructor : function(editor, pluginName) {
+	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
-
+	configurePlugin: function(editor) {
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.2",
-			developer	: "Cau Guanabara & Stanislas Rolland",
-			developerUrl	: "mailto:caugb@ibest.com.br",
-			copyrightOwner	: "Cau Guanabara & Stanislas Rolland",
-			sponsor		: "Independent production & SJBR",
-			sponsorUrl	: "http://www.netflash.com.br/gb/HA3-rc1/examples/find-replace.html",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Cau Guanabara & Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca',
+			copyrightOwner	: 'Cau Guanabara & Stanislas Rolland',
+			sponsor		: 'Independent production & SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-
 		/*
 		 * Registering the button
 		 */
-		var buttonId = "FindReplace";
+		var buttonId = 'FindReplace';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize("Find and Replace"),
-			action		: "onButtonPress",
+			tooltip		: this.localize('Find and Replace'),
+			action		: 'onButtonPress',
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-
-		this.popupWidth = 400;
-		this.popupHeight = 360;
-
+			// Compile regular expression to clean up marks
+		this.marksCleaningRE = /(<span\s+[^>]*id="?htmlarea-frmark[^>]*"?>)([^<>]*)(<\/span>)/gi;
 		return true;
 	},
-
 	/*
-	 * This function gets called when the button was pressed.
+	 * This function gets called when the 'Find & Replace' button is pressed.
 	 *
 	 * @param	object		editor: the editor instance
 	 * @param	string		id: the button id or the key
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id, target) {
+	onButtonPress: function (editor, id, target) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-
-		var sel = this.editor.getSelectedHTML(), param = null;
-		if (/\w/.test(sel)) {
-			sel = sel.replace(/<[^>]*>/g,"");
-			sel = sel.replace(/&nbsp;/g,"");
+			// Initialize search variables
+		this.buffer = null;
+		this.initVariables();
+			// Disable the toolbar undo/redo buttons and snapshots while this window is opened
+		var plugin = this.getPluginInstance('UndoRedo');
+		if (plugin) {
+			plugin.stop();
+			var undo = this.getButton('Undo');
+			if (undo) {
+				undo.setDisabled(true);
+			}
+			var redo = this.getButton('Redo');
+			if (redo) {
+				redo.setDisabled(true);
+			}
 		}
-		if (/\w/.test(sel)) {
-			param = { fr_pattern: sel };
-		}
-		if (Ext.isOpera) {
-			this.cleanUpRegularExpression = /(<span\s+[^>]*id=.?frmark[^>]*>)([^<>]*)(<\/span>)/gi;
-			this.cleanUp.defer(200, this);
-		}
-		this.dialog = this.openDialog("FindReplace", this.makeUrlFromPopupName("find_replace"), null, param, {width:this.popupWidth, height:this.popupHeight});
+			// Open dialogue window
+		this.openDialogue(
+			buttonId,
+			'Find and Replace',
+			this.getWindowDimensions(
+				{
+					width: 460,
+					height:360
+				},
+				buttonId
+			)
+		);
 		return false;
 	},
-
 	/*
-	 * This function cleans up any span tag left by Opera if the window was closed with the close handle in which case the unload event is not fired by Opera
+	 * Open the dialogue window
+	 *
+	 * @param	string		buttonId: the button id
+	 * @param	string		title: the window title
+	 * @param	integer		dimensions: the opening width of the window
 	 *
 	 * @return	void
 	 */
-	cleanUp : function () {
-		if (this.dialog && (!this.dialog.dialogWindow || (this.dialog.dialogWindow && this.dialog.dialogWindow.closed))) {
-			this.editor.setHTML(this.editor.getInnerHTML().replace(this.cleanUpRegularExpression,"$2"));
-			this.dialog.close();
-		} else {
-			this.cleanUp.defer(200, this);
+	openDialogue: function (buttonId, title, dimensions) {
+		this.dialog = new Ext.Window({
+			title: this.localize(title),
+			cls: 'htmlarea-window',
+			border: false,
+			width: dimensions.width,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
+			iconCls: buttonId,
+			listeners: {
+				close: {
+					fn: this.onClose,
+					scope: this
+				}
+			},
+			items: [{
+					xtype: 'fieldset',
+					defaultType: 'textfield',
+					labelWidth: 150,
+					defaults: {
+						labelSeparator: '',
+						width: 250,
+						listeners: {
+							change: {
+								fn: this.clearDoc,
+								scope: this
+							}
+						}
+					},
+					listeners: {
+						render: {
+							fn: this.initPattern,
+							scope: this
+						}
+					},
+					items: [{
+							itemId: 'pattern',
+							fieldLabel: this.localize('Search for:')
+						},{
+							itemId: 'replacement',
+							fieldLabel: this.localize('Replace with:')
+						}
+					]
+				},{
+					xtype: 'fieldset',
+					defaultType: 'checkbox',
+					title: this.localize('Options'),
+					labelWidth: 150,
+					items: [{
+							itemId: 'words',
+							fieldLabel: this.localize('Whole words only'),
+							listeners: {
+								check: {
+									fn: this.clearDoc,
+									scope: this
+								}
+							}
+						},{
+							itemId: 'matchCase',
+							fieldLabel: this.localize('Case sensitive search'),
+							listeners: {
+								check: {
+									fn: this.clearDoc,
+									scope: this
+								}
+							}
+						},{
+							itemId: 'replaceAll',
+							fieldLabel: this.localize('Substitute all occurrences'),
+							listeners: {
+								check: {
+									fn: this.requestReplacement,
+									scope: this
+								}
+							}
+						}
+					]
+				},{
+					xtype: 'fieldset',
+					defaultType: 'button',
+					title: this.localize('Actions'),
+					defaults: {
+						minWidth: 150,
+						disabled: true,
+						style: {
+							marginBottom: '5px'
+						}
+					},
+					items: [{
+							text: this.localize('Clear'),
+							itemId: 'clear',
+							listeners: {
+								click: {
+									fn: this.clearMarks,
+									scope: this
+								}
+							}
+						},{
+							text: this.localize('Highlight'),
+							itemId: 'hiliteall',
+							listeners: {
+								click: {
+									fn: this.hiliteAll,
+									scope: this
+								}
+							}
+						},{
+							text: this.localize('Undo'),
+							itemId: 'undo',
+							listeners: {
+								click: {
+									fn: this.resetContents,
+									scope: this
+								}
+							}
+						}
+					]
+				}
+			],
+			buttons: [
+				this.buildButtonConfig('Next', this.onNext),
+				this.buildButtonConfig('Done', this.onCancel)
+			]
+		});
+		this.show();
+	},
+	/*
+	 * Handler invoked to initialize the pattern to search
+	 *
+	 * @param	object		fieldset: the fieldset component
+	 *
+	 * @return	void
+	 */
+	initPattern: function (fieldset) {
+		var selection = this.editor.getSelectedHTML();
+		if (/\S/.test(selection)) {
+			selection = selection.replace(/<[^>]*>/g, '');
+			selection = selection.replace(/&nbsp;/g, '');
 		}
+		if (/\S/.test(selection)) {
+			fieldset.getComponent('pattern').setValue(selection);
+			fieldset.getComponent('replacement').focus();
+		} else {
+			fieldset.getComponent('pattern').focus();
+		}
+	},
+	/*
+	 * Handler invoked when the replace all checkbox is checked
+	 */
+	requestReplacement: function () {
+		if (!this.dialog.find('itemId', 'replacement')[0].getValue() && this.dialog.find('itemId', 'replaceAll')[0].getValue()) {
+			Ext.MessageBox.alert('', this.localize('Inform a replacement word'));
+		}
+		this.clearDoc();
+	},
+	/*
+	 * Handler invoked when the 'Next' button is pressed
+	 */
+	onNext: function () {
+		if (!this.dialog.find('itemId', 'pattern')[0].getValue()) {
+			Ext.MessageBox.alert('', this.localize('Enter the text you want to find'));
+			this.dialog.find('itemId', 'pattern')[0].focus();
+			return false;
+		}
+		var fields = [
+			'pattern',
+			'replacement',
+			'words',
+			'matchCase',
+			'replaceAll'
+		];
+		var params = {};
+		Ext.each(fields, function (field) {
+			params[field] = this.dialog.find('itemId', field)[0].getValue();
+		}, this);
+		this.search(params);
+		return false;
+	},
+	/*
+	 * Search the pattern and insert span tags
+	 *
+	 * @param	object		params: the parameters of the search corresponding to the values of fields:
+	 *					pattern
+	 *					replacement
+	 *					words
+	 *					matchCase
+	 *					replaceAll
+	 *
+	 * @return	void
+	 */
+	search: function (params) {
+		var html = this.editor.getInnerHTML();
+		if (this.buffer == null) {
+			this.buffer = html;
+		}
+		if (this.matches == 0) {
+			var pattern = new RegExp(params.words ? '(?!<[^>]*)(\\b' + params.pattern + '\\b)(?![^<]*>)' : '(?!<[^>]*)(' + params.pattern + ')(?![^<]*>)', 'g' + (params.matchCase? '' : 'i'));
+			this.editor.setHTML(html.replace(pattern, '<span id="htmlarea-frmark">' + "$1" + '</span>'));
+			Ext.each(this.editor.document.body.getElementsByTagName('span'), function (mark) {
+				if (/^htmlarea-frmark/.test(mark.id)) {
+					this.spans.push(mark);
+				}
+			}, this);
+		}
+		this.spanWalker(params.pattern, params.replacement, params.replaceAll);
+	},
+	/*
+	 * Walk the span tags
+	 *
+	 * @param	string		pattern: the pattern being searched for
+	 * @param	string		replacement: the replacement string
+	 * @param	bolean		replaceAll: true if all occurrences should be replaced
+	 *
+	 * @return	void
+	 */
+	spanWalker: function (pattern, replacement, replaceAll) {
+		this.clearMarks();
+		if (this.spans.length) {
+			Ext.each(this.spans, function (mark, i) {
+				if (i >= this.matches && !/[0-9]$/.test(mark.id)) {
+					this.matches++;
+					this.disableActions('clear', false);
+					mark.id = 'htmlarea-frmark_' + this.matches;
+					mark.style.color = 'white';
+					mark.style.backgroundColor = 'highlight';
+					mark.style.fontWeight = 'bold';
+					mark.scrollIntoView(false);
+					var self = this;
+					function replace(button) {
+						if (button == 'yes') {
+							mark.firstChild.replaceData(0, mark.firstChild.data.length, replacement);
+							self.replaces++;
+							self.disableActions('undo', false);
+						}
+						self.endWalk(pattern, i);
+					}
+					if (replaceAll) {
+						replace('yes');
+						return true;
+					} else {
+						Ext.MessageBox.confirm('', this.localize('Substitute this occurrence?'), replace, this);
+						return false;
+					}
+				}
+			}, this);
+		} else {
+			this.endWalk(pattern, 0);
+		}
+	},
+	/*
+	 * End the replacement walk
+	 *
+	 * @param	string		pattern: the pattern being searched for
+	 * @param	integer		index: the index reached in the walk
+	 *
+	 * @return 	void
+	 */
+	endWalk: function (pattern, index) {
+		if (index >= this.spans.length - 1 || !this.spans.length) {
+			var message = this.localize('Done') + ':<br /><br />';
+			if (this.matches > 0) {
+				if (this.matches == 1) {
+					message += this.matches + ' ' + this.localize('found item');
+				} else {
+					message += this.matches + ' ' + this.localize('found items');
+				}
+				if (this.replaces > 0) {
+					if (this.replaces == 1) {
+						message += ',<br />' + this.replaces + ' ' + this.localize('replaced item');
+					} else {
+						message += ',<br />' + this.replaces + ' ' + this.localize('replaced items');
+					}
+				}
+				this.hiliteAll();
+			} else {
+				message += '"' + pattern + '" ' + this.localize('not found');
+				this.disableActions('hiliteall,clear', true);
+			}
+			Ext.MessageBox.minWidth = 300;
+			Ext.MessageBox.alert('', message + '.');
+		}
+	},
+	/*
+	 * Remove all marks
+	 */
+	clearDoc: function () {
+		this.editor.setHTML(this.editor.getInnerHTML().replace(this.marksCleaningRE, "$2"));
+		this.initVariables();
+		this.disableActions('hiliteall,clear', true);
+	},
+	/*
+	 * De-highlight all marks
+	 */
+	clearMarks: function () {
+		Ext.each(this.editor.document.body.getElementsByTagName('span'), function (mark) {
+			if (/^htmlarea-frmark/.test(mark.id)) {
+				mark.style.backgroundColor = '';
+				mark.style.color = '';
+				mark.style.fontWeight = '';
+			}
+		}, this);
+		this.disableActions('hiliteall', false);
+		this.disableActions('clear', true);
+	},
+	/*
+	 * Highlight all marks
+	 */
+	hiliteAll: function () {
+		Ext.each(this.editor.document.body.getElementsByTagName('span'), function (mark) {
+			if (/^htmlarea-frmark/.test(mark.id)) {
+				mark.style.backgroundColor = 'highlight';
+				mark.style.color = 'white';
+				mark.style.fontWeight = 'bold';
+			}
+		}, this);
+		this.disableActions('clear', false);
+		this.disableActions('hiliteall', true);
+	},
+	/*
+	 * Undo the replace operation
+	 */
+	resetContents: function () {
+		if (this.buffer != null) {
+			var transp = this.editor.getInnerHTML();
+			this.editor.setHTML(this.buffer);
+			this.buffer = transp;
+			this.disableActions('clear', true);
+		}
+	},
+	/*
+	 * Disable action buttons
+	 *
+	 * @param	array		actions: array of buttonIds to set disabled/enabled
+	 * @param	boolean		disabled: true to set disabled
+	 */
+	disableActions: function (actions, disabled) {
+		Ext.each(actions.split(/[,; ]+/), function (action) {
+				this.dialog.find('itemId', action)[0].setDisabled(disabled);
+		}, this);
+	},
+	/*
+	 * Initialize find & replace variables
+	 */
+	initVariables: function () {
+		this.matches = 0;
+		this.replaces = 0;
+		this.spans = new Array();
+	},
+	/*
+	 * Clear the document before leaving on 'Done' button
+	 */
+	onCancel: function () {
+		this.clearDoc();
+		var plugin = this.getPluginInstance('UndoRedo');
+		if (plugin) {
+			plugin.start();
+		}
+		this.base();
+	},
+	/*
+	 * Clear the document before leaving on window close handle
+	 */
+	onClose: function () {
+		this.clearDoc();
+		var plugin = this.getPluginInstance('UndoRedo');
+		if (plugin) {
+			plugin.start();
+		}
+		this.base();
 	}
 });

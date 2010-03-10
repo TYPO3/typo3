@@ -1,3 +1,7 @@
+2010-03-09  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13785: htmlArea RTE: Extjize Find & Replace dialogue
+
 2010-03-08  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13766: Auto-increment does not work with driver odbc_mssql [adodb]
