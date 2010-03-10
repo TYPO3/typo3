@@ -368,7 +368,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 			$tableName = $source->getSelectorName();
 			$sql['fields'][] = $tableName . '.*';
-			$sql['tables'][] = $tableName;
+			$sql['tables'][$tableName] = $tableName;
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 			$this->parseJoin($source, $sql);
 		}
