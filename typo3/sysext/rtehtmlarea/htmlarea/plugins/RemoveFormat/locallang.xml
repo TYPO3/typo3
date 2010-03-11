@@ -14,6 +14,7 @@
 			<label index="Cleaning options">Type of formatting to remove</label>
 			<label index="Formatting:">HTML Formatting:</label>
 			<label index="MS Word Formatting:">MS Word Formatting:</label>
+			<label index="Spaces">Non-breaking spaces:</label>
 			<label index="Images:">Images:</label>
 			<label index="All HTML:">All HTML tags:</label>
 			<label index="Select the type of formatting you wish to remove.">Select the type of formatting to remove.</label>
