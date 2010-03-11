@@ -1,3 +1,7 @@
+2010-03-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9218: htmlArea RTE: "Remove format" messes up some inline formats
+
 2010-03-06  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #1104: Setting file fields in TCA to "required" makes it impossible to save the record (thanks to Ingmar Schlecht & Tobias Liebig)

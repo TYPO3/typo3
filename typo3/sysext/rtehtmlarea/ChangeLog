@@ -1,3 +1,7 @@
+2010-03-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9218: htmlArea RTE: "Remove format" messes up some inline formats
+
 2010-03-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13057: htmlArea RTE sometimes deletes contents
