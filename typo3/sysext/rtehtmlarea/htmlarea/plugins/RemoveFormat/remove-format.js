@@ -212,13 +212,10 @@ RemoveFormat = HTMLArea.Plugin.extend({
 				html = html.replace(/<[\!]*?[^<>]*?>/g, "");
 			}
 			if (params['formatting']) {
-					// remove font, b, strong, i, em, u, strike, span and other tags
-				var regF1 = new RegExp("<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|u[^a-zA-Z]|var)[^>]*>", "gi");
-				html = html.replace(regF1, "");
-					// keep tags, strip attributes
-				var regF2 = new RegExp(" style=\"[^>\"]*\"", "gi");
-				var regF3 = new RegExp(" (class|align|cellpadding|cellspacing|frame|bgcolor)=(([^>\s\"]+)|(\"[^>\"]*\"))", "gi");
-				html = html.replace(regF2, "").replace(regF3, "");
+					// Remove font, b, strong, i, em, u, strike, span and other inline tags
+				html = html.replace(/<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|tt|u[^a-zA-Z]|var)[^>]*>/gi, "");
+					// Keep tags, strip attributes
+				html = html.replace(/ style=\"[^>\"]*\"/gi, "").replace(/ (class|align|cellpadding|cellspacing|frame|bgcolor)=(([^>\s\"]+)|(\"[^>\"]*\"))/gi, "");
 			}
 			if (params['spaces']) {
 					// Replace non-breaking spaces by normal spaces
@@ -229,18 +226,12 @@ RemoveFormat = HTMLArea.Plugin.extend({
 				html = html.replace(/<\/?img[^>]*>/gi, "");
 			}
 			if (params['msWordFormatting']) {
-					// make one line
-				var regMS1 = new RegExp("(\r\n|\n|\r)", "g");
-				html = html.replace(regMS1, " ");
-					//clean up tags
-				var regMS2 = new RegExp("<(b[^r]|strong|i|em|p|li|ul) [^>]*>", "gi");
-				html = html.replace(regMS2, "<$1>");
-					// keep tags, strip attributes
-				var regMS3 = new RegExp(" style=\"[^>\"]*\"", "gi");
-				var regMS4 = new RegExp(" (class|align)=(([^>\s\"]+)|(\"[^>\"]*\"))", "gi");
-				html = html.replace(regMS3, "").replace(regMS4, "");
-					// mozilla doesn't like <em> tags
-				html = html.replace(/<em>/gi, "<i>").replace(/<\/em>/gi, "</i>");
+					// Make one line
+				html = html.replace(/(\r\n|\n|\r)/g, " ");
+					// Clean up tags
+				html = html.replace(/<(b|strong|i|em|p|li|ul) [^>]*>/gi, "<$1>");
+					// Keep tags, strip attributes
+				html = html.replace(/ style=\"[^>\"]*\"/gi, "").replace(/ (class|align)=(([^>\s\"]+)|(\"[^>\"]*\"))/gi, "");
 					// kill unwanted tags: span, div, ?xml:, st1:, [a-z]:, meta, link
 				html = html.replace(/<\/?span[^>]*>/gi, "").
 					replace(/<\/?div[^>]*>/gi, "").
@@ -254,21 +245,18 @@ RemoveFormat = HTMLArea.Plugin.extend({
 					replace(/<title[^>]*>.*<\/title[^>]*>/gi, "");
 					// remove comments
 				html = html.replace(/<!--[^>]*>/gi, "");
-					// remove double tags
-				oldlen = html.length + 1;
-				var reg6 = new RegExp("<([a-z][a-z]*)> *<\/\1>", "gi");
-				var reg7 = new RegExp("<([a-z][a-z]*)> *<\/?([a-z][^>]*)> *<\/\1>", "gi");
-				var reg8 = new RegExp("<([a-z][a-z]*)><\1>", "gi");
-				var reg9 = new RegExp("<\/([a-z][a-z]*)><\/\1>", "gi");
-				var reg10 = new RegExp("[\x20]+", "gi");
+					// Remove font elements resets
+				html = html.replace(/<\/(b|big|i|s|small|strike|tt|u)><\1>/gi, "");
+					// Remove double tags
+				var oldlen = html.length + 1;
 				while(oldlen > html.length) {
 					oldlen = html.length;
-						// join us now and free the tags
-					html = html.replace(reg6, " ").replace(reg7, "<$2>");
-						// remove double tags
-					html = html.replace(reg8, "<$1>").replace(reg9, "<\/$1>");
-						// remove double spaces
-					html = html.replace(reg10, " ");
+						// Remove double opening tags
+					html = html.replace(/<([a-z][a-z]*)> *<\/\1>/gi, " ").replace(/<([a-z][a-z]*)> *<\/?([a-z][^>]*)> *<\/\1>/gi, "<$2>");
+						// Remove double closing tags
+					html = html.replace(/<([a-z][a-z]*)><\1>/gi, "<$1>").replace(/<\/([a-z][a-z]*)><\/\1>/gi, "<\/$1>");
+						// Remove multiple spaces
+					html = html.replace(/[\x20]+/gi, " ");
 				}
 			}
 			if (params['allContent']) {
