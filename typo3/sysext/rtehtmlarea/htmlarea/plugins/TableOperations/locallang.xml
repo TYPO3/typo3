@@ -63,6 +63,8 @@
 			<label index="scope_column">Column</label>
 			<label index="scope_rowgroup">Group of rows</label>
 			<label index="Scope of header cell">Scope of the header</label>
+			<label index="Abbreviation">Abbreviation</label>
+			<label index="Header abbreviation">Header abbreviation</label>
 			<label index="Center">Center</label>
 			<label index="Character">Character</label>
 			<label index="Align on this character">Align text relative to this character</label>

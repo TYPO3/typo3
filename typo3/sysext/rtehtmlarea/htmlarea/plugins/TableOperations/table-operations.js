@@ -611,6 +611,11 @@ TableOperations = HTMLArea.Plugin.extend({
 						element.scope = val.substring(2,10);
 					}
 					break;
+				    case "f_cell_abbr":
+					if (!column) {
+					    	element.abbr = (element.nodeName.toLowerCase() == 'td') ? '' : val;
+					}
+					break;
 				    case "f_rowgroup":
 					var nodeName = section.nodeName.toLowerCase();
 					if (val != nodeName) {
@@ -1527,8 +1532,12 @@ TableOperations = HTMLArea.Plugin.extend({
 		var attributes = element.attributes, attributeName, attributeValue;
 		for (var i = attributes.length; --i >= 0;) {
 			attributeName = attributes.item(i).nodeName;
-			attributeValue = element.getAttribute(attributeName);
-			if (attributeValue) newCell.setAttribute(attributeName, attributeValue);
+			if (nodeName != 'td' || (attributeName != 'scope' && attributeName != 'abbr')) {
+				attributeValue = element.getAttribute(attributeName);
+				if (attributeValue) {
+					newCell.setAttribute(attributeName, attributeValue);
+				}
+			}
 		}
 			// In IE, the above fails to update the classname and style attributes.
 		if (HTMLArea.is_ie) {
@@ -2395,13 +2404,23 @@ TableOperations = HTMLArea.Plugin.extend({
 				[this.localize('Header for row group'), 'throwgroup']
 			];
 		}
-			// onChange handler: reset the CSS class dropdown when the cell type changes
+			// onChange handler: reset the CSS class dropdown and show/hide abbr field when the cell type changes
 			// @param	object		cellTypeField: the combo object
-			// @param	string		value: the value of the cell type field
+			// @param	object		record: the selected record
 			// @return	void
 		var self = this;
-		function resetStyleOptions(cellTypeField, value) {
-			self.setStyleOptions(self.dialog.find('itemId', 'f_class'), element, value.substring(0,2));
+		function cellTypeChange(cellTypeField, record) {
+			value = record.get('value');
+			var styleCombo = self.dialog.find('itemId', 'f_class')[0];
+			if (styleCombo) {
+				self.setStyleOptions(styleCombo, element, value.substring(0,2));
+			}
+				// abbr field present only for single cell, not for column
+			var abbrField = self.dialog.find('itemId', 'f_cell_abbr')[0];
+			if (abbrField) {
+				abbrField.setVisible(value != 'td');
+				abbrField.label.setVisible(value != 'td');
+			}
 		}
 		var selected = element.nodeName.toLowerCase() + element.scope.toLowerCase();
 		itemsConfig.push(Ext.apply({
@@ -2417,12 +2436,26 @@ TableOperations = HTMLArea.Plugin.extend({
 			width: (this.properties && this.properties.cellType && this.properties.cellType.width) ? this.properties.cellType.width : 250,
 			value: (column && selected == 'thcol') ? 'td' : selected,
 			listeners: {
-				change: {
-					fn: resetStyleOptions,
+				select: {
+					fn: cellTypeChange,
 					scope: this
 				}
 			}
 		}, this.configDefaults['combo']));
+		if (!column) {
+			itemsConfig.push({
+				xtype: 'textfield',
+				fieldLabel: this.localize('Abbreviation'),
+				labelSeparator: ':',
+				itemId: 'f_cell_abbr',
+				helpTitle: this.localize('Header abbreviation'),
+				width: 300,
+				value: element.abbr,
+				hideMode: 'visibility',
+				hidden: (selected == 'td'),
+				hideLabel: (selected == 'td')
+			});
+		}
 		return {
 			xtype: 'fieldset',
 			title: this.localize(column ? 'Type of cells' : 'Cell Type and Scope'),
