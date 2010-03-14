@@ -2511,13 +2511,22 @@ class t3lib_stdGraphic	{
 	 * @param	string		The relative (to PATH_site) image filepath, input file (read from)
 	 * @param	string		The relative (to PATH_site) image filepath, output filename (written to)
 	 * @param	string		ImageMagick parameters
-	 * @param	string		Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
+	 * @param	integer		Optional, refers to which frame-number to select in the image. '' or 0
+	 *				will select the first frame, 1 will select the next and so on...
 	 * @return	string		The result of a call to PHP function "exec()"
 	 */
-	function imageMagickExec($input,$output,$params,$frame = 0)	{
-		if (!$this->NO_IMAGE_MAGICK)	{
-			$frame = $frame ? '['.intval($frame).']' : '';
-			$cmd = t3lib_div::imageMagickCommand('convert', $params.' '.$this->wrapFileName($input).$frame.' '.$this->wrapFileName($output));
+	function imageMagickExec($input, $output, $params, $frame = 0) {
+		if (!$this->NO_IMAGE_MAGICK) {
+
+				// Unless noFramePrepended is set in the Install Tool, a frame number is added to
+				// select a specific page of the image (by default this will be the first page)
+			if (!$this->noFramePrepended) {
+				$frame = '[' . intval($frame) . ']';
+			} else {
+				$frame = '';
+			}
+
+			$cmd = t3lib_div::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . $frame . ' ' . $this->wrapFileName($output));
 			$this->IM_commands[] = array($output,$cmd);
 
 			$ret = exec($cmd);
