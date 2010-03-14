@@ -2,6 +2,7 @@
 
 	* Fixed bug #13283: Thumbnail generation broken for PDF files (thanks to Michael Stucki & Andy Grunwald)
 	* Fixed bug #13690: Clean up class definition of frontendDoc in template.php
+	* Fixed bug #11805: IRRE does not work correctly with FE-editing (thanks to Bjoern Pedersen)
 
 2010-03-14  Jochen Rau <jochen.rau@typoplanet.de>
 
