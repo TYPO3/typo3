@@ -1,3 +1,7 @@
+2010-03-14  Jochen Rau <jochen.rau@typoplanet.de>
+
+	* Fixed bug #13371: cropHTML not honoring whole word setting
+
 2010-03-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9218: htmlArea RTE: "Remove format" messes up some inline formats
