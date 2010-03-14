@@ -129,7 +129,7 @@ var inline = {
 	makeAjaxCall: function(method, params, lock) {
 		var max, url='', urlParams='', options={};
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
-			url = 'ajax.php';
+			url = TBE_EDITOR.getBackendPath() + 'ajax.php';
 			urlParams = '&ajaxID=t3lib_TCEforms_inline::'+method;
 			for (var i=0, max=params.length; i<max; i++) {
 				urlParams += '&ajax['+i+']='+params[i];

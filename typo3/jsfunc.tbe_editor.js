@@ -566,7 +566,23 @@ var TBE_EDITOR = {
 			}
 		}
 		return false;
-	}	
+	},
+
+	/**
+	 * Determines backend path to be used for e.g. ajax.php
+	 * @return string
+	 */
+	getBackendPath: function() {
+		var backendPath = '';
+		if (TYPO3) {
+			if (TYPO3.configuration && TYPO3.configuration.PATH_typo3) {
+				backendPath = TYPO3.configuration.PATH_typo3;
+			} else if (TYPO3.settings && TYPO3.settings.PATH_typo3) {
+				backendPath = TYPO3.settings.PATH_typo3;
+			}
+		}
+		return backendPath;
+	}
 };
 
 function typoSetup	() {
