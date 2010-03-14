@@ -2105,6 +2105,18 @@ class mediumDoc extends template {
 class frontendDoc extends template {
 
 	/**
+	 * Gets instance of PageRenderer
+	 *
+	 * @return	t3lib_PageRenderer
+	 */
+	public function getPageRenderer() {
+		if (!isset($this->pageRenderer)) {
+			$this->pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+		}
+		return $this->pageRenderer;
+	}
+
+	/**
 	 * Used in the frontend context to insert header data via TSFE->additionalHeaderData.
 	 * Mimics header inclusion from template->startPage().
 	 *
@@ -2112,37 +2124,18 @@ class frontendDoc extends template {
 	 */
 	public function insertHeaderData() {
 
-		/** @var $pageRenderer t3lib_PageRenderer */
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-
 		$this->backPath = $GLOBALS['TSFE']->backPath = TYPO3_mainDir;
 		$this->pageRenderer->setBackPath($this->backPath);
 		$this->docStyle();
 
 			// add applied JS/CSS to $GLOBALS['TSFE']
 		if ($this->JScode) {
-			$pageRenderer->addHeaderData($this->JScode);
+			$this->pageRenderer->addHeaderData($this->JScode);
 		}
 		if (count($this->JScodeArray)) {
 			foreach ($this->JScodeArray as $name => $code) {
-				$pageRenderer->addJsInlineCode($name, $code);
+				$this->pageRenderer->addJsInlineCode($name, $code);
 			}
-		}
-
-		if ($this->addPrototype) {
-			$pageRenderer->loadPrototype();
-		}
-		if ($this->addScriptaculous) {
-			$pageRenderer->loadScriptaculous();
-		}
-		if ($this->addExtJS) {
-			$pageRenderer->loadExtJs();
-		}
-		if ($this->inlineLanguageLabels) {
-			$pageRenderer->addInlineLanguageLabelArray($this->inlineLanguageLabels);
-		}
-		if ($this->inlineSettings) {
-			$pageRenderer->addInlineSettingArray($this->inlineSettings);
 		}
 	}
 }

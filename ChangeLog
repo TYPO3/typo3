@@ -1,6 +1,7 @@
 2010-03-14  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #13283: Thumbnail generation broken for PDF files (thanks to Michael Stucki & Andy Grunwald)
+	* Fixed bug #13690: Clean up class definition of frontendDoc in template.php
 
 2010-03-14  Jochen Rau <jochen.rau@typoplanet.de>
 
