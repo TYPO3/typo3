@@ -253,7 +253,7 @@ class Tx_Extbase_Property_Mapper {
 				try {
 					$propertyValue = new $targetType($propertyValue);
 				} catch (Exception $e) {
-					throw new InvalidArgumentException('Conversion to a ' . $targetType . ' object is not possible. Cause: ' . $e->getMessage(), 1190034628);
+					$propertyValue = NULL;
 				}
 			}
 		} else {

@@ -172,22 +172,20 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	/**
 	 * Performs a logical conjunction of the two given constraints.
 	 *
-	 * @param object $constraint1 First constraint
-	 * @param object $constraint2 Second constraint
+	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return object
 	 * @api
 	 */
-	public function logicalAnd($constraint1, $constraint2);
+	public function logicalAnd($constraint1);
 
 	/**
 	 * Performs a logical disjunction of the two given constraints
 	 *
-	 * @param object $constraint1 First constraint
-	 * @param object $constraint2 Second constraint
+	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return object
 	 * @api
 	 */
-	public function logicalOr($constraint1, $constraint2);
+	public function logicalOr($constraint1);
 
 	/**
 	 * Performs a logical negation of the given constraint

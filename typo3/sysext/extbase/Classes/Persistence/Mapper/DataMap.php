@@ -594,7 +594,11 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			case Tx_Extbase_Persistence_PropertyType::DECIMAL:
 				return (float) $string;
 			case Tx_Extbase_Persistence_PropertyType::DATE:
-				return new DateTime(date('r', $string));
+				if (empty($string)) { // 0 -> NULL !!!
+					return NULL;
+				} else {
+					return new DateTime(date('c', $string));
+				}
 			case Tx_Extbase_Persistence_PropertyType::BOOLEAN:
 				return (boolean) $string;
 			default:
@@ -613,7 +617,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 			$convertedValue = $propertyValue ? 1 : 0;
 		} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
 			$convertedValue = $propertyValue->getUid();
-		} elseif (is_a($propertyValue, 'DateTime')) {
+		} elseif ($propertyValue instanceof DateTime) {
 			$convertedValue = $propertyValue->format('U');
 		} elseif (is_int($propertyValue)) {
 			$convertedValue = $propertyValue;

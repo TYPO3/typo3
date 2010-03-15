@@ -341,97 +341,56 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	}
 
 	/**
-	 * Performs a logical conjunction of the given constraints.
+	 * Performs a logical conjunction of the given constraints. The method takes one or more contraints and concatenates them with a boolean AND.
+	 * It also scepts a single array of constraints to be concatenated.
 	 *
-	 * @param object $constraint1 First constraint
-	 * @param object $constraint2 Second constraint
+	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return Tx_Extbase_Persistence_QOM_AndInterface
-	 * @api Passing more than two constraints as arguments is currently not yet conform to the api of FLOW3
+	 * @api
 	 */
-	public function logicalAnd($constraint1, $constraint2) {
-		$constraints = func_get_args();
-		$numberOfConstraints = func_num_args();
-		if (func_num_args() > 1) {
-			$resultingConstraint = array_shift($constraints);
-			foreach ($constraints as $constraint) {
-				$resultingConstraint = $this->qomFactory->_and(
-					$resultingConstraint,
-					$constraint
-					);
-			}
+	public function logicalAnd($constraint1) {
+		if (is_array($constraint1)) {
+			$resultingConstraint = array_shift($constraint1);
+			$constraints = $constraint1;
 		} else {
-			throw new Tx_Extbase_Persistence_Exception_InvalidNumberOfConstraints('There must be at least two constraints. Got only ' . func_num_args() . '.', 1268056288);
-		}
-		return $resultingConstraint;
-	}
-
-	/**
-	 * Performs a logical conjunction of the given constraints.
-	 *
-	 * @param array $constraints An array of constraints
-	 * @return Tx_Extbase_Persistence_QOM_AndInterface
-	 */
-	public function implodeAnd(array $constraints) {
-		$numberOfConstraints = count($constraints);
-		$resultingConstraint = NULL;
-		if ($numberOfConstraints === 1) {
-			return array_shift($constraints);
-		} elseif ($numberOfConstraints > 1) {
+			$constraints = func_get_args();
 			$resultingConstraint = array_shift($constraints);
-			foreach ($constraints as $constraint) {
-				$resultingConstraint = $this->qomFactory->_and(
-					$resultingConstraint,
-					$constraint
-					);
-			}
+		}
+		if ($resultingConstraint === NULL) {
+			throw new Tx_Extbase_Persistence_Exception_InvalidNumberOfConstraints('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
+		}
+		foreach ($constraints as $constraint) {
+			$resultingConstraint = $this->qomFactory->_and(
+				$resultingConstraint,
+				$constraint
+				);
 		}
 		return $resultingConstraint;
 	}
-
+	
 	/**
 	 * Performs a logical disjunction of the two given constraints
 	 *
-	 * @param object $constraint1 First constraint
-	 * @param object $constraint2 Second constraint
+	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return Tx_Extbase_Persistence_QOM_OrInterface
-	 * @api Passing more than two constraints as arguments is currently not yet conform to the api of FLOW3
+	 * @api
 	 */
-	public function logicalOr($constraint1, $constraint2) {
-		$constraints = func_get_args();
-		$numberOfConstraints = func_num_args();
-		if (func_num_args() > 1) {
-			$resultingConstraint = array_shift($constraints);
-			foreach ($constraints as $constraint) {
-				$resultingConstraint = $this->qomFactory->_or(
-					$resultingConstraint,
-					$constraint
-					);
-			}
+	public function logicalOr($constraint1) {
+		if (is_array($constraint1)) {
+			$resultingConstraint = array_shift($constraint1);
+			$constraints = $constraint1;
 		} else {
-			throw new Tx_Extbase_Persistence_Exception_InvalidNumberOfConstraints('There must be at least two constraints. Got only ' . func_num_args() . '.', 1268056288);
-		}
-		return $resultingConstraint;
-	}
-
-	/**
-	 * Performs a logical conjunction of the given constraints.
-	 *
-	 * @param array $constraints An array of constraints
-	 * @return Tx_Extbase_Persistence_QOM_AndInterface
-	 */
-	public function implodeOr(array $constraints) {
-		$numberOfConstraints = count($constraints);
-		$resultingConstraint = NULL;
-		if ($numberOfConstraints === 1) {
-			return array_shift($constraints);
-		} elseif ($numberOfConstraints > 1) {
+			$constraints = func_get_args();
 			$resultingConstraint = array_shift($constraints);
-			foreach ($constraints as $constraint) {
-				$resultingConstraint = $this->qomFactory->_or(
-					$resultingConstraint,
-					$constraint
-					);
-			}
+		}
+		if ($resultingConstraint === NULL) {
+			throw new Tx_Extbase_Persistence_Exception_InvalidNumberOfConstraints('There must be at least one constraint or a non-empty array of constraints given.', 1268056288);
+		}
+		foreach ($constraints as $constraint) {
+			$resultingConstraint = $this->qomFactory->_or(
+				$resultingConstraint,
+				$constraint
+				);
 		}
 		return $resultingConstraint;
 	}
