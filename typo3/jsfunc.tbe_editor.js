@@ -206,19 +206,21 @@ var TBE_EDITOR = {
 					}
 				}
 			} else if (type == 'range' && elementData.range) {
+				var numberOfElements = 0;
 				form = document[TBE_EDITOR.formname][elementName+'_list'];
 				if (!form) {
 						// special treatment for IRRE fields:
 					var tempObj = document[TBE_EDITOR.formname][elementName];
 					if (tempObj && Element.hasClassName(tempObj, 'inlineRecord')) {
 						form = tempObj.value ? tempObj.value.split(',') : [];
+						numberOfElements = form.length;
 					}
 
 				} else {
 						// special treatment for file uploads
 					var tempObj = document[TBE_EDITOR.formname][elementName.replace(/^data/, 'data_files')];
-					var numberOfElements = form.length;
-
+					numberOfElements = form.length;
+					
 					if (tempObj && tempObj.type == 'file' && tempObj.value) {
 						numberOfElements++; // Add new uploaded file to the number of elements
 					}
