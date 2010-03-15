@@ -35,15 +35,6 @@
  */
 class Tx_Extbase_Persistence_QOM_Operand implements Tx_Extbase_Persistence_QOM_OperandInterface {
 
-	/**
-	 * Does nothing
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-	}
-
 }
 
 ?>

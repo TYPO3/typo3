@@ -292,7 +292,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 		$childSortByFieldName = $columnMap->getChildSortByFieldName();
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-			$query = $queryFactory->create($this->getType($parentObject, $propertyName));
+			$query = $queryFactory->create($this->getType(get_class($parentObject), $propertyName));
 			if (isset($parentKeyFieldName)) {
 				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
 			} else {
@@ -331,7 +331,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 
 			$query->setSource($source);
 			if (!empty($childSortByFieldName)) {
-				$query->setOrderings(array($relationTableName . '.' . $childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
 			
 			// attempt to support MM_match_fields
@@ -494,22 +494,18 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * Returns the type of a child object.
 	 *
-	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject The object instance this proxy is part of
+	 * @param string $parentClassName The class name of the object this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @return string The class name of the child object
 	 */
-	protected function getType(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
-		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-		$childClassName = $columnMap->getChildClassName();
-		if (!empty($childClassName)) {
-			$elementType = $childClassName;
-		} elseif (!empty($propertyMetaData['type'])) {
-			$elementType = $propertyMetaData['type'];
+	public function getType($parentClassName, $propertyName) {
+		$propertyMetaData = $this->reflectionService->getClassSchema($parentClassName)->getProperty($propertyName);
+		if (!empty($propertyMetaData['type'])) {
+			$type = $propertyMetaData['type'];
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Could not determine the child object object type.', 1251315967);
 		}
-		return $elementType;
+		return $type;
 	}
 
 	/**
@@ -521,11 +517,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function getElementType($parentClassName, $propertyName) {
 		$propertyMetaData = $this->reflectionService->getClassSchema($parentClassName)->getProperty($propertyName);
-		$columnMap = $this->getDataMap($parentClassName)->getColumnMap($propertyName);
-		$childClassName = $columnMap->getChildClassName();
-		if (!empty($childClassName)) {
-			$elementType = $childClassName;
-		} elseif (!empty($propertyMetaData['elementType'])) {
+		if (!empty($propertyMetaData['elementType'])) {
 			$elementType = $propertyMetaData['elementType'];
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Could not determine the type of the contained objects.', 1251315966);

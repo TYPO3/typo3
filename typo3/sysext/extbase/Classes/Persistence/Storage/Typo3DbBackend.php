@@ -227,8 +227,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->checkSqlErrors();
 		$rows = $this->getRowsFromResult($query->getSource(), $result);
 		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows);
-
-		// $objectData = $this->processObjectRecords($statementHandle);
+		// TODO: implement $objectData = $this->processObjectRecords($statementHandle);
 		return $rows;
 	}
 
@@ -261,6 +260,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function parseQuery(Tx_Extbase_Persistence_QueryInterface $query, array &$parameters) {
 		$sql = array();
+		$sql['keywords'] = array();
 		$sql['tables'] = array();
 		$sql['unions'] = array();
 		$sql['fields'] = array();
@@ -293,7 +293,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return string The SQL statement
 	 */
 	public function buildQuery(array $sql) {
-		$statement = 'SELECT DISTINCT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']) . ' '. implode(' ', $sql['unions']);
+		$statement = 'SELECT ' . implode(' ', $sql['keywords']) . ' '. implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']) . ' '. implode(' ', $sql['unions']);
 		if (!empty($sql['where'])) {
 			$statement .= ' WHERE ' . implode('', $sql['where']);
 			if (!empty($sql['additionalWhereClause'])) {
@@ -367,7 +367,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected function parseSource(Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 			$tableName = $source->getSelectorName();
-			$sql['fields'][] = $tableName . '.*';
+			$sql['fields'][$tableName] = $tableName . '.*';
 			$sql['tables'][$tableName] = $tableName;
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 			$this->parseJoin($source, $sql);
@@ -383,26 +383,31 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function parseJoin(Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql) {
 		$leftSource = $join->getLeft();
+		$leftClassName = $leftSource->getNodeTypeName();
 		$leftTableName = $leftSource->getSelectorName();
+		// $sql['fields'][$leftTableName] = $leftTableName . '.*';
 		$rightSource = $join->getRight();
-		$rightTableName = $rightSource->getSelectorName();
-
-		$sql['fields'][] = $leftTableName . '.*';
-		$sql['fields'][] = $rightTableName . '.*';
-
-		// TODO Implement support for different join types and nested joins
+		if ($rightSource instanceof	Tx_Extbase_Persistence_QOM_JoinInterface) {
+			$rightClassName = $rightSource->getLeft()->getNodeTypeName();
+			$rightTableName = $rightSource->getLeft()->getSelectorName();
+		} else {
+			$rightClassName = $rightSource->getNodeTypeName();
+			$rightTableName = $rightSource->getSelectorName();
+			$sql['fields'][$leftTableName] = $rightTableName . '.*';
+		}
+		
 		$sql['tables'][$leftTableName] = $leftTableName;
-		$sql['unions'][$rightTableName] = 'LEFT JOIN ' . $rightTableName;
+		$sql['unions'][$rightTableName] = 'INNER JOIN ' . $rightTableName;
 
 		$joinCondition = $join->getJoinCondition();
-		// TODO Check the parsing of the join
 		if ($joinCondition instanceof Tx_Extbase_Persistence_QOM_EquiJoinCondition) {
-			// TODO Discuss, if we should use $leftSource instead of $selector1Name
-			$column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftSource->getNodeTypeName());
-			$column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightSource->getNodeTypeName());
-			$sql['unions'][$joinCondition->getSelector2Name()] .= ' ON ' . $joinCondition->getSelector1Name() . '.' . $column1Name . ' = ' . $joinCondition->getSelector2Name() . '.' . $column2Name;
+			$column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
+			$column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
+			$sql['unions'][$rightTableName] .= ' ON ' . $joinCondition->getSelector1Name() . '.' . $column1Name . ' = ' . $joinCondition->getSelector2Name() . '.' . $column2Name;
 		}
-		// TODO Implement childtableWhere
+		if ($rightSource instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+			$this->parseJoin($rightSource, $sql);
+		}
 	}
 
 	/**
@@ -481,11 +486,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$sql['where'][] = '1<>1';
 			} else {
 				$className = $source->getNodeTypeName();
+				$tableName = $this->dataMapper->convertClassNameToTableName($className);
 				$propertyName = $operand1->getPropertyName();
 				while (strpos($propertyName, '.') !== FALSE) {
-					$this->addUnionStatement($className, $propertyName, $sql);
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
 				}
-				$tableName = $this->dataMapper->convertClassNameToTableName($className);
 				$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 				$dataMap = $this->dataMapper->getDataMap($className);
 				$columnMap = $dataMap->getColumnMap($propertyName);
@@ -518,7 +523,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				}
 			}
 			$this->parseDynamicOperand($operand1, $operator, $source, $sql, $parameters);
-			$parameters[] = $this->getPlainValue($operand2);			
+			$parameters[] = $this->getPlainValue($operand2);
 		}
 	}
 	
@@ -557,14 +562,16 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		} elseif ($operand instanceof Tx_Extbase_Persistence_QOM_UpperCaseInterface) {
 			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, $parameters, 'UPPER');
 		} elseif ($operand instanceof Tx_Extbase_Persistence_QOM_PropertyValueInterface) {
+			$propertyName = $operand->getPropertyName();
 			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) { // FIXME Only necessary to differ from  Join
 				$className = $source->getNodeTypeName();
+				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				while (strpos($propertyName, '.') !== FALSE) {
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
+				}
+			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+				$tableName = $source->getJoinCondition()->getSelector1Name();
 			}
-			$propertyName = $operand->getPropertyName();
-			while (strpos($propertyName, '.') !== FALSE) {
-				$this->addUnionStatement($className, $propertyName, $sql);
-			}
-			$tableName = $this->dataMapper->convertClassNameToTableName($className);
 			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 			$operator = $this->resolveOperator($operator);
 			if ($valueFunction === NULL) {
@@ -577,7 +584,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 	}
 	
-	protected function addUnionStatement(&$className, &$propertyPath, array &$sql) {
+	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql) {
 		$explodedPropertyPath = explode('.', $propertyPath, 2);
 		$propertyName = $explodedPropertyPath[0];
 		$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
@@ -591,7 +598,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			} else {
 				$sql['unions'][$childTableName] = 'INNER JOIN ' . $childTableName . ' ON ' . $tableName . '.' . $columnName . '=' . $childTableName . '.uid';
 			}
-			$className = $columnMap->getChildClassName();
+			$className = $this->dataMapper->getType($className, $propertyName);
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			if (isset($parentKeyFieldName)) {
 				$sql['unions'][$childTableName] = 'INNER JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
@@ -610,7 +617,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);
 		}
+		// TODO check if there is another solution for this
+		$sql['keywords']['distinct'] = 'DISTINCT';
 		$propertyPath = $explodedPropertyPath[1];
+		$tableName = $childTableName;
 	}
 
 	/**
@@ -769,37 +779,27 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Transforms orderings into SQL.
 	 *
-	 * @param array $orderings Ann array of orderings (Tx_Extbase_Persistence_QOM_Ordering)
+	 * @param array $orderings An array of orderings (Tx_Extbase_Persistence_QOM_Ordering)
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source
 	 * @param array &$sql The query parts
 	 * @return void
 	 */
 	protected function parseOrderings(array $orderings, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
-		foreach ($orderings as $ordering) {
-			$operand = $ordering->getOperand();
-			$order = $ordering->getOrder();
-			if ($operand instanceof Tx_Extbase_Persistence_QOM_PropertyValue) {
-				switch ($order) {
-					case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING:
-						$order = 'ASC';
-						break;
-					case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING:
-						$order = 'DESC';
-						break;
-					default:
-						throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('Unsupported order encountered.', 1242816074);
+		foreach ($orderings as $propertyName => $order) {
+			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+				$className = $source->getNodeTypeName();
+				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				while (strpos($propertyName, '.') !== FALSE) {
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
 				}
-				$tableName = $operand->getSelectorName();
-				$className = '';
-				if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-					$className = $source->getNodeTypeName();
-				}
-				$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand->getPropertyName(), $className);
-				if (strlen($tableName) > 0) {
-					$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
-				} else {
-					$sql['orderings'][] = $columnName . ' ' . $order;
-				}
+			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+				$tableName = $source->getLeft()->getSelectorName();
+			}
+			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
+			if (strlen($tableName) > 0) {
+				$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
+			} else {
+				$sql['orderings'][] = $columnName . ' ' . $order;
 			}
 		}
 	}

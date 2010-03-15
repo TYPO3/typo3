@@ -365,7 +365,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			if (!$dataMap->isPersistableProperty($propertyName) || $this->propertyValueIsLazyLoaded($propertyValue)) continue;
 			
 			$columnMap = $dataMap->getColumnMap($propertyName);
-			$childClassName = $columnMap->getChildClassName();
 			$propertyMetaData = $classSchema->getProperty($propertyName);
 			$propertyType = $propertyMetaData['type'];
 			// FIXME enable property-type check
@@ -435,6 +434,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		}
 	}
 	
+	/**
+	 * Checks, if the property value is lazy loaded and was not initialized
+	 *
+	 * @param mixed $propertyValue The property value
+	 * @return bool
+	 */
 	public function propertyValueIsLazyLoaded($propertyValue) {
 		if ($propertyValue instanceof Tx_Extbase_Persistence_LazyLoadingProxy) return TRUE;
 		if (is_object($propertyValue) && get_class($propertyValue) === 'Tx_Extbase_Persistence_LazyObjectStorage') {

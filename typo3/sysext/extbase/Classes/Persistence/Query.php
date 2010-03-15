@@ -228,25 +228,15 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @api
 	 */
 	public function setOrderings(array $orderings) {
-		$parsedOrderings = array();
-		foreach ($orderings as $propertyName => $order) {
-			if ($order === Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING) {
-				$parsedOrderings[] = $this->qomFactory->descending($this->qomFactory->propertyValue($propertyName));
-			} elseif ($order === Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING) {
-				$parsedOrderings[] = $this->qomFactory->ascending($this->qomFactory->propertyValue($propertyName));
-			} else {
-				throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('The order you specified for your query is not supported.', 1253785630);
-			}
-		}
-		$this->orderings = $parsedOrderings;
+		$this->orderings = $orderings;
 		return $this;
 	}
 	
 	/**
 	 * Returns the property names to order the result by. Like this:
 	 * array(
-	 *  'foo' => \F3\FLOW3\Persistence\QueryInterface::ORDER_ASCENDING,
-	 *  'bar' => \F3\FLOW3\Persistence\QueryInterface::ORDER_DESCENDING
+	 *  'foo' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING,
+	 *  'bar' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	 * )
 	 *
 	 * @return array

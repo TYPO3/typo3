@@ -237,15 +237,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function getColumnName() {
 		return $this->columnName;
 	}
-
-	public function setChildClassName($childClassName) {
-		$this->childClassName = $childClassName;
-	}
-
-	public function getChildClassName() {
-		return $this->childClassName;
-	}
-
+	
 	public function setChildTableName($childTableName) {
 		$this->childTableName = $childTableName;
 	}

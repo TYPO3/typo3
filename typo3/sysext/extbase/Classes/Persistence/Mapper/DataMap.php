@@ -213,13 +213,13 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		if (isset($columnConfiguration) && $columnConfiguration['type'] !== 'passthrough') {
-			if (isset($columnConfiguration['foreign_table']) && !isset($columnConfiguration['MM']) && !(isset($columnConfiguration['foreign_label']) || isset($columnConfiguration['foreign_selector']))) {
+			if (isset($columnConfiguration['foreign_table']) && !isset($columnConfiguration['MM']) && !isset($columnConfiguration['foreign_selector'])) {
 				if ($columnConfiguration['maxitems'] == 1) {
 					$this->setOneToOneRelation($columnMap, $columnConfiguration);
 				} else {
 					$this->setOneToManyRelation($columnMap, $columnConfiguration);
 				}
-			} elseif (isset($columnConfiguration['MM']) || (isset($columnConfiguration['foreign_label']) || isset($columnConfiguration['foreign_selector']))) {
+			} elseif (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
 				$this->setManyToManyRelation($columnMap, $columnConfiguration);
 			} else {
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
@@ -237,7 +237,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function setOneToOneRelation(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE);
-		$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
 		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
 		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
@@ -255,7 +254,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function setOneToManyRelation(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY);
-		$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
 		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
 		$columnMap->setChildSortbyFieldName($columnConfiguration['foreign_sortby']);
@@ -277,14 +275,12 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		if ($columnConfiguration['type'] === 'inline') {
 			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
 			$childKeyFieldName = $this->determineChildKeyFieldName($columnConfiguration);
-			$columnMap->setChildClassName($this->determineChildClassName($columns[$childKeyFieldName]['config']));
 			$columnMap->setChildTableName($columns[$childKeyFieldName]['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
 			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 			$columnMap->setChildKeyFieldName($childKeyFieldName);
 			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		} else {
-			$columnMap->setChildClassName($this->determineChildClassName($columnConfiguration));
 			$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 			$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
 			$columnMap->setRelationTableName($columnConfiguration['MM']);
@@ -325,34 +321,6 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		return $childKeyFieldName;
 	}
 	
-	/**
-	 * This function determines the child class name. It can either be defined as foreign_class in the column configuration (TCA)
-	 * or it must be defined in the extbase framework configuration (reverse mapping from tableName to className).
-	 * 
-	 * @param $columnConfiguration The column configuration (from TCA)
-	 * @return string The class name of the related child object
-	 */
-	protected function determineChildClassName($columnConfiguration) {
-		$foreignClassName = '';
-		if (is_string($columnConfiguration['foreign_class']) && (strlen($columnConfiguration['foreign_class']) > 0)) {
-			$foreignClassName = $columnConfiguration['foreign_class'];
-		}
-		if (empty($foreignClassName)){
-			$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-			// TODO Apply a cache to increase performance (profile first)
-			if (is_array($extbaseSettings['persistence']['classes'])) {
-				foreach	($extbaseSettings['persistence']['classes'] as $className => $classConfiguration) {
-					if ($classConfiguration['mapping']['tableName'] === $columnConfiguration['foreign_table']) {
-						$foreignClassName = $className;
-						break;
-					}
-				}
-			}
-		}
-		// TODO Throw exception if no appropriate class name was found
-		return $foreignClassName;
-	}
-
 	/**
 	 * Sets the column maps.
 	 *
