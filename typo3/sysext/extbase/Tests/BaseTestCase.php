@@ -65,6 +65,26 @@ abstract class Tx_Extbase_BaseTestCase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Returns a mock object which allows for calling protected methods and access
+	 * of protected properties.
+	 *
+	 * @param string $className Full qualified name of the original class
+	 * @param array $methods
+	 * @param array $arguments
+	 * @param string $mockClassName
+	 * @param boolean $callOriginalConstructor
+	 * @param boolean $callOriginalClone
+	 * @param boolean $callAutoload
+	 * @return object
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @api
+	 */
+	protected function getAccessibleMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE) {
+		return $this->getMock($this->buildAccessibleProxy($originalClassName), $methods, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload);
+	}
+
+
+	/**
 	 * Creates a proxy class of the specified class which allows
 	 * for calling even protected methods and access of protected properties.
 	 *

@@ -182,5 +182,14 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	public function getFlashMessages() {
 		return $this->flashMessages;
 	}
+
+	/**
+	 * Get the flash messages
+	 *
+	 * @return Tx_Extbase_MVC_Controller_FlashMessages
+	 */
+	public function getFlashMessageContainer() {
+		return $this->flashMessages;
+	}
 }
 ?>
