@@ -441,7 +441,9 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 			// PostParse Facet
 		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface) {
-			$viewHelper::postParseEvent($currentDynamicNode, $argumentsObjectTree, $state->getVariableContainer());
+			// Don't just use $viewHelper::postParseEvent(...),
+			// as this will break with PHP < 5.3.
+			call_user_func(array($viewHelper, 'postParseEvent'), $currentDynamicNode, $argumentsObjectTree, $state->getVariableContainer());
 		}
 
 		$this->callInterceptor($currentDynamicNode, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER);
