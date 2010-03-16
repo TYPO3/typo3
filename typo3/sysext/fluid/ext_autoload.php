@@ -17,6 +17,7 @@ return array(
 	'tx_fluid_core_parser_templateparser' => $extensionClassesPath . 'Core/Parser/TemplateParser.php',
 	'tx_fluid_core_parser_syntaxtree_abstractnode' => $extensionClassesPath . 'Core/Parser/SyntaxTree/AbstractNode.php',
 	'tx_fluid_core_parser_syntaxtree_arraynode' => $extensionClassesPath . 'Core/Parser/SyntaxTree/ArrayNode.php',
+	'tx_fluid_core_parser_syntaxtree_nodeinterface' => $extensionClassesPath . 'Core/Parser/SyntaxTree/NodeInterface.php',
 	'tx_fluid_core_parser_syntaxtree_objectaccessornode' => $extensionClassesPath . 'Core/Parser/SyntaxTree/ObjectAccessorNode.php',
 	'tx_fluid_core_parser_syntaxtree_rootnode' => $extensionClassesPath . 'Core/Parser/SyntaxTree/RootNode.php',
 	'tx_fluid_core_parser_syntaxtree_textnode' => $extensionClassesPath . 'Core/Parser/SyntaxTree/TextNode.php',

@@ -16,7 +16,7 @@
 /**
  * @package
  * @subpackage
- * @version $Id$
+ * @version $Id: ObjectFactory.php 1734 2009-11-25 21:53:57Z stucki $
  */
 /**
  * Class emulating the object factory for Fluid v4.
@@ -24,7 +24,7 @@
  * DO NOT USE DIRECTLY!
  * @internal
  */
-class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
+class Tx_Fluid_Compatibility_ObjectManager implements t3lib_Singleton {
 
 	protected $injectors = array(
 		'Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper' => array(
@@ -40,10 +40,13 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 			'injectVariableContainer' => 'Tx_Fluid_Core_ViewHelper_TemplateVariableContainer'
 		),
 		'Tx_Fluid_Core_Parser_TemplateParser' => array(
-			'injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'
+			'injectObjectManager' => 'Tx_Fluid_Compatibility_ObjectManager'
 		),
 		'Tx_Fluid_Core_Rendering_RenderingContext' => array(
-			'injectObjectFactory' => 'Tx_Fluid_Compatibility_ObjectFactory'
+			'injectObjectManager' => 'Tx_Fluid_Compatibility_ObjectManager'
+		),
+		'Tx_Fluid_Core_Parser_Interceptor_Escape' => array(
+			'injectObjectManager' => 'Tx_Fluid_Compatibility_ObjectManager'
 		),
 		'Tx_Extbase_Validation_ValidatorResolver' => array(
 			'injectObjectManager' => 'Tx_Extbase_Object_Manager'
@@ -59,7 +62,7 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 	 * DO NOT USE DIRECTLY!
 	 *
 	 * @param string $objectName Object name to create
-	 * @retrun object Object which was created
+	 * @return object Object which was created
 	 * @internal
 	 */
 	public function create($objectName) {
@@ -85,6 +88,10 @@ class Tx_Fluid_Compatibility_ObjectFactory implements t3lib_Singleton {
 			call_user_func(array($object, $injectMethodName), $this->create($injectObjectName));
 		}
 		return $object;
+	}
+
+	public function get($objectName) {
+		return $this->create($objectName);
 	}
 }
 

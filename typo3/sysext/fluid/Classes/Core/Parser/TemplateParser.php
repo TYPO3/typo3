@@ -78,7 +78,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 *
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public static $SPLIT_PATTERN_TAGARGUMENTS = '/(?:\s*(?P<Argument>[a-zA-Z0-9:]+)=(?:"(?P<ValueDoubleQuoted>(?:\\\"|[^"])*)"|\'(?P<ValueSingleQuoted>(?:\\\\\'|[^\'])*)\')\s*)/';
+	public static $SPLIT_PATTERN_TAGARGUMENTS = '/(?:\s*(?P<Argument>[a-zA-Z0-9:]+)=(?:(?P<ValueQuoted>(?:"(?:\\\"|[^"])*")|(?:\'(?:\\\\\'|[^\'])*\')))\s*)/';
 
 	/**
 	 * This pattern detects CDATA sections and outputs the text between opening
@@ -119,7 +119,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 */
 	public static $SCAN_PATTERN_SHORTHANDSYNTAX_OBJECTACCESSORS = '/
 		^{                                                      # Start of shorthand syntax
-			                                                 # A shorthand syntax is either...
+			                                                # A shorthand syntax is either...
 			(?P<Object>[a-zA-Z0-9\-_.]*)                                     # ... an object accessor
 			\s*(?P<Delimiter>(?:->)?)\s*
 
@@ -158,7 +158,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 */
 	public static $SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER = '/
 
-		(?P<NamespaceIdentifier>[a-zA-Z0-9]+)                               # Namespace prefix of ViewHelper (as in $SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG)
+		(?P<NamespaceIdentifier>[a-zA-Z0-9]+)       # Namespace prefix of ViewHelper (as in $SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG)
 		:
 		(?P<MethodIdentifier>[a-zA-Z0-9\\.]+)
 		\(                                          # Opening parameter brackets of ViewHelper
@@ -217,8 +217,10 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 			(?P<Key>[a-zA-Z0-9\-_]+)                               # The keys of the array
 			\s*:\s*                                                   # Key|Value delimiter :
 			(?:                                                       # Possible value options:
-				"(?P<DoubleQuotedString>(?:\\\"|[^"])*)"              # Double qouoted string
-				|\'(?P<SingleQuotedString>(?:\\\\\'|[^\'])*)\'        # Single quoted string
+				(?P<QuotedString>                                     # Quoted string
+					(?:"(?:\\\"|[^"])*")
+					|(?:\'(?:\\\\\'|[^\'])*\')
+				)
 				|(?P<VariableIdentifier>[a-zA-Z][a-zA-Z0-9\-_.]*)    # variable identifiers have to start with a letter
 				|(?P<Number>[0-9.]+)                                  # Number
 				|{\s*(?P<Subarray>(?:(?P>ArrayPart)\s*,?\s*)+)\s*}              # Another sub-array
@@ -235,9 +237,14 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	);
 
 	/**
-	 * @var \Tx_Fluid_Compatibility_ObjectFactory
+	 * @var \Tx_Fluid_Compatibility_ObjectManager
 	 */
-	protected $objectFactory;
+	protected $objectManager;
+
+	/**
+	 * @var Tx_Fluid_Core_Parser_Configuration
+	 */
+	protected $configuration;
 
 	/**
 	 * Constructor. Preprocesses the $SCAN_PATTERN_NAMESPACEDECLARATION by
@@ -252,12 +259,23 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	/**
 	 * Inject object factory
 	 *
-	 * @param Tx_Fluid_Compatibility_ObjectFactory $objectFactory
+	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function injectObjectFactory(Tx_Fluid_Compatibility_ObjectFactory $objectFactory) {
-		$this->objectFactory = $objectFactory;
+	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * Set the configuration for the parser.
+	 *h
+	 * @param Tx_Fluid_Core_Parser_Configuration $configuration
+	 * @return void
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	public function setConfiguration(Tx_Fluid_Core_Parser_Configuration $configuration = NULL) {
+		$this->configuration = $configuration;
 	}
 
 	/**
@@ -271,11 +289,11 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	public function parse($templateString) {
 		if (!is_string($templateString)) throw new Tx_Fluid_Core_Parser_Exception('Parse requires a template string as argument, ' . gettype($templateString) . ' given.', 1224237899);
 
-		$this->initialize();
+		$this->reset();
 
 		$templateString = $this->extractNamespaceDefinitions($templateString);
-		$splittedTemplate = $this->splitTemplateAtDynamicTags($templateString);
-		$parsingState = $this->buildMainObjectTree($splittedTemplate);
+		$splitTemplate = $this->splitTemplateAtDynamicTags($templateString);
+		$parsingState = $this->buildObjectTree($splitTemplate);
 
 		return $parsingState;
 	}
@@ -296,7 +314,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function initialize() {
+	protected function reset() {
 		$this->namespaces = array(
 			'f' => 'Tx_Fluid_ViewHelpers'
 		);
@@ -340,37 +358,29 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	}
 
 	/**
-	 * Build object tree from the splitted template
+	 * Build object tree from the split template
 	 *
-	 * @param array $splittedTemplate The splitted template, so that every tag with a namespace declaration is already a seperate array element.
+	 * @param array $splitTemplate The split template, so that every tag with a namespace declaration is already a seperate array element.
 	 * @return Tx_Fluid_Core_Parser_ParsingState
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function buildMainObjectTree($splittedTemplate) {
+	protected function buildObjectTree($splitTemplate) {
 		$regularExpression_openingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_VIEWHELPERTAG);
 		$regularExpression_closingViewHelperTag = $this->prepareTemplateRegularExpression(self::$SCAN_PATTERN_TEMPLATE_CLOSINGVIEWHELPERTAG);
 
-		$state = $this->objectFactory->create('Tx_Fluid_Core_Parser_ParsingState');
-		$rootNode = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
+		$state = $this->objectManager->create('Tx_Fluid_Core_Parser_ParsingState');
+		$rootNode = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
 		$state->setRootNode($rootNode);
 		$state->pushNodeToStack($rootNode);
 
-		foreach ($splittedTemplate as $templateElement) {
+		foreach ($splitTemplate as $templateElement) {
 			$matchedVariables = array();
 			if (preg_match(self::$SCAN_PATTERN_CDATA, $templateElement, $matchedVariables) > 0) {
 				$this->textHandler($state, $matchedVariables[1]);
 			} elseif (preg_match($regularExpression_openingViewHelperTag, $templateElement, $matchedVariables) > 0) {
-				$namespaceIdentifier = $matchedVariables['NamespaceIdentifier'];
-				$methodIdentifier = $matchedVariables['MethodIdentifier'];
-				$selfclosing = $matchedVariables['Selfclosing'] === '' ? FALSE : TRUE;
-				$arguments = $matchedVariables['Attributes'];
-
-				$this->openingViewHelperTagHandler($state, $namespaceIdentifier, $methodIdentifier, $arguments, $selfclosing);
+				$this->openingViewHelperTagHandler($state, $matchedVariables['NamespaceIdentifier'], $matchedVariables['MethodIdentifier'], $matchedVariables['Attributes'], ($matchedVariables['Selfclosing'] === '' ? FALSE : TRUE));
 			} elseif (preg_match($regularExpression_closingViewHelperTag, $templateElement, $matchedVariables) > 0) {
-				$namespaceIdentifier = $matchedVariables['NamespaceIdentifier'];
-				$methodIdentifier = $matchedVariables['MethodIdentifier'];
-
-				$this->closingViewHelperTagHandler($state, $namespaceIdentifier, $methodIdentifier);
+				$this->closingViewHelperTagHandler($state, $matchedVariables['NamespaceIdentifier'], $matchedVariables['MethodIdentifier']);
 			} else {
 				$this->textAndShorthandSyntaxHandler($state, $templateElement);
 			}
@@ -398,7 +408,8 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		$this->initializeViewHelperAndAddItToStack($state, $namespaceIdentifier, $methodIdentifier, $argumentsObjectTree);
 
 		if ($selfclosing) {
-			$state->popNodeFromStack();
+			$node = $state->popNodeFromStack();
+			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER);
 		}
 	}
 
@@ -412,37 +423,39 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @param array $argumentsObjectTree Arguments object tree
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function initializeViewHelperAndAddItToStack(Tx_Fluid_Core_Parser_ParsingState $state, $namespaceIdentifier, $methodIdentifier, $argumentsObjectTree) {
 		if (!array_key_exists($namespaceIdentifier, $this->namespaces)) {
 			throw new Tx_Fluid_Core_Parser_Exception('Namespace could not be resolved. This exception should never be thrown!', 1224254792);
 		}
 
-		$viewHelperName = $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier);
-
-		$viewHelper = $this->objectFactory->create($viewHelperName);
+		$viewHelper = $this->objectManager->create($this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier));
 		$expectedViewHelperArguments = $viewHelper->prepareArguments();
 		$this->abortIfUnregisteredArgumentsExist($expectedViewHelperArguments, $argumentsObjectTree);
 		$this->abortIfRequiredArgumentsAreMissing($expectedViewHelperArguments, $argumentsObjectTree);
 
-		$currentDynamicNode = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', $viewHelperName, $argumentsObjectTree);
+		$currentDynamicNode = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', $viewHelper, $argumentsObjectTree);
 
 		$state->getNodeFromStack()->addChildNode($currentDynamicNode);
 
 			// PostParse Facet
-		if (in_array('Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface', class_implements($viewHelperName))) {
-			call_user_func(array($viewHelperName, 'postParseEvent'), $currentDynamicNode, $argumentsObjectTree, $state->getVariableContainer());
+		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_Facets_PostParseInterface) {
+			$viewHelper::postParseEvent($currentDynamicNode, $argumentsObjectTree, $state->getVariableContainer());
 		}
+
+		$this->callInterceptor($currentDynamicNode, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER);
 
 		$state->pushNodeToStack($currentDynamicNode);
 	}
 
 	/**
-	 * Throw a ParsingException if there are arguments which were not registered
+	 * Throw an exception if there are arguments which were not registered
 	 * before.
 	 *
 	 * @param array $expectedArguments Array of Tx_Fluid_Core_ViewHelper_ArgumentDefinition of all expected arguments
 	 * @param array $actualArguments Actual arguments
+	 * @throws Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function abortIfUnregisteredArgumentsExist($expectedArguments, $actualArguments) {
@@ -459,10 +472,11 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	}
 
 	/**
-	 * Throw a ParsingException if required arguments are missing
+	 * Throw an exception if required arguments are missing
 	 *
 	 * @param array $expectedArguments Array of Tx_Fluid_Core_ViewHelper_ArgumentDefinition of all expected arguments
 	 * @param array $actualArguments Actual arguments
+	 * @throws Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function abortIfRequiredArgumentsAreMissing($expectedArguments, $actualArguments) {
@@ -475,11 +489,11 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	}
 
 	/**
-	 * Resolve a view helper.
+	 * Resolve a viewhelper name.
 	 *
 	 * @param string $namespaceIdentifier Namespace identifier for the view helper.
 	 * @param string $methodIdentifier Method identifier, might be hierarchical like "link.url"
-	 * @return array An Array where the first argument is the object to call the method on, and the second argument is the method name
+	 * @return string The fully qualified class name of the viewhelper
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function resolveViewHelperName($namespaceIdentifier, $methodIdentifier) {
@@ -504,6 +518,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @param string $namespaceIdentifier Namespace identifier for the closing tag.
 	 * @param string $methodIdentifier Method identifier.
 	 * @return void
+	 * @throws Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function closingViewHelperTagHandler(Tx_Fluid_Core_Parser_ParsingState $state, $namespaceIdentifier, $methodIdentifier) {
@@ -517,6 +532,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		if ($lastStackElement->getViewHelperClassName() != $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier)) {
 			throw new Tx_Fluid_Core_Parser_Exception('Templating tags not properly nested. Expected: ' . $lastStackElement->getViewHelperClassName() . '; Actual: ' . $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier), 1224485398);
 		}
+		$this->callInterceptor($lastStackElement, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER);
 	}
 
 	/**
@@ -527,6 +543,9 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 *
 	 * @param Tx_Fluid_Core_Parser_ParsingState $state The current parsing state
 	 * @param string $objectAccessorString String which identifies which objects to fetch
+	 * @param string $delimiter
+	 * @param string $viewHelperString
+	 * @param string $additionalViewHelpersString
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -545,36 +564,61 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		$matches = array();
 		if (strlen($viewHelperString) > 0 && preg_match_all(self::$SPLIT_PATTERN_SHORTHANDSYNTAX_VIEWHELPER, $viewHelperString, $matches, PREG_SET_ORDER) > 0) {
 				// The last ViewHelper has to be added first for correct chaining.
-			$matches = array_reverse($matches);
-			foreach ($matches as $singleMatch) {
-				$namespaceIdentifier = $singleMatch['NamespaceIdentifier'];
-				$methodIdentifier = $singleMatch['MethodIdentifier'];
+			foreach (array_reverse($matches) as $singleMatch) {
 				if (strlen($singleMatch['ViewHelperArguments']) > 0) {
-					$arguments = $this->recursiveArrayHandler($singleMatch['ViewHelperArguments']);
-					$arguments = $this->postProcessArgumentsForObjectAccessor($arguments);
+					$arguments = $this->postProcessArgumentsForObjectAccessor(
+						$this->recursiveArrayHandler($singleMatch['ViewHelperArguments'])
+					);
 				} else {
 					$arguments = array();
 				}
-				$this->initializeViewHelperAndAddItToStack($state, $namespaceIdentifier, $methodIdentifier, $arguments);
+				$this->initializeViewHelperAndAddItToStack($state, $singleMatch['NamespaceIdentifier'], $singleMatch['MethodIdentifier'], $arguments);
 				$numberOfViewHelpers++;
 			}
 		}
 
 			// Object Accessor
 		if (strlen($objectAccessorString) > 0) {
-			$node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
+			
+			$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
+			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR);
+
 			$state->getNodeFromStack()->addChildNode($node);
 		}
 
 			// Close ViewHelper Tags if needed.
 		for ($i=0; $i<$numberOfViewHelpers; $i++) {
-			$state->popNodeFromStack();
+			$node = $state->popNodeFromStack();
+			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER);
+		}
+	}
+
+	/**
+	 * Call all interceptors registered for a given interception point.
+	 *
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node The syntax tree node which can be modified by the interceptors.
+	 * @param int the interception point. One of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants.
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	protected function callInterceptor(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface &$node, $interceptionPoint) {
+		if ($this->configuration !== NULL) {
+			// $this->configuration is UNSET inside the arguments of a ViewHelper.
+			// That's why the interceptors are only called if the object accesor is not inside a ViewHelper Argument
+			// This could be a problem if We have a ViewHelper as an argument to another ViewHelper, and an ObjectAccessor nested inside there.
+			// TODO: Clean up this.
+			$interceptors = $this->configuration->getInterceptors($interceptionPoint);
+			if (count($interceptors) > 0) {
+				foreach($interceptors as $interceptor) {
+					$node = $interceptor->process($node, $interceptionPoint);
+				}
+			}
 		}
 	}
 
 	/**
 	 * Post process the arguments for the ViewHelpers in the object accessor
-	 * syntax. We need to convert an array into an array of ViewHelper Nodes
+	 * syntax. We need to convert an array into an array of (only) nodes
 	 *
 	 * @param array $arguments The arguments to be processed
 	 * @return array the processed array
@@ -584,7 +628,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	protected function postProcessArgumentsForObjectAccessor(array $arguments) {
 		foreach ($arguments as $argumentName => $argumentValue) {
 			if (!($argumentValue instanceof Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode)) {
-				$arguments[$argumentName] = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', (string)$argumentValue);
+				$arguments[$argumentName] = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', (string)$argumentValue);
 			}
 		}
 		return $arguments;
@@ -604,14 +648,14 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		$argumentsObjectTree = array();
 		$matches = array();
 		if (preg_match_all(self::$SPLIT_PATTERN_TAGARGUMENTS, $argumentsString, $matches, PREG_SET_ORDER) > 0) {
+			$configurationBackup = $this->configuration;
+			$this->configuration = NULL;
 			foreach ($matches as $singleMatch) {
 				$argument = $singleMatch['Argument'];
-				if (!array_key_exists('ValueSingleQuoted', $singleMatch)) $singleMatch['ValueSingleQuoted'] = '';
-				if (!array_key_exists('ValueDoubleQuoted', $singleMatch)) $singleMatch['ValueDoubleQuoted'] = '';
-
-				$value = $this->unquoteArgumentString($singleMatch['ValueSingleQuoted'], $singleMatch['ValueDoubleQuoted']);
+				$value = $this->unquoteString($singleMatch['ValueQuoted']);
 				$argumentsObjectTree[$argument] = $this->buildArgumentObjectTree($value);
 			}
+			$this->configuration = $configurationBackup;
 		}
 		return $argumentsObjectTree;
 	}
@@ -629,32 +673,32 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 */
 	protected function buildArgumentObjectTree($argumentString) {
 		if (strstr($argumentString, '{') === FALSE && strstr($argumentString, '<') === FALSE) {
-			return $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $argumentString);
+			return $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $argumentString);
 		}
-		$splittedArgument = $this->splitTemplateAtDynamicTags($argumentString);
-		$rootNode = $this->buildMainObjectTree($splittedArgument)->getRootNode();
+		$splitArgument = $this->splitTemplateAtDynamicTags($argumentString);
+		$rootNode = $this->buildObjectTree($splitArgument)->getRootNode();
 		return $rootNode;
 	}
 
 	/**
-	 * Removes escapings from a given argument string. Expects two string
-	 * parameters, with one of them being empty.
-	 * The first parameter should be non-empty if the argument was quoted by
-	 * single quotes, and the second parameter should be non-empty if the
-	 * argument was quoted by double quotes.
+	 * Removes escapings from a given argument string and trims the outermost
+	 * quotes.
 	 *
 	 * This method is meant as a helper for regular expression results.
 	 *
-	 * @param string $singleQuotedValue Value, if quoted by single quotes
-	 * @param string $doubleQuotedValue Value, if quoted by double quotes
+	 * @param string $quotedValue Value to unquote
 	 * @return string Unquoted value
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	protected function unquoteArgumentString($singleQuotedValue, $doubleQuotedValue) {
-		if ($singleQuotedValue != '') {
-			$value = str_replace("\\'", "'", $singleQuotedValue);
-		} else {
-			$value = str_replace('\"', '"', $doubleQuotedValue);
+	protected function unquoteString($quotedValue) {
+		switch ($quotedValue[0]) {
+			case '"':
+				$value = str_replace('\"', '"', trim($quotedValue, '"'));
+			break;
+			case "'":
+				$value = str_replace("\'", "'", trim($quotedValue, "'"));
+			break;
 		}
 		return str_replace('\\\\', '\\', $value);
 	}
@@ -707,8 +751,9 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function arrayHandler(Tx_Fluid_Core_Parser_ParsingState $state, $arrayText) {
-		$node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode', $this->recursiveArrayHandler($arrayText));
-		$state->getNodeFromStack()->addChildNode($node);
+		$state->getNodeFromStack()->addChildNode(
+			$this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode', $this->recursiveArrayHandler($arrayText))
+		);
 	}
 
 	/**
@@ -732,17 +777,14 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 			foreach ($matches as $singleMatch) {
 				$arrayKey = $singleMatch['Key'];
 				if (!empty($singleMatch['VariableIdentifier'])) {
-					$arrayToBuild[$arrayKey] = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $singleMatch['VariableIdentifier']);
+					$arrayToBuild[$arrayKey] = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $singleMatch['VariableIdentifier']);
 				} elseif (array_key_exists('Number', $singleMatch) && ( !empty($singleMatch['Number']) || $singleMatch['Number'] === '0' ) ) {
 					$arrayToBuild[$arrayKey] = floatval($singleMatch['Number']);
-				} elseif ( ( array_key_exists('DoubleQuotedString', $singleMatch) && !empty($singleMatch['DoubleQuotedString']) )
-							|| ( array_key_exists('SingleQuotedString', $singleMatch) && !empty($singleMatch['SingleQuotedString']) ) ) {
-					if (!array_key_exists('SingleQuotedString', $singleMatch)) $singleMatch['SingleQuotedString'] = '';
-					if (!array_key_exists('DoubleQuotedString', $singleMatch)) $singleMatch['DoubleQuotedString'] = '';
-					$argumentString = $this->unquoteArgumentString($singleMatch['SingleQuotedString'], $singleMatch['DoubleQuotedString']);
+				} elseif ( ( array_key_exists('QuotedString', $singleMatch) && !empty($singleMatch['QuotedString']) ) ) {
+					$argumentString = $this->unquoteString($singleMatch['QuotedString']);
 					$arrayToBuild[$arrayKey] = $this->buildArgumentObjectTree($argumentString);
 				} elseif ( array_key_exists('Subarray', $singleMatch) && !empty($singleMatch['Subarray'])) {
-					$arrayToBuild[$arrayKey] = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode', $this->recursiveArrayHandler($singleMatch['Subarray']));
+					$arrayToBuild[$arrayKey] = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode', $this->recursiveArrayHandler($singleMatch['Subarray']));
 				} else {
 					throw new Tx_Fluid_Core_Parser_Exception('This exception should never be thrown, as the array value has to be of some type (Value given: "' . var_export($singleMatch, TRUE) . '"). Please post your template to the bugtracker at forge.typo3.org.', 1225136013);
 				}
@@ -760,10 +802,14 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	 * @param string $text
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function textHandler(Tx_Fluid_Core_Parser_ParsingState $state, $text) {
-		$node = $this->objectFactory->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $text);
+		$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $text);
+		$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_TEXT);
+		
 		$state->getNodeFromStack()->addChildNode($node);
 	}
+
 }
 ?>

@@ -51,13 +51,14 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	}
 
 	/**
-	 * Return the text associated to the syntax tree.
+	 * Return the text associated to the syntax tree. Text from child nodes is
+	 * appended to the text in the node's own text.
 	 *
-	 * @return string the text stored in this node.
+	 * @return string the text stored in this node/subtree.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function evaluate() {
-		return $this->text;
+		return $this->text . $this->evaluateChildNodes();
 	}
 }
 

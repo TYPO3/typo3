@@ -21,23 +21,50 @@
  *                                                                        */
 
 /**
+ * Node in the syntax tree.
  *
- *
- * @version $Id$
+ * @version $Id: NodeInterface.php 3751 2010-01-22 15:56:47Z k-fish $
  * @package Fluid
- * @subpackage Core\Rendering
+ * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @scope prototype
  */
-interface Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface {
+interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
 
 	/**
-	 * Post-Process an Object Accessor
-	 *
-	 * @param mixed $object the object that is currently rendered
-	 * @param boolean $enabled TRUE if post processing is currently enabled.
-	 * @return mixed $object the original object. If not within arguments and of type string, the value is htmlspecialchar'ed
+	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext Rendering Context to be used for this evaluation
+	 * @return void
 	 */
-	public function process($object, $enabled);
+	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext);
 
+	/**
+	 * Evaluate all child nodes and return the evaluated results.
+	 *
+	 * @return mixed Normally, an object is returned - in case it is concatenated with a string, a string is returned.
+	 */
+	public function evaluateChildNodes();
+
+	/**
+	 * Returns all child nodes for a given node.
+	 *
+	 * @return array<Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface> A list of nodes
+	 */
+	public function getChildNodes();
+
+	/**
+	 * Appends a subnode to this node. Is used inside the parser to append children
+	 *
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode The subnode to add
+	 * @return void
+	 */
+	public function addChildNode(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode);
+
+	/**
+	 * Evaluates the node - can return not only strings, but arbitary objects.
+	 *
+	 * @return mixed Evaluated node
+	 */
+	public function evaluate();
 }
+
 ?>

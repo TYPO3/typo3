@@ -32,7 +32,7 @@ class Tx_Fluid_Compatibility_TemplateParserBuilder {
 	 */
 	static public function build() {
 		$templateParser = t3lib_div::makeInstance('Tx_Fluid_Core_Parser_TemplateParser');
-		$templateParser->injectObjectFactory(t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectFactory'));
+		$templateParser->injectObjectManager(t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectManager'));
 		return $templateParser;
 	}
 }

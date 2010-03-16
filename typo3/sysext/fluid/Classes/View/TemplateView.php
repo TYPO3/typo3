@@ -33,12 +33,6 @@
 class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implements Tx_Fluid_View_TemplateViewInterface {
 
 	/**
-	 * Pattern for fetching information from controller object name
-	 * @var string
-	 */
-	protected $PATTERN_CONTROLLER = '/^TxFLUID_NAMESPACE_SEPARATOR\w*FLUID_NAMESPACE_SEPARATOR(?:(?P<SubpackageName>.*)FLUID_NAMESPACE_SEPARATOR)?ControllerFLUID_NAMESPACE_SEPARATOR(?P<ControllerName>\w*)Controller$/';
-
-	/**
 	 * @var Tx_Fluid_Core_Parser_TemplateParser
 	 */
 	protected $templateParser;
@@ -63,16 +57,19 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 	/**
 	 * Path to the template root. If NULL, then $this->templateRootPathPattern will be used.
+	 * @var string
 	 */
 	protected $templateRootPath = NULL;
 
 	/**
 	 * Path to the partial root. If NULL, then $this->partialRootPathPattern will be used.
+	 * @var string
 	 */
 	protected $partialRootPath = NULL;
 
 	/**
 	 * Path to the layout root. If NULL, then $this->layoutRootPathPattern will be used.
+	 * @var string
 	 */
 	protected $layoutRootPath = NULL;
 
@@ -108,7 +105,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 	public function __construct() {
 						$this->templateParser = Tx_Fluid_Compatibility_TemplateParserBuilder::build();
-						$this->objectFactory = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectFactory');
+						$this->objectManager = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectManager');
 					}
 	// Here, the backporter can insert a constructor method, which is needed for Fluid v4.
 
@@ -160,27 +157,42 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 	/**
 	 * Build the rendering context
+	 *
+	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer
+	 * @return Tx_Fluid_Core_Rendering_RenderingContext
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function buildRenderingContext($variableContainer = NULL) {
+	protected function buildRenderingContext(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer = NULL) {
 		if ($variableContainer === NULL) {
-			$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $this->viewData);
+			$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $this->variables);
 		}
-		$renderingConfiguration = $this->objectFactory->create('Tx_Fluid_Core_Rendering_RenderingConfiguration');
-		$renderingConfiguration->setObjectAccessorPostProcessor($this->objectFactory->create('Tx_Fluid_Core_Rendering_HtmlSpecialCharsPostProcessor'));
 
-		$renderingContext = $this->objectFactory->create('Tx_Fluid_Core_Rendering_RenderingContext');
+		$renderingContext = $this->objectManager->create('Tx_Fluid_Core_Rendering_RenderingContext');
 		$renderingContext->setTemplateVariableContainer($variableContainer);
 		if ($this->controllerContext !== NULL) {
 			$renderingContext->setControllerContext($this->controllerContext);
 		}
-		$renderingContext->setRenderingConfiguration($renderingConfiguration);
 
-		$viewHelperVariableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
+		$viewHelperVariableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
 		$viewHelperVariableContainer->setView($this);
 		$renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
 
 		return $renderingContext;
+	}
+
+	/**
+	 * Build parser configuration
+	 *
+	 * @return Tx_Fluid_Core_Parser_Configuration
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 */
+	protected function buildParserConfiguration() {
+		$parserConfiguration = $this->objectManager->create('Tx_Fluid_Core_Parser_Configuration');
+		if ($this->controllerContext->getRequest()->getFormat() === 'html') {
+			$parserConfiguration->addInterceptor($this->objectManager->get('Tx_Fluid_Core_Parser_Interceptor_Escape'));
+			
+		}
+		return $parserConfiguration;
 	}
 
 	/**
@@ -195,6 +207,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	public function render($actionName = NULL) {
 		$templatePathAndFilename = $this->resolveTemplatePathAndFilename($actionName);
 
+		$this->templateParser->setConfiguration($this->buildParserConfiguration());
 		$parsedTemplate = $this->parseTemplate($templatePathAndFilename);
 
 		$variableContainer = $parsedTemplate->getVariableContainer();
@@ -202,8 +215,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 			return $this->renderWithLayout($variableContainer->get('layoutName'));
 		}
 
-		$renderingContext = $this->buildRenderingContext();
-		return $parsedTemplate->render($renderingContext);
+		return $parsedTemplate->render($this->buildRenderingContext());
 	}
 
 	/**
@@ -236,7 +248,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 * Renders a given section.
 	 *
 	 * @param string $sectionName Name of section to render
-	 * @return rendered template for the section
+	 * @return string rendered template for the section
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -298,15 +310,18 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 	/**
 	 * Renders a partial.
-	 * SHOULD NOT BE USED BY USERS!
 	 *
+	 * @param string $partialName
+	 * @param string $sectionToRender
+	 * @param array $variables
+	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function renderPartial($partialName, $sectionToRender, array $variables) {
 		$partial = $this->parseTemplate($this->resolvePartialPathAndFilename($partialName));
-		$variableContainer = $this->objectFactory->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
+		$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
 		$renderingContext = $this->buildRenderingContext($variableContainer);
 		return $partial->render($renderingContext);
 	}
@@ -353,11 +368,14 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 *
 	 * @param string $templatePathAndFilename absolute filename of the template to be parsed
 	 * @return Tx_Fluid_Core_Parser_ParsedTemplateInterface the parsed template tree
+	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function parseTemplate($templatePathAndFilename) {
 		$templateSource = file_get_contents($templatePathAndFilename);
-
+		if ($templateSource === FALSE) {
+			throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('"' . $templatePathAndFilename . '" is not a valid template resource URI.', 1257246929);
+		}
 		return $this->templateParser->parse($templateSource);
 	}
 
@@ -468,25 +486,17 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 * @param boolean $formatIsOptional if TRUE, then half of the resulting strings will have .@format stripped off, and the other half will have it.
 	 * @return array unix style path
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function expandGenericPathPattern($pattern, $bubbleControllerAndSubpackage, $formatIsOptional) {
 		$pattern = str_replace('@templateRoot', $this->getTemplateRootPath(), $pattern);
 		$pattern = str_replace('@partialRoot', $this->getPartialRootPath(), $pattern);
 		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
 
-		$matches = array();
-		$this->PATTERN_CONTROLLER = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR), $this->PATTERN_CONTROLLER);
-		preg_match($this->PATTERN_CONTROLLER, $this->controllerContext->getRequest()->getControllerObjectName(), $matches);
+		$subPackageKey = '';
+		$controllerName = $this->controllerContext->getRequest()->getControllerName();
 
-		$subpackageParts = array();
-		if ($matches['SubpackageName'] !== '') {
-			$subpackageParts = explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $matches['SubpackageName']);
-		}
-
-		$controllerName = NULL;
-		if (strpos($pattern, '@controller') !== FALSE) {
-			$controllerName = $matches['ControllerName'];
-		}
+		$subpackageParts = ($subPackageKey !== '') ? explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $subPackageKey) : array();
 
 		$results = array();
 
@@ -515,4 +525,5 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		return $results;
 	}
 }
+
 ?>

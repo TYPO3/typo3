@@ -37,60 +37,60 @@
 class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 
 	/**
-	 * List of reserved words that can't be used as object identifiers in Fluid templates
+	 * List of reserved words that can't be used as variable identifiers in Fluid templates
 	 * @var array
 	 */
-	static protected $reservedKeywords = array('true', 'false');
+	static protected $reservedVariableNames = array('true', 'false', 'on', 'off', 'yes', 'no');
 
 	/**
-	 * Objects stored in context
+	 * Variables stored in context
 	 * @var array
 	 */
-	protected $objects = array();
+	protected $variables = array();
 
 	/**
-	 * Constructor. Can take an array, and initializes the objects with it.
+	 * Constructor. Can take an array, and initializes the variables with it.
 	 *
-	 * @param array $objectArray
+	 * @param array $variableArray
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
-	public function __construct($objectArray = array()) {
-		if (!is_array($objectArray)) throw new RuntimeException('Context has to be initialized with an array, ' . gettype($objectArray) . ' given.', 1224592343);
-		$this->objects = $objectArray;
+	public function __construct($variableArray = array()) {
+		if (!is_array($variableArray)) throw new RuntimeException('Context has to be initialized with an array, ' . gettype($variableArray) . ' given.', 1224592343);
+		$this->variables = $variableArray;
 	}
 
 	/**
-	 * Add an object to the context
+	 * Add a variable to the context
 	 *
-	 * @param string $identifier
-	 * @param object $object
+	 * @param string $identifier Identifier of the variable to add
+	 * @param mixed $value The variable's value
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api
 	 */
-	public function add($identifier, $object) {
-		if (array_key_exists($identifier, $this->objects)) throw new RuntimeException('Duplicate variable declarations!', 1224479063);
-		if (in_array(strtolower($identifier), self::$reservedKeywords)) throw new RuntimeException('"' . $identifier . '" is a reserved keyword and can\'t be used as variable identifier.', 1256730379);
-		$this->objects[$identifier] = $object;
+	public function add($identifier, $value) {
+		if (array_key_exists($identifier, $this->variables)) throw new RuntimeException('Duplicate variable declarations!', 1224479063);
+		if (in_array(strtolower($identifier), self::$reservedVariableNames)) throw new RuntimeException('"' . $identifier . '" is a reserved variable name and can\'t be used as variable identifier.', 1256730379);
+		$this->variables[$identifier] = $value;
 	}
 
 	/**
-	 * Get an object from the context. Throws exception if object is not found in context.
+	 * Get a variable from the context. Throws exception if variable is not found in context.
 	 *
 	 * @param string $identifier
-	 * @return object The object identified by $identifier
+	 * @return variable The variable identified by $identifier
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function get($identifier) {
-		if (!array_key_exists($identifier, $this->objects)) throw new RuntimeException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
-		return $this->objects[$identifier];
+		if (!array_key_exists($identifier, $this->variables)) throw new RuntimeException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
+		return $this->variables[$identifier];
 	}
 
 	/**
-	 * Remove an object from context. Throws exception if object is not found in context.
+	 * Remove a variable from context. Throws exception if variable is not found in context.
 	 *
 	 * @param string $identifier The identifier to remove
 	 * @return void
@@ -98,8 +98,8 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function remove($identifier) {
-		if (!array_key_exists($identifier, $this->objects)) throw new RuntimeException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
-		unset($this->objects[$identifier]);
+		if (!array_key_exists($identifier, $this->variables)) throw new RuntimeException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
+		unset($this->variables[$identifier]);
 	}
 
 	/**
@@ -109,7 +109,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getAllIdentifiers() {
-		return array_keys($this->objects);
+		return array_keys($this->variables);
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function exists($identifier) {
-		return array_key_exists($identifier, $this->objects);
+		return array_key_exists($identifier, $this->variables);
 	}
 
 	/**
@@ -131,7 +131,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __sleep() {
-		return array('objects');
+		return array('variables');
 	}
 }
 ?>

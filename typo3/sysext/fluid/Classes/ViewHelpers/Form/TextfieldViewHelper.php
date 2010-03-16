@@ -21,28 +21,25 @@
  *                                                                        */
 
 /**
- * DEPRECATED: Use <f:form.textfield> instead!
- *
- * View Helper which creates a simple Text Box (<input type="text">).
+ * View Helper which creates a text field (<input type="text">).
  *
   * = Examples =
  *
  * <code title="Example">
- * <f:form.textbox name="myTextBox" value="default value" />
+ * <f:form.textfield name="myTextBox" value="default value" />
  * </code>
  *
  * Output:
  * <input type="text" name="myTextBox" value="default value" />
  *
- * @version $Id$
+ * @version $Id: TextfieldViewHelper.php 3628 2010-01-14 15:31:38Z robert $
  * @package Fluid
  * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
- * @deprecated since 1.0.0 alpha 7
  */
-class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
+class Tx_Fluid_ViewHelpers_Form_TextfieldViewHelper extends Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper {
 
 	/**
 	 * @var string
@@ -53,8 +50,7 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_F
 	 * Initialize the arguments.
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Christopher Hlubek <hlubek@networkteam.com>
+	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -68,19 +64,35 @@ class Tx_Fluid_ViewHelpers_Form_TextboxViewHelper extends Tx_Fluid_ViewHelpers_F
 	}
 
 	/**
-	 * Renders the textbox.
+	 * Renders the textfield.
 	 *
+	 * @param boolean $required If the field is required or not
+	 * @param string $type The field type, e.g. "text", "email", "url" etc.
+	 * @param string $placeholder A string used as a placeholder for the value to enter
 	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
-	public function render() {
+	public function render($required = NULL, $type = 'text', $placeholder = NULL) {
 		$name = $this->getName();
 		$this->registerFieldNameForFormTokenGeneration($name);
 
-		$this->tag->addAttribute('type', 'text');
+		$this->tag->addAttribute('type', $type);
 		$this->tag->addAttribute('name', $name);
-		$this->tag->addAttribute('value', $this->getValue());
+
+		$value = $this->getValue();
+
+		if ($placeholder !== NULL) {
+			$this->tag->addAttribute('placeholder', $placeholder);
+		}
+
+		if (!empty($value)) {
+			$this->tag->addAttribute('value', $value);
+		}
+
+		if ($required !== NULL) {
+			$this->tag->addAttribute('required', 'required');
+		}
 
 		$this->setErrorClassAttribute();
 

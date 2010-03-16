@@ -31,7 +31,7 @@
  * <f:base />
  * </code>
  * <output>
- * <base href="http://yourdomain.tld/"></base>
+ * <base href="http://yourdomain.tld/" />
  * (depending on your domain)
  * </output>
  *
@@ -55,8 +55,7 @@ class Tx_Fluid_ViewHelpers_BaseViewHelper extends Tx_Fluid_Core_ViewHelper_Abstr
 	 * @api
 	 */
 	public function render() {
-		$currentRequest = $this->controllerContext->getRequest();
-		return '<base href="' . $currentRequest->getBaseUri() . '"></base>';
+		return '<base href="' . $this->controllerContext->getRequest()->getBaseUri() . '" />';
 	}
 }
 

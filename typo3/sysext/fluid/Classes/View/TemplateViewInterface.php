@@ -32,15 +32,6 @@
 interface Tx_Fluid_View_TemplateViewInterface extends Tx_Extbase_MVC_View_ViewInterface {
 
 	/**
-	 * Inject the template parser
-	 *
-	 * @param Tx_Fluid_Core_Parser_TemplateParser $templateParser The template parser
-	 * @return void
-	 * @api
-	 */
-	public function injectTemplateParser(Tx_Fluid_Core_Parser_TemplateParser $templateParser);
-
-	/**
 	 * Sets the path and name of of the template file. Effectively overrides the
 	 * dynamic resolving of a template file.
 	 *

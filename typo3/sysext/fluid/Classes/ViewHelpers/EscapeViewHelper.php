@@ -21,31 +21,73 @@
  *                                                                        */
 
 /**
+ * The EscapeViewHelper is used to escape variable content in various ways. By
+ * default HTML is the target.
  *
+ * = Examples =
  *
- * @version $Id$
+ * <code title="HTML">
+ * <f:escape>{text}</f:escape>
+ * </code>
+ *
+ * Output:
+ * Text with & " ' < > * replaced by HTML entities (htmlspecialchars applied).
+ *
+ * <code title="Entities">
+ * <f:escape type="entities">{text}</f:escape>
+ * </code>
+ *
+ * Output:
+ * Text with all possible chars replaced by HTML entities (htmlentities applied).
+ *
+ * <code title="URL">
+ * <f:escape type="url">{text}</f:escape>
+ * </code>
+ *
+ * Output:
+ * Text encoded for URL use (rawurlencode applied).
+ *
+ * @version $Id: EscapeViewHelper.php 3751 2010-01-22 15:56:47Z k-fish $
  * @package Fluid
- * @subpackage Core\Rendering
+ * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ * @api
  * @scope prototype
  */
-class Tx_Fluid_Core_Rendering_HtmlSpecialCharsPostProcessor implements Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface {
+class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Process an Object Accessor by wrapping it into HTML.
-	 * NOT part of public API.
+	 * Escapes special characters with their escaped counterparts as needed.
 	 *
-	 * @param mixed $object the object that is currently rendered
-	 * @param boolean $enabled TRUE if post processing is currently enabled.
-	 * @return mixed $object the original object. If not within arguments and of type string, the value is htmlspecialchar'ed
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @param string $value
+	 * @param string $type The type, one of html, entities, url
+	 * @param string $encoding
+	 * @return string the altered string.
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @api
 	 */
-	public function process($object, $enabled) {
-		if ($enabled === TRUE && is_string($object)) {
-			return htmlspecialchars($object);
+	public function render($value = NULL, $type = 'html', $encoding = 'UTF-8') {
+		if ($value === NULL) {
+			$value = $this->renderChildren();
 		}
-		return $object;
+
+		if (!is_string($value)) {
+			return $value;
+		}
+
+		switch ($type) {
+			case 'html':
+				return htmlspecialchars($value, ENT_COMPAT, $encoding);
+			break;
+			case 'entities':
+				return htmlentities($value, ENT_COMPAT, $encoding);
+			break;
+			case 'url':
+				return rawurlencode($value);
+			default:
+				return $value;
+			break;
+		}
 	}
 }
 ?>

@@ -133,7 +133,7 @@ class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerat
 	 * @return object
 	 */
 	protected function instanciateViewHelper($className) {
-		return $this->objectManager->getObject($className);
+		return $this->objectManager->get($className);
 	}
 
 	/**

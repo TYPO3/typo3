@@ -21,43 +21,36 @@
  *                                                                        */
 
 /**
- * The rendering configuration. Contains all configuration needed to configure the rendering of a SyntaxTree.
- * This currently contains:
- * - the active ObjectAccessorPostProcessor, if any
+ * An interceptor interface. Interceptors are used in the parsing stage to change
+ * the syntax tree of a template, e.g. by adding viewhelper nodes.
  *
- * @version $Id$
+ * @version $Id: InterceptorInterface.php 3952 2010-03-16 08:00:53Z sebastian $
  * @package Fluid
- * @subpackage Core\Rendering
+ * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
-class Tx_Fluid_Core_Rendering_RenderingConfiguration {
+interface Tx_Fluid_Core_Parser_InterceptorInterface {
+
+	const INTERCEPT_OPENING_VIEWHELPER = 1;
+	const INTERCEPT_CLOSING_VIEWHELPER = 2;
+	const INTERCEPT_TEXT = 3;
+	const INTERCEPT_OBJECTACCESSOR = 4;
 
 	/**
-	 * Object accessor post processor to use
-	 * @var Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface
-	 */
-	protected $objectAccessorPostProcessor;
-
-	/**
-	 * Set the Object accessor post processor
+	 * The interceptor can process the given node at will and must return a node
+	 * that will be used in place of the given node.
 	 *
-	 * @param Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface $objectAccessorPostProcessor The ObjectAccessorPostProcessor to set
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node
+	 * @param int One of the INTERCEPT_* constants for the current interception point
+	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
 	 */
-	public function setObjectAccessorPostProcessor(Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface $objectAccessorPostProcessor) {
-		$this->objectAccessorPostProcessor = $objectAccessorPostProcessor;
-	}
+	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition);
 
 	/**
-	 * Get the currently set ObjectAccessorPostProcessor
+	 * The interceptor should define at which interception positions it wants to be called.
 	 *
-	 * @return Tx_Fluid_Core_Rendering_ObjectAccessorPostProcessorInterface The currently set ObjectAccessorPostProcessor, or NULL if none set.
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @return array Array of INTERCEPT_* constants
 	 */
-	public function getObjectAccessorPostProcessor() {
-		return $this->objectAccessorPostProcessor;
-	}
+	public function getInterceptionPoints();
 }
 ?>

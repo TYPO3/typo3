@@ -53,13 +53,13 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	protected $contentObject;
 
 	/**
-	 * If the ObjectAccessorPostProcessor should be disabled inside this ViewHelper, then set this value to FALSE.
+	 * If the escaping interceptor should be disabled inside this ViewHelper, then set this value to FALSE.
 	 * This is internal and NO part of the API. It is very likely to change.
 	 *
 	 * @var boolean
 	 * @internal
 	 */
-	protected $objectAccessorPostProcessorEnabled = FALSE;
+	protected $escapingInterceptorEnabled = FALSE;
 
 	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
