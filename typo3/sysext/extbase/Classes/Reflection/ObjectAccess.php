@@ -80,24 +80,24 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	}
 
 	/**
-	 * Gets a property path from a given object.
+	 * Gets a property path from a given object or array.
 	 * If propertyPath is "bla.blubb", then we first call getProperty($object, 'bla'),
 	 * and on the resulting object we call getProperty(..., 'blubb')
 	 *
-	 * @param object $object
+	 * @param mixed $subject Object or array to get the property path from
 	 * @param string $propertyPath
-	 * @return object Value of the property
+	 * @return mixed Value of the property
 	 */
-	static public function getPropertyPath($object, $propertyPath) {
+	static public function getPropertyPath($subject, $propertyPath) {
 		$propertyPathSegments = explode('.', $propertyPath);
 		foreach ($propertyPathSegments as $pathSegment) {
-			if (is_object($object) && self::isPropertyGettable($object, $pathSegment)) {
-				$object = self::getProperty($object, $pathSegment);
+			if (is_array($subject) || (is_object($subject) && self::isPropertyGettable($subject, $pathSegment))) {
+				$subject = self::getProperty($subject, $pathSegment);
 			} else {
 				return NULL;
 			}
 		}
-		return $object;
+		return $subject;
 	}
 
 	/**
