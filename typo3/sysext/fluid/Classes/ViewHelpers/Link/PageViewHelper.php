@@ -34,6 +34,14 @@
  * <a href="index.php?id=1&foo=bar">page link</f:link.action>
  * (depending on your TS configuration)
  *
+ * <code title="query parameters for extensions">
+ * <f:link.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}">page link</f:link.page>
+ * </code>
+ *
+ * Output:
+ * <a href="index.php?id=1&extension_key[foo]=bar">page link</f:link.action>
+ * (depending on your TS configuration)
+ *
  * @package Fluid
  * @subpackage ViewHelpers
  * @version $Id$
