@@ -334,14 +334,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
 			
-			// attempt to support MM_match_fields
 			$conditions = $query->equals($parentKeyFieldName, $parentObject->getUid());
 
 			$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
 			if (count($relationTableMatchFields)) {
 				foreach($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
-					$relationMatchCondition = $query->equals($relationTableName . '.' . $relationTableMatchFieldName, $relationTableMatchFieldValue);
-					$conditions = $query->logicalAnd($conditions, $relationMatchCondition);
+					$conditions = $query->logicalAnd($conditions, $query->equals($relationTableMatchFieldName, $relationTableMatchFieldValue));
 				}
 			}
 			$query->matching($conditions);
