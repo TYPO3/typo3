@@ -72,6 +72,14 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	protected $requestHashService;
 
 	/**
+	 * We need the arguments of the formActionUri on requesthash calculation
+	 * therefore we will store them in here right after calling uriBuilder
+	 *
+	 * @var array
+	 */
+	protected $formActionUriArguments;
+
+	/**
 	 * Inject a request hash service
 	 *
 	 * @param Tx_Extbase_Security_Channel_RequestHashService $requestHashService The request hash service
@@ -159,6 +167,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 				->setTargetPageUid($this->arguments['pageUid'])
 				->setTargetPageType($this->arguments['pageType'])
 				->uriFor($this->arguments['action'], $this->arguments['arguments'], $this->arguments['controller'], $this->arguments['extensionName'], $this->arguments['pluginName']);
+			$this->formActionUriArguments = $uriBuilder->getArguments();
 		}
 		$this->tag->addAttribute('action', $formActionUri);
 	}
@@ -308,7 +317,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 */
 	protected function renderRequestHashField() {
 		$formFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formFieldNames');
-		$this->postProcessUriArgumentsForRequesthash($this->controllerContext->getUriBuilder()->getLastArguments(), $formFieldNames);
+		$this->postProcessUriArgumentsForRequesthash($this->formActionUriArguments, $formFieldNames);
 		$requestHash = $this->requestHashService->generateRequestHash($formFieldNames, $this->getFieldNamePrefix());
 		// in v4, we need to prefix __hmac as well to make it show up in the request object.
 		return '<input type="hidden" name="' . $this->prefixFieldName('__hmac') . '" value="' . htmlspecialchars($requestHash) . '" />';
