@@ -1,3 +1,7 @@
+2010-03-16  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raising Extbase and Fluid versions to 1.1.0alpha1
+
 2010-03-15  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Follow-up to #1104: fix 'required' validation for IRRE records
