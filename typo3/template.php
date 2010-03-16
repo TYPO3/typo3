@@ -193,6 +193,7 @@ class template {
 	var $styleSheetFile = 'stylesheet.css';	// Filename of stylesheet (relative to PATH_typo3)
 	var $styleSheetFile2 = '';		// Filename of stylesheet #2 - linked to right after the $this->styleSheetFile script (relative to PATH_typo3)
 	var $styleSheetFile_post = '';	// Filename of a post-stylesheet - included right after all inline styles.
+	var $styleSheetFile_print = 'stylesheet_print.css';	// Filename of a print-stylesheet - included after all styles.
 	var $backGroundImage = '';		// Background image of page (relative to PATH_typo3)
 	var $inDocStyles_TBEstyle = '';	// Inline css styling set from TBE_STYLES array
 
@@ -268,6 +269,7 @@ class template {
 		if ($TBE_STYLES['stylesheet'])	$this->styleSheetFile = $TBE_STYLES['stylesheet'];
 		if ($TBE_STYLES['stylesheet2'])	$this->styleSheetFile2 = $TBE_STYLES['stylesheet2'];
 		if ($TBE_STYLES['styleSheetFile_post'])	$this->styleSheetFile_post = $TBE_STYLES['styleSheetFile_post'];
+		if ($TBE_STYLES['styleSheetFile_print'])	$this->styleSheetFile_print = $TBE_STYLES['styleSheetFile_print'];
 		if ($TBE_STYLES['inDocStyles_TBEstyle'])	$this->inDocStyles_TBEstyle = $TBE_STYLES['inDocStyles_TBEstyle'];
 
 			// Stylesheets from skins:
@@ -1029,7 +1031,10 @@ $str.=$this->docBodyTagBegin().
 		$this->pageRenderer->addCssInlineBlock('inDocStyles', $inDocStyles . chr(10) . '/*###POSTCSSMARKER###*/');
 		if ($this->styleSheetFile_post) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_post);
-	}
+		}
+		if ($this->styleSheetFile_print) {
+			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_print, 'stylesheet', 'print');
+		}
 
 	}
 
