@@ -1,3 +1,7 @@
+2010-03-16  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #13825: TypoScript object browser - Show all TS (thanks to Stefan Geith)
+
 2010-03-16  Benjamin Mack  <benni@typo3.org>
 
 	* Release of TYPO3 4.4.0alpha2

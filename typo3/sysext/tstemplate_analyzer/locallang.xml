@@ -23,6 +23,8 @@
 			<label index="blockMode">Block mode</label>
 			<label index="constants">Constants:</label>
 			<label index="setup">Setup:</label>
+			<label index="viewCompleteTS">View the complete TS Listing</label>
+			<label index="completeTS">Complete TS:</label>
 		</languageKey>
 	</data>
 </T3locallang>
