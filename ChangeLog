@@ -1,3 +1,7 @@
+2010-03-17 Andreas Otto <andreas@otto-hanika.de>
+
+	* Fixed bug #12959: cHashParams in index_phash is too small (thanks to Dmitry Dulepov).
+
 2010-03-16  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13823: Backend not printable if more than one page (thanks to Stefan Geith)
