@@ -1861,19 +1861,26 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	array		TypoScript configuration specifically for search result.
 	 * @return	string		<img> tag for icon
 	 */
-	function makeItemTypeIcon($it,$alt='',$specRowConf)	{
+	function makeItemTypeIcon($it, $alt='', $specRowConf) {
+
+			// Build compound key if item type is 0, iconRendering is not used
+			// and specConfs.[pid].pageIcon was set in TS
+		if ($it === '0' && $specRowConf['_pid'] && is_array($specRowConf['pageIcon.']) && !is_array($this->conf['iconRendering.'])) {
+			$it .= ':' . $specRowConf['_pid'];
+		}
 		if (!isset($this->iconFileNameCache[$it]))	{
 			$this->iconFileNameCache[$it] = '';
 
 				// If TypoScript is used to render the icon:
 			if (is_array($this->conf['iconRendering.']))	{
 				$this->cObj->setCurrentVal($it);
-				$this->iconFileNameCache[$it] = $this->cObj->cObjGetSingle($this->conf['iconRendering'],$this->conf['iconRendering.']);
-			} else { // ... otherwise, get flag from sys_language record:
+				$this->iconFileNameCache[$it] = $this->cObj->cObjGetSingle($this->conf['iconRendering'], $this->conf['iconRendering.']);
+				// ... otherwise, get flag from sys_language record:
+			} else {
 
 					// Default creation / finding of icon:
 				$icon = '';
-				if ($it==='0')	{
+				if ($it === '0' || substr($it, 0, 2) == '0:')	{
 					if (is_array($specRowConf['pageIcon.']))	{
 						$this->iconFileNameCache[$it] = $this->cObj->IMAGE($specRowConf['pageIcon.']);
 					} else {
@@ -1888,8 +1895,8 @@ class tx_indexedsearch extends tslib_pibase {
 
 					if ($fullPath)	{
 						$info = @getimagesize($fullPath);
-						$iconPath = substr($fullPath,strlen(PATH_site));
-						$this->iconFileNameCache[$it] = is_array($info) ? '<img src="'.$iconPath.'" '.$info[3].' title="'.htmlspecialchars($alt).'" alt="" />' : '';
+						$iconPath = substr($fullPath, strlen(PATH_site));
+						$this->iconFileNameCache[$it] = (is_array($info)) ? '<img src="' . $iconPath . '" ' . $info[3] . ' title="' . htmlspecialchars($alt) . '" alt="" />' : '';
 					}
 				}
 			}
@@ -2124,6 +2131,7 @@ class tx_indexedsearch extends tslib_pibase {
 			foreach ($rl as $dat)	{
 				if (is_array($this->conf['specConfs.'][$dat['uid'].'.']))	{
 					$specConf = $this->conf['specConfs.'][$dat['uid'].'.'];
+					$specConf['_pid'] = $dat['uid'];
 					break;
 				}
 			}
