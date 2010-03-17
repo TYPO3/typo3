@@ -1,5 +1,9 @@
 2010-03-17 Andreas Otto <andreas@otto-hanika.de>
 
+	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Müller).
+
+2010-03-17 Andreas Otto <andreas@otto-hanika.de>
+
 	* Fixed bug #12959: cHashParams in index_phash is too small (thanks to Dmitry Dulepov).
 
 2010-03-16  Xavier Perseguers  <typo3@perseguers.ch>
