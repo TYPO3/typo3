@@ -1,3 +1,7 @@
+2010-01-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+    * Fixed bug #12434: Name attribute in search form - invalid XHTML strict
+
 2009-01-20  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #10134: XSS vulnerability in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
