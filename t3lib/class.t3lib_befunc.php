@@ -2649,7 +2649,7 @@ final class t3lib_BEfunc {
 	
 			// check if we need to preview a mount point
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
-		$sys_page->init(false);
+		$sys_page->init(FALSE);
 		$mountPointInfo = $sys_page->getMountPointInfo($id);
 		if ($mountPointInfo) {
 			$id = $mountPointInfo['mount_pid'];
