@@ -1,3 +1,7 @@
+2010-03-18  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #13739: "Show" clickmenu in page tree does not work for mount pages
+
 2010-03-15  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Follow-up to #1104: fix 'required' validation for IRRE records

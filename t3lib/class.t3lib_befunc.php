@@ -2547,6 +2547,15 @@ final class t3lib_BEfunc {
 			$preUrl = $preUrl_temp ? (t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://').$preUrl_temp : $backPath.'..';
 			$url = $preUrl.$viewScript.$id.$addGetVars.$anchor;
 		}
+	
+			// check if we need to preview a mount point
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$sys_page->init(false);
+		$mountPointInfo = $sys_page->getMountPointInfo($id);
+		if ($mountPointInfo) {
+			$id = $mountPointInfo['mount_pid'];
+			$addGetVars .= '&MP=' . $mountPointInfo['MPvar'];
+		}
 
 		return "previewWin=window.open('".$url."','newTYPO3frontendWindow');".
 				($switchFocus ? 'previewWin.focus();' : '');
