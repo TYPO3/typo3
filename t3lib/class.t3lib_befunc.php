@@ -2646,7 +2646,7 @@ final class t3lib_BEfunc {
 				// Add it:
 			$addGetVars .= $suffix;
 		}
-	
+
 			// check if we need to preview a mount point
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$sys_page->init(FALSE);
@@ -2658,7 +2658,7 @@ final class t3lib_BEfunc {
 
 		$viewDomain = t3lib_BEfunc::getViewDomain($id, $rootLine);
 		$urlPreviewEnabled  = $viewDomain . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
-		$urlPreviewDisabled = $viewDomain . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;		
+		$urlPreviewDisabled = $viewDomain . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
 
 		return "previewWin=window.open(top.WorkspaceFrontendPreviewEnabled?'" .
 			$urlPreviewDisabled . "':'" . $urlPreviewEnabled .
@@ -2682,7 +2682,7 @@ final class t3lib_BEfunc {
 		if (!is_array($rootLine)) {
 			$rootLine = t3lib_BEfunc::BEgetRootLine($pageId);
 		}
-		
+
 			// checks alternate domains
 		if (count($rootLine) > 0) {
 			$urlParts = parse_url($domain);
@@ -2693,8 +2693,8 @@ final class t3lib_BEfunc {
 		}
 
 		return $domain;
-	}	
-	
+	}
+
 	/**
 	 * Returns the merged User/Page TSconfig for page id, $id.
 	 * Please read details about module programming elsewhere!
