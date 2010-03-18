@@ -1,6 +1,7 @@
 2010-03-18  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13739: "Show" clickmenu in page tree does not work for mount pages
+	* Fixed bug #13740: "Show" clickmenu in page tree generates wrong URL if no sys_domain is present
 
 2010-03-17  Andreas Otto  <andreas@otto-hanika.de>
 

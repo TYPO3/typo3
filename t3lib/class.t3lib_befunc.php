@@ -2672,12 +2672,12 @@ final class t3lib_BEfunc {
 	 * @param integer $pageId the page ID to use, must be > 0
 	 * @param array $rootLine the root line structure to use
 	 *
-	 * @return string the full domain including the protocol http:// or https://
+	 * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
 	 *
 	 * @author Michael Klapper <michael.klapper@aoemedia.de>
 	 */
 	public static function getViewDomain($pageId, $rootLine = null) {
-		$domain = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');
 
 		if (!is_array($rootLine)) {
 			$rootLine = t3lib_BEfunc::BEgetRootLine($pageId);
