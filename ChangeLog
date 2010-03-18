@@ -1,6 +1,7 @@
 2010-01-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
     * Fixed bug #12434: Name attribute in search form - invalid XHTML strict
+	* Fixed bug #10392: Indexed search does not use config.fileTarget for files
 
 2010-03-18  Ernesto Baschny  <ernst@cron-it.de>
 

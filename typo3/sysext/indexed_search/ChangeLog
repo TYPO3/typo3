@@ -1,6 +1,7 @@
 2010-01-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
     * Fixed bug #12434: Name attribute in search form - invalid XHTML strict
+	* Fixed bug #10392: Indexed search does not use config.fileTarget for files
 
 2009-01-20  Ingo Renner  <ingo@typo3.org>
 

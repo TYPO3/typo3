@@ -1731,7 +1731,13 @@ class tx_indexedsearch extends tslib_pibase {
 			// If external media, link to the media-file instead.
 		if ($row['item_type'])	{		// External media
 			if ($row['show_resume'])	{	// Can link directly.
-				$title = '<a href="'.htmlspecialchars($row['data_filename']).'">'.htmlspecialchars($this->makeTitle($row)).'</a>';
+				$targetAttribute = '';
+				if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
+					$targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
+				}
+				$title = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' .
+					htmlspecialchars($this->makeTitle($row)) .
+					'</a>';
 			} else {	// Suspicious, so linking to page instead...
 				$copy_row = $row;
 				unset($copy_row['cHashParams']);
@@ -2102,7 +2108,13 @@ class tx_indexedsearch extends tslib_pibase {
 
 		$pI = parse_url($row['data_filename']);
 		if ($pI['scheme'])	{
-			$tmplArray['path'] = '<a href="'.htmlspecialchars($row['data_filename']).'">'.htmlspecialchars($row['data_filename']).'</a>';
+			$targetAttribute = '';
+			if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
+				$targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
+			}
+			$tmplArray['path'] = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' .
+				htmlspecialchars($row['data_filename']) .
+				'</a>';
 		} else {
 			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId,$pathMP));
 			$tmplArray['path'] = $this->linkPage($pathId,$pathStr,array(
