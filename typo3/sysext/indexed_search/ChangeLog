@@ -1,3 +1,7 @@
+2010-01-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #12434: Name attribute in search form - invalid XHTML strict
+
 2009-01-20  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #10134: XSS vulnerability in sysext indexed_search (thanks to the TYPO3 Security Team and especially Marcus Krause)
@@ -149,11 +153,11 @@
 	* Fixed spelling mistake "Interne pages" => "Internal pages"
 	* Fixed bug #0000642: No translations for the word "page" printed by indexed_search when a PDF file matches
 
-2004-04-26  Kasper Skårhøj,,,  <kasper@typo3.com>
+2004-04-26  Kasper Skï¿½rhï¿½j,,,  <kasper@typo3.com>
 
 	* Fixed spelling mistake.
 
-2004-04-22  Kasper Skårhøj,,,  <kasper@typo3.com>
+2004-04-22  Kasper Skï¿½rhï¿½j,,,  <kasper@typo3.com>
 
 	* Added possibility of having more than the three fixed rootline columns.
 

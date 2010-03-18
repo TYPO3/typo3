@@ -1,3 +1,7 @@
+2010-01-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #12434: Name attribute in search form - invalid XHTML strict
+
 2010-03-18  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13739: "Show" clickmenu in page tree does not work for mount pages
