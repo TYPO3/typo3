@@ -1,6 +1,10 @@
-2010-03-17 Andreas Otto <andreas@otto-hanika.de>
+2010-03-18  Ernesto Baschny  <ernst@cron-it.de>
 
-		* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Müller).
+	* Fixed bug #13739: "Show" clickmenu in page tree does not work for mount pages
+
+2010-03-17  Andreas Otto  <andreas@otto-hanika.de>
+
+	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Müller).
 
 2010-03-15  Tobias Liebig  <mail_typo3@etobi.de>
 
