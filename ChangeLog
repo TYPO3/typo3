@@ -1,6 +1,10 @@
-2010-01-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+2010-03-20  Stanislas Rolland  <typo3@sjbr.ca>
 
-    * Fixed bug #12434: Name attribute in search form - invalid XHTML strict
+	* Fixed bug #12845: RTE link query parameters cannot contain "id="
+
+2010-03-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #12434: Name attribute in search form - invalid XHTML strict
 	* Fixed bug #10392: Indexed search does not use config.fileTarget for files
 
 2010-03-18  Ernesto Baschny  <ernst@cron-it.de>

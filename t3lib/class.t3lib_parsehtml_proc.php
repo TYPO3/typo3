@@ -1543,7 +1543,9 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					$info['url']=$info['relUrl'];
 					$info['type']='anchor';
 				} elseif (!trim($uP['path']) || !strcmp($uP['path'],'index.php'))	{
-					$pp = explode('id=',$uP['query']);
+						// URL is a page (id parameter)
+					$pp = preg_split('/^id=/', $uP['query']);
+					$pp[1] = preg_replace( '/&id=[^&]*/', '', $pp[1]);
 					$parameters = explode('&', $pp[1]);
 					$id = array_shift($parameters);
 					if ($id)	{
