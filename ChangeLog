@@ -1,6 +1,7 @@
 2010-03-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13870: htmlArea RTE: Extjize the spell checker
+	* Fixed bug #12845: RTE link query parameters cannot contain "id="
 
 2010-03-20  Andreas Otto  <andreas@otto-hanika.de>
 

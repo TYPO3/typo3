@@ -2575,7 +2575,8 @@ class browse_links {
 				} else {	// URL is a page (id parameter)
 					$uP=parse_url($rel);
 					if (!trim($uP['path']))	{
-						$pp = explode('id=',$uP['query']);
+						$pp = preg_split('/^id=/', $uP['query']);
+						$pp[1] = preg_replace( '/&id=[^&]*/', '', $pp[1]);
 						$parameters = explode('&', $pp[1]);
 						$id = array_shift($parameters);
 						if ($id)	{
