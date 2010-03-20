@@ -490,55 +490,22 @@
 	border: 1px solid #A2AAB8;
 }
 /* Selectors for the SpellChecker dialogue */
-.htmlarea-spell-check .dictionaries {
-	float:right;
-	padding:2px;
+.htmlarea-window .spell-check .controls {
+	text-align: center;
+	width: 175px;
+	margin: 3px;
 }
-.htmlarea-spell-check .dictionaries #v_dictionaries {
-	width:10em;
-	margin-right:5px;
+.htmlarea-window .spell-check .controls .x-btn {
+	margin-top: 3px;
+	margin-left: 8px;
 }
-.htmlarea-spell-check #b_recheck {
-	vertical-align:middle;
-	width:12em;
-}
-.htmlarea-spell-check .status {
-	font-weight:bold;
-	padding:2px;
-}
-.htmlarea-spell-check .controls {
-	width:14em;
-	clear:right;float:left;
-	text-align:center;
-	margin:3px;
-}
-.htmlarea-spell-check .controls .sectitle {
-	font-weight:bold;
-	padding:2px 4px;
-}
-.htmlarea-spell-check .controls .secbody {
-	margin-bottom:10px;
-}
-.htmlarea-spell-check .controls #v_currentWord {
-	color:#F00;font-weight:bold;
-	margin-bottom:2px;
-}
-.htmlarea-spell-check .controls #v_replacement {
-	margin-bottom:3px;
-}
-.htmlarea-spell-check .controls #v_suggestions, .controls #v_replacement {
-	width:12em;
-}
-.htmlarea-spell-check .contentframe {
-	float:right; margin:3px;
-}
-.htmlarea-spell-check .contentframe #i_framecontent {
-	background-color:#FFF;color:#000;
-	height:450px;width:480px;
-}
-.htmlarea-spell-check .occurrences-found {
-	padding:7px 0px 0px 5px;
-	clear:both;
+.htmlarea-window .spell-check .contentframe {
+	float: right;
+	height: 450px;
+	margin: 9px 0px;
+	background-color: #FFF;
+	color: #000;
+	border: 1px solid #A2AAB8;
 }
 /* Selectors for the ContextMenu plugin */
 .htmlarea-context-menu {
@@ -564,4 +531,58 @@
 	padding-bottom:0;
 	margin-bottom:0;
 	border-color:#A2AAB8;
+}
+/* Window status bar selectors */
+.htmlarea-window .status-ready {
+	padding-left: 21px !important;
+	background-repeat: no-repeat;
+	background-image: url("images/dialog-ok.png");
+	background-position: 0px 2px;
+}
+.htmlarea-window .status-info {
+	padding-left: 21px !important;
+	background-repeat: no-repeat;
+	background-image: url("images/dialog-information.png");
+	background-position: 0px 2px;
+}
+.htmlarea-window .status-wait {
+	padding-left: 45px !important;
+	background-repeat: no-repeat;
+	background-image:url("images/loading-balls.gif");
+	background-position: 0px 6px;
+}
+.x-statusbar .x-btn {
+	margin-left: 5px;
+}
+.x-statusbar .x-status-text {
+    cursor: default;
+}
+
+/* Button background positioning in window status bar*/
+.x-statusbar .x-btn-tl{
+	background-position: 0 0;
+}
+.x-statusbar .x-btn-tr{
+	background-position: -3px 0;
+}
+.x-statusbar .x-btn-tc{
+	background-position: 0 -6px;
+}
+.x-statusbar .x-btn-ml{
+	background-position: 0 -24px;
+}
+.x-statusbar .x-btn-mr{
+	background-position: -3px -24px;
+}
+.x-statusbar .x-btn-mc{
+	background-position: 0 -1096px;
+}
+.x-statusbar .x-btn-bl{
+	background-position: 0 -3px;
+}
+.x-statusbar .x-btn-br{
+	background-position: -3px -3px;
+}
+.x-statusbar .x-btn-bc{
+	background-position: 0 -15px;
 }

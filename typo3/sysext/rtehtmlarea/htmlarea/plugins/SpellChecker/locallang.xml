@@ -23,6 +23,7 @@
 			<label index="HTMLArea Spell Checker">HTMLArea Spell Checker</label>
 			<label index="QUIT_CONFIRMATION">This will drop changes and quit spell checker.  Please confirm.</label>
 			<label index="Re-check">Re-check</label>
+			<label index="Replacement">Replacement</label>
 			<label index="Replace all">Replace all</label>
 			<label index="Replace with">Replace with</label>
 			<label index="Replace">Replace</label>
@@ -36,6 +37,7 @@
 			<label index="of the word">of the word</label>
 			<label index="was found.">was found.</label>
 			<label index="were found.">were found.</label>
+			<label index="Info">Info</label>
 			<label index="Document information">Document information</label>
 			<label index="No information available">No information available</label>
 			<label index="Total words">Total words</label>

@@ -1,3 +1,7 @@
+2010-03-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13870: htmlArea RTE: Extjize the spell checker
+
 2010-03-20  Andreas Otto  <andreas@otto-hanika.de>
 
 	* Fixed bug #13871: Field data_page_type in table index_phash is too small.
