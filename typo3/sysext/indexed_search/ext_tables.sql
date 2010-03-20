@@ -9,7 +9,7 @@ CREATE TABLE index_phash (
   data_filename varchar(255) DEFAULT '' NOT NULL,
   data_page_id int(11) unsigned DEFAULT '0' NOT NULL,
   data_page_reg1 int(11) unsigned DEFAULT '0' NOT NULL,
-  data_page_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
+  data_page_type int(11) unsigned DEFAULT '0' NOT NULL,
   data_page_mp varchar(255) DEFAULT '' NOT NULL,
   gr_list varchar(255) DEFAULT '' NOT NULL,
   item_type varchar(5) DEFAULT '' NOT NULL,
