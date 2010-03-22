@@ -196,24 +196,24 @@ TableOperations = HTMLArea.Plugin.extend({
 				if (!element) {
 					var element = this.getClosest('th');
 				}
-				this.properties = this.buttonsConfiguration.cellproperties.properties;
+				this.properties = (this.buttonsConfiguration.cellproperties && this.buttonsConfiguration.cellproperties.properties) ? this.buttonsConfiguration.cellproperties.properties : {};
 				var title = (type == 'column') ? 'Column Properties' : 'Cell Properties';
 				break;
 			case 'row':
 				var element = this.getClosest('tr');
-				this.properties = this.buttonsConfiguration.rowproperties.properties;
+				this.properties = (this.buttonsConfiguration.rowproperties && this.buttonsConfiguration.rowproperties.properties) ? this.buttonsConfiguration.rowproperties.properties : {};
 				var title = 'Row Properties';
 				break;
 			case 'table':
 				var insert = (buttonId === 'InsertTable');
 				var element = insert ? null : this.getClosest('table');
-				this.properties = this.buttonsConfiguration.table.properties;
+				this.properties = (this.buttonsConfiguration.table && this.buttonsConfiguration.table.properties) ? this.buttonsConfiguration.table.properties : {};
 				var title = insert ? 'Insert Table' : 'Table Properties';
 				break;
 		}
 		var propertySet = element ? type + 'properties' : 'table';
 		this.removedFieldsets = (this.buttonsConfiguration[propertySet] && this.buttonsConfiguration[propertySet].removeFieldsets) ? this.buttonsConfiguration[propertySet].removeFieldsets : '';
-		this.removedProperties = (this.properties && this.properties.removed) ? this.properties.removed : '';
+		this.removedProperties = this.properties.removed ? this.properties.removed : '';
 			// Open the dialogue window
 		this.openDialogue(
 			title,
@@ -396,8 +396,8 @@ TableOperations = HTMLArea.Plugin.extend({
 			return false;
 		});
 		var errorFlag = false;
-		if (this.buttonsConfiguration.table.properties && this.buttonsConfiguration.table.properties.required) {
-			if (this.buttonsConfiguration.table.properties.required.indexOf('captionOrSummary') != -1) {
+		if (this.properties.required) {
+			if (this.properties.required.indexOf('captionOrSummary') != -1) {
 				if (!/\S/.test(params.f_caption) && !/\S/.test(params.f_summary)) {
 					Ext.MessageBox.alert(this.localize('Error'), this.localize('captionOrSummary' + '-required'));
 					var field = this.dialog.find('itemId', 'f_caption')[0];
@@ -412,7 +412,7 @@ TableOperations = HTMLArea.Plugin.extend({
 					f_summary: 'summary'
 				};
 				Ext.iterate(required, function (item) {
-					if (!params[item] && this.buttonsConfiguration.table.properties.required.indexOf(required[item]) != -1) {
+					if (!params[item] && this.properties.required.indexOf(required[item]) != -1) {
 						Ext.MessageBox.alert(this.localize('Error'), this.localize(required[item] + '-required'));
 						var field = this.dialog.find('itemId', item)[0];
 						var tab = field.findParentByType('container');
@@ -1731,7 +1731,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				fieldLabel: this.localize('Rows:'),
 				labelSeparator: '',
 				itemId: 'f_rows',
-				value: (this.properties && this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : '2',
+				value: (this.properties.numberOfRows && this.properties.numberOfRows.defaultValue) ? this.properties.numberOfRows.defaultValue : '2',
 				width: 30,
 				minValue: 1,
 				helpTitle: this.localize('Number of rows')
@@ -1740,7 +1740,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				fieldLabel: this.localize('Cols:'),
 				labelSeparator: '',
 				itemId: 'f_cols',
-				value: (this.properties && this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : '4',
+				value: (this.properties.numberOfColumns && this.properties.numberOfColumns.defaultValue) ? this.properties.numberOfColumns.defaultValue : '4',
 				width: 30,
 				minValue: 1,
 				helpTitle: this.localize('Number of columns')
@@ -1760,7 +1760,7 @@ TableOperations = HTMLArea.Plugin.extend({
 			});
 			this.removeOptions(store, 'headers');
 			if (Ext.isEmpty(table)) {
-				var selected = (this.properties && this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : 'top';
+				var selected = (this.properties.headers && this.properties.headers.defaultValue) ? this.properties.headers.defaultValue : 'top';
 			} else {
 				var selected = 'none';
 				var thead = table.getElementsByTagName('thead');
@@ -1781,7 +1781,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				itemId: 'f_headers',
 				helpTitle: this.localize('Table headers'),
 				store: store,
-				width: (this.properties && this.properties['headers'] && this.properties['headers'].width) ? this.properties['headers'].width : 200,
+				width: (this.properties['headers'] && this.properties['headers'].width) ? this.properties['headers'].width : 200,
 				value: selected
 			}, this.configDefaults['combo']));
 		}
@@ -1854,7 +1854,7 @@ TableOperations = HTMLArea.Plugin.extend({
 			itemId: fieldName,
 			fieldLabel: this.localize(fieldLabel),
 			helpTitle: this.localize(fieldTitle),
-			width: (this.properties && this.properties['style'] && this.properties['style'].width) ? this.properties['style'].width : 300,
+			width: (this.properties['style'] && this.properties['style'].width) ? this.properties['style'].width : 300,
 			store: new Ext.data.ArrayStore({
 				autoDestroy:  true,
 				fields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
@@ -1918,7 +1918,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				itemId: 'f_lang',
 				helpTitle: this.localize('Language'),
 				store: languageStore,
-				width: (this.properties && this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 200,
+				width: (this.properties['language'] && this.properties['language'].width) ? this.properties['language'].width : 200,
 				value: selectedLanguage
 			}, this.configDefaults['combo']));
 		}
@@ -1937,7 +1937,7 @@ TableOperations = HTMLArea.Plugin.extend({
 						[this.localize('LeftToRight'), 'ltr']
 					]
 				}),
-				width: (this.properties && this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200,
+				width: (this.properties['direction'] && this.properties['dirrection'].width) ? this.properties['direction'].width : 200,
 				value: !Ext.isEmpty(element) && element.dir ? element.dir : 'not set'
 			}, this.configDefaults['combo']));
 		}
@@ -2019,7 +2019,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				fieldLabel: this.localize('Width:'),
 				labelSeparator: '',
 				itemId: 'f_st_width',
-				value: element ? this.getLength(element.style.width) : ((this.properties && this.properties.width && this.properties.width.defaultValue) ? this.properties.width.defaultValue : ''),
+				value: element ? this.getLength(element.style.width) : ((this.properties.width && this.properties.width.defaultValue) ? this.properties.width.defaultValue : ''),
 				width: 30,
 				helpTitle: this.localize(widthTitle)
 			});
@@ -2029,8 +2029,8 @@ TableOperations = HTMLArea.Plugin.extend({
 				itemId: 'f_st_widthUnit',
 				helpTitle: this.localize('Width unit'),
 				store: widthUnitStore,
-				width: (this.properties && this.properties['widthUnit'] && this.properties['widthUnit'].width) ? this.properties['widthUnit'].width : 60,
-				value: element ? (/%/.test(element.style.width) ? '%' : (/px/.test(element.style.width) ? 'px' : 'em')) : ((this.properties && this.properties.widthUnit &&this.properties.widthUnit.defaultValue) ? this.properties.widthUnit.defaultValue : '%')
+				width: (this.properties['widthUnit'] && this.properties['widthUnit'].width) ? this.properties['widthUnit'].width : 60,
+				value: element ? (/%/.test(element.style.width) ? '%' : (/px/.test(element.style.width) ? 'px' : 'em')) : ((this.properties.widthUnit && this.properties.widthUnit.defaultValue) ? this.properties.widthUnit.defaultValue : '%')
 			}, this.configDefaults['combo']));
 		}
 		if (this.removedProperties.indexOf('height') === -1) {
@@ -2048,7 +2048,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				fieldLabel: this.localize('Height:'),
 				labelSeparator: '',
 				itemId: 'f_st_height',
-				value: element ? this.getLength(element.style.height) : ((this.properties && this.properties.height && this.properties.height.defaultValue) ? this.properties.height.defaultValue : ''),
+				value: element ? this.getLength(element.style.height) : ((this.properties.height && this.properties.height.defaultValue) ? this.properties.height.defaultValue : ''),
 				width: 30,
 				helpTitle: this.localize(heightTitle)
 			});
@@ -2058,8 +2058,8 @@ TableOperations = HTMLArea.Plugin.extend({
 				itemId: 'f_st_heightUnit',
 				helpTitle: this.localize('Height unit'),
 				store: heightUnitStore,
-				width: (this.properties && this.properties['heightUnit'] && this.properties['heightUnit'].width) ? this.properties['heightUnit'].width : 60,
-				value: element ? (/%/.test(element.style.height) ? '%' : (/px/.test(element.style.height) ? 'px' : 'em')) : ((this.properties && this.properties.heightUnit &&this.properties.heightUnit.defaultValue) ? this.properties.heightUnit.defaultValue : '%')
+				width: (this.properties['heightUnit'] && this.properties['heightUnit'].width) ? this.properties['heightUnit'].width : 60,
+				value: element ? (/%/.test(element.style.height) ? '%' : (/px/.test(element.style.height) ? 'px' : 'em')) : ((this.properties.heightUnit && this.properties.heightUnit.defaultValue) ? this.properties.heightUnit.defaultValue : '%')
 			}, this.configDefaults['combo']));
 		}
 		if (nodeName == 'table' && this.removedProperties.indexOf('float') === -1) {
@@ -2080,7 +2080,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				itemId: 'f_st_float',
 				helpTitle: this.localize('Specifies where the table should float'),
 				store: floatStore,
-				width: (this.properties && this.properties['float'] && this.properties['float'].width) ? this.properties['float'].width : 120,
+				width: (this.properties['float'] && this.properties['float'].width) ? this.properties['float'].width : 120,
 				value: element ? (Ext.get(element).hasClass(this.floatLeft) ? 'left' : (Ext.get(element).hasClass(this.floatRight) ? 'right' : 'not set')) : this.floatDefault
 			}, this.configDefaults['combo']));
 		}
@@ -2133,7 +2133,7 @@ TableOperations = HTMLArea.Plugin.extend({
 					[this.localize('Justify'), 'justify']
 				]
 			}),
-			width: (this.properties && this.properties['textAlign'] && this.properties['textAlign'].width) ? this.properties['textAlign'].width : 100,
+			width: (this.properties['textAlign'] && this.properties['textAlign'].width) ? this.properties['textAlign'].width : 100,
 			value: selectedTextAlign
 		}, this.configDefaults['combo']));
 			// Vertical alignment
@@ -2153,7 +2153,7 @@ TableOperations = HTMLArea.Plugin.extend({
 					[this.localize('Baseline'), 'baseline']
 				]
 			}),
-			width: (this.properties && this.properties['verticalAlign'] && this.properties['verticalAlign'].width) ? this.properties['verticalAlign'].width : 100,
+			width: (this.properties['verticalAlign'] && this.properties['verticalAlign'].width) ? this.properties['verticalAlign'].width : 100,
 			value: (element && element.style.verticalAlign) ? element.style.verticalAlign : 'not set'
 		}, this.configDefaults['combo']));
 		return {
@@ -2195,14 +2195,14 @@ TableOperations = HTMLArea.Plugin.extend({
 		this.removeOptions(borderStyleStore, 'borderStyle');
 			// Gecko reports "solid solid solid solid" for "border-style: solid".
 			// That is, "top right bottom left" -- we only consider the first value.
-		var selectedBorderStyle = element && element.style.borderStyle ? element.style.borderStyle : ((this.properties && this.properties.borderWidth) ? ((this.properties.borderStyle && this.properties.borderStyle.defaultValue) ? this.properties.borderStyle.defaultValue : 'solid') : 'not set');
+		var selectedBorderStyle = element && element.style.borderStyle ? element.style.borderStyle : ((this.properties.borderWidth) ? ((this.properties.borderStyle && this.properties.borderStyle.defaultValue) ? this.properties.borderStyle.defaultValue : 'solid') : 'not set');
 		itemsConfig.push(Ext.apply({
 			xtype: 'combo',
 			fieldLabel: this.localize('Border style:'),
 			itemId: 'f_st_borderStyle',
 			helpTitle: this.localize('Border style'),
 			store: borderStyleStore,
-			width: (this.properties && this.properties.borderStyle && this.properties.borderStyle.width) ? this.properties.borderStyle.width : 150,
+			width: (this.properties.borderStyle && this.properties.borderStyle.width) ? this.properties.borderStyle.width : 150,
 			value: selectedBorderStyle,
 			listeners: {
 				change: {
@@ -2214,7 +2214,7 @@ TableOperations = HTMLArea.Plugin.extend({
 		itemsConfig.push({
 			fieldLabel: this.localize('Border width:'),
 			itemId: 'f_st_borderWidth',
-			value: element ? this.getLength(element.style.borderWidth) : ((this.properties && this.properties.borderWidth && this.properties.borderWidth.defaultValue) ? this.properties.borderWidth.defaultValue : ''),
+			value: element ? this.getLength(element.style.borderWidth) : ((this.properties.borderWidth && this.properties.borderWidth.defaultValue) ? this.properties.borderWidth.defaultValue : ''),
 			width: 30,
 			minValue: 0,
 			helpTitle: this.localize('Border width'),
@@ -2227,7 +2227,7 @@ TableOperations = HTMLArea.Plugin.extend({
 			fieldLabel: this.localize('Color:'),
 			itemId: 'f_st_borderColor',
 			colorsConfiguration: this.editorConfiguration.colors,
-			value: HTMLArea.util.Color.colorToHex(element && element.style.borderColor ? element.style.borderColor : ((this.properties && this.properties.borderColor && this.properties.borderColor.defaultValue) ? this.properties.borderColor.defaultValue : '')).substr(1, 6),
+			value: HTMLArea.util.Color.colorToHex(element && element.style.borderColor ? element.style.borderColor : ((this.properties.borderColor && this.properties.borderColor.defaultValue) ? this.properties.borderColor.defaultValue : '')).substr(1, 6),
 			helpTitle: this.localize('Border color'),
 			disabled: (selectedBorderStyle === 'none')
 		});
@@ -2248,7 +2248,7 @@ TableOperations = HTMLArea.Plugin.extend({
 						[this.localize('Detached borders'), 'separate']
 					]
 				}),
-				width: (this.properties && this.properties.borderCollapse && this.properties.borderCollapse.width) ? this.properties.borderCollapse.width : 150,
+				width: (this.properties.borderCollapse && this.properties.borderCollapse.width) ? this.properties.borderCollapse.width : 150,
 				value: element && element.style.borderCollapse ? element.style.borderCollapse : 'not set',
 				disabled: (selectedBorderStyle === 'none')
 			}, this.configDefaults['combo']));
@@ -2273,7 +2273,7 @@ TableOperations = HTMLArea.Plugin.extend({
 						[this.localize('All four sides'), 'box']
 					]
 				}),
-				width: (this.properties && this.properties.frame && this.properties.frame.width) ? this.properties.frame.width : 250,
+				width: (this.properties.frame && this.properties.frame.width) ? this.properties.frame.width : 250,
 				value: (element && element.frame) ? element.frame : 'not set',
 				disabled: (selectedBorderStyle === 'none')
 			}, this.configDefaults['combo']));
@@ -2294,7 +2294,7 @@ TableOperations = HTMLArea.Plugin.extend({
 						[this.localize('Rules will appear between all rows and columns'), 'all']
 					]
 				}),
-				width: (this.properties && this.properties.rules && this.properties.rules.width) ? this.properties.rules.width : 360,
+				width: (this.properties.rules && this.properties.rules.width) ? this.properties.rules.width : 360,
 				value: (element && element.rules) ? element.rules : 'not set'
 			}, this.configDefaults['combo']));
 		}
@@ -2351,7 +2351,7 @@ TableOperations = HTMLArea.Plugin.extend({
 			fieldLabel: this.localize('FG Color:'),
 			itemId: 'f_st_color',
 			colorsConfiguration: this.editorConfiguration.colors,
-			value: HTMLArea.util.Color.colorToHex(element && element.style.color ? element.style.color : ((this.properties && this.properties.color && this.properties.color.defaultValue) ? this.properties.color.defaultValue : '')).substr(1, 6)
+			value: HTMLArea.util.Color.colorToHex(element && element.style.color ? element.style.color : ((this.properties.color && this.properties.color.defaultValue) ? this.properties.color.defaultValue : '')).substr(1, 6)
 		});
 			// Background color
 		itemsConfig.push({
@@ -2359,14 +2359,14 @@ TableOperations = HTMLArea.Plugin.extend({
 			fieldLabel: this.localize('Background:'),
 			itemId: 'f_st_backgroundColor',
 			colorsConfiguration: this.editorConfiguration.colors,
-			value: HTMLArea.util.Color.colorToHex(element && element.style.backgroundColor ? element.style.backgroundColor : ((this.properties && this.properties.backgroundColor && this.properties.backgroundColor.defaultValue) ? this.properties.backgroundColor.defaultValue : '')).substr(1, 6)
+			value: HTMLArea.util.Color.colorToHex(element && element.style.backgroundColor ? element.style.backgroundColor : ((this.properties.backgroundColor && this.properties.backgroundColor.defaultValue) ? this.properties.backgroundColor.defaultValue : '')).substr(1, 6)
 		});
 			// Background image
 		itemsConfig.push({
 			fieldLabel: this.localize('Image URL:'),
 			itemId: 'f_st_backgroundImage',
 			value: element && element.style.backgroundImage.match(/url\(\s*(.*?)\s*\)/) ? RegExp.$1 : '',
-			width: (this.properties && this.properties.backgroundImage && this.properties.backgroundImage.width) ? this.properties.backgroundImage.width : 300,
+			width: (this.properties.backgroundImage && this.properties.backgroundImage.width) ? this.properties.backgroundImage.width : 300,
 			helpTitle: this.localize('URL of the background image'),
 			helpIcon: true
 		});
@@ -2410,7 +2410,7 @@ TableOperations = HTMLArea.Plugin.extend({
 			// @return	void
 		var self = this;
 		function cellTypeChange(cellTypeField, record) {
-			value = record.get('value');
+			var value = record.get('value');
 			var styleCombo = self.dialog.find('itemId', 'f_class')[0];
 			if (styleCombo) {
 				self.setStyleOptions(styleCombo, element, value.substring(0,2));
@@ -2433,7 +2433,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				fields: [ { name: 'text'}, { name: 'value'}],
 				data: data
 			}),
-			width: (this.properties && this.properties.cellType && this.properties.cellType.width) ? this.properties.cellType.width : 250,
+			width: (this.properties.cellType && this.properties.cellType.width) ? this.properties.cellType.width : 250,
 			value: (column && selected == 'thcol') ? 'td' : selected,
 			listeners: {
 				select: {
@@ -2508,7 +2508,7 @@ TableOperations = HTMLArea.Plugin.extend({
 					[this.localize('Table footer'), 'tfoot']
 				]
 			}),
-			width: (this.properties && this.properties.rowGroup && this.properties.rowGroup.width) ? this.properties.rowGroup.width : 150,
+			width: (this.properties.rowGroup && this.properties.rowGroup.width) ? this.properties.rowGroup.width : 150,
 			value: current,
 			labelSeparator: '',
 			listeners: {
@@ -2544,7 +2544,7 @@ TableOperations = HTMLArea.Plugin.extend({
 	 *
 	 */
 	removeOptions: function (store, property) {
-		if (this.properties && this.properties[property] && this.properties[property].removeItems) {
+		if (this.properties[property] && this.properties[property].removeItems) {
 			var items = this.properties[property].removeItems.split(',');
 			var index = -1;
 			Ext.each(items, function (item) {
