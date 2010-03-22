@@ -2,6 +2,7 @@
 
 	* Added feature #13878: htmlArea RTE: Extjize the default non-TYPO3 link dialogue
 	* Fixed bug #13887: htmlArea RTE: Table dialogues may raise js error
+	* Added feature #13888: htmlArea RTE: Add border around toolbar
 
 2010-03-20  Stanislas Rolland  <typo3@sjbr.ca>
 

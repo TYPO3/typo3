@@ -1,7 +1,7 @@
 /* Selectors for the htmlArea RTE editor */
 .htmlarea {
-	background-color:#EFEFF4;
- 	margin:0 2px 0 0;padding:0;
+ 	margin: 0 2px 0 0;
+ 	padding: 0;
 }
 .pleasewait {
  	position:relative;
@@ -35,11 +35,12 @@
 }
 /* Selectors for the editor toolbar */
 .htmlarea .toolbar {
-	background-color:#EFEFF4;cursor:default;
-	border:1px solid #EFEFF4;
-	border-bottom:0px;
-	margin:0;
-	padding:2px 0px;
+	background-color: #EFEFF4;
+	cursor: default;
+	border: 1px solid #A2AAB8;
+	border-bottom: 0;
+	margin: 0;
+	padding: 2px;
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .htmlarea .toolbar .tb-group {
