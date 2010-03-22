@@ -187,6 +187,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 		}, this);
 		if (params['allHtml'] || params['formatting'] || params['spaces'] || params['images'] || params['msWordFormatting']) {
 			this.applyRequest(params);
+			this.close();
 		} else {
 			Ext.MessageBox.alert('', this.localize('Select the type of formatting you wish to remove.'));
 		}
