@@ -1,3 +1,7 @@
+2010-03-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13878: htmlArea RTE: Extjize the default non-TYPO3 link dialogue
+
 2010-03-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13870: htmlArea RTE: Extjize the spell checker

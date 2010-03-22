@@ -451,10 +451,6 @@
 	width:300px;height:200px;
 	border:1px solid gray;margin:5px 0px;
 }
-/* Selectors for the Default Link dialogue */
-.htmlarea-default-link #url, .htmlarea-default-link #title {
-	white-space:nowrap;
-}
 /* Selectors for the InsertSmiley plugin */
 .htmlarea-window .emoticon-array {
 	padding: 10px;
