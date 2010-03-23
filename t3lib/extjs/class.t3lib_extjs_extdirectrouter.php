@@ -42,19 +42,27 @@ class t3lib_extjs_ExtDirectRouter {
 	 */
 	public function route($ajaxParams, TYPO3AJAX $ajaxObj) {
 		try {
-			$isForm = false;
-			$isUpload = false;
+			$isForm = FALSE;
+			$isUpload = FALSE;
 			$rawPostData = file_get_contents('php://input');
+			$postParameters = t3lib_div::_POST();
 			$namespace = t3lib_div::_GET('namespace');
 
-			if (!empty($rawPostData)) {
-				$ajaxObj->setContentFormat('jsonbody');
+			if (!empty($postParameters['extAction'])) {
+				$isForm = TRUE;
+				$isUpload = $postParameters['extUpload'] === 'true';
+
+				$request->action = $postParameters['extAction'];
+				$request->method = $postParameters['extMethod'];
+				$request->tid = $postParameters['extTID'];
+				$request->data = array($_POST + $_FILES);
+			} elseif (!empty($rawPostData)) {
 				$request = json_decode($rawPostData);
 			} else {
 				throw new t3lib_error_Exception('ExtDirect: Missing Parameters!');
 			}
 
-			$response = null;
+			$response = NULL;
 			if (is_array($request)) {
 				$response = array();
 				foreach ($request as $singleRequest) {
@@ -64,6 +72,19 @@ class t3lib_extjs_ExtDirectRouter {
 				$response = $this->processRpc($request, $namespace);
 			}
 
+			if ($isForm && $isUpload) {
+				$ajaxObj->setContentFormat('plain');
+				$response = json_encode($response);
+				$response = preg_replace('/&quot;/', '\\&quot;', $response);
+
+				$response = array(
+					'<html><body><textarea>' .
+					$response .
+					'</textarea></body></html>'
+				);
+			} else {
+				$ajaxObj->setContentFormat('jsonbody');
+			}
 		} catch (t3lib_error_Exception $exception) {
 			$response = array(
 				'type' => 'exception',
@@ -113,11 +134,7 @@ class t3lib_extjs_ExtDirectRouter {
 			);
 
 		} catch (t3lib_error_Exception $exception) {
-			$response = array(
-				'type' => 'exception',
-				'message' => $exception->getMessage(),
-				'where' => $exception->getTraceAsString()
-			);
+			throw $exception;
 		}
 
 		return $response;

@@ -1,3 +1,7 @@
+2010-03-23  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13811: Missing formHandler in ExtDirect API (Thanks to Stefan Galinski)
+
 2010-03-23  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #9229: indexing of records containing HTML leads to concatenated words

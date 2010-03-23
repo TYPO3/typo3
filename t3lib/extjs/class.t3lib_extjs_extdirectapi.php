@@ -140,10 +140,13 @@ class t3lib_extjs_ExtDirectApi {
 				foreach (get_class_methods($serverObject) as $methodName) {
 					$reflectionMethod = new ReflectionMethod($serverObject, $methodName);
 					$numberOfParameters = $reflectionMethod->getNumberOfParameters();
-
+					$docHeader = $reflectionMethod->getDocComment();
+					$formHandler = (strpos($docHeader, '@formHandler') !== FALSE);
+					
 					$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName][] = array(
 						'name' => $methodName,
-						'len' => $numberOfParameters
+						'len' => $numberOfParameters,
+						'formHandler' => $formHandler
 					);
 				}
 			}
