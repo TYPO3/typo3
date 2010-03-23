@@ -1,6 +1,7 @@
 2010-03-23  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #9229: indexing of records containing HTML leads to concatenated words
+	* Fixed bug #8933: icons in indexed search modfunc1 are not skinned
 
 2010-03-22  Stanislas Rolland  <typo3@sjbr.ca>
 
