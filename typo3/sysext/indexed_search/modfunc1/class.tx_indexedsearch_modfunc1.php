@@ -1009,7 +1009,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 */
 	function printRemoveIndexed($phash,$alt)	{
 		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('deletePhash'=>$phash))).'">'.
-				'<img src="'.$GLOBALS['BACK_PATH'].'gfx/garbage.gif" width="11" hspace="1" vspace="2" height="12" border="0" title="'.htmlspecialchars($alt).'" alt="" />'.
+				'<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') . ' hspace="1" vspace="2" border="0" title="'.htmlspecialchars($alt).'" alt="" />'.
 				'</a>';
 	}
 
@@ -1023,7 +1023,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	function printReindex($resultRow,$alt)	{
 		if ($resultRow['item_type'] && $resultRow['item_type']!=='0')	{
 			return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('reindex'=>$resultRow['phash'],'reindex_id'=>$resultRow['page_id']))).'">'.
-					'<img src="'.$GLOBALS['BACK_PATH'].'gfx/refresh_n.gif" width="14" hspace="1" vspace="2" height="14" border="0" title="'.htmlspecialchars($alt).'" alt="" />'.
+					'<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="14" height="14"') . ' hspace="1" vspace="2" border="0" title="'.htmlspecialchars($alt).'" alt="" />'.
 					'</a>';
 		}
 	}
