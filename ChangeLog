@@ -1,3 +1,7 @@
+2010-03-23  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #9229: indexing of records containing HTML leads to concatenated words
+
 2010-03-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #12845: RTE link query parameters cannot contain "id="
