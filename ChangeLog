@@ -1,3 +1,7 @@
+2010-03-23  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #9229: indexing of records containing HTML leads to concatenated words
+
 2010-03-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13878: htmlArea RTE: Extjize the default non-TYPO3 link dialogue
@@ -15,7 +19,7 @@
 
 	* Fixed bug #13871: Field data_page_type in table index_phash is too small.
 
-2010-01-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+2010-03-18  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #12434: Name attribute in search form - invalid XHTML strict
 	* Fixed bug #10392: Indexed search does not use config.fileTarget for files
