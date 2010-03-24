@@ -1,5 +1,6 @@
 2010-03-25  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to bug #11239: typolink addQueryString.exclude does not support arrays, main patch for tslib_content
 	* Fixed bug #11239: typolink addQueryString.exclude does not support arrays, pre-patch to add t3lib_div::arrayDiffAssocRecursive()
 	* Added feature #9289: Missing index for deleting outdated session data in fe_session_data
 	* Fixed bug #9769: Organisation in mail header should be Organization

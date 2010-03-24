@@ -6447,77 +6447,45 @@ class tslib_cObj {
 	 * Arguments may be removed or set, depending on configuration.
 	 *
 	 * @param	string		Configuration
-	 * @param	array		Key/value pairs that overrule incoming query arguments
-	 * @param	boolean		If set key/value pairs not in the query but the overrule array will be set
+	 * @param	array		Multidimensional key/value pairs that overrule incoming query arguments
+	 * @param	boolean		If set, key/value pairs not in the query but the overrule array will be set
 	 * @return	string		The URL query part (starting with a &)
 	 */
-	function getQueryArguments($conf,$overruleQueryArgs=array(),$forceArgs=FALSE) {
-		$rawValues = FALSE;
-		switch((string)$conf['method'])	{
+	public function getQueryArguments($conf, $overruleQueryArguments=array(), $forceOverruleArguments = FALSE) {
+		switch ((string)$conf['method']) {
 			case 'GET':
-				$q_in = t3lib_div::_GET();
+				$currentQueryArray = t3lib_div::_GET();
 			break;
 			case 'POST':
-				$q_in = t3lib_div::_POST();
+				$currentQueryArray = t3lib_div::_POST();
 			break;
 			case 'GET,POST':
-				$q_in = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
+				$currentQueryArray = array_merge(t3lib_div::_GET(), t3lib_div::_POST());
 			break;
 			case 'POST,GET':
-				$q_in = array_merge(t3lib_div::_POST(), t3lib_div::_GET());
+				$currentQueryArray = array_merge(t3lib_div::_POST(), t3lib_div::_GET());
 			break;
 			default:
-				$queryString = t3lib_div::getIndpEnv('QUERY_STRING');
-
-					// shortcut (no further processing necessary)
-				if (!$conf['exclude']) {
-					return $queryString ? '&'.$queryString : '';
-				}
-
-				$q_in = array();
-					// explode never returns an empty array, so check in advance
-				if ($queryString) {
-					foreach (explode('&', $queryString) as $arg) {
-						list($k,$v) = explode('=', $arg);
-						$q_in[$k] = $v;
-					}
-				}
-				$rawValues = TRUE;
+				$currentQueryArray = t3lib_div::explodeUrl2Array(t3lib_div::getIndpEnv('QUERY_STRING'), TRUE);
 		}
 
-		if ($conf['exclude'])	{
-			$q_out = array();
-			$exclude = t3lib_div::trimExplode(',', $conf['exclude']);
-			$exclude[] = 'id';	// never repeat id
-			foreach ($q_in as $k => $v)   {
-				if (!in_array($k, $exclude)) {
-					if (isset($overruleQueryArgs[$k]))	{
-						$v = $overruleQueryArgs[$k];
-						unset($overruleQueryArgs[$k]);
-					}
-					$q_out[$k] = $v;
-				}
-			}
-				// any remaining overrule arguments?
-			if ($forceArgs)	{
-				foreach ($overruleQueryArgs as $k => $v)	{
-					$q_out[$k] = $v;
-				}
-			}
+		if ($conf['exclude']) {
+			$exclude = str_replace(',', '&', $conf['exclude']);
+			$exclude = t3lib_div::explodeUrl2Array($exclude, TRUE);
+				// never repeat id
+			$exclude['id'] = 0;
+			$newQueryArray = t3lib_div::arrayDiffAssocRecursive($currentQueryArray, $exclude);
 		} else {
-			$q_out = &$q_in;
+			$newQueryArray = $currentQueryArray;
 		}
 
-		$content = '';
-		if ($rawValues)	{
-			foreach ($q_out as $k => $v)	{
-				$content .= '&'.$k.'='.$v;
-			}
+		if ($forceOverruleArguments) {
+			$newQueryArray = t3lib_div::array_merge_recursive_overrule($newQueryArray, $overruleQueryArguments);
 		} else {
-			$content = t3lib_div::implodeArrayForUrl('',$q_out);
+			$newQueryArray = t3lib_div::array_merge_recursive_overrule($newQueryArray, $overruleQueryArguments, TRUE);
 		}
 
-		return $content;
+		return t3lib_div::implodeArrayForUrl('', $newQueryArray);
 	}
 
 
