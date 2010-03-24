@@ -289,19 +289,19 @@ DefaultLink = HTMLArea.Plugin.extend({
 	 * Handler invoked when the OK button is clicked
 	 */
 	onOK: function () {
-		var href = this.dialog.find('itemId', 'href')[0].getValue().trim();
-		if (!href) {
-			Ext.MessageBox.alert('', this.localize('link_url_required'));
-			this.dialog.find('itemId', 'href').focus();
-			return false;
+		var hrefField = this.dialog.find('itemId', 'href')[0];
+		var href = hrefField.getValue().trim();
+		if (href) {
+			var title = this.dialog.find('itemId', 'title')[0].getValue();
+			var target = this.dialog.find('itemId', 'target')[0].getValue();
+			if (target == '_other') {
+				target = this.dialog.find('itemId', 'frame')[0].getValue().trim();
+			}
+			this.createLink(href, title, target);
+			this.close();
+		} else {
+			Ext.MessageBox.alert('', this.localize('link_url_required'), function () { hrefField.focus(); });
 		}
-		var title = this.dialog.find('itemId', 'title')[0].getValue();
-		var target = this.dialog.find('itemId', 'target')[0].getValue();
-		if (target == '_other') {
-			target = this.dialog.find('itemId', 'frame')[0].getValue().trim();
-		}
-		this.createLink(href, title, target);
-		this.close();
 		return false;
 	},
 	/*
