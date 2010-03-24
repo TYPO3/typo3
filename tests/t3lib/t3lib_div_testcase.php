@@ -487,6 +487,100 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	}
 
 	//////////////////////////////////////
+	// Tests concerning arrayDiffAssocRecursive
+	//////////////////////////////////////
+
+	/**
+	 * Test if a one dimensional array is correctly diffed.
+	 *
+	 * @test
+	 * @see t3lib_div::arrayDiffAssocRecursive
+	 */
+	public function doesArrayDiffAssocRecursiveCorrectlyHandleOneDimensionalArrays() {
+		$array1 = array(
+			'key1' => 'value1',
+			'key2' => 'value2',
+			'key3' => 'value3',
+		);
+		$array2 = array(
+			'key1' => 'value1',
+			'key3' => 'value3',
+		);
+		$expectedResult = array(
+			'key2' => 'value2',
+		);
+		$actualResult = t3lib_div::arrayDiffAssocRecursive($array1, $array2);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * Test if a three dimensional array is correctly diffed.
+	 *
+	 * @test
+	 * @see t3lib_div::arrayDiffAssocRecursive
+	 */
+	public function doesArrayDiffAssocRecursiveCorrectlyHandleMultiDimensionalArrays() {
+		$array1 = array(
+			'key1' => 'value1',
+			'key2' => array(
+				'key21' => 'value21',
+				'key22' => 'value22',
+				'key23' => array(
+					'key231' => 'value231',
+					'key232' => 'value232',
+				),
+			),
+		);
+		$array2 = array(
+			'key1' => 'value1',
+			'key2' => array(
+				'key21' => 'value21',
+				'key23' => array(
+					'key231' => 'value231',
+				),
+			),
+		);
+		$expectedResult = array(
+			'key2' => array(
+				'key22' => 'value22',
+				'key23' => array(
+					'key232' => 'value232',
+				),
+			),
+		);
+		$actualResult = t3lib_div::arrayDiffAssocRecursive($array1, $array2);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * Test if arrays are correctly diffed if types are different.
+	 *
+	 * @test
+	 * @see t3lib_div::arrayDiffAssocRecursive
+	 */
+	public function doesArrayDiffAssocRecursiveCorrectlyHandleMixedArrays() {
+		$array1 = array(
+			'key1' => array(
+				'key11' => 'value11',
+				'key12' => 'value12',
+			),
+			'key2' => 'value2',
+			'key3' => 'value3',
+		);
+		$array2 = array(
+			'key1' => 'value1',
+			'key2' => array(
+				'key21' => 'value21',
+			),
+		);
+		$expectedResult = array(
+			'key3' => 'value3',
+		);
+		$actualResult = t3lib_div::arrayDiffAssocRecursive($array1, $array2);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	//////////////////////////////////////
 	// Tests concerning removeDotsFromTS
 	//////////////////////////////////////
 
