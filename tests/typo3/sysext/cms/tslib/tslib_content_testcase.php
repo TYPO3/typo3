@@ -34,9 +34,9 @@
  */
 class tslib_content_testcase extends tx_phpunit_testcase {
 	/**
-	 * @var	boolean
+	 * @var	array
 	 */
-	protected $backupGlobals = true;
+	private $backupGlobalVariables;
 
 	/**
 	 * @var	tslib_cObj
@@ -59,6 +59,12 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	private $typoScriptImage;
 
 	public function setUp() {
+		$this->backupGlobalVariables = array(
+			'_GET' => $_GET,
+			'_POST' => $_POST,
+			'_SERVER' => $_SERVER,
+		);
+
 		$this->template = $this->getMock(
 			't3lib_TStemplate', array('getFileName', 'linkData')
 		);
@@ -84,6 +90,10 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	}
 
 	public function tearDown() {
+		foreach ($this->backupGlobalVariables as $key => $data) {
+			$GLOBALS[$key] = $data;
+		}
+
 		$GLOBALS['TSFE'] = null;
 
 		unset($this->cObj, $this->tsfe, $this->template,$this->typoScriptImage);
@@ -162,6 +172,179 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 				array()
 			)
 		);
+	}
+
+	//////////////////////////
+	// Tests concerning getQueryArguments()
+	//////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function doesGetQueryArgumentsCorrectlyExcludeParameters() {
+		$_SERVER['QUERY_STRING'] =
+			'key1=value1' .
+			'&key2=value2' .
+			'&key3[key31]=value31' .
+			'&key3[key32][key321]=value321' .
+			'&key3[key32][key322]=value322';
+
+		$getQueryArgumentsConfiguration = array();
+		$getQueryArgumentsConfiguration['exclude'] = array();
+		$getQueryArgumentsConfiguration['exclude'][] = 'key1';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
+		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
+
+		$expectedResult = '&key2=value2&key3[key32][key322]=value322';
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function doesGetQueryArgumentsCorrectlyExcludeGETParameters() {
+		$_GET = array(
+			'key1' => 'value1',
+			'key2' => 'value2',
+			'key3' => array(
+				'key31' => 'value31',
+				'key32' => array(
+					'key321' => 'value321',
+					'key322' => 'value322',
+				),
+			),
+		);
+
+		$getQueryArgumentsConfiguration = array();
+		$getQueryArgumentsConfiguration['method'] = 'GET';
+		$getQueryArgumentsConfiguration['exclude'] = array();
+		$getQueryArgumentsConfiguration['exclude'][] = 'key1';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
+		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
+
+		$expectedResult = '&key2=value2&key3[key32][key322]=value322';
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function doesGetQueryArgumentsCorrectlyOverruleSingleParameter() {
+		$_SERVER['QUERY_STRING'] = 'key1=value1';
+
+		$getQueryArgumentsConfiguration = array();
+
+		$overruleArguments = array(
+				// Should be overriden
+			'key1' => 'value1Overruled',
+				// Shouldn't be set: Parameter doesn't exist in source array and is not forced
+			'key2' => 'value2Overruled',
+		);
+
+		$expectedResult = '&key1=value1Overruled';
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function doesGetQueryArgumentsCorrectlyOverruleMultiDimensionalParameters() {
+		$_POST = array(
+			'key1' => 'value1',
+			'key2' => 'value2',
+			'key3' => array(
+				'key31' => 'value31',
+				'key32' => array(
+					'key321' => 'value321',
+					'key322' => 'value322',
+				),
+			),
+		);
+
+		$getQueryArgumentsConfiguration = array();
+		$getQueryArgumentsConfiguration['method'] = 'POST';
+		$getQueryArgumentsConfiguration['exclude'] = array();
+		$getQueryArgumentsConfiguration['exclude'][] = 'key1';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
+		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
+
+		$overruleArguments = array(
+				// Should be overriden
+			'key2' => 'value2Overruled',
+			'key3' => array(
+				'key32' => array(
+						// Shouldn't be set: Parameter is excluded and not forced
+					'key321' => 'value321Overruled',
+						// Should be overriden: Parameter is not excluded
+					'key322' => 'value322Overruled',
+						// Shouldn't be set: Parameter doesn't exist in source array and is not forced
+					'key323' => 'value323Overruled',
+				),
+			),
+		);
+
+		$expectedResult = '&key2=value2Overruled&key3[key32][key322]=value322Overruled';
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function doesGetQueryArgumentsCorrectlyOverruleMultiDimensionalForcedParameters() {
+		$_SERVER['QUERY_STRING'] =
+			'key1=value1' .
+			'&key2=value2' .
+			'&key3[key31]=value31' .
+			'&key3[key32][key321]=value321' .
+			'&key3[key32][key322]=value322';
+
+		$_POST = array(
+			'key1' => 'value1',
+			'key2' => 'value2',
+			'key3' => array(
+				'key31' => 'value31',
+				'key32' => array(
+					'key321' => 'value321',
+					'key322' => 'value322',
+				),
+			),
+		);
+
+		$getQueryArgumentsConfiguration = array();
+		$getQueryArgumentsConfiguration['exclude'] = array();
+		$getQueryArgumentsConfiguration['exclude'][] = 'key1';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key321]';
+		$getQueryArgumentsConfiguration['exclude'][] = 'key3[key32][key322]';
+		$getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
+
+		$overruleArguments = array(
+				// Should be overriden
+			'key2' => 'value2Overruled',
+			'key3' => array(
+				'key32' => array(
+						// Should be set: Parameter is excluded but forced
+					'key321' => 'value321Overruled',
+						// Should be set: Parameter doesn't exist in source array but is forced
+					'key323' => 'value323Overruled',
+				),
+			),
+		);
+
+		$expectedResult = '&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled';
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
+		$this->assertEquals($expectedResult, $actualResult);
+
+		$getQueryArgumentsConfiguration['method'] = 'POST';
+		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
+		$this->assertEquals($expectedResult, $actualResult);
 	}
 }
 ?>
