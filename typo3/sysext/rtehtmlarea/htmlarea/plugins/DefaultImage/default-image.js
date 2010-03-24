@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,203 +32,475 @@
  * TYPO3 SVN ID: $Id$
  */
 DefaultImage = HTMLArea.Plugin.extend({
-	
-	constructor : function(editor, pluginName) {
+	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
-		
+	configurePlugin: function(editor) {
 		this.baseURL = this.editorConfiguration.baseURL;
 		this.pageTSConfiguration = this.editorConfiguration.buttons.image;
 		if (this.pageTSConfiguration && this.pageTSConfiguration.properties && this.pageTSConfiguration.properties.removeItems) {
-			this.removeItems = this.pageTSConfiguration.properties.removeItems.split(",");
-				var layout = 0;
-				var padding = 0;
-				for (var i = 0, length = this.removeItems.length; i < length; ++i) {
-					this.removeItems[i] = this.removeItems[i].replace(/(?:^\s+|\s+$)/g, "");
-					if (/^(align|border|float)$/i.test(this.removeItems[i])) ++layout;
-					if (/^(paddingTop|paddingRight|paddingBottom|paddingLeft)$/i.test(this.removeItems[i])) ++padding;
+			this.removeItems = this.pageTSConfiguration.properties.removeItems.split(',');
+			var layout = 0;
+			var padding = 0;
+			for (var i = 0, n = this.removeItems.length; i < n; ++i) {
+				this.removeItems[i] = this.removeItems[i].replace(/(?:^\s+|\s+$)/g, '');
+				if (/^(align|border|float)$/i.test(this.removeItems[i])) {
+					++layout;
 				}
-				if (layout == 3) this.removeItems[this.removeItems.length] = "layout";
-				if (layout == 4) this.removeItems[this.removeItems.length] = "padding";
+				if (/^(paddingTop|paddingRight|paddingBottom|paddingLeft)$/i.test(this.removeItems[i])) {
+					++padding;
+				}
+			}
+			if (layout == 3) {
+				this.removeItems.push('layout');
+			}
+			if (layout == 4) {
+				this.removeItems.push('padding');
+			}
+			this.removeItems = new RegExp( '^(' + this.removeItems.join('|') + ')$', 'i');
+		} else {
+			this.removeItems = new RegExp( '^(none)$', 'i');
 		}
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.ajbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the button
 		 */
-		var buttonId = "InsertImage";
+		var buttonId = 'InsertImage';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize("insertimage"),
-			action		: "onButtonPress",
+			tooltip		: this.localize('insertimage'),
+			action		: 'onButtonPress',
 			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			dialog		: true
 		};
 		this.registerButton(buttonConfiguration);
-		
 		return true;
 	 },
-	 
+	/*
+	 * Sets of default configuration values for dialogue form fields
+	 */
+	configDefaults: {
+		combo: {
+			editable: true,
+			typeAhead: true,
+			triggerAction: 'all',
+			forceSelection: true,
+			mode: 'local',
+			valueField: 'value',
+			displayField: 'text',
+			helpIcon: true,
+			tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
+		}
+	},
 	/*
 	 * This function gets called when the button was pressed.
 	 *
 	 * @param	object		editor: the editor instance
 	 * @param	string		id: the button id or the key
-	 * @param	object		target: the target element of the contextmenu event, when invoked from the context menu
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function(editor, id, target) {
-		
+	onButtonPress: function(editor, id) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
-		var image, outparam = null;
-		this.editor.focusEditor();
-		
-		if (typeof(target) !== "undefined") {
-			image = target;
+		this.editor.focus();
+		this.image = this.editor.getParentElement();
+		if (this.image && !/^img$/i.test(this.image.nodeName)) {
+			this.image = null;
+		}
+		if (this.image) {
+			this.parameters = {
+				base: 		this.baseURL,
+				url: 		this.image.getAttribute('src'),
+				alt:		this.image.alt,
+				border:		isNaN(parseInt(this.image.style.borderWidth)) ? '' : parseInt(this.image.style.borderWidth),
+				align:		this.image.style.verticalAlign ? this.image.style.verticalAlign : '',
+				paddingTop:	isNaN(parseInt(this.image.style.paddingTop)) ? '' : parseInt(this.image.style.paddingTop),
+				paddingRight:	isNaN(parseInt(this.image.style.paddingRight)) ? '' : parseInt(this.image.style.paddingRight),
+				paddingBottom:	isNaN(parseInt(this.image.style.paddingBottom)) ? '' : parseInt(this.image.style.paddingBottom),
+				paddingLeft:	isNaN(parseInt(this.image.style.paddingLeft)) ? '' : parseInt(this.image.style.paddingLeft),
+				cssFloat: 	Ext.isIE ? this.image.style.styleFloat : this.image.style.cssFloat
+			};
 		} else {
-			image = this.editor.getParentElement();
-		}
-		if (image && !/^img$/i.test(image.nodeName)) {
-			image = null;
-		}
-		if (image) {
-			outparam = {
-				f_base		: this.baseURL,
-				f_url		: image.getAttribute("src"),
-				f_alt		: image.alt,
-				f_border	: isNaN(parseInt(image.style.borderWidth)) ? "" : parseInt(image.style.borderWidth),
-				f_align 	: image.style.verticalAlign,
-				f_top		: isNaN(parseInt(image.style.paddingTop)) ? "" : parseInt(image.style.paddingTop),
-				f_right		: isNaN(parseInt(image.style.paddingRight)) ? "" : parseInt(image.style.paddingRight),
-				f_bottom	: isNaN(parseInt(image.style.paddingBottom)) ? "" : parseInt(image.style.paddingBottom),
-				f_left	 	: isNaN(parseInt(image.style.paddingLeft)) ? "" : parseInt(image.style.paddingLeft),
-				f_float 	: HTMLArea.is_ie ? image.style.styleFloat : image.style.cssFloat
+			this.parameters = {
+				base: 	this.baseURL,
+				url: 	'',
+				alt:	'',
+				border:	'',
+				align:	'',
+				paddingTop:	'',
+				paddingRight:	'',
+				paddingBottom:	'',
+				paddingLeft:	'',
+				cssFloat: ''
 			};
 		}
-		this.image = image;
-		
-		this.dialog = this.openDialog("InsertImage", this.makeUrlFromPopupName("insert_image"), "insertImage", outparam, {width:600, height:610});
+			// Open dialogue window
+		this.openDialogue(
+			buttonId,
+			'Insert Image',
+			this.getWindowDimensions(
+				{
+					width: 460,
+					height:300
+				},
+				buttonId
+			),
+			this.buildTabItems()
+		);
 		return false;
 	},
-	
 	/*
-	 * Insert the image
+	 * Open the dialogue window
 	 *
-	 * @param	object		param: the returned values
+	 * @param	string		buttonId: the button id
+	 * @param	string		title: the window title
+	 * @param	integer		dimensions: the opening width of the window
+	 * @param	object		tabItems: the configuration of the tabbed panel
 	 *
-	 * @return	boolean		false
+	 * @return	void
 	 */
-	insertImage : function(param) {
-		if (typeof(param) != "undefined" && typeof(param.f_url) != "undefined") {
-			this.editor.focusEditor();
-			var image = this.image;
-			if (!image) {
-				var selection = this.editor._getSelection();
-				var range = this.editor._createRange(selection);
-				this.editor._doc.execCommand("InsertImage", false, param.f_url);
-				if (HTMLArea.is_ie) {
-					image = range.parentElement();
-					if (!/^img$/i.test(image.nodeName)) {
-						image = image.previousSibling;
-					}
-				} else {
-					var selection = this.editor._getSelection();
-					var range = this.editor._createRange(selection);
-					image = range.startContainer;
-					if (HTMLArea.is_opera) {
-						image = image.parentNode;
-					}
-					image = image.lastChild;
-					while(image && !/^img$/i.test(image.nodeName)) {
-						image = image.previousSibling;
-					}
+	openDialogue: function (buttonId, title, dimensions, tabItems) {
+		this.dialog = new Ext.Window({
+			title: this.localize(title),
+			cls: 'htmlarea-window',
+			border: false,
+			width: dimensions.width,
+			height: 'auto',
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			resizable: !Ext.isIE,
+			iconCls: buttonId,
+			listeners: {
+				close: {
+					fn: this.onClose,
+					scope: this
 				}
-			} else {
-				image.src = param.f_url;
-			}
-			
-			for (var field in param) {
-				if (param.hasOwnProperty(field)) {
-					var value = param[field];
-					switch (field) {
-						case "f_alt"    :
-							image.alt = value;
-							break;
-						case "f_border" :
-							if (parseInt(value)) {
-								image.style.borderWidth = parseInt(value)+"px";
-								image.style.borderStyle = "solid";
-							} else {
-								image.style.borderWidth = "";
-								image.style.borderStyle = "none";
-							}
-							break;
-						case "f_align"  :
-							image.style.verticalAlign = value;
-							break;
-						case "f_top"   :
-							if (parseInt(value)) {
-								image.style.paddingTop = parseInt(value)+"px";
-							} else {
-								image.style.paddingTop = "";
-							}
-							break;
-						case "f_right"  :
-							if (parseInt(value)) {
-								image.style.paddingRight = parseInt(value)+"px";
-							} else {
-								image.style.paddingRight = "";
-							}
-							break;
-						case "f_bottom"   :
-							if (parseInt(value)) {
-								image.style.paddingBottom = parseInt(value)+"px";
-							} else {
-								image.style.paddingBottom = "";
-							}
-							break;
-						case "f_left"  :
-							if (parseInt(value)) {
-								image.style.paddingLeft = parseInt(value)+"px";
-							} else {
-								image.style.paddingLeft = "";
-							}
-							break;
-						case "f_float"  :
-							if (HTMLArea.is_ie) {
-								image.style.styleFloat = value;
-							} else {
-								image.style.cssFloat = value;
-							}
-							break;
+			},
+			items: {
+				xtype: 'tabpanel',
+				itemId: 'tabpanel',
+				activeTab: 0,
+				defaults: {
+					xtype: 'container',
+					layout: 'form',
+					defaults: {
+						labelWidth: 100
 					}
+				},
+				listeners: {
+					tabchange: {
+						fn: this.syncHeight,
+						scope: this
+					}
+				},
+				items: tabItems
+			},
+			buttons: [
+				this.buildButtonConfig('OK', this.onOK),
+				this.buildButtonConfig('Cancel', this.onCancel)
+			]
+		});
+		this.show();
+	},
+	/*
+	 * Build the configuration of the the tab items
+	 *
+	 * @return	array	the configuration array of tab items
+	 */
+	buildTabItems: function () {
+		var tabItems = [];
+			// General tab
+		tabItems.push({
+			title: this.localize('General'),
+			items: [{
+					xtype: 'fieldset',
+					defaultType: 'textfield',
+					defaults: {
+						helpIcon: true,
+						width: 300,
+						labelSeparator: ''
+					},
+					items: [{
+							itemId: 'url',
+							fieldLabel: this.localize('Image URL:'),
+							value: this.parameters.url,
+							helpTitle: this.localize('Enter the image URL here')
+						},{
+							itemId: 'alt',
+							fieldLabel: this.localize('Alternate text:'),
+							value: this.parameters.alt,
+							helpTitle: this.localize('For browsers that dont support images')
+						}
+					]
+				},{
+					xtype: 'fieldset',
+					title: this.localize('Image Preview'),
+					items: [{
+								// The preview iframe
+							xtype: 'box',
+							itemId: 'image-preview',
+							autoEl: {
+								name: 'ipreview',
+								tag: 'iframe',
+								cls: 'image-preview',
+								src: this.parameters.url
+							}
+						},{
+							xtype: 'button',
+							minWidth: 150,
+							text: this.localize('Preview'),
+							itemId: 'preview',
+							style: {
+								marginTop: '5px',
+								'float': 'right'
+							},
+							listeners: {
+								click: {
+									fn: this.onPreviewClick,
+									scope: this
+								}
+							}
+						}
+					]
 				}
+			]
+		});
+			// Layout tab
+		if (!this.removeItems.test('layout')) {
+			tabItems.push({
+				title: this.localize('Layout'),
+				items: [{
+						xtype: 'fieldset',
+						defaultType: 'textfield',
+						defaults: {
+							helpIcon: true,
+							width: 250,
+							labelSeparator: ''
+						},
+						items: [
+							Ext.apply({
+								xtype: 'combo',
+								fieldLabel: this.localize('Image alignment:'),
+								itemId: 'align',
+								value: this.parameters.align,
+								helpTitle: this.localize('Positioning of this image'),
+								store: new Ext.data.ArrayStore({
+									autoDestroy:  true,
+									fields: [ { name: 'text'}, { name: 'value'}],
+									data: [
+										[this.localize('Not set'), ''],
+										[this.localize('Bottom'), 'bottom'],
+										[this.localize('Middle'), 'middle'],
+										[this.localize('Top'), 'top']
+									]
+								}),
+								hidden: this.removeItems.test('align'),
+								hideLabel: this.removeItems.test('align'),
+								}, this.configDefaults['combo'])
+							,{
+								itemId: 'border',
+								fieldLabel: this.localize('Border thickness:'),
+								width: 100,
+								value: this.parameters.border,
+								helpTitle: this.localize('Leave empty for no border'),
+								hidden: this.removeItems.test('border'),
+								hideLabel: this.removeItems.test('border')
+							},
+							Ext.apply({
+								xtype: 'combo',
+								fieldLabel: this.localize('Float:'),
+								itemId: 'cssFloat',
+								value: this.parameters.cssFloat,
+								helpTitle: this.localize('Where the image should float'),
+								store: new Ext.data.ArrayStore({
+									autoDestroy:  true,
+									fields: [ { name: 'text'}, { name: 'value'}],
+									data: [
+										[this.localize('Not set'), ''],
+										[this.localize('Non-floating'), 'none'],
+										[this.localize('Left'), 'left'],
+										[this.localize('Right'), 'right']
+									]
+								}),
+								hidden: this.removeItems.test('float'),
+								hideLabel: this.removeItems.test('float')
+								}, this.configDefaults['combo'])
+						]
+				}]
+			});
+		}
+			// Padding tab
+		if (!this.removeItems.test('padding')) {
+			tabItems.push({
+				title: this.localize('Spacing and padding'),
+				items: [{
+						xtype: 'fieldset',
+						defaultType: 'textfield',
+						defaults: {
+							helpIcon: true,
+							width: 100,
+							labelSeparator: ''
+						},
+						items: [{
+								itemId: 'paddingTop',
+								fieldLabel: this.localize('Top:'),
+								value: this.parameters.paddingTop,
+								helpTitle: this.localize('Top padding'),
+								hidden: this.removeItems.test('paddingTop'),
+								hideLabel: this.removeItems.test('paddingTop')
+							},{
+								itemId: 'paddingRight',
+								fieldLabel: this.localize('Right:'),
+								value: this.parameters.paddingRight,
+								helpTitle: this.localize('Right padding'),
+								hidden: this.removeItems.test('paddingRight'),
+								hideLabel: this.removeItems.test('paddingRight')
+							},{
+								itemId: 'paddingBottom',
+								fieldLabel: this.localize('Bottom:'),
+								value: this.parameters.paddingBottom,
+								helpTitle: this.localize('Bottom padding'),
+								hidden: this.removeItems.test('paddingBottom'),
+								hideLabel: this.removeItems.test('paddingBottom')
+							},{
+								itemId: 'paddingLeft',
+								fieldLabel: this.localize('Left:'),
+								value: this.parameters.paddingLeft,
+								helpTitle: this.localize('Left padding'),
+								hidden: this.removeItems.test('paddingLeft'),
+								hideLabel: this.removeItems.test('paddingLeft')
+							}
+						]
+				}]
+			});
+		}
+		return tabItems;
+	},
+	/*
+	 * Handler invoked when the Preview button is clicked
+	 */
+	onPreviewClick: function () {
+		var tabPanel = this.dialog.find('itemId', 'tabpanel')[0];
+		var urlField = this.dialog.find('itemId', 'url')[0];
+		var url = urlField.getValue().trim();
+		if (url) {
+			try {
+				window.ipreview.location.replace(url);
+			} catch (e) {
+				Ext.MessageBox.alert('', this.localize('image_url_invalid'), function () { tabPanel.setActiveTab(0); urlField.focus(); });
 			}
-			this.dialog.close();
+		} else {
+			Ext.MessageBox.alert('', this.localize('image_url_first'), function () { tabPanel.setActiveTab(0); urlField.focus(); });
 		}
 		return false;
+	},
+	/*
+	 * Handler invoked when the OK button is clicked
+	 */
+	onOK: function () {
+		var urlField = this.dialog.find('itemId', 'url')[0];
+		var url = urlField.getValue().trim();
+		if (url) {
+			var fieldNames = ['url', 'alt', 'align', 'border', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'cssFloat'];
+			Ext.each(fieldNames, function (fieldName) {
+				var field = this.dialog.find('itemId', fieldName)[0];
+				if (field && !field.hidden) {
+					this.parameters[fieldName] = field.getValue();
+				}
+			}, this);
+			this.insertImage();
+			this.close();
+		} else {
+			var tabPanel = this.dialog.find('itemId', 'tabpanel')[0];
+			Ext.MessageBox.alert('', this.localize('image_url_required'), function () { tabPanel.setActiveTab(0); urlField.focus(); });
+		}
+		return false;
+	},
+	/*
+	 * Insert the image
+	 */
+	insertImage: function() {
+		this.editor.focus();
+		this.restoreSelection();
+		var image = this.image;
+		if (!image) {
+			var selection = this.editor._getSelection();
+			var range = this.editor._createRange(selection);
+			this.editor.document.execCommand('InsertImage', false, this.parameters.url);
+			if (Ext.isWebKit) {
+				this.editor.cleanAppleStyleSpans(this.editor.document.body);
+			}
+			if (Ext.isIE) {
+				image = range.parentElement();
+				if (!/^img$/i.test(image.nodeName)) {
+					image = image.previousSibling;
+				}
+				this.editor.selectNode(image);
+			} else {
+				var selection = this.editor._getSelection();
+				var range = this.editor._createRange(selection);
+				image = range.startContainer;
+				image = image.lastChild;
+				while (image && !/^img$/i.test(image.nodeName)) {
+					image = image.previousSibling;
+				}
+			}
+		} else {
+			image.src = this.parameters.url;
+		}
+		if (/^img$/i.test(image.nodeName)) {
+			Ext.iterate(this.parameters, function (fieldName, value) {
+				switch (fieldName) {
+					case 'alt':
+						image.alt = value;
+						break;
+					case 'border':
+						if (parseInt(value)) {
+							image.style.borderWidth = parseInt(value) + 'px';
+							image.style.borderStyle = 'solid';
+						} else {
+							image.style.borderWidth = '';
+							image.style.borderStyle = 'none';
+						}
+						break;
+					case 'align':
+						image.style.verticalAlign = value;
+						break;
+					case 'paddingTop':
+					case 'paddingRight':
+					case 'paddingBottom':
+					case 'paddingLeft':
+						if (parseInt(value)) {
+							image.style[fieldName] = parseInt(value) + 'px';
+						} else {
+							image.style[fieldName] = '';
+						}
+						break;
+					case 'cssFloat':
+						if (Ext.isIE) {
+							image.style.styleFloat = value;
+						} else {
+							image.style.cssFloat = value;
+						}
+						break;
+				}
+			});
+		}
 	}
 });
-

@@ -673,7 +673,18 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 	saveSelection: function (event) {
 		var editor = this.getEditor();
 		if (editor.document.hasFocus()) {
-			this.bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
+			var selection = editor._getSelection();
+			switch (selection.type.toLowerCase()) {
+				case 'none':
+				case 'text':
+					this.bookmark = editor.getBookmark(editor._createRange(selection));
+					this.controlRange = null;
+					break;
+				case 'control':
+					this.controlRange = editor._createRange(selection);
+					this.bookmark = null;
+					break;
+			}
 		}
 	},
 	/*
@@ -682,7 +693,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 	restoreSelection: function (event) {
 		if (!Ext.isEmpty(this.bookmark) && this.triggered) {
 			var editor = this.getEditor();
-			editor.selectRange(editor.moveToBookmark(this.bookmark));
+			editor.selectRange(this.bookmark ? editor.moveToBookmark(this.bookmark) : this.controlRange);
 			this.triggered = false;
 		}
 	},
@@ -2011,10 +2022,13 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 		var editor = this.getEditor();
 		element.blur();
 		if (!Ext.isIE) {
-			editor.selectNodeContents(element.ancestor);
+			if (/^(img)$/i.test(element.ancestor.nodeName)) {
+				editor.selectNode(element.ancestor);
+			} else {
+				editor.selectNodeContents(element.ancestor);
+			}
 		} else {
-			var nodeName = element.ancestor.nodeName.toLowerCase();
-			if (nodeName == 'table' || nodeName == 'img') {
+			if (/^(img|table)$/i.test(element.ancestor.nodeName)) {
 				var range = editor.document.body.createControlRange();
 				range.addElement(element.ancestor);
 				range.select();
@@ -4442,7 +4456,18 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	saveSelection: function () {
 			// If IE, save the current selection
 		if (Ext.isIE) {
-			this.bookmark = this.editor.getBookmark(this.editor._createRange(this.editor._getSelection()));
+			var selection = this.editor._getSelection();
+			switch (selection.type.toLowerCase()) {
+				case 'none':
+				case 'text':
+					this.bookmark = this.editor.getBookmark(this.editor._createRange(selection));
+					this.controlRange = null;
+					break;
+				case 'control':
+					this.controlRange = this.editor._createRange(selection);
+					this.bookmark = null;
+					break;
+			}
 		}
 	},
 	/*
@@ -4452,7 +4477,10 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	restoreSelection: function () {
 			// If IE, restore the selection saved when the window was shown
 		if (Ext.isIE) {
-			this.editor.selectRange(this.editor.moveToBookmark(this.bookmark));
+				// Restoring the selection will not work if the inner html was replaced by the plugin
+			try {
+				this.editor.selectRange(this.bookmark ? this.editor.moveToBookmark(this.bookmark) : this.controlRange);
+			} catch (e) {}
 		}
 	},
 	/*

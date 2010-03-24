@@ -1,3 +1,7 @@
+2010-03-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13909: htmlArea RTE: Extjize the default non-TYPO3 image dialogue
+
 2010-03-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #13878: htmlArea RTE: Extjize the default non-TYPO3 link dialogue

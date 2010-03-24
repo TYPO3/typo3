@@ -233,6 +233,9 @@
 	text-decoration: underline;
 }
 /* Selectors for dialogue windows */
+.htmlarea-window ul.x-tab-strip {
+	list-style: none;
+}
 .htmlarea-window .x-tab-panel-body {
 	background-color: #EFEFF4;
 }
@@ -240,7 +243,9 @@
 	margin: 3px;
 }
 .htmlarea-window .x-form-item-label {
+	font-size: 10px;
 	text-align: right;
+	margin: 0;
 	padding: 3px 5px 0 5px;
 }
 .htmlarea-window .x-btn-text {
@@ -249,6 +254,11 @@
 }
 .htmlarea-window .x-form-check-wrap {
 	padding-top: 3px;
+}
+.htmlarea-window iframe {
+	background-color: #FFF;
+	color: #000;
+	border: 1px solid #A2AAB8;
 }
 .htmlarea-window .show-color {
 	margin-top: 10px;
@@ -272,185 +282,16 @@
 .htmlarea-custom-colors em span {
 	width: 100%;
 }
-.popupwin {
-	background-color:#e4e0db;color:ButtonText;
-	font:11px Tahoma,Verdana,sans-serif;
-	border-style:none;margin:5px;padding:0;
-}
-.popupwin .title {
-	clear:both;
-	background-color:#ddf;color:#000;
-	font-weight:bold;font-size:120%;letter-spacing:2px;
-	border-top:0px;border-bottom:1px solid black;margin-top:0px;margin-bottom:10px;padding:3px 10px;
-}
-.popupwin p {
-	margin: 0.5em 0;
-}
-.popupwin h1 {
-	font-weight: bold; font-size: 1.2em;
-	padding: .3em 0; border-bottom: 1px solid #999;
-}
-.popupwin a:link, .popupwin a:visited {
-	color: #00f;
-}
-.popupwin a:hover {
-	color: #f00;
-}
-.popupwin a:active { 
-	color: #f80;
-}
-.popupwin #tabbar { position: relative; left: 10px; }
-.popupwin .tab {
-	color: #454; background-color: #66f; cursor: pointer;
-	margin-left: -5px; float: left; position: relative; top: -3px; left: -2px; z-index: 0;
-	border: 1px solid black; border-top: none; padding: 2px 10px 3px 10px;
-	-moz-border-radius: 0px 0px 4px 4px;
-	border-radius: 0px 0px 4px 4px;
-}
-.popupwin .tab-current {
-	color: #000; background-color: #ddf;
-	top: -4px; z-index: 10;
-	padding: 3px 10px 4px 10px;
-}
-.popupwin .content, .popupwin #content {
-	border-style:none;
-	margin:0;padding:0;
-}
-.popupwin ul {
-	list-style-type:none;
-	border-style:none;margin:0;padding:0;
-}
-.popupwin li {
-	margin:4px 0;
-}
-.popupwin select {
-	display:inline;
-}
-.popupwin table {
-	border-collapse:collapse;border-style:none;margin:0;padding:0;
-}
-.popupwin thead {
-	font-weight: bold; background-color: #ddf;
-}
-.popupwin td {
-	padding: 0.2em;
-}
-.popupwin form {
-	background-color:#e4e0db;
-	border-style:none;margin:0;padding:0;
-}
-.popupwin form p {
-	margin-top:5px;margin-bottom:5px;
-}
-.popupwin fieldset {
-	display:block;
-	margin:5px 5px 0 5px;padding:0 5px 2px 5px;
-}
-.popupwin fieldset div {
-	margin:3px 0;
-}
-.popupwin .floating {
-	float:left;
-}
-.popupwin legend {
-	font-weight:bold;padding:0 3px;
-}
-.popupwin .field {
-	float:left;text-align:left;
-	margin-left:5px;padding:2px 5px;
-}
-.popupwin label {
-	text-align:left;
-	margin-left:5px;padding:2px 5px;
-}
-.popupwin fieldset table {
-	font-size:11px;font-family:Tahoma,Verdana,sans-serif;
-	border-style:none;margin:2px 0;padding:0;
-}
-.popupwin .buttons {
-	clear:both;text-align:right;
-	border-top:1px solid #999;margin-top:10px;padding:5px;
-}
-.popupwin span.colorButton {
-	float:left;
-	padding:2px 0;
-}
-.popupwin span.colorButtonNoFloat {
-	padding:2px 0;
-}
-.popupwin select, .popupwin input, .popupwin button, .popupwin textarea, .popupwin table, .popupwin label {
-	font:11px Tahoma,Verdana,sans-serif;
-}
-.popupwin button {
-	background-color:#e4e0db;
-	width:8em;
-	padding:0;
-}
-.popupwin dl, .popupwin dt, .popupwin dd {
-	display: block;
-}
-.popupwin dt, .popupwin dd {
-	margin:3px 0;
-}
-.popupwin button.long-button {
-	width:10em;
-}
-.popupwin .fl {
-	float:left;text-align:right;
-	width:15em;
-	padding:2px 5px;
-}
-.popupwin .fl-borderCollapse {
-	float:left;text-align:right;
-	width:13em;
-	margin-left:10px;padding:2px 5px;
-}
-.popupwin .fr {
-	float:left;text-align:right;
-	width:9em;
-	padding:2px 5px;
-}
-.popupwin .space {
-	clear:left;
-	padding:2px;
-}
-.popupwin .label {
-	text-align:right;
-	width:8em;
-}
-.popupwin .checkbox {
-	text-align:left;
-	padding:2px 5px;
-}
-.popupwin .postlabel {
-	text-align:left;
-	padding:2px 5px;
-}
-.popupwin input.value {
-	width:30em;
-}
-.popupwin input.shorter-value {
-	width:17em;
-}
 /* Selectors for the About dialogue */
 .htmlarea-window .about-plugins .x-list-body dt {
     overflow: auto;
     white-space: normal;
 }
-/* Selectors for the Default Image dialogue */
-.htmlarea-default-image #image, .htmlarea-default-image #alt {
-	white-space:nowrap;
-}
-.htmlarea-default-image button.preview {
-	margin-left:5px;vertical-align:top;
-	white-space:normal;
-}
-.htmlarea-default-image div.imagepreview {
-	text-align:center;
-}
-.htmlarea-default-image div.imagepreview iframe {
-	width:300px;height:200px;
-	border:1px solid gray;margin:5px 0px;
+/* Selectors for the default image dialogue */
+.htmlarea-window .image-preview {
+    height: 300;
+    width: 99%;
+    float: right;
 }
 /* Selectors for the InsertSmiley plugin */
 .htmlarea-window .emoticon-array {
@@ -493,9 +334,6 @@
 	float: right;
 	height: 450px;
 	margin: 9px 0px;
-	background-color: #FFF;
-	color: #000;
-	border: 1px solid #A2AAB8;
 }
 /* Selectors for the ContextMenu plugin */
 .htmlarea-context-menu {
@@ -503,6 +341,16 @@
 	color:#212424;
 	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 	font-size:10px;
+}
+.htmlarea-context-menu ul {
+	list-style: none;
+	margin: 0;
+}
+.htmlarea-context-menu li {
+	margin: 0;
+}
+.htmlarea-context-menu a {
+	font-weight: normal;
 }
 .htmlarea-context-menu .button {
 	background-color:transparent;

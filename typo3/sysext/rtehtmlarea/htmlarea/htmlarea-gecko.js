@@ -157,18 +157,24 @@ HTMLArea.Editor.prototype.rangeIntersectsNode = function(range, node) {
  */
 HTMLArea.Editor.prototype.getSelectionType = function(selection) {
 		// By default set the type to "Text".
-	var type = "Text";
+	var type = 'Text';
 	if (!selection) {
 		var selection = this._getSelection();
 	}
 			// Check if the actual selection is a Control
 	if (selection && selection.rangeCount == 1) {
-		var range = selection.getRangeAt(0) ;
-		if (range.startContainer == range.endContainer
-				&& (range.endOffset - range.startOffset) == 1
-				&& range.startContainer.nodeType == 1
-				&& /^(img|hr|li|table|tr|td|embed|object|ol|ul)$/i.test(range.startContainer.childNodes[range.startOffset].nodeName)) {
-			type = "Control";
+		var range = selection.getRangeAt(0);
+		if (range.startContainer.nodeType == 1) {
+			if (
+					// Gecko
+				(range.startContainer == range.endContainer && (range.endOffset - range.startOffset) == 1) ||
+					// Opera and WebKit
+				(range.endContainer.nodeType == 3 && range.endOffset == 0 && range.startContainer.childNodes[range.startOffset].nextSibling == range.endContainer)
+			) {
+				if (/^(img|hr|li|table|tr|td|embed|object|ol|ul|dl)$/i.test(range.startContainer.childNodes[range.startOffset].nodeName)) {
+					type = 'Control';
+				}
+			}
 		}
 	}
 	return type;
