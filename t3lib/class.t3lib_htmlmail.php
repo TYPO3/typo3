@@ -502,9 +502,9 @@ class t3lib_htmlmail {
 				$this->add_header('Reply-To: '.$this->replyto_email);
 			}
 		}
-			// Organisation
+			// Organization, using american english spelling (organization / organisation) as defined in RFC 1036 / 2076
 		if ($this->organisation) {
-			$this->add_header('Organisation: '.$this->organisation);
+			$this->add_header('Organization: ' . $this->organisation);
 		}
 			// mailer
 		if ($this->mailer) {

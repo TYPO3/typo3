@@ -84,7 +84,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 	 * [from_name]:			Sender name. If not set, [name] is used
 	 * [replyto_email]:		Reply-to email. If not set [from_email] is used
 	 * [replyto_name]:		Reply-to name. If not set [from_name] is used
-	 * [organisation]:		Organisation (header)
+	 * [organisation]:		Organization (header)
 	 * [priority]:			Priority, 1-5, default 3
 	 * [html_enabled]:		If mail is sent as html
 	 * [use_base64]:		If set, base64 encoding will be used instead of quoted-printable
