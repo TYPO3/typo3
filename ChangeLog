@@ -1,5 +1,6 @@
 2010-03-24  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Added feature #9289: Missing index for deleting outdated session data in fe_session_data
 	* Fixed bug #9769: Organisation in mail header should be Organization
 
 2010-03-24  Stanislas Rolland  <typo3@sjbr.ca>
