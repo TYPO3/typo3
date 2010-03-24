@@ -2,6 +2,7 @@
 
 	* Added feature #13909: htmlArea RTE: Extjize the default non-TYPO3 image dialogue
 	* Follow-up to feature #13878: htmlArea RTE: Extjize the default non-TYPO3 link dialogue
+	* Follow-up to feature #13785: htmlArea RTE: Extjize Find & Replace dialogue
 
 2010-03-22  Stanislas Rolland  <typo3@sjbr.ca>
 

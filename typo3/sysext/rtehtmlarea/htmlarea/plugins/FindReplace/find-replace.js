@@ -102,7 +102,7 @@ FindReplace = HTMLArea.Plugin.extend({
 			'Find and Replace',
 			this.getWindowDimensions(
 				{
-					width: 460,
+					width: 410,
 					height:360
 				},
 				buttonId
@@ -138,7 +138,7 @@ FindReplace = HTMLArea.Plugin.extend({
 			items: [{
 					xtype: 'fieldset',
 					defaultType: 'textfield',
-					labelWidth: 150,
+					labelWidth: 100,
 					defaults: {
 						labelSeparator: '',
 						width: 250,
