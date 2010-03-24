@@ -1,3 +1,7 @@
+2010-03-25  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #11239: typolink addQueryString.exclude does not support arrays, pre-patch to add t3lib_div::arrayDiffAssocRecursive()
+
 2010-03-23  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #9229: indexing of records containing HTML leads to concatenated words

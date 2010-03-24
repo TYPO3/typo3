@@ -1998,6 +1998,29 @@ final class t3lib_div {
 	}
 
 	/**
+	 * Filters keys off from first array that also exist in second array. Comparision is done by keys.
+	 * This method is a recursive version of php array_diff_assoc()
+	 *
+	 * @param	array		Source array
+	 * @param	array		Reduce source array by this array
+	 * @return	array		Source array reduced by keys also present in second array
+	 */
+	public static function arrayDiffAssocRecursive(array $array1, array $array2) {
+		$differenceArray = array();
+		foreach ($array1 as $key => $value) {
+			if (!array_key_exists($key, $array2)) {
+				$differenceArray[$key] = $value;
+			} elseif (is_array($value)) {
+				if (is_array($array2[$key])) {
+					$differenceArray[$key] = t3lib_div::arrayDiffAssocRecursive($value, $array2[$key]);
+				}
+			}
+		}
+
+		return $differenceArray;
+	}
+
+	/**
 	 * Takes a row and returns a CSV string of the values with $delim (default is ,) and $quote (default is ") as separator chars.
 	 * Usage: 5
 	 *
