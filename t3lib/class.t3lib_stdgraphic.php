@@ -2293,7 +2293,7 @@ class t3lib_stdGraphic	{
 						// file has changed, delete the row
 					$TYPO3_DB->exec_DELETEquery ('cache_imagesizes', 'md5hash='.$TYPO3_DB->fullQuoteStr($row['md5hash'],'cache_imagesizes'));
 				} else {
-					return (array($row['imagewidth'], $row['imageheight'], strtolower($reg[0]), $imageFile));
+					return (array((int) $row['imagewidth'], (int) $row['imageheight'], strtolower($reg[0]), $imageFile));
 				}
 			}
 		}
