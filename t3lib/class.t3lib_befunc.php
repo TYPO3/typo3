@@ -2668,7 +2668,7 @@ final class t3lib_BEfunc {
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$sys_page->init(FALSE);
 		$mountPointInfo = $sys_page->getMountPointInfo($id);
-		if ($mountPointInfo) {
+		if ($mountPointInfo && $mountPointInfo['overlay']) {
 			$id = $mountPointInfo['mount_pid'];
 			$addGetVars .= '&MP=' . $mountPointInfo['MPvar'];
 		}
