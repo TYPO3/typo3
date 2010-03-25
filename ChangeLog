@@ -1,6 +1,7 @@
 2010-03-25  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13901: GIFBULDER generates same picture twice (in typo3temp/GB) (thanks to Vladimir Podkovanov)
+	* Follow-up to #13739: Make the clickmenu work again and also for the case when "Substitute Mount Point" is not set
 
 2010-03-18  Ernesto Baschny  <ernst@cron-it.de>
 
