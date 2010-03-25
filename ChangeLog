@@ -1,3 +1,7 @@
+2010-03-25  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #13901: GIFBULDER generates same picture twice (in typo3temp/GB) (thanks to Vladimir Podkovanov)
+
 2010-03-25  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to bug #11239: typolink addQueryString.exclude does not support arrays, main patch for tslib_content
