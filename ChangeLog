@@ -1,8 +1,9 @@
 2010-03-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #13792: Bug: Double semicolon in css styled content (Thanks to Susanne Moog)
 	* Fixed bug #13386: Bug: mod.web_list.hideTables doesn't accept spaces (Thanks to Marcel Greter)
 	* Follow-up to bug #13681: Added testcase for t3lib_div::revExplode
-	* Fixed bug #13681: Improve performance of t3lib_div::revExplode
+	* Fixed bug #13681: Improve performance of t3lib_div::revExplode (Thanks to Nikolas Hagelstein)
 
 2010-03-26  Francois Suter  <francois@typo3.org>
 
