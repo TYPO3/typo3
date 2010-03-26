@@ -1,6 +1,6 @@
 2010-03-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #13386: Bug: mod.web_list.hideTables doesn't accept spaces
+	* Fixed bug #13386: Bug: mod.web_list.hideTables doesn't accept spaces (Thanks to Marcel Greter)
 	* Follow-up to bug #13681: Added testcase for t3lib_div::revExplode
 	* Fixed bug #13681: Improve performance of t3lib_div::revExplode
 
