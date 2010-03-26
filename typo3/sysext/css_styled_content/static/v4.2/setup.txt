@@ -961,7 +961,7 @@ tt_content.login.20 {
 		override.listNum = 1
 	}
 
-	stdWrap.wrap = <table border="0" cellspacing="1" cellpadding="1" class="csc-loginform">  | </table>
+	stdWrap.wrap = <div class="csc-loginform"> | </div>
 	stdWrap {
 		editIcons.iconTitle.data = LLL:EXT:css_styled_content/pi1/locallang.xml:eIcon.login
 
