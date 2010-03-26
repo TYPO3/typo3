@@ -1194,7 +1194,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// include extJS
 		if ($this->addExtJS) {
 				// use the base adapter all the time
-			$out .= '<script src="' . $this->backPath . 'contrib/extjs/adapter/' . $this->extJSadapter . '" type="text/javascript"></script>' . chr(10);
+			$out .= '<script src="' . $this->backPath . 'contrib/extjs/adapter/' . ($this->enableExtJsDebug ? str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter) . '" type="text/javascript"></script>' . chr(10);
 			$out .= '<script src="' . $this->backPath . 'contrib/extjs/ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js" type="text/javascript"></script>' . chr(10);
 
 				// add extJS localization
