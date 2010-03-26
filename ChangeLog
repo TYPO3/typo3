@@ -1,3 +1,7 @@
+2010-03-26  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13681: Improve performance of t3lib_div::revExplode
+
 2010-03-26  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #3716: includeCSS changed behavior, must default to media="all" (thanks to internezzo ag)

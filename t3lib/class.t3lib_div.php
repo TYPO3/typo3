@@ -1663,14 +1663,10 @@ final class t3lib_div {
 	 * @param	integer		Number of array entries
 	 * @return	array		Exploded values
 	 */
-	public static function revExplode($delim, $string, $count=0)	{
-		$temp = explode($delim,strrev($string),$count);
-		foreach ($temp as &$val) {
-			$val = strrev($val);
-		}
-		$temp = array_reverse($temp);
-		reset($temp);
-		return $temp;
+	public static function revExplode($delimiter, $string, $count=0) {
+		$explodedValues = explode($delimiter, strrev($string), $count);
+		$explodedValues = array_map('strrev', $explodedValues);
+		return array_reverse($explodedValues);
 	}
 
 	/**
