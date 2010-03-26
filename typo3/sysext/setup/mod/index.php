@@ -115,6 +115,7 @@ class SC_mod_user_setup_index {
 	protected $passwordIsUpdated = FALSE;
 	protected $passwordIsSubmitted = FALSE;
 	protected $setupIsUpdated = FALSE;
+	protected $tempDataIsCleared = FALSE;
 
 
 	/******************************
@@ -159,6 +160,7 @@ class SC_mod_user_setup_index {
 						unset ($BE_USER->uc[$key]);
 					}
 				}
+				$this->tempDataIsCleared = TRUE;
 			} else {
 					// save all submitted values if they are no array (arrays are with table=be_users) and exists in $GLOBALS['TYPO3_USER_SETTINGS'][columns]
 				foreach($columns as $field => $config) {
@@ -184,6 +186,10 @@ class SC_mod_user_setup_index {
 				$BE_USER->writeUC($BE_USER->uc);
 				$BE_USER->writelog(254, 1, 0, 1, 'Personal settings changed', array());
 				$this->setupIsUpdated = TRUE;
+			}
+				// If the temporary data has been cleared, lets make a log note about it
+			if ($this->tempDataIsCleared) {
+				$BE_USER->writelog(254, 1, 0, 1, $GLOBALS['LANG']->getLL('tempDataClearedLog'), array());
 			}
 
 
@@ -331,6 +337,15 @@ class SC_mod_user_setup_index {
 				't3lib_FlashMessage',
 				$LANG->getLL('setupWasUpdated'),
 				$LANG->getLL('UserSettings')
+			);
+			$this->content .= $flashMessage->render();
+		}
+			// Show if temporary data was cleared
+		if ($this->tempDataIsCleared) {
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				$LANG->getLL('tempDataClearedFlashMessage'),
+				$LANG->getLL('tempDataCleared')
 			);
 			$this->content .= $flashMessage->render();
 		}

@@ -107,6 +107,9 @@
 			<label index="enableInstallTool.label">Install Tool Access</label>
 			<label index="enableInstallTool.createFile">Create Install Tool Enable File</label>
 			<label index="enableInstallTool.deleteFile">Delete Install Tool Enable File</label>
+			<label index="tempDataCleared">Temporary data cleared</label>
+			<label index="tempDataClearedFlashMessage">The temporary data has been cleared.</label>
+			<label index="tempDataClearedLog">Temporary data cleared</label>
 		</languageKey>
 	</data>
 </T3locallang>
