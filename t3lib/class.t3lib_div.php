@@ -322,25 +322,54 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Writes input value to $_GET
+	 * Writes input value to $_GET.
 	 * Usage: 2
 	 *
-	 * @param	mixed		Array to write to $_GET. Values should NOT be escaped at input time (but will be escaped before writing according to TYPO3 standards).
-	 * @param	string		Alternative key; If set, this will not set the WHOLE GET array, but only the key in it specified by this value!
+	 * @param mixed $inputGet
+	 *        array or single value to write to $_GET. Values should NOT be
+	 *        escaped at input time (but will be escaped before writing
+	 *        according to TYPO3 standards).
+	 * @param string $key
+	 *        alternative key; If set, this will not set the WHOLE GET array,
+	 *        but only the key in it specified by this value!
+	 *        You can specify to replace keys on deeper array levels by
+	 *        separating the keys with a pipe.
+	 *        Example: 'parentKey|childKey' will result in
+	 *        array('parentKey' => array('childKey' => $inputGet))
+	 *
 	 * @return	void
 	 */
-	public static function _GETset($inputGet,$key='')	{
-			// ADDS slashes since TYPO3 standard currently is that slashes MUST be applied (regardless of magic_quotes setting).
-		if (strcmp($key,''))	{
-			if (is_array($inputGet)) {
-				self::addSlashesOnArray($inputGet);
-			} else {
-				$inputGet = addslashes($inputGet);
-			}
-			$GLOBALS['HTTP_GET_VARS'][$key] = $_GET[$key] = $inputGet;
-		} elseif (is_array($inputGet)) {
+	public static function _GETset($inputGet, $key = '') {
+			// adds slashes since TYPO3 standard currently is that slashes
+			// must be applied (regardless of magic_quotes setting)
+		if (is_array($inputGet)) {
 			self::addSlashesOnArray($inputGet);
-			$GLOBALS['HTTP_GET_VARS'] = $_GET = $inputGet;
+		} else {
+			$inputGet = addslashes($inputGet);
+		}
+
+		if ($key != '') {
+			if (strpos($key, '|') !== FALSE) {
+				$pieces = explode('|', $key);
+				$newGet = array();
+				$pointer =& $newGet;
+				foreach ($pieces as $piece) {
+					$pointer =& $pointer[$piece];
+				}
+				$pointer = $inputGet;
+				$mergedGet = self::array_merge_recursive_overrule(
+					$_GET, $newGet
+				);
+
+				$_GET = $mergedGet;
+				$GLOBALS['HTTP_GET_VARS'] = $mergedGet;
+			} else {
+				$_GET[$key] = $inputGet;
+				$GLOBALS['HTTP_GET_VARS'][$key] = $inputGet;
+			}
+		} elseif (is_array($inputGet)) {
+			$_GET = $inputGet;
+			$GLOBALS['HTTP_GET_VARS'] = $inputGet;
 		}
 	}
 

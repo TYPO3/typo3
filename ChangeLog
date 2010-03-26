@@ -8,6 +8,7 @@
 
 2010-03-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Added Feature #13418: Allow t3lib_div::_GETset() to set specified key (Thanks to Felix Oertel)
 	* Fixed bug #13595: loginform has <table> stdWrap, but <div>s inside [css styled content] (Thanks to Susanne Moog)
 	* Fixed bug #13792: Double semicolon in css styled content (Thanks to Susanne Moog)
 	* Fixed bug #13386: mod.web_list.hideTables doesn't accept spaces (Thanks to Marcel Greter)
