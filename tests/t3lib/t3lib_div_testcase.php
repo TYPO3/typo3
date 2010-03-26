@@ -51,7 +51,6 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	public function tearDown() {
 		foreach ($this->backupGlobalVariables as $key => $data) {
 			$GLOBALS[$key] = $data;
-			$$key = $data;
 		}
 	}
 
