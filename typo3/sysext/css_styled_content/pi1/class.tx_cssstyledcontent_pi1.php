@@ -378,7 +378,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				}
 
 					// Compile it all into table tags:
-				$out = $this->cObj->wrap(implode('',$outputEntries), $outerWrap);;
+				$out = $this->cObj->wrap(implode('', $outputEntries), $outerWrap);
 			}
 
 				// Calling stdWrap:
