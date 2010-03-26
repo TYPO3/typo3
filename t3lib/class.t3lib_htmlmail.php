@@ -747,21 +747,6 @@ class t3lib_htmlmail {
 				  $this->headers);
 		}
 
-			// Sending a copy
-		if ($recipient_copy) {
-			if ($returnPathPossible) {
-				$mailWasSent = mail($recipient_copy,
-					$this->subject,
-					$this->message,
-					$this->headers,
-					$returnPath);
-			} else {
-				$mailWasSent = mail($recipient_copy,
-					$this->subject,
-					$this->message,
-					$this->headers);
-			}
-		}
 			// Auto response
 		if ($this->auto_respond_msg) {
 			$theParts = explode('/',$this->auto_respond_msg,2);
