@@ -1,3 +1,7 @@
+2010-03-26  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #13697: Add possibility to retrieve extension version (thanks to Tolleiv Nietsch & Oliver Klee)
+
 2010-03-26  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13775: Missing <tr> in "Admin Tools -> User Admin" (thanks to Stephan Kellermayr)

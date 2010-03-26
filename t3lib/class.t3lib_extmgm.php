@@ -229,8 +229,27 @@ final class t3lib_extMgm {
 		self::$extensionKeyMap = NULL;
 	}
 
+	/**
+	 * Retrieves the version of an installed extension.
+	 * If the extension is not installed, this function returns an empty string.
+	 *
+	 * @param string $key the key of the extension to look up, must not be empty
+	 * @return string the extension version as a string in the format "x.y.z",
+	 *                will be an empty string if the extension is not loaded
+	 */
+	public static function getExtensionVersion($key) {
+		if (!is_string($key) || empty($key)) {
+			throw new InvalidArgumentException('Extension key must be a non-empty string.');
+		}
+		if (!self::isLoaded($key)) {
+			return '';
+		}
 
+		$_EXTKEY = $key;
+		include(t3lib_extMgm::extPath($key) . 'ext_emconf.php');
 
+		return $EM_CONF[$key]['version'];
+	}
 
 
 

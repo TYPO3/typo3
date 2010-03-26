@@ -401,5 +401,66 @@ class t3lib_extmgm_testcase extends tx_phpunit_testcase {
 			'newA, newB, fieldX', $GLOBALS['TCA'][$table]['palettes']['generatedFor-fieldA']['showitem']
 		);
 	}
+
+
+	/////////////////////////////////////////
+	// Tests concerning getExtensionVersion
+	/////////////////////////////////////////
+
+	/**
+	 * Data provider for negative getExtensionVersion() tests.
+	 *
+	 * @return array
+	 */
+	public function getExtensionVersionFaultyDataProvider() {
+		return array(
+			array(''),
+			array(0),
+			array(new stdClass()),
+			array(TRUE),
+		);
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 * @dataProvider getExtensionVersionFaultyDataProvider
+	 */
+	public function getExtensionVersionForFaultyExtensionKeyThrowsException($key) {
+		t3lib_extMgm::getExtensionVersion($key);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getExtensionVersionForNotLoadedExtensionReturnsEmptyString() {
+		t3lib_extMgm::clearExtensionKeyMap();
+
+		$uniqueSuffix = uniqid('test');
+		$extensionKey = 'unloadedextension' . $uniqueSuffix;
+
+		$this->assertEquals(
+			'',
+			t3lib_extMgm::getExtensionVersion($extensionKey)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getExtensionVersionForLoadedExtensionReturnsExtensionVersion() {
+		t3lib_extMgm::clearExtensionKeyMap();
+
+		$uniqueSuffix = uniqid('test');
+		$extensionKey = 'unloadedextension' . $uniqueSuffix;
+
+		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array(
+			'siteRelPath' => 'typo3_src/tests/t3lib/fixtures/',
+		);
+		$this->assertEquals(
+			'1.2.3',
+			t3lib_extMgm::getExtensionVersion($extensionKey)
+		);
+	}
 }
 ?>
