@@ -8,6 +8,7 @@
 
 2010-03-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #13737: Unit test failures in scheduler if the extension is not installed (Thanks to Oliver Klee)
 	* Follow-up to #13418: Removed a duplicate reset in tearDown of testcase
 	* Follow-up to #13418: Added testcase for t3lib_div::_getSET (Thanks to Susanne Moog and Oliver Klee)
 	* Added Feature #13418: Allow t3lib_div::_GETset() to set specified key (Thanks to Felix Oertel)
