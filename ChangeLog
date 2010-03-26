@@ -1,5 +1,6 @@
 2010-03-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to bug #13681: Added testcase for t3lib_div::revExplode
 	* Fixed bug #13681: Improve performance of t3lib_div::revExplode
 
 2010-03-26  Francois Suter  <francois@typo3.org>

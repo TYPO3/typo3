@@ -47,6 +47,17 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
+	public function checkRevExplodeCorrectlyExplodesString() {
+		$testString = 'my:words:here';
+		$expectedArray = array('my:words', 'here');
+		$actualArray = t3lib_div::revExplode(':', $testString, 2);
+
+		$this->assertEquals($expectedArray, $actualArray);
+	}
+
+	/**
+	 * @test
+	 */
 	public function checkTrimExplodeTrimsSpacesAtElementStartAndEnd() {
 		$testString = ' a , b , c ,d ,,  e,f,';
 		$expectedArray = array('a', 'b', 'c', 'd', '', 'e', 'f', '');
