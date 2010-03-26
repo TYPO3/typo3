@@ -34,6 +34,29 @@
  */
 class t3lib_div_testcase extends tx_phpunit_testcase {
 	/**
+	 * backup of the global variables _GET, _POST, _SERVER
+	 *
+	 * @var array
+	 */
+	private $backupGlobalVariables;
+
+	public function setUp() {
+		$this->backupGlobalVariables = array(
+			'_GET' => $_GET,
+			'_POST' => $_POST,
+			'_SERVER' => $_SERVER,
+		);
+	}
+
+	public function tearDown() {
+		foreach ($this->backupGlobalVariables as $key => $data) {
+			$GLOBALS[$key] = $data;
+			$$key = $data;
+		}
+	}
+
+
+	/**
 	 * @test
 	 */
 	public function checkIntExplodeConvertsStringsToInteger() {
@@ -838,7 +861,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 */
 	public function readLLfileLocallangXMLOverride() {
 		$unique = uniqid('locallangXMLOverrideTest');
-		
+
 		$xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 			<T3locallang>
 				<data type="array">
@@ -866,6 +889,155 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 		unlink($file);
 	}
-}
 
+
+	///////////////////////////////
+	// Tests concerning _GETset()
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getSetCanSetWholeArray() {
+		$_GET = array();
+		$GLOBALS['HTTP_GET_VARS'] = array();
+		t3lib_div::_GETset(array('oneKey' => 'oneValue'));
+
+		$this->assertEquals(
+			array('oneKey' => 'oneValue'),
+			$_GET
+		);
+		$this->assertEquals(
+			array('oneKey' => 'oneValue'),
+			$GLOBALS['HTTP_GET_VARS']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSetForArrayDropsExistingValues() {
+		$_GET = array();
+		$GLOBALS['HTTP_GET_VARS'] = array();
+
+		t3lib_div::_GETset(array('foo' => 'bar'));
+		t3lib_div::_GETset(array('oneKey' => 'oneValue'));
+
+		$this->assertEquals(
+			array('oneKey' => 'oneValue'),
+			$_GET
+		);
+		$this->assertEquals(
+			array('oneKey' => 'oneValue'),
+			$GLOBALS['HTTP_GET_VARS']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSetCanAssignOneValueToOneKey() {
+		$_GET = array();
+		$GLOBALS['HTTP_GET_VARS'] = array();
+
+		t3lib_div::_GETset('oneValue', 'oneKey');
+
+		$this->assertEquals(
+			'oneValue',
+			$_GET['oneKey']
+		);
+		$this->assertEquals(
+			'oneValue',
+			$GLOBALS['HTTP_GET_VARS']['oneKey']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSetForOneValueNotDropsExistingValues() {
+		$_GET = array();
+		$GLOBALS['HTTP_GET_VARS'] = array();
+
+		t3lib_div::_GETset(array('foo' => 'bar'));
+		t3lib_div::_GETset('oneValue', 'oneKey');
+
+		$this->assertEquals(
+			array('foo' => 'bar', 'oneKey' => 'oneValue'),
+			$_GET
+		);
+		$this->assertEquals(
+			array('foo' => 'bar', 'oneKey' => 'oneValue'),
+			$GLOBALS['HTTP_GET_VARS']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSetCanAssignAnArrayToSpecificArrayElement() {
+		$_GET = array();
+		$GLOBALS['HTTP_GET_VARS'] = array();
+
+		t3lib_div::_GETset(array('childKey' => 'oneValue'), 'parentKey');
+
+		$this->assertEquals(
+			array('parentKey' => array('childKey' => 'oneValue')),
+			$_GET
+		);
+		$this->assertEquals(
+			array('parentKey' => array('childKey' => 'oneValue')),
+			$GLOBALS['HTTP_GET_VARS']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSetCanAssignAValueToSpecificArrayChildElement() {
+		$_GET = array();
+		$GLOBALS['HTTP_GET_VARS'] = array();
+
+		t3lib_div::_GETset('oneValue', 'parentKey|childKey');
+
+		$this->assertEquals(
+			array('parentKey' => array('childKey' => 'oneValue')),
+			$_GET
+		);
+		$this->assertEquals(
+			array('parentKey' => array('childKey' => 'oneValue')),
+			$GLOBALS['HTTP_GET_VARS']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSetCanAssignAnArrayToSpecificArrayChildElement() {
+		$_GET = array();
+		$GLOBALS['HTTP_GET_VARS'] = array();
+
+		t3lib_div::_GETset(
+			array('key1' => 'value1', 'key2' => 'value2'),
+			'parentKey|childKey'
+		);
+
+		$this->assertEquals(
+			array(
+				'parentKey' => array(
+					'childKey' => array('key1' => 'value1', 'key2' => 'value2')
+				)
+			),
+			$_GET
+		);
+		$this->assertEquals(
+			array(
+				'parentKey' => array(
+					'childKey' => array('key1' => 'value1', 'key2' => 'value2')
+				)
+			),
+			$GLOBALS['HTTP_GET_VARS']
+		);
+	}
+}
 ?>
