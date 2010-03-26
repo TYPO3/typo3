@@ -4,15 +4,15 @@
 
 2010-03-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #13792: Bug: Double semicolon in css styled content (Thanks to Susanne Moog)
-	* Fixed bug #13386: Bug: mod.web_list.hideTables doesn't accept spaces (Thanks to Marcel Greter)
+	* Fixed bug #13792: Double semicolon in css styled content (Thanks to Susanne Moog)
+	* Fixed bug #13386: mod.web_list.hideTables doesn't accept spaces (Thanks to Marcel Greter)
 	* Follow-up to bug #13681: Added testcase for t3lib_div::revExplode
 	* Fixed bug #13681: Improve performance of t3lib_div::revExplode (Thanks to Nikolas Hagelstein)
 
 2010-03-26  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #13716: includeCSS changed behavior, must default to media="all" (thanks to internezzo ag)
-	* Fixed bug #13678: Bug: htmlmail send mail twice if cc recipient is set (thanks to Robert Heel)
+	* Fixed bug #13678: htmlmail send mail twice if cc recipient is set (thanks to Robert Heel)
 	* Follow-up to #13678: Removed cleanup of recipient_copy which is now unused
 	* Fixed bug #13920: Removed unused property $additionalStyleSheets in template.php (thanks to Steffen Gebert)
 	* Fixed bug #12202: "Clear temporary data" in setup module misses JS confirm (thanks to Søren Malling)
