@@ -179,7 +179,6 @@ class template {
 	var $form_rowsToStylewidth = 9.58;	// Multiplication factor for formWidth() input size (default is 48* this value).
 	var $form_largeComp = 1.33;		// Compensation for large documents (used in class.t3lib_tceforms.php)
 	var $endJS=1;					// If set, then a JavaScript section will be outputted in the bottom of page which will try and update the top.busy session expiry object.
-	protected $additionalStyleSheets=array();	// Links to additional style sheets
 
 		// TYPO3 Colorscheme.
 		// If you want to change this, please do so through a skin using the global var $TBE_STYLES
