@@ -10,6 +10,7 @@
 	* Fixed bug #13678: Bug: htmlmail send mail twice if cc recipient is set (thanks to Robert Heel)
 	* Follow-up to #13678: Removed cleanup of recipient_copy which is now unused
 	* Fixed bug #13920: Removed unused property $additionalStyleSheets in template.php (thanks to Steffen Gebert)
+	* Fixed bug #12202: "Clear temporary data" in setup module misses JS confirm (thanks to Søren Malling)
 
 2010-03-25  Ernesto Baschny  <ernst@cron-it.de>
 
