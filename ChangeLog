@@ -8,6 +8,7 @@
 
 	* Fixed bug #13716: includeCSS changed behavior, must default to media="all" (thanks to internezzo ag)
 	* Fixed bug #13678: Bug: htmlmail send mail twice if cc recipient is set (thanks to Robert Heel)
+	* Follow-up to #13678: Remove cleanup of recipient_copy which is now unused
 
 2010-03-25  Ernesto Baschny  <ernst@cron-it.de>
 
