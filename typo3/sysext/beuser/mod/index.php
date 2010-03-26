@@ -1379,7 +1379,7 @@ class SC_mod_tools_be_user_index {
 				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/new_el.gif') . ' title="' . $GLOBALS['LANG']->getLL('newUser', true) . '" alt="" />'.
 				'</a>';
 
-			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><td><b>' . $GLOBALS['LANG']->getLL('usernames', true) . '</b></td><td width="12">' . $link_createNewUser . '</td></tr></table>';
+			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><b>' . $GLOBALS['LANG']->getLL('usernames', TRUE) . '</b></td><td width="12">' . $link_createNewUser . '</td></tr></table>';
 
 			foreach ($options as $kk => $vv) {
 				if ($compareFlags[$kk])	{

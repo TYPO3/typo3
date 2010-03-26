@@ -1,3 +1,7 @@
+2010-03-26  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13775: Missing <tr> in "Admin Tools -> User Admin" (thanks to Stephan Kellermayr)
+
 2010-03-26  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13813: Using ExtJS with debug should also use debug-files of adapter
