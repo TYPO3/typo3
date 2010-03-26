@@ -1,3 +1,7 @@
+2010-03-26  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Follow-up to #13554: Make the code in line with follow-up to #13739
+
 2010-03-25  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13901: GIFBULDER generates same picture twice (in typo3temp/GB) (thanks to Vladimir Podkovanov)
