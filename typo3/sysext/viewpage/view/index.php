@@ -116,8 +116,9 @@ class SC_mod_web_view_index {
 
 			// preview of mount pages
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
-		$sys_page->init();
-		if ($mountPointInfo = $sys_page->getMountPointInfo($this->id)) {
+		$sys_page->init(FALSE);
+		$mountPointInfo = $sys_page->getMountPointInfo($this->id);
+		if ($mountPointInfo && $mountPointInfo['overlay']) {
 			$this->id = $mountPointInfo['mount_pid'];
 			$addCmd .= '&MP=' . $mountPointInfo['MPvar'];
 		}
