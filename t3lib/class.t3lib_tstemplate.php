@@ -1210,9 +1210,13 @@ class t3lib_TStemplate	{
 		}
 
 			// find
-		if (strstr($file,'/')) {	// here it is manual media
-			if(!strcmp(substr($file,0,6),'media/')) $file = 'typo3/sysext/cms/tslib/'.$file;
-			if (@is_file($this->getFileName_backPath.$file))	{
+		if (strpos($file, '/') !== false) {
+				// if the file is in the media/ folder but it doesn't exist,
+				// it is assumed that it's in the tslib folder
+			if (t3lib_div::isFirstPartOfStr($file, 'media/') && !is_file($this->getFileName_backPath . $file)) {
+				$file = t3lib_extMgm::siteRelPath('cms') . 'tslib/' . $file;
+			}
+			if (is_file($this->getFileName_backPath . $file)) {
 				$outFile = $file;
 				$fileInfo = t3lib_div::split_fileref($outFile);
 				$OK=0;
