@@ -1,5 +1,6 @@
 2010-03-27  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #12794: t3lib_TStemplate::getFileName() handles path starting with media/ as magic
 	* Fixed bug #13590: felogin adds field felogin_forgotHash to tca but does not add field to database (Thanks to Fabrizio Branca)
 
 2010-03-26  Xavier Perseguers  <typo3@perseguers.ch>
