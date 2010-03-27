@@ -1,3 +1,7 @@
+2010-03-27  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13590: felogin adds field felogin_forgotHash to tca but does not add field to database (Thanks to Fabrizio Branca)
+
 2010-03-26  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #13697: Add possibility to retrieve extension version (thanks to Tolleiv Nietsch & Oliver Klee)
