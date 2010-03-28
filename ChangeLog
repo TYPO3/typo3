@@ -1,3 +1,7 @@
+2010-03-28  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13273: Caching framework sub-select is slow because mysql does not use indexes on outer query
+
 2010-03-27  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12794: t3lib_TStemplate::getFileName() handles path starting with media/ as magic
