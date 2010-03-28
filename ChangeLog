@@ -1,5 +1,6 @@
 2010-03-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to #13273: Improve caching framework dbBackend testcase to catch not deleted rows in tag table
 	* Fixed bug #13273: Caching framework sub-select is slow because mysql does not use indexes on outer query
 
 2010-03-27  Benjamin Mack  <benni@typo3.org>
