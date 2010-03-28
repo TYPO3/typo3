@@ -489,6 +489,13 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 		$this->assertTrue($this->backend->has('BackendDbTest1'), 'BackendDbTest1 does not exist anymore.');
 		$this->assertFalse($this->backend->has('BackendDbTest2'), 'BackendDbTest2 still exists.');
 		$this->assertTrue($this->backend->has('BackendDbTest3'), 'BackendDbTest3 does not exist anymore.');
+
+		$tagEntriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			$this->testingTagsTable,
+			'tag = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('UnitTestTag%special', $this->testingTagsTable)
+		);
+		$this->assertEquals(0, count($tagEntriesFound), 'UnitTestTag%special still exists in tags table');
 	}
 
 
