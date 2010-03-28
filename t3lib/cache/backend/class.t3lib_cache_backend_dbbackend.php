@@ -289,20 +289,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	public function flushByTag($tag) {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-			$this->cacheTable,
-			'identifier IN (' .
-				$GLOBALS['TYPO3_DB']->SELECTsubquery(
-					'identifier',
-					$this->tagsTable,
-					$this->getQueryForTag($tag)
-				) .
-			')'
-		);
+		$tagsTableWhereClause = $this->getQueryForTag($tag);
+
+		$this->deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause);
 
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->tagsTable,
-			$this->getQueryForTag($tag)
+			$tagsTableWhereClause
 		);
 	}
 
@@ -319,20 +312,13 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 				$listQueryConditions[$tag] = $this->getQueryForTag($tag);
 			}
 
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-				$this->cacheTable,
-				'identifier IN (' .
-					$GLOBALS['TYPO3_DB']->SELECTsubquery(
-						'identifier',
-						$this->tagsTable,
-						implode(' OR ', $listQueryConditions)
-					) .
-				')'
-			);
+			$tagsTableWhereClause = implode(' OR ', $listQueryConditions);
+
+			$this->deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause);
 
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				$this->tagsTable,
-				implode(' OR ', $listQueryConditions)
+				$tagsTableWhereClause
 			);
 		}
 	}
@@ -344,17 +330,31 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbage() {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
-			$this->tagsTable,
-			'identifier IN (' .
-				$GLOBALS['TYPO3_DB']->SELECTsubquery(
-					'identifier',
-					$this->cacheTable,
-					'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
-				) .
-			')'
+			// Get identifiers of expired cache entries
+		$tagsEntryIdentifierRowsRessource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'identifier',
+			$this->cacheTable,
+			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
 		);
 
+		$tagsEntryIdentifiers = array();
+		while ($tagsEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($tagsEntryIdentifierRowsRessource)) {
+			$tagsEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr(
+				$tagsEntryIdentifierRow['identifier'],
+				$this->tagsTable
+			);
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsRessource);
+
+			// Delete tag rows connected to expired cache entries
+		if (count($tagsEntryIdentifiers)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				$this->tagsTable,
+				'identifier IN (' . implode(', ', $tagsEntryIdentifiers) . ')'
+			);
+		}
+
+			// Delete expired cache rows
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			$this->cacheTable,
 			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
@@ -456,6 +456,36 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Deletes rows in cache table found by where clause on tags table
+	 *
+	 * @param string The where clause for the tags table
+	 * @return void
+	 */
+	protected function deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause) {
+		$cacheEntryIdentifierRowsRessource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'DISTINCT identifier',
+			$this->tagsTable,
+			$tagsTableWhereClause
+		);
+
+		$cacheEntryIdentifiers = array();
+		while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsRessource)) {
+			$cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr(
+				$cacheEntryIdentifierRow['identifier'],
+				$this->cacheTable
+			);
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsRessource);
+
+		if (count($cacheEntryIdentifiers)) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+				$this->cacheTable,
+				'identifier IN (' . implode(', ', $cacheEntryIdentifiers) . ')'
+			);
+		}
 	}
 }
 
