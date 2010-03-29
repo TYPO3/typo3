@@ -27,7 +27,7 @@ Backend
 Frontend
 ========
 
-	* ...
+	* Indexed search no logner puts a double wrap around search rules in the advanced search form. This may require style changes if a default indexed search is used.
 
 
 Compatibility

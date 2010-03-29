@@ -1501,7 +1501,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 			$substitutedContent = $this->cObj->substituteMarkerArrayCached($html, $markerArray, array(), array());
 
-			return '<div'.$this->pi_classParam('rules').'>'.$this->cObj->stdWrap($substitutedContent, $this->conf['rules_stdWrap.']).'</div>';
+			return $this->cObj->stdWrap($substitutedContent, $this->conf['rules_stdWrap.']);
 		}
 	}
 
