@@ -914,12 +914,14 @@ class tx_indexedsearch_indexer {
 			if (strlen($content))	{
 
 					// Create temporary file:
-				$tmpFile = t3lib_div::tempnam('EXTERNAL_URL').'.html';
-				t3lib_div::writeFile($tmpFile, $content);
+				$tmpFile = t3lib_div::tempnam('EXTERNAL_URL');
+				if ($tmpFile) {
+					t3lib_div::writeFile($tmpFile, $content);
 
-					// Index that file:
-				$this->indexRegularDocument($externalUrl, TRUE, $tmpFile, 'html');	// Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)
-				unlink($tmpFile);
+						// Index that file:
+					$this->indexRegularDocument($externalUrl, TRUE, $tmpFile, 'html');	// Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)
+					unlink($tmpFile);
+				}
 			}
 		}
 	}
