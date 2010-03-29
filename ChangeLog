@@ -2,6 +2,7 @@
 
 	* Fixed bug #11696: External files with Umlauts/special chars in filename are not indexed
 	* Fixed bug #12375: typo3temp got filled with thousands of EXTERNAL_URL* files
+	* Fixed bug #1436: Meta tag output in indexed search result breaks layout
 
 2010-03-28  Ernesto Baschny  <ernst@cron-it.de>
 
