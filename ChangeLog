@@ -1,3 +1,7 @@
+2010-03-29  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13935: t3lib_fullsearch has a lot of hanging SQL record sets
+
 2010-03-29  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #11696: External files with Umlauts/special chars in filename are not indexed

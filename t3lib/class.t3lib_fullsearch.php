@@ -232,6 +232,7 @@ class t3lib_fullsearch {
 
 				$res = @$GLOBALS['TYPO3_DB']->sql_query($qCount);
 				if (!$GLOBALS['TYPO3_DB']->sql_error())	{
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					$dA = array();
 					$dA['t2_data'] = serialize(array(
 						'qC'=>$saveArr,
@@ -402,6 +403,7 @@ class t3lib_fullsearch {
 					$output.= $GLOBALS['SOBE']->doc->section('SQL error',$out,0,1);
 				} else {
 					$cPR = $this->getQueryResultCode($mQ,$res,$qGen->table);
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					$output.=$GLOBALS['SOBE']->doc->section($cPR['header'],$cPR['content'],0,1);
 				}
 			}
@@ -603,6 +605,7 @@ class t3lib_fullsearch {
 							$rowArr[]=$this->resultRowDisplay($row,$conf,$table);
 							$lrow=$row;
 						}
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 						$out.='<table border="0" cellpadding="2" cellspacing="1">'.$this->resultRowTitles($lrow,$conf,$table).implode(chr(10),$rowArr).'</table>';
 					}
 					$out.='<HR>';
@@ -812,6 +815,7 @@ class t3lib_fullsearch {
 					$theList .= $this->getTreeList($row['uid'], $depth-1, $begin-1, $perms_clause);
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 		return $theList;
 	}
@@ -917,6 +921,7 @@ class t3lib_fullsearch {
 								}
 							}
 						}
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
 				}
 			} else {
@@ -988,6 +993,7 @@ class t3lib_fullsearch {
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$this->tableArray[$from_table][] = $row;
 						}
+						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 					}
 					reset($this->tableArray[$from_table]);
 					foreach ($this->tableArray[$from_table] as $key => $val) {
