@@ -1,3 +1,7 @@
+2010-03-28  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #13677: margin-bottom on images was missing in the "single image" rendering (thanks to Susanne Moog)
+
 2010-03-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to #13273: Improve caching framework dbBackend testcase to catch not deleted rows in tag table
