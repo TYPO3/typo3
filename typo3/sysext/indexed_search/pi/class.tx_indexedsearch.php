@@ -1341,7 +1341,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$html = $this->cObj->substituteSubpart($html, '###ADDITONAL_KEYWORD###', '');
 		}
 
-		$markerArray['###ACTION_URL###'] = htmlspecialchars($this->pi_getPageLink($GLOBALS['TSFE']->id, $GLOBALS['TSFE']->sPre));
+		$markerArray['###ACTION_URL###'] = htmlspecialchars($this->getSearchFormActionURL());
 
 		$hiddenFieldCode = $this->cObj->getSubpart($this->templateCode, '###HIDDEN_FIELDS###');
 		$hiddenFieldCode = preg_replace('/^\n\t(.+)/ms', '$1', $hiddenFieldCode);		// Remove first newline and tab (cosmetical issue)
@@ -2394,6 +2394,38 @@ class tx_indexedsearch extends tslib_pibase {
 				return $hookObj;
 			}
 		}
+	}
+
+	/**
+	 * Obtains the URL of the search target page
+	 *
+	 * @return string
+	 */
+	protected function getSearchFormActionURL() {
+		$targetUrlPid = $this->getSearchFormActionPidFromTS();
+		if ($targetUrlPid == 0) {
+			$targetUrlPid = $GLOBALS['TSFE']->id;
+		}
+		return $this->pi_getPageLink($targetUrlPid, $GLOBALS['TSFE']->sPre);
+	}
+
+	/**
+	 * Obtains search form target pid from the TypoScript configuration
+	 *
+	 * @return int
+	 */
+	protected function getSearchFormActionPidFromTS() {
+		$result = 0;
+		if (isset($this->conf['search.']['targetPid']) || isset($this->conf['search.']['targetPid.'])) {
+			if (is_array($this->conf['search.']['targetPid.'])) {
+				$result = $this->cObj->stdWrap($this->conf['search.']['targetPid'], $this->conf['search.']['targetPid.']);
+			}
+			else {
+				$result = $this->conf['search.']['targetPid'];
+			}
+			$result = intval($result);
+		}
+		return $result;
 	}
 }
 

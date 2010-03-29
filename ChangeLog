@@ -4,6 +4,7 @@
 	* Fixed bug #12375: typo3temp got filled with thousands of EXTERNAL_URL* files
 	* !!! Fixed bug #12254: Double wrap of rules subpart with template_css.tmpl (indexed_search)
 	* Fixed bug #1436: Meta tag output in indexed search result breaks layout
+	* Fixed bug #1044: Indexed Search results always on same page as search
 
 2010-03-28  Ernesto Baschny  <ernst@cron-it.de>
 

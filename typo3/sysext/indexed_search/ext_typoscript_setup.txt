@@ -48,6 +48,7 @@ plugin.tx_indexedsearch {
 		defaultFreeIndexUidList =
 		skipExtendToSubpagesChecking = 0
 		exactCount = 0
+		targetPid.data = TSFE:id
 	}
 
 	result_link_target =
