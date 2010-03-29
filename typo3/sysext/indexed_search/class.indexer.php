@@ -629,8 +629,12 @@ class tx_indexedsearch_indexer {
 			for($i=0;$this->embracingTags($headPart,'meta',$dummy,$headPart,$meta[$i]);$i++) { /*nothing*/ }
 			for($i=0;isset($meta[$i]);$i++) {
 				$meta[$i] = t3lib_div::get_tag_attributes($meta[$i]);
-				if(stristr($meta[$i]['name'],'keywords')) $contentArr['keywords'].=','.$meta[$i]['content'];
-				if(stristr($meta[$i]['name'],'description')) $contentArr['description'].=','.$meta[$i]['content'];
+				if (stristr($meta[$i]['name'], 'keywords')) {
+					$contentArr['keywords'] .= ',' . $this->addSpacesToKeywordList($meta[$i]['content']);
+				}
+				if (stristr($meta[$i]['name'], 'description')) {
+					$contentArr['description'] .= ',' . $meta[$i]['content'];
+				}
 			}
 		}
 
@@ -2085,6 +2089,19 @@ class tx_indexedsearch_indexer {
 				// Disables a look-up for cached page data - thus resulting in re-generation of the page even if cached.
 			$params['disableAcquireCacheData'] = TRUE;
 		}
+	}
+
+	/**
+	 * Makes sure that keywords are space-separated. This is impotant for their
+	 * proper displaying as a part of fulltext index.
+	 *
+	 * @param string $keywordList
+	 * @return string
+	 * @see http://bugs.typo3.org/view.php?id=1436
+	 */
+	protected function addSpacesToKeywordList($keywordList) {
+		$keywords = t3lib_div::trimExplode(',', $keywordList);
+		return ' ' . implode(', ', $keywords) . ' ';
 	}
 }
 
