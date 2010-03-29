@@ -1,6 +1,7 @@
 2010-03-29  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #11696: External files with Umlauts/special chars in filename are not indexed
+	* Fixed bug #12375: typo3temp got filled with thousands of EXTERNAL_URL* files
 
 2010-03-26  Ernesto Baschny  <ernst@cron-it.de>
 
