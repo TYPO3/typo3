@@ -1267,7 +1267,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		this.mon(documentElement, (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
 		this.mon(documentElement, 'mouseup', this.onMouse, this);
 		this.mon(documentElement, 'click', this.onMouse, this);
-		this.mon(documentElement, 'drag', this.onMouse, this);
+		this.mon(documentElement, Ext.isWebKit ? 'dragend' : 'drop', this.onDrop, this);
 	},
 	/*
 	 * Handler for other key events
@@ -1313,6 +1313,15 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	onMouse: function () {
 		this.getToolbar().updateLater.delay(100);
 		return true;
+	},
+	/*
+	 * Handlers for drag and drop operations
+	 */
+	onDrop: function (event) {
+		if (Ext.isWebKit) {
+			this.getEditor().cleanAppleStyleSpans.defer(50, this.getEditor(), [this.getEditor().document.body]);
+		}
+		this.getToolbar().updateLater.delay(100);
 	},
 	/*
 	 * Handler for UP, DOWN, LEFT and RIGHT keys
@@ -2364,7 +2373,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.addEvents(
 			/*
 			 * @event editorready
-			 * Fires when initializatio of the editor is complete
+			 * Fires when initialization of the editor is complete
 			 */
 			'editorready',
 			/*
@@ -4294,6 +4303,9 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 },
 
 	/**
+	 ***********************************************
+	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+	 ***********************************************
 	 * Open a dialog window or bring focus to it if is already opened
 	 *
 	 * @param	string		buttonId: buttonId requesting the opening of the dialog
@@ -4331,6 +4343,69 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 				);
 		}
 	},
+	/*
+	 * Open a window with container iframe
+	 *
+	 * @param	string		buttonId: the id of the button
+	 * @param	string		title: the window title (will be localized here)
+	 * @param	object		dimensions: the opening dimensions od the window
+	 * @param	string		url: the url to load ino the iframe
+	 *
+	 * @ return	void
+	 */
+	openContainerWindow: function (buttonId, title, dimensions, url) {
+		this.dialog = new Ext.Window({
+			id: this.editor.editorId + buttonId,
+			title: this.localize(title),
+			cls: 'htmlarea-window',
+			width: dimensions.width,
+			height: dimensions.height,
+			border: false,
+				// As of ExtJS 3.1, JS error with IE when the window is resizable
+			//resizable: !Ext.isIE,
+			iconCls: buttonId,
+			listeners: {
+				afterrender: {
+					fn: this.onContainerResize
+				},
+				resize: {
+					fn: this.onContainerResize
+				},
+				close: {
+					fn: this.onClose,
+					scope: this
+				}
+			},
+			items: {
+					// The content iframe
+				xtype: 'box',
+				itemId: 'content-iframe',
+				autoEl: {
+					tag: 'iframe',
+					cls: 'content-iframe',
+					src: url
+				}
+			}
+		});
+		this.show();
+	},
+	/*
+	 * Handler invoked when the container window is rendered or resized in order to resize the content iframe to maximum size
+	 */
+	onContainerResize: function (panel) {
+		var iframe = panel.getComponent('content-iframe');
+		if (iframe.rendered) {
+			iframe.getEl().setSize(panel.getInnerWidth(), panel.getInnerHeight());
+		}
+	},
+	/*
+	 * Get the opening diment=sions of the window
+	 *
+	 * @param	object		dimensions: default opening width and height set by the plugin
+	 * @param	string		buttonId: the id of the button that is triggering the opening of the window
+	 *
+	 * @return	object		opening width and height of the window
+	 */
 	getWindowDimensions: function (dimensions, buttonId) {
 			// Apply default dimensions
 		var dialogueWindowDimensions = {
@@ -4358,18 +4433,19 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		}
 		return dialogueWindowDimensions;
 	},
-
 	/**
+	 ***********************************************
+	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+	 ***********************************************
 	 * Make url from the name of a popup of the plugin
 	 *
 	 * @param	string		popupName: name, without extension, of the html file to be loaded into the dialog window
 	 *
 	 * @return	string		the url
 	 */
-	makeUrlFromPopupName : function(popupName) {
+	makeUrlFromPopupName: function(popupName) {
 		return (popupName ? this.editor.popupURL("plugin://" + this.name + "/" + popupName) : this.editor.popupURL("blank.html"));
 	},
-
 	/**
 	 * Make url from module path
 	 *
@@ -4378,10 +4454,9 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	string		the url
 	 */
-	makeUrlFromModulePath : function(modulePath, parameters) {
-		return this.editor.popupURL(modulePath + "?" + this.editorConfiguration.RTEtsConfigParams + "&editorNo=" + this.editorNumber + "&sys_language_content=" + this.editorConfiguration.sys_language_content + "&contentTypo3Language=" + this.editorConfiguration.typo3ContentLanguage + "&contentTypo3Charset=" + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:''));
+	makeUrlFromModulePath: function(modulePath, parameters) {
+		return this.editor.popupURL(modulePath + "?" + this.editorConfiguration.RTEtsConfigParams + "&editorNo=" + this.editor.editorId + "&sys_language_content=" + this.editorConfiguration.sys_language_content + "&contentTypo3Language=" + this.editorConfiguration.typo3ContentLanguage + "&contentTypo3Charset=" + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:''));
 	},
-
 	/**
 	 * Append an entry at the end of the troubleshooting log
 	 *
@@ -4390,7 +4465,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	void
 	 */
-	appendToLog : function (functionName, text) {
+	appendToLog: function (functionName, text) {
 		HTMLArea._appendToLog("[" + this.name + "::" + functionName + "]: " + text);
 	},
 	/*
@@ -4507,9 +4582,9 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 
 /**
  * HTMLArea.Dialog class
- *
- * Every dialog should be an instance of this class
- *
+ *********************************************
+ * THIS OBJECT IS DEPRECATED AS OF TYPO3 4.4 *
+ *********************************************
  */
 HTMLArea.Dialog = HTMLArea.Base.extend({
 

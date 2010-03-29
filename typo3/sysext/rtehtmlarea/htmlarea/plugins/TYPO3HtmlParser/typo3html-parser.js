@@ -29,47 +29,41 @@
  * TYPO3 SVN ID: $Id$
  */
 TYPO3HtmlParser = HTMLArea.Plugin.extend({
-	
-	constructor : function(editor, pluginName) {
+	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
-		
+	configurePlugin: function(editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.cleanword;
 		this.parseHtmlModulePath = this.pageTSConfiguration.pathParseHtmlModule;
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.8",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '1.8',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the (hidden) button
 		 */
-		var buttonId = "CleanWord";
+		var buttonId = 'CleanWord';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize(buttonId + "-Tooltip"),
-			action		: "onButtonPress",
+			tooltip		: this.localize(buttonId + '-Tooltip'),
+			action		: 'onButtonPress',
 			hide		: true,
 			hideInContextMenu: true
 		};
 		this.registerButton(buttonConfiguration);
 	},
-	
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -78,7 +72,7 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id, target) {
+	onButtonPress: function (editor, id) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
@@ -89,12 +83,8 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 	 * This function gets called when the editor is generated
 	 */
 	onGenerate: function () {
-		var documentElement = Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement);
-		this.editor.iframe.mon(documentElement, 'paste', this.wordCleanHandler, this);
-		this.editor.iframe.mon(documentElement, 'dragdrop', this.wordCleanHandler, this);
-		this.editor.iframe.mon(documentElement, 'drop', this.wordCleanHandler, this);
+		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
 	},
-	
 	clean: function() {
 		var editor = this.editor;
 		if (Ext.isWebKit) {
@@ -119,11 +109,6 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 	 * Handler for paste, dragdrop and drop events
 	 */
 	wordCleanHandler: function (event) {
-			// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
-		if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
-			HTMLArea.Dialog.TYPO3Image.close();
-		} else {
-			this.clean.defer(250, this);
-		}
+		this.clean.defer(250, this);
 	}
 });

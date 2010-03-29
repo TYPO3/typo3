@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2005-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -457,7 +457,6 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				$bodyTagAdditions = $hookObject->addBodyTagAdditions($bodyTagAdditions);
 			}
 		}
-		$bodyTagAdditions['onLoad'] = 'initDialog();' . $bodyTagAdditions['onLoad'];
 		return t3lib_div::implodeAttributes($bodyTagAdditions, TRUE);
 	}
 
@@ -471,16 +470,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '';
 		$JScode.= '
-			var dialog = window.opener.HTMLArea.Dialog.TYPO3Link;
-			var plugin = dialog.plugin;
-			var HTMLArea = window.opener.HTMLArea;
-
-			function initDialog() {
-				window.dialog = window.opener.HTMLArea.Dialog.TYPO3Link;
-				window.plugin = dialog.plugin;
-				window.HTMLArea = window.opener.HTMLArea;
-				dialog.captureEvents("skipUnload");
-			}
+			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Link");
+			var HTMLArea = window.parent.HTMLArea;
 			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";
 			var add_target="'.($this->setTarget?'&curUrl[target]='.rawurlencode($this->setTarget):'').'";
 			var add_class="'.($this->setClass?'&curUrl[class]='.rawurlencode($this->setClass):'').'";

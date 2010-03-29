@@ -30,34 +30,29 @@
  * TYPO3 SVN ID: $Id$
  */
 TYPO3Link = HTMLArea.Plugin.extend({
-	
-	constructor : function(editor, pluginName) {
+	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
-		
+	configurePlugin: function(editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.link;
 		this.modulePath = this.pageTSConfiguration.pathLinkModule;
 		this.classesAnchorUrl = this.pageTSConfiguration.classesAnchorUrl;
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.2",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the buttons
 		 */
@@ -68,7 +63,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId.toLowerCase()),
-				action		: "onButtonPress",
+				action		: 'onButtonPress',
 				hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 				context		: button[1],
 				selection	: button[2],
@@ -76,18 +71,15 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			};
 			this.registerButton(buttonConfiguration);
 		}
-		
 		return true;
-	 },
-	 
+	},
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : [
-		["CreateLink", "a,img", false, true],
-		["UnLink", "a", false, false]
+	buttonList: [
+		['CreateLink', 'a,img', false, true],
+		['UnLink', 'a', false, false]
 	],
-	 
 	/*
 	 * This function gets called when the button was pressed
 	 *
@@ -97,7 +89,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function(editor, id, target) {
+	onButtonPress: function(editor, id, target) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
@@ -141,10 +133,20 @@ TYPO3Link = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		this.dialog = this.openDialog("CreateLink", this.makeUrlFromModulePath(this.modulePath, additionalParameter), null, null, {width:550, height:350}, "yes");
+		this.openContainerWindow(
+			buttonId,
+			buttonId.toLowerCase(),
+			this.getWindowDimensions(
+				{
+					width:	550,
+					height:	350
+				},
+				buttonId
+			),
+			this.makeUrlFromModulePath(this.modulePath, additionalParameter)
+		);
 		return false;
 	},
-	
 	/*
 	 * Add a link to the selection.
 	 * This function is called from the TYPO3 link popup.
@@ -160,6 +162,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	createLink : function(theLink,cur_target,cur_class,cur_title,additionalValues) {
 		var selection, range, anchorClass, imageNode = null, addIconAfterLink;
 		this.editor.focusEditor();
+		this.restoreSelection();
 		var node = this.editor.getParentElement();
 		var el = HTMLArea.getElementObject(node, "a");
 		if (el != null && /^a$/i.test(el.nodeName)) node = el;
@@ -209,7 +212,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 				// We may have created multiple links in as many blocks
 			this.setLinkAttributes(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues);
 		}
-		this.dialog.close();
+		this.close();
 	},
 	
 	/*
@@ -218,6 +221,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	*/
 	unLink : function() {
 		this.editor.focusEditor();
+		this.restoreSelection();
 		var node = this.editor.getParentElement();
 		var el = HTMLArea.getElementObject(node, "a");
 		if (el != null && /^a$/i.test(el.nodeName)) node = el;
@@ -235,7 +239,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			this.editor._doc.execCommand("Unlink", false, "");
 		}
 		if (this.dialog) {
-			this.dialog.close();
+			this.close();
 		}
 	},
 	
@@ -381,4 +385,3 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		}
 	}
 });
-

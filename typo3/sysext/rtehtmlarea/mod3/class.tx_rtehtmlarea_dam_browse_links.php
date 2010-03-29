@@ -290,7 +290,6 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->backPath = $BACK_PATH;
 	}
 
@@ -315,13 +314,8 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '';
 		$JScode.= '
-			var dialog = window.opener.HTMLArea.Dialog.TYPO3Link;
-			var plugin = dialog.plugin;
-			var HTMLArea = window.opener.HTMLArea;
-			function initDialog() {
-				dialog.captureEvents("skipUnload");
-			}
-
+			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Link");
+			var HTMLArea = window.parent.HTMLArea;
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
 			var add_href="'.($this->curUrlArray['href']?'&curUrl[href]='.rawurlencode($this->curUrlArray['href']):'').'";
 			var add_target="'.($this->setTarget?'&curUrl[target]='.rawurlencode($this->setTarget):'').'";

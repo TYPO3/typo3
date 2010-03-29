@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2009 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,7 +29,6 @@
  * Displays image selector for the RTE
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
- * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
  *
  * $Id$  *
  */
@@ -247,7 +246,6 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 
 			// Creating backend template object:
 		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->bodyTagAdditions = 'onLoad="initDialog();"';
 		$this->doc->backPath = $BACK_PATH;
 	}
 
@@ -332,8 +330,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 </head>
 <script type="text/javascript">
 /*<![CDATA[*/
-	var dialog = window.opener.HTMLArea.Dialog["TYPO3Image"];
-	var plugin = dialog.plugin;
+	var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
 	function insertImage(file,width,height,alt,title)	{
 		plugin.insertImage(\'<img src="\'+file+\'"'  . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):'') . ' alt="\'+alt+\'" title="\'+title+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 	}
@@ -358,12 +355,11 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		global $LANG,$BACK_PATH,$TYPO3_CONF_VARS;
 
 		$JScode='
-			var dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
-			var plugin = dialog.plugin;
-			var HTMLArea = window.opener.HTMLArea;
-
-			function initDialog() {
-				dialog.captureEvents("skipUnload");
+			var plugin = window.parent.RTEarea["' . $editorNo . '"].editor.getPlugin("TYPO3Image");
+			var HTMLArea = window.parent.HTMLArea;
+			var Ext = window.parent.Ext;
+			if (Ext.isWebKit) {
+				plugin.dialog.mon(Ext.get(plugin.dialog.getComponent("content-iframe").getEl().dom.contentWindow.document.documentElement), "dragend", plugin.onDrop, plugin, {single: true});
 			}
 			function insertElement(table, uid, type, filename,fp,filetype,imagefile,action, close)	{
 				return jumpToUrl(\''.$this->thisScript.'?act='.$this->act.'&mode='.$this->mode.'&bparams='.$this->bparams.'&insertImage='.'\'+fp);
@@ -532,7 +528,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 							selectedImageRef.removeAttribute("clickenlarge");
 						}
 					}
-					dialog.close();
+					plugin.close();
 				}
 				return false;
 			}

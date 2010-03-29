@@ -1,3 +1,7 @@
+2010-03-29  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13954: htmlArea RTE: Extjize TYPO3 link, image and user elements dialogue windows
+
 2010-03-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13935: t3lib_fullsearch has a lot of hanging SQL record sets

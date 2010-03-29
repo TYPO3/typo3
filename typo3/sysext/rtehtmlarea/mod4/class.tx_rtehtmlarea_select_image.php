@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 1999-2009 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -166,7 +166,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 
-		$this->allowedItems = $this->getAllowedItems('dragdrop,magic,plain,image', $this->buttonConfig);
+		$this->allowedItems = $this->getAllowedItems('magic,plain,image', $this->buttonConfig);
 		reset($this->allowedItems);
 		if (!in_array($this->act,$this->allowedItems))	{
 			$this->act = current($this->allowedItems);
@@ -259,7 +259,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 * @return	string		the body tag additions
 	 */
 	public function getBodyTagAdditions() {
-		return 'onLoad="initDialog();"';
+		return '';
 	}
 
 	/**
@@ -389,17 +389,16 @@ class tx_rtehtmlarea_select_image extends browse_links {
 <html>
 <head>
 	<title>Untitled</title>
+	<script type="text/javascript">
+	/*<![CDATA[*/
+		var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
+		function insertImage(file,width,height,alt,title,additionalParams)	{
+			plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\''  . ($this->defaultClass?('+\' class="'.$this->defaultClass.'"\''):'') .
+				'+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
+		}
+	/*]]>*/
+	</script>
 </head>
-<script type="text/javascript">
-/*<![CDATA[*/
-	var dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
-	var plugin = dialog.plugin;
-	function insertImage(file,width,height,alt,title,additionalParams)	{
-		plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\''  . ($this->defaultClass?('+\' class="'.$this->defaultClass.'"\''):'') .
-			'+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
-	}
-/*]]>*/
-</script>
 <body>
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -446,17 +445,12 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		}
 
 		$JScode='
-			var dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
-			var plugin = dialog.plugin;
-			var HTMLArea = window.opener.HTMLArea;
-
-			function initDialog() {
-				window.dialog = window.opener.HTMLArea.Dialog.TYPO3Image;
-				window.plugin = dialog.plugin;
-				window.HTMLArea = window.opener.HTMLArea;
-				dialog.captureEvents("skipUnload");
+			var plugin = window.parent.RTEarea["' . $editorNo . '"].editor.getPlugin("TYPO3Image");
+			var HTMLArea = window.parent.HTMLArea;
+			var Ext = window.parent.Ext;
+			if (Ext.isWebKit) {
+				plugin.dialog.mon(Ext.get(plugin.dialog.getComponent("content-iframe").getEl().dom.contentWindow.document.documentElement), "dragend", plugin.onDrop, plugin, {single: true});
 			}
-
 			function jumpToUrl(URL,anchor)	{
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$act.'" : "";
 				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$editorNo.'" : "";
@@ -491,7 +485,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
 				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions  . '</select>\';
 				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
-				if (plugin.isButtonInToolbar("Language")) {
+				/*if (plugin.isButtonInToolbar("Language")) {
 					var languageOptions = plugin.getDropDownConfiguration("Language").options;
 					var languageSelector = \'<select id="iLang" name="iLang">\';
 					for (var option in languageOptions) {
@@ -500,7 +494,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						}
 					}
 					languageSelector += \'</select>\';
-				}
+				}*/
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
 				sz+=\'<table border=0 cellpadding=1 cellspacing=1><form action="" name="imageData">\';
@@ -533,9 +527,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				.(in_array('alt', $removedProperties)?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">'.$LANG->getLL('alt').': </label></td><td><input type="text" id="iAlt" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
 				.(in_array('lang', $removedProperties)?'':'
-				if (plugin.isButtonInToolbar("Language")) {
+				/*if (plugin.isButtonInToolbar("Language")) {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.getPluginInstance("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
-				}')
+				}*/')
 				.(in_array('clickenlarge', $removedProperties)?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
 				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
@@ -643,7 +637,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 							selectedImageRef.removeAttribute("clickenlarge");
 						}
 					}
-					dialog.close();
+					plugin.close();
 				}
 				return false;
 			}

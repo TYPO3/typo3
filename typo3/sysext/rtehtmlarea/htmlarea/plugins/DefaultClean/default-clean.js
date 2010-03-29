@@ -29,46 +29,40 @@
  * TYPO3 SVN ID: $Id$
  */
 DefaultClean = HTMLArea.Plugin.extend({
-	
-	constructor : function(editor, pluginName) {
+	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
-		
+	configurePlugin: function(editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.cleanword;
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.2",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the (hidden) button
 		 */
-		var buttonId = "CleanWord";
+		var buttonId = 'CleanWord';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize(buttonId + "-Tooltip"),
-			action		: "onButtonPress",
+			tooltip		: this.localize(buttonId + '-Tooltip'),
+			action		: 'onButtonPress',
 			hide		: true,
 			hideInContextMenu: true
 		};
 		this.registerButton(buttonConfiguration);
 	},
-	
 	/*
 	 * This function gets called when the button was pressed.
 	 *
@@ -77,11 +71,10 @@ DefaultClean = HTMLArea.Plugin.extend({
 	 *
 	 * @return	boolean		false if action is completed
 	 */
-	onButtonPress : function (editor, id, target) {
+	onButtonPress: function (editor, id, target) {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
 		this.clean();
 		return false;
 	},
@@ -89,22 +82,25 @@ DefaultClean = HTMLArea.Plugin.extend({
 	 * This function gets called when the editor is generated
 	 */
 	onGenerate: function () {
-		var documentElement = Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement);
-		this.editor.iframe.mon(documentElement, 'paste', this.wordCleanHandler, this);
-		this.editor.iframe.mon(documentElement, 'dragdrop', this.wordCleanHandler, this);
-		this.editor.iframe.mon(documentElement, 'drop', this.wordCleanHandler, this);
+		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
 	},
-
-	clean : function () {
+	/*
+	 * This function cleans all nodes in the node tree below the input node
+	 *
+	 * @param	object	node: the root of the node tree to clean
+	 *
+	 * @return 	void
+	 */
+	clean: function () {
 		function clearClass(node) {
 			var newc = node.className.replace(/(^|\s)mso.*?(\s|$)/ig,' ');
 			if(newc != node.className) {
 				node.className = newc;
 				if(!/\S/.test(node.className)) {
 					if (!HTMLArea.is_opera) {
-						node.removeAttribute("class");
+						node.removeAttribute('class');
 						if (HTMLArea.is_ie) {
-							node.removeAttribute("className");
+							node.removeAttribute('className');
 						}
 					} else {
 						node.className = '';
@@ -114,13 +110,13 @@ DefaultClean = HTMLArea.Plugin.extend({
 		}
 		function clearStyle(node) {
 			if (HTMLArea.is_ie) var style = node.style.cssText;
-				else var style = node.getAttribute("style");
+				else var style = node.getAttribute('style');
 			if (style) {
 				var declarations = style.split(/\s*;\s*/);
 				for (var i = declarations.length; --i >= 0;) {
 					if(/^mso|^tab-stops/i.test(declarations[i]) || /^margin\s*:\s*0..\s+0..\s+0../i.test(declarations[i])) declarations.splice(i,1);
 				}
-				node.setAttribute("style", declarations.join("; "));
+				node.setAttribute('style', declarations.join('; '));
 			}
 		}
 		function stripTag(el) {
@@ -175,11 +171,6 @@ DefaultClean = HTMLArea.Plugin.extend({
 	 * Handler for paste, dragdrop and drop events
 	 */
 	wordCleanHandler: function (event) {
-			// If we dropped an image dragged from the TYPO3 Image plugin, let's close the dialog window
-		if (typeof(HTMLArea.Dialog) != "undefined" && HTMLArea.Dialog.TYPO3Image) {
-			HTMLArea.Dialog.TYPO3Image.close();
-		} else {
-			this.clean.defer(250, this);
-		}
+		this.clean.defer(250, this);
 	}
 });
