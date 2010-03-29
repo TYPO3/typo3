@@ -790,6 +790,7 @@ class tx_indexedsearch_indexer {
 					$this->indexExternalUrl($linkSource);
 				}
 			} elseif (!$qParts['query']) {
+				$linkSource = urldecode($linkSource);
 				if (t3lib_div::isAllowedAbsPath($linkSource))	{
 					$localFile = $linkSource;
 				} else {
