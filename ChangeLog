@@ -1,3 +1,7 @@
+2010-03-29  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #11696: External files with Umlauts/special chars in filename are not indexed
+
 2010-03-26  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Follow-up to #13554: Make the code in line with follow-up to #13739
