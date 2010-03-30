@@ -485,16 +485,14 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				var classesImage = ' . ($this->thisConfig['classesImage']?'true':'false') . ';
 				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions  . '</select>\';
 				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
-				/*if (plugin.isButtonInToolbar("Language")) {
+				if (plugin.getButton("Language")) {
 					var languageOptions = plugin.getDropDownConfiguration("Language").options;
 					var languageSelector = \'<select id="iLang" name="iLang">\';
-					for (var option in languageOptions) {
-						if (languageOptions.hasOwnProperty(option)) {
-							languageSelector +=\'<option value="\' + languageOptions[option] + \'">\' + option + \'</option>\';
-						}
-					}
+					Ext.each(languageOptions, function (option) {
+						languageSelector +=\'<option value="\' + option[1] + \'">\' + option[0] + \'</option>\';
+					});
 					languageSelector += \'</select>\';
-				}*/
+				}
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
 				sz+=\'<table border=0 cellpadding=1 cellspacing=1><form action="" name="imageData">\';
@@ -527,9 +525,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				.(in_array('alt', $removedProperties)?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">'.$LANG->getLL('alt').': </label></td><td><input type="text" id="iAlt" name="iAlt"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' /></td></tr>\';')
 				.(in_array('lang', $removedProperties)?'':'
-				/*if (plugin.isButtonInToolbar("Language")) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.getPluginInstance("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
-				}*/')
+				if (plugin.getButton("Language")) {
+					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
+				}')
 				.(in_array('clickenlarge', $removedProperties)?'':'
 				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$LANG->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
 				sz+=\'<tr><td><input type="submit" value="'.$LANG->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
@@ -623,7 +621,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					}
 					if (document.imageData.iLang) {
 						var iLang = document.imageData.iLang.options[document.imageData.iLang.selectedIndex].value;
-						var languageObject = plugin.getPluginInstance("Language");
+						var languageObject = plugin.editor.getPlugin("Language");
 						if (iLang || languageObject.getLanguageAttribute(selectedImageRef)) {
 							languageObject.setLanguageAttributes(selectedImageRef, iLang);
 						} else {
@@ -716,12 +714,12 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					}
 					if (document.imageData.iLang) {
 						var fObj=document.imageData.iLang;
-						var value=plugin.getPluginInstance("Language").getLanguageAttribute(selectedImageRef);
+						var value=plugin.editor.getPlugin("Language").getLanguageAttribute(selectedImageRef);
 						for (var i = 0, n = fObj.length; i < n; i++) {
 							if (fObj.options[i].value == value) {
 								fObj.selectedIndex = i;
 								if (i) {
-									fObj.options[0].text = plugin.getPluginInstance("Language").localize("Remove language mark");
+									fObj.options[0].text = plugin.editor.getPlugin("Language").localize("Remove language mark");
 								}
 							}
 						}
