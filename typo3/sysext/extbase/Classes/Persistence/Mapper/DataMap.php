@@ -213,14 +213,16 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		if (isset($columnConfiguration) && $columnConfiguration['type'] !== 'passthrough') {
-			if (isset($columnConfiguration['foreign_table']) && !isset($columnConfiguration['MM']) && !isset($columnConfiguration['foreign_selector'])) {
-				if ($columnConfiguration['maxitems'] == 1) {
-					$this->setOneToOneRelation($columnMap, $columnConfiguration);
+			if (isset($columnConfiguration['foreign_table'])) {
+				if (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
+					$this->setManyToManyRelation($columnMap, $columnConfiguration);
 				} else {
-					$this->setOneToManyRelation($columnMap, $columnConfiguration);
+					if ($columnConfiguration['maxitems'] == 1) {
+						$this->setOneToOneRelation($columnMap, $columnConfiguration);
+					} else {
+						$this->setOneToManyRelation($columnMap, $columnConfiguration);
+					}
 				}
-			} elseif (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
-				$this->setManyToManyRelation($columnMap, $columnConfiguration);
 			} else {
 				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
 			}
@@ -272,15 +274,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	protected function setManyToManyRelation(Tx_Extbase_Persistence_Mapper_ColumnMap &$columnMap, $columnConfiguration) {
 		// TODO support multi table relationships
 		$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
-		if ($columnConfiguration['type'] === 'inline') {
-			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
-			$childKeyFieldName = $this->determineChildKeyFieldName($columnConfiguration);
-			$columnMap->setChildTableName($columns[$childKeyFieldName]['config']['foreign_table']);
-			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
-			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
-			$columnMap->setChildKeyFieldName($childKeyFieldName);
-			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
-		} else {
+		if (isset($columnConfiguration['MM'])) {
 			$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 			$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
 			$columnMap->setRelationTableName($columnConfiguration['MM']);
@@ -300,25 +294,21 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 				$columnMap->setChildKeyFieldName('uid_foreign');
 				$columnMap->setChildSortByFieldName('sorting');
 			}
-		}
-	}
-	
-	/**
-	 * This method returns the foreign key field name in the relation table. For IRRE setups it will return
-	 * the foreign_label; if not present the foreign_selector. Default is uid_foreign.
-	 *
-	 * @param string $columnConfiguration The column configuration of the parent table relation field
-	 * @return string The foreign key field name of the relation table
-	 */
-	public function determineChildKeyFieldName($columnConfiguration) {
-		if (isset($columnConfiguration['foreign_label'])) {
-			$childKeyFieldName = $columnConfiguration['foreign_label'];
 		} elseif (isset($columnConfiguration['foreign_selector'])) {
-			$childKeyFieldName = $columnConfiguration['foreign_selector'];
+			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
+			if (isset($columnConfiguration['foreign_selector'])) {
+				$childKeyFieldName = $columnConfiguration['foreign_selector'];
+			} else {
+				$childKeyFieldName = 'uid_foreign';
+			}
+			$columnMap->setChildTableName($columns[$childKeyFieldName]['config']['foreign_table']);
+			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
+			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
+			$columnMap->setChildKeyFieldName($childKeyFieldName);
+			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		} else {
-			$childKeyFieldName = 'uid_foreign';
+			throw new Tx_Extbase_Persistence_Exception_UnsupportedRelation('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
 		}
-		return $childKeyFieldName;
 	}
 	
 	/**

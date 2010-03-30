@@ -31,6 +31,7 @@
  * @package Extbase
  * @subpackage Persistence\QOM
  * @version $Id$
+ * @deprecated since Extbase 1.1; use Tx_Extbase_Persistence_QueryInterface::* instead
  */
 interface Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface {
 

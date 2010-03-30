@@ -167,6 +167,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid, $isRelation);
 		}
+		// debug($statement, -2);
 		$returnValue = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors();
 		return $returnValue;
@@ -474,10 +475,6 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$sql['where'][] = '1<>1';
 			} else {
 				$this->parseDynamicOperand($operand1, $operator, $source, $sql, $parameters, NULL, $operand2);
-				$items = array();
-				foreach ($operand2 as $value) {
-					$items[] = $this->getPlainValue($value);
-				}
 				$parameters[] = $items;
 			}
 		} elseif ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS) {
@@ -785,6 +782,18 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function parseOrderings(array $orderings, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
 		foreach ($orderings as $propertyName => $order) {
+			switch ($order) {
+				case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING: // Deprecated since Extbase 1.1
+				case Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING:
+					$order = 'ASC';
+					break;
+				case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING: // Deprecated since Extbase 1.1
+				case Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING:
+					$order = 'DESC';
+					break;
+				default:
+					throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('Unsupported order encountered.', 1242816074);
+			}
 			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 				$className = $source->getNodeTypeName();
 				$tableName = $this->dataMapper->convertClassNameToTableName($className);

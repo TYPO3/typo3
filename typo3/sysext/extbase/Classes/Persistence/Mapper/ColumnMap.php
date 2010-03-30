@@ -38,6 +38,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	const RELATION_NONE = 'RELATION_NONE';
 	const RELATION_HAS_ONE = 'RELATION_HAS_ONE';
 	const RELATION_HAS_MANY = 'RELATION_HAS_MANY';
+	const RELATION_BELONGS_TO_MANY = 'RELATION_BELONGS_TO_MANY';
 	const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
 
 	/**
@@ -170,6 +171,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 			case self::RELATION_NONE;
 			case self::RELATION_HAS_ONE;
 			case self::RELATION_HAS_MANY;
+			case self::RELATION_BELONGS_TO_MANY;
 			case self::RELATION_HAS_AND_BELONGS_TO_MANY;
 				$this->typeOfRelation = $typeOfRelation;
 				break;
