@@ -1,3 +1,7 @@
+2010-03-30  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11386: t3lib_cache_backend_FileBacked violates open_basedir_restrictions
+
 2010-03-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13935: t3lib_fullsearch has a lot of hanging SQL record sets
