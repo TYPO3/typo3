@@ -736,7 +736,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		);
 
 		$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-		if (count($relationTableMatchFields)) {
+		if (is_array($relationTableMatchFields) && count($relationTableMatchFields) > 0) {
 			$relationMatchFields = array_merge($relationTableMatchFields,$relationMatchFields);
 		}
 
