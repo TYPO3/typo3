@@ -247,7 +247,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		} else {
 			$query = $this->createQuery();
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-			$result = $query->matching($query->withUid($uid))->execute();
+			$result = $query->matching($query->equals('uid', $uid))->execute();
 			$object = NULL;
 			if (count($result) > 0) {
 				$object = current($result);
