@@ -59,6 +59,7 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 *
 	 */
 	public function __construct($title) {
+		$this->setTitle($title);
 		$this->subgroup = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 
