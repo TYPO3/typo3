@@ -1,5 +1,6 @@
-2010-03-26  Steffen Kamper  <info@sk-typo3.de>
+2010-03-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11386: t3lib_cache_backend_FileBacked violates open_basedir_restrictions
 	* Added feature #13899: Add Viewport layout to BE (thanks to Stefan Galinski)
 
 2010-03-30  Stanislas Rolland  <typo3@sjbr.ca>
