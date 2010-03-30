@@ -91,7 +91,9 @@ class Tx_Extbase_Reflection_ObjectAccess {
 	static public function getPropertyPath($subject, $propertyPath) {
 		$propertyPathSegments = explode('.', $propertyPath);
 		foreach ($propertyPathSegments as $pathSegment) {
-			if (is_array($subject) || (is_object($subject) && self::isPropertyGettable($subject, $pathSegment))) {
+			if (is_object($subject) && self::isPropertyGettable($subject, $pathSegment)) {
+				$subject = self::getProperty($subject, $pathSegment);
+			} elseif (is_array($subject) && array_key_exists($pathSegment, $subject)) {
 				$subject = self::getProperty($subject, $pathSegment);
 			} else {
 				return NULL;

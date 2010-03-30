@@ -66,6 +66,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected $dataMaps = array();
 
 	/**
+	 * @var Tx_Extbase_Persistence_Mapper_DataMapFactory
+	 */
+	protected $dataMapFactory;
+	
+	/**
 	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
 	 */
 	protected $queryFactory;
@@ -83,6 +88,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function __construct() {
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		$this->dataMapFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory');
 	}
 
 	/**
@@ -192,44 +198,62 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		} else {
 			$object->_setProperty('uid', $row['uid']);
 		}
-		unset($properties['uid']);
 		foreach ($properties as $propertyName => $propertyValue) {
 			if (!$dataMap->isPersistableProperty($propertyName)) continue;
 			$columnMap = $dataMap->getColumnMap($propertyName);
 			$columnName = $columnMap->getColumnName();
+			$propertyData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);			
 			$propertyValue = NULL;
-			
-			$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
-			$propertyType = Tx_Extbase_Persistence_PropertyType::valueFromType($propertyMetaData['type']);
-
-			if ($propertyType == Tx_Extbase_Persistence_PropertyType::UNDEFINED) {
-				$propertyType = $columnMap->getPropertyType();
-			}
-
-			switch ($propertyType) {
-				case Tx_Extbase_Persistence_PropertyType::STRING;
-				case Tx_Extbase_Persistence_PropertyType::DATE;
-				case Tx_Extbase_Persistence_PropertyType::LONG;
-				case Tx_Extbase_Persistence_PropertyType::DOUBLE;
-				case Tx_Extbase_Persistence_PropertyType::BOOLEAN;
-				if (isset($row[$columnName])) {
-					$rawPropertyValue = $row[$columnName];
-					$propertyValue = $dataMap->convertFieldValueToPropertyValue($propertyType, $rawPropertyValue);
+			if ($row[$columnName] !== NULL) {
+				switch ($propertyData['type']) {
+					case 'integer':
+						$propertyValue = (int) $row[$columnName];
+					break;
+					case 'float':
+						$propertyValue = (float) $row[$columnName];
+					break;
+					case 'boolean':
+						$propertyValue = (boolean) $row[$columnName];
+					break;
+					case 'string':
+						$propertyValue = (string) $row[$columnName];
+					break;
+					case 'array':
+						// $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
+					break;
+					case 'SplObjectStorage':
+					case 'Tx_Extbase_Persistence_ObjectStorage':
+						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
+					break;
+					default:
+						if (($propertyData['type'] === 'DateTime') || in_array('DateTime', class_parents($propertyData['type']))) {
+							$propertyValue = $this->mapDateTime($row[$columnName]);
+						} else {
+							$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
+							// $propertyValue = $this->mapToObject($row[$columnName]); // Not supported, yet!
+						}
+					break;
 				}
-				break;
-				case (Tx_Extbase_Persistence_PropertyType::REFERENCE):
-					$propertyValue = $row[$columnName];
-					if (!is_null($propertyValue)) {
-						$fieldValue = $row[$columnName];
-						$result = $this->fetchRelated($object, $propertyName, $fieldValue);
-						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $result);
-					}
-					break;
-				default:
-					// FIXME throw exception
-					break;
 			}
-			$object->_setProperty($propertyName, $propertyValue);
+
+			if ($propertyValue !== NULL) {
+				$object->_setProperty($propertyName, $propertyValue);
+			}
+		}
+	}
+	
+	/**
+	 * Creates a DateTime from an unix timestamp. If the input is empty
+	 * NULL is returned.
+	 *
+	 * @param integer $timestamp
+	 * @return DateTime
+	 */
+	protected function mapDateTime($timestamp) {
+		if (empty($timestamp)) { // 0 -> NULL !!!
+			return NULL;
+		} else {
+			return new DateTime(date('c', $timestamp));
 		}
 	}
 
@@ -246,8 +270,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	public function fetchRelated(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE, $performLanguageOverlay = TRUE) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-		if ($enableLazyLoading === TRUE && ($propertyMetaData['lazy'] || ($columnMap->getLoadingStrategy() !== Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_EAGER))) {
-			if (($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage') || ($columnMap->getLoadingStrategy() === Tx_Extbase_Persistence_Mapper_ColumnMap::STRATEGY_LAZY_STORAGE)) {
+		if ($enableLazyLoading === TRUE && $propertyMetaData['lazy']) {
+			if ($propertyMetaData['type'] === 'Tx_Extbase_Persistence_ObjectStorage') {
 				$result = t3lib_div::makeInstance('Tx_Extbase_Persistence_LazyObjectStorage', $parentObject, $propertyName, $fieldValue);				
 			} else {
 				if (empty($fieldValue)) {
@@ -398,7 +422,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
 		return $query->count();
 	}
-
+	
 	/**
 	 * Delegates the call to the Data Map.
 	 * Returns TRUE if the property is persistable (configured in $TCA)
@@ -421,37 +445,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	public function getDataMap($className) {
 		if (!is_string($className) || strlen($className) === 0) throw new Tx_Extbase_Persistence_Exception('No class name was given to retrieve the Data Map for.', 1251315965);
 		if (!isset($this->dataMaps[$className])) {
-			// FIXME This is too expensive for table name aliases -> implement a DataMapBuilder (knowing the aliases defined in $TCA)
-			$columnMapping = array();
-			$tableName = '';
-			$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-			if (is_array($extbaseSettings['persistence']['classes'][$className])) {
-				$persistenceSettings = $extbaseSettings['persistence']['classes'][$className];
-				if (is_string($persistenceSettings['mapping']['tableName']) && strlen($persistenceSettings['mapping']['tableName']) > 0) {
-					$tableName = $persistenceSettings['mapping']['tableName'];
-				}
-				if (is_array($persistenceSettings['mapping']['columns'])) {
-					$columnMapping = $persistenceSettings['mapping']['columns'];
-				}
-			} elseif (class_exists($className)) {
-				foreach (class_parents($className) as $parentClassName) {
-					$persistenceSettings = $extbaseSettings['persistence']['classes'][$parentClassName];
-					if (is_array($persistenceSettings)) {
-						if (is_string($persistenceSettings['mapping']['tableName']) && strlen($persistenceSettings['mapping']['tableName']) > 0) {
-							$tableName = $persistenceSettings['mapping']['tableName'];
-						}
-						if (is_array($persistenceSettings['mapping']['columns'])) {
-							$columnMapping = $persistenceSettings['mapping']['columns'];
-						}
-					}
-					break;
-				}
-			} else {
-				throw new Tx_Extbase_Persistence_Exception('Could not determine a Data Map for given class name.', 1256067130);
-			}
-
-			$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $columnMapping);
-			$this->dataMaps[$className] = $dataMap;
+			$this->dataMaps[$className] = $this->dataMapFactory->buildDataMap($className);
 		}
  		return $this->dataMaps[$className];
 	}
@@ -463,10 +457,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @return string The selector name
 	 */
 	public function convertClassNameToTableName($className = NULL) {
-		if (!empty($className)) {
-			return $this->getDataMap($className)->getTableName();
+		if ($className !== NULL) {
+			$tableName = $this->getDataMap($className)->getTableName();
+		} else {
+			$tableName = strtolower($className);
 		}
-		return strtolower($className);
+		return $tableName;
 	}
 
 	/**
@@ -501,7 +497,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		if (!empty($propertyMetaData['type'])) {
 			$type = $propertyMetaData['type'];
 		} else {
-			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Could not determine the child object object type.', 1251315967);
+			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('Could not determine the child object type.', 1251315967);
 		}
 		return $type;
 	}

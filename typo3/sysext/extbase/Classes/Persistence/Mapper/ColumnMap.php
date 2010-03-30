@@ -42,6 +42,14 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
 
 	/**
+	 * Constants reflecting how the relation information is stored
+	 */
+	const RELATION_PARENT_FOREIGN_KEY = 'RELATION_PARENT_FOREIGN_KEY';
+	const RELATION_CHILD_FOREIGN_KEY = 'RELATION_CHILD_FOREIGN_KEY';
+	const RELATION_PARENT_CSV = 'RELATION_PARENT_CSV';
+	const RELATION_INTERMEDIATE_TABLE = 'RELATION_INTERMEDIATE_TABLE';
+
+	/**
 	 * Constants reflecting the loading strategy
 	 */
 	const STRATEGY_EAGER = 'eager';
@@ -167,61 +175,11 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	}
 
 	public function setTypeOfRelation($typeOfRelation) {
-		switch ($typeOfRelation) {
-			case self::RELATION_NONE;
-			case self::RELATION_HAS_ONE;
-			case self::RELATION_HAS_MANY;
-			case self::RELATION_BELONGS_TO_MANY;
-			case self::RELATION_HAS_AND_BELONGS_TO_MANY;
-				$this->typeOfRelation = $typeOfRelation;
-				break;
-			default:
-				$this->typeOfRelation = NULL;
-				break;
-		}
-	}
-
-	public function isRelation() {
-		return $this->typeOfRelation !== NULL && $this->typeOfRelation !== self::RELATION_NONE;
+		$this->typeOfRelation = $typeOfRelation;
 	}
 
 	public function getTypeOfRelation() {
 		return $this->typeOfRelation;
-	}
-
-	public function setPropertyType($propertyType) {
-		switch ($propertyType) {
-			case Tx_Extbase_Persistence_PropertyType::UNDEFINED;
-			case Tx_Extbase_Persistence_PropertyType::STRING;
-			case Tx_Extbase_Persistence_PropertyType::DATE;
-			case Tx_Extbase_Persistence_PropertyType::LONG;
-			case Tx_Extbase_Persistence_PropertyType::DOUBLE;
-			case Tx_Extbase_Persistence_PropertyType::BOOLEAN;
-			case Tx_Extbase_Persistence_PropertyType::REFERENCE;
-				$this->propertyType = $propertyType;
-				break;
-			default:
-				$this->propertyType = Tx_Extbase_Persistence_PropertyType::UNDEFINED;
-				break;
-		}
-	}
-
-	public function getPropertyType() {
-		return $this->propertyType;
-	}
-
-	public function setLoadingStrategy($loadingStrategy) {
-		switch ($loadingStrategy) {
-			case self::STRATEGY_LAZY_PROXY;
-			case self::STRATEGY_LAZY_STORAGE;
-			case self::STRATEGY_EAGER;
-				$this->loadingStrategy = $loadingStrategy;
-				break;
-		}
-	}
-
-	public function getLoadingStrategy() {
-		return $this->loadingStrategy;
 	}
 
 	public function setPropertyName($propertyName) {

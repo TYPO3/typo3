@@ -390,10 +390,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 							$this->persistValueObject($propertyValue);
 						}
 					}
-					$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+					$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
 				}
 			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || $object->_isNew() || $object->_isDirty($propertyName)) {
-				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+				$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
 			}
 		}
 
@@ -477,7 +477,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				$propertyType = $propertyMetaData['type'];
 				// FIXME enable property-type check
 				// $this->checkPropertyType($propertyType, $propertyValue);
-				$row[$columnMap->getColumnName()] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+				$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
 			}
 			$this->insertObject($object, $row);
 		}
@@ -802,13 +802,13 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function addCommonFieldsToRow(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
 		$className = get_class($object);
 		$dataMap = $this->dataMapper->getDataMap($className);
-		if ($dataMap->hasCreationDateColumn() && $object->_isNew()) {
+		if ($object->_isNew() && ($dataMap->getCreationDateColumnName() !== NULL)) {
 			$row[$dataMap->getCreationDateColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
-		if ($dataMap->hasTimestampColumn()) {
-			$row[$dataMap->getTimestampColumnName()] = $GLOBALS['EXEC_TIME'];
+		if ($dataMap->getModificationDateColumnName() !== NULL) {
+			$row[$dataMap->getModificationDateColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
-		if ($object->_isNew() && $dataMap->hasPidColumn() && !isset($row['pid'])) {
+		if ($object->_isNew() && !isset($row['pid'])) {
 			$row['pid'] = $this->determineStoragePageIdForNewRecord($object);
 		}
 	}
@@ -838,8 +838,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function removeObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, $markAsDeleted = TRUE) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$tableName = $dataMap->getTableName();
-		if (($markAsDeleted === TRUE) && $dataMap->hasDeletedColumn()) {
-			$deletedColumnName = $dataMap->getDeletedColumnName();
+		if (($markAsDeleted === TRUE) && ($dataMap->getDeletedFlagColumnName() !== NULL)) {
+			$deletedColumnName = $dataMap->getDeletedFlagColumnName();
 			$res = $this->storageBackend->updateRow(
 				$tableName,
 				array(
@@ -887,19 +887,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 	/**
-	 * Delegates the call to the Data Map.
-	 * Returns TRUE if the property is persistable (configured in $TCA)
-	 *
-	 * @param string $className The property name
-	 * @param string $propertyName The property name
-	 * @return boolean TRUE if the property is persistable (configured in $TCA)
-	 */
-	public function isPersistableProperty($className, $propertyName) {
-		$dataMap = $this->dataMapper->getDataMap($className);
-		return $dataMap->isPersistableProperty($propertyName);
-	}
-	
-	/**
 	 * Determine the storage page ID for a given NEW record
 	 *
 	 * This does the following:
@@ -918,6 +905,24 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		} else {
 			$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['persistence']['storagePid']);
 			return (int) $storagePidList[0];
+		}
+	}
+	
+	/**
+	 * Returns a plain value, i.e. objects are flattened out if possible.
+	 *
+	 * @param mixed $input
+	 * @return mixed
+	 */
+	protected function getPlainValue($input) {
+		if ($input instanceof DateTime) {
+			return $input->format('U');
+		} elseif ($input instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+			return $input->getUid();
+		} elseif (is_bool($input)) {
+			return $input === TRUE ? 1 : 0;
+		} else {
+			return $input;
 		}
 	}
 

@@ -104,8 +104,6 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$columnMap = $dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
 		$numberOfElements = NULL;
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
-			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
 			$numberOfElements = $dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
 		} else {
 			$this->initializeStorage();

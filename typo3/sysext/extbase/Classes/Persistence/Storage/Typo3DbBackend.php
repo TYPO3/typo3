@@ -329,7 +329,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . ' IS NULL';
 				} else {
 					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
-					$parameters[] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+					$parameters[] = $this->getPlainValue($propertyValue);
 				}
 			}
 		}
