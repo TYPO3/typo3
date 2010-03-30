@@ -103,7 +103,10 @@ class Tx_Extbase_Dispatcher {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
 		}
-		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration);
+		
+		$context = getenv('EXTBASE_CONTEXT');
+		$context = (strlen($context) === 0) ? 'Production' : $context;
+		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration, $context);
 
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize(self::$extbaseFrameworkConfiguration);
@@ -130,6 +133,13 @@ class Tx_Extbase_Dispatcher {
 			try {
 				$controller->processRequest($request, $response);
 			} catch (Tx_Extbase_MVC_Exception_StopAction $ignoredException) {
+			} catch (Exception $exception) {
+				if ($context === 'Production') {
+					t3lib_div::sysLog(get_class($exception) . ': ' . $exception->getMessage(), 'Extbase', 4);
+					return '';
+				} else {
+					throw $exception;
+				}
 			}
 		}
 		$this->timeTrackPull();
@@ -172,9 +182,10 @@ class Tx_Extbase_Dispatcher {
 	 * Initializes the configuration manager and the Extbase settings
 	 *
 	 * @param $configuration The current incoming configuration
+	 * @param $context The current context (not implemented, yet)
 	 * @return void
 	 */
-	protected function initializeConfigurationManagerAndFrameworkConfiguration($configuration) {
+	protected function initializeConfigurationManagerAndFrameworkConfiguration($configuration, $context) {
 		if (TYPO3_MODE === 'FE') {
 			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager');
 			self::$configurationManager->setContentObject($this->cObj);
