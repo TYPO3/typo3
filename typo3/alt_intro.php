@@ -109,6 +109,7 @@ class SC_alt_intro {
 		$this->content.= $TBE_TEMPLATE->startPage('About modules');
 
 		$this->content .= '
+			<div id="typo3-alt-intro-php-sub">
 			<h1>TYPO3 '.TYPO3_version.'<br />'.$LANG->getLL('introtext').'</h1>
 
 			<p>'.t3lib_BEfunc::TYPO3_copyRightNotice().'</p>';
@@ -126,7 +127,7 @@ class SC_alt_intro {
 
 			// end text: 'Features may vary depending on your website and permissions'
 		$this->content.='<p class="c-features"><em>('.$LANG->getLL('endText').')</em></p>';
-		$this->content .= '<br />';
+		$this->content .= '<br /></div>';
 
 			// End page
 		$this->content.= $TBE_TEMPLATE->endPage();

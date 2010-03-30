@@ -13,10 +13,6 @@ Description : styles for the TYPO3 backend
 
 /* ----- Basics ----- */
 
-#typo3-backend {
-	/* background-color: #fff; */
-}
-
 #typo3-top-container {
 	background-image: url(../gfx/bar.png);
 }
@@ -39,6 +35,7 @@ Description : styles for the TYPO3 backend
 	list-style: none;
 	margin: 0px;
 	padding: 0px;
+	z-index: 200;
 }
 
 #typo3-toolbar li {
@@ -63,6 +60,8 @@ Description : styles for the TYPO3 backend
 
 .toolbar-item-menu {
 	top: 25px;
+	z-index: 100;
+	position: absolute;
 }
 
 #typo3-toolbar .no-separator {

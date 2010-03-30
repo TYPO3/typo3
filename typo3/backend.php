@@ -97,7 +97,7 @@ class TYPO3backend {
 			'contrib/swfupload/plugins/swfupload.queue.js',
 			'md5.js',
 			'js/common.js',
-			'js/sizemanager.js',
+			'js/extjs/backendsizemanager.js',
 			'js/toolbarmanager.js',
 			'js/modulemenu.js',
 			'js/iecompatibility.js',
@@ -109,6 +109,8 @@ class TYPO3backend {
 		$this->jsFilesAfterInline = array(
 			'js/backend.js',
 			'js/loginrefresh.js',
+			'js/extjs/viewport.js',
+			'js/extjs/viewportConfiguration.js',
 		);
 			// add default BE css
 		$this->css      = '';
@@ -171,13 +173,7 @@ class TYPO3backend {
 
 		if ($this->menuWidth != $this->menuWidthDefault) {
 			$this->css .= '
-				#typo3-logo,
-				#typo3-side-menu {
-					width: ' . ($this->menuWidth - 1) . 'px;
-				}
-
-				#typo3-top,
-				#typo3-content {
+				#typo3-top {
 					margin-left: ' . $this->menuWidth . 'px;
 				}
 			';
@@ -186,17 +182,17 @@ class TYPO3backend {
 			// create backend scaffolding
 		$backendScaffolding = '
 	<div id="typo3-backend">
-		<div id="typo3-top-container">
+		<div id="typo3-top-container" class="x-hide-display">
 			<div id="typo3-logo">'.$logo->render().'</div>
-			<div id="typo3-top" class="typo3-top-toolbar">'
-				.$this->renderToolbar()
-			.'</div>
+			<div id="typo3-top" class="typo3-top-toolbar">' .
+				$this->renderToolbar() .
+			'</div>
 		</div>
 		<div id="typo3-main-container">
-			<div id="typo3-side-menu">
-				'.$menu.'
-			</div>
-			<div id="typo3-content">
+			<div id="typo3-side-menu" class="x-hide-display">' .
+				$menu .
+			'</div>
+			<div id="typo3-content" class="x-hide-display">
 				<iframe src="alt_intro.php" name="content" id="content" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto"></iframe>
 			</div>
 		</div>
@@ -215,10 +211,16 @@ class TYPO3backend {
 			// register the extDirect API providers
 			// Note: we need to iterate thru the object, because the addProvider method
 			// does this only with multiple arguments
-		$pageRenderer->addExtOnReadyCode(
-			'for (var api in Ext.app.ExtDirectAPI) {
+		$pageRenderer->addExtOnReadyCode('
+			for (var api in Ext.app.ExtDirectAPI) {
 				Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
 			}',
+			TRUE
+		);
+
+			// initiates the ExtJS based backend viewport
+		$pageRenderer->addExtOnReadyCode('
+			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);',
 			TRUE
 		);
 
@@ -374,6 +376,7 @@ class TYPO3backend {
 			'workspaceFrontendPreviewEnabled' => $GLOBALS['BE_USER']->workspace != 0 && !$GLOBALS['BE_USER']->user['workspace_preview'] ? 0 : 1,
 			'veriCode' => $GLOBALS['BE_USER']->veriCode(),
 			'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
+			'moduleMenuWidth' => $this->menuWidth - 1,
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
 		);
 		$t3LLLcore = array(
@@ -459,7 +462,6 @@ class TYPO3backend {
 	var TS = new typoSetup();
 
 	var currentModuleLoaded = "";
-	var goToModule = ' . $goToModuleSwitch . ';
 
 	/**
 	 * Frameset Module object
@@ -477,7 +479,11 @@ class TYPO3backend {
 	}
 	var fsMod = new fsModules();' . $moduleFramesHelper . ';';
 
-
+			// add goToModule code
+		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$pageRenderer->addExtOnReadyCode('
+			top.goToModule = ' . $goToModuleSwitch . ';
+		');
 
 			// Check editing of page:
 		$this->handlePageEditing();
@@ -558,7 +564,8 @@ class TYPO3backend {
 
 		$moduleParameters = t3lib_div::_GET('modParams');
 		if($startModule) {
-			$this->js .= '
+			$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+			$pageRenderer->addExtOnReadyCode('
 			// start in module:
 		function startInModule(modName, cMR_flag, addGetVars)	{
 			Event.observe(document, \'dom:loaded\', function() {
@@ -567,7 +574,7 @@ class TYPO3backend {
 		}
 
 		startInModule(\''.$startModule.'\', false, '.t3lib_div::quoteJSvalue($moduleParameters).');
-			';
+			');
 		}
 	}
 

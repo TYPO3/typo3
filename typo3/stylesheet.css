@@ -187,6 +187,7 @@ body#typo3-alt-palette-php {
 	background-color: #9BA1A8;
 }
 
+body#typo3-alt-intro-php,
 body#typo3-alt-doc-php,
 body#typo3-alt-file-navframe-php,
 body#typo3-db-list-php,
@@ -713,8 +714,13 @@ Help > About modules (alt_intro.php)
 - - - - - - - - - - - - - - - - - - - - - */
 
 div.typo3-alt-intro-php {
-	width: 600px;
+	height: 100%;
+	overflow: auto;
+}
+
+#typo3-alt-intro-php-sub {
 	margin-left: 10px;
+	width: 600px;
 }
 
 table#typo3-about-modules {

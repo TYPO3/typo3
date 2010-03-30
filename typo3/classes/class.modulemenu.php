@@ -515,10 +515,10 @@ class ModuleMenu {
 					top.content.nav_frame.location = top.getModuleUrl(top.TS.PATH_typo3 + navFrames[mainModName]);
 				}
 			} else {
-				$("content").src = top.TS.PATH_typo3 + modScriptURL;
+				TYPO3.Backend.loadModule(mainModName, modName, top.getModuleUrl(modScriptURL));
 			}
 		} else if (modScriptURL) {
-			$("content").src = top.getModuleUrl(top.TS.PATH_typo3 + modScriptURL + additionalGetVariables);
+			TYPO3.Backend.loadModule(mainModName, modName, top.getModuleUrl(modScriptURL + additionalGetVariables));
 		}
 		currentModuleLoaded = modName;
 		top.fsMod.currentMainLoaded = mainModName;

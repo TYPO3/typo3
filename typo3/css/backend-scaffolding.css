@@ -19,18 +19,17 @@ TYPO3 backend scaffolding
 - - - - - - - - - - - - - - - - - - - - - */
 
 body#typo3-backend-php {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 }
 
-#typo3-backend {
-	width: 100%;
-}
-
-#typo3-logo,
-#typo3-side-menu {
+#typo3-logo {
 	float: left;
 	width: 159px;
+}
+
+#typo3-toolbar div {
+	overflow: visible !important;
 }
 
 #typo3-top-container {
@@ -41,28 +40,16 @@ body#typo3-backend-php {
 	clear: both;
 }
 
-#typo3-top,
-#typo3-content {
+#typo3-top {
 	margin-left: 160px;
 }
 
-#typo3-side-menu {
+iframe {
+	width: 100%;
+}
+
+#typo3-side-menu,
+iframe {
+	height: 100%;
 	overflow: auto;
 }
-
-iframe {
-	width: 99.9%;
-}
-
-#typo3-content,
-#typo3-main-container,
-#typo3-main-container * iframe {
-	height: 660px;
-	z-index: 1;
-}
-
-
-
-
-
-
