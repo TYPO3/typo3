@@ -1,5 +1,6 @@
 2010-03-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13011: Bug: borders for single image rendering [css styled content] (thanks to Susanne Moog)
 	* Fixed bug #11386: t3lib_cache_backend_FileBacked violates open_basedir_restrictions
 	* Added feature #13899: Add Viewport layout to BE (thanks to Stefan Galinski)
 
