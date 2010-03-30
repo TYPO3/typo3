@@ -7,7 +7,6 @@ config.tx_extbase {
 				mapping {
 					tableName = fe_users
 					columns {
-						usergroup.foreignClass = Tx_Extbase_Domain_Model_FrontendUserGroup
 						lockToDomain.mapOnProperty = lockToDomain
 					}
 				}
@@ -16,7 +15,6 @@ config.tx_extbase {
 				mapping {
 					tableName = fe_groups
 					columns {
-						subgroup.foreignClass = Tx_Extbase_Domain_Model_FrontendUserGroup
 						lockToDomain.mapOnProperty = lockToDomain
 					}
 				}
