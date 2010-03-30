@@ -79,7 +79,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
 		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
-		$this->persistenceManager->registerRepositoryClassName(get_class($this));
+		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
 	}
 
