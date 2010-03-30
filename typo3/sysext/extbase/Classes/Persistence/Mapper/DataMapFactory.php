@@ -67,7 +67,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		if ($tableName === NULL) {
 			$tableName = strtolower($className);
 		}
-		
 		$dataMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 		$columnConfigurations = array();
@@ -81,7 +80,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			$columnMap = $this->setRelations($columnMap, $columnConfiguration);
 			$dataMap->addColumnMap($columnMap);
 		}
-		// debug($dataMap);
 		return $dataMap;
 	}
 
@@ -102,6 +100,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	
 	protected function addMetaDataColumnNames(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $tableName) {
 		$controlSection = $GLOBALS['TCA'][$tableName]['ctrl'];
+		$dataMap->setPageIdColumnName('pid');
 		if (isset($controlSection['tstamp'])) $dataMap->setModificationDateColumnName($controlSection['tstamp']);
 		if (isset($controlSection['crdate'])) $dataMap->setCreationDateColumnName($controlSection['crdate']);
 		if (isset($controlSection['cruser_id'])) $dataMap->setCreatorColumnName($controlSection['cruser_id']);
@@ -208,11 +207,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			}
 		} elseif (isset($columnConfiguration['foreign_selector'])) {
 			$columns = $this->getColumnsDefinition($columnConfiguration['foreign_table']);
-			if (isset($columnConfiguration['foreign_selector'])) {
-				$childKeyFieldName = $columnConfiguration['foreign_selector'];
-			} else {
-				$childKeyFieldName = 'uid_foreign';
-			}
+			$childKeyFieldName = $columnConfiguration['foreign_selector'];
 			$columnMap->setChildTableName($columns[$childKeyFieldName]['config']['foreign_table']);
 			$columnMap->setRelationTableName($columnConfiguration['foreign_table']);
 			$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
@@ -221,6 +216,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnsupportedRelation('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
 		}
+		// debug($columnMap);
 		return $columnMap;
 	}
 		

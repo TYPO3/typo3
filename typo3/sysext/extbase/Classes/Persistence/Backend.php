@@ -704,6 +704,10 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		// if (isset($childTableName)) {
 		// 	$row['tablenames'] = $childTableName;
 		// }
+		$pageIdColumnName = $dataMap->getPageIdColumnName();
+		if ($pageIdColumnName !== NULL) {
+			$row[$pageIdColumnName] = $this->determineStoragePageIdForNewRecord();
+		}
 		
 		$relationTableInsertFields = $columnMap->getRelationTableInsertFields();
 		if (count($relationTableInsertFields)) {
@@ -896,16 +900,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object
 	 * @return int the storage Page ID where the object should be stored
 	 */
-	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
-		$className = get_class($object);
+	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
 		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-
-		if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'])) {
-			return (int)$extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'];
-		} else {
-			$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['persistence']['storagePid']);
-			return (int) $storagePidList[0];
+		if ($object !== NULL) {
+			$className = get_class($object);
+			if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'])) {
+				return (int)$extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'];
+			}
 		}
+		$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['persistence']['storagePid']);
+		return (int) $storagePidList[0];
 	}
 	
 	/**

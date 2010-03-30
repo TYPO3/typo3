@@ -55,6 +55,11 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	/**
 	 * @var string
 	 **/
+	protected $pageIdColumnName;
+
+	/**
+	 * @var string
+	 **/
 	protected $modificationDateColumnName;
 
 	/**
@@ -168,6 +173,27 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		return isset($this->columnMaps[$propertyName]);
 	}
 	
+	
+	/**
+	 * Sets the name of a column holding the page id
+	 *
+	 * @param string The field name
+	 * @return void
+	 */
+	public function setPageIdColumnName($pageIdColumnName) {
+		$this->pageIdColumnName = $pageIdColumnName;
+	}
+	
+	/**
+	 * Sets the name of a column holding the page id
+	 *
+	 * @return string The field name
+	 */
+	public function getPageIdColumnName() {
+		return $this->pageIdColumnName;
+	}
+	
+
 	/**
 	 * Sets the name of a column holding the timestamp the record was modified
 	 *
