@@ -105,6 +105,9 @@ class Tx_Extbase_Dispatcher {
 		}
 		
 		$context = getenv('EXTBASE_CONTEXT');
+		if ($context == '') {
+			$context = getenv('REDIRECT_EXTBASE_CONTEXT');
+		}
 		$context = (strlen($context) === 0) ? 'Production' : $context;
 		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration, $context);
 
