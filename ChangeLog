@@ -1,6 +1,7 @@
 2010-04-01  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #13557: t3editor/codecompletion: add new typoscript properties and update tsref descriptions
+	* Fixed bug #11839: t3editor doesn't have an API for using at other places
 
 2010-04-01  Steffen Kamper  <info@sk-typo3.de>
 

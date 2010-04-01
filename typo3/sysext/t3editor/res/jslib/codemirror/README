@@ -1,0 +1,16 @@
+The t3editor is based on the CodeMirror-project by Marijn Haverbeke (http://marijn.haverbeke.nl/codemirror/)
+
+Currently the release 0.66 is used.
+To use the CodeMirror for the t3editor some changes were needed. 
+
+See the LICENSE file for the CodeMirror license.
+All files in this folder (typo3/sysext/t3editor/jslib/codemirror/) are part of or based on the CodeMirror and therefore licened under the CodeMirror license.
+
+t3editor itself is part of TYPO3 and therefore licened under GPL (as TYPO3 is).
+
+
+thanks,
+
+  Tobias Liebig
+  mail(at)etobi.de
+

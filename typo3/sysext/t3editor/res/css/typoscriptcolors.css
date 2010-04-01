@@ -1,0 +1,24 @@
+
+/*********************************************
+ * Syntax highlighting
+ *********************************************/
+
+.other { color: black; }
+.ts-operator { color: #0000cc; font-weight: bold; }
+.ts-value { color: #cc0000; }
+.ts-objstr, .keyword, .keyword2, .keyword3, .reserved { color: #0000cc; }
+.ts-value_copy { color: #006600; }
+.ts-value_unset { background-color: #66cc66; }
+.ts-ignored { background-color: #66cc66; }
+.ts-default { background-color: #66cc66; }
+.ts-comment { color: #666; font-style: italic; }
+.ts-condition { background-color: maroon; color: #fff; font-weight: bold; }
+.ts-error { background-color: yellow; border: 1px red dashed; font-weight: bold; }
+.highlight-bracket {background-color: #0c0; color: #fff; }
+.error-bracket {background-color: #d00; color: #fff; }
+
+/* unparsed code */
+pre.code, .editbox {
+	color: #666;
+}
+
