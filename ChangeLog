@@ -1,3 +1,7 @@
+2010-04-01  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #13557: t3editor/codecompletion: add new typoscript properties and update tsref descriptions
+
 2010-04-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13980: PageRenderer renderJsLibraries should be after the hook
