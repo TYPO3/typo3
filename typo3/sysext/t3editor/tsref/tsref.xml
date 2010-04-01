@@ -406,6 +406,21 @@ This option may be overridden in the FORMS-cObject.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="defaultGetVars" type="array">
+			<description><![CDATA[Allows to set default values for GET parameters. Default value is taken only if the GET parameter isn't defined. Array notation is done with dots, e.g.:
+
+test[var1] will be written as text.var1
+
+Example:
+
+config.defaultgetVars {
+    test.var1.var2.p3 = 15
+    L = 3
+}
+			]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="disableAllHeaderCode" type="boolean">
 			<description><![CDATA[If this is set, none of the features of the PAGE-object is processed and the content of the page will be the result of the cObject array (1,2,3,4...) of the PAGE-object.  This means that the result of the cObject should include everything from the <HTML> .... to the </HTML> tag !!
 Use this feature in templates supplying other content-types than HTML. That could be an image or a WAP-page!]]></description>
@@ -472,6 +487,11 @@ If a PHP_SCRIPT_EXT object is detected on the page or if the Backend user is log
 		<property name="extTarget" type="string">
 			<description><![CDATA[default external target. Used by typolink if no extTarget is set]]></description>
 			<default><![CDATA[_top]]></default>
+		</property>
+		<property name="fileTarget" type="string">
+			<description><![CDATA[Default file link target. Used by typolink if no fileTarget is set. ]]></description>
+			<default><![CDATA[
+			]]></default>
 		</property>
 		<property name="forceTypeValue" type="int">
 			<description><![CDATA[Force the &type value of all TYPO3 generated links to a specific value (except if overruled by local forceTypeValue values).
@@ -689,6 +709,13 @@ Is used for a) HTML meta-tag, b) HTTP header (unless disabled with .disableChars
 If renderCharset and metaCharset are different the output content is automatically converted to metaCharset before output and likewise are values posted back to the page converted from metaCharset to renderCharset for internal processing. This conversion takes time of course so there is another good reason to use the same charset for both.]]></description>
 			<default><![CDATA[value of ".renderCharset"]]></default>
 		</property>
+		<property name="moveJsFromHeaderToFooter" type="boolean">
+			<description><![CDATA[
+			If set, all Javascript (includes and inline) will be moved to the bottom of the HTML document, which is after content and before the closing body tag
+			]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="noPageTitle" type="int">
 			<description><![CDATA[If you only want to have the sitename (from the template record) in your <title> tag, set this to 1. If the value is 2 then the <title> tag is not printed at all.
 Please take note that this tag is required for XHTML compliant output, so you should only disable this tag if you generate it manually already.]]></description>
@@ -736,6 +763,17 @@ $TYPO3_CONF_VARS["FE"]["noPHPscriptInclude"]=1;
 
 is set in localconf.php.]]></description>
 			<default><![CDATA[typo3/sysext/cms/tslib/pagegen.php]]></default>
+		</property>
+		<property name="pageRendererTemplateFile" type="string">
+			<description><![CDATA[
+			Sets the template for page renderer class (t3lib_PageRenderer).
+
+Example:
+
+pageRendererTemplateFile = fileadmin/test_pagerender.html
+			]]></description>
+			<default><![CDATA[
+]]></default>
 		</property>
 		<property name="pageTitleFirst" type="boolean">
 			<description><![CDATA[If set (and the page title is printed) then the page-title will be printed BEFORE the template title.]]></description>
@@ -1235,10 +1273,11 @@ Use -1 in combination with collect.
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="table" type="string">
-			<description><![CDATA[The table, the content should come from.
+		<property name="table" type="stdWrap">
+			<description><![CDATA[TableName/stdWrap
+			The table, the content should come from.
 In standard-configurations this will be "tt_content"
-NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_", "tx_", "ttx_", "fe_", "user_"]]></description>
+NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_", "tx_", "ttx_", "fe_", "user_" or "static_"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -1448,8 +1487,14 @@ A very good example is to look at "media/scripts/guest_submit.inc", included fro
 		<property name="altText" type="stdWrap">
 			<description><![CDATA[For <img> output only!
 
-If no titltext is specified, it will use the alttext insteadIf no alttext is specified, it will use an empty alttext]]></description>
+If no alttext is specified, it will use an empty alttext]]></description>
 			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="emptyTitleHandling" type="string">
+			<description><![CDATA[Value can be "keepEmpty" to preserve an empty title attribute, or "useAlt" to use the alt attribute instead.
+]]></description>
+			<default><![CDATA[useAlt
 ]]></default>
 		</property>
 		<property name="file" type="string">
@@ -1910,27 +1955,27 @@ NOTE: Is set automatically and should not be overridden under normal conditions!
 	</type>
 	<type id="GifBuilderObj">
 		<property name="if" type="if">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
 		</property>
 	</type>
 	<type id="GIFBUILDER">
 		<property name="1" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="2" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="3" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="4" type="GifBuilderObj">
-			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
+			<description><![CDATA[.if (->if)  is a property of all gifbuilder-objects. If the property is present and NOT set, the object is NOT rendered! This corresponds to the functionallity of ".if" of the stdWrap-function.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -2045,6 +2090,13 @@ autoLevels: -
 x,y    is the offset.
 w,h    is the dimensions. Dimensions of 1 will result in 1-pixel wide lines!]]></description>
 			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="opacity" type="int">
+			<description><![CDATA[pos-int (1-100)
+			Dimensions of a filled box.
+Opacity (i.e. inverse of transparency, e.g. 100% opacity = 0% transparency)]]></description>
+			<default><![CDATA[100
 ]]></default>
 		</property>
 	</type>
@@ -2276,6 +2328,17 @@ Range: -90 til 90]]></default>
 
 Note: This option is not available if .niceText is enabled]]></description>
 			<default><![CDATA[1]]></default>
+		</property>
+		<property name="breakWidth" type="int">
+			<description><![CDATA[Defines the maximum width for an object, overlapping elements will force an automatic line break.
+			]]></description>
+			<default><![CDATA[
+			]]></default>
+		</property>
+		<property name="breakSpace" type="float">
+			<description><![CDATA[Defines a value that is multiplied by the line height of the current element.
+			]]></description>
+			<default><![CDATA[1.0]]></default>
 		</property>
 		<property name="doNotStripHTML" type="boolean">
 			<description><![CDATA[If set, HTML-tags in the string inserted are NOT removed. Any other way HTML-code is removed by default!]]></description>
@@ -2535,8 +2598,8 @@ Notice: This works only for special=language.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="alwaysActivePIDlist" type="intList">
-			<description><![CDATA[List of Integers
+		<property name="alwaysActivePIDlist" type="stdWrap">
+			<description><![CDATA[List of Integers /stdWrap
 			This is a list of page UID numbers that will always be regarded as active menu items and thereby automatically opened regardless of the rootline.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -2708,6 +2771,11 @@ Page level 1 > Page level 2 > Page level 3 > Page level 4 >
 			]]></description>
 			<default><![CDATA[
 ]]></default>
+		</property>
+		<property name="reverseOrder" type="boolean">
+			<description><![CDATA[If set to true, the order of the rootline menu elements will be reversed.
+			]]></description>
+			<default><![CDATA[false]]></default>
 		</property>
 		<property name="targets" type="string">
 			<description><![CDATA[.targets.[0-x]  targets
@@ -3388,6 +3456,11 @@ Applies to GMENU, TMENU, GMENU_LAYERS, TMENU_LAYERS and GMENU_FOLDOUT on >= 2nd 
 		</property>
 		<property name="wrap" type="wrap">
 			<description><![CDATA[Wraps only if there were items in the menu!]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="wrapItemAndSub" type="stdWrap">Wrap/stdWrap
+			<description><![CDATA[Wraps the whole item and any submenu concatenated to it.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -4417,7 +4490,7 @@ Applies to GMENU, TMENU, IMGMENU]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="expAll" type="boolean">
+		<property name="expAll" type="stdWrap">boolean/stdWrap
 			<description><![CDATA[If this is true, the menu will always show the menu on the level underneath the menuitem. This corresponds to a situation where a user has clicked a menuitem and the menu folds out the next level. This can enable that to happen on all items as default.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -4915,7 +4988,7 @@ Example:
 	</type>
 	<type id="IMAGE">
 		<property name="altText" type="stdWrap">
-			<description><![CDATA[If no titltext is specified, it will use the alttext insteadIf no alttext is specified, it will use an empty alttext
+			<description><![CDATA[If no alttext is specified, it will use an empty alttext
 
 ("alttext" is the old spelling of this attribute. It will be used only if "altText" does not specify a value or properties)]]></description>
 			<default><![CDATA[
@@ -4924,6 +4997,12 @@ Example:
 		<property name="border" type="int">
 			<description><![CDATA[Value of the "border" attribute of the image tag.]]></description>
 			<default><![CDATA[0]]></default>
+		</property>
+		<property name="emptyTitleHandling" type="string">
+			<description><![CDATA[Value can be "keepEmpty" to preserve an empty title attribute, or "useAlt" to use the alt attribute instead.
+]]></description>
+			<default><![CDATA[useAlt
+]]></default>
 		</property>
 		<property name="file" type="imgResource">
 			<description><![CDATA[
@@ -5058,7 +5137,7 @@ Important:
 		<property name="altText" type="stdWrap">
 			<description><![CDATA[Default altText/titleText if no alternatives are provided by the ->IMAGE cObjects
 
-If no titltext is specified, it will use the alttext insteadIf no alttext is specified, it will use an empty alttext]]></description>
+If no alttext is specified, it will use an empty alttext]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5115,6 +5194,12 @@ If 6 images are placed in three columns and their width's are high enough to be 
 		<property name="editIcons" type="string">
 			<description><![CDATA[(See stdWrap.editIcons)]]></description>
 			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="emptyTitleHandling" type="string">
+			<description><![CDATA[Value can be "keepEmpty" to preserve an empty title attribute, or "useAlt" to use the alt attribute instead.
+]]></description>
+			<default><![CDATA[useAlt
 ]]></default>
 		</property>
 		<property name="equalH" type="stdWrap">
@@ -5956,8 +6041,50 @@ adds leftmargin="4" topmargin="4" marginwidth="4" marginheight="4"  to the bodyT
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="cssInline" type="CARRAY">
+			<description><![CDATA[Use cObjects for creating inline CSS
+
+Example:
+
+cssInline {
+    10 = TEXT
+    10.value = h1 {margin:15px;}
+
+    20 = TEXT
+    20.value = h1 span {color: blue;}
+}
+			]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="config" type="CONFIG">
 			<description><![CDATA[configuration for the page. Any entries override the same entries in the toplevel-object "config".]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="extOnReady" type="CARRAY">
+			<description><![CDATA[ExtJS specific, adds inline javascript, wrapped in Ext.onReady.
+
+Example:
+
+page.extOnReady {
+
+   10 = TEXT
+
+   10.value = Ext.Msg.alert("Typoscript Message","Hello World!");
+
+}
+
+will produce following source:
+
+Ext.onReady(function() {Ext.Msg.alert("Typoscript Message","Hello World!"); });
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="footerData" type="CARRAY">
+			<description><![CDATA[Same as headerData above, except that this block gets included at the bottom of the page (just before the closing body tag).
+			]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -5999,35 +6126,95 @@ Deprecated. Use stylesheet instead.]]></description>
 The file definition must be a valid "resource" datatype, otherwise nothing is inserted.
 
 Each file has optional properties:
+
 .media - setting the media attribute of the <style> tag.
+
 .title - setting the title of the <style> tag.
+
 .alternate - If set (boolean) then the rel-attribute will be "alternate stylesheet"
+
 .import - If set (boolean) then the @import way of including a stylesheet is used instead of <link>
 
+.allWrap - wraps the complete tag, useful for conditional comments.
+
+.external - If set, there is no file existence check. Useful for inclusion of external files.
+
 Example:
+
 includeCSS {
   file1 = fileadmin/mystylesheet1.css
+
   file2 = stylesheet_uploaded_to_template*.css
   file2.title = High contrast
   file2.media = print
-}]]></description>
+  
+  ie6Style = fileadmin/css/style3.css
+  ie6Style.allWrap = <!--[if lte IE 7]>|<![endif]-->
+
+  cooliris = http://www.cooliris.com/shared/resources/css/global.css
+  cooliris.external = 1
+}
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="includeJS" type="array">
 			<description><![CDATA[Inserts one or more (Java)Scripts in <script> tags.
 
-The file definition must be a valid "resource" datatype, otherwise nothing is inserted.
+The file definition must be a valid "resource" datatype, otherwise nothing is inserted. This means that remote files cannot be referenced (i.e. using "http://..."), except by using the ".external" property.
 
 Each file has optional properties:
-.style - setting the MIME type of the script (default: text/javascript)
+
+.type - setting the MIME type of the script (default: text/javascript)
+
+.compressed - boolean flag. This will be used by external compressors to see if the file is already compressed.
+
+.forceOnTop - boolean flag. If set, this file will be added on top of all other files
+
+.allWrap - wraps the complete tag, useful for conditional comments.
+
+.external - If set, there is no file existence check. Useful for inclusion of external files.
 
 Example:
+
 includeJS {
   file1 = fileadmin/helloworld.js
   file1.type = application/x-javascript
   file2 = javascript_uploaded_to_template*.js
 }]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>	
+		<property name="includeJSlibs" type="array">
+			<description><![CDATA[Adds JS library files to head of page.
+
+The file definition must be a valid "resource" datatype, otherwise nothing is inserted. This means that remote files cannot be referenced (i.e. using "http://..."), except by using the ".external" property.
+
+Each file has optional properties:
+
+.allWrap - wraps the complete tag, useful for conditional comments.
+
+.external - If set, there is no file existence check. Useful for inclusion of external files.
+
+Example:
+
+includeJSlibs.twitter = http://twitter.com/javascripts/blogger.js
+
+includeJSlibs.twitter.external = 1
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="includeJSFooter" type="array">
+			<description><![CDATA[resource
+			Same as includeJS above, except that this block gets included at the bottom of the page (just before the closing body tag).
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>			
+		<property name="includeJSFooterlibs" type="array">
+			<description><![CDATA[	Same as includeJSlibs above, except that this block gets included at the bottom of the page (just before the closing body tag).
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6046,12 +6233,115 @@ Please do not use the prefix shown above ("ts_") as this will probably be used b
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="inlineLanguageLabel" type="array">
+			<description><![CDATA[array of strings
+			ExtJS specific, adds language labels to the page.
+
+Example:
+
+inlineLanguageLabel {
+   label1 = 123
+   label2 = 456
+}
+
+will produce following source:
+
+TYPO3.lang = {"label1":"123","label2":"456"};
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="inlineSettings" type="array">
+			<description><![CDATA[array of strings
+ExtJS specific, adds settings to the page.
+
+Example:
+
+page.inlineSettings {
+   setting1 = Hello
+   setting2 = GoOnTop
+}
+
+will produce following source:
+
+TYPO3.settings = {"TS":{"setting1":"Hello","setting2":"GoOnTop"}};
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>		
 		<property name="insertClassesFromRTE" type="boolean">
 			<description><![CDATA[If set, the classes for the Rich Text Editor configured in Page TSconfig is inserted in as the first thing in the Style-section right after the setting of the stylesheet.
 
 .add_mainStyleOverrideDefs = [* / list of tags ] - will add all the "RTE.default. mainStyleOverride_add" - tags configured as well.
 
 Might be deprecated soon. Most likely the RTE should be configured by the stylesheet instead. Stay tuned...]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="javascriptLibs" type="array">
+			<description><![CDATA[array of Strings
+	This allows to include the JavaScript libraries that are shipped with the TYPO3 Core.
+
+javascriptLibs {
+
+     # include prototype
+   Prototype = 1
+   
+     # include Scriptaculous
+   Scriptaculous = 1
+
+     # adds modules dragdrop and controls to Scriptaculous
+   Scriptaculous.modules = dragdrop,controls
+
+     # include ExtCore
+   ExtCore = 1
+
+     # include ExtCore debug file (uncompressed)
+   ExtCore.debug = 1
+
+     # includes ExtJS
+   ExtJs = 1
+
+     # include ext-all.css
+   ExtJs.css = 1
+
+     # include default theme
+   ExtJs.theme = 1
+
+    # load specific adapter (jquery|prototype|yui)
+   ExtJs.adapter = ...
+
+     # initialize QuickTips
+   ExtJs.quickTips = 1
+
+     # includes ExtJS debug file (uncompressed)
+   ExtJs.debug = 1
+}
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>				
+		<property name="jsInline" type="CARRAY">
+			<description><![CDATA[Use cObjects for creating inline JavaScript
+
+Example:
+
+page.jsInline {
+10 = TEXT
+10.dataWrap = var pageId = {TSFE:id};
+}
+
+Note:
+
+with config.removeDefaultJS = external, the inlineJS is moved to external file.
+with config.minifyJS = 1, the jsInline will be minified as well.
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="jsFooterInline" type="CARRAY">
+			<description><![CDATA[Same jsInline above, except that the JavaScript gets inserted at the bottom of the page (just before the closing body tag).
+]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6284,8 +6574,14 @@ class="board"]]></description>
 		<property name="altText" type="stdWrap">
 			<description><![CDATA[For icons (image made with "iconCObject" must have their own properties)
 
-If no titltext is specified, it will use the alttext insteadIf no alttext is specified, it will use an empty alttext]]></description>
+If no alttext is specified, it will use an empty alttext]]></description>
 			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="emptyTitleHandling" type="string">
+			<description><![CDATA[Value can be "keepEmpty" to preserve an empty title attribute, or "useAlt" to use the alt attribute instead.
+]]></description>
+			<default><![CDATA[useAlt
 ]]></default>
 		</property>
 		<property name="file" type="stdWrap">
@@ -6478,6 +6774,11 @@ gamma=1,3 | sharpen=80 | solarize=70]]></description>
 			<description><![CDATA[The image is linked ONLY if this is true!!]]></description>
 			<default><![CDATA[0]]></default>
 		</property>
+		<property name="file" type="stdWrap">
+			<description><![CDATA[Override the path of the image which is displayed]]></description>
+			<default><![CDATA[
+			]]></default>
+		</property>
 		<property name="height" type="int">
 			<description><![CDATA[Range:  1-1000
 If you add "m" to either the width or height, the image will be held in proportions and width/height works as max-dimensions]]></description>
@@ -6486,6 +6787,12 @@ If you add "m" to either the width or height, the image will be held in proporti
 		</property>
 		<property name="sample" type="boolean">
 			<description><![CDATA[If set, -sample is used to scale images instead of -geometry. Sample does not use antialiasing and is therefore much faster.]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="stdWrap" type="stdWrap">
+			<description><![CDATA[->stdWrap
+			Enable stdWrap for the image.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -6583,6 +6890,20 @@ fx. "-rotate 90" or "-negate"]]></description>
 		</property>
 		<property name="sample" type="boolean">
 			<description><![CDATA[If set, -sample is used to scale images instead of -geometry. Sample does not use antialiasing and is therefore much faster.]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="stripProfile" type="boolean">
+			<description><![CDATA[If set, IM-command will use a stripProfile-command which shrinks the generated thumbnails. See Install Tool for options and details.
+
+If im_useStripProfileByDefault is set in the install tool, you can deactivate it by setting stripProfile=0.
+
+Example:
+
+10 = IMAGE
+10.file = fileadmin/images/image1.jpg
+10.file.stripProfile = 1
+			]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7102,6 +7423,13 @@ Uses "renderCharset" for the operation.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="cropHTML" type="string">
+			<description><![CDATA[Crops the content to a certain length. In contrast to stdWrap.crop it respects HTML tags. It does not crop inside tags and closes open tags. Entities (like ">") are counted as one char. See stdWrap.crop below for a syntax description and examples.
+
+Note that stdWrap.crop should not be used if stdWrap.cropHTML is already used.]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
 		<property name="csConv" type="string">
 			<description><![CDATA[Convert the charset of the string from the charset given as value to the current rendering charset of the frontend (renderCharset).]]></description>
 			<default><![CDATA[
@@ -7209,7 +7537,7 @@ Note: You can also divide fieldnames by "//". Say, you set "nav_title // title" 
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="filelink" type="string">
+		<property name="filelink" type="filelink">
 			<description><![CDATA[Used to make lists of links to files.]]></description>
 			<default><![CDATA[
 ]]></default>
@@ -7477,8 +7805,9 @@ If the content i empty, "" is returned immediately.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="space" type="string">
-			<description><![CDATA[[spaceBefore]   |   [spaceAfter]
+		<property name="space" type="stdWrap">
+			<description><![CDATA[[space /stdWrap
+			spaceBefore]   |   [spaceAfter]
 
 Additional property:
 .useDiv = 1
@@ -7768,6 +8097,11 @@ NOTE: This is only active for internal links!]]></description>
 		<property name="extTarget" type="stdWrap">
 			<description><![CDATA[target used for external links]]></description>
 			<default><![CDATA[_top]]></default>
+		</property>
+		<property name="fileTarget" type="string">
+			<description><![CDATA[Default file link target. Used by typolink if no fileTarget is set. ]]></description>
+			<default><![CDATA[
+			]]></default>
 		</property>
 		<property name="no_cache" type="stdWrap">
 			<description><![CDATA[Adds a "&no_cache=1"-parameter to the link]]></description>
