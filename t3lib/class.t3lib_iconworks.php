@@ -252,7 +252,7 @@ final class t3lib_iconWorks	{
 			$iconFileName_stateTagged = preg_replace('/.([[:alnum:]]+)$/', '__'.$flags.'.\1', basename($iconfile));
 
 				// Check if tagged icon file name exists (a tagget icon means the icon base name with the flags added between body and extension of the filename, prefixed with underscore)
-			if (@is_file(dirname($absfile).'/'.$iconFileName_stateTagged))	{	// Look for [iconname]_xxxx.[ext]
+			if (@is_file(dirname($absfile) . '/' . $iconFileName_stateTagged) || @is_file($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . '/' . dirname($iconfile) . '/' . $iconFileName_stateTagged)) {	// Look for [iconname]_xxxx.[ext]
 				return dirname($iconfile).'/'.$iconFileName_stateTagged;
 			} elseif ($doNotGenerateIcon)	{		// If no icon generation can be done, try to look for the _X icon:
 				$iconFileName_X = preg_replace('/.([[:alnum:]]+)$/', '__x.\1', basename($iconfile));
