@@ -1,3 +1,7 @@
+2010-04-05  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13486: Wrong icon-state returned from 'getIcon' (thanks to Stephan Kellermayr)
+
 2010-04-03  Francois Suter  <francois@typo3.org>
 
 	* Cleanup #13869: Scheduler: editTasks() calls all registered tasks to edit just one

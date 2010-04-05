@@ -190,6 +190,10 @@ final class t3lib_iconWorks	{
 			if ($enCols['starttime']) {
 				if ($GLOBALS['EXEC_TIME'] < intval($row[$enCols['starttime']])) {
 					$timing = TRUE;
+						// ...And if "endtime" is NOT set:
+					if (intval($row[$enCols['endtime']]) == 0) {
+						$futuretiming = TRUE;
+					}
 				}
 			}
 				// If an "endtime" is set:
