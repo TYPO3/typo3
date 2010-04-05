@@ -6148,6 +6148,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 
 			$v = $this->xmlhandler->extensionsXML[$name]['versions'];
 			$versions = array_keys($v);
+			natsort($versions);
 			$lastversion = end($versions);
 
 			if ((t3lib_extMgm::isLoaded($name) || $this->MOD_SETTINGS['display_installed']) &&
