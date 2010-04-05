@@ -1,3 +1,7 @@
+2010-04-05  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #14003: "Check for extension updates" does not always find latest version
+
 2010-04-05  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13487: No alternative icon returned from 'getIcon' (thanks to Stephan Kellermayr)
