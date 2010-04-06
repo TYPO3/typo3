@@ -1,3 +1,7 @@
+2010-04-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14004: htmlArea RTE: Applying color or font repeatedly produces nested span elements
+
 2010-03-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9218: htmlArea RTE: "Remove format" messes up some inline formats

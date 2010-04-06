@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -202,11 +202,33 @@ TYPO3Color = HTMLArea.Plugin.extend({
 		switch (dialog.arguments.buttonId) {
 			case "ForeColor":
 			case "HiliteColor":
+				var fullNodeSelected = false;
 				var selection = editor._getSelection();
-				var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
 				var range = editor._createRange(selection);
-				if (editor._selectionEmpty(selection)) {
-					element = editor.getParentElement(selection, range);
+				var parent = editor.getParentElement(selection, range);
+				var ancestors = editor.getAllAncestors();
+				var selectionEmpty = editor._selectionEmpty(selection);
+				var statusBarSelection = editor.getPluginInstance("StatusBar") ? editor.getPluginInstance("StatusBar").getSelection() : null;
+				if (!selectionEmpty) {
+						// The selection is not empty.
+					for (var i = 0; i < ancestors.length; ++i) {
+						fullNodeSelected = (HTMLArea.is_ie && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text)))
+									|| (HTMLArea.is_gecko && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
+						if (fullNodeSelected) {
+							parent = ancestors[i];
+							break;
+						}
+					}
+						// Working around bug in Safari selectNodeContents
+					if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && statusBarSelection.textContent === range.toString()) {
+						fullNodeSelected = true;
+						parent = statusBarSelection;
+					}
+					var fullNodeSelected = (HTMLArea.is_gecko && parent.textContent === range.toString())
+									|| (HTMLArea.is_ie && parent.innerText === range.text);
+				}
+				if (selectionEmpty || fullNodeSelected) {
+					element = parent;
 						// Set the color in the style attribute
 					this.processStyle(dialog, params, element, dialog.arguments.field);
 						// Remove the span tag if it has no more attribute
