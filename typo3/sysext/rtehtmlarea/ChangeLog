@@ -1,3 +1,7 @@
+2010-04-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14004: htmlArea RTE: Applying color or font repeatedly produces nested span elements
+
 2010-03-30  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to feature #13954: htmlArea RTE: Extjize TYPO3 link, image and user elements dialogue windows

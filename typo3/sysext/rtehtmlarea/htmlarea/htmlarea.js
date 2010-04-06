@@ -3081,7 +3081,49 @@ HTMLArea.Editor.prototype._getFirstAncestor = function(sel,types) {
 	}
 	return null;
 };
-
+/*
+ * Get the node whose contents are currently fully selected
+ *
+ * @param 	array		selection: the current selection
+ * @param 	array		range: the range of the current selection
+ * @param 	array		ancestors: the array of ancestors node of the current selection
+ *
+ * @return	object		the fully selected node, if any, null otherwise
+ */
+HTMLArea.Editor.prototype.getFullySelectedNode = function (selection, range, ancestors) {
+	var node, fullNodeSelected = false;
+	if (!selection) {
+		var selection = this._getSelection();
+	}
+	if (!this._selectionEmpty(selection)) {
+		if (!range) {
+			var range = this._createRange(selection);
+		}
+		if (!ancestors) {
+			var ancestors = this.getAllAncestors();
+		}
+		Ext.each(ancestors, function (ancestor) {
+			if (Ext.isIE) {
+				fullNodeSelected = (selection.type !== 'Control' && ancestor.innerText == range.text) || (selection.type === 'Control' && ancestor.innerText == range.item(0).text);
+			} else {
+				fullNodeSelected = (ancestor.textContent == range.toString());
+			}
+			if (fullNodeSelected) {
+				node = ancestor;
+				return false;
+			}
+		});
+			// Working around bug with WebKit selection
+		if (Ext.isWebKit && !fullNodeSelected) {
+			var statusBarSelection = this.statusBar ? this.statusBar.getSelection() : null;
+			if (statusBarSelection && statusBarSelection.textContent == range.toString()) {
+				fullNodeSelected = true;
+				node = statusBarSelection;
+			}
+		}
+	}
+	return fullNodeSelected ? node : null;
+};
 /***************************************************
  *  Category: EVENT HANDLERS
  ***************************************************/

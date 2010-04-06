@@ -63,21 +63,19 @@ SelectFont = HTMLArea.Plugin.extend({
 				this.allowedAttributes.push("className");
 			}
 		}
-
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the dropdowns
 		 */
@@ -138,19 +136,29 @@ SelectFont = HTMLArea.Plugin.extend({
 		FontName	: "font-family",
 		FontSize	: "font-size"
 	},
-	 
 	/*
 	 * This function gets called when some font style or font size was selected from the dropdown lists
 	 */
-	onChange : function (editor, combo, record, index) {
+	onChange: function (editor, combo, record, index) {
 		var param = combo.getValue();
-		editor.focusEditor();
-		var selection = editor._getSelection(),
-			range = editor._createRange(selection),
-			statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null,
-			element;
-		if (editor._selectionEmpty(selection)) {
-			element = editor.getParentElement(selection, range);
+		editor.focus();
+		var 	element,
+			fullNodeSelected = false;
+		var selection = editor._getSelection();
+		var range = editor._createRange(selection);
+		var parent = editor.getParentElement(selection, range);
+		var selectionEmpty = editor._selectionEmpty(selection);
+		var statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null;
+		if (!selectionEmpty) {
+			var ancestors = editor.getAllAncestors();
+			var fullySelectedNode = editor.getFullySelectedNode(selection, range, ancestors);
+			if (fullySelectedNode) {
+				fullNodeSelected = true;
+				parent = fullySelectedNode;
+			}
+		}
+		if (selectionEmpty || fullNodeSelected) {
+			element = parent;
 				// Set the style attribute
 			this.setStyle(element, combo.itemId, param);
 				// Remove the span tag if it has no more attribute
@@ -177,7 +185,6 @@ SelectFont = HTMLArea.Plugin.extend({
 		}
 		return false;
 	},
-
 	/*
 	 * This function sets the style attribute on the element
 	 *

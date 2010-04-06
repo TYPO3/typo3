@@ -224,13 +224,13 @@ InlineElements = HTMLArea.Plugin.extend({
 	 * This function applies to the selection the markup chosen in the drop-down list or corresponding to the button pressed
 	 */
 	applyInlineElement : function (editor, element) {
-		editor.focusEditor();
+		editor.focus();
 		var selection = editor._getSelection();
 		var range = editor._createRange(selection);
 		var parent = editor.getParentElement(selection, range);
 		var ancestors = editor.getAllAncestors();
 		var elementIsAncestor = false;
-		var selectionEmpty = editor._selectionEmpty(selection);
+		var fullNodeSelected = false;
 		if (HTMLArea.is_ie) {
 			var bookmark = editor.getBookmark(range);
 		}
@@ -242,30 +242,13 @@ InlineElements = HTMLArea.Plugin.extend({
 				break;
 			}
 		}
-		if (!selectionEmpty) {
+		if (!editor._selectionEmpty(selection)) {
+			var fullySelectedNode = editor.getFullySelectedNode(selection, range, ancestors);
+			fullNodeSelected = this.isInlineElement(fullySelectedNode);
+			if (fullNodeSelected) {
+				parent = fullySelectedNode;
+			}
 			var statusBarSelection = (editor.statusBar ? editor.statusBar.getSelection() : null);
-				// The selection is not empty.
-			for (var i = 0; i < ancestors.length; ++i) {
-				fullNodeSelected = (HTMLArea.is_ie && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text)))
-							|| (HTMLArea.is_gecko && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
-				if (fullNodeSelected) {
-					if (!HTMLArea.isBlockElement(ancestors[i])) {
-						parent = ancestors[i];
-					}
-					break;
-				}
-			}
-				// Working around bug in Safari selectNodeContents
-			if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
-				fullNodeSelected = true;
-				parent = statusBarSelection;
-			}
-			
-			var fullNodeTextSelected = (HTMLArea.is_gecko && parent.textContent === range.toString())
-							|| (HTMLArea.is_ie && parent.innerText === range.text);
-			if (fullNodeTextSelected && elementIsAncestor) {
-				fullNodeSelected = true;
-			}
 			if (element !== "none" && !(fullNodeSelected && elementIsAncestor)) {
 					// Add markup
 				var newElement = editor._doc.createElement(element);
@@ -274,17 +257,17 @@ InlineElements = HTMLArea.Plugin.extend({
 				}
 				if (HTMLArea.is_gecko) {
 					if (fullNodeSelected && statusBarSelection) {
-						if (HTMLArea.is_safari) {
-							editor.selectNode(parent);
-							selection = editor._getSelection();
-							range = editor._createRange(selection);
+						if (Ext.isWebKit) {
+							newElement = parent.parentNode.insertBefore(newElement, statusBarSelection);
+							newElement.appendChild(statusBarSelection);
+							newElement.normalize();
 						} else {
 							range.selectNode(parent);
+							editor.wrapWithInlineElement(newElement, selection, range);
 						}
-					}
-					editor.wrapWithInlineElement(newElement, selection, range);
-					if (fullNodeSelected && statusBarSelection && !HTMLArea.is_safari) {
 						editor.selectNodeContents(newElement.lastChild, false);
+					} else {
+						editor.wrapWithInlineElement(newElement, selection, range);
 					}
 					range.detach();
 				} else {
@@ -313,7 +296,11 @@ InlineElements = HTMLArea.Plugin.extend({
 					if (elementIsAncestor) {
 						parent = ancestors[elementAncestorIndex];
 					}
+					var parentElement = parent.parentNode;
 					editor.removeMarkup(parent);
+					if (Ext.isWebKit && this.isInlineElement(parentElement)) {
+						editor.selectNodeContents(parentElement, false);
+					}
 				}
 			}
 		} else {
@@ -378,36 +365,25 @@ InlineElements = HTMLArea.Plugin.extend({
 		}
 		return newElement;
 	},
-	
 	/*
 	* This function gets called when the toolbar is updated
 	*/
 	onUpdateToolbar : function (button, mode, selectionEmpty, ancestors, endPointsInSameBlock) {
 		var editor = this.editor;
 		if (mode === "wysiwyg" && editor.isEditable()) {
-			var tagName = false, fullNodeSelected = false;
-			var sel = editor._getSelection();
-			var range = editor._createRange(sel);
-			var parent = editor.getParentElement(sel);
+			var 	tagName = false,
+				fullNodeSelected = false;
+			var selection = editor._getSelection();
+			var range = editor._createRange(selection);
+			var parent = editor.getParentElement(selection);
 			if (parent && !HTMLArea.isBlockElement(parent)) {
 				tagName = parent.nodeName.toLowerCase();
 			}
 			if (!selectionEmpty) {
-				var statusBarSelection = editor.statusBar ? editor.statusBar.getSelection() : null;
-				for (var i = 0, n = ancestors.length; i < n; ++i) {
-					fullNodeSelected = (statusBarSelection === ancestors[i])
-						&& ((HTMLArea.is_gecko && ancestors[i].textContent === range.toString()) || (HTMLArea.is_ie && ((sel.type !== "Control" && ancestors[i].innerText === range.text) || (sel.type === "Control" && ancestors[i].innerText === range.item(0).text))));
-					if (fullNodeSelected) {
-						if (!HTMLArea.isBlockElement(ancestors[i])) {
-							tagName = ancestors[i].nodeName.toLowerCase();
-						}
-						break;
-					}
-				}
-					// Working around bug in Safari selectNodeContents
-				if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
-					fullNodeSelected = true;
-					tagName = statusBarSelection.nodeName.toLowerCase();
+				var fullySelectedNode = editor.getFullySelectedNode(selection, range, ancestors);
+				fullNodeSelected = this.isInlineElement(fullySelectedNode);
+				if (fullNodeSelected) {
+					tagName = fullySelectedNode.nodeName.toLowerCase();
 				}
 			}
 			var selectionInInlineElement = tagName && this.REInlineElements.test(tagName);
@@ -426,13 +402,12 @@ InlineElements = HTMLArea.Plugin.extend({
 							return true;
 						}
 					}, this);
-					button.setInactive(!activeButton);
+					button.setInactive(!activeButton && this.convertBtn[button.itemId] !== tagName);
 					button.setDisabled(disabled);
 					break;
 			}
 		}
 	},
-	
 	/*
 	* This function updates the drop-down list of inline elemenents
 	*/
