@@ -1,3 +1,7 @@
+2010-04-06  Francois Suter  <francois@typo3.org>
+
+	* Added feature #11316: Add a "No Frame" option [css styled content] (thanks to Susanne Moog)
+
 2010-04-06  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #13977: Improve OpenID association handling

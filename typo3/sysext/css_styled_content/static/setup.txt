@@ -316,7 +316,7 @@ tt_content.stdWrap {
 			30 = TEXT
 			30.value = >|</div>
 		}
-
+		
 		1 =< tt_content.stdWrap.innerWrap.cObject.default
 		1.15.value = csc-frame csc-frame-invisible
 
@@ -340,6 +340,54 @@ tt_content.stdWrap {
 
 		21 =< tt_content.stdWrap.innerWrap.cObject.default
 		21.15.value = csc-frame csc-frame-frame2
+		
+		66 = COA
+		66 {
+			10 = TEXT
+			10 {
+				value = <a id="c{field:uid}"></a>
+				insertData = 1
+			}
+			
+			20 = COA
+			20 {
+				10 = TEXT
+				10 {
+					value = {$content.spaceBefore}
+					wrap = |+
+					if.isTrue = {$content.spaceBefore}
+				}
+
+				20 = TEXT
+				20 {
+					field = spaceBefore
+				}
+
+		 		stdWrap {
+					prioriCalc = intval
+					wrap = margin-top:|px;
+					required = 1
+					ifEmpty.value =
+					wrap2 = <div style="|"></div>
+				}
+			}
+			
+			30 = TEXT
+			30 {
+				value = |
+			}
+			
+			40 < .20
+			40 {
+				10 {
+					value = {$content.spaceAfter}
+					if.isTrue = {$content.spaceAfter}
+				}
+				20.field = spaceAfter
+				stdWrap.wrap = margin-bottom:|px;
+			}
+		}
+		
 	}
 	
 	innerWrap2 = | <p class="csc-linkToTop"><a href="#">{LLL:EXT:css_styled_content/pi1/locallang.xml:label.toTop}</a></p>

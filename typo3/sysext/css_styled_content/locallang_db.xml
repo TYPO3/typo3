@@ -27,6 +27,8 @@
 			<label index="tt_content.tx_cssstyledcontent_tableparsing_delimiter_colon">:</label>
 			<label index="tt_content.tx_cssstyledcontent_tableparsing_delimiter_comma">,</label>
 			<label index="tt_content.tx_cssstyledcontent_tableparsing_delimiter_tab">&lt;tabulator&gt;</label>
+			<label index="tt_content.tx_cssstyledcontent_section_frame.I.9">No Frame</label>
+			<label index="tt_content.tx_cssstyledcontent_section_frame.I.0">Default Frame</label>
 		</languageKey>
 	</data>
 </T3locallang>
