@@ -1,6 +1,7 @@
 2010-04-06  Francois Suter  <francois@typo3.org>
 
 	* Added feature #11316: Add a "No Frame" option [css styled content] (thanks to Susanne Moog)
+	* Added feature #13296: Scheduler: Add option to disable the sample tasks
 
 2010-04-06  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 

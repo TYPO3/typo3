@@ -3,3 +3,6 @@ maxLifetime = 1440
 
 # cat=basic//; type=boolean; label=Enable logging: When turned on, every start and end of every executed task is logged into TYPO3's BE Log. While this is convenient when setting things up, it may clutter the BE Log in the long run.
 enableBELog = 1
+
+# cat=basic//; type=boolean; label=Enable sample tasks: When turned on, you can use the sample, test tasks provided by the scheduler. Before turning this off, make sure you don't have any of those sample tasks currently scheduled. You will also need to clear the configuration cache.
+showSampleTasks = 1
