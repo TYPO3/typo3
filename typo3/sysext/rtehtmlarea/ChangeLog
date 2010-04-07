@@ -1,3 +1,7 @@
+2010-04-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13956: htmlArea RTE: Editing area is collapsed when the RTE is loaded inside a hidden tab in Safari
+
 2010-04-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14004: htmlArea RTE: Applying color or font repeatedly produces nested span elements

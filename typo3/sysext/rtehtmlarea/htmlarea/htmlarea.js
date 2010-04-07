@@ -908,17 +908,34 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Initialize event listeners and the document after the iframe has rendered
 	 */
 	initEventListeners: function () {
-			// The editor iframe may become hidden with style.display = "none"
-			// This breaks the editor in Firefox: the designMode attribute needs to be reset after the style.display of the containing div is reset to "block"
-		if (Ext.isGecko && this.isNested) {
-			Ext.each(this.nestedParentElements.sorted, function (nested) {
-				this.mon(Ext.get(nested), 'DOMAttrModified', this.onNestedShow, this, {delay: 100});
-			}, this);
-		}
+		this.initStyleChangeEventListener();
 		if (Ext.isOpera) {
 			this.mon(this.getEl(), 'load', this.initializeIframe , this, {single: true});
 		} else {
 			this.initializeIframe();
+		}
+	},
+	/*
+	 * The editor iframe may become hidden with style.display = "none" on some parent div
+	 * This breaks the editor in Firefox: the designMode attribute needs to be reset after the style.display of the container div is reset to "block"
+	 * In all browsers, it breaks the evaluation of the framework dimensions
+	 */
+	initStyleChangeEventListener: function () {
+		if (this.isNested  && !Ext.isWebKit) {
+			Ext.each(this.nestedParentElements.sorted, function (nested) {
+				this.mon(
+					Ext.get(nested),
+					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
+					this.onNestedShow,
+					this,
+					{
+						delay: 50,
+						single: true,
+						stopEvent: true,
+						target: Ext.get(nested)
+					}
+				);
+			}, this);
 		}
 	},
 	/*
@@ -1167,20 +1184,27 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	onNestedShow: function (event, target) {
 		var styleEvent = true;
-			// In older versions of Mozilla ev.attrName is not yet set and refering to it causes a non-catchable crash
-			// We are assuming that this was fixed in Firefox 2.0.0.11
-		if (navigator.productSub > 20071127) {
+			// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
+		if ((Ext.isGecko && navigator.productSub > 20071127) || Ext.isOpera) {
 			styleEvent = (event.browserEvent.attrName == 'style');
+		} else if (Ext.isIE) {
+			styleEvent = (event.browserEvent.propertyName == 'style.display');
 		}
-		if (styleEvent && this.nestedParentElements.sorted.indexOf(target.id) != -1 && this.getEditor().getMode() === 'wysiwyg' && (target.style.display == '' || target.style.display == 'block')) {
-				// Check if all affected nested elements are displayed (style.display!='none'):
+		if (styleEvent && this.nestedParentElements.sorted.indexOf(target.id) != -1 && (target.style.display == '' || target.style.display == 'block')) {
+				// Check if all container nested elements are displayed
 			if (HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-				this.setDesignMode(true);
-				this.fireEvent('show');
-				this.getEditor().updateToolbar();
+				if (this.getEditor().getMode() === 'wysiwyg') {
+					if (Ext.isGecko) {
+						this.setDesignMode(true);
+					}
+					this.fireEvent('show');
+				} else {
+					this.ownerCt.textAreaContainer.fireEvent('show');
+				}
+				this.getToolbar().update();
 			}
 		}
-		event.stopEvent();
+		this.initStyleChangeEventListener();
 	},
 	/*
 	 * Get the HTML content of the iframe
@@ -2124,15 +2148,11 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			// Make the framework resizable, if configured by the user
 		this.makeResizable();
 			// Monitor textArea container becoming shown or hidden as it may change the height of the status bar
-		this.mon(this.textAreaContainer, 'show', this.onTextAreaShow, this);
-		if (this.resizable) {
-				// Monitor iframe becoming shown or hidden as it may change the height of the status bar
-			this.mon(this.iframe, 'show', this.onIframeShow, this);
-		}
+		this.mon(this.textAreaContainer, 'show', this.resizable ? this.onTextAreaShow : this.onWindowResize, this);
+			// Monitor iframe becoming shown or hidden as it may change the height of the status bar
+		this.mon(this.iframe, 'show', this.resizable ? this.onIframeShow : this.onWindowResize, this);
 			// Monitor window resizing
-		if (this.resizable || this.textAreaInitialSize.width.indexOf('%') !== -1) {
-			Ext.EventManager.onWindowResize(this.onWindowResize, this);
-		}
+		Ext.EventManager.onWindowResize(this.onWindowResize, this);
 			// If the textarea is inside a form, on reset, re-initialize the HTMLArea content and update the toolbar
 		var form = this.textArea.dom.form;
 		if (form) {
@@ -2145,6 +2165,9 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			this.mon(Ext.get(form), 'reset', this.onReset, this);
 		}
 		this.addListener({
+			resize: {
+				fn: this.onFrameworkResize
+			},
 			beforedestroy: {
 				fn: this.onBeforeDestroy
 			}
@@ -2199,6 +2222,19 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		height: 0
 	},
 	/*
+	 * doLayout will fail if inside a hidden tab or inline element
+	 */
+	doLayout: function () {
+		if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+			HTMLArea.Framework.superclass.doLayout.call(this);
+		} else {
+				// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
+			var parentElements = [].concat(this.nestedParentElements.sorted);
+				// Walk through all nested tabs and inline levels to get correct sizes
+			HTMLArea.util.TYPO3.accessParentElements(parentElements, 'HTMLArea.Framework.superclass.doLayout.call(args[0])', [this]);
+		}
+	},
+	/*
 	 * Make the framework resizable, if configured
 	 */
 	makeResizable: function () {
@@ -2213,9 +2249,19 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		}
 	},
 	/*
+	 * Resize the framework when the resizer handles are used
+	 */
+	onHtmlAreaResize: function (resizer, width, height, event) {
+			// Set width first as it may change the height of the toolbar and of the statusBar
+		this.setWidth(width);
+			// Set height of iframe and textarea
+		this.iframe.setHeight(this.getInnerHeight());
+		this.textArea.setSize(this.getInnerWidth(), this.getInnerHeight());
+	},
+	/*
 	 * Size the iframe according to initial textarea size as set by Page and User TSConfig
 	 */
-	onWindowResize: function(width, height) {
+	onWindowResize: function (width, height) {
 		if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 			this.resizeFramework(width, height);
 		} else {
@@ -2229,37 +2275,31 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 	 * Resize the framework to its initial size
 	 */
 	resizeFramework: function (width, height) {
-		var frameworkHeight = this.fullScreen ? HTMLArea.util.TYPO3.getWindowSize().height - 20 : parseInt(this.textAreaInitialSize.height);
+		var frameworkHeight = parseInt(this.textAreaInitialSize.height);
 		if (this.textAreaInitialSize.width.indexOf('%') === -1) {
 				// Width is specified in pixels
 			var frameworkWidth = parseInt(this.textAreaInitialSize.width) - this.getFrameWidth();
 		} else {
 				// Width is specified in %
-			if (Ext.isDefined(width)) {
+			if (Ext.isNumber(width)) {
 					// Framework sizing on actual window resize
-				var frameworkWidth = parseInt(((width - this.textAreaInitialSize.nextSiblingWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
+				var frameworkWidth = parseInt(((width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
 			} else {
 					// Initial framework sizing
-				var frameworkWidth = parseInt(((HTMLArea.util.TYPO3.getWindowSize().width - this.textAreaInitialSize.nextSiblingWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
+				var frameworkWidth = parseInt(((HTMLArea.util.TYPO3.getWindowSize().width - this.textAreaInitialSize.wizardsWidth - (this.fullScreen ? 10 : Ext.getScrollBarWidth()) - this.getBox().x - 15) * parseInt(this.textAreaInitialSize.width))/100);
 			}
 		}
 		if (this.resizable) {
 			this.resizer.resizeTo(frameworkWidth, frameworkHeight);
 		} else {
 			this.setSize(frameworkWidth, frameworkHeight);
-				// Adjust height of iframe and textarea to height of toolbar and statusbar
-			this.iframe.setSize(this.getInnerWidth(), this.getInnerHeight());
-			this.textArea.setSize(this.getInnerWidth(), this.getInnerHeight());
 		}
 	},
 	/*
-	 * Resize the components when the editor framework was resized
+	 * Resize the framework components
 	 */
-	onHtmlAreaResize: function (resizer, width, height, event) {
-			// Set width first as it may change the height of the toolbar and of the statusBar
-		this.setWidth(width);
-			// Set height of iframe and textarea
-		this.iframe.setHeight(this.getInnerHeight());
+	onFrameworkResize: function () {
+		this.iframe.setSize(this.getInnerWidth(), this.getInnerHeight());
 		this.textArea.setSize(this.getInnerWidth(), this.getInnerHeight());
 	},
 	/*
@@ -2273,8 +2313,12 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 	 * Adjust the height to the changing size of the statusbar when the iframe is shown
 	 */
 	onIframeShow: function () {
-		this.iframe.setHeight(this.getInnerHeight());
-		this.textArea.setHeight(this.getInnerHeight());
+		if (this.getInnerHeight() <= 0) {
+			this.onWindowResize();
+		} else {
+			this.iframe.setHeight(this.getInnerHeight());
+			this.textArea.setHeight(this.getInnerHeight());
+		}
 	},
 	/*
 	 * Fire the editor when all components of the framework are rendered and ready
@@ -2313,9 +2357,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 	 * Cleanup on framework destruction
 	 */
 	onBeforeDestroy: function () {
-		if (this.resizable) {
-			Ext.EventManager.removeResizeListener(this.onWindowResize, this);
-		}
+		Ext.EventManager.removeResizeListener(this.onWindowResize, this);
 		var form = this.textArea.dom.form;
 		if (form) {
 			form.htmlAreaPreviousOnReset = null;
@@ -2342,7 +2384,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.textAreaInitialSize = {
 			width: this.config.RTEWidthOverride ? this.config.RTEWidthOverride : this.textArea.getStyle('width'),
 			height: this.config.fullScreen ? HTMLArea.util.TYPO3.getWindowSize().height - 20 : this.textArea.getStyle('height'),
-			nextSiblingWidth: 0
+			wizardsWidth: 0
 		};
 			// TYPO3 Inline elements and tabs
 		this.nestedParentElements = {
@@ -2351,17 +2393,19 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		};
 		this.isNested = !Ext.isEmpty(this.nestedParentElements.sorted);
 			// Get width of wizards
-		var nextSibling = this.textArea.parent().parent().next();
-		if (nextSibling) {
+		this.wizards = this.textArea.parent().parent().next();
+		if (this.wizards) {
 			if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-				this.textAreaInitialSize.nextSiblingWidth = nextSibling.getWidth();
+				this.textAreaInitialSize.wizardsWidth = this.wizards.getWidth();
 			} else {
 					// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
 				var parentElements = [].concat(this.nestedParentElements.sorted);
 					// Walk through all nested tabs and inline levels to get correct size
-					this.textAreaInitialSize.nextSiblingWidth = HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].getWidth()', [nextSibling]);
+				this.textAreaInitialSize.wizardsWidth = HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].getWidth()', [this.wizards]);
 			}
 		}
+			// Hide the wizards so that they do not move around while the editor framework is being sized
+		this.wizards.hide();
 			// Plugins register
 		this.plugins = {};
 			// Register the plugins included in the configuration
@@ -2478,6 +2522,8 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.generatePlugins();
 			// Make the editor visible
 		this.show();
+			// Make the wizards visible again
+		this.wizards.show();
 			// Focus on the first editor that is not hidden
 		Ext.iterate(RTEarea, function (editorId, RTE) {
 			if (!Ext.isDefined(RTE.editor) || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
@@ -2697,20 +2743,20 @@ HTMLArea.util.TYPO3 = function () {
 			var result = {};
 			if (parentElements.length) {
 				var currentElement = parentElements.pop();
-				var elementStyle = document.getElementById(currentElement).style;
-				var actionRequired = (elementStyle.display == 'none' ? true : false);
+				currentElement = Ext.get(currentElement);
+				var actionRequired = (currentElement.getStyle('display') == 'none');
 				if (actionRequired) {
-					var originalVisibility = elementStyle.visibility;
-					var originalPosition = elementStyle.position;
-					elementStyle.visibility = 'hidden';
-					elementStyle.position = 'absolute';
-					elementStyle.display = '';
+					var originalStyles = currentElement.getStyles('visibility', 'position', 'top', 'display');
+					currentElement.setStyle({
+						visibility: 'hidden',
+						position: 'absolute',
+						top: '-10000px',
+						display: ''
+					});
 				}
 				result = this.accessParentElements(parentElements, callbackFunc, args);
 				if (actionRequired) {
-					elementStyle.display = 'none';
-					elementStyle.position = originalPosition;
-					elementStyle.visibility = originalVisibility;
+					currentElement.setStyle(originalStyles);
 				}
 			} else {
 				result = eval(callbackFunc);

@@ -1,3 +1,7 @@
+2010-04-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13956: htmlArea RTE: Editing area is collapsed when the RTE is loaded inside a hidden tab in Safari
+
 2010-04-06  Francois Suter  <francois@typo3.org>
 
 	* Added feature #11316: Add a "No Frame" option [css styled content] (thanks to Susanne Moog)
