@@ -88,13 +88,15 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 					$list[] = trim($this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']), ',');
 				}
 			}
+			if (count($list) > 0) {
+				$pages = $pages . ',' . implode(',', $list);
+			}
 			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, array(
 				'persistence' => array(
-					'storagePid' => $pages . implode(',', $list)
+					'storagePid' => $pages
 				)
 			));
 		}
-
 		return $frameworkConfiguration;
 	}
 
