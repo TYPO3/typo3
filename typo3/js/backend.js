@@ -29,7 +29,7 @@
  */
 
 
-
+Ext.ns('TYPO3.configuration');
 
 /**
  * jump the backend to a module

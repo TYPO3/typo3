@@ -76,6 +76,13 @@ class TYPO3backend {
 	protected $moduleMenu;
 
 	/**
+	 * Pagerenderer
+	 *
+	 * @var $pageRenderer t3lib_PageRenderer
+	 */
+	protected $pageRenderer;
+
+	/**
 	 * constructor
 	 *
 	 * @return	void
@@ -87,6 +94,23 @@ class TYPO3backend {
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 
 		$this->moduleMenu = t3lib_div::makeInstance('ModuleMenu');
+
+		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
+		$this->pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
+		$this->pageRenderer->loadExtJS();
+
+			// register the extDirect API providers
+			// Note: we need to iterate thru the object, because the addProvider method
+			// does this only with multiple arguments
+		$this->pageRenderer->addExtOnReadyCode(
+			'for (var api in Ext.app.ExtDirectAPI) {
+				Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
+			}
+			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
+			',
+			TRUE
+		);
+
 
 			// add default BE javascript
 		$this->js      = '';
@@ -103,15 +127,13 @@ class TYPO3backend {
 			'js/iecompatibility.js',
 			'js/flashupload.js',
 			'../t3lib/jsfunc.evalfield.js',
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend'
-		);
-
-		$this->jsFilesAfterInline = array(
+			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend',
 			'js/backend.js',
 			'js/loginrefresh.js',
 			'js/extjs/viewport.js',
 			'js/extjs/viewportConfiguration.js',
 		);
+
 			// add default BE css
 		$this->css      = '';
 		$this->cssFiles = array(
@@ -203,57 +225,26 @@ class TYPO3backend {
 		 * now put the complete backend document together
 		 ******************************************************/
 
-		/** @var $pageRenderer t3lib_PageRenderer */
-		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-		$pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
-		$pageRenderer->loadExtJS();
-
-			// register the extDirect API providers
-			// Note: we need to iterate thru the object, because the addProvider method
-			// does this only with multiple arguments
-		$pageRenderer->addExtOnReadyCode('
-			for (var api in Ext.app.ExtDirectAPI) {
-				Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
-			}',
-			TRUE
-		);
-
-			// initiates the ExtJS based backend viewport
-		$pageRenderer->addExtOnReadyCode('
-			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);',
-			TRUE
-		);
-
-			// remove duplicate entries
-		$this->jsFiles = array_unique($this->jsFiles);
-
-			// add javascript
-		foreach($this->jsFiles as $jsFile) {
-			$GLOBALS['TBE_TEMPLATE']->loadJavascriptLib($jsFile);
-		}
-		$GLOBALS['TBE_TEMPLATE']->JScode .= chr(10);
-		$this->generateJavascript();
-		$GLOBALS['TBE_TEMPLATE']->JScode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags($this->js) . chr(10);
-
-		foreach($this->jsFilesAfterInline as $jsFile) {
-			$GLOBALS['TBE_TEMPLATE']->JScode .= '
-			<script type="text/javascript" src="' . $jsFile . '"></script>';
-		}
-
-
-			// FIXME abusing the JS container to add CSS, need to fix template.php
 		foreach($this->cssFiles as $cssFileName => $cssFile) {
-			$GLOBALS['TBE_TEMPLATE']->addStyleSheet($cssFileName, $cssFile);
+			$this->pageRenderer->addCssFile($cssFile);
 
 				// load addditional css files to overwrite existing core styles
 			if(!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
-				$GLOBALS['TBE_TEMPLATE']->addStyleSheet($cssFileName . 'TBE_STYLES', $GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName]);
+				$this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName]);
 			}
 		}
 
 		if(!empty($this->css)) {
-			$GLOBALS['TBE_TEMPLATE']->inDocStylesArray['backend.php'] = $this->css;
+			$this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
 		}
+
+		foreach ($this->jsFiles as $jsFile) {
+			$this->pageRenderer->addJsFile($jsFile);
+		}
+
+		$this->generateJavascript();
+		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js);
+
 
 			// set document title:
 		$title = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
@@ -658,14 +649,10 @@ class TYPO3backend {
 	public function addCssFile($cssFileName, $cssFile) {
 		$cssFileAdded = false;
 
-			//TODO add more checks if neccessary
-		if(file_exists(t3lib_div::resolveBackPath(PATH_typo3.$cssFile))) {
-				// prevent overwriting existing css files
-			if(empty($this->cssFiles[$cssFileName])) {
-				$this->cssFiles[$cssFileName] = $cssFile;
-				$cssFileAdded = true;
-			}
-		}
+		if(empty($this->cssFiles[$cssFileName])) {
+			$this->cssFiles[$cssFileName] = $cssFile;
+			$cssFileAdded = true;
+ 		}
 
 		return $cssFileAdded;
 	}
