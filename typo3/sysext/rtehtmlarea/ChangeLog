@@ -1,3 +1,7 @@
+2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 1.7.15
+
 2010-03-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #9218: htmlArea RTE: "Remove format" messes up some inline formats
