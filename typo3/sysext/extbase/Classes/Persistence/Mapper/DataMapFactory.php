@@ -126,7 +126,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 				if (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
 					$columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
 				} else {
-					if ($columnConfiguration['maxitems'] == 1) {
+					if (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] == 1) {
 						$columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
 					} else {
 						$columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
