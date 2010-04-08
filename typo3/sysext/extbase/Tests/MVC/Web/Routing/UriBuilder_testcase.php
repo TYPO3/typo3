@@ -385,7 +385,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 		$this->uriBuilder->setTargetPageUid(123);
 		$this->uriBuilder->setArguments(array('foo' => 'bar', 'baz' => array('extbase' => 'fluid')));
 
-		$expectedConfiguration = array('parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&foo=bar&baz%5Bextbase%5D=fluid');
+		$expectedConfiguration = array('parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&foo=bar&baz[extbase]=fluid');
 		$actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
 
 		$this->assertEquals($expectedConfiguration, $actualConfiguration);
@@ -404,7 +404,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 		$this->uriBuilder->setTargetPageUid(123);
 		$this->uriBuilder->setArguments(array('someDomainObject' => $mockDomainObject1, 'baz' => array('someOtherDomainObject' => $mockDomainObject2)));
 
-		$expectedConfiguration = array('parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&someDomainObject=123&baz%5BsomeOtherDomainObject%5D=321');
+		$expectedConfiguration = array('parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&someDomainObject=123&baz[someOtherDomainObject]=321');
 		$actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
 
 		$this->assertEquals($expectedConfiguration, $actualConfiguration);

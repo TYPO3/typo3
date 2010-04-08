@@ -508,7 +508,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if (count($this->arguments) > 0) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
 			$this->lastArguments = $arguments;
-			$typolinkConfiguration['additionalParams'] = '&' . t3lib_div::implodeArrayForUrl(NULL, $arguments);
+			$typolinkConfiguration['additionalParams'] = t3lib_div::implodeArrayForUrl(NULL, $arguments);
 		}
 
 		if ($this->addQueryString === TRUE) {

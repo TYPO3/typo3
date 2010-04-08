@@ -51,6 +51,24 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 	/**
 	 * @test
 	 */
+	public function setRelationsDetectsOneToOneRelationOfTypeSelectWithDefaultMaxitems() {
+		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
+	    $columnConfiguration = array(
+			'type' => 'select',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable'
+			);
+		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
+		$mockDataMap->expects($this->once())->method('setOneToOneRelation');
+		$mockDataMap->expects($this->never())->method('setOneToManyRelation');
+		$mockDataMap->expects($this->never())->method('setManyToManyRelation');
+		$mockDataMap->_callRef('setRelations', $mockColumnMap, $columnConfiguration);
+	}
+	
+	/**
+	 * @test
+	 */
 	public function setRelationsDetectsOneToOneRelationOfTypeInline() {
 		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
 	    $columnConfiguration = array(
@@ -76,7 +94,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 			'type' => 'select',
 			'foreign_table' => 'tx_myextension_bar',
 			'foreign_field' => 'parentid',
-			'foreign_table_field' => 'parenttable'
+			'foreign_table_field' => 'parenttable',
+			'maxitems' => 9999
 			);
 		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
 		$mockDataMap->expects($this->never())->method('setOneToOneRelation');
@@ -94,7 +113,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 			'type' => 'inline',
 			'foreign_table' => 'tx_myextension_bar',
 			'foreign_field' => 'parentid',
-			'foreign_table_field' => 'parenttable'
+			'foreign_table_field' => 'parenttable',
+			'maxitems' => 9999
 			);
 		$mockDataMap = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);
 		$mockDataMap->expects($this->never())->method('setOneToOneRelation');
