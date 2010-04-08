@@ -59,6 +59,7 @@ TYPO3Image = HTMLArea.Plugin.extend({
 		var buttonConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + '-Tooltip'),
+			iconCls		: 'htmlarea-action-image-edit',
 			action		: 'onButtonPress',
 			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			dialog		: true

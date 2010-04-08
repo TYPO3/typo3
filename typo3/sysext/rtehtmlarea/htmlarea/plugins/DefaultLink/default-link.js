@@ -66,7 +66,8 @@ DefaultLink = HTMLArea.Plugin.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId.toLowerCase()),
-				action		: "onButtonPress",
+				iconCls		: 'htmlarea-action-' + button[4],
+				action		: 'onButtonPress',
 				hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 				context		: button[1],
 				selection	: button[2],
@@ -80,8 +81,8 @@ DefaultLink = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList: [
-		['CreateLink', 'a,img', false, true],
-		['UnLink', 'a', false, false]
+		['CreateLink', 'a,img', false, true, 'link-edit'],
+		['UnLink', 'a', false, false, 'unlink']
 	],
 	/*
 	 * Sets of default configuration values for dialogue form fields
@@ -178,7 +179,7 @@ DefaultLink = HTMLArea.Plugin.extend({
 			height: 'auto',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
-			iconCls: buttonId,
+			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
 					fn: this.onAfterRender,

@@ -58,7 +58,6 @@ CopyPaste = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the buttons
 		 */
@@ -68,7 +67,8 @@ CopyPaste = HTMLArea.Plugin.extend({
 				var buttonConfiguration = {
 					id		: buttonId,
 					tooltip		: this.localize(buttonId.toLowerCase()),
-					action		: "onButtonPress",
+					iconCls		: 'htmlarea-action-' + button[2],
+					action		: 'onButtonPress',
 					context		: button[0],
 					selection	: button[3],
 					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
@@ -84,17 +84,15 @@ CopyPaste = HTMLArea.Plugin.extend({
 			}
 		}
 		return true;
-	 },
-	 
+	},
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : {
-		Copy	: [null, "c", "copy", true],
-		Cut	: [null, "x", "cut", true],
-		Paste	: [null, "v", "paste", false]
+	buttonList: {
+		Copy	: [null, 'c', 'copy', true],
+		Cut	: [null, 'x', 'cut', true],
+		Paste	: [null, 'v', 'paste', false]
 	},
-	
 	/*
 	 * This function gets called when a button or a hotkey was pressed.
 	 *

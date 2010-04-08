@@ -69,6 +69,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 		var buttonConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize('SC-spell-check'),
+			iconCls		: 'htmlarea-action-spell-check',
 			action		: 'onButtonPress',
 			dialog		: true
 		};
@@ -135,7 +136,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 			height: 'auto',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
-			iconCls: buttonId,
+			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
 					fn: this.onWindowAfterRender,

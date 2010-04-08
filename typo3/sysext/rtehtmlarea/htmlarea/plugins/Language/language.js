@@ -81,7 +81,6 @@ Language = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-
 		/*
 		 * Registering the buttons
 		 */
@@ -91,13 +90,13 @@ Language = HTMLArea.Plugin.extend({
 			buttonId = button[0];
 			var buttonConfiguration = {
 				id		: buttonId,
-				tooltip		: this.localize(buttonId + "-Tooltip"),
-				action		: "onButtonPress",
+				tooltip		: this.localize(buttonId + '-Tooltip'),
+				iconCls		: 'htmlarea-action-' + button[2],
+				action		: 'onButtonPress',
 				context		: button[1]
 			};
 			this.registerButton(buttonConfiguration);
 		}
-
 		/*
 		 * Registering the dropdown list
 		 */
@@ -111,9 +110,9 @@ Language = HTMLArea.Plugin.extend({
 		}
 		var dropDownConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize(buttonId + "-Tooltip"),
+			tooltip		: this.localize(buttonId + '-Tooltip'),
 			options		: options,
-			action		: "onChange"
+			action		: 'onChange'
 		};
 		if (this.buttonsConfiguration.language) {
 			dropDownConfiguration.width = this.buttonsConfiguration.language.width ? parseInt(this.buttonsConfiguration.language.width, 10) : 200;
@@ -126,15 +125,15 @@ Language = HTMLArea.Plugin.extend({
 		}
 		this.registerDropDown(dropDownConfiguration);
 		return true;
-	 },
-
-	/* The list of buttons added by this plugin */
-	buttonList : [
-		["LeftToRight", null],
-		["RightToLeft", null],
-		["ShowLanguageMarks", null]
+	},
+	/*
+	 * The list of buttons added by this plugin
+	 */
+	buttonList: [
+		['LeftToRight', null, 'text-direction-left-to-right'],
+		['RightToLeft', null, 'text-direction-right-to-left'],
+		['ShowLanguageMarks', null, 'language-marks-show']
 	],
-
 	/*
 	 * This function gets called when the editor is generated
 	 */

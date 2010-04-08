@@ -63,6 +63,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId.toLowerCase()),
+				iconCls		: 'htmlarea-action-' + button[4],
 				action		: 'onButtonPress',
 				hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 				context		: button[1],
@@ -77,8 +78,8 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList: [
-		['CreateLink', 'a,img', false, true],
-		['UnLink', 'a', false, false]
+		['CreateLink', 'a,img', false, true, 'link-edit'],
+		['UnLink', 'a', false, false, 'unlink']
 	],
 	/*
 	 * This function gets called when the button was pressed

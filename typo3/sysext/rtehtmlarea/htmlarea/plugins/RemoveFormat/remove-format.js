@@ -57,6 +57,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 		var buttonConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize(buttonId + 'Tooltip'),
+			iconCls		: 'htmlarea-action-remove-format',
 			action		: 'onButtonPress',
 			dialog		: true
 		};
@@ -107,7 +108,7 @@ RemoveFormat = HTMLArea.Plugin.extend({
 			height: 'auto',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
-			iconCls: buttonId,
+			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
 					fn: this.onClose,

@@ -167,7 +167,6 @@ BlockElements = HTMLArea.Plugin.extend({
 				this.registerHotKey(hotKeyConfiguration);
 			}
 		}, this);
-
 		/*
 		 * Registering the buttons
 		 */
@@ -177,47 +176,45 @@ BlockElements = HTMLArea.Plugin.extend({
 				var buttonConfiguration = {
 					id		: buttonId,
 					tooltip		: this.localize(buttonId + '-Tooltip') || this.localize(button[2]),
+					iconCls		: 'htmlarea-action-' + button[3],
 					contextMenuTitle: this.localize(buttonId + '-contextMenuTitle'),
-					action		: "onButtonPress",
+					action		: 'onButtonPress',
 					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
 				};
 				this.registerButton(buttonConfiguration);
 			}
 		}
 		return true;
-	 },
-	 
+	},
 	/*
 	 * The list of buttons added by this plugin
 	 */
 	buttonList: {
-		Indent			: [null, "TAB", "indent"],
-		Outdent			: [null, "SHIFT-TAB", "outdent"],
-		Blockquote		: [null, null, "blockquote"],
-		InsertParagraphBefore	: [null, null, "insertparagraphbefore"],
-		InsertParagraphAfter	: [null, null, "insertparagraphafter"],
-		JustifyLeft		: [null, "l", "left"],
-		JustifyCenter		: [null, "e", "center"],
-		JustifyRight		: [null, "r", "right"],
-		JustifyFull		: [null, "j", "justifyfull"],
-		InsertOrderedList	: [null, null, "orderedlist"],
-		InsertUnorderedList	: [null, null, "unorderedlist"],
-		InsertHorizontalRule	: [null, null, "inserthorizontalrule"]
+		Indent			: [null, 'TAB', 'indent', 'indent'],
+		Outdent			: [null, 'SHIFT-TAB', 'outdent', 'outdent'],
+		Blockquote		: [null, null, 'blockquote', 'blockquote'],
+		InsertParagraphBefore	: [null, null, 'insertparagraphbefore', 'paragraph-insert-before'],
+		InsertParagraphAfter	: [null, null, 'insertparagraphafter', 'paragraph-insert-after'],
+		JustifyLeft		: [null, 'l', 'left', 'justify-left'],
+		JustifyCenter		: [null, 'e', 'center', 'justify-center'],
+		JustifyRight		: [null, 'r', 'right', 'justify-right'],
+		JustifyFull		: [null, 'j', 'justifyfull', 'justify-full'],
+		InsertOrderedList	: [null, null, 'orderedlist', 'ordered-list'],
+		InsertUnorderedList	: [null, null, 'unorderedlist', 'unordered-list'],
+		InsertHorizontalRule	: [null, null, 'inserthorizontalrule', 'horizontal-rule-insert']
 	},
-	
 	/*
 	 * The list of hotkeys associated with block elements and registered by default by this plugin
 	 */
-	defaultHotKeys : {
-			"p"	: "n",
-			"h1"	: "1",
-			"h2"	: "2",
-			"h3"	: "3",
-			"h4"	: "4",
-			"h5"	: "5",
-			"h6"	: "6"
+	defaultHotKeys: {
+			'p'	: 'n',
+			'h1'	: '1',
+			'h2'	: '2',
+			'h3'	: '3',
+			'h4'	: '4',
+			'h5'	: '5',
+			'h6'	: '6'
 	},
-	
 	/*
 	 * The function returns true if the type of block element is allowed in the current configuration
 	 */

@@ -109,68 +109,67 @@ InlineElements = HTMLArea.Plugin.extend({
 				action		: "onButtonPress",
 				context		: button[1],
 				hide		: false,
-				selection	: false
+				selection	: false,
+				iconCls		: 'htmlarea-action-' + button[2]
 			};
 			this.registerButton(buttonConfiguration);
 		}
 	},
-	
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : [
-		["BiDiOverride", null],
-		["Big", null],
-		["Bold", null],
-		["Citation", null],
-		["Code", null],
-		["Definition", null],
-		["DeletedText", null],
-		["Emphasis", null],
-		["InsertedText", null],
-		["Italic", null],
-		["Keyboard", null],
-		//["Label", null],
-		["MonoSpaced", null],
-		["Quotation", null],
-		["Sample", null],
-		["Small", null],
-		["Span", null],
-		["StrikeThrough", null],
-		["Strong", null],
-		["Subscript", null],
-		["Superscript", null],
-		["Underline", null],
-		["Variable", null]
+	buttonList: [
+		['BiDiOverride', null, 'bidi-override'],
+		['Big', null, 'big'],
+		['Bold', null, 'bold'],
+		['Citation', null, 'citation'],
+		['Code', null, 'code'],
+		['Definition', null, 'definition'],
+		['DeletedText', null, 'deleted-text'],
+		['Emphasis', null, 'emphasis'],
+		['InsertedText', null, 'inserted-text'],
+		['Italic', null, 'italic'],
+		['Keyboard', null, 'keyboard'],
+		//['Label', null, 'Label'],
+		['MonoSpaced', null, 'mono-spaced'],
+		['Quotation', null, 'quotation'],
+		['Sample', null, 'sample'],
+		['Small', null, 'small'],
+		['Span', null, 'span'],
+		['StrikeThrough', null, 'strike-through'],
+		['Strong', null, 'strong'],
+		['Subscript', null, 'subscript'],
+		['Superscript', null, 'superscript'],
+		['Underline', null, 'underline'],
+		['Variable', null, 'variable']
 	],
-	
 	/*
 	 * Conversion object: button names to corresponding tag names
 	 */
-	convertBtn : {
-		BiDiOverride	: "bdo",
-		Big		: "big",
-		Bold		: "b",
-		Citation	: "cite",
-		Code		: "code",
-		Definition	: "dfn",
-		DeletedText	: "del",
-		Emphasis	: "em",
-		InsertedText	: "ins",
-		Italic		: "i",
-		Keyboard	: "kbd",
-		//Label		: "label",
-		MonoSpaced	: "tt",
-		Quotation	: "q",
-		Sample		: "samp",
-		Small		: "small",
-		Span		: "span",
-		StrikeThrough	: "strike",
-		Strong		: "strong",
-		Subscript	: "sub",
-		Superscript	: "sup",
-		Underline	: "u",
-		Variable	: "var"
+	convertBtn: {
+		BiDiOverride	: 'bdo',
+		Big		: 'big',
+		Bold		: 'b',
+		Citation	: 'cite',
+		Code		: 'code',
+		Definition	: 'dfn',
+		DeletedText	: 'del',
+		Emphasis	: 'em',
+		InsertedText	: 'ins',
+		Italic		: 'i',
+		Keyboard	: 'kbd',
+		//Label		: 'label',
+		MonoSpaced	: 'tt',
+		Quotation	: 'q',
+		Sample		: 'samp',
+		Small		: 'small',
+		Span		: 'span',
+		StrikeThrough	: 'strike',
+		Strong		: 'strong',
+		Subscript	: 'sub',
+		Superscript	: 'sup',
+		Underline	: 'u',
+		Variable	: 'var'
 	 },
 	
 	/*

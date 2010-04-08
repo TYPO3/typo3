@@ -85,6 +85,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 		var buttonConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize('Insert Smiley'),
+			iconCls		: 'htmlarea-action-smiley-insert',
 			action		: 'onButtonPress',
 			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			dialog		: true
@@ -113,7 +114,7 @@ InsertSmiley = HTMLArea.Plugin.extend({
 			height: 'auto',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
-			iconCls: buttonId,
+			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
 					fn: this.onClose,

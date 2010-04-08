@@ -85,7 +85,6 @@ TableOperations = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the buttons
 		 */
@@ -93,46 +92,45 @@ TableOperations = HTMLArea.Plugin.extend({
 		var buttonList = this.buttonList, buttonId;
 		for (var i = 0, n = buttonList.length; i < n; ++i) {
 			var button = buttonList[i];
-			buttonId = (button[0] === "InsertTable") ? button[0] : ("TO-" + button[0]);
+			buttonId = (button[0] === 'InsertTable') ? button[0] : ('TO-' + button[0]);
 			var buttonConfiguration = {
 				id		: buttonId,
-				tooltip		: this.localize((buttonId === "InsertTable") ? "Insert Table" : buttonId),
-				action		: "onButtonPress",
+				tooltip		: this.localize((buttonId === 'InsertTable') ? 'Insert Table' : buttonId),
+				iconCls		: 'htmlarea-action-' + button[4],
+				action		: 'onButtonPress',
 				hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : null),
 				context		: button[1],
-				hide		: ((buttonId == "TO-toggle-borders") ? hideToggleBorders : ((button[0] === "InsertTable") ? false : this.editorConfiguration.hideTableOperationsInToolbar)),
+				hide		: ((buttonId == 'TO-toggle-borders') ? hideToggleBorders : ((button[0] === 'InsertTable') ? false : this.editorConfiguration.hideTableOperationsInToolbar)),
 				dialog		: button[3]
 			};
 			this.registerButton(buttonConfiguration);
 		}
-		
 		return true;
-	 },
-	 
+	 }, 
 	/*
 	 * The list of buttons added by this plugin
 	 */
 	buttonList: [
-		["InsertTable",		null,				"table", true],
-		["toggle-borders",	null, 				"toggleborders", false],
-		["table-prop",		"table",			"tableproperties", true],
-		["table-restyle",	"table",			"tablerestyle", false],
-		["row-prop",		"tr",				"rowproperties", true],
-		["row-insert-above",	"tr",				"rowinsertabove", false],
-		["row-insert-under",	"tr",				"rowinsertunder", false],
-		["row-delete",		"tr",				"rowdelete", false],
-		["row-split",		"td,th[rowSpan!=1]",		"rowsplit", false],
-		["col-prop",		"td,th",			"columnproperties", true],
-		["col-insert-before",	"td,th",			"columninsertbefore", false],
-		["col-insert-after",	"td,th",			"columninsertafter", false],
-		["col-delete",		"td,th",			"columndelete", false],
-		["col-split",		"td,th[colSpan!=1]",		"columnsplit", false],
-		["cell-prop",		"td,th",			"cellproperties", true],
-		["cell-insert-before",	"td,th",			"cellinsertbefore", false],
-		["cell-insert-after",	"td,th",			"cellinsertafter", false],
-		["cell-delete",		"td,th",			"celldelete", false],
-		["cell-merge",		"tr",				"cellmerge", false],
-		["cell-split",		"td,th[colSpan!=1,rowSpan!=1]",	"cellsplit", false]
+		['InsertTable',		null,				'table', true, 'table-insert'],
+		['toggle-borders',	null, 				'toggleborders', false, 'table-show-borders'],
+		['table-prop',		'table',			'tableproperties', true, 'table-edit-properties'],
+		['table-restyle',	'table',			'tablerestyle', false, 'table-restyle'],
+		['row-prop',		'tr',				'rowproperties', true, 'row-edit-properties'],
+		['row-insert-above',	'tr',				'rowinsertabove', false, 'row-insert-above'],
+		['row-insert-under',	'tr',				'rowinsertunder', false, 'row-insert-under'],
+		['row-delete',		'tr',				'rowdelete', false, 'row-delete'],
+		['row-split',		'td,th[rowSpan!=1]',		'rowsplit', false, 'row-split'],
+		['col-prop',		'td,th',			'columnproperties', true, 'column-edit-properties'],
+		['col-insert-before',	'td,th',			'columninsertbefore', false, 'column-insert-before'],
+		['col-insert-after',	'td,th',			'columninsertafter', false, 'column-insert-after'],
+		['col-delete',		'td,th',			'columndelete', false, 'column-delete'],
+		['col-split',		'td,th[colSpan!=1]',		'columnsplit', false, 'column-split'],
+		['cell-prop',		'td,th',			'cellproperties', true, 'cell-edit-properties'],
+		['cell-insert-before',	'td,th',			'cellinsertbefore', false, 'cell-insert-before'],
+		['cell-insert-after',	'td,th',			'cellinsertafter', false, 'cell-insert-after'],
+		['cell-delete',		'td,th',			'celldelete', false, 'cell-delete'],
+		['cell-merge',		'tr',				'cellmerge', false, 'cell-merge'],
+		['cell-split',		'td,th[colSpan!=1,rowSpan!=1]',	'cellsplit', false, 'cell-split']
 	],
 	/*
 	 * Sets of default configuration values for dialogue form fields
@@ -349,7 +347,7 @@ TableOperations = HTMLArea.Plugin.extend({
 			border: false,
 			width: dimensions.width,
 			height: 'auto',
-			iconCls: arguments.buttonId,
+			iconCls: this.getButton(arguments.buttonId).iconCls,
 			listeners: {
 				close: {
 					fn: this.onClose,

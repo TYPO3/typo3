@@ -65,6 +65,7 @@ QuickTag = HTMLArea.Plugin.extend({
 		var buttonConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize('Quick Tag Editor'),
+			iconCls		: 'htmlarea-action-tag-insert',
 			action		: 'onButtonPress',
 			selection	: true,
 			dialog		: true
@@ -448,7 +449,7 @@ QuickTag = HTMLArea.Plugin.extend({
 			border: false,
 			width: dimensions.width,
 			height: 'auto',
-			iconCls: arguments.buttonId,
+			iconCls: this.getButton(arguments.buttonId).iconCls,
 			listeners: {
 				close: {
 					fn: this.onClose,

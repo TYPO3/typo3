@@ -60,21 +60,20 @@ Acronym = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the button
 		 */
-		var buttonId = "Acronym";
+		var buttonId = 'Acronym';
 		var buttonConfiguration = {
 			id		: buttonId,
-			tooltip		: this.localize("Insert/Modify Acronym"),
-			action		: "onButtonPress",
+			tooltip		: this.localize('Insert/Modify Acronym'),
+			action		: 'onButtonPress',
 			hide		: (this.pageTSConfiguration.noAcronym && this.pageTSConfiguration.noAbbr),
 			dialog		: true,
+			iconCls		: 'htmlarea-action-abbreviation-edit',
 			contextMenuTitle: this.localize(buttonId + '-contextMenuTitle')
 		};
 		this.registerButton(buttonConfiguration);
-		
 		return true;
 	 },
 	/*
@@ -149,7 +148,7 @@ Acronym = HTMLArea.Plugin.extend({
 			border: false,
 			width: dimensions.width,
 			height: 'auto',
-			iconCls: buttonId,
+			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
 					fn: this.onClose,

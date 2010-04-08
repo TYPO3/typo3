@@ -150,7 +150,7 @@ ContextMenu = HTMLArea.Plugin.extend({
 			itemId: itemId,
 			cls: 'button',
 			overCls: 'hover',
-			iconCls: itemId,
+			iconCls: 'htmlarea-action-delete-item',
 			helpText: this.localize('Remove this node from the document')
 		});
 		return itemsConfig;

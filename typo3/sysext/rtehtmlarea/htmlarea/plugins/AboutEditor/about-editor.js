@@ -61,7 +61,8 @@ AboutEditor = HTMLArea.Plugin.extend({
 			tooltip		: this.localize(buttonId.toLowerCase()),
 			action		: 'onButtonPress',
 			textMode	: true,
-			dialog		: true
+			dialog		: true,
+			iconCls		: 'htmlarea-action-editor-show-about'
 		};
 		this.registerButton(buttonConfiguration);
 		return true;
@@ -116,7 +117,7 @@ AboutEditor = HTMLArea.Plugin.extend({
 			height: 'auto',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
-			iconCls: buttonId,
+			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				close: {
 					fn: this.onClose,

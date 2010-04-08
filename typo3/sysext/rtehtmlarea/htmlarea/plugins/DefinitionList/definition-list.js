@@ -67,7 +67,6 @@ DefinitionList = BlockElements.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the buttons
 		 */
@@ -75,8 +74,9 @@ DefinitionList = BlockElements.extend({
 			var buttonId = button[0];
 			var buttonConfiguration = {
 				id		: buttonId,
-				tooltip		: this.localize(buttonId + "-Tooltip"),
-				action		: "onButtonPress",
+				tooltip		: this.localize(buttonId + '-Tooltip'),
+				iconCls		: 'htmlarea-action-' + button[5],
+				action		: 'onButtonPress',
 				context		: button[1],
 				hotKey		: (this.buttonsConfiguration[button[3]] ? this.buttonsConfiguration[button[3]].hotKey : (button[2] ? button[2] : null)),
 				noAutoUpdate	: button[4]
@@ -84,16 +84,15 @@ DefinitionList = BlockElements.extend({
 			this.registerButton(buttonConfiguration);
 		}, this);
 		return true;
-	 },
-	 
+	},
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	buttonList : [
-		['Indent', null, 'TAB', 'indent', false],
-		['Outdent', null, 'SHIFT-TAB', 'outdent', false],
-		['DefinitionList', null, null, 'definitionlist', true],
-		['DefinitionItem', 'dd,dt', null, 'definitionitem', false]
+	buttonList: [
+		['Indent', null, 'TAB', 'indent', false, 'indent'],
+		['Outdent', null, 'SHIFT-TAB', 'outdent', false, 'outdent'],
+		['DefinitionList', null, null, 'definitionlist', true, 'definition-list'],
+		['DefinitionItem', 'dd,dt', null, 'definitionitem', false, 'definition-list-item']
 	 ],
 	/*
 	 * This function gets called when the plugin is generated

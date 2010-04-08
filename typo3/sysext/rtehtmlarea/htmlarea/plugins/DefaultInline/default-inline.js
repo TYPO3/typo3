@@ -53,7 +53,6 @@ DefaultInline = HTMLArea.Plugin.extend({
 			license		: "GPL"
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/*
 		 * Registering the buttons
 		 */
@@ -61,9 +60,10 @@ DefaultInline = HTMLArea.Plugin.extend({
 			var buttonId = button[0];
 			var buttonConfiguration = {
 				id		: buttonId,
-				tooltip		: this.localize(buttonId + "-Tooltip"),
+				tooltip		: this.localize(buttonId + '-Tooltip'),
+				iconCls		: 'htmlarea-action-' + button[2],
 				textMode	: false,
-				action		: "onButtonPress",
+				action		: 'onButtonPress',
 				context		: button[1],
 				hotKey		: (this.editorConfiguration.buttons[buttonId.toLowerCase()]?this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey:null)
 			};
@@ -72,14 +72,16 @@ DefaultInline = HTMLArea.Plugin.extend({
 		}, this);
 		return true;
 	},
-	/* The list of buttons added by this plugin */
+	/*
+	 * The list of buttons added by this plugin
+	 */
 	buttonList: [
-		["Bold", null],
-		["Italic", null],
-		["StrikeThrough", null],
-		["Subscript", null],
-		["Superscript", null],
-		["Underline", null]
+		['Bold', null, 'bold'],
+		['Italic', null, 'italic'],
+		['StrikeThrough', null, 'strike-through'],
+		['Subscript', null, 'subscript'],
+		['Superscript', null, 'superscript'],
+		['Underline', null, 'underline']
 	],
 	/*
 	 * This function gets called when some inline element button was pressed.

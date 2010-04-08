@@ -356,7 +356,9 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 				config.helpTitle = config.tooltip;
 				break;
 			default:
-				config.iconCls = config.id;
+				if (!config.iconCls) {
+					config.iconCls = config.id;
+				}
 				break;
 		}
 		config.cmd = config.id;
@@ -4451,7 +4453,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 			border: false,
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			//resizable: !Ext.isIE,
-			iconCls: buttonId,
+			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
 					fn: this.onContainerResize

@@ -58,6 +58,7 @@ UserElements = HTMLArea.Plugin.extend({
 		var buttonConfiguration = {
 			id		: buttonId,
 			tooltip		: this.localize('Insert custom element'),
+			iconCls		: 'htmlarea-action-user-element-edit',
 			action		: 'onButtonPress',
 			hotKey		: (this.pageTSConfiguration ? this.pageTSConfiguration.hotKey : null),
 			dialog		: true

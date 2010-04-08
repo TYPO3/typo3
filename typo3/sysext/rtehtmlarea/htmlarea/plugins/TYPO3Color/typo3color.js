@@ -83,6 +83,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId),
+				iconCls		: 'htmlarea-action-' + button[2],
 				action		: 'onButtonPress',
 				hotKey		: (this.buttonsConfiguration[button[1]] ? this.buttonsConfiguration[button[1]].hotKey : null),
 				dialog		: true
@@ -95,8 +96,8 @@ TYPO3Color = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList: [
-		['ForeColor', 'textcolor'],
-		['HiliteColor', 'bgcolor']
+		['ForeColor', 'textcolor', 'color-foreground'],
+		['HiliteColor', 'bgcolor', 'color-background']
 	],
 	/*
 	 * Conversion object: button name to corresponding style property name
@@ -309,7 +310,7 @@ TYPO3Color = HTMLArea.Plugin.extend({
 			height: 'auto',
 				// As of ExtJS 3.1, JS error with IE when the window is resizable
 			resizable: !Ext.isIE,
-			iconCls: arguments.buttonId,
+			iconCls: this.getButton(arguments.buttonId).iconCls,
 			listeners: {
 				close: {
 					fn: this.onClose,

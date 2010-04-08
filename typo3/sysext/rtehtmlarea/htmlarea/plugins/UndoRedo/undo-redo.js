@@ -70,6 +70,7 @@ UndoRedo = HTMLArea.Plugin.extend({
 			var buttonConfiguration = {
 				id		: buttonId,
 				tooltip		: this.localize(buttonId.toLowerCase()),
+				iconCls		: 'htmlarea-action-' + button[3],
 				action		: 'onButtonPress',
 				hotKey		: (this.editorConfiguration.buttons[buttonId.toLowerCase()]?this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey:button[2]),
 				noAutoUpdate	: true
@@ -82,8 +83,8 @@ UndoRedo = HTMLArea.Plugin.extend({
 	 * The list of buttons added by this plugin
 	 */
 	buttonList: [
-		['Undo', null, 'z'],
-		['Redo', null, 'y']
+		['Undo', null, 'z', 'undo'],
+		['Redo', null, 'y', 'redo']
 	],
 	/*
 	 * This function gets called when the editor is generated

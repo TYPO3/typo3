@@ -1,3 +1,7 @@
+2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #14035: htmlArea RTE: Use sprite for toolbar icons
+
 2010-04-08  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13828: Login cause JS error if not in frame (access to parent is not allowed)
