@@ -560,6 +560,7 @@ tt_content.image.20 {
 
 	borderCol = {$styles.content.imgtext.borderColor}
 	borderThick = {$styles.content.imgtext.borderThick}
+	borderClass = {$styles.content.imgtext.borderClass}
 	colSpace = {$styles.content.imgtext.colSpace}
 	rowSpace = {$styles.content.imgtext.rowSpace}
 	textMargin = {$styles.content.imgtext.textMargin}

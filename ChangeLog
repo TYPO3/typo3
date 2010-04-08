@@ -1,5 +1,6 @@
 2010-04-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added feature #12818: Feature: border class is hardcoded  [css styled content] (thanks to Susanne Moog)
 	* Fixed bug #13693: Backend doesn't use pageRenderer methods
 
 2010-04-07  Stanislas Rolland  <typo3@sjbr.ca>

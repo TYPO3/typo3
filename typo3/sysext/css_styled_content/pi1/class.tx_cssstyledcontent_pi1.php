@@ -810,7 +810,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		}
 		$borderClass = '';
 		if ($border)	{
-			$borderClass = 'csc-textpic-border';
+			$borderClass = $conf['borderClass'] ? $conf['borderClass'] : 'csc-textpic-border';
 		}
 
 			// Multiple classes with all properties, to be styled in CSS
