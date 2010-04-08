@@ -369,7 +369,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$query->matching($conditions);
 			
 		} else {
-			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);
+			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation. This is mainly caused by a missing type declaration above the property definition.', 1252502725);
 		}
 		return $query;
 	}

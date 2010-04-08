@@ -216,7 +216,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnsupportedRelation('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
 		}
-		// debug($columnMap);
 		return $columnMap;
 	}
 		
