@@ -594,6 +594,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$content = '';
 		$taskInfo = array();
 		$task = NULL;
+		$process = 'edit';
 
 		if ($this->submittedData['uid'] > 0) {
 				// If editing, retrieve data for existing task
@@ -663,6 +664,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$taskInfo['end'] = '';
 			$taskInfo['frequency'] = '';
 			$taskInfo['multiple'] = 0;
+			$process = 'add';
 		}
 
 		if (count($this->submittedData) > 0) {
@@ -673,12 +675,23 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 			// Get the extra fields to display for each task that needs some
 		$allAdditionalFields = array();
-		foreach ($registeredClasses as $class => $registrationInfo) {
-			if (!empty($registrationInfo['provider'])) {
-				$providerObject = t3lib_div::getUserObj($registrationInfo['provider']);
+		if ($process == 'add') {
+			foreach ($registeredClasses as $class => $registrationInfo) {
+				if (!empty($registrationInfo['provider'])) {
+					$providerObject = t3lib_div::getUserObj($registrationInfo['provider']);
+					if ($providerObject instanceof tx_scheduler_AdditionalFieldProvider) {
+						$additionalFields = $providerObject->getAdditionalFields($taskInfo, NULL, $this);
+						$allAdditionalFields = array_merge($allAdditionalFields, array($class => $additionalFields));
+					}
+				}
+			}
+
+			// In case of edit, get only the extra fields for the current task class
+		} else {
+			if (!empty($registeredClasses[$taskInfo['class']]['provider'])) {
+				$providerObject = t3lib_div::getUserObj($registeredClasses[$taskInfo['class']]['provider']);
 				if ($providerObject instanceof tx_scheduler_AdditionalFieldProvider) {
-					$additionalFields = $providerObject->getAdditionalFields($taskInfo, isset($task) ? $task : null, $this);
-					$allAdditionalFields = array_merge($allAdditionalFields, array($class => $additionalFields));
+					$allAdditionalFields[$taskInfo['class']] = $providerObject->getAdditionalFields($taskInfo, $task, $this);
 				}
 			}
 		}

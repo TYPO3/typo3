@@ -1,3 +1,7 @@
+2010-04-08  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup #13869: Scheduler: editTasks() calls all registered tasks to edit just one (thanks to Francois Suter)
+
 2010-04-08  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13828: Login cause JS error if not in frame (access to parent is not allowed)
