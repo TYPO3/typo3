@@ -1,3 +1,7 @@
+2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 1.8.9
+
 2010-04-08  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup #13869: Scheduler: editTasks() calls all registered tasks to edit just one (thanks to Francois Suter)
