@@ -653,8 +653,13 @@ class SC_index {
 		$JSCode .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 			function startUp() {
 					// If the login screen is shown in the login_frameset window for re-login, then try to get the username of the current/former login from opening windows main frame:
-				if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
-					document.loginform.username.value = parent.opener.TS.username;
+				try {
+					if (parent.opener && parent.opener.TS && parent.opener.TS.username && document.loginform && document.loginform.username)	{
+						document.loginform.username.value = parent.opener.TS.username;
+					}
+				}
+				catch(error) {
+					//continue
 				}
 
 					// Wait a few millisecons before calling checkFocus(). This might be necessary because some browsers need some time to auto-fill in the form fields

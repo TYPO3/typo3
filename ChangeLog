@@ -1,5 +1,6 @@
 2010-04-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13828: Login cause JS error if not in frame (access to parent is not allowed)
 	* Added feature #12818: Feature: border class is hardcoded  [css styled content] (thanks to Susanne Moog)
 	* Fixed bug #13693: Backend doesn't use pageRenderer methods
 
