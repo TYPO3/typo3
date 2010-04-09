@@ -1,5 +1,6 @@
 2010-04-09  Michael Stucki  <michael@typo3.org>
 
+	* Release of TYPO3 4.3.3
 	* Fixed bug #13959: Core autoloader should accept class names only (could lead to remote command execution). Thanks to Helmut Hummel and Marcus Krause for providing a fix.
 
 2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
