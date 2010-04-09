@@ -1,3 +1,7 @@
+2010-04-09  Michael Stucki  <michael@typo3.org>
+
+	* Fixed bug #13959: Security precaution for extensions which use their own autoloader. Note: This is the same fix which has been committed to TYPO3 4.3 where it is marked as a security fix. However, versions prior to TYPO3 4.3 do not ship with an autoloader, so they are not affected by this problem unless an extension provides its own autoloader.
+
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 
