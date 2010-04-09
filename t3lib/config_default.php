@@ -385,7 +385,7 @@ function debug($variable='', $name='*variable*', $line='*line*', $file='*file*',
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
 
-	if(@is_callable(array($GLOBALS['error'],'debug'))) {
+	if(is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debug'))) {
 		$GLOBALS['error']->debug($variable, $name, $line, $file, $recursiveDepth, $debugLevel);
 	} else {
 		$br = ($name == '*variable*') ? 0 : $name;
@@ -393,12 +393,12 @@ function debug($variable='', $name='*variable*', $line='*line*', $file='*file*',
 	}
 }
 function debugBegin() {
-	if(@is_callable(array($GLOBALS['error'],'debugBegin'))) {
+	if(is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debugBegin'))) {
 		$GLOBALS['error']->debugBegin();
 	}
 }
 function debugEnd() {
-	if(@is_callable(array($GLOBALS['error'],'debugEnd'))) {
+	if(is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debugEnd'))) {
 		$GLOBALS['error']->debugEnd();
 	}
 }

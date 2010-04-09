@@ -159,6 +159,10 @@ die();
 	define('PATH_typo3conf', PATH_site.'typo3conf/');	// Abs. TYPO3 configuration path (local, not part of source)
 }
 
+// *********************
+// Unset variable(s) in global scope (fixes #13959)
+// *********************
+unset($error);
 
 // *************************************************
 // t3lib_div + extention management class included
