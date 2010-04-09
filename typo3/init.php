@@ -177,6 +177,10 @@ die();
 	}
 }
 
+// *********************
+// Unset variable(s) in global scope (fixes #13959)
+// *********************
+unset($error);
 
 // *************************************************
 // t3lib_div + extention management class included

@@ -79,6 +79,11 @@ if (!defined('PATH_tslib')) {
 if (!@is_dir(PATH_typo3conf))	die('Cannot find configuration. This file is probably executed from the wrong location.');
 
 // *********************
+// Unset variable(s) in global scope (fixes #13959)
+// *********************
+unset($error);
+
+// *********************
 // Prevent any output until AJAX/compression is initialized to stop
 // AJAX/compression data corruption
 // *********************
@@ -567,7 +572,7 @@ if (is_object($BE_USER) && $BE_USER->isAdminPanelVisible() && $TSFE->beUserLogin
 // *************
 // Debugging Output
 // *************
-if(@is_callable(array($error,'debugOutput'))) {
+if(is_object($error) && @is_callable(array($error,'debugOutput'))) {
 	$error->debugOutput();
 }
 if (TYPO3_DLOG) {
