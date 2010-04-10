@@ -82,6 +82,26 @@ TYPO3Link = HTMLArea.Plugin.extend({
 		['UnLink', 'a', false, false, 'unlink']
 	],
 	/*
+	 * This function is invoked when the editor is being generated
+	 */
+	onGenerate: function () {
+			// Download the definition of special anchor classes if not yet done
+		if (this.classesAnchorUrl && (typeof(HTMLArea.classesAnchorSetup) === 'undefined')) {
+			this.getJavascriptFile(this.classesAnchorUrl, function (options, success, response) {
+				if (success) {
+					try {
+						if (typeof(HTMLArea.classesAnchorSetup) === 'undefined') {
+							eval(response.responseText);
+							this.appendToLog('ongenerate', 'Javascript file successfully evaluated: ' + this.classesAnchorUrl);
+						}
+					} catch(e) {
+						this.appendToLog('ongenerate', 'Error evaluating contents of Javascript file: ' + this.classesAnchorUrl);
+					}
+				}
+			});
+		}
+	},
+	/*
 	 * This function gets called when the button was pressed
 	 *
 	 * @param	object		editor: the editor instance
@@ -94,58 +114,68 @@ TYPO3Link = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
 			// Download the definition of special anchor classes if not yet done
-		if (this.classesAnchorUrl && (typeof(HTMLArea.classesAnchorSetup) === "undefined")) {
-			this.getJavascriptFile(this.classesAnchorUrl);
-		}
-		
-		if (buttonId === "UnLink") {
-			this.unLink();
-			return false;
-		}
-		
-		var additionalParameter;
-		var node = this.editor.getParentElement();
-		var el = HTMLArea.getElementObject(node, "a");
-		if (el != null && /^a$/i.test(el.nodeName)) node = el;
-		if (node != null && /^a$/i.test(node.nodeName)) {
-			additionalParameter = "&curUrl[href]=" + encodeURIComponent(node.getAttribute("href"));
-			if (node.target) additionalParameter += "&curUrl[target]=" + encodeURIComponent(node.target);
-			if (node.className) additionalParameter += "&curUrl[class]=" + encodeURIComponent(node.className);
-			if (node.title) additionalParameter += "&curUrl[title]=" + encodeURIComponent(node.title);
-			if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes) {
-				var additionalAttributes = this.pageTSConfiguration.additionalAttributes.split(",");
-				for (var i = additionalAttributes.length; --i >= 0;) {
-					if (node.hasAttribute(additionalAttributes[i])) {
-						additionalParameter += "&curUrl[" + additionalAttributes[i] + "]=" + encodeURIComponent(node.getAttribute(additionalAttributes[i]));
+		if (this.classesAnchorUrl && (typeof(HTMLArea.classesAnchorSetup) === 'undefined')) {
+			this.getJavascriptFile(this.classesAnchorUrl, function (options, success, response) {
+				if (success) {
+					try {
+						if (typeof(HTMLArea.classesAnchorSetup) === 'undefined') {
+							eval(response.responseText);
+							this.appendToLog('onButtonPress', 'Javascript file successfully evaluated: ' + this.classesAnchorUrl);
+						}
+						this.onButtonPress(editor, id, target);
+					} catch(e) {
+						this.appendToLog('onButtonPress', 'Error evaluating contents of Javascript file: ' + this.classesAnchorUrl);
+					}
+				}
+			});
+		} else {
+			if (buttonId === "UnLink") {
+				this.unLink();
+				return false;
+			}
+			var additionalParameter;
+			var node = this.editor.getParentElement();
+			var el = HTMLArea.getElementObject(node, "a");
+			if (el != null && /^a$/i.test(el.nodeName)) node = el;
+			if (node != null && /^a$/i.test(node.nodeName)) {
+				additionalParameter = "&curUrl[href]=" + encodeURIComponent(node.getAttribute("href"));
+				if (node.target) additionalParameter += "&curUrl[target]=" + encodeURIComponent(node.target);
+				if (node.className) additionalParameter += "&curUrl[class]=" + encodeURIComponent(node.className);
+				if (node.title) additionalParameter += "&curUrl[title]=" + encodeURIComponent(node.title);
+				if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes) {
+					var additionalAttributes = this.pageTSConfiguration.additionalAttributes.split(",");
+					for (var i = additionalAttributes.length; --i >= 0;) {
+						if (node.hasAttribute(additionalAttributes[i])) {
+							additionalParameter += "&curUrl[" + additionalAttributes[i] + "]=" + encodeURIComponent(node.getAttribute(additionalAttributes[i]));
+						}
+					}
+				}
+			} else if (this.editor.hasSelectedText()) {
+				var text = this.editor.getSelectedHTML();
+				if (text && text != null) {
+					var offset = text.toLowerCase().indexOf("<a");
+					if (offset!=-1) {
+						var ATagContent = text.substring(offset+2);
+						offset = ATagContent.toUpperCase().indexOf(">");
+						ATagContent = ATagContent.substring(0,offset);
+						additionalParameter = "&curUrl[all]=" + encodeURIComponent(ATagContent);
 					}
 				}
 			}
-		} else if (this.editor.hasSelectedText()) {
-			var text = this.editor.getSelectedHTML();
-			if (text && text != null) {
-				var offset = text.toLowerCase().indexOf("<a");
-				if (offset!=-1) {
-					var ATagContent = text.substring(offset+2);
-					offset = ATagContent.toUpperCase().indexOf(">");
-					ATagContent = ATagContent.substring(0,offset);
-					additionalParameter = "&curUrl[all]=" + encodeURIComponent(ATagContent);
-				}
-			}
+			this.openContainerWindow(
+				buttonId,
+				buttonId.toLowerCase(),
+				this.getWindowDimensions(
+					{
+						width:	550,
+						height:	350
+					},
+					buttonId
+				),
+				this.makeUrlFromModulePath(this.modulePath, additionalParameter)
+			);
 		}
-		this.openContainerWindow(
-			buttonId,
-			buttonId.toLowerCase(),
-			this.getWindowDimensions(
-				{
-					width:	550,
-					height:	350
-				},
-				buttonId
-			),
-			this.makeUrlFromModulePath(this.modulePath, additionalParameter)
-		);
 		return false;
 	},
 	/*

@@ -88,15 +88,14 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 			$languages = array_flip(array_merge($languages, $this->getLanguages()));
 			$languagesJSArray = array();
 			foreach ($languages as $key => $value) {
-				$languagesJSArray[] = array($key, $value);
+				$languagesJSArray[] = array('text' => $key, 'value' => $value);
 			}
-			$languagesJSArray = 'var options = ' . json_encode($languagesJSArray) . ';';
+			$languagesJSArray = json_encode(array('options' => $languagesJSArray));
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.dataUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', $button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}
-
 	/**
 	 * Getting all languages into an array
 	 * 	where the key is the ISO alpha-2 code of the language
@@ -159,9 +158,7 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 		}
 	}
 }
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Language/class.tx_rtehtmlarea_language.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Language/class.tx_rtehtmlarea_language.php']);
 }
-
 ?>

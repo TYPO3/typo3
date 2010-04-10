@@ -408,8 +408,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 				if (InstallTrigger.enabled()) {
 					var mozillaXpi = new Object();
 					mozillaXpi["AllowClipboard Helper"] = this.buttonsConfiguration.paste.mozillaAllowClipboardURL;
-					var mozillaInstallCallback = this.makeFunctionReference("mozillaInstallCallback");
-					InstallTrigger.install(mozillaXpi, mozillaInstallCallback);
+					InstallTrigger.install(mozillaXpi, this.mozillaInstallCallback);
 				} else {
 					alert(this.localize("Mozilla-Org-Install-Not-Enabled"));
 					this.appendToLog("mozillaClipboardAccessException", "Mozilla install was not enabled.");

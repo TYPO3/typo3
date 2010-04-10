@@ -234,7 +234,7 @@ TextStyle = HTMLArea.Plugin.extend({
 	 * This function gets called on plugin generation, on toolbar update and  on change mode
 	 * Re-initiate the parsing of the style sheets, if not yet completed, and refresh our toolbar components
 	 */
-	generate : function(editor, dropDownId) {
+	generate: function (editor, dropDownId) {
 		if (this.cssLoaded) {
 			this.updateToolbar(dropDownId);
 		} else {
@@ -242,10 +242,23 @@ TextStyle = HTMLArea.Plugin.extend({
 				window.clearTimeout(this.cssTimeout);
 				this.cssTimeout = null;
 			}
-			if (this.classesUrl && (typeof(HTMLArea.classesLabels) === "undefined")) {
-				this.getJavascriptFile(this.classesUrl);
+			if (this.classesUrl && (typeof(HTMLArea.classesLabels) === 'undefined')) {
+				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
+					if (success) {
+						try {
+							if (typeof(HTMLArea.classesLabels) === 'undefined') {
+								eval(response.responseText);
+								this.appendToLog('generate', 'Javascript file successfully evaluated: ' + this.classesUrl);
+							}
+						} catch(e) {
+							this.appendToLog('generate', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
+						}
+					}
+					this.buildCssArray(this.editor, dropDownId);
+				});
+			} else {
+				this.buildCssArray(this.editor, dropDownId);
 			}
-			this.buildCssArray(editor, dropDownId);
 		}
 	},
 	

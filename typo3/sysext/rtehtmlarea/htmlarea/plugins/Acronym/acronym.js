@@ -30,23 +30,14 @@
  * TYPO3 SVN ID: $Id$
  */
 Acronym = HTMLArea.Plugin.extend({
-	constructor : function(editor, pluginName) {
+	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function(editor) {
+	configurePlugin: function(editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.acronym;
-		this.acronymUrl = this.pageTSConfiguration.acronymUrl;
-		this.data = this.getJavascriptFile(this.acronymUrl, 'noEval');
-		if (this.data) {
-			eval(this.data);
-		};
-		this.data = {
-			acronym: acronyms,
-			abbr: abbreviations
-		};
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -253,10 +244,12 @@ Acronym = HTMLArea.Plugin.extend({
 			itemId: 'termSelector',
 			helpTitle: this.localize('Select_a_term'),
 			tpl: '<tpl for="."><div ext:qtip="{abbr}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{term}</div></tpl>',
-			store: new Ext.data.ArrayStore({
+			store: new Ext.data.JsonStore({
 				autoDestroy:  true,
+				autoLoad: true,
+				root: type,
 				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
-				data: this.data[type]
+				url: this.pageTSConfiguration.acronymUrl
 			}),
 			width: 350,
 			listeners: {
@@ -278,10 +271,12 @@ Acronym = HTMLArea.Plugin.extend({
 			fieldLabel: this.localize('Abridged_term'),
 			itemId: 'abbrSelector',
 			helpTitle: this.localize('Select_an_' + type),
-			store: new Ext.data.ArrayStore({
+			store: new Ext.data.JsonStore({
 				autoDestroy:  true,
+				autoLoad: true,
+				root: type,
 				fields: [ { name: 'term'}, { name: 'abbr'},  { name: 'language'}],
-				data: this.data[type]
+				url: this.pageTSConfiguration.acronymUrl
 			}),
 			width: 100,
 			listeners: {
@@ -297,19 +292,30 @@ Acronym = HTMLArea.Plugin.extend({
 		}, this.configDefaults['combo']));
 		var languageObject = this.getPluginInstance('Language');
 		if (this.getButton('Language')) {
-			var languageStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'} ],
-				data: this.getDropDownConfiguration('Language').options
-			});
 			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
-			if (selectedLanguage !== 'none') {
-				languageStore.removeAt(0);
-				languageStore.insert(0, new languageStore.recordType({
-					text: languageObject.localize('Remove language mark'),
-					value: 'none'
-				}));
+			function initLanguageStore (store) {
+				if (selectedLanguage !== 'none') {
+					store.removeAt(0);
+					store.insert(0, new store.recordType({
+						text: languageObject.localize('Remove language mark'),
+						value: 'none'
+					}));
+				}
+				this.getButton('Language').setValue('none');
 			}
+			var languageStore = new Ext.data.JsonStore({
+				autoDestroy:  true,
+				autoLoad: true,
+				root: 'options',
+				fields: [ { name: 'text'}, { name: 'value'} ],
+				url: this.getDropDownConfiguration('Language').dataUrl,
+				listeners: {
+					load: {
+						fn: initLanguageStore,
+						scope: this
+					}
+				}
+			});
 			itemsConfig.push(Ext.apply({
 				xtype: 'combo',
 				fieldLabel: this.localize('Language'),
@@ -321,7 +327,17 @@ Acronym = HTMLArea.Plugin.extend({
 				tpl: '<tpl for="."><div ext:qtip="{value}" style="text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>',
 				store: languageStore,
 				width: 200,
-				value: selectedLanguage
+				value: selectedLanguage,
+				listeners: {
+					render: {
+						fn: function (combo) {
+								// Load the language dropdown
+							combo.getStore().load({
+								callback: function () { combo.setValue(selectedLanguage); }
+							});
+						}
+					}
+				}
 			}, this.configDefaults['combo']));
 		}
 		return {

@@ -430,7 +430,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 				data['to_r_list[' + index + '][0]'] = replacement[0];
 				data['to_r_list[' + index + '][1]'] = replacement[1];
 			});
-			HTMLArea._postback(this.pageTSconfiguration.path, data);
+			this.postData(this.pageTSconfiguration.path, data);
 		}
 		this.close();
 		return false;

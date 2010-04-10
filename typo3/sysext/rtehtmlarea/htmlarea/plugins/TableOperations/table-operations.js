@@ -1182,33 +1182,46 @@ TableOperations = HTMLArea.Plugin.extend({
 	 *
 	 * @return	void
 	 */
-	reStyleTable : function (table) {
+	reStyleTable: function (table) {
 		if (table) {
-			if (this.classesUrl && (typeof(HTMLArea.classesAlternating) === "undefined" || typeof(HTMLArea.classesCounting) === "undefined")) {
-				this.getJavascriptFile(this.classesUrl);
-			}
-			var classNames = table.className.trim().split(" ");
-			for (var i = classNames.length; --i >= 0;) {
-				var classConfiguration = HTMLArea.classesAlternating[classNames[i]];
-				if (classConfiguration && classConfiguration.rows) {
-					if (classConfiguration.rows.oddClass && classConfiguration.rows.evenClass) {
-						this.alternateRows(table, classConfiguration);
+			if (this.classesUrl && (typeof(HTMLArea.classesAlternating) === 'undefined' || typeof(HTMLArea.classesCounting) === 'undefined')) {
+				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
+					if (success) {
+						try {
+							if (typeof(HTMLArea.classesAlternating) === 'undefined' || typeof(HTMLArea.classesCounting) === 'undefined') {
+								eval(response.responseText);
+								this.appendToLog('reStyleTable', 'Javascript file successfully evaluated: ' + this.classesUrl);
+							}
+							this.reStyleTable(table);
+						} catch(e) {
+							this.appendToLog('reStyleTable', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
+						}
 					}
-				}
-				if (classConfiguration && classConfiguration.columns) {
-					if (classConfiguration.columns.oddClass && classConfiguration.columns.evenClass) {
-						this.alternateColumns(table, classConfiguration);
+				});
+			} else {
+				var classNames = table.className.trim().split(' ');
+				for (var i = classNames.length; --i >= 0;) {
+					var classConfiguration = HTMLArea.classesAlternating[classNames[i]];
+					if (classConfiguration && classConfiguration.rows) {
+						if (classConfiguration.rows.oddClass && classConfiguration.rows.evenClass) {
+							this.alternateRows(table, classConfiguration);
+						}
 					}
-				}
-				classConfiguration = HTMLArea.classesCounting[classNames[i]];
-				if (classConfiguration && classConfiguration.rows) {
-					if (classConfiguration.rows.rowClass) {
-						this.countRows(table, classConfiguration);
+					if (classConfiguration && classConfiguration.columns) {
+						if (classConfiguration.columns.oddClass && classConfiguration.columns.evenClass) {
+							this.alternateColumns(table, classConfiguration);
+						}
 					}
-				}
-				if (classConfiguration && classConfiguration.columns) {
-					if (classConfiguration.columns.columnClass) {
-						this.countColumns(table, classConfiguration);
+					classConfiguration = HTMLArea.classesCounting[classNames[i]];
+					if (classConfiguration && classConfiguration.rows) {
+						if (classConfiguration.rows.rowClass) {
+							this.countRows(table, classConfiguration);
+						}
+					}
+					if (classConfiguration && classConfiguration.columns) {
+						if (classConfiguration.columns.columnClass) {
+							this.countColumns(table, classConfiguration);
+						}
 					}
 				}
 			}
@@ -1222,18 +1235,31 @@ TableOperations = HTMLArea.Plugin.extend({
 	 *
 	 * @return	void
 	 */
-	removeAlternatingClasses : function (table, removeClass) {
+	removeAlternatingClasses: function (table, removeClass) {
 		if (table) {
-			if (this.classesUrl && typeof(HTMLArea.classesAlternating) === "undefined") {
-				this.getJavascriptFile(this.classesUrl);
-			}
-			var classConfiguration = HTMLArea.classesAlternating[removeClass];
-			if (classConfiguration) {
-				if (classConfiguration.rows && classConfiguration.rows.oddClass && classConfiguration.rows.evenClass) {
-					this.alternateRows(table, classConfiguration, true);
-				}
-				if (classConfiguration.columns && classConfiguration.columns.oddClass && classConfiguration.columns.evenClass) {
-					this.alternateColumns(table, classConfiguration, true);
+			if (this.classesUrl && typeof(HTMLArea.classesAlternating) === 'undefined') {
+				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
+					if (success) {
+						try {
+							if (typeof(HTMLArea.classesAlternating) === 'undefined') {
+								eval(response.responseText);
+								this.appendToLog('removeAlternatingClasses', 'Javascript file successfully evaluated: ' + this.classesUrl);
+							}
+							this.removeAlternatingClasses(table, removeClass);
+						} catch(e) {
+							this.appendToLog('removeAlternatingClasses', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
+						}
+					}
+				});
+			} else {
+				var classConfiguration = HTMLArea.classesAlternating[removeClass];
+				if (classConfiguration) {
+					if (classConfiguration.rows && classConfiguration.rows.oddClass && classConfiguration.rows.evenClass) {
+						this.alternateRows(table, classConfiguration, true);
+					}
+					if (classConfiguration.columns && classConfiguration.columns.oddClass && classConfiguration.columns.evenClass) {
+						this.alternateColumns(table, classConfiguration, true);
+					}
 				}
 			}
 		}
@@ -1321,7 +1347,7 @@ TableOperations = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-	},	
+	},
 	/*
 	 * Removes from rows/cells the counting classes of an counting style scheme
 	 *
@@ -1330,18 +1356,31 @@ TableOperations = HTMLArea.Plugin.extend({
 	 *
 	 * @return	void
 	 */
-	removeCountingClasses : function (table, removeClass) {
+	removeCountingClasses: function (table, removeClass) {
 		if (table) {
-			if (this.classesUrl && typeof(HTMLArea.classesCounting) === "undefined") {
-				this.getJavascriptFile(this.classesUrl);
-			}
-			var classConfiguration = HTMLArea.classesCounting[removeClass];
-			if (classConfiguration) {
-				if (classConfiguration.rows && classConfiguration.rows.rowClass) {
-					this.countRows(table, classConfiguration, true);
-				}
-				if (classConfiguration.columns && classConfiguration.columns.columnClass) {
-					this.countColumns(table, classConfiguration, true);
+			if (this.classesUrl && typeof(HTMLArea.classesCounting) === 'undefined') {
+				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
+					if (success) {
+						try {
+							if (typeof(HTMLArea.classesCounting) === 'undefined') {
+								eval(response.responseText);
+								this.appendToLog('removeCountingClasses', 'Javascript file successfully evaluated: ' + this.classesUrl);
+							}
+							this.removeCountingClasses(table, removeClass);
+						} catch(e) {
+							this.appendToLog('removeCountingClasses', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
+						}
+					}
+				});
+			} else {
+				var classConfiguration = HTMLArea.classesCounting[removeClass];
+				if (classConfiguration) {
+					if (classConfiguration.rows && classConfiguration.rows.rowClass) {
+						this.countRows(table, classConfiguration, true);
+					}
+					if (classConfiguration.columns && classConfiguration.columns.columnClass) {
+						this.countColumns(table, classConfiguration, true);
+					}
 				}
 			}
 		}
@@ -1897,19 +1936,26 @@ TableOperations = HTMLArea.Plugin.extend({
 		var itemsConfig = [];
 		var languageObject = this.getPluginInstance('Language');
 		if (this.removedProperties.indexOf('language') == -1 && this.getButton('Language')) {
-			var languageStore = new Ext.data.ArrayStore({
-				autoDestroy:  true,
-				fields: [ { name: 'text'}, { name: 'value'} ],
-				data: this.getDropDownConfiguration('Language').options
-			});
 			var selectedLanguage = !Ext.isEmpty(element) ? languageObject.getLanguageAttribute(element) : 'none';
-			if (selectedLanguage !== 'none') {
-				languageStore.removeAt(0);
-				languageStore.insert(0, new languageStore.recordType({
-					text: languageObject.localize('Remove language mark'),
-					value: 'none'
-				}));
+			function initLanguageStore (store) {
+				if (selectedLanguage !== 'none') {
+					store.removeAt(0);
+					store.insert(0, new store.recordType({
+						text: languageObject.localize('Remove language mark'),
+						value: 'none'
+					}));
+				}
 			}
+			var languageStore = new Ext.data.JsonStore({
+				autoDestroy:  true,
+				autoLoad: true,
+				root: 'options',
+				fields: [ { name: 'text'}, { name: 'value'} ],
+				url: this.getDropDownConfiguration('Language').dataUrl,
+				listeners: {
+					load: initLanguageStore
+				}
+			});
 			itemsConfig.push(Ext.apply({
 				xtype: 'combo',
 				fieldLabel: this.localize('Language'),

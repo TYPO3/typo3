@@ -102,28 +102,23 @@ Language = HTMLArea.Plugin.extend({
 		 */
 		var buttonId = 'Language';
 		if (this.buttonsConfiguration[buttonId.toLowerCase()] && this.buttonsConfiguration[buttonId.toLowerCase()].dataUrl) {
-				// Load the options var
-			var optionsData = this.getJavascriptFile(this.buttonsConfiguration[buttonId.toLowerCase()].dataUrl, "noEval");
-			if (optionsData) {
-				eval(optionsData);
+			var dropDownConfiguration = {
+				id		: buttonId,
+				tooltip		: this.localize(buttonId + '-Tooltip'),
+				storeUrl	: this.buttonsConfiguration[buttonId.toLowerCase()].dataUrl,
+				action		: 'onChange'
+			};
+			if (this.buttonsConfiguration.language) {
+				dropDownConfiguration.width = this.buttonsConfiguration.language.width ? parseInt(this.buttonsConfiguration.language.width, 10) : 200;
+				if (this.buttonsConfiguration.language.listWidth) {
+					dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.language.listWidth, 10);
+				}
+				if (this.buttonsConfiguration.language.maxHeight) {
+					dropDownConfiguration.maxHeight = parseInt(this.buttonsConfiguration.language.maxHeight, 10);
+				}
 			}
+			this.registerDropDown(dropDownConfiguration);
 		}
-		var dropDownConfiguration = {
-			id		: buttonId,
-			tooltip		: this.localize(buttonId + '-Tooltip'),
-			options		: options,
-			action		: 'onChange'
-		};
-		if (this.buttonsConfiguration.language) {
-			dropDownConfiguration.width = this.buttonsConfiguration.language.width ? parseInt(this.buttonsConfiguration.language.width, 10) : 200;
-			if (this.buttonsConfiguration.language.listWidth) {
-				dropDownConfiguration.listWidth = parseInt(this.buttonsConfiguration.language.listWidth, 10);
-			}
-			if (this.buttonsConfiguration.language.maxHeight) {
-				dropDownConfiguration.maxHeight = parseInt(this.buttonsConfiguration.language.maxHeight, 10);
-			}
-		}
-		this.registerDropDown(dropDownConfiguration);
 		return true;
 	},
 	/*
@@ -137,7 +132,7 @@ Language = HTMLArea.Plugin.extend({
 	/*
 	 * This function gets called when the editor is generated
 	 */
-	onGenerate : function () {
+	onGenerate: function () {
 			// Add rules to the stylesheet for language mark highlighting
 			// Model: body.htmlarea-show-language-marks *[lang=en]:before { content: "en: "; }
 			// Works in IE8, but not in earlier versions of IE
@@ -160,8 +155,12 @@ Language = HTMLArea.Plugin.extend({
 				return true;
 			});
 		}
+			// Load the language dropdown
+		this.getButton('Language').getStore().load({
+			callback: function () { this.getButton('Language').setValue('none'); },
+			scope: this
+		});
 	},
-
 	/*
 	 * This function gets called when a button was pressed.
 	 *

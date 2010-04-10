@@ -176,11 +176,10 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 		}
 			// Setting the JS list of options
 		$itemsJSArray = array();
-		foreach ($items as $option) {
-			$itemsJSArray[] = $option;
+		foreach ($items as $name => $option) {
+			$itemsJSArray[] = array('text' => $option[0], 'value' => $option[1]);
 		}
-		$itemsJSArray = 'var options = ' . json_encode($itemsJSArray) . ';';
-		
+		$itemsJSArray = json_encode(array('options' => $itemsJSArray));
 			// Adding to button JS configuration
 		if (!is_array( $this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$buttonId . '.'])) {
 			$configureRTEInJavascriptString .= '
@@ -190,8 +189,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $buttonId . '.dataUrl = \'' . $this->htmlAreaRTE->writeTemporaryFile('', $buttonId . '_'. $this->htmlAreaRTE->contentLanguageUid, 'js', $itemsJSArray) . '\';';
 		return $configureRTEInJavascriptString;
 	}
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/SelectFont/class.tx_rtehtmlarea_selectfont.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/SelectFont/class.tx_rtehtmlarea_selectfont.php']);
 }

@@ -177,7 +177,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 		$whereClause .= t3lib_BEfunc::deleteClause($tableB);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $tableAB, $whereClause);
 		while ($acronymRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$item = array($GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset), $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset), $GLOBALS['LANG']->csConvObj->utf8_encode(strtolower($acronymRow['lg_iso_2']), $charset) . ($acronymRow['lg_country_iso_2'] ? ('-' . $acronymRow['lg_country_iso_2']) : ''));
+			$item = array('term' => $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['term'], $charset), 'abbr' => $GLOBALS['LANG']->csConvObj->utf8_encode($acronymRow['acronym'], $charset), 'language' => $GLOBALS['LANG']->csConvObj->utf8_encode(strtolower($acronymRow['lg_iso_2']), $charset) . ($acronymRow['lg_country_iso_2'] ? ('-' . $acronymRow['lg_country_iso_2']) : ''));
 			if ($acronymRow['type'] == 1) {
 				$acronymArray[] = $item;
 			} else if ($acronymRow['type'] == 2) {
@@ -186,10 +186,9 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlareaapi {
 		}
 		$this->acronymIndex = count($acronymArray);
 		$this->abbreviationIndex = count($abbrArray);
-		return 'var acronyms = ' . json_encode($acronymArray) . ';' . 'var abbreviations = ' . json_encode($abbrArray) . ';';
+		return json_encode(array('abbr' => $abbrArray, 'acronym' => $acronymArray));
 	}
 }
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Acronym/class.tx_rtehtmlarea_acronym.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Acronym/class.tx_rtehtmlarea_acronym.php']);
 }

@@ -486,10 +486,9 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions  . '</select>\';
 				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $LANG->getLL('notSet') . '</option><option value="none">' . $LANG->getLL('nonFloating') . '</option><option value="left">' . $LANG->getLL('left') . '</option><option value="right">' . $LANG->getLL('right') . '</option></select>\';
 				if (plugin.getButton("Language")) {
-					var languageOptions = plugin.getDropDownConfiguration("Language").options;
 					var languageSelector = \'<select id="iLang" name="iLang">\';
-					Ext.each(languageOptions, function (option) {
-						languageSelector +=\'<option value="\' + option[1] + \'">\' + option[0] + \'</option>\';
+					plugin.getButton("Language").getStore().each(function (record) {
+						languageSelector +=\'<option value="\' + record.get("value") + \'">\' + record.get("text") + \'</option>\';
 					});
 					languageSelector += \'</select>\';
 				}

@@ -1,6 +1,7 @@
 2010-04-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #14051: htmlArea RTE: Streamline the RTE loading process
+	* Added feature #14057: htmlArea RTE: Extjize the RTE ajax requests.
 
 2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
 

@@ -30,19 +30,15 @@
  * TYPO3 SVN ID: $Id$
  */
 SelectFont = HTMLArea.Plugin.extend({
-		
-	constructor : function(editor, pluginName) {
+	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function (editor) {
-
+	configurePlugin: function (editor) {
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
 		this.disablePCexamples = this.editorConfiguration.disablePCexamples;
-
 			// Font formating will use the style attribute
 		if (this.getPluginInstance("TextStyle")) {
 			this.getPluginInstance("TextStyle").addAllowedAttribute("style");
@@ -81,19 +77,11 @@ SelectFont = HTMLArea.Plugin.extend({
 		 */
 		Ext.each(this.dropDownList, function (dropDown) {
 			var buttonId = dropDown[0];
-				// Load the options var
-			var options = [];
-			if (this.buttonsConfiguration[dropDown[2]] && this.buttonsConfiguration[dropDown[2]].dataUrl) {
-				var optionsData = this.getJavascriptFile(this.buttonsConfiguration[dropDown[2]].dataUrl, "noEval");
-				if (optionsData) {
-					eval(optionsData);
-				}
-			}
 			var dropDownConfiguration = {
 				id: buttonId,
 				tooltip: this.localize(buttonId.toLowerCase()),
-				options: options,
-				action: "onChange",
+				storeUrl: this.buttonsConfiguration[dropDown[2]].dataUrl,
+				action: 'onChange',
 				tpl: this.disablePCexamples ? '' : '<tpl for="."><div ext:qtip="{value}" style="' + dropDown[3] + '" class="x-combo-list-item">{text}</div></tpl>'
 			};
 			if (this.buttonsConfiguration[dropDown[2]]) {
@@ -112,29 +100,38 @@ SelectFont = HTMLArea.Plugin.extend({
 		}, this);
 		return true;
 	 },
-	 
 	/*
 	 * The list of buttons added by this plugin
 	 */
-	dropDownList : [
+	dropDownList: [
 		['FontName', null, 'fontstyle', 'font-family:{value};text-align:left;font-size:11px;'],
 		['FontSize', null, 'fontsize', 'text-align:left;font-size:{value};']
 	],
-	
 	/*
 	 * Conversion object: button name to corresponding style property name
 	 */
-	styleProperty : {
+	styleProperty: {
 		FontName	: "fontFamily",
 		FontSize	: "fontSize"
 	},
-	
 	/*
 	 * Conversion object: button name to corresponding css property name
 	 */
-	cssProperty : {
+	cssProperty: {
 		FontName	: "font-family",
 		FontSize	: "font-size"
+	},
+	/*
+	 * This funcion is invoked by the editor when it is being generated
+	 */
+	onGenerate: function () {
+			// Load the dropdowns
+		Ext.each(this.dropDownList, function (dropDown) {
+			this.getButton(dropDown[0]).getStore().load({
+				callback: function () { this.getButton(dropDown[0]).setValue('none'); },
+				scope: this
+			})
+		}, this);
 	},
 	/*
 	 * This function gets called when some font style or font size was selected from the dropdown lists
@@ -194,7 +191,7 @@ SelectFont = HTMLArea.Plugin.extend({
 	 *
 	 * @return	void
 	 */
-	setStyle : function (element, buttonId, value) {
+	setStyle: function (element, buttonId, value) {
 		element.style[this.styleProperty[buttonId]] = (value && value !== 'none') ? value : '';
 			// In IE, we need to remove the empty attribute in order to unset it
 		if (HTMLArea.is_ie && (!value || value == 'none')) {
@@ -211,7 +208,6 @@ SelectFont = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-
 	/*
 	 * This function gets called when the toolbar is updated
 	 */
@@ -223,8 +219,8 @@ SelectFont = HTMLArea.Plugin.extend({
 			var value = parentElement.style[this.styleProperty[select.itemId]];
 			if (!value) {
 				if (HTMLArea.is_gecko) {
-					if (editor._doc.defaultView.getComputedStyle(parentElement, null)) {
-						value = editor._doc.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
+					if (editor.document.defaultView.getComputedStyle(parentElement, null)) {
+						value = editor.document.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
 					}
 				} else {
 					value = parentElement.currentStyle[this.styleProperty[select.itemId]];
@@ -241,7 +237,7 @@ SelectFont = HTMLArea.Plugin.extend({
 			}
 			if (index != -1) {
 				select.setValue(store.getAt(index).get('value'));
-			} else {
+			} else if (store.getCount()) {
 				select.setValue('none');
 			}
 			select.setDisabled(!endPointsInSameBlock || (selectionEmpty && /^body$/i.test(parentElement.nodeName)));

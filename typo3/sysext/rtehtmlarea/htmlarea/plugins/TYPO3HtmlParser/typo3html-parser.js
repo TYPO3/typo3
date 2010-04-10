@@ -91,18 +91,23 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 			editor.cleanAppleStyleSpans(editor._doc.body);
 		}
 		var bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
+		var url = this.parseHtmlModulePath;
 		var content = {
-			editorNo : this.editorNumber,
+			editorNo : this.editorId,
 			content	 : editor.getInnerHTML()
 		};
-			// Server-based synchronous pasted content cleaning
-		this.postData(	this.parseHtmlModulePath,
+			// Server-based cleaning of pasted content
+		this.postData(	url,
 				content,
-				function(response) {
-					editor.setHTML(response);
-					editor.selectRange(editor.moveToBookmark(bookmark));
-				},
-				false
+				function (options, success, response) {
+					if (success) {
+						editor.setHTML(response.responseText);
+						editor.selectRange(editor.moveToBookmark(bookmark));
+						this.appendToLog('clean', 'Post request to ' + url + ' successful. Server response: ' + response.responseText);
+					} else {
+						this.appendToLog('clean', 'Post request to ' + url + ' failed. Server reported ' + response.status);
+					}
+				}
 		);
 	},
 	/*

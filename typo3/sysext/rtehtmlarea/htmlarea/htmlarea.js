@@ -37,7 +37,9 @@
 if (typeof(HTMLArea) == 'undefined') {
 	// Establish HTMLArea name space
 Ext.namespace('HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color', 'Ext.ux.form', 'Ext.ux.menu', 'Ext.ux.Toolbar');
-	// Establish some constants
+/***************************************************
+ *  CONSTANTS
+ ***************************************************/
 Ext.apply(HTMLArea, {
 		// Browser identification
 	is_gecko	: Ext.isGecko || Ext.isOpera || Ext.isWebKit,
@@ -93,65 +95,6 @@ HTMLArea.init = function() {
 	HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + HTMLArea.editorUrl);
 	HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + HTMLArea.editorCSS);
 	HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + HTMLArea.editedContentCSS);
-};
-/***************************************************
- *  SCRIPT LOADING
- ***************************************************/
-/*
- * Get a script using asynchronous XMLHttpRequest
- */
-HTMLArea.MSXML_XMLHTTP_PROGIDS = new Array('Msxml2.XMLHTTP.5.0', 'Msxml2.XMLHTTP.4.0', 'Msxml2.XMLHTTP.3.0', 'Msxml2.XMLHTTP', 'Microsoft.XMLHTTP');
-HTMLArea.XMLHTTPResponseHandler = function (request, url) {
-	return (function() {
-		if (request.readyState == 4) {
-			if (request.status == 200) {
-				try {
-					eval(request.responseText);
-				} catch (e) {
-					HTMLArea._appendToLog('ERROR [HTMLArea::getScript]: Unable to get script ' + url + ': ' + e);
-				}
-			} else {
-				HTMLArea._appendToLog('ERROR [HTMLArea::getScript]: Unable to get ' + url + ' . Server reported ' + request.status);
-			}
-		}
-	});
-};
-HTMLArea._getScript = function (i,asynchronous,url) {
-	if (typeof(asynchronous) == 'undefined') {
-		var asynchronous = true;
-	}
-	if (window.XMLHttpRequest) {
-		var request = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		var success = false;
-		for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
-			try {
-				var request = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
-				success = true;
-			} catch (e) { }
-		}
-		if (!success) {
-			return false;
-		}
-	}
-	if (request) {
-		HTMLArea._appendToLog('[HTMLArea::getScript]: Requesting script ' + url);
-		request.open('GET', url, asynchronous);
-		if (asynchronous) {
-			request.onreadystatechange = HTMLArea.XMLHTTPResponseHandler(request, url);
-		}
-		if (window.XMLHttpRequest) {
-			request.send(null);
-		} else if (window.ActiveXObject) {
-			request.send();
-		}
-		if (!asynchronous) {
-			return (request.status == 200 ? request.responseText : '');
-		}
-		return true;
-	} else {
-		return false;
-	}
 };
 /***************************************************
  *  EDITOR CONFIGURATION
@@ -219,6 +162,7 @@ HTMLArea.Config = function (editorId) {
 			submitValue: false,
 			forceSelection: true,
 			mode: 'local',
+			storeRoot: 'options',
 			storeFields: [ { name: 'text'}, { name: 'value'}],
 			valueField: 'value',
 			displayField: 'text',
@@ -257,12 +201,24 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 			// Set some additional properties
 		switch (config.xtype) {
 			case 'htmlareacombo':
-					// Create combo store
-				config.store = new Ext.data.ArrayStore({
-					autoDestroy:  true,
-					fields: config.storeFields,
-					data: config.options
-				});
+				if (config.options) {
+						// Create combo array store
+					config.store = new Ext.data.ArrayStore({
+						autoDestroy:  true,
+						fields: config.storeFields,
+						data: config.options
+					});
+				} else if (config.storeUrl) {
+					config.mode = 'remote';
+						// Create combo json store
+					config.store = new Ext.data.JsonStore({
+						autoDestroy:  true,
+						autoLoad: true,
+						root: config.storeRoot,
+						fields: config.storeFields,
+						url: config.storeUrl
+					});
+				}
 				config.hideLabel = Ext.isEmpty(config.fieldLabel);
 				config.helpTitle = config.tooltip;
 				break;
@@ -3644,73 +3600,6 @@ Ext.ux.form.ColorPaletteField = Ext.extend(Ext.form.TriggerField, {
 	}
 });
 Ext.reg('colorpalettefield', Ext.ux.form.ColorPaletteField);
-/*
- * Use XML HTTPRequest to post some data back to the server and do something
- * with the response (asyncronously or syncronously); this is used by such things as the spellchecker update personal dict function
- */
-HTMLArea._postback = function(url, data, handler, addParams, charset, asynchronous) {
-	if (typeof(charset) == "undefined") var charset = "utf-8";
-	if (typeof(asynchronous) == "undefined") {
-		var asynchronous = true;
-	}
-	var req = null;
-	if (window.XMLHttpRequest) req = new XMLHttpRequest();
-		else if (window.ActiveXObject) {
-			var success = false;
-			for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
-				try {
-					req = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
-					success = true;
-				} catch (e) { }
-			}
-		}
-
-	if(req) {
-		var content = '';
-		for (var i in data) {
-			content += (content.length ? '&' : '') + i + '=' + encodeURIComponent(data[i]);
-		}
-		content += (content.length ? '&' : '') + 'charset=' + charset;
-		if (typeof(addParams) != "undefined") content += addParams;
-
-		function callBack() {
-			if (req.readyState == 4) {
-				if (req.status == 200) {
-					if (typeof(handler) == "function") handler(req.responseText, req);
-					HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
-				} else {
-					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + url + " . Server reported " + req.statusText);
-				}
-			}
-		}
-		if (asynchronous) {
-			req.onreadystatechange = callBack;
-		}
-		function sendRequest() {
-			HTMLArea._appendToLog("[HTMLArea::_postback]: Request: " + content);
-			req.send(content);
-		}
-
-		req.open('POST', url, asynchronous);
-		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		if (!asynchronous) {
-			HTMLArea.pendingSynchronousXMLHttpRequest = true;
-			sendRequest();
-			if (req.status == 200) {
-				if (typeof(handler) == "function") {
-					handler(req.responseText, req);
-				}
-				HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
-			} else {
-				HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + url + " . Server reported " + req.statusText);
-			}
-			HTMLArea.pendingSynchronousXMLHttpRequest = false;
-		} else {
-			window.setTimeout(sendRequest, 500);
-		}
-	}
-};
-
 /**
  * Internet Explorer returns an item having the _name_ equal to the given id, even if it's not having any id.
  * This way it can return a different form field even if it's not a textarea.  This works around the problem by
@@ -3887,6 +3776,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	constructor : function(editor, pluginName) {
 		this.editor = editor;
 		this.editorNumber = editor.editorId;
+		this.editorId = editor.editorId;
 		this.editorConfiguration = editor.config;
 		this.name = pluginName;
 		try {
@@ -4184,7 +4074,9 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	onUpdateToolbar: Ext.emptyFn,
 	/**
-	 * Deprecated as of TYPO3 4.4
+	 ***********************************************
+	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+	 ***********************************************
 	 * Register the key handler to the editor keyMap in onGenerate function
 	 * The keyPress event handler
 	 * This function may be defined by the plugin subclass.
@@ -4219,12 +4111,15 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	onGenerate: Ext.emptyFn,
 	/**
 	 * Make function reference in order to avoid memory leakage in IE
+	 ***********************************************
+	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+	 ***********************************************
 	 *
 	 * @param	string		functionName: the name of the plugin function to be invoked
 	 *
 	 * @return	function	function definition invoking the specified function of the plugin
 	 */
-	makeFunctionReference : function (functionName) {
+	makeFunctionReference: function (functionName) {
 		var self = this;
 		return (function(arg1, arg2, arg3) {
 			return (self[functionName](arg1, arg2, arg3));});
@@ -4237,53 +4132,76 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	string		the localization of the label
 	 */
-	localize : function (label) {
+	localize: function (label) {
 		return this.I18N[label] || HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label];
 	},
-
 	/**
-	 * Load a Javascript file synchronously
+	 * Load a Javascript file asynchronously
 	 *
 	 * @param	string		url: url of the file to load
+	 * @param	function	callBack: the callBack function
 	 *
-	 * @return	boolean		true on success
+	 * @return	boolean		true on success of the request submission
 	 */
-	getJavascriptFile : function (url, noEval) {
-		var script = HTMLArea._getScript(0, false, url);
-		if (script) {
-			if (noEval) {
-				return script;
-			} else {
-				try {
-					eval(script);
-					return true;
-				} catch(e) {
-					this.appendToLog("getJavascriptFile", "Error evaluating contents of Javascript file: " + url);
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
+	getJavascriptFile: function (url, callback) {
+		var success = false;
+		this.appendToLog('getJavascriptFile', 'Requesting script ' + url);
+		Ext.Ajax.request({
+			method: 'GET',
+			url: url,
+			callback: callback,
+			success: function (response) {
+				success = true;
+			},
+			failure: function (response) {
+				this.appendToLog('getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + response.status);
+			},
+			scope: this
+		});
+		return success;
 	},
-
 	/**
 	 * Post data to the server
 	 *
 	 * @param	string		url: url to post data to
 	 * @param	object		data: data to be posted
-	 * @param	function	handler: function that will handle the response returned by the server
-	 * @param	boolean		asynchronous: flag indicating if the request should processed asynchronously or not
+	 * @param	function	callback: function that will handle the response returned by the server
 	 *
 	 * @return	boolean		true on success
 	 */
-	 postData : function (url, data, handler, asynchronous) {
-	 	 if (typeof(asynchronous) == "undefined") {
-	 	 	 var asynchronous = true;
-	 	 }
-		 HTMLArea._postback(url, data, handler, this.editorConfiguration.RTEtsConfigParams, (this.editorConfiguration.typo3ContentCharset ? this.editorConfiguration.typo3ContentCharset : "utf-8"), asynchronous);
+	 postData: function (url, data, callback) {
+		var success = false;
+		data.charset = this.editorConfiguration.typo3ContentCharset ? this.editorConfiguration.typo3ContentCharset : 'utf-8';
+		var params = '';
+		Ext.iterate(data, function (parameter, value) {
+			params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(value);
+		});
+		params += this.editorConfiguration.RTEtsConfigParams;
+		this.appendToLog('postData', 'Posting to ' + url + '. Data: ' + params);
+		Ext.Ajax.request({
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			url: url,
+			params: params,
+			callback: Ext.isFunction(callback) ? callback: function (options, success, response) {
+				if (success) {
+					this.appendToLog('postData', 'Post request to ' + url + ' successful. Server response: ' + response.responseText);
+				} else {
+					this.appendToLog('postData', 'Post request to ' + url + ' failed. Server reported ' + response.status);
+				}
+			},
+			success: function (response) {
+				success = true;
+			},
+			failure: function (response) {
+				this.appendToLog('postData', 'Unable to post ' + url + ' . Server reported ' + response.status);
+			},
+			scope: this
+		});
+		return success;
 	 },
-
 	/**
 	 ***********************************************
 	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
