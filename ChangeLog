@@ -1,8 +1,9 @@
 2010-04-10  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added feature #13948: Hookrequest - tslib_fe pre/post process for settingLanguage() (thanks to Tolleiv Nietsch)
 	* Added feature #13947: Hookrequest - tslib_menu should provide hook for further filtering (thanks to Tolleiv Nietsch)
 	* Added feature #13952: Hookrequest - t3lib_page::getPageOverlay (thanks to Tolleiv Nietsch)
-	* Fixed bug #485: Hookrequest for ~ TemplaVoila unlink doesn't work for Non-Admins (thanks to Tolleiv Nietsch)
+	* Added feature #485: Hookrequest for ~ TemplaVoila unlink doesn't work for Non-Admins (thanks to Tolleiv Nietsch)
 
 2010-04-10  Stanislas Rolland  <typo3@sjbr.ca>
 
