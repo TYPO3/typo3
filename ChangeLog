@@ -1,5 +1,6 @@
 2010-04-10  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added feature #14041: impexp: Add Hooks
 	* Added feature #13949: Hookrequest - alt_doc::makeEditForm() to enable further access-restrictions (thanks to Tolleiv Nietsch)
 	* Added feature #13948: Hookrequest - tslib_fe pre/post process for settingLanguage() (thanks to Tolleiv Nietsch)
 	* Added feature #13947: Hookrequest - tslib_menu should provide hook for further filtering (thanks to Tolleiv Nietsch)

@@ -1196,7 +1196,7 @@ class tx_impexp {
 				// $pageRecords is a copy of the pages array in the imported file. Records here are unset one by one when the addSingle function is called.
 			$pageRecords = $this->dat['header']['records']['pages'];
 			$this->import_data = array();
-#debug($pageRecords);
+
 				// First add page tree if any
 			if (is_array($this->dat['header']['pagetree']))	{
 				$pagesFromTree = $this->flatInversePageTree($this->dat['header']['pagetree']);
@@ -1208,7 +1208,7 @@ class tx_impexp {
 					unset($pageRecords[$uid]);
 				}
 			}
-#debug($pageRecords);
+
 				// Then add all remaining pages not in tree on root level:
 			if (count($pageRecords))	{
 				$remainingPageUids = array_keys($pageRecords);
@@ -1219,10 +1219,16 @@ class tx_impexp {
 
 				// Now write to database:
 			$tce = $this->getNewTCE();
+			$this->callHook('before_writeRecordsPages', array(
+				'tce' => &$tce,
+				'data' => &$this->import_data,
+			));
 			$tce->suggestedInsertUids = $this->suggestedInsertUids;
 			$tce->start($this->import_data,Array());
 			$tce->process_datamap();
-#debug($this->import_data,'PAGES');
+			$this->callHook('after_writeRecordsPages', array(
+				'tce' => &$tce
+			));
 
 				// post-processing: Registering new ids (end all tcemain sessions with this)
 			$this->addToMapId($tce->substNEWwithIDs);
@@ -1248,9 +1254,7 @@ class tx_impexp {
 
 			// Get uid-pid relations and traverse them in order to map to possible new IDs
 		$pidsFromTree = $this->flatInversePageTree_pid($this->dat['header']['pagetree']);
-#debug($this->dat['header']['pagetree'],'pagetree');
-#debug($pidsFromTree,'$pidsFromTree');
-#debug($this->import_newId_pids,'import_newId_pids');
+
 		foreach($pidsFromTree as $origPid => $newPid)	{
 			if ($newPid>=0 && $this->dontIgnorePid('pages', $origPid))	{
 				if (substr($this->import_newId_pids[$origPid],0,3)==='NEW')	{	// If the page had a new id (because it was created) use that instead!
@@ -1268,10 +1272,17 @@ class tx_impexp {
 			// Execute the move commands if any:
 		if (count($cmd_data))	{
 			$tce = $this->getNewTCE();
+			$this->callHook('before_writeRecordsPagesOrder', array(
+				'tce' => &$tce,
+				'data' => &$cmd_data,
+			));
 			$tce->start(Array(),$cmd_data);
 			$tce->process_cmdmap();
+			$this->callHook('after_writeRecordsPagesOrder', array(
+				'tce' => &$tce,
+			));
 		}
-#debug($cmd_data,'$cmd_data');
+
 	}
 
 	/**
@@ -1307,11 +1318,17 @@ class tx_impexp {
 
 			// Now write to database:
 		$tce = $this->getNewTCE();
+		$this->callHook('before_writeRecordsRecords', array(
+			'tce' => &$tce,
+			'data' => &$this->import_data,
+		));
 		$tce->suggestedInsertUids = $this->suggestedInsertUids;
 		$tce->reverseOrder=1;	// Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
 		$tce->start($this->import_data,Array());
 		$tce->process_datamap();
-#debug($this->import_data,'RECORDS');
+		$this->callHook('after_writeRecordsRecords', array(
+			'tce' => &$tce,
+		));
 
 			// post-processing: Removing files and registering new ids (end all tcemain sessions with this)
 		$this->addToMapId($tce->substNEWwithIDs);
@@ -1338,11 +1355,9 @@ class tx_impexp {
 			$pagesFromTree = $this->flatInversePageTree($this->dat['header']['pagetree']);
 		} else $pagesFromTree = array();
 
-#debug($this->dat['header']['pid_lookup'],'pid_lookup');
 		if (is_array($this->dat['header']['pid_lookup']))	{
 			foreach($this->dat['header']['pid_lookup'] as $pid => $recList)	{
 				$newPid = isset($this->import_mapId['pages'][$pid]) ? $this->import_mapId['pages'][$pid] : $mainPid;
-#debug(array($pid,$newPid),'$pid / $newPid');
 
 				if (t3lib_div::testInt($newPid))	{
 					foreach($recList as $tableName => $uidList)	{
@@ -1352,7 +1367,7 @@ class tx_impexp {
 								if ($this->dontIgnorePid($tableName, $uid))	{
 									$cmd_data[$tableName][$uid]['move'] = $newPid;
 								} else {
-#debug($tableName.':'.$uid,'removed');
+									// nothing
 								}
 							}
 						}
@@ -1364,10 +1379,16 @@ class tx_impexp {
 			// Execute the move commands if any:
 		if (count($cmd_data))	{
 			$tce = $this->getNewTCE();
+			$this->callHook('before_writeRecordsRecordsOrder', array(
+				'tce' => &$tce,
+				'data' => &$cmd_data,
+			));
 			$tce->start(Array(),$cmd_data);
 			$tce->process_cmdmap();
+			$this->callHook('after_writeRecordsRecordsOrder', array(
+				'tce' => &$tce,
+			));
 		}
-#debug($cmd_data,'$cmd_data');
 	}
 
 	/**
@@ -1570,9 +1591,15 @@ class tx_impexp {
 		}
 		if (count($updateData))	{
 			$tce = $this->getNewTCE();
+			$this->callHook('before_setRelation', array(
+				'tce' => &$tce,
+				'data' => &$updateData,
+			));
 			$tce->start($updateData,Array());
 			$tce->process_datamap();
-#debug($updateData,'setRelations()');
+			$this->callHook('after_setRelations', array(
+				'tce' => &$tce,
+			));
 		}
 	}
 
@@ -1637,7 +1664,6 @@ class tx_impexp {
 		global $TCA;
 
 		$updateData = array();
-#debug($this->import_newId);
 			// import_newId contains a register of all records that was in the import memorys "records" key
 		reset($this->import_newId);
 		while(list($nId,$dat) = each($this->import_newId))	{
@@ -1647,8 +1673,6 @@ class tx_impexp {
 				// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid]))	{
 				$thisNewUid = t3lib_BEfunc::wsMapId($table,$this->import_mapId[$table][$uid]);
-#debug($thisNewUid,'$thisNewUid');
-#debug($this->dat['records'][$table.':'.$uid]['rels']);
 				if (is_array($this->dat['records'][$table.':'.$uid]['rels']))	{
 					reset($this->dat['records'][$table.':'.$uid]['rels']);
 					t3lib_div::loadTCA($table);
@@ -1663,17 +1687,11 @@ class tx_impexp {
 									// If there has been registered relations inside the flex form field, run processing on the content:
 								if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file']))	{
 									$origRecordRow = t3lib_BEfunc::getRecord($table,$thisNewUid,'*');	// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
-#debug(array($updateData[$table][$thisNewUid][$field]),'flexXML');
 									$conf = $TCA[$table]['columns'][$field]['config'];
 									if (is_array($origRecordRow) && is_array($conf) && $conf['type']==='flex')	{
-#debug($conf,'***');
 											// Get current data structure and value array:
 										$dataStructArray = t3lib_BEfunc::getFlexFormDS($conf, $origRecordRow, $table);
 										$currentValueArray = t3lib_div::xml2array($updateData[$table][$thisNewUid][$field]);
-#	debug($dataStructArray);
-#	debug($currentValueArray);
-#	debug($origRecordRow);
-#	debug($currentValueArray['data'],'BE');
 											// Do recursive processing of the XML data:
 										$iteratorObj = t3lib_div::makeInstance('t3lib_TCEmain');
 										$iteratorObj->callBackObj = $this;
@@ -1685,7 +1703,6 @@ class tx_impexp {
 													array($table,$thisNewUid,$field,$config),	// Parameters.
 													'remapListedDBRecords_flexFormCallBack'
 												);
-#debug($currentValueArray['data'],'AF');
 											// The return value is set as an array which means it will be processed by tcemain for file and DB references!
 										if (is_array($currentValueArray['data']))	{
 											$updateData[$table][$thisNewUid][$field] = $currentValueArray;
@@ -1700,9 +1717,15 @@ class tx_impexp {
 		}
 		if (count($updateData))	{
 			$tce = $this->getNewTCE();
+			$this->callHook('before_setFlexFormRelations', array(
+				'tce' => &$tce,
+				'data' => &$updateData,
+			));
 			$tce->start($updateData,Array());
 			$tce->process_datamap();
-#debug($updateData,'setFlexFormRelations()');
+			$this->callHook('after_setFlexFormRelations', array(
+				'tce' => &$tce,
+			));
 		}
 	}
 
@@ -1837,9 +1860,16 @@ class tx_impexp {
 
 			// Now write to database:
 		$tce = $this->getNewTCE();
+		$this->callHook('before_processSoftReferences', array(
+				'tce' => &$tce,
+				'data' => &$inData,
+			));
 		$tce->enableLogging = TRUE;
 		$tce->start($inData, Array());
 		$tce->process_datamap();
+		$this->callHook('after_processSoftReferences', array(
+			'tce' => &$tce,
+		));
 	}
 
 	/**
@@ -3281,7 +3311,20 @@ class tx_impexp {
 		return $this->fileProcObj;
 	}
 
-
+	/**
+	 * Call Hook
+	 *
+	 * @param string $name name of the hook
+	 * @param array $params array with params
+	 * @return void
+	 */
+	public function callHook($name, $params) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/impexp/class.tx_impexp.php'][$name])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/impexp/class.tx_impexp.php'][$name] as $hook) {
+				t3lib_div::callUserFunction($hook, $params, $this);
+			}
+		}
+	}
 
 
 
