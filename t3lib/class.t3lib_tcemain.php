@@ -757,7 +757,7 @@ class t3lib_TCEmain	{
 							$status = 'new';						// Yes new record, change $record_status to 'insert'
 						} else {	// Nope... $id is a number
 							$fieldArray = array();
-							$recordAccess = $this->checkRecordUpdateAccess($table,$id);
+							$recordAccess = $this->checkRecordUpdateAccess($table, $id, $data, $hookObjectsArr);
 							if (!$recordAccess)		{
 								$propArr = $this->getRecordProperties($table,$id);
 								$this->log($table,$id,2,0,1,"Attempt to modify record '%s' (%s) without permission. Or non-existing page.",2,array($propArr['header'],$table.':'.$id),$propArr['event_pid']);
@@ -5574,11 +5574,26 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 	 *
 	 * @param	string		Record table
 	 * @param	integer		Record UID
+	 * @param	array		Record data
+	 * @param	array		Hook objects
 	 * @return	boolean		Returns true if the user may update the record given by $table and $id
 	 */
-	function checkRecordUpdateAccess($table,$id)	{
+	function checkRecordUpdateAccess($table, $id, $data=false, &$hookObjectsArr = false) {
 		global $TCA;
-		$res = 0;
+		$res = NULL;
+		if (is_array($hookObjectsArr)) {
+			foreach($hookObjectsArr as $hookObj) {
+				if (method_exists($hookObj, 'checkRecordUpdateAccess')) {
+					$res = $hookObj->checkRecordUpdateAccess($table, $id, $data, $res, $this);
+				}
+			}
+		}
+		if($res === 1 || $res === 0) {
+			return $res;
+		} else {
+			$res = 0;
+		}
+
 		if ($TCA[$table] && intval($id)>0)	{
 			if (isset($this->recUpdateAccessCache[$table][$id]))	{	// If information is cached, return it
 				return $this->recUpdateAccessCache[$table][$id];

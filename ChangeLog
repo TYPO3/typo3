@@ -1,3 +1,7 @@
+2010-04-10  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #485: Hookrequest for ~ TemplaVoila unlink doesn't work for Non-Admins (thanks to Tolleiv Nietsch)
+
 2010-04-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #14051: htmlArea RTE: Streamline the RTE loading process
