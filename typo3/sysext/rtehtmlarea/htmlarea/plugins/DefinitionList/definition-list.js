@@ -113,7 +113,7 @@ DefinitionList = BlockElements.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.editor.focusEditor();
+		this.editor.focus();
 		var selection = editor._getSelection();
 		var range = editor._createRange(selection);
 		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;

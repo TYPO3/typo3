@@ -145,7 +145,7 @@ BlockStyle = HTMLArea.Plugin.extend({
 	 */
 	onChange : function (editor, combo, record, index) {
 		var className = combo.getValue();
-		this.editor.focusEditor();
+		this.editor.focus();
 		var blocks = this.getSelectedBlocks();
 		for (var k = 0; k < blocks.length; ++k) {
 			var parent = blocks[k];

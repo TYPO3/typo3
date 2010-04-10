@@ -57,7 +57,7 @@ HTMLArea.Editor.prototype._createRange = function(sel) {
 		var sel = this._getSelection();
 	}
 	if (sel.type.toLowerCase() == "none") {
-		this.focusEditor();
+		this.focus();
 	}
 	return sel.createRange();
 };
@@ -66,7 +66,7 @@ HTMLArea.Editor.prototype._createRange = function(sel) {
  * Select a node AND the contents inside the node
  */
 HTMLArea.Editor.prototype.selectNode = function(node) {
-	this.focusEditor();
+	this.focus();
 	this.forceRedraw();
 	var range = this._doc.body.createTextRange();
 	range.moveToElementText(node);
@@ -77,7 +77,7 @@ HTMLArea.Editor.prototype.selectNode = function(node) {
  * Select ONLY the contents inside the given node
  */
 HTMLArea.Editor.prototype.selectNodeContents = function(node, endPoint) {
-	this.focusEditor();
+	this.focus();
 	this.forceRedraw();
 	var range = this._doc.body.createTextRange();
 	range.moveToElementText(node);
@@ -91,7 +91,7 @@ HTMLArea.Editor.prototype.selectNodeContents = function(node, endPoint) {
  * Determine whether the node intersects the range
  */
 HTMLArea.Editor.prototype.rangeIntersectsNode = function(range, node) {
-	this.focusEditor();
+	this.focus();
 	var nodeRange = this._doc.body.createTextRange();
 	nodeRange.moveToElementText(node);
 	return (range.compareEndPoints("EndToStart", nodeRange) == -1 && range.compareEndPoints("StartToEnd", nodeRange) == 1) ||

@@ -266,7 +266,7 @@ BlockElements = HTMLArea.Plugin.extend({
 					if (HTMLArea.is_ie) {
 						element = "<" + element + ">";
 					}
-					this.editor.focusEditor();
+					this.editor.focus();
 					if (HTMLArea.is_safari && !this.editor._doc.body.hasChildNodes()) {
 						this.editor._doc.body.appendChild((this.editor._doc.createElement("br")));
 					}
@@ -294,7 +294,7 @@ BlockElements = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.editor.focusEditor();
+		this.editor.focus();
 		var selection = editor._getSelection();
 		var range = editor._createRange(selection);
 		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;

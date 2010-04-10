@@ -106,7 +106,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		this.editor.focusEditor();
+		this.editor.focus();
 		if (!this.applyToTable(buttonId, target)) {
 				// If we are not handling table cells
 			switch (buttonId) {

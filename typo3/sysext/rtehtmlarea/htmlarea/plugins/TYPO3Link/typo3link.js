@@ -192,7 +192,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	 */
 	createLink : function(theLink,cur_target,cur_class,cur_title,additionalValues) {
 		var selection, range, anchorClass, imageNode = null, addIconAfterLink;
-		this.editor.focusEditor();
+		this.editor.focus();
 		this.restoreSelection();
 		var node = this.editor.getParentElement();
 		var el = HTMLArea.getElementObject(node, "a");
@@ -251,7 +251,7 @@ TYPO3Link = HTMLArea.Plugin.extend({
 	* This function is called from the TYPO3 link popup and from the context menu.
 	*/
 	unLink : function() {
-		this.editor.focusEditor();
+		this.editor.focus();
 		this.restoreSelection();
 		var node = this.editor.getParentElement();
 		var el = HTMLArea.getElementObject(node, "a");

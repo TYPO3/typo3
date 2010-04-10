@@ -62,8 +62,8 @@ HTMLArea.Editor.prototype.emptySelection = function(selection) {
 	} else {
 		selection.removeAllRanges();
 	}
-	if (HTMLArea.is_opera) {
-		this._iframe.focus();
+	if (Ext.isOpera) {
+		this.focus();
 	}
 };
 
@@ -118,7 +118,7 @@ HTMLArea.Editor.prototype._createRange = function(sel) {
  * Select a node AND the contents inside the node
  */
 HTMLArea.Editor.prototype.selectNode = function(node, endPoint) {
-	this.focusEditor();
+	this.focus();
 	var selection = this._getSelection();
 	var range = this._doc.createRange();
 	if (node.nodeType == 1 && node.nodeName.toLowerCase() == "body") {
@@ -141,7 +141,7 @@ HTMLArea.Editor.prototype.selectNode = function(node, endPoint) {
  * Select ONLY the contents inside the given node
  */
 HTMLArea.Editor.prototype.selectNodeContents = function(node, endPoint) {
-	this.focusEditor();
+	this.focus();
 	var selection = this._getSelection();
 	var range = this._doc.createRange();
 	if (Ext.isWebKit) {
@@ -160,7 +160,6 @@ HTMLArea.Editor.prototype.selectNodeContents = function(node, endPoint) {
 	this.emptySelection(selection);
 	this.addRangeToSelection(selection, range);
 };
-
 HTMLArea.Editor.prototype.rangeIntersectsNode = function(range, node) {
 	var nodeRange = this._doc.createRange();
 	try {
@@ -181,7 +180,6 @@ HTMLArea.Editor.prototype.rangeIntersectsNode = function(range, node) {
 	return (range.compareBoundaryPoints(range.END_TO_START, nodeRange) == -1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == 1) ||
 		(range.compareBoundaryPoints(range.END_TO_START, nodeRange) == 1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == -1);
 };
-
 /*
  * Get the selection type
  */
@@ -413,7 +411,7 @@ HTMLArea.Editor.prototype.selectRange = function (range) {
  * Split the text node, if needed.
  */
 HTMLArea.Editor.prototype.insertNodeAtSelection = function(toBeInserted) {
-	this.focusEditor();
+	this.focus();
 	var range = this._createRange(this._getSelection());
 	range.deleteContents();
 	var toBeSelected = (toBeInserted.nodeType === 11) ? toBeInserted.lastChild : toBeInserted;
@@ -426,7 +424,7 @@ HTMLArea.Editor.prototype.insertNodeAtSelection = function(toBeInserted) {
  * Delete the current selection, if any.
  */
 HTMLArea.Editor.prototype.insertHTML = function(html) {
-	this.focusEditor();
+	this.focus();
 	var fragment = this._doc.createDocumentFragment();
 	var div = this._doc.createElement("div");
 	div.innerHTML = html;
@@ -539,7 +537,7 @@ HTMLArea.Editor.prototype._checkBackspace = function() {
  */
 HTMLArea.Editor.prototype._checkInsertP = function() {
 	var editor = this;
-	this.focusEditor();
+	this.focus();
 	var i, left, right, rangeClone,
 		sel	= this._getSelection(),
 		range	= this._createRange(sel),

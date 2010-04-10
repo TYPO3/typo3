@@ -162,7 +162,7 @@ TextStyle = HTMLArea.Plugin.extend({
 		var classNames = null;
 		var fullNodeSelected = false;
 		
-		this.editor.focusEditor();
+		this.editor.focus();
 		var selection = this.editor._getSelection();
 		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
 		var range = this.editor._createRange(selection);

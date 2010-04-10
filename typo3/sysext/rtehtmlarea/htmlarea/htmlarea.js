@@ -2778,6 +2778,9 @@ HTMLArea.Editor.prototype.forceRedraw = function() {
 
 /*
  * Focus the editor iframe window or the textarea.
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+ ***********************************************
  */
 HTMLArea.Editor.prototype.focusEditor = function() {
 	this.focus();
@@ -2786,6 +2789,9 @@ HTMLArea.Editor.prototype.focusEditor = function() {
 
 /*
  * Check if any plugin has an opened window
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+ ***********************************************
  */
 HTMLArea.Editor.prototype.hasOpenedWindow = function () {
 	for (var plugin in this.plugins) {

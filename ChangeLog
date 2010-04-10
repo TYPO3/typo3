@@ -14,6 +14,7 @@
 	* Added feature #14051: htmlArea RTE: Streamline the RTE loading process
 	* Added feature #14057: htmlArea RTE: Extjize the RTE ajax requests.
 	* Added feature #14058: htmlArea RTE: update some WebKit dom methods.
+	* Added feature #14059: htmlArea RTE: Cleanup use of editor focus method
 
 2010-04-09  Michael Stucki  <michael@typo3.org>
 

@@ -90,7 +90,7 @@ DefaultInline = HTMLArea.Plugin.extend({
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		editor.focusEditor();
+		editor.focus();
 		try {
 			editor._doc.execCommand(buttonId, false, null);
 		}
