@@ -706,6 +706,18 @@ class SC_alt_doc {
 								} else $hasAccess = 0;
 							}
 
+							if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck']))	{
+								foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] as $_funcRef)	{
+									$_params = array(
+										'table' 	=>	$table,
+										'uid' 		=> 	$theUid,
+										'cmd' 		=> 	$cmd,
+										'hasAccess' => $hasAccess
+									);
+									$hasAccess = t3lib_div::callUserFunction($_funcRef, $_params, $this);
+								}
+							}
+
 							// AT THIS POINT we have checked the access status of the editing/creation of records and we can now proceed with creating the form elements:
 
 							if ($hasAccess)	{
