@@ -138,6 +138,7 @@ class SC_mod_user_setup_index {
 		$columns = $GLOBALS['TYPO3_USER_SETTINGS']['columns'];
 		$beUserId = $BE_USER->user['uid'];
 		$storeRec = array();
+		$fieldList = $this->getFieldsFromShowItem();
 
 		if (is_array($d))	{
 
@@ -163,7 +164,11 @@ class SC_mod_user_setup_index {
 				$this->tempDataIsCleared = TRUE;
 			} else {
 					// save all submitted values if they are no array (arrays are with table=be_users) and exists in $GLOBALS['TYPO3_USER_SETTINGS'][columns]
+			
 				foreach($columns as $field => $config) {
+					if (!in_array($field, $fieldList)) {
+						continue;
+					}
 					if ($config['table']) {
 						if ($config['table'] == 'be_users' && !in_array($field, array('password', 'password2', 'email', 'realName', 'admin'))) {
 							if (!isset($config['access']) || $this->checkAccess($config) && $BE_USER->user[$field] !== $d['be_users'][$field]) {
@@ -464,18 +469,8 @@ class SC_mod_user_setup_index {
 		$code = array();
 		$i = 0;
 
-		$fieldList = $GLOBALS['TYPO3_USER_SETTINGS']['showitem'];
+		$fieldArray = $this->getFieldsFromShowItem();
 
-			// disable fields depended on settings
-		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
-			$fieldList = t3lib_div::rmFromList('edit_RTE', $fieldList);
-		}
-
-		if ($GLOBALS['BE_USER']->uc['interfaceSetup'] != 'backend_old') {
-			$fieldList = t3lib_div::rmFromList('noMenuMode', $fieldList);
-		}
-
-		$fieldArray = t3lib_div::trimExplode(',', $fieldList, true);
 		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? intval($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) : 0;
 
 
@@ -864,6 +859,28 @@ class SC_mod_user_setup_index {
 			$str = 'option_' . $str;
 		}
 		return t3lib_BEfunc::cshItem('_MOD_user_setup', $str, $this->doc->backPath, '|', false, 'margin-bottom:0px;');
+	}
+	
+	/**
+	 * Returns array with fields defined in $GLOBALS['TYPO3_USER_SETTINGS']['showitem']
+	 * 
+	 * @param	void
+	 * @return	array	array with fieldnames visible in form
+	 */
+	protected function getFieldsFromShowItem() {
+		$fieldList = $GLOBALS['TYPO3_USER_SETTINGS']['showitem'];
+
+			// disable fields depended on settings
+		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
+			$fieldList = t3lib_div::rmFromList('edit_RTE', $fieldList);
+}
+
+		if ($GLOBALS['BE_USER']->uc['interfaceSetup'] != 'backend_old') {
+			$fieldList = t3lib_div::rmFromList('noMenuMode', $fieldList);
+		}
+
+		$fieldArray = t3lib_div::trimExplode(',', $fieldList, TRUE);
+		return $fieldArray;
 	}
 }
 
