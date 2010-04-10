@@ -147,6 +147,7 @@ return array(
 	'tx_cms_mediaitems' => PATH_tslib . 'hooks/class.tx_cms_mediaitems.php',
 	'tx_cms_treelistcacheupdate' => PATH_tslib . 'hooks/class.tx_cms_treelistcacheupdate.php',
 	'tslib_content_cobjgetsinglehook' => PATH_tslib . 'interfaces/interface.tslib_content_cobjgetsinglehook.php',
+	'tslib_menu_filterMenuPagesHook' => PATH_tslib . 'interfaces/interface.tslib_menu_filterMenuPagesHook.php',
 	'tslib_content_getdatahook' => PATH_tslib . 'interfaces/interface.tslib_content_getdatahook.php',
 	'tslib_cobj_getimgresourcehook' => PATH_tslib . 'interfaces/interface.tslib_content_getimgresourcehook.php',
 	'tslib_content_stdwraphook' => PATH_tslib . 'interfaces/interface.tslib_content_stdwraphook.php',

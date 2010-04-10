@@ -947,6 +947,22 @@ class tslib_menu {
 	 */
 	function filterMenuPages(&$data,$banUidArray,$spacer)	{
 
+		$includePage = TRUE;
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/tslib/class.tslib_menu.php']['filterMenuPages'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+
+				if (!($hookObject instanceof tslib_menu_filterMenuPagesHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface tslib_menu_filterMenuPagesHook', 1269877402);
+				}
+
+				$includePage = $includePage && $hookObject->tslib_menu_filterMenuPagesHook($data, $banUidArray, $spacer, $this);
+			}
+		}
+		if (!$includePage) {
+			return FALSE;
+		}
+
 		if ($data['_SAFE'])	return TRUE;
 
 		$uid = $data['uid'];
