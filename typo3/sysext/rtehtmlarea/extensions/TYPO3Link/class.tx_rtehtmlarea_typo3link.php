@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -76,7 +76,7 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathLinkModule = "../../mod3/browse_links.php";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathLinkModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod3/browse_links.php";';
 
 			if ($this->htmlAreaRTE->is_FE()) {
 				$RTEProperties = $this->htmlAreaRTE->RTEsetup;
@@ -149,11 +149,8 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 			return $show;
 		}
 	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3Link/class.tx_rtehtmlarea_typo3link.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3Link/class.tx_rtehtmlarea_typo3link.php']);
 }
-
 ?>

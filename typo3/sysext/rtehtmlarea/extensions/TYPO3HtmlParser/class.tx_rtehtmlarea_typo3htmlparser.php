@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -90,11 +90,8 @@ class tx_rtehtmlarea_typo3htmlparser extends tx_rtehtmlareaapi {
 	public function applyToolbarConstraints($show) {
 		return array_unique(array_merge($show, t3lib_div::trimExplode(',', $this->pluginButtons)));
 	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3HtmlParser/class.tx_rtehtmlarea_typo3htmlparser.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3HtmlParser/class.tx_rtehtmlarea_typo3htmlparser.php']);
 }
-
 ?>

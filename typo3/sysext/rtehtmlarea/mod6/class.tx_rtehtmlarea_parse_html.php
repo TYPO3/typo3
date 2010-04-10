@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005-2009 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * Content parsing for htmlArea RTE
  *
- * @author	Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * $Id$  *
  */
@@ -138,14 +138,10 @@ class tx_rtehtmlarea_parse_html {
 				}
 			}
 		}
-
 		return $html;
 	}
-
 }
-
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod6/class.tx_rtehtmlarea_parse_html.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/mod6/class.tx_rtehtmlarea_parse_html.php']);
 }
-
 ?>

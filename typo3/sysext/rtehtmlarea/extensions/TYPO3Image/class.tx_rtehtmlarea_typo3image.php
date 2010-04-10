@@ -75,16 +75,12 @@ class tx_rtehtmlarea_typo3image extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.']["buttons"]["'. $button .'"] = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathImageModule = "../../mod4/select_image.php";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathImageModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod4/select_image.php";';
 		}
-
 		return $registerRTEinJavascriptString;
 	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3Image/class.tx_rtehtmlarea_typo3image.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TYPO3Image/class.tx_rtehtmlarea_typo3image.php']);
 }
-
 ?>

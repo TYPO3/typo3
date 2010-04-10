@@ -42,28 +42,24 @@ InsertSmiley = HTMLArea.Plugin.extend({
 	 */
 	configurePlugin : function(editor) {
 		this.pageTSConfiguration = this.editorConfiguration.buttons.emoticon;
-		this.editor_url = _typo3_host_url + _editor_url;
-		if (this.editor_url == '../') {
-			this.editor_url = document.URL.replace(/^(.*\/).*\/.*$/g, "$1");
-		}
 			// Default set of imoticons from Mozilla Thunderbird
 		this.icons = [
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_smile' + '.png', alt: ':-)', title: this.localize('mozilla_smile')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_frown' + '.png', alt: ':-(', title: this.localize('mozilla_frown')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_wink' + '.png', alt: ';-)', title: this.localize('mozilla_wink')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_tongueout' + '.png', alt: ':-P', title: this.localize('mozilla_tongueout')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_laughing' + '.png', alt: ':-D', title: this.localize('mozilla_laughing')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_embarassed' + '.png', alt: ':-[', title: this.localize('mozilla_embarassed')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_undecided' + '.png', alt: ':-\\', title: this.localize('mozilla_undecided')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_surprised' + '.png', alt: '=-O', title: this.localize('mozilla_surprised')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_kiss' + '.png', alt: ':-*', title: this.localize('mozilla_kiss')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_yell' + '.png', alt: '>:o', title: this.localize('mozilla_yell')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_cool' + '.png', alt: '8-)', title: this.localize('mozilla_cool')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_moneyinmouth' + '.png', alt: ':-$', title: this.localize('mozilla_moneyinmouth')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_footinmouth' + '.png', alt: ':-!', title: this.localize('mozilla_footinmouth')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_innocent' + '.png', alt: 'O:-)', title: this.localize('mozilla_innocent')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_cry' + '.png', alt: ':\'(', title: this.localize('mozilla_cry')},
-			{ file: this.editor_url + 'plugins/InsertSmiley/smileys/' + 'mozilla_sealed' + '.png', alt: ':-X', title: this.localize('mozilla_sealed')}
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_smile' + '.png', alt: ':-)', title: this.localize('mozilla_smile')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_frown' + '.png', alt: ':-(', title: this.localize('mozilla_frown')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_wink' + '.png', alt: ';-)', title: this.localize('mozilla_wink')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_tongueout' + '.png', alt: ':-P', title: this.localize('mozilla_tongueout')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_laughing' + '.png', alt: ':-D', title: this.localize('mozilla_laughing')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_embarassed' + '.png', alt: ':-[', title: this.localize('mozilla_embarassed')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_undecided' + '.png', alt: ':-\\', title: this.localize('mozilla_undecided')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_surprised' + '.png', alt: '=-O', title: this.localize('mozilla_surprised')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_kiss' + '.png', alt: ':-*', title: this.localize('mozilla_kiss')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_yell' + '.png', alt: '>:o', title: this.localize('mozilla_yell')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_cool' + '.png', alt: '8-)', title: this.localize('mozilla_cool')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_moneyinmouth' + '.png', alt: ':-$', title: this.localize('mozilla_moneyinmouth')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_footinmouth' + '.png', alt: ':-!', title: this.localize('mozilla_footinmouth')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_innocent' + '.png', alt: 'O:-)', title: this.localize('mozilla_innocent')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_cry' + '.png', alt: ':\'(', title: this.localize('mozilla_cry')},
+			{ file: HTMLArea.editorUrl + 'plugins/InsertSmiley/smileys/' + 'mozilla_sealed' + '.png', alt: ':-X', title: this.localize('mozilla_sealed')}
 		 ];
 		/*
 		 * Registering plugin "About" information

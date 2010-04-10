@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2009 Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -24,7 +24,7 @@
 /**
  * User Elements extension for htmlArea RTE
  *
- * @author Stanislas Rolland <stanislas.rolland(arobas)fructifor.ca>
+ * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * TYPO3 SVN ID: $Id$
  *
@@ -69,16 +69,12 @@ class tx_rtehtmlarea_userelements extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 			}
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathUserModule = "../../mod5/user.php";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.pathUserModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod5/user.php";';
 		}
-
 		return $registerRTEinJavascriptString;
 	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/UserElements/class.tx_rtehtmlarea_userelements.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/UserElements/class.tx_rtehtmlarea_userelements.php']);
 }
-
 ?>

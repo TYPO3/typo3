@@ -109,7 +109,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 			'Spell Checker',
 			this.getWindowDimensions(
 				{
-					width: 710,
+					width: 740,
 					height: 600
 				},
 				buttonId
@@ -207,7 +207,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 						name: 'contentframe',
 						tag: 'iframe',
 						cls: 'contentframe',
-						src: Ext.isGecko ? 'javascript:void(0);' : (Ext.isOpera ? _typo3_host_url : '') + _editor_url + 'popups/blank.html'
+						src: Ext.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
 					}
 				},{
 						// The original word
@@ -654,7 +654,7 @@ SpellChecker = HTMLArea.Plugin.extend({
 			select.setValue(store.getAt(0).get('value'));
 			select.fireEvent('select', select, store.getAt(0), 0);
 		} else {
-			this.dialog.find('itemId', 'replacement')[0].setVvalue(this.currentElement.innerHTML);
+			this.dialog.find('itemId', 'replacement')[0].setValue(this.currentElement.innerHTML);
 		}
 		return false;
 	},

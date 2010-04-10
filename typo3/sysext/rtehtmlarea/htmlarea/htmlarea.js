@@ -33,214 +33,126 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-	// Avoid re-starting on Ajax request
+	// Avoid re-initialization on AJax call when HTMLArea object was already initialized
 if (typeof(HTMLArea) == 'undefined') {
 	// Establish HTMLArea name space
 Ext.namespace('HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color', 'Ext.ux.form', 'Ext.ux.menu', 'Ext.ux.Toolbar');
+	// Establish some constants
+Ext.apply(HTMLArea, {
+		// Browser identification
+	is_gecko	: Ext.isGecko || Ext.isOpera || Ext.isWebKit,
+	is_ff2		: Ext.isGecko2,
+	is_ie		: Ext.isIE,
+	is_safari	: Ext.isWebKit,
+	is_chrome	: Ext.isChrome,
+	is_opera	: Ext.isOpera,
+		// Some operations require bug fixes provided by Opera 10 (Presto 2.2)
+	is_opera9	: Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1,
+		// Compile some regular expressions
+	RE_tagName		: /(<\/|<)\s*([^ \t\n>]+)/ig,
+	RE_head			: /<head>((.|\n)*?)<\/head>/i,
+	RE_body			: /<body>((.|\n)*?)<\/body>/i,
+	Reg_body		: new RegExp('<\/?(body)[^>]*>', 'gi'),
+	reservedClassNames	: /htmlarea/,
+	RE_email		: /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i,
+	RE_url			: /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i,
+	RE_blockTags		: /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/,
+	RE_closingTags		: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/,
+	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/
+});
 /***************************************************
- *  BROWSER IDENTIFICATION
+ *  TROUBLESHOOTING
  ***************************************************/
-HTMLArea.agt = navigator.userAgent.toLowerCase();
-HTMLArea.is_opera  = Ext.isOpera;
-// Some operations require bug fixes provided by Opera 10 (Presto 2.2)
-HTMLArea.is_opera9 = Ext.isOpera && HTMLArea.agt.indexOf("Presto/2.1") != -1;
-HTMLArea.is_ie = Ext.isIE;
-HTMLArea.is_safari = Ext.isWebKit;
-HTMLArea.is_gecko  = Ext.isGecko || Ext.isOpera || Ext.isWebKit;
-HTMLArea.is_ff2 = Ext.isGecko2;
-HTMLArea.is_chrome = Ext.isChrome;
-
-/*
- * A log for troubleshooting
- */
 HTMLArea._appendToLog = function(str){
-	if(HTMLArea._debugMode) {
-		var log = document.getElementById("HTMLAreaLog");
+	if (HTMLArea.enableDebugMode) {
+		var log = document.getElementById('HTMLAreaLog');
 		if(log) {
 			log.appendChild(document.createTextNode(str));
-			log.appendChild(document.createElement("br"));
+			log.appendChild(document.createElement('br'));
 		}
 	}
 };
 /***************************************************
- *  SCRIPTS LOADING PROCESS
+ *  HTMLArea INITIALIZATION
  ***************************************************/
-/*
- * Build stack of scripts to be loaded
- */
-HTMLArea.loadScript = function(url, pluginName, asynchronous) {
-	if (typeof(pluginName) == "undefined") {
-		var pluginName = "";
+HTMLArea.init = function() {
+		// Apply global configuration settings
+	Ext.apply(HTMLArea, RTEarea[0]);
+	Ext.applyIf(HTMLArea, {
+		editorSkin	: HTMLArea.editorUrl + 'skins/default/',
+		editorCSS	: HTMLArea.editorUrl + 'skins/default/htmlarea.css'
+	});
+	if (!Ext.isString(HTMLArea.editedContentCSS)) {
+		HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
 	}
-	if (typeof(asynchronous) == "undefined") {
-		var asynchronous = true;
-	}
-	if (Ext.isOpera) url = _typo3_host_url + url;
-	if (HTMLArea._compressedScripts && url.indexOf("compressed") == -1) url = url.replace(/\.js$/gi, "_compressed.js");
-	var scriptInfo = {
-		pluginName	: pluginName,
-		url		: url,
-		asynchronous	: asynchronous
-	};
-	HTMLArea._scripts.push(scriptInfo);
+		// Initialize pending request flag for Opera
+	HTMLArea.pendingSynchronousXMLHttpRequest = false;
+		// Localization of core script
+	HTMLArea.I18N = HTMLArea_langArray;
+	HTMLArea.isReady = true;
+	HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + HTMLArea.editorUrl);
+	HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + HTMLArea.editorCSS);
+	HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + HTMLArea.editedContentCSS);
 };
-
+/***************************************************
+ *  SCRIPT LOADING
+ ***************************************************/
 /*
  * Get a script using asynchronous XMLHttpRequest
  */
-HTMLArea.MSXML_XMLHTTP_PROGIDS = new Array("Msxml2.XMLHTTP.5.0", "Msxml2.XMLHTTP.4.0", "Msxml2.XMLHTTP.3.0", "Msxml2.XMLHTTP", "Microsoft.XMLHTTP");
-HTMLArea.XMLHTTPResponseHandler = function (i) {
+HTMLArea.MSXML_XMLHTTP_PROGIDS = new Array('Msxml2.XMLHTTP.5.0', 'Msxml2.XMLHTTP.4.0', 'Msxml2.XMLHTTP.3.0', 'Msxml2.XMLHTTP', 'Microsoft.XMLHTTP');
+HTMLArea.XMLHTTPResponseHandler = function (request, url) {
 	return (function() {
-		var url = HTMLArea._scripts[i].url;
-		if (HTMLArea._request[i].readyState != 4) return;
-		if (HTMLArea._request[i].status == 200) {
-			try {
-				eval(HTMLArea._request[i].responseText);
-				HTMLArea._scriptLoaded[i] = true;
-				i = null;
-			} catch (e) {
-				HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get script " + url + ": " + e);
+		if (request.readyState == 4) {
+			if (request.status == 200) {
+				try {
+					eval(request.responseText);
+				} catch (e) {
+					HTMLArea._appendToLog('ERROR [HTMLArea::getScript]: Unable to get script ' + url + ': ' + e);
+				}
+			} else {
+				HTMLArea._appendToLog('ERROR [HTMLArea::getScript]: Unable to get ' + url + ' . Server reported ' + request.status);
 			}
-		} else {
-			HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get " + url + " . Server reported " + HTMLArea._request[i].status);
 		}
 	});
 };
 HTMLArea._getScript = function (i,asynchronous,url) {
-	if (typeof(url) == "undefined") var url = HTMLArea._scripts[i].url;
-	if (typeof(asynchronous) == "undefined") var asynchronous = HTMLArea._scripts[i].asynchronous;
-	if (window.XMLHttpRequest) HTMLArea._request[i] = new XMLHttpRequest();
-		else if (window.ActiveXObject) {
-			var success = false;
-			for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
-				try {
-					HTMLArea._request[i] = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
-					success = true;
-				} catch (e) { }
-			}
-			if (!success) return false;
+	if (typeof(asynchronous) == 'undefined') {
+		var asynchronous = true;
+	}
+	if (window.XMLHttpRequest) {
+		var request = new XMLHttpRequest();
+	} else if (window.ActiveXObject) {
+		var success = false;
+		for (var k = 0; k < HTMLArea.MSXML_XMLHTTP_PROGIDS.length && !success; k++) {
+			try {
+				var request = new ActiveXObject(HTMLArea.MSXML_XMLHTTP_PROGIDS[k]);
+				success = true;
+			} catch (e) { }
 		}
-	var request = HTMLArea._request[i];
+		if (!success) {
+			return false;
+		}
+	}
 	if (request) {
-		HTMLArea._appendToLog("[HTMLArea::getScript]: Requesting script " + url);
-		request.open("GET", url, asynchronous);
-		if (asynchronous) request.onreadystatechange = HTMLArea.XMLHTTPResponseHandler(i);
-		if (window.XMLHttpRequest) request.send(null);
-			else if (window.ActiveXObject) request.send();
+		HTMLArea._appendToLog('[HTMLArea::getScript]: Requesting script ' + url);
+		request.open('GET', url, asynchronous);
+		if (asynchronous) {
+			request.onreadystatechange = HTMLArea.XMLHTTPResponseHandler(request, url);
+		}
+		if (window.XMLHttpRequest) {
+			request.send(null);
+		} else if (window.ActiveXObject) {
+			request.send();
+		}
 		if (!asynchronous) {
-			if (request.status == 200) return request.responseText;
-				else return '';
+			return (request.status == 200 ? request.responseText : '');
 		}
 		return true;
 	} else {
 		return false;
 	}
 };
-
-/*
- * Wait for the loading process to complete
- */
-HTMLArea.checkInitialLoad = function() {
-	var scriptsLoaded = true;
-	for (var i = HTMLArea._scripts.length; --i >= 0;) {
-		scriptsLoaded = scriptsLoaded && HTMLArea._scriptLoaded[i];
-	}
-	if(HTMLArea.loadTimer) window.clearTimeout(HTMLArea.loadTimer);
-	if (scriptsLoaded) {
-		HTMLArea.is_loaded = true;
-		HTMLArea._appendToLog("[HTMLArea::init]: All scripts successfully loaded.");
-		HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + _editor_url);
-		HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + _editor_CSS);
-		HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + _editor_edited_content_CSS);
-		if (window.ActiveXObject) {
-			for (var i = HTMLArea._scripts.length; --i >= 0;) {
-				HTMLArea._request[i].onreadystatechange = new Function();
-				HTMLArea._request[i] = null;
-			}
-		}
-	} else {
-		HTMLArea.loadTimer = window.setTimeout("HTMLArea.checkInitialLoad();", 200);
-		return false;
-	}
-};
-
-/*
- * Initial load
- */
-HTMLArea.init = function() {
-	if (typeof(_editor_url) != "string") {
-		window.setTimeout("HTMLArea.init();", 50);
-	} else {
-			// Set some basic paths
-			// Leave exactly one backslash at the end of _editor_url
-		_editor_url = _editor_url.replace(/\x2f*$/, '/');
-		if (typeof(_editor_skin) == "string") _editor_skin = _editor_skin.replace(/\x2f*$/, '/');
-			else _editor_skin = _editor_url + "skins/default/";
-		if (typeof(_editor_CSS) != "string") _editor_CSS = _editor_url + "skins/default/htmlarea.css";
-		if (typeof(_editor_edited_content_CSS) != "string") _editor_edited_content_CSS = _editor_skin + "htmlarea-edited-content.css";
-		if (typeof(_editor_lang) == "string") _editor_lang = _editor_lang ? _editor_lang.toLowerCase() : "en";
-		HTMLArea.editorCSS = _editor_CSS;
-			// Initialize pending request flag
-		HTMLArea.pendingSynchronousXMLHttpRequest = false;
-			// Set troubleshooting mode
-		HTMLArea._debugMode = false;
-		if (typeof(_editor_debug_mode) != "undefined") HTMLArea._debugMode = _editor_debug_mode;
-			// Using compressed scripts
-		HTMLArea._compressedScripts = false;
-		if (typeof(_editor_compressed_scripts) != "undefined") HTMLArea._compressedScripts = _editor_compressed_scripts;
-			// Localization of core script
-		HTMLArea.I18N = HTMLArea_langArray;
-			// Build array of scripts to be loaded
-		HTMLArea.is_loaded = false;
-		HTMLArea.loadTimer;
-		HTMLArea._scripts = [];
-		HTMLArea._scriptLoaded = [];
-		HTMLArea._request = [];
-		if (!Ext.isIE) HTMLArea.loadScript(RTEarea[0]["htmlarea-gecko"] ? RTEarea[0]["htmlarea-gecko"] : _editor_url + "htmlarea-gecko.js");
-		if (Ext.isIE) HTMLArea.loadScript(RTEarea[0]["htmlarea-ie"] ? RTEarea[0]["htmlarea-ie"] : _editor_url + "htmlarea-ie.js");
-		for (var i = 0, n = HTMLArea_plugins.length; i < n; i++) {
-			HTMLArea.loadScript(HTMLArea_plugins[i].url, "", HTMLArea_plugins[i].asynchronous);
-		}
-			// Get all the scripts
-		if (window.XMLHttpRequest || window.ActiveXObject) {
-			try {
-				var success = true;
-				for (var i = 0, n = HTMLArea._scripts.length; i < n && success; i++) {
-					if (HTMLArea._scripts[i].asynchronous) {
-						success = success && HTMLArea._getScript(i);
-					} else {
-						try {
-							eval(HTMLArea._getScript(i));
-							HTMLArea._scriptLoaded[i] = true;
-						} catch (e) {
-							HTMLArea._appendToLog("ERROR [HTMLArea::getScript]: Unable to get script " + url + ": " + e);
-						}
-					}
-				}
-			} catch (e) {
-				HTMLArea._appendToLog("ERROR [HTMLArea::init]: Unable to use XMLHttpRequest: "+ e);
-			}
-			if (success) {
-				HTMLArea.checkInitialLoad();
-			} else {
-				if (Ext.isIE) window.setTimeout('alert(HTMLArea.I18N.msg["ActiveX-required"]);', 200);
-			}
-		} else {
-			if (Ext.isIE) alert(HTMLArea.I18N.msg["ActiveX-required"]);
-		}
-	}
-};
-
-/*
- * Compile some regular expressions
- */
-HTMLArea.RE_tagName = /(<\/|<)\s*([^ \t\n>]+)/ig;
-HTMLArea.RE_head    = /<head>((.|\n)*?)<\/head>/i;
-HTMLArea.RE_body    = /<body>((.|\n)*?)<\/body>/i;
-HTMLArea.Reg_body = new RegExp("<\/?(body)[^>]*>", "gi");
-HTMLArea.reservedClassNames = /htmlarea/;
-HTMLArea.RE_email    = /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i;
-HTMLArea.RE_url      = /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i;
 /***************************************************
  *  EDITOR CONFIGURATION
  ***************************************************/
@@ -255,7 +167,7 @@ HTMLArea.Config = function (editorId) {
 	this.disableObjectResizing = false;
 	this.removeTrailingBR = false;
 		// style included in the iframe document
-	this.editedContentStyle = _editor_edited_content_CSS;
+	this.editedContentStyle = HTMLArea.editedContentCSS;
 		// content style
 	this.pageStyle = "";
 		// remove tags (these have to be a regexp, or null if this functionality is not desired)
@@ -272,7 +184,6 @@ HTMLArea.Config = function (editorId) {
 		this.baseURL = RegExp.$1 + "/";
 	}
 		// URL-s
-	this.imgURL = "images/";
 	this.popupURL = "popups/";
 		// DocumentType
 	this.documentType = '<!DOCTYPE html\r'
@@ -924,18 +835,23 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	initStyleChangeEventListener: function () {
 		if (this.isNested  && !Ext.isWebKit) {
+			var options = {
+				single: true,
+				stopEvent: true
+			};
+			if (Ext.isGecko) {
+				options.delay = 50;
+			}
 			Ext.each(this.nestedParentElements.sorted, function (nested) {
+				if (!Ext.isGecko) {
+					options.target = Ext.get(nested);
+				}
 				this.mon(
 					Ext.get(nested),
 					Ext.isIE ? 'propertychange' : 'DOMAttrModified',
 					this.onNestedShow,
 					this,
-					{
-						delay: 50,
-						single: true,
-						stopEvent: true,
-						target: Ext.get(nested)
-					}
+					options
 				);
 			}, this);
 		}
@@ -1022,7 +938,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			head = this.document.createElement('head');
 			this.document.documentElement.appendChild(head);
 		}
-		if (this.config.baseURL && !Ext.isOpera) {
+		if (this.config.baseURL) {
 			var base = this.document.getElementsByTagName('base')[0];
 			if (!base) {
 				base = this.document.createElement('base');
@@ -2474,7 +2390,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 						id: this.editorId + '-iframe',
 						tag: 'iframe',
 						cls: 'editorIframe',
-						src: Ext.isGecko ? 'javascript:void(0);' : (Ext.isOpera ? _typo3_host_url : '') + _editor_url + 'popups/blank.html'
+						src: Ext.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
 					},
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
@@ -2841,23 +2757,15 @@ HTMLArea.Editor.prototype.registerPlugin = function(plugin) {
 		return false;
 	}
 };
-
-/*
- * Load the required plugin script
- */
-HTMLArea.loadPlugin = function (pluginName, url, asynchronous) {
-	if (typeof(asynchronous) == "undefined") {
-		var asynchronous = true;
-	}
-	HTMLArea.loadScript(url, pluginName, asynchronous);
-};
-
 /*
  * Load a stylesheet file
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+ ***********************************************
  */
 HTMLArea.loadStyle = function(style, plugin, url) {
 	if (typeof(url) == "undefined") {
-		var url = _editor_url || '';
+		var url = HTMLArea.editorUrl || '';
 		if (typeof(plugin) != "undefined") { url += "plugins/" + plugin + "/"; }
 		url += style;
 		if (/^\//.test(style)) { url = style; }
@@ -2870,15 +2778,10 @@ HTMLArea.loadStyle = function(style, plugin, url) {
 };
 
 /*
- * Get the url of some image
- */
-HTMLArea.Editor.prototype.imgURL = function(file, plugin) {
-	if (typeof(plugin) == "undefined") return _editor_skin + this.config.imgURL + file;
-		else return _editor_skin + this.config.imgURL + plugin + "/" + file;
-};
-
-/*
  * Get the url of some popup
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
+ ***********************************************
  */
 HTMLArea.Editor.prototype.popupURL = function(file) {
 	var url = "";
@@ -2889,10 +2792,10 @@ HTMLArea.Editor.prototype.popupURL = function(file) {
 		if (this.config.pathToPluginDirectory[pluginId]) {
 			url = this.config.pathToPluginDirectory[pluginId] + "popups/" + popup;
 		} else {
-			url = _typo3_host_url + _editor_url + "plugins/" + pluginId + "/popups/" + popup;
+			url = HTMLArea.editorUrl + "plugins/" + pluginId + "/popups/" + popup;
 		}
 	} else {
-		url = _typo3_host_url + _editor_url + this.config.popupURL + file;
+		url = HTMLArea.editorUrl + this.config.popupURL + file;
 	}
 	return url;
 };
@@ -3209,9 +3112,6 @@ HTMLArea.Editor.prototype.scrollToCaret = function() {
  *  UTILITY FUNCTIONS
  ***************************************************/
 
-// variable used to pass the object to the popup editor window.
-HTMLArea._object = null;
-
 /*
  * Check if the client agent is supported
  */
@@ -3288,10 +3188,7 @@ HTMLArea._hasClass = function(el, className, substring) {
 	return false;
 };
 
-HTMLArea.RE_blockTags = /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/;
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
-HTMLArea.RE_closingTags = /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/;
-HTMLArea.RE_noClosingTag = /^(img|br|hr|col|input|area|base|link|meta|param)$/;
 HTMLArea.needsClosingTag = function(el) { return el && el.nodeType == 1 && !HTMLArea.RE_noClosingTag.test(el.tagName.toLowerCase()); };
 
 /*
@@ -3325,7 +3222,7 @@ HTMLArea.getHTML = function(root, outputRoot, editor){
 		return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
 	} catch(e) {
 		HTMLArea._appendToLog("The HTML document is not well-formed.");
-		if(!HTMLArea._debugMode) alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
+		if (!HTMLArea.enableDebugMode) alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
 			else return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
 		return editor.document.body.innerHTML;
 	}
@@ -3451,7 +3348,7 @@ HTMLArea.util.Tips = function () {
 				if (label && this.helpIcon && !Ext.isIE) {
 					var helpImage = label.insertFirst({
 						tag: 'img',
-						src: _editor_skin + 'images/helpbubble.gif',
+						src: HTMLArea.editorSkin + 'images/helpbubble.gif',
 						style: 'vertical-align: middle; padding-right: 2px;'
 					});
 					if (this.helpDisplay == 'image' || this.helpDisplay == 'both'){
@@ -3775,11 +3672,6 @@ HTMLArea._postback = function(url, data, handler, addParams, charset, asynchrono
 		}
 		content += (content.length ? '&' : '') + 'charset=' + charset;
 		if (typeof(addParams) != "undefined") content += addParams;
-		if (url.substring(0,1) == '/') {
-			var postUrl = _typo3_host_url + url;
-		} else {
-			var postUrl = _typo3_host_url + _editor_url + url;
-		}
 
 		function callBack() {
 			if (req.readyState == 4) {
@@ -3787,7 +3679,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset, asynchrono
 					if (typeof(handler) == "function") handler(req.responseText, req);
 					HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
 				} else {
-					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + postUrl + " . Server reported " + req.statusText);
+					HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + url + " . Server reported " + req.statusText);
 				}
 			}
 		}
@@ -3799,7 +3691,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset, asynchrono
 			req.send(content);
 		}
 
-		req.open('POST', postUrl, asynchronous);
+		req.open('POST', url, asynchronous);
 		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 		if (!asynchronous) {
 			HTMLArea.pendingSynchronousXMLHttpRequest = true;
@@ -3810,7 +3702,7 @@ HTMLArea._postback = function(url, data, handler, addParams, charset, asynchrono
 				}
 				HTMLArea._appendToLog("[HTMLArea::_postback]: Server response: " + req.responseText);
 			} else {
-				HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + postUrl + " . Server reported " + req.statusText);
+				HTMLArea._appendToLog("ERROR [HTMLArea::_postback]: Unable to post " + url + " . Server reported " + req.statusText);
 			}
 			HTMLArea.pendingSynchronousXMLHttpRequest = false;
 		} else {
@@ -3853,7 +3745,7 @@ HTMLArea.initEditor = function(editorNumber) {
 		if (HTMLArea.checkSupportedBrowser()) {
 			document.getElementById('pleasewait' + editorNumber).style.display = 'block';
 			document.getElementById('editorWrap' + editorNumber).style.visibility = 'hidden';
-			if (!HTMLArea.is_loaded) {
+			if (!HTMLArea.isReady) {
 				HTMLArea.initEditor.defer(150, null, [editorNumber]);
 			} else {
 					// Create an editor for the textarea
@@ -4545,7 +4437,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the url
 	 */
 	makeUrlFromModulePath: function(modulePath, parameters) {
-		return this.editor.popupURL(modulePath + "?" + this.editorConfiguration.RTEtsConfigParams + "&editorNo=" + this.editor.editorId + "&sys_language_content=" + this.editorConfiguration.sys_language_content + "&contentTypo3Language=" + this.editorConfiguration.typo3ContentLanguage + "&contentTypo3Charset=" + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:''));
+		return modulePath + '?' + this.editorConfiguration.RTEtsConfigParams + '&editorNo=' + this.editor.editorId + '&sys_language_content=' + this.editorConfiguration.sys_language_content + '&contentTypo3Language=' + this.editorConfiguration.typo3ContentLanguage + '&contentTypo3Charset=' + encodeURIComponent(this.editorConfiguration.typo3ContentCharset) + (parameters?parameters:'');
 	},
 	/**
 	 * Append an entry at the end of the troubleshooting log
@@ -4556,7 +4448,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	void
 	 */
 	appendToLog: function (functionName, text) {
-		HTMLArea._appendToLog("[" + this.name + "::" + functionName + "]: " + text);
+		HTMLArea._appendToLog('[' + this.name + '::' + functionName + ']: ' + text);
 	},
 	/*
 	 * Add a config element to config array if not empty
@@ -4822,7 +4714,7 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		link.rel = "stylesheet";
 		link.type = "text/css";
 		link.href = HTMLArea.editorCSS;
-		if (link.href.indexOf("http") == -1 && !Ext.isIE) link.href = _typo3_host_url + link.href;
+		if (link.href.indexOf("http") == -1 && !Ext.isIE) link.href = HTMLArea.hostUrl + link.href;
 		head.appendChild(link);
 	},
 
@@ -5087,4 +4979,4 @@ HTMLArea.Dialog = HTMLArea.Base.extend({
 		Ext.EventManager.on(this.dialogWindow.document, 'keypress', this.closeOnEscape, this, {single: true});
 	 }
 });
-};
+}

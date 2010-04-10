@@ -1,3 +1,7 @@
+2010-04-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #14051: htmlArea RTE: Streamline the RTE loading process
+
 2010-04-09  Michael Stucki  <michael@typo3.org>
 
 	* Fixed bug #13959: Core autoloader should accept class names only (could lead to remote command execution). Thanks to Helmut Hummel and Marcus Krause for providing a fix.

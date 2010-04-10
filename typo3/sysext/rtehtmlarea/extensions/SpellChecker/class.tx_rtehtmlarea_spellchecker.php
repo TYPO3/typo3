@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2008-2209 Stanislas Rolland <typo3(arobas)sjbr.ca>
+*  (c) 2008-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -96,15 +96,12 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.spellCheckerMode = "' . $spellCheckerMode .'";
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') .';';
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.path = "' . ($this->htmlAreaRTE->is_FE() ? t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '/index.php?eID=rtehtmlarea_spellchecker' : substr(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), strlen(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST'))) . TYPO3_mainDir . 'ajax.php?ajaxID=rtehtmlarea::spellchecker') . '";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.path = "' . ($this->htmlAreaRTE->is_FE() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : 'ajax.php?ajaxID=rtehtmlarea::spellchecker') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/SpellChecker/class.tx_rtehtmlarea_spellchecker.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/SpellChecker/class.tx_rtehtmlarea_spellchecker.php']);
 }
-
 ?>
