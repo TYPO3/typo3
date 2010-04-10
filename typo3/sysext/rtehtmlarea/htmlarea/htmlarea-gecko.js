@@ -53,8 +53,12 @@ HTMLArea.Editor.prototype._getSelection = function() {
  * Empty the selection object
  */
 HTMLArea.Editor.prototype.emptySelection = function(selection) {
-	if (HTMLArea.is_safari) {
-		selection.empty();
+	if (Ext.isWebKit) {
+		if (Ext.isFunction(selection.removeAllRanges)) {
+			selection.removeAllRanges();
+		} else {
+			selection.empty();
+		}
 	} else {
 		selection.removeAllRanges();
 	}
@@ -67,8 +71,12 @@ HTMLArea.Editor.prototype.emptySelection = function(selection) {
  * Add a range to the selection
  */
 HTMLArea.Editor.prototype.addRangeToSelection = function(selection, range) {
-	if (HTMLArea.is_safari) {
-		selection.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
+	if (Ext.isWebKit) {
+		if (Ext.isFunction(selection.addRange)) {
+			selection.addRange(range);
+		} else {
+			selection.setBaseAndExtent(range.startContainer, range.startOffset, range.endContainer, range.endOffset);
+		}
 	} else {
 		selection.addRange(range);
 	}
@@ -114,7 +122,12 @@ HTMLArea.Editor.prototype.selectNode = function(node, endPoint) {
 	var selection = this._getSelection();
 	var range = this._doc.createRange();
 	if (node.nodeType == 1 && node.nodeName.toLowerCase() == "body") {
-		range.selectNodeContents(node);
+		if (Ext.isWebKit) {
+			range.setStart(node, 0);
+			range.setEnd(node, node.childNodes.length);
+		} else {
+			range.selectNodeContents(node);
+		}
 	} else {
 		range.selectNode(node);
 	}
@@ -124,7 +137,6 @@ HTMLArea.Editor.prototype.selectNode = function(node, endPoint) {
 	this.emptySelection(selection);
 	this.addRangeToSelection(selection, range);
 };
-
 /*
  * Select ONLY the contents inside the given node
  */
@@ -132,7 +144,16 @@ HTMLArea.Editor.prototype.selectNodeContents = function(node, endPoint) {
 	this.focusEditor();
 	var selection = this._getSelection();
 	var range = this._doc.createRange();
-	range.selectNodeContents(node);
+	if (Ext.isWebKit) {
+		range.setStart(node, 0);
+		if (node.nodeType == 3 || node.nodeType == 8 || node.nodeType == 4) {
+			range.setEnd(node, node.textContent.length);
+		} else {
+			range.setEnd(node, node.childNodes.length);
+		}
+	} else {
+		range.selectNodeContents(node);
+	}
 	if (typeof(endPoint) !== "undefined") {
 		range.collapse(endPoint);
 	}
@@ -145,9 +166,18 @@ HTMLArea.Editor.prototype.rangeIntersectsNode = function(range, node) {
 	try {
 		nodeRange.selectNode(node);
 	} catch (e) {
-		nodeRange.selectNodeContents(node);
+		if (Ext.isWebKit) {
+			nodeRange.setStart(node, 0);
+			if (node.nodeType == 3 || node.nodeType == 8 || node.nodeType == 4) {
+				nodeRange.setEnd(node, node.textContent.length);
+			} else {
+				nodeRange.setEnd(node, node.childNodes.length);
+			}
+		} else {
+			nodeRange.selectNodeContents(node);
+		}
 	}
-		// Note: sometimes Safari inverts the end points
+		// Note: sometimes WebKit inverts the end points
 	return (range.compareBoundaryPoints(range.END_TO_START, nodeRange) == -1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == 1) ||
 		(range.compareBoundaryPoints(range.END_TO_START, nodeRange) == 1 && range.compareBoundaryPoints(range.START_TO_END, nodeRange) == -1);
 };

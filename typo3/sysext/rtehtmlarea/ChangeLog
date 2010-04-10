@@ -2,6 +2,7 @@
 
 	* Added feature #14051: htmlArea RTE: Streamline the RTE loading process
 	* Added feature #14057: htmlArea RTE: Extjize the RTE ajax requests.
+	* Added feature #14058: htmlArea RTE: update some WebKit dom methods.
 
 2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
 
