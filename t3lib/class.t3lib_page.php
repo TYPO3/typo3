@@ -306,6 +306,18 @@ class t3lib_pageSelect {
 		if ($lUid<0)	$lUid = $this->sys_language_uid;
 		$row = NULL;
 
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_page.php']['getPageOverlay'] as $classRef) {
+				$hookObject = t3lib_div::getUserObj($classRef);
+
+				if (!($hookObject instanceof t3lib_pageSelect_getPageOverlayHook)) {
+					throw new UnexpectedValueException('$hookObject must implement interface t3lib_pageSelect_getPageOverlayHook', 1269878881);
+				}
+
+				$hookObject->getPageOverlay_preProcess($pageInput, $lUid, $this);
+			}
+		}
+
 			// If language UID is different from zero, do overlay:
 		if ($lUid)	{
 			$fieldArr = explode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['pageOverlayFields']);

@@ -112,6 +112,7 @@ return array(
 	't3lib_browselinkshook' => PATH_t3lib . 'interfaces/interface.t3lib_browselinkshook.php',
 	't3lib_localrecordlistgettablehook' => PATH_t3lib . 'interfaces/interface.t3lib_localrecordlistgettablehook.php',
 	't3lib_pageselect_getpagehook' => PATH_t3lib . 'interfaces/interface.t3lib_pageselect_getpagehook.php',
+	't3lib_pageselect_getpageoverlayhook' => PATH_t3lib . 'interfaces/interface.t3lib_pageselect_getpageoverlayhook.php',
 	't3lib_singleton' => PATH_t3lib . 'interfaces/interface.t3lib_singleton.php',
 	't3lib_tceformsinlinehook' => PATH_t3lib . 'interfaces/interface.t3lib_tceformsinlinehook.php',
 	't3lib_tcemain_checkmodifyaccesslisthook' => PATH_t3lib . 'interfaces/interface.t3lib_tcemain_checkmodifyaccesslisthook.php',
