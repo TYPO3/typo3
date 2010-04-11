@@ -648,8 +648,11 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					unset($attribArray_copy['rteerror']);
 				}
 				if (!count($attribArray_copy))	{	// Only if href, target and class are the only attributes, we can alter the link!
+						// Quoting class and title attributes if they contain spaces
+					$attribArray['class'] = preg_match('/ /', $attribArray['class']) ? '"' . $attribArray['class'] . '"' : $attribArray['class'];
+					$attribArray['title'] = preg_match('/ /', $attribArray['title']) ? '"' . $attribArray['title'] . '"' : $attribArray['title'];
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
-					$bTag='<link '.$info['url'].($info['query']?',0,'.$info['query']:'').($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' "'.$attribArray['title'].'"':'').'>';
+					$bTag='<link '.$info['url'].($info['query']?',0,'.$info['query']:'').($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' '.$attribArray['title']:'').'>';
 					$eTag='</link>';
 					$blockSplit[$k] = $bTag.$this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 				} else {	// ... otherwise store the link as a-tag.
