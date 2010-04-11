@@ -484,7 +484,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			$extraHidden = implode(chr(10), $extraHiddenAr);
 		}
 
-		if (!$gpRedirectUrl && $this->redirectUrl && $this->logintype === 'login') {
+		if (!$gpRedirectUrl && $this->redirectUrl) {
 			$gpRedirectUrl = $this->redirectUrl;
 		}
 
