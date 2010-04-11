@@ -1,6 +1,7 @@
 2010-04-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14062: Text Content element crashes (thanks to Jigal van Hemert)
+	* Fixed bug #10629: class and title parameters of typolinks get broken
 
 2010-04-11  Francois Suter  <francois@typo3.org>
 
