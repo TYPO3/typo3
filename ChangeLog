@@ -1,5 +1,9 @@
 2010-04-10  Steffen Kamper  <info@sk-typo3.de>
 
+	* Update #14063: Updated ExtJs library from 3.1.1 to 3.2 Final
+
+2010-04-10  Steffen Kamper  <info@sk-typo3.de>
+
 	* Fixed bug #12838: Deactivated fields of $TYPO3_USER_SETTINGS are changed by the module "User Settings"
 	* Added feature #13953: Hookrequest - t3lib_page::getRecordOverlay (thanks to Tolleiv Nietsch)
 	* Added feature #14041: impexp: Add Hooks

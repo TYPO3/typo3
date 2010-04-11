@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project path="" name="Ext - Resources" author="Ext JS, LLC" version="3.1+" copyright="Ext JS Library $version&#xD;&#xA;Copyright(c) 2006-2009, $author.&#xD;&#xA;licensing@extjs.com&#xD;&#xA;&#xD;&#xA;http://extjs.com/license" output="C:\Apps\www\deploy\ext-3.0\resources" source="true" source-dir="$output" minify="False" min-dir="$output\build" doc="False" doc-dir="$output\docs" master="true" master-file="$output\yui-ext.js" zip="true" zip-file="$output\yuo-ext.$version.zip">
+<project path="" name="Ext - Resources" author="Ext JS, Inc." version="3.2+" copyright="Ext JS Library $version&#xD;&#xA;Copyright(c) 2006-2010, $author.&#xD;&#xA;licensing@extjs.com&#xD;&#xA;&#xD;&#xA;http://extjs.com/license" output="C:\Apps\www\deploy\ext-3.0\resources" source="true" source-dir="$output" minify="False" min-dir="$output\build" doc="False" doc-dir="$output\docs" master="true" master-file="$output\yui-ext.js" zip="true" zip-file="$output\yuo-ext.$version.zip">
   <directory name="" />
   <file name="charts.swf" path="" />
   <file name="expressinstall.swf" path="" />
@@ -453,6 +453,32 @@
     <include name="css\structure\dialog.css" />
   </target>
   <target name="Ext Blue Theme (default)" file="$output\css\xtheme-blue.css" debug="False" shorthand="False" shorthand-list="YAHOO.util.Dom.setStyle&#xD;&#xA;YAHOO.util.Dom.getStyle&#xD;&#xA;YAHOO.util.Dom.getRegion&#xD;&#xA;YAHOO.util.Dom.getViewportHeight&#xD;&#xA;YAHOO.util.Dom.getViewportWidth&#xD;&#xA;YAHOO.util.Dom.get&#xD;&#xA;YAHOO.util.Dom.getXY&#xD;&#xA;YAHOO.util.Dom.setXY&#xD;&#xA;YAHOO.util.CustomEvent&#xD;&#xA;YAHOO.util.Event.addListener&#xD;&#xA;YAHOO.util.Event.getEvent&#xD;&#xA;YAHOO.util.Event.getTarget&#xD;&#xA;YAHOO.util.Event.preventDefault&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Event.stopPropagation&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Anim&#xD;&#xA;YAHOO.util.Motion&#xD;&#xA;YAHOO.util.Connect.asyncRequest&#xD;&#xA;YAHOO.util.Connect.setForm&#xD;&#xA;YAHOO.util.Dom&#xD;&#xA;YAHOO.util.Event">
+    <include name="css\visual\core.css" />
+    <include name="css\visual\tabs.css" />
+    <include name="css\visual\form.css" />
+    <include name="css\visual\button.css" />
+    <include name="css\visual\toolbar.css" />
+    <include name="css\visual\resizable.css" />
+    <include name="css\visual\grid.css" />
+    <include name="css\visual\dd.css" />
+    <include name="css\visual\tree.css" />
+    <include name="css\visual\date-picker.css" />
+    <include name="css\visual\qtips.css" />
+    <include name="css\visual\menu.css" />
+    <include name="css\visual\box.css" />
+    <include name="css\visual\debug.css" />
+    <include name="css\visual\combo.css" />
+    <include name="css\visual\panel.css" />
+    <include name="css\visual\window.css" />
+    <include name="css\visual\editor.css" />
+    <include name="css\visual\borders.css" />
+    <include name="css\visual\layout.css" />
+    <include name="css\visual\progress.css" />
+    <include name="css\visual\list-view.css" />
+    <include name="css\visual\slider.css" />
+    <include name="css\visual\dialog.css" />
+  </target>
+  <target name="Your Theme" file="$output\css\yourtheme.css" debug="False" shorthand="False" shorthand-list="YAHOO.util.Dom.setStyle&#xD;&#xA;YAHOO.util.Dom.getStyle&#xD;&#xA;YAHOO.util.Dom.getRegion&#xD;&#xA;YAHOO.util.Dom.getViewportHeight&#xD;&#xA;YAHOO.util.Dom.getViewportWidth&#xD;&#xA;YAHOO.util.Dom.get&#xD;&#xA;YAHOO.util.Dom.getXY&#xD;&#xA;YAHOO.util.Dom.setXY&#xD;&#xA;YAHOO.util.CustomEvent&#xD;&#xA;YAHOO.util.Event.addListener&#xD;&#xA;YAHOO.util.Event.getEvent&#xD;&#xA;YAHOO.util.Event.getTarget&#xD;&#xA;YAHOO.util.Event.preventDefault&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Event.stopPropagation&#xD;&#xA;YAHOO.util.Event.stopEvent&#xD;&#xA;YAHOO.util.Anim&#xD;&#xA;YAHOO.util.Motion&#xD;&#xA;YAHOO.util.Connect.asyncRequest&#xD;&#xA;YAHOO.util.Connect.setForm&#xD;&#xA;YAHOO.util.Dom&#xD;&#xA;YAHOO.util.Event">
     <include name="css\visual\core.css" />
     <include name="css\visual\tabs.css" />
     <include name="css\visual\form.css" />

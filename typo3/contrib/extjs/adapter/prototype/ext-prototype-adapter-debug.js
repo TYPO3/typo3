@@ -1,6 +1,6 @@
 /*!
- * Ext JS Library 3.1.1
- * Copyright(c) 2006-2010 Ext JS, LLC
+ * Ext JS Library 3.2.0
+ * Copyright(c) 2006-2010 Ext JS, Inc.
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
@@ -19,7 +19,7 @@ Ext = {
      * The version of the framework
      * @type String
      */
-    version : '3.1.1'
+    version : '3.2.0'
 };
 
 /**
@@ -665,7 +665,7 @@ function(el){
          * @return {Boolean}
          */
         isElement : function(v) {
-            return !!v && v.tagName;
+            return v ? !!v.tagName : false;
         },
 
         /**
@@ -1202,9 +1202,9 @@ ImageComponent = Ext.extend(Ext.BoxComponent, {
     }
 });
          * </code></pre> 
-         * @param {Object} The destination object.
-         * @param {Object} The source object.
-         * @param {Array/String} Either an Array of property names, or a comma-delimited list
+         * @param {Object} dest The destination object.
+         * @param {Object} source The source object.
+         * @param {Array/String} names Either an Array of property names, or a comma-delimited list
          * of property names to copy.
          * @return {Object} The modified object.
         */
@@ -1404,7 +1404,7 @@ Ext.invoke(Ext.query("p"), "getAttribute", "id");
          * </code></pre>
          * @param {Array|NodeList} arr The Array of items to invoke the method on.
          * @param {String} methodName The method name to invoke.
-         * @param {Anything} ... Arguments to send into the method invocation.
+         * @param {...*} args Arguments to send into the method invocation.
          * @return {Array} The results of invoking the method on each item in the array.
          */
         invoke : function(arr, methodName){
@@ -1728,6 +1728,7 @@ Ext.TaskMgr.start({
 });
 
  * </code></pre>
+ * <p>See the {@link #start} method for details about how to configure a task object.</p>
  * Also see {@link Ext.util.DelayedTask}. 
  * 
  * @constructor
@@ -1799,21 +1800,25 @@ Ext.util.TaskRunner = function(interval){
     /**
      * Starts a new task.
      * @method start
-     * @param {Object} task A config object that supports the following properties:<ul>
-     * <li><code>run</code> : Function<div class="sub-desc">The function to execute each time the task is run. The
-     * function will be called at each interval and passed the <code>args</code> argument if specified.  If a
-     * particular scope is required, be sure to specify it using the <code>scope</code> argument.</div></li>
+     * @param {Object} task <p>A config object that supports the following properties:<ul>
+     * <li><code>run</code> : Function<div class="sub-desc"><p>The function to execute each time the task is invoked. The
+     * function will be called at each interval and passed the <code>args</code> argument if specified, and the
+     * current invocation count if not.</p>
+     * <p>If a particular scope (<code>this</code> reference) is required, be sure to specify it using the <code>scope</code> argument.</p>
+     * <p>Return <code>false</code> from this function to terminate the task.</p></div></li>
      * <li><code>interval</code> : Number<div class="sub-desc">The frequency in milliseconds with which the task
-     * should be executed.</div></li>
+     * should be invoked.</div></li>
      * <li><code>args</code> : Array<div class="sub-desc">(optional) An array of arguments to be passed to the function
-     * specified by <code>run</code>.</div></li>
+     * specified by <code>run</code>. If not specified, the current invocation count is passed.</div></li>
      * <li><code>scope</code> : Object<div class="sub-desc">(optional) The scope (<tt>this</tt> reference) in which to execute the
      * <code>run</code> function. Defaults to the task config object.</div></li>
-     * <li><code>duration</code> : Number<div class="sub-desc">(optional) The length of time in milliseconds to execute
+     * <li><code>duration</code> : Number<div class="sub-desc">(optional) The length of time in milliseconds to invoke
      * the task before stopping automatically (defaults to indefinite).</div></li>
-     * <li><code>repeat</code> : Number<div class="sub-desc">(optional) The number of times to execute the task before
+     * <li><code>repeat</code> : Number<div class="sub-desc">(optional) The number of times to invoke the task before
      * stopping automatically (defaults to indefinite).</div></li>
-     * </ul>
+     * </ul></p>
+     * <p>Before each invocation, Ext injects the property <code>taskRunCount</code> into the task object so
+     * that calculations based on the repeat count can be performed.</p>
      * @return {Object} The task
      */
     this.start = function(task){
@@ -1867,6 +1872,7 @@ var task = {
 }
 Ext.TaskMgr.start(task);
 </code></pre>
+ * <p>See the {@link #start} method for details about how to configure a task object.</p>
  * @singleton
  */
 Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
