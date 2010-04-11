@@ -3644,11 +3644,11 @@ class t3lib_TCEmain	{
 	 * @param	array		$conf: TCA configuration of current field
 	 * @return	void
 	 */
-	function moveRecord_procBasedOnFieldType($table,$uid,$destPid,$field,$value,$conf) {
+	function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf) {
 		$moveTable = '';
 		$moveIds = array();
 
-		if ($conf['type'] == 'inline')	{
+		if ($conf['type'] == 'inline') {
 			$foreign_table = $conf['foreign_table'];
 			$moveChildrenWithParent = (!isset($conf['behaviour']['disableMovingChildrenWithParent']) || !$conf['behaviour']['disableMovingChildrenWithParent']);
 
@@ -3656,18 +3656,23 @@ class t3lib_TCEmain	{
 				$inlineType = $this->getInlineFieldType($conf);
 				if ($inlineType == 'list' || $inlineType == 'field') {
 					$moveTable = $foreign_table;
+					if ($table == 'pages') {
+							// If the inline elements are related to a page record,
+							// make sure they reside at that page and not at its parent
+						$destPid = $uid;
+					}
 					$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 					$dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
 				}
 			}
 		}
 
-			// move the records
+			// Move the records
 		if (isset($dbAnalysis)) {
 				// Moving records to a positive destination will insert each
 				// record at the beginning, thus the order is reversed here:
 			foreach (array_reverse($dbAnalysis->itemArray) as $v) {
-				$this->moveRecord($v['table'],$v['id'],$destPid);
+				$this->moveRecord($v['table'], $v['id'], $destPid);
 			}
 		}
 	}
