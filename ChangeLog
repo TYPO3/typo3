@@ -1,4 +1,4 @@
-2010-04-10  Steffen Kamper  <info@sk-typo3.de>
+2010-04-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13985: bugfix/code cleanup: wrong image dimension returned if alternative logo is set and skin-extension is installed in global-space (backend-redesign) (thanks to Stephan N Kellermayr)
 	* Update #14063: Updated ExtJs library from 3.1.1 to 3.2 Final
