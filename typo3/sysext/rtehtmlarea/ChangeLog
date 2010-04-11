@@ -1,3 +1,7 @@
+2010-04-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14060: htmlArea RTE: Some table operations configuration may cause js error
+
 2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.8.9
