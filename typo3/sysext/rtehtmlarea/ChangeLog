@@ -4,6 +4,7 @@
 	* Added feature #14057: htmlArea RTE: Extjize the RTE ajax requests.
 	* Added feature #14058: htmlArea RTE: update some WebKit dom methods.
 	* Added feature #14059: htmlArea RTE: Cleanup use of editor focus method
+	* Fixed bug #14060: htmlArea RTE: Some table operations configuration may cause js error
 
 2010-04-08  Stanislas Rolland  <typo3@sjbr.ca>
 
