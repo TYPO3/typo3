@@ -55,12 +55,44 @@ class tx_coreupdates_installsysexts {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = false;
-		$description = 'Install the following system extensions as their functionality is moved out of the TYPO3 base installation and now optional:<br />
-		<strong>Help&gt;About [about]</strong><br />Shows info about TYPO3 and installed extensions.<br />
-		<strong>Help&gt;TYPO3 Manual [cshmanual]</strong><br />Shows TYPO3 inline user manual.<br />
-		<strong>Frontend Editing [feedit]</strong><br />This module enables FE-editing, configuration is done by Typoscript.<br />
-		<strong>User&gt;Open Documents [opendocs]</strong><br />Handles the list of opened documents in TYPO3 backend.<br />
-		<strong>Simulate Static URLs [simulatestatic]</strong><br />If you do not want to use RealURL or CoolURI but still want the Speaking URL feature. If you used "config.simulateStaticDocuments = 1" in this installation before, you should install this system extension. Be sure to read the manual of "simulatestatic".';
+		$description = '
+			<p>
+				Install the following system extensions as their functionality
+				is moved out of the TYPO3 base installation and now optional:
+			</p>
+			<ul>
+				<li>
+					<strong>Help&gt;About [about]</strong>
+					<br />
+					Shows info about TYPO3 and installed extensions.
+				</li>
+				<li>
+					<strong>Help&gt;TYPO3 Manual [cshmanual]</strong>
+					<br />
+					Shows TYPO3 inline user manual.
+				</li>
+				<li>
+					<strong>Frontend Editing [feedit]</strong>
+					<br />
+					This module enables FE-editing, configuration is done by
+					Typoscript.
+				</li>
+				<li>
+					<strong>User&gt;Open Documents [opendocs]</strong>
+					<br />
+					Handles the list of opened documents in TYPO3 backend.
+				</li>
+				<li>
+					<strong>Simulate Static URLs [simulatestatic]</strong>
+					<br />
+					If you do not want to use RealURL or CoolURI but still want
+					the Speaking URL feature. If you used
+					"config.simulateStaticDocuments = 1" in this installation
+					before, you should install this system extension. Be sure to
+					read the manual of "simulatestatic".
+				</li>
+			</ul>
+		';
 
 		foreach($this->newSystemExtensions as $ext) {
 			if (!t3lib_extMgm::isLoaded($ext)) {
@@ -77,12 +109,37 @@ class tx_coreupdates_installsysexts {
 	 * @return	string		HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-		$content = '<strong>Install the following SystemExtensions</strong>:<br />
-		<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" /><label for="about">Help&gt;About [about]</label><br />
-		<input type="checkbox" id="cshmanual" name="' . $inputPrefix . '[sysext][cshmanual]" value="1" checked="checked" /><label for="cshmanual">Help&gt;TYPO3 Manual [cshmanual]</label><br />
-		<input type="checkbox" id="feedit" name="' . $inputPrefix . '[sysext][feedit]" value="1" checked="checked" /><label for="feedit">Frontend Editing [feedit]</label><br />
-		<input type="checkbox" id="opendocs" name="' . $inputPrefix . '[sysext][opendocs]" value="1" checked="checked" /><label for="opendocs">User&gt;Open Documents [opendocs]</label><br />
-		<input type="checkbox" id="simulatestatic" name="' . $inputPrefix . '[sysext][simulatestatic]" value="1" checked="checked" /><label for="simulatestatic">Simulate Static URLs [simulatestatic]</label><br />';
+		$content = '
+			<p>
+				<strong>
+					Install the following SystemExtensions
+				</strong>:
+			</p>
+			<fieldset>
+				<ol>
+					<li class="labelAfter">
+						<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" />
+						<label for="about">Help&gt;About [about]</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" id="cshmanual" name="' . $inputPrefix . '[sysext][cshmanual]" value="1" checked="checked" />
+						<label for="cshmanual">Help&gt;TYPO3 Manual [cshmanual]</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" id="feedit" name="' . $inputPrefix . '[sysext][feedit]" value="1" checked="checked" />
+						<label for="feedit">Frontend Editing [feedit]</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" id="opendocs" name="' . $inputPrefix . '[sysext][opendocs]" value="1" checked="checked" />
+						<label for="opendocs">User&gt;Open Documents [opendocs]</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" id="simulatestatic" name="' . $inputPrefix . '[sysext][simulatestatic]" value="1" checked="checked" />
+						<label for="simulatestatic">Simulate Static URLs [simulatestatic]</label>
+					</li>
+				</ol>
+			</fieldset>
+		';
 
 		return $content;
 	}

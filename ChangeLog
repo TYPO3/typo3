@@ -1,3 +1,7 @@
+2010-04-11  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added feature #14064: Install tool refactoring
+
 2010-04-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #10327: [felogin] redirecting to referer does not work

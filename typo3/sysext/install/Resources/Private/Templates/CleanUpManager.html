@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: Clean up manager</title>
+	</head>
+	<body>
+		<!-- ###TEMPLATE### begin -->
+		<dl id="cleanupManagerNumbers">
+			<dt>
+				###NUMBERCACHED###
+			</dt>
+			<dd>
+				###NUMBER###
+			</dd>
+		</dl>
+		<form method="post" action="###ACTION###">
+			<fieldset>
+				<ol>
+					<li>
+						<label for="cleanupType">###CLEANUP###</label>
+						<select id="cleanupType" name="TYPO3_INSTALL[cleanup_type]">
+							<!-- ###CLEANUPOPTIONS### begin -->
+							<option value="###VALUE###">###DATA###</option>
+							<!-- ###CLEANUPOPTIONS### begin -->
+						</select>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">###EXECUTE###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###TEMPLATE### end -->
+	</body>
+</html>

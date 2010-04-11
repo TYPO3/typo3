@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: Step Output</title>
+	</head>
+	<body>
+		<!-- ###TEMPLATE### begin -->
+		###STEPHEADER###
+		<h3>###HEADER###</h3>
+		###STEP###
+		<div id="skip123">
+			<a href="###SKIP123###">
+				###NOTICE###
+			</a>
+		</div>
+		<!-- ###TEMPLATE### end -->
+		
+		<!-- ###STEP1### begin -->
+		###LLINTRODUCTION###
+		<form method="post" action="###ACTION###">
+			<fieldset>
+				<ol>
+					<li class="hidden">
+						<input type="hidden" value="###STEP###" name="step" />
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">###CONTINUE###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###STEP1### end -->
+		
+		<!-- ###STEP2### begin -->
+		<form method="post" action="###ACTION###">
+			<fieldset class="labelWidth7">
+				<ol>
+					<li class="hidden">
+						<input type="hidden" value="###STEP###" name="step" />
+						<input type="hidden" value="###ENCRYPTIONKEY###" name="TYPO3_INSTALL[localconf.php][encryptionKey]" />
+						<input type="hidden" value="###BRANCH###" name="TYPO3_INSTALL[localconf.php][compat_version]" />
+					</li>
+					<li>
+						<label for="userName">###LABELUSERNAME###</label>
+						<input id="userName" class="inputText" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+					</li>
+					<li>
+						<label for="password">###LABELPASSWORD###</label>
+						<input id="password" class="inputText" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+					</li>
+					<li>
+						<label for="host">###LABELHOST###</label>
+						<input id="host" class="inputText" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">###CONTINUE###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###STEP2### end -->
+		
+		<!-- ###STEP3### begin -->
+		<p>###LLOPTIONS###</p>
+		<form id="step3" method="post" action="###ACTION###">
+			<fieldset>
+				<ol>
+					<li class="hidden">
+						<input type="hidden" value="###STEP###" name="step" />
+					</li>
+					<li>
+						<label for="newDatabase">###LLOPTION1###</label>
+						<p>###LLREMARK1###</p>
+						<input id="newDatabase" class="inputText" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" />
+					</li>
+					<li>
+						<label for="database">###LLOPTION2###</label>
+						<p>###LLREMARK2###</p>
+						<select id="database" name="TYPO3_INSTALL[localconf.php][typo_db]">
+							<option value="">Select database</option>
+							<!-- ###DATABASEOPTIONS### begin -->
+							<option value="###DATABASEVALUE###" ###DATABASESELECTED###>###DATABASENAME###</option>
+							<!-- ###DATABASEOPTIONS### end -->
+						</select>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">###CONTINUE###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###STEP3### end -->
+		
+		<!-- ###STEP4### begin -->
+		<h4>###LLSUMMARY###</h4>
+		<dl id="stepOutputSummary" class="clearfix">
+			<dt>###LLUSERNAME###</dt>
+			<dd>###USERNAME###</dd>
+			<dt>###LLHOST###</dt>
+			<dd>###HOST###</dd>
+			<dt>###LLDATABASE###</dt>
+			<dd>###DATABASE###</dd>
+			<dt>###LLNUMBERTABLES###</dt>
+			<dd>###NUMBERTABLES###</dd>
+		</dl>
+		<form action="###ACTION####bottom" method="post">
+			<fieldset>
+				<ol>
+					<li class="hidden">
+						<input type="hidden" name="TYPO3_INSTALL[database_type]" value="import" />
+						<input type="hidden" name="TYPO3_INSTALL[database_import_all]" value="1" />
+						<input type="hidden" name="step" value="" />
+						<input type="hidden" name="goto_step" value="go" />
+					</li>
+					<li>
+						<label for="databaseType">###LLDATABASETYPE###</label>
+						<select id="databaseType" name="TYPO3_INSTALL[database_type]">
+							<!-- ###DATABASETYPEOPTIONS### begin -->
+							<option value="###DATABASETYPEVALUE###">###DATABASENAME###</option>
+							<!-- ###DATABASETYPEOPTIONS### end -->
+						</select>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset>
+				<ol>
+					<li>
+						<button type="submit">
+							###LABEL###
+							<span class="positive">&nbsp;</span>
+						</button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###STEP4### end -->
+
+		<!-- ###STEPGO### begin -->
+		###MESSAGEBASICFINISHED###
+		<h4 class="typo3-message message-warning">###LLIMPORTANT###</h4>
+		###SECURITYRISK###
+		###LLSWITCHMODE###
+		<!-- ###STEPGO### end -->
+	</body>
+</html>

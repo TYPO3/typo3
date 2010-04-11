@@ -1,0 +1,70 @@
+@CHARSET "UTF-8";
+
+body {
+	background: #4f4f4f url('../Images/body-background.jpg') repeat-x fixed;
+}
+
+#container {
+	margin: 0 auto;
+}
+
+h1,
+#menuTop,
+#menuBottom,
+#links,
+#contentTop,
+#contentBottom,
+#copyright {
+	display: block;
+}
+
+h1 {
+	background: url('../Images/logo.gif') no-repeat scroll 0 0 transparent;
+	text-indent:-999em;
+	margin: 2em 0 3.7em 0;
+	height: 34px;
+	width: 19em;
+	float: left;
+}
+
+h2 {
+	padding: 3.3em 0 3.7em 17.5em;
+	margin: 0;
+	height: auto;
+	color: #ffffff;
+}
+
+#contentTop {
+	height: 3px;
+	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+}
+
+#content {
+	background-color: #eeeeee;
+}
+
+#contentBottom {
+	height: 3px;
+	background: #4d4c4d url('../Images/content-bottom.png') no-repeat center top;
+}
+
+#menu,
+#content {
+	border: 0;
+}
+
+#menuTop {
+	width: 17.6em;
+	height: 3px;
+	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+}
+
+#menu {
+	background: #ebebeb url('../Images/menuBackground.gif') repeat-x left bottom;
+}
+
+#menuBottom {
+	width: 17.6em;
+	height: 3px;
+	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+}

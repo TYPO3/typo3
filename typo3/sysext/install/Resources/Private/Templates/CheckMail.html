@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: Check Mail</title>
+	</head>
+	<body>
+		<!-- ###TEMPLATE### begin -->
+		<!-- ###MAILSENT### begin -->
+		<h4 class="typo3-message message-information">###MESSAGE###</h4>
+		<!-- ###MAILSENT### end -->
+		<form action="###ACTIONURL###" method="post">
+			<fieldset>
+				<ol>
+					<li>
+						<label for="checkMail" class="strong">###ENTEREMAIL###</label>
+						<input id="checkMail" type="text" name="TYPO3_INSTALL[check_mail]" class="inputText" />
+					</li>
+					<li class="labelAfter">
+						<input id="useHtmlMail" type="checkbox" name="TYPO3_INSTALL[use_htmlmail]" />
+						<label for="useHtmlMail" class="strong">###USEHTMLMAILLABEL###</label>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">###SUBMIT###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###TEMPLATE### begin -->
+	</body>
+</html>

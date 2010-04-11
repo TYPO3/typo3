@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+body {
+	background-color: #f2f2f2;
+}
+
+#container {
+	width: 43em;
+	margin: 1em auto;
+}
+
+h1,
+#contentTop,
+#contentBottom {
+	display: none;
+}
+
+.login h1 {
+	float: none;
+}
+
+.login h2 {
+	background: url('../Images/login-icon-key.gif') no-repeat scroll 1em center #585858;
+	color: #ffffff;
+	font-size: 120%;
+	padding:0.5em 0 0.5em 3.35em;
+	margin: 0;
+}
+
+h3 {
+	margin: 1em 0 2em 0;
+}
+
+#content {
+	border: 1px #dcdcdc solid;
+	border-top: 0;
+	color: #606060;
+	background-color: #eeeeee;
+	padding: 1em 3.6em 1em;
+}
+
+.typo3-message {
+	font-size: 110%;
+	line-height: 1.5em;
+}
+
+.message-information {
+	color: #64859c;
+}

@@ -1,0 +1,385 @@
+@CHARSET "UTF-8";
+
+body {
+	background-color: #f2f2f2;
+}
+
+h1,
+#menuTop,
+#menuBottom,
+#links,
+#contentTop,
+#contentBottom,
+#copyright {
+	display: none;
+}
+
+#content,
+#menu {
+	border: 1px #dcdcdc solid;
+	background-color: #ffffff;
+}
+
+/* 0: Login form */
+
+/* 1: Basic configuration */
+#checkImageMagick label {
+	width: 27em;
+}
+
+#systemInformation dt {
+	float: left;
+	width: 11em;
+}
+
+#systemInformation dd {
+	padding-left: 11em;
+	font-weight: bold;
+}
+
+#imageMagickVersions td {
+	padding-right: 1em;
+}
+
+/* 2: Database Analyzer */
+#databaseMenu {
+	width: 100%;
+}
+
+#databaseConnected dt,
+#checkTheDatabaseExplanation dt {
+	float: left;
+	width: 7em;
+}
+
+#databaseConnected dd,
+#checkTheDatabaseExplanation dd {
+	padding-left: 7em;
+}
+
+#databaseConnected dd,
+#checkTheDatabaseExplanation dt {
+	font-weight: bold;
+}
+
+#checkTheDatabaseImport label span,
+#checkTheDatabaseCache label span {
+	float: none;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#checkTheDatabaseImport label span {
+	width: 32%;
+}
+
+#checkTheDatabaseCache label span.column1 {
+	width: 27%;
+}
+#checkTheDatabaseCache label span.column3 {
+	width: 56%;
+}
+
+#checkTheDatabaseCache label span.column2 {
+	width: 15%;
+}
+
+.displayFields,
+.displaySuggestions,
+.displayFieldsCompare {
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+.displayFields th,
+.displaySuggestions th,
+.displayFieldsCompare th {
+	text-align: left;
+	background-color: #B3B7BD;
+}
+
+.displaySuggestions .tfootHeader {
+	font-weight: bold;
+	background-color: #d0d0d0;
+}
+
+.displayFields th,
+.displayFields td,
+.displaySuggestions th,
+.displaySuggestions td,
+.displayFieldsCompare th,
+.displayFieldsCompare td {
+	padding: 0.2em;
+}
+
+.displayFields thead,
+.displayFields tbody,
+.displaySuggestions thead,
+.displaySuggestions tfoot,
+.displaySuggestions tbody,
+.displayFieldsCompare thead,
+.displayFieldsCompare tbody {
+	border: 1px #B3B7BD solid;
+}
+
+.displayFields .column1,
+.displaySuggestions .column1 {
+	width: 35%;
+}
+
+.displaySuggestions tr {
+	border-top: 1px #B3B7BD solid;
+}
+
+.displaySuggestions pre {
+	font-size: 110%;
+}
+
+.displayFieldsCompare .warning {
+	color: red;
+}
+
+/* 4: Image processing */
+#imageProcessingIm dt,
+#imageProcessingOther dt,
+#imageProcessingFileFormats dt {
+	float: left;
+	width: 19em;
+}
+
+#imageProcessingIm dd,
+#imageProcessingOther dd,
+#imageProcessingFileFormats dd {
+	font-weight: bold;
+	padding-left: 19em;
+}
+
+#imageProcessingIm dd span,
+#imageProcessingOther dd span,
+#imageProcessingFileFormats dd span {
+	font-weight: normal;
+}
+
+.displayTwinImageTextarea {
+	width: 48em; 
+	overflow: scroll;
+	border: 1px #797878 solid;
+}
+
+.displayTwinImageTextarea textarea {
+	width: 300em; 
+	border: 0;
+}
+
+.displayTwinImageImages,
+.displayTwinImageReference,
+.displayTwinImageDifferentFileSize {
+	width: 100%;
+	margin: 0.3em 0;
+}
+
+.displayTwinImageImages td,
+.displayTwinImageReference th,
+.displayTwinImageReference td,
+.displayTwinImageDifferentFileSize th,
+.displayTwinImageDifferentFileSize td {
+	text-align: center;
+}
+
+/* 5: All configuration */
+
+/* 6: typo3temp/ */
+#tempManagerNumbers dt {
+	float: left;
+	width: 19em;
+}
+
+#tempManagerNumbers dd {
+	font-weight: bold;
+	padding-left: 19em;
+}
+
+#tempManagerNumbers dd span {
+	font-weight: normal;
+}
+
+/* 7: Clean up database */
+#cleanupManagerNumbers dt {
+	float: left;
+	width: 19em;
+}
+
+#cleanupManagerNumbers dd {
+	font-weight: bold;
+	padding-left: 19em;
+}
+
+#cleanupManagerNumbers dd span {
+	font-weight: normal;
+}
+
+/* 8: phpinfo() */
+#debugInformation {
+	width: 48em; 
+	height: 20em; 
+	overflow: scroll;
+	border: 1px #797878 solid;
+}
+
+#debugInformation textarea {
+	width: 200em; 
+	height: 68em;
+	border: 0;
+}
+
+.viewArray {
+	border: 1px solid #B3B7BD;
+	border-bottom: 0;
+}
+
+.viewArray .viewArray {
+	border: 0;
+}
+
+.viewArray dt {
+	float: left;
+	width: 19em;
+	font-weight: bold;
+}
+
+.viewArray dd {
+	padding-left: 19em;
+	border-bottom: 1px #d0d0d0 solid
+}
+
+.viewArray .viewArray dt {
+	width: 10em;
+}
+
+.viewArray .viewArray dd {
+	padding-left: 10em;
+	border: 0;
+}
+
+.viewArray dl {
+	margin: 0;
+}
+
+.phpinfo pre {
+	margin: 0px;
+	font-family: monospace;
+}
+
+.phpinfo table {
+	border-collapse: collapse;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.phpinfo .center table {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+}
+
+.phpinfo .center th {
+	text-align: center !important;
+}
+
+.phpinfo td,
+.phpinfo th {
+	border: 1px solid #000000;
+	vertical-align: baseline;
+	padding: 0.3em;
+	overflow: hidden;
+}
+
+.phpinfo h1 {
+	font-size: 150%;
+	background-image: none;
+	text-indent: 0;
+	height: auto;
+	color: #000000;
+	margin: 1em 0 1em 0;
+	text-align: center;
+	float: none;
+}
+
+.phpinfo h2 {
+	margin: 1em 0 1em 0;
+	color: #000000;
+	padding: 0;
+	text-align: center;
+	background-color: transparent;
+	float: none;
+}
+
+.phpinfo .p {
+	text-align: left;
+}
+
+.phpinfo .e {
+	background-color: #ccf;
+	font-weight: bold;
+	color: #000000;
+}
+
+.phpinfo .h {
+	background-color: #99c;
+	font-weight: bold;
+	color: #000000;
+}
+
+.phpinfo .v {
+	background-color: #ccc;
+	color: #000000;
+}
+
+.phpinfo .vr {
+	background-color: #ccc;
+	text-align: right;
+	color: #000000;
+}
+
+.phpinfo img {
+	float: right;
+	border: 0px;
+}
+
+.phpinfo hr {
+	background-color: #ccc;
+	border: 0px;
+	height: 1px;
+	color: #000000;
+}
+
+/* 9: Edit files in typo3conf/ */
+#confEditFileList dt {
+	float: left;
+	width: 45em;
+}
+
+#confEditFileList dd {
+	padding-left: 45em;
+}
+
+#confEditFileList dt a {
+	color: blue;
+	text-decoration: none;
+}
+
+#confEditFileList dt a:hover {
+	text-decoration: underline;
+}
+
+#confEditFileList dt.act a {
+	font-weight: bold;
+}
+
+#fileEdit textarea {
+	height: 10em;
+	width: 99%;
+	padding: 0;
+}
+
+/* 10: About */

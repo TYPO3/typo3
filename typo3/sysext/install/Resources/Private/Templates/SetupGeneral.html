@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: Setup General</title>
+	</head>
+	<body>
+		<!-- ###TEMPLATE### begin -->
+		<form action="###ACTIONURL###" method="post" id="setupGeneral">
+			<!-- ###ALLMODES### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label for="userName">###LABELUSERNAME###</label>
+						<input id="userName" type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="###USERNAME###" class="inputText" />
+					</li>
+					<!-- ###SQLSAFEMODEUSERSUBPART### begin -->
+					<li>
+						###LABELSQLSAFEMODEUSER###
+						<br />
+						<strong>
+							###SQLSAFEMODEUSER###
+						</strong>
+					</li>
+					<!-- ###SQLSAFEMODEUSERSUBPART### end -->
+					<li>
+						<label for="password">###LABELPASSWORD###</label>
+						<input id="password" type="password" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="###PASSWORD###" class="inputText" />
+					</li>
+					<li>
+						<label for="host">###LABELHOST###</label>
+						<input id="host" type="text" name="TYPO3_INSTALL[localconf.php][typo_db_host]" value="###HOST###" class="inputText" />
+					</li>
+				</ol>
+			</fieldset>
+			<!-- ###DATABASELIST### begin -->
+			<fieldset>
+				<ol>
+					<!-- ###DATABASEAVAILABLE### begin -->
+					<li>
+						<label for="db">###LABELDATABASE###</label>
+						<select id="db" name="TYPO3_INSTALL[localconf.php][typo_db]">
+							<!-- ###DATABASEITEM### begin -->
+							<option value="###DATABASENAME###" ###DATABASESELECTED###>
+								###DATABASEVALUE###
+							</option>
+							<!-- ###DATABASEITEM### end -->
+						</select>
+					</li>
+					<li>
+						<label for="createDatabase">###LABELCREATEDATABASE###</label>
+						<input id="createDatabase" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" value="" class="inputText" />
+					</li>
+					<!-- ###DATABASEAVAILABLE### end -->
+					<!-- ###DATABASENOTAVAILABLE### begin -->
+					<li>
+						<label>###LABELDATABASE###</label>
+						<strong>
+							###TYPO3DB###
+						</strong>
+						<br />
+						###LABELNODATABASE###
+						<input type="hidden" name="TYPO3_INSTALL[localconf.php][typo_db]" value="###TYPO3DB###" />
+					</li>
+					<!-- ###DATABASENOTAVAILABLE### end -->
+				</ol>
+			</fieldset>
+			<!-- ###DATABASELIST### end -->
+			<!-- ###ALLMODES### end -->
+			<!-- ###REGULARMODE### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label for="siteName">###LABELSITENAME###</label>
+						<input id="siteName" type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="###SITENAME###" class="inputText" />
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset>
+				<ol>
+					<li>
+						<label for="encryptionKey">###LABELENCRYPTIONKEY###</label>
+						<span>
+							<input id="encryptionKey" type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="###ENCRYPTIONKEY###" class="inputText" />
+							<br />
+							<button type="button" onclick="EncryptionKey.load(this)">###LABELGENERATERANDOMKEY###<span class="positive">&nbsp;</span></button>
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###DISABLEEXECFUNCTIONSUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELDISABLEEXECFUNCTION###</label>
+						<span>
+							###STRONGDISABLEEXECFUNCTION###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTDISABLEEXECFUNCTION###
+							<input type="hidden" name="TYPO3_INSTALL[localconf.php][disable_exec_function]" value="###DISABLEEXECFUNCTION###" />
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###DISABLEEXECFUNCTIONSUBPART### end -->
+			<!--  ###GDLIBSUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELGDLIB###</label>
+						<span>
+							###STRONGGDLIB###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTGDLIB###
+							<input type="hidden" name="TYPO3_INSTALL[localconf.php][gdlib]" value="###GDLIB###" />
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###GDLIBSUBPART### end -->
+			<!--  ###GDLIBPNGSUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELGDLIBPNG###</label>
+						<span>
+							###STRONGGDLIBPNG###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTGDLIBPNG###
+							<br />
+							<select name="TYPO3_INSTALL[localconf.php][gdlib_png]">
+								<!-- ###GDLIBPNGOPTION### -->
+								<option value="###VALUE###" ###SELECTED###>
+									###DATA###
+								</option>
+								<!-- ###GDLIBPNGOPTION### -->
+							</select>
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###GDLIBPNGSUBPART### end -->
+			<!--  ###IMAGEMAGICKSUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELIMAGEMAGICK###</label>
+						<span>
+							###STRONGIMAGEMAGICK###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTIMAGEMAGICK###
+							<input type="hidden" name="TYPO3_INSTALL[localconf.php][im]" value="###IMAGEMAGICK###" />
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###IMAGEMAGICKSUBPART### end -->
+			<!--  ###IMCOMBINEFILENAMESUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELIMCOMBINEFILENAME###</label>
+						<span>
+							###STRONGIMCOMBINEFILENAME###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTIMCOMBINEFILENAME###
+							<input type="hidden" name="TYPO3_INSTALL[localconf.php][im_combine_filename]" value="###IMCOMBINEFILENAME###" />
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###IMCOMBINEFILENAMESUBPART### end -->
+			<!--  ###IMVERSION5SUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELIMVERSION5###</label>
+						<span>
+							###STRONGIMVERSION5###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTIMVERSION5###
+							<input type="hidden" name="TYPO3_INSTALL[localconf.php][im_version_5]" value="###IMVERSION5###" />
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###IMVERSION5SUBPART### end -->
+			<!--  ###IMPATHSUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELIMPATH###</label>
+						<span>
+							###STRONGIMPATH###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTIMPATH###
+							<input type="hidden" name="TYPO3_INSTALL[localconf.php][im_path]" value="###IMPATH###" />
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###IMPATHSUBPART### end -->
+			<!--  ###IMPATHLZWSUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label>###LABELIMPATHLZW###</label>
+						<span>
+							###STRONGIMPATHLZW###
+							<br />
+							###LABELCURRENTVALUEIS### ###DEFAULTIMPATH###
+							<br />
+							<select name="TYPO3_INSTALL[localconf.php][im_path_lzw]">
+								<!-- ###IMPATHLZWOPTION### begin -->
+								<option value="###VALUE###" ###SELECTED###>
+									###DATA###
+								</option>
+								<!-- ###IMPATHLZWOPTION### end -->
+							</select>
+						</span>
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###IMPATHLZWSUBPART### end -->
+			<!--  ###TTFDPISUBPART### begin -->
+			<fieldset>
+				<ol>
+					<li>
+						<label for="ttfDpi">###LABELTTFDPI###</label>
+						<input id="ttfDpi" type="text" name="TYPO3_INSTALL[localconf.php][TTFdpi]" value="###TTFDPI###" class="inputText" />
+					</li>
+				</ol>
+			</fieldset>
+			<!--  ###TTFDPISUBPART### end -->
+			<!-- ###REGULARMODE### end -->
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">
+							###LABELUPDATELOCALCONF###
+							<span class="positive">&nbsp;</span>
+						</button>
+					</li>
+					<li>
+						<strong>###LABELNOTICE###</strong> 
+						###LABELCOMMENTUPDATELOCALCONF###
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###TEMPLATE### begin -->
+	</body>
+</html>

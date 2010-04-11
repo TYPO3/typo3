@@ -75,6 +75,13 @@ class tx_install_session {
 	private $regenerateSessionIdTime = 5;
 
 	/**
+	 * part of the referer when the install tool has been called from the backend
+	 *
+	 * @var string
+	 */
+	private $backendFile = 'backend.php';
+
+	/**
 	 * Constructor. Starts PHP session handling in our own private store
 	 *
 	 * Side-effect: might set a cookie, so must be called before any other output.
@@ -136,6 +143,14 @@ class tx_install_session {
 	 */
 	public function startSession() {
 		$_SESSION['created'] = time();
+
+		$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+		if (strpos($referer['path'], $this->backendFile)) {
+			$_SESSION['backend'] = TRUE;
+		} else {
+			$_SESSION['backend'] = FALSE;
+		}
+
 		return session_id();
 	}
 
@@ -234,6 +249,18 @@ class tx_install_session {
 		}
 		if ($_SESSION['expires'] < time()) {
 			// This session was authorized before, but has expired
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Check if the install tool is called in the backend
+	 *
+	 * @return boolean True if the install tool has been called from the backend
+	 */
+	public function inBackend() {
+		if ($_SESSION['backend']) {
 			return TRUE;
 		}
 		return FALSE;

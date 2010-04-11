@@ -1,0 +1,201 @@
+@CHARSET "UTF-8";
+
+/* Font size 62.8% = 1em = 10px */
+body {
+	background: #4f4f4f url('../Images/body-background.jpg') repeat-x fixed;
+}
+
+#container {
+	width: 43em;
+	margin-left: 16em;
+}
+
+h1 {
+	background: url('../Images/logo.gif') no-repeat scroll 0 0 transparent;
+	text-indent:-999em;
+	margin: 2em 0 3.7em 0;
+	height: 34px;
+}
+
+h2 {
+	background-color: #585858;
+	font-size: 120%;
+	font-weight: bold;
+	color: #ffffff;
+	padding: 0.5em 1.8em 0.5em 1.8em;
+	margin: 0;
+}
+
+h3 {
+	font-size: 163%;
+}
+
+#contentTop {
+	height: 3px;
+	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+}
+
+#contentBottom {
+	height: 3px;
+	background: #4d4c4d url('../Images/content-bottom.png') no-repeat center top;
+}
+
+#content {
+	color: #787878;
+	background: #ebebeb url('../Images/content-background.jpg') repeat-x left bottom;
+	padding: 1em 1.8em 1em;
+}
+
+/* 1-2-3 General */
+#stepHeader {
+	list-style: none;
+	margin: 1em 0 0;
+	padding: 0;
+}
+
+#stepHeader li {
+	float: left;
+	text-indent:-999em;
+	width: 35px;
+	height: 35px;
+	margin-right: 1.1em;
+	background: url('../Images/numbers.png') no-repeat scroll 0 0 transparent;
+}
+
+#stepHeader li a {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+#stepHeader li.step1 {
+	background-position: 0 0;
+}
+
+#stepHeader li.step1.act {
+	background-position: 0 center;
+}
+
+#stepHeader li.step1.done {
+	background-position: 0 bottom;
+}
+
+#stepHeader li.step2 {
+	background-position: -35px 0;
+}
+
+#stepHeader li.step2.act {
+	background-position: -35px center;
+}
+
+#stepHeader li.step2.done {
+	background-position: -35px bottom;
+}
+
+#stepHeader li.step3 {
+	background-position: -70px 0;
+}
+
+#stepHeader li.step3.act {
+	background-position: -70px center;
+}
+
+#stepHeader li.step3.done {
+	background-position: -70px bottom;
+}
+
+#stepHeader li.step4 {
+	background-position: -105px 0;
+}
+
+#stepHeader li.step4.act {
+	background-position: -105px center;
+}
+
+#stepHeader li.step4.done {
+	background-position: -105px bottom;
+}
+
+#stepHeader li.step5 {
+	background-position: -140px 0;
+}
+
+#stepHeader li.step5.act {
+	background-position: -140px center;
+}
+
+#stepHeader li.step5.done {
+	background-position: -140px bottom;
+}
+
+#stepHeader li.step6 {
+	background-position: -175px 0;
+}
+
+#stepHeader li.step6.act {
+	background-position: -175px center;
+}
+
+#stepHeader li.step6.done {
+	background-position: -175px bottom;
+}
+
+#stepHeader li.step7 {
+	background-position: -210px 0;
+}
+
+#stepHeader li.step7.act {
+	background-position: -210px center;
+}
+
+#stepHeader li.step7.done {
+	background-position: -210px bottom;
+}
+
+#stepHeader li.step8 {
+	background-position: -245px 0;
+}
+
+#stepHeader li.step8.act {
+	background-position: -245px center;
+}
+
+#stepHeader li.step8.done {
+	background-position: -245px bottom;
+}
+
+#skip123 {
+	text-align: right;
+	font-size: 0.91em;
+}
+
+#skip123 a {
+	color: #888888;
+	text-decoration: none;
+}
+
+#skip123 a:hover {
+	text-decoration: underline;
+}
+
+/* 1-2-3: Step 3 */
+#step3 label {
+	float: none;
+	font-weight: bold;
+}
+
+#step3 p {
+	margin: 0 0 0.5em;
+}
+
+/* 1-2-3: Step 4 */
+#stepOutputSummary dt {
+	float: left;
+	clear: both;
+	width: 15em;
+	margin-right: 1em;
+}
+
+#stepOutputSummary dd {
+	float: left;
+}

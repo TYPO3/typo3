@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: TYPO3 Conf Edit</title>
+	</head>
+	<body>
+		<!-- ###TEMPLATE### begin -->
+		<dl id="confEditFileList">
+			<!-- ###FILES### begin -->
+			<dt ###CLASS###>
+				<a href="###EDITURL###">
+					###FILENAME###
+				</a>
+			</dt>
+			<dd>
+				###FILESIZE### 
+			</dd>
+			<!-- ###FILES### end -->
+		</dl>
+		<p>
+			###EDITPATH###
+		</p>
+		<!-- ###ALLOWFILEEDITOUTSIDETYPO3CONFDIR### begin -->
+		<form action="###ACTION###" method="post">
+			<fieldset>
+				<ol>
+					<li>
+						<label for="editPath">###PATHSITE###</label>
+						<input id="editPath" type="text" name="TYPO3_INSTALL[FILE][EDIT_path]" value="###EDITPATH###" class="inputText" />
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">###SET###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###ALLOWFILEEDITOUTSIDETYPO3CONFDIR### end -->
+		<p>
+			<a href="###DELETETEMPCACHEDURL###">
+				###DELETETEMPCACHED###
+			</a>
+		</p>
+		<!--  ###FILEEDIT### begin -->
+		<h4 id="fileEditHeader" class="typo3-message message-information">
+			###LLEDITING### ###FILE###
+		</h4>
+		###MESSAGES###
+		<p>
+			###MD5SUM###
+		</p>
+		<form id="fileEdit" action="###ACTION###" method="post">
+			<fieldset>
+				<ol>
+					<li class="hidden">
+						<input type="hidden" name="TYPO3_INSTALL[FILE][name]" value="###FILENAME###" />
+						<!-- ###ALLOWFILEEDITOUTSIDETYPO3CONFDIR### begin -->
+						<input type="hidden" name="TYPO3_INSTALL[FILE][EDIT_path]" value="###FILEEDITPATH###" />
+						<!-- ###ALLOWFILEEDITOUTSIDETYPO3CONFDIR### end -->
+						<input type="hidden" name="TYPO3_INSTALL[FILE][prevMD5]" value="###FILEPREVIOUSMD5###" />
+					</li>
+					<li>
+						<textarea cols="48" rows="30" name="TYPO3_INSTALL[FILE][###FILEMD5###]" wrap="off">###FILECONTENT###</textarea>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset>
+				<ol>
+					<li class="labelAfter">
+						<input type="checkbox" name="TYPO3_INSTALL[FILE][win_to_unix_br]" id="winToUnixBr" value="1" ###WINTOUNIXBRCHECKED### />
+						<label for="winToUnixBr">###WINTOUNIXBR###</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" name="TYPO3_INSTALL[FILE][backup]" id="backup" value="1" ###BACKUPCHECKED### />
+						<label for="backup">###BACKUP###</label>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<!-- ###SHOWSAVEBUTTON### begin -->
+						<button type="submit" name="TYPO3_INSTALL[SAVE_FILE]" value="###SAVEFILE###">###SAVEFILE###<span class="positive">&nbsp;</span></button>
+						<!-- ###SHOWSAVEBUTTON### end -->
+						<button type="submit" name="_close" value="###CLOSE###">###CLOSE###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!--  ###FILEEDIT### end -->
+		<!-- ###TEMPLATE### end -->
+	</body>
+</html>

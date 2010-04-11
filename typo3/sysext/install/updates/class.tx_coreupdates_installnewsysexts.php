@@ -55,7 +55,16 @@ class tx_coreupdates_installnewsysexts {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = false;
-		$description = 'Install the following system extensions that are new in TYPO3 4.3:<br />';
+		$description = '
+			<p>
+				Install the following system extensions that are new in TYPO3
+				4.3:
+			</p>
+		';
+
+		$description .= '
+			<ul>
+		';
 
 		foreach($this->newSystemExtensions as $_EXTKEY) {
 			if (!t3lib_extMgm::isLoaded($_EXTKEY)) {
@@ -63,12 +72,22 @@ class tx_coreupdates_installnewsysexts {
 					// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
 				require (PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php');
 				$description .= '
-					<strong>' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']</strong>
-					' . $EM_CONF[$_EXTKEY]['description'] . '<br />';
+					<li>
+						<strong>
+							' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']
+						</strong>
+						<br />
+						' . $EM_CONF[$_EXTKEY]['description'] . '
+					</li>
+				';
 
 				$result = true;
 			}
 		}
+
+		$description .= '
+			</ul>
+		';
 
 		return $result;
 	}
@@ -80,16 +99,38 @@ class tx_coreupdates_installnewsysexts {
 	 * @return	string		HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-		$content = '<strong>Install the following system extensions that are new in TYPO3 4.3:</strong><br />';
+		$content = '
+			<p>
+				<strong>
+					Install the following system extensions that are new in
+					TYPO3 4.3:
+				</strong>
+			</p>
+		';
+
+		$content .= '
+			<fieldset>
+				<ol>
+		';
+
 		foreach($this->newSystemExtensions as $_EXTKEY) {
 			if (!t3lib_extMgm::isLoaded($_EXTKEY)) {
 				$EM_CONF = FALSE;
 					// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
 				require (PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php');
 				$content .= '
-					<input type="checkbox" id="' . $_EXTKEY . '" name="' . $inputPrefix . '[sysext][' . $_EXTKEY . ']" value="1" checked="checked" /><label for="' . $_EXTKEY . '">' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']</label><br />';
+					<li class="labelAfter">
+						<input type="checkbox" id="' . $_EXTKEY . '" name="' . $inputPrefix . '[sysext][' . $_EXTKEY . ']" value="1" checked="checked" />
+						<label for="' . $_EXTKEY . '">' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']</label>
+					</li>
+				';
 			}
 		}
+
+		$content .= '
+				</ol>
+			</fieldset>
+		';
 
 		return $content;
 	}

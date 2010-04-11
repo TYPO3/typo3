@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: Update wizard parts</title>
+	</head>
+	<body>
+		<!-- ###CHECKFORUPDATE### begin -->
+		<!-- ###UPDATESAVAILABLE### begin -->
+		<!-- ###UPDATEWIZARDBOXES### begin -->
+		<form action="###ACTION####bottom" method="post">
+			<fieldset class="hidden">
+				<ol>
+					<li>
+						<input type="hidden" name="TYPO3_INSTALL[database_type]" value="getUserInput" />
+					</li>
+				</ol>
+			</fieldset>
+			<!-- ###SINGLEUPDATEWIZARDBOX### begin -->
+			<h3>###IDENTIFIER###</h3>
+			###EXPLANATION###
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit" name="TYPO3_INSTALL[update][###IDENTIFIER###]">
+							###NEXT###
+							<span class="positive">&nbsp;</span>
+						</button>
+					</li>
+				</ol>
+			</fieldset>
+			<!-- ###SINGLEUPDATEWIZARDBOX### end -->
+		</form>
+		<!-- ###UPDATEWIZARDBOXES### end -->
+		<h3>###FINALSTEP###</h3>
+		###FINALSTEPEXPLANATION###
+		<a href="index.php?TYPO3_INSTALL[type]=database&amp;TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom" class="button">###COMPAREDATABASE###<span class="positive">&nbsp;</span></a>
+		<!-- ###UPDATESAVAILABLE### end -->
+		<!-- ###CHECKFORUPDATE### end -->
+		
+		<!-- ###GETUSERINPUT### begin -->
+		<form action="###ACTION####bottom" method="post">
+			<fieldset class="hidden">
+				<ol>
+					<li>
+						<input type="hidden" value="performUpdate" name="TYPO3_INSTALL[database_type]" />
+					</li>
+				</ol>
+			</fieldset>
+			<p>
+				<strong>
+					###INTRODUCTION###
+				</strong>
+			</p>
+			<!-- ###NOUPDATESAVAILABLE### begin -->
+			<p>
+				<strong>
+					###NOUPDATES###
+				</strong>
+			</p>
+			<!-- ###NOUPDATESAVAILABLE### end -->
+			<!-- ###UPDATESAVAILABLE### begin -->
+			<fieldset>
+				<ol>
+					<li class="hidden">
+						<input type="hidden" name="TYPO3_INSTALL[update][extList][]" value="###IDENTIFIER###" />
+					</li>
+				</ol>
+			</fieldset>
+			<p>
+				<strong>
+					###IDENTIFIER###
+				</strong>
+			</p>
+			###IDENTIFIERMETHOD###
+			<!-- ###UPDATESAVAILABLE### end -->
+			<fieldset>
+				<ol>
+					<li class="labelAfter">
+						<input type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" id="showDatabaseQueries" value="1" />
+						<label for="showDatabaseQueries">###SHOWDATABASEQUERIES###</label>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">
+							###PERFORMUPDATES###
+							<span class="positive">&nbsp;</span>
+						</button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		<!-- ###GETUSERINPUT### end -->
+		
+		<!-- ###PERFORMUPDATE### begin -->
+			<!-- ###UPDATEITEMS### begin -->
+			<p class="innerWidth">
+				<strong>
+					###IDENTIFIER###
+				</strong>
+			</p>
+				<!-- ###CHECKUSERINPUT### begin -->
+				###CUSTOMOUTPUT###
+				<br />
+				<br />
+				<a href="javascript:history.back()">
+					###GOBACK###
+				</a>
+				<!-- ###CHECKUSERINPUT### end -->
+				<!-- ###UPDATEPERFORMED### begin -->
+				<strong>
+					###UPDATESTATUS###
+				</strong>
+				<!-- ###DATABASEQUERIES### begin -->
+				<br />
+				###QUERY###
+				<!-- ###DATABASEQUERIES### end -->
+				
+				<!-- ###CUSTOMOUTPUT### begin -->
+				<br />
+				###CUSTOM###
+				<!-- ###CUSTOMOUTPUT### end -->
+				
+				<!-- ###UPDATEPERFORMED### end -->
+				<!-- ###NOPERFORMUPDATE### begin -->
+				<strong>
+					###NOUPDATEMETHOD###
+				</strong>
+				<!-- ###NOPERFORMUPDATE### end -->
+			<!-- ###UPDATEITEMS### end -->
+		<!-- ###PERFORMUPDATE### end -->
+	</body>
+</html>

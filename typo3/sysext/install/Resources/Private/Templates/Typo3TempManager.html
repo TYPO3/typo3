@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: TYPO3 Temp Manager</title>
+	</head>
+	<body>
+		<!-- ###TEMPLATE### begin -->
+		<dl id="tempManagerNumbers">
+			<dt>
+				###NUMBERTEMPORARY###
+			</dt>
+			<dd>
+				###TEMPORARY###
+			</dd>
+			<dt>
+				###NUMBERMATCHING###
+			</dt>
+			<dd>
+				###MATCHING### ###DELETETYPE###
+			</dd>
+			<dt>
+				###NUMBERDELETED###
+			</dt>
+			<dd>
+				###DELETED###
+			</dd>
+		</dl>
+		<form id="tempManagerForm" method="post" action="index.php?TYPO3_INSTALL[type]=typo3temp">
+			<fieldset>
+				<ol>
+					<li>
+						<label for="delete">###DELETECONDITION###</label>
+						<select id="delete" name="TYPO3_INSTALL[typo3temp_delete]">
+							<!-- ###DELETEOPTIONS### begin -->
+							<option value="###VALUE###" ###SELECTED###>###DATA###</option>
+							<!-- ###DELETEOPTIONS### end -->
+						</select>
+					</li>
+					<li>
+						<label for="action">###NUMBERFILES###</label>
+						<select id="action" name="TYPO3_INSTALL[typo3temp_action]">
+							<!-- ###ACTIONOPTIONS### begin -->
+							<option value="###VALUE###">###DATA###</option>
+							<!-- ###ACTIONOPTIONS### end -->
+						</select>
+					</li>
+					<li>
+						<label for="subDirectory">###FROMSUBDIRECTORY###</label>
+						<select id="subDirectory" name="TYPO3_INSTALL[typo3temp_subdir]">
+							<!-- ###SUBDIRECTORYOPTIONS### begin -->
+							<option value="###VALUE###" ###SELECTED###>###DATA###</option>
+							<!-- ###SUBDIRECTORYOPTIONS### end -->
+						</select>
+					</li>
+				</ol>
+			</fieldset>
+			<fieldset class="submit">
+				<ol>
+					<li>
+						<button type="submit">###EXECUTE###<span class="positive">&nbsp;</span></button>
+					</li>
+				</ol>
+			</fieldset>
+		</form>
+		###EXPLANATION###
+		<!-- ###TEMPLATE### end -->
+	</body>
+</html>

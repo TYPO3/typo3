@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: Check the database cache</title>
+	</head>
+	<body>
+		<!-- ###EMPTIEDTABLES### begin -->
+		<ul>
+			<!-- ###TABLE### begin -->
+			<li>
+				###TABLENAME###
+			</li>
+			<!-- ###TABLE### end -->
+		</ul>
+		<!-- ###EMPTIEDTABLES### end -->
+		
+		<!-- ###TABLELIST### begin -->
+		<fieldset id="checkTheDatabaseCache">
+			<ol>
+				<!-- ###SINGLETABLE### begin -->
+				<li class="labelAfter">
+				<input name="TYPO3_INSTALL[database_clearcache][###TABLE###]" id="database_clearcache###TABLE###" value="1" type="checkbox" ###CHECKED### />
+				<label for="database_clearcache###TABLE###">
+					<span class="strong column1">
+						###TABLE###
+					</span>
+					<span class="column2">
+						###COUNT###
+					</span>
+					<span class="column3">
+						###LABEL###
+					</span>
+				</label>
+				</li>
+				<!-- ###SINGLETABLE### end -->
+				<!-- ###GROUP### begin -->
+				<li>&nbsp;</li>
+				<!-- ###GROUP### end -->
+			</ol>
+		</fieldset>
+		<!-- ###TABLELIST### end -->
+	</body>
+</html>

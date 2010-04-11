@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Template: Login Form</title>
+	</head>
+	<body>
+		<!-- ###TEMPLATE### begin -->
+		<div id="contentTop">&nbsp;</div>
+		<h2>###HEADTITLE###</h2>
+		<div id="content">
+			<h3>###SITENAME###</h3>
+			<form action="index.php" method="post" id="passwordForm">
+				<fieldset>
+					<ol>
+						<li class="labelWidth7">
+							<label for="password">###ENTERPASSWORD###</label>
+							<input id="password" type="password" name="password" class="inputText" />
+						</li>
+						<li class="hidden">
+							<input type="hidden" name="redirect_url" value="###REDIRECTURL###" />
+						</li>
+					</ol>
+				</fieldset>
+				<fieldset class="submit">
+					<ol>
+						<li>
+							<button type="submit">
+								###LOGIN###
+								<span class="positive">&nbsp;</span>
+							</button>
+						</li>
+					</ol>
+				</fieldset>
+			</form>
+		</div>
+		<div id="contentBottom">&nbsp;</div>
+		<!-- ###WRONGPASSWORD### begin -->
+		<p class="typo3-message message-error">
+			###PASSWORDMESSAGE###
+			<br />
+			###PASSWORD###
+		</p>
+		<!-- ###WRONGPASSWORD### end -->
+		<!-- ###SESSIONEXPIRED### begin -->
+		<p class="typo3-message message-error">
+			###MESSAGE###
+		</p>
+		<!-- ###SESSIONEXPIRED### end -->
+		###MESSAGE###
+		<script type="text/javascript">
+		<!--
+			$('password').focus();
+		//-->
+		</script>
+		<!-- ###TEMPLATE### end -->
+	</body>
+</html>
