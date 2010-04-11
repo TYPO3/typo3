@@ -60,7 +60,7 @@
  * This class is meant to be used without instance:
  * $cmd = t3lib_exec::getCommand ('awstats','perl');
  *
- * The data of this class is hold in a global variable. Doing it this way the setup is cached.
+ * The data of this class is cached.
  * That means if a program is found once it don't have to be searched again.
  *
  * user functions:
@@ -78,80 +78,101 @@
  * binaries can be preconfigured with
  * $TYPO3_CONF_VARS['SYS']['binSetup']
  *
- * @author	René Fritz <r.fritz@colorcube.de>
- * @package TYPO3
- * @subpackage t3lib
+ * @author		René Fritz <r.fritz@colorcube.de>
+ * @package		TYPO3
+ * @subpackage	t3lib
  */
 class t3lib_exec {
 
+	/** Tells if object is already initialized */
+	protected static $initialized = FALSE;
+
 	/**
-	 * Checks if a command is valid or not
-	 * updates global vars
+	 * Contains application list. This is an array with the following structure:
+	 * - app => file name to the application (like 'tar' or 'bzip2')
+	 * - path => full path to the application without application name (like '/usr/bin/' for '/usr/bin/tar')
+	 * - valid => true or false
+	 * Array key is identical to 'app'.
+	 *
+	 * @var	array
+	 */
+	protected static $applications = array();
+
+	/**
+	 * Paths where to search for applications
+	 *
+	 * @var	array
+	 */
+	protected static $paths = NULL;
+
+	/**
+	 * Checks if a command is valid or not, updates global variables
 	 *
 	 * @param	string		the command that should be executed. eg: "convert"
 	 * @param	string		executer for the command. eg: "perl"
 	 * @return	boolean		false if cmd is not found, or -1 if the handler is not found
 	 */
-	function checkCommand($cmd, $handler='')	{
-		global $T3_VAR;
-
-		if (!t3lib_exec::_init()) {
-			return false;
+	public static function checkCommand($cmd, $handler = '') {
+		if (!self::init()) {
+			return FALSE;
 		}
 
-
-		if ($handler && !t3lib_exec::checkCommand($handler)) {
+		if ($handler && !self::checkCommand($handler)) {
 			return -1;
 		}
-			// already checked and valid
-		if ($T3_VAR['t3lib_exec']['apps'][$cmd]['valid']) {
-			return true;
+			// Already checked and valid
+		if (self::$applications[$cmd]['valid']) {
+			return TRUE;
 		}
-			// is set but was (above) not true
-		if (isset($T3_VAR['t3lib_exec']['apps'][$cmd]['valid'])) {
-			return false;
+			// Is set but was (above) not true
+		if (isset(self::$applications[$cmd]['valid'])) {
+			return FALSE;
 		}
 
-		foreach($T3_VAR['t3lib_exec']['paths'] as $path => $validPath) {
-				// ignore invalid (false) paths
+		foreach (self::$paths as $path => $validPath) {
+				// Ignore invalid (false) paths
 			if ($validPath) {
-				if (TYPO3_OS=='WIN') {
-					if (@is_file($path.$cmd)) {
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['path'] = $path;
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['valid'] = true;
-						return true;
+				if (TYPO3_OS == 'WIN') {
+						// Windows OS
+						// TODO Why is_executable() is not called here?
+					if (@is_file($path . $cmd)) {
+						self::$applications[$cmd]['app'] = $cmd;
+						self::$applications[$cmd]['path'] = $path;
+						self::$applications[$cmd]['valid'] = TRUE;
+						return TRUE;
 					}
-					if (@is_file($path.$cmd.'.exe')) {
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd.'.exe';
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['path'] = $path;
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['valid'] = true;
-						return true;
+					if (@is_file($path . $cmd . '.exe')) {
+						self::$applications[$cmd]['app'] = $cmd . '.exe';
+						self::$applications[$cmd]['path'] = $path;
+						self::$applications[$cmd]['valid'] = TRUE;
+						return TRUE;
 					}
-				} else { // UNIX
-					if (@is_executable($path.$cmd)) {
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['path'] = $path;
-						$T3_VAR['t3lib_exec']['apps'][$cmd]['valid'] = true;
-						return true;
+				} else {
+						// Unix-like OS
+					$filePath = realpath($path . $cmd);
+					if ($filePath && @is_executable($filePath)) {
+						self::$applications[$cmd]['app'] = $cmd;
+						self::$applications[$cmd]['path'] = $path;
+						self::$applications[$cmd]['valid'] = TRUE;
+						return TRUE;
 					}
 				}
 			}
 		}
 
-			// try to get the executable with the command 'which'. It do the same like already done, but maybe on other paths??
-		if (TYPO3_OS!='WIN') {
-			$cmd = @exec ('which '.$cmd);
-
+			// Try to get the executable with the command 'which'.
+			// It does the same like already done, but maybe on other paths
+		if (TYPO3_OS != 'WIN') {
+			$cmd = @exec('which ' . $cmd);
 			if (@is_executable($cmd)) {
-				$T3_VAR['t3lib_exec']['apps'][$cmd]['app'] = $cmd;
-				$T3_VAR['t3lib_exec']['apps'][$cmd]['path'] = dirname($cmd).'/';
-				$T3_VAR['t3lib_exec']['apps'][$cmd]['valid'] = true;
-				return true;
+				self::$applications[$cmd]['app'] = $cmd;
+				self::$applications[$cmd]['path'] = dirname($cmd) . '/';
+				self::$applications[$cmd]['valid'] = TRUE;
+				return TRUE;
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 
@@ -163,43 +184,40 @@ class t3lib_exec {
 	 * @param	string		options for the handler, like '-w' for "perl"
 	 * @return	mixed		returns command string, or false if cmd is not found, or -1 if the handler is not found
 	 */
-	function getCommand($cmd, $handler='', $handlerOpt='')	{
-		global $T3_VAR;
-
-		if (!t3lib_exec::_init()) {
-			return false;
+	public static function getCommand($cmd, $handler = '', $handlerOpt = '') {
+		if (!self::init()) {
+			return FALSE;
 		}
 
 			// handler
 		if ($handler) {
-			$handler = t3lib_exec::getCommand($handler);
+			$handler = self::getCommand($handler);
 
 			if (!$handler) {
 				return -1;
 			}
-			$handler .= ' '.$handlerOpt.' ';
+			$handler .= ' ' . $handlerOpt . ' ';
 		}
 
 			// command
-		if (!t3lib_exec::checkCommand($cmd)) {
-			return false;
+		if (!self::checkCommand($cmd)) {
+			return FALSE;
 		}
-		$cmd = $T3_VAR['t3lib_exec']['apps'][$cmd]['path'].$T3_VAR['t3lib_exec']['apps'][$cmd]['app'].' ';
+		$cmd = self::$applications[$cmd]['path'] . self::$applications[$cmd]['app'] . ' ';
 
-		return trim($handler.$cmd);
+		return trim($handler . $cmd);
 	}
 
 
 	/**
 	 * Extend the preset paths. This way an extension can install an executable and provide the path to t3lib_exec.
 	 *
-	 * @param	string		comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
+	 * @param	string		comma separated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
 	 * @return	void
 	 */
-	function addPaths($paths)	{
-		t3lib_exec::_initPaths($paths);
+	public static function addPaths($paths) {
+		self::initPaths($paths);
 	}
-
 
 
 	/**
@@ -208,19 +226,17 @@ class t3lib_exec {
 	 * @param	boolean		If set the array contains invalid path too. Then the key is the path and the value is empty
 	 * @return	array		Array of search paths (empty if exec is disabled)
 	 */
-	function getPaths($addInvalid=false)	{
-		global $T3_VAR;
-
-		if (!t3lib_exec::_init()) {
+	public static function getPaths($addInvalid = FALSE) {
+		if (!self::init()) {
 			return array();
 		}
 
-		$paths = $T3_VAR['t3lib_exec']['paths'];
-		if(!$addInvalid) {
+		$paths = self::$paths;
 
-			foreach($paths as $path => $validPath) {
-				if(!$validPath) {
-					unset($paths);
+		if (!$addInvalid) {
+			foreach ($paths as $path => $validPath) {
+				if (!$validPath) {
+					unset($paths[$path]);
 				}
 			}
 		}
@@ -229,74 +245,62 @@ class t3lib_exec {
 
 
 	/**
-	 * Initialization, internal
+	 * Initializes this class
 	 *
 	 * @return	void
-	 * @internal
 	 */
-	function _init()	{
-		global $T3_VAR, $TYPO3_CONF_VARS;
-
-		if ($TYPO3_CONF_VARS['BE']['disable_exec_function']) {
-			return false;
+	protected static function init() {
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function']) {
+			return FALSE;
 		}
-		if (!$T3_VAR['t3lib_exec']['init']) {
-			t3lib_exec::_initPaths();
-			$T3_VAR['t3lib_exec']['apps'] = t3lib_exec::_getConfiguredApps();;
-			$T3_VAR['t3lib_exec']['init'] = true;
+		if (!self::$initialized) {
+			self::initPaths();
+			self::$applications = self::getConfiguredApps();
+			self::$initialized = TRUE;
 		}
-		return true;
+		return TRUE;
 	}
 
 
 	/**
-	 * Init and extend the preset paths with own
+	 * Initializes and extends the preset paths with own
 	 *
 	 * @param	string		Comma seperated list of extra paths where a command should be searched. Relative paths (without leading "/") are prepend with site root path (PATH_site).
 	 * @return	void
-	 * @internal
 	 */
-	function _initPaths($paths='')	{
-		global $T3_VAR;
-
-		$doCeck=false;
+	protected static function initPaths($paths = '') {
+		$doCheck = FALSE;
 
 			// init global paths array if not already done
-		if (!is_array($T3_VAR['t3lib_exec']['paths'])) {
-			$T3_VAR['t3lib_exec']['paths'] = t3lib_exec::_getPaths();
-			$doCeck=true;
+		if (!is_array(self::$paths)) {
+			self::$paths = self::getPathsInternal();
+			$doCheck = TRUE;
 		}
 			// merge the submitted paths array to the global
 		if ($paths) {
-			$paths = t3lib_div::trimExplode(',',$paths,1);
+			$paths = t3lib_div::trimExplode(',', $paths, 1);
 			if (is_array($paths)) {
-				foreach($paths as $path) {
+				foreach ($paths as $path) {
 						// make absolute path of relative
-					if (!preg_match('#^/#',$path)) {
-						$path = PATH_site.$path;
+					if (!preg_match('#^/#', $path)) {
+						$path = PATH_site . $path;
 					}
-					if (!isset($T3_VAR['t3lib_exec']['paths'][$path])) {
+					if (!isset(self::$paths[$path])) {
 						if (@is_dir($path)) {
-							$T3_VAR['t3lib_exec']['paths'][$path] = $path;
-							$T3_VAR['t3lib_exec']['allPaths'].=','.$path;
-							// $doCeck=true; just done
+							self::$paths[$path] = $path;
 						} else {
-							$T3_VAR['t3lib_exec']['paths'][$path] = false;
+							self::$paths[$path] = FALSE;
 						}
 					}
 				}
 			}
 		}
 			// check if new paths are invalid
-		if ($doCeck) {
-			$T3_VAR['t3lib_exec']['allPaths']='';
-			foreach($T3_VAR['t3lib_exec']['paths'] as $path => $valid) {
+		if ($doCheck) {
+			foreach (self::$paths as $path => $valid) {
 					// ignore invalid (false) paths
 				if ($valid AND !@is_dir($path)) {
-					$T3_VAR['t3lib_exec']['paths'][$path] = false;
-				}
-				if ($path = $T3_VAR['t3lib_exec']['paths'][$path]) {
-					$T3_VAR['t3lib_exec']['allPaths'].=','.$path;
+					self::$paths[$path] = FALSE;
 				}
 			}
 		}
@@ -304,25 +308,20 @@ class t3lib_exec {
 
 
 	/**
-	 * Processes and returns the paths from $TYPO3_CONF_VARS['SYS']['binSetup']
+	 * Processes and returns the paths from $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']
 	 *
-	 * @return	array		Array of commands and path
-	 * @internal
+	 * @return	array	Array of commands and path
 	 */
-	function _getConfiguredApps()	{
-		global $TYPO3_CONF_VARS;
-
+	protected static function getConfiguredApps() {
 		$cmdArr = array();
 
-		if ($TYPO3_CONF_VARS['SYS']['binSetup']) {
-			$pathSetup = implode("\n", t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binSetup'],1));
-			$pathSetup = t3lib_div::trimExplode("\n",$pathSetup,1);
-			foreach($pathSetup as $val) {
-				list($cmd, $cmdPath) = t3lib_div::trimExplode('=',$val,1);
-
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']) {
+			$pathSetup = preg_split('/[\n,]+/', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup']);
+			foreach ($pathSetup as $val) {
+				list($cmd, $cmdPath) = t3lib_div::trimExplode('=', $val, 1);
 				$cmdArr[$cmd]['app'] = basename($cmdPath);
-				$cmdArr[$cmd]['path'] = dirname($cmdPath).'/';
-				$cmdArr[$cmd]['valid'] = true;
+				$cmdArr[$cmd]['path'] = dirname($cmdPath) . '/';
+				$cmdArr[$cmd]['valid'] = TRUE;
 			}
 		}
 
@@ -331,42 +330,40 @@ class t3lib_exec {
 
 
 	/**
-	 * Set the search paths from different sources, internal
+	 * Sets the search paths from different sources, internal
 	 *
 	 * @return	array		Array of absolute paths (keys and values are equal)
-	 * @internal
 	 */
-	function _getPaths()	{
-		global $T3_VAR, $TYPO3_CONF_VARS;
+	protected static function getPathsInternal() {
 
 		$pathsArr = array();
 		$sysPathArr = array();
 
 			// image magick paths first
 			// im_path_lzw take precedence over im_path
-		if ($imPath = ($TYPO3_CONF_VARS['GFX']['im_path_lzw'] ? $TYPO3_CONF_VARS['GFX']['im_path_lzw'] : $TYPO3_CONF_VARS['GFX']['im_path'])) {
-			$imPath = t3lib_exec::_fixPath($imPath);
+		if (($imPath = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']))) {
+			$imPath = self::fixPath($imPath);
 			$pathsArr[$imPath] = $imPath;
 		}
 
 			// add configured paths
-		if ($TYPO3_CONF_VARS['SYS']['binPath']) {
-			$sysPath = t3lib_div::trimExplode(',',$TYPO3_CONF_VARS['SYS']['binPath'],1);
-			foreach($sysPath as $val) {
-				$val = t3lib_exec::_fixPath($val);
-				$sysPathArr[$val]=$val;
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath']) {
+			$sysPath = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['binPath'], 1);
+			foreach ($sysPath as $val) {
+				$val = self::fixPath($val);
+				$sysPathArr[$val] = $val;
 			}
 		}
 
 
 			// add path from environment
-// TODO: how does this work for WIN
+			// TODO: how does this work for WIN
 		if ($GLOBALS['_SERVER']['PATH']) {
-			$sep = (TYPO3_OS=='WIN') ? ';' : ':';
-			$envPath = t3lib_div::trimExplode($sep,$GLOBALS['_SERVER']['PATH'],1);
-			foreach($envPath as $val) {
-				$val = t3lib_exec::_fixPath($val);
-				$sysPathArr[$val]=$val;
+			$sep = (TYPO3_OS == 'WIN' ? ';' : ':');
+			$envPath = t3lib_div::trimExplode($sep, $GLOBALS['_SERVER']['PATH'], 1);
+			foreach ($envPath as $val) {
+				$val = self::fixPath($val);
+				$sysPathArr[$val] = $val;
 			}
 		}
 
@@ -389,10 +386,9 @@ class t3lib_exec {
 	 *
 	 * @param	string		Input path
 	 * @return	string		Output path
-	 * @internal
 	 */
-	function _fixPath($path)	{
-		return str_replace ('//','/',$path.'/');
+	protected static function fixPath($path) {
+		return str_replace('//', '/', $path . '/');
 	}
 }
 

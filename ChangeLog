@@ -1,6 +1,7 @@
 2010-04-11  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14005: Moving a page with IRRE records misplaces IRRE records
+	* Cleanup #9581: Adapt t3lib_exec to PHP5 and CGLs (thanks to Martin Kutschker and Felix Oertel)
 
 2010-04-11  Patrick Broens  <patrick@patrickbroens.nl>
 
