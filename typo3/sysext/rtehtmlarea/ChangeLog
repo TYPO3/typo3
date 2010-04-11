@@ -1,3 +1,7 @@
+2010-04-11  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14062: Text Content element crashes (thanks to Jigal van Hemert)
+
 2010-04-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #14051: htmlArea RTE: Streamline the RTE loading process

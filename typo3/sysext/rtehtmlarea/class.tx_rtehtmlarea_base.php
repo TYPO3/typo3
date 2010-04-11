@@ -438,6 +438,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if (is_object($this->registeredPlugins[$pluginId])) {
 				$pathToSkin = $this->registeredPlugins[$pluginId]->getPathToSkin();
 				if ($pathToSkin) {
+					$key = $this->registeredPlugins[$pluginId]->getExtensionKey();
 					$this->addStyleSheet(
 						'rtehtmlarea-plugin-' . $pluginId . '-skin',
 						($this->is_FE() ? t3lib_extMgm::siteRelPath($key) : t3lib_extMgm::extRelPath($key)) . $pathToSkin
