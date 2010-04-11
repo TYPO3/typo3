@@ -1,3 +1,7 @@
+2010-04-11  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #14005: Moving a page with IRRE records misplaces IRRE records
+
 2010-04-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #10327: [felogin] redirecting to referer does not work
@@ -43,7 +47,7 @@
 
 2010-04-03  Francois Suter  <francois@typo3.org>
 
-	* Fixed bug #13625: tx_scheduler_TestTask fails to execute successfully due to missing mail initialization (thanks to Marc Bastian Heinrichs)
+	* Fixed bug #13625: Scheduler: tx_scheduler_TestTask fails to execute successfully due to missing mail initialization (thanks to Marc Bastian Heinrichs)
 
 2010-04-01  Tobias Liebig  <mail_typo3@etobi.de>
 
