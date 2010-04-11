@@ -1,3 +1,7 @@
+2010-04-11  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13985: bugfix/code cleanup: wrong image dimension returned if alternative logo is set and skin-extension is installed in global-space (backend-redesign) (thanks to Stephan N Kellermayr)
+
 2010-04-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14060: htmlArea RTE: Some table operations configuration may cause js error

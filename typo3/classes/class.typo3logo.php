@@ -64,17 +64,14 @@ class TYPO3Logo {
 
 
 		$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="'.$GLOBALS['TBE_TEMPLATE']->thisBlur().'">'.
-				'<img'.t3lib_iconWorks::skinImg('', $logoFile, $imgInfo[3]).' title="TYPO3 Content Management Framework" alt="" />'.
+				'<img'.t3lib_iconWorks::skinImg('', $logoFile, $imgInfo[3]).' title="TYPO3 Content Management System" alt="" />'.
 				'</a>';
 
 			// overwrite with custom logo
 		if($GLOBALS['TBE_STYLES']['logo'])	{
-			if(substr($GLOBALS['TBE_STYLES']['logo'], 0, 3) == '../')	{
-				$imgInfo = @getimagesize(PATH_site.substr($GLOBALS['TBE_STYLES']['logo'], 3));
-			}
-
-			$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="'.$GLOBALS['TBE_TEMPLATE']->thisBlur().'">'.
-				'<img src="'.$GLOBALS['TBE_STYLES']['logo'].'" '.$imgInfo[3].' title="TYPO3 Content Management Framework" alt="" />'.
+			$imgInfo = @getimagesize(t3lib_div::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['logo'], 3));
+			$logo = '<a href="http://www.typo3.com/" target="_blank" onclick="' . $GLOBALS['TBE_TEMPLATE']->thisBlur() . '">' .
+				'<img src="' . $GLOBALS['TBE_STYLES']['logo'] . '" ' . $imgInfo[3] . ' title="TYPO3 Content Management System" alt="" />' .
 				'</a>';
 		}
 
