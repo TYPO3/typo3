@@ -1,5 +1,6 @@
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13788: [felogin] Redirects use incorrect function parameters
 	* Updated manual of felogin (thanks to Jigal van Hemert and Jeff Segars)
 	* Reverted Update #14063: Updated ExtJs library from 3.1.1 to 3.2 Final
 

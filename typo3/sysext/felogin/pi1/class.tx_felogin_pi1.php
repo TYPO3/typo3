@@ -547,7 +547,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								'felogin_redirectPid!="" AND uid IN (' . implode(',', $groupData['uid']) . ')'
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
-								$redirect_url[] = $this->pi_getPageLink($row[0], array(), TRUE); // take the first group with a redirect page
+								$redirect_url[] = $this->pi_getPageLink($row[0]); // take the first group with a redirect page
 							}
 						break;
 						case 'userLogin':
@@ -557,12 +557,12 @@ class tx_felogin_pi1 extends tslib_pibase {
 								$GLOBALS['TSFE']->fe_user->userid_column . '=' . $GLOBALS['TSFE']->fe_user->user['uid'] . ' AND felogin_redirectPid!=""'
 							);
 							if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))	{
-								$redirect_url[] = $this->pi_getPageLink($row[0], array(), TRUE);
+								$redirect_url[] = $this->pi_getPageLink($row[0]);
 							}
 						break;
 						case 'login':
 							if ($this->conf['redirectPageLogin']) {
-								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']), array(), TRUE);
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogin']));
 							}
 						break;
 						case 'getpost':
@@ -606,7 +606,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					switch ($redirMethod) {
 						case 'loginError':
 							if ($this->conf['redirectPageLoginError']) {
-								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLoginError']), array(), TRUE);
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLoginError']));
 							}
 						break;
 					}
@@ -620,7 +620,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 				} elseif (($this->logintype == '') && ($redirMethod == 'logout') && $this->conf['redirectPageLogout'] && $GLOBALS['TSFE']->loginUser) {
 						// if logout and page not accessible
-					$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), TRUE);
+					$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']));
 
 				} elseif ($this->logintype === 'logout') { // after logout
 
@@ -637,7 +637,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					switch ($redirMethod) {
 						case 'logout':
 							if ($this->conf['redirectPageLogout']) {
-								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']), array(), TRUE);
+								$redirect_url[] = $this->pi_getPageLink(intval($this->conf['redirectPageLogout']));
 							}
 						break;
 					}
