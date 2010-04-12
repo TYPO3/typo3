@@ -87,8 +87,6 @@ HTMLArea.init = function() {
 	if (!Ext.isString(HTMLArea.editedContentCSS)) {
 		HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
 	}
-		// Initialize pending request flag for Opera
-	HTMLArea.pendingSynchronousXMLHttpRequest = false;
 		// Localization of core script
 	HTMLArea.I18N = HTMLArea_langArray;
 	HTMLArea.isReady = true;
@@ -1171,8 +1169,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for other key events
 	 */
 	onAnyKey: function(event) {
-			// In Opera, inhibit key events while synchronous XMLHttpRequest is being processed
-		if (Ext.isOpera && HTMLArea.pendingSynchronousXMLHttpRequest) {
+			// Inhibit key events while server-based cleaning is being processed
+		if (this.getEditor().inhibitKeyboardInput) {
 			event.stopEvent();
 			return false;
 		}
@@ -2288,6 +2286,8 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				this.registerPlugin(plugin);
 			}
 		}, this);
+			// Initialize keyboard input inhibit flag
+		this.inhibitKeyboardInput = false;
 		this.addEvents(
 			/*
 			 * @event editorready
@@ -4160,6 +4160,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 				success = true;
 			},
 			failure: function (response) {
+				this.editor.inhibitKeyboardInput = false;
 				this.appendToLog('getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + response.status);
 			},
 			scope: this

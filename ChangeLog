@@ -2,6 +2,7 @@
 
 	* Fixed bug #14062: Text Content element crashes (thanks to Jigal van Hemert)
 	* Fixed bug #10629: class and title parameters of typolinks get broken
+	* Fixed bug #14066: htmlArea RTE: Erratic handling of oncut and onpaste events
 
 2010-04-11  Francois Suter  <francois@typo3.org>
 

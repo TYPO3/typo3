@@ -86,6 +86,7 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'paste', this.wordCleanHandler, this);
 	},
 	clean: function() {
+		this.editor.inhibitKeyboardInput = true;
 		var editor = this.editor;
 		if (Ext.isWebKit) {
 			editor.cleanAppleStyleSpans(editor._doc.body);
@@ -107,6 +108,7 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 					} else {
 						this.appendToLog('clean', 'Post request to ' + url + ' failed. Server reported ' + response.status);
 					}
+					this.editor.inhibitKeyboardInput = false;
 				}
 		);
 	},
@@ -114,6 +116,6 @@ TYPO3HtmlParser = HTMLArea.Plugin.extend({
 	 * Handler for paste, dragdrop and drop events
 	 */
 	wordCleanHandler: function (event) {
-		this.clean.defer(250, this);
+		this.clean.defer(50, this);
 	}
 });
