@@ -2,6 +2,7 @@
 
 	* Fixed bug #14069: New install tool refactoring uses FE layer for templating instead of t3lib_parsehtml
 	* Fixed bug #14070: require_once to class.tslib_content.php in sysext/install/mod/class.tx_install.php should be deleted 
+	* Fixed bug #14071: Convert some characters in copyright of the stand alone install tool to XHTML character entities 
 
 2010-04-11  Stanislas Rolland  <typo3@sjbr.ca>
 

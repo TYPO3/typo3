@@ -7986,8 +7986,8 @@ $out="
 	function copyright() {
 		$content = '
 			<p>
-				<strong>TYPO3 CMS.</strong> Copyright © 1998-' . date('Y') . '
-				Kasper Skårhøj. Extensions are copyright of their respective
+				<strong>TYPO3 CMS.</strong> Copyright &copy; 1998-' . date('Y') . '
+				Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective
 				owners. Go to <a href="http://typo3.com/">http://typo3.com/</a>
 				for details. TYPO3 comes with ABSOLUTELY NO WARRANTY;
 				<a href="http://typo3.com/1316.0.html">click</a> for details.
