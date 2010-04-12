@@ -1170,9 +1170,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for other key events
 	 */
 	onAnyKey: function(event) {
-			// Inhibit key events while server-based cleaning is being processed
-		if (this.getEditor().inhibitKeyboardInput) {
-			event.stopEvent();
+		if (this.inhibitKeyboardInput(event)) {
 			return false;
 		}
 		/*****************************************************
@@ -1207,6 +1205,18 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		return true;
 	},
 	/*
+	 * On any key input event, check if input is currently inhibited
+	 */
+	inhibitKeyboardInput: function (event) {
+			// Inhibit key events while server-based cleaning is being processed
+		if (this.getEditor().inhibitKeyboardInput) {
+			event.stopEvent();
+			return true;
+		} else {
+			return false;
+		}
+	},
+	/*
 	 * Handler for mouse events
 	 */
 	onMouse: function () {
@@ -1235,6 +1245,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * If available, BlockElements plugin will handle the TAB key
 	 */
 	onTab: function (key, event) {
+		if (this.inhibitKeyboardInput(event)) {
+			return false;
+		}
 		var keyName = (event.shiftKey ? 'SHIFT-' : '') + 'TAB';
 		if (this.config.hotKeyList[keyName] && this.config.hotKeyList[keyName].cmd) {
 			var button = this.getButton(this.config.hotKeyList[keyName].cmd);
@@ -1250,6 +1263,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for BACKSPACE and DELETE keys
 	 */
 	onBackSpace: function (key, event) {
+		if (this.inhibitKeyboardInput(event)) {
+			return false;
+		}
 		if ((!Ext.isIE && !event.shiftKey) || Ext.isIE) {
 			if (this.getEditor()._checkBackspace()) {
 				event.stopEvent();
@@ -1263,6 +1279,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for ENTER key in non-IE browsers
 	 */
 	onEnter: function (key, event) {
+		if (this.inhibitKeyboardInput(event)) {
+			return false;
+		}
 		this.getEditor()._detectURL(event);
 		if (this.getEditor()._checkInsertP()) {
 			event.stopEvent();
@@ -1275,6 +1294,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for ENTER key in WebKit browsers
 	 */
 	onWebKitEnter: function (key, event) {
+		if (this.inhibitKeyboardInput(event)) {
+			return false;
+		}
 		if (event.shiftKey || this.config.disableEnterParagraphs) {
 			this.getEditor()._detectURL(event);
 		}
@@ -1286,6 +1308,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for CTRL-SPACE keys
 	 */
 	onCtrlSpace: function (key, event) {
+		if (this.inhibitKeyboardInput(event)) {
+			return false;
+		}
 		this.getEditor().insertHTML('&nbsp;');
 		event.stopEvent();
 		return false;
@@ -1294,6 +1319,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for OPTION-SPACE keys on Mac
 	 */
 	onOptionSpace: function (key, event) {
+		if (this.inhibitKeyboardInput(event)) {
+			return false;
+		}
 		this.getEditor().insertHTML('&nbsp;');
 		event.stopEvent();
 		return false;
@@ -1302,6 +1330,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Handler for configured hotkeys
 	 */
 	onHotKey: function (key, event) {
+		if (this.inhibitKeyboardInput(event)) {
+			return false;
+		}
 		var hotKey = String.fromCharCode(key).toLowerCase();
 		this.getButton(this.config.hotKeyList[hotKey].cmd).fireEvent('hotkey', hotKey, event);
 		return false;
