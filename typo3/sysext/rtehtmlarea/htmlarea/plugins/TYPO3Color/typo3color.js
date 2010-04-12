@@ -56,7 +56,7 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
-			if (HTMLArea.is_ie) {
+			if (Ext.isIE) {
 				this.allowedAttributes.push('className');
 			}
 		}
@@ -376,7 +376,7 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 				// Set the color in the style attribute
 			element.style[this.styleProperty[buttonId]] = color;
 			this.editor.wrapWithInlineElement(element, selection, range);
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				range.detach();
 			}
 		}

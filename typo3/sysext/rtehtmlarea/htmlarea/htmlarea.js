@@ -41,6 +41,9 @@ Ext.namespace('HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color'
  *  CONSTANTS
  ***************************************************/
 Ext.apply(HTMLArea, {
+	/*************************************************************************
+	 * THESE BROWSER IDENTIFICATION CONSTANTS ARE DEPRECATED AS OF TYPO3 4.4 *
+	 *************************************************************************/
 		// Browser identification
 	is_gecko	: Ext.isGecko || Ext.isOpera || Ext.isWebKit,
 	is_ff2		: Ext.isGecko2,
@@ -48,8 +51,6 @@ Ext.apply(HTMLArea, {
 	is_safari	: Ext.isWebKit,
 	is_chrome	: Ext.isChrome,
 	is_opera	: Ext.isOpera,
-		// Some operations require bug fixes provided by Opera 10 (Presto 2.2)
-	is_opera9	: Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1,
 		// Compile some regular expressions
 	RE_tagName		: /(<\/|<)\s*([^ \t\n>]+)/ig,
 	RE_head			: /<head>((.|\n)*?)<\/head>/i,

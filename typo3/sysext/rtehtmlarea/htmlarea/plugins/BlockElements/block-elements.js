@@ -70,7 +70,7 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 			}
 		}
 		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
-		if (HTMLArea.is_ie) {
+		if (Ext.isIE) {
 			this.addAllowedAttribute("className");
 		}
 		this.indentedList = null;
@@ -263,11 +263,11 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 					break;
 				default	:
 					var element = tagName;
-					if (HTMLArea.is_ie) {
+					if (Ext.isIE) {
 						element = "<" + element + ">";
 					}
 					this.editor.focus();
-					if (HTMLArea.is_safari && !this.editor._doc.body.hasChildNodes()) {
+					if (Ext.isWebKit && !this.editor._doc.body.hasChildNodes()) {
 						this.editor._doc.body.appendChild((this.editor._doc.createElement("br")));
 					}
 					try {
@@ -315,11 +315,11 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		var fullNodeTextSelected = (HTMLArea.is_gecko && parentElement.textContent === range.toString()) || (HTMLArea.is_ie && parentElement.innerText === range.text);
+		var fullNodeTextSelected = (!Ext.isIE && parentElement.textContent === range.toString()) || (Ext.isIE && parentElement.innerText === range.text);
 		switch (buttonId) {
 			case "Indent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !(fullNodeTextSelected && !/^(li)$/i.test(parentElement.parentNode.nodeName))) {
-					if (HTMLArea.is_opera) {
+					if (Ext.isOpera) {
 						try {
 							this.editor._doc.execCommand(buttonId, false, null);
 						} catch(e) {
@@ -385,7 +385,7 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 			case "Outdent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !HTMLArea._hasClass(parentElement, this.useClass.Indent)) {
 					if (/^(li)$/i.test(parentElement.parentNode.nodeName)) {
-						if (HTMLArea.is_opera) {
+						if (Ext.isOpera) {
 							try {
 								this.editor._doc.execCommand(buttonId, false, null);
 							} catch(e) {
@@ -634,7 +634,7 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 			blockElement = contextElement.appendChild(blockElement);
 		}
 			// Things go wrong in some browsers when the node is empty
-		if (HTMLArea.is_safari && !blockElement.hasChildNodes()) {
+		if (Ext.isWebKit && !blockElement.hasChildNodes()) {
 			blockElement = blockElement.appendChild(this.editor._doc.createElement("br"));
 		}
 		return blockElement;
@@ -751,7 +751,7 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 			} catch(e) {
 				this.appendToLog("onButtonPress", e + "\n\nby execCommand(" + buttonId + ");");
 			}
-			if (HTMLArea.is_safari) {
+			if (Ext.isWebKit) {
 				this.editor.cleanAppleStyleSpans(parentNode);
 			}
 		}
@@ -913,7 +913,7 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 		if (endElement) {
 			var parent = endElement.parentNode;
 			var paragraph = this.editor._doc.createElement("p");
-			if (HTMLArea.is_ie) {
+			if (Ext.isIE) {
 				paragraph.innerHTML = "&nbsp";
 			} else {
 				paragraph.appendChild(this.editor._doc.createElement("br"));

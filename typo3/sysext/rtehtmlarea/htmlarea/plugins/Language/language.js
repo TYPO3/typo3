@@ -63,7 +63,7 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
-			if (HTMLArea.is_ie) {
+			if (Ext.isIE) {
 				this.allowedAttributes.push("className");
 			}
 		}
@@ -143,7 +143,7 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 				var selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + option.get('value') + '"]:before';
 				var style = 'content: "' + option.get('value') + ': ";';
 				var rule = selector + ' { ' + style + ' }';
-				if (HTMLArea.is_gecko) {
+				if (!Ext.isIE) {
 					try {
 						styleSheet.insertRule(rule, styleSheet.cssRules.length);
 					} catch (e) {
@@ -247,14 +247,14 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 				var ancestors = this.editor.getAllAncestors();
 				for (var i = 0; i < ancestors.length; ++i) {
 					fullNodeSelected = (statusBarSelection === ancestors[i])
-						&& ((HTMLArea.is_gecko && ancestors[i].textContent === range.toString()) || (HTMLArea.is_ie && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text))));
+						&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text))));
 					if (fullNodeSelected) {
 						parent = ancestors[i];
 						break;
 					}
 				}
 					// Working around bug in Safari selectNodeContents
-				if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && statusBarSelection.textContent === range.toString()) {
+				if (!fullNodeSelected && Ext.isWebKit && statusBarSelection && statusBarSelection.textContent === range.toString()) {
 					fullNodeSelected = true;
 					parent = statusBarSelection;
 				}
@@ -273,7 +273,7 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 				var newElement = this.editor._doc.createElement("span");
 				this.setLanguageAttributes(newElement, language);
 				this.editor.wrapWithInlineElement(newElement, selection, range);
-				if (HTMLArea.is_gecko) {
+				if (!Ext.isIE) {
 					range.detach();
 				}
 			}
@@ -416,14 +416,14 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 						if (endPointsInSameBlock) {
 							for (var i = 0; i < ancestors.length; ++i) {
 								fullNodeSelected = (statusBarSelection === ancestors[i])
-									&& ((HTMLArea.is_gecko && ancestors[i].textContent === range.toString()) || (HTMLArea.is_ie && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text))));
+									&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ((selection.type !== "Control" && ancestors[i].innerText === range.text) || (selection.type === "Control" && ancestors[i].innerText === range.item(0).text))));
 								if (fullNodeSelected) {
 									parent = ancestors[i];
 									break;
 								}
 							}
 								// Working around bug in Safari selectNodeContents
-							if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && statusBarSelection.textContent === range.toString()) {
+							if (!fullNodeSelected && Ext.isWebKit && statusBarSelection && statusBarSelection.textContent === range.toString()) {
 								fullNodeSelected = true;
 								parent = statusBarSelection;
 							}

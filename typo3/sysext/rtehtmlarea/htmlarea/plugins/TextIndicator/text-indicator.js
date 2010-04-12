@@ -76,7 +76,7 @@ HTMLArea.TextIndicator = HTMLArea.Plugin.extend({
 			var doc = editor._doc;
 			try {
 				var style = {
-					backgroundColor: HTMLArea._makeColor(doc.queryCommandValue((HTMLArea.is_ie || HTMLArea.is_safari) ? 'BackColor' : 'HiliteColor')),
+					backgroundColor: HTMLArea._makeColor(doc.queryCommandValue((Ext.isIE || Ext.isWebKit) ? 'BackColor' : 'HiliteColor')),
 					color: HTMLArea._makeColor(doc.queryCommandValue('ForeColor')),
 					fontFamily: doc.queryCommandValue('FontName'),
 					fontWeight: 'normal',

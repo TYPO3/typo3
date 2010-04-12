@@ -206,7 +206,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 		}
 			// In FF, if the url is the same except for upper/lower case of a file name, the link is not updated.
 			// Therefore, we remove the link before creating a new one.
-		if (HTMLArea.is_gecko && node != null && /^a$/i.test(node.nodeName)) {
+		if (!Ext.isIE && node != null && /^a$/i.test(node.nodeName)) {
 				// If the class attribute is not removed, UnLink folowed by CreateLink will create a span element inside the new link
 			node.removeAttribute("class");
 				// Moreover, the selection is sometimes lost after the unlink operation
@@ -216,7 +216,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 			this.editor._doc.execCommand("UnLink", false, null);
 			this.editor.selectRange(this.editor.moveToBookmark(bookmark));
 		}
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+		if (Ext.isGecko) {
 			this.editor._doc.execCommand("CreateLink", false, encodeURI(theLink));
 		} else {
 			this.editor._doc.execCommand("CreateLink", false, theLink);
@@ -260,7 +260,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 		if (HTMLArea.classesAnchorSetup) {
 			var selection = this.editor._getSelection();
 			var range = this.editor._createRange(selection);
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				this.cleanAllLinks(node, range, false);
 			} else {
 				this.cleanAllLinks(node, range, true);
@@ -291,7 +291,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 	setLinkAttributes : function(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues) {
 		if (/^a$/i.test(node.nodeName)) {
 			var nodeInRange = false;
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				nodeInRange = this.editor.rangeIntersectsNode(range, node);
 			} else {
 				if (this.editor._getSelection().type.toLowerCase() == "control") {
@@ -311,7 +311,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 						node.insertBefore(imageNode.cloneNode(false), node.firstChild);
 					}
 				}
-				if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+				if (Ext.isGecko) {
 					node.href = decodeURI(node.href);
 				}
 				if (cur_target.trim()) node.target = cur_target.trim();
@@ -319,7 +319,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 				if (cur_class.trim()) {
 					node.className = cur_class.trim();
 				} else { 
-					if (HTMLArea.is_gecko) {
+					if (!Ext.isIE) {
 						node.removeAttribute('class');
 					} else {
 						node.removeAttribute('className');
@@ -382,7 +382,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 	cleanAllLinks : function(node, range, keepLinks) {
 		if (/^a$/i.test(node.nodeName)) {
 			var intersection = false;
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				intersection = this.editor.rangeIntersectsNode(range, node);
 			} else {
 				if (this.editor._getSelection().type.toLowerCase() == "control") {

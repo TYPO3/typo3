@@ -55,7 +55,7 @@ HTMLArea.SelectFont = HTMLArea.Plugin.extend({
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class", "style");
-			if (HTMLArea.is_ie) {
+			if (Ext.isIE) {
 				this.allowedAttributes.push("className");
 			}
 		}
@@ -176,7 +176,7 @@ HTMLArea.SelectFont = HTMLArea.Plugin.extend({
 			this.setStyle(element, combo.itemId, param);
 				// Wrap the selection with span tag with the style attribute
 			editor.wrapWithInlineElement(element, selection, range);
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				range.detach();
 			}
 		}
@@ -194,10 +194,10 @@ HTMLArea.SelectFont = HTMLArea.Plugin.extend({
 	setStyle: function (element, buttonId, value) {
 		element.style[this.styleProperty[buttonId]] = (value && value !== 'none') ? value : '';
 			// In IE, we need to remove the empty attribute in order to unset it
-		if (HTMLArea.is_ie && (!value || value == 'none')) {
+		if (Ext.isIE && (!value || value == 'none')) {
 			element.style.removeAttribute(this.styleProperty[buttonId], false);
 		}
-		if (HTMLArea.is_opera) {
+		if (Ext.isOpera) {
 				// Opera 9.60 replaces single quotes with double quotes
 			element.style.cssText = element.style.cssText.replace(/\"/g, "\'");
 				// Opera 9.60 removes from the list of fonts any fonts that are not installed on the client system
@@ -218,7 +218,7 @@ HTMLArea.SelectFont = HTMLArea.Plugin.extend({
 			var parentElement = statusBarSelection ? statusBarSelection : editor.getParentElement();
 			var value = parentElement.style[this.styleProperty[select.itemId]];
 			if (!value) {
-				if (HTMLArea.is_gecko) {
+				if (!Ext.isIE) {
 					if (editor.document.defaultView.getComputedStyle(parentElement, null)) {
 						value = editor.document.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
 					}

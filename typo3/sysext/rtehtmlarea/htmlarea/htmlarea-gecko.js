@@ -86,7 +86,7 @@ HTMLArea.Editor.prototype.addRangeToSelection = function(selection, range) {
  * Create a range for the current selection
  */
 HTMLArea.Editor.prototype._createRange = function(sel) {
-	if (HTMLArea.is_safari) {
+	if (Ext.isWebKit) {
 		var range = this._doc.createRange();
 		if (typeof(sel) == "undefined") {
 			return range;
@@ -467,7 +467,7 @@ HTMLArea.Editor.prototype.wrapWithInlineElement = function(element, selection, r
  * @return	void
  */
 HTMLArea.Editor.prototype.cleanAppleStyleSpans = function(node) {
-	if (HTMLArea.is_safari) {
+	if (Ext.isWebKit) {
 		if (node.getElementsByClassName) {
 			var spans = node.getElementsByClassName("Apple-style-span");
 			for (var i = spans.length; --i >= 0;) {
@@ -589,7 +589,7 @@ HTMLArea.Editor.prototype._checkInsertP = function() {
 			var first = block.firstChild;
 			if (first) block.removeChild(first);
 			right = doc.createElement("p");
-			if (HTMLArea.is_safari || HTMLArea.is_opera) {
+			if (Ext.isWebKit || Ext.isOpera) {
 				right.innerHTML = "<br />";
 			}
 			right = block.appendChild(right);
@@ -599,7 +599,7 @@ HTMLArea.Editor.prototype._checkInsertP = function() {
 		range.setEndAfter(block);
 		var df = range.extractContents(), left_empty = false;
 		if (!/\S/.test(block.innerHTML)) {
-			if (!HTMLArea.is_opera) {
+			if (!Ext.isOpera) {
 				block.innerHTML = "<br />";
 			}
 			left_empty = true;
@@ -613,7 +613,7 @@ HTMLArea.Editor.prototype._checkInsertP = function() {
 				if (/^(dt|dd)$/i.test(p.nodeName)) {
 					 p = this.convertNode(p, (p.nodeName.toLowerCase() === "dt") ? "dd" : "dt");
 				}
-				if (!HTMLArea.is_opera) {
+				if (!Ext.isOpera) {
 					p.innerHTML = "<br />";
 				}
 				if(/^li$/i.test(p.nodeName) && left_empty && !block.nextSibling) {
@@ -629,13 +629,13 @@ HTMLArea.Editor.prototype._checkInsertP = function() {
 			if (p.previousSibling) {
 				var a = p.previousSibling.lastChild;
 				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
-					if (HTMLArea.is_opera) {
+					if (Ext.isOpera) {
 						this.removeMarkup(a);
 					} else {
 						HTMLArea.removeFromParent(a);
 					}
 				}
-				if (!/\S/.test(p.previousSibling.textContent) && !HTMLArea.is_opera) {
+				if (!/\S/.test(p.previousSibling.textContent) && !Ext.isOpera) {
 					p.previousSibling.innerHTML = "<br />";
 				}
 			}
@@ -649,7 +649,7 @@ HTMLArea.Editor.prototype._checkInsertP = function() {
 			} else {
 				p = doc.createElement("p");
 			}
-			if (!HTMLArea.is_opera) {
+			if (!Ext.isOpera) {
 				p.innerHTML = "<br />";
 			}
 			if (block.nextSibling) {

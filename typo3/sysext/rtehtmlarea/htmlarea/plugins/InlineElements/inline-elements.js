@@ -50,7 +50,7 @@ HTMLArea.InlineElements = HTMLArea.Plugin.extend({
 			this.allowedAttributes = this.editor.plugins.TextStyle.instance.allowedAttributes;
 		} else {
 			this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
-			if (HTMLArea.is_ie) {
+			if (Ext.isIE) {
 				this.addAllowedAttribute("className");
 			}
 		}
@@ -230,7 +230,7 @@ HTMLArea.InlineElements = HTMLArea.Plugin.extend({
 		var ancestors = editor.getAllAncestors();
 		var elementIsAncestor = false;
 		var fullNodeSelected = false;
-		if (HTMLArea.is_ie) {
+		if (Ext.isIE) {
 			var bookmark = editor.getBookmark(range);
 		}
 			// Check if the chosen element is among the ancestors
@@ -254,7 +254,7 @@ HTMLArea.InlineElements = HTMLArea.Plugin.extend({
 				if (element === "bdo") {
 					newElement.setAttribute("dir", "rtl");
 				}
-				if (HTMLArea.is_gecko) {
+				if (!Ext.isIE) {
 					if (fullNodeSelected && statusBarSelection) {
 						if (Ext.isWebKit) {
 							newElement = parent.parentNode.insertBefore(newElement, statusBarSelection);
@@ -334,7 +334,7 @@ HTMLArea.InlineElements = HTMLArea.Plugin.extend({
 			}
 		}
 			// In IE, the above fails to update the class and style attributes.
-		if (HTMLArea.is_ie) {
+		if (Ext.isIE) {
 			if (element.style.cssText) {
 				newElement.style.cssText = element.style.cssText;
 			}

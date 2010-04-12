@@ -453,7 +453,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 				tbody.appendChild(tr);
 				for (var j = params.f_cols; --j >= 0;) {
 					var td = doc.createElement('td');
-					if (HTMLArea.is_gecko) td.innerHTML = '<br />';
+					if (!Ext.isIE) td.innerHTML = '<br />';
 					tr.appendChild(td);
 				}
 			}
@@ -691,7 +691,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 		
-		var mozbr = HTMLArea.is_gecko ? "<br />" : "";
+		var mozbr = !Ext.isIE ? "<br />" : "";
 		var tableParts = ["tfoot", "thead", "tbody"];
 		var tablePartsIndex = { tfoot : 0, thead : 1, tbody : 2 };
 		
@@ -872,7 +872,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			if (!cell) var cell = this.getClosest("th");
 			if (!cell) break;
 			var sel = editor._getSelection();
-			if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+			if (Ext.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
 				for (i = 0; i < cells.length; ++i) splitRow(cells[i]);
 			} else {
@@ -914,7 +914,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			if (!cell) var cell = this.getClosest("th");
 			if (!cell) break;
 			var sel = editor._getSelection();
-			if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+			if (Ext.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
 				for (i = 0; i < cells.length; ++i) splitCol(cells[i]);
 			} else {
@@ -968,7 +968,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			if (!cell) var cell = this.getClosest("th");
 			if (!cell) break;
 			var sel = editor._getSelection();
-			if (HTMLArea.is_gecko && !sel.isCollapsed && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+			if (Ext.isGecko && !sel.isCollapsed) {
 				var cells = getSelectedCells(sel);
 				for (i = 0; i < cells.length; ++i) splitCell(cells[i]);
 			} else {
@@ -1577,7 +1577,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			}
 		}
 			// In IE, the above fails to update the classname and style attributes.
-		if (HTMLArea.is_ie) {
+		if (Ext.isIE) {
 			if (element.style.cssText) {
 				newCell.style.cssText = element.style.cssText;
 			}
@@ -1637,7 +1637,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 	 */
 	processStyle: function (element, params) {
 		var style = element.style;
-		if (HTMLArea.is_ie) {
+		if (Ext.isIE) {
 			style.styleFloat = "";
 		} else {
 			style.cssFloat = "";

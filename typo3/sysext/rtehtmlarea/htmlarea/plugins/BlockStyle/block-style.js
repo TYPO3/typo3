@@ -202,7 +202,7 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 	getSelectedBlocks : function() {
 		var block, range, i = 0, blocks = [];
 		var statusBarSelection = this.editor.statusBar ? this.editor.statusBar.getSelection() : null;
-		if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+		if (Ext.isGecko) {
 			var selection = this.editor._getSelection();
 			try {
 				while ((range = selection.getRangeAt(i++))) {
@@ -223,7 +223,7 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 	onGenerate: function() {
 			// Monitor editor changing mode
 		this.editor.iframe.mon(this.editor, 'modeChange', this.onModeChange, this);
-		if (HTMLArea.is_gecko) {
+		if (!Ext.isIE) {
 			this.generate(this.editor, 'BlockStyle');
 		}
 	},
@@ -472,7 +472,7 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 		var newCssArray = new Object();
 		this.cssLoaded = true;
 		for (var i = 0; i < iframe.styleSheets.length; i++) {
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				try {
 					newCssArray = this.parseCssRule(iframe.styleSheets[i].cssRules, newCssArray);
 				} catch(e) {

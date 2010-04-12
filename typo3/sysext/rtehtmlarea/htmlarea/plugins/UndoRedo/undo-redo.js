@@ -168,14 +168,10 @@ HTMLArea.UndoRedo = HTMLArea.Plugin.extend({
 			// Insert a bookmark
 		if (this.editor.getMode() == 'wysiwyg' && this.editor.isEditable()) {
 			var selection = this.editor._getSelection();
-			if ((HTMLArea.is_gecko && !HTMLArea.is_opera9) || (HTMLArea.is_ie && selection.type.toLowerCase() != 'control')) {
+			if ((!Ext.isIE && !(Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (Ext.isIE && selection.type.toLowerCase() != 'control')) {
 					// Catch error in FF when the selection contains no usable range
 				try {
-						// Work around IE8 bug: can't create a range correctly if the selection is empty and the focus is not on the editor window
-						// But we cannot grab focus from an opened window just for the sake of taking this bookmark
-					if (!HTMLArea.is_ie || !this.editor.hasOpenedWindow() || selection.type.toLowerCase() != 'none') {
-						bookmark = this.editor.getBookmark(this.editor._createRange(selection));
-					}
+					bookmark = this.editor.getBookmark(this.editor._createRange(selection));
 				} catch (e) {
 					bookmark = null;
 				}
@@ -185,7 +181,7 @@ HTMLArea.UndoRedo = HTMLArea.Plugin.extend({
 				bookmarkedText = this.editor.getInnerHTML();
 				var range = this.editor.moveToBookmark(bookmark);
 					// Restore Firefox selection
-				if (HTMLArea.is_gecko && !HTMLArea.is_opera && !HTMLArea.is_safari) {
+				if (Ext.isGecko) {
 					this.editor.emptySelection(selection);
 					this.editor.addRangeToSelection(selection, range);
 				}

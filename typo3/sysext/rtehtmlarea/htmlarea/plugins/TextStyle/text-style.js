@@ -91,7 +91,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		
 			// Allowed attributes on inline elements
 		this.allowedAttributes = new Array("id", "title", "lang", "xml:lang", "dir", "class");
-		if (HTMLArea.is_ie) {
+		if (Ext.isIE) {
 			this.addAllowedAttribute("className");
 		}
 		
@@ -169,15 +169,15 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		var parent = this.editor.getParentElement();
 		var selectionEmpty = this.editor._selectionEmpty(selection);
 		var ancestors = this.editor.getAllAncestors();
-		if (HTMLArea.is_ie) {
+		if (Ext.isIE) {
 			var bookmark = range.getBookmark();
 		}
 		
 		if (!selectionEmpty) {
 				// The selection is not empty
 			for (var i = 0; i < ancestors.length; ++i) {
-				fullNodeSelected = (HTMLArea.is_ie && ((statusBarSelection === ancestors[i] && ancestors[i].innerText === range.text) || (!statusBarSelection && ancestors[i].innerText === range.text)))
-							|| (HTMLArea.is_gecko && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
+				fullNodeSelected = (Ext.isIE && ((statusBarSelection === ancestors[i] && ancestors[i].innerText === range.text) || (!statusBarSelection && ancestors[i].innerText === range.text)))
+							|| (!Ext.isIE && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
 				if (fullNodeSelected) {
 					if (this.isInlineElement(ancestors[i])) {
 						parent = ancestors[i];
@@ -186,7 +186,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 				}
 			}
 				// Working around bug in Safari selectNodeContents
-			if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
+			if (!fullNodeSelected && Ext.isWebKit && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
 				fullNodeSelected = true;
 				parent = statusBarSelection;
 			}
@@ -198,7 +198,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 				var newElement = editor._doc.createElement("span");
 				HTMLArea._addClass(newElement, className);
 				editor.wrapWithInlineElement(newElement, selection, range);
-				if (HTMLArea.is_gecko) {
+				if (!Ext.isIE) {
 					range.detach();
 				}
 			}
@@ -280,7 +280,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		var newCssArray = new Object();
 		this.cssLoaded = true;
 		for (var i = 0; i < iframe.styleSheets.length; i++) {
-			if (HTMLArea.is_gecko) {
+			if (!Ext.isIE) {
 				try {
 					newCssArray = this.parseCssRule(iframe.styleSheets[i].cssRules, newCssArray);
 				} catch(e) {
@@ -442,7 +442,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			if (!selectionEmpty) {
 				for (var i = 0; i < ancestors.length; ++i) {
 					fullNodeSelected = (statusBarSelection === ancestors[i])
-						&& ((HTMLArea.is_gecko && ancestors[i].textContent === range.toString()) || (HTMLArea.is_ie && ancestors[i].innerText === range.text));
+						&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ancestors[i].innerText === range.text));
 					if (fullNodeSelected) {
 						if (!HTMLArea.isBlockElement(ancestors[i])) {
 							tagName = ancestors[i].nodeName.toLowerCase();
@@ -454,7 +454,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 					}
 				}
 					// Working around bug in Safari selectNodeContents
-				if (!fullNodeSelected && HTMLArea.is_safari && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
+				if (!fullNodeSelected && Ext.isWebKit && statusBarSelection && this.isInlineElement(statusBarSelection) && statusBarSelection.textContent === range.toString()) {
 					fullNodeSelected = true;
 					tagName = statusBarSelection.nodeName.toLowerCase();
 					if (statusBarSelection.className && /\S/.test(statusBarSelection.className)) {
