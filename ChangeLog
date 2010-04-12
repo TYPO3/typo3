@@ -1,3 +1,7 @@
+2010-04-12  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #14069: New install tool refactoring uses FE layer for templating instead of t3lib_parsehtml 
+
 2010-04-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14062: Text Content element crashes (thanks to Jigal van Hemert)

@@ -166,7 +166,6 @@ require_once(PATH_tslib . 'class.tslib_content.php');
  * @subpackage tx_install
  */
 class tx_install extends t3lib_install {
-	var $contentObject;
 	var $templateFilePath = 'typo3/sysext/install/Resources/Private/Templates/';
 	var $template;
 	var $javascript;
@@ -251,7 +250,6 @@ class tx_install extends t3lib_install {
 	 */
 	function tx_install() {
 		parent::t3lib_install();
-		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
 
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'])	die("Install Tool deactivated.<br />You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be 'joh316':<br /><br />\$TYPO3_CONF_VARS['BE']['installToolPassword'] = 'bacb98acf97e0b6112b1d1b650b84971';");
 
@@ -434,14 +432,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			PATH_site . $this->templateFilePath . 'LoginForm.html'
 		);
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart(
+		$template = t3lib_parsehtml::getSubpart(
 			$templateFile, '###TEMPLATE###'
 		);
 			// Password has been given, but this form is rendered again.
 			// This means the given password was wrong
 		if (!empty($password)) {
 				// Get the subpart for the wrong password
-			$wrongPasswordSubPart = $this->contentObject->getSubpart(
+			$wrongPasswordSubPart = t3lib_parsehtml::getSubpart(
 				$template, '###WRONGPASSWORD###'
 			);
 				// Define the markers content
@@ -450,7 +448,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'password' => md5($password)
 			);
 				// Fill the markers in the subpart
-			$wrongPasswordSubPart = $this->contentObject->substituteMarkerArray(
+			$wrongPasswordSubPart = t3lib_parsehtml::substituteMarkerArray(
 				$wrongPasswordSubPart,
 				$wrongPasswordMarkers,
 				'###|###',
@@ -461,7 +459,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Session has expired
 		if (!$this->session->isAuthorized() && $this->session->isExpired()) {
 				// Get the subpart for the expired session message
-			$sessionExpiredSubPart = $this->contentObject->getSubpart(
+			$sessionExpiredSubPart = t3lib_parsehtml::getSubpart(
 				$template, '###SESSIONEXPIRED###'
 			);
 				// Define the markers content
@@ -469,7 +467,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'message' => 'Your install tool session has expired'
 			);
 				// Fill the markers in the subpart
-			$sessionExpiredSubPart = $this->contentObject->substituteMarkerArray(
+			$sessionExpiredSubPart = t3lib_parsehtml::substituteMarkerArray(
 				$sessionExpiredSubPart,
 				$sessionExpiredMarkers,
 				'###|###',
@@ -478,13 +476,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart for the expired session in the template
-		$template = $this->contentObject->substituteSubpart(
+		$template = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###SESSIONEXPIRED###',
 			$sessionExpiredSubPart
 		);
 			// Substitute the subpart for the wrong password in the template
-		$template = $this->contentObject->substituteSubpart(
+		$template = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###WRONGPASSWORD###',
 			$wrongPasswordSubPart
@@ -511,7 +509,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'
 		);
 			// Fill the markers in the template
-		$content = $this->contentObject->substituteMarkerArray(
+		$content = t3lib_parsehtml::substituteMarkerArray(
 			$template,
 			$markers,
 			'###|###',
@@ -700,7 +698,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						PATH_site . $this->templateFilePath . 'InitExtConfig.html'
 					);
 						// Get the template part from the file
-					$template = $this->contentObject->getSubpart(
+					$template = t3lib_parsehtml::getSubpart(
 						$templateFile, '###TEMPLATE###'
 					);
 						// Define the markers content
@@ -715,7 +713,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'
 					);
 						// Fill the markers in the template
-					$content = $this->contentObject->substituteMarkerArray(
+					$content = t3lib_parsehtml::substituteMarkerArray(
 						$template,
 						$markers,
 						'###|###',
@@ -912,7 +910,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			PATH_site . $this->templateFilePath . 'StepOutput.html'
 		);
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart(
+		$template = t3lib_parsehtml::getSubpart(
 			$templateFile, '###TEMPLATE###'
 		);
 			// Define the markers content
@@ -972,7 +970,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			switch(strtolower($this->step)) {
 				case 1:
 						// Get the subpart for the first step
-					$step1SubPart = $this->contentObject->getSubpart(
+					$step1SubPart = t3lib_parsehtml::getSubpart(
 						$templateFile, '###STEP1###'
 					);
 						// Add header marker for main template
@@ -994,7 +992,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'continue' => 'Continue'
 					);
 						// Add step marker for main template
-					$markers['step'] = $this->contentObject->substituteMarkerArray(
+					$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
 						$step1SubPart,
 						$step1SubPartMarkers,
 						'###|###',
@@ -1004,7 +1002,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 				case 2:
 						// Get the subpart for the second step
-					$step2SubPart = $this->contentObject->getSubpart(
+					$step2SubPart = t3lib_parsehtml::getSubpart(
 						$templateFile, '###STEP2###'
 					);
 						// Add header marker for main template
@@ -1024,7 +1022,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'continue' => 'Continue'
 					);
 						// Add step marker for main template
-					$markers['step'] = $this->contentObject->substituteMarkerArray(
+					$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
 						$step2SubPart,
 						$step2SubPartMarkers,
 						'###|###',
@@ -1040,11 +1038,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						TYPO3_db_host, TYPO3_db_username, TYPO3_db_password
 					)) {
 							// Get the subpart for the third step
-						$step3SubPart = $this->contentObject->getSubpart(
+						$step3SubPart = t3lib_parsehtml::getSubpart(
 							$templateFile, '###STEP3###'
 						);
 							// Get the subpart for the database options
-						$step3DatabaseOptionsSubPart = $this->contentObject->getSubpart(
+						$step3DatabaseOptionsSubPart = t3lib_parsehtml::getSubpart(
 							$step3SubPart, '###DATABASEOPTIONS###'
 						);
 
@@ -1058,7 +1056,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								'databaseName' => htmlspecialchars($dbname)
 							);
 								// Add the option HTML to an array
-							$step3DatabaseOptions[] = $this->contentObject->substituteMarkerArray(
+							$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
 								$step3DatabaseOptionsSubPart,
 								$step3DatabaseOptionMarkers,
 								'###|###',
@@ -1075,7 +1073,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								'databaseName' => htmlspecialchars(TYPO3_db) . ' (NO ACCESS!)'
 							);
 								// Add the option HTML to an array
-							$step3DatabaseOptions[] = $this->contentObject->substituteMarkerArray(
+							$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
 								$step3DatabaseOptionsSubPart,
 								$step3DatabaseOptionMarkers,
 								'###|###',
@@ -1084,7 +1082,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							);
 						}
 							// Substitute the subpart for the database options
-						$content = $this->contentObject->substituteSubpart(
+						$content = t3lib_parsehtml::substituteSubpart(
 							$step3SubPart,
 							'###DATABASEOPTIONS###',
 							implode(chr(10), $step3DatabaseOptions)
@@ -1101,7 +1099,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							'continue' => 'Continue'
 						);
 							// Add step marker for main template
-						$markers['step'] = $this->contentObject->substituteMarkerArray(
+						$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
 							$content,
 							$step3SubPartMarkers,
 							'###|###',
@@ -1123,11 +1121,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							// The selected database should be accessible
 						if ($GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db)) {
 								// Get the subpart for the fourth step
-							$step4SubPart = $this->contentObject->getSubpart(
+							$step4SubPart = t3lib_parsehtml::getSubpart(
 								$templateFile, '###STEP4###'
 							);
 								// Get the subpart for the database type options
-							$step4DatabaseTypeOptionsSubPart = $this->contentObject->getSubpart(
+							$step4DatabaseTypeOptionsSubPart = t3lib_parsehtml::getSubpart(
 								$step4SubPart, '###DATABASETYPEOPTIONS###'
 							);
 
@@ -1148,7 +1146,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'databaseName' => htmlspecialchars(basename($f))
 								);
 									// Add the option HTML to an array
-								$step4DatabaseTypeOptions[] = $this->contentObject->substituteMarkerArray(
+								$step4DatabaseTypeOptions[] = t3lib_parsehtml::substituteMarkerArray(
 									$step4DatabaseTypeOptionsSubPart,
 									$step4DatabaseTypeOptionMarkers,
 									'###|###',
@@ -1157,7 +1155,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								);
 							}
 								// Substitute the subpart for the database type options
-							$content = $this->contentObject->substituteSubpart(
+							$content = t3lib_parsehtml::substituteSubpart(
 								$step4SubPart,
 								'###DATABASETYPEOPTIONS###',
 								implode(chr(10), $step4DatabaseTypeOptions)
@@ -1178,7 +1176,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								'label' => 'Import database'
 							);
 								// Add step marker for main template
-							$markers['step'] = $this->contentObject->substituteMarkerArray(
+							$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
 								$content,
 								$step4SubPartMarkers,
 								'###|###',
@@ -1206,7 +1204,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								// The database should contain tables
 							if (count($whichTables)) {
 									// Get the subpart for the go step
-								$stepGoSubPart = $this->contentObject->getSubpart(
+								$stepGoSubPart = t3lib_parsehtml::getSubpart(
 									$templateFile, '###STEPGO###'
 								);
 									// Define the markers content
@@ -1222,7 +1220,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'
 								);
 									// Add step marker for main template
-								$markers['step'] = $this->contentObject->substituteMarkerArray(
+								$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
 									$stepGoSubPart,
 									$stepGoSubPartMarkers,
 									'###|###',
@@ -1245,7 +1243,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			}
 		}
 			// Fill the markers in the template
-		$content = $this->contentObject->substituteMarkerArray(
+		$content = t3lib_parsehtml::substituteMarkerArray(
 			$template,
 			$markers,
 			'###|###',
@@ -1354,9 +1352,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'Typo3ConfEdit.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for the files
-		$filesSubpart = $this->contentObject->getSubpart($template, '###FILES###');
+		$filesSubpart = t3lib_parsehtml::getSubpart($template, '###FILES###');
 		$files = array();
 
 		$typo3conf_files = t3lib_div::getFilesInDir($EDIT_path,'',1,1);
@@ -1380,7 +1378,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'class' => $this->INSTALL['typo3conf_files'] && !strcmp($this->INSTALL['typo3conf_files'], $file) ? 'class="act"' : ''
 			);
 				// Fill the markers in the subpart
-			$files[] = $this->contentObject->substituteMarkerArray(
+			$files[] = t3lib_parsehtml::substituteMarkerArray(
 				$filesSubpart,
 				$filesMarkers,
 				'###|###',
@@ -1394,26 +1392,26 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$backupFile = $this->getBackupFilename($this->INSTALL['typo3conf_files']);
 			$fileContent = t3lib_div::getUrl($this->INSTALL['typo3conf_files']);
 				// Get the subpart to edit the files
-			$fileEditTemplate = $this->contentObject->getSubpart($template, '###FILEEDIT###');
+			$fileEditTemplate = t3lib_parsehtml::getSubpart($template, '###FILEEDIT###');
 			$allowFileEditOutsideTypo3ConfDirSubPart = '';
 
 			if (substr($this->INSTALL['typo3conf_files'], -1) != '~' && !strstr($this->INSTALL['typo3conf_files'], '_bak')) {
 					// Get the subpart to show the save button
-				$showSaveButtonSubPart = $this->contentObject->getSubpart($fileEditTemplate, '###SHOWSAVEBUTTON###');
+				$showSaveButtonSubPart = t3lib_parsehtml::getSubpart($fileEditTemplate, '###SHOWSAVEBUTTON###');
 			}
 
 			if ($this->allowFileEditOutsite_typo3conf_dir) {
 					// Get the subpart to show if files are allowed outside the directory typo3conf
-				$allowFileEditOutsideTypo3ConfDirSubPart = $this->contentObject->getSubpart($fileEditTemplate, '###ALLOWFILEEDITOUTSIDETYPO3CONFDIR###');
+				$allowFileEditOutsideTypo3ConfDirSubPart = t3lib_parsehtml::getSubpart($fileEditTemplate, '###ALLOWFILEEDITOUTSIDETYPO3CONFDIR###');
 			}
 				// Substitute the subpart for the save button
-			$fileEditContent = $this->contentObject->substituteSubpart(
+			$fileEditContent = t3lib_parsehtml::substituteSubpart(
 				$fileEditTemplate,
 				'###SHOWSAVEBUTTON###',
 				$showSaveButtonSubPart
 			);
 				// Substitute the subpart to show if files are allowed outside the directory typo3conf
-			$fileEditContent = $this->contentObject->substituteSubpart(
+			$fileEditContent = t3lib_parsehtml::substituteSubpart(
 				$fileEditContent,
 				'###ALLOWFILEEDITOUTSIDETYPO3CONFDIR###',
 				$allowFileEditOutsideTypo3ConfDirSubPart
@@ -1438,7 +1436,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'backup' => 'Make backup copy (rename to ' . basename($backupFile) . ')'
 			);
 				// Fill the markers in the subpart to edit the files
-			$fileEditContent = $this->contentObject->substituteMarkerArray(
+			$fileEditContent = t3lib_parsehtml::substituteMarkerArray(
 				$fileEditContent,
 				$fileEditMarkers,
 				'###|###',
@@ -1449,7 +1447,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 		if ($this->allowFileEditOutsite_typo3conf_dir) {
 				// Get the subpart to show if files are allowed outside the directory typo3conf
-			$allowFileEditOutsideTypo3ConfDirSubPart = $this->contentObject->getSubpart($template, '###ALLOWFILEEDITOUTSIDETYPO3CONFDIR###');
+			$allowFileEditOutsideTypo3ConfDirSubPart = t3lib_parsehtml::getSubpart($template, '###ALLOWFILEEDITOUTSIDETYPO3CONFDIR###');
 				// Define the markers content
 			$allowFileEditOutsideTypo3ConfDirMarkers = array(
 				'action' => $this->action,
@@ -1458,7 +1456,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'set' => 'Set'
 			);
 				// Fill the markers in the subpart
-			$allowFileEditOutsideTypo3ConfDirSubPart = $this->contentObject->substituteMarkerArray(
+			$allowFileEditOutsideTypo3ConfDirSubPart = t3lib_parsehtml::substituteMarkerArray(
 				$allowFileEditOutsideTypo3ConfDirSubPart,
 				$allowFileEditOutsideTypo3ConfDirMarkers,
 				'###|###',
@@ -1467,19 +1465,19 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart to edit the file
-		$fileListContent = $this->contentObject->substituteSubpart(
+		$fileListContent = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###FILEEDIT###',
 			$fileEditContent
 		);
 			// Substitute the subpart when files can be edited outside typo3conf directory
-		$fileListContent = $this->contentObject->substituteSubpart(
+		$fileListContent = t3lib_parsehtml::substituteSubpart(
 			$fileListContent,
 			'###ALLOWFILEEDITOUTSIDETYPO3CONFDIR###',
 			$allowFileEditOutsideTypo3ConfDirSubPart
 		);
 			// Substitute the subpart for the files
-		$fileListContent = $this->contentObject->substituteSubpart(
+		$fileListContent = t3lib_parsehtml::substituteSubpart(
 			$fileListContent,
 			'###FILES###',
 			implode(chr(10), $files)
@@ -1491,7 +1489,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'deleteTempCached' => 'Delete temp_CACHED* files'
 		);
 			// Fill the markers
-		$fileListContent = $this->contentObject->substituteMarkerArray(
+		$fileListContent = t3lib_parsehtml::substituteMarkerArray(
 			$fileListContent,
 			$fileListMarkers,
 			'###|###',
@@ -1550,14 +1548,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'PhpInformation.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Define the markers content
 		$markers = array(
 			'explanation' => 'Please copy/paste the information from this text field into an email or bug-report as "Debug System Information" whenever you wish to get support or report problems. This information helps others to check if your system has some obvious misconfiguration and you\'ll get your help faster!',
 			'debugInfo' => t3lib_div::formatForTextarea(implode(chr(10), $debugInfo))
 		);
 			// Fill the markers
-		$content = $this->contentObject->substituteMarkerArray(
+		$content = t3lib_parsehtml::substituteMarkerArray(
 			$template,
 			$markers,
 			'###|###',
@@ -1729,9 +1727,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'Typo3TempManager.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for 'Delete files by condition' dropdown
-		$deleteOptionsSubpart = $this->contentObject->getSubpart($template, '###DELETEOPTIONS###');
+		$deleteOptionsSubpart = t3lib_parsehtml::getSubpart($template, '###DELETEOPTIONS###');
 		$deleteOptions = array();
 
 		foreach ($deleteType as $deleteKey => $deleteValue) {
@@ -1742,7 +1740,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'data' => htmlspecialchars($deleteValue)
 			);
 				// Fill the markers in the subpart
-			$deleteOptions[] = $this->contentObject->substituteMarkerArray(
+			$deleteOptions[] = t3lib_parsehtml::substituteMarkerArray(
 				$deleteOptionsSubpart,
 				$deleteMarkers,
 				'###|###',
@@ -1751,13 +1749,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart for 'Delete files by condition' dropdown
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###DELETEOPTIONS###',
 			implode(chr(10), $deleteOptions)
 		);
 			// Get the subpart for 'Number of files at a time' dropdown
-		$actionOptionsSubpart = $this->contentObject->getSubpart($template, '###ACTIONOPTIONS###');
+		$actionOptionsSubpart = t3lib_parsehtml::getSubpart($template, '###ACTIONOPTIONS###');
 		$actionOptions = array();
 
 		foreach ($actionType as $actionKey => $actionValue) {
@@ -1767,7 +1765,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'data' => htmlspecialchars($actionValue)
 			);
 				// Fill the markers in the subpart
-			$actionOptions[] = $this->contentObject->substituteMarkerArray(
+			$actionOptions[] = t3lib_parsehtml::substituteMarkerArray(
 				$actionOptionsSubpart,
 				$actionMarkers,
 				'###|###',
@@ -1776,13 +1774,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart for 'Number of files at a time' dropdown
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$content,
 			'###ACTIONOPTIONS###',
 			implode(chr(10), $actionOptions)
 		);
 			// Get the subpart for 'From sub-directory' dropdown
-		$subDirectoryOptionsSubpart = $this->contentObject->getSubpart($template, '###SUBDIRECTORYOPTIONS###');
+		$subDirectoryOptionsSubpart = t3lib_parsehtml::getSubpart($template, '###SUBDIRECTORYOPTIONS###');
 		$subDirectoryOptions = array();
 
 		foreach ($subdirRegistry as $subDirectoryKey => $subDirectoryValue) {
@@ -1793,7 +1791,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'data' => htmlspecialchars($subDirectoryValue)
 			);
 				// Fill the markers in the subpart
-			$subDirectoryOptions[] = $this->contentObject->substituteMarkerArray(
+			$subDirectoryOptions[] = t3lib_parsehtml::substituteMarkerArray(
 				$subDirectoryOptionsSubpart,
 				$subDirectoryMarkers,
 				'###|###',
@@ -1802,7 +1800,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart for 'From sub-directory' dropdown
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$content,
 			'###SUBDIRECTORYOPTIONS###',
 			implode(chr(10), $subDirectoryOptions)
@@ -1829,7 +1827,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'
 		);
 			// Fill the markers
-		$content = $this->contentObject->substituteMarkerArray(
+		$content = t3lib_parsehtml::substituteMarkerArray(
 			$content,
 			$markers,
 			'###|###',
@@ -1913,9 +1911,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CleanUpManager.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for the 'Clean up' dropdown
-		$cleanUpOptionsSubpart = $this->contentObject->getSubpart($template, '###CLEANUPOPTIONS###');
+		$cleanUpOptionsSubpart = t3lib_parsehtml::getSubpart($template, '###CLEANUPOPTIONS###');
 		$cleanUpOptions = array();
 
 		foreach ($cleanupType as $cleanUpKey => $cleanUpValue) {
@@ -1925,7 +1923,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'data' => htmlspecialchars($cleanUpValue)
 			);
 				// Fill the markers in the subpart
-			$cleanUpOptions[] = $this->contentObject->substituteMarkerArray(
+			$cleanUpOptions[] = t3lib_parsehtml::substituteMarkerArray(
 				$cleanUpOptionsSubpart,
 				$cleanUpMarkers,
 				'###|###',
@@ -1934,7 +1932,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart for the 'Clean up' dropdown
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###CLEANUPOPTIONS###',
 			implode(chr(10), $cleanUpOptions)
@@ -1948,7 +1946,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'execute' => 'Execute'
 		);
 			// Fill the markers
-		$content = $this->contentObject->substituteMarkerArray(
+		$content = t3lib_parsehtml::substituteMarkerArray(
 			$content,
 			$markers,
 			'###|###',
@@ -1994,7 +1992,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					// Get the template file
 				$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'GenerateConfigForm.html');
 					// Get the template part from the file
-				$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+				$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 
 				foreach ($GLOBALS['TYPO3_CONF_VARS'] as $k => $va) {
 					$ext='['.$k.']';
@@ -2014,7 +2012,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 							if ($isTextarea) {
 									// Get the subpart for a textarea
-								$textAreaSubpart = $this->contentObject->getSubpart($template, '###TEXTAREA###');
+								$textAreaSubpart = t3lib_parsehtml::getSubpart($template, '###TEXTAREA###');
 									// Define the markers content
 								$textAreaMarkers = array(
 									'id' => $k . '-' . $vk,
@@ -2022,7 +2020,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'value' => $value
 								);
 									// Fill the markers in the subpart
-								$textAreaSubpart = $this->contentObject->substituteMarkerArray(
+								$textAreaSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$textAreaSubpart,
 									$textAreaMarkers,
 									'###|###',
@@ -2031,7 +2029,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								);
 							} elseif (preg_match('/^boolean/i',$description)) {
 									// Get the subpart for a checkbox
-								$booleanSubpart = $this->contentObject->getSubpart($template, '###BOOLEAN###');
+								$booleanSubpart = t3lib_parsehtml::getSubpart($template, '###BOOLEAN###');
 									// Define the markers content
 								$booleanMarkers = array(
 									'id' => $k . '-' . $vk,
@@ -2040,7 +2038,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'checked' => $value ? 'checked="checked"' : ''
 								);
 									// Fill the markers in the subpart
-								$booleanSubpart = $this->contentObject->substituteMarkerArray(
+								$booleanSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$booleanSubpart,
 									$booleanMarkers,
 									'###|###',
@@ -2049,7 +2047,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								);
 							} else {
 									// Get the subpart for an input text field
-								$textLineSubpart = $this->contentObject->getSubpart($template, '###TEXTLINE###');
+								$textLineSubpart = t3lib_parsehtml::getSubpart($template, '###TEXTLINE###');
 									// Define the markers content
 								$textLineMarkers = array(
 									'id' => $k . '-' . $vk,
@@ -2057,7 +2055,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'value' => $value
 								);
 									// Fill the markers in the subpart
-								$textLineSubpart = $this->contentObject->substituteMarkerArray(
+								$textLineSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$textLineSubpart,
 									$textLineMarkers,
 									'###|###',
@@ -2066,19 +2064,19 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								);
 							}
 								// Substitute the subpart for a textarea
-							$content = $this->contentObject->substituteSubpart(
+							$content = t3lib_parsehtml::substituteSubpart(
 								$template,
 								'###TEXTAREA###',
 								$textAreaSubpart
 							);
 								// Substitute the subpart for a checkbox
-							$content = $this->contentObject->substituteSubpart(
+							$content = t3lib_parsehtml::substituteSubpart(
 								$content,
 								'###BOOLEAN###',
 								$booleanSubpart
 							);
 								// Substitute the subpart for an input text field
-							$content = $this->contentObject->substituteSubpart(
+							$content = t3lib_parsehtml::substituteSubpart(
 								$content,
 								'###TEXTLINE###',
 								$textLineSubpart
@@ -2090,7 +2088,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								'label' => htmlspecialchars(t3lib_div::fixed_lgd_cs($value, 40))
 							);
 								// Fill the markers
-							$content = $this->contentObject->substituteMarkerArray(
+							$content = t3lib_parsehtml::substituteMarkerArray(
 								$content,
 								$markers,
 								'###|###',
@@ -2647,14 +2645,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					// Get the template file
 				$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CheckMail.html');
 					// Get the template part from the file
-				$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+				$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 
 				if (!empty($this->mailMessage)) {
 						// Get the subpart for the mail is sent message
-					$mailSentSubpart = $this->contentObject->getSubpart($template, '###MAILSENT###');
+					$mailSentSubpart = t3lib_parsehtml::getSubpart($template, '###MAILSENT###');
 				}
 					// Substitute the subpart for the mail is sent message
-				$template = $this->contentObject->substituteSubpart(
+				$template = t3lib_parsehtml::substituteSubpart(
 					$template,
 					'###MAILSENT###',
 					$mailSentSubpart
@@ -2668,7 +2666,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'submit' => 'Send test mail'
 				);
 					// Fill the markers
-				$out .= $this->contentObject->substituteMarkerArray(
+				$out .= t3lib_parsehtml::substituteMarkerArray(
 					$template,
 					$markers,
 					'###|###',
@@ -2998,9 +2996,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			', 2);
 		} else {
 				// Get the subpart for the ImageMagick versions
-			$theCode = $this->contentObject->getSubpart($templateFile, '###VERSIONS###');
+			$theCode = t3lib_parsehtml::getSubpart($templateFile, '###VERSIONS###');
 				// Get the subpart for each ImageMagick version
-			$rowsSubPart = $this->contentObject->getSubpart($theCode, '###ROWS###');
+			$rowsSubPart = t3lib_parsehtml::getSubpart($theCode, '###ROWS###');
 
 			foreach ($this->config_array['im_versions'] as $p => $v) {
 				$ka = array();
@@ -3013,7 +3011,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'version' => implode('<br />', $v)
 				);
 					// Fill the markers in the subpart
-				$rows[] = $this->contentObject->substituteMarkerArray(
+				$rows[] = t3lib_parsehtml::substituteMarkerArray(
 					$rowsSubPart,
 					$rowsMarkers,
 					'###|###',
@@ -3022,7 +3020,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				);
 			}
 				// Substitute the subpart for the ImageMagick versions
-			$theCode = $this->contentObject->substituteSubpart(
+			$theCode = t3lib_parsehtml::substituteSubpart(
 				$theCode,
 				'###ROWS###',
 				implode(chr(10), $rows)
@@ -3031,7 +3029,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$this->message($ext, 'Available ImageMagick/GraphicsMagick installations:', $theCode, -1);
 		}
 			// Get the template file
-		$formSubPart = $this->contentObject->getSubpart($templateFile, '###FORM###');
+		$formSubPart = t3lib_parsehtml::getSubpart($templateFile, '###FORM###');
 			// Define the markers content
 		$formMarkers = array(
 			'actionUrl' => $this->action,
@@ -3043,7 +3041,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'send' => 'Send'
 		);
 			// Fill the markers
-		$formSubPart = $this->contentObject->substituteMarkerArray(
+		$formSubPart = t3lib_parsehtml::substituteMarkerArray(
 			$formSubPart,
 			$formMarkers,
 			'###|###',
@@ -3252,9 +3250,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					// Get the template file
 				$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'SetupGeneral.html');
 					// Get the template part from the file
-				$form = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+				$form = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 					// Get the subpart for all modes
-				$allModesSubpart = $this->contentObject->getSubpart($form, '###ALLMODES###');
+				$allModesSubpart = t3lib_parsehtml::getSubpart($form, '###ALLMODES###');
 					// Define the markers content
 				$formMarkers['actionUrl'] = $this->action;
 
@@ -3264,14 +3262,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				} elseif ($this->config_array['sql.safe_mode_user']) {
 					$username = $this->config_array['sql.safe_mode_user'];
 						// Get the subpart for the sql safe mode user
-					$sqlSafeModeUserSubpart = $this->contentObject->getSubpart($allModesSubpart, '###SQLSAFEMODEUSERSUBPART###');
+					$sqlSafeModeUserSubpart = t3lib_parsehtml::getSubpart($allModesSubpart, '###SQLSAFEMODEUSERSUBPART###');
 						// Define the markers content
 					$sqlSafeModeUserMarkers = array(
 						'labelSqlSafeModeUser' => 'sql.safe_mode_user:',
 						'sqlSafeModeUser' => $this->config_array['sql.safe_mode_user']
 					);
 						// Fill the markers in the subpart
-					$sqlSafeModeUserSubpart = $this->contentObject->substituteMarkerArray(
+					$sqlSafeModeUserSubpart = t3lib_parsehtml::substituteMarkerArray(
 						$sqlSafeModeUserSubpart,
 						$sqlSafeModeUserMarkers,
 						'###|###',
@@ -3280,7 +3278,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					);
 				}
 					// Get the subpart for all modes
-				$allModesSubpart = $this->contentObject->substituteSubpart(
+				$allModesSubpart = t3lib_parsehtml::substituteSubpart(
 					$allModesSubpart,
 					'###SQLSAFEMODEUSERSUBPART###',
 					$sqlSafeModeUserSubpart
@@ -3297,12 +3295,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'labelCreateDatabase' => 'Create database?'
 				);
 					// Get the subpart for the database list
-				$databasesSubpart = $this->contentObject->getSubpart($allModesSubpart, '###DATABASELIST###');
+				$databasesSubpart = t3lib_parsehtml::getSubpart($allModesSubpart, '###DATABASELIST###');
 				if ($this->config_array['mysqlConnect']) {
 						// Get the subpart when database is available
-					$databaseAvailableSubpart = $this->contentObject->getSubpart($databasesSubpart, '###DATABASEAVAILABLE###');
+					$databaseAvailableSubpart = t3lib_parsehtml::getSubpart($databasesSubpart, '###DATABASEAVAILABLE###');
 						// Get the subpart for each database table
-					$databaseItemSubpart = $this->contentObject->getSubpart($databaseAvailableSubpart, '###DATABASEITEM###');
+					$databaseItemSubpart = t3lib_parsehtml::getSubpart($databaseAvailableSubpart, '###DATABASEITEM###');
 					$dbArr = $this->getDatabaseList();
 					$options='';
 					$dbIncluded=0;
@@ -3317,7 +3315,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$databaseItemMarkers['databaseSelected'] = 'selected="selected"';
 						}
 							// Fill the markers in the subpart
-						$databaseItems[]  = $this->contentObject->substituteMarkerArray(
+						$databaseItems[]  = t3lib_parsehtml::substituteMarkerArray(
 							$databaseItemSubpart,
 							$databaseItemMarkers,
 							'###|###',
@@ -3331,7 +3329,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$databaseItemMarkers['databaseSelected'] = 'selected="selected"';
 						$databaseItemMarkers['databaseValue'] = htmlspecialchars(TYPO3_db) . ' (NO ACCESS!)';
 							// Fill the markers in the subpart
-						$databaseItems[]  = $this->contentObject->substituteMarkerArray(
+						$databaseItems[]  = t3lib_parsehtml::substituteMarkerArray(
 							$databaseItemSubpart,
 							$databaseItemMarkers,
 							'###|###',
@@ -3340,14 +3338,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						);
 					}
 						// Substitute the subpart for the database tables
-					$databaseAvailableSubpart = $this->contentObject->substituteSubpart(
+					$databaseAvailableSubpart = t3lib_parsehtml::substituteSubpart(
 						$databaseAvailableSubpart,
 						'###DATABASEITEM###',
 						implode(chr(10), $databaseItems)
 					);
 				} else {
 						// Get the subpart when the database is not available
-					$databaseNotAvailableSubpart = $this->contentObject->getSubpart($databasesSubpart, '###DATABASENOTAVAILABLE###');
+					$databaseNotAvailableSubpart = t3lib_parsehtml::getSubpart($databasesSubpart, '###DATABASENOTAVAILABLE###');
 					$databaseNotAvailableMarkers = array(
 						'typo3Db' => htmlspecialchars(TYPO3_db),
 						'labelNoDatabase' => '
@@ -3356,7 +3354,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'
 					);
 						// Fill the markers in the subpart
-					$databaseNotAvailableSubpart = $this->contentObject->substituteMarkerArray(
+					$databaseNotAvailableSubpart = t3lib_parsehtml::substituteMarkerArray(
 						$databaseNotAvailableSubpart,
 						$databaseNotAvailableMarkers,
 						'###|###',
@@ -3365,25 +3363,25 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					);
 				}
 					// Substitute the subpart when database is available
-				$databasesSubpart = $this->contentObject->substituteSubpart(
+				$databasesSubpart = t3lib_parsehtml::substituteSubpart(
 					$databasesSubpart,
 					'###DATABASEAVAILABLE###',
 					$databaseAvailableSubpart
 				);
 					// Substitute the subpart when database is not available
-				$databasesSubpart = $this->contentObject->substituteSubpart(
+				$databasesSubpart = t3lib_parsehtml::substituteSubpart(
 					$databasesSubpart,
 					'###DATABASENOTAVAILABLE###',
 					$databaseNotAvailableSubpart
 				);
 					// Substitute the subpart for the databases
-				$allModesSubpart = $this->contentObject->substituteSubpart(
+				$allModesSubpart = t3lib_parsehtml::substituteSubpart(
 					$allModesSubpart,
 					'###DATABASELIST###',
 					$databasesSubpart
 				);
 					// Fill the markers in the subpart for all modes
-				$allModesSubpart = $this->contentObject->substituteMarkerArray(
+				$allModesSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$allModesSubpart,
 					$allModesMarkers,
 					'###|###',
@@ -3391,7 +3389,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					1
 				);
 					// Substitute the subpart for all modes
-				$form = $this->contentObject->substituteSubpart(
+				$form = t3lib_parsehtml::substituteSubpart(
 					$form,
 					'###ALLMODES###',
 					$allModesSubpart
@@ -3407,7 +3405,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						TYPO3_mainDir .
 						'sysext/install/Resources/Public/Javascript/install.js"></script>';
 						// Get the subpart for the regular mode
-					$regularModeSubpart = $this->contentObject->getSubpart($form, '###REGULARMODE###');
+					$regularModeSubpart = t3lib_parsehtml::getSubpart($form, '###REGULARMODE###');
 						// Define the markers content
 					$regularModeMarkers = array(
 						'labelSiteName' => 'Site name:',
@@ -3424,13 +3422,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// Disable exec function
 					if (is_array($fA['disable_exec_function'])) {
 							// Get the subpart for the disable exec function
-						$disableExecFunctionSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###DISABLEEXECFUNCTIONSUBPART###');
+						$disableExecFunctionSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###DISABLEEXECFUNCTIONSUBPART###');
 						$regularModeMarkers['labelDisableExecFunction'] = '[BE][disable_exec_function]=';
 						$regularModeMarkers['strongDisableExecFunction'] = (integer) current($fA['disable_exec_function']);
 						$regularModeMarkers['defaultDisableExecFunction'] = (integer) $GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'];
 						$regularModeMarkers['disableExecFunction'] = (integer) current($fA['disable_exec_function']);
 							// Fill the markers in the subpart
-						$disableExecFunctionSubpart = $this->contentObject->substituteMarkerArray(
+						$disableExecFunctionSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$disableExecFunctionSubpart,
 							$regularModeMarkers,
 							'###|###',
@@ -3439,7 +3437,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						);
 					}
 						// Substitute the subpart for the disable exec function
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###DISABLEEXECFUNCTIONSUBPART###',
 						$disableExecFunctionSubpart
@@ -3448,13 +3446,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// GDlib
 					if (is_array($fA['gdlib'])) {
 							// Get the subpart for the disable gd lib
-						$gdLibSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###DISABLEGDLIB###');
+						$gdLibSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###DISABLEGDLIB###');
 						$regularModeMarkers['labelGdLib'] = '[GFX][gdlib]=';
 						$regularModeMarkers['strongGdLib'] = (integer) current($fA['gdlib']);
 						$regularModeMarkers['defaultGdLib'] = (integer) $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'];
 						$regularModeMarkers['gdLib'] = (integer) current($fA['gdlib']);
 							// Fill the markers in the subpart
-						$gdLibSubpart = $this->contentObject->substituteMarkerArray(
+						$gdLibSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$gdLibSubpart,
 							$regularModeMarkers,
 							'###|###',
@@ -3463,7 +3461,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						);
 					}
 						// Substitute the subpart for the disable gdlib
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###DISABLEGDLIB###',
 						$gdLibSubpart
@@ -3472,9 +3470,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// GDlib PNG
 					if (is_array($fA['gdlib_png']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
 							// Get the subpart for the gdlib png
-						$gdLibPngSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###GDLIBPNGSUBPART###');
+						$gdLibPngSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###GDLIBPNGSUBPART###');
 							// Get the subpart for the dropdown options
-						$gdLibPngOptionSubpart = $this->contentObject->getSubpart($gdLibPngSubpart, '###GDLIBPNGOPTION###');
+						$gdLibPngOptionSubpart = t3lib_parsehtml::getSubpart($gdLibPngSubpart, '###GDLIBPNGOPTION###');
 						$gdLibPngLabels = $this->setLabelValueArray($fA['gdlib_png'], 2);
 						reset($gdLibPngLabels);
 
@@ -3490,7 +3488,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								$gdLibPngMarker['selected'] = 'selected="selected"';
 							}
 								// Fill the markers in the subpart
-							$gdLibPngOptions[] = $this->contentObject->substituteMarkerArray(
+							$gdLibPngOptions[] = t3lib_parsehtml::substituteMarkerArray(
 								$gdLibPngOptionSubpart,
 								$gdLibPngMarker,
 								'###|###',
@@ -3499,13 +3497,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							);
 						}
 							// Substitute the subpart for the dropdown options
-						$gdLibPngSubpart = $this->contentObject->substituteSubpart(
+						$gdLibPngSubpart = t3lib_parsehtml::substituteSubpart(
 							$gdLibPngSubpart,
 							'###GDLIBPNGOPTION###',
 							implode(chr(10), $gdLibPngOptions)
 						);
 							// Fill the markers in the subpart
-						$gdLibPngSubpart = $this->contentObject->substituteMarkerArray(
+						$gdLibPngSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$gdLibPngSubpart,
 							$regularModeMarkers,
 							'###|###',
@@ -3514,7 +3512,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						);
 					}
 						// Substitute the subpart for the gdlib png
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###GDLIBPNGSUBPART###',
 						$gdLibPngSubpart
@@ -3523,14 +3521,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// ImageMagick
 					if (is_array($fA['im'])) {
 							// Get the subpart for ImageMagick
-						$imageMagickSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###IMAGEMAGICKSUBPART###');
+						$imageMagickSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMAGEMAGICKSUBPART###');
 							// Define the markers content
 						$regularModeMarkers['labelImageMagick'] = '[GFX][im]=';
 						$regularModeMarkers['strongImageMagick'] = (string) current($fA['im']);
 						$regularModeMarkers['defaultImageMagick'] = (integer) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'];
 						$regularModeMarkers['imageMagick'] = (integer) current($fA['im']);
 							// Fill the markers in the subpart
-						$imageMagickSubpart = $this->contentObject->substituteMarkerArray(
+						$imageMagickSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$imageMagickSubpart,
 							$regularModeMarkers,
 							'###|###',
@@ -3540,14 +3538,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 							// IM Combine Filename
 							// Get the subpart for ImageMagick Combine filename
-						$imCombineFileNameSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###IMCOMBINEFILENAMESUBPART###');
+						$imCombineFileNameSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMCOMBINEFILENAMESUBPART###');
 							// Define the markers content
 						$regularModeMarkers['labelImCombineFilename'] = '[GFX][im_combine_filename]';
 						$regularModeMarkers['strongImCombineFilename'] = (string) current($fA['im_combine_filename']);
 						$regularModeMarkers['defaultImCombineFilename'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'];
 						$regularModeMarkers['imCombineFilename'] = (string) ($fA['im_combine_filename'] ? current($fA['im_combine_filename']) : 'combine');
 							// Fill the markers in the subpart
-						$imCombineFileNameSubpart = $this->contentObject->substituteMarkerArray(
+						$imCombineFileNameSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$imCombineFileNameSubpart,
 							$regularModeMarkers,
 							'###|###',
@@ -3557,14 +3555,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 							// IM Version 5
 							// Get the subpart for ImageMagick Version 5
-						$imVersion5Subpart = $this->contentObject->getSubpart($regularModeSubpart, '###IMVERSION5SUBPART###');
+						$imVersion5Subpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMVERSION5SUBPART###');
 							// Define the markers content
 						$regularModeMarkers['labelImVersion5'] = '[GFX][im_version_5]=';
 						$regularModeMarkers['strongImVersion5'] = (string) current($fA['im_version_5']);
 						$regularModeMarkers['defaultImVersion5'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'];
 						$regularModeMarkers['imVersion5'] = (string) ($fA['im_version_5'] ? current($fA['im_version_5']) : '');
 							// Fill the markers in the subpart
-						$imVersion5Subpart = $this->contentObject->substituteMarkerArray(
+						$imVersion5Subpart = t3lib_parsehtml::substituteMarkerArray(
 							$imVersion5Subpart,
 							$regularModeMarkers,
 							'###|###',
@@ -3576,7 +3574,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								// IM Path
 							if (is_array($fA['im_path'])) {
 									// Get the subpart for ImageMagick path
-								$imPathSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###IMPATHSUBPART###');
+								$imPathSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMPATHSUBPART###');
 
 								$labelImPath = $this->setLabelValueArray($fA['im_path'], 1);
 								reset($labelImPath);
@@ -3588,7 +3586,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								$regularModeMarkers['defaultImPath'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
 								$regularModeMarkers['ImPath'] = (string) current($imPath);
 									// Fill the markers in the subpart
-								$imPathSubpart = $this->contentObject->substituteMarkerArray(
+								$imPathSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$imPathSubpart,
 									$regularModeMarkers,
 									'###|###',
@@ -3599,9 +3597,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								// IM Path LZW
 							if (is_array($fA['im_path_lzw'])) {
 									// Get the subpart for ImageMagick lzw path
-								$imPathLzwSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###IMPATHLZWSUBPART###');
+								$imPathLzwSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMPATHLZWSUBPART###');
 									// Get the subpart for ImageMagick lzw path dropdown options
-								$imPathOptionSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###IMPATHLZWOPTION###');
+								$imPathOptionSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMPATHLZWOPTION###');
 
 								$labelImPathLzw = $this->setLabelValueArray($fA['im_path_lzw'], 1);
 								reset($labelImPathLzw);
@@ -3624,7 +3622,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										$imPathLzwMarker['selected'] = 'selected="selected"';
 									}
 										// Fill the markers in the subpart
-									$imPathLzwOptions[] = $this->contentObject->substituteMarkerArray(
+									$imPathLzwOptions[] = t3lib_parsehtml::substituteMarkerArray(
 										$imPathOptionSubpart,
 										$imPathLzwMarker,
 										'###|###',
@@ -3633,13 +3631,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									);
 								}
 									// Substitute the subpart for ImageMagick lzw path dropdown options
-								$imPathLzwSubpart = $this->contentObject->substituteSubpart(
+								$imPathLzwSubpart = t3lib_parsehtml::substituteSubpart(
 									$imPathLzwSubpart,
 									'###IMPATHLZWOPTION###',
 									implode(chr(10), $imPathLzwOptions)
 								);
 									// Fill the markers in the subpart
-								$imPathLzwSubpart = $this->contentObject->substituteMarkerArray(
+								$imPathLzwSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$imPathLzwSubpart,
 									$regularModeMarkers,
 									'###|###',
@@ -3650,31 +3648,31 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						}
 					}
 						// Substitute the subpart for ImageMagick
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###IMAGEMAGICKSUBPART###',
 						$imageMagickSubpart
 					);
 						// Substitute the subpart for ImageMagick Combine filename
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###IMCOMBINEFILENAMESUBPART###',
 						$imCombineFileNameSubpart
 					);
 						// Substitute the subpart for ImageMagick Version 5
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###IMVERSION5SUBPART###',
 						$imVersion5Subpart
 					);
 						// Substitute the subpart for ImageMagick path
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###IMPATHSUBPART###',
 						$imPathSubpart
 					);
 						// Substitute the subpart for ImageMagick lzw path
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###IMPATHLZWSUBPART###',
 						$imPathLzwSubpart
@@ -3682,12 +3680,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 						// TrueType Font dpi
 						// Get the subpart for TrueType dpi
-					$ttfDpiSubpart = $this->contentObject->getSubpart($regularModeSubpart, '###TTFDPISUBPART###');
+					$ttfDpiSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###TTFDPISUBPART###');
 						// Define the markers content
 					$regularModeMarkers['labelTtfDpi'] = '[GFX][TTFdpi]=';
 					$regularModeMarkers['ttfDpi'] = htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']);
 						// Fill the markers in the subpart
-					$ttfDpiSubpart = $this->contentObject->substituteMarkerArray(
+					$ttfDpiSubpart = t3lib_parsehtml::substituteMarkerArray(
 						$ttfDpiSubpart,
 						$regularModeMarkers,
 						'###|###',
@@ -3695,13 +3693,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						1
 					);
 						// Substitute the subpart for TrueType dpi
-					$regularModeSubpart = $this->contentObject->substituteSubpart(
+					$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 						$regularModeSubpart,
 						'###TTFDPISUBPART###',
 						$ttfDpiSubpart
 					);
 						// Fill the markers in the regular mode subpart
-					$regularModeSubpart = $this->contentObject->substituteMarkerArray(
+					$regularModeSubpart = t3lib_parsehtml::substituteMarkerArray(
 						$regularModeSubpart,
 						$regularModeMarkers,
 						'###|###',
@@ -3714,13 +3712,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				$formMarkers['labelNotice'] = 'NOTICE:';
 				$formMarkers['labelCommentUpdateLocalConf'] = 'By clicking this button, localconf.php is updated with new values for the parameters listed above!';
 					// Substitute the subpart for regular mode
-				$form = $this->contentObject->substituteSubpart(
+				$form = t3lib_parsehtml::substituteSubpart(
 					$form,
 					'###REGULARMODE###',
 					$regularModeSubpart
 				);
 					// Fill the markers
-				$out = $this->contentObject->substituteMarkerArray(
+				$out = t3lib_parsehtml::substituteMarkerArray(
 					$form,
 					$formMarkers,
 					'###|###',
@@ -3899,9 +3897,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			switch($returnVal) {
 				case 'continue':
 						// Get the template part from the file
-					$template = $this->contentObject->getSubpart($templateFile, '###CONTINUE###');
+					$template = t3lib_parsehtml::getSubpart($templateFile, '###CONTINUE###');
 						// Get the subpart for messages
-					$messagesSubPart = $this->contentObject->getSubpart($template, '###MESSAGES###');
+					$messagesSubPart = t3lib_parsehtml::getSubpart($template, '###MESSAGES###');
 
 					$messages = array();
 
@@ -3909,7 +3907,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							// Define the markers content
 						$messagesMarkers['message'] = $message;
 							// Fill the markers in the subpart
-						$messages[] = $this->contentObject->substituteMarkerArray(
+						$messages[] = t3lib_parsehtml::substituteMarkerArray(
 							$messagesSubPart,
 							$messagesMarkers,
 							'###|###',
@@ -3918,7 +3916,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						);
 					}
 						// Substitute the subpart for messages
-					$content = $this->contentObject->substituteSubpart(
+					$content = t3lib_parsehtml::substituteSubpart(
 						$template,
 						'###MESSAGES###',
 						implode(chr(10), $messages)
@@ -3930,7 +3928,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'label' => 'Click to continue...'
 					);
 						// Fill the markers
-					$content = $this->contentObject->substituteMarkerArray(
+					$content = t3lib_parsehtml::substituteMarkerArray(
 						$content,
 						$markers,
 						'###|###',
@@ -3941,7 +3939,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 				case 'nochange':
 						// Get the template part from the file
-					$template = $this->contentObject->getSubpart($templateFile, '###NOCHANGE###');
+					$template = t3lib_parsehtml::getSubpart($templateFile, '###NOCHANGE###');
 						// Define the markers content
 					$markers = array(
 						'header' => 'Writing to \'localconf.php\'',
@@ -3950,7 +3948,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'label' => 'Click to continue...'
 					);
 						// Fill the markers
-					$content = $this->contentObject->substituteMarkerArray(
+					$content = t3lib_parsehtml::substituteMarkerArray(
 						$template,
 						$markers,
 						'###|###',
@@ -5159,14 +5157,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'DisplayTwinImage.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 
 		$content = '';
 
 		$errorLevels=array(-1);
 		if ($imageFile) {
 				// Get the subpart for the images
-			$imageSubpart = $this->contentObject->getSubpart($template, '###IMAGE###');
+			$imageSubpart = t3lib_parsehtml::getSubpart($template, '###IMAGE###');
 			$verifyFile = t3lib_extMgm::extPath('install').'verify_imgs/'.basename($imageFile);
 			$destImg = @getImageSize($imageFile);
 			$destImgCode ='<img src="'.$this->backPath.'../'.substr($imageFile,strlen(PATH_site)).'" '.$destImg[3].'>';
@@ -5194,7 +5192,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				// Display a warning if the generated image is more than 2KB larger than its reference...
 			if (($destImg['filesize']!=$verifyImg['filesize']) && (intval($destImg['filesize']) && ($destImg['filesize']-$verifyImg['filesize']) > 2048)) {
 					// Get the subpart for the different filesize message
-				$differentFileSizeSubpart = $this->contentObject->getSubpart($imageSubpart, '###DIFFERENTFILESIZE###');
+				$differentFileSizeSubpart = t3lib_parsehtml::getSubpart($imageSubpart, '###DIFFERENTFILESIZE###');
 					// Define the markers content
 				$differentFileSizeMarkers = array(
 					'message' => 'File size is very different from reference',
@@ -5202,7 +5200,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'referenceFileSize' => $verifyImg['filesize']
 				);
 					// Fill the markers in the subpart
-				$differentFileSizeSubpart = $this->contentObject->substituteMarkerArray(
+				$differentFileSizeSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$differentFileSizeSubpart,
 					$differentFileSizeMarkers,
 					'###|###',
@@ -5213,7 +5211,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				$errorLevels[]=2;
 			}
 				// Substitute the subpart for different filesize message
-			$imageSubpart = $this->contentObject->substituteSubpart(
+			$imageSubpart = t3lib_parsehtml::substituteSubpart(
 				$imageSubpart,
 				'###DIFFERENTFILESIZE###',
 				$differentFileSizeSubpart
@@ -5221,13 +5219,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 			if ($destImg[0]!=$verifyImg[0] || $destImg[1]!=$verifyImg[1]) {
 					// Get the subpart for the different pixel dimensions message
-				$differentPixelDimensionsSubpart = $this->contentObject->getSubpart($imageSubpart, '###DIFFERENTPIXELDIMENSIONS###');
+				$differentPixelDimensionsSubpart = t3lib_parsehtml::getSubpart($imageSubpart, '###DIFFERENTPIXELDIMENSIONS###');
 					// Define the markers content
 				$differentPixelDimensionsMarkers = array(
 					'message' => 'Pixel dimension are not equal!'
 				);
 					// Fill the markers in the subpart
-				$differentPixelDimensionsSubpart = $this->contentObject->substituteMarkerArray(
+				$differentPixelDimensionsSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$differentPixelDimensionsSubpart,
 					$differentPixelDimensionsMarkers,
 					'###|###',
@@ -5238,7 +5236,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				$errorLevels[]=2;
 			}
 					// Substitute the subpart for different pixel dimensions message
-			$imageSubpart = $this->contentObject->substituteSubpart(
+			$imageSubpart = t3lib_parsehtml::substituteSubpart(
 				$imageSubpart,
 				'###DIFFERENTPIXELDIMENSIONS###',
 				$differentPixelDimensionsSubpart
@@ -5246,14 +5244,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 			if ($note) {
 					// Get the subpart for the note
-				$noteSubpart = $this->contentObject->getSubpart($imageSubpart, '###NOTE###');
+				$noteSubpart = t3lib_parsehtml::getSubpart($imageSubpart, '###NOTE###');
 					// Define the markers content
 				$noteMarkers = array(
 					'message' => $note[0],
 					'label' => $note[1]
 				);
 					// Fill the markers in the subpart
-				$noteSubpart = $this->contentObject->substituteMarkerArray(
+				$noteSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$noteSubpart,
 					$noteMarkers,
 					'###|###',
@@ -5262,7 +5260,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				);
 			}
 				// Substitute the subpart for the note
-			$imageSubpart = $this->contentObject->substituteSubpart(
+			$imageSubpart = t3lib_parsehtml::substituteSubpart(
 				$imageSubpart,
 				'###NOTE###',
 				$noteSubpart
@@ -5271,7 +5269,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			if ($this->dumpImCommands && count($IMcommands)) {
 				$commands = $this->formatImCmds($IMcommands);
 					// Get the subpart for the ImageMagick commands
-				$imCommandsSubpart = $this->contentObject->getSubpart($imageSubpart, '###IMCOMMANDS###');
+				$imCommandsSubpart = t3lib_parsehtml::getSubpart($imageSubpart, '###IMCOMMANDS###');
 					// Define the markers content
 				$imCommandsMarkers = array(
 					'message' => 'ImageMagick commands executed:',
@@ -5279,7 +5277,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'commands' => htmlspecialchars(implode($commands, chr(10)))
 				);
 					// Fill the markers in the subpart
-				$imCommandsSubpart = $this->contentObject->substituteMarkerArray(
+				$imCommandsSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$imCommandsSubpart,
 					$imCommandsMarkers,
 					'###|###',
@@ -5288,13 +5286,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				);
 			}
 				// Substitute the subpart for the ImageMagick commands
-			$imageSubpart = $this->contentObject->substituteSubpart(
+			$imageSubpart = t3lib_parsehtml::substituteSubpart(
 				$imageSubpart,
 				'###IMCOMMANDS###',
 				$imCommandsSubpart
 			);
 				// Fill the markers
-			$imageSubpart = $this->contentObject->substituteMarkerArray(
+			$imageSubpart = t3lib_parsehtml::substituteMarkerArray(
 				$imageSubpart,
 				$imageMarkers,
 				'###|###',
@@ -5304,19 +5302,19 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 		} else {
 				// Get the subpart when no image has been generated
-			$noImageSubpart = $this->contentObject->getSubpart($template, '###NOIMAGE###');
+			$noImageSubpart = t3lib_parsehtml::getSubpart($template, '###NOIMAGE###');
 			$commands = $this->formatImCmds($IMcommands);
 
 			if (count($commands)) {
 					// Get the subpart for the ImageMagick commands
-				$commandsSubpart = $this->contentObject->getSubpart($noImageSubpart, '###COMMANDSAVAILABLE###');
+				$commandsSubpart = t3lib_parsehtml::getSubpart($noImageSubpart, '###COMMANDSAVAILABLE###');
 					// Define the markers content
 				$commandsMarkers = array(
 					'rows' => t3lib_div::intInRange(count($commands), 2, 10),
 					'commands' => htmlspecialchars(implode($commands, chr(10)))
 				);
 					// Fill the markers in the subpart
-				$commandsSubpart = $this->contentObject->substituteMarkerArray(
+				$commandsSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$commandsSubpart,
 					$commandsMarkers,
 					'###|###',
@@ -5325,7 +5323,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				);
 			}
 				// Substitute the subpart for the ImageMagick commands
-			$noImageSubpart = $this->contentObject->substituteSubpart(
+			$noImageSubpart = t3lib_parsehtml::substituteSubpart(
 				$noImageSubpart,
 				'###COMMANDSAVAILABLE###',
 				$commandsSubpart
@@ -5336,7 +5334,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'label' => 'Below there\'s a dump of the ImageMagick commands executed:'
 			);
 				// Fill the markers
-			$noImageSubpart = $this->contentObject->substituteMarkerArray(
+			$noImageSubpart = t3lib_parsehtml::substituteMarkerArray(
 				$noImageSubpart,
 				$noImageMarkers,
 				'###|###',
@@ -5347,13 +5345,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$errorLevels[]=3;
 		}
 			// Substitute the subpart when image has been generated
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###IMAGE###',
 			$imageSubpart
 		);
 			// Substitute the subpart when no image has been generated
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$content,
 			'###NOIMAGE###',
 			$noImageSubpart
@@ -5391,9 +5389,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$template = @file_get_contents(PATH_site . $this->templateFilePath . 'ImageMenu.html');
 			// Get the subpart for the menu
-		$menuSubPart = $this->contentObject->getSubpart($template, '###MENU###');
+		$menuSubPart = t3lib_parsehtml::getSubpart($template, '###MENU###');
 			// Get the subpart for the single item in the menu
-		$menuItemSubPart = $this->contentObject->getSubpart($menuSubPart, '###MENUITEM###');
+		$menuItemSubPart = t3lib_parsehtml::getSubpart($menuSubPart, '###MENUITEM###');
 
 		$menuitems = array(
 			'read' => 'Reading image formats',
@@ -5412,7 +5410,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'item' => $v
 			);
 				// Fill the markers in the subpart
-			$items[] = $this->contentObject->substituteMarkerArray(
+			$items[] = t3lib_parsehtml::substituteMarkerArray(
 				$menuItemSubPart,
 				$markers,
 				'###|###',
@@ -5421,7 +5419,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart for the single item in the menu
-		$menuSubPart = $this->contentObject->substituteSubpart(
+		$menuSubPart = t3lib_parsehtml::substituteSubpart(
 			$menuSubPart,
 			'###MENUITEM###',
 			implode(chr(10), $items)
@@ -5539,7 +5537,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CheckTheDatabaseMenu.html');
 			// Get the template part from the file
-		$menu = $this->contentObject->getSubpart($templateFile, '###MENU###');
+		$menu = t3lib_parsehtml::getSubpart($templateFile, '###MENU###');
 
 		$menuMarkers = array(
 			'action' => $this->action,
@@ -5559,7 +5557,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'clearTables' => 'Clear tables'
 		);
 			// Get the subpart for extra SQL
-		$extraSql = $this->contentObject->getSubpart($menu, '###EXTRASQL###');
+		$extraSql = t3lib_parsehtml::getSubpart($menu, '###EXTRASQL###');
 
 		$directJump='';
 		$extraSqlFiles = array();
@@ -5583,7 +5581,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				'view' => 'VIEW'
 			);
 				// Fill the markers in the subpart
-			$extraSqlFiles[] = $this->contentObject->substituteMarkerArray(
+			$extraSqlFiles[] = t3lib_parsehtml::substituteMarkerArray(
 				$extraSql,
 				$extraSqlMarkers,
 				'###|###',
@@ -5592,13 +5590,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 		}
 			// Substitute the subpart for extra SQL
-		$menu = $this->contentObject->substituteSubpart(
+		$menu = t3lib_parsehtml::substituteSubpart(
 			$menu,
 			'###EXTRASQL###',
 			implode(chr(10), $extraSqlFiles)
 		);
 			// Fill the markers
-		$menu = $this->contentObject->substituteMarkerArray(
+		$menu = t3lib_parsehtml::substituteMarkerArray(
 			$menu,
 			$menuMarkers,
 			'###|###',
@@ -5995,27 +5993,27 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									// Get the template file
 								$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CheckTheDatabaseImport.html');
 									// Get the template part from the file
-								$content = $this->contentObject->getSubpart($templateFile, '###IMPORT###');
+								$content = t3lib_parsehtml::getSubpart($templateFile, '###IMPORT###');
 
 								if ($this->mode!='123') {
 									$tables = array();
 										// Get the subpart for regular mode
-									$regularModeSubpart = $this->contentObject->getSubpart($content, '###REGULARMODE###');
+									$regularModeSubpart = t3lib_parsehtml::getSubpart($content, '###REGULARMODE###');
 									foreach ($statements_table as $table => $definition) {
 											// Get the subpart for rows
-										$tableSubpart = $this->contentObject->getSubpart($content, '###ROWS###');
+										$tableSubpart = t3lib_parsehtml::getSubpart($content, '###ROWS###');
 											// Fill the 'table exists' part when it exists
 										$exist=isset($whichTables[$table]);
 										if ($exist) {
 												// Get the subpart for table exists
-											$existSubpart = $this->contentObject->getSubpart($tableSubpart, '###EXIST###');
+											$existSubpart = t3lib_parsehtml::getSubpart($tableSubpart, '###EXIST###');
 												// Define the markers content
 											$existMarkers = array (
 												'tableExists' => 'Table exists!',
 												'backPath' => $this->backPath
 											);
 												// Fill the markers in the subpart
-											$existSubpart = $this->contentObject->substituteMarkerArray(
+											$existSubpart = t3lib_parsehtml::substituteMarkerArray(
 												$existSubpart,
 												$existMarkers,
 												'###|###',
@@ -6024,7 +6022,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 											);
 										}
 											// Substitute the subpart for table exists
-										$tableHtml = $this->contentObject->substituteSubpart(
+										$tableHtml = t3lib_parsehtml::substituteSubpart(
 											$tableSubpart,
 											'###EXIST###',
 											$existSubpart
@@ -6039,7 +6037,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 											'backPath' => $this->backPath
 										);
 											// Fill the markers
-										$tables[] = $this->contentObject->substituteMarkerArray(
+										$tables[] = t3lib_parsehtml::substituteMarkerArray(
 											$tableHtml,
 											$tableMarkers,
 											'###|###',
@@ -6048,14 +6046,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										);
 									}
 										// Substitute the subpart for the rows
-									$regularModeSubpart = $this->contentObject->substituteSubpart(
+									$regularModeSubpart = t3lib_parsehtml::substituteSubpart(
 										$regularModeSubpart,
 										'###ROWS###',
 										implode(chr(10), $tables)
 									);
 								}
 									// Substitute the subpart for the regular mode
-								$content = $this->contentObject->substituteSubpart(
+								$content = t3lib_parsehtml::substituteSubpart(
 									$content,
 									'###REGULARMODE###',
 									$regularModeSubpart
@@ -6066,7 +6064,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'label' => 'Import the whole file \'' . basename($actionParts[1]) . '\' directly (ignores selections above)'
 								);
 									// Fill the markers
-								$content = $this->contentObject->substituteMarkerArray(
+								$content = t3lib_parsehtml::substituteMarkerArray(
 									$content,
 									$contentMarkers,
 									'###|###',
@@ -6200,7 +6198,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							// Get the template file
 						$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CheckTheDatabaseAdminUser.html');
 							// Get the template part from the file
-						$content = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+						$content = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 							// Define the markers content
 						$contentMarkers = array(
 							'userName' => 'username - unique, no space, lowercase',
@@ -6208,7 +6206,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							'repeatPassword' => 'password (repeated)'
 						);
 							// Fill the markers
-						$content = $this->contentObject->substituteMarkerArray(
+						$content = t3lib_parsehtml::substituteMarkerArray(
 							$content,
 							$contentMarkers,
 							'###|###',
@@ -6252,13 +6250,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							// Get the template file
 						$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CheckTheDatabaseUc.html');
 							// Get the template part from the file
-						$content = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+						$content = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 							// Define the markers content
 						$contentMarkers = array(
 							'clearBeUsers' => 'Clear be_users preferences ("uc" field)'
 						);
 							// Fill the markers
-						$content = $this->contentObject->substituteMarkerArray(
+						$content = t3lib_parsehtml::substituteMarkerArray(
 							$content,
 							$contentMarkers,
 							'###|###',
@@ -6302,9 +6300,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							// Get the template file
 						$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CheckTheDatabaseCache.html');
 							// Get the subpart for emptied tables
-						$emptiedTablesSubpart = $this->contentObject->getSubpart($templateFile, '###EMPTIEDTABLES###');
+						$emptiedTablesSubpart = t3lib_parsehtml::getSubpart($templateFile, '###EMPTIEDTABLES###');
 							// Get the subpart for table
-						$tableSubpart = $this->contentObject->getSubpart($emptiedTablesSubpart, '###TABLE###');
+						$tableSubpart = t3lib_parsehtml::getSubpart($emptiedTablesSubpart, '###TABLE###');
 						foreach ($tableListArr as $table) {
 							if ($table!='--div--') {
 								$table_c = TYPO3_OS=='WIN' ? strtolower($table) : $table;
@@ -6315,7 +6313,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										'tableName' => $table
 									);
 										// Fill the markers in the subpart
-									$qList[] = $this->contentObject->substituteMarkerArray(
+									$qList[] = t3lib_parsehtml::substituteMarkerArray(
 										$tableSubpart,
 										$emptiedTablesMarkers,
 										'###|###',
@@ -6326,7 +6324,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							}
 						}
 							// Substitute the subpart for table
-						$emptiedTablesSubpart = $this->contentObject->substituteSubpart(
+						$emptiedTablesSubpart = t3lib_parsehtml::substituteSubpart(
 							$emptiedTablesSubpart,
 							'###TABLE###',
 							implode(chr(10), $qList)
@@ -6363,11 +6361,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// Get the template file
 					$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CheckTheDatabaseCache.html');
 						// Get the subpart for table list
-					$tableListSubpart = $this->contentObject->getSubpart($templateFile, '###TABLELIST###');
+					$tableListSubpart = t3lib_parsehtml::getSubpart($templateFile, '###TABLELIST###');
 						// Get the subpart for the group separator
-					$groupSubpart = $this->contentObject->getSubpart($tableListSubpart, '###GROUP###');
+					$groupSubpart = t3lib_parsehtml::getSubpart($tableListSubpart, '###GROUP###');
 						// Get the subpart for a single table
-					$singleTableSubpart = $this->contentObject->getSubpart($tableListSubpart, '###SINGLETABLE###');
+					$singleTableSubpart = t3lib_parsehtml::getSubpart($tableListSubpart, '###SINGLETABLE###');
 					$group = array();
 					$checkBoxes = array();
 					foreach ($tableListArr as $table) {
@@ -6393,7 +6391,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 								);
 									// Fill the markers in the subpart
-								$checkBoxes[] = $this->contentObject->substituteMarkerArray(
+								$checkBoxes[] = t3lib_parsehtml::substituteMarkerArray(
 									$singleTableSubpart,
 									$singleTableMarkers,
 									'###|###',
@@ -6406,13 +6404,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						}
 					}
 						// Substitute the subpart for the single tables
-					$content = $this->contentObject->substituteSubpart(
+					$content = t3lib_parsehtml::substituteSubpart(
 						$tableListSubpart,
 						'###SINGLETABLE###',
 						implode(chr(10), $checkBoxes)
 					);
 						// Substitute the subpart for the group separator
-					$content = $this->contentObject->substituteSubpart(
+					$content = t3lib_parsehtml::substituteSubpart(
 						$content,
 						'###GROUP###',
 						''
@@ -6471,7 +6469,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				// first step - check for updates available
 			case 'checkForUpdate':
 					// Get the subpart for check for update
-				$checkForUpdateSubpart = $this->contentObject->getSubpart($templateFile, '###CHECKFORUPDATE###');
+				$checkForUpdateSubpart = t3lib_parsehtml::getSubpart($templateFile, '###CHECKFORUPDATE###');
 				$title = 'Step 1 - Introduction';
 				$updateWizardBoxes = '';
 				if (!$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']) {
@@ -6485,9 +6483,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				} else {
 
 						// step through list of updates, and check if update is needed and if yes, output an explanation
-					$updatesAvailableSubpart = $this->contentObject->getSubpart($checkForUpdateSubpart, '###UPDATESAVAILABLE###');
-					$updateWizardBoxesSubpart = $this->contentObject->getSubpart($updatesAvailableSubpart, '###UPDATEWIZARDBOXES###');
-					$singleUpdateWizardBoxSubpart = $this->contentObject->getSubpart($updateWizardBoxesSubpart, '###SINGLEUPDATEWIZARDBOX###');
+					$updatesAvailableSubpart = t3lib_parsehtml::getSubpart($checkForUpdateSubpart, '###UPDATESAVAILABLE###');
+					$updateWizardBoxesSubpart = t3lib_parsehtml::getSubpart($updatesAvailableSubpart, '###UPDATEWIZARDBOXES###');
+					$singleUpdateWizardBoxSubpart = t3lib_parsehtml::getSubpart($updateWizardBoxesSubpart, '###SINGLEUPDATEWIZARDBOX###');
 					$singleUpdate = array();
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] as $identifier => $className) {
 						$tmpObj = $this->getUpgradeObjInstance($className, $identifier);
@@ -6499,7 +6497,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									'explanation' => $explanation,
 									'next' => 'Next'
 								);
-								$singleUpdate[] = $this->contentObject->substituteMarkerArray(
+								$singleUpdate[] = t3lib_parsehtml::substituteMarkerArray(
 									$singleUpdateWizardBoxSubpart,
 									$updateMarkers,
 									'###|###',
@@ -6511,7 +6509,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					}
 
 					if (!empty($singleUpdate)) {
-						$updateWizardBoxesSubpart = $this->contentObject->substituteSubpart(
+						$updateWizardBoxesSubpart = t3lib_parsehtml::substituteSubpart(
 							$updateWizardBoxesSubpart,
 							'###SINGLEUPDATEWIZARDBOX###',
 							implode(chr(10), $singleUpdate)
@@ -6519,7 +6517,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$updateWizardBoxesMarkers = array(
 							'action' => $this->action
 						);
-						$updateWizardBoxesSubpart = $this->contentObject->substituteMarkerArray(
+						$updateWizardBoxesSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$updateWizardBoxesSubpart,
 							$updateWizardBoxesMarkers,
 							'###|###',
@@ -6535,7 +6533,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							</p>
 						';
 					}
-					$updatesAvailableSubpart = $this->contentObject->substituteSubpart(
+					$updatesAvailableSubpart = t3lib_parsehtml::substituteSubpart(
 						$updatesAvailableSubpart,
 						'###UPDATEWIZARDBOXES###',
 						$updateWizardBoxesSubpart
@@ -6558,7 +6556,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							',
 							'compareDatabase' => 'COMPARE DATABASE'
 						);
-						$updatesAvailableSubpart = $this->contentObject->substituteMarkerArray(
+						$updatesAvailableSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$updatesAvailableSubpart,
 							$updatesAvailableMarkers,
 							'###|###',
@@ -6566,7 +6564,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							1
 						);
 				}
-				$content = $this->contentObject->substituteSubpart(
+				$content = t3lib_parsehtml::substituteSubpart(
 					$checkForUpdateSubpart,
 					'###UPDATESAVAILABLE###',
 					$updatesAvailableSubpart
@@ -6575,7 +6573,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				// second step - get user input and ask for final confirmation
 			case 'getUserInput':
 				$title = 'Step 2 - Configuration of updates';
-				$getUserInputSubpart = $this->contentObject->getSubpart($templateFile, '###GETUSERINPUT###');
+				$getUserInputSubpart = t3lib_parsehtml::getSubpart($templateFile, '###GETUSERINPUT###');
 
 				$markers = array(
 					'introduction' => 'The following updates will be performed:',
@@ -6585,11 +6583,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				);
 
 				if (!$this->INSTALL['update']) {
-					$noUpdatesAvailableSubpart = $this->contentObject->getSubpart($getUserInputSubpart, '###NOUPDATESAVAILABLE###');
+					$noUpdatesAvailableSubpart = t3lib_parsehtml::getSubpart($getUserInputSubpart, '###NOUPDATESAVAILABLE###');
 
 					$noUpdateMarkers['noUpdates'] = 'No updates selected!';
 
-					$noUpdatesAvailableSubpart = $this->contentObject->substituteMarkerArray(
+					$noUpdatesAvailableSubpart = t3lib_parsehtml::substituteMarkerArray(
 						$noUpdatesAvailableSubpart,
 						$noUpdateMarkers,
 						'###|###',
@@ -6599,7 +6597,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					break;
 				} else {
 					// update methods might need to get custom data
-					$updatesAvailableSubpart = $this->contentObject->getSubpart($getUserInputSubpart, '###UPDATESAVAILABLE###');
+					$updatesAvailableSubpart = t3lib_parsehtml::getSubpart($getUserInputSubpart, '###UPDATESAVAILABLE###');
 					foreach ($this->INSTALL['update'] as $identifier => $tmp) {
 						$updateMarkers = array();
 
@@ -6613,7 +6611,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$updateMarkers['identifierMethod'] = $tmpObj->getUserInput('TYPO3_INSTALL[update][' . $identifier . ']');
 						}
 
-						$updateItems[] = $this->contentObject->substituteMarkerArray(
+						$updateItems[] = t3lib_parsehtml::substituteMarkerArray(
 							$updatesAvailableSubpart,
 							$updateMarkers,
 							'###|###',
@@ -6624,17 +6622,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$updatesAvailableSubpart = implode(chr(10), $updateItems);
 				}
 
-				$content = $this->contentObject->substituteSubpart(
+				$content = t3lib_parsehtml::substituteSubpart(
 					$getUserInputSubpart,
 					'###NOUPDATESAVAILABLE###',
 					$noUpdatesAvailableSubpart
 				);
-				$content = $this->contentObject->substituteSubpart(
+				$content = t3lib_parsehtml::substituteSubpart(
 					$content,
 					'###UPDATESAVAILABLE###',
 					$updatesAvailableSubpart
 				);
-				$content = $this->contentObject->substituteMarkerArray(
+				$content = t3lib_parsehtml::substituteMarkerArray(
 					$content,
 					$markers,
 					'###|###',
@@ -6644,13 +6642,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 			case 'performUpdate':	// third step - perform update
 				$title = 'Step 3 - Perform updates';
-				$performUpdateSubpart = $this->contentObject->getSubpart($templateFile, '###PERFORMUPDATE###');
-				$updateItemsSubpart = $this->contentObject->getSubpart($performUpdateSubpart, '###UPDATEITEMS###');
-				$checkUserInputSubpart = $this->contentObject->getSubpart($updateItemsSubpart, '###CHECKUSERINPUT###');
-				$updatePerformedSubpart = $this->contentObject->getSubpart($updateItemsSubpart, '###UPDATEPERFORMED###');
-				$noPerformUpdateSubpart = $this->contentObject->getSubpart($updateItemsSubpart, '###NOPERFORMUPDATE###');
-				$databaseQueriesSubpart = $this->contentObject->getSubpart($updatePerformedSubpart, '###DATABASEQUERIES###');
-				$customOutputSubpart = $this->contentObject->getSubpart($updatePerformedSubpart, '###CUSTOMOUTPUT###');
+				$performUpdateSubpart = t3lib_parsehtml::getSubpart($templateFile, '###PERFORMUPDATE###');
+				$updateItemsSubpart = t3lib_parsehtml::getSubpart($performUpdateSubpart, '###UPDATEITEMS###');
+				$checkUserInputSubpart = t3lib_parsehtml::getSubpart($updateItemsSubpart, '###CHECKUSERINPUT###');
+				$updatePerformedSubpart = t3lib_parsehtml::getSubpart($updateItemsSubpart, '###UPDATEPERFORMED###');
+				$noPerformUpdateSubpart = t3lib_parsehtml::getSubpart($updateItemsSubpart, '###NOPERFORMUPDATE###');
+				$databaseQueriesSubpart = t3lib_parsehtml::getSubpart($updatePerformedSubpart, '###DATABASEQUERIES###');
+				$customOutputSubpart = t3lib_parsehtml::getSubpart($updatePerformedSubpart, '###CUSTOMOUTPUT###');
 				if (!$this->INSTALL['update']['extList']) { break; }
 
 				$GLOBALS['TYPO3_DB']->store_lastBuiltQuery = TRUE;
@@ -6666,7 +6664,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							'customOutput' => ($customOutput ? $customOutput : 'Something went wrong'),
 							'goBack' => 'Go back to update configuration'
 						);
-						$checkUserInput = $this->contentObject->substituteMarkerArray(
+						$checkUserInput = t3lib_parsehtml::substituteMarkerArray(
 							$checkUserInputSubpart,
 							$userInputMarkers,
 							'###|###',
@@ -6687,7 +6685,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								$content .= '<br />' . implode('<br />',$dbQueries);
 								foreach($dbQueries as $query) {
 									$databaseQueryMarkers['query'] = $query;
-									$databaseQueries[] = $this->contentObject->substituteMarkerArray(
+									$databaseQueries[] = t3lib_parsehtml::substituteMarkerArray(
 										$databaseQueriesSubpart,
 										$databaseQueryMarkers,
 										'###|###',
@@ -6700,7 +6698,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							if (strlen($customOutput)) {
 								$content.= '<br />' . $customOutput;
 								$customOutputMarkers['custom'] = $customOutput;
-								$customOutputItem = $this->contentObject->substituteMarkerArray(
+								$customOutputItem = t3lib_parsehtml::substituteMarkerArray(
 									$customOutputSubpart,
 									$customOutputMarkers,
 									'###|###',
@@ -6709,17 +6707,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								);
 							}
 
-							$updatePerformed = $this->contentObject->substituteSubpart(
+							$updatePerformed = t3lib_parsehtml::substituteSubpart(
 								$updatePerformedSubpart,
 								'###DATABASEQUERIES###',
 								implode(chr(10), $databaseQueries)
 							);
-							$updatePerformed = $this->contentObject->substituteSubpart(
+							$updatePerformed = t3lib_parsehtml::substituteSubpart(
 								$updatePerformed,
 								'###CUSTOMOUTPUT###',
 								$customOutputItem
 							);
-							$updatePerformed = $this->contentObject->substituteMarkerArray(
+							$updatePerformed = t3lib_parsehtml::substituteMarkerArray(
 								$updatePerformed,
 								$performUpdateMarkers,
 								'###|###',
@@ -6728,7 +6726,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							);
 						} else {
 							$noPerformUpdateMarkers['noUpdateMethod'] = 'No update method available!';
-							$noPerformUpdate = $this->contentObject->substituteMarkerArray(
+							$noPerformUpdate = t3lib_parsehtml::substituteMarkerArray(
 								$noPerformUpdateSubpart,
 								$noPerformUpdateMarkers,
 								'###|###',
@@ -6737,27 +6735,27 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							);
 						}
 					}
-					$updateItem = $this->contentObject->substituteSubpart(
+					$updateItem = t3lib_parsehtml::substituteSubpart(
 						$updateItemsSubpart,
 						'###CHECKUSERINPUT###',
 						$checkUserInput
 					);
-					$updateItem = $this->contentObject->substituteSubpart(
+					$updateItem = t3lib_parsehtml::substituteSubpart(
 						$updateItem,
 						'###UPDATEPERFORMED###',
 						$updatePerformed
 					);
-					$updateItem = $this->contentObject->substituteSubpart(
+					$updateItem = t3lib_parsehtml::substituteSubpart(
 						$updateItem,
 						'###NOPERFORMUPDATE###',
 						$noPerformUpdate
 					);
-					$updateItem = $this->contentObject->substituteSubpart(
+					$updateItem = t3lib_parsehtml::substituteSubpart(
 						$updateItem,
 						'###UPDATEITEMS###',
 						implode(chr(10), $updateItems)
 					);
-					$updateItems[] = $this->contentObject->substituteMarkerArray(
+					$updateItems[] = t3lib_parsehtml::substituteMarkerArray(
 						$updateItem,
 						$updateItemsMarkers,
 						'###|###',
@@ -6765,7 +6763,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						1
 					);
 				}
-				$content = $this->contentObject->substituteSubpart(
+				$content = t3lib_parsehtml::substituteSubpart(
 					$performUpdateSubpart,
 					'###UPDATEITEMS###',
 					implode(chr(10), $updateItems)
@@ -6894,7 +6892,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'GetUpdateDbFormWrap.html');
 			// Get the template part from the file
-		$form = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$form = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Define the markers content
 		$formMarkers = array(
 			'action' => $this->action,
@@ -6903,7 +6901,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			'label' => $label
 		);
 			// Fill the markers
-		$form = $this->contentObject->substituteMarkerArray(
+		$form = t3lib_parsehtml::substituteMarkerArray(
 			$form,
 			$formMarkers,
 			'###|###',
@@ -6927,7 +6925,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'DisplayFields.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Define the markers content
 		$templateMarkers = array(
 			'headerFieldName' => 'Field name:',
@@ -6936,7 +6934,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if (is_array($arr)) {
 			$rows = array();
 				// Get the subpart for rows
-			$rowsSubpart = $this->contentObject->getSubpart($template, '###ROWS###');
+			$rowsSubpart = t3lib_parsehtml::getSubpart($template, '###ROWS###');
 			foreach ($arr as $fieldname => $fieldContent) {
 				if ($pre) {
 					$fieldContent = '<pre>'.trim($fieldContent).'</pre>';
@@ -6947,7 +6945,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'fieldContent' => $fieldContent
 				);
 					// Fill the markers in the subpart
-				$rows[] = $this->contentObject->substituteMarkerArray(
+				$rows[] = t3lib_parsehtml::substituteMarkerArray(
 					$rowsSubpart,
 					$rowsMarkers,
 					'###|###',
@@ -6957,13 +6955,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			}
 		}
 			// Substitute the subpart for rows
-		$template = $this->contentObject->substituteSubpart(
+		$template = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###ROWS###',
 			implode(chr(10), $rows)
 		);
 			// Fill the markers
-		$template = $this->contentObject->substituteMarkerArray(
+		$template = t3lib_parsehtml::substituteMarkerArray(
 			$template,
 			$templateMarkers,
 			'###|###',
@@ -6985,7 +6983,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'DisplayFieldComp.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Define the markers content
 		$templateMarkers = array(
 			'headerFieldName' => 'Field name:',
@@ -6995,7 +6993,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$rows = array();
 		if (is_array($arr)) {
 				// Get the subpart for rows
-			$rowsSubpart = $this->contentObject->getSubpart($template, '###ROWS###');
+			$rowsSubpart = t3lib_parsehtml::getSubpart($template, '###ROWS###');
 			foreach ($arr as $fieldname => $fieldContent) {
 					// This tries to equalize the types tinyint and int
 				$str1 = $fieldContent;
@@ -7018,7 +7016,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					'class' => $bgcolor
 				);
 					// Fill the markers in the subpart
-				$rows[] = $this->contentObject->substituteMarkerArray(
+				$rows[] = t3lib_parsehtml::substituteMarkerArray(
 					$rowsSubpart,
 					$rowsMarkers,
 					'###|###',
@@ -7028,13 +7026,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			}
 		}
 			// Substitute the subpart for rows
-		$template = $this->contentObject->substituteSubpart(
+		$template = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###ROWS###',
 			implode(chr(10), $rows)
 		);
 			// Fill the markers
-		$out = $this->contentObject->substituteMarkerArray(
+		$out = t3lib_parsehtml::substituteMarkerArray(
 			$template,
 			$templateMarkers,
 			'###|###',
@@ -7056,25 +7054,25 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'DisplaySuggestions.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 
 		$templateMarkers = array();
 		$fC=0;
 		$rows = array();
 		if (is_array($arr)) {
 				// Get the subpart for rows
-			$rowsSubpart = $this->contentObject->getSubpart($template, '###ROWS###');
+			$rowsSubpart = t3lib_parsehtml::getSubpart($template, '###ROWS###');
 			foreach ($arr as $fieldname => $fieldContent) {
 				if (!t3lib_div::inList($excludeList,$fieldname) && substr($fieldname,0,strlen($this->deletedPrefixKey))!=$this->deletedPrefixKey && substr($fieldname,-1)!='.') {
 					if ($arr[$fieldname.'.']) {
 							// Get the subpart for pre
-						$preSubpart = $this->contentObject->getSubpart($rowsSubpart, '###PRE###');
+						$preSubpart = t3lib_parsehtml::getSubpart($rowsSubpart, '###PRE###');
 							// Define the markers content
 						$preMarkers = array(
 							'code' => '<pre>' . trim($arr[$fieldname.'.']) . '</pre>'
 						);
 							// Fill the markers in the subpart
-						$preSubpart = $this->contentObject->substituteMarkerArray(
+						$preSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$preSubpart,
 							$preMarkers,
 							'###|###',
@@ -7083,7 +7081,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						);
 					}
 						// Substitute the subpart for pre
-					$row = $this->contentObject->substituteSubpart(
+					$row = t3lib_parsehtml::substituteSubpart(
 						$rowsSubpart,
 						'###PRE###',
 						$preSubpart
@@ -7097,7 +7095,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'fieldContent' => $fieldContent,
 					);
 						// Fill the markers in the subpart
-					$rows[] = $this->contentObject->substituteMarkerArray(
+					$rows[] = t3lib_parsehtml::substituteMarkerArray(
 						$row,
 						$rowsMarkers,
 						'###|###',
@@ -7109,13 +7107,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			}
 		}
 			// Substitute the subpart for rows
-		$template = $this->contentObject->substituteSubpart(
+		$template = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###ROWS###',
 			implode(chr(10), $rows)
 		);
 			// Fill the markers
-		$out = $this->contentObject->substituteMarkerArray(
+		$out = t3lib_parsehtml::substituteMarkerArray(
 			$template,
 			$templateMarkers,
 			'###|###',
@@ -7555,7 +7553,7 @@ $out="
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'PrintSection.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 
 		switch($type) {
 			case 3:
@@ -7580,10 +7578,10 @@ $out="
 		} else {
 			if (trim($long_string)) {
 					// Get the subpart for the long string
-				$longStringSubpart = $this->contentObject->getSubpart($template, '###LONGSTRINGAVAILABLE###');
+				$longStringSubpart = t3lib_parsehtml::getSubpart($template, '###LONGSTRINGAVAILABLE###');
 			}
 				// Substitute the subpart for the long string
-			$content = $this->contentObject->substituteSubpart(
+			$content = t3lib_parsehtml::substituteSubpart(
 				$template,
 				'###LONGSTRINGAVAILABLE###',
 				$longStringSubpart
@@ -7595,7 +7593,7 @@ $out="
 				'longString' => $long_string
 			);
 				// Fill the markers
-			$content = $this->contentObject->substituteMarkerArray(
+			$content = t3lib_parsehtml::substituteMarkerArray(
 				$content,
 				$markers,
 				'###|###',
@@ -7615,19 +7613,19 @@ $out="
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'PrintAll.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 		$sections = array();
 
 		foreach ($this->sections as $header => $valArray) {
 				// Get the subpart for sections
-			$sectionSubpart = $this->contentObject->getSubpart($template, '###SECTIONS###');
+			$sectionSubpart = t3lib_parsehtml::getSubpart($template, '###SECTIONS###');
 				// Define the markers content
 			$sectionMarkers = array(
 				'header' => $header . ':',
 				'sectionContent' => implode(chr(10), $valArray)
 			);
 				// Fill the markers in the subpart
-			$sections[] = $this->contentObject->substituteMarkerArray(
+			$sections[] = t3lib_parsehtml::substituteMarkerArray(
 				$sectionSubpart,
 				$sectionMarkers,
 				'###|###',
@@ -7636,7 +7634,7 @@ $out="
 			);
 		}
 			// Substitute the subpart for the sections
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###SECTIONS###',
 			implode(chr(10), $sections)
@@ -7729,9 +7727,9 @@ $out="
 			// Add the error messages
 		if (!empty($this->errorMessages)) {
 				// Get the subpart for all error messages
-			$errorMessagesSubPart = $this->contentObject->getSubpart($this->template, '###ERRORMESSAGES###');
+			$errorMessagesSubPart = t3lib_parsehtml::getSubpart($this->template, '###ERRORMESSAGES###');
 				// Get the subpart for a single error message
-			$errorMessageSubPart = $this->contentObject->getSubpart($errorMessagesSubPart, '###MESSAGES###');
+			$errorMessageSubPart = t3lib_parsehtml::getSubpart($errorMessagesSubPart, '###MESSAGES###');
 			$errors = array();
 
 			foreach ($this->errorMessages as $errorMessage) {
@@ -7740,7 +7738,7 @@ $out="
 					'message' => $errorMessage
 				);
 					// Fill the markers in the subpart
-				$errors[] = $this->contentObject->substituteMarkerArray(
+				$errors[] = t3lib_parsehtml::substituteMarkerArray(
 					$errorMessageSubPart,
 					$errorMessageMarkers,
 					'###|###',
@@ -7749,7 +7747,7 @@ $out="
 				);
 			}
 				// Substitute the subpart for a single message
-			$errorMessagesSubPart = $this->contentObject->substituteSubpart(
+			$errorMessagesSubPart = t3lib_parsehtml::substituteSubpart(
 				$errorMessagesSubPart,
 				'###MESSAGES###',
 				implode(chr(10), $errors)
@@ -7759,11 +7757,11 @@ $out="
 			// Version subpart is only allowed when password is ok
 		if ($this->passwordOK) {
 				// Get the subpart for the version
-			$versionSubPart = $this->contentObject->getSubpart($this->template, '###VERSIONSUBPART###');
+			$versionSubPart = t3lib_parsehtml::getSubpart($this->template, '###VERSIONSUBPART###');
 				// Define the markers content
 			$versionSubPartMarkers['version'] = 'Version: ' . TYPO3_version;
 				// Fill the markers in the subpart
-			$versionSubPart = $this->contentObject->substituteMarkerArray(
+			$versionSubPart = t3lib_parsehtml::substituteMarkerArray(
 				$versionSubPart,
 				$versionSubPartMarkers,
 				'###|###',
@@ -7772,31 +7770,31 @@ $out="
 			);
 		}
 			// Substitute the version subpart
-		$this->template = $this->contentObject->substituteSubpart(
+		$this->template = t3lib_parsehtml::substituteSubpart(
 			$this->template,
 			'###VERSIONSUBPART###',
 			$versionSubPart
 		);
 			// Substitute the menu subpart
-		$this->template = $this->contentObject->substituteSubpart(
+		$this->template = t3lib_parsehtml::substituteSubpart(
 			$this->template,
 			'###MENU###',
 			$this->menu()
 		);
 			// Substitute the error messages subpart
-		$this->template = $this->contentObject->substituteSubpart(
+		$this->template = t3lib_parsehtml::substituteSubpart(
 			$this->template,
 			'###ERRORMESSAGES###',
 			$errorMessagesSubPart
 		);
 			// Substitute the content subpart
-		$this->template = $this->contentObject->substituteSubpart(
+		$this->template = t3lib_parsehtml::substituteSubpart(
 			$this->template,
 			'###CONTENT###',
 			$content
 		);
 			// Fill the markers
-		$this->template = $this->contentObject->substituteMarkerArray(
+		$this->template = t3lib_parsehtml::substituteMarkerArray(
 			$this->template,
 			$this->markers,
 			'###|###',
@@ -7831,9 +7829,9 @@ $out="
 			$c = 0;
 			$items = array();
 				// Get the subpart for the main menu
-			$menuSubPart = $this->contentObject->getSubpart($this->template, '###MENU###');
+			$menuSubPart = t3lib_parsehtml::getSubpart($this->template, '###MENU###');
 				// Get the subpart for each single menu item
-			$menuItemSubPart = $this->contentObject->getSubpart($this->template, '###MENUITEM###');
+			$menuItemSubPart = t3lib_parsehtml::getSubpart($this->template, '###MENUITEM###');
 
 			foreach ($this->menuitems as $k => $v) {
 					// Define the markers content
@@ -7849,7 +7847,7 @@ $out="
 					'item' => $v
 				);
 					// Fill the markers in the subpart
-				$items[] = $this->contentObject->substituteMarkerArray(
+				$items[] = t3lib_parsehtml::substituteMarkerArray(
 					$menuItemSubPart,
 					$markers,
 					'###|###',
@@ -7858,7 +7856,7 @@ $out="
 				);
 			}
 				// Substitute the subpart for the single menu items
-			$menuSubPart = $this->contentObject->substituteSubpart(
+			$menuSubPart = t3lib_parsehtml::substituteSubpart(
 				$menuSubPart,
 				'###MENUITEM###',
 				implode(chr(10), $items)
@@ -7877,9 +7875,9 @@ $out="
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'StepHeader.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for each item
-		$stepItemSubPart = $this->contentObject->getSubpart($template, '###STEPITEM###');
+		$stepItemSubPart = t3lib_parsehtml::getSubpart($template, '###STEPITEM###');
 
 		$steps = array();
 
@@ -7898,7 +7896,7 @@ $out="
 				'step' => $counter
 			);
 				// Fill the markers in the subpart
-			$steps[] = $this->contentObject->substituteMarkerArray(
+			$steps[] = t3lib_parsehtml::substituteMarkerArray(
 				$stepItemSubPart,
 				$stepItemMarkers,
 				'###|###',
@@ -7907,7 +7905,7 @@ $out="
 			);
 		}
 			// Substitute the subpart for the items
-		$content = $this->contentObject->substituteSubpart(
+		$content = t3lib_parsehtml::substituteSubpart(
 			$template,
 			'###STEPITEM###',
 			implode(chr(10), $steps)
@@ -7961,7 +7959,7 @@ $out="
 			// Get the template file
 		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'AlterPasswordForm.html');
 			// Get the template part from the file
-		$template = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 			// Define the markers content
 		$markers = array(
 			'action' => $this->scriptSelf.'?TYPO3_INSTALL[type]=extConfig',
@@ -7970,7 +7968,7 @@ $out="
 			'submit' => 'Set new password'
 		);
 			// Fill the markers
-		$content = $this->contentObject->substituteMarkerArray(
+		$content = t3lib_parsehtml::substituteMarkerArray(
 			$template,
 			$markers,
 			'###|###',
@@ -8093,7 +8091,7 @@ $out="
 				// Get the template file
 			$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'GenerateUpdateDatabaseFormCheckboxes.html');
 				// Get the template part from the file
-			$content = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+			$content = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 				// Define the markers content
 			$templateMarkers = array(
 				'label' => $label,
@@ -8102,7 +8100,7 @@ $out="
 				// Select/Deselect All
 			if (count($arr) > 1) {
 					// Get the subpart for multiple tables
-				$multipleTablesSubpart = $this->contentObject->getSubpart($content, '###MULTIPLETABLES###');
+				$multipleTablesSubpart = t3lib_parsehtml::getSubpart($content, '###MULTIPLETABLES###');
 					// Define the markers content
 				$multipleTablesMarkers = array(
 					'label' => $label,
@@ -8112,7 +8110,7 @@ $out="
 					'selectDeselectAll' => 'select/deselect all'
 				);
 					// Fill the markers in the subpart
-				$multipleTablesSubpart = $this->contentObject->substituteMarkerArray(
+				$multipleTablesSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$multipleTablesSubpart,
 					$multipleTablesMarkers,
 					'###|###',
@@ -8121,7 +8119,7 @@ $out="
 				);
 			}
 				// Substitute the subpart for multiple tables
-			$content = $this->contentObject->substituteSubpart(
+			$content = t3lib_parsehtml::substituteSubpart(
 				$content,
 				'###MULTIPLETABLES###',
 				$multipleTablesSubpart
@@ -8129,7 +8127,7 @@ $out="
 				// Rows
 			foreach ($arr as $key => $string) {
 					// Get the subpart for rows
-				$rowsSubpart = $this->contentObject->getSubpart($content, '###ROWS###');
+				$rowsSubpart = t3lib_parsehtml::getSubpart($content, '###ROWS###');
 				$currentSubpart = '';
 				$ico = '';
 				$warnings = array();
@@ -8156,9 +8154,9 @@ $out="
 
 					if (!empty($iconMarkers)) {
 							// Get the subpart for icons
-						$iconSubpart = $this->contentObject->getSubpart($content, '###ICONAVAILABLE###');
+						$iconSubpart = t3lib_parsehtml::getSubpart($content, '###ICONAVAILABLE###');
 							// Fill the markers in the subpart
-						$iconSubpart = $this->contentObject->substituteMarkerArray(
+						$iconSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$iconSubpart,
 							$iconMarkers,
 							'###|###',
@@ -8168,7 +8166,7 @@ $out="
 					}
 				}
 					// Substitute the subpart for icons
-				$rowsSubpart = $this->contentObject->substituteSubpart(
+				$rowsSubpart = t3lib_parsehtml::substituteSubpart(
 					$rowsSubpart,
 					'###ICONAVAILABLE###',
 					$iconSubpart
@@ -8176,14 +8174,14 @@ $out="
 
 				if (isset($currentValue[$key])) {
 						// Get the subpart for current
-					$currentSubpart = $this->contentObject->getSubpart($rowsSubpart, '###CURRENT###');
+					$currentSubpart = t3lib_parsehtml::getSubpart($rowsSubpart, '###CURRENT###');
 						// Define the markers content
 					$currentMarkers = array (
 						'message' => (!$cVfullMsg ? 'Current value:': ''),
 						'value' => $currentValue[$key]
 					);
 						// Fill the markers in the subpart
-					$currentSubpart = $this->contentObject->substituteMarkerArray(
+					$currentSubpart = t3lib_parsehtml::substituteMarkerArray(
 						$currentSubpart,
 						$currentMarkers,
 						'###|###',
@@ -8192,13 +8190,13 @@ $out="
 					);
 				}
 					// Substitute the subpart for current
-				$rowsSubpart = $this->contentObject->substituteSubpart(
+				$rowsSubpart = t3lib_parsehtml::substituteSubpart(
 					$rowsSubpart,
 					'###CURRENT###',
 					$currentSubpart
 				);
 					// Fill the markers in the subpart
-				$rowsSubpart = $this->contentObject->substituteMarkerArray(
+				$rowsSubpart = t3lib_parsehtml::substituteMarkerArray(
 					$rowsSubpart,
 					$rowsMarkers,
 					'###|###',
@@ -8209,7 +8207,7 @@ $out="
 				$rows[] = $rowsSubpart;
 			}
 				// Substitute the subpart for rows
-			$content = $this->contentObject->substituteSubpart(
+			$content = t3lib_parsehtml::substituteSubpart(
 				$content,
 				'###ROWS###',
 				implode(chr(10), $rows)
@@ -8217,15 +8215,15 @@ $out="
 
 			if (count($warnings)) {
 					// Get the subpart for warnings
-				$warningsSubpart = $this->contentObject->getSubpart($content, '###WARNINGS###');
+				$warningsSubpart = t3lib_parsehtml::getSubpart($content, '###WARNINGS###');
 
 				foreach ($warnings as $warning) {
 						// Get the subpart for single warning items
-					$warningItemSubpart = $this->contentObject->getSubpart($warningsSubpart, '###WARNINGITEM###');
+					$warningItemSubpart = t3lib_parsehtml::getSubpart($warningsSubpart, '###WARNINGITEM###');
 						// Define the markers content
 					$warningItemMarker['warning'] = $warning;
 						// Fill the markers in the subpart
-					$warningItem[] = $this->contentObject->substituteMarkerArray(
+					$warningItem[] = t3lib_parsehtml::substituteMarkerArray(
 						$warningItemSubpart,
 						$warningItemMarker,
 						'###|###',
@@ -8234,21 +8232,21 @@ $out="
 					);
 				}
 					// Substitute the subpart for single warning items
-				$warningsSubpart = $this->contentObject->substituteSubpart(
+				$warningsSubpart = t3lib_parsehtml::substituteSubpart(
 					$warningsSubpart,
 					'###WARNINGITEM###',
 					implode(chr(10), $warningItems)
 				);
 			}
 				// Substitute the subpart for warnings
-			$content = $this->contentObject->substituteSubpart(
+			$content = t3lib_parsehtml::substituteSubpart(
 				$content,
 				'###WARNINGS###',
 				implode(chr(10), $warningsSubpart)
 			);
 		}
 			// Fill the markers
-		$content = $this->contentObject->substituteMarkerArray(
+		$content = t3lib_parsehtml::substituteMarkerArray(
 			$content,
 			$templateMarkers,
 			'###|###',
@@ -8272,9 +8270,9 @@ $out="
 
 		if (is_array($incomingValue) && !empty($incomingValue)) {
 				// Get the template part from the file
-			$content = $this->contentObject->getSubpart($templateFile, '###TEMPLATE###');
+			$content = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
 				// Get the subpart for a single item
-			$itemSubpart = $this->contentObject->getSubpart($content, '###ITEM###');
+			$itemSubpart = t3lib_parsehtml::getSubpart($content, '###ITEM###');
 
 			foreach ($incomingValue as $key => $value) {
 				if (is_array($value)) {
@@ -8297,7 +8295,7 @@ $out="
 					'description' => !empty($description) ? $description : '&nbsp;'
 				);
 					// Fill the markers in the subpart
-				$items[] = $this->contentObject->substituteMarkerArray(
+				$items[] = t3lib_parsehtml::substituteMarkerArray(
 					$itemSubpart,
 					$itemMarkers,
 					'###|###',
@@ -8306,7 +8304,7 @@ $out="
 				);
 			}
 				// Substitute the subpart for single item
-			$content = $this->contentObject->substituteSubpart(
+			$content = t3lib_parsehtml::substituteSubpart(
 				$content,
 				'###ITEM###',
 				implode(chr(10), $items)
