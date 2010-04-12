@@ -704,6 +704,19 @@ class t3lib_TStemplate	{
 		}
 
 		$this->addExtensionStatics($idList,$templateID,$pid,$row);
+
+			// Include Static Template Records after all other TypoScript has been included.
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'])) {
+			$_params = array(
+					'idList' => &$idList,
+					'templateId' => &$templateID,
+					'pid' => &$pid,
+					'row' => &$row
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['includeStaticTypoScriptSourcesAtEnd'] as $_funcRef)	{
+				t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
 	}
 
 	/**
