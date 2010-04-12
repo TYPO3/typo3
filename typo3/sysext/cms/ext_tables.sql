@@ -433,7 +433,8 @@ CREATE TABLE tt_content (
 
   PRIMARY KEY (uid),
   KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-  KEY parent (pid,sorting)
+  KEY parent (pid,sorting),
+  KEY language (l18n_parent,sys_language_uid)
 );
 
 
