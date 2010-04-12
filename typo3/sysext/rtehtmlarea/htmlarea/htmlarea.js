@@ -1886,15 +1886,6 @@ HTMLArea._editorEvent = function(ev) {
 							if (editor._checkInsertP()) {
 								HTMLArea._stopEvent(ev);
 							}
-						} else if (HTMLArea.is_safari) {
-							var brNode = editor._doc.createElement("br");
-							editor.insertNodeAtSelection(brNode);
-							if (!brNode.nextSibling || !HTMLArea.getInnerText(brNode.nextSibling)) {
-								var secondBrNode = editor._doc.createElement("br");
-								secondBrNode = brNode.parentNode.appendChild(secondBrNode);
-								editor.selectNode(secondBrNode, false);
-							}
-							HTMLArea._stopEvent(ev);
 						}
 							// update the toolbar state after some time
 						if (editor._timerToolbar) window.clearTimeout(editor._timerToolbar);
