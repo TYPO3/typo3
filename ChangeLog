@@ -1,3 +1,7 @@
+2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #9851: LICENSE.txt refers to wrong webpage on typo3.com
+
 2010-04-12  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13945: Missing key on l18n_parent in tt_content table

@@ -1,6 +1,6 @@
 ---------------------------------
  The TYPO3 licensing conditions
- 2003-2009, Kasper Skårhøj (kasperYYYY@typo3.com)
+ 2003-2009, Kasper SkÃ¥rhÃ¸j (kasperYYYY@typo3.com)
  Document version 2.2.0, 01-2009
 ---------------------------------
 
@@ -9,7 +9,7 @@ GNU General Public License version 2 or any later version.
 The GNU/GPL license (version 2) is found in the file GPL.txt
 
 For information about what this license means and how copyright law applies to
-a product like TYPO3, please refer to http://typo3.com/1316.0.html
+a product like TYPO3, please refer to http://typo3.org/about/licenses/
 
 ---------------------------------
 
