@@ -131,6 +131,10 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		if ($GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == true) {
 			$this->addWhere .= ' AND t3ver_wsid = 0';
 		}
+
+		if (isset($config['addWhere'])) {
+			$this->addWhere .= ' ' . $config['addWhere'];
+		}
 	}
 
 	/**
@@ -160,7 +164,6 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 				'',
 				$this->orderByStatement,
 				$start . ', 50');
-
 
 		$allRowsCount = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 

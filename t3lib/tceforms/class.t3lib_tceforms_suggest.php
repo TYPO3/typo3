@@ -129,9 +129,17 @@ class t3lib_TCEforms_Suggest {
 		}
 
 		$TSconfig = t3lib_BEfunc::getPagesTSconfig($pageId);
-
+		$queryTables = array();
+		$foreign_table_where = '';
 		$wizardConfig = $GLOBALS['TCA'][$table]['columns'][$field]['config']['wizards']['suggest'];
+		if (isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['allowed'])) {
 		$queryTables = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$field]['config']['allowed']);
+		} elseif (isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table'])) {
+			$queryTables = array($GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table']);
+			$foreign_table_where = $GLOBALS['TCA'][$table]['columns'][$field]['config']['foreign_table_where'];
+				// strip ORDER BY clause
+			$foreign_table_where = trim(preg_replace('/ORDER[[:space:]]+BY.*/i', '', $foreign_table_where));
+		}
 		$resultRows = array();
 
 			// fetch the records for each query table. A query table is a table from which records are allowed to
@@ -167,6 +175,17 @@ class t3lib_TCEforms_Suggest {
 			}
 			if (is_array($TSconfig['TCEFORM.'][$table.'.'][$field.'.']['suggest.'][$queryTable.'.'])) {
 				$config = t3lib_div::array_merge_recursive_overrule($config, $TSconfig['TCEFORM.'][$table.'.'][$field.'.']['suggest.'][$queryTable.'.']);
+			}
+
+				//process addWhere
+			if (!isset($config['addWhere']) && $foreign_table_where) {
+				$config['addWhere'] = $foreign_table_where;
+			}
+			if (isset($config['addWhere'])) {
+				$config['addWhere'] = strtr(' ' . $config['addWhere'], array(
+					'###THIS_UID###' => intval($uid),
+					'###CURRENT_PID###' => intval($pageId),
+				));
 			}
 				// instantiate the class that should fetch the records for this $queryTable
 			$receiverClassName = $config['receiverClass'];
