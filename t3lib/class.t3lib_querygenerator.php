@@ -1183,13 +1183,13 @@ class t3lib_queryGenerator	{
 		while(list($key,$conf) = each($queryConfig)) {
 			switch($conf['type']) {
 				case 'newlevel':
-					$qs.=chr(10).$pad.trim($conf['operator']).' ('.$this->getQuery($queryConfig[$key]['nl'],$pad.'   ').chr(10).$pad.')';
+					$qs.=LF.$pad.trim($conf['operator']).' ('.$this->getQuery($queryConfig[$key]['nl'],$pad.'   ').LF.$pad.')';
 				break;
 				case 'userdef':
-					$qs.=chr(10).$pad.getUserDefQuery($conf,$first);
+					$qs.=LF.$pad.getUserDefQuery($conf,$first);
 				break;
 				default:
-					$qs.=chr(10).$pad.$this->getQuerySingle($conf,$first);
+					$qs.=LF.$pad.$this->getQuerySingle($conf,$first);
 				break;
 			}
 			$first=0;

@@ -375,7 +375,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddCssInlineBlockForceOnTop() {
 
-		$expectedReturnValue = '/*general1*/' . chr(10) . 'h1 {margin:20px;}' . chr(10) . '/*general*/' . chr(10) . 'body {margin:20px;}';
+		$expectedReturnValue = '/*general1*/' . LF . 'h1 {margin:20px;}' . LF . '/*general*/' . LF . 'body {margin:20px;}';
 		$this->fixture->addCssInlineBlock('general', 'body {margin:20px;}');
 		$this->fixture->addCssInlineBlock('general1', 'h1 {margin:20px;}', NULL, TRUE);
 		$out = $this->fixture->render();
@@ -424,7 +424,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
     public function testLoadExtJS() {
 
-		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter.js" type="text/javascript"></script>' . chr(10) . '<script src="contrib/extjs/ext-all.js" type="text/javascript"></script>';
+		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter.js" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all.js" type="text/javascript"></script>';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$out = $this->fixture->render();
 
@@ -456,7 +456,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testEnableExtJsDebug() {
 
-		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter.js" type="text/javascript"></script>' . chr(10) . '<script src="contrib/extjs/ext-all-debug.js" type="text/javascript"></script>';
+		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter.js" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all-debug.js" type="text/javascript"></script>';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$this->fixture->enableExtJsDebug();
 		$out = $this->fixture->render();

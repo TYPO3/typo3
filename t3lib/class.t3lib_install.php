@@ -216,7 +216,7 @@ class t3lib_install {
 		}
 
 				// Splitting localconf.php file into lines:
-		$lines = explode(chr(10),str_replace(chr(13),'',trim(t3lib_div::getUrl($writeToLocalconf_dat['file']))));
+		$lines = explode(LF,str_replace(CR,'',trim(t3lib_div::getUrl($writeToLocalconf_dat['file']))));
 		$writeToLocalconf_dat['endLine'] = array_pop($lines);	// Getting "? >" ending.
 
 			// Checking if "updated" line was set by this tool - if so remove old line.
@@ -235,10 +235,10 @@ class t3lib_install {
 
 			if ($this->setLocalconf)	{
 				$success = FALSE;
-				if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'],implode(chr(10),$inlines)))	{
+				if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'],implode(LF,$inlines)))	{
 					$msg = 'typo3conf/localconf.php'.$tmpExt.' could not be written - maybe a write access problem?';
 				}
-				elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(chr(10),$inlines)))	{
+				elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF,$inlines)))	{
 					@unlink($writeToLocalconf_dat['tmpfile']);
 					$msg = 'typo3conf/localconf.php'.$tmpExt.' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
 				}
@@ -274,7 +274,7 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function checkForBadString($string)	{
-		return preg_match('/['.chr(10).chr(13).']/',$string) ? FALSE : TRUE;
+		return preg_match('/['.LF.CR.']/',$string) ? FALSE : TRUE;
 	}
 
 	/**
@@ -285,9 +285,9 @@ class t3lib_install {
 	 * @see setValueInLocalconfFile()
 	 */
 	function slashValueForSingleDashes($value)	{
-		$value = str_replace("'.chr(10).'", '###INSTALL_TOOL_LINEBREAK###', $value);
+		$value = str_replace("'.LF.'", '###INSTALL_TOOL_LINEBREAK###', $value);
 		$value = str_replace("'","\'",str_replace('\\','\\\\',$value));
-		$value = str_replace('###INSTALL_TOOL_LINEBREAK###', "'.chr(10).'", $value);
+		$value = str_replace('###INSTALL_TOOL_LINEBREAK###', "'.LF.'", $value);
 
 		return $value;
 	}
@@ -314,7 +314,7 @@ class t3lib_install {
 	 * @return	array		Array with information about table.
 	 */
 	function getFieldDefinitions_fileContent($fileContent)	{
-		$lines = t3lib_div::trimExplode(chr(10), $fileContent, 1);
+		$lines = t3lib_div::trimExplode(LF, $fileContent, 1);
 		$table = '';
 		$total = array();
 
@@ -812,7 +812,7 @@ class t3lib_install {
 	 * @return	array		Array of SQL statements
 	 */
 	function getStatementArray($sqlcode,$removeNonSQL=0,$query_regex='')	{
-		$sqlcodeArr = explode(chr(10), $sqlcode);
+		$sqlcodeArr = explode(LF, $sqlcode);
 
 			// Based on the assumption that the sql-dump has
 		$statementArray = array();
@@ -839,7 +839,7 @@ class t3lib_install {
 				$statementArrayPointer++;
 
 			} elseif ($is_set) {
-				$statementArray[$statementArrayPointer].= chr(10);
+				$statementArray[$statementArrayPointer].= LF;
 			}
 		}
 
@@ -865,13 +865,13 @@ class t3lib_install {
 					if (TYPO3_OS == 'WIN') {
 						$table = strtolower($table);
 					}
-					$sqlLines = explode(chr(10), $lineContent);
+					$sqlLines = explode(LF, $lineContent);
 					foreach ($sqlLines as $k=>$v) {
 						if (stristr($v,'auto_increment')) {
 							$sqlLines[$k] = preg_replace('/ default \'0\'/i', '', $v);
 						}
 					}
-					$lineContent = implode(chr(10), $sqlLines);
+					$lineContent = implode(LF, $sqlLines);
 					$crTables[$table] = $lineContent;
 				}
 			} elseif ($insertCountFlag && preg_match('/^insert[[:space:]]*into[[:space:]]*[`]?([[:alnum:]_]*)[`]?/i',substr($lineContent,0,100),$reg)) {

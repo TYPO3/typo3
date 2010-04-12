@@ -935,7 +935,7 @@ class SC_db_layout {
 		if (count($tceforms->commentMessages))	{
 			$content.='
 	<!-- TCEFORM messages
-	'.htmlspecialchars(implode(chr(10),$tceforms->commentMessages)).'
+	'.htmlspecialchars(implode(LF,$tceforms->commentMessages)).'
 	-->
 	';
 		}

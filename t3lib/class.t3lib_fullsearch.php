@@ -143,7 +143,7 @@ class t3lib_fullsearch {
 		$TDparams=' nowrap="nowrap" class="bgColor4"';
 		$tmpCode='
 		<table border="0" cellpadding="3" cellspacing="1">
-		<tr'.$TDparams.'><td><select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">'.implode(chr(10),$opt).'</select><input type="submit" name="storeControl[LOAD]" value="Load"></td></tr>
+		<tr'.$TDparams.'><td><select name="storeControl[STORE]" onChange="document.forms[0][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';">'.implode(LF,$opt).'</select><input type="submit" name="storeControl[LOAD]" value="Load"></td></tr>
 		<tr'.$TDparams.'><td nowrap><input name="storeControl[title]" value="" type="text" max="80"'.$GLOBALS['SOBE']->doc->formWidth().'><input type="submit" name="storeControl[SAVE]" value="Save" onClick="if (document.forms[0][\'storeControl[STORE]\'].options[document.forms[0][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing query in this action?\');"><input type="submit" name="storeControl[REMOVE]" value="Remove"></td></tr>
 		</table>
 		';
@@ -441,7 +441,7 @@ class t3lib_fullsearch {
 					}
 				}
 				if (count($rowArr))	{
-					$out.='<table border="0" cellpadding="2" cellspacing="1" width="100%">'.$this->resultRowTitles($lrow, $TCA[$table], $table).implode(chr(10), $rowArr).'</table>';
+					$out.='<table border="0" cellpadding="2" cellspacing="1" width="100%">'.$this->resultRowTitles($lrow, $TCA[$table], $table).implode(LF, $rowArr).'</table>';
 				}
 				if (!$out)	$out='<em>No rows selected!</em>';
 				$cPR['header']='Result';
@@ -458,7 +458,7 @@ class t3lib_fullsearch {
 					$rowArr[]=$this->csvValues($row, ',', '"', $TCA[$table], $table);
 				}
 				if (count($rowArr))	{
-					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS['SOBE']->doc->formWidthText($this->formW,'','off').' class="fixed-font">'.t3lib_div::formatForTextarea(implode(chr(10),$rowArr)).'</textarea>';
+					$out.='<textarea name="whatever" rows="20" wrap="off"'.$GLOBALS['SOBE']->doc->formWidthText($this->formW,'','off').' class="fixed-font">'.t3lib_div::formatForTextarea(implode(LF,$rowArr)).'</textarea>';
 					if (!$this->noDownloadB)	{
 						$out.='<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\''.$this->downloadScript.'\';">';		// document.forms[0].target=\'_blank\';
 					}
@@ -468,7 +468,7 @@ class t3lib_fullsearch {
 						$mimeType = 'application/octet-stream';
 						header('Content-Type: '.$mimeType);
 						header('Content-Disposition: attachment; filename='.$filename);
-						echo implode(chr(13).chr(10),$rowArr);
+						echo implode(CRLF,$rowArr);
 						exit;
 					}
 				}
@@ -606,7 +606,7 @@ class t3lib_fullsearch {
 							$lrow=$row;
 						}
 						$GLOBALS['TYPO3_DB']->sql_free_result($res);
-						$out.='<table border="0" cellpadding="2" cellspacing="1">'.$this->resultRowTitles($lrow,$conf,$table).implode(chr(10),$rowArr).'</table>';
+						$out.='<table border="0" cellpadding="2" cellspacing="1">'.$this->resultRowTitles($lrow,$conf,$table).implode(LF,$rowArr).'</table>';
 					}
 					$out.='<HR>';
 				}
@@ -1070,7 +1070,7 @@ class t3lib_fullsearch {
 			// Close header row
 		$tableHeader[] = '</tr></thead>';
 
-		return implode($tableHeader, chr(10));
+		return implode($tableHeader, LF);
 	}
 
 	/**

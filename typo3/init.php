@@ -247,13 +247,13 @@ if (defined('TYPO3_cliMode') && TYPO3_cliMode && basename(PATH_thisScript)=='cli
 		} else {
 			echo "The supplied 'cliKey' was not valid. Please use one of the available from this list:\n\n";
 			print_r(array_keys($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']));
-			echo "\n";
+			echo LF;
 			exit;
 		}
 	} else {
 		echo "Please supply a 'cliKey' as first argument. The following are available:\n\n";
 		print_r($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']);
-		echo "\n";
+		echo LF;
 		exit;
 	}
 }
@@ -431,9 +431,9 @@ if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
 	if (!strcmp($_SERVER['argv'][1],'status'))	{
 		echo "Status of TYPO3 CLI script:\n\n";
 		echo "Username [uid]: ".$BE_USER->user['username']." [".$BE_USER->user['uid']."]\n";
-		echo "Database: ".TYPO3_db."\n";
-		echo "PATH_site: ".PATH_site."\n";
-		echo "\n";
+		echo "Database: ".TYPO3_db.LF;
+		echo "PATH_site: ".PATH_site.LF;
+		echo LF;
 		exit;
 	}
 }

@@ -101,7 +101,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 			// Initialize result array:
 		$listExplain = ' Shows the relative filename of missing file as header and under a list of record fields in which the references are found. '.$this->label_infoString;
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'managedFilesMissing' => array('List of missing files managed by TCEmain', $listExplain, 3),
 				'softrefFilesMissing' => array('List of missing files registered as a soft reference', $listExplain, 2),
@@ -157,7 +157,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 	 */
 	function main_autoFix($resultArray)	{
 		foreach($resultArray['managedFilesMissing'] as $key => $value)	{
-			echo 'Processing file: '.$key.chr(10);
+			echo 'Processing file: '.$key.LF;
 			$c=0;
 			foreach($value as $hash => $recReference)	{
 				echo '	Removing reference in record "'.$recReference.'": ';
@@ -167,12 +167,12 @@ This will show you missing files in the TYPO3 system and only report back if err
 					$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
 					$error = $sysRefObj->setReferenceValue($hash,NULL);
 					if ($error)	{
-						echo '		t3lib_refindex::setReferenceValue(): '.$error.chr(10);
-						echo 'missing_files: exit on error'.chr(10);
+						echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
+						echo 'missing_files: exit on error'.LF;
 						exit;
 					} else echo "DONE";
 				}
-				echo chr(10);
+				echo LF;
 			}
 		}
 	}

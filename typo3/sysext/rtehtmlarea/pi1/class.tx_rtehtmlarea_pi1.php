@@ -85,7 +85,7 @@ class tx_rtehtmlarea_pi1 {
 			// Setting the list of dictionaries
 		if (!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {
 			$dictionaryList = shell_exec( $this->AspellDirectory.' dump dicts');
-			$dictionaryList = implode(',', t3lib_div::trimExplode(chr(10), $dictionaryList, 1));
+			$dictionaryList = implode(',', t3lib_div::trimExplode(LF, $dictionaryList, 1));
 		}
 		if (empty($dictionaryList)) {
 			$dictionaryList = t3lib_div::_POST('showDictionaries');
@@ -177,12 +177,12 @@ class tx_rtehtmlarea_pi1 {
 				$tmpFileName = t3lib_div::tempnam($this->filePrefix);
 				if($filehandle = fopen($tmpFileName,'wb')) {
 					foreach ($to_p_dict as $personal_word) {
-						$cmd = '&' . $personal_word . "\n";
+						$cmd = '&' . $personal_word . LF;
 						echo $cmd;
 						fwrite($filehandle, $cmd, strlen($cmd));
 					}
 					foreach ($to_r_list as $replace_pair) {
-						$cmd = '$$ra ' . $replace_pair[0] . ' , ' . $replace_pair[1] . "\n";
+						$cmd = '$$ra ' . $replace_pair[0] . ' , ' . $replace_pair[1] . LF;
 						echo $cmd;
 						fwrite($filehandle, $cmd, strlen($cmd));
 					}
@@ -192,7 +192,7 @@ class tx_rtehtmlarea_pi1 {
 					fclose($filehandle);
 						// $this->personalDictsArg has already been escapeshellarg()'ed above, it is an optional paramter and might be empty here
 					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
-					print $AspellCommand . "\n";
+					print $AspellCommand . LF;
 					print shell_exec($AspellCommand);
 					t3lib_div::unlink_tempfile($tmpFileName);
 					echo('Personal word list was updated.');
@@ -254,7 +254,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 </head>
 ';
 			$this->result .= '<body onload="window.parent.RTEarea[\'' . t3lib_div::_POST('editorId') . '\'].editor.getPlugin(\'SpellChecker\').spellCheckComplete();">';
-			$this->result .= preg_replace('/'.preg_quote('<?xml').'.*'.preg_quote('?>').'['.preg_quote(chr(10).chr(13).chr(32)).']*/'.(($this->parserCharset == 'utf-8')?'u':''), '', $this->text);
+			$this->result .= preg_replace('/'.preg_quote('<?xml').'.*'.preg_quote('?>').'['.preg_quote(LF.CR.chr(32)).']*/'.(($this->parserCharset == 'utf-8')?'u':''), '', $this->text);
 			$this->result .= '<div style="display: none;">'.$dictionaries.'</div>';
 
 				// Closing
@@ -366,7 +366,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
-					$AspellResultLines = t3lib_div::trimExplode(chr(10), $AspellAnswer, 1);
+					$AspellResultLines = t3lib_div::trimExplode(LF, $AspellAnswer, 1);
 					if(substr($AspellResultLines[0],0,6) == 'Error:') echo("{$AspellAnswer}");
 					t3lib_div::unlink_tempfile($tmpFileName);
 					if(substr($AspellResultLines['1'],0,1) != '*') {

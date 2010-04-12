@@ -1091,7 +1091,7 @@ class tx_impexp {
 
 			// Creating XML file from $outputArray:
 		$charset = $this->dat['header']['charset'] ? $this->dat['header']['charset'] : 'iso-8859-1';
-		$XML = '<?xml version="1.0" encoding="'.$charset.'" standalone="yes" ?>'.chr(10);
+		$XML = '<?xml version="1.0" encoding="'.$charset.'" standalone="yes" ?>'.LF;
 		$XML.= t3lib_div::array2xml($this->dat,'',0,'T3RecordDocument',0,$options);
 
 		return $XML;

@@ -95,7 +95,7 @@ Automatic Repair:
 
 			// Initialize result array:
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'versions' => array('All versions','Showing all versions of records found',0),
 				'versions_published' => array('All published versions','This is all records that has been published and can therefore be removed permanently',1),
@@ -214,7 +214,7 @@ Automatic Repair:
 
 			// Traversing records:
 		foreach($resultArray[$kk] as $table => $list)	{
-			echo 'Flushing published records from table "'.$table.'":'.chr(10);
+			echo 'Flushing published records from table "'.$table.'":'.LF;
 			foreach($list as $uid)	{
 				echo '	Flushing record "'.$table.':'.$uid.'": ';
 
@@ -230,16 +230,16 @@ Automatic Repair:
 
 						// Return errors if any:
 					if (count($tce->errorLog))	{
-						echo '	ERROR from "TCEmain":'.chr(10).'TCEmain:'.implode(chr(10).'TCEmain:',$tce->errorLog);
+						echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:',$tce->errorLog);
 					} else echo 'DONE';
 				}
-				echo chr(10);
+				echo LF;
 			}
 		}
 
 			// Traverse workspace:
 		foreach($resultArray['versions_lost_workspace'] as $table => $list)	{
-			echo 'Resetting workspace to zero for records from table "'.$table.'":'.chr(10);
+			echo 'Resetting workspace to zero for records from table "'.$table.'":'.LF;
 			foreach($list as $uid)	{
 				echo '	Flushing record "'.$table.':'.$uid.'": ';
 				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid))	{
@@ -251,7 +251,7 @@ Automatic Repair:
 					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid='.intval($uid),$fields_values);
 					echo 'DONE';
 				}
-				echo chr(10);
+				echo LF;
 			}
 		}
 
@@ -271,10 +271,10 @@ Automatic Repair:
 
 					// Return errors if any:
 				if (count($tce->errorLog))	{
-					echo '	ERROR from "TCEmain":'.chr(10).'TCEmain:'.implode(chr(10).'TCEmain:',$tce->errorLog);
+					echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:',$tce->errorLog);
 				} else echo 'DONE';
 			}
-			echo chr(10);
+			echo LF;
 		}
 	}
 }

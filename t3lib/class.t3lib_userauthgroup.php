@@ -1201,7 +1201,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				// Check include lines.
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
 
-			$this->userTS_text = implode(chr(10).'[GLOBAL]'.chr(10),$this->TSdataArray);	// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
+			$this->userTS_text = implode(LF.'[GLOBAL]'.LF,$this->TSdataArray);	// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
 
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions'] && !$this->userTS_dontGetCached) {
 					// Perform TS-Config parsing with condition matching
@@ -1459,12 +1459,12 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	function addTScomment($str)	{
 		$delimiter = '# ***********************************************';
 
-		$out = $delimiter.chr(10);
-		$lines = t3lib_div::trimExplode(chr(10),$str);
+		$out = $delimiter.LF;
+		$lines = t3lib_div::trimExplode(LF,$str);
 		foreach($lines as $v)	{
-			$out.= '# '.$v.chr(10);
+			$out.= '# '.$v.LF;
 		}
-		$out.= $delimiter.chr(10);
+		$out.= $delimiter.LF;
 		return $out;
 	}
 
@@ -1809,7 +1809,7 @@ This is a dump of the failures:
 				while($testRows = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					$theData = unserialize($testRows['log_data']);
 					$email_body.= date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$testRows['tstamp']).':  '.@sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
-					$email_body.= chr(10);
+					$email_body.= LF;
 				}
 				mail(	$email,
 					$subject,

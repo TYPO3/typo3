@@ -134,7 +134,7 @@ class SC_alt_main {
 
 		$pt3 = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		$goToModule_switch = $this->alt_menuObj->topMenu($this->loadModules->modules,0,"",4);
-		$fsMod = implode(chr(10),$this->alt_menuObj->fsMod);
+		$fsMod = implode(LF,$this->alt_menuObj->fsMod);
 
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
@@ -298,7 +298,7 @@ class SC_alt_main {
 		var acc;
 		for (i in obj) {
 			if (obj[i])	{
-				acc+=i+":  "+obj[i]+"\n";
+				acc+=i+":  "+obj[i]+LF;
 			}
 		}
 		alert("Object: "+name+"\n\n"+acc);

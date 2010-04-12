@@ -82,7 +82,7 @@ class t3lib_TSparser {
 
 		// Internal
 	var $setup = Array();			// TypoScript hierarchy being build during parsing.
-	var $raw; 						// raw data, the input string exploded by chr(10)
+	var $raw; 						// raw data, the input string exploded by LF
 	var $rawP; 						// pointer to entry in raw data array
 	var $lastComment='';			// Holding the value of the last comment
 	var $commentSet=0;				// Internally set, used as internal flag to create a multi-line comment (one of those like /*... */)
@@ -131,7 +131,7 @@ class t3lib_TSparser {
 	 * @return	void
 	 */
 	function parse($string,$matchObj='')	{
-		$this->raw = explode(chr(10),$string);
+		$this->raw = explode(LF,$string);
 		$this->rawP = 0;
 		$pre = '[GLOBAL]';
 		while($pre)	{
@@ -206,7 +206,7 @@ class t3lib_TSparser {
 					if (substr($line,0,1)==')')	{	// Multiline ends...
 						if ($this->syntaxHighLight)	$this->regHighLight("operator",$lineP,strlen($line)-1);
 						$this->multiLineEnabled=0;	// Disable multiline
-						$theValue = implode($this->multiLineValue,chr(10));
+						$theValue = implode($this->multiLineValue,LF);
 						if (strstr($this->multiLineObject,'.'))	{
 							$this->setVal($this->multiLineObject,$setup,array($theValue));	// Set the value deeper.
 						} else {
@@ -258,7 +258,7 @@ class t3lib_TSparser {
 
 									$tsFuncArg = str_replace(
 										array('\\\\', '\n','\t'),
-										array('\\', chr(10),chr(9)),
+										array('\\', LF,TAB),
 										$tsFuncArg
 									);
 
@@ -371,7 +371,7 @@ class t3lib_TSparser {
 						if ($this->syntaxHighLight)	$this->regHighLight("comment",	$lineP);
 
 							// Comment. The comments are concatenated in this temporary string:
-						if ($this->regComments) $this->lastComment.= trim($line).chr(10);
+						if ($this->regComments) $this->lastComment.= trim($line).LF;
 					}
 				}
 			}
@@ -518,7 +518,7 @@ class t3lib_TSparser {
 		$splitStr='<INCLUDE_TYPOSCRIPT:';
 		if (strstr($string,$splitStr))	{
 			$newString='';
-			$allParts = explode($splitStr,chr(10).$string.chr(10));	// adds line break char before/after
+			$allParts = explode($splitStr,LF.$string.LF);	// adds line break char before/after
 			foreach ($allParts as $c => $v) {
 				if (!$c)	{	 // first goes through
 					$newString.=$v;
@@ -526,7 +526,7 @@ class t3lib_TSparser {
 					$subparts=explode('>',$v,2);
 					if (preg_match('/^\s*\r?\n/',$subparts[1]))	{	// There must be a line-break char after
 							// SO, the include was positively recognized:
-						$newString.='### '.$splitStr.$subparts[0].'> BEGIN:'.chr(10);
+						$newString.='### '.$splitStr.$subparts[0].'> BEGIN:'.LF;
 						$params = t3lib_div::get_tag_attributes($subparts[0]);
 						if ($params['source'])	{
 							$sourceParts = explode(':',$params['source'],2);
@@ -544,13 +544,13 @@ class t3lib_TSparser {
 												$includedFiles = array_merge($includedFiles, $included_text['files']);
 												$included_text = $included_text['typoscript'];
 											}
-											$newString.= $included_text.chr(10);
+											$newString.= $included_text.LF;
 										}
 									}
 								break;
 							}
 						}
-						$newString.='### '.$splitStr.$subparts[0].'> END:'.chr(10);
+						$newString.='### '.$splitStr.$subparts[0].'> END:'.LF;
 						$newString.=$subparts[1];
 					} else $newString.=$splitStr.$v;
 				} else $newString.=$splitStr.$v;
@@ -620,7 +620,7 @@ class t3lib_TSparser {
 		$this->syntaxHighLight=1;
 		$this->highLightData=array();
 		$this->error=array();
-		$string = str_replace(chr(13),'',$string);		// This is done in order to prevent empty <span>..</span> sections around chr(13) content. Should not do anything but help lessen the amount of HTML code.
+		$string = str_replace(CR,'',$string);		// This is done in order to prevent empty <span>..</span> sections around CR content. Should not do anything but help lessen the amount of HTML code.
 
 		$this->parse($string);
 
@@ -699,7 +699,7 @@ class t3lib_TSparser {
 			$lines[] = $lineC;
 		}
 
-		return '<pre class="ts-hl">'.implode(chr(10),$lines).'</pre>';
+		return '<pre class="ts-hl">'.implode(LF,$lines).'</pre>';
 	}
 }
 

@@ -566,7 +566,7 @@ class tslib_pibase {
 					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_last','Last >>',$hscText),$wrapper['disabledLinkWrap']);
 				}
 			}
-			$theLinks = $this->cObj->wrap(implode(chr(10),$links),$wrapper['browseLinksWrap']);
+			$theLinks = $this->cObj->wrap(implode(LF,$links),$wrapper['browseLinksWrap']);
 		} else {
 			$theLinks = '';
 		}
@@ -1060,14 +1060,14 @@ class tslib_pibase {
 				// TypoScript property .recursive is a int+ which determines how many levels down from the pids in the pid-list subpages should be included in the select.
 			$pidList = $this->pi_getPidList($this->conf['pidList'],$this->conf['recursive']);
 			if (is_array($mm_cat))	{
-				$query='FROM '.$table.','.$mm_cat['table'].','.$mm_cat['mmtable'].chr(10).
-						' WHERE '.$table.'.uid='.$mm_cat['mmtable'].'.uid_local AND '.$mm_cat['table'].'.uid='.$mm_cat['mmtable'].'.uid_foreign '.chr(10).
-						(strcmp($mm_cat['catUidList'],'')?' AND '.$mm_cat['table'].'.uid IN ('.$mm_cat['catUidList'].')':'').chr(10).
-						' AND '.$table.'.pid IN ('.$pidList.')'.chr(10).
-						$this->cObj->enableFields($table).chr(10);	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
+				$query='FROM '.$table.','.$mm_cat['table'].','.$mm_cat['mmtable'].LF.
+						' WHERE '.$table.'.uid='.$mm_cat['mmtable'].'.uid_local AND '.$mm_cat['table'].'.uid='.$mm_cat['mmtable'].'.uid_foreign '.LF.
+						(strcmp($mm_cat['catUidList'],'')?' AND '.$mm_cat['table'].'.uid IN ('.$mm_cat['catUidList'].')':'').LF.
+						' AND '.$table.'.pid IN ('.$pidList.')'.LF.
+						$this->cObj->enableFields($table).LF;	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
 			} else {
-				$query='FROM '.$table.' WHERE pid IN ('.$pidList.')'.chr(10).
-						$this->cObj->enableFields($table).chr(10);	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
+				$query='FROM '.$table.' WHERE pid IN ('.$pidList.')'.LF.
+						$this->cObj->enableFields($table).LF;	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
 			}
 		}
 
@@ -1077,11 +1077,11 @@ class tslib_pibase {
 		$WHERE = trim($WHERE);
 
 			// Add '$addWhere'
-		if ($addWhere)	{$WHERE.=' '.$addWhere.chr(10);}
+		if ($addWhere)	{$WHERE.=' '.$addWhere.LF;}
 
 			// Search word:
 		if ($this->piVars['sword'] && $this->internal['searchFieldList'])	{
-			$WHERE.=$this->cObj->searchWhere($this->piVars['sword'],$this->internal['searchFieldList'],$table).chr(10);
+			$WHERE.=$this->cObj->searchWhere($this->piVars['sword'],$this->internal['searchFieldList'],$table).LF;
 		}
 
 		if ($count) {

@@ -908,7 +908,7 @@ class tslib_cObj {
 			if ($conf['captionSplit'] && $conf['captionSplit.']['cObject'])	{
 				$legacyCaptionSplit = 1;
 				$capSplit = $this->stdWrap($conf['captionSplit.']['token'], $conf['captionSplit.']['token.']);
-				if (!$capSplit) {$capSplit=chr(10);}
+				if (!$capSplit) {$capSplit=LF;}
 				$captionArray = explode($capSplit, $this->cObjGetSingle($conf['captionSplit.']['cObject'], $conf['captionSplit.']['cObject.'], 'captionSplit.cObject'));
 				foreach ($captionArray as $ca_key => $ca_val) {
 					$captionArray[$ca_key] = $this->stdWrap(trim($captionArray[$ca_key]), $conf['captionSplit.']['stdWrap.']);
@@ -1730,7 +1730,7 @@ class tslib_cObj {
 			$dataArr = array();
 				// Getting the original config
 			if (trim($data))	{
-				$data = str_replace(chr(10),'||',$data);
+				$data = str_replace(LF,'||',$data);
 				$dataArr = explode('||',$data);
 			}
 				// Adding the new dataArray config form:
@@ -1880,7 +1880,7 @@ class tslib_cObj {
 						} else {
 							$wrap = $wrap ? ' wrap="'.$wrap.'"' : ' wrap="virtual"';
 						}
-						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], str_replace('\n',chr(10),trim($parts[2])));
+						$default = $this->getFieldDefaultValue($conf['noValueInsert'], $confData['fieldname'], str_replace('\n',LF,trim($parts[2])));
 						$fieldCode=sprintf('<textarea name="%s"%s cols="%s" rows="%s"%s%s>%s</textarea>',
 							$confData['fieldname'], $elementIdAttribute, $cols, $rows, $wrap, $addParams, t3lib_div::formatForTextarea($default));
 					break;
@@ -2617,7 +2617,7 @@ class tslib_cObj {
 				}
 
 					// fetching params
-				$lines = explode(chr(10), $this->stdWrap($conf['params'],$conf['params.']));
+				$lines = explode(LF, $this->stdWrap($conf['params'],$conf['params.']));
 				foreach ($lines as $l) {
 					$parts = explode('=', $l);
 					$parameter = strtolower(trim($parts[0]));
@@ -2716,7 +2716,7 @@ class tslib_cObj {
 						//custom parameter entry
 						$rawTS = $val['mmParamCustomEntry'];
 						//read and merge
-						$tmp = t3lib_div::trimExplode(chr(10), $rawTS);
+						$tmp = t3lib_div::trimExplode(LF, $rawTS);
 						if (count($tmp)) {
 							foreach ($tmp as $tsLine) {
 								if (substr($tsLine, 0, 1) != '#' && $pos = strpos($tsLine, '.')) {
@@ -2783,7 +2783,7 @@ class tslib_cObj {
 				$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
 				$conf['params']= '';
 				foreach ($paramsArray as $key => $value) {
-					$conf['params'] .= $key . '=' . $value . chr(10);
+					$conf['params'] .= $key . '=' . $value . LF;
 				}
 				$content = $this->MULTIMEDIA($conf);
 			break;
@@ -2942,10 +2942,10 @@ class tslib_cObj {
 		if (is_array($conf['params.'])) {
 			t3lib_div::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 			foreach ($conf['params.'] as $key => $value) {
-				$params .= $qtObject . '.addParam("' .$key . '", "' . $value . '");' . chr(10);
+				$params .= $qtObject . '.addParam("' .$key . '", "' . $value . '");' . LF;
 			}
 		}
-		$params = ($params ? substr($params, 0, -2) : '') . chr(10) . $qtObject . '.write("' . $replaceElementIdString . '");';
+		$params = ($params ? substr($params, 0, -2) : '') . LF . $qtObject . '.write("' . $replaceElementIdString . '");';
 
 		$alternativeContent = $this->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']);
 		$layout = $this->stdWrap($conf['layout'], $conf['layout.']);
@@ -3791,7 +3791,7 @@ class tslib_cObj {
 					$content=preg_replace("/\r?\n[\t ]*\r?\n/",$conf['doubleBrTag'],$content);
 				}
 				if ($conf['br']) {$content=nl2br($content);}
-				if ($conf['brTag']) {$content= str_replace(chr(10),$conf['brTag'],$content);}
+				if ($conf['brTag']) {$content= str_replace(LF,$conf['brTag'],$content);}
 				if ($conf['encapsLines.']) {$content=$this->encaps_lineSplit($content,$conf['encapsLines.']);}
 				if ($conf['keywords']) {$content= $this->keywords($content);}
 				if ($conf['innerWrap'] || $conf['innerWrap.']){$content=$this->wrap($content, $this->stdWrap($conf['innerWrap'], $conf['innerWrap.']));}
@@ -4170,13 +4170,13 @@ class tslib_cObj {
 		$parts = explode('|',$str);
 
 		$output =
-			chr(10).str_pad('',$parts[0],chr(9)).
+			LF.str_pad('',$parts[0],TAB).
 			'<!-- '.htmlspecialchars($this->insertData($parts[1])).' [begin] -->'.
-			chr(10).str_pad('',$parts[0]+1,chr(9)).
+			LF.str_pad('',$parts[0]+1,TAB).
 				$content.
-			chr(10).str_pad('',$parts[0],chr(9)).
+			LF.str_pad('',$parts[0],TAB).
 			'<!-- '.htmlspecialchars($this->insertData($parts[1])).' [end] -->'.
-			chr(10).str_pad('',$parts[0]+1,chr(9));
+			LF.str_pad('',$parts[0]+1,TAB);
 
 		return $output;
 	}
@@ -4818,10 +4818,10 @@ class tslib_cObj {
 					$tagName=strtolower($htmlParser->getFirstTagName($v));
 					$cfg=$conf['externalBlocks.'][$tagName.'.'];
 					if ($cfg['stripNLprev'] || $cfg['stripNL'])	{
-						$parts[$k-1]=preg_replace('/'.chr(13).'?'.chr(10).'[ ]*$/', '', $parts[$k-1]);
+						$parts[$k-1]=preg_replace('/'.CR.'?'.LF.'[ ]*$/', '', $parts[$k-1]);
 					}
 					if ($cfg['stripNLnext'] || $cfg['stripNL'])	{
-						$parts[$k+1]=preg_replace('/^[ ]*'.chr(13).'?'.chr(10).'/', '', $parts[$k+1]);
+						$parts[$k+1]=preg_replace('/^[ ]*'.CR.'?'.LF.'/', '', $parts[$k+1]);
 					}
 				}
 			}
@@ -4857,7 +4857,7 @@ class tslib_cObj {
 										$colParts[$kkk] = $htmlParser->removeFirstAndLastTag($vvv);
 
 										if ($cfg['HTMLtableCells.'][$cc.'.']['callRecursive'] || (!isset($cfg['HTMLtableCells.'][$cc.'.']['callRecursive']) && $cfg['HTMLtableCells.']['default.']['callRecursive']))	{
-											if ($cfg['HTMLtableCells.']['addChr10BetweenParagraphs'])	$colParts[$kkk]=str_replace('</p><p>','</p>'.chr(10).'<p>',$colParts[$kkk]);
+											if ($cfg['HTMLtableCells.']['addChr10BetweenParagraphs'])	$colParts[$kkk]=str_replace('</p><p>','</p>'.LF.'<p>',$colParts[$kkk]);
 											$colParts[$kkk] = $this->parseFunc($colParts[$kkk], $conf);
 										}
 
@@ -4941,7 +4941,7 @@ class tslib_cObj {
 				$data = substr($theValue,$pointer,$len);	// $data is the content until the next <tag-start or end is detected. In case of a currentTag set, this would mean all data between the start- and end-tags
 				if ($data!='')	{
 					if ($stripNL)	{		// If the previous tag was set to strip NewLines in the beginning of the next data-chunk.
-						$data = preg_replace('/^[ ]*'.chr(13).'?'.chr(10).'/', '', $data);
+						$data = preg_replace('/^[ ]*'.CR.'?'.LF.'/', '', $data);
 					}
 
 					if (!is_array($currentTag))	{			// These operations should only be performed on code outside the tags...
@@ -5044,9 +5044,9 @@ class tslib_cObj {
 						}
 						$this->parameters['allParams']=trim($currentTag[1]);
 						if ($stripNL)	{	// Removes NL in the beginning and end of the tag-content AND at the end of the currentTagBuffer. $stripNL depends on the configuration of the current tag
-							$contentAccum[$contentAccumP-1] = preg_replace('/'.chr(13).'?'.chr(10).'[ ]*$/', '', $contentAccum[$contentAccumP-1]);
-							$contentAccum[$contentAccumP] = preg_replace('/^[ ]*'.chr(13).'?'.chr(10).'/', '', $contentAccum[$contentAccumP]);
-							$contentAccum[$contentAccumP] = preg_replace('/'.chr(13).'?'.chr(10).'[ ]*$/', '', $contentAccum[$contentAccumP]);
+							$contentAccum[$contentAccumP-1] = preg_replace('/'.CR.'?'.LF.'[ ]*$/', '', $contentAccum[$contentAccumP-1]);
+							$contentAccum[$contentAccumP] = preg_replace('/^[ ]*'.CR.'?'.LF.'/', '', $contentAccum[$contentAccumP]);
+							$contentAccum[$contentAccumP] = preg_replace('/'.CR.'?'.LF.'[ ]*$/', '', $contentAccum[$contentAccumP]);
 						}
 						$this->data[$this->currentValKey] = $contentAccum[$contentAccumP];
 						$newInput=$this->cObjGetSingle($theName,$theConf,'/parseFunc/.tags.'.$tag[0]);	// fetch the content object
@@ -5097,16 +5097,16 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Lets you split the content by chr(10) and proces each line independently. Used to format content made with the RTE.
+	 * Lets you split the content by LF and proces each line independently. Used to format content made with the RTE.
 	 *
 	 * @param	string		The input value
 	 * @param	array		TypoScript options
-	 * @return	string		The processed input value being returned; Splitted lines imploded by chr(10) again.
+	 * @return	string		The processed input value being returned; Splitted lines imploded by LF again.
 	 * @access private
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=323&cHash=a19312be78
 	 */
 	function encaps_lineSplit($theValue, $conf)	{
-		$lParts = explode(chr(10),$theValue);
+		$lParts = explode(LF,$theValue);
 
 		$encapTags = t3lib_div::trimExplode(',',strtolower($conf['encapsTagList']),1);
 		$nonWrappedTag = $conf['nonWrappedTag'];
@@ -5174,7 +5174,7 @@ class tslib_cObj {
 			$lParts[$k] = $str_content;
 		}
 
-		return implode(chr(10),$lParts);
+		return implode(LF,$lParts);
 	}
 
 	/**
@@ -5194,7 +5194,7 @@ class tslib_cObj {
 		$textstr = $textpieces[0];
 		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
 		for($i=1; $i<$pieces; $i++)	{
-			$len=strcspn($textpieces[$i],chr(32).chr(9).chr(13).chr(10));
+			$len=strcspn($textpieces[$i],chr(32).TAB.CRLF);
 			if (trim(substr($textstr,-1))=='' && $len)	{
 
 				$lastChar=substr($textpieces[$i],$len-1,1);
@@ -5264,7 +5264,7 @@ class tslib_cObj {
 		$textstr = $textpieces[0];
 		$initP = '?id='.$GLOBALS['TSFE']->id.'&type='.$GLOBALS['TSFE']->type;
 		for($i=1; $i<$pieces; $i++)	{
-			$len = strcspn($textpieces[$i],chr(32).chr(9).chr(13).chr(10));
+			$len = strcspn($textpieces[$i],chr(32).TAB.CRLF);
 			if (trim(substr($textstr,-1))=='' && $len)	{
 				$lastChar = substr($textpieces[$i],$len-1,1);
 				if (!preg_match('/[A-Za-z0-9]/',$lastChar)) {$len--;}
@@ -6630,7 +6630,7 @@ class tslib_cObj {
 	 */
 	function processParams($params)	{
 		$paramArr=array();
-		$lines=t3lib_div::trimExplode(chr(10),$params,1);
+		$lines=t3lib_div::trimExplode(LF,$params,1);
 		foreach($lines as $val)	{
 			$pair = explode('=',$val,2);
 			if (!t3lib_div::inList('#,/',substr(trim($pair[0]),0,1)))	{
@@ -6647,7 +6647,7 @@ class tslib_cObj {
 	 * @return	string		Cleaned up string, keywords will be separated by a comma only.
 	 */
 	function keywords($content)	{
-		$listArr = preg_split('/[,;' . chr(10) . ']/', $content);
+		$listArr = preg_split('/[,;' . LF . ']/', $content);
 		foreach ($listArr as $k => $v) {
 			$listArr[$k]=trim($v);
 		}
@@ -6771,12 +6771,12 @@ class tslib_cObj {
 
 		$emailContent = trim($msg);
 		if ($emailContent)	{
-			$parts = explode(chr(10), $emailContent, 2);		// First line is subject
+			$parts = explode(LF, $emailContent, 2);		// First line is subject
 			$subject=trim($parts[0]);
 			$plain_message=trim($parts[1]);
 
-			if ($recipients)	$GLOBALS['TSFE']->plainMailEncoded($recipients, $subject, $plain_message, implode(chr(10),$headers));
-			if ($cc)	$GLOBALS['TSFE']->plainMailEncoded($cc, $subject, $plain_message, implode(chr(10),$headers));
+			if ($recipients)	$GLOBALS['TSFE']->plainMailEncoded($recipients, $subject, $plain_message, implode(LF,$headers));
+			if ($cc)	$GLOBALS['TSFE']->plainMailEncoded($cc, $subject, $plain_message, implode(LF,$headers));
 			return true;
 		}
 	}
@@ -6938,7 +6938,7 @@ class tslib_cObj {
 	 * @see gifBuilderTextBox()
 	 */
 	function linebreaks($string,$chars,$maxLines=0)	{
-		$lines = explode(chr(10),$string);
+		$lines = explode(LF,$string);
 		$lineArr=Array();
 		$c=0;
 		foreach ($lines as $paragraph) {
@@ -7991,16 +7991,16 @@ class tslib_frameset {
 							if (!$conf['src'] && !$typeNum) 	{
 								$typeNum = -1;
 							}
-							$content.='<frame'.$this->frameParams($conf,$typeNum).' />'.chr(10);
+							$content.='<frame'.$this->frameParams($conf,$typeNum).' />'.LF;
 						break;
 						case 'FRAMESET':
 							$frameset = t3lib_div::makeInstance('tslib_frameset');
-							$content.=$frameset->make($conf).chr(10);
+							$content.=$frameset->make($conf).LF;
 						break;
 					}
 				}
 			}
-			return '<frameset'.$this->framesetParams($setup).'>'.chr(10).$content.'</frameset>';
+			return '<frameset'.$this->framesetParams($setup).'>'.LF.$content.'</frameset>';
 		}
 	}
 
@@ -8094,7 +8094,7 @@ class tslib_tableOffset	{
 				// If width is defined AND there has been no change to the default table params, then extend them to a tablewidth of 1
 			if ($valPairs[4] && $this->default_tableParams==$this->tableParams)	{$this->tableParams.=' width="1"';}
 				// Init:
-			$this->begin = chr(10).'<table '.$this->tableParams.'>';
+			$this->begin = LF.'<table '.$this->tableParams.'>';
 			$this->end = '</table>';
 			$rows=array();
 			$widthImg = '';
@@ -8222,7 +8222,7 @@ class tslib_controlTable	{
 		if (!$rows && $cols) $rows=1;		// If there are no rows in the middle but still som columns...
 
 		if ($rows&&$cols)	{
-			$res = chr(10).'<table '.$this->tableParams.'>';
+			$res = LF.'<table '.$this->tableParams.'>';
 				// top offset:
 			if ($offArr[1])	{
 				$xoff = $offArr[0] ? 1 : 0;

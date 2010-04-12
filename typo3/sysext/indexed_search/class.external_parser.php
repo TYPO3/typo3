@@ -437,7 +437,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['catdoc'])	{
 					$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
 					exec($cmd,$res);
-					$content = implode(chr(10),$res);
+					$content = implode(LF,$res);
 					unset($res);
 					$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 				}
@@ -447,7 +447,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['ppthtml'])	{
 					$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
 					exec($cmd,$res);
-					$content = implode(chr(10),$res);
+					$content = implode(LF,$res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
@@ -458,7 +458,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['xlhtml'])	{
 					$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
 					exec($cmd,$res);
-					$content = implode(chr(10),$res);
+					$content = implode(LF,$res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
@@ -475,13 +475,13 @@ class tx_indexed_search_extparse {
 						// Read content.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
 					exec($cmd,$res);
-					$content_xml = implode(chr(10),$res);
+					$content_xml = implode(LF,$res);
 					unset($res);
 
 						// Read meta.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
 					exec($cmd, $res);
-					$meta_xml = implode(chr(10),$res);
+					$meta_xml = implode(LF,$res);
 					unset($res);
 
 					$utf8_content = trim(strip_tags(str_replace('<',' <',$content_xml)));
@@ -508,7 +508,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['unrtf'])	{
 					$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
 					exec($cmd,$res);
-					$fileContent = implode(chr(10),$res);
+					$fileContent = implode(LF,$res);
 					unset($res);
 					$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
 					$contentArr = $this->pObj->splitHTMLContent($fileContent);
@@ -637,7 +637,7 @@ class tx_indexed_search_extparse {
 	 * @return	string		String
 	 */
 	function removeEndJunk($string)	{
-		return trim(preg_replace('/['.chr(10).chr(12).']*$/','',$string));
+		return trim(preg_replace('/['.LF.chr(12).']*$/','',$string));
 	}
 
 

@@ -616,7 +616,7 @@ class t3lib_TStemplate	{
 			'title'=>$row['title'],
 			'uid'=>$row['uid'],
 			'pid'=>$row['pid'],
-			'configLines' => substr_count($row['config'], chr(10))+1
+			'configLines' => substr_count($row['config'], LF)+1
 		);
 
 			// Adding the content of the fields constants (Constants), config (Setup) and editorcfg (Backend Editor Configuration) to the internal arrays.
@@ -1012,7 +1012,7 @@ class t3lib_TStemplate	{
 		}
 			// Parsing the user TS (or getting from cache)
 		$TSdataArray = t3lib_TSparser::checkIncludeLines_array($TSdataArray);
-		$userTS = implode(chr(10).'[GLOBAL]'.chr(10),$TSdataArray);
+		$userTS = implode(LF.'[GLOBAL]'.LF,$TSdataArray);
 
 		$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 		$parseObj->parse($userTS);

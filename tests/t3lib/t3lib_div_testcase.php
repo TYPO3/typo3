@@ -92,7 +92,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function checkTrimExplodeRemovesNewLines() {
-		$testString = ' a , b , ' . chr(10) . ' ,d ,,  e,f,';
+		$testString = ' a , b , ' . LF . ' ,d ,,  e,f,';
 		$expectedArray = array('a', 'b', 'd', 'e', 'f');
 		$actualArray = t3lib_div::trimExplode(',', $testString, true);
 
@@ -820,7 +820,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	public function quoteJSvalueEscapesTab() {
 		$this->assertEquals(
 			"'" . '\t' . "'",
-			t3lib_div::quoteJSvalue(chr(9))
+			t3lib_div::quoteJSvalue(TAB)
 		);
 	}
 
@@ -830,7 +830,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	public function quoteJSvalueEscapesLinefeed() {
 		$this->assertEquals(
 			"'" . '\n' . "'",
-			t3lib_div::quoteJSvalue(chr(10))
+			t3lib_div::quoteJSvalue(LF)
 		);
 	}
 
@@ -840,7 +840,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	public function quoteJSvalueEscapesCarriageReturn() {
 		$this->assertEquals(
 			"'" . '\r' . "'",
-			t3lib_div::quoteJSvalue(chr(13))
+			t3lib_div::quoteJSvalue(CR)
 		);
 	}
 

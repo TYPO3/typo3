@@ -90,7 +90,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 
 			// Initialize result array:
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'deleted' => array('Index of deleted records','These are records from the page tree having the deleted-flag set. The --AUTOFIX option will flush them completely!',1),
 			),
@@ -131,7 +131,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 
 			// Traversing records:
 		foreach($resultArray['deleted'] as $table => $list)	{
-			echo 'Flushing deleted records from table "'.$table.'":'.chr(10);
+			echo 'Flushing deleted records from table "'.$table.'":'.LF;
 			foreach($list as $uid)	{
 				echo '	Flushing record "'.$table.':'.$uid.'": ';
 				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid))	{
@@ -146,10 +146,10 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 
 						// Return errors if any:
 					if (count($tce->errorLog))	{
-						echo '	ERROR from "TCEmain":'.chr(10).'TCEmain:'.implode(chr(10).'TCEmain:',$tce->errorLog);
+						echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:',$tce->errorLog);
 					} else echo "DONE";
 				}
-				echo chr(10);
+				echo LF;
 			}
 		}
 	}

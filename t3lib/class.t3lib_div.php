@@ -58,8 +58,8 @@
  *  499:     function fixed_lgd($string,$origChars,$preStr='...')
  *  524:     function fixed_lgd_pre($string,$chars)
  *  538:     function fixed_lgd_cs($string,$chars)
- *  555:     function breakTextForEmail($str,$implChar="\n",$charWidth=76)
- *  574:     function breakLinesForEmail($str,$implChar="\n",$charWidth=76)
+ *  555:     function breakTextForEmail($str,$implChar=LF,$charWidth=76)
+ *  574:     function breakLinesForEmail($str,$implChar=LF,$charWidth=76)
  *  610:     function cmpIP($baseIP, $list)
  *  626:     function cmpIPv4($baseIP, $list)
  *  668:     function cmpIPv6($baseIP, $list)
@@ -202,16 +202,14 @@
  *
  */
 
-
-
-
-
-
-
-
-
-
-
+	// a tabulator
+define('TAB', chr(9));
+	// a linefeed
+define('LF', chr(10));
+	// a carriage return
+define('CR', chr(13));
+	// a CR-LF combination
+define('CRLF', CR . LF);
 
 /**
  * The legendary "t3lib_div" class - Miscellaneous functions for general purpose.
@@ -625,15 +623,15 @@ final class t3lib_div {
 	 * @deprecated since TYPO3 4.1 - Use PHP function wordwrap()
 	 * @return	string
 	 */
-	public static function breakTextForEmail($str,$implChar="\n",$charWidth=76)	{
+	public static function breakTextForEmail($str,$implChar=LF,$charWidth=76)	{
 		self::logDeprecatedFunction();
 
-		$lines = explode(chr(10),$str);
+		$lines = explode(LF,$str);
 		$outArr=array();
 		foreach ($lines as $lStr) {
 			$outArr[] = self::breakLinesForEmail($lStr,$implChar,$charWidth);
 		}
-		return implode(chr(10),$outArr);
+		return implode(LF,$outArr);
 	}
 
 	/**
@@ -646,7 +644,7 @@ final class t3lib_div {
 	 * @return	string
 	 * @see breakTextForEmail()
 	 */
-	public static function breakLinesForEmail($str,$implChar="\n",$charWidth=76)	{
+	public static function breakLinesForEmail($str,$implChar=LF,$charWidth=76)	{
 		$lines=array();
 		$l=$charWidth;
 		$p=0;
@@ -1500,7 +1498,7 @@ final class t3lib_div {
 	 * @return	string		Formatted for <textarea>-tags
 	 */
 	public static function formatForTextarea($content)	{
-		return chr(10).htmlspecialchars($content);
+		return LF.htmlspecialchars($content);
 	}
 
 	/**
@@ -2242,14 +2240,14 @@ final class t3lib_div {
 	public static function wrapJS($string, $linebreak=TRUE) {
 		if(trim($string)) {
 				// <script wrapped in nl?
-			$cr = $linebreak? "\n" : '';
+			$cr = $linebreak? LF : '';
 
 				// remove nl from the beginning
 			$string = preg_replace ('/^\n+/', '', $string);
 				// re-ident to one tab using the first line as reference
 			$match = array();
 			if(preg_match('/^(\t+)/',$string,$match)) {
-				$string = str_replace($match[1],"\t", $string);
+				$string = str_replace($match[1],TAB, $string);
 			}
 			$string = $cr.'<script type="text/javascript">
 /*<![CDATA[*/
@@ -2360,7 +2358,7 @@ final class t3lib_div {
 		}
 
 			// Return XML:
-		return '<?xml version="1.0" encoding="'.htmlspecialchars($charset).'" standalone="yes" ?>'.chr(10).
+		return '<?xml version="1.0" encoding="'.htmlspecialchars($charset).'" standalone="yes" ?>'.LF.
 				self::array2xml($array,'',0,$docTag,0, $options);
 	}
 
@@ -2381,7 +2379,7 @@ final class t3lib_div {
 	 * @param	string		tag-prefix, eg. a namespace prefix like "T3:"
 	 * @param	integer		Current recursion level. Don't change, stay at zero!
 	 * @param	string		Alternative document tag. Default is "phparray".
-	 * @param	integer		If greater than zero, then the number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single chr(9) (TAB) is used
+	 * @param	integer		If greater than zero, then the number of spaces corresponding to this number is used for indenting, if less than zero - no indentation, if zero - a single TAB is used
 	 * @param	array		Options for the compilation. Key "useNindex" => 0/1 (boolean: whether to use "n0, n1, n2" for num. indexes); Key "useIndexTagForNum" => "[tag for numerical indexes]"; Key "useIndexTagForAssoc" => "[tag for associative indexes"; Key "parentTagMap" => array('parentTag' => 'thisLevelTag')
 	 * @param	string		Stack data. Don't touch.
 	 * @return	string		An XML string made from the input content in the array.
@@ -2394,9 +2392,9 @@ final class t3lib_div {
 						chr(20).chr(21).chr(22).chr(23).chr(24).chr(25).chr(26).chr(27).chr(28).chr(29).
 						chr(30).chr(31);
 			// Set indenting mode:
-		$indentChar = $spaceInd ? ' ' : chr(9);
+		$indentChar = $spaceInd ? ' ' : TAB;
 		$indentN = $spaceInd>0 ? $spaceInd : 1;
-		$nl = ($spaceInd >= 0 ? chr(10) : '');
+		$nl = ($spaceInd >= 0 ? LF : '');
 
 			// Init output variable:
 		$output='';
@@ -2715,7 +2713,7 @@ final class t3lib_div {
 		require_once(PATH_typo3 . 'contrib/jsmin/jsmin.php');
 		try {
 			$error = '';
-			$script = trim(JSMin::minify(str_replace(chr(13), '', $script)));
+			$script = trim(JSMin::minify(str_replace(CR, '', $script)));
 		}
 		catch(JSMinException $e) {
 			$error = 'Error while minifying JavaScript: ' . $e->getMessage();
@@ -2853,12 +2851,12 @@ final class t3lib_div {
 			$method = ($includeHeader == 2) ? 'HEAD' : 'GET';
 			$msg = $method . ' ' . $parsedURL['path'] .
 					($parsedURL['query'] ? '?' . $parsedURL['query'] : '') .
-					' HTTP/1.0' . "\r\n" . 'Host: ' .
+					' HTTP/1.0' . CRLF . 'Host: ' .
 					$parsedURL['host'] . "\r\nConnection: close\r\n";
 			if (is_array($requestHeaders))	{
-				$msg .= implode("\r\n", $requestHeaders) . "\r\n";
+				$msg .= implode(CRLF, $requestHeaders) . CRLF;
 			}
-			$msg .= "\r\n";
+			$msg .= CRLF;
 
 			fputs($fp, $msg);
 			while (!feof($fp))	{
@@ -2895,7 +2893,7 @@ final class t3lib_div {
 			}
 			$ctx = stream_context_create(array(
 						'http' => array(
-							'header' => implode("\r\n", $requestHeaders)
+							'header' => implode(CRLF, $requestHeaders)
 						)
 					)
 				);
@@ -5112,7 +5110,7 @@ final class t3lib_div {
 	 * @param	string		Email address to send to. (see PHP function mail())
 	 * @param	string		Subject line, non-encoded. (see PHP function mail())
 	 * @param	string		Message content, non-encoded. (see PHP function mail())
-	 * @param	string		Headers, separated by chr(10)
+	 * @param	string		Headers, separated by LF
 	 * @param	string		Encoding type: "base64", "quoted-printable", "8bit". Default value is "quoted-printable".
 	 * @param	string		Charset used in encoding-headers (only if $encoding is set to a valid value which produces such a header)
 	 * @param	boolean		If set, the header content will not be encoded.
@@ -5127,7 +5125,7 @@ final class t3lib_div {
 		if (!$dontEncodeHeader)	{
 				// Mail headers must be ASCII, therefore we convert the whole header to either base64 or quoted_printable
 			$newHeaders=array();
-			foreach (explode(chr(10),$headers) as $line)	{	// Split the header in lines and convert each line separately
+			foreach (explode(LF,$headers) as $line)	{	// Split the header in lines and convert each line separately
 				$parts = explode(': ',$line,2);	// Field tags must not be encoded
 				if (count($parts)==2)	{
 					if (0 == strcasecmp($parts[0], 'from')) {
@@ -5139,7 +5137,7 @@ final class t3lib_div {
 					$newHeaders[] = $line;	// Should never happen - is such a mail header valid? Anyway, just add the unchanged line...
 				}
 			}
-			$headers = implode(chr(10),$newHeaders);
+			$headers = implode(LF,$newHeaders);
 			unset($newHeaders);
 
 			$email = self::encodeHeader($email,$encoding,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skårhøj <kasperYYYY@typo3.com>")
@@ -5148,24 +5146,24 @@ final class t3lib_div {
 
 		switch ((string)$encoding)	{
 			case 'base64':
-				$headers=trim($headers).chr(10).
-				'Mime-Version: 1.0'.chr(10).
-				'Content-Type: text/plain; charset="'.$charset.'"'.chr(10).
+				$headers=trim($headers).LF.
+				'Mime-Version: 1.0'.LF.
+				'Content-Type: text/plain; charset="'.$charset.'"'.LF.
 				'Content-Transfer-Encoding: base64';
 
-				$message=trim(chunk_split(base64_encode($message.chr(10)))).chr(10);	// Adding chr(10) because I think MS outlook 2002 wants it... may be removed later again.
+				$message=trim(chunk_split(base64_encode($message.LF))).LF;	// Adding LF because I think MS outlook 2002 wants it... may be removed later again.
 			break;
 			case '8bit':
-				$headers=trim($headers).chr(10).
-				'Mime-Version: 1.0'.chr(10).
-				'Content-Type: text/plain; charset='.$charset.chr(10).
+				$headers=trim($headers).LF.
+				'Mime-Version: 1.0'.LF.
+				'Content-Type: text/plain; charset='.$charset.LF.
 				'Content-Transfer-Encoding: 8bit';
 			break;
 			case 'quoted-printable':
 			default:
-				$headers=trim($headers).chr(10).
-				'Mime-Version: 1.0'.chr(10).
-				'Content-Type: text/plain; charset='.$charset.chr(10).
+				$headers=trim($headers).LF.
+				'Mime-Version: 1.0'.LF.
+				'Content-Type: text/plain; charset='.$charset.LF.
 				'Content-Transfer-Encoding: quoted-printable';
 
 				$message=self::quoted_printable($message);
@@ -5175,7 +5173,7 @@ final class t3lib_div {
 		// Headers must be separated by CRLF according to RFC 2822, not just LF.
 		// But many servers (Gmail, for example) behave incorectly and want only LF.
 		// So we stick to LF in all cases.
-		$headers = trim(implode(chr(10), self::trimExplode(chr(10), $headers, true)));	// Make sure no empty lines are there.
+		$headers = trim(implode(LF, self::trimExplode(LF, $headers, true)));	// Make sure no empty lines are there.
 
 		$ret = @mail($email, $subject, $message, $headers);
 		if (!$ret)	{
@@ -5196,16 +5194,16 @@ final class t3lib_div {
 	 */
 	public static function quoted_printable($string,$maxlen=76)	{
 			// Make sure the string contains only Unix linebreaks
-		$string = str_replace(chr(13).chr(10), chr(10), $string);	// Replace Windows breaks (\r\n)
-		$string = str_replace(chr(13), chr(10), $string);		// Replace Mac breaks (\r)
+		$string = str_replace(CRLF, LF, $string);	// Replace Windows breaks (\r\n)
+		$string = str_replace(CR, LF, $string);		// Replace Mac breaks (\r)
 
-		$linebreak = chr(10);			// Default line break for Unix systems.
+		$linebreak = LF;			// Default line break for Unix systems.
 		if (TYPO3_OS=='WIN')	{
-			$linebreak = chr(13).chr(10);	// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
+			$linebreak = CRLF;	// Line break for Windows. This is needed because PHP on Windows systems send mails via SMTP instead of using sendmail, and thus the linebreak needs to be \r\n.
 		}
 
 		$newString = '';
-		$theLines = explode(chr(10),$string);	// Split lines
+		$theLines = explode(LF,$string);	// Split lines
 		foreach ($theLines as $val)	{
 			$newVal = '';
 			$theValLen = strlen($val);
@@ -5226,7 +5224,7 @@ final class t3lib_div {
 				}
 			}
 			$newVal = preg_replace('/'.chr(32).'$/','=20',$newVal);		// Replaces a possible SPACE-character at the end of a line
-			$newVal = preg_replace('/'.chr(9).'$/','=09',$newVal);		// Replaces a possible TAB-character at the end of a line
+			$newVal = preg_replace('/'.TAB.'$/','=09',$newVal);		// Replaces a possible TAB-character at the end of a line
 			$newString.=$newVal.$linebreak;
 		}
 		return preg_replace('/'.$linebreak.'$/','',$newString);		// Remove last newline
@@ -5464,7 +5462,7 @@ final class t3lib_div {
 				$file = fopen($destination, 'a');
 				if ($file)     {
 					flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
-					fwrite($file, date($dateFormat.' '.$timeFormat).$msgLine.chr(10));
+					fwrite($file, date($dateFormat.' '.$timeFormat).$msgLine.LF);
 					flock($file, LOCK_UN);    // release the lock
 					fclose($file);
 				}
@@ -5473,10 +5471,10 @@ final class t3lib_div {
 			elseif ($type == 'mail')	{
 				list($to,$from) = explode('/',$destination);
 				mail($to, 'Warning - error in TYPO3 installation',
-					'Host: '.$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost']."\n".
-					'Extension: '.$extKey."\n".
-					'Severity: '.$severity."\n".
-					"\n".$msg,
+					'Host: '.$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'].LF.
+					'Extension: '.$extKey.LF.
+					'Severity: '.$severity.LF.
+					LF.$msg,
 					($from ? 'From: '.$from : '')
 				);
 			}
@@ -5535,7 +5533,7 @@ final class t3lib_div {
 		if ($file) {
 			$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
 			flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
-			@fwrite($file, $date.$msg.chr(10));
+			@fwrite($file, $date.$msg.LF);
 			flock($file, LOCK_UN);    // release the lock
 			@fclose($file);
 		}
@@ -5607,7 +5605,7 @@ final class t3lib_div {
 		$valListCnt = count($valueList);
 		foreach ($arr as $key => $value)	{
 			if (!$valListCnt || in_array($key, $valueList))	{
-				$str .= (string)$key.trim(': '.self::fixed_lgd_cs(str_replace("\n",'|',(string)$value), $valueLength)).'; ';
+				$str .= (string)$key.trim(': '.self::fixed_lgd_cs(str_replace(LF,'|',(string)$value), $valueLength)).'; ';
 			}
 		}
 		return $str;
@@ -5723,7 +5721,7 @@ final class t3lib_div {
 	 */
 	static public function quoteJSvalue($value, $withinCData = false)	{
 		$escapedValue = addcslashes(
-			$value, '\'' . '"' . '\\' . chr(9) . chr(10) . chr(13)
+			$value, '\'' . '"' . '\\' . TAB . LF . CR
 		);
 		if (!$withinCData) {
 			$escapedValue = htmlspecialchars($escapedValue);

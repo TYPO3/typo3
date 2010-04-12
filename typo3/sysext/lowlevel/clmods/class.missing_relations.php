@@ -104,7 +104,7 @@ Reports missing relations';
 			// Initialize result array:
 		$listExplain = ' Shows the missing record as header and underneath a list of record fields in which the references are found. '.$this->label_infoString;
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'offlineVersionRecords_m' => array('Offline version records (managed)','These records are offline versions having a pid=-1 and references should never occur directly to their uids.'.$listExplain,3),
 				'deletedRecords_m' => array('Deleted-flagged records (managed)','These records are deleted with a flag but references are still pointing at them. Keeping the references is useful if you undelete the referenced records later, otherwise the references are lost completely when the deleted records are flushed at some point. Notice that if those records listed are themselves deleted (marked with "DELETED") it is not a problem.'.$listExplain,2),
@@ -184,7 +184,7 @@ Reports missing relations';
 
 		$trav = array('offlineVersionRecords_m', 'nonExistingRecords_m');
 		foreach($trav as $tk)	{
-			echo 'Processing managed "'.$tk.'"...'.chr(10);
+			echo 'Processing managed "'.$tk.'"...'.LF;
 			foreach($resultArray[$tk] as $key => $value)	{
 				foreach($value as $hash => $recReference)	{
 					echo '	Removing reference to '.$key.' in record "'.$recReference.'": ';
@@ -194,10 +194,10 @@ Reports missing relations';
 						$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
 						$error = $sysRefObj->setReferenceValue($hash,NULL);
 						if ($error)	{
-							echo '		t3lib_refindex::setReferenceValue(): '.$error.chr(10);
+							echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
 						} else echo 'DONE';
 					}
-					echo chr(10);
+					echo LF;
 				}
 			}
 		}

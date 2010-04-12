@@ -931,25 +931,25 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 			$addElementCode = '';
 			foreach ($mainElements as $elListName => $elValue) {
-				$addElementCode .= strToLower($elListName) . ' {' . $elValue . '}' . chr(10);
+				$addElementCode .= strToLower($elListName) . ' {' . $elValue . '}' . LF;
 			}
 
-			$stylesheet = $this->thisConfig['mainStyleOverride'] ? $this->thisConfig['mainStyleOverride'] : chr(10) .
+			$stylesheet = $this->thisConfig['mainStyleOverride'] ? $this->thisConfig['mainStyleOverride'] : LF .
 				'body.htmlarea-content-body { font-family: ' . $mainStyle_font .
 					'; font-size: '.($this->thisConfig['mainStyle_size'] ? $this->thisConfig['mainStyle_size'] : '12px') .
 					'; color: '.($this->thisConfig['mainStyle_color']?$this->thisConfig['mainStyle_color'] : 'black') .
 					'; background-color: '.($this->thisConfig['mainStyle_bgcolor'] ? $this->thisConfig['mainStyle_bgcolor'] : 'white') .
-					';'.$this->thisConfig['mainStyleOverride_add.']['BODY'].'}' . chr(10) .
-				'td { ' . $this->thisConfig['mainStyleOverride_add.']['TD'].'}' . chr(10) .
-				'div { ' . $this->thisConfig['mainStyleOverride_add.']['DIV'].'}' . chr(10) .
-				'pre { ' . $this->thisConfig['mainStyleOverride_add.']['PRE'].'}' . chr(10) .
-				'ol { ' . $this->thisConfig['mainStyleOverride_add.']['OL'].'}' . chr(10) .
-				'ul { ' . $this->thisConfig['mainStyleOverride_add.']['UL'].'}' . chr(10) .
-				'blockquote { ' . $this->thisConfig['mainStyleOverride_add.']['BLOCKQUOTE'].'}' . chr(10) .
+					';'.$this->thisConfig['mainStyleOverride_add.']['BODY'].'}' . LF .
+				'td { ' . $this->thisConfig['mainStyleOverride_add.']['TD'].'}' . LF .
+				'div { ' . $this->thisConfig['mainStyleOverride_add.']['DIV'].'}' . LF .
+				'pre { ' . $this->thisConfig['mainStyleOverride_add.']['PRE'].'}' . LF .
+				'ol { ' . $this->thisConfig['mainStyleOverride_add.']['OL'].'}' . LF .
+				'ul { ' . $this->thisConfig['mainStyleOverride_add.']['UL'].'}' . LF .
+				'blockquote { ' . $this->thisConfig['mainStyleOverride_add.']['BLOCKQUOTE'].'}' . LF .
 				$addElementCode;
 
 			if (is_array($this->thisConfig['inlineStyle.']))        {
-				$stylesheet .= chr(10) . implode(chr(10), $this->thisConfig['inlineStyle.']) . chr(10);
+				$stylesheet .= LF . implode(LF, $this->thisConfig['inlineStyle.']) . LF;
 			}
 		} else {
 			$stylesheet = '/* mainStyleOverride and inlineStyle properties ignored. */';
@@ -1023,7 +1023,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		foreach ($classesArray as $key => $subArray) {
-			$JSClassesArray .= 'HTMLArea.classes' . ucfirst($key) . ' = ' . $this->buildNestedJSArray($subArray) . ';' . chr(10);
+			$JSClassesArray .= 'HTMLArea.classes' . ucfirst($key) . ' = ' . $this->buildNestedJSArray($subArray) . ';' . LF;
 		}
 		return $JSClassesArray;
 	}
@@ -1054,7 +1054,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript localization array
 	 */
 	function buildJSMainLangArray() {
-		$JSLanguageArray = 'var HTMLArea_langArray = new Object();' . chr(10);
+		$JSLanguageArray = 'var HTMLArea_langArray = new Object();' . LF;
 		$labelsArray = array('tooltips' => array(), 'msg' => array(), 'dialogs' => array());
 		foreach ($labelsArray as $labels => $subArray) {
 			$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xml', $this->language, 'utf-8');
@@ -1065,7 +1065,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 			$labelsArray[$labels] = $LOCAL_LANG[$this->language];
 		}
-		$JSLanguageArray .= 'HTMLArea_langArray = ' . json_encode($labelsArray) . ';' . chr(10);
+		$JSLanguageArray .= 'HTMLArea_langArray = ' . json_encode($labelsArray) . ';' . LF;
 		return $JSLanguageArray;
 	}
 
@@ -1145,9 +1145,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		filename
 	 */
 	function buildJSMainLangFile($RTEcounter) {
-		$contents = $this->buildJSMainLangArray() . chr(10);
+		$contents = $this->buildJSMainLangArray() . LF;
 		foreach ($this->pluginEnabledCumulativeArray[$RTEcounter] as $pluginId) {
-			$contents .= $this->buildJSLangArray($pluginId) . chr(10);
+			$contents .= $this->buildJSLangArray($pluginId) . LF;
 		}
 		return $this->writeTemporaryFile('', $this->language.'_'.$this->OutputCharset, 'js', $contents, TRUE);
 	}
@@ -1164,7 +1164,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$LOCAL_LANG = FALSE;
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
 		$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8', 1);
-		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : chr(10);
+		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : LF;
 		$JSLanguageArray = 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
 		if (is_array($LOCAL_LANG)) {
 			if (!empty($LOCAL_LANG[$this->language])) {
@@ -1172,7 +1172,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
-			$JSLanguageArray .= $plugin . '_langArray = ' . json_encode($LOCAL_LANG[$this->language]) . ';'. chr(10);
+			$JSLanguageArray .= $plugin . '_langArray = ' . json_encode($LOCAL_LANG[$this->language]) . ';'. LF;
 		}
 		return $JSLanguageArray;
 	}

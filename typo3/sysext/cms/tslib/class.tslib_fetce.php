@@ -102,7 +102,7 @@ class tslib_feTCE	{
 		while(list($table,$id_arr)=each($data))	{
 			t3lib_div::loadTCA($table);
 			if (is_array($id_arr))	{
-				$sep=$FEData[$table.'.']['separator']?$FEData[$table.'.']['separator']:chr(10);
+				$sep=$FEData[$table.'.']['separator']?$FEData[$table.'.']['separator']:LF;
 				reset($id_arr);
 				while(list($id,$field_arr)=each($id_arr))	{
 					$this->newData[$table][$id]=Array();

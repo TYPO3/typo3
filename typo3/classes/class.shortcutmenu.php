@@ -121,7 +121,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		$shortcutMenu[] = $this->renderMenu();
 		$shortcutMenu[] = '</div>';
 
-		return implode("\n", $shortcutMenu);
+		return implode(LF, $shortcutMenu);
 	}
 
 	/**
@@ -203,7 +203,7 @@ class ShortcutMenu implements backend_toolbarItem {
 
 		$shortcutMenu[] = '</table>';
 
-		$compiledShortcutMenu = implode("\n", $shortcutMenu);
+		$compiledShortcutMenu = implode(LF, $shortcutMenu);
 
 		return $compiledShortcutMenu;
 	}

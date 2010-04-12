@@ -788,10 +788,10 @@ class tx_indexedsearch_crawler {
 	 */
 	function checkDeniedSuburls($url, $url_deny)	{
 		if (trim($url_deny))	{
-			$url_denyArray = t3lib_div::trimExplode(chr(10),$url_deny,1);
+			$url_denyArray = t3lib_div::trimExplode(LF,$url_deny,1);
 			foreach($url_denyArray as $testurl)	{
 				if (t3lib_div::isFirstPartOfStr($url,$testurl))	{
-					echo $url.' /// '.$url_deny.chr(10);
+					echo $url.' /// '.$url_deny.LF;
 					return TRUE;
 				}
 			}

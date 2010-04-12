@@ -302,7 +302,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			}
 		}
 
-		return array(count($functions)? implode(chr(10), $functions) . chr(10) . implode(chr(10), $setEvents) : '', $setBody);
+		return array(count($functions)? implode(LF, $functions) . LF . implode(LF, $setEvents) : '', $setBody);
 	}
 
 	/**
@@ -357,7 +357,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 		$headerComment = $GLOBALS['TSFE']->config['config']['headerComment'];
 		if (trim($headerComment)) {
-			$pageRenderer->addInlineComment("\t" . str_replace("\n", "\n\t", trim($headerComment)) . "\n");
+			$pageRenderer->addInlineComment(TAB . str_replace(LF, LF . TAB, trim($headerComment)) . LF);
 		}
 
 			// Setting charset:
@@ -452,7 +452,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 			// Adding doctype parts:
 		if (count($docTypeParts)) {
-			$pageRenderer->setXmlPrologAndDocType(implode(chr(10), $docTypeParts));
+			$pageRenderer->setXmlPrologAndDocType(implode(LF, $docTypeParts));
 		}
 
 			// Begin header section:
@@ -499,14 +499,14 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$temp_styleLines = array ();
 			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key => $iCSScode) {
 				if (is_array($iCSScode) && $iCSScode['_CSS_DEFAULT_STYLE']) {
-					$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, - 1) . '" */' . chr(10) . $iCSScode['_CSS_DEFAULT_STYLE'];
+					$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, - 1) . '" */' . LF . $iCSScode['_CSS_DEFAULT_STYLE'];
 				}
 			}
 			if (count($temp_styleLines)) {
 				if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
-					$pageRenderer->addCssFile(TSpagegen::inline2TempFile(implode(chr(10), $temp_styleLines), 'css'));
+					$pageRenderer->addCssFile(TSpagegen::inline2TempFile(implode(LF, $temp_styleLines), 'css'));
 				} else {
-					$pageRenderer->addCssInlineBlock('TSFEinlineStyle', implode(chr(10), $temp_styleLines));
+					$pageRenderer->addCssInlineBlock('TSFEinlineStyle', implode(LF, $temp_styleLines));
 				}
 			}
 		}
@@ -875,7 +875,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if (is_array($GLOBALS['TSFE']->inlineJS)) {
 			foreach ($GLOBALS['TSFE']->inlineJS as $key => $val) {
 				if (! is_array($val)) {
-					$inlineJS .= chr(10) . $val . chr(10);
+					$inlineJS .= LF . $val . LF;
 				}
 			}
 		}
@@ -884,7 +884,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			// Javascript inline code
 		$inline = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['jsInline.'], 'jsInline.');
 		if ($inline) {
-			$inlineJS .= chr(10) . $inline . chr(10);
+			$inlineJS .= LF . $inline . LF;
 		}
 
 			// Javascript inline code for Footer
@@ -966,12 +966,12 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 			// add header data block
 		if ($GLOBALS['TSFE']->additionalHeaderData) {
-			$pageRenderer->addHeaderData(implode(chr(10), $GLOBALS['TSFE']->additionalHeaderData));
+			$pageRenderer->addHeaderData(implode(LF, $GLOBALS['TSFE']->additionalHeaderData));
 		}
 
 			// add footer data block
 		if ($GLOBALS['TSFE']->additionalFooterData) {
-			$pageRenderer->addFooterData(implode(chr(10), $GLOBALS['TSFE']->additionalFooterData));
+			$pageRenderer->addFooterData(implode(LF, $GLOBALS['TSFE']->additionalFooterData));
 		}
 
 		// Header complete, now add content
@@ -980,7 +980,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
 			$fs = t3lib_div::makeInstance('tslib_frameset');
 			$pageRenderer->addBodyContent($fs->make($GLOBALS['TSFE']->pSetup['frameSet.']));
-			$pageRenderer->addBodyContent(chr(10) . '<noframes>' . chr(10));
+			$pageRenderer->addBodyContent(LF . '<noframes>' . LF);
 		}
 
 			// Bodytag:
@@ -1008,22 +1008,22 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		if (count($JSef[1])) { // Event functions:
 			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
 		}
-		$pageRenderer->addBodyContent(chr(10) . $bodyTag);
+		$pageRenderer->addBodyContent(LF . $bodyTag);
 
 			// Div-sections
 		if ($GLOBALS['TSFE']->divSection) {
-			$pageRenderer->addBodyContent(chr(10) . $GLOBALS['TSFE']->divSection);
+			$pageRenderer->addBodyContent(LF . $GLOBALS['TSFE']->divSection);
 		}
 
 			// Page content
-		$pageRenderer->addBodyContent(chr(10) . $pageContent);
+		$pageRenderer->addBodyContent(LF . $pageContent);
 
 			// Render complete page
 		$GLOBALS['TSFE']->content = $pageRenderer->render();
 
 			// Ending page
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
-			$GLOBALS['TSFE']->content .= chr(10) . '</noframes>';
+			$GLOBALS['TSFE']->content .= LF . '</noframes>';
 		}
 
 	}

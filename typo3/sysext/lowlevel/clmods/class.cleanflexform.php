@@ -91,7 +91,7 @@ Cleaning XML for FlexForm fields.
 
 			// Initialize result array:
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'dirty' => array('','',2),
 			),
@@ -125,7 +125,7 @@ Cleaning XML for FlexForm fields.
 		t3lib_div::loadTCA($tableName);
 		foreach($GLOBALS['TCA'][$tableName]['columns'] as $colName => $config)	{
 			if ($config['config']['type']=='flex')	{
-				if ($echoLevel>2)	echo chr(10).'			[cleanflexform:] Field "'.$colName.'" in '.$tableName.':'.$uid.' was a flexform and...';
+				if ($echoLevel>2)	echo LF.'			[cleanflexform:] Field "'.$colName.'" in '.$tableName.':'.$uid.' was a flexform and...';
 
 				$recRow = t3lib_BEfunc::getRecordRaw($tableName,'uid='.intval($uid));
 				$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
@@ -180,10 +180,10 @@ Cleaning XML for FlexForm fields.
 
 					// Return errors if any:
 				if (count($tce->errorLog))	{
-					echo '	ERROR from "TCEmain":'.chr(10).'TCEmain:'.implode(chr(10).'TCEmain:',$tce->errorLog);
+					echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:',$tce->errorLog);
 				} else echo 'DONE';
 			}
-			echo chr(10);
+			echo LF;
 		}
 	}
 }

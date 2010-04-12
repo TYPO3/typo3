@@ -21,13 +21,13 @@ General
 Backend
 =======
 
-	* It is now possible to add whole directories of CSS files to the backend by setting $TBE_STYLES['stylesheetDirectories'][$_EXTKEY][] = 'EXT:myext/stylesheets/' 
+	* It is now possible to add whole directories of CSS files to the backend by setting $TBE_STYLES['stylesheetDirectories'][$_EXTKEY][] = 'EXT:myext/stylesheets/'
 
 
 Frontend
 ========
 
-	* Indexed search no logner puts a double wrap around search rules in the advanced search form. This may require style changes if a default indexed search is used.
+	* Indexed search no longer puts a double wrap around search rules in the advanced search form. This may require style changes if a default indexed search is used.
 
 
 Compatibility
@@ -39,7 +39,7 @@ Compatibility
 Development
 ===========
 
-	* ...
+	* t3lib_div now provides the constants LF, CR, CRLF and TAB which can be used to improve code readability.
 
 
 TypoScript changes

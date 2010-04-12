@@ -336,7 +336,7 @@ class TYPO3backend {
 
 		$pathTYPO3          = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
 		$goToModuleSwitch   = $this->moduleMenu->getGotoModuleJavascript();
-		$moduleFramesHelper = implode(chr(10), $this->moduleMenu->getFsMod());
+		$moduleFramesHelper = implode(LF, $this->moduleMenu->getFsMod());
 
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));

@@ -161,7 +161,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				';
 				$tmpl->ext_lineNumberOffset = -2;	// Don't know why -2 and not 0... :-) But works.
 				$tmpl->ext_lineNumberOffset_mode = "const";
-				$tmpl->ext_lineNumberOffset += count(explode(chr(10), t3lib_TSparser::checkIncludeLines("" . $GLOBALS["TYPO3_CONF_VARS"]["FE"]["defaultTypoScript_constants"]))) + 1;
+				$tmpl->ext_lineNumberOffset += count(explode(LF, t3lib_TSparser::checkIncludeLines("" . $GLOBALS["TYPO3_CONF_VARS"]["FE"]["defaultTypoScript_constants"]))) + 1;
 
 				reset($tmpl->clearList_const);
 				foreach ($tmpl->constants as $key => $val) {
@@ -182,7 +182,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 							break;
 						}
 					}
-					$tmpl->ext_lineNumberOffset += count(explode(chr(10), $val)) + 1;
+					$tmpl->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
 					next($tmpl->clearList_const);
 				}
 				$theOutput .= '
@@ -200,7 +200,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				';
 				$tmpl->ext_lineNumberOffset = 0;
 				$tmpl->ext_lineNumberOffset_mode = "setup";
-				$tmpl->ext_lineNumberOffset += count(explode(chr(10), t3lib_TSparser::checkIncludeLines("" . $GLOBALS["TYPO3_CONF_VARS"]["FE"]["defaultTypoScript_setup"]))) + 1;
+				$tmpl->ext_lineNumberOffset += count(explode(LF, t3lib_TSparser::checkIncludeLines("" . $GLOBALS["TYPO3_CONF_VARS"]["FE"]["defaultTypoScript_setup"]))) + 1;
 
 				reset($tmpl->clearList_setup);
 				foreach ($tmpl->config as $key => $val)	{
@@ -218,7 +218,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 							break;
 						}
 					}
-					$tmpl->ext_lineNumberOffset += count(explode(chr(10), $val)) + 1;
+					$tmpl->ext_lineNumberOffset += count(explode(LF, $val)) + 1;
 					next($tmpl->clearList_setup);
 				}
 				$theOutput .= '

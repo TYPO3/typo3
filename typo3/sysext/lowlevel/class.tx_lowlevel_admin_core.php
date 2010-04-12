@@ -131,7 +131,7 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 				$this->cli_echo("Unknown toolkey, '".$analysisType."'");
 			break;
 		}
-		$this->cli_echo("\n");
+		$this->cli_echo(LF);
 	}
 
 

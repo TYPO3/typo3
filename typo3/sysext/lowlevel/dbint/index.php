@@ -366,7 +366,7 @@ class SC_mod_tools_dbint_index {
 			list($headerContent,$bodyContent) = $refIndexObj->updateIndex($testOnly);
 
 				// Output content:
-			$this->content.=$this->doc->section($headerContent,str_replace(chr(10),'<br/>',$bodyContent),0,1);
+			$this->content.=$this->doc->section($headerContent,str_replace(LF,'<br/>',$bodyContent),0,1);
 		}
 
 			// Output content:

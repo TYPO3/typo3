@@ -55,7 +55,7 @@ if ($pid)	{
 		$key = $row['uid'];
 		$val = $row['title'];
 		$content.= '<a target="testTemplate" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.'index.php?id='.$GLOBALS['TSFE']->id.'&based_on_uid='.$key).'">'.$val.'</a><br />';
-		$specialComment.= '[globalVar= based_on_uid='.$key.']'.chr(10);
+		$specialComment.= '[globalVar= based_on_uid='.$key.']'.LF;
 	}
 		// Select subcategories of template folder.
 	$page_res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid='.intval($pid).' AND deleted=0 AND hidden=0 AND starttime=0 AND endtime=0 AND fe_group=0', '', 'sorting');
@@ -67,7 +67,7 @@ if ($pid)	{
 			$key = $row['uid'];
 			$val = $page_row['title'].' / '.$row['title'];
 			$content.= '<a target="testTemplate" href="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.'index.php?id='.$GLOBALS['TSFE']->id.'&based_on_uid='.$key).'">'.$val.'</a><br />';
-			$specialComment.= '[globalVar= based_on_uid='.$key.']'.chr(10);
+			$specialComment.= '[globalVar= based_on_uid='.$key.']'.LF;
 		}
 	}
 }

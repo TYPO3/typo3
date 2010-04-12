@@ -1,4 +1,9 @@
+2010-04-12  Benjamin Mack  <benni@typo3.org>
+
+	* Added Feature #12066: Added constants throughout the core for LF, CR, TAB (Thanks to Oliver Klee)
+
 2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
+
 	* Fixed bug #14054: CSS Styled Content has no manual
 
 2010-04-12  Patrick Broens  <patrick@patrickbroens.nl>

@@ -97,7 +97,7 @@ This will check the system for double files relations.';
 
 			// Initialize result array:
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'multipleReferencesList_count' => array('Number of multi-reference files','(See below)',0),
 				'singleReferencesList_count' => array('Number of files correctly referenced','The amount of correct 1-1 references',0),
@@ -185,11 +185,11 @@ This will check the system for double files relations.';
 		foreach($resultArray['multipleReferencesList'] as $key => $value)	{
 			$absFileName = t3lib_div::getFileAbsFileName($key);
 			if ($absFileName && @is_file($absFileName))	{
-				echo 'Processing file: '.$key.chr(10);
+				echo 'Processing file: '.$key.LF;
 				$c=0;
 				foreach($value as $hash => $recReference)	{
 					if ($c==0)	{
-						echo '	Keeping '.$key.' for record "'.$recReference.'"'.chr(10);
+						echo '	Keeping '.$key.' for record "'.$recReference.'"'.LF;
 					} else {
 							// Create unique name for file:
 						$fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
@@ -206,14 +206,14 @@ This will check the system for double files relations.';
 								$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
 								$error = $sysRefObj->setReferenceValue($hash,basename($newName));
 								if ($error)	{
-									echo '	ERROR:	t3lib_refindex::setReferenceValue(): '.$error.chr(10);
+									echo '	ERROR:	t3lib_refindex::setReferenceValue(): '.$error.LF;
 									exit;
 								} else echo "DONE";
 							} else {
 								echo '	ERROR: File "'.$newName.'" was not created!';
 							}
 						}
-						echo chr(10);
+						echo LF;
 					}
 					$c++;
 				}

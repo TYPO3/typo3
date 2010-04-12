@@ -139,7 +139,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			// Print Howto:
 		if ($this->cli_isArg('--showhowto'))	{
 			$howto = t3lib_div::getUrl(t3lib_extMgm::extPath('lowlevel').'HOWTO_clean_up_TYPO3_installations.txt');
-			echo wordwrap($howto,120).chr(10);
+			echo wordwrap($howto,120).LF;
 			exit;
 		}
 
@@ -263,9 +263,9 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		if ($detailLevel <= 1)	{
 			$this->cli_echo(
 				"*********************************************\n".
-				$header."\n".
+				$header.LF.
 				"*********************************************\n");
-			$this->cli_echo(wordwrap(trim($res['message'])).chr(10).chr(10));
+			$this->cli_echo(wordwrap(trim($res['message'])).LF.LF);
 		}
 
 			// Traverse headers for output:
@@ -276,12 +276,12 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 					if (is_array($res[$key]) && (count($res[$key]) || !$silent)) {
 
 							// Header and explanaion:
-						$this->cli_echo('---------------------------------------------'.chr(10),1);
-						$this->cli_echo('['.$header.']'.chr(10),1);
-						$this->cli_echo($value[0].' ['.$severity[$value[2]].']'.chr(10),1);
-						$this->cli_echo('---------------------------------------------'.chr(10),1);
+						$this->cli_echo('---------------------------------------------'.LF,1);
+						$this->cli_echo('['.$header.']'.LF,1);
+						$this->cli_echo($value[0].' ['.$severity[$value[2]].']'.LF,1);
+						$this->cli_echo('---------------------------------------------'.LF,1);
 						if (trim($value[1]))	{
-							$this->cli_echo('Explanation: '.wordwrap(trim($value[1])).chr(10).chr(10),1);
+							$this->cli_echo('Explanation: '.wordwrap(trim($value[1])).LF.LF,1);
 						}
 					}
 
@@ -290,10 +290,10 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 						if (count($res[$key]))	{
 							if ($this->cli_echo('',1)) { print_r($res[$key]); }
 						} else {
-							$this->cli_echo('(None)'.chr(10).chr(10));
+							$this->cli_echo('(None)'.LF.LF);
 						}
 					} else {
-						$this->cli_echo($res[$key].chr(10).chr(10));
+						$this->cli_echo($res[$key].LF.LF);
 					}
 				}
 			}
@@ -362,7 +362,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			ksort($this->recStats[$kk]);
 		}
 
-		if ($echoLevel>0)	echo chr(10).chr(10);
+		if ($echoLevel>0)	echo LF.LF;
 
 
 			// Processing performance statistics:
@@ -378,7 +378,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			);
 			$countRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub);
 			$this->performanceStatistics['MySQL_count'][$tableName]=$countRow['count(*)'];
-			$this->performanceStatistics['CSV'].=chr(10).$tableName.','.
+			$this->performanceStatistics['CSV'].=LF.$tableName.','.
 								$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName].','.
 								$this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName].','.
 								$this->performanceStatistics['MySQL_count'][$tableName];
@@ -432,14 +432,14 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		}
 
 		if ($echoLevel>0)
-			echo chr(10).$accumulatedPath.' ['.$rootID.']'.
+			echo LF.$accumulatedPath.' ['.$rootID.']'.
 				($pageRecord['deleted'] ? ' (DELETED)':'').
 				($this->recStats['versions_published']['pages'][$rootID] ? ' (PUBLISHED)':'')
 				;
 		if ($echoLevel>1 && $this->recStats['versions_lost_workspace']['pages'][$rootID])
-			echo chr(10).'	ERROR! This version belongs to non-existing workspace ('.$pageRecord['t3ver_wsid'].')!';
+			echo LF.'	ERROR! This version belongs to non-existing workspace ('.$pageRecord['t3ver_wsid'].')!';
 		if ($echoLevel>1 && $this->recStats['versions_inside_versioned_page']['pages'][$rootID])
-			echo chr(10).'	WARNING! This version is inside an already versioned page or branch!';
+			echo LF.'	WARNING! This version is inside an already versioned page or branch!';
 
 			// Call back:
 		if ($callBack)	{
@@ -466,17 +466,17 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 				$pt5=t3lib_div::milliseconds();
 				$count = $GLOBALS['TYPO3_DB']->sql_num_rows($resSub);
 				if ($count)	{
-					if ($echoLevel==2)	echo chr(10).'	\-'.$tableName.' ('.$count.')';
+					if ($echoLevel==2)	echo LF.'	\-'.$tableName.' ('.$count.')';
 				}
 
 				while ($rowSub = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub))	{
-					if ($echoLevel==3)	echo chr(10).'	\-'.$tableName.':'.$rowSub['uid'];
+					if ($echoLevel==3)	echo LF.'	\-'.$tableName.':'.$rowSub['uid'];
 
 						// If the rootID represents an "element" or "page" version type, we must check if the record from this table is allowed to belong to this:
 					if ($versionSwapmode=='SWAPMODE:-1' || ($versionSwapmode=='SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages']))	{
 							// This is illegal records under a versioned page - therefore not registered in $this->recStats['all'] so they should be orphaned:
 						$this->recStats['illegal_record_under_versioned_page'][$tableName][$rowSub['uid']] = $rowSub['uid'];
-						if ($echoLevel>1)	echo chr(10).'		ERROR! Illegal record ('.$tableName.':'.$rowSub['uid'].') under versioned page!';
+						if ($echoLevel>1)	echo LF.'		ERROR! Illegal record ('.$tableName.':'.$rowSub['uid'].') under versioned page!';
 					} else {
 						$this->recStats['all'][$tableName][$rowSub['uid']] = $rowSub['uid'];
 
@@ -489,11 +489,11 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 							// Check location of records regarding tree root:
 						if (!$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] && $rootID==0) {
 							$this->recStats['misplaced_at_rootlevel'][$tableName][$rowSub['uid']] = $rowSub['uid'];
-							if ($echoLevel>1)	echo chr(10).'		ERROR! Misplaced record ('.$tableName.':'.$rowSub['uid'].') on rootlevel!';
+							if ($echoLevel>1)	echo LF.'		ERROR! Misplaced record ('.$tableName.':'.$rowSub['uid'].') on rootlevel!';
 						}
 						if ($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel']==1 && $rootID>0) {
 							$this->recStats['misplaced_inside_tree'][$tableName][$rowSub['uid']] = $rowSub['uid'];
-							if ($echoLevel>1)	echo chr(10).'		ERROR! Misplaced record ('.$tableName.':'.$rowSub['uid'].') inside page tree!';
+							if ($echoLevel>1)	echo LF.'		ERROR! Misplaced record ('.$tableName.':'.$rowSub['uid'].') inside page tree!';
 						}
 
 							// Traverse plugins:
@@ -507,7 +507,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 							if (is_array($versions))	{
 								foreach($versions as $verRec)	{
 									if (!$verRec['_CURRENT_VERSION'])	{
-										if ($echoLevel==3)	echo chr(10).'		\-[#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].'] '.$tableName.':'.$verRec['uid'].')';
+										if ($echoLevel==3)	echo LF.'		\-[#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].'] '.$tableName.':'.$verRec['uid'].')';
 										$this->recStats['all'][$tableName][$verRec['uid']] = $verRec['uid'];
 
 											// Register deleted:
@@ -527,11 +527,11 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 										}
 										if (!isset($this->workspaceIndex[$verRec['t3ver_wsid']]))	{
 											$this->recStats['versions_lost_workspace'][$tableName][$verRec['uid']] = $verRec['uid'];
-											if ($echoLevel>1)	echo chr(10).'		ERROR! Version ('.$tableName.':'.$verRec['uid'].') belongs to non-existing workspace ('.$verRec['t3ver_wsid'].')!';
+											if ($echoLevel>1)	echo LF.'		ERROR! Version ('.$tableName.':'.$verRec['uid'].') belongs to non-existing workspace ('.$verRec['t3ver_wsid'].')!';
 										}
 										if ($versionSwapmode)	{	// In case we are inside a versioned branch, there should not exists versions inside that "branch".
 											$this->recStats['versions_inside_versioned_page'][$tableName][$verRec['uid']] = $verRec['uid'];
-											if ($echoLevel>1)	echo chr(10).'		ERROR! This version ('.$tableName.':'.$verRec['uid'].') is inside an already versioned page or branch!';
+											if ($echoLevel>1)	echo LF.'		ERROR! This version ('.$tableName.':'.$verRec['uid'].') is inside an already versioned page or branch!';
 										}
 
 											// Traverse plugins:

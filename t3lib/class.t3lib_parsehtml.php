@@ -65,7 +65,7 @@
  * 1038:     function caseShift($str,$flag,$cacheKey='')
  * 1065:     function compileTagAttribs($tagAttrib,$meta=array(), $xhtmlClean=0)
  * 1093:     function get_tag_attributes_classic($tag,$deHSC=0)
- * 1106:     function indentLines($content, $number=1, $indentChar="\t")
+ * 1106:     function indentLines($content, $number=1, $indentChar=TAB)
  * 1123:     function HTMLparserConfig($TSconfig,$keepTags=array())
  * 1247:     function XHTML_clean($content)
  * 1269:     function processTag($value,$conf,$endTag,$protected=0)
@@ -1233,13 +1233,13 @@ class t3lib_parsehtml	{
 	 * @param	string		Indent character/string
 	 * @return	string		Indented code (typ. HTML)
 	 */
-	function indentLines($content, $number=1, $indentChar="\t")	{
+	function indentLines($content, $number=1, $indentChar=TAB)	{
 		$preTab = str_pad('', $number*strlen($indentChar), $indentChar);
-		$lines = explode(chr(10),str_replace(chr(13),'',$content));
+		$lines = explode(LF,str_replace(CR,'',$content));
 		foreach ($lines as $k => $v)	{
 			$lines[$k] = $preTab.$v;
 		}
-		return implode(chr(10), $lines);
+		return implode(LF, $lines);
 	}
 
 	/**

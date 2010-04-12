@@ -98,7 +98,7 @@ Reports problems with RTE images';
 
 			// Initialize result array:
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'completeFileList' => array('Complete list of used RTEmagic files','Both parent and copy are listed here including usage count (which should in theory all be "1"). This list does not exclude files that might be missing.',1),
 				'RTEmagicFilePairs' => array('Statistical info about RTEmagic files','(copy used as index)',0),
@@ -197,7 +197,7 @@ Reports problems with RTE images';
 		if (is_array($resultArray['doubleFiles']))	{
 			if (!$limitTo || $limitTo==='doubleFiles')	{
 
-				echo 'FIXING double-usages of RTE files in uploads/: '.chr(10);
+				echo 'FIXING double-usages of RTE files in uploads/: '.LF;
 				foreach($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
 
 						// Only fix something if there is a usage count of more than 1 plus if both original and copy exists:
@@ -207,7 +207,7 @@ Reports problems with RTE images';
 						$c=0;
 						foreach($fileInfo['usedIn'] as $hash => $recordID)	{
 							if ($c==0)	{
-								echo '	Keeping file '.$fileName.' for record '.$recordID.chr(10);
+								echo '	Keeping file '.$fileName.' for record '.$recordID.LF;
 							} else {
 									// CODE below is adapted from "class.tx_impexp.php" where there is support for duplication of RTE images:
 								echo '	Copying file '.basename($fileName).' for record '.$recordID.' ';
@@ -243,7 +243,7 @@ Reports problems with RTE images';
 												$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
 												$error = $sysRefObj->setReferenceValue($hash,substr($copyDestName,strlen(PATH_site)));
 												if ($error)	{
-													echo '	- ERROR:	t3lib_refindex::setReferenceValue(): '.$error.chr(10);
+													echo '	- ERROR:	t3lib_refindex::setReferenceValue(): '.$error.LF;
 													exit;
 												} else echo " - DONE";
 											} else {
@@ -252,19 +252,19 @@ Reports problems with RTE images';
 										}
 									} else echo '	- ERROR: Could not construct new unique names for file!';
 								} else echo '	- ERROR: Maybe directory of file was not within "uploads/"?';
-								echo chr(10);
+								echo LF;
 							}
 							$c++;
 						}
 					}
 				}
-			} else echo 'Bypassing fixing of double-usages since --AUTOFIX was not "doubleFiles"'.chr(10);
+			} else echo 'Bypassing fixing of double-usages since --AUTOFIX was not "doubleFiles"'.LF;
 		}
 
 
 		if (is_array($resultArray['lostFiles']))	{
 			if ($limitTo==='lostFiles')	{
-				echo 'Removing lost RTEmagic files from folders inside uploads/: '.chr(10);
+				echo 'Removing lost RTEmagic files from folders inside uploads/: '.LF;
 
 				foreach($resultArray['lostFiles'] as $key => $value)	{
 					$absFileName = t3lib_div::getFileAbsFileName($value);
@@ -279,10 +279,10 @@ Reports problems with RTE images';
 							echo '	ERROR: File "'.$absFileName.'" was not found!';
 						}
 					}
-					echo chr(10);
+					echo LF;
 				}
 			}
-		} else echo 'Bypassing fixing of double-usages since --AUTOFIX was not "lostFiles"'.chr(10);
+		} else echo 'Bypassing fixing of double-usages since --AUTOFIX was not "lostFiles"'.LF;
 	}
 
 	/**

@@ -150,7 +150,7 @@ class tx_rsaauth_cmdline_backend extends tx_rsaauth_abstract_backend {
 		@unlink($privateKeyFile);
 		@unlink($dataFile);
 
-		return implode(chr(10), $output);
+		return implode(LF, $output);
 	}
 
 	/**

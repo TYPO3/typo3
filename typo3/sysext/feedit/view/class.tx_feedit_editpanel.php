@@ -123,7 +123,7 @@ class tx_feedit_editpanel {
 				$labelTxt = $this->cObj->stdWrap($conf['label'],$conf['label.']);
 
 				foreach((array) $hiddenFields as $name => $value) {
-					$hiddenFieldString .= '<input type="hidden" name="TSFE_EDIT[' . $name . ']" value="' . $value . '"/>' . chr(10);
+					$hiddenFieldString .= '<input type="hidden" name="TSFE_EDIT[' . $name . ']" value="' . $value . '"/>' . LF;
 				}
 
 				$panel='

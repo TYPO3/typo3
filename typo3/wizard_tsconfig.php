@@ -549,7 +549,7 @@ class SC_wizard_tsconfig {
 			foreach($table['rows'] as $row)	{
 
 					// Linking:
-				$lP=t3lib_div::trimExplode(chr(10),$row['property'],1);
+				$lP=t3lib_div::trimExplode(LF,$row['property'],1);
 				$lP2=array();
 				while(list($k,$lStr)=each($lP))	{
 					$lP2[$k] = $this->linkProperty($lStr,$lStr,$objString,$row['datatype']);

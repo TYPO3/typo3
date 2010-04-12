@@ -158,11 +158,11 @@ class ModuleMenu {
 					$menu .= $this->renderSubModules($moduleData['subitems'], $menuState);
 				}
 
-				$menu .= '</li>' . "\n";
+				$menu .= '</li>' . LF;
 			}
 		}
 
-		return ($wrapInUl ? '<ul id="typo3-menu">' . "\n".$menu.'</ul>' . "\n" : $menu);
+		return ($wrapInUl ? '<ul id="typo3-menu">' . LF.$menu.'</ul>' . LF : $menu);
 	}
 
 	/**
@@ -216,10 +216,10 @@ class ModuleMenu {
 					.'</a>';
 			}
 
-			$moduleMenu .= '<li id="modmenu_' . $moduleData['name'] . '">' . $submoduleLink . '</li>' . "\n";
+			$moduleMenu .= '<li id="modmenu_' . $moduleData['name'] . '">' . $submoduleLink . '</li>' . LF;
 		}
 
-		return '<ul'.($menuState ? ' style="display:none;"' : '').'>'."\n".$moduleMenu.'</ul>'."\n";
+		return '<ul'.($menuState ? ' style="display:none;"' : '').'>'.LF.$moduleMenu.'</ul>'.LF;
 	}
 
 	/**
@@ -501,7 +501,7 @@ class ModuleMenu {
 		var modScriptURL = "";
 
 		switch(modName)	{'
-			."\n".implode("\n", $moduleJavascriptCommands)."\n".'
+			.LF.implode(LF, $moduleJavascriptCommands).LF.'
 		}
 		';
 

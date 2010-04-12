@@ -105,7 +105,7 @@ class tx_opendocs implements backend_toolbarItem {
 		$opendocsMenu[] = $this->renderMenu();
 		$opendocsMenu[] = '</div>';
 
-		return implode("\n", $opendocsMenu);
+		return implode(LF, $opendocsMenu);
 	}
 
 	/**

@@ -149,7 +149,7 @@ STEP2: Build your cleaner class:
 				// Initialize result array:
 			$resultArray = array(
 				'message' => $this->cli_help['name'].
-							chr(10).chr(10).
+							LF.LF.
 							$this->cli_help['description'],
 				'headers' => array(
 					'SOME_ANALYSIS_1' => array('HEADER','DESCRIPTION',VERBOSITY_LEVEL 0-3),

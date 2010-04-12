@@ -1336,7 +1336,7 @@ final class t3lib_BEfunc {
 		}
 
 			// Parsing the page TS-Config (or getting from cache)
-		$pageTS = implode(chr(10) . '[GLOBAL]' . chr(10), $TSdataArray);
+		$pageTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions']) {
 			/* @var $parseObj t3lib_TSparser_TSconfig */
 			$parseObj = t3lib_div::makeInstance('t3lib_TSparser_TSconfig');
@@ -1401,7 +1401,7 @@ final class t3lib_BEfunc {
 			if (count($set)) {
 					// Get page record and TS config lines
 				$pRec = t3lib_befunc::getRecord('pages', $id);
-				$TSlines = explode(chr(10), $pRec['TSconfig']);
+				$TSlines = explode(LF, $pRec['TSconfig']);
 				$TSlines = array_reverse($TSlines);
 					// Reset the set of changes.
 				reset($set);
@@ -1424,7 +1424,7 @@ final class t3lib_BEfunc {
 				$TSlines = array_reverse($TSlines);
 
 					// store those changes
-				$TSconf = implode(chr(10), $TSlines);
+				$TSconf = implode(LF, $TSlines);
 
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('pages', 'uid='.intval($id), array('TSconfig' => $TSconf));
 			}
@@ -2926,7 +2926,7 @@ final class t3lib_BEfunc {
 			}
 		}
 
-		$content = implode(chr(10), $signals);
+		$content = implode(LF, $signals);
 
 		t3lib_BEfunc::setUpdateSignal();	// for backwards compatibility, should be replaced
 		return $content;
@@ -4366,7 +4366,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function processParams($params) {
 		$paramArr = array();
-		$lines = explode(chr(10), $params);
+		$lines = explode(LF, $params);
 		while(list(,$val) = each($lines)) {
 			$val = trim($val);
 			if ($val) {

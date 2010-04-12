@@ -139,7 +139,7 @@ class SC_alt_topmenu_dummy {
 					<tr>';
 
 			foreach ($contentArray as $key=>$menucontent)	{
-				$this->content .= implode(chr(10), $menucontent);
+				$this->content .= implode(LF, $menucontent);
 			}
 
 			$this->content.='

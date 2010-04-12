@@ -160,7 +160,7 @@ class t3lib_admin {
 
 				// Build HTML output:
 			if ($this->genTree_makeHTML)	{
-				$this->genTree_HTML.=chr(10).'<div><span class="nobr">';
+				$this->genTree_HTML.=LF.'<div><span class="nobr">';
 				$PM = 'join';
 				$LN = ($a==$c)?'blank':'line';
 				$BTM = ($a==$c)?'bottom':'';
@@ -250,7 +250,7 @@ class t3lib_admin {
 
 				// Build HTML output:
 			if ($this->genTree_makeHTML)	{
-				$this->genTree_HTML.=chr(10).'<div><span class="nobr">';
+				$this->genTree_HTML.=LF.'<div><span class="nobr">';
 				$PM = 'join';
 				$LN = ($a==$c)?'blank':'line';
 				$BTM = ($a==$c)?'bottom':'';

@@ -464,7 +464,7 @@ class t3lib_flexformtools {
 		$output = t3lib_div::array2xml($array,'',0,'T3FlexForms', $spaceInd, $options);
 
 		if ($addPrologue)	{
-			$output = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>'.chr(10).$output;
+			$output = '<?xml version="1.0" encoding="'.$GLOBALS['LANG']->charSet.'" standalone="yes" ?>'.LF.$output;
 		}
 
 		return $output;

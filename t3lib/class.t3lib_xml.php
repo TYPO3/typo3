@@ -120,7 +120,7 @@ class t3lib_xml {
 	 * @return	string
 	 */
 	function getResult()	{
-		$content = implode(chr(10),$this->lines);
+		$content = implode(LF,$this->lines);
 		return $this->output($content);
 	}
 
@@ -209,7 +209,7 @@ class t3lib_xml {
 		if ($b)	$this->XMLIndent++; else $this->XMLIndent--;
 		$this->Icode='';
 		for ($a=0;$a<$this->XMLIndent;$a++)	{
-			$this->Icode.=chr(9);
+			$this->Icode.=TAB;
 		}
 		return $this->Icode;
 	}
@@ -245,7 +245,7 @@ class t3lib_xml {
 	/**
 	 * Internal function for adding the actual content of the $row from $table to the internal structure.
 	 * Notice that only fields from $table that are listed in $this->XML_recFields[$table] (set by setRecFields()) will be rendered (and in the order found in that array!)
-	 * Content from the row will be htmlspecialchar()'ed, UTF-8 encoded and have chr(10) (newlines) exchanged for '<newline/>' tags. The element name for a value equals the fieldname from the record.
+	 * Content from the row will be htmlspecialchar()'ed, UTF-8 encoded and have LF (newlines) exchanged for '<newline/>' tags. The element name for a value equals the fieldname from the record.
 	 *
 	 * @param	string		Table name
 	 * @param	array		Row from table to add.
@@ -273,13 +273,13 @@ class t3lib_xml {
 	}
 
 	/**
-	 * Substitutes chr(10) characters with a '<newline/>' tag.
+	 * Substitutes LF characters with a '<newline/>' tag.
 	 *
 	 * @param	string		Input value
 	 * @return	string		Processed input value
 	 */
 	function substNewline($string)	{
-		return str_replace(chr(10),'<newline/>',$string);
+		return str_replace(LF,'<newline/>',$string);
 	}
 
 	/**

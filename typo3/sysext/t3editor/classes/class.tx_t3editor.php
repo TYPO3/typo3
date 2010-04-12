@@ -144,11 +144,11 @@ class tx_t3editor implements t3lib_Singleton {
 
 			$content .= t3lib_div::wrapJS(
 				'T3editor = T3editor || {};' .
-				'T3editor.lang = ' . json_encode($this->getJavaScriptLabels()) .';' . chr(10).
-				'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . '"; ' . chr(10).
-				'T3editor.URL_typo3 = "' . htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . '"; ' .chr(10).
-				'T3editor.template = '. $this->getPreparedTemplate() .';' .chr(10).
-				'T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' .chr(10). 
+				'T3editor.lang = ' . json_encode($this->getJavaScriptLabels()) .';' . LF.
+				'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . '"; ' . LF.
+				'T3editor.URL_typo3 = "' . htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . '"; ' .LF.
+				'T3editor.template = '. $this->getPreparedTemplate() .';' .LF.
+				'T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' .LF. 
 				'T3editor.stylesheet = ' . $this->getStylesheetByMode($this->mode) . ';'
 			);
 		}
@@ -168,7 +168,7 @@ class tx_t3editor implements t3lib_Singleton {
 			)
 		);
 		$T3Editor_template = addslashes($T3Editor_template);
-		$T3Editor_template = str_replace("\n", "' + '", $T3Editor_template);
+		$T3Editor_template = str_replace(LF, "' + '", $T3Editor_template);
 
 		return '\'' . $T3Editor_template . '\'';
 	}

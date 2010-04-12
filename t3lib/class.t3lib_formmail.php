@@ -144,14 +144,14 @@ class t3lib_formmail extends t3lib_htmlmail {
 				reset($V);
 				while (list($key,$val)=each($V))	{
 					if (!t3lib_div::inList($this->reserved_names,$key))	{
- 						$space = (strlen($val)>60)?chr(10):'';
-						$val = (is_array($val) ? implode($val,chr(10)) : $val);
+ 						$space = (strlen($val)>60)?LF:'';
+						$val = (is_array($val) ? implode($val,LF) : $val);
 
 							// convert form data from renderCharset to mail charset (HTML may use entities)
 						$Plain_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv($val,$GLOBALS['TSFE']->renderCharset,$this->charset,0) : $val;
 						$HTML_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv(htmlspecialchars($val),$GLOBALS['TSFE']->renderCharset,$this->charset,1) : htmlspecialchars($val);
 
-						$Plain_content.= strtoupper($key).':  '.$space.$Plain_val."\n".$space;
+						$Plain_content.= strtoupper($key).':  '.$space.$Plain_val.LF.$space;
 						$HTML_content.= '<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br($HTML_val).'&nbsp;</font></td></tr>';
 					}
 				}

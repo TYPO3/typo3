@@ -261,7 +261,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 							);
 							t3lib_FlashMessageQueue::addMessage($propertyAddedMessage);
 
-							$line.=chr(10).$pline;
+							$line.=LF.$pline;
 						}
 					} elseif ($POST['update_value']) {
 						$pline = $name . " = " . trim($POST['data'][$name]['value']);
@@ -273,7 +273,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 						);
 						t3lib_FlashMessageQueue::addMessage($updatedMessage);
 
-						$line .= chr(10) . $pline;
+						$line .= LF . $pline;
 					} elseif ($POST['clear_object']) {
 						if ($POST['data'][$name]['clearValue'])	{
 							$pline = $name . ' >';
@@ -285,7 +285,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 							);
 							t3lib_FlashMessageQueue::addMessage($objectClearedMessage);
 
-							$line .= chr(10) . $pline;
+							$line .= LF . $pline;
 						}
 					}
 				}

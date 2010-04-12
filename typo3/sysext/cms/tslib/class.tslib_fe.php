@@ -1508,7 +1508,7 @@
 				if ($reason == '') {
 					$reason = 'Page cannot be found.';
 				}
-				$reason.= chr(10) . chr(10) . 'Additionally, ' . $code . ' was not found while trying to retrieve the error document.';
+				$reason.= LF . LF . 'Additionally, ' . $code . ' was not found while trying to retrieve the error document.';
 				$this->printError('Reason: '.nl2br(htmlspecialchars($reason)));
 				exit();
 			}
@@ -1521,8 +1521,8 @@
 			$res = t3lib_div::getURL($code, 1, $headerArr);
 
 				// Header and content are separated by an empty line
-			list($header, $content) = explode("\r\n\r\n", $res, 2);
-			$content.= "\r\n";
+			list($header, $content) = explode(CRLF . CRLF, $res, 2);
+			$content.= CRLF;
 
 			if (false === $res) {
 					// Last chance -- redirect
@@ -1561,7 +1561,7 @@
 						$base.= preg_replace('/(.*\/)[^\/]*/', '${1}', $url_parts['path']);
 
 							// Put it into content (generate also <head> if necessary)
-						$replacement = chr(10) . '<base href="' . htmlentities($base) . '" />' . chr(10);
+						$replacement = LF . '<base href="' . htmlentities($base) . '" />' . LF;
 						if (stristr($content, '<head>'))	{
 							$content = preg_replace('/(<head>)/i', '\1' . $replacement, $content);
 						} else {
@@ -1915,7 +1915,7 @@
 							$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
 							$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
 
-							$this->content.= chr(10).'<!-- Cached page generated '.date($dateFormat.' '.$timeFormat, $row['tstamp']).'. Expires '.Date($dateFormat.' '.$timeFormat, $row['expires']).' -->';
+							$this->content.= LF.'<!-- Cached page generated '.date($dateFormat.' '.$timeFormat, $row['tstamp']).'. Expires '.Date($dateFormat.' '.$timeFormat, $row['expires']).' -->';
 						}
 					}
 				$GLOBALS['TT']->pull();
@@ -2773,7 +2773,7 @@
 			$padSuffix = '<!--pad-->';	// prevent any trims
 			$padSize = 768 - strlen($padSuffix) - strlen($temp_content);
 			if ($padSize > 0) {
-				$temp_content = str_pad($temp_content, $padSize, "\n") . $padSuffix;
+				$temp_content = str_pad($temp_content, $padSize, LF) . $padSuffix;
 			}
 
 			if (!$this->headerNoCache() && $cachedRow = $this->getFromCache_queryRow())	{
@@ -3192,7 +3192,7 @@
 
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
-		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(chr(10),$this->additionalHeaderData),'HD'), $this->content);
+		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF,$this->additionalHeaderData),'HD'), $this->content);
 		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection,'TDS'), $this->content);
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
@@ -3285,7 +3285,7 @@ if (version == "n3") {
 <script type="text/javascript">
 	/*<![CDATA[*/
 <!--
-'.implode(chr(10),$this->additionalJavaScript).'
+'.implode(LF,$this->additionalJavaScript).'
 '.trim($this->JSCode).'
 // -->
 	/*]]>*/
@@ -3296,7 +3296,7 @@ if (version == "n3") {
 <style type="text/css">
 	/*<![CDATA[*/
 <!--
-'.implode(chr(10),$this->additionalCSS).'
+'.implode(LF,$this->additionalCSS).'
 // -->
 	/*]]>*/
 </style>';
@@ -3814,7 +3814,7 @@ if (version == "n3") {
 
 						$GLOBALS['TT']->push('Write to log file (fputs)');
 							$logfilehandle = fopen($this->config['stat_vars']['logFile'], 'a');
-							fputs($logfilehandle, $LogLine.chr(10));
+							fputs($logfilehandle, $LogLine.LF);
 							@fclose($logfilehandle);
 						$GLOBALS['TT']->pull();
 
@@ -4283,7 +4283,7 @@ if (version == "n3") {
 
 			exec ($this->TYPO3_CONF_VARS['FE']['tidy_path'].' '.$fname, $output);			// run the $content through 'tidy', which formats the HTML to nice code.
 			@unlink ($fname);	// Delete the tempfile again
-			$content = implode(chr(10),$output);
+			$content = implode(LF,$output);
 			if (!trim($content))	{
 				$content = $oldContent;	// Restore old content due empty return value.
 				$GLOBALS['TT']->setTSlogMessage('"tidy" returned an empty value!',2);
@@ -4453,7 +4453,7 @@ if (version == "n3") {
 			}
 				// Parsing the user TS (or getting from cache)
 			$TSdataArray = t3lib_TSparser::checkIncludeLines_array($TSdataArray);
-			$userTS = implode(chr(10).'[GLOBAL]'.chr(10),$TSdataArray);
+			$userTS = implode(LF.'[GLOBAL]'.LF,$TSdataArray);
 			$hash = md5('pageTS:'.$userTS);
 			$cachedContent = $this->sys_page->getHash($hash);
 			if (isset($cachedContent))	{

@@ -576,11 +576,11 @@ class SC_mod_user_setup_index {
 					if ($config['itemsProcFunc']) {
 						$html = t3lib_div::callUserFunction($config['itemsProcFunc'], $config, $this, '');
 					} else {
-						$html = '<select id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . chr(10);
+						$html = '<select id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . LF;
 						foreach ($config['items'] as $key => $optionLabel) {
 							$html .= '<option value="' . $key . '"' .
 								($value == $key ? ' selected="selected"' : '') .
-								'>' . $this->getLabel($optionLabel, '', false) . '</option>' . chr(10);
+								'>' . $this->getLabel($optionLabel, '', false) . '</option>' . LF;
 						}
 						$html .= '</select>';
 					}
@@ -651,7 +651,7 @@ class SC_mod_user_setup_index {
 
 			// compile the languages dropdown
 		$languageOptions = array(
-			'000000000' => chr(10) . '<option value="">' . $GLOBALS['LANG']->getLL('lang_default', 1) . '</option>'
+			'000000000' => LF . '<option value="">' . $GLOBALS['LANG']->getLL('lang_default', 1) . '</option>'
 		);
 			// traverse the number of languages
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);

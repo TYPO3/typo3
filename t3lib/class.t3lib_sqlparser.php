@@ -135,7 +135,7 @@ class t3lib_sqlparser {
 			// Finding starting keyword of string:
 		$_parseString = $parseString;	// Protecting original string...
 		$keyword = $this->nextPart($_parseString, '^(SELECT|UPDATE|INSERT[[:space:]]+INTO|DELETE[[:space:]]+FROM|EXPLAIN|DROP[[:space:]]+TABLE|CREATE[[:space:]]+TABLE|CREATE[[:space:]]+DATABASE|ALTER[[:space:]]+TABLE|TRUNCATE[[:space:]]+TABLE)[[:space:]]+');
-		$keyword = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$keyword));
+		$keyword = strtoupper(str_replace(array(' ',TAB,CR,LF),'',$keyword));
 
 		switch($keyword)	{
 			case 'SELECT':
@@ -481,7 +481,7 @@ class t3lib_sqlparser {
 				// While the parseString is not yet empty:
 			while(strlen($parseString)>0)	{
 				if ($key = $this->nextPart($parseString, '^(KEY|PRIMARY KEY|UNIQUE KEY|UNIQUE)([[:space:]]+|\()'))	{	// Getting key
-					$key = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$key));
+					$key = strtoupper(str_replace(array(' ',TAB,CR,LF),'',$key));
 
 					switch($key)	{
 						case 'PRIMARYKEY':
@@ -557,7 +557,7 @@ class t3lib_sqlparser {
 
 		if ($result['TABLE'])	{
 			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|DROP|ADD|RENAME)([[:space:]]+|\()'))	{
-				$actionKey = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$result['action']));
+				$actionKey = strtoupper(str_replace(array(' ',TAB,CR,LF),'',$result['action']));
 
 					// Getting field:
 				if (t3lib_div::inList('ADDPRIMARYKEY,DROPPRIMARYKEY',$actionKey) || $fieldKey = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+'))	{
@@ -832,7 +832,7 @@ class t3lib_sqlparser {
 
 					// Looking for stop-keywords:
 				if ($stopRegex && $this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex))	{
-					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$this->lastStopKeyWord));
+					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',TAB,CR,LF),'',$this->lastStopKeyWord));
 					return $stack;
 				}
 
@@ -917,7 +917,7 @@ class t3lib_sqlparser {
 			if ($stack[$pnt]['table'] = $this->nextPart($parseString,'^([[:alnum:]_]+)(,|[[:space:]]+)')) {
 					// Looking for stop-keywords before fetching potential table alias:
 				if ($stopRegex && ($this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex))) {
-					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"), '', $this->lastStopKeyWord));
+					$this->lastStopKeyWord = strtoupper(str_replace(array(' ',TAB,CR,LF), '', $this->lastStopKeyWord));
 					return $stack;
 				}
 				if (!preg_match('/^(LEFT|RIGHT|JOIN|INNER)[[:space:]]+/i', $parseString)) {
@@ -969,7 +969,7 @@ class t3lib_sqlparser {
 
 				// Looking for stop-keywords:
 			if ($stopRegex && $this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex)) {
-				$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"), '', $this->lastStopKeyWord));
+				$this->lastStopKeyWord = strtoupper(str_replace(array(' ',TAB,CR,LF), '', $this->lastStopKeyWord));
 				return $stack;
 			}
 
@@ -1230,7 +1230,7 @@ class t3lib_sqlparser {
 
 						// Looking for stop-keywords:
 					if ($stopRegex && $this->lastStopKeyWord = $this->nextPart($parseString, $stopRegex)) {
-						$this->lastStopKeyWord = strtoupper(str_replace(array(' ',"\t","\r","\n"), '', $this->lastStopKeyWord));
+						$this->lastStopKeyWord = strtoupper(str_replace(array(' ',TAB,CR,LF), '', $this->lastStopKeyWord));
 						return $stack[0];
 					} else {
 						return $this->parseError('No operator, but parsing not finished in parseWhereClause().', $parseString);
@@ -1278,7 +1278,7 @@ class t3lib_sqlparser {
 
 				// Looking for keywords
 			while($keyword = $this->nextPart($parseString,'^(DEFAULT|NOT[[:space:]]+NULL|AUTO_INCREMENT|UNSIGNED)([[:space:]]+|,|\))'))	{
-				$keywordCmp = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$keyword));
+				$keywordCmp = strtoupper(str_replace(array(' ',TAB,CR,LF),'',$keyword));
 
 				$result['featureIndex'][$keywordCmp]['keyword'] = $keyword;
 
@@ -1339,7 +1339,7 @@ class t3lib_sqlparser {
 	protected function getValue(&$parseString, $comparator = '', $mode = '') {
 		$value = '';
 
-		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(str_replace(array(' ',"\n","\r","\t"),'',$comparator))))	{	// List of values:
+		if (t3lib_div::inList('NOTIN,IN,_LIST',strtoupper(str_replace(array(' ',LF,CR,TAB),'',$comparator))))	{	// List of values:
 			if ($this->nextPart($parseString,'^([(])'))	{
 				$listValues = array();
 				$comma=',';
@@ -1694,7 +1694,7 @@ class t3lib_sqlparser {
 		$query = 'ALTER TABLE '.$components['TABLE'].' '.$components['action'].' '.($components['FIELD']?$components['FIELD']:$components['KEY']);
 
 			// Based on action, add the final part:
-		switch(strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$components['action'])))	{
+		switch(strtoupper(str_replace(array(' ',TAB,CR,LF),'',$components['action'])))	{
 			case 'ADD':
 				$query.=' '.$this->compileFieldCfg($components['definition']);
 			break;
@@ -1929,7 +1929,7 @@ class t3lib_sqlparser {
 						$output .= ' ' . $v['comparator'];
 
 							// Detecting value type; list or plain:
-						if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
+						if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
 							if (isset($v['subquery'])) {
 								$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
 							} else {
@@ -2062,10 +2062,10 @@ class t3lib_sqlparser {
 #		$str1 = stripslashes($str1);
 #		$str2 = stripslashes($str2);
 
-		if (strcmp(str_replace(array(' ',"\t","\r","\n"),'',$this->trimSQL($str1)),str_replace(array(' ',"\t","\r","\n"),'',$this->trimSQL($str2))))	{
+		if (strcmp(str_replace(array(' ',TAB,CR,LF),'',$this->trimSQL($str1)),str_replace(array(' ',TAB,CR,LF),'',$this->trimSQL($str2))))	{
 			return array(
-					str_replace(array(' ',"\t","\r","\n"),' ',$str),
-					str_replace(array(' ',"\t","\r","\n"),' ',$newStr),
+					str_replace(array(' ',TAB,CR,LF),' ',$str),
+					str_replace(array(' ',TAB,CR,LF),' ',$newStr),
 				);
 		}
 	}

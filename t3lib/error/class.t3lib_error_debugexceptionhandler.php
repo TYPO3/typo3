@@ -130,8 +130,8 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 		$exceptionCodeNumber = ($exception->getCode() > 0) ? '#' . $exception->getCode() . ': ' : '';
 		$this->writeLogEntries($exception, self::CONTEXT_CLI);
 
-		echo "\nUncaught TYPO3 Exception " . $exceptionCodeNumber . $exception->getMessage() . "\n";
-		echo "thrown in file " . $filePathAndName . "\n";
+		echo "\nUncaught TYPO3 Exception " . $exceptionCodeNumber . $exception->getMessage() . LF;
+		echo "thrown in file " . $filePathAndName . LF;
 		echo "in line " . $exception->getLine() . "\n\n";
 	}
 
@@ -158,7 +158,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 							$preparedArgument = (strlen($argument) < 100) ? $argument : substr($argument, 0, 50) . '#tripleDot#' . substr($argument, -50);
 							$preparedArgument = htmlspecialchars($preparedArgument);
 							$preparedArgument = str_replace('#tripleDot#', '<span style="color:white;">&hellip;</span>', $preparedArgument);
-							$preparedArgument = str_replace(chr(10), '<span style="color:white;">&crarr;</span>', $preparedArgument);
+							$preparedArgument = str_replace(LF, '<span style="color:white;">&crarr;</span>', $preparedArgument);
 							$arguments .= '"<span style="color:#FF8700;" title="' . htmlspecialchars($argument) . '">' . $preparedArgument . '</span>"';
 						} elseif (is_numeric($argument)) {
 							$arguments .= '<span style="color:#FF8700;">' . (string)$argument . '</span>';
@@ -199,7 +199,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 				if ($endLine > $startLine) {
 					$codeSnippet = '<br /><span style="font-size:10px;">' . $filePathAndName . ':</span><br /><pre>';
 					for ($line = $startLine; $line < $endLine; $line++) {
-						$codeLine = str_replace("\t", ' ', $phpFile[$line-1]);
+						$codeLine = str_replace(TAB, ' ', $phpFile[$line-1]);
 
 						if ($line === $lineNumber) {
 							$codeSnippet .= '</pre><pre style="background-color: #F1F1F1; color: black;">';

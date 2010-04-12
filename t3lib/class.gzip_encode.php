@@ -225,7 +225,7 @@ class gzip_encode {
 
 			// By Kasper Skaarhoj, start
 		if ($outputCompressedSizes)	{
-			$contents.=chr(10)."<!-- Compressed, level ".$level.", original size was ".strlen($contents)." bytes. New size is ".strlen(gzcompress($contents, $level))." bytes -->";
+			$contents.=LF."<!-- Compressed, level ".$level.", original size was ".strlen($contents)." bytes. New size is ".strlen(gzcompress($contents, $level))." bytes -->";
 			$size = strlen($contents);	// Must set again!
 		}
 			// By Kasper Skaarhoj, end

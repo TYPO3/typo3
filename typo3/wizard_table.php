@@ -359,7 +359,7 @@ class SC_wizard_table {
 					if ($this->inputStyle)	{
 						$cells[]='<input type="text"'.$this->doc->formWidth(20).' name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']" value="'.htmlspecialchars($cellContent).'" />';
 					} else {
-						$cellContent=preg_replace('/<br[ ]?[\/]?>/i',chr(10),$cellContent);
+						$cellContent=preg_replace('/<br[ ]?[\/]?>/i',LF,$cellContent);
 						$cells[]='<textarea '.$this->doc->formWidth(20).' rows="5" name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']">'.t3lib_div::formatForTextarea($cellContent).'</textarea>';
 					}
 
@@ -588,7 +588,7 @@ class SC_wizard_table {
 		while(list($a)=each($this->TABLECFG['c']))	{
 			reset($this->TABLECFG['c'][$a]);
 			while(list($b)=each($this->TABLECFG['c'][$a]))	{
-				$this->TABLECFG['c'][$a][$b] = str_replace(chr(10),'<br />',str_replace(chr(13),'',$this->TABLECFG['c'][$a][$b]));
+				$this->TABLECFG['c'][$a][$b] = str_replace(LF,'<br />',str_replace(CR,'',$this->TABLECFG['c'][$a][$b]));
 			}
 		}
 	}
@@ -617,7 +617,7 @@ class SC_wizard_table {
 		}
 
 			// Finally, implode the lines into a string:
-		$bodyText = implode(chr(10),$inLines);
+		$bodyText = implode(LF,$inLines);
 
 			// Return the configuration code:
 		return $bodyText;
@@ -634,7 +634,7 @@ class SC_wizard_table {
 	function cfgString2CfgArray($cfgStr,$cols)	{
 
 			// Explode lines in the configuration code - each line is a table row.
-		$tLines=explode(chr(10),$cfgStr);
+		$tLines=explode(LF,$cfgStr);
 
 			// Setting number of columns
 		if (!$cols && trim($tLines[0]))	{	// auto...

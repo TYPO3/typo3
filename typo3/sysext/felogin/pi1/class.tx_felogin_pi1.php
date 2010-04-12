@@ -481,7 +481,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 			$onSubmit = implode('; ', $onSubmitAr).'; return true;';
 		}
 		if (count($extraHiddenAr)) {
-			$extraHidden = implode(chr(10), $extraHiddenAr);
+			$extraHidden = implode(LF, $extraHiddenAr);
 		}
 
 		if (!$gpRedirectUrl && $this->redirectUrl) {

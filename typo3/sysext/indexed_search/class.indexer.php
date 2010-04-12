@@ -942,7 +942,7 @@ class tx_indexedsearch_indexer {
 
 		if (strlen($content))	{
 				// Compile headers:
-			$headers = t3lib_div::trimExplode(chr(10),$content,1);
+			$headers = t3lib_div::trimExplode(LF,$content,1);
 			$retVal = array();
 			foreach($headers as $line)	{
 				if (!strlen(trim($line)))	{
@@ -1224,7 +1224,7 @@ class tx_indexedsearch_indexer {
 		if ($maxL)	{
 				// Takes the quadruple lenght first, because whitespace and entities may be removed and thus shorten the string more yet.
 	#		$bodyDescription = implode(' ',split('[[:space:],]+',substr(trim($contentArr['body']),0,$maxL*4)));
-			$bodyDescription = str_replace(array(' ',"\t","\r","\n"),' ',$contentArr['body']);
+			$bodyDescription = str_replace(array(' ',TAB,CR,LF),' ',$contentArr['body']);
 
 				// Shorten the string:
 			$bodyDescription = $this->csObj->strtrunc('utf-8', $bodyDescription, $maxL);

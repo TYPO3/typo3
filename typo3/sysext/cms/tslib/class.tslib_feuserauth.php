@@ -326,7 +326,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		if (!$this->userTSUpdated) {
 				// Parsing the user TS (or getting from cache)
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
-			$userTS = implode(chr(10).'[GLOBAL]'.chr(10),$this->TSdataArray);
+			$userTS = implode(LF.'[GLOBAL]'.LF,$this->TSdataArray);
 			$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 			$parseObj->parse($userTS);
 			$this->userTS = $parseObj->setup;

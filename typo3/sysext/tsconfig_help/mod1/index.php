@@ -541,10 +541,10 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			$node = $vals[$id];
 
 			// sanity check
-			if ($sectionHeader < 0)	die ('Malformed XML (header-rows)'."\n");
-			if ($sectionRow < 0)	die ('Malformed XML (row)'."\n");
-			if ($sectionCell < 0)	die ('Malformed XML (cell)'."\n");
-			if ($sectionP < 0)		die ('Malformed XML (P)'."\n");
+			if ($sectionHeader < 0)	die ('Malformed XML (header-rows)'.LF);
+			if ($sectionRow < 0)	die ('Malformed XML (row)'.LF);
+			if ($sectionCell < 0)	die ('Malformed XML (cell)'.LF);
+			if ($sectionP < 0)		die ('Malformed XML (P)'.LF);
 
 			switch ($node['type'])	{
 				case 'open':

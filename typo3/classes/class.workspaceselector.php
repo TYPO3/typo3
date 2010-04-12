@@ -240,7 +240,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 
 		$workspaceMenu[] = '</ul>';
 
-		return implode("\n", $workspaceMenu);
+		return implode(LF, $workspaceMenu);
 	}
 
 	/**

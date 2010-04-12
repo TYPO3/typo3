@@ -94,7 +94,7 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 			}
 
 			$actionMenu[] = '</ul>';
-			return implode("\n", $actionMenu);
+			return implode(LF, $actionMenu);
 		} else {
 			return '';
 		}

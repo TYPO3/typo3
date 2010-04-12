@@ -313,7 +313,7 @@ class tslib_AdminPanel {
 					<input type="hidden" name="TSFE_ADMIN_PANEL[display_top]" value="' . $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] . '" />' . ($this->extNeedUpdate ? '<input type="submit" value="' . $this->extGetLL('update') . '" />' : '') . '</td>
 			</tr>';
 
-		$query = !t3lib_div::_GET('id') ? ('<input type="hidden" name="id" value="' . $GLOBALS['TSFE']->id . '" />' . chr(10)) : '';
+		$query = !t3lib_div::_GET('id') ? ('<input type="hidden" name="id" value="' . $GLOBALS['TSFE']->id . '" />' . LF) : '';
 			// the dummy field is needed for Firefox: to force a page reload on submit with must change the form value with JavaScript (see "onsubmit" attribute of the "form" element")
 		$query .= '<input type="hidden" name="TSFE_ADMIN_PANEL[DUMMY]" value="">';
 		foreach (t3lib_div::_GET() as $key => $value) {
@@ -321,7 +321,7 @@ class tslib_AdminPanel {
 				if (is_array($value)) {
 					$query .= $this->getHiddenFields($key, $value);
 				} else {
-					$query .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($value) . '">' . chr(10);
+					$query .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($value) . '">' . LF;
 				}
 			}
 		}
@@ -399,7 +399,7 @@ $query . '
 			if (is_array($v)) {
 				$out .= $this->getHiddenFields($key . '[' . $k . ']', $v);
 			} else {
-				$out .= '<input type="hidden" name="' . $key . '[' . $k . ']" value="' . htmlspecialchars($v) . '">' . chr(10);
+				$out .= '<input type="hidden" name="' . $key . '[' . $k . ']" value="' . htmlspecialchars($v) . '">' . LF;
 			}
 		}
 		return $out;

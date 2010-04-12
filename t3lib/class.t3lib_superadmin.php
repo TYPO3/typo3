@@ -848,7 +848,7 @@ class t3lib_superadmin {
 				// List of those extension keys in a form field:
 			$extensionKeysCollect = array_unique($extensionKeysCollect);
 			asort($extensionKeysCollect);
-			$out.='<form action=""><textarea cols="80" rows="10">'.implode(chr(10),$extensionKeysCollect).'</textarea></form>';
+			$out.='<form action=""><textarea cols="80" rows="10">'.implode(LF,$extensionKeysCollect).'</textarea></form>';
 
 				// USER extension (prefixed "user_")
 			$out.='<br />
@@ -1094,7 +1094,7 @@ class t3lib_superadmin {
 
 			// debug($row);
 		}
-		return '<pre>'.implode(chr(10),$lines).'</pre>';
+		return '<pre>'.implode(LF,$lines).'</pre>';
 	}
 
 	/**

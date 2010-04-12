@@ -1938,7 +1938,7 @@ class tx_cms_layout extends recordList {
 	 */
 	function infoGif($infoArr)	{
 		if (count($infoArr) && $this->tt_contentConfig['showInfo'])	{
-			$out='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' title="'.htmlspecialchars(implode(chr(10),$infoArr)).'" alt="" /> ';
+			$out='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' title="'.htmlspecialchars(implode(LF,$infoArr)).'" alt="" /> ';
 			return $out;
 		}
 	}
@@ -2323,7 +2323,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		Processed output.
 	 */
 	function wordWrapper($content,$max=50,$char=' -')	{
-		$array = preg_split('/[ ' . chr(10) . ']/', $content);
+		$array = preg_split('/[ ' . LF . ']/', $content);
 		foreach($array as $val)	{
 			if (strlen($val)>$max)	{
 				$content=str_replace($val,substr(chunk_split($val,$max,$char),0,-1),$content);
@@ -2702,7 +2702,7 @@ class tx_cms_layout extends recordList {
 		if($fillEmptyContent && strstr($content, '><'))	{
 			$content = preg_replace('/(<[^ >]* )([^ >]*)([^>]*>)(<\/[^>]*>)/', '$1$2$3$2$4', $content);
 		}
-		$content = preg_replace('/<br.?\/?>/', chr(10), $content);
+		$content = preg_replace('/<br.?\/?>/', LF, $content);
 
 		return strip_tags($content);
 	}

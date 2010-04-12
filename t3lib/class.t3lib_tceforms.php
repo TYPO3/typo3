@@ -326,8 +326,8 @@ class t3lib_TCEforms	{
 
 		$this->RTEenabled = $GLOBALS['BE_USER']->isRTE();
 		if (!$this->RTEenabled)	{
-			$this->RTEenabled_notReasons = implode(chr(10),$GLOBALS['BE_USER']->RTE_errors);
-			$this->commentMessages[] = 'RTE NOT ENABLED IN SYSTEM due to:'.chr(10).$this->RTEenabled_notReasons;
+			$this->RTEenabled_notReasons = implode(LF,$GLOBALS['BE_USER']->RTE_errors);
+			$this->commentMessages[] = 'RTE NOT ENABLED IN SYSTEM due to:'.LF.$this->RTEenabled_notReasons;
 		}
 
 			// Default color+class scheme
@@ -1240,7 +1240,7 @@ class t3lib_TCEforms	{
 		$origRows = $rows = t3lib_div::intInRange($config['rows'] ? $config['rows'] : 5, 1, 20);
 		if (strlen($PA['itemFormElValue']) > $this->charsPerRow*2)	{
 			$cols = $this->maxTextareaWidth;
-			$rows = t3lib_div::intInRange(round(strlen($PA['itemFormElValue'])/$this->charsPerRow), count(explode(chr(10),$PA['itemFormElValue'])), 20);
+			$rows = t3lib_div::intInRange(round(strlen($PA['itemFormElValue'])/$this->charsPerRow), count(explode(LF,$PA['itemFormElValue'])), 20);
 			if ($rows<$origRows)	$rows = $origRows;
 		}
 
@@ -1633,11 +1633,11 @@ class t3lib_TCEforms	{
 				} else {
 					if (count($optGroupStart)) {
 						if($optGroupOpen) { // Closing last optgroup before next one starts
-							$opt[]='</optgroup>' . "\n";
+							$opt[]='</optgroup>' . LF;
 						}
 						$opt[]= '<optgroup label="'.t3lib_div::deHSCentities(htmlspecialchars($optGroupStart[0])).'"'.
 								($optGroupStart[1] ? ' style="'.htmlspecialchars($optGroupStart[1]).'"' : '').
-								' class="c-divider">' . "\n";
+								' class="c-divider">' . LF;
 						$optGroupOpen = true;
 						$c--;
 						$optGroupStart = array();
@@ -1645,7 +1645,7 @@ class t3lib_TCEforms	{
 					$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
 							$sM.
 							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>' . "\n";
+							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>' . LF;
 				}
 			}
 
@@ -2359,7 +2359,7 @@ class t3lib_TCEforms	{
 				$origRows = $rows = t3lib_div::intInRange($rows, 1, 20);
 				if (strlen($itemValue)>$this->charsPerRow*2)	{
 					$cols = $this->maxTextareaWidth;
-					$rows = t3lib_div::intInRange(round(strlen($itemValue)/$this->charsPerRow),count(explode(chr(10),$itemValue)),20);
+					$rows = t3lib_div::intInRange(round(strlen($itemValue)/$this->charsPerRow),count(explode(LF,$itemValue)),20);
 					if ($rows<$origRows)	$rows=$origRows;
 				}
 			}
@@ -4613,7 +4613,7 @@ class t3lib_TCEforms	{
 								// Description texts:
 							if ($this->edit_showFieldHelp)	{
 								$descr = $GLOBALS['LANG']->moduleLabels['labels'][$theMod.'_tablabel'].
-											chr(10).
+											LF.
 											$GLOBALS['LANG']->moduleLabels['labels'][$theMod.'_tabdescr'];
 							}
 
@@ -5446,21 +5446,21 @@ class t3lib_TCEforms	{
 			// $this->additionalJS_submit:
 		if ($this->additionalJS_submit) {
 			$additionalJS_submit = implode('', $this->additionalJS_submit);
-			$additionalJS_submit = str_replace("\r", '', $additionalJS_submit);
-			$additionalJS_submit = str_replace("\n", '', $additionalJS_submit);
+			$additionalJS_submit = str_replace(CR, '', $additionalJS_submit);
+			$additionalJS_submit = str_replace(LF, '', $additionalJS_submit);
 			$out .= '
 			TBE_EDITOR.addActionChecks("submit", "'.addslashes($additionalJS_submit).'");
 			';
 		}
 
-		$out .= chr(10).implode(chr(10),$this->additionalJS_post).chr(10).$this->extJSCODE;
+		$out .= LF.implode(LF,$this->additionalJS_post).LF.$this->extJSCODE;
 		$out .= '
 			TBE_EDITOR.loginRefreshed();
 		';
 
 			// Regular direct output:
 		if (!$update) {
-			$spacer = chr(10) . chr(9);
+			$spacer = LF . TAB;
 			$out  = $spacer . implode($spacer, $jsFile) . t3lib_div::wrapJS($out);
 		}
 

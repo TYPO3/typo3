@@ -800,7 +800,7 @@ class SC_wizard_forms {
 
 						// Default:
 					if ($vv['type']=='select' || $vv['type']=='radio')	{
-						$thisLine[2]=str_replace(chr(10),', ',str_replace(',','',$vv['options']));
+						$thisLine[2]=str_replace(LF,', ',str_replace(',','',$vv['options']));
 					} elseif ($vv['type']=='check')	{
 						if ($vv['default'])	$thisLine[2]=1;
 					} elseif (strcmp(trim($vv['default']),'')) {
@@ -814,7 +814,7 @@ class SC_wizard_forms {
 			}
 		}
 			// Finally, implode the lines into a string, and return it:
-		return implode(chr(10),$inLines);
+		return implode(LF,$inLines);
 	}
 
 	/**
@@ -827,7 +827,7 @@ class SC_wizard_forms {
 	function cfgString2CfgArray($cfgStr)	{
 
 			// Traverse the number of form elements:
-		$tLines=explode(chr(10),$cfgStr);
+		$tLines=explode(LF,$cfgStr);
 		foreach($tLines as $k => $v)	{
 
 				// Initialize:
@@ -870,7 +870,7 @@ class SC_wizard_forms {
 					switch((string)$confData['type'])	{
 						case 'select':
 						case 'radio':
-							$confData['default'] = implode(chr(10),t3lib_div::trimExplode(',',$parts[2]));
+							$confData['default'] = implode(LF,t3lib_div::trimExplode(',',$parts[2]));
 						break;
 						default:
 							$confData['default'] = trim($parts[2]);

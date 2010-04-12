@@ -147,7 +147,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 
 		$cacheMenu[] = '</ul>';
 
-		return implode("\n", $cacheMenu);
+		return implode(LF, $cacheMenu);
 	}
 
 	/**

@@ -208,7 +208,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 	 */
 	function ext_mergeIncomingWithExisting($arr)	{
 		$parseObj = t3lib_div::makeInstance("t3lib_TSparser");
-		$parseObj->parse(implode(chr(10),$this->ext_incomingValues));
+		$parseObj->parse(implode(LF,$this->ext_incomingValues));
 		$arr2 = $parseObj->setup;
 		return t3lib_div::array_merge_recursive_overrule($arr,$arr2);
 	}

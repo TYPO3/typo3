@@ -375,7 +375,7 @@ GLV_date = new Date();
 GLV_timeout["'.$this->WMid.'"] = GLV_date.getTime();
 GLV_timeoutRef["'.$this->WMid.'"] = '.t3lib_div::intInRange($this->mconf['hideMenuTimer'],0,20000).';
 GLV_menuXY["'.$this->WMid.'"] = new Array();
-'.implode(chr(10),$this->WMxyArray).'
+'.implode(LF,$this->WMxyArray).'
 '.$this->WMrestoreVars;
 
 		if ($this->mconf['freezeMouseover'])	{
@@ -384,14 +384,14 @@ GLV_menuXY["'.$this->WMid.'"] = new Array();
 function GL'.$this->WMid.'_over(mitm_id)	{
 	GL'.$this->WMid.'_out("");	// removes any old roll over state of an item. Needed for alwaysKeep and Opera browsers.
 	switch(mitm_id)	{
-'.implode(chr(10),$this->VMmouseoverActions).'
+'.implode(LF,$this->VMmouseoverActions).'
 	}
 	GLV_currentROitem["'.$this->WMid.'"]=mitm_id;
 }
 function GL'.$this->WMid.'_out(mitm_id)	{
 	if (!mitm_id)	mitm_id=GLV_currentROitem["'.$this->WMid.'"];
 	switch(mitm_id)	{
-'.implode(chr(10),$this->VMmouseoutActions).'
+'.implode(LF,$this->VMmouseoutActions).'
 	}
 }
 ';
@@ -399,7 +399,7 @@ function GL'.$this->WMid.'_out(mitm_id)	{
 		$GLOBALS["TSFE"]->JSCode.= '
 function GL'.$this->WMid.'_getMouse(e) {
 	if (GLV_menuOn["'.$this->WMid.'"]!=null && !GLV_dontFollowMouse["'.$this->WMid.'"]){
-'.implode(chr(10),$GLV_menuOn).'
+'.implode(LF,$GLV_menuOn).'
 	}
 	GL_mouseMoveEvaluate("'.$this->WMid.'");
 }
@@ -407,7 +407,7 @@ function GL'.$this->WMid.'_hideCode() {
 '.$this->WMhideCode.'
 }
 function GL'.$this->WMid.'_doTop(WMid,id) {
-'.trim(implode(chr(10),$DoTop)).'
+'.trim(implode(LF,$DoTop)).'
 }
 function GL'.$this->WMid.'_restoreMenu() {
 '.$this->WMrestoreScript.'
@@ -428,7 +428,7 @@ GLV_timeout_count++;
 		$GLOBALS['TSFE']->JSeventFuncCalls['onmousemove'][$this->WMid]= 'GL'.$this->WMid.'_getMouse(e);';
 		$GLOBALS['TSFE']->JSeventFuncCalls['onmouseup'][$this->WMid]= 'GL_mouseUp(\''.$this->WMid.'\',e);';
 
-		$GLOBALS['TSFE']->divSection.=implode($this->divLayers,chr(10)).chr(10);
+		$GLOBALS['TSFE']->divSection.=implode($this->divLayers,LF).LF;
 
 		return parent::extProc_finish();
 	}

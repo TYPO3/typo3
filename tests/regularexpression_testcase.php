@@ -96,8 +96,8 @@ class regularexpression_testcase extends tx_phpunit_testcase {
 	 */
 	public function split1() {
 		$string = 'test1, test2|test3;test4';
-		$array1 = split(',|;|'.chr(10),$string);
-		$array2 = preg_split('/[,;'.chr(10).']/',$string);
+		$array1 = split(',|;|'.LF,$string);
+		$array2 = preg_split('/[,;'.LF.']/',$string);
 		foreach($array1 as $key => $value) {
 			$this->assertTrue(
 				($array2[$key] === $value)

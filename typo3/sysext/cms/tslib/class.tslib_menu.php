@@ -1874,8 +1874,8 @@ class tslib_tmenu extends tslib_menu {
 				if ($imgROInfo)	{
 					$theName = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'].$pref;
 					$name = ' '.$this->nameAttribute.'="'.$theName.'"';
-					$GLOBALS['TSFE']->JSImgCode.= chr(10).$theName.'_n=new Image(); '.$theName.'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'"; ';
-					$GLOBALS['TSFE']->JSImgCode.= chr(10).$theName.'_h=new Image(); '.$theName.'_h.src = "'.$GLOBALS['TSFE']->absRefPrefix.$imgROInfo[3].'"; ';
+					$GLOBALS['TSFE']->JSImgCode.= LF.$theName.'_n=new Image(); '.$theName.'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$imgInfo[3].'"; ';
+					$GLOBALS['TSFE']->JSImgCode.= LF.$theName.'_h=new Image(); '.$theName.'_h.src = "'.$GLOBALS['TSFE']->absRefPrefix.$imgROInfo[3].'"; ';
 				}
 			}
 			$GLOBALS['TSFE']->imagesOnPage[]=$imgInfo[3];
@@ -2395,8 +2395,8 @@ class tslib_gmenu extends tslib_menu {
 						$this->I['name'] = ' '.$this->nameAttribute.'="'.$this->I["theName"].'"';
 						$this->I['linkHREF']['onMouseover']=$this->WMfreezePrefix.'over(\''.$this->I['theName'].'\');';
 						$this->I['linkHREF']['onMouseout']=$this->WMfreezePrefix.'out(\''.$this->I['theName'].'\');';
-						$GLOBALS['TSFE']->JSImgCode.= chr(10).$this->I['theName'].'_n=new Image(); '.$this->I['theName'].'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'"; ';
-						$GLOBALS['TSFE']->JSImgCode.= chr(10).$this->I['theName'].'_h=new Image(); '.$this->I['theName'].'_h.src = "'.$GLOBALS['TSFE']->absRefPrefix.$this->result['RO'][$key]['output_file'].'"; ';
+						$GLOBALS['TSFE']->JSImgCode.= LF.$this->I['theName'].'_n=new Image(); '.$this->I['theName'].'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'"; ';
+						$GLOBALS['TSFE']->JSImgCode.= LF.$this->I['theName'].'_h=new Image(); '.$this->I['theName'].'_h.src = "'.$GLOBALS['TSFE']->absRefPrefix.$this->result['RO'][$key]['output_file'].'"; ';
 						$GLOBALS['TSFE']->imagesOnPage[]=$this->result['RO'][$key]['output_file'];
 						$GLOBALS['TSFE']->setJS('mouseOver');
 						$this->extProc_RO($key);
@@ -2847,7 +2847,7 @@ class tslib_jsmenu extends tslib_menu {
 			for ($a=1;$a<=$levels;$a++)	{
 				$JScode.="\n var ".$this->JSVarName.$a."=0;";
 			}
-			$JScode.= $this->generate_level($levels,1,$this->id,$this->menuArr,$this->MP_array)."\n";
+			$JScode.= $this->generate_level($levels,1,$this->id,$this->menuArr,$this->MP_array).LF;
 
 			$GLOBALS['TSFE']->additionalHeaderData['JSMenuCode']='<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.menu.js"></script>';
 			$GLOBALS['TSFE']->JSCode.=$JScode;
@@ -2948,7 +2948,7 @@ class tslib_jsmenu extends tslib_menu {
 						$url = $GLOBALS['TSFE']->baseUrlWrap($LD['totalURL']);
 						$target = $LD['target'];
 					}
-					$codeLines.="\n".$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, true).",".t3lib_div::quoteJSvalue($url, true).",".t3lib_div::quoteJSvalue($target, true).");";
+					$codeLines.=LF.$var.$count."=".$menuName.".add(".$parent.",".$prev.",0,".t3lib_div::quoteJSvalue($title, true).",".t3lib_div::quoteJSvalue($url, true).",".t3lib_div::quoteJSvalue($target, true).");";
 						// If the active one should be chosen...
 					$active = ($levelConf['showActive'] && $this->isActive($data['uid'], $MP_var));
 						// If the first item should be shown
@@ -2956,9 +2956,9 @@ class tslib_jsmenu extends tslib_menu {
 						// do it...
 					if ($active || $first)	{
 						if ($count==1)	{
-							$codeLines.="\n".$menuName.".openID = ".$var.$count.";";
+							$codeLines.=LF.$menuName.".openID = ".$var.$count.";";
 						} else {
-							$codeLines.="\n".$menuName.".entry[".$parent."].openID = ".$var.$count.";";
+							$codeLines.=LF.$menuName.".entry[".$parent."].openID = ".$var.$count.";";
 						}
 					}
 						// Add submenu...
@@ -2973,7 +2973,7 @@ class tslib_jsmenu extends tslib_menu {
 			$levelConf['firstLabel'] = $this->mconf['firstLabelGeneral'];
 		}
 		if ($levelConf['firstLabel'] && $codeLines)	{
-			$codeLines.= chr(10).$menuName.'.defTopTitle['.$count.'] = '.t3lib_div::quoteJSvalue($levelConf['firstLabel'], true).';';
+			$codeLines.= LF.$menuName.'.defTopTitle['.$count.'] = '.t3lib_div::quoteJSvalue($levelConf['firstLabel'], true).';';
 		}
 		return $codeLines;
 	}

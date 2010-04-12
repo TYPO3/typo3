@@ -144,7 +144,7 @@ class t3lib_cli {
 			if ($token{0}==='-' && !t3lib_div::testInt($token{1}))	{	// Options starting with a number is invalid - they could be negative values... !
 				list($index,$opt) = explode('=',$token,2);
 				if (isset($cli_options[$index]))	{
-					echo 'ERROR: Option '.$index.' was used twice!'.chr(10);
+					echo 'ERROR: Option '.$index.' was used twice!'.LF;
 					exit;
 				}
 				$cli_options[$index] = array();
@@ -175,7 +175,7 @@ class t3lib_cli {
 					$ii=$i;
 					if ($i>0)	{
 						if (!isset($cli_args_copy[$argSplit[0]][$i-1]) && $v{0}!='[')	{	// Using "[]" around a paramter makes it optional
-							echo 'ERROR: Option "'.$argSplit[0].'" requires a value ("'.$v.'") on position '.$i.chr(10);
+							echo 'ERROR: Option "'.$argSplit[0].'" requires a value ("'.$v.'") on position '.$i.LF;
 							exit;
 						}
 					}
@@ -183,7 +183,7 @@ class t3lib_cli {
 
 				$ii++;
 				if (isset($cli_args_copy[$argSplit[0]][$ii-1]))	{
-					echo 'ERROR: Option "'.$argSplit[0].'" does not support a value on position '.$ii.chr(10);
+					echo 'ERROR: Option "'.$argSplit[0].'" does not support a value on position '.$ii.LF;
 					exit;
 				}
 
@@ -192,7 +192,7 @@ class t3lib_cli {
 		}
 
 		if (count($cli_args_copy))	{
-			echo wordwrap('ERROR: Option '.implode(',',array_keys($cli_args_copy)).' was unknown to this script!'.chr(10).'(Options are: '.implode(', ',$allOptions).')'.chr(10));
+			echo wordwrap('ERROR: Option '.implode(',',array_keys($cli_args_copy)).' was unknown to this script!'.LF.'(Options are: '.implode(', ',$allOptions).')'.LF);
 			exit;
 		}
 	}
@@ -259,7 +259,7 @@ class t3lib_cli {
 					$this->cli_echo($this->cli_indent(str_replace('###OPTIONS###',trim($optStr),$value),4)."\n\n");
 				break;
 				case 'options':
-					$this->cli_echo($this->cli_indent($value,4)."\n");
+					$this->cli_echo($this->cli_indent($value,4).LF);
 
 					$maxLen = 0;
 					foreach ($this->cli_options as $v)	{
@@ -267,9 +267,9 @@ class t3lib_cli {
 					}
 
 					foreach ($this->cli_options as $v)	{
-						$this->cli_echo($v[0].substr($this->cli_indent(rtrim($v[1].chr(10).$v[2]),$maxLen+4),strlen($v[0]))."\n");
+						$this->cli_echo($v[0].substr($this->cli_indent(rtrim($v[1].LF.$v[2]),$maxLen+4),strlen($v[0])).LF);
 					}
-					$this->cli_echo("\n");
+					$this->cli_echo(LF);
 				break;
 				default:
 					$this->cli_echo($this->cli_indent($value,4)."\n\n");
@@ -286,12 +286,12 @@ class t3lib_cli {
 	 * @return	string		Result
 	 */
 	function cli_indent($str,$indent)	{
-		$lines = explode(chr(10),wordwrap($str,75-$indent));
+		$lines = explode(LF,wordwrap($str,75-$indent));
 		$indentStr = str_pad('',$indent,' ');
 		foreach($lines as $k => $v)	{
 			$lines[$k] = $indentStr.$lines[$k];
 		}
-		return implode(chr(10),$lines);
+		return implode(LF,$lines);
 	}
 }
 

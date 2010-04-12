@@ -767,7 +767,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				if(count($extensions)) {
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif', 'width="18" height="16"').' align="top" alt="" /><strong>'.htmlspecialchars($this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName)).'</strong></td></tr>';
-					$lines[] = implode(chr(10),$extensions);
+					$lines[] = implode(LF,$extensions);
 				}
 			}
 		}
@@ -828,7 +828,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				if(count($extensions)) {
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><br /></td></tr>';
 					$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif', 'width="18" height="16"').'align="top" alt="" /><strong>'.htmlspecialchars($this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName)).'</strong></td></tr>';
-					$lines[] = implode(chr(10),$extensions);
+					$lines[] = implode(LF,$extensions);
 				}
 			}
 
@@ -838,7 +838,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 <!--
 EXTENSION KEYS:
 
-'.trim(implode(chr(10),$allKeys)).'
+'.trim(implode(LF,$allKeys)).'
 
 -->
 
@@ -966,7 +966,7 @@ EXTENSION KEYS:
 					$content.= '
 
 					<!-- TER Extensions list -->
-					<table border="0" cellpadding="2" cellspacing="1">'.implode(chr(10),$lines).'</table>';
+					<table border="0" cellpadding="2" cellspacing="1">'.implode(LF,$lines).'</table>';
  					$content .= '<br />'.$this->browseLinks();
 					$content.= '<br /><br />'.$this->securityHint;
 					$content .= '<br /><br /><strong>' . $GLOBALS['LANG']->getLL('privacy_notice_header') .
@@ -2340,7 +2340,7 @@ EXTENSION KEYS:
 							if(isset($submittedContent['file']) && !$GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'])	{		// Check referer here?
 								$oldFileContent = t3lib_div::getUrl($editFile);
 								if($oldFileContent != $submittedContent['file']) {
-									$oldMD5 = md5(str_replace(chr(13),'',$oldFileContent));
+									$oldMD5 = md5(str_replace(CR,'',$oldFileContent));
 									$info .= sprintf(
 										$GLOBALS['LANG']->getLL('ext_details_md5_previous'),
 										'<b>' . $oldMD5 . '</b>'
@@ -2359,13 +2359,13 @@ EXTENSION KEYS:
 								'<b>' . substr($editFile, strlen($absPath)) . '</b> (' .
 									t3lib_div::formatSize(filesize($editFile)) . ')<br />'
 							);
-							$fileMD5 = md5(str_replace(chr(13),'',$fileContent));
+							$fileMD5 = md5(str_replace(CR,'',$fileContent));
 							$info .= sprintf(
 								$GLOBALS['LANG']->getLL('ext_details_md5_current'),
 								'<b>' . $fileMD5 . '</b>'
 							) . '<br />';
 							if($saveFlag)	{
-								$saveMD5 = md5(str_replace(chr(13),'',$submittedContent['file']));
+								$saveMD5 = md5(str_replace(CR,'',$submittedContent['file']));
 								$info .= sprintf(
 									$GLOBALS['LANG']->getLL('ext_details_md5_submitted'),
 									'<b>' . $saveMD5 . '</b>'
@@ -3236,10 +3236,10 @@ EXTENSION KEYS:
 		return nl2br(trim((is_array($techInfo['tables']) ?
 			($tableHeader ?
 				"\n\n<strong>" . $GLOBALS['LANG']->getLL('extDumpTables_tables') . "</strong>\n" : '') .
-			implode(chr(10), $techInfo['tables']) : '') .
+			implode(LF, $techInfo['tables']) : '') .
 		(is_array($techInfo['static']) ?
 			"\n\n<strong>" . $GLOBALS['LANG']->getLL('extBackup_static_tables') . "</strong>\n" .
-			implode(chr(10), $techInfo['static']) : '').
+			implode(LF, $techInfo['static']) : '').
 		(is_array($techInfo['fields']) ?
 			"\n\n<strong>" . $GLOBALS['LANG']->getLL('extInfoArray_additional_fields') . "</strong>\n" .
 			implode('<hr />', $techInfo['fields']) : '')));
@@ -4179,7 +4179,7 @@ EXTENSION KEYS:
 						if (preg_match('/\n[[:space:]]*class[[:space:]]*([[:alnum:]_]+)([[:alnum:][:space:]_]*)/',$fContent,$reg))	{
 
 							// Find classes:
-							$lines = explode(chr(10),$fContent);
+							$lines = explode(LF,$fContent);
 							foreach($lines as $l)	{
 								$line = trim($l);
 								unset($reg);
@@ -4240,7 +4240,7 @@ EXTENSION KEYS:
 	 * @see writeTYPO3_MOD_PATH()
 	 */
 	function modConfFileAnalysis($confFilePath)	{
-		$lines = explode(chr(10),t3lib_div::getUrl($confFilePath));
+		$lines = explode(LF,t3lib_div::getUrl($confFilePath));
 		$confFileInfo = array();
 		$confFileInfo['lines'] = $lines;
 		$reg = array();
@@ -4405,7 +4405,7 @@ EXTENSION KEYS:
 		} else $errors[] = $GLOBALS['LANG']->getLL('rmExtDir_error_unallowed_path') . ' ' . $removePath;
 
 		// Return errors if any:
-		return implode(chr(10),$errors);
+		return implode(LF,$errors);
 	}
 
 	/**
@@ -4551,7 +4551,7 @@ EXTENSION KEYS:
 	 * @see modConfFileAnalysis()
 	 */
 	function writeTYPO3_MOD_PATH($confFilePath,$type,$mP)	{
-		$lines = explode(chr(10),t3lib_div::getUrl($confFilePath));
+		$lines = explode(LF,t3lib_div::getUrl($confFilePath));
 		$confFileInfo = array();
 		$confFileInfo['lines'] = $lines;
 		$reg = array();
@@ -4585,7 +4585,7 @@ EXTENSION KEYS:
 		}
 
 		if ($flag_B && $flag_M)	{
-			t3lib_div::writeFile($confFilePath,implode(chr(10),$lines));
+			t3lib_div::writeFile($confFilePath,implode(LF,$lines));
 			return sprintf($GLOBALS['LANG']->getLL('writeModPath_ok'),
 				substr($confFilePath, strlen(PATH_site)));
 		} elseif ($flag_Dispatch){
@@ -4743,7 +4743,7 @@ EXTENSION KEYS:
 $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 
 ?>';
-		return str_replace(chr(13), '', $code);
+		return str_replace(CR, '', $code);
 	}
 
 	/**
@@ -4755,17 +4755,17 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 	 * @return	unknown
 	 */
 	function arrayToCode($array, $level=0) {
-		$lines = 'array('.chr(10);
+		$lines = 'array('.LF;
 		$level++;
 		foreach($array as $k => $v)	{
 			if(strlen($k) && is_array($v)) {
-				$lines .= str_repeat(chr(9),$level)."'".$k."' => ".$this->arrayToCode($v, $level);
+				$lines .= str_repeat(TAB,$level)."'".$k."' => ".$this->arrayToCode($v, $level);
 			} elseif(strlen($k)) {
-				$lines .= str_repeat(chr(9),$level)."'".$k."' => ".(t3lib_div::testInt($v) ? intval($v) : "'".t3lib_div::slashJS(trim($v),1)."'").','.chr(10);
+				$lines .= str_repeat(TAB,$level)."'".$k."' => ".(t3lib_div::testInt($v) ? intval($v) : "'".t3lib_div::slashJS(trim($v),1)."'").','.LF;
 			}
 		}
 
-		$lines .= str_repeat(chr(9),$level-1).')'.($level-1==0 ? '':','.chr(10));
+		$lines .= str_repeat(TAB,$level-1).')'.($level-1==0 ? '':','.LF);
 		return $lines;
 	}
 
@@ -4816,7 +4816,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 						'content' => t3lib_div::getUrl($file)
 						);
 						if (t3lib_div::inList('php,inc',strtolower($fI['extension'])))	{
-							$uploadArray['FILES'][$relFileName]['codelines']=count(explode(chr(10),$uploadArray['FILES'][$relFileName]['content']));
+							$uploadArray['FILES'][$relFileName]['codelines']=count(explode(LF,$uploadArray['FILES'][$relFileName]['content']));
 							$uploadArray['misc']['codelines']+=$uploadArray['FILES'][$relFileName]['codelines'];
 							$uploadArray['misc']['codebytes']+=$uploadArray['FILES'][$relFileName]['size'];
 
@@ -5664,7 +5664,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		}
 
 		// Return result:
-		return implode(chr(10).chr(10).chr(10),$tables);
+		return implode(LF.LF.LF,$tables);
 	}
 
 	/**
@@ -5688,9 +5688,9 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$header = $this->dumpTableHeader($table,$dbFields[$table],1);
 				$insertStatements = $this->dumpTableContent($table,$dbFields[$table]['fields']);
 
-				$out.= $dHeader.chr(10).chr(10).chr(10).
-				$header.chr(10).chr(10).chr(10).
-				$insertStatements.chr(10).chr(10).chr(10);
+				$out.= $dHeader.LF.LF.LF.
+				$header.LF.LF.LF.
+				$insertStatements.LF.LF.LF;
 			} else {
 				die($GLOBALS['LANG']->getLL('dumpStaticTables_table_not_found'));
 			}
@@ -5746,7 +5746,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 #
 '.($dropTableIfExists ? 'DROP TABLE IF EXISTS '.$table.';
 ' : '').'CREATE TABLE '.$table.' (
-'.implode(','.chr(10),$lines).'
+'.implode(','.LF,$lines).'
 );'
 );
 		}
@@ -5787,7 +5787,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);
 
 		// Implode lines and return:
-		return implode(chr(10),$lines);
+		return implode(LF,$lines);
 	}
 
 	/**
@@ -6183,11 +6183,11 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				}
 				$warn = '';
 				if (strcmp(serialize($currentMD5Array), serialize($serverMD5Array)))	{
-					$warn = '<tr class="bgColor4" style="color:red"><td colspan="7">'.$GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>'.$name.': '.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_warn_diff').'</strong>').'</td></tr>'."\n";
+					$warn = '<tr class="bgColor4" style="color:red"><td colspan="7">'.$GLOBALS['TBE_TEMPLATE']->rfw('<br /><strong>'.$name.': '.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_warn_diff').'</strong>').'</td></tr>'.LF;
 					if ($this->MOD_SETTINGS['display_files'] == 1) {
 						$affectedFiles = $this->findMD5ArrayDiff($serverMD5Array,$currentMD5Array);
 						if (count($affectedFiles)) {
-							$warn .= '<tr class="bgColor4"><td colspan="7"><strong>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_modified').'</strong><br />'.$GLOBALS['TBE_TEMPLATE']->rfw(implode('<br />',$affectedFiles)).'</td></tr>'."\n";
+							$warn .= '<tr class="bgColor4"><td colspan="7"><strong>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:msg_modified').'</strong><br />'.$GLOBALS['TBE_TEMPLATE']->rfw(implode('<br />',$affectedFiles)).'</td></tr>'.LF;
 						}
 					}
 				}
@@ -6197,9 +6197,9 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 '<td valign="top" align="right">'.$data[EM_CONF][version].'</td>'.
 '<td valign="top" align="right">'.$lastversion.'</td>'.
 '<td valign="top" nowrap="nowrap">'.$this->typeLabels[$data['type']].(strlen($data['doubleInstall'])>1?'<strong> '.$GLOBALS['TBE_TEMPLATE']->rfw($extInfo['doubleInstall']).'</strong>':'').'</td>'.
-'<td valign="top">'.$comment.'</td></tr>'."\n".
+'<td valign="top">'.$comment.'</td></tr>'.LF.
 $warn.
-'<tr class="bgColor4"><td colspan="7"><hr style="margin:0px" /></td></tr>'."\n";
+'<tr class="bgColor4"><td colspan="7"><hr style="margin:0px" /></td></tr>'.LF;
 			}
 		}
 

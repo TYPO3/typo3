@@ -79,7 +79,7 @@ class BackendSearchMenu implements backend_toolbarItem {
 		$searchMenu[] = '<input type="text" id="search-query" name="search-query" value="" />';
 		$searchMenu[] = '</div>';
 
-		return implode("\n", $searchMenu);
+		return implode(LF, $searchMenu);
 	}
 
 	/**

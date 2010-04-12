@@ -731,19 +731,19 @@ class template {
 		if ($this->docType !== 'html_3') {
 				// Put the XML prologue before or after the doctype declaration according to browser
 			if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
-				$headerStart = $headerStart . chr(10) . $xmlPrologue;
+				$headerStart = $headerStart . LF . $xmlPrologue;
 			} else {
-				$headerStart = $xmlPrologue . chr(10) . $headerStart;
+				$headerStart = $xmlPrologue . LF . $headerStart;
 			}
 
 				// Add the xml stylesheet according to doctype
 			if ($this->docType !== 'xhtml_frames') {
-				$headerStart = $headerStart . chr(10) . $xmlStylesheet;
+				$headerStart = $headerStart . LF . $xmlStylesheet;
 			}
 		}
 
 		$this->pageRenderer->setXmlPrologAndDocType($headerStart);
-		$this->pageRenderer->setHeadTag('<head>' . chr(10). '<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->');
+		$this->pageRenderer->setHeadTag('<head>' . LF. '<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->');
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
 		$this->pageRenderer->addMetaTag($this->xUaCompatible());
@@ -1018,7 +1018,7 @@ $str.=$this->docBodyTagBegin().
 		$this->inDocStylesArray[] = $this->inDocStyles_TBEstyle;
 
 			// Implode it all:
-		$inDocStyles = implode(chr(10), $this->inDocStylesArray);
+		$inDocStyles = implode(LF, $this->inDocStylesArray);
 
 		if ($this->styleSheetFile) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile);
@@ -1027,7 +1027,7 @@ $str.=$this->docBodyTagBegin().
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile2);
 		}
 
-		$this->pageRenderer->addCssInlineBlock('inDocStyles', $inDocStyles . chr(10) . '/*###POSTCSSMARKER###*/');
+		$this->pageRenderer->addCssInlineBlock('inDocStyles', $inDocStyles . LF . '/*###POSTCSSMARKER###*/');
 		if ($this->styleSheetFile_post) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_post);
 		}
@@ -1084,11 +1084,11 @@ $str.=$this->docBodyTagBegin().
 	function insertStylesAndJS($content)	{
 			// insert accumulated CSS
 		$this->inDocStylesArray[] = $this->inDocStyles;
-		$styles = "\n".implode("\n", $this->inDocStylesArray);
+		$styles = LF.implode(LF, $this->inDocStylesArray);
 		$content = str_replace('/*###POSTCSSMARKER###*/',$styles,$content);
 
 			// insert accumulated JS
-		$jscode = $this->JScode."\n".$this->wrapScriptTags(implode("\n", $this->JScodeArray));
+		$jscode = $this->JScode.LF.$this->wrapScriptTags(implode(LF, $this->JScodeArray));
 		$content = str_replace('<!--###POSTJSMARKER###-->',$jscode,$content);
 
 		return $content;
@@ -1236,14 +1236,14 @@ $str.=$this->docBodyTagBegin().
 	function wrapScriptTags($string, $linebreak=TRUE)	{
 		if(trim($string)) {
 				// <script wrapped in nl?
-			$cr = $linebreak? "\n" : '';
+			$cr = $linebreak? LF : '';
 
 				// remove nl from the beginning
 			$string = preg_replace ('/^\n+/', '', $string);
 				// re-ident to one tab using the first line as reference
 			$match = array();
 			if(preg_match('/^(\t+)/',$string,$match)) {
-				$string = str_replace($match[1],"\t", $string);
+				$string = str_replace($match[1],TAB, $string);
 			}
 			$string = $cr.'<script type="text/javascript">
 /*<![CDATA[*/
@@ -2016,7 +2016,7 @@ $str.=$this->docBodyTagBegin().
 				}
 			}
 				// replace the marker with the template and remove all line breaks (for IE compat)
-			$markers['BUTTONLIST_' . strtoupper($key)] = str_replace("\n", '', $buttonTemplate);
+			$markers['BUTTONLIST_' . strtoupper($key)] = str_replace(LF, '', $buttonTemplate);
 		}
 
 			// Hook for manipulating docHeaderButtons

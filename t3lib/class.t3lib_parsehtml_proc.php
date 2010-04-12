@@ -275,7 +275,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			// Line breaks of content is unified into char-10 only (removing char 13)
 		if (!$this->procOptions['disableUnifyLineBreaks'])	{
-			$value = str_replace(chr(13).chr(10),chr(10),$value);
+			$value = str_replace(CRLF,LF,$value);
 		}
 
 			// In an entry-cleaner was configured, pass value through the HTMLcleaner with that:
@@ -309,7 +309,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						break;
 						case 'ts_transform':
 						case 'css_transform':
-							$value = str_replace(chr(13),'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
+							$value = str_replace(CR,'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
 							$this->allowedClasses = t3lib_div::trimExplode(',', $this->procOptions['allowedClasses'], 1);
 							$value = $this->TS_transform_db($value,$cmd=='css_transform');
 						break;
@@ -344,7 +344,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						break;
 						case 'ts_transform':
 						case 'css_transform':
-							$value = str_replace(chr(13),'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
+							$value = str_replace(CR,'',$value);	// Has a very disturbing effect, so just remove all '13' - depend on '10'
 							$value = $this->TS_transform_rte($value,$cmd=='css_transform');
 						break;
 						default:
@@ -361,8 +361,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			// Final clean up of linebreaks:
 		if (!$this->procOptions['disableUnifyLineBreaks'])	{
-			$value = str_replace(chr(13).chr(10),chr(10),$value);	// Make sure no \r\n sequences has entered in the meantime...
-			$value = str_replace(chr(10),chr(13).chr(10),$value);	// ... and then change all \n into \r\n
+			$value = str_replace(CRLF,LF,$value);	// Make sure no \r\n sequences has entered in the meantime...
+			$value = str_replace(LF,CRLF,$value);	// ... and then change all \n into \r\n
 		}
 
 			// Return value:
@@ -826,7 +826,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			// Traverse the blocks
 		foreach($blockSplit as $k => $v)	{
 			$cc++;
-			$lastBR = $cc==$aC ? '' : chr(10);
+			$lastBR = $cc==$aC ? '' : LF;
 
 			if ($k%2)	{	// Inside block:
 
@@ -847,23 +847,23 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist'])	{
 								$parts = $this->getAllParts($this->splitIntoBlock('LI',$this->removeFirstAndLastTag($blockSplit[$k])),1,0);
 								while(list($k2)=each($parts))	{
-									$parts[$k2]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/','',$parts[$k2]);	// remove all linesbreaks!
+									$parts[$k2]=preg_replace('/['.preg_quote(LF.CR).']+/','',$parts[$k2]);	// remove all linesbreaks!
 									$parts[$k2]=$this->defaultTStagMapping($parts[$k2],'db');
 									$parts[$k2]=$this->cleanFontTags($parts[$k2],0,0,0);
 									$parts[$k2] = $this->HTMLcleaner_db($parts[$k2],strtolower($this->procOptions['allowTagsInTypolists']?$this->procOptions['allowTagsInTypolists']:'br,font,b,i,u,a,img,span,strong,em'));
 								}
 								if ($tagName=='ol')	{ $params=' type="1"'; } else { $params=''; }
-								$blockSplit[$k]='<typolist'.$params.'>'.chr(10).implode(chr(10),$parts).chr(10).'</typolist>'.$lastBR;
+								$blockSplit[$k]='<typolist'.$params.'>'.LF.implode(LF,$parts).LF.'</typolist>'.$lastBR;
 							}
 						} else {
-							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(LF.CR).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					case 'table':	// Tables are NOT allowed in any form (unless preserveTables is set or CSS is the mode)
 						if (!$this->procOptions['preserveTables'] && !$css)	{
 							$blockSplit[$k]=$this->TS_transform_db($this->removeTables($blockSplit[$k]));
 						} else {
-							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(LF.CR).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					case 'h1':
@@ -898,17 +898,17 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							}
 						} else {
 								// Eliminate true linebreaks inside Hx tags
-							$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
+							$blockSplit[$k]=preg_replace('/['.preg_quote(LF.CR).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 						}
 					break;
 					default:
 							// Eliminate true linebreaks inside other headlist tags and after hr tag
-						$blockSplit[$k]=preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
+						$blockSplit[$k]=preg_replace('/['.preg_quote(LF.CR).']+/',' ',$this->transformStyledATags($blockSplit[$k])).$lastBR;
 					break;
 				}
 			} else {	// NON-block:
 				if (strcmp(trim($blockSplit[$k]),''))	{
-					$blockSplit[$k]=$this->divideIntoLines(preg_replace('/['.preg_quote(chr(10).chr(13)).']+/',' ',$blockSplit[$k])).$lastBR;
+					$blockSplit[$k]=$this->divideIntoLines(preg_replace('/['.preg_quote(LF.CR).']+/',' ',$blockSplit[$k])).$lastBR;
 					$blockSplit[$k]=$this->transformStyledATags($blockSplit[$k]);
 				} else unset($blockSplit[$k]);
 			}
@@ -976,12 +976,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					case 'typolist':	// Transform typolist blocks into OL/UL lists. Type 1 is expected to be numerical block
 						if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist'])	{
 							$tListContent = $this->removeFirstAndLastTag($blockSplit[$k]);
-							$tListContent = preg_replace('/^[ ]*'.chr(10).'/','',$tListContent);
-							$tListContent = preg_replace('/'.chr(10).'[ ]*$/','',$tListContent);
-							$lines = explode(chr(10),$tListContent);
+							$tListContent = preg_replace('/^[ ]*'.LF.'/','',$tListContent);
+							$tListContent = preg_replace('/'.LF.'[ ]*$/','',$tListContent);
+							$lines = explode(LF,$tListContent);
 							$typ = $attribArray['type']==1 ? 'ol' : 'ul';
-							$blockSplit[$k] = '<'.$typ.'>'.chr(10).
-												'<li>'.implode('</li>'.chr(10).'<li>',$lines).'</li>'.
+							$blockSplit[$k] = '<'.$typ.'>'.LF.
+												'<li>'.implode('</li>'.LF.'<li>',$lines).'</li>'.
 												'</'.$typ.'>';
 						}
 					break;
@@ -998,12 +998,12 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 					break;
 				}
-				$blockSplit[$k+1] = preg_replace('/^[ ]*'.chr(10).'/','',$blockSplit[$k+1]);	// Removing linebreak if typohead
+				$blockSplit[$k+1] = preg_replace('/^[ ]*'.LF.'/','',$blockSplit[$k+1]);	// Removing linebreak if typohead
 			} else {	// NON-block:
 				$nextFTN = $this->getFirstTagName($blockSplit[$k+1]);
-				$singleLineBreak = $blockSplit[$k]==chr(10);
+				$singleLineBreak = $blockSplit[$k]==LF;
 				if (t3lib_div::inList('TABLE,BLOCKQUOTE,TYPOLIST,TYPOHEAD,'.($this->procOptions['preserveDIVSections']?'DIV,':'').$this->blockElementList,$nextFTN))	{	// Removing linebreak if typolist/typohead
-					$blockSplit[$k] = preg_replace('/'.chr(10).'[ ]*$/','',$blockSplit[$k]);
+					$blockSplit[$k] = preg_replace('/'.LF.'[ ]*$/','',$blockSplit[$k]);
 				}
 					// If $blockSplit[$k] is blank then unset the line. UNLESS the line happend to be a single line break.
 				if (!strcmp($blockSplit[$k],'') && !$singleLineBreak)	{
@@ -1013,7 +1013,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				}
 			}
 		}
-		return implode(chr(10),$blockSplit);
+		return implode(LF,$blockSplit);
 	}
 
 	/**
@@ -1199,7 +1199,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	}
 
 	/**
-	 * This resolves the $value into parts based on <div></div>-sections and <p>-sections and <br />-tags. These are returned as lines separated by chr(10).
+	 * This resolves the $value into parts based on <div></div>-sections and <p>-sections and <br />-tags. These are returned as lines separated by LF.
 	 * This point is to resolve the HTML-code returned from RTE into ordinary lines so it's 'human-readable'
 	 * The function ->setDivTags does the opposite.
 	 * This function processes content to go into the database.
@@ -1290,7 +1290,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						}
 
 							// Remove any line break char (10 or 13)
-						$subLines[$sk]=preg_replace('/'.chr(10).'|'.chr(13).'/','',$subLines[$sk]);
+						$subLines[$sk]=preg_replace('/'.LF.'|'.CR.'/','',$subLines[$sk]);
 
 							// If there are any attributes or if we are supposed to remap the tag, then do so:
 						if (count($newAttribs) && strcmp($remapParagraphTag,'1'))		{
@@ -1301,7 +1301,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					}
 				}
 					// Add the processed line(s)
-				$divSplit[$k] = implode(chr(10),$subLines);
+				$divSplit[$k] = implode(LF,$subLines);
 
 					// If it turns out the line is just blank (containing a &nbsp; possibly) then just make it pure blank.
 					// But, prevent filtering of lines that are blank in sense above, but whose tags contain attributes.
@@ -1317,7 +1317,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		}
 
 			// Return value:
-		return $returnArray ? $divSplit : implode(chr(10),$divSplit);
+		return $returnArray ? $divSplit : implode(LF,$divSplit);
 	}
 
 	/**
@@ -1337,8 +1337,8 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		$hSC = $this->procOptions['dontHSC_rte'] ? 0 : 1;	// Default: re-convert literals to characters (that is &lt; to <)
 		$convNBSP = !$this->procOptions['dontConvAmpInNBSP_rte']?1:0;
 
-			// Divide the content into lines, based on chr(10):
-		$parts = explode(chr(10),$value);
+			// Divide the content into lines, based on LF:
+		$parts = explode(LF,$value);
 		foreach($parts as $k => $v)	{
 
 				// Processing of line content:
@@ -1360,7 +1360,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 		}
 
 			// Implode result:
-		return implode(chr(10),$parts);
+		return implode(LF,$parts);
 	}
 
 	/**

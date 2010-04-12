@@ -101,7 +101,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			if (!strcmp($content,''))	return '';
 
 				// Split into single lines:
-			$lines = t3lib_div::trimExplode(chr(10),$content);
+			$lines = t3lib_div::trimExplode(LF,$content);
 			foreach($lines as &$val)	{
 				$val = '<li>'.$this->cObj->stdWrap($val,$conf['innerStdWrap.']).'</li>';
 			}
@@ -173,7 +173,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$headerIdPrefix = $headerScope.$this->cObj->data['uid'].'-';
 
 				// Split into single lines (will become table-rows):
-			$rows = t3lib_div::trimExplode(chr(10),$content);
+			$rows = t3lib_div::trimExplode(LF,$content);
 			reset($rows);
 
 				// Find number of columns to render:
@@ -314,7 +314,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			if (count($fileArray))	{
 
 					// Get the descriptions for the files (if any):
-				$descriptions = t3lib_div::trimExplode(chr(10),$this->cObj->data['imagecaption']);
+				$descriptions = t3lib_div::trimExplode(LF,$this->cObj->data['imagecaption']);
 
 					// Adding hardcoded TS to linkProc configuration:
 				$conf['linkProc.']['path.']['current'] = 1;

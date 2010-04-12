@@ -938,7 +938,7 @@ class SC_alt_doc {
 
 		if (is_array($this->tceforms->extraFormHeaders)) {
 			$extraTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###DOCHEADER_EXTRAHEADER###');
-			$extraTemplate = t3lib_parsehtml::substituteMarker($extraTemplate, '###EXTRAHEADER###', implode(chr(10), $this->tceforms->extraFormHeaders));
+			$extraTemplate = t3lib_parsehtml::substituteMarker($extraTemplate, '###EXTRAHEADER###', implode(LF, $this->tceforms->extraFormHeaders));
 		}
 		return $extraTemplate;
 	}
@@ -1031,7 +1031,7 @@ class SC_alt_doc {
 		if (count($this->tceforms->commentMessages))	{
 			$tceformMessages = '
 				<!-- TCEFORM messages
-				'.htmlspecialchars(implode(chr(10),$this->tceforms->commentMessages)).'
+				'.htmlspecialchars(implode(LF,$this->tceforms->commentMessages)).'
 				-->
 			';
 		}

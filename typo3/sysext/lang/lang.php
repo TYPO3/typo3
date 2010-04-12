@@ -373,7 +373,7 @@ class language {
 							// Add label:
 						switch((string)$kParts[2])	{
 							case '+':	// adding
-								$TCA_DESCR[$table]['columns'][$kParts[0]][$kParts[1]].= chr(10).$lVal;
+								$TCA_DESCR[$table]['columns'][$kParts[0]][$kParts[1]].= LF.$lVal;
 							break;
 							default:	// Substituting:
 								$TCA_DESCR[$table]['columns'][$kParts[0]][$kParts[1]] = $lVal;

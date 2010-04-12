@@ -641,7 +641,7 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 				$itemKeys = array_intersect($itemKeys, $subSelKeys);
 			}
 		} else {
-			$comp = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$config['comparator']));
+			$comp = strtoupper(str_replace(array(' ',TAB,CR,LF),'',$config['comparator']));
 			$mod = strtoupper($config['modifier']);
 			switch($comp)	{
 				case 'NOTLIKE':

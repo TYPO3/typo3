@@ -368,7 +368,7 @@ class t3lib_readmail {
 	function extractMailHeader($content,$limit=0)	{
 		if ($limit)	$content = substr($content,0,$limit);
 
-		$lines=explode(chr(10),ltrim($content));
+		$lines=explode(LF,ltrim($content));
 		$headers=array();
 		$p='';
 		while(list($k,$str)=each($lines))		{
@@ -386,7 +386,7 @@ class t3lib_readmail {
 			}
 			unset($lines[$k]);
 		}
-		if (!$limit)	$headers['CONTENT']=ltrim(implode(chr(10),$lines));
+		if (!$limit)	$headers['CONTENT']=ltrim(implode(LF,$lines));
 		return $headers;
 	}
 

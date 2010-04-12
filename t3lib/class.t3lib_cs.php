@@ -987,7 +987,7 @@ class t3lib_cs {
 					$this->parsedCharsets[$charset]=unserialize(t3lib_div::getUrl($cacheFile));
 				} else {
 						// Parse conversion table into lines:
-					$lines=t3lib_div::trimExplode(chr(10),t3lib_div::getUrl($charsetConvTableFile),1);
+					$lines=t3lib_div::trimExplode(LF,t3lib_div::getUrl($charsetConvTableFile),1);
 						// Initialize the internal variable holding the conv. table:
 					$this->parsedCharsets[$charset]=array('local'=>array(),'utf8'=>array());
 						// traverse the lines:

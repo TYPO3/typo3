@@ -538,7 +538,7 @@ class SC_view_help {
 		global $TCA,$BE_USER,$TCA_DESCR;
 
 			// Split references by comma or linebreak
-		$items = preg_split('/[,' . chr(10) . ']/', $value);
+		$items = preg_split('/[,' . LF . ']/', $value);
 		$lines = array();
 
 		foreach($items as $val)	{
@@ -588,7 +588,7 @@ class SC_view_help {
 			// Splitting:
 		$imgArray = t3lib_div::trimExplode(',', $images, 1);
 		if (count($imgArray))	{
-			$descrArray = explode(chr(10),$descr,count($imgArray));
+			$descrArray = explode(LF,$descr,count($imgArray));
 
 			foreach($imgArray as $k => $image)	{
 				$descr = $descrArray[$k];

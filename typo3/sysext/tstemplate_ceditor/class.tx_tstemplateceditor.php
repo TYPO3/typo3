@@ -119,7 +119,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				if ($tmpl->changed)	{
 						// Set the data to be saved
 					$recData=array();
-					$recData["sys_template"][$saveId]["constants"] = implode($tmpl->raw,chr(10));
+					$recData["sys_template"][$saveId]["constants"] = implode($tmpl->raw,LF);
 						// Create new  tce-object
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values=0;

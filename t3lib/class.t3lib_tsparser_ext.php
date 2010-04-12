@@ -466,7 +466,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		if (!is_array($this->lnToScript))	{
 			$this->lnToScript = array();
 			$c=1;
-			$c+=substr_count($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'],chr(10))+2;
+			$c+=substr_count($GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup'],LF)+2;
 			$this->lnToScript[$c] = '[Default]';
 
 			foreach($this->hierarchyInfoToRoot as $info)	{
@@ -681,11 +681,11 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$all='';
 		reset($config);
 		while (list(,$str)=each($config))	{
-			$all .= chr(10) .'[GLOBAL]' . chr(10) . $str;
+			$all .= LF .'[GLOBAL]' . LF . $str;
 		}
 
 		if ($syntaxHL)	{
-			$all = preg_replace('/^[^'.chr(10).']*./','',$all);
+			$all = preg_replace('/^[^'.LF.']*./','',$all);
 			$all = chop($all);
 			$tsparser = t3lib_div::makeInstance('t3lib_TSparser');
 			$tsparser->lineNumberOffset=$this->ext_lineNumberOffset+1;
@@ -738,9 +738,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_formatTS($input, $ln, $comments=1, $crop=0)	{
-		$input = preg_replace('/^[^'.chr(10).']*./','',$input);
+		$input = preg_replace('/^[^'.LF.']*./','',$input);
 		$input = chop($input);
-		$cArr = explode(chr(10),$input);
+		$cArr = explode(LF,$input);
 
 		reset($cArr);
 		$n = ceil(log10(count($cArr)+$this->ext_lineNumberOffset));
@@ -823,7 +823,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		while(list($const,$value)=each($this->flatSetup))	{
 			if (substr($const,-2)!='..' && isset($this->flatSetup[$const.'..']))	{
 				$comment = trim($this->flatSetup[$const.'..']);
-				$c_arr = explode(chr(10),$comment);
+				$c_arr = explode(LF,$comment);
 				while(list($k,$v)=each($c_arr))	{
 					$line=trim(preg_replace('/^[#\/]*/','',$v));
 					if ($line)	{
@@ -1428,7 +1428,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 */
 	function ext_regObjectPositions($constants)	{
 			// This runs through the lines of the constants-field of the active template and registers the constants-names and linepositions in an array, $this->objReg
-		$this->raw = explode(chr(10),$constants);
+		$this->raw = explode(LF,$constants);
 		$this->rawP=0;
 
 		$this->objReg=array();		// resetting the objReg if the divider is found!!
@@ -1575,7 +1575,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			while(list($key,$var)=each($data))	{
 				if (isset($theConstants[$key]))	{
 					if ($this->ext_dontCheckIssetValues || isset($check[$key]))	{		// If checkbox is set, update the value
-						list($var) = explode(chr(10),$var);	// exploding with linebreak, just to make sure that no multiline input is given!
+						list($var) = explode(LF,$var);	// exploding with linebreak, just to make sure that no multiline input is given!
 						$typeDat=$this->ext_getTypeData($theConstants[$key]['type']);
 						switch($typeDat['type'])	{
 							case 'int':

@@ -101,7 +101,7 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 	public function buildJSClassesAnchorArray() {
 		global $LANG, $TYPO3_CONF_VARS;
 
-		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : chr(10);
+		$linebreak = $TYPO3_CONF_VARS['EXTCONF'][$this->htmlAreaRTE->ID]['enableCompressedScripts'] ? '' : LF;
 		$JSClassesAnchorArray .= 'HTMLArea.classesAnchorSetup = [ ' . $linebreak;
 		$classesAnchorIndex = 0;
 		foreach ($this->htmlAreaRTE->RTEsetup['properties']['classesAnchor.'] as $label => $conf) {

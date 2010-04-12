@@ -1187,7 +1187,7 @@ class t3lib_TCEmain	{
 					$eFileMarker = $eFile['markerField']&&trim($mixedRec[$eFile['markerField']]) ? trim($mixedRec[$eFile['markerField']]) : '###TYPO3_STATICFILE_EDIT###';
 					$insertContent = str_replace($eFileMarker,'',$mixedRec[$eFile['contentField']]);	// must replace the marker if present in content!
 
-					$SW_fileNewContent = $parseHTML->substituteSubpart($SW_fileContent, $eFileMarker, chr(10).$insertContent.chr(10), 1, 1);
+					$SW_fileNewContent = $parseHTML->substituteSubpart($SW_fileContent, $eFileMarker, LF.$insertContent.LF, 1, 1);
 					t3lib_div::writeFile($eFile['editFile'],$SW_fileNewContent);
 
 						// Write status:
@@ -4330,7 +4330,7 @@ class t3lib_TCEmain	{
 			foreach($files as $dat)	{
 				if (@is_file($dat['ID_absFile']))	{
 					unlink ($dat['ID_absFile']);
-#echo 'DELETE FlexFormFile:'.$dat['ID_absFile'].chr(10);
+#echo 'DELETE FlexFormFile:'.$dat['ID_absFile'].LF;
 				} else {
 					$this->log($table,0,3,0,100,"Delete: Referenced file '".$dat['ID_absFile']."' that was supposed to be deleted together with it's record didn't exist");
 				}

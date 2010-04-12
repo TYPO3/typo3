@@ -484,12 +484,12 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			);
 			$outCode.= $this->tableRow(
 				$GLOBALS['LANG']->getLL('constants'),
-				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[constants]) ? count(explode(chr(10), $tplRow[constants])) : 0)),
+				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[constants]) ? count(explode(LF, $tplRow[constants])) : 0)),
 				'constants'
 			);
 			$outCode.= $this->tableRow(
 				$GLOBALS['LANG']->getLL('setup'),
-				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[config]) ? count(explode(chr(10), $tplRow[config])) : 0)),
+				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[config]) ? count(explode(LF, $tplRow[config])) : 0)),
 				'config'
 			);
 			$outCode = '<table border=0 cellpadding=1 cellspacing=1 width="100%">'.$outCode.'</table>';

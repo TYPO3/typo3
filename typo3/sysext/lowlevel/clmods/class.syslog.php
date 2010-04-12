@@ -82,7 +82,7 @@ Showing last 25 hour entries from the syslog. More features pending. This is the
 
 			// Initialize result array:
 		$resultArray = array(
-			'message' => $this->cli_help['name'].chr(10).chr(10).$this->cli_help['description'],
+			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
 				'listing' => array('','',1),
 				'allDetails' => array('','',0),
