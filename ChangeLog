@@ -1,3 +1,7 @@
+2010-04-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13788: [felogin] Redirects use incorrect function parameters
+
 2010-04-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #13674: htmlArea RTE: Incorrect position of cursor after SHIFT-ENTER in WebKit browser
