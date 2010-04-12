@@ -403,10 +403,18 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 				if (cssClass == 'none') {
 					store.getAt(0).set('text', cssArray[cssClass]);
 				} else {
+					var style = null;
+					if (!this.editor.config.disablePCexamples) {
+						if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
+							style = HTMLArea.classesValues[cssClass];
+						} else if (/-[0-9]+$/.test(cssClass) && HTMLArea.classesValues[RegExp.leftContext + '-'])  {
+							style = HTMLArea.classesValues[RegExp.leftContext + '-'];
+						}
+					}
 					store.add(new store.recordType({
 						text: cssArray[cssClass],
 						value: cssClass,
-						style: (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
+						style: style
 					}));
 				}
 			}

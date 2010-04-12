@@ -1,3 +1,7 @@
+2010-04-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13116: htmlArea RTE: Allow to hide counting classes
+
 2010-04-11  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14062: Text Content element crashes (thanks to Jigal van Hemert

@@ -1,3 +1,7 @@
+2010-04-12  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #13116: htmlArea RTE: Allow to hide counting classes
+
 2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #9851: LICENSE.txt refers to wrong webpage on typo3.com
