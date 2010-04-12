@@ -1175,7 +1175,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			event.stopEvent();
 			return false;
 		}
-			// onKeyPress deprecated as of TYPO3 4.4
+		/*****************************************************
+		 * onKeyPress DEPRECATED AS OF TYPO3 4.4             *
+		 *****************************************************/
 		if (this.getEditor().hasPluginWithOnKeyPressHandler) {
 			var letBubble = true;
 			Ext.iterate(this.getEditor().plugins, function (pluginId) {
@@ -1194,7 +1196,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		}
 		if (!event.altKey && !event.ctrlKey) {
 				// Detect URL in non-IE browsers
-			if (!Ext.isIE && (event.getKey() != Ext.EventObject.ENTER || event.shiftKey)) {
+			if (!Ext.isIE && (event.getKey() != Ext.EventObject.ENTER || (event.shiftKey && !Ext.isWebKit))) {
 				this.getEditor()._detectURL(event);
 			}
 				// Handle option+SPACE for Mac users
@@ -1262,10 +1264,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	onEnter: function (key, event) {
 		this.getEditor()._detectURL(event);
-		if (!event.shiftKey) {
-			if (this.getEditor()._checkInsertP()) {
-				event.stopEvent();
-			}
+		if (this.getEditor()._checkInsertP()) {
+			event.stopEvent();
 		}
 			// Update the toolbar state after some time
 		this.getToolbar().updateLater.delay(200);
@@ -1276,14 +1276,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	onWebKitEnter: function (key, event) {
 		if (event.shiftKey || this.config.disableEnterParagraphs) {
-			var brNode = this.document.createElement('br');
-			this.getEditor().insertNodeAtSelection(brNode);
-			if (!brNode.nextSibling || !HTMLArea.getInnerText(brNode.nextSibling)) {
-				var secondBrNode = this.document.createElement('br');
-				secondBrNode = brNode.parentNode.appendChild(secondBrNode);
-				this.getEditor().selectNode(secondBrNode, false);
-			}
-			event.stopEvent();
+			this.getEditor()._detectURL(event);
 		}
 			// Update the toolbar state after some time
 		this.getToolbar().updateLater.delay(200);
