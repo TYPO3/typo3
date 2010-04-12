@@ -93,8 +93,12 @@ class t3lib_fullsearch {
 
 	protected $formName = '';
 
-
-
+	/**
+	 * constructor
+	 */
+	public function __construct() {
+		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_t3lib_fullsearch.xml');
+	}
 
 
 	/**
@@ -282,11 +286,15 @@ class t3lib_fullsearch {
 		$saveStoreArray=0;
 		$writeArray=array();
 		if (is_array($storeControl))	{
+			$msg = '';
 			if ($storeControl['LOAD'])	{
 				if ($storeIndex>0)	{
 					$writeArray=$this->loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray);
-					$saveStoreArray=1;
-					$msg="'".htmlspecialchars($storeArray[$storeIndex])."' query loaded!";
+					$saveStoreArray = 1;
+					$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							sprintf($GLOBALS['LANG']->getLL('query_loaded'), htmlspecialchars($storeArray[$storeIndex]))
+						);
 				} elseif ($storeIndex<0 && t3lib_extMgm::isLoaded('sys_action'))	{
 					$actionRecord=t3lib_BEfunc::getRecord('sys_action',abs($storeIndex));
 					if (is_array($actionRecord))	{
@@ -297,17 +305,28 @@ class t3lib_fullsearch {
 						}
 						$writeArray=$this->loadStoreQueryConfigs($dbSC,'0',$writeArray);
 						$saveStoreArray=1;
-						$acTitle=htmlspecialchars($actionRecord['title']);
-						$msg="Query from action '".$acTitle."' loaded!";
+
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							sprintf($GLOBALS['LANG']->getLL('query_from_action_loaded'), htmlspecialchars($actionRecord['title']))
+						);
 					}
 				}
 			} elseif ($storeControl['SAVE'])	{
 				if ($storeIndex<0)	{
 					$qOK = $this->saveQueryInAction(abs($storeIndex));
-					if ($qOK)	{
-						$msg='Query OK and saved.';
+					if ($qOK) {
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->getLL('query_saved')
+						);
 					} else {
-						$msg='No query saved!';
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->getLL('query_notsaved'),
+							'',
+							t3lib_FlashMessage::ERROR
+						);
 					}
 				} else {
 					if (trim($storeControl['title']))	{
@@ -320,15 +339,24 @@ class t3lib_fullsearch {
 						}
 						$storeQueryConfigs=$this->addToStoreQueryConfigs($storeQueryConfigs,$storeIndex);
 						$saveStoreArray=1;
-						$msg="'".htmlspecialchars($storeArray[$storeIndex])."' query saved!";
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							$GLOBALS['LANG']->getLL('query_saved')
+						);
 					}
 				}
 			} elseif ($storeControl['REMOVE'])	{
 				if ($storeIndex>0)	{
-					$msg="'" . htmlspecialchars($storeArray[$storeControl['STORE']]) . "' query entry removed!";
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						sprintf($GLOBALS['LANG']->getLL('query_removed'), htmlspecialchars($storeArray[$storeControl['STORE']]))
+					);
 					unset($storeArray[$storeControl['STORE']]);	// Removing
 					$saveStoreArray=1;
 				}
+			}
+			if ($flashMessage) {
+				$msg = $flashMessage->render();
 			}
 		}
 		if ($saveStoreArray)	{
@@ -355,8 +383,8 @@ class t3lib_fullsearch {
 
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableStoreControl']) {
 			$output.= $GLOBALS['SOBE']->doc->section('Load/Save Query',$this->makeStoreControl(),0,1);
-			if ($msg)	{
-				$output.= $GLOBALS['SOBE']->doc->section('','<font color=red><strong>'.$msg.'</strong></font>');
+			if ($msg) {
+				$output .= '<br />' . $msg;
 			}
 			$output.= $GLOBALS['SOBE']->doc->spacer(20);
 		}
