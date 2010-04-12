@@ -33,7 +33,7 @@
  * TYPO3 SVN ID: $Id$
  */
 
-InsertSmiley = HTMLArea.Plugin.extend({
+HTMLArea.InsertSmiley = HTMLArea.Plugin.extend({
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

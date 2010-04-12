@@ -31,7 +31,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-AboutEditor = HTMLArea.Plugin.extend({
+HTMLArea.AboutEditor = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

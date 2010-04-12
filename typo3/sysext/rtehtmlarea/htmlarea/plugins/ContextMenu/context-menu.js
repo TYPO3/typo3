@@ -32,7 +32,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-ContextMenu = HTMLArea.Plugin.extend({
+HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-RemoveFormat = HTMLArea.Plugin.extend({
+HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

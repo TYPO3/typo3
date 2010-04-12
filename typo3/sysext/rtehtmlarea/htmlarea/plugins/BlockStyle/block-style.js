@@ -31,7 +31,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-BlockStyle = HTMLArea.Plugin.extend({
+HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);

@@ -32,7 +32,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-QuickTag = HTMLArea.Plugin.extend({
+HTMLArea.QuickTag = HTMLArea.Plugin.extend({
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

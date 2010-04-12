@@ -32,7 +32,7 @@
 /*
  * Creation of the class of InlineElements plugins
  */
-InlineElements = HTMLArea.Plugin.extend({
+HTMLArea.InlineElements = HTMLArea.Plugin.extend({
 	/*
 	 * Let the base class do some initialization work
 	 */

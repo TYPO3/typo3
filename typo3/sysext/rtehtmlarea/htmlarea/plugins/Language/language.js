@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-Language = HTMLArea.Plugin.extend({
+HTMLArea.Language = HTMLArea.Plugin.extend({
 
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);

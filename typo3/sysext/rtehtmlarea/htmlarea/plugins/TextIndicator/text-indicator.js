@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id: text-indicator.js 6539 2009-11-25 14:49:14Z stucki $
  */
-TextIndicator = HTMLArea.Plugin.extend({
+HTMLArea.TextIndicator = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);

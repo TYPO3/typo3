@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-DefinitionList = BlockElements.extend({
+HTMLArea.DefinitionList = HTMLArea.BlockElements.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);

@@ -31,7 +31,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-UndoRedo = HTMLArea.Plugin.extend({
+HTMLArea.UndoRedo = HTMLArea.Plugin.extend({
 	constructor: function (editor, pluginName) {
 		this.base(editor, pluginName);
 	},

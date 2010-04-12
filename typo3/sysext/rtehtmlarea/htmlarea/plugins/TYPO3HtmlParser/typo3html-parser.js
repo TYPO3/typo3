@@ -28,7 +28,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-TYPO3HtmlParser = HTMLArea.Plugin.extend({
+HTMLArea.TYPO3HtmlParser = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

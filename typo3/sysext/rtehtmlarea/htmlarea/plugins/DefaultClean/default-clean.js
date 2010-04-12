@@ -28,7 +28,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-DefaultClean = HTMLArea.Plugin.extend({
+HTMLArea.DefaultClean = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

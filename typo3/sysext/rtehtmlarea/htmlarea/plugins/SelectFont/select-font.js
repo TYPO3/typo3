@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-SelectFont = HTMLArea.Plugin.extend({
+HTMLArea.SelectFont = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

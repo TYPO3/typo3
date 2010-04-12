@@ -33,7 +33,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-CharacterMap = HTMLArea.Plugin.extend({
+HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

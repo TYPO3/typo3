@@ -31,7 +31,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-DefaultImage = HTMLArea.Plugin.extend({
+HTMLArea.DefaultImage = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

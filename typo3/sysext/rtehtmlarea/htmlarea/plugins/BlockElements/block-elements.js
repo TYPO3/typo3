@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-BlockElements = HTMLArea.Plugin.extend({
+HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);

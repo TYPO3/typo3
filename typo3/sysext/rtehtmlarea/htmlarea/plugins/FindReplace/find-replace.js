@@ -32,7 +32,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-FindReplace = HTMLArea.Plugin.extend({
+HTMLArea.FindReplace = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

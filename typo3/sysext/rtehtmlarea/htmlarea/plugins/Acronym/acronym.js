@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-Acronym = HTMLArea.Plugin.extend({
+HTMLArea.Acronym = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

@@ -31,7 +31,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-DefaultLink = HTMLArea.Plugin.extend({
+HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

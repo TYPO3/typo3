@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-TYPO3Color = HTMLArea.Plugin.extend({
+HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

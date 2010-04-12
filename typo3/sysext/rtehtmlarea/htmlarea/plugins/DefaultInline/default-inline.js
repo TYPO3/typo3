@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-DefaultInline = HTMLArea.Plugin.extend({
+HTMLArea.DefaultInline = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);

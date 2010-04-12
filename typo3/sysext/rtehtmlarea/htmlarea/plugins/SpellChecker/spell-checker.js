@@ -32,7 +32,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-SpellChecker = HTMLArea.Plugin.extend({
+HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

@@ -33,7 +33,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-TableOperations = HTMLArea.Plugin.extend({
+HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 		
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);

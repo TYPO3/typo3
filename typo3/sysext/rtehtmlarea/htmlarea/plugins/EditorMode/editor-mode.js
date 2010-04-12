@@ -29,7 +29,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-EditorMode = HTMLArea.Plugin.extend({
+HTMLArea.EditorMode = HTMLArea.Plugin.extend({
 	constructor : function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

@@ -32,7 +32,7 @@
 /*
  * Creation of the class of TextStyle plugins
  */
-TextStyle = HTMLArea.Plugin.extend({
+HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 	/*
 	 * Let the base class do some initialization work
 	 */

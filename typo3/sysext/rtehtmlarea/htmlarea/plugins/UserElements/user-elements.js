@@ -28,7 +28,7 @@
  *
  * TYPO3 SVN ID: $Id$
  */
-UserElements = HTMLArea.Plugin.extend({
+HTMLArea.UserElements = HTMLArea.Plugin.extend({
 	constructor: function(editor, pluginName) {
 		this.base(editor, pluginName);
 	},

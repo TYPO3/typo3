@@ -2502,6 +2502,46 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}
 	},
 	/*
+	 * Instantiate the specified plugin and register it with the editor
+	 *
+	 * @param	string		plugin: the name of the plugin
+	 *
+	 * @return	boolean		true if the plugin was successfully registered
+	 */
+	registerPlugin: function (pluginName) {
+		var plugin = null;
+		if (Ext.isString(pluginName)) {
+			/*******************************************************************************
+			 * USE OF PLUGIN NAME OUTSIDE HTMLArea NAMESPACE IS DEPRECATED AS OF TYPO3 4.4 *
+			 *******************************************************************************/
+			try {
+				plugin = eval(pluginName);
+			} catch (e) {
+				try {
+					plugin = eval('HTMLArea.' + pluginName);
+				} catch (error) {
+					HTMLArea._appendToLog('ERROR [HTMLArea.Editor::registerPlugin]: Cannot register invalid plugin: ' + error);
+					return false;
+				}
+			}
+		}
+		if (!Ext.isFunction(plugin)) {
+			HTMLArea._appendToLog('ERROR [HTMLArea.Editor::registerPlugin]: Cannot register undefined plugin.');
+			return false;
+		}
+		var pluginInstance = new plugin(this, pluginName);
+		if (pluginInstance) {
+			var pluginInformation = pluginInstance.getPluginInformation();
+			pluginInformation.instance = pluginInstance;
+			this.plugins[pluginName] = pluginInformation;
+			HTMLArea._appendToLog('[HTMLArea.Editor::registerPlugin]: Plugin ' + pluginName + ' was successfully registered.');
+			return true;
+		} else {
+			HTMLArea._appendToLog("ERROR [HTMLArea.Editor::registerPlugin]: Can't register plugin " + pluginName + '.');
+			return false;
+		}
+	},
+	/*
 	 * Generate registered plugins
 	 */
 	generatePlugins: function () {
@@ -2674,45 +2714,6 @@ HTMLArea.util.TYPO3 = function () {
 		}
 	}
 }();
-/***************************************************
- *  PLUGINS, STYLESHEETS, AND IMAGE AND POPUP URL'S
- ***************************************************/
-/*
- * Instantiate the specified plugin and register it with the editor
- *
- * @param	string		plugin: the name of the plugin
- *
- * @return	boolean		true if the plugin was successfully registered
- */
-HTMLArea.Editor.prototype.registerPlugin = function(plugin) {
-	var pluginName = plugin;
-	if (typeof(plugin) === "string") {
-		try {
-			var plugin = eval(plugin);
-		} catch(e) {
-			HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Cannot register invalid plugin: " + e);
-			return false;
-		}
-	}
-	if (typeof(plugin) !== "function") {
-		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Cannot register undefined plugin.");
-		return false;
-	}
-	var pluginInstance = new plugin(this, pluginName);
-	if (pluginInstance) {
-		var pluginInformation = plugin._pluginInfo;
-		if(!pluginInformation) {
-			pluginInformation = pluginInstance.getPluginInformation();
-		}
-		pluginInformation.instance = pluginInstance;
-		this.plugins[pluginName] = pluginInformation;
-		HTMLArea._appendToLog("[HTMLArea::registerPlugin]: Plugin " + pluginName + " was successfully registered.");
-		return true;
-	} else {
-		HTMLArea._appendToLog("ERROR [HTMLArea::registerPlugin]: Can't register plugin " + pluginName + ".");
-		return false;
-	}
-};
 /*
  * Load a stylesheet file
  ***********************************************
