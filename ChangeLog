@@ -15,6 +15,7 @@
 	* Added feature #13116: htmlArea RTE: Allow to hide counting classes
 	* Fixed bug #13674: htmlArea RTE: Incorrect position of cursor after SHIFT-ENTER in WebKit browser
 	* Follow-up to bug #14066: htmlArea RTE: Erratic handling of oncut and onpaste events
+	* Updated NEWS.txt as follow-up to #13580: htmlArea RTE: Extjize the RTE
 
 2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
 

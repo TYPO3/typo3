@@ -10,13 +10,13 @@ General
 
 	* The static templates for some basic designs that were part of the TYPO3 Core since TYPO3 3.5 are now moved to a system extension that is not included by default. If you are using one of these templates (GLUECK, GREEN, CANDIDATE etc) or one of the old table-based layouts for rendering content (like content (default) or plaintext rendering), make sure to install the system extension via the TYPO3 Installer.
 
-	* The RTE is undergoing major changes as UI components are being transformed into ExtJS widgets:
+	* The RTE has undergone major changes as UI components have been transformed into ExtJS widgets:
 		1. The RTE framework becomes an ExtJS Panel comprising the toolbar, the iframe, the textarea and the status bar. All components are ExtJS objects.
 		2. When BE textareas are resizable, the framework is resizable as a whole. In the FE, the framework is always resizable.
 		3. The toolbar dropdowns become ExtJS ComboBoxes.
 		4. The context menu becomes a configurable ExtJS Menu.
-		5. Color palettes become ExtJS ColorPalettes
-		6. The following dialogue windows become ExtJS windows: acronym/abbreviation, table/row/column/cell properties, foreground/background color, emoticon.
+		5. Color palettes become ExtJS ColorPalettes.
+		6. All dialogue windows become ExtJS windows.
 
 Backend
 =======
