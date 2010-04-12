@@ -387,8 +387,8 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 		$cmd = (string)t3lib_div::_GP('cmd');
 		switch ($cmd) {
 			case 'flush':
-				$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog', '');
-				$res = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_dbal_debuglog_where', '');
+				$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog');
+				$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog_where');
 				$outStr = 'Log FLUSHED!';
 				break;
 			case 'joins':
