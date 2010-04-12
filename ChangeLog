@@ -1,3 +1,6 @@
+2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
+	* Fixed bug #14054: CSS Styled Content has no manual
+
 2010-04-12  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #14069: New install tool refactoring uses FE layer for templating instead of t3lib_parsehtml
@@ -176,8 +179,8 @@
 	* Fixed bug #13678: htmlmail send mail twice if cc recipient is set (thanks to Robert Heel)
 	* Follow-up to #13678: Removed cleanup of recipient_copy which is now unused
 	* Fixed bug #13920: Removed unused property $additionalStyleSheets in template.php (thanks to Steffen Gebert)
-	* Fixed bug #12202: "Clear temporary data" in setup module misses JS confirm (thanks to Søren Malling)
-	* Fixed bug #13832: Wrong flash message when clearing temporary data (thanks to Søren Malling)
+	* Fixed bug #12202: "Clear temporary data" in setup module misses JS confirm (thanks to Sï¿½ren Malling)
+	* Fixed bug #13832: Wrong flash message when clearing temporary data (thanks to Sï¿½ren Malling)
 
 2010-03-25  Ernesto Baschny  <ernst@cron-it.de>
 
@@ -237,7 +240,7 @@
 
 2010-03-17  Andreas Otto  <andreas@otto-hanika.de>
 
-	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Müller).
+	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Mï¿½ller).
 
 2010-03-17  Andreas Otto  <andreas@otto-hanika.de>
 
@@ -325,7 +328,7 @@
 
 2010-02-27  Andreas Otto  <andreas@otto-hanika.de>
 
-	* Fixed bug #13685: Recursive copy and move of alternative page languages (thanks to Albrecht Köhnlein)
+	* Fixed bug #13685: Recursive copy and move of alternative page languages (thanks to Albrecht Kï¿½hnlein)
 
 2010-02-27  Oliver Hader  <oliver@typo3.org>
 
@@ -567,7 +570,7 @@
 
 2010-01-27  Steffen Kamper  <info@sk-typo3.de>
 
-	* Added feature #11221 : Separate first-, middle- and lastname columns in fe_users table (thanks to Ismaël Bidau)
+	* Added feature #11221 : Separate first-, middle- and lastname columns in fe_users table (thanks to Ismaï¿½l Bidau)
 
 2010-01-25  Steffen Kamper  <info@sk-typo3.de>
 
@@ -872,7 +875,7 @@
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12759: button styling missed some buttons: type reset / button (thanks to Georg Ringer)
-	* Fixed bug #9058: Hook objects for stdWrap in class.tslib_content.php get executed multiple times. (thanks to Steffen Müller)
+	* Fixed bug #9058: Hook objects for stdWrap in class.tslib_content.php get executed multiple times. (thanks to Steffen Mï¿½ller)
 	* Fixed bug #12467: TYPO3 Inline User Manual is broken
 	* Fixed bug #12297: t3lib_cs::cropMbstring has problems with negative length (Thanks to Steffen Gebert)
 	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (Thanks to Andreas Kundoch)
@@ -907,7 +910,7 @@
 
 2009-11-24  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen Müller)
+	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen Mï¿½ller)
 
 2009-11-24  Oliver Hader  <oliver@typo3.org>
 
