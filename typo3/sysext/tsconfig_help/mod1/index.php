@@ -727,7 +727,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		if ($extension != '')	{
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('static_tsconfig_help', 'guide='.$guide);
 		} else {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('static_tsconfig_help', '');
+			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('static_tsconfig_help');
 		}
 	}
 

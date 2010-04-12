@@ -7416,22 +7416,22 @@ State was change by %s (username: %s)
 
 					if (TYPO3_UseCachingFramework) {
 						if (t3lib_extMgm::isLoaded('cms'))	{
-							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_treelist', '');
+							$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
 						}
 					} else {
 						if (t3lib_extMgm::isLoaded('cms'))	{
-							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_treelist', '');
-							$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pagesection','');
+							$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_treelist');
+							$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pagesection');
 						}
 						$this->internal_clearPageCache();
-						$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_hash','');
+						$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_hash');
 					}
 
 						// Clearing additional cache tables:
 					if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables']))	{
 						foreach($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearAllCache_additionalTables'] as $tableName)	{
 							if (!preg_match('/[^[:alnum:]_]/',$tableName) && substr($tableName,-5)=='cache')	{
-								$GLOBALS['TYPO3_DB']->exec_DELETEquery($tableName,'');
+								$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($tableName);
 							} else {
 								die('Fatal Error: Trying to flush table "'.$tableName.'" with "Clear All Cache"');
 							}
@@ -7626,7 +7626,7 @@ State was change by %s (username: %s)
 						t3lib_div::sysLog('Could not remove page cache files in "'.$cacheDir.'"','Core/t3lib_tcemain',2);
 					}
 				}
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_pages','');
+				$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_pages');
 			}
 		}
 	}

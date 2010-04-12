@@ -8,6 +8,7 @@
 
 2010-04-12  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Added feature #13508: Use exec_TRUNCATEquery() instead of DELETE FROM throughout the core
 	* Fixed bug #13945: Missing key on l18n_parent in tt_content table
 
 2010-04-12  Benjamin Mack  <benni@typo3.org>

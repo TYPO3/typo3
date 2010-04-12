@@ -288,8 +288,8 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flush() {
-		$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $this->cacheTable);
-		$GLOBALS['TYPO3_DB']->sql_query('TRUNCATE ' . $this->tagsTable);
+		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->cacheTable);
+		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($this->tagsTable);
 	}
 
 	/**

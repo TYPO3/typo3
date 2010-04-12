@@ -1886,7 +1886,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$action = $this->INSTALL['cleanup_type'];
 
 		if (($action == 'cache_imagesizes' || $action == 'all') && isset ($tables['cache_imagesizes'])) {
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery ('cache_imagesizes','');
+			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_imagesizes');
 		}
 
 		$cleanupType = array (
@@ -6306,7 +6306,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							if ($table!='--div--') {
 								$table_c = TYPO3_OS=='WIN' ? strtolower($table) : $table;
 								if ($this->INSTALL['database_clearcache'][$table] && $whichTables[$table_c]) {
-									$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, '');
+									$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($table);
 										// Define the markers content
 									$emptiedTablesMarkers = array(
 										'tableName' => $table

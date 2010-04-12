@@ -370,7 +370,7 @@ class SC_mod_tools_em_xmlhandler {
 			$this->revStateArr[$state] = $idx++;
 		}
 
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_extensions', '1=1');
+		$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_extensions');
 
 		$extcount = 0;
 		@ini_set('pcre.backtrack_limit', 500000);
