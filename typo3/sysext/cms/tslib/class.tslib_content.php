@@ -3763,9 +3763,11 @@ class tslib_cObj {
 				if ($conf['prioriCalc']){$content=t3lib_div::calcParenthesis($content); if ($conf['prioriCalc']=='intval') $content=intval($content);}
 				if ((string)$conf['char']!=''){$content=chr(intval($conf['char']));}
 				if ($conf['intval']){$content=intval($content);}
-				if ($conf['date']){$content=date($conf['date'], $content);}
-				if ($conf['strftime']){
-					$content = strftime($conf['strftime'], $content);
+				if ($conf['date']) {
+					$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
+				}
+				if ($conf['strftime']) {
+					$content = ($conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content));
 					$tmp_charset = $conf['strftime.']['charset'] ? $conf['strftime.']['charset'] : $GLOBALS['TSFE']->localeCharset;
 					if ($tmp_charset)	{
 						$content = $GLOBALS['TSFE']->csConv($content,$tmp_charset);
