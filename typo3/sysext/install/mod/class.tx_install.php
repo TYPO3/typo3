@@ -155,7 +155,6 @@ require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_inst
 require_once(t3lib_extMgm::extPath('install').'updates/class.tx_coreupdates_installnewsysexts.php');
 require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install_session.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_statictemplates.php');
-require_once(PATH_tslib . 'class.tslib_content.php');
 
 /**
  * Install Tool module
