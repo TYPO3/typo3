@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+
+/* Font size 62.8% = 1em = 10px */
+body {
+	font: 62.8% Verdana, Arial, Helvetica, sans-serif;
+	background-color: #f2f2f2;
+	padding-top: 11em;
+}
+
+body.standalone {
+	background: #4f4f4f url('../gfx/installbackground.jpg') repeat-x fixed;
+}
+
+h1 {
+	display: none;
+}
+
+.standalone h1 {
+	background: url('../gfx/installlogo.gif') no-repeat scroll 0 0 transparent;
+	text-indent:-999em;
+	display: block;
+	height: 34px;
+	margin: 0 0 1.85em;
+}
+
+h2 {
+	margin-top: 0;
+}
+
+#container {
+	margin: 0 auto;
+	width: 39em;
+	font-size: 110%;
+	line-height: 1.5em;
+}
+
+.typo3-message {
+	padding: 0.6em 0.6em 0.6em 2.6em;
+	background-repeat: no-repeat;
+	background-position: 0.5em 0.7em;
+	border: 1px solid;
+	color: #000000;
+}
+
+.message-warning {
+	background-image: url("../gfx/warning.png");
+	background-color: #fbffb3;
+	border-color: #c4b70d;
+}

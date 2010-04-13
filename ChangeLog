@@ -1,3 +1,7 @@
+2010-04-13  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #14088: Change typo3/install/index.php install tool locked message to proper HTML and CSS
+
 2010-04-13  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to feature #14051: htmlArea RTE: Streamline the RTE loading process
