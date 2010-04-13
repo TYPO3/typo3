@@ -170,6 +170,19 @@ Before importing make sure you change any editable soft references that are show
 			<label index="upload.alttitle">Upload import file</label>
 			<label index="upload.description">Select a file to import from your local computer and upload it here. If the upload completes succesfully you can immediately see its content displayed in the preview display.</label>
 			<label index="upload.details">Notice that there are usually limits set by the server (PHP) to the size of uploaded files at around 2 MB in which case nothing will happen.</label>
+
+			<label index="task.title">Preset title</label>
+			<label index="task.icon">Icon</label>
+			<label index="task.public">Public</label>
+			<label index="task.owner">Owner</label>
+			<label index="task.page">Page</label>
+			<label index="task.path">Path</label>
+			<label index="task.meta">Meta data</label>
+			<label index="task.own">Own</label>
+			<label index="notes">Notes</label>
+			<label index="single-record">Single record</label>
+			<label index="no-presets">No presets found!</label>
+
 		</languageKey>
 	</data>
 </T3locallang>
