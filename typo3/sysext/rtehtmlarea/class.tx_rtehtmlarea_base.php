@@ -726,9 +726,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				RTEarea[0] = new Object();
 				RTEarea[0].version = "' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['version'] . '";
 				RTEarea[0].editorUrl = "' . $this->extHttpPath . 'htmlarea/";
-				RTEarea[0].editorCSS = "' . $this->editorCSS . '";
+				RTEarea[0].editorCSS = "' . t3lib_div::createVersionNumberedFilename($this->editorCSS) . '";
 				RTEarea[0].editorSkin = "' . dirname($this->editorCSS) . '/";
-				RTEarea[0].editedContentCSS = "' .  $this->editedContentCSS  . '";
+				RTEarea[0].editedContentCSS = "' .  t3lib_div::createVersionNumberedFilename($this->editedContentCSS)  . '";
 				RTEarea[0].hostUrl = "' . $this->hostURL . '";
 				RTEarea[0].enableDebugMode = ' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
 				RTEarea.init = function() {
@@ -871,7 +871,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Setting the pageStyle
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].pageStyle = "' . $this->getFullFileName($filename) .'";';
+			RTEarea[editornumber].pageStyle = "' . t3lib_div::createVersionNumberedFilename($this->getFullFileName($filename)) .'";';
 			// Process classes configuration
 		$classesConfigurationRequired = false;
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
@@ -1107,7 +1107,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if ($concatenate) {
 			$this->cumulativeScripts[$this->TCEform->RTEcounter][] = $destination;
 		}
-		return (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '../' ) . $relativeFilename;
+		return (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '../' ) . t3lib_div::createVersionNumberedFilename($relativeFilename);
 	}
 	/**
 	 * Concatenates all accumulated scripts in a file in typo3temp/rtehtmlarea directory and returns the file name
@@ -1138,7 +1138,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				}
 			}
 		}
-		return (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '../' ) . $relativeFilename;
+		return (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '../' ) . t3lib_div::createVersionNumberedFilename($relativeFilename);
 	}
 
 	/**
