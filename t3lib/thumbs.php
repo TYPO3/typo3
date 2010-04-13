@@ -174,7 +174,10 @@ class SC_t3lib_thumbs {
 			$this->size = $size;
 			$this->mtime = $mtime;
 		} else {
-			die('Error: Image does not exist and/or MD5 checksum did not match.');
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: Image does not exist and/or MD5 checksum did not match.',
+				1270853950
+			);
 		}
 	}
 
@@ -277,7 +280,12 @@ class SC_t3lib_thumbs {
 	function errorGif($l1,$l2,$l3)	{
 		global $TYPO3_CONF_VARS;
 
-		if (!$TYPO3_CONF_VARS['GFX']['gdlib'])	die($l1.' '.$l2.' '.$l3);
+		if (!$TYPO3_CONF_VARS['GFX']['gdlib']) {
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: No gdlib. ' . $l1 . ' ' . $l2 . ' ' . $l3,
+				1270853952
+			);
+		}
 
 			// Creates the basis for the error image
 		if ($TYPO3_CONF_VARS['GFX']['gdlib_png'])	{
@@ -329,7 +337,12 @@ class SC_t3lib_thumbs {
 	function fontGif($font)	{
 		global $TYPO3_CONF_VARS;
 
-		if (!$TYPO3_CONF_VARS['GFX']['gdlib'])	die('');
+		if (!$TYPO3_CONF_VARS['GFX']['gdlib']) {
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: No gdlib.',
+				1270853953
+			);
+		}
 
 			// Create image and set background color to white.
 		$im = imageCreate(250,76);

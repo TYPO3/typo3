@@ -2321,7 +2321,12 @@ EXTENSION KEYS:
 					Header('Content-Disposition: attachment; filename='.basename($dlFile));
 					echo t3lib_div::getUrl($dlFile);
 					exit;
-				} else die($GLOBALS['LANG']->getLL('ext_details_error_downloading'));
+				} else {
+					throw new RuntimeException(
+						'TYPO3 Fatal Error: ' . $GLOBALS['LANG']->getLL('ext_details_error_downloading'),
+						1270853980
+					);
+				}
 
 			} elseif ($this->CMD['editFile'] && !in_array($extKey,$this->requiredExt))	{
 
@@ -2990,7 +2995,12 @@ EXTENSION KEYS:
 				$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 				return $content;
 			}
-		} else die($GLOBALS['LANG']->getLL('extBackup_unexpected_error'));
+		} else {
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: ' . $GLOBALS['LANG']->getLL('extBackup_unexpected_error'),
+				1270853981
+			);
+	}
 	}
 
 	/**
@@ -5314,9 +5324,9 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 									$finalDir = PATH_site.$crDirStart;
 								}
 							} else {
-								die(sprintf($GLOBALS['LANG']->getLL('checkUploadFolder_error'),
-									PATH_site . $crDir
-									)
+								throw new RuntimeException(
+									'TYPO3 Fatal Error: ' . sprintf($GLOBALS['LANG']->getLL('checkUploadFolder_error'), PATH_site . $crDir),
+									1270853982
 								);
 							}
 						}
@@ -5692,7 +5702,10 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 				$header.LF.LF.LF.
 				$insertStatements.LF.LF.LF;
 			} else {
-				die($GLOBALS['LANG']->getLL('dumpStaticTables_table_not_found'));
+				throw new RuntimeException(
+					'TYPO3 Fatal Error: ' . $GLOBALS['LANG']->getLL('dumpStaticTables_table_not_found'),
+					1270853983
+				);
 			}
 		}
 		return $out;

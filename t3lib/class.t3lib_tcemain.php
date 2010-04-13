@@ -2712,8 +2712,6 @@ class t3lib_TCEmain	{
 		}
 
 		$this->accumulateForNotifEmail = array();	// Reset notification array
-
-#		die("REMOVE ME");
 	}
 
 
@@ -5713,7 +5711,12 @@ $this->log($table,$id,6,0,0,'Stage raised...',30,array('comment'=>$comment,'stag
 			$perms = intval($perms);
 		}
 
-		if (!$perms)	{die('Internal ERROR: no permissions to check for non-admin user.');}
+		if (!$perms) {
+			throw new RuntimeException(
+				'Internal ERROR: no permissions to check for non-admin user',
+				1270853920
+			);
+		}
 
 			// For all tables: Check if record exists:
 		if (is_array($TCA[$table]) && $id>0 && ($this->isRecordInWebMount($table,$id) || $this->admin))	{
@@ -7433,7 +7436,10 @@ State was change by %s (username: %s)
 							if (!preg_match('/[^[:alnum:]_]/',$tableName) && substr($tableName,-5)=='cache')	{
 								$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery($tableName);
 							} else {
-								die('Fatal Error: Trying to flush table "'.$tableName.'" with "Clear All Cache"');
+								throw new RuntimeException(
+									'TYPO3 Fatal Error: Trying to flush table "' . $tableName . '" with "Clear All Cache"',
+									1270853922
+								);
 							}
 						}
 					}

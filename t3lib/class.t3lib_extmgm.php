@@ -131,7 +131,12 @@ final class t3lib_extMgm {
 	 */
 	public static function isLoaded($key, $exitOnError = 0) {
 		global $TYPO3_LOADED_EXT;
-		if ($exitOnError && !isset($TYPO3_LOADED_EXT[$key]))	die('Fatal Error: Extension "'.$key.'" was not loaded.');
+		if ($exitOnError && !isset($TYPO3_LOADED_EXT[$key])) {
+			throw new BadFunctionCallException(
+				'TYPO3 Fatal Error: Extension "' . $key . '" was not loaded!',
+				1270853910
+			);
+		}
 		return isset($TYPO3_LOADED_EXT[$key]);
 	}
 
@@ -148,8 +153,10 @@ final class t3lib_extMgm {
 	public static function extPath($key, $script = '') {
 		global $TYPO3_LOADED_EXT;
 		if (!isset($TYPO3_LOADED_EXT[$key])) {
-			#debug(array(debug_backtrace()));
-			die('TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded! (t3lib_extMgm::extPath)');
+			throw new BadFunctionCallException(
+				'TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded!',
+				1270853878
+			);
 		}
 		return PATH_site.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$script;
 	}
@@ -166,7 +173,10 @@ final class t3lib_extMgm {
 	public static function extRelPath($key) {
 		global $TYPO3_LOADED_EXT;
 		if (!isset($TYPO3_LOADED_EXT[$key])) {
-			die('TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded! (t3lib_extMgm::extRelPath)');
+			throw new BadFunctionCallException(
+				'TYPO3 Fatal Error: Extension key "'.$key.'" was NOT loaded!',
+				1270853879
+			);
 		}
 		return $TYPO3_LOADED_EXT[$key]['typo3RelPath'];
 	}

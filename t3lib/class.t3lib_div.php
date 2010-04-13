@@ -1079,8 +1079,18 @@ final class t3lib_div {
 	 * @return	string		Returns the list without any duplicates of values, space around values are trimmed
 	 */
 	public static function uniqueList($in_list, $secondParameter=NULL)	{
-		if (is_array($in_list))	die('t3lib_div::uniqueList() does NOT support array arguments anymore! Only string comma lists!');
-		if (isset($secondParameter))	die('t3lib_div::uniqueList() does NOT support more than a single argument value anymore. You have specified more than one.');
+		if (is_array($in_list)) {
+			throw new InvalidArgumentException(
+				'TYPO3 Fatal Error: t3lib_div::uniqueList() does NOT support array arguments anymore! Only string comma lists!',
+				1270853885
+			);
+		}
+		if (isset($secondParameter)) {
+			throw new InvalidArgumentException(
+				'TYPO3 Fatal Error: t3lib_div::uniqueList() does NOT support more than a single argument value anymore. You have specified more than one!',
+				1270853886
+			);
+		}
 
 		return implode(',',array_unique(self::trimExplode(',',$in_list,1)));
 	}
@@ -4465,7 +4475,10 @@ final class t3lib_div {
 				include($fileRef);
 				if (!is_array($LOCAL_LANG))	{
 					$fileName = substr($fileRef, strlen(PATH_site));
-					die('\'' . $fileName . '\' is no TYPO3 language file)!');
+					throw new RuntimeException(
+						'TYPO3 Fatal Error: "' . $fileName . '" is no TYPO3 language file!',
+						1270853900
+					);
 				}
 
 					// converting the default language (English)
@@ -4485,7 +4498,12 @@ final class t3lib_div {
 					// Cache the content now:
 				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>array('default'=>$LOCAL_LANG['default'], $langKey=>$LOCAL_LANG[$langKey]));
 				$res = self::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
-				if ($res)	die('ERROR: '.$res);
+				if ($res) {
+					throw new RuntimeException(
+						'TYPO3 Fatal Error: "' . $res,
+						1270853901
+					);
+				}
 			} else {
 					// Get content from cache:
 				$serContent = unserialize(self::getUrl($cacheFileName));
@@ -4542,7 +4560,10 @@ final class t3lib_div {
 				$xmlContent = self::xml2array($xmlString);
 				if (!is_array($xmlContent)) {
 					$fileName = substr($fileRef, strlen(PATH_site));
-					die('The file "' . $fileName . '" is no TYPO3 language file!');
+					throw new RuntimeException(
+						'TYPO3 Fatal Error: The file "' . $fileName . '" is no TYPO3 language file!',
+						1270853902
+					);
 				}
 
 					// Set default LOCAL_LANG array content:
@@ -4581,7 +4602,12 @@ final class t3lib_div {
 					// Cache the content now:
 				$serContent = array('origFile'=>$hashSource, 'LOCAL_LANG'=>array('default'=>$LOCAL_LANG['default'], $langKey=>$LOCAL_LANG[$langKey]));
 				$res = self::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
-				if ($res)	die('ERROR: '.$res);
+				if ($res) {
+					throw new RuntimeException(
+						'TYPO3 Fatal Error: ' . $res,
+						1270853903
+					);
+				}
 			} else {
 					// Get content from cache:
 				$serContent = unserialize(self::getUrl($cacheFileName));
@@ -4609,7 +4635,10 @@ final class t3lib_div {
 						$local_xmlContent = self::xml2array($local_xmlString);
 						if (!is_array($local_xmlContent)) {
 							$fileName = substr($localized_file, strlen(PATH_site));
-							die('The file "' . $fileName . '" is no TYPO3 language file!');
+							throw new RuntimeException(
+								'TYPO3 Fatal Error: The file "' . $fileName . '" is no TYPO3 language file!',
+								1270853904
+							);
 						}
 						$LOCAL_LANG[$langKey] = is_array($local_xmlContent['data'][$langKey]) ? $local_xmlContent['data'][$langKey] : array();
 
@@ -4624,7 +4653,10 @@ final class t3lib_div {
 						$serContent = array('extlang'=>$langKey, 'origFile'=>$hashSource, 'EXT_DATA'=>$LOCAL_LANG[$langKey]);
 						$res = self::writeFileToTypo3tempDir($cacheFileName, serialize($serContent));
 						if ($res) {
-							die('ERROR: '.$res);
+							throw new RuntimeException(
+								'TYPO3 Fatal Error: ' . $res,
+								1270853905
+							);
 						}
 					} else {
 							// Get content from cache:

@@ -123,9 +123,12 @@ class em_unzip {
 
 		// Check the zlib
 		if (!extension_loaded('zlib')) {
-			die("The extension 'zlib' couldn't be found.\n".
-			"Please make sure your version of PHP was built ".
-			"with 'zlib' support.\n");
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: ' . "The extension 'zlib' couldn't be found.\n" .
+				"Please make sure your version of PHP was built " .
+				"with 'zlib' support.\n",
+				1270853984
+			);
 		}
 
 		// Set the attributes

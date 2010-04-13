@@ -208,11 +208,17 @@ class t3lib_install {
 		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'].$tmpExt;
 
 			// Checking write state of localconf.php:
-		if (!$this->allowUpdateLocalConf)	{
-			die('->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.');
+		if (!$this->allowUpdateLocalConf) {
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.',
+				1270853915
+			);
 		}
 		if (!@is_writable($writeToLocalconf_dat['file']))	{
-			die($writeToLocalconf_dat['file'].' is not writable!');
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file'] . ' is not writable!',
+				1270853916
+			);
 		}
 
 				// Splitting localconf.php file into lines:
@@ -465,7 +471,12 @@ class t3lib_install {
 						}
 
 						$total[$table]['fields'][$fN] = $sqlParser->compileFieldCfg($fInfo);
-						if ($sqlParser->parse_error)	die($sqlParser->parse_error);
+						if ($sqlParser->parse_error) {
+							throw new RuntimeException(
+								'TYPO3 Fatal Error: ' . $sqlParser->parse_error,
+								1270853961
+							);
+						}
 					}
 				}
 			}

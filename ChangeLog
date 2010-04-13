@@ -15,6 +15,7 @@
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14061: Do not die, be the exception!
 	* Added Feature #13799: ExtJS driven fading in/out Flashmessages
 	* Corrected spelling errors in felogin manual
 	* Added Feature #12229: Add stdWrap date/strftime with GMT format property

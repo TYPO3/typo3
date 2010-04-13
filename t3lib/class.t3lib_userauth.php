@@ -485,9 +485,12 @@ class t3lib_userAuth {
 			if ($this->formfield_status && $loginData['uident'] && $loginData['uname'])	{
 				$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 				if (!$this->getMethodEnabled && ($httpHost!=$authInfo['refInfo']['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']))	{
-					die('Error: This host address ("'.$httpHost.'") and the referer host ("'.$authInfo['refInfo']['host'].'") mismatches!<br />
+					throw new RuntimeException(
+						'TYPO3 Fatal Error: Error: This host address ("' . $httpHost . '") and the referer host ("' . $authInfo['refInfo']['host'] . '") mismatches!<br />
 						It\'s possible that the environment variable HTTP_REFERER is not passed to the script because of a proxy.<br />
-						The site administrator can disable this check in the "All Configuration" section of the Install Tool (flag: TYPO3_CONF_VARS[SYS][doNotCheckReferer]).');
+						The site administrator can disable this check in the "All Configuration" section of the Install Tool (flag: TYPO3_CONF_VARS[SYS][doNotCheckReferer]).',
+						1270853930
+					);
 				}
 
 					// delete old user session if any
@@ -496,7 +499,10 @@ class t3lib_userAuth {
 
 				// Refuse login for _CLI users (used by commandline scripts)
 			if ((strtoupper(substr($loginData['uname'],0,5))=='_CLI_') && (!defined('TYPO3_cliMode') || !TYPO3_cliMode))	{	// although TYPO3_cliMode should never be set when using active login...
-				die('Error: You have tried to login using a CLI user. Access prohibited!');
+				throw new RuntimeException(
+					'TYPO3 Fatal Error: You have tried to login using a CLI user. Access prohibited!',
+					1270853931
+				);
 			}
 		}
 
@@ -874,12 +880,12 @@ class t3lib_userAuth {
 	 * if the client is flash (e.g. from a flash application inside TYPO3 that does a server request)
 	 * then don't evaluate with the hashLockClause, as the client/browser is included in this hash
 	 * and thus, the flash request would be rejected
-	 * 
+	 *
 	 * @return DB result object or false on error
 	 * @access private
 	 */
 	protected function fetchUserSessionFromDB() {
-		
+
 		if ($GLOBALS['CLIENT']['BROWSER'] == 'flash') {
 			// if on the flash client, the veri code is valid, then the user session is fetched
 			// from the DB without the hashLock clause
@@ -974,7 +980,7 @@ class t3lib_userAuth {
 	public function veriCode() {
 		return substr(md5($this->id . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 10);
 	}
-	
+
 	/**
 	 * This returns the where-clause needed to lock a user to a hash integer
 	 *

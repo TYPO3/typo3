@@ -203,7 +203,10 @@ class t3lib_extobjbase {
 			// Path of this script:
 		$this->thisPath = dirname($conf['path']);
 		if (!@is_dir($this->thisPath))	{
-			die('Error: '.$this->thisPath.' was not a directory as expected...');
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: Extension "' . $this->thisPath . ' was not a directory as expected...',
+				1270853912
+			);
 		}
 
 			// Local lang:

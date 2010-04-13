@@ -384,7 +384,7 @@ class t3lib_DB {
 
 	/**
 	 * Truncates a table.
-	 * 
+	 *
 	 * @param	string		Database tablename
 	 * @return	mixed		Result from handler
 	 */
@@ -514,8 +514,10 @@ class t3lib_DB {
 				return $query;
 			}
 		} else {
-			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for UPDATE ' .
-				'query was not a string in $this->UPDATEquery() !');
+			throw new InvalidArgumentException(
+				'TYPO3 Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !',
+				1270853880
+			);
 		}
 	}
 
@@ -539,8 +541,10 @@ class t3lib_DB {
 			}
 			return $query;
 		} else {
-			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for DELETE ' .
-				'query was not a string in $this->DELETEquery() !');
+			throw new InvalidArgumentException(
+				'TYPO3 Fatal Error: "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !',
+				1270853881
+			);
 		}
 	}
 
@@ -582,7 +586,7 @@ class t3lib_DB {
 	/**
 	 * Creates a SELECT SQL-statement to be used as subquery within another query.
 	 * BEWARE: This method should not be overriden within DBAL to prevent quoting from happening.
-	 * 
+	 *
 	 * @param	string		$select_fields: List of fields to select from the table.
 	 * @param	string		$from_table: Table from which to select.
 	 * @param	string		$where_clause: Conditional WHERE statement
@@ -604,7 +608,7 @@ class t3lib_DB {
 
 	/**
 	 * Creates a TRUNCATE TABLE SQL-statement
-	 * 
+	 *
 	 * @param	string		See exec_TRUNCATEquery()
 	 * @return	string		Full SQL query for TRUNCATE TABLE
 	 */
@@ -1319,16 +1323,21 @@ class t3lib_DB {
 	function connectDB() {
 		if ($this->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 			if (!TYPO3_db) {
-				die('No database selected');
-				exit;
+				throw new RuntimeException(
+					'TYPO3 Fatal Error: No database selected!',
+					1270853882
+				);
 			} elseif (!$this->sql_select_db(TYPO3_db)) {
-				die('Cannot connect to the current database, "' . TYPO3_db . '"');
-				exit;
+				throw new RuntimeException(
+					'TYPO3 Fatal Error: Cannot connect to the current database, "' . TYPO3_db . '"!',
+					1270853883
+				);
 			}
 		} else {
-			die('The current username, password or host was not accepted when the ' .
-				'connection to the database was attempted to be established!');
-			exit;
+			throw new RuntimeException(
+				'TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!',
+				1270853884
+			);
 		}
 	}
 
