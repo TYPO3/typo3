@@ -17,6 +17,11 @@
 			<label index="sys_action.t3_listPid">List pid:</label>
 			<label index="sys_action.t3_tables">List only table:</label>
 			<label index="sys_action.t4_recordsToEdit">Records to edit:</label>
+			<label index="sys_action.type.1">Create Backend User</label>
+			<label index="sys_action.type.2">SQL query</label>
+			<label index="sys_action.type.3">Record list</label>
+			<label index="sys_action.type.4">Edit records</label>
+			<label index="sys_action.type.5">New Record</label>
 		</languageKey>
 	</data>
 </T3locallang>

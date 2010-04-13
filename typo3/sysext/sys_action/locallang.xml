@@ -6,6 +6,21 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="sys_action">Action</label>
+			<label index="description">An 'Action' is a configuration of a specific task which may be performed by assigned usergroups via the Task Center.</label>
+			<label index="new-sys_action">Create a new action</label>
+			<label index="edit-sys_action">Edit record</label>
+			<label index="action_error-not-found">The action doesn't exist</label>
+			<label index="action_not-found">No actions found</label>
+			<label index="action_not-found-description">Currently there are no actions yet defined!</label>
+			<label index="action_error-access">You don't have sufficient rights to see the records. Please ask the administrator to set those for you.</label>
+			<label index="error-wrong-email">The E-mail address is wrong.</label>
+			<label index="error-username-empty">The username is empty.</label>
+			<label index="error-password-empty">The password is empty.</label>
+			<label index="error-wrong-user">You are not allowed to edit this user.</label>
+			<label index="success">Success</label>
+			<label index="success-user-created">The user has been created.</label>
+			<label index="success-user-updated">The user has been updated.</label>
 			<label index="action_noType">Error: The action had no type defined.</label>
 			<label index="action_notReady">Error: The action configuration is not finished.</label>
 			<label index="action_download_file">Click here to download the exported data in a file</label>

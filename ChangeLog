@@ -24,6 +24,7 @@
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added Feature #13982: Feature: Renewal of the taskcenter Part II (thanks to Georg Ringer)
 	* Added Feature #13982: Feature: Renewal of the taskcenter Part I (thanks to Georg Ringer)
 	* Fixed bug #14061: Do not die, be the exception!
 	* Added Feature #13799: ExtJS driven fading in/out Flashmessages
