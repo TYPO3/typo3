@@ -338,7 +338,10 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 	setColor: function(button, event) {
 		this.restoreSelection();
 		var buttonId = this.dialog.arguments.buttonId;
-		var color = '#' + this.dialog.find('itemId', 'color')[0].getValue();
+		var color = this.dialog.find('itemId', 'color')[0].getValue();
+		if (color) {
+			color = '#' + color;
+		}
 		this.editor.focus();
 		var 	element,
 			fullNodeSelected = false;
@@ -371,14 +374,14 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 			if ((element.nodeName.toLowerCase() === 'span') && !HTMLArea.hasAllowedAttributes(element, this.allowedAttributes)) {
 				this.editor.removeMarkup(element);
 			}
-		} else if (this.editor.endPointsInSameBlock()) {
+		} else if (color && this.editor.endPointsInSameBlock()) {
 			var element = this.editor._doc.createElement('span');
 				// Set the color in the style attribute
 			element.style[this.styleProperty[buttonId]] = color;
 			this.editor.wrapWithInlineElement(element, selection, range);
-			if (!Ext.isIE) {
-				range.detach();
-			}
+		}
+		if (!Ext.isIE) {
+			range.detach();
 		}
 		this.close();
 		event.stopEvent();
