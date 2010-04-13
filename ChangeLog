@@ -2,6 +2,7 @@
 
 	* Follow-up to feature #14051: htmlArea RTE: Streamline the RTE loading process
 	* Fixed bug #14085: htmlArea RTE: Setting empty color raises js error in IE
+	* Fixed bug #14086: htmlArea RTE: Small css glitch in the color setting dialogue
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
