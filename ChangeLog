@@ -2,6 +2,7 @@
 
 	* Fixed bug #14027: Tweak: Add "tiff" to imagefile_ext array
 	* Fixed bug #14023: choose proper variable namings in tslib_cObj::getGlobal()
+	* Fixed bug ##1740: date parameters are not configurable in indexed search
 
 2010-04-13  Patrick Broens  <patrick@patrickbroens.nl>
 

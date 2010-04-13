@@ -2096,12 +2096,9 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	array		Modified template array
 	 */
 	function makeInfo($row,$tmplArray)	{
-		$dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-		$timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-
 		$tmplArray['size'] = t3lib_div::formatSize($row['item_size']);
-		$tmplArray['created'] = date($dateFormat, $row['item_crdate']);
-		$tmplArray['modified'] = date($dateFormat.' '.$timeFormat, $row['item_mtime']);
+		$tmplArray['created'] = $this->formatCreatedDate($row['item_crdate']);
+		$tmplArray['modified'] = $this->formatModifiedDate($row['item_mtime']);
 
 		$pathId = $row['data_page_id']?$row['data_page_id']:$row['page_id'];
 		$pathMP = $row['data_page_id']?$row['data_page_mp']:'';
@@ -2424,6 +2421,51 @@ class tx_indexedsearch extends tslib_pibase {
 				$result = $this->conf['search.']['targetPid'];
 			}
 			$result = intval($result);
+		}
+		return $result;
+	}
+
+	/**
+	 * Formats date as 'created' date
+	 *
+	 * @param int $date
+	 * @param string $defaultFormat
+	 * @return string
+	 */
+	protected function formatCreatedDate($date) {
+		$defaultFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+		return $this->formatDate($date, 'created', $defaultFormat);
+	}
+
+	/**
+	 * Formats date as 'modified' date
+	 *
+	 * @param int $date
+	 * @param string $defaultFormat
+	 * @return string
+	 */
+	protected function formatModifiedDate($date) {
+		$defaultFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' .
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+		return $this->formatDate($date, 'modified', $defaultFormat);
+	}
+
+	/**
+	 * Formats the date using format string from TypoScript or default format
+	 * if TypoScript format is not set
+	 *
+	 * @param int $date
+	 * @param string $tsKey
+	 * @param string $defaultFormat
+	 * @return string
+	 */
+	protected function formatDate($date, $tsKey, $defaultFormat) {
+		$strftimeFormat = $this->conf['dateFormat.'][$tsKey];
+		if ($strftimeFormat) {
+			$result = strftime($strftimeFormat, $date);
+		}
+		else {
+			$result = date($defaultFormat, $date);
 		}
 		return $result;
 	}

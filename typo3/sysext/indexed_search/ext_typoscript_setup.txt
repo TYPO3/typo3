@@ -5,6 +5,12 @@ config.index_metatags = 1
 plugin.tx_indexedsearch {
 	templateFile = EXT:indexed_search/pi/indexed_search.tmpl
 
+	# Date formats for created/modified dates in search results. See PHP strftime() function. Leave blank for using system defaults
+	dateFormat {
+		created =
+		modified =
+	}
+
 	show {
 		rules = 1
 		parsetimes = 0
