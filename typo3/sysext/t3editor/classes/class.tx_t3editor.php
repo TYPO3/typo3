@@ -126,9 +126,9 @@ class tx_t3editor implements t3lib_Singleton {
 
 				// include editor-css
 			$content .= '<link href="' .
-				$GLOBALS['BACK_PATH'] .
+				t3lib_div::createVersionNumberedFilename($GLOBALS['BACK_PATH'] .
 				t3lib_extmgm::extRelPath('t3editor') .
-				'res/css/t3editor.css' .
+				'res/css/t3editor.css') .
 				'" type="text/css" rel="stylesheet" />';
 
 				// include editor-js-lib

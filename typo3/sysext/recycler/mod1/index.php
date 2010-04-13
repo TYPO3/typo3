@@ -158,7 +158,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	 */
 	protected function loadStylesheet($fileName) {
 		$fileName = t3lib_div::resolveBackPath($this->doc->backPath . $fileName);
-		$this->doc->JScode.= TAB . '<link rel="stylesheet" type="text/css" href="' . $fileName . '" />' . LF;
+		$this->doc->JScode .= TAB . '<link rel="stylesheet" type="text/css" href="' . t3lib_div::createVersionNumberedFilename($fileName) . '" />' . LF;
 	}
 
 	/**
@@ -169,7 +169,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 	 */
 	protected function loadJavaScript($fileName) {
 		$fileName = t3lib_div::resolveBackPath($this->doc->backPath . $fileName);
-		$this->doc->JScode.= TAB . '<script language="javascript" type="text/javascript" src="' . $fileName . '"></script>' . LF;
+		$this->doc->JScode .= TAB . '<script language="javascript" type="text/javascript" src="' . t3lib_div::createVersionNumberedFilename($fileName) . '"></script>' . LF;
 	}
 
 	/**

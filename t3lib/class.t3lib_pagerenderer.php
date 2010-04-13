@@ -1000,8 +1000,12 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		if (count($this->cssFiles)) {
 			foreach ($this->cssFiles as $file => $properties) {
-				$file = htmlspecialchars(t3lib_div::resolveBackPath($file));
-				$tag = '<link rel="' . $properties['rel'] . '" type="text/css" href="' . $file . '" media="' . $properties['media'] . '"' . ($properties['title'] ? ' title="' . $properties['title'] . '"' : '') . ' />';
+				$file = t3lib_div::resolveBackPath($file);
+				$file = t3lib_div::createVersionNumberedFilename($file);
+				$tag = '<link rel="' . $properties['rel'] . '" type="text/css" href="' .
+					htmlspecialchars($file) . '" media="' . $properties['media'] . '"' .
+					($properties['title'] ? ' title="' . $properties['title'] . '"' : '') .
+					' />';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
 				}
@@ -1028,10 +1032,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		if (count($this->jsLibs)) {
 			foreach ($this->jsLibs as $name => $properties) {
-				$properties['file'] = htmlspecialchars(
-					t3lib_div::resolveBackPath($properties['file'])
-				);
-				$tag = '<script src="' . $properties['file'] . '" type="' . $properties['type'] . '"></script>';
+				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
+				$properties['file'] = t3lib_div::createVersionNumberedFilename($properties['file']);
+				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . $properties['type'] . '"></script>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
 				}
@@ -1054,8 +1057,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		if (count($this->jsFiles)) {
 			foreach ($this->jsFiles as $file => $properties) {
-					$file = htmlspecialchars(t3lib_div::resolveBackPath($file));
-					$tag = '<script src="' . $file . '" type="' . $properties['type'] . '"></script>';
+					$file = t3lib_div::resolveBackPath($file);
+					$file = t3lib_div::createVersionNumberedFilename($file);
+					$tag = '<script src="' . htmlspecialchars($file) . '" type="' . $properties['type'] . '"></script>';
 					if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 						$tag = str_replace('|', $tag, $properties['allWrap']);
 					}
@@ -1162,7 +1166,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$out = '';
 
 		if ($this->addPrototype) {
-			$out .= '<script src="' . $this->backPath . 'contrib/prototype/prototype.js" type="text/javascript"></script>' . LF;
+			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+				'contrib/prototype/prototype.js') . '" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . 'contrib/prototype/prototype.js']);
 		}
 
@@ -1181,22 +1186,30 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			if (count($mods)) {
 				$moduleLoadString = '?load=' . implode(',', $mods);
 			}
-
-			$out .= '<script src="' . $this->backPath . 'contrib/scriptaculous/scriptaculous.js' . $moduleLoadString . '" type="text/javascript"></script>' . LF;
+			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+				'contrib/scriptaculous/scriptaculous.js' . $moduleLoadString, TRUE) .
+				'" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/scriptaculous.js' . $moduleLoadString]);
 		}
 
 			// include extCore
 		if ($this->addExtCore) {
-			$out .= '<script src="' . $this->backPath . 'contrib/extjs/ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js" type="text/javascript"></script>' . LF;
+			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+				'contrib/extjs/ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
+				'" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . 'contrib/extjs/ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js']);
 		}
 
 			// include extJS
 		if ($this->addExtJS) {
 				// use the base adapter all the time
-			$out .= '<script src="' . $this->backPath . 'contrib/extjs/adapter/' . ($this->enableExtJsDebug ? str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter) . '" type="text/javascript"></script>' . LF;
-			$out .= '<script src="' . $this->backPath . 'contrib/extjs/ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js" type="text/javascript"></script>' . LF;
+			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+				'contrib/extjs/adapter/' . ($this->enableExtJsDebug ?
+					str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter)) .
+				'" type="text/javascript"></script>' . LF;
+			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+				'contrib/extjs/ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') .
+				'" type="text/javascript"></script>' . LF;
 
 				// add extJS localization
 			$localeMap = $this->csConvObj->isoArray; // load standard ISO mapping and modify for use with ExtJS
@@ -1211,7 +1224,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
 			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
-				$out .= '<script src="' . $this->backPath . $extJsLocaleFile . '" type="text/javascript" charset="utf-8"></script>' . LF;
+				$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+					$extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
 			}
 
 

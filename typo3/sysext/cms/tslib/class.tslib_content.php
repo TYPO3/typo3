@@ -2204,9 +2204,19 @@ class tslib_cObj {
 		$hiddenfields = '<div style="display:none;">'.$hiddenfields.'</div>';
 
 		if ($conf['REQ'])	{
-			$validateForm=' onsubmit="return validateForm(\''.$formname.'\',\''.implode(',',$fieldlist).'\','.t3lib_div::quoteJSvalue($conf['goodMess']).','.t3lib_div::quoteJSvalue($conf['badMess']).','.t3lib_div::quoteJSvalue($conf['emailMess']).')"';
-			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.validateform.js"></script>';
-		} else $validateForm='';
+			$validateForm = ' onsubmit="return validateForm(\'' .
+				$formname . '\',\'' . implode(',',$fieldlist) . '\',' .
+				t3lib_div::quoteJSvalue($conf['goodMess']) . ',' .
+				t3lib_div::quoteJSvalue($conf['badMess']) . ',' .
+				t3lib_div::quoteJSvalue($conf['emailMess']) . ')"';
+			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] =
+				'<script type="text/javascript" src="' .
+				t3lib_div::createVersionNumberedFilename($GLOBALS['TSFE']->absRefPrefix .
+					't3lib/jsfunc.validateform.js') .
+				'"</script>';
+		} else {
+			$validateForm = '';
+		}
 
 			// Create form tag:
 		$theTarget = ($theRedirect?$LD['target']:$LD_A['target']);
@@ -6989,7 +6999,11 @@ class tslib_cObj {
 	/*]]>*/
 </script>
 ';
-		$GLOBALS['TSFE']->additionalHeaderData['JSincludeFormupdate']='<script type="text/javascript" src="'.$GLOBALS['TSFE']->absRefPrefix.'t3lib/jsfunc.updateform.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['JSincludeFormupdate'] =
+			'<script type="text/javascript" src="'
+			. t3lib_div::createVersionNumberedFilename($GLOBALS['TSFE']->absRefPrefix
+				. 't3lib/jsfunc.updateform.js')
+			. '"></script>';
 		return $JSPart;
 	}
 

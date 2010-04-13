@@ -3351,7 +3351,68 @@ final class t3lib_div {
 	}
 
 
+	/**
+	 * Function for static version numbers on files, based on the filemtime
+	 *
+	 * This will make the filename automatically change when a file is
+	 * changed, and by that re-cached by the browser. If the file does not
+	 * exist physically the original file passed to the function is
+	 * returned without the timestamp.
+	 * 
+	 * Behaviour is influenced by the setting 
+	 * TYPO3_CONF_VARS[TYPO3_MODE][versionNumberInFilename]
+	 * = true (BE) / "embed" (FE) : modify filename
+	 * = false (BE) / "querystring" (FE) : add timestamp as parameter
+	 *
+	 * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
+	 * @param boolean $forceQueryString If settings would suggest to embed in filename, this parameter allows us to force the versioning to occur in the query string. This is needed for scriptaculous.js which cannot have a different filename in order to load its modules (?load=...)
+	 * @return Relative path with version filename including the timestamp
+	 * @author Lars Houmark <lars@houmark.com>
+	 */
+	public static function createVersionNumberedFilename($file, $forceQueryString = FALSE) {
+		$lookupFile = explode('?', $file);
+		$path = self::resolveBackPath(self::dirname(PATH_thisScript) .'/'. $lookupFile[0]);
 
+		if (TYPO3_MODE == 'FE') {
+			$mode = strtolower($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename']);
+			if ($mode === 'embed') {
+				$mode = TRUE;
+			} else if ($mode === 'querystring') {
+				$mode = FALSE;
+			} else {
+				$doNothing = TRUE;
+			}
+		} else {
+			$mode = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename'];
+		}
+
+		if (! file_exists($path) || $doNothing) {
+				// File not found, return filename unaltered
+			$fullName = $file;
+
+		} else if (! $mode || $forceQueryString) {
+				// If use of .htaccess rule is not configured,
+				// we use the default query-string method
+			if ($lookupFile[1]) {
+				$separator = '&';
+			} else {
+				$separator = '?';
+			}
+			$fullName = $file . $separator . filemtime($path);
+
+		} else {
+				// Change the filename
+			$name = explode('.', $lookupFile[0]);
+			$extension = array_pop($name);
+		
+			array_push($name, filemtime($path), $extension);
+			$fullName = implode('.', $name);
+				// append potential query string
+			$fullName .= $lookupFile[1] ? '?' . $lookupFile[1] : '';
+		}
+
+		return $fullName;
+	}
 
 
 

@@ -1,3 +1,7 @@
+2010-04-13  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #13998: Introduce automatic versioning of CSS and JS files (thanks to Lars Houmark)
+
 2010-04-13  Benjamin Mack  <benni@typo3.org>
 
 	* Added feature #13865: Possibility to configure alternative parameter for jumpurl filelinks (Thanks to Sebastian Gebhard)
