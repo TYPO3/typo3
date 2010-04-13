@@ -1,5 +1,6 @@
 2010-04-14  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #13732: External URL only indexes first page [indexed_search]
 	* Raised DBAL version from 1.0.4 to 1.0.5
 
 2010-04-13  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
