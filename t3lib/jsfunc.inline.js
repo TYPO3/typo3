@@ -45,10 +45,19 @@ var inline = {
 	setPrependFormFieldNames: function(value) {	this.prependFormFieldNames = value; },
 	setNoTitleString: function(value) { this.noTitleString = value; },
 
-	expandCollapseRecord: function(objectId, expandSingle) {
+	expandCollapseRecord: function(objectId, expandSingle, returnURL) {
 		var currentUid = this.parseObjectId('none', objectId, 1);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 
+			// if content is not loaded yet, get it now from server
+		if ($(objectId+'_fields') && $(objectId+'_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
+				// add loading-indicator
+			if ($(objectId+'_label')) {
+				$(objectId+'_label').insert({before:'<span id="irre-loading-indicator" class="loading-indicator">&nbsp;</span>'});
+			}
+			return this.getRecordDetails(objectId, returnURL);	
+		}		
+		
 		var currentState = '';
 		var collapse = new Array();
 		var expand = new Array();
@@ -103,6 +112,11 @@ var inline = {
 		if (ucFormObj.length) {
 			ucFormObj[0].value = value;
 		}
+	},
+	
+	getRecordDetails: function(objectId, returnURL) {
+		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true);
+		return false;
 	},
 
 	createNewRecord: function(objectId, recordUid) {
@@ -350,6 +364,17 @@ var inline = {
 			else if (method == 'after')
 				new Insertion.After(insertObject, htmlData);
 		}
+	},
+	domAddRecordDetails: function(objectId, objectPrefix, expandSingle, htmlData) {
+		var objectDiv = $(objectId + '_fields');
+		if (!objectDiv || objectDiv.innerHTML.substr(0,16) != '<!--notloaded-->')
+			return;
+		objectDiv.update(htmlData);
+			// remove loading-indicator
+		if ($('irre-loading-indicator')) 
+			$('irre-loading-indicator').remove();
+			// now that the content is loaded, set the expandState
+		this.expandCollapseRecord(objectId, expandSingle);
 	},
 
 		// Get script and link elements from head tag:

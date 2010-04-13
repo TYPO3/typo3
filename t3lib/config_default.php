@@ -262,6 +262,7 @@ $TYPO3_CONF_VARS = array(
 			'SC_alt_file_navframe::expandCollapse'              => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',
 			'TYPO3_tcefile::process'                            => 'typo3/classes/class.typo3_tcefile.php:TYPO3_tcefile->processAjaxRequest',
 			't3lib_TCEforms_inline::createNewRecord'		    => 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
+			't3lib_TCEforms_inline::getRecordDetails'		    => 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
 			't3lib_TCEforms_inline::synchronizeLocalizeRecords'	=> 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
 			't3lib_TCEforms_inline::setExpandedCollapsedState'	=> 't3lib/class.t3lib_tceforms_inline.php:t3lib_TCEforms_inline->processAjaxRequest',
 			't3lib_TCEforms_suggest::searchRecord'              => 't3lib/tceforms/class.t3lib_tceforms_suggest.php:t3lib_TCEforms_suggest->processAjaxRequest',
