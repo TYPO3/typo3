@@ -7623,6 +7623,22 @@ class tslib_cObj {
 	 */
 	function getQuery($table, $conf, $returnQueryArray=FALSE)	{
 
+			// Handle PDO-style named parameter markers first
+		$queryMarkers = $this->getQueryMarkers($table, $conf);
+
+			// replace the markers in the non-stdWrap properties
+		foreach ($queryMarkers as $marker => $markerValue) {
+			$properties = array('uidInList', 'selectFields', 'where', 'max',
+				'begin', 'groupBy', 'orderBy', 'join', 'leftjoin', 'rightjoin');
+			foreach ($properties as $property) {
+				if ($conf[$property]) {
+					$conf[$property] = str_replace('###' . $marker . '###',
+							$markerValue,
+							$conf[$property]);
+				}
+			}
+		}
+		
 			// Construct WHERE clause:
 		$conf['pidInList'] = trim($this->stdWrap($conf['pidInList'],$conf['pidInList.']));
 
@@ -7690,6 +7706,17 @@ class tslib_cObj {
 
 				// Compile and return query:
 			$queryParts['FROM'] = trim($table.' '.$joinPart);
+
+				// replace the markers in the queryParts to handle stdWrap
+				// enabled properties
+			foreach ($queryMarkers as $marker => $markerValue) {
+				foreach ($queryParts as $queryPartKey => &$queryPartValue) {
+					$queryPartValue = str_replace('###' . $marker . '###', 
+							$markerValue,
+							$queryPartValue);
+				}
+			}
+
 			$query = $GLOBALS['TYPO3_DB']->SELECTquery(
 						$queryParts['SELECT'],
 						$queryParts['FROM'],
@@ -7698,6 +7725,7 @@ class tslib_cObj {
 						$queryParts['ORDERBY'],
 						$queryParts['LIMIT']
 					);
+
 			return $returnQueryArray ? $queryParts : $query;
 		}
 	}
@@ -7849,6 +7877,84 @@ class tslib_cObj {
 			$this->checkPid_cache[$uid] = (bool)$count;
 		}
 		return $this->checkPid_cache[$uid];
+	}
+
+	/**
+	 * Builds list of marker values for handling PDO-like parameter markers in select parts.
+	 * Marker values support stdWrap functionality thus allowing a way to use stdWrap functionality in various properties of 'select' AND prevents SQL-injection problems by quoting and escaping of numeric values, strings, NULL values and comma separated lists.
+	 *
+	 * @param	string $table Table to select records from
+	 * @param	array $conf Select part of CONTENT definition
+	 * @return	array List of values to replace markers with
+	 * @access private
+	 * @see getQuery()
+	 */
+	function getQueryMarkers($table, $conf) {
+
+			// parse markers and prepare their values
+		$markerValues = array();
+		if (is_array($conf['markers.'])) {
+			foreach($conf['markers.'] as $dottedMarker => $dummy) {
+				$marker = rtrim($dottedMarker, '.');
+				if ($dottedMarker == $marker . '.') {
+						// parse definition
+					$tempValue = $this->stdWrap(
+							$conf['markers.'][$dottedMarker]['value'],
+							$conf['markers.'][$dottedMarker]
+						);
+						// quote/escape if needed
+					if (is_numeric($tempValue)) {
+						if ((int)$tempValue == $tempValue) {
+								// handle integer
+							$markerValues[$marker] = intval($tempValue);
+						} else {
+								// handle float
+							$markerValues[$marker] = floatval($tempValue);
+						}
+					} elseif (is_null($tempValue)) {
+							// it represents NULL
+						$markerValues[$marker] = 'NULL';
+					} elseif ($conf['markers.'][$dottedMarker]['commaSeparatedList'] == 1) {
+							// see if it is really a comma separated list of values
+						$explodeValues = t3lib_div::trimExplode(',', $tempValue);
+						if (count($explodeValues) > 1) {
+								// handle each element of list separately
+							$tempArray = array();
+							foreach ($explodeValues as $listValue) {
+								if (is_numeric($listValue)) {
+									if ((int)$listValue == $listValue) {
+										$tempArray[] = intval($listValue);
+									} else {
+										$tempArray[] = floatval($listValue);
+									}
+								} else {
+										// if quoted, remove quotes before
+										// escaping.
+									if (preg_match('/^\'([^\']*)\'$/', 
+											$listValue,
+											$matches)) {
+										$listValue = $matches[1];
+									} elseif (preg_match('/^\"([^\"]*)\"$/', 
+											$listValue,
+											$matches)) {
+										$listValue = $matches[1];
+									}
+									$tempArray[] = $GLOBALS['TYPO3_DB']->fullQuoteStr($listValue, $table);
+								}
+							}
+							$markerValues[$marker] = implode(',', $tempArray);
+						} else {
+								// handle remaining values as string
+							$markerValues[$marker] = $GLOBALS['TYPO3_DB']->fullQuoteStr($tempValue, $table);
+						}
+					} else {
+							// handle remaining values as string
+						$markerValues[$marker] = $GLOBALS['TYPO3_DB']->fullQuoteStr($tempValue, $table);
+					}
+				}
+			}
+		}
+		return $markerValues;
 	}
 
 

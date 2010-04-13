@@ -31,6 +31,7 @@
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added Feature #13940 Added marker in CONTENT object (thanks to Jigal van Hemert)
 	* Added testcase for #13698 (thanks to Oliver Klee)
 	* Added Feature #13698: Add proxy for the mail() function (thanks to Tolleiv Nietsch)
 	* Added Feature #13982: Feature: Renewal of the taskcenter Part III (thanks to Georg Ringer)
