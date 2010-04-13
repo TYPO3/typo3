@@ -5715,33 +5715,30 @@ class tslib_cObj {
 	 * @param	string		Global var key, eg. "HTTP_GET_VAR" or "HTTP_GET_VARS|id" to get the GET parameter "id" back.
 	 * @param	array		Alternative array than $GLOBAL to get variables from.
 	 * @return	mixed		Whatever value. If none, then blank string.
-	 * @access private
 	 * @see getData()
 	 */
-	function getGlobal($var, $source=NULL)	{
-		$vars = explode('|', $var);
-		$c = count($vars);
-		$k = trim($vars[0]);
-		$theVar = isset($source) ? $source[$k] : $GLOBALS[$k];
+	function getGlobal($keyString, $source = NULL) {
+		$keys = explode('|', $keyString);
+		$numberOfLevels = count($keys);
+		$rootKey = trim($keys[0]);
+		$value = isset($source) ? $source[$rootKey] : $GLOBALS[$rootKey];
 
-		for ($a=1;$a<$c;$a++)	{
-			if (!isset($theVar))	{ break; }
-
-			$key = trim($vars[$a]);
-			if (is_object($theVar))	{
-				$theVar = $theVar->$key;
-			} elseif (is_array($theVar))	{
-				$theVar = $theVar[$key];
+		for ($i = 1; $i < $numberOfLevels && isset($value); $i++) {
+			$currentKey = trim($keys[$i]);
+			if (is_object($value)) {
+				$value = $value->$currentKey;
+			} elseif (is_array($value)) {
+				$value = $value[$currentKey];
 			} else {
-				return '';
+				$value = '';
+				break;
 			}
 		}
 
-		if (!is_array($theVar) && !is_object($theVar))	{
-			return $theVar;
-		} else {
-			return '';
+		if (!is_scalar($value)) {
+			$value = '';
 		}
+		return $value;
 	}
 
 	/**
