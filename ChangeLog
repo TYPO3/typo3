@@ -10,6 +10,7 @@
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Corrected spelling errors in felogin manual
 	* Added Feature #12229: Add stdWrap date/strftime with GMT format property
 	* Fixed bug #13402: Active suggest feature for TCA fields with foreign tables
 	* Fixed bug #13788: [felogin] Redirects use incorrect function parameters
