@@ -1,3 +1,7 @@
+2010-04-13  Dmitry Dulepov <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #14027: Tweak: Add "tiff" to imagefile_ext array
+
 2010-04-13  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #14088: Change typo3/install/index.php install tool locked message to proper HTML and CSS
