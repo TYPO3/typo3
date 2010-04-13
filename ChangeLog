@@ -17,6 +17,7 @@
 	* Follow-up to bug #14066: htmlArea RTE: Erratic handling of oncut and onpaste events
 	* Updated NEWS.txt as follow-up to #13580: htmlArea RTE: Extjize the RTE
 	* Fixed bug #14084: htmlArea RTE: RTE fails in absence of wizards
+	* Follow-up to feature #14067: htmlARea RTE: Eliminate namespace pollution
 
 2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
 

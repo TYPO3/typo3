@@ -703,7 +703,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		the html code for loading the Javascript Files
  	 */
 	function loadJSfiles($RTEcounter) {
-		$this->buildJSMainLangFile($RTEcounter);
 		$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea.js', 'htmlarea', 'js', '', TRUE);
 		if ($this->client['BROWSER'] == 'msie') {
 			$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', 'htmlarea-ie', 'js', '', TRUE);
@@ -714,6 +713,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$extensionKey = is_object($this->registeredPlugins[$pluginId]) ? $this->registeredPlugins[$pluginId]->getExtensionKey() : $this->ID;
 			$this->writeTemporaryFile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $pluginId . '/' . strtolower(preg_replace('/([a-z])([A-Z])([a-z])/', "$1".'-'."$2"."$3", $pluginId)) . '.js', $pluginId, 'js', '', TRUE);
 		}
+		$this->buildJSMainLangFile($RTEcounter);
 			// Avoid re-initialization on AJax call when RTEarea object was already initialized
 		$loadJavascriptCode = '
 		<script type="text/javascript" src="' . $this->doConcatenate() . '"></script>
@@ -1054,7 +1054,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript localization array
 	 */
 	function buildJSMainLangArray() {
-		$JSLanguageArray = 'var HTMLArea_langArray = new Object();' . LF;
+		$JSLanguageArray = 'HTMLArea.I18N = new Object();' . LF;
 		$labelsArray = array('tooltips' => array(), 'msg' => array(), 'dialogs' => array());
 		foreach ($labelsArray as $labels => $subArray) {
 			$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $this->ID . '/htmlarea/locallang_' . $labels . '.xml', $this->language, 'utf-8');
@@ -1065,7 +1065,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 			$labelsArray[$labels] = $LOCAL_LANG[$this->language];
 		}
-		$JSLanguageArray .= 'HTMLArea_langArray = ' . json_encode($labelsArray) . ';' . LF;
+		$JSLanguageArray .= 'HTMLArea.I18N = ' . json_encode($labelsArray) . ';' . LF;
 		return $JSLanguageArray;
 	}
 
@@ -1165,14 +1165,14 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$extensionKey = is_object($this->registeredPlugins[$plugin]) ? $this->registeredPlugins[$plugin]->getExtensionKey() : $this->ID;
 		$LOCAL_LANG = t3lib_div::readLLfile('EXT:' . $extensionKey . '/htmlarea/plugins/' . $plugin . '/locallang.xml', $this->language, 'utf-8', 1);
 		$linebreak = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts'] ? '' : LF;
-		$JSLanguageArray = 'var ' . $plugin . '_langArray = new Object();' . $linebreak;
+		$JSLanguageArray = 'HTMLArea.I18N["' . $plugin . '"] = new Object();' . $linebreak;
 		if (is_array($LOCAL_LANG)) {
 			if (!empty($LOCAL_LANG[$this->language])) {
 				$LOCAL_LANG[$this->language] = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG['default'],$LOCAL_LANG[$this->language]);
 			} else {
 				$LOCAL_LANG[$this->language] = $LOCAL_LANG['default'];
 			}
-			$JSLanguageArray .= $plugin . '_langArray = ' . json_encode($LOCAL_LANG[$this->language]) . ';'. LF;
+			$JSLanguageArray .= 'HTMLArea.I18N["' . $plugin . '"] = ' . json_encode($LOCAL_LANG[$this->language]) . ';'. LF;
 		}
 		return $JSLanguageArray;
 	}

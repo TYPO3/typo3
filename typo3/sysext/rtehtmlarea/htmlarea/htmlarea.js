@@ -88,8 +88,6 @@ HTMLArea.init = function() {
 	if (!Ext.isString(HTMLArea.editedContentCSS)) {
 		HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
 	}
-		// Localization of core script
-	HTMLArea.I18N = HTMLArea_langArray;
 	HTMLArea.isReady = true;
 	HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + HTMLArea.editorUrl);
 	HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + HTMLArea.editorCSS);
@@ -3814,7 +3812,6 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		this.editorConfiguration = editor.config;
 		this.name = pluginName;
 		try {
-			HTMLArea.I18N[this.name] = eval(this.name + "_langArray");
 			this.I18N = HTMLArea.I18N[this.name];
 		} catch(e) {
 			this.I18N = new Object();
