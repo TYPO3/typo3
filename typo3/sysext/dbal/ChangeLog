@@ -1,3 +1,15 @@
+2010-04-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.0.5
+
+2010-03-07  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #4640: Backend login impossible with MSSQL via ODBC (thanks to Felix Eckhofer)
+
+2010-02-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #2367: No support for LIMIT [PostgreSQL]
+
 2010-02-14  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.0.4

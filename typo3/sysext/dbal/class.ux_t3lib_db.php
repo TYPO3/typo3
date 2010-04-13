@@ -918,6 +918,18 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	string		Full SQL query for SELECT
 	 */
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
+		$this->lastHandlerKey = $this->handler_getFromTableList($from_table);
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
+				// Possibly rewrite the LIMIT to be PostgreSQL-compatible
+			$splitLimit = t3lib_div::intExplode(',', $limit);		// Splitting the limit values:
+			if ($splitLimit[1]) {	// If there are two parameters, do mapping differently than otherwise:
+				$numrows = $splitLimit[1];
+				$offset = $splitLimit[0];
+				$limit = $numrows . ' OFFSET ' . $offset;
+			}
+		}
+		
 		$select_fields = $this->quoteFieldNames($select_fields);
 		$from_table = $this->quoteFromTables($from_table);
 		$where_clause = $this->quoteWhereClause($where_clause);
@@ -1445,12 +1457,22 @@ class ux_t3lib_DB extends t3lib_DB {
 
 						// Removing all numeric/integer keys.
 						// A workaround because in ADOdb we would need to know what we want before executing the query...
+						// MSSQL does not support ADODB_FETCH_BOTH and always returns an assoc. array instead. So
+						// we don't need to remove anything.
 					if (is_array($output)) {
-						foreach ($output as $key => $value) {
-							if (is_integer($key)) {
-								unset($output[$key]);
+						if ($this->runningADOdbDriver('mssql')) {
+								// MSSQL does not know such thing as an empty string. So it returns one space instead, which we must fix.
+							foreach ($output as $key => $value) {
+								if ($value === ' ') {
+									$output[$key] = '';
+								}
 							}
-							elseif ($value === ' ' && $this->runningADOdbDriver('mssql')) $output[$key] = ''; // MSSQL does not know such thing as an empty string. So it returns one space instead, which we must fix.
+						} else {
+							foreach ($output as $key => $value) {
+								if (is_integer($key)) {
+									unset($output[$key]);
+								}
+							}
 						}
 					}
 				}
@@ -1494,10 +1516,20 @@ class ux_t3lib_DB extends t3lib_DB {
 
 						// Removing all assoc. keys.
 						// A workaround because in ADOdb we would need to know what we want before executing the query...
+						// MSSQL does not support ADODB_FETCH_BOTH and always returns an assoc. array instead. So
+						// we need to convert resultset.
 					if (is_array($output)) {
+						$keyIndex = 0;
 						foreach ($output as $key => $value) {
-							if (!is_integer($key))	unset($output[$key]);
-							elseif ($value === ' ' && $this->runningADOdbDriver('mssql')) $output[$key] = ''; // MSSQL does not know such thing as an empty string. So it returns one space instead, which we must fix.
+							unset($output[$key]);
+							if (is_integer($key) || $this->runningADOdbDriver('mssql')) {
+								$output[$keyIndex] = $value;
+								if ($value === ' ') {
+										// MSSQL does not know such thing as an empty string. So it returns one space instead, which we must fix.
+									$output[$keyIndex] = '';
+								}
+								$keyIndex++;
+							}
 						}
 					}
 				}
