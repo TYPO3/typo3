@@ -35,4 +35,6 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 		),
 	),
 );
+
+$TYPO3_CONF_VARS['EXTCONF']['dbal']['table2handlerKeys'] = array();
 ?>
