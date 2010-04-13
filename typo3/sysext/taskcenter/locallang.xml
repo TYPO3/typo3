@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Module labels</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="taskcenter">Taskcenter</label>
+			<label index="choose_task">Task:</label>
+			<label index="mlang_tabs_tab">Tasks</label>
+			<label index="task_overview">Overview</label>
+
+
+
+
+
+
+			<label index="lReplyAddress">Reply address is your email</label>
+			<label index="lSelf">Self</label>
+			<label index="lSendNew">Send message</label>
+			<label index="lSendReply">Reply to message</label>
+			<label index="listSeparator_Groups">__Groups:__</label>
+			<label index="lHomedir">Home dir</label>
+			<label index="lNone">[none]</label>
+			<label index="lCreate">Create</label>
+			<label index="lCancel">Cancel</label>
+			<label index="lDelete_warning">Are you sure you want to delete this user?</label>
+			<label index="lDelete">Delete</label>
+			<label index="lUpdate">Update</label>
+			
+			
+			
+			
+			<label index="task_help_title">About the taskcenter</label>
+			<label index="task_help_description">Get more information about the taskcenter</label>
+			
+			
+			
+		</languageKey>
+	</data>
+</T3locallang>
