@@ -137,6 +137,7 @@ class tx_coreupdates_compatversion {
 				'3.8' => '<= 3.8',
 				'4.1' => '<= 4.1',
 				'4.2' => '<= 4.2',
+				'4.3' => '<= 4.3'
 			);
 			foreach ($versions as $singleVersion => $caption)	{
 				$content .= '

@@ -9,6 +9,7 @@
 2010-04-13  Susanne Moog <typo3@susanne-moog.de>
 
 	* Added feature #5500: Load Inline Elements On Demand (thanks to Harald Glaser & Vladimir Podkovanov)
+	* Added feature #5678: Missing clearer div in csc-textpic-intext-left/csc-textpic-intext-right
 
 2010-04-13  Dmitry Dulepov <dmitry.dulepov@gmail.com>
 

@@ -607,13 +607,9 @@ tt_content.image.20 {
 		# intext-right
 		17 = TEXT
 		17.value = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div>
-		17.override = <div class="csc-textpic csc-textpic-intext-right###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
-		17.override.if.isTrue = {$styles.content.imgtext.addIntextClearer}
 		# intext-left
 		18 = TEXT
 		18.value = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div>
-		18.override = <div class="csc-textpic csc-textpic-intext-left###CLASSES###">###IMAGES######TEXT###</div><div class="csc-textpic-clear"><!-- --></div>
-		18.override.if.isTrue = {$styles.content.imgtext.addIntextClearer}
 		# intext-right-nowrap
 		25 = TEXT
 		25.value = <div class="csc-textpic csc-textpic-intext-right-nowrap###CLASSES###">###IMAGES###<div style="margin-right:{register:rowWidthPlusTextMargin}px;">###TEXT###</div></div><div class="csc-textpic-clear"><!-- --></div>
@@ -1816,4 +1812,4 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul {padding-left: 40px; overflow: auto; height: 1%; }
 )
 
-# TYPO3 SVN ID: $Id$
+# TYPO3 SVN ID: $Id: setup.txt 7254 2010-04-08 10:50:09Z steffenk $
