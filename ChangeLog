@@ -1,4 +1,9 @@
+2010-04-13  Benjamin Mack  <benni@typo3.org>
+
+	* Added feature #13865: Possibility to configure alternative parameter for jumpurl filelinks (Thanks to Sebastian Gebhard)
+
 2010-04-13  Susanne Moog <typo3@susanne-moog.de>
+
 	* Added feature #5500: Load Inline Elements On Demand (thanks to Harald Glaser & Vladimir Podkovanov)
 
 2010-04-13  Dmitry Dulepov <dmitry.dulepov@gmail.com>

@@ -4570,8 +4570,9 @@ class tslib_cObj {
 
 			// the jumpURL feature will be taken care of by typoLink, only "jumpurl.secure = 1" is applyable needed for special link creation
 			if ($conf['jumpurl.']['secure']) {
+				$alternativeJumpUrlParameter = $this->stdWrap($conf['jumpurl.']['parameter'], $conf['jumpurl.']['parameter.']);
 				$typoLinkConf = array(
-					'parameter'  => $GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type,
+					'parameter'  => ($alternativeJumpUrlParameter ? $alternativeJumpUrlParameter : ($GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type)),
 					'fileTarget' => $conf['target'],
 					'ATagParams' => $this->getATagParams($conf),
 					'additionalParams' => '&jumpurl=' . rawurlencode($theFileEnc) . $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) . $GLOBALS['TSFE']->getMethodUrlIdToken
