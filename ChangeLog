@@ -1,3 +1,7 @@
+2010-04-13  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to feature #14051: htmlArea RTE: Streamline the RTE loading process
+
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Added Feature #12229: Add stdWrap date/strftime with GMT format property

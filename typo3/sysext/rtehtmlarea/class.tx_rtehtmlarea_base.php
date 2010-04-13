@@ -703,6 +703,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		the html code for loading the Javascript Files
  	 */
 	function loadJSfiles($RTEcounter) {
+			// Re-initialize the scripts array so that only the cumulative set of plugins of the last RTE on the page is used
+		$this->cumulativeScripts[$RTEcounter] = array();
 		$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea.js', 'htmlarea', 'js', '', TRUE);
 		if ($this->client['BROWSER'] == 'msie') {
 			$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', 'htmlarea-ie', 'js', '', TRUE);
@@ -716,7 +718,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$this->buildJSMainLangFile($RTEcounter);
 			// Avoid re-initialization on AJax call when RTEarea object was already initialized
 		$loadJavascriptCode = '
-		<script type="text/javascript" src="' . $this->doConcatenate() . '"></script>
+		<script type="text/javascript" src="' . $this->doConcatenate($RTEcounter) . '"></script>
 		<script type="text/javascript">
 		/*<![CDATA[*/
 			if (typeof(RTEarea) == "undefined") {
@@ -1103,23 +1105,25 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		if ($concatenate) {
-			$this->cumulativeScripts[] = $destination;
+			$this->cumulativeScripts[$this->TCEform->RTEcounter][] = $destination;
 		}
 		return (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '../' ) . $relativeFilename;
 	}
 	/**
 	 * Concatenates all accumulated scripts in a file in typo3temp/rtehtmlarea directory and returns the file name
 	 *
+	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
+	 *
 	 * @return	string		The name of the file writtten to typo3temp/rtehtmlarea
 	 */
-	protected function doConcatenate() {
+	protected function doConcatenate($RTEcounter) {
 		$fileExtension = 'js';
 		$compress = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts'];
-		$token = implode('|', $this->cumulativeScripts);
+		$token = implode('|', $this->cumulativeScripts[$RTEcounter]);
 		$relativeFilename = 'typo3temp/' . $this->ID . '/' . 'htmlarea_cumulative' . '_' . t3lib_div::shortMD5(($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['version'] . $token ), 20) . ($compress ? '_compressed' : '') . '.' . $fileExtension;
 		$destination = PATH_site . $relativeFilename;
 		if (!file_exists($destination)) {
-			foreach ($this->cumulativeScripts as $fileName) {
+			foreach ($this->cumulativeScripts[$RTEcounter] as $fileName) {
 				$contents = file_get_contents($fileName);
 				if (!file_exists($destination)) {
 					$failure = t3lib_div::writeFileToTypo3tempDir($destination, $contents);
