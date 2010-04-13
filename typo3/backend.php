@@ -128,6 +128,7 @@ class TYPO3backend {
 			'js/flashupload.js',
 			'../t3lib/jsfunc.evalfield.js',
 			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend',
+			'../t3lib/js/extjs/ux/flashmessages.js',
 			'js/backend.js',
 			'js/loginrefresh.js',
 			'js/extjs/viewport.js',
