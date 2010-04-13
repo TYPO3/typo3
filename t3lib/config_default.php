@@ -29,7 +29,7 @@ $TYPO3_CONF_VARS = Array(
 		'thumbnails_png' => 0,					// Bits. Bit0: If set, thumbnails from non-jpegs will be 'png', otherwise 'gif' (0=gif/1=png). Bit1: Even JPG's will be converted to png or gif (2=gif/3=png)
 		'noIconProc' => 1,						// Boolean. If true, icons are never processed with overlays for hidden, starttime, endtime etc. They must be available pre-processed. If this is disabled, do so only if you have full image processing capabilities on the server for TYPO3.
 		'gif_compress' => 1,					// Boolean. Enables the use of the t3lib_div::gif_compress() workaround function for compressing giffiles made with GD or IM, which probably use only RLE or no compression at all.
-		'imagefile_ext' => 'gif,jpg,jpeg,tif,bmp,pcx,tga,png,pdf,ai',	// Commalist of file extensions perceived as images by TYPO3. List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
+		'imagefile_ext' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai',	// Commalist of file extensions perceived as images by TYPO3. List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
 
 		'gdlib' => 1,							// Boolean. Enables the use of GD.
 		'gdlib_png' => 0,						// Boolean. Enables the use of GD, with PNG only. This means that all items normally generated as gif-files will be png-files instead!
