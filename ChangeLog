@@ -30,6 +30,7 @@
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added Feature #13698: Add proxy for the mail() function (thanks to Tolleiv Nietsch)
 	* Added Feature #13982: Feature: Renewal of the taskcenter Part III (thanks to Georg Ringer)
 	* Added Feature #13982: Feature: Renewal of the taskcenter Part II (thanks to Georg Ringer)
 	* Added Feature #13982: Feature: Renewal of the taskcenter Part I (thanks to Georg Ringer)

@@ -734,13 +734,13 @@ class t3lib_htmlmail {
 		// If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
 		$returnPathPossible = (!ini_get('safe_mode') && $this->forceReturnPath);
 		if ($returnPathPossible) {
-			$mailWasSent = mail($recipient,
+			$mailWasSent = t3lib_utility_Mail::mail($recipient,
 				  $this->subject,
 				  $this->message,
 				  $this->headers,
 				  $returnPath);
 		} else {
-			$mailWasSent = mail($recipient,
+			$mailWasSent = t3lib_utility_Mail::mail($recipient,
 				  $this->subject,
 				  $this->message,
 				  $this->headers);
@@ -751,13 +751,13 @@ class t3lib_htmlmail {
 			$theParts = explode('/',$this->auto_respond_msg,2);
 			$theParts[1] = str_replace("/",LF,$theParts[1]);
 			if ($returnPathPossible) {
-				$mailWasSent = mail($this->from_email,
+				$mailWasSent = t3lib_utility_Mail::mail($this->from_email,
 					$theParts[0],
 					$theParts[1],
 					'From: ' . $recipient,
 					$returnPath);
 			} else {
-				$mailWasSent = mail($this->from_email,
+				$mailWasSent = t3lib_utility_Mail::mail($this->from_email,
 					$theParts[0],
 					$theParts[1],
 					'From: ' . $recipient);

@@ -1811,7 +1811,7 @@ This is a dump of the failures:
 					$email_body.= date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'].' '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$testRows['tstamp']).':  '.@sprintf($testRows['details'],''.$theData[0],''.$theData[1],''.$theData[2]);
 					$email_body.= LF;
 				}
-				mail(	$email,
+				t3lib_utility_Mail::mail($email,
 					$subject,
 					$email_body,
 					'From: TYPO3 Login WARNING<>'

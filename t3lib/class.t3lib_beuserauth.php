@@ -345,7 +345,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 					$prefix='[AdminLoginWarning]';
 				}
 				if ($warn)	{
-					mail($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'],
+					t3lib_utility_Mail::mail($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'],
 						$prefix.' '.$subject,
 						$msg,
 						$this->notifyHeader
@@ -355,7 +355,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 
 				// If An email should be sent to the current user, do that:
 			if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'],'@'))	{
-				mail($this->user['email'],
+				t3lib_utility_Mail::mail($this->user['email'],
 					$subject,
 					$msg,
 					$this->notifyHeader

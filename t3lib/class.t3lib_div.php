@@ -5268,12 +5268,9 @@ final class t3lib_div {
 		// So we stick to LF in all cases.
 		$headers = trim(implode(LF, self::trimExplode(LF, $headers, true)));	// Make sure no empty lines are there.
 
-		$ret = @mail($email, $subject, $message, $headers);
-		if (!$ret)	{
-			self::sysLog('Mail to "'.$email.'" could not be sent (Subject: "'.$subject.'").', 'Core', 3);
+
+		return t3lib_utility_Mail::mail($email, $subject, $message, $headers);
 		}
-		return $ret;
-	}
 
 	/**
 	 * Implementation of quoted-printable encode.
@@ -5563,7 +5560,7 @@ final class t3lib_div {
 				// send message per mail
 			elseif ($type == 'mail')	{
 				list($to,$from) = explode('/',$destination);
-				mail($to, 'Warning - error in TYPO3 installation',
+				t3lib_utility_Mail::mail($to, 'Warning - error in TYPO3 installation',
 					'Host: '.$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'].LF.
 					'Extension: '.$extKey.LF.
 					'Severity: '.$severity.LF.

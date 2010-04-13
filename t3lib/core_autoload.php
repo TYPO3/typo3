@@ -124,6 +124,7 @@ return array(
 	't3lib_tceforms_suggest_defaultreceiver' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_suggest_defaultreceiver.php',
 	't3lib_utility_client' => PATH_t3lib . 'utility/class.t3lib_utility_client.php',
 	't3lib_utility_http' => PATH_t3lib . 'utility/class.t3lib_utility_http.php',
+	't3lib_utility_mail' => PATH_t3lib . 'utility/class.t3lib_utility_mail.php',
 	'tslib_adminpanel' => PATH_tslib . 'class.tslib_adminpanel.php',
 	'tslib_cobj' => PATH_tslib . 'class.tslib_content.php',
 	'tslib_frameset' => PATH_tslib . 'class.tslib_content.php',
