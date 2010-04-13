@@ -44,7 +44,7 @@ TYPO3.Viewport.configuration = {
 		region: 'west',
 		id: 'typo3-module-menu',
 		contentEl: 'typo3-side-menu',
-		width: TYPO3.configuration.moduleMenuWidth,
+		width: 159,
 		anchor: '100% 100%',
 		border: false
 	}, {

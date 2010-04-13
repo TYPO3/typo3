@@ -80,13 +80,17 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	 * @param configuration object configuration of the viewport
 	 * @return void
 	 */
-	initComponent: function(configuration) {
+	initComponent: function() {
+		//adjust the width of module menu
+		this.initialConfig.items[1].width = TYPO3.configuration.moduleMenuWidth;
+		//call parent constructor
 		TYPO3.Viewport.superclass.initComponent.apply(this, arguments);
 
 		this.ContentContainer = Ext.ComponentMgr.get('typo3-contentContainer');
 		this.NavigationContainer = Ext.ComponentMgr.get('typo3-navigationContainer');
 		this.Toolbar = Ext.ComponentMgr.get('typo3-toolbar');
 		this.ModuleMenuContainer = Ext.ComponentMgr.get('typo3-module-menu');
+
 	},
 
 	/**

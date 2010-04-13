@@ -36,6 +36,7 @@
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14100: ModuleMenu is too small
 	* Added Feature #13940 Added marker in CONTENT object (thanks to Jigal van Hemert)
 	* Added testcase for #13698 (thanks to Oliver Klee)
 	* Added Feature #13698: Add proxy for the mail() function (thanks to Tolleiv Nietsch)
