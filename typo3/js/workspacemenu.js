@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
+Ext.ns('TYPO3', 'TYPO3.configuration');
 /**
  * class to handle the workspace menu
  *
@@ -112,9 +112,11 @@ var WorkspaceMenu = Class.create({
 				var stateInactiveIcon = $$('#workspace-selector-menu img.state-inactive')[0].cloneNode(true);
 
 				if (response.newWorkspacePreviewState == 1) {
+					TYPO3.configuration.workspaceFrontendPreviewEnabled = 1;
 					Event.element(event).previous().replace(stateActiveIcon);
 					top.WorkspaceFrontendPreviewEnabled = true;
 				} else {
+					TYPO3.configuration.workspaceFrontendPreviewEnabled = 0;
 					Event.element(event).previous().replace(stateInactiveIcon);
 					top.WorkspaceFrontendPreviewEnabled = false;
 				}
@@ -142,6 +144,8 @@ var WorkspaceMenu = Class.create({
 		new Ajax.Request('ajax.php', {
 			parameters: 'ajaxID=WorkspaceMenu::setWorkspace&workspaceId=' + workspaceId,
 			onSuccess: function(transport, response) {
+				TYPO3.configuration.inWorkspace = response.setWorkspaceId === 0 ? 0 : 1;
+				
 					// first remove all checks, then set the check in front of the selected workspace
 				var stateActiveIcon = $$('#workspace-selector-menu img.state-active')[0].cloneNode(true);
 				var stateInactiveIcon = $$('#workspace-selector-menu img.state-inactive')[0].cloneNode(true);

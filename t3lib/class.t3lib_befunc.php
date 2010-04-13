@@ -2660,8 +2660,8 @@ final class t3lib_BEfunc {
 		$urlPreviewEnabled  = $viewDomain . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
 		$urlPreviewDisabled = $viewDomain . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
 
-		return "previewWin=window.open(top.WorkspaceFrontendPreviewEnabled?'" .
-			$urlPreviewDisabled . "':'" . $urlPreviewEnabled .
+		return "var previewWin=window.open(top.TYPO3.configuration.inWorkspace !== 0 && top.TYPO3.configuration.workspaceFrontendPreviewEnabled ?'" .
+			$urlPreviewEnabled . "':'" . $urlPreviewDisabled .
 			"','newTYPO3frontendWindow');" . ( $switchFocus ? 'previewWin.focus();' : '');
 	}
 
