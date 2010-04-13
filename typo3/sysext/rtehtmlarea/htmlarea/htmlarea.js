@@ -2300,9 +2300,9 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 					// Walk through all nested tabs and inline levels to get correct size
 				this.textAreaInitialSize.wizardsWidth = HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].getWidth()', [this.wizards]);
 			}
+				// Hide the wizards so that they do not move around while the editor framework is being sized
+			this.wizards.hide();
 		}
-			// Hide the wizards so that they do not move around while the editor framework is being sized
-		this.wizards.hide();
 			// Plugins register
 		this.plugins = {};
 			// Register the plugins included in the configuration
@@ -2422,7 +2422,9 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			// Make the editor visible
 		this.show();
 			// Make the wizards visible again
-		this.wizards.show();
+		if (this.wizards) {
+			this.wizards.show();
+		}
 			// Focus on the first editor that is not hidden
 		Ext.iterate(RTEarea, function (editorId, RTE) {
 			if (!Ext.isDefined(RTE.editor) || (RTE.editor.isNested && !HTMLArea.util.TYPO3.allElementsAreDisplayed(RTE.editor.nestedParentElements.sorted))) {
