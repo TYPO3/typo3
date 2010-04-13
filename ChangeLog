@@ -23,6 +23,7 @@
 
 2010-04-12  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to #13710: Added missing typo3/sysext/lang/locallang_t3lib_fullsearch.xml
 	* Fixed bug #13710: Flashmessages in t3lib_fullsearch (Thanks to Georg Ringer)
 	* Added feature #13508: Use exec_TRUNCATEquery() instead of DELETE FROM throughout the core
 	* Fixed bug #13945: Missing key on l18n_parent in tt_content table

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>Labels for t3lib_fullsearch</description>
+		<type>module</type>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="query_loaded">Query "%s" loaded!</label>
+			<label index="query_from_action_loaded">Query from action "%s" loaded!</label>
+			<label index="query_saved">Query saved!</label>
+			<label index="query_notsaved">No query saved!</label>
+			<label index="query_removed">"%s" query entry removed!</label>
+		</languageKey>
+	</data>
+</T3locallang>
