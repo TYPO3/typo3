@@ -222,12 +222,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsLibrary() {
 
-		$expectedReturnValue = '<script src="fileadmin/test.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsLibrary('test', 'fileadmin/test.js');
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -239,12 +239,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsFooterLibrary() {
 
-		$expectedReturnValue = '<script src="fileadmin/test.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsFooterLibrary('test', 'fileadmin/test.js');
 		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -255,12 +255,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsFile() {
 
-		$expectedReturnValue = '<script src="fileadmin/test.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsFile('fileadmin/test.js');
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -271,12 +271,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsFooterFile() {
 
-		$expectedReturnValue = '<script src="fileadmin/test.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsFooterFile('fileadmin/test.js');
 		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -392,12 +392,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
     */
   	public function testLoadPrototype() {
 
-		$expectedReturnValue = '<script src="contrib/prototype/prototype.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="contrib/prototype/prototype\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadPrototype();
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -408,12 +408,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testLoadScriptaculous() {
 
-		$expectedReturnValue = '<script src="contrib/scriptaculous/scriptaculous.js?load=effects,controls,slider" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="contrib/scriptaculous/scriptaculous\.js\?load=effects,controls,slider(&\d+)?" type="text/javascript"></script>#';
 		$this->fixture->loadScriptaculous('slider,controls');
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -424,12 +424,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
     public function testLoadExtJS() {
 
-		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter.js" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#m';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -440,12 +440,12 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testLoadExtCore() {
 
-		$expectedReturnValue = '<script src="contrib/extjs/ext-core.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="contrib/extjs/ext-core\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadExtCore();
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -456,13 +456,13 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testEnableExtJsDebug() {
 
-		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter.js" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all-debug.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="contrib/extjs/ext-all-debug\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$this->fixture->enableExtJsDebug();
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
@@ -473,13 +473,13 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
    	public function testEnableExtCoreDebug() {
 
-		$expectedReturnValue = '<script src="contrib/extjs/ext-core-debug.js" type="text/javascript"></script>';
+		$expectedRegExp = '#<script src="contrib/extjs/ext-core-debug\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadExtCore();
 		$this->fixture->enableExtCoreDebug();
 		$out = $this->fixture->render();
 
-		$this->assertContains(
-			$expectedReturnValue,
+		$this->assertRegExp(
+			$expectedRegExp,
 			$out
 		);
 	}
