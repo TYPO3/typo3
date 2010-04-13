@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * This class is a search indexer for TYPO3
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * Originally Christian Jul Jensen <christian@jul.net> helped as well.
  */
 /**
@@ -881,9 +881,36 @@ class tx_indexedsearch_indexer {
 		return $list;
 	}
 
+	/**
+	 * Extracts the "base href" from content string.
+	 *
+	 * @param	string		Content to analyze
+	 * @return	string		The base href or an empty string if not found
+	 */
+	public function extractBaseHref($string) {
+		if (!is_object($this->htmlParser)) {
+			$this->htmlParser = t3lib_div::makeInstance('t3lib_parseHtml');
+		}
 
+		$parts = $this->htmlParser->splitTags('base', $string);
+		foreach ($parts as $key => $value) {
+			if ($key % 2) {
+				$params = $this->htmlParser->get_tag_attributes($value, 1);
+				$firstTagName = $this->htmlParser->getFirstTagName($value); // The 'name' of the first tag
 
+				switch (strtolower($firstTagName)) {
+					case 'base':
+						$href = $params[0]['href'];
+						if ($href) {
+								// Return the first "base href" found (a single one should be present anyway)
+							return $href;
+						}
+				}
+			}
+		}
 
+		return '';
+	}
 
 
 

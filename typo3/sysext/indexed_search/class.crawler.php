@@ -641,6 +641,15 @@ class tx_indexedsearch_crawler {
 		$indexerObj->indexExternalUrl($url);
 		$url_qParts = parse_url($url);
 
+		$baseAbsoluteHref = $url_qParts['scheme'] . '://' . $url_qParts['host'];
+		$baseHref = $indexerObj->extractBaseHref($indexerObj->indexExternalUrl_content);
+		if (!$baseHref) {
+				// Extract base href from current URL
+			$baseHref = $baseAbsoluteHref;
+			$baseHref .= substr($url_qParts['path'], 0, strrpos($url_qParts['path'], '/'));
+		}
+		$baseHref = rtrim($baseHref, '/');
+
 			// Get URLs on this page:
 		$subUrls = array();
 		$list = $indexerObj->extractHyperLinks($indexerObj->indexExternalUrl_content);
@@ -653,7 +662,12 @@ class tx_indexedsearch_crawler {
 
 			$qParts = parse_url($subUrl);
 			if (!$qParts['scheme'])	{
-				$subUrl = $url_qParts['scheme'].'://'.$url_qParts['host'].'/'.t3lib_div::resolveBackPath($subUrl);
+				$relativeUrl = t3lib_div::resolveBackPath($subUrl);
+				if ($relativeUrl{0} === '/') {
+					$subUrl = $baseAbsoluteHref . $relativeUrl;
+				} else {
+					$subUrl = $baseHref . '/' . $relativeUrl;
+				}
 			}
 
 			$subUrls[] = $subUrl;
