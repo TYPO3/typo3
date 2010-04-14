@@ -422,10 +422,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$redirect_url = $this->redirect_url ? $this->redirect_url : $this->action;
 			// Add prototype to javascript array for output
 		$this->javascript[] = '<script type="text/javascript" src="' .
-			t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
-			TYPO3_mainDir .
-			'contrib/prototype/prototype.js"></script>
-		';
+			t3lib_div::createVersionNumberedFilename(
+				'../contrib/prototype/prototype.js'
+			) . '"></script>';
 			// Get the template file
 		$templateFile = @file_get_contents(
 			PATH_site . $this->templateFilePath . 'LoginForm.html'
@@ -3396,13 +3395,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 				if ($this->mode!='123') {
 					$this->javascript[] = '<script type="text/javascript" src="' .
-						t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
-						TYPO3_mainDir .
-						'contrib/prototype/prototype.js"></script>';
+						t3lib_div::createVersionNumberedFilename(
+							'../contrib/prototype/prototype.js'
+						) . '"></script>';
 					$this->javascript[] = '<script type="text/javascript" src="' .
-						t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
-						TYPO3_mainDir .
-						'sysext/install/Resources/Public/Javascript/install.js"></script>';
+						t3lib_div::createVersionNumberedFilename(
+							'../sysext/install/Resources/Public/Javascript/install.js'
+						) . '"></script>';
 						// Get the subpart for the regular mode
 					$regularModeSubpart = t3lib_parsehtml::getSubpart($form, '###REGULARMODE###');
 						// Define the markers content
@@ -5451,9 +5450,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 */
 	function checkTheDatabase() {
 		$this->javascript[] = '<script type="text/javascript" src="' .
-			t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
-			TYPO3_mainDir .
-			'contrib/prototype/prototype.js"></script>';
+			t3lib_div::createVersionNumberedFilename(
+				'../contrib/prototype/prototype.js'
+			) . '"></script>';
 		if (!$this->config_array['mysqlConnect']) {
 			$this->message('Database Analyser', 'Your database connection failed', '
 				<p>
@@ -7660,34 +7659,41 @@ $out="
 
 			// Include the default stylesheets
 		$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-			$this->backPath .
-			'sysext/install/Resources/Public/Stylesheets/reset.css" />';
+			t3lib_div::createVersionNumberedFilename($this->backPath .
+				'sysext/install/Resources/Public/Stylesheets/reset.css'
+			) . '" />';
 		$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-			$this->backPath .
-			'sysext/install/Resources/Public/Stylesheets/general.css" />';
+			t3lib_div::createVersionNumberedFilename($this->backPath .
+				'sysext/install/Resources/Public/Stylesheets/general.css'
+			) . '" />';
 
 			// Include the stylesheets based on screen
 		if ($this->mode == '123') {
 			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-				$this->backPath .
-				'sysext/install/Resources/Public/Stylesheets/install_123.css" />';
+				t3lib_div::createVersionNumberedFilename($this->backPath .
+					'sysext/install/Resources/Public/Stylesheets/install_123.css'
+				) . '" />';
 		} elseif ($this->passwordOK) {
 			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-				$this->backPath .
-				'sysext/install/Resources/Public/Stylesheets/install.css" />';
+				t3lib_div::createVersionNumberedFilename($this->backPath .
+					'sysext/install/Resources/Public/Stylesheets/install.css'
+				) . '" />';
 			if (!$this->session->inBackend()) {
 				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-					$this->backPath .
-					'sysext/install/Resources/Public/Stylesheets/install_standalone.css" />';
+					t3lib_div::createVersionNumberedFilename($this->backPath .
+						'sysext/install/Resources/Public/Stylesheets/install_standalone.css'
+					) . '" />';
 			}
 		} else {
 			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-				$this->backPath .
-				'sysext/install/Resources/Public/Stylesheets/install_login.css" />';
+				t3lib_div::createVersionNumberedFilename($this->backPath .
+					'sysext/install/Resources/Public/Stylesheets/install_login.css'
+				) . '" />';
 			if (!$this->session->inBackend()) {
 				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-					$this->backPath .
-					'sysext/install/Resources/Public/Stylesheets/install_standalone.css" />';
+					t3lib_div::createVersionNumberedFilename($this->backPath .
+						'sysext/install/Resources/Public/Stylesheets/install_standalone.css'
+					) . '" />';
 			}
 		}
 

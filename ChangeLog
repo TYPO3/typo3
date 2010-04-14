@@ -1,3 +1,7 @@
+2010-04-14  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Added feature #14109: Add Automatic versioning of CSS and JS files mentioned in #13998 to install tool
+
 2010-04-14  Benjamin Mack  <benni@typo3.org>
 
 	* Updated NEWS.txt
