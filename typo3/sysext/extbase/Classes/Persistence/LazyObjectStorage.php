@@ -83,7 +83,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	protected function initializeStorage() {
 		if (!$this->isInitialized) {
 			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
-			$objects = $dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE, FALSE);
+			$objects = $dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE);
 			$storage = array();
 			foreach ($objects as $object) {
 				$storage[spl_object_hash($object)] = $object;

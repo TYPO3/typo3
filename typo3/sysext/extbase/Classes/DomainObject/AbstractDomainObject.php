@@ -39,9 +39,14 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	protected $uid;
 
 	/**
-	 * @var int The uid of the localization parent
+	 * @var int The uid of the localized record. In TYPO3 v4.x the property "uid" holds the uid of the record in default language (the translationOrigin).
 	 */
-	protected $_localizationParentUid;
+	protected $_localizedUid;
+
+	/**
+	 * @var int The uid of the language of the object. In TYPO3 v4.x this is the uid of the language record in the table sys_language.
+	 */
+	protected $_languageUid;
 
 	/**
 	 * TRUE if the object is a clone

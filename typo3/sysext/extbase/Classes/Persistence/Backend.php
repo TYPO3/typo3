@@ -369,18 +369,16 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$propertyType = $propertyMetaData['type'];
 			// FIXME enable property-type check
 			// $this->checkPropertyType($propertyType, $propertyValue);
-			if (($propertyValue !== NULL) && ($propertyValue instanceof Tx_Extbase_Persistence_ObjectStorage || $propertyType === 'Tx_Extbase_Persistence_ObjectStorage')) {
+			if (($propertyValue !== NULL) && ($propertyType === 'SplObjectStorage' || $propertyType === 'Tx_Extbase_Persistence_ObjectStorage')) {
 				if ($object->_isNew() || $object->_isDirty($propertyName)) {
 					$this->persistObjectStorage($propertyValue, $object, $propertyName, $queue, $row);
-					if (is_array($propertyValue) || $propertyValue instanceof Iterator) {
-						foreach ($propertyValue as $containedObject) {
-							if ($containedObject instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-								$queue[] = $containedObject;
-							}
+					foreach ($propertyValue as $containedObject) {
+						if ($containedObject instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+							$queue[] = $containedObject;
 						}
 					}
 				}
-			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {				
+			} elseif ($propertyValue instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
 				if ($object->_isDirty($propertyName)) {
 					if ($propertyValue->_isNew()) {
 						if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
@@ -661,23 +659,25 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 	
 	/**
-	 * Inserts an object in the storage
+	 * Inserts an object in the storage backend
 	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
-	 * @param array $row The tuple to be inserted
-	 * @param Tx_Extbase_DomainObject_AbstractEntity $parentObject The parent object (if any)
-	 * @param string $parentPropertyName The name of the property
+	 * @return void
 	 */
-	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row = array()) {
-		$tableName = $this->dataMapper->getDataMap(get_class($object))->getTableName();
+	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+		$row = array();
+		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$this->addCommonFieldsToRow($object, $row);
+		if($dataMap->getLanguageIdColumnName() !== NULL) {
+			$row[$dataMap->getLanguageIdColumnName()] = -1;
+		}
 		$uid = $this->storageBackend->addRow(
-			$tableName,
+			$dataMap->getTableName(),
 			$row
 			);
 		$object->_setProperty('uid', (int)$uid);
 		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
-			$this->referenceIndex->updateRefIndexTable($tableName, $uid);
+			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
 		}
 		$this->identityMap->registerObject($object, $uid);
 	}
@@ -781,17 +781,22 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param string|NULL $parentPropertyName The name of the property
 	 * @param array $row The $row
 	 */
-	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array &$row) {
-		$tableName = $this->dataMapper->getDataMap(get_class($object))->getTableName();
+	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row) {
+		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$this->addCommonFieldsToRow($object, $row);
-		$uid = $object->getUid();
-		$row['uid'] = $uid;
+		if($dataMap->getLanguageIdColumnName() !== NULL) {
+			$row[$dataMap->getLanguageIdColumnName()] = $object->_getProperty('_languageUid');
+			$row['uid'] = $object->_getProperty('_localizedUid');
+			// $row[$dataMap->getTranslationOriginColumnName()] = $object->_getProperty('_languageUid');
+		} else {
+			$row['uid'] = $object->getUid();
+		}
 		$res = $this->storageBackend->updateRow(
-			$tableName,
+			$dataMap->getTableName(),
 			$row
 			);
 		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
-			$this->referenceIndex->updateRefIndexTable($tableName, $uid);
+			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
 		}
 		return $res;
 	}

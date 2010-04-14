@@ -333,7 +333,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * Gets the constraint for this query.
 	 *
 	 * @return Tx_Extbase_Persistence_QOM_Constraint the constraint, or null if none
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	*/
 	public function getConstraint() {
@@ -411,7 +410,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 *
 	 * @param int $uid The uid to match against
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
-	 * @deprecated since Extbase 2.0; was removed in FLOW3; will be removed in Extbase 3.0; use equals() ínstead
+	 * @deprecated since Extbase 1.2.0; was removed in FLOW3; will be removed in Extbase 1.3.0; use equals() instead
 	 */
 	public function withUid($operand) {
 		t3lib_div::logDeprecatedFunction();

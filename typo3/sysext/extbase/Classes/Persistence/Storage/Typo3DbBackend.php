@@ -877,6 +877,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if (is_object($GLOBALS['TSFE'])) {
 				if ($languageUid === NULL) {
 					$languageUid = $GLOBALS['TSFE']->sys_language_uid;
+					$languageMode = $GLOBALS['TSFE']->sys_language_mode;
 				}
 				if ($workspaceUid !== NULL) {
 					$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
@@ -898,10 +899,13 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$this->pageSelectObject->versionOL($tableName, $row, TRUE);
 			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
 				if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1,0))) {
-					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid);
+					$overlayMode = ($languageMode === 'strict') ? 'hideNonTranslated' : '';
+					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, $overlayMode);
 				}
 			}
-			$overlayedRows[] = $row;
+			if ($row !== NULL) {
+				$overlayedRows[] = $row;
+			}
 		}
 		return $overlayedRows;
 	}

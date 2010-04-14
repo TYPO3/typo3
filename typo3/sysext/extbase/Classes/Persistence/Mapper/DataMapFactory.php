@@ -105,6 +105,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		if (isset($controlSection['crdate'])) $dataMap->setCreationDateColumnName($controlSection['crdate']);
 		if (isset($controlSection['cruser_id'])) $dataMap->setCreatorColumnName($controlSection['cruser_id']);
 		if (isset($controlSection['delete'])) $dataMap->setDeletedFlagColumnName($controlSection['delete']);
+		if (isset($controlSection['languageField'])) $dataMap->setLanguageIdColumnName($controlSection['languageField']);
+		if (isset($controlSection['transOrigPointerField'])) $dataMap->setTranslationOriginColumnName($controlSection['transOrigPointerField']);
 		if (isset($controlSection['enablecolumns']['disabled'])) $dataMap->setDisabledFlagColumnName($controlSection['enablecolumns']['disabled']);
 		if (isset($controlSection['enablecolumns']['starttime'])) $dataMap->setStartTimeColumnName($controlSection['enablecolumns']['starttime']);
 		if (isset($controlSection['enablecolumns']['endtime'])) $dataMap->setEndTimeColumnName($controlSection['enablecolumns']['endtime']);

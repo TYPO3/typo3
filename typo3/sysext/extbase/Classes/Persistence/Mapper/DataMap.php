@@ -60,6 +60,16 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	/**
 	 * @var string
 	 **/
+	protected $languageIdColumnName;
+
+	/**
+	 * @var string
+	 **/
+	protected $translationOriginColumnName;
+
+	/**
+	 * @var string
+	 **/
 	protected $modificationDateColumnName;
 
 	/**
@@ -193,7 +203,44 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 		return $this->pageIdColumnName;
 	}
 	
-
+ 	/**
+ 	 * Sets the name of a column holding the language id of the record
+ 	 *
+ 	 * @param string $languageIdColumnName The field name
+ 	 * @return void
+ 	 */
+ 	public function setLanguageIdColumnName($languageIdColumnName) {
+ 		$this->languageIdColumnName = $languageIdColumnName;
+ 	}
+		
+ 	/**
+ 	 * Returns the name of a column holding the language id of the record.
+ 	 *
+ 	 * @return string The field name
+ 	 */
+ 	public function getLanguageIdColumnName() {
+ 		return $this->languageIdColumnName;
+ 	}
+	
+ 	/**
+ 	 * Sets the name of a column holding the the uid of the record which this record is a translation of.
+ 	 *
+ 	 * @param string $translationOriginColumnName The field name
+ 	 * @return void
+ 	 */
+ 	public function setTranslationOriginColumnName($translationOriginColumnName) {
+ 		$this->translationOriginColumnName = $translationOriginColumnName;
+ 	}
+		
+ 	/**
+ 	 * Returns the name of a column holding the the uid of the record which this record is a translation of.
+ 	 *
+ 	 * @return string The field name
+ 	 */
+ 	public function getTranslationOriginColumnName() {
+ 		return $this->translationOriginColumnName;
+ 	}
+	
 	/**
 	 * Sets the name of a column holding the timestamp the record was modified
 	 *

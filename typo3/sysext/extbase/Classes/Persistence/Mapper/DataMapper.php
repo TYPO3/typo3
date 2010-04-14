@@ -190,14 +190,16 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected function thawProperties(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row) {
 		$className = get_class($object);
 		$dataMap = $this->getDataMap($className);
-		$properties = $object->_getProperties();
-		$localizedUid = $row['_LOCALIZED_UID'];
-		if ($localizedUid !== NULL) {
-			$object->_setProperty('uid', $localizedUid);
-			$object->_setProperty('_localizationParentUid', $row['uid']);
-		} else {
-			$object->_setProperty('uid', $row['uid']);
+		$object->_setProperty('uid', intval($row['uid']));
+		if ($dataMap->getLanguageIdColumnName() !== NULL) {
+			$object->_setProperty('_languageUid', intval($row[$dataMap->getLanguageIdColumnName()]));
+			if (isset($row['_LOCALIZED_UID'])) {
+				$object->_setProperty('_localizedUid', intval($row['_LOCALIZED_UID']));
+			} else {
+				$object->_setProperty('_localizedUid', intval($row['uid']));
+			}
 		}
+		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
 			if (!$dataMap->isPersistableProperty($propertyName)) continue;
 			$columnMap = $dataMap->getColumnMap($propertyName);
@@ -267,7 +269,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
 	 * @return mixed The result
 	 */
-	public function fetchRelated(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE, $performLanguageOverlay = TRUE) {
+	public function fetchRelated(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 		if ($enableLazyLoading === TRUE && $propertyMetaData['lazy']) {
@@ -281,7 +283,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				}
 			}
 		} else {
-			$result = $this->fetchRelatedEager($parentObject, $propertyName, $fieldValue, $performLanguageOverlay);
+			$result = $this->fetchRelatedEager($parentObject, $propertyName, $fieldValue);
 		}
 		return $result;
 	}
@@ -295,10 +297,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
 	 * @return void
 	 */
-	protected function fetchRelatedEager(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $performLanguageOverlay = TRUE) {
+	protected function fetchRelatedEager(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		if ($fieldValue === '') return array();
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
-		$query->getQuerySettings()->setRespectSysLanguage($performLanguageOverlay);
 		return $query->execute();
 	}
 	
@@ -318,9 +319,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 			$query = $queryFactory->create($this->getType(get_class($parentObject), $propertyName));
 			if (isset($parentKeyFieldName)) {
-				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
+				$query->matching($query->equals($parentKeyFieldName, $parentObject));
 			} else {
-				$query->matching($query->withUid(intval($fieldValue)));
+				$query->matching($query->equals('uid', intval($fieldValue)));
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$query = $queryFactory->create($this->getElementType(get_class($parentObject), $propertyName));
@@ -331,7 +332,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
 			if (isset($parentKeyFieldName)) {
-				$query->matching($query->equals($parentKeyFieldName, $parentObject->getUid()));
+				$query->matching($query->equals($parentKeyFieldName, $parentObject));
 			} else {
 				$query->matching($query->in('uid', t3lib_div::intExplode(',', $fieldValue)));					
 			}
@@ -369,7 +370,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 			$query->matching($conditions);
 			
 		} else {
-			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation. This is mainly caused by a missing type declaration above the property definition.', 1252502725);
+			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation for the property "' . $propertyName . '". This is mainly caused by a missing type declaration above the property definition.', 1252502725);
 		}
 		return $query;
 	}
