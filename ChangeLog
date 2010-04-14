@@ -36,6 +36,7 @@
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added Feature #13439: [FEATURE] Allow marker for Subject and Message in auto-response-message of Mailform
 	* Fixed bug #14097: Preview in BE opens Workspace-preview
 	* Fixed bug #14100: ModuleMenu is too small
 	* Added Feature #13940 Added marker in CONTENT object (thanks to Jigal van Hemert)

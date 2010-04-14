@@ -749,7 +749,9 @@ class t3lib_htmlmail {
 			// Auto response
 		if ($this->auto_respond_msg) {
 			$theParts = explode('/',$this->auto_respond_msg,2);
+			$theParts[0] = str_replace('###SUBJECT###', $this->subject, $theParts[0]);
 			$theParts[1] = str_replace("/",LF,$theParts[1]);
+			$theParts[1] = str_replace("###MESSAGE###", $this->getContent('plain'), $theParts[1]);			
 			if ($returnPathPossible) {
 				$mailWasSent = t3lib_utility_Mail::mail($this->from_email,
 					$theParts[0],
