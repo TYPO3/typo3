@@ -1341,14 +1341,14 @@ class t3lib_DB {
 		}
 	}
 
-
-
-
-
-
-
-
-
+	/**
+	 * Checks if database is connected
+	 *
+	 * @return boolean
+	 */
+	public function isConnected() {
+		return is_resource($this->link);
+	}
 
 
 
