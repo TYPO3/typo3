@@ -5559,24 +5559,18 @@ class tslib_cObj {
 			if ((string)$key!='')	{
 				$type = strtolower(trim($parts[0]));
 				switch($type) {
-					case 'gp':
 					case 'gpvar':
-						list($firstKey, $rest) = explode('|', $key, 2);
-						if (strlen(trim($firstKey)))	{
-							$retVal = t3lib_div::_GP(trim($firstKey));
-								// Look for deeper levels:
-							if (strlen(trim($rest)))	{
-								$retVal = is_array($retVal) ? $this->getGlobal($rest, $retVal) : '';
-							}
-								// Check that output is not an array:
-							if (is_array($retVal))	$retVal = '';
-						}
-						if ($type == 'gpvar') {
-							t3lib_div::deprecationLog('Using gpvar in TypoScript getText is deprecated since TYPO3 4.3 - Use gp instead of gpvar.');
-						}
+						t3lib_div::deprecationLog('Using gpvar in TypoScript getText is deprecated since TYPO3 4.3 - Use gp instead of gpvar.');
+						// Fall Through
+					case 'gp':
+							// Merge GET and POST and get $key out of the merged array
+						$retVal = $this->getGlobal(
+							$key,
+							t3lib_div::array_merge_recursive_overrule(t3lib_div::_GET(), t3lib_div::_POST())
+						);
 					break;
 					case 'tsfe':
-						$retVal = $this->getGlobal ('TSFE|'.$key);
+						$retVal = $this->getGlobal ('TSFE|' . $key);
 					break;
 					case 'getenv':
 						$retVal = getenv($key);
