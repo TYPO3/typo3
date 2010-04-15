@@ -30,7 +30,7 @@
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Mapper_DataMap {
-
+	
 	/**
 	 * The class name
 	 *
@@ -46,11 +46,25 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	protected $tableName;
 
 	/**
+	 * The record type stored in the "type" field as configured in $TCA
+	 *
+	 * @var string
+	 **/
+	protected $recordType;
+
+	/**
+	 * The subclasses of the current class
+	 *
+	 * @var array
+	 **/
+	protected $subclasses = array();
+
+	/**
 	 * An array of column maps configured in $TCA
 	 *
 	 * @var array
 	 **/
-	protected $columnMaps;
+	protected $columnMaps = array();
 		
 	/**
 	 * @var string
@@ -108,13 +122,23 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	protected $frontendUserGroupColumnName;
 
 	/**
+	 * @var string
+	 **/
+	protected $recordTypeColumnName;
+
+	/**
 	 * Constructs this DataMap
 	 *
-	 * @param string $className The class name. This determines the table to fetch the configuration for
+	 * @param string $className The class name
+	 * @param string $tableName The table name
+	 * @param string $recordType The record type
+	 * @param array $subclasses The subclasses
 	 */
-	public function __construct($className, $tableName) {
+	public function __construct($className, $tableName, $recordType, array $subclasses = array()) {
 		$this->setClassName($className);
 		$this->setTableName($tableName);
+		$this->setRecordType($recordType);
+		$this->setSubclasses($subclasses);
 	}
 
 	/**
@@ -151,6 +175,44 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	public function getTableName() {
 		return $this->tableName;
+	}
+	
+	/**
+	 * Sets the record type
+	 *
+	 * @param string $recordType The record type
+	 * @return void
+	 */
+	public function setRecordType($recordType) {
+		$this->recordType = $recordType;
+	}
+
+	/**
+	 * Returns the record type
+	 *
+	 * @return string The record type
+	 */
+	public function getRecordType() {
+		return $this->recordType;
+	}
+	
+	/**
+	 * Sets the subclasses
+	 *
+	 * @param array $subclasses An array of subclasses
+	 * @return void
+	 */
+	public function setSubclasses(array $subclasses) {
+		$this->subclasses = $subclasses;
+	}
+
+	/**
+	 * Returns the subclasses
+	 *
+	 * @return array The subclasses
+	 */
+	public function getSubclasses() {
+		return $this->subclasses;
 	}
 	
 	/**
@@ -391,6 +453,25 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 */
 	public function getFrontEndUserGroupColumnName() {
 		return $this->frontendUserGroupColumnName;
+	}
+
+	/**
+	 * Sets the name of a column holding the record type
+	 *
+	 * @param string $recordTypeColumnName The field name
+	 * @return void
+	 */
+	public function setRecordTypeColumnName($recordTypeColumnName) {
+		$this->recordTypeColumnName = $recordTypeColumnName;
+	}
+
+	/**
+	 * Sets the name of a column holding the record type
+	 *
+	 * @return string The field name
+	 */
+	public function getRecordTypeColumnName() {
+		return $this->recordTypeColumnName;
 	}
 
 }

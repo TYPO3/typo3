@@ -816,6 +816,9 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		if ($dataMap->getModificationDateColumnName() !== NULL) {
 			$row[$dataMap->getModificationDateColumnName()] = $GLOBALS['EXEC_TIME'];
 		}
+		if ($dataMap->getRecordTypeColumnName() !== NULL) {
+			$row[$dataMap->getRecordTypeColumnName()] = $className; // FIXME add mapping
+		}
 		if ($object->_isNew() && !isset($row['pid'])) {
 			$row['pid'] = $this->determineStoragePageIdForNewRecord($object);
 		}

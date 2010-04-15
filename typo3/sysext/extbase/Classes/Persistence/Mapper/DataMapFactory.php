@@ -30,44 +30,39 @@
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Mapper_DataMapFactory {
-
+	
 	/**
 	 * Builds a data map by adding column maps for all the configured columns in the $TCA.
 	 * It also resolves the type of values the column is holding and the typo of relation the column
 	 * represents.
 	 *
-	 * @return void
+	 * @param string $className The class name you want to fetch the Data Map for
+	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function buildDataMap($className) {
-		$tableName = NULL;
+		$recordType = $className;
+		$subclasses = array();
+		$tableName = strtolower($className);
 		$columnMapping = array();
-		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		if (is_array($extbaseSettings['persistence']['classes'][$className])) {
-			$persistenceSettings = $extbaseSettings['persistence']['classes'][$className];
-			if (is_string($persistenceSettings['mapping']['tableName']) && strlen($persistenceSettings['mapping']['tableName']) > 0) {
-				$tableName = $persistenceSettings['mapping']['tableName'];
+		
+		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		$classSettings = $extbaseFrameworkConfiguration['persistence']['classes'][$className];
+		if ($classSettings !== NULL) {
+			if (isset($classSettings['subclasses']) && is_array($classSettings['subclasses'])) {
+				$subclasses = $classSettings['subclasses'];
 			}
-			if (is_array($persistenceSettings['mapping']['columns'])) {
-				$columnMapping = $persistenceSettings['mapping']['columns'];
+			if (isset($classSettings['mapping']['recordType']) && strlen($classSettings['mapping']['recordType']) > 0) {
+				$recordType = $classSettings['mapping']['recordType'];
 			}
-		} elseif (class_exists($className)) {
-			foreach (class_parents($className) as $parentClassName) {
-				$persistenceSettings = $extbaseSettings['persistence']['classes'][$parentClassName];
-				if (is_array($persistenceSettings)) {
-					if (is_string($persistenceSettings['mapping']['tableName']) && strlen($persistenceSettings['mapping']['tableName']) > 0) {
-						$tableName = $persistenceSettings['mapping']['tableName'];
-					}
-					if (is_array($persistenceSettings['mapping']['columns'])) {
-						$columnMapping = $persistenceSettings['mapping']['columns'];
-					}
-				}
-				break;
+			if (isset($classSettings['mapping']['tableName']) && strlen($classSettings['mapping']['tableName']) > 0) {
+				$tableName = $classSettings['mapping']['tableName'];
+			}
+			if (isset($classSettings['mapping']['columns']) && is_array($classSettings['mapping']['columns'])) {
+				$columnMapping = $classSettings['mapping']['columns'];
 			}
 		}
-		if ($tableName === NULL) {
-			$tableName = strtolower($className);
-		}
-		$dataMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName);
+
+		$dataMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 		$columnConfigurations = array();
 		foreach ($this->getColumnsDefinition($tableName) as $columnName => $columnDefinition) {
@@ -82,7 +77,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		}
 		return $dataMap;
 	}
-
+	
 	/**
 	 * Returns the TCA ctrl section of the specified table; or NULL if not set
 	 *
@@ -127,6 +122,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		if (isset($controlSection['delete'])) $dataMap->setDeletedFlagColumnName($controlSection['delete']);
 		if (isset($controlSection['languageField'])) $dataMap->setLanguageIdColumnName($controlSection['languageField']);
 		if (isset($controlSection['transOrigPointerField'])) $dataMap->setTranslationOriginColumnName($controlSection['transOrigPointerField']);
+		if (isset($controlSection['type'])) $dataMap->setRecordTypeColumnName($controlSection['type']);
 		if (isset($controlSection['enablecolumns']['disabled'])) $dataMap->setDisabledFlagColumnName($controlSection['enablecolumns']['disabled']);
 		if (isset($controlSection['enablecolumns']['starttime'])) $dataMap->setStartTimeColumnName($controlSection['enablecolumns']['starttime']);
 		if (isset($controlSection['enablecolumns']['endtime'])) $dataMap->setEndTimeColumnName($controlSection['enablecolumns']['endtime']);

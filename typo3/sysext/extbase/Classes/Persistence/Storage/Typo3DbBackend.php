@@ -256,7 +256,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Parses the query and returns the SQL statement parts.
 	 *
-	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param Tx_Extbase_Persistence_QueryInterface $query The query
 	 * @return array The SQL statement parts
 	 */
 	public function parseQuery(Tx_Extbase_Persistence_QueryInterface $query, array &$parameters) {
@@ -366,11 +366,43 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function parseSource(Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-			$tableName = $source->getSelectorName();
+			$className = $source->getNodeTypeName();
+			$tableName = $this->dataMapper->getDataMap($className)->getTableName();
+			$this->addRecordTypeConstraint($className, $sql);
 			$sql['fields'][$tableName] = $tableName . '.*';
 			$sql['tables'][$tableName] = $tableName;
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
 			$this->parseJoin($source, $sql);
+		}
+	}
+	
+	/**
+	 * Adda a constrint to ensure that the record type of the returned tuples is matching the data type of the repository.
+	 *
+	 * @param string $className The class name
+	 * @param array &$sql The query parts
+	 * @return void
+	 */
+	protected function addRecordTypeConstraint($className, &$sql) {
+		if ($className !== NULL) {
+			$dataMap = $this->dataMapper->getDataMap($className);
+			if ($dataMap->getRecordTypeColumnName() !== NULL) {
+				$recordSubtypes = array();
+				foreach ($dataMap->getSubclasses() as $subclassName) {
+					$recordSubtype = $this->dataMapper->getDataMap($subclassName)->getRecordType();
+					if ($recordSubtype !== NULL) {
+						$recordSubtypes[] = $recordSubtype;
+					} else {
+						$recordSubtypes[] = $subclassName;
+					}
+				}
+				$recordTypes = array_merge(array($dataMap->getRecordType()), $recordSubtypes);
+				$recordTypeStatements = array();
+				foreach ($recordTypes as $recordType) {
+					$recordTypeStatements[] = $dataMap->getTableName() . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, 'foo');
+				}
+				$sql['additionalWhereClause'][] = '(' . implode(' OR ', $recordTypeStatements) . ')';
+			}
 		}
 	}
 
@@ -384,6 +416,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected function parseJoin(Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql) {
 		$leftSource = $join->getLeft();
 		$leftClassName = $leftSource->getNodeTypeName();
+		$this->addRecordTypeConstraint($leftClassName, $sql);
 		$leftTableName = $leftSource->getSelectorName();
 		// $sql['fields'][$leftTableName] = $leftTableName . '.*';
 		$rightSource = $join->getRight();
@@ -395,6 +428,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			$rightTableName = $rightSource->getSelectorName();
 			$sql['fields'][$leftTableName] = $rightTableName . '.*';
 		}
+		$this->addRecordTypeConstraint($rightClassName, $sql);
 		
 		$sql['tables'][$leftTableName] = $leftTableName;
 		$sql['unions'][$rightTableName] = 'LEFT JOIN ' . $rightTableName;
@@ -457,7 +491,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$operator = $comparison->getOperator();
 		$operand2 = $comparison->getOperand2();
 		if (($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO) && (is_array($operand2) || ($operand2 instanceof ArrayAccess) || ($operand2 instanceof Traversable))) {
-			// FIXME this else branch enables equals() to behave like in(). This behavior is deprecated and will be removed in future. Use in() instead.
+			// this else branch enables equals() to behave like in(). This behavior is deprecated and will be removed in future. Use in() instead.
 			$operator = Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN;
 		}
 				

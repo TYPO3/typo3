@@ -132,20 +132,39 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	}
 
 	/**
-	 * Maps the given rows on objects of the given class
+	 * Maps the given rows on objects
 	 *
-	 * @param string $className The name of the target class
+	 * @param string $className The name of the class
 	 * @param array $rows An array of arrays with field_name => value pairs
 	 * @return array An array of objects of the given class
 	 */
 	public function map($className, array $rows) {
 		$objects = array();
 		foreach ($rows as $row) {
-			$objects[] = $this->mapSingleRow($className, $row);
+			$objects[] = $this->mapSingleRow($this->getTargetType($className, $row), $row);
 		}
 		return $objects;
 	}
-
+	
+	/**
+	 * Returns the target type for the given row.
+	 *
+	 * @param string $className The name of the class
+	 * @param array $row A single array with field_name => value pairs
+	 * @return string The target type (a class name)
+	 */
+	public function getTargetType($className, array $row) {
+		$dataMap = $this->getDataMap($className);
+		if ($dataMap->getRecordTypeColumnName() === NULL) return $className;
+		foreach ($dataMap->getSubclasses() as $subclassName) {
+			$recordSubtype = $this->getDataMap($subclassName)->getRecordType();
+			if ($row[$dataMap->getRecordTypeColumnName()] === $recordSubtype) {
+				return $subclassName;
+			}
+		}
+		return $className;
+	}
+	
 	/**
 	 * Maps a single row on an object of the given class
 	 *
