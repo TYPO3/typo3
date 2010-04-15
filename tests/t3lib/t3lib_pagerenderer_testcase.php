@@ -222,7 +222,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsLibrary() {
 
-		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsLibrary('test', 'fileadmin/test.js');
 		$out = $this->fixture->render();
 
@@ -239,7 +239,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsFooterLibrary() {
 
-		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsFooterLibrary('test', 'fileadmin/test.js');
 		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
@@ -255,7 +255,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsFile() {
 
-		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsFile('fileadmin/test.js');
 		$out = $this->fixture->render();
 
@@ -271,7 +271,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddJsFooterFile() {
 
-		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->addJsFooterFile('fileadmin/test.js');
 		$out = $this->fixture->render(t3lib_PageRenderer::PART_FOOTER);
 
@@ -392,7 +392,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
     */
   	public function testLoadPrototype() {
 
-		$expectedRegExp = '#<script src="contrib/prototype/prototype\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/prototype/prototype\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadPrototype();
 		$out = $this->fixture->render();
 
@@ -424,7 +424,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
     public function testLoadExtJS() {
 
-		$expectedRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#m';
+		$expectedRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#m';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$out = $this->fixture->render();
 
@@ -440,7 +440,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testLoadExtCore() {
 
-		$expectedRegExp = '#<script src="contrib/extjs/ext-core\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/extjs/ext-core\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadExtCore();
 		$out = $this->fixture->render();
 
@@ -456,7 +456,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testEnableExtJsDebug() {
 
-		$expectedRegExp = '#<script src="contrib/extjs/ext-all-debug\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/extjs/ext-all-debug\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$this->fixture->enableExtJsDebug();
 		$out = $this->fixture->render();
@@ -473,7 +473,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
    	public function testEnableExtCoreDebug() {
 
-		$expectedRegExp = '#<script src="contrib/extjs/ext-core-debug\.(js|\d+\.js|js?\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/extjs/ext-core-debug\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadExtCore();
 		$this->fixture->enableExtCoreDebug();
 		$out = $this->fixture->render();
