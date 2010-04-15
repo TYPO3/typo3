@@ -73,23 +73,30 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 			// write error message to the configured syslogs
 		t3lib_div::sysLog($logMessage, $logTitle, 4);
 
-			// In case an error occurs before a database connection exists, try
-			// to connect to the DB to be able to write the devlog/sys_log entry
-		if (isset($GLOBALS['TYPO3_DB']) && is_object($GLOBALS['TYPO3_DB']) && empty($GLOBALS['TYPO3_DB']->link)) {
-			$GLOBALS['TYPO3_DB']->connectDB();
-		}
+			// When database credentials are wrong, the exception is probably
+			// caused by this. Therefor we cannot do any database operation,
+			// otherwise this will lead into recurring exceptions.
+		try {
+				// In case an error occurs before a database connection exists, try
+				// to connect to the DB to be able to write the devlog/sys_log entry
+			if (isset($GLOBALS['TYPO3_DB']) && is_object($GLOBALS['TYPO3_DB']) && empty($GLOBALS['TYPO3_DB']->link)) {
+				$GLOBALS['TYPO3_DB']->connectDB();
+			}
 
-			// write error message to devlog
-			// see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
-		if (TYPO3_EXCEPTION_DLOG) {
-			t3lib_div::devLog($logMessage, $logTitle, 3, array(
-				'TYPO3_MODE' => TYPO3_MODE,
-				'backtrace' => $backtrace
-			));
-		}
+				// write error message to devlog
+				// see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
+			if (TYPO3_EXCEPTION_DLOG) {
+				t3lib_div::devLog($logMessage, $logTitle, 3, array(
+					'TYPO3_MODE' => TYPO3_MODE,
+					'backtrace' => $backtrace
+				));
+			}
 
-			// write error message to sys_log table
-		$this->writeLog($logTitle . ': ' . $logMessage);
+				// write error message to sys_log table
+			$this->writeLog($logTitle . ': ' . $logMessage);
+		} catch (Exception $exception) {
+			// Nothing happens here. It seems the database credentials are wrong
+		}
 	}
 
 	/**
