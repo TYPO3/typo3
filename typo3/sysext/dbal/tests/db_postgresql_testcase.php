@@ -64,10 +64,12 @@ class db_postgresql_testcase extends BaseTestCase {
 		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName;
 
+		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
+
 			// Initialize a fake PostgreSQL connection (using 'postgres7' as 'postgres' is remapped to it in AdoDB)
 		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'postgres7');
 
-		$this->assertTrue($GLOBALS['TYPO3_DB']->handlerInstance['_DEFAULT']->isConnected());
+		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 
 	/**
