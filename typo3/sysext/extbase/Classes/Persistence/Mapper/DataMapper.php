@@ -313,67 +313,81 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	protected function getPreparedQuery(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
-		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
-		$childSortByFieldName = $columnMap->getChildSortByFieldName();
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
 			$query = $queryFactory->create($this->getType(get_class($parentObject), $propertyName));
-			if (isset($parentKeyFieldName)) {
-				$query->matching($query->equals($parentKeyFieldName, $parentObject));
-			} else {
-				$query->matching($query->equals('uid', intval($fieldValue)));
-			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			$query = $queryFactory->create($this->getElementType(get_class($parentObject), $propertyName));
-			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
-			// enableFields and storage page settings.
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			if (!empty($childSortByFieldName)) {
-				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
-			}
-			if (isset($parentKeyFieldName)) {
-				$query->matching($query->equals($parentKeyFieldName, $parentObject));
-			} else {
-				$query->matching($query->in('uid', t3lib_div::intExplode(',', $fieldValue)));					
+			if ($columnMap->getChildSortByFieldName() !== NULL) {
+				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$query = $queryFactory->create($this->getElementType(get_class($parentObject), $propertyName));
-			// TODO: This is an ugly hack, just ignoring the storage page state from here. Actually, the query settings would have to be passed into the DataMapper, so we can respect
-			// enableFields and storage page settings.
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$relationTableName = $columnMap->getRelationTableName();
-			$left = $this->qomFactory->selector(NULL, $relationTableName);
-			$childClassName = $this->getElementType(get_class($parentObject), $propertyName);
-			$childTableName = $columnMap->getChildTableName();
-			$right = $this->qomFactory->selector($childClassName, $childTableName);
-			$joinCondition = $this->qomFactory->equiJoinCondition($relationTableName, $columnMap->getChildKeyFieldName(), $childTableName, 'uid');
-			$source = $this->qomFactory->join(
-				$left,
-				$right,
-				Tx_Extbase_Persistence_QueryInterface::JCR_JOIN_TYPE_INNER,
-				$joinCondition
-				);
-
-			$query->setSource($source);
-			if (!empty($childSortByFieldName)) {
-				$query->setOrderings(array($childSortByFieldName => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+			$query->setSource($this->getSource($parentObject, $propertyName));
+			if ($columnMap->getChildSortByFieldName() !== NULL) {
+				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
-			
-			$conditions = $query->equals($parentKeyFieldName, $parentObject->getUid());
-
-			$relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-			if (count($relationTableMatchFields)) {
-				foreach($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
-					$conditions = $query->logicalAnd($conditions, $query->equals($relationTableMatchFieldName, $relationTableMatchFieldValue));
-				}
-			}
-			$query->matching($conditions);
-			
 		} else {
 			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation for the property "' . $propertyName . '". This is mainly caused by a missing type declaration above the property definition.', 1252502725);
 		}
+		$query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
 		return $query;
 	}
+	
+	/**
+	 * Builds and returns the constraint for multi value properties.
+	 *
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject 
+	 * @param string $propertyName 
+	 * @param string $fieldValue 
+	 * @param array $relationTableMatchFields 
+	 * @return Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint
+	 */
+	protected function getConstraint(Tx_Extbase_Persistence_QueryInterface $query, Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $relationTableMatchFields = array()) {
+		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+		if ($columnMap->getParentKeyFieldName() !== NULL) {
+			$constraint = $query->equals($columnMap->getParentKeyFieldName(), $parentObject);
+ 			if($columnMap->getParentTableFieldName() !== NULL) {
+ 				$constraint = $query->logicalAnd(
+					$constraint,
+					$query->equals($columnMap->getParentTableFieldName(), $this->getDataMap(get_class($parentObject))->getTableName())
+					);
+ 			}
+		} else {
+			$constraint = $query->in('uid', t3lib_div::intExplode(',', $fieldValue));
+		}
+		if (count($relationTableMatchFields) > 0) {
+			foreach($relationTableMatchFields as $relationTableMatchFieldName => $relationTableMatchFieldValue) {
+				$constraint = $query->logicalAnd($constraint, $query->equals($relationTableMatchFieldName, $relationTableMatchFieldValue));
+			}
+		}
+		return $constraint;
+	}
 
+	/**
+	 * Builds and returns the source to buidl a join for a m:n relation.
+	 *
+	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject 
+	 * @param string $propertyName 
+	 * @return Tx_Extbase_Persistence_QOM_SourceInterface $source
+	 */
+	protected function getSource(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName) {
+		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
+		$left = $this->qomFactory->selector(NULL, $columnMap->getRelationTableName());
+		$childClassName = $this->getElementType(get_class($parentObject), $propertyName);
+		$right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
+		$joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
+		$source = $this->qomFactory->join(
+			$left,
+			$right,
+			Tx_Extbase_Persistence_QueryInterface::JCR_JOIN_TYPE_INNER,
+			$joinCondition
+			);
+		return $source;
+	}
+	
 	/**
 	 * Returns the given result as property value of the specified property type.
 	 *
