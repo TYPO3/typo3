@@ -64,10 +64,12 @@ class db_mssql_testcase extends BaseTestCase {
 		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName;
 
+		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
+
 			// Initialize a fake MS SQL connection
 		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'mssql');
 
-		$this->assertTrue($GLOBALS['TYPO3_DB']->handlerInstance['_DEFAULT']->isConnected());
+		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 
 	/**

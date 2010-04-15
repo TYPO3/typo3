@@ -2580,6 +2580,26 @@ class ux_t3lib_DB extends t3lib_DB {
 
 
 	/**
+	 * Checks if database is connected.
+	 *
+	 * @return boolean
+	 */
+	public function isConnected() {
+		$result = FALSE;
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+			case 'native':
+				$result = is_resource($this->link);
+				break;
+			case 'adodb':
+			case 'userdefined':
+				$result = is_object($this->handlerInstance[$this->lastHandlerKey]) && $this->handlerInstance[$this->lastHandlerKey]->isConnected();
+				break;
+		}
+		return $result;
+	}
+
+
+	/**
 	 * Checks whether the DBAL is currently inside an operation running on the "native" DB handler (i.e. MySQL)
 	 *
 	 * @return boolean	True if running on "native" DB handler (i.e. MySQL)
