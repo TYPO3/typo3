@@ -784,12 +784,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected function updateObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$this->addCommonFieldsToRow($object, $row);
+		$row['uid'] = $object->getUid();
 		if($dataMap->getLanguageIdColumnName() !== NULL) {
 			$row[$dataMap->getLanguageIdColumnName()] = $object->_getProperty('_languageUid');
-			$row['uid'] = $object->_getProperty('_localizedUid');
-			// $row[$dataMap->getTranslationOriginColumnName()] = $object->_getProperty('_languageUid');
-		} else {
-			$row['uid'] = $object->getUid();
+			if ($object->_getProperty('_localizedUid') !== NULL) {
+				$row['uid'] = $object->_getProperty('_localizedUid');
+			}
 		}
 		$res = $this->storageBackend->updateRow(
 			$dataMap->getTableName(),
