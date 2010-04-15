@@ -84,18 +84,38 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	}
 
 	/**
+	 * Returns the TCA ctrl section of the specified table; or NULL if not set
+	 *
+	 * @param string $tableName An optional table name to fetch the columns definition from
+	 * @return array The TCA columns definition
+	 */
+	protected function getControlSection($tableName) {
+		$this->includeTca($tableName);
+		return is_array($GLOBALS['TCA'][$tableName]['ctrl']) ? $GLOBALS['TCA'][$tableName]['ctrl'] : NULL;
+	}
+	
+	/**
 	 * Returns the TCA columns array of the specified table
 	 *
 	 * @param string $tableName An optional table name to fetch the columns definition from
 	 * @return array The TCA columns definition
 	 */
 	protected function getColumnsDefinition($tableName) {
+		$this->includeTca($tableName);
+		return is_array($GLOBALS['TCA'][$tableName]['columns']) ? $GLOBALS['TCA'][$tableName]['columns'] : array();
+	}
+	
+	/**
+	 * Includes the TCA for the given table
+	 *
+	 * @param string $tableName An optional table name to fetch the columns definition from
+	 * @return void
+	 */
+	protected function includeTca($tableName) {
 		if (TYPO3_MODE === 'FE') {
 			$GLOBALS['TSFE']->includeTCA();
 		}
 		t3lib_div::loadTCA($tableName);
-		$columns = is_array($GLOBALS['TCA'][$tableName]['columns']) ? $GLOBALS['TCA'][$tableName]['columns'] : array();
-		return $columns;
 	}
 	
 	protected function addMetaDataColumnNames(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $tableName) {
@@ -217,6 +237,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
 		} else {
 			throw new Tx_Extbase_Persistence_Exception_UnsupportedRelation('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
+		}
+		if ($this->getControlSection($columnMap->getRelationTableName()) !== NULL) {
+			$columnMap->setRelationTablePageIdColumnName('pid');
 		}
 		return $columnMap;
 	}

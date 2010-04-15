@@ -704,9 +704,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		// if (isset($childTableName)) {
 		// 	$row['tablenames'] = $childTableName;
 		// }
-		$pageIdColumnName = $dataMap->getPageIdColumnName();
-		if ($pageIdColumnName !== NULL) {
-			$row[$pageIdColumnName] = $this->determineStoragePageIdForNewRecord();
+		if ($columnMap->getRelationTablePageIdColumnName() !== NULL) {
+			$row[$columnMap->getRelationTablePageIdColumnName()] = $this->determineStoragePageIdForNewRecord();
 		}
 		
 		$relationTableInsertFields = $columnMap->getRelationTableInsertFields();

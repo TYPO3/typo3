@@ -120,6 +120,13 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	protected $relationTableName;
 
 	/**
+	 * The name of the column  of the relation table holding the page id
+	 *
+	 * @var string
+	 **/
+	protected $relationTablePageIdColumnName;
+
+	/**
 	 * An array of field => value pairs to both insert and match against when writing/reading MM relations
 	 *
 	 * @var array
@@ -228,6 +235,14 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	public function getRelationTableName() {
 		return $this->relationTableName;
+	}
+
+	public function setRelationTablePageIdColumnName($relationTablePageIdColumnName) {
+		$this->relationTablePageIdColumnName = $relationTablePageIdColumnName;
+	}
+
+	public function getRelationTablePageIdColumnName() {
+		return $this->relationTablePageIdColumnName;
 	}
 
 	public function setRelationTableMatchFields(array $relationTableMatchFields) {

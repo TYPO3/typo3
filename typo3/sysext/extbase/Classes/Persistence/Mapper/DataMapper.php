@@ -191,6 +191,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$className = get_class($object);
 		$dataMap = $this->getDataMap($className);
 		$object->_setProperty('uid', intval($row['uid']));
+		$object->_setProperty('_localizedUid', intval($row['uid']));
 		if ($dataMap->getLanguageIdColumnName() !== NULL) {
 			$object->_setProperty('_languageUid', intval($row[$dataMap->getLanguageIdColumnName()]));
 			if (isset($row['_LOCALIZED_UID'])) {
