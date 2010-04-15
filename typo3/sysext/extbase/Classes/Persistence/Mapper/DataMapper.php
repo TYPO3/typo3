@@ -367,7 +367,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	}
 
 	/**
-	 * Builds and returns the source to buidl a join for a m:n relation.
+	 * Builds and returns the source to build a join for a m:n relation.
 	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $parentObject 
 	 * @param string $propertyName 
