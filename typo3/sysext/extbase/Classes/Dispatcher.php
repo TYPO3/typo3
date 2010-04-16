@@ -248,9 +248,9 @@ class Tx_Extbase_Dispatcher {
 		
 		$controller->injectSettings(!empty(self::$extbaseFrameworkConfiguration['settings']) ? self::$extbaseFrameworkConfiguration['settings'] : array());
 
-		$flashMessages = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
-		$flashMessages->reset();
-		$controller->injectFlashMessages($flashMessages);
+		$flashMessageContainer = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
+		$flashMessageContainer->reset();
+		$controller->injectFlashMessageContainer($flashMessageContainer);
 
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
