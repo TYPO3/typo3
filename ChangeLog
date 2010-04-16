@@ -1,3 +1,7 @@
+2010-04-16  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #14118: Exception handler does not produce valid (X)HTML 
+
 2010-04-15  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #14117: RuntimeException thrown within the exception handler when wrong database credentials

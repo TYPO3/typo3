@@ -72,49 +72,67 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
 
-		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-				"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
-			<head>
-				<title>TYPO3 Exception</title>
-				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-			</head>
-			<style>
-				.ExceptionProperty {
-					color: #101010;
-				}
-				pre {
-					margin: 0;
-					font-size: 11px;
-					color: #515151;
-					background-color: #D0D0D0;
-					padding-left: 30px;
-				}
-			</style>
-			<div style="
-					position: absolute;
-					left: 10px;
-					background-color: #B9B9B9;
-					outline: 1px solid #515151;
-					color: #515151;
-					font-family: Arial, Helvetica, sans-serif;
-					font-size: 12px;
-					margin: 10px;
-					padding: 0;
-				">
-				<div style="width: 100%; background-color: #515151; color: white; padding: 2px; margin: 0 0 6px 0;">Uncaught TYPO3 Exception</div>
-				<div style="width: 100%; padding: 2px; margin: 0 0 6px 0;">
-					<strong style="color: #BE0027;">' . $exceptionCodeNumber . $exception->getMessage() . '</strong> ' ./* $moreInformationLink .*/ '<br />
-					<br />
-					<span class="ExceptionProperty">' . get_class($exception) . '</span> thrown in file<br />
-					<span class="ExceptionProperty">' . $filePathAndName . '</span> in line
-					<span class="ExceptionProperty">' . $exception->getLine() . '</span>.<br />
-					<br />
-					' . $backtraceCode . '
-				</div>
-		';
-		echo '
-			</div>
+			// Set the XML prologue
+		$xmlPrologue = '<?xml version="1.0" encoding="utf-8"?>';
+
+			// Set the doctype declaration
+		$docType = '<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+
+			// Get the browser info
+		$browserInfo = t3lib_utility_Client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
+
+			// Put the XML prologue before or after the doctype declaration according to browser
+		if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
+			$headerStart = $docType . LF . $xmlPrologue;
+		} else {
+			$headerStart = $xmlPrologue . LF . $docType;
+		}
+
+		echo $headerStart . '
+			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+				<head>
+					<title>TYPO3 Exception</title>
+					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+					<style type="text/css">
+						.ExceptionProperty {
+							color: #101010;
+						}
+						pre {
+							margin: 0;
+							font-size: 11px;
+							color: #515151;
+							background-color: #D0D0D0;
+							padding-left: 30px;
+						}
+					</style>
+				</head>
+				<body>
+					<div style="
+							position: absolute;
+							left: 10px;
+							background-color: #B9B9B9;
+							outline: 1px solid #515151;
+							color: #515151;
+							font-family: Arial, Helvetica, sans-serif;
+							font-size: 12px;
+							margin: 10px;
+							padding: 0;
+						">
+						<div style="width: 100%; background-color: #515151; color: white; padding: 2px; margin: 0 0 6px 0;">Uncaught TYPO3 Exception</div>
+						<div style="width: 100%; padding: 2px; margin: 0 0 6px 0;">
+							<strong style="color: #BE0027;">' . $exceptionCodeNumber . $exception->getMessage() . '</strong> ' ./* $moreInformationLink .*/ '<br />
+							<br />
+							<span class="ExceptionProperty">' . get_class($exception) . '</span> thrown in file<br />
+							<span class="ExceptionProperty">' . $filePathAndName . '</span> in line
+							<span class="ExceptionProperty">' . $exception->getLine() . '</span>.<br />
+							<br />
+							' . $backtraceCode . '
+						</div>
+					</div>
+				</body>
+			</html>
 		';
 	}
 
