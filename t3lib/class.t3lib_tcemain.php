@@ -2761,7 +2761,12 @@ class t3lib_TCEmain	{
 				// Now, the $uid is the actual record we will copy while $origUid is the record we asked to get copied - but that could be a live version.
 */
 			if ($this->doesRecordExist($table,$uid,'show'))	{		// This checks if the record can be selected which is all that a copy action requires.
-				if (($language > 0 && $this->BE_USER->checkLanguageAccess($language) ) || $this->BE_USER->recordEditAccessInternals($table, $uid, false, false, true)) { //Used to check language and general editing rights
+				$fullLanguageCheckNeeded = ($table != 'pages');
+				if (($language > 0 && $this->BE_USER->checkLanguageAccess($language) ) || 
+						$this->BE_USER->recordEditAccessInternals(
+							$table, $uid, false, false, $fullLanguageCheckNeeded
+						)
+					) { //Used to check language and general editing rights
 					$data = Array();
 
 					$nonFields = array_unique(t3lib_div::trimExplode(',','uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_id,t3ver_label,t3ver_state,t3ver_swapmode,t3ver_count,t3ver_stage,t3ver_tstamp,'.$excludeFields,1));
@@ -3485,7 +3490,8 @@ class t3lib_TCEmain	{
 			}
 
 				// Checking if there is anything else disallowing moving the record by checking if editing is allowed
-			$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, false, true);
+			$fullLanguageCheckNeeded = ($table != 'pages');
+			$mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded);
 
 				// If moving is allowed, begin the processing:
 			if ($mayEditAccess)	{
@@ -4402,14 +4408,22 @@ class t3lib_TCEmain	{
 				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
 				if ($brExist != -1)	{	// Checks if we had permissions
 					if ($this->noRecordsFromUnallowedTables($brExist.$uid))	{
-						return t3lib_div::trimExplode(',',$brExist.$uid,1);
+						$pagesInBranch = t3lib_div::trimExplode(',', $brExist . $uid, 1);
+						foreach ($pagesInBranch as $pageInBranch) {
+							if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, FALSE, FALSE, TRUE)) {
+								return 'Attempt to delete page which has prohibited localizations.';
+							}
+						}
+						return $pagesInBranch;
 					} else return 'Attempt to delete records from disallowed tables';
 				} else return 'Attempt to delete pages in branch without permissions';
 			} else {
 				$brExist = $this->doesBranchExist('',$uid,$this->pMap['delete'],1);	// returns the branch
 				if ($brExist == '')	{	// Checks if branch exists
-					if ($this->noRecordsFromUnallowedTables($uid))	{
-						return array($uid);
+				if ($this->noRecordsFromUnallowedTables($uid))	{
+						if ($this->BE_USER->recordEditAccessInternals('pages', $uid, FALSE, FALSE, TRUE)) {
+							return array($uid);
+						} else return 'Attempt to delete page which has prohibited localizations.';
 					} else return 'Attempt to delete records from disallowed tables';
 				} else return 'Attempt to delete page which has subpages';
 			}

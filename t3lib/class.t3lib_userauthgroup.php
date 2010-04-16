@@ -547,14 +547,27 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	function checkFullLanguagesAccess($table, $record) {
 		$recordLocalizationAccess = $this->checkLanguageAccess(0);
-		if ($recordLocalizationAccess && t3lib_BEfunc::isTableLocalizable($table)) {
+		if ($recordLocalizationAccess
+				 && (
+					t3lib_BEfunc::isTableLocalizable($table)
+					|| isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])
+				)
+		) {
 
-			$pointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+			if (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
+				$l10nTable = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
+				$pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
+				$pointerValue = $record['uid'];
+			} else {
+				$l10nTable = $table;
+				$pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
+				$pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
+			}
 
 			$recordLocalizations = t3lib_BEfunc::getRecordsByField(
-				$table,
+				$l10nTable,
 				$pointerField,
-				$record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'],
+				$pointerValue,
 				'',
 				'',
 				'',
@@ -563,7 +576,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 			if (is_array($recordLocalizations)) {
 				foreach($recordLocalizations as $localization) {
-					$recordLocalizationAccess = $recordLocalizationAccess && $this->checkLanguageAccess($localization[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
+					$recordLocalizationAccess = $recordLocalizationAccess
+						&& $this->checkLanguageAccess($localization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]);
 					if (!$recordLocalizationAccess) {
 						break;
 					}
@@ -624,6 +638,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 					$this->errorMsg = 'ERROR: The "languageField" field named "'.$TCA[$table]['ctrl']['languageField'].'" was not found in testing record!';
 					return FALSE;
 				}
+			} elseif (isset($TCA[$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+				return FALSE;
 			}
 
 				// Checking authMode fields:
