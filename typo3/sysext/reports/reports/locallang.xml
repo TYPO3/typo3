@@ -13,6 +13,8 @@
 			<label index="status_insecure">Insecure</label>
 			<label index="status_disabled">Disabled</label>
 			<label index="status_enabled">Enabled</label>
+			<label index="status_enabledPermanently">Enabled permanently</label>
+			<label index="status_enabledTemporarily">Enabled temporarily</label>
 			<label index="status_empty">Empty</label>
 			<label index="status_connectionFailed">Connection Failed</label>
 			<label index="status_updateComplete">Update Complete</label>
@@ -42,6 +44,7 @@
  			<label index="status_phpRegisterGlobalsHowToChange">how to change configuration settings</label>
  			<label index="status_phpRegisterGlobalsPHPManual">The PHP manual has instructions for %s.</label>
  			<label index="status_webServer">Web Server</label>
+			<label index="status_installEnabledTemporarily">The Install Tool is temporarily enabled. Delete the file &quot;%s&quot; when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</label>
 		</languageKey>
 	</data>
 </T3locallang>

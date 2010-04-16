@@ -1,3 +1,7 @@
+2010-04-13  Susanne Moog <typo3@susanne-moog.de>
+
+	* Fixed bug #13630: Status Report reports "Install Tool: disabled" when it is not. (thanks to Gregor Hermens)
+
 2010-04-16  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14090: In Extension Manager importExtInfo() does not sort versions correctly (thanks to Daniel Minder and Steffen Gebert)
@@ -170,7 +174,7 @@
 
 2010-03-17  Andreas Otto  <andreas@otto-hanika.de>
 
-	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Müller).
+	* Fixed bug #8597: Defining alternative icons with specConfs.[pid].pageIcon does not work in indexed_search (thanks to Steffen Mï¿½ller).
 
 2010-03-15  Tobias Liebig  <mail_typo3@etobi.de>
 
@@ -216,7 +220,7 @@
 
 2010-02-27  Andreas Otto  <andreas@otto-hanika.de>
 
-	* Fixed bug #13685: Recursive copy and move of alternative page languages (thanks to Albrecht Köhnlein)
+	* Fixed bug #13685: Recursive copy and move of alternative page languages (thanks to Albrecht Kï¿½hnlein)
 
 2010-02-27  Oliver Hader  <oliver@typo3.org>
 
@@ -308,7 +312,7 @@
 	* Fixed bug #13205: RTE 1.8.6 not focusing correctly with IE8
 	* Fixed bug #13478: htmlArea RTE: Inline styles not available if text marked with keyboard
 	* Fixed bug #13480: htmlArea RTE: Automatic linking ignores/replaces protocol
-	* Fixed bug #13282: htmlArea RTE: buttons.formattext.restrictTo not evaluated correctly (Thanks to Jörg Wagner)
+	* Fixed bug #13282: htmlArea RTE: buttons.formattext.restrictTo not evaluated correctly (Thanks to Jï¿½rg Wagner)
 
 2010-02-19  Benjamin Mack  <benni@typo3.org>
 
@@ -662,7 +666,7 @@
 2009-11-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12759: button styling missed some buttons: type reset / button (thanks to Georg Ringer)
-	* Fixed bug #9058: Hook objects for stdWrap in class.tslib_content.php get executed multiple times. (thanks to Steffen Müller)
+	* Fixed bug #9058: Hook objects for stdWrap in class.tslib_content.php get executed multiple times. (thanks to Steffen Mï¿½ller)
 	* Fixed bug #12467: TYPO3 Inline User Manual is broken
 	* Fixed bug #12297: t3lib_cs::cropMbstring has problems with negative length (Thanks to Steffen Gebert)
 	* Follow-up to bugfix #12728: Upgrade ExtJS skin to match t3skin (Thanks to Andreas Kundoch)
@@ -697,7 +701,7 @@
 
 2009-11-24  Rupert Germann  <rupi@gmx.li>
 
-	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen Müller)
+	* Fixed bug #12706: OpenID redirects to wrong page and does not create a BE session (thanks to Steffen Mï¿½ller)
 
 2009-11-24  Oliver Hader  <oliver@typo3.org>
 
