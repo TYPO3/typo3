@@ -1606,10 +1606,11 @@ EXTENSION KEYS:
 		list($fetchData,) = $this->prepareImportExtList(true);
 
 		$versions = array_keys($fetchData[$extKey]['versions']);
+		natsort($versions);
 		$version = ($version == '') ? end($versions) : $version;
 
 		$opt = array();
-		foreach(array_keys($fetchData[$extKey]['versions']) as $ver)	{
+		foreach($versions as $ver) {
 			$opt[]='<option value="'.$ver.'"'.(($version == $ver) ? ' selected="selected"' : '').'>'.$ver.'</option>';
 		}
 

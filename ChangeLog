@@ -1,3 +1,7 @@
+2010-04-16  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #14090: In Extension Manager importExtInfo() does not sort versions correctly (thanks to Daniel Minder and Steffen Gebert)
+
 2010-04-15  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14021: Simplify the code to get nested GET Parameters with TS
