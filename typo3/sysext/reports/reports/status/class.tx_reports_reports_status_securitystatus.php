@@ -248,19 +248,49 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 
 		$enableInstallToolFileExists = is_file($enableInstallToolFile);
 
-		if ($enableInstallToolFileExists && trim(file_get_contents($enableInstallToolFile)) === 'KEEP_FILE') {
-			$value    = $GLOBALS['LANG']->getLL('status_enabled');
-			$severity = tx_reports_reports_status_Status::WARNING;
+		if ($enableInstallToolFileExists) {
 
-			$disableInstallToolUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')
-				. '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
+			if (trim(file_get_contents($enableInstallToolFile)) === 'KEEP_FILE') {
 
-			$message = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled'),
-				'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>');
-			$message .= ' <a href="' . $disableInstallToolUrl . '">'
-				. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled_cmd')
-				. '</a>';
+				$severity = tx_reports_reports_status_Status::WARNING;
+
+				$disableInstallToolUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')
+					. '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
+
+				$value    = $GLOBALS['LANG']->getLL('status_enabledPermanently');
+
+				$message = sprintf(
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled'),
+					'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>');
+				$message .= ' <a href="' . $disableInstallToolUrl . '">'
+					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled_cmd')
+					. '</a>';
+
+			} else {
+
+				$enableInstallToolFileTtl = filemtime($enableInstallToolFile) + 3600 - time();
+
+				if ($enableInstallToolFileTtl <= 0) {
+
+					unlink($enableInstallToolFile);
+
+				} else {
+
+					$severity = tx_reports_reports_status_Status::NOTICE;
+
+					$disableInstallToolUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL')
+						. '&amp;adminCmd=remove_ENABLE_INSTALL_TOOL';
+
+					$value = $GLOBALS['LANG']->getLL('status_enabledTemporarily');
+
+					$message = sprintf(
+						$GLOBALS['LANG']->getLL('status_installEnabledTemporarily'),
+						'<span style="white-space: nowrap;">' . $enableInstallToolFile . '</span>', floor($enableInstallToolFileTtl/60) );
+					$message .= ' <a href="' . $disableInstallToolUrl . '">'
+						. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_enabled_cmd')
+						. '</a>';
+				}
+			}
 		}
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
