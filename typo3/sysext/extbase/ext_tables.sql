@@ -24,3 +24,11 @@ CREATE TABLE tx_extbase_cache_reflection_tags (
   KEY cache_id (identifier),
   KEY cache_tag (tag)
 ) ENGINE=InnoDB;
+
+CREATE TABLE fe_users (
+	tx_extbase_type varchar(255)
+);
+
+CREATE TABLE fe_groups (
+	tx_extbase_type varchar(255)
+);
