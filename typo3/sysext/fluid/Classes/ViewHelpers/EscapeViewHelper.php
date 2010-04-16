@@ -66,13 +66,17 @@ class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @api
 	 */
-	public function render($value = NULL, $type = 'html', $encoding = 'UTF-8') {
+	public function render($value = NULL, $type = 'html', $encoding = NULL) {
 		if ($value === NULL) {
 			$value = $this->renderChildren();
 		}
 
 		if (!is_string($value)) {
 			return $value;
+		}
+
+		if ($encoding === NULL) {
+			$encoding = $this->resolveDefaultEncoding();
 		}
 
 		switch ($type) {
@@ -87,6 +91,24 @@ class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 			default:
 				return $value;
 			break;
+		}
+	}
+
+	/**
+	 * Resolve the default encoding. If none is set in Frontend or Backend, uses UTF-8.
+	 * 
+	 * @return string the encoding
+	 */
+	protected function resolveDefaultEncoding() {
+		if (TYPO3_MODE === 'BE') {
+			$encoding = strtoupper($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
+
+			if ($encoding === NULL) {
+				$encoding = 'UTF-8';
+			}
+			return $encoding;
+		} else {
+			return strtoupper($GLOBALS['TSFE']->renderCharset);
 		}
 	}
 }
