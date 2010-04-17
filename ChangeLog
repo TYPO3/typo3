@@ -8,7 +8,7 @@
 
 2010-04-15  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
-	* Fixed bug #14021: Simplify the code to get nested GET Parameters with TS
+	* Fixed bug #14021: Simplify the code to get nested GET Parameters with TS (thanks to Sebastian Gebhard)
 
 2010-04-14  Xavier Perseguers  <typo3@perseguers.ch>
 
@@ -18,7 +18,7 @@
 2010-04-13  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14027: add "tiff" to imagefile_ext array
-	* Fixed bug #14023: choose proper variable namings in tslib_cObj::getGlobal()
+	* Fixed bug #14023: choose proper variable namings in tslib_cObj::getGlobal() (thanks to Sebastian Gebhard)
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
 
