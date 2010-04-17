@@ -17,7 +17,7 @@
 
 2010-04-13  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
-	* Fixed bug #14027: add "tiff" to imagefile_ext array
+	* Fixed bug #14027: add "tiff" to imagefile_ext array (Thanks to Søren Malling)
 	* Fixed bug #14023: choose proper variable namings in tslib_cObj::getGlobal() (thanks to Sebastian Gebhard)
 
 2010-04-13  Steffen Kamper  <info@sk-typo3.de>
