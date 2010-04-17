@@ -60,9 +60,9 @@
 
 2010-04-13  Dmitry Dulepov <dmitry.dulepov@gmail.com>
 
-	* Fixed bug #14027: Tweak: Add "tiff" to imagefile_ext array
-	* Fixed bug #14023: choose proper variable namings in tslib_cObj::getGlobal()
-	* Fixed bug ##1740: date parameters are not configurable in indexed search
+	* Fixed bug #14027: Tweak: Add "tiff" to imagefile_ext array (Thanks to Søren Malling)
+	* Fixed bug #14023: choose proper variable namings in tslib_cObj::getGlobal() (Thanks to Sebastian Gebhard)
+	* Fixed bug #1740: date parameters are not configurable in indexed search
 
 2010-04-13  Patrick Broens  <patrick@patrickbroens.nl>
 
@@ -109,10 +109,6 @@
 	* Fixed bug #14084: htmlArea RTE: RTE fails in absence of wizards
 	* Follow-up to feature #14067: htmlARea RTE: Eliminate namespace pollution
 
-2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
-
-	* Fixed bug #9851: LICENSE.txt refers to wrong webpage on typo3.com
-
 2010-04-12  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to #13710: Added missing typo3/sysext/lang/locallang_t3lib_fullsearch.xml
@@ -126,6 +122,7 @@
 
 2010-04-12  Susanne Moog  <typo3@susanne-moog.de>
 
+	* Fixed bug #9851: LICENSE.txt refers to wrong webpage on typo3.com
 	* Fixed bug #14054: CSS Styled Content has no manual
 
 2010-04-12  Patrick Broens  <patrick@patrickbroens.nl>
