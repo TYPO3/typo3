@@ -1,6 +1,6 @@
 2010-04-13  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
-	* Fixed bug #14027: Tweak: Add "tiff" to imagefile_ext array
+	* Fixed bug #14027: Tweak: Add "tiff" to imagefile_ext array (Thanks to Søren Malling)
 
 2010-04-11  Francois Suter  <francois@typo3.org>
 
