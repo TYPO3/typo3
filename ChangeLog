@@ -17,7 +17,7 @@
 
 2010-04-15  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
-	* Fixed bug #14021: Simplify the code to get nested GET Parameters with TS
+	* Fixed bug #14021: Simplify the code to get nested GET Parameters with TS (thanks to Sebastian Gebhard)
 	* Fixed bug #14120: Add a method to check if database is connected
 
 2010-04-15  Benjamin Mack  <benni@typo3.org>
