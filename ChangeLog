@@ -1,3 +1,7 @@
+2010-04-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #10315: htmlArea RTE: 10315: Paste does not work correctly with table rows in Firefox
+
 2010-04-19  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13991: Content Element Media does not work with render type "HTML Embed Element" (thanks to Sascha Egerer)

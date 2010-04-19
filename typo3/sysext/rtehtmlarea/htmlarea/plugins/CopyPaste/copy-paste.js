@@ -70,7 +70,7 @@ CopyPaste = HTMLArea.Plugin.extend({
 					tooltip		: this.localize(buttonId.toLowerCase()),
 					action		: "onButtonPress",
 					context		: button[0],
-					hotKey		: (this.buttonsConfiguration[button[2]] ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
+					hotKey		: ((this.buttonsConfiguration[button[2]] && this.buttonsConfiguration[button[2]].hotKey) ? this.buttonsConfiguration[button[2]].hotKey : (button[1] ? button[1] : null))
 				};
 				this.registerButton(buttonConfiguration);
 				if (!this.isButtonInToolbar(buttonId)) {
