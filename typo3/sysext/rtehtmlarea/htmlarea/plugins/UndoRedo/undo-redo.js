@@ -78,7 +78,7 @@ UndoRedo = HTMLArea.Plugin.extend({
 				tooltip		: this.localize(buttonId.toLowerCase()),
 				action		: "onButtonPress",
 				context		: button[1],
-				hotKey		: (this.editorConfiguration.buttons[buttonId.toLowerCase()]?this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey:button[2])
+				hotKey		: ((this.editorConfiguration.buttons[buttonId.toLowerCase()] && this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey) ? this.editorConfiguration.buttons[buttonId.toLowerCase()].hotKey : button[2])
 			};
 			this.registerButton(buttonConfiguration);
 		}
