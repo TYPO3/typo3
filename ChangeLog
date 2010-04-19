@@ -1,3 +1,7 @@
+2010-04-20  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13908: saltedpasswords: Enhance Unit Tests by testing passwords of various character classes
+
 2010-04-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14153: htmlAreaRTE: Some Page TSConfig may break default hotkey assignments
