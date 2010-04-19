@@ -8247,7 +8247,7 @@ $out="
 			$content = t3lib_parsehtml::substituteSubpart(
 				$content,
 				'###WARNINGS###',
-				implode(chr(10), $warningsSubpart)
+				$warningsSubpart
 			);
 		}
 			// Fill the markers

@@ -1,3 +1,7 @@
+2010-04-19  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #14105: Install Tool: PHP Warning: implode() Invalid arguments passed in typo3\sysext\install\mod\class.tx_install.php line 8244
+
 2010-04-19  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14128: Tree list cache does not recognize 'this' for 'pidInList'
