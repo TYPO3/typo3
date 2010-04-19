@@ -1,3 +1,7 @@
+2010-04-19  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13991: Content Element Media does not work with render type "HTML Embed Element" (thanks to Sascha Egerer)
+
 2010-04-19  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14128: Tree list cache does not recognize 'this' for 'pidInList'
