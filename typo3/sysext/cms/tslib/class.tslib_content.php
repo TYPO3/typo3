@@ -2789,7 +2789,7 @@ class tslib_cObj {
 				$conf['params.'] = array_merge((array) $conf['params.'], $conf['predefined']);
 				$content = $this->QTOBJECT($conf);
 			break;
-			case 'media':
+			case 'embed':
 				$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
 				$conf['params']= '';
 				foreach ($paramsArray as $key => $value) {
