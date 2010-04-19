@@ -123,8 +123,8 @@ class tx_saltedpasswords_salts_md5_testcase extends tx_phpunit_testcase {
 	 */
 	public function createdSaltedHashOfProperStructure() {
 		$password = 'password';
-		$saltedHashPW = $this->objectInstance->getHashedPassword($password);
-		$this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPW), $this->getWarningWhenMethodUnavailable());
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword), $this->getWarningWhenMethodUnavailable());
 	}
 
 	/**
@@ -138,17 +138,96 @@ class tx_saltedpasswords_salts_md5_testcase extends tx_phpunit_testcase {
 		$salt = $this->objectInstance->base64Encode($randomBytes, $this->objectInstance->getSaltLength());
 		$this->assertTrue($this->objectInstance->isValidSalt($salt), $this->getWarningWhenMethodUnavailable());
 
-		$saltedHashPW = $this->objectInstance->getHashedPassword($password, $salt);
-		$this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPW), $this->getWarningWhenMethodUnavailable());
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password, $salt);
+		$this->assertTrue($this->objectInstance->isValidSaltedPW($saltedHashPassword), $this->getWarningWhenMethodUnavailable());
 	}
 
 	/**
+	 * Tests authentication procedure with alphabet characters.
+	 *
+	 * Checks if a "plain-text password" is everytime mapped to the
+	 * same "salted password hash" when using the same salt.
+	 *
 	 * @test
 	 */
-	public function authenticationWithValidPassword() {
-		$password = 'password';
-		$saltedHashPW = $this->objectInstance->getHashedPassword($password);
-		$this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPW), $this->getWarningWhenMethodUnavailable());
+	public function authenticationWithValidAlphaCharClassPassword() {
+		$password = 'aEjOtY';
+
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+	}
+
+	/**
+	 * Tests authentication procedure with numeric characters.
+	 *
+	 * Checks if a "plain-text password" is everytime mapped to the
+	 * same "salted password hash" when using the same salt.
+	 *
+	 * @test
+	 */
+	public function authenticationWithValidNumericCharClassPassword() {
+		$password = '01369';
+
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+	}
+
+	/**
+	 * Tests authentication procedure with US-ASCII special characters.
+	 *
+	 * Checks if a "plain-text password" is everytime mapped to the
+	 * same "salted password hash" when using the same salt.
+	 *
+	 * @test
+	 */
+	public function authenticationWithValidAsciiSpecialCharClassPassword() {
+		$password = ' !"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~';
+
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+	}
+
+	/**
+	 * Tests authentication procedure with latin1 special characters.
+	 *
+	 * Checks if a "plain-text password" is everytime mapped to the
+	 * same "salted password hash" when using the same salt.
+	 *
+	 * @test
+	 */
+	public function authenticationWithValidLatin1SpecialCharClassPassword() {
+		$password = '';
+		for ($i = 160; $i <= 191; $i++) {
+			$password .= chr($i);
+		}
+		$password .= chr(215) . chr(247);
+
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
+	}
+
+	/**
+	 * Tests authentication procedure with latin1 umlauts.
+	 *
+	 * Checks if a "plain-text password" is everytime mapped to the
+	 * same "salted password hash" when using the same salt.
+	 *
+	 * @test
+	 */
+	public function authenticationWithValidLatin1UmlautCharClassPassword() {
+		$password = '';
+		for ($i = 192; $i <= 214; $i++) {
+			$password .= chr($i);
+		}
+		for ($i = 216; $i <= 246; $i++) {
+			$password .= chr($i);
+		}
+		for ($i = 248; $i <= 255; $i++) {
+			$password .= chr($i);
+		}
+
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertTrue($this->objectInstance->checkPassword($password, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
 	}
 
 	/**
@@ -157,8 +236,8 @@ class tx_saltedpasswords_salts_md5_testcase extends tx_phpunit_testcase {
 	public function authenticationWithNonValidPassword() {
 		$password = 'password';
 		$password1 = $password . 'INVALID';
-		$saltedHashPW = $this->objectInstance->getHashedPassword($password);
-		$this->assertFalse($this->objectInstance->checkPassword($password1, $saltedHashPW), $this->getWarningWhenMethodUnavailable());
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertFalse($this->objectInstance->checkPassword($password1, $saltedHashPassword), $this->getWarningWhenMethodUnavailable());
 	}
 
 	/**
@@ -169,12 +248,12 @@ class tx_saltedpasswords_salts_md5_testcase extends tx_phpunit_testcase {
 		$password = '';
 		$criticalPwLength = 0;
 			// We're using a constant salt.
-		$saltedHashPWPrevious = $saltedHashPWCurrent = $salt = $this->objectInstance->getHashedPassword($pad);
+		$saltedHashPasswordPrevious = $saltedHashPasswordCurrent = $salt = $this->objectInstance->getHashedPassword($pad);
 		for ($i = 0; $i <= 128; $i += 8) {
 			$password = str_repeat($pad, max($i, 1));
-			$saltedHashPWPrevious = $saltedHashPWCurrent;
-			$saltedHashPWCurrent = $this->objectInstance->getHashedPassword($password, $salt);
-			if ($i > 0 && 0 == strcmp($saltedHashPWPrevious, $saltedHashPWCurrent)) {
+			$saltedHashPasswordPrevious = $saltedHashPasswordCurrent;
+			$saltedHashPasswordCurrent = $this->objectInstance->getHashedPassword($password, $salt);
+			if ($i > 0 && 0 == strcmp($saltedHashPasswordPrevious, $saltedHashPasswordCurrent)) {
 				$criticalPwLength = $i;
 				break;
 			}
@@ -187,8 +266,8 @@ class tx_saltedpasswords_salts_md5_testcase extends tx_phpunit_testcase {
 	 */
 	public function noUpdateNecessityForMd5() {
 		$password = 'password';
-		$saltedHashPW = $this->objectInstance->getHashedPassword($password);
-		$this->assertFalse($this->objectInstance->isHashUpdateNeeded($saltedHashPW));
+		$saltedHashPassword = $this->objectInstance->getHashedPassword($password);
+		$this->assertFalse($this->objectInstance->isHashUpdateNeeded($saltedHashPassword));
 	}
 }
 ?>
