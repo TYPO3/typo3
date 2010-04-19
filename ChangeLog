@@ -1,6 +1,6 @@
 2010-04-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #13908: saltedpasswords: Enhance Unit Tests by testing passwords of various character classes
+	* Fixed bug #13908: saltedpasswords: Enhance Unit Tests by testing passwords of various character classes (thanks to Marcus Krause)
 
 2010-04-19  Stanislas Rolland  <typo3@sjbr.ca>
 
