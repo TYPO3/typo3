@@ -7595,6 +7595,9 @@ class tslib_cObj {
 			$conf['recursive'] = intval($conf['recursive']);
 			if ($conf['recursive'] > 0) {
 				foreach (explode(',', $conf['pidInList']) as $value) {
+					if ($value === 'this') {
+						$value = $GLOBALS['TSFE']->id;
+					}
 					$pidList .= $value . ',' . $this->getTreeList($value, $conf['recursive']);
 				}
 				$conf['pidInList'] = trim($pidList, ',');

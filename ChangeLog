@@ -1,3 +1,7 @@
+2010-04-19  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #14128: Tree list cache does not recognize 'this' for 'pidInList'
+
 2010-04-13  Susanne Moog <typo3@susanne-moog.de>
 
 	* Fixed bug #13630: Status Report reports "Install Tool: disabled" when it is not. (thanks to Gregor Hermens)
