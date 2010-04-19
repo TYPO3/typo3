@@ -78,7 +78,7 @@ HTMLArea.DefinitionList = HTMLArea.BlockElements.extend({
 				iconCls		: 'htmlarea-action-' + button[5],
 				action		: 'onButtonPress',
 				context		: button[1],
-				hotKey		: (this.buttonsConfiguration[button[3]] ? this.buttonsConfiguration[button[3]].hotKey : (button[2] ? button[2] : null)),
+				hotKey		: ((this.buttonsConfiguration[button[3]] && this.buttonsConfiguration[button[3]].hotKey) ? this.buttonsConfiguration[button[3]].hotKey : (button[2] ? button[2] : null)),
 				noAutoUpdate	: button[4]
 			};
 			this.registerButton(buttonConfiguration);
