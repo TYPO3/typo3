@@ -7462,26 +7462,27 @@ class tslib_cObj {
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
-		}
-			// If first run, check if the ID should be returned:
-		if (!$recursionLevel) {
-			if ($addId) {
-				if ($begin > 0) {
-					$theList.= 0;
-				} else {
-					$theList.= $addId;
-				}
-			}
 
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery(
-				'cache_treelist',
-				array(
-					'md5hash'  => $requestHash,
-					'pid'      => $id,
-					'treelist' => $theList,
-					'tstamp'   => $GLOBALS['EXEC_TIME'],
-				)
-			);
+				// If first run, check if the ID should be returned:
+			if (!$recursionLevel) {
+				if ($addId) {
+					if ($begin > 0) {
+						$theList.= 0;
+					} else {
+						$theList.= $addId;
+					}
+				}
+
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery(
+					'cache_treelist',
+					array(
+						'md5hash'  => $requestHash,
+						'pid'      => $id,
+						'treelist' => $theList,
+						'tstamp'   => $GLOBALS['EXEC_TIME'],
+					)
+				);
+			}
 		}
 			// Return list:
 		return $theList;

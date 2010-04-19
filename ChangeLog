@@ -1,6 +1,7 @@
 2010-04-19  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14128: Tree list cache does not recognize 'this' for 'pidInList'
+	* Fixed bug #14129: Function tslib_cObj::getTreeList() inserts records with empty PK
 
 2010-04-16  Susanne Moog <typo3@susanne-moog.de>
 
