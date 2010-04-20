@@ -1,3 +1,7 @@
+2010-04-20  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #13741: cache_treelist does not take FE users into account
+
 2010-04-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13471: List module eats up tons of memory if displaying records with many references
