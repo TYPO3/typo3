@@ -6,6 +6,7 @@
 
 	* Fixed bug #10315: htmlArea RTE: 10315: Paste does not work correctly with table rows in Firefox
 	* Fixed bug #14153: htmlAreaRTE: Some Page TSConfig may break default hotkey assignments
+	* Fixed bug #14106: htmlArea RTE: ENTER after an image at beginning of block deletes the image
 
 2010-04-19  Steffen Kamper  <info@sk-typo3.de>
 

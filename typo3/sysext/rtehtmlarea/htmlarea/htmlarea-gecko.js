@@ -663,7 +663,7 @@ HTMLArea.prototype._checkInsertP = function() {
 	} else {
 		range.setEndAfter(block);
 		var df = range.extractContents(), left_empty = false;
-		if (!/\S/.test(block.innerHTML)) {
+		if (!/\S/.test(block.innerHTML) || (!/\S/.test(block.textContent) && !/<(img|hr|table)/i.test(block.innerHTML))) {
 			if (!HTMLArea.is_opera) {
 				block.innerHTML = "<br />";
 			}
@@ -671,7 +671,7 @@ HTMLArea.prototype._checkInsertP = function() {
 		}
 		p = df.firstChild;
 		if (p) {
-			if (!/\S/.test(p.textContent)) {
+			if (!/\S/.test(p.innerHTML) || (p.childNodes.length == 1 && /^br$/i.test(p.firstChild.nodeName))) {
  				if (/^h[1-6]$/i.test(p.nodeName)) {
 					p = this.convertNode(p, "p");
 				}
@@ -691,18 +691,16 @@ HTMLArea.prototype._checkInsertP = function() {
 			}
 			range.insertNode(df);
 				// Remove any anchor created empty
+				// Remove any anchor created empty on both sides of the selection
 			if (p.previousSibling) {
 				var a = p.previousSibling.lastChild;
 				if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
-					if (HTMLArea.is_opera) {
-						this.removeMarkup(a);
-					} else {
-						HTMLArea.removeFromParent(a);
-					}
+					this.convertNode(a, 'br');
 				}
-				if (!/\S/.test(p.previousSibling.textContent) && !HTMLArea.is_opera) {
-					p.previousSibling.innerHTML = "<br />";
-				}
+			}
+			var a = p.lastChild;
+			if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
+				this.convertNode(a, 'br');
 			}
 			if (/^br$/i.test(p.nodeName)) {
 				p = p.parentNode.insertBefore(this._doc.createTextNode("\x20"), p);
