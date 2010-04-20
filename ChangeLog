@@ -1,6 +1,7 @@
 2010-04-20  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #13741: cache_treelist does not take FE users into account
+	* Fixed bug #14149: tslib_cObj::getTreeList() incorrectly checks cache entries
 
 2010-04-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
