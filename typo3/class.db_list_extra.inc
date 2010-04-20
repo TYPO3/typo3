@@ -119,7 +119,22 @@ class localRecordList extends recordList {
 	var $CBnames=array();					// Tracking names of elements (for clipboard use)
 	var $duplicateStack=array();			// Used to track which elements has duplicates and how many
 
-	var $references;						// References of the current record
+	/**
+	 * references of the current record
+	 *
+	 * @var array
+	 *
+	 * @deprecated since 4.4: Use getReferenceCount instead
+	 */
+	public $references;
+
+	/**
+	 * [$tablename][$uid] = number of references to this record
+	 *
+	 * @var array
+	 */
+	protected $referenceCount = array();
+
 	var $translations;						// Translations of the current record
 	var $selFieldList;						// select fields for the query which fetches the translations of the current record
 
@@ -639,8 +654,6 @@ class localRecordList extends recordList {
 		}
 
 		if (is_array($row))	{
-
-			$this->setReferences($table, $row['uid']);
 				// add special classes for first and last row
 			$rowSpecial = '';
 			if ($cc == 1 && $indent == 0) {
@@ -679,7 +692,7 @@ class localRecordList extends recordList {
 							'</a>';
 					}
 					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
-					
+
 						// Render thumbsnails if a thumbnail column exists and there is content in it:
 					if ($this->thumbs && trim($row[$thumbsCol])) {
 						$theData[$fCol] .= '<br />' . $this->thumbCode($row,$table,$thumbsCol);
@@ -696,7 +709,7 @@ class localRecordList extends recordList {
 				} elseif ($fCol == '_PATH_') {
 					$theData[$fCol]=$this->recPath($row['pid']);
 				} elseif ($fCol == '_REF_') {
-					$theData[$fCol]=$this->makeRef($table,$row['uid']);
+					$theData[$fCol] = $this->createReferenceHtml($table, $row['uid']);
 				} elseif ($fCol == '_CONTROL_') {
 					$theData[$fCol]=$this->makeControl($table,$row);
 				} elseif ($fCol == '_AFTERCONTROL_' || $fCol == '_AFTERREF_') {
@@ -750,16 +763,50 @@ class localRecordList extends recordList {
 	 * @param	string		Table name
 	 * @param	integer		Uid of current record
 	 * @return	void
+	 *
+	 * @deprecated since 4.4: Use getReferenceCount instead
 	 */
 	function setReferences($table, $uid) {
+		t3lib_div::logDeprecatedFunction();
+
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
+			'tablename, recuid, field',
 			'sys_refindex',
 			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
 				' AND ref_uid='.intval($uid).
 				' AND deleted=0'
 		);
 		$this->references = $rows;
+	}
+
+	/**
+	 * Gets the number of records referencing the record with the UID $uid in
+	 * the table $tableName.
+	 *
+	 * @param string $tableName
+	 *        table name of the referenced record, must not be empty
+	 * @param integer $uid
+	 *        UID of the referenced record, must be > 0
+	 *
+	 * @return integer the number of references to record $uid in table
+	 *                 $tableName, will be >= 0
+	 */
+	protected function getReferenceCount($tableName, $uid) {
+		if (!isset($this->referenceCount[$tableName][$uid])) {
+			$numberOfReferences = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+				'*',
+				'sys_refindex',
+				'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(
+					$tableName, 'sys_refindex'
+				) .
+					' AND ref_uid = ' . $uid .
+					' AND deleted = 0'
+			);
+
+			$this->referenceCount[$tableName][$uid] = $numberOfReferences;
+		}
+
+		return $this->referenceCount[$tableName][$uid];
 	}
 
 	/**
@@ -1248,7 +1295,14 @@ class localRecordList extends recordList {
 					$title = t3lib_div::slashJS(t3lib_div::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
 					$params = '&cmd['.$table.']['.$row['uid'].'][delete]=1';
 
-					$refCountMsg = t3lib_BEfunc::referenceCount($table, $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.referencesToRecord'), count($this->references)) .
+					$refCountMsg = t3lib_BEfunc::referenceCount(
+						$table,
+						$row['uid'],
+						' ' . $GLOBALS['LANG']->sL(
+							'LLL:EXT:lang/locallang_core.xml:labels.referencesToRecord'
+						),
+						$this->getReferenceCount($table, $row['uid'])
+					) .
 						t3lib_BEfunc::translationCount($table, $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.translationsOfRecord'));
 					$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').' "'. $title.'" '.$refCountMsg).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'">'.
 							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('delete',1).'" alt="" />'.
@@ -1419,8 +1473,11 @@ class localRecordList extends recordList {
 	 * @param	string		Table name
 	 * @param	integer		UID of record
 	 * @return	string		HTML-table
+	 *
+	 * @deprecated since 4.4: Use getReferenceHTML() instead
 	 */
 	function makeRef($table,$uid)	{
+		t3lib_div::logDeprecatedFunction();
 
 			// Compile information for title tag:
 		$infoData=array();
@@ -1431,6 +1488,58 @@ class localRecordList extends recordList {
 		}
 
 		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$table.'\', \''.$uid.'\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">'.count($infoData).'</a>' : '';
+	}
+
+	/**
+	 * Creates the HTML for a reference count for the record with the UID $uid
+	 * in the table $tableName.
+	 *
+	 * @param string $tableName
+	 *        table name of the referenced record, must not be empty
+	 * @param integer $uid
+	 *        UID of the referenced record, must be > 0
+	 *
+	 * @return string HTML of reference a link, will be empty if there are no
+	 *                references to the corresponding record
+	 */
+	protected function createReferenceHtml($tableName, $uid) {
+		$referenceCount = $this->getReferenceCount($tableName, $uid);
+		if ($referenceCount == 0) {
+			return '';
+		}
+
+		$queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'tablename, recuid, field',
+			'sys_refindex',
+			'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(
+				$tableName, 'sys_refindex'
+			) .
+				' AND ref_uid = ' . $uid .
+				' AND deleted = 0',
+			'',
+			'',
+			'0,20'
+		);
+
+		$referenceTitles = array();
+
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResult)) {
+			$referenceTitles[] = $row['tablename'] . ':' . $row['recuid'] .
+				':' . $row['field'];
+			if (strlen(implode(' / ', $referenceTitles)) >= 100) {
+				break;
+			}
+		}
+		$GLOBALS['TYPO3_DB']->sql_free_result($queryResult);
+
+		return '<a href="#" ' .
+			'onclick="' . htmlspecialchars(
+				'top.launchView(\'' . $tableName . '\', \'' . $uid .
+				'\'); return false;'
+			) . '" ' .
+			'title="' . htmlspecialchars(
+				t3lib_div::fixed_lgd_cs(implode(' / ', $referenceTitles), 100)
+			) . '">' . $referenceCount . '</a>';
 	}
 
 	/**
@@ -1715,7 +1824,7 @@ class localRecordList extends recordList {
 					break;
 
 				case '_REF_':
-					$csvRow[] = $this->makeRef($table, $row['uid']);
+					$csvRow[] = $this->createReferenceHtml($table, $row['uid']);
 					break;
 
 					// remove these columns from the CSV view
