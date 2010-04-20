@@ -42,12 +42,6 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isDayListCorrectForOneDayOfMonth() {
-		if (!t3lib_extMgm::isLoaded('scheduler')) {
-			$this->markTestSkipped(
-				'This test only is applicable if the scheduler is installed.'
-			);
-		}
-
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2 * *');
 		$expectedResult = array(
 			'0' => 2,
@@ -62,12 +56,6 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isDayListCorrectForListOfDayOfMonth() {
-		if (!t3lib_extMgm::isLoaded('scheduler')) {
-			$this->markTestSkipped(
-				'This test only is applicable if the scheduler is installed.'
-			);
-		}
-
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2,7 * *');
 		$expectedResult = array(
 			'0' => 2,
@@ -83,12 +71,6 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isDayListCorrectForRangeOfDayOfMonth() {
-		if (!t3lib_extMgm::isLoaded('scheduler')) {
-			$this->markTestSkipped(
-				'This test only is applicable if the scheduler is installed.'
-			);
-		}
-
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2-4,10 * *');
 		$expectedResult = array(
 			'0' => 2,
@@ -106,12 +88,6 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isDayListCorrectForOneDayOfWeek() {
-		if (!t3lib_extMgm::isLoaded('scheduler')) {
-			$this->markTestSkipped(
-				'This test only is applicable if the scheduler is installed.'
-			);
-		}
-
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * * * 1', self::TIMESTAMP);
 		$expectedResult = array(
 			'0' => 4,
@@ -129,12 +105,6 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isDayListCorrectForCombinationOfDayOfMonthAndDayOfWeek() {
-		if (!t3lib_extMgm::isLoaded('scheduler')) {
-			$this->markTestSkipped(
-				'This test only is applicable if the scheduler is installed.'
-			);
-		}
-
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 1,2 * 1', self::TIMESTAMP);
 		$expectedResult = array(
 			'0' => 1,
