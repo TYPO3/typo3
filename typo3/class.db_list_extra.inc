@@ -753,7 +753,7 @@ class localRecordList extends recordList {
 	 */
 	function setReferences($table, $uid) {
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
+			'tablename, recuid, field',
 			'sys_refindex',
 			'ref_table='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_refindex').
 				' AND ref_uid='.intval($uid).
