@@ -7354,15 +7354,15 @@ class tslib_cObj {
 				);
 				$requestHash = md5(serialize($parameters));
 
-				$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				list($cacheEntry) = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'treelist',
 					'cache_treelist',
 					'md5hash = \'' . $requestHash . '\' AND ( expires > ' . $GLOBALS['EXEC_TIME'] . ' OR expires = 0 )'
 				);
 
-				if (!empty($cacheEntry[0]['treelist'])) {
+				if (is_array($cacheEntry)) {
 						// cache hit
-					return $cacheEntry[0]['treelist'];
+					return $cacheEntry['treelist'];
 				}
 
 					// If Id less than zero it means we should add the real id to list:
