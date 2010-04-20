@@ -7349,7 +7349,8 @@ class tslib_cObj {
 					$dontCheckEnableFields,
 					$addSelectFields,
 					$moreWhereClauses,
-					$prevId_array
+					$prevId_array,
+					$GLOBALS['TSFE']->gr_list
 				);
 				$requestHash = md5(serialize($parameters));
 

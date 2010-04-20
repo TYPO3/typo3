@@ -1,3 +1,7 @@
+2010-04-20  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #13741: cache_treelist does not take FE users into account
+
 2010-04-20  Susanne Moog <typo3@susanne-moog.de>
 
 	* Follow-up to feature #13698: proxy for the mail() function - typos corrected (thanks to Georg Ringer)
