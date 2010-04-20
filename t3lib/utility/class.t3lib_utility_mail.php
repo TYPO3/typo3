@@ -40,10 +40,10 @@ final class t3lib_utility_Mail {
 	/**
 	 * Proxy for the PHP mail() function. Adds possibility to hook in and send the mails in a different way.
 	 * The hook can be used by adding function to the configuration array:
-	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substitudeMailDelivery']
+	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery']
 	 *
 	 * @param	string		Email address to send to.
-	 * @param	string		Subject line, non-encoded. (see )
+	 * @param	string		Subject line, non-encoded. (see PHP function mail())
 	 * @param	string		Message content, non-encoded. (see PHP function mail())
 	 * @param	string 		Additional headers for the mail (see PHP function mail())
 	 * @param	string		Additional flags for the sending mail tool (see PHP function mail())
@@ -62,14 +62,14 @@ final class t3lib_utility_Mail {
 				'additionalParameters' => $additionalParameters,
 			);
 			$fakeThis = FALSE;
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'] as $hookMethod)	{
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'] as $hookMethod) {
 				$success = $success && t3lib_div::callUserFunction($hookMethod, $parameters, $fakeThis);
 			}
 		} else {
 			$success = @mail($to, $subject, $messageBody, $additionalHeaders, $additionalParameters);
 		}
 
-		if (!$success)	{
+		if (!$success) {
 			t3lib_div::sysLog('Mail to "' . $email . '" could not be sent (Subject: "' . $subject . '").', 'Core', 3);
 		}
 		return $success;

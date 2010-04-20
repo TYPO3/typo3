@@ -1,3 +1,7 @@
+2010-04-20  Susanne Moog <typo3@susanne-moog.de>
+
+	* Follow-up to feature #13698: proxy for the mail() function - typos corrected (thanks to Georg Ringer)
+
 2010-04-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13908: saltedpasswords: Enhance Unit Tests by testing passwords of various character classes (thanks to Marcus Krause)
