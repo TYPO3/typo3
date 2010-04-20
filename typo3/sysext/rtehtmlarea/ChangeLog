@@ -1,6 +1,7 @@
 2010-04-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14153: htmlAreaRTE: Some Page TSConfig may break default hotkey assignments
+	* Fixed bug #14106: htmlArea RTE: ENTER after an image at beginning of block deletes the image
 
 2010-04-14  Stanislas Rolland  <typo3@sjbr.ca>
 
