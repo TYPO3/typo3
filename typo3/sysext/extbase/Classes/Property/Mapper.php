@@ -245,7 +245,7 @@ class Tx_Extbase_Property_Mapper {
 	 * @return object The object, when no transformation was possible this may return NULL as well
 	 */
 	protected function transformToObject($propertyValue, $targetType, $propertyName) {
-		if ($targetType === 'DateTime' || in_array('DateTime', class_parents($targetType)) ) {
+		if ($targetType === 'DateTime' || is_subclass_of($targetType, 'DateTime')) {
 			// TODO replace this with converter implementation of FLOW3
 			if ($propertyValue === '') {
 				$propertyValue = NULL;
@@ -313,7 +313,7 @@ class Tx_Extbase_Property_Mapper {
 	protected function findObjectByUid($dataType, $uid) {
 		$query = $this->queryFactory->create($dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$result = $query->matching($query->withUid($uid))->execute();
+		$result = $query->matching($query->equals('uid', intval($uid)))->execute();
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
