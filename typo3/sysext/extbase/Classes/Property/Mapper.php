@@ -82,6 +82,7 @@ class Tx_Extbase_Property_Mapper {
 	 * Constructs the Property Mapper.
 	 */
 	public function __construct() {
+		// TODO Clean up this dependencies; inject the instance
 		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
 		$this->validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
 		$this->validatorResolver->injectObjectManager($objectManager);
@@ -310,6 +311,7 @@ class Tx_Extbase_Property_Mapper {
 	 * @param int $uid The object's uid
 	 * @return mixed Either the object matching the uid or, if none or more than one object was found, FALSE
 	 */
+	// TODO This is duplicated code; see Argument class
 	protected function findObjectByUid($dataType, $uid) {
 		$query = $this->queryFactory->create($dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
@@ -317,6 +319,8 @@ class Tx_Extbase_Property_Mapper {
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
+		} else {
+			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The requested object with the identifier "' . $uid . '" was not found.', 1271856793);
 		}
 		return $object;
 	}

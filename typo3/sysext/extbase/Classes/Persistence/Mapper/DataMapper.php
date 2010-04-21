@@ -155,14 +155,17 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function getTargetType($className, array $row) {
 		$dataMap = $this->getDataMap($className);
-		if ($dataMap->getRecordTypeColumnName() === NULL) return $className;
-		foreach ($dataMap->getSubclasses() as $subclassName) {
-			$recordSubtype = $this->getDataMap($subclassName)->getRecordType();
-			if ($row[$dataMap->getRecordTypeColumnName()] === $recordSubtype) {
-				return $subclassName;
+		$targetType = $className;
+		if ($dataMap->getRecordTypeColumnName() !== NULL) {
+			foreach ($dataMap->getSubclasses() as $subclassName) {
+				$recordSubtype = $this->getDataMap($subclassName)->getRecordType();
+				if ($row[$dataMap->getRecordTypeColumnName()] === $recordSubtype) {
+					$targetType =  $subclassName;
+					break;
+				}
 			}
 		}
-		return $className;
+		return $targetType;
 	}
 	
 	/**

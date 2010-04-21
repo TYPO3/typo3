@@ -378,10 +378,12 @@ class Tx_Extbase_MVC_Controller_Argument {
 	protected function findObjectByUid($uid) {
 		$query = $this->queryFactory->create($this->dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$result = $query->matching($query->withUid($uid))->execute();
+		$result = $query->matching($query->equals('uid', $uid))->execute();
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
+		} else {
+			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The requested object with the identifier "' . $uid . '" was not found.', 1271856793);
 		}
 		return $object;
 	}
