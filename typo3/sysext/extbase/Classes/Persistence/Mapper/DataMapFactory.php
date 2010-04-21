@@ -40,7 +40,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function buildDataMap($className) {
-		$recordType = $className;
+		$recordType = NULL;
 		$subclasses = array();
 		$tableName = strtolower($className);
 		$columnMapping = array();

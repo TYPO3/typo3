@@ -26,9 +26,9 @@ CREATE TABLE tx_extbase_cache_reflection_tags (
 ) ENGINE=InnoDB;
 
 CREATE TABLE fe_users (
-	tx_extbase_type varchar(255)
+	tx_extbase_type varchar(255) DEFAULT '' NOT NULL,
 );
 
 CREATE TABLE fe_groups (
-	tx_extbase_type varchar(255)
+	tx_extbase_type varchar(255) DEFAULT '' NOT NULL,
 );

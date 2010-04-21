@@ -387,21 +387,23 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if ($className !== NULL) {
 			$dataMap = $this->dataMapper->getDataMap($className);
 			if ($dataMap->getRecordTypeColumnName() !== NULL) {
-				$recordSubtypes = array();
+				$recordTypes = array();
+				if ($dataMap->getRecordType() !== NULL) {
+					$recordTypes[] = $dataMap->getRecordType();
+				}
 				foreach ($dataMap->getSubclasses() as $subclassName) {
-					$recordSubtype = $this->dataMapper->getDataMap($subclassName)->getRecordType();
-					if ($recordSubtype !== NULL) {
-						$recordSubtypes[] = $recordSubtype;
-					} else {
-						$recordSubtypes[] = $subclassName;
+					$subclassDataMap = $this->dataMapper->getDataMap($subclassName);
+					if ($subclassDataMap->getRecordType() !== NULL) {
+						$recordTypes[] = $subclassDataMap->getRecordType();
 					}
 				}
-				$recordTypes = array_merge(array($dataMap->getRecordType()), $recordSubtypes);
-				$recordTypeStatements = array();
-				foreach ($recordTypes as $recordType) {
-					$recordTypeStatements[] = $dataMap->getTableName() . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, 'foo');
+				if (count($recordTypes) > 0) {
+					$recordTypeStatements = array();
+					foreach ($recordTypes as $recordType) {
+						$recordTypeStatements[] = $dataMap->getTableName() . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, 'foo');
+					}
+					$sql['additionalWhereClause'][] = '(' . implode(' OR ', $recordTypeStatements) . ')';
 				}
-				$sql['additionalWhereClause'][] = '(' . implode(' OR ', $recordTypeStatements) . ')';
 			}
 		}
 	}

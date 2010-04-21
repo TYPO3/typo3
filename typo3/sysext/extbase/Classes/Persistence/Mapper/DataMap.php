@@ -134,7 +134,7 @@ class Tx_Extbase_Persistence_Mapper_DataMap {
 	 * @param string $recordType The record type
 	 * @param array $subclasses The subclasses
 	 */
-	public function __construct($className, $tableName, $recordType, array $subclasses = array()) {
+	public function __construct($className, $tableName, $recordType = NULL, array $subclasses = array()) {
 		$this->setClassName($className);
 		$this->setTableName($tableName);
 		$this->setRecordType($recordType);
