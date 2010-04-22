@@ -16,7 +16,7 @@
 	* Fixed bug #13741: cache_treelist does not take FE users into account
 	* Fixed bug #14149: tslib_cObj::getTreeList() incorrectly checks cache entries
 
-2010-04-20  Susanne Moog <typo3@susanne-moog.de>
+2010-04-20  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to feature #13698: proxy for the mail() function - typos corrected (thanks to Georg Ringer)
 
@@ -45,12 +45,12 @@
 	* Fixed bug #14128: Tree list cache does not recognize 'this' for 'pidInList'
 	* Fixed bug #14129: Function tslib_cObj::getTreeList() inserts records with empty PK
 
-2010-04-16  Susanne Moog <typo3@susanne-moog.de>
+2010-04-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #13630: Status Report reports "Install Tool: disabled" when it is not. (thanks to Gregor Hermens)
 	* Fixed bug #13941: Deleting pages should check language permissions (thanks to Tolleiv Nietsch) 
 	
-2010-04-16 Francois Suter <francois@typo3.org>
+2010-04-16 Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14090: In Extension Manager importExtInfo() does not sort versions correctly (thanks to Daniel Minder and Steffen Gebert)
 
@@ -71,7 +71,7 @@
 
 	* Release of TYPO3 4.4.0beta1
 
-2010-04-14  Susanne Moog <typo3@susanne-moog.de>
+2010-04-14  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #5699: Sitemap Content Element does not honorate Workspaces
 
@@ -100,12 +100,12 @@
 
 	* Added feature #13865: Possibility to configure alternative parameter for jumpurl filelinks (Thanks to Sebastian Gebhard)
 
-2010-04-13  Susanne Moog <typo3@susanne-moog.de>
+2010-04-13  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Added feature #5500: Load Inline Elements On Demand (thanks to Harald Glaser & Vladimir Podkovanov)
 	* Added feature #5678: Missing clearer div in csc-textpic-intext-left/csc-textpic-intext-right
 
-2010-04-13  Dmitry Dulepov <dmitry.dulepov@gmail.com>
+2010-04-13  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14027: Tweak: Add "tiff" to imagefile_ext array (Thanks to Søren Malling)
 	* Fixed bug #14023: choose proper variable namings in tslib_cObj::getGlobal() (Thanks to Sebastian Gebhard)
@@ -440,7 +440,7 @@
 	* Fixed bug #13690: Clean up class definition of frontendDoc in template.php
 	* Fixed bug #11805: IRRE does not work correctly with FE-editing (thanks to Bjoern Pedersen)
 
-2010-03-14  Jochen Rau <jochen.rau@typoplanet.de>
+2010-03-14  Jochen Rau  <jochen.rau@typoplanet.de>
 
 	* Fixed bug #13371: cropHTML not honoring whole word setting
 
@@ -574,7 +574,7 @@
 	* Fixed bug #13618: htmlArea RTE: RTE iframe is sometimes collapsed
 	* Fixed bug #13619: htmlArea RTE: url not detected on enter
 
-2010-02-22  Dmitry Dulepov <dmitry.dulepov@gmail.com>
+2010-02-22  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #12958: Catchable fatal error in indexed_search
 
@@ -1248,7 +1248,7 @@
 
 	* Fixed bug #12464: Reports: Sorting of status collections wrongly relied on localized strings
 
-2009-11-14  Tobias Liebig <mail_typo3@etobi.de>
+2009-11-14  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #12522: t3editor/codecompletion: tsref properties get listed twice when they are defined
 	* Fixed bug #12523: t3editor/codecompletion: Gifbuilder TEXT and Gifbuilder IMAGE inside of GMENU_itemState
@@ -1352,7 +1352,7 @@
 
 	* Fixed bug #12499: Call to deprecated method t3lib_userAuth::redirect()
 
-2009-11-06  Tobias Liebig <mail_typo3@etobi.de>
+2009-11-06  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #9046: Nested domain linking
 
@@ -1393,7 +1393,7 @@
 
 	* Fixed bug #12420: Log deprecated method calls (to be removed in TYPO3 4.5) (thanks to Xavier Perseguers)
 
-2009-11-05  Tobias Liebig <mail_typo3@etobi.de>
+2009-11-05  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Cleanup/Bugfix #11838: Hardcoded labels in t3editor
 
@@ -1428,7 +1428,7 @@
 
 	* Cleanup #12440: Copy DBAL-only SQL parser methods from t3lib_sqlparser to ux_t3lib_sqlparser (thanks to Xavier Perseguers)
 
-2009-11-03  Tobias Liebig <mail_typo3@etobi.de>
+2009-11-03  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #9513: t3editor bad line numbering
 	* Fixed bug #12409: t3editor/codecompletion objects still showed up after deleting (thanks to Christian Kartnig)
@@ -1527,7 +1527,7 @@
 
 	* Fixed bug RFC #12326: EXT:setup CSH mode setting gets lost (thanks to Steffen Gebert)
 
-2009-10-24  Ernesto Baschny <ernst@cron-it.de>
+2009-10-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #12321: Follow-up to #11586, fixes FE editing
 
@@ -1535,7 +1535,7 @@
 
 	* Release of TYPO3 4.3.0beta2
 
-2009-10-22  Ernesto Baschny <ernst@cron-it.de>
+2009-10-22  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #11586: Potential SQL injection in frontend editing (thanks to Oliver Klee)
 	* Fixed bug #12309: It was possible to gain access to the Install Tool by only knowing the md5 hash of the password.
