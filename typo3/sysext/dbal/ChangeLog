@@ -1,3 +1,7 @@
+2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14182: Multiple join conditions are not supported
+
 2010-04-15  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14120: Add a method to check if database is connected
