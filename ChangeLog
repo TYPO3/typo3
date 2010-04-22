@@ -1,4 +1,4 @@
-2010-04-22  Susanne Moog <typo3@susanne-moog.de>
+2010-04-22  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #3996: Constant Editor - Default Image Width [styles.content.imgtext.linkWrap.width] - wrong description (thanks to Martin Herzog)
 	* Fixed bug #12908: wrong distance between image rows  [css styled content]
@@ -28,7 +28,7 @@
 	* Fixed bug #14128: Tree list cache does not recognize 'this' for 'pidInList'
 	* Fixed bug #14129: Function tslib_cObj::getTreeList() inserts records with empty PK
 
-2010-04-13  Susanne Moog <typo3@susanne-moog.de>
+2010-04-13  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #13630: Status Report reports "Install Tool: disabled" when it is not. (thanks to Gregor Hermens)
 
