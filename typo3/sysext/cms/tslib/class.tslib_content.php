@@ -4296,11 +4296,16 @@ class tslib_cObj {
 				if (($strLen + $thisStrLen > $absChars)) {
 					$croppedOffset = $offset;
 					$cropPosition = $absChars - $strLen;
+						// The snippet "&[^&\s;]{2,8};" in the RegEx below represents entities.
+					$patternMatchEntityAsSingleChar = '(&[^&\s;]{2,8};|.)';
 					if ($crop2space) {
-						$cropRegEx = $chars < 0 ? '#(?<=\s)(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}$#ui' : '#^(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}(?=\s)#ui';
+						$cropRegEx = $chars < 0 ?
+							'#(?<=\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui' :
+							'#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}(?=\s)#ui';
 					} else {
-						// The snippets "&[^&\s;]{2,7};" in the RegEx below represents entities.
-						$cropRegEx = $chars < 0 ? '#(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}$#ui' : '#^(.(?![^&\s]{2,7};)|(&[^&\s;]{2,7};)){0,' . $cropPosition . '}#ui';
+						$cropRegEx = $chars < 0 ?
+							'#' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui' :
+							'#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}#ui';
 					}
 					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
 						$tempContent = $croppedMatch[0];

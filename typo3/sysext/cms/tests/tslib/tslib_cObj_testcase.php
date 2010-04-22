@@ -69,7 +69,7 @@ class tslib_cObj_testcase extends tx_phpunit_testcase {
 	public function providerForCrop() {
 		$plainText = 'Kasper Skårhøj implemented the original version of the crop function.';
 	 	$textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Skårhøj</a> implemented</strong> the original version of the crop function.';
-		$textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the original version of the crop function.';
+		$textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; original version of the crop function.';
 
 		$charsets = array();
 		$charsets[] = 'iso-8859-1';
@@ -104,9 +104,9 @@ class tslib_cObj_testcase extends tx_phpunit_testcase {
 				$charset . ' text with entities 14|...' => array('14|...', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset),
 				$charset . ' text with entities 15|...' => array('15|...', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j ...', $charset),
 				$charset . ' text with entities 16|...' => array('16|...', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j i...', $charset),
-				$charset . ' text with entities -56|...' => array('-56|...', $textWithEntities, '...j implemented the original version of the crop function.', $charset),
-				$charset . ' text with entities -57|...' => array('-57|...', $textWithEntities, '...&oslash;j implemented the original version of the crop function.', $charset),
-				$charset . ' text with entities -58|...' => array('-58|...', $textWithEntities, '...h&oslash;j implemented the original version of the crop function.', $charset),
+				$charset . ' text with entities -57|...' => array('-57|...', $textWithEntities, '...j implemented the; original version of the crop function.', $charset),
+				$charset . ' text with entities -58|...' => array('-58|...', $textWithEntities, '...&oslash;j implemented the; original version of the crop function.', $charset),
+				$charset . ' text with entities -59|...' => array('-59|...', $textWithEntities, '...h&oslash;j implemented the; original version of the crop function.', $charset),
 				$charset . ' text with entities 9|...|1' => array('9|...|1', $textWithEntities, 'Kasper...', $charset),
 				$charset . ' text with entities 10|...|1' => array('10|...|1', $textWithEntities, 'Kasper...', $charset),
 				$charset . ' text with entities 11|...|1' => array('11|...|1', $textWithEntities, 'Kasper...', $charset),
@@ -114,9 +114,9 @@ class tslib_cObj_testcase extends tx_phpunit_testcase {
 				$charset . ' text with entities 14|...|1' => array('14|...|1', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset),
 				$charset . ' text with entities 15|...|1' => array('15|...|1', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset),
 				$charset . ' text with entities 16|...|1' => array('16|...|1', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset),
-				$charset . ' text with entities -56|...|1' => array('-56|...|1', $textWithEntities, '...implemented the original version of the crop function.', $charset),
-				$charset . ' text with entities -57|...|1' => array('-57|...|1', $textWithEntities, '...implemented the original version of the crop function.', $charset),
-				$charset . ' text with entities -58|...|1' => array('-58|...|1', $textWithEntities, '...implemented the original version of the crop function.', $charset)
+				$charset . ' text with entities -57|...|1' => array('-57|...|1', $textWithEntities, '...implemented the; original version of the crop function.', $charset),
+				$charset . ' text with entities -58|...|1' => array('-58|...|1', $textWithEntities, '...implemented the; original version of the crop function.', $charset),
+				$charset . ' text with entities -59|...|1' => array('-59|...|1', $textWithEntities, '...implemented the; original version of the crop function.', $charset)
 				));
 		}
 		return $data;
