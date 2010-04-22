@@ -35,7 +35,7 @@ styles.content.imgtext {
   maxW = 600
     # cat=content/cImage/b2; type=int+; label= Max Image Width (Text): Same as above, but this is the maximum width when text is wrapped around an imageblock. Default is 50% of the normal Max Image Width.
   maxWInText =
-    # cat=content/cImage/c1; type=int+; label= Default Image Width: This indicates that default number of pixels (width) a block of images inserted as content will consume, if the user didn't specify otherwise in the content object.
+    # cat=content/cImage/c1; type=int+; label= Click-enlarge Image Width: This specifies the width of the enlarged image when click-enlarge is enabled.
   linkWrap.width = 800m
   linkWrap.height = 600m
   linkWrap.effects =
