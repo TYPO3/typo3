@@ -73,7 +73,10 @@ plugin.tx_felogin_pi1 {
 	changePasswordMessage_stdWrap {
 		wrap = <div>|</div>
 	}
-	
+
+	cookieWarning_stdWrap {
+		wrap = <p style="color:red; font-weight:bold;">|</p>
+	}
 	
 	# stdWrap for fe_users fields used in Messages
 	userfields {

@@ -126,13 +126,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 				$content .= $this->showLogin();
 			}
 		}
-
-
-
+		
 			// Process the redirect
 		if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
 			if (!$GLOBALS['TSFE']->fe_user->cookieId) {
-				$content .= '<p style="color:red; font-weight:bold;">' . $this->pi_getLL('cookie_warning', '', 1) . '</p>';
+				$content .= $this->cObj->stdWrap($this->pi_getLL('cookie_warning', '', 1), $this->conf['cookieWarning_stdWrap.']);
 			} else {
 				t3lib_utility_Http::redirect($this->redirectUrl);
 			}

@@ -1,5 +1,9 @@
 2010-04-22 Jochen Rau <jochen.rau@typoplanet.de>
 
+	* Fixed bug #14131: Styling of cookie warning is hardcoded (thanks to Jigal van Hemert)
+
+2010-04-22 Jochen Rau <jochen.rau@typoplanet.de>
+
 	* Fixed bug #13972: cropHTML uses faulty reg exp for HTML entities (thanks to Ralf Hettinger)
 
 2010-04-22  Ernesto Baschny  <ernst@cron-it.de>
