@@ -420,6 +420,30 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14182
+	 */
+	public function canParseMultipleJoinConditions() {
+		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.pid = T1.uid AND T2.size = 4 WHERE T1.cr_userid = 1';
+		$expected = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.pid=T1.uid AND T2.size=4 WHERE T1.cr_userid = 1';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14182 
+	 */
+	public function canParseMultipleJoinConditionsWithLessThanOperator() {
+		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size < 4 OR T2.pid = T1.uid WHERE T1.cr_userid = 1';
+		$expected = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size<4 OR T2.pid=T1.uid WHERE T1.cr_userid = 1';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning DB management
 	///////////////////////////////////////
