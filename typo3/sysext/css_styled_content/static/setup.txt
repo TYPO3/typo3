@@ -1696,13 +1696,16 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 		margin-left: {$styles.content.imgtext.colSpace}px;
 	}
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image .csc-textpic-caption { margin: 0; }
-	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image IMG { margin: 0; }
+	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image IMG { margin: 0; vertical-align:bottom; }
 
 	/* Space below each image (also in-between rows) */
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-image { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
 	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: {$styles.content.imgtext.rowSpace}px; display: block; }
 	DIV.csc-textpic DIV.csc-textpic-imagerow { clear: both; }
 	DIV.csc-textpic DIV.csc-textpic-single-image IMG { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
+	
+	*+html DIV.csc-textpic DIV.csc-textpic-imagerow .csc-textpic-image { margin-bottom: 0; }
+	*+html DIV.csc-textpic DIV.csc-textpic-imagerow { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
 
 	/* No margins around the whole image-block */
 	DIV.csc-textpic DIV.csc-textpic-imagewrap .csc-textpic-firstcol { margin-left: 0px !important; }
