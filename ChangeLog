@@ -1,4 +1,4 @@
-2010-04-22  Ernesto Baschny <ernst@cron-it.de>
+2010-04-22  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #14176: unit test for RemoveXSS triggers fatal error in phpunit extension (thanks to Jigal van Hemert)
 
