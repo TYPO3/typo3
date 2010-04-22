@@ -1,3 +1,7 @@
+2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14182: Multiple join conditions are not supported
+
 2010-04-22 Jochen Rau <jochen.rau@typoplanet.de>
 
 	* Fixed bug #14131: Styling of cookie warning is hardcoded (thanks to Jigal van Hemert)
