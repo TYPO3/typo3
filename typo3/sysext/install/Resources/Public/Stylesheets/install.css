@@ -5,17 +5,17 @@ body {
 }
 
 h1,
-#menuTop,
-#menuBottom,
-#links,
-#contentTop,
-#contentBottom,
-#copyright {
+#t3-install-menu-border-top,
+#t3-install-menu-bottom,
+#t3-install-links,
+#t3-install-box-border-top,
+#t3-install-box-border-bottom,
+#t3-install-copyright {
 	display: none;
 }
 
-#content,
-#menu {
+#t3-install-box-body,
+#t3-install-menu {
 	border: 1px #dcdcdc solid;
 	background-color: #ffffff;
 }
@@ -23,7 +23,7 @@ h1,
 /* 0: Login form */
 
 /* 1: Basic configuration */
-#checkImageMagick label {
+#t3-install-checkimagemagick label {
 	width: 27em;
 }
 
@@ -37,231 +37,232 @@ h1,
 	font-weight: bold;
 }
 
-#imageMagickVersions td {
+#t3-install-imagemagickversions td {
 	padding-right: 1em;
 }
 
 /* 2: Database Analyzer */
-#databaseMenu {
+#t3-install-databasemenu {
 	width: 100%;
 }
 
-#databaseConnected dt,
-#checkTheDatabaseExplanation dt {
+#t3-install-databaseconnected dt,
+#t3-install-checkthedatabaseexplanation dt {
 	float: left;
 	width: 7em;
 }
 
-#databaseConnected dd,
-#checkTheDatabaseExplanation dd {
+#t3-install-databaseconnected dd,
+#t3-install-checkthedatabaseexplanation dd {
 	padding-left: 7em;
 }
 
-#databaseConnected dd,
-#checkTheDatabaseExplanation dt {
+#t3-install-databaseconnected dd,
+#t3-install-checkthedatabaseexplanation dt {
 	font-weight: bold;
 }
 
-#checkTheDatabaseImport label span,
-#checkTheDatabaseCache label span {
+#t3-install-checkthedatabaseimport label span,
+#t3-install-checkthedatabasecache label span {
 	float: none;
 	display: inline-block;
 	vertical-align: top;
 }
 
-#checkTheDatabaseImport label span {
+#t3-install-checkthedatabaseimport label span {
 	width: 32%;
 }
 
-#checkTheDatabaseCache label span.column1 {
+#t3-install-checkthedatabasecache label span.t3-install-column1 {
 	width: 27%;
 }
-#checkTheDatabaseCache label span.column3 {
+
+#t3-install-checkthedatabasecache label span.t3-install-column3 {
 	width: 56%;
 }
 
-#checkTheDatabaseCache label span.column2 {
+#t3-install-checkthedatabasecache label span.t3-install-column2 {
 	width: 15%;
 }
 
-.displayFields,
-.displaySuggestions,
-.displayFieldsCompare {
+.t3-install-displayfields,
+.t3-install-displaysuggestions,
+.t3-install-displayfieldscompare {
 	width: 100%;
 	margin-bottom: 1em;
 }
 
-.displayFields th,
-.displaySuggestions th,
-.displayFieldsCompare th {
+.t3-install-displayfields th,
+.t3-install-displaysuggestions th,
+.t3-install-displayfieldscompare th {
 	text-align: left;
 	background-color: #B3B7BD;
 }
 
-.displaySuggestions .tfootHeader {
+.t3-install-displaysuggestions .tfootHeader {
 	font-weight: bold;
 	background-color: #d0d0d0;
 }
 
-.displayFields th,
-.displayFields td,
-.displaySuggestions th,
-.displaySuggestions td,
-.displayFieldsCompare th,
-.displayFieldsCompare td {
+.t3-install-displayfields th,
+.t3-install-displayfields td,
+.t3-install-displaysuggestions th,
+.t3-install-displaysuggestions td,
+.t3-install-displayfieldscompare th,
+.t3-install-displayfieldscompare td {
 	padding: 0.2em;
 }
 
-.displayFields thead,
-.displayFields tbody,
-.displaySuggestions thead,
-.displaySuggestions tfoot,
-.displaySuggestions tbody,
-.displayFieldsCompare thead,
-.displayFieldsCompare tbody {
+.t3-install-displayfields thead,
+.t3-install-displayfields tbody,
+.t3-install-displaysuggestions thead,
+.t3-install-displaysuggestions tfoot,
+.t3-install-displaysuggestions tbody,
+.t3-install-displayfieldscompare thead,
+.t3-install-displayfieldscompare tbody {
 	border: 1px #B3B7BD solid;
 }
 
-.displayFields .column1,
-.displaySuggestions .column1 {
+.t3-install-displayfields .t3-install-column1,
+.t3-install-displaysuggestions .t3-install-column1 {
 	width: 35%;
 }
 
-.displaySuggestions tr {
+.t3-install-displaysuggestions tr {
 	border-top: 1px #B3B7BD solid;
 }
 
-.displaySuggestions pre {
+.t3-install-displaysuggestions pre {
 	font-size: 110%;
 }
 
-.displayFieldsCompare .warning {
+.t3-install-displayfieldscompare .warning {
 	color: red;
 }
 
 /* 4: Image processing */
-#imageProcessingIm dt,
-#imageProcessingOther dt,
-#imageProcessingFileFormats dt {
+#t3-install-imageprocessingim dt,
+#t3-install-imageprocessingother dt,
+#t3-install-imageprocessingfileformats dt {
 	float: left;
 	width: 19em;
 }
 
-#imageProcessingIm dd,
-#imageProcessingOther dd,
-#imageProcessingFileFormats dd {
+#t3-install-imageprocessingim dd,
+#t3-install-imageprocessingother dd,
+#t3-install-imageprocessingfileformats dd {
 	font-weight: bold;
 	padding-left: 19em;
 }
 
-#imageProcessingIm dd span,
-#imageProcessingOther dd span,
-#imageProcessingFileFormats dd span {
+#t3-install-imageprocessingim dd span,
+#t3-install-imageprocessingother dd span,
+#t3-install-imageprocessingfileformats dd span {
 	font-weight: normal;
 }
 
-.displayTwinImageTextarea {
+.t3-install-displaytwinimagetextarea {
 	width: 48em; 
 	overflow: scroll;
 	border: 1px #797878 solid;
 }
 
-.displayTwinImageTextarea textarea {
+.t3-install-displaytwinimagetextarea textarea {
 	width: 300em; 
 	border: 0;
 }
 
-.displayTwinImageImages,
-.displayTwinImageReference,
-.displayTwinImageDifferentFileSize {
+.t3-install-displaytwinimageimages,
+.t3-install-displaytwinimagereference,
+.t3-install-displaytwinimagedifferentfilesize {
 	width: 100%;
 	margin: 0.3em 0;
 }
 
-.displayTwinImageImages td,
-.displayTwinImageReference th,
-.displayTwinImageReference td,
-.displayTwinImageDifferentFileSize th,
-.displayTwinImageDifferentFileSize td {
+.t3-install-displaytwinimageimages td,
+.t3-install-displaytwinimagereference th,
+.t3-install-displaytwinimagereference td,
+.t3-install-displaytwinimagedifferentfilesize th,
+.t3-install-displaytwinimagedifferentfilesize td {
 	text-align: center;
 }
 
 /* 5: All configuration */
 
 /* 6: typo3temp/ */
-#tempManagerNumbers dt {
+#t3-install-tempmanagernumbers dt {
 	float: left;
 	width: 19em;
 }
 
-#tempManagerNumbers dd {
+#t3-install-tempmanagernumbers dd {
 	font-weight: bold;
 	padding-left: 19em;
 }
 
-#tempManagerNumbers dd span {
+#t3-install-tempmanagernumbers dd span {
 	font-weight: normal;
 }
 
 /* 7: Clean up database */
-#cleanupManagerNumbers dt {
+#t3-install-cleanupmanagernumbers dt {
 	float: left;
 	width: 19em;
 }
 
-#cleanupManagerNumbers dd {
+#t3-install-cleanupmanagernumbers dd {
 	font-weight: bold;
 	padding-left: 19em;
 }
 
-#cleanupManagerNumbers dd span {
+#t3-install-cleanupmanagernumbers dd span {
 	font-weight: normal;
 }
 
 /* 8: phpinfo() */
-#debugInformation {
+#t3-install-debuginformation {
 	width: 48em; 
 	height: 20em; 
 	overflow: scroll;
 	border: 1px #797878 solid;
 }
 
-#debugInformation textarea {
+#t3-install-debuginformation textarea {
 	width: 200em; 
 	height: 68em;
 	border: 0;
 }
 
-.viewArray {
+.t3-install-viewarray {
 	border: 1px solid #B3B7BD;
 	border-bottom: 0;
 }
 
-.viewArray .viewArray {
+.t3-install-viewarray .t3-install-viewarray {
 	border: 0;
 }
 
-.viewArray dt {
+.t3-install-viewarray dt {
 	float: left;
 	width: 19em;
 	font-weight: bold;
 }
 
-.viewArray dd {
+.t3-install-viewarray dd {
 	padding-left: 19em;
 	border-bottom: 1px #d0d0d0 solid
 }
 
-.viewArray .viewArray dt {
+.t3-install-viewarray .t3-install-viewarray dt {
 	width: 10em;
 }
 
-.viewArray .viewArray dd {
+.t3-install-viewarray .t3-install-viewarray dd {
 	padding-left: 10em;
 	border: 0;
 }
 
-.viewArray dl {
+.t3-install-viewarray dl {
 	margin: 0;
 }
 
@@ -354,29 +355,29 @@ h1,
 }
 
 /* 9: Edit files in typo3conf/ */
-#confEditFileList dt {
+#t3-install-confeditfilelist dt {
 	float: left;
 	width: 45em;
 }
 
-#confEditFileList dd {
+#t3-install-confeditfilelist dd {
 	padding-left: 45em;
 }
 
-#confEditFileList dt a {
+#t3-install-confeditfilelist dt a {
 	color: blue;
 	text-decoration: none;
 }
 
-#confEditFileList dt a:hover {
+#t3-install-confeditfilelist dt a:hover {
 	text-decoration: underline;
 }
 
-#confEditFileList dt.act a {
+#t3-install-confeditfilelist dt.act a {
 	font-weight: bold;
 }
 
-#fileEdit textarea {
+#t3-install-fileedit textarea {
 	height: 10em;
 	width: 99%;
 	padding: 0;

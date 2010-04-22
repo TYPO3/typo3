@@ -5,7 +5,7 @@ body {
 	background: #4f4f4f url('../Images/body-background.jpg') repeat-x fixed;
 }
 
-#container {
+#t3-install-outer {
 	width: 43em;
 	margin-left: 16em;
 }
@@ -30,30 +30,30 @@ h3 {
 	font-size: 163%;
 }
 
-#contentTop {
+#t3-install-box-border-top {
 	height: 3px;
 	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
 }
 
-#contentBottom {
+#t3-install-box-border-bottom {
 	height: 3px;
 	background: #4d4c4d url('../Images/content-bottom.png') no-repeat center top;
 }
 
-#content {
+#t3-install-box-body {
 	color: #787878;
 	background: #ebebeb url('../Images/content-background.jpg') repeat-x left bottom;
 	padding: 1em 1.8em 1em;
 }
 
 /* 1-2-3 General */
-#stepHeader {
+#t3-install-123-stepheader {
 	list-style: none;
 	margin: 1em 0 0;
 	padding: 0;
 }
 
-#stepHeader li {
+#t3-install-123-stepheader li {
 	float: left;
 	text-indent:-999em;
 	width: 35px;
@@ -62,140 +62,140 @@ h3 {
 	background: url('../Images/numbers.png') no-repeat scroll 0 0 transparent;
 }
 
-#stepHeader li a {
+#t3-install-123-stepheader li a {
 	width: 100%;
 	height: 100%;
 	display: block;
 }
 
-#stepHeader li.step1 {
+#t3-install-123-stepheader li.step1 {
 	background-position: 0 0;
 }
 
-#stepHeader li.step1.act {
+#t3-install-123-stepheader li.step1.act {
 	background-position: 0 center;
 }
 
-#stepHeader li.step1.done {
+#t3-install-123-stepheader li.step1.done {
 	background-position: 0 bottom;
 }
 
-#stepHeader li.step2 {
+#t3-install-123-stepheader li.step2 {
 	background-position: -35px 0;
 }
 
-#stepHeader li.step2.act {
+#t3-install-123-stepheader li.step2.act {
 	background-position: -35px center;
 }
 
-#stepHeader li.step2.done {
+#t3-install-123-stepheader li.step2.done {
 	background-position: -35px bottom;
 }
 
-#stepHeader li.step3 {
+#t3-install-123-stepheader li.step3 {
 	background-position: -70px 0;
 }
 
-#stepHeader li.step3.act {
+#t3-install-123-stepheader li.step3.act {
 	background-position: -70px center;
 }
 
-#stepHeader li.step3.done {
+#t3-install-123-stepheader li.step3.done {
 	background-position: -70px bottom;
 }
 
-#stepHeader li.step4 {
+#t3-install-123-stepheader li.step4 {
 	background-position: -105px 0;
 }
 
-#stepHeader li.step4.act {
+#t3-install-123-stepheader li.step4.act {
 	background-position: -105px center;
 }
 
-#stepHeader li.step4.done {
+#t3-install-123-stepheader li.step4.done {
 	background-position: -105px bottom;
 }
 
-#stepHeader li.step5 {
+#t3-install-123-stepheader li.step5 {
 	background-position: -140px 0;
 }
 
-#stepHeader li.step5.act {
+#t3-install-123-stepheader li.step5.act {
 	background-position: -140px center;
 }
 
-#stepHeader li.step5.done {
+#t3-install-123-stepheader li.step5.done {
 	background-position: -140px bottom;
 }
 
-#stepHeader li.step6 {
+#t3-install-123-stepheader li.step6 {
 	background-position: -175px 0;
 }
 
-#stepHeader li.step6.act {
+#t3-install-123-stepheader li.step6.act {
 	background-position: -175px center;
 }
 
-#stepHeader li.step6.done {
+#t3-install-123-stepheader li.step6.done {
 	background-position: -175px bottom;
 }
 
-#stepHeader li.step7 {
+#t3-install-123-stepheader li.step7 {
 	background-position: -210px 0;
 }
 
-#stepHeader li.step7.act {
+#t3-install-123-stepheader li.step7.act {
 	background-position: -210px center;
 }
 
-#stepHeader li.step7.done {
+#t3-install-123-stepheader li.step7.done {
 	background-position: -210px bottom;
 }
 
-#stepHeader li.step8 {
+#t3-install-123-stepheader li.step8 {
 	background-position: -245px 0;
 }
 
-#stepHeader li.step8.act {
+#t3-install-123-stepheader li.step8.act {
 	background-position: -245px center;
 }
 
-#stepHeader li.step8.done {
+#t3-install-123-stepheader li.step8.done {
 	background-position: -245px bottom;
 }
 
-#skip123 {
+#t3-install-123-skip {
 	text-align: right;
 	font-size: 0.91em;
 }
 
-#skip123 a {
+#t3-install-123-skip a {
 	color: #888888;
 	text-decoration: none;
 }
 
-#skip123 a:hover {
+#t3-install-123-skip a:hover {
 	text-decoration: underline;
 }
 
 /* 1-2-3: Step 3 */
-#step3 label {
+#t3-install-123-step3 label {
 	float: none;
 	font-weight: bold;
 }
 
-#step3 p {
+#t3-install-123-step3 p {
 	margin: 0 0 0.5em;
 }
 
 /* 1-2-3: Step 4 */
-#stepOutputSummary dt {
+#t3-install-123-stepoutputsummary dt {
 	float: left;
 	clear: both;
 	width: 15em;
 	margin-right: 1em;
 }
 
-#stepOutputSummary dd {
+#t3-install-123-stepoutputsummary dd {
 	float: left;
 }

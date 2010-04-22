@@ -181,7 +181,6 @@ class tx_install extends t3lib_install {
 	var $scriptSelf = 'index.php';		// The url that calls this script
 	var $updateIdentity = 'TYPO3 Install Tool';
 	var $headerStyle ='';
-	var $contentBeforeTable='';
 	var $setAllCheckBoxesByDefault=0;
 
 	var $allowFileEditOutsite_typo3conf_dir=0;
@@ -3166,7 +3165,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			}
 			if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 				$this->message($ext, 'Connected to SQL database successfully', '
-					<dl id="databaseConnected">
+					<dl id="t3-install-databaseconnected">
 						<dt>
 							Username:
 						</dt>
@@ -4461,7 +4460,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$im_path_lzw = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'];
 		$im_path_lzw_version = $this->config_array['im_versions'][$im_path_lzw]['convert'];
 		$msg = '
-			<dl id="imageProcessingIm">
+			<dl id="t3-install-imageprocessingim">
 				<dt>
 					ImageMagick enabled:
 				</dt>
@@ -4487,7 +4486,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] : '&nbsp;') . '
 				</dd>
 			</dl>
-			<dl id="imageProcessingOther">
+			<dl id="t3-install-imageprocessingother">
 				<dt>
 					GDLib enabled:
 				</dt>
@@ -4528,7 +4527,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					<span>(Should be set for some IM versions approx. 5.4+)</span>
 				</dd>
 			</dl>
-			<dl id="imageProcessingFileFormats">
+			<dl id="t3-install-imageprocessingfileformats">
 				<dt>
 					File Formats:
 				</dt>
@@ -5495,7 +5494,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		', 0);
 
 		$this->message($headCode, 'Connected to SQL database successfully', '
-			<dl id="databaseConnected">
+			<dl id="t3-install-databaseconnected">
 				<dt>
 					Username:
 				</dt>
@@ -5617,7 +5616,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					files you want to either compare or import/merge with the
 					existing database.
 				</p>
-				<dl id="checkTheDatabaseExplanation">
+				<dl id="t3-install-checkthedatabaseexplanation">
 					<dt>
 						COMPARE:
 					</dt>
@@ -7842,7 +7841,7 @@ $out="
 					// Define the markers content
 				$markers = array(
 					'class' => ($this->INSTALL['type']==$k ? 'class="act"' : ''),
-					'id' => $k,
+					'id' => 't3-install-menu-' . $k,
 					'url' => htmlspecialchars(
 						$this->scriptSelf .
 						'?TYPO3_INSTALL[type]=' .
@@ -8111,7 +8110,7 @@ $out="
 					'label' => $label,
 					'tableId' => $tableId,
 					'checked' => ($checked ? ' checked="checked"' : ''),
-					'selectAllId' => $tableId . '-checkbox',
+					'selectAllId' => 't3-install-' . $tableId . '-checkbox',
 					'selectDeselectAll' => 'select/deselect all'
 				);
 					// Fill the markers in the subpart
@@ -8138,7 +8137,7 @@ $out="
 				$warnings = array();
 					// Define the markers content
 				$rowsMarkers = array(
-					'checkboxId' => 'db-' . $key,
+					'checkboxId' => 't3-install-db-' . $key,
 					'name' => $this->dbUpdateCheckboxPrefix . '[' . $key . ']',
 					'checked' => ($checked ? 'checked="checked"' : ''),
 					'string' => htmlspecialchars($string)

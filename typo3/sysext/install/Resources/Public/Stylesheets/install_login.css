@@ -4,22 +4,22 @@ body {
 	background-color: #f2f2f2;
 }
 
-#container {
+#t3-install-outer {
 	width: 43em;
 	margin: 1em auto;
 }
 
 h1,
-#contentTop,
-#contentBottom {
+#t3-install-box-border-top,
+#t3-install-box-border-bottom {
 	display: none;
 }
 
-.login h1 {
+.t3-install-login h1 {
 	float: none;
 }
 
-.login h2 {
+.t3-install-login h2 {
 	background: url('../Images/login-icon-key.gif') no-repeat scroll 1em center #585858;
 	color: #ffffff;
 	font-size: 120%;
@@ -31,7 +31,7 @@ h3 {
 	margin: 1em 0 2em 0;
 }
 
-#content {
+#t3-install-box-body {
 	border: 1px #dcdcdc solid;
 	border-top: 0;
 	color: #606060;

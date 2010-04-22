@@ -13,7 +13,7 @@
 		###STEPHEADER###
 		<h3>###HEADER###</h3>
 		###STEP###
-		<div id="skip123">
+		<div id="t3-install-123-skip">
 			<a href="###SKIP123###">
 				###NOTICE###
 			</a>
@@ -25,15 +25,15 @@
 		<form method="post" action="###ACTION###">
 			<fieldset>
 				<ol>
-					<li class="hidden">
+					<li class="t3-install-hidden">
 						<input type="hidden" value="###STEP###" name="step" />
 					</li>
 				</ol>
 			</fieldset>
-			<fieldset class="submit">
+			<fieldset class="t3-install-form-submit">
 				<ol>
 					<li>
-						<button type="submit">###CONTINUE###<span class="positive">&nbsp;</span></button>
+						<button type="submit">###CONTINUE###<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
 					</li>
 				</ol>
 			</fieldset>
@@ -42,31 +42,31 @@
 		
 		<!-- ###STEP2### begin -->
 		<form method="post" action="###ACTION###">
-			<fieldset class="labelWidth7">
+			<fieldset class="t3-install-form-label-width-7">
 				<ol>
-					<li class="hidden">
+					<li class="t3-install-hidden">
 						<input type="hidden" value="###STEP###" name="step" />
 						<input type="hidden" value="###ENCRYPTIONKEY###" name="TYPO3_INSTALL[localconf.php][encryptionKey]" />
 						<input type="hidden" value="###BRANCH###" name="TYPO3_INSTALL[localconf.php][compat_version]" />
 					</li>
 					<li>
-						<label for="userName">###LABELUSERNAME###</label>
-						<input id="userName" class="inputText" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+						<label for="t3-install-form-username">###LABELUSERNAME###</label>
+						<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
 					</li>
 					<li>
-						<label for="password">###LABELPASSWORD###</label>
-						<input id="password" class="inputText" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+						<label for="t3-install-form-password">###LABELPASSWORD###</label>
+						<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
 					</li>
 					<li>
-						<label for="host">###LABELHOST###</label>
-						<input id="host" class="inputText" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+						<label for="t3-install-form-host">###LABELHOST###</label>
+						<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
 					</li>
 				</ol>
 			</fieldset>
-			<fieldset class="submit">
+			<fieldset class="t3-install-form-submit">
 				<ol>
 					<li>
-						<button type="submit">###CONTINUE###<span class="positive">&nbsp;</span></button>
+						<button type="submit">###CONTINUE###<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
 					</li>
 				</ol>
 			</fieldset>
@@ -75,21 +75,21 @@
 		
 		<!-- ###STEP3### begin -->
 		<p>###LLOPTIONS###</p>
-		<form id="step3" method="post" action="###ACTION###">
+		<form id="t3-install-123-step3" method="post" action="###ACTION###">
 			<fieldset>
 				<ol>
-					<li class="hidden">
+					<li class="t3-install-hidden">
 						<input type="hidden" value="###STEP###" name="step" />
 					</li>
 					<li>
-						<label for="newDatabase">###LLOPTION1###</label>
+						<label for="t3-install-123-newdatabase">###LLOPTION1###</label>
 						<p>###LLREMARK1###</p>
-						<input id="newDatabase" class="inputText" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" />
+						<input id="t3-install-123-newdatabase" class="t3-install-form-input-text" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" />
 					</li>
 					<li>
-						<label for="database">###LLOPTION2###</label>
+						<label for="t3-install-123-database">###LLOPTION2###</label>
 						<p>###LLREMARK2###</p>
-						<select id="database" name="TYPO3_INSTALL[localconf.php][typo_db]">
+						<select id="t3-install-123-database" name="TYPO3_INSTALL[localconf.php][typo_db]">
 							<option value="">Select database</option>
 							<!-- ###DATABASEOPTIONS### begin -->
 							<option value="###DATABASEVALUE###" ###DATABASESELECTED###>###DATABASENAME###</option>
@@ -98,10 +98,10 @@
 					</li>
 				</ol>
 			</fieldset>
-			<fieldset class="submit">
+			<fieldset class="t3-install-form-submit">
 				<ol>
 					<li>
-						<button type="submit">###CONTINUE###<span class="positive">&nbsp;</span></button>
+						<button type="submit">###CONTINUE###<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
 					</li>
 				</ol>
 			</fieldset>
@@ -110,7 +110,7 @@
 		
 		<!-- ###STEP4### begin -->
 		<h4>###LLSUMMARY###</h4>
-		<dl id="stepOutputSummary" class="clearfix">
+		<dl id="t3-install-123-stepoutputsummary" class="clearfix">
 			<dt>###LLUSERNAME###</dt>
 			<dd>###USERNAME###</dd>
 			<dt>###LLHOST###</dt>
@@ -120,18 +120,18 @@
 			<dt>###LLNUMBERTABLES###</dt>
 			<dd>###NUMBERTABLES###</dd>
 		</dl>
-		<form action="###ACTION####bottom" method="post">
+		<form action="###ACTION####t3-install-bottom" method="post">
 			<fieldset>
 				<ol>
-					<li class="hidden">
+					<li class="t3-install-hidden">
 						<input type="hidden" name="TYPO3_INSTALL[database_type]" value="import" />
 						<input type="hidden" name="TYPO3_INSTALL[database_import_all]" value="1" />
 						<input type="hidden" name="step" value="" />
 						<input type="hidden" name="goto_step" value="go" />
 					</li>
 					<li>
-						<label for="databaseType">###LLDATABASETYPE###</label>
-						<select id="databaseType" name="TYPO3_INSTALL[database_type]">
+						<label for="t3-install-123-databasetype">###LLDATABASETYPE###</label>
+						<select id="t3-install-123-databasetype" name="TYPO3_INSTALL[database_type]">
 							<!-- ###DATABASETYPEOPTIONS### begin -->
 							<option value="###DATABASETYPEVALUE###">###DATABASENAME###</option>
 							<!-- ###DATABASETYPEOPTIONS### end -->
@@ -144,7 +144,7 @@
 					<li>
 						<button type="submit">
 							###LABEL###
-							<span class="positive">&nbsp;</span>
+							<span class="t3-install-form-button-icon-positive">&nbsp;</span>
 						</button>
 					</li>
 				</ol>

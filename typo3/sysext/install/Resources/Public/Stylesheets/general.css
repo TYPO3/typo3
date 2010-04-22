@@ -76,41 +76,41 @@ fieldset span {
 	width: 29em;
 }
 
-.labelAfter input {
+.t3-install-form-label-after input {
 	float: left;
 }
 
-.labelAfter label,
-.labelAbove label {
+.t3-install-form-label-after label,
+.t3-install-form-label-above label {
 	float: none;
 	display: block;
 	width: auto;
 	margin-right: 0;
 }
 
-.labelAbove label {
+.t3-install-form-label-above label {
 	margin-bottom: 0.5em;
 }
 
-.labelAfter label {
+.t3-install-form-label-after label {
 	padding-left: 3em;
 }
 
-.labelWidth7 label {
+.t3-install-form-label-width-7 label {
 	width: 7em;
 }
 
-.labelWidth21 label {
+.t3-install-form-label-width-21 label {
 	width: 21em;
 }
 
-fieldset.submit {
+fieldset.t3-install-form-submit {
 	float: none;
 	width: auto;
 }
 
 fieldset select,
-input.inputText,
+input.t3-install-form-input-text,
 textarea {
 	background: url('../Images/input-background.gif') repeat-x scroll 0 0 #FFFFFF;
 	border: 1px solid #7C7C7C;
@@ -127,7 +127,7 @@ fieldset select {
 	width: 17.4em;
 }
 
-input.inputText {
+input.t3-install-form-input-text {
 	height: 1.7em;
 	padding: 0.1em 2.1em 0 0.45em;
 }
@@ -155,39 +155,39 @@ button span {
 	float: none;
 }
 
-button span.negative {
+button span.t3-install-form-button-icon-negative {
 	background-image: url('../../../../../gfx/error.png');
 }
 
-button span.positive {
+button span.t3-install-form-button-icon-positive {
 	background-image: url('../../../../../gfx/ok.png');
 }
 
-.hidden {
+.t3-install-hidden {
 	display: none;
 }
 
-.strong {
+.t3-install-strong {
 	font-weight: bold;
 }
 
-#container {
+#t3-install-outer {
 	width: 76em;
 	margin: 1em auto;
 }
 
-#left {
+#t3-install-left {
 	float: left;
 	width: 19em;
 	clear: both;
 }
 
-#right {
+#t3-install-right {
 	padding-left: 19em;
 	width: 57em;
 }
 
-#menu {
+#t3-install-menu {
 	margin: 0;
 	padding: 0.5em 0;
 	list-style: none;
@@ -196,74 +196,74 @@ button span.positive {
 	line-height: 2em;
 }
 
-#menu li {
+#t3-install-menu li {
 	padding: 0 0 0 2.8em;
 }
 
-#menu li.act {
+#t3-install-menu li.act {
 	background-color: #585858;
 }
 
-#menu a {
+#t3-install-menu a {
 	color: #606060;
 	text-decoration: none;
 }
 
-#menu a:hover {
+#t3-install-menu a:hover {
 	text-decoration: underline;
 }
 
-#menu li.act a {
+#t3-install-menu li.act a {
 	font-weight: bold;
 	color: #ffffff;
 }
 
-#menu li {
+#t3-install-menu li {
 	background-repeat: no-repeat;
 	background-position: 0.7em center;
 }
 
-#menu #config {
+#t3-install-menu #t3-install-menu-config {
 	background-image: url('../Images/menuConfig.png');
 }
 
-#menu #database {
+#t3-install-menu #t3-install-menu-database {
 	background-image: url('../Images/menuDatabase.png');
 }
 
-#menu #update {
+#t3-install-menu #t3-install-menu-update {
 	background-image: url('../Images/menuUpdate.png');
 }
 
-#menu #images {
+#t3-install-menu #t3-install-menu-images {
 	background-image: url('../Images/menuImages.png');
 }
 
-#menu #extConfig {
+#t3-install-menu #t3-install-menu-extConfig {
 	background-image: url('../Images/menuExtConfig.png');
 }
 
-#menu #typo3temp {
+#t3-install-menu #t3-install-menu-typo3temp {
 	background-image: url('../Images/menuTypo3temp.png');
 }
 
-#menu #cleanup {
+#t3-install-menu #t3-install-menu-cleanup {
 	background-image: url('../Images/menuCleanup.png');
 }
 
-#menu #phpinfo {
+#t3-install-menu #t3-install-menu-phpinfo {
 	background-image: url('../Images/menuPhpinfo.png');
 }
 
-#menu #typo3conf_edit {
+#t3-install-menu #t3-install-menu-typo3conf_edit {
 	background-image: url('../Images/menuTypo3confEdit.png');
 }
 
-#menu #about {
+#t3-install-menu #t3-install-menu-about {
 	background-image: url('../Images/menuAbout.png');
 }
 
-#links {
+#t3-install-links {
 	margin: 2em 0 0 0.8em;
 	padding: 0;
 	list-style: none;
@@ -272,16 +272,16 @@ button span.positive {
 	line-height: 2em;
 }
 
-#links a {
+#t3-install-links a {
 	color: #797878;
 	text-decoration: none;
 }
 
-#links a:hover {
+#t3-install-links a:hover {
 	text-decoration: underline;
 }
 
-#content {
+#t3-install-box-body {
 	font-size: 110%;
 	line-height: 1.5em;
 	padding: 0.1em 1.8em 1em 1.8em;
@@ -330,13 +330,13 @@ button span.positive {
 	border-color: #dc4c42;
 }
 
-#copyright {
+#t3-install-copyright {
 	color: #797878;
 	border-top: 1px #5f5f5f solid;
 	margin-top: 3.7em;
 	clear: both;
 }
 
-#copyright a {
+#t3-install-copyright a {
 	color: #797878;
 }

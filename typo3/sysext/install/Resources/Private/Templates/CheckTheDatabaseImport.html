@@ -11,13 +11,13 @@
 	<body>
 		<!-- ###IMPORT### begin -->
 		<!-- ###REGULARMODE### begin-->
-		<fieldset id="checkTheDatabaseImport">
+		<fieldset id="t3-install-checkthedatabaseimport">
 			<ol>
 				<!-- ###ROWS### begin -->
-				<li class="labelAfter">
-					<input name="TYPO3_INSTALL[database_import][###TABLE###]" id="database_import_###TABLE###" value="###DEFINITION###" type="checkbox" />
-					<label for="database_import_###TABLE###">
-						<span class="strong">
+				<li class="t3-install-form-label-after">
+					<input id="t3-install-database-import-###TABLE###" name="TYPO3_INSTALL[database_import][###TABLE###]" value="###DEFINITION###" type="checkbox" />
+					<label for="t3-install-database-import-###TABLE###">
+						<span class="t3-install-strong">
 							###TABLE###
 						</span>
 						<span>
@@ -37,9 +37,9 @@
 		<!-- ###REGULARMODE### end-->
 		<fieldset>
 			<ol>
-				<li class="labelAfter">
-					<input name="TYPO3_INSTALL[database_import_all]" id="database_import_all" value="1" type="checkbox" ###CHECKED### />
-					<label for="database_import_all">
+				<li class="t3-install-form-label-after">
+					<input id="t3-install-database-import-all" name="TYPO3_INSTALL[database_import_all]" value="1" type="checkbox" ###CHECKED### />
+					<label for="t3-install-database-import-all">
 						###LABEL###
 					</label>
 				</li>

@@ -10,35 +10,35 @@
 	</head>
 	<body>
 		<!-- ###TEMPLATE### begin -->
-		<div id="contentTop">&nbsp;</div>
+		<div id="t3-install-box-border-top">&nbsp;</div>
 		<h2>###HEADTITLE###</h2>
-		<div id="content">
+		<div id="t3-install-box-body">
 			<h3>###SITENAME###</h3>
-			<form action="index.php" method="post" id="passwordForm">
+			<form action="index.php" method="post" id="t3-install-form-login">
 				<fieldset>
 					<ol>
-						<li class="labelWidth7">
-							<label for="password">###ENTERPASSWORD###</label>
-							<input id="password" type="password" name="password" class="inputText" />
+						<li class="t3-install-form-label-width-7">
+							<label for="t3-install-form-password">###ENTERPASSWORD###</label>
+							<input id="t3-install-form-password" type="password" name="password" class="t3-install-form-input-text" />
 						</li>
-						<li class="hidden">
+						<li class="t3-install-hidden">
 							<input type="hidden" name="redirect_url" value="###REDIRECTURL###" />
 						</li>
 					</ol>
 				</fieldset>
-				<fieldset class="submit">
+				<fieldset class="t3-install-form-submit">
 					<ol>
 						<li>
 							<button type="submit">
 								###LOGIN###
-								<span class="positive">&nbsp;</span>
+								<span class="t3-install-form-button-icon-positive">&nbsp;</span>
 							</button>
 						</li>
 					</ol>
 				</fieldset>
 			</form>
 		</div>
-		<div id="contentBottom">&nbsp;</div>
+		<div id="t3-install-box-border-bottom">&nbsp;</div>
 		<!-- ###WRONGPASSWORD### begin -->
 		<p class="typo3-message message-error">
 			###PASSWORDMESSAGE###
@@ -54,7 +54,7 @@
 		###MESSAGE###
 		<script type="text/javascript">
 		<!--
-			$('password').focus();
+			$('t3-install-form-password').focus();
 		//-->
 		</script>
 		<!-- ###TEMPLATE### end -->

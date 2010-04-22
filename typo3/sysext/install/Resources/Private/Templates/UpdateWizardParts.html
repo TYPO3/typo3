@@ -12,8 +12,8 @@
 		<!-- ###CHECKFORUPDATE### begin -->
 		<!-- ###UPDATESAVAILABLE### begin -->
 		<!-- ###UPDATEWIZARDBOXES### begin -->
-		<form action="###ACTION####bottom" method="post">
-			<fieldset class="hidden">
+		<form action="###ACTION####t3-install-bottom" method="post">
+			<fieldset class="t3-install-hidden">
 				<ol>
 					<li>
 						<input type="hidden" name="TYPO3_INSTALL[database_type]" value="getUserInput" />
@@ -23,12 +23,12 @@
 			<!-- ###SINGLEUPDATEWIZARDBOX### begin -->
 			<h3>###IDENTIFIER###</h3>
 			###EXPLANATION###
-			<fieldset class="submit">
+			<fieldset class="t3-install-form-submit">
 				<ol>
 					<li>
 						<button type="submit" name="TYPO3_INSTALL[update][###IDENTIFIER###]">
 							###NEXT###
-							<span class="positive">&nbsp;</span>
+							<span class="t3-install-form-button-icon-positive">&nbsp;</span>
 						</button>
 					</li>
 				</ol>
@@ -38,13 +38,13 @@
 		<!-- ###UPDATEWIZARDBOXES### end -->
 		<h3>###FINALSTEP###</h3>
 		###FINALSTEPEXPLANATION###
-		<a href="index.php?TYPO3_INSTALL[type]=database&amp;TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#bottom" class="button">###COMPAREDATABASE###<span class="positive">&nbsp;</span></a>
+		<a href="index.php?TYPO3_INSTALL[type]=database&amp;TYPO3_INSTALL[database_type]=cmpFile|CURRENT_TABLES#t3-install-bottom">###COMPAREDATABASE###<span class="t3-install-form-button-icon-positive">&nbsp;</span></a>
 		<!-- ###UPDATESAVAILABLE### end -->
 		<!-- ###CHECKFORUPDATE### end -->
 		
 		<!-- ###GETUSERINPUT### begin -->
-		<form action="###ACTION####bottom" method="post">
-			<fieldset class="hidden">
+		<form action="###ACTION####t3-install-bottom" method="post">
+			<fieldset class="t3-install-hidden">
 				<ol>
 					<li>
 						<input type="hidden" value="performUpdate" name="TYPO3_INSTALL[database_type]" />
@@ -66,7 +66,7 @@
 			<!-- ###UPDATESAVAILABLE### begin -->
 			<fieldset>
 				<ol>
-					<li class="hidden">
+					<li class="t3-install-hidden">
 						<input type="hidden" name="TYPO3_INSTALL[update][extList][]" value="###IDENTIFIER###" />
 					</li>
 				</ol>
@@ -80,18 +80,18 @@
 			<!-- ###UPDATESAVAILABLE### end -->
 			<fieldset>
 				<ol>
-					<li class="labelAfter">
-						<input type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" id="showDatabaseQueries" value="1" />
-						<label for="showDatabaseQueries">###SHOWDATABASEQUERIES###</label>
+					<li class="t3-install-form-label-after">
+						<input id="t3-install-showdatabasequeries" type="checkbox" name="TYPO3_INSTALL[update][showDatabaseQueries]" value="1" />
+						<label for="t3-install-showdatabasequeries">###SHOWDATABASEQUERIES###</label>
 					</li>
 				</ol>
 			</fieldset>
-			<fieldset class="submit">
+			<fieldset class="t3-install-form-submit">
 				<ol>
 					<li>
 						<button type="submit">
 							###PERFORMUPDATES###
-							<span class="positive">&nbsp;</span>
+							<span class="t3-install-form-button-icon-positive">&nbsp;</span>
 						</button>
 					</li>
 				</ol>

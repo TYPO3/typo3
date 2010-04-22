@@ -1,3 +1,7 @@
+2010-04-22  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #14177: Change CSS classes- and id names to identifyable install tool names
+
 2010-04-20  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #13741: cache_treelist does not take FE users into account

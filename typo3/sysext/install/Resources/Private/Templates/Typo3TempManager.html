@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<!-- ###TEMPLATE### begin -->
-		<dl id="tempManagerNumbers">
+		<dl id="t3-install-tempmanagernumbers">
 			<dt>
 				###NUMBERTEMPORARY###
 			</dt>
@@ -30,28 +30,28 @@
 				###DELETED###
 			</dd>
 		</dl>
-		<form id="tempManagerForm" method="post" action="index.php?TYPO3_INSTALL[type]=typo3temp">
+		<form method="post" action="index.php?TYPO3_INSTALL[type]=typo3temp">
 			<fieldset>
 				<ol>
 					<li>
-						<label for="delete">###DELETECONDITION###</label>
-						<select id="delete" name="TYPO3_INSTALL[typo3temp_delete]">
+						<label for="t3-install-delete">###DELETECONDITION###</label>
+						<select id="t3-install-delete" name="TYPO3_INSTALL[typo3temp_delete]">
 							<!-- ###DELETEOPTIONS### begin -->
 							<option value="###VALUE###" ###SELECTED###>###DATA###</option>
 							<!-- ###DELETEOPTIONS### end -->
 						</select>
 					</li>
 					<li>
-						<label for="action">###NUMBERFILES###</label>
-						<select id="action" name="TYPO3_INSTALL[typo3temp_action]">
+						<label for="t3-install-action">###NUMBERFILES###</label>
+						<select id="t3-install-action" name="TYPO3_INSTALL[typo3temp_action]">
 							<!-- ###ACTIONOPTIONS### begin -->
 							<option value="###VALUE###">###DATA###</option>
 							<!-- ###ACTIONOPTIONS### end -->
 						</select>
 					</li>
 					<li>
-						<label for="subDirectory">###FROMSUBDIRECTORY###</label>
-						<select id="subDirectory" name="TYPO3_INSTALL[typo3temp_subdir]">
+						<label for="t3-install-subdirectory">###FROMSUBDIRECTORY###</label>
+						<select id="t3-install-subdirectory" name="TYPO3_INSTALL[typo3temp_subdir]">
 							<!-- ###SUBDIRECTORYOPTIONS### begin -->
 							<option value="###VALUE###" ###SELECTED###>###DATA###</option>
 							<!-- ###SUBDIRECTORYOPTIONS### end -->
@@ -59,10 +59,10 @@
 					</li>
 				</ol>
 			</fieldset>
-			<fieldset class="submit">
+			<fieldset class="t3-install-form-submit">
 				<ol>
 					<li>
-						<button type="submit">###EXECUTE###<span class="positive">&nbsp;</span></button>
+						<button type="submit">###EXECUTE###<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
 					</li>
 				</ol>
 			</fieldset>

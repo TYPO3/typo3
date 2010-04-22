@@ -4,17 +4,17 @@ body {
 	background: #4f4f4f url('../Images/body-background.jpg') repeat-x fixed;
 }
 
-#container {
+#t3-install-outer {
 	margin: 0 auto;
 }
 
 h1,
-#menuTop,
-#menuBottom,
-#links,
-#contentTop,
-#contentBottom,
-#copyright {
+#t3-install-menu-border-top,
+#t3-install-menu-bottom,
+#t3-install-links,
+#t3-install-box-border-top,
+#t3-install-box-border-bottom,
+#t3-install-copyright {
 	display: block;
 }
 
@@ -34,36 +34,36 @@ h2 {
 	color: #ffffff;
 }
 
-#contentTop {
+#t3-install-box-border-top {
 	height: 3px;
 	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
 }
 
-#content {
+#t3-install-box-body {
 	background-color: #eeeeee;
 }
 
-#contentBottom {
+#t3-install-box-border-bottom {
 	height: 3px;
 	background: #4d4c4d url('../Images/content-bottom.png') no-repeat center top;
 }
 
-#menu,
-#content {
+#t3-install-menu,
+#t3-install-box-body {
 	border: 0;
 }
 
-#menuTop {
+#t3-install-menu-border-top {
 	width: 17.6em;
 	height: 3px;
 	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
 }
 
-#menu {
+#t3-install-menu {
 	background: #ebebeb url('../Images/menuBackground.gif') repeat-x left bottom;
 }
 
-#menuBottom {
+#t3-install-menu-bottom {
 	width: 17.6em;
 	height: 3px;
 	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
