@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require(PATH_typo3 . 'contrib/RemoveXSS/RemoveXSS.php');
+require_once(PATH_typo3 . 'contrib/RemoveXSS/RemoveXSS.php');
 
 /**
  * Testcase for class RemoveXSS
