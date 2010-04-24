@@ -1,3 +1,7 @@
+2010-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13386: mod.web_list.hideTables doesn't accept spaces (thanks to Marcel Greter)
+
 2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14182: Multiple join conditions are not supported
