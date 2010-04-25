@@ -47,14 +47,48 @@ class user_tx_install_hook {
 	 * @param tx_install $instObj
 	 * @return void
 	 */
-	public function execute(array &$markers, $step, tx_install $instObj) {
+	public function executeStepOutput(array &$markers, $step, tx_install $instObj) {
 		switch ($step) {
 			case 2:
 				$this->createConnectionForm(t3lib_div::_GET('driver'), $markers, $instObj);
 				break;
+		}
+	}
+
+	/**
+	 * Hooks into Installer to modify lines to be written to localconf.php.
+	 * 
+	 * @param array $lines
+	 * @param integer $step
+	 * @param tx_install $instObj
+	 * @return void
+	 */
+	public function executeLocalconf(array &$lines, $step, tx_install $instObj) {
+		switch ($step) {
 			case 3:
-				t3lib_div::debug(t3lib_div::_POST, 'POST');
-				die();
+				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
+				$driverConfig = '';
+				switch ($driver) {
+					case 'oci8':
+						$driverConfig = '\'driverOptions\' => array(' .
+							'\'connectSID\' => ' . ($instObj->INSTALL['localconf.php']['typo_db_type'] === 'sid' ? 'TRUE' : 'FALSE') .
+						')' ;
+						break;
+					case 'mssql':
+					case 'odbc_mssql':
+						$driverConfig = '\'useNameQuote\' => TRUE';
+						break;
+				}
+				$config = 'array(' .
+					'\'_DEFAULT\' => array(' .
+						'\'type\' => \'adodb\',' .
+						'\'config\' => array(' .
+							'\'driver\' => \'' . $driver . '\',' .
+							$driverConfig .
+						')' .
+					')' .
+				');';
+				$lines[] = '$TYPO3_CONF_VARS[\'EXTCONF\'][\'dbal\'][\'handlerCfg\'] = ' . $config;
 				break;
 		}
 	}
