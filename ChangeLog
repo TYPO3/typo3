@@ -1,3 +1,7 @@
+2010-04-25 Francois Suter  <francois@typo3.org>
+
+	* Fixed bug: #14107: Scheduler: Missing Flash message in the Scheduler (thanks to Georg Ringer)
+
 2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14182: Multiple join conditions are not supported

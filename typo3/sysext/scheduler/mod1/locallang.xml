@@ -64,6 +64,7 @@
 			<label index="msg.noEmail">Please enter an email address.</label>
 			<label index="msg.noFrequency">No frequency was defined, either as an interval or as a cron command.</label>
 			<label index="msg.noLastRun">The Scheduler has never yet run or the information about the last run has been lost.</label>
+			<label index="msg.noTasksDefined">There are currently no task classes available at all. To be able to create new tasks, you must either enable the samples provided by the Scheduler or install some other extension that relies on the Scheduler.</label>
 			<label index="msg.noTaskClassFound">The selected task class could not be found. You should probably contact the task's developers.</label>
 			<label index="msg.noTasks">No tasks defined yet.</label>
 			<label index="msg.notExecuted">Not executed: %s</label>
