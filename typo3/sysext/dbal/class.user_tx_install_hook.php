@@ -52,6 +52,10 @@ class user_tx_install_hook {
 			case 2:
 				$this->createConnectionForm(t3lib_div::_GET('driver'), $markers, $instObj);
 				break;
+			case 3:
+				t3lib_div::debug(t3lib_div::_POST, 'POST');
+				die();
+				break;
 		}
 	}
 
@@ -88,9 +92,20 @@ class user_tx_install_hook {
 		);
 
 			// Get the subpart related to selected database driver
-		$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
-			$template, '###DRIVER_' . t3lib_div::strtoupper($driver) . '###'
-		);
+		if ($driver === '' || $driver === 'mysql' || $driver === 'mysqli') {
+			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
+				$template, '###DRIVER_MYSQL###'
+			);
+		} else {
+			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
+				$template, '###DRIVER_' . t3lib_div::strtoupper($driver) . '###'
+			);
+			if ($driverOptionsSubPart === '') {
+				$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
+					$template, '###DRIVER_DEFAULT###'
+				);
+			}
+		}
 
 			// Define driver-specific markers
 		$driverMarkers = array();
@@ -133,7 +148,7 @@ class user_tx_install_hook {
 					'database' => TYPO3_db,  
 				);
 				break;
-			case 'postgres':
+			default:
 				$driverMarkers = array(
 					'labelUsername' => 'Username',
 					'username' => TYPO3_db_username,
@@ -141,6 +156,8 @@ class user_tx_install_hook {
 					'password' => TYPO3_db_password,
 					'labelHost' => 'Host',
 					'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
+					'labelDatabase' => 'Database',
+					'database' => TYPO3_db,
 				);
 				break;
 		}

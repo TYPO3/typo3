@@ -53,7 +53,25 @@
 
 
 
-<!-- ###DRIVER_MSSQL### begin -->
+<!-- ###DRIVER_MYSQL### begin -->
+<li>
+	<label for="t3-install-form-username">###LABELUSERNAME###</label>
+	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+</li>
+<li>
+	<label for="t3-install-form-password">###LABELPASSWORD###</label>
+	<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+</li>
+<li>
+	<label for="t3-install-form-host">###LABELHOST###</label>
+	<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+</li>
+<!-- ###DRIVER_MYSQL### end -->
+
+
+
+
+<!-- ###DRIVER_DEFAULT### begin -->
 <li>
 	<label for="t3-install-form-username">###LABELUSERNAME###</label>
 	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
@@ -70,7 +88,7 @@
 	<label for="t3-install-form-database">###LABELDATABASE###</label>
 	<input id="t3-install-form-database" class="t3-install-form-input-text" type="text" value="###DATABASE###" name="TYPO3_INSTALL[localconf.php][typo_db]" />
 </li>
-<!-- ###DRIVER_MSSQL### end -->
+<!-- ###DRIVER_DEFAULT### end -->
 
 
 
@@ -119,24 +137,6 @@
 	<input id="t3-install-form-database" class="t3-install-form-input-text" type="text" value="###DATABASE###" name="TYPO3_INSTALL[localconf.php][typo_db]" />
 </li>
 <!-- ###DRIVER_OCI8### end -->
-
-
-
-
-<!-- ###DRIVER_POSTGRES### begin -->
-<li>
-	<label for="t3-install-form-username">###LABELUSERNAME###</label>
-	<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
-</li>
-<li>
-	<label for="t3-install-form-password">###LABELPASSWORD###</label>
-	<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
-</li>
-<li>
-	<label for="t3-install-form-host">###LABELHOST###</label>
-	<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
-</li>
-<!-- ###DRIVER_POSTGRES### end -->
 
 <!-- ###TEMPLATE### end -->
 </body>
