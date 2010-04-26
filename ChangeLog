@@ -1,3 +1,7 @@
+2010-04-26  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #3977: Permissions not set on extracted localization files (Thanks to Lars Houmark)
+
 2010-04-25 Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #14107: Scheduler: Missing Flash message in the Scheduler (thanks to Georg Ringer)

@@ -2961,20 +2961,55 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Sets the file system mode and group ownership of file.
+	 * Sets the file system mode and group ownership of a file or a folder.
 	 *
-	 * @param string $file
-	 *               the path of an existing file, must not be escaped
-	 *
-	 * @return void
+	 * @param   string   Absolute filepath of file or folder, must not be escaped.
+	 * @param   boolean  If set, also fixes permissions of files and folders in the folder (if $path is a folder)
+	 * @return  mixed    TRUE on success, FALSE on error, always TRUE on Windows OS
 	 */
-	public static function fixPermissions($file)	{
-		if (@is_file($file) && TYPO3_OS!='WIN')	{
-			@chmod($file, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));		// "@" is there because file is not necessarily OWNED by the user
-			if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
-				@chgrp($file, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);		// "@" is there because file is not necessarily OWNED by the user
+	public static function fixPermissions($path, $recursive = FALSE) {
+		if (TYPO3_OS != 'WIN') {
+			$result = FALSE;
+			if (self::isAllowedAbsPath($path)) {
+				if (@is_file($path)) {
+						// "@" is there because file is not necessarily OWNED by the user
+					$result = @chmod($path, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']));
+				} elseif (@is_dir($path)) {
+					$path = preg_replace('|/$|', '', $path);
+						// "@" is there because file is not necessarily OWNED by the user
+					$result = @chmod($path, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
+				}
+
+					// Set createGroup if not empty
+				if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']) {
+						// "@" is there because file is not necessarily OWNED by the user
+					$changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
+					$result = $changeGroupResult ? $result : FALSE;
+				}
+
+					// Call recursive if recursive flag if set and $path is directory
+				if ($recursive && @is_dir($path)) {
+					$handle = opendir($path);
+					while (($file = readdir($handle)) !== FALSE) {
+						unset($recursionResult);
+						if ($file !== '.' && $file !== '..') {
+							if (@is_file($path . '/' . $file)) {
+								$recursionResult = t3lib_div::fixPermissions($path . '/' . $file);
+							} elseif (@is_dir($path . '/' . $file)) {
+								$recursionResult = t3lib_div::fixPermissions($path . '/' . $file, TRUE);
+							}
+							if (isset($recursionResult) && !$recursionResult) {
+								$result = FALSE;
+							}
+						}
+					}
+					closedir($handle);
+				}
 			}
+		} else {
+			$result = TRUE;
 		}
+		return $result;
 	}
 
 	/**
@@ -3022,24 +3057,20 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Wrapper function for mkdir, setting folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']
-	 * Usage: 6
+	 * Wrapper function for mkdir.
+	 * Sets folder permissions according to $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']
+	 * and group ownership according to $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']
 	 *
 	 * @param	string		Absolute path to folder, see PHP mkdir() function. Removes trailing slash internally.
 	 * @return	boolean		TRUE if @mkdir went well!
 	 */
-	public static function mkdir($theNewFolder)	{
-		$theNewFolder = preg_replace('|/$|','',$theNewFolder);
-		if (@mkdir($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']))){
-			chmod($theNewFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'])); //added this line, because the mode at 'mkdir' has a strange behaviour sometimes
-
-			if($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])	{	// skip this if createGroup is empty
-				@chgrp($theNewFolder, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
-			}
-			return true;
-		} else {
-			return false;
+	public static function mkdir($newFolder) {
+		$newFolder = preg_replace('|/$|', '', $newFolder);
+		$result = @mkdir($newFolder, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
+		if ($result) {
+			self::fixPermissions($newFolder);
 		}
+		return $result;
 	}
 
 	/**

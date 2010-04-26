@@ -1498,6 +1498,10 @@ EXTENSION KEYS:
 							$GLOBALS['LANG']->getLL('translation_update_done') . '";
 					</script>
 				';
+
+					// Fix permissions on unzipped language xml files in the entire l10n folder and all subfolders
+				t3lib_div::fixPermissions(PATH_typo3conf . 'l10n', TRUE);
+
 				echo $contentParts[1] . $this->doc->endPage();
 				exit;
 			}
