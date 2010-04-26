@@ -1,3 +1,7 @@
+2010-04-22  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Reverted fix for bug #12908: wrong distance between image rows due to new rules
+
 2010-04-24  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13386: mod.web_list.hideTables doesn't accept spaces (thanks to Marcel Greter)
