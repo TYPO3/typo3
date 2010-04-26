@@ -1756,7 +1756,8 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	DIV.csc-textpic-equalheight DIV.csc-textpic-imagerow { margin-bottom: {$styles.content.imgtext.rowSpace}px; display: block; }
 	DIV.csc-textpic DIV.csc-textpic-imagerow { clear: both; }
 	DIV.csc-textpic DIV.csc-textpic-single-image IMG { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
-	
+
+	/* IE7 hack for margin between image rows */	
 	*+html DIV.csc-textpic DIV.csc-textpic-imagerow .csc-textpic-image { margin-bottom: 0; }
 	*+html DIV.csc-textpic DIV.csc-textpic-imagerow { margin-bottom: {$styles.content.imgtext.rowSpace}px; }
 

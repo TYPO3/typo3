@@ -1,3 +1,7 @@
+2010-04-26  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Follow-up to bug #12908: reverted changes in CSC 4.3 folder due to new rules, added comment to IE hacks (thanks to Helmut Hummel)
+
 2010-04-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to bug #3977: Added unit tests for t3lib_div:mkdir() and t3lib_div::fixPermissions()
