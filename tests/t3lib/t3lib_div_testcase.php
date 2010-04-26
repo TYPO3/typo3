@@ -45,6 +45,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 			'_GET' => $_GET,
 			'_POST' => $_POST,
 			'_SERVER' => $_SERVER,
+			'TYPO3_CONF_VARS' =>  $GLOBALS['TYPO3_CONF_VARS'],
 		);
 	}
 
@@ -1037,6 +1038,309 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 			),
 			$GLOBALS['HTTP_GET_VARS']
 		);
+	}
+
+	/**
+	 * Checks if t3lib_div::fixPermissions() correctly sets permissions to single file
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 * This test is not available on windows OS
+	 *
+	 * @test
+	 * @see t3lib_div::fixPermissions()
+	 */
+	public function checkFixPermissionsCorrectlySetsPermissionsToFile() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+			// Create and prepare test file
+		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
+		t3lib_div::writeFileToTypo3tempDir($filename, '42');
+		chmod($filename, 0742);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
+		$fixPermissionsResult = t3lib_div::fixPermissions($filename);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($filename)), 2);
+		$resultFileGroup = filegroup($filename);
+		unlink($filename);
+
+			// Test if everything was ok
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals($resultFilePermissions, '0660');
+		$this->assertEquals($resultFileGroup, posix_getegid());
+	}
+
+	/**
+	 * Checks if t3lib_div::fixPermissions() correctly sets permissions to hidden file
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 * This test is not available on windows OS
+	 *
+	 * @test
+	 * @see t3lib_div::fixPermissions()
+	 */
+	public function checkFixPermissionsCorrectlySetsPermissionsToHiddenFile() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+			// Create and prepare test file
+		$filename = PATH_site . 'typo3temp/' . uniqid('.test_');
+		t3lib_div::writeFileToTypo3tempDir($filename, '42');
+		chmod($filename, 0742);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
+		$fixPermissionsResult = t3lib_div::fixPermissions($filename);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($filename)), 2);
+		$resultFileGroup = filegroup($filename);
+		unlink($filename);
+
+			// Test if everything was ok
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals($resultFilePermissions, '0660');
+		$this->assertEquals($resultFileGroup, posix_getegid());
+	}
+
+	/**
+	 * Checks if t3lib_div::fixPermissions() correctly sets permissions to directory with trailing slash
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 * This test is not available on windows OS
+	 *
+	 * @test
+	 * @see t3lib_div::fixPermissions()
+	 */
+	public function checkFixPermissionsCorrectlySetsPermissionsToDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+			// Create and prepare test directory
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		t3lib_div::mkdir($directory);
+		chmod($directory, 1551);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '2770';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
+		$fixPermissionsResult = t3lib_div::fixPermissions($directory . '/');
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
+		$resultDirectoryGroup = filegroup($directory);
+		t3lib_div::rmdir($directory);
+
+			// Test if everything was ok
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals($resultDirectoryPermissions, '2770');
+		$this->assertEquals($resultDirectoryGroup, posix_getegid());
+	}
+
+	/**
+	 * Checks if t3lib_div::fixPermissions() correctly sets permissions to hidden directory
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 * This test is not available on windows OS
+	 *
+	 * @test
+	 * @see t3lib_div::fixPermissions()
+	 */
+	public function checkFixPermissionsCorrectlySetsPermissionsToHiddenDirectory() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+			// Create and prepare test directory
+		$directory = PATH_site . 'typo3temp/' . uniqid('.test_');
+		t3lib_div::mkdir($directory);
+		chmod($directory, 1551);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '2770';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
+		$fixPermissionsResult = t3lib_div::fixPermissions($directory);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
+		$resultDirectoryGroup = filegroup($directory);
+		t3lib_div::rmdir($directory);
+
+			// Test if everything was ok
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals($resultDirectoryPermissions, '2770');
+		$this->assertEquals($resultDirectoryGroup, posix_getegid());
+	}
+
+	/**
+	 * Checks if t3lib_div::fixPermissions() correctly sets permissions recursivly
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 * This test is not available on windows OS
+	 *
+	 * @test
+	 * @see t3lib_div::fixPermissions()
+	 */
+	public function checkFixPermissionsCorrectlySetsPermissionsRecursive() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+			// Create and prepare test directory and file structure
+		$baseDirectory = PATH_site . 'typo3temp/' . uniqid('test_');
+		t3lib_div::mkdir($baseDirectory);
+		chmod($baseDirectory, 1751);
+		t3lib_div::writeFileToTypo3tempDir($baseDirectory . '/file', '42');
+		chmod($baseDirectory . '/file', 0742);
+		t3lib_div::mkdir($baseDirectory . '/foo');
+		chmod($baseDirectory . '/foo', 1751);
+		t3lib_div::writeFileToTypo3tempDir($baseDirectory . '/foo/file', '42');
+		chmod($baseDirectory . '/foo/file', 0742);
+		t3lib_div::mkdir($baseDirectory . '/.bar');
+		chmod($baseDirectory . '/.bar', 1751);
+			// Use this if writeFileToTypo3tempDir is fixed to create hidden files in subdirectories
+		// t3lib_div::writeFileToTypo3tempDir($baseDirectory . '/.bar/.file', '42');
+		// t3lib_div::writeFileToTypo3tempDir($baseDirectory . '/.bar/..file2', '42');
+		touch($baseDirectory . '/.bar/.file', '42');
+		chmod($baseDirectory . '/.bar/.file', 0742);
+		touch($baseDirectory . '/.bar/..file2', '42');
+		chmod($baseDirectory . '/.bar/..file2', 0742);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '2770';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
+		$fixPermissionsResult = t3lib_div::fixPermissions($baseDirectory, TRUE);
+
+			// Get actual permissions
+		clearstatcache();
+		$resultBaseDirectoryPermissions = substr(decoct(fileperms($baseDirectory)), 1);
+		$resultBaseDirectoryGroup = filegroup($baseDirectory);
+		$resultBaseFilePermissions = substr(decoct(fileperms($baseDirectory . '/file')), 2);
+		$resultBaseFileGroup = filegroup($baseDirectory . '/file');
+		$resultFooDirectoryPermissions = substr(decoct(fileperms($baseDirectory . '/foo')), 1);
+		$resultFooDirectoryGroup = filegroup($baseDirectory . '/foo');
+		$resultFooFilePermissions = substr(decoct(fileperms($baseDirectory . '/foo/file')), 2);
+		$resultFooFileGroup = filegroup($baseDirectory . '/foo/file');
+		$resultBarDirectoryPermissions = substr(decoct(fileperms($baseDirectory . '/.bar')), 1);
+		$resultBarDirectoryGroup = filegroup($baseDirectory . '/.bar');
+		$resultBarFilePermissions = substr(decoct(fileperms($baseDirectory . '/.bar/.file')), 2);
+		$resultBarFileGroup = filegroup($baseDirectory . '/.bar/.file');
+		$resultBarFile2Permissions = substr(decoct(fileperms($baseDirectory . '/.bar/..file2')), 2);
+		$resultBarFile2Group = filegroup($baseDirectory . '/.bar/..file2');
+
+			// Clean up
+		unlink($baseDirectory . '/file');
+		unlink($baseDirectory . '/foo/file');
+		unlink($baseDirectory . '/.bar/.file');
+		unlink($baseDirectory . '/.bar/..file2');
+		t3lib_div::rmdir($baseDirectory . '/foo');
+		t3lib_div::rmdir($baseDirectory . '/.bar');
+		t3lib_div::rmdir($baseDirectory);
+
+			// Test if everything was ok
+		$this->assertTrue($fixPermissionsResult);
+		$this->assertEquals($resultBaseDirectoryPermissions, '2770');
+		$this->assertEquals($resultBaseDirectoryGroup, posix_getegid());
+		$this->assertEquals($resultBaseFilePermissions, '0660');
+		$this->assertEquals($resultBaseFileGroup, posix_getegid());
+		$this->assertEquals($resultFooDirectoryPermissions, '2770');
+		$this->assertEquals($resultFooDirectoryGroup, posix_getegid());
+		$this->assertEquals($resultFooFilePermissions, '0660');
+		$this->assertEquals($resultFooFileGroup, posix_getegid());
+		$this->assertEquals($resultBarDirectoryPermissions, '2770');
+		$this->assertEquals($resultBarDirectoryGroup, posix_getegid());
+		$this->assertEquals($resultBarFilePermissions, '0660');
+		$this->assertEquals($resultBarFileGroup, posix_getegid());
+		$this->assertEquals($resultBarFile2Permissions, '0660');
+		$this->assertEquals($resultBarFile2Group, posix_getegid());
+	}
+
+	/**
+	 * Checks if t3lib_div::fixPermissions() does not fix permissions on not allowed path
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 * This test is not available on windows OS
+	 *
+	 * @test
+	 * @see t3lib_div::fixPermissions()
+	 */
+	public function checkFixPermissionsDoesNotSetPermissionsToNotAllowedPath() {
+		if (TYPO3_OS == 'WIN') {
+			$this->markTestSkipped('fixPermissions() tests not available on Windows');
+		}
+
+			// Create and prepare test file
+		$filename = PATH_site . 'typo3temp/../typo3temp/' . uniqid('test_');
+		touch($filename);
+		chmod($filename, 0742);
+
+			// Set target permissions and run method
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
+		$fixPermissionsResult = t3lib_div::fixPermissions($filename);
+
+			// Get actual permissions and clean up
+		clearstatcache();
+		$resultFilePermissions = substr(decoct(fileperms($filename)), 2);
+		unlink($filename);
+
+			// Test if everything was ok
+		$this->assertFalse($fixPermissionsResult);
+		$this->assertEquals($resultFilePermissions, '0742');
+	}
+
+	/**
+	 * Checks if t3lib_div::mkdir() correctly creates a directory
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 *
+	 * @test
+	 * @see t3lib_div::mkdir()
+	 */
+	public function checkMkdirCorrectlyCreatesDirectory() {
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$mkdirResult = t3lib_div::mkdir($directory);
+		$directoryCreated = is_dir($directory);
+		t3lib_div::rmdir($directory);
+		$this->assertTrue($mkdirResult);
+		$this->assertTrue($directoryCreated);
+	}
+
+	/**
+	 * Checks if t3lib_div::mkdir() correctly creates a hidden directory
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 *
+	 * @test
+	 * @see t3lib_div::mkdir()
+	 */
+	public function checkMkdirCorrectlyCreatesHiddenDirectory() {
+		$directory = PATH_site . 'typo3temp/' . uniqid('.test_');
+		$mkdirResult = t3lib_div::mkdir($directory);
+		$directoryCreated = is_dir($directory);
+		t3lib_div::rmdir($directory);
+		$this->assertTrue($mkdirResult);
+		$this->assertTrue($directoryCreated);
+	}
+
+	/**
+	 * Checks if t3lib_div::mkdir() correctly creates a directory with trailing slash
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 *
+	 * @test
+	 * @see t3lib_div::mkdir()
+	 */
+	public function checkMkdirCorrectlyCreatesDirectoryWithTrailingSlash() {
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
+		$mkdirResult = t3lib_div::mkdir($directory);
+		$directoryCreated = is_dir($directory);
+		t3lib_div::rmdir($directory);
+		$this->assertTrue($mkdirResult);
+		$this->assertTrue($directoryCreated);
 	}
 }
 ?>
