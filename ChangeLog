@@ -1,3 +1,7 @@
+2010-04-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14137: Startup in module does not work (thanks to Stefan Galinski)
+
 2010-04-27  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to bug #10768: CSC height 1% breaks rendering of images (thanks to Helmut Hummel)

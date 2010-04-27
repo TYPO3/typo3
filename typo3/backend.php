@@ -561,7 +561,7 @@ class TYPO3backend {
 			$pageRenderer->addExtOnReadyCode('
 			// start in module:
 		function startInModule(modName, cMR_flag, addGetVars)	{
-			Event.observe(document, \'dom:loaded\', function() {
+			Ext.onReady(function() {
 				top.goToModule(modName, cMR_flag, addGetVars);
 			});
 		}
