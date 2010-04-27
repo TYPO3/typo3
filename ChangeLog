@@ -1,3 +1,7 @@
+2010-04-27  Patrick Broens  <patrick@patrickbroens.nl>
+
+	* Fixed bug #14214: Install tool hooks are not complete and could be better 
+
 2010-04-26  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to bug #12908: reverted changes in CSC 4.3 folder due to new rules, added comment to IE hacks (thanks to Helmut Hummel)

@@ -294,7 +294,7 @@ class tx_install extends t3lib_install {
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['additionalSteps'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['additionalSteps'] as $classData) {
 				$hookObject = t3lib_div::getUserObj($classData);
-				$this->totalSteps += (integer) $hookObject->execute();
+				$this->totalSteps += (integer) $hookObject->executeAdditionalSteps($this);
 			}
 		}
 
@@ -959,7 +959,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['stepOutput'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['stepOutput'] as $classData) {
 				$hookObject = t3lib_div::getUserObj($classData);
-				$hookObject->execute($markers, $this->step, $this);
+				$hookObject->executeStepOutput($markers, $this->step, $this);
 			}
 		}
 			// Use the default steps when there is no override
@@ -3865,10 +3865,15 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'],$value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'TTFdpi\']', $value);
 							break;
 						}
-
-
 					}
 
+						// Hook to modify localconf.php lines in the 1-2-3 installer
+					if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['writeLocalconf'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['writeLocalconf'] as $classData) {
+							$hookObject = t3lib_div::getUserObj($classData);
+							$hookObject->executeWriteLocalconf($lines, $this->step, $this);
+						}
+					}
 					$this->writeToLocalconf_control($lines);
 				}
 			break;
