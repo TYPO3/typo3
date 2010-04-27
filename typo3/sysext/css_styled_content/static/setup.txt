@@ -1809,7 +1809,9 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Left (in text, no wrap around) */
 	DIV.csc-textpic-intext-left-nowrap DIV.csc-textpic-imagewrap { float: left; clear: both; }
 	/* Hide from IE5-mac. Only IE-win sees this. \*/
-	* html DIV.csc-textpic-intext-left-nowrap .csc-textpic-text { height: 1%; }
+	* html DIV.csc-textpic-intext-left-nowrap .csc-textpic-text,
+	* html .csc-textpic-intext-left ol,
+	* html .csc-textpic-intext-left ul { height: 1%; }
 	/* End hide from IE5/mac */
 	
 	DIV.csc-textpic DIV.csc-textpic-imagerow-last { margin-bottom: 0; }
@@ -1817,7 +1819,7 @@ plugin.tx_cssstyledcontent._CSS_DEFAULT_STYLE (
 	/* Browser fixes: */
 
 	/* Fix for unordered and ordered list with image "In text, left" */
-	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul {padding-left: 40px; overflow: auto; height: 1%; }
+	.csc-textpic-intext-left ol, .csc-textpic-intext-left ul {padding-left: 40px; overflow: auto; }
 )
 
 # TYPO3 SVN ID: $Id$
