@@ -79,11 +79,11 @@ final class t3lib_utility_Client {
 				// Since some UAs have more than one phrase (e.g Firefox has a Gecko phrase,
 				// Opera 7,8 have a MSIE phrase), use the last one found (the right-most one
 				// in the UA).  That's usually the most correct.
-			$i = count($matches['browser']) - 1;
-			$browserInfo['browser'] = $matches['browser'][$i];
-			$browserInfo['version'] = $matches['version'][$i];
+			$lastIndex = count($matches['browser']) - 1;
+			$browserInfo['browser'] = $matches['browser'][$lastIndex];
+			$browserInfo['version'] = $matches['version'][$lastIndex];
 				//But return all parsed browsers / version in an extra array
-			for ($i = 0; $i < count($matches['browser']); $i++) {
+			for ($i = 0; $i <= $lastIndex; $i++) {
 				$browserInfo['all'][$matches['browser'][$i]] = $matches['version'][$i];
 			}
 		}

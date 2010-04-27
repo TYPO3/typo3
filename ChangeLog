@@ -1,5 +1,6 @@
 2010-04-27  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #14201: getBrowserInfo delivers wrong info
 	* Fixed bug #14201: getBrowserInfo delivers wrong info
 	* Fixed bug #14137: Startup in module does not work (thanks to Stefan Galinski)
 
