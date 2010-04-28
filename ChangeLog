@@ -1,3 +1,7 @@
+2010-04-27  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14230: Match TS browser condition with all delivered browsers
+
 2010-04-28  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14139: condensed mode in backend does not work (thanks to Stefan Galinski)
