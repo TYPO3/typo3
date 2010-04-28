@@ -52,6 +52,9 @@ class user_tx_install_hook {
 			case 2:
 				$this->createConnectionForm(t3lib_div::_GET('driver'), $markers, $instObj);
 				break;
+			case 3:
+				$this->createDatabaseForm($markers, $instObj);
+				break;
 		}
 	}
 
@@ -152,9 +155,8 @@ class user_tx_install_hook {
 					'password' => TYPO3_db_password,
 					'labelHost' => 'Host',
 					'host' => TYPO3_db_host ? TYPO3_db_host : 'windows',
-					'labelDatabase' => 'Database',
-					'database' => TYPO3_db,  
 				);
+				$nextStep = $instObj->step + 1;
 				break;
 			case 'odbc_mssql':
 				$driverMarkers = array(
@@ -166,6 +168,7 @@ class user_tx_install_hook {
 					'host' => TYPO3_db_host ? TYPO3_db_host : 'windows',
 					'database' => 'dummy_string',
 				);
+				$nextStep = $instObj->step + 2;
 				break;
 			case 'oci8':
 				$driverMarkers = array(
@@ -179,8 +182,9 @@ class user_tx_install_hook {
 					'labelSID' => 'SID',
 					'labelServiceName' => 'Service Name',
 					'labelDatabase' => 'Name',
-					'database' => TYPO3_db,  
+					'database' => TYPO3_db,
 				);
+				$nextStep = $instObj->step + 2;
 				break;
 			default:
 				$driverMarkers = array(
@@ -193,6 +197,7 @@ class user_tx_install_hook {
 					'labelDatabase' => 'Database',
 					'database' => TYPO3_db,
 				);
+				$nextStep = $instObj->step + 1;
 				break;
 		}
 
@@ -200,7 +205,7 @@ class user_tx_install_hook {
 		$markers['header'] = 'Connect to your database host';
 			// Define the markers content for the subpart
 		$subPartMarkers = array(
-			'step' => $instObj->step + 1,
+			'step' => $nextStep,
 			'action' => htmlspecialchars($instObj->action),
 			'encryptionKey' => $instObj->createEncryptionKey(),
 			'branch' => TYPO3_branch,
@@ -218,6 +223,116 @@ class user_tx_install_hook {
 			1
 		);
 	}
+
+	/**
+	 * Creates a specialized form to configure the database.
+	 * 
+	 * @param array $markers
+	 * @param tx_install $instObj
+	 */
+	protected function createDatabaseForm(array &$markers, tx_install $instObj) {
+		$error_missingConnect = '
+			<p class="typo3-message message-error">
+				<strong>
+					There is no connection to the database!
+				</strong>
+				<br />
+				(Username: <em>' . TYPO3_db_username . '</em>,
+				Host: <em>' . TYPO3_db_host . '</em>,
+				Using Password: YES)
+				<br />
+				Go to Step 1 and enter a proper username/password!
+			</p>
+		';
+
+			// Add header marker for main template
+		$markers['header'] = 'Select database';
+			// There should be a database host connection at this point
+		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(
+			TYPO3_db_host, TYPO3_db_username, TYPO3_db_password
+		)) {
+				// Get the template file
+			$templateFile = @file_get_contents(
+				t3lib_extMgm::extPath('dbal') . $this->templateFilePath . 'install.html'
+			);
+				// Get the template part from the file
+			$template = t3lib_parsehtml::getSubpart(
+				$templateFile, '###TEMPLATE###'
+			);
+				// Get the subpart for the database choice step
+			$formSubPart = t3lib_parsehtml::getSubpart(
+				$template, '###DATABASE_FORM###'
+			);
+				// Get the subpart for the database options
+			$step3DatabaseOptionsSubPart = t3lib_parsehtml::getSubpart(
+				$formSubPart, '###DATABASEOPTIONS###'
+			);
+
+			$dbArr = $instObj->getDatabaseList();
+			$dbIncluded = FALSE;
+			foreach ($dbArr as $dbname) {
+					// Define the markers content for database options
+				$step3DatabaseOptionMarkers = array(
+					'databaseValue' => htmlspecialchars($dbname),
+					'databaseSelected' => ($dbname === TYPO3_db) ? 'selected="selected"' : '',
+					'databaseName' => htmlspecialchars($dbname)
+				);
+					// Add the option HTML to an array
+				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
+					$step3DatabaseOptionsSubPart,
+					$step3DatabaseOptionMarkers,
+					'###|###',
+					1,
+					1
+				);
+				if ($dbname === TYPO3_db) {
+					$dbIncluded = TRUE;
+				}
+			}
+			if (!$dbIncluded && TYPO3_db) {
+					// // Define the markers content when no access
+				$step3DatabaseOptionMarkers = array(
+					'databaseValue' => htmlspecialchars(TYPO3_db),
+					'databaseSelected' => 'selected="selected"',
+					'databaseName' => htmlspecialchars(TYPO3_db) . ' (NO ACCESS!)'
+				);
+					// Add the option HTML to an array
+				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray(
+					$step3DatabaseOptionsSubPart,
+					$step3DatabaseOptionMarkers,
+					'###|###',
+					1,
+					1
+				);
+			}
+				// Substitute the subpart for the database options
+			$content = t3lib_parsehtml::substituteSubpart(
+				$formSubPart,
+				'###DATABASEOPTIONS###',
+				implode(chr(10), $step3DatabaseOptions)
+			);
+				// Define the markers content
+			$step3SubPartMarkers = array(
+				'step' => $instObj->step + 1,
+				'action' => htmlspecialchars($instObj->action),
+				'llOption2' => 'Select an EMPTY existing database:',
+				'llRemark2' => 'All tables used by TYPO3 will be overwritten in step 3.',
+				'continue' => 'Continue'
+			);
+				// Add step marker for main template
+			$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
+				$content,
+				$step3SubPartMarkers,
+				'###|###',
+				1,
+				1
+			);
+		} else {
+				// Add step marker for main template when no connection
+			$markers['step'] = $error_missingConnect;
+		}
+	}
+
 }
 
 ?>
