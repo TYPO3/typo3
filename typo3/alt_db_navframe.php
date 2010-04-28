@@ -175,7 +175,7 @@ class SC_alt_db_navframe {
 			}
 			top.fsMod.currentBank = bank;
 
-			if (top.condensedMode) {
+			if (top.TYPO3.configuration.condensedMode) {
 				top.content.location.href = theUrl;
 			} else {
 				parent.list_frame.location.href=theUrl;
