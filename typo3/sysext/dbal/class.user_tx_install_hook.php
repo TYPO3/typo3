@@ -69,7 +69,11 @@ class user_tx_install_hook {
 	public function executeLocalconf(array &$lines, $step, tx_install $instObj) {
 		switch ($step) {
 			case 3:
+			case 4:
 				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
+				if (!$driver) {
+					break;
+				}
 				$driverConfig = '';
 				switch ($driver) {
 					case 'oci8':

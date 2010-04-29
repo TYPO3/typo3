@@ -2480,6 +2480,10 @@ class ux_t3lib_DB extends t3lib_DB {
 		$output = FALSE;
 
 		if (is_array($cfgArray)) {
+			if (!$cfgArray['config']['database']) {
+					// Configuration is incomplete
+				return;
+			}
 			switch ($handlerType) {
 				case 'native':
 					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
