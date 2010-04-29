@@ -319,8 +319,6 @@ class Tx_Extbase_Property_Mapper {
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
-		} else {
-			throw new Tx_Extbase_Persistence_Exception_UnknownObject('The requested object with the identifier "' . $uid . '" was not found.', 1271856793);
 		}
 		return $object;
 	}
