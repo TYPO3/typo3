@@ -1,6 +1,7 @@
 2010-04-29  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14207: Duplicate submodule URL in JavaScript
+	* Fixed bug #14026: Main module does not load different navFrames in submodules in dependency of navFrameScriptParam
 
 2010-04-22  Susanne Moog  <typo3@susanne-moog.de>
 
