@@ -2071,6 +2071,7 @@ class browse_links {
 	function TBE_expandFolder($expandFolder=0,$extensionList='',$noThumbs=0)	{
 		global $LANG;
 
+		$extensionList = ($extensionList == '*') ? '' : $extensionList;
 		$expandFolder = $expandFolder ? $expandFolder : $this->expandFolder;
 		$out='';
 		if ($expandFolder && $this->checkFolder($expandFolder))	{
@@ -2339,6 +2340,7 @@ class browse_links {
 	function TBE_dragNDrop($expandFolder=0,$extensionList='')	{
 		global $BACK_PATH;
 
+		$extensionList = ($extensionList == '*') ? '' : $extensionList;
 		$expandFolder = $expandFolder ? $expandFolder : $this->expandFolder;
 		$out='';
 		if ($expandFolder && $this->checkFolder($expandFolder))	{
