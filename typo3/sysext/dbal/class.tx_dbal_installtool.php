@@ -235,58 +235,14 @@ class tx_dbal_installtool {
 			'abstractionLayer' => t3lib_parsehtml::getSubpart($template, '###ABSTRACTION_LAYER###'),
 			'vendor' => t3lib_parsehtml::getSubpart($template, '###VENDOR###'),
 		);
-		$supportedDrivers = array(
-			'Native' => array(
-				'mysqli' => array(
-					'label'      => 'MySQLi (recommended)',
-					'extensions' => array('mysqli'),
-				),
-				'mysql' => array(
-					'label'      => 'MySQL',
-					'extensions' => array('mysql'),
-				),
-				'mssql' => array(
-					'label'      => 'Microsoft SQL Server',
-					'extensions' => array('mssql'),
-				),
-				'oci8' => array(
-					'label'      => 'Oracle OCI8',
-					'extensions' => array('oci8'),
-				),
-				'postgres' => array(
-					'label'      => 'PostgreSQL',
-					'extensions' => array('pgsql'),
-				)
-			),
-			'ODBC' => array(
-				'odbc_mssql' => array(
-					'label'      => 'Microsoft SQL Server',
-					'extensions' => array('odbc', 'mssql'),
-				),
-			),
-		);
 
-			// Search for installed drivers
-		$installedDrivers = array();
-		foreach ($supportedDrivers as $abstractionLayer => $drivers) {
-			foreach ($drivers as $driver => $info) {
-				$isAvailable = TRUE;
-				foreach ($info['extensions'] as $extension) {
-					$isAvailable &= extension_loaded($extension);
-				}
-				if ($isAvailable) {
-					if (!isset($installedDrivers[$abstractionLayer])) {
-						$installedDrivers[$abstractionLayer] = array();
-					}
-					$installedDrivers[$abstractionLayer][$driver] = $info['label'];
-				}
-			}
-		}
+		$supportedDrivers = $this->getSupportedDrivers();
+		$availableDrivers = $this->getAvailableDrivers($supportedDrivers);
 
-			// Create the drop-down list of drivers
+			// Create the drop-down list of available drivers
 		$dropdown = '';
 		$activeDriver = t3lib_div::_GET('driver');
-		foreach ($installedDrivers as $abstractionLayer => $drivers) {
+		foreach ($availableDrivers as $abstractionLayer => $drivers) {
 			$options = array();
 			foreach ($drivers as $driver => $label) {
 				$markers = array(
@@ -327,6 +283,74 @@ class tx_dbal_installtool {
 			'Driver'
 		);
 		return $form;
+	}
+
+	/**
+	 * Returns a list of DBAL supported database drivers, with a user-friendly name
+	 * and any PHP module dependency.
+	 *
+	 * @return array
+	 */
+	protected function getSupportedDrivers() {
+		$supportedDrivers = array(
+			'Native' => array(
+				'mysqli' => array(
+					'label'      => 'MySQLi (recommended)',
+					'extensions' => array('mysqli'),
+				),
+				'mysql' => array(
+					'label'      => 'MySQL',
+					'extensions' => array('mysql'),
+				),
+				'mssql' => array(
+					'label'      => 'Microsoft SQL Server',
+					'extensions' => array('mssql'),
+				),
+				'oci8' => array(
+					'label'      => 'Oracle OCI8',
+					'extensions' => array('oci8'),
+				),
+				'postgres' => array(
+					'label'      => 'PostgreSQL',
+					'extensions' => array('pgsql'),
+				)
+			),
+			'ODBC' => array(
+				'odbc_mssql' => array(
+					'label'      => 'Microsoft SQL Server',
+					'extensions' => array('odbc', 'mssql'),
+				),
+			),
+		);
+		return $supportedDrivers;
+	}
+
+	/**
+	 * Returns a list of database drivers that are available on current server.
+	 *
+	 * @param array $supportedDrivers
+	 * @return array
+	 */
+	protected function getAvailableDrivers(array $supportedDrivers) {
+		$availableDrivers = array();
+		foreach ($supportedDrivers as $abstractionLayer => $drivers) {
+			foreach ($drivers as $driver => $info) {
+				$isAvailable = TRUE;
+
+					// Loop through each PHP module dependency to ensure it is loaded
+				foreach ($info['extensions'] as $extension) {
+					$isAvailable &= extension_loaded($extension);
+				}
+
+				if ($isAvailable) {
+					if (!isset($availableDrivers[$abstractionLayer])) {
+						$availableDrivers[$abstractionLayer] = array();
+					}
+					$availableDrivers[$abstractionLayer][$driver] = $info['label'];
+				}
+			}
+		}
+		return $availableDrivers;
 	}
 
 	/**
