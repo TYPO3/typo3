@@ -445,9 +445,6 @@ class ModuleMenu {
 							$submoduleNavigationFrameScript = $subModuleData['navigationFrameScript'] ? $subModuleData['navigationFrameScript'] : $subModuleData['parentNavigationFrameScript'];
 							$submoduleNavigationFrameScript = t3lib_div::resolveBackPath($submoduleNavigationFrameScript);
 
-								// add GET parameters for sub module to the navigation script
-							$submoduleNavigationFrameScript = $this->appendQuestionmarkToLink($submoduleNavigationFrameScript).$subModuleData['navigationFrameScript'];
-
 							$javascriptCommand = '
 				if (top.content.list_frame && top.fsMod.currentMainLoaded=="'.$parentModuleName.'") {
 					top.currentSubScript="'.$subModuleData['originalLink'].'";
