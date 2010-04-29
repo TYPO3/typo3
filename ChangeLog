@@ -1,3 +1,7 @@
+2010-04-29  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #14207: Duplicate submodule URL in JavaScript
+
 2010-04-27  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14230: Match TS browser condition with all delivered browsers
