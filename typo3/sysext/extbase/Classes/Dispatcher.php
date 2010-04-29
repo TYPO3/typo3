@@ -246,7 +246,7 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
 		
-		$controller->injectSettings(!empty(self::$extbaseFrameworkConfiguration['settings']) ? self::$extbaseFrameworkConfiguration['settings'] : array());
+		$controller->injectSettings(is_array(self::$extbaseFrameworkConfiguration['settings']) ? self::$extbaseFrameworkConfiguration['settings'] : array());
 
 		$flashMessageContainer = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
 		$flashMessageContainer->reset();
