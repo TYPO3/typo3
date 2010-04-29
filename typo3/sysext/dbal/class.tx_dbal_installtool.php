@@ -26,7 +26,7 @@
 ***************************************************************/
 
 /**
- * Hook for TYPO3 installer.
+ * Hooks for TYPO3 Install Tool.
  *
  * $Id$
  *
@@ -35,7 +35,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class user_tx_install_hook {
+class tx_dbal_installtool {
 
 	protected $templateFilePath = 'res/Templates/';
 
@@ -69,11 +69,7 @@ class user_tx_install_hook {
 	public function executeLocalconf(array &$lines, $step, tx_install $instObj) {
 		switch ($step) {
 			case 3:
-			case 4:
 				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
-				if (!$driver) {
-					break;
-				}
 				$driverConfig = '';
 				switch ($driver) {
 					case 'oci8':
@@ -125,7 +121,7 @@ class user_tx_install_hook {
 		$driverTemplate = t3lib_parsehtml::getSubpart(
 			$formSubPart, '###DATABASE_DRIVER###'
 		);
-		$driverSubPart = $instObj->prepareDatabaseDrivers($driverTemplate);
+		$driverSubPart = $this->prepareDatabaseDrivers($driverTemplate);
 		$formSubPart = t3lib_parsehtml::substituteSubpart(
 			$formSubPart,
 			'###DATABASE_DRIVER###',
@@ -226,6 +222,111 @@ class user_tx_install_hook {
 			1,
 			1
 		);
+	}
+
+	/**
+	 * Prepares the list of database drivers for step 2.
+	 *
+	 * @param string $template
+	 * @return string
+	 */
+	protected function prepareDatabaseDrivers($template) {
+		$subParts = array(
+			'abstractionLayer' => t3lib_parsehtml::getSubpart($template, '###ABSTRACTION_LAYER###'),
+			'vendor' => t3lib_parsehtml::getSubpart($template, '###VENDOR###'),
+		);
+		$supportedDrivers = array(
+			'Native' => array(
+				'mysqli' => array(
+					'label'      => 'MySQLi (recommended)',
+					'extensions' => array('mysqli'),
+				),
+				'mysql' => array(
+					'label'      => 'MySQL',
+					'extensions' => array('mysql'),
+				),
+				'mssql' => array(
+					'label'      => 'Microsoft SQL Server',
+					'extensions' => array('mssql'),
+				),
+				'oci8' => array(
+					'label'      => 'Oracle OCI8',
+					'extensions' => array('oci8'),
+				),
+				'postgres' => array(
+					'label'      => 'PostgreSQL',
+					'extensions' => array('pgsql'),
+				)
+			),
+			'ODBC' => array(
+				'odbc_mssql' => array(
+					'label'      => 'Microsoft SQL Server',
+					'extensions' => array('odbc', 'mssql'),
+				),
+			),
+		);
+
+			// Search for installed drivers
+		$installedDrivers = array();
+		foreach ($supportedDrivers as $abstractionLayer => $drivers) {
+			foreach ($drivers as $driver => $info) {
+				$isAvailable = TRUE;
+				foreach ($info['extensions'] as $extension) {
+					$isAvailable &= extension_loaded($extension);
+				}
+				if ($isAvailable) {
+					if (!isset($installedDrivers[$abstractionLayer])) {
+						$installedDrivers[$abstractionLayer] = array();
+					}
+					$installedDrivers[$abstractionLayer][$driver] = $info['label'];
+				}
+			}
+		}
+
+			// Create the drop-down list of drivers
+		$dropdown = '';
+		$activeDriver = t3lib_div::_GET('driver');
+		foreach ($installedDrivers as $abstractionLayer => $drivers) {
+			$options = array();
+			foreach ($drivers as $driver => $label) {
+				$markers = array(
+					'driver'      => $driver,
+					'labelvendor' => $label,
+					'onclick'     => 'document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver . '\';',
+					'selected'    => '',
+				);
+				if ($driver === $activeDriver) {
+					$markers['selected'] .= ' selected="selected"';
+				}
+				$options[] = t3lib_parsehtml::substituteMarkerArray(
+					$subParts['vendor'],
+					$markers,
+					'###|###',
+					1
+				);
+			}
+			$subPart = t3lib_parsehtml::substituteSubpart(
+				$subParts['abstractionLayer'],
+				'###VENDOR###',
+				implode("\n", $options)
+			);
+			$dropdown .= t3lib_parsehtml::substituteMarker(
+				$subPart,
+				'###LABELABSTRACTIONLAYER###',
+				$abstractionLayer
+			);
+		}
+		$form = t3lib_parsehtml::substituteSubpart(
+			$template,
+			'###ABSTRACTION_LAYER###',
+			$dropdown
+		);
+		$form = t3lib_parsehtml::substituteMarker(
+			$form,
+			'###LABELDRIVER###',
+			'Driver'
+		);
+		return $form;
 	}
 
 	/**
@@ -339,4 +440,8 @@ class user_tx_install_hook {
 
 }
 
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_installtool.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_installtool.php']);
+}
 ?>
