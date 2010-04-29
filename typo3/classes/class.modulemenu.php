@@ -520,7 +520,7 @@ class ModuleMenu {
 					top.content.nav_frame.location = top.getModuleUrl(top.TS.PATH_typo3 + navFrames[mainModName]);
 				}
 			} else {
-				TYPO3.Backend.loadModule(mainModName, modName, top.getModuleUrl(modScriptURL));
+				TYPO3.Backend.loadModule(mainModName, modName, modScriptURL + additionalGetVariables);
 			}
 		} else if (modScriptURL) {
 			TYPO3.Backend.loadModule(mainModName, modName, top.getModuleUrl(modScriptURL + additionalGetVariables));

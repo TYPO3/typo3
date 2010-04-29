@@ -77,13 +77,12 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	/**
 	 * Initializes the ExtJS viewport with the given configuration.
 	 *
-	 * @param configuration object configuration of the viewport
 	 * @return void
 	 */
 	initComponent: function() {
-		//adjust the width of module menu
+		// adjust the width of module menu
 		this.initialConfig.items[1].width = TYPO3.configuration.moduleMenuWidth;
-		//call parent constructor
+		// call parent constructor
 		TYPO3.Viewport.superclass.initComponent.apply(this, arguments);
 
 		this.ContentContainer = Ext.ComponentMgr.get('typo3-contentContainer');
@@ -127,9 +126,13 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 			this.NavigationContainer.hide();
 		}
 
-		// top.currentSubScript
+		// append the typo3 path if it wasn't already applied
+		// this is important for backwards compatibility (e.g. shortcuts)
+		if (contentScript.indexOf(top.TS.PATH_typo3) !== 0) {
+			contentScript = top.TS.PATH_typo3 + contentScript;
+		}
 		Ext.get('content').set({
-			src: top.TS.PATH_typo3 + contentScript
+			src: contentScript
 		});
 
 		this.NavigationContainer.ownerCt.doLayout();

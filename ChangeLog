@@ -1,3 +1,7 @@
+2010-04-29  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14151: Shortcuts broken, if in user or admin tools modules (thanks to Stefan Galinski)
+
 2010-04-29  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14207: Duplicate submodule URL in JavaScript
