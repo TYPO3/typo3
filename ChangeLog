@@ -8,6 +8,7 @@
 
 2010-04-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #14222: Notice undefined index in tslib_pibase.php (Thanks to Martin Müller)
 	* Fixed bug #14220: Notice undefined index in t3lib_div::_GPmerged() (Thanks to Martin Müller)
 	* Fixed bug #14256: tslib_cObj has two test case files (Thanks to Oliver Klee)
 

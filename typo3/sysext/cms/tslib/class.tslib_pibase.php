@@ -218,9 +218,9 @@ class tslib_pibase {
 				$GLOBALS['TSFE']->reqCHash();
 			}
 		}
-		if ($GLOBALS['TSFE']->config['config']['language'])	{
+		if (!empty($GLOBALS['TSFE']->config['config']['language'])) {
 			$this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
-			if ($GLOBALS['TSFE']->config['config']['language_alt'])	{
+			if (!empty($GLOBALS['TSFE']->config['config']['language_alt'])) {
 				$this->altLLkey = $GLOBALS['TSFE']->config['config']['language_alt'];
 			}
 		}
