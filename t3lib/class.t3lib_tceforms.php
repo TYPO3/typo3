@@ -1645,7 +1645,7 @@ class t3lib_TCEforms	{
 					$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
 							$sM.
 							($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-							'>'.t3lib_div::deHSCentities(htmlspecialchars($p[0])).'</option>' . "\n";
+							'>' . t3lib_div::deHSCentities(($p[0])) . '</option>' . "\n";
 				}
 			}
 
@@ -2027,7 +2027,7 @@ class t3lib_TCEforms	{
 			// Perform modification of the selected items array:
 		foreach($itemArray as $tk => $tv) {
 			$tvP = explode('|',$tv,2);
-			$evalValue = rawurldecode($tvP[0]);
+			$evalValue = ($tvP[0]);
 			$isRemoved = in_array($evalValue,$removeItems)  || ($config['form_type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode($table,$field,$evalValue,$config['authMode']));
 			if ($isRemoved && !$PA['fieldTSConfig']['disableNoMatchingValueElement'] && !$config['disableNoMatchingValueElement'])	{
 				$tvP[1] = rawurlencode(@sprintf($nMV_label, $evalValue));
@@ -2038,7 +2038,7 @@ class t3lib_TCEforms	{
 					// Case: flexform, default values supplied, no label provided (bug #9795)
 				foreach ($selItems as $selItem) {
 					if ($selItem[1] == $tvP[0]) {
-						$tvP[1] = $selItem[0];
+						$tvP[1] = html_entity_decode($selItem[0]);
 						break;
 					}
 				}
@@ -2057,7 +2057,7 @@ class t3lib_TCEforms	{
 				}
 				$opt[]= '<option value="'.htmlspecialchars($p[1]).'"'.
 								($styleAttrValue ? ' style="'.htmlspecialchars($styleAttrValue).'"' : '').
-								'>'.htmlspecialchars($p[0]).'</option>';
+								'>' . $p[0] . '</option>';
 			}
 
 				// Put together the selector box:
@@ -4703,8 +4703,8 @@ class t3lib_TCEforms	{
 
 					// Add the item:
 				$items[] = array(
-					$lPrefix.strip_tags(t3lib_BEfunc::getRecordTitle($f_table,$row)),
-					$uidPre.$row['uid'],
+					$lPrefix . htmlspecialchars(t3lib_BEfunc::getRecordTitle($f_table, $row)),
+					$uidPre . $row['uid'],
 					$icon
 				);
 			}

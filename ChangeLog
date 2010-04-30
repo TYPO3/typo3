@@ -1,10 +1,14 @@
+2010-04-30  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14179: TCA select doesn't show record titles whic start with <= (thanks to Georg Ringer)
+
 2010-04-30  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #13758: page.jsInline / page.jsFooterInline may fail with config.removeDefaultJS=external (thanks to Steffen Ritter)
 
 2010-04-30  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Führicht)
+	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard FÃ¼hricht)
 
 2010-04-29  Jeff Segars  <jeff@webempoweredchurch.org>
 
