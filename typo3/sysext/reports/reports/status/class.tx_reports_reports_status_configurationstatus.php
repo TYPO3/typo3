@@ -63,8 +63,10 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		$severity = tx_reports_reports_status_Status::OK;
 
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex');
+		$registry = t3lib_div::makeInstance('t3lib_Registry');
+		$lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate'); 
 
-		if (!$count) {
+		if (!$count && $lastRefIndexUpdate) {
 			$value    = $GLOBALS['LANG']->getLL('status_empty');
 			$severity = tx_reports_reports_status_Status::WARNING;
 
@@ -72,10 +74,10 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 			$message  = sprintf(
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference'),
 				'<a href="' . $url . '">',
-				'</a>'
+				'</a>',
+				t3lib_BeFunc::dateTime($lastRefIndexUpdate)
 			);
 		}
-
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity
 		);

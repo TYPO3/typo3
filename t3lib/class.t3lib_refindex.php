@@ -1059,6 +1059,11 @@ class t3lib_refindex {
 		$bodyContent = $testedHowMuch.(count($errors)?implode(LF,$errors):'Index Integrity was perfect!');
 		if ($cli_echo) echo $testedHowMuch.(count($errors)?'Updates: '.count($errors):'Index Integrity was perfect!').LF;
 
+		if(!$testOnly) {
+			$registry = t3lib_div::makeInstance('t3lib_Registry');
+			$registry->set('core', 'sys_refindex_lastUpdate', $GLOBALS['EXEC_TIME']);
+		}
+
 		return array($headerContent,$bodyContent,count($errors));
 	}
 }

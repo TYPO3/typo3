@@ -4231,12 +4231,15 @@ final class t3lib_BEfunc {
 
 				// Check if sys_refindex is empty
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex');
-			if (!$count) {
+			$registry = t3lib_div::makeInstance('t3lib_Registry');
+			$lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
+			if (!$count && $lastRefIndexUpdate) {
 				$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
 				$warnings["backend_reference"] = sprintf(
 					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference'),
 					'<a href="'.$url.'">',
-					'</a>');
+					'</a>',
+					t3lib_BEfunc::dateTime($lastRefIndexUpdate));
 			}
 
 			// Check for memcached if configured
