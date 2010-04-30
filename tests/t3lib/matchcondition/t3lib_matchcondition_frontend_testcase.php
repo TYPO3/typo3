@@ -163,6 +163,8 @@ class t3lib_matchCondition_frontend_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function deprecatedBrowserInfoHookIsCalled() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = FALSE;
+
 		$classRef = uniqid('tx_browserInfoHook');
 		$browserInfoHookMock = $this->getMock($classRef, array('browserInfo'));
 		$browserInfoHookMock->expects($this->atLeastOnce())->method('browserInfo');
@@ -181,6 +183,8 @@ class t3lib_matchCondition_frontend_testcase extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function deprecatedWhichDeviceHookIsCalled() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = FALSE;
+
 		$classRef = uniqid('tx_whichDeviceHook');
 		$whichDeviceHookMock = $this->getMock($classRef, array('whichDevice'));
 		$whichDeviceHookMock->expects($this->atLeastOnce())->method('whichDevice');

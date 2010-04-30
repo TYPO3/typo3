@@ -56,6 +56,8 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 			'T3_VAR' => $GLOBALS['T3_VAR'],
 		);
 
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'] = FALSE;
+
 		$this->testGlobalNamespace = uniqid('TEST');
 		$GLOBALS[$this->testGlobalNamespace] = array();
 
