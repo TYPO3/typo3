@@ -84,8 +84,9 @@ var Tree = {
 	refresh: function() {
 		var r = new Date();
 		// randNum is useful so pagetree does not get cached in browser cache when refreshing
-		var location = window.location.href.replace(/&randNum=\d+/, '');
-		window.location = location + '&randNum=' + r.getTime();
+		var loc = window.location.href.replace(/&randNum=\d+/, '');
+		var addSign = loc.indexOf('?') > 0 ? '&' : '?';
+		window.location = loc + addSign + 'randNum=' + r.getTime();
 	},
 
 	// attaches the events to the elements needed for the drag and drop (for the titles and the icons)
