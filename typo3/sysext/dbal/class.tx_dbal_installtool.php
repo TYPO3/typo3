@@ -90,6 +90,7 @@ class tx_dbal_installtool {
 	public function executeWriteLocalconf(array &$lines, $step, tx_install $instObj) {
 		switch ($step) {
 			case 3:
+			case 4:
 				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
 				$driverConfig = '';
 				switch ($driver) {
@@ -112,7 +113,7 @@ class tx_dbal_installtool {
 						')' .
 					')' .
 				');';
-				$lines[] = '$TYPO3_CONF_VARS[\'EXTCONF\'][\'dbal\'][\'handlerCfg\'] = ' . $config;
+				$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXTCONF\'][\'dbal\'][\'handlerCfg\']', $config, FALSE);
 				break;
 		}
 	}
