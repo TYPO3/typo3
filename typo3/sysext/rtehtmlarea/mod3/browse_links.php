@@ -67,6 +67,19 @@ class tx_rtehtmlarea_SC_browse_links {
 	function main()	{
 			// Setting alternative web browsing mounts (ONLY local to browse_links.php this script so they stay "read-only")
 		$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
+
+		// Clear temporary DB mounts
+		$tmpMount = t3lib_div::_GET('setTempDBmount');
+		if (isset($tmpMount)) {
+			$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', intval($tmpMount));
+		}
+
+		// Set temporary DB mounts
+		$tempDBmount = intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'));
+		if ($tempDBmount) {
+	 		$altMountPoints = $tempDBmount;
+		}
+
 		if ($altMountPoints) {
 			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
 			$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();

@@ -1413,6 +1413,21 @@ class browse_links {
 				$pagetree->thisScript = $this->thisScript;
 				$tree=$pagetree->getBrowsableTree();
 				$cElements = $this->expandPage();
+
+				// Outputting Temporary DB mount notice:
+				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint')))	{
+					$link = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))) . '">' .
+										$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) .
+									'</a>';
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$link,
+						'',
+						t3lib_FlashMessage::INFO
+					);
+					$dbmount = $flashMessage->render();
+				}
+
 				$content.= '
 
 			<!--
@@ -1420,7 +1435,7 @@ class browse_links {
 			-->
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkPages">
 						<tr>
-							<td class="c-wCell" valign="top">'.$this->barheader($GLOBALS['LANG']->getLL('pageTree').':').$tree.'</td>
+							<td class="c-wCell" valign="top">' . $this->barheader($GLOBALS['LANG']->getLL('pageTree') . ':') . $dbmount . $tree . '</td>
 							<td class="c-wCell" valign="top">'.$cElements.'</td>
 						</tr>
 					</table>
