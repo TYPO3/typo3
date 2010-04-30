@@ -41,16 +41,21 @@ class tx_dbal_autoloader {
 	/**
 	 * Activates DBAL if it is supported.
 	 *
-	 * @param integer $step
+	 * @param tx_install $instObj
 	 * @return void
 	 */
-	public function execute($step) {
-		t3lib_div::debug($step, 'current step');
-		switch ($step) {
+	public function execute(tx_install $instObj) {
+		switch ($instObj->step) {
 			case 1:
+			case 2:
 				if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
-					t3lib_div::debug('activated dbal');
 					$this->activateDbal();
+				}
+				break;
+			case 3:
+				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
+				if ($driver === 'mysql' || $driver === 'mysqli') {
+					$this->deactivateDbal();
 				}
 				break;
 		}
@@ -80,6 +85,27 @@ class tx_dbal_autoloader {
 		if (!t3lib_div::inArray($extList, 'dbal')) {
 			$extList[] = 'dbal';
 		}
+		$this->updateExtensionList(implode(',', $extList));
+	}
+
+	/**
+	 * Dectivates DBAL.
+	 *
+	 * @return void
+	 */
+	protected function deactivateDbal() {
+		$extList = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
+		$extList = array_flip($extList);
+
+			// Remove sysext dbal and adodb
+		if (isset($extList['dbal'])) {
+			unset($extList['dbal']);
+		}
+		if (isset($extList['adodb'])) {
+			unset($extList['adodb']);
+		}
+		$extList = array_flip($extList);
+
 		$this->updateExtensionList(implode(',', $extList));
 	}
 
@@ -114,9 +140,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/cl
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dbal/class.tx_dbal_autoloader.php']);
 }
 
-$installStep = $this->step;
-
 	// Make instance:
 $SOBE = t3lib_div::makeInstance('tx_dbal_autoloader');
-$SOBE->execute($installStep);
+$SOBE->execute($this);
 ?>

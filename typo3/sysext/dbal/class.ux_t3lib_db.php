@@ -2108,10 +2108,14 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 				break;
 			case 'adodb':
-				$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
-				while (list($k, $theTable) = each($sqlTables)) {
-					if (preg_match('/BIN\$/', $theTable)) continue; // skip tables from the Oracle 10 Recycle Bin
-					$whichTables[$theTable] = $theTable;
+					// check needed for install tool - otherwise it will just die because the call to
+					// MetaTables is done on a stdClass instance
+				if (method_exists($this->handlerInstance['_DEFAULT'], 'MetaTables')) {
+					$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
+					while (list($k, $theTable) = each($sqlTables)) {
+						if (preg_match('/BIN\$/', $theTable)) continue; // skip tables from the Oracle 10 Recycle Bin
+						$whichTables[$theTable] = $theTable;
+					}
 				}
 				break;
 			case 'userdefined':

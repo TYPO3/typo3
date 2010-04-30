@@ -87,8 +87,13 @@ class tx_dbal_installtool {
 	 * @param tx_install $instObj
 	 * @return void
 	 */
-	public function executeLocalconf(array &$lines, $step, tx_install $instObj) {
+	public function executeWriteLocalconf(array &$lines, $step, tx_install $instObj) {
 		switch ($step) {
+			//case 2:
+			//	if (isset($instObj->INSTALL['localconf.php']['typo_db_driver'])) {
+			//		$instObj->setValueInLocalconfFile($lines, '$typo_db_driver', trim($this->INSTALL['localconf.php']['typo_db_driver']));
+			//	}
+			//	break;
 			case 3:
 				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
 				$driverConfig = '';
