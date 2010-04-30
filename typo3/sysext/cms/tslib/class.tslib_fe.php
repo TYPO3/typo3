@@ -487,7 +487,16 @@
 	 * @return	void
 	 */
 	function connectToDB()	{
-		if ($GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+		try {
+			$link = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password);
+		} catch (RuntimeException $e) {
+			if (TYPO3_db) {
+					// Database is defined, this should normally not happen, user should be informed
+				throw $e;
+			}
+			$link = FALSE;
+		}
+		if ($link !== FALSE) {
 			if (!TYPO3_db)	{
 				$this->printError('No database selected','Database Error');
 					// Redirects to the Install Tool:

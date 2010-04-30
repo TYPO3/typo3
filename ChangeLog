@@ -1,3 +1,7 @@
+2010-04-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14254: Fresh install does not redirect to Install Tool when mysql is not available
+
 2010-04-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14256: tslib_cObj has two test case files (Thanks to Oliver Klee)
