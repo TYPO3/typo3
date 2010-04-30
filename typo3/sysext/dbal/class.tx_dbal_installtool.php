@@ -103,6 +103,9 @@ class tx_dbal_installtool {
 					case 'odbc_mssql':
 						$driverConfig = '\'useNameQuote\' => TRUE';
 						break;
+					case 'mysql':
+					case 'mysqli':
+						return;
 				}
 				$config = 'array(' .
 					'\'_DEFAULT\' => array(' .
