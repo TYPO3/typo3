@@ -566,12 +566,22 @@ class SC_index {
 			$newsItemTemplate = t3lib_parsehtml::getSubpart($newsContent, '###NEWS_ITEM###');
 
 			$newsItemContent = '';
+			$count = 1;
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem) {
+				$additionalClass = '';
+				if ($count == 1) {
+					$additionalClass = ' first-item';
+				} elseif($count == count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
+					$additionalClass = ' last-item';
+				}
 				$newsItemMarker = array(
 					'###HEADER###'  => htmlspecialchars($newsItem['header']),
 					'###DATE###'    => htmlspecialchars($newsItem['date']),
-					'###CONTENT###' => trim($newsItem['content'])
+					'###CONTENT###' => trim($newsItem['content']),
+					'###CLASS###'	=> $additionalClass
 				);
+				
+				$count++;
 				$newsItemContent .= t3lib_parsehtml::substituteMarkerArray($newsItemTemplate, $newsItemMarker);
 			}
 

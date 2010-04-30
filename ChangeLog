@@ -1,5 +1,6 @@
 2010-04-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14212: Better styling of BE login news (thanks to Georg Ringer)
 	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Führicht)
 
 2010-04-29  Jeff Segars  <jeff@webempoweredchurch.org>
