@@ -1,3 +1,7 @@
+2010-04-30  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #11587: set proper default timezone (fixes PHP 5.3 warnings concerning missing timezone settings)
+
 2010-04-30  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #13758: page.jsInline / page.jsFooterInline may fail with config.removeDefaultJS=external (thanks to Steffen Ritter)
