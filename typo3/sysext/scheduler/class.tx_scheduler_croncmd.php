@@ -217,65 +217,69 @@ class tx_scheduler_CronCmd {
 	}
 
 	/**
-	 * Builds a list of possible values from a cron command
+	 * Builds a list of possible values from a cron command.
 	 *
-	 * @param	string		$definition: the command e.g. 2-8, *, 0-59/20
-	 * @param	integer		$min: minimum allowed value
-	 * @param	integer		$max: maximum allowed value
+	 * @param	string		$definition: the command e.g. "2-8,14,0-59/20"
+	 * @param	integer		$min: minimum allowed value, greater or equal zero
+	 * @param	integer		$max: maximum allowed value, greater than $min
 	 * @return	array		list with possible values
 	 */
 	protected function getList($definition, $min, $max) {
-		$list = array();
+		$possibleValues = array();
+
+		$listParts = t3lib_div::trimExplode(',', $definition, TRUE);
+		foreach ($listParts as $part) {
+			$possibleValues = array_merge($possibleValues, $this->getListPart($part, $min, $max));
+		}
+
+		sort($possibleValues);
+		return $possibleValues;
+	}
+
+	/**
+	 * Builds a list of possible values from a single part of a cron command.
+	 * Parses asterisk (*), ranges (2-4) and steps (2-10/2).
+	 *
+	 * @param	string		$definition: a command part e.g. "2-8", "*", "0-59/20"
+	 * @param	integer		$min: minimum allowed value, greater or equal zero
+	 * @param	integer		$max: maximum allowed value, greater than $min
+	 * @return	array		list with possible values or empty array
+	 */
+	protected function getListPart($definition, $min, $max) {
+		$possibleValues = array();
 
 		if ($definition == '*') {
-				// Get list for the asterix
-			for ($tmp = $min; $tmp <= $max; $tmp++) {
-				$list[] = $tmp;
+				// Get list for the asterisk
+			for ($value = $min; $value <= $max; $value++) {
+				$possibleValues[] = $value;
 			}
 		} else if (strpos($definition, '/') !== false) {
 				// Get list for step values
-
-				// Extract list part
-			$defList = substr($definition, 0, strpos($definition, '/'));
-			$stepDef = substr($definition, strpos($definition, '/') + 1);
-			$tmpList = $this->getList($defList, $min, $max);
-
-			for ($i=0; $i<count($tmpList); $i++) {
-				if ($i % $stepDef == 0) {
-					$list[] = $tmpList[$i];
+			list($listPart, $stepPart) = t3lib_div::trimExplode('/', $definition);
+			$tempList = $this->getListPart($listPart, $min, $max);
+			foreach ($tempList as $tempListValue) {
+				if ($tempListValue % $stepPart == 0) {
+					$possibleValues[] = $tempListValue;
 				}
-			}
-		} else if (strpos($definition, ',') !== false) {
-				// Get list for list definitions
-
-			$defList = explode(',', $definition);
-			foreach ($defList as $listItem) {
-				$tmpList = $this->getList($listItem, $min, $max);
-				$list = array_merge($list, $tmpList);
 			}
 		} else if (strpos($definition, '-') !== false) {
 				// Get list for range definitions
-
 				// Get list definition parts
-			list($def_min, $def_max) = t3lib_div::trimExplode('-', $definition);
-
-			if ($def_min < $min) {
-				$def_min = $min;
+			list($minValue, $maxValue) = t3lib_div::trimExplode('-', $definition);
+			if ($minValue < $min) {
+				$minValue = $min;
 			}
-
-			if ($def_max > $max) {
-				$def_max = $max;
+			if ($maxValue > $max) {
+				$maxValue = $max;
 			}
-
-			$list = $this->getList('*', $def_min, $def_max);
+			$possibleValues = $this->getListPart('*', $minValue, $maxValue);
 		} else if (is_numeric($definition) && $definition >= $min && $definition <= $max) {
 				// Get list for single values
-			$list[] = intval($definition);
+			$possibleValues[] = intval($definition);
 		}
 
-			// Sort the list and return it
-		sort($list);
-		return $list;
+		sort($possibleValues);
+		return $possibleValues;
 	}
 
 	/**
