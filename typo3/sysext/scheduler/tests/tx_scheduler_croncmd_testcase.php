@@ -37,11 +37,27 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	const TIMESTAMP = 1262300400;
 
 	/**
+	 * Tests wether step values are correctly parsed for minutes
+	 *
+	 * @test
+	 */
+	public function minutePartUsesStepValuesWithinRange() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '0-20/10 * * * *');
+		$expectedResult = array(
+			'0' => 0,
+			'1' => 10,
+			'2' => 20,
+		);
+		$actualResult = $cronCmdInstance->valid_values;
+		$this->assertEquals($expectedResult, $actualResult[0]);
+	}
+
+	/**
 	 * Tests whether dayList is correctly calculated for a single day of month
 	 *
 	 * @test
 	 */
-	public function isDayListCorrectForOneDayOfMonth() {
+	public function dayPartUsesSingleDay() {
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2 * *');
 		$expectedResult = array(
 			'0' => 2,
@@ -55,7 +71,7 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 *
 	 * @test
 	 */
-	public function isDayListCorrectForListOfDayOfMonth() {
+	public function dayPartUsesLists() {
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2,7 * *');
 		$expectedResult = array(
 			'0' => 2,
@@ -70,7 +86,7 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 *
 	 * @test
 	 */
-	public function isDayListCorrectForRangeOfDayOfMonth() {
+	public function dayPartUsesRangesWithLists() {
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2-4,10 * *');
 		$expectedResult = array(
 			'0' => 2,
@@ -83,11 +99,44 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * Tests whether dayList is correctly calculated for stops of month days
+	 *
+	 * @test
+	 */
+	public function dayPartUsesStepValues() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * */14 * *');
+		$expectedResult = array(
+			'0' => 14,
+			'1' => 28,
+		);
+		$actualResult = $cronCmdInstance->valid_values;
+		$this->assertEquals($expectedResult, $actualResult[2]);
+	}
+	
+	/**
+	 * Tests whether dayList is correctly calculated for stops of month days combined with ranges and lists
+	 *
+	 * @test
+	 */
+	public function dayPartUsesListsWithRangesAndSteps() {
+		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 2,4-6/2,*/14 * *');
+		$expectedResult = array(
+			'0' => 2,
+			'1' => 4,
+			'2' => 6,
+			'3' => 14,
+			'4' => 28,
+		);
+		$actualResult = $cronCmdInstance->valid_values;
+		$this->assertEquals($expectedResult, $actualResult[2]);
+	}
+
+	/**
 	 * Tests whether dayList is correctly calculated for a single day of week
 	 *
 	 * @test
 	 */
-	public function isDayListCorrectForOneDayOfWeek() {
+	public function weekdayPartUsesSingleDay() {
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * * * 1', self::TIMESTAMP);
 		$expectedResult = array(
 			'0' => 4,
@@ -104,7 +153,7 @@ class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
 	 *
 	 * @test
 	 */
-	public function isDayListCorrectForCombinationOfDayOfMonthAndDayOfWeek() {
+	public function dayListUsesListOfDayOfMonthWithSingleDayOfWeek() {
 		$cronCmdInstance = t3lib_div::makeInstance('tx_scheduler_cronCmd', '* * 1,2 * 1', self::TIMESTAMP);
 		$expectedResult = array(
 			'0' => 1,

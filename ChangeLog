@@ -25,6 +25,7 @@
 
 2010-04-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to bug #13194: Additional unit tests and test renamings for class tx_scheduler_CronCmd
 	* Fixed bug #13194: tx_scheduler_CronCmd does not correctly parse step values
 	* Fixed bug #14223: Notice undefined index in tslib_fe.php isOutputting() (Thanks to Martin Müller)
 	* Fixed bug #14222: Notice undefined index in tslib_pibase.php (Thanks to Martin Müller)
