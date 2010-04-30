@@ -47,6 +47,7 @@ The following configuration is recommended:
 	- cURL
 	- filter
 	- GD2
+	- hash
 	- JSON
 	- mbstring
 	- mysql

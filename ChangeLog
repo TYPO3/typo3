@@ -1,3 +1,7 @@
+2010-04-30  Benjamin Mack  <benni@typo3.org>
+
+	* Added feature #12502: Use HMACs for authencity and integrity checks (Thanks to Marcus Krause and the TYPO3 Security Team)
+
 2010-04-30 Francois Suter  <francois@typo3.org>
 
 	* Added feature #14195: Reorganize the backend stylesheets (thanks to Fabien Udriot and Steffen Gebert)

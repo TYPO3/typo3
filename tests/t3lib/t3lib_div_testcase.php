@@ -732,6 +732,38 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 
 	//////////////////////////////////
+	// Tests concerning hmac
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function hmacReturnsHashOfProperLength() {
+		$hmac = t3lib_div::hmac('message');
+		$this->assertTrue(!empty($hmac) && is_string($hmac));
+		$this->assertTrue(strlen($hmac) == 40);
+	}
+
+	/**
+	 * @test
+	 */
+	public function hmacReturnsEqualHashesForEqualInput() {
+		$msg0 = 'message';
+		$msg1 = 'message';
+		$this->assertEquals(t3lib_div::hmac($msg0), t3lib_div::hmac($msg1));
+	}
+
+	/**
+	 * @test
+	 */
+	public function hmacReturnsNotEqualHashesForNotEqualInput() {
+		$msg0 = 'message0';
+		$msg1 = 'message1';
+		$this->assertNotEquals(t3lib_div::hmac($msg0), t3lib_div::hmac($msg1));
+	}
+
+
+	//////////////////////////////////
 	// Tests concerning quoteJSvalue
 	//////////////////////////////////
 
