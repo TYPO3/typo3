@@ -276,8 +276,8 @@ final class t3lib_div {
 	 * @return	array		Returns the GET vars merged recursively onto the POST vars.
 	 */
 	public static function _GPmerged($parameter) {
-		$postParameter = is_array($_POST[$parameter]) ? $_POST[$parameter] : array();
-		$getParameter  = is_array($_GET[$parameter])  ? $_GET[$parameter]  : array();
+		$postParameter = (isset($_POST[$parameter]) && is_array($_POST[$parameter])) ? $_POST[$parameter] : array();
+		$getParameter  = (isset($_GET[$parameter]) && is_array($_GET[$parameter])) ? $_GET[$parameter] : array();
 
 		$mergedParameters = self::array_merge_recursive_overrule($getParameter, $postParameter);
 		self::stripSlashesOnArray($mergedParameters);
