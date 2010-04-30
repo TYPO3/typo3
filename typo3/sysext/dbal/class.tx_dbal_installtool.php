@@ -89,11 +89,6 @@ class tx_dbal_installtool {
 	 */
 	public function executeWriteLocalconf(array &$lines, $step, tx_install $instObj) {
 		switch ($step) {
-			//case 2:
-			//	if (isset($instObj->INSTALL['localconf.php']['typo_db_driver'])) {
-			//		$instObj->setValueInLocalconfFile($lines, '$typo_db_driver', trim($this->INSTALL['localconf.php']['typo_db_driver']));
-			//	}
-			//	break;
 			case 3:
 				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
 				$driverConfig = '';
@@ -184,8 +179,10 @@ class tx_dbal_installtool {
 					'password' => TYPO3_db_password,
 					'labelHost' => 'Host',
 					'host' => TYPO3_db_host ? TYPO3_db_host : 'windows',
+					'labelDatabase' => 'Database',
+					'database' => TYPO3_db,
 				);
-				$nextStep = $instObj->step + 1;
+				$nextStep = $instObj->step + 2;
 				break;
 			case 'odbc_mssql':
 				$driverMarkers = array(
