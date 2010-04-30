@@ -1,0 +1,144 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Workspace
+
+$Id: element_version.css 2229 2010-04-16 11:09:43Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-alt-db-navframe-php .workspace-info {
+	background-color: #ccccff;
+	border: none;
+}
+
+table#typo3-versionSelector {
+	background-color: #b8bec9;
+	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+	border: 1px solid #a2aab8;
+}
+
+table#typo3-versionSelector td {
+	color: #fff;
+}
+
+.ver-element,
+ul.tree ul li.ver-element {
+	background-color: #d7dbe2;
+}
+
+.ver-page,
+ul.tree ul li.ver-page {
+	background-color: #ccccff;
+}
+
+.ver-branch,
+ul.tree ul li.ver-branch {
+	background-color: #ffcccc;
+}
+
+.ver-branchpoint,
+ul.tree ul li.ver-branchpoint {
+	background-color: #ff9999;
+}
+.ver-versions,
+ul.tree ul li.ver-versions {
+	background-color: #ffffaa;
+}
+
+ul.tree ul li.ver-element ul {
+	background-color: #efeff4;
+}
+
+ul.tree ul li.ver-page ul {
+	background-color: #efeff4;
+}
+
+ul.tree ul li.ver-branch ul {
+	background-color: #efeff4;
+}
+
+ul.tree ul li.ver-branchpoint ul {
+	background-color: #efeff4;
+}
+
+ul.tree ul li.ver-versions ul {
+	background-color: #efeff4;
+}
+
+table.ver-subtree a {
+	text-decoration: none;
+}
+
+table.ver-subtree tr td.iconTitle {
+	white-space: nowrap;
+}
+
+table.ver-subtree tr td.diffCell {
+	white-space: normal;
+}
+
+table.ver-subtree table.diffTable {
+	background-color: white;
+	border: 1px solid black;
+}
+
+table.ver-subtree div.diffLayer,
+div.logLayer {
+	background-color: white;
+	border: 1px solid black;
+}
+
+table.ver-subtree,
+table.ver-verElement td.c-diffCell {
+	border: 1px solid #666;
+}
+
+table.ver-subtree tr.typo3-ver td.iconTitle,
+table.ver-subtree tr.typo3-ver td.diffCell,
+table.ver-subtree tr.typo3-ver td.cmdCell {
+	background-color: #c5c1b5;
+}
+
+table.ver-subtree tr.typo3-ver-hl td.iconTitle,
+table.ver-subtree tr.typo3-ver-hl td.diffCell,
+table.ver-subtree tr.typo3-ver-hl td.cmdCell {
+	background-color: #999;
+}
+
+table.ver-subtree tr.typo3-ver-new td {
+	background-color: #eee;
+	color: #666;
+}
+
+table.ver-subtree tr.typo3-ver-noComp td {
+	font-style: italic;
+}
+
+.ver-wl-table {
+	border: 1px solid black;
+}
+
+.ver-wl-details-table {
+	border: 1px solid #d9d5c9;
+}
+
+.ver-wl-details {
+	background-color: #e6e2d5;
+}
+
+.ver-wl-details-label {
+	background-color: #e6e2d5;
+	white-space: nowrap;
+}
+
+#ver-wl-new-workspace-icon {
+	border: none;
+}
+
+.ver-wl-mp-inacessible {
+	color: #7c7c7c;
+	font-style: italic;
+}
+
+.ver-wl-current-user {
+	font-weight: bold;
+}

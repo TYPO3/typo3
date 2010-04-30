@@ -1,0 +1,24 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Document, listing recently edited records if no records were open
+(alt_doc_nodoc.php) - this is effectively the Doc module
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.typo3-recent-edited {
+	width: 100%;
+}
+
+table.typo3-recent-edited img.c-recicon {
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+body#typo3-alt-doc-nodoc-php p img {
+	margin-left: 5px;
+	vertical-align: middle;
+}
+
+body#typo3-alt-doc-nodoc-php {
+	margin-left: 5px;
+}

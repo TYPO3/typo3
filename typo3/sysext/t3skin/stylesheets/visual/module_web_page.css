@@ -1,0 +1,25 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Web > Page
+
+$Id: module_web_page.css 2229 2010-04-16 11:09:43Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.typo3-page-colHeader .bgColor2 div {
+	color: #fff;
+}
+
+table.typo3-page-columnsMode tr td a {
+	text-decoration: none;
+}
+
+table.typo3-page-columnsMode tr td a b {
+	text-decoration: underline;
+}
+
+table.typo3-page-cols tr td span.exampleContent a {
+	text-decoration: none;
+}
+
+table#typo3-page-stdlist tr td.c-headLine {
+	background-color: #d7dbe2;
+}

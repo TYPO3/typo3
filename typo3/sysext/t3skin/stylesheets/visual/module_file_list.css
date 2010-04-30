@@ -1,0 +1,39 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+File > List
+
+$Id: module_file_list.css 2229 2010-04-16 11:09:43Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-filelist tr.c-headLine {
+	background-color: #a2aab8;
+	font-weight: bold;
+}
+
+table#typo3-filelist tr.c-headLine td {
+	background-color: #ccc;
+	font-weight: bold;
+}
+
+table#typo3-filelist tr.c-headLine td a {
+	color: #fff;
+}
+
+table#typo3-filelist tr td.c-headLine {
+	background-color: #b8bec9;
+	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+	font-weight: bold;
+}
+
+table#typo3-filelist tr td.c-headLine a {
+	color: #fff;
+}
+
+table#typo3-filelist tr td img {
+	text-align: center;
+}
+
+table#typo3-filelist tr td div.typo3-clipCtrl,
+table#typo3-filelist tr td div.typo3-editCtrl {
+	text-align: center;
+}

@@ -1,0 +1,50 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Flash Messages (template.php)
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-message {
+	border: 1px solid;
+	background-position: 4px 4px;
+	background-repeat: no-repeat;
+}
+
+.typo3-message a {
+	text-decoration: underline;
+}
+
+.typo3-message .message-header {
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.message-notice {
+	background-color: #f6f7fa;
+	background-image: url('../../icons/gfx/notice.png');
+	border-color: #c2cbcf;
+}
+
+.message-information {
+	background-color: #ddeef9;
+	background-image: url('../../icons/gfx/information.png');
+	border-color: #8aafc4;
+}
+
+.message-ok {
+	background-color: #cdeaca;
+	background-image: url('../../icons/gfx/ok.png');
+	border-color: #58b548;
+}
+
+.message-warning {
+	background-color: #fbffb3;
+	background-image: url('../../icons/gfx/warning.png');
+	border-color: #c4b70d;
+}
+
+.message-error {
+	background-color: #fbb19b;
+	background-image: url('../../icons/gfx/error.png');
+	border-color: #dc4c42;
+}

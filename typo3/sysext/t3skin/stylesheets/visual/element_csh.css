@@ -1,0 +1,120 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Context Sensitive Help (CSH)
+
+$Id: element_csh.css 2229 2010-04-16 11:09:43Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.typo3-csh-inline {
+	background-color: #ffffff;
+	border: 1px solid #a2aab8;
+}
+
+span.typo3-csh-inline {
+	line-height: 16px;
+}
+
+a.typo3-csh-link span.typo3-csh-inline {
+	background: #ffffff;
+	border: 1px solid #050505;
+	color: #000000;
+	font-weight: normal;
+}
+
+table.typo3-csh-inline a.typo3-csh-link,
+table.typo3-csh-inline span.header,
+span.typo3-csh-inline span.header,
+a.typo3-csh-link span.typo3-csh-inline span.header {
+	background-color: #b8bec9;
+	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+	color: white;
+}
+
+span.typo3-csh-inline span.header,
+table.typo3-csh-inline span.header {
+	font-weight: bold;
+}
+
+tr.c-headLineTable table.typo3-csh-inline span.paragraph {
+	background-color: #fff;
+}
+
+img.typo3-csh-icon {
+	cursor: help;
+}
+
+a.typo3-csh-link {
+	white-space: normal;
+}
+
+/*  view_help.php */
+div.typo3-view-help h1 {
+	background: none;
+	color: #000;
+	font-size: 150%;
+	text-align: left;
+}
+
+div.typo3-view-help h2 {
+	color: #fff;
+	font-size: 130%;
+	background: #acb3bf;
+	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+}
+
+div.typo3-view-help h3 {
+	background-color: #b8bec9;
+	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+	color: white;
+}
+
+div.typo3-view-help h4 {
+	background: none;
+}
+
+div.typo3-view-help {
+	background-color: #f7f7f9;
+	border: 1px solid #ccc;
+}
+
+div.typo3-view-help p {
+	font-size: 12px;
+	line-height: 1.4;
+}
+
+div.typo3-view-help p.c-nav a {
+	background-color: transparent;
+}
+
+div.typo3-view-help div.c-toc {
+	background: none;
+	border: none;
+}
+
+div.typo3-view-help div.c-toc ul {
+	list-style: none;
+}
+
+div.typo3-view-help div.c-toc ul li ul {
+	list-style: disc;
+}
+
+div.typo3-view-help div.c-toc a:hover,
+div.typo3-view-help .manual-title a:hover,
+div.typo3-view-help p a:hover {
+	color: red;
+}
+
+div.typo3-view-help .manual-title,
+div.typo3-view-help .introduction {
+	font-size: 1.2em;
+	line-height: 1.4;
+}
+
+div.typo3-view-help .manual-title a,
+div.typo3-view-help div.c-toc a,
+div.typo3-view-help p a {
+	text-decoration: underline;
+}

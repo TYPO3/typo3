@@ -1,0 +1,121 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 styles for basic elements
+
+$Id: main_content.css 2220 2010-04-15 14:48:13Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+html {
+	height: 100%;
+}
+
+select,
+textarea,
+input,
+td,
+body,
+.defstyle,
+p,
+div {
+	margin: 0px;
+}
+
+/* Occasionally used, eg. in About Modules: */
+h1 {
+	margin: 6px 0 16px 0;
+}
+
+h2 {
+	margin: 6px 0;
+}
+
+/* Normal section headers */
+h3 {
+	padding: 2px 0;
+	margin: 8px 0 10px;
+}
+
+/* Discrete section headers (no background) */
+h4 {
+	margin: 6px 0;
+}
+
+/* Preformatted text - not used so much in TYPO3 */
+pre {
+	margin: 0px;
+}
+
+/* horizontal ruler */
+hr,
+div.hr {
+	height: 1px;
+}
+
+th,
+td {
+	vertical-align: top;
+}
+
+/* Forms */
+
+/* Reformatting of the submit buttons */
+form {
+	margin: 0px;
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+	padding: 2px 4px 2px 4px;
+}
+
+label {
+	vertical-align: middle;
+}
+
+.checkbox,
+.radio,
+.checkbox:hover {
+	height: 13px;
+	margin-right: 5px;
+	overflow: hidden;
+	vertical-align: middle;
+	width: 13px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Various classes
+- - - - - - - - - - - - - - - - - - - - - */
+
+div.diff-r {
+	padding: 3px 3px 3px 3px;
+}
+
+div.diff-g {
+	padding: 3px 3px 3px 3px;
+}
+
+img.absmiddle {
+	vertical-align: middle;
+}
+
+.smallCheckboxes {
+	height: 12px;
+	margin: 0px;
+	width: 12px;
+}
+
+.tableheader td {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.lrPadding td {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.alignToInputText, .alignToInputText:hover {
+	margin-top: 5px;
+	margin-right: 2px;
+	vertical-align: top;
+}

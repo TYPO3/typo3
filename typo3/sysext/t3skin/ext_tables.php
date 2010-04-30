@@ -4,6 +4,11 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER']->isFrontendEditingActive())) {
 	global $TBE_STYLES;
 
+		// register as a skin
+	$TBE_STYLES['skins'][$_EXTKEY] = array(
+		'name' => 't3skin',
+	);
+
 		// Support for other extensions to add own icons...
 	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ?
 		$TBE_STYLES['skinImg'] :
@@ -74,15 +79,6 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 	$TBE_STYLES['loginBoxImage_rotationFolder'] = $temp_eP.'images/login/';
 	$TBE_STYLES['loginBoxImage_author']['loginimage_4_2.jpg'] = 'Photo by Photo by J.C. Franca (www.digitalphoto.com.br)';
 #	$TBE_STYLES['loginBoxImage_rotationFolder'] = '';
-
-		// Setting up stylesheets (See template() constructor!)
-#	$TBE_STYLES['stylesheet']                   = $temp_eP.'stylesheets/stylesheet.css';			// Alternative stylesheet to the default "typo3/stylesheet.css" stylesheet.
-#	$TBE_STYLES['stylesheet2']                  = $temp_eP.'stylesheets/stylesheet.css';			// Additional stylesheet (not used by default).  Set BEFORE any in-document styles
-	$TBE_STYLES['styleSheetFile_post']          = $temp_eP.'stylesheets/stylesheet_post.css';		// Additional stylesheet. Set AFTER any in-document styles
-#	$TBE_STYLES['inDocStyles_TBEstyle']         = '* {text-align: right;}';							// Additional default in-document styles.
-	$TBE_STYLES['stylesheets']['modulemenu']    = $temp_eP.'stylesheets/modulemenu.css';
-	$TBE_STYLES['stylesheets']['backend-style'] = $temp_eP.'stylesheets/backend-style.css';
-	$TBE_STYLES['stylesheets']['admPanel'] = $temp_eP.'stylesheets/admPanel.css';
 
 		// Alternative dimensions for frameset sizes:
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 160;		// Left menu frame width

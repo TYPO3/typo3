@@ -34,7 +34,7 @@
 TYPO3.BackendSizeManager = function() {
 	var resizeBackend = function() {
 		var viewportHeight = document.viewport.getHeight();
-		var topHeight = Ext.get('typo3-toolbar').getHeight();
+		var topHeight = Ext.get('typo3-topbar').getHeight();
 		var styles = {
 			height: (viewportHeight - topHeight) + 'px'
 		}

@@ -1,3 +1,7 @@
+2010-04-30 Francois Suter  <francois@typo3.org>
+
+	* Added feature #14195: Reorganize the backend stylesheets (thanks to Fabien Udriot and Steffen Gebert)
+
 2010-04-30  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #11587: set proper default timezone (fixes PHP 5.3 warnings concerning missing timezone settings)

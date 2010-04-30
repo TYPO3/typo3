@@ -137,11 +137,7 @@ class TYPO3backend {
 
 			// add default BE css
 		$this->css      = '';
-		$this->cssFiles = array(
-			'backend-scaffolding' => 'css/backend-scaffolding.css',
-			'backend-style'       => 'css/backend-style.css',
-			'modulemenu'          => 'css/modulemenu.css',
-		);
+		$this->cssFiles = array();
 
 		$this->toolbarItems = array();
 		$this->initializeCoreToolbarItems();

@@ -1,0 +1,25 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Web > Permissions
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+a.perm-allowed,
+a.perm-denied,
+#perm-legend .perm-allowed,
+#perm-legend .perm-denied {
+	display: block;
+	float: left;
+	height: 10px;
+	padding: 2px;
+	width: 10px;
+}
+
+#perm-legend .perm-allowed,
+#perm-legend .perm-denied {
+	clear: left;
+}
+
+#perm-legend {
+	margin-top: 10px;
+}

@@ -1,0 +1,43 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Toolbar inside the Topbar
+
+$Id: element_button_back.css 2233 2010-04-16 19:18:46Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-top-toolbar {
+	padding-right: 15px;
+	position: absolute;
+	right: 0px;
+}
+
+#typo3-toolbar {
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+}
+
+#typo3-toolbar li {
+	display: inline;
+	float: left;
+	margin-right: -1px; /* necessary for overlaying the separators with the active state background */
+}
+
+#typo3-toolbar * li {
+	display: list-item;
+}
+
+#typo3-toolbar div {
+	overflow: visible !important;
+}
+
+.toolbar-item {
+	display: block;
+	padding-bottom: 9px;
+	padding-top: 2px;
+}
+
+.toolbar-item-menu {
+	position: absolute;
+	top: 25px;
+	z-index: 100;
+}

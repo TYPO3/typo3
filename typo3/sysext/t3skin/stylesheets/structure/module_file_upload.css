@@ -1,0 +1,24 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+File Upload Window
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+.swfupload {
+	display: block;
+	height: 22px;
+	position: absolute;
+	z-index: 2000;
+}
+
+#t3-upload-window-infopanel div div {
+	padding: 10px;
+}
+.t3-upload-window-infopanel div div {
+	padding: 0 10px 10px;
+}
+
+.t3-upload-window-infopanel input {
+	margin-right: 3px;
+	vertical-align: text-bottom;
+}

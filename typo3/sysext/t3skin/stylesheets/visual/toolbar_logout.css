@@ -1,0 +1,20 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Logout-Button
+
+$Id: toolbar_logout.css -1   $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#logout-button input {
+	background: #c3c7ce url('../../icons/gfx/bg_input_button.gif') repeat-x;
+	border: 1px solid #acb3be;
+	color: #333;
+	cursor: pointer;
+	line-height: 14px;
+	text-align: center;
+}
+
+#logout-button input:hover {
+	background: #c3c7ce url('../../icons/gfx/bg_input_button_hover.gif') repeat-x;
+	border: 1px solid #737f91;
+	color: #000;
+}

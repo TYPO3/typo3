@@ -1,0 +1,9 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Toolbar inside the Topbar
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-toolbar li {
+	float: left;
+}

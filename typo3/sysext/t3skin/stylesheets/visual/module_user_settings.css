@@ -1,0 +1,14 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+User settings
+
+$Id: module_user_settings.css 2233 2010-04-16 19:18:46Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#ext-setup-mod-index-php table.typo3-dyntabmenu td.tabact a {
+	background-color: #eee;
+}
+
+#ext-setup-mod-index-php div.typo3-dyntabmenu-divs {
+	background-color: #eee;
+	border: 1px solid #aaa;
+}

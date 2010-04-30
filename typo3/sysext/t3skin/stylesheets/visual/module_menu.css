@@ -1,0 +1,58 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Module menu
+
+$Id: module_menu.css 2229 2010-04-16 11:09:43Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-side-menu {
+	background: #edeeee;
+	border-right: 1px solid #ddd;
+}
+
+#typo3-menu,
+#typo3-menu ul {
+	list-style: none;
+}
+
+#typo3-menu div.expanded,
+#typo3-menu div.collapsed {
+	border-bottom: 1px solid #ddd;
+}
+
+#typo3-menu li.menuSection li:hover,
+#typo3-menu li.menuSection li.hover,
+#typo3-menu li.highlighted {
+	background-color: #d7dbe2;
+}
+
+#typo3-menu li.highlighted {
+	font-weight: bold;
+}
+
+#typo3-menu li div {
+	background-color: #edeeee;
+	color: #505d6d;
+	cursor: pointer;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+#typo3-menu li div.collapsed {
+	background-image: url('../../icons/gfx/arrowright.png');
+	background-repeat: no-repeat;
+}
+
+#typo3-menu li div.expanded {
+	background-image: url('../../icons/gfx/arrowdown.png');
+	background-repeat: no-repeat;
+}
+
+#typo3-menu li ul li {
+	cursor: pointer;
+	font-weight: normal;
+	line-height: 16px;
+}
+
+#typo3-menu li ul li a {
+	text-decoration: none;
+}

@@ -1,0 +1,25 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+New Record Wizard
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+body#typo3-db-new-php img {
+	vertical-align: middle;
+}
+
+body#typo3-db-new-php a img {
+	margin-right: 5px;
+}
+
+body#typo3-db-new-php img.c-helpImg {
+	margin-left: 20px;
+}
+
+body#typo3-db-new-php div#typo3-newPageLink {
+	margin-top: 20px;
+}
+
+body#typo3-db-new-php  table#typo3-newRecord tr td {
+	padding-right: 20px;
+}

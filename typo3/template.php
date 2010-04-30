@@ -189,12 +189,24 @@ class template {
 	var $bgColor5 = '#ABBBB4';		// light tablerow background, greenish
 	var $bgColor6 = '#E7DBA8';		// light tablerow background, yellowish, for section headers. Light.
 	var $hoverColor = '#254D7B';
-	var $styleSheetFile = 'stylesheet.css';	// Filename of stylesheet (relative to PATH_typo3)
+	var $styleSheetFile = '';	// Filename of stylesheet (relative to PATH_typo3)
 	var $styleSheetFile2 = '';		// Filename of stylesheet #2 - linked to right after the $this->styleSheetFile script (relative to PATH_typo3)
 	var $styleSheetFile_post = '';	// Filename of a post-stylesheet - included right after all inline styles.
-	var $styleSheetFile_print = 'stylesheet_print.css';	// Filename of a print-stylesheet - included after all styles.
 	var $backGroundImage = '';		// Background image of page (relative to PATH_typo3)
 	var $inDocStyles_TBEstyle = '';	// Inline css styling set from TBE_STYLES array
+
+		// Skinning
+		// stylesheets from core
+	protected $stylesheetsCore = array(
+		'structure' => 'stylesheets/structure/',
+		'visual' => 'stylesheets/visual/',
+	);
+
+		// include these CSS directories from skins by default
+	protected $stylesheetsSkins = array(
+		'structure' => 'stylesheets/structure/',
+		'visual' => 'stylesheets/visual/',
+	);
 
 		// DEV:
 	var $parseTimeFlag = 0;			// Will output the parsetime of the scripts in milliseconds (for admin-users). Set this to false when releasing TYPO3. Only for dev.
@@ -268,28 +280,11 @@ class template {
 		if ($TBE_STYLES['stylesheet'])	$this->styleSheetFile = $TBE_STYLES['stylesheet'];
 		if ($TBE_STYLES['stylesheet2'])	$this->styleSheetFile2 = $TBE_STYLES['stylesheet2'];
 		if ($TBE_STYLES['styleSheetFile_post'])	$this->styleSheetFile_post = $TBE_STYLES['styleSheetFile_post'];
-		if ($TBE_STYLES['styleSheetFile_print'])	$this->styleSheetFile_print = $TBE_STYLES['styleSheetFile_print'];
 		if ($TBE_STYLES['inDocStyles_TBEstyle'])	$this->inDocStyles_TBEstyle = $TBE_STYLES['inDocStyles_TBEstyle'];
 
-			// Stylesheets from skins:
-			// stylesheet directories have to be registered this way in ext_tables.php:
-			// $TBE_STYLES['stylesheetDirectories'][$_EXTKEY][] = 'EXT:myext/stylesheets/visual/'
-		if (is_array($TBE_STYLES['stylesheetDirectories'])) {
-				// loop over all extensions registering stylesheetDirectories
-			foreach ($TBE_STYLES['stylesheetDirectories'] as $key => $directories) {
-					// loop over all stylesheetDirectories of this extension
-				foreach ($directories as $directory) {
-						// we expect EXT:myext/.../ here
-					$extKey = substr($directory, 4, strpos($directory, '/') - 4);
-					$styleDirectory = substr($directory, strpos($directory, '/') + 1);
-						// ensure that we have a trailing /
-					$styleDirectory = rtrim($styleDirectory, '/') . '/';
-						// add stylesheets
-					if (is_readable(t3lib_extMgm::extPath($extKey) . $styleDirectory)) {
-						$this->addStyleSheetDirectory(t3lib_extMgm::extRelPath($extKey) . $styleDirectory);
-					}
-				}
-			}
+			// include all stylesheets
+		foreach ($this->getSkinStylesheetDirectories() as $stylesheetDirectory) {
+			$this->addStylesheetDirectory($stylesheetDirectory);
 		}
 
 			// Background image
@@ -1031,9 +1026,6 @@ $str.=$this->docBodyTagBegin().
 		if ($this->styleSheetFile_post) {
 			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_post);
 		}
-		if ($this->styleSheetFile_print) {
-			$this->pageRenderer->addCssFile($this->backPath . $this->styleSheetFile_print, 'stylesheet', 'print');
-		}
 
 	}
 
@@ -1092,6 +1084,50 @@ $str.=$this->docBodyTagBegin().
 		$content = str_replace('<!--###POSTJSMARKER###-->',$jscode,$content);
 
 		return $content;
+	}
+
+	/**
+	 * Returns an array of all stylesheet directories belonging to core and skins
+	 *
+	 * @return	array	Stylesheet directories
+	 */
+	public function getSkinStylesheetDirectories() {
+		$stylesheetDirectories = array();
+
+			// add default core stylesheets
+		foreach ($this->stylesheetsCore as $stylesheetDir) {
+			$stylesheetDirectories[] = $stylesheetDir;
+		}
+
+			// Stylesheets from skins
+			// merge default css directories ($this->stylesheetsSkin) with additional ones and include them
+		if (is_array($GLOBALS['TBE_STYLES']['skins'])) {
+				// loop over all registered skins
+			foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinExtKey => $skin) {
+				$skinStylesheetDirs = $this->stylesheetsSkins;
+
+					// skins can add custom stylesheetDirectories using
+					// $TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']
+				if (is_array($skin['stylesheetDirectories'])) {
+					$skinStylesheetDirs = array_merge($skinStylesheetDirs, $skin['stylesheetDirectories']);
+				}
+
+					// add all registered directories
+				foreach ($skinStylesheetDirs as $stylesheetDir) {
+						// for EXT:myskin/stylesheets/ syntax
+					if (substr($stylesheetDir, 0, 4) === 'EXT:') {
+						list($extKey, $path) = explode('/', substr($stylesheetDir, 4), 2);
+						if (strcmp($extKey, '') && t3lib_extMgm::isLoaded($extKey) && strcmp($path, '')) {
+							$stylesheetDirectories[] = t3lib_extMgm::extRelPath($extKey) . $path;
+						}
+					} else {
+						// for relative paths
+						$stylesheetDirectories[] = t3lib_extMgm::extRelPath($skinExtKey) . $stylesheetDir;
+					}
+				}
+			}
+		}
+		return $stylesheetDirectories;
 	}
 
 	/**

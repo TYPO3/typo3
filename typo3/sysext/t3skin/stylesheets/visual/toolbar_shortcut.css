@@ -1,0 +1,43 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Shortcuts menu in the toolbar
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+#shortcut-menu .toolbar-item-menu {
+	background-color: #f9f9f9;
+	border: 1px solid #abb2bc;
+	border-top: none;
+	list-style: none;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td {
+	line-height: 16px;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut.first-row td {
+	background-image: url('../../icons/gfx/shortcutgroups-bg.png');
+	background-repeat: repeat-x;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut-group td.shortcut-group-icon,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-icon,
+#shortcut-menu .shortcut-list td.shortcut-edit,
+#shortcut-menu .shortcut-list td.shortcut-delete {
+	text-align: center;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-label a {
+	cursor: pointer;
+}
+
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-edit img,
+#shortcut-menu .shortcut-list tr.shortcut td.shortcut-delete img {
+	cursor: pointer;
+}
+
+#shortcut-menu .shortcut-list .shortcut-group td {
+	background-color: #dbdbdb;
+	border-bottom: 1px solid #a5a5a5;
+	border-top: 1px solid #a5a5a5;
+}

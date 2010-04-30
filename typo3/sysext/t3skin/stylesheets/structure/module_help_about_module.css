@@ -1,0 +1,29 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Help > About modules (alt_intro.php)
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+div.typo3-alt-intro-php {
+	height: 100%;
+	overflow: auto;
+}
+
+#typo3-alt-intro-php-sub {
+	margin-left: 10px;
+	width: 600px;
+}
+
+table#typo3-about-modules {
+	margin-top: 5px;
+}
+
+table#typo3-about-modules tr td {
+	padding: 2px 2px 2px 2px;
+	vertical-align: top;
+}
+
+table#typo3-about-modules tr.c-mainitem td img {
+	padding: 0px 2px 0px 2px;
+	vertical-align: middle;
+}

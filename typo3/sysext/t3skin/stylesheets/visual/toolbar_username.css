@@ -1,0 +1,15 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Username inside the toolbar
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+#username.su-user {
+	color: red;
+	font-weight: bold;
+}
+
+#username a {
+	line-height: 16px;
+	text-decoration: none;
+}

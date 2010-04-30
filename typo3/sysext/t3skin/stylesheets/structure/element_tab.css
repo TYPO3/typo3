@@ -1,0 +1,96 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Tab menu (template.php)
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-tabmenu {
+	margin-top: 5px;
+}
+
+table#typo3-tabmenu tr {
+	height: 1.5em;
+}
+
+table#typo3-tabmenu td.tab {
+	padding: 0;
+}
+
+table#typo3-tabmenu td.disabled {
+	padding: 5px 10px 5px 10px;
+}
+
+table#typo3-tabmenu td a {
+	display: block;
+	padding: 5px 10px 5px 10px;
+}
+
+table#typo3-tabmenu td.tabact a {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+Dynamic Tab menu (template.php)
+- - - - - - - - - - - - - - - - - - - - - */
+div.typo3-dyntabmenu-divs {
+	padding: 0;
+}
+
+div.typo3-dyntabmenu-tabs,
+div.typo3-dyntabmenu-divs p.c-descr {
+	margin: 0;
+	padding: 0;
+}
+
+table.typo3-dyntabmenu tr {
+	height: 1.5em;
+}
+
+table.typo3-dyntabmenu td {
+	padding: 0;
+}
+
+table.typo3-dyntabmenu td.disabled,
+table.typo3-dyntabmenu td.disabled_over {
+	padding: 5px 10px 5px 10px;
+}
+
+table.typo3-dyntabmenu td a {
+	display: block;
+	padding: 5px 10px 5px 10px;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.c-tablayer {
+	margin-left: 20px;
+}
+
+.c-tablayer {
+	margin: 0;
+	padding: 0;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.tab,
+div.typo3-dyntabmenu-divs-foldout div.tab_over,
+div.typo3-dyntabmenu-divs-foldout div.tabact,
+div.typo3-dyntabmenu-divs-foldout div.tabact_over,
+div.typo3-dyntabmenu-divs-foldout div.disabled,
+div.typo3-dyntabmenu-divs-foldout div.disabled_over {
+	margin-top: 5px;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.disabled {
+	padding: 2px 2px 2px 18px;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.disabled_over {
+	padding: 2px 2px 2px 18px;
+}
+
+div.typo3-dyntabmenu-divs-foldout div.tab a,
+div.typo3-dyntabmenu-divs-foldout div.tabact a,
+div.typo3-dyntabmenu-divs-foldout div.tab_over a,
+div.typo3-dyntabmenu-divs-foldout div.tabact_over a {
+	display: block;
+	padding: 2px 2px 2px 18px;
+}

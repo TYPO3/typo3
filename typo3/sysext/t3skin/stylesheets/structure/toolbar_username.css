@@ -1,0 +1,19 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Username inside the toolbar
+
+$Id: element_button_back.css 2233 2010-04-16 19:18:46Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#username {
+	padding-top: 2px;
+}
+
+#username span {
+	padding-right: 4px;
+	vertical-align: bottom;
+}
+
+#username img {
+	padding-right: 4px;
+	vertical-align: bottom;
+}

@@ -1,0 +1,23 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Topbar (whole upper area), containts Logo and toolbar
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-topbar {
+	height: 25px;
+	z-index: 200;
+}
+
+#typo3-topbar div {
+	overflow: visible !important;
+}
+
+#typo3-top-container {
+	height: 100%;
+}
+
+#typo3-logo {
+	padding: 1px 0px 0px 10px;
+	width: 159px;
+}

@@ -75,7 +75,7 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 	}
 		// Define the stylesheet
 	$stylesheet = '<link rel="stylesheet" type="text/css" href="' .
-		'../css/install.css" />';
+		'../stylesheets/install/install.css" />';
 		// Get the template file
 	$template = @file_get_contents($PATH_site . '/typo3/templates/install.html');
 		// Define the markers content

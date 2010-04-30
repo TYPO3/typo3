@@ -1,0 +1,21 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Logout-Button
+
+$Id: topbar_logout.css 2217 2010-04-15 13:38:53Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#login-info p {
+	padding-bottom: 30px;
+	padding-top: 5px;
+}
+
+#logout-button {
+	padding-left: 4px;
+	padding-right: 7px;
+}
+
+#logout-button input {
+	height: 18px;
+	padding: 0;
+	vertical-align: baseline;
+}

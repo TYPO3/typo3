@@ -1,0 +1,44 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Workspace
+
+$Id: element_version.css 2209 2010-04-14 18:55:19Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+div.workspace-info {
+	margin: -10px 0px 5px -10px;
+	padding: 3px;
+}
+
+table.workspace-overview td {
+	vertical-align: top;
+}
+
+table.ver-subtree tr td img {
+	vertical-align: middle;
+}
+
+table.ver-verElement {
+	width: 100%;
+}
+
+.ver-wl-details {
+	vertical-align: top;
+}
+
+.ver-wl-details-label {
+	width: 150px;
+	vertical-align: top;
+}
+
+.ver-wl-details-user-list-label {
+	width: 100px;
+}
+
+#ver-wl-new-workspace-icon {
+	margin-right: 5px;
+	float: left;
+}
+
+#typo3-alt-db-navframe-php .workspace-info {
+	margin: 10px 0 0 10px;
+}

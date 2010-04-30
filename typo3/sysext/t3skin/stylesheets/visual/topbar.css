@@ -1,0 +1,9 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Topbar (whole upper area), containts Logo and toolbar
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-top-container {
+	background-image: url('../../icons/gfx/bar.png');
+}

@@ -36,7 +36,7 @@ TYPO3.Viewport.configuration = {
 	border: false,
 	items: [{
 		region: 'north',
-		id: 'typo3-toolbar',
+		id: 'typo3-topbar',
 		contentEl: 'typo3-top-container',
 		border: false
 	}, {

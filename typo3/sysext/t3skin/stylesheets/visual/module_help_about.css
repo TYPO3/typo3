@@ -1,0 +1,30 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Help > About
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-mod-help-about-index-php-outer {
+	text-align: center;
+}
+
+#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner {
+	background: #eaeaea;
+	border: 1px solid black;
+	text-align: left;
+}
+
+#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner h3 {
+	background-color: transparent;
+	font-size: 14px;
+	text-align: center;
+}
+
+#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner a {
+	color: black;
+	text-decoration: underline;
+}
+
+#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner a:hover {
+	text-decoration: none;
+}

@@ -1,0 +1,14 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Wizards
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-formwizard tr#typo3-formWizardHeader td {
+	font-weight: bold;
+	text-align: center;
+}
+
+body#typo3-wizard-colorpicker-php p.c-head {
+	font-weight: bold;
+}

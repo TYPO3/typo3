@@ -1,0 +1,13 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Context Sensitive Help (CSH)
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+a.typo3-csh-link span.typo3-csh-inline {
+	display: none;
+}
+
+a.typo3-csh-link:hover span.typo3-csh-inline {
+	display: block;
+}

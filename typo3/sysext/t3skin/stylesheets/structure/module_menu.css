@@ -1,0 +1,67 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Module menu
+
+$Id: module_menu.css 2217 2010-04-15 13:38:53Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-menu {
+	padding-left: 1px;
+	padding-top: 2px;
+	margin: 0;
+}
+
+#typo3-menu ul {
+	padding: 0;
+	margin: 0;
+}
+
+#typo3-menu li {
+	clear: both;
+}
+
+#typo3-menu li a {
+	display: block;
+}
+
+#typo3-menu li img {
+	vertical-align: baseline;
+}
+
+#typo3-menu li span {
+	margin-top: 1px;
+}
+
+#typo3-menu li div {
+	margin: 8px 0px 2px 4px;
+	overflow: hidden;
+	padding: 2px 0px 4px 16px;
+	vertical-align: middle;
+}
+
+#typo3-menu li span.submodule-icon {
+	display: block;
+	float: left;
+	vertical-align: top;
+	width: 20px;
+}
+
+#typo3-menu li ul {
+	margin-bottom: 5px;
+}
+
+#typo3-menu li ul li {
+	height: auto;
+	margin-bottom: 1px;
+	margin-left: 0px;
+	padding: 1px 0px 1px 2px;
+}
+
+#typo3-menu li ul li a {
+	display: block;
+	padding-left: 13px;
+}
+
+#typo3-menu div.expanded,
+#typo3-menu div.collapsed {
+	margin-left: 0px;
+}

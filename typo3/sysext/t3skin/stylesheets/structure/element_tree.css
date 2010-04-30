@@ -1,0 +1,109 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Trees
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-tree {
+	margin: 10px 0 20px 10px;
+	width: 95%;
+}
+
+table#typo3-tree tr td {
+	padding: 0px;
+}
+
+table#typo3-tree tr td img {
+	vertical-align: middle;
+}
+
+table#typo3-tree tr td img.c-recIcon {
+	margin-right: 1px;
+}
+
+p.c-refresh img {
+	margin-right: 7px;
+	vertical-align: middle;
+}
+
+body#typo3-alt-db-navframe-php div.c-notice {
+	margin-top: 5px;
+	margin-bottom: 10px;
+	padding: 5px 5px 5px 5px;
+	width: 95%;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+AJAX Page Tree
+- - - - - - - - - - - - - - - - - - - - - */
+body#typo3-pagetree,
+body#typo3-alt-file-navframe-php {
+	margin: 0;
+	padding: 0;
+}
+
+body#typo3-pagetree #typo3-inner-docbody,
+body#typo3-alt-file-navframe-php #typo3-inner-docbody {
+	padding-right: 0px;
+}
+
+ul.tree {
+	clear: both;
+	margin: 0;
+	padding: 0;
+}
+
+ul.tree img {
+	vertical-align: middle;
+}
+
+ul.tree ul {
+	padding: 0;
+	padding-left: 17px;
+	margin: 0;
+}
+
+ul.tree ul li {
+	padding: 0;
+	margin: 0;
+}
+
+#dragIcon {
+	position: absolute;
+	visibility: hidden;
+	z-index: 20;
+}
+
+#treeFilterBox {
+	height: 27px;
+	position: absolute;
+	top: 22px;
+	z-index: 3;
+	width: 260px;
+}
+
+#searchBubble {
+	padding-left: 10px;
+}
+
+#treeFilter {
+	margin: 6px 0pt 0pt 19px !important;
+	height: 16px;
+	width: 165px;
+}
+
+#treeFilterReset {
+	left: 194px;
+	position: absolute;
+	top: 6px;
+	visibility: hidden;
+}
+
+#typo3-pagetree #typo3-docheader img,
+#typo3-alt-file-navframe-php #typo3-docheader img {
+	margin: 2px 1px;
+}
+
+#treeRoot {
+	margin-top: 6px;
+}

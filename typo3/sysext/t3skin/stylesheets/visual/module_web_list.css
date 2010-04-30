@@ -1,0 +1,130 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Web > List
+
+$Id: module_web_list.css 2229 2010-04-16 11:09:43Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.typo3-dblist,
+table.typo3-page-stdlist {
+	border: 1px solid #a2aab8;
+}
+
+table.typo3-dblist tr td.db_list_alt {
+	background-color: #e3dfd3;
+}
+
+table.typo3-dblist tr.db_list_alt td,
+table.typo3-page-stdlist tr.db_list_alt td {
+	background-color: #e4e5f0;
+}
+
+table.typo3-page-stdlist .bgColor4,
+table#typo3-dblist-top table.bgColor4 {
+	background-color: #efeff4;
+}
+
+table.typo3-dblist tr td.c-headLineTable {
+	background-color: #ccc;
+}
+
+table.typo3-dblist tr.c-headLineTable td,
+table.typo3-page-stdlist tr.c-headLineTable td {
+	background-color: #b8bec9;
+	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+}
+
+table.typo3-dblist tr.c-headLineTable td a,
+table.typo3-page-stdlist tr.c-headLineTable td a {
+	color: #fff;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+table.typo3-dblist tr td.c-headLine,
+table.typo3-page-stdlist tr td.c-headLine,
+table.typo3-dblist tr.c-headLine td {
+	background-color: #efeff4;
+	background-image: url('../../backgrounds/list_sep.gif');
+	background-position: bottom left;
+	background-repeat: repeat-x;
+}
+
+table.typo3-dblist tr.c-headLine td.col-title a {
+	font-weight: bold;
+}
+
+tr.db_list_normal td.col-control,
+tr.db_list_normal td.col-clipboard {
+	border-left: 1px solid #d7d8e2;
+	border-right: 1px solid #d7d8e2;
+	text-align: left;
+}
+
+tr.firstcol td.col-control,
+tr.firstcol td.col-clipboard {
+	border-top: 1px solid #d7d8e2;
+}
+
+tr.lastcol td.col-control,
+tr.lastcol td.col-clipboard {
+	border-bottom: 1px solid #d7d8e2;
+}
+
+table.typo3-dblist-overview td.c-tableDescription {
+	color: #333;
+	font-style: italic;
+}
+
+table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning {
+	font-weight: bold;
+	line-height: 16px;
+	text-align: center;
+}
+
+table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-multipleVersions {
+	background-color: #ffff00;
+}
+
+table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-oneVersion {
+	background-color: #9999cc;
+}
+
+table.typo3-dblist tr:hover,
+table.typo3-dblist tr:hover td {
+	background-color: #ebebeb;
+}
+
+table#typo3-versionSelector {
+	background-color: #abbbb4;
+}
+
+div#typo3-newRecordLink,
+div.typo3-newRecordLink,
+div.typo3-localizationLink,
+div.typo3-synchronizationLink {
+	font-weight: bold;
+}
+
+div#typo3-dblist-pagination {
+	white-space: nowrap;
+}
+
+div#typo3-dblist-pagination span.bar {
+	border-left: 1px solid #5485c3;
+}
+
+/* Special treatment for searchfield on page */
+#typo3-dblist-search input[type="submit"] {
+	background: #c3c7ce url('../../icons/gfx/bg_input_button.gif') repeat-x;
+	border: 1px solid #acb3be;
+	color: #333;
+	cursor: pointer;
+}
+
+#typo3-dblist-search input[type="submit"]:hover {
+	background: #c3c7ce url('../../icons/gfx/bg_input_button_hover.gif') repeat-x;
+	border: 1px solid #737f91;
+	color: #000;
+	cursor: pointer;
+}

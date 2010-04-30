@@ -1,0 +1,33 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Web > Page
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.typo3-page-ceHeader {
+	width: 100%;
+}
+
+table.typo3-page-ceHeader img {
+	vertical-align: middle;
+}
+
+table.typo3-page-columnsMode img.c-divider {
+	margin: 10px 0px 5px 0px;
+}
+
+table.typo3-page-stdlist {
+	margin-top: 10px;
+}
+
+table.typo3-page-stdlist tr td.c-headLine {
+	height: 24px;
+}
+
+table.typo3-page-stdlist tr.c-table-row-spacer td {
+	display: none;
+}
+
+table.typo3-page-stdlist tr td div.typo3-DBctrl {
+	padding: 2px;
+}

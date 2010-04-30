@@ -1,0 +1,51 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Context Sensitive Menu / Layer (alt_clickmenu.php creates it)
+Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickmenu.php
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table.typo3-CSM tr.typo3-CSM-itemRow td {
+	padding: 1px 5px 1px 5px;
+}
+
+table.typo3-CSM tr.typo3-CSM-itemRow {
+	height: 13px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+special backend elements
+- - - - - - - - - - - - - - - - - - - - - */
+
+/* Context Sensitive Menu / Top frame (alt_clickmenu.php): */
+
+body#typo3-alt-clickmenu-php {
+	margin-top: 10px;
+}
+
+table#typo3-CSM-top img {
+	margin-bottom: 2px;
+	vertical-align: middle;
+}
+
+table#typo3-CSM-top tr td.c-closebutton {
+	padding-left: 10px;
+}
+
+table#typo3-CSM-top tr td.c-itemicon {
+	padding-left: 10px;
+}
+
+table#typo3-CSM-top img.c-roimg {
+	margin-right: 2px;
+}
+
+div#contentMenu0 {
+	position: absolute;
+	z-index: 10;
+}
+
+div#contentMenu1 {
+	position: absolute;
+	z-index: 20;
+}

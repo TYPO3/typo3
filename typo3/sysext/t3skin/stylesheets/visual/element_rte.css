@@ -1,0 +1,38 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Element Browser / RTE link selection
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-curUrl {
+	font-weight: bold;
+}
+
+table#typo3-RTElinkMenu tr td {
+	font-weight: bold;
+	text-align: center;
+	white-space: nowrap;
+}
+
+table#typo3-linkPages tr td.c-wCell,
+table#typo3-linkFiles tr td.c-wCell,
+table#typo3-EBrecords tr td.c-wCell,
+table#typo3-EBfiles tr td.c-wCell {
+	white-space: nowrap;
+}
+
+body#typo3-browse-links-php a {
+	text-decoration: none;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+RTE select image
+- - - - - - - - - - - - - - - - - - - - - */
+
+body#ext-rte-app-rte-select-image-php a {
+	text-decoration: none;
+}
+
+body#ext-rte-app-rte-select-image-php table tr td table tr.bgColor4 td a {
+	text-decoration: underline;
+}

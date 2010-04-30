@@ -1,0 +1,22 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Toolbar inside the Topbar
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+#typo3-toolbar {
+	list-style: none;
+}
+
+.toolbar-item {
+	background-image: url('../../icons/gfx/toolbar_separator.png');
+	background-repeat: no-repeat;
+	text-align: center;
+}
+
+#typo3-toolbar .no-separator {
+	background-image: none;
+}
+
+.toolbar-item-active {
+	background-image: url('../../icons/gfx/toolbar_item_active_bg.png');
+}

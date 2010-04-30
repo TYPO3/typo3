@@ -34,7 +34,7 @@ General
 Backend
 =======
 
-	* It is now possible to add whole directories of CSS files to the backend by setting $TBE_STYLES['stylesheetDirectories'][$_EXTKEY][] = 'EXT:myext/stylesheets/'
+	* Skins now have to register themselves by adding an entry $TBE_STYLES['skins'][$_EXTKEY]. By default, all CSS files from subdirectories stylesheets/structure/ and stylesheets/visual/ are included, additional directories can be added by setting $TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories'].
 
 	* The TYPO3 Backend was moved into an ExtJS Viewport. This is one of the first steps in a sequence to ExtJSify the complete backend. Currently this gives you the possibility to create your own left sidebar (like the pagetree) in your backend modules. Also you can extend the viewport easily with own code to create e.g. a collapsable module menu. More Informations can be found in the TYPO3 Wiki and the official ExtJS viewport documentation. See these links: http://wiki.typo3.org/index.php/TYPO3Viewport and http://www.extjs.com/deploy/dev/docs/
 	

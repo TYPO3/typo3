@@ -47,11 +47,11 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	navigationWidgetMetaData: {},
 
 	/**
-	 * The toolbar area
+	 * The topbar area
 	 *
 	 * @var Ext.Panel
 	 */
-	Toolbar: null,
+	Topbar: null,
 
 	/**
 	 * The content area
@@ -87,7 +87,7 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 
 		this.ContentContainer = Ext.ComponentMgr.get('typo3-contentContainer');
 		this.NavigationContainer = Ext.ComponentMgr.get('typo3-navigationContainer');
-		this.Toolbar = Ext.ComponentMgr.get('typo3-toolbar');
+		this.Topbar = Ext.ComponentMgr.get('typo3-topbar');
 		this.ModuleMenuContainer = Ext.ComponentMgr.get('typo3-module-menu');
 
 	},

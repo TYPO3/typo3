@@ -1,0 +1,17 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+File Upload Window
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+.t3icon-ext-upload {
+	background: url('../../icons/gfx/upload.gif') 1px 1px no-repeat !important;
+}
+.t3icon-ext-cancel {
+	background: url('../../icons/gfx/icon_fatalerror.gif') 1px 1px no-repeat !important;
+}
+
+.t3-upload-window-progressbar .x-progress-text div {
+	text-align: left;
+	text-indent: 6px;
+}

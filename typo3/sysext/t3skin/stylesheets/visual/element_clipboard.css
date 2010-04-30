@@ -1,0 +1,42 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Clipboard
+
+$Id: element_clipboard.css 2229 2010-04-16 11:09:43Z stephenking $
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-clipboard {
+	background-color: #efeff4;
+	border: 1px solid #a2aab8;
+	border-top: 1px solid #a2aab8;
+}
+
+table#typo3-clipboard tr.bgColor2 {
+	background-color: #efeff4;
+}
+
+table#typo3-clipboard tr.bgColor2 td {
+	background-color: #b8bec9;
+	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-repeat: repeat-x;
+	color: #fff;
+}
+
+table#typo3-clipboard tr.typo3-clipboard-head {
+	background-color: #efeff4;
+	background-image: url('../../backgrounds/list_sep.gif');
+	background-repeat: repeat-x;
+	border-bottom: 1px solid #a2aab8;
+	border-top: 1px solid #fefefe;
+}
+
+table#typo3-clipboard tr.bgColor5 td {
+	background-color: #f8f9fa;
+}
+
+table#typo3-clipboard tr.bgColor5 td a {
+	text-decoration: none;
+}
+
+tr.typo3-clipboard-head {
+	background-color: #ccc;
+}
