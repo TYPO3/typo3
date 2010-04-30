@@ -9,6 +9,7 @@
 2010-04-30  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14079: Running the unit tests floods the deprecation log (thanks to Oliver Klee)
+	* Fixed bug #11811: Raise versions and states of sysexts (stable <-> 1.0.0) (thanks to Steffen Gebert)
 
 2010-04-30  Steffen Kamper  <info@sk-typo3.de>
 
