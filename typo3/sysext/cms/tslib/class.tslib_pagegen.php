@@ -925,9 +925,23 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 				$pageRenderer->addJsFooterInlineCode('TS_inlineFooter', $inlineFooterJs, $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS'] === 'external') {
-				// put default and inlineJS in external file
+			/*
+			 This keeps inlineJS from *_INT Objects from being moved to external files.
+			 At this point in frontend rendering *_INT Objects only have placeholders instead 
+			 of actual content so moving these placeholders to external files would 
+			 	a) break the JS file (syntax errors due to the placeholders)
+			 	b) the needed JS would never get included to the page
+			 Therefore inlineJS from *_INT Objects must not be moved to external files but
+			 kept internal.
+			*/
+			$inlineJSint = '';
+			self::stripIntObjectPlaceholder($inlineJS, $inlineJSint);
+			$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
 			$pageRenderer->addJsFile(TSpagegen::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
 			if ($inlineFooterJs) {
+				$inlineFooterJSint = '';
+				self::stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
+				$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
 				$pageRenderer->addJsFooterFile(TSpagegen::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 		} else {
@@ -1046,6 +1060,20 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * Remember: Calls internally must still be done on the non-instantiated class: TSpagegen::inline2TempFile()
 	 *
 	 *************************/
+	 
+	/**
+	 * Searches for placeholder created from *_INT cObjects, removes them from
+	 * $searchString and merges them to $intObjects
+	 *
+	 * @param	string		$searchString: the String which should be cleaned from int-object markers
+	 * @param	string		$intObjects: the String the found int-placeholders are moved to (for further processing)
+	 */
+	protected static function stripIntObjectPlaceholder(&$searchString, &$intObjects) {
+		$tempArray = array();
+		preg_match_all('/\<\!--INT_SCRIPT.[a-z0-9]*--\>/', $searchString, $tempArray);
+		$searchString = preg_replace('/\<\!--INT_SCRIPT.[a-z0-9]*--\>/', '', $searchString);
+		$intObjects = implode('', $tempArray[0]);
+	}
 
 	/**
 	 * Writes string to a temporary file named after the md5-hash of the string

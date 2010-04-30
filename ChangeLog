@@ -1,3 +1,7 @@
+2010-04-30  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #13758: page.jsInline / page.jsFooterInline may fail with config.removeDefaultJS=external (thanks to Steffen Ritter)
+
 2010-04-30  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Führicht)
