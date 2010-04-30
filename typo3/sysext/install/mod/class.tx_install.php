@@ -353,6 +353,12 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 				@touch($enableInstallToolFile);
 			}
 
+				// Let DBAL decide whether to load itself
+			$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php'; 
+			if (@is_file($dbalLoaderFile)) {
+				include($dbalLoaderFile);
+			}
+
 			if($this->redirect_url) {
 				t3lib_utility_Http::redirect($this->redirect_url);
 			}
@@ -4024,7 +4030,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 *
 	 * @return array List of available databases
 	 */
-	function getDatabaseList() {
+	public function getDatabaseList() {
 		$dbArr = array();
 		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 			$dbArr = $GLOBALS['TYPO3_DB']->admin_get_dbs();
@@ -8328,7 +8334,7 @@ $out="
 	 * @param integer $keyLength Desired key length
 	 * @return string The encryption key
 	 */
-	protected function createEncryptionKey($keyLength = 96) {
+	public function createEncryptionKey($keyLength = 96) {
 		$bytes = t3lib_div::generateRandomBytes($keyLength);
 		return substr(bin2hex($bytes), -96);
 	}

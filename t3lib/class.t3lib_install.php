@@ -126,10 +126,11 @@ class t3lib_install {
 	 * @param	array		$line_array	the localconf.php file exploded into an array by linebreaks. (see writeToLocalconf_control())
 	 * @param	string		$variable	The variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
 	 * @param	string		$value		Is the value to be insert for the variable
+	 * @param	boolean		$quoteValue	Whether the given value should be quoted before being written 
 	 * @return	void
 	 * @see writeToLocalconf_control()
 	 */
-	function setValueInLocalconfFile(&$line_array, $variable, $value)	{
+	public function setValueInLocalconfFile(&$line_array, $variable, $value, $quoteValue = TRUE) {
 		if (!$this->checkForBadString($value))	return 0;
 
 			// Initialize:
@@ -154,7 +155,10 @@ class t3lib_install {
 					$mainparts = explode($variable,$v,2);
 					if (count($mainparts)==2)	{	// should ALWAYS be....
 						$subparts = explode('//',$mainparts[1],2);
-						$line_array[$k] = $mainparts[0].$variable." = '".$this->slashValueForSingleDashes($value)."';	".('//'.$comment.str_replace($comment,'',$subparts[1]));
+						if ($quoteValue) {
+							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
+						}
+						$line_array[$k] = $mainparts[0] . $variable . " = " . $value . ";	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
 						$this->touchedLine = count($line_array)-$k-1;
 						$found = 1;
 						break;
@@ -168,7 +172,10 @@ class t3lib_install {
 					$mainparts = explode($varDoubleQuotes, $v, 2);
 					if (count($mainparts) == 2) { // should ALWAYS be....
 						$subparts = explode('//', $mainparts[1], 2);
-						$line_array[$k] = $mainparts[0] . $variable . " = '" . $this->slashValueForSingleDashes($value) . "';	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						if ($quoteValue) {
+							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
+						}
+						$line_array[$k] = $mainparts[0] . $variable . " = " . $value . ";	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
 						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
@@ -182,13 +189,16 @@ class t3lib_install {
 				$line_array[] = $commentKey.$this->localconf_editPointToken;
 				$line_array[] = '';
 			}
-			$line_array[] = $variable." = '".$this->slashValueForSingleDashes($value)."';	// ".$comment;
+			if ($quoteValue) {
+				$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
+			}
+			$line_array[] = $variable . " = " . $value . ";	// " . $comment;
 			$this->touchedLine = -1;
 		}
 		if ($variable == '$typo_db_password') {
 			$this->messages[] = 'Updated ' . $variable;
 		} else {
-			$this->messages[] = $variable . " = '" . htmlspecialchars($value) . "'";
+			$this->messages[] = $variable . " = " . htmlspecialchars($value);
 		}
 		$this->setLocalconf = 1;
 	}

@@ -13,6 +13,7 @@
 
 2010-04-30  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Added feature #14260: Allow DBAL to be configured [Install Tool]
 	* Fixed bug #14055: Install Tool wants to remove static_template table (thanks to Gregor Hermens)
 	* Fixed bug #14254: Fresh install does not redirect to Install Tool when mysql is not available
 
