@@ -1,3 +1,7 @@
+2010-04-30  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #13758: page.jsInline / page.jsFooterInline may fail with config.removeDefaultJS=external (thanks to Steffen Ritter)
+
 2010-04-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14254: Fresh install does not redirect to Install Tool when mysql is not available
