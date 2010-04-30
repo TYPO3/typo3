@@ -37,6 +37,7 @@
 
 2010-04-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #14207: Duplicate submodule URL in JavaScript
 	* Fixed bug #9758: Write Configuration to extTables.php
 	* Fixed bug #14212: Better styling of BE login news (thanks to Georg Ringer)
 	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Führicht)
