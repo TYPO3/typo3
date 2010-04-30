@@ -23,6 +23,9 @@
 			<label index="enterSearchPhrase">Enter search phrase:</label>
 			<label index="search">Search</label>
 			<label index="useRegExp">Use regular expression</label>
+			<label index="writeValue">Write value to configuration file</label>
+			<label index="writeMessage">Following line was added to configuration file (%s): %s%s</label>
+			<label index="writeMessageFailed">Write to configuration file failed (%s)!</label>
 		</languageKey>
 	</data>
 </T3locallang>
