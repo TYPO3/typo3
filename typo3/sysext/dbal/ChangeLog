@@ -1,3 +1,19 @@
+2010-04-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.3
+
+2010-04-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added autoloader for Install Tool
+
+2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14182: Multiple join conditions are not supported
+
+2010-04-15  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14120: Add a method to check if database is connected
+
 2010-04-14  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.1.2

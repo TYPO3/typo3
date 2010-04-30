@@ -64,10 +64,12 @@ class db_oracle_testcase extends BaseTestCase {
 		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName;
 
+		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
+
 			// Initialize a fake Oracle connection
 		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
 
-		$this->assertTrue($GLOBALS['TYPO3_DB']->handlerInstance['_DEFAULT']->isConnected());
+		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 
 	/**

@@ -1254,10 +1254,12 @@ class ux_t3lib_DB extends t3lib_DB {
 				foreach ($v['JOIN'] as $joinCnt => $join) {
 					$from_table[$k]['JOIN'][$joinCnt]['withTable'] = $this->quoteName($join['withTable']);
 					$from_table[$k]['JOIN'][$joinCnt]['as'] = ($join['as']) ? $this->quoteName($join['as']) : '';
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['table'] = ($join['ON'][0]['table']) ? $this->quoteName($join['ON'][0]['table']) : '';
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['field'] = $this->quoteName($join['ON'][0]['field']);
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['table'] = ($join['ON'][1]['table']) ? $this->quoteName($join['ON'][1]['table']) : '';
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['field'] = $this->quoteName($join['ON'][1]['field']);
+					foreach ($from_table[$k]['JOIN'][$joinCnt]['ON'] as &$condition) {
+						$condition['left']['table'] = ($condition['left']['table']) ? $this->quoteName($condition['left']['table']) : '';
+						$condition['left']['field'] = $this->quoteName($condition['left']['field']);
+						$condition['right']['table'] = ($condition['right']['table']) ? $this->quoteName($condition['right']['table']) : '';
+						$condition['right']['field'] = $this->quoteName($condition['right']['field']);
+					}
 				}
 			}
 		}
@@ -2106,10 +2108,14 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 				break;
 			case 'adodb':
-				$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
-				while (list($k, $theTable) = each($sqlTables)) {
-					if (preg_match('/BIN\$/', $theTable)) continue; // skip tables from the Oracle 10 Recycle Bin
-					$whichTables[$theTable] = $theTable;
+					// check needed for install tool - otherwise it will just die because the call to
+					// MetaTables is done on a stdClass instance
+				if (method_exists($this->handlerInstance['_DEFAULT'], 'MetaTables')) {
+					$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
+					while (list($k, $theTable) = each($sqlTables)) {
+						if (preg_match('/BIN\$/', $theTable)) continue; // skip tables from the Oracle 10 Recycle Bin
+						$whichTables[$theTable] = $theTable;
+					}
 				}
 				break;
 			case 'userdefined':
@@ -2478,6 +2484,10 @@ class ux_t3lib_DB extends t3lib_DB {
 		$output = FALSE;
 
 		if (is_array($cfgArray)) {
+			if (!$cfgArray['config']['database']) {
+					// Configuration is incomplete
+				return;
+			}
 			switch ($handlerType) {
 				case 'native':
 					if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect']) {
@@ -2576,6 +2586,26 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			return $output;
 		} else die('ERROR: No handler for key "'.$handlerKey.'"');
+	}
+
+
+	/**
+	 * Checks if database is connected.
+	 *
+	 * @return boolean
+	 */
+	public function isConnected() {
+		$result = FALSE;
+		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
+			case 'native':
+				$result = is_resource($this->link);
+				break;
+			case 'adodb':
+			case 'userdefined':
+				$result = is_object($this->handlerInstance[$this->lastHandlerKey]) && $this->handlerInstance[$this->lastHandlerKey]->isConnected();
+				break;
+		}
+		return $result;
 	}
 
 
@@ -2735,17 +2765,23 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 					$onPartsArray = array();
 						// Mapping ON parts of the JOIN
-					if (is_array($join['ON'])) {
-						foreach ($join['ON'] as $onParts) {
-							if (isset($this->mapping[$onParts['table']]['mapFieldNames'][$onParts['field']])) {
-								$onParts['field'] = $this->mapping[$onParts['table']]['mapFieldNames'][$onParts['field']];
+					if (is_array($tables[$k]['JOIN'][$joinCnt]['ON'])) {
+						foreach ($tables[$k]['JOIN'][$joinCnt]['ON'] as &$condition) {
+								// Left side of the comparator
+							if (isset($this->mapping[$condition['left']['table']]['mapFieldNames'][$condition['left']['field']])) {
+								$condition['left']['field'] = $this->mapping[$condition['left']['table']]['mapFieldNames'][$condition['left']['field']];
 							}
-							if (isset($this->mapping[$onParts['table']]['mapTableName'])) {
-								$onParts['table'] = $this->mapping[$onParts['table']]['mapTableName'];
+							if (isset($this->mapping[$condition['left']['table']]['mapTableName'])) {
+								$condition['left']['table'] = $this->mapping[$condition['left']['table']]['mapTableName'];
 							}
-							$onPartsArray[]	= $onParts;
+								// Right side of the comparator
+							if (isset($this->mapping[$condition['right']['table']]['mapFieldNames'][$condition['right']['field']])) {
+								$condition['right']['field'] = $this->mapping[$condition['right']['table']]['mapFieldNames'][$condition['right']['field']];
+							}
+							if (isset($this->mapping[$condition['right']['table']]['mapTableName'])) {
+								$condition['right']['table'] = $this->mapping[$condition['right']['table']]['mapTableName'];
+							}
 						}
-						$tables[$k]['JOIN'][$joinCnt]['ON'] = $onPartsArray;
 					}
 				}
 			}
