@@ -3372,7 +3372,9 @@ if (version == "n3") {
 		$enableOutput = (!$this->jumpurl);
 
 			// Call hook for possible disabling of output:
-		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting']))	{
+		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'])
+			&& is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'])) {
+
 			$_params = array('pObj' => &$this, 'enableOutput' => &$enableOutput);
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['isOutputting'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
