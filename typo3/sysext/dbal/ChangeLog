@@ -1,3 +1,7 @@
+2010-04-29  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added autoloader for Install Tool
+
 2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14182: Multiple join conditions are not supported
