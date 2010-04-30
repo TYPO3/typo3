@@ -358,7 +358,11 @@ class tx_dbal_installtool {
 		$availableDrivers = array();
 		foreach ($this->supportedDrivers as $abstractionLayer => $drivers) {
 			foreach ($drivers as $driver => $info) {
-				$isAvailable = TRUE;
+				if (isset($info['combine']) && $info['combine'] === 'OR') {
+					$isAvailable = FALSE;
+				} else {
+					$isAvailable = TRUE;
+				}
 
 					// Loop through each PHP module dependency to ensure it is loaded
 				foreach ($info['extensions'] as $extension) {
