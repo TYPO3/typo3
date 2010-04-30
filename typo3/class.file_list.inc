@@ -266,8 +266,8 @@ class fileList extends t3lib_recordList {
 				if ($this->clipObj->current!='normal' && $iOut)	{
 					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/clip_copy.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_selectMarked',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_selectMarked',1).'" />',$table,'setCB');
 					$cells[]=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg('','gfx/garbage.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_deleteMarked',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_deleteMarked',1).'" />',$table,'delete',$GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
-					$onClick = 'checkOffCB(\''.implode(',',$this->CBnames).'\'); return false;';
-					$cells[]='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
+					$onClick = 'checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;';
+					$cells[] = '<a class="cbcCheckAll" rel="" href="#" onclick="' . htmlspecialchars($onClick) . '">'.
 							'<img'.t3lib_iconWorks::skinImg('','gfx/clip_select.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" alt="'.$GLOBALS['LANG']->getLL('clip_markRecords',1).'" />'.
 							'</a>';
 				}

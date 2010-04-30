@@ -317,33 +317,19 @@ class t3lib_recordList {
 	function CBfunctions()	{
 		return '
 		// checkOffCB()
-	function checkOffCB(listOfCBnames)	{	//
-		var notChecked=0;
-		var total=0;
-
-			// Checking how many is checked, how many is not
-		var pointer=0;
-		var pos = listOfCBnames.indexOf(",");
-		while (pos!=-1)	{
-			if (!cbValue(listOfCBnames.substr(pointer,pos-pointer))) notChecked++;
-			total++;
-			pointer=pos+1;
-			pos = listOfCBnames.indexOf(",",pointer);
+	function checkOffCB(listOfCBnames, link)	{	//
+		var checkBoxes, flag, i;
+		var checkBoxes = listOfCBnames.split(",");
+		if (link.rel === "") {
+			link.rel = "allChecked";
+			flag = true;
+		} else {
+			link.rel = "";
+			flag = false;
 		}
-		if (!cbValue(listOfCBnames.substr(pointer))) notChecked++;
-		total++;
-
-			// Setting the status...
-		var flag = notChecked*2>total;
-		pointer=0;
-		pos = listOfCBnames.indexOf(",");
-		while (pos!=-1)	{
-			setcbValue(listOfCBnames.substr(pointer,pos-pointer),flag);
-
-			pointer=pos+1;
-			pos = listOfCBnames.indexOf(",",pointer);
+		for (i = 0; i < checkBoxes.length; i++) {
+			setcbValue(checkBoxes[i], flag);
 		}
-		setcbValue(listOfCBnames.substr(pointer),flag);
 	}
 		// cbValue()
 	function cbValue(CBname)	{	//
@@ -353,7 +339,9 @@ class t3lib_recordList {
 		// setcbValue()
 	function setcbValue(CBname,flag)	{	//
 		CBfullName = "CBC["+CBname+"]";
-		document.dblistForm[CBfullName].checked = flag ? "on" : 0;
+		if(document.dblistForm[CBfullName]) {
+			document.dblistForm[CBfullName].checked = flag ? "on" : 0;
+		}
 	}
 
 		';

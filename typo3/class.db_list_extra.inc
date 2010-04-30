@@ -679,7 +679,7 @@ class localRecordList extends recordList {
 							'</a>';
 					}
 					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
-					
+
 						// Render thumbsnails if a thumbnail column exists and there is content in it:
 					if ($this->thumbs && trim($row[$thumbsCol])) {
 						$theData[$fCol] .= '<br />' . $this->thumbCode($row,$table,$thumbsCol);
@@ -825,7 +825,7 @@ class localRecordList extends recordList {
 						$cells['delete']=$this->linkClipboardHeaderIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$LANG->getLL('clip_deleteMarked',1).'" alt="" />',$table,'delete',sprintf($LANG->getLL('clip_deleteMarkedWarning'),$LANG->sL($TCA[$table]['ctrl']['title'])));
 
 							// The "Select all" link:
-						$cells['markAll']='<a href="#" onclick="'.htmlspecialchars('checkOffCB(\''.implode(',',$this->CBnames).'\'); return false;').'">'.
+						$cells['markAll'] = '<a class="cbcCheckAll" rel="" href="#" onclick="' . htmlspecialchars('checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;') . '">' .
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_select.gif','width="12" height="12"').' title="'.$LANG->getLL('clip_markRecords',1).'" alt="" />'.
 								'</a>';
 					} else {
