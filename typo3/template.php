@@ -304,6 +304,7 @@ class template {
 				TYPO3_mainDir . 'templates/template_page_backend.html'
 			);
 			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
+			$this->pageRenderer->enableConcatenateFiles();
 		}
 		return $this->pageRenderer;
 	}

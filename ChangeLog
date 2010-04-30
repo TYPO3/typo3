@@ -35,6 +35,7 @@
 	* Fixed bug #14079: Running the unit tests floods the deprecation log (thanks to Oliver Klee)
 	* Fixed bug #11811: Raise versions and states of sysexts (stable <-> 1.0.0) (thanks to Steffen Gebert)
 	* Fixed bug #14179: TCA select doesn't show record titles whic start with <= (thanks to Georg Ringer)
+	* Added feature #14247: Add a concatenator for CSS and JS (thanks to Steffen Gebert)
 
 2010-04-30  Steffen Kamper  <info@sk-typo3.de>
 

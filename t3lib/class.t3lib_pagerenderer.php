@@ -1308,9 +1308,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		// then remove concatenated files from array and add the concatenated file
 
 
-			// extern concatination
-		if ($this->concatenateFiles && $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler']) {
-			// use extern concatenate routine
+		if ($this->concatenateFiles) {
 			$params = array (
 				'jsLibs'         => &$this->jsLibs,
 				'jsFiles'        => &$this->jsFiles,
@@ -1319,11 +1317,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'headerData'     => &$this->headerData,
 				'footerData'     => &$this->footerData,
 			);
-			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler'], $params, $this);
-		} else {
-			// own method, nothing implemented atm
 
-
+			if ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler']) {
+				// use extern concatenate routine
+				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler'], $params, $this);
+			} elseif (TYPO3_MODE === 'BE') {
+				$compressor = t3lib_div::makeInstance('t3lib_compressor');
+				$cssOptions = array('baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories());
+				$this->cssFiles = $compressor->concatenateCssFiles($this->cssFiles, $cssOptions);
+			}
 		}
 	}
 
