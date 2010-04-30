@@ -23,14 +23,13 @@
 ***************************************************************/
 
 /**
- * Testcase for the "tslib_cObj" in the TYPO3 Core.
+ * Testcase for the "tslib_cObj" class in the TYPO3 Core.
  *
  * @package TYPO3
  * @subpackage tslib
  *
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
- *
  */
 class tslib_content_testcase extends tx_phpunit_testcase {
 	/**
@@ -63,6 +62,7 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 			'_GET' => $_GET,
 			'_POST' => $_POST,
 			'_SERVER' => $_SERVER,
+			'TYPO3_CONF_VARS' => $GLOBALS['TYPO3_CONF_VARS'],
 		);
 
 		$this->template = $this->getMock(
@@ -72,6 +72,8 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
 		$GLOBALS['TSFE'] = $this->tsfe;
+		$GLOBALS['TSFE']->csConvObj = new t3lib_cs();
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['t3lib_cs_utils'] = 'mbstring';
 
 		$className = 'tslib_cObj_' . uniqid('test');
 		eval('
@@ -96,15 +98,36 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 
 		$GLOBALS['TSFE'] = null;
 
-		unset($this->cObj, $this->tsfe, $this->template,$this->typoScriptImage);
+		unset($this->cObj, $this->tsfe, $this->template, $this->typoScriptImage);
 	}
 
+
+	////////////////////////
+	// Utitility functions
+	////////////////////////
+
 	/**
-	 * Tests whether the getImgResource hook is called correctly.
+	 * Converts the subject and the expected result into the target charset.
 	 *
+	 * @param string $charset the target charset
+	 * @param string $subject the subject, will be modified
+	 * @param string $expected the expected result, will be modified
+	 */
+	protected function handleCharset($charset, &$subject, &$expected) {
+		$GLOBALS['TSFE']->renderCharset = $charset;
+		$subject = $GLOBALS['TSFE']->csConvObj->conv($subject, 'iso-8859-1', $charset);
+		$expected = $GLOBALS['TSFE']->csConvObj->conv($expected, 'iso-8859-1', $charset);
+	}
+
+
+	/////////////////////////////////////////////
+	// Tests concerning the getImgResource hook
+	/////////////////////////////////////////////
+
+	/**
 	 * @test
 	 */
-	public function isGetImgResourceHookCalled() {
+	public function getImgResourceHookGetsCalled() {
 		$this->template->expects($this->atLeastOnce())->method('getFileName')
 			->with('typo3/clear.gif')->will($this->returnValue('typo3/clear.gif'));
 
@@ -127,6 +150,8 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	 * Handles the arguments that have been sent to the getImgResource hook.
 	 *
 	 * @return	array
+	 *
+	 * @see getImgResourceHookGetsCalled
 	 */
 	public function isGetImgResourceHookCalledCallback() {
 		list($file, $fileArray, $imageResource, $parent) = func_get_args();
@@ -174,14 +199,15 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 		);
 	}
 
-	//////////////////////////
+
+	/////////////////////////////////////////
 	// Tests concerning getQueryArguments()
-	//////////////////////////
+	/////////////////////////////////////////
 
 	/**
 	 * @test
 	 */
-	public function doesGetQueryArgumentsCorrectlyExcludeParameters() {
+	public function getQueryArgumentsExcludesParameters() {
 		$_SERVER['QUERY_STRING'] =
 			'key1=value1' .
 			'&key2=value2' .
@@ -204,7 +230,7 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function doesGetQueryArgumentsCorrectlyExcludeGETParameters() {
+	public function getQueryArgumentsExcludesGetParameters() {
 		$_GET = array(
 			'key1' => 'value1',
 			'key2' => 'value2',
@@ -233,7 +259,7 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function doesGetQueryArgumentsCorrectlyOverruleSingleParameter() {
+	public function getQueryArgumentsOverrulesSingleParameter() {
 		$_SERVER['QUERY_STRING'] = 'key1=value1';
 
 		$getQueryArgumentsConfiguration = array();
@@ -253,7 +279,7 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function doesGetQueryArgumentsCorrectlyOverruleMultiDimensionalParameters() {
+	public function getQueryArgumentsOverrulesMultiDimensionalParameters() {
 		$_POST = array(
 			'key1' => 'value1',
 			'key2' => 'value2',
@@ -297,7 +323,7 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function doesGetQueryArgumentsCorrectlyOverruleMultiDimensionalForcedParameters() {
+	public function getQueryArgumentsOverrulesMultiDimensionalForcedParameters() {
 		$_SERVER['QUERY_STRING'] =
 			'key1=value1' .
 			'&key2=value2' .
@@ -345,6 +371,264 @@ class tslib_content_testcase extends tx_phpunit_testcase {
 		$getQueryArgumentsConfiguration['method'] = 'POST';
 		$actualResult = $this->cObj->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+
+	//////////////////////////////
+	// Tests concerning cropHTML
+	//////////////////////////////
+
+	/**
+	 * This is the data provider for the tests of crop and cropHTML below. It provides all combinations
+	 * of charset, text type, and configuration options to be tested.
+	 *
+	 * @return array two-dimensional array with the second level like this:
+	 *               0 => the settings for the crop function, for example "-58|..."
+	 *               1 => the string to crop
+	 *               2 => the expected cropped result
+	 *               3 => the charset that will be set as renderCharset
+	 *
+	 * @see cropHtmlWithDataProvider
+	 */
+	public function cropHtmlDataProvider() {
+		$plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248) .
+			'j implemented the original version of the crop function.';
+	 	$textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' .
+	 		chr(229) . 'rh' . chr(248) . 'j</a>' .
+	 		' implemented</strong> the original version of the crop function.';
+		$textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; original ' .
+			'version of the crop function.';
+
+		$charsets = array('iso-8859-1', 'utf-8', 'ascii', 'big5');
+
+		$data = array();
+		foreach ($charsets as $charset) {
+			$data = array_merge($data, array(
+				$charset . ' plain text; 11|...' => array(
+					'11|...', $plainText, 'Kasper Sk' . chr(229) . 'r...', $charset
+				),
+				$charset . ' plain text; -58|...' => array(
+					'-58|...', $plainText, '...h' . chr(248) . 'j implemented the original version of the crop function.', $charset
+				),
+				$charset . ' plain text; 20|...|1' => array(
+					'20|...|1', $plainText, 'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j...', $charset
+				),
+				$charset . ' plain text; -49|...|1' => array(
+					'-49|...|1', $plainText, '...the original version of the crop function.', $charset
+				),
+				$charset . ' text with markup; 11|...' => array(
+					'11|...', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'r...</a></strong>', $charset
+				),
+				$charset . ' text with markup; 13|...' => array(
+					'13|...', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . '...</a></strong>', $charset
+				),
+				$charset . ' text with markup; 14|...' => array(
+					'14|...', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>', $charset
+				),
+				$charset . ' text with markup; 15|...' => array(
+					'15|...', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> ...</strong>', $charset
+				),
+				$charset . ' text with markup; 29|...' => array(
+					'29|...', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> th...', $charset
+				),
+				$charset . ' text with markup; -58|...' => array(
+					'-58|...', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">...h' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.', $charset
+				),
+				$charset . ' text with markup; 11|...|1' => array(
+					'11|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>', $charset
+				),
+				$charset . ' text with markup; 13|...|1' => array(
+					'13|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper...</a></strong>', $charset
+				),
+				$charset . ' text with markup; 14|...|1' => array(
+					'14|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>', $charset
+				),
+				$charset . ' text with markup; 15|...|1' => array(
+					'15|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>', $charset
+				),
+				$charset . ' text with markup; 29|...|1' => array(
+					'29|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong>...', $charset
+				),
+				$charset . ' text with markup; -66|...|1' => array(
+					'-66|...|1', $textWithMarkup, '<strong><a href="mailto:kasper@typo3.org">...Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.', $charset
+				),
+				$charset . ' text with entities 9|...' => array(
+					'9|...', $textWithEntities, 'Kasper Sk...', $charset
+				),
+				$charset . ' text with entities 10|...' => array(
+					'10|...', $textWithEntities, 'Kasper Sk&aring;...', $charset
+				),
+				$charset . ' text with entities 11|...' => array(
+					'11|...', $textWithEntities, 'Kasper Sk&aring;r...', $charset
+				),
+				$charset . ' text with entities 13|...' => array(
+					'13|...', $textWithEntities, 'Kasper Sk&aring;rh&oslash;...', $charset
+				),
+				$charset . ' text with entities 14|...' => array(
+					'14|...', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset
+				),
+				$charset . ' text with entities 15|...' => array(
+					'15|...', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j ...', $charset
+				),
+				$charset . ' text with entities 16|...' => array(
+					'16|...', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j i...', $charset
+				),
+				$charset . ' text with entities -57|...' => array(
+					'-57|...', $textWithEntities, '...j implemented the; original version of the crop function.', $charset
+				),
+				$charset . ' text with entities -58|...' => array(
+					'-58|...', $textWithEntities, '...&oslash;j implemented the; original version of the crop function.', $charset
+				),
+				$charset . ' text with entities -59|...' => array(
+					'-59|...', $textWithEntities, '...h&oslash;j implemented the; original version of the crop function.', $charset
+				),
+				$charset . ' text with entities 9|...|1' => array(
+					'9|...|1', $textWithEntities, 'Kasper...', $charset
+				),
+				$charset . ' text with entities 10|...|1' => array(
+					'10|...|1', $textWithEntities, 'Kasper...', $charset
+				),
+				$charset . ' text with entities 11|...|1' => array(
+					'11|...|1', $textWithEntities, 'Kasper...', $charset
+				),
+				$charset . ' text with entities 13|...|1' => array(
+					'13|...|1', $textWithEntities, 'Kasper...', $charset
+				),
+				$charset . ' text with entities 14|...|1' => array(
+					'14|...|1', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset
+				),
+				$charset . ' text with entities 15|...|1' => array(
+					'15|...|1', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset
+				),
+				$charset . ' text with entities 16|...|1' => array(
+					'16|...|1', $textWithEntities, 'Kasper Sk&aring;rh&oslash;j...', $charset
+				),
+				$charset . ' text with entities -57|...|1' => array(
+					'-57|...|1', $textWithEntities, '...implemented the; original version of the crop function.', $charset
+				),
+				$charset . ' text with entities -58|...|1' => array(
+					'-58|...|1', $textWithEntities, '...implemented the; original version of the crop function.', $charset
+				),
+				$charset . ' text with entities -59|...|1' => array(
+					'-59|...|1', $textWithEntities, '...implemented the; original version of the crop function.', $charset
+				),
+			));
+		}
+		return $data;
+	}
+
+	/**
+	 * Checks if stdWrap.cropHTML works with plain text cropping from left
+	 *
+	 * @test
+	 *
+	 * @dataProvider cropHtmlDataProvider
+	 *
+	 * @param string $settings
+	 *        the settings for the crop function, for example "-58|..."
+	 * @param string $subject the string to crop
+	 * @param string $expected the expected cropped result
+	 * @param string $charset the charset that will be set as renderCharset
+	 */
+	public function cropHtmlWithDataProvider($settings, $subject, $expected, $charset) {
+		$this->handleCharset($charset, $subject, $expected);
+
+		$this->assertEquals(
+			$expected,
+			$this->cObj->cropHTML($subject, $settings),
+			'cropHTML failed with settings: "' . $settings . '" and charset "' . $charset . '"'
+		);
+	}
+
+	/**
+	 * Checks if stdWrap.cropHTML works with a complex content with many tags. Currently cropHTML
+	 * counts multiple invisible characters not as one (as the browser will output the content).
+	 *
+	 * @test
+	 */
+	public function cropHtmlWorksWithComplexContent() {
+		$GLOBALS['TSFE']->renderCharset = 'iso-8859-1';
+		$subject = '
+<h1>Blog Example</h1>
+<hr>
+<div class="csc-header csc-header-n1">
+	<h2 class="csc-firstHeader">Welcome to Blog #1</h2>
+</div>
+<p class="bodytext">
+	A blog about TYPO3 extension development. In order to start blogging, read the <a href="#">Help section</a>. If you have any further questions, feel free to contact the administrator John Doe (<a href="mailto:john.doe@example.com">john.doe@example.com)</a>.
+</p>
+<div class="tx-blogexample-list-container">
+	<p class="bodytext">
+		Below are the most recent posts:
+	</p>
+	<ul>
+		<li>
+			<h3>
+				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Post #1</a>
+			</h3>
+			<p class="bodytext">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut...
+			</p>
+			<p class="metadata">
+				Published on 26.08.2009 by Jochen Rau
+			</p>
+			<p>
+				Tags: [MVC]&nbsp;[Domain Driven Design]&nbsp;<br>
+				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>
+				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>
+			</p>
+		</li>
+	</ul>
+	<p>
+		<a href="index.php?id=99&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=new&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=2718a4b1a0">Create a new Post</a>
+	</p>
+</div>
+<hr>
+<p>
+	? TYPO3 Association
+</p>
+';
+
+		$result = $this->cObj->cropHTML($subject, '300');
+		$expected = '
+<h1>Blog Example</h1>
+<hr>
+<div class="csc-header csc-header-n1">
+	<h2 class="csc-firstHeader">Welcome to Blog #1</h2>
+</div>
+<p class="bodytext">
+	A blog about TYPO3 extension development. In order to start blogging, read the <a href="#">Help section</a>. If you have any further questions, feel free to contact the administrator John Doe (<a href="mailto:john.doe@example.com">john.doe@example.com)</a>.
+</p>
+<div class="tx-blogexample-list-container">
+	<p class="bodytext">
+		Below are the most recent posts:
+	</p>
+	<ul>
+		<li>
+			<h3>
+				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog]=&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=003b0131ed">The Pos</a></h3></li></ul></div>';
+		$this->assertEquals($expected, $result);
+
+		$result = $this->cObj->cropHTML($subject, '-100');
+		$expected = '<div class="tx-blogexample-list-container"><ul><li><p>Design]&nbsp;<br>
+				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[action]=show&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=f982643bc3">read more &gt;&gt;</a><br>
+				<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=edit&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=5b481bc8f0">Edit</a>&nbsp;<a href="index.php?id=99&amp;tx_blogexample_pi1[post][uid]=211&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=delete&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=4e52879656">Delete</a>
+			</p>
+		</li>
+	</ul>
+	<p>
+		<a href="index.php?id=99&amp;tx_blogexample_pi1[blog][uid]=70&amp;tx_blogexample_pi1[action]=new&amp;tx_blogexample_pi1[controller]=Post&amp;cHash=2718a4b1a0">Create a new Post</a>
+	</p>
+</div>
+<hr>
+<p>
+	? TYPO3 Association
+</p>
+';
+		$this->assertEquals(
+			$expected,
+			$result
+		);
 	}
 }
 ?>
