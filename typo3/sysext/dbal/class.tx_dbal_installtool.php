@@ -321,13 +321,10 @@ class tx_dbal_installtool {
 	protected function getSupportedDrivers() {
 		$supportedDrivers = array(
 			'Native' => array(
-				'mysqli' => array(
-					'label'      => 'MySQLi (recommended)',
-					'extensions' => array('mysqli'),
-				),
 				'mysql' => array(
-					'label'      => 'MySQL',
-					'extensions' => array('mysql'),
+					'label'      => 'MySQL/MySQLi (recommended)',
+					'combine'    => 'OR',
+					'extensions' => array('mysql', 'mysqli'),
 				),
 				'mssql' => array(
 					'label'      => 'Microsoft SQL Server',
@@ -365,7 +362,11 @@ class tx_dbal_installtool {
 
 					// Loop through each PHP module dependency to ensure it is loaded
 				foreach ($info['extensions'] as $extension) {
-					$isAvailable &= extension_loaded($extension);
+					if (isset($info['combine']) && $info['combine'] === 'OR') {
+						$isAvailable |= extension_loaded($extension);
+					} else {
+						$isAvailable &= extension_loaded($extension);
+					}
 				}
 
 				if ($isAvailable) {
