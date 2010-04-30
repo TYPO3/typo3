@@ -17,6 +17,7 @@
 
 2010-04-30  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Updated NEWS.txt as follow-up to #14260 and raise of DBAL version
 	* Raised DBAL version from 1.1.2 to 1.1.3
 	* Added feature #14260: Allow DBAL to be configured [Install Tool]
 	* Fixed bug #14055: Install Tool wants to remove static_template table (thanks to Gregor Hermens)

@@ -88,7 +88,7 @@ Database changes
 DBAL
 ====
 
-	* ...
+	* It is now possible to use the 1-2-3 installer process to configure a website running MSSQL, Oracle or PostgreSQL as TYPO3 database. TYPO3 automatically detects available database drivers and presents them in a convenient driver dropdown list.
 
 
 Backend skin
