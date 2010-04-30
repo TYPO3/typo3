@@ -37,7 +37,28 @@
  */
 class tx_dbal_installtool {
 
+	/**
+	 * @var string
+	 */
 	protected $templateFilePath = 'res/Templates/';
+
+	/**
+	 * @var array
+	 */
+	protected $supportedDrivers;
+
+	/**
+	 * @var array
+	 */
+	protected $availableDrivers;
+
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$this->supportedDrivers = $this->getSupportedDrivers();
+		$this->availableDrivers = $this->getAvailableDrivers();
+	}
 
 	/**
 	 * Hooks into Installer to let a non-MySQL database to be configured.
@@ -128,6 +149,9 @@ class tx_dbal_installtool {
 			$driverSubPart
 		);
 
+		if (!$driver) {  
+			$driver = $this->getDefaultDriver();
+		}
 			// Get the subpart related to selected database driver
 		if ($driver === '' || $driver === 'mysql' || $driver === 'mysqli') {
 			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
@@ -236,13 +260,10 @@ class tx_dbal_installtool {
 			'vendor' => t3lib_parsehtml::getSubpart($template, '###VENDOR###'),
 		);
 
-		$supportedDrivers = $this->getSupportedDrivers();
-		$availableDrivers = $this->getAvailableDrivers($supportedDrivers);
-
 			// Create the drop-down list of available drivers
 		$dropdown = '';
 		$activeDriver = t3lib_div::_GET('driver');
-		foreach ($availableDrivers as $abstractionLayer => $drivers) {
+		foreach ($this->availableDrivers as $abstractionLayer => $drivers) {
 			$options = array();
 			foreach ($drivers as $driver => $label) {
 				$markers = array(
@@ -328,12 +349,11 @@ class tx_dbal_installtool {
 	/**
 	 * Returns a list of database drivers that are available on current server.
 	 *
-	 * @param array $supportedDrivers
 	 * @return array
 	 */
-	protected function getAvailableDrivers(array $supportedDrivers) {
+	protected function getAvailableDrivers() {
 		$availableDrivers = array();
-		foreach ($supportedDrivers as $abstractionLayer => $drivers) {
+		foreach ($this->supportedDrivers as $abstractionLayer => $drivers) {
 			foreach ($drivers as $driver => $info) {
 				$isAvailable = TRUE;
 
@@ -351,6 +371,22 @@ class tx_dbal_installtool {
 			}
 		}
 		return $availableDrivers;
+	}
+
+	/**
+	 * Returns the driver that is selected by default in the
+	 * Install Tool dropdown list.
+	 *
+	 * @return string
+	 */
+	protected function getDefaultDriver() {
+		$defaultDriver = '';
+		if (count($this->availableDrivers)) {
+			$abstractionLayers = array_keys($this->availableDrivers);
+			$drivers = array_keys($this->availableDrivers[$abstractionLayers[0]]);
+			$defaultDriver = $drivers[0];
+		}
+		return $defaultDriver;
 	}
 
 	/**
