@@ -1,3 +1,7 @@
+2010-05-01 Francois Suter  <francois@typo3.org>
+
+	* Follow-up to #14195: removed file typo3/sysext/t3skin/stylesheets/.htaccess which has become useless
+
 2010-05-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* deleted testcase for comparing ereg_ usage as it doesn't work with php >= 5.3
