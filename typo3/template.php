@@ -305,6 +305,7 @@ class template {
 			);
 			$this->pageRenderer->setLanguage($GLOBALS['LANG']->lang);
 			$this->pageRenderer->enableConcatenateFiles();
+			$this->pageRenderer->enableCompressCss();
 		}
 		return $this->pageRenderer;
 	}
