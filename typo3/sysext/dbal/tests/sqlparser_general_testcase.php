@@ -486,6 +486,21 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertTrue(is_array($alterTables), $alterTables);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=2186
+	 */
+	public function canParseUniqueIndexCreation() {
+		$sql = 'ALTER TABLE static_territories ADD UNIQUE uid (uid)';
+		$expected = $sql;
+		$alterTables = $this->fixture->_callRef('parseALTERTABLE', $sql);
+		$queries = $this->fixture->compileSQL($alterTables);
+
+		$this->assertTrue(is_array($queries), $queries);
+		$this->assertTrue(count($queries) == 1, $queries);
+		$this->assertEquals($expected, $queries[0]);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning subqueries
 	///////////////////////////////////////
