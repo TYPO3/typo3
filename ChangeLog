@@ -9,6 +9,7 @@
 
 2010-05-01  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #8305: SQL debug output is not shown in the Backend
 	* deleted testcase for comparing ereg_ usage as it doesn't work with php >= 5.3
 	* Fixed bug #8305: SQL debug output is not shown in the Backend (thanks to Stefan Galinski)
 

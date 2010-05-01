@@ -801,8 +801,11 @@ $str.=$this->docBodyTagBegin().
 				$this->parseTime().
 				($this->form?'
 </form>':'');
-			// if something is in buffer, put it to end of page
-		$str .= ob_get_clean();
+			// if something is in buffer like debug, put it to end of page
+		if (ob_get_contents()) {
+			$str .= ob_get_clean();
+			header('Content-Encoding: None');
+		}
 
 		if ($this->docType!='xhtml_frames') {
 
