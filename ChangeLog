@@ -1,5 +1,6 @@
 2010-05-01  Steffen Kamper  <info@sk-typo3.de>
 
+	* deleted testcase for comparing ereg_ usage as it doesn't work with php >= 5.3
 	* Fixed bug #8305: SQL debug output is not shown in the Backend (thanks to Stefan Galinski)
 
 2010-05-01  Susanne Moog  <typo3@susanne-moog.de>
