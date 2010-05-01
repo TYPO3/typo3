@@ -1,3 +1,7 @@
+2010-05-01  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #8305: SQL debug output is not shown in the Backend (thanks to Stefan Galinski)
+
 2010-05-01  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #236: Rendered pages do not validate if no doctype is set. (thanks to Christian Buelter)

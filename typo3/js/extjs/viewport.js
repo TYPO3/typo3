@@ -75,6 +75,13 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	ModuleMenuContainer: null,
 
 	/**
+	 * The debug console
+	 * 
+	 * @var Ext.TabPanel
+	 */
+	DebugConsole: null,
+
+	/**
 	 * Initializes the ExtJS viewport with the given configuration.
 	 *
 	 * @return void
@@ -90,6 +97,25 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 		this.Topbar = Ext.ComponentMgr.get('typo3-topbar');
 		this.ModuleMenuContainer = Ext.ComponentMgr.get('typo3-module-menu');
 
+		// adds the debug console and some listeners to consider the initial hiding of
+		// the debug console (the viewport needs to be resized if it's expand/collapse)
+		// -> see the TYPO3.BackendSizeManager
+		this.DebugConsole = Ext.ComponentMgr.get('typo3-debug-console');
+		this.DebugConsole.addListener({
+			'resize': {
+				scope: this,
+				fn: function() {
+					this.fireEvent('resize');
+				}
+			},
+			'collapse': {
+				scope: this,
+				fn: function() {
+					this.fireEvent('resize');
+				}
+			}
+		});
+		Ext.ComponentMgr.get('typo3-debug-console-closerTab').setTitle(TYPO3.LLL.core.tabs_closeAll);
 	},
 
 	/**

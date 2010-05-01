@@ -3419,8 +3419,8 @@ final class t3lib_div {
 	 * changed, and by that re-cached by the browser. If the file does not
 	 * exist physically the original file passed to the function is
 	 * returned without the timestamp.
-	 * 
-	 * Behaviour is influenced by the setting 
+	 *
+	 * Behaviour is influenced by the setting
 	 * TYPO3_CONF_VARS[TYPO3_MODE][versionNumberInFilename]
 	 * = true (BE) / "embed" (FE) : modify filename
 	 * = false (BE) / "querystring" (FE) : add timestamp as parameter
@@ -3465,7 +3465,7 @@ final class t3lib_div {
 				// Change the filename
 			$name = explode('.', $lookupFile[0]);
 			$extension = array_pop($name);
-		
+
 			array_push($name, filemtime($path), $extension);
 			$fullName = implode('.', $name);
 				// append potential query string
@@ -3576,37 +3576,106 @@ final class t3lib_div {
 	 * Usage: 8
 	 *
 	 * @param	mixed		Variable to print
-	 * @param	mixed		If the parameter is a string it will be used as header. Otherwise number of break tags to apply after (positive integer) or before (negative integer) the output.
+	 * @param	string		The header.
 	 * @return	void
 	 */
-	public static function debug($var='',$brOrHeader=0)	{
+	public static function debug($var = '', $header = '')	{
 			// buffer the output of debug if no buffering started before
 		if (ob_get_level()==0) {
 			ob_start();
 		}
+		$debug = '';
 
-		if ($brOrHeader && !self::testInt($brOrHeader))	{
-			echo '<table class="typo3-debug" border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;"><tr><td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">'.htmlspecialchars((string)$brOrHeader).'</td></tr><tr><td>';
-		} elseif ($brOrHeader<0)	{
-			for($a=0;$a<abs(intval($brOrHeader));$a++){echo '<br />';}
+		if ($header) {
+			$debug .= '
+			<table class="typo3-debug" border="0" cellpadding="0" cellspacing="0" bgcolor="white" style="border:0px; margin-top:3px; margin-bottom:3px;">
+				<tr>
+					<td style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;">' .
+						htmlspecialchars((string) $header) .
+					'</td>
+				</tr>
+				<tr>
+					<td>';
 		}
 
 		if (is_array($var))	{
-			self::print_array($var);
-		} elseif (is_object($var))	{
-			echo '<b>|Object:<pre>';
-			print_r($var);
-			echo '</pre>|</b>';
-		} elseif ((string)$var!='')	{
-			echo '<b>|'.htmlspecialchars((string)$var).'|</b>';
+			$debug .= self::view_array($var);
+		} elseif (is_object($var)) {
+			$debug .=  '<b>|Object:<pre>';
+			$debug .= print_r($var, TRUE);
+			$debug .=  '</pre>|</b>';
+		} elseif ((string) $var !== '')	{
+			$debug .= '<b>|' . htmlspecialchars((string)$var) . '|</b>';
 		} else {
-			echo '<b>| debug |</b>';
+			$debug .= '<b>| debug |</b>';
 		}
 
-		if ($brOrHeader && !self::testInt($brOrHeader))	{
-			echo '</td></tr></table>';
-		} elseif ($brOrHeader>0)	{
-			for($a=0;$a<intval($brOrHeader);$a++){echo '<br />';}
+		if ($header) {
+			$debug .=  '
+					</td>
+				</tr>
+			</table>';
+		}
+
+		if (TYPO3_MODE === 'BE') {
+			$tabHeader = 'Debug';
+			if ($header) {
+				$tabHeader .= ': ' . htmlspecialchars($header);
+			}
+			if (is_object($var)) {
+				$debug = str_replace(
+					array('"', "\n", "\r"),
+					array('\"', '<br />', ''),
+					$debug
+				);
+			} else {
+				$debug = str_replace(
+					array('"', "\n", "\r"),
+					array('\"', '', ''),
+					$debug
+				);
+			}
+
+			$script = '
+				var TYPO3ViewportInstance = null, tab;
+				var debugString = "' . $debug . '";
+
+				if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
+					TYPO3ViewportInstance = top.TYPO3.Backend;
+				} else if (top.TYPO3 && typeof TYPO3.Backend === "object") {
+					TYPO3ViewportInstance = TYPO3.Backend;
+				}
+
+				if (TYPO3ViewportInstance !== null) {
+					if (TYPO3ViewportInstance.DebugConsole.hidden) {
+						TYPO3ViewportInstance.DebugConsole.show();
+					} else if (TYPO3ViewportInstance.DebugConsole.collapsed) {
+						TYPO3ViewportInstance.DebugConsole.expand();
+					}
+
+					tab = TYPO3ViewportInstance.DebugConsole.add({
+						title: "' . $tabHeader . '",
+						html: debugString,
+						border: false,
+						closable: true,
+						autoScroll: true,
+						listeners: {
+							close: function(tab) {
+								if (tab.ownerCt.items.getCount() === 1) {
+									tab.ownerCt.hide();
+								}
+							}
+						}
+					});
+					TYPO3ViewportInstance.DebugConsole.setActiveTab(tab);
+					TYPO3ViewportInstance.doLayout();
+				} else {
+					document.write(debugString);
+				}
+			';
+			echo self::wrapJS($script);
+		} else {
+			echo $debug;
 		}
 	}
 

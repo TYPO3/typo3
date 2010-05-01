@@ -35,16 +35,19 @@ TYPO3.BackendSizeManager = function() {
 	var resizeBackend = function() {
 		var viewportHeight = document.viewport.getHeight();
 		var topHeight = Ext.get('typo3-topbar').getHeight();
+		var debugConsole = Ext.get('typo3-debug-console');
+		var consoleHeight = debugConsole.isVisible() ? 0 : debugConsole.getHeight() + debugConsole.getHeight();
 		var styles = {
-			height: (viewportHeight - topHeight) + 'px'
+			height: (viewportHeight - topHeight - consoleHeight) + 'px'
 		}
 
 		Ext.get('typo3-side-menu').setStyle(styles);
 		Ext.get('content').setStyle(styles);
 	}
 
-	Ext.EventManager.on(window, 'resize', resizeBackend);
+	Ext.EventManager.onWindowResize(resizeBackend);
 	Ext.onReady(function() {
+		TYPO3.Backend.addListener('resize', resizeBackend);
 		resizeBackend();
 	});
 }();
