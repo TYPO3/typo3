@@ -776,7 +776,10 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			$pageRenderer->setTitle($titleTagContent);
 		}
 
-		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS" />');
+			// add ending slash only to documents rendered as xhtml
+		$endingSlash = $GLOBALS['TSFE']->xhtmlVersion ? ' /' : '';
+
+		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>');
 
 		$conf = $GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf)) {
@@ -792,7 +795,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 						if (strtolower($key) == 'refresh') {
 							$a = 'http-equiv';
 						}
-						$pageRenderer->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '" />');
+						$pageRenderer->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '"' . $endingSlash . '>');
 					}
 				}
 			}

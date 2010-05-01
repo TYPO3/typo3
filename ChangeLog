@@ -1,3 +1,7 @@
+2010-05-01  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #236: Rendered pages do not validate if no doctype is set. (thanks to Christian Buelter)
+
 2010-04-30  Benjamin Mack  <benni@typo3.org>
 
 	* Added feature #12502: Use HMACs for authencity and integrity checks (Thanks to Marcus Krause and the TYPO3 Security Team)

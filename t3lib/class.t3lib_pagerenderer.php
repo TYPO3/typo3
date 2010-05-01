@@ -966,7 +966,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$jsFooterFiles = '';
 		$noJS = FALSE;
 
-		
+
 
 		// preRenderHook for possible manuipulation
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
@@ -986,7 +986,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 
 		$jsLibs = $this->renderJsLibraries();
-		
+
 		if ($this->compressCss || $this->compressJavascript) {
 				// do the file compression
 			$this->doCompress();
@@ -998,6 +998,18 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 		$metaTags = implode(LF, $this->metaTags);
 
+			// remove ending slashes from static header block
+			// if the page is beeing rendered as html (not xhtml)
+			// and define variable $endingSlash for further use
+		if ($GLOBALS['TSFE']->xhtmlVersion) {
+			$endingSlash = ' /';
+		} else {
+			$this->metaCharsetTag = str_replace(' />', '>', $this->metaCharsetTag);
+			$this->baseUrlTag = str_replace(' />', '>', $this->baseUrlTag);
+			$this->shortcutTag = str_replace(' />', '>', $this->shortcutTag);
+			$endingSlash = '';
+		}
+
 		if (count($this->cssFiles)) {
 			foreach ($this->cssFiles as $file => $properties) {
 				$file = t3lib_div::resolveBackPath($file);
@@ -1005,7 +1017,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				$tag = '<link rel="' . $properties['rel'] . '" type="text/css" href="' .
 					htmlspecialchars($file) . '" media="' . $properties['media'] . '"' .
 					($properties['title'] ? ' title="' . $properties['title'] . '"' : '') .
-					' />';
+					$endingSlash . '>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
 				}
