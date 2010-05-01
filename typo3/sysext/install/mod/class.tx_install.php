@@ -982,7 +982,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'llIntroduction' => '
 							<p>
 								TYPO3 is an enterprise content management system
-								that is very powerfull and yet easy to install.
+								that is very powerful and yet easy to install.
 							</p>
 							<p>
 								Choose your database, import some data and
