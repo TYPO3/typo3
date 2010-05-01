@@ -100,7 +100,6 @@
  * 3873:     function updateWizard_parts($action)
  * 3987:     function getUpgradeObjInstance($className, $identifier)
  * 4000:     function isBackendAdminUser()
- * 4011:     function isStaticTemplates()
  * 4023:     function isBasicComplete($tLabel)
  * 4063:     function generateUpdateDatabaseForm($type, $arr_update, $arr_remove, $action_type)
  * 4094:     function getUpdateDbFormWrap($action_type, $content, $label='Write to database')
@@ -6807,15 +6806,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	}
 
 	/**
-	 * Check if static templates are available in database
-	 *
-	 * @return integer Amount of static templates in the database
-	 */
-	function isStaticTemplates() {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'static_template');
-	}
-
-	/**
 	 * Check if the basic settings are complete
 	 * Only used by 1-2-3 mode
 	 *
@@ -6828,9 +6818,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 			if (count($tables)) {
 				$beuser = $this->isBackendAdminUser();
-				$static = $this->isStaticTemplates();
 			}
-			if (count($tables) && $beuser && $static) {
+			if (count($tables) && $beuser) {
 				$mode123Imported=1;
 				$this->message($tLabel, 'Basic Installation Completed', $this->messageBasicFinished(), -1, 1);
 				$this->message($tLabel,'Security Risk!',$this->securityRisk().$this->alterPasswordForm(),2,1);
@@ -6839,8 +6828,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				You may be missing one of these points before your TYPO3 installation is complete:
 
 				'.(count($tables)?'':'- You haven\'t imported any tables yet.
-				')
-				.($static?'':'- You haven\'t imported the static_template table.
 				')
 				.($beuser?'':'- You haven\'t created an admin-user yet.
 				')

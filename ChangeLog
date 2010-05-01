@@ -1,3 +1,7 @@
+2010-05-01  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #7501: Removed check for static templates from installer
+
 2010-05-01 Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #14195: removed file typo3/sysext/t3skin/stylesheets/.htaccess which has become useless
