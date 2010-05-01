@@ -1216,12 +1216,11 @@ tt_content.'.$key.$prefix.' {
 '.$content;
 			if ($afterStaticUid) {
 				$TYPO3_CONF_VARS['FE']['defaultTypoScript_'.$type.'.'][$afterStaticUid].=$content;
-					// TODO: find a dynamic way to add default TS to all versions of css_style_content
-				if ($afterStaticUid==43)	{	// If 'content (default)' is targeted, also add to other 'content rendering templates', eg. css_styled_content
-					$TYPO3_CONF_VARS['FE']['defaultTypoScript_'.$type.'.']['cssstyledcontent/static/'] .= $content;
-					$TYPO3_CONF_VARS['FE']['defaultTypoScript_'.$type.'.']['cssstyledcontent/static/v4.2/'] .= $content;
-					$TYPO3_CONF_VARS['FE']['defaultTypoScript_'.$type.'.']['cssstyledcontent/static/v3.9/'] .= $content;
-					$TYPO3_CONF_VARS['FE']['defaultTypoScript_'.$type.'.']['cssstyledcontent/static/v3.8/'] .= $content;
+					// If 'content (default)' is targeted, also add to other 'content rendering templates', eg. css_styled_content
+				if ($afterStaticUid==43 && is_array($TYPO3_CONF_VARS['FE']['contentRenderingTemplates'])) {
+					foreach ($TYPO3_CONF_VARS['FE']['contentRenderingTemplates'] as $templateName) {
+						$TYPO3_CONF_VARS['FE']['defaultTypoScript_'.$type.'.'][$templateName] .= $content;
+					}
 				}
 			} else {
 				$TYPO3_CONF_VARS['FE']['defaultTypoScript_'.$type].=$content;

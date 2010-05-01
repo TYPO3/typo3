@@ -1,6 +1,7 @@
 2010-05-01  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #236: Rendered pages do not validate if no doctype is set. (thanks to Christian Buelter)
+	* Fixed bug #14231: csc static template "v4.3" won't include the registered plugins
 
 2010-04-30  Benjamin Mack  <benni@typo3.org>
 
