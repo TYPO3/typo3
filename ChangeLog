@@ -11,7 +11,7 @@
 
 	* Fixed bug #14272: typo in t3lib_PageRenderer (thanks to Steffen Gebert)
 	* Follow-up to bug #8305: SQL debug output is not shown in the Backend
-	* deleted testcase for comparing ereg_ usage as it doesn't work with php >= 5.3
+	* Deleted testcase for comparing ereg_ usage as it doesn't work with php >= 5.3
 	* Fixed bug #8305: SQL debug output is not shown in the Backend (thanks to Stefan Galinski)
 
 2010-05-01  Susanne Moog  <typo3@susanne-moog.de>
@@ -21,7 +21,7 @@
 
 2010-04-30  Benjamin Mack  <benni@typo3.org>
 
-	* Added feature #12502: Use HMACs for authencity and integrity checks (Thanks to Marcus Krause and the TYPO3 Security Team)
+	* Added feature #12502: Use HMACs for authenticity and integrity checks (Thanks to Marcus Krause and the TYPO3 Security Team)
 
 2010-04-30 Francois Suter  <francois@typo3.org>
 
@@ -29,7 +29,7 @@
 
 2010-04-30  Tobias Liebig  <mail_typo3@etobi.de>
 
-	* Fixed bug #11587: set proper default timezone (fixes PHP 5.3 warnings concerning missing timezone settings)
+	* Fixed bug #11587: Set proper default timezone (fixes PHP 5.3 warnings concerning missing timezone settings)
 	* Fixed bug #3800: Improve warning about empty reference index table (thanks to Michael Knabe)
 
 2010-04-30  Jeff Segars  <jeff@webempoweredchurch.org>
