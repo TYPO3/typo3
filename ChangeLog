@@ -1,5 +1,6 @@
 2010-05-01  Benjamin Mack  <benni@typo3.org>
 
+	* Followup to #14064: Removed unused functions to detect GDlib/TTF() in the installer
 	* Fixed bug #14243: some notices, undefined index in tslib_fe.php (Thanks to Martin Mueller)
 	* Followup to #14064: Textual change to the new install tool
 	* Followup to #7501: Removed check for static templates from installer

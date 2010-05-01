@@ -74,8 +74,7 @@
  * 2246:     function getFormElement($labels,$values,$fieldName,$default,$msg='')
  * 2266:     function getDatabaseList()
  * 2290:     function setupGeneralCalculate()
- * 2368:     function getGDPartOfPhpinfo()
- * 2387:     function isTTF($phpinfo='')
+ * 2387:     function isTTF()
  *
  *              SECTION: ABOUT the isXXX functions.
  * 2436:     function isGD()
@@ -172,10 +171,6 @@ class tx_install extends t3lib_install {
 	var $messages = array();
 	var $errorMessages = array();
 	var $mailMessage = '';
-	var $getGD_start_string='<h2 align="center"><a name="module_gd">gd</a></h2>';	// Used to identify the GD section in the output from phpinfo()
-	var $getGD_end_string = '</table>';	// Used to identify the end of the GD section (found with getGD_start_string) in the output from phpinfo()
-	var $getTTF_string = 'with TTF library';	// Used to identify whether TTF-lib is included with GD
-	var $getTTF_string_alt = 'with freetype';       // Used to identify whether TTF-lib is included with GD
 	var $action = '';		// The url that calls this script
 	var $scriptSelf = 'index.php';		// The url that calls this script
 	var $updateIdentity = 'TYPO3 Install Tool';
@@ -4133,38 +4128,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		return $formArray;
 	}
 
-	/**
-	 * Returns the part of phpinfo() output that tells about GD library (HTML-code)
-	 *
-	 * @return string HTML GD Library part
-	 */
-	function getGDPartOfPhpinfo() {
-		ob_start();
-		phpinfo();
-		$contents = ob_get_contents();
-		ob_end_clean();
-		$start_string = $this->getGD_start_string;
-		$end_string = $this->getGD_end_string;
-		list(,$gdpart_tmp) = explode($start_string,$contents,2);
-		list($gdpart) = explode($end_string,$start_string.$gdpart_tmp,2);
-		$gdpart.=$end_string;
-		return $gdpart;
-	}
 
 	/**
-	 * Returns true if TTF lib is install according to phpinfo().
-	 * If $phpinfo supply as parameter that string is searched instead.
+	 * Returns true if TTF lib is installed.
 	 *
-	 * @param string $phpinfo PHPinfo HTML
 	 * @return boolean TRUE if TrueType support
 	 */
-	function isTTF($phpinfo='') {
-/*		$phpinfo = $phpinfo?$phpinfo:$this->getGDPartOfPhpinfo();
-		if (stristr($phpinfo, $this->getTTF_string))    return 1;
-		if (stristr($phpinfo, $this->getTTF_string_alt))        return 1;
-		*/
-
-		// Return right away if imageTTFtext does not exist.
+	function isTTF() {
+			// Return right away if imageTTFtext does not exist.
 		if (!function_exists('imagettftext')) {
 			return 0;
 		}
