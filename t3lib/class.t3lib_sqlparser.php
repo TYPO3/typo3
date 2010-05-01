@@ -528,7 +528,7 @@ class t3lib_sqlparser {
 		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+');
 
 		if ($result['TABLE'])	{
-			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|DROP|ADD|RENAME)([[:space:]]+|\()'))	{
+			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+UNIQUE|DROP|ADD|RENAME)([[:space:]]+|\()'))	{
 				$actionKey = strtoupper(str_replace(array(' ',"\t","\r","\n"),'',$result['action']));
 
 					// Getting field:
@@ -554,6 +554,7 @@ class t3lib_sqlparser {
 
 						case 'ADDKEY':
 						case 'ADDPRIMARYKEY':
+						case 'ADDUNIQUE':
 							$result['KEY'] = $fieldKey;
 							$result['fields'] = $this->getValue($parseString, '_LIST', 'INDEX');
 							if ($this->parse_error)	{ return $this->parse_error; }
@@ -1531,6 +1532,7 @@ class t3lib_sqlparser {
 			break;
 			case 'ADDKEY':
 			case 'ADDPRIMARYKEY':
+			case 'ADDUNIQUE':
 				$query.=' ('.implode(',',$components['fields']).')';
 			break;
 		}

@@ -1,3 +1,7 @@
+2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #2186: Error installing static_info_tables
+
 2010-05-01  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14272: typo in t3lib_PageRenderer (thanks to Steffen Gebert)
