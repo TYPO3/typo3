@@ -54,7 +54,7 @@ class tx_dbal_autoloader {
 				break;
 			case 3:
 				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
-				if ($driver === 'mysql' || $driver === 'mysqli') {
+				if ($driver === 'mysql') {
 					$this->deactivateDbal();
 				}
 				break;

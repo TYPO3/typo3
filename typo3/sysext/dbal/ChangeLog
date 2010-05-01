@@ -1,3 +1,7 @@
+2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14265: Driver dropdown in install tool should be hidden when only MySQL is available
+
 2010-04-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.1.3
