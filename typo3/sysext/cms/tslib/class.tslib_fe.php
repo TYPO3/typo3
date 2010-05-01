@@ -3336,7 +3336,7 @@ if (version == "n3") {
 	 * @return	string		Keyword: "all", "cached" or "output"
 	 */
 	function doLocalAnchorFix()	{
-		return $this->config['config']['prefixLocalAnchors'];
+		return (isset($this->config['config']['prefixLocalAnchors'])) ? $this->config['config']['prefixLocalAnchors'] : NULL;
 	}
 
 
@@ -3391,21 +3391,21 @@ if (version == "n3") {
 	 *
 	 * @return	void
 	 */
-	function processOutput()	{
+	function processOutput() {
 
 			// Set header for charset-encoding unless disabled
-		if (!$this->config['config']['disableCharsetHeader'])	{
+		if (empty($this->config['config']['disableCharsetHeader'])) {
 			$headLine = 'Content-Type: text/html; charset='.trim($this->metaCharset);
 			header($headLine);
 		}
 
 			// Set cache related headers to client (used to enable proxy / client caching!)
-		if ($this->config['config']['sendCacheHeaders'])	{
+		if (!empty($this->config['config']['sendCacheHeaders'])) {
 			$this->sendCacheHeaders();
 		}
 
 			// Set headers, if any
-		if ($this->config['config']['additionalHeaders'])	{
+		if (!empty($this->config['config']['additionalHeaders'])) {
 			$headerArray = explode('|', $this->config['config']['additionalHeaders']);
 			while(list(,$headLine)=each($headerArray))	{
 				$headLine = trim($headLine);
@@ -3419,7 +3419,7 @@ if (version == "n3") {
 		}
 
 			// Make substitution of eg. username/uid in content only if cache-headers for client/proxy caching is NOT sent!
-		if (!$this->isClientCachable)	{
+		if (!$this->isClientCachable) {
 			$this->contentStrReplace();
 		}
 
@@ -3430,30 +3430,30 @@ if (version == "n3") {
 			$GLOBALS['TT']->pull();
 		}
 			// XHTML-clean the code, if flag set
-		if ($this->doXHTML_cleaning() == 'output')		{
+		if ($this->doXHTML_cleaning() == 'output') {
 			$GLOBALS['TT']->push('XHTML clean, output','');
 				$XHTML_clean = t3lib_div::makeInstance('t3lib_parsehtml');
 				$this->content = $XHTML_clean->XHTML_clean($this->content);
 			$GLOBALS['TT']->pull();
 		}
 			// Fix local anchors in links, if flag set
-		if ($this->doLocalAnchorFix() == 'output')		{
+		if ($this->doLocalAnchorFix() == 'output') {
 			$GLOBALS['TT']->push('Local anchor fix, output','');
 				$this->prefixLocalAnchorsWithScript();
 			$GLOBALS['TT']->pull();
 		}
 
 			// Hook for post-processing of page content before output:
-		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']))	{
+		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'])) {
 			$_params = array('pObj' => &$this);
-			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'] as $_funcRef)	{
+			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'] as $_funcRef) {
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
 			}
 		}
 
 			// Send content-lenght header.
 			// Notice that all HTML content outside the length of the content-length header will be cut off! Therefore content of unknown length from included PHP-scripts and if admin users are logged in (admin panel might show...) or if debug mode is turned on, we disable it!
-		if ($this->config['config']['enableContentLengthHeader'] &&
+		if (!empty($this->config['config']['enableContentLengthHeader']) &&
 			!$this->isEXTincScript() &&
 			!$this->beUserLogin  &&
 			!$this->TYPO3_CONF_VARS['FE']['debug'] &&
@@ -3477,7 +3477,7 @@ if (version == "n3") {
 		$doCache = $this->isStaticCacheble();
 
 			// This variable will be TRUE unless cache headers are configured to be sent ONLY if a branch does not allow logins and logins turns out to be allowed anyway...
-		$loginsDeniedCfg = !$this->config['config']['sendCacheHeaders_onlyWhenLoginDeniedInBranch'] || !$this->loginAllowedInBranch;
+		$loginsDeniedCfg = (empty($this->config['config']['sendCacheHeaders_onlyWhenLoginDeniedInBranch']) || empty($this->loginAllowedInBranch));
 
 			// Finally, when backend users are logged in, do not send cache headers at all (Admin Panel might be displayed for instance).
 		if ($doCache
@@ -3560,12 +3560,12 @@ if (version == "n3") {
 		if ($this->fe_user->user['uid'])	{
 
 				// User name:
-			$token = trim($this->config['config']['USERNAME_substToken']);
+			$token = (isset($this->config['config']['USERNAME_substToken'])) ? trim($this->config['config']['USERNAME_substToken']) : '';
 			$search[] = ($token ? $token : '<!--###USERNAME###-->');
 			$replace[] = $this->fe_user->user['username'];
 
 				// User uid (if configured):
-			$token = trim($this->config['config']['USERUID_substToken']);
+			$token = (isset($this->config['config']['USERUID_substToken'])) ? trim($this->config['config']['USERUID_substToken']) : '';
 			if ($token) {
 				$search[] = $token;
 				$replace[] = $this->fe_user->user['uid'];
@@ -3604,7 +3604,7 @@ if (version == "n3") {
 	 * @see tslib_cObj::PHP_SCRIPT
 	 */
 	function isEXTincScript()	{
-		return is_array($this->config['EXTincScript']);
+		return (isset($this->config['EXTincScript']) && is_array($this->config['EXTincScript']));
 	}
 
 	/**
@@ -3623,11 +3623,15 @@ if (version == "n3") {
 	 * @access private
 	 */
 	function setParseTime()	{
-			// Compensates for the time consumed with Back end user initialization.
-		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_end'])
-								- $GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_start'])
-								- ($GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']) - $GLOBALS['TT']->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start']));
-	}
+        // Compensates for the time consumed with Back end user initialization.
+        $microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
+        $microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
+        $microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
+        $microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
+        
+        $this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
+                                - ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
+    }
 
 	/**
 	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
@@ -3736,13 +3740,13 @@ if (version == "n3") {
 	 * @return	void
 	 */
 	function statistics()	{
-		if ($this->config['config']['stat'] &&
+		if (!empty($this->config['config']['stat']) &&
 				(!strcmp('',$this->config['config']['stat_typeNumList']) || t3lib_div::inList(str_replace(' ','',$this->config['config']['stat_typeNumList']), $this->type)) &&
-				(!$this->config['config']['stat_excludeBEuserHits'] || !$this->beUserLogin) &&
-				(!$this->config['config']['stat_excludeIPList'] || !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'),str_replace(' ','',$this->config['config']['stat_excludeIPList'])))) {
+				(empty($this->config['config']['stat_excludeBEuserHits']) || !$this->beUserLogin) &&
+				(empty($this->config['config']['stat_excludeIPList']) || !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'),str_replace(' ','',$this->config['config']['stat_excludeIPList'])))) {
 
 			$GLOBALS['TT']->push('Stat');
-				if (t3lib_extMgm::isLoaded('sys_stat') && $this->config['config']['stat_mysql'])	{
+				if (t3lib_extMgm::isLoaded('sys_stat') && !empty($this->config['config']['stat_mysql'])) {
 
 						// Jumpurl:
 					$sword = t3lib_div::_GP('sword');
@@ -3788,7 +3792,7 @@ if (version == "n3") {
 					);
 
 						// Hook for preprocessing the list of fields to insert into sys_stat:
-					if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass']))    {
+					if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'])) {
 						foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'] as $_classRef)    {
 							$_procObj = t3lib_div::getUserObj($_classRef);
 							$insertFields = $_procObj->sysstat_preProcessFields($insertFields,$this);
@@ -3802,11 +3806,11 @@ if (version == "n3") {
 				}
 
 					// Apache:
-				if ($this->config['config']['stat_apache'] && $this->config['stat_vars']['pageName'])	{
+				if (!empty($this->config['config']['stat_apache']) && !empty($this->config['stat_vars']['pageName'])) {
 					if (@is_file($this->config['stat_vars']['logFile'])) {
 							// Build a log line (format is derived from the NCSA extended/combined log format)
 							// Log part 1: Remote hostname / address
-						$LogLine = (t3lib_div::getIndpEnv('REMOTE_HOST') && !$this->config['config']['stat_apache_noHost']) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR');
+						$LogLine = (t3lib_div::getIndpEnv('REMOTE_HOST') && empty($this->config['config']['stat_apache_noHost'])) ? t3lib_div::getIndpEnv('REMOTE_HOST') : t3lib_div::getIndpEnv('REMOTE_ADDR');
 							// Log part 2: Fake the remote logname
 						$LogLine.= ' -';
 							// Log part 3: Remote username
@@ -3818,7 +3822,7 @@ if (version == "n3") {
 							// Log part 6: Status and content length (ignores special content like admin panel!)
 						$LogLine.= ' 200 '.strlen($this->content);
 
-						if (!$this->config['config']['stat_apache_notExtended']) {
+						if (empty($this->config['config']['stat_apache_notExtended'])) {
 							$referer = t3lib_div::getIndpEnv('HTTP_REFERER');
 							$LogLine.= ' "'.($referer ? $referer : '-').'" "'.t3lib_div::getIndpEnv('HTTP_USER_AGENT').'"';
 						}
@@ -3875,7 +3879,7 @@ if (version == "n3") {
 	function hook_eofe()	{
 
 			// Call hook for end-of-frontend processing:
-		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']))	{
+		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'])) {
 			$_params = array('pObj' => &$this);
 			foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] as $_funcRef)	{
 				t3lib_div::callUserFunction($_funcRef,$_params,$this);
@@ -3889,7 +3893,7 @@ if (version == "n3") {
 	 * @return	string		HTML, a tag for a link to the backend.
 	 */
 	function beLoginLinkIPList()	{
-		if ($this->config['config']['beLoginLinkIPList']) {
+		if (!empty($this->config['config']['beLoginLinkIPList'])) {
 			if (t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->config['config']['beLoginLinkIPList']))	{
 				$label = !$this->beUserLogin ? $this->config['config']['beLoginLinkIPList_login'] : $this->config['config']['beLoginLinkIPList_logout'];
 				if ($label)	{
