@@ -6,65 +6,10 @@ $Id$
 
 /* Set default values for bodytags: */
 body {
-	margin: 2px 2px 0px 4px;
-}
-
-body#typo3-alt-intro-php,
-body#typo3-alt-doc-php,
-body#typo3-alt-file-navframe-php,
-body#typo3-db-list-php,
-body#typo3-mod-web-perm-index-php,
-body#typo3-mod-web-info-index-php,
-body#typo3-mod-web-func-index-php,
-body#typo3-mod-user-ws-index-php,
-body#typo3-mod-user-ws-workspaceforms-php,
-body#typo3-mod-php,
-body#typo3-mod-tools-em-index-php,
-body#typo3-wizard-rte-php,
-body#typo3-pagetree,
-body#typo3-db-new-php,
-body#typo3-move-el-php,
-body#typo3-show-rechis-php,
-body#typo3-wizard-table-php,
-body#typo3-wizard-forms-php,
-body#ext-cms-layout-db-layout-php,
-body#ext-tstemplate-ts-index-php,
-body#ext-version-cm1-index-php,
-body#ext-setup-mod-index-php,
-body#ext-tsconfig-help-mod1-index-php,
-body#ext-lowlevel-dbint-index-php,
-body#ext-lowlevel-config-index-php,
-body#ext-indexed-search-mod-index-php,
-body#ext-cms-layout-db-new-content-el-php,
-body#ext-beuser-mod-index-php,
-body#ext-belog-mod-index-php,
-body#ext-recycler-mod1-index-php,
-body#imp-exp-mod {
 	height: 100%;
 	margin: 0;
-	overflow: hidden;
+/*	overflow: hidden;*/
 	padding: 0;
-}
-
-/* Set body styles for Filelist module */
-body#typo3-file-newfolder-php,
-body#typo3-file-list-php,
-body#typo3-file-edit-php,
-body#typo3-file-rename-php,
-body#typo3-file-upload-php {
-	height: 100%;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
-}
-
-/* Set body styles for Filelist module */
-body#typo3-file-newfolder-php,
-body#typo3-file-list-php,
-body#typo3-file-edit-php,
-body#typo3-file-rename-php,
-body#typo3-file-upload-php {
-	margin: 0;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -

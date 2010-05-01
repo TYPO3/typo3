@@ -15,6 +15,7 @@
 
 2010-05-01  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11150: CSS in BE has no general rules, only specific (thanks to Steffen Gebert)
 	* Added feature #14247: Add a compressor/concatenator for CSS and JS (thanks to Steffen Gebert)
 	* Fixed bug #14272: typo in t3lib_PageRenderer (thanks to Steffen Gebert)
 	* Follow-up to bug #8305: SQL debug output is not shown in the Backend
