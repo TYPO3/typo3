@@ -973,7 +973,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$params = array (
 				'jsLibs'         => &$this->jsLibs,
 				'jsFiles'        => &$this->jsFiles,
-				'jsFooterFiles'  => &$this->jsFiles,
+				'jsFooterFiles'  => &$this->jsFooterFiles,
 				'cssFiles'       => &$this->cssFiles,
 				'headerData'     => &$this->headerData,
 				'footerData'     => &$this->footerData,
@@ -1324,7 +1324,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$params = array (
 				'jsLibs'         => &$this->jsLibs,
 				'jsFiles'        => &$this->jsFiles,
-				'jsFooterFiles'  => &$this->jsFiles,
+				'jsFooterFiles'  => &$this->jsFooterFiles,
 				'cssFiles'       => &$this->cssFiles,
 				'headerData'     => &$this->headerData,
 				'footerData'     => &$this->footerData,
@@ -1354,7 +1354,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'jsFooterInline'  => &$this->jsFooterInline,
 				'jsLibs'          => &$this->jsLibs,
 				'jsFiles'         => &$this->jsFiles,
-				'jsFooterFiles'   => &$this->jsFiles,
+				'jsFooterFiles'   => &$this->jsFooterFiles,
 				'headerData'      => &$this->headerData,
 				'footerData'      => &$this->footerData,
 			);
