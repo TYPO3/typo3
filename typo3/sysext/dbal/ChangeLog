@@ -1,5 +1,6 @@
 2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #14274: Some exception are not caught when trying to install DBAL in 1-2-3 Install Tool process
 	* Fixed bug #2186: Error installing static_info_tables
 	* Fixed bug #14265: Driver dropdown in install tool should be hidden when only MySQL is available
 

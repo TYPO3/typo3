@@ -121,16 +121,23 @@ class tx_dbal_autoloader {
 		$instObj->allowUpdateLocalConf = 1;
 		$instObj->updateIdentity = 'TYPO3 Core Update Manager';
 
-			// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->writeToLocalconf_control($lines);
+		try {
+				// Get lines from localconf file
+			$lines = $instObj->writeToLocalconf_control();
+			$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
+			$instObj->writeToLocalconf_control($lines);
 
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
-			// Make sure to get cache file for backend, not frontend
-		$cacheFilePrefix = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'];
-		$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = str_replace('temp_CACHED_FE', 'temp_CACHED', $cacheFilePrefix);
-		t3lib_extMgm::removeCacheFiles();
+			$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
+				// Make sure to get cache file for backend, not frontend
+			$cacheFilePrefix = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'];
+			$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = str_replace('temp_CACHED_FE', 'temp_CACHED', $cacheFilePrefix);
+			t3lib_extMgm::removeCacheFiles();
+		} catch (Exception $e) {
+			$header = 'Error';
+			$message = $e->getMessage();
+			t3lib_timeTrack::debug_typo3PrintError($header, $message, FALSE, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+			exit; 
+		}
 	}
 
 }
