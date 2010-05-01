@@ -961,13 +961,13 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$jsFooterFiles = '';
 		$noJS = FALSE;
 
-		
+
 		// preRenderHook for possible manuipulation
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
 			$params = array (
 				'jsLibs'         => &$this->jsLibs,
 				'jsFiles'        => &$this->jsFiles,
-				'jsFooterFiles'  => &$this->jsFiles,
+				'jsFooterFiles'  => &$this->jsFooterFiles,
 				'cssFiles'       => &$this->cssFiles,
 				'headerData'     => &$this->headerData,
 				'footerData'     => &$this->footerData,
@@ -980,7 +980,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 
 		$jsLibs = $this->renderJsLibraries();
-		
+
 		if ($this->compressCss || $this->compressJavascript) {
 				// do the file compression
 			$this->doCompress();
@@ -1292,7 +1292,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$params = array (
 				'jsLibs'         => &$this->jsLibs,
 				'jsFiles'        => &$this->jsFiles,
-				'jsFooterFiles'  => &$this->jsFiles,
+				'jsFooterFiles'  => &$this->jsFooterFiles,
 				'cssFiles'       => &$this->cssFiles,
 				'headerData'     => &$this->headerData,
 				'footerData'     => &$this->footerData,
@@ -1318,7 +1318,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				'jsFooterInline'  => &$this->jsFooterInline,
 				'jsLibs'          => &$this->jsLibs,
 				'jsFiles'         => &$this->jsFiles,
-				'jsFooterFiles'   => &$this->jsFiles,
+				'jsFooterFiles'   => &$this->jsFooterFiles,
 				'headerData'      => &$this->headerData,
 				'footerData'      => &$this->footerData,
 			);

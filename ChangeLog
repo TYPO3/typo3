@@ -1,5 +1,6 @@
 2010-05-01  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14272: typo in t3lib_PageRenderer (thanks to Steffen Gebert)
 	* deleted testcase for comparing ereg_ usage as it doesn't work with php >= 5.3
 
 2010-04-30  Susanne Moog  <typo3@susanne-moog.de>
