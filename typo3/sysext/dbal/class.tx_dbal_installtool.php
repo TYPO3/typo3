@@ -104,7 +104,6 @@ class tx_dbal_installtool {
 						$driverConfig = '\'useNameQuote\' => TRUE';
 						break;
 					case 'mysql':
-					case 'mysqli':
 						return;
 				}
 				$config = 'array(' .
@@ -130,6 +129,11 @@ class tx_dbal_installtool {
 	 * @return void
 	 */
 	protected function createConnectionForm($driver, array &$markers, tx_install $instObj) {
+			// Normalize current driver
+		if (!$driver) {  
+			$driver = $this->getDefaultDriver();
+		}
+
 			// Get the template file
 		$templateFile = @file_get_contents(
 			t3lib_extMgm::extPath('dbal') . $this->templateFilePath . 'install.html'
@@ -143,21 +147,25 @@ class tx_dbal_installtool {
 		$formSubPart = t3lib_parsehtml::getSubpart(
 			$template, '###CONNECTION_FORM###'
 		);
-		$driverTemplate = t3lib_parsehtml::getSubpart(
-			$formSubPart, '###DATABASE_DRIVER###'
-		);
-		$driverSubPart = $this->prepareDatabaseDrivers($driverTemplate);
+		if ($this->getNumberOfAvailableDrivers() == 1 && $this->getDefaultDriver() === 'mysql') {
+				// Only MySQL is actually available (PDO support may be compiled in
+				// PHP itself and as such DBAL was activated, behaves as if DBAL were
+				// not activated
+			$driverSubPart = '';
+		} else {
+			$driverTemplate = t3lib_parsehtml::getSubpart(
+				$formSubPart, '###DATABASE_DRIVER###'
+			);
+			$driverSubPart = $this->prepareDatabaseDrivers($driverTemplate);
+		}
 		$formSubPart = t3lib_parsehtml::substituteSubpart(
 			$formSubPart,
 			'###DATABASE_DRIVER###',
 			$driverSubPart
 		);
 
-		if (!$driver) {  
-			$driver = $this->getDefaultDriver();
-		}
 			// Get the subpart related to selected database driver
-		if ($driver === '' || $driver === 'mysql' || $driver === 'mysqli') {
+		if ($driver === '' || $driver === 'mysql') {
 			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
 				$template, '###DRIVER_MYSQL###'
 			);
@@ -382,6 +390,19 @@ class tx_dbal_installtool {
 			}
 		}
 		return $availableDrivers;
+	}
+
+	/**
+	 * Returns the number of available drivers.
+	 *
+	 * @return boolean
+	 */
+	protected function getNumberOfAvailableDrivers() {
+		$count = 0;
+		foreach ($this->availableDrivers as $drivers) {
+			$count += count($drivers);
+		}
+		return $count;
 	}
 
 	/**

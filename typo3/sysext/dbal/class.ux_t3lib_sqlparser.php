@@ -298,6 +298,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 						break;
 					case 'ADDKEY':
 					case 'ADDPRIMARYKEY':
+					case 'ADDUNIQUE':
 						$query .= ' (' . implode(',', $components['fields']) . ')';
 						break;
 				}
