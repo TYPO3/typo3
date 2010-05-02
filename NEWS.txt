@@ -30,7 +30,9 @@ General
 		RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif)$ $1.$3 [L]
 	  Developers can use this API for versioning of files in their own backend mods, by calling t3lib_div::createVersionNumberedFilename or using the core API for including files in the page renderer class.
 
-
+	* CSS and JS are compressed now. This means, that they are concatenated to a single file. This will reduce the count of request drastically, which ends up in faster loading and better performance.
+	  If compressionLevel is configured ($TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel'] = 1 [1-9 for compression level]) they will be served with gzip. Be sure to uncomment the needed configuration in you .htaccess, also found in misc/advanced.htaccess.
+	  
 Backend
 =======
 
@@ -72,7 +74,8 @@ Development
 	
 	* There is now a new API for sending emails t3lib_utility_Mail::mail() that serves as a proxy for the PHP mail() function, and is now the recommended way for sending emails, in order to have a central place to use a different mailing engine.
 
-
+	* The debug in BE was enhanced. There is a new debug console, which will show each debug in a single tab. The console will pop up as soon a debug statement is present.
+	
 TypoScript changes
 ==================
 
