@@ -27,7 +27,7 @@
 
 /**
  * Compressor
- * This class can currently merge CSS files of the TYPO3 Backend.
+ * This merges and compresses CSS and JavaScript files of the TYPO3 Backend.
  *
  * @author	Steffen Gebert <steffen@steffen-gebert.de>
  * @package TYPO3
@@ -63,6 +63,17 @@ class t3lib_compressor {
 				$this->gzipCompressionLevel = $compressionLevel;
 			}
 		}
+
+			// decide whether we should create gzipped versions or not
+		$compressionLevel = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel'];
+			// we need zlib for gzencode()
+		if (extension_loaded('zlib') && $compressionLevel) {
+			$this->createGzipped = TRUE;
+				// $compressionLevel can also be TRUE
+			if (t3lib_div::testInt($compressionLevel)) {
+				$this->gzipCompressionLevel = $compressionLevel;
+			}
+		}
 	}
 
 	/**
@@ -71,7 +82,7 @@ class t3lib_compressor {
 	 * Options:
 	 *   baseDirectories		If set, only include files below one of the base directories
 	 *
-	 * @param	array	$cssFiles		CSS files added to the PageRenderer
+	 * @param	array	$cssFiles		CSS files to process
 	 * @param	array	$options		Additional options
 	 * @return	array	CSS files
 	 */
@@ -144,8 +155,8 @@ class t3lib_compressor {
 	/**
 	 * Compress multiple css files
 	 *
-	 * @param array $cssFiles	The files to compress (array key = filename)
-	 * @return array 			The CSS files after compression (array key = new filename)
+	 * @param array $cssFiles	The files to compress (array key = filename), relative to requested page
+	 * @return array 			The CSS files after compression (array key = new filename), relative to requested page
 	 */
 	public function compressCssFiles(array $cssFiles) {
 		$filesAfterCompression = array();
@@ -154,7 +165,7 @@ class t3lib_compressor {
 			$filenameFromMainDir = substr($filename, strlen($GLOBALS['BACK_PATH']));
 				// if compression is enabled
 			if ($fileOptions['compress']) {
-				$filesAfterCompression[$GLOBALS['BACK_PATH'] . $this->compressCssFile($filename)] = $fileOptions;
+				$filesAfterCompression[$this->compressCssFile($filename)] = $fileOptions;
 			} else {
 				$filesAfterCompression[$filename] = $fileOptions;
 			}
@@ -171,8 +182,8 @@ class t3lib_compressor {
 	 * removes comments and whitespaces
 	 * Adopted from http://drupal.org/files/issues/minify_css.php__1.txt
 	 *
-	 * @param	string	$filename		Source filename
-	 * @return	string		Filename of the compressed file
+	 * @param	string	$filename		Source filename, relative to requested page
+	 * @return	string		Compressed filename, relative to requested page
 	 */
 	public function compressCssFile($filename) {
 			// generate the unique name of the file
@@ -218,7 +229,7 @@ class t3lib_compressor {
 			$this->writeFileAndCompressed($targetFile, $contents);
 		}
 
-		return '../' . $this->returnFileReference($targetFile);
+		return $GLOBALS['BACK_PATH'] . '../' . $this->returnFileReference($targetFile);
 	}
 
 	/**
@@ -253,6 +264,51 @@ class t3lib_compressor {
 			return $matches[8];
 		}
 		return $matches[0] . "\n/* ERROR! Unexpected _proccess_css_minify() parameter */\n"; // never get here
+	}
+
+	/**
+	 * Compress multiple javascript files
+	 *
+	 * @param	array	$jsFiles		The files to compress (array key = filename), relative to requested page
+	 * @return	array		The js files after compression (array key = new filename), relative to requested page
+		*/
+	public function compressJsFiles(array $jsFiles) {
+		$filesAfterCompression = array();
+		foreach ($jsFiles as $filename => $fileOptions) {
+				// we remove BACK_PATH from $filename, so make it relative to TYPO3_mainDir
+			$filenameFromMainDir = substr($filename, strlen($GLOBALS['BACK_PATH']));
+				// if compression is enabled
+			if ($fileOptions['compress']) {
+				$filesAfterCompression[$this->compressJsFile($filename)] = $fileOptions;
+			} else {
+				$filesAfterCompression[$filename] = $fileOptions;
+			}
+		}
+		return $filesAfterCompression;
+	}
+
+	/**
+	 * Compresses a javascript file
+	 *
+	 * Options:
+	 *   baseDirectories		If set, only include files below one of the base directories
+	 *
+	 * @param	string	$filename		Source filename, relative to requested page
+	 * @return	string		Filename of the compressed file, relative to requested page
+	 */
+	public function compressJsFile($filename) {
+			// generate the unique name of the file
+		$filenameAbsolute = t3lib_div::resolveBackPath(PATH_typo3 . substr($filename, strlen($GLOBALS['BACK_PATH'])));
+		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
+
+		$pathinfo = pathinfo($filename);
+		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
+			// only create it, if it doesn't exist, yet
+		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gz'))) {
+			$contents = t3lib_div::getUrl($filenameAbsolute);
+			$this->writeFileAndCompressed($targetFile, $contents);
+		}
+		return $GLOBALS['BACK_PATH'] . '../' . $this->returnFileReference($targetFile);
 	}
 
 	/**
@@ -309,7 +365,7 @@ class t3lib_compressor {
 			if (isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel']) && is_numeric($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel'])) {
 				$compressionLevel = intval($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel']);
 			}
-			t3lib_div::writeFile(PATH_site . $filename . '.gz', gzencode($contents, $compressionLevel));
+			t3lib_div::writeFile(PATH_site . $filename . '.gzip', gzencode($contents, $compressionLevel));
 		}
 	}
 
@@ -323,7 +379,7 @@ class t3lib_compressor {
 	protected function returnFileReference($filename) {
 			// if the client accepts gzip and we can create gzipped files, we give him compressed versions
 		if ($this->createGzipped && strpos(t3lib_div::getIndpEnv('HTTP_ACCEPT_ENCODING'), 'gzip') !== FALSE) {
-			return $filename . '.gz';
+			return $filename . '.gzip';
 		} else {
 			return $filename;
 		}

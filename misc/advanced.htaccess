@@ -36,6 +36,20 @@
 # 
 ####
 
+##
+# Compressed .js and .css files
+##
+# uncomment the following lines if you use compression
+#
+#<FilesMatch "\.js\.gzip$">
+#  AddType "text/javascript" .gzip
+#</FilesMatch>
+#<FilesMatch "\.css\.gzip$">
+#  AddType "text/css" .gzip
+#</FilesMatch>
+#AddEncoding gzip .gzip
+
+
 ### Begin: Rewrite stuff ###
 
 # Enable URL rewriting

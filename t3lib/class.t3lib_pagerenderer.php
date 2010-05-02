@@ -47,6 +47,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $csConvObj;
 	protected $lang;
 
+	/* @var t3lib_compressor Instance of t3lib_compressor */
+	protected $compressor;
+
 	// static array containing associative array for the included files
 	protected static $jsFiles = array ();
 	protected static $jsFooterFiles = array ();
@@ -1200,8 +1203,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$out = '';
 
 		if ($this->addPrototype) {
-			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
-				'contrib/prototype/prototype.js') . '" type="text/javascript"></script>' . LF;
+			$out .= '<script src="' . $this->processJsFile($this->backPath  . 'contrib/prototype/prototype.js') .
+				'" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . 'contrib/prototype/prototype.js']);
 		}
 
@@ -1218,17 +1221,20 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			}
 
 			if (count($mods)) {
-				$moduleLoadString = '?load=' . implode(',', $mods);
+				foreach ($mods as $module) {
+					$out .= '<script src="' . $this->processJsFile($this->backPath .
+						'contrib/scriptaculous/' . $module . '.js') . '" type="text/javascript"></script>' . LF;
+					unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/' . $module . '.js']);
 			}
-			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
-				'contrib/scriptaculous/scriptaculous.js' . $moduleLoadString, TRUE) .
-				'" type="text/javascript"></script>' . LF;
-			unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/scriptaculous.js' . $moduleLoadString]);
+		}
+			$out .= '<script src="' . $this->processJsFile($this->backPath .
+				'contrib/scriptaculous/scriptaculous.js') . '" type="text/javascript"></script>' . LF;
+			unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/scriptaculous.js']);
 		}
 
 			// include extCore
 		if ($this->addExtCore) {
-			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+			$out .= '<script src="' . $this->processJsFile($this->backPath .
 				'contrib/extjs/ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
 				'" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . 'contrib/extjs/ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js']);
@@ -1237,11 +1243,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// include extJS
 		if ($this->addExtJS) {
 				// use the base adapter all the time
-			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+			$out .= '<script src="' . $this->processJsFile($this->backPath .
 				'contrib/extjs/adapter/' . ($this->enableExtJsDebug ?
 					str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter)) .
 				'" type="text/javascript"></script>' . LF;
-			$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+			$out .= '<script src="' . $this->processJsFile($this->backPath .
 				'contrib/extjs/ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') .
 				'" type="text/javascript"></script>' . LF;
 
@@ -1258,7 +1264,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
 			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
-				$out .= '<script src="' . t3lib_div::createVersionNumberedFilename($this->backPath .
+				$out .= '<script src="' . $this->processJsFile($this->backPath .
 					$extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
 			}
 
@@ -1302,16 +1308,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 			if ($this->extJStheme) {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
-					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'screen', '', FALSE, TRUE);
+					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'all', '', TRUE, TRUE);
 				} else {
-					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/xtheme-blue.css', 'stylesheet', 'screen', '', FALSE, TRUE);
+					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/xtheme-blue.css', 'stylesheet', 'all', '', TRUE, TRUE);
 				}
 			}
 			if ($this->extJScss) {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
-					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'screen', '', FALSE, TRUE);
+					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'all', '', TRUE, TRUE);
 				} else {
-					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css', 'stylesheet', 'screen', '', FALSE, TRUE);
+					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css', 'stylesheet', 'all', '', TRUE, TRUE);
 				}
 			}
 		} else {
@@ -1333,7 +1339,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * concatenate files into one file
 	 * registered handler
-	 * TODO: implement own method
 	 *
 	 * @return void
 	 */
@@ -1355,9 +1360,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				// use extern concatenate routine
 				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['concatenateHandler'], $params, $this);
 			} elseif (TYPO3_MODE === 'BE') {
-				$compressor = t3lib_div::makeInstance('t3lib_compressor');
 				$cssOptions = array('baseDirectories' => $GLOBALS['TBE_TEMPLATE']->getSkinStylesheetDirectories());
-				$this->cssFiles = $compressor->concatenateCssFiles($this->cssFiles, $cssOptions);
+				$this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles, $cssOptions);
 			}
 		}
 	}
@@ -1396,7 +1400,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 						}
 					}
 				}
+				if (TYPO3_MODE === 'BE') {
+					$this->jsFiles = $this->getCompressor()->compressJsFiles($this->jsFiles);
+					$this->jsFooterFiles = $this->getCompressor()->compressJsFiles($this->jsFooterFiles);
 			}
+		}
 		}
 		if ($this->compressCss) {
 				// use extern compress routine
@@ -1411,12 +1419,42 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				// use extern concatenate routine
 				t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssCompressHandler'], $params, $this);
 			} elseif (TYPO3_MODE === 'BE') {
-				$compressor = t3lib_div::makeInstance('t3lib_compressor');
-				$this->cssFiles = $compressor->compressCssFiles($this->cssFiles);
+				$this->cssFiles = $this->getCompressor()->compressCssFiles($this->cssFiles);
 			}
 		}
 	}
 
+	/**
+	 * Returns instance of t3lib_compressor
+	 *
+	 * @return	t3lib_compressor		Instance of t3lib_compressor
+	 */
+	protected function getCompressor() {
+		if ($this->compressor === NULL) {
+			$this->compressor = t3lib_div::makeInstance('t3lib_compressor');
+}
+		return $this->compressor;
+	}
+
+	/**
+	 * Processes a Javascript file dependent on the current context
+	 *
+	 * Adds the version number for Frontend, compresses the file for Backend
+	 *
+	 * @param	string	$filename		Filename
+	 * @return	string		new filename
+	 */
+	protected function processJsFile($filename) {
+		switch (TYPO3_MODE) {
+			case 'FE':
+				$filename = t3lib_div::createVersionNumberedFilename($filename);
+				break;
+			case 'BE':
+				$filename = $this->getCompressor()->compressJsFile($filename);
+				break;
+		}
+		return $filename;
+	}
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php']) {

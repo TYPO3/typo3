@@ -127,7 +127,6 @@ class TYPO3backend {
 			'js/iecompatibility.js',
 			'js/flashupload.js',
 			'../t3lib/jsfunc.evalfield.js',
-			'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend',
 			'../t3lib/js/extjs/ux/flashmessages.js',
 			'js/backend.js',
 			'js/loginrefresh.js',
@@ -238,6 +237,8 @@ class TYPO3backend {
 		foreach ($this->jsFiles as $jsFile) {
 			$this->pageRenderer->addJsFile($jsFile);
 		}
+			// we mustn't compress this file
+		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend', NULL, FALSE);
 
 		$this->generateJavascript();
 		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js);
