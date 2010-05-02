@@ -88,7 +88,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function __construct() {
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
-		$this->dataMapFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory');
 	}
 
 	/**
@@ -119,6 +118,16 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
+	}
+	
+	/**
+	 * Injects the DataMap Factory
+	 *
+	 * @param Tx_Extbase_Persistence_Mapper_DataMapFactory
+	 * @return void
+	 */
+	public function injectDataMapFactory(Tx_Extbase_Persistence_Mapper_DataMapFactory $dataMapFactory) {
+		$this->dataMapFactory = $dataMapFactory;
 	}
 	
 	/**

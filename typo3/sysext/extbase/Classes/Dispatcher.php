@@ -276,6 +276,8 @@ class Tx_Extbase_Dispatcher {
 			$dataMapper->injectIdentityMap($identityMap);
 			$dataMapper->injectSession($persistenceSession);
 			$dataMapper->injectReflectionService(self::$reflectionService);
+			$dataMapper->injectDataMapFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory'));
+			
 			
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);

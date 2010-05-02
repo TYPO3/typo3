@@ -32,6 +32,21 @@
 class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	
 	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
+	 * Injects the reflection service
+	 *
+	 * @param Tx_Extbase_Reflection_Service $reflectionService
+	 * @return void
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
+	
+	/**
 	 * Builds a data map by adding column maps for all the configured columns in the $TCA.
 	 * It also resolves the type of values the column is holding and the typo of relation the column
 	 * represents.
@@ -57,27 +72,44 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			if (isset($classSettings['mapping']['tableName']) && strlen($classSettings['mapping']['tableName']) > 0) {
 				$tableName = $classSettings['mapping']['tableName'];
 			}
-			if (isset($classSettings['mapping']['columns']) && is_array($classSettings['mapping']['columns'])) {
-				$columnMapping = $classSettings['mapping']['columns'];
+			$classHierachy = array($className) + class_parents($className);
+			foreach ($classHierachy as $currentClassName) {
+				if (in_array($currentClassName, array('Tx_Extbase_DomainObject_AbstractEntity', 'Tx_Extbase_DomainObject_AbstractValueObject'))) {
+					break;
+				}
+				$currentTableName = strtolower($currentClassName);
+				$currentClassSettings = $extbaseFrameworkConfiguration['persistence']['classes'][$currentClassName];
+				if ($currentClassSettings !== NULL) {
+					if (isset($currentClassSettings['mapping']['columns']) && is_array($currentClassSettings['mapping']['columns'])) {
+						$columnMapping = t3lib_div::array_merge_recursive_overrule($columnMapping, $currentClassSettings['mapping']['columns'], 0, FALSE); // FALSE means: do not include empty values form 2nd array
+					}
+				}
 			}
 		}
 
 		$dataMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
+
 		$columnConfigurations = array();
-		foreach ($this->getColumnsDefinition($tableName) as $columnName => $columnDefinition) {
-			$columnConfigurations[$columnName] = $columnDefinition['config'];
-			$columnConfigurations[$columnName]['mapOnProperty'] = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
+		$classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
+		$tcaColumnsDefinition = $this->getColumnsDefinition($tableName);
+		$tcaColumnsDefinition = t3lib_div::array_merge_recursive_overrule($tcaColumnsDefinition, $columnMapping); // TODO Is this is too powerful?
+		foreach ($tcaColumnsDefinition as $columnName => $columnDefinition) {
+			if (isset($columnDefinition['mapOnProperty'])) {
+				$propertyName = $columnDefinition['mapOnProperty'];
+			} else {
+				$propertyName = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
+			}
+			// if (in_array($propertyName, $classPropertyNames)) {
+				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
+				$columnMap = $this->setRelations($columnMap, $columnDefinition['config']);
+				$dataMap->addColumnMap($columnMap);
+			// }
 		}
-		$columnConfigurations = t3lib_div::array_merge_recursive_overrule($columnConfigurations, $columnMapping);
-		foreach ($columnConfigurations as $columnName => $columnConfiguration) {
-			$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $columnConfiguration['mapOnProperty']);
-			$columnMap = $this->setRelations($columnMap, $columnConfiguration);
-			$dataMap->addColumnMap($columnMap);
-		}
+		debug($dataMap);
 		return $dataMap;
 	}
-	
+		
 	/**
 	 * Returns the TCA ctrl section of the specified table; or NULL if not set
 	 *

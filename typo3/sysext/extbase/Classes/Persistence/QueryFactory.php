@@ -40,10 +40,16 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 	public function create($className) {
 		$persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
 
+		$reflectionService = $persistenceManager->getBackend()->getReflectionService();
+		
+		$dataMapFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory');
+		$dataMapFactory->injectReflectionService($reflectionService);
+
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
 		$dataMapper->injectIdentityMap($persistenceManager->getBackend()->getIdentityMap());
 		$dataMapper->injectSession($persistenceManager->getSession());
-		$dataMapper->injectReflectionService($persistenceManager->getBackend()->getReflectionService());
+		$dataMapper->injectReflectionService($reflectionService);
+		$dataMapper->injectDataMapFactory($dataMapFactory);
 		
 		$querySettings = t3lib_div::makeInstance('Tx_Extbase_Persistence_Typo3QuerySettings');
 
