@@ -1,5 +1,6 @@
 2010-05-02  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14276: tceforms: Title of a record does not use API call to limit the character
 	* Added feature #13379: Introduced a Sprite Icon API to render icons from sprites (Thanks to Thomas Allmer and Steffen Ritter)
 
 2010-05-02  Steffen Kamper  <info@sk-typo3.de>
