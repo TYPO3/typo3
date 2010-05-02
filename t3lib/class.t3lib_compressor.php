@@ -193,7 +193,7 @@ class t3lib_compressor {
 		$pathinfo = pathinfo($filename);
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
 			// only create it, if it doesn't exist, yet
-		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gz'))) {
+		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip'))) {
 			$contents = t3lib_div::getUrl($filenameAbsolute);
 				// Perform some safe CSS optimizations.
 			$contents = str_replace("\r", '', $contents);  // Strip any and all carriage returns.
@@ -304,7 +304,7 @@ class t3lib_compressor {
 		$pathinfo = pathinfo($filename);
 		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
 			// only create it, if it doesn't exist, yet
-		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gz'))) {
+		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip'))) {
 			$contents = t3lib_div::getUrl($filenameAbsolute);
 			$this->writeFileAndCompressed($targetFile, $contents);
 		}
@@ -374,7 +374,7 @@ class t3lib_compressor {
 	 * based on HTTP_ACCEPT_ENCODING
 	 *
 	 * @param	string	$filename		File name
-	 * @return	string		$filename suffixed with '.gz' or not - dependent on HTTP_ACCEPT_ENCODING
+	 * @return	string		$filename suffixed with '.gzip' or not - dependent on HTTP_ACCEPT_ENCODING
 	 */
 	protected function returnFileReference($filename) {
 			// if the client accepts gzip and we can create gzipped files, we give him compressed versions

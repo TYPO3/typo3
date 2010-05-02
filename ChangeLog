@@ -4,6 +4,7 @@
 
 2010-05-02  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to #14277: Improve t3lib_compressor (thanks to Steffen Gebert)
 	* Fixed bug #14277: Improve t3lib_compressor (thanks to Steffen Gebert)
 	* Fixed bug #14279: Some non-XHTML tags in Backend (thanks to Steffen Gebert)
 
