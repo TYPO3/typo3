@@ -1,4 +1,4 @@
-2010-05-01  Steffen Kamper  <info@sk-typo3.de>
+2010-05-02  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14279: Some non-XHTML tags in Backend (thanks to Steffen Gebert)
 
@@ -64,9 +64,9 @@
 
 	* Follow-up to bug #13194: Additional unit tests and test renamings for class tx_scheduler_CronCmd
 	* Fixed bug #13194: tx_scheduler_CronCmd does not correctly parse step values
-	* Fixed bug #14223: Notice undefined index in tslib_fe.php isOutputting() (Thanks to Martin Müller)
-	* Fixed bug #14222: Notice undefined index in tslib_pibase.php (Thanks to Martin Müller)
-	* Fixed bug #14220: Notice undefined index in t3lib_div::_GPmerged() (Thanks to Martin Müller)
+	* Fixed bug #14223: Notice undefined index in tslib_fe.php isOutputting() (Thanks to Martin Mueller)
+	* Fixed bug #14222: Notice undefined index in tslib_pibase.php (Thanks to Martin Mueller)
+	* Fixed bug #14220: Notice undefined index in t3lib_div::_GPmerged() (Thanks to Martin Mueller)
 	* Fixed bug #14256: tslib_cObj has two test case files (Thanks to Oliver Klee)
 
 2010-04-30  Susanne Moog  <typo3@susanne-moog.de>
@@ -82,7 +82,7 @@
 	* Follow-up to bug #14207: Duplicate submodule URL in JavaScript
 	* Fixed bug #9758: Write Configuration to extTables.php
 	* Fixed bug #14212: Better styling of BE login news (thanks to Georg Ringer)
-	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Führicht)
+	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Fuehricht)
 
 2010-04-29  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -8159,7 +8159,7 @@
 
 2006-12-12  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Brühlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
+	* Better getRecordTitle() function introducing label_userFunc (Thanks to David Bruehlmeier for this patch! See http://lists.netfielders.de/pipermail/typo3-team-core/2006-December/006521.html for details.)
 
 2006-12-11  Martin Kutschker  <masi@typo3.org>
 
