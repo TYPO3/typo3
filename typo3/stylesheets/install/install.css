@@ -8,7 +8,7 @@ body {
 }
 
 body.standalone {
-	background: #4f4f4f url('../gfx/installbackground.jpg') repeat-x fixed;
+	background: #4f4f4f url('../../gfx/installbackground.jpg') repeat-x fixed;
 }
 
 h1 {
@@ -16,7 +16,7 @@ h1 {
 }
 
 .standalone h1 {
-	background: url('../gfx/installlogo.gif') no-repeat scroll 0 0 transparent;
+	background: url('../../gfx/installlogo.gif') no-repeat scroll 0 0 transparent;
 	text-indent:-999em;
 	display: block;
 	height: 34px;
@@ -43,7 +43,7 @@ h2 {
 }
 
 .message-warning {
-	background-image: url("../gfx/warning.png");
+	background-image: url("../../gfx/warning.png");
 	background-color: #fbffb3;
 	border-color: #c4b70d;
 }
