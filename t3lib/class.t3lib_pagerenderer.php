@@ -59,6 +59,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $favIcon;
 	protected $baseUrl;
 
+	protected $renderXhtml = TRUE;
+
 	// static header blocks
 	protected $xmlPrologAndDocType = '';
 	protected $metaTags = array ();
@@ -181,6 +183,17 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
+	}
+
+
+	/**
+	 * Enables/disables rendering of XHTML code
+	 *
+	 * @param boolean $enable	Enable XHTML
+	 * @return void
+	 */
+	public function setRenderXhtml($enable) {
+		$this->renderXhtml = $enable;
 	}
 
 	/**
@@ -382,6 +395,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function getLanguage() {
 		return $this->lang;
+	}
+
+	/**
+	 * Returns rendering mode XHTML or HTML
+	 *
+	 * @return boolean		TRUE if XHTML, FALSE if HTML
+	 */
+	public function getRenderXhtml() {
+		return $this->renderXhtml;
 	}
 
 	/**
@@ -1001,7 +1023,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// remove ending slashes from static header block
 			// if the page is beeing rendered as html (not xhtml)
 			// and define variable $endingSlash for further use
-		if ($GLOBALS['TSFE']->xhtmlVersion) {
+		if ($this->getRenderXhtml()) {
 			$endingSlash = ' /';
 		} else {
 			$this->metaCharsetTag = str_replace(' />', '>', $this->metaCharsetTag);

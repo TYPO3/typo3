@@ -244,9 +244,12 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 					$GLOBALS['TSFE']->xhtmlVersion = 200;
 				break;
 				default:
+					$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
 					$GLOBALS['TSFE']->xhtmlDoctype = '';
 					$GLOBALS['TSFE']->xhtmlVersion = 0;
 			}
+		} else {
+			$GLOBALS['TSFE']->getPageRenderer()->setRenderXhtml(FALSE);
 		}
 	}
 
@@ -930,8 +933,8 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		} elseif ($GLOBALS['TSFE']->config['config']['removeDefaultJS'] === 'external') {
 			/*
 			 This keeps inlineJS from *_INT Objects from being moved to external files.
-			 At this point in frontend rendering *_INT Objects only have placeholders instead 
-			 of actual content so moving these placeholders to external files would 
+			 At this point in frontend rendering *_INT Objects only have placeholders instead
+			 of actual content so moving these placeholders to external files would
 			 	a) break the JS file (syntax errors due to the placeholders)
 			 	b) the needed JS would never get included to the page
 			 Therefore inlineJS from *_INT Objects must not be moved to external files but
@@ -1063,7 +1066,7 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	 * Remember: Calls internally must still be done on the non-instantiated class: TSpagegen::inline2TempFile()
 	 *
 	 *************************/
-	 
+
 	/**
 	 * Searches for placeholder created from *_INT cObjects, removes them from
 	 * $searchString and merges them to $intObjects

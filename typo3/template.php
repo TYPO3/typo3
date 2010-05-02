@@ -690,6 +690,8 @@ class template {
 			case 'html_3':
 				$headerStart = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
 				$htmlTag = '<html>';
+				// disable rendering of XHTML tags
+				$this->getPageRenderer()->setRenderXhtml(FALSE);
 				break;
 			case 'xhtml_strict':
 				$headerStart = '<!DOCTYPE html
