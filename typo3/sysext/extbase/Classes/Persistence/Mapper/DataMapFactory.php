@@ -90,8 +90,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		$dataMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 
-		$columnConfigurations = array();
-		$classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
+		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
 		$tcaColumnsDefinition = $this->getColumnsDefinition($tableName);
 		$tcaColumnsDefinition = t3lib_div::array_merge_recursive_overrule($tcaColumnsDefinition, $columnMapping); // TODO Is this is too powerful?
 		foreach ($tcaColumnsDefinition as $columnName => $columnDefinition) {
@@ -100,13 +99,13 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			} else {
 				$propertyName = Tx_Extbase_Utility_Extension::convertUnderscoredToLowerCamelCase($columnName);
 			}
-			// if (in_array($propertyName, $classPropertyNames)) {
+			// if (in_array($propertyName, $classPropertyNames)) { // TODO Enable check for property existance
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
 				$columnMap = $this->setRelations($columnMap, $columnDefinition['config']);
 				$dataMap->addColumnMap($columnMap);
 			// }
 		}
-		debug($dataMap);
+		// debug($dataMap);
 		return $dataMap;
 	}
 		
