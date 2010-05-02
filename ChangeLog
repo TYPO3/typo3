@@ -1,3 +1,7 @@
+2010-05-02  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid versions to 1.2.0beta1.
+
 2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #2186: Error installing static_info_tables
@@ -109,7 +113,7 @@
 
 2010-04-27  Patrick Broens  <patrick@patrickbroens.nl>
 
-	* Fixed bug #14214: Install tool hooks are not complete and could be better 
+	* Fixed bug #14214: Install tool hooks are not complete and could be better
 
 2010-04-26  Susanne Moog  <typo3@susanne-moog.de>
 
@@ -186,15 +190,15 @@
 2010-04-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #13630: Status Report reports "Install Tool: disabled" when it is not. (thanks to Gregor Hermens)
-	* Fixed bug #13941: Deleting pages should check language permissions (thanks to Tolleiv Nietsch) 
-	
+	* Fixed bug #13941: Deleting pages should check language permissions (thanks to Tolleiv Nietsch)
+
 2010-04-16 Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14090: In Extension Manager importExtInfo() does not sort versions correctly (thanks to Daniel Minder and Steffen Gebert)
 
 2010-04-16  Patrick Broens  <patrick@patrickbroens.nl>
 
-	* Fixed bug #14118: Exception handler does not produce valid (X)HTML 
+	* Fixed bug #14118: Exception handler does not produce valid (X)HTML
 
 2010-04-15  Patrick Broens  <patrick@patrickbroens.nl>
 
@@ -313,8 +317,8 @@
 2010-04-12  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #14069: New install tool refactoring uses FE layer for templating instead of t3lib_parsehtml
-	* Fixed bug #14070: require_once to class.tslib_content.php in sysext/install/mod/class.tx_install.php should be deleted 
-	* Fixed bug #14071: Convert some characters in copyright of the stand alone install tool to XHTML character entities 
+	* Fixed bug #14070: require_once to class.tslib_content.php in sysext/install/mod/class.tx_install.php should be deleted
+	* Fixed bug #14071: Convert some characters in copyright of the stand alone install tool to XHTML character entities
 
 2010-04-11  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -677,7 +681,7 @@
 
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 
+	* Fixed bug #13470: Session/Login not working in IE8 across subdomains
 
 2010-02-24  Steffen Kamper  <info@sk-typo3.de>
 
