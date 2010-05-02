@@ -200,6 +200,7 @@ class template {
 	protected $stylesheetsCore = array(
 		'structure' => 'stylesheets/structure/',
 		'visual' => 'stylesheets/visual/',
+		'generatedSprites' => '../typo3temp/sprites/',
 	);
 
 		// include these CSS directories from skins by default

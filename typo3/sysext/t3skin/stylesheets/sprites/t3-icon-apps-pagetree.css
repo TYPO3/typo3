@@ -1,0 +1,87 @@
+.t3-icon-apps-pagetree {
+	background-image: url('../../images/sprites/t3-icon-apps-pagetree.png');
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-backend-user {
+	background-position: 0 -10px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-drag-move-between {
+	background-position: 0 -36px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-drag-move-into {
+	background-position: 0 -62px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-drag-new-between {
+	background-position: 0 -88px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-drag-new-inside {
+	background-position: 0 -114px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-drag-place-denied {
+	background-position: 0 -140px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-folder-default {
+	background-position: 0 -166px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-advanced {
+	background-position: 0 -192px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-backend-users {
+	background-position: 0 -218px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-default {
+	background-position: 0 -244px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-domain {
+	background-position: 0 -270px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-frontend-user {
+	background-position: 0 -296px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-frontend-users {
+	background-position: 0 -322px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-mauntpoint {
+	background-position: 0 -348px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-mountpoint {
+	background-position: 0 -374px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-no-icon-found {
+	background-position: 0 -400px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-not-in-menu {
+	background-position: 0 -426px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-shortcut-external {
+	background-position: 0 -452px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-page-shortcut {
+	background-position: 0 -478px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-root {
+	background-position: 0 -504px;
+}
+
+.t3-icon-apps-pagetree.t3-icon-pagetree-spacer {
+	background-position: 0 -530px;
+}

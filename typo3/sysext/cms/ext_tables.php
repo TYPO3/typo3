@@ -675,6 +675,27 @@ $TCA['tt_content'] = array (
 			'fe_group' => 'fe_group',
 		),
 		'typeicon_column' => 'CType',
+		'typeicon_classes' => array(
+			'header' => 'mimetypes-x-content-header',
+			'textpic' => 'mimetypes-x-content-text-picture',
+			'image' => 'mimetypes-x-content-image',
+			'bullets' => 'mimetypes-x-content-list-bullets',
+			'table' => 'mimetypes-x-content-table',
+			'splash' => 'mimetypes-x-content-splash',
+			'uploads' => 'mimetypes-x-content-uploads',
+			'multimedia' => 'mimetypes-x-content-multimedia',
+			'media' => 'mimetypes-x-content-multimedia',
+			'menu' => 'mimetypes-x-content-menu',
+			'list' => 'mimetypes-x-content-plugin',
+			'mailform' => 'mimetypes-x-content-form',
+			'search' => 'mimetypes-x-content-search',
+			'login' => 'mimetypes-x-content-login',
+			'shortcut' => 'mimetypes-x-content-link',
+			'script' => 'mimetypes-x-content-script',
+			'div' => 'mimetypes-x-content-divider',
+			'html' => 'mimetypes-x-content-html',
+			'text' => 'mimetypes-x-content-text',
+		),
 		'typeicons' => array (
 			'header' => 'tt_content_header.gif',
 			'textpic' => 'tt_content_textpic.gif',
@@ -825,6 +846,10 @@ $TCA['sys_template'] = array (
 			'endtime' => 'endtime'
 		),
 		'typeicon_column' => 'root',
+		'typeicon_classes' => array(
+			'0' => 'mimetypes-x-content-template-extension',
+			'1' => 'mimetypes-x-content-template',
+		),
 		'typeicons' => array (
 			'0' => 'template_add.gif'
 		),

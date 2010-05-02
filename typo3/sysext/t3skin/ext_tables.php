@@ -13,6 +13,8 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ?
 		$TBE_STYLES['skinImg'] :
 		array();
+		
+	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
 
 	/**
 	 * Setting up backend styles and colors

@@ -84,6 +84,63 @@
  */
 final class t3lib_iconWorks	{
 
+	protected static $tcaSpriteIconNames = array();
+
+	public static $fileSpriteIconNames = array(
+		'htm'   => 'mimetype-text-htm',
+		'html'  => 'mimetype-text-htm',
+		'css'   => 'mimetype-text-css',
+		'js'    => 'mimetype-text-js',
+		'csv'   => 'mimetype-text-csv',
+		'xml'   => 'mimetype-text-xml',
+		'php'   => 'mimetype-text-php',
+		'php6'  => 'mimetype-text-php',
+		'php5'  => 'mimetype-text-php',
+		'php4'  => 'mimetype-text-php',
+		'php3'  => 'mimetype-text-php',
+		'inc'   => 'mimetype-text-php',
+		'ts'    => 'mimetype-text-ts',
+		'txt'   => 'mimetype-text-text',
+		'class' => 'mimetype-text-text',
+		'tmpl'  => 'mimetype-text-text',
+		'jpg'   => 'mimetype-media-image-jpg',
+		'jpeg'  => 'mimetype-media-image-jpg',
+		'gif'   => 'mimetype-media-image-gif',
+		'png'   => 'mimetype-media-image-png',
+		'bmp'   => 'mimetype-media-image-bmp',
+		'tif'   => 'mimetype-media-image',
+		'tga'   => 'mimetype-media-image',
+		'psd'   => 'mimetype-media-image',
+		'eps'   => 'mimetype-media-image',
+		'avi'   => 'mimetype-media-video-avi',
+		'mpg'   => 'mimetype-media-video',
+		'mpeg'  => 'mimetype-media-video',
+		'mov'   => 'mimetype-media-video',
+		'wav'   => 'mimetype-media-audio',
+		'mp3'   => 'mimetype-media-audio',
+		'mid'   => 'mimetype-media-audio',
+		'swf'   => 'mimetype-media-flash',
+		'swa'   => 'mimetype-media-flash',
+		'exe'   => 'mimetype-executable-executable',
+		'com'   => 'mimetype-executable-executable',
+		't3x'   => 'mimetype-compressed-t3x',
+		't3d'   => 'mimetype-compressed-t3d',
+		'zip'   => 'mimetype-compressed-compressed',
+		'tgz'   => 'mimetype-compressed-compressed',
+		'gz'    => 'mimetype-compressed-compressed',
+		'pdf'   => 'mimetype-word-pdf',
+		'doc'   => 'mimetype-word-word',
+		'sxw'   => 'mimetype-word-word',
+		'rtf'   => 'mimetype-word-word',
+		'xls'   => 'mimetype-spreadsheet-spreadsheet',
+		'sxc'   => 'mimetype-spreadsheet-spreadsheet',
+		'ttf'   => 'mimetype-font-font',
+		'ppt'   => 'mimetype-presentation-presentation',
+		'mount' => 'apps-filetree-mount',
+		'folder'  => 'apps-filetree-folder-default',
+		'default' => 'mimetype-other-other'
+	);
+
 	/**
 	 * Returns an icon image tag, 18x16 pixels, based on input information.
 	 * This function is recommended to use in your backend modules.
@@ -541,6 +598,454 @@ final class t3lib_iconWorks	{
 			@ImagePng($im, $path);
 		} else {
 			@ImageGif($im, $path);
+		}
+	}
+
+
+	/**********************************************
+	 *         SPRITE ICON API
+	 *
+	 * The Sprite Icon API helps you to quickly get the HTML for any icon you want
+	 * this is typically wrapped in a <span> tag with corresponding CSS classes that
+	 * will be responsible for the
+	 *
+	 * There are three ways to use this API:
+	 *
+	 * 1) for any given TCA record
+	 *    $spriteIconHtml = t3lib_iconWorks::getSpriteIconForRecord('pages', $row);
+	 *
+	 * 2) for any given file
+	 *    $spriteIconHtml = t3lib_iconWorks::getSpriteIconForFile('myimage.png');
+	 *
+	 * 3) for any other icon you know the name
+	 *    $spriteIconHtml = t3lib_iconWorks::getSpriteIcon('actions-document-open');
+	 *
+	 **********************************************/
+
+	/**
+	 * This generic method is used throughout the TYPO3 Backend to show icons in any variation which are not
+	 * bound to any file type (see getSpriteIconForFile) or database record (see getSpriteIconForRecord)
+	 *
+	 * Generates a HTML tag with proper CSS classes. The TYPO3 skin has defined these CSS classes
+	 * already to have a pre-defined background image, and the correct background-position to show
+	 * the necessary icon.
+	 *
+	 * @param	string	$iconName	the name of the icon to fetch
+	 * @param	array	$options	an associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
+	 * @param	array	$overlays	an associative array with the icon-name as key, and the options for this overlay as an array again (see the parameter $options again)
+	 * @return	string	the full HTML tag (usually a <span>)
+	 * @access public
+	 */
+	public static function getSpriteIcon($iconName, $options = array(), $overlays = array()) {
+		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
+		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
+
+			// deal with the overlays
+		if (count($overlays)) {
+			foreach ($overlays as $overlayIconName => $overlayOptions) {
+				$overlayOptions['html']  = $innerHtml;
+				$overlayOptions['class'] = (isset($overlayOptions['class']) ? $overlayOptions['class'] . ' ': '') . 't3-icon-overlay';
+				$innerHtml = self::getSpriteIcon($overlayIconName, $overlayOptions);
+			}
+		}
+
+			// create the CSS class
+		$options['class'] = self::getSpriteIconClasses($iconName) . (isset($options['class']) ? ' ' . $options['class'] : '');
+
+		unset($options['html']);
+		unset($options['tagName']);
+		return self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+	}
+
+
+	/**
+	 * This method is used throughout the TYPO3 Backend to show icons for a file type
+	 *
+	 * Generates a HTML tag with proper CSS classes. The TYPO3 skin has defined these CSS classes
+	 * already to have a pre-defined background image, and the correct background-position to show
+	 * the necessary icon.
+	 *
+	 * @param	string	$fileExtension	the name of the icon to fetch, can be a file extension, full file path or one of the special keywords "folder" or "mount"
+	 * @param	array	$options	an associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
+	 * @return	string	the full HTML tag (usually a <span>)
+	 * @access public
+	 */
+	public static function getSpriteIconForFile($fileExtension, $options = array()) {
+		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
+		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
+
+			// create the CSS class
+		$options['class'] = self::mapFileExtensionToSpriteIconClass($fileExtension) . (isset($options['class']) ? ' ' . $options['class'] : '');
+
+		unset($options['html']);
+		unset($options['tagName']);
+		return self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+	}
+
+
+	/**
+	 * Generates the spriteicon name for a given path or fileExtension
+	 * usually called from getSpriteIconForFile
+	 *
+	 * @param	string		fileExtension can be jpg, gif etc, but also be 'mount' or 'folder', but can also be a full path which will be resolved then
+	 * @return	string		the string of the CSS class, see t3lib_iconworks::$fileSpriteIconNames
+	 */
+	public static function mapFileExtensionToSpriteIconClass($fileExtension) {
+
+			// if the file is a whole file with name etc (mainly, if it has a "." or a "/"),
+			// then it is checked whether it is a valid directory
+		if (strpos($fileExtension, '.') !== FALSE || strpos($fileExtension, '/') !== FALSE) {
+
+				// check if it is a directory
+			$filePath = dirname(t3lib_div::getIndpEnv('SCRIPT_FILENAME')) . '/' . $GLOBALS['BACK_PATH'] . $fileExtension;
+			$path = t3lib_div::resolveBackPath($filePath);
+			if (is_dir($path) || substr($fileExtension, -1) === '/' || substr($fileExtension, -1) === '\\') {
+				$fileExtension = 'folder';
+			} else if (($pos = strrpos($fileExtension, '.')) !== FALSE) {
+				$fileExtension = strtolower(substr($fileExtension, $pos + 1));
+			} else {
+				$fileExtension = 'default';
+			}
+		}
+
+			// if the file extension is not valid
+			// then use the default one
+		if (!isset(self::$fileSpriteIconNames[$fileExtension])) {
+			$fileExtension = 'default';
+		}
+		$iconName = self::$fileSpriteIconNames[$fileExtension];
+		return self::getSpriteIconClasses($iconName);
+	}
+
+
+	/**
+	 * This method is used throughout the TYPO3 Backend to show icons for a DB record
+	 *
+	 * Generates a HTML tag with proper CSS classes. The TYPO3 skin has defined these CSS classes
+	 * already to have a pre-defined background image, and the correct background-position to show
+	 * the necessary icon.
+	 *
+	 * @param	string	$table	the TCA table name
+	 * @param	array	$row	the DB record of the TCA table
+	 * @param	array	$options	an associative array with additional options and attributes for the tag. by default, the key is the name of the attribute, and the value is the parameter string that is set. However, there are some additional special reserved keywords that can be used as keys: "html" (which is the HTML that will be inside the icon HTML tag), "tagName" (which is an alternative tagName than "span"), and "class" (additional class names that will be merged with the sprite icon CSS classes)
+	 * @return	string	the full HTML tag (usually a <span>)
+	 * @access public
+	 */
+	public static function getSpriteIconForRecord($table, $row, $options = array()) {
+		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
+		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
+
+			// overlay this record icon with the status of the row
+		$overlaySpriteIconName = self::mapRecordOverlayToSpriteIconName($table, $row);
+		if ($overlaySpriteIconName) {
+			$overlayOptions = array(
+				'html'  => $innerHtml,
+				'class' => 't3-icon-overlay'
+			);
+		 	$innerHtml = self::getSpriteIcon($overlaySpriteIconName, $overlayOptions);
+		}
+
+			// fetch the name for the CSS class, based on the $row
+		$options['class'] = self::mapRecordTypeToSpriteIconClass($table, $row) . (isset($options['class']) ? ' ' . $options['class'] : '');
+
+		unset($options['html']);
+		unset($options['tagName']);
+		return self::buildSpriteHtmlIconTag($options, $innerHtml, $tagName);
+	}
+
+
+	/**
+	 * this helper functions looks up the column that is used for the type of
+	 * the chosen TCA table. And then fetches the corresponding class
+	 * based on the chosen iconsprite class in this TCA
+	 * The TCA looks up
+	 *   - [ctrl][typeicon_column]
+	 *   -
+	 * This method solely takes care of the type of this record, not any
+	 * statuses, used for overlays.
+	 *
+	 * see t3lib/stddb/tables.php for an example with the TCA table "pages"
+	 *
+	 * @param	string	$table	the TCA table
+	 * @param	array	$row	the selected record
+	 * @return	string	the CSS class for the sprite icon of that DB record
+	 * @access	private
+	 **/
+	protected static function mapRecordTypeToSpriteIconClass($table, $row) {
+		self::buildTcaSpriteIconNames();
+		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
+			$column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
+
+			$recordType = $row[$column];
+
+				// workaround to give nav_hide pages a complete different icon
+				// although it's not a separate doctype
+			if ($table === 'pages' && $row['nav_hide']) {
+				$recordType .= '-hideinmenu';
+			}
+
+			$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType];
+			if (!$iconName && in_array('tcarecords-' . $table . '-' . $recordType, self::$tcaSpriteIconNames)) {
+				$iconName = 'tcarecords-' . $table . '-' . $recordType;
+			}
+		} else {
+			$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][0];
+			if (!$iconName && in_array('tcarecords-' . $table . '-default', self::$tcaSpriteIconNames)) {
+				$iconName = 'tcarecords-' . $table . '-default';
+			}
+		}
+		return self::getSpriteIconClasses(($iconName ? $iconName : 'status-status-icon-missing'));
+	}
+
+
+	/**
+	 * this helper functions checks if the DB record ($row) has any special status
+	 * based on the TCA settings like hidden, starttime etc, and then returns a specific
+	 * Sprite icon class for the overlay of this DB record
+	 * This method solely takes care of the overlay of this record, not any type
+	 *
+	 * Please note that this only returns one overlay, one status, that is prioritized
+	 * by $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayPriorities']
+	 * We wanted to not have these icons blown over by tons of overlays, so this is limited
+	 * to just one.
+	 *
+	 * see t3lib/config_default.php for the default options, you will find
+	 * $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayNames'] that shows
+	 * the list of CSS classes that will be used for the sprites, mapped to the statuses here
+	 *
+	 * @param	string	$table	the TCA table
+	 * @param	array	$row	the selected record
+	 * @return	string	the CSS class for the sprite icon of that DB record
+	 * @access	private
+	 */
+	protected static function mapRecordOverlayToSpriteIconName($table, $row) {
+		$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+
+			// Calculate for a given record the actual visibility at the moment
+		$status = array(
+			'hidden'           => FALSE,
+			'starttime'        => FALSE,
+			'endtime'          => FALSE,
+			'futureendtime'    => FALSE,
+			'fe_group'         => FALSE,
+			'deleted'          => FALSE,
+			'protectedSection' => FALSE,
+			'nav_hide'         => ($row['nav_hide'] ? TRUE : FALSE),
+			'noIconFound'      => ($row['_NO_ICON_FOUND'] ? TRUE : FALSE),
+		);
+
+			// Icon state based on "enableFields":
+		if (is_array($tcaCtrl['enablecolumns'])) {
+			$enCols = $tcaCtrl['enablecolumns'];
+				// If "hidden" is enabled:
+			if ($tcaCtrl['enablecolumns']['disabled'] && $row[$tcaCtrl['enablecolumns']['disabled']]) {
+				$status['hidden'] = TRUE;
+			}
+				// If a "starttime" is set and higher than current time:
+			if ($tcaCtrl['enablecolumns']['starttime'] && $GLOBALS['EXEC_TIME'] < intval($row[$tcaCtrl['enablecolumns']['starttime']])) {
+				$status['starttime'] = TRUE;
+			}
+
+				// If an "endtime" is set
+			if ($tcaCtrl['enablecolumns']['endtime']) {
+				if (intval($row[$tcaCtrl['enablecolumns']['endtime']]) > 0) {
+					if (intval($row[$tcaCtrl['enablecolumns']['endtime']]) < $GLOBALS['EXEC_TIME']) {
+							// End-timing applies at this point.
+						$status['endtime'] = TRUE;
+					} else {
+							// End-timing WILL apply in the future for this element.
+						$status['futureendtime'] = TRUE;
+					}
+				}
+			}
+				// If a user-group field is set
+			if ($tcaCtrl['enablecolumns']['fe_group'] && $row[$tcaCtrl['enablecolumns']['fe_group']]) {
+				$status['fe_group'] = TRUE;
+			}
+		}
+
+			// If "deleted" flag is set (only when listing records which are also deleted!)
+		if ($row[$tcaCtrl['delete']]) {
+			$status['deleted'] = TRUE;
+		}
+
+			// Detecting extendToSubpages (for pages only)
+		if ($table == 'pages' && $row['extendToSubpages'] && ($status['hidden'] || $status['starttime'] || $status['endtime'] || $status['futureendtime'] || $status['fe_group'])) {
+			$status['protectedSection'] = TRUE;
+		}
+
+
+			// now only show the status with the highest priority
+		$priorities = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayPriorities'];
+
+		$iconName = '';
+		foreach ($priorities as $priority) {
+			if ($status[$priority]) {
+				$iconName = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayNames'][$priority];
+				break;
+			}
+		}
+
+		return $iconName;
+	}
+
+
+
+	/**
+	 * generic method to create the final CSS classes based on the sprite icon name
+	 * with the base class and splits the name into parts
+	 * is usually called by the methods that are responsible for fetching the names
+	 * out of the file name, or the record type
+	 *
+	 * @param	string	$name	iconname like 'actions-document-new'
+	 * @return	string	a list of all CSS classes needed for the HTML tag
+	 * @access public
+	 */
+	public static function getSpriteIconClasses($iconName) {
+		$cssClasses = $baseCssClass = 't3-icon';
+		$parts = explode('-', $iconName);
+
+		if (count($parts) > 1) {
+				// will be something like "t3-icon-actions"
+			$cssClasses .= ' ' . ($baseCssClass . '-' . $parts[0]);
+				// will be something like "t3-icon-actions-document"
+			$cssClasses .= ' ' . ($baseCssClass . '-' . $parts[0] . '-' . $parts[1]);
+				// will be something like "t3-icon-document-new"
+			$cssClasses .= ' ' . ($baseCssClass . '-' . substr($iconName, strlen($parts[0]) + 1));
+		}
+		return $cssClasses;
+	}
+
+
+	/**
+	 * low level function that generates the HTML tag for the sprite icon
+	 * is usually called by the three API classes (getSpriteIcon, getSpriteIconForFile, getSpriteIconForRecord)
+	 * it does not care about classes or anything else, but just plainly builds the HTML tag
+	 *
+	 * @param	array	$tagAttributes	an associative array of additional tagAttributes for the HTML tag
+	 * @param	string	$innerHtml (optional)	the content within the tag, a "&nbsp;" by default
+	 * @param	string	$tagName (optional)	the name of the HTML element that should be used (span by default)
+	 */
+	protected static function buildSpriteHtmlIconTag($tagAttributes, $innerHtml = '&nbsp;', $tagName = 'span') {
+		$attributes = '';
+		foreach ($tagAttributes as $attribute => $value) {
+			$attributes .= ' ' . htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
+		}
+		return '<' . $tagName . $attributes . '>' . $innerHtml . '</' . $tagName . '>';
+	}
+
+
+
+	/**
+	 * this method creates SpriteIcon names for all tables in TCA (including their possible type-icons)
+	 * where there is no "typeicon_classes" of this TCA table ctrl section and caches the result to the TYPO3 registry
+	 * 
+	 * Note: This method is just preliminary and will be extracted in the future to go to t3lib_spriteGenerator
+	 *
+	 * @return void
+	 */
+	protected static function buildTcaSpriteIconNames() {
+			// if the data is already loaded during this request,
+			// there is nothing to do
+		if (!count(self::$tcaSpriteIconNames)) {
+
+				// step one: check with registry if an update is needed
+			$registry = t3lib_div::makeInstance('t3lib_Registry');
+			$storedHash = $registry->get('core', 'tcaSpriteIconNamesTcaHash', '');
+			$TCAtables = array_keys($GLOBALS['TCA']);
+			$currentHash = md5(serialize($TCAtables)) . 'A';
+
+				// the fileName is prefixed with since the concatenator orders files per name
+			$cssTcaFile = PATH_site . 'typo3temp/sprites/zextensions.css';
+
+				// if update would be needed or file does not exist
+			if ($storedHash != $currentHash || !file_exists($cssTcaFile)) {
+
+				$styleSheetTemplate = '
+	.t3-icon-###TABLE###-###TYPE### {
+		background-position: 0px 0px !important;
+		background-image: url(\'###IMAGE###\') !important;
+	}
+';
+
+					// delete old tempFiles
+				@unlink($cssTcaFile);
+
+					// contains the content of the CSS file
+				$styleSheetData = '';
+
+					// backpath from the stylesheet file ($cssTcaFile) to typo3 dir
+					// in order to set the background-image URL paths correct
+				$iconPath = '../../' . TYPO3_mainDir;
+
+					// path (relative from typo3 dir) for skin-Images
+				if (isset($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'])) {
+					$skinPath = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'];
+				} else {
+					$skinPath = '';
+				}
+
+					// check every table in the TCA, if an icon is needed
+				foreach ($TCAtables as $tableName) {
+
+						// this method is only needed for TCA tables where
+						//  typeicon_classes are not configured
+					if (!is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
+						$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
+
+						$template = str_replace('###TABLE###', $tableName, $styleSheetTemplate);
+
+							// adding the default Icon (without types)
+						if (isset($tcaCtrl['iconfile'])) {
+								// in CSS wie need a path relative to the css file
+								// [TCA][ctrl][iconfile] defines icons without path info to reside in /gfx/i/
+							if (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
+								$icon = $tcaCtrl['iconfile'];
+							} else {
+								$icon = $skinPath .'gfx/i/' . $tcaCtrl['iconfile'];
+							}
+
+							$icon = t3lib_div::resolveBackPath($iconPath . $icon);
+
+								// saving default icon
+							$stylesString = str_replace('###TYPE###', 'default', $template);
+							$stylesString = str_replace('###IMAGE###', $icon, $stylesString);
+							$styleSheetData .= $stylesString;
+							self::$tcaSpriteIconNames[] = 'tcarecords-'. $tableName . '-default';
+						}
+
+							// if records types are available, register them
+						if (isset($tcaCtrl['typeicon_column']) && is_array($tcaCtrl['typeicons'])) {
+							foreach ($tcaCtrl['typeicons'] as $type => $icon) {
+
+									// in CSS wie need a path relative to the css file
+									// [TCA][ctrl][iconfile] defines icons without path info to reside in /gfx/i/
+								if (strpos($icon, '/') === FALSE) {
+									$icon = $skinPath .'gfx/i/' . $icon;
+								}
+
+								$icon = t3lib_div::resolveBackPath($iconPath . $icon);
+								$stylesString = str_replace('###TYPE###', $type, $template);
+								$stylesString = str_replace('###IMAGE###', $icon, $stylesString);
+									// saving type icon
+								$styleSheetData .= $stylesString;
+								self::$tcaSpriteIconNames[] = 'tcarecords-' . $tableName . '-' . $type;
+							}
+						}
+					}
+				}
+
+					// cache results in the CSS file
+				t3lib_div::writeFileToTypo3tempDir($cssTcaFile, $styleSheetData);
+
+					// update registry
+				$registry->set('core', 'tcaSpriteIconNames', serialize(self::$tcaSpriteIconNames));
+				$registry->set('core', 'tcaSpriteIconNamesTcaHash', $currentHash);
+
+			} else {
+					// if no update is needed just load the old results
+				self::$tcaSpriteIconNames = unserialize($registry->get('core', 'tcaSpriteIconNames'));
+			}
 		}
 	}
 }

@@ -147,7 +147,31 @@ $TCA['pages'] = array(
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 		'cruser_id' => 'cruser_id',
 		'editlock' => 'editlock',
-		'useColumnsForDefaultValues' => 'doktype'
+		'useColumnsForDefaultValues' => 'doktype',
+		'typeicon_column' => 'doktype',
+		'typeicon_classes' => array(
+			'1' => 'apps-pagetree-page-default',
+			'1-hideinmenu' => 'apps-pagetree-page-default-hideinmenu',
+			'3' => 'apps-pagetree-page-shortcut-external',
+			'3-hideinmenu' => 'apps-pagetree-page-shortcut-external-hideinmenu',
+			'4' => 'apps-pagetree-page-shortcut',
+			'4-hideinmenu' => 'apps-pagetree-page-shortcut-hideinmenu',
+			'6' => 'apps-pagetree-page-backend-user',
+			'6-hideinmenu' => 'apps-pagetree-page-backend-user-hideinmenu',
+			'7' => 'apps-pagetree-page-mountpoint',
+			'7-hideinmenu' => 'apps-pagetree-page-mountpoint-hideinmenu',
+			'199' => 'apps-pagetree-spacer',
+			'199-hideinmenu' => 'apps-pagetree-spacer-hideinmenu',
+			'254' => 'apps-pagetree-folder-default',
+			'254-hideinmenu' => 'apps-pagetree-folder-default-hideinmenu',
+			'255' => 'apps-pagetree-dust-bin',
+			'255-hideinmenu' => 'apps-pagetree-dust-bin-hideinmenu',
+		),
+		'typeicons' => array(
+			'1' => 'pages.gif',
+			'254' => 'sysf.gif',
+			'255' => 'recycler.gif',
+		)
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'doktype,title',
