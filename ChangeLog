@@ -4,6 +4,7 @@
 
 2010-05-02  Benjamin Mack  <benni@typo3.org>
 
+	* Updated NEWS.txt to reflect the breaking changes of Extbase
 	* Fixed bug #14276: tceforms: Title of a record does not use API call to limit the character
 	* Added feature #13379: Introduced a Sprite Icon API to render icons from sprites (Thanks to Thomas Allmer and Steffen Ritter)
 

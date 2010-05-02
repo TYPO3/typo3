@@ -56,7 +56,7 @@ Frontend
 Compatibility
 =============
 
-	* ...
+	* Extbase: has been updated to support "Single Table Inheritance" which is a breaking change.  In TYPO3 4.3, Extbase made a "best guess" for the table name if it was not the lowercased class name (simply by crawling the class hierarchy upwards trying to find a mapping rule or table). This "magic" was removed because It was very hard to understand what was happening; especially if there was an error. This behaviour is now changed and you define the recordType and the tableName through TypoScript now. See the typo3.projecty.typo3v4mvc mailing list for more details on this topic.
 
 
 Development
@@ -76,7 +76,7 @@ Development
 
 	* The debug in BE was enhanced. There is a new debug console, which will show each debug in a single tab. The console will pop up as soon a debug statement is present.
 	
-	* We now a new API in place to generate HTML <span> tags with corresponding CSS classes in order to display previously created sprite images in the right background position. Make sure to have a look at "t3lib_iconWorks::getSpriteIconForRecord($table, $row)", "t3lib_iconWorks::getSpriteIconForFile('myimage.png')", and "t3lib_iconWorks::getSpriteIcon('actions-document-open')".
+	* There is a new API in place to generate HTML <span> tags with corresponding CSS classes in order to display previously created sprite images in the right background position. Make sure to have a look at "t3lib_iconWorks::getSpriteIconForRecord($table, $row)", "t3lib_iconWorks::getSpriteIconForFile('myimage.png')", and "t3lib_iconWorks::getSpriteIcon('actions-document-open')".
 
 
 TypoScript changes
