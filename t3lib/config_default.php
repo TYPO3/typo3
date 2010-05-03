@@ -258,7 +258,7 @@ $TYPO3_CONF_VARS = array(
 		'flexformForceCDATA' => 0,				// Boolean:  If set, will add CDATA to Flexform XML. Some versions of libxml have a bug that causes HTML entities to be stripped from any XML content and this setting will avoid the bug by adding CDATA.
 		'explicitConfirmationOfTranslation' => FALSE,	// If set, then the diff-data of localized records is not saved automatically when updated but requires that a translator clicks the special finish_translation/save/close button that becomes available.
 		'elementVersioningOnly' => FALSE,		// If true, only element versioning is allowed in the backend. This is recommended for new installations of TYPO3 4.2+ since "page" and "branch" versioning types are known for the drawbacks of loosing ids and "element" type versions supports moving now.
-		'versionNumberInFilename' => FALSE, // Boolean. If true, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires this .htaccess rule to work: RewriteCond %{REQUEST_FILENAME} !-f - RewriteCond %{REQUEST_FILENAME} !-d - RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif)$ $1.$3 [L]. If false the filemtime will be appended as a query-string.
+		'versionNumberInFilename' => FALSE, // Boolean. If true, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires this .htaccess rule to work: RewriteCond %{REQUEST_FILENAME} !-f - RewriteCond %{REQUEST_FILENAME} !-d - RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]. If false the filemtime will be appended as a query-string.
 		'AJAX' => array(				// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php and the classes/class.typo3ajax.php for more information.
 			'SC_alt_db_navframe::expandCollapse'                => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxExpandCollapse',
 			'SC_alt_file_navframe::expandCollapse'              => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',
@@ -288,7 +288,7 @@ $TYPO3_CONF_VARS = array(
 		),
 		'XCLASS' => array(),					// See 'Inside TYPO3' document for more information.
 		'spriteIconRecordOverlayPriorities' => array('hidden', 'starttime', 'endtime', 'futureendtime', 'fe_group', 'protectedSection'),
-		'spriteIconRecordOverlayNames' => array(	
+		'spriteIconRecordOverlayNames' => array(
 			'hidden'           => 'status-overlay-hidden',
 			'fe_group'         => 'status-overlay-access-restricted',
 			'starttime'        => 'status-overlay-scheduled-start',
