@@ -126,7 +126,15 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 				// In case an error occurs before a database connection exists, try
 				// to connect to the DB to be able to write an entry to devlog/sys_log
 			if (is_object($GLOBALS['TYPO3_DB']) && empty($GLOBALS['TYPO3_DB']->link)) {
-				$GLOBALS['TYPO3_DB']->connectDB();
+				try {
+					$GLOBALS['TYPO3_DB']->connectDB();
+				}
+				catch (Exception $e) {
+					// There's nothing more we can do at this point if the
+					// database failed. It is up to the various log writers
+					// to check for themselves whether the have a DB connection
+					// available or not.
+				}
 			}
 
 				// Write error message to devlog extension(s),

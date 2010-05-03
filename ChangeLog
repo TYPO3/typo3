@@ -1,3 +1,7 @@
+2010-05-03 Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #14275: Error handler does not catch exception while connecting to DB
+
 2010-05-03  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14282: t3lib_compressor processes JSlibs, even when it's not supposed to to (thanks to Steffen Gebert)
