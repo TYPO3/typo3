@@ -68,6 +68,9 @@ RewriteEngine On
 # If you place this in httpd.conf, you cannot use this directive in any case!
 #RewriteBase /
 
+# Rule for versioned static files (see $TYPO3_CONF_VARS[BE][versionNumberInFilename])
+RewriteRule ^(.+)\.(.+\d)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
+
 # Stop rewrite processing if we are in the typo3/ directory
 # For httpd.conf, use this line instead of the next one:
 # RewriteRule ^/TYPO3root/(typo3|t3lib|tslib|fileadmin|typo3conf|typo3temp|uploads|showpic\.php|favicon\.ico)/ - [L]
