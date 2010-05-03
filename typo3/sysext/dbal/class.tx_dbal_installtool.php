@@ -151,7 +151,7 @@ class tx_dbal_installtool {
 				// Only MySQL is actually available (PDO support may be compiled in
 				// PHP itself and as such DBAL was activated, behaves as if DBAL were
 				// not activated
-			$driverSubPart = '';
+			$driverSubPart = '<input type="hidden" name="TYPO3_INSTALL[localconf.php][typo_db_driver]" value="mysql" />';
 		} else {
 			$driverTemplate = t3lib_parsehtml::getSubpart(
 				$formSubPart, '###DATABASE_DRIVER###'

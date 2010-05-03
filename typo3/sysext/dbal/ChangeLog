@@ -1,3 +1,7 @@
+2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed 1-2-3 installer crash when having only mysql available
+
 2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14274: Some exception are not caught when trying to install DBAL in 1-2-3 Install Tool process
