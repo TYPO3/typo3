@@ -1,3 +1,7 @@
+2010-05-03  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14144: Positioning of toolbar elements broken, especially in Safari (thanks to Stefan Galinski)
+
 2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Raised DBAL version from 1.1.4 to 1.1.5

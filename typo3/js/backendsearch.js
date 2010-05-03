@@ -37,7 +37,7 @@ var BackendSearch = Class.create({
 	initialize: function() {
 		Event.observe(window, 'resize', this.positionMenu);
 
-		Event.observe(window, 'load', function(){
+		Ext.onReady(function() {
 			this.positionMenu();
 			this.toolbarItemIcon = $$('#backend-search-menu .toolbar-item img')[0].src;
 
@@ -57,7 +57,7 @@ var BackendSearch = Class.create({
 				if(keyCode == Event.KEY_RETURN) {
 					this.invokeSearch();
 				}
-			}.bindAsEventListener(this));
+			}, this);
 
 			$$('#backend-search-menu .toolbar-item')[0].observe('click', this.toggleMenu)
 		}.bindAsEventListener(this));
@@ -69,7 +69,9 @@ var BackendSearch = Class.create({
 	positionMenu: function() {
 		var calculatedOffset = 0;
 		var parentWidth      = $('backend-search-menu').getWidth();
-		var ownWidth         = $$('#backend-search-menu div')[0].getWidth();
+		var currentToolbarItemLayer = $$('#backend-search-menu div')[0];
+		var ownWidth         = currentToolbarItemLayer.getWidth();
+
 		var parentSiblings   = $('backend-search-menu').previousSiblings();
 
 		parentSiblings.each(function(toolbarItem) {
@@ -83,6 +85,10 @@ var BackendSearch = Class.create({
 		});
 		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
 
+		// border correction
+	if (currentToolbarItemLayer.getStyle('display') !== 'none') {
+		calculatedOffset += 2;
+	}
 
 		$$('#backend-search-menu div')[0].setStyle({
 			left: calculatedOffset + 'px'
@@ -134,7 +140,7 @@ var BackendSearch = Class.create({
 						top.loadEditId(jsonResponse.editRecord);
 						break;
 					case 'alternative':
-						this.jump( 
+						this.jump(
 							unescape('alt_doc.php?returnUrl=dummy.php&edit[' + jsonResponse.alternativeTable + '][' + jsonResponse.alternativeUid + ']=edit'),
 							'web_list',
 							'web'

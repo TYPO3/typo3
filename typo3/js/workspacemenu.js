@@ -38,7 +38,7 @@ var WorkspaceMenu = Class.create({
 	initialize: function() {
 		Event.observe(window, 'resize', this.positionMenu);
 
-		Event.observe(window, 'load', function(){
+		Ext.onReady(function() {
 			this.positionMenu();
 
 			Event.observe('workspace-selector-menu', 'click', this.toggleMenu);
@@ -50,7 +50,7 @@ var WorkspaceMenu = Class.create({
 				Event.observe(element, 'click', this.switchWorkspace.bind(this));
 			}.bindAsEventListener(this));
 
-		}.bindAsEventListener(this));
+		}, this);
 	},
 
 	/**
@@ -59,7 +59,8 @@ var WorkspaceMenu = Class.create({
 	positionMenu: function() {
 		var calculatedOffset = 0;
 		var parentWidth      = $('workspace-selector-menu').getWidth();
-		var ownWidth         = $$('#workspace-selector-menu ul')[0].getWidth();
+		var currentToolbarItemLayer = $$('#workspace-selector-menu ul')[0];
+		var ownWidth         = currentToolbarItemLayer.getWidth();
 		var parentSiblings   = $('workspace-selector-menu').previousSiblings();
 
 		parentSiblings.each(function(toolbarItem) {
@@ -73,6 +74,10 @@ var WorkspaceMenu = Class.create({
 		});
 		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
 
+			// border correction
+		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
+			calculatedOffset += 2;
+		}
 
 		$$('#workspace-selector-menu ul')[0].setStyle({
 			left: calculatedOffset + 'px'
@@ -145,7 +150,7 @@ var WorkspaceMenu = Class.create({
 			parameters: 'ajaxID=WorkspaceMenu::setWorkspace&workspaceId=' + workspaceId,
 			onSuccess: function(transport, response) {
 				TYPO3.configuration.inWorkspace = response.setWorkspaceId === 0 ? 0 : 1;
-				
+
 					// first remove all checks, then set the check in front of the selected workspace
 				var stateActiveIcon = $$('#workspace-selector-menu img.state-active')[0].cloneNode(true);
 				var stateInactiveIcon = $$('#workspace-selector-menu img.state-inactive')[0].cloneNode(true);

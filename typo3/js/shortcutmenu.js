@@ -38,13 +38,13 @@ var ShortcutMenu = Class.create({
 	initialize: function() {
 		Event.observe(window, 'resize', this.positionMenu);
 
-		Event.observe(window, 'load', function(){
+		Ext.onReady(function() {
 			this.positionMenu();
 			this.toolbarItemIcon = $$('#shortcut-menu .toolbar-item img')[0].src;
 
 			Event.observe($$('#shortcut-menu .toolbar-item')[0], 'click', this.toggleMenu);
 			this.initControls();
-		}.bindAsEventListener(this));
+		}, this);
 	},
 
 	/**
@@ -107,7 +107,8 @@ var ShortcutMenu = Class.create({
 	positionMenu: function() {
 		var calculatedOffset = 0;
 		var parentWidth      = $('shortcut-menu').getWidth();
-		var ownWidth         = $$('#shortcut-menu .toolbar-item-menu')[0].getWidth();
+		 var currentToolbarItemLayer = $$('#shortcut-menu .toolbar-item-menu')[0];
+		var ownWidth         = currentToolbarItemLayer.getWidth();
 		var parentSiblings   = $('shortcut-menu').previousSiblings();
 
 		parentSiblings.each(function(toolbarItem) {
@@ -121,6 +122,10 @@ var ShortcutMenu = Class.create({
 		});
 		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
 
+			// border correction
+		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
+			calculatedOffset += 2;
+		}
 
 		$$('#shortcut-menu .toolbar-item-menu')[0].setStyle({
 			left: calculatedOffset + 'px'

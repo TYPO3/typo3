@@ -37,7 +37,7 @@ var ClearCacheMenu = Class.create({
 	initialize: function() {
 		Event.observe(window, 'resize', this.positionMenu);
 
-		Event.observe(window, 'load', function(){
+		Ext.onReady(function() {
 			this.positionMenu();
 			this.toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0].src;
 
@@ -47,7 +47,7 @@ var ClearCacheMenu = Class.create({
 			$$('#clear-cache-actions-menu li a').each(function(element) {
 				Event.observe(element, 'click', this.clearCache.bind(this));
 			}.bindAsEventListener(this));
-		}.bindAsEventListener(this));
+		}, this);
 	},
 
 	/**
@@ -56,7 +56,8 @@ var ClearCacheMenu = Class.create({
 	positionMenu: function() {
 		var calculatedOffset = 0;
 		var parentWidth      = $('clear-cache-actions-menu').getWidth();
-		var ownWidth         = $$('#clear-cache-actions-menu ul')[0].getWidth();
+		var currentToolbarItemLayer = $$('#clear-cache-actions-menu ul')[0];
+		var ownWidth         = currentToolbarItemLayer.getWidth();
 		var parentSiblings   = $('clear-cache-actions-menu').previousSiblings();
 
 		parentSiblings.each(function(toolbarItem) {
@@ -69,6 +70,11 @@ var ClearCacheMenu = Class.create({
 			}
 		});
 		calculatedOffset = calculatedOffset - ownWidth + parentWidth;
+
+			// border correction
+		if (currentToolbarItemLayer.getStyle('display') !== 'none') {
+			calculatedOffset += 2;
+		}
 
 
 		$$('#clear-cache-actions-menu ul')[0].setStyle({
