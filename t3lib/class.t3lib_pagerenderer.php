@@ -991,8 +991,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$jsFooterFiles = '';
 		$noJS = FALSE;
 
-
-
 		// preRenderHook for possible manuipulation
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'])) {
 			$params = array (
@@ -1055,7 +1053,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 
 		if (count($this->cssInline)) {
-
 			foreach ($this->cssInline as $name => $properties) {
 				if ($properties['forceOnTop']) {
 					$cssInline = '/*' . htmlspecialchars($name) . '*/' . LF . $properties['code'] . LF . $cssInline;
@@ -1064,7 +1061,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				}
 			}
 			$cssInline = $this->inlineCssWrap[0] . $cssInline . $this->inlineCssWrap[1];
-
 		}
 
 		if (count($this->jsLibs)) {
@@ -1088,31 +1084,30 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 						$jsFooterLibs .= LF . $tag;
 					}
 				}
-
 			}
 		}
 
 		if (count($this->jsFiles)) {
 			foreach ($this->jsFiles as $file => $properties) {
-					$file = t3lib_div::resolveBackPath($file);
-					$file = t3lib_div::createVersionNumberedFilename($file);
-					$tag = '<script src="' . htmlspecialchars($file) . '" type="' . $properties['type'] . '"></script>';
-					if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
-						$tag = str_replace('|', $tag, $properties['allWrap']);
-					}
-					if ($properties['forceOnTop']) {
-						if ($properties['section'] === self::PART_HEADER) {
-							$jsFiles = $tag . LF . $jsFiles;
-						} else {
-							$jsFooterFiles = $tag . LF . $jsFooterFiles;
-						}
+				$file = t3lib_div::resolveBackPath($file);
+				$file = t3lib_div::createVersionNumberedFilename($file);
+				$tag = '<script src="' . htmlspecialchars($file) . '" type="' . $properties['type'] . '"></script>';
+				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
+					$tag = str_replace('|', $tag, $properties['allWrap']);
+				}
+				if ($properties['forceOnTop']) {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsFiles = $tag . LF . $jsFiles;
 					} else {
-						if ($properties['section'] === self::PART_HEADER) {
-							$jsFiles .= LF . $tag;
-						} else {
-							$jsFooterFiles .= LF . $tag;
-						}
+						$jsFooterFiles = $tag . LF . $jsFooterFiles;
 					}
+				} else {
+					if ($properties['section'] === self::PART_HEADER) {
+						$jsFiles .= LF . $tag;
+					} else {
+						$jsFooterFiles .= LF . $tag;
+					}
+				}
 			}
 		}
 
@@ -1225,8 +1220,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					$out .= '<script src="' . $this->processJsFile($this->backPath .
 						'contrib/scriptaculous/' . $module . '.js') . '" type="text/javascript"></script>' . LF;
 					unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/' . $module . '.js']);
+				}
 			}
-		}
 			$out .= '<script src="' . $this->processJsFile($this->backPath .
 				'contrib/scriptaculous/scriptaculous.js') . '" type="text/javascript"></script>' . LF;
 			unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/scriptaculous.js']);
@@ -1323,7 +1318,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		} else {
 			if ($inlineSettings) {
 				$out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
-		}
+			}
 		}
 
 		return $out;
@@ -1369,6 +1364,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * compress inline code
 	 *
+	 * @return void
 	 */
 	protected function doCompress() {
 
@@ -1403,8 +1399,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				if (TYPO3_MODE === 'BE') {
 					$this->jsFiles = $this->getCompressor()->compressJsFiles($this->jsFiles);
 					$this->jsFooterFiles = $this->getCompressor()->compressJsFiles($this->jsFooterFiles);
+				}
 			}
-		}
 		}
 		if ($this->compressCss) {
 				// use extern compress routine
@@ -1432,7 +1428,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected function getCompressor() {
 		if ($this->compressor === NULL) {
 			$this->compressor = t3lib_div::makeInstance('t3lib_compressor');
-}
+		}
 		return $this->compressor;
 	}
 
