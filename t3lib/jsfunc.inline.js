@@ -36,6 +36,7 @@ var inline = {
 	lockedAjaxMethod: {},
 	sourcesLoaded: {},
 	data: {},
+	isLoading: false,
 
 	addToDataArray: function(object) {
 		$H(object).each(function(pair) {
@@ -50,11 +51,14 @@ var inline = {
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 
 			// if content is not loaded yet, get it now from server
-		if ($(objectId+'_fields') && $(objectId+'_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
+		if(($(objectId+'_fields') && $("irre-loading-indicator"+objectId)) || inline.isLoading) {
+			return false;
+		} else if ($(objectId+'_fields') && $(objectId+'_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
 				// add loading-indicator
 			if ($(objectId+'_label')) {
-				$(objectId+'_label').insert({before:'<span id="irre-loading-indicator" class="loading-indicator">&nbsp;</span>'});
+				$(objectId+'_label').insert({before:'<span id="irre-loading-indicator'+objectId+'" class="loading-indicator">&nbsp;</span>'});
 			}
+			inline.isLoading = true;
 			return this.getRecordDetails(objectId, returnURL);	
 		}		
 		
@@ -151,8 +155,8 @@ var inline = {
 			options = {
 				method:		'post',
 				parameters:	urlParams,
-				onSuccess:	function(xhr) { inline.processAjaxResponse(method, xhr); },
-				onFailure:	function(xhr) { inline.showAjaxFailure(method, xhr); }
+				onSuccess:	function(xhr) { inline.isLoading = false; inline.processAjaxResponse(method, xhr); },
+				onFailure:	function(xhr) { inline.isLoading = false; inline.showAjaxFailure(method, xhr); }
 			};
 
 			new Ajax.Request(url, options);
@@ -371,8 +375,8 @@ var inline = {
 			return;
 		objectDiv.update(htmlData);
 			// remove loading-indicator
-		if ($('irre-loading-indicator')) 
-			$('irre-loading-indicator').remove();
+		if ($('irre-loading-indicator'+objectId)) 
+			$('irre-loading-indicator'+objectId).remove();
 			// now that the content is loaded, set the expandState
 		this.expandCollapseRecord(objectId, expandSingle);
 	},

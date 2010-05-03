@@ -1,3 +1,7 @@
+2010-05-03  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Follow up to #5500: Load Inline Elements On Demand (thanks to Steffen Ritter)
+
 2010-05-03  Benjamin Mack  <benni@typo3.org>
 
 	* Release of TYPO3 4.4.0beta2
