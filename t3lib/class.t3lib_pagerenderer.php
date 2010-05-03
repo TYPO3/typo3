@@ -790,7 +790,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param string $modules   add modules you need. use "all" if you need complete modules
 	 * @return void
 	 */
-	public function loadScriptaculous($modules = '') {
+	public function loadScriptaculous($modules = 'all') {
 		// Scriptaculous require prototype, so load prototype too.
 		$this->addPrototype = TRUE;
 		$this->addScriptaculous = TRUE;
