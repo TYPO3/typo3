@@ -176,7 +176,7 @@ class tx_opendocs implements backend_toolbarItem {
 			$entry = '
 				<tr id="opendocs-open-' . $table . '-' . $uid . '" class="opendoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
-					<td class="label"><a href="' . htmlspecialchars($link) . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
+					<td class="label"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\'); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
 				</tr>';
 		} else {
@@ -184,7 +184,7 @@ class tx_opendocs implements backend_toolbarItem {
 			$entry = '
 				<tr id="opendocs-recent-' . $table . '-' . $uid . '" class="recentdoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
-					<td class="label" colspan="2"><a href="' . htmlspecialchars($link) . '" target="content" onclick="TYPO3BackendOpenDocs.toggleMenu();">' . $label . '</a></td>
+					<td class="label" colspan="2"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\'); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 				</tr>';
 		}
 
