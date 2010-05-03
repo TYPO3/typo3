@@ -1,3 +1,8 @@
+2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.5 (TYPO3 4.4 beta2)
+	* Fixed 1-2-3 installer crash when having only mysql available
+
 2010-05-02  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.1.4 (TYPO3 4.4 beta2)
