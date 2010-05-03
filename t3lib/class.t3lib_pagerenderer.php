@@ -1450,7 +1450,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				$filename = t3lib_div::createVersionNumberedFilename($filename);
 				break;
 			case 'BE':
-				$filename = $this->getCompressor()->compressJsFile($filename);
+				if ($this->compressJavascript) {
+					$filename = $this->getCompressor()->compressJsFile($filename);
+				}
 				break;
 		}
 		return $filename;
