@@ -25,7 +25,9 @@ General
 	* Automatic version-numbers of CSS and JS files to avoid caching problems: This feature provides automatic numbering of CSS and JS files using the files modified timestamp. This way the file reference will change when a CSS or JS files is changed, and by this the browser and proxy will re-cache the file. Can be configured to include the timestamp within the the filename (before .ext) or as a parameter to the file (default).
 	  If versioning is done inside the filename (by setting $TYPO3_CONF_VARS[BE][versionNumberInFilename] to true) you need this line as the first rewrite rule in .htaccess:
 		# Rule for versioned static files (see $TYPO3_CONF_VARS[BE][versionNumberInFilename])
-		RewriteRule ^(.+)\.(.+\d)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteCond %{REQUEST_FILENAME} !-d
+		RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gzip)$ $1.$3 [L]
 	  IMPORTANT: this rule has to be the very first rule to work properly, at least it has to be placed before the (^typo3...) rewrite rule
 	  Developers can use this API for versioning of files in their own backend mods, by calling t3lib_div::createVersionNumberedFilename or using the core API for including files in the page renderer class.
 
