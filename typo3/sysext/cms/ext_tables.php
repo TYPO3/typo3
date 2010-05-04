@@ -536,7 +536,7 @@ if (TYPO3_MODE=='BE')	{
 		'),
 			// shortcut
 		'4' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
+				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut,
 				shortcut;;;;3-3-3, shortcut_mode,
 			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
