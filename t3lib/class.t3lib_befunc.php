@@ -2293,6 +2293,14 @@ final class t3lib_BEfunc {
 				break;
 			}
 
+			// If this field is a password field, then hide the password by changing it to a random number of asterisk (*)
+			if (stristr($theColConf['eval'], 'password')) {
+				unset($l);
+				$randomNumber = rand(5, 12);
+				for ($i=0; $i < $randomNumber; $i++) {
+					$l .= '*';
+				}
+			}
 				/*****************
 				 *HOOK: post-processing the human readable output from a record
 				 ****************/
@@ -2663,7 +2671,7 @@ final class t3lib_BEfunc {
 				// Add it:
 			$addGetVars .= $suffix;
 		}
-	
+
 			// check if we need to preview a mount point
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$sys_page->init(FALSE);

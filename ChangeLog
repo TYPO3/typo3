@@ -1,3 +1,7 @@
+2010-05-05  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14307: fe_user passwords are visible in the info popup window in the backend (thanks to Lars Houmark)
+
 2010-05-03  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #7795: opendocs: documents are opened without pagetree (thanks to Stefan Galinski)
