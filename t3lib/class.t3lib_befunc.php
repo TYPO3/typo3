@@ -2286,6 +2286,15 @@ final class t3lib_BEfunc {
 				break;
 			}
 
+				// If this field is a password field, then hide the password by changing it to a random number of asterisk (*)
+			if (stristr($theColConf['eval'], 'password')) {
+				unset($l);
+				$randomNumber = rand(5, 12);
+				for ($i=0; $i < $randomNumber; $i++) {
+					$l .= '*';
+				}
+			}
+
 				/*****************
 				 *HOOK: post-processing the human readable output from a record
 				 ****************/
