@@ -5073,7 +5073,6 @@ final class t3lib_div {
 			list($type,$destination) = explode(',',$log,3);
 
 			if ($type == 'syslog')	{
-				define_syslog_variables();
 				if (TYPO3_OS == 'WIN')	{
 					$facility = LOG_USER;
 				} else {

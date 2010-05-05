@@ -1,3 +1,7 @@
+2010-05-05  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12470: PHP-5.3 error: function define_syslog_variables() is deprecated (Thanks to Rupert Germann)
+
 2010-05-02  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #14276: tceforms: Title of a record does not use API call to limit the character
