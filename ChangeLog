@@ -1,3 +1,7 @@
+2010-05-05  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #13998 / #14298: Missing ">" in HTML source when including jsfunc.validateform.js (Thanks to Lars Houmark)
+
 2010-05-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14295: Recycler and tcemain->process_cmdmap cannot undelete some records (thanks to Lars Houmark)

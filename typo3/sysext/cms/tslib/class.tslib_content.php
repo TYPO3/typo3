@@ -2213,7 +2213,7 @@ class tslib_cObj {
 				'<script type="text/javascript" src="' .
 				t3lib_div::createVersionNumberedFilename($GLOBALS['TSFE']->absRefPrefix .
 					't3lib/jsfunc.validateform.js') .
-				'"</script>';
+				'"></script>';
 		} else {
 			$validateForm = '';
 		}
