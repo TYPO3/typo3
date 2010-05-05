@@ -2762,7 +2762,7 @@ class t3lib_TCEmain	{
 */
 			if ($this->doesRecordExist($table,$uid,'show'))	{		// This checks if the record can be selected which is all that a copy action requires.
 				$fullLanguageCheckNeeded = ($table != 'pages');
-				if (($language > 0 && $this->BE_USER->checkLanguageAccess($language) ) || 
+				if (($language > 0 && $this->BE_USER->checkLanguageAccess($language) ) ||
 						$this->BE_USER->recordEditAccessInternals(
 							$table, $uid, false, false, $fullLanguageCheckNeeded
 						)
@@ -4454,13 +4454,13 @@ class t3lib_TCEmain	{
 	 * @return	boolean		Whether the record can be undeleted
 	 */
 	public function isRecordUndeletable($table, $uid) {
-		$result = false;
-		$record = t3lib_BEfunc::getRecord($table, $uid, 'pid', '', false);
+		$result = FALSE;
+		$record = t3lib_BEfunc::getRecord($table, $uid, 'pid', '', FALSE);
 		if ($record['pid']) {
-			$page = t3lib_BEfunc::getRecord('pages', $record['pid'], 'deleted, title, uid', '', false);
+			$page = t3lib_BEfunc::getRecord('pages', $record['pid'], 'deleted, title, uid', '', FALSE);
 				// The page containing the record is not deleted, thus the record can be undeleted:
 			if (!$page['deleted']) {
-				$result = true;
+				$result = TRUE;
 				// The page containing the record is deleted and has to be undeleted first:
 			} else {
 				$this->log(
@@ -4469,6 +4469,9 @@ class t3lib_TCEmain	{
 						$page['title'] . ' (UID: ' . $page['uid'] . ')" first'
 				);
 			}
+		} else {
+				// The page containing the record is on rootlevel, so there is no parent record to check, and the record can be undeleted:
+			$result = TRUE;
 		}
 		return $result;
 	}
