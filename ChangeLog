@@ -1,5 +1,6 @@
 2010-05-05  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #12470: PHP-5.3 error: function define_syslog_variables() is deprecated (Thanks to Rupert Germann)
 	* Followup to #13998 / #14298: Missing ">" in HTML source when including jsfunc.validateform.js (Thanks to Lars Houmark)
 
 2010-05-05  Steffen Kamper  <info@sk-typo3.de>
