@@ -1619,7 +1619,7 @@ class t3lib_TCEforms	{
 				if ($sM) {
 					list($selectIconFile,$selectIconInfo) = $this->getIcon($p[2]);
 						if (!empty($selectIconInfo)) {
-							$selectedStyle = ' style="background-image: url('.$selectIconFile.'); background-repeat: no-repeat; background-position: 0% 50%; padding: 1px; padding-left: 24px; -webkit-background-size: 0;"';
+							$selectedStyle = ' style="background: #fff url(' . $selectIconFile . ') 0% 50% no-repeat; padding: 1px 1px 1px 24px; -webkit-background-size: 0;"';
 						}
 				}
 			}
@@ -4031,7 +4031,7 @@ class t3lib_TCEforms	{
 			}
 
 			$padTop = t3lib_div::intInRange(($selIconInfo[1]-12)/2,0);
-			$styleAttr = 'background-image: url('.$selIconFile.'); background-repeat: no-repeat; height: '.t3lib_div::intInRange(($selIconInfo[1]+2)-$padTop,0).'px; padding-top: '.$padTop.'px; padding-left: '.$padLeft.'px;';
+			$styleAttr = 'background: #fff url(' . $selIconFile . ') 0% 50% no-repeat; height: ' . t3lib_div::intInRange(($selIconInfo[1] + 2) - $padTop, 0) . 'px; padding-top: ' . $padTop . 'px; padding-left: ' . $padLeft . 'px;';
 			return $styleAttr;
 		}
 	}
