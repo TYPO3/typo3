@@ -644,11 +644,11 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 				// Checking authMode fields:
 			if (is_array($TCA[$table]['columns']))	{
-				foreach($TCA[$table]['columns'] as $fN => $fV)	{
-					if (isset($idOrRow[$fN]))	{	//
-						if ($fV['config']['type']=='select' && $fV['config']['authMode'] && !strcmp($fV['config']['authMode_enforce'],'strict')) {
-							if (!$this->checkAuthMode($table,$fN,$idOrRow[$fN],$fV['config']['authMode']))	{
-								$this->errorMsg = 'ERROR: authMode "'.$fV['config']['authMode'].'" failed for field "'.$fN.'" with value "'.$idOrRow[$fN].'" evaluated';
+				foreach ($TCA[$table]['columns'] as $fieldName => $fieldValue) {
+					if (isset($idOrRow[$fieldName])) {
+						if ($fieldValue['config']['type'] == 'select' && $fieldValue['config']['authMode'] && !strcmp($fieldValue['config']['authMode_enforce'], 'strict')) {
+							if (!$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
+								$this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode'] . '" failed for field "' . $fieldName . '" with value "' . $idOrRow[$fieldName] . '" evaluated';
 								return FALSE;
 							}
 						}
@@ -692,24 +692,40 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Will check a type of permission against the compiled permission integer, $lCP, and in relation to table, $table
+	 * Checks a type of permission against the compiled permission integer, $compiledPermissions, and in relation to table, $tableName
 	 *
-	 * @param	integer		$lCP could typically be the "compiled permissions" integer returned by ->calcPerms
-	 * @param	string		$table is the tablename to check: If "pages" table then edit,new,delete and editcontent permissions can be checked. Other tables will be checked for "editcontent" only (and $type will be ignored)
-	 * @param	string		For $table='pages' this can be 'edit' (2), 'new' (8 or 16), 'delete' (4), 'editcontent' (16). For all other tables this is ignored. (16 is used)
+	 * @param	integer		$compiledPermissions could typically be the "compiled permissions" integer returned by ->calcPerms
+	 * @param	string		$tableName is the tablename to check: If "pages" table then edit,new,delete and editcontent permissions can be checked. Other tables will be checked for "editcontent" only (and $type will be ignored)
+	 * @param	string		For $tableName='pages' this can be 'edit' (2), 'new' (8 or 16), 'delete' (4), 'editcontent' (16). For all other tables this is ignored. (16 is used)
 	 * @return	boolean
-	 * @access private
+	 * @access public (used by typo3/alt_clickmenu.php)
 	 */
-	function isPSet($lCP,$table,$type='')	{
-		if ($this->isAdmin())	return true;
-		if ($table=='pages')	{
-			if ($type=='edit')	return $lCP & 2;
-			if ($type=='new')	return ($lCP & 8) || ($lCP & 16);	// Create new page OR pagecontent
-			if ($type=='delete')	return $lCP & 4;
-			if ($type=='editcontent')	return $lCP & 16;
-		} else {
-			return $lCP & 16;
+	public function isPSet($compiledPermissions, $tableName, $actionType = '') {
+		if ($this->isAdmin()) {
+			$result = TRUE;
 		}
+		elseif ($tableName == 'pages') {
+			switch($actionType) {
+				case 'edit':
+					$result = ($compiledPermissions & 2) !== 0;
+					break;
+				case 'new':
+					// Create new page OR page content
+					$result = ($compiledPermissions & (8 + 16)) !== 0;
+					break;
+				case 'delete':
+					$result = ($compiledPermissions & 4) !== 0;
+					break;
+				case 'editcontent':
+					$result = ($compiledPermissions & 16) !== 0;
+					break;
+				default:
+					$result = FALSE;
+			}
+		} else {
+			$result = ($compiledPermissions & 16) !== 0;
+		}
+		return $result;
 	}
 
 	/**
@@ -1332,7 +1348,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			// Traversing records in the correct order
 		$include_staticArr = t3lib_div::intExplode(',',$grList);
 		reset($include_staticArr);
-		while(list(,$uid)=each($include_staticArr))	{	// traversing list
+			// traversing list
+		foreach ($include_staticArr as $key => $uid) {
 
 				// Get row:
 			$row=$this->userGroups[$uid];
