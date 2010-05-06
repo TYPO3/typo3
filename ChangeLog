@@ -1,5 +1,6 @@
 2010-05-06  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #13996: Hardcoded TYPO3 logo shown in "HELP > About TYPO3" (Thanks to Stephan Kellermayr)
 	* Fixed bug #13995: Hardcoded TYPO3 logo image shown in "HELP > About Modules" (Thanks to Stephan Kellermayr and Steffen Kamper)
 	* Fixed bug #14291: TCEforms: Incorrect background color style in type fields with images (Thanks to Stefan Galinski)
 	* Fixed bug #14316: Updated TYPO3_copyright_year in constants section of config_default.php (Thanks to Steffen Gebert)
