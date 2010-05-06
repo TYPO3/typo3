@@ -169,7 +169,7 @@ class filelistFolderTree extends t3lib_folderTree {
 			// if this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
 			if($v['isFirst'] && !($doCollapse) && !($doExpand && $expandedFolderUid == $uid))	{
-				$itemHTML = "</div><ul>\n";
+				$itemHTML = "<ul>\n";
 			}
 
 			// add CSS classes to the list item
@@ -179,10 +179,10 @@ class filelistFolderTree extends t3lib_folderTree {
 			$itemHTML .='
 				<li id="'.$idAttr.'"'.($classAttr ? ' class="'.$classAttr.'"' : '').'><div class="treeLinkItem">'.
 					$v['HTML'].
-					$this->wrapTitle($this->getTitleStr($v['row'],$titleLen),$v['row'],$v['bank']);
+					$this->wrapTitle($this->getTitleStr($v['row'],$titleLen),$v['row'],$v['bank']) . '</div>';
 
 
-			if(!$v['hasSub']) { $itemHTML .= "</div></li>\n"; }
+			if(!$v['hasSub']) { $itemHTML .= "</li>\n"; }
 
 			// we have to remember if this is the last one
 			// on level X so the last child on level X+1 closes the <ul>-tag
@@ -342,6 +342,12 @@ class filelistFolderTree extends t3lib_folderTree {
 
 				// Add tree:
 			$treeArr = array_merge($treeArr, $this->tree);
+			
+				// if this is an AJAX call, don't run through all mounts, only 
+				// show the expansion of the current one, not the rest of the mounts
+			if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+				break;
+			}
 		}
 		return $this->printTree($treeArr);
 	}

@@ -1,5 +1,6 @@
 2010-05-06  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14315: Filelist: AJAX bug with multiple file mounts in the folder tree
 	* Fixed bug #12429: Renamed "t3lib_tstemplate::procesIncludes" to "processIncludes" due to a misspelling (Thanks to Bernhard Kraft)
 	* Fixed bug #13996: Hardcoded TYPO3 logo shown in "HELP > About TYPO3" (Thanks to Stephan Kellermayr)
 	* Fixed bug #13995: Hardcoded TYPO3 logo image shown in "HELP > About Modules" (Thanks to Stephan Kellermayr and Steffen Kamper)
