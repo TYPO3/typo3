@@ -1,3 +1,7 @@
+2010-05-06  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #14217: options.pageTree.showPageIdWithTitle doesn't work in record picker and RTE (Thanks to Reinhard Fuehricht)
+
 2010-05-06  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14185: The tt_content.fe_groups field is not placed under the Access Tab (Thanks to Peter Klein & Lars Houmark)

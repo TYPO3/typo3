@@ -238,6 +238,12 @@ class TBE_browser_recordList extends localRecordList {
 class localPageTree extends t3lib_browseTree {
 
 	/**
+	 * whether the page ID should be shown next to the title, activate through userTSconfig (options.pageTree.showPageIdWithTitle)
+	 * @boolean
+	 */
+	public $ext_showPageId = FALSE;
+
+	/**
 	 * Constructor. Just calling init()
 	 *
 	 * @return	void
@@ -355,8 +361,12 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		The row for the current element
 	 * @return	string		The processed icon input value.
 	 */
-	function wrapIcon($icon,$row)	{
-		return $this->addTagAttributes($icon,' title="id='.$row['uid'].'"');
+	function wrapIcon($icon, $row) {
+		$content = $this->addTagAttributes($icon, ' title="id=' . $row['uid'] . '"');
+		if ($this->ext_showPageId) {
+		 	$content .= '[' . $row['uid'] . ']&nbsp;';
+		}
+		return $content;
 	}
 }
 
@@ -1411,6 +1421,7 @@ class browse_links {
 			case 'page':
 				$pagetree = t3lib_div::makeInstance('rtePageTree');
 				$pagetree->thisScript = $this->thisScript;
+				$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 				$tree=$pagetree->getBrowsableTree();
 				$cElements = $this->expandPage();
 
@@ -1573,6 +1584,7 @@ class browse_links {
 		$pagetree->thisScript=$this->thisScript;
 		$pagetree->ext_pArrPages = !strcmp($pArr[3],'pages')?1:0;
 		$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
+		$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
 		$pagetree->addField('nav_title');
 		$tree=$pagetree->getBrowsableTree();
 
