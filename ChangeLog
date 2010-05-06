@@ -1,3 +1,7 @@
+2010-05-06  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14185: The tt_content.fe_groups field is not placed under the Access Tab (Thanks to Peter Klein & Lars Houmark)
+
 2010-05-05  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12470: PHP-5.3 error: function define_syslog_variables() is deprecated (Thanks to Rupert Germann)
