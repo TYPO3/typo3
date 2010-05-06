@@ -510,7 +510,7 @@ class t3lib_TStemplate	{
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			$this->rootLine[] = $this->absoluteRootLine[$a];
 		}
-		$this->procesIncludes();
+		$this->processIncludes();
 	}
 
 	/**
@@ -819,7 +819,7 @@ class t3lib_TStemplate	{
 		array_unshift($this->editorcfg,''.$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_editorcfg']);	// Adding default TS/editorcfg
 
 			// Parse the TypoScript code text for include-instructions!
-		$this->procesIncludes();
+		$this->processIncludes();
 
 			// These vars are also set lateron...
 		$this->setup['resources']= $this->resources;
@@ -977,12 +977,25 @@ class t3lib_TStemplate	{
 
 	/**
 	 * Searching TypoScript code text (for constants, config (Setup) and editorcfg) for include instructions and does the inclusion if needed.
-	 * Modifies
+	 *
+	 * @return	void
+	 * @deprecated since TYPO3 4.4 - Method name misspelled. Use "processIncludes" instead! This function will be removed in TYPO3 4.6.
+	 * @see t3lib_TSparser, processIncludes()
+	 */
+	public function procesIncludes() {
+		t3lib_div::logDeprecatedFunction();
+		$this->processIncludes();
+	}
+
+	/**
+	 * Searching TypoScript code text (for constants, config (Setup) and editorcfg)
+	 * for include instructions and does the inclusion of external TypoScript files
+	 * if needed.
 	 *
 	 * @return	void
 	 * @see t3lib_TSparser, generateConfig()
 	 */
-	function procesIncludes() {
+	public function processIncludes() {
 		$files = array();
 		foreach ($this->constants as &$value) {
 			$includeData = t3lib_TSparser::checkIncludeLines($value, 1, true);
@@ -1004,7 +1017,7 @@ class t3lib_TStemplate	{
 		if (count($files)) {
 			$files = array_unique($files);
 			foreach ($files as $file) {
-				$this->rowSum[] = Array($file, filemtime($file));
+				$this->rowSum[] = array($file, filemtime($file));
 			}
 		}
 	}
