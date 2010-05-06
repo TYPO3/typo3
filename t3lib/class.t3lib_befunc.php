@@ -4137,7 +4137,7 @@ final class t3lib_BEfunc {
 			);
 		}
 		$cNotice = '<a href="http://typo3.com/" target="_blank">' .
-			'<img src="gfx/loginlogo_transp.gif" width="75" vspace="2" hspace="4" height="19" alt="' .
+			'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/loginlogo_transp.gif', 'width="75" height="19" vspace="2" hspace="4"') . ' alt="' . 
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.logo') . '" align="left" />' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.cms') . ' ' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:version.short') . ' ' .
