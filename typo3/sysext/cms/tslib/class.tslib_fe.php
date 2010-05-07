@@ -441,7 +441,7 @@
 				$GLOBALS['TT']->setTSlogMessage($warning,2);
 			} else {
 				$warning = '&no_cache=1 has been supplied, so caching is disabled! URL: "'.t3lib_div::getIndpEnv('TYPO3_REQUEST_URL').'"';
-				$this->no_cache = $no_cache ? 1 : 0;
+				$this->disableCache();
 			}
 			t3lib_div::sysLog($warning, 'cms', 2);
 		}
@@ -830,7 +830,7 @@
 
 				// If the front-end is showing a preview, caching MUST be disabled.
 			if ($this->fePreview)	{
-				$this->set_no_cache();
+				$this->disableCache();
 			}
 		}
 		$GLOBALS['TT']->pull();
@@ -4570,10 +4570,20 @@ if (version == "n3") {
 			$GLOBALS['TT']->setTSlogMessage($warning,2);
 		} else {
 			$warning.= ' Caching is disabled!';
-			$this->no_cache = 1;
+			$this->disableCache();
 		}
 
 		t3lib_div::sysLog($warning, 'cms', 2);
+	}
+
+	/**
+	 * Disables caching of the current page.
+	 *
+	 * @return void
+	 * @internal
+	 */
+	protected function disableCache() {
+		$this->no_cache = 1;
 	}
 
 	/**
