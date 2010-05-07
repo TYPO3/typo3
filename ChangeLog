@@ -1,3 +1,7 @@
+2010-05-07  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #5003: prefixRelPath() incorrectly changes links to anchors (Thanks to Jigal van Hemert)
+
 2010-05-07  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #13495: Workspace tiled Preview shows same version of Page
