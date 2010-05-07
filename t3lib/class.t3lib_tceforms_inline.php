@@ -539,7 +539,7 @@ class t3lib_TCEforms_inline {
 		}
 
 		$altText = t3lib_BEfunc::getRecordIconAltText($rec, $foreign_table);
-		$iconImg = t3lib_iconWorks::getIconImage($foreign_table, $rec, $this->backPath, 'title="'.htmlspecialchars($altText).'" class="absmiddle"');
+		$iconImg = t3lib_iconWorks::getIconImage($foreign_table, $rec, $this->backPath, 'title="' . htmlspecialchars($altText) . '" class="absmiddle" id="' . $objectId . '_icon"');
 		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
 		if (!$isVirtualRecord) {
 			$iconImg = $this->wrapWithAnchor($iconImg, '#', array('onclick' => $onClick));
@@ -553,7 +553,7 @@ class t3lib_TCEforms_inline {
 			'<table cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-right: '.$this->inlineStyles['margin-right'].'px;"'.
 			($this->fObj->borderStyle[2] ? ' background="'.htmlspecialchars($this->backPath.$this->fObj->borderStyle[2]).'"':'').
 			($this->fObj->borderStyle[3] ? ' class="'.htmlspecialchars($this->fObj->borderStyle[3]).'"':'').'>' .
-			'<tr class="class-main12"><td width="18">'.$iconImg.'</td><td align="left"><b>'.$label.'</b></td><td align="right">'.$ctrl.'</td></tr></table>';
+			'<tr class="class-main12"><td width="18" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td><td align="left"><b>' . $label . '</b></td><td align="right">' . $ctrl . '</td></tr></table>';
 
 		return $header;
 	}

@@ -1,3 +1,7 @@
+2010-05-07  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14293: IRRE loading indicator makes label text jump (Thanks to Lars Houmark)
+
 2010-05-07  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #5003: prefixRelPath() incorrectly changes links to anchors (Thanks to Jigal van Hemert)

@@ -54,11 +54,12 @@ var inline = {
 		if(($(objectId+'_fields') && $("irre-loading-indicator"+objectId)) || inline.isLoading) {
 			return false;
 		} else if ($(objectId+'_fields') && $(objectId+'_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
-				// add loading-indicator
-			if ($(objectId+'_label')) {
-				$(objectId+'_label').insert({before:'<span id="irre-loading-indicator'+objectId+'" class="loading-indicator">&nbsp;</span>'});
-			}
 			inline.isLoading = true;
+				// add loading-indicator
+			if ($(objectId + '_icon')) {
+				$(objectId + '_icon').hide();
+				$(objectId + '_iconcontainer').addClassName('loading-indicator');
+			}
 			return this.getRecordDetails(objectId, returnURL);	
 		}		
 		
@@ -375,8 +376,10 @@ var inline = {
 			return;
 		objectDiv.update(htmlData);
 			// remove loading-indicator
-		if ($('irre-loading-indicator'+objectId)) 
-			$('irre-loading-indicator'+objectId).remove();
+		if ($(objectId + '_icon')) {
+			$(objectId + '_iconcontainer').removeClassName('loading-indicator');
+			$(objectId + '_icon').show();
+		}
 			// now that the content is loaded, set the expandState
 		this.expandCollapseRecord(objectId, expandSingle);
 	},
