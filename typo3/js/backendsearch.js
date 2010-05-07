@@ -55,9 +55,9 @@ var BackendSearch = Class.create({
 				}
 
 				if(keyCode == Event.KEY_RETURN) {
-					this.invokeSearch();
+					TYPO3BackendSearchMenu.invokeSearch();
 				}
-			}, this);
+			});
 
 			$$('#backend-search-menu .toolbar-item')[0].observe('click', this.toggleMenu)
 		}.bindAsEventListener(this));
