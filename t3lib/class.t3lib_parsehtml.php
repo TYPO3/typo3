@@ -1046,10 +1046,15 @@ class t3lib_parsehtml	{
 	 * @return	string		Output path, prefixed if no scheme in input string
 	 * @access private
 	 */
-	function prefixRelPath($prefix,$srcVal,$suffix='')	{
-		$pU = parse_url($srcVal);
-		if (!$pU['scheme'] && substr($srcVal, 0, 1)!='/')	{ // If not an absolute URL.
-			$srcVal = $prefix.$srcVal.$suffix;
+	function prefixRelPath($prefix, $srcVal, $suffix = '') {
+			// Only prefix if it's not an absolute URL or 
+			// only a link to a section within the page.
+		if (substr($srcVal, 0, 1) != '/' && substr($srcVal, 0, 1) != '#') {
+			$urlParts = parse_url($srcVal);
+				// only prefix URLs without a scheme
+			if (!$urlParts['scheme']) {
+				$srcVal = $prefix . $srcVal . $suffix;
+			}
 		}
 		return $srcVal;
 	}
