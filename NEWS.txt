@@ -52,6 +52,8 @@ Frontend
 	* Indexed search no longer puts a double wrap around search rules in the advanced search form. This may require style changes if a default indexed search is used.
 
 	* The system extensions "CSS Styled Content" (css_styled_content) and "Frontend User Login" (felogin) now have new manuals that reflect the current state of the extension.
+	
+	* The browser condition now delivers reliable information about the client browser. So now it's possible to make a condition for usage of Firefox, or even a webkit based browser.
 
 
 Compatibility
