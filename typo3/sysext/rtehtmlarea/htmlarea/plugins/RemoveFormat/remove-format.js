@@ -41,7 +41,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.0',
+			version		: '2.1',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -217,7 +217,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 					// Remove font, b, strong, i, em, u, strike, span and other inline tags
 				html = html.replace(/<\/?(abbr|acronym|b[^a-zA-Z]|big|cite|code|em[^a-zA-Z]|font|i[^a-zA-Z]|q|s[^a-zA-Z]|samp|small|span|strike|strong|sub|sup|tt|u[^a-zA-Z]|var)[^>]*>/gi, "");
 					// Keep tags, strip attributes
-				html = html.replace(/ style=\"[^>\"]*\"/gi, "").replace(/ (class|align|cellpadding|cellspacing|frame|bgcolor)=(([^>\s\"]+)|(\"[^>\"]*\"))/gi, "");
+				html = html.replace(/[ \t\n\r]+(style|class|align|cellpadding|cellspacing|frame|bgcolor)=\"[^>\"]*\"/gi, "");
 			}
 			if (params['spaces']) {
 					// Replace non-breaking spaces by normal spaces
@@ -229,11 +229,11 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 			}
 			if (params['msWordFormatting']) {
 					// Make one line
-				html = html.replace(/(\r\n|\n|\r)/g, " ");
+				html = html.replace(/[ \r\n\t]+/g, " ");
 					// Clean up tags
 				html = html.replace(/<(b|strong|i|em|p|li|ul) [^>]*>/gi, "<$1>");
 					// Keep tags, strip attributes
-				html = html.replace(/ style=\"[^>\"]*\"/gi, "").replace(/ (class|align)=(([^>\s\"]+)|(\"[^>\"]*\"))/gi, "");
+				html = html.replace(/ (style|class|align)=\"[^>\"]*\"/gi, "");
 					// kill unwanted tags: span, div, ?xml:, st1:, [a-z]:, meta, link
 				html = html.replace(/<\/?span[^>]*>/gi, "").
 					replace(/<\/?div[^>]*>/gi, "").
@@ -247,8 +247,8 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 					replace(/<title[^>]*>.*<\/title[^>]*>/gi, "");
 					// remove comments
 				html = html.replace(/<!--[^>]*>/gi, "");
-					// Remove font elements resets
-				html = html.replace(/<\/(b|big|i|s|small|strike|tt|u)><\1>/gi, "");
+					// Remove inline elements resets
+				html = html.replace(/<\/(b[^a-zA-Z]|big|i[^a-zA-Z]|s[^a-zA-Z]|small|strike|tt|u[^a-zA-Z])><\1>/gi, "");
 					// Remove double tags
 				var oldlen = html.length + 1;
 				while(oldlen > html.length) {

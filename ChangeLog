@@ -1,3 +1,7 @@
+2010-05-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14202: htmlArea RTE: Tables may get lost when using remove format feature
+
 2010-05-07  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14293: IRRE loading indicator makes label text jump (Thanks to Lars Houmark)
