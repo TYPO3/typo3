@@ -174,7 +174,7 @@ class tx_opendocs implements backend_toolbarItem {
 			$closeIcon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
 
 			$entry = '
-				<tr id="opendocs-open-' . $table . '-' . $uid . '" class="opendoc' . $firstRow . '">
+				<tr class="opendoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
 					<td class="label"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\'); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
@@ -182,7 +182,7 @@ class tx_opendocs implements backend_toolbarItem {
 		} else {
 				// recently used document
 			$entry = '
-				<tr id="opendocs-recent-' . $table . '-' . $uid . '" class="recentdoc' . $firstRow . '">
+				<tr class="recentdoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
 					<td class="label" colspan="2"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\'); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 				</tr>';
