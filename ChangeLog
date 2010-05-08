@@ -1,5 +1,6 @@
 2010-05-07  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14326: [Performance] Preload ExtJS in BE
 	* Fixed bug #14288: opendocs can cause duplicate id html errors (thanks to Stefan Galinski)
 
 2010-05-07  Stanislas Rolland  <typo3@sjbr.ca>

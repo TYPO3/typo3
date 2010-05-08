@@ -184,6 +184,8 @@ class SC_index {
 		$TBE_TEMPLATE->bodyTagAdditions = ' onload="startUp();"';
 		$TBE_TEMPLATE->moduleTemplate = $TBE_TEMPLATE->getHtmlTemplate('templates/login.html');
 
+		$TBE_TEMPLATE->getPageRenderer()->loadExtJS();
+
 			// Set JavaScript for creating a MD5 hash of the password:
 		$TBE_TEMPLATE->JScode.= $this->getJScode();
 
@@ -580,7 +582,7 @@ class SC_index {
 					'###CONTENT###' => trim($newsItem['content']),
 					'###CLASS###'	=> $additionalClass
 				);
-				
+
 				$count++;
 				$newsItemContent .= t3lib_parsehtml::substituteMarkerArray($newsItemTemplate, $newsItemMarker);
 			}
