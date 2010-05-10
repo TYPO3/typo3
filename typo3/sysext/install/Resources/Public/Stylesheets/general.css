@@ -146,6 +146,11 @@ button {
 	cursor: pointer;
 }
 
+button:hover {
+	background-color: #ededed;
+	background-image: url('../Images/button-background-hover.jpg');
+}
+
 button span {
 	background-repeat: no-repeat;
 	display: inline-block;
