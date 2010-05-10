@@ -348,7 +348,7 @@ BTW: This Install Tool will only work if cookies are accepted by your web browse
 			}
 
 				// Let DBAL decide whether to load itself
-			$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php'; 
+			$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php';
 			if (@is_file($dbalLoaderFile)) {
 				include($dbalLoaderFile);
 			}
@@ -7676,7 +7676,7 @@ $out="
 		} else {
 			$this->markers['headTitle'] = '
 				TYPO3 ' . TYPO3_version . '
-				Install tool on site: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '
+				Install Tool on site: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '
 			';
 		}
 		$this->markers['title'] = 'TYPO3 ' . TYPO3_version;
