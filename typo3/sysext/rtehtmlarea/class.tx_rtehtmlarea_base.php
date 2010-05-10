@@ -1107,7 +1107,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if ($concatenate) {
 			$this->cumulativeScripts[$this->TCEform->RTEcounter][] = $destination;
 		}
-		return (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '../' ) . t3lib_div::createVersionNumberedFilename($relativeFilename);
+		if ($this->is_FE()) {
+			return ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
+		} else {
+			return t3lib_div::createVersionNumberedFilename('../' . $relativeFilename);
+		}
 	}
 	/**
 	 * Concatenates all accumulated scripts in a file in typo3temp/rtehtmlarea directory and returns the file name
@@ -1138,7 +1142,11 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				}
 			}
 		}
-		return (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '../' ) . t3lib_div::createVersionNumberedFilename($relativeFilename);
+		if ($this->is_FE()) {
+			return ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
+		} else {
+			return t3lib_div::createVersionNumberedFilename('../' . $relativeFilename);
+		}
 	}
 
 	/**
