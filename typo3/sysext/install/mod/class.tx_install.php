@@ -461,7 +461,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			);
 				// Define the markers content
 			$sessionExpiredMarkers = array(
-				'message' => 'Your install tool session has expired'
+				'message' => 'Your Install Tool session has expired'
 			);
 				// Fill the markers in the subpart
 			$sessionExpiredSubPart = t3lib_parsehtml::substituteMarkerArray(
@@ -488,7 +488,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$markers = array(
 			'siteName' => 'Site: ' .
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-			'headTitle' => 'Login to TYPO3 ' . TYPO3_version . ' Install tool',
+			'headTitle' => 'Login to TYPO3 ' . TYPO3_version . ' Install Tool',
 			'redirectUrl' => htmlspecialchars($redirect_url),
 			'enterPassword' => 'Password',
 			'login' => 'Login',
@@ -521,7 +521,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * Calling function that checks system, IM, GD, dirs, database
 	 * and lets you alter localconf.php
 	 *
-	 * This method is called from init.php to start the install Tool.
+	 * This method is called from init.php to start the Install Tool.
 	 *
 	 * @return void
 	 */
@@ -2751,7 +2751,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							versions) you\'ll end up with GIF-filesizes all too
 							big!
 							<br />
-							This install tool tests what kinds of GIF
+							This Install Tool tests what kinds of GIF
 							compression are available in the ImageMagick
 							installations by a physical test. You can also check
 							it manually by opening a TYPO3 generated gif-file
@@ -7924,7 +7924,7 @@ $out="
 	}
 
 	/**
-	 * Generates the form to alter the password of the install tool
+	 * Generates the form to alter the password of the Install Tool
 	 *
 	 * @return string HTML of the form
 	 */
