@@ -1143,10 +1143,16 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 		if ($this->is_FE()) {
-			return ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
+			$filename = ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
 		} else {
-			return t3lib_div::createVersionNumberedFilename('../' . $relativeFilename);
+			if ($compress) {
+				$compressor = t3lib_div::makeInstance('t3lib_compressor');
+				$filename = $compressor->compressJsFile('../' . $relativeFilename);
+			} else {
+				$filename = t3lib_div::createVersionNumberedFilename('../' . $relativeFilename);
+			}
 		}
+		return $filename;
 	}
 
 	/**
