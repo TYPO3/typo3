@@ -3,6 +3,7 @@
 	* Follow-up to feature #14014: htmlArea RTE should use version numbering method for CSS and JS files
 	* Fixed bug #14349: htmlArea RTE: Unavailability of hot key map may cause plugin to fail
 	* Follow-up to feature #14277: Apply gzip compression to htmlArea RTE concatenated js script
+	* Follow-up to feature #14014: Some htmlArea RTE csss files are not versioned in the FE
 
 2010-05-07  Steffen Kamper  <info@sk-typo3.de>
 

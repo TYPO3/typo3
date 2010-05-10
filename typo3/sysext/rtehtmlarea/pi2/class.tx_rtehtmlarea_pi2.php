@@ -269,11 +269,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 * @return	void
 	 */
 	protected function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
-		if (!isset($GLOBALS['TSFE']->additionalHeaderData[$key])) {
-			$GLOBALS['TSFE']->additionalHeaderData[$key] = '<link rel="' . $relation . '" type="text/css" href="' . $href . '"' . ($title ? (' title="' . $title . '"') : '') . ' />';
-		}
+		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+		$pageRenderer->addCssFile($href, $relation, 'screen', $title);
 	}
-
 	/**
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.
 	 * This is for submit function from the form.
