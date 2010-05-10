@@ -1148,9 +1148,10 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				hotKeys += key.toUpperCase();
 			}
 		});
+			// Make hot key map available, even if empty, so that plugins may add bindings
+		this.hotKeyMap = new Ext.KeyMap(documentElement);
 		if (!Ext.isEmpty(hotKeys)) {
-			this.hotKeyMap = new Ext.KeyMap(documentElement,
-			{
+			this.hotKeyMap.addBinding({
 				key: hotKeys,
 				ctrl: true,
 				shift: false,
