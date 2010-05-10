@@ -247,6 +247,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 			// Note: parseCurUrl will invoke the hooks
 		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
+		if (isset($this->curUrlArray['external']) && $this->curUrlInfo['act'] != 'mail') {
+			$this->curUrlInfo['act'] = 'url';
+			$this->curUrlInfo['info'] = $this->curUrlArray['href'];
+		}
 			// Determine nature of current url:
 		$this->act = t3lib_div::_GP('act');
 		if (!$this->act)	{
@@ -693,7 +697,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>URL:</td>
 								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; return link_current();" /></td>
+									'<input type="submit" value="'.$LANG->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; browse_links_setAdditionalValue(\'external\', \'1\'); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -890,7 +894,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<td>
 							</td>
 							<td colspan="3">
-								<input type="submit" value="'.$LANG->getLL('update',1).'" onclick="return link_current();" />
+								<input type="submit" value="'.$LANG->getLL('update',1).'" onclick="' . (($this->act == 'url') ? 'browse_links_setAdditionalValue(\'external\', \'1\'); ' : '') .'return link_current();" />
 							</td>
 						</tr>';
 		}

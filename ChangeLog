@@ -1,3 +1,7 @@
+2010-05-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #9455: RTE incorrectly modifies external links and causes problems with subdomains
+
 2010-05-07  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14335: Install Tool buttons have no hover state (thanks to Steffen Gebert)
