@@ -62,37 +62,55 @@
 .htmlarea .toolbar .button {
 	background-color: transparent;
 	color: ButtonText;
-	width: 22px;
-	height: 22px;
 	border-style: solid;
-	border-color: #EFEFF4;
 	border-width: 1px;
-	margin: 0 0 1px 0;
+	border-color: transparent;
+	border-collapse: separate;
+	margin: 0 0 4px 0;
 	padding: 0;
 	float: left;
 }
-.htmlarea .toolbar .x-btn-mc, .htmlarea .toolbar .x-btn-ml, .htmlarea .toolbar .x-btn-mr, .htmlarea .toolbar .x-btn-tc, .htmlarea .toolbar .x-btn-tl, .htmlarea .toolbar .x-btn-tr, .htmlarea .toolbar .x-btn-bl, .htmlarea .toolbar .x-btn-bc, .htmlarea .toolbar .x-btn-br {
+.htmlarea .toolbar .x-btn-mc {
 	background-color: transparent;
 	background-image: none;
 	border-style: none;
 	margin: 0;
 	padding: 0;
 }
+.htmlarea .toolbar .x-btn-tl,
+.htmlarea .toolbar .x-btn-tc,
+.htmlarea .toolbar .x-btn-tr,
+.htmlarea .toolbar .x-btn-ml,
+.htmlarea .toolbar .x-btn-mr,
+.htmlarea .toolbar .x-btn-bl,
+.htmlarea .toolbar .x-btn-bc,
+.htmlarea .toolbar .x-btn-br {
+	display: none;
+}
 .htmlarea .toolbar .x-btn-text {
 	background-image: url("images/sprites/actions.png");
 	background-repeat: no-repeat;
+	width: 20px;
+	height: 18px;
+	padding: 0;
+	margin: 1px 0 1px 2px;
 }
 .htmlarea .toolbar .buttonHover {
-	border:1px solid;border-color:white #C5C5D5 #C5C5D5 white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: white #C5C5D5 #C5C5D5 white;
 	background-color: #E0E0E9;
+	opacity: 1.00;
 }
-.htmlarea .toolbar .buttonActive, .htmlarea .toolbar .buttonPressed, .htmlarea-context-menu .buttonActive {
-	border:1px solid;border-color:#C5C5D5 white white #C5C5D5;
-	background-color:ButtonHighlight;
-}
-.htmlarea .toolbar .buttonPressed, .htmlarea-context-menu .buttonActive {
-	background-color:ButtonHighlight;
-	text-decoration:none;
+.htmlarea .toolbar .buttonActive,
+.htmlarea .toolbar .buttonPressed,
+.htmlarea-context-menu .buttonActive {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #C5C5D5 #C5C5D5 #C5C5D5 #C5C5D5;
+	background-color: ButtonHighlight;
+	text-decoration: none;
+	opacity: 1.00;
 }
 .htmlarea .toolbar .indicator {
 	background-color:white;cursor:default;
@@ -105,14 +123,14 @@
 }
 .htmlarea .toolbar .buttonDisabled {
 	filter: gray() alpha(opacity=25);
-	-moz-opacity:0.25;
-	opacity:0.25;
+	opacity: 0.25;
+	-moz-opacity: 0.25;
 }
 .htmlarea .toolbar .separator {
 	background-color: transparent;
 	background-image: url("images/separator.gif");
 	background-repeat: no-repeat;
-	background-position: 0;
+	background-position: 0 -1px;
 	width: 7px;
 	height: 23px;
 	border: 1px solid #EFEFF4;
@@ -239,7 +257,7 @@
 }
 /* Selectors for the default image dialogue */
 .htmlarea-window .image-preview {
-    height: 300;
+    height: 300px;
     width: 99%;
     float: right;
 }
@@ -298,29 +316,35 @@
 }
 .htmlarea-context-menu li {
 	margin: 0;
+	padding: 0;
+	border-width: 0;
 }
 .htmlarea-context-menu a {
 	font-weight: normal;
 }
 .htmlarea-context-menu .button {
 	background-color: transparent;
-	padding-bottom: 0;
-	margin-bottom: 0;
+	margin: 0 2px 0 0;
+	padding-top: 1px;
 }
 .htmlarea-context-menu .separator {
-	border-top:1px solid #A2AAB8;
+	border-top: 1px solid #A2AAB8;
 }
 .htmlarea-context-menu .hover {
 	background-image: url("images/alt_menu_mainitem_bg.gif");
 	background-repeat: repeat-x;
 	color: #FFF;
-	padding-bottom: 0;
-	margin-bottom: 0;
+	margin: 0 2px 0 0;
+	padding-top: 1px;
 	border-color: #A2AAB8;
 }
 .htmlarea-context-menu .x-menu-item-icon {
 	background-image: url("images/sprites/actions.png");
 	background-repeat: no-repeat;
+	margin-top: -2px;
+	margin-left: -2px;
+	width: 18px;
+	height: 18px;
 }
 /* Window status bar selectors */
 .htmlarea-window .status-ready {
