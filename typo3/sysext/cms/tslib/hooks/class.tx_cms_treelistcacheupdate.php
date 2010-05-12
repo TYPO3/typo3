@@ -395,18 +395,10 @@ class tx_cms_treelistCacheUpdate {
 				switch ($updatedFieldName) {
 					case 'pid':
 							// page moved
-						$actions['allParents']    = true;
-						$actions['uidInTreelist'] = true;
-						break;
 					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled']:
-					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['fe_group']:
+							// page hidden / unhidden
 					case $GLOBALS['TCA']['pages']['ctrl']['delete']:
-					case 'extendToSubpages':
-					case 'php_tree_stop':
-							// page hidden / unhidden / deleted / extendToSubpages set
-							// php_tree_stop and/or FE groups set
-						$actions['uidInTreelist'] = true;
-						break;
+							// page deleted / undeleted
 					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['starttime']:
 							/*
 							 start time set/unset
@@ -416,6 +408,13 @@ class tx_cms_treelistCacheUpdate {
 							 treelist. When unsetting the start time it must
 							 become listed in the tree list again.
 							*/
+					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['fe_group']:
+							// changes to FE user group
+					case 'extendToSubpages':
+							// extendToSubpages set (apply FE access restrictions to subpages)
+					case 'php_tree_stop':
+							// php_tree_stop
+						$actions['allParents'] = TRUE;
 						$actions['uidInTreelist'] = true;
 						break;
 					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['endtime']:
