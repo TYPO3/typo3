@@ -1,6 +1,7 @@
 2010-05-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #14360: htmlArea RTE: Toolbar and context menu styling needs adjustments
+	* Fixed bug #14374: htmlArea RTE: Language plugin may cause js error on RTE initialization
 
 2010-05-10  Stanislas Rolland  <typo3@sjbr.ca>
 

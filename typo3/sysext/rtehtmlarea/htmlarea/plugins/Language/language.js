@@ -67,18 +67,17 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 				this.allowedAttributes.push("className");
 			}
 		}
-
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.0",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: this.localize("Technische Universitat Ilmenau"),
-			sponsorUrl	: "http://www.tu-ilmenau.de/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: this.localize('Technische Universitat Ilmenau'),
+			sponsorUrl	: 'http://www.tu-ilmenau.de/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*
@@ -154,12 +153,12 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 				}
 				return true;
 			});
+				// Load the language dropdown
+			select.getStore().load({
+				callback: function () { this.getButton('Language').setValue('none'); },
+				scope: this
+			});
 		}
-			// Load the language dropdown
-		this.getButton('Language').getStore().load({
-			callback: function () { this.getButton('Language').setValue('none'); },
-			scope: this
-		});
 	},
 	/*
 	 * This function gets called when a button was pressed.
