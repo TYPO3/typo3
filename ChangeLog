@@ -1,6 +1,6 @@
 2010-05-12  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
-	* Fixed bug #14052: cache_treelist is out of date after setting hidden=0
+	* Fixed bug #14052: cache_treelist is out of date after setting hidden=0 (thanks to Steffen Gebert)
 
 2010-05-10  Stanislas Rolland  <typo3@sjbr.ca>
 
