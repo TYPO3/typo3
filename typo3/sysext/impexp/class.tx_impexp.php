@@ -398,8 +398,7 @@ class tx_impexp {
 	 */
 	function unsetExcludedSections($idH)	{
 		if (is_array($idH))	{
-			reset($idH);
-			while(list($k,$v) = each($idH))	{
+			foreach ($idH as $k => $v) {
 				if ($this->excludeMap['pages:'.$idH[$k]['uid']])	{
 					unset($idH[$k]);
 				} elseif (is_array($idH[$k]['subrow']))	{
@@ -421,8 +420,7 @@ class tx_impexp {
 	function flatInversePageTree($idH,$a=array())	{
 		if (is_array($idH))	{
 			$idH = array_reverse($idH);
-			reset($idH);
-			while(list($k,$v) = each($idH))	{
+			foreach ($idH as $k => $v) {
 				$a[$v['uid']] = $v['uid'];
 				if (is_array($v['subrow']))	{
 					$a = $this->flatInversePageTree($v['subrow'],$a);
@@ -444,8 +442,7 @@ class tx_impexp {
 	function flatInversePageTree_pid($idH,$a=array(),$pid=-1)	{
 		if (is_array($idH))	{
 			$idH = array_reverse($idH);
-			reset($idH);
-			while(list($k,$v) = each($idH))	{
+			foreach ($idH as $k => $v) {
 				$a[$v['uid']] = $pid;
 				if (is_array($v['subrow']))	{
 					$a = $this->flatInversePageTree_pid($v['subrow'],$a,$v['uid']);
@@ -546,11 +543,9 @@ class tx_impexp {
 
 			// Traverse all "rels" registered for "records"
 		if (is_array($this->dat['records']))	{
-			reset($this->dat['records']);
-			while(list($k) = each($this->dat['records']))	{
+			foreach ($this->dat['records'] as $k => $value) {
 				if (is_array($this->dat['records'][$k]))	{
-					reset($this->dat['records'][$k]['rels']);
-					while(list($fieldname,$vR) = each($this->dat['records'][$k]['rels']))	{
+					foreach ($this->dat['records'][$k]['rels'] as $fieldname => $vR) {
 #debug($vR);
 							// For all DB types of relations:
 						if ($vR['type']=='db')	{
@@ -670,11 +665,9 @@ class tx_impexp {
 
 			// Traverse all "rels" registered for "records"
 		if (is_array($this->dat['records']))	{
-			reset($this->dat['records']);
-			while(list($k)=each($this->dat['records']))	{
+			foreach ($this->dat['records'] as $k => $value) {
 				if (is_array($this->dat['records'][$k]['rels']))	{
-					reset($this->dat['records'][$k]['rels']);
-					while(list($fieldname,$vR)=each($this->dat['records'][$k]['rels']))	{
+					foreach ($this->dat['records'][$k]['rels'] as $fieldname => $vR) {
 
 							// For all file type relations:
 						if ($vR['type']=='file')	{
@@ -1298,11 +1291,9 @@ class tx_impexp {
 			// Write the rest of the records
 		$this->import_data = array();
 		if (is_array($this->dat['header']['records']))	{
-			reset($this->dat['header']['records']);
-			while(list($table,$recs) = each($this->dat['header']['records']))	{
+			foreach ($this->dat['header']['records'] as $table => $recs) {
 				if ($table!='pages')	{
-					reset($recs);
-					while(list($uid,$thisRec)=each($recs))	{
+					foreach ($recs as $uid => $thisRec) {
 							// PID: Set the main $pid, unless a NEW-id is found
 						$setPid = isset($this->import_mapId['pages'][$thisRec['pid']]) ? $this->import_mapId['pages'][$thisRec['pid']] : $pid;
 						if (is_array($TCA[$table]) && $TCA[$table]['ctrl']['rootLevel'])	{
@@ -1446,8 +1437,7 @@ class tx_impexp {
 				}
 
 					// Setting db/file blank:
-				reset($this->dat['records'][$table.':'.$uid]['rels']);
-				while(list($field,$config) = each($this->dat['records'][$table.':'.$uid]['rels']))	{
+				foreach ($this->dat['records'][$table.':'.$uid]['rels'] as $field => $config) {
 					switch((string)$config['type'])	{
 						case 'db':
 						case 'file':
@@ -1476,10 +1466,8 @@ class tx_impexp {
 	 * @see writeRecords()
 	 */
 	function addToMapId($substNEWwithIDs)	{
-		reset($this->import_data);
-		while(list($table,$recs)=each($this->import_data))	{
-			reset($recs);
-			while(list($id)=each($recs))	{
+		foreach ($this->import_data as $table => $recs) {
+			foreach ($recs as $id => $value) {
 				$old_uid = $this->import_newId[$table.':'.$id]['uid'];
 				if (isset($substNEWwithIDs[$id]))	{
 					$this->import_mapId[$table][$old_uid] = $substNEWwithIDs[$id];
@@ -1554,8 +1542,7 @@ class tx_impexp {
 		$updateData = array();
 
 			// import_newId contains a register of all records that was in the import memorys "records" key
-		reset($this->import_newId);
-		while(list($nId,$dat) = each($this->import_newId))	{
+		foreach ($this->import_newId as $nId => $dat) {
 			$table = $dat['table'];
 			$uid = $dat['uid'];	// original UID - NOT the new one!
 
@@ -1564,10 +1551,9 @@ class tx_impexp {
 				$thisNewUid = t3lib_BEfunc::wsMapId($table,$this->import_mapId[$table][$uid]);
 
 				if (is_array($this->dat['records'][$table.':'.$uid]['rels']))	{
-					reset($this->dat['records'][$table.':'.$uid]['rels']);
 
 						// Traverse relation fields of each record
-					while(list($field,$config) = each($this->dat['records'][$table.':'.$uid]['rels']))	{
+					foreach ($this->dat['records'][$table.':'.$uid]['rels'] as $field => $config) {
 						switch((string)$config['type'])	{
 							case 'db':
 								if (is_array($config['itemArray']) && count($config['itemArray']))	{
@@ -1665,8 +1651,7 @@ class tx_impexp {
 
 		$updateData = array();
 			// import_newId contains a register of all records that was in the import memorys "records" key
-		reset($this->import_newId);
-		while(list($nId,$dat) = each($this->import_newId))	{
+		foreach ($this->import_newId as $nId, $dat) {
 			$table = $dat['table'];
 			$uid = $dat['uid'];	// original UID - NOT the new one!
 
@@ -1674,11 +1659,10 @@ class tx_impexp {
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid]))	{
 				$thisNewUid = t3lib_BEfunc::wsMapId($table,$this->import_mapId[$table][$uid]);
 				if (is_array($this->dat['records'][$table.':'.$uid]['rels']))	{
-					reset($this->dat['records'][$table.':'.$uid]['rels']);
 					t3lib_div::loadTCA($table);
 
 						// Traverse relation fields of each record
-					while(list($field,$config) = each($this->dat['records'][$table.':'.$uid]['rels']))	{
+					foreach ($this->dat['records'][$table.':'.$uid]['rels'] as $field => $config) {
 						switch((string)$config['type'])	{
 							case 'flex':
 									// Get XML content and set as default value (string, non-processed):
@@ -2542,19 +2526,16 @@ class tx_impexp {
 	 * @return	void
 	 */
 	function traversePageTree($pT,&$lines,$preCode='')	{
-		reset($pT);
-		while(list($k,$v) = each($pT))	{
+		foreach ($pT as $k => $v) {
 
 				// Add this page:
 			$this->singleRecordLines('pages',$k,$lines,$preCode);
 
 				// Subrecords:
 			if (is_array($this->dat['header']['pid_lookup'][$k]))	{
-				reset($this->dat['header']['pid_lookup'][$k]);
-				while(list($t,$recUidArr)=each($this->dat['header']['pid_lookup'][$k]))	{
+				foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
 					if ($t!='pages')	{
-						reset($recUidArr);
-						while(list($ruid)=each($recUidArr))	{
+						foreach ($recUidArr as $ruid => $value) {
 							$this->singleRecordLines($t,$ruid,$lines,$preCode.'&nbsp;&nbsp;&nbsp;&nbsp;');
 						}
 					}
@@ -2577,16 +2558,13 @@ class tx_impexp {
 	 * @return	void
 	 */
 	function traversePageRecords($pT,&$lines)	{
-		reset($pT);
-		while(list($k,$rHeader)=each($pT))	{
+		foreach ($pT as $k => $rHeader) {
 			$this->singleRecordLines('pages',$k,$lines,'',1);
 				// Subrecords:
 			if (is_array($this->dat['header']['pid_lookup'][$k]))	{
-				reset($this->dat['header']['pid_lookup'][$k]);
-				while(list($t,$recUidArr)=each($this->dat['header']['pid_lookup'][$k]))	{
+				foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
 					if ($t!='pages')	{
-						reset($recUidArr);
-						while(list($ruid)=each($recUidArr))	{
+						foreach ($recUidArr as $ruid => $value) {
 							$this->singleRecordLines($t,$ruid,$lines,'&nbsp;&nbsp;&nbsp;&nbsp;');
 						}
 					}
@@ -2604,11 +2582,9 @@ class tx_impexp {
 	 * @return	void
 	 */
 	function traverseAllRecords($pT,&$lines)	{
-		reset($pT);
-		while(list($t,$recUidArr)=each($pT))	{
+		foreach ($pT as $t => $recUidArr) {
 			if ($t!='pages')	{
-				reset($recUidArr);
-				while(list($ruid)=each($recUidArr))	{
+				foreach ($recUidArr as $ruid => $value) {
 					$this->singleRecordLines($t,$ruid,$lines,$preCode,1);
 				}
 			}
@@ -3197,8 +3173,7 @@ class tx_impexp {
 	function renderSelectBox($prefix,$value,$optValues)	{
 		$opt = array();
 		$isSelFlag = 0;
-		reset($optValues);
-		while(list($k,$v) = each($optValues))	{
+		foreach ($optValues as $k => $v) {
 			$sel = (!strcmp($k,$value) ? ' selected="selected"' : '');
 			if ($sel)	$isSelFlag++;
 			$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';

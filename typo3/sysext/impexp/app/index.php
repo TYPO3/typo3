@@ -557,8 +557,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				// In any case we should have a multi-level array, $idH, with the page structure here (and the HTML-code loaded into memory for nice display...)
 			if (is_array($idH))	{
 				$flatList = $this->export->setPageTree($idH);	// Sets the pagetree and gets a 1-dim array in return with the pages (in correct submission order BTW...)
-				reset($flatList);
-				while(list($k)=each($flatList))	{
+				foreach ($flatList as $k => $value) {
 					$this->export->export_addRecord('pages',t3lib_BEfunc::getRecord('pages',$k));
 					$this->addRecordsForPid($k,$inData['pagetree']['tables'],$inData['pagetree']['maxNumber']);
 				}
@@ -695,8 +694,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		global $TCA;
 
 		if (is_array($tables))	{
-			reset($TCA);
-			while(list($table)=each($TCA))	{
+			foreach ($TCA as $table => $value) {
 				if ($table!='pages' && (in_array($table,$tables) || in_array('_ALL',$tables)))	{
 					if ($GLOBALS['BE_USER']->check('tables_select',$table) && !$TCA[$table]['ctrl']['is_static'])	{
 						$res = $this->exec_listQueryPid($table,$k,t3lib_div::intInRange($maxNumber,1));
@@ -1616,8 +1614,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	function renderSelectBox($prefix,$value,$optValues)	{
 		$opt = array();
 		$isSelFlag = 0;
-		reset($optValues);
-		while(list($k,$v) = each($optValues))	{
+		foreach ($optValues as $k => $v) {
 			$sel = (!strcmp($k,$value) ? ' selected="selected"' : '');
 			if ($sel)	$isSelFlag++;
 			$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
@@ -1639,14 +1636,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	function tableSelector($prefix,$value,$excludeList='')	{
 		global $TCA, $LANG;
 
-		reset($TCA);
 		$optValues = array();
 
 		if (!t3lib_div::inList($excludeList,'_ALL'))	{
 			$optValues['_ALL'] = '['.$LANG->getLL('ALL_tables').']';
 		}
 
-		while(list($table) = each($TCA))	{
+		foreach ($TCA as $table => $value) {
 			if ($GLOBALS['BE_USER']->check('tables_select',$table) && !t3lib_div::inList($excludeList,$table))	{
 				$optValues[$table] = $table;
 			}
@@ -1655,8 +1651,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// make box:
 		$opt = array();
 		$opt[] = '<option value=""></option>';
-		reset($optValues);
-		while(list($k,$v)=each($optValues))	{
+		foreach ($optValues as $k => $v) {
 			if (is_array($value))	{
 				$sel = in_array($k,$value)?' selected="selected"':'';
 			}
