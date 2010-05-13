@@ -552,8 +552,7 @@ class SC_wizard_table {
 				ksort($this->TABLECFG['c']);
 			}
 			if (substr($cmd,0,4)=='col_')	{
-				reset($this->TABLECFG['c']);
-				while(list($cAK)=each($this->TABLECFG['c']))	{
+				foreach ($this->TABLECFG['c'] as $cAK => $value) {
 					switch($cmd)	{
 						case 'col_remove':
 							unset($this->TABLECFG['c'][$cAK][$kk]);
@@ -584,10 +583,8 @@ class SC_wizard_table {
 		}
 
 		// Convert line breaks to <br /> tags:
-		reset($this->TABLECFG['c']);
-		while(list($a)=each($this->TABLECFG['c']))	{
-			reset($this->TABLECFG['c'][$a]);
-			while(list($b)=each($this->TABLECFG['c'][$a]))	{
+		foreach ($this->TABLECFG['c'] as $a => $value) {
+			foreach ($this->TABLECFG['c'][$a] as $b => $value2) {
 				$this->TABLECFG['c'][$a][$b] = str_replace(LF,'<br />',str_replace(CR,'',$this->TABLECFG['c'][$a][$b]));
 			}
 		}
@@ -606,11 +603,9 @@ class SC_wizard_table {
 		$inLines=array();
 
 			// Traverse the elements of the table wizard and transform the settings into configuration code.
-		reset($this->TABLECFG['c']);
-		while(list($a)=each($this->TABLECFG['c']))	{
+		foreach ($this->TABLECFG['c'] as $a => $value) {
 			$thisLine=array();
-			reset($this->TABLECFG['c'][$a]);
-			while(list($b)=each($this->TABLECFG['c'][$a]))	{
+			foreach ($this->TABLECFG['c'][$a] as $b => $value) {
 				$thisLine[]=$this->tableParsing_quote.str_replace($this->tableParsing_delimiter,'',$this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
 			}
 			$inLines[]=implode($this->tableParsing_delimiter,$thisLine);

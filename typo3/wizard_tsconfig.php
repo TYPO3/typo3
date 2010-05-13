@@ -423,10 +423,10 @@ class SC_wizard_tsconfig {
 		while($rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
 			$p = explode(';',$rec['obj_string']);
-			while(list(,$v)=each($p))	{
+			foreach ($p as $v) {
 				$p2 = t3lib_div::trimExplode(':',$v,1);
 				$subp=t3lib_div::trimExplode('/',$p2[1],1);
-				while(list(,$v2)=each($subp))	{
+				foreach ($subp as $v2) {
 					$this->setObj($objTree,explode('.',$p2[0].'.'.$v2),array($rec,$v2));
 				}
 			}
@@ -492,8 +492,7 @@ class SC_wizard_tsconfig {
 	 * @access private
 	 */
 	function removePointerObjects($objArray)	{
-		reset($objArray);
-		while(list($k)=each($objArray))	{
+		foreach ($objArray as $k => $value) {
 			if (substr(trim($k),0,2)=="->" && trim($k)!='->.')	{
 				$objArray['->.'][substr(trim($k),2)]=$objArray[$k];
 				unset($objArray[$k]);
@@ -551,7 +550,7 @@ class SC_wizard_tsconfig {
 					// Linking:
 				$lP=t3lib_div::trimExplode(LF,$row['property'],1);
 				$lP2=array();
-				while(list($k,$lStr)=each($lP))	{
+				foreach ($lP as $k => $lStr) {
 					$lP2[$k] = $this->linkProperty($lStr,$lStr,$objString,$row['datatype']);
 				}
 				$linkedProperties=implode('<hr />',$lP2);

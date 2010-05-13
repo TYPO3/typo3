@@ -408,8 +408,7 @@ class clickMenu {
 	 */
 	function processingByExtClassArray($menuItems,$table,$uid)	{
 		if (is_array($this->extClassArray))	{
-			reset($this->extClassArray);
-			while(list(,$conf)=each($this->extClassArray))	{
+			foreach ($this->extClassArray as $conf) {
 				$obj=t3lib_div::makeInstance($conf['name']);
 				$menuItems = $obj->main($this,$menuItems,$table,$uid);
 			}
@@ -1292,9 +1291,8 @@ class clickMenu {
 	 * @return	array		Array of menu items for top frame.
 	 */
 	function menuItemsForTopFrame($menuItems)	{
-		reset($menuItems);
 		$out=array();
-		while(list(,$i)=each($menuItems))	{
+		foreach ($menuItems as $i) {
 			if ($i[4]==1 && !$GLOBALS['SOBE']->doc->isCMlayers())	$i[4]=0;	// IF the topbar is the ONLY means of the click menu, then items normally disabled from the top menu will appear anyways IF they are disabled with a "1" (2+ will still disallow them in the topbar)
 			if (is_array($i) && !$i[4])	$out[]=$i[0];
 		}
@@ -1309,9 +1307,8 @@ class clickMenu {
 	 * @return	array		array for implosion in the CM div-layers table.
 	 */
 	function menuItemsForClickMenu($menuItems)	{
-		reset($menuItems);
 		$out=array();
-		while(list($cc,$i)=each($menuItems))	{
+		foreach ($menuItems as $cc => $i) {
 			if (is_string($i) && $i=='spacer')	{	// MAKE horizontal spacer
 				$out[]='
 					<tr class="bgColor2">

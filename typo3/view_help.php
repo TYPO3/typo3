@@ -434,8 +434,7 @@ class SC_view_help {
 			$parts[0] = '';	// Reserved for header of table
 
 				// Traverse table columns as listed in TCA_DESCR
-			reset($TCA_DESCR[$table]['columns']);
-			while(list($field) = each($TCA_DESCR[$table]['columns']))	{
+			foreach ($TCA_DESCR[$table]['columns'] as $field => $value) {
 
 				$fieldValue = isset($TCA[$table]) && strcmp($field,'') ? $TCA[$table]['columns'][$field] : array();
 
@@ -797,8 +796,7 @@ class SC_view_help {
 					if (is_array($TCA_DESCR[$cshKey]['columns']))	{
 
 							// Traverse table columns as listed in TCA_DESCR
-						reset($TCA_DESCR[$cshKey]['columns']);
-						while(list($field,$data) = each($TCA_DESCR[$cshKey]['columns']))	{
+						foreach ($TCA_DESCR[$cshKey]['columns'] as $field => $data) {
 							if ($field)	{
 								$this->glossaryWords[$cshKey.'.'.$field] = array(
 									'title' => trim($data['alttitle'] ? $data['alttitle'] : $cshKey),

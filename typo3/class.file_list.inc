@@ -319,8 +319,7 @@ class fileList extends t3lib_recordList {
 
 		// Folders:
 		if (count($items['sorting']))	{
-			reset($items['sorting']);
-			while (list($key,) = each($items['sorting']))	{
+			foreach ($items['sorting'] as $key => $value) {
 				list($flag,$code) = $this->fwd_rwd_nav();
 				$out.=$code;
 				if ($flag)	{
@@ -336,8 +335,7 @@ class fileList extends t3lib_recordList {
 
 						// 	Preparing and getting the data-array
 					$theData = Array();
-					reset($this->fieldArray);
-					while(list(,$field)=each($this->fieldArray))	{
+					foreach ($this->fieldArray as $field) {
 						switch($field)	{
 							case 'size':
 								$theData[$field] = t3lib_div::formatSize($theFile[$field], $GLOBALS['LANG']->getLL('byteSizeUnits', true));
@@ -462,8 +460,7 @@ class fileList extends t3lib_recordList {
 
 			// Files:
 		if (count($items['sorting']))	{
-			reset($items['sorting']);
-			while (list($key,) = each($items['sorting']))	{
+			foreach ($items['sorting'] as $key => $value) {
 				list($flag,$code) = $this->fwd_rwd_nav();
 				$out.=$code;
 				if ($flag)	{
@@ -481,8 +478,7 @@ class fileList extends t3lib_recordList {
 
 						// 	Preparing and getting the data-array
 					$theData = Array();
-					reset($this->fieldArray);
-					while(list(,$field)=each($this->fieldArray))	{
+					foreach ($this->fieldArray as $field) {
 						switch($field)	{
 							case 'size':
 								$theData[$field] = t3lib_div::formatSize($theFile[$field], $GLOBALS['LANG']->getLL('byteSizeUnits', true));
@@ -605,8 +601,7 @@ class fileList extends t3lib_recordList {
 				$d->close();
 			}
 				// Get fileinfo
-			reset($tempArray);
-			while (list(,$val)=each($tempArray))	{
+			foreach ($tempArray as $val) {
 				$temp = $GLOBALS['SOBE']->basicFF->getTotalFileInfo($val);
 				$items['files'][] = $temp;
 				if ($this->sort)	{

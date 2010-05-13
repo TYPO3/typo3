@@ -917,9 +917,8 @@ class browse_links {
 
 		if ($this->mode == 'wizard')	{	// Functions used, if the link selector is in wizard mode (= TCEforms fields)
 			unset($this->P['fieldChangeFunc']['alert']);
-			reset($this->P['fieldChangeFunc']);
 			$update='';
-			while(list($k,$v)=each($this->P['fieldChangeFunc']))	{
+			foreach ($this->P['fieldChangeFunc'] as $k => $v) {
 				$update.= '
 				window.opener.'.$v;
 			}
@@ -1364,8 +1363,7 @@ class browse_links {
 				if (is_array($this->thisConfig['userLinks.']))	{
 					$subcats=array();
 					$v=$this->thisConfig['userLinks.'];
-					reset($v);
-					while(list($k2)=each($v))	{
+					foreach ($v as $k2 => $value) {
 						$k2i = intval($k2);
 						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
 
@@ -2395,7 +2393,7 @@ class browse_links {
 						</tr>';
 
 						// Traverse files:
-					while(list(,$filepath)=each($files))	{
+					foreach ($files as $filepath) {
 						$fI = pathinfo($filepath);
 
 							// URL of image:

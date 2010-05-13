@@ -142,8 +142,7 @@ class alt_menu_functions {
 		}
 
 			// Traverse array with modules
-		reset($theModules);
-		while(list($moduleName,$moduleInfo)=each($theModules))	{
+		foreach ($theModules as $moduleName => $moduleInfo) {
 			$mC++;
 
 			$prefix = $this->getNavFramePrefix($moduleInfo);
@@ -239,10 +238,9 @@ class alt_menu_functions {
 				// Traversing submodules
 			$subCode='';
 			if (is_array($moduleInfo['sub']))	{
-				reset($moduleInfo['sub']);
 				$collection[$moduleKey]['subitems'] = array();
 				$c=0;
-				while(list($subName,$subInfo)=each($moduleInfo['sub']))	{
+				foreach ($moduleInfo['sub'] as $subName => $subInfo) {
 					if ($c==0)		{
 						$subCode.='
 								<tr class="c-first">

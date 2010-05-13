@@ -262,8 +262,7 @@ class SC_file_list {
 				if (count($items))	{
 						// Make command array:
 					$FILE=array();
-					reset($items);
-					while(list(,$v)=each($items))	{
+					foreach ($items as $v) {
 						$FILE['delete'][]=array('data'=>$v);
 					}
 

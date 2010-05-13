@@ -260,8 +260,7 @@ class SC_db_list {
 				$items = $dblist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),$this->cmd_table,1);
 				if (count($items))	{
 					$cmd=array();
-					reset($items);
-					while(list($iK)=each($items))	{
+					foreach ($items as $iK => $value) {
 						$iKParts = explode('|',$iK);
 						$cmd[$iKParts[0]][$iKParts[1]]['delete']=1;
 					}

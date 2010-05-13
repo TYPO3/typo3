@@ -243,8 +243,7 @@ class recordList extends t3lib_recordList {
 		$this->pageRecord = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
 
 			// Traverse the TCA table array:
-		reset($TCA);
-		while (list($tableName)=each($TCA))	{
+		foreach ($TCA as $tableName => $value) {
 
 				// Checking if the table should be rendered:
 			if ((!$this->table || $tableName==$this->table) && (!$this->tableList || t3lib_div::inList($this->tableList,$tableName)) && $GLOBALS['BE_USER']->check('tables_select',$tableName))	{		// Checks that we see only permitted/requested tables:
@@ -322,7 +321,7 @@ class recordList extends t3lib_recordList {
 			// Make level selector:
 		$opt=array();
 		$parts = explode('|',$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchLevels'));
-		while(list($kv,$label)=each($parts))	{
+		foreach ($parts as $kv => $label) {
 			$opt[] = '<option value="'.$kv.'"'.($kv==intval($this->searchLevels)?' selected="selected"':'').'>'.htmlspecialchars($label).'</option>';
 		}
 		$lMenu = '<select name="search_levels">'.implode('',$opt).'</select>';
