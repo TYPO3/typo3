@@ -1187,8 +1187,7 @@ class tx_indexedsearch_indexer {
 	function charsetEntity2utf8(&$contentArr, $charset)	{
 
 			// Convert charset if necessary
-		reset($contentArr);
-		while(list($key,)=each($contentArr)) {
+		foreach ($contentArr as $key => $value) {
 			if (strlen($contentArr[$key]))	{
 
 				if ($charset!=='utf-8')	{
@@ -1210,8 +1209,7 @@ class tx_indexedsearch_indexer {
 	function processWordsInArrays($contentArr)	{
 
 			// split all parts to words
-		reset($contentArr);
-		while(list($key,)=each($contentArr)) {
+		foreach ($contentArr as $key => $value) {
 			$contentArr[$key] = $this->lexerObj->split2Words($contentArr[$key]);
 		}
 
@@ -1288,8 +1286,7 @@ class tx_indexedsearch_indexer {
 	 * @return	void
 	 */
 	function analyzeHeaderinfo(&$retArr,$content,$key,$offset) {
-		reset($content[$key]);
-		while(list(,$val)=each($content[$key]))  {
+		foreach ($content[$key] as $val) {
 			$val = substr($val,0,60);	// Max 60 - because the baseword varchar IS 60. This MUST be the same.
 			$retArr[$val]['cmp'] = $retArr[$val]['cmp']|pow(2,$offset);
 			$retArr[$val]['count'] = $retArr[$val]['count']+1;
@@ -1879,9 +1876,8 @@ class tx_indexedsearch_indexer {
 	 * @return	void
 	 */
 	function checkWordList($wl) {
-		reset($wl);
 		$phashArr = array();
-		while(list($key,) = each($wl)) {
+		foreach ($wl as $key => $value) {
 			$phashArr[] = $wl[$key]['hash'];
 		}
 		if (count($phashArr))	{
@@ -1894,8 +1890,7 @@ class tx_indexedsearch_indexer {
 					unset($wl[$row['baseword']]);
 				}
 
-				reset($wl);
-				while(list($key,$val)=each($wl)) {
+				foreach ($wl as $key => $val) {
 					$insertFields = array(
 						'wid' => $val['hash'],
 						'baseword' => $key,

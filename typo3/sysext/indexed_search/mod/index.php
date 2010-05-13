@@ -234,8 +234,7 @@ class SC_mod_tools_isearch_index {
 	function getRecordsNumbers()	{
 		$tables=explode(",","index_phash,index_words,index_rel,index_grlist,index_section,index_fulltext");
 		$recList=array();
-		reset($tables);
-		while(list(,$t)=each($tables))	{
+		foreach ($tables as $t) {
 			$recList[] = array(
 				$this->tableHead($t),
 				$GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $t)
@@ -435,9 +434,8 @@ class SC_mod_tools_isearch_index {
 	 * @return	[type]		...
 	 */
 	function formatFeGroup($fegroup_recs)	{
-		reset($fegroup_recs);
 		$str = array();
-		while(list(,$row)=each($fegroup_recs))	{
+		foreach ($fegroup_recs as $row) {
 			$str[] = $row["gr_list"]=="0,-1" ? "NL" : $row["gr_list"];
 		}
 		arsort($str);
@@ -451,12 +449,11 @@ class SC_mod_tools_isearch_index {
 	 * @return	[type]		...
 	 */
 	function formatCHash($arr)	{
-		reset($arr);
-		$list=array();
-		while(list($k,$v)=each($arr))	{
-			$list[]=$k."=".$v;
+		$list = array();
+		foreach ($arr as $k => $v) {
+			$list[] = $k . '=' . $v;
 		}
-		return implode("<BR>",$list);
+		return implode('<br />', $list);
 	}
 
 	/**

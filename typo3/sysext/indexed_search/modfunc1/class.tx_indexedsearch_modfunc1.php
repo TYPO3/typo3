@@ -1067,9 +1067,8 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 */
 	function printExtraGrListRows($extraGrListRows)	{
 		if (count($extraGrListRows))	{
-			reset($extraGrListRows);
 			$lines=array();
-			while(list(,$r)=each($extraGrListRows))	{
+			foreach ($extraGrListRows as $r) {
 				$lines[] = $r['gr_list'];
 			}
 			return '<br />' . $GLOBALS['TBE_TEMPLATE']->dfw(implode('<br />', $lines));

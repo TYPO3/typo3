@@ -344,13 +344,13 @@ class tx_indexedsearch extends tslib_pibase {
 			// This selects the first and secondary menus for the "sections" selector - so we can search in sections and sub sections.
 		if ($this->conf['show.']['L1sections'])	{
 			$firstLevelMenu = $this->getMenu($this->wholeSiteIdList);
-			while(list($kk,$mR) = each($firstLevelMenu))	{
+			foreach ($firstLevelMenu as $kk => $mR) {
 					// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
 				if ($mR['doktype']!=5 && !$mR['nav_hide']) {
 					$this->optValues['sections']['rl1_'.$mR['uid']] = trim($this->pi_getLL('opt_RL1').' '.$mR['title']);
 					if ($this->conf['show.']['L2sections'])	{
 						$secondLevelMenu = $this->getMenu($mR['uid']);
-						while(list($kk2,$mR2) = each($secondLevelMenu))	{
+						foreach ($secondLevelMenu as $kk2 => $mR2) {
 								// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
 							if ($mR2['doktype']!=5 && !$mR2['nav_hide']) {
 								$this->optValues['sections']['rl2_'.$mR2['uid']] = trim($this->pi_getLL('opt_RL2').' '.$mR2['title']);
@@ -1085,7 +1085,7 @@ class tx_indexedsearch extends tslib_pibase {
 		} elseif ($this->wholeSiteIdList>=0) {	// Collecting all pages IDs in which to search; filtering out ALL pages that are not accessible due to enableFields. Does NOT look for "no_search" field!
 			$siteIdNumbers = t3lib_div::intExplode(',',$this->wholeSiteIdList);
 			$id_list=array();
-			while(list(,$rootId)=each($siteIdNumbers))	{
+			foreach ($siteIdNumbers as $rootId) {
 				$id_list[] = $this->cObj->getTreeList($rootId,9999,0,0,'','').$rootId;
 			}
 			$page_where = 'ISEC.page_id IN ('.implode(',',$id_list).')';
@@ -2299,8 +2299,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$hitRoot = 0;
 			$path = '';
 			if (is_array($rl) && count($rl))	{
-				reset($rl);
-				while(list($k,$v)=each($rl))	{
+				foreach ($rl as $k => $v) {
 						// Check fe_user
 					if ($v['fe_group'] && ($v['uid']==$id || $v['extendToSubpages']))	{
 						$this->fe_groups_required[$id][]=$v['fe_group'];
