@@ -342,11 +342,10 @@ class user_wapversion {
 	 */
 	function menuCurrentLevel($indent)	{
 		$rL = $GLOBALS['TSFE']->config['rootLine'];
-		reset($rL);
 		$preSpace='';
 		$out=array();
 			// Hierarchy menu
-		while(list($level,$data)=each($rL))	{
+		foreach ($rL as $level => $data) {
 			$preSign = count($rL)-1 > $level ? '-' : '>';
 			$menuItem = htmlspecialchars($preSign.' '.$data['title']);
 			$menuItem = $this->link($preSpace.$menuItem,$data['uid']);
@@ -355,8 +354,7 @@ class user_wapversion {
 		}
 			// Current page menu:
 		$menu = $this->cleanMenuArray($GLOBALS['TSFE']->sys_page->getMenu($GLOBALS['TSFE']->id));
-		reset($menu);
-		while(list(,$data)=each($menu))	{
+		foreach ($menu as $data) {
 			$preSign = count($this->cleanMenuArray($GLOBALS['TSFE']->sys_page->getMenu($data['uid']))) ? '+' : '*';
 			$menuItem = htmlspecialchars($preSign.' '.$data['title']);
 			$menuItem = $this->link($preSpace.$menuItem,$data['uid']);

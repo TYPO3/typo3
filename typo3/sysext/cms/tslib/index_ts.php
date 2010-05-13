@@ -471,16 +471,14 @@ if ($TSFE->isOutputting())	{
 			$EXTiS_splitC = explode('<!--EXT_SCRIPT.',$TSFE->content);	// Splits content with the key
 
 				// Special feature: Include libraries
-			reset($EXTiS_config);
-			while(list(,$EXTiS_cPart)=each($EXTiS_config))	{
+			foreach ($EXTiS_config as $EXTiS_cPart) {
 				if (isset($EXTiS_cPart['conf']['includeLibs']) && $EXTiS_cPart['conf']['includeLibs']) {
 					$EXTiS_resourceList = t3lib_div::trimExplode(',',$EXTiS_cPart['conf']['includeLibs'], true);
 					$TSFE->includeLibraries($EXTiS_resourceList);
 				}
 			}
 
-			reset($EXTiS_splitC);
-			while(list($EXTiS_c,$EXTiS_cPart)=each($EXTiS_splitC))	{
+			foreach ($EXTiS_splitC as $EXTiS_c => $EXTiS_cPart) {
 				if (substr($EXTiS_cPart,32,3)=='-->')	{	// If the split had a comment-end after 32 characters it's probably a split-string
 					$EXTiS_key = 'EXT_SCRIPT.'.substr($EXTiS_cPart,0,32);
 					if (is_array($EXTiS_config[$EXTiS_key]))	{

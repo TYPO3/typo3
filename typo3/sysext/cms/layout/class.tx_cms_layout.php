@@ -649,7 +649,7 @@ class tx_cms_layout extends recordList {
 					</tr>';
 
 					// Traverse columns to display top-on-top
-				while(list($counter,$key)=each($cList))	{
+				foreach ($cList as $counter => $key) {
 
 						// Select content elements:
 					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos='.intval($key).$showHidden.$showLanguage);
@@ -948,8 +948,7 @@ class tx_cms_layout extends recordList {
 						$out.=$this->tt_board_drawItem('tt_board',$row,count($theRows));
 
 						if ($GLOBALS['SOBE']->MOD_SETTINGS['tt_board']=='expand')	{
-							reset($theRows);
-							while(list($n,$sRow)=each($theRows))	{
+							foreach ($theRows as $n => $sRow) {
 								$out.=$this->tt_board_drawItem('tt_board',$sRow,0);
 							}
 						}

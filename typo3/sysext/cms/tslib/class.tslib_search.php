@@ -168,12 +168,12 @@ class tslib_search {
 	function explodeCols($in)	{
 		$theArray = explode(':',$in);
 		$out = Array();
-		while(list(,$val)=each($theArray))	{
+		foreach ($theArray as $val) {
 			$val=trim($val);
 			$parts = explode('.',$val);
 			if ($parts[0] && $parts[1])	{
 				$subparts = explode('-',$parts[1]);
-				while(list(,$piece)=each($subparts))	{
+				foreach ($subparts as $piece) {
 					$piece=trim($piece);
 					if ($piece)		$out[]=$parts[0].'.'.$piece;
 				}
@@ -198,8 +198,7 @@ class tslib_search {
 			if (is_array($components))	{
 				$i=0;
 				$lastoper = '';
-				reset($components);
-				while (list($key,$val) = each ($components))	{
+				foreach ($components as $key => $val) {
 					$operator=$this->get_operator($val);
 					if ($operator)	{
 						$lastoper = $operator;
@@ -412,11 +411,10 @@ class tslib_search {
 	function get_operator($operator)	{
 		$operator = trim($operator);
 		$op_array = $this->operator_translate_table;
-		reset ($op_array);
 		if ($this->operator_translate_table_caseinsensitive)	{
 			$operator = strtolower($operator);	// case-conversion is charset insensitive, but it doesn't spoil anything if input string AND operator table is already converted
 		}
-		while (list($key,$val) = each($op_array))	{
+		foreach ($op_array as $key => $val) {
 			$item = $op_array[$key][0];
 			if ($this->operator_translate_table_caseinsensitive)	{
 				$item = strtolower($item);	// See note above.

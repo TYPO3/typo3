@@ -398,10 +398,9 @@ class user_feAdmin	{
 	 */
 	function parseValues()	{
 		if (is_array($this->conf['parseValues.']))	{
-			reset($this->conf['parseValues.']);
-			while(list($theField,$theValue)=each($this->conf['parseValues.']))	{
+			foreach ($this->conf['parseValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
-				while(list(,$cmd)=each($listOfCommands))	{
+				foreach ($listOfCommands as $cmd) {
 					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd=trim($cmdParts[0]);
 					switch($theCmd)	{
@@ -450,9 +449,8 @@ class user_feAdmin	{
 						break;
 						case 'checkArray':
 							if (is_array($this->dataArr[$theField]))	{
-								reset($this->dataArr[$theField]);
 								$val = 0;
-								while(list($kk,$vv)=each($this->dataArr[$theField]))	{
+								foreach ($this->dataArr[$theField] as $kk => $vv) {
 									$kk = t3lib_div::intInRange($kk,0);
 									if ($kk<=30)	{
 										if ($vv)	{
@@ -466,7 +464,7 @@ class user_feAdmin	{
 						case 'uniqueHashInt':
 							$otherFields = t3lib_div::trimExplode(';',$cmdParts[1],1);
 							$hashArray=array();
-							while(list(,$fN)=each($otherFields))	{
+							foreach ($otherFields as $fN) {
 								$vv = $this->dataArr[$fN];
 								$vv = preg_replace('/[[:space:]]/','',$vv);
 								$vv = preg_replace('/[^[:alnum:]]/','',$vv);
@@ -498,8 +496,7 @@ class user_feAdmin	{
 
 		if (is_string($this->dataArr[$theField]))	{		// files from preview.
 			$tmpArr = explode(',',$this->dataArr[$theField]);
-			reset($tmpArr);
-			while(list(,$val)=each($tmpArr))	{
+			foreach ($tmpArr as $val) {
 				$valParts = explode('|',$val);
 				$filesArr[] = array (
 					'name'=>$valParts[1],
@@ -507,8 +504,7 @@ class user_feAdmin	{
 				);
 			}
 		} elseif (is_array($_FILES['FE'][$this->theTable][$theField]['name']))	{	// Files from upload
-			reset($_FILES['FE'][$this->theTable][$theField]['name']);
-			while(list($kk,$vv)=each($_FILES['FE'][$this->theTable][$theField]['name']))	{
+			foreach ($_FILES['FE'][$this->theTable][$theField]['name'] as $kk => $vv) {
 				if ($vv)	{
 					$tmpFile = t3lib_div::upload_to_tempfile($_FILES['FE'][$this->theTable][$theField]['tmp_name'][$kk]);
 					if ($tmpFile)	{
@@ -521,8 +517,7 @@ class user_feAdmin	{
 				}
 			}
 		} elseif (is_array($_FILES['FE']['name'][$this->theTable][$theField]))	{	// Files from upload
-			reset($_FILES['FE']['name'][$this->theTable][$theField]);
-			while(list($kk,$vv)=each($_FILES['FE']['name'][$this->theTable][$theField]))	{
+			foreach ($_FILES['FE']['name'][$this->theTable][$theField] as $kk => $vv) {
 				if ($vv)	{
 					$tmpFile = t3lib_div::upload_to_tempfile($_FILES['FE']['tmp_name'][$this->theTable][$theField][$kk]);
 					if ($tmpFile)	{
@@ -542,8 +537,7 @@ class user_feAdmin	{
 		if (count($filesArr))	{
 			$extArray = t3lib_div::trimExplode(';',strtolower($cmdParts[1]),1);
 			$maxSize = intval($cmdParts[3]);
-			reset($filesArr);
-			while(list(,$infoArr)=each($filesArr))	{
+			foreach ($filesArr as $infoArr) {
 				$fI = pathinfo($infoArr['name']);
 				if (t3lib_div::verifyFilenameAgainstDenyPattern($fI['name']))	{
 					if (!count($extArray) || in_array(strtolower($fI['extension']), $extArray))	{
@@ -558,9 +552,8 @@ class user_feAdmin	{
 			}
 		}
 			// Copy the files in the resulting array to the proper positions based on preview/non-preview.
-		reset($finalFilesArr);
 		$fileNameList=array();
-		while(list(,$infoArr)=each($finalFilesArr))	{
+		foreach ($finalFilesArr as $infoArr) {
 			if ($this->isPreview())	{		// If the form is a preview form (and data is therefore not going into the database...) do this.
 				$this->createFileFuncObj();
 				$fI = pathinfo($infoArr['name']);
@@ -600,8 +593,7 @@ class user_feAdmin	{
 	function overrideValues()	{
 		// Addition of overriding values
 		if (is_array($this->conf[$this->cmdKey.'.']['overrideValues.']))	{
-			reset($this->conf[$this->cmdKey.'.']['overrideValues.']);
-			while(list($theField,$theValue)=each($this->conf[$this->cmdKey.'.']['overrideValues.']))	{
+			foreach ($this->conf[$this->cmdKey.'.']['overrideValues.'] as $theField => $theValue) {
 				$this->dataArr[$theField] = $theValue;
 			}
 		}
@@ -616,8 +608,7 @@ class user_feAdmin	{
 	function defaultValues()	{
 			// Addition of default values
 		if (is_array($this->conf[$this->cmdKey.'.']['defaultValues.']))	{
-			reset($this->conf[$this->cmdKey.'.']['defaultValues.']);
-			while(list($theField,$theValue)=each($this->conf[$this->cmdKey.'.']['defaultValues.']))	{
+			foreach ($this->conf[$this->cmdKey.'.']['defaultValues.'] as $theField => $theValue) {
 				$this->dataArr[$theField] = $theValue;
 			}
 		}
@@ -634,9 +625,8 @@ class user_feAdmin	{
 	 */
 	function evalValues()	{
 		// Check required, set failure if not ok.
-		reset($this->requiredArr);
 		$tempArr=array();
-		while(list(,$theField)=each($this->requiredArr))	{
+		foreach ($this->requiredArr as $theField) {
 			if (!trim($this->dataArr[$theField]))	{
 				$tempArr[]=$theField;
 			}
@@ -660,10 +650,9 @@ class user_feAdmin	{
 				break;
 			}
 
-			reset($this->conf[$this->cmdKey.'.']['evalValues.']);
-			while(list($theField,$theValue)=each($this->conf[$this->cmdKey.'.']['evalValues.']))	{
+			foreach ($this->conf[$this->cmdKey.'.']['evalValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
-				while(list(,$cmd)=each($listOfCommands))	{
+				foreach ($listOfCommands as $cmd) {
 					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
@@ -908,16 +897,14 @@ class user_feAdmin	{
 
 		$GLOBALS['TSFE']->includeTCA();
 		t3lib_div::loadTCA($table);
-		reset($GLOBALS['TCA'][$table]['columns']);
 		$iFields=array();
-		while(list($field,$conf)=each($GLOBALS['TCA'][$table]['columns']))	{
+		foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
 			if ($conf['config']['type']=='group' && $conf['config']['internal_type']=='file')	{
 
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), array($field => ''));
 
 				$delFileArr = explode(',',$rec[$field]);
-				reset($delFileArr);
-				while(list(,$n)=each($delFileArr))	{
+				foreach ($delFileArr as $n) {
 					if ($n)	{
 						$fpath = $conf['config']['uploadfolder'].'/'.$n;
 						unlink($fpath);
@@ -1103,8 +1090,7 @@ class user_feAdmin	{
 			$fieldArr=array();
 			if (is_array($fD) || $sFK=='DELETE')	{
 				if (is_array($fD))	{
-					reset($fD);
-					while(list($field,$value)=each($fD))	{
+					foreach ($fD as $field => $value) {
 						$origArr[$field]=$value;
 						$fieldArr[]=$field;
 					}
@@ -1183,8 +1169,7 @@ class user_feAdmin	{
 	 * @return	string		The processed template HTML code
 	 */
 	function removeRequired($templateCode,$failure)	{
-		reset($this->requiredArr);
-		while(list(,$theField)=each($this->requiredArr))	{
+		foreach ($this->requiredArr as $theField) {
 			if (!t3lib_div::inList($failure,$theField))	{
 				$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELD_'.$theField.'###', '');
 			}
@@ -1219,10 +1204,9 @@ class user_feAdmin	{
 	 */
 	function modifyDataArrForFormUpdate($inputArr)	{
 		if (is_array($this->conf[$this->cmdKey.'.']['evalValues.']))	{
-			reset($this->conf[$this->cmdKey.'.']['evalValues.']);
-			while(list($theField,$theValue)=each($this->conf[$this->cmdKey.'.']['evalValues.']))	{
+			foreach ($this->conf[$this->cmdKey.'.']['evalValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
-				while(list(,$cmd)=each($listOfCommands))	{
+				foreach ($listOfCommands as $cmd) {
 					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
@@ -1239,10 +1223,10 @@ class user_feAdmin	{
 			}
 		}
 		if (is_array($this->conf['parseValues.']))	{
-			reset($this->conf['parseValues.']);
-			while(list($theField,$theValue)=each($this->conf['parseValues.']))	{
+			while(list($theField,$theValue)=each())	{
+			foreach ($this->conf['parseValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
-				while(list(,$cmd)=each($listOfCommands))	{
+				foreach ($listOfCommands as $cmd) {
 					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
@@ -1288,9 +1272,8 @@ class user_feAdmin	{
 	 */
 	function setCObjects($templateCode,$currentArr=array(),$markerArray='',$specialPrefix='')	{
 		if (is_array($this->conf['cObjects.']))	{
-			reset($this->conf['cObjects.']);
 
-			while(list($theKey,$theConf)=each($this->conf['cObjects.']))	{
+			foreach ($this->conf['cObjects.'] as $theKey => $theConf) {
 				if (!strstr($theKey,'.'))	{
 					if (strstr($templateCode,'###'.$specialPrefix.'CE_'.$theKey.'###'))	{
 						$cObjCode = $this->cObj->cObjGetSingle($this->conf['cObjects.'][$theKey], $this->conf['cObjects.'][$theKey.'.'], 'cObjects.'.$theKey);
@@ -1406,8 +1389,7 @@ class user_feAdmin	{
 		$userContent['rec'] = $this->cObj->getSubpart($userContent['all'], '###SUB_RECORD###');
 		$adminContent['rec'] = $this->cObj->getSubpart($adminContent['all'], '###SUB_RECORD###');
 
-		reset($DBrows);
-		while(list(,$r)=each($DBrows))	{
+		foreach ($DBrows as $r) {
 			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $r,'',0);
 			$markerArray = $this->setCObjects($userContent['rec'].$adminContent['rec'],$r,$markerArray,'ITEM_');
 			$markerArray['###SYS_AUTHCODE###'] = $this->authCode($r);
@@ -1607,7 +1589,7 @@ class user_feAdmin	{
 		if ($this->conf['authcodeFields'])	{
 			$fieldArr = t3lib_div::trimExplode(',', $this->conf['authcodeFields'], 1);
 			$value='';
-			while(list(,$field)=each($fieldArr))	{
+			foreach ($fieldArr as $field) {
 				$value.=$r[$field].'|';
 			}
 			$value.=$extra.'|'.$this->conf['authcodeFields.']['addKey'];
@@ -1630,8 +1612,7 @@ class user_feAdmin	{
 	 */
 	function setfixed($markerArray, $setfixed, $r)	{
 		if (is_array($setfixed))	{
-			reset($setfixed);
-			while(list($theKey,$data)=each($setfixed))	{
+			foreach ($setfixed as $theKey => $data) {
 				if (!strcmp($theKey,'DELETE'))	{
 					$recCopy = $r;
 					$string='&cmd=setfixed&sFK='.rawurlencode($theKey).'&rU='.$r['uid'];
@@ -1641,10 +1622,9 @@ class user_feAdmin	{
 				} elseif (strstr($theKey,'.'))	{
 					$theKey = substr($theKey,0,-1);
 					if (is_array($data))	{
-						reset($data);
 						$recCopy = $r;
 						$string='&cmd=setfixed&sFK='.rawurlencode($theKey).'&rU='.$r['uid'];
-						while(list($fieldName,$fieldValue)=each($data))	{
+						foreach ($data as $fieldName => $fieldValue) {
 							$string.='&fD%5B'.$fieldName.'%5D='.rawurlencode($fieldValue);
 							$recCopy[$fieldName]=$fieldValue;
 						}
@@ -1669,8 +1649,7 @@ class user_feAdmin	{
 	function setfixedHash($recCopy,$fields='')	{
 		if ($fields)	{
 			$fieldArr = t3lib_div::trimExplode(',',$fields,1);
-			reset($fieldArr);
-			while(list($k,$v)=each($fieldArr))	{
+			foreach ($fieldArr as $k => $v) {
 				$recCopy_temp[$k]=$recCopy[$v];
 			}
 		} else {

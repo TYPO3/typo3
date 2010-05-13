@@ -58,8 +58,7 @@ $GLOBALS['TSFE']->newCObj();
 // LIBRARY INCLUSION, TypoScript
 // ******************************
 $temp_incFiles=TSpagegen::getIncFiles();
-reset($temp_incFiles);
-while(list(,$temp_file)=each($temp_incFiles))	{
+foreach ($temp_incFiles as $temp_file) {
 	include_once('./'.$temp_file);
 }
 

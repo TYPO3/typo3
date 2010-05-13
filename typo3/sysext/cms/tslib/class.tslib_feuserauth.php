@@ -500,11 +500,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			}
 			$change=0;
 			$recs_array=$this->getKey('ses','recs');
-			reset($recs);
-			while(list($table,$data)=each($recs))	{
+			foreach ($recs as $table => $data) {
 				if (is_array($data))	{
-					reset($data);
-					while(list($rec_id,$value)=each($data))	{
+					foreach ($data as $rec_id => $value) {
 						if ($value != $recs_array[$table][$rec_id])	{
 							$recs_array[$table][$rec_id] = $value;
 							$change=1;

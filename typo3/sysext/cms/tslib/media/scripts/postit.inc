@@ -118,7 +118,7 @@ $cols = intval($conf['cols']) ? intval($conf['cols']) : 3;
 
 $lines = explode(chr(10),$data);
 $imageArr = array();
-while(list($key,$content)=each($lines))	{
+foreach ($lines as $key => $content) {
 	$content = trim($content);
 	if ($content)	{
 		$parts = explode('|',$content);

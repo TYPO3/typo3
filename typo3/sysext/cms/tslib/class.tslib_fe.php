@@ -1140,8 +1140,7 @@
 					$pO = $randval;
 				}
 				$c = 0;
-				reset($pageArray);
-				while(list(,$pV)=each($pageArray))	{
+				foreach ($pageArray as $pV) {
 					if ($c==$pO)	{
 						$page = $pV;
 						break;
@@ -1345,9 +1344,8 @@
 
 		// Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's from other domains are not possible.
 		if ($domainStartPage && is_array($this->rootLine)) {
-			reset ($this->rootLine);
 			$idFound = 0;
-			while(list($key,$val)=each($this->rootLine)) {
+			foreach ($this->rootLine as $key => $val) {
 				if ($val['uid']==$domainStartPage)	{
 					$idFound=1;
 					break;
@@ -2359,14 +2357,12 @@
 
 			// Updating content of the two rootLines IF the language key is set!
 		if ($this->sys_language_uid && is_array($this->tmpl->rootLine))	{
-			reset($this->tmpl->rootLine);
-			while(list($rLk)=each($this->tmpl->rootLine))	{
+			foreach ($this->tmpl->rootLine as $rLk => $value) {
 				$this->tmpl->rootLine[$rLk] = $this->sys_page->getPageOverlay($this->tmpl->rootLine[$rLk]);
 			}
 		}
 		if ($this->sys_language_uid && is_array($this->rootLine))	{
-			reset($this->rootLine);
-			while(list($rLk)=each($this->rootLine))	{
+			foreach ($this->rootLine as $rLk => $value) {
 				$this->rootLine[$rLk] = $this->sys_page->getPageOverlay($this->rootLine[$rLk]);
 			}
 		}
@@ -3407,7 +3403,7 @@ if (version == "n3") {
 			// Set headers, if any
 		if (!empty($this->config['config']['additionalHeaders'])) {
 			$headerArray = explode('|', $this->config['config']['additionalHeaders']);
-			while(list(,$headLine)=each($headerArray))	{
+			foreach ($headerArray as $headLine) {
 				$headLine = trim($headLine);
 				header($headLine);
 			}
@@ -4445,8 +4441,7 @@ if (version == "n3") {
 			return array();
 		}
 
-		reset($this->rootLine);
-		while(list(,$rC)=each($this->rootLine))	{
+		foreach ($this->rootLine as $rC) {
 			if (!$res['_STORAGE_PID'])	$res['_STORAGE_PID']=intval($rC['storage_pid']);
 			if (!$res['_SITEROOT'])	$res['_SITEROOT']=$rC['is_siteroot']?intval($rC['uid']):0;
 		}
@@ -4460,10 +4455,9 @@ if (version == "n3") {
 	 */
 	function getPagesTSconfig()	{
 		if (!is_array($this->pagesTSconfig))	{
-			reset($this->rootLine);
 			$TSdataArray = array();
 			$TSdataArray[] = $this->TYPO3_CONF_VARS['BE']['defaultPageTSconfig'];	// Setting default configuration:
-			while(list($k,$v)=each($this->rootLine))	{
+			foreach ($this->rootLine as $k => $v) {
 				$TSdataArray[]=$v['TSconfig'];
 			}
 				// Parsing the user TS (or getting from cache)
@@ -4778,7 +4772,7 @@ if (version == "n3") {
 		$this->getPageRenderer()->setLanguage($this->lang);
 
 		$ls = explode('|',TYPO3_languages);
-		while(list($i,$v)=each($ls))	{
+		foreach ($ls as $i => $v) {
 			if ($v==$this->lang)	{$this->langSplitIndex=$i; break;}
 		}
 

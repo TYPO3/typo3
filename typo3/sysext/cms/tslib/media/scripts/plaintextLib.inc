@@ -283,10 +283,9 @@ class user_plaintext {
 	 */
 	function renderUploads($str,$upload_path='uploads/media/')	{
 		$files = explode(',',$str);
-		reset($files);
 		$lines=array();
 		if ($this->conf['uploads.']['header'])	{$lines[]=$this->getString($this->conf['uploads.']['header']);}
-		while(list($k,$file)=each($files))	{
+		foreach ($files as $k => $file) {
 			$lines[]=$this->siteUrl.$upload_path.$file;
 		}
 		return implode(chr(10),$lines);
@@ -370,9 +369,8 @@ class user_plaintext {
 	 */
 	function breakContent($str)	{
 		$cParts = explode(chr(10),$str);
-		reset($cParts);
 		$lines=array();
-		while(list(,$substrs)=each($cParts))	{
+		foreach ($cParts as $substrs) {
 			$lines[]=$this->breakLines($substrs);
 		}
 		return implode(chr(10),$lines);
@@ -391,10 +389,9 @@ class user_plaintext {
 		$tConf = $this->conf['bulletlist.'][$type.'.'];
 
 		$cParts = explode(chr(10),$str);
-		reset($cParts);
 		$lines=array();
 		$c=0;
-		while(list(,$substrs)=each($cParts))	{
+		foreach ($cParts as $substrs) {
 			$c++;
 			$bullet = $tConf['bullet'] ? $this->getString($tConf['bullet']) : ' - ';
 			$bLen=strlen($bullet);
@@ -417,11 +414,10 @@ class user_plaintext {
 	 */
 	function breakTable($str)	{
 		$cParts = explode(chr(10),$str);
-		reset($cParts);
 		$lines=array();
 		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0 ;
 		$c=0;
-		while(list(,$substrs)=each($cParts))	{
+		foreach ($cParts as $substrs) {
 			$c++;
 			if (trim($substrs))	{
 				$lineParts=explode('|',$substrs);
@@ -444,8 +440,7 @@ class user_plaintext {
 		$outLines = array();
 		$outLines[]=$this->addDiv($messure,'',$divChar,$joinChar,$cols);
 
-		reset($lines);
-		while(list($k,$v)=each($lines))	{
+		foreach ($lines as $k => $v) {
 			$top = intval($messure[1][$k]);
 			for ($aa=0;$aa<$top;$aa++)	{
 				$tempArr=array();
@@ -490,12 +485,9 @@ class user_plaintext {
 	function traverseTable($tableLines)	{
 		$maxLen=array();
 		$maxLines=array();
-		reset($tableLines);
-		while(list($k,$v)=each($tableLines))	{
-			reset($v);
-			while(list($kk,$vv)=each($v))	{
-				reset($vv);
-				while(list($lk,$lv)=each($vv))	{
+		foreach ($tableLines as $k => $v) {
+			foreach ($v as $kk => $vv) {
+				foreach ($vv as $lk => $lv) {
 					if (strlen($lv)>intval($maxLen[$kk]))	$maxLen[$kk]=strlen($lv);
 				}
 				if (count($vv)>intval($maxLines[$k]))	$maxLines[$k]=count($vv);
@@ -517,10 +509,9 @@ class user_plaintext {
 	function renderImages($str,$links,$caption,$upload_path='uploads/pics/')	{
 		$images = explode(',',$str);
 		$linksArr = explode(',',$links);
-		reset($images);
 		$lines=array();
 		if ($this->conf['images.']['header'])	{$lines[]=$this->getString($this->conf['images.']['header']);}
-		while(list($k,$file)=each($images))	{
+		foreach ($images as $k => $file) {
 			$lines[]=$this->siteUrl.$upload_path.$file;
 			if ($links && count($linksArr)>1)	{
 				if (isset($linksArr[$k]))	{

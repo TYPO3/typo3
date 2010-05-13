@@ -68,7 +68,7 @@ if ($value=='') {
 	$value=$GLOBALS['TSFE']->page['uid'];
 }
 $items=t3lib_div::intExplode(',',$value);
-while(list(,$id)=each($items))        {
+foreach ($items as $id) {
 	$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
 	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))        {
 		$menuItemsArray[]=$row;

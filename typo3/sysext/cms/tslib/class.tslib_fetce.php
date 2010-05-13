@@ -98,13 +98,11 @@ class tslib_feTCE	{
 	 * @see tslib_fe::fe_tce(), includeScripts()
 	 */
 	function start($data,$FEData)	{
-		reset($data);
-		while(list($table,$id_arr)=each($data))	{
+		foreach ($data as $table => $id_arr) {
 			t3lib_div::loadTCA($table);
 			if (is_array($id_arr))	{
 				$sep=$FEData[$table.'.']['separator']?$FEData[$table.'.']['separator']:LF;
-				reset($id_arr);
-				while(list($id,$field_arr)=each($id_arr))	{
+				foreach ($id_arr as $id => $field_arr) {
 					$this->newData[$table][$id]=Array();
 					if (strstr($id,'NEW'))	{		// NEW
 							// Defaults:
@@ -116,8 +114,7 @@ class tslib_feTCE	{
 						}
 							// Insert external data:
 						if (is_array($field_arr))	{
-							reset($field_arr);
-							while(list($field,$value)=each($field_arr))	{
+							foreach ($field_arr as $field => $value) {
 								if ($FEData[$table.'.']['allowNew.'][$field])	{
 									if (is_array($value)) {
 										$this->newData[$table][$id][$field] = implode($sep,$value);
@@ -142,8 +139,7 @@ class tslib_feTCE	{
 					} else {		// EDIT
 							// Insert external data:
 						if (is_array($field_arr))	{
-							reset($field_arr);
-							while(list($field,$value)=each($field_arr))	{
+							foreach ($field_arr as $field => $value) {
 								if ($FEData[$table.'.']['allowEdit.'][$field])	{
 									if (is_array($value)) {
 										$this->newData[$table][$id][$field] = implode($sep,$value);
@@ -155,8 +151,7 @@ class tslib_feTCE	{
 						}
 							// Internal Override
 						if (is_array($FEData[$table.'.']['overrideEdit.']))	{
-							reset($FEData[$table.'.']['overrideEdit.']);
-							while(list($field,$value)=each($FEData[$table.'.']['overrideEdit.']))	{
+							foreach ($FEData[$table.'.']['overrideEdit.'] as $field => $value) {
 								$this->newData[$table][$id][$field] = $value;
 							}
 						}
@@ -212,8 +207,7 @@ class tslib_feTCE	{
 	 * @see tslib_fe::fe_tce(), includeScripts()
 	 */
 	function includeScripts()	{
-		reset($this->extScripts);
-		while(list($incFile_table,$incFile)=each($this->extScripts))	{
+		foreach ($this->extScripts as $incFile_table => $incFile) {
 			if (@is_file($incFile) && $GLOBALS['TSFE']->checkFileInclude($incFile))	{
 				include($incFile);	// Always start the incFiles with a check of the object fe_tce.  is_object($this);
 				$GLOBALS['TT']->setTSlogMessage('Included '.$incFile,0);

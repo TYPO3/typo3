@@ -986,8 +986,7 @@ class SC_db_layout {
 		$CMcounter = 0;
 
 			// Traverse the list of table names which has records on this page (that array is populated by the $dblist object during the function getTableMenu()):
-		reset($dblist->activeTables);
-		while(list($table)=each($dblist->activeTables))	{
+		foreach ($dblist->activeTables as $table => $value) {
 
 				// Load full table definitions:
 			t3lib_div::loadTCA($table);
