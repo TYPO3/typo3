@@ -170,8 +170,7 @@ class t3lib_recordList {
 		$ccount=0;
 
 			// Traverse field array which contains the data to present:
-		reset($this->fieldArray);
-		while(list(,$vKey)=each($this->fieldArray))	{
+		foreach ($this->fieldArray as $vKey) {
 			if (isset($data[$vKey]))	{
 				if ($lastKey)	{
 					$cssClass = $this->addElement_tdCssClass[$lastKey];

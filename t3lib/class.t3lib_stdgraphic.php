@@ -785,7 +785,7 @@ class t3lib_stdGraphic	{
 			$x=0;
 			if (!$spacing && $wordSpacing)	{
 				$bits = explode(' ',$theText);
-				while(list(,$word)=each($bits))	{
+				foreach ($bits as $word) {
 					$word.=' ';
 					$wordInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $word, $conf['splitRendering.'],$sF);
 					$wordW = ($wordInf[2]-$wordInf[0]);
@@ -908,8 +908,7 @@ class t3lib_stdGraphic	{
 
 		if (!$spacing && $wordSpacing)	{
 			$bits = explode(' ',$text);
-			reset($bits);
-			while(list(,$word)=each($bits))	{
+			foreach ($bits as $word) {
 				$word.=' ';
 				$word = $word;
 				$wordInf = $this->ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $word, $splitRenderingConf ,$sF);
@@ -1653,7 +1652,7 @@ class t3lib_stdGraphic	{
 		if (!trim($setup)){return '';}
 		$effects = explode('|', $setup);
 		$commands = '';
-		while(list(,$val)=each($effects))	{
+		foreach ($effects as $val) {
 			$pairs=explode('=',$val,2);
 			$value = trim($pairs[1]);
 			$effect = strtolower(trim($pairs[0]));
@@ -1736,7 +1735,7 @@ class t3lib_stdGraphic	{
 		$setup = $conf['value'];
 		if (!trim($setup)){return '';}
 		$effects = explode('|', $setup);
-		while(list(,$val)=each($effects))	{
+		foreach ($effects as $val) {
 			$pairs=explode('=',$val,2);
 			$value = trim($pairs[1]);
 			$effect = strtolower(trim($pairs[0]));
@@ -2635,7 +2634,7 @@ class t3lib_stdGraphic	{
 			if ($splitstring)	{
 				preg_match('/([^\.]*)$/',$imagefile,$reg);
 				$splitinfo = explode(' ', $splitstring);
-				while (list($key,$val) = each($splitinfo))	{
+				foreach ($splitinfo as $key => $val) {
 					$temp = '';
 					if ($val) {$temp = explode('x', $val);}
 					if (intval($temp[0]) && intval($temp[1]))	{

@@ -670,8 +670,7 @@ final class t3lib_extMgm {
 					case 'after':
 					case 'before':
 						$pointer = 0;
-						reset($mods);
-						while(list($k, $m) = each($mods)) {
+						foreach ($mods as $k => $m) {
 							if (!strcmp($m, $modRef)) {
 								$pointer = strtolower($place)=='after'?$k+1:$k;
 							}
@@ -1013,8 +1012,7 @@ final class t3lib_extMgm {
 
 		t3lib_div::loadTCA('tt_content');
 		if (is_array($TCA['tt_content']['columns']) && is_array($TCA['tt_content']['columns'][$type]['config']['items'])) {
-			reset($TCA['tt_content']['columns'][$type]['config']['items']);
-			while(list($k, $v) = each($TCA['tt_content']['columns'][$type]['config']['items'])) {
+			foreach ($TCA['tt_content']['columns'][$type]['config']['items'] as $k => $v) {
 				if (!strcmp($v[1], $itemArray[1])) {
 					$TCA['tt_content']['columns'][$type]['config']['items'][$k] = $itemArray;
 					return;
@@ -1465,8 +1463,7 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\''.addslashes(serialize($extension
 
 ?>';
 
-		reset($extensions);
-		while(list($key, $conf) = each($extensions)) {
+		foreach ($extensions as $key => $conf) {
 			if (is_array($conf)) {
 				if ($conf['ext_localconf.php']) {
 					$cFiles['ext_localconf'].=t3lib_extMgm::_makeIncludeHeader($key, $conf['ext_localconf.php']);

@@ -153,9 +153,8 @@ class t3lib_readmail {
 	function getMailBoundaryParts($boundary,$content)	{
 		$mParts = explode('--'.$boundary,$content);
 		unset($mParts[0]);
-		reset($mParts);
 		$new=array();
-		while(list(,$val)=each($mParts))	{
+		foreach ($mParts as $val) {
 			if (trim($val)=='--') break;
 			$new[] = ltrim($val);
 		}
@@ -371,7 +370,7 @@ class t3lib_readmail {
 		$lines=explode(LF,ltrim($content));
 		$headers=array();
 		$p='';
-		while(list($k,$str)=each($lines))		{
+		foreach ($lines as $k => $str) {
 			if (!trim($str))	break;	// header finished
 			$parts = explode(' ',$str,2);
 			if ($parts[0] && substr($parts[0],-1)==':')	{
@@ -406,12 +405,12 @@ class t3lib_readmail {
 
 			// Decoding header values which potentially can be encoded by =?...?=
 		$list = explode(',','subject,thread-topic,from,to');
-		while(list(,$headerType)=each($list))	{
+		foreach ($list as $headerType) {
 			if (isset($mailParts[$headerType]))	$mailParts[$headerType]=$this->decodeHeaderString($mailParts[$headerType]);
 		}
 			// Separating email/names from header fields which can contain email addresses.
 		$list = explode(',','from,to,reply-to,sender,return-path');
-		while(list(,$headerType)=each($list))	{
+		foreach ($list as $headerType) {
 			if (isset($mailParts[$headerType]))	{
 				$mailParts['_'.strtoupper($headerType)]=$this->extractNameEmail($mailParts[$headerType]);
 			}
@@ -449,8 +448,7 @@ class t3lib_readmail {
 					$contentSectionParts = t3lib_div::trimExplode('--'.$mailParts['_CONTENT_TYPE_DAT']['boundary'],$mailParts['CONTENT'],1);
 					$contentSectionParts_proc=array();
 
-					reset($contentSectionParts);
-					while(list($k,$v)=each($contentSectionParts))	{
+					foreach ($contentSectionParts as $k => $v) {
 						if (substr($v,0,2)=='--')	break;
 						$contentSectionParts_proc[$k]=$this->fullParse($v);
 					}

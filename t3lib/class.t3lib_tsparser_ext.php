@@ -191,8 +191,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function flattenSetup($setupArray, $prefix, $resourceFlag)	{
 		if (is_array($setupArray))	{
 			$this->getFileName_backPath=PATH_site;		// Setting absolute prefixed path for relative resources.
-			reset($setupArray);
-			while(list($key,$val)=each($setupArray))	{
+			foreach ($setupArray as $key => $val) {
 				if ($prefix || substr($key,0,16)!='TSConstantEditor')	{		// We don't want 'TSConstantEditor' in the flattend setup.
 					if (is_array($val))	{
 						$this->flattenSetup($val,$prefix.$key, ($key=='file.'));
@@ -298,8 +297,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 		$c=0;
 		$cc=count($this->constants);
-		reset($this->constants);
-		while (list(,$str)=each($this->constants))	{
+		foreach ($this->constants as $str) {
 			$c++;
 			if ($c==$cc)	{
 				if (strstr($str,$this->edit_divider))	{
@@ -360,13 +358,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$HTML='';
 		$a=0;
 
-		reset($arr);
 		if($alphaSort == '1')	{
 			ksort($arr);
 		}
 		$keyArr_num=array();
 		$keyArr_alpha=array();
-		while (list($key,)=each($arr))	{
+		foreach ($arr as $key => $value) {
 			if (substr($key,-2)!='..')	{	// Don't do anything with comments / linenumber registrations...
 				$key=preg_replace('/\.$/','',$key);
 				if (substr($key,-1)!='.')	{
@@ -380,11 +377,10 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		ksort($keyArr_num);
 		$keyArr=$keyArr_num+$keyArr_alpha;
-		reset($keyArr);
 		$c=count($keyArr);
 		if ($depth_in)	{$depth_in = $depth_in.'.';}
 
-		while (list($key,)=each($keyArr))	{
+		foreach ($keyArr as $key => $value) {
 			$a++;
 			$depth=$depth_in.$key;
 			if ($this->bType!='const' || substr($depth,0,1)!='_')	{		// this excludes all constants starting with '_' from being shown.
@@ -507,18 +503,16 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_getSearchKeys($arr, $depth_in, $searchString, $keyArray)		{
-		reset($arr);
 		$keyArr=array();
-		while (list($key,)=each($arr))	{
+		foreach ($arr as $key => $value) {
 			$key=preg_replace('/\.$/','',$key);
 			if (substr($key,-1)!='.')	{
 				$keyArr[$key]=1;
 			}
 		}
-		reset($keyArr);
 		$c=count($keyArr);
 		if ($depth_in)	{ $depth_in = $depth_in.'.'; }
-		while (list($key,)=each($keyArr))	{
+		foreach ($keyArr as $key => $value) {
 			$depth=$depth_in.$key;
 			$deeper = is_array($arr[$key.'.']);
 
@@ -563,8 +557,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 */
 	function ext_getRootlineNumber($pid)	{
 		if ($pid && is_array($GLOBALS['rootLine']))	{
-			reset($GLOBALS['rootLine']);
-			while(list($key,$val)=each($GLOBALS['rootLine']))	{
+			foreach ($GLOBALS['rootLine'] as $key => $val) {
 				if ($val['uid']==$pid)	return $key;
 			}
 		}
@@ -580,19 +573,17 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_getTemplateHierarchyArr($arr,$depthData, $keyArray,$first=0)	{
-		reset($arr);
 		$keyArr=array();
-		while (list($key,)=each($arr))	{
+		foreach ($arr as $key => $value) {
 			$key=preg_replace('/\.$/','',$key);
 			if (substr($key,-1)!='.')	{
 				$keyArr[$key]=1;
 			}
 		}
-		reset($keyArr);
 		$a=0;
 		$c=count($keyArr);
 		static $i;
-		while (list($key,)=each($keyArr))	{
+		foreach ($keyArr as $key => $value) {
 			$HTML = '';
 			$a++;
 			$deeper = is_array($arr[$key . '.']);
@@ -679,8 +670,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 */
 	function ext_outputTS($config, $lineNumbers=0, $comments=0, $crop=0, $syntaxHL=0, $syntaxHLBlockmode=0)	{
 		$all='';
-		reset($config);
-		while (list(,$str)=each($config))	{
+		foreach ($config as $str) {
 			$all .= LF .'[GLOBAL]' . LF . $str;
 		}
 
@@ -742,10 +732,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$input = chop($input);
 		$cArr = explode(LF,$input);
 
-		reset($cArr);
 		$n = ceil(log10(count($cArr)+$this->ext_lineNumberOffset));
 		$lineNum='';
-		while(list($k,$v)=each($cArr))	{
+		foreach ($cArr as $k => $v) {
 			$lln=$k+$this->ext_lineNumberOffset+1;
 			if ($ln)	$lineNum = $this->ext_lnBreakPointWrap($lln,str_replace(' ','&nbsp;',sprintf('% '.$n.'d',$lln))).':   ';
 			$v=htmlspecialchars($v);
@@ -820,15 +809,15 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function ext_compareFlatSetups($default)	{
 		$editableComments=array();
 		reset($this->flatSetup);
-		while(list($const,$value)=each($this->flatSetup))	{
+		foreach ($this->flatSetup as $const => $value) {
 			if (substr($const,-2)!='..' && isset($this->flatSetup[$const.'..']))	{
 				$comment = trim($this->flatSetup[$const.'..']);
 				$c_arr = explode(LF,$comment);
-				while(list($k,$v)=each($c_arr))	{
+				foreach ($c_arr as $k => $v) {
 					$line=trim(preg_replace('/^[#\/]*/','',$v));
 					if ($line)	{
 						$parts = explode(';', $line);
-						while(list(,$par)=each($parts))		{
+						foreach ($parts as $par) {
 							if (strstr($par,'='))	{
 								$keyValPair =explode('=',$par,2);
 								switch(trim(strtolower($keyValPair[0])))	{
@@ -893,14 +882,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 */
 	function ext_categorizeEditableConstants($editConstArray)	{
 		// Runs through the available constants and fills the $this->categories array with pointers and priority-info
-		reset($editConstArray);
-		while(list($constName,$constData)=each($editConstArray))	{
+		foreach ($editConstArray as $constName => $constData) {
 			if (!$constData['type']) {
 				$constData['type']='string';
 			}
 			$cats = explode(',',$constData['cat']);
-			reset($cats);
-			while (list(,$theCat)=each($cats))	{		// if = only one category, while allows for many. We have agreed on only one category is the most basic way...
+			foreach ($cats as $theCat) {		// if = only one category, while allows for many. We have agreed on only one category is the most basic way...
 				$theCat=trim($theCat);
 				if ($theCat)	{
 					$this->categories[$theCat][$constName]=$constData['subcat'];
@@ -917,7 +904,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function ext_getCategoryLabelArray()	{
 		// Returns array used for labels in the menu.
 		$retArr = array();
-		while(list($k,$v)=each($this->categories))	{
+		foreach ($this->categories as $k => $v) {
 			if (count($v))	{
 				$retArr[$k]=strtoupper($k).' ('.count($v).')';
 			}
@@ -976,8 +963,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$catConf=$this->setup['constants']['TSConstantEditor.'][$category.'.'];
 		$out=array();
 		if (is_array($catConf))	{
-			reset($catConf);
-			while(list($key,$val)=each($catConf))	{
+			foreach ($catConf as $key => $val) {
 				switch($key)	{
 					case 'image':
 						$out['imagetag'] = $this->ext_getTSCE_config_image($catConf['image']);
@@ -990,8 +976,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 					default:
 						if (t3lib_div::testInt($key))	{
 							$constRefs = explode(',',$val);
-							reset($constRefs);
-							while(list(,$const)=each($constRefs))	{
+							foreach ($constRefs as $const) {
 								$const=trim($const);
 								if ($const && $const<=20)	{
 									$out['constants'][$const].=$this->ext_getKeyImage($key);
@@ -1048,7 +1033,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function ext_resourceDims()	{
 		if ($this->setup['resources'])	{
 			$rArr=explode(',',$this->setup['resources']);
-			while(list($c,$val)=each($rArr))	{
+			foreach ($rArr as $c => $val) {
 				$val=trim($val);
 				$theFile = PATH_site.'uploads/tf/'.$val;
 				if ($val && @is_file($theFile))	{
@@ -1059,8 +1044,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				}
 			}
 		}
-		reset($this->dirResources);
-		while(list($c,$val)=each($this->dirResources))	{
+		foreach ($this->dirResources as $c => $val) {
 			$val=trim($val);
 			$imgInfo = @getimagesize(PATH_site.$val);
 			if (is_array($imgInfo))	{
@@ -1144,7 +1128,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$this->rArr=explode(',',$this->setup['resources'].','.implode($this->dirResources,','));
 
 			if (!$this->doNotSortCategoriesBeforeMakingForm) asort($this->categories[$category]);
-			while(list($name,$type)=each($this->categories[$category]))	{
+			foreach ($this->categories[$category] as $name => $type) {
 				$params = $theConstants[$name];
 				if (is_array($params))	{
 					if ($subcat!=$params['subcat_name'])	{
@@ -1190,7 +1174,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						case 'color':
 							$colorNames=explode(',',','.$this->HTMLcolorList);
 							$p_field='';
-							while(list(,$val)=each($colorNames))	{
+							foreach ($colorNames as $val) {
 								$sel='';
 								if ($val==strtolower($params['value'])) {
 									$sel = ' selected';
@@ -1224,7 +1208,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						case 'options':
 							if (is_array($typeDat['params']))	{
 								$p_field='';
-								while(list(,$val)=each($typeDat['params']))	{
+								foreach ($typeDat['params'] as $val) {
 									$vParts = explode('=',$val,2);
 									$label = $vParts[0];
 									$val = isset($vParts[1]) ? $vParts[1] : $vParts[0];
@@ -1273,7 +1257,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							reset($this->rArr);
 							$onlineResourceFlag=$this->ext_defaultOnlineResourceFlag;
 
-							while(list($c,$val)=each($this->rArr))	{
+							foreach ($this->rArr as $c => $val) {
 								$val=trim($val);
 								$fI=t3lib_div::split_fileref($val);
 								if ($val && (!$extList || t3lib_div::inList($extList,$fI['fileext'])))	{
@@ -1526,22 +1510,20 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 * @return	[type]		...
 	 */
 	function ext_depthKeys($arr,$settings)	{
-		reset($arr);
 		$tsbrArray=array();
-		while(list($theK,$theV)=each($arr))	{
+		foreach ($arr as $theK => $theV) {
 			$theKeyParts = explode('.',$theK);
 			$depth='';
 			$c=count($theKeyParts);
 			$a=0;
-			while(list(,$p)=each($theKeyParts))	{
+			foreach ($theKeyParts as $p) {
 				$a++;
 				$depth.=($depth?'.':'').$p;
 				$tsbrArray[$depth]= ($c==$a) ? $theV : 1;
 			}
 		}
 			// Modify settings
-		reset($tsbrArray);
-		while(list($theK,$theV)=each($tsbrArray))	{
+		foreach ($tsbrArray as $theK => $theV) {
 			if ($theV)	{
 				$settings[$theK] = 1;
 			} else {
@@ -1571,8 +1553,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		$W5data=$http_post_vars['W5data'];
 
 		if (is_array($data))	{
-			reset($data);
-			while(list($key,$var)=each($data))	{
+			foreach ($data as $key => $var) {
 				if (isset($theConstants[$key]))	{
 					if ($this->ext_dontCheckIssetValues || isset($check[$key]))	{		// If checkbox is set, update the value
 						list($var) = explode(LF,$var);	// exploding with linebreak, just to make sure that no multiline input is given!
@@ -1679,8 +1660,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 			// Remaining keys in $check indicates fields that are just clicked "on" to be edited. Therefore we get the default value and puts that in the template as a start...
 		if (!$this->ext_dontCheckIssetValues && is_array($check))	{
-			reset($check);
-			while(list($key,$var)=each($check))	{
+			foreach ($check as $key => $var) {
 				if (isset($theConstants[$key]))	{
 					$dValue = $theConstants[$key]['default_value'];
 					$this->ext_putValueInConf($key, $dValue);
@@ -1749,8 +1729,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	 */
 	function ext_prevPageWithTemplate($id,$perms_clause)	{
 		$rootLine = t3lib_BEfunc::BEgetRootLine($id,$perms_clause?' AND '.$perms_clause:'');
-		reset($rootLine);
-		while(list(,$p)=each($rootLine))	{
+		foreach ($rootLine as $p) {
 			if ($this->ext_getFirstTemplate($p['uid']))	{
 				return $p;
 			}

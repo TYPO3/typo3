@@ -931,8 +931,7 @@ class t3lib_refindex {
 					unset($wl[$row['baseword']]);
 				}
 
-				reset($wl);
-				while(list($key,$val)=each($wl)) {
+				foreach ($wl as $key => $val) {
 					$insertFields = array(
 						'wid' => t3lib_div::md5int($key),
 						'baseword' => $key

@@ -1347,7 +1347,6 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 
 			// Traversing records in the correct order
 		$include_staticArr = t3lib_div::intExplode(',',$grList);
-		reset($include_staticArr);
 			// traversing list
 		foreach ($include_staticArr as $key => $uid) {
 

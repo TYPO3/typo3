@@ -457,9 +457,8 @@ class t3lib_superadmin {
 			if (@is_dir($dir))	{
 				$in_dirs = t3lib_div::get_dirs($dir);
 				asort($in_dirs);
-				reset($in_dirs);
 				$dirArr=array();
-				while(list($k,$v)=each($in_dirs))	{
+				foreach ($in_dirs as $k => $v) {
 					if (substr($v,0,9)!='typo3_src')	{
 						$this->currentUrl = $baseUrl.'/'.$v;
 						$content.= $this->headerSiteDir($v);
@@ -787,8 +786,7 @@ class t3lib_superadmin {
 				$mtimes = array();
 
 					// Find most recent mtime of the options:
-				reset($instances);
-				while(list($k,$eInfo)=each($instances))	{
+				foreach ($instances as $k => $eInfo) {
 					$mtimes[] = $eInfo['mtime'];
 				}
 					// Max mtime:
@@ -999,8 +997,7 @@ class t3lib_superadmin {
 	 * @return	array		Modified file array (or error string)
 	 */
 	function removePrefixPathFromList($fileArr,$extPath)	{
-		reset($fileArr);
-		while(list($k,$absFileRef)=each($fileArr))	{
+		foreach ($fileArr as $k => $absFileRef) {
 			if(t3lib_div::isFirstPartOfStr($absFileRef,$extPath))	{
 				$fileArr[$k]=substr($absFileRef,strlen($extPath));
 			} else return 'ERROR: One or more of the files was NOT prefixed with the prefix-path!';

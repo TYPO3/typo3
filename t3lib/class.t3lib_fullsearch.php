@@ -127,8 +127,7 @@ class t3lib_fullsearch {
 
 			// Store Array:
 		$opt=array();
-		reset($storeArray);
-		while(list($k,$v)=each($storeArray))	{
+		foreach ($storeArray as $k => $v) {
 			$opt[]='<option value="'.$k.'"'.(!strcmp($cur,$v)?' selected':'').'>'.htmlspecialchars($v).'</option>';
 		}
 
@@ -181,8 +180,7 @@ class t3lib_fullsearch {
 	 */
 	function cleanStoreQueryConfigs($storeQueryConfigs,$storeArray)	{
 		if (is_array($storeQueryConfigs))	{
-			reset($storeQueryConfigs);
-			while(list($k,$v)=each($storeQueryConfigs))	{
+			foreach ($storeQueryConfigs as $k => $v) {
 				if (!isset($storeArray[$k]))	unset($storeQueryConfigs[$k]);
 			}
 		}
@@ -198,9 +196,8 @@ class t3lib_fullsearch {
 	 */
 	function addToStoreQueryConfigs($storeQueryConfigs,$index)	{
 		$keyArr = explode(',',$this->storeList);
-		reset($keyArr);
 		$storeQueryConfigs[$index]=array();
-		while(list(,$k)=each($keyArr))	{
+		foreach ($keyArr as $k) {
 			$storeQueryConfigs[$index][$k]=$GLOBALS['SOBE']->MOD_SETTINGS[$k];
 		}
 		return $storeQueryConfigs;
@@ -215,9 +212,8 @@ class t3lib_fullsearch {
 	function saveQueryInAction($uid)	{
 		if (t3lib_extMgm::isLoaded('sys_action'))	{
 			$keyArr = explode(',',$this->storeList);
-			reset($keyArr);
 			$saveArr=array();
-			while(list(,$k)=each($keyArr))	{
+			foreach ($keyArr as $k) {
 				$saveArr[$k]=$GLOBALS['SOBE']->MOD_SETTINGS[$k];
 			}
 
@@ -264,8 +260,7 @@ class t3lib_fullsearch {
 	function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)	{
 		if ($storeQueryConfigs[$storeIndex])	{
 			$keyArr = explode(',',$this->storeList);
-			reset($keyArr);
-			while(list(,$k)=each($keyArr))	{
+			foreach ($keyArr => $k) {
 				$writeArray[$k]=$storeQueryConfigs[$storeIndex][$k];
 			}
 		}
@@ -599,8 +594,7 @@ class t3lib_fullsearch {
 		$limit=200;
 		$showAlways=0;
 		if ($swords)	{
-			reset($TCA);
-			while(list($table)=each($TCA))	{
+			foreach ($TCA as $table => $value) {
 					// Get fields list
 				t3lib_div::loadTCA($table);
 				$conf=$TCA[$table];
@@ -610,11 +604,7 @@ class t3lib_fullsearch {
 					continue;
 				}
 
-				reset($conf['columns']);
-				$list=array();
-				while(list($field,)=each($conf['columns']))	{
-					$list[]=$field;
-				}
+				$list = array_keys($conf['columns']);
 					// Get query
 				$qp = $GLOBALS['TYPO3_DB']->searchQuery(array($swords), $list, $table);
 
@@ -657,8 +647,7 @@ class t3lib_fullsearch {
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$out='<tr class="bgColor' . ($even ? '6' : '4') . '">';
 		$even = !$even;
-		reset($row);
-		while(list($fN,$fV)=each($row))	{
+		foreach ($row as $fN => $fV) {
 			if (t3lib_div::inList($SET['queryFields'], $fN) || (!$SET['queryFields'] && $fN!='pid' && $fN!='deleted'))	{
 				if ($SET['search_result_labels'])	{
 					$fVnew = $this->getProcessedValueExtra($table, $fN, $fV, $conf, '<br />');

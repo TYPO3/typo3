@@ -268,7 +268,7 @@ class t3lib_BEDisplayLog {
 	 */
 	function stripPath($inArr)	{
 		if ($this->stripPath && is_array($inArr))	{
-			while(list($key,$val)=each($inArr))	{
+			foreach ($inArr as $key => $val) {
 				$inArr[$key]=basename($val);
 			}
 		}

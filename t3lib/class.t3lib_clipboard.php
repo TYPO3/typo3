@@ -195,8 +195,7 @@ class t3lib_clipboard {
 	 */
 	function setCmd($cmd)	{
 		if (is_array($cmd['el']))	{
-			reset($cmd['el']);
-			while(list($k,$v)=each($cmd['el']))	{
+			foreach ($cmd['el'] as $k => $v) {
 				if ($this->current=='normal')	{
 					unset($this->clipData['normal']);
 				}
@@ -270,8 +269,7 @@ class t3lib_clipboard {
 	 */
 	function cleanUpCBC($CBarr,$table,$removeDeselected=0)	{
 		if (is_array($CBarr))	{
-			reset($CBarr);
-			while(list($k,$v)=each($CBarr))	{
+			foreach ($CBarr as $k => $v) {
 				$p=explode('|',$k);
 				if ((string)$p[0]!=(string)$table || ($removeDeselected && !$v))	{
 					unset($CBarr[$k]);
@@ -424,8 +422,7 @@ class t3lib_clipboard {
 
 		$lines=array();
 		if (is_array($this->clipData[$pad]['el']))	{
-			reset($this->clipData[$pad]['el']);
-			while(list($k,$v)=each($this->clipData[$pad]['el']))	{
+			foreach ($this->clipData[$pad]['el'] as $k => $v) {
 				if ($v)	{
 					list($table,$uid) = explode('|',$k);
 					$bgColClass = ($table=='_FILE'&&$this->fileMode)||($table!='_FILE'&&!$this->fileMode) ? 'bgColor4-20' : 'bgColor4';
@@ -664,9 +661,8 @@ class t3lib_clipboard {
 	 */
 	function editUrl()	{
 		$elements = $this->elFromTable('');	// all records
-		reset($elements);
 		$editCMDArray=array();
-		while(list($tP)=each($elements))	{
+		foreach ($elements as $tP => $value) {
 			list($table,$uid) = explode('|',$tP);
 			$editCMDArray[] = '&edit['.$table.']['.$uid.']=edit';
 		}
@@ -762,8 +758,7 @@ class t3lib_clipboard {
 
 			// Traverse items:
 		if (is_array($this->clipData[$pad]['el']))	{
-			reset($this->clipData[$pad]['el']);
-			while(list($k,$v)=each($this->clipData[$pad]['el']))	{
+			foreach ($this->clipData[$pad]['el'] as $k => $v) {
 				if ($v)	{
 					list($table,$uid) = explode('|',$k);
 
@@ -837,8 +832,7 @@ class t3lib_clipboard {
 	 */
 	function cleanCurrent()	{
 		if (is_array($this->clipData[$this->current]['el']))	{
-			reset($this->clipData[$this->current]['el']);
-			while(list($k,$v)=each($this->clipData[$this->current]['el']))	{
+			foreach ($this->clipData[$this->current]['el'] as $k => $v) {
 				list($table,$uid) = explode('|',$k);
 				if ($table!='_FILE')	{
 					if (!$v || !is_array(t3lib_BEfunc::getRecord($table,$uid,'uid')))	{
@@ -866,8 +860,7 @@ class t3lib_clipboard {
 		$pad = $pad ? $pad : $this->current;
 		$list=array();
 		if (is_array($this->clipData[$pad]['el']))	{
-			reset($this->clipData[$pad]['el']);
-			while(list($k,$v)=each($this->clipData[$pad]['el']))	{
+			foreach ($this->clipData[$pad]['el'] as $k => $v) {
 				if ($v)	{
 					list($table,$uid) = explode('|',$k);
 					if ($table!='_FILE')	{
@@ -977,8 +970,7 @@ class t3lib_clipboard {
 			$mode = $this->currentMode()=='copy' ? 'copy' : 'move';
 
 				// Traverse elements and make CMD array
-			reset($elements);
-			while(list($tP)=each($elements))	{
+			foreach ($elements as $tP => $value) {
 				list($table,$uid) = explode('|',$tP);
 				if (!is_array($CMD[$table]))	$CMD[$table]=array();
 				$CMD[$table][$uid][$mode]=$pUid;
@@ -997,8 +989,7 @@ class t3lib_clipboard {
 	 */
 	function makeDeleteCmdArray($CMD)	{
 		$elements = $this->elFromTable('');	// all records
-		reset($elements);
-		while(list($tP)=each($elements))	{
+		foreach ($elements as $tP => $value) {
 			list($table,$uid) = explode('|',$tP);
 			if (!is_array($CMD[$table]))	$CMD[$table]=array();
 			$CMD[$table][$uid]['delete']=1;
@@ -1044,8 +1035,7 @@ class t3lib_clipboard {
 		$mode = $this->currentMode()=='copy' ? 'copy' : 'move';
 
 			// Traverse elements and make CMD array
-		reset($elements);
-		while(list($tP,$path)=each($elements))	{
+		foreach ($elements as $tP => $path) {
 			$FILE[$mode][]=array('data'=>$path,'target'=>$pUid,'altName'=>1);
 			if ($mode=='move')	$this->removeElement($tP);
 		}
@@ -1063,8 +1053,7 @@ class t3lib_clipboard {
 	function makeDeleteCmdArray_file($FILE)	{
 		$elements = $this->elFromTable('_FILE');
 			// Traverse elements and make CMD array
-		reset($elements);
-		while(list($tP,$path)=each($elements))	{
+		foreach ($elements as $tP => $path) {
 			$FILE['delete'][]=array('data'=>$path);
 			$this->removeElement($tP);
 		}

@@ -97,11 +97,10 @@ class t3lib_diff {
 		$diffRes = $this->getDiff(implode(LF,$str1Lines).LF,implode(LF,$str2Lines).LF);
 
 		if (is_array($diffRes))	{
-			reset($diffRes);
 			$c=0;
 			$diffResArray=array();
 			$differenceStr = '';
-			while(list(,$lValue)=each($diffRes))	{
+			foreach ($diffRes as $lValue) {
 				if (intval($lValue))	{
 					$c=intval($lValue);
 					$diffResArray[$c]['changeInfo']=$lValue;
@@ -205,8 +204,7 @@ class t3lib_diff {
 	function explodeStringIntoWords($str)	{
 		$strArr = t3lib_div::trimExplode(LF,$str);
 		$outArray=array();
-		reset($strArr);
-		while(list(,$lineOfWords)=each($strArr))	{
+		foreach ($strArr as $lineOfWords) {
 			$allWords = t3lib_div::trimExplode(' ',$lineOfWords,1);
 			$outArray = array_merge($outArray,$allWords);
 			$outArray[]='';

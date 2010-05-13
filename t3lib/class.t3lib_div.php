@@ -1370,14 +1370,13 @@ final class t3lib_div {
 		$reg = array();
 		preg_match_all('/'.$regex.'/',$string,$reg);
 
-		reset($reg[2]);
 		$number=0;
 		$Msign='+';
 		$err='';
 		$buffer=doubleval(current($reg[2]));
 		next($reg[2]);  // Advance pointer
 
-		while(list($k,$v)=each($reg[2])) {
+		foreach ($reg[2] as $k => $v) {
 			$v=doubleval($v);
 			$sign = $reg[1][$k];
 			if ($sign=='+' || $sign=='-')	{

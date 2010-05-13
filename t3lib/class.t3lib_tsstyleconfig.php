@@ -123,8 +123,7 @@ class t3lib_tsStyleConfig extends t3lib_tsparser_ext	{
 		$this->flatSetup = $temp;
 
 
-		reset($theConstants);
-		while(list($k,$p)=each($theConstants))	{
+		foreach ($theConstants as $k => $p) {
 			if (isset($this->objReg[$k]))	{
 				$theConstants[$k]["value"] = $this->ext_realValues[$k];
 			}

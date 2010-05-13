@@ -1,3 +1,7 @@
+2010-05-13  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed issue #13670: Performance optimization: change while(list() to foreach() (thanks to Georg Ringer)
+
 2010-05-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12803: Creating or deleting ENABLE_INSTALL_TOOL file saves settings in "User Settings"

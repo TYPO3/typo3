@@ -398,8 +398,7 @@ class t3lib_timeTrack {
 			$keyLabel = '';
 			if (!$flag_tree && $data['stackPointer']) {
 				$temp = array();
-				reset($data['tsStack']);
-				while(list($k,$v)=each($data['tsStack'])) {
+				foreach ($data['tsStack'] as $k => $v) {
 					$temp[] = t3lib_div::fixed_lgd_cs(implode($v,$k?'.':'/'),-$keyLgd);
 				}
 				array_pop($temp);
@@ -438,8 +437,7 @@ class t3lib_timeTrack {
 			$msgArr = array();
 			$msg = '';
 			if ($flag_messages && is_array($data['message'])) {
-				reset($data['message']);
-				while(list(,$v)=each($data['message'])) {
+				foreach ($data['message'] as $v) {
 					$msgArr[] = nl2br($v);
 				}
 			}
@@ -481,16 +479,14 @@ class t3lib_timeTrack {
 		$ac=0;
 		$c=0;
 			// First, find number of entries
-		reset($arr);
-		while(list($k,$v)=each($arr)) {
+		foreach ($arr as $k => $v) {
 			if (t3lib_div::testInt($k)) {
 				$ac++;
 			}
 		}
 			// Traverse through entries
 		$subtime=0;
-		reset($arr);
-		while(list($k,$v)=each($arr)) {
+		foreach ($arr as $k => $v) {
 			if (t3lib_div::testInt($k)) {
 				$c++;
 
@@ -522,8 +518,7 @@ class t3lib_timeTrack {
 		$content=$this->fixCLen($content, $this->tsStackLog[$vKey]['value']);
 
 			// Traverse array again, this time substitute the unique hash with the red key
-		reset($arr);
-		while(list($k,$v)=each($arr)) {
+		foreach ($arr as $k => $v) {
 			if (t3lib_div::testInt($k)) {
 				if (strlen($this->tsStackLog[$v]['content'])) {
 					$content = str_replace($v, '<strong style="color:red;">['.$this->tsStackLog[$v]['key'].']</strong>', $content);

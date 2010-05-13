@@ -101,8 +101,7 @@ class t3lib_arrayBrowser	{
 		if ($depth_in)	{$depth_in = $depth_in.'.';}
 
 		$c=count($arr);
-		reset($arr);
-		while (list($key,)=each($arr))	{
+		foreach ($arr as $key => $value) {
 			$a++;
 			$depth = $depth_in.$key;
 			$goto = 'a' . substr(md5($depth), 0, 6);
@@ -199,10 +198,9 @@ class t3lib_arrayBrowser	{
 	 * @return	array
 	 */
 	function getSearchKeys($keyArr, $depth_in, $searchString, $keyArray)		{
-		reset($keyArr);
 		$c=count($keyArr);
 		if ($depth_in)	{$depth_in = $depth_in.'.';}
-		while (list($key,)=each($keyArr))	{
+		foreach ($keyArr as $key => $value) {
 			$depth=$depth_in.$key;
 			$deeper = is_array($keyArr[$key]);
 
@@ -251,21 +249,19 @@ class t3lib_arrayBrowser	{
 	 */
 	function depthKeys($arr,$settings)	{
 		$tsbrArray=array();
-		reset($arr);
-		while(list($theK,$theV)=each($arr))	{
+		foreach ($arr as $theK => $theV) {
 			$theKeyParts = explode('.',$theK);
 			$depth='';
 			$c=count($theKeyParts);
 			$a=0;
-			while(list(,$p)=each($theKeyParts))	{
+			foreach ($theKeyParts as $p) {
 				$a++;
 				$depth.=($depth?'.':'').$p;
 				$tsbrArray[$depth]= ($c==$a) ? $theV : 1;
 			}
 		}
 			// Modify settings
-		reset($tsbrArray);
-		while(list($theK,$theV)=each($tsbrArray))	{
+		foreach ($tsbrArray as $theK => $theV) {
 			if ($theV)	{
 				$settings[$theK] = 1;
 			} else {

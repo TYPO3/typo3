@@ -314,10 +314,9 @@ class t3lib_admin {
 	 */
 	function lostRecords($pid_list)	{
 		global $TCA;
-		reset($TCA);
 		$this->lostPagesList='';
 		if ($pid_list)	{
-			while (list($table)=each($TCA))	{
+			foreach ($TCA as $table => $tableConf) {
 				t3lib_div::loadTCA($table);
 
 				$pid_list_tmp = $pid_list;
@@ -373,11 +372,10 @@ class t3lib_admin {
 	 */
 	function countRecords($pid_list)	{
 		global $TCA;
-		reset($TCA);
 		$list=Array();
 		$list_n=Array();
 		if ($pid_list)	{
-			while (list($table)=each($TCA))	{
+			foreach ($TCA as $table => $tableConf) {
 				t3lib_div::loadTCA($table);
 
 				$pid_list_tmp = $pid_list;
@@ -408,13 +406,11 @@ class t3lib_admin {
 	 */
 	function getGroupFields($mode)	{
 		global $TCA;
-		reset ($TCA);
 		$result = Array();
-		while (list($table)=each($TCA))	{
+		foreach ($TCA as $table => $tableConf) {
 			t3lib_div::loadTCA($table);
 			$cols = $TCA[$table]['columns'];
-			reset ($cols);
-			while (list($field,$config)=each($cols))	{
+			foreach ($cols as $field => $config) {
 				if ($config['config']['type']=='group')	{
 					if (
 						((!$mode||$mode=='file') && $config['config']['internal_type']=='file') ||
@@ -442,13 +438,11 @@ class t3lib_admin {
 	 */
 	function getFileFields($uploadfolder)	{
 		global $TCA;
-		reset ($TCA);
 		$result = Array();
-		while (list($table)=each($TCA))	{
+		foreach ($TCA as $table => $tableConf) {
 			t3lib_div::loadTCA($table);
 			$cols = $TCA[$table]['columns'];
-			reset ($cols);
-			while (list($field,$config)=each($cols))	{
+			foreach ($cols as $field => $config) {
 				if ($config['config']['type']=='group' && $config['config']['internal_type']=='file' && $config['config']['uploadfolder']==$uploadfolder)	{
 					$result[]=Array($table,$field);
 				}
@@ -467,11 +461,10 @@ class t3lib_admin {
 		global $TCA;
 		$result = Array();
 		reset ($TCA);
-		while (list($table)=each($TCA))	{
+		foreach ($TCA as $table => $tableConf) {
 			t3lib_div::loadTCA($table);
 			$cols = $TCA[$table]['columns'];
-			reset ($cols);
-			while (list($field,$config)=each($cols))	{
+			foreach ($cols as $field => $config) {
 				if ($config['config']['type']=='group' && $config['config']['internal_type']=='db')	{
 					if (trim($config['config']['allowed'])=='*' || strstr($config['config']['allowed'],$theSearchTable))	{
 						$result[]=Array($table,$field);
@@ -494,8 +487,7 @@ class t3lib_admin {
 	function selectNonEmptyRecordsWithFkeys($fkey_arrays)	{
 		global $TCA;
 		if (is_array($fkey_arrays))	{
-			reset($fkey_arrays);
-			while (list($table,$field_list)=each($fkey_arrays))	{
+			foreach ($fkey_arrays as $table => $field_list) {
 				if ($TCA[$table] && trim($field_list))	{
 					t3lib_div::loadTCA($table);
 					$fieldArr = explode(',',$field_list);
@@ -506,7 +498,7 @@ class t3lib_admin {
 						list(,$field)=each($fieldArr);
 						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'R') ?
 						$field.'!=0' : $field.'!=\'\'';
-						while (list(,$field)=each($fieldArr))	{
+						foreach ($fieldArr as $field) {
 							$cl_fl .= ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'R') ?
 							' OR '.$field.'!=0' : ' OR '.$field.'!=\'\'';
 						}
@@ -518,8 +510,7 @@ class t3lib_admin {
 
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$field_list, $table, $cl_fl);
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-						reset($fieldArr);
-						while (list(,$field)=each($fieldArr))	{
+						foreach ($fieldArr as $field) {
 							if (trim($row[$field]))		{
 								$fieldConf = $TCA[$table]['columns'][$field]['config'];
 								if ($fieldConf['type']=='group')	{
@@ -529,8 +520,7 @@ class t3lib_admin {
 											$tempArr=array();
 											$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 											$dbAnalysis->start('','files',$fieldConf['MM'],$row['uid']);
-											reset($dbAnalysis->itemArray);
-											while (list($somekey,$someval)=each($dbAnalysis->itemArray))	{
+											foreach ($dbAnalysis->itemArray as $somekey => $someval) {
 												if ($someval['id'])	{
 													$tempArr[]=$someval['id'];
 												}
@@ -538,8 +528,7 @@ class t3lib_admin {
 										} else {
 											$tempArr = explode(',',trim($row[$field]));
 										}
-										reset($tempArr);
-										while (list(,$file)=each($tempArr))	{
+										foreach ($tempArr as $file) {
 											$file = trim($file);
 											if ($file)	{
 												$this->checkFileRefs[$fieldConf['uploadfolder']][$file]+=1;
@@ -550,8 +539,7 @@ class t3lib_admin {
 										// dbs - group
 										$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 										$dbAnalysis->start($row[$field],$fieldConf['allowed'],$fieldConf['MM'],$row['uid'], $table, $fieldConf);
-										reset($dbAnalysis->itemArray);
-										while (list(,$tempArr)=each($dbAnalysis->itemArray))	{
+										foreach ($dbAnalysis->itemArray as $tempArr) {
 											$this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']]+=1;
 										}
 									}
@@ -560,8 +548,7 @@ class t3lib_admin {
 									// dbs - select
 									$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 									$dbAnalysis->start($row[$field],$fieldConf['foreign_table'],$fieldConf['MM'],$row['uid'], $table, $fieldConf);
-									reset($dbAnalysis->itemArray);
-									while (list(,$tempArr)=each($dbAnalysis->itemArray))	{
+									foreach ($dbAnalysis->itemArray as $tempArr) {
 										if ($tempArr['id']>0)	{
 											$this->checkGroupDBRefs[$fieldConf['foreign_table']][$tempArr['id']]+=1;
 										}
@@ -570,6 +557,7 @@ class t3lib_admin {
 							}
 						}
 					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
 			}
 		}
@@ -607,8 +595,7 @@ class t3lib_admin {
 		}
 		$this->checkFileRefs = $newCheckFileRefs;
 
-		reset($this->checkFileRefs);
-		while(list($folder,$fileArr)=each($this->checkFileRefs))	{
+		foreach ($this->checkFileRefs as $folder => $fileArr) {
 			$path = PATH_site.$folder;
 			if (@is_dir($path))	{
 				$d = dir($path);
@@ -618,7 +605,7 @@ class t3lib_admin {
 							if ($fileArr[$entry] > 1)	{
 								$temp = $this->whereIsFileReferenced($folder,$entry);
 								$tempList = '';
-								while(list(,$inf)=each($temp))	{
+								foreach ($temp as $inf) {
 									$tempList.='['.$inf['table'].']['.$inf['uid'].']['.$inf['field'].'] (pid:'.$inf['pid'].') - ';
 								}
 								$output['moreReferences'][] = Array($path,$entry,$fileArr[$entry],$tempList);
@@ -633,9 +620,8 @@ class t3lib_admin {
 					}
 				}
 				$d->close();
-				reset($fileArr);
 				$tempCounter=0;
-				while(list($file,)=each($fileArr))	{
+				foreach ($fileArr as $file => $value) {
 						// workaround for direct file references
 					if (preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
 						$file = $folder . '/' . $file;
@@ -644,7 +630,7 @@ class t3lib_admin {
 					}
 					$temp = $this->whereIsFileReferenced($folder,$file);
 					$tempList = '';
-					while(list(,$inf)=each($temp))	{
+					foreach ($temp as $inf) {
 						$tempList.='['.$inf['table'].']['.$inf['uid'].']['.$inf['field'].'] (pid:'.$inf['pid'].') - ';
 					}
 					$tempCounter++;
@@ -665,13 +651,10 @@ class t3lib_admin {
 	 */
 	function testDBRefs($theArray)	{
 		global $TCA;
-		reset($theArray);
-		while(list($table,$dbArr)=each($theArray))	{
+		foreach ($theArray as $table => $dbArr) {
 			if ($TCA[$table])	{
-				$idlist = Array();
-				while(list($id,)=each($dbArr))	{
-					$idlist[]=$id;
-				}
+				$idlist = array_keys($dbArr); 
+
 				$theList = implode(',',$idlist);
 				if ($theList)	{
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN ('.$theList.')'.t3lib_BEfunc::deleteClause($table));
@@ -682,8 +665,7 @@ class t3lib_admin {
 							$result.='Strange Error. ...<br />';
 						}
 					}
-					reset($dbArr);
-					while (list($theId,$theC)=each($dbArr))	{
+					foreach ($dbArr as $theId => $theC) {
 						$result.='There are '.$theC.' records pointing to this missing or deleted record; ['.$table.']['.$theId.']<br />';
 					}
 				}
@@ -705,7 +687,7 @@ class t3lib_admin {
 		global $TCA;
 		$fileFields = $this->getDBFields($searchTable);	// Gets tables / Fields that reference to files...
 		$theRecordList=Array();
-		while (list(,$info)=each($fileFields))	{
+		foreach ($fileFields as $info) {
 			$table=$info[0];	$field=$info[1];
 			t3lib_div::loadTCA($table);
 			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -720,13 +702,13 @@ class t3lib_admin {
 
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 				$dbAnalysis->start($row[$field],$allowedTables,$fieldConf['MM'],$row['uid'], $table, $fieldConf);
-				reset($dbAnalysis->itemArray);
-				while (list(,$tempArr)=each($dbAnalysis->itemArray))	{
+				foreach ($dbAnalysis->itemArray as $tempArr) {
 					if ($tempArr['table']==$searchTable && $tempArr['id']==$id)	{
 						$theRecordList[]=Array('table'=>$table,'uid'=>$row['uid'],'field'=>$field,'pid'=>$row['pid']);
 					}
 				}
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 		}
 		return $theRecordList;
 	}
@@ -742,7 +724,7 @@ class t3lib_admin {
 		global $TCA;
 		$fileFields = $this->getFileFields($uploadfolder);	// Gets tables / Fields that reference to files...
 		$theRecordList=Array();
-		while (list(,$info)=each($fileFields))	{
+		foreach ($fileFields as $info) {
 			$table=$info[0];	$field=$info[1];
 			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'uid,pid,'.$TCA[$table]['ctrl']['label'].','.$field,
@@ -752,7 +734,7 @@ class t3lib_admin {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
 				// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
 				$tempArr = explode(',',trim($row[$field]));
-				while (list(,$file)=each($tempArr))	{
+				foreach ($tempArr as $file) {
 					$file = trim($file);
 					if ($file==$filename)	{
 						$theRecordList[]=Array('table'=>$table,'uid'=>$row['uid'],'field'=>$field,'pid'=>$row['pid']);

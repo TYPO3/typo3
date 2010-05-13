@@ -169,8 +169,7 @@ class t3lib_xml {
 			$pList='';
 			if (count($params))	{
 				$par=array();
-				reset($params);
-				while(list($key,$val)=each($params))	{
+				foreach ($params as $key => $val) {
 					$par[]=$key.'="'.htmlspecialchars($val).'"';
 				}
 				$pList=' '.implode(' ',$par);
@@ -254,8 +253,7 @@ class t3lib_xml {
 	 */
 	function getRowInXML($table,$row)	{
 		$fields = t3lib_div::trimExplode(',',$this->XML_recFields[$table],1);
-		reset($fields);
-		while(list(,$field)=each($fields))	{
+		foreach ($fields as $field) {
 			if ($row[$field] || $this->includeNonEmptyValues)	{
 				$this->lines[]=$this->Icode.$this->fieldWrap($field,$this->substNewline($this->utf8(htmlspecialchars($row[$field]))));
 			}

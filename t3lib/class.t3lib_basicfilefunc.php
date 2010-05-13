@@ -324,8 +324,7 @@ class t3lib_basicFileFunctions	{
 	 */
 	function checkPathAgainstMounts($thePath)	{
 		if ($thePath && $this->isPathValid($thePath) && is_array($this->mounts))	{
-			reset ($this->mounts);
-			while(list($k,$val)=each($this->mounts))	{
+			foreach ($this->mounts as $k => $val) {
 				if (t3lib_div::isFirstPartOfStr($thePath,$val['path']))	{
 					return $k;
 				}
@@ -342,8 +341,7 @@ class t3lib_basicFileFunctions	{
 		global $TYPO3_CONF_VARS;
 
 		if (is_array($this->mounts))	{
-			reset ($this->mounts);
-			while(list($k,$val)=each($this->mounts))	{
+			foreach ($this->mounts as $k => $val) {
 				if (t3lib_div::isFirstPartOfStr($val['path'], PATH_site.$TYPO3_CONF_VARS['BE']['fileadminDir']))	{
 					return $k;
 				}
@@ -376,8 +374,7 @@ class t3lib_basicFileFunctions	{
 	 */
 	function findTempFolder()	{
 		if ($this->tempFN && is_array($this->mounts))	{
-			reset ($this->mounts);
-			while(list($k,$val)=each($this->mounts))	{
+			foreach ($this->mounts as $k => $val) {
 				$tDir = $val['path'].$this->tempFN;
 				if (@is_dir($tDir))	{
 					return $tDir;

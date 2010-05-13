@@ -247,8 +247,7 @@ class t3lib_modSettings {
 
 		$prefix = $prefix ? $prefix : $this->prefix;
 
-		reset($SOBE->MOD_SETTINGS);
-		while(list($key)=each($SOBE->MOD_SETTINGS))	{
+		foreach ($SOBE->MOD_SETTINGS as $key => $value) {
 			if (preg_match('/^'.$prefix.'/',$key)) {
 				$this->storeList[$key]=$key;
 			}

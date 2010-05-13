@@ -141,8 +141,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 
 				// Runs through $V and generates the mail
 			if (is_array($V))	{
-				reset($V);
-				while (list($key,$val)=each($V))	{
+				foreach ($V as $key => $val) {
 					if (!t3lib_div::inList($this->reserved_names,$key))	{
  						$space = (strlen($val)>60)?LF:'';
 						$val = (is_array($val) ? implode($val,LF) : $val);

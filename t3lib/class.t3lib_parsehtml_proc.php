@@ -601,8 +601,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 			case 'db':
 				$siteURL = $this->siteUrl();
 				$blockSplit = $this->splitIntoBlock('A',$value);
-				reset($blockSplit);
-				while(list($k,$v)=each($blockSplit))	{
+				foreach ($blockSplit as $k => $v) {
 					if ($k%2)	{	// block:
 						$attribArray=$this->get_tag_attributes_classic($this->getFirstTag($v),1);
 							// If the url is local, remove url-prefix
@@ -855,7 +854,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						if (!$css)	{
 							if (!isset($this->procOptions['typolist']) || $this->procOptions['typolist'])	{
 								$parts = $this->getAllParts($this->splitIntoBlock('LI',$this->removeFirstAndLastTag($blockSplit[$k])),1,0);
-								while(list($k2)=each($parts))	{
+								foreach ($parts as $k2 => $value) {
 									$parts[$k2]=preg_replace('/['.preg_quote(LF.CR).']+/','',$parts[$k2]);	// remove all linesbreaks!
 									$parts[$k2]=$this->defaultTStagMapping($parts[$k2],'db');
 									$parts[$k2]=$this->cleanFontTags($parts[$k2],0,0,0);
@@ -1256,8 +1255,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					}
 
 						// Traverse sublines (there is typically one, except if <br/> has been converted to lines as well!)
-					reset($subLines);
-					while(list($sk)=each($subLines))	{
+					foreach ($subLines as $sk => $value) {
 
 							// Clear up the subline for DB.
 						$subLines[$sk]=$this->HTMLcleaner_db($subLines[$sk]);
@@ -1588,8 +1586,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 	 */
 	function TS_AtagToAbs($value,$dontSetRTEKEEP=FALSE)	{
 		$blockSplit = $this->splitIntoBlock('A',$value);
-		reset($blockSplit);
-		while(list($k,$v)=each($blockSplit))	{
+		foreach ($blockSplit as $k => $v) {
 			if ($k%2)	{	// block:
 				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v),1);
 

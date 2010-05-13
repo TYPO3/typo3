@@ -392,7 +392,7 @@ final class t3lib_BEfunc {
 		$list = Array();
 		if ((string)trim($in_list)!='') {
 			$tempItemArray = explode(',', trim($in_list));
-			while(list($key, $val) = each($tempItemArray)) {
+			foreach ($tempItemArray as $key => $val) {
 				$val = strrev($val);
 				$parts = explode('_', $val, 2);
 				if ((string)trim($parts[0])!='') {
@@ -1069,8 +1069,7 @@ final class t3lib_BEfunc {
 	public static function getSpecConfParametersFromArray($pArr) {
 		$out = array();
 		if (is_array($pArr)) {
-			reset($pArr);
-			while(list($k, $v) = each($pArr)) {
+			foreach ($pArr as $k => $v) {
 				$parts = explode('=', $v, 2);
 				if (count($parts)==2) {
 					$out[trim($parts[0])] = trim($parts[1]);
@@ -1390,9 +1389,8 @@ final class t3lib_BEfunc {
 			if (!is_array($impParams)) {
 				$impParams =t3lib_BEfunc::implodeTSParams(t3lib_BEfunc::getPagesTSconfig($id));
 			}
-			reset($pageTS);
 			$set = array();
-			while(list($f, $v) = each($pageTS)) {
+			foreach ($pageTS as $f => $v) {
 				$f = $TSconfPrefix.$f;
 				if ((!isset($impParams[$f])&&trim($v)) || strcmp(trim($impParams[$f]), trim($v))) {
 					$set[$f] = trim($v);
@@ -1404,11 +1402,9 @@ final class t3lib_BEfunc {
 				$TSlines = explode(LF, $pRec['TSconfig']);
 				$TSlines = array_reverse($TSlines);
 					// Reset the set of changes.
-				reset($set);
-				while(list($f, $v) = each($set)) {
-					reset($TSlines);
+				foreach ($set as $f => $v) {
 					$inserted = 0;
-					while(list($ki, $kv) = each($TSlines)) {
+					foreach ($TSlines as $ki => $kv) {
 						if (substr($kv, 0, strlen($f)+1)==$f.'=') {
 							$TSlines[$ki] = $f.'='.$v;
 							$inserted = 1;
@@ -1442,8 +1438,7 @@ final class t3lib_BEfunc {
 	public static function implodeTSParams($p, $k = '') {
 		$implodeParams = array();
 		if (is_array($p)) {
-			reset($p);
-			while(list($kb, $val) = each($p)) {
+			foreach ($p as $kb => $val) {
 				if (is_array($val)) {
 					$implodeParams = array_merge($implodeParams, t3lib_BEfunc::implodeTSParams($val, $k.$kb));
 				} else {
@@ -1537,12 +1532,11 @@ final class t3lib_BEfunc {
 	 */
 	public static function blindUserNames($usernames, $groupArray, $excludeBlindedFlag = 0) {
 		if (is_array($usernames) && is_array($groupArray)) {
-			while(list($uid, $row) = each($usernames)) {
+			foreach ($usernames as $uid => $row) {
 				$userN = $uid;
 				$set = 0;
 				if ($row['uid']!=$GLOBALS['BE_USER']->user['uid']) {
-					reset($groupArray);
-					while(list(,$v) = each($groupArray)) {
+					foreach ($groupArray as $v) {
 						if ($v && t3lib_div::inList($row['usergroup_cached_list'], $v)) {
 							$userN = $row['username'];
 							$set = 1;
@@ -1570,7 +1564,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function blindGroupNames($groups, $groupArray, $excludeBlindedFlag = 0) {
 		if (is_array($groups) && is_array($groupArray)) {
-			while(list($uid, $row) = each($groups)) {
+			foreach ($groups as $uid => $row) {
 				$groupN = $uid;
 				$set = 0;
 				if (t3lib_div::inArray($groupArray, $uid)) {
@@ -1773,7 +1767,7 @@ final class t3lib_BEfunc {
 			// Traverse files:
 		$thumbs = explode(',', $row[$field]);
 		$thumbData = '';
-		while(list(,$theFile) = each($thumbs)) {
+		foreach ($thumbs as $theFile) {
 			if (trim($theFile)) {
 				$fI = t3lib_div::split_fileref($theFile);
 				$ext = $fI['fileext'];
@@ -1999,8 +1993,7 @@ final class t3lib_BEfunc {
 			// Check, if there is an "items" array:
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$col]) && is_array($TCA[$table]['columns'][$col]['config']['items'])) {
 				// Traverse the items-array...
-			reset($TCA[$table]['columns'][$col]['config']['items']);
-			while(list($k, $v) = each($TCA[$table]['columns'][$col]['config']['items'])) {
+			foreach ($TCA[$table]['columns'][$col]['config']['items'] as $k => $v) {
 					// ... and return the first found label where the value was equal to $key
 				if (!strcmp($v[1], $key))	return $v[0];
 			}
@@ -2218,9 +2211,8 @@ final class t3lib_BEfunc {
 								$l = $value;
 							} else {
 								$rParts = t3lib_div::trimExplode(',', $value, 1);
-								reset($rParts);
 								$lA = array();
-								while(list(,$rVal) = each($rParts)) {
+								foreach ($rParts as $rVal) {
 									$rVal = intval($rVal);
 									if ($rVal>0) {
 										$r = t3lib_BEfunc::getRecordWSOL($theColConf['foreign_table'], $rVal);
@@ -2245,9 +2237,8 @@ final class t3lib_BEfunc {
 					if (!is_array($theColConf['items']) || count($theColConf['items'])==1) {
 						$l = $value ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes') : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 					} else {
-						reset($theColConf['items']);
 						$lA = Array();
-						while(list($key, $val) = each($theColConf['items'])) {
+						foreach ($theColConf['items'] as $key => $val) {
 							if ($value & pow(2, $key))	{$lA[] = $GLOBALS['LANG']->sL($val[0]);}
 						}
 						$l = implode(', ', $lA);
@@ -2413,9 +2404,8 @@ final class t3lib_BEfunc {
 	public static function makeConfigForm($configArray, $defaults, $dataPrefix) {
 		$params = $defaults;
 		if (is_array($configArray)) {
-			reset($configArray);
 			$lines = array();
-			while(list($fname, $config) = each($configArray)) {
+			foreach ($configArray as $fname => $config) {
 				if (is_array($config)) {
 					$lines[$fname] = '<strong>'.htmlspecialchars($config[1]).'</strong><br />';
 					$lines[$fname].=$config[2].'<br />';
@@ -2431,9 +2421,8 @@ final class t3lib_BEfunc {
 							$formEl = '';
 						break;
 						case 'select':
-							reset($config[3]);
 							$opt = array();
-							while(list($k, $v) = each($config[3])) {
+							foreach ($config[3] as $k => $v) {
 								$opt[] = '<option value="'.htmlspecialchars($k).'"'.($params[$fname]==$k?' selected="selected"':'').'>'.htmlspecialchars($v).'</option>';
 							}
 							$formEl = '<select name="'.$dataPrefix.'['.$fname.']">'.implode('', $opt).'</select>';
@@ -2838,8 +2827,7 @@ final class t3lib_BEfunc {
 			// Getting TS-config options for this module for the Backend User:
 		$conf = $GLOBALS['BE_USER']->getTSConfig($TSref, $modTSconfig);
 		if (is_array($conf['properties'])) {
-			reset($conf['properties']);
-			while(list($key, $val) = each($conf['properties'])) {
+			foreach ($conf['properties'] as $key => $val) {
 				if (!$val) {
 					unset($itemArray[$key]);
 				}
@@ -3172,7 +3160,7 @@ final class t3lib_BEfunc {
 		$fTWHERE = $fieldValue['config'][$prefix.'foreign_table_where'];
 		if (strstr($fTWHERE, '###REC_FIELD_')) {
 			$fTWHERE_parts = explode('###REC_FIELD_', $fTWHERE);
-			while(list($kk, $vv) = each($fTWHERE_parts)) {
+			foreach ($fTWHERE_parts as $kk => $vv) {
 				if ($kk) {
 					$fTWHERE_subpart = explode('###', $vv, 2);
 					$fTWHERE_parts[$kk] = $TSconfig['_THIS_ROW'][$fTWHERE_subpart[0]].$fTWHERE_subpart[1];
@@ -3258,7 +3246,7 @@ final class t3lib_BEfunc {
 		if ($TScID>=0) {
 			$tempConf = $GLOBALS['BE_USER']->getTSConfig('TCEFORM.'.$table, t3lib_BEfunc::getPagesTSconfig($TScID, $rootLine));
 			if (is_array($tempConf['properties'])) {
-				while(list($key, $val) = each($tempConf['properties'])) {
+				foreach ($tempConf['properties'] as $key => $val) {
 					if (is_array($val)) {
 						$fieldN = substr($key, 0, -1);
 						$res[$fieldN] = $val;
@@ -3275,8 +3263,7 @@ final class t3lib_BEfunc {
 		$res['_THIS_CID'] = $row['cid'];
 		$res['_THIS_ROW'] = $row;	// So the row will be passed to foreign_table_where_query()
 
-		reset($rootLine);
-		while(list(,$rC) = each($rootLine)) {
+		foreach ($rootLine as $rC) {
 			if (!$res['_STORAGE_PID'])	$res['_STORAGE_PID'] = intval($rC['storage_pid']);
 			if (!$res['_SITEROOT'])	$res['_SITEROOT'] = $rC['is_siteroot']?intval($rC['uid']):0;
 		}
@@ -3371,8 +3358,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function firstDomainRecord($rootLine) {
 		if (t3lib_extMgm::isLoaded('cms')) {
-			reset($rootLine);
-			while(list(,$row) = each($rootLine)) {
+			foreach ($rootLine as $row) {
 				$dRec = t3lib_BEfunc::getRecordsByField('sys_domain', 'pid', $row['uid'], ' AND redirectTo=\'\' AND hidden=0', '', 'sorting');
 				if (is_array($dRec)) {
 					reset($dRec);
@@ -3546,14 +3532,13 @@ final class t3lib_BEfunc {
 	 * @return	boolean
 	 */
 	public static function isModuleSetInTBE_MODULES($modName) {
-		reset($GLOBALS['TBE_MODULES']);
 		$loaded = array();
 
-		while(list($mkey, $list) = each($GLOBALS['TBE_MODULES'])) {
+		foreach ($GLOBALS['TBE_MODULES'] as $mkey => $list) {
 			$loaded[$mkey] = 1;
 			if (!is_array($list) && trim($list)) {
 				$subList = t3lib_div::trimExplode(',', $list, 1);
-				while(list(,$skey) = each($subList)) {
+				foreach ($subList as $skey) {
 					$loaded[$mkey.'_'.$skey] = 1;
 				}
 			}
@@ -4137,7 +4122,7 @@ final class t3lib_BEfunc {
 			);
 		}
 		$cNotice = '<a href="http://typo3.com/" target="_blank">' .
-			'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/loginlogo_transp.gif', 'width="75" height="19" vspace="2" hspace="4"') . ' alt="' . 
+			'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/loginlogo_transp.gif', 'width="75" height="19" vspace="2" hspace="4"') . ' alt="' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.logo') . '" align="left" />' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.cms') . ' ' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:version.short') . ' ' .
@@ -4379,7 +4364,7 @@ final class t3lib_BEfunc {
 	public static function processParams($params) {
 		$paramArr = array();
 		$lines = explode(LF, $params);
-		while(list(,$val) = each($lines)) {
+		foreach ($lines as $val) {
 			$val = trim($val);
 			if ($val) {
 				$pair = explode('=', $val, 2);

@@ -1307,8 +1307,7 @@ class t3lib_TStemplate	{
 	function checkFile($name,$menuArr)	{
 		t3lib_div::logDeprecatedFunction();
 
-		reset ($menuArr);
-		while (list($aKey,)=each($menuArr))	{
+		foreach ($menuArr as $aKey => $value) {
 			$menuArr[$aKey][$name] = $this->getFileName($menuArr[$aKey][$name]);
 		}
 		return $menuArr;

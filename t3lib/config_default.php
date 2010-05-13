@@ -590,8 +590,7 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE'])	{
 	require(PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php');
 } else {
 	$temp_TYPO3_LOADED_EXT = $TYPO3_LOADED_EXT;
-	reset($temp_TYPO3_LOADED_EXT);
-	while(list($_EXTKEY,$temp_lEDat)=each($temp_TYPO3_LOADED_EXT))	{
+	foreach ($temp_TYPO3_LOADED_EXT as $_EXTKEY => $temp_lEDat) {
 		if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php'])	{
 			$_EXTCONF = $TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY];
 			require($temp_lEDat['ext_localconf.php']);

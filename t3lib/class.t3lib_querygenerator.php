@@ -249,8 +249,7 @@ class t3lib_queryGenerator	{
 		$fieldListArr = array();
 		if (is_array($TCA[$this->table]))	{
 			t3lib_div::loadTCA($this->table);
-			reset($TCA[$this->table]['columns']);
-			while(list($fN)=each($TCA[$this->table]['columns']))	{
+			foreach ($TCA[$this->table]['columns'] as $fN => $value)
 				$fieldListArr[]=$fN;
 			}
 			$fieldListArr[]='uid';
@@ -283,8 +282,7 @@ class t3lib_queryGenerator	{
 			$this->fieldList = $fieldList ? $fieldList : $this->makeFieldList();
 
 			$fieldArr = t3lib_div::trimExplode(',',$this->fieldList,1);
-			reset($fieldArr);
-			while(list(,$fN)=each($fieldArr))	{
+			foreach ($fieldArr as $fN) {
 				$fC = $TCA[$this->table]['columns'][$fN];
 				$this->fields[$fN] = $fC['config'];
 				$this->fields[$fN]['exclude'] = $fC['exclude'];
@@ -411,9 +409,8 @@ class t3lib_queryGenerator	{
 	 */
 	function setAndCleanUpExternalLists($name,$list,$force='')	{
 		$fields = array_unique(t3lib_div::trimExplode(',',$list.','.$force,1));
-		reset($fields);
 		$reList=array();
-		while(list(,$fN)=each($fields))	{
+		foreach ($fields as $fN) {
 			if ($this->fields[$fN])		$reList[]=$fN;
 		}
 		$this->extFieldLists[$name]=implode(',',$reList);
@@ -537,10 +534,9 @@ class t3lib_queryGenerator	{
 			if(!$queryConfig[0] || !$queryConfig[0]['type']) $queryConfig[0] = array('type'=>'FIELD_');
 		}
 			// Traverse:
-		reset($queryConfig);
 		$c=0;
 		$arrCount=0;
-		while(list($key,$conf)=each($queryConfig))	{
+		foreach ($queryConfig as $key => $conf) {
 			if(substr($conf['type'],0,6)=='FIELD_') {
 				$fName = substr($conf['type'],6);
 				$fType = $this->fields[$fName]['type'];
@@ -589,10 +585,9 @@ class t3lib_queryGenerator	{
 		$codeArr=array();
 		if (!is_array($queryConfig))	$queryConfig=$this->queryConfig;
 
-		reset($queryConfig);
 		$c=0;
 		$arrCount=0;
-		while(list($key,$conf)=each($queryConfig))	{
+		foreach ($queryConfig as $key => $conf) {
 			$subscript = $parent.'['.$key.']';
 			$lineHTML = '';
 			$lineHTML.=$this->mkOperatorSelect($this->name.$subscript,$conf['operator'],$c,($conf['type']!='FIELD_'));
@@ -953,12 +948,11 @@ class t3lib_queryGenerator	{
  * @return	[type]		...
  */
 	function printCodeArray($codeArr,$l=0)	{
-		reset($codeArr);
 		$line='';
 		if ($l)		$indent='<td style="vertical-align:top;"><img height="1" width="50"></td>';
 		$lf=$l*30;
 		$bgColor = t3lib_div::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor2,$lf,$lf,$lf);
-		while(list($k,$v)=each($codeArr))	{
+		foreach ($codeArr as $k => $v) {
 			$line.= '<tr>'.$indent.'<td bgcolor="'.$bgColor.'"'.$this->noWrap.'>'.$v['html'].'</td></tr>';
 			if ($this->enableQueryParts)	{$line.= '<tr>'.$indent.'<td>'.$this->formatQ($v['query']).'</td></tr>';}
 			if (is_array($v['sub']))	{
@@ -1013,8 +1007,7 @@ class t3lib_queryGenerator	{
 	function mkTypeSelect($name,$fieldName,$prepend='FIELD_')	{
 		$out='<select name="'.$name.'" onChange="submit();">';
 		$out.='<option value=""></option>';
-		reset($this->fields);
-		while(list($key,)=each($this->fields)) {
+		foreach ($this->fields as $key => $value) {
 			if (!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table.':'.$key)) {
 				$label = $this->fields[$key]['label'];
 				$label_alt = $this->fields[$key]['label_alt'];
@@ -1032,9 +1025,8 @@ class t3lib_queryGenerator	{
 	 * @return	[type]		...
 	 */
 	function verifyType($fieldName)	{
-		reset($this->fields);
 		$first = '';
-		while(list($key,)=each($this->fields)) {
+		foreach ($this->fields as $key => $value) {
 			if (!$first)	$first = $key;
 			if ($key==$fieldName) return $key;
 		}
@@ -1071,8 +1063,7 @@ class t3lib_queryGenerator	{
 		$out='<input type="Text" value="'.htmlspecialchars($fieldName).'" name="'.$name.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth().'>'.$this->updateIcon();
 		$out.='<a href="#" onClick="document.forms[0][\''.$name.'\'].value=\'\';return false;"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') . ' class="absmiddle" title="Clear list" border="0"></a>';
 		$out.='<BR><select name="_fieldListDummy" size="5" onChange="document.forms[0][\''.$name.'\'].value+=\',\'+this.value">';
-		reset($this->fields);
-		while(list($key,)=each($this->fields)) {
+		foreach ($this->fields as $key => $value) {
 			if (!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table.':'.$key))	{
 				$label = $this->fields[$key]['label'];
 				$label_alt = $this->fields[$key]['label_alt'];
@@ -1094,8 +1085,7 @@ class t3lib_queryGenerator	{
 		global $TCA;
 		$out='<select name="'.$name.'" onChange="submit();">';
 		$out.='<option value=""></option>';
-		reset($TCA);
-		while(list($tN)=each($TCA)) {
+		foreach ($TCA as $tN => $value) {
 			if ($GLOBALS['BE_USER']->check('tables_select',$tN))	{
 				$out.='<option value="'.$tN.'"'.($tN==$cur ? ' selected':'').'>'.$GLOBALS['LANG']->sl($TCA[$tN]['ctrl']['title']).'</option>';
 			}
@@ -1178,9 +1168,8 @@ class t3lib_queryGenerator	{
 		$qs = '';
 			// Since we don't traverse the array using numeric keys in the upcoming whileloop make sure it's fresh and clean
 		ksort($queryConfig);
-		reset($queryConfig);
 		$first=1;
-		while(list($key,$conf) = each($queryConfig)) {
+		foreach ($queryConfig as $key => $conf) {
 			switch($conf['type']) {
 				case 'newlevel':
 					$qs.=LF.$pad.trim($conf['operator']).' ('.$this->getQuery($queryConfig[$key]['nl'],$pad.'   ').LF.$pad.')';
@@ -1333,9 +1322,8 @@ class t3lib_queryGenerator	{
 			if ($this->extFieldLists['queryOrder'])	{
 				$descParts = explode(',',$modSettings['queryOrderDesc'].','.$modSettings['queryOrder2Desc']);
 				$orderParts = explode(',',$this->extFieldLists['queryOrder']);
-				reset($orderParts);
 				$reList=array();
-				while(list($kk,$vv)=each($orderParts))	{
+				foreach ($orderParts as $kk => $vv) {
 					$reList[]=$vv.($descParts[$kk]?' DESC':'');
 				}
 				$this->extFieldLists['queryOrder_SQL'] = implode(',',$reList);

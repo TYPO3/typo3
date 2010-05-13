@@ -794,8 +794,7 @@ class t3lib_parsehtml	{
 								if (is_array($tags[$tagName]['fixAttrib']))	{
 									$tagAttrib = $this->get_tag_attributes($tagParts[1]);
 									$tagParts[1]='';
-									reset($tags[$tagName]['fixAttrib']);
-									while(list($attr,$params)=each($tags[$tagName]['fixAttrib']))	{
+									foreach ($tags[$tagName]['fixAttrib'] as $attr => $params) {
 										if (strlen($params['set']))	$tagAttrib[0][$attr] = $params['set'];
 										if (strlen($params['unset']))	unset($tagAttrib[0][$attr]);
 										if (strcmp($params['default'],'') && !isset($tagAttrib[0][$attr]))	$tagAttrib[0][$attr]=$params['default'];
@@ -1262,22 +1261,19 @@ class t3lib_parsehtml	{
 
 			// Set config properties.
 		if (is_array($TSconfig['tags.']))	{
-			reset($TSconfig['tags.']);
-			while(list($key,$tagC)=each($TSconfig['tags.']))	{
+			foreach ($TSconfig['tags.'] as $key => $tagC) {
 				if (!is_array($tagC) && $key==strtolower($key))	{
 					if (!strcmp($tagC,'0'))	unset($keepTags[$key]);
 					if (!strcmp($tagC,'1') && !isset($keepTags[$key]))	$keepTags[$key]=1;
 				}
 			}
 
-			reset($TSconfig['tags.']);
 			foreach ($TSconfig['tags.'] as $key => $tagC)	{
 				if (is_array($tagC) && $key==strtolower($key))	{
 					$key=substr($key,0,-1);
 					if (!is_array($keepTags[$key]))	$keepTags[$key]=array();
 					if (is_array($tagC['fixAttrib.']))	{
-						reset($tagC['fixAttrib.']);
-						while(list($atName,$atConfig)=each($tagC['fixAttrib.']))	{
+						foreach ($tagC['fixAttrib.'] as $atName => $atConfig) {
 							if (is_array($atConfig))	{
 								$atName=substr($atName,0,-1);
 								if (!is_array($keepTags[$key]['fixAttrib'][$atName]))	{
@@ -1298,7 +1294,7 @@ class t3lib_parsehtml	{
 			// localNesting
 		if ($TSconfig['localNesting'])	{
 			$lN = t3lib_div::trimExplode(',',strtolower($TSconfig['localNesting']),1);
-			while(list(,$tn)=each($lN))	{
+			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn]))	{
 					$keepTags[$tn]['nesting']=1;
 				}
@@ -1306,7 +1302,7 @@ class t3lib_parsehtml	{
 		}
 		if ($TSconfig['globalNesting'])	{
 			$lN = t3lib_div::trimExplode(',',strtolower($TSconfig['globalNesting']),1);
-			while(list(,$tn)=each($lN))	{
+			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn]))	{
 					if (!is_array($keepTags[$tn]))	$keepTags[$tn]=array();
 					$keepTags[$tn]['nesting']='global';
@@ -1315,7 +1311,7 @@ class t3lib_parsehtml	{
 		}
 		if ($TSconfig['rmTagIfNoAttrib'])	{
 			$lN = t3lib_div::trimExplode(',',strtolower($TSconfig['rmTagIfNoAttrib']),1);
-			while(list(,$tn)=each($lN))	{
+			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn]))	{
 					if (!is_array($keepTags[$tn]))	$keepTags[$tn]=array();
 					$keepTags[$tn]['rmTagIfNoAttrib']=1;
@@ -1324,7 +1320,7 @@ class t3lib_parsehtml	{
 		}
 		if ($TSconfig['noAttrib'])	{
 			$lN = t3lib_div::trimExplode(',',strtolower($TSconfig['noAttrib']),1);
-			while(list(,$tn)=each($lN))	{
+			foreach ($lN as $tn) {
 				if (isset($keepTags[$tn]))	{
 					if (!is_array($keepTags[$tn]))	$keepTags[$tn]=array();
 					$keepTags[$tn]['allowedAttribs']=0;
@@ -1333,7 +1329,7 @@ class t3lib_parsehtml	{
 		}
 		if ($TSconfig['removeTags'])	{
 			$lN = t3lib_div::trimExplode(',',strtolower($TSconfig['removeTags']),1);
-			while(list(,$tn)=each($lN))	{
+			foreach ($lN as $tn) {
 				$keepTags[$tn]=array();
 				$keepTags[$tn]['allowedAttribs']=0;
 				$keepTags[$tn]['rmTagIfNoAttrib']=1;
@@ -1419,8 +1415,7 @@ class t3lib_parsehtml	{
 				if (!strcmp($tagName,'img') && !isset($tagAttrib[0]['alt']))		$tagAttrib[0]['alt']='';	// Set alt attribute for all images (not XHTML though...)
 				if (!strcmp($tagName,'script') && !isset($tagAttrib[0]['type']))	$tagAttrib[0]['type']='text/javascript';	// Set type attribute for all script-tags
 				$outA=array();
-				reset($tagAttrib[0]);
-				while(list($attrib_name,$attrib_value)=each($tagAttrib[0]))	{
+				foreach ($tagAttrib[0] as $attrib_name => $attrib_value) {
 						// Set attributes: lowercase, always in quotes, with htmlspecialchars converted.
 					$outA[]=$attrib_name.'="'.$this->bidir_htmlspecialchars($attrib_value,2).'"';
 				}
