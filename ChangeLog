@@ -1,5 +1,6 @@
 2010-05-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14341: c&p error in t3lib_div::logDeprecatedFunction
 	* Fixed bug #14365: Bug: Install Tool skin is sometimes wrong (thanks to Lars Houmark)
 	* Fixed bug #14336: Merge modules "Cleanup and typo3temp/" of the Install Tool (thanks to Steffen Gebert)
 
