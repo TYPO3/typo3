@@ -149,7 +149,7 @@ class language {
 
 			// Finding the requested language in this list based on the $lang key being inputted to this function.
 		$ls = explode('|',$this->langSplit);
-		while(list($i,$v)=each($ls))	{
+		foreach ($ls as $i => $v) {
 			if ($v==$lang)	{	// Language is found. Configure it:
 				$this->langSplitIndex=$i;		// The index of the language as found in the TYPO3_languages list
 				$this->lang = $lang;			// The current language key
@@ -180,14 +180,12 @@ class language {
 	 */
 	function addModuleLabels($arr,$prefix)	{
 		if (is_array($arr))	{
-			reset($arr);
-			while(list($k,$larr)=each($arr))	{
+			foreach ($arr as $k => $larr) {
 				if (!isset($this->moduleLabels[$k]))	{
 					$this->moduleLabels[$k]=array();
 				}
 				if (is_array($larr))	{
-					reset($larr);
-					while(list($l,$v)=each($larr))	{
+					foreach ($larr as $l => $v) {
 						$this->moduleLabels[$k][$prefix.$l]=$v;
 					}
 				}
