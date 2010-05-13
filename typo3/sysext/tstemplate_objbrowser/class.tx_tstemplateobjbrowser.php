@@ -149,8 +149,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		if ($ObjectKind && is_array($TSobjTable[$ObjectKind]))	{
 			$result=array();
 			if (is_array($propertyArray))		{
-				reset($propertyArray);
-				while(list($key,$val)=each($propertyArray))	{
+				foreach ($propertyArray as $key => $val) {
 					if (t3lib_div::testInt($key))	{	// If num-arrays
 						$result[$key]=$TSobjTable[$ObjectKind]["prop"]["1,2,3"];
 					} else {	// standard
@@ -461,9 +460,8 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				// Parser Errors:
 			$pEkey = ($bType=="setup"?"config":"constants");
 			if (count($tmpl->parserErrors[$pEkey]))	{
-				reset($tmpl->parserErrors[$pEkey]);
 				$errMsg=array();
-				while(list(,$inf)=each($tmpl->parserErrors[$pEkey]))	{
+				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
 					$errMsg[]=($inf[1]).": &nbsp; &nbsp;".$inf[0];
 				}
 				$theOutput .= $this->pObj->doc->spacer(10);
@@ -521,8 +519,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('conditions'), '', 0, 1);
 
 				$out = '';
-				reset($tmpl->sections);
-				while(list($key,$val)=each($tmpl->sections))	{
+				foreach ($tmpl->sections as $key => $val) {
 					$out .= '<tr><td nowrap class="tsob-conditions"><input type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? " checked" : "") . ' />';
 					$out .= '<label for="check' .$key . '">' . $tmpl->substituteCMarkers(htmlspecialchars($val)) . '</label></td></tr>';
 				}
