@@ -489,8 +489,7 @@ class SC_mod_tools_dbint_index {
 		$codeArr['tableheader'] = array($GLOBALS['LANG']->getLL('doktype_value'), $GLOBALS['LANG']->getLL('count'));
 		$doktype= $TCA['pages']['columns']['doktype']['config']['items'];
 		if (is_array($doktype))	{
-			reset($doktype);
-			while(list($n,$setup) = each($doktype))	{
+			foreach ($doktype as $n => $setup) {
 				if ($setup[1]!='--div--')	{
 					$codeArr[$n][] = '<img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/i/' . ($PAGES_TYPES[$setup[1]]['icon'] ? $PAGES_TYPES[$setup[1]]['icon'] : $PAGES_TYPES['default']['icon']), 'width="18" height="16"') . ' hspace="4" align="top">';
 					$codeArr[$n][] = $GLOBALS['LANG']->sL($setup[0]) . ' (' . $setup[1] . ')';
@@ -527,8 +526,7 @@ class SC_mod_tools_dbint_index {
 		$countArr = $admin->countRecords($id_list);
 		if (is_array($TCA))	{
 
-			reset($TCA);
-			while(list($t)=each($TCA))	{
+			foreach ($TCA as $t => $value) {
 				if ($TCA[$t]['ctrl']['hideTable']) {
 					continue;
 				}
@@ -545,8 +543,7 @@ class SC_mod_tools_dbint_index {
 
 				$lr='';
 				if (is_array($admin->lRecords[$t]))	{
-					reset($admin->lRecords[$t]);
-					while(list(,$data)=each($admin->lRecords[$t]))	{
+					foreach ($admin->lRecords[$t] as $data) {
 						if (!t3lib_div::inList($admin->lostPagesList,$data[pid]))	{
 							$lr.= '<nobr><b><a href="index.php?SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data[uid] . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</b></nobr><br>';
 						} else {
@@ -583,7 +580,7 @@ class SC_mod_tools_dbint_index {
 
 		$code='';
 		if (is_array($fileTest['noReferences']))	{
-			while(list(,$val)=each($fileTest['noReferences']))	{
+			foreach (fileTest['noReferences'] as $val) {
 				$code.='<nobr>' . $val[0] . '/<b>' . $val[1] . '</b></nobr><br>';
 			}
 		}
@@ -591,7 +588,7 @@ class SC_mod_tools_dbint_index {
 
 		$code='';
 		if (is_array($fileTest['moreReferences']))	{
-			while(list(,$val)=each($fileTest['moreReferences']))	{
+			foreach ($fileTest['moreReferences'] as $val) {
 				$code.='<nobr>' . $val[0] . '/<b>' . $val[1] . '</b>: ' . $val[2] . ' ' . $GLOBALS['LANG']->getLL('references') . '</nobr><br>' . $val[3] . '<br><br>';
 			}
 		}
@@ -600,8 +597,7 @@ class SC_mod_tools_dbint_index {
 		$code='';
 		if (is_array($fileTest['noFile']))	{
 			ksort($fileTest['noFile']);
-			reset($fileTest['noFile']);
-			while(list(,$val)=each($fileTest['noFile']))	{
+			foreach ($fileTest['noFile'] as $val) {
 				$code.='<nobr>' . $val[0] . '/<b>' . $val[1] . '</b> ' . $GLOBALS['LANG']->getLL('isMissing') . ' </nobr><br>' . $GLOBALS['LANG']->getLL('referencedFrom') . $val[2] . '<br><br>';
 			}
 		}
