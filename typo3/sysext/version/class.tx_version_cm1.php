@@ -95,9 +95,8 @@ class tx_version_cm1 {
 			);
 
 				// Find position of "delete" element:
-			reset($menuItems);
 			$c=0;
-			while(list($k)=each($menuItems))	{
+			foreach ($menuItems as $k => $value) {
 				$c++;
 				if (!strcmp($k,'delete'))	break;
 			}
