@@ -107,10 +107,9 @@ class tx_extrapagecmoptions {
 			}
 
 				// Find delete element among the input menu items and insert the local items just before that:
-			reset($menuItems);
 			$c=0;
 			$deleteFound = FALSE;
-			while(list($k)=each($menuItems))	{
+			foreach ($menuItems as $k => $value) {
 				$c++;
 				if (!strcmp($k,'delete'))	{
 					$deleteFound = TRUE;
