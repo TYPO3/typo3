@@ -1,3 +1,7 @@
+2010-05-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14341: c&p error in t3lib_div::logDeprecatedFunction
+
 2010-05-12  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #14052: cache_treelist is out of date after setting hidden=0 (thanks to Steffen Gebert)

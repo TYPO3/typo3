@@ -5516,7 +5516,7 @@ final class t3lib_div {
 
 	/**
 	 * Logs a call to a deprecated function.
-	 * The log message will b etaken from the annotation.
+	 * The log message will be taken from the annotation.
 	 * @return	void
 	 */
 	public static function logDeprecatedFunction() {
@@ -5531,29 +5531,21 @@ final class t3lib_div {
 		} else {
 			$function = new ReflectionFunction($trail[1]['function']);
 		}
-		if (!$msg) {
-			if (preg_match('/@deprecated\s+(.*)/', $function->getDocComment(), $match)) {
-				$msg = $match[1];
-			}
+
+		$msg = '';
+		if (preg_match('/@deprecated\s+(.*)/', $function->getDocComment(), $match)) {
+			$msg = $match[1];
 		}
 
-		// trigger PHP error with a short message: <function> is deprecated (called from <source>, defined in <source>)
+			// trigger PHP error with a short message: <function> is deprecated (called from <source>, defined in <source>)
 		$errorMsg = 'Function ' . $trail[1]['function'];
 		if ($trail[1]['class']) {
 			$errorMsg .= ' of class ' . $trail[1]['class'];
 		}
 		$errorMsg .= ' is deprecated (called from '.$trail[1]['file'] . '#' . $trail[1]['line'] . ', defined in ' . $function->getFileName() . '#' . $function->getStartLine() . ')';
 
-// michael@typo3.org: Temporary disabled until error handling is implemented (follows later this week...)
-/*
-		if (defined('E_USER_DEPRECATED')) {
-			trigger_error($errorMsg, E_USER_DEPRECATED);	// PHP 5.3
-		} else {
-			trigger_error($errorMsg, E_USER_NOTICE);	// PHP 5.2
-		}
-*/
 
-		// write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
+			// write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
 		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
 		$logMsg .= '() - ' . $msg.' - ' . self::debug_trail();
 		$logMsg .= ' (' . substr($function->getFileName(), strlen(PATH_site)) . '#' . $function->getStartLine() . ')';
