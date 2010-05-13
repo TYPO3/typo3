@@ -384,3 +384,81 @@ h1,
 }
 
 /* 10: About */
+
+
+/* Stylesheet for the standalone version of the Install Tool */
+
+body.standalone {
+	background: #4f4f4f url('../Images/body-background.jpg') repeat-x fixed;
+}
+
+body.standalone #t3-install-outer {
+	margin: 0 auto;
+}
+
+body.standalone h1,
+body.standalone #t3-install-menu-border-top,
+body.standalone #t3-install-menu-bottom,
+body.standalone #t3-install-links,
+body.standalone #t3-install-box-border-top,
+body.standalone #t3-install-box-border-bottom,
+body.standalone #t3-install-copyright {
+	display: block;
+}
+
+body.standalone h1 {
+	background: url('../Images/logo.gif') no-repeat scroll 0 0 transparent;
+	text-indent:-999em;
+	margin: 2em 0 3.7em 0;
+	height: 34px;
+	width: 19em;
+	float: left;
+}
+
+body.standalone h2 {
+	padding: 3.3em 0 3.7em 17.5em;
+	margin: 0;
+	height: auto;
+	color: #ffffff;
+}
+
+body.standalone #t3-install-box-border-top {
+	height: 3px;
+	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+}
+
+body.standalone #t3-install-box-body {
+	background-color: #eeeeee;
+}
+
+body.standalone #t3-install-box-border-bottom {
+	height: 3px;
+	background: #4d4c4d url('../Images/content-bottom.png') no-repeat center top;
+}
+
+body.standalone #t3-install-menu,
+body.standalone #t3-install-box-body {
+	border: 0;
+}
+
+body.standalone #t3-install-menu-border-top {
+	width: 17.6em;
+	height: 3px;
+	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+}
+
+body.standalone #t3-install-menu {
+	background: #ebebeb url('../Images/menuBackground.gif') repeat-x left bottom;
+}
+
+body.standalone #t3-install-menu-bottom {
+	width: 17.6em;
+	height: 3px;
+	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+}
+
+body.standalone .t3-install-login h2 {
+	clear: both;
+	margin: 0;
+	padding: 0.5em 0 0.5em 3.35em;
+}

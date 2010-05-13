@@ -1,10 +1,10 @@
 /***************************************************************
 *
-*  Javascript functions to provide AJAX calls for install tool
+*  Various JavaScript functions for the Install Tool
 *
 *  Copyright notice
 *
-*  (c) 2009 Marcus Krause, Helmut Hummel <security@typo3.org>
+*  (c) 2009-2010 Marcus Krause, Helmut Hummel, Lars Houmark
 *  All rights reserved
 *
 *  This script is part of the TYPO3 backend provided by
@@ -22,8 +22,9 @@
 
 
 /**
+ * Javascript class to provide AJAX calls for Install Tool
  *
- * @author	Marcus Krause
+ * @author Marcus Krause, Helmut Hummel <security@typo3.org>
  */
 var EncryptionKey = {
 	thisScript: '../../index.php',
@@ -47,3 +48,19 @@ var EncryptionKey = {
 		});
 	}
 };
+
+/**
+ * Prototype method to detect if the Install Tool is loaded
+ * in the backend or as a standalone.
+ *
+ * If it standalone, a class is added to the body tag in order
+ * to different the CSS style for that version.
+ *
+ * @author Lars Houmark <lars@houmark.com>
+ */
+document.observe("dom:loaded", function() {
+	if (top.location === document.location) {
+			// standalone-mode, add class to the body tag
+			$(document.body).addClassName('standalone');
+	}
+});

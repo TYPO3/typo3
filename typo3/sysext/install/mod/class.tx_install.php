@@ -418,11 +418,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	function loginForm() {
 		$password = t3lib_div::_GP('password');
 		$redirect_url = $this->redirect_url ? $this->redirect_url : $this->action;
-			// Add prototype to javascript array for output
-		$this->javascript[] = '<script type="text/javascript" src="' .
-			t3lib_div::createVersionNumberedFilename(
-				'../contrib/prototype/prototype.js'
-			) . '"></script>';
 			// Get the template file
 		$templateFile = @file_get_contents(
 			PATH_site . $this->templateFilePath . 'LoginForm.html'
@@ -540,6 +535,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if ($this->step) {
 			$this->output($this->outputWrapper($this->stepOutput()));
 		} else {
+			
 				// Menu...
 			switch($this->INSTALL['type']) {
 				case 'images':
@@ -3357,14 +3353,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				);
 
 				if ($this->mode!='123') {
-					$this->javascript[] = '<script type="text/javascript" src="' .
-						t3lib_div::createVersionNumberedFilename(
-							'../contrib/prototype/prototype.js'
-						) . '"></script>';
-					$this->javascript[] = '<script type="text/javascript" src="' .
-						t3lib_div::createVersionNumberedFilename(
-							'../sysext/install/Resources/Public/Javascript/install.js'
-						) . '"></script>';
 						// Get the subpart for the regular mode
 					$regularModeSubpart = t3lib_parsehtml::getSubpart($form, '###REGULARMODE###');
 						// Define the markers content
@@ -5393,10 +5381,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return void
 	 */
 	function checkTheDatabase() {
-		$this->javascript[] = '<script type="text/javascript" src="' .
-			t3lib_div::createVersionNumberedFilename(
-				'../contrib/prototype/prototype.js'
-			) . '"></script>';
 		if (!$this->config_array['mysqlConnect']) {
 			$this->message('Database Analyser', 'Your database connection failed', '
 				<p>
@@ -7589,6 +7573,18 @@ $out="
 			$this->template = @file_get_contents(PATH_site . $this->templateFilePath . 'Install.html');
 		}
 
+			// Add prototype to javascript array for output
+		$this->javascript[] = '<script type="text/javascript" src="' .
+			t3lib_div::createVersionNumberedFilename(
+				'../contrib/prototype/prototype.js'
+			) . '"></script>';
+			
+			// Add JS functions for output
+		$this->javascript[] = '<script type="text/javascript" src="' .
+			t3lib_div::createVersionNumberedFilename(
+				'../sysext/install/Resources/Public/Javascript/install.js'
+			) . '"></script>';
+
 			// Include the default stylesheets
 		$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
 			t3lib_div::createVersionNumberedFilename($this->backPath .
@@ -7630,24 +7626,16 @@ $out="
 				t3lib_div::createVersionNumberedFilename($this->backPath .
 					'sysext/install/Resources/Public/Stylesheets/install.css'
 				) . '" />';
-			if (!$this->session->inBackend()) {
+		} else {			
 				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
 					t3lib_div::createVersionNumberedFilename($this->backPath .
-						'sysext/install/Resources/Public/Stylesheets/install_standalone.css'
+					'sysext/install/Resources/Public/Stylesheets/install.css'
 					) . '" />';
-			}
-		} else {
 			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
 				t3lib_div::createVersionNumberedFilename($this->backPath .
 					'sysext/install/Resources/Public/Stylesheets/install_login.css'
 				) . '" />';
-			if (!$this->session->inBackend()) {
-				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
-					t3lib_div::createVersionNumberedFilename($this->backPath .
-						'sysext/install/Resources/Public/Stylesheets/install_standalone.css'
-					) . '" />';
 			}
-		}
 
 			// Include javascript message
 		$this->javascript[] = $this->JSmessage ?
