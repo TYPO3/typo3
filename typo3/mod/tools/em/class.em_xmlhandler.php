@@ -202,8 +202,7 @@ class SC_mod_tools_em_xmlhandler {
 	function removeObsolete(&$extensions) {
 		if($this->useObsolete) return;
 
-		reset($extensions);
-		while (list($version, $data) = each($extensions)) {
+		foreach ($extensions as $version => $data) {
 			if($data['state']=='obsolete')
 			unset($extensions[$version]);
 		}
@@ -235,8 +234,7 @@ class SC_mod_tools_em_xmlhandler {
 	function checkReviewState(&$extensions) {
 		if ($this->useUnchecked) return;
 
-		reset($extensions);
-		while (list($version, $data) = each($extensions)) {
+		foreach ($extensions as $version => $data) {
 			if($data['reviewstate']<1)
 				unset($extensions[$version]);
 		}
@@ -250,9 +248,8 @@ class SC_mod_tools_em_xmlhandler {
 	function checkReviewStateGlobal() {
 		if($this->useUnchecked) return;
 
-		reset($this->extensionsXML);
-		while (list($extkey, $data) = each($this->extensionsXML)) {
-			while (list($version, $vdata) = each($data['versions'])) {
+		foreach ($this->extensionsXML as $extkey => $data) {
+			foreach ($data['versions'] as $version => $vdata) {
 				if($vdata['reviewstate']<1) unset($this->extensionsXML[$extkey]['versions'][$version]);
 			}
 			if(!count($this->extensionsXML[$extkey]['versions'])) unset($this->extensionsXML[$extkey]);

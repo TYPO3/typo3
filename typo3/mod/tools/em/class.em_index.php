@@ -751,9 +751,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			foreach($cat[$this->MOD_SETTINGS['listOrder']] as $catName => $extEkeys)	{
 				natcasesort($extEkeys);
-				reset($extEkeys);
 				$extensions = array();
-				while(list($extKey)=each($extEkeys))	{
+				foreach ($extEkeys as $extKey => $value) {
 					if (array_key_exists($extKey,$TYPO3_LOADED_EXT) && ($this->MOD_SETTINGS['display_shy'] || !$list[$extKey]['EM_CONF']['shy']) && $this->searchExtension($extKey,$list[$extKey]))	{
 						if (in_array($extKey, $this->requiredExt))	{
 							$loadUnloadLink = '<strong>' . $GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('extension_required_short')) . '</strong>';
@@ -808,9 +807,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				$allKeys[]='TYPE: '.$catName;
 
 				natcasesort($extEkeys);
-				reset($extEkeys);
 				$extensions = array();
-				while(list($extKey)=each($extEkeys))	{
+				foreach ($extEkeys as $extKey => $value) {
 					$allKeys[]=$extKey;
 					if ((!$list[$extKey]['EM_CONF']['shy'] || $this->MOD_SETTINGS['display_shy']) &&
 							($list[$extKey]['EM_CONF']['state']!='obsolete' || $this->MOD_SETTINGS['display_obsolete'])
@@ -905,8 +903,7 @@ EXTENSION KEYS:
 							$lines[]='<tr><td colspan="'.(3+$this->detailCols[$this->MOD_SETTINGS['display_details']]).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/i/sysf.gif', 'width="18" height="16"').'align="top" alt="" /><strong>'.htmlspecialchars($this->listOrderTitle($this->MOD_SETTINGS['listOrder'],$catName)).'</strong></td></tr>';
 
 							natcasesort($extEkeys);
-							reset($extEkeys);
-							while(list($extKey)=each($extEkeys))	{
+							foreach ($extEkeys as $extKey => $value) {
 								$version = array_keys($list[$extKey]['versions']);
 								$version = end($version);
 								$ext = $list[$extKey]['versions'][$version];
@@ -979,8 +976,7 @@ EXTENSION KEYS:
 					$content='';
 					$lines=array();
 					if (count($this->inst_keys))	{
-						reset($this->inst_keys);
-						while(list($extKey)=each($this->inst_keys))	{
+						foreach ($extEkeys as $extKey => $value) {
  							$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true);
 							if((strlen($this->listRemote_search) && !stristr($extKey,$this->listRemote_search)) || isset($this->xmlhandler->extensionsXML[$extKey])) continue;
 
@@ -1933,8 +1929,7 @@ EXTENSION KEYS:
 			require(PATH_typo3conf.$TYPO3_LOADED_EXT['_CACHEFILE'].'_ext_localconf.php');
 		} else {
 			$temp_TYPO3_LOADED_EXT = $TYPO3_LOADED_EXT;
-			reset($temp_TYPO3_LOADED_EXT);
-			while(list($_EXTKEY,$temp_lEDat)=each($temp_TYPO3_LOADED_EXT))  {
+			foreach ($temp_TYPO3_LOADED_EXT as $_EXTKEY => $temp_lEDat) {
 				if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php'])  {
 					$_EXTCONF = $TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY];
 					require($temp_lEDat['ext_localconf.php']);
@@ -3875,8 +3870,7 @@ EXTENSION KEYS:
 		$cat = $this->defaultCategories;
 		$filepath = $this->getMirrorURL();
 
-		reset($this->xmlhandler->extensionsXML);
-		while (list($extKey, $data) = each($this->xmlhandler->extensionsXML)) {
+		foreach ($this->xmlhandler->extensionsXML as $extKey => $data) {
 			$GLOBALS['LANG']->csConvObj->convArray($data,'utf-8',$GLOBALS['LANG']->charSet); // is there a better place for conversion?
 			$list[$extKey]['type'] = '_';
 			$version = array_keys($data['versions']);
@@ -3994,8 +3988,7 @@ EXTENSION KEYS:
 						' + ' . count($d['keys']) . ' ' . $GLOBALS['LANG']->getLL('detailedExtAnalysis_keys') : '') .
 					'</i>';
 					if (is_array($d['fields']))	{
-						reset($d['fields']);
-						while(list($fN) = each($d['fields']))	{
+						foreach ($d['fields'] as $fN => $value) {
 							$infoArray['dump_tf'][] = $tN.'.'.$fN;
 							if (!t3lib_div::isFirstPartOfStr($fN,$table_class_prefix))	{
 								$infoArray['NSerrors']['fields'][$fN] = $fN;
@@ -4005,8 +3998,7 @@ EXTENSION KEYS:
 						}
 					}
 					if (is_array($d['keys']))	{
-						reset($d['keys']);
-						while(list($fN)=each($d['keys']))	{
+						foreach ($d['keys'] as $fN => $value) {
 							$infoArray['dump_tf'][] = $tN.'.KEY:'.$fN;
 						}
 					}
@@ -5794,8 +5786,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		// Traverse the selected rows and dump each row as a line in the file:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$values = array();
-			reset($fieldStructure);
-			while(list($field) = each($fieldStructure))	{
+			foreach ($fieldStructure as $field => $dummyValue) {
 				$values[] = isset($row[$field]) ? "'".str_replace($search, $replace, $row[$field])."'" : 'NULL';
 			}
 			$lines[] = 'INSERT INTO '.$table.' VALUES ('.implode(', ',$values).');';
