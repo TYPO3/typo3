@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+/* IE7 only styles */
+
+/* fix position of right hand section */
+#t3-install-right {
+	padding-left: 0px !important;
+}
+/* fix background image in menu */
+#t3-install-menu li {
+	height: 1%;
+}

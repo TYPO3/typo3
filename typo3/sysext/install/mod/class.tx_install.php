@@ -7635,6 +7635,26 @@ $out="
 				'sysext/install/Resources/Public/Stylesheets/general.css'
 			) . '" />';
 
+			// Get the browser info
+		$browserInfo = t3lib_utility_Client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
+
+			// Add the stylesheet for Internet Explorer
+		if ($browserInfo['browser'] === 'msie') {
+				// IE7
+			if (intval($browserInfo['version']) === 7) {
+				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
+					t3lib_div::createVersionNumberedFilename($this->backPath .
+						'sysext/install/Resources/Public/Stylesheets/ie7.css'
+				) . '" />';
+				// IE6
+			} elseif (intval($browserInfo['version']) < 7) {
+				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
+					t3lib_div::createVersionNumberedFilename($this->backPath .
+						'sysext/install/Resources/Public/Stylesheets/ie6.css'
+				) . '" />';
+			}
+		}
+
 			// Include the stylesheets based on screen
 		if ($this->mode == '123') {
 			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
