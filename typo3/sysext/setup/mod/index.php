@@ -112,6 +112,7 @@ class SC_mod_user_setup_index {
 
 	protected $tsFieldConf;
 
+	protected $saveData = FALSE;
 	protected $passwordIsUpdated = FALSE;
 	protected $passwordIsSubmitted = FALSE;
 	protected $setupIsUpdated = FALSE;
@@ -130,6 +131,7 @@ class SC_mod_user_setup_index {
 	 * @return	void
 	 */
 	function storeIncomingData()	{
+		/* @var $BE_USER t3lib_beUserAuth */
 		global $BE_USER;
 
 			// First check if something is submittet in the data-array from POST vars
@@ -159,7 +161,7 @@ class SC_mod_user_setup_index {
 						unset ($BE_USER->uc[$key]);
 					}
 				}
-			} else {
+			} elseif ($d['save']) {
 					// save all submitted values if they are no array (arrays are with table=be_users) and exists in $GLOBALS['TYPO3_USER_SETTINGS'][columns]
 				foreach($columns as $field => $config) {
 					if ($config['table']) {
@@ -176,7 +178,31 @@ class SC_mod_user_setup_index {
 						$BE_USER->uc[$field] = htmlspecialchars($d[$field]);
 					}
 				}
+
+					// Personal data for the users be_user-record (email, name, password...)
+					// If email and name is changed, set it in the users record:
+				$be_user_data = $d['be_users'];
+
+				$this->passwordIsSubmitted = (strlen($be_user_data['password']) > 0);
+				$passwordIsConfirmed = ($this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2']);
+
+					// Update the real name:
+				if ($be_user_data['realName'] !== $BE_USER->user['realName']) {
+					$BE_USER->user['realName'] = $storeRec['be_users'][$beUserId]['realName'] = substr($be_user_data['realName'], 0, 80);
+				}
+					// Update the email address:
+				if ($be_user_data['email'] !== $BE_USER->user['email']) {
+					$BE_USER->user['email'] = $storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 80);
+				}
+					// Update the password:
+				if ($passwordIsConfirmed) {
+					$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
+					$this->passwordIsUpdated = TRUE;
+				}
+
+				$this->saveData = TRUE;
 			}
+
 			$BE_USER->overrideUC();	// Inserts the overriding values.
 
 			$save_after = md5(serialize($BE_USER->uc));
@@ -186,30 +212,8 @@ class SC_mod_user_setup_index {
 				$this->setupIsUpdated = TRUE;
 			}
 
-
-				// Personal data for the users be_user-record (email, name, password...)
-				// If email and name is changed, set it in the users record:
-			$be_user_data = $d['be_users'];
-
-			$this->passwordIsSubmitted = (strlen($be_user_data['password']) > 0);
-			$passwordIsConfirmed = ($this->passwordIsSubmitted && $be_user_data['password'] === $be_user_data['password2']);
-
-				// Update the real name:
-			if ($be_user_data['realName'] !== $BE_USER->user['realName']) {
-				$BE_USER->user['realName'] = $storeRec['be_users'][$beUserId]['realName'] = substr($be_user_data['realName'], 0, 80);
-			}
-				// Update the email address:
-			if ($be_user_data['email'] !== $BE_USER->user['email']) {
-				$BE_USER->user['email'] = $storeRec['be_users'][$beUserId]['email'] = substr($be_user_data['email'], 0, 80);
-			}
-				// Update the password:
-			if ($passwordIsConfirmed) {
-				$storeRec['be_users'][$beUserId]['password'] = $be_user_data['password2'];
-				$this->passwordIsUpdated = TRUE;
-			}
-
 				// Persist data if something has changed:
-			if (count($storeRec)) {
+			if (count($storeRec) && $this->saveData) {
 					// Make instance of TCE for storing the changes.
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 				$tce->stripslashes_values=0;
@@ -365,7 +369,7 @@ class SC_mod_user_setup_index {
 		$this->content .= $this->doc->section('',
 			t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $BACK_PATH) . '
 			<input type="hidden" name="simUser" value="'.$this->simUser.'" />
-			<input type="submit" name="submit" value="'.$LANG->getLL('save').'" />
+			<input type="submit" name="data[save]" value="'.$LANG->getLL('save').'" />
 			<input type="submit" name="data[setValuesToDefault]" value="'.$LANG->getLL('resetConfiguration').'" onclick="return confirm(\''.$LANG->getLL('setToStandardQuestion').'\');" />
 			<input type="submit" name="data[clearSessionVars]" value="'.$LANG->getLL('clearSessionVars').'" />'
 		);
