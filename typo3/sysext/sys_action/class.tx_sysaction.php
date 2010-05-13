@@ -126,9 +126,8 @@ class tx_sysaction extends mod_user_task {
 							$opt=array();
 
 							$grList = t3lib_div::trimExplode(",",$actionRow["t1_allowed_groups"],1);
-							reset($grList);
 							$opt[]='<option value=""></option>';
-							while(list(,$gu)=each($grList))	{
+							foreach ($grlist as $gu) {
 								$checkGr = t3lib_BEfunc::getRecord("be_groups",$gu);
 								if (is_array($checkGr))	$opt[]='<option value="'.$checkGr["uid"].'"'.(t3lib_div::inList($userRecord["usergroup"],$checkGr["uid"])?" selected":"").'>'.htmlspecialchars($checkGr["title"]).'</option>';
 							}
@@ -220,8 +219,7 @@ class tx_sysaction extends mod_user_task {
 						$dbAnalysis->getFromDB();
 
 						$lines=array();
-						reset($dbAnalysis->itemArray);
-						while(list(,$el)=each($dbAnalysis->itemArray))	{
+						foreach ($dbAnalysis->itemArray as $el) {
 							$path = t3lib_BEfunc::getRecordPath ($el["id"],$this->perms_clause,$this->BE_USER->uc["titleLen"]);
 							$lines[]='<tr>
 								<td nowrap class="bgColor4">'.
@@ -373,15 +371,13 @@ class tx_sysaction extends mod_user_task {
 			// All current groups:
 		$cGroups = array_flip(t3lib_div::trimExplode(",",$curUserGroup,1));
 		$grList = t3lib_div::intExplode(",",$allowedGroups);
-		reset($grList);
-		while(list(,$gu)=each($grList))	{
+		foreach ($grList as $gu) {
 			unset($cGroups[$gu]);	// Remove the group if it's in the array for some reason...
 		}
 			// reverse array again and set incoming groups:
 		$cGroups=array_keys($cGroups);
 		if (is_array($inGroups))	{
-			reset($inGroups);
-			while(list(,$gu)=each($inGroups))	{
+			foreach ($inGroups as $gu) {
 				$checkGr = t3lib_BEfunc::getRecord("be_groups",$gu);
 				if (is_array($checkGr) && in_array($gu,$grList))	{
 					$cGroups[]=$gu;
