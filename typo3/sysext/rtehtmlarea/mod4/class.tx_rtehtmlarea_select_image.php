@@ -931,8 +931,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		if ($expandFolder && $this->checkFolder($expandFolder))	{
 			$files = t3lib_div::getFilesInDir($expandFolder,($plainFlag?'jpg,jpeg,gif,png':$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),1,1);	// $extensionList="",$prependPath=0,$order="")
 			if (is_array($files))	{
-				reset($files);
-
 				$out.=$this->barheader(sprintf($LANG->getLL('images').' (%s):',count($files)));
 
 				$titleLen = intval($BE_USER->uc['titleLen']);
@@ -946,7 +944,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$imgObj->tempPath=PATH_site.$imgObj->tempPath;
 
 				$lines=array();
-				while(list(,$filepath)=each($files))	{
+				foreach ($files as $filepath) {
 					$fI=pathinfo($filepath);
 
 					$origFile = t3lib_div::rawUrlEncodeFP(substr($filepath,strlen(PATH_site)));
@@ -1019,7 +1017,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						</tr>';
 
 						// Traverse files:
-					while(list(,$filepath)=each($files))	{
+					foreach ($files as $filepath) {
 						$fI = pathinfo($filepath);
 
 							// URL of image:

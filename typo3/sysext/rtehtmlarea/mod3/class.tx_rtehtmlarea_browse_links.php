@@ -759,8 +759,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				if (is_array($this->thisConfig['userLinks.']))	{
 					$subcats=array();
 					$v=$this->thisConfig['userLinks.'];
-					reset($v);
-					while(list($k2)=each($v))	{
+					foreach ($v as $k2 => $dummyValue) {
 						$k2i = intval($k2);
 						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
 

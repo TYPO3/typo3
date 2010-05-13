@@ -179,8 +179,7 @@ class tx_rtehtmlarea_user {
 		if (is_array($thisConfig['userElements.']))	{
 
 			$categories=array();
-			reset($thisConfig['userElements.']);
-			while(list($k)=each($thisConfig['userElements.']))	{
+			foreach ($thisConfig['userElements.'] as $k => $value) {
 				$ki=intval($k);
 				$v = $thisConfig['userElements.'][$ki.'.'];
 				if (substr($k,-1)=="." && is_array($v))	{
@@ -195,9 +194,8 @@ class tx_rtehtmlarea_user {
 								if ($v['path'] && @is_dir(PATH_site.$v['path']))	{
 									$files = t3lib_div::getFilesInDir(PATH_site.$v['path'],'gif,jpg,jpeg,png',0,'');
 									if (is_array($files))	{
-										reset($files);
 										$c=0;
-										while(list(,$filename)=each($files))	{
+										foreach ($files as $filename) {
 											$iInfo = @getimagesize(PATH_site.$v['path'].$filename);
 											$iInfo = $this->calcWH($iInfo,50,100);
 
@@ -221,8 +219,7 @@ class tx_rtehtmlarea_user {
 								$v=$mArray;
 							}
 						}
-						reset($v);
-						while(list($k2)=each($v))	{
+						foreach ($v as $k2 => $dummyValue) {
 							$k2i = intval($k2);
 							if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
 								$title = trim($v[$k2i]);
@@ -271,8 +268,7 @@ class tx_rtehtmlarea_user {
 
 			# Render menu of the items:
 			$lines=array();
-			reset($categories);
-			while(list($k,$v)=each($categories))	{
+			foreach ($categories as $k => $v) {
 				$title = trim($thisConfig['userElements.'][$k]);
 				$openK = $k;
 				if (!$title)	{

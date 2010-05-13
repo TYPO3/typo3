@@ -227,8 +227,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 				$classesAnchor = array();
 				$classesAnchor['all'] = array();
 				if (is_array($RTEsetup['properties']['classesAnchor.'])) {
-					reset($RTEsetup['properties']['classesAnchor.']);
-					while(list($label,$conf)=each($RTEsetup['properties']['classesAnchor.'])) {
+					foreach ($RTEsetup['properties']['classesAnchor.'] as $label => $conf) {
 						if (in_array($conf['class'], $classesAnchorArray)) {
 							$classesAnchor['all'][] = $conf['class'];
 							if (in_array($conf['type'], $anchorTypes)) {
@@ -246,10 +245,8 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 						}
 					}
 				}
-				reset($anchorTypes);
-				while (list(, $anchorType) = each($anchorTypes) ) {
-					reset($classesAnchorArray);
-					while(list(,$class)=each($classesAnchorArray)) {
+				foreach ($anchorTypes as $anchorType) {
+					foreach ($classesAnchorArray as $class) {
 						if (!in_array($class, $classesAnchor['all']) || (in_array($class, $classesAnchor['all']) && is_array($classesAnchor[$anchorType]) && in_array($class, $classesAnchor[$anchorType]))) {
 							$selected = '';
 							if ($this->setClass == $class || (!$this->setClass && $this->classesAnchorDefault[$anchorType] == $class)) {
@@ -622,8 +619,7 @@ class tx_rtehtmlarea_dam_browse_links extends tx_dam_browse_media {
 				if (is_array($this->thisConfig['userLinks.']))	{
 					$subcats=array();
 					$v=$this->thisConfig['userLinks.'];
-					reset($v);
-					while(list($k2)=each($v))	{
+					foreach ($v as $k2 => $dummyValue) {
 						$k2i = intval($k2);
 						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.']))	{
 
