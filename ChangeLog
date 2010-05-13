@@ -1,3 +1,7 @@
+2010-05-13  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14336: Merge modules "Cleanup and typo3temp/" of the Install Tool (thanks to Steffen Gebert)
+
 2010-05-13  Patrick Broens  <patrick@patrickbroens.nl>
 
 	* Fixed bug #14379: CSS issues for Internet Explorer version 6 and 7 (thanks to Jigal van Hemert)

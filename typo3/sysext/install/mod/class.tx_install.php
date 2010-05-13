@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -222,8 +222,7 @@ class tx_install extends t3lib_install {
 		'update' => 'Update Wizard',
 		'images' => 'Image Processing',
 		'extConfig' => 'All Configuration',
-		'typo3temp' => 'typo3temp/',
-		'cleanup' => 'Clean up database',
+		'cleanup' => 'Clean up',
 		'phpinfo' => 'phpinfo()',
 		'typo3conf_edit' => 'Edit files in typo3conf/',
 		'about' => 'About'
@@ -272,7 +271,7 @@ class tx_install extends t3lib_install {
 		if ($_GET['TYPO3_INSTALL']['type']) {
 			$allowedTypes = array(
 				'config', 'database', 'update', 'images', 'extConfig',
-				'typo3temp', 'cleanup', 'phpinfo', 'typo3conf_edit', 'about'
+				'cleanup', 'phpinfo', 'typo3conf_edit', 'about'
 			);
 
 			if (in_array($_GET['TYPO3_INSTALL']['type'], $allowedTypes)) {
@@ -651,7 +650,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							time.
 							<br />
 							The problem is solved by <a href="' .
-							htmlspecialchars($this->setScriptName('typo3temp')) .
+							htmlspecialchars($this->setScriptName('cleanup')) .
 							'">clearing the typo3temp/ folder</a>.
 							Also make sure to clear the cache_pages table.
 						</p>
@@ -664,7 +663,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							URLs etc.
 							<br />
 							The problem is solved by <a href="' .
-							htmlspecialchars($this->setScriptName('typo3temp')) .
+							htmlspecialchars($this->setScriptName('cleanup')) .
 							'">clearing the typo3temp/ folder</a>.
 							Also make sure to clear the cache_pages table.
 						</p>
@@ -719,11 +718,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					);
 						// Send content to the page wrapper function
 					$this->output($this->outputWrapper($content));
-				break;
-				case 'typo3temp':
-					$this->checkTheConfig();
-					$this->silent=0;
-					$this->typo3TempManager();
 				break;
 				case 'cleanup':
 					$this->checkTheConfig();
@@ -816,17 +810,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							does.
 						</p>
 						<p>
-							<strong>6: typo3temp/</strong>
+							<strong>6: Cleanup</strong>
 							<br />
-							Here you can manage the files in typo3temp/ folder
-							in a simple manner. typo3temp/ contains temporary
-							files, which may still be used by the website, but
-							some may not. By searching for files with old
-							access-dates, you can possibly manage to delete
-							unused files rather than files still used. However
-							if you delete a temporary file still in use, it\'s
-							just regenerated as long as you make sure to clear
-							the cache tables afterwards.
+							Here you can clean up the temporary files in typo3temp/
+							folder and the tables used for caching of data in
+							your database.
 						</p>
 					');
 
@@ -1603,23 +1591,116 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 
 
-
-
-
 	/*******************************
 	 *
-	 * typo3temp/ manager
+	 * cleanup manager
 	 *
 	 *******************************/
 
 	/**
-	 * Provides a tool for deleting temporary files located in typo3temp/
+	 * Provides a tool cleaning up various tables in the database
 	 *
 	 * @return void
+	 * @author Robert Lemke <rl@robertlemke.de>
+	 * @todo Add more functionality ...
 	 */
-	function typo3TempManager() {
-		$headCode = 'typo3temp/ directory';
-		$this->message($headCode, 'What is it?', '
+	function cleanupManager() {
+		$headCode = 'Clean up your TYPO3 installation';
+		$this->message($headCode, 'Database cache tables', '
+			<p>
+				<strong>Clear cached image sizes</strong>
+				<br />
+				Clears the cache used for memorizing sizes of all images used in
+				your website. This information is cached in order to gain
+				performance and will be stored each time a new image is being
+				displayed in the frontend.
+			</p>
+			<p>
+				You should <em>Clear All Cache</em> in the backend after
+				clearing this cache.
+			</p>
+		');
+
+		$tables = $this->getListOfTables();
+		$action = $this->INSTALL['cleanup_type'];
+
+		if (($action == 'cache_imagesizes' || $action == 'all') && isset ($tables['cache_imagesizes'])) {
+			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_imagesizes');
+		}
+
+		$cleanupType = array (
+			'all' => 'Clean up everything',
+		);
+
+			// Get cache_imagesizes info
+		if (isset ($tables['cache_imagesizes'])) {
+			$cleanupType['cache_imagesizes'] = 'Clear cached image sizes only';
+			$cachedImageSizesCounter = intval($GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_imagesizes'));
+		} else {
+			$this->message($headCode, 'Table cache_imagesizes does not exist!', '
+				<p>
+					The table cache_imagesizes was not found. Please check your
+					database settings in Basic Configuration and compare your
+					table definition with the Database Analyzer.
+				</p>
+			', 2);
+			$cachedImageSizesCounter = 'unknown';
+		}
+			// Get the template file
+		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CleanUpManager.html');
+			// Get the template part from the file
+		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
+			// Get the subpart for the 'Clean up' dropdown
+		$cleanUpOptionsSubpart = t3lib_parsehtml::getSubpart($template, '###CLEANUPOPTIONS###');
+		$cleanUpOptions = array();
+
+		foreach ($cleanupType as $cleanUpKey => $cleanUpValue) {
+				// Define the markers content
+			$cleanUpMarkers = array(
+				'value' => htmlspecialchars($cleanUpKey),
+				'data' => htmlspecialchars($cleanUpValue)
+			);
+				// Fill the markers in the subpart
+			$cleanUpOptions[] = t3lib_parsehtml::substituteMarkerArray(
+				$cleanUpOptionsSubpart,
+				$cleanUpMarkers,
+				'###|###',
+				1,
+				1
+			);
+		}
+			// Substitute the subpart for the 'Clean up' dropdown
+		$content = t3lib_parsehtml::substituteSubpart(
+			$template,
+			'###CLEANUPOPTIONS###',
+			implode(chr(10), $cleanUpOptions)
+		);
+			// Define the markers content
+		$markers = array(
+			'numberCached' => 'Number cached image sizes:',
+			'number' => $cachedImageSizesCounter,
+			'action' => $this->action,
+			'cleanUp' => 'Clean up',
+			'execute' => 'Execute'
+		);
+			// Fill the markers
+		$content = t3lib_parsehtml::substituteMarkerArray(
+			$content,
+			$markers,
+			'###|###',
+			1,
+			1
+		);
+			// Add the content to the message array
+		$this->message($headCode, 'Statistics', $content, 1);
+
+
+
+
+
+
+
+		$this->message($headCode, 'typo3temp/ folder', '
 			<p>
 				TYPO3 uses this directory for temporary files, mainly processed
 				and cached images.
@@ -1833,125 +1914,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		);
 			// Add the content to the message array
 		$this->message($headCode, 'Statistics', $content, 1);
-			// Output the page
-		$this->output($this->outputWrapper($this->printAll()));
-	}
 
 
-
-
-
-
-
-
-
-	/*******************************
-	 *
-	 * cleanup manager
-	 *
-	 *******************************/
-
-	/**
-	 * Provides a tool cleaning up various tables in the database
-	 *
-	 * @return void
-	 * @author Robert Lemke <rl@robertlemke.de>
-	 * @todo Add more functionality ...
-	 */
-	function cleanupManager() {
-		$headCode = 'Clean up database';
-		$this->message($headCode, 'What is it?', '
-			<p>
-				This function will become a general clean up manager for various
-				tables used by TYPO3. By now you can only empty the cache which
-				is used for storing image sizes of all pictures used in TYPO3.
-			</p>
-			<p>
-				<strong>Clear cached image sizes</strong>
-				<br />
-				Clears the cache used for memorizing sizes of all images used in
-				your website. This information is cached in order to gain
-				performance and will be stored each time a new image is being
-				displayed in the frontend.
-			</p>
-			<p>
-				You should <em>Clear All Cache</em> in the backend after
-				clearing this cache.
-			</p>
-		');
-
-		$tables = $this->getListOfTables();
-		$action = $this->INSTALL['cleanup_type'];
-
-		if (($action == 'cache_imagesizes' || $action == 'all') && isset ($tables['cache_imagesizes'])) {
-			$GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('cache_imagesizes');
-		}
-
-		$cleanupType = array (
-			'all' => 'Clean up everything',
-		);
-
-			// Get cache_imagesizes info
-		if (isset ($tables['cache_imagesizes'])) {
-			$cleanupType['cache_imagesizes'] = 'Clear cached image sizes only';
-			$cachedImageSizesCounter = intval($GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'cache_imagesizes'));
-		} else {
-			$this->message($headCode, 'Table cache_imagesizes does not exist!', '
-				<p>
-					The table cache_imagesizes was not found. Please check your
-					database settings in Basic Configuration and compare your
-					table definition with the Database Analyzer.
-				</p>
-			', 2);
-			$cachedImageSizesCounter = 'unknown';
-		}
-			// Get the template file
-		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'CleanUpManager.html');
-			// Get the template part from the file
-		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
-			// Get the subpart for the 'Clean up' dropdown
-		$cleanUpOptionsSubpart = t3lib_parsehtml::getSubpart($template, '###CLEANUPOPTIONS###');
-		$cleanUpOptions = array();
-
-		foreach ($cleanupType as $cleanUpKey => $cleanUpValue) {
-				// Define the markers content
-			$cleanUpMarkers = array(
-				'value' => htmlspecialchars($cleanUpKey),
-				'data' => htmlspecialchars($cleanUpValue)
-			);
-				// Fill the markers in the subpart
-			$cleanUpOptions[] = t3lib_parsehtml::substituteMarkerArray(
-				$cleanUpOptionsSubpart,
-				$cleanUpMarkers,
-				'###|###',
-				1,
-				1
-			);
-		}
-			// Substitute the subpart for the 'Clean up' dropdown
-		$content = t3lib_parsehtml::substituteSubpart(
-			$template,
-			'###CLEANUPOPTIONS###',
-			implode(chr(10), $cleanUpOptions)
-		);
-			// Define the markers content
-		$markers = array(
-			'numberCached' => 'Number cached image sizes:',
-			'number' => $cachedImageSizesCounter,
-			'action' => $this->action,
-			'cleanUp' => 'Clean up',
-			'execute' => 'Execute'
-		);
-			// Fill the markers
-		$content = t3lib_parsehtml::substituteMarkerArray(
-			$content,
-			$markers,
-			'###|###',
-			1,
-			1
-		);
-			// Add the content to the message array
-		$this->message($headCode, 'Statistics', $content, 1);
 			// Output the page
 		$this->output($this->outputWrapper($this->printAll()));
 	}
