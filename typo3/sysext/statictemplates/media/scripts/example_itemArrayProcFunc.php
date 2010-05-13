@@ -73,10 +73,9 @@
  */
 function user_itemArrayProcFuncTest($menuArr,$conf)	{
 	if ($conf['demoItemStates'])	{		// Used in the example of item states
-		reset($menuArr);
 		$c=0;
 		$teststates=explode(',','NO,ACT,IFSUB,CUR,USR,SPC,USERDEF1,USERDEF2');
-		while(list($k,$v)=each($menuArr))	{
+		foreach ($menuArr as $k => $v) {
 			$menuArr[$k]['ITEM_STATE']=$teststates[$c];
 			$menuArr[$k]['title'].= ($teststates[$c] ? ' ['.$teststates[$c].']' : '');
 			$c++;

@@ -337,8 +337,7 @@ GL'.$this->WMid.'_out("");';
 
 		$TEST='';
 		if (count($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']))	{
-			reset($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']);
-			while(list(,$mIdStr)=each($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid']))	{
+			foreach ($GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'] as $mIdStr) {
 				$this->WMhideCode.='
 GL_hideAll("'.$mIdStr.'");';
 				$this->WMrestoreScript.='
