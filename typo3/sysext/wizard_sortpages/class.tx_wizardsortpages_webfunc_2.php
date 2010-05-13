@@ -97,8 +97,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 					$tce->stripslashes_values=0;
 					$menuItems = array_reverse($menuItems);
 					$cmd=array();
-					reset($menuItems);
-					while(list(,$r)=each($menuItems))	{
+					foreach ($menuItems as $r) {
 						$cmd['pages'][$r['uid']]['move']=$this->pObj->id;
 					}
 					$tce->start(array(),$cmd);
@@ -109,7 +108,6 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 
 				//
 			$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
-			reset($menuItems);
 			$lines=array();
 				$lines[]= '<tr>
 					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title').'</b></td>
@@ -117,7 +115,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp').'</b></td>
 					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate').'</b></td>
 					</tr>';
-			while(list(,$rec)=each($menuItems))	{
+			foreach ($menuItems as $rec) {
 				$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);	// edit permissions for that page!
 				$pRec = t3lib_BEfunc::getRecord ('pages',$rec['uid'],'uid',' AND '.$m_perms_clause);
 				$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],'align="top" '.t3lib_BEfunc::titleAttribForPages($rec)).
