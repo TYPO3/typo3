@@ -187,15 +187,15 @@ class SC_mod_tools_log_index {
 
 		// Adding groups to the users_array
 		$groups = t3lib_BEfunc::getGroupNames();
-			if (is_array($groups))	{
-			while(list(,$grVals)=each($groups))	{
+		if (is_array($groups))	{
+			foreach ($groups as $grVals) {
 				$this->MOD_MENU['users']['gr-'.$grVals['uid']] = 'Group: '.$grVals['title'];
 			}
 		}
 
 		$users = t3lib_BEfunc::getUserNames();
 		if (is_array($users))	{
-			while(list(,$grVals)=each($users))	{
+			foreach ($users as $grVals) {
 				$this->MOD_MENU['users']['us-'.$grVals['uid']] = 'User: '.$grVals['username'];
 			}
 		}
@@ -341,7 +341,7 @@ class SC_mod_tools_log_index {
 		if (substr($this->MOD_SETTINGS['users'],0,3) == "gr-")	{	// All users
 			$this->be_user_Array = t3lib_BEfunc::blindUserNames($this->be_user_Array,array(substr($this->MOD_SETTINGS['users'],3)),1);
 			if (is_array($this->be_user_Array))	{
-				while(list(,$val)=each($this->be_user_Array))	{
+				foreach ($this->be_user_Array as $val) {
 					if ($val['uid']!=$BE_USER->user['uid'])	{
 						$selectUsers[]=$val['uid'];
 					}
