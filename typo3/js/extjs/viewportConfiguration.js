@@ -24,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+Ext.ns('TYPO3');
+
 /**
  * The backend viewport configuration
  *
@@ -75,7 +77,7 @@ TYPO3.Viewport.configuration = {
 		}]
 	}, {
 		region: 'south',
-		xtype: 'tabpanel',
+		xtype: 'typo3DebugPanel',
 		collapsible: true,
 		collapseMode: 'mini',
 		hideCollapseTool: true,
@@ -84,30 +86,7 @@ TYPO3.Viewport.configuration = {
 		autoScroll: true,
 		hidden: true,
 		height: 200,
-		title: 'Debug-Console',
 		id: 'typo3-debug-console',
-		border: false,
-		enableTabScroll: true,
-		items: [{
-			title: "",
-			id: 'typo3-debug-console-closerTab',
-			border: false,
-			closable: false,
-			listeners: {
-				activate: function(tab) {
-					var i, id = [], tabCount = tab.ownerCt.items.getCount();
-						// get tab id's
-					for (var i = 1; i < tabCount; i++) {
-						id.push(tab.ownerCt.items.keys[i]);
-					}
-						// remove all tabs except first
-					for (var i = 0; i < id.length; i++) {
-						tab.ownerCt.remove(id[i]);
-					}
-					tab.ownerCt.hide();
-					tab.ownerCt.fireEvent("resize");
-				}
-			}
-		}]
+		border: false
 	}]
 };

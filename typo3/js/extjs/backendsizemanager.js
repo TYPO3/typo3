@@ -35,8 +35,14 @@ TYPO3.BackendSizeManager = function() {
 	var resizeBackend = function() {
 		var viewportHeight = document.viewport.getHeight();
 		var topHeight = Ext.get('typo3-topbar').getHeight();
+
+		var consoleHeight = 0;
 		var debugConsole = Ext.get('typo3-debug-console');
-		var consoleHeight = debugConsole.isVisible() ? 0 : debugConsole.getHeight() + debugConsole.getHeight();
+		if (debugConsole.isVisible()) {
+			consoleHeight = debugConsole.getHeight() +
+				Ext.get('typo3-debug-console-xsplit').getHeight()
+		}
+
 		var styles = {
 			height: (viewportHeight - topHeight - consoleHeight) + 'px'
 		}

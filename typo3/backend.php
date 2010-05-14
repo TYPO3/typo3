@@ -128,8 +128,10 @@ class TYPO3backend {
 			'js/flashupload.js',
 			'../t3lib/jsfunc.evalfield.js',
 			'../t3lib/js/extjs/ux/flashmessages.js',
+			'../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
 			'js/backend.js',
 			'js/loginrefresh.js',
+			'js/extjs/debugPanel.js',
 			'js/extjs/viewport.js',
 			'js/extjs/viewportConfiguration.js',
 		);
@@ -389,6 +391,8 @@ class TYPO3backend {
 			'refresh_login_refresh_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_refresh_button'),
 			'refresh_direct_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_direct_logout_button'),
 			'tabs_closeAll' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tabs.closeAll'),
+			'tabs_closeOther' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tabs.closeOther'),
+			'tabs_close' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tabs.close'),
 		);
 		$t3LLLfileUpload = array(
 			'windowTitle' => $GLOBALS['LANG']->getLL('fileUpload_windowTitle'),

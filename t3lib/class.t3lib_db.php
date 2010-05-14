@@ -1374,7 +1374,8 @@ class t3lib_DB {
 					'lastBuiltQuery' => ($query ? $query : $this->debug_lastBuiltQuery),
 					'debug_backtrace' => t3lib_div::debug_trail(),
 				),
-				'SQL debug'
+				$func,
+				is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debug')) ? '' : 'DB Error'
 			);
 		}
 	}

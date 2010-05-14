@@ -263,7 +263,9 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="toolbarItems.shortcutsDelete">Delete Shortcut</label>
 			<label index="toolbarItems.search">Search</label>
 			<label index="toolbarItems.workspace">Workspace</label>
-			<label index="tabs.closeAll">Close all</label>
+			<label index="tabs.closeAll">Close All Tabs</label>
+			<label index="tabs.closeOther">Close Other Tabs</label>
+			<label index="tabs.close">Close Tab</label>
 		</languageKey>
 	</data>
 </T3locallang>

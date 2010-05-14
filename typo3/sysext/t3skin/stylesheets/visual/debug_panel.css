@@ -1,0 +1,20 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+TYPO3 debug panel
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-debugPanel-dragDropOver {
+}
+
+.typo3-debugPanel-dragDropArrowDown {
+	background-image: url('../../icons/gfx/arrowdown.png');
+	display: block;
+	visibility: visible;
+	z-index: 20000;
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	top: 0;
+	left: 0;
+}

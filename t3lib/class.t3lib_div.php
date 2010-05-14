@@ -3576,9 +3576,10 @@ final class t3lib_div {
 	 *
 	 * @param	mixed		Variable to print
 	 * @param	string		The header.
+	 * @param	string		Group for the debug console
 	 * @return	void
 	 */
-	public static function debug($var = '', $header = '')	{
+	public static function debug($var = '', $header = '', $group = 'Debug')	{
 			// buffer the output of debug if no buffering started before
 		if (ob_get_level()==0) {
 			ob_start();
@@ -3617,59 +3618,44 @@ final class t3lib_div {
 		}
 
 		if (TYPO3_MODE === 'BE') {
+			$group = htmlspecialchars($group);
+
+			if ($header !== '') {
+				$tabHeader = htmlspecialchars($header);
+			} else {
 			$tabHeader = 'Debug';
-			if ($header) {
-				$tabHeader .= ': ' . htmlspecialchars($header);
 			}
+			
 			if (is_object($var)) {
 				$debug = str_replace(
-					array('"', "\n", "\r"),
-					array('\"', '<br />', ''),
+					array('"', '/', '<', "\n", "\r"),
+					array('\"', '\/', '\<', '<br />', ''),
 					$debug
 				);
 			} else {
 				$debug = str_replace(
-					array('"', "\n", "\r"),
-					array('\"', '', ''),
+					array('"', '/', '<', "\n", "\r"),
+					array('\"', '\/', '\<', '', ''),
 					$debug
 				);
 			}
 
 			$script = '
-				var TYPO3ViewportInstance = null, tab;
-				var debugString = "' . $debug . '";
+				var TYPO3ViewportInstance = null;
+				var debugMessage = "' . $debug . '";
+				var header = "' . $tabHeader . '";
+				var group = "' . $group . '";
 
 				if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
 					TYPO3ViewportInstance = top.TYPO3.Backend;
-				} else if (top.TYPO3 && typeof TYPO3.Backend === "object") {
+				} else if (typeof TYPO3 === "object" && typeof TYPO3.Backend === "object") {
 					TYPO3ViewportInstance = TYPO3.Backend;
 				}
 
 				if (TYPO3ViewportInstance !== null) {
-					if (TYPO3ViewportInstance.DebugConsole.hidden) {
-						TYPO3ViewportInstance.DebugConsole.show();
-					} else if (TYPO3ViewportInstance.DebugConsole.collapsed) {
-						TYPO3ViewportInstance.DebugConsole.expand();
-					}
-
-					tab = TYPO3ViewportInstance.DebugConsole.add({
-						title: "' . $tabHeader . '",
-						html: debugString,
-						border: false,
-						closable: true,
-						autoScroll: true,
-						listeners: {
-							close: function(tab) {
-								if (tab.ownerCt.items.getCount() === 1) {
-									tab.ownerCt.hide();
-								}
-							}
-						}
-					});
-					TYPO3ViewportInstance.DebugConsole.setActiveTab(tab);
-					TYPO3ViewportInstance.doLayout();
+					TYPO3ViewportInstance.DebugConsole.addTab(debugMessage, header, group);
 				} else {
-					document.write(debugString);
+					document.write(debugMessage);
 				}
 			';
 			echo self::wrapJS($script);

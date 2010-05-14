@@ -509,7 +509,8 @@ function debug($variable='', $name='*variable*', $line='*line*', $file='*file*',
 		$GLOBALS['error']->debug($variable, $name, $line, $file, $recursiveDepth, $debugLevel);
 	} else {
 		$br = ($name == '*variable*') ? 0 : $name;
-		t3lib_div::debug($variable, $br);
+		$group = $line ? $line : NULL;
+		t3lib_div::debug($variable, $br, $group);
 	}
 }
 function debugBegin() {

@@ -24,6 +24,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+Ext.ns('TYPO3');
+
 /**
  * Extends the viewport with some functionality for TYPO3.
  *
@@ -115,7 +117,6 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 				}
 			}
 		});
-		Ext.ComponentMgr.get('typo3-debug-console-closerTab').setTitle(TYPO3.LLL.core.tabs_closeAll);
 	},
 
 	/**
