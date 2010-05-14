@@ -1,3 +1,7 @@
+2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #14337: "The install tool is locked" doesn't send no-cache headers (thanks to Steffen Gebert)
+
 2010-05-07  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #5003: prefixRelPath() incorrectly changes links to anchors (Thanks to Jigal van Hemert)
