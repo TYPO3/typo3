@@ -148,6 +148,14 @@ class tx_install_session {
 	}
 
 	/**
+	 * Destroys a session
+	 *
+	 */
+	public function destroySession() {
+		session_destroy();
+	}
+
+	/**
 	 * Generates a new session ID and sends it to the client.
 	 *
 	 * Also moves session information from the old session to the new one

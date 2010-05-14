@@ -225,7 +225,8 @@ class tx_install extends t3lib_install {
 		'cleanup' => 'Clean up',
 		'phpinfo' => 'phpinfo()',
 		'typo3conf_edit' => 'Edit files in typo3conf/',
-		'about' => 'About'
+		'about' => 'About',
+		'logout' => 'Logout from Install Tool',
 	);
 	var $JSmessage = '';
 
@@ -271,7 +272,7 @@ class tx_install extends t3lib_install {
 		if ($_GET['TYPO3_INSTALL']['type']) {
 			$allowedTypes = array(
 				'config', 'database', 'update', 'images', 'extConfig',
-				'cleanup', 'phpinfo', 'typo3conf_edit', 'about'
+				'cleanup', 'phpinfo', 'typo3conf_edit', 'about', 'logout'
 			);
 
 			if (in_array($_GET['TYPO3_INSTALL']['type'], $allowedTypes)) {
@@ -535,7 +536,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		if ($this->step) {
 			$this->output($this->outputWrapper($this->stepOutput()));
 		} else {
-			
+
 				// Menu...
 			switch($this->INSTALL['type']) {
 				case 'images':
@@ -727,6 +728,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				case 'typo3conf_edit':
 					$this->silent=0;
 					$this->typo3conf_edit();
+				break;
+				case 'logout':
+					$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';
+					if (is_file($enableInstallToolFile) && trim(file_get_contents($enableInstallToolFile)) !== 'KEEP_FILE') {
+						unlink(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+					}
+					$this->session->destroySession();
+					t3lib_utility_Http::redirect($this->scriptSelf);
 				break;
 				case 'about':
 				default:
@@ -7578,7 +7587,7 @@ $out="
 			t3lib_div::createVersionNumberedFilename(
 				'../contrib/prototype/prototype.js'
 			) . '"></script>';
-			
+
 			// Add JS functions for output
 		$this->javascript[] = '<script type="text/javascript" src="' .
 			t3lib_div::createVersionNumberedFilename(
@@ -7626,7 +7635,7 @@ $out="
 				t3lib_div::createVersionNumberedFilename($this->backPath .
 					'sysext/install/Resources/Public/Stylesheets/install.css'
 				) . '" />';
-		} else {			
+		} else {
 				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' .
 					t3lib_div::createVersionNumberedFilename($this->backPath .
 					'sysext/install/Resources/Public/Stylesheets/install.css'
