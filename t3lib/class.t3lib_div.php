@@ -5731,19 +5731,34 @@ final class t3lib_div {
 			return;
 		}
 
-		// write a longer message to the deprecation log
-		$destination = PATH_typo3conf . '/deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
-		$file = @fopen($destination, 'a');
-		if ($file) {
-			$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
-			flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
-			@fwrite($file, $date.$msg.LF);
-			flock($file, LOCK_UN);    // release the lock
-			@fclose($file);
+		$log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
+		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
+
+			// legacy values (no strict comparison, $log can be boolean, string or int)
+		if ($log === TRUE || $log == '1') {
+			$log = 'file';
 		}
 
-		// copy message also to the developer log
-		self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
+		if (stripos($log, 'file') !== FALSE) {
+			// write a longer message to the deprecation log
+			$destination = PATH_typo3conf . '/deprecation_' . self::shortMD5(PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
+			$file = @fopen($destination, 'a');
+			if ($file) {
+				flock($file, LOCK_EX);  // try locking, but ignore if not available (eg. on NFS and FAT)
+				@fwrite($file, $date . $msg . LF);
+				flock($file, LOCK_UN);    // release the lock
+				@fclose($file);
+			}
+		}
+
+		if (stripos($log, 'devlog') !== FALSE) {
+			// copy message also to the developer log
+			self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
+		}
+
+		if (stripos($log, 'console') !== FALSE) {
+			self::debug($msg, $date, 'Deprecation Log');
+		}
 	}
 
 	/**
