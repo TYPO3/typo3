@@ -67,21 +67,21 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 		// Include t3lib_div and t3lib_parsehtml for templating
 	require_once($PATH_site . '/t3lib/class.t3lib_div.php');
 	require_once($PATH_site . '/t3lib/class.t3lib_parsehtml.php');
-		// Get the referer to define if this is called from backend or stand alone
-	$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
-		// Define body class when stand alone
-	if (!strpos($referer['path'], 'backend.php')) {
-		$bodyClass = 'class="standalone"';
-	}
+
 		// Define the stylesheet
 	$stylesheet = '<link rel="stylesheet" type="text/css" href="' .
 		'../stylesheets/install/install.css" />';
+	$javascript = '<script type="text/javascript" src="' .
+		'../contrib/prototype/prototype.js"></script>' . LF;
+	$javascript .= '<script type="text/javascript" src="' .
+		'../sysext/install/Resources/Public/Javascript/install.js"></script>';
+	
 		// Get the template file
 	$template = @file_get_contents($PATH_site . '/typo3/templates/install.html');
 		// Define the markers content
 	$markers = array(
-		'bodyClass' => $bodyClass,
 		'styleSheet' => $stylesheet,
+		'javascript' => $javascript,
 		'title' => 'The install tool is locked',
 		'content' => '
 			<p>

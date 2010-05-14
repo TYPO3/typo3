@@ -1,5 +1,6 @@
 2010-05-14  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #14365: Bug: Install Tool skin is sometimes wrong (thanks to Lars Houmark)
 	* Fixed bug #14367: Install Tool does not provide a logout possibility (thanks to Lars Houmark)
 
 2010-05-13  Ernesto Baschny  <ernst@cron-it.de>
