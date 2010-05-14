@@ -110,6 +110,8 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 	);
 		// Output the warning message and exit
 	header('Content-Type: text/html; charset=utf-8');
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Pragma: no-cache');
 	echo $content;
 	exit();
 }
