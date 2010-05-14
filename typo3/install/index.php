@@ -63,6 +63,8 @@ if (is_file($enableInstallToolFile) && (time() - filemtime($enableInstallToolFil
 
 	// Change 1==2 to 1==1 if you want to lock the Install Tool regardless of the file ENABLE_INSTALL_TOOL
 if (1==2 || !is_file($enableInstallToolFile)) {
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Pragma: no-cache');
 	die(nl2br('<strong>The Install Tool is locked.</strong>
 
 		Fix: Create a file typo3conf/ENABLE_INSTALL_TOOL

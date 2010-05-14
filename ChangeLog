@@ -1,3 +1,7 @@
+2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #14337: "The install tool is locked" doesn't send no-cache headers (thanks to Steffen Gebert)
+
 2010-05-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #12803: Creating or deleting ENABLE_INSTALL_TOOL file saves settings in "User Settings"
