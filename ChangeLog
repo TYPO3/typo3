@@ -1,5 +1,6 @@
 2010-05-15  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #14309: Notice undefined index "error" & "debug" in index_ts.php (thanks to Martin Müller)
 	* Fixed bug #14180: No Message shown when accessing backend if TYPO3_CONF_VARS[BE][adminOnly] = -1 (thanks to Georg Ringer)
 
 2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
