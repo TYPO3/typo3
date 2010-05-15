@@ -380,7 +380,7 @@ class SC_mod_tools_dbint_index {
 					'<code>php ' . PATH_typo3 . 'cli_dispatch.phpsh lowlevel_refindex -e</code><br /><br />';
 		$content.= '<div class="typo3-message message-information"><div class="message-body">' . $GLOBALS['LANG']->getLL('checkScript_information') . '</div></div>';
 		$content.= '<p>' . $GLOBALS['LANG']->getLL('checkScript_moreDetails') . '<br /><a href="' . $GLOBALS['BACK_PATH'] . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt" target="_new">' . PATH_typo3 . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</a></p>';
-		
+
 		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('updateRefIndex'), $content, false, true);
 	}
 
@@ -580,7 +580,7 @@ class SC_mod_tools_dbint_index {
 
 		$code='';
 		if (is_array($fileTest['noReferences']))	{
-			foreach (fileTest['noReferences'] as $val) {
+			foreach ($fileTest['noReferences'] as $val) {
 				$code.='<nobr>' . $val[0] . '/<b>' . $val[1] . '</b></nobr><br>';
 			}
 		}

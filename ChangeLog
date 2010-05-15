@@ -1,6 +1,6 @@
 2010-05-16  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #14343 - Flash message when install tool enable file has been deleted/created (thanks to Jigal van Hemert)
+	* Follow-up to bug #13670: Performance optimization: change while(list() to foreach()
 
 2010-05-15  Christian Kuhn  <lolli@schwarzbu.ch>
 
