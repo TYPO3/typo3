@@ -1,3 +1,7 @@
+2010-05-15  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #14180: No Message shown when accessing backend if TYPO3_CONF_VARS[BE][adminOnly] = -1 (thanks to Georg Ringer)
+
 2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #14337: "The install tool is locked" doesn't send no-cache headers (thanks to Steffen Gebert)

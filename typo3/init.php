@@ -263,9 +263,8 @@ if (defined('TYPO3_cliMode') && TYPO3_cliMode && basename(PATH_thisScript)=='cli
 // Check Hardcoded lock on BE:
 // **********************
 if ($TYPO3_CONF_VARS['BE']['adminOnly'] < 0)	{
-	header('Status: 404 Not Found');	// Send Not Found header - if the webserver can make use of it...
-	header('Location: http://');	// Just point us away from here...
-	exit;	// ... and exit good!
+	t3lib_BEfunc::typo3printError('Backend locked', 'Backend and Install Tool are locked for maintenance. [BE][adminOnly] is set to "' . intval($TYPO3_CONF_VARS['BE']['adminOnly']) . '".');
+	exit;
 }
 if (!(defined('TYPO3_cliMode') && TYPO3_cliMode) && @is_file(PATH_typo3conf.'LOCK_BACKEND'))	{
 	if (TYPO3_PROCEED_IF_NO_USER == 2) {
