@@ -152,7 +152,7 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 			}
 
 				// Add error message to the flashmessageQueue
-			if (TYPO3_ERRORHANDLER_MODE == 'debug') {
+			if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {
 				$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						$message,
