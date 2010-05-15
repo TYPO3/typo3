@@ -307,10 +307,44 @@ class SC_mod_user_setup_index {
 		if ($this->isAdmin) {
 			if (t3lib_div::_POST('deleteInstallToolEnableFile')) {
 				unlink(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+				$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+				if ($installToolEnableFileExists) {
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('enableInstallTool.fileDelete_failed'),
+						$LANG->getLL('enableInstallTool.file'),
+						t3lib_FlashMessage::ERROR
+					);
+				} else {
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('enableInstallTool.fileDelete_ok'),
+						$LANG->getLL('enableInstallTool.file'),
+						t3lib_FlashMessage::OK
+					);
+			}
+				$this->content .= $flashMessage->render();
 			}
 			if (t3lib_div::_POST('createInstallToolEnableFile')) {
 				touch(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+				$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+				if ($installToolEnableFileExists) {
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('enableInstallTool.fileCreate_ok'),
+						$LANG->getLL('enableInstallTool.file'),
+						t3lib_FlashMessage::OK
+					);
+				} else {
+					$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						$LANG->getLL('enableInstallTool.fileCreate_failed'),
+						$LANG->getLL('enableInstallTool.file'),
+						t3lib_FlashMessage::ERROR
+					);
 			}
+				$this->content .= $flashMessage->render();
+		}
 		}
 
 		if ($this->languageUpdate) {

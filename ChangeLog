@@ -1,6 +1,10 @@
+2010-05-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14343 - Flash message when install tool enable file has been deleted/created (thanks to Jigal van Hemert)
+
 2010-05-15  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #14312: Notice undefined index systemLog and undefined constant TYPO3_ERRORHANDLER_MODE (thanks to Martin Müller)
+	* Fixed bug #14312: Notice undefined index systemLog and undefined constant TYPO3_ERRORHANDLER_MODE (thanks to Martin Mueller)
 	* Fixed bug #14309: Notice undefined index "error" & "debug" in index_ts.php (thanks to Martin Müller)
 	* Fixed bug #14180: No Message shown when accessing backend if TYPO3_CONF_VARS[BE][adminOnly] = -1 (thanks to Georg Ringer)
 
