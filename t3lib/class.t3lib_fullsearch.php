@@ -260,7 +260,7 @@ class t3lib_fullsearch {
 	function loadStoreQueryConfigs($storeQueryConfigs,$storeIndex,$writeArray)	{
 		if ($storeQueryConfigs[$storeIndex])	{
 			$keyArr = explode(',',$this->storeList);
-			foreach ($keyArr => $k) {
+			foreach ($keyArr as $k) {
 				$writeArray[$k]=$storeQueryConfigs[$storeIndex][$k];
 			}
 		}
@@ -598,7 +598,7 @@ class t3lib_fullsearch {
 					// Get fields list
 				t3lib_div::loadTCA($table);
 				$conf=$TCA[$table];
-				
+
 					// avoid querying tables with no columns
 				if (empty($conf['columns'])) {
 					continue;
