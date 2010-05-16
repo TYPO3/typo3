@@ -1651,7 +1651,7 @@ class tx_impexp {
 
 		$updateData = array();
 			// import_newId contains a register of all records that was in the import memorys "records" key
-		foreach ($this->import_newId as $nId, $dat) {
+		foreach ($this->import_newId as $nId => $dat) {
 			$table = $dat['table'];
 			$uid = $dat['uid'];	// original UID - NOT the new one!
 

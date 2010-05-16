@@ -1,3 +1,7 @@
+2010-05-16  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to bug #13670: #14393 Fatal error in impexp
+
 2010-05-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to bug #13670: Performance optimization: change while(list() to foreach()
