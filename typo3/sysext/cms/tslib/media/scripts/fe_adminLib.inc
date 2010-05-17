@@ -1223,7 +1223,6 @@ class user_feAdmin	{
 			}
 		}
 		if (is_array($this->conf['parseValues.']))	{
-			while(list($theField,$theValue)=each())	{
 			foreach ($this->conf['parseValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				foreach ($listOfCommands as $cmd) {
