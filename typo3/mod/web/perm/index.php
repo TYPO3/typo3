@@ -512,7 +512,7 @@ class SC_mod_web_perm_index {
 				<tr>
 					<td class="bgColor2" colspan="2">&nbsp;</td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center" nowrap="nowrap"><b>'.$LANG->getLL('User',1).':</b> '.$BE_USER->user['username'].'</td>
+					<td class="bgColor2" align="center" nowrap="nowrap"><b>'.$LANG->getLL('User',1).':</b> ' . htmlspecialchars($BE_USER->user['username']) . '</td>
 					'.(!$BE_USER->isAdmin()?'<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
 					<td class="bgColor2" align="center"><b>'.$LANG->getLL('EditLock',1).'</b></td>':'').'
 				</tr>';
