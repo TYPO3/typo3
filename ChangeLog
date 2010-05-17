@@ -1,5 +1,6 @@
 2010-05-17  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to bug #13670: Fatal in t3lib_querygenerator
 	* Follow-up to bug #13670: Fatal in fe_adminLib.inc (thanks to Lars Houmark)
 
 2010-05-16  Christian Kuhn  <lolli@schwarzbu.ch>

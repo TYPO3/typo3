@@ -249,7 +249,7 @@ class t3lib_queryGenerator	{
 		$fieldListArr = array();
 		if (is_array($TCA[$this->table]))	{
 			t3lib_div::loadTCA($this->table);
-			foreach ($TCA[$this->table]['columns'] as $fN => $value)
+			foreach ($TCA[$this->table]['columns'] as $fN => $value) {
 				$fieldListArr[]=$fN;
 			}
 			$fieldListArr[]='uid';
