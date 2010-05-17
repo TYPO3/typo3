@@ -323,7 +323,7 @@ class t3lib_fullsearch {
 				}
 			} elseif ($storeControl['REMOVE'])	{
 				if ($storeIndex>0)	{
-					$msg="'".$storeArray[$storeControl['STORE']]."' query entry removed!";
+					$msg="'" . htmlspecialchars($storeArray[$storeControl['STORE']]) . "' query entry removed!";
 					unset($storeArray[$storeControl['STORE']]);	// Removing
 					$saveStoreArray=1;
 				}

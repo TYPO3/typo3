@@ -976,7 +976,7 @@ class t3lib_queryGenerator	{
 	 * @return	[type]		...
 	 */
 	function formatQ($str)	{
-		return '<font size="1" face="verdana" color="maroon"><i>'.$str.'</i></font>';
+		return '<font size="1" face="verdana" color="maroon"><i>' . htmlspecialchars($str) . '</i></font>';
 	}
 
 	/**
