@@ -466,6 +466,10 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 			},
 			hotkey: {
 				fn: this.onHotKey
+			},
+			beforedestroy: {
+				fn: this.onBeforeDestroy,
+				single: true
 			}
 		});
 			// Monitor toolbar updates in order to refresh the state of the combo
@@ -609,6 +613,15 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 				// Restore the selection if combo was triggered
 			this.mon(iframe.getEl(), 'focus', this.restoreSelection, this);
 		}
+	},
+	/*
+	 * Cleanup
+	 */
+	onBeforeDestroy: function () {
+		this.controlRange = null;
+		this.bookmark = null;
+		this.getStore().removeAll();
+		this.getStore().destroy();
 	}
 });
 Ext.reg('htmlareacombo', Ext.ux.form.HTMLAreaCombo);
@@ -646,6 +659,12 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 	 * Initialize listeners
 	 */
 	initEventListeners: function () {
+		this.addListener({
+			beforedestroy: {
+				fn: this.onBeforeDestroy,
+				single: true
+			}
+		});
 			// Monitor editor becoming ready
 		this.mon(this.getEditor(), 'editorready', this.update, this, {single: true});
 	},
@@ -736,6 +755,13 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 			endPointsInSameBlock = editor.endPointsInSameBlock();
 		}
 		this.fireEvent('update', mode, selectionEmpty, ancestors, endPointsInSameBlock);
+	},
+	/*
+	 * Cleanup
+	 */
+	onBeforeDestroy: function () {
+		this.removeAll(true);
+		return true;
 	}
 });
 Ext.reg('htmlareatoolbar', HTMLArea.Toolbar);
@@ -760,7 +786,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				fn: this.initEventListeners,
 				single: true
 			},
-			beforeDestroy: {
+			beforedestroy: {
 				fn: this.onBeforeDestroy,
 				single: true
 			}
@@ -1087,9 +1113,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Start listening to things happening in the iframe
 	 */
 	startListening: function () {
-		var documentElement = Ext.get(this.document.documentElement);
 			// Create keyMap so that plugins may bind key handlers
-		this.keyMap = new Ext.KeyMap(documentElement, [], (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress');
+		this.keyMap = new Ext.KeyMap(Ext.get(this.document.documentElement), [], (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress');
 			// Special keys map
 		this.keyMap.addBinding([
 			{
@@ -1141,7 +1166,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			});
 		}
-			// Hot key map (on keydown for all brwosers)
+			// Hot key map (on keydown for all browsers)
 		var hotKeys = '';
 		Ext.iterate(this.config.hotKeyList, function (key) {
 			if (key.length == 1) {
@@ -1149,7 +1174,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			}
 		});
 			// Make hot key map available, even if empty, so that plugins may add bindings
-		this.hotKeyMap = new Ext.KeyMap(documentElement);
+		this.hotKeyMap = new Ext.KeyMap(Ext.get(this.document.documentElement));
 		if (!Ext.isEmpty(hotKeys)) {
 			this.hotKeyMap.addBinding({
 				key: hotKeys,
@@ -1160,10 +1185,10 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				scope: this
 			});
 		}
-		this.mon(documentElement, (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
-		this.mon(documentElement, 'mouseup', this.onMouse, this);
-		this.mon(documentElement, 'click', this.onMouse, this);
-		this.mon(documentElement, Ext.isWebKit ? 'dragend' : 'drop', this.onDrop, this);
+		this.mon(Ext.get(this.document.documentElement), (Ext.isIE || Ext.isWebKit) ? 'keydown' : 'keypress', this.onAnyKey, this);
+		this.mon(Ext.get(this.document.documentElement), 'mouseup', this.onMouse, this);
+		this.mon(Ext.get(this.document.documentElement), 'click', this.onMouse, this);
+		this.mon(Ext.get(this.document.documentElement), Ext.isWebKit ? 'dragend' : 'drop', this.onDrop, this);
 	},
 	/*
 	 * Handler for other key events
@@ -1340,8 +1365,33 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * Cleanup
 	 */
 	onBeforeDestroy: function () {
+			// ExtJS KeyMap object makes IE leak memory
+			// Nullify EXTJS private handlers
+		Ext.each(this.keyMap.bindings, function (binding, index) {
+			this.keyMap.bindings[index] = null;
+		});
+		this.keyMap.handleKeyDown = null;
+		Ext.each(this.hotKeyMap.bindings, function (binding, index) {
+			this.hotKeyMap.bindings[index] = null;
+		});
+		this.hotKeyMap.handleKeyDown = null;
 		this.keyMap.disable();
 		this.hotKeyMap.disable();
+			// Cleaning references to DOM in order to avoid IE memory leaks
+		Ext.get(this.document.body).purgeAllListeners();
+		Ext.get(this.document.body).dom = null;
+		Ext.get(this.document.documentElement).purgeAllListeners();
+		Ext.get(this.document.documentElement).dom = null;
+		this.document = null;
+		this.getEditor().document = null;
+		this.getEditor()._doc = null;
+		this.getEditor()._iframe = null;
+		Ext.each(this.nestedParentElements.sorted, function (nested) {
+			Ext.get(nested).purgeAllListeners();
+			Ext.get(nested).dom = null;
+		});
+		Ext.destroy(this.autoEl, this.el, this.resizeEl, this.positionEl);
+		return true;
 	}
 });
 Ext.reg('htmlareaiframe', HTMLArea.Iframe);
@@ -1789,7 +1839,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 	initEventListeners: function () {
 		this.addListener({
 			beforedestroy: {
-				fn: this.clear,
+				fn: this.onBeforeDestroy,
 				single: true
 			}
 		});
@@ -1833,6 +1883,8 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 		this.statusBarTree.removeAllListeners();
 		Ext.each(this.statusBarTree.query('a'), function (node) {
 			Ext.QuickTips.unregister(node);
+			Ext.get(node).dom.ancestor = null;
+			Ext.destroy(node);
 		});
 		this.statusBarTree.update('');
 		this.setSelection(null);
@@ -1995,6 +2047,15 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 	onContextMenu: function (event, target) {
 		this.selectElement(target);
 		return this.getEditor().getPlugin('ContextMenu') ? this.getEditor().getPlugin('ContextMenu').show(event, target.ancestor) : false;
+	},
+	/*
+	 * Cleanup
+	 */
+	onBeforeDestroy: function() {
+		this.clear();
+		this.removeAll(true);
+		Ext.destroy(this.statusBarTree, this.statusBarTextMode);
+		return true;
 	}
 });
 Ext.reg('htmlareastatusbar', HTMLArea.StatusBar);
@@ -2254,10 +2315,21 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 	 */
 	onBeforeDestroy: function () {
 		Ext.EventManager.removeResizeListener(this.onWindowResize, this);
+			// Cleaning references to DOM in order to avoid IE memory leaks
 		var form = this.textArea.dom.form;
 		if (form) {
 			form.htmlAreaPreviousOnReset = null;
+			Ext.get(form).dom = null;
 		}
+		Ext.getBody().dom = null;
+			// ExtJS is not releasing any resources when the iframe is unloaded
+		this.toolbar.destroy();
+		this.statusBar.destroy();
+		this.removeAll(true);
+		if (this.resizable) {
+			this.resizer.destroy();
+		}
+		return true;
 	}
 });
 Ext.reg('htmlareaframework', HTMLArea.Framework);
@@ -2322,7 +2394,12 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			 * @event modeChange
 			 * Fires when the editor changes mode
 			 */
-			'modeChange'
+			'modeChange',
+			/*
+			 * @event beforedestroy
+			 * Fires before the editor is to be destroyed
+			 */
+			'beforedestroy'
 		);
 	},
 	/*
@@ -2381,10 +2458,21 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 					itemId: 'textAreaContainer',
 					anchor: '100%',
 					width: (this.textAreaInitialSize.width.indexOf('%') === -1) ? parseInt(this.textAreaInitialSize.width) : 300,
-						// Let the framework swallow the textarea
+						// Let the framework swallow the textarea and throw it back
 					listeners: {
-						afterRender: {
-							fn: function (textAreaContainer) { textAreaContainer.getEl().appendChild(this.textArea); },
+						afterrender: {
+							fn: function (textAreaContainer) {
+								this.originalParent = this.textArea.parent().dom;
+								textAreaContainer.getEl().appendChild(this.textArea);
+							},
+							single: true,
+							scope: this
+						},
+						beforedestroy: {
+							fn: function (textAreaContainer) {
+								this.originalParent.appendChild(this.textArea.dom);
+								return true;
+							},
 							single: true,
 							scope: this
 						}
@@ -2593,6 +2681,16 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		return (this.plugins[pluginName] ? this.plugins[pluginName].instance : null);
 	},
 	/*
+	 * Unregister the instance of the specified plugin
+	 *
+	 * @param	string		pluginName: the name of the plugin
+	 * @return	void
+	 */
+	unRegisterPlugin: function(pluginName) {
+		delete this.plugins[pluginName].instance;
+		delete this.plugins[pluginName];
+	},
+	/*
 	 * Focus on the editor
 	 */
 	focus: function () {
@@ -2626,7 +2724,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	/*
 	 * Iframe unload handler: Update the textarea for submission and cleanup
 	 */
-	onUnload: function (event) {;
+	onUnload: function (event) {
 			// Save the HTML content into the original textarea for submit, back/forward, etc.
 		if (this.ready) {
 			this.textArea.set({
@@ -2634,8 +2732,19 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			}, false);
 		}
 			// Cleanup
+		this.fireEvent('beforedestroy');
 		Ext.TaskMgr.stopAll();
+			// ExtJS is not releasing any resources when the iframe is unloaded
 		this.htmlArea.destroy();
+		Ext.iterate(this.plugins, function (pluginId) {
+			this.unRegisterPlugin(pluginId);
+		}, this);
+		this.purgeListeners()
+			// Cleaning references to DOM in order to avoid IE memory leaks
+		this.wizards.dom = null;
+		this.textArea.parent().parent().dom = null;
+		this.textArea.parent().dom = null;
+		this.textArea.dom = null;;
 		RTEarea[this.editorId].editor = null;
 	}
 });
@@ -2736,6 +2845,7 @@ HTMLArea.util.TYPO3 = function () {
 			if (docHeader) {
 				size.height -= docHeader.getHeight();
 			}
+			docHeader.dom = null;
 			return size;
 		}
 	}
