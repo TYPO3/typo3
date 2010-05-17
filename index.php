@@ -70,7 +70,7 @@ if (@is_dir(PATH_site.'typo3/sysext/cms/tslib/')) {
 }
 
 if (PATH_tslib=='') {
-	die('Cannot find tslib/. Please set path by defining $configured_tslib_path in '.basename(PATH_thisScript).'.');
+	die('Cannot find tslib/. Please set path by defining $configured_tslib_path in ' . htmlspecialchars(basename(PATH_thisScript)) . '.');
 }
 
 // ******************
