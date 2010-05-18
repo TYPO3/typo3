@@ -2,9 +2,9 @@
 
 	* Follow-up to bug #13670: Wrong variable name causing EM not to show "Extensions found only on this server" on "Import extensions" search result
 
-2010-05-16  Steffen Kamper  <info@sk-typo3.de>
+2010-05-18  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #13670: #14327: Condition misses check for no logged in user
+	* Fixed bug #14327: Condition misses check for no logged in user
 
 2010-05-17  Stanislas Rolland  <typo3@sjbr.ca>
 
