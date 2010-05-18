@@ -976,7 +976,7 @@ EXTENSION KEYS:
 					$content='';
 					$lines=array();
 					if (count($this->inst_keys))	{
-						foreach ($extEkeys as $extKey => $value) {
+						foreach ($this->inst_keys as $extKey => $value) {
  							$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true);
 							if((strlen($this->listRemote_search) && !stristr($extKey,$this->listRemote_search)) || isset($this->xmlhandler->extensionsXML[$extKey])) continue;
 
