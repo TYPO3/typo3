@@ -116,7 +116,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a condition matches Internet Explorer 7 on Windows.
-	 * 
+	 *
 	 * @return	void
 	 * @test
 	 */
@@ -128,7 +128,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a condition does not match Internet Explorer 7 on Windows.
-	 * 
+	 *
 	 * @return	void
 	 * @test
 	 */
@@ -140,7 +140,7 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether the browserInfo hook is called.
-	 * 
+	 *
 	 * @return	void
 	 * @test
 	 */
@@ -291,6 +291,15 @@ class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
 		$GLOBALS['TSFE']->fe_user->user['uid'] = 13;
 		$this->assertFalse($this->matchCondition->match('[loginUser = *]'));
 		$this->assertFalse($this->matchCondition->match('[loginUser = 13]'));
+	}
+
+	/**
+	 * Tests whether user is not logged in
+	 * @test
+	 */
+	public function loginUserConditionMatchIfUserIsNotLoggedIn() {
+		$GLOBALS['TSFE']->loginUser = FALSE;
+		$this->assertTrue($this->matchCondition->match('[loginUser = ]'));
 	}
 
 	/**

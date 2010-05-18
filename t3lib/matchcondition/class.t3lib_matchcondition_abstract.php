@@ -345,6 +345,10 @@ abstract class t3lib_matchCondition_abstract {
 							return true;
 						}
 					}
+				} else {
+					if ($value === '') {
+						return TRUE;
+					}
 				}
 			break;
 			case 'globalVar':
