@@ -63,17 +63,6 @@ class t3lib_compressor {
 				$this->gzipCompressionLevel = $compressionLevel;
 			}
 		}
-
-			// decide whether we should create gzipped versions or not
-		$compressionLevel = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel'];
-			// we need zlib for gzencode()
-		if (extension_loaded('zlib') && $compressionLevel) {
-			$this->createGzipped = TRUE;
-				// $compressionLevel can also be TRUE
-			if (t3lib_div::testInt($compressionLevel)) {
-				$this->gzipCompressionLevel = $compressionLevel;
-			}
-		}
 	}
 
 	/**
@@ -87,6 +76,7 @@ class t3lib_compressor {
 	 * @return	array	CSS files
 	 */
 	public function concatenateCssFiles(array $cssFiles, $options = array()) {
+
 		$filesToInclude = array();
 		foreach ($cssFiles as $filename => $fileOptions) {
 				// we remove BACK_PATH from $filename, so make it relative to TYPO3_mainDir

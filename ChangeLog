@@ -1,3 +1,7 @@
+2010-05-18  Benjamin Mack  <benni@typo3.org>
+
+	* Follow-up to #14277: Removed redundant code / Improve t3lib_compressor
+
 2010-05-18  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Follow-up to bug #13670: Wrong variable name causing EM not to show "Extensions found only on this server" on "Import extensions" search result
