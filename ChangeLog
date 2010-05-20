@@ -1,3 +1,7 @@
+2010-05-20  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #7753: EM warns No XCLASS inclusion code found if you use $GLOBALS['TYPO3_CONF_VARS'] (thanks to Franz Holzinger)
+
 2010-05-19  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #14413: htmlArea RTE: ExtJS resources are not released in IE when RTE closes

@@ -4215,22 +4215,33 @@ EXTENSION KEYS:
 									);
 								}
 							}
-							//
-							$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && \$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]/', $fContent, 2);
+
+								// Check for proper XCLASS definition
+								// Match $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] with single or doublequotes
+							$XclassSearch = '\$TYPO3_CONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
+							$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
+							if (count($XclassParts) !== 2) {
+									// Match $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'] with single or doublequotes
+								$XclassSearch = '\$GLOBALS\[[\'"]TYPO3_CONF_VARS[\'"]\]\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]';
+								$XclassParts = preg_split('/if \(defined\([\'"]TYPO3_MODE[\'"]\) && ' . $XclassSearch . '/', $fContent, 2);
+							}
 							if (count($XclassParts)==2)	{
 								unset($reg);
 								preg_match('/^\[[\'"]([[:alnum:]_\/\.]*)[\'"]\]/',$XclassParts[1],$reg);
 								if ($reg[1]) {
 									$cmpF = 'ext/'.$extKey.'/'.$fileName;
 									if (!strcmp($reg[1],$cmpF))	{
-										if (preg_match('/_once[[:space:]]*\(\$TYPO3_.ONF_VARS\[TYPO3_MODE\]\[[\'"]XCLASS[\'"]\]\[[\'"]'.preg_quote($cmpF,'/').'[\'"]\]\);/', $XclassParts[1]))	{
+										if (preg_match('/_once[[:space:]]*\(' . $XclassSearch . '\[[\'"]' . preg_quote($cmpF, '/') . '[\'"]\]\);/', $XclassParts[1])) {
 											$out['msg'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_xclass_ok'), $fileName);
 										} else $out['errors'][] = $GLOBALS['LANG']->getLL('detailedExtAnalysis_xclass_no_include');
 									} else $out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_xclass_incorrect'),
 										$reg[1], $cmpF
 									);
 								} else $out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_xclass_filename'), $fileName);
-							} elseif (!$this->first_in_array('ux_', $out['files'][$fileName]['classes'])) $out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_xclass_found'), $fileName);
+							} elseif (!$this->first_in_array('ux_', $out['files'][$fileName]['classes'])) {
+									// No Xclass definition required if classname starts with 'ux_'
+								$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_xclass_found'), $fileName);
+							}
 						}
 					}
 				}
