@@ -1,3 +1,7 @@
+2010-05-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to bug #14413: htmlArea RTE: ExtJS resources are not released in IE when RTE closes
+
 2010-05-17  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug 14413: htmlArea RTE: ExtJS resources are not released in IE when RTE closes

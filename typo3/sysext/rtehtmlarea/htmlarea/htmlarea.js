@@ -1369,11 +1369,11 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			// Nullify EXTJS private handlers
 		Ext.each(this.keyMap.bindings, function (binding, index) {
 			this.keyMap.bindings[index] = null;
-		});
+		}, this);
 		this.keyMap.handleKeyDown = null;
 		Ext.each(this.hotKeyMap.bindings, function (binding, index) {
 			this.hotKeyMap.bindings[index] = null;
-		});
+		}, this);
 		this.hotKeyMap.handleKeyDown = null;
 		this.keyMap.disable();
 		this.hotKeyMap.disable();
@@ -2113,7 +2113,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			// If the textarea is inside a form, on reset, re-initialize the HTMLArea content and update the toolbar
 		var form = this.textArea.dom.form;
 		if (form) {
-			if (Ext.isFunction(form.onsubmit)) {
+			if (Ext.isFunction(form.onreset)) {
 				if (typeof(form.htmlAreaPreviousOnReset) == 'undefined') {
 					form.htmlAreaPreviousOnReset = [];
 				}
@@ -2126,7 +2126,8 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 				fn: this.onFrameworkResize
 			},
 			beforedestroy: {
-				fn: this.onBeforeDestroy
+				fn: this.onBeforeDestroy,
+				single: true
 			}
 		});
 	},
@@ -2739,12 +2740,12 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		Ext.iterate(this.plugins, function (pluginId) {
 			this.unRegisterPlugin(pluginId);
 		}, this);
-		this.purgeListeners()
+		this.purgeListeners();
 			// Cleaning references to DOM in order to avoid IE memory leaks
 		this.wizards.dom = null;
 		this.textArea.parent().parent().dom = null;
 		this.textArea.parent().dom = null;
-		this.textArea.dom = null;;
+		this.textArea.dom = null;
 		RTEarea[this.editorId].editor = null;
 	}
 });
