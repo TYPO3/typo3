@@ -1,5 +1,6 @@
 2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #14372: Mapping does not work with table alias
 	* Follow-up of changeset 32847: DBAL cannot be loaded if typo3conf/ is not writable
 
 2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
