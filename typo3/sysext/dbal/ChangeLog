@@ -1,3 +1,7 @@
+2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14372: Mapping does not work with table alias
+
 2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #2186: Error installing static_info_tables

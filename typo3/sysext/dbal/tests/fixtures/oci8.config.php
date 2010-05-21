@@ -35,6 +35,12 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 			'pid' => 'page_id',
 		),
 	),
+	'pages' => array(
+		'mapTableName' => 'my_pages',
+		'mapFieldNames' => array(
+			'uid' => 'page_uid',
+		),
+	),
 	'tt_news' => array(
 		'mapTableName' => 'ext_tt_news',
 		'mapFieldNames' => array(
