@@ -125,7 +125,14 @@ class tx_dbal_autoloader {
 				// Get lines from localconf file
 			$lines = $instObj->writeToLocalconf_control();
 			$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-			$instObj->writeToLocalconf_control($lines);
+			$result = $instObj->writeToLocalconf_control($lines);
+			if ($result === 'nochange') {
+				$message = 'DBAL was not loaded.';
+				if (!@is_writable(PATH_typo3conf)) {
+					$message .= ' ' . PATH_typo3conf . ' is not writable!';
+				}
+				throw new Exception($message);
+			}
 
 			$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
 				// Make sure to get cache file for backend, not frontend

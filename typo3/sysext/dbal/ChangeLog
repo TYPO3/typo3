@@ -1,3 +1,7 @@
+2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Follow-up of changeset 32847: DBAL cannot be loaded if typo3conf/ is not writable
+
 2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed 1-2-3 installer crash when having only mysql available
