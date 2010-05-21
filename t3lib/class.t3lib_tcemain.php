@@ -3173,8 +3173,8 @@ class t3lib_TCEmain	{
 
 					// Walk through the items, copy them and remember the new id:
 				foreach ($dbAnalysis->itemArray as $k => $v) {
-						// If language is set, this isn't a copy action but a localization of our parent/ancestor:
-					if ($language>0) {
+						// If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
+					if ($language > 0 && t3lib_BEfunc::isTableLocalizable($table) && $language != $row[$TCA[$table]['ctrl']['languageField']]) {
 							// If children should be localized when the parent gets localized the first time, just do it:
 						if ($localizationMode!=false && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization']) {
 							$newId = $this->localize($v['table'], $v['id'], $language);

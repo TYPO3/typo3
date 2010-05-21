@@ -1,3 +1,7 @@
+2010-05-21  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #13749: IRRE: Inline elements of translated records are not copied correctly. (Thanks to Albrecht Koehnlein)
+
 2010-05-20  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #7753: EM warns No XCLASS inclusion code found if you use $GLOBALS['TYPO3_CONF_VARS'] (thanks to Franz Holzinger)
