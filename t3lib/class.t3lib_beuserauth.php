@@ -281,6 +281,11 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 			$this->uc['lang']=$this->user['lang'];
 			$U=1;
 		}
+			// Setting the time of the first login:
+		if (!isset($this->uc['firstLoginTimeStamp'])) {
+			$this->uc['firstLoginTimeStamp'] = $GLOBALS['EXEC_TIME'];
+			$U = TRUE;
+		}
 
 			// Saving if updated.
 		if ($U)	{

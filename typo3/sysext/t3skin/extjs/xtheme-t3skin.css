@@ -2205,7 +2205,8 @@ body.x-body-masked .x-window-plain .x-window-mc {
 
 #loginRefreshWindow .x-panel-body.x-panel-body-noheader.x-panel-body-noborder,
 #loginRefreshWindow .x-panel-header.x-unselectable,
-#loginformWindow .x-panel-header.x-unselectable {
+#loginformWindow .x-panel-header.x-unselectable,
+.t3-window .x-panel-body.x-panel-body-noheader.x-panel-body-noborder {
 	background-image: none;
 	background-color: transparent;
 	color: #000;
@@ -2227,4 +2228,18 @@ body.x-body-masked .x-window-plain .x-window-mc {
 
 #loginformWindow .x-window-ml {
 	background-color: #E4E4E4;
+}
+
+.t3-window .x-window-body.x-window-body-noborder {
+	padding: 10px;
+}
+
+.t3-window .x-btn button {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+#donateWindow.t3-window .x-window-body.x-window-body-noborder {
+	padding-left: 100px;
+	background: url(../images/general/donate_teaser.png) no-repeat 25px 10px !important;
 }

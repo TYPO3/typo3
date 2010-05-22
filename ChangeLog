@@ -1,3 +1,7 @@
+2010-05-22  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #13868: Integrate TYPO3 donate notice in the backend
+
 2010-05-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12923: Javascript error in tmenu_layers.php & gmenu_layers.php (Thanks to Klaus Goessl)

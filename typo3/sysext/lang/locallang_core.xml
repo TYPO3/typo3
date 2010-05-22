@@ -266,6 +266,11 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="tabs.closeAll">Close All Tabs</label>
 			<label index="tabs.closeOther">Close Other Tabs</label>
 			<label index="tabs.close">Close Tab</label>
+			<label index="donateWindow.title">TYPO3 donation notice</label>
+			<label index="donateWindow.message">&lt;b&gt;You have now used TYPO3 for more than three months.&lt;/b&gt; It would be great if you could donate. TYPO3 is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt; &lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your help!</label>
+			<label index="donateWindow.button_donate">Donate now</label>
+			<label index="donateWindow.button_disable">Never show again</label>
+			<label index="donateWindow.button_postpone">Remind me later</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -45,6 +45,9 @@ Backend
 
 	* The t3editor code completion DB was updated to reflect the latest additions. Also the syntax highlighting engine was now extracted from the system extension so it can be used in other places of the TYPO3 Core as well.
 
+	* A donate notice will be shown to admins in the TYPO3 backend after using it for more than three months.
+	  This behaviour can be disabled completely - see $TYPO3_CONF_VARS[BE][allowDonateWindow].
+
 
 Frontend
 ========
