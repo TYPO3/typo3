@@ -84,8 +84,6 @@
  */
 final class t3lib_iconWorks	{
 
-	protected static $tcaSpriteIconNames = array();
-
 	public static $fileSpriteIconNames = array(
 		'htm'   => 'mimetype-text-htm',
 		'html'  => 'mimetype-text-htm',
@@ -342,7 +340,7 @@ final class t3lib_iconWorks	{
 	public static function skinImg($backPath, $src, $wHattribs = '', $outputMode = 0)	{
 
 		static $cachedSkinImages = array();
-
+		
 		$imageId = md5($backPath . $src . $wHattribs . $outputMode);
 
 		if (isset($cachedSkinImages[$imageId])) {
@@ -649,6 +647,9 @@ final class t3lib_iconWorks	{
 			}
 		}
 
+			// check if whished icon is available
+		$iconName = (in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']) || $iconName == 'empty-empty' ? $iconName : 'status-status-icon-missing');
+			
 			// create the CSS class
 		$options['class'] = self::getSpriteIconClasses($iconName) . (isset($options['class']) ? ' ' . $options['class'] : '');
 
@@ -772,7 +773,7 @@ final class t3lib_iconWorks	{
 	 * @access	private
 	 **/
 	protected static function mapRecordTypeToSpriteIconClass($table, $row) {
-		self::buildTcaSpriteIconNames();
+		$iconName = '';
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
 			$column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
 
@@ -785,12 +786,12 @@ final class t3lib_iconWorks	{
 			}
 
 			$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType];
-			if (!$iconName && in_array('tcarecords-' . $table . '-' . $recordType, self::$tcaSpriteIconNames)) {
+			if (!$iconName && in_array('tcarecords-' . $table . '-' . $recordType, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
 				$iconName = 'tcarecords-' . $table . '-' . $recordType;
 			}
 		} else {
 			$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][0];
-			if (!$iconName && in_array('tcarecords-' . $table . '-default', self::$tcaSpriteIconNames)) {
+			if (!$iconName && in_array('tcarecords-' . $table . '-default', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
 				$iconName = 'tcarecords-' . $table . '-default';
 			}
 		}
@@ -934,119 +935,5 @@ final class t3lib_iconWorks	{
 		return '<' . $tagName . $attributes . '>' . $innerHtml . '</' . $tagName . '>';
 	}
 
-
-
-	/**
-	 * this method creates SpriteIcon names for all tables in TCA (including their possible type-icons)
-	 * where there is no "typeicon_classes" of this TCA table ctrl section and caches the result to the TYPO3 registry
-	 * 
-	 * Note: This method is just preliminary and will be extracted in the future to go to t3lib_spriteGenerator
-	 *
-	 * @return void
-	 */
-	protected static function buildTcaSpriteIconNames() {
-			// if the data is already loaded during this request,
-			// there is nothing to do
-		if (!count(self::$tcaSpriteIconNames)) {
-
-				// step one: check with registry if an update is needed
-			$registry = t3lib_div::makeInstance('t3lib_Registry');
-			$storedHash = $registry->get('core', 'tcaSpriteIconNamesTcaHash', '');
-			$TCAtables = array_keys($GLOBALS['TCA']);
-			$currentHash = md5(serialize($TCAtables)) . 'A';
-
-				// the fileName is prefixed with since the concatenator orders files per name
-			$cssTcaFile = PATH_site . 'typo3temp/sprites/zextensions.css';
-
-				// if update would be needed or file does not exist
-			if ($storedHash != $currentHash || !file_exists($cssTcaFile)) {
-
-				$styleSheetTemplate = '
-	.t3-icon-###TABLE###-###TYPE### {
-		background-position: 0px 0px !important;
-		background-image: url(\'###IMAGE###\') !important;
-	}
-';
-
-					// delete old tempFiles
-				@unlink($cssTcaFile);
-
-					// contains the content of the CSS file
-				$styleSheetData = '';
-
-					// backpath from the stylesheet file ($cssTcaFile) to typo3 dir
-					// in order to set the background-image URL paths correct
-				$iconPath = '../../' . TYPO3_mainDir;
-
-					// path (relative from typo3 dir) for skin-Images
-				if (isset($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'])) {
-					$skinPath = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'];
-				} else {
-					$skinPath = '';
-				}
-
-					// check every table in the TCA, if an icon is needed
-				foreach ($TCAtables as $tableName) {
-
-						// this method is only needed for TCA tables where
-						//  typeicon_classes are not configured
-					if (!is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
-						$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
-
-						$template = str_replace('###TABLE###', $tableName, $styleSheetTemplate);
-
-							// adding the default Icon (without types)
-						if (isset($tcaCtrl['iconfile'])) {
-								// in CSS wie need a path relative to the css file
-								// [TCA][ctrl][iconfile] defines icons without path info to reside in /gfx/i/
-							if (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
-								$icon = $tcaCtrl['iconfile'];
-							} else {
-								$icon = $skinPath .'gfx/i/' . $tcaCtrl['iconfile'];
-							}
-
-							$icon = t3lib_div::resolveBackPath($iconPath . $icon);
-
-								// saving default icon
-							$stylesString = str_replace('###TYPE###', 'default', $template);
-							$stylesString = str_replace('###IMAGE###', $icon, $stylesString);
-							$styleSheetData .= $stylesString;
-							self::$tcaSpriteIconNames[] = 'tcarecords-'. $tableName . '-default';
-						}
-
-							// if records types are available, register them
-						if (isset($tcaCtrl['typeicon_column']) && is_array($tcaCtrl['typeicons'])) {
-							foreach ($tcaCtrl['typeicons'] as $type => $icon) {
-
-									// in CSS wie need a path relative to the css file
-									// [TCA][ctrl][iconfile] defines icons without path info to reside in /gfx/i/
-								if (strpos($icon, '/') === FALSE) {
-									$icon = $skinPath .'gfx/i/' . $icon;
-								}
-
-								$icon = t3lib_div::resolveBackPath($iconPath . $icon);
-								$stylesString = str_replace('###TYPE###', $type, $template);
-								$stylesString = str_replace('###IMAGE###', $icon, $stylesString);
-									// saving type icon
-								$styleSheetData .= $stylesString;
-								self::$tcaSpriteIconNames[] = 'tcarecords-' . $tableName . '-' . $type;
-							}
-						}
-					}
-				}
-
-					// cache results in the CSS file
-				t3lib_div::writeFileToTypo3tempDir($cssTcaFile, $styleSheetData);
-
-					// update registry
-				$registry->set('core', 'tcaSpriteIconNames', serialize(self::$tcaSpriteIconNames));
-				$registry->set('core', 'tcaSpriteIconNamesTcaHash', $currentHash);
-
-			} else {
-					// if no update is needed just load the old results
-				self::$tcaSpriteIconNames = unserialize($registry->get('core', 'tcaSpriteIconNames'));
-			}
-		}
-	}
 }
 ?>
