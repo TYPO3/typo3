@@ -1,3 +1,7 @@
+2010-05-22  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12923: Javascript error in tmenu_layers.php & gmenu_layers.php (Thanks to Klaus Goessl)
+
 2010-05-22  Xavier Perseguers  <typo3@perseguers.ch>
  
  	* Fixed bug #14175: belog not shown / error when actions: error is selected (thanks to Philipp Thiele)
