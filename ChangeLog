@@ -1,5 +1,6 @@
 2010-05-22  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14328: Include prototype+scriptaculous using API at the login screen (thanks to Steffen Gebert)
 	* Added Feature #14324: Add spriteGeneratorAPI to support the new sprite-icon-API (thanks to Steffen Ritter)
 
 2010-05-22  Xavier Perseguers  <typo3@perseguers.ch>
