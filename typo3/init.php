@@ -393,6 +393,9 @@ if (TYPO3_extTableDef_script)	{
 	include (PATH_typo3conf.TYPO3_extTableDef_script);
 }
 
+	// load TYPO3 SpriteGenerating API
+$spriteManager = t3lib_div::makeInstance('t3lib_spriteManager', TRUE);
+$spriteManager->loadCacheFile();
 
 
 // *******************************
