@@ -1,3 +1,7 @@
+2010-05-21  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #12923: Javascript error in tmenu_layers.php & gmenu_layers.php (Thanks to Klaus Goessl)
+
 2010-05-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14191: Install tool lacks hint of how to create ENABLE_INSTALL_TOOL (thanks to Steffen Gebert)
