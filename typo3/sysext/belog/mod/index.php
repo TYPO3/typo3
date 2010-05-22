@@ -208,7 +208,7 @@ class SC_mod_tools_log_index {
 		if ($this->MOD_SETTINGS['action'] > 0)	{
 			$where_part.=' AND type='.intval($this->MOD_SETTINGS['action']);
 		} elseif ($this->MOD_SETTINGS['action'] == -1)	{
-			$where_part.=' AND error';
+			$where_part .= ' AND error != 0';
 		}
 
 

@@ -1,3 +1,7 @@
+2010-05-22  Xavier Perseguers  <typo3@perseguers.ch>
+ 
+ 	* Fixed bug #14175: belog not shown / error when actions: error is selected (thanks to Philipp Thiele)
+ 
 2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #14337: "The install tool is locked" doesn't send no-cache headers (thanks to Steffen Gebert)
