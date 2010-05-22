@@ -968,7 +968,7 @@ class t3lib_parsehtml	{
 		$parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a',$content);
 		foreach ($parts as $k => $v)	{
 			if ($k%2)	{
-				$params = $this->get_tag_attributes($v,1);
+				$params = $this->get_tag_attributes($v);
 				$tagEnd = substr($v,-2)=='/>' ? ' />' : '>';	// Detect tag-ending so that it is re-applied correctly.
 				$firstTagName = $this->getFirstTagName($v);	// The 'name' of the first tag
 				$somethingDone=0;
