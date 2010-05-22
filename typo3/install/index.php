@@ -85,11 +85,18 @@ if (1==2 || !is_file($enableInstallToolFile)) {
 		'title' => 'The install tool is locked',
 		'content' => '
 			<p>
-				Fix: Create a file named <strong>ENABLE_INSTALL_TOOL</strong>
-				and put it into the folder <strong>typo3conf/</strong>
-				<br />
-				This file may simply be empty.
+				To enable access to the install tool, you have the following option<span class="t3-install-locked-user-settings">s</span>:
 			</p>
+			<ul>
+				<li>
+					Create a file named <strong>ENABLE_INSTALL_TOOL</strong>
+					and put it into the folder <strong>typo3conf/</strong>.<br />
+					This file may simply be empty.
+				</li>
+				<li class="t3-install-locked-user-settings">
+					Go to <a href="../sysext/setup/mod/index.php">User tools &gt; User settings</a> and let TYPO3 create this file for you.
+				</li>
+			</ul>
 			<p>
 				For security reasons, it is highly recommended to rename or
 				delete the file after the operation is finished.

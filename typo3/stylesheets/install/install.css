@@ -47,3 +47,19 @@ h2 {
 	background-color: #fbffb3;
 	border-color: #c4b70d;
 }
+
+.typo3-message ul {
+	padding-left: 20px;
+}
+
+.typo3-message a {
+	color: #212424;
+}
+
+.typo3-message a:hover {
+	color: #000000;
+}
+
+.standalone .t3-install-locked-user-settings {
+	display: none;
+}
