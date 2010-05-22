@@ -1,5 +1,6 @@
 2010-05-21  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14443: Deprecate $TYPO3_CONF_VARS[GFX][TTFLocaleConv]
 	* Cleaned up #9416: Code Cleanup for lang.php (Thanks to Stefano Kowalke)
 	* Fixed bug #6555: template.relPathPrefix causes decoding of html-entities in affected attributes (Thanks to Martin Ficzel)
 	* Fixed bug #13749: IRRE: Inline elements of translated records are not coppied correctly. (Thanks to Albrecht Koehnlein)

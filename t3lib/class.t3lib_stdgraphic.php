@@ -164,7 +164,7 @@ class t3lib_stdGraphic	{
 	var $truecolor = true;					// Internal variable which get's used to determine wheter GDlib should use function truecolor pendants
 	var $png_truecolor = false;					// Set to true if generated png's should be truecolor by default
 	var $truecolorColors = 0xffffff;			// 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
-	var $TTFLocaleConv = '';					// Used to recode input to TTF-functions for other charsets.
+	var $TTFLocaleConv = '';					// Used to recode input to TTF-functions for other charsets. Deprecated since TYPO3 3.6, will be removed in TYPO3 4.6
 	var $enable_typo3temp_db_tracking = 0;		// If set, then all files in typo3temp will be logged in a database table. In addition to being a log of the files with original filenames, it also serves to secure that the same image is not rendered simultaneously by two different processes.
 	var $imageFileExt = 'gif,jpg,jpeg,png,tif,bmp,tga,pcx,ai,pdf';	// Commalist of file extensions perceived as images by TYPO3. List should be set to 'gif,png,jpeg,jpg' if IM is not available. Lowercase and no spaces between!
 	var $webImageExt = 'gif,jpg,jpeg,png';		// Commalist of web image extensions (can be shown by a webbrowser)
@@ -2150,7 +2150,9 @@ class t3lib_stdGraphic	{
 		}
 
 			// Recode string accoding to TTFLocaleConv. Deprecated.
-		if ($this->TTFLocaleConv)	{
+		if ($this->TTFLocaleConv) {
+			t3lib_div::deprecationLog('The option $TYPO3_CONF_VARS[\'GFX\'][\'TTFLocaleConv\'] is in use, but deprecated since TYPO3 3.6, will be removed in TYPO3 4.6. Make sure to unset this variable in your typo3conf/localconf.php and use a different way to encode your string.');
+
 			list($from, $to) = t3lib_div::trimExplode('..', $this->TTFLocaleConv, true);
 			$string = $this->csConvObj->conv($string, $from, $to);
 		}
