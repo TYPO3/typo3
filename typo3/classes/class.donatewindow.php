@@ -96,7 +96,7 @@ class DonateWindow implements t3lib_Singleton {
 		$isCancelled = (isset($uc[self::FLAG_DonateWindowDisabled]) && !empty($uc[self::FLAG_DonateWindowDisabled]));
 		$isPostponed = (isset($uc[self::FLAG_DonateWindowPostponed]) && $uc[self::FLAG_DonateWindowPostponed] > $GLOBALS['EXEC_TIME'] - self::VALUE_DonateWindowPostponeDays * 86400);
 
-		return ($isAdmin && $isAllowed && !$isCancelled && !$isPostponed);
+		return ($isAdmin && $isAllowed && $isTriggered && !$isCancelled && !$isPostponed);
 	}
 
 	/**

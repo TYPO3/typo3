@@ -38,8 +38,8 @@ Ext.ux.TYPO3.donate = Ext.extend(Ext.util.Observable, {
 	constructor: function(config) {
 		this.ajaxRequestDefault = {
 			url: TYPO3.configuration.PATH_typo3 + 'ajax.php',
-			success: function() {},
-			failure: function() {}
+			success: Ext.emptyFn,
+			failure: Ext.emptyFn
 		};
 
 		config = config || {};
