@@ -1,4 +1,4 @@
-2010-05-22  Steffen Kamper  <info@sk-typo3.de>
+2010-05-23  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to bug #13868: Integrate TYPO3 donate notice in the backend
 	* Fixed bug #14387: Updating the CGLs [was: Remove the feature "Enable extensions without review (basic security check)" from EM] (thanks to Lars Houmark)
@@ -70,7 +70,7 @@
 2010-05-15  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14312: Notice undefined index systemLog and undefined constant TYPO3_ERRORHANDLER_MODE (thanks to Martin Mueller)
-	* Fixed bug #14309: Notice undefined index "error" & "debug" in index_ts.php (thanks to Martin Müller)
+	* Fixed bug #14309: Notice undefined index "error" & "debug" in index_ts.php (thanks to Martin Mueller)
 	* Fixed bug #14180: No Message shown when accessing backend if TYPO3_CONF_VARS[BE][adminOnly] = -1 (thanks to Georg Ringer)
 
 2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
