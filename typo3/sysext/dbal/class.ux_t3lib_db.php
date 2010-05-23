@@ -1427,7 +1427,12 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				if ($this->handlerInstance[$this->lastHandlerKey]['link']) {
+					$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				} else {
+						// link may be null when unit testing DBAL
+					$str = str_replace('\'', '\\\'', $str);
+				}
 				break;
 			case 'adodb':
 				$str = substr($this->handlerInstance[$this->lastHandlerKey]->qstr($str), 1, -1);
