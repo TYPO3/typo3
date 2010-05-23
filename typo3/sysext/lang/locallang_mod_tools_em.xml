@@ -33,6 +33,7 @@
 			<label index="descr_local">Local extension (typo3conf/ext/) - Local for this TYPO3 installation only (dynamic).</label>
 			<label index="privacy_notice">When you interact with the online repository, server information may be sent and stored in the repository for statistics.</label>
 			<label index="security_header">Found a security problem? Please get in touch with us!</label>
+			<label index="security_warning_extensions">Please be aware that extensions are third-party software. Installing an extension is a security risk, as the high level of quality and security in the TYPO3 Core can not be assured in these extensions.</label>
 			<label index="security_descr">If you think you have found a security issue in TYPO3 or an extension, please contact the %sTYPO3 security team%s! Thank you!</label>
 			<label index="menu_loaded_extensions">Loaded extensions</label>
 			<label index="menu_install_extensions">Install extensions</label>
@@ -74,6 +75,7 @@
 			<label index="excluded_from_updates">The extension is excluded from updates! You can change this in the appropriate ext_emconf.php file.</label>
 			<label index="import_to_local_dir">Import this extension from online repository to the 'local' directory typo3conf/ext/.</label>
 			<label index="list_or_look_up">List or look up %s extensions</label>
+			<label index="list_or_look_up_extensions">Look up extensions:</label>
 			<label index="list_or_look_up_all">all</label>
 			<label index="list_or_look_up_reviewed">reviewed</label>
 			<label index="look_up_button">Look up</label>

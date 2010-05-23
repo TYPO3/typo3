@@ -382,7 +382,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		);
 
 		$this->privacyNotice = $GLOBALS['LANG']->getLL('privacy_notice');
-		$securityMessage = sprintf($GLOBALS['LANG']->getLL('security_descr'),
+		$securityMessage = $GLOBALS['LANG']->getLL('security_warning_extensions') .
+			'<br /><br />' . sprintf($GLOBALS['LANG']->getLL('security_descr'),
 				'<a href="http://typo3.org/teams/security/" target="_blank">', '</a>'
 			);
 		$flashMessage = t3lib_div::makeInstance(
@@ -419,7 +420,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->terConnection->wsdlURL = $TYPO3_CONF_VARS['EXT']['em_wsdlURL'];
 		$this->xmlhandler = t3lib_div::makeInstance('SC_mod_tools_em_xmlhandler');
 		$this->xmlhandler->emObj = $this;
-		$this->xmlhandler->useUnchecked = $this->MOD_SETTINGS['display_unchecked'];
 		$this->xmlhandler->useObsolete = $this->MOD_SETTINGS['display_obsolete'];
 
 			// Initialize Document Template object:
@@ -515,7 +515,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			),
 			'display_shy' => '',
 			'display_own' => '',
-			'display_unchecked' => '',
 			'display_obsolete' => '',
 			'display_installed' => '',
 			'display_files' => '',
@@ -885,9 +884,9 @@ EXTENSION KEYS:
 			$offset = $this->listingLimit*$this->pointer;
 
 			if($this->MOD_SETTINGS['display_own'] && strlen($this->fe_user['username'])) {
-				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, $this->fe_user['username'], $this->MOD_SETTINGS['listOrder']);
+				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, $this->fe_user['username'], $this->MOD_SETTINGS['listOrder'], TRUE);
 			} else {
-				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, '', $this->MOD_SETTINGS['listOrder'], false, false, $offset, $this->listingLimit);
+				$this->xmlhandler->searchExtensionsXML($this->listRemote_search, '', $this->MOD_SETTINGS['listOrder'], TRUE, FALSE, $offset, $this->listingLimit);
 			}
 			if (count($this->xmlhandler->extensionsXML))	{
 				list($list,$cat) = $this->prepareImportExtList(true);
@@ -947,14 +946,7 @@ EXTENSION KEYS:
 					$content .= t3lib_BEfunc::cshItem('_MOD_tools_em', 'import_ter', $GLOBALS['BACK_PATH'], '|<br />');
 					$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['lookUp'].value);return false;";
 					$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
-							'"><label for="lookUp">' .
-							sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
-								($this->MOD_SETTINGS['display_unchecked'] ?
-									'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
-									: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
-								)
-							) .
-							'</label><br />
+							'"><label for="lookUp">' . $GLOBALS['LANG']->getLL('list_or_look_up_extensions') . '</label><br />
 							<input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->listRemote_search) .
 							'" /> <input type="submit" value="' . $GLOBALS['LANG']->getLL('look_up_button') . '" /></form><br /><br />';
 
@@ -1004,13 +996,7 @@ EXTENSION KEYS:
 				$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['lookUp'].value);return false;";
 				$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
 					'"><label for="lookUp">' .
-					sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
-						($this->MOD_SETTINGS['display_unchecked'] ?
-							'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
-							: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
-						)
-					) .
-					'</label><br />
+					$GLOBALS['LANG']->getLL('list_or_look_up_extensions') . '</label><br />
 					<input type="text" id="lookUp" name="lookUp" value="' . htmlspecialchars($this->listRemote_search) .
 					'" /> <input type="submit" value="' . $GLOBALS['LANG']->getLL('look_up_button') . '" /></form><br /><br />';
 
@@ -1028,13 +1014,7 @@ EXTENSION KEYS:
 			$onsubmit = "window.location.href='index.php?ter_connect=1&ter_search='+escape(this.elements['lookUp'].value);return false;";
 			$content .= '<form action="index.php" method="post" onsubmit="' . htmlspecialchars($onsubmit) .
 				'"><label for="lookUp">' .
-				sprintf($GLOBALS['LANG']->getLL('list_or_look_up'),
-					($this->MOD_SETTINGS['display_unchecked'] ?
-						'<strong style="color:#900;">' . $GLOBALS['LANG']->getLL('list_or_look_up_all') . '</strong>'
-						: '<strong style="color:#090;">' . $GLOBALS['LANG']->getLL('list_or_look_up_reviewed') . '</strong>'
-					)
-				) .
-				'</label><br />
+				$GLOBALS['LANG']->getLL('list_or_look_up_extensions') . '</label><br />
 				<input type="text" id="lookUp" name="lookUp" value="" /> <input type="submit" value="' .
 				$GLOBALS['LANG']->getLL('look_up_button') . '" /><br /><br />';
 
@@ -1130,20 +1110,6 @@ EXTENSION KEYS:
 		$content.= '
 			' . t3lib_BEfunc::cshItem('_MOD_tools_em', 'settings', $GLOBALS['BACK_PATH'], '|<br />') . '
 			<form action="index.php" method="post" name="altersettings">
-			<fieldset><legend>' . $GLOBALS['LANG']->getLL('security_settings') . '</legend>
-			<table border="0" cellpadding="2" cellspacing="2">
-				<tr class="bgColor4">
-					<td><label for="display_unchecked">' . $GLOBALS['LANG']->getLL('show_exts_without_security_check') . '</label></td>
-					<td>'.t3lib_BEfunc::getFuncCheck(0,'SET[display_unchecked]',$this->MOD_SETTINGS['display_unchecked'],'','','id="display_unchecked"').'</td>
-				</tr>
-			</table>
-			<strong>' . $GLOBALS['LANG']->getLL('notice') . '</strong> ' .
-				sprintf($GLOBALS['LANG']->getLL('security_notice'),
-					'<a href="http://typo3.org/extensions/what-are-reviews/" target="_blank">', '</a>'
-				) .
-			'</fieldset>
-			<br />
-			<br />
 			<fieldset><legend>' . $GLOBALS['LANG']->getLL('user_settings') . '</legend>
 			<table border="0" cellpadding="2" cellspacing="2">
 				<tr class="bgColor4">
@@ -1868,7 +1834,7 @@ EXTENSION KEYS:
 		if (!$this->xmlhandler->countExtensions())	{
 			$this->fetchMetaData('extensions');
 		}
-		$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', true);
+		$this->xmlhandler->searchExtensionsXMLExact($extKey, '', '', TRUE, TRUE);
 
 			// check if extension can be fetched
 		if(isset($this->xmlhandler->extensionsXML[$extKey])) {
@@ -6161,7 +6127,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		'</tr>';
 
 		foreach ($extList[0] as $name => $data)	{
-			$this->xmlhandler->searchExtensionsXMLExact($name, '', '', false, true);
+			$this->xmlhandler->searchExtensionsXMLExact($name, '', '', TRUE, TRUE);
 			if (!is_array($this->xmlhandler->extensionsXML[$name]))	{
 				continue;
 			}
