@@ -1,5 +1,6 @@
 2010-05-24  Benjamin Mack  <benni@typo3.org>
 
+	* Follow-up to #13379: Sprite Icon API - Removed unused sprites for t3skin (Thanks to Steffen Ritter)
 	* Follow-up to #13379: Sprite Icon API - Added updated Sprites for t3skin (Thanks to Steffen Ritter)
 
 2010-05-23  Steffen Kamper  <info@sk-typo3.de>
