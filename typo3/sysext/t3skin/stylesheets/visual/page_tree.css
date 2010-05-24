@@ -101,3 +101,12 @@ ul.tree ul li.active ul span a {
 	border: 0;
 	cursor: pointer;
 }
+/*div#PageTreeDiv span.t3-icon-apps {
+	margin-bottom:-6px !important;
+	margin-right:1px !important;
+}*/
+
+ul.tree ul li {vertical-align:bottom;}
+ul.tree img {vertical-align:bottom;}
+ul.tree ul li span {vertical-align:bottom;}
+ul.tree .treeLinkItem {line-height:16px;}

@@ -1,0 +1,65 @@
+
+.t3-icon-mimetypes {
+	background-image:url('../../images/sprites/t3-icon-mimetypes.png');
+}
+
+.t3-icon-mimetypes.t3-icon-x-content-link {
+	background-position: 0 0px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-script {
+	background-position: 0 -24px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-plugin {
+	background-position: 0 -48px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-divider {
+	background-position: 0 -72px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-table {
+	background-position: 0 -96px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-text-picture {
+	background-position: 0 -120px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-login {
+	background-position: 0 -144px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-header {
+	background-position: 0 -168px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-form-search {
+	background-position: 0 -192px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-template {
+	background-position: 0 -216px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-multimedia {
+	background-position: 0 -240px;
+}
+.t3-icon-mimetypes.t3-icon-text-csv {
+	background-position: 0 -264px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-list-files {
+	background-position: 0 -288px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-text {
+	background-position: 0 -312px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-list-bullets {
+	background-position: 0 -336px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-form {
+	background-position: 0 -360px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-image {
+	background-position: 0 -384px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-menu {
+	background-position: 0 -408px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-html {
+	background-position: 0 -432px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-template-static {
+	background-position: 0 -456px;
+}

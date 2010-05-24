@@ -1,0 +1,11 @@
+
+.t3-icon-places {
+	background-image:url('../../images/sprites/t3-icon-places.png');
+}
+
+.t3-icon-places.t3-icon-folder-closed {
+	background-position: 0 0px;
+}
+.t3-icon-places.t3-icon-folder-opened {
+	background-position: 0 -24px;
+}
