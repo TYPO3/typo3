@@ -529,7 +529,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$typeOfRelation = $columnMap->getTypeOfRelation();
 				if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$sql['where'][] = $tableName . '.uid IN (SELECT uid_local FROM ' . $relationTableName . ' WHERE uid_foreign=' . $this->getPlainValue($operand2) . ')';
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->getPlainValue($operand2) . ')';
 				} elseif ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {
