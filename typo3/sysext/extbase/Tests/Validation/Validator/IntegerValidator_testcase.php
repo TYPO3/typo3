@@ -63,7 +63,6 @@ class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extba
 	
 	/**
 	 * @test
-	 * @dataProvider validIntegers
 	 */
 	public function integerValidatorReturnsTrueForAValidInteger() {
 		$integerValidator = new Tx_Extbase_Validation_Validator_IntegerValidator();
