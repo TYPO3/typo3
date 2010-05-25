@@ -3064,7 +3064,13 @@ HTMLArea.Editor.prototype.getEndBlocks = function(selection) {
 	var range = this._createRange(selection);
 	if (!Ext.isIE) {
 		var parentStart = range.startContainer;
+		if (/^(body)$/i.test(parentStart.nodeName)) {
+			parentStart = parentStart.firstChild;
+		}
 		var parentEnd = range.endContainer;
+		if (/^(body)$/i.test(parentEnd.nodeName)) {
+			parentEnd = parentEnd.lastChild;
+		}
 	} else {
 		if (selection.type !== "Control" ) {
 			var rangeEnd = range.duplicate();

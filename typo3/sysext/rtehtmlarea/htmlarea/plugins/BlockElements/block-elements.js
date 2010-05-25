@@ -655,37 +655,39 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 		if (endBlocks.start === endBlocks.end) {
 			--index;
 		}
-		for (var block = startAncestors[index]; block; block = block.nextSibling) {
-			if (HTMLArea.isBlockElement(block)) {
-				switch (buttonId) {
-					case "Indent" :
-						if (!HTMLArea._hasClass(block, this.useClass[buttonId])) {
-							HTMLArea._addClass(block, this.useClass[buttonId]);
-						}
-						break;
-					case "Outdent" :
-						if (HTMLArea._hasClass(block, this.useClass["Indent"])) {
-							HTMLArea._removeClass(block, this.useClass["Indent"]);
-						}
-						break;
-					case "JustifyLeft"   :
-					case "JustifyCenter" :
-					case "JustifyRight"  :
-					case "JustifyFull"   :
-						this.toggleAlignmentClass(block, buttonId);
-						break;
-					default :
-						if (this.standardBlockElements.test(buttonId.toLowerCase()) && buttonId.toLowerCase() == block.nodeName.toLowerCase()) {
-							this.cleanClasses(block);
-							if (className) {
-								HTMLArea._addClass(block, className);
+		if (!/^(body)$/i.test(startAncestors[index].nodeName)) {
+			for (var block = startAncestors[index]; block; block = block.nextSibling) {
+				if (HTMLArea.isBlockElement(block)) {
+					switch (buttonId) {
+						case "Indent" :
+							if (!HTMLArea._hasClass(block, this.useClass[buttonId])) {
+								HTMLArea._addClass(block, this.useClass[buttonId]);
 							}
-						}
-						break;
+							break;
+						case "Outdent" :
+							if (HTMLArea._hasClass(block, this.useClass["Indent"])) {
+								HTMLArea._removeClass(block, this.useClass["Indent"]);
+							}
+							break;
+						case "JustifyLeft"   :
+						case "JustifyCenter" :
+						case "JustifyRight"  :
+						case "JustifyFull"   :
+							this.toggleAlignmentClass(block, buttonId);
+							break;
+						default :
+							if (this.standardBlockElements.test(buttonId.toLowerCase()) && buttonId.toLowerCase() == block.nodeName.toLowerCase()) {
+								this.cleanClasses(block);
+								if (className) {
+									HTMLArea._addClass(block, className);
+								}
+							}
+							break;
+					}
 				}
-			}
-			if (block == endAncestors[index]) {
-				break;
+				if (block == endAncestors[index]) {
+					break;
+				}
 			}
 		}
 	},
