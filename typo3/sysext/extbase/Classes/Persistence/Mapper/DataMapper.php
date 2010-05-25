@@ -424,6 +424,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 *
 	 * @param mixed $result The result could be an object or an ObjectStorage 
 	 * @param array $propertyMetaData The property meta data
+	 * @param array $result The result 
 	 * @return void
 	 */
 	public function mapResultToPropertyValue(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $result) {
@@ -450,7 +451,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					$propertyValue = $objects;
 				}
 			} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
-				$propertyValue = current($result);
+				if (is_array($result)) {
+					$propertyValue = current($result);
+				} else {
+					$propertyValue = $result;
+				}
 			}
 		}
 		return $propertyValue;
