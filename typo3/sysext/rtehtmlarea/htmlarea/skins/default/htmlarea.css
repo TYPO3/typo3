@@ -225,7 +225,7 @@
 	border-color: white;
 }
 .htmlarea-custom-colors a {
-	border-style: none;
+	border-color: transparent;
 	float: none;
 	display: block;
 	width: 100%;
