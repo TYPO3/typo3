@@ -1,5 +1,6 @@
 2010-05-26  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #13379: Sprite Icon API (thanks to Steffen Ritter)
 	* Follow-up to bug #14324: Feature: Add spriteGeneratorAPI to support the new sprite-icon-api (thanks to Steffen Ritter)
 
 2010-05-25  Stanislas Rolland  <typo3@sjbr.ca>

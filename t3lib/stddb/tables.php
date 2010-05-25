@@ -526,5 +526,18 @@ $FILEICONS = array(
 
 
 
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array('hidden', 'starttime', 'endtime', 'futureendtime', 'fe_group', 'protectedSection');
+$GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
+	'hidden'           => 'status-overlay-hidden',
+	'fe_group'         => 'status-overlay-access-restricted',
+	'starttime'        => 'status-overlay-scheduled-start',
+	'endtime'          => 'status-overlay-scheduled-end',
+	'futureendtime'    => 'status-overlay-scheduled-future-end',
+	'readonly'         => 'status-overlay-locked',
+	'deleted'          => 'status-overlay-deleted',
+	'missing'          => 'status-overlay-missing',
+	'translated'       => 'status-overlay-translated',
+	'protectedSection' => 'status-overlay-includes-subpages',
+);
 
 ?>

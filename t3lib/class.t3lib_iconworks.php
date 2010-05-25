@@ -877,12 +877,12 @@ final class t3lib_iconWorks	{
 
 
 			// now only show the status with the highest priority
-		$priorities = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayPriorities'];
+		$priorities = $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'];
 
 		$iconName = '';
 		foreach ($priorities as $priority) {
 			if ($status[$priority]) {
-				$iconName = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayNames'][$priority];
+				$iconName = $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'][$priority];
 				break;
 			}
 		}

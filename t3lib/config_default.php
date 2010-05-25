@@ -291,19 +291,6 @@ $TYPO3_CONF_VARS = array(
 			'ExtDirect::route' => 't3lib/extjs/class.t3lib_extjs_extdirectrouter.php:t3lib_extjs_ExtDirectRouter->route',
 		),
 		'XCLASS' => array(),					// See 'Inside TYPO3' document for more information.
-		'spriteIconRecordOverlayPriorities' => array('hidden', 'starttime', 'endtime', 'futureendtime', 'fe_group', 'protectedSection'),
-		'spriteIconRecordOverlayNames' => array(
-			'hidden'           => 'status-overlay-hidden',
-			'fe_group'         => 'status-overlay-access-restricted',
-			'starttime'        => 'status-overlay-scheduled-start',
-			'endtime'          => 'status-overlay-scheduled-end',
-			'futureendtime'    => 'status-overlay-scheduled-future-end',
-			'readonly'         => 'status-overlay-locked',
-			'deleted'          => 'status-overlay-deleted',
-			'missing'          => 'status-overlay-missing',
-			'translated'       => 'status-overlay-translated',
-			'protectedSection' => 'status-overlay-includes-subpages',
-		),
 	),
 	'FE' => array(			// Configuration for the TypoScript frontend (FE). Nothing here relates to the administration backend!
 		'png_to_gif' => FALSE,					// Boolean. Enables conversion back to gif of all png-files generated in the frontend libraries. Notice that this leaves an increased number of temporary files in typo3temp/
