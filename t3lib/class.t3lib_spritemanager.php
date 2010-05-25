@@ -110,15 +110,17 @@ class t3lib_spriteManager {
 			// ask the handlerClass to kindly rebuild our data
 		$this->handler->generate();
 
-			// get active skin Name
-		list($activeSkin) = $GLOBALS['TBE_STYLES']['skins'];
-		$activeSkin = $activeSkin['name'];
-
+			// get all Icons registered from skins, merge with core-Icon-List
+		$availableSkinIcons = (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageName'];
+		foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinName => $skinData) {
+			$availableSkinIcons = array_merge($availableSkinIcons, (array)$skinData['availableSpriteIcons']);
+		}
+		
 			// merge icon names whith them provided by the skin,
 			// registered from "complete sprites" and the ones detected
 			// by the handlerclass
 		$this->iconNames = array_merge(
-			(array) $GLOBALS['TBE_STYLES']['skins'][$activeSkin]['availableSpriteIcons'],
+			$availableSkinIcons,
 			(array) $GLOBALS['TBE_STYLES']['spriteManager']['spriteIconsAvailable'],
 			$this->handler->getAvailableIconNames()
 		);
@@ -129,7 +131,7 @@ class t3lib_spriteManager {
 
 			// delete old cache files
 		$oldFiles = t3lib_div::getFilesInDir(PATH_site . t3lib_spriteManager::$tempPath, 'inc', 1);
-		foreach ($oldFiles aS $file) {
+		foreach ($oldFiles as $file) {
 			@unlink($file);
 		}
 			// and write the new one
