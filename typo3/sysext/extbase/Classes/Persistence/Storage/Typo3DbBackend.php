@@ -566,10 +566,17 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @return mixed
 	 */
 	protected function getPlainValue($input) {
+		if (is_array($input)) {
+			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('An array could not be converted to a plain value.', 1274799932);
+		}
 		if ($input instanceof DateTime) {
 			return $input->format('U');
-		} elseif ($input instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
-			return $input->getUid();
+		} elseif (is_object($input)) {
+			if ($input instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+				return $input->getUid();
+			} else {
+				throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
+			}
 		} elseif (is_bool($input)) {
 			return $input === TRUE ? 1 : 0;
 		} else {
