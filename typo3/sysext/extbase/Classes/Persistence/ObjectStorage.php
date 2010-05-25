@@ -113,7 +113,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 * @param mixed $information The data to associate with the object.
 	 * @return void
 	 */
-	public function offsetSet($object, $information = NULL) {
+	public function offsetSet($object, $information) {
 		$this->storage[spl_object_hash($object)] = array('obj' => $object, 'inf' => $information);
 	}
 
