@@ -190,8 +190,6 @@ tt_content.list.20.' . $pluginSignature . ' {
 		$config = $GLOBALS['TBE_MODULES'][$key]['config'];
 		define('TYPO3_MOD_PATH', $config['extRelPath']);
 
-		$GLOBALS['BACK_PATH'] = '';
-
 			// Fill $MCONF
 		$MCONF['name'] = $key;
 		$MCONF['access'] = $config['access'];
