@@ -259,12 +259,14 @@ class Tx_Extbase_Dispatcher {
 			$identityMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap');
 			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
 
+			$dataMapFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory');
+			$dataMapFactory->injectReflectionService(self::$reflectionService);
+
 			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 			$dataMapper->injectIdentityMap($identityMap);
 			$dataMapper->injectSession($persistenceSession);
 			$dataMapper->injectReflectionService(self::$reflectionService);
-			$dataMapper->injectDataMapFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory'));
-			
+			$dataMapper->injectDataMapFactory($dataMapFactory);
 			
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);
