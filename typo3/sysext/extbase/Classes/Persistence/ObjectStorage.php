@@ -25,51 +25,37 @@
 /**
  * The storage for objects. It ensures the uniqueness of an object in the storage. It's a remake of the
  * SplObjectStorage introduced in PHP 5.3.
+ * 
+ * Opposed to the SplObjectStorage the ObjectStorage does not implement the Serializable interface.
  *
  * @package Extbase
  * @subpackage Persistence
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, ArrayAccess {
+class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, ArrayAccess {
 
 	/**
-	 * The array holding references of the stored objects
+	 * An array holding the objects and the stored information. The key of the array items ist the 
+	 * spl_object_hash of the given object.
+	 *
+	 * array(
+	 * 	spl_object_hash =>
+	 * 		array(
+	 *			'obj' => $object,
+	 * 			'inf' => $information
+	 *		)
+	 * )
 	 *
 	 * @var array
 	 */
 	protected $storage = array();
 
 	/**
-	 *
-	 * @var bool
-	 */
-	protected $isInitialized = TRUE;
-
-	/**
-	 * This is a template function to be overwritten by a concrete implementation. It enables you to implement
-	 * a lazy load implementation. 
-	 *
-	 * @return void
-	 */
-	protected function initializeStorage() {
-	}
-	
-	/**
-	 * Returns the state of the initialization
-	 *
-	 * @return void
-	 */
-	public function isInitialized() {
-		return $this->isInitialized;
-	}
-	
-	/**
-	 * Resets the array pointer of the storage
+	 * Rewind the iterator to the first storage element.
 	 *
 	 * @return void
 	 */
 	public function rewind() {
-		$this->initializeStorage();
 		reset($this->storage);
 	}
 
@@ -79,199 +65,179 @@ class Tx_Extbase_Persistence_ObjectStorage implements Iterator, Countable, Array
 	 * @return void
 	 */
 	public function valid() {
-		$this->initializeStorage();
-		return $this->current() !== FALSE;
-	}
-
-	/**
-	 * Returns the current key storage array
-	 *
-	 * @return void
-	 */
-	public function key() {
-		$this->initializeStorage();
-		return key($this->storage);
-	}
-
-	/**
-	 * Returns the current value of the storage array
-	 *
-	 * @return void
-	 */
-	public function current() {
-		$this->initializeStorage();
 		return current($this->storage);
 	}
 
 	/**
-	 * Returns the next position of the storage array
+	 * Returns the index at which the iterator currently is. This is different from the SplObjectStorage 
+	 * as the key in this implementation is the object hash.
+	 *
+	 * @return string The index corresponding to the position of the iterator.
+	 */
+	public function key() {
+		return key($this->storage);
+	}
+
+	/**
+	 * Returns the current storage entry.
+	 *
+	 * @return object The object at the current iterator position.
+	 */
+	public function current() {
+		$item = current($this->storage);
+		return $item['obj'];
+	}
+
+	/**
+	 * Moves the iterator to the next object in the storage.
 	 *
 	 * @return void
 	 */
 	public function next() {
-		$this->initializeStorage();
 		next($this->storage);
 	}
 
 	/**
-	 * Counts the elements in the storage array
+	 * Counts the number of objects in the storage.
 	 *
-	 * @return void
+	 * @return int The number of objects in the storage.
 	 */
 	public function count() {
-		$this->initializeStorage();
 		return count($this->storage);
 	}
 
 	/**
-	 * Loads the array at a given offset. Nothing happens if the object already exists in the storage
+	 * Associate data to an object in the storage. offsetSet() is an alias of attach(). 
 	 *
-	 * @param string $offset
-	 * @param string $obj The object
+	 * @param object $object The object to add.
+	 * @param mixed $information The data to associate with the object.
 	 * @return void
 	 */
-	public function offsetSet($offset, $value) {
-		if (!is_object($offset)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter 1 to be object, ' . gettype($offset) . ' given');
-		// TODO Check implementation again
-		// if (!is_object($obj)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter 2 to be object, ' . gettype($offset) . ' given');
-		// if (!($offset === $obj)) throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Parameter 1 and parameter 2 must be a reference to the same object.');
-		$this->initializeStorage();
-		if (!$this->contains($offset)) {
-			$this->storage[spl_object_hash($offset)] = $value;
-		}
+	public function offsetSet($object, $information = NULL) {
+		$this->storage[spl_object_hash($object)] = array('obj' => $object, 'inf' => $information);
 	}
 
 	/**
-	 * Checks if a given offset exists in the storage
+	 * Checks whether an object exists in the storage.
 	 *
-	 * @param string $offset
-	 * @return boolean TRUE if the given offset exists; otherwise FALSE
+	 * @param string $object The object to look for.
+	 * @return boolean Returns TRUE if the object exists in the storage, and FALSE otherwise.
 	 */
-	public function offsetExists($offset) {
-		$this->isObject($offset);
-		$this->initializeStorage();
-		return isset($this->storage[spl_object_hash($offset)]);
+	public function offsetExists($object) {
+		return isset($this->storage[spl_object_hash($object)]);
 	}
 
 	/**
-	 * Unsets the storage at the given offset
+	 * Removes an object from the storage. offsetUnset() is an alias of detach().
 	 *
-	 * @param string $offset The offset
+	 * @param Object $object The object to remove.
 	 * @return void
 	 */
-	public function offsetUnset($offset) {
-		$this->isObject($offset);
-		$this->initializeStorage();
-		unset($this->storage[spl_object_hash($offset)]);
-	}
-
-	/**
-	 * Returns the object at the given offset
-	 *
-	 * @param string $offset The offset
-	 * @return Object The object
-	 */
-	public function offsetGet($offset) {
-		$this->isObject($offset);
-		$this->initializeStorage();
-		return isset($this->storage[spl_object_hash($offset)]) ? $this->storage[spl_object_hash($offset)] : NULL;
-	}
-
-	/**
-	 * Checks if the storage contains the given object
-	 *
-	 * @param Object $object The object to be checked for
-	 * @return boolean TRUE|FALSE Returns TRUE if the storage contains the object; otherwise FALSE
-	 */
-	public function contains($object) {
-		$this->isObject($object);
-		$this->initializeStorage();
-		return array_key_exists(spl_object_hash($object), $this->storage);
-	}
-
-	/**
-	 * Attaches an object to the storage
-	 *
-	 * @param Object $obj The Object to be attached
-	 * @return void
-	 */
-	public function attach($object, $value = NULL) {
-		$this->isObject($object);
-		$this->initializeStorage();
-		if (!$this->contains($object)) {
-			if ($value === NULL) {
-				$value = $object;
-			}
-			// TODO Revise this with Karsten
-			$this->storage[spl_object_hash($object)] = $value;
-		}
-	}
-
-	/**
-	 * Detaches an object from the storage
-	 *
-	 * @param Object $object The object to be removed from the storage
-	 * @return void
-	 */
-	public function detach($object) {
-		$this->isObject($object);
-		$this->initializeStorage();
+	public function offsetUnset($object) {
 		unset($this->storage[spl_object_hash($object)]);
 	}
 
 	/**
-	 * Attach all objects to the storage
+	 * Returns the data associated with an object in the storage.
 	 *
-	 * @param array $objects The objects to be attached to the storage
+	 * @param string $object The object to look for.
+	 * @return mixed The data previously associated with the object in the storage. 
+	 */
+	public function offsetGet($object) {
+		return $this->storage[spl_object_hash($object)]['inf'];
+	}
+
+	/**
+	 * Checks if the storage contains the object provided.
+	 *
+	 * @param Object $object The object to look for.
+	 * @return boolean Returns TRUE if the object is in the storage, FALSE otherwise.
+	 */
+	public function contains($object) {
+		return $this->offsetExists($object);
+	}
+
+	/**
+	 * Adds an object inside the storage, and optionaly associate it to some data.
+	 *
+	 * @param object $object The object to add.
+	 * @param mixed $information The data to associate with the object.
 	 * @return void
 	 */
-	public function addAll($objects) {
-		if (is_array($objects) || $objects instanceof Iterator) {
-			$this->initializeStorage();
-			foreach ($objects as $object) {
-				$this->attach($object);
-			}
+	public function attach($object, $information = NULL) {
+		$this->offsetSet($object, $information);
+	}
+
+	/**
+	 * Removes the object from the storage.
+	 *
+	 * @param Object $object The object to remove.
+	 * @return void
+	 */
+	public function detach($object) {
+		$this->offsetUnset($object);
+	}
+	
+	/**
+	 * Returns the data, or info, associated with the object pointed by the current iterator position.
+	 *
+	 * @return mixed The data associated with the current iterator position.
+	 */
+	public function getInfo() {
+		$item = current($this->storage);
+		return $item['inf'];
+	}
+	
+	public function setInfo($data) {
+		$key = key($this->storage);
+		$this->storage[$key]['inf']  = $data;
+	}
+
+	/**
+	 * Adds all objects-data pairs from a different storage in the current storage.
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage $storage The storage you want to import.
+	 * @return void
+	 */
+	public function addAll(Tx_Extbase_Persistence_ObjectStorage $storage) {
+		foreach ($storage as $object) {
+			$this->attach($object, $storage->getInfo());
 		}
 	}
 
 	/**
-	 * Detaches all objects from the storage
+	 * Removes objects contained in another storage from the current storage.
 	 *
-	 * @param array $objects The objects to be detached from the storage
+	 * @param Tx_Extbase_Persistence_ObjectStorage $storage The storage containing the elements to remove.
 	 * @return void
 	 */
-	public function removeAll($objects) {
-		if (is_array($objects) || $objects instanceof Iterator) {
-			$this->initializeStorage();
-			foreach ($objects as $object) {
-				$this->detach($object);
-			}
+	public function removeAll(Tx_Extbase_Persistence_ObjectStorage $storage) {
+		foreach ($storage as $object) {
+			$this->detach($object);
 		}
 	}
-
-	/**
-	 * Checks, if the given value is an object and throws an exception if not
-	 *
-	 * @param string $value The value to be tested
-	 * @return bool TRUE, if the given value is an object
-	 */
-	protected function isObject($value) {
-		if (!is_object($value)) {
-			throw new Tx_Extbase_MVC_Exception_InvalidArgumentType('Expected parameter to be an object, ' . gettype($offset) . ' given');
-		}
-		return TRUE;
-	}
-
+	
 	/**
 	 * Returns this object storage as an array
 	 *
 	 * @return array The object storage
 	 */
 	public function toArray() {
-		$this->initializeStorage();
-		return $this->storage;
+		$array = array();
+		foreach ($this->storage as $item) {
+			$array[] = $item['obj'];
+		}
+		return $array;
 	}
 
+	public function serialize() {
+		throw new RuntimeException('An ObjectStorage instance cannot be serialized.', 1267700868);
+	}
+
+	public function unserialize($serialized) {
+		throw new RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
+	}
+	
 }
 
 ?>

@@ -46,7 +46,7 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 		$entity = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
 		$persistenceSession->registerReconstitutedObject($entity);
 		$reconstitutedObjects = $persistenceSession->getReconstitutedObjects();
-		$this->assertTrue(!empty($reconstitutedObjects[$entity]), 'The object was not registered as reconstituted.');
+		$this->assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
 	}
 
 	/**
@@ -61,8 +61,6 @@ class Tx_Extbase_Persistence_Session_testcase extends tx_phpunit_testcase {
 
 		$this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
 	}
-	// /**
-	//  * Replacing a reconstituted object which during this session has been
 
 }
 ?>

@@ -32,20 +32,12 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 	 */
 	public function anObjectCanBeAttached() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage->attach($object);
-		$result = $objectStorage->offsetGet($object);
-
-		$this->assertEquals($result, $object, 'The retrieved object differs from the attached object.');		
-	}
-	
-	/**
-	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
-	 */
-	public function attachingSomethingElseThanAnObjectThrowsAnException() {
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$objectStorage->attach('foo');
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2, 'foo');
+		$this->assertEquals($objectStorage[$object1], NULL);
+		$this->assertEquals($objectStorage[$object2], 'foo');
 	}
 	
 	/**
@@ -53,102 +45,150 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 	 */
 	public function anObjectCanBeDetached() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage->offsetSet($object, $object);
-		$resultBeforeDetaching = $objectStorage->offsetGet($object);
-
-		$this->assertEquals($resultBeforeDetaching, $object, 'The object could not be set via offsetSet().');		
-
-		$objectStorage->detach($object);
-		$resultAfterDetaching = $objectStorage->offsetGet($object);
-
-		$this->assertEquals($resultAfterDetaching, NULL, 'The object could not be detached.');		
-	}
-	
-	/**
-	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
-	 */
-	public function detachingSomethingElseThanAnObjectThrowsAnException() {
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$objectStorage->detach('foo');
-	}
-	
-	/**
-	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
-	 */
-	public function addingAnObjectWithoutAnObjectAsOffsetThrowsAnException() {
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage[] = $object;
-	}
-		
-	/**
-	 * @test
-	 */
-	public function anObjectCouldBeSetViaAnOffset() {
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage[$object] = $object;
-		$result = $objectStorage->offsetGet($object);
-
-		$this->assertEquals($result, $object, 'The retrieved object differs from the attached object.');
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2, 'foo');
+		$this->assertEquals(count($objectStorage), 2);
+		$objectStorage->detach($object1);
+		$this->assertEquals(count($objectStorage), 1);
+		$objectStorage->detach($object2);
+		$this->assertEquals(count($objectStorage), 0);
 	}
 	
 	/**
 	 * @test
 	 */
-	public function itCanBeTestedIfTheStorageContainsAnObject() {
+	public function offsetSetAssociatesDataToAnObjectInTheStorage() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage->attach($object);
-		$result = $objectStorage->contains($object);
-
-		$this->assertEquals($result, TRUE, 'The method object differs from the attached object.');		
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage->offsetSet($object1, 'foo');
+		$this->assertEquals(count($objectStorage), 1);
+		$objectStorage[$object2] = 'bar';
+		$this->assertEquals(count($objectStorage), 2);
 	}
 	
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentType
 	 */
-	public function unsettingSomethingElseThanAnObjectThrowsAnException() {
+	public function offsetUnsetRemovesAnObjectFromTheStorage() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		// $object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		// $objectStorage->offsetSet($object, $object);
-		$objectStorage->offsetUnset('foo');
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2, 'foo');
+		$this->assertEquals(count($objectStorage), 2);
+		$objectStorage->offsetUnset($object2);
+		$this->assertEquals(count($objectStorage), 1);
+		$objectStorage->offsetUnset($object1);
+		$this->assertEquals(count($objectStorage), 0);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function offsetGetReturnsTheDataAssociatedWithAnObject() {
+		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage[$object1] = 'foo';
+		$objectStorage->attach($object2);
+		$this->assertEquals($objectStorage->offsetGet($object1), 'foo');
+		$this->assertEquals($objectStorage->offsetGet($object2), NULL);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function offsetExistsChecksWhetherAnObjectExistsInTheStorage() {
+		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage->attach($object1);
+		$this->assertEquals($objectStorage->offsetExists($object1), TRUE);
+		$this->assertEquals($objectStorage->offsetExists($object2), FALSE);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function getInfoReturnsTheDataAssociatedWithTheCurrentIteratorEntry() {
+		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$object3 = new StdClass;
+		$objectStorage->attach($object1, 42);
+		$objectStorage->attach($object2, 'foo');
+		$objectStorage->attach($object3, array('bar', 'baz'));
+		$objectStorage->rewind();
+		$this->assertEquals($objectStorage->getInfo(), 42);
+		$objectStorage->next();
+		$this->assertEquals($objectStorage->getInfo(), 'foo');
+		$objectStorage->next();
+		$this->assertEquals($objectStorage->getInfo(), array('bar', 'baz'));
+	}
+	
+	/**
+	 * @test
+	 */
+	public function setInfoSetsTheDataAssociatedWithTheCurrentIteratorEntry() {
+		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage->attach($object1);
+		$objectStorage->attach($object2, 'foo');
+		$objectStorage->rewind();
+		$objectStorage->setInfo(42);
+		$objectStorage->next();
+		$objectStorage->setInfo('bar');
+		$this->assertEquals($objectStorage[$object1], 42);
+		$this->assertEquals($objectStorage[$object2], 'bar');
+	}
+	
+	/**
+	 * @test
+	 */
+	public function removeAllRemovesObjectsContainedInAnotherStorageFromTheCurrentStorage() {
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorageA = new Tx_Extbase_Persistence_ObjectStorage();
+		$objectStorageA->attach($object1, 'foo');
+		$objectStorageB = new Tx_Extbase_Persistence_ObjectStorage();
+		$objectStorageB->attach($object1, 'bar');
+		$objectStorageB->attach($object2, 'baz');
+		$this->assertEquals(count($objectStorageB), 2);
+		$objectStorageB->removeAll($objectStorageA);
+		$this->assertEquals(count($objectStorageB), 1);
 	}
 
 	/**
 	 * @test
 	 */
-	public function anObjectCanBeUnset() {
-		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage->offsetSet($object, $object);
-		$resultBeforeDetaching = $objectStorage->offsetGet($object);
-
-		$this->assertEquals($resultBeforeDetaching, $object, 'The object could not be set via offsetSet().');		
-
-		$objectStorage->offsetUnset($object);
-		$resultAfterDetaching = $objectStorage->offsetGet($object);
-
-		$this->assertEquals($resultAfterDetaching, NULL, 'The object could not be unsetted.');		
+	public function addAllAddsAllObjectsFromAnotherStorage() {
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorageA = new Tx_Extbase_Persistence_ObjectStorage(); // It might be better to mock this
+		$objectStorageA->attach($object1, 'foo');
+		$objectStorageB = new Tx_Extbase_Persistence_ObjectStorage();
+		$objectStorageB->attach($object2, 'baz');
+		$this->assertEquals($objectStorageB->offsetExists($object1), FALSE);
+		$objectStorageB->addAll($objectStorageA);
+		$this->assertEquals($objectStorageB[$object1], 'foo');
+		$this->assertEquals($objectStorageB[$object2], 'baz');
 	}
 
+	
 	/**
 	 * @test
 	 */
 	public function theStorageCanBeRetrievedAsArray() {
 		$objectStorage = new Tx_Extbase_Persistence_ObjectStorage();
-		$object1 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage->offsetSet($object1, $object1);
-		$object2 = $this->getMock('Tx_Extbase_DomainObject_AbstractEntity');
-		$objectStorage->offsetSet($object2, $object2);
-		$result = $objectStorage->toArray();
-
-		$this->assertEquals(is_array($result), TRUE, 'The result was not an array as expected.');		
-		$this->assertEquals(count($result), 2, 'The retrieved array did not contain two elements.');		
+		$object1 = new StdClass;
+		$object2 = new StdClass;
+		$objectStorage->attach($object1, 'foo');
+		$objectStorage->attach($object2, 'bar');
+		$this->assertEquals($objectStorage->toArray(), array($object1, $object2));
 	}
 
 }
