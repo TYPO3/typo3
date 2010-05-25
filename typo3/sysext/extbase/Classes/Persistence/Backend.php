@@ -652,8 +652,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to be insterted in the storage
 	 * @return void
 	 */
-	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
-		$row = array();
+	protected function insertObject(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row = array()) {
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$this->addCommonFieldsToRow($object, $row);
 		if($dataMap->getLanguageIdColumnName() !== NULL) {
