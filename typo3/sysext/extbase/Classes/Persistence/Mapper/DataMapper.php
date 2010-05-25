@@ -432,7 +432,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		} else {
 			$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
 			$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage'))) {
+			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'))) {
 				$elementType = $this->getElementType(get_class($parentObject), $propertyName);
 				$objects = array();
 				foreach ($result as $value) {

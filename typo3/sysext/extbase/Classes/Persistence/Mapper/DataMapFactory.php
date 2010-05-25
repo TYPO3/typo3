@@ -101,7 +101,8 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			}
 			// if (in_array($propertyName, $classPropertyNames)) { // TODO Enable check for property existance
 				$columnMap = new Tx_Extbase_Persistence_Mapper_ColumnMap($columnName, $propertyName);
-				$columnMap = $this->setRelations($columnMap, $columnDefinition['config']);
+				$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
+				$columnMap = $this->setRelations($columnMap, $columnDefinition['config'], $propertyMetaData);
 				$dataMap->addColumnMap($columnMap);
 			// }
 		}
@@ -167,23 +168,26 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	 *
 	 * @param Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap The column map
 	 * @param string $columnConfiguration The column configuration from $TCA
+	 * @param array $propertyMetaData The property metadata as delivered by the reflection service
 	 * @return void
 	 */
-	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap, $columnConfiguration) {
+	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap, $columnConfiguration, $propertyMetaData) {
 		if (isset($columnConfiguration) && $columnConfiguration['type'] !== 'passthrough') {
-			if (isset($columnConfiguration['foreign_table'])) {
+			if (isset($propertyMetaData['elementType'])) {
 				if (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
 					$columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
 				} else {
-					if (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] == 1) {
-						$columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
-					} else {
-						$columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
-					}
+					$columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
 				}
 			} else {
-				$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
+				if (isset($propertyMetaData['type']) && strpos($propertyMetaData['type'], '_') !== FALSE) {
+					$columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
+				} else {
+					$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
+				}
 			}
+		} else {
+			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
 		}
 		return $columnMap;
 	}
