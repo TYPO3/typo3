@@ -1707,7 +1707,13 @@ HTMLArea.prototype.getEndBlocks = function(selection) {
 	var range = this._createRange(selection);
 	if (HTMLArea.is_gecko) {
 		var parentStart = range.startContainer;
+		if (/^(body)$/i.test(parentStart.nodeName)) {
+			parentStart = parentStart.firstChild;
+		}
 		var parentEnd = range.endContainer;
+		if (/^(body)$/i.test(parentEnd.nodeName)) {
+			parentEnd = parentEnd.lastChild;
+		}
 	} else {
 		if (selection.type !== "Control" ) {
 			var rangeEnd = range.duplicate();
