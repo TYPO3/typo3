@@ -1485,21 +1485,7 @@ class t3lib_DB {
 		}
 
 		if ($debug) {
-			if ($explainMode == 1) {
-				t3lib_div::debug('QUERY: ' . $query);
-				t3lib_div::debug(array('Debug trail:' => $trail), 'Row count: ' . $row_count);
-
-				if ($error) {
-					t3lib_div::debug($error);
-				}
-				if (count($explain_output)) {
-					t3lib_div::debug($explain_output);
-				}
-				if (count($indices_output)) {
-					t3lib_div::debugRows($indices_output);
-				}
-
-			} elseif ($explainMode == 2) {
+			if ($explainMode) {
 				$data = array();
 				$data['query'] = $query;
 				$data['trail'] = $trail;
@@ -1514,7 +1500,12 @@ class t3lib_DB {
 				if (count($indices_output)) {
 					$data['indices'] = $indices_output;
 				}
-				$GLOBALS['TT']->setTSselectQuery($data);
+
+				if ($explainMode == 1) {
+					t3lib_div::debug($data, 'Tables: ' . $from_table, 'DB SQL EXPLAIN');
+				} elseif ($explainMode == 2) {
+					$GLOBALS['TT']->setTSselectQuery($data);
+				}
 			}
 			return true;
 		}
