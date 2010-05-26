@@ -1,3 +1,7 @@
+2010-05-26  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #14486: Added missing icons for the new iconset (thanks to Steffen Ritter)
+
 2010-05-26  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #13443: Wrong image shown in WEB->PERM (thanks to Stephan Kellermayr) 

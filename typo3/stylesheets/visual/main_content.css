@@ -7,3 +7,21 @@ $Id$
 a img {
 	border: none;
 }
+
+.t3-icon {
+	background-image:url('../../gfx/icon_fatalerror.gif');
+	background-repeat:no-repeat;
+	padding-left: 20px;
+	position: relative;
+	display: inline;
+	height: 18px;
+	overflow: hidden;
+	padding-bottom: 5px;
+	padding-left: 16px;
+}
+
+.t3-icon .c-inputButton {
+	margin-left:-17px !important;;
+	width:16px;
+	height:16px;
+}

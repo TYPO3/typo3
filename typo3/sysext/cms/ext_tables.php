@@ -695,6 +695,7 @@ $TCA['tt_content'] = array (
 			'div' => 'mimetypes-x-content-divider',
 			'html' => 'mimetypes-x-content-html',
 			'text' => 'mimetypes-x-content-text',
+			'default' => 'mimetypes-x-content-text',
 		),
 		'typeicons' => array (
 			'header' => 'tt_content_header.gif',
@@ -740,6 +741,9 @@ $TCA['fe_users'] = array (
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
+		'typeicon_classes' => array(
+			'default' => 'status-user-frontend',
+		),
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
 		'dividers2tabs' => 1
@@ -764,6 +768,9 @@ $TCA['fe_groups'] = array (
 			'disabled' => 'hidden'
 		),
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups',
+		'typeicon_classes' => array(
+			'default' => 'status-user-group-frontend',
+		),
 		'useColumnsForDefaultValues' => 'lockToDomain',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
 		'dividers2tabs' => 1
@@ -784,6 +791,9 @@ $TCA['sys_domain'] = array (
 		'iconfile' => 'domain.gif',
 		'enablecolumns' => array (
 			'disabled' => 'hidden'
+		),
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-content-domain',
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php'
 	)
@@ -816,6 +826,10 @@ $TCA['pages_language_overlay'] = array (
 		'mainpalette'                     => 1,
 		'dynamicConfigFile'               => t3lib_extMgm::extPath($_EXTKEY) . 'tbl_cms.php',
 		'type'                            => 'doktype',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-content-page-language-overlay',
+		),
+
 		'dividers2tabs'                   => true
 	)
 );

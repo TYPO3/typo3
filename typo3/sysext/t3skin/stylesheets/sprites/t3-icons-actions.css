@@ -267,9 +267,15 @@
 .t3-icon-actions.t3-icon-edit-localize-status-low {
 	background-position: 0 -2088px;
 }
-.t3-icon-actions.t3-icon-edit-delete {
+.t3-icon-actions.t3-icon-system-options-view {
 	background-position: 0 -2112px;
 }
-.t3-icon-actions.t3-icon-move-right {
+.t3-icon-actions.t3-icon-edit-delete {
 	background-position: 0 -2136px;
+}
+.t3-icon-actions.t3-icon-move-right {
+	background-position: 0 -2160px;
+}
+.t3-icon-actions.t3-icon-window-open {
+	background-position: 0 -2184px;
 }
