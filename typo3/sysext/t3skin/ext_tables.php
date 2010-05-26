@@ -115,7 +115,6 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 		'MOD:web_list/list.gif'                    => array($temp_eP.'icons/module_web_list.gif','width="24" height="24"'),
 		'MOD:web_info/info.gif'                    => array($temp_eP.'icons/module_web_info.gif','width="24" height="24"'),
 		'MOD:web_perm/perm.gif'                    => array($temp_eP.'icons/module_web_perms.gif','width="24" height="24"'),
-		'MOD:web_perm/legend.gif'                  => array($temp_eP.'icons/legend.gif','width="24" height="24"'),
 		'MOD:web_func/func.gif'                    => array($temp_eP.'icons/module_web_func.gif','width="24" height="24"'),
 		'MOD:web_ts/ts1.gif'                       => array($temp_eP.'icons/module_web_ts.gif','width="24" height="24"'),
 		'MOD:web_modules/modules.gif'              => array($temp_eP.'icons/module_web_modules.gif','width="24" height="24"'),

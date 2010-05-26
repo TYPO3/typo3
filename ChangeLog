@@ -1,3 +1,7 @@
+2010-05-26  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #13443: Wrong image shown in WEB->PERM (thanks to Stephan Kellermayr) 
+
 2010-05-26  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #14463: Add post initialization hook for tslib_cObj

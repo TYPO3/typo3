@@ -715,7 +715,9 @@ class SC_mod_web_perm_index {
 
 		$code='<table border="0" id="typo3-legendTable">
 			<tr>
-				<td valign="top"><img src="legend.gif" width="86" height="75" alt="" /></td>
+				<td valign="top">
+					<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />
+				</td>
 				<td valign="top" nowrap="nowrap">'.$legendText.'</td>
 			</tr>
 		</table>';
