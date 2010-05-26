@@ -396,6 +396,18 @@ class tslib_cObj {
 				$this->stdWrapHookObjects[] = $hookObject;
 			}
 		}
+
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['postInit'] as $classData) {
+				$postInitializationProcessor = t3lib_div::getUserObj($classData);
+
+				if(!($postInitializationProcessor instanceof tslib_content_PostInitHook)) {
+					throw new UnexpectedValueException('$postInitializationProcessor must implement interface tslib_content_PostInitHook', 1274563549);
+				}
+
+				$postInitializationProcessor->postProcessContentObjectInitialization($this);
+			}
+		}
 	}
 
 	/**
