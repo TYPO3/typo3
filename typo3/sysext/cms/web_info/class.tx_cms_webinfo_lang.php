@@ -118,7 +118,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			$tree->addField('l18n_cfg');
 
 				// Creating top icon; the current page
-			$HTML = t3lib_iconWorks::getIconImage('pages', $treeStartingRecord, $GLOBALS['BACK_PATH'],'align="top"');
+			$HTML = t3lib_iconWorks::getSpriteIconForRecord('pages', $treeStartingRecord);
 			$tree->tree[] = array(
 				'row' => $treeStartingRecord,
 				'HTML'=>$HTML
@@ -185,8 +185,8 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 				// DEFAULT language:
 				// "View page" link is created:
 			$viewPageLink= '<a href="#" onclick="'.
-					htmlspecialchars(t3lib_BEfunc::viewOnClick($data['row']['uid'],$GLOBALS['BACK_PATH'],'','','','&L=###LANG_UID###')).'">'.
-					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom.gif','width="12" height="12"').' title="'.$LANG->getLL('lang_renderl10n_viewPage','1').'" border="0" alt="" />'.
+					htmlspecialchars(t3lib_BEfunc::viewOnClick($data['row']['uid'],$GLOBALS['BACK_PATH'],'','','','&L=###LANG_UID###')).'" title="' . $LANG->getLL('lang_renderl10n_viewPage', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 					'</a>';
 			$status = $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-ok';
 
@@ -194,11 +194,11 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			$info = '';
 			$editUid = $data['row']['uid'];
 			$params = '&edit[pages]['.$editUid.']=edit';
-			$info.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
-					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editDefaultLanguagePage','1').'" border="0" alt="" />'.
+			$info.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editDefaultLanguagePage', TRUE) . '">'.
+						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 					'</a>';
-			$info.= '<a href="#" onclick="'.htmlspecialchars('top.loadEditId('.intval($data['row']['uid']).',"&SET[language]=0"); return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit_page.gif','width="12" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editPage','1').'" border="0" alt="" />'.
+			$info.= '<a href="#" onclick="'.htmlspecialchars('top.loadEditId('.intval($data['row']['uid']).',"&SET[language]=0"); return false;').'" title="' . $LANG->getLL('lang_renderl10n_editPage', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 					'</a>';
 			$info.= str_replace('###LANG_UID###','0',$viewPageLink);
 
@@ -222,11 +222,10 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 					if (is_array($row))	{
 						$langRecUids[$langRow['uid']][] = $row['uid'];
 						$status = $row['_HIDDEN'] ? (t3lib_div::hideIfNotTranslated($data['row']['l18n_cfg']) || $data['row']['l18n_cfg']&1 ? 'c-blocked' : 'c-fallback') : 'c-ok';
-						$icon = t3lib_iconWorks::getIconImage(
+						$icon = t3lib_iconWorks::getSpriteIconForRecord(
 							'pages_language_overlay',
 							$row,
-							$GLOBALS['BACK_PATH'],
-							'align="top" class="c-recIcon"'
+							array('class' => 'c-recIcon')
 						);
 
 						$info = $icon.
@@ -241,12 +240,12 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 						$info = '';
 						$editUid = $row['uid'];
 						$params = '&edit[pages_language_overlay]['.$editUid.']=edit';
-						$info.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">'.
-								'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editLanguageOverlayRecord','1').'" border="0" alt="" />'.
+						$info.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editLanguageOverlayRecord', TRUE) . '">' .
+									t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 								'</a>';
 
-						$info.= '<a href="#" onclick="'.htmlspecialchars('top.loadEditId('.intval($data['row']['uid']).',"&SET[language]='.$langRow['uid'].'"); return false;').'">'.
-								'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit_page.gif','width="12" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editPageLang','1').'" border="0" alt="" />'.
+						$info.= '<a href="#" onclick="'.htmlspecialchars('top.loadEditId('.intval($data['row']['uid']).',"&SET[language]='.$langRow['uid'].'"); return false;').'" title="' . $LANG->getLL('lang_renderl10n_editPageLang', TRUE) . '">' .
+									t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 								'</a>';
 						$info.= str_replace('###LANG_UID###',$langRow['uid'],$viewPageLink);
 
@@ -285,9 +284,9 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 		if (is_array($langRecUids[0]))	{
 			$params = '&edit[pages]['.implode(',',$langRecUids[0]).']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
-			$editIco = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">
-				<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editPageProperties','1').'" border="0" alt="" />
-				</a>';
+			$editIco = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editPageProperties', TRUE) . '">' . 
+					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+				'</a>';
 		} else $editIco = '';
 		$tCells[] = '<td class="c-leftLine" colspan="2">'.
 					$LANG->getLL('lang_renderl10n_default','1').':'.
@@ -302,18 +301,18 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 					// Edit language overlay records:
 				if (is_array($langRecUids[$langRow['uid']]))	{
 					$params = '&edit[pages_language_overlay]['.implode(',',$langRecUids[$langRow['uid']]).']=edit&columnsOnly=title,nav_title,hidden';
-					$tCells[] = '<td><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">
-						<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/edit2.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_renderl10n_editLangOverlays','1').'" border="0" alt="" />
-						</a></td>';
+					$tCells[] = '<td><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editLangOverlays', TRUE) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+						'</a></td>';
 				} else {
 					$tCells[] = '<td>&nbsp;</td>';
 				}
 
 					// Create new overlay records:
 				$params = "'".$newOL_js[$langRow['uid']]."+'&columnsOnly=title,hidden,sys_language_uid&defVals[pages_language_overlay][sys_language_uid]=".$langRow['uid'];
-				$tCells[] = '<td><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'">
-					<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/new_el.gif','width="11" height="12"').' title="'.$LANG->getLL('lang_getlangsta_createNewTranslationHeaders','1').'" border="0" alt="" />
-					</a></td>';
+				$tCells[] = '<td><a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_getlangsta_createNewTranslationHeaders', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+					'</a></td>';
 			}
 		}
 

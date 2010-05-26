@@ -2707,7 +2707,7 @@ class tx_impexp {
 			$preCode_B = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			foreach($record['softrefs'] as $info)	{
 				$pInfo = array();
-				$pInfo['preCode'] = $preCode_A.'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/rel_softref.png','width="13" height="12"').' align="top" alt="" />';
+				$pInfo['preCode'] = $preCode_A. t3lib_iconWorks::getSpriteIcon('status-reference-soft');
 				$pInfo['title'] = '<em>'.$info['field'].', "'.$info['spKey'].'" </em>: <span title="'.htmlspecialchars($info['matchString']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['matchString'],60)).'</span>';
 				if ($info['subst']['type'])	{
 					if (strlen($info['subst']['title']))	{
@@ -2839,7 +2839,7 @@ class tx_impexp {
 					return;
 				}
 			}
-			$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/rel_file.gif','width="13" height="12"').' align="top" alt="" />';
+			$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;'.t3lib_iconWorks::getSpriteIcon('status-reference-file');
 			$pInfo['title'] = htmlspecialchars($fI['filename']);
 			$pInfo['ref'] = 'FILE';
 			$pInfo['size'] = $fI['filesize'];
@@ -2898,7 +2898,7 @@ class tx_impexp {
 
 				$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID],strlen(PATH_site));
 
-				$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/rel_file.gif','width="13" height="12"').' align="top" alt="" />';
+				$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.t3lib_iconWorks::getSpriteIcon('actions-reference-file');
 				$pInfo['title'] = htmlspecialchars($fI['filename']).' <em>(Original)</em>';
 				$pInfo['ref'] = 'FILE';
 				$pInfo['size'] = $fI['filesize'];
@@ -2922,7 +2922,7 @@ class tx_impexp {
 
 					$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID],strlen(PATH_site));
 
-					$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/rel_file.gif','width="13" height="12"').' align="top" alt="" />';
+					$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.t3lib_iconWorks::getSpriteIcon('actions-reference-file');
 					$pInfo['title'] = htmlspecialchars($fI['filename']).' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';
 					$pInfo['size'] = $fI['filesize'];

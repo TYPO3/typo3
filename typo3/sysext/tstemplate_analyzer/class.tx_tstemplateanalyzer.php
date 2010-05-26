@@ -92,7 +92,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		if ($existTemplate)	{
 			$theOutput.=$this->pObj->doc->divider(5);
 			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', true) ,
-				'<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)) . ' align="top" /> <b>' .
+				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow) . '<b>' .
 				$this->pObj->linkWrapTemplateTitle($tplRow["title"]) . '</b>' .
 				htmlspecialchars(trim($tplRow["sitetitle"]) ? ' - (' . $tplRow["sitetitle"] . ')' : ''));
 		}

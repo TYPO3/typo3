@@ -300,14 +300,7 @@ class TYPO3backend {
 	protected function getLoggedInUserLabel() {
 		global $BE_USER, $BACK_PATH;
 
-		$icon = '<img'.t3lib_iconWorks::skinImg(
-			'',
-			$BE_USER->isAdmin() ?
-				'gfx/i/be_users_admin.gif' :
-				'gfx/i/be_users.gif',
-			'width="18" height="16"'
-		)
-		.' title="" alt="" />';
+                $icon = t3lib_iconWorks::getSpriteIcon('status-user-'. ($BE_USER->isAdmin() ? 'admin' : 'backend'));
 
 		$label = $GLOBALS['BE_USER']->user['realName'] ?
 			$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']' :

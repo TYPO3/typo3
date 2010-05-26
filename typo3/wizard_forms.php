@@ -291,8 +291,8 @@ class SC_wizard_forms {
 
 			// Close
 			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($this->P['returnUrl']) . '\')); return false;') . '">' .
-				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" />' .
-				'</a>';
+				t3lib_iconWorks::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE))) . 
+		  '</a>';
 
 			// Save
 			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';

@@ -64,7 +64,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 				'id'    => 'all',
 				'title' => $title,
 				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=all',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_red.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
+				'icon'  => t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear-impact-high')
 			);
 		}
 
@@ -75,7 +75,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 				'id'    => 'pages',
 				'title' => $title,
 				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=pages',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
+				'icon'  => t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear-impact-medium')
 			);
 		}
 
@@ -86,7 +86,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 				'id'    => 'temp_CACHED',
 				'title' => $title,
 				'href'  => $this->backPath.'tce_db.php?vC='.$GLOBALS['BE_USER']->veriCode().'&cacheCmd=temp_CACHED',
-				'icon'  => '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning_green.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
+				'icon'  => t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear-impact-low')
 			);
 		}
 

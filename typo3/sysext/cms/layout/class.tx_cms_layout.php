@@ -33,6 +33,7 @@
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
+ 
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
@@ -341,8 +342,8 @@ class tx_cms_layout extends recordList {
 				if ($editIdList && isset($TCA['pages']['columns'][$field]) && $field!='uid' && !$this->pages_noEditColumns)	{
 					$params='&edit[pages]['.$editIdList.']=edit&columnsOnly='.$field.'&disHelp=1';
 					$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'),rtrim(trim($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('pages',$field))), ':'));
-					$eI= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,'')).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.htmlspecialchars($iTitle).'" alt="" />'.
+					$eI= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,'')).'" title="'.htmlspecialchars($iTitle).'">'.
+								t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 							'</a>';
 				} else $eI='';
 				switch($field)	{
@@ -356,7 +357,7 @@ class tx_cms_layout extends recordList {
 						if (substr($field,0,6)=='table_')	{
 							$f2 = substr($field,6);
 							if ($TCA[$f2])	{
-								$theData[$field] = '&nbsp;'.t3lib_iconWorks::getIconImage($f2,array(),$this->backPath,'title="'.$GLOBALS['LANG']->sL($TCA[$f2]['ctrl']['title'],1).'"');
+								$theData[$field] = '&nbsp;'.t3lib_iconWorks::getSpriteIconForRecord($f2,array(),array('title'=>$GLOBALS['LANG']->sL($TCA[$f2]['ctrl']['title'],1)));
 							}
 						} elseif (substr($field,0,5)=='HITS_')	{
 							$fParts = explode(':',substr($field,5));
@@ -548,7 +549,7 @@ class tx_cms_layout extends recordList {
 
 						// "View page" icon is added:
 					$viewLink = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($this->id,$this->backPath,t3lib_BEfunc::BEgetRootLine($this->id),'','','&L='.$lP)).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom.gif','width="12" height="12"').' class="absmiddle" title="" alt="" />'.
+							t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 						'</a>';
 
 						// Language overlay page header:
@@ -557,10 +558,10 @@ class tx_cms_layout extends recordList {
 						list($lpRecord) = t3lib_BEfunc::getRecordsByField('pages_language_overlay','pid',$id,'AND sys_language_uid='.intval($lP));
 						t3lib_BEfunc::workspaceOL('pages_language_overlay',$lpRecord);
 						$params='&edit[pages_language_overlay]['.$lpRecord['uid'].']=edit&overrideVals[pages_language_overlay][sys_language_uid]='.$lP;
-						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getIconImage('pages_language_overlay',$lpRecord,$this->backPath,'  class="absmiddle"'),'pages_language_overlay',$lpRecord['uid']).
+						$lPLabel = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon(t3lib_iconWorks::getSpriteIconForRecord('pages_language_overlay',$lpRecord)).
 							$viewLink.
-							($GLOBALS['BE_USER']->check('tables_modify','pages_language_overlay') ? '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('edit',1).'" class="absmiddle" alt="" />'.
+							($GLOBALS['BE_USER']->check('tables_modify','pages_language_overlay') ? '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
+								t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 							'</a>' : '').
 							htmlspecialchars(t3lib_div::fixed_lgd_cs($lpRecord['title'],20));
 					} else {
@@ -1188,8 +1189,8 @@ class tx_cms_layout extends recordList {
 			$theData = array();
 			$theData = $this->headerFields($this->fieldArray,$table,$theData);
 			if ($this->doEdit)	{
-				$theData['__cmds__'] = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$table.']['.$this->id.']=new',$this->backPath)).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif').' title="'.$GLOBALS['LANG']->getLL('new',1).'" alt="" />'.
+				$theData['__cmds__'] = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$table.']['.$this->id.']=new',$this->backPath)).'" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 					'</a>';
 			}
 			$out.= $this->addelement(1,'',$theData,' class="c-headLine"',15);
@@ -1211,9 +1212,9 @@ class tx_cms_layout extends recordList {
 							$Nrow['__cmds__']= $this->getIcon($table,$row);
 						}
 						if ($this->doEdit)	{
-							$Nrow['__cmds__'].= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.
-											'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('edit',1).'" alt="" />'.
-											'</a>';
+							$Nrow['__cmds__'].= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
+											t3lib_iconWorks::getSpriteIcon('actions-document-open') . 
+										'</a>';
 						} else {
 							$Nrow['__cmds__'].= $this->noEditIcon();
 						}
@@ -1402,8 +1403,8 @@ class tx_cms_layout extends recordList {
 				case 'uid':
 					if ($GLOBALS['BE_USER']->doesUserHaveAccess($row,2))	{
 						$params='&edit[pages]['.$row['uid'].']=edit';
-						$eI= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,'')).'">'.
-								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('editThisPage',1).'" alt="" />'.
+						$eI= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath,'')).'" title="' . $GLOBALS['LANG']->getLL('editThisPage', TRUE) . '">' .
+									t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 								'</a>';
 					} else $eI='';
 					$theData[$field] = '<span align="right">'.$row['uid'].$eI.'</span>';
@@ -1504,14 +1505,14 @@ class tx_cms_layout extends recordList {
 
 				// Edit whole of column:
 			if ($editParams)	{
-				$out.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($editParams,$this->backPath)).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('editColumn',1).'" alt="" />'.
-						'</a>';
+				$out.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($editParams,$this->backPath)).'" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+					'</a>';
 			}
 				// New record:
 			if ($newParams)	{
-				$out.='<a href="#" onclick="'.htmlspecialchars($newParams).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_record.gif','width="16" height="12"').' title="'.$GLOBALS['LANG']->getLL('newInColumn',1).'" alt="" />'.
+				$out.='<a href="#" onclick="'.htmlspecialchars($newParams).'" title="' . $GLOBALS['LANG']->getLL('newInColumn', TRUE) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 						'</a>';
 			}
 				// End cell:
@@ -1547,9 +1548,9 @@ class tx_cms_layout extends recordList {
 
 			// Get record locking status:
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked('tt_content',$row['uid']))	{
-			$lockIcon='<a href="#" onclick="'.htmlspecialchars('alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;').'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
-						'</a>';
+			$lockIcon='<a href="#" onclick="'.htmlspecialchars('alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;').'" title="'.htmlspecialchars($lockInfo['msg']).'">'.
+						t3lib_iconWorks::getSpriteIcon('status-warning-in-use') .
+					'</a>';
 		} else $lockIcon='';
 
 			// Call stats information hook
@@ -1590,8 +1591,8 @@ class tx_cms_layout extends recordList {
 
 					// Edit content element:
 				$params='&edit[tt_content]['.$this->tt_contentData['nextThree'][$row['uid']].']=edit';
-				$out.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.htmlspecialchars($this->nextThree>1?sprintf($GLOBALS['LANG']->getLL('nextThree'),$this->nextThree):$GLOBALS['LANG']->getLL('edit')).'" alt="" />'.
+				$out.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'" title="'.htmlspecialchars($this->nextThree>1?sprintf($GLOBALS['LANG']->getLL('nextThree'),$this->nextThree):$GLOBALS['LANG']->getLL('edit')).'">'.
+							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 						'</a>';
 
 				if (!$disableMoveAndNewButtons)	{
@@ -1602,27 +1603,27 @@ class tx_cms_layout extends recordList {
 						$params='&edit[tt_content]['.(-$row['uid']).']=new';
 						$onClick = t3lib_BEfunc::editOnClick($params,$this->backPath);
 					}
-					$out.='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_record.gif','width="16" height="12"').' title="'.$GLOBALS['LANG']->getLL('newAfter',1).'" alt="" />'.
+					$out.='<a href="#" onclick="'.htmlspecialchars($onClick).'" title="'.$GLOBALS['LANG']->getLL('newAfter',1).'">'.
+								t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 							'</a>';
 
 						// Move element up:
 					if ($this->tt_contentData['prev'][$row['uid']])	{
 						$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['prev'][$row['uid']];
-						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
-								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('moveUp',1).'" alt="" />'.
+						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" title="'.$GLOBALS['LANG']->getLL('moveUp', TRUE).'">'.
+									t3lib_iconWorks::getSpriteIcon('actions-move-up') .
 								'</a>';
 					} else {
-						$out.='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"',2).' alt="" />';
+						$out.=t3lib_iconWorks::getSpriteIcon('empty-empty');
 					}
 						// Move element down:
 					if ($this->tt_contentData['next'][$row['uid']])	{
 						$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['next'][$row['uid']];
-						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
-								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('moveDown',1).'" alt="" />'.
+						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" title="'.$GLOBALS['LANG']->getLL('moveDown', TRUE).'">'.
+									t3lib_iconWorks::getSpriteIcon('actions-move-down') .
 								'</a>';
 					} else {
-						$out.='<img src="clear.gif" '.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"',2).' alt="" />';
+						$out.= t3lib_iconWorks::getSpriteIcon('empty-empty');
 					}
 				}
 
@@ -1631,13 +1632,13 @@ class tx_cms_layout extends recordList {
 				if ($hiddenField && $TCA['tt_content']['columns'][$hiddenField] && (!$TCA['tt_content']['columns'][$hiddenField]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields','tt_content:'.$hiddenField)))	{
 					if ($row[$hiddenField])	{
 						$params='&data[tt_content]['.($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid']).']['.$hiddenField.']=0';
-						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
-								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_unhide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('unHide',1).'" alt="" />'.
+						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" title="'.$GLOBALS['LANG']->getLL('unHide', TRUE).'">'.
+									t3lib_iconWorks::getSpriteIcon('actions-edit-unhide') .
 								'</a>';
 					} else {
 						$params='&data[tt_content]['.($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid']).']['.$hiddenField.']=1';
-						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'">'.
-								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_hide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->getLL('hide',1).'" alt="" />'.
+						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" title="'.$GLOBALS['LANG']->getLL('hide', TRUE).'">'.
+									t3lib_iconWorks::getSpriteIcon('actions-edit-hide') .
 								'</a>';
 					}
 				}
@@ -1646,8 +1647,8 @@ class tx_cms_layout extends recordList {
 				$params='&cmd[tt_content]['.$row['uid'].'][delete]=1';
 				$confirm = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning') .
 					t3lib_BEfunc::translationCount('tt_content', $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.translationsOfRecord')));
-				$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" onclick="'.htmlspecialchars('return confirm('. $confirm .');').'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('deleteItem',1).'" alt="" />'.
+				$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" onclick="'.htmlspecialchars('return confirm('. $confirm .');').'" title="'.$GLOBALS['LANG']->getLL('deleteItem', TRUE).'">'.
+							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') . 
 						'</a>';
 
 					// End cell:
@@ -1937,8 +1938,7 @@ class tx_cms_layout extends recordList {
 	 */
 	function infoGif($infoArr)	{
 		if (count($infoArr) && $this->tt_contentConfig['showInfo'])	{
-			$out='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' title="'.htmlspecialchars(implode(LF,$infoArr)).'" alt="" /> ';
-			return $out;
+			return t3lib_iconWorks::getSpriteIcon('actions-document-view', array('title' => htmlspecialchars(implode(LF, $infoArr))));
 		}
 	}
 
@@ -2264,7 +2264,7 @@ class tx_cms_layout extends recordList {
 
 			// Initialization
 		$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
-		$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.$alttext.'"');
+		$iconImg = t3lib_iconWorks::getSpriteIconForRecord($table,$row,array('title'=>$alttext));
 		$this->counter++;
 
 			// The icon with link
@@ -2339,7 +2339,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		IMG tag for icon.
 	 */
 	function noEditIcon($label='noEditItems')	{
-		return '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2_d.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL($label,1).'" alt="" />';
+		return t3lib_iconWorks::getSpriteIcon('status-edit-deny', array('title' => $GLOBALS['LANG']->getLL($label, TRUE)));
 	}
 
 	/**
@@ -2456,15 +2456,15 @@ class tx_cms_layout extends recordList {
 			// If editing of the page properties is allowed:
 		if ($edit)	{
 			$params='&edit[pages]['.$rec['uid'].']=edit';
-			$editIcon='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->getLL('edit',1).'" alt="" />'.
+			$editIcon='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 						'</a>';
 		} else {
 			$editIcon=$this->noEditIcon('noEditPage');
 		}
 
 			// Setting page icon, link, title:
-		$outPutContent = t3lib_iconWorks::getIconImage('pages',$rec,$this->backPath,'title="'.htmlspecialchars(t3lib_BEfunc::titleAttribForPages($rec)).'"').
+		$outPutContent = t3lib_iconWorks::getSpriteIconForRecord('pages',$rec,array('title'=>t3lib_BEfunc::titleAttribForPages($rec))).
 				$editIcon.
 				'&nbsp;'.
 				htmlspecialchars($rec['title']);
@@ -2660,12 +2660,12 @@ class tx_cms_layout extends recordList {
 						// Add row to menu:
 					$out.='
 					<td><a href="#'.$tName.'"></a>'.
-							t3lib_iconWorks::getIconImage($tName,Array(),$this->backPath,'title="'.$GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'],1).'"').
+							t3lib_iconWorks::getSpriteIconForRecord($tName,Array(),array('title'=>$GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'],1))).
 							'</td>';
 
 						// ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
 					$this->activeTables[$tName]=
-							t3lib_iconWorks::getIconImage($tName,Array(),$this->backPath,'title="'.$GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'],1).': '.$c.' '.$GLOBALS['LANG']->getLL('records',1).'" class="absmiddle"').
+							t3lib_iconWorks::getSpriteIconForRecord($tName,Array(),array('title'=>$GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'],1).': '.$c.' '.$GLOBALS['LANG']->getLL('records',1))).
 							'&nbsp;'.
 							$GLOBALS['LANG']->sL($TCA[$tName]['ctrl']['title'],1);
 				}

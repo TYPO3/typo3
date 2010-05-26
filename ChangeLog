@@ -1,6 +1,7 @@
 2010-05-26  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #14486: Added missing icons for the new iconset (thanks to Steffen Ritter)
+	* Added feature #14465: Make use of the new sprite API through the TYPO3 core (thanks to Steffen Ritter)
 
 2010-05-26  Susanne Moog  <typo3@susanne-moog.de>
 

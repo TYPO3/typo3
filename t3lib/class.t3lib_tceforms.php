@@ -766,7 +766,7 @@ class t3lib_TCEforms	{
 
 			$thePalIcon = '';
 			if ($collapsed && $collapsedHeader !== NULL) {
-				list($thePalIcon,) = $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$palette,1);
+				list($thePalIcon,) = $this->wrapOpenPalette(t3lib_iconWorks::getSpriteIcon('actions-system-options-view', array('title' => htmlspecialchars($this->getLL('l_moreOptions')))), $table, $row, $palette, 1);
 				$thePalIcon = '<span style="margin-left: 20px;">' . $thePalIcon . $collapsedHeader . '</span>';
 			}
 
@@ -873,7 +873,7 @@ class t3lib_TCEforms	{
 					if (!$PA['palette'])	{
 						$paletteFields = $this->loadPaletteElements($table, $row, $PA['pal']);
 						if ($PA['pal'] && $this->isPalettesCollapsed($table,$PA['pal']) && count($paletteFields))	{
-							list($thePalIcon,$palJSfunc) = $this->wrapOpenPalette('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/options.gif','width="18" height="16"').' border="0" title="'.htmlspecialchars($this->getLL('l_moreOptions')).'" alt="" />',$table,$row,$PA['pal'],1);
+							list($thePalIcon,$palJSfunc) = $this->wrapOpenPalette(t3lib_iconWorks::getSpriteIcon('actions-system-options-view', array('title' => htmlspecialchars($this->getLL('l_moreOptions')))),$table,$row,$PA['pal'],1);
 						} else {
 							$thePalIcon = '';
 							$palJSfunc = '';
@@ -1801,7 +1801,7 @@ class t3lib_TCEforms	{
 
 					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
 						$helpIcon  = '<a class="typo3-csh-link" href="#">';
-						$helpIcon .= '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/helpbubble.gif', 'width="14" height="14"');
+						$helpIcon .= t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
 						$helpIcon .= ' hspace="2" border="0" class="absmiddle"' . ($GLOBALS['CLIENT']['FORMSTYLE'] ? ' style="cursor:help;"' : '') . ' alt="" />' . $help;
 						$helpIcon .= '</a>';
 						$help = $helpIcon;
@@ -1857,8 +1857,7 @@ class t3lib_TCEforms	{
 			// Add revert icon
 		if (is_array($restoreCmd)) {
 			$item .= '<a href="#" onclick="' . implode('', $restoreCmd).' return false;' . '">' .
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"') . ' title="' .
-				htmlspecialchars($this->getLL('l_revertSelection')) . '" alt="" />' .'</a>';
+				t3lib_iconWorks::getSpriteIcon('actions-edit-undo', array('title' => htmlspecialchars($this->getLL('l_revertSelection')))) . '</a>';
 		}
 			// Implode rows in table:
 		$item .= '
@@ -1969,9 +1968,9 @@ class t3lib_TCEforms	{
 						'</em>
 					</td>
 					<td valign="top">
-					<a href="#" onclick="'.htmlspecialchars($this->elName($PA['itemFormElName'].'[]').'.selectedIndex=-1;'.implode('',$restoreCmd).' return false;').'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/undo.gif','width="13" height="12"').' title="'.htmlspecialchars($this->getLL('l_revertSelection')).'" alt="" />'.
-						'</a>
+					  <a href="#" onclick="'.htmlspecialchars($this->elName($PA['itemFormElName'].'[]').'.selectedIndex=-1;'.implode('',$restoreCmd).' return false;').'" title="' . htmlspecialchars($this->getLL('l_revertSelection')) . '">' .
+					    t3lib_iconWorks::getSpriteIcon('actions-edit-undo') .
+					 '</a>
 					</td>
 				</tr>
 			</table>
@@ -2704,8 +2703,8 @@ class t3lib_TCEforms	{
 								$this->additionalJS_post = $additionalJS_post_saved;
 								$this->additionalJS_submit = $additionalJS_submit_saved;
 								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new', 1);
-								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'">
-									<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_el.gif','width="11" height="12"').' alt="' . $new . '" title="' . $new . '" align="absmiddle" />' .
+								$newElementsLinks[]= '<a href="#" onclick="'.htmlspecialchars($onClickInsert).'">' .
+									t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 									htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']),30)) . '</a>';
 							}
 
@@ -2716,10 +2715,10 @@ class t3lib_TCEforms	{
 							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1);
 							$output.= '
 							<div style="padding: 5px 0px 5px 20px;">
-							<a href="#" onclick="'.htmlspecialchars('flexFormToggleSubs("'.$idTagPrefix.'"); return false;').'">
-								<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/pil2right.gif', 'width="7" height="12"') . ' align="absmiddle" alt="' .
-								$toggleAll . '" title="' . $toggleAll . '" />
-								<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' align="absmiddle" alt="' .
+							<a href="#" onclick="'.htmlspecialchars('flexFormToggleSubs("'.$idTagPrefix.'"); return false;').'">'
+								. t3lib_iconWorks::getSpriteIcon('actions-move-right') .
+								$toggleAll . '" title="' . $toggleAll . '" />'
+								. t3lib_iconWorks::getSpriteIcon('actions-move-right') .
 								$toggleAll . '" title="' . $toggleAll . '" />' . $toggleAll . '
 							</a>
 							</div>
@@ -2729,8 +2728,8 @@ class t3lib_TCEforms	{
 						} else {
 							// It is a container
 
-							$toggleIcon_open = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2down.gif','width="12" height="7"').' hspace="2" alt="Open" title="Open" />';
-							$toggleIcon_close = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' hspace="2" alt="Close" title="Close" />';
+							$toggleIcon_open = t3lib_iconWorks::getSpriteIcon('actions-move-down');
+							$toggleIcon_close = t3lib_iconWorks::getSpriteIcon('actions-move-right');
 
 								// Create on-click actions.
 							//$onClickCopy = 'new Insertion.After($("'.$idTagPrefix.'"), getOuterHTML("'.$idTagPrefix.'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-copy"+Math.floor(Math.random()*100000+1)+"-")); return false;';	// Copied elements doesn't work (well) in Safari while they do in Firefox and MSIE! UPDATE: It turned out that copying doesn't work for any browser, simply because the data from the copied form never gets submitted to the server for some reason! So I decided to simply disable copying for now. If it's requested by customers we can look to enable it again and fix the issue. There is one un-fixable problem though; Copying an element like this will violate integrity if files are attached inside that element because the file reference doesn't get an absolute path prefixed to it which would be required to have TCEmain generate a new copy of the file.
@@ -2754,9 +2753,9 @@ class t3lib_TCEforms	{
 										<strong>'.$theTitle.'</strong> <em><span id="'.$idTagPrefix.'-preview"></span></em>
 									</td>
 									<td align="right">'.
-										($mayRestructureFlexforms ? '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move.gif','width="16" height="16"').' alt="Drag to Move" title="Drag to Move" />' : '').
+										($mayRestructureFlexforms ? t3lib_iconWorks::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move')) : '').
 									#	'<a href="#" onclick="'.htmlspecialchars($onClickCopy).'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_copy.gif','width="12" height="12"').' alt="Copy" title="Copy" /></a>'.	// DISABLED - see what above in definition of variable $onClickCopy
-										($mayRestructureFlexforms ? '<a href="#" onclick="'.htmlspecialchars($onClickRemove).'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' alt="Delete" title="Delete" /></a>' : '').
+										($mayRestructureFlexforms ? '<a href="#" onclick="'.htmlspecialchars($onClickRemove).'">'.t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => 'Delete')) : '').
 									'</td>
 									</tr>
 								</table>';
@@ -3616,25 +3615,25 @@ class t3lib_TCEforms	{
 				}
 				$aOnClick='setFormValueOpenBrowser(\''.$mode.'\',\''.($fName.'|||'.$allowed.'|'.$aOnClickInline).'\'); return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-						'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/insert3.gif', 'width="14" height="14"') . ' border="0" ' . t3lib_BEfunc::titleAltAttrib($this->getLL('l_browse_' . ($mode == 'db' ? 'db' : 'file'))) . ' />' .
-						'</a>';
+						t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => htmlspecialchars($this->getLL('l_browse_' . ($mode == 'db' ? 'db' : 'file'))))) .
+				'</a>';
 			}
 			if (!$params['dontShowMoveIcons'])	{
 				if ($sSize>=5)	{
 					$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Top\'); return false;">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_totop.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_top')).' />'.
-							'</a>';
+							t3lib_iconWorks::getSpriteIcon('actions-move-to-top', array('title' => htmlspecialchars($this->getLL('l_move_to_top')))) .
+					'</a>';
 				}
 				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Up\'); return false;">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/up.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_up')).' />'.
-						'</a>';
+				  t3lib_iconWorks::getSpriteIcon('actions-move-up', array('title' => htmlspecialchars($this->getLL('l_move_up')))) . 
+				'</a>';
 				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Down\'); return false;">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/down.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_down')).' />'.
-						'</a>';
+				  t3lib_iconWorks::getSpriteIcon('actions-move-down', array('title' => htmlspecialchars($this->getLL('l_move_down')))) .
+				'</a>';
 				if ($sSize>=5)	{
 					$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Bottom\'); return false;">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_tobottom.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_move_to_bottom')).' />'.
-							'</a>';
+					  t3lib_iconWorks::getSpriteIcon('actions-move-to-bottom', array('title' => htmlspecialchars($this->getLL('l_move_to_bottom')))) .
+					'</a>';
 				}
 			}
 
@@ -3654,13 +3653,13 @@ class t3lib_TCEforms	{
 				}
 				$aOnClick.= 'return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-						'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/insert5.png', 'width="14" height="14"') . ' border="0" ' . t3lib_BEfunc::titleAltAttrib(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))) . ' />' .
-						'</a>';
+						t3lib_iconWorks::getSpriteIcon('actions-edit-paste', array('title' => htmlspecialchars(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))))) . 
+				'</a>';
 			}
 			$rOnClick = $rOnClickInline.'setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false';
 			$icons['L'][]='<a href="#" onclick="'.htmlspecialchars($rOnClick).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/group_clear.gif','width="14" height="14"').' border="0" '.t3lib_BEfunc::titleAltAttrib($this->getLL('l_remove_selected')).' />'.
-					'</a>';
+			  t3lib_iconWorks::getSpriteIcon('actions-selection-delete', array('title' => htmlspecialchars($this->getLL('l_remove_selected')))) . 
+			'</a>';
 		}
 
 		$str='<table border="0" cellpadding="0" cellspacing="0" width="1">
@@ -5066,7 +5065,7 @@ class t3lib_TCEforms	{
 
 					// Hover popup textbox with alttitle and description
 				if ($this->edit_showFieldHelp == 'icon') {
-					$arrow = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/rel_db.gif', 'width="13" height="12"') . ' class="absmiddle" alt="" />';
+					$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
 						// add description text
 					$hoverText = '<span class="paragraph">' . nl2br(htmlspecialchars($value)) . $arrow . '</span>';
 						// put header before the rest of the text
@@ -5085,8 +5084,8 @@ class t3lib_TCEforms	{
 				)));
 				$aOnClick = 'vHWin=window.open(\''.$this->backPath.'view_help.php?ffID=' . $params . '\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 				return '<a href="#" class="typo3-csh-link" onclick="'.htmlspecialchars($aOnClick).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/helpbubble.gif','width="14" height="14"').' hspace="2" border="0" class="absmiddle"'.($GLOBALS['CLIENT']['FORMSTYLE']?' style="cursor:help;"':'').' alt="" />' . $hoverText .
-						'</a>';
+						t3lib_iconWorks::getSpriteIcon('actions-system-help-open') . $hoverText .
+				'</a>';
 			}
 		}
 		return '';
@@ -5333,8 +5332,8 @@ class t3lib_TCEforms	{
 			}
 
 				// Toggle icons:
-			$toggleIcon_open = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2down.gif','width="12" height="7"').' hspace="2" alt="Open" title="Open" />';
-			$toggleIcon_close = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pil2right.gif','width="7" height="12"').' hspace="2" alt="Close" title="Close" />';
+			$toggleIcon_open = t3lib_iconWorks::getSpriteIcon('actions-move-down', array('title' => 'Open'));
+			$toggleIcon_close = t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => 'Close'));
 
 			$out .= '
 			function getOuterHTML(idTagPrefix)	{	// Function getting the outerHTML of an element with id

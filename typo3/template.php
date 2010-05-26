@@ -448,7 +448,7 @@ class template {
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'],$this->backPath,'');
 			if ($table=='pages')	$path.=' - '.t3lib_BEfunc::titleAttribForPages($row,'',0);
 		} else {
-			$iconImgTag='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif',$wHattribs='width="18" height="16"').' title="'.htmlspecialchars($path).'" alt="" />';
+			$iconImgTag = t3lib_iconWorks::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
 			$title=$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
 
@@ -504,7 +504,8 @@ class template {
 			.'\''.rawurlencode($pathInfo['path']."?".$storeUrl).$mMN.'\''
 		.');return false;';
 
-		$sIcon = '<a href="#" onclick="'.htmlspecialchars($onClick).'"><img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut',1).'" alt="" /></a>';
+		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick).'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeShortcut', TRUE) . '">'
+			. t3lib_iconworks::getSpriteIcon('actions-system-shortcut-new') . '</a>';
 		return $sIcon;
 	}
 
@@ -1206,22 +1207,22 @@ $str.=$this->docBodyTagBegin().
 	function icons($type, $styleAttribValue='')	{
 		switch($type)	{
 			case '3':
-				$icon = 'gfx/icon_fatalerror.gif';
+				$icon = 'status-dialog-error';
 			break;
 			case '2':
-				$icon = 'gfx/icon_warning.gif';
+				$icon = 'status-dialog-warning';
 			break;
 			case '1':
-				$icon = 'gfx/icon_note.gif';
+				$icon = 'status-dialog-notification';
 			break;
 			case '-1':
-				$icon = 'gfx/icon_ok.gif';
+				$icon = 'status-dialog-ok';
 			break;
 			default:
 			break;
 		}
 		if ($icon)	{
-			return '<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' class="absmiddle"'.($styleAttribValue ? ' style="'.htmlspecialchars($styleAttribValue).'"' : '').' alt="" />';
+			return t3lib_iconWorks::getSpriteIcon($icon);
 		}
 	}
 
@@ -2120,13 +2121,13 @@ $str.=$this->docBodyTagBegin().
 				// Add icon with clickmenu, etc:
 		if ($pageRecord['uid'])	{	// If there IS a real page
 			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = t3lib_iconWorks::getIconImage('pages', $pageRecord, $this->backPath, 'class="absmiddle" title="'. htmlspecialchars($alttext) . '"');
+			$iconImg = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageRecord, array('title'=>$alttext));
 				// Make Icon:
 			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 			$pid = $pageRecord['uid'];
 		} else {	// On root-level of page tree
 				// Make Icon
-			$iconImg = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" />';
+			$iconImg = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root', array('title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']));
 			if($BE_USER->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {

@@ -320,7 +320,7 @@ class SC_move_el {
 						if (is_array($pidPageInfo))	{
 							if ($BE_USER->isInWebMount($pidPageInfo['pid'],$this->perms_clause))	{
 								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']),'moveUid'=>$this->moveUid))).'">'.
-									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/i/pages_up.gif','width="18" height="16"').' alt="" />'.
+									t3lib_iconWorks::getSpriteIcon('actions-view-go-up') . 
 									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'</a><br />';
 							} else {
@@ -375,7 +375,7 @@ class SC_move_el {
 						if (is_array($pidPageInfo))	{
 							if ($BE_USER->isInWebMount($pidPageInfo['pid'],$this->perms_clause))	{
 								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']),'moveUid'=>$this->moveUid))).'">'.
-									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/i/pages_up.gif','width="18" height="16"').' alt="" />'.
+									t3lib_iconWorks::getSpriteIcon('actions-view-go-up') . 
 									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'</a><br />';
 							} else {
@@ -440,7 +440,9 @@ class SC_move_el {
 
 			if ($this->R_URI) {
 					// Back
-				$buttons['back'] ='<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' alt="" title="' . $LANG->getLL('goBack', 1) .'" /></a>';
+				$buttons['back'] ='<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $LANG->getLL('goBack', TRUE) .'">' .
+						t3lib_iconWorks::getSpriteIcon('actions-go-back') .
+					'</a>';
 			}
 		}
 

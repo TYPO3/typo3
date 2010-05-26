@@ -1061,7 +1061,7 @@ class t3lib_queryGenerator	{
 	 */
 	function mkFieldToInputSelect($name,$fieldName)	{
 		$out='<input type="Text" value="'.htmlspecialchars($fieldName).'" name="'.$name.'"'.$GLOBALS['TBE_TEMPLATE']->formWidth().'>'.$this->updateIcon();
-		$out.='<a href="#" onClick="document.forms[0][\''.$name.'\'].value=\'\';return false;"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') . ' class="absmiddle" title="Clear list" border="0"></a>';
+		$out.='<a href="#" onClick="document.forms[0][\''.$name.'\'].value=\'\';return false;">' . t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => 'Clear list')) . '</a>';
 		$out.='<BR><select name="_fieldListDummy" size="5" onChange="document.forms[0][\''.$name.'\'].value+=\',\'+this.value">';
 		foreach ($this->fields as $key => $value) {
 			if (!$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table.':'.$key))	{

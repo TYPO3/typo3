@@ -274,7 +274,8 @@ class SC_alt_file_navframe {
 
 			// Refresh
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '">' .
-				'<img' . t3lib_iconWorks::skinImg('','gfx/refresh_n.gif','width="14" height="14"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.refresh',1) . '" alt="" /></a>';
+				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') . 
+		'</a>';
 
 			// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline','typo3-csh-inline show-right',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']));

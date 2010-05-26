@@ -348,8 +348,8 @@ class SC_mod_web_perm_index {
 		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// View page
-		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewonclick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
-				'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewonclick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				'</a>';
 
 			// Shortcut
@@ -360,8 +360,8 @@ class SC_mod_web_perm_index {
 			// If access to Web>List for user, then link to that module.
 		if ($GLOBALS['BE_USER']->check('modules','web_list'))	{
 			$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-					'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+			$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
 					'</a>';
 		}
 		return $buttons;
@@ -582,7 +582,7 @@ class SC_mod_web_perm_index {
 		$tree->addField('editlock');
 
 			// Creating top icon; the current page
-		$HTML=t3lib_iconWorks::getIconImage('pages',$this->pageinfo,$BACK_PATH,'align="top"');
+		$HTML=t3lib_iconWorks::getSpriteIconForRecord('pages',$this->pageinfo);
 		$tree->tree[] = array('row'=>$this->pageinfo,'HTML'=>$HTML);
 
 			// Create the tree from $this->id:
@@ -652,7 +652,7 @@ class SC_mod_web_perm_index {
 			if ($editPermsAllowed && $pageId) {
 				$aHref = 'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId).'&return_id='.$this->id.'&edit=1';
 				$cells[]='
-					<td'.$bgCol.'><a href="'.htmlspecialchars($aHref).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/edit2.gif','width="11" height="12"').' border="0" title="'.$LANG->getLL('ch_permissions',1).'" align="top" alt="" /></a></td>';
+					<td'.$bgCol.'><a href="'.htmlspecialchars($aHref).'" title="'.$LANG->getLL('ch_permissions',1).'">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
 				$cells[]='
 					<td'.$bgCol.'></td>';
@@ -671,7 +671,8 @@ class SC_mod_web_perm_index {
 					<td'.$bgCol.' nowrap="nowrap">'.($pageId ? ' '.SC_mod_web_perm_ajax::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '').'</td>
 
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock']?'<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'1\');"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/recordlock_warning2.gif','width="22" height="16"').' title="'.$LANG->getLL('EditLock_descr',1).'" alt="Edit Lock" /></a></span>' : ( $pageId === 0 ? '' : '<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')).'</td>
+					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock']?'<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'1\');" title="'.$LANG->getLL('EditLock_descr',1).'">' .
+						t3lib_iconWorks::getSpriteIcon('status-warning-lock') . '</a></span>' : ( $pageId === 0 ? '' : '<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')).'</td>
 				';
 			} else {
 				$cells[]='
@@ -684,7 +685,7 @@ class SC_mod_web_perm_index {
 					<td'.$bgCol.' nowrap="nowrap" align="center">'.($pageId ? $owner.SC_mod_web_perm_ajax::renderPermissions($BE_USER->calcPerms($data['row']), $pageId, 'user') : '').'</td>
 					'.(!$BE_USER->isAdmin()?'
 					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock']?'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/recordlock_warning2.gif','width="22" height="16"').' title="'.$LANG->getLL('EditLock_descr',1).'" alt="" />' : '').'</td>
+					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-lock', array('title' => $LANG->getLL('EditLock_descr', TRUE))) : '').'</td>
 					':'');
 				$bgCol = $lE_bgCol;
 			}
@@ -722,8 +723,8 @@ class SC_mod_web_perm_index {
 			</tr>
 		</table>';
 		$code.='<div id="perm-legend">'.$LANG->getLL('def',1);
-		$code.='<br /><br /><span class="perm-allowed">*</span>: '.$LANG->getLL('A_Granted', 1);
-		$code.='<br /><span class="perm-denied">x</span>: '.$LANG->getLL('A_Denied', 1);
+		$code.='<br /><br />'.t3lib_iconWorks::getSpriteIcon('status-status-permission-granted').': '.$LANG->getLL('A_Granted', 1);
+		$code.='<br />'.t3lib_iconWorks::getSpriteIcon('status-status-permission-denied').': '.$LANG->getLL('A_Denied', 1);
 		$code.='</div>';
 
 			// Adding section with legend code:

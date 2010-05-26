@@ -366,8 +366,8 @@ class t3lib_clipboard {
 				'</td>
 				<td>'.
 				'<a href="'.htmlspecialchars($rmall_url).'#clip_head">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/closedok_2.gif','width="21" height="16"').' vspace="2" border="0" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear',1).'" alt="" />'.
-					'</a></td>
+					t3lib_iconWorks::getSpriteIcon('actions-document-close', array('title' => $LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE))) . 
+				'</a></td>
 			</tr>';
 
 
@@ -375,7 +375,7 @@ class t3lib_clipboard {
 		$out[]='
 			<tr class="bgColor5">
 				<td colspan="3"><a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('CB'=>array('setP'=>'normal')))).'#clip_head">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($this->current=='normal'?'minus':'plus').'bullet.gif','width="18" height="16"').' border="0" align="top" alt="" />'.
+					t3lib_iconWorks::getSpriteIcon('actions-view-table-' . (($this->current == 'normal') ? 'collapse' : 'expand')) .
 					$this->padTitleWrap('Normal','normal').
 					'</a></td>
 			</tr>';
@@ -386,7 +386,7 @@ class t3lib_clipboard {
 			$out[]='
 				<tr class="bgColor5">
 					<td colspan="3"><a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('CB'=>array('setP'=>'tab_'.$a)))).'#clip_head">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($this->current=='tab_'.$a?'minus':'plus').'bullet.gif','width="18" height="16"').' border="0" align="top" alt="" />'.
+						t3lib_iconWorks::getSpriteIcon('actions-view-table-' . (($this->current == 'tab_' . $a) ? 'collapse' : 'expand')) .
 						$this->padTitleWrap($this->clLabel('cliptabs').$a,'tab_'.$a).
 						'</a></td>
 				</tr>';

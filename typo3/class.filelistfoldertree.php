@@ -304,26 +304,26 @@ class filelistFolderTree extends t3lib_folderTree {
 
 				// Set PM icon:
 			$cmd = $this->bank.'_'.($isOpen ? '0_' : '1_').$specUID.'_'.$this->treeName;
-			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif').' alt="" />';
+			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen? 'minus':'plus').'only.gif').' alt="" />';
 			$firstHtml= $this->PM_ATagWrap($icon,$cmd);
 
 			switch ($val['type']) {
 				case 'user':
-					$icon = 'gfx/i/_icon_ftp_user.gif';
+					$icon = 'apps-filetree-folder-user';
 					break;
 				case 'group':
-					$icon = 'gfx/i/_icon_ftp_group.gif';
+					$icon = 'apps-filetree-folder-user';
 					break;
 				case 'readonly':
-					$icon = 'gfx/i/_icon_ftp_readonly.gif';
+					$icon = 'apps-filetree-folder-locked';
 					break;
 				default:
-					$icon = 'gfx/i/_icon_ftp.gif';
+					$icon = 'apps-filetree-mount';
 					break;
 			}
 
 				// Preparing rootRec for the mount
-			$firstHtml.=$this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,$icon,'width="18" height="16"').' alt="" />',$val);
+			$firstHtml.=$this->wrapIcon(t3lib_iconWorks::getSpriteIcon($icon),$val);
 			$row=array();
 			$row['uid']   = $specUID;
 			$row['path']  = $val['path'];
@@ -415,22 +415,29 @@ class filelistFolderTree extends t3lib_folderTree {
 
 				if (is_writable($path)) {
 					$type = '';
+					$overlays = array();
 				} else {
 					$type = 'readonly';
+					$overlays= array('status-overlay-locked'=>array());
+					
 				}
 
-				$icon = 'gfx/i/_icon_' .$webpath . 'folders' . ($type == 'readonly' ? '_ro' : '') . '.gif';
+				if($webpath == 'web') {
+					$icon = 'apps-filetree-folder-default';;
+				} else {
+					$icon = 'apps-filetree-folder-default';
+				}
 				if ($val == '_temp_')	{
-					$icon = 'gfx/i/sysf.gif';
+					$icon = 'apps-filetree-folder-temp';
 					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true);
 					$row['_title'] = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true) . '</strong>';
 				}
 				if ($val == '_recycler_')	{
-					$icon = 'gfx/i/recycler.gif';
+					$icon = 'apps-filetree-recycler';
 					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true);
 					$row['_title'] = '<strong>' .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true) . '</strong>';
 				}
-				$HTML .= $this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath, $icon, 'width="18" height="16"').' alt="" />',$row);
+				$HTML .= $this->wrapIcon(t3lib_iconWorks::getSpriteIcon($icon,array('title'=>$row['title']),$overlays),$row);
 			}
 
 				// Finally, add the row/HTML content to the ->tree array in the reserved key.

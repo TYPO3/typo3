@@ -347,7 +347,7 @@ class SC_wizard_tsconfig {
 
 				// Title and description:
 			$out.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>''))).'" class="typo3-goBack">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />'.
+					t3lib_iconWorks::getSpriteIcon('actions-go-back') . 
 					htmlspecialchars($obj_string).
 					'</a><br />';
 			if ($rec['title'])	$out.= '<strong>'.htmlspecialchars($rec['title']).': </strong>';
@@ -615,8 +615,8 @@ class SC_wizard_tsconfig {
 		if(!$this->onlyProperty)	{
 			$aOnClick = 'document.editform.mixer.value=unescape(\'  '.rawurlencode($propertyName.'='.$propertyVal).'\')+\'\n\'+document.editform.mixer.value; return false;';
 			$out.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/plusbullet2.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('tsprop_addToList',1).'" align="top" alt="" />'.
-					'</a>';
+					t3lib_iconWorks::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('tsprop_addToList', TRUE))) . 
+			'</a>';
 			$propertyName = $prefix.'.'.$propertyName;
 		}
 

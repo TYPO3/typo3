@@ -95,7 +95,7 @@ class webPageTree extends t3lib_browseTree {
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked('pages',$row['uid']))	{
 			$aOnClick = 'alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;';
 			$lockIcon='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-				'<img'.t3lib_iconWorks::skinImg('','gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
+				t3lib_iconWorks::getSpriteIcon('status-warning-in-use',array('title'=>htmlspecialchars($lockInfo['msg']))).
 				'</a>';
 		} else $lockIcon = '';
 
@@ -357,7 +357,7 @@ class webPageTree extends t3lib_browseTree {
 
 				// Set PM icon for root of mount:
 			$cmd = $this->bank.'_'.($isOpen? "0_" : "1_").$uid.'_'.$this->treeName;
-			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif').' alt="" />';
+			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen? 'minus' :'plus' ) . 'only.gif').' alt="" />';
 			$firstHtml = $this->PMiconATagWrap($icon,$cmd,!$isOpen);
 
 				// Preparing rootRec for the mount

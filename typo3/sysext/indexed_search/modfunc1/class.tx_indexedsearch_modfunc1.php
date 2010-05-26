@@ -1008,9 +1008,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	string		HTML img-tag with link around.
 	 */
 	function printRemoveIndexed($phash,$alt)	{
-		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('deletePhash'=>$phash))).'">'.
-				'<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') . ' hspace="1" vspace="2" border="0" title="'.htmlspecialchars($alt).'" alt="" />'.
-				'</a>';
+		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('deletePhash'=>$phash))).'" title="' . htmlspecialchars($alt) . '">' .
+				t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
+			'</a>';
 	}
 
 	/**

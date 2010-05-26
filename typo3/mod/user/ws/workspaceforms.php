@@ -179,8 +179,8 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 			$this->content .= $LANG->getLL($this->isEditAction ? 'edit_workspace_no_permission' : 'create_workspace_no_permission');
 			$this->content .= $this->doc->spacer(5);
 			$goBack = $GLOBALS['LANG']->getLL('edit_workspace_go_back');
-			$this->content .= '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/goback.gif', 'width="14" height="14"') . ' alt="' . $goBack . '" align="middle" hspace="2" />' .
-						'<a href="javascript:history.back()">' .
+			$this->content .= t3lib_iconWorks::getSpriteIcon('actions-go-back') .
+						'<a href="javascript:history.back()" title="'. $goBack . '">' .
 						$goBack .
 						'</a>';
 			$this->content .= $this->doc->endPage();
@@ -248,7 +248,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		);
 
 			// Close,  `n` below is simply to prevent caching
-		$buttons['close'] = '<a href="index.php?n=' . uniqid('wksp') . '"><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" /></a>';
+		$buttons['close'] = '<a href="index.php?n=' . uniqid('wksp') . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
 			// Save
 		$buttons['save'] = '<input type="image" class="c-inputButton" name="_savedok"' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" value="_savedok" />';
 			// Save & Close

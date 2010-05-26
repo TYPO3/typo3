@@ -608,16 +608,16 @@ class t3lib_TCEforms_inline {
 		$cells['required'] = '<img name="'.$nameObjectFtId.'_req" src="clear.gif" width="10" height="10" hspace="4" vspace="3" alt="" />';
 
 		if (isset($rec['__create'])) {
-			$cells['localize.isLocalizable'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_green.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize.isLocalizable', 1).'" alt="" />';
+			$cells['localize.isLocalizable'] = t3lib_iconWorks::getSpriteIcon('actions-edit-localize-status-low', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize.isLocalizable', TRUE)));
 		} elseif (isset($rec['__remove'])) {
-			$cells['localize.wasRemovedInOriginal'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_red.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize.wasRemovedInOriginal', 1).'" alt="" />';
+			$cells['localize.wasRemovedInOriginal'] = t3lib_iconWorks::getSpriteIcon('actions-edit-localize-status-high', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize.wasRemovedInOriginal', 1)));
 		}
 
 			// "Info": (All records)
 		if ($enabledControls['info'] && !$isNewItem) {
 			$cells['info']='<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$foreign_table.'\', \''.$rec['uid'].'\'); return false;').'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/zoom2.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:showInfo',1).'" alt="" />'.
-				'</a>';
+				t3lib_iconWorks::getSpriteIcon('actions-system-search', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:showInfo', TRUE))).
+		  '</a>';
 		}
 			// If the table is NOT a read-only table, then show these links:
 		if (!$tcaTableCtrl['readOnly'] && !$isVirtualRecord)	{
@@ -641,7 +641,7 @@ class t3lib_TCEforms_inline {
 
 				// Drag&Drop Sorting: Sortable handler for script.aculo.us
 			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable'])	{
-				$cells['dragdrop'] = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/move.gif','width="16" height="16" hspace="2"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move',1).'" alt="" style="cursor: move;" class="sortableHandle" />';
+				$cells['dragdrop'] = t3lib_iconWorks::getSpriteIcon('actions-move-move', array('class' => 'sortableHandle', 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move', TRUE)));
 			}
 
 				// "Up/Down" links
@@ -649,13 +649,13 @@ class t3lib_TCEforms_inline {
 				$onClick = "return inline.changeSorting('".$nameObjectFtId."', '1')";	// Up
 				$style = $config['inline']['first'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
 				$cells['sort.up']='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="sortingUp" '.$style.'>'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_up.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveUp',1).'" alt="" />'.
-						'</a>';
+						t3lib_iconWorks::getSpriteIcon('actions-move-up', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveUp', TRUE))).
+				'</a>';
 
 				$onClick = "return inline.changeSorting('".$nameObjectFtId."', '-1')";	// Down
 				$style = $config['inline']['last'] == $rec['uid'] ? 'style="visibility: hidden;"' : '';
 				$cells['sort.down']='<a href="#" onclick="'.htmlspecialchars($onClick).'" class="sortingDown" '.$style.'>'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_down.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveDown',1).'" alt="" />'.
+						t3lib_iconWorks::getSpriteIcon('actions-move-down', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:moveDown', TRUE))).
 						'</a>';
 			}
 
@@ -678,23 +678,23 @@ class t3lib_TCEforms_inline {
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms&4 || !$isPagesTable && $calcPerms&16)) {
 				$onClick = "inline.deleteRecord('".$nameObjectFtId."');";
 				$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')).')) {	'.$onClick.' } return false;').'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/garbage.gif','width="11" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete',1).'" alt="" />'.
-						'</a>';
+						t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete', TRUE))) . 
+			  '</a>';
 			}
 			// If this is a virtual record offer a minimized set of icons for user interaction:
 		} elseif ($isVirtualRecord) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = "inline.synchronizeLocalizeRecords('".$nameObjectFt."', ".$rec['uid'].");";
 				$cells['localize'] = '<a href="#" onclick="'.htmlspecialchars($onClick).'">' .
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/localize_el.gif','width="16" height="16"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', 1).'" alt="" />' .
-					'</a>';
+					t3lib_iconWorks::getSpriteIcon('actions-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', TRUE))) .
+			  '</a>';
 			}
 		}
 
 			// If the record is edit-locked	by another user, we will show a little warning sign:
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked($foreign_table,$rec['uid']))	{
 			$cells['locked']='<a href="#" onclick="'.htmlspecialchars('alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;').'">'.
-					'<img'.t3lib_iconWorks::skinImg('','gfx/recordlock_warning3.gif','width="17" height="12"').' title="'.htmlspecialchars($lockInfo['msg']).'" alt="" />'.
+					t3lib_iconWorks::getSpriteIcon('status-record-warning', array('title' => htmlspecialchars($lockInfo['msg']))) . 
 					'</a>';
 		}
 
@@ -851,7 +851,7 @@ class t3lib_TCEforms_inline {
 			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation',1);
 			$item .=
 				'<a href="#" onclick="'.htmlspecialchars($onChange).'" align="abstop">'.
-					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/edit2.gif','width="11" height="12"').' align="absmiddle" '.t3lib_BEfunc::titleAltAttrib($createNewRelationText).' /> '.$createNewRelationText.
+					t3lib_iconWorks::getSpriteIcon('actions-edit-edit', array('title' => $createNewRelationText)) . $createNewRelationText .
 				'</a>';
 				// wrap the selector and add a spacer to the bottom
 			$item = '<div style="margin-bottom: 20px;">'.$item.'</div>';
@@ -880,7 +880,7 @@ class t3lib_TCEforms_inline {
 		$onClick = "setFormValueOpenBrowser('db','".('|||'.$allowed.'|'.$objectPrefix.'|inline.checkUniqueElement||inline.importElement')."'); return false;";
 		$item =
 			'<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-				'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert3.gif','width="14" height="14"').' align="absmiddle" '.t3lib_BEfunc::titleAltAttrib($createNewRelationText).' /> '.$createNewRelationText.
+				t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)). $createNewRelationText .
 			'</a>';
 
 		return $item;

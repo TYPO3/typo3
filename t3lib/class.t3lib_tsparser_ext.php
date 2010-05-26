@@ -595,10 +595,13 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$PM = 'join';
 
 			$HTML .= $depthData;
-			$icon = substr($row['templateID'],0,3) == 'sys' ? t3lib_iconWorks::getIcon('sys_template', array('root' => $row['root'])) :
-							(substr($row['templateID'], 0, 6) == 'static' ? t3lib_iconWorks::getIcon('static_template', array()) : 'gfx/i/default.gif');
+
 			$alttext = '[' . $row['templateID'] . ']';
 			$alttext .= $row['pid'] ? ' - ' . t3lib_BEfunc::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
+
+			$icon = substr($row['templateID'],0,3) == 'sys' ? t3lib_iconWorks::getSpriteIconForRecord('sys_template', $row['root'],array('title'=>$alttext)) :
+							(substr($row['templateID'], 0, 6) == 'static' ? t3lib_iconWorks::getSpriteIconForRecord('static_template', array(),array('title'=>$alttext)) : 
+								t3lib_iconWorks::getSpriteIcon('mimetypes-default',array('title'=>$alttext)));
 			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
 				$A_B = '<a href="index.php?id=' . $GLOBALS['SOBE']->id . '&template=' . $row['templateID'] . '">';
 				$A_E = '</a>';
@@ -611,14 +614,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$A_E = '';
 			}
 			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" />') .
-				'<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $icon) . ' align="top" title="' . $alttext.'" /> ' .
+				 $icon .
 				$A_B . t3lib_div::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap>' . $HTML . '</td>
-							<td align="center" class="bgColor5">' . ($row['root'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : '') . '&nbsp;&nbsp;</td>
-							<td align="center">' . ($row['clConf'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' :'') . '&nbsp;&nbsp;' . '</td>
-							<td align="center" class="bgColor5">' . ($row['clConst'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : '') . '&nbsp;&nbsp;' . '</td>
+							<td align="center" class="bgColor5">' . ($row['root'] ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;</td>
+							<td align="center">' . ($row['clConf'] ? t3lib_iconWorks::getSpriteIcon('status-status-checked') :'') . '&nbsp;&nbsp;' . '</td>
+							<td align="center" class="bgColor5">' . ($row['clConst'] ? t3lib_iconWorks::getSpriteIcon('status-staus-checked') : '') . '&nbsp;&nbsp;' . '</td>
 							<td align="center">' . ($row['pid'] ? $row['pid'] : '') . '</td>
 							<td align="center" class="bgColor5">' . (strcmp($RL, '') ? $RL : '') . '</td>
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
@@ -1313,7 +1316,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								}
 
 								if ($copyFile && @is_file($copyFile))	{
-									$p_field .= '<img src="clear.gif" width="20" ' . 'height="1" alt="" /><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_copy.gif', 'width="12" height="12"') . ' border="0" alt="" /><input type="checkbox" ' . 'name="_copyResource[' . $params['name'] . ']" value="' . htmlspecialchars($copyFile) . '" onclick="uFormUrl(' . $aname . ');if (this.checked && !confirm(\'' . t3lib_div::slashJS(htmlspecialchars(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsparser.xml:tsparser_ext.make_copy'), $params['value']))) . '\')) this.checked=false;" />';
+									$p_field .= '<img src="clear.gif" width="20" ' . 'height="1" alt="" />' . t3lib_iconWorks::getSpriteIcon('actions-edit-copy') . ' border="0" alt="" /><input type="checkbox" ' . 'name="_copyResource[' . $params['name'] . ']" value="' . htmlspecialchars($copyFile) . '" onclick="uFormUrl(' . $aname . ');if (this.checked && !confirm(\'' . t3lib_div::slashJS(htmlspecialchars(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsparser.xml:tsparser_ext.make_copy'), $params['value']))) . '\')) this.checked=false;" />';
 								}
 
 								// Upload?
@@ -1360,8 +1363,8 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						}
 
 
-						$deleteIconHTML = '<img class="typo3-tstemplate-ceditor-control undoIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undo.gif').' alt="Revert to default Constant" title="Revert to default Constant" rel="'.$params['name'].'" />';
-						$editIconHTML 	= '<img class="typo3-tstemplate-ceditor-control editIcon" '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif').' alt="Edit this Constant" title="Edit this Constant" rel="'.$params['name'].'" />';
+						$deleteIconHTML = t3lib_iconWorks::getSpriteIcon('actions-edit-undo',array('class'=>"typo3-tstemplate-ceditor-control undoIcon",'alt'=>"Revert to default Constant",'title'=>"Revert to default Constant",'rel'=>$params['name']));
+						$editIconHTML 	= t3lib_iconWorks::getSpriteIcon('actions-document-open',array('class'=>"typo3-tstemplate-ceditor-control editIcon",'alt'=>"Edit this Constant",'title'=>"Edit this Constant",'rel'=>$params['name']));
 						$constantCheckbox = '<input type="hidden" name="'.$checkboxName.'" id="'.$checkboxID.'" value="'.$checkboxValue.'"/>';
 
 						// If there's no default value for the field, use a static label.

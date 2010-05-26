@@ -118,7 +118,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			foreach ($menuItems as $rec) {
 				$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);	// edit permissions for that page!
 				$pRec = t3lib_BEfunc::getRecord ('pages',$rec['uid'],'uid',' AND '.$m_perms_clause);
-				$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],'align="top" '.t3lib_BEfunc::titleAttribForPages($rec)).
+				$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getSpriteIconForRecord('pages',$rec).
 					(!is_array($pRec)?$GLOBALS['TBE_TEMPLATE']->rfw('<b>'.$LANG->getLL('wiz_W',1).'</b> '):'').
 					htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>
 					'.(t3lib_extMgm::isLoaded('cms')?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['subtitle'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>':'').'

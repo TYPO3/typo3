@@ -183,16 +183,10 @@ class WorkspaceSelector implements backend_toolbarItem {
 		$availableWorkspaces = $this->getAvailableWorkspaces();
 		$workspaceMenu       = array();
 
-		$stateCheckedIcon = '<img' . t3lib_iconWorks::skinImg(
-			$this->backPath,
-			'gfx/state_checked.png',
-			'width="16" height="16"') .
-			' title="' . $GLOBALS['LANG']->getLL('shortcut_active') .
-			'" alt="' . $GLOBALS['LANG']->getLL('shortcut_active') . '" class="state-active" />';
-		$stateUncheckedIcon = '<img src="clear.gif" width="16" height="16"
-			title="' . $GLOBALS['LANG']->getLL('shortcut_inactive') .
-			'" alt="' . $GLOBALS['LANG']->getLL('shortcut_inactive') . '" class="state-inactive" />';
-
+		$stateCheckedIcon = t3lib_iconWorks::getSpriteIcon('status-status-checked');
+	
+		$stateUncheckedIcon = '<img src="clear.gif" width="16" height="16" title="' . $GLOBALS['LANG']->getLL('shortcut_inactive') .
+		  '" alt="' . $GLOBALS['LANG']->getLL('shortcut_inactive') . '" class="state-inactive" />';
 
 		$workspaceMenu[] = '<a href="#" class="toolbar-item"><img' .
 			t3lib_iconWorks::skinImg(

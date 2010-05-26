@@ -171,7 +171,7 @@ class tx_opendocs implements backend_toolbarItem {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', true);
 
 				// open document
-			$closeIcon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
+			$closeIcon = t3lib_iconWorks::getSpriteIcon('actions-document-close');
 
 			$entry = '
 				<tr class="opendoc' . $firstRow . '">

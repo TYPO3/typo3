@@ -260,8 +260,8 @@ class SC_mod_web_perm_ajax {
 		$elementId = 'o_'.$page;
 		$options = '<option value="0"></option>'.$options;
 		$selector = '<select name="new_page_owner" id="new_page_owner">'.$options.'</select>';
-		$saveButton = '<a onclick="WebPermissions.changeOwner('.$page.', '.$ownerUid.', \''.$elementId.'\');"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/savedok.gif', 'width="21" height="16"').' border="0" title="Change owner" align="top" alt="" /></a>';
-		$cancelButton = '<a onclick="WebPermissions.restoreOwner('.$page.', '.$ownerUid.', \''.($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($username)).'\', \''.$elementId.'\');"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/closedok.gif', 'width="21" height="16"').' border="0" title="Cancel" align="top" alt="" /></a>';
+		$saveButton = '<a onclick="WebPermissions.changeOwner('.$page.', '.$ownerUid.', \''.$elementId.'\');" title="Change owner">' . t3lib_iconWorks::getSpriteIcon('actions-document-save') . '</a>';
+		$cancelButton = '<a onclick="WebPermissions.restoreOwner('.$page.', '.$ownerUid.', \''.($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($username)).'\', \''.$elementId.'\');" title="Cancel">' . t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
 		$ret = $selector.$saveButton.$cancelButton;
 		return $ret;
 	}
@@ -309,8 +309,8 @@ class SC_mod_web_perm_ajax {
 		$elementId = 'g_'.$page;
 		$options = '<option value="0"></option>'.$options;
 		$selector = '<select name="new_page_group" id="new_page_group">'.$options.'</select>';
-		$saveButton = '<a onclick="WebPermissions.changeGroup('.$page.', '.$groupUid.', \''.$elementId.'\');"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/savedok.gif', 'width="21" height="16"').' border="0" title="Change group" align="top" alt="" /></a>';
-		$cancelButton = '<a onclick="WebPermissions.restoreGroup('.$page.', '.$groupUid.', \''.($groupname == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($groupname)).'\', \''.$elementId.'\');"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/closedok.gif', 'width="21" height="16"').' border="0" title="Cancel" align="top" alt="" /></a>';
+		$saveButton = '<a onclick="WebPermissions.changeGroup('.$page.', '.$groupUid.', \''.$elementId.'\');" title="Change group">' . t3lib_iconWorks::getSpriteIcon('actions-document-save') . '</a>';
+		$cancelButton = '<a onclick="WebPermissions.restoreGroup('.$page.', '.$groupUid.', \''.($groupname == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($groupname)).'\', \''.$elementId.'\');" title="Cancel">' . t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
 		$ret = $selector.$saveButton.$cancelButton;
 		return $ret;
 	}
@@ -357,7 +357,7 @@ class SC_mod_web_perm_ajax {
 	 */
 	protected function renderToggleEditLock($page, $editLockState) {
 		if ($editLockState === 1) {
-			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock('.$page.', 1);"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/recordlock_warning2.gif','width="22" height="16"').' title="The page and all content is locked for editing by all non-Admin users." alt="" /></a>';
+			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock('.$page.', 1);" title="The page and all content is locked for editing by all non-Admin users.">' . t3lib_iconWorks::getSpriteIcon('status-warning-lock') . '</a>';
 		} else {
 			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock('.$page.', 0);" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a>';
 		}
@@ -380,9 +380,9 @@ class SC_mod_web_perm_ajax {
 		$permissions = array(1,16,2,4,8);
 		foreach ($permissions as $permission) {
 			if ($int&$permission) {
-				$str .= '<span class="perm-allowed"><a title="'.$LANG->getLL($permission,1).'" class="perm-allowed" onclick="WebPermissions.setPermissions('.$pageId.', '.$permission.', \'delete\', \''.$who.'\', '.$int.');">*</a></span>';
+				$str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-granted',array('tag'=>'a','title'=>$LANG->getLL($permission,1), 'onclick'=> 'WebPermissions.setPermissions('.$pageId.', '.$permission.', \'delete\', \''.$who.'\', '.$int.');'));
 			} else {
-				$str .= '<span class="perm-denied"><a title="'.$LANG->getLL($permission,1).'" class="perm-denied" onclick="WebPermissions.setPermissions('.$pageId.', '.$permission.', \'add\', \''.$who.'\', '.$int.');">x</a></span>';
+				$str .= t3lib_iconWorks::getSpriteIcon('status-status-permission-denied',array('tag'=>'a','title'=>$LANG->getLL($permission,1),'onclick'=>'WebPermissions.setPermissions('.$pageId.', '.$permission.', \'add\', \''.$who.'\', '.$int.');'));
 			}
 		}
 		return '<span id="'.$pageId.'_'.$who.'">'.$str.'</span>';

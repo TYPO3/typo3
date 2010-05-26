@@ -640,7 +640,7 @@ class t3lib_treeView {
 	 * @return	string		Icon image tag.
 	 */
 	function getRootIcon($rec) {
-		return $this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' alt="" />',$rec);
+		return $this->wrapIcon(t3lib_iconWorks::getSpriteIcon('apps-pagetree-root'),$rec);
 	}
 
 
@@ -656,7 +656,12 @@ class t3lib_treeView {
 		if ($this->iconPath && $this->iconName) {
 			$icon = '<img'.t3lib_iconWorks::skinImg('',$this->iconPath.$this->iconName,'width="18" height="16"').' alt=""'.($this->showDefaultTitleAttribute ? ' title="UID: '.$row['uid'].'"':'').' />';
 		} else {
-			$icon = t3lib_iconWorks::getIconImage($this->table,$row,$this->backPath,'align="top" class="c-recIcon"'.($this->showDefaultTitleAttribute ? ' title="UID: '.$row['uid'].'"':''));
+
+			$icon = t3lib_iconWorks::getSpriteIconForRecord($this->table, $row, array(
+				'title' => ($this->showDefaultTitleAttribute ? 'UID: '. $row['uid'] : ''),
+				'class' => 'c-recIcon'
+			));
+		
 		}
 
 		return $this->wrapIcon($icon,$row);

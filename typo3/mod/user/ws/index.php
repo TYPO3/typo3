@@ -251,8 +251,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc->setModuleTemplate('templates/ws.html');
 
 			// JavaScript
-		$plusIcon = t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/ol/plusbullet.gif', 'width="18" height="16"', 1);
-		$minusIcon = t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/ol/minusbullet.gif', 'width="18" height="16"', 1);
+		$plusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-expand');
+		$minusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-collapse');
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
 			function jumpToUrl(URL)	{	//
@@ -599,7 +599,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// row #1, column #1: expand icon
 			$content .= '<td>' .
 						'<a href="javascript:expandCollapse(' . $rowNum . ')">' .
-						'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/ol/plusbullet.gif', 'width="18" height="16"') . ' id="wl_' . $rowNum . 'i" border="0" hspace="1" alt="' . $LANG->getLL('img_title_show_more') . '" />' .
+						t3lib_iconWorks::getSpriteIcon('actions-view-tables-expand', array('title' => $LANG->getLL('img_title_show_more'))) .
 						'</a></td>';
 
 				// row #1, column #2: icon panel
@@ -747,8 +747,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				if (!$isAdmin && !in_array($mp['uid'], $userMPs)) {
 					// Show warning icon
 					$title = $GLOBALS['LANG']->getLL('workspace_list_mount_point_inaccessible');
-					$str = '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') .
-							' alt="' . $title . '" title="' . $title . '" align="absmiddle" />';
+					$str = t3lib_iconWorks::getSpriteIcon('status-warning');
 					$classAttr = 'class="ver-wl-mp-inacessible" ';
 				}
 				else {
@@ -800,8 +799,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				if (!$isAdmin && !in_array($mp['uid'], $userMPs)) {
 					// Show warning icon
 					$title = $GLOBALS['LANG']->getLL('workspace_list_mount_point_inaccessible');
-					$str = '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') .
-							' alt="' . $title . '" title="' . $title . '" align="absmiddle" />';
+					$str = t3lib_iconWorks::getSpriteIcon('status-warning');
 					$classAttr = 'class="ver-wl-mp-inacessible" ';
 				}
 				else {
@@ -982,9 +980,9 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// User can modify workspace parameters, display corresponding link and icon
 			$editUrl = 'workspaceforms.php?action=edit&amp;wkspId=' . $wksp['uid'];
 
-			$content .= '<a href="' . $editUrl . '" />' .
-					'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/edit2.gif', 'width="11" height="12"') . ' border="0" alt="' . $LANG->getLL('workspace_list_icon_title_edit_workspace') . '" align="middle" hspace="1" />' .
-					'</a>';
+			$content .= '<a href="' . $editUrl . '" title="'. $LANG->getLL('workspace_list_icon_title_edit_workspace') .'"/>' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+			'</a>';
 		} else {
 				// User can NOT modify workspace parameters, display space
 				// Get only withdth and height from skinning API
@@ -997,8 +995,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// Workspace switching button
 			$content .= '<a href="' .
 					t3lib_div::getIndpEnv('SCRIPT_NAME') .
-					'?changeWorkspace=' . $wksp['uid'] . '"/>' .
-					'<img ' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/switch.gif', 'width="11" height="10"') . ' border="0" alt="' . $LANG->getLL('workspace_list_icon_title_switch_workspace') . '" align="middle" hspace="1" />' .
+					'?changeWorkspace=' . $wksp['uid'] . '" title="'. $LANG->getLL('workspace_list_icon_title_switch_workspace') . '"/>' .
+					t3lib_iconWorks::getSpriteIcon('actions-version-swap-workspace') . 
 					'</a>';
 		} else {
 				// Current workspace: empty space instead of workspace switching button

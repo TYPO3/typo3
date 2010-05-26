@@ -230,16 +230,16 @@ class SC_file_edit {
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_edit', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// Save button
-		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/savedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit',1)).'" alt="" />';
-		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();">'.$theIcon.'</a>';
+		$theIcon = t3lib_iconWorks::getSpriteIcon('actions-document-save');
+		$buttons['SAVE'] = '<a href="#" onclick="document.editform.submit();" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.submit', TRUE)).'">' . $theIcon . '</a>';
 
 			// Save and Close button
-		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/saveandclosedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose',1)).'" alt="" />';
-		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=\''.htmlspecialchars($this->returnUrl).'\'; document.editform.submit();">'.$theIcon.'</a>';
+		$theIcon = t3lib_iconWorks::getSpriteIcon('actions-document-save-close');
+		$buttons['SAVE_CLOSE'] = '<a href="#" onclick="document.editform.redirect.value=\''.htmlspecialchars($this->returnUrl).'\'; document.editform.submit();" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.saveAndClose', TRUE)).'">' . $theIcon . '</a>';
 
 			// Cancel button
-		$theIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/closedok.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel',1)).'" alt="" />';
-		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;">'.$theIcon.'</a>';
+		$theIcon = t3lib_iconWorks::getSpriteIcon('actions-document-close');
+		$buttons['CANCEL'] = '<a href="#" onclick="backToList(); return false;" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel', TRUE)) . '">' . $theIcon . '</a>';
 
 		return $buttons;
 	}

@@ -284,13 +284,13 @@ class t3lib_recordList {
 			case 'fwd':
 				$href = $this->listURL().'&pointer='.($pointer-$this->iLimit).$tParam;
 				$content = '<a href="'.htmlspecialchars($href).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pilup.gif','width="14" height="14"').' alt="" />'.
+						t3lib_iconWorks::getSpriteIcon('actions-move-up').
 						'</a> <i>[1 - '.$pointer.']</i>';
 			break;
 			case 'rwd':
 				$href = $this->listURL().'&pointer='.$pointer.$tParam;
 				$content = '<a href="'.htmlspecialchars($href).'">'.
-						'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/pildown.gif','width="14" height="14"').' alt="" />'.
+						t3lib_iconWorks::getSpriteIcon('actions-move-down').
 						'</a> <i>['.($pointer+1).' - '.$this->totalItems.']</i>';
 			break;
 		}

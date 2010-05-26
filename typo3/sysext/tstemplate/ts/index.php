@@ -248,15 +248,15 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 		if ($this->id && $this->access) {
 				// View page
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
-					'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', true) . '" hspace="3" alt="" />' .
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
 					'</a>';
 
 				// If access to Web>List for user, then link to that module.
 			if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
 				$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-						'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', true) . '" alt="" />' .
+				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') . 
 						'</a>';
 			}
 
@@ -269,24 +269,24 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 					$buttons['new'] = '';
 
 						// SAVE button
-					$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', true) . '" />';
+					$buttons['save'] = t3lib_iconWorks::getSpriteIcon('actions-document-save',array('html'=>'<input type="image" class="c-inputButton" name="submit" src="clear.gif" title="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', true) .'" />'));
 
 						// SAVE AND CLOSE button
-					$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveclose" value="Save and close"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', true) . '" />';
+					$buttons['save_close'] = t3lib_iconWorks::getSpriteIcon('actions-document-save-close',array('html'=>'<input type="image" class="c-inputButton" name="saveclose" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', true) . '" />'));
 
 						// CLOSE button
-					$buttons['close'] = '<input type="image" class="c-inputButton" name="abort" value="Abort"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/closedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', true) . '" />';
+					$buttons['close'] = t3lib_iconWorks::getSpriteIcon('actions-document-close',array('html'=>'<input type="image" class="c-inputButton" name="abort" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', true) . '" />'));
 
 				}
 			} elseif($this->extClassConf['name'] == 'tx_tstemplateceditor' && count($this->MOD_MENU['constant_editor_cat'])) {
 					// SAVE button
-				$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', true) . '" />';
+				$buttons['save'] = t3lib_iconWorks::getSpriteIcon('actions-document-save',array('html'=>'<input type="image" class="c-inputButton" name="submit" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', true) . '" />'));
 			} elseif($this->extClassConf['name'] == 'tx_tstemplateobjbrowser') {
 				if(!empty($this->sObj)) {
 						// BACK
-					$buttons['back'] = '<a href="index.php?id=' . $this->id . '" class="typo3-goBack">' .
-									'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/goback.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', true) . '" alt="" />' .
-									'</a>';
+					$buttons['back'] = '<a href="index.php?id=' . $this->id . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+									t3lib_iconWorks::getSpriteIcon('actions-go-back') . 
+								'</a>';
 				}
 			}
 
@@ -377,13 +377,15 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$theOutput .= $this->doc->spacer(10);
 			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br />
 			<br />' .
-			$selector . '<br />
-			<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') . ' hspace="5" align="top">
-			<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '"' . $confirm . '>', 0, 1);
+			$selector . '<br />' .
+				t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . 
+			'<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '"' . $confirm . '>', 0, 1);
 		}
 			// Extension?
 		$theOutput .= $this->doc->spacer(10);
-		$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('extTemplate'), $GLOBALS['LANG']->getLL('extTemplateDescription') . '<BR><BR><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning.gif', 'width="18" height="16"') . ' hspace="5" align="top"><input type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '"' . $confirm . '>', 0, 1);
+		$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('extTemplate'), $GLOBALS['LANG']->getLL('extTemplateDescription') . '<br /><br />' .
+				t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . 
+			'<input type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '"' . $confirm . '>', 0, 1);
 
 			// Go to first appearing...
 		$first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);
@@ -501,20 +503,18 @@ page.10.value = HELLO WORLD!
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align="top">' .
 							'<a href="' . t3lib_div::linkThisScript(array('id' => $k)) . '">' .
-							t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), $GLOBALS['BACK_PATH'], ' align="top" title="ID: ' . $k . '"') .
+							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), array("title"=>'ID: ' . $k )) .
 							t3lib_div::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 							<td align="center">' . $pArray[$k . '_']['count'] . '</td>
-							<td align="center" class="bgColor5">' . ($pArray[$k . '_']['root_max_val'] > 0 ? '<img' .
-							t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : "&nbsp;") .
+							<td align="center" class="bgColor5">' . ($pArray[$k . '_']['root_max_val'] > 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : "&nbsp;") .
 							'</td>
-							<td align="center">' . ($pArray[$k . '_']['root_min_val'] == 0 ? '<img' .
-							t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/perm-allowed.gif', 'width="10" height="9"') . ' align="top" alt="" />' : "&nbsp;") .
+							<td align="center">' . ($pArray[$k . '_']['root_min_val'] == 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : "&nbsp;") .
 							'</td>
 							</tr>';
 					} else {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap ><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align=top>' .
-							t3lib_iconWorks::getIconImage('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), $GLOBALS['BACK_PATH'], ' align="top"') .
+							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k)) .
 							t3lib_div::fixed_lgd_cs($pArray[$k], 30) . '</td>
 							<td align="center"></td>
 							<td align="center" class="bgColor5"></td>

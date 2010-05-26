@@ -242,9 +242,11 @@ class SC_alt_db_navframe {
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
-			'IMG_RESET'     => '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') .
-			' id="treeFilterReset" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter') . '" ' .
-			'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter') . '" />',
+			'IMG_RESET'     => t3lib_iconWorks::getSpriteIcon('actions-document-close', array(
+						'id' =>'treeFilterReset',
+						'alt'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter'),
+						'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter')
+					)),
 			'WORKSPACEINFO' => $this->getWorkspaceInfo(),
 			'CONTENT'       => $this->content
 		);
@@ -286,10 +288,14 @@ class SC_alt_db_navframe {
 
 			// New Page
 		$onclickNewPageWizard = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'db_new.php?pagesOnly=1&amp;id=\'+Tree.pageID;';
-		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/new_page.gif') . ' title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '" alt="" /></a>';
+		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage', TRUE) . '">' .
+				t3lib_iconWorks::getSpriteIcon('actions-page-new') . 
+			'</a>';
 
 			// Refresh
-		$buttons['refresh'] = '<a href="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '"><img' . t3lib_iconWorks::skinImg('', 'gfx/refresh_n.gif') . ' title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh', 1) . '" alt="" /></a>';
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh', TRUE) . '">' .
+				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') . 
+			'</a>';
 
 			// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline','typo3-csh-inline show-right',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'], '', TRUE));
@@ -321,7 +327,7 @@ class SC_alt_db_navframe {
 			$workspaceInfo = '
 				<div class="bgColor4 workspace-info">
 					<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
-					'<img'.t3lib_iconWorks::skinImg('','gfx/i/sys_workspace.png','width="18" height="16"').' align="top" alt="" />'.
+					  t3lib_iconWorks::getSpriteIcon('status-workspace-draft') . 
 					'</a>'.$wsTitle.'
 				</div>
 			';

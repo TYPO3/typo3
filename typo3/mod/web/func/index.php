@@ -192,9 +192,10 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 		if($this->id && is_array($this->pageinfo)) {
 
 				// View page
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
-					'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" hspace="3" alt="" />' .
-					'</a>';
+			$buttons['view'] = '<a href="#" 
+					onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '
+					title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '
+				">' .	t3lib_iconWorks::getSpriteIcon('actions-page-view') . '</a>';
 
 				// Shortcut
 			if ($BE_USER->mayMakeShortcut())	{
@@ -204,9 +205,8 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 				// If access to Web>List for user, then link to that module.
 			if ($BE_USER->check('modules','web_list'))	{
 				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
-						'</a>';
+				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-system-list-open') . '</a>';
 			}
 		}
 

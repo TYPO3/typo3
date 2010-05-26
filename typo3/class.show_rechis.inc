@@ -405,7 +405,7 @@ class recordHistory {
 			$singleLine = array();
 
 				// diff link
-			$image = '<img'.t3lib_iconWorks::skinImg('','gfx/button_top_right.gif').' align="top" alt="'.$LANG->getLL('sumUpChanges',1).'" title="'.$LANG->getLL('sumUpChanges',1).'" />';
+			$image = t3lib_iconWorks::getSpriteIcon('actions-go-forward', array('title' => $LANG->getLL('sumUpChanges', TRUE)));
 			$singleLine[] = '<span>'.$this->linkPage($image,array('diff' => $sysLogUid)).'</span>';	// remove first link
 
 			$singleLine[] = htmlspecialchars(t3lib_BEfunc::datetime($entry['tstamp']));	// add time
@@ -461,7 +461,7 @@ class recordHistory {
 			</table>';
 
 		if ($this->lastSyslogId)	{
-			$theCode .= '<br />' .  $this->linkPage('<img'.t3lib_iconWorks::skinImg('','gfx/group_tobottom.gif').' alt="'.$LANG->getLL('fullView',1).'" title="'.$LANG->getLL('fullView',1).'" />',array('diff' => ''));
+			$theCode .= '<br />' .  $this->linkPage(t3lib_iconWorks::getSpriteIcon('actions-move-to-bottom', array('title' => $LANG->getLL('fullView', TRUE))), array('diff' => ''));
 		}
 
 			// Add message about the difference view.

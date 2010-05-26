@@ -302,8 +302,8 @@ class SC_db_new {
 		if (!$this->pagesOnly)	{	// Regular new element:
 				// New page
 			if ($this->showNewRecLink('pages'))	{
-				$buttons['new_page'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => '1'))) . '">' .
-					'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_page.gif') . ' alt="" />' .
+				$buttons['new_page'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-page-new') .
 					'</a>';
 			}
 				// CSH
@@ -315,22 +315,22 @@ class SC_db_new {
 
 			// Back
 		if ($this->R_URI) {
-			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack">' .
-				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/goback.gif') . ' alt="" />' .
+			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', 1) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-go-back') .
 				'</a>';
 		}
 
 		if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 				// View
-			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '">' .
-				'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/zoom.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '" alt="" />' .
+			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				'</a>';
 
 				// Record list
 			if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
 				$href = $this->backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
-					'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
+				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
 					'</a>';
 			}
 		}
@@ -381,7 +381,7 @@ class SC_db_new {
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
 		$pageIcon = t3lib_iconWorks::getIconImage($table, array(), $this->doc->backPath, '');
-		$newPageIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_page.gif', 'width="13" height="12"') . ' alt="" />';
+		$newPageIcon = t3lib_iconWorks::getSpriteIcon('actions-page-new');
 		$rowContent = $firstLevel . $newPageIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewPage') . '</strong>';
 
 			// New pages INSIDE this pages
@@ -441,7 +441,7 @@ class SC_db_new {
 
 			// New tables (but not pages) INSIDE this pages
 		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
-		$newContentIcon = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/new_record.gif', 'width="16" height="12"') . ' alt="" />';
+		$newContentIcon = t3lib_iconWorks::getSpriteIcon('actions-document-new');
 		if ($this->newContentInto)	{
 			if (is_array($GLOBALS['TCA']))	{
 				$groupName = '';

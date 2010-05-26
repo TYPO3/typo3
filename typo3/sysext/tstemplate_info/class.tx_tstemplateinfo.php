@@ -64,7 +64,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 */
 	function tableRow($label, $data, $field)	{
 		$ret = '<tr><td class="bgColor4" width="1%">';
-		$ret.= '<a href="index.php?id='.$this->pObj->id.'&e['.$field.']=1"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif').' width=11 height=12 hspace=3 border=0 title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', true) . '"></a>';
+		$ret.= '<a href="index.php?id='.$this->pObj->id.'&e['.$field.']=1">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array("title"=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', true))) . '</a>';
 		$ret.= '</td><td class="bgColor4" width="1%"><b>'.$label.'&nbsp;&nbsp;</b></td><td class="bgColor4" width="99%">'.$data.'&nbsp;</td></tr>';
 		return $ret;
 	}
@@ -89,7 +89,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$functions.= '<td'.$bgcol.' nowrap>';
 				$fI = t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions,$fI['fileext']))	{
-					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'"><img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif').' width=11 height=12 hspace=3 border=0 title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', true) . '"></a>';
+					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', true))) . '</a>';
 				}
 				$functions.= '</td>';
 			}
@@ -339,7 +339,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			}
 
 			$theOutput.= $this->pObj->doc->spacer(5);
-			$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation'), '<img '.t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)).' align="top" /> <b>'.htmlspecialchars($tplRow['title']).'</b>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
+			$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation'), t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow).'<b>'.htmlspecialchars($tplRow['title']).'</b>'.htmlspecialchars(trim($tplRow['sitetitle'])?' - ('.$tplRow['sitetitle'].')':''), 0, 1);
 			if ($manyTemplatesMenu)	{
 				$theOutput.= $this->pObj->doc->section('', $manyTemplatesMenu);
 				$theOutput.= $this->pObj->doc->divider(5);
@@ -451,7 +451,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						'formName' => 'editForm',
 						'itemName' => 'data[config]',
 					);
-					$outCode.= '<a href="#" onClick="vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('', array('P' => $params)).'\',\'popUp'.$md5ID.'\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img '.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/wizard_tsconfig.gif').' width="22" height="27" border="0" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef', true) . '"></a>';
+					$outCode.= '<a href="#" onClick="vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('', array('P' => $params)).'\',\'popUp'.$md5ID.'\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open', array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef', true))) . '</a>';
 				}
 
 				$outCode.= '<input type="Hidden" name="e[config]" value="1">';
@@ -500,9 +500,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 				// Edit all icon:
 			$outCode.= '<br /><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') .
-				'&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong><img ' .
-				t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif') .' width="11" height="12" hspace="3" border="0" title="' .
-				$GLOBALS['LANG']->getLL('editTemplateRecord') . '">' . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
+				'&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong>' .
+				t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title'=> 
+				$GLOBALS['LANG']->getLL('editTemplateRecord') ))  . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
 			$theOutput.= $this->pObj->doc->spacer(25);
 			$theOutput.= $this->pObj->doc->section('', $outCode);
 

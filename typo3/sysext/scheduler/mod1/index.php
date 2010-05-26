@@ -497,7 +497,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				$table[$tr][] = $classInfo['extension'];
 				$table[$tr][] = $classInfo['description'];
 				$link = $GLOBALS['MCONF']['_'] . '&SET[function]=list&CMD=add&tx_scheduler[class]=' . $class;
-				$table[$tr][] = '<a href="' . htmlspecialchars($link) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/new_el.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '" /></a>';
+				$table[$tr][] = '<a href="' . htmlspecialchars($link) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:new', TRUE) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-new') . '</a>';
 				$tr++;
 			}
 
@@ -1000,7 +1000,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$tr = 0;
 
 				// Header row
-			$table[$tr][] = '<a href="#" onclick="toggleCheckboxes();" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('label.checkAll')) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/clip_select.gif') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('label.checkAll')) . '" /></a>';
+			$table[$tr][] = '<a href="#" onclick="toggleCheckboxes();" title="' . $GLOBALS['LANG']->getLL('label.checkAll', TRUE) . '">' . t3lib_iconWorks::getSpriteIcon('actions-clip-select') . '</a>';
 			$table[$tr][] = '&nbsp;';
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.id');
 			$table[$tr][] = $GLOBALS['LANG']->getLL('task');
@@ -1014,9 +1014,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				// Loop on all tasks
 			while (($schedulerRecord = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 					// Define action icons
-				$editAction = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '" /></a> ';
-				$deleteAction = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(\'' . htmlspecialchars($GLOBALS['LANG']->getLL('msg.delete')) . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/garbage.gif') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '" /></a>';
-				$stopAction = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid']) . '" onclick="return confirm(\'' . htmlspecialchars($GLOBALS['LANG']->getLL('msg.stop')) . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('scheduler') . 'res/gfx/stop.png') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '" /></a>';
+				$editAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=edit&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a>';
+				$deleteAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=delete&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.delete') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:delete', TRUE) . '">' . t3lib_iconWorks::getSpriteIcon('actions-edit-delete') . '</a>';
+				$stopAction = '<a href="' . $GLOBALS['MCONF']['_'] . '&CMD=stop&tx_scheduler[uid]=' . $schedulerRecord['uid'] . '" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('msg.stop') . '\');" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop', TRUE) . '"><img ' . t3lib_iconWorks::skinImg($this->backPath, t3lib_extMgm::extRelPath('scheduler') . '/res/gfx/stop.png') . ' alt="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:stop') . '" /></a>';
 					// Define some default values
 				$lastExecution = '-';
 				$isRunning = false;
@@ -1541,9 +1541,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		);
 
 		if (empty($this->CMD) || $this->CMD == 'list') {
-			$buttons['reload'] = '<a href="' . htmlspecialchars($GLOBALS['MCONF']['_']) . '">' .
-				'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '" alt="" />' .
-				'</a>';
+			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '>' .
+			  t3lib_iconWorks::getSpriteIcon('actions-system-refresh') . 
+		  '</a>';
 		}
 
 		return $buttons;

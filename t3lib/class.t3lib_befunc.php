@@ -2483,7 +2483,7 @@ final class t3lib_BEfunc {
 				$text = t3lib_BEfunc::helpText($table, $field, $BACK_PATH, '');
 				$text = '<span class="typo3-csh-inline">'.$GLOBALS['LANG']->hscAndCharConv($text, false).'</span>';
 			}
-			return '<a class="typo3-csh-link" href="#" onclick="'.htmlspecialchars($onClick).'"><img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/helpbubble.gif', 'width="14" height="14"').' hspace="2" border="0" class="typo3-csh-icon" alt="" />'.$text.'</a>';
+			return '<a class="typo3-csh-link" href="#" onclick="'.htmlspecialchars($onClick).'">' . t3lib_iconWorks::getSpriteIcon('actions-system-help-open', array('class' => 'typo3-csh-icon')) . $text.'</a>';
 		}
 	}
 
@@ -2509,7 +2509,7 @@ final class t3lib_BEfunc {
 			$data = $TCA_DESCR[$table]['columns'][$field];
 				// add see also arrow
 			if ($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax']) {
-				$arrow = '<img'.t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/rel_db.gif', 'width="13" height="12"').' class="absmiddle" alt="" />';
+				$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
 			}
 				// add description text
 			if ($data['description'] || $arrow) {

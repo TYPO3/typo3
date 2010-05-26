@@ -660,13 +660,13 @@ class t3lib_fullsearch {
 		$params = '&edit['.$table.']['.$row['uid'].']=edit';
 		$out.='<td nowrap>';
 		if (!$row['deleted'])	{
-			$out .= '<a href="#" onClick="top.launchView(\''.$table.'\','.$row['uid'].',\''.$GLOBALS['BACK_PATH'].'\');return false;"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' alt="" /></a>';
-			$out .= '<a href="#" onClick="'.t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], t3lib_div::getIndpEnv('REQUEST_URI').t3lib_div::implodeArrayForUrl('SET', (array)t3lib_div::_POST('SET'))).'"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"') . ' border="0" alt=""></a>';
+			$out .= '<a href="#" onClick="top.launchView(\''.$table.'\','.$row['uid'].',\''.$GLOBALS['BACK_PATH'].'\');return false;">' . t3lib_iconWorks::getSpriteIcon('actions-system-search') . '</a>';
+			$out .= '<a href="#" onClick="'.t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], t3lib_div::getIndpEnv('REQUEST_URI').t3lib_div::implodeArrayForUrl('SET', (array)t3lib_div::_POST('SET'))).'">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') .  '</a>';
 		} else {
 			$out.= '<a href="'.t3lib_div::linkThisUrl($GLOBALS['BACK_PATH'].'tce_db.php', array('cmd['.$table.']['.$row['uid'].'][undelete]' => '1', 'redirect' => t3lib_div::linkThisScript(array()))).'">';
-			$out.= '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undelete.gif', 'width="13" height="12"') . ' border="0" alt="undelete" only></a>';
+			$out.= t3lib_iconWorks::getSpriteIcon('action-undelete-button', array('title' => 'undelete only')) . '</a>';
 			$out.= '<a href="'.t3lib_div::linkThisUrl($GLOBALS['BACK_PATH'].'tce_db.php', array('cmd['.$table.']['.$row['uid'].'][undelete]' => '1', 'redirect' => t3lib_div::linkThisUrl('alt_doc.php', array('edit['.$table.']['.$row['uid'].']' => 'edit', 'returnUrl' => t3lib_div::linkThisScript(array()))))).'">';
-			$out.= '<img '. t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/undelete_and_edit.gif', 'width="13" height="12"') . ' border="0" alt="undelete and edit">';
+			$out.= t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => 'undelete and edit')) . '</a>';
 		}
 		$_params = array($table=>$row);
 		if (is_array($this->hookArray['additionalButtons']))	{
