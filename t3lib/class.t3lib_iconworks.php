@@ -340,7 +340,7 @@ final class t3lib_iconWorks	{
 	public static function skinImg($backPath, $src, $wHattribs = '', $outputMode = 0)	{
 
 		static $cachedSkinImages = array();
-		
+
 		$imageId = md5($backPath . $src . $wHattribs . $outputMode);
 
 		if (isset($cachedSkinImages[$imageId])) {
@@ -649,7 +649,7 @@ final class t3lib_iconWorks	{
 
 			// check if whished icon is available
 		$iconName = (in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']) || $iconName == 'empty-empty' ? $iconName : 'status-status-icon-missing');
-			
+
 			// create the CSS class
 		$options['class'] = self::getSpriteIconClasses($iconName) . (isset($options['class']) ? ' ' . $options['class'] : '');
 
@@ -795,7 +795,7 @@ final class t3lib_iconWorks	{
 				} else {
 					$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
 				}
-				
+
 			} else {
 				if (in_array('tcarecords-' . $table . '-' . $recordType, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
 					$iconName = 'tcarecords-' . $table . '-' . $recordType;
@@ -951,4 +951,5 @@ final class t3lib_iconWorks	{
 	}
 
 }
+
 ?>
