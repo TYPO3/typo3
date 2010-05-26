@@ -777,7 +777,11 @@ final class t3lib_iconWorks	{
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
 			$column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
 
-			$recordType = $row[$column];
+			if(isset($row[$column])) {
+				$recordType = $row[$column];
+			} else {
+				$recordType = 'default';
+			}
 
 				// workaround to give nav_hide pages a complete different icon
 				// although it's not a separate doctype
@@ -785,17 +789,28 @@ final class t3lib_iconWorks	{
 				$recordType .= '-hideinmenu';
 			}
 
-			$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType];
-			if (!$iconName && in_array('tcarecords-' . $table . '-' . $recordType, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
-				$iconName = 'tcarecords-' . $table . '-' . $recordType;
+			if(is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+				if(isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType])) {
+					$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType];
+				} else {
+					$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+				}
+				
+			} else {
+				if (in_array('tcarecords-' . $table . '-' . $recordType, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+					$iconName = 'tcarecords-' . $table . '-' . $recordType;
+				} else {
+					$iconName = $iconName = 'tcarecords-' . $table . '-default';
+				}
 			}
 		} else {
-			$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][0];
-			if (!$iconName && in_array('tcarecords-' . $table . '-default', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+			if(is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+				$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+			} else if (in_array('tcarecords-' . $table . '-default', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
 				$iconName = 'tcarecords-' . $table . '-default';
 			}
 		}
-		return self::getSpriteIconClasses(($iconName ? $iconName : 'status-status-icon-missing'));
+		return self::getSpriteIconClasses(($iconName != '' ? $iconName : 'status-status-icon-missing'));
 	}
 
 
