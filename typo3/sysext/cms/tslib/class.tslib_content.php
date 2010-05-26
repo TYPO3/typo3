@@ -314,6 +314,7 @@ class tslib_cObj {
 	 * @see init()
 	 */
 	var $data = Array();
+	protected $table = '';
 	var $oldData = Array();				// Used for backup...
 	var $alternativeData ='';			// If this is set with an array before stdWrap, it's used instead of $this->data in the data-property in stdWrap
 	var $parameters = Array();			// Used by the parseFunc function and is loaded with tag-parameters when parsing tags.
@@ -376,6 +377,7 @@ class tslib_cObj {
 	function start($data,$table='')	{
 		global $TYPO3_CONF_VARS;
 		$this->data = $data;
+		$this->table = $table;
 		$this->currentRecord = $table ? $table.':'.$this->data['uid'] : '';
 		$this->parameters = Array();
 		if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'])) {
@@ -7651,7 +7653,7 @@ class tslib_cObj {
 				}
 			}
 		}
-		
+
 			// Construct WHERE clause:
 		$conf['pidInList'] = trim($this->stdWrap($conf['pidInList'],$conf['pidInList.']));
 
@@ -7727,7 +7729,7 @@ class tslib_cObj {
 				// enabled properties
 			foreach ($queryMarkers as $marker => $markerValue) {
 				foreach ($queryParts as $queryPartKey => &$queryPartValue) {
-					$queryPartValue = str_replace('###' . $marker . '###', 
+					$queryPartValue = str_replace('###' . $marker . '###',
 							$markerValue,
 							$queryPartValue);
 				}
@@ -7946,11 +7948,11 @@ class tslib_cObj {
 								} else {
 										// if quoted, remove quotes before
 										// escaping.
-									if (preg_match('/^\'([^\']*)\'$/', 
+									if (preg_match('/^\'([^\']*)\'$/',
 											$listValue,
 											$matches)) {
 										$listValue = $matches[1];
-									} elseif (preg_match('/^\"([^\"]*)\"$/', 
+									} elseif (preg_match('/^\"([^\"]*)\"$/',
 											$listValue,
 											$matches)) {
 										$listValue = $matches[1];
