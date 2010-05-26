@@ -156,6 +156,7 @@ return array(
 	'tslib_menu_filterMenuPagesHook' => PATH_tslib . 'interfaces/interface.tslib_menu_filterMenuPagesHook.php',
 	'tslib_content_getdatahook' => PATH_tslib . 'interfaces/interface.tslib_content_getdatahook.php',
 	'tslib_cobj_getimgresourcehook' => PATH_tslib . 'interfaces/interface.tslib_content_getimgresourcehook.php',
+	'tslib_content_postinithook' => PATH_tslib . 'interfaces/interface.tslib_content_postinithook.php',
 	'tslib_content_stdwraphook' => PATH_tslib . 'interfaces/interface.tslib_content_stdwraphook.php',
 	'user_various' => PATH_tslib . 'media/scripts/example_callfunction.php',
 	'tslib_gmenu_foldout' => PATH_tslib . 'media/scripts/gmenu_foldout.php',

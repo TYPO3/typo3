@@ -1,6 +1,7 @@
 2010-05-26  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #14463: Add post initialization hook for tslib_cObj
+	* Follow-up to #14463: Added the new tslib_content_PostInitHook interface to core_autoload.php
 	* Fixed issue #14480: tslib_cObj->start() sets a member "data", but not "table"
 
 2010-05-26  Steffen Kamper  <info@sk-typo3.de>
