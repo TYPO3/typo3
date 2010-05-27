@@ -1,5 +1,6 @@
 2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #14456: SQL parser doesn't accept ALTER TABLE statement without CHANGE, DROP or ADD keyword
 	* Fixed bug #14457: 1-2-3 Install Process breaks with PostgreSQL
 
 2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
