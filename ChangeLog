@@ -1,3 +1,7 @@
+2010-05-27  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #14388: TypoScript templates containing a "$1" become corrupted
+
 2010-05-22  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #12923: Javascript error in tmenu_layers.php & gmenu_layers.php (Thanks to Klaus Goessl)
