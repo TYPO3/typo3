@@ -1,3 +1,7 @@
+2010-05-27  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #14388: TypoScript templates containing a "$1" become corrupted
+
 2010-05-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14333: htmlArea RTE: justify after CTRL+A not working in Firefox

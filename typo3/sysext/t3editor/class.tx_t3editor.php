@@ -328,7 +328,7 @@ class tx_t3editor {
 			$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
 						'data[constants]',
 						'fixed-font enable-tab',
-						t3lib_div::formatForTextarea($parameters['tplRow']['constants']),
+						'$1',
 						$attributes,
 						$title,
 						array(
@@ -357,7 +357,7 @@ class tx_t3editor {
 			$outCode = $GLOBALS['T3_VAR']['t3editorObj']->getCodeEditor(
 						'data[config]',
 						'fixed-font enable-tab',
-						t3lib_div::formatForTextarea($parameters['tplRow']['config']),
+						'$1',
 						$attributes,
 						$title,
 						array(
