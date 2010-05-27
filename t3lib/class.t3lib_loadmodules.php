@@ -133,6 +133,10 @@ class t3lib_loadModules {
 			//
 		$this->absPathArray = $modulesArray['_PATHS'];
 		unset($modulesArray['_PATHS']);
+			// unset the array for calling external backend module dispatchers in typo3/mod.php 
+		unset($modulesArray['_dispatcher']);
+			// unset the array for calling backend modules based on external backend module dispatchers in typo3/mod.php 
+		unset($modulesArray['_configuration']);
 
 			/*
 				With the above data for modules the result of this function call will be:
@@ -389,8 +393,8 @@ class t3lib_loadModules {
 		}
 
 			// Check for own way of configuring module
-		if (is_array($GLOBALS['TBE_MODULES'][$name]['configureModuleFunction'])) {
-			$obj = $GLOBALS['TBE_MODULES'][$name]['configureModuleFunction'];
+		if (is_array($GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'])) {
+			$obj = $GLOBALS['TBE_MODULES']['_configuration'][$name]['configureModuleFunction'];
 			if (is_callable($obj)) {
 				return call_user_func($obj, $name, $fullpath);
 			}

@@ -1,3 +1,7 @@
+2010-05-27  Jochen Rau <jochen.rau@typoplanet.de>
+
+	* Fixed bug #13604: PHP Warning from t3lib_loadmodules after installing extbase, because $TBE_MODULES['_dispatcher'] is not unset (thanks to Marc Bastian Heinrichs)
+
 2010-05-27  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #14388: TypoScript templates containing a "$1" become corrupted
