@@ -1,3 +1,7 @@
+2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13934: Side-effect of substr in t3lib_cs (thanks to Rens Admiraal)
+
 2010-05-27  Jochen Rau <jochen.rau@typoplanet.de>
 
 	* Fixed bug #13604: PHP Warning from t3lib_loadmodules after installing extbase, because $TBE_MODULES['_dispatcher'] is not unset (thanks to Marc Bastian Heinrichs)
