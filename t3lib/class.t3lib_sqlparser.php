@@ -553,10 +553,14 @@ class t3lib_sqlparser {
 		$result['type'] = 'ALTERTABLE';
 
 			// Get table:
-		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)[[:space:]]+');
+		$hasBackquote = ($this->nextPart($parseString, '^(`)') === '`');
+		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)' . ($hasBackquote ? '`' : '') . '[[:space:]]+');
+		if ($hasBackquote && $this->nextPart($parseString, '^(`)') !== '`') {
+			return $this->parseError('No end backquote found!', $parseString);
+		}
 
 		if ($result['TABLE'])	{
-			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+UNIQUE|DROP|ADD|RENAME|ENGINE)([[:space:]]+|\(|=)'))	{
+			if ($result['action'] = $this->nextPart($parseString, '^(CHANGE|DROP[[:space:]]+KEY|DROP[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+KEY|ADD[[:space:]]+PRIMARY[[:space:]]+KEY|ADD[[:space:]]+UNIQUE|DROP|ADD|RENAME|DEFAULT[[:space:]]+CHARACTER[[:space:]]+SET|ENGINE)([[:space:]]+|\(|=)'))	{
 				$actionKey = strtoupper(str_replace(array(' ',TAB,CR,LF),'',$result['action']));
 
 					// Getting field:
@@ -592,6 +596,9 @@ class t3lib_sqlparser {
 						break;
 						case 'DROPPRIMARYKEY':
 							// ??? todo!
+						break;
+						case 'DEFAULTCHARACTERSET':
+							$result['charset'] = $fieldKey;
 						break;
 						case 'ENGINE':
 							$result['engine'] = $this->nextPart($parseString, '^=[[:space:]]*([[:alnum:]]+)[[:space:]]+', TRUE);
@@ -1730,6 +1737,9 @@ class t3lib_sqlparser {
 			case 'ADDPRIMARYKEY':
 			case 'ADDUNIQUE':
 				$query.=' ('.implode(',',$components['fields']).')';
+			break;
+			case 'DEFAULTCHARACTERSET':
+				$query .= $components['charset'];
 			break;
 			case 'ENGINE':
 				$query .= '= ' . $components['engine'];
