@@ -1,6 +1,7 @@
 2010-05-27  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Follow-up to bug #14486: Sprite icons not shown in Safari and IE6 (thanks to Steffen Ritter)
+	* Follow-up to bug #14486: Fix transparency on frontend and backend user icons (thanks to Steffen Gebert and Steffen Ritter)
 
 2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
 
