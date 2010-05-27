@@ -1,6 +1,7 @@
 2010-05-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14489: htmlArea RTE: color dialogues do not show all configured colors
+	* Fixed bug #14491: htmlArea RTE: disableColorPicker not always honoured
 
 2010-05-25  Stanislas Rolland  <typo3@sjbr.ca>
 

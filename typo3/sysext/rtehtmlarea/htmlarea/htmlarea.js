@@ -3597,20 +3597,24 @@ Ext.ux.menu.HTMLAreaColorMenu = Ext.extend(Ext.menu.Menu, {
 					)
 				}
 			});
+		}
+		if (this.colors.length) {
+			paletteItems.push({
+				xtype: 'container',
+				layout: 'anchor',
+				items: {
+					xtype: 'colorpalette',
+					itemId: 'color-palette',
+					cls: 'color-palette',
+					colors: this.colors,
+					value: this.value,
+					allowReselect: true
+				}
+			});
+		}
+		if (this.colorsConfiguration && this.colors.length) {
 			width = 350;
 		}
-		paletteItems.push({
-			xtype: 'container',
-			layout: 'anchor',
-			items: {
-				xtype: 'colorpalette',
-				itemId: 'color-palette',
-				cls: 'color-palette',
-				colors: this.colors,
-				value: this.value,
-				allowReselect: true
-			}
-		});
 		Ext.apply(this, {
 			layout: 'menu',
 			width: width,
@@ -3644,8 +3648,8 @@ Ext.reg('htmlareacolormenu', Ext.ux.menu.HTMLAreaColorMenu);
  * Based on http://www.extjs.com/forum/showthread.php?t=89312
  */
 Ext.ux.form.ColorPaletteField = Ext.extend(Ext.form.TriggerField, {
-	triggerClass : 'x-form-color-trigger',
-	colors : [
+	triggerClass: 'x-form-color-trigger',
+	defaultColors: [
 		'000000', '222222', '444444', '666666', '999999', 'BBBBBB', 'DDDDDD', 'FFFFFF',
 		'660000', '663300', '996633', '003300', '003399', '000066', '330066', '660066',
 		'990000', '993300', 'CC9900', '006600', '0033FF', '000099', '660099', '990066',
@@ -3663,7 +3667,10 @@ Ext.ux.form.ColorPaletteField = Ext.extend(Ext.form.TriggerField, {
 	editable: true,
 	initComponent: function () {
 		Ext.ux.form.ColorPaletteField.superclass.initComponent.call(this);
-		this.addEvents(            
+		if (!this.colors) {
+			this.colors = this.defaultColors;
+		}
+		this.addEvents(
 			'select'
 		);
 	},

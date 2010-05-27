@@ -2270,6 +2270,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			xtype: 'colorpalettefield',
 			fieldLabel: this.localize('Color:'),
 			itemId: 'f_st_borderColor',
+			colors: this.editorConfiguration.disableColorPicker ? [] : null,
 			colorsConfiguration: this.editorConfiguration.colors,
 			value: HTMLArea.util.Color.colorToHex(element && element.style.borderColor ? element.style.borderColor : ((this.properties.borderColor && this.properties.borderColor.defaultValue) ? this.properties.borderColor.defaultValue : '')).substr(1, 6),
 			helpTitle: this.localize('Border color'),
@@ -2394,6 +2395,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			xtype: 'colorpalettefield',
 			fieldLabel: this.localize('FG Color:'),
 			itemId: 'f_st_color',
+			colors: this.editorConfiguration.disableColorPicker ? [] : null,
 			colorsConfiguration: this.editorConfiguration.colors,
 			value: HTMLArea.util.Color.colorToHex(element && element.style.color ? element.style.color : ((this.properties.color && this.properties.color.defaultValue) ? this.properties.color.defaultValue : '')).substr(1, 6)
 		});
@@ -2402,6 +2404,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			xtype: 'colorpalettefield',
 			fieldLabel: this.localize('Background:'),
 			itemId: 'f_st_backgroundColor',
+			colors: this.editorConfiguration.disableColorPicker ? [] : null,
 			colorsConfiguration: this.editorConfiguration.colors,
 			value: HTMLArea.util.Color.colorToHex(element && element.style.backgroundColor ? element.style.backgroundColor : ((this.properties.backgroundColor && this.properties.backgroundColor.defaultValue) ? this.properties.backgroundColor.defaultValue : '')).substr(1, 6)
 		});

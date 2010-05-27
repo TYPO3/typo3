@@ -213,6 +213,7 @@ HTMLArea.QuickTag = HTMLArea.Plugin.extend({
 				xtype: 'colorpalettefield',
 				fieldLabel: this.localize('Colors'),
 				itemId: 'colors',
+				colors: this.editorConfiguration.disableColorPicker ? [] : null,
 				colorsConfiguration: this.editorConfiguration.colors,
 				hidden: true,
 				listeners: {
