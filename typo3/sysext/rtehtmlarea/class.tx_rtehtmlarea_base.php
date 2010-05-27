@@ -210,7 +210,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			 * =======================================
 			 */
 				// Get the path to this extension:
-			$this->extHttpPath = t3lib_extMgm::extRelPath($this->ID);
+			$this->extHttpPath = $this->TCEform->backPath . t3lib_extMgm::extRelPath($this->ID);
 				// Get the site URL
 			$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 				// Get the host URL
@@ -441,7 +441,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$key = $this->registeredPlugins[$pluginId]->getExtensionKey();
 					$this->addStyleSheet(
 						'rtehtmlarea-plugin-' . $pluginId . '-skin',
-						($this->is_FE() ? t3lib_extMgm::siteRelPath($key) : t3lib_extMgm::extRelPath($key)) . $pathToSkin
+						($this->is_FE() ? t3lib_extMgm::siteRelPath($key) : $this->TCEform->backPath . t3lib_extMgm::extRelPath($key)) . $pathToSkin
 						);
 				}
 			}
@@ -1110,7 +1110,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		if ($this->is_FE()) {
 			return ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
 		} else {
-			return t3lib_div::createVersionNumberedFilename('../' . $relativeFilename);
+			return t3lib_div::createVersionNumberedFilename('../' . $this->TCEform->backPath . $relativeFilename);
 		}
 	}
 	/**
@@ -1147,9 +1147,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		} else {
 			if ($compress) {
 				$compressor = t3lib_div::makeInstance('t3lib_compressor');
-				$filename = $compressor->compressJsFile('../' . $relativeFilename);
+				$filename = $compressor->compressJsFile('../' . $this->TCEform->backPath  . $relativeFilename);
 			} else {
-				$filename = t3lib_div::createVersionNumberedFilename('../' . $relativeFilename);
+				$filename = t3lib_div::createVersionNumberedFilename('../' . $this->TCEform->backPath  . $relativeFilename);
 			}
 		}
 		return $filename;
@@ -1305,12 +1305,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			list($extKey,$local) = explode('/',substr($filename,4),2);
 			$newFilename = '';
 			if (strcmp($extKey,'') &&  t3lib_extMgm::isLoaded($extKey) && strcmp($local,'')) {
-				$newFilename = ($this->is_FE() ? t3lib_extMgm::siteRelPath($extKey) : t3lib_extMgm::extRelPath($extKey)) . $local;
+				$newFilename = ($this->is_FE() ? t3lib_extMgm::siteRelPath($extKey) : $this->TCEform->backPath . t3lib_extMgm::extRelPath($extKey)) . $local;
 			}
 		} elseif (substr($filename,0,1) != '/') {
-			$newFilename = ($this->is_FE() ? '' : '../') . $filename;
+			$newFilename = ($this->is_FE() ? '' : '../' . $this->TCEform->backPath) . $filename;
 		} else {
-			$newFilename = ($this->is_FE() ? '' : '../') . substr($filename, 1);
+			$newFilename = ($this->is_FE() ? '' : '../' . $this->TCEform->backPath) . substr($filename, 1);
 		}
 		return  $newFilename;
 	}
