@@ -321,8 +321,8 @@ class Tx_Extbase_Dispatcher {
 	 * @return void
 	 */
 	public function callModule($module) {
-		if (isset($GLOBALS['TBE_MODULES'][$module])) {
-			$config = $GLOBALS['TBE_MODULES'][$module];
+		if (isset($GLOBALS['TBE_MODULES']['_configuration'][$module])) {
+			$config = $GLOBALS['TBE_MODULES']['_configuration'][$module];
 
 			// Check permissions and exit if the user has no permission for entry
 			$GLOBALS['BE_USER']->modAccess($config, TRUE);
@@ -355,7 +355,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return array The controller/action pair to use for current call
 	 */
 	protected function resolveControllerAction($module) {
-		$configuration = $GLOBALS['TBE_MODULES'][$module];
+		$configuration = $GLOBALS['TBE_MODULES']['_configuration'][$module];
 		$fallbackControllerAction = $this->getFallbackControllerAction($configuration);
 
 			// Extract dispatcher settings from request
@@ -468,7 +468,7 @@ class Tx_Extbase_Dispatcher {
 			$controllerAction['actionName'] = $matches[2];
 		} else {
 				// Support for external SCbase module function rendering
-			$functions = $GLOBALS['TBE_MODULES_EXT'][$module]['MOD_MENU']['function'];
+			$functions = $GLOBALS['TBE_MODULES_EXT']['_configuration'][$module]['MOD_MENU']['function'];
 			if (isset($functions[$moduleFunction])) {
 				$controllerAction['controllerName'] = $defaultController;
 				$controllerAction['actionName'] = 'extObj';
@@ -488,7 +488,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return string The module rendered view
 	 */
 	protected function transfer($module, $controller, $action) {
-		$config = $GLOBALS['TBE_MODULES'][$module];
+		$config = $GLOBALS['TBE_MODULES']['_configuration'][$module];
 
 		$extbaseConfiguration = array(
 			'userFunc' => 'tx_extbase_dispatcher->dispatch',

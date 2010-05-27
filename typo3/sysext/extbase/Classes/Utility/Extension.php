@@ -187,7 +187,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 */
 	public function configureModule($key, $fullpath, array $MCONF = array(), array $MLANG = array()) {
 		$path = preg_replace('/\/[^\/.]+\/\.\.\//', '/', $fullpath); // because 'path/../path' does not work
-		$config = $GLOBALS['TBE_MODULES'][$key]['config'];
+		$config = $GLOBALS['TBE_MODULES']['_configuration'][$key]['config'];
 		define('TYPO3_MOD_PATH', $config['extRelPath']);
 
 			// Fill $MCONF
@@ -308,8 +308,8 @@ tt_content.list.20.' . $pluginSignature . ' {
 			'controllerActions' => $controllerActions,
 			'config' => $config,
 		);
-		$GLOBALS['TBE_MODULES'][$key] = $moduleConfig;
-		$GLOBALS['TBE_MODULES'][$key]['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
+		$GLOBALS['TBE_MODULES']['_configuration'][$key] = $moduleConfig;
+		$GLOBALS['TBE_MODULES']['_configuration'][$key]['configureModuleFunction'] = array('Tx_Extbase_Utility_Extension', 'configureModule');
 
 		t3lib_extMgm::addModule($main, $sub, $position);
 	}
