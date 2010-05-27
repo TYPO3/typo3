@@ -95,7 +95,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 				$outCode = $t3editor->getCodeEditor(
 					'data[' . $type . ']',
 					'fixed-font enable-tab',
-					t3lib_div::formatForTextarea($parameters['tplRow'][$type]),
+					'$1', // will be replaced with the actual code later, see preg_replace below
 					$attributes,
 					$title,
 					array(
