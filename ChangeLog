@@ -1,3 +1,7 @@
+2010-05-27  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Follow-up to bug #14486: Sprite icons not shown in Safari and IE6 (thanks to Steffen Ritter)
+
 2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14496: SQL parser does not handle ALTER TABLE with character set operation
@@ -28,7 +32,7 @@
 
 	* Fixed bug #14486: Added missing icons for the new iconset (thanks to Steffen Ritter)
 	* Added feature #14465: Make use of the new sprite API through the TYPO3 core (thanks to Steffen Ritter)
-	* Followup to feature #14465: Remove extra semicolon at end of line
+	* Follow-up to feature #14465: Remove extra semicolon at end of line
 
 2010-05-26  Susanne Moog  <typo3@susanne-moog.de>
 

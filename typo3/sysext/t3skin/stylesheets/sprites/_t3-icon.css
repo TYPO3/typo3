@@ -1,17 +1,7 @@
-.t3-icon {
-	padding-left: 20px;
-	background: url('../../images/sprites/t3-icon-actions-edit.png') no-repeat -2px -3px;
-	position: relative;
-}
-
 span.t3-icon {
-	display: inline;
-	height: 18px;
-	overflow: hidden;
-	padding-bottom: 5px;
-	padding-left: 16px;
+	margin-right: 2px;
+	margin-top: 2px;
 }
-
 span.t3-icon-overlay {
 	display: block;
 	width: 16px;
@@ -21,4 +11,7 @@ span.t3-icon-overlay {
 	top: 0;
 	text-decoration: none;
 	padding: 0;
+}
+.t3-icon-empty {
+	background-image: none;
 }
