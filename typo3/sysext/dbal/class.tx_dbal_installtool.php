@@ -53,11 +53,22 @@ class tx_dbal_installtool {
 	protected $availableDrivers;
 
 	/**
+	 * @var string
+	 */
+	protected $driver;
+
+	/**
 	 * Default constructor.
 	 */
 	public function __construct() {
 		$this->supportedDrivers = $this->getSupportedDrivers();
 		$this->availableDrivers = $this->getAvailableDrivers();
+
+		$configDriver =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'];
+		$this->driver = t3lib_div::_GET('driver');
+		if (!$this->driver && $configDriver) {
+			$this->driver = $configDriver;
+		}
 	}
 
 	/**
@@ -71,7 +82,7 @@ class tx_dbal_installtool {
 	public function executeStepOutput(array &$markers, $step, tx_install $instObj) {
 		switch ($step) {
 			case 2:
-				$this->createConnectionForm(t3lib_div::_GET('driver'), $markers, $instObj);
+				$this->createConnectionForm($markers, $instObj);
 				break;
 			case 3:
 				$this->createDatabaseForm($markers, $instObj);
@@ -92,6 +103,10 @@ class tx_dbal_installtool {
 			case 3:
 			case 4:
 				$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
+				if (!$driver && $this->driver) {
+					// Driver was already configured
+					break;
+				}
 				$driverConfig = '';
 				switch ($driver) {
 					case 'oci8':
@@ -123,15 +138,14 @@ class tx_dbal_installtool {
 	/**
 	 * Creates a specialized form to configure the DBMS connection.
 	 * 
-	 * @param string $driver
 	 * @param array $markers
 	 * @param tx_install $instObj
 	 * @return void
 	 */
-	protected function createConnectionForm($driver, array &$markers, tx_install $instObj) {
+	protected function createConnectionForm(array &$markers, tx_install $instObj) {
 			// Normalize current driver
-		if (!$driver) {  
-			$driver = $this->getDefaultDriver();
+		if (!$this->driver) {  
+			$this->driver = $this->getDefaultDriver();
 		}
 
 			// Get the template file
@@ -165,13 +179,13 @@ class tx_dbal_installtool {
 		);
 
 			// Get the subpart related to selected database driver
-		if ($driver === '' || $driver === 'mysql') {
+		if ($this->driver === '' || $this->driver === 'mysql') {
 			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
 				$template, '###DRIVER_MYSQL###'
 			);
 		} else {
 			$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
-				$template, '###DRIVER_' . t3lib_div::strtoupper($driver) . '###'
+				$template, '###DRIVER_' . t3lib_div::strtoupper($this->driver) . '###'
 			);
 			if ($driverOptionsSubPart === '') {
 				$driverOptionsSubPart = t3lib_parsehtml::getSubpart(
@@ -182,7 +196,7 @@ class tx_dbal_installtool {
 
 			// Define driver-specific markers
 		$driverMarkers = array();
-		switch ($driver) {
+		switch ($this->driver) {
 			case 'mssql':
 				$driverMarkers = array(
 					'labelUsername' => 'Username',
@@ -220,6 +234,19 @@ class tx_dbal_installtool {
 					'labelSID' => 'SID',
 					'labelServiceName' => 'Service Name',
 					'labelDatabase' => 'Name',
+					'database' => TYPO3_db,
+				);
+				$nextStep = $instObj->step + 2;
+				break;
+			case 'postgres':
+				$driverMarkers = array(
+					'labelUsername' => 'Username',
+					'username' => TYPO3_db_username,
+					'labelPassword' => 'Password',
+					'password' => TYPO3_db_password,
+					'labelHost' => 'Host',
+					'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
+					'labelDatabase' => 'Database',
 					'database' => TYPO3_db,
 				);
 				$nextStep = $instObj->step + 2;
@@ -276,7 +303,6 @@ class tx_dbal_installtool {
 
 			// Create the drop-down list of available drivers
 		$dropdown = '';
-		$activeDriver = t3lib_div::_GET('driver');
 		foreach ($this->availableDrivers as $abstractionLayer => $drivers) {
 			$options = array();
 			foreach ($drivers as $driver => $label) {
@@ -286,7 +312,7 @@ class tx_dbal_installtool {
 					'onclick'     => 'document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver . '\';',
 					'selected'    => '',
 				);
-				if ($driver === $activeDriver) {
+				if ($driver === $this->driver) {
 					$markers['selected'] .= ' selected="selected"';
 				}
 				$options[] = t3lib_parsehtml::substituteMarkerArray(
