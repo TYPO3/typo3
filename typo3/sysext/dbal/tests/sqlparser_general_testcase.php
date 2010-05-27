@@ -352,6 +352,21 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $alterTable[0]);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14496
+	 */
+	public function canParseAlterCharacterSetStatement() {
+		$parseString = 'ALTER TABLE `index_phash` DEFAULT CHARACTER SET utf8';
+		$components = $this->fixture->_callRef('parseALTERTABLE', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$alterTable = $this->cleanSql($this->fixture->_callRef('compileALTERTABLE', $components));
+		$expected = 'ALTER TABLE index_phash DEFAULT CHARACTER SET utf8';
+		$this->assertTrue(is_array($alterTable), $alterTable);
+		$this->assertEquals($expected, $alterTable[0]);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////
