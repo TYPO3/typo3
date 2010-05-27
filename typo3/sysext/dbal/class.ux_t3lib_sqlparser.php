@@ -301,6 +301,9 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					case 'ADDUNIQUE':
 						$query .= ' (' . implode(',', $components['fields']) . ')';
 						break;
+					case 'ENGINE':
+						// ??? todo!
+						break;
 				}
 				break;
 		}
