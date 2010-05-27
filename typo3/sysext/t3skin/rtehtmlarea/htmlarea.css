@@ -236,6 +236,9 @@
 	border-width: 1px;
 	border-color: white;
 }
+.htmlarea-custom-colors {
+	height: auto;
+}
 .htmlarea-custom-colors a {
 	border-color: transparent;
 	float: none;

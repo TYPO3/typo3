@@ -1,3 +1,7 @@
+2010-05-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14489: htmlArea RTE: color dialogues do not show all configured colors
+
 2010-05-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14333: htmlArea RTE: justify after CTRL+A not working in Firefox
