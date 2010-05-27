@@ -3,6 +3,7 @@
 	* Fixed bug #14489: htmlArea RTE: color dialogues do not show all configured colors
 	* Fixed bug #14491: htmlArea RTE: disableColorPicker not always honoured
 	* Fixed bug #14494: htmlArea RTE: backpath is not correctly set
+	* Follow-up to issue #14494: htmlArea RTE: backpath is not correctly set
 
 2010-05-25  Stanislas Rolland  <typo3@sjbr.ca>
 
