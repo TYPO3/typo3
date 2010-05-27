@@ -1,5 +1,6 @@
 2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Follow-up of bug #13670: forgotten reset/each statement caused side effect of using foreach statement
 	* Fixed bug #14456: SQL parser doesn't accept ALTER TABLE statement without CHANGE, DROP or ADD keyword
 	* Fixed bug #13934: Side-effect of substr in t3lib_cs (thanks to Rens Admiraal)
 

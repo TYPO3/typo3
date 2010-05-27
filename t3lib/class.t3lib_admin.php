@@ -494,8 +494,7 @@ class t3lib_admin {
 
 					if(t3lib_extMgm::isLoaded('dbal')) {
 						$fields = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
-						reset($fields);
-						list(,$field)=each($fieldArr);
+						$field = array_shift($fieldArr);
 						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'],$table) == 'R') ?
 						$field.'!=0' : $field.'!=\'\'';
 						foreach ($fieldArr as $field) {
