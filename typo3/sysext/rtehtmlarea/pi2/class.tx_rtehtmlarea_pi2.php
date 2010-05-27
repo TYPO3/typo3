@@ -81,7 +81,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// Get the path to this extension:
 		$this->extHttpPath = t3lib_extMgm::siteRelPath($this->ID);
 			// Get the site URL
-		$this->siteURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$this->siteURL = $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '';
 			// Get the host URL
 		$this->hostURL = '';
 			// Element ID + pid
@@ -207,14 +207,14 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			// Preloading the pageStyle and including RTE skin stylesheets
 		$this->addPageStyle();
 		$this->addSkin();
-		$pageRenderer->addCssFile($this->hostURL . '/t3lib/js/extjs/ux/resize.css');
+		$pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
 			// Loading JavaScript files and code
 		$pageRenderer->loadExtJs();
 		$pageRenderer->enableExtJSQuickTips();
 		if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
 			$pageRenderer->enableExtJsDebug();
 		}
-		$pageRenderer->addJsFile($this->hostURL . '/t3lib/js/extjs/ux/ext.resizable.js');
+		$pageRenderer->addJsFile($this->siteURL . 't3lib/js/extjs/ux/ext.resizable.js');
 		if ($this->TCEform->RTEcounter == 1) {
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 		}
@@ -271,6 +271,14 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	protected function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
 		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 		$pageRenderer->addCssFile($href, $relation, 'screen', $title);
+	}
+	/**
+	 * Return true if we are in the FE, but not in the FE editing feature of BE.
+	 *
+	 * @return boolean
+	 */
+	function is_FE() {
+		return true;
 	}
 	/**
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.

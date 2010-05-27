@@ -96,7 +96,7 @@ class tx_rtehtmlarea_spellchecker extends tx_rtehtmlareaapi {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.spellCheckerMode = "' . $spellCheckerMode .'";
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.enablePersonalDicts = ' . ($enablePersonalDicts ? 'true' : 'false') .';';
 			$registerRTEinJavascriptString .= '
-			RTEarea['.$RTEcounter.'].buttons.'. $button .'.path = "' . ($this->htmlAreaRTE->is_FE() ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : $this->htmlAreaRTE->TCEform->backPath . 'ajax.php?ajaxID=rtehtmlarea::spellchecker') . '";';
+			RTEarea['.$RTEcounter.'].buttons.'. $button .'.path = "' . (($this->htmlAreaRTE->is_FE() || $this->htmlAreaRTE->isFrontendEditActive()) ? ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . 'index.php?eID=rtehtmlarea_spellchecker' : $this->htmlAreaRTE->backPath . 'ajax.php?ajaxID=rtehtmlarea::spellchecker') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

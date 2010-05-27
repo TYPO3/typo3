@@ -2845,8 +2845,8 @@ HTMLArea.util.TYPO3 = function () {
 			var docHeader = Ext.get('typo3-docheader');
 			if (docHeader) {
 				size.height -= docHeader.getHeight();
+				docHeader.dom = null;
 			}
-			docHeader.dom = null;
 			return size;
 		}
 	}
