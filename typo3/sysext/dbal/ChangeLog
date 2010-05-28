@@ -1,3 +1,18 @@
+2010-05-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.6 (TYPO3 4.4 beta3)
+
+2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14496: SQL parser does not handle ALTER TABLE with character set operation
+	* Fixed bug #14456: SQL parser doesn't accept ALTER TABLE statement without CHANGE, DROP or ADD keyword
+	* Fixed bug #14457: 1-2-3 Install Process breaks with PostgreSQL
+
+2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14372: Mapping does not work with table alias
+	* Follow-up of changeset 32847: DBAL cannot be loaded if typo3conf/ is not writable
+
 2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.1.5 (TYPO3 4.4 beta2)

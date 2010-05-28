@@ -1427,7 +1427,12 @@ class ux_t3lib_DB extends t3lib_DB {
 		$this->lastHandlerKey = $this->handler_getFromTableList($table);
 		switch ((string)$this->handlerCfg[$this->lastHandlerKey]['type']) {
 			case 'native':
-				$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				if ($this->handlerInstance[$this->lastHandlerKey]['link']) {
+					$str = mysql_real_escape_string($str, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				} else {
+						// link may be null when unit testing DBAL
+					$str = str_replace('\'', '\\\'', $str);
+				}
 				break;
 			case 'adodb':
 				$str = substr($this->handlerInstance[$this->lastHandlerKey]->qstr($str), 1, -1);
@@ -2703,13 +2708,14 @@ class ux_t3lib_DB extends t3lib_DB {
 	protected function map_assocArray($input, $tables, $rev = FALSE) {
 			// Traverse tables from query (hopefully only one table):
 		foreach ($tables as $tableCfg) {
-			if (is_array($this->mapping[$tableCfg['table']]['mapFieldNames'])) {
+			$tableKey = $this->getMappingKey($tableCfg['table']);
+			if (is_array($this->mapping[$tableKey]['mapFieldNames'])) {
 
 					// Get the map (reversed if needed):
 				if ($rev) {
-					$theMap = array_flip($this->mapping[$tableCfg['table']]['mapFieldNames']);
+					$theMap = array_flip($this->mapping[$tableKey]['mapFieldNames']);
 				} else {
-					$theMap = $this->mapping[$tableCfg['table']]['mapFieldNames'];
+					$theMap = $this->mapping[$tableKey]['mapFieldNames'];
 				}
 
 					// Traverse selected record, map fieldnames:
@@ -2749,37 +2755,61 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @see exec_SELECTquery()
 	 */
 	protected function map_remapSELECTQueryParts(&$select_fields, &$from_table, &$where_clause, &$groupBy, &$orderBy) {
+			// Backup current mapping as it may be altered if aliases on mapped tables are found
+		$backupMapping = $this->mapping;
+
 			// Tables:
 		$tables = $this->SQLparser->parseFromTables($from_table);
 		$defaultTable = $tables[0]['table'];
+			// Prepare mapping for aliased tables. This will copy the definition of the original table name.
+			// The alias is prefixed with a database-incompatible character to prevent naming clash with real table name
+			// Further access to $this->mapping should be made through $this->getMappingKey() method
 		foreach ($tables as $k => $v) {
-			if ($this->mapping[$v['table']]['mapTableName']) {
-				$tables[$k]['table'] = $this->mapping[$v['table']]['mapTableName'];
+			if ($v['as'] && is_array($this->mapping[$v['table']]['mapFieldNames'])) {
+				$mappingKey = $this->getFreeMappingKey($v['as']);
+				$this->mapping[$mappingKey]['mapFieldNames'] =& $this->mapping[$v['table']]['mapFieldNames'];
+			}
+			if (is_array($v['JOIN'])) {
+				foreach ($v['JOIN'] as $joinCnt => $join) {
+					if ($join['as'] && is_array($this->mapping[$join['withTable']]['mapFieldNames'])) {
+						$mappingKey = $this->getFreeMappingKey($join['as']);
+						$this->mapping[$mappingKey]['mapFieldNames'] =& $this->mapping[$join['withTable']]['mapFieldNames'];
+					}
+				}
+			}
+		}
+		foreach ($tables as $k => $v) {
+			$tableKey = $this->getMappingKey($v['table']);
+			if ($this->mapping[$tableKey]['mapTableName']) {
+				$tables[$k]['table'] = $this->mapping[$tableKey]['mapTableName'];
 			}
 				// Mapping JOINS
 			if (is_array($v['JOIN'])) {
 				foreach($v['JOIN'] as $joinCnt => $join) {
 						// Mapping withTable of the JOIN
-					if ($this->mapping[$join['withTable']]['mapTableName']) {
-						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$join['withTable']]['mapTableName'];					
+					$withTableKey = $this->getMappingKey($join['withTable']);
+					if ($this->mapping[$withTableKey]['mapTableName']) {
+						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$withTableKey]['mapTableName'];					
 					}
 					$onPartsArray = array();
 						// Mapping ON parts of the JOIN
 					if (is_array($tables[$k]['JOIN'][$joinCnt]['ON'])) {
 						foreach ($tables[$k]['JOIN'][$joinCnt]['ON'] as &$condition) {
 								// Left side of the comparator
-							if (isset($this->mapping[$condition['left']['table']]['mapFieldNames'][$condition['left']['field']])) {
-								$condition['left']['field'] = $this->mapping[$condition['left']['table']]['mapFieldNames'][$condition['left']['field']];
+							$leftTableKey = $this->getMappingKey($condition['left']['table']);
+							if (isset($this->mapping[$leftTableKey]['mapFieldNames'][$condition['left']['field']])) {
+								$condition['left']['field'] = $this->mapping[$leftTableKey]['mapFieldNames'][$condition['left']['field']];
 							}
-							if (isset($this->mapping[$condition['left']['table']]['mapTableName'])) {
-								$condition['left']['table'] = $this->mapping[$condition['left']['table']]['mapTableName'];
+							if (isset($this->mapping[$leftTableKey]['mapTableName'])) {
+								$condition['left']['table'] = $this->mapping[$leftTableKey]['mapTableName'];
 							}
 								// Right side of the comparator
-							if (isset($this->mapping[$condition['right']['table']]['mapFieldNames'][$condition['right']['field']])) {
-								$condition['right']['field'] = $this->mapping[$condition['right']['table']]['mapFieldNames'][$condition['right']['field']];
+							$rightTableKey = $this->getMappingKey($condition['right']['table']);
+							if (isset($this->mapping[$rightTableKey]['mapFieldNames'][$condition['right']['field']])) {
+								$condition['right']['field'] = $this->mapping[$rightTableKey]['mapFieldNames'][$condition['right']['field']];
 							}
-							if (isset($this->mapping[$condition['right']['table']]['mapTableName'])) {
-								$condition['right']['table'] = $this->mapping[$condition['right']['table']]['mapTableName'];
+							if (isset($this->mapping[$rightTableKey]['mapTableName'])) {
+								$condition['right']['table'] = $this->mapping[$rightTableKey]['mapTableName'];
 							}
 						}
 					}
@@ -2807,6 +2837,37 @@ class ux_t3lib_DB extends t3lib_DB {
 		$expFields = $this->SQLparser->parseFieldList($orderBy);
 		$this->map_sqlParts($expFields,$defaultTable);
 		$orderBy = $this->SQLparser->compileFieldList($expFields);
+
+			// Restore the original mapping
+		$this->mapping = $backupMapping;
+	}
+
+	/**
+	 * Returns the key to be used when retrieving information from $this->mapping. This ensures
+	 * that mapping from aliased tables is properly retrieved.
+	 *
+	 * @param string $tableName
+	 * @return string
+	 */
+	protected function getMappingKey($tableName) {
+			// Search deepest alias mapping
+		while (isset($this->mapping['*' . $tableName])) {
+			$tableName = '*' . $tableName;
+		}
+		return $tableName;
+	}
+
+	/**
+	 * Returns a free key to be used to store mapping information in $this->mapping.
+	 *
+	 * @param string $tableName
+	 * @return string
+	 */
+	protected function getFreeMappingKey($tableName) {
+		while (isset($this->mapping[$tableName])) {
+			$tableName = '*' . $tableName;
+		}
+		return $tableName;
 	}
 
 	/**
@@ -2819,6 +2880,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @see map_remapSELECTQueryParts()
 	 */
 	protected function map_sqlParts(&$sqlPartArray, $defaultTable) {
+		$defaultTableKey = $this->getMappingKey($defaultTable);
 			// Traverse sql Part array:
 		if (is_array($sqlPartArray)) {
 			foreach ($sqlPartArray as $k => $v) {
@@ -2833,19 +2895,20 @@ class ux_t3lib_DB extends t3lib_DB {
 						case 'CASE':
 							if (isset($sqlPartArray[$k]['case_field'])) {
 								$fieldArray = explode('.', $sqlPartArray[$k]['case_field']);
-								if (count($fieldArray) == 1 && is_array($this->mapping[$defaultTable]['mapFieldNames']) && isset($this->mapping[$defaultTable]['mapFieldNames'][$fieldArray[0]])) {
-									$sqlPartArray[$k]['case_field'] = $this->mapping[$defaultTable]['mapFieldNames'][$fieldArray[0]];
+								if (count($fieldArray) == 1 && is_array($this->mapping[$defaultTableKey]['mapFieldNames']) && isset($this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]])) {
+									$sqlPartArray[$k]['case_field'] = $this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]];
 								}
 								elseif (count($fieldArray) == 2) {
 										// Map the external table
 									$table = $fieldArray[0];
-									if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
-										$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+									$tableKey = $this->getMappingKey($table);
+									if (isset($this->mapping[$tableKey]['mapTableName'])) {
+										$table = $this->mapping[$tableKey]['mapTableName'];
 									}
 										// Map the field itself
 									$field = $fieldArray[1];
-									if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
-										$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+									if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
+										$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 									}
 									$sqlPartArray[$k]['case_field'] = $table . '.' . $field;
 								}
@@ -2863,15 +2926,13 @@ class ux_t3lib_DB extends t3lib_DB {
 				} elseif (isset($sqlPartArray[$k]['func'])) {
 					switch ($sqlPartArray[$k]['func']['type']) {
 						case 'EXISTS':
-							$subqueryDefaultTable = $sqlPartArray[$k]['func']['subquery']['FROM'][0]['table'];
-							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['SELECT'], $subqueryDefaultTable);
-							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['FROM'], $subqueryDefaultTable);
-							$this->map_sqlParts($sqlPartArray[$k]['func']['subquery']['WHERE'], $subqueryDefaultTable);
+							$this->map_subquery($sqlPartArray[$k]['func']['subquery']);
 							break;
 						case 'IFNULL':
 						case 'LOCATE':
 								// For the field, look for table mapping (generic):
 							$t = $sqlPartArray[$k]['func']['table'] ? $sqlPartArray[$k]['func']['table'] : $defaultTable;
+							$t = $this->getMappingKey($t);
 							if (is_array($this->mapping[$t]['mapFieldNames']) && $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['func']['field']]) {
 								$sqlPartArray[$k]['func']['field'] = $this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['func']['field']];
 							}
@@ -2883,6 +2944,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				} else {
 						// For the field, look for table mapping (generic):
 					$t = $sqlPartArray[$k]['table'] ? $sqlPartArray[$k]['table'] : $defaultTable;
+					$t = $this->getMappingKey($t);
 
 						// Mapping field name, if set:
 					if (is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']])) {
@@ -2899,13 +2961,14 @@ class ux_t3lib_DB extends t3lib_DB {
 						elseif (count($fieldArray) == 2) {
 								// Map the external table
 							$table = $fieldArray[0];
-							if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
-								$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+							$tableKey = $this->getMappingKey($table);
+							if (isset($this->mapping[$tableKey]['mapTableName'])) {
+								$table = $this->mapping[$tableKey]['mapTableName'];
 							}
 								// Map the field itself
 							$field = $fieldArray[1];
-							if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
-								$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
+								$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 							}
 							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $table . '.' . $field;
 							$sqlPartArray[$k]['func_content'] = $table . '.' . $field;
@@ -2924,21 +2987,19 @@ class ux_t3lib_DB extends t3lib_DB {
 						// Do we have a function (e.g., CONCAT)
 					if (isset($v['value']['operator'])) {
 						foreach ($sqlPartArray[$k]['value']['args'] as $argK => $fieldDef) {
-							if (isset($this->mapping[$fieldDef['table']]['mapTableName'])) {
-								$sqlPartArray[$k]['value']['args'][$argK]['table'] = $this->mapping[$fieldDef['table']]['mapTableName'];
+							$tableKey = $this->getMappingKey($fieldDef['table']);
+							if (isset($this->mapping[$tableKey]['mapTableName'])) {
+								$sqlPartArray[$k]['value']['args'][$argK]['table'] = $this->mapping[$tableKey]['mapTableName'];
 							}
-							if (is_array($this->mapping[$fieldDef['table']]['mapFieldNames']) && isset($this->mapping[$fieldDef['table']]['mapFieldNames'][$fieldDef['field']])) {
-								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$fieldDef['table']]['mapFieldNames'][$fieldDef['field']];	
+							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']])) {
+								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']];	
 							}
 						}
 					}
 
 						// Do we have a subquery (WHERE parts only)?
 					if (isset($sqlPartArray[$k]['subquery'])) {
-						$subqueryDefaultTable = $sqlPartArray[$k]['subquery']['FROM'][0]['table'];
-						$this->map_sqlParts($sqlPartArray[$k]['subquery']['SELECT'], $subqueryDefaultTable);
-						$this->map_sqlParts($sqlPartArray[$k]['subquery']['FROM'], $subqueryDefaultTable);
-						$this->map_sqlParts($sqlPartArray[$k]['subquery']['WHERE'], $subqueryDefaultTable);
+						$this->map_subquery($sqlPartArray[$k]['subquery']);
 					}
 
 						// do we have a field name in the value?
@@ -2950,25 +3011,65 @@ class ux_t3lib_DB extends t3lib_DB {
 						} elseif (count($fieldArray) == 2) {
 								// Map the external table
 							$table = $fieldArray[0];
-							if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
-								$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+							$tableKey = $this->getMappingKey($table);
+							if (isset($this->mapping[$tableKey]['mapTableName'])) {
+								$table = $this->mapping[$tableKey]['mapTableName'];
 							}
 								// Map the field itself
 							$field = $fieldArray[1];
-							if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
-								$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
+								$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 							}
 							$sqlPartArray[$k]['value'][0] = $table . '.' . $field;
 						}
 					}
 
 						// Map table?
-					if ($sqlPartArray[$k]['table'] && $this->mapping[$sqlPartArray[$k]['table']]['mapTableName']) {
-						$sqlPartArray[$k]['table'] = $this->mapping[$sqlPartArray[$k]['table']]['mapTableName'];
+					$tableKey = $this->getMappingKey($sqlPartArray[$k]['table']);
+					if ($sqlPartArray[$k]['table'] && $this->mapping[$tableKey]['mapTableName']) {
+						$sqlPartArray[$k]['table'] = $this->mapping[$tableKey]['mapTableName'];
 					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Maps table and field names in a subquery.
+	 *
+	 * @param array $parsedQuery
+	 * @return void
+	 */
+	protected function map_subquery(&$parsedQuery) {
+			// Backup current mapping as it may be altered
+		$backupMapping = $this->mapping;
+
+		foreach ($parsedQuery['FROM'] as $k => $v) {
+			$mappingKey = $v['table'];
+			if ($v['as'] && is_array($this->mapping[$v['table']]['mapFieldNames'])) {
+				$mappingKey = $this->getFreeMappingKey($v['as']);
+			} else {
+					// Should ensure that no alias is defined in the external query
+					// which would correspond to a real table name in the subquery
+				if ($this->getMappingKey($v['table']) !== $v['table']) {
+					$mappingKey = $this->getFreeMappingKey($v['table']);
+						// This is the only case when 'mapTableName' should be copied
+					$this->mapping[$mappingKey]['mapTableName'] =& $this->mapping[$v['table']]['mapTableName'];
+				}
+			}
+			if ($mapping !== $v['table']) {
+				$this->mapping[$mappingKey]['mapFieldNames'] =& $this->mapping[$v['table']]['mapFieldNames'];
+			}
+		}
+
+			// Perform subquery's remapping
+		$defaultTable = $parsedQuery['FROM'][0]['table'];
+ 		$this->map_sqlParts($parsedQuery['SELECT'], $defaultTable);
+ 		$this->map_sqlParts($parsedQuery['FROM'], $defaultTable);
+ 		$this->map_sqlParts($parsedQuery['WHERE'], $defaultTable);
+
+ 			// Restore the mapping
+ 		$this->mapping = $backupMapping;
 	}
 
 	/**
