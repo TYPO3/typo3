@@ -1228,6 +1228,7 @@ class t3lib_TCEforms	{
 
 			// Init config:
 		$config = $PA['fieldConf']['config'];
+		$evalList = t3lib_div::trimExplode(',', $config['eval'], 1);
 
 		if($this->renderReadonly || $config['readOnly'])  {
 			return $this->getSingleField_typeNone_render($config, $PA['itemFormElValue']);
@@ -1242,6 +1243,10 @@ class t3lib_TCEforms	{
 			$cols = $this->maxTextareaWidth;
 			$rows = t3lib_div::intInRange(round(strlen($PA['itemFormElValue'])/$this->charsPerRow), count(explode(LF,$PA['itemFormElValue'])), 20);
 			if ($rows<$origRows)	$rows = $origRows;
+		}
+
+		if (in_array('required', $evalList))	{
+			$this->requiredFields[$table . '_' . $row['uid'] . '_' . $field] = $PA['itemFormElName'];
 		}
 
 			// Init RTE vars:
