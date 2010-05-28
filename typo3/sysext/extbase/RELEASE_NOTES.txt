@@ -1,0 +1,34 @@
+RELEASE NOTES of Extbase v1.0.0
+===============================
+
+This package contains the Extbase Framework for Extensions. You may 
+also want to install the BlogExample (blog_example) to experiment 
+with. This little example extension demonstrates some of the main 
+features of Extbase. The documentation is bundled in a separate 
+extension called doc_extbase. Both, the blog_example and the 
+doc_extbase can downloaded via TER.
+
+http://typo3.org/extensions/repository/view/blog_example/current/
+http://typo3.org/extensions/repository/view/doc_extbase/current/
+
+Currently Extbase is in ALPHA state. Do not expect everything in the 
+right place and shape. And keep in mind that the API may change 
+until TYPO3 v4.3beta1 is released.
+
+If you have any feature requests or encountered issues regarding 
+this package please use the facilities on forge to report.
+
+We are very open to answer your questions. Please use the newsgroup 
+
+typo3.projects.typo3v4mvc on lists.netfielders.de
+
+so other developers can react to your comments and also 
+profit from the postet solutions. Do not contact a member of the 
+development team via private email (or skype, or visits, or ...) 
+until he accepted this channel. We all do coding for Extbase on 
+our sparetime and must handle our regular work load - and don't 
+forget about our families ;-).
+
+We hope you have fun with this package!
+
+-- Your Extbase Development Team

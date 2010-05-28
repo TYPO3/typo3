@@ -1,0 +1,26 @@
+config.tx_extbase {
+	persistence{
+		enableAutomaticCacheClearing = 1
+		updateReferenceIndex = 0
+		classes {
+			Tx_Extbase_Domain_Model_FrontendUser {
+				mapping {
+					tableName = fe_users
+					recordType = Tx_Extbase_Domain_Model_FrontendUser
+					columns {
+						lockToDomain.mapOnProperty = lockToDomain
+					}
+				}
+			}
+			Tx_Extbase_Domain_Model_FrontendUserGroup {
+				mapping {
+					tableName = fe_groups
+					recordType = Tx_Extbase_Domain_Model_FrontendUserGroup
+					columns {
+						lockToDomain.mapOnProperty = lockToDomain
+					}
+				}
+			}
+		}
+	}
+}
