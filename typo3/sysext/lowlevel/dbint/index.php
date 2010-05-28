@@ -129,7 +129,7 @@ class SC_mod_tools_dbint_index {
 
 		$this->doc->tableLayout = array (
 			'0' => array (
-				'defCol' => array('<td class="c-headLineTable"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="c-headLineTable"><b>', '</b></td>')
+				'defCol' => array('<td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="t3-row-header"><b>', '</b></td>')
 			),
 			'defRow' => array (
 				'0' => array('<td valign="top">','</td>'),

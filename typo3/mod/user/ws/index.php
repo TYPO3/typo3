@@ -159,7 +159,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
 			foreach($workspaces as $rec)	{
 				if ($GLOBALS['BE_USER']->checkWorkspace($rec))	{
-					$this->MOD_MENU['display'][$rec['uid']] = '['.$rec['uid'].'] '.$rec['title'];
+					$this->MOD_MENU['display'][$rec['uid']] = '[' . $rec['uid'] . '] ' . htmlspecialchars($rec['title']);
 				}
 			}
 		}

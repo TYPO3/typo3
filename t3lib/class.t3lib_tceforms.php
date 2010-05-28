@@ -4756,8 +4756,10 @@ class t3lib_TCEforms	{
 
 			// Wrapping all table rows for a particular record being edited:
 		$this->totalWrap='
+		<h2>###PAGE_TITLE###</h2>
+
 		<table class="typo3-TCEforms">'.
-			'<tr class="typo3-TCEforms-recHeaderRow bgColor2">
+			'<tr class="typo3-TCEforms-recHeaderRow">
 				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
 			</tr>'.
 			'|'.
@@ -4878,14 +4880,18 @@ class t3lib_TCEforms	{
 			#t3lib_BEfunc::fixVersioningPid($table,$rec);	// Kasper: Should not be used here because NEW records are not offline workspace versions...
 			$truePid = t3lib_BEfunc::getTSconfig_pidValue($table,$rec['uid'],$rec['pid']);
 			$prec = t3lib_BEfunc::getRecordWSOL('pages',$truePid,'title');
-			$rLabel = '<em>[PID: '.$truePid.'] ' . t3lib_BEfunc::getRecordTitle('pages', $prec, TRUE, FALSE) . '</em>';
+			$pageTitle = t3lib_BEfunc::getRecordTitle('pages', $prec, TRUE, FALSE);
+			$rLabel = '<em>[PID: ' . $truePid . '] ' . $pageTitle . '</em>';
 		} else {
 			$newLabel = ' <span class="typo3-TCEforms-recUid">['.$rec['uid'].']</span>';
 			$rLabel   = t3lib_BEfunc::getRecordTitle($table, $rec, TRUE, FALSE);
+			$prec = t3lib_BEfunc::getRecordWSOL('pages',$rec['pid'],'title');
+			$pageTitle = t3lib_BEfunc::getRecordTitle('pages', $prec, TRUE, FALSE);
 		}
 
 		foreach ($arr as $k => $v)	{
 				// Make substitutions:
+			$arr[$k] = str_replace('###PAGE_TITLE###', $pageTitle, $arr[$k]);
 			$arr[$k] = str_replace('###ID_NEW_INDICATOR###', $newLabel, $arr[$k]);
 			$arr[$k] = str_replace('###RECORD_LABEL###',$rLabel,$arr[$k]);
 			$arr[$k] = str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);

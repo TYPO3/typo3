@@ -59,7 +59,7 @@ class TYPO3backend {
 	protected $jsFiles;
 	protected $jsFilesAfterInline;
 	protected $toolbarItems;
-	private   $menuWidthDefault = 160; // intentionally private as nobody should modify defaults
+	private   $menuWidthDefault = 190; // intentionally private as nobody should modify defaults
 	protected $menuWidth;
 
 	/**
@@ -303,7 +303,7 @@ class TYPO3backend {
                 $icon = t3lib_iconWorks::getSpriteIcon('status-user-'. ($BE_USER->isAdmin() ? 'admin' : 'backend'));
 
 		$label = $GLOBALS['BE_USER']->user['realName'] ?
-			$BE_USER->user['realName'].' ['.$BE_USER->user['username'].']' :
+			$BE_USER->user['realName'] . ' (' . $BE_USER->user['username'] . ')' :
 			$BE_USER->user['username'];
 
 			// Link to user setup if it's loaded and user has access

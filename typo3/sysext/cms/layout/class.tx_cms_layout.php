@@ -408,6 +408,8 @@ class tx_cms_layout extends recordList {
 		$lMarg=1;
 		$showHidden = $this->tt_contentConfig['showHidden']?'':t3lib_BEfunc::BEenableFields('tt_content');
 		$pageTitleParamForAltDoc='&recTitle='.rawurlencode(t3lib_BEfunc::getRecordTitle('pages',t3lib_BEfunc::getRecordWSOL('pages',$id),TRUE));
+		$GLOBALS['SOBE']->doc->getPageRenderer()->loadExtJs();
+		$GLOBALS['SOBE']->doc->getPageRenderer()->addJsFile($GLOBALS['BACK_PATH'] . 'sysext/cms/layout/js/typo3pageModule.js');
 
 			// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels =array();
@@ -474,6 +476,12 @@ class tx_cms_layout extends recordList {
 							$isRTE = $RTE && $this->isRTEforField('tt_content',$row,'bodytext');
 							$singleElementHTML.= '<div '.($row['_ORIG_uid'] ? ' class="ver-element"' :'').'>'.$this->tt_content_drawItem($row,$isRTE).'</div>';
 
+								// NOTE: this is the end tag for <div class="t3-page-ce-body">
+								// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
+							$singleElementHTML .= '</div>';
+
+							$singleElementHTML = '<div class="t3-page-ce">' . $singleElementHTML . '</div>';
+
 							if ($this->defLangBinding && $this->tt_contentConfig['languageMode'])	{
 								$defLangBinding[$key][$lP][$row[($lP ? 'l18n_parent' : 'uid')]] = $singleElementHTML;
 							} else {
@@ -497,11 +505,11 @@ class tx_cms_layout extends recordList {
 					} else {
 						$out.= '
 							<td><img src="clear.gif" width="4" height="1" alt="" /></td>
-							<td bgcolor="black"><img src="clear.gif" width="1" height="1" alt="" /></td>
+							<td bgcolor="#cfcfcf"><img src="clear.gif" width="1" height="1" alt="" /></td>
 							<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
 					}
 					$out.= '
-							<td valign="top">'.$head[$key].$content[$key].'</td>';
+							<td class="t3-page-column">' . $head[$key] . $content[$key] . '</td>';
 
 						// Storing content for use if languageMode is set:
 					if ($this->tt_contentConfig['languageMode'])	{
@@ -514,7 +522,7 @@ class tx_cms_layout extends recordList {
 
 					// Wrap the cells into a table row:
 				$out = '
-					<table border="0" cellpadding="0" cellspacing="0" width="480" class="typo3-page-cols">
+					<table border="0" cellpadding="0" cellspacing="0" class="t3-page-columns">
 						<tr>'.$out.'
 						</tr>
 					</table>';
@@ -1490,45 +1498,32 @@ class tx_cms_layout extends recordList {
 	 */
 	function tt_content_drawColHeader($colName,$editParams,$newParams)	{
 
-			// Create header row:
-		$out = '
-				<tr>
-					<td class="bgColor2" nowrap="nowrap"><img src="clear.gif" width="1" height="2" alt="" /><br /><div align="center"><b>' . htmlspecialchars($GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $colName, 'toUpper')) . '</b></div><img src="clear.gif" width="1" height="2" alt="" /></td>
-				</tr>';
-
+		$icons = '';
 			// Create command links:
-		if ($this->tt_contentConfig['showCommands'])	{
-				// Start cell:
-			$out.= '
-				<tr>
-					<td class="bgColor5">';
-
-				// Edit whole of column:
-			if ($editParams)	{
-				$out.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($editParams,$this->backPath)).'" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+		if ($this->tt_contentConfig['showCommands']) {
+				// New record:
+			if ($newParams) {
+				$icons .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newInColumn', TRUE) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 					'</a>';
 			}
-				// New record:
-			if ($newParams)	{
-				$out.='<a href="#" onclick="'.htmlspecialchars($newParams).'" title="' . $GLOBALS['LANG']->getLL('newInColumn', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-						'</a>';
+				// Edit whole of column:
+			if ($editParams) {
+				$icons .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($editParams, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+					'</a>';
 			}
-				// End cell:
-			$out.= '
-					</td>
-				</tr>';
+		}
+		if (strlen($icons)) {
+			$icons = '<div class="t3-page-colHeader-icons">' . $icons . '</div>';
 		}
 
-			// Wrap and return:
-		return '
-			<table border="0" cellpadding="0" cellspacing="0" width="100%" class="typo3-page-colHeader">'.($space?'
-				<tr>
-					<td><img src="clear.gif" height="'.$space.'" alt="" /></td>
-				</tr>':'').
-				$out.'
-			</table>';
+			// Create header row:
+		$out = '<div class="t3-page-colHeader t3-row-header">
+					' . $icons . '
+					<div class="t3-page-colHeader-label">' . htmlspecialchars($colName) . '</div>
+				</div>';
+		return $out;
 	}
 
 	/**
@@ -1562,38 +1557,22 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-			// Create header with icon/lock-icon/title:
-		$header = $this->getIcon('tt_content',$row).
-				$lockIcon.
-				$stat.
-				($langMode ? $this->languageFlag($row['sys_language_uid']) : '').
-				'&nbsp;<b>'.htmlspecialchars($this->CType_labels[$row['CType']]).'</b>';
-		$out = '
-					<tr>
-						<td class="bgColor4">'.$header.'</td>
-					</tr>';
+			// Create line with type of content element and icon/lock-icon/title:
+		$ceType = $this->getIcon('tt_content',$row) . ' ' .
+				$lockIcon . ' ' .
+				$stat . ' ' .
+				($langMode ? $this->languageFlag($row['sys_language_uid']) : '') .  ' ' .
+				'&nbsp;<b>' . htmlspecialchars($this->CType_labels[$row['CType']]) .. '</b>';
 
 			// If show info is set...;
 		if ($this->tt_contentConfig['showInfo'])	{
 
 				// Get processed values:
 			$info = Array();
-			$this->getProcessedValue('tt_content','hidden,starttime,endtime,fe_group,spaceBefore,spaceAfter,section_frame,sectionIndex,linkToTop',$row,$info);
+			$this->getProcessedValue('tt_content', 'hidden,starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
 
 				// Render control panel for the element:
 			if ($this->tt_contentConfig['showCommands'] && $this->doEdit)	{
-
-					// Start control cell:
-				$out.= '
-					<!-- Control Panel -->
-					<tr>
-						<td class="bgColor5">';
-
-					// Edit content element:
-				$params='&edit[tt_content]['.$this->tt_contentData['nextThree'][$row['uid']].']=edit';
-				$out.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'" title="'.htmlspecialchars($this->nextThree>1?sprintf($GLOBALS['LANG']->getLL('nextThree'),$this->nextThree):$GLOBALS['LANG']->getLL('edit')).'">'.
-							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
-						'</a>';
 
 				if (!$disableMoveAndNewButtons)	{
 						// New content element:
@@ -1603,29 +1582,17 @@ class tx_cms_layout extends recordList {
 						$params='&edit[tt_content]['.(-$row['uid']).']=new';
 						$onClick = t3lib_BEfunc::editOnClick($params,$this->backPath);
 					}
-					$out.='<a href="#" onclick="'.htmlspecialchars($onClick).'" title="'.$GLOBALS['LANG']->getLL('newAfter',1).'">'.
-								t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-							'</a>';
-
-						// Move element up:
-					if ($this->tt_contentData['prev'][$row['uid']])	{
-						$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['prev'][$row['uid']];
-						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" title="'.$GLOBALS['LANG']->getLL('moveUp', TRUE).'">'.
-									t3lib_iconWorks::getSpriteIcon('actions-move-up') .
-								'</a>';
-					} else {
-						$out.=t3lib_iconWorks::getSpriteIcon('empty-empty');
-					}
-						// Move element down:
-					if ($this->tt_contentData['next'][$row['uid']])	{
-						$params='&cmd[tt_content]['.$row['uid'].'][move]='.$this->tt_contentData['next'][$row['uid']];
-						$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" title="'.$GLOBALS['LANG']->getLL('moveDown', TRUE).'">'.
-									t3lib_iconWorks::getSpriteIcon('actions-move-down') .
-								'</a>';
-					} else {
-						$out.= t3lib_iconWorks::getSpriteIcon('empty-empty');
-					}
+					$out .= '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->getLL('newAfter', 1) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+						'</a>';
 				}
+
+				// Edit content element:
+				$params = '&edit[tt_content][' . $this->tt_contentData['nextThree'][$row['uid']] . ']=edit';
+				$out .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' .
+					htmlspecialchars($this->nextThree > 1 ? sprintf($GLOBALS['LANG']->getLL('nextThree'), $this->nextThree) : $GLOBALS['LANG']->getLL('edit')) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+					'</a>';
 
 					// Hide element:
 				$hiddenField = $TCA['tt_content']['ctrl']['enablecolumns']['disabled'];
@@ -1651,28 +1618,50 @@ class tx_cms_layout extends recordList {
 							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') . 
 						'</a>';
 
-					// End cell:
-				$out.= '
-						</td>
-					</tr>';
+				if (!$disableMoveAndNewButtons) {
+					$out .= '<span class="t3-page-ce-icons-move">';
+					// Move element up:
+					if ($this->tt_contentData['prev'][$row['uid']]) {
+						$params = '&cmd[tt_content][' . $row['uid'] . '][move]=' . $this->tt_contentData['prev'][$row['uid']];
+						$out .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('moveUp', TRUE) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-move-up') .
+							'</a>';
+					} else {
+						$out .= t3lib_iconWorks::getSpriteIcon('empty-empty');
+					}
+						// Move element down:
+					if ($this->tt_contentData['next'][$row['uid']])	{
+						$params = '&cmd[tt_content][' . $row['uid'] . '][move]= ' . $this->tt_contentData['next'][$row['uid']];
+						$out .= '<a href="' . htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)) . '" title="' . $GLOBALS['LANG']->getLL('moveDown', TRUE) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-move-down') .
+							'</a>';
+					} else {
+						$out .= t3lib_iconWorks::getSpriteIcon('empty-empty');
+					}
+					$out .= '</span>';
+				}
 			}
 
 				// Display info from records fields:
+			$infoOutput = '';
 			if (count($info))	{
-				$out.= '
-					<tr>
-						<td class="bgColor4-20">'.implode('<br />',$info).'</td>
-					</tr>';
+				$infoOutput = '<div class="t3-page-ce-info">
+					' . implode('<br />', $info) . '
+					</div>';
 			}
 		}
-			// Wrap the whole header in a table:
-		return '
-				<table border="0" cellpadding="0" cellspacing="0" class="typo3-page-ceHeader">'.($space?'
-					<tr>
-						<td><img src="clear.gif" height="'.$space.'" alt="" /></td>
-					</tr>':'').
-					$out.'
-				</table>';
+			// Wrap the whole header
+			// NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
+		return '<h4 class="t3-page-ce-header">
+					<div class="t3-row-header">
+					' . $out . '
+					</div>
+				</h4>
+				<div class="t3-page-ce-body">
+					<div class="t3-page-ce-type">
+						' . $ceType . '
+					</div>
+					' . $infoOutput;
 	}
 
 	/**

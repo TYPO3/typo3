@@ -112,7 +112,9 @@ class webPageTree extends t3lib_browseTree {
 
 			// Add Page ID:
 		$pageIdStr = '';
-		if ($this->ext_showPageId) { $pageIdStr = '['.$row['uid'].']&nbsp;'; }
+		if ($this->ext_showPageId) {
+			$pageIdStr = '<span class="dragId">[' . $row['uid'] . ']</span> ';
+		}
 
 			// Call stats information hook
 		$stat = '';
@@ -194,7 +196,7 @@ class webPageTree extends t3lib_browseTree {
 		$PM = t3lib_div::_GP('PM');
 		if(($PMpos = strpos($PM, '#')) !== false) { $PM = substr($PM, 0, $PMpos); }
 		$PM = explode('_', $PM);
-		if((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) && is_array($PM) && count($PM)==4) {
+		if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) && is_array($PM) && count($PM) == 4 && $PM[2] != 0) {
 			if($PM[1])	{
 				$expandedPageUid = $PM[2];
 				$ajaxOutput = '';
@@ -345,7 +347,7 @@ class webPageTree extends t3lib_browseTree {
 
 				// Set first:
 			$this->bank = $idx;
-			$isOpen = $this->stored[$idx][$uid] || $this->expandFirst;
+			$isOpen = $this->stored[$idx][$uid] || $this->expandFirst || $uid === '0';
 
 				// Save ids while resetting everything else.
 			$curIds = $this->ids;
@@ -354,8 +356,11 @@ class webPageTree extends t3lib_browseTree {
 
 				// Set PM icon for root of mount:
 			$cmd = $this->bank.'_'.($isOpen? "0_" : "1_").$uid.'_'.$this->treeName;
-			$icon='<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen? 'minus' :'plus' ) . 'only.gif').' alt="" />';
-			$firstHtml = $this->PMiconATagWrap($icon,$cmd,!$isOpen);
+				// only, if not for uid 0
+			if ($uid) {
+				$icon = '<img' . t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/' . ($isOpen ? 'minus' :'plus' ) . 'only.gif') . ' alt="" />';
+				$firstHtml = $this->PMiconATagWrap($icon, $cmd, !$isOpen);
+			}
 
 				// Preparing rootRec for the mount
 			if ($uid)   {

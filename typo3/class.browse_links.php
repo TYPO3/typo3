@@ -2232,7 +2232,7 @@ class browse_links {
 		<!--
 			File listing
 		-->
-				<table border="0" cellpadding="0" cellspacing="1" id="typo3-fileList">
+				<table cellpadding="0" cellspacing="0" id="typo3-fileList">
 					'.implode('',$lines).'
 				</table>';
 		}

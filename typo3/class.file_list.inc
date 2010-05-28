@@ -278,8 +278,8 @@ class fileList extends t3lib_recordList {
 				$theData[$v] = $theT;
 			}
 		}
-		$out.=$this->addelement(1, $levelUp, $theData, ' class="c-headLine"', '');
-		$out.=$iOut;
+		$out .= '<thead>' . $this->addelement(1, $levelUp, $theData, ' class="t3-row-header"', '') . '</thead>';
+		$out .= '<tbody>' . $iOut . '</tbody>';
 
 			// half line is drawn
 
@@ -290,7 +290,7 @@ class fileList extends t3lib_recordList {
 		<!--
 			File list table:
 		-->
-			<table border="0" cellpadding="0" cellspacing="1" id="typo3-filelist">
+			<table cellpadding="0" cellspacing="0" id="typo3-filelist">
 				'.$out.'
 			</table>';
 	}

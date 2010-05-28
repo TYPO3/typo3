@@ -459,9 +459,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$adminLinks = $this->adminLinks($this->table,$row);
 
 			$content.='
-				<tr class="'.($row['uid']!=$this->uid ? 'bgColor4' : 'bgColor2 tableheader').'">
+				<tr class="' . ($row['uid'] != $this->uid ? 'bgColor4' : 'bgColor2 tableheader') . '">
 					<td>'.($row['uid']!=$this->uid ? '<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][action]=swap').'" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent', TRUE) . '">'.
-							t3lib_iconWorks::getSpriteIcon('apps-version-swap-versions') .
+						t3lib_iconWorks::getSpriteIcon('apps-version-swap-versions') .
 						'</a>' /* (
 							$this->table == 'pages' ?
 							'<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][action]=swap&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][swapContent]=1').'">'.

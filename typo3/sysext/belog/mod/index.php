@@ -108,7 +108,7 @@ class SC_mod_tools_log_index {
 
 		$this->doc->tableLayout = Array (
 			'0' => Array (
-				'defCol' => Array('<td valign="top" class="c-headLineTable"><b>', '</b></td><td class="c-headLineTable"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td>')
+				'defCol' => array('<td valign="top" class="t3-row-header"><b>', '</b></td><td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td>')
 			),
 			'defRow' => Array (
 				'0' => Array('<td valign="top">','</td>'),

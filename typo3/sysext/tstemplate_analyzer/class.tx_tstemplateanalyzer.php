@@ -110,7 +110,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$tmpl->procesIncludes();
 
 		$hierarArr = array();
-		$head = '<tr class="c-headLineTable">';
+		$head = '<tr class="t3-row-header">';
 		$head.= '<td>' . $GLOBALS['LANG']->getLL('title', true) . '</td>';
 		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootlevel', true) . '</td>';
 		$head.= '<td>' . $GLOBALS['LANG']->getLL('clearSetup', true) . '</td>';

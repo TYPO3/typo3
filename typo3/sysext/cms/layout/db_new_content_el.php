@@ -343,7 +343,7 @@ class SC_db_new_content_el {
 				// Add the wizard table to the content, wrapped in tabs:
 			if ($this->config['renderMode'] == 'tabs') {
 				$this->doc->inDocStylesArray[] = '
-					.typo3-dyntabmenu-divs { background-color: #fafafa; border: 1px solid #000; width: 680px; }
+					.typo3-dyntabmenu-divs { background-color: #fafafa; border: 1px solid #adadad; width: 680px; }
 					.typo3-dyntabmenu-divs table { margin: 15px; }
 					.typo3-dyntabmenu-divs table td { padding: 3px; }
 				';

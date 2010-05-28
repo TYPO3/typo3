@@ -480,7 +480,7 @@ class localRecordList extends recordList {
 			if ($listOnlyInSingleTableMode)	{
 				$out.='
 					<tr>
-						<td class="c-headLineTable" style="width:95%;">'.$theData[$titleCol].'</td>
+						<td class="t3-row-header" style="width:95%;">' . $theData[$titleCol] . '</td>
 					</tr>';
 
 				if ($GLOBALS['BE_USER']->uc["edit_showFieldHelp"])	{
@@ -501,7 +501,7 @@ class localRecordList extends recordList {
 							($tableCollapsed ? t3lib_iconWorks::getSpriteIcon('actions-view-list-expand', array('class' => 'collapseIcon')) : t3lib_iconWorks::getSpriteIcon('actions-view-list-collapse', array('class' => 'collapseIcon'))) .
 						'</a>';
 				}
-				$out .= $this->addelement(1, $collapseIcon, $theData, ' class="c-headLineTable"', '');
+				$out .= $this->addElement(1, $collapseIcon, $theData, ' class="t3-row-header"', '');
 			}
 
 			// Render table rows only if in multi table view and not collapsed or if in single table view

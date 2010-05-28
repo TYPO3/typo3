@@ -823,7 +823,7 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 		<!--
 			File listing
 		-->
-				<table border="0" cellpadding="1" cellspacing="1" id="typo3-fileList">
+				<table cellpadding="0" cellspacing="0" id="typo3-fileList">
 					'.implode('',$lines).'
 				</table>';
 		}

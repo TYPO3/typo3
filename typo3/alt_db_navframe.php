@@ -159,6 +159,9 @@ class SC_alt_db_navframe {
 		$this->doc->getDragDropCode('pages');
 		$this->doc->getContextMenuCode();
 		$this->doc->getPageRenderer()->loadScriptaculous('effects');
+		$this->doc->getPageRenderer()->loadExtJS();
+
+		$this->doc->getPageRenderer()->addJsFile('js/pagetreefiltermenu.js');
 
 		$this->doc->JScode .= $this->doc->wrapScriptTags(
 		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
@@ -284,6 +287,7 @@ class SC_alt_db_navframe {
 			'csh' => '',
 			'new_page' => '',
 			'refresh' => '',
+			'filter' => '',
 		);
 
 			// New Page
@@ -299,6 +303,11 @@ class SC_alt_db_navframe {
 
 			// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline','typo3-csh-inline show-right',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'], '', TRUE));
+
+			// Filter
+		if ($this->hasFilterBox) {
+			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item"><img' . t3lib_iconWorks::skinImg('', 'gfx/filter.png') . ' title="' .. $LANG->sL('LLL:EXT:cms/layout/locallang.xml:labels.filter', 1) . '" alt="" /></a></span>';
+		}
 
 		return $buttons;
 	}

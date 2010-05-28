@@ -134,9 +134,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$this->doc->inDocStylesArray[] = '
 				TABLE#typo3-objectBrowser A { text-decoration: none; }
 				TABLE#typo3-objectBrowser .comment { color: maroon; font-weight: bold; }
-				TABLE#ts-analyzer tr.c-headLineTable {background-color: #A2AAB8;}
+				TABLE#ts-analyzer tr.t3-row-header { background-color: #A2AAB8; }
 				TABLE#ts-analyzer tr td {padding: 0 2px;}
-				TABLE#ts-analyzer tr.c-headLineTable td {padding: 2px 4px; font-weight:bold; color: #fff;}
+				TABLE#ts-analyzer tr.t3-row-header td { padding: 2px 4px; font-weight:bold; color: #fff; }
 				.tsob-menu label, .tsob-menu-row2 label, .tsob-conditions label {padding: 0 5px; vertical-align: text-top;}
 				.tsob-menu-row2 {margin-top: 10px;}
 				.tsob-conditions {padding: 1px 2px;}
@@ -164,9 +164,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				// If no access or if ID == zero
 
 			$this->doc->inDocStylesArray[] = '
-				TABLE#ts-overview tr.c-headLineTable {background-color: #A2AAB8;}
+				TABLE#ts-overview tr.t3-row-header { background-color: #A2AAB8; }
 				TABLE#ts-overview tr td {padding: 2px;}
-				TABLE#ts-overview tr.c-headLineTable td {padding: 2px 4px; font-weight:bold; color: #fff;}
+				TABLE#ts-overview tr.t3-row-header td { padding: 2px 4px; font-weight:bold; color: #fff; }
 			';
 				// Template pages:
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -191,7 +191,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			}
 
 			$lines = array();
-			$lines[] = '<tr class="c-headLineTable">
+			$lines[] = '<tr class="t3-row-header">
 				<td nowrap>' . $GLOBALS['LANG']->getLL('pageName') . '</td>
 				<td nowrap>' . $GLOBALS['LANG']->getLL('templates') . '</td>
 				<td nowrap>' . $GLOBALS['LANG']->getLL('isRoot') . '</td>
@@ -533,8 +533,8 @@ page.10.value = HELLO WORLD!
 							<td align="center">' . ($pArray[$k . '_']['root_min_val'] == 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : "&nbsp;") .
 							'</td>
 							</tr>';
-					} else {
-						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+						} else {
+							$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap ><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align=top>' .
 							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k)) .
 							t3lib_div::fixed_lgd_cs($pArray[$k], 30) . '</td>
