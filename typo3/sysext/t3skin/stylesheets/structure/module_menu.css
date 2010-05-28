@@ -5,9 +5,7 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-menu {
-	padding-left: 1px;
-	padding-top: 2px;
-	margin: 0;
+	padding-top: 22px;
 }
 
 #typo3-menu ul {
@@ -27,12 +25,8 @@ $Id$
 	vertical-align: baseline;
 }
 
-#typo3-menu li span {
-	margin-top: 1px;
-}
-
 #typo3-menu li div {
-	margin: 8px 0px 2px 4px;
+	margin: 4px 0px 2px 4px;
 	overflow: hidden;
 	padding: 2px 0px 4px 16px;
 	vertical-align: middle;
@@ -50,15 +44,21 @@ $Id$
 }
 
 #typo3-menu li ul li {
-	height: auto;
-	margin-bottom: 1px;
-	margin-left: 0px;
-	padding: 1px 0px 1px 2px;
+	height: 21px;
 }
 
 #typo3-menu li ul li a {
 	display: block;
-	padding-left: 13px;
+	margin-bottom: 1px;
+	padding: 3px 0 3px 15px;
+}
+
+#typo3-menu li ul li a:hover,
+#typo3-menu li ul li.hover a,
+#typo3-menu li ul li.highlighted a {
+	margin-bottom: 1px;
+	padding-bottom: 2px;
+	padding-top: 2px;
 }
 
 #typo3-menu div.expanded,

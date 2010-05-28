@@ -8,6 +8,8 @@ General
 
 	* TYPO3 requires PHP 5.2 now
 
+	* There is now a complete new Backend skin for all modules, the login screen and the install tool. It is still called "t3skin", however due to the use of icon sprites and the refactoring of the CSS files, it is not possible anymore to run the TYPO3 backend with the old backend skin (from 3.x), the t3skin look and feel from the previous 4.x versions can be obtained by the TER, but is not actively maintained anymore.
+
 	* The static templates for some basic designs that were part of the TYPO3 Core since TYPO3 3.5 are now moved to a system extension that is not included by default. If you are using one of these templates (GLUECK, GREEN, CANDIDATE etc) or one of the old table-based layouts for rendering content (like content (default) or plaintext rendering), make sure to install the system extension via the TYPO3 Installer.
 
 	* The RTE has undergone major changes as UI components have been transformed into ExtJS widgets:

@@ -10,46 +10,34 @@ h3,
 h4 {
 	color: #555555;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
 	font-weight: bold;
 }
 
 /* Occasionally used, eg. in About Modules: */
 h1 {
-	background-color: #efeff4;
 	font-size: 14px;
 	text-align: center;
 }
 
 /* MAIN page header: */
 h2 {
-	background-color: #efeff4;
 	font-size: 14px;
 }
 
 /* Normal section headers */
 h3 {
-	background-color: #efeff4;
 	font-size: 13px;
 }
 
 /* Discrete section headers (no background) */
 h4 {
-	background-color: #efeff4;
 	font-size: 12px;
 }
 
-select,
-textarea,
-input,
-td,
-body,
-.defstyle,
-p,
-div {
+body {
 	color: black;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 11px;
 	line-height: 14px;
 }
 
@@ -92,11 +80,8 @@ Background color classes
 }
 
 .bgColor2 {
-	background-color: #b8bec9;
-	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
-	background-repeat: repeat-x;
-	border: 1px solid #a2aab8;
-	color: #fff;
+	background-color: #585858;
+	color: #ffffff;
 }
 
 .bgColor3 {
@@ -104,11 +89,12 @@ Background color classes
 }
 
 .bgColor3-20 {
-	background-color: #e4e5f0;
+	background-color: #f7f7f7;
 }
 
 .bgColor4 {
-	background-color: #efeff4;
+	background-color: #f1f1f1;
+	color: #212424;
 }
 
 .bgColor4-20 {
@@ -116,16 +102,32 @@ Background color classes
 }
 
 .bgColor5 {
-	background-color: #d7dbe2;
+	background-color: #9b9b9b;
 }
 
 .bgColor6 {
-	background-color: #e4e5f0;
+	background-color: #f7f7f7;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
 Various classes
 - - - - - - - - - - - - - - - - - - - - - */
+
+.t3-row-header {
+	background-color: #7f7f7f;
+	background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
+	color: #fff;
+	font-size: 10px;
+	line-height: 16px;
+	height: 20px;
+}
+
+.t3-row-header a {
+	color: #fff;
+	float: left;
+}
 
 .nobr {
 	white-space: nowrap;
@@ -224,62 +226,47 @@ span.warningboxheader {
 /* - - - - - - - - - - - - - - - - - - - - -
 input elements
 - - - - - - - - - - - - - - - - - - - - - */
+
+input,
 textarea,
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
+select,
+submit {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+textarea {
 	background-color: #fefefe;
-	border-top: 1px solid #838ea0;
-	border-left: 1px solid #838ea0;
-	border-right: 1px solid #545861;
-	border-bottom: 1px solid #545861;
+	border: 1px solid #7c7c7c;
 }
 
-textarea:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover,
-input[type="button"]:hover {
-	border-top: 1px solid #aaa;
-	border-left: 1px solid #aaa;
-	border-right: 1px solid #888;
-	border-bottom: 1px solid #888;
-}
-
-textarea:focus,
-input[type="submit"]:focus,
-input[type="reset"]:focus,
-input[type="button"]:focus {
-	border-top: 1px solid #999;
-	border-left: 1px solid #999;
-	border-right: 1px solid #777;
-	border-bottom: 1px solid #777;
-}
-
-/* Reformatting of the submit buttons */
-input[type="submit"],
-input[type="reset"],
-input[type="button"] {
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	border-bottom: none;
+textarea:hover {
+	border: 1px solid #737f91;
 }
 
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-	background: #c3c7ce url('../../icons/gfx/bg_input_button.gif') repeat-x;
-	border: 1px solid #acb3be;
-	color: #333;
+	background-color: #e2e2e2;
+	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
+	border: 1px solid #7c7c7c;
+	border-radius: 1px;
+	-moz-border-radius: 1px;
+	color: #434343;
 	cursor: pointer;
 }
 
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover {
-	background: #c3c7ce url('../../icons/gfx/bg_input_button_hover.gif') repeat-x;
+	background-color: #c3c7ce;
+	background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #c8c8c8));
 	border: 1px solid #737f91;
-	color: #000;
+	color: #1e1e1e;
 	cursor: pointer;
 }
 

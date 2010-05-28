@@ -33,6 +33,7 @@
 
 2010-05-28  Benjamin Mack  <benni@typo3.org>
 
+	* Added feature #14490: A new skin for the TYPO3 Backend (Thanks to Steffen Gebert and Lars Zimmermann)
 	* Fixed bug #14342: t3lib_compressor does not rewrite "data:" URIs (Thanks to Steffen Gebert)
 
 2010-05-28  Sebastian Kurfuerst  <sebastian@typo3.org>

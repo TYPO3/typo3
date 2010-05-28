@@ -4,18 +4,8 @@ File > List
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-table#typo3-filelist tr.c-headLine {
-	background-color: #a2aab8;
-	font-weight: bold;
-}
-
-table#typo3-filelist tr.c-headLine td {
-	background-color: #ccc;
-	font-weight: bold;
-}
-
-table#typo3-filelist tr.c-headLine td a {
-	color: #fff;
+table#typo3-filelist {
+	border: 1px solid #a2aab8;
 }
 
 table#typo3-filelist tr td.c-headLine {
@@ -27,6 +17,18 @@ table#typo3-filelist tr td.c-headLine {
 
 table#typo3-filelist tr td.c-headLine a {
 	color: #fff;
+}
+
+table#typo3-filelist td {
+	border-right: 1px solid #f1f1f1;
+}
+
+table#typo3-filelist td:last-child {
+	border-right: none;
+}
+
+table#typo3-filelist tbody tr:hover td {
+	background-color: #dedede;
 }
 
 table#typo3-filelist tr td img {

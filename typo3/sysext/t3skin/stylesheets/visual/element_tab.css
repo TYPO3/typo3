@@ -3,7 +3,7 @@ Tab menu (template.php)
 
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
-
+/*
 table#typo3-tabmenu td.tabact {
 	color: black;
 	background: #e7dba8;
@@ -46,41 +46,32 @@ table#typo3-tabmenu td.tab:hover {
 /* - - - - - - - - - - - - - - - - - - - - -
 Dynamic Tab menu (template.php)
 - - - - - - - - - - - - - - - - - - - - - */
-div.typo3-dyntabmenu-divs p.c-descr {
-	background: #e7dba8;
-	font-style: italic;
-}
-
 table.typo3-dyntabmenu td {
-	border: 1px solid #555;
+	background: #dadada;
+	border: 1px solid #adadad;
 	border-bottom: none;
-	border-radius: 3px;
-}
-
-table.typo3-dyntabmenu td,
-table.typo3-dyntabmenu td a {
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 	-moz-border-radius-topleft: 3px;
 	-moz-border-radius-topright: 3px;
 	-webkit-border-top-left-radius: 3px;
 	-webkit-border-top-right-radius: 3px;
 }
 
-table.typo3-dyntabmenu td.tab {
-	background: #c4d4cd;
-}
-
-table.typo3-dyntabmenu td.tabact {
-	background: #e7dba8;
-}
-
 table.typo3-dyntabmenu td.tabact,
-table.typo3-dyntabmenu td.tabact_over {
-	border-color: black;
-}
-
 table.typo3-dyntabmenu td.tab_over,
 table.typo3-dyntabmenu td.tabact_over {
-	background: #f6eab7;
+	background: #ffffff;
+}
+
+table.typo3-dyntabmenu td.tabact a,
+table.typo3-dyntabmenu td.tab_over a,
+table.typo3-dyntabmenu td.tabact_over a {
+	background: #ffffff;
+	padding-bottom: 6px;
+	padding-top: 4px;
+	position: relative;
+	top: 1px;
 }
 
 table.typo3-dyntabmenu td.disabled,
@@ -95,15 +86,20 @@ table.typo3-dyntabmenu td a {
 	text-decoration: none;
 }
 
-table.typo3-dyntabmenu td.tabact a,
-table.typo3-dyntabmenu td.tabact_over a {
-	color: black;
+div.typo3-dyntabmenu-divs {
+	background: #ffffff;
+	background-image: linear-gradient(center top, #ffffff 10%, #ececec 90%);
+	background-image: -moz-linear-gradient(center top, #ffffff 10%, #ececec 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #ffffff), color-stop(0.9, #ececec));
+	border: 1px solid #adadad;
 }
 
-table.typo3-tabmenu td:hover {
-	background: #f6eab7;
+div.typo3-dyntabmenu-divs p.c-descr {
+	background: #e7dba8;
+	font-style: italic;
 }
 
+/* Foldout tabs */
 div.typo3-dyntabmenu-divs-foldout div.tab,
 div.typo3-dyntabmenu-divs-foldout div.tab_over,
 div.typo3-dyntabmenu-divs-foldout div.tabact,
@@ -157,23 +153,24 @@ div.typo3-dyntabmenu-divs-foldout div.tabact_over a {
 	text-decoration: none;
 }
 
+/*
 table#typo3-tabmenu td.tab,
 table.typo3-dyntabmenu td {
 	border: solid 1px #a2aab8;
 	border-bottom: 0;
-	color: #e6e1b2;
+	color: #606060;
 	cursor: pointer;
 }
 
 table#typo3-tabmenu td.tab,
 table.typo3-dyntabmenu td.tab {
-	background-color: transparent;
+	background-color: #dadada;
 }
 
 table#typo3-tabmenu td.tabact,
 table.typo3-dyntabmenu td.tabact:hover,
 table.typo3-dyntabmenu td.tabact a {
-	background-color: #f8f9fb;
+	background-color: #ffffff;
 }
 
 table#typo3-tabmenu td.disabled,
@@ -187,9 +184,9 @@ table#typo3-tabmenu td.tab:hover,
 table#typo3-tabmenu td a:hover,
 table.typo3-dyntabmenu td:hover,
 table.typo3-dyntabmenu td a:hover {
-	background-color: #f8f9fb;
+	background-color: #ffffff;
 }
-
+*/
 div.typo3-dyntabmenu-divs-foldout div.disabled,
 div.typo3-dyntabmenu-divs-foldout div.disabled_over {
 	background: #ccc;

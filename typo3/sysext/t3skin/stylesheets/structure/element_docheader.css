@@ -54,7 +54,8 @@ div#typo3-docheader div.buttonsright {
 }
 
 div#typo3-docheader img,
-div#typo3-docheader input {
+div#typo3-docheader input,
+div#typo3-docheader span.t3-icon {
 	margin: 2px 3px 0;
 	vertical-align: top;
 }
@@ -78,7 +79,7 @@ div#typo3-docheader div.docheader-row2-left {
 
 div#typo3-docheader div.docheader-row2-right {
 	float: right;
-	margin-right: 6px;
+	margin-right: 20px;
 }
 
 div#typo3-docbody {
@@ -120,6 +121,10 @@ div#typo3-docheader div.buttonsleft div.buttongroup {
 	height: 20px;
 	margin-right: 5px;
 	padding-right: 20px;
+}
+
+div#typo3-docheader div.buttonsright {
+	margin-right: 18px;
 }
 
 div#typo3-docheader div.buttonsright div.buttongroup {

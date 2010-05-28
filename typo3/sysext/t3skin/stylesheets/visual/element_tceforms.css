@@ -8,9 +8,7 @@ table.typo3-TCEforms {
 	border-collapse: collapse;
 }
 
-table.typo3-TCEforms .bgColor2,
 table.typo3-TCEforms tr.bgColor2 td {
-	background-color: #efeff4;
 	color: #212424;
 }
 
@@ -41,9 +39,8 @@ table.typo3-TCEforms span.typo3-TCEforms-recHeader {
 	font-weight: bold;
 }
 
-table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow,
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
-	border: 0;
+	text-align: right;
 }
 
 table.typo3-TCEforms span.typo3-TCEforms-newToken {

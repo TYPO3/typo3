@@ -5,8 +5,16 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-side-menu {
-	background: #edeeee;
-	border-right: 1px solid #ddd;
+	background: #dddddd;
+	background-image: url('../../images/backgrounds/module-menu-right.png');
+	background-position: right top;
+	background-repeat: repeat-y;
+}
+
+#typo3-menu {
+	background-image: url('../../images/backgrounds/module-menu-top.png');
+	background-position: right top;
+	background-repeat: no-repeat;
 }
 
 #typo3-menu,
@@ -14,15 +22,27 @@ $Id$
 	list-style: none;
 }
 
-#typo3-menu div.expanded,
-#typo3-menu div.collapsed {
-	border-bottom: 1px solid #ddd;
+#typo3-menu a {
+	color: #1e2121;
 }
 
-#typo3-menu li.menuSection li:hover,
-#typo3-menu li.menuSection li.hover,
-#typo3-menu li.highlighted {
-	background-color: #d7dbe2;
+#typo3-menu > li {
+	border-bottom: 1px solid #c7c7c7;
+	border-bottom-right-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-webkit-border-bottom-right-radius: 3px;
+}
+
+#typo3-menu > li:last-child {
+	border-bottom: none;
+}
+
+#typo3-menu li.menuSection li a:hover,
+#typo3-menu li.menuSection li.hover a,
+#typo3-menu li.highlighted a {
+	background-color: #f1f1f1;
+	border-top: 1px solid #b8b8b8;
+	border-bottom: 1px solid #b8b8b8;
 }
 
 #typo3-menu li.highlighted {
@@ -30,27 +50,28 @@ $Id$
 }
 
 #typo3-menu li div {
-	background-color: #edeeee;
-	color: #505d6d;
+	color: #252524;
 	cursor: pointer;
-	font-size: 11px;
 	font-weight: bold;
+	text-transform: uppercase;
 }
 
 #typo3-menu li div.collapsed {
-	background-image: url('../../icons/gfx/arrowright.png');
+	background-image: url('../../images/arrows/module-menu-right.png');
+	background-position: 5px 5px;
 	background-repeat: no-repeat;
 }
 
 #typo3-menu li div.expanded {
-	background-image: url('../../icons/gfx/arrowdown.png');
+	background-image: url('../../images/arrows/module-menu-down.png');
+	background-position: 4px 7px;
 	background-repeat: no-repeat;
 }
 
 #typo3-menu li ul li {
 	cursor: pointer;
 	font-weight: normal;
-	line-height: 16px;
+	line-height: 15px;
 }
 
 #typo3-menu li ul li a {

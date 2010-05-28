@@ -20,6 +20,8 @@ Description : styles the Open Documents toolbar item
 }
 
 #tx-opendocs-counter {
+	font-size: 9px;
+	height: 12px;
 	width: 14px;
 	text-align: right;
 	border: 1px dashed #999;

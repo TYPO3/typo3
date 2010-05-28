@@ -6,7 +6,9 @@
 
  */
 body#typo3-index-php {
+	height: auto;
 	margin: 0;
+	padding-top: 75px;
 }
 
 body#typo3-index-php #t3-login-form-outer {
@@ -74,9 +76,9 @@ body#typo3-index-php .t3-login-field {
 }
 
 body#typo3-index-php .t3-login-field .t3-login-clearInputField {
-	left: 275px;
+	left: 260px;
 	position: absolute;
-	top: 5px;
+	top: 4px;
 }
 
 body#typo3-index-php .t3-login-field .t3-login-alert-capslock {
@@ -88,11 +90,11 @@ body#typo3-index-php .t3-login-field .t3-login-alert-capslock {
 body#typo3-index-php .t3-login-field label {
 	float: left;
 	padding-right: 10px;
-	width: 85px;
+	width: 70px;
 }
 
 body#typo3-index-php .t3-login-field input {
-	height: 19px;
+	height: 18px;
 	margin: 0;
 	padding: 2px 23px 0 5px;
 	width: 168px;
@@ -101,7 +103,7 @@ body#typo3-index-php .t3-login-field input {
 body#typo3-index-php #t3-login-form-fields {
 	display: none;
 	margin: 0;
-	padding: 14px 0 0 30px;
+	padding: 14px 0 5px 30px;
 }
 
 body#typo3-index-php #t3-interfaceselector {
@@ -129,7 +131,7 @@ body#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
 }
 
 body#typo3-index-php .t3-login-submit {
-	margin: 15px 0 0 95px;
+	margin: 15px 0 0 80px;
 	padding: 3px 16px;
 }
 
@@ -204,7 +206,7 @@ body#typo3-index-php .t3-login-logout-form .t3-username-current {
 body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 	float: left;
 	padding-right: 10px;
-	width: 85px;
+	width: 70px;
 }
 
 /**
@@ -230,6 +232,10 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 
 .t3-login-box-body {
 	padding: 10px;
+}
+
+.t3-login-box-shadow {
+	height: 3px;
 }
 
 .t3-login-box-border-bottom {

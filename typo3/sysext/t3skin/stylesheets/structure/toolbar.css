@@ -5,6 +5,7 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 .typo3-top-toolbar {
+	margin-top: 9px;
 	padding-right: 15px;
 	position: absolute;
 	right: 0px;

@@ -35,10 +35,6 @@ table.typo3-csh-inline span.header {
 	font-weight: bold;
 }
 
-tr.c-headLineTable table.typo3-csh-inline span.paragraph {
-	background-color: #fff;
-}
-
 img.typo3-csh-icon {
 	cursor: help;
 }

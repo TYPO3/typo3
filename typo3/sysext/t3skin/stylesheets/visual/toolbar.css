@@ -3,13 +3,12 @@ Toolbar inside the Topbar
 
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
+
 #typo3-toolbar {
 	list-style: none;
 }
 
 .toolbar-item {
-	background-image: url('../../icons/gfx/toolbar_separator.png');
-	background-repeat: no-repeat;
 	text-align: center;
 }
 

@@ -29,10 +29,6 @@ table.typo3-usersettings td.td-label-right {
 	width: 50px;
 }
 
-#ext-setup-mod-index-php div.typo3-dyntabmenu-divs {
-	padding-bottom: 12px;
-}
-
 #ext-setup-mod-index-php #user-setup-wrapper {
 	float: left;
 }

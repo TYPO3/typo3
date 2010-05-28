@@ -10,6 +10,9 @@ $Id$
 }
 
 #username a {
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 11px;
 	line-height: 16px;
 	text-decoration: none;
 }

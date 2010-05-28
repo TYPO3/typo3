@@ -14,8 +14,7 @@ table.typo3-dblist img {
 }
 
 table.typo3-dblist tr td {
-	padding-left: 1px;
-	padding-right: 6px;
+	padding: 3px 1px 3px 6px;
 }
 
 table.typo3-dblist tr td.c-headLine,
@@ -27,15 +26,14 @@ table.typo3-dblist tr.c-table-row-spacer td {
 	display: none;
 }
 
-table.typo3-dblist tr td.c-headLineTable,
-table.typo3-dblist tr.c-headLineTable td {
-	height: 16px;
-}
-
 table.typo3-dblist tr td div.typo3-DBctrl {
 	height: 16px;
 	min-width: 252px;
 	padding: 2px;
+}
+
+tr.t3-row-header td {
+	padding: 3px 7px;
 }
 
 * html table.typo3-dblist tr td div.typo3-DBctrl {
@@ -63,8 +61,8 @@ table.typo3-dblist tr td .typo3-DBctrl .typo3-ctrl-versioning-hidden {
 	visibility: hidden;
 }
 
-table.typo3-dblist tr td div.typo3-clipCtrl img,
-table.typo3-dblist tr td div.typo3-DBctrl img {
+table.typo3-dblist tr td div.typo3-clipCtrl span.t3-icon,
+table.typo3-dblist tr td div.typo3-DBctrl span.t3-icon {
 	float: left;
 	margin-left: 1px;
 	margin-right: 1px;
@@ -73,17 +71,7 @@ table.typo3-dblist tr td div.typo3-DBctrl img {
 table.typo3-dblist tr td.col-icon {
 	padding-left: 4px;
 	padding-right: 0px;
-	vertical-align: top;
-	width: 20px;
-}
-
-table.typo3-dblist tr.c-headLineTable td.col-icon {
-	padding-left: 3px;
-}
-
-table.typo3-dblist tr td.col-icon a {
-	display: block;
-	margin-top: 3px;
+	vertical-align: middle;
 	width: 20px;
 }
 
@@ -101,22 +89,12 @@ table.typo3-dblist tr td.col-title.localization {
 	padding-left: 18px;
 }
 
-table.typo3-dblist tr.c-headLine td.col-title a {
-	display: block;
-	width: 240px;
-}
-
 table.typo3-dblist tr td.col-control {
 	width: 250px;
 }
 
 table.typo3-dblist tr td.col-control-space {
 	width: 4px;
-}
-
-table.typo3-dblist tr.c-headLine td.col-control a{
-	display: block;
-	width: 250px;
 }
 
 table.typo3-dblist tr td.col-clipboard {
@@ -208,4 +186,18 @@ div#typo3-dblist-pagination span.bar {
 	height: 19px;
 	margin-left: 5px;
 	padding: 0 4px 2px 4px;
+}
+
+.t3-list-table-header-icon-down {
+	display: inline-block;
+	height: 6px;
+	padding: 5px 4px;
+	width: 9px;
+}
+
+.t3-list-table-header-icon-right {
+	display: inline-block;
+	height: 8px;
+	padding: 4px 5px;
+	width: 7px;
 }

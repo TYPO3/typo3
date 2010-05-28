@@ -15,9 +15,7 @@ table#typo3-clipboard tr.bgColor2 {
 }
 
 table#typo3-clipboard tr.bgColor2 td {
-	background-color: #b8bec9;
-	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
-	background-repeat: repeat-x;
+	background-color: #585858;
 	color: #fff;
 }
 

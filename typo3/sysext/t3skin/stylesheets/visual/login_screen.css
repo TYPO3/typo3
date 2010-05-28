@@ -6,21 +6,25 @@
 
  */
 body#typo3-index-php {
-	background: #fff;
+	background: #4f4f4f;
+	background-attachment: fixed;
+	background-image: url('../../images/login/background.png');
+	background-repeat: repeat-x;
 }
 
 body#typo3-index-php #t3-login-form {
+	color: #606060;
 	font-size: 11px;
 	text-align: left;
 }
 
 body#typo3-index-php .t3-headline {
-	background: #b5bbc7 url('../../backgrounds/login-box-header.png') repeat-x;
-	border-bottom: 1px solid #d6d9df;
+	background: #585858;
 }
 
 body#typo3-index-php .t3-headline h2 {
-	background: transparent url('../../icons/login-icon-key.gif') no-repeat 10px 5px;
+	background: transparent no-repeat 10px 5px;
+	background-image: url('../../icons/login-icon-key.gif');
 	color: #fff;
 	font-size: 11px !important;
 	line-height: 24px;
@@ -32,7 +36,6 @@ body#typo3-index-php #t3-login-process {
 
 body#typo3-index-php #t3-login-process h2 {
 	background: url('../../icons/login-submit-progress.gif') no-repeat 10px center;
-	color: #7f8083;
 	font-size: 11px !important;
 }
 
@@ -44,20 +47,22 @@ body#typo3-index-php .t3-headline .t3-login-news-headline {
 }
 
 body#typo3-index-php .t3-login-field {
-	line-height: 21px;
-}
-
-body#typo3-index-php .t3-login-field label {
-	color: #7f8083;
+	line-height: 18px;
 }
 
 body#typo3-index-php .t3-login-field input {
-	background: #ffffff url('../../backgrounds/login-field-input.gif') repeat-x;
+	background: #fff;
 	border: 1px solid #7c7c7c;
+	border-radius: 1px;
+	-moz-border-radius: 1px;
+	box-shadow: 0 1px 1px #cbcbcb inset;
+	-moz-box-shadow: 0 1px 1px #cbcbcb inset;
+	-webkit-box-shadow: 0 1px 1px #cbcbcb inset;
 	color: #000;
 	font-size: 11px;
 	line-height: 19px;
 	-webkit-appearance: textfield;
+	
 }
 
 body#typo3-index-php #t3-login-form-fields {
@@ -79,7 +84,7 @@ body#typo3-index-php .t3-login-form-footer a {
 body#typo3-index-php .t3-login-form-footer,
 body#typo3-index-php .t3-login-form-footer a.switchToOpenId,
 body#typo3-index-php dl#t3-login-news a {
-	color: #777d7d;
+	color: #888;
 	font-size: 10px;
 }
 
@@ -99,16 +104,16 @@ body#typo3-index-php .t3-login-submit {
 
 body#typo3-index-php div#t3-copyright-notice {
 	font-weight: normal;
-	color: #b0b0b0;
+	color: #797878;
 }
 
 body#typo3-index-php div#t3-copyright-notice a {
-	color: #b0b0b0;
+	color: #797878;
 	text-decoration: underline;
 }
 
 body#typo3-index-php div#t3-copyright-notice a:hover {
-	color: #333;
+	color: #b0b0b0;
 }
 
 body#typo3-index-php div#t3-login-image {
@@ -116,15 +121,16 @@ body#typo3-index-php div#t3-login-image {
 }
 
 body#typo3-index-php #t3-footer {
-	border-top: 1px solid #d1d2d3;
+	border-top: 1px solid #5c5c5c;
+	font-size: 10px;
 }
 
 body#typo3-index-php #t3-meta-links {
-	color: #b0b0b0;
+	color: #797878;
 }
 
 body#typo3-index-php #t3-meta-links a {
-	color: #b0b0b0;
+	color: #797878;
 	text-decoration: underline;
 }
 
@@ -133,7 +139,7 @@ body#typo3-index-php #t3-meta-links a.t3-login-link-donate {
 }
 
 body#typo3-index-php #t3-meta-links a:hover {
-	color: #000;
+	color: #b0b0b0;
 }
 
 /**
@@ -150,13 +156,9 @@ body#typo3-index-php #t3-login-news-outer #t3-login-news dd {
 /**
  * @section logout
  */
-body#typo3-index-php .t3-login-logout-form .t3-username-current {
-	color: #7f8083;
-	line-height: 21px;
-}
-
+body#typo3-index-php .t3-login-logout-form .t3-username-current,
 body#typo3-index-php .t3-login-logout-form div.t3-login-label {
-	color: #7f8083;
+	color: #606060;
 	line-height: 21px;
 }
 
@@ -211,15 +213,9 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 /**
  * @section box layout
  */
-.t3-login-box {
-	border: 1px solid #d6d9df;
-	border-bottom: none;
-}
-
 .t3-login-box-body {
-	background: #e3e5ea url('../../backgrounds/login-box-body.png') repeat-x;
-}
-
-.t3-login-box-border-bottom {
-	background: url('../../backgrounds/login-border-bottom.png') top left no-repeat;
+	background: #ebebeb;
+	background-image: linear-gradient(center top, #ebebeb 0%, #c9c9c9 100%);
+	background-image: -moz-linear-gradient(center top, #ebebeb 0%, #c9c9c9 100%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #ebebeb), color-stop(1, #c9c9c9));
 }

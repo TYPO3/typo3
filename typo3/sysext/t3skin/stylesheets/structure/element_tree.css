@@ -44,27 +44,60 @@ body#typo3-alt-file-navframe-php {
 
 body#typo3-pagetree #typo3-inner-docbody,
 body#typo3-alt-file-navframe-php #typo3-inner-docbody {
-	padding-right: 0px;
+	padding: 0 10px 10px 5px;
 }
 
 ul.tree {
 	clear: both;
-	margin: 0;
+	margin: 16px 0 0 5px;
 	padding: 0;
 }
 
-ul.tree img {
-	vertical-align: middle;
+ul.tree span.dragIcon {
+	position: relative;
+	top: -1px;
+}
+
+ul.tree span.dragTitle,
+ul.tree span.dragId {
+	position: relative;
+	top: -7px;
 }
 
 ul.tree ul {
 	padding: 0;
-	padding-left: 17px;
 	margin: 0;
+}
+
+ul.tree ul {
+	padding-left: 19px;
+}
+
+ul #pages0_0 > ul {
+	padding-left: 0;
 }
 
 ul.tree ul li {
 	padding: 0;
+	margin: 0;
+}
+
+ul.tree div.treeLinkItem {
+	display: block;
+	height: 16px;
+	padding-left: 2px;
+}
+
+ul.tree div.treeLinkItem img {
+	position: relative;
+	top: -3px;
+}
+
+ul.tree div.treeLinkItem span.dragIcon {
+	margin: 0 3px 0 1px;
+}
+
+ul.tree span.t3-icon {
 	margin: 0;
 }
 
@@ -75,11 +108,12 @@ ul.tree ul li {
 }
 
 #treeFilterBox {
+	display: none;
 	height: 27px;
 	position: absolute;
 	top: 22px;
-	z-index: 3;
 	width: 260px;
+	z-index: 3;
 }
 
 #searchBubble {
@@ -87,13 +121,13 @@ ul.tree ul li {
 }
 
 #treeFilter {
-	margin: 6px 0pt 0pt 19px !important;
+	margin: 6px 0pt 0pt 17px !important;
 	height: 16px;
 	width: 165px;
 }
 
 #treeFilterReset {
-	left: 194px;
+	left: 190px;
 	position: absolute;
 	top: 6px;
 	visibility: hidden;
@@ -101,9 +135,5 @@ ul.tree ul li {
 
 #typo3-pagetree #typo3-docheader img,
 #typo3-alt-file-navframe-php #typo3-docheader img {
-	margin: 2px 1px;
-}
-
-#treeRoot {
-	margin-top: 6px;
+	margin: 2px;
 }

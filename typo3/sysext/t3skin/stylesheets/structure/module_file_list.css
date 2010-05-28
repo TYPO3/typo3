@@ -14,6 +14,10 @@ table#typo3-filelist img {
 }
 
 table#typo3-filelist tr td {
+	padding: 5px 3px;
+}
+
+table#typo3-filelist tr.t3-row-header td {
 	padding: 3px;
 }
 

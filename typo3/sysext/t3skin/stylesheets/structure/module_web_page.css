@@ -4,12 +4,60 @@ Web > Page
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-table.typo3-page-ceHeader {
-	width: 100%;
+td.t3-page-column {
+	min-width: 150px;
+	max-width: 300px;
 }
 
-table.typo3-page-ceHeader img {
-	vertical-align: middle;
+.t3-page-colHeader {
+	margin-bottom: 10px;
+	position: relative;
+}
+
+.t3-page-colHeader-icons {
+	position: absolute;
+	top: 2px;
+}
+
+.t3-page-ce {
+	margin-bottom: 10px;
+}
+
+.t3-page-ce h4 {
+	margin: 0;
+}
+
+.t3-page-ce .t3-row-header {
+	visibility: hidden;
+}
+
+.t3-page-ce.active .t3-row-header {
+	visibility: visible;
+}
+
+.t3-page-colHeader-icons span.t3-icon,
+.t3-page-ce .t3-row-header span.t3-icon {
+	margin-right: 3px;
+}
+
+.t3-page-ce-icons-move {
+	float: right;
+}
+
+.t3-page-ce-icons-move span {
+	float: left;
+}
+
+.t3-page-ce-body {
+	padding: 7px;
+}
+
+.t3-page-ce-type {
+	margin-bottom: 5px;
+}
+
+.t3-page-ce-type a {
+	vertical-align: text-bottom;
 }
 
 table.typo3-page-columnsMode img.c-divider {

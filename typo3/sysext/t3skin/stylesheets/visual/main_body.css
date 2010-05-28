@@ -6,16 +6,5 @@ $Id$
 
 /* Set default values for bodytags: */
 body {
-	background-color: #efeff4;
-}
-
-/* Setting alternative background color on some frames: */
-body#typo3-alt-toplogo-php,
-body#typo3-alt-menu-sel-php,
-body#typo3-alt-topmenu-dummy-php,
-body#typo3-alt-topmenu-dummy-php-iconmenu,
-body#typo3-alt-clickmenu-php,
-body#typo3-alt-clickmenu-php-notop,
-body#typo3-alt-palette-php {
-	background-color: #9ba1a8;
+	background-color: #f1f1f1;
 }

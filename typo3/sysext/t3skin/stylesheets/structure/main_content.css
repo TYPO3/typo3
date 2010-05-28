@@ -55,6 +55,10 @@ td {
 	vertical-align: top;
 }
 
+.t3-row-header {
+	padding: 3px 7px;
+}
+
 /* Forms */
 
 /* Reformatting of the submit buttons */

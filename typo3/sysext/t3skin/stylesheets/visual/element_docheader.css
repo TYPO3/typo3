@@ -17,12 +17,11 @@ Record editing (alt_doc.php)
 - - - - - - - - - - - - - - - - - - - - - */
 
 div#typo3-docheader-row1 {
-	background: url('../../icons/gfx/alt_menu_mainitem_bg.gif') top left repeat-x;
+	background-color: #585858;
 }
 
 div#typo3-docheader-row2 {
-	background: #f3f3f9;
-	border-bottom: 2px solid #595d66;
+	background-color: #dadada;
 	line-height: 27px;
 }
 
@@ -41,12 +40,4 @@ div#typo3-docheader input {
 
 div#typo3-docheader-row2 div {
 	line-height: normal;
-}
-
-div#typo3-docheader div.buttonsleft div.buttongroup {
-	border-right: 1px dashed #ccc;
-}
-
-div#typo3-docheader div.no-border div.buttongroup {
-	border: 0px;
 }

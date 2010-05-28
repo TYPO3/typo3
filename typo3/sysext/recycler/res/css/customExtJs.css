@@ -49,25 +49,14 @@ body .x-panel {
 
 .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar,
 .x-panel-tbar-noheader .x-toolbar, .x-panel-mc .x-panel-tbar .x-toolbar {
-	background-color:#B8BEC9;
-	background-image:url('../icons/x_toolbar_bg.gif');
-	background-position:left top;
-	background-repeat:repeat-x;
+	background-color: #585858;
 }
 
 .x-toolbar-ct .x-toolbar-left {
 	width: 400px;
-	background-color:#B8BEC9;
-	background-image:url('../icons/x_toolbar_bg.gif');
-	background-position:left top;
-	background-repeat:repeat-x;
 }
 
 .x-toolbar-ct .x-toolbar-right, .x-toolbar-cell {
-	background-color:#B8BEC9;
-	background-image:url('../icons/x_toolbar_bg.gif');
-	background-position:left top;
-	background-repeat:repeat-x;
 }
 
 .x-toolbar-ct .xtb-text {

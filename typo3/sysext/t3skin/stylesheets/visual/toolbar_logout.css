@@ -5,16 +5,18 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 #logout-button input {
-	background: #c3c7ce url('../../icons/gfx/bg_input_button.gif') repeat-x;
-	border: 1px solid #acb3be;
-	color: #333;
+	background: #494949;
+	border: 1px solid #636363;
+	color: #fff;
 	cursor: pointer;
-	line-height: 14px;
 	text-align: center;
 }
 
 #logout-button input:hover {
-	background: #c3c7ce url('../../icons/gfx/bg_input_button_hover.gif') repeat-x;
+	background-color: #c3c7ce;
+	background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
+	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #c8c8c8));
 	border: 1px solid #737f91;
 	color: #000;
 }
