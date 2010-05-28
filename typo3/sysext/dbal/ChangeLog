@@ -1,5 +1,9 @@
 2010-05-28  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #7015: t3lib_DB displays wrong SQL in error case
+
+2010-05-28  Xavier Perseguers  <typo3@perseguers.ch>
+
 	* Set version to 1.1.6 (TYPO3 4.4 beta3)
 
 2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
