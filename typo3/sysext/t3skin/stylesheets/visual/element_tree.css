@@ -1,0 +1,108 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Tree
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-tree a {
+	text-decoration: none;
+}
+
+body#typo3-alt-db-navframe-php div.c-notice {
+	border: 1px solid black;
+}
+
+.navFrameHL {
+	background-color: #d7dbe2;
+}
+
+.navFrameHL a {
+	font-weight: bold;
+}
+
+table#typo3-tree tr:hover {
+	background-color: #d7dbe2;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
+AJAX Page Tree
+- - - - - - - - - - - - - - - - - - - - - */
+
+ul.tree {
+	line-height: 13px;
+	list-style: none;
+}
+
+ul.tree a {
+	text-decoration: none;
+}
+
+ul.tree a.pm {
+	cursor: pointer;
+}
+
+ul.tree ul {
+	list-style: none;
+}
+
+ul.tree ul li {
+	list-style: none;
+	white-space: nowrap;
+}
+
+ul.tree ul li.expanded ul {
+	background: transparent url('../../icons/gfx/ol/line.gif') 2px top repeat-y;
+}
+
+ul.tree ul li.last > ul {
+	background: none;
+}
+
+ul.tree li.active > div.treeLinkItem,
+ul.tree ul li.active > div.treeLinkItem {
+	background-color: #d8d8d8;
+}
+
+ul.tree li.active span a,
+ul.tree ul li.active span a {
+	font-weight: bold;
+}
+
+ul.tree li.active ul span a,
+ul.tree ul li.active ul span a {
+	font-weight: normal;
+}
+
+#dragIcon {
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	white-space: nowrap;
+	-moz-opacity: 0.5;
+}
+
+#treeFilterBox {
+	background-image: url('../../icons/gfx/filter_bg.gif');
+	background-repeat: no-repeat;
+	background-position: 0 -2px;
+}
+
+#treeFilter {
+	background: transparent;
+	border: 0px;
+	font-size: 11px;
+}
+
+#treeFilterReset {
+	border: 0;
+	cursor: pointer;
+}
+
+#tree-toolbar-filter-item {
+	display: inline-block;
+	height: 22px;
+	width: 20px;
+}
+
+#tree-toolbar-filter-item.active {
+	background-image: url("../../icons/gfx/toolbar_item_active_bg.png")
+}
