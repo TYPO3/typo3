@@ -189,14 +189,14 @@ class SC_mod_tools_log_index {
 		$groups = t3lib_BEfunc::getGroupNames();
 		if (is_array($groups))	{
 			foreach ($groups as $grVals) {
-				$this->MOD_MENU['users']['gr-'.$grVals['uid']] = 'Group: '.$grVals['title'];
+				$this->MOD_MENU['users']['gr-' . $grVals['uid']] = $GLOBALS['LANG']->getLL('group') . ' ' . $grVals['title'];
 			}
 		}
 
 		$users = t3lib_BEfunc::getUserNames();
 		if (is_array($users))	{
 			foreach ($users as $grVals) {
-				$this->MOD_MENU['users']['us-'.$grVals['uid']] = 'User: '.$grVals['username'];
+				$this->MOD_MENU['users']['us-' . $grVals['uid']] = $GLOBALS['LANG']->getLL('user') . ' ' . $grVals['username'];
 			}
 		}
 
@@ -263,15 +263,16 @@ class SC_mod_tools_log_index {
 			array(
 				array($GLOBALS['LANG']->getLL('users'), $menuU),
 				array($GLOBALS['LANG']->getLL('time'), $menuT . ($this->MOD_SETTINGS['time'] == 30 ?
-				'<br />from ' . $inputDate . $pickerInputDate . ' to ' . $inputDate_end . $pickerInputDate_end . '&nbsp;' . $setButton : ''))
+				'<br />' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:from', true) . ' ' . $inputDate . $pickerInputDate . 
+				' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:to', true) . ' ' . $inputDate_end . $pickerInputDate_end . '&nbsp;' . $setButton : ''))
 			),
 			array(
 				array($GLOBALS['LANG']->getLL('max'), $menuM),
 				array($GLOBALS['LANG']->getLL('action'), $menuA)
 			),
 			array(
-				$GLOBALS['BE_USER']->workspace!==0 ? array('Workspace:','<b>'.$GLOBALS['BE_USER']->workspace.'</b>') : array('Workspace:',$menuW),
-				array('Group by page:',$groupByPage)
+				$GLOBALS['BE_USER']->workspace !== 0 ? array($GLOBALS['LANG']->getLL('workspace'), '<b>'.$GLOBALS['BE_USER']->workspace . '</b>') : array($GLOBALS['LANG']->getLL('workspace'), $menuW),
+				array($GLOBALS['LANG']->getLL('groupByPage'), $groupByPage)
 			)
 		));
 
@@ -375,12 +376,26 @@ class SC_mod_tools_log_index {
 			$overviewList = array();
 			foreach($logPids as $pid)	{
 				if ((int)$pid>0)	{
-					$overviewList[]= htmlspecialchars(t3lib_BEfunc::getRecordPath($pid,'',20).'" [UID:'.$pid.']');
+					$overviewList[]= htmlspecialchars(
+						sprintf(
+							$GLOBALS['LANG']->getLL('pagenameWithUID'),
+							t3lib_BEfunc::getRecordPath($pid, '', 20),
+							$pid
+						)
+					);
 				}
 			}
 			sort($overviewList);
 			$this->content.=$this->doc->divider(5);
-			$this->content.= $this->doc->section('Overview', 'These pages have log messages from ' . date($this->dateFormat, $starttime) . ' to ' . date($this->dateFormat, $endtime) . '<br /><br /><br />' . implode('<br />', $overviewList), 1, 1, 0);
+			$this->content.= $this->doc->section(
+				$GLOBALS['LANG']->getLL('overview'),
+				sprintf($GLOBALS['LANG']->getLL('timeInfo'),
+					date($this->dateFormat, $starttime),
+					date($this->dateFormat, $endtime)) .
+				'<br /><br /><br />' . implode('<br />', $overviewList),
+				1, 1, 0
+			);
+
 			$this->content.=$this->doc->spacer(30);
 		} else $logPids[] = '_SINGLE';
 
@@ -396,16 +411,23 @@ class SC_mod_tools_log_index {
 					$insertMsg = '';
 				break;
 				case '-1':
-					$insertMsg = ' for NON-PAGE related actions ';
+					$insertMsg = ' ' . $GLOBALS['LANG']->getLL('forNonPageRelatedActions') . ' ';
 				break;
 				case '0':
-					$insertMsg = ' for ROOT LEVEL ';
+					$insertMsg = ' ' . $GLOBALS['LANG']->getLL('forRootLevel') . ' ';
 				break;
 				default:
-					$insertMsg = ' for PAGE "'.t3lib_BEfunc::getRecordPath($pid,'',20).'" ('.$pid.') ';
+					$insertMsg = ' ' . sprintf($GLOBALS['LANG']->getLL('forPage'), t3lib_BEfunc::getRecordPath($pid, '', 20), $pid) . ' ';
 				break;
 			}
-			$this->content.=$this->doc->section('Log '.$insertMsg.'from '.date($this->dateFormat, $starttime).' to '.date($this->dateFormat, $endtime),'',1,1,0);
+			$this->content .= $this->doc->section(
+				sprintf($GLOBALS['LANG']->getLL('logForNonPageRelatedActionsOrRootLevelOrPage'),
+					$insertMsg,
+					date($this->dateFormat, $starttime),
+					date($this->dateFormat, $endtime)
+				),
+				'', 1, 1, 0
+			);
 
 			$log = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', '1=1'.$where_part.($pid!='_SINGLE'?' AND event_pid='.intval($pid):''), '', 'uid DESC', intval($this->MOD_SETTINGS['max']));
 
@@ -441,7 +463,7 @@ class SC_mod_tools_log_index {
 		$markers['CONTENT'] = $this->content;
 
 			// Build the <body> for the module
-		$this->content = $this->doc->startPage('Administration log');
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('adminLog'));
 		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);

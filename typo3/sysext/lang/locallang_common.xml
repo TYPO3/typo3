@@ -27,6 +27,7 @@
 			<label index="file">File</label>
 			<label index="files">Files</label>
 			<label index="first">First</label>
+			<label index="from">From</label>
 			<label index="go">Go</label>
 			<label index="goTo">Go to</label>
 			<label index="help">Help</label>
@@ -59,6 +60,7 @@
 			<label index="start">Start</label>
 			<label index="stop">Stop</label>
 			<label index="submit">Submit</label>
+			<label index="to">To</label>
 			<label index="tsRef">TSref reference</label>
 			<label index="up">Up</label>
 			<label index="upload">Upload</label>
