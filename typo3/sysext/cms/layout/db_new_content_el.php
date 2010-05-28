@@ -291,10 +291,6 @@ class SC_db_new_content_el {
 				} else {
 					top.TYPO3ModuleMenu.refreshMenu();
 				}
-
-				if(top.shortcutFrame) {
-					top.shortcutFrame.refreshShortcuts();
-				}
 			');
 
 				// Traverse items for the wizard.

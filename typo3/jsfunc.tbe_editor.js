@@ -409,13 +409,6 @@ var TBE_EDITOR = {
 	 */
 	checkSubmit: function(sendAlert) {
 		var funcIndex, funcMax, funcRes;
-		if (TBE_EDITOR.backend_interface == "backend_old") {
-			if (TBE_EDITOR.checkLoginTimeout() && confirm(TBE_EDITOR.labels.refresh_login)) {
-				vHWin=window.open(TBE_EDITOR.backPath+'login_frameset.php?','relogin','height=300,width=400,status=0,menubar=0');
-				vHWin.focus();
-				return false;
-			}
-		}
 		var OK=1;
 
 		// $this->additionalJS_submit:

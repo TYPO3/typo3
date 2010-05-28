@@ -53,16 +53,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:condensedMode',
 			'csh' => 'condensedMode',
 		),
-		'noMenuMode' => array(
-			'type' => 'select',
-			'items' => array(
-				'0' => 'LLL:EXT:setup/mod/locallang.xml:noMenuMode_def',
-				'1' => 'LLL:EXT:setup/mod/locallang.xml:noMenuMode_sel',
-				'icons' => 'LLL:EXT:setup/mod/locallang.xml:noMenuMode_icons',
-			),
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:noMenuMode',
-			'csh' => 'noMenuMode',
-		),
 		'startModule' => array(
 			'type' => 'select',
 			'itemsProcFunc' => 'SC_mod_user_setup_index->renderStartModuleSelect',
@@ -161,7 +151,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 		),
 	),
 	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
-			--div--;LLL:EXT:setup/mod/locallang.xml:opening,condensedMode,noMenuMode,startModule,thumbnailsByDefault,helpText,edit_showFieldHelp,titleLen,
+			--div--;LLL:EXT:setup/mod/locallang.xml:opening,condensedMode,startModule,thumbnailsByDefault,helpText,edit_showFieldHelp,titleLen,
 			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,enableFlashUploader,resizeTextareas,resizeTextareas_MaxHeight,resizeTextareas_Flexible,disableCMlayers,copyLevels,recursiveDelete,
 			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,installToolEnableButton'
 

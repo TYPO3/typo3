@@ -1,3 +1,7 @@
+2010-05-28  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14462: Remove old_backend
+
 2010-05-28  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #14503: HTML is shown in sysext belog after the usage of the sprite api for icons (thanks to Andy Grunwald)

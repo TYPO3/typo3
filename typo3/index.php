@@ -386,10 +386,8 @@ class SC_index {
 				// Based on specific setting of interface we set the redirect script:
 			switch ($this->GPinterface)	{
 				case 'backend':
-					$this->redirectToURL = 'backend.php';
-				break;
 				case 'backend_old':
-					$this->redirectToURL = 'alt_main.php';
+					$this->redirectToURL = 'backend.php';
 				break;
 				case 'frontend':
 					$this->redirectToURL = '../';
@@ -443,7 +441,7 @@ class SC_index {
 
 				$jumpScript=array();
 				$jumpScript['backend']     = 'backend.php';
-				$jumpScript['backend_old'] = 'alt_main.php';
+				$jumpScript['backend_old'] = 'backend.php';
 				$jumpScript['frontend']    = '../';
 
 					// Traverse the interface keys:

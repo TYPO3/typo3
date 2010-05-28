@@ -13,7 +13,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 	$presetSkinImgs = is_array($TBE_STYLES['skinImg']) ?
 		$TBE_STYLES['skinImg'] :
 		array();
-		
+
 	$TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories']['sprites'] = 'EXT:t3skin/stylesheets/sprites/';
 
 	/**
@@ -85,8 +85,6 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 		// Alternative dimensions for frameset sizes:
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 160;		// Left menu frame width
 	$TBE_STYLES['dims']['topFrameH']      = 45;			// Top frame heigth
-	$TBE_STYLES['dims']['shortcutFrameH'] = 35;			// Shortcut frame height
-	$TBE_STYLES['dims']['selMenuFrame']   = 200;		// Width of the selector box menu frame
 	$TBE_STYLES['dims']['navFrameWidth']  = 260;		// Default navigation frame width
 
 		// Setting roll-over background color for click menus:

@@ -354,10 +354,6 @@ class SC_mod_user_setup_index {
 				} else {
 					top.TYPO3ModuleMenu.refreshMenu();
 				}
-
-				if (top.shortcutFrame) {
-					top.shortcutFrame.refreshShortcuts();
-				}
 			';
 		}
 
@@ -911,10 +907,6 @@ class SC_mod_user_setup_index {
 			// disable fields depended on settings
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
 			$fieldList = t3lib_div::rmFromList('edit_RTE', $fieldList);
-}
-
-		if ($GLOBALS['BE_USER']->uc['interfaceSetup'] != 'backend_old') {
-			$fieldList = t3lib_div::rmFromList('noMenuMode', $fieldList);
 		}
 
 		$fieldArray = t3lib_div::trimExplode(',', $fieldList, TRUE);

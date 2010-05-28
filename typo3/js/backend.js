@@ -61,12 +61,6 @@ var ShortcutManager = {
 					// backend.php
 				TYPO3BackendShortcutMenu.createShortcut('', moduleName, url);
 			}
-
-			if(top.shortcutFrame) {
-					// alt_main.php
-				var location = backPath + 'alt_shortcut.php?modName=' + moduleName + '&URL=' + url;
-				shortcutFrame.location.href = location;
-			}
 		}
 	}
 }

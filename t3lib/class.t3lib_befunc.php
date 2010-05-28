@@ -4410,7 +4410,7 @@ final class t3lib_BEfunc {
 	/**
 	 * Returns the name of the backend script relative to the TYPO3 main directory.
 	 *
-	 * @param	string		Name of the backend interface  (backend, backend_old, frontend) to look up the script name for. If no interface is given, the interface for the current backend user is used.
+	 * @param	string		Name of the backend interface  (backend, frontend) to look up the script name for. If no interface is given, the interface for the current backend user is used.
 	 * @return	string		The name of the backend script relative to the TYPO3 main directory.
 	 */
 	public static function getBackendScript($interface = '') {
@@ -4419,9 +4419,6 @@ final class t3lib_BEfunc {
 		}
 
 		switch ($interface) {
-			case 'backend_old':
-				$script = 'alt_main.php';
-				break;
 			case 'frontend':
 				$script = '../.';
 				break;

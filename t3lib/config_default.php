@@ -220,8 +220,7 @@ $TYPO3_CONF_VARS = array(
 		'maxFileSize' => '10240',				// Integer. If set this is the max filesize in KB's for file operations in the backend. Can be overridden through $TCA per table field separately.
 		'forceCharset' => '',					// String. Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value.
 		'installToolPassword' => '',			// String. This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
- 		'defaultUserTSconfig' => 'options.shortcutFrame=1
-			options.enableShortcuts=1',			// String (exclude). Enter lines of default backend user/group TSconfig.
+ 		'defaultUserTSconfig' => 'options.enableShortcuts=1',	// String (exclude). Enter lines of default backend user/group TSconfig.
 		'defaultPageTSconfig' => '',			// String (exclude).Enter lines of default Page TSconfig.
 		'defaultPermissions' => array (			// Default permissions set for new pages in t3lib/tce_main.php. Keys are 'show,edit,delete,new,editcontent'. Enter as comma-list
 //			'user' => '',						// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.
@@ -242,7 +241,7 @@ $TYPO3_CONF_VARS = array(
 		),
 		'customPermOptions' => array(),			// Array with sets of custom permission options. Syntax is; 'key' => array('header' => 'header string, language splitted', 'items' => array('key' => array('label, language splitted', 'icon reference', 'Description text, language splitted'))). Keys cannot contain ":|," characters.
 		'fileDenyPattern' => FILE_DENY_PATTERN_DEFAULT ,	// A perl-compatible regular expression (without delimiters!) that - if it matches a filename - will deny the file upload/rename or whatever in the webspace. For security reasons, files with multiple extensions have to be denied on an Apache environment with mod_alias, if the filename contains a valid php handler in an arbitary position. Also, ".htaccess" files have to be denied. Matching is done case-insensitive. Default value is stored in constant FILE_DENY_PATTERN_DEFAULT
-		'interfaces' => 'backend',					// This determines which interface options is available in the login prompt and in which order (All options: ",backend,backend_old,frontend")
+		'interfaces' => 'backend',					// This determines which interface options is available in the login prompt and in which order (All options: ",backend,frontend")
 		'useOnContextMenuHandler' => TRUE,		// Boolean. If set, the context menus (clickmenus) in the backend are activated on right-click - although this is not a XHTML attribute!
 		'loginLabels' => 'Username|Password|Interface|Log In|Log Out|Backend,Front End,Traditional Backend|Administration Login on ###SITENAME###|(Note: Cookies and JavaScript must be enabled!)|Important Messages:|Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.',		// Language labels of the login prompt, separated with a pipe symbol (|). These should not be used anymore to change the labels since TYPO3 4.3, furthermore overload the labels with , see EXT:lang/locallang_login.xml for the used labels.
 		'loginNews' => array(),						// In this array you can define news-items for the login screen. To this array, add arrays with assoc keys 'date', 'header', 'content' (HTML content) and for those appropriate value pairs
