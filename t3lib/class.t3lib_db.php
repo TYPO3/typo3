@@ -486,33 +486,31 @@ class t3lib_DB {
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	array		See exec_UPDATEquery()
 	 * @param	array		See fullQuoteArray()
-	 * @return	string		Full SQL query for UPDATE (unless $fields_values does not contain any elements in which case it will be false)
+	 * @return	string		Full SQL query for UPDATE
 	 */
 	function UPDATEquery($table, $where, $fields_values, $no_quote_fields = FALSE) {
-
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this
 			// function (contrary to values in the arrays which may be insecure).
 		if (is_string($where)) {
+			$fields = array();
 			if (is_array($fields_values) && count($fields_values)) {
 
 					// quote and escape values
 				$nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 
-				$fields = array();
 				foreach ($nArr as $k => $v) {
 					$fields[] = $k.'='.$v;
 				}
-
-					// Build query:
-				$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) .
-					(strlen($where) > 0 ? ' WHERE ' . $where : '');
-
-					// Return query:
-				if ($this->debugOutput || $this->store_lastBuiltQuery) {
-					$this->debug_lastBuiltQuery = $query;
-				}
-				return $query;
 			}
+
+				// Build query:
+			$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) .
+				(strlen($where) > 0 ? ' WHERE ' . $where : '');
+
+			if ($this->debugOutput || $this->store_lastBuiltQuery) {
+				$this->debug_lastBuiltQuery = $query;
+			}
+			return $query;
 		} else {
 			throw new InvalidArgumentException(
 				'TYPO3 Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !',
