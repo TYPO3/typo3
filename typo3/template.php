@@ -195,6 +195,12 @@ class template {
 	var $backGroundImage = '';		// Background image of page (relative to PATH_typo3)
 	var $inDocStyles_TBEstyle = '';	// Inline css styling set from TBE_STYLES array
 
+	/**
+	 * Whether to use the X-UA-Compatible meta tag
+	 * @var boolean 
+	 */
+	protected $useCompatibilityTag = TRUE;
+
 		// Skinning
 		// stylesheets from core
 	protected $stylesheetsCore = array(
@@ -630,6 +636,16 @@ class template {
 		}
 	}
 
+	/**
+	 * Defines whether to use the X-UA-Compatible meta tag.
+	 *
+	 * @param boolean $useCompatibilityTag Whether to use the tag
+	 * @return void
+	 */
+	public function useCompatibilityTag($useCompatibilityTag = TRUE) {
+		$this->useCompatibilityTag = (bool) $useCompatibilityTag;
+	}
+
 
 
 
@@ -687,7 +703,7 @@ class template {
 		header ('Content-Type:text/html;charset='.$this->charset);
 
 			// Standard HTML tag
-		$this->pageRenderer->setHtmlTag('<html xmlns="http://www.w3.org/1999/xhtml">');
+		$htmlTag = '<html xmlns="http://www.w3.org/1999/xhtml">';
 
 		switch($this->docType)	{
 			case 'html_3':
@@ -703,16 +719,24 @@ class template {
 				break;
 			case 'xhtml_frames':
 				$headerStart = '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
+	PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
-			// The fallthrough is intended as XHTML 1.0 transitional is the default for the BE.
+			case 'html_5':
+				$headerStart = '<!DOCTYPE html>' . LF;
+				$htmlTag = '<html>';
+				// disable rendering of XHTML tags
+				$this->getPageRenderer()->setRenderXhtml(FALSE);
+				break;
+				// The fallthrough is intended as XHTML 1.0 transitional is the default for the BE.
 			case 'xhtml_trans':
 			default:
 				$headerStart = '<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 		}
+
+		$this->pageRenderer->setHtmlTag($htmlTag);
 
 		// This loads the tabulator-in-textarea feature. It automatically modifies
 		// every textarea which is found.
@@ -730,7 +754,7 @@ class template {
 		$xmlStylesheet = '<?xml-stylesheet href="#internalStyle" type="text/css"?>';
 
 			// Add the XML prologue for XHTML doctypes
-		if ($this->docType !== 'html_3') {
+		if ($this->docType !== 'html_3' && $this->docType !== 'html_5') {
 				// Put the XML prologue before or after the doctype declaration according to browser
 			if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
 				$headerStart = $headerStart . LF . $xmlPrologue;
@@ -748,7 +772,9 @@ class template {
 		$this->pageRenderer->setHeadTag('<head>' . LF. '<!-- TYPO3 Script ID: '.htmlspecialchars($this->scriptID).' -->');
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
-		$this->pageRenderer->addMetaTag($this->xUaCompatible());
+		if ($this->useCompatibilityTag) {
+			$this->pageRenderer->addMetaTag($this->xUaCompatible());
+		}
 		$this->pageRenderer->setTitle($title);
 
 		// add docstyles
@@ -813,7 +839,7 @@ $str.=$this->docBodyTagBegin().
 			header('Content-Encoding: None');
 		}
 
-		if ($this->docType!='xhtml_frames') {
+		if ($this->docType !== 'xhtml_frames') {
 
 			$str .= ($this->divClass?'
 
@@ -1169,12 +1195,11 @@ $str.=$this->docBodyTagBegin().
 	/**
 	 * Returns X-UA-Compatible meta tag
 	 *
+	 * @param	string		$content Content of the compatible tag (default: IE-8)
 	 * @return	string		<meta http-equiv="X-UA-Compatible" content="???" />
 	 */
-	function xUaCompatible() {
-			// the most recent version if Internet Explorer, in which the Backend works
-		$str = "IE=8";
-		return '<meta http-equiv="X-UA-Compatible" content="' . $str . '" />';
+	public function xUaCompatible($content = 'IE=8') {
+		return '<meta http-equiv="X-UA-Compatible" content="' . $content . '" />';
 	}
 
 

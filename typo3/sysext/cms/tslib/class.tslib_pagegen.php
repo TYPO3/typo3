@@ -428,6 +428,9 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 	PUBLIC "-//W3C//DTD XHTML 2.0//EN"
 	"http://www.w3.org/TR/xhtml2/DTD/xhtml2.dtd">';
 					break;
+				case 'html_5' :
+					$docTypeParts[] = '<!DOCTYPE html>';
+					break;
 				case 'none' :
 					break;
 				default :

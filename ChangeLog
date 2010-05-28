@@ -1,5 +1,6 @@
 2010-05-28  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #11503: HTML5 doctype implementation
 	* Follow-up to feature #14506: Fixes for alt_db_navframe (page tree filter) (Thanks to Steffen Gebert)
 	* Follow-up to feature #14490: forgotten css file
 	* Follow-up to feature #14490: A new skin for the TYPO3 Backend (Thanks to Steffen Gebert and Lars Zimmermann)
