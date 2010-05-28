@@ -8,7 +8,7 @@ General
 
 	* TYPO3 requires PHP 5.2 now
 
-	* There is now a complete new Backend skin for all modules, the login screen and the install tool. It is still called "t3skin", however due to the use of icon sprites and the refactoring of the CSS files, it is not possible anymore to run the TYPO3 backend with the old backend skin (from 3.x), the t3skin look and feel from the previous 4.x versions can be obtained by the TER, but is not actively maintained anymore.
+	* There is now a complete new Backend skin for all backend modules, the login screen and the install tool. It is still called "t3skin", however due to the use of icon sprites and the refactoring of the CSS files, it is not possible anymore to run the TYPO3 backend with the old backend skin (from 3.x), the t3skin look and feel from the previous 4.x versions can be obtained by the TER, but is not actively maintained anymore.
 
 	* The static templates for some basic designs that were part of the TYPO3 Core since TYPO3 3.5 are now moved to a system extension that is not included by default. If you are using one of these templates (GLUECK, GREEN, CANDIDATE etc) or one of the old table-based layouts for rendering content (like content (default) or plaintext rendering), make sure to install the system extension via the TYPO3 Installer.
 
@@ -39,8 +39,6 @@ General
 Backend
 =======
 
-	* Skins now have to register themselves by adding an entry $TBE_STYLES['skins'][$_EXTKEY]. By default, all CSS files from subdirectories stylesheets/structure/ and stylesheets/visual/ are included, additional directories can be added by setting $TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories'].
-
 	* The TYPO3 Backend was moved into an ExtJS Viewport. This is one of the first steps in a sequence to ExtJSify the complete backend. Currently this gives you the possibility to create your own left sidebar (like the pagetree) in your backend modules. Also you can extend the viewport easily with own code to create e.g. a collapsable module menu. More Informations can be found in the TYPO3 Wiki and the official ExtJS viewport documentation. See these links: http://wiki.typo3.org/index.php/TYPO3Viewport and http://www.extjs.com/deploy/dev/docs/
 	
 	* Inline Records (IRRE Elements) are now loaded on demand, which is only when they are opened. This should speed up the editing process drastically.  
@@ -50,6 +48,7 @@ Backend
 	* A donate notice will be shown to admins in the TYPO3 backend after using it for more than three months.
 	  This behaviour can be disabled completely - see $TYPO3_CONF_VARS[BE][allowDonateWindow].
 
+	* Most Icons used in the TYPO3 Backend are now rendered through so-called sprites. Instead of loading many image tags with single icons and therefore many http requests we now just have 6 sprites (one big image with all icons included) that need to be loaded. Image tags got replaced by spans using the big sprite images with background and offset. This reduces the HTTP and fileheader overhead of about 90% which results in a blasting fast Backend. For details about the new icon sprite API, have a look at t3lib/class.t3lib_iconworks.php.
 
 Frontend
 ========
@@ -108,7 +107,11 @@ DBAL
 Backend skin
 ============
 
-	* ...
+	* There is now a complete new Backend skin for all backend modules, the login screen and the install tool. It is still called "t3skin", however due to the use of icon sprites and the refactoring of the CSS files, it is not possible anymore to run the TYPO3 backend with the old backend skin (from 3.x), the t3skin look and feel from the previous 4.x versions can be obtained by the TER, but is not actively maintained anymore.
+
+	* Skins now have to register themselves by adding an entry $TBE_STYLES['skins'][$_EXTKEY]. By default, all CSS files from subdirectories stylesheets/structure/ and stylesheets/visual/ are included, additional directories can be added by setting $TBE_STYLES['skins'][$_EXTKEY]['stylesheetDirectories'].
+
+	* Most Icons used in the TYPO3 Backend are now rendered through so-called sprites. Instead of loading many image tags with single icons and therefore many http requests we now just have 6 sprites (one big image with all icons included) that need to be loaded. Image tags got replaced by spans using the big sprite images with background and offset. This reduces the HTTP and fileheader overhead of about 90% which results in a blasting fast Backend. For details about the new icon sprite API, have a look at t3lib/class.t3lib_iconworks.php.
 
 
 Speed improvements
