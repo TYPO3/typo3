@@ -1,5 +1,6 @@
 2010-05-28  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #14490: A new skin for the TYPO3 Backend (Thanks to Steffen Gebert and Lars Zimmermann)
 	* Fixed bug #14462: Remove old_backend
 
 2010-05-28  Oliver Hader  <oliver@typo3.org>

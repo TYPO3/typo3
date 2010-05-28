@@ -215,9 +215,9 @@ class SC_alt_db_navframe {
 			$flashText = '
 				<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))) . '">' .
 				$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount',1) .
-				'</a>		<br />' . 
+				'</a>		<br />' .
 				$LANG->sl('LLL:EXT:lang/locallang_core.xml:labels.path',1) . ': <span title="' .
-				htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . 
+				htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' .
 				htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).
 				'</span>
 			';
@@ -229,7 +229,7 @@ class SC_alt_db_navframe {
 				t3lib_FlashMessage::INFO
 			);
 
-		
+
 			$this->content.= $flashMessage->render();
 		}
 
@@ -293,12 +293,12 @@ class SC_alt_db_navframe {
 			// New Page
 		$onclickNewPageWizard = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'db_new.php?pagesOnly=1&amp;id=\'+Tree.pageID;';
 		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:newPage', TRUE) . '">' .
-				t3lib_iconWorks::getSpriteIcon('actions-page-new') . 
+				t3lib_iconWorks::getSpriteIcon('actions-page-new') .
 			'</a>';
 
 			// Refresh
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.refresh', TRUE) . '">' .
-				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') . 
+				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
 			'</a>';
 
 			// CSH
@@ -306,7 +306,7 @@ class SC_alt_db_navframe {
 
 			// Filter
 		if ($this->hasFilterBox) {
-			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item"><img' . t3lib_iconWorks::skinImg('', 'gfx/filter.png') . ' title="' .. $LANG->sL('LLL:EXT:cms/layout/locallang.xml:labels.filter', 1) . '" alt="" /></a></span>';
+			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item"><img' . t3lib_iconWorks::skinImg('', 'gfx/filter.png') . ' title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:labels.filter', 1) . '" alt="" /></a></span>';
 		}
 
 		return $buttons;
@@ -336,7 +336,7 @@ class SC_alt_db_navframe {
 			$workspaceInfo = '
 				<div class="bgColor4 workspace-info">
 					<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
-					  t3lib_iconWorks::getSpriteIcon('status-workspace-draft') . 
+					  t3lib_iconWorks::getSpriteIcon('status-workspace-draft') .
 					'</a>'.$wsTitle.'
 				</div>
 			';
