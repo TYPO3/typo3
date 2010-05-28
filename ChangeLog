@@ -30,7 +30,7 @@
 
 2010-05-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #14508: Fixes to the Page module: Add missing js file as follow-up to #14490
+	* Fixed bug #14508: Fixes to the Page module: Add missing js file as follow-up to #14490 (Thanks to Steffen Gebert)
 	* Fixed bug #13636: sysext:version needs doNotLoadInFE => 0 (Thanks to Georg Ringer)
 	* Fixed bug #9731: Wrong XCLASS definition in t3lib/t3lib_rteapi.php (Thanks to Marcus Schwemer)
 	* Fixed bug #7015: t3lib_DB displays wrong SQL in error case (Thanks to Steffen Ritter)
