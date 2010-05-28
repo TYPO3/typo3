@@ -4230,7 +4230,7 @@ final class t3lib_BEfunc {
 			if (!$count && $lastRefIndexUpdate) {
 				$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
 				$warnings["backend_reference"] = sprintf(
-					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference'),
+					$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference_index'),
 					'<a href="'.$url.'">',
 					'</a>',
 					t3lib_BEfunc::dateTime($lastRefIndexUpdate));

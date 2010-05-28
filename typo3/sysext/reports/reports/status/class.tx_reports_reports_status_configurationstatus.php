@@ -72,7 +72,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 			$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
 			$message  = sprintf(
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference'),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference_index'),
 				'<a href="' . $url . '">',
 				'</a>',
 				t3lib_BeFunc::dateTime($lastRefIndexUpdate)

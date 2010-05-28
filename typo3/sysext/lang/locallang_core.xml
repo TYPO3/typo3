@@ -252,7 +252,8 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="warning.install_encryption">The encryption key is not set. Set it in the %sBasic Configuration section%s of the Install Tool.</label>
 			<label index="warning.install_update">This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the %sUpdate Wizard%s section of the Install Tool to see how TYPO3 would change.</label>
 			<label index="warning.header">Important Notice!</label>
-			<label index="warning.backend_reference">The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</label>
+			<label index="warning.backend_reference">The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</label>
+			<label index="warning.backend_reference_index">The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</label>
 			<label index="warning.memcache_not_usable">Memcache is configured, but connection to memcached failed with these configuration(s):</label>
 			<label index="warning.file_missing">File is missing!</label>
 			<label index="warning.file_missing_text">This content element references a file which seems to not exist:</label>

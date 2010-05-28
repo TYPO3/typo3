@@ -1,3 +1,7 @@
+2010-05-27  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Follow-up to bug #3800: change the label names (warning about empty reference index table) (thanks to Michael Knabe)
+
 2010-05-28  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to bug #14465: Make use of the new Sprite API throughout the TYPO3 Core Backend
