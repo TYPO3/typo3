@@ -917,7 +917,7 @@ class wslib_gui {
 		// History/Log
 		$actionLinks.=
 			'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'" title="' . $LANG->getLL('img_title_show_log') . '">' . 
-			  t3lib_iconWorks::skinImg('actions-document-history-open') . 
+			  t3lib_iconWorks::getSpriteIcon('actions-document-history-open') . 
 			'</a>';
 
 		// View
