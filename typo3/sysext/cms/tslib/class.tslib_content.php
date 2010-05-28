@@ -6080,7 +6080,8 @@ class tslib_cObj {
 							// Find all domain records in the rootline of the target page
 							$targetPageRootline = $GLOBALS['TSFE']->sys_page->getRootLine($page['uid']);
 							$foundDomains = array();
-							$foundForcedDomains = array();
+							$firstFoundDomains = array();
+							$firstFoundForcedDomains = array();
 							$targetPageRootlinePids = array();
 							foreach ($targetPageRootline as $data)	{
 								$targetPageRootlinePids[] = intval($data['uid']);
@@ -6095,27 +6096,28 @@ class tslib_cObj {
 							);
 							// TODO maybe it makes sense to hold all sys_domain records in a cache to save additional DB querys on each typolink
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-								if (!isset($foundDomains[$row['pid']])) {
-									$foundDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
+								$foundDomains[] = preg_replace('/\/$/', '', $row['domainName']);
+								if (!isset($firstFoundDomains[$row['pid']])) {
+									$firstFoundDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
 								}
-								if ($row['forced'] && !isset($foundForcedDomains[$row['pid']])) {
-									$foundForcedDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
+								if ($row['forced'] && !isset($firstFoundForcedDomains[$row['pid']])) {
+									$firstFoundForcedDomains[$row['pid']] = preg_replace('/\/$/', '', $row['domainName']);
 								}
 							}
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 							// Set targetDomain to first found domain record if the target page cannot be reached within the current domain
 							if (count($foundDomains) > 0
-							  && (!in_array($currentDomain, $foundDomains) || count($foundForcedDomains) > 0)) {
+							  && (!in_array($currentDomain, $foundDomains) || count($firstFoundForcedDomains) > 0)) {
 								foreach ($targetPageRootlinePids as $pid) {
 									// Always use the 'forced' domain if we found one
-									if (isset($foundForcedDomains[$pid])) {
-										$targetDomain = $foundForcedDomains[$pid];
+									if (isset($firstFoundForcedDomains[$pid])) {
+										$targetDomain = $firstFoundForcedDomains[$pid];
 										break;
 									}
 									// Use the first found domain record
-									if ($targetDomain === '' && isset($foundDomains[$pid])) {
-										$targetDomain = $foundDomains[$pid];
+									if ($targetDomain === '' && isset($firstFoundDomains[$pid])) {
+										$targetDomain = $firstFoundDomains[$pid];
 									}
 								}
 								// Do not prepend the domain if its the current hostname
