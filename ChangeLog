@@ -1,3 +1,7 @@
+2010-05-28  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #14342: t3lib_compressor does not rewrite "data:" URIs (Thanks to Steffen Gebert)
+
 2010-05-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raised Extbase version from 1.2.0beta1 to 1.2.0beta2

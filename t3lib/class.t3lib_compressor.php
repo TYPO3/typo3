@@ -331,9 +331,12 @@ class t3lib_compressor {
 		foreach ($matches[2] as $matchCount => $match) {
 				// remove '," or white-spaces around
 			$match = preg_replace('/[\"\'\s]/', '', $match);
-			$newPath = t3lib_div::resolveBackPath('../../' . TYPO3_mainDir . $oldDir . $match);
 
-			$contents = str_replace($matches[1][$matchCount], '(\'' . $newPath  . '\')', $contents);
+				// we must not rewrite paths containing ":", e.g. data URIs (see RFC 2397)
+			if (strpos($match, ':') === FALSE) {
+				$newPath = t3lib_div::resolveBackPath('../../' . TYPO3_mainDir . $oldDir . $match);
+				$contents = str_replace($matches[1][$matchCount], '(\'' . $newPath  . '\')', $contents);
+			}
 		}
 		return $contents;
 	}
