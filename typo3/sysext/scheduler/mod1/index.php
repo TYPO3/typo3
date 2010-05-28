@@ -1113,16 +1113,17 @@ class tx_scheduler_Module extends t3lib_SCbase {
 						$executionStatus  = 'disabled';
 					}
 
-						// A failure is the worst thing that could happen, so it must overwrite all other statuses
+						// Check if the last run failed
+					$failureOutput = '';
 					if (!empty($schedulerRecord['lastexecution_failure'])) {
 						$exception = unserialize($schedulerRecord['lastexecution_failure']);
-
-						$executionStatus       = 'failure';
-						$executionStatusDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exception->getCode(), $exception->getMessage());
+						$failureDetail = sprintf($GLOBALS['LANG']->getLL('msg.executionFailureReport'), $exception->getCode(), $exception->getMessage());
+						$failureOutput = ' <img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_failure.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.failure')) . '" title="' . htmlspecialchars($failureDetail) . '" />';
 					}
 
-						// Format the execution status
-					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($executionStatusDetail) . '" />' . ' ' . htmlspecialchars($name);
+						// Format the execution status,
+						// including failure feedback, if any
+					$executionStatusOutput = '<img ' . t3lib_iconWorks::skinImg(t3lib_extMgm::extRelPath('scheduler'), 'res/gfx/status_' . $executionStatus . '.png') . ' alt="' . htmlspecialchars($GLOBALS['LANG']->getLL('status.' . $executionStatus)) . '" title="' . htmlspecialchars($executionStatusDetail) . '" />' . $failureOutput . ' ' . htmlspecialchars($name);
 
 					$table[$tr][] = $startExecutionElement;
 					$table[$tr][] = $actions;

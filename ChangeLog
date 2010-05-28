@@ -1,4 +1,8 @@
-2010-05-27  Tobias Liebig  <mail_typo3@etobi.de>
+2010-05-28 Francois Suter  <francois@typo3.org>
+
+	* Fixed bug: #13315: Scheduler: Failed status hides other statuses
+
+2010-05-28  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Follow-up to bug #3800: change the label names (warning about empty reference index table) (thanks to Michael Knabe)
 
