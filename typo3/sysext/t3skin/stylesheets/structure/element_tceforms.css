@@ -25,14 +25,24 @@ img.t3-TCEforms-contentchangedImg {
 	width: 7px;
 }
 
+.t3-form-palette-icon-required {
+	display: inline-block;
+	height: 16px;
+	margin-right: 2px;
+	width: 16px;
+}
+/* renamed to .t3-form-palette-icon-required, lines below kept for backwards-compatibility */
 img.t3-TCEforms-reqPaletteImg {
 	display: inline-block;
 	height: 16px;
 	margin-right: 2px;
 	width: 16px;
-
 }
 
+.t3-form-palette-icon-contentchanged {
+	width: 7px;
+}
+/* renamed to .t3-form-palette-icon-contentchanged, lines below kept for backwards-compatibility */
 img.t3-TCEforms-contentchangedPaletteImg {
 	width: 7px;
 }
@@ -172,6 +182,16 @@ table.typo3-TCEforms td.thumbnails {
 
 .typo3-TCEforms-palette selct.select {
 	margin-top: 2px;
+}
+
+.t3-form-palette-field-container {
+	display:inline-block;
+	margin-left:20px;
+	vertical-align:top;
+}
+
+.t3-form-palette-field-container .t3-form-palette-field-label, .t3-form-palette-field-container .t3-form-palette-field {
+	display:block;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -

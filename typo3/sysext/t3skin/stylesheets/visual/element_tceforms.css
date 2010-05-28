@@ -212,6 +212,9 @@ table.typo3-TCEforms table.wrapperAttention .wrapperTable5 {
 	border: 1px solid #a30904;
 }
 
+.t3-form-palette-fieldset {
+	border:none;
+}
 
 input.typo3-TCEforms-suggest-search {
 	background-image: url('../../icons/gfx/zoom.gif');

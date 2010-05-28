@@ -4955,20 +4955,34 @@ class t3lib_TCEforms	{
 	 * @param	array		The palette array to print
 	 * @return	string		HTML output
 	 */
-	function printPalette($palArr)	{
+	function printPalette($palArr) {
+		$fieldAttributes = $labelAttributes = '';
 
 			// Init color/class attributes:
-		$ccAttr2 = $this->colorScheme[2] ? ' bgcolor="'.$this->colorScheme[2].'"' : '';
-		$ccAttr2.= $this->classScheme[2] ? ' class="'.$this->classScheme[2].'"' : '';
-		$ccAttr4 = $this->colorScheme[4] ? ' style="color:'.$this->colorScheme[4].'"' : '';
-		$ccAttr4.= $this->classScheme[4] ? ' class="'.$this->classScheme[4].'"' : '';
+		if ($this->colorScheme[2]) {
+			$labelAttributes .= ' bgcolor="' . $this->colorScheme[2] . '"';
+		}
+
+		if ($this->classScheme[2]) {
+			$labelAttributes .= ' class="t3-form-palette-field-label ' . $this->classScheme[2] . '"';
+		} else {
+			$labelAttributes .= ' class="t3-form-palette-field-label"';
+		}
+
+		if ($this->colorScheme[4]) {
+			$fieldAttributes .= ' style="color: ' . $this->colorScheme[4] . '"';
+		}
+		
+		if ($this->classScheme[4]) {
+			$fieldAttributes .= ' class="t3-form-palette-field' . $this->classScheme[4] . '"';
+		}
 
 		$row = 0;
 		$hRow = $iRow = array();
 		$lastLineWasLinebreak = FALSE;
 
-			// Traverse palette fields and render them into table rows:
-		foreach($palArr as $content)	{
+			// Traverse palette fields and render them into containers:
+		foreach ($palArr as $content) {
 			if ($content['NAME'] === '--linebreak--') {
 				if (!$lastLineWasLinebreak) {
 					$row++;
@@ -4976,42 +4990,30 @@ class t3lib_TCEforms	{
 				}
 			} else {
 				$lastLineWasLinebreak = FALSE;
-				$hRow[$row][] = '<td' . $ccAttr2 . '>&nbsp;</td>
-					<td nowrap="nowrap"'.$ccAttr2.'>'.
-						'<span'.$ccAttr4.'>'.
-							$content['NAME'].
-						'</span>'.
-					'</td>';
-				$iRow[$row][] = '<td valign="top">' .
-						'<img name="req_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" class="t3-TCEforms-reqPaletteImg"alt="" />'.
-						'<img name="cm_'.$content['TABLE'].'_'.$content['ID'].'_'.$content['FIELD'].'" src="clear.gif" class="t3-TCEforms-contentchangedPaletteImg" alt="" />'.
-					'</td>
-					<td nowrap="nowrap" valign="top">'.
-						$content['ITEM'].
-						$content['HELP_ICON'].
-					'</td>';
-		}
+				$fieldIdentifierForJs = $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'];
+				$iRow[$row][] = '<span class="t3-form-palette-field-container">' .
+						'<label' . $labelAttributes . '>' .
+							$content['NAME'] . 
+							'<img name="req_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-required" alt="" />' .
+							'<img name="cm_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />' .
+						'</label>' .
+						'<span' . $fieldAttributes . '>' .
+							$content['ITEM'] .
+							$content['HELP_ICON'] .
+						'</span>' .
+					'</span>';
+			}
 		}
 
-			// Final wrapping into the table:
-		$out='<table border="0" cellpadding="0" cellspacing="0" class="typo3-TCEforms-palette">';
-		for ($i=0; $i<=$row; $i++) {
-			$out .= '
-			<tr>
-				<td><img src="clear.gif" width="'.intval($this->paletteMargin).'" height="1" alt="" /></td>'.
-					implode('
-					', $hRow[$i]) . '
-			</tr>
-			<tr>
-				<td></td>'.
-					implode('
-					', $iRow[$i]) . '
-				</tr>';
+			// Final wrapping into the fieldset:
+		$out = '<fieldset class="t3-form-palette-fieldset">';
+		for ($i = 0; $i <= $row; $i++) {
+			$out .= implode($iRow[$i]);
 		}
-		$out .= '</table>';
-
+		$out .= '</fieldset>';
 		return $out;
 	}
+
 
 	/**
 	 * Returns help-text ICON if configured for.

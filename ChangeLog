@@ -22,6 +22,7 @@
 	* Fixed bug #1402: Text area / RTE fields can't be set to required at the moment.
 	* Fixed bug #12604: fileNameASCIIPrefix got deprecated but is used in core (Thanks to Steffen Gebert)
 	* Fixed bug #11437: New labels in the log module are hardcoded (Thanks to Andy Grunwald)
+	* Fixed bug #14461: TCEforms: Use fieldsets for palettes instead of tables (Thanks to Jo Hasenau)
 
 2010-05-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
