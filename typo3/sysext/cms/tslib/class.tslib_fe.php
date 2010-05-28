@@ -4045,6 +4045,7 @@ if (version == "n3") {
 	 * @todo	Deprecated but still used in the Core!
 	 */
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
+		t3lib_div::logDeprecatedFunction();
 		$out = $this->csConvObj->specCharsToASCII($this->renderCharset, $inTitle);
 			// Get replacement character
 		$replacementChar = $this->config['config']['simulateStaticDocuments_replacementChar'];

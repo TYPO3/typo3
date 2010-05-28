@@ -16,6 +16,7 @@
 
 	* Follow-up to bug #14465: Make use of the new Sprite API throughout the TYPO3 Core Backend
 	* Fixed bug #1402: Text area / RTE fields can't be set to required at the moment.
+	* Fixed bug #12604: fileNameASCIIPrefix got deprecated but is used in core (Thanks to Steffen Gebert)
 
 2010-05-28  Christian Kuhn  <lolli@schwarzbu.ch>
 

@@ -5372,7 +5372,13 @@ class tslib_cObj {
 							$gifCreator->init();
 
 							if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])	{
-								$gifCreator->filenamePrefix = $GLOBALS['TSFE']->fileNameASCIIPrefix(preg_replace('/\.[[:alnum:]]+$/','',basename($theImage)),intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']),'_');
+								$filename = basename($theImage);
+									// remove extension
+								$filename = substr($filename, 0, strrpos($filename, '.'));
+									// strip everything non-ascii
+								$filename = preg_replace('/[^A-Za-z0-9_-]/', '', trim($filename));
+								$gifCreator->filenamePrefix = substr($filename, 0, intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix'])) . '_';
+								unset($filename);
 							}
 
 							if ($fileArray['sample'])	{
