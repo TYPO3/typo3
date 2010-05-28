@@ -201,8 +201,16 @@ class t3lib_rteapi {
 	}
 }
 
+/**
+ * @deprecated since TYPO3 4.4: Use XCLASS t3lib/class.t3lib_rteapi.php instead. Will be removed in TYPO3 4.6.
+ */
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rte/class.tx_rte_base.php'])	{
+	t3lib_div::deprecationLog('XCLASS "ext/rte/class.tx_rte_base.php" is deprecated since TYPO3 4.4 - use "t3lib/class.t3lib_rteapi.php" instead.');
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rte/class.tx_rte_base.php']);
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_rteapi.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_rteapi.php']);
 }
 
 ?>

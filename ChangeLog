@@ -8,6 +8,7 @@
 
 2010-05-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #9731: Wrong XCLASS definition in t3lib/t3lib_rteapi.php (Thanks to Marcus Schwemer)
 	* Fixed bug #7015: t3lib_DB displays wrong SQL in error case (Thanks to Steffen Ritter)
 
 2010-05-28  Benjamin Mack  <benni@typo3.org>
