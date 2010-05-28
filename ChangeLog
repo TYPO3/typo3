@@ -10,6 +10,7 @@
 
 	* Follow-up to bug #3800: change the label names (warning about empty reference index table) (thanks to Michael Knabe)
 	* Fixed bug #13903: wrong links with multiple domain records on one page with typolinkCheckRootline (thanks to Irene Höppner)
+	* Fixed bug #14499: saving in t3editor per ajax call not possible (follow-up to #14465 new Sprite API)
 
 2010-05-28  Susanne Moog  <typo3@susanne-moog.de>
 

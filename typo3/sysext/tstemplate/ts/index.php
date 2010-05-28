@@ -262,25 +262,47 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 			if ($this->extClassConf['name'] == 'tx_tstemplateinfo') {
 					// NEW button
-				$buttons['new'] = '<input type="image" class="c-inputButton" name="createExtension" value="New"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_el.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle', true) . '" />';
+				$buttons['new'] = '<input type="image" class="c-inputButton" name="createExtension" value="New"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_el.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle', TRUE) . '" />';
 
 				if (!empty($this->e) && !t3lib_div::_POST('abort') && !t3lib_div::_POST('saveclose')) {
 						// no NEW-button while edit
 					$buttons['new'] = '';
 
 						// SAVE button
-					$buttons['save'] = t3lib_iconWorks::getSpriteIcon('actions-document-save',array('html'=>'<input type="image" class="c-inputButton" name="submit" src="clear.gif" title="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', true) .'" />'));
+					$buttons['save'] = t3lib_iconWorks::getSpriteIcon('actions-document-save',
+						array(
+							'html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' .
+								'title="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) .'" ' . 
+								'value="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) .'" ' . 
+								'/>'
+						));
 
 						// SAVE AND CLOSE button
-					$buttons['save_close'] = t3lib_iconWorks::getSpriteIcon('actions-document-save-close',array('html'=>'<input type="image" class="c-inputButton" name="saveclose" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', true) . '" />'));
+					$buttons['save_close'] = t3lib_iconWorks::getSpriteIcon('actions-document-save-close',
+						array(
+							'html' => '<input type="image" class="c-inputButton" name="saveclose" src="clear.gif" '.
+								'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', TRUE) . '" ' .
+								'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', TRUE) . '" ' .
+								'/>'
+						));
 
 						// CLOSE button
-					$buttons['close'] = t3lib_iconWorks::getSpriteIcon('actions-document-close',array('html'=>'<input type="image" class="c-inputButton" name="abort" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', true) . '" />'));
+					$buttons['close'] = t3lib_iconWorks::getSpriteIcon('actions-document-close',
+						array(
+							'html' => '<input type="image" class="c-inputButton" name="abort" src="clear.gif" ' . 
+								'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" ' .
+								'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" ' .
+								'/>'
+						));
 
 				}
 			} elseif($this->extClassConf['name'] == 'tx_tstemplateceditor' && count($this->MOD_MENU['constant_editor_cat'])) {
 					// SAVE button
-				$buttons['save'] = t3lib_iconWorks::getSpriteIcon('actions-document-save',array('html'=>'<input type="image" class="c-inputButton" name="submit" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', true) . '" />'));
+				$buttons['save'] = t3lib_iconWorks::getSpriteIcon('actions-document-save',
+					array('html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" '.
+						'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) . '" ' .
+						'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) . '" ' .
+						'/>'));
 			} elseif($this->extClassConf['name'] == 'tx_tstemplateobjbrowser') {
 				if(!empty($this->sObj)) {
 						// BACK
