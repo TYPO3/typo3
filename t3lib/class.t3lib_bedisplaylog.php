@@ -212,8 +212,10 @@ class t3lib_BEDisplayLog {
 			$text .= ' ' . sprintf($GLOBALS['LANG']->getLL('changesInFields'), '<em>' . $newRow['fieldlist'] . '</em>');
 			$text .= ' <a href="' . htmlspecialchars($GLOBALS['BACK_PATH'] . 'show_rechis.php?sh_uid=' . $newRow['uid'] .
 					'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-document-history-open') .
-					' title="' . $GLOBALS['LANG']->getLL('showHistory') . '" alt="" />' .
+					t3lib_iconWorks::getSpriteIcon(
+						'actions-document-history-open',
+						array('title' => $GLOBALS['LANG']->getLL('showHistory'))
+					) .
 					'</a>';
 		}
 
