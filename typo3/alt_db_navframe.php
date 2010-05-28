@@ -306,7 +306,7 @@ class SC_alt_db_navframe {
 
 			// Filter
 		if ($this->hasFilterBox) {
-			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item"><img' . t3lib_iconWorks::skinImg('', 'gfx/filter.png') . ' title="' . $LANG->sL('LLL:EXT:cms/layout/locallang.xml:labels.filter', 1) . '" alt="" /></a></span>';
+			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item">' . t3lib_iconWorks::getSpriteIcon('actions-system-tree-search-open', array('title'=> $LANG->sL('LLL:EXT:cms/layout/locallang.xml:labels.filter', 1))) . '</span>';
 		}
 
 		return $buttons;

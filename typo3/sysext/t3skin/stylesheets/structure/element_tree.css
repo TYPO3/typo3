@@ -121,15 +121,15 @@ ul.tree span.t3-icon {
 }
 
 #treeFilter {
-	margin: 6px 0pt 0pt 17px !important;
+	margin: 2px 0 0 17px !important;
 	height: 16px;
 	width: 165px;
 }
 
 #treeFilterReset {
-	left: 190px;
+	left: 176px;
 	position: absolute;
-	top: 6px;
+	top: 4px;
 	visibility: hidden;
 }
 
