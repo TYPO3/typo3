@@ -90,7 +90,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @param	array		Data row for element.
 	 * @return	string		Page icon
 	 */
-	function wrapIcon($icon,&$row)	{
+	function wrapIcon($thePageIcon, &$row)	{
 			// If the record is locked, present a warning sign.
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked('pages',$row['uid']))	{
 			$aOnClick = 'alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;';
@@ -98,9 +98,6 @@ class webPageTree extends t3lib_browseTree {
 				t3lib_iconWorks::getSpriteIcon('status-warning-in-use',array('title'=>htmlspecialchars($lockInfo['msg']))).
 				'</a>';
 		} else $lockIcon = '';
-
-			// Add title attribute to input icon tag
-		$thePageIcon = $this->addTagAttributes($icon, $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"');
 
 			// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode)	{

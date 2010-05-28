@@ -80,10 +80,7 @@ class filelistFolderTree extends t3lib_folderTree {
 	 * @param	array		Data row for element.
 	 * @return	string		Page icon
 	 */
-	function wrapIcon($icon,&$row)	{
-
-			// Add title attribute to input icon tag
-		$theFolderIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.$this->getTitleAttrib($row).'"' : ''));
+	function wrapIcon($theFolderIcon, &$row)	{
 
 			// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode)	{
