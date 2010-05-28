@@ -1,3 +1,7 @@
+2010-05-28  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13160: Datepicker doesn't work with IE8 in French (Thanks to Alexandre Gravel-Raymond)
+
 2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13934: Side-effect of substr in t3lib_cs (thanks to Rens Admiraal)
