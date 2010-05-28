@@ -1562,7 +1562,7 @@ class tx_cms_layout extends recordList {
 				$lockIcon . ' ' .
 				$stat . ' ' .
 				($langMode ? $this->languageFlag($row['sys_language_uid']) : '') .  ' ' .
-				'&nbsp;<b>' . htmlspecialchars($this->CType_labels[$row['CType']]) .. '</b>';
+				'&nbsp;<b>' . htmlspecialchars($this->CType_labels[$row['CType']]) . '</b>';
 
 			// If show info is set...;
 		if ($this->tt_contentConfig['showInfo'])	{
