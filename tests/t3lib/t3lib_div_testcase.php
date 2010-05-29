@@ -59,6 +59,29 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
+	public function calcPriorityCalculatesBasicArithmeticOperation() {
+		$this->assertEquals(9, t3lib_div::calcPriority('6 + 3'));
+		$this->assertEquals(3, t3lib_div::calcPriority('6 - 3'));
+		$this->assertEquals(-3, t3lib_div::calcPriority('3 - 6'));
+		$this->assertEquals(6, t3lib_div::calcPriority('2 * 3'));
+		$this->assertEquals(2.5, t3lib_div::calcPriority('5 / 2'));
+		$this->assertEquals(1, t3lib_div::calcPriority('5 % 2'));
+		$this->assertEquals(8, t3lib_div::calcPriority('2 ^ 3'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function calcPriorityCalculatesArithmeticOperationWithMultipleOperands() {
+		$this->assertEquals(6.5, t3lib_div::calcPriority('5 + 3 / 2'));
+		$this->assertEquals(14, t3lib_div::calcPriority('5 + 3 ^ 2'));
+		$this->assertEquals(4, t3lib_div::calcPriority('5 % 2 + 3'));
+		$this->assertEquals(3, t3lib_div::calcPriority('2 + 6 / 2 - 2'));
+	}
+
+	/**
+	 * @test
+	 */
 	public function checkIntExplodeConvertsStringsToInteger() {
 		$testString = '1,foo,2';
 		$expectedArray = array(1, 0, 2);
