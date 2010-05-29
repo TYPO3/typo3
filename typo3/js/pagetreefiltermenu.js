@@ -46,6 +46,7 @@ var PagetreeFilterMenu = Class.create({
 	toggleMenu: function(event) {
 		var toolbarItem = Ext.get('tree-toolbar-filter-item');
 		var treeFilterBox = Ext.get('treeFilterBox');
+		var treeFilterItem = Ext.get('treeFilter');
 		var treeFilterReset = Ext.get('treeFilterReset');
 
 		toolbarItem.blur();
@@ -55,6 +56,7 @@ var PagetreeFilterMenu = Class.create({
 			treeFilterReset.fadeOut();
 		} else {
 			treeFilterBox.fadeIn();
+			treeFilterItem.focus();
 		}
 
 		toolbarItem.toggleClass('active');
