@@ -1,3 +1,7 @@
+2010-05-29  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #14510: Increase width of module menu and navigation frame (Thanks to Steffen Gebert)
+
 2010-05-29  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug 14523: Missing icons in workspace modules

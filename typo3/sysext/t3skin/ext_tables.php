@@ -83,9 +83,9 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 #	$TBE_STYLES['loginBoxImage_rotationFolder'] = '';
 
 		// Alternative dimensions for frameset sizes:
-	$TBE_STYLES['dims']['leftMenuFrameW'] = 160;		// Left menu frame width
+	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;		// Left menu frame width
 	$TBE_STYLES['dims']['topFrameH']      = 45;			// Top frame heigth
-	$TBE_STYLES['dims']['navFrameWidth']  = 260;		// Default navigation frame width
+	$TBE_STYLES['dims']['navFrameWidth']  = 280;		// Default navigation frame width
 
 		// Setting roll-over background color for click menus:
 		// Notice, this line uses the the 'scriptIDindex' feature to override another value in this array (namely $TBE_STYLES['mainColors']['bgColor5']), for a specific script "typo3/alt_clickmenu.php"
