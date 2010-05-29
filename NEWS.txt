@@ -50,6 +50,8 @@ Backend
 
 	* Most Icons used in the TYPO3 Backend are now rendered through so-called sprites. Instead of loading many image tags with single icons and therefore many http requests we now just have 6 sprites (one big image with all icons included) that need to be loaded. Image tags got replaced by spans using the big sprite images with background and offset. This reduces the HTTP and fileheader overhead of about 90% which results in a blasting fast Backend. For details about the new icon sprite API, have a look at t3lib/class.t3lib_iconworks.php.
 
+	* The "bigButtons" (Edit page properties, Move page, ...) in the Page module are now disabled by default to have a cleaner interface. The old behavior can be restored by setting mod.web_layout.disableBigButtons = 0 in UserTS or PageTS.
+
 Frontend
 ========
 

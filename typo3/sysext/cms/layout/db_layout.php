@@ -969,7 +969,7 @@ class SC_db_layout {
 		$dblist->agePrefixes = $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
 		$dblist->id = $this->id;
 		$dblist->nextThree = t3lib_div::intInRange($this->modTSconfig['properties']['editFieldsAtATime'],0,10);
-		$dblist->option_showBigButtons = $this->modTSconfig['properties']['disableBigButtons'] ? 0 : 1;
+		$dblist->option_showBigButtons = ($this->modTSconfig['properties']['disableBigButtons'] === '0');
 		$dblist->option_newWizard = $this->modTSconfig['properties']['disableNewContentElementWizard'] ? 0 : 1;
 		$dblist->defLangBinding = $this->modTSconfig['properties']['defLangBinding'] ? 1 : 0;
 		if (!$dblist->nextThree)	$dblist->nextThree = 1;
