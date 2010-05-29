@@ -1,7 +1,7 @@
 <?php
 	// This checks for my own IP at home. You can just remove the if-statement.
 if (1==0 || ($_SERVER['REMOTE_ADDR']!='127.0.0.1'))	{
-	die('In the source distribution of TYPO3, this script is disabled by a die() function call.<br/><b>Fix:</b> Open the file misc/phpcheck/incfile.php and remove/out-comment the line that outputs this message!');
+	die('In the source distribution of TYPO3, this script is disabled by a die() function call.<br/><strong>Fix:</strong> Open the file misc/phpcheck/incfile.php and remove/out-comment the line that outputs this message!');
 }
 
 include('../../t3lib/class.t3lib_div.php');
