@@ -68,7 +68,7 @@ var WorkspaceMenu = Class.create({
 			// -1 to compensate for the margin-right -1px of the list items,
 			// which itself is necessary for overlaying the separator with the active state background
 
-			if(toolbarItem.down().hasClassName('no-separator')) {
+			if (toolbarItem.down().hasClassName('no-separator')) {
 				calculatedOffset -= 1;
 			}
 		});
@@ -92,7 +92,7 @@ var WorkspaceMenu = Class.create({
 		var menu        = $$('#workspace-selector-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
 
-		if(!toolbarItem.hasClassName('toolbar-item-active')) {
+		if (!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
 			Effect.Appear(menu, {duration: 0.2});
 			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
@@ -110,13 +110,13 @@ var WorkspaceMenu = Class.create({
 	 * toggles the workspace frontend preview
 	 */
 	toggleFrontendPreview: function(event) {
-		new Ajax.Request('ajax.php', {
+		var toggle = new Ajax.Request('ajax.php', {
 			parameters: 'ajaxID=WorkspaceMenu::toggleWorkspacePreview',
 			onSuccess: function(transport, response) {
 				var stateActiveIcon = $$('#workspace-selector-menu img.state-active')[0].cloneNode(true);
 				var stateInactiveIcon = $$('#workspace-selector-menu img.state-inactive')[0].cloneNode(true);
 
-				if (response.newWorkspacePreviewState == 1) {
+				if (response.newWorkspacePreviewState === 1) {
 					TYPO3.configuration.workspaceFrontendPreviewEnabled = 1;
 					Event.element(event).previous().replace(stateActiveIcon);
 					top.WorkspaceFrontendPreviewEnabled = true;
@@ -146,7 +146,7 @@ var WorkspaceMenu = Class.create({
 	switchWorkspace: function(event) {
 		var workspaceId = Event.element(event).identify().substring(3);
 
-		new Ajax.Request('ajax.php', {
+		var switchRequest = new Ajax.Request('ajax.php', {
 			parameters: 'ajaxID=WorkspaceMenu::setWorkspace&workspaceId=' + workspaceId,
 			onSuccess: function(transport, response) {
 				TYPO3.configuration.inWorkspace = response.setWorkspaceId === 0 ? 0 : 1;

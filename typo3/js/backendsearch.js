@@ -44,17 +44,17 @@ var BackendSearch = Class.create({
 			$('search-query').observe('keypress', function(event) {
 				var keyCode;
 
-				if(!event) {
+				if (!event) {
 					var event = window.event;
 				}
 
-				if(event.keyCode) {
+				if (event.keyCode) {
 					keyCode = event.keyCode;
-				} else if(event.which) {
+				} else if (event.which) {
 					keyCode = event.which;
 				}
 
-				if(keyCode == Event.KEY_RETURN) {
+				if (keyCode === Event.KEY_RETURN) {
 					TYPO3BackendSearchMenu.invokeSearch();
 				}
 			});
@@ -79,7 +79,7 @@ var BackendSearch = Class.create({
 			// -1 to compensate for the margin-right -1px of the list items,
 			// which itself is necessary for overlaying the separator with the active state background
 
-			if(toolbarItem.down().hasClassName('no-separator')) {
+			if (toolbarItem.down().hasClassName('no-separator')) {
 				calculatedOffset -= 1;
 			}
 		});
@@ -103,7 +103,7 @@ var BackendSearch = Class.create({
 		var menu        = $$('#backend-search-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
 
-		if(!toolbarItem.hasClassName('toolbar-item-active')) {
+		if (!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
 			Effect.Appear(menu, {duration: 0.2});
 			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
@@ -171,7 +171,7 @@ var BackendSearch = Class.create({
 	jump: function(url, modName, mainModName) {
 			// Clear information about which entry in nav. tree that might have been highlighted.
 		top.fsMod.navFrameHighlightedID = new Array();
-		if(top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
+		if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
 			top.content.nav_frame.refresh_nav();
 		}
 

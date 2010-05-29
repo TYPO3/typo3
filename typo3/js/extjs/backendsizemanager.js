@@ -45,11 +45,11 @@ TYPO3.BackendSizeManager = function() {
 
 		var styles = {
 			height: (viewportHeight - topHeight - consoleHeight) + 'px'
-		}
+		};
 
 		Ext.get('typo3-side-menu').setStyle(styles);
 		Ext.get('content').setStyle(styles);
-	}
+	};
 
 	Ext.EventManager.onWindowResize(resizeBackend);
 	Ext.onReady(function() {

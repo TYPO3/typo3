@@ -38,12 +38,12 @@ var Clickmenu = {
 	 * @return	nothing
 	 */
 	show: function(table, uid, listFr, enDisItems, backPath, addParams) {
-		var params = 'table=' + encodeURIComponent(table)
-			+ '&uid=' + uid
-			+ '&listFr=' + listFr
-			+ '&enDisItems=' + enDisItems
-			+ '&backPath=' + backPath
-			+ '&addParams=' + addParams;
+		var params = 'table=' + encodeURIComponent(table) +
+			'&uid=' + uid +
+			'&listFr=' + listFr +
+			'&enDisItems=' + enDisItems +
+			'&backPath=' + backPath +
+			'&addParams=' + addParams;
 		this.callURL(params);
 	},
 
@@ -58,12 +58,14 @@ var Clickmenu = {
 	callURL: function(params) {	
 		if (this.ajax && Ajax.getTransport()) { // run with AJAX
 			params += '&ajax=1';
-			new Ajax.Request(this.clickURL, {
+			var call = new Ajax.Request(this.clickURL, {
 				method: 'get',
 				parameters: params,
 				onComplete: function(xhr) {
 					var response = xhr.responseXML;
-					if (!response.getElementsByTagName('data')[0]) return;
+					if (!response.getElementsByTagName('data')[0]) {
+						return;
+					}
 					var menu  = response.getElementsByTagName('data')[0].getElementsByTagName('clickmenu')[0];
 					var data  = menu.getElementsByTagName('htmltable')[0].firstChild.data;
 					var level = menu.getElementsByTagName('cmlevel')[0].firstChild.data;
@@ -81,11 +83,13 @@ var Clickmenu = {
 	 * @param	level	the depth of the clickmenu
 	 */
 	populateData: function(data, level) {
-		if (!$('contentMenu0')) this.addClickmenuItem();
-		level = parseInt(level) || 0;
+		if (!$('contentMenu0')) {
+			this.addClickmenuItem();
+		}
+		level = parseInt(level, 10) || 0;
 		var obj = $('contentMenu' + level);
 
-		if (obj && (level == 0 || Element.visible('contentMenu' + (level-1)))) {
+		if (obj && (level === 0 || Element.visible('contentMenu' + (level-1)))) {
 			obj.innerHTML = data;
 			var x = this.mousePos.X;
 			var y = this.mousePos.Y;
@@ -153,7 +157,7 @@ var Clickmenu = {
 		obj = $(obj);
 		if (obj && Element.visible(obj) && !Position.within(obj, this.mousePos.X, this.mousePos.Y)) {
 			this.hide(obj);
-			if (/MSIE5/.test(navigator.userAgent) && obj.id == 'contentMenu0') {
+			if (/MSIE5/.test(navigator.userAgent) && obj.id === 'contentMenu0') {
 				this._toggleSelectorBoxes('visible');
 			}
 		}
@@ -186,8 +190,8 @@ var Clickmenu = {
 	 * @result	nothing
 	 */
 	_toggleSelectorBoxes: function(action) {
-		for (i = 0; i < document.forms.length; i++) {
-			for (j = 0; j < document.forms[i].elements.length; j++) {
+		for (var i = 0; i < document.forms.length; i++) {
+			for (var j = 0; j < document.forms[i].elements.length; j++) {
 				if (document.forms[i].elements[j].type == 'select-one') {
 					document.forms[i].elements[j].style.visibility = action;
 				}
@@ -203,7 +207,7 @@ var Clickmenu = {
 	 */
 	addClickmenuItem: function() {
 		var code = '<div id="contentMenu0" style="display: block;"></div><div id="contentMenu1" style="display: block;"></div>';
-		new Insertion.Bottom(document.getElementsByTagName('body')[0], code);
+		var insert = new Insertion.Bottom(document.getElementsByTagName('body')[0], code);
 	}
 }
 
@@ -218,7 +222,7 @@ function showClickmenu(table, uid, listFr, enDisItems, backPath, addParams)	{
 
 function showClickmenu_raw(url) {
 	var parts = url.split('?');
-	if (parts.length == 2) {
+	if (parts.length === 2) {
 		Clickmenu.clickURL = parts[0];
 		Clickmenu.callURL(parts[1]);
 	} else {
@@ -236,7 +240,7 @@ function hideEmpty() {
 	return false;
 }
 function hideSpecific(level) {
-	if (level == 0 || level == 1)	{
+	if (level === 0 || level === 1)	{
 		Clickmenu.hide('contentMenu'+level);
 	}
 } 

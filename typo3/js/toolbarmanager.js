@@ -34,7 +34,7 @@ var ToolbarManager = Class.create({
 		var sibling = toolbarItem.next();
 
 			// check whether it is a toolbar item with menu
-		if(sibling.hasClassName('toolbar-item-menu')) {
+		if (sibling.hasClassName('toolbar-item-menu')) {
 				// hide all
 			$$('#typo3-toolbar a.toolbar-item + .toolbar-item-menu').invoke('hide');
 			$$('#typo3-toolbar a.toolbar-item').each(function(element) {

@@ -65,7 +65,7 @@ var ClearCacheMenu = Class.create({
 			// -1 to compensate for the margin-right -1px of the list items,
 			// which itself is necessary for overlaying the separator with the active state background
 
-			if(toolbarItem.down().hasClassName('no-separator')) {
+			if (toolbarItem.down().hasClassName('no-separator')) {
 				calculatedOffset -= 1;
 			}
 		});
@@ -90,7 +90,7 @@ var ClearCacheMenu = Class.create({
 		var menu        = $$('#clear-cache-actions-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
 
-		if(!toolbarItem.hasClassName('toolbar-item-active')) {
+		if (!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
 			Effect.Appear(menu, {duration: 0.2});
 			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
@@ -117,14 +117,14 @@ var ClearCacheMenu = Class.create({
 			// activate the spinner
 		toolbarItemIcon.src = 'gfx/spinner.gif';
 
-		if (clickedElement.tagName == 'IMG') {
+		if (clickedElement.tagName === 'IMG') {
 			url =  clickedElement.up('a').href;
 		} else {
 			url =  clickedElement.href;
 		}
 
 		if (url) {
-			new Ajax.Request(url, {
+			var call = new Ajax.Request(url, {
 				'method': 'get',
 				'onComplete': function() {
 					toolbarItemIcon.src = this.toolbarItemIcon;

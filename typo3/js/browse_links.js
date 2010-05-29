@@ -40,18 +40,17 @@ var BrowseLinks = {
 			parent.close();
 		}
 	}
-}
+};
 
 BrowseLinks.File = {
 	insertElement: function(index, close) {
 		var result = false;
-		if (typeof BrowseLinks.elements[index] != 'undefined') {
+		if (typeof BrowseLinks.elements[index] !== undefined) {
 			var element = BrowseLinks.elements[index];
 			result = insertElement(
 				'', element.md5, element.type,
 				element.fileName, element.filePath, element.fileExt,
-				element.fileIcon, '', close
-			);
+				element.fileIcon, '', close);
 		}
 		return result;
 	}

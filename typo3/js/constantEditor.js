@@ -57,13 +57,13 @@ var ModuleConstantEditor = Class.create({
 		var userDiv = $('userTS-'+paramName);
 		var checkBox = $('check[' + paramName + ']');
 		
-		if(editIcon.hasClassName('editIcon')) {
+		if (editIcon.hasClassName('editIcon')) {
 			$(defaultDiv).hide(); 
 			$(userDiv).show().setStyle({backgroundColor: '#fdf8bd'}); 
 			$(checkBox).enable().setValue('checked');
 		} 
 		
-		if(editIcon.hasClassName('undoIcon')) {
+		if (editIcon.hasClassName('undoIcon')) {
 			$(userDiv).hide(); 
 			$(defaultDiv).show(); 
 			$(checkBox).setValue('').disable();
@@ -93,7 +93,7 @@ var ModuleConstantEditor = Class.create({
 		$(colorBox).setStyle({backgroundColor: colorValue});
 		
 		$(colorSelect).childElements().each(function(option) {
-			if(option.value == colorValue) {
+			if (option.value === colorValue) {
 				option.selected = true;
 			} else {
 				option.selected = false;

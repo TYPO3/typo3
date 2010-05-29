@@ -31,7 +31,7 @@ if (Prototype) {
 
 			// if the TYPO3 AJAX backend is used, 
 			// the onSuccess & onComplete callbacks are hooked
-			if (request.url.indexOf("ajax.php") == -1) {
+			if (request.url.indexOf("ajax.php") === -1) {
 				return;
 			}
 
@@ -58,23 +58,23 @@ if (Prototype) {
 					} else {
 						origComplete(xhr, json);
 					}
-				}
+				};
 			}
 		}
 	});
 }
 
-var T3AJAX = new Object();
+var T3AJAX = {};
 T3AJAX.showError = function(xhr, json) {
-	if (typeof xhr.responseText != 'undefined' && xhr.responseText) {
-		if (typeof Ext.MessageBox != 'undefined') {
+	if (typeof xhr.responseText !== undefined && xhr.responseText) {
+		if (typeof Ext.MessageBox !== undefined) {
 			Ext.MessageBox.alert('TYPO3', xhr.responseText);
 		}
 		else {
 			alert(xhr.responseText);
 		}
 	}
-}
+};
 
 // common storage and global object, could later hold more information about the current user etc.
 var TYPO3 = {
@@ -91,7 +91,7 @@ var TYPO3 = {
 	helpers: {
 		// creates an array by splitting a string into parts, taking a delimiter 
 		split: function(str, delim) {
-			var res = new Array();
+			var res = [];
 			while (str.indexOf(delim) > 0) {
 				res.push(str.substr(0, str.indexOf(delim)));
 				str = str.substr(str.indexOf(delim) + delim.length);

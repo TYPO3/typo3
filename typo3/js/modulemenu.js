@@ -53,7 +53,7 @@ var ModuleMenu = Class.create({
 	 */
 	registerEventListeners: function() {
 		$$('#typo3-menu li.menuSection div').invoke('observe', 'click', this.toggleMenu);
-		if(Prototype.Browser.IE) {
+		if (Prototype.Browser.IE) {
 				//mouseenter and mouseleave are only available but thats our target
 			$$('#typo3-menu li.menuSection li').invoke('observe', 'mouseenter', this.toggleHoverClass);
 			$$('#typo3-menu li.menuSection li').invoke('observe', 'mouseleave', this.toggleHoverClass);		
@@ -76,15 +76,17 @@ var ModuleMenu = Class.create({
 
 		var mainMenuId       = mainModuleHeader.up().identify();
 		var subModulesMenu   = mainModuleHeader.next('ul');
-		if (!subModulesMenu) return;
+		if (!subModulesMenu) {
+			return;
+		}
 		var state            = subModulesMenu.visible();
 
 			// save state
-		new Ajax.Request('ajax.php', {
+		var save = new Ajax.Request('ajax.php', {
 			parameters : 'ajaxID=ModuleMenu::saveMenuState&menuid=' + mainMenuId + '&state=' + state
 		});
 
-		if(state) {
+		if (state) {
 			Effect.BlindUp(subModulesMenu, {duration : 0.1});
 			$(mainModuleHeader).removeClassName('expanded');
 			$(mainModuleHeader).addClassName('collapsed');
@@ -99,7 +101,7 @@ var ModuleMenu = Class.create({
 	 * refreshes the complete module menu
 	 */
 	refreshMenu: function() {
-		new Ajax.Updater('typo3-menu', TS.PATH_typo3 + 'ajax.php', {
+		var refresh = new Ajax.Updater('typo3-menu', TS.PATH_typo3 + 'ajax.php', {
 			parameters   : 'ajaxID=ModuleMenu::render',
 			asynchronous : false,
 			evalScripts  : true
@@ -123,7 +125,7 @@ var ModuleMenu = Class.create({
 			$(moduleId).addClassName('highlighted');
 		}
 
-		if(undefined != mainModule) {
+		if (undefined !== mainModule) {
 			this.currentlyHighLightedMainModule = mainModule;
 		}
 		this.currentlyHighlightedModuleId = moduleId;

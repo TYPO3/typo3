@@ -30,6 +30,93 @@
  *
  * @author	Benjamin Mack
  */
+ 
+// new object-oriented drag and drop - code,
+// tested in IE 6, Firefox 2, Opera 9
+var DragDrop = {
+	dragID: null,
+
+	// options needed for doing the changes when dropping
+	table: null,	// can be "pages" or "folders"
+	changeURL: null,
+	backPath: null,
+
+
+	dragElement: function(event, elementID) {
+		Event.stop(event); // stop bubbling
+		this.dragID = this.getIdFromEvent(event);
+		if (!this.dragID) {
+			return false;
+		}
+
+		if (!elementID) {
+			elementID = this.dragID;
+		}
+		if (!$('dragIcon')) {
+			this.addDragIcon();
+		}
+
+		$('dragIcon').innerHTML = $('dragIconID_'+elementID).innerHTML +
+								  $('dragTitleID_'+elementID).firstChild.innerHTML;
+
+		document.onmouseup   = function(event) { DragDrop.cancelDragEvent(event); };
+		document.onmousemove = function(event) { DragDrop.mouseMoveEvent(event); };
+		return false;
+	},
+
+	dropElement: function(event) {
+		var dropID = this.getIdFromEvent(event);
+		if ((this.dragID) && (this.dragID !== dropID)) {
+			var url = this.changeURL +
+					'?dragDrop=' + this.table +
+					'&srcId=' + this.dragID +
+					'&dstId=' + dropID +
+					'&backPath=' + this.backPath;
+			showClickmenu_raw(url);
+		}
+		this.cancelDragEvent();
+		return false;
+	},
+
+
+	cancelDragEvent: function(event) {
+		this.dragID = null;
+		if ($('dragIcon') && $('dragIcon').style.visibility === 'visible') {
+			$('dragIcon').style.visibility = 'hidden';
+		}
+
+		document.onmouseup = null;
+		document.onmousemove = null;
+	},
+
+	mouseMoveEvent: function(event) {
+		if (!event) {
+			event = window.event;
+		}
+		$('dragIcon').style.left = (Event.pointerX(event) + 5) + 'px';
+		$('dragIcon').style.top  = (Event.pointerY(event) - 5) + 'px';
+		$('dragIcon').style.visibility = 'visible';
+		return false;
+	},
+
+
+	// -- helper functions --
+	getIdFromEvent: function(event) {
+		var obj = Event.element(event);
+		while (obj.id == false && obj.parentNode) { 
+			obj = obj.parentNode;
+		}
+		return obj.id.substring(obj.id.indexOf('_') + 1);
+	},
+
+	// dynamically manipulates the DOM to add the div needed for drag&drop at the bottom of the <body>-tag
+	addDragIcon: function() {
+		var code = '<div id="dragIcon" style="visibility: hidden;">&nbsp;</div>';
+		var insert = new Insertion.Bottom(document.getElementsByTagName('body')[0], code);
+	}
+};
+
+
 var Tree = {
 	thisScript: 'ajax.php',
 	ajaxID: 'SC_alt_db_navframe::expandCollapse',	// has to be either "SC_alt_db_navframe::expandCollapse" or "SC_alt_file_navframe::expandCollapse"
@@ -41,7 +128,7 @@ var Tree = {
 	// reloads a part of the page tree (useful when "expand" / "collapse")
 	load: function(params, isExpand, obj) {
 			// fallback if AJAX is not possible (e.g. IE < 6)
-		if (typeof Ajax.getTransport() != 'object') {
+		if (typeof Ajax.getTransport() !== 'object') {
 			window.location.href = this.thisScript + '?ajaxID=' + this.ajaxID + '&PM=' + params;
 			return;
 		}
@@ -63,7 +150,7 @@ var Tree = {
 			obj.style.cursor = 'wait';
 		}
 
-		new Ajax.Request(this.thisScript, {
+		var call = new Ajax.Request(this.thisScript, {
 			method: 'get',
 			parameters: 'ajaxID=' + this.ajaxID + '&PM=' + params,
 			onComplete: function(xhr) {
@@ -91,7 +178,9 @@ var Tree = {
 
 	// attaches the events to the elements needed for the drag and drop (for the titles and the icons)
 	registerDragDropHandlers: function() {
-		if (!this.activateDragDrop) return;
+		if (!this.activateDragDrop) {
+			return;
+		}
 		this._registerDragDropHandlers('dragTitle');
 		this._registerDragDropHandlers('dragIcon');
 	},
@@ -107,7 +196,7 @@ var Tree = {
 
 	// selects the activated item again, in case it collapsed and got expanded again
 	reSelectActiveItem: function() {
-		obj = $(top.fsMod.navFrameHighlightedID[this.frameSetModule]);
+		var obj = $(top.fsMod.navFrameHighlightedID[this.frameSetModule]);
 		if (obj) {
 			Element.addClassName(obj, this.highlightClass);
 			this.extractPageIdFromTreeItem(obj.id);
@@ -121,7 +210,7 @@ var Tree = {
 		this.extractPageIdFromTreeItem(highlightID);
 
 		// Remove all items that are already highlighted
-		obj = $(top.fsMod.navFrameHighlightedID[frameSetModule]);
+		var obj = $(top.fsMod.navFrameHighlightedID[frameSetModule]);
 		if (obj) {
 			var classes = $w(this.highlightClass);
 			for (var i = 0; i < classes.length; i++)
@@ -130,7 +219,9 @@ var Tree = {
 
 		// Set the new item
 		top.fsMod.navFrameHighlightedID[frameSetModule] = highlightID;
-		if ($(highlightID)) Element.addClassName(highlightID, this.highlightClass);
+		if ($(highlightID)) {
+			Element.addClassName(highlightID, this.highlightClass);
+		}
 	},
 
 	//extract pageID from the given id (pagesxxx_y_z where xxx is the ID)
@@ -141,84 +232,6 @@ var Tree = {
 	}
 };
 
-
-
-// new object-oriented drag and drop - code,
-// tested in IE 6, Firefox 2, Opera 9
-var DragDrop = {
-	dragID: null,
-
-	// options needed for doing the changes when dropping
-	table: null,	// can be "pages" or "folders"
-	changeURL: null,
-	backPath: null,
-
-
-	dragElement: function(event, elementID) {
-		Event.stop(event); // stop bubbling
-		this.dragID = this.getIdFromEvent(event);
-		if (this.dragID == 0) return false;
-
-		if (!elementID) elementID = this.dragID;
-		if (!$('dragIcon')) this.addDragIcon();
-
-		$('dragIcon').innerHTML = $('dragIconID_'+elementID).innerHTML
-								+ $('dragTitleID_'+elementID).firstChild.innerHTML;
-
-		document.onmouseup   = function(event) { DragDrop.cancelDragEvent(event); };
-		document.onmousemove = function(event) { DragDrop.mouseMoveEvent(event); };
-		return false;
-	},
-
-	dropElement: function(event) {
-		var dropID = this.getIdFromEvent(event);
-		if ((this.dragID) && (this.dragID != dropID)) {
-			var url = this.changeURL
-				    + '?dragDrop=' + this.table
-					+ '&srcId=' + this.dragID
-					+ '&dstId=' + dropID;
-					+ '&backPath=' + this.backPath;
-			showClickmenu_raw(url);
-		}
-		this.cancelDragEvent();
-		return false;
-	},
-
-
-	cancelDragEvent: function(event) {
-		this.dragID = null;
-		if ($('dragIcon') && $('dragIcon').style.visibility == 'visible') {
-			$('dragIcon').style.visibility = 'hidden';
-		}
-
-		document.onmouseup = null;
-		document.onmousemove = null;
-	},
-
-	mouseMoveEvent: function(event) {
-		if (!event) {
-			event = window.event;
-		}
-		$('dragIcon').style.left = (Event.pointerX(event) + 5) + 'px';
-		$('dragIcon').style.top  = (Event.pointerY(event) - 5) + 'px';
-		$('dragIcon').style.visibility = 'visible';
-		return false;
-	},
-
-
-	// -- helper functions --
-	getIdFromEvent: function(event) {
-		var obj = Event.element(event);
-		while (obj.id == false && obj.parentNode) { obj = obj.parentNode; }
-		return obj.id.substring(obj.id.indexOf('_')+1);
-	},
-
-	// dynamically manipulates the DOM to add the div needed for drag&drop at the bottom of the <body>-tag
-	addDragIcon: function() {
-		var code = '<div id="dragIcon" style="visibility: hidden;">&nbsp;</div>';
-		new Insertion.Bottom(document.getElementsByTagName('body')[0], code);
-	}
-};
 
 
 

@@ -57,7 +57,7 @@ var ShortcutMenu = Class.create({
 			var shortcutId = element.up('tr.shortcut').identify().slice(9);
 
 				// map InPlaceEditor to edit icons
-			new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, 'ajax.php?ajaxID=ShortcutMenu::saveShortcut', {
+			var edit = new Ajax.InPlaceEditor('shortcut-label-' + shortcutId, 'ajax.php?ajaxID=ShortcutMenu::saveShortcut', {
 				externalControl     : 'shortcut-edit-' + shortcutId,
 				externalControlOnly : true,
 				highlightcolor      : '#f9f9f9',
@@ -78,7 +78,6 @@ var ShortcutMenu = Class.create({
 
 				// follow/execute shortcuts
 			element.observe('click', function(event) {
-				Event.stop(event);
 				this.toggleMenu();
 			}.bind(this));
 
@@ -87,11 +86,11 @@ var ShortcutMenu = Class.create({
 			// activate delete icon
 		$$('.shortcut-delete img').each(function(element) {
 			element.observe('click', function(event) {
-				if(confirm('Do you really want to remove this shortcut?')) {
+				if (confirm('Do you really want to remove this shortcut?')) {
 					var deleteControl = event.element();
 					var shortcutId = deleteControl.up('tr.shortcut').identify().slice(9);
 
-					new Ajax.Request('ajax.php', {
+					var del = new Ajax.Request('ajax.php', {
 						parameters : 'ajaxID=ShortcutMenu::delete&shortcutId=' + shortcutId,
 						onComplete : this.reRenderMenu.bind(this)
 					});
@@ -107,7 +106,7 @@ var ShortcutMenu = Class.create({
 	positionMenu: function() {
 		var calculatedOffset = 0;
 		var parentWidth      = $('shortcut-menu').getWidth();
-		 var currentToolbarItemLayer = $$('#shortcut-menu .toolbar-item-menu')[0];
+		var currentToolbarItemLayer = $$('#shortcut-menu .toolbar-item-menu')[0];
 		var ownWidth         = currentToolbarItemLayer.getWidth();
 		var parentSiblings   = $('shortcut-menu').previousSiblings();
 
@@ -116,7 +115,7 @@ var ShortcutMenu = Class.create({
 			// -1 to compensate for the margin-right -1px of the list items,
 			// which itself is necessary for overlaying the separator with the active state background
 
-			if(toolbarItem.down().hasClassName('no-separator')) {
+			if (toolbarItem.down().hasClassName('no-separator')) {
 				calculatedOffset -= 1;
 			}
 		});
@@ -140,7 +139,7 @@ var ShortcutMenu = Class.create({
 		var menu        = $$('#shortcut-menu .toolbar-item-menu')[0];
 		toolbarItem.blur();
 
-		if(!toolbarItem.hasClassName('toolbar-item-active')) {
+		if (!toolbarItem.hasClassName('toolbar-item-active')) {
 			toolbarItem.addClassName('toolbar-item-active');
 			Effect.Appear(menu, {duration: 0.2});
 			TYPO3BackendToolbarManager.hideOthers(toolbarItem);
@@ -148,8 +147,6 @@ var ShortcutMenu = Class.create({
 			toolbarItem.removeClassName('toolbar-item-active');
 			Effect.Fade(menu, {duration: 0.1});
 		}
-
-		Event.stop(event);
 	},
 
 	/**
@@ -166,13 +163,13 @@ var ShortcutMenu = Class.create({
 		var firstInGroup    = null;
 		var shortcutGroupId = 0;
 
-		if(shortcut.hasClassName('first-row')) {
+		if (shortcut.hasClassName('first-row')) {
 			firstInGroup = shortcut;
 		} else {
 			firstInGroup = shortcut.previous('.first-row');
 		}
 
-		if(undefined != firstInGroup) {
+		if (undefined !== firstInGroup) {
 			shortcutGroupId = firstInGroup.previous().identify().slice(15);
 		}
 
@@ -186,12 +183,12 @@ var ShortcutMenu = Class.create({
 			// first create an option for "no group"
 		option = document.createElement('option');
 		option.value = 0;
-		option.selected = (shortcutGroupId == 0 ? true : false);
+		option.selected = (shortcutGroupId === 0 ? true : false);
 		option.appendChild(document.createTextNode('No Group'));
 		selectField.appendChild(option);
 
 			// get the groups
-		new Ajax.Request('ajax.php', {
+		var getGroups = new Ajax.Request('ajax.php', {
 			method: 'get',
 			parameters: 'ajaxID=ShortcutMenu::getGroups',
 			asynchronous: false, // needs to be synchronous to build the options before adding the selectfield
@@ -204,7 +201,7 @@ var ShortcutMenu = Class.create({
 				shortcutGroups.each(function(group) {
 					option = document.createElement('option');
 					option.value = group.key
-					option.selected = (shortcutGroupId == group.key ? true : false);
+					option.selected = (shortcutGroupId === group.key ? true : false);
 					option.appendChild(document.createTextNode(group.value));
 					selectField.appendChild(option);
 				});
@@ -223,7 +220,7 @@ var ShortcutMenu = Class.create({
 	 */
 	reRenderMenu: function(transport, element, backPath) {
 		var container = $$('#shortcut-menu .toolbar-item-menu')[0];
-		if(!backPath) {
+		if (!backPath) {
 			var backPath = '';
 		}
 
@@ -233,7 +230,7 @@ var ShortcutMenu = Class.create({
 		});
 		container.update('LOADING');
 
-		new Ajax.Updater(
+		var render = new Ajax.Updater(
 			container,
 			backPath + 'ajax.php',
 			{
@@ -258,7 +255,7 @@ var ShortcutMenu = Class.create({
 
 			// synchrous call to wait for it to complete and call the render
 			// method with backpath _afterwards_
-		new Ajax.Request(backPath + 'ajax.php', {
+		var call = new Ajax.Request(backPath + 'ajax.php', {
 			parameters : 'ajaxID=ShortcutMenu::create&module=' + moduleName + '&url=' + url,
 			asynchronous : false
 		});

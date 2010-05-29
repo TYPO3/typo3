@@ -36,7 +36,7 @@ Ext.ns('TYPO3.configuration');
  */
 function jump(url, modName, mainModName) {
 		// clear information about which entry in nav. tree that might have been highlighted.
-	top.fsMod.navFrameHighlightedID = new Array();
+	top.fsMod.navFrameHighlightedID = [];
 
 	if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
 		top.content.nav_frame.refresh_nav();
@@ -57,7 +57,7 @@ var ShortcutManager = {
 	 */
 	createShortcut: function(confirmQuestion, backPath, moduleName, url) {
 		if(confirm(confirmQuestion)) {
-			if(typeof TYPO3BackendShortcutMenu != 'undefined') {
+			if (typeof TYPO3BackendShortcutMenu !== undefined) {
 					// backend.php
 				TYPO3BackendShortcutMenu.createShortcut('', moduleName, url);
 			}
@@ -96,7 +96,7 @@ function str_replace(match,replace,string)	{	//
 	var output = "";
 	var pointer=0;
 	var pos = input.indexOf(matchStr);
-	while (pos!=-1)	{
+	while (pos !== -1)	{
 		output+=""+input.substr(pointer, pos-pointer)+replace;
 		pointer=pos+matchStr.length;
 		pos = input.indexOf(match,pos+1);
@@ -123,7 +123,10 @@ function launchView(table,uid,bP)	{	//
  * Opens plain window with url
  */
 function openUrlInWindow(url,windowName)	{	//
-	regularWindow = window.open(url,windowName,"status=1,menubar=1,resizable=1,location=1,directories=0,scrollbars=1,toolbar=1");
+	regularWindow = window.open(
+		url,
+		windowName,
+		"status=1,menubar=1,resizable=1,location=1,directories=0,scrollbars=1,toolbar=1");
 	regularWindow.focus();
 	return false;
 }
@@ -132,8 +135,8 @@ function openUrlInWindow(url,windowName)	{	//
  * Loads a page id for editing in the page edit module:
  */
 function loadEditId(id,addGetVars)	{	//
-	top.fsMod.recentIds["web"]=id;
-	top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_0";		// For highlighting
+	top.fsMod.recentIds.web = id;
+	top.fsMod.navFrameHighlightedID.web = "pages" + id + "_0";		// For highlighting
 
 	if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
 		top.content.nav_frame.refresh_nav();
@@ -163,7 +166,7 @@ function getModuleUrl(inUrl)	{	//
  */
 function debugObj(obj,name)	{	//
 	var acc;
-	for (i in obj) {
+	for (var i in obj) {
 		if (obj[i])	{
 			acc+=i+":  "+obj[i]+"\n";
 		}
@@ -179,7 +182,7 @@ var currentSubScript = "";
 var currentSubNavScript = "";
 
 	// Used for tab-panels:
-var DTM_currentTabs = new Array();
+var DTM_currentTabs = [];
 
 	// status of WS FE preview
 var WorkspaceFrontendPreviewEnabled = TYPO3.configuration.workspaceFrontendPreviewEnabled;

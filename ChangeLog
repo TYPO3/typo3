@@ -5,7 +5,8 @@
 
 2010-05-29  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug 14523: Missing icons in workspace modules
+	* Fixed bug #10377: Cleaning and linting typo3/js-scripts
+	* Fixed bug #14523: Missing icons in workspace modules
 
 2010-05-29  Oliver Hader  <oliver@typo3.org>
 

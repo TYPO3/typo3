@@ -31,7 +31,7 @@ Element.addMethods({
 		var transparentGifPath = 'clear.gif';
 
 			// If there is valid element, it is an image and the image file ends with png:
-		if (Object.isElement(element) && element.tagName == 'IMG' && element.src.endsWith('.png')) {
+		if (Object.isElement(element) && element.tagName === 'IMG' && element.src.endsWith('.png')) {
 			var alphaImgSrc = element.src;
 			var sizingMethod = 'scale';
 			element.src = transparentGifPath;
@@ -62,7 +62,7 @@ var IECompatibility = Class.create({
 		Event.observe(window, 'load', function() {
 			if (Prototype.Browser.IE) {
 				var version = parseFloat(navigator.appVersion.split(';')[1].strip().split(' ')[1]);
-				if (version == 6) {
+				if (version === 6) {
 					$$('img').each(function(img){
 						img.pngHack();
 					});
@@ -72,6 +72,6 @@ var IECompatibility = Class.create({
 	}
 });
 
-if(Prototype.Browser.IE) {
+if (Prototype.Browser.IE) {
 	var TYPO3IECompatibilty = new IECompatibility();
 }

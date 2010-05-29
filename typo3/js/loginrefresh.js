@@ -49,7 +49,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 					method: "GET",
 					success: function(response, options) {
 						var result = Ext.util.JSON.decode(response.responseText);
-						if(result.login.locked) {
+						if (result.login.locked) {
 							this.locked = 1;
 							Ext.MessageBox.show({
 								title: TYPO3.LLL.core.please_wait,
@@ -178,7 +178,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			buttons: [{
 				text: TYPO3.LLL.core.refresh_login_refresh_button,
 				handler: function() {
-					refresh = Ext.Ajax.request({
+					var refresh = Ext.Ajax.request({
 						url: "ajax.php",
 						params: {
 							"ajaxID": "BackendLogin::isTimedOut"
@@ -229,7 +229,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 
 		});
 		progressControl.on('update', function(control, value, text) {
-			var rest = 30-(parseInt(value*30));
+			var rest = 30-(value * 30);
 			if (rest === 1) {
 				control.updateText(String.format(TYPO3.LLL.core.refresh_login_countdown_singular, rest));
 			} else {
@@ -244,7 +244,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 
 	showLoginPopup: function() {
 		Ext.getCmp("loginRefreshWindow").hide();
-		vHWin=window.open("login_frameset.php","relogin_"+TS.uniqueID,"height=450,width=700,status=0,menubar=0,location=1");
+		var vHWin = window.open("login_frameset.php","relogin_" + TS.uniqueID,"height=450,width=700,status=0,menubar=0,location=1");
 		vHWin.focus();
 	},
 
@@ -262,10 +262,10 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		if (fields.p_field === "") {
 			Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
 		} else {
-			if (TS.securityLevel == "superchallenged") {
+			if (TS.securityLevel === "superchallenged") {
 				fields.p_field = MD5(fields.p_field);
 			}
-			if (TS.securityLevel == "superchallenged" || TS.securityLevel == "challenged") {
+			if (TS.securityLevel === "superchallenged" || TS.securityLevel === "challenged") {
 				fields.challenge = challenge;
 				fields.userident = MD5(fields.username + ":" + fields.p_field + ":" + challenge);
 			} else {
@@ -303,7 +303,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 	},
 
 	triggerSubmitForm: function() {
-		if (TS.securityLevel == 'superchallenged' || TS.securityLevel == 'challenged') {
+		if (TS.securityLevel === 'superchallenged' || TS.securityLevel === 'challenged') {
 			Ext.Ajax.request({
 				url: 'ajax.php',
 				params: {
