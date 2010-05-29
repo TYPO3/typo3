@@ -706,7 +706,7 @@ NATSOFT.DOMAIN =
 		//if (strlen($val) < 4000) return $this->Execute("UPDATE $table SET $column=:blob WHERE $where",array('blob'=>$val)) != false;
 		
 		switch(strtoupper($blobtype)) {
-		default: ADOConnection::outp("<b>UpdateBlob</b>: Unknown blobtype=$blobtype"); return false;
+		default: ADOConnection::outp("<strong>UpdateBlob</strong>: Unknown blobtype=$blobtype"); return false;
 		case 'BLOB': $type = OCI_B_BLOB; break;
 		case 'CLOB': $type = OCI_B_CLOB; break;
 		}
@@ -737,7 +737,7 @@ NATSOFT.DOMAIN =
 	function UpdateBlobFile($table,$column,$val,$where,$blobtype='BLOB')
 	{
 		switch(strtoupper($blobtype)) {
-		default: ADOConnection::outp( "<b>UpdateBlob</b>: Unknown blobtype=$blobtype"); return false;
+		default: ADOConnection::outp( "<strong>UpdateBlob</strong>: Unknown blobtype=$blobtype"); return false;
 		case 'BLOB': $type = OCI_B_BLOB; break;
 		case 'CLOB': $type = OCI_B_CLOB; break;
 		}
@@ -950,7 +950,7 @@ NATSOFT.DOMAIN =
 			$stmt[2] += 1;
 		} else if (oci_lob_desc($type)) {
 			if ($this->debug) {
-				ADOConnection::outp("<b>Bind</b>: name = $name");
+				ADOConnection::outp("<strong>Bind</strong>: name = $name");
 			}
             //we have to create a new Descriptor here
 			$numlob = count($this->_refLOBs);
@@ -960,7 +960,7 @@ NATSOFT.DOMAIN =
 			$tmp = $this->_refLOBs[$numlob]['LOB'];
 	        $rez = OCIBindByName($stmt[1], ":".$name, $tmp, -1, $type);
 			if ($this->debug) {
-				ADOConnection::outp("<b>Bind</b>: descriptor has been allocated, var (".$name.") binded");
+				ADOConnection::outp("<strong>Bind</strong>: descriptor has been allocated, var (".$name.") binded");
 			}
 			
 			// if type is input then write data to lob now
@@ -969,7 +969,7 @@ NATSOFT.DOMAIN =
 				$tmp->WriteTemporary($var);
 				$this->_refLOBs[$numlob]['VAR'] = &$var;
 				if ($this->debug) {
-					ADOConnection::outp("<b>Bind</b>: LOB has been written to temp");
+					ADOConnection::outp("<strong>Bind</strong>: LOB has been written to temp");
 				}
 			} else {
 				$this->_refLOBs[$numlob]['VAR'] = $var;
@@ -977,7 +977,7 @@ NATSOFT.DOMAIN =
 			$rez = $tmp;
 		} else {
 			if ($this->debug) 
-				ADOConnection::outp("<b>Bind</b>: name = $name");
+				ADOConnection::outp("<strong>Bind</strong>: name = $name");
 			
 			if ($type !== false) $rez = OCIBindByName($stmt[1],":".$name,$var,$size,$type);
 			else $rez = OCIBindByName($stmt[1],":".$name,$var,$size); // +1 byte for null terminator
@@ -1100,7 +1100,7 @@ NATSOFT.DOMAIN =
 					if ($this -> _refLOBs[$key]['TYPE'] == true) {
 						$tmp = $this -> _refLOBs[$key]['LOB'] -> load();
 						if ($this -> debug) {
-							ADOConnection::outp("<b>OUT LOB</b>: LOB has been loaded. <br>");
+							ADOConnection::outp("<strong>OUT LOB</strong>: LOB has been loaded. <br>");
 						}
 						//$_GLOBALS[$this -> _refLOBs[$key]['VAR']] = $tmp;
 						$this -> _refLOBs[$key]['VAR'] = $tmp;
@@ -1109,7 +1109,7 @@ NATSOFT.DOMAIN =
 						$this -> _refLOBs[$key]['LOB']->free();
 						unset($this -> _refLOBs[$key]);
                         if ($this->debug) {
-							ADOConnection::outp("<b>IN LOB</b>: LOB has been saved. <br>");
+							ADOConnection::outp("<strong>IN LOB</strong>: LOB has been saved. <br>");
 						}
                     }					
 				}

@@ -155,7 +155,7 @@ class ADODB_Pager {
 			
 			for($i=$start; $i <= $end; $i++) {
                 if ($this->rs->AbsolutePage() == $i)
-                    $numbers .= "<font color=$this->linkSelectedColor><b>$i</b></font>  ";
+                    $numbers .= "<font color=$this->linkSelectedColor><strong>$i</strong></font>  ";
                 else 
                      $numbers .= "<a href=$PHP_SELF?$link=$i>$i</a>  ";
             

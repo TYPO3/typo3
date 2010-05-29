@@ -413,7 +413,7 @@ function adodb_date_test_date($y1,$m,$d=13)
 	if ($h == 0) $h = '00';
 	else if ($h < 10) $h = '0'.$h;
 	if ("$y1-$m-$d $h:00:00" != $rez) {
-		print "<b>$y1 error, expected=$y1-$m-$d $h:00:00, adodb=$rez</b><br>";
+		print "<strong>$y1 error, expected=$y1-$m-$d $h:00:00, adodb=$rez</strong><br>";
 		return false;
 	}
 	return true;
@@ -484,10 +484,10 @@ function adodb_date_test()
 	print  adodb_mktime(0,0,0,10,4,1582).' ';
 	print adodb_mktime(0,0,0,10,15,1582);
 	$diff = (adodb_mktime(0,0,0,10,15,1582) - adodb_mktime(0,0,0,10,4,1582));
-	if ($diff != 3600*24) print " <b>Error in gregorian correction = ".($diff/3600/24)." days </b><br>";
+	if ($diff != 3600*24) print " <strong>Error in gregorian correction = ".($diff/3600/24)." days </strong><br>";
 		
-	print " 15 Oct 1582, Fri=".(adodb_dow(1582,10,15) == 5 ? 'Fri' : '<b>Error</b>')."<br>";
-	print " 4 Oct 1582, Thu=".(adodb_dow(1582,10,4) == 4 ? 'Thu' : '<b>Error</b>')."<br>";
+	print " 15 Oct 1582, Fri=".(adodb_dow(1582,10,15) == 5 ? 'Fri' : '<strong>Error</strong>')."<br>";
+	print " 4 Oct 1582, Thu=".(adodb_dow(1582,10,4) == 4 ? 'Thu' : '<strong>Error</strong>')."<br>";
 	
 	print "<p>Testing overflow<p>";
 	
@@ -538,9 +538,9 @@ function adodb_date_test()
 					break;
 				}
 			}
-			print "<b>Error date(): $ts<br><pre> 
+			print "<strong>Error date(): $ts<br><pre> 
 &nbsp; \"$s1\" (date len=".strlen($s1).")
-&nbsp; \"$s2\" (adodb_date len=".strlen($s2).")</b></pre><br>";
+&nbsp; \"$s2\" (adodb_date len=".strlen($s2).")</strong></pre><br>";
 			$fail = true;
 		}
 		
@@ -548,7 +548,7 @@ function adodb_date_test()
 		$a2 = adodb_getdate($ts);
 		$rez = array_diff($a1,$a2);
 		if (sizeof($rez)>0) {
-			print "<b>Error getdate() $ts</b><br>";
+			print "<strong>Error getdate() $ts</strong><br>";
 				print_r($a1);
 			print "<br>";
 				print_r($a2);
@@ -598,7 +598,7 @@ function adodb_date_test()
 	}
 	echo "Tested $cnt dates<br>";
 	if (!$fail) print "<p>Passed !</p>";
-	else print "<p><b>Failed</b> :-(</p>";
+	else print "<p><strong>Failed</strong> :-(</p>";
 }
 
 /**

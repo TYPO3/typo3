@@ -600,7 +600,7 @@ class ADORecordSet_ado extends ADORecordSet {
 				$this->fields[] = false;
 				break;
 			case 6: // currency is not supported properly;
-				ADOConnection::outp( '<b>'.$f->Name.': currency type not supported by PHP</b>');
+				ADOConnection::outp( '<strong>'.$f->Name.': currency type not supported by PHP</strong>');
 				$this->fields[] = (float) $f->value;
 				break;
 			case 11: //BIT;

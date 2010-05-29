@@ -380,7 +380,7 @@ class ADODB_mssqlnative extends ADOConnection {
         if ($this->debug) error_log("<hr>connecting... hostname: $argHostname params: ".var_export($connectionInfo,true));
         //if ($this->debug) error_log("<hr>_connectionID before: ".serialize($this->_connectionID));
         if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) { 
-            if ($this->debug) error_log( "<hr><b>errors</b>: ".print_r( sqlsrv_errors(), true));
+            if ($this->debug) error_log( "<hr><strong>errors</strong>: ".print_r( sqlsrv_errors(), true));
             return false;
         }
         //if ($this->debug) error_log(" _connectionID after: ".serialize($this->_connectionID));
