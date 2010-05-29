@@ -1,0 +1,17 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Decorations (shadows etc.)
+
+$Id$
+- - - - - - - - - - - - - - - - - - - - - */
+
+.shadow-box-bottom-424 {
+	background-image: url('../../images/shadows/box-bottom-424.png');
+	background-position: top center;
+	background-repeat: no-repeat;
+}
+
+.shadow-box-top-428 {
+	background-image: url('../../images/shadows/box-top-428.png');
+	background-position: bottom center;
+	background-repeat: no-repeat;
+}

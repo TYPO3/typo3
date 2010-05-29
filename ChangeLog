@@ -1,5 +1,6 @@
 2010-05-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Follow-up to feature #14490: Add missing styles of login box (Thanks to Steffen Gebert)
 	* Fixed bug #14510: Increase width of module menu and navigation frame (Thanks to Steffen Gebert)
 
 2010-05-29  Steffen Kamper  <info@sk-typo3.de>
