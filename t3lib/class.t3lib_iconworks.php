@@ -783,7 +783,10 @@ final class t3lib_iconWorks	{
 
 				// workaround to give nav_hide pages a complete different icon
 				// although it's not a separate doctype
-			if ($table === 'pages' && $row['nav_hide']) {
+				// and to give root-pages an own icon
+			if ($table === 'pages' && $row['is_siteroot']) {
+				$recordType .= '-root';
+			} else if ($table === 'pages' && $row['nav_hide']) {
 				$recordType .= '-hideinmenu';
 			}
 

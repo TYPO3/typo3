@@ -152,14 +152,19 @@ $TCA['pages'] = array(
 		'typeicon_classes' => array(
 			'1' => 'apps-pagetree-page-default',
 			'1-hideinmenu' => 'apps-pagetree-page-not-in-menu',
+			'1-root' => 'apps-pagetree-page-domain',
 			'3' => 'apps-pagetree-page-shortcut-external',
 			'3-hideinmenu' => 'apps-pagetree-page-shortcut-external-hideinmenu',
+			'3-root' => 'apps-pagetree-page-domain',
 			'4' => 'apps-pagetree-page-shortcut',
 			'4-hideinmenu' => 'apps-pagetree-page-shortcut-hideinmenu',
+			'4-root' => 'apps-pagetree-page-domain',
 			'6' => 'apps-pagetree-page-backend-user',
 			'6-hideinmenu' => 'apps-pagetree-page-backend-user-hideinmenu',
+			'6-root' => 'apps-pagetree-page-domain',
 			'7' => 'apps-pagetree-page-mountpoint',
 			'7-hideinmenu' => 'apps-pagetree-page-mountpoint-hideinmenu',
+			'7-root' => 'apps-pagetree-page-domain',
 			'199' => 'apps-pagetree-spacer',
 			'199-hideinmenu' => 'apps-pagetree-spacer-hideinmenu',
 			'254' => 'apps-pagetree-folder-default',
@@ -167,6 +172,7 @@ $TCA['pages'] = array(
 			'255' => 'apps-pagetree-dust-bin',
 			'255-hideinmenu' => 'apps-pagetree-dust-bin-hideinmenu',
 			'default' => 'apps-pagetree-page-default',
+			
 		),
 		'typeicons' => array(
 			'1' => 'pages.gif',
