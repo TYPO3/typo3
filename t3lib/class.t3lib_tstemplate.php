@@ -1356,7 +1356,7 @@ class t3lib_TStemplate	{
 	 * Ordinary "wrapping" function. Used in the tslib_menu class and extension classes instead of the similar function in tslib_cObj
 	 *
 	 * @param	string		The content to wrap
-	 * @param	string		The wrap value, eg. "<b> | </b>"
+	 * @param	string		The wrap value, eg. "<strong> | </strong>"
 	 * @return	string		Wrapped input string
 	 * @see tslib_menu, tslib_cObj::wrap()
 	 */

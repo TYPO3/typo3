@@ -3519,7 +3519,7 @@ final class t3lib_div {
 			$result='
 			<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">';
 			if (count($array_in) == 0)	{
-				$result.= '<tr><td><font face="Verdana,Arial" size="1"><b>EMPTY!</b></font></td></tr>';
+				$result.= '<tr><td><font face="Verdana,Arial" size="1"><strong>EMPTY!</strong></font></td></tr>';
 			} else	{
 				foreach ($array_in as $key => $val)	{
 					$result.= '<tr>
@@ -3602,13 +3602,13 @@ final class t3lib_div {
 		if (is_array($var))	{
 			$debug .= self::view_array($var);
 		} elseif (is_object($var)) {
-			$debug .=  '<b>|Object:<pre>';
+			$debug .=  '<strong>|Object:<pre>';
 			$debug .= print_r($var, TRUE);
-			$debug .=  '</pre>|</b>';
+			$debug .=  '</pre>|</strong>';
 		} elseif ((string) $var !== '')	{
-			$debug .= '<b>|' . htmlspecialchars((string)$var) . '|</b>';
+			$debug .= '<strong>|' . htmlspecialchars((string)$var) . '|</strong>';
 		} else {
-			$debug .= '<b>| debug |</b>';
+			$debug .= '<strong>| debug |</strong>';
 		}
 
 		if ($header) {

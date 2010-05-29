@@ -151,7 +151,7 @@ class t3lib_formmail extends t3lib_htmlmail {
 						$HTML_val = ($convCharset && strlen($val)) ? $GLOBALS['TSFE']->csConvObj->conv(htmlspecialchars($val),$GLOBALS['TSFE']->renderCharset,$this->charset,1) : htmlspecialchars($val);
 
 						$Plain_content.= strtoupper($key).':  '.$space.$Plain_val.LF.$space;
-						$HTML_content.= '<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><b>'.strtoupper($key).'</b></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br($HTML_val).'&nbsp;</font></td></tr>';
+						$HTML_content.= '<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><strong>'.strtoupper($key).'</strong></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">'.nl2br($HTML_val).'&nbsp;</font></td></tr>';
 					}
 				}
 			}

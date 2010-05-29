@@ -160,7 +160,7 @@ class t3lib_arrayBrowser	{
 	function wrapValue($theValue,$depth)	{
 		$wrappedValue = '';
 		if (strlen($theValue) > 0) {
-			$wrappedValue = '<b>' . htmlspecialchars($theValue) . '</b>';
+			$wrappedValue = '<strong>' . htmlspecialchars($theValue) . '</strong>';
 		}
 		return $wrappedValue;
 	}

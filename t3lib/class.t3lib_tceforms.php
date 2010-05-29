@@ -276,7 +276,7 @@ class t3lib_TCEforms	{
 
 		// INTERNAL, templates
 	var $totalWrap='<hr />|<hr />';				// Total wrapping for the table rows.
-	var $fieldTemplate='<b>###FIELD_NAME###</b><br />###FIELD_ITEM###<hr />';	// Field template
+	var $fieldTemplate='<strong>###FIELD_NAME###</strong><br />###FIELD_ITEM###<hr />';	// Field template
 	var $sectionWrap='';						// Wrapping template code for a section
 	var $palFieldTemplateHeader='';				// Template for palette headers
 	var $palFieldTemplate='';					// Template for palettes
@@ -2495,7 +2495,7 @@ class t3lib_TCEforms	{
 
 			foreach ($rotateLang as $lKey)	{
 				if (!$langChildren && !$langDisabled)	{
-					$item.= '<b>'.$this->getLanguageIcon($table,$row,'v'.$lKey).$lKey.':</b>';
+					$item.= '<strong>'.$this->getLanguageIcon($table,$row,'v'.$lKey).$lKey.':</strong>';
 				}
 
 				$tabParts = array();
@@ -2729,7 +2729,7 @@ class t3lib_TCEforms	{
 							</div>
 
 							<div id="'.$idTagPrefix.'" style="padding-left: 20px;">'.implode('',$tRows).'</div>';
-							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><b>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.addnew', 1) . ':</b> '.implode(' | ',$newElementsLinks).'</div>' : '';
+							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.addnew', 1) . ':</strong> '.implode(' | ',$newElementsLinks).'</div>' : '';
 						} else {
 							// It is a container
 
@@ -4773,7 +4773,7 @@ class t3lib_TCEforms	{
 		$this->fieldTemplate='
 			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
 				<td>###FIELD_HELP_ICON###</td>
-				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><b>###FIELD_NAME###</b></span>###FIELD_HELP_TEXT###</td>
+				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><strong>###FIELD_NAME###</strong></span>###FIELD_HELP_TEXT###</td>
 			</tr>
 			<tr ###BGCOLOR######CLASSATTR_1###>
 				<td nowrap="nowrap"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-reqImg" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" /></td>

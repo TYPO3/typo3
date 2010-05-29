@@ -2002,7 +2002,7 @@ final class t3lib_BEfunc {
 
 	/**
 	 * Returns the label-value for fieldname $col in table, $table
-	 * If $printAllWrap is set (to a "wrap") then it's wrapped around the $col value IF THE COLUMN $col DID NOT EXIST in TCA!, eg. $printAllWrap = '<b>|</b>' and the fieldname was 'not_found_field' then the return value would be '<b>not_found_field</b>'
+	 * If $printAllWrap is set (to a "wrap") then it's wrapped around the $col value IF THE COLUMN $col DID NOT EXIST in TCA!, eg. $printAllWrap = '<strong>|</strong>' and the fieldname was 'not_found_field' then the return value would be '<strong>not_found_field</strong>'
 	 * Usage: 17
 	 *
 	 * @param	string		Table name, present in $TCA
@@ -4084,7 +4084,7 @@ final class t3lib_BEfunc {
 									<tr>
 										<td bgcolor="#F4F0E8">
 											<font face="verdana,arial,helvetica" size="2">';
-			echo '<b><center><font size="+1">'.$header.'</font></center></b><br />'.$text;
+			echo '<strong><center><font size="+1">'.$header.'</font></center></strong><br />'.$text;
 			echo '							</font>
 										</td>
 									</tr>

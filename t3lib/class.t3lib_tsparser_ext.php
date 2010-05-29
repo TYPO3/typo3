@@ -260,12 +260,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 	function substituteCMarkers($all)	{
 		switch($this->constantMode)	{
 			case 'const':
-				$all = str_replace('##'.$this->Cmarker.'_B##', '<font color="green"><B>', $all);
-				$all = str_replace('##'.$this->Cmarker.'_E##', '</b></font>', $all);
+				$all = str_replace('##'.$this->Cmarker.'_B##', '<font color="green"><strong>', $all);
+				$all = str_replace('##'.$this->Cmarker.'_E##', '</strong></font>', $all);
 			break;
 			case 'subst':
-				$all = str_replace('##'.$this->Cmarker.'_B##', '<font color="green"><B>', $all);
-				$all = str_replace('##'.$this->Cmarker.'_E##', '</b></font>', $all);
+				$all = str_replace('##'.$this->Cmarker.'_B##', '<font color="green"><strong>', $all);
+				$all = str_replace('##'.$this->Cmarker.'_E##', '</strong></font>', $all);
 			break;
 			default:
 				$all = $all;
@@ -412,7 +412,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 							$ln = '';
 						}
 
-						if ($this->tsbrowser_searchKeys[$depth] & 4)	{ $label = '<b><font color="red">'.$label.'</font></b>'; }	// The key has matched the search string
+						if ($this->tsbrowser_searchKeys[$depth] & 4)	{ $label = '<strong><font color="red">'.$label.'</font></strong>'; }	// The key has matched the search string
 						$label = '<a href="'.htmlspecialchars($aHref).'" title="'.htmlspecialchars($ln).'">'.$label.'</a>';
 					}
 				}
@@ -427,9 +427,9 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 						$theValue = $this->ext_fixed_lgd($theValue,$lgdChars);
 					}
 					if ($this->tsbrowser_searchKeys[$depth] & 2)	{	// The value has matched the search string
-						$HTML.='&nbsp;=&nbsp;<b><font color="red">'.$this->makeHtmlspecialchars($theValue).'</font></b>';
+						$HTML.='&nbsp;=&nbsp;<strong><font color="red">'.$this->makeHtmlspecialchars($theValue).'</font></strong>';
 					} else {
-						$HTML.='&nbsp;=&nbsp;<b>'.$this->makeHtmlspecialchars($theValue).'</b>';
+						$HTML.='&nbsp;=&nbsp;<strong>'.$this->makeHtmlspecialchars($theValue).'</strong>';
 					}
 					if ($this->ext_regComments && isset($arr[$key.'..']))	{
 						$comment = $arr[$key.'..'];
@@ -746,7 +746,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 
 			$firstChar = substr(trim($v),0,1);
 			if ($firstChar=='[')	{
-				$cArr[$k] = '<font color="green"><b>'.$cArr[$k].'</b></font>';
+				$cArr[$k] = '<font color="green"><strong>'.$cArr[$k].'</strong></font>';
 			} elseif ($firstChar=='/' || $firstChar=='#')	{
 				if ($comments)	{
 					$cArr[$k] = '<span class="typo3-dimmed">'.$cArr[$k].'</span>';

@@ -109,7 +109,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	public function setFancyDesign() {
 		$this->fieldTemplate = '
 	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6">###FIELD_HELP_ICON###<font face="verdana" size="1" color="black"><b>###FIELD_NAME###</b></font>###FIELD_HELP_TEXT###</td>
+		<td nowrap="nowrap" bgcolor="#F6F2E6">###FIELD_HELP_ICON###<font face="verdana" size="1" color="black"><strong>###FIELD_NAME###</strong></font>###FIELD_HELP_TEXT###</td>
 	</tr>
 	<tr>
 		<td nowrap="nowrap" bgcolor="#ABBBB4"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="10" height="10" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" width="7" height="10" alt="" /><font face="verdana" size="1" color="black">###FIELD_ITEM###</font>###FIELD_PAL_LINK_ICON###</td>
@@ -123,7 +123,7 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	</tr>	';
 		$this->palFieldTemplateHeader = '
 	<tr>
-		<td nowrap="nowrap" bgcolor="#F6F2E6"><font face="verdana" size="1" color="black"><b>###FIELD_HEADER###</b></font></td>
+		<td nowrap="nowrap" bgcolor="#F6F2E6"><font face="verdana" size="1" color="black"><strong>###FIELD_HEADER###</strong></font></td>
 	</tr>	';
 	}
 

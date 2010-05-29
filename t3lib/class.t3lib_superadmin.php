@@ -1172,7 +1172,7 @@ class t3lib_superadmin {
 						$label = $all['siteInfo']['sitename'] ? $all['siteInfo']['sitename'] : '(DB: '.$all['siteInfo']['TYPO3_db'].')';
 						$lines[] = '
 							<hr />
-							<b>'.htmlspecialchars($label).'</b> ('.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])+1)).')<br />';
+							<strong>'.htmlspecialchars($label).'</strong> ('.htmlspecialchars(substr($all['siteInfo']['SA_PATH'],strlen($all['siteInfo']['MAIN_DIR'])+1)).')<br />';
 
 								// To avoid "visited links" display on next hit:
 							$tempVal='&_someUniqueValue=' . $GLOBALS['EXEC_TIME'];
