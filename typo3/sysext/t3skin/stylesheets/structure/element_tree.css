@@ -58,6 +58,7 @@ ul.tree span.dragIcon {
 	top: -1px;
 }
 
+ul.tree .typo3-red,
 ul.tree span.dragTitle,
 ul.tree span.dragId {
 	position: relative;

@@ -59,6 +59,9 @@ td {
 	padding: 3px 7px;
 }
 
+a span {
+	cursor: pointer;
+}
 /* Forms */
 
 /* Reformatting of the submit buttons */

@@ -1,3 +1,7 @@
+2010-05-29  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Follow-up to feature #14490: wrong position of stop page tree icon & cursor:pointer for IE6 icons
+
 2010-05-28  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11503: HTML5 doctype implementation
