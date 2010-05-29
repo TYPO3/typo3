@@ -1,6 +1,7 @@
 2010-05-29  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to feature #14490: wrong position of stop page tree icon & cursor:pointer for IE6 icons
+	* Follow-up to feature #14506: Fixes for alt_db_navframe (page tree filter - missing JS file) (Thanks to Steffen Gebert)
 
 2010-05-28  Steffen Kamper  <info@sk-typo3.de>
 
