@@ -3905,10 +3905,10 @@ class tslib_cObj {
 			if ($conf['debug'])	{$content = '<pre>'.htmlspecialchars($content).'</pre>';}
 			if ($conf['debugFunc'])	{debug($conf['debugFunc']==2?array($content):$content);}
 			if ($conf['debugData'])	{
-				echo '<b>$cObj->data:</b>';
+				echo '<strong>$cObj->data:</strong>';
 				debug($this->data,'$cObj->data:');
 				if (is_array($this->alternativeData))	{
-					echo '<b>$cObj->alternativeData:</b>';
+					echo '<strong>$cObj->alternativeData:</strong>';
 					debug($this->alternativeData,'$this->alternativeData');
 				}
 			}
@@ -4145,7 +4145,7 @@ class tslib_cObj {
 	 * Wrapping input value in a regular "wrap" but parses the wrapping value first for "insertData" codes.
 	 *
 	 * @param	string		Input string being wrapped
-	 * @param	string		The wrap string, eg. "<b></b>" or more likely here '<a href="index.php?id={TSFE:id}"> | </a>' which will wrap the input string in a <a> tag linking to the current page.
+	 * @param	string		The wrap string, eg. "<strong></strong>" or more likely here '<a href="index.php?id={TSFE:id}"> | </a>' which will wrap the input string in a <a> tag linking to the current page.
 	 * @return	string		Output string wrapped in the wrapping value.
 	 * @see insertData(), stdWrap()
 	 */
@@ -4478,7 +4478,7 @@ class tslib_cObj {
 
 			// properties
 		if (($properties&8))	{$theValue=$this->HTMLcaseshift($theValue, 'upper');}
-		if (($properties&1))	{$theValue='<b>'.$theValue.'</b>';}
+		if (($properties&1))	{$theValue='<strong>'.$theValue.'</strong>';}
 		if (($properties&2))	{$theValue='<i>'.$theValue.'</i>';}
 		if (($properties&4))	{$theValue='<u>'.$theValue.'</u>';}
 
@@ -6545,10 +6545,10 @@ class tslib_cObj {
 	/**
 	 * Wrapping a string.
 	 * Implements the TypoScript "wrap" property.
-	 * Example: $content = "HELLO WORLD" and $wrap = "<b> | </b>", result: "<b>HELLO WORLD</b>"
+	 * Example: $content = "HELLO WORLD" and $wrap = "<strong> | </strong>", result: "<strong>HELLO WORLD</strong>"
 	 *
 	 * @param	string		The content to wrap
-	 * @param	string		The wrap value, eg. "<b> | </b>"
+	 * @param	string		The wrap value, eg. "<strong> | </strong>"
 	 * @param	string		The char used to split the wrapping value, default is "|"
 	 * @return	string		Wrapped input string
 	 * @see noTrimWrap()
@@ -6565,8 +6565,8 @@ class tslib_cObj {
 	 * Notice that the wrap value uses part 1/2 to wrap (and not 0/1 which wrap() does)
 	 *
 	 * @param	string		The content to wrap, eg. "HELLO WORLD"
-	 * @param	string		The wrap value, eg. " | <b> | </b>"
-	 * @return	string		Wrapped input string, eg. " <b> HELLO WORD </b>"
+	 * @param	string		The wrap value, eg. " | <strong> | </strong>"
+	 * @return	string		Wrapped input string, eg. " <strong> HELLO WORD </strong>"
 	 * @see wrap()
 	 */
 	function noTrimWrap($content,$wrap)	{

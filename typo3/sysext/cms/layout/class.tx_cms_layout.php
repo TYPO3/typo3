@@ -348,10 +348,10 @@ class tx_cms_layout extends recordList {
 				} else $eI='';
 				switch($field)	{
 					case 'title':
-						$theData[$field] = '&nbsp;<b>'.$GLOBALS['LANG']->sL($TCA['pages']['columns'][$field]['label']).'</b>'.$eI;
+						$theData[$field] = '&nbsp;<strong>'.$GLOBALS['LANG']->sL($TCA['pages']['columns'][$field]['label']).'</strong>'.$eI;
 					break;
 					case 'uid':
-						$theData[$field] = '&nbsp;<b>ID:</b>';
+						$theData[$field] = '&nbsp;<strong>ID:</strong>';
 					break;
 					default:
 						if (substr($field,0,6)=='table_')	{
@@ -371,7 +371,7 @@ class tx_cms_layout extends recordList {
 								break;
 							}
 						} else {
-							$theData[$field] = '&nbsp;&nbsp;<b>'.$GLOBALS['LANG']->sL($TCA['pages']['columns'][$field]['label'],1).'</b>'.$eI;
+							$theData[$field] = '&nbsp;&nbsp;<strong>'.$GLOBALS['LANG']->sL($TCA['pages']['columns'][$field]['label'],1).'</strong>'.$eI;
 						}
 					break;
 				}
@@ -833,8 +833,8 @@ class tx_cms_layout extends recordList {
 					// header line is drawn
 				$theData = Array();
 				$theData['__cmds__'] ='';
-				$theData['info'] = '<b>Info</b><br /><img src="clear.gif" height="1" width="220" alt="" />';
-				$theData['note'] = '<b>Note</b>';
+				$theData['info'] = '<strong>Info</strong><br /><img src="clear.gif" height="1" width="220" alt="" />';
+				$theData['note'] = '<strong>Note</strong>';
 				$out.=$this->addelement(1,'',$theData,' class="c-headLine"',20);
 
 					// half line is drawn
@@ -865,7 +865,7 @@ class tx_cms_layout extends recordList {
 							$theData = Array();
 							$this->getProcessedValue('sys_note','subject,category,author,email,personal',$row,$info);
 							$cont=implode('<br />',$info);
-							$head = '<b>Page:</b> '.t3lib_BEfunc::getRecordPath($row['pid'],$perms_clause,10).'<br />';
+							$head = '<strong>Page:</strong> '.t3lib_BEfunc::getRecordPath($row['pid'],$perms_clause,10).'<br />';
 
 							$theData['__cmds__']= $this->getIcon('sys_note',$row);
 							$theData['info'] = $head.$cont;
@@ -927,12 +927,12 @@ class tx_cms_layout extends recordList {
 
 				// Header line is drawn
 			$theData = Array();
-			$theData['subject'] = '<b>'.$GLOBALS['LANG']->getLL('tt_board_subject',1).'</b>';
-			$theData['author'] = '<b>'.$GLOBALS['LANG']->getLL('tt_board_author',1).'</b>';
-			$theData['date'] = '<b>'.$GLOBALS['LANG']->getLL('tt_board_date',1).'</b>';
-			$theData['age'] = '<b>'.$GLOBALS['LANG']->getLL('tt_board_age',1).'</b>';
+			$theData['subject'] = '<strong>'.$GLOBALS['LANG']->getLL('tt_board_subject',1).'</strong>';
+			$theData['author'] = '<strong>'.$GLOBALS['LANG']->getLL('tt_board_author',1).'</strong>';
+			$theData['date'] = '<strong>'.$GLOBALS['LANG']->getLL('tt_board_date',1).'</strong>';
+			$theData['age'] = '<strong>'.$GLOBALS['LANG']->getLL('tt_board_age',1).'</strong>';
 			if ($GLOBALS['SOBE']->MOD_SETTINGS['tt_board']!='expand') {
-				$theData['replys'] = '<b>'.$GLOBALS['LANG']->getLL('tt_board_RE',1).'</b>';
+				$theData['replys'] = '<strong>'.$GLOBALS['LANG']->getLL('tt_board_RE',1).'</strong>';
 			}
 			$out.=$this->addelement(1,'',$theData,' class="c-headLine"',20);
 
@@ -1282,7 +1282,7 @@ class tx_cms_layout extends recordList {
 						// Traverse fields, separated by ";" (displayed in a single cell).
 					foreach($theFields as $fName2)	{
 						if ($TCA[$table]['columns'][$fName2])	{
-							 $out[$fieldName].= '<b>'.$GLOBALS['LANG']->sL($TCA[$table]['columns'][$fName2]['label'],1).'</b>'.
+							 $out[$fieldName].= '<strong>'.$GLOBALS['LANG']->sL($TCA[$table]['columns'][$fName2]['label'],1).'</strong>'.
 							 					'&nbsp;&nbsp;'.
 												htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table,$fName2,$row[$fName2],0,0,0,$row['uid']),25)).
 												'<br />';
@@ -1317,7 +1317,7 @@ class tx_cms_layout extends recordList {
 
 		foreach($fieldArr as $fieldName)	{
 			$ll = $GLOBALS['LANG']->sL($TCA[$table]['columns'][$fieldName]['label'],1);
-			$out[$fieldName] = '<b>'.($ll?$ll:'&nbsp;').'</b>';
+			$out[$fieldName] = '<strong>'.($ll?$ll:'&nbsp;').'</strong>';
 		}
 		return $out;
 	}
@@ -1397,7 +1397,7 @@ class tx_cms_layout extends recordList {
 		foreach($fieldArr as $field)	{
 			switch($field)	{
 				case 'title':
-					$red = $this->plusPages[$row['uid']] ? '<font color="red"><b>+&nbsp;</b></font>' : '';
+					$red = $this->plusPages[$row['uid']] ? '<font color="red"><strong>+&nbsp;</strong></font>' : '';
 					$pTitle = htmlspecialchars(t3lib_BEfunc::getProcessedValue('pages',$field,$row[$field],20));
 					if ($red)	{
 						$pTitle = '<a href="'.htmlspecialchars($this->script.'?id='.$row['uid']).'">'.$pTitle.'</a>';
@@ -1406,7 +1406,7 @@ class tx_cms_layout extends recordList {
 				break;
 				case 'php_tree_stop':
 				case 'TSconfig':
-					$theData[$field] = $row[$field]?'&nbsp;<b>x</b>':'&nbsp;';
+					$theData[$field] = $row[$field]?'&nbsp;<strong>x</strong>':'&nbsp;';
 				break;
 				case 'uid':
 					if ($GLOBALS['BE_USER']->doesUserHaveAccess($row,2))	{
@@ -1562,7 +1562,7 @@ class tx_cms_layout extends recordList {
 				$lockIcon . ' ' .
 				$stat . ' ' .
 				($langMode ? $this->languageFlag($row['sys_language_uid']) : '') .  ' ' .
-				'&nbsp;<b>' . htmlspecialchars($this->CType_labels[$row['CType']]) . '</b>';
+				'&nbsp;<strong>' . htmlspecialchars($this->CType_labels[$row['CType']]) . '</strong>';
 
 			// If show info is set...;
 		if ($this->tt_contentConfig['showInfo'])	{
@@ -1688,7 +1688,7 @@ class tx_cms_layout extends recordList {
 			}
 			$outHeader=  ($row['date'] ? htmlspecialchars($this->itemLabels['date'].' '.t3lib_BEfunc::date($row['date'])).'<br />':'').
 					$this->infoGif($infoArr).
-					'<b>' . $this->linkEditContent($this->renderText($row['header']), $row) . $hiddenHeaderNote . '</b><br />';
+					'<strong>' . $this->linkEditContent($this->renderText($row['header']), $row) . $hiddenHeaderNote . '</strong><br />';
 		}
 
 		// Make content:
