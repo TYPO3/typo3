@@ -129,7 +129,7 @@ class SC_mod_tools_dbint_index {
 
 		$this->doc->tableLayout = array (
 			'0' => array (
-				'defCol' => array('<td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="t3-row-header"><b>', '</b></td>')
+				'defCol' => array('<td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="t3-row-header"><strong>', '</strong></td>')
 			),
 			'defRow' => array (
 				'0' => array('<td valign="top">','</td>'),
@@ -545,7 +545,7 @@ class SC_mod_tools_dbint_index {
 				if (is_array($admin->lRecords[$t]))	{
 					foreach ($admin->lRecords[$t] as $data) {
 						if (!t3lib_div::inList($admin->lostPagesList,$data[pid]))	{
-							$lr.= '<nobr><b><a href="index.php?SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data[uid] . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</b></nobr><br>';
+							$lr.= '<nobr><strong><a href="index.php?SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data[uid] . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</strong></nobr><br>';
 						} else {
 							$lr.= '<nobr><img src="' . $BACK_PATH . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</font></nobr><br>';
 						}
@@ -581,7 +581,7 @@ class SC_mod_tools_dbint_index {
 		$code='';
 		if (is_array($fileTest['noReferences']))	{
 			foreach ($fileTest['noReferences'] as $val) {
-				$code.='<nobr>' . $val[0] . '/<b>' . $val[1] . '</b></nobr><br>';
+				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong></nobr><br>';
 			}
 		}
 		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('files_no_ref'), $code, true, true);
@@ -589,7 +589,7 @@ class SC_mod_tools_dbint_index {
 		$code='';
 		if (is_array($fileTest['moreReferences']))	{
 			foreach ($fileTest['moreReferences'] as $val) {
-				$code.='<nobr>' . $val[0] . '/<b>' . $val[1] . '</b>: ' . $val[2] . ' ' . $GLOBALS['LANG']->getLL('references') . '</nobr><br>' . $val[3] . '<br><br>';
+				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong>: ' . $val[2] . ' ' . $GLOBALS['LANG']->getLL('references') . '</nobr><br>' . $val[3] . '<br><br>';
 			}
 		}
 		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'),$code, true, true);
@@ -598,7 +598,7 @@ class SC_mod_tools_dbint_index {
 		if (is_array($fileTest['noFile']))	{
 			ksort($fileTest['noFile']);
 			foreach ($fileTest['noFile'] as $val) {
-				$code.='<nobr>' . $val[0] . '/<b>' . $val[1] . '</b> ' . $GLOBALS['LANG']->getLL('isMissing') . ' </nobr><br>' . $GLOBALS['LANG']->getLL('referencedFrom') . $val[2] . '<br><br>';
+				$code.='<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong> ' . $GLOBALS['LANG']->getLL('isMissing') . ' </nobr><br>' . $GLOBALS['LANG']->getLL('referencedFrom') . $val[2] . '<br><br>';
 			}
 		}
 		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('files_no_file'), $code, true, true);
@@ -628,13 +628,13 @@ class SC_mod_tools_dbint_index {
 					$info = $this->findFile(PATH_site.$value.'/',$pattern,$matching_files,$depth);
 				}
 				if (is_array($info))	{
-					$lines[]='<hr><b>' . $value . '/</b> ' . $GLOBALS['LANG']->getLL('beingChecked');
+					$lines[]='<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('beingChecked');
 					$lines[]=$GLOBALS['LANG']->getLL('directories') . ' ' . $info[0];
 					if ($info[2])	$lines[]='<span class="typo3-red">' . $GLOBALS['LANG']->getLL('directoriesTooDeep') . ' ' . $depth . '</span>';
 					$lines[]=$GLOBALS['LANG']->getLL('files') . ' ' . $info[1];
 					$lines[]=$GLOBALS['LANG']->getLL('matchingFiles') . '<br><nobr><span class="typo3-red">' . implode('<br>', $matching_files) . '</span></nobr>';
 				} else {
-					$lines[]=$GLOBALS['TBE_TEMPLATE']->dfw('<hr><b>' . $value . '/</b> ' . $GLOBALS['LANG']->getLL('notChecked'));
+					$lines[]=$GLOBALS['TBE_TEMPLATE']->dfw('<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('notChecked'));
 				}
 			}
 

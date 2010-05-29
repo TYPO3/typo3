@@ -53,7 +53,7 @@ class tx_coreupdates_statictemplates {
 				'ref_table = "static_template" AND tablename != "static_template" AND deleted=0'
 			);
 			if ($count) {
-				$description .= '<b style="color:#f00">Dependencies found! You MUST install the extenion "statictemplates"!</b>';
+				$description .= '<strong style="color:#f00">Dependencies found! You MUST install the extenion "statictemplates"!</strong>';
 				return TRUE;
 			}
 			else {

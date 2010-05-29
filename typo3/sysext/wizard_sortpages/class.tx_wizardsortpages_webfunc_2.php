@@ -110,16 +110,16 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
 			$lines=array();
 				$lines[]= '<tr>
-					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title').'</b></td>
-					'.(t3lib_extMgm::isLoaded('cms')?'<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'),'subtitle').'</b></td>':'').'
-					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp').'</b></td>
-					<td class="bgColor5"><b>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate').'</b></td>
+					<td class="bgColor5"><strong>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title').'</strong></td>
+					'.(t3lib_extMgm::isLoaded('cms')?'<td class="bgColor5"><strong>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'),'subtitle').'</strong></td>':'').'
+					<td class="bgColor5"><strong>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp').'</strong></td>
+					<td class="bgColor5"><strong>'.$this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate').'</strong></td>
 					</tr>';
 			foreach ($menuItems as $rec) {
 				$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);	// edit permissions for that page!
 				$pRec = t3lib_BEfunc::getRecord ('pages',$rec['uid'],'uid',' AND '.$m_perms_clause);
 				$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getSpriteIconForRecord('pages',$rec).
-					(!is_array($pRec)?$GLOBALS['TBE_TEMPLATE']->rfw('<b>'.$LANG->getLL('wiz_W',1).'</b> '):'').
+					(!is_array($pRec)?$GLOBALS['TBE_TEMPLATE']->rfw('<strong>'.$LANG->getLL('wiz_W',1).'</strong> '):'').
 					htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>
 					'.(t3lib_extMgm::isLoaded('cms')?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['subtitle'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>':'').'
 					<td nowrap="nowrap">'.t3lib_Befunc::datetime($rec['tstamp']).'&nbsp;&nbsp;</td>
@@ -127,7 +127,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 					</tr>';
 			}
 
-			$theCode.= '<b>'.$LANG->getLL('wiz_currentPageOrder',1).':</b><br /><br />
+			$theCode.= '<strong>'.$LANG->getLL('wiz_currentPageOrder',1).':</strong><br /><br />
 			<table border="0" cellpadding="0" cellspacing="0">'.implode('',$lines).'</table><br />';
 
 			if (count($menuItems))	{
@@ -139,7 +139,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate');
 				$lines[] = '';
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_REVERSE'),'REV');
-				$theCode.= '<b>'.$LANG->getLL('wiz_changeOrder').':</b><br /><br />'.implode('<br />',$lines);
+				$theCode.= '<strong>'.$LANG->getLL('wiz_changeOrder').':</strong><br /><br />'.implode('<br />',$lines);
 			}
 
 				// CSH:

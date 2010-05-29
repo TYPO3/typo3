@@ -59,11 +59,11 @@ Recycler.grid = {
 		var expander = new Ext.grid.RowExpander({
 			tpl : new Ext.Template(
 				'<br/>' +
-				'<p style="margin-left:45px;"><b>' + Recycler.lang.table + ':</b> {table}</p>' +
-				'<p style="margin-left:45px;"><b>' + Recycler.lang.crdate + ':</b> {crdate}</p>' +
-				'<p style="margin-left:45px;"><b>' + Recycler.lang.tstamp + ':</b> {tstamp}</p>' +
-				'<p style="margin-left:45px;"><b>' + Recycler.lang.owner + ':</b> {owner} (UID: {owner_uid})</p>' +
-				'<p style="margin-left:45px;"><b>' + Recycler.lang.path + ':</b> {path}</p>' +
+				'<p style="margin-left:45px;"><strong>' + Recycler.lang.table + ':</strong> {table}</p>' +
+				'<p style="margin-left:45px;"><strong>' + Recycler.lang.crdate + ':</strong> {crdate}</p>' +
+				'<p style="margin-left:45px;"><strong>' + Recycler.lang.tstamp + ':</strong> {tstamp}</p>' +
+				'<p style="margin-left:45px;"><strong>' + Recycler.lang.owner + ':</strong> {owner} (UID: {owner_uid})</p>' +
+				'<p style="margin-left:45px;"><strong>' + Recycler.lang.path + ':</strong> {path}</p>' +
 				'<br/>'
 			)
 		});

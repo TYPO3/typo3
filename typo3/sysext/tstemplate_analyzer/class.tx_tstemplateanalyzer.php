@@ -92,8 +92,8 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		if ($existTemplate)	{
 			$theOutput.=$this->pObj->doc->divider(5);
 			$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', true) ,
-				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow) . '<b>' .
-				$this->pObj->linkWrapTemplateTitle($tplRow["title"]) . '</b>' .
+				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $tplRow) . '<strong>' .
+				$this->pObj->linkWrapTemplateTitle($tplRow["title"]) . '</strong>' .
 				htmlspecialchars(trim($tplRow["sitetitle"]) ? ' - (' . $tplRow["sitetitle"] . ')' : ''));
 		}
 		if ($manyTemplatesMenu)	{
@@ -169,7 +169,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 					if ($cVal == t3lib_div::_GET('template') || t3lib_div::_GET('template') == "all")	{
 						$theOutput .= '
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><b>' . $tmpl->templateTitles[$cVal] . '</b></td></tr>
+								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><strong>' . $tmpl->templateTitles[$cVal] . '</strong></td></tr>
 							<tr>
 								<td><img src="clear.gif" width="3" height="1" /></td>
 								<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 class="bgColor0" width="100%"><tr><td nowrap>' .
@@ -207,7 +207,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 					if (current($tmpl->clearList_setup) == t3lib_div::_GET('template') || t3lib_div::_GET('template') == "all")	{
 						$theOutput .= '
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><b>' . $tmpl->templateTitles[current($tmpl->clearList_setup)] . '</b></td></tr>
+								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><strong>' . $tmpl->templateTitles[current($tmpl->clearList_setup)] . '</strong></td></tr>
 							<tr>
 								<td><img src="clear.gif" width="3" height="1" /></td>
 								<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 class="bgColor0" width="100%"><tr><td nowrap>'.$tmpl->ext_outputTS(array($val),$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"]).'</td></tr></table>

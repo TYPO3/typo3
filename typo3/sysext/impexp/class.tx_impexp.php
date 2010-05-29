@@ -2642,7 +2642,7 @@ class tx_impexp {
 				if ($this->update)	{
 					$diffInverse = TRUE;	// In case of update-PREVIEW we swap the diff-sources.
 					$recInf = $this->doesRecordExist($table, $uid, $this->showDiff ? '*' : '');
-					$pInfo['updatePath']= $recInf ? htmlspecialchars($this->getRecordPath($recInf['pid'])) : '<b>NEW!</b>';
+					$pInfo['updatePath']= $recInf ? htmlspecialchars($this->getRecordPath($recInf['pid'])) : '<strong>NEW!</strong>';
 
 						// Mode selector:
 					$optValues = array();
@@ -2711,15 +2711,15 @@ class tx_impexp {
 				$pInfo['title'] = '<em>'.$info['field'].', "'.$info['spKey'].'" </em>: <span title="'.htmlspecialchars($info['matchString']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['matchString'],60)).'</span>';
 				if ($info['subst']['type'])	{
 					if (strlen($info['subst']['title']))	{
-						$pInfo['title'].= '<br/>'.$preCode_B.'<b>'.$LANG->getLL('impexpcore_singlereco_title',1).'</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['title'],60));
+						$pInfo['title'].= '<br/>'.$preCode_B.'<strong>'.$LANG->getLL('impexpcore_singlereco_title',1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['title'],60));
 					}
 					if (strlen($info['subst']['description']))	{
-						$pInfo['title'].= '<br/>'.$preCode_B.'<b>'.$LANG->getLL('impexpcore_singlereco_descr',1).'</b> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['description'],60));
+						$pInfo['title'].= '<br/>'.$preCode_B.'<strong>'.$LANG->getLL('impexpcore_singlereco_descr',1).'</strong> '.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['subst']['description'],60));
 					}
 					$pInfo['title'].= '<br/>'.$preCode_B.
-											($info['subst']['type'] == 'file' ? $LANG->getLL('impexpcore_singlereco_filename',1).' <b>'.$info['subst']['relFileName'].'</b>' : '').
-											($info['subst']['type'] == 'string' ? $LANG->getLL('impexpcore_singlereco_value',1).' <b>'.$info['subst']['tokenValue'].'</b>' : '').
-											($info['subst']['type'] == 'db' ? $LANG->getLL('impexpcore_softrefsel_record',1).' <b>'.$info['subst']['recordRef'].'</b>' : '');
+											($info['subst']['type'] == 'file' ? $LANG->getLL('impexpcore_singlereco_filename',1).' <strong>'.$info['subst']['relFileName'].'</strong>' : '').
+											($info['subst']['type'] == 'string' ? $LANG->getLL('impexpcore_singlereco_value',1).' <strong>'.$info['subst']['tokenValue'].'</strong>' : '').
+											($info['subst']['type'] == 'db' ? $LANG->getLL('impexpcore_softrefsel_record',1).' <strong>'.$info['subst']['recordRef'].'</strong>' : '');
 				}
 				$pInfo['ref'] = 'SOFTREF';
 				$pInfo['size'] = '';
@@ -2972,7 +2972,7 @@ class tx_impexp {
 				$cfg = $this->softrefCfg[$tokenID];
 				if ($cfg['mode'] === 'editable')	{
 					return
-						(strlen($cfg['title']) ? '<b>'.htmlspecialchars($cfg['title']).'</b><br/>' : '').
+						(strlen($cfg['title']) ? '<strong>'.htmlspecialchars($cfg['title']).'</strong><br/>' : '').
 						htmlspecialchars($cfg['description']).'<br/>
 						<input type="text" name="tx_impexp[softrefInputValues]['.$tokenID.']" value="'.htmlspecialchars(isset($this->softrefInputValues[$tokenID]) ? $this->softrefInputValues[$tokenID] : $cfg['defValue']).'" />';
 				}
@@ -3015,7 +3015,7 @@ class tx_impexp {
 				if (strlen($cfg['subst']['title']))	{
 					$descriptionField.= '
 					<input type="hidden" name="tx_impexp[softrefCfg]['.$cfg['subst']['tokenID'].'][title]" value="'.htmlspecialchars($cfg['subst']['title']).'" />
-					<b>'.htmlspecialchars($cfg['subst']['title']).'</b><br/>';
+					<strong>'.htmlspecialchars($cfg['subst']['title']).'</strong><br/>';
 				}
 
 					// Description:
@@ -3218,7 +3218,7 @@ class tx_impexp {
 						unset($importRecord[$fN]);
 					} else {
 							// This will tell us if the field is not in the import file, but who cares? It is totally ok that the database contains fields that are not in the import, isn't it (extensions could be installed that added these fields!)?
-						#$output[$fN] = '<b>Field missing</b> in import file';
+						#$output[$fN] = '<strong>Field missing</strong> in import file';
 					}
 				}
 			}
@@ -3226,7 +3226,7 @@ class tx_impexp {
 				// Traverse remaining in import record:
 			foreach($importRecord as $fN => $value)	{
 				if (is_array($TCA[$table]['columns'][$fN]) && $TCA[$table]['columns'][$fN]['config']['type']!='passthrough')	{
-					$output[$fN] = '<b>Field missing</b> in database';
+					$output[$fN] = '<strong>Field missing</strong> in database';
 				}
 			}
 
@@ -3247,7 +3247,7 @@ class tx_impexp {
 				$output = 'Match';
 			}
 
-			return '<b class="nobr">['.htmlspecialchars($table.':'.$importRecord['uid'].' => '.$databaseRecord['uid']).']:</b> '.$output;
+			return '<strong class="nobr">['.htmlspecialchars($table.':'.$importRecord['uid'].' => '.$databaseRecord['uid']).']:</strong> '.$output;
 		}
 
 

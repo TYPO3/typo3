@@ -300,7 +300,7 @@ class SC_mod_tools_config_index {
 		$this->content.= '<tr>
 					<td><img src="clear.gif" width="1" height="1" alt="" /></td>
 					<td class="bgColor2">
-						<table border="0" cellpadding="0" cellspacing="0" class="bgColor5" width="100%"><tr><td nowrap="nowrap"><b>'.$label.'</b></td></tr></table>
+						<table border="0" cellpadding="0" cellspacing="0" class="bgColor5" width="100%"><tr><td nowrap="nowrap"><strong>'.$label.'</strong></td></tr></table>
 					</td>
 				</tr>';
 		$this->content.='<tr>

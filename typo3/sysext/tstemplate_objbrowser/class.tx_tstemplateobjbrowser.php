@@ -220,8 +220,8 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
 		if ($existTemplate)	{
 			$theOutput .= '<h4 style="margin-bottom:5px;">' . $GLOBALS['LANG']->getLL('currentTemplate') . ' <img ' .
-				t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)) . ' align="top" /> <b>' .
-				$this->pObj->linkWrapTemplateTitle($tplRow["title"], ($bType == "setup" ? "config" : "constants")) . '</b>' .
+				t3lib_iconWorks::skinImg($BACK_PATH, t3lib_iconWorks::getIcon('sys_template', $tplRow)) . ' align="top" /> <strong>' .
+				$this->pObj->linkWrapTemplateTitle($tplRow["title"], ($bType == "setup" ? "config" : "constants")) . '</strong>' .
 				htmlspecialchars(trim($tplRow["sitetitle"]) ? ' - (' . $tplRow["sitetitle"] . ')' : '') . '</h4>';
 			if ($manyTemplatesMenu)	{
 				$theOutput.=$this->pObj->doc->section("",$manyTemplatesMenu);
@@ -386,10 +386,10 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 					// clear
 				$out = '';
-				$out = htmlspecialchars($this->pObj->sObj) . " <b>" .
+				$out = htmlspecialchars($this->pObj->sObj) . " <strong>" .
 					$GLOBALS['LANG']->csConvObj->conv_case(
 						$GLOBALS['LANG']->charSet, $GLOBALS['LANG']->getLL('clear'), 'toUpper'
-					) . "</b> &nbsp;&nbsp;";
+					) . "</strong> &nbsp;&nbsp;";
 				$out .= '<input type="Checkbox" name="data[' . htmlspecialchars($this->pObj->sObj) . '][clearValue]" value="1" />';
 				$out .= '<input type="Submit" name="clear_object" value="' . $GLOBALS['LANG']->getLL('clearButton') . '" />';
 				$theOutput .= $this->pObj->doc->spacer(20);
@@ -424,7 +424,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 				// back
 			$out = $GLOBALS['LANG']->getLL('back');
-			$out = '<a href="index.php?id='.$this->pObj->id.'"><b>'.$out.'</b></a>';
+			$out = '<a href="index.php?id='.$this->pObj->id.'"><strong>'.$out.'</strong></a>';
 			$theOutput.=$this->pObj->doc->divider(5);
 			$theOutput.=$this->pObj->doc->section("",$out);
 
@@ -471,7 +471,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 
 			if (isset($this->pObj->MOD_SETTINGS["ts_browser_TLKeys_".$bType][$theKey]))	{
-				$remove = '<td width="1%" nowrap><a href="index.php?id=' . $this->pObj->id . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0"><b>' . $GLOBALS['LANG']->getLL('removeKey') . '</b></a></td>';
+				$remove = '<td width="1%" nowrap><a href="index.php?id=' . $this->pObj->id . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0"><strong>' . $GLOBALS['LANG']->getLL('removeKey') . '</strong></a></td>';
 			} else {
 				$remove = '';
 			}
@@ -486,7 +486,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					<tr>
 						<td><img src=clear.gif width=4 height=1></td>
 						<td class="bgColor2">
-							<table border=0 cellpadding=0 cellspacing=0 class="bgColor5" width="100%"><tr><td nowrap width="99%"><b>'.$label.'</b></td>'.$remove.'</tr></table>
+							<table border=0 cellpadding=0 cellspacing=0 class="bgColor5" width="100%"><tr><td nowrap width="99%"><strong>'.$label.'</strong></td>'.$remove.'</tr></table>
 						</td>
 					</tr>
 					<tr>

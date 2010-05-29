@@ -204,7 +204,7 @@ SaltedPasswords has been configured to be the only authentication service for
 the backend. Additionally, usage of salted passwords is enforced (forceSalted).
 The result is that there is no chance to login with users not having a salted
 password hash.<br />
-<b><i>WARNING:</i></b> This may lock you out of the backend!
+<strong><i>WARNING:</i></strong> This may lock you out of the backend!
 EOT;
 				} else {
 						// inform the user that things like openid won't work anymore
@@ -224,7 +224,7 @@ SaltedPasswords has been configured to enforce salted passwords (forceSalted).
 <br />
 This means that only passwords in the format of this extension will succeed for
 login.<br />
-<b><i>IMPORTANT:</i></b> This has the effect that passwords that are set from
+<strong><i>IMPORTANT:</i></strong> This has the effect that passwords that are set from
 the Install Tool will not work!
 EOT;
 			}
@@ -273,7 +273,7 @@ EOT;
 			if (!t3lib_div::inList('normal,rsa', $GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'])) {
 				$this->setErrorLevel('info');
 				$problems[] = <<< EOT
-<b>IMPORTANT:</b><br />
+<strong>IMPORTANT:</strong><br />
 Frontend requirements for SaltedPasswords are not met, therefore the
 authentication will not work even if it was explicitely enabled for frontend
 usage:<br />
@@ -300,7 +300,7 @@ SaltedPasswords has been configured to enforce salted passwords (forceSalted).
 <br />
 This means that only passwords in the format of this extension will succeed for
 login.<br />
-<b><i>IMPORTANT:</i></b> Because of this, it is not possible to login with
+<strong><i>IMPORTANT:</i></strong> Because of this, it is not possible to login with
 users not having a salted password hash (e.g. existing frontend users).
 EOT;
 				} else {
@@ -321,7 +321,7 @@ SaltedPasswords has been configured to enforce salted passwords (forceSalted).
 <br />
 This means that only passwords in the format of this extension will succeed for
 login.<br />
-<b><i>IMPORTANT:</i></b> This has the effect that passwords that were set
+<strong><i>IMPORTANT:</i></strong> This has the effect that passwords that were set
 before SaltedPasswords was used will not work (in fact, they need to be
 redefined).
 EOT;

@@ -309,7 +309,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 
 	/**
 	 * Parses the whole XML file in order to understand the Styles structure. This function is mostly looking at the styles
-	 * that create bold or italic characters in the document, as these will later on need to be translated to <i> and <b> tags
+	 * that create bold or italic characters in the document, as these will later on need to be translated to <i> and <strong> tags
 	 * This function takes into account the hierarchy of the styles, as created by OpenOffice. This means that if a style has
 	 * a parant, this function will make it inherit the styles of the parent. Therefore bold and italic styles are propagated
 	 * to children as well.
@@ -469,7 +469,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 *
 	 * @param	array		an array containing all the style tags
 	 * @param	string		either '' or '/' depending on whether the style definition is to open or close the style
-	 * @return	string		the sequence of tags to open or close the style, for example <b><i>
+	 * @return	string		the sequence of tags to open or close the style, for example <strong><i>
 	 */
 	function styleHTML($style, $char)	{
 		$string = '';

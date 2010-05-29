@@ -108,7 +108,7 @@ class SC_mod_tools_log_index {
 
 		$this->doc->tableLayout = Array (
 			'0' => Array (
-				'defCol' => array('<td valign="top" class="t3-row-header"><b>', '</b></td><td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td>')
+				'defCol' => array('<td valign="top" class="t3-row-header"><strong>', '</strong></td><td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td>')
 			),
 			'defRow' => Array (
 				'0' => Array('<td valign="top">','</td>'),
@@ -271,7 +271,7 @@ class SC_mod_tools_log_index {
 				array($GLOBALS['LANG']->getLL('action'), $menuA)
 			),
 			array(
-				$GLOBALS['BE_USER']->workspace !== 0 ? array($GLOBALS['LANG']->getLL('workspace'), '<b>'.$GLOBALS['BE_USER']->workspace . '</b>') : array($GLOBALS['LANG']->getLL('workspace'), $menuW),
+				$GLOBALS['BE_USER']->workspace !== 0 ? array($GLOBALS['LANG']->getLL('workspace'), '<strong>'.$GLOBALS['BE_USER']->workspace . '</strong>') : array($GLOBALS['LANG']->getLL('workspace'), $menuW),
 				array($GLOBALS['LANG']->getLL('groupByPage'), $groupByPage)
 			)
 		));

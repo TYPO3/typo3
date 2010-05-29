@@ -18,10 +18,10 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_cssstyledcon
 	'title' => 'CSS Styled Content: Accessibility improvements',
 	'version' => 3009000,
 	'description' => '<p>The rendering of the following elements will change:
-				<ul><li><b>tt_content.menu</b> (used f.e. for sitemaps): Instead of div-tags, lists are used now.</li>
-				<li><b>tt_content.mailform</b>: Mailforms do not use tables anymore, instead, they use the div-tag. Besides that, mailforms are accessible now.</li>
-				<li><b>The p-tag</b> has been removed from all table cells.</li>
-				<li><b>CSS based "image" and "text with image"</b><br />As the extension cron_cssstyledimgtext has been merged into the core, rendering of the content elements "image" and "text with image" has been changed to be CSS instead of table based. Read the <a href="http://wiki.typo3.org/index.php/TYPO3_4.0" target="_blank">4.0 release notes</a> for further information.</li></ul>',
+				<ul><li><strong>tt_content.menu</strong> (used f.e. for sitemaps): Instead of div-tags, lists are used now.</li>
+				<li><strong>tt_content.mailform</strong>: Mailforms do not use tables anymore, instead, they use the div-tag. Besides that, mailforms are accessible now.</li>
+				<li><strong>The p-tag</strong> has been removed from all table cells.</li>
+				<li><strong>CSS based "image" and "text with image"</strong><br />As the extension cron_cssstyledimgtext has been merged into the core, rendering of the content elements "image" and "text with image" has been changed to be CSS instead of table based. Read the <a href="http://wiki.typo3.org/index.php/TYPO3_4.0" target="_blank">4.0 release notes</a> for further information.</li></ul>',
 	'description_acknowledge' => 'You will have to update your stylesheets to comply with these changes.'
 );
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_cssstyledcontent_pagetargets'] = array(

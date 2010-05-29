@@ -366,7 +366,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 			$out.='
 				<tr class="typo3-red">
-					<td colspan="'.$this->returnNumberOfColumns().'"><b>Warning:</b> phash-row "'.$row['phash'].'" didn\'t have a representation in the index_section table!</td>
+					<td colspan="'.$this->returnNumberOfColumns().'"><strong>Warning:</strong> phash-row "'.$row['phash'].'" didn\'t have a representation in the index_section table!</td>
 				</tr>';
 			$this->allPhashListed[] = $row['phash'];
 		}
@@ -650,9 +650,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						$this->utf8_to_currentCharset(t3lib_div::view_array($debugInfo));
 
 				$content.= '<h4>Debug information / lexer splitting:</h4>'.
-						'<hr/><b>'.
+						'<hr/><strong>'.
 						$this->utf8_to_currentCharset($lexer).
-						'</b><hr/>';
+						'</strong><hr/>';
 			}
 
 

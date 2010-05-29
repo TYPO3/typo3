@@ -927,8 +927,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 							// Create version element:
 						$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
 						$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace !== 0 ? '<br />' . $this->doc->icons(2) . $GLOBALS['LANG']->getLL('otherVersions') . $versionsInOtherWS : '';
-						$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace !== 0 ? '<br />' . $this->doc->icons(3) . '<b>' . $GLOBALS['LANG']->getLL('multipleVersions') . '</b>' : '');
-						$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) ? '<br />' . $this->doc->icons(3) . '<b>' . $GLOBALS['LANG']->getLL('versionInVersion') . '</b>' : '';
+						$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace !== 0 ? '<br />' . $this->doc->icons(3) . '<strong>' . $GLOBALS['LANG']->getLL('multipleVersions') . '</strong>' : '');
+						$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) ? '<br />' . $this->doc->icons(3) . '<strong>' . $GLOBALS['LANG']->getLL('versionInVersion') . '</strong>' : '';
 						$verElement = $icon.
 							(!$this->details ? '<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode($this->REQUEST_URI)).'">' : '').
 							t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).
@@ -943,13 +943,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 									$this->displayWorkspaceOverview_commandLinks($table,$rec_on,$rec_off,$vType).
 									htmlspecialchars($swapLabel).
 									'&nbsp;&nbsp;</td>
-								'.(!$this->diffOnly?'<td nowrap="nowrap"><b>' . $GLOBALS['LANG']->getLL('lifecycle')  . ':</b> '.htmlspecialchars($this->formatCount($rec_off['t3ver_count'])).'</td>'.		// Lifecycle
+								'.(!$this->diffOnly?'<td nowrap="nowrap"><strong>' . $GLOBALS['LANG']->getLL('lifecycle')  . ':</strong> '.htmlspecialchars($this->formatCount($rec_off['t3ver_count'])).'</td>'.		// Lifecycle
 									($this->showWorkspaceCol ? '
-								<td nowrap="nowrap">&nbsp;&nbsp;<b>' . $GLOBALS['LANG']->getLL('workspace')  . ':</b> '.htmlspecialchars($this->formatWorkspace($rec_off['t3ver_wsid'])).'</td>' : ''):'');
+								<td nowrap="nowrap">&nbsp;&nbsp;<strong>' . $GLOBALS['LANG']->getLL('workspace')  . ':</strong> '.htmlspecialchars($this->formatWorkspace($rec_off['t3ver_wsid'])).'</td>' : ''):'');
 
 						if ($diffCode)	{
 							$verElement = $verElement.'
-							<br /><b>' . $GLOBALS['LANG']->getLL('diffToLiveElement') . '</b>
+							<br /><strong>' . $GLOBALS['LANG']->getLL('diffToLiveElement') . '</strong>
 							<table border="0" cellpadding="0" cellspacing="0" class="ver-verElement">
 								<tr>
 									<td class="c-diffCell">'.$diffCode.'</td>

@@ -156,7 +156,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 							htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'</nobr>';
 					}
 				}
-				$theCode.= '<b>'.$LANG->getLL('wiz_newPages_currentMenu').':</b><br /><br />'.implode('<br />',$lines);
+				$theCode.= '<strong>'.$LANG->getLL('wiz_newPages_currentMenu').':</strong><br /><br />'.implode('<br />',$lines);
 			} else {
 					// Create loremIpsum code:
 				if (t3lib_extMgm::isLoaded('lorem_ipsum'))	{
@@ -170,7 +170,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 						(is_object($loremIpsumObj) ? '<a href="#" onclick="' . htmlspecialchars($loremIpsumObj->getHeaderTitleJS('document.forms[0][\'data[pages][NEW' . $a . '][title]\'].value', 'title')) . '">' . $loremIpsumObj->getIcon('', $this->pObj->doc->backPath) . '</a>' : '');
 				}
 
-				$theCode.= '<b>'.$LANG->getLL('wiz_newPages').':</b><br /><br />'.implode('<br />',$lines).
+				$theCode.= '<strong>'.$LANG->getLL('wiz_newPages').':</strong><br /><br />'.implode('<br />',$lines).
 				'<br /><br />
 				<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" /> <label for="createInListEnd">'.$LANG->getLL('wiz_newPages_listEnd').'</label><br />
 				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">'.$LANG->getLL('wiz_newPages_hidePages').'</label><br /><br />

@@ -336,7 +336,7 @@ class printAllPageTree_perms extends printAllPageTree {
 		$str.= (($int&4)?'*':'<font color="red">x</font>');
 		$str.= (($int&8)?'*':'<font color="red">x</font>');
 
-		return '<b><font color="green">'.$str.'</font></b>';
+		return '<strong style="color:green;">'.$str.'</strong>';
 	}
 
 	/**
@@ -738,7 +738,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 							// Traverse types:
 						foreach ($theTypes as $tableFieldKey => $theTypeArrays)	{
 							if (is_array($theTypeArrays['items']))	{
-								$pout[] = '<b>'.$theTypeArrays['tableFieldLabel'].'</b>';
+								$pout[] = '<strong>'.$theTypeArrays['tableFieldLabel'].'</strong>';
 									// Traverse options for this field:
 								foreach ($theTypeArrays['items'] as $itemValue => $itemContent)	{
 									$v = $tableFieldKey.':'.$itemValue.':'.$itemContent[0];
@@ -881,7 +881,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		$str.= (($int&4)?'*':'<font color="red">x</font>');
 		$str.= (($int&8)?'*':'<font color="red">x</font>');
 
-		return '<b><font color="green">'.$str.'</font></b>';
+		return '<strong style="color:green;">'.$str.'</strong>';
 	}
 
 	/**
@@ -1379,11 +1379,11 @@ class SC_mod_tools_be_user_index {
 					t3lib_iconWorks::getSpriteIcon('actions-document-new') . 
 				'</a>';
 
-			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><b>' . $GLOBALS['LANG']->getLL('usernames', TRUE) . '</b></td><td width="12">' . $link_createNewUser . '</td></tr></table>';
+			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><strong>' . $GLOBALS['LANG']->getLL('usernames', TRUE) . '</strong></td><td width="12">' . $link_createNewUser . '</td></tr></table>';
 
 			foreach ($options as $kk => $vv) {
 				if ($compareFlags[$kk])	{
-					$allCells[$kk] = '<b>'.$vv.':</b>';
+					$allCells[$kk] = '<strong>'.$vv.':</strong>';
 				}
 			}
 			$allGroups[]=$allCells;
@@ -1605,9 +1605,9 @@ class SC_mod_tools_be_user_index {
 		$outTable = '
 		<table border="0" cellpadding="2" cellspacing="2">
 			<tr class="bgColor5">
-				<td valign="top"><b>' . $GLOBALS['LANG']->getLL('timestamp', true) . '</b></td>
-				<td valign="top"><b>' . $GLOBALS['LANG']->getLL('host', true) . '</b></td>
-				<td valign="top" colspan="5"><b>' . $GLOBALS['LANG']->getLL('username', true) . '</b></td>
+				<td valign="top"><strong>' . $GLOBALS['LANG']->getLL('timestamp', true) . '</strong></td>
+				<td valign="top"><strong>' . $GLOBALS['LANG']->getLL('host', true) . '</strong></td>
+				<td valign="top" colspan="5"><strong>' . $GLOBALS['LANG']->getLL('username', true) . '</strong></td>
 			</tr>'.$outTable.'
 		</table>';
 
