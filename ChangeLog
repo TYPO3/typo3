@@ -6,6 +6,7 @@
 
 2010-05-29  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14519: Toolbar menuitems alignment
 	* Fixed bug #14512: Remove "bigButtons" by default in Page module (Thanks to Steffen Gebert)
 	* Fixed bug #10377: Cleaning and linting typo3/js-scripts
 	* Fixed bug #14523: Missing icons in workspace modules

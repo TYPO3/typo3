@@ -27,6 +27,8 @@ $Id$
 
 #workspace-selector-menu li img {
 	float: left;
+	position: relative;
+	margin-right: 2px;
 }
 
 #workspace-selector-menu li a {
@@ -38,4 +40,10 @@ $Id$
 
 #workspace-selector-menu li.divider {
 	padding-top: 4px;
+}
+
+#workspace-selector-menu li span.t3-icon {
+	float: left;
+	margin-top: 0;
+	margin-right: 2px;
 }
