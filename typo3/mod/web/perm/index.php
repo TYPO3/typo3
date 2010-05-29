@@ -525,11 +525,11 @@ class SC_mod_web_perm_index {
 			// Adding help text:
 		if ($BE_USER->uc['helpText'])	{
 			$this->content.=$this->doc->divider(20);
-			$legendText = '<b>'.$LANG->getLL('1',1).'</b>: '.$LANG->getLL('1_t',1);
-			$legendText.= '<br /><b>'.$LANG->getLL('16',1).'</b>: '.$LANG->getLL('16_t',1);
-			$legendText.= '<br /><b>'.$LANG->getLL('2',1).'</b>: '.$LANG->getLL('2_t',1);
-			$legendText.= '<br /><b>'.$LANG->getLL('4',1).'</b>: '.$LANG->getLL('4_t',1);
-			$legendText.= '<br /><b>'.$LANG->getLL('8',1).'</b>: '.$LANG->getLL('8_t',1);
+			$legendText = '<strong>'.$LANG->getLL('1',1).'</strong>: '.$LANG->getLL('1_t',1);
+			$legendText.= '<br /><strong>'.$LANG->getLL('16',1).'</strong>: '.$LANG->getLL('16_t',1);
+			$legendText.= '<br /><strong>'.$LANG->getLL('2',1).'</strong>: '.$LANG->getLL('2_t',1);
+			$legendText.= '<br /><strong>'.$LANG->getLL('4',1).'</strong>: '.$LANG->getLL('4_t',1);
+			$legendText.= '<br /><strong>'.$LANG->getLL('8',1).'</strong>: '.$LANG->getLL('8_t',1);
 
 			$code=$legendText.'<br /><br />'.$LANG->getLL('def',1);
 			$this->content.=$this->doc->section($LANG->getLL('Legend',1).':',$code);
@@ -595,13 +595,13 @@ class SC_mod_web_perm_index {
 				<tr>
 					<td class="bgColor2" colspan="2">&nbsp;</td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><b>'.$LANG->getLL('Owner',1).'</b></td>
+					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('Owner',1).'</strong></td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><b>'.$LANG->getLL('Group',1).'</b></td>
+					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('Group',1).'</strong></td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><b>'.$LANG->getLL('Everybody',1).'</b></td>
+					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('Everybody',1).'</strong></td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><b>'.$LANG->getLL('EditLock',1).'</b></td>
+					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('EditLock',1).'</strong></td>
 				</tr>
 			';
 		} else {
@@ -609,9 +609,9 @@ class SC_mod_web_perm_index {
 				<tr>
 					<td class="bgColor2" colspan="2">&nbsp;</td>
 					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center" nowrap="nowrap"><b>'.$LANG->getLL('User',1).':</b> ' . htmlspecialchars($BE_USER->user['username']) . '</td>
+					<td class="bgColor2" align="center" nowrap="nowrap"><strong>'.$LANG->getLL('User',1).':</strong> ' . htmlspecialchars($BE_USER->user['username']) . '</td>
 					'.(!$BE_USER->isAdmin()?'<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><b>'.$LANG->getLL('EditLock',1).'</b></td>':'').'
+					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('EditLock',1).'</strong></td>':'').'
 				</tr>';
 		}
 
@@ -708,11 +708,11 @@ class SC_mod_web_perm_index {
 		$this->content.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH'], '<br />|');
 
 			// Creating legend table:
-		$legendText = '<b>'.$LANG->getLL('1',1).'</b>: '.$LANG->getLL('1_t',1);
-		$legendText.= '<br /><b>'.$LANG->getLL('16',1).'</b>: '.$LANG->getLL('16_t',1);
-		$legendText.= '<br /><b>'.$LANG->getLL('2',1).'</b>: '.$LANG->getLL('2_t',1);
-		$legendText.= '<br /><b>'.$LANG->getLL('4',1).'</b>: '.$LANG->getLL('4_t',1);
-		$legendText.= '<br /><b>'.$LANG->getLL('8',1).'</b>: '.$LANG->getLL('8_t',1);
+		$legendText = '<strong>'.$LANG->getLL('1',1).'</strong>: '.$LANG->getLL('1_t',1);
+		$legendText.= '<br /><strong>'.$LANG->getLL('16',1).'</strong>: '.$LANG->getLL('16_t',1);
+		$legendText.= '<br /><strong>'.$LANG->getLL('2',1).'</strong>: '.$LANG->getLL('2_t',1);
+		$legendText.= '<br /><strong>'.$LANG->getLL('4',1).'</strong>: '.$LANG->getLL('4_t',1);
+		$legendText.= '<br /><strong>'.$LANG->getLL('8',1).'</strong>: '.$LANG->getLL('8_t',1);
 
 		$code='<table border="0" id="typo3-legendTable">
 			<tr>

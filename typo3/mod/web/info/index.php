@@ -104,8 +104,8 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc->setModuleTemplate('templates/info.html');
 			$this->doc->tableLayout = Array (
 				'0' => Array (
-					'0' => Array('<td valign="top"><b>','</b></td>'),
-					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><b>','</b></td>')
+					'0' => Array('<td valign="top"><strong>','</strong></td>'),
+					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>','</strong></td>')
 				),
 				"defRow" => Array (
 					"0" => Array('<td valign="top">','</td>'),

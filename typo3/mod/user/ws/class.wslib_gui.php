@@ -177,7 +177,7 @@ class wslib_gui {
 		$browse .= 'Showing ' . $browseStat['begin'] . ' to ' . ($browseStat['end'] ? $browseStat['end'] . ' out of ' . $browseStat['allItems'] : $browseStat['allItems']) . ' versions:<br />';
 		if (!($browseStat['begin']==1 && !$browseStat['end']))	{
 			for($a=0;$a<ceil($browseStat['allItems']/$resultsPerPage);$a++)	{
-				$browse.=($a==(int)$pointer?'<b>':'').'<a href="'.htmlspecialchars('index.php?browsePointer='.rawurlencode($a)).'">['.($a+1).']</a>'.($a==(int)$pointer?'</b>':'').' ';
+				$browse.=($a==(int)$pointer?'<strong>':'').'<a href="'.htmlspecialchars('index.php?browsePointer='.rawurlencode($a)).'">['.($a+1).']</a>'.($a==(int)$pointer?'</strong>':'').' ';
 			}
 			$browse.= '<br />';
 		}
@@ -483,8 +483,8 @@ class wslib_gui {
 									// Create version element:
 									$versionsInOtherWS = $this->versionsInOtherWS($table, $rec_on['uid']);
 									$versionsInOtherWSWarning = $versionsInOtherWS && $GLOBALS['BE_USER']->workspace !== 0 ? '<br />' . $this->doc->icons(2) . $LANG->getLL('label_otherversions') . ' ' . $versionsInOtherWS : '';
-									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace !==0 ? '<br />' . $this->doc->icons(3) . '<b>' . $LANG->getLL('label_multipleversions') . '</b>' : '');
-									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) ? '<br />' . $this->doc->icons(3) . '<b>' . $LANG->getLL('label_nestedversions') . '</b>' : '';
+									$multipleWarning = (!$mainCell && $GLOBALS['BE_USER']->workspace !==0 ? '<br />' . $this->doc->icons(3) . '<strong>' . $LANG->getLL('label_multipleversions') . '</strong>' : '');
+									$verWarning = $warnAboutVersions || ($warnAboutVersions_nonPages && $GLOBALS['TCA'][$table]['ctrl']['versioning_followPages']) ? '<br />' . $this->doc->icons(3) . '<strong>' . $LANG->getLL('label_nestedversions') . '</strong>' : '';
 									$verElement = $icon.
 										'<a href="'.htmlspecialchars($this->doc->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table==='pages'?$rec_on['uid']:$rec_on['pid']).'&details='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'">'.
 										t3lib_BEfunc::getRecordTitle($table,$rec_off,TRUE).

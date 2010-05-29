@@ -89,17 +89,17 @@ class wsol_preview {
 						<title>Header</title>
 					</head>
 					<body bgcolor="'.$color.'">
-						<font face="verdana,arial" size="2" color="white"><b>'.$headerText.'</b></font>
+						<strong style="font-family:Verdana, Arial;font-size:80%;color:white;">'.$headerText.'</strong>
 					</body>
 				</html>';
 		} elseif ($msg = t3lib_div::_GP('msg'))	{
 			switch($msg)	{
 				case 'branchpoint':
-					$message = '<b>No live page available!</b><br /><br />
+					$message = '<strong>No live page available!</strong><br /><br />
 					The previewed page was inside a "Branch" type version and has no traceable counterpart in the live workspace.';
 				break;
 				case 'newpage':
-					$message = '<b>New page!</b><br /><br />
+					$message = '<strong>New page!</strong><br /><br />
 					The previewed page is created in the workspace and has no counterpart in the live workspace.';
 				break;
 				default:

@@ -469,19 +469,19 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$content = '
 		<table border="0" cellpadding="1" cellspacing="1" class="lrPadding" style="border: 1px solid black;">
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_workspace') . '</b>&nbsp;</td>
+				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_workspace') . '</strong>&nbsp;</td>
 				<td class="bgColor4" nowrap="nowrap">'.$title.'</td>
 			</tr>
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_description') . '</b>&nbsp;</td>
+				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_description') . '</strong>&nbsp;</td>
 				<td class="bgColor4">'.$description.'</td>
 			</tr>'.($GLOBALS['BE_USER']->workspace!=-99 && !$details ? '
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_options') . '</b>&nbsp;</td>
+				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_options') . '</strong>&nbsp;</td>
 				<td class="bgColor4">'.$menu.$actionLinks.'</td>
 			</tr>
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_status') . '</b>&nbsp;</td>
+				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_status') . '</strong>&nbsp;</td>
 				<td class="bgColor4">'.$LANG->getLL('label_access_level').' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
 			</tr>' : '').'
 		</table>
@@ -687,27 +687,27 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		global $LANG;
 
 		$content = '<table cellspacing="1" cellpadding="1" width="100%" class="ver-wl-details-table">' .
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_file_mountpoints') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_file_mountpoints') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getFileMountPoints($wksp) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_db_mountpoints') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_db_mountpoints') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getWebMountPoints($wksp) . '</td></tr>';
 		if ($wksp['uid'] > 0) {
 			// Displaying information below makes sence only for custom workspaces
 			$content .=
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_frozen') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_frozen') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $LANG->getLL($wksp['freeze'] ? 'workspace_list_label_frozen_yes' : 'workspace_list_label_frozen_no') . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_publish_date') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_publish_date') . '</strong></td>' .
 				'<td class="ver-wl-details">' . ($wksp['publish_time'] == 0 ? '&nbsp;&ndash;' : t3lib_BEfunc::datetime($wksp['publish_time'])) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_unpublish_date') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_unpublish_date') . '</strong></td>' .
 				'<td class="ver-wl-details">' . ($wksp['unpublish_time'] == 0 ? '&nbsp;&ndash;' : t3lib_BEfunc::datetime($wksp['unpublish_time'])) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_your_access') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_your_access') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $LANG->getLL('workspace_list_access_' . $wksp['_ACCESS']) . '</td></tr>' .
-				'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_workspace_users') . '</b></td>' .
+				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		}
 		else if ($GLOBALS['BE_USER']->isAdmin()) {
 			// show users for draft/live workspace only to admin users
-			$content .=	'<tr><td class="ver-wl-details-label"><b>' . $LANG->getLL('workspace_list_label_workspace_users') . '</b></td>' .
+			$content .=	'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_workspace_users') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		}
 		$content .= '</table>';
@@ -958,7 +958,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 		$content = '<tr><td class="ver-wl-details-label ver-wl-details-user-list-label">';
 		// TODO CSH lable explaining access here?
-		$content .= '<b>' . $access . '</b></td>';
+		$content .= '<strong>' . $access . '</strong></td>';
 		$content .= '<td class="ver-wl-details">' . implode('<br />', $content_array) . '</td></tr>';
 		return $content;
 	}

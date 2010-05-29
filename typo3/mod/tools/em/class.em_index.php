@@ -2318,7 +2318,7 @@ EXTENSION KEYS:
 									$oldMD5 = md5(str_replace(CR,'',$oldFileContent));
 									$info .= sprintf(
 										$GLOBALS['LANG']->getLL('ext_details_md5_previous'),
-										'<b>' . $oldMD5 . '</b>'
+										'<strong>' . $oldMD5 . '</strong>'
 									) . '<br />';
 									t3lib_div::writeFile($editFile,$submittedContent['file']);
 									$saveFlag = 1;
@@ -2331,19 +2331,19 @@ EXTENSION KEYS:
 
 							$outCode.= sprintf(
 								$GLOBALS['LANG']->getLL('ext_details_file'),
-								'<b>' . substr($editFile, strlen($absPath)) . '</b> (' .
+								'<strong>' . substr($editFile, strlen($absPath)) . '</strong> (' .
 									t3lib_div::formatSize(filesize($editFile)) . ')<br />'
 							);
 							$fileMD5 = md5(str_replace(CR,'',$fileContent));
 							$info .= sprintf(
 								$GLOBALS['LANG']->getLL('ext_details_md5_current'),
-								'<b>' . $fileMD5 . '</b>'
+								'<strong>' . $fileMD5 . '</strong>'
 							) . '<br />';
 							if($saveFlag)	{
 								$saveMD5 = md5(str_replace(CR,'',$submittedContent['file']));
 								$info .= sprintf(
 									$GLOBALS['LANG']->getLL('ext_details_md5_submitted'),
-									'<b>' . $saveMD5 . '</b>'
+									'<strong>' . $saveMD5 . '</strong>'
 								) . '<br />';
 								if ($fileMD5!=$saveMD5) {
 									$info .= $GLOBALS['TBE_TEMPLATE']->rfw(
