@@ -16,7 +16,6 @@ td.t3-page-column {
 
 .t3-page-colHeader-icons {
 	position: absolute;
-	top: 2px;
 }
 
 .t3-page-ce {
@@ -33,11 +32,6 @@ td.t3-page-column {
 
 .t3-page-ce.active .t3-row-header {
 	visibility: visible;
-}
-
-.t3-page-colHeader-icons span.t3-icon,
-.t3-page-ce .t3-row-header span.t3-icon {
-	margin-right: 3px;
 }
 
 .t3-page-ce-icons-move {

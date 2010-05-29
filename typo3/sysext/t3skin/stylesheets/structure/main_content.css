@@ -56,7 +56,12 @@ td {
 }
 
 .t3-row-header {
-	padding: 3px 7px;
+	padding: 1px 7px;
+}
+
+.t3-row-header span.t3-icon {
+	margin-right: 3px;
+	margin-top: 2px;
 }
 
 a span {
