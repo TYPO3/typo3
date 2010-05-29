@@ -336,7 +336,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($this->recordFound && $TCA[$this->table]['ctrl']['versioningWS']) {
 				// View page
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
+						t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 					'</a>';
 
 				// Shortcut
@@ -348,7 +348,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			if ($BE_USER->check('modules','web_list'))	{
 				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') . 
+							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
 						'</a>';
 			}
 		}
@@ -461,7 +461,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$content.='
 				<tr class="' . ($row['uid'] != $this->uid ? 'bgColor4' : 'bgColor2 tableheader') . '">
 					<td>'.($row['uid']!=$this->uid ? '<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][action]=swap').'" title="' . $GLOBALS['LANG']->getLL('swapWithCurrent', TRUE) . '">'.
-						t3lib_iconWorks::getSpriteIcon('apps-version-swap-versions') .
+						t3lib_iconWorks::getSpriteIcon('actions-version-swap-version') .
 						'</a>' /* (
 							$this->table == 'pages' ?
 							'<a href="'.$this->doc->issueCommand('&cmd['.$this->table.']['.$this->uid.'][version][action]=swap&cmd['.$this->table.']['.$this->uid.'][version][swapWith]='.$row['uid'].'&cmd['.$this->table.']['.$this->uid.'][version][swapContent]=1').'">'.
@@ -614,12 +614,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Edit link:
 		$adminLink = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit['.$table.']['.$row['uid'].']=edit',$this->doc->backPath)).'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.edit', TRUE) . '">'.
-							t3lib_iconWorks::getSpriteIcon('actions-document-open') . 
+							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 						'</a>';
 
 			// Delete link:
 		$adminLink.= '<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$row['uid'].'][delete]=1')).'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.delete', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') . 
+							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 						'</a>';
 
 
@@ -635,15 +635,15 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$a_wp = t3lib_extMgm::isLoaded('cms') && $BE_USER->check('modules',$pageModule);
 
 			$adminLink.='<a href="#" onclick="top.loadEditId('.$row['uid'].');top.goToModule(\''.$pageModule.'\'); return false;">'.
-							t3lib_iconWorks::getSpriteIcon('apps-version-page-open') .
+							t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 						'</a>';
 			$adminLink.='<a href="#" onclick="top.loadEditId('.$row['uid'].');top.goToModule(\'web_list\'); return false;">'.
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') . 
+							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
 						'</a>';
 
 				// "View page" icon is added:
 			$adminLink.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($row['uid'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($row['uid']))).'">'.
-					t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
+					t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				'</a>';
 		} else {
 			if ($row['pid']==-1)	{
@@ -651,7 +651,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 					// "View page" icon is added:
 				$adminLink.='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($row['_REAL_PID'],$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($row['_REAL_PID']),'','',$getVars)).'">'.
-						t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
+						t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 					'</a>';
 			}
 		}
@@ -809,7 +809,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		} else $table = '';
 
 		$linkBack = t3lib_div::_GP('returnUrl') ? '<a href="' . htmlspecialchars(t3lib_div::_GP('returnUrl')) . '" class="typo3-goBack">' .
-				t3lib_iconWorks::getSpriteIcon('actions-go-back') . $GLOBALS['LANG']->getLL('goBack', TRUE) . 
+				t3lib_iconWorks::getSpriteIcon('actions-go-back') . $GLOBALS['LANG']->getLL('goBack', TRUE) .
 			'</a><br /><br />' : '';
 		$resetDiffOnly = $this->diffOnly ? '<a href="index.php?id=' . intval($this->id) . '" class="typo3-goBack">' . $GLOBALS['LANG']->getLL('showAllInformation') . '</a><br /><br />' : '';
 
@@ -1680,7 +1680,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid']
 						)).'" title="' . $GLOBALS['LANG']->getLL('publish', TRUE) . '">'.
-					t3lib_iconWorks::getSpriteIcon('apps-version-swap-versions') .
+					t3lib_iconWorks::getSpriteIcon('actions-version-swap-versions') .
 				'</a>';
 			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 				$actionLinks.=
@@ -1689,7 +1689,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid'].
 							'&cmd['.$table.']['.$rec_on['uid'].'][version][swapIntoWS]=1'
 							)).'" title="' . $GLOBALS['LANG']->getLL('swap', TRUE) . '">'.
-						t3lib_iconWorks::getSpriteIcon('apps-version-swap-workspace') .
+						t3lib_iconWorks::getSpriteIcon('actions-version-swap-workspace') .
 					'</a>';
 			}
 		}
@@ -1698,7 +1698,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				// Release
 			$actionLinks.=
 				'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'" onclick="return confirm(\'' . $GLOBALS['LANG']->getLL('removeFromWorkspace', TRUE) . '?\');" title="' . $GLOBALS['LANG']->getLL('removeFromWorkspace', TRUE) . '">'.
-					t3lib_iconWorks::getSpriteIcon('apps-version-document-remove') .
+					t3lib_iconWorks::getSpriteIcon('actions-version-document-remove') .
 				'</a>';
 
 				// Edit
@@ -1706,13 +1706,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
 				$actionLinks.=
 					'<a href="#" onclick="top.loadEditId('.$tempUid.');top.goToModule(\''.$this->pageModule.'\'); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_page', TRUE) . '">'.
-						t3lib_iconWorks::getSpriteIcon('apps-version-page-open') .
+						t3lib_iconWorks::getSpriteIcon('actions-version-page-open') .
 					'</a>';
 			} else {
 				$params = '&edit['.$table.']['.$rec_off['uid'].']=edit';
 				$actionLinks.=
 					'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->doc->backPath)).'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_element', TRUE). '">'.
-						t3lib_iconWorks::getSpriteIcon('actions-document-open') . 
+						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 					'</a>';
 			}
 		}

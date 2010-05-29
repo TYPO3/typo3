@@ -336,7 +336,7 @@ class SC_alt_db_navframe {
 			$workspaceInfo = '
 				<div class="bgColor4 workspace-info">
 					<a href="'.htmlspecialchars('mod/user/ws/index.php').'" target="content">'.
-					  t3lib_iconWorks::getSpriteIcon('status-workspace-draft') .
+					  t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace') .
 					'</a>'.$wsTitle.'
 				</div>
 			';

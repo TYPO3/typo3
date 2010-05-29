@@ -874,7 +874,7 @@ class wslib_gui {
 				'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
 				'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid']
 				)).' " title="' . $LANG->getLL('img_title_publish') . '">'.
-				  t3lib_iconWorks::getSpriteIcon('apps-version-swap-versions') . 
+				  t3lib_iconWorks::getSpriteIcon('actions-version-swap-version') .
 				'</a>';
 			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 				$actionLinks.=
@@ -883,7 +883,7 @@ class wslib_gui {
 					'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid'].
 					'&cmd['.$table.']['.$rec_on['uid'].'][version][swapIntoWS]=1'
 								)).'" title="' . $LANG->getLL('img_title_swap') . '">'.
-					  t3lib_iconWorks::getSpriteIcon('apps-version-swap-workspace') . 
+					  t3lib_iconWorks::getSpriteIcon('actions-version-swap-workspace') .
 					'</a>';
 			}
 		}
@@ -894,7 +894,7 @@ class wslib_gui {
 				$confirm = $LANG->JScharCode($LANG->getLL('remove_from_ws_confirmation'));
 				$actionLinks.=
 				'<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$rec_off['uid'].'][version][action]=clearWSID')).'" onclick="return confirm(' . $confirm . ');" title="' . $LANG->getLL('img_title_remove_from_ws') . '">'.
-				  t3lib_iconWorks::getSpriteIcon('apps-version-document-remove') . 
+				  t3lib_iconWorks::getSpriteIcon('actions-version-document-remove') .
 				'</a>';
 			}
 
@@ -903,21 +903,21 @@ class wslib_gui {
 				$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
 				$actionLinks.=
 					'<a href="#" onclick="top.loadEditId('.$tempUid.');top.goToModule(\''.$this->pageModule.'\'); return false;" title="' . $LANG->getLL('img_title_edit_page') . '">'.
-					  t3lib_iconWorks::getSpriteIcon('apps-version-page-open') . 
+					  t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 					'</a>';
 			} else {
 				$params = '&edit['.$table.']['.$rec_off['uid'].']=edit';
 				$actionLinks.=
 					'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->doc->backPath)).'" title="' . $LANG->getLL('img_title_edit_element') . '">'.
-					  t3lib_iconWorks::getSpriteIcon('actions-document-open') . 
+					  t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 					'</a>';
 			}
 		}
 
 		// History/Log
 		$actionLinks.=
-			'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'" title="' . $LANG->getLL('img_title_show_log') . '">' . 
-			  t3lib_iconWorks::getSpriteIcon('actions-document-history-open') . 
+			'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$rec_off['uid']).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'" title="' . $LANG->getLL('img_title_show_log') . '">' .
+			  t3lib_iconWorks::getSpriteIcon('actions-document-history-open') .
 			'</a>';
 
 		// View
@@ -925,7 +925,7 @@ class wslib_gui {
 			$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
 			$actionLinks.=
 				'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($tempUid,$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($tempUid))).'">'.
-				  t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
+				  t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				'</a>';
 		}
 
@@ -1184,13 +1184,13 @@ class wslib_gui {
 				if ($table==='pages')	{
 					$actionLinks.=
 						'<a href="#" onclick="top.loadEditId('.$uid.');top.goToModule(\''.$this->pageModule.'\'); return false;" title="' . $LANG->getLL('img_title_edit_page') . '">'.
-						  t3lib_iconWorks::getSpriteIcon('apps-version-page-open') . 
+						  t3lib_iconWorks::getSpriteIcon('apps-version-page-open') .
 						'</a>';
 				} else {
 					$params = '&edit['.$table.']['.$uid.']=edit';
 					$actionLinks.=
 						'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->doc->backPath)).'" title="' . $LANG->getLL('img_title_edit_element') . '">'.
-						  t3lib_iconWorks::getSpriteIcon('actions-document-open') . 
+						  t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 						'</a>';
 				}
 			}
@@ -1198,7 +1198,7 @@ class wslib_gui {
 			// History/Log
 			$actionLinks.=
 				'<a href="'.htmlspecialchars($this->doc->backPath.'show_rechis.php?element='.rawurlencode($table.':'.$uid).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))).'" title="' . $LANG->getLL('img_title_show_log') . '">'.
-				  t3lib_iconWorks::getSpriteIcon('actions-document-history-open') . 
+				  t3lib_iconWorks::getSpriteIcon('actions-document-history-open') .
 				'</a>';
 		}
 
@@ -1206,7 +1206,7 @@ class wslib_gui {
 		if ($table==='pages')	{
 			$actionLinks.=
 				'<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($uid,$this->doc->backPath,t3lib_BEfunc::BEgetRootLine($uid))).'">'.
-				  t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
+				  t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				'</a>';
 		}
 
@@ -1270,7 +1270,7 @@ class wslib_gui {
 			// Reject:
 			$actionLinks.=
 			'<a href="#" onclick="'.htmlspecialchars($onClick).'"title="'.$LANG->getLL('label_reject').'"> '.
-			  t3lib_iconWorks::getSpriteIcon('actions-move-down') . 
+			  t3lib_iconWorks::getSpriteIcon('actions-move-down') .
 			'</a>';
 		} else {
 			// Reject:
@@ -1292,7 +1292,7 @@ class wslib_gui {
 			if ($rec_off['t3ver_stage']!=10)	{
 				$actionLinks.=
 				'<a href="#" onclick="'.htmlspecialchars($onClick).'" title="'.htmlspecialchars($titleAttrib).'">'.
-				  t3lib_iconWorks::getSpriteIcon('actions-move-up') . 
+				  t3lib_iconWorks::getSpriteIcon('actions-move-up') .
 				'</a>';
 
 				$this->stageIndex[$sId][$table][] = $rec_off['uid'];

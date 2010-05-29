@@ -251,25 +251,23 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		$this->doc->setModuleTemplate('templates/ws.html');
 
 			// JavaScript
-		$plusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-expand');
-		$minusIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-collapse');
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
 			function jumpToUrl(URL)	{	//
 				window.location.href = URL;
 			}
 
-			function expandCollapse(rowNumber)	{	//
-				elementId = \'wl_\' + rowNumber;
+			function expandCollapse(rowNumber) {
+				elementId = "wl_" + rowNumber;
 				element = document.getElementById(elementId);
-				image = document.getElementById(elementId + \'i\');
+				image = document.getElementById("spanw1_" + rowNumber);
 				if (element.style)	{
-					if (element.style.display == \'none\')	{
-						element.style.display = \'\';
-						image.src = \'' . $minusIcon . '\';
+					if (element.style.display == "none")	{
+						element.style.display = "block";
+						image.className = "t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-table-collapse";
 					} else {
-						element.style.display = \'none\';
-						image.src = \'' . $plusIcon . '\';
+						element.style.display = "none";
+						image.className = "t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-table-expand";
 					}
 				}
 			}
@@ -599,7 +597,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				// row #1, column #1: expand icon
 			$content .= '<td>' .
 						'<a href="javascript:expandCollapse(' . $rowNum . ')">' .
-						t3lib_iconWorks::getSpriteIcon('actions-view-tables-expand', array('title' => $LANG->getLL('img_title_show_more'))) .
+						t3lib_iconWorks::getSpriteIcon('actions-view-table-expand', array(
+							'title' => $LANG->getLL('img_title_show_more'),
+							'id' => 'spanw1_' . $rowNum
+						)) .
 						'</a></td>';
 
 				// row #1, column #2: icon panel
@@ -996,7 +997,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			$content .= '<a href="' .
 					t3lib_div::getIndpEnv('SCRIPT_NAME') .
 					'?changeWorkspace=' . $wksp['uid'] . '" title="'. $LANG->getLL('workspace_list_icon_title_switch_workspace') . '"/>' .
-					t3lib_iconWorks::getSpriteIcon('actions-version-swap-workspace') . 
+					t3lib_iconWorks::getSpriteIcon('actions-version-swap-workspace') .
 					'</a>';
 		} else {
 				// Current workspace: empty space instead of workspace switching button
