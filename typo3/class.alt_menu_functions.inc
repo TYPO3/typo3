@@ -206,7 +206,7 @@ class alt_menu_functions {
 			}
 
 			$selectItems[] = '<option value="top.goToModule(\''.$moduleName.'\');">'.htmlspecialchars($LANG->moduleLabels['tabs'][$moduleKey]).'</option>';
-			$label='&nbsp;<b>'.$label.'</b>&nbsp;';
+			$label='&nbsp;<strong>'.$label.'</strong>&nbsp;';
 
 
 				// make menu collapsable

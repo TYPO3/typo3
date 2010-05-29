@@ -199,7 +199,7 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 	 * @return	string		Wrapped title string.
 	 */
 	function wrapRecordTitle($str,$row)	{
-		if ($GLOBALS['SOBE']->moveUid==$row['uid'])	$str = '<b>'.$str.'</b>';
+		if ($GLOBALS['SOBE']->moveUid==$row['uid'])	$str = '<strong>'.$str.'</strong>';
 		return parent::wrapRecordTitle($str,$row);
 	}
 }

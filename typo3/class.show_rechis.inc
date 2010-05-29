@@ -324,7 +324,7 @@ class recordHistory {
 			// get link to page history if the element history is shown
 		$elParts = explode(':',$this->element);
 		if ($elParts[0] != 'pages')	{
-			$content .= '<b>'.$LANG->getLL('elementHistory',1).'</b><br />';
+			$content .= '<strong>'.$LANG->getLL('elementHistory',1).'</strong><br />';
 			$pid = t3lib_BEfunc::getRecordRaw($elParts[0],'uid='.intval($elParts[1]));
 			$content .= $this->linkPage($LANG->getLL('elementHistory_link',1),array('element' => 'pages:'.$pid['pid']));
 		}
@@ -389,7 +389,7 @@ class recordHistory {
 
 				$lines[] = '
 				<tr class="bgColor4-20">
-					<td colspan="7"><b>'.$LANG->getLL('consistenceWarning',1).'</b></td>
+					<td colspan="7"><strong>'.$LANG->getLL('consistenceWarning',1).'</strong></td>
 				</tr>';
 			}
 
@@ -501,10 +501,10 @@ class recordHistory {
 				$elParts = explode(':',$key);
 					// turn around diff because it should be a "rollback preview"
 				if ($diff['insertsDeletes'][$key] == 1)	{	// insert
-					$record .= '<b>'.$LANG->getLL('delete',1).'</b>';
+					$record .= '<strong>'.$LANG->getLL('delete',1).'</strong>';
 					$record .= '<br />';
 				} elseif ($diff['insertsDeletes'][$key] == -1)	{
-					$record .= '<b>'.$LANG->getLL('insert',1).'</b>';
+					$record .= '<strong>'.$LANG->getLL('insert',1).'</strong>';
 					$record .= '<br />';
 				}
 					// build up temporary diff array

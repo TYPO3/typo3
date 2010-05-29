@@ -1,5 +1,6 @@
 2010-05-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #12872: Use "strong" instead of "b" (Thanks to Steffen Kamper and Stefano Kowalke)
 	* Fixed bug #14517: Set focus on pagetree filter input field (Thanks to Sebastian Gebhard)
 	* Fixed bug #14513: Improve rendering of icons in t3-row-header (Thanks to Steffen Gebert)
 	* Follow-up to feature #14490: Add missing styles of login box (Thanks to Steffen Gebert)

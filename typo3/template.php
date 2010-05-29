@@ -474,7 +474,7 @@ class template {
 	 */
 	function getFileheader($title,$path,$iconfile)	{
 		$fileInfo = t3lib_div::split_fileref($title);
-		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($fileInfo['path'],-35)).'<b>'.htmlspecialchars($fileInfo['file']).'</b>';
+		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($fileInfo['path'],-35)).'<strong>'.htmlspecialchars($fileInfo['file']).'</strong>';
 		return '<span class="typo3-moduleHeader"><img'.t3lib_iconWorks::skinImg($this->backPath,$iconfile,'width="18" height="16"').' title="'.htmlspecialchars($path).'" alt="" />'.$title.'</span>';
 	}
 
@@ -1838,11 +1838,11 @@ $str.=$this->docBodyTagBegin().
 
 						// Controls:
 					if ($id==$onlineId)	{
-						$controls = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="absmiddle" alt="" /> <b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online',1).'</b>';
+						$controls = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="absmiddle" alt="" /> <strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online',1).'</strong>';
 					} elseif (!$noAction) {
 						$controls = '<a href="'.$this->issueCommand('&cmd[pages]['.$onlineId.'][version][swapWith]='.$id.'&cmd[pages]['.$onlineId.'][version][action]=swap',t3lib_div::linkThisScript(array('id'=>$onlineId))).'" class="nobr">'.
 								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert1.gif','width="14" height="14"').' style="margin-right: 2px;" class="absmiddle" alt="" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage',1).'" />'.
-								'<b>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap',1).'</b></a>';
+								'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap',1).'</strong></a>';
 					}
 
 						// Write out HTML code:
