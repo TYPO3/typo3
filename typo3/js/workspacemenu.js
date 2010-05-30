@@ -113,16 +113,16 @@ var WorkspaceMenu = Class.create({
 		var toggle = new Ajax.Request('ajax.php', {
 			parameters: 'ajaxID=WorkspaceMenu::toggleWorkspacePreview',
 			onSuccess: function(transport, response) {
-				var stateActiveIcon = $$('#workspace-selector-menu img.state-active')[0].cloneNode(true);
-				var stateInactiveIcon = $$('#workspace-selector-menu img.state-inactive')[0].cloneNode(true);
+				var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
+				var stateInactiveClass = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
 
-				if (response.newWorkspacePreviewState === 1) {
+				if (response.newWorkspacePreviewState === '1') {
 					TYPO3.configuration.workspaceFrontendPreviewEnabled = 1;
-					Event.element(event).previous().replace(stateActiveIcon);
+					Event.element(event).previous().removeClassName(stateInactiveClass).addClassName(stateActiveClass);
 					top.WorkspaceFrontendPreviewEnabled = true;
 				} else {
 					TYPO3.configuration.workspaceFrontendPreviewEnabled = 0;
-					Event.element(event).previous().replace(stateInactiveIcon);
+					Event.element(event).previous().removeClassName(stateActiveClass).addClassName(stateInactiveClass);
 					top.WorkspaceFrontendPreviewEnabled = false;
 				}
 			}
@@ -152,15 +152,15 @@ var WorkspaceMenu = Class.create({
 				TYPO3.configuration.inWorkspace = response.setWorkspaceId === 0 ? 0 : 1;
 
 					// first remove all checks, then set the check in front of the selected workspace
-				var stateActiveIcon = $$('#workspace-selector-menu img.state-active')[0].cloneNode(true);
-				var stateInactiveIcon = $$('#workspace-selector-menu img.state-inactive')[0].cloneNode(true);
+				var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
+				var stateInactiveClass = 't3-icon t3-icon-empty t3-icon-empty-empty t3-icon-empty';
 
 					// remove "selected" class and checkmark
-				$$('#workspace-selector-menu li.selected img.state-active')[0].replace(stateInactiveIcon);
+				$$('#workspace-selector-menu li.selected span.t3-icon-status-checked')[0].removeClassName(stateActiveClass).addClassName(stateInactiveClass);
 				$$('#workspace-selector-menu li.selected')[0].removeClassName('selected');
 
 					// add "selected" class and checkmark
-				Event.element(event).previous().replace(stateActiveIcon);
+				Event.element(event).previous().removeClassName(stateInactiveClass).addClassName(stateActiveClass);
 				Event.element(event).up().addClassName('selected');
 
 					// when in web module reload, otherwise send the user to the web module

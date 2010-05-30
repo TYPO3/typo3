@@ -1,5 +1,6 @@
 2010-05-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14525: Workspacemenu JS is broken
 	* Fixed bug #14522: Pagetree workspace div correction
 
 2010-05-30  Oliver Hader  <oliver@typo3.org>
