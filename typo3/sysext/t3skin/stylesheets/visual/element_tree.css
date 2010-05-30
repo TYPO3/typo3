@@ -84,6 +84,8 @@ ul.tree ul li.active ul span a {
 	background-image: url('../../icons/gfx/filter_bg.gif');
 	background-repeat: no-repeat;
 	background-position: 0 -2px;
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #dadada;
 }
 
 #treeFilter {
