@@ -107,7 +107,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 
 		$pointer = count($tmpl->hierarchyInfo);
 		$tmpl->hierarchyInfoArr = $tmpl->ext_process_hierarchyInfo(array(), $pointer);
-		$tmpl->procesIncludes();
+		$tmpl->processIncludes();
 
 		$hierarArr = array();
 		$head = '<tr class="t3-row-header">';

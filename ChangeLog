@@ -4,6 +4,7 @@
 
 2010-05-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14544: Core calls deprecated procesIncludes()
 	* Fixed bug #14530: Missing icons in new BE skin (sprites) v5
 	* Fixed bug #14530: Missing icons in new BE skin (sprites) v4
 	* Fixed bug #14530: Missing icons in new BE skin (sprites) v3
