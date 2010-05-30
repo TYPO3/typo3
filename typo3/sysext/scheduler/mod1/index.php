@@ -1000,7 +1000,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$tr = 0;
 
 				// Header row
-			$table[$tr][] = '<a href="#" onclick="toggleCheckboxes();" title="' . $GLOBALS['LANG']->getLL('label.checkAll', TRUE) . '">' . t3lib_iconWorks::getSpriteIcon('actions-clip-select') . '</a>';
+			$table[$tr][] = '<a href="#" onclick="toggleCheckboxes();" title="' . $GLOBALS['LANG']->getLL('label.checkAll', TRUE) . '">' .
+				t3lib_iconWorks::getSpriteIcon('actions-document-select') .
+				'</a>';
 			$table[$tr][] = '&nbsp;';
 			$table[$tr][] = $GLOBALS['LANG']->getLL('label.id');
 			$table[$tr][] = $GLOBALS['LANG']->getLL('task');
@@ -1543,7 +1545,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 
 		if (empty($this->CMD) || $this->CMD == 'list') {
 			$buttons['reload'] = '<a href="' . $GLOBALS['MCONF']['_'] . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.reload', TRUE) . '>' .
-			  t3lib_iconWorks::getSpriteIcon('actions-system-refresh') . 
+			  t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
 		  '</a>';
 		}
 

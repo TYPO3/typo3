@@ -150,7 +150,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 				t3lib_FlashMessage::INFO
 			);
 			$this->content = $flashMessage->render();
-			
+
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];
@@ -192,10 +192,10 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 		if($this->id && is_array($this->pageinfo)) {
 
 				// View page
-			$buttons['view'] = '<a href="#" 
-					onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '
+			$buttons['view'] = '<a href="#"
+					onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $BACK_PATH, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '"
 					title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '
-				">' .	t3lib_iconWorks::getSpriteIcon('actions-page-view') . '</a>';
+				">' .	t3lib_iconWorks::getSpriteIcon('actions-document-view') . '</a>';
 
 				// Shortcut
 			if ($BE_USER->mayMakeShortcut())	{
