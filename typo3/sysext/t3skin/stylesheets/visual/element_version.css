@@ -4,9 +4,9 @@ Workspace
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-alt-db-navframe-php .workspace-info {
+#typo3-pagetree .workspace-info {
 	background-color: #ccccff;
-	border: none;
+	border-bottom: 1px solid #999999;
 }
 
 table#typo3-versionSelector {

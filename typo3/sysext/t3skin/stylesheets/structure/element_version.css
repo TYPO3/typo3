@@ -5,8 +5,8 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 div.workspace-info {
-	margin: -10px 0px 5px -10px;
-	padding: 3px;
+	margin: -10px -10px 5px -10px;
+	padding: 14px 10px 3px;
 }
 
 table.workspace-overview td {
@@ -37,8 +37,4 @@ table.ver-verElement {
 #ver-wl-new-workspace-icon {
 	margin-right: 5px;
 	float: left;
-}
-
-#typo3-alt-db-navframe-php .workspace-info {
-	margin: 10px 0 0 10px;
 }
