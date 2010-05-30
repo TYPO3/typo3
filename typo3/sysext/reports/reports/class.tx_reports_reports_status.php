@@ -126,7 +126,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 				tx_reports_reports_status_Status::ERROR   => 'error',
 			);
 
-			$icon[tx_reports_reports_status_Status::WARNING] = t3lib_iconWorks::getSpriteIcon('status-warning');
+			$icon[tx_reports_reports_status_Status::WARNING] = t3lib_iconWorks::getSpriteIcon('status-dialog-warning');
 			$icon[tx_reports_reports_status_Status::ERROR] = t3lib_iconWorks::getSpriteIcon('status-dialog-error');
 			$messages = '';
 			$headerIcon = '';
@@ -142,7 +142,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 					'###CONTENT###' => $status->getMessage(),
 				));
 			}
-			if ($sectionSeverity > 0) {
+			if ($sectionSeverity > 0) {t3lib_div::debug($sectionSeverity);
 				$headerIcon = $icon[$sectionSeverity];
 			}
 			$content .= '<h2 id="' . $id . '" class="section-header ' . $collapsedClass . '">' . $headerIcon . $provider . '</h2>

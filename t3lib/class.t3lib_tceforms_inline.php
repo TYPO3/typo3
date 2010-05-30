@@ -432,7 +432,7 @@ class t3lib_TCEforms_inline {
 				$appearanceStyleFields = ' style="display: none;"';
 			}
 		}
-				
+
 		if ($config['renderFieldsOnly']) {
 			$out = $fields . $combination;
 		} else {
@@ -616,7 +616,7 @@ class t3lib_TCEforms_inline {
 			// "Info": (All records)
 		if ($enabledControls['info'] && !$isNewItem) {
 			$cells['info']='<a href="#" onclick="'.htmlspecialchars('top.launchView(\''.$foreign_table.'\', \''.$rec['uid'].'\'); return false;').'">'.
-				t3lib_iconWorks::getSpriteIcon('actions-system-search', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:showInfo', TRUE))).
+				t3lib_iconWorks::getSpriteIcon('status-dialog-information', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:showInfo', TRUE))).
 		  '</a>';
 		}
 			// If the table is NOT a read-only table, then show these links:
@@ -678,7 +678,7 @@ class t3lib_TCEforms_inline {
 			if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms&4 || !$isPagesTable && $calcPerms&16)) {
 				$onClick = "inline.deleteRecord('".$nameObjectFtId."');";
 				$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')).')) {	'.$onClick.' } return false;').'">'.
-						t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete', TRUE))) . 
+						t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete', TRUE))) .
 			  '</a>';
 			}
 			// If this is a virtual record offer a minimized set of icons for user interaction:
@@ -686,7 +686,7 @@ class t3lib_TCEforms_inline {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
 				$onClick = "inline.synchronizeLocalizeRecords('".$nameObjectFt."', ".$rec['uid'].");";
 				$cells['localize'] = '<a href="#" onclick="'.htmlspecialchars($onClick).'">' .
-					t3lib_iconWorks::getSpriteIcon('actions-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', TRUE))) .
+					t3lib_iconWorks::getSpriteIcon('actions-document-localize', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localize', TRUE))) .
 			  '</a>';
 			}
 		}
@@ -694,7 +694,7 @@ class t3lib_TCEforms_inline {
 			// If the record is edit-locked	by another user, we will show a little warning sign:
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked($foreign_table,$rec['uid']))	{
 			$cells['locked']='<a href="#" onclick="'.htmlspecialchars('alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;').'">'.
-					t3lib_iconWorks::getSpriteIcon('status-record-warning', array('title' => htmlspecialchars($lockInfo['msg']))) . 
+					t3lib_iconWorks::getSpriteIcon('status-record-warning', array('title' => htmlspecialchars($lockInfo['msg']))) .
 					'</a>';
 		}
 
@@ -979,7 +979,7 @@ class t3lib_TCEforms_inline {
 	 * @return	void
 	 */
 	public function processAjaxRequest($params, $ajaxObj) {
-		
+
 		$ajaxArguments = t3lib_div::_GP('ajax');
 		$ajaxIdParts = explode('::', $GLOBALS['ajaxID'], 2);
 
@@ -1319,7 +1319,7 @@ class t3lib_TCEforms_inline {
 			// Return the JSON array:
 		return $jsonArray;
 	}
-	
+
 
 	/**
 	 * Generates a JSON array which executes the changes and thus updates the forms view.

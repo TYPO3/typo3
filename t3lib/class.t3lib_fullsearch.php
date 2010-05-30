@@ -660,7 +660,7 @@ class t3lib_fullsearch {
 		$params = '&edit['.$table.']['.$row['uid'].']=edit';
 		$out.='<td nowrap>';
 		if (!$row['deleted'])	{
-			$out .= '<a href="#" onClick="top.launchView(\''.$table.'\','.$row['uid'].',\''.$GLOBALS['BACK_PATH'].'\');return false;">' . t3lib_iconWorks::getSpriteIcon('actions-system-search') . '</a>';
+			$out .= '<a href="#" onClick="top.launchView(\''.$table.'\','.$row['uid'].',\''.$GLOBALS['BACK_PATH'].'\');return false;">' . t3lib_iconWorks::getSpriteIcon('status-dialog-information') . '</a>';
 			$out .= '<a href="#" onClick="'.t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], t3lib_div::getIndpEnv('REQUEST_URI').t3lib_div::implodeArrayForUrl('SET', (array)t3lib_div::_POST('SET'))).'">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') .  '</a>';
 		} else {
 			$out.= '<a href="'.t3lib_div::linkThisUrl($GLOBALS['BACK_PATH'].'tce_db.php', array('cmd['.$table.']['.$row['uid'].'][undelete]' => '1', 'redirect' => t3lib_div::linkThisScript(array()))).'">';
