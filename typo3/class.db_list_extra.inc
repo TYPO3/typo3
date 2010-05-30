@@ -682,8 +682,8 @@ class localRecordList extends recordList {
 			$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
 			//$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"'.);
 			$iconImg = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($alttext), 'style' => ($indent ? ' margin-left: ' . $indent . 'px;' : '')));
-			
-			
+
+
 			$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg,$table,$row['uid']) : $iconImg;
 
 				// Preparing and getting the data-array
@@ -955,7 +955,7 @@ class localRecordList extends recordList {
 							// If the numeric clipboard pads are selected, show duplicate sorting link:
 						if ($this->clipNumPane()) {
 							$theData[$fCol].='<a href="'.htmlspecialchars($this->listURL('',-1).'&duplicateField='.$fCol).'" title="'.$LANG->getLL('clip_duplicates', TRUE) . '">'.
-												t3lib_iconWorks::getSpriteIcon('actions-list-dublicates-select') .
+												t3lib_iconWorks::getSpriteIcon('actions-document-duplicates-select') .
 											'</a>';
 						}
 
@@ -1306,7 +1306,7 @@ class localRecordList extends recordList {
 					) .
 						t3lib_BEfunc::translationCount($table, $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.translationsOfRecord'));
 					$cells['delete']='<a href="#" onclick="'.htmlspecialchars('if (confirm('.$LANG->JScharCode($LANG->getLL('deleteWarning').' "'. $title.'" '.$refCountMsg).')) {jumpToUrl(\''.$SOBE->doc->issueCommand($params,-1).'\');} return false;').'" title="' . $LANG->getLL('delete', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') . 
+							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 							'</a>';
 				} elseif(!$this->table) {
 					$cells['delete'] = $this->spaceIcon;
