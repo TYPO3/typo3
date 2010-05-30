@@ -43,3 +43,8 @@ dl.typo3-tstemplate-ceditor-constant dt {
 	display: inline;
 	margin-right: 5px;
 }
+
+#ext-tstemplate-ts-index-php td.bgColor4 {
+	vertical-align: middle;
+	padding: 5px;
+}
