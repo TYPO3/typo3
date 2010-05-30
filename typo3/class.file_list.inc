@@ -331,7 +331,7 @@ class fileList extends t3lib_recordList {
 					list($title,$icon,$path) =  $this->dirData($theFile);
 
 						// The icon with link
-					$theIcon = t3lib_iconWorks::getSpriteIconForFile($theFile['fileext'], array('title' => htmlspecialchars($theFile['file'])));
+					$theIcon = t3lib_iconWorks::getSpriteIconForFile( ($theFile['type'] == 'dir' ? 'folder' : $theFile['fileext']), array('title' => htmlspecialchars($theFile['file'])));
 					if ($this->clickMenus) $theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($theIcon,$path);
 
 						// 	Preparing and getting the data-array

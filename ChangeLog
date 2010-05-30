@@ -1,3 +1,7 @@
+2010-05-30  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #14465: Make use of the new Sprite API throughout the TYPO3 Core Backend - Missing check for directory type in class.file_list.inc (Thanks to Steffen Ritter)
+
 2010-05-30  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14530: Missing icons in new BE skin (sprites) v2
