@@ -1,6 +1,7 @@
 2010-05-30  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #14383: Integrate hooks to backend.php to perform several customizations
+	* Fixed bug #14392: typolink creates incomplete links in combination with the forceAbsoluteUrl property
 
 2010-05-29  Christian Kuhn  <lolli@schwarzbu.ch>
 

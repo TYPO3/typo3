@@ -5978,6 +5978,7 @@ class tslib_cObj {
 						} else {
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix.$link_param;
 						}
+						$this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
 						$target = isset($conf['fileTarget']) ? $conf['fileTarget'] : $GLOBALS['TSFE']->fileTarget;
 						if ($conf['fileTarget.'])	{$target = $this->stdWrap($target, $conf['fileTarget.']);}
 						if ($forceTarget)	{$target=$forceTarget;}
@@ -6217,6 +6218,8 @@ class tslib_cObj {
 										$addParams,
 										$target
 									);
+									$this->lastTypoLinkUrl = $this->forceAbsoluteUrl($this->lastTypoLinkUrl, $conf);
+									$this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
 									$LD = $this->lastTypoLinkLD;
 						}
 
@@ -6295,6 +6298,47 @@ class tslib_cObj {
 		} else {
 			return $linktxt;
 		}
+	}
+
+	/**
+	 * Forces a given URL to be absolute.
+	 *
+	 * @param string $url The URL to be forced to be absolute
+	 * @param array $configuration TypoScript configuration of typolink
+	 * @return string The absolute URL
+	 */
+	protected function forceAbsoluteUrl($url, array $configuration) {
+		if (!empty($url) && isset($configuration['forceAbsoluteUrl']) && $configuration['forceAbsoluteUrl']) {
+			if (preg_match('#^(?:([a-z]+)(://))?([^/]*)(.*)$#', $url, $matches)) {
+				$urlParts = array(
+					'scheme' => $matches[1],
+					'delimiter' => '://',
+					'host' => $matches[3],
+					'path' => $matches[4],
+				);
+
+				// Set scheme and host if not yet part of the URL:
+				if (empty($urlParts['host'])) {
+					$urlParts['scheme'] = 'http';
+					$urlParts['host'] = t3lib_div::getIndpEnv('HTTP_HOST');
+					$isUrlModified = TRUE;
+				}
+
+				// Override scheme:
+				$forceAbsoluteUrl =& $configuration['forceAbsoluteUrl.']['scheme'];
+				if (!empty($forceAbsoluteUrl) && $urlParts['scheme'] !== $forceAbsoluteUrl) {
+					$urlParts['scheme'] = $forceAbsoluteUrl;
+					$isUrlModified = TRUE;
+				}
+
+				// Recreate the absolute URL:
+				if ($isUrlModified) {
+					$url = implode('', $urlParts);
+				}
+			}
+		}
+
+		return $url;
 	}
 
 	/**
