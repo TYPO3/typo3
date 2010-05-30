@@ -426,8 +426,8 @@ class SC_db_new_content_el {
 
 				// Back
 			if ($this->R_URI)	{
-				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $LANG->getLL('goBack', TRUE) . '">' . 
-						t3lib_iconWorks::getSpriteIcon('actions-go-back') .
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $LANG->getLL('goBack', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 					'</a>';
 			}
 		}

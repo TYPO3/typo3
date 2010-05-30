@@ -1,5 +1,6 @@
 2010-05-30  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14530: Missing icons in new BE skin (sprites) v2
 	* Fixed bug #14526: page tree filterbox styling fixed in new BE layout (Thanks to Jigal van Hemert)
 	* Fixed bug #14533: SpriteIcons: Icons in db_new.php are not replaced (Thanks to Steffen Ritter)
 	* Fixed bug #14530: Missing icons in new BE skin (sprites)
