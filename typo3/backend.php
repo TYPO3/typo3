@@ -148,6 +148,8 @@ class TYPO3backend {
 		if (isset($GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW']) && (int) $GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'] != (int) $this->menuWidth) {
 			$this->menuWidth = (int) $GLOBALS['TBE_STYLES']['dims']['leftMenuFrameW'];
 		}
+
+		$this->executeHook('constructPostProcess');
 	}
 
 	/**
@@ -185,6 +187,7 @@ class TYPO3backend {
 	 * @return	void
 	 */
 	public function render()	{
+		$this->executeHook('renderPreProcess');
 
 		if (t3lib_div::makeInstance('DonateWindow')->isDonateWindowAllowed()) {
 			$this->pageRenderer->addJsFile('js/donate.js');
@@ -261,6 +264,9 @@ class TYPO3backend {
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);
 		$this->content .= $backendScaffolding;
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
+
+		$hookConfiguration = array('content' => &$this->content);
+		$this->executeHook('renderPostProcess', $hookConfiguration);
 
 		echo $this->content;
 	}
@@ -682,6 +688,28 @@ class TYPO3backend {
 			$this->toolbarItems[$toolbarItemName] = $toolbarItem;
 		} else {
 			unset($toolbarItem);
+		}
+	}
+
+	/**
+	 * Executes defined hooks functions for the given identifier.
+	 *
+	 * These hook identifiers are valid:
+	 *	+ constructPostProcess
+	 *	+ renderPreProcess
+	 *	+ renderPostProcess
+	 *
+	 * @param string $identifier Specific hook identifier
+	 * @param array $hookConfiguration Additional configuration passed to hook functions
+	 * @return void
+	 */
+	protected function executeHook($identifier, array $hookConfiguration = array()) {
+		$options =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
+
+		if(isset($options[$identifier]) && is_array($options[$identifier])) {
+			foreach($options[$identifier] as $hookFunction) {
+				t3lib_div::callUserFunction($hookFunction, $hookConfiguration, $this);
+			}
 		}
 	}
 }

@@ -1,3 +1,7 @@
+2010-05-30  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #14383: Integrate hooks to backend.php to perform several customizations
+
 2010-05-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #12872: Use "strong" instead of "b" (Thanks to Steffen Kamper and Stefano Kowalke)
