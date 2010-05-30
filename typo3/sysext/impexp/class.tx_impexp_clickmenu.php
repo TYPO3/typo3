@@ -96,7 +96,7 @@ class tx_impexp_clickmenu {
 			}
 			$localItems[] = $backRef->linkItem(
 				$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export',$LL)),
-				$backRef->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-export')),
+				$backRef->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-export-t3d')),
 				$backRef->urlRefForCM($url),
 				1	// Disables the item in the top-bar
 			);
@@ -105,7 +105,7 @@ class tx_impexp_clickmenu {
 				$url = $modUrl . '?id='. $uid . '&table=' . $table . '&tx_impexp[action]=import';
 				$localItems[] = $backRef->linkItem(
 					$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import',$LL)),
-					$backRef->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-export')),
+					$backRef->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-import-t3d')),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar
 				);

@@ -599,9 +599,10 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$alttext = '[' . $row['templateID'] . ']';
 			$alttext .= $row['pid'] ? ' - ' . t3lib_BEfunc::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
 
-			$icon = substr($row['templateID'],0,3) == 'sys' ? t3lib_iconWorks::getSpriteIconForRecord('sys_template', $row['root'],array('title'=>$alttext)) :
-							(substr($row['templateID'], 0, 6) == 'static' ? t3lib_iconWorks::getSpriteIconForRecord('static_template', array(),array('title'=>$alttext)) :
-								t3lib_iconWorks::getSpriteIcon('mimetypes-default',array('title'=>$alttext)));
+			$icon = (substr($row['templateID'],0,3) == 'sys' ? 
+						t3lib_iconWorks::getSpriteIconForRecord('sys_template', $row['root'], array('title' => $alttext)) 
+						: t3lib_iconWorks::getSpriteIcon('mimetypes-x-content-template-static', array('title' => $alttext))
+					);
 			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
 				$A_B = '<a href="index.php?id=' . $GLOBALS['SOBE']->id . '&template=' . $row['templateID'] . '">';
 				$A_E = '</a>';
