@@ -142,7 +142,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 					'###CONTENT###' => $status->getMessage(),
 				));
 			}
-			if ($sectionSeverity > 0) {t3lib_div::debug($sectionSeverity);
+			if ($sectionSeverity > 0) {
 				$headerIcon = $icon[$sectionSeverity];
 			}
 			$content .= '<h2 id="' . $id . '" class="section-header ' . $collapsedClass . '">' . $headerIcon . $provider . '</h2>
