@@ -247,10 +247,10 @@ class SC_db_new {
 
 				// Set header-HTML and return_url
 			if (is_array($this->pageinfo) && $this->pageinfo['uid'])	{
-				$iconImgTag = t3lib_iconWorks::getIconImage('pages', $this->pageinfo, $this->backPath, 'title="' . htmlspecialchars($this->pageinfo['_thePath']) . '"');
+				$iconImgTag = t3lib_iconWorks::getSpriteIconForRecord('pages', $this->pageinfo, array('title' => htmlspecialchars($this->pageinfo['_thePath'])));
 				$title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
 			} else {
-				$iconImgTag = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' title="' . htmlspecialchars($this->pageinfo['_thePath']) . '" alt="" />';
+				$iconImgTag = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($this->pageinfo['_thePath'])));
 				$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 			}
 
@@ -316,7 +316,7 @@ class SC_db_new {
 			// Back
 		if ($this->R_URI) {
 			$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', 1) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-go-back') .
+					t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 				'</a>';
 		}
 
@@ -380,7 +380,8 @@ class SC_db_new {
 			// New Page
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
-		$pageIcon = t3lib_iconWorks::getIconImage($table, array(), $this->doc->backPath, '');
+		$pageIcon = t3lib_iconWorks::getSpriteIconForRecord($table,array());
+						
 		$newPageIcon = t3lib_iconWorks::getSpriteIcon('actions-page-new');
 		$rowContent = $firstLevel . $newPageIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewPage') . '</strong>';
 
@@ -394,7 +395,7 @@ class SC_db_new {
 				// Create link to new page inside:
 
 			$rowContent .= '<br />' . $secondLevel . $this->linkWrap(
-						'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/i/' . ($v['ctrl']['iconfile'] ? $v['ctrl']['iconfile'] : $table . '.gif'), 'width="18" height="16"') . ' alt="" />' .
+						t3lib_iconWorks::getSpriteIconForRecord($table, array()) .
 						$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.inside', 1) . ')',
 						$table,
 						$this->id);
@@ -456,7 +457,7 @@ class SC_db_new {
 							&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid'] ? $this->pageinfo['_ORIG_uid'] : $this->id, $table)
 							)	{
 
-						$newRecordIcon = t3lib_iconWorks::getIconImage($table ,array(), $this->doc->backPath, '');
+						$newRecordIcon = t3lib_iconWorks::getSpriteIconForRecord($table, array());
 						$rowContent = '';
 
 							// Create new link for record:
@@ -519,7 +520,7 @@ class SC_db_new {
 							} else {
 								$_EXTKEY = 'system';
 								$thisTitle = $GLOBALS['LANG']->getLL('system_records');
-								$iconFile['system'] = '<img src="gfx/typo3.png" />';
+								$iconFile['system'] = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root');
 							}
 
 							if($groupName == '' || $groupName != $_EXTKEY) {
