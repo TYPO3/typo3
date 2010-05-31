@@ -405,7 +405,7 @@ class recordHistory {
 			$singleLine = array();
 
 				// diff link
-			$image = t3lib_iconWorks::getSpriteIcon('actions-go-forward', array('title' => $LANG->getLL('sumUpChanges', TRUE)));
+			$image = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward', array('title' => $LANG->getLL('sumUpChanges', TRUE)));
 			$singleLine[] = '<span>'.$this->linkPage($image,array('diff' => $sysLogUid)).'</span>';	// remove first link
 
 			$singleLine[] = htmlspecialchars(t3lib_BEfunc::datetime($entry['tstamp']));	// add time
