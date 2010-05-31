@@ -1574,9 +1574,9 @@ class localRecordList extends recordList {
 						'&cmd['.$table.']['.$row['uid'].'][localize]='.$lUid_OnPage,
 						$this->listURL().'&justLocalized='.rawurlencode($table.':'.$row['uid'].':'.$lUid_OnPage)
 					);
-
+					$language = t3lib_BEfunc::getRecord('sys_language', $lUid_OnPage, 'title');
 					$lC = ($this->languageIconTitles[$lUid_OnPage]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$lUid_OnPage]['flagIcon'].'" class="absmiddle" alt="" />' : $this->languageIconTitles[$lUid_OnPage]['title']);
-					$lC = '<a href="'.htmlspecialchars($href).'">'.$lC.'</a> ';
+					$lC = '<a href="' . htmlspecialchars($href) . '" title="' . htmlspecialchars($language['title']) . '">' . $lC . '</a> ';
 
 					$lNew.=$lC;
 				}
