@@ -201,51 +201,54 @@
 .t3-icon-status.t3-icon-user-admin {
 	background-position: 0 -1560px;
 }
-.t3-icon-status.t3-icon-version-7 {
+.t3-icon-status.t3-icon-overlay-scheduled-future-end {
 	background-position: 0 -1584px;
 }
-.t3-icon-status.t3-icon-version-10 {
+.t3-icon-status.t3-icon-version-7 {
 	background-position: 0 -1608px;
 }
-.t3-icon-status.t3-icon-version-27 {
+.t3-icon-status.t3-icon-version-10 {
 	background-position: 0 -1632px;
 }
-.t3-icon-status.t3-icon-version-23 {
+.t3-icon-status.t3-icon-version-27 {
 	background-position: 0 -1656px;
 }
-.t3-icon-status.t3-icon-version-42 {
+.t3-icon-status.t3-icon-version-23 {
 	background-position: 0 -1680px;
 }
-.t3-icon-status.t3-icon-dialog-notification {
+.t3-icon-status.t3-icon-version-42 {
 	background-position: 0 -1704px;
 }
-.t3-icon-status.t3-icon-version-20 {
+.t3-icon-status.t3-icon-dialog-notification {
 	background-position: 0 -1728px;
 }
-.t3-icon-status.t3-icon-status-current {
+.t3-icon-status.t3-icon-version-20 {
 	background-position: 0 -1752px;
 }
-.t3-icon-status.t3-icon-version-25 {
+.t3-icon-status.t3-icon-status-current {
 	background-position: 0 -1776px;
 }
-.t3-icon-status.t3-icon-overlay-translated {
+.t3-icon-status.t3-icon-version-25 {
 	background-position: 0 -1800px;
 }
-.t3-icon-status.t3-icon-version-31 {
+.t3-icon-status.t3-icon-overlay-translated {
 	background-position: 0 -1824px;
 }
-.t3-icon-status.t3-icon-version-12 {
+.t3-icon-status.t3-icon-version-31 {
 	background-position: 0 -1848px;
 }
-.t3-icon-status.t3-icon-dialog-warning {
+.t3-icon-status.t3-icon-version-12 {
 	background-position: 0 -1872px;
 }
-.t3-icon-status.t3-icon-status-permission-denied {
+.t3-icon-status.t3-icon-dialog-warning {
 	background-position: 0 -1896px;
 }
-.t3-icon-status.t3-icon-overlay-access-restricted {
+.t3-icon-status.t3-icon-status-permission-denied {
 	background-position: 0 -1920px;
 }
-.t3-icon-status.t3-icon-version-26 {
+.t3-icon-status.t3-icon-overlay-access-restricted {
 	background-position: 0 -1944px;
+}
+.t3-icon-status.t3-icon-version-26 {
+	background-position: 0 -1968px;
 }

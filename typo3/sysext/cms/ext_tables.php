@@ -860,7 +860,7 @@ $TCA['sys_template'] = array (
 		),
 		'typeicon_column' => 'root',
 		'typeicon_classes' => array(
-			'0' => 'mimetypes-x-content-template-extension',
+			'default' => 'mimetypes-x-content-template-extension',
 			'1' => 'mimetypes-x-content-template',
 		),
 		'typeicons' => array (

@@ -53,9 +53,9 @@ div#typo3-docheader div.buttonsright {
 	margin: 0 3px 0 0;
 }
 
-div#typo3-docheader img,
-div#typo3-docheader input,
-div#typo3-docheader span.t3-icon {
+div#typo3-docheader-row1 img,
+div#typo3-docheader-row1 input,
+div#typo3-docheader-row1 span.t3-icon {
 	margin: 2px 3px 0;
 	vertical-align: top;
 }
@@ -69,7 +69,7 @@ div#typo3-docheader-row2 img {
 }
 
 div#typo3-docheader select {
-	margin: 1px 0 0;
+	margin: 2px 0 0;
 }
 
 div#typo3-docheader div.docheader-row2-left {

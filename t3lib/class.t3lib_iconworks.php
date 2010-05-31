@@ -887,7 +887,7 @@ final class t3lib_iconWorks	{
 		}
 
 			// Detecting extendToSubpages (for pages only)
-		if ($table == 'pages' && $row['extendToSubpages'] && ($status['hidden'] || $status['starttime'] || $status['endtime'] || $status['futureendtime'] || $status['fe_group'])) {
+		if ($table == 'pages' && $row['extendToSubpages']) {
 			$status['protectedSection'] = TRUE;
 		}
 

@@ -25,6 +25,9 @@ $TCA['sys_workspace'] = array(
 		'rootLevel' => 1,
 		'delete' => 'deleted',
 		'iconfile' => 'sys_workspace.png',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_workspace'
+		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
 		'versioningWS_alwaysAllowLiveEdit' => true,
 		'dividers2tabs' => true
