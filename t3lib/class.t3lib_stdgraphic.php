@@ -146,6 +146,9 @@
 /**
  * Class contains a bunch of cool functions for manipulating graphics with GDlib/Freetype and ImageMagick
  * VERY OFTEN used with gifbuilder that extends this class and provides a TypoScript API to using these functions
+ * 
+ * With TYPO3 4.4 GDlib 1.x support was dropped, also an option from config_default.php:
+ * $TYPO3_CONF_VARS['GFX']['gdlib_2'] = 0,	// String/Boolean. Set this if you are using the new GDlib 2.0.1+. If you don't set this flag and still use GDlib2, you might encounter strange behaviours like black images etc. This feature might take effect only if ImageMagick is installed and working as well! You can also use the value "no_imagecopyresized_fix" - in that case it will NOT try to fix a known issue where "imagecopyresized" does not work correctly.
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -157,11 +160,11 @@ class t3lib_stdGraphic	{
 		// Internal configuration, set in init()
 	var $combineScript = 'combine';				// The ImageMagick filename used for combining two images. This name changed during the versions.
 	var $noFramePrepended=0;					// If set, there is no frame pointer prepended to the filenames.
-	var $GD2=0;									// Set, if the GDlib used is version 2.
+	var $GD2 = 1;								// Set, if the GDlib used is version 2. @deprecated as of TYPO3 4.4, as this variables is now always set (GDlib2 always has this method, and PHP recommends to only use imagecreatetruecolor() over imagecreate())
 	var $imagecopyresized_fix=0;				// If set, imagecopyresized will not be called directly. For GD2 (some PHP installs?)
 	var $gifExtension = 'gif';					// This should be changed to 'png' if you want this class to read/make PNG-files instead!
 	var $gdlibExtensions = '';			// File formats supported by gdlib. This variable get's filled in "init" method
-	var $truecolor = true;					// Internal variable which get's used to determine wheter GDlib should use function truecolor pendants
+	var $truecolor = TRUE;					// Internal variable which get's used to determine wheter GDlib should use function truecolor pendants, @deprecated as of TYPO3 4.4, as this variables is now always set (GDlib2 always has this method, and PHP recommends to only use imagecreatetruecolor() over imagecreate())
 	var $png_truecolor = false;					// Set to true if generated png's should be truecolor by default
 	var $truecolorColors = 0xffffff;			// 16777216 Colors is the maximum value for PNG, JPEG truecolor images (24-bit, 8-bit / Channel)
 	var $TTFLocaleConv = '';					// Used to recode input to TTF-functions for other charsets. Deprecated since TYPO3 3.6, will be removed in TYPO3 4.6
@@ -170,10 +173,10 @@ class t3lib_stdGraphic	{
 	var $webImageExt = 'gif,jpg,jpeg,png';		// Commalist of web image extensions (can be shown by a webbrowser)
 	var $maskNegate = '';						// Will be ' -negate' if ImageMagick ver 5.2+. See init();
 	var $NO_IM_EFFECTS = '';
-	var $cmds = Array (
+	var $cmds = array(
 		'jpg' => '',
 		'jpeg' => '',
-		'gif' => '-colors 64',
+		'gif' => '',
 		'png' => '-colors 64'
 	);
 	var $NO_IMAGE_MAGICK = '';
@@ -252,19 +255,14 @@ class t3lib_stdGraphic	{
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['png_truecolor'])	{
 			$this->png_truecolor = true;
 		}
-		if (!$gfxConf['gdlib_2'] || !function_exists('imagecreatetruecolor'))	{
-			$this->truecolor = false;
-		}
 		if (!$gfxConf['im_version_5'])	{
 			$this->im_version_4 = true;
 		}
 
-			// When GIFBUILDER gets used in truecolor mode (GD2 required)
-		if ($this->truecolor)	{
-			if ($this->png_truecolor)	{
-				$this->cmds['png'] = '';	// No colors parameter if we generate truecolor images.
-			}
-			$this->cmds['gif'] = '';	// No colors parameter if we generate truecolor images.
+			// When GIFBUILDER gets used in truecolor mode 
+			// No colors parameter if we generate truecolor images.
+		if ($this->png_truecolor) {
+			$this->cmds['png'] = '';
 		}
 
 			// Setting default JPG parameters:
@@ -274,10 +272,10 @@ class t3lib_stdGraphic	{
 		if ($gfxConf['im_combine_filename'])	$this->combineScript=$gfxConf['im_combine_filename'];
 		if ($gfxConf['im_noFramePrepended'])	$this->noFramePrepended=1;
 
-		if ($gfxConf['gdlib_2'])	{
-			$this->GD2 = 1;
-			$this->imagecopyresized_fix = $gfxConf['gdlib_2']==='no_imagecopyresized_fix' ? 0 : 1;
-		}
+			// kept for backwards compatibility, can be turned on manually through localconf.php,
+			// but not through the installer anymore
+		$this->imagecopyresized_fix = ($gfxConf['gdlib_2'] === 'no_imagecopyresized_fix' ? 0 : 1);
+
 		if ($gfxConf['gdlib_png'])	{
 			$this->gifExtension='png';
 		}
@@ -392,7 +390,7 @@ class t3lib_stdGraphic	{
 				$theMask = $tmpStr.'_mask.'.$this->gifExtension;
 						// prepare overlay image
 				$cpImg = $this->imageCreateFromFile($BBimage[3]);
-				$destImg = $this->imagecreate($w,$h);
+				$destImg = imagecreatetruecolor($w, $h);
 				$Bcolor = ImageColorAllocate($destImg, 0,0,0);
 				ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
 				$this->copyGifOntoGif($destImg,$cpImg,$conf,$workArea);
@@ -401,7 +399,7 @@ class t3lib_stdGraphic	{
 				imageDestroy($destImg);
 						// prepare mask image
 				$cpImg = $this->imageCreateFromFile($BBmask[3]);
-				$destImg = $this->imagecreate($w,$h);
+				$destImg = imagecreatetruecolor($w, $h);
 				$Bcolor = ImageColorAllocate($destImg, 0, 0, 0);
 				ImageFilledRectangle($destImg, 0, 0, $w, $h, $Bcolor);
 				$this->copyGifOntoGif($destImg,$cpImg,$conf,$workArea);
@@ -540,7 +538,7 @@ class t3lib_stdGraphic	{
 	 */
 	function imagecopyresized(&$im, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h)	{
 		if ($this->imagecopyresized_fix)	{
-			$im_base = $this->imagecreate(imagesx($im), imagesy($im));	// Make true color image
+			$im_base = imagecreatetruecolor(imagesx($im), imagesy($im));	// Make true color image
 			imagecopyresized($im_base, $im, 0,0,0,0, imagesx($im),imagesy($im),imagesx($im),imagesy($im));	// Copy the source image onto that
 			imagecopyresized($im_base, $cpImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $w, $h, $w, $h);	// Then copy the $cpImg onto that (the actual operation!)
 			$im = $im_base;	// Set pointer
@@ -634,7 +632,7 @@ class t3lib_stdGraphic	{
 				$newH = ceil($sF*imagesy($im));
 
 					// Make mask
-				$maskImg = $this->imagecreate($newW, $newH);
+				$maskImg = imagecreatetruecolor($newW, $newH);
 				$Bcolor = ImageColorAllocate($maskImg, 255,255,255);
 				ImageFilledRectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
 				$Fcolor = ImageColorAllocate($maskImg, 0,0,0);
@@ -671,7 +669,7 @@ class t3lib_stdGraphic	{
 				$this->imageMagickExec($fileMask,$fileMask,$command);
 
 					// Make the color-file
-				$colorImg = $this->imagecreate($w,$h);
+				$colorImg = imagecreatetruecolor($w, $h);
 				$Ccolor = ImageColorAllocate($colorImg, $cols[0],$cols[1],$cols[2]);
 				ImageFilledRectangle($colorImg, 0, 0, $w, $h, $Ccolor);
 				$this->ImageWrite($colorImg, $fileColor);
@@ -1485,7 +1483,7 @@ class t3lib_stdGraphic	{
 			$fileMask = $tmpStr.'_mask.'.$this->gifExtension;
 
 				// BlurColor Image laves
-			$blurColImg = $this->imagecreate($w,$h);
+			$blurColImg = imagecreatetruecolor($w, $h);
 			$bcols=$this->convertColor($conf['color']);
 			$Bcolor = ImageColorAllocate($blurColImg, $bcols[0],$bcols[1],$bcols[2]);
 			ImageFilledRectangle($blurColImg, 0, 0, $w, $h, $Bcolor);
@@ -1493,7 +1491,7 @@ class t3lib_stdGraphic	{
 			ImageDestroy($blurColImg);
 
 				// The mask is made: BlurTextImage
-			$blurTextImg = $this->imagecreate($w+$blurBorder*2,$h+$blurBorder*2);
+			$blurTextImg = imagecreatetruecolor($w + $blurBorder * 2, $h + $blurBorder * 2);
 			$Bcolor = ImageColorAllocate($blurTextImg, 0,0,0);		// black background
 			ImageFilledRectangle($blurTextImg, 0, 0, $w+$blurBorder*2, $h+$blurBorder*2, $Bcolor);
 			$txtConf['fontColor'] = 'white';
@@ -1524,7 +1522,7 @@ class t3lib_stdGraphic	{
 			if ($blurTextImg_tmp)	{	// if nothing went wrong we continue with the blurred mask
 
 					// cropping the border from the mask
-				$blurTextImg = $this->imagecreate($w,$h);
+				$blurTextImg = imagecreatetruecolor($w, $h);
 				$this->imagecopyresized($blurTextImg, $blurTextImg_tmp, 0, 0, $blurBorder, $blurBorder, $w, $h, $w, $h);
 				ImageDestroy($blurTextImg_tmp);	// Destroy the temporary mask
 
@@ -1769,7 +1767,7 @@ class t3lib_stdGraphic	{
 		$conf['offset']=$cords[0].','.$cords[1];
 		$cords = $this->objPosition($conf,$this->workArea,Array($cords[2],$cords[3]));
 
-		$newIm = $this->imagecreate($cords[2],$cords[3]);
+		$newIm = imagecreatetruecolor($cords[2], $cords[3]);
 		$cols=$this->convertColor($conf['backColor']?$conf['backColor']:$this->setup['backColor']);
 		$Bcolor = ImageColorAllocate($newIm, $cols[0],$cols[1],$cols[2]);
 		ImageFilledRectangle($newIm, 0, 0, $cords[2], $cords[3], $Bcolor);
@@ -1955,14 +1953,18 @@ class t3lib_stdGraphic	{
 
 	/**
 	 * Reduce colors in image dependend on the actual amount of colors (Only works if we are not in truecolor mode)
+	 * This function is not needed anymore, as truecolor is now always on.
 	 *
 	 * @param	integer		GDlib Image Pointer
 	 * @param	integer		The max number of colors in the image before a reduction will happen; basically this means that IF the GD image current has the same amount or more colors than $limit define, THEN a reduction is performed.
 	 * @param	integer		Number of colors to reduce the image to.
 	 * @return	void
+	 * @deprecated since TYPO3 4.4, this function will be removed in TYPO3 4.6.
 	 */
 	function reduceColors(&$im,$limit, $cols)	{
-		if (!$this->truecolor && ImageColorsTotal($im)>=$limit)	{
+		t3lib_div::logDeprecatedFunction();
+
+		if (!$this->truecolor && ImageColorsTotal($im)>=$limit) {
 			$this->makeEffect($im, Array('value'=>'colors='.$cols) );
 		}
 	}
@@ -2852,7 +2854,7 @@ class t3lib_stdGraphic	{
 				case 'png':
 					if ($this->ImageWrite($this->im, $file))	{
 							// ImageMagick operations
-						if ($this->setup['reduceColors'] || (!$this->png_truecolor && $this->truecolor))	{
+						if ($this->setup['reduceColors'] || !$this->png_truecolor) {
 							$reduced = $this->IMreduceColors($file, t3lib_div::intInRange($this->setup['reduceColors'], 256, $this->truecolorColors, 256));
 							if ($reduced)	{
 								@copy($reduced, $file);
@@ -2920,10 +2922,8 @@ class t3lib_stdGraphic	{
 				}
 			break;
 			case 'gif':
-				if (function_exists('imageGif'))	{
-					if ($this->truecolor)	{
-						imagetruecolortopalette($destImg, true, 256);
-					}
+				if (function_exists('imageGif')) {
+					imagetruecolortopalette($destImg, true, 256);
 					$result = imageGif($destImg, $theImage);
 				}
 			break;
@@ -3002,7 +3002,7 @@ class t3lib_stdGraphic	{
 
 		// If non of the above:
 		$i = @getimagesize($sourceImg);
-		$im = $this->imagecreate($i[0],$i[1]);
+		$im = imagecreatetruecolor($i[0], $i[1]);
 		$Bcolor = ImageColorAllocate($im, 128,128,128);
 		ImageFilledRectangle($im, 0, 0, $i[0], $i[1], $Bcolor);
 		return $im;
@@ -3010,19 +3010,20 @@ class t3lib_stdGraphic	{
 
 
 	/**
-	 * Creates a new GD image resource. Wrapper for imagecreate(truecolor) depended if GD2 is used.
+	 * Creates a new GD image resource. 
+	 * Wrapper for imagecreate(truecolor) depended if GD2 is used.
+	 * This function however got obsolete, as PHP now recommends to use
+	 * imagecreatetruecolor() only.
 	 *
 	 * @param	integer		Width of image
 	 * @param	integer		Height of image
 	 * @return	pointer		Image Resource pointer
+	 * @deprecated since TYPO3 4.4, this function will be removed in TYPO3 4.6.
 	 */
-	function imagecreate($w, $h)	{
-		if($this->truecolor && function_exists('imagecreatetruecolor'))	{
-			return imagecreatetruecolor($w, $h);
-		} else	{
-			return imagecreate($w, $h);
-		}
-
+	function imagecreate($w, $h) {
+		t3lib_div::logDeprecatedFunction();
+		
+		return imagecreatetruecolor($w, $h);
 	}
 
 	/**

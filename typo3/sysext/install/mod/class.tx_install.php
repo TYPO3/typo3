@@ -1522,7 +1522,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$sVar['SERVER: '.$k]=$_SERVER[$k];
 		}
 
-		$gE_keys = explode(',','image_processing,gdlib,gdlib_png,gdlib_2,im,im_path,im_path_lzw,im_version_5,im_negate_mask,im_imvMaskState,im_combine_filename');
+		$gE_keys = explode(',','image_processing,gdlib,gdlib_png,im,im_path,im_path_lzw,im_version_5,im_negate_mask,im_imvMaskState,im_combine_filename');
 
 		foreach ($gE_keys as $k) {
 			$sVar['T3CV_GFX: '.$k]=$GLOBALS['TYPO3_CONF_VARS']['GFX'][$k];
@@ -2768,13 +2768,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				$this->config_array['freetype']=1;
 			}
 		} else {
-			$this->message($ext, 'GDLib not found', '
+			$this->message($ext, 'GDLib2 not found', '
 				<p>
-					GDLib is required if you want to use the GIFBUILDER object
+					GDLib2 is required if you want to use the GIFBUILDER object
 					in TypoScript. GIFBUILDER is in charge of all advanced image
 					generation in TypoScript, including graphical menuitems.
 					<br />
-					GDLib is also used in the TYPO3 Backend (TBE) to generate
+					GDLib2 is also used in the TYPO3 Backend (TBE) to generate
 					record icons and new module tabs.
 					<br />
 					It\'s highly recommended to install this library. Remember
@@ -4145,8 +4145,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return boolean TRUE if GD is available
 	 */
 	function isGD() {
-		if (function_exists('imagecreate')) {
-			if (@imagecreate(50, 100)) {
+		if (function_exists('imagecreatetruecolor')) {
+			if (@imagecreatetruecolor(50, 100)) {
 				return 1;
 			}
 		}
@@ -4440,12 +4440,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				</dt>
 				<dd>
 					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] : '&nbsp;') . '
-				</dd>
-				<dt>
-					GDLib 2 enabled:
-				</dt>
-				<dd>
-					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_2'] ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_2'] : '&nbsp;') . '
 				</dd>
 				<dt>
 					IM5 effects enabled:
@@ -4940,11 +4934,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								using ImageMagick 5 and should set the flag
 								TYPO3_CONF_VARS[GFX][im_v5effects]. However this
 								may cost server performance!
-								<br />
-								Finally if you see no drop shadow at all or if
-								the shadow is still not soft, then check if you
-								are using GDlib2 and if so set
-								TYPO3_CONF_VARS[GFX][gdlib_2]=1)
 							</p>
 						' . $result[0], $result[1]);
 					} else {

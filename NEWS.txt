@@ -35,6 +35,8 @@ General
 
 	* CSS and JS are compressed now. This means that they are concatenated to a single file. This will reduce the count of request drastically, which ends up in faster loading and better performance.
 	  If compressionLevel is configured ($TYPO3_CONF_VARS[TYPO3_MODE]['compressionLevel'] = 1 [1-9 for compression level or TRUE for enable]) they will be served with gzip. Be sure to uncomment the needed configuration in your .htaccess, also found in misc/advanced.htaccess.
+
+	* Support for GDlib 1.x was completely dropped, only GDlib 2.x is supported, which is bundled with most PHP installations.
 	  
 Backend
 =======
@@ -67,6 +69,7 @@ Compatibility
 
 	* Extbase: has been updated to support "Single Table Inheritance" which is a breaking change.  In TYPO3 4.3, Extbase made a "best guess" for the table name if it was not the lowercased class name (simply by crawling the class hierarchy upwards trying to find a mapping rule or table). This "magic" was removed because It was very hard to understand what was happening; especially if there was an error. This behaviour is now changed and you define the recordType and the tableName through TypoScript now. See the typo3.projecty.typo3v4mvc mailing list for more details on this topic.
 
+	* Support for GDlib 1.x was completely dropped, only GDlib 2.x is supported, which is bundled with most PHP installations.
 
 Development
 ===========
