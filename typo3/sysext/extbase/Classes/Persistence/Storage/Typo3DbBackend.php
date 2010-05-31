@@ -277,7 +277,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->parseOrderings($query->getOrderings(), $source, $sql);
 		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
 
-		foreach (array_keys($sql['tables']) as $tableName) {
+		$tableNames = array_unique(array_keys($sql['tables'] + $sql['unions']));
+		foreach ($tableNames as $tableName) {
 			if (is_string($tableName) && strlen($tableName) > 0) {
 				$this->addAdditionalWhereClause($query->getQuerySettings(), $tableName, $sql);
 			}
