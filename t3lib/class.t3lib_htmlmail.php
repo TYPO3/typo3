@@ -725,8 +725,8 @@ class t3lib_htmlmail {
 
 			// On windows the -f flag is not used (specific for Sendmail and Postfix),
 			// but instead the php.ini parameter sendmail_from is used.
-		$returnPath = (strlen($this->returnPath) > 0) ? '-f ' . escapeshellarg($this->returnPath) : '';
-		if($this->returnPath) {
+		$returnPath = ($this->forceReturnPath && strlen($this->returnPath) > 0) ? '-f ' . escapeshellarg($this->returnPath) : '';
+		if (TYPO3_OS == 'WIN' && $this->returnPath) {
 			@ini_set('sendmail_from', t3lib_div::normalizeMailAddress($this->returnPath));
 		}
 		$recipient = t3lib_div::normalizeMailAddress($this->recipient);
