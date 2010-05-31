@@ -37,7 +37,14 @@ General
 	  If compressionLevel is configured ($TYPO3_CONF_VARS[TYPO3_MODE]['compressionLevel'] = 1 [1-9 for compression level or TRUE for enable]) they will be served with gzip. Be sure to uncomment the needed configuration in your .htaccess, also found in misc/advanced.htaccess.
 
 	* Support for GDlib 1.x was completely dropped, only GDlib 2.x is supported, which is bundled with most PHP installations.
-	  
+	
+	* HTML5 now is official supported. For frontend simply use these two config lines:
+		config.doctype = html_5
+		config.xmlprologue = none
+	  Backend modules also allow HTML5 configuration, simply choose the doktype:
+	  	$this->doc->docType = 'html_5';
+
+
 Backend
 =======
 
@@ -53,6 +60,8 @@ Backend
 	* Most Icons used in the TYPO3 Backend are now rendered through so-called sprites. Instead of loading many image tags with single icons and therefore many http requests we now just have 6 sprites (one big image with all icons included) that need to be loaded. Image tags got replaced by spans using the big sprite images with background and offset. This reduces the HTTP and fileheader overhead of about 90% which results in a blasting fast Backend. For details about the new icon sprite API, have a look at t3lib/class.t3lib_iconworks.php.
 
 	* The "bigButtons" (Edit page properties, Move page, ...) in the Page module are now disabled by default to have a cleaner interface. The old behavior can be restored by setting mod.web_layout.disableBigButtons = 0 in UserTS or PageTS.
+	
+	* The "backend_old" was removed. This was the BE interface from 4.1. As it wasn't maintained and didn't worked correct, all references are removed, so remaining interfaces for login are backend and frontend. 
 
 Frontend
 ========
