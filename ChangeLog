@@ -1,3 +1,7 @@
+2010-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13701: @ini_set() works only on windows, on some unices it could render the function unusable (Thanks to Stephan Seitz)
+
 2010-05-31  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14530: Missing icons in new BE skin (sprites) v6
