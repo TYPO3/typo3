@@ -1,3 +1,7 @@
+2010-05-31  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #13858: IS cannot not index files if absRefPrefix is set and indexExternalURLs is not (thanks to Christian Kuhn and Steffen Ritter for help!)
+
 2010-05-31  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #13138: Add hook for manipulating content in felogin extension (Thanks to Thomas Layh)
