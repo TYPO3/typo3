@@ -788,7 +788,7 @@ class tx_indexedsearch_indexer {
 				$qParts = parse_url($linkSource);	// parse again due to new linkSource!
 			}
 
-			if ($qParts['scheme'])	{
+			if (!$linkInfo['localPath'] && $qParts['scheme']) {
 				if ($this->indexerConfig['indexExternalURLs'])	{
 						// Index external URL (http or otherwise)
 					$this->indexExternalUrl($linkSource);
@@ -839,46 +839,34 @@ class tx_indexedsearch_indexer {
 	}
 
 	/**
-	 * Extracts all links to external documents from content string.
+	 * Extracts all links to external documents from the HTML content string
 	 *
-	 * @param	string		Content to analyse
-	 * @return	array		Array of hyperlinks
+	 * @param string $html
+	 * @return array Array of hyperlinks (keys: tag, href, localPath (empty if not local))
 	 * @see extractLinks()
 	 */
-	function extractHyperLinks($string)	{
-		if (!is_object($this->htmlParser))	{
-			$this->htmlParser = t3lib_div::makeInstance('t3lib_parseHtml');
-		}
+	function extractHyperLinks($html)	{
+		$htmlParser = t3lib_div::makeInstance('t3lib_parseHtml');
+		$htmlParts = $htmlParser->splitTags('a', $html);
+		$hyperLinksData = array();
+		foreach ($htmlParts as $index => $tagData) {
+			if (($index % 2) !== 0)	{
+				$tagAttributes = $htmlParser->get_tag_attributes($tagData, TRUE);
+				$firstTagName = $htmlParser->getFirstTagName($tagData);
 
-		$parts = $this->htmlParser->splitTags('a',$string);
-		$list = array();
-		foreach ($parts as $k => $v)	{
-			if ($k%2)	{
-				$params = $this->htmlParser->get_tag_attributes($v,1);
-				$firstTagName = $this->htmlParser->getFirstTagName($v);	// The 'name' of the first tag
-
-				switch (strtolower($firstTagName))	{
-					case 'a':
-						$src = $params[0]['href'];
-						if ($src)	{
-								// Check if a local path to that file has been set - useful if you are using a download script.
-							$md5 = t3lib_div::shortMD5($src);
-							if (is_array($indexLocalFiles=$GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles']))	{
-								$localPath = isset($indexLocalFiles[$md5]) ? $indexLocalFiles[$md5] : '';
-							} else $localPath=false;
-
-							$list[] = array(
-								'tag' => $v,
-								'href' => $params[0]['href'],
-								'localPath' => $localPath
+				if (strtolower($firstTagName) == 'a') {
+					if ($tagAttributes[0]['href'] && $tagAttributes[0]['href']{0} != '#') {
+						$hyperLinksData[] = array(
+							'tag' => $tagData,
+							'href' => $tagAttributes[0]['href'],
+							'localPath' => $this->createLocalPath($tagAttributes[0]['href'])
 							);
 						}
-					break;
 				}
 			}
 		}
 
-		return $list;
+		return $hyperLinksData;
 	}
 
 	/**
@@ -887,36 +875,25 @@ class tx_indexedsearch_indexer {
 	 * @param	string		Content to analyze
 	 * @return	string		The base href or an empty string if not found
 	 */
-	public function extractBaseHref($string) {
-		if (!is_object($this->htmlParser)) {
-			$this->htmlParser = t3lib_div::makeInstance('t3lib_parseHtml');
-		}
-
-		$parts = $this->htmlParser->splitTags('base', $string);
-		foreach ($parts as $key => $value) {
-			if ($key % 2) {
-				$params = $this->htmlParser->get_tag_attributes($value, 1);
-				$firstTagName = $this->htmlParser->getFirstTagName($value); // The 'name' of the first tag
-
-				switch (strtolower($firstTagName)) {
-					case 'base':
-						$href = $params[0]['href'];
+	public function extractBaseHref($html) {
+		$href = '';
+		$htmlParser = t3lib_div::makeInstance('t3lib_parseHtml');
+		$htmlParts = $htmlParser->splitTags('base', $html);
+		foreach ($htmlParts as $index => $tagData) {
+			if (($index % 2) !== 0) {
+				$tagAttributes = $htmlParser->get_tag_attributes($tagData, true);
+				$firstTagName = $htmlParser->getFirstTagName($tagData);
+				if (strtolower($firstTagName) == 'base') {
+					$href = $tagAttributes[0]['href'];
 						if ($href) {
-								// Return the first "base href" found (a single one should be present anyway)
-							return $href;
+						break;
 						}
 				}
 			}
 		}
 
-		return '';
+		return $href;
 	}
-
-
-
-
-
-
 
 	/******************************************
 	 *
@@ -985,15 +962,155 @@ class tx_indexedsearch_indexer {
 
 
 
+	/**
+	 * Checks if the file is local
+	 *
+	 * @param $sourcePath
+	 * @return string Absolute path to file if file is local, else empty string
+	 */
+	protected function createLocalPath($sourcePath) {
+		$localPath = '';
+		static $pathFunctions = array(
+			'createLocalPathFromT3vars',
+			'createLocalPathUsingAbsRefPrefix',
+			'createLocalPathUsingDomainURL',
+			'createLocalPathFromAbsoluteURL',
+			'createLocalPathFromRelativeURL'
+			);
+		foreach ($pathFunctions as $functionName) {
+			$localPath = $this->$functionName($sourcePath);
+			if ($localPath != '') {
+				break;
+			}
+		}
+		return $localPath;
+	}
 
+	/**
+	 * Attempts to create a local file path from T3VARs. This is useful for
+	 * various download extensions that hide actual file name but still want the
+	 * file to be indexed.
+	 *
+	 * @param string $sourcePath
+	 * @return string
+	 */
+	protected function createLocalPathFromT3vars($sourcePath) {
+		$localPath = '';
+		$indexLocalFiles = $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'];
+		if (is_array($indexLocalFiles)) {
+			$md5 = t3lib_div::shortMD5($sourcePath);
+			// Note: not using self::isAllowedLocalFile here because this method
+			// is allowed to index files outside of the web site (for example,
+			// protected downloads)
+			if (isset($indexLocalFiles[$md5]) && is_file($indexLocalFiles[$md5])) {
+				$localPath = $indexLocalFiles[$md5];
+			}
+		}
+		return $localPath;
+	}
 
+	/**
+	 * Attempts to create a local file path by matching a current request URL.
+	 *
+	 * @param string $sourcePath
+	 * @return string
+	 */
+	protected function createLocalPathUsingDomainURL($sourcePath) {
+		$localPath = '';
+		$baseURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$baseURLLength = strlen($baseURL);
+		if (substr($sourcePath, 0, $baseURLLength) == $baseURL) {
+			$sourcePath = substr($sourcePath, $baseURLLength);
+			$localPath = PATH_site . $sourcePath;
+			if (!self::isAllowedLocalFile($localPath)) {
+				$localPath = '';
+			}
+		}
+		return $localPath;
+	}
 
+	/**
+	 * Attempts to create a local file path by matching absRefPrefix. This
+	 * requires TSFE. If TSFE is missing, this function does nothing.
+	 *
+	 * @param string $sourcePath
+	 * @return string
+	 */
+	protected function createLocalPathUsingAbsRefPrefix($sourcePath) {
+		$localPath = '';
+		if ($GLOBALS['TSFE'] instanceof tslib_fe) {
+			$absRefPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
+			$absRefPrefixLength = strlen($absRefPrefix);
+			if ($absRefPrefixLength > 0 && substr($sourcePath, 0, $absRefPrefixLength) == $absRefPrefix) {
+				$sourcePath = substr($sourcePath, $absRefPrefixLength);
+				$localPath = PATH_site . $sourcePath;
+				if (!self::isAllowedLocalFile($localPath)) {
+					$localPath = '';
+				}
+			}
+		}
+		return $localPath;
+	}
 
+	/**
+	 * Attempts to create a local file path from the absolute URL without
+	 * schema.
+	 *
+	 * @param string $sourcePath
+	 * @return string
+	 */
+	protected function createLocalPathFromAbsoluteURL($sourcePath) {
+		$localPath = '';
+		if ($sourcePath{0} == '/') {
+			$sourcePath = substr($sourcePath, 1);
+			$localPath = PATH_site . $sourcePath;
+			if (!self::isAllowedLocalFile($localPath)) {
+				$localPath = '';
+			}
+		}
+		return $localPath;
+	}
 
+	/**
+	 * Attempts to create a local file path from the relative URL.
+	 *
+	 * @param string $sourcePath
+	 * @return string
+	 */
+	protected function createLocalPathFromRelativeURL($sourcePath) {
+		$localPath = '';
+		if (self::isRelativeURL($sourcePath)) {
+			$localPath = PATH_site . $sourcePath;
+			if (!self::isAllowedLocalFile($localPath)) {
+				$localPath = '';
+			}
+		}
+		return $localPath;
+	}
 
+	/**
+	 * Checks if URL is relative.
+	 *
+	 * @param string $url
+	 * @return boolean
+	 */
+	static protected function isRelativeURL($url) {
+		$urlParts = @parse_url($url);
+		return ($urlParts['scheme'] == '' && $urlParts['path']{0} != '/');
+	}
 
-
-
+	/**
+	 * Checks if the path points to the file inside the web site
+	 *
+	 * @param string $filePath
+	 * @return boolean
+	 */
+	static protected function isAllowedLocalFile($filePath) {
+		$filePath = t3lib_div::resolveBackPath($filePath);
+		$insideWebPath = (substr($filePath, 0, strlen(PATH_site)) == PATH_site);
+		$isFile = is_file($filePath);
+		return $insideWebPath && $isFile;
+	}
 
 	/******************************************
 	 *

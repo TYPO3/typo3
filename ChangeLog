@@ -1,3 +1,7 @@
+2010-05-31  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #13858: IS cannot not index files if absRefPrefix is set and indexExternalURLs is not (thanks to Christian Kuhn and Steffen Ritter for help)
+
 2010-05-28  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13636: sysext:version needs doNotLoadInFE => 0 (Thanks to Georg Ringer)
