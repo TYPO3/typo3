@@ -1,5 +1,6 @@
 2010-05-31  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14535: Checkbox Alignment in TCEforms is broken (Thanks to Steffen Kamper)
 	* Fixed bug #14532: SpriteIcons: Clickmenu is not replaced (Thanks to Steffen Ritter)
 
 2010-05-30  Benjamin Mack  <benni@typo3.org>
