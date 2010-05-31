@@ -1,3 +1,7 @@
+2010-05-31  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug  #12990 : referrer in felogin form is not encoded correctly (Thanks to Jigal van Hemert)
+	
 2010-05-31  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #13858: IS cannot not index files if absRefPrefix is set and indexExternalURLs is not (thanks to Christian Kuhn and Steffen Ritter for help!)

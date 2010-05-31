@@ -474,7 +474,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		if (t3lib_div::inList($this->conf['redirectMode'], 'referer') || t3lib_div::inList($this->conf['redirectMode'], 'refererDomains')) {
 			$referer = $this->referer ? $this->referer : t3lib_div::getIndpEnv('HTTP_REFERER');
 			if ($referer) {
-				$extraHiddenAr[] = '<input type="hidden" name="referer" value="' . rawurlencode($referer) . '" />';
+				$extraHiddenAr[] = '<input type="hidden" name="referer" value="' . htmlspecialchars($referer) . '" />';
 			}
 		}
 
