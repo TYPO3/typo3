@@ -41,12 +41,11 @@ var OpenDocs = Class.create({
 
 		Ext.onReady(function() {
 			this.positionMenu();
-			this.toolbarItemIcon = $$('#tx-opendocs-menu .toolbar-item img')[0].src;
+			this.toolbarItemIcon = $$('#tx-opendocs-menu .toolbar-item span.t3-icon')[0];
 			this.ajaxScript      = top.TS.PATH_typo3 + this.ajaxScript; // can't be initialized earlier
 
 			Event.observe($$('#tx-opendocs-menu .toolbar-item')[0], 'click', this.toggleMenu);
 			this.menu = $$('#tx-opendocs-menu .toolbar-item-menu')[0];
-			this.toolbarItemIcon = $$('#shortcut-menu .toolbar-item img')[0].src;
 		}, this);
 	},
 

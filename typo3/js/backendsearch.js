@@ -39,7 +39,7 @@ var BackendSearch = Class.create({
 
 		Ext.onReady(function() {
 			this.positionMenu();
-			this.toolbarItemIcon = $$('#backend-search-menu .toolbar-item img')[0].src;
+			this.toolbarItemIcon = $$('#backend-search-menu .toolbar-item span.t3-icon')[0];
 
 			$('search-query').observe('keypress', function(event) {
 				var keyCode;

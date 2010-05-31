@@ -39,7 +39,7 @@ var ClearCacheMenu = Class.create({
 
 		Ext.onReady(function() {
 			this.positionMenu();
-			this.toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0].src;
+			this.toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item span.t3-icon')[0];
 
 			Event.observe('clear-cache-actions-menu', 'click', this.toggleMenu)
 
@@ -110,14 +110,17 @@ var ClearCacheMenu = Class.create({
 	 * @param	Event	prototype event object
 	 */
 	clearCache: function(event) {
-		var toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item img')[0];
+		var toolbarItemIcon = $$('#clear-cache-actions-menu .toolbar-item span.t3-icon')[0];
 		var url             = '';
 		var clickedElement  = Event.element(event);
 
 			// activate the spinner
-		toolbarItemIcon.src = 'gfx/spinner.gif';
+		var parent = Element.up(toolbarItemIcon);
+		var oldIcon = toolbarItemIcon.remove();
+		var spinner = Element('span', { 'class': 'spinner'});
+		parent.insert(spinner, {position: content});
 
-		if (clickedElement.tagName === 'IMG') {
+		if (clickedElement.tagName === 'SPAN') {
 			url =  clickedElement.up('a').href;
 		} else {
 			url =  clickedElement.href;
@@ -127,7 +130,8 @@ var ClearCacheMenu = Class.create({
 			var call = new Ajax.Request(url, {
 				'method': 'get',
 				'onComplete': function() {
-					toolbarItemIcon.src = this.toolbarItemIcon;
+					spinner.remove();
+					parent.insert(oldIcon, {position: content});
 				}.bind(this)
 			});
 		}

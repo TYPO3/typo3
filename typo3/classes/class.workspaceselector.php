@@ -189,12 +189,9 @@ class WorkspaceSelector implements backend_toolbarItem {
 			'title' => $GLOBALS['LANG']->getLL('shortcut_inactive')
 		));
 
-		$workspaceMenu[] = '<a href="#" class="toolbar-item"><img' .
-			t3lib_iconWorks::skinImg(
-				$this->backPath,
-				'gfx/i/sys_workspace.png',
-				'width="16" height="16"') .
-			' title="' . $title . '" alt="' . $title . '" /></a>';
+		$workspaceMenu[] = '<a href="#" class="toolbar-item">' .
+			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . 
+				'</a>';
 		$workspaceMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 
 		if (count($availableWorkspaces)) {

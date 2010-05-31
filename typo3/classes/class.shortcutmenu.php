@@ -116,7 +116,9 @@ class ShortcutMenu implements backend_toolbarItem {
 
 		$shortcutMenu = array();
 
-		$shortcutMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/toolbar_shortcut.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" /></a>';
+		$shortcutMenu[] = '<a href="#" class="toolbar-item">' .
+			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-shortcut', array('title' => $title)) .
+			'</a>';
 		$shortcutMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
 		$shortcutMenu[] = $this->renderMenu();
 		$shortcutMenu[] = '</div>';

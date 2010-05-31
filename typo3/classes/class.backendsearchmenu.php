@@ -73,7 +73,9 @@ class BackendSearchMenu implements backend_toolbarItem {
 		$this->addJavascriptToBackend();
 		$searchMenu = array();
 
-		$searchMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/magnifier.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" /></a>';
+		$searchMenu[] = '<a href="#" class="toolbar-item">' .
+			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-search', array('title' => $title)) .
+			'</a>';
 
 		$searchMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
 		$searchMenu[] = '<input type="text" id="search-query" name="search-query" value="" />';

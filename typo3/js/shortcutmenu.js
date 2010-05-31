@@ -40,7 +40,7 @@ var ShortcutMenu = Class.create({
 
 		Ext.onReady(function() {
 			this.positionMenu();
-			this.toolbarItemIcon = $$('#shortcut-menu .toolbar-item img')[0].src;
+			this.toolbarItemIcon = $$('#shortcut-menu .toolbar-item span.t3-icon')[0];
 
 			Event.observe($$('#shortcut-menu .toolbar-item')[0], 'click', this.toggleMenu);
 			this.initControls();
@@ -251,7 +251,12 @@ var ShortcutMenu = Class.create({
 	 * when finished it reloads the menu
 	 */
 	createShortcut: function(backPath, moduleName, url) {
-		$$('#shortcut-menu .toolbar-item img')[0].src = 'gfx/spinner.gif';
+		var toolbarItemIcon = $$('#shortcut-menu .toolbar-item span.t3-icon')[0];
+
+		var parent = Element.up(toolbarItemIcon);
+		var oldIcon = toolbarItemIcon.remove();
+		var spinner = Element('span', { 'class': 'spinner'});
+		parent.insert(spinner, {position: content});
 
 			// synchrous call to wait for it to complete and call the render
 			// method with backpath _afterwards_
@@ -261,7 +266,8 @@ var ShortcutMenu = Class.create({
 		});
 
 		this.reRenderMenu(null, null, backPath);
-		$$('#shortcut-menu .toolbar-item img')[0].src = this.toolbarItemIcon;
+		spinner.remove();
+		parent.insert(oldIcon, {position: content});
 	}
 
 });

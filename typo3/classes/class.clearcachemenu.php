@@ -137,7 +137,9 @@ class ClearCacheMenu implements backend_toolbarItem {
 		$this->addJavascriptToBackend();
 		$cacheMenu = array();
 
-		$cacheMenu[] = '<a href="#" class="toolbar-item"><img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/lightning.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" /></a>';
+		$cacheMenu[] = '<a href="#" class="toolbar-item">' .
+			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . 
+			'</a>';
 
 		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 

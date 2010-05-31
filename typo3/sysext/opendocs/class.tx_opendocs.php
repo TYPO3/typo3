@@ -98,7 +98,7 @@ class tx_opendocs implements backend_toolbarItem {
 			// toolbar item icon
 		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
 		$opendocsMenu[] = '<input type="text" id="tx-opendocs-counter" disabled="disabled" value="' . $numDocs . '" />';
-		$opendocsMenu[] = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], t3lib_extMgm::extRelPath($this->EXTKEY) . 'opendocs.png', 'width="23" height="16"') . '  alt="' . $title . '" title="' . $title . '" /></a>';
+		$opendocsMenu[] = t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-opendocs', array('title' => $title)) . '</a>';
 
 			// toolbar item menu and initial content
 		$opendocsMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
