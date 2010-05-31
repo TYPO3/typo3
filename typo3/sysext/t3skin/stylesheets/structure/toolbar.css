@@ -31,6 +31,10 @@ $Id$
 	overflow: visible !important;
 }
 
+#typo3-toolbar span.spinner {
+	background-image: url('../../images/spinner/3f3f3f.gif');
+}
+
 .toolbar-item {
 	display: block;
 	padding-bottom: 9px;
