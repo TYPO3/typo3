@@ -1,3 +1,7 @@
+2010-05-31  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #14556: Media content element shows HTML markup in additional flexform configuration
+
 2010-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14527: fixPermissions() for ENABLE_INSTALL_TOOL and extension import

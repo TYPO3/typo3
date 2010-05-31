@@ -2720,11 +2720,8 @@ class t3lib_TCEforms	{
 							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1);
 							$output.= '
 							<div style="padding: 5px 0px 5px 20px;">
-							<a href="#" onclick="'.htmlspecialchars('flexFormToggleSubs("'.$idTagPrefix.'"); return false;').'">'
-								. t3lib_iconWorks::getSpriteIcon('actions-move-right') .
-								$toggleAll . '" title="' . $toggleAll . '" />'
-								. t3lib_iconWorks::getSpriteIcon('actions-move-right') .
-								$toggleAll . '" title="' . $toggleAll . '" />' . $toggleAll . '
+							<a href="#" onclick="' . htmlspecialchars('flexFormToggleSubs("' . $idTagPrefix . '"); return false;') . '">'
+								. t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
 							</a>
 							</div>
 
