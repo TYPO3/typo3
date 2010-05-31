@@ -135,6 +135,17 @@ class tx_felogin_pi1 extends tslib_pibase {
 				t3lib_utility_Http::redirect($this->redirectUrl);
 			}
 		}
+
+			// Adds hook for processing of extra item markers / special
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'])) {
+			$_params = array(
+				'content' => $content
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] as $_funcRef) {
+				$content = t3lib_div::callUserFunction($_funcRef, $_params, $this);
+			}
+		}
+
 		return $this->conf['wrapContentInBaseClass'] ? $this->pi_wrapInBaseClass($content) : $content;
 
 	}
