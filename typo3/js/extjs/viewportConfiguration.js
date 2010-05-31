@@ -37,8 +37,10 @@ TYPO3.Viewport.configuration = {
 	renderTo: Ext.getBody(),
 	border: false,
 	items: [{
+		layout: 'absolute',
 		region: 'north',
 		id: 'typo3-topbar',
+		height: 42,
 		contentEl: 'typo3-top-container',
 		border: false
 	}, {

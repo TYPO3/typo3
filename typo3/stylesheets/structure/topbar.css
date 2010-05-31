@@ -4,10 +4,6 @@ Topbar (whole upper area), containts Logo and toolbar
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-topbar {
-	height: 42px;
-}
-
 #typo3-logo {
 	float: left;
 }

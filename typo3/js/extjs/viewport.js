@@ -89,8 +89,10 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	 * @return void
 	 */
 	initComponent: function() {
-		// adjust the width of module menu
+		// adjust the width of module menu and the height of the topbar
+		this.initialConfig.items[0].height = TYPO3.configuration.topBarHeight;
 		this.initialConfig.items[1].width = TYPO3.configuration.moduleMenuWidth;
+
 		// call parent constructor
 		TYPO3.Viewport.superclass.initComponent.apply(this, arguments);
 

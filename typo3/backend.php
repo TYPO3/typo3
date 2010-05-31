@@ -373,6 +373,7 @@ class TYPO3backend {
 			'veriCode' => $GLOBALS['BE_USER']->veriCode(),
 			'denyFileTypes' => PHP_EXTENSIONS_DEFAULT,
 			'moduleMenuWidth' => $this->menuWidth - 1,
+			'topBarHeight' => (int) $GLOBALS['TBE_STYLES']['dims']['topFrameH'],
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
 		);
 		$t3LLLcore = array(

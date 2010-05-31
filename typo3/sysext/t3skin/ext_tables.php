@@ -84,7 +84,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 
 		// Alternative dimensions for frameset sizes:
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;		// Left menu frame width
-	$TBE_STYLES['dims']['topFrameH']      = 45;			// Top frame heigth
+	$TBE_STYLES['dims']['topFrameH']      = 42;			// Top frame height
 	$TBE_STYLES['dims']['navFrameWidth']  = 280;		// Default navigation frame width
 
 		// Setting roll-over background color for click menus:
