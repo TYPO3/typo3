@@ -327,6 +327,7 @@ class SC_mod_user_setup_index {
 			}
 			if (t3lib_div::_POST('createInstallToolEnableFile')) {
 				touch(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+				t3lib_div::fixPermissions(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
 				$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
 				if ($installToolEnableFileExists) {
 					$flashMessage = t3lib_div::makeInstance(

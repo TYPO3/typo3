@@ -2022,6 +2022,8 @@ EXTENSION KEYS:
 											}
 										}
 
+										t3lib_div::fixPermissions($extDirPath, TRUE);
+
 											// No content, no errors. Create success output here:
 										if (!$content)	{
 											$messageContent = sprintf($GLOBALS['LANG']->getLL('ext_import_success_folder'), $extDirPath) . '<br />';
