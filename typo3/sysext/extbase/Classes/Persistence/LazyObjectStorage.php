@@ -235,6 +235,14 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->initialize();
 		return parent::valid();
 	}
+	
+	/**
+	 * @see Tx_Extbase_Persistence_ObjectStorage::toArray
+	 */
+	public function toArray() {
+		$this->initialize();
+		return parent::toArray();
+	}
 		
 }
 ?>
