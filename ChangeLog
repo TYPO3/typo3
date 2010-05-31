@@ -8,6 +8,7 @@
 
 2010-05-31  Benjamin Mack  <benni@typo3.org>
 
+	* Followup to #13998: Introduce Automatic versioning of CSS and JS files - fixed tabs for install tool
 	* Dropped feature #14441: Drop support for GDlib 1.x, GDlib2 is now default
 	* Fixed bug #13138: Add hook for manipulating content in felogin extension (Thanks to Thomas Layh)
 	* Fixed bug #14540: Replace icons in module menu to use new styles (Thanks to Steffen Gebert)
