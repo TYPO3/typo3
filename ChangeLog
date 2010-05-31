@@ -5,6 +5,7 @@
 
 2010-05-31  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14530: Missing icons in new BE skin (sprites) v7
 	* Fixed bug #14547: Flags in localization view (list view) have no title
 	* Fixed bug #14530: Missing icons in new BE skin (sprites) v6
 	* Fixed bug  #12990 : referrer in felogin form is not encoded correctly (Thanks to Jigal van Hemert)

@@ -197,7 +197,9 @@ class ShortcutMenu implements backend_toolbarItem {
 		if(count($shortcutMenu) == 1) {
 				//no shortcuts added yet, show a small help message how to add shortcuts
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcuts', true);
-			$icon  = '<img'.t3lib_iconWorks::skinImg($backPath,'gfx/shortcut.gif','width="14" height="14"').' title="'.$title.'" alt="'.$title.'" />';
+			$icon = t3lib_iconWorks::getSpriteIcon('actions-system-shortcut-new', array(
+				'title' => $title
+			));
 			$label = str_replace('%icon%', $icon, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:shortcutDescription'));
 
 			$shortcutMenu[] = '<tr><td style="padding:1px 2px; color: #838383;">'.$label.'</td></tr>';
