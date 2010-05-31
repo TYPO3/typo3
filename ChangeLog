@@ -1,5 +1,9 @@
 2010-05-31  Oliver Hader  <oliver@typo3.org>
 
+	* Release of TYPO3 4.4.0beta3
+
+2010-05-31  Oliver Hader  <oliver@typo3.org>
+
 	* Fixed bug #14556: Media content element shows HTML markup in additional flexform configuration
 
 2010-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
