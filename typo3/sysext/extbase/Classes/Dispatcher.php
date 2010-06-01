@@ -198,7 +198,7 @@ class Tx_Extbase_Dispatcher {
 		} catch (t3lib_cache_exception_NoSuchCache $exception) {
 			$GLOBALS['typo3CacheFactory']->create(
 				'cache_extbase_reflection',
-				't3lib_cache_frontend_VariableFrontend',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['frontend'],
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']
 			);
