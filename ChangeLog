@@ -1,6 +1,6 @@
 2010-06-02  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #13506: Function changePassword does not work, when hitting 'enter' in change password form (Thanks to Christian Futterlieb)
+	* Fixed bug #13506: [felogin] Function changePassword does not work, when hitting 'enter' in change password form (Thanks to Christian Futterlieb)
 
 2010-05-31  Oliver Hader  <oliver@typo3.org>
 
