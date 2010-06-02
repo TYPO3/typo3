@@ -269,7 +269,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 					// all is fine, continue with new password
 				$postData = t3lib_div::_POST($this->prefixId);
 
-				if ($postData['changepasswordsubmit']) {
+				if (isset($postData['changepasswordsubmit'])) {
 					if (strlen($postData['password1']) < $minLength) {
 			 			$markerArray['###STATUS_MESSAGE###'] = sprintf($this->getDisplayText('change_password_tooshort_message', $this->conf['changePasswordMessage_stdWrap.']), $minLength);
 					} elseif ($postData['password1'] != $postData['password2']) {
