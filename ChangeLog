@@ -1,3 +1,7 @@
+2010-06-02  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13506: [felogin] Function changePassword does not work, when hitting 'enter' in change password form (Thanks to Christian Futterlieb)
+
 2010-05-31  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13701: @ini_set() works only on windows, on some unices it could render the function unusable (Thanks to Stephan Seitz)
