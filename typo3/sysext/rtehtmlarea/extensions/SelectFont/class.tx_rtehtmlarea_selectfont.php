@@ -135,9 +135,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 		if ($this->htmlAreaRTE->is_FE()) {
 			$items['none'] = array($GLOBALS['TSFE']->getLLL((($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $this->LOCAL_LANG), 'none');
 		} else {
-			$items['none'] = array(($this->htmlAreaRTE->TCEform->inline->isAjaxCall
-					? $GLOBALS['LANG']->csConvObj->utf8_encode($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size'), $GLOBALS['LANG']->charSet)
-					: $GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size')), 'none');
+			$items['none'] = array(($GLOBALS['LANG']->getLL(($buttonId == 'fontstyle') ? 'Default font' : 'Default size')), 'none');
 		}
 			// Inserting and localizing default items
 		if ($hideItems != '*') {
@@ -151,7 +149,6 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 						if (!$label) {
 							$label = $name;
 						}
-						$label = $this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
 					}
 					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($value));
 				}
@@ -164,7 +161,6 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 				$name = substr($name,0,-1);
 				if (in_array($name, $addItems)) {
 					$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'],0);
-					$label = (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet) : $label;
 					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($conf['value']));
 				}
 			}
@@ -178,6 +174,11 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlareaapi {
 		$itemsJSArray = array();
 		foreach ($items as $name => $option) {
 			$itemsJSArray[] = array('text' => $option[0], 'value' => $option[1]);
+		}
+		if ($this->htmlAreaRTE->is_FE()) {
+			$GLOBALS['TSFE']->csConvObj->convArray($itemsJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
+		} else {
+			$GLOBALS['LANG']->csConvObj->convArray($itemsJSArray, $GLOBALS['LANG']->charSet, 'utf-8');
 		}
 		$itemsJSArray = json_encode(array('options' => $itemsJSArray));
 			// Adding to button JS configuration

@@ -165,28 +165,24 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlareaapi {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.']) || !$this->thisConfig['buttons.']['formatblock.']['orderItems']) {
 				asort($blockElementsOptions);
 			}
-				// utf8-encode labels if we are responding to an IRRE ajax call
-			if (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) {
-				foreach ($blockElementsOptions as $item => $label) {
-					$blockElementsOptions[$item] = $GLOBALS['LANG']->csConvObj->utf8_encode($label, $GLOBALS['LANG']->charSet);
-				}
-			}
 				// Generating the javascript options
 			$JSBlockElements = array();
 			$JSBlockElements[] = array($first, 'none');
 			foreach ($blockElementsOptions as $item => $label) {
 				$JSBlockElements[] = array($label, $item);
 			}
+			if ($this->htmlAreaRTE->is_FE()) {
+				$GLOBALS['TSFE']->csConvObj->convArray($JSBlockElements, $this->htmlAreaRTE->OutputCharset, 'utf-8');
+			} else {
+				$GLOBALS['LANG']->csConvObj->convArray($JSBlockElements, $GLOBALS['LANG']->charSet, 'utf-8');
+			}
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/BlockElements/class.tx_rtehtmlarea_blockelements.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/BlockElements/class.tx_rtehtmlarea_blockelements.php']);
 }
-
 ?>

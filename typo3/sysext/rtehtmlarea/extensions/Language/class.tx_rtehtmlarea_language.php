@@ -90,6 +90,11 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 			foreach ($languages as $key => $value) {
 				$languagesJSArray[] = array('text' => $key, 'value' => $value);
 			}
+			if ($this->htmlAreaRTE->is_FE()) {
+				$GLOBALS['TSFE']->csConvObj->convArray($languagesJSArray, $this->htmlAreaRTE->OutputCharset, 'utf-8');
+			} else {
+				$GLOBALS['LANG']->csConvObj->convArray($languagesJSArray, $GLOBALS['LANG']->charSet, 'utf-8');
+			}
 			$languagesJSArray = json_encode(array('options' => $languagesJSArray));
 			$registerRTEinJavascriptString .= '
 			RTEarea['.$RTEcounter.'].buttons.'. $button .'.dataUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', $button . '_' . $this->htmlAreaRTE->contentLanguageUid, 'js', $languagesJSArray) . '";';
@@ -132,13 +137,17 @@ class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
 			$code = strtolower($row['lg_iso_2']).($row['lg_country_iso_2']?'-'.strtoupper($row['lg_country_iso_2']):'');
 			foreach ($titleFields as $titleField) {
 				if ($row[$titleField]) {
-					$nameArray[$code] = $this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->csConv($row[$titleField], $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset']) : ($this->htmlAreaRTE->TCEform->inline->isAjaxCall ? $GLOBALS['LANG']->csConvObj->utf8_encode($row[$titleField], $GLOBALS['LANG']->charSet) : $row[$titleField]);
-					$nameArray[$code] = $prefixLabelWithCode ? ($code . ' - ' . $nameArray[$code]) : ($postfixLabelWithCode ? ($nameArray[$code] . ' - ' . $code) : $nameArray[$code]);
+					$nameArray[$code] = $prefixLabelWithCode ? ($code . ' - ' . $row[$titleField]) : ($postfixLabelWithCode ? ($row[$titleField] . ' - ' . $code) : $row[$titleField]);
 					break;
 				}
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
+		if ($this->htmlAreaRTE->is_FE()) {
+			$GLOBALS['TSFE']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $this->htmlAreaRTE->OutputCharset);
+		} else {
+			$GLOBALS['LANG']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $GLOBALS['LANG']->charSet);
+		}
 		uasort($nameArray, 'strcoll');
 		return $nameArray;
 	}

@@ -94,7 +94,6 @@ class tx_rtehtmlarea_typo3color extends tx_rtehtmlareaapi {
 			foreach ($RTEProperties['colors.'] as $colorName => $conf) {
 				$colorName = substr($colorName, 0, -1);
 				$colorLabel = $this->htmlAreaRTE->getPageConfigLabel($conf['name'], 0);
-				$colorLabel = (!$this->htmlAreaRTE->is_FE() && $this->htmlAreaRTE->TCEform->inline->isAjaxCall) ? $GLOBALS['LANG']->csConvObj->utf8_encode($colorLabel, $GLOBALS['LANG']->charSet) : $colorLabel;
 				$HTMLAreaColorname[$colorName] = array($colorLabel, strtoupper(substr($conf['value'], 1, 6)));
 			}
 		}
@@ -106,6 +105,11 @@ class tx_rtehtmlarea_typo3color extends tx_rtehtmlareaapi {
 				if ($HTMLAreaColorname[$colorName]) {
 					$HTMLAreaJSColors[] = $HTMLAreaColorname[$colorName];
 				}
+			}
+			if ($this->htmlAreaRTE->is_FE()) {
+				$GLOBALS['TSFE']->csConvObj->convArray($HTMLAreaJSColors, $this->htmlAreaRTE->OutputCharset, 'utf-8');
+			} else {
+				$GLOBALS['LANG']->csConvObj->convArray($HTMLAreaJSColors, $GLOBALS['LANG']->charSet, 'utf-8');
 			}
 			$configureRTEInJavascriptString .= '
 			RTEarea['.$RTEcounter.'].colors = ' . json_encode($HTMLAreaJSColors) . ';';
