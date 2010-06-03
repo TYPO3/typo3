@@ -1,3 +1,7 @@
+2010-06-03  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14130: Switching pages with browsebox doesn't work (thanks to Mark Kuiphuis)
+
 2010-06-02  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13506: [felogin] Function changePassword does not work, when hitting 'enter' in change password form (Thanks to Christian Futterlieb)
