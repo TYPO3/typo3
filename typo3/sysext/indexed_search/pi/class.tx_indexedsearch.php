@@ -1853,9 +1853,9 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	string		Input string wrapped in <a> tag with onclick event attribute set.
 	 */
 	function makePointerSelector_link($str,$p,$freeIndexUid)	{
-		$onclick = 'document.'.$this->prefixId.'[\''.$this->prefixId.'[pointer]\'].value=\''.$p.'\';'.
-					'document.'.$this->prefixId.'[\''.$this->prefixId.'[_freeIndexUid]\'].value=\''.rawurlencode($freeIndexUid).'\';'.
-					'document.'.$this->prefixId.'.submit();return false;';
+		$onclick = 'document.getElementById(\'' . $this->prefixId . '_pointer\').value=\'' . $p . '\';' .
+					'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';' .
+					'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($onclick).'">'.$str.'</a>';
 	}
 
