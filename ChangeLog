@@ -1,3 +1,7 @@
+2010-06-04  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14615: Autosuggest function doesn't work with quotes
+
 2010-06-04  Susanne Moog  <typo3@susannemoog.de>
 
 	* Fixed bug #13818: tcemain versionSwap might break pages_language_overlay relations (thanks to Tolleiv Nietsch)
