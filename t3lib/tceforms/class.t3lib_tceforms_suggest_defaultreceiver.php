@@ -231,8 +231,9 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		$searchString = $this->params['value'];
 		$searchUid = intval($searchString);
 		if (strlen($searchString)) {
+			$searchString = $GLOBALS['TYPO3_DB']->quoteStr($searchString, $this->table);
 			$likeCondition = ' LIKE \'' . ($searchWholePhrase ? '%' : '') .
-				$GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table).'%\'';
+				$GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table) . '%\'';
 
 				// Search in all fields given by label or label_alt
 			$selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'];
