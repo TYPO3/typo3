@@ -4777,7 +4777,7 @@ class t3lib_TCEmain	{
 											$keepFields[] = $TCA[$table]['ctrl']['sortby'];
 										}
 											// l10n-fields must be kept otherwise the localization will be lost during the publishing
-										if ($TCA[$table]['ctrl']['transOrigPointerField']) {
+										if (!isset($TCA[$table]['ctrl']['transOrigPointerTable']) && $TCA[$table]['ctrl']['transOrigPointerField']) {
 											$keepFields[] = $TCA[$table]['ctrl']['transOrigPointerField'];
 										}
 
