@@ -561,7 +561,7 @@ class SC_index {
 		$newsContent = '';
 
 			// Traverse news array IF there are records in it:
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && !t3lib_div::_GP('loginRefresh')) {
 
 				// get the main news template, and replace the subpart after looped through
 			$newsContent      = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');

@@ -4,6 +4,7 @@
 
 2010-06-05  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14626: Login refresh popup should not display news
 	* Followup to #14387: Remove the feature "Enable extensions without review (basic security check)" from EM (Thanks to Helmut Hummel)
 
 2010-06-04  Steffen Kamper  <info@sk-typo3.de>
