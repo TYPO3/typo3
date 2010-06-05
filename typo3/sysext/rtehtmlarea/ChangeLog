@@ -1,3 +1,7 @@
+2010-06-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14625: htmlArea RTE: Inconsistant position of ok button
+
 2010-06-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14397: htmlArea RTE: Incorrect encoding of some labels when BE is not utf-8

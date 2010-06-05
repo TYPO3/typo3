@@ -76,7 +76,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "5.0",
+			version		: "5.1",
 			developer	: "Mihai Bazon & Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Mihai Bazon & Stanislas Rolland",
@@ -373,8 +373,8 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 				items: tabItems
 			},
 			buttons: [
-				this.buildButtonConfig('Cancel', this.onCancel),
-				this.buildButtonConfig('OK', handler)
+				this.buildButtonConfig('OK', handler),
+				this.buildButtonConfig('Cancel', this.onCancel)
 			]
 		});
 		this.show();

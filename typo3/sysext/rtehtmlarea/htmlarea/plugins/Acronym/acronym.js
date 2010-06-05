@@ -42,7 +42,7 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "2.0",
+			version		: "2.1",
 			developer	: "Stanislas Rolland",
 			developerUrl	: "http://www.sjbr.ca/",
 			copyrightOwner	: "Stanislas Rolland",
@@ -220,11 +220,11 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 	 * @return	object		the buttons configuration
 	 */
 	buildButtonsConfig: function (element, okHandler, deleteHandler) {
-		var buttonsConfig = [this.buildButtonConfig('Cancel', this.onCancel)];
+		var buttonsConfig = [this.buildButtonConfig('OK', okHandler)];
 		if (element) {
 			buttonsConfig.push(this.buildButtonConfig('Delete', deleteHandler));
 		}
-		buttonsConfig.push(this.buildButtonConfig('OK', okHandler));
+		buttonsConfig.push(this.buildButtonConfig('Cancel', this.onCancel));
 		return buttonsConfig;
 	},
 	/*

@@ -49,7 +49,7 @@ HTMLArea.QuickTag = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.0',
+			version		: '2.1',
 			developer	: 'Cau Guanabara & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca',
 			copyrightOwner	: 'Cau Guanabara & Stanislas Rolland',
@@ -466,8 +466,8 @@ HTMLArea.QuickTag = HTMLArea.Plugin.extend({
 				items: items
 			},
 			buttons: [
-				this.buildButtonConfig('Cancel', this.onCancel),
-				this.buildButtonConfig('OK', handler)
+				this.buildButtonConfig('OK', handler),
+				this.buildButtonConfig('Cancel', this.onCancel)
 			]
 		});
 		this.show();

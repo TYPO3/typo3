@@ -1,3 +1,7 @@
+2010-06-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14625: htmlArea RTE: Inconsistant position of ok button
+
 2010-06-05  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #14387: Remove the feature "Enable extensions without review (basic security check)" from EM (Thanks to Helmut Hummel)
