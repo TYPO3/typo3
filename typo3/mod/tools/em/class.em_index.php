@@ -3524,10 +3524,12 @@ EXTENSION KEYS:
 			$cells[] = '<td nowrap="nowrap" class="extstate" style="background-color:'.$this->stateColors[$extInfo['EM_CONF']['state']].';">'.$this->states[$extInfo['EM_CONF']['state']].'</td>';
 		}
 
-		if($this->xmlhandler->getReviewState($extKey,$extInfo['EM_CONF']['version'])<1) {
+			// show a different background through a different class for insecure (-1) extensions,
+			// for unreviewed (0) an reviewed extensions (1), just use the regular class
+		if ($this->xmlhandler->getReviewState($extKey,$extInfo['EM_CONF']['version']) < 0) {
 			$bgclass = ' class="unsupported-ext"';
 		} else {
-			$bgclass = ' class="'.($bgColorClass?$bgColorClass:'bgColor4').'"';
+			$bgclass = ' class="' . ($bgColorClass ? $bgColorClass : 'em-listbg2') . '"';
 		}
 
 		return '

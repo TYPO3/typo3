@@ -1,3 +1,7 @@
+2010-06-05  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #14387: Remove the feature "Enable extensions without review (basic security check)" from EM (Thanks to Helmut Hummel)
+
 2010-06-04  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14615: Autosuggest function doesn't work with quotes
