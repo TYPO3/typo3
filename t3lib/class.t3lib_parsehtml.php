@@ -965,7 +965,7 @@ class t3lib_parsehtml	{
 	 */
 	function prefixResourcePath($main_prefix,$content,$alternatives=array(),$suffix='')	{
 
-		$parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a',$content);
+		$parts = $this->splitTags('embed,td,table,body,img,input,form,link,script,a,param',$content);
 		foreach ($parts as $k => $v)	{
 			if ($k%2)	{
 				$params = $this->get_tag_attributes($v);
@@ -1009,6 +1009,16 @@ class t3lib_parsehtml	{
 						if ($src)	{
 							$params[0]['action'] = $this->prefixRelPath($prefix,$params[0]['action'],$suffix);
 							$somethingDone=1;
+						}
+					break;
+						// value attribute
+					case 'param':
+						$test = $params[0]['name'];
+						if ($test && $test === 'movie') {
+							if ($params[0]['value']) {
+								$params[0]['value'] = $this->prefixRelPath($prefix, $params[0]['value'], $suffix);
+								$somethingDone = 1;
+							}
 						}
 					break;
 				}

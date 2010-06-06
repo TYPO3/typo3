@@ -1,5 +1,6 @@
 2010-06-06  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #1294: movie param of flash object not processed by prefixResourcePath(Thanks to Jigal van Hemert)
 	* Fixed bug #14629: Copyright Year in Page Source is still wrong (Thanks to Jigal van Hemert)
 
 2010-06-06  Christian Kuhn  <lolli@schwarzbu.ch>
