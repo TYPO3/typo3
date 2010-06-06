@@ -1153,7 +1153,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$filename = ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
 		} else {
 			if ($compress) {
-				$compressor = t3lib_div::makeInstance('t3lib_compressor');
+				$compressor = t3lib_div::makeInstance('t3lib_Compressor');
 				$filename = $compressor->compressJsFile('../' . $this->backPath  . $relativeFilename);
 			} else {
 				$filename = t3lib_div::createVersionNumberedFilename('../' . $this->backPath  . $relativeFilename);
@@ -1362,7 +1362,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function is_FE() {
 		return is_object($GLOBALS['TSFE']) && !$this->isFrontendEditActive();
 	}
-	
+
 	/**
 	 * Checks whether frontend editing is active.
 	 *

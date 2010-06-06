@@ -47,7 +47,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $csConvObj;
 	protected $lang;
 
-	/* @var t3lib_compressor Instance of t3lib_compressor */
+	/* @var t3lib_Compressor Instance of t3lib_Compressor */
 	protected $compressor;
 
 	// static array containing associative array for the included files
@@ -1421,13 +1421,13 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Returns instance of t3lib_compressor
+	 * Returns instance of t3lib_Compressor
 	 *
-	 * @return	t3lib_compressor		Instance of t3lib_compressor
+	 * @return	t3lib_Compressor		Instance of t3lib_Compressor
 	 */
 	protected function getCompressor() {
 		if ($this->compressor === NULL) {
-			$this->compressor = t3lib_div::makeInstance('t3lib_compressor');
+			$this->compressor = t3lib_div::makeInstance('t3lib_Compressor');
 		}
 		return $this->compressor;
 	}

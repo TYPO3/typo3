@@ -1,6 +1,7 @@
 2010-06-06  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #14560: Violation of naming conventions in sprite generation API
+	* Fixed issue #14561: Violation of naming conventions in t3lib_compressor
 
 2010-06-06  Steffen Kamper  <info@sk-typo3.de>
 

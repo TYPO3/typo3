@@ -34,7 +34,7 @@
  * @subpackage t3lib
  * $Id$
  */
-class t3lib_compressor {
+class t3lib_Compressor {
 
 	protected $targetDirectory = 'typo3temp/compressor/';
 
