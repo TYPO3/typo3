@@ -113,13 +113,16 @@
 	opacity: 1.00;
 }
 .htmlarea .toolbar .indicator {
-	background-color:white;cursor:default;
-	width:20px;overflow:hidden;
-	height:16px;
-	text-align:center;
-	border:1px solid ButtonShadow;
-	margin:3px 1px 4px 1px;padding:0 3px;
-	float:left;
+	cursor: default;
+	background-color: white;
+	width: 20px;
+	height: 16px;
+	overflow: hidden;
+	text-align: center;
+	border: 1px solid ButtonShadow;
+	margin: 3px 1px 5px 1px;
+	padding: 0 3px;
+	float: left;
 }
 .htmlarea .toolbar .buttonDisabled {
 	filter: gray() alpha(opacity=25);

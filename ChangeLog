@@ -1,3 +1,7 @@
+2010-06-06  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to bug #14360: htmlArea RTE: Toolbar and context menu styling needs adjustments
+
 2010-06-06  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #14560: Violation of naming conventions in sprite generation API
