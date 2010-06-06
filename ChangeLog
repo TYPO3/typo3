@@ -1,3 +1,7 @@
+2010-06-06  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #14455: [Performance] Wrong variable in t3lib_cache_memcachedbackend leads to redundant data (Thanks to Dan Osipov)
+
 2010-06-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14625: htmlArea RTE: Inconsistant position of ok button
