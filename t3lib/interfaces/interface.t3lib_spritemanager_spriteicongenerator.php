@@ -27,25 +27,25 @@
 
 
 /**
- * Interface all handlers in t3lib_spriteManager has to implement.
+ * Interface all handlers in t3lib_spritemanager have to implement.
  *
  * @author	Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
-interface t3lib_spriteManager_spriteIconGenerator {
+interface t3lib_spritemanager_SpriteIconGenerator {
 
 	/**
 	 * the implementation of this function has to do the main task
 	 * this function will be called if the extension list changed or
-	 * registered icons in TBE_STYLES[spriteManager] changed
+	 * registered icons in TBE_STYLES[spritemanager] changed
 	 *
 	 * @return void
 	 */
 	public function generate();
 
 	/**
-	 * the spriteManager will call this function after the call to "generate"
+	 * The sprite manager will call this function after the call to "generate"
 	 * it should return an array of all sprite-icon-names generated through the run
 	 *
 	 * @retun array all generated/detected sprite-icon-names

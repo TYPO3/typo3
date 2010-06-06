@@ -128,7 +128,7 @@ return array(
 	't3lib_utility_mail' => PATH_t3lib . 'utility/class.t3lib_utility_mail.php',
 	't3lib_spritemanager' => PATH_t3lib . 'class.t3lib_spritemanager.php',
 	't3lib_spritemanager_spriteicongenerator' => PATH_t3lib . 'interfaces/interface.t3lib_spritemanager_spriteicongenerator.php',
-	't3lib_spritemanager_simplehandler' => PATH_t3lib . 'spriteManager/class.t3lib_spritemanager_simplehandler.php',
+	't3lib_spritemanager_simplehandler' => PATH_t3lib . 'spritemanager/class.t3lib_spritemanager_simplehandler.php',
 	'tslib_adminpanel' => PATH_tslib . 'class.tslib_adminpanel.php',
 	'tslib_cobj' => PATH_tslib . 'class.tslib_content.php',
 	'tslib_frameset' => PATH_tslib . 'class.tslib_content.php',

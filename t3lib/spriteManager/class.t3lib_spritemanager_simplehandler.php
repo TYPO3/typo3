@@ -27,8 +27,8 @@
 
 
 /**
- * A class with an concrete implementation of t3lib_spriteManager_spriteIconGenerator.
- * It is the standard / fallback handler of the spriteManager.
+ * A class with an concrete implementation of t3lib_spritemanager_SpriteIconGenerator.
+ * It is the standard / fallback handler of the sprite manager.
  * This implementation won't generate sprites at all. It will just render css-definitions
  * for all registered icons so that they may be used through t3lib_iconWorks::getSpriteIcon*
  * Without the css classes generated here, icons of for example tca records would be empty.
@@ -37,7 +37,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_spriteManager_simpleHandler implements t3lib_spriteManager_spriteIconGenerator {
+class t3lib_spritemanager_SimpleHandler implements t3lib_spritemanager_SpriteIconGenerator {
 	/**
 	 * all "registered" Icons available through sprite-api will cumuluated within
 	 * @var array
@@ -48,7 +48,7 @@ class t3lib_spriteManager_simpleHandler implements t3lib_spriteManager_spriteIco
 	 * contains the content of the CSS file to write
 	 * @var String
 	 */
-	protected $styleSheetData = "/* Auto-Generated via t3lib_spriteManager_simpleHandler */\n";
+	protected $styleSheetData = "/* Auto-Generated via t3lib_spritemanager_SimpleHandler */\n";
 
 	/**
 	 * css-template for each sprite-icon of an tca-record-symbol
@@ -83,13 +83,13 @@ class t3lib_spriteManager_simpleHandler implements t3lib_spriteManager_spriteIco
 	 * @return void
 	 */
 	function __construct() {
-			// the fileName is prefixed with "z" since the concatenator orders files per name
-		$this->cssTcaFile = PATH_site . t3lib_spriteManager::$tempPath . 'zextensions.css';
+			// the file name is prefixed with "z" since the concatenator orders files per name
+		$this->cssTcaFile = PATH_site . t3lib_SpriteManager::$tempPath . 'zextensions.css';
 	}
 
 	/**
-	 * Interface function. This will be called from the spriteManager to refresh
-	 * all caches.
+	 * Interface function. This will be called from the sprite manager to
+	 * refresh all caches.
 	 *
 	 * @return void
 	 */
@@ -110,7 +110,7 @@ class t3lib_spriteManager_simpleHandler implements t3lib_spriteManager_spriteIco
 
 	/**
 	 * This function builds an css class for every single icon registered via
-	 * t3lib_spriteManager::addSingleIcons to use them via t3lib_iconWorks::getSpriteIcon
+	 * t3lib_SpriteManager::addSingleIcons to use them via t3lib_iconWorks::getSpriteIcon
 	 * In the simpleHandler the icon just will be added as css-background-image.
 	 *
 	 * @return void
@@ -120,7 +120,7 @@ class t3lib_spriteManager_simpleHandler implements t3lib_spriteManager_spriteIco
 			// in order to set the background-image URL paths correct
 		$iconPath = '../../' . TYPO3_mainDir;
 
-		foreach((array) $GLOBALS['TBE_STYLES']['spriteManager']['singleIcons'] as $iconName => $iconFile) {
+		foreach((array) $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] as $iconName => $iconFile) {
 			$css = str_replace('###NAME###', str_replace('extensions-', '', $iconName), $this->styleSheetTemplateExtIcons);
 			$css = str_replace('###IMAGE###', t3lib_div::resolveBackPath($iconPath . $iconFile), $css);
 
@@ -130,9 +130,12 @@ class t3lib_spriteManager_simpleHandler implements t3lib_spriteManager_spriteIco
 	}
 
 	/**
-	 * loads all StyleSheets Files registered through t3lib_spriteManager::addIconSprite
-	 * in fact the stylesheet-files are copied to t3lib_spriteManager::tempPath where they automatically
-	 * will be included from via template.php and t3lib_compressor.
+	 * Loads all StyleSheets Files registered through
+	 * t3lib_SpriteManager::::addIconSprite
+	 *
+	 * In fact the stylesheet-files are copied to t3lib_SpriteManager::tempPath
+	 * where they automatically will be included from via template.php and
+	 * t3lib_compressor.
 	 *
 	 * @return void
 	 */
@@ -140,23 +143,23 @@ class t3lib_spriteManager_simpleHandler implements t3lib_spriteManager_spriteIco
 			// saves which CSS Files are currently "allowed to be in place"
 		$allowedCssFilesinTempDir = array(basename($this->cssTcaFile));
 			// process every registeres file
-		foreach((array)$GLOBALS['TBE_STYLES']['spriteManager']['cssFiles'] as $file) {
+		foreach((array) $GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'] as $file) {
 			$fileName = basename($file);
 				// file should be present
 			$allowedCssFilesinTempDir[] = $fileName;
 				// get-Cache Filename
 			$unique = md5($fileName . filemtime(PATH_site . $file) . filesize(PATH_site . $file));
-			$cacheFile = PATH_site . t3lib_spriteManager::$tempPath . $fileName . $unique . '.css';
+			$cacheFile = PATH_site . t3lib_SpriteManager::$tempPath . $fileName . $unique . '.css';
 			if(!file_exists($cacheFile)) {
 				copy(PATH_site . $file, $cacheFile);
 			}
 		}
 			// get all .css files in dir
-		$cssFilesPresentInTempDir = t3lib_div::getFilesInDir(PATH_site . t3lib_spriteManager::$tempPath , '.css', 0);
+		$cssFilesPresentInTempDir = t3lib_div::getFilesInDir(PATH_site . t3lib_SpriteManager::$tempPath , '.css', 0);
 			// and delete old ones which are not needed anymore
 		$filesToDelete = array_diff($cssFilesPresentInTempDir, $allowedCssFilesinTempDir);
 		foreach ($filesToDelete as $file) {
-			unlink(PATH_site . t3lib_spriteManager::$tempPath . $file);
+			unlink(PATH_site . t3lib_SpriteManager::$tempPath . $file);
 		}
 	}
 

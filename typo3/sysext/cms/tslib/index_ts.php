@@ -345,10 +345,10 @@ $TT->pull();
 // Admin Panel & Frontend editing
 // *****************************************
 if ($TSFE->beUserLogin) {
-		// if a BE User is present load the spriteManager for frontend-editing
-	$spriteManager = t3lib_div::makeInstance('t3lib_spriteManager', FALSE);
+		// if a BE User is present load, the sprite manager for frontend-editing
+	$spriteManager = t3lib_div::makeInstance('t3lib_SpriteManager', FALSE);
 	$spriteManager->loadCacheFile();
-	
+
 	$BE_USER->initializeFrontendEdit();
  	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
 		$LANG = t3lib_div::makeInstance('language');

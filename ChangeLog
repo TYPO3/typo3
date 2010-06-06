@@ -1,3 +1,7 @@
+2010-06-06  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #14560: Violation of naming conventions in sprite generation API
+
 2010-06-06  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14630: Backend doesn't use $this->pageRenderer
@@ -29,7 +33,7 @@
 2010-06-04  Susanne Moog  <typo3@susannemoog.de>
 
 	* Fixed bug #13818: tcemain versionSwap might break pages_language_overlay relations (thanks to Tolleiv Nietsch)
-	
+
 2010-06-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14397: htmlArea RTE: Incorrect encoding of some labels when BE is not utf-8
@@ -62,7 +66,7 @@
 	* Fixed bug #14547: Flags in localization view (list view) have no title
 	* Fixed bug #14530: Missing icons in new BE skin (sprites) v6
 	* Fixed bug  #12990 : referrer in felogin form is not encoded correctly (Thanks to Jigal van Hemert)
-	
+
 2010-05-31  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #13858: IS cannot not index files if absRefPrefix is set and indexExternalURLs is not (thanks to Christian Kuhn and Steffen Ritter for help!)
@@ -220,7 +224,7 @@
 
 2010-05-26  Susanne Moog  <typo3@susanne-moog.de>
 
-	* Fixed bug #13443: Wrong image shown in WEB->PERM (thanks to Stephan Kellermayr) 
+	* Fixed bug #13443: Wrong image shown in WEB->PERM (thanks to Stephan Kellermayr)
 
 2010-05-26  Ingo Renner  <ingo@typo3.org>
 

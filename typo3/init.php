@@ -88,7 +88,7 @@ define('TYPO3_mainDir', 'typo3/');		// This is the directory of the backend admi
 
 
 // *******************************
-// Fix BACK_PATH, if the TYPO3_mainDir is set to something else than 
+// Fix BACK_PATH, if the TYPO3_mainDir is set to something else than
 // typo3/, this is a workaround because the conf.php of the old modules
 // still have "typo3/" hardcoded. Can be removed once we don't have to worry about
 // legacy modules (with conf.php and $BACK_PATH) anymore. See RFC / Bug #13262 for more details.
@@ -394,7 +394,7 @@ if (TYPO3_extTableDef_script)	{
 }
 
 	// load TYPO3 SpriteGenerating API
-$spriteManager = t3lib_div::makeInstance('t3lib_spriteManager', TRUE);
+$spriteManager = t3lib_div::makeInstance('t3lib_SpriteManager', TRUE);
 $spriteManager->loadCacheFile();
 
 
