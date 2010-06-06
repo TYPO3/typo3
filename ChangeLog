@@ -14,6 +14,7 @@
 
 2010-06-06  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #14635: Caching framework file backend: Unit test fixes
 	* Fixed bug #14632: Caching framework memcached backend: No exception thrown if set() fails and wrong boolean comparison
 	* Fixed bug #14631: Caching framework memcached backend: Wrong memcache server detection in unit tests
 	* Follow-up to #11386: Caching framework file backend does not return absolute path in getCacheDirectory()
