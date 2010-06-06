@@ -237,7 +237,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 				$chunkNumber = 1;
 
 				foreach ($data as $chunk) {
-					$success &= $this->memcache->set(
+					$success = $success && $this->memcache->set(
 						$this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber,
 						$chunk,
 						$this->flags,
@@ -245,7 +245,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 					);
 					$chunkNumber++;
 				}
-				$success &= $this->memcache->set(
+				$success = $success && $this->memcache->set(
 					$this->identifierPrefix . $entryIdentifier,
 					'TYPO3*chunked:' . $chunkNumber,
 					$this->flags,
@@ -264,6 +264,11 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 				$this->removeIdentifierFromAllTags($entryIdentifier);
 				$this->addTagsToTagIndex($tags);
 				$this->addIdentifierToTags($entryIdentifier, $tags);
+			} else {
+				throw new t3lib_cache_Exception(
+					'Could not set data to memcache server.',
+					1275830266
+				);
 			}
 		} catch(Exception $exception) {
 			throw new t3lib_cache_Exception(
