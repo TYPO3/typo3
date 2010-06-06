@@ -1,3 +1,7 @@
+2010-06-06  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #14629: Copyright Year in Page Source is still wrong (Thanks to Jigal van Hemert)
+
 2010-06-06  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14455: [Performance] Wrong variable in t3lib_cache_memcachedbackend leads to redundant data (Thanks to Dan Osipov)
