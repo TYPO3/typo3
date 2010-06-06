@@ -420,13 +420,6 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$cacheDirectory = $this->backend->getCacheDirectory();
 		$this->backend->setCache($cache);
 
-//		$pattern = $cacheDirectory
-//			. 'data/'
-//			. $cacheIdentifier . '/*/*/'
-//			. t3lib_cache_backend_FileBackend::FILENAME_EXPIRYTIME_GLOB
-//			. t3lib_cache_backend_FileBackend::SEPARATOR
-//			. $entryIdentifier
-//			. '?';
 		$pattern = $cacheDirectory
 			. 'data/'
 			. $cacheIdentifier . '/*/*/'
@@ -442,8 +435,8 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		sleep(2);
 
 		$this->backend->collectGarbage();
-		$filesFound = glob($pattern);
-		$this->assertTrue(count($filesFound) == 0, 'The cache entries still exist.');
+		$filesFound = is_array(glob($pattern)) ? glob($pattern) : array();
+		$this->assertTrue(count($filesFound) === 0, 'The cache entries still exist.');
 	}
 
 	/**
@@ -539,16 +532,18 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$this->backend->flush();
 
 		$pattern = $cacheDirectory . '*/*/*';
-		$filesFound = glob($pattern);
-		$this->assertTrue(count($filesFound) == 0, 'Still files in the cache directory');
+		$filesFound = is_array(glob($pattern)) ? glob($pattern) : array();
+		$this->assertTrue(count($filesFound) === 0, 'Still files in the cache directory');
 
+		$tagPrefixTest = $tagsDirectory . 'UnitTestTag%test/' . $cacheIdentifier . '^';
+		$tagPrefixSpecial = $tagsDirectory . 'UnitTestTag%special/' . $cacheIdentifier . '^';
 		$entryIdentifier = 'BackendFileTest1';
-		$this->assertTrue(!file_exists($tagsDirectory . 'UnitTestTag%test/' . $entryIdentifier), 'File "' . $tagsDirectory . 'UnitTestTag%test/' . $entryIdentifier . '" still exists.');
+		$this->assertTrue(!file_exists($tagPrefixTest . $entryIdentifier), 'File "' . $tagPrefixTest . $entryIdentifier . '" still exists.');
 		$entryIdentifier = 'BackendFileTest2';
-		$this->assertTrue(!file_exists($tagsDirectory . 'UnitTestTag%test/' . $entryIdentifier), 'File "' . $tagsDirectory . 'UnitTestTag%test/' . $entryIdentifier . '" still exists.');
+		$this->assertTrue(!file_exists($tagPrefixTest . $entryIdentifier), 'File "' . $tagPrefixTest . $entryIdentifier . '" still exists.');
+		$this->assertTrue(!file_exists($tagPrefixSpecial . $entryIdentifier), 'File "' . $tagPrefixSpecial . $entryIdentifier . '" still exists.');
 		$entryIdentifier = 'BackendFileTest3';
-		$this->assertTrue(!file_exists($tagsDirectory . 'UnitTestTag%test/' . $entryIdentifier), 'File "' . $tagsDirectory . 'UnitTestTag%test/' . $entryIdentifier . '" still exists.');
-		$this->assertTrue(!file_exists($tagsDirectory . 'UnitTestTag%special/' . $entryIdentifier), 'File "' . $tagsDirectory . 'UnitTestTag%special/' . $entryIdentifier . '" still exists.');
+		$this->assertTrue(!file_exists($tagPrefixTest . $entryIdentifier), 'File "' . $tagPrefixTest . $entryIdentifier . '" still exists.');
 	}
 
 	/**
@@ -715,7 +710,6 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
