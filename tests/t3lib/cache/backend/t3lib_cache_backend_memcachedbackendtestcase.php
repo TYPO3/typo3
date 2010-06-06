@@ -70,7 +70,9 @@ class t3lib_cache_backend_MemcachedBackendTestCase extends tx_phpunit_testcase {
 		}
 
 		try {
-			fsockopen('localhost', 11211);
+			if (!fsockopen('localhost', 11211)) {
+				$this->markTestSkipped('memcached not reachable');
+			}
 		} catch (Exception $e) {
 			$this->markTestSkipped('memcached not reachable');
 		}
