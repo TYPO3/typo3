@@ -189,7 +189,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getCacheDirectory() {
-		return $this->cacheDirectory;
+		return $this->root . $this->cacheDirectory;
 	}
 
 	/**

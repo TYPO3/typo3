@@ -115,7 +115,7 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$fullPathToDirectory = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/' . $directory;
 
 		$this->backend->setCacheDirectory($directory);
-		$this->assertEquals($fullPathToDirectory, $this->backend->getCacheDirectory(), 'getDirectory() did not return the expected value.');
+		$this->assertEquals($fullPathToDirectory, $this->backend->getCacheDirectory(), 'getCacheDirectory() did not return the expected value.');
 	}
 
 	/**
