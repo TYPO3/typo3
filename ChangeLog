@@ -1,3 +1,7 @@
+2010-06-06  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14630: Backend doesn't use $this->pageRenderer
+
 2010-06-06  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #1294: movie param of flash object not processed by prefixResourcePath(Thanks to Jigal van Hemert)

@@ -485,8 +485,7 @@ class TYPO3backend {
 	var fsMod = new fsModules();' . $moduleFramesHelper . ';';
 
 			// add goToModule code
-		$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-		$pageRenderer->addExtOnReadyCode('
+		$this->pageRenderer->addExtOnReadyCode('
 			top.goToModule = ' . $goToModuleSwitch . ';
 		');
 
@@ -569,8 +568,7 @@ class TYPO3backend {
 
 		$moduleParameters = t3lib_div::_GET('modParams');
 		if($startModule) {
-			$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
-			$pageRenderer->addExtOnReadyCode('
+			$this->pageRenderer->addExtOnReadyCode('
 			// start in module:
 		function startInModule(modName, cMR_flag, addGetVars)	{
 			Ext.onReady(function() {
