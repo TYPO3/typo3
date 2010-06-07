@@ -31,6 +31,7 @@
  *
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
+ * @api
  * @subpackage t3lib
  */
 interface t3lib_cache_backend_Backend {
@@ -60,7 +61,7 @@ interface t3lib_cache_backend_Backend {
 	/**
 	 * Loads data from the cache.
 	 *
-	 * @param string $entryIdentifier: An identifier which describes the cache entry to load
+	 * @param string $entryIdentifier An identifier which describes the cache entry to load
 	 * @return mixed The cache entry's content as a string or FALSE if the cache entry could not be loaded
 	 */
 	public function get($entryIdentifier);

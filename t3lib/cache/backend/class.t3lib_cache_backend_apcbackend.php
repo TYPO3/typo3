@@ -41,7 +41,7 @@
  * Each key is prepended with a prefix. By default prefix consists from two parts
  * separated by underscore character and ends in yet another underscore character:
  * - "TYPO3"
- * - MD5 of script path and filename and SAPI name
+ * - MD5 of path to TYPO3 and user running TYPO3
  * This prefix makes sure that keys from the different installations do not
  * conflict.
  *
@@ -49,6 +49,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @api
  * @version $Id$
  */
 class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend {
@@ -76,6 +77,20 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 		}
 
 		parent::__construct($options);
+	}
+
+	/**
+	 * Initializes the identifier prefix when setting the cache.
+	 *
+	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function setCache(t3lib_cache_frontend_Frontend $cache) {
+		parent::setCache($cache);
+		$processUser = extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : array('name' => 'default');
+		$pathHash = t3lib_div::shortMD5(PATH_site . $processUser['name'], 12);
+		$this->identifierPrefix = 'TYPO3_' . $pathHash;
 	}
 
 	/**
@@ -107,7 +122,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 			);
 		}
 
-		$tags[] = '%APCBE%' . $this->cache->getIdentifier();
+		$tags[] = '%APCBE%' . $this->cacheIdentifier;
 		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;
 
 		$success = apc_store($this->identifierPrefix . $entryIdentifier, $data, $expiration);
@@ -241,7 +256,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 			);
 		}
 
-		$this->flushByTag('%APCBE%' . $this->cache->getIdentifier());
+		$this->flushByTag('%APCBE%' . $this->cacheIdentifier);
 	}
 
 	/**

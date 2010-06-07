@@ -32,6 +32,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @api
  * @version $Id$
  */
 class t3lib_cache_Factory implements t3lib_Singleton {
@@ -48,7 +49,7 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 *
 	 * This is called by the cache manager itself
 	 *
-	 * @param t3lib_cache_Manager The cache manager
+	 * @param t3lib_cache_Manager $cacheManager The cache manager
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @internal
@@ -61,10 +62,10 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 * Factory method which creates the specified cache along with the specified kind of backend.
 	 * After creating the cache, it will be registered at the cache manager.
 	 *
-	 * @param string The name / identifier of the cache to create
-	 * @param string Name of the cache frontend
-	 * @param string Name of the cache backend
-	 * @param array (optional) Array of backend options
+	 * @param string $cacheIdentifier The name / identifier of the cache to create
+	 * @param string $cacheName Name of the cache frontend
+	 * @param string $backendName Name of the cache backend
+	 * @param array $backendOptions (optional) Array of backend options
 	 * @return t3lib_cache_frontend_Frontend The created cache frontend
 	 * @author Robert Lemke <robert@typo3.org>
 	 */

@@ -51,6 +51,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @api
  * @version $Id$
  */
 class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractBackend {
@@ -118,7 +119,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 		parent::__construct($options);
 
 		$this->memcache = new Memcache();
-		$this->identifierPrefix = $this->getIdentifierPrefix();
 		$defaultPort = ini_get('memcache.default_port');
 
 		if (!count($this->servers)) {
@@ -185,6 +185,19 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	}
 
 	/**
+	 * Initializes the identifier prefix when setting the cache.
+	 *
+	 * @param t3lib_cache_frontend_Frontend $cache The frontend for this backend
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Dmitry Dulepov
+	 */
+	public function setCache(t3lib_cache_frontend_Frontend $cache) {
+		parent::setCache($cache);
+		$this->identifierPrefix = 'TYPO3_' . md5(PATH_site) . '_';
+	}
+
+	/**
 	 * Saves data in the cache.
 	 *
 	 * @param string An identifier for this specific cache entry
@@ -221,7 +234,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 			);
 		}
 
-		$tags[] = '%MEMCACHEBE%' . $this->cache->getIdentifier();
+		$tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
 		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;
 
 			// Memcached consideres values over 2592000 sec (30 days) as UNIX timestamp
@@ -384,7 +397,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 			throw new t3lib_cache_Exception('No cache frontend has been set via setCache() yet.', 1204111376);
 		}
 
-		$this->flushByTag('%MEMCACHEBE%' . $this->cache->getIdentifier());
+		$this->flushByTag('%MEMCACHEBE%' . $this->cacheIdentifier);
 	}
 
 	/**
@@ -550,20 +563,6 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	protected function findTagsByIdentifier($identifier) {
 		$tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
 		return ($tags === FALSE ? array() : (array)$tags);
-	}
-
-	/**
-	 * Returns idenfier prefix. Extensions can override this function to provide
-	 * another identifier prefix if it is necessary for special purposes.
-	 * Default identifier prefix is based on PATH_site only. In most cases
-	 * it is enough because different installations use different paths and page
-	 * IDs in the same installation never repeat.
-	 *
-	 * @return	string	Identifier prefix, ending with underscore
-	 * @author	Dmitry Dulepov
-	 */
-	protected function getIdentifierPrefix() {
-		return 'TYPO3_' . md5(PATH_site) . '_';
 	}
 
 	/**

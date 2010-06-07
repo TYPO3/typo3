@@ -203,15 +203,15 @@ class t3lib_cache_backend_ApcBackendTestCase extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'some data' . microtime();
-		$backend->set('BackendMemcacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-		$backend->set('BackendMemcacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-		$backend->set('BackendMemcacheTest3', $data, array('UnitTestTag%test'));
+		$backend->set('BackendAPCTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
+		$backend->set('BackendAPCTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
+		$backend->set('BackendAPCTest3', $data, array('UnitTestTag%test'));
 
 		$backend->flushByTag('UnitTestTag%special');
 
-		$this->assertTrue($backend->has('BackendMemcacheTest1'), 'BackendMemcacheTest1');
-		$this->assertFalse($backend->has('BackendMemcacheTest2'), 'BackendMemcacheTest2');
-		$this->assertTrue($backend->has('BackendMemcacheTest3'), 'BackendMemcacheTest3');
+		$this->assertTrue($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
+		$this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
+		$this->assertTrue($backend->has('BackendAPCTest3'), 'BackendAPCTest3');
 	}
 
 	/**
@@ -222,15 +222,15 @@ class t3lib_cache_backend_ApcBackendTestCase extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 
 		$data = 'some data' . microtime();
-		$backend->set('BackendMemcacheTest1', $data);
-		$backend->set('BackendMemcacheTest2', $data);
-		$backend->set('BackendMemcacheTest3', $data);
+		$backend->set('BackendAPCTest1', $data);
+		$backend->set('BackendAPCTest2', $data);
+		$backend->set('BackendAPCTest3', $data);
 
 		$backend->flush();
 
-		$this->assertFalse($backend->has('BackendMemcacheTest1'), 'BackendMemcacheTest1');
-		$this->assertFalse($backend->has('BackendMemcacheTest2'), 'BackendMemcacheTest2');
-		$this->assertFalse($backend->has('BackendMemcacheTest3'), 'BackendMemcacheTest3');
+		$this->assertFalse($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
+		$this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
+		$this->assertFalse($backend->has('BackendAPCTest3'), 'BackendAPCTest3');
 	}
 
 	/**
@@ -274,14 +274,14 @@ class t3lib_cache_backend_ApcBackendTestCase extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Sets up the memcached backend used for testing
+	 * Sets up the APC backend used for testing
 	 *
-	 * @param	array	$backendOptions Options for the memcache backend
+	 * @param array $backendOptions Options for the APC backend
 	 * @return t3lib_cache_backend_ApcBackend
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	protected function setUpBackend(array $backendOptions = array()) {
+	protected function setUpBackend() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
 		$backend = new t3lib_cache_backend_ApcBackend();
 		$backend->setCache($cache);

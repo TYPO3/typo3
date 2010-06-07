@@ -1,3 +1,7 @@
+2010-06-07  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #14638: Update caching framework to its according FLOW3 revision 4443
+
 2010-06-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #14360: htmlArea RTE: Toolbar and context menu styling needs adjustments

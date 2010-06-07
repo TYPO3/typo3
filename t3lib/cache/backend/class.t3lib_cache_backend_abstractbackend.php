@@ -30,6 +30,7 @@
  * @author	Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @api
  * @version $Id$
  */
 abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_Backend {
@@ -43,6 +44,11 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 * @var t3lib_cache_frontend_Frontend
 	 */
 	protected $cache;
+
+	/**
+	 * @var string
+	 */
+	protected $cacheIdentifier;
 
 	/**
 	 * Default lifetime of a cache entry in seconds
@@ -79,12 +85,13 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		$this->cache = $cache;
+		$this->cacheIdentifier = $this->cache->getIdentifier();
 	}
 
 	/**
 	 * Sets the default lifetime for this cache backend
 	 *
-	 * @param integer $defaultLifeTime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param integer $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */

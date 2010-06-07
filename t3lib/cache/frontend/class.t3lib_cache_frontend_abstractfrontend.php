@@ -30,6 +30,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @api
  * @version $Id$
  */
 abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_frontend_Frontend {
@@ -190,7 +191,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	/**
 	 * Checks the validity of an entry identifier. Returns true if it's valid.
 	 *
-	 * @param string An identifier to be checked for validity
+	 * @param string $identifier An identifier to be checked for validity
 	 * @return boolean
 	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
@@ -201,7 +202,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	/**
 	 * Checks the validity of a tag. Returns true if it's valid.
 	 *
-	 * @param string An identifier to be checked for validity
+	 * @param string $tag An identifier to be checked for validity
 	 * @return boolean
 	 * @author Robert Lemke <robert@typo3.org>
 	 */

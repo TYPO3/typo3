@@ -30,6 +30,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @api
  * @version $Id$
  */
 class t3lib_cache_Manager implements t3lib_Singleton {
@@ -114,7 +115,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 				$backend        = isset($configuration['backend'])        ? $configuration['backend']        : $this->cacheConfigurations['default']['backend'];
 				$backendOptions = isset($configuration['backendOptions']) ? $configuration['backendOptions'] : $this->cacheConfigurations['default']['backendOptions'];
 
-				$cache = $this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
+				$this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
 			}
 		}
 	}

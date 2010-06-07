@@ -30,6 +30,7 @@
  *
  * @package TYPO3
  * @subpackage t3lib_cache
+ * @api
  * @version $Id$
  */
 class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBackend {
@@ -101,7 +102,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				}
 			} else {
 				$delimiter = ':';
-				if ($cacheDirectory{0} != '/') {
+				if ($cacheDirectory[0] != '/') {
 						// relative path to cache directory.
 					$cacheDirectory = PATH_site . $cacheDirectory;
 				}
@@ -114,7 +115,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				if (TYPO3_OS === 'WIN') {
 					$basedir = str_replace('\\', '/', $basedir);
 				}
-				if ($basedir{strlen($basedir) - 1} !== '/') {
+				if ($basedir[strlen($basedir) - 1] !== '/') {
 					$basedir .= '/';
 				}
 				if (t3lib_div::isFirstPartOfStr($cacheDirectory, $basedir)) {
@@ -131,7 +132,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				);
 			}
 		} else {
-			if ($cacheDirectory{0} == '/') {
+			if ($cacheDirectory[0] == '/') {
 					// absolute path to cache directory.
 				$documentRoot = '/';
 			}
@@ -143,7 +144,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 
 		// after this point all paths have '/' as directory seperator
 
-		if ($cacheDirectory{strlen($cacheDirectory) - 1} !== '/') {
+		if ($cacheDirectory[strlen($cacheDirectory) - 1] !== '/') {
 			$cacheDirectory .= '/';
 		}
 
@@ -285,7 +286,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * Creates a tag that is associated with the given cache identifier
 	 *
 	 * @param string $entryIdentifier An identifier for this specific cache entry
-	 * @param string Tag to associate with this cache entry
+	 * @param string $tag Tag to associate with this cache entry
 	 * @return void
 	 * @throws t3lib_cache_Exception if the tag path is not writable or exceeds the maximum allowed path length
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -304,7 +305,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			}
 		}
 
-		$tagPathAndFilename = $absTagPath . $this->cache->getIdentifier()
+		$tagPathAndFilename = $absTagPath . $this->cacheIdentifier
 			. self::SEPARATOR . $entryIdentifier;
 		if (strlen($tagPathAndFilename) > $this->maximumPathLength) {
 			throw new t3lib_cache_Exception(
@@ -356,7 +357,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			return FALSE;
 		}
 
-		if (unlink ($pathAndFilename) === FALSE) {
+		if (unlink($pathAndFilename) === FALSE) {
 			return FALSE;
 		}
 
@@ -365,7 +366,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				return FALSE;
 			}
 
-			if (unlink ($pathAndFilename) === FALSE) {
+			if (unlink($pathAndFilename) === FALSE) {
 				return FALSE;
 			}
 		}
@@ -391,7 +392,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		}
 
 		$path = $this->root . $this->cacheDirectory . 'tags/';
-		$pattern = $path . $tag . '/' . $this->cache->getIdentifier() . self::SEPARATOR . '*';
+		$pattern = $path . $tag . '/' . $this->cacheIdentifier . self::SEPARATOR . '*';
 		$filesFound = glob($pattern);
 
 		if ($filesFound === FALSE || count($filesFound) === 0) {
@@ -450,7 +451,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			);
 		}
 
-		$dataPath = $this->root . $this->cacheDirectory . 'data/' . $this->cache->getIdentifier() . '/';
+		$dataPath = $this->root . $this->cacheDirectory . 'data/' . $this->cacheIdentifier . '/';
 		$tagsPath = $this->root . $this->cacheDirectory . 'tags/';
 
 		t3lib_div::rmdir($dataPath, true);
@@ -515,7 +516,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			);
 		}
 
-		$pattern = $this->root . $this->cacheDirectory . 'data/' . $this->cache->getIdentifier() . '/*/*/*';
+		$pattern = $this->root . $this->cacheDirectory . 'data/' . $this->cacheIdentifier . '/*/*/*';
 		$filesFound = glob($pattern);
 
 		foreach ($filesFound as $cacheFilename) {
@@ -536,7 +537,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 */
 	protected function renderCacheEntryPath($identifier) {
 		$identifierHash = sha1($identifier);
-		return $this->cacheDirectory . 'data/' . $this->cache->getIdentifier() . '/' . $identifierHash[0] . '/' . $identifierHash[1] . '/';
+		return $this->cacheDirectory . 'data/' . $this->cacheIdentifier . '/' . $identifierHash[0] . '/' . $identifierHash[1] . '/';
 	}
 
 	/**
@@ -544,7 +545,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * Usually only one cache entry should be found - if more than one exist, this
 	 * is due to some error or crash.
 	 *
-	 * @param string The cache entry identifier
+	 * @param string $entryIdentifier The cache entry identifier
 	 * @return mixed The file names (including path) as an array if one or more entries could be found, otherwise FALSE
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws t3lib_cache_Exception if no frontend has been set
@@ -571,7 +572,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	/**
 	 * Tries to find the tag entries for the specified cache entry.
 	 *
-	 * @param string The cache entry identifier to find tag files for
+	 * @param string $entryIdentifier The cache entry identifier to find tag files for
 	 * @return array The file names (including path)
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @throws t3lib_cache_Exception if no frontend has been set
@@ -586,8 +587,9 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 		}
 
 		$path = $this->root . $this->cacheDirectory . 'tags/';
-		$pattern = $path . '*/' . $this->cache->getIdentifier() . self::SEPARATOR . $entryIdentifier;
-		return glob($pattern);
+		$pattern = $path . '*/' . $this->cacheIdentifier . self::SEPARATOR . $entryIdentifier;
+		$tagFilesFound = glob($pattern);
+		return ($tagFilesFound ? $tagFilesFound : array());
 	}
 }
 
