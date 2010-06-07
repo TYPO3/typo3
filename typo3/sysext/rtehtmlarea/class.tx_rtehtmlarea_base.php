@@ -1396,7 +1396,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$bInfo['BROWSER']= 'msie';
 		} elseif (strstr($useragent,'Gecko/'))	{
 			$bInfo['BROWSER']='gecko';
-		} elseif (strstr($useragent,'Safari/')) {
+		} elseif (strstr($useragent,'WebKit/')) {
 			$bInfo['BROWSER']='safari';
 		} elseif (strstr($useragent,'Mozilla/4')) {
 			$bInfo['BROWSER']='net';
@@ -1419,7 +1419,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,4)));
 				break;
 				case 'safari':
-					$tmp = strstr($useragent,'Safari/');
+					$tmp = strstr($useragent,'WebKit/');
 					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,3)));
 				break;
 				case 'opera':

@@ -5,6 +5,7 @@
 2010-06-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #14360: htmlArea RTE: Toolbar and context menu styling needs adjustments
+	* Fixed bug #12486: RTE does not work with Arora
 
 2010-06-06  Ingo Renner  <ingo@typo3.org>
 
