@@ -602,12 +602,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					}
 					if (document.imageData.iFloat) {
 						var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
-						if (iFloat || selectedImageRef.style.cssFloat || selectedImageRef.style.styleFloat) {
-							if (document.all) {
-								selectedImageRef.style.styleFloat = (iFloat != "none") ? iFloat : "";
-							} else {
-								selectedImageRef.style.cssFloat = (iFloat != "none") ? iFloat : "";
-							}
+						if (document.all) {
+							selectedImageRef.style.styleFloat = iFloat ? iFloat : "";
+						} else {
+							selectedImageRef.style.cssFloat = iFloat ? iFloat : "";
 						}
 					}
 					if (classesImage && document.imageData.iClass) {

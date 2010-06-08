@@ -500,18 +500,14 @@ class tx_rtehtmlarea_dam_browse_media extends tx_dam_browse_media {
 						}
 						selectedImageRef.removeAttribute("border");
 					}
-
 					if (document.imageData.iFloat) {
 						var iFloat = document.imageData.iFloat.options[document.imageData.iFloat.selectedIndex].value;
-						if (iFloat || selectedImageRef.style.cssFloat || selectedImageRef.style.styleFloat) {
-							if (document.all) {
-								selectedImageRef.style.styleFloat = (iFloat != "none") ? iFloat : "";
-							} else {
-								selectedImageRef.style.cssFloat = (iFloat != "none") ? iFloat : "";
-							}
+						if (document.all) {
+							selectedImageRef.style.styleFloat = iFloat ? iFloat : "";
+						} else {
+							selectedImageRef.style.cssFloat = iFloat ? iFloat : "";
 						}
 					}
-
 					if (classesImage && document.imageData.iClass) {
 						var iClass = document.imageData.iClass.options[document.imageData.iClass.selectedIndex].value;
 						if (iClass || (selectedImageRef.attributes["class"] && selectedImageRef.attributes["class"].value)) {
