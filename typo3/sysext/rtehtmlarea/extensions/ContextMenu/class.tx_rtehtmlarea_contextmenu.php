@@ -47,7 +47,7 @@ class tx_rtehtmlarea_contextmenu extends tx_rtehtmlareaapi {
 	protected $convertToolbarForHtmlAreaArray = array ();
 
 	public function main($parentObject) {
-		return parent::main($parentObject) && !($this->htmlAreaRTE->client['BROWSER'] == 'opera' || $this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']);
+		return parent::main($parentObject) && !($this->htmlAreaRTE->client['browser'] == 'opera' || $this->thisConfig['disableContextMenu'] || $this->thisConfig['disableRightClick']);
 	}
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension

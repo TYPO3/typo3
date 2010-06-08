@@ -51,7 +51,7 @@ class tx_rtehtmlarea_quicktag extends tx_rtehtmlareaapi {
 
 	public function main($parentObject) {
 		$available = parent::main($parentObject);
-		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['BROWSER'] != 'gecko') {
+		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['browser'] != 'gecko') {
 			$this->requiredPlugins = 'DefaultColor';
 		}
 		return $available;

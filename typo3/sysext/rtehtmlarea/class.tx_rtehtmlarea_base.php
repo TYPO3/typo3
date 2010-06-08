@@ -41,7 +41,15 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			'msie' => array (
 				1 => array (
 					'version' => 6.0,
-					'system' => 'win'
+					'system' => 'winNT'
+				),
+				2 => array (
+					'version' => 6.0,
+					'system' => 'win98'
+				),
+				3 => array (
+					'version' => 6.0,
+					'system' => 'win95'
 				)
 			),
 			'gecko' => array (
@@ -49,7 +57,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					'version' => 1.8
 				)
 			),
-			'safari' => array (
+			'webkit' => array (
 				1 => array (
 					'version' => 523
 				)
@@ -143,13 +151,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$rteConfBrowser = $this->conf_supported_browser;
 			if (is_array($rteConfBrowser)) {
 				foreach ($rteConfBrowser as $browser => $browserConf) {
-					if ($browser == $this->client['BROWSER']) {
+					if ($browser == $this->client['browser']) {
 							// Config for Browser found, check it:
 						if (is_array($browserConf)) {
 							foreach ($browserConf as $browserConfNr => $browserConfSub) {
-								if ($browserConfSub['version'] <= $this->client['VERSION'] || empty($browserConfSub['version'])) {
+								if ($browserConfSub['version'] <= $this->client['version'] || empty($browserConfSub['version'])) {
 									// Version is correct
-									if ($browserConfSub['system'] == $this->client['SYSTEM'] || empty($browserConfSub['system'])) {
+									if ($browserConfSub['system'] == $this->client['system'] || empty($browserConfSub['system'])) {
 											// System is correctly
 										$rteIsAvailable = 1;
 									}// End of System
@@ -307,7 +315,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$RTEWidth -= ($inline->getStructureDepth() > 0 ? ($inline->getStructureDepth()+1)*$inline->getLevelMargin() : 0);
 			if (isset($this->thisConfig['RTEWidthOverride'])) {
 				if (strstr($this->thisConfig['RTEWidthOverride'], '%')) {
-					if ($this->client['BROWSER'] != 'msie') {
+					if ($this->client['browser'] != 'msie') {
 						$RTEWidth = (intval($this->thisConfig['RTEWidthOverride']) > 0) ? $this->thisConfig['RTEWidthOverride'] : '100%';
 					}
 				} else {
@@ -543,7 +551,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	function setToolbar() {
 		global $BE_USER;
 
-		if ($this->client['BROWSER'] == 'msie' || $this->client['BROWSER'] == 'opera') {
+		if ($this->client['browser'] == 'msie' || $this->client['browser'] == 'opera') {
 			$this->thisConfig['keepButtonGroupTogether'] = 0;
 		}
 
@@ -709,7 +717,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			// Re-initialize the scripts array so that only the cumulative set of plugins of the last RTE on the page is used
 		$this->cumulativeScripts[$RTEcounter] = array();
 		$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea.js', 'htmlarea', 'js', '', TRUE);
-		if ($this->client['BROWSER'] == 'msie') {
+		if ($this->client['browser'] == 'msie') {
 			$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-ie.js', 'htmlarea-ie', 'js', '', TRUE);
 		} else {
 			$this->writeTemporaryFile('EXT:' . $this->ID . '/htmlarea/htmlarea-gecko.js', 'htmlarea-gecko', 'js', '', TRUE);
@@ -1371,82 +1379,41 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	public function isFrontendEditActive() {
 		return is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->beUserLogin && ($GLOBALS['BE_USER']->frontendEdit instanceof t3lib_frontendedit);
 	}
-
 	/**
 	 * Client Browser Information
 	 *
-	 * Usage: 4
-	 *
-	 * @param	string		Alternative User Agent string (if empty, t3lib_div::getIndpEnv('HTTP_USER_AGENT') is used)
-	 * @return	array		Parsed information about the HTTP_USER_AGENT in categories BROWSER, VERSION, SYSTEM and FORMSTYLE
+	 * @param	string		$userAgent: The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @return	array		Contains keys "useragent", "browser", "version", "system"
+	 *					where "browser" is limited to the engines
+	 *					and where "version" is a floating number
 	 */
-
-	function clientInfo($useragent='')	{
-		global $TYPO3_CONF_VARS;
-
-		if (!$useragent) $useragent=t3lib_div::getIndpEnv('HTTP_USER_AGENT');
-
-		$bInfo=array();
-			// Which browser?
-		if (strstr($useragent,'Konqueror'))	{
-			$bInfo['BROWSER']= 'konqu';
-		} elseif (strstr($useragent,'Opera'))	{
-			$bInfo['BROWSER']= 'opera';
-		} elseif (strstr($useragent,'MSIE'))	{
-			$bInfo['BROWSER']= 'msie';
-		} elseif (strstr($useragent,'Gecko/'))	{
-			$bInfo['BROWSER']='gecko';
-		} elseif (strstr($useragent,'WebKit/')) {
-			$bInfo['BROWSER']='safari';
-		} elseif (strstr($useragent,'Mozilla/4')) {
-			$bInfo['BROWSER']='net';
+	function clientInfo ($userAgent='') {
+		if (!$userAgent) {
+			$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
 		}
-
-		if ($bInfo['BROWSER'])	{
-				// Browser version
-			switch($bInfo['BROWSER'])	{
-				case 'net':
-					$bInfo['VERSION']= doubleval(substr($useragent,8));
-					if (strstr($useragent,'Netscape6/')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape6/'),10));}
-					if (strstr($useragent,'Netscape/7')) {$bInfo['VERSION']=doubleval(substr(strstr($useragent,'Netscape/7'),9));}
-				break;
-				case 'gecko':
-					$tmp = strstr($useragent,'rv:');
-					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,3)));
-				break;
-				case 'msie':
-					$tmp = strstr($useragent,'MSIE');
-					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,4)));
-				break;
-				case 'safari':
-					$tmp = strstr($useragent,'WebKit/');
-					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,3)));
-				break;
-				case 'opera':
-					$tmp = strstr($useragent,'Opera');
-					$bInfo['VERSION'] = doubleval(preg_replace('/^[^0-9]*/','',substr($tmp,5)));
-				break;
-				case 'konqu':
-					$tmp = strstr($useragent,'Konqueror/');
-					$bInfo['VERSION'] = doubleval(substr($tmp,10));
-				break;
-			}
-
-				// Client system
-			if (strstr($useragent,'Win'))	{
-				$bInfo['SYSTEM'] = 'win';
-			} elseif (strstr($useragent,'Mac'))	{
-				$bInfo['SYSTEM'] = 'mac';
-			} elseif (strstr($useragent,'Linux') || strstr($useragent,'X11') || strstr($useragent,'SGI') || strstr($useragent,' SunOS ') || strstr($useragent,' HP-UX '))	{
-				$bInfo['SYSTEM'] = 'unix';
+		$browserInfo = t3lib_utility_Client::getBrowserInfo($userAgent);
+			// Known engines: order is not irrelevant.
+		$knownEngines = array('opera', 'msie', 'gecko', 'webkit');
+		if (is_array($browserInfo['all'])) {
+			foreach ($knownEngines as $engine) {
+				if ($browserInfo['all'][$engine]) {
+					$browserInfo['browser'] = $engine;
+					switch ($engine) {
+						case 'gecko':
+								// We need the Gecko revision number as version of the Gecko engine, not the build date
+							$tmp = strstr($browserInfo['useragent'], 'rv:');
+							$browserInfo['version'] = t3lib_utility_Client::getVersion(substr($tmp, 3));
+						break;
+						default:
+							$browserInfo['version'] = t3lib_utility_Client::getVersion($browserInfo['all'][$engine]);
+						break;
+					}
+					break;
+				}
 			}
 		}
-
-			// Is true if the browser supports css to format forms, especially the width
-		$bInfo['FORMSTYLE']=($bInfo['BROWSER']=='msie' || ($bInfo['BROWSER']=='net'&&$bInfo['VERSION']>=5) || $bInfo['BROWSER']=='opera' || $bInfo['BROWSER']=='konqu');
-		return $bInfo;
+		return $browserInfo;
 	}
-
 	/***************************
 	 *
 	 * OTHER FUNCTIONS:	(from Classic RTE)

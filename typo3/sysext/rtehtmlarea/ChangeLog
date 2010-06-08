@@ -1,6 +1,7 @@
 2010-06-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE manual.
+	* Fixed bug #14662: htmlArea RTE: Should use t3lib_utility_Client::getBrowserInfo
 
 2010-06-06  Stanislas Rolland  <typo3@sjbr.ca>
 

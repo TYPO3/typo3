@@ -181,7 +181,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$width = 460+($this->TCEform->docLarge ? 150 : 0);
 		if (isset($this->thisConfig['RTEWidthOverride'])) {
 			if (strstr($this->thisConfig['RTEWidthOverride'], '%')) {
-				if ($this->client['BROWSER'] != 'msie') {
+				if ($this->client['browser'] != 'msie') {
 					$width = (intval($this->thisConfig['RTEWidthOverride']) > 0) ? $this->thisConfig['RTEWidthOverride'] : '100%';
 				}
 			} else {

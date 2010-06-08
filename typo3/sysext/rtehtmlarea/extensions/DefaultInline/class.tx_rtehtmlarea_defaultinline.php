@@ -81,7 +81,7 @@ class tx_rtehtmlarea_defaultinline extends tx_rtehtmlareaapi {
 	public function transformContent($content) {
 
 			// Change the strong and em tags for gecko browsers
-		if ($this->htmlAreaRTE->client['BROWSER'] == 'gecko') {
+		if ($this->htmlAreaRTE->client['browser'] == 'gecko') {
 				// change <strong> to <b>
 			$content = preg_replace('/<(\/?)strong/i', "<$1b", $content);
 				// change <em> to <i>

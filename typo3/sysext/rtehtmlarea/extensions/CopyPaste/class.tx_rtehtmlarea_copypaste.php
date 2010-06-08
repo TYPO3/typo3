@@ -50,15 +50,15 @@ class tx_rtehtmlarea_copypaste extends tx_rtehtmlareaapi {
 		);
 		// Hide buttons not implemented in client browsers
 	protected $hideButtonsFromClient = array (
-		'safari'	=>	array('paste'),
+		'webkit'	=>	array('paste'),
 		'opera'		=>	array('copy', 'cut', 'paste'),
  		);
 
 	public function main($parentObject) {
 		$enabled = parent::main($parentObject);
 			// Hiding some buttons
-		if ($enabled && is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']])) {
-			$this->pluginButtons = implode(',', array_diff(t3lib_div::trimExplode(',', $this->pluginButtons, 1), $this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']]));
+		if ($enabled && is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']])) {
+			$this->pluginButtons = implode(',', array_diff(t3lib_div::trimExplode(',', $this->pluginButtons, 1), $this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']]));
 		}
 			// Force enabling the plugin even if no button remains in the tool bar, so that hot keys still are enabled
 		$this->pluginAddsButtons = false;
@@ -79,7 +79,7 @@ class tx_rtehtmlarea_copypaste extends tx_rtehtmlareaapi {
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
 		$button = 'paste';
-		if ($this->htmlAreaRTE->client['BROWSER'] == 'gecko') {
+		if ($this->htmlAreaRTE->client['browser'] == 'gecko') {
 			$mozillaAllowClipboardURL = $this->thisConfig['buttons.'][$button.'.']['mozillaAllowClipboardURL'] ? $this->thisConfig['buttons.'][$button.'.']['mozillaAllowClipboardURL'] : $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins']['CopyPaste']['mozillaAllowClipboardURL'];
 			if ($mozillaAllowClipboardURL) {
 				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$button.'.'])) {
@@ -102,8 +102,8 @@ class tx_rtehtmlarea_copypaste extends tx_rtehtmlareaapi {
 	 */
 	public function applyToolbarConstraints($show) {
 			// Remove some buttons
-		if (is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']])) {
-			return array_diff($show, $this->hideButtonsFromClient[$this->htmlAreaRTE->client['BROWSER']]);
+		if (is_array($this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']])) {
+			return array_diff($show, $this->hideButtonsFromClient[$this->htmlAreaRTE->client['browser']]);
 		} else {
 			return $show;
 		}

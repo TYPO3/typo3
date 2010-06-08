@@ -75,10 +75,10 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlareaapi {
 
 		$available = parent::main($parentObject);
 
-		if ($this->htmlAreaRTE->client['BROWSER'] == 'opera') {
+		if ($this->htmlAreaRTE->client['browser'] == 'opera') {
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
 		}
-		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['BROWSER'] != 'gecko') {
+		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['browser'] != 'gecko') {
 			$this->requiredPlugins = 'DefaultColor';
 		}
 		return $available;
