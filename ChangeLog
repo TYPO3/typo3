@@ -1,3 +1,7 @@
+2010-06-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE manual.
+
 2010-06-08  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed formatting of t3lib_PageRenderer_testcase
