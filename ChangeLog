@@ -1,6 +1,7 @@
 2010-06-08  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Fixed formatting of t3lib_PageRenderer_testcase
+	* Fixed unit tests: Directory permission tests are too restrictive
 
 2010-06-08  Steffen Kamper  <info@sk-typo3.de>
 

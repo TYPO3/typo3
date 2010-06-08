@@ -1184,7 +1184,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 		chmod($directory, 1551);
 
 			// Set target permissions and run method
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '2770';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
 		$fixPermissionsResult = t3lib_div::fixPermissions($directory . '/');
 
@@ -1196,7 +1196,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 			// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultDirectoryPermissions, '2770');
+		$this->assertEquals($resultDirectoryPermissions, '0770');
 		$this->assertEquals($resultDirectoryGroup, posix_getegid());
 	}
 
@@ -1219,7 +1219,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 		chmod($directory, 1551);
 
 			// Set target permissions and run method
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '2770';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
 		$fixPermissionsResult = t3lib_div::fixPermissions($directory);
 
@@ -1231,7 +1231,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 			// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultDirectoryPermissions, '2770');
+		$this->assertEquals($resultDirectoryPermissions, '0770');
 		$this->assertEquals($resultDirectoryGroup, posix_getegid());
 	}
 
@@ -1270,7 +1270,7 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 			// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0660';
-		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '2770';
+		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0770';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = posix_getegid();
 		$fixPermissionsResult = t3lib_div::fixPermissions($baseDirectory, TRUE);
 
@@ -1302,15 +1302,15 @@ class t3lib_div_testcase extends tx_phpunit_testcase {
 
 			// Test if everything was ok
 		$this->assertTrue($fixPermissionsResult);
-		$this->assertEquals($resultBaseDirectoryPermissions, '2770');
+		$this->assertEquals($resultBaseDirectoryPermissions, '0770');
 		$this->assertEquals($resultBaseDirectoryGroup, posix_getegid());
 		$this->assertEquals($resultBaseFilePermissions, '0660');
 		$this->assertEquals($resultBaseFileGroup, posix_getegid());
-		$this->assertEquals($resultFooDirectoryPermissions, '2770');
+		$this->assertEquals($resultFooDirectoryPermissions, '0770');
 		$this->assertEquals($resultFooDirectoryGroup, posix_getegid());
 		$this->assertEquals($resultFooFilePermissions, '0660');
 		$this->assertEquals($resultFooFileGroup, posix_getegid());
-		$this->assertEquals($resultBarDirectoryPermissions, '2770');
+		$this->assertEquals($resultBarDirectoryPermissions, '0770');
 		$this->assertEquals($resultBarDirectoryGroup, posix_getegid());
 		$this->assertEquals($resultBarFilePermissions, '0660');
 		$this->assertEquals($resultBarFileGroup, posix_getegid());
