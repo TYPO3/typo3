@@ -407,13 +407,51 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	 *
 	 */
 	public function testLoadScriptaculous() {
-
-		$expectedRegExp = '#<script src="contrib/scriptaculous/scriptaculous\.js\?load=effects,controls,slider(&\d+)?" type="text/javascript"></script>#';
 		$this->fixture->loadScriptaculous('slider,controls');
 		$out = $this->fixture->render();
 
+		$this->assertContains(
+			'<script src="contrib/scriptaculous/scriptaculous.js" type="text/javascript"></script>',
+			$out
+		);
+		$this->assertContains(
+			'<script src="contrib/scriptaculous/effects.js" type="text/javascript"></script>',
+			$out
+		);
+		$this->assertContains(
+			'<script src="contrib/scriptaculous/controls.js" type="text/javascript"></script>',
+			$out
+		);
+		$this->assertContains(
+			'<script src="contrib/scriptaculous/slider.js" type="text/javascript"></script>',
+			$out
+		);
+	}
+
+	/**
+	 * Tests whether scriptaculous is loaded correctly when compression is enabled.
+	 *
+	 * @test
+	 */
+	public function isScriptaculousLoadedCompressed() {
+		$this->fixture->loadScriptaculous('slider,controls');
+		$this->fixture->enableCompressJavascript();
+		$out = $this->fixture->render();
+
 		$this->assertRegExp(
-			$expectedRegExp,
+			'#<script src="[^"]*/typo3temp/compressor/scriptaculous-[a-f0-9]+.js" type="text/javascript"></script>#',
+			$out
+		);
+		$this->assertRegExp(
+			'#<script src="[^"]*/typo3temp/compressor/effects-[a-f0-9]+.js" type="text/javascript"></script>#',
+			$out
+		);
+		$this->assertRegExp(
+			'#<script src="[^"]*/typo3temp/compressor/controls-[a-f0-9]+.js" type="text/javascript"></script>#',
+			$out
+		);
+		$this->assertRegExp(
+			'#<script src="[^"]*/typo3temp/compressor/slider-[a-f0-9]+.js" type="text/javascript"></script>#',
 			$out
 		);
 	}

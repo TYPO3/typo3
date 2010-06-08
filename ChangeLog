@@ -2,6 +2,7 @@
 
 	* Cleanup: Fixed formatting of t3lib_PageRenderer_testcase
 	* Follow-up to bug #3977: Unit tests for directory permission are too restrictive
+	* Follow-up to feature #14277: Fixed unit tests for loading scriptaculous modules
 
 2010-06-08  Steffen Kamper  <info@sk-typo3.de>
 
