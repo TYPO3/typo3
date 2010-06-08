@@ -1,3 +1,7 @@
+2010-06-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14611: [Install] Content of Input Fields is not displayed completely
+
 2010-06-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14638: Update caching framework to its according FLOW3 revision 4443

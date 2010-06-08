@@ -118,7 +118,7 @@ textarea {
 	font-size: 1.1em;
 	line-height: 1.7em;
 	margin: 0;
-	width: 14.7em;
+	width: 20em;
 }
 
 fieldset select {
@@ -129,7 +129,7 @@ fieldset select {
 
 input.t3-install-form-input-text {
 	height: 1.7em;
-	padding: 0.1em 2.1em 0 0.45em;
+	padding: 0.1em 0.1em 0 0.45em;
 }
 
 textarea {
