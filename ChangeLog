@@ -1,3 +1,7 @@
+2010-06-08  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed unit tests for t3lib_PageRenderer
+
 2010-06-06  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #1294: movie param of flash object not processed by prefixResourcePath (Thanks to Jigal van Hemert)

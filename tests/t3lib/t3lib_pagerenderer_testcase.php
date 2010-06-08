@@ -343,7 +343,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testAddCssFile() {
 
-		$expectedReturnValue = '<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="screen" />';
+		$expectedReturnValue = '<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="all" />';
 		$this->fixture->addCssFile('fileadmin/test.css');
 		$out = $this->fixture->render();
 
@@ -456,7 +456,7 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	*/
 	public function testEnableExtJsDebug() {
 
-		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter.js" type="text/javascript"></script>' . chr(10) . '<script src="contrib/extjs/ext-all-debug.js" type="text/javascript"></script>';
+		$expectedReturnValue = '<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter-debug.js" type="text/javascript"></script>' . chr(10) . '<script src="contrib/extjs/ext-all-debug.js" type="text/javascript"></script>';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$this->fixture->enableExtJsDebug();
 		$out = $this->fixture->render();
