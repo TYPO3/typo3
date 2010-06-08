@@ -1,3 +1,7 @@
+2010-06-08  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #13062: htmlArea RTE: "non-floating" float value doesn't stick on images
+
 2010-05-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14333: htmlArea RTE: justify after CTRL+A not working in Firefox
