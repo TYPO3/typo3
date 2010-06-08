@@ -67,9 +67,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	//////////////////////
 
 	/**
-	* test set xml prolog and doctype
-	*
-	*/
+	 * test set xml prolog and doctype
+	 *
+	 */
 	public function testSetXmlPrologAndDocType() {
 
 		$expectedReturnValue = '<?xml version="1.0" encoding="utf-8" ?>';
@@ -83,9 +83,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test set title
-	*
-	*/
+	 * test set title
+	 *
+	 */
 	public function testSetTitle() {
 
 		$expectedReturnValue = '<title>This is the title</title>';
@@ -99,9 +99,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test set charset
-	*
-	*/
+	 * test set charset
+	 *
+	 */
 	public function testSetCharset() {
 
 		$expectedReturnValue = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
@@ -115,9 +115,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test set favicon
-	*
-	*/
+	 * test set favicon
+	 *
+	 */
 	public function testSetFavIcon() {
 
 		$expectedReturnValue1 = '<link rel="shortcut icon" href="http://google.com/favicon.ico" />';
@@ -137,9 +137,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test set baseUrl
-	*
-	*/
+	 * test set baseUrl
+	 *
+	 */
 	public function testSetBaseUrl() {
 
 		$expectedReturnValue = '<base href="http://ggogle.com/" />';
@@ -153,9 +153,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add meta tag
-	*
-	*/
+	 * test add meta tag
+	 *
+	 */
 	public function testAddMetaTag() {
 
 		$expectedReturnValue = '<meta name="author" content="Anna Lyse">';
@@ -169,9 +169,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add inline comment
-	*
-	*/
+	 * test add inline comment
+	 *
+	 */
 	public function testAddInlineComment() {
 
 		$expectedReturnValue = 'this is an inline comment written by unit test';
@@ -185,9 +185,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add header data
-	*
-	*/
+	 * test add header data
+	 *
+	 */
 	public function testAddHeaderData() {
 
 		$expectedReturnValue = '<tag method="private" name="test" />';
@@ -201,9 +201,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add footer data
-	*
-	*/
+	 * test add footer data
+	 *
+	 */
 	public function testAddFooterData() {
 
 		$expectedReturnValue = '<tag method="private" name="test" />';
@@ -217,9 +217,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add JS library file
-	*
-	*/
+	 * test add JS library file
+	 *
+	 */
 	public function testAddJsLibrary() {
 
 		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
@@ -234,9 +234,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 
 
 	/**
-	* test add JS footer library file
-	*
-	*/
+	 * test add JS footer library file
+	 *
+	 */
 	public function testAddJsFooterLibrary() {
 
 		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
@@ -250,9 +250,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add JS file
-	*
-	*/
+	 * test add JS file
+	 *
+	 */
 	public function testAddJsFile() {
 
 		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
@@ -266,9 +266,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add JS file for footer
-	*
-	*/
+	 * test add JS file for footer
+	 *
+	 */
 	public function testAddJsFooterFile() {
 
 		$expectedRegExp = '#<script src="fileadmin/test\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
@@ -282,9 +282,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add JS inline
-	*
-	*/
+	 * test add JS inline
+	 *
+	 */
 	public function testAddJsInlineCode() {
 
 		$expectedReturnValue = 'var x = "testvar"';
@@ -298,9 +298,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add JS inline for footer
-	*
-	*/
+	 * test add JS inline for footer
+	 *
+	 */
 	public function testAddJsFooterInlineCode() {
 
 		$expectedReturnValue = 'var x = "testvar"';
@@ -314,9 +314,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add JS handler
-	*
-	*/
+	 * test add JS handler
+	 *
+	 */
 	public function testAddExtOnReadyCode() {
 
 		$expectedReturnValue1 = 'Ext.onReady(function() {';
@@ -338,9 +338,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add CSS file
-	*
-	*/
+	 * test add CSS file
+	 *
+	 */
 	public function testAddCssFile() {
 
 		$expectedReturnValue = '<link rel="stylesheet" type="text/css" href="fileadmin/test.css" media="all" />';
@@ -354,9 +354,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add CSS inline
-	*
-	*/
+	 * test add CSS inline
+	 *
+	 */
 	public function testAddCssInlineBlock() {
 
 		$expectedReturnValue = 'body {margin:20px;}';
@@ -370,9 +370,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add CSS inline and force on top
-	*
-	*/
+	 * test add CSS inline and force on top
+	 *
+	 */
 	public function testAddCssInlineBlockForceOnTop() {
 
 		$expectedReturnValue = '/*general1*/' . LF . 'h1 {margin:20px;}' . LF . '/*general*/' . LF . 'body {margin:20px;}';
@@ -386,11 +386,11 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 		);
 	}
 
-    /**
-    * test load prototype
-    *
-    */
-  	public function testLoadPrototype() {
+	/**
+	 * test load prototype
+	 *
+	 */
+	public function testLoadPrototype() {
 
 		$expectedRegExp = '#<script src="contrib/prototype/prototype\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadPrototype();
@@ -403,9 +403,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test load Scriptaculous
-	*
-	*/
+	 * test load Scriptaculous
+	 *
+	 */
 	public function testLoadScriptaculous() {
 
 		$expectedRegExp = '#<script src="contrib/scriptaculous/scriptaculous\.js\?load=effects,controls,slider(&\d+)?" type="text/javascript"></script>#';
@@ -419,10 +419,10 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test load ExtJS
-	*
-	*/
-    public function testLoadExtJS() {
+	 * test load ExtJS
+	 *
+	 */
+	public function testLoadExtJS() {
 
 		$expectedRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#m';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
@@ -435,9 +435,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test load ExtCore
-	*
-	*/
+	 * test load ExtCore
+	 *
+	 */
 	public function testLoadExtCore() {
 
 		$expectedRegExp = '#<script src="contrib/extjs/ext-core\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
@@ -451,9 +451,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test enable ExtJsDebug
-	*
-	*/
+	 * test enable ExtJsDebug
+	 *
+	 */
 	public function testEnableExtJsDebug() {
 
 		$expectedRegExp = '#<script src="contrib/extjs/ext-all-debug\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
@@ -468,10 +468,10 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test enable ExtCoreDebug
-	*
-	*/
-   	public function testEnableExtCoreDebug() {
+	 * test enable ExtCoreDebug
+	 *
+	 */
+	public function testEnableExtCoreDebug() {
 
 		$expectedRegExp = '#<script src="contrib/extjs/ext-core-debug\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadExtCore();
@@ -485,9 +485,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test inline language label
-	*
-	*/
+	 * test inline language label
+	 *
+	 */
 	public function testAddInlineLanguageLabel() {
 
 		$expectedReturnValue = 'TYPO3.lang = {"myKey":"myValue"}';
@@ -503,9 +503,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test inline language label as array
-	*
-	*/
+	 * test inline language label as array
+	 *
+	 */
 	public function testAddInlineLanguageLabelArray() {
 
 		$expectedReturnValue = 'TYPO3.lang = {"myKey1":"myValue1","myKey2":"myValue2"}';
@@ -521,9 +521,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test inline language label as array get merged
-	*
-	*/
+	 * test inline language label as array get merged
+	 *
+	 */
 	public function testAddInlineLanguageLabelArrayMerged() {
 
 		$expectedReturnValue = 'TYPO3.lang = {"myKey1":"myValue1","myKey2":"myValue2"}';
@@ -540,9 +540,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test inline setting
-	*
-	*/
+	 * test inline setting
+	 *
+	 */
 	public function testAddInlineSetting() {
 
 		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue"}};';
@@ -558,9 +558,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test inline settings with array
-	*
-	*/
+	 * test inline settings with array
+	 *
+	 */
 	public function testAddInlineSettingArray() {
 
 		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey1":"myValue1","myKey2":"myValue2"}};';
@@ -576,9 +576,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test inline settings with array get merged
-	*
-	*/
+	 * test inline settings with array get merged
+	 *
+	 */
 	public function testAddInlineSettingArrayMerged() {
 
 		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey1":"myValue1","myKey2":"myValue2"}};';
@@ -595,9 +595,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 	}
 
 	/**
-	* test add body content
-	*
-	*/
+	 * test add body content
+	 *
+	 */
 	public function testAddBodyContent() {
 		$expectedReturnValue = 'ABCDE';
 		$this->fixture->addBodyContent('A');
@@ -615,9 +615,9 @@ class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
 
 
 	/**
-	* test set body content
-	*
-	*/
+	 * test set body content
+	 *
+	 */
 	public function testSetBodyContent() {
 		$expectedReturnValue = 'ABCDE';
 		$this->fixture->setBodyContent('ABCDE');
