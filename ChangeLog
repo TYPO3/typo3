@@ -1,6 +1,7 @@
 2010-06-08  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed unit tests for t3lib_PageRenderer
+	* Cleanup: Fixed formatting of t3lib_PageRenderer_testcase
 
 2010-06-06  Benjamin Mack  <benni@typo3.org>
 
