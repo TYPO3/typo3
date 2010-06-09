@@ -191,8 +191,8 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 				parent = statusBarSelection;
 			}
 		}
-		if (!selectionEmpty && !fullNodeSelected) {
-				// The selection is not empty, nor full element
+		if (!selectionEmpty && !fullNodeSelected || (!selectionEmpty && fullNodeSelected && parent && HTMLArea.isBlockElement(parent))) {
+				// The selection is not empty, nor full element, or the selection is full block element
 			if (className !== "none") {
 					// Add span element with class attribute
 				var newElement = editor._doc.createElement("span");

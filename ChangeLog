@@ -7,6 +7,7 @@
 	* Updated htmlArea RTE manual.
 	* Fixed bug #14662: htmlArea RTE: Should use t3lib_utility_Client::getBrowserInfo
 	* Fixed bug #13062: htmlArea RTE: "non-floating" float value doesn't stick on images
+	* Fixed bug #13301: htmlArea RTE: textstyle cannot be applied to full content of block element
 
 2010-06-08  Oliver Hader  <oliver@typo3.org>
 
