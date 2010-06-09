@@ -64,24 +64,34 @@ class t3lib_extjs_ExtDirectApi {
 	public function getAPI($ajaxParams, TYPO3AJAX $ajaxObj) {
 		$filterNamespace = t3lib_div::_GET('namespace');
 
-		// look up into the cache
+			// Check GET-parameter no_cache and extCache setting
+		$extCache = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache']) && (
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === 0 ||
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === '0'
+		);
+		$noCache = t3lib_div::_GET('no_cache') ? TRUE : $extCache;
+
+			// look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
 		$cacheHash = md5($cacheIdentifier . $filterNamespace . serialize($this->settings));
-		$cacheContent = t3lib_pageSelect::getHash($cacheHash);
+			// with no_cache always generate the javascript content
+		$cacheContent = $noCache ? '' : t3lib_pageSelect::getHash($cacheHash);
 
-		// generate the javascript content if it wasn't found inside the cache and cache it!
+			// generate the javascript content if it wasn't found inside the cache and cache it!
 		if (!$cacheContent) {
 			$javascriptNamespaces = $this->generateAPI($filterNamespace);
-			t3lib_pageSelect::storeHash(
-				$cacheHash,
-				serialize($javascriptNamespaces),
-				$cacheIdentifier
-			);
+			if (!empty($javascriptNamespaces)) {
+				t3lib_pageSelect::storeHash(
+					$cacheHash,
+					serialize($javascriptNamespaces),
+					$cacheIdentifier
+				);
+			}
 		} else {
 			$javascriptNamespaces = unserialize($cacheContent);
 		}
 
-		// return the generated javascript API configuration
+			// return the generated javascript API configuration
 		if (count($javascriptNamespaces)) {
 			$setup = '
 				if (typeof Ext.app.ExtDirectAPI !== "object") {
@@ -103,6 +113,36 @@ class t3lib_extjs_ExtDirectApi {
 			$ajaxObj->setJavascriptCallbackWrap(
 				$setup . 'Ext.app.ExtDirectAPI = Object.extend(Ext.app.ExtDirectAPI, |);'
 			);
+		} else {
+			if ($filterNamespace) {
+					// namespace error
+				$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.namespaceError'),
+								__CLASS__, $filterNamespace
+				);
+			}
+			else {
+					// no namespace given
+				$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.noNamespace'),
+								__CLASS__
+				);
+			}
+				// make js multiline message
+			$msg = t3lib_div::trimExplode(LF, str_replace('"', '\"', $errorMessage), TRUE);
+			$errorMessage = '';
+			foreach ($msg as $line) {
+				$errorMessage .= '"' . $line . '" + ' . LF;
+			}
+			$errorMessage = substr(trim($errorMessage), 0, -1);
+				//generate the javascript
+			$ajaxObj->setContentFormat('javascript');
+			$ajaxObj->setJavascriptCallbackWrap('
+				errorMessage = ' . $errorMessage . ';
+				if (typeof console === "object") {
+					console.log(errorMessage);
+				} else {
+					alert(errorMessage);
+				}
+			');
 		}
 	}
 
@@ -142,7 +182,7 @@ class t3lib_extjs_ExtDirectApi {
 					$numberOfParameters = $reflectionMethod->getNumberOfParameters();
 					$docHeader = $reflectionMethod->getDocComment();
 					$formHandler = (strpos($docHeader, '@formHandler') !== FALSE);
-					
+
 					$javascriptNamespaces[$javascriptNamespace]['actions'][$javascriptObjectName][] = array(
 						'name' => $methodName,
 						'len' => $numberOfParameters,

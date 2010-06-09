@@ -272,6 +272,13 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="donateWindow.button_donate">Donate now</label>
 			<label index="donateWindow.button_disable">Never show again</label>
 			<label index="donateWindow.button_postpone">Remind me later</label>
+			<label index="ExtDirect.namespaceError">Ext Direct error in &quot;%s&quot; with namespace: &quot;%s&quot;\n
+Try to clear the TYPO3 cache and / or use paramater no_cache=1 as parameter in URL typo3/ajax.php\n\n
+Check also the following points:\n
+- configuration in ext_localconf.php: registration key should be like &quot;TYPO3.MyExtension.Sample&quot;\n
+- URL typo3/ajax.php: namespace parameter should be like: &quot;TYPO3.MyExtension&quot;\n
+- javascript: method\'s name should be like: &quot;TYPO3.MyExtension.Sample.myMethod&quot;\n</label>
+			<label index="ExtDirect.noNamespace">Ext Direct error in &quot;%s&quot;: no namespace has been found.</label>
 		</languageKey>
 	</data>
 </T3locallang>

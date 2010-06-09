@@ -247,8 +247,20 @@ class TYPO3backend {
 		foreach ($this->jsFiles as $jsFile) {
 			$this->pageRenderer->addJsFile($jsFile);
 		}
-			// we mustn't compress this file
-		$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend', NULL, FALSE);
+
+			// Those lines can be removed once we have at least one official ExtDirect router within the backend.
+		$hasExtDirectRouter = FALSE;
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'] as $key => $value) {
+				if (strpos($key, 'TYPO3.Backend') !== FALSE) {
+					$hasExtDirectRouter = TRUE;
+					break;
+				}
+			}
+		}
+		if ($hasExtDirectRouter) {
+			$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend', NULL, FALSE);
+		}
 
 		$this->generateJavascript();
 		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js);
