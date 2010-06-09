@@ -5033,7 +5033,7 @@ final class t3lib_div {
 			if ($errorMode == 2) {
 				throw new Exception($errorMsg);
 			} elseif(!$errorMode)	{
-				debug($errorMsg, 1);
+				debug($errorMsg, 't3lib_div::callUserFunction');
 			}
 			return false;
 		}
@@ -5074,7 +5074,7 @@ final class t3lib_div {
 					if ($errorMode == 2) {
 						throw new Exception($errorMsg);
 					} elseif(!$errorMode)   {
-						debug($errorMsg, 1);
+						debug($errorMsg, 't3lib_div::callUserFunction');
 					}
 				}
 			} else {
@@ -5082,7 +5082,7 @@ final class t3lib_div {
 				if ($errorMode == 2) {
 					throw new Exception($errorMsg);
 				} elseif(!$errorMode)   {
-					debug($errorMsg, 1);
+					debug($errorMsg, 't3lib_div::callUserFunction');
 				}
 			}
 		} else {	// Function
@@ -5093,7 +5093,7 @@ final class t3lib_div {
 				if ($errorMode == 2) {
 					throw new Exception($errorMsg);
 				} elseif(!$errorMode)   {
-					debug($errorMsg, 1);
+					debug($errorMsg, 't3lib_div::callUserFunction');
 				}
 			}
 		}
@@ -5140,7 +5140,7 @@ final class t3lib_div {
 				!self::isFirstPartOfStr(trim($class),$checkPrefix) &&
 				!self::isFirstPartOfStr(trim($class),'tx_')
 				)	{
-				if (!$silent)	debug("Class '".$class."' was not prepended with '".$checkPrefix."'",1);
+				if (!$silent)	debug("Class '".$class."' was not prepended with '".$checkPrefix."'", 't3lib_div::getUserObj');
 				return FALSE;
 			}
 
@@ -5155,7 +5155,7 @@ final class t3lib_div {
 
 				return $classObj;
 			} else {
-				if (!$silent)	debug("<strong>ERROR:</strong> No class named: ".$class,1);
+				if (!$silent)	debug("<strong>ERROR:</strong> No class named: ".$class, 't3lib_div::getUserObj');
 			}
 		}
 	}

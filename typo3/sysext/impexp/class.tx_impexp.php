@@ -1601,11 +1601,11 @@ class tx_impexp {
 		foreach($itemArray as $relDat)	{
 			if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']]))	{
 
-				#debug('FOUND: '.$relDat['table'].':'.$relDat['id'],1);
+				#debug('FOUND: '.$relDat['table'].':'.$relDat['id']);
 				$valArray[] = $relDat['table'].'_'.$this->import_mapId[$relDat['table']][$relDat['id']];
 			} elseif ($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id']) || $relDat['id']<0) {	// Checking for less than zero because some select types could contain negative values, eg. fe_groups (-1, -2) and sys_language (-1 = ALL languages). This must be handled on both export and import.
 
-				#debug('STATIC: '.$relDat['table'].':'.$relDat['id'],1);
+				#debug('STATIC: '.$relDat['table'].':'.$relDat['id']);
 				$valArray[] = $relDat['table'].'_'.$relDat['id'];
 			} else {
 
@@ -2785,7 +2785,7 @@ class tx_impexp {
 
 							$pInfo['msg'] = 'LOST RELATION'.(!$doesRE ? ' (Record not found!)' : ' (Path: '.$lostPath.')');
 							$Iprepend = '_lost';
-	#						debug('MISSING relation: '.$table.':'.$uid,1);
+	#						debug('MISSING relation: '.$table.':'.$uid);
 						}
 					} else {
 						$pInfo['title'] = htmlspecialchars($record['title']);

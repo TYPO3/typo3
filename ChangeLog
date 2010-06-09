@@ -1,5 +1,6 @@
 2010-06-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to bug #8305: SQL debug output is not shown in the Backend
 	* Added test case t3lib_utility_clientTest.php
 	* Fixed bug #14458: getBrowserInfo fails with IE UA Strings
 

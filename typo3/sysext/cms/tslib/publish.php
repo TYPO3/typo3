@@ -64,7 +64,7 @@ $temp_publish_array = array();	// Collects the rendered pages.
 
 foreach ($temp_publish_pages as $temp_publish_id) {
 	$TT->push('Page '.$temp_publish_id,'');
-//debug($temp_publish_id,1);
+//debug($temp_publish_id);
 		$TSFE = t3lib_div::makeInstance('tslib_fe', $TYPO3_CONF_VARS, $temp_publish_id, 0);
 
 		$TSFE->initFEuser();
@@ -120,11 +120,11 @@ foreach ($temp_publish_pages as $temp_publish_id) {
 $publishDir = $TYPO3_CONF_VARS['FE']['publish_dir'];
 if ($publishDir && @is_dir($publishDir))	{
 	$publishDir = rtrim($publishDir, '/').'/';
-	debug('Publishing in: '.$publishDir,1);
+	debug('Publishing in: '.$publishDir, 'Publish');
 	foreach ($temp_publish_array as $key => $val) {
 		$file = $publishDir.$key;
 		t3lib_div::writeFile($file,$val[2]);
-		debug('Writing: '.$file,1);
+		debug('Writing: '.$file, 'Publish');
 	}
 //	debug($temp_publish_array);
 } else {

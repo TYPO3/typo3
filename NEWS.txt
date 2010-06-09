@@ -97,6 +97,8 @@ Development
 
 	* The debug in BE was enhanced. There is a new debug console, which will show each debug in a single tab. The console will pop up as soon a debug statement is present.
 	
+	* t3lib_div::debug(): Removed the feature of passing an integer as $header (second argument) to add multiple br-tags.
+	
 	* There is a new API in place to generate HTML <span> tags with corresponding CSS classes in order to display previously created sprite images in the right background position. Make sure to have a look at "t3lib_iconWorks::getSpriteIconForRecord($table, $row)", "t3lib_iconWorks::getSpriteIconForFile('myimage.png')", and "t3lib_iconWorks::getSpriteIcon('actions-document-open')".
 
 

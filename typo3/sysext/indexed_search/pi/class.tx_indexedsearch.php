@@ -1222,10 +1222,10 @@ class tx_indexedsearch extends tslib_pibase {
 				// If this is NOT found, there is still a theoretical possibility that another user accessible page would display a link, so maybe the resume of such a document here may be unjustified hidden. But better safe than sorry.
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash='.intval($row['phash_t3']).' AND gr_list='.$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' YES - ('.$GLOBALS['TSFE']->gr_list.")!",1);
+				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' YES - ('.$GLOBALS['TSFE']->gr_list.")!");
 				return TRUE;
 			} else {
-				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' NO - ('.$GLOBALS['TSFE']->gr_list.")!",1);
+				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' NO - ('.$GLOBALS['TSFE']->gr_list.")!");
 				return FALSE;
 			}
 		} else {	// Ordinary TYPO3 pages:
@@ -1233,14 +1233,14 @@ class tx_indexedsearch extends tslib_pibase {
 					// Selecting for the grlist records belonging to the phash-row where the current users gr_list exists. If it is found it is proof that this user has direct access to the phash-rows content although he did not himself initiate the indexing...
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('phash', 'index_grlist', 'phash='.intval($row['phash']).' AND gr_list='.$GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['TSFE']->gr_list, 'index_grlist'));
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{
-					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash'].' - YES ('.$GLOBALS['TSFE']->gr_list.")",1);
+					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash'].' - YES ('.$GLOBALS['TSFE']->gr_list.")");
 					return TRUE;
 				} else {
-					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash']." - NOPE",1);
+					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash']." - NOPE");
 					return FALSE;
 				}
 			} else {
-					#debug('Resume can be shown, because the document was in fact indexed by this combination of groups!'.$GLOBALS['TSFE']->gr_list.' - '.$row['item_title'].'/'.$row['phash'],1);
+					#debug('Resume can be shown, because the document was in fact indexed by this combination of groups!'.$GLOBALS['TSFE']->gr_list.' - '.$row['item_title'].'/'.$row['phash']);
 				return TRUE;
 			}
 		}
