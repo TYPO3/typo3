@@ -314,7 +314,19 @@ DefinitionList = BlockElements.extend({
 		}
 		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
 		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
-		if (parentElement.nodeName.toLowerCase() === "body") return false;
+		if (parentElement.nodeName.toLowerCase() === "body") {
+				// The selection is not contained in any block
+			for (var buttonId in this.buttonList) {
+				if (this.buttonList.hasOwnProperty(buttonId) && this.isButtonInToolbar(buttonId)) {
+					switch (buttonId) {
+						case 'Outdent':
+							this.base();
+							break;
+					}
+				}
+			}
+			return false;
+		}
 		while (parentElement && (!HTMLArea.isBlockElement(parentElement) || /^(li)$/i.test(parentElement.nodeName))) {
 			parentElement = parentElement.parentNode;
 		}

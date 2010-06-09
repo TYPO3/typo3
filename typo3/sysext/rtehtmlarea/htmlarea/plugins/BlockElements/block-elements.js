@@ -921,7 +921,45 @@ BlockElements = HTMLArea.Plugin.extend({
 		}
 		var statusBarSelection = this.editor.getPluginInstance("StatusBar") ? this.editor.getPluginInstance("StatusBar").getSelection() : null;
 		var parentElement = statusBarSelection ? statusBarSelection : this.editor.getParentElement();
-		if (parentElement.nodeName.toLowerCase() === "body") return false;
+		if (parentElement.nodeName.toLowerCase() === "body") {
+				// The selection is not contained in any block
+			var dropDownConfiguration = this.getDropDownConfiguration("FormatBlock");
+			if ((typeof(dropDownConfiguration) !== "undefined") && this.isButtonInToolbar(dropDownConfiguration.id)) {
+				this.updateDropDown(dropDownConfiguration);
+			}
+			for (var buttonId in this.buttonList) {
+				if (this.buttonList.hasOwnProperty(buttonId) && this.isButtonInToolbar(buttonId)) {
+					switch (buttonId) {
+						case 'Outdent' :
+							this.editor._toolbarObjects[buttonId].state("enabled", false);
+							break;
+						case 'Indent' :
+							break;
+						case 'InsertParagraphBefore' :
+						case 'InsertParagraphAfter'  :
+							this.editor._toolbarObjects[buttonId].state("enabled", false);
+							break;
+						case 'Blockquote' :
+							this.editor._toolbarObjects[buttonId].state("active", false);
+							break;
+						case 'JustifyLeft'   :
+						case 'JustifyCenter' :
+						case 'JustifyRight'  :
+						case 'JustifyFull'   :
+							this.editor._toolbarObjects[buttonId].state("active", false);
+							this.editor._toolbarObjects[buttonId].state("enabled", false);
+							break;
+						case 'InsertOrderedList':
+						case 'InsertUnorderedList':
+							this.editor._toolbarObjects[buttonId].state("active", false);
+							break;
+						default	:
+							break;
+					}
+				}
+			}
+			return false;
+		}
 		while (parentElement && !HTMLArea.isBlockElement(parentElement) || /^li$/i.test(parentElement.nodeName)) {
 			parentElement = parentElement.parentNode;
 		}

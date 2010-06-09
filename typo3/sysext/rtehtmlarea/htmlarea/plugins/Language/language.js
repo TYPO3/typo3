@@ -408,6 +408,9 @@ Language = HTMLArea.Plugin.extend({
 							if (parent) {
 								var direction = (buttonId === "RightToLeft") ? "rtl" : "ltr";
 								this.editor._toolbarObjects[buttonId].state("active",(parent.dir == direction || parent.style.direction == direction));
+								this.editor._toolbarObjects[buttonId].state("enabled", !/^body$/i.test(parent.nodeName));
+							} else {
+								this.editor._toolbarObjects[buttonId].state("enabled", false);
 							}
 							break;
 						case "ShowLanguageMarks":
