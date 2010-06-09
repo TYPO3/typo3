@@ -1314,18 +1314,22 @@ class t3lib_DB {
 	/**
 	 * Connects to database for TYPO3 sites:
 	 *
+	 * @param string $host
+	 * @param string $user
+	 * @param string $password
+	 * @param string $db
 	 * @return	void
 	 */
-	function connectDB() {
-		if ($this->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
-			if (!TYPO3_db) {
+	function connectDB($host = TYPO3_db_host, $user = TYPO3_db_username, $password = TYPO3_db_password, $db = TYPO3_db) {
+		if ($this->sql_pconnect($host, $user, $password)) {
+			if (!$db) {
 				throw new RuntimeException(
 					'TYPO3 Fatal Error: No database selected!',
 					1270853882
 				);
-			} elseif (!$this->sql_select_db(TYPO3_db)) {
+			} elseif (!$this->sql_select_db($db)) {
 				throw new RuntimeException(
-					'TYPO3 Fatal Error: Cannot connect to the current database, "' . TYPO3_db . '"!',
+					'TYPO3 Fatal Error: Cannot connect to the current database, "' . $db . '"!',
 					1270853883
 				);
 			}
