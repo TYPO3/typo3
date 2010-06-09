@@ -4,6 +4,7 @@
 
 2010-06-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added test case for #14663: t3lib_utility_Client::getBrowserInfo returns gecko build date rather than version
 	* Fixed bug #14663: t3lib_utility_Client::getBrowserInfo returns gecko build date rather than version
 	* Fixed bug #14673: Usage of debug() in BE use group *line* by default
 	* Fixed bug #14674: Replace calls to t3lib_extMgm:: within t3lib_extMgm to self:: due to performance reasons (Thanks to Sebastian Michaelsen)

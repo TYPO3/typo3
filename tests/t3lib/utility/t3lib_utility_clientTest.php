@@ -189,5 +189,17 @@ class t3lib_utility_clientTest extends tx_phpunit_testcase {
 		$this->analyzeUserAgentStrings($browserStrings, $expectedMembers);
 	}
 
+	/**
+	 * @test
+	 */
+	public function checkGeckoVersion() {
+		$userAgentString = 'Mozilla/5.0 (Windows; U; Windows NT 6.0; de; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3';
+		$infoArray = t3lib_utility_Client::getBrowserInfo($userAgentString);
+
+		$this->assertEquals(
+		 	'1.9.2.3',
+		 	$infoArray['all']['gecko']
+		);
+	}
 }
 ?>
