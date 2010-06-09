@@ -151,7 +151,9 @@ final class t3lib_iconWorks	{
 	 * @see getIcon()
 	 */
 	public static function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
-		$str = '<img'.t3lib_iconWorks::skinImg($backPath, t3lib_iconWorks::getIcon($table, $row, $shaded), 'width="18" height="16"').(trim($params)?' '.trim($params):'');
+		$str = '<img' .
+				self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') .
+				(trim($params) ? ' ' . trim($params) : '');
 		if (!stristr($str, 'alt="')) {
 			$str.=' alt=""';
 		}
@@ -315,7 +317,7 @@ final class t3lib_iconWorks	{
 					return 'gfx/i/no_icon_found.gif';
 				}
 			} else {	// Otherwise, create the icon:
-				$theRes = t3lib_iconWorks::makeIcon($GLOBALS['BACK_PATH'].$iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
+				$theRes = self::makeIcon($GLOBALS['BACK_PATH'] . $iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
 				return $theRes;
 			}
 		} else {
@@ -387,7 +389,7 @@ final class t3lib_iconWorks	{
 			$temp_path = dirname(PATH_thisScript) . '/';
 			if (!@is_file($temp_path . $backPath . $src)) {
 				$srcOrg = preg_replace('/_i' . preg_quote($matches[2]) . '$/', $matches[2], $src);
-				$src = t3lib_iconWorks::makeIcon($backPath . $srcOrg, 'disabled', 0, false, $temp_path . $backPath . $srcOrg, $srcBasename);
+				$src = self::makeIcon($backPath . $srcOrg, 'disabled', 0, false, $temp_path . $backPath . $srcOrg, $srcBasename);
 			}
 		}
 
@@ -453,7 +455,7 @@ final class t3lib_iconWorks	{
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'])	{
 
 						// Create image pointer, if possible
-					$im = t3lib_iconworks::imagecreatefrom($absFile);
+					$im = self::imagecreatefrom($absFile);
 					if ($im<0)	return $iconfile;
 
 						// Converting to gray scale, dimming the icon:
@@ -476,29 +478,29 @@ final class t3lib_iconWorks	{
 							imagestring($im, 1, 1, 1, $user, $white);
 						}
 
-						$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_group.gif');
+						$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_group.gif');
 						if ($ol_im<0)	return $iconfile;
 
-						t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
+						self::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
 					}
 						// Applying overlay based on mode:
 					if ($mode) {
 						unset($ol_im);
 						switch($mode) {
 							case 'deleted':
-								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_deleted.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_deleted.gif');
 							break;
 							case 'futuretiming':
-								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_timing.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
 							break;
 							case 'timing':
-								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_timing.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_timing.gif');
 							break;
 							case 'hiddentiming':
-								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_hidden_timing.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden_timing.gif');
 							break;
 							case 'no_icon_found':
-								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_no_icon_found.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_no_icon_found.gif');
 							break;
 							case 'disabled':
 									// is already greyed - nothing more
@@ -506,23 +508,23 @@ final class t3lib_iconWorks	{
 							break;
 							case 'hidden':
 							default:
-								$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_hidden.gif');
+								$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_hidden.gif');
 							break;
 						}
 						if ($ol_im<0)	return $iconfile;
 						if ($ol_im) {
-							t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
+							self::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
 						}
 					}
 						// Protect-section icon:
 					if ($protectSection) {
-						$ol_im = t3lib_iconworks::imagecreatefrom($GLOBALS['BACK_PATH'].'gfx/overlay_sub5.gif');
+						$ol_im = self::imagecreatefrom($GLOBALS['BACK_PATH'] . 'gfx/overlay_sub5.gif');
 						if ($ol_im<0)	return $iconfile;
-						t3lib_iconworks::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
+						self::imagecopyresized($im, $ol_im, 0, 0, 0, 0, imagesx($ol_im), imagesy($ol_im), imagesx($ol_im), imagesy($ol_im));
 					}
 
 						// Create the image as file, destroy GD image and return:
-					@t3lib_iconWorks::imagemake($im, $path);
+					@self::imagemake($im, $path);
 					t3lib_div::gif_compress($path, 'IM');
 					ImageDestroy($im);
 					return $mainpath;

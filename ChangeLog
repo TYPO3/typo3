@@ -1,5 +1,6 @@
-2010-06-08  Steffen Kamper  <info@sk-typo3.de>
+2010-06-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14676: Replace calls to t3lib_iconWorks:: within t3lib_iconWorks to self:: due to performance reasons (Thanks to Senastian Michaelsen)
 	* Fixed bug #14675: Replace calls to t3lib_BEfunc:: within t3lib_BEfunc to self:: due to performance reasons (Thanks to Senastian Michaelsen)
 	* Follow-up to bug #13611: Replace calls to t3lib_div:: within t3lib_div to self:: du to performance reasons (Thanks to Senastian Michaelsen)
 	* Fixed bug #14555: early thrown debug messages are not visible (BE only) (Thanks to Stefan Galinski)
