@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Ingo Renner <ingo@typo3.org>
+*  (c) 2009-2010 Ingo Renner <ingo@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -50,12 +50,19 @@ require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.p
  *
  * This file is a backport from FLOW3
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage tests
  * @version $Id$
  */
 class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
+	/**
+	 * Backup of global variable EXEC_TIME
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalVariables;
 
 	/**
 	 * If set, the tearDown() method will clean up the cache subdirectory used by this unit test.
@@ -64,6 +71,9 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 */
 	protected $backend;
 
+	/**
+	 * @var string Directory for testing data, relative to PATH_site
+	 */
 	protected $testingCacheDirectory;
 
 	/**
@@ -72,6 +82,10 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function setUp() {
+		$this->backupGlobalVariables = array(
+			'EXEC_TIME' => $GLOBALS['EXEC_TIME'],
+		);
+
 		$this->testingCacheDirectory = 'typo3temp/cache/testing/';
 
 		$this->backend = t3lib_div::makeInstance(
@@ -110,7 +124,7 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function getCacheDirectoryReturnsThePreviouslySetDirectory() {
+	public function getCacheDirectoryReturnsTheCurrentCacheDirectory() {
 		$directory = $this->testingCacheDirectory;
 		$fullPathToDirectory = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/' . $directory;
 
@@ -125,17 +139,12 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @expectedException t3lib_cache_exception_InvalidData
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
+		$this->backend->setCache($mockCache);
 		$data = array('Some data');
 		$entryIdentifier = 'BackendFileTest';
-
-		$this->backend->setCache($cache);
 
 		$this->backend->set($entryIdentifier, $data);
 	}
@@ -146,39 +155,19 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setReallySavesToTheSpecifiedDirectory() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileTest';
-		$entryIdentifierHash = sha1($entryIdentifier);
+		$this->backend->setCache($mockCache);
+		$pathAndFilename = $this->backend->getCacheDirectory() . $entryIdentifier;
 
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data);
+		$this->backend->set($entryIdentifier, $data, array(), 10);
 
-		$cacheDirectory = $this->backend->getCacheDirectory();
-		$pathAndFilename = $cacheDirectory
-			. 'data/'
-			. $cacheIdentifier . '/'
-			. $entryIdentifierHash[0] . '/'
-			. $entryIdentifierHash[1] . '/'
-			. $entryIdentifier;
-		$this->assertTrue(file_exists($pathAndFilename), 'File does not exist.');
-		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH);
-		$this->assertEquals(
-			$data,
-			$retrievedData,
-			'The original and the retrieved data don\'t match.'
-		);
+		$this->assertFileExists($pathAndFilename);
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, 0, strlen($data));
+		$this->assertEquals($data, $retrievedData);
 	}
 
 	/**
@@ -187,37 +176,23 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setOverwritesAnAlreadyExistingCacheEntryForTheSameIdentifier() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data1 = 'some data' . microtime();
 		$data2 = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileRemoveBeforeSetTest';
-		$entryIdentifierHash = sha1($entryIdentifier);
 
-		$this->backend->setCache($cache);
+		$this->backend->setCache($mockCache);
 		$this->backend->set($entryIdentifier, $data1, array(), 500);
-			// setting a second entry with the same identifier, but different
+			// Setting a second entry with the same identifier, but different
 			// data, this should _replace_ the existing one we set before
 		$this->backend->set($entryIdentifier, $data2, array(), 200);
 
-		$cacheDirectory = $this->backend->getCacheDirectory();
-		$pathAndFilename = $cacheDirectory
-			. 'data/'
-			. $cacheIdentifier . '/'
-			. $entryIdentifierHash[0] . '/'
-			. $entryIdentifierHash[1] . '/'
-			. $entryIdentifier;
-		$this->assertTrue(file_exists($pathAndFilename), 'File does not exist.');
-		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH);
+		$pathAndFilename = $this->backend->getCacheDirectory() . $entryIdentifier;
+
+		$this->assertFileExists($pathAndFilename);
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, 0, strlen($data2));
 		$this->assertEquals($data2, $retrievedData);
 	}
 
@@ -226,35 +201,62 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function setReallySavesSpecifiedTags() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+	public function setAlsoSavesSpecifiedTags() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileTest';
-		$entryIdentifierHash = sha1($entryIdentifier);
 
-		$this->backend->setCache($cache);
-		$tagsDirectory = $this->backend->getCacheDirectory() . 'tags/';
+		$this->backend->setCache($mockCache);
+		$this->backend->set($entryIdentifier, $data, array('Tag1', 'Tag2'));
 
-		$this->backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
+		$pathAndFilename = $this->backend->getCacheDirectory() . $entryIdentifier;
+		$this->assertFileExists($pathAndFilename);
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, (strlen($data) + t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH), 9);
+		$this->assertEquals('Tag1 Tag2', $retrievedData);
+	}
 
-		$this->assertTrue(is_dir($tagsDirectory . 'UnitTestTag%tag1'), 'Tag directory UnitTestTag%tag1 does not exist.');
-		$this->assertTrue(is_dir($tagsDirectory . 'UnitTestTag%tag2'), 'Tag directory UnitTestTag%tag2 does not exist.');
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function setWithUnlimitedLifetimeWritesCorrectEntry() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$filename = $tagsDirectory . 'UnitTestTag%tag1/' . $cacheIdentifier . t3lib_cache_backend_FileBackend::SEPARATOR . $entryIdentifier;
-		$this->assertTrue(file_exists($filename), 'File "' . $filename . '" does not exist.');
+		$data = 'some data' . microtime();
+		$entryIdentifier = 'BackendFileTest';
 
-		$filename = $tagsDirectory . 'UnitTestTag%tag2/' . $cacheIdentifier . t3lib_cache_backend_FileBackend::SEPARATOR . $entryIdentifier;
-		$this->assertTrue(file_exists($filename), 'File "' . $filename . '" does not exist.');
+		$this->backend->setCache($mockCache);
+		$pathAndFilename = $this->backend->getCacheDirectory() . $entryIdentifier;
+
+		$this->backend->set($entryIdentifier, $data, array(), 0);
+
+		$this->assertFileExists($pathAndFilename);
+
+		$dataSize = (integer)file_get_contents($pathAndFilename, NULL, NULL, filesize($pathAndFilename) - t3lib_cache_backend_FileBackend::DATASIZE_DIGITS, t3lib_cache_backend_FileBackend::DATASIZE_DIGITS);
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, 0, $dataSize);
+
+		$this->assertEquals($data, $retrievedData, 'The original and the retrieved data don\'t match.');
+	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function getReturnsFalseForExpiredEntries() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+		$fullPathToCacheFile = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/typo3temp/cache/UnitTestCache/ExpiredEntry';
+		$backend->expects($this->once())->method('isCacheFileExpired')->with($fullPathToCacheFile)->will($this->returnValue(TRUE));
+		$backend->setCache($mockCache);
+
+		$this->assertFalse($backend->get('ExpiredEntry'));
 	}
 
 	/**
@@ -262,54 +264,13 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function getReturnsContentOfTheCorrectCacheFile() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+	public function hasReturnsTrueIfAnEntryExists() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$this->backend->setCache($cache);
+		$this->backend->setCache($mockCache);
 
 		$entryIdentifier = 'BackendFileTest';
-
-		$data = 'some data' . microtime();
-		$this->backend->set($entryIdentifier, $data, array(), 500);
-
-		$data = 'some other data' . microtime();
-		$this->backend->set($entryIdentifier, $data, array(), 100);
-
-		$loadedData = $this->backend->get($entryIdentifier);
-
-		$this->assertEquals($data, $loadedData, 'The original and the retrieved data don\'t match.');
-	}
-
-	/**
-	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function hasReturnsTheCorrectResult() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
-
-		$this->backend->setCache($cache);
-
-		$entryIdentifier = 'BackendFileTest';
-
 		$data = 'some data' . microtime();
 		$this->backend->set($entryIdentifier, $data);
 
@@ -320,39 +281,34 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function hasReturnsFalseForExpiredEntries() {
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+		$backend->expects($this->exactly(2))->method('isCacheFileExpired')->will($this->onConsecutiveCalls(TRUE, FALSE));
+
+		$this->assertFalse($backend->has('foo'));
+		$this->assertTrue($backend->has('bar'));
+	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function removeReallyRemovesACacheEntry() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
-		$entryIdentifier = 'BackendFileRemovalTest';
-		$entryIdentifierHash = sha1($entryIdentifier);
+		$entryIdentifier = 'BackendFileTest';
 
-		$cacheDirectory = $this->backend->getCacheDirectory();
-		$this->backend->setCache($cache);
-
-		$pathAndFilename = $cacheDirectory
-			. 'data/'
-			. $cacheIdentifier . '/'
-			. $entryIdentifierHash[0] . '/'
-			. $entryIdentifierHash[1] . '/'
-			. $entryIdentifier;
-
+		$this->backend->setCache($mockCache);
+		$pathAndFilename = $this->backend->getCacheDirectory() . $entryIdentifier;
 		$this->backend->set($entryIdentifier, $data);
-		$this->assertTrue(file_exists($pathAndFilename), 'The cache entry does not exist.');
 
+		$this->assertFileExists($pathAndFilename);
 		$this->backend->remove($entryIdentifier);
-		$this->assertFalse(file_exists($pathAndFilename), 'The cache entry still exists.');
+		$this->assertFileNotExists($pathAndFilename);
 	}
 
 	/**
@@ -362,38 +318,22 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbageReallyRemovesAnExpiredCacheEntry() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileRemovalTest';
-		$entryIdentifierHash = sha1($entryIdentifier);
 
-		$cacheDirectory = $this->backend->getCacheDirectory();
-		$this->backend->setCache($cache);
-
-		$pathAndFilename = $cacheDirectory
-			. 'data/'
-			. $cacheIdentifier . '/'
-			. $entryIdentifierHash[0] . '/'
-			. $entryIdentifierHash[1] . '/'
-			. $entryIdentifier;
-
+		$this->backend->setCache($mockCache);
+		$pathAndFilename = $this->backend->getCacheDirectory() . $entryIdentifier;
 		$this->backend->set($entryIdentifier, $data, array(), 1);
-		$this->assertTrue(file_exists($pathAndFilename), 'The cache entry does not exist.');
 
-		sleep(2);
+		$this->assertFileExists($pathAndFilename);
 
+		$GLOBALS['EXEC_TIME'] += 2;
 		$this->backend->collectGarbage();
-		$this->assertFalse(file_exists($pathAndFilename), 'The cache entry still exists.');
+
+		$this->assertFileNotExists($pathAndFilename);
 	}
 
 	/**
@@ -403,71 +343,32 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbageReallyRemovesAllExpiredCacheEntries() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileRemovalTest';
 
-		$cacheDirectory = $this->backend->getCacheDirectory();
-		$this->backend->setCache($cache);
+		$this->backend->setCache($mockCache);
+		$pathAndFilename = $this->backend->getCacheDirectory() . $entryIdentifier;
 
-		$pattern = $cacheDirectory
-			. 'data/'
-			. $cacheIdentifier . '/*/*/'
-			. $entryIdentifier
-			. '?';
-
-		$this->backend->set($entryIdentifier . 'A', $data, array(), 1);
-		$this->backend->set($entryIdentifier . 'B', $data, array(), 1);
+		$this->backend->set($entryIdentifier . 'A', $data, array(), NULL);
+		$this->backend->set($entryIdentifier . 'B', $data, array(), 10);
 		$this->backend->set($entryIdentifier . 'C', $data, array(), 1);
-		$filesFound = glob($pattern);
-		$this->assertTrue(is_array($filesFound) && count($filesFound) > 0, 'The cache entries do not exist.');
+		$this->backend->set($entryIdentifier . 'D', $data, array(), 1);
 
-		sleep(2);
+		$this->assertFileExists($pathAndFilename . 'A');
+		$this->assertFileExists($pathAndFilename . 'B');
+		$this->assertFileExists($pathAndFilename . 'C');
+		$this->assertFileExists($pathAndFilename . 'D');
 
+		$GLOBALS['EXEC_TIME'] += 2;
 		$this->backend->collectGarbage();
-		$filesFound = is_array(glob($pattern)) ? glob($pattern) : array();
-		$this->assertTrue(count($filesFound) === 0, 'The cache entries still exist.');
-	}
 
-	/**
-	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function removeReallyRemovesTagsOfRemovedEntry() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
-
-		$data = 'some data' . microtime();
-		$entryIdentifier = 'BackendFileTest';
-
-		$this->backend->setCache($cache);
-
-		$tagsDirectory = $this->backend->getCacheDirectory() . 'tags/';
-
-		$this->backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-		$this->backend->remove($entryIdentifier);
-
-		$this->assertTrue(!file_exists($tagsDirectory . 'UnitTestTag%tag1/' . $entryIdentifier), 'File "' . $tagsDirectory . 'UnitTestTag%tag1/' . $entryIdentifier . '" still exists.');
-		$this->assertTrue(!file_exists($tagsDirectory . 'UnitTestTag%tag2/' . $entryIdentifier), 'File "' . $tagsDirectory . 'UnitTestTag%tag2/' . $entryIdentifier . '" still exists.');
+		$this->assertFileExists($pathAndFilename . 'A');
+		$this->assertFileExists($pathAndFilename . 'B');
+		$this->assertFileNotExists($pathAndFilename . 'C');
+		$this->assertFileNotExists($pathAndFilename . 'D');
 	}
 
 	/**
@@ -476,18 +377,10 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$this->backend->setCache($cache);
+		$this->backend->setCache($mockCache);
 
 		$data = 'some data' . microtime();
 		$this->backend->set('BackendFileTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
@@ -497,9 +390,30 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$expectedEntry = 'BackendFileTest2';
 
 		$actualEntries = $this->backend->findIdentifiersByTag('UnitTestTag%special');
-		$this->assertTrue(is_array($actualEntries), 'actualEntries is not an array.');
 
+		$this->assertTrue(is_array($actualEntries), 'actualEntries is not an array.');
 		$this->assertEquals($expectedEntry, array_pop($actualEntries));
+	}
+
+	/**
+	 * @test
+	 * @author Ingo Renner <ingo@typo3.org>
+	 */
+	public function findIdentifiersByTagDoesNotReturnExpiredEntries() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+		$this->backend->setCache($mockCache);
+
+		$data = 'some data';
+		$this->backend->set('BackendFileTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
+		$this->backend->set('BackendFileTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'), -100);
+		$this->backend->set('BackendFileTest3', $data, array('UnitTestTag%test'));
+
+		$this->assertSame(array(), $this->backend->findIdentifiersByTag('UnitTestTag%special'));
+		$foundIdentifiers = $this->backend->findIdentifiersByTag('UnitTestTag%test');
+		sort($foundIdentifiers);
+		$this->assertSame(array('BackendFileTest1', 'BackendFileTest3'), $foundIdentifiers);
 	}
 
 	/**
@@ -507,22 +421,11 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function flushRemovesAllCacheEntriesAndRelatedTags() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+	public function flushRemovesAllCacheEntries() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$this->backend->setCache($cache);
-
-		$tagsDirectory = $this->backend->getCacheDirectory() . 'tags/';
-		$cacheDirectory = $this->backend->getCacheDirectory() . 'data/' . $cacheIdentifier . '/';
+		$this->backend->setCache($mockCache);
 
 		$data = 'some data' . microtime();
 		$this->backend->set('BackendFileTest1', $data, array('UnitTestTag%test'));
@@ -531,19 +434,9 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 
 		$this->backend->flush();
 
-		$pattern = $cacheDirectory . '*/*/*';
+		$pattern = $this->backend->getCacheDirectory() . '*';
 		$filesFound = is_array(glob($pattern)) ? glob($pattern) : array();
 		$this->assertTrue(count($filesFound) === 0, 'Still files in the cache directory');
-
-		$tagPrefixTest = $tagsDirectory . 'UnitTestTag%test/' . $cacheIdentifier . '^';
-		$tagPrefixSpecial = $tagsDirectory . 'UnitTestTag%special/' . $cacheIdentifier . '^';
-		$entryIdentifier = 'BackendFileTest1';
-		$this->assertTrue(!file_exists($tagPrefixTest . $entryIdentifier), 'File "' . $tagPrefixTest . $entryIdentifier . '" still exists.');
-		$entryIdentifier = 'BackendFileTest2';
-		$this->assertTrue(!file_exists($tagPrefixTest . $entryIdentifier), 'File "' . $tagPrefixTest . $entryIdentifier . '" still exists.');
-		$this->assertTrue(!file_exists($tagPrefixSpecial . $entryIdentifier), 'File "' . $tagPrefixSpecial . $entryIdentifier . '" still exists.');
-		$entryIdentifier = 'BackendFileTest3';
-		$this->assertTrue(!file_exists($tagPrefixTest . $entryIdentifier), 'File "' . $tagPrefixTest . $entryIdentifier . '" still exists.');
 	}
 
 	/**
@@ -552,18 +445,10 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$this->backend->setCache($cache);
+		$this->backend->setCache($mockCache);
 
 		$data = 'some data' . microtime();
 		$this->backend->set('BackendFileTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
@@ -577,138 +462,6 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		$this->assertTrue($this->backend->has('BackendFileTest3'), 'BackendFileTest3');
 	}
 
-
-	/**
-	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function hasReturnsTheCorrectResultForEntryWithExceededLifetime() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
-
-		$this->backend->setCache($cache);
-
-		$entryIdentifier = 'BackendFileTest';
-		$data = 'some data' . microtime();
-		$this->backend->set($entryIdentifier, $data);
-
-		$expiredEntryIdentifier = 'ExpiredBackendFileTest';
-		$expiredData = 'some old data' . microtime();
-		$this->backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
-
-		sleep(2);
-
-		$this->assertFalse($this->backend->has($expiredEntryIdentifier), 'has() did not return FALSE.');
-	}
-
-	/**
-	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function getReturnsFalseForEntryWithExceededLifetime() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
-
-		$this->backend->setCache($cache);
-
-		$entryIdentifier = 'BackendFileTest';
-		$data = 'some data' . microtime();
-		$this->backend->set($entryIdentifier, $data);
-
-		$expiredEntryIdentifier = 'ExpiredBackendFileTest';
-		$expiredData = 'some old data' . microtime();
-		$this->backend->set($expiredEntryIdentifier, $expiredData, array(), 1);
-
-		sleep(2);
-
-		$this->assertEquals($data, $this->backend->get($entryIdentifier), 'The original and the retrieved data don\'t match.');
-		$this->assertFalse($this->backend->get($expiredEntryIdentifier), 'The expired entry could be loaded.');
-	}
-
-	/**
-	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function findIdentifiersByTagReturnsEmptyArrayForEntryWithExceededLifetime() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
-
-		$this->backend->setCache($cache);
-
-		$this->backend->set('BackendFileTest', 'some data', array('UnitTestTag%special'), 1);
-
-		sleep(2);
-
-		$this->assertEquals(array(), $this->backend->findIdentifiersByTag('UnitTestTag%special'));
-	}
-
-	/**
-	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
-	 */
-	public function setWithUnlimitedLifetimeWritesCorrectEntry() {
-		$cacheIdentifier = 'UnitTestCache';
-		$cache = $this->getMock('t3lib_cache_frontend_AbstractFrontend',
-			array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove'),
-			array(),
-			'',
-			FALSE
-		);
-		$cache->expects($this->atLeastOnce())
-			->method('getIdentifier')
-			->will($this->returnValue($cacheIdentifier));
-
-		$data = 'some data' . microtime();
-		$entryIdentifier = 'BackendFileTest';
-		$entryIdentifierHash = sha1($entryIdentifier);
-
-		$this->backend->setCache($cache);
-		$this->backend->set($entryIdentifier, $data, array(), 0);
-
-		$cacheDirectory = $this->backend->getCacheDirectory();
-
-		$pathAndFilename = $cacheDirectory
-			. 'data/'
-			. $cacheIdentifier . '/'
-			. $entryIdentifierHash[0] . '/'
-			. $entryIdentifierHash[1] . '/'
-			. $entryIdentifier;
-		$this->assertTrue(file_exists($pathAndFilename), 'File not found.');
-
-		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH);
-		$this->assertEquals($data, $retrievedData, 'The original and the retrieved data don\'t match.');
-	}
-
 	/**
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
@@ -717,8 +470,11 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 		if (is_object($this->backend)) {
 			$directory = $this->backend->getCacheDirectory();
 			if (is_dir($directory)) {
-				t3lib_div::rmdir($directory, true);
+				t3lib_div::rmdir($directory, TRUE);
 			}
+		}
+		foreach ($this->backupGlobalVariables as $key => $data) {
+			$GLOBALS[$key] = $data;
 		}
 	}
 }

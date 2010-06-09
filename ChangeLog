@@ -18,6 +18,7 @@
 
 2010-06-09  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Added feature #14666: Caching framework: Backport PhpFrontend from FLOW3 and refactor FileBackend
 	* Added feature #14655: Caching framework: Implement PDO backend
 
 2010-06-08  Stanislas Rolland  <typo3@sjbr.ca>
