@@ -402,6 +402,9 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 					if (parent) {
 						var direction = (button.itemId === 'RightToLeft') ? 'rtl' : 'ltr';
 						button.setInactive(parent.dir != direction && parent.style.direction != direction);
+						button.setDisabled(/^body$/i.test(parent.nodeName));
+					} else {
+						button.setDisabled(true);
 					}
 					break;
 				case 'ShowLanguageMarks':

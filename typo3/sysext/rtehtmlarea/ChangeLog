@@ -1,3 +1,7 @@
+2010-06-09  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14677: htmlArea RTE: Toolbar state incorect in the absence of block element
+
 2010-06-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE manual.

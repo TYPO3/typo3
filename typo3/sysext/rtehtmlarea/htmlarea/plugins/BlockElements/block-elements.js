@@ -1106,7 +1106,38 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 						break;
 					default	:
 						break;
-		
+				}
+			} else {
+					// The selection is not contained in any block
+				switch (button.itemId) {
+					case 'FormatBlock':
+						this.updateDropDown(button);
+						break;
+					case 'Outdent' :
+						button.setDisabled(true);
+						break;
+					case 'Indent' :
+						break;
+					case 'InsertParagraphBefore' :
+					case 'InsertParagraphAfter'  :
+						button.setDisabled(true);
+						break;
+					case 'Blockquote' :
+						button.setInactive(true);
+						break;
+					case 'JustifyLeft'   :
+					case 'JustifyCenter' :
+					case 'JustifyRight'  :
+					case 'JustifyFull'   :
+						button.setInactive(true);
+						button.setDisabled(true);
+						break;
+					case 'InsertOrderedList':
+					case 'InsertUnorderedList':
+						button.setInactive(true);
+						break;
+					default	:
+						break;
 				}
 			}
 		}

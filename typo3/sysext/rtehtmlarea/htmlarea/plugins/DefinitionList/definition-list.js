@@ -335,6 +335,12 @@ HTMLArea.DefinitionList = HTMLArea.BlockElements.extend({
 													&& !(endBlocks.start != endBlocks.end && /^(p|h[1-6])$/i.test(endBlocks.start.nodeName)));
 						break;
 				}
+			} else {
+				switch (button.itemId) {
+					case 'Outdent':
+						this.base(button, mode, selectionEmpty, ancestors);
+						break;
+				}
 			}
 		}
 	}
