@@ -485,10 +485,10 @@ if (!strcasecmp($TYPO3_CONF_VARS['FE']['pageNotFound_handling'],'TRUE'))	{
 
 
 	// simple debug function which prints output immediately
-function xdebug($var='',$br=0)	{
+function xdebug($var = '', $debugTitle = 'xdebug')	{
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
-	t3lib_div::debug($var,$br);
+	t3lib_div::debug($var, $debugTitle);
 }
 	// Debug function which calls $GLOBALS['error'] error handler if available
 function debug($variable='', $name='*variable*', $line='*line*', $file='*file*', $recursiveDepth=3, $debugLevel=E_DEBUG)	{
