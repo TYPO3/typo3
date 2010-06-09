@@ -2075,7 +2075,7 @@ final class t3lib_div {
 				$differenceArray[$key] = $value;
 			} elseif (is_array($value)) {
 				if (is_array($array2[$key])) {
-					$differenceArray[$key] = t3lib_div::arrayDiffAssocRecursive($value, $array2[$key]);
+					$differenceArray[$key] = self::arrayDiffAssocRecursive($value, $array2[$key]);
 				}
 			}
 		}
@@ -3024,9 +3024,9 @@ final class t3lib_div {
 						unset($recursionResult);
 						if ($file !== '.' && $file !== '..') {
 							if (@is_file($path . '/' . $file)) {
-								$recursionResult = t3lib_div::fixPermissions($path . '/' . $file);
+								$recursionResult = self::fixPermissions($path . '/' . $file);
 							} elseif (@is_dir($path . '/' . $file)) {
-								$recursionResult = t3lib_div::fixPermissions($path . '/' . $file, TRUE);
+								$recursionResult = self::fixPermissions($path . '/' . $file, TRUE);
 							}
 							if (isset($recursionResult) && !$recursionResult) {
 								$result = FALSE;
