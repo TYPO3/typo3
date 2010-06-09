@@ -1,3 +1,7 @@
+2010-06-08  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14458: getBrowserInfo fails with IE UA Strings
+
 2010-06-09  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Added feature #14655: Caching framework: Implement PDO backend
