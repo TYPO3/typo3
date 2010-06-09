@@ -498,9 +498,9 @@ function debug($variable='', $name='*variable*', $line='*line*', $file='*file*',
 	if(is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debug'))) {
 		$GLOBALS['error']->debug($variable, $name, $line, $file, $recursiveDepth, $debugLevel);
 	} else {
-		$br = ($name == '*variable*') ? 0 : $name;
-		$group = $line ? $line : NULL;
-		t3lib_div::debug($variable, $br, $group);
+		$title = ($name === '*variable*') ? '' : $name;
+		$group = ($line === '*line*') ? NULL : $line;
+		t3lib_div::debug($variable, $title, $group);
 	}
 }
 function debugBegin() {
