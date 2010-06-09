@@ -3624,7 +3624,7 @@ final class t3lib_div {
 			if ($header !== '') {
 				$tabHeader = htmlspecialchars($header);
 			} else {
-			$tabHeader = 'Debug';
+				$tabHeader = 'Debug';
 			}
 			
 			if (is_object($var)) {
@@ -3642,22 +3642,36 @@ final class t3lib_div {
 			}
 
 			$script = '
-				var TYPO3ViewportInstance = null;
-				var debugMessage = "' . $debug . '";
-				var header = "' . $tabHeader . '";
-				var group = "' . $group . '";
+				(function debug() {
+					var debugMessage = "' . $debug . '";
+					var header = "' . $tabHeader . '";
+					var group = "' . $group . '";
 
-				if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
-					TYPO3ViewportInstance = top.TYPO3.Backend;
-				} else if (typeof TYPO3 === "object" && typeof TYPO3.Backend === "object") {
-					TYPO3ViewportInstance = TYPO3.Backend;
-				}
+					if (typeof Ext !== "object" && (top && typeof top.Ext !== "object")) {
+						document.write(debugMessage);
+						return;
+					}
 
-				if (TYPO3ViewportInstance !== null) {
-					TYPO3ViewportInstance.DebugConsole.addTab(debugMessage, header, group);
-				} else {
-					document.write(debugMessage);
-				}
+					if (top && typeof Ext !== "object") {
+						Ext = top.Ext;	
+					}
+
+					Ext.onReady(function() {
+						var TYPO3ViewportInstance = null;
+
+						if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
+							TYPO3ViewportInstance = top.TYPO3.Backend;
+						} else if (typeof TYPO3 === "object" && typeof TYPO3.Backend === "object") {
+							TYPO3ViewportInstance = TYPO3.Backend;
+						}
+
+						if (TYPO3ViewportInstance !== null) {
+							TYPO3ViewportInstance.DebugConsole.addTab(debugMessage, header, group);
+						} else {
+							document.write(debugMessage);
+						}
+					});
+				})();
 			';
 			echo self::wrapJS($script);
 		} else {
