@@ -191,7 +191,7 @@ final class t3lib_extMgm {
 	 * @return	string
 	 */
 	public static function siteRelPath($key) {
-		return substr(t3lib_extMgm::extPath($key), strlen(PATH_site));
+		return substr(self::extPath($key), strlen(PATH_site));
 	}
 
 	/**
@@ -256,7 +256,7 @@ final class t3lib_extMgm {
 		}
 
 		$_EXTKEY = $key;
-		include(t3lib_extMgm::extPath($key) . 'ext_emconf.php');
+		include(self::extPath($key) . 'ext_emconf.php');
 
 		return $EM_CONF[$key]['version'];
 	}
@@ -872,7 +872,7 @@ final class t3lib_extMgm {
 				$os = t3lib_div::trimExplode(',', strtoupper($T3_SERVICES[$serviceType][$serviceKey]['os']));
 
 				if (!in_array($os_type, $os)) {
-					t3lib_extMgm::deactivateService($serviceType, $serviceKey);
+					self::deactivateService($serviceType, $serviceKey);
 				}
 			}
 
@@ -932,7 +932,7 @@ final class t3lib_extMgm {
 						$executables = t3lib_div::trimExplode(',', $info['exec'], 1);
 						foreach($executables as $executable) {
 							if(!t3lib_exec::checkCommand($executable)) {
-								t3lib_extMgm::deactivateService($serviceType, $key);
+								self::deactivateService($serviceType, $key);
 								$info['available'] = FALSE;
 								break;
 							}
@@ -1007,7 +1007,7 @@ final class t3lib_extMgm {
 
 		$_EXTKEY = $GLOBALS['_EXTKEY'];
 		if ($_EXTKEY && !$itemArray[2]) {
-			$itemArray[2] = t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif';
+			$itemArray[2] = self::extRelPath($_EXTKEY) . 'ext_icon.gif';
 		}
 
 		t3lib_div::loadTCA('tt_content');
@@ -1087,7 +1087,7 @@ final class t3lib_extMgm {
 	public static function addPItoST43($key, $classFile = '', $prefix = '', $type = 'list_type', $cached = 0) {
 		global $TYPO3_LOADED_EXT;
 		$classFile = $classFile ? $classFile : 'pi/class.tx_'.str_replace('_', '', $key).$prefix.'.php';
-		$cN = t3lib_extMgm::getCN($key);
+		$cN = self::getCN($key);
 
 			// General plugin:
 		$pluginContent = trim('
@@ -1096,7 +1096,7 @@ plugin.'.$cN.$prefix.' {
   includeLibs = '.$TYPO3_LOADED_EXT[$key]['siteRelPath'].$classFile.'
   userFunc = '.$cN.$prefix.'->main
 }');
-		t3lib_extMgm::addTypoScript($key, 'setup', '
+		self::addTypoScript($key, 'setup', '
 # Setting '.$key.' plugin TypoScript
 '.$pluginContent);
 
@@ -1131,7 +1131,7 @@ tt_content.'.$key.$prefix.' {
 			break;
 		}
 		if ($addLine) {
-			t3lib_extMgm::addTypoScript($key, 'setup', '
+			self::addTypoScript($key, 'setup', '
 # Setting '.$key.' plugin TypoScript
 '.$addLine.'
 ', 43);
@@ -1296,7 +1296,7 @@ tt_content.'.$key.$prefix.' {
 			if (intval($TYPO3_CONF_VARS['EXT']['extCache'])==2)	$cacheFilePrefix.= '_'.t3lib_div::shortMD5($rawExtList);
 
 				// If cache files available, set cache file prefix and return:
-			if ($TYPO3_CONF_VARS['EXT']['extCache'] && t3lib_extMgm::isCacheFilesAvailable($cacheFilePrefix)) {
+			if ($TYPO3_CONF_VARS['EXT']['extCache'] && self::isCacheFilesAvailable($cacheFilePrefix)) {
 					// Return cache file prefix:
 				$extensions['_CACHEFILE'] = $cacheFilePrefix;
 			} else {	// ... but if not, configure...
@@ -1332,12 +1332,12 @@ tt_content.'.$key.$prefix.' {
 				if ($TYPO3_CONF_VARS['EXT']['extCache'] &&
 						@is_dir(PATH_typo3.'sysext/') &&
 						@is_dir(PATH_typo3.'ext/'))	{	// Must also find global and system extension directories to exist, otherwise caching cannot be allowed (since it is most likely a temporary server problem). This might fix a rare, unrepeatable bug where global/system extensions are not loaded resulting in fatal errors if that is cached!
-					$wrError = t3lib_extMgm::cannotCacheFilesWritable($cacheFilePrefix);
+					$wrError = self::cannotCacheFilesWritable($cacheFilePrefix);
 					if ($wrError) {
 						$TYPO3_CONF_VARS['EXT']['extCache'] = 0;
 					} else {
 							// Write cache files:
-						$extensions = t3lib_extMgm::writeCacheFiles($extensions, $cacheFilePrefix);
+						$extensions = self::writeCacheFiles($extensions, $cacheFilePrefix);
 					}
 				}
 			}
@@ -1429,11 +1429,11 @@ $_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
 		if (($cacheFilePrefix = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'])) {
 			$cacheFilePrefixFE = str_replace('temp_CACHED','temp_CACHED_FE',$cacheFilePrefix);
 			$files = array();
-			if (t3lib_extMgm::isCacheFilesAvailable($cacheFilePrefix)) {
+			if (self::isCacheFilesAvailable($cacheFilePrefix)) {
 				$files[] = PATH_typo3conf.$cacheFilePrefix.'_ext_localconf.php';
 				$files[] = PATH_typo3conf.$cacheFilePrefix.'_ext_tables.php';
 			}
-			if (t3lib_extMgm::isCacheFilesAvailable($cacheFilePrefixFE)) {
+			if (self::isCacheFilesAvailable($cacheFilePrefixFE)) {
 				$files[] = PATH_typo3conf.$cacheFilePrefixFE.'_ext_localconf.php';
 				$files[] = PATH_typo3conf.$cacheFilePrefixFE.'_ext_tables.php';
 			}
@@ -1466,12 +1466,12 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\''.addslashes(serialize($extension
 		foreach ($extensions as $key => $conf) {
 			if (is_array($conf)) {
 				if ($conf['ext_localconf.php']) {
-					$cFiles['ext_localconf'].=t3lib_extMgm::_makeIncludeHeader($key, $conf['ext_localconf.php']);
-					$cFiles['ext_localconf'].=trim(t3lib_div::getUrl($conf['ext_localconf.php']));
+					$cFiles['ext_localconf'] .= self::_makeIncludeHeader($key, $conf['ext_localconf.php']);
+					$cFiles['ext_localconf'] .= trim(t3lib_div::getUrl($conf['ext_localconf.php']));
 				}
 				if ($conf['ext_tables.php']) {
-					$cFiles['ext_tables'].=t3lib_extMgm::_makeIncludeHeader($key, $conf['ext_tables.php']);
-					$cFiles['ext_tables'].=trim(t3lib_div::getUrl($conf['ext_tables.php']));
+					$cFiles['ext_tables'] .= self::_makeIncludeHeader($key, $conf['ext_tables.php']);
+					$cFiles['ext_tables'] .= trim(t3lib_div::getUrl($conf['ext_tables.php']));
 				}
 			}
 		}
@@ -1494,7 +1494,7 @@ $TYPO3_LOADED_EXT = unserialize(stripslashes(\''.addslashes(serialize($extension
 	 * @return	integer		Number of deleted files.
 	 */
 	public static function removeCacheFiles() {
-		$cacheFiles = t3lib_extMgm::currentCacheFiles();
+		$cacheFiles = self::currentCacheFiles();
 		$out = 0;
 		if (is_array($cacheFiles)) {
 			reset($cacheFiles);
