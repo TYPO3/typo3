@@ -89,13 +89,19 @@ final class t3lib_utility_Client {
 					$browserInfo['all'][$matches['browser'][$i]] = $matches['version'][$i];
 				}
 			}
+				//Replace gecko build date with version given by rv
+			if (isset($browserInfo['all']['gecko'])) {
+				preg_match_all('/rv:([0-9\.]*)/', strtolower($userAgent), $version);
+				if ($version[1][0]) {
+					$browserInfo['all']['gecko'] = $version[1][0];
+				}
+			}
 		}
 
-
-		// system
+			// system
 		$browserInfo['system'] = '';
 		if (strstr($userAgent, 'Win')) {
-			// windows
+				// windows
 			if (strstr($userAgent, 'Win98') || strstr($userAgent, 'Windows 98')) {
 				$browserInfo['system'] = 'win98';
 			} elseif (strstr($userAgent, 'Win95') || strstr($userAgent, 'Windows 95')) {
