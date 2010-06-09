@@ -1,5 +1,6 @@
 2010-06-08  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added test case t3lib_utility_clientTest.php
 	* Fixed bug #14458: getBrowserInfo fails with IE UA Strings
 
 2010-06-09  Christian Kuhn  <lolli@schwarzbu.ch>
