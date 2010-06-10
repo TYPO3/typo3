@@ -1,3 +1,7 @@
+2010-06-10  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
+
+	* Fixed bug #5117: typolink: cHash corrupted due to linkVars (together with Pierre Dudoret (Popy))
+
 2010-06-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14677: htmlArea RTE: Toolbar state incorect in the absence of block element
