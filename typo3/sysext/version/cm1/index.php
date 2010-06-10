@@ -121,6 +121,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	var $be_user_Array = array();
 	var $stageIndex = array();
 	var $recIndex = array();
+	protected $showDraftWorkspace = FALSE; // Determines whether to show the dummy draft workspace
 
 
 
@@ -140,6 +141,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function menuConfig()	{
 
+			// fetches the configuration of the version extension
+		$versionExtconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
+			// show draft workspace only if enabled in the version extensions config
+		if($versionExtconf['showDraftWorkspace']) {
+			$this->showDraftWorkspace = TRUE;
+		}
+
 			// Menu items:
 		$this->MOD_MENU = array(
 			'filter' => array(
@@ -151,10 +159,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 				0 => $GLOBALS['LANG']->getLL('liveWorkspace'),
 				-98 => $GLOBALS['LANG']->getLL('draftWorkspaces'),
 				-99 => $GLOBALS['LANG']->getLL('filter_all'),
-				-1 => $GLOBALS['LANG']->getLL('defaultDraft')
 			),
 			'diff' => ''
 		);
+		
+		if($this->showDraftWorkspace === TRUE) {
+			$this->MOD_MENU['display'][-1] = $GLOBALS['LANG']->getLL('defaultDraft');
+		}
 
 			// Add workspaces:
 		if ($GLOBALS['BE_USER']->workspace===0)	{	// Spend time on this only in online workspace because it might take time:
@@ -177,7 +188,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
+		
 			// Template markers
 		$markers = array(
 			'CSH' => '',

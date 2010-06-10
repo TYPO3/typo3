@@ -1562,7 +1562,23 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	function checkWorkspace($wsRec,$fields='uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')	{
 		$retVal = FALSE;
-
+		
+			// Show draft workspace only if it's enabled in version extension
+		if (t3lib_extMgm::isLoaded('version')) {
+			$versionExtConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
+			if (!$versionExtConf['showDraftWorkspace']) {
+				if (!is_array($wsRec)) {
+					if ((string) $wsRec === '-1') {
+						return FALSE;
+					} 
+				} else {
+					if ((string) $wsRec['uid'] === '-1') {
+						return FALSE;
+					} 
+				}
+			} 
+		} 
+		
 			// If not array, look up workspace record:
 		if (!is_array($wsRec))	{
 			switch((string)$wsRec)	{

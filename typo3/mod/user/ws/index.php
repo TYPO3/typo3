@@ -113,6 +113,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	var $publishAccess = FALSE;
 	var $be_user_Array = array();
 	var $be_user_Array_full = array();	// not blinded, used by workspace listing
+	protected $showDraftWorkspace = FALSE;	// Determines whether the draft workspace is shown
 
 
 	/*********************************
@@ -129,6 +130,13 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	function menuConfig()	{
 		global	$LANG;
 
+			// fetches the configuration of the version extension
+		$versionExtconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
+			// show draft workspace only if enabled in the version extensions config
+		if($versionExtconf['showDraftWorkspace']) {
+			$this->showDraftWorkspace = TRUE;
+		}
+
 			// Menu items:
 		$this->MOD_MENU = array(
 			'function' => array(
@@ -143,8 +151,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			'display' => array(
 				0 => '['.$LANG->getLL('shortcut_onlineWS').']',
 				-98 => $LANG->getLL('label_offlineWSes'),
-				-99 => $LANG->getLL('label_allWSes'),
-				-1 => '['.$LANG->getLL('shortcut_offlineWS').']'
+				-99 => $LANG->getLL('label_allWSes')
 			),
 			'diff' => array(
 				0 => $LANG->getLL('diff_no_diff'),
@@ -153,7 +160,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			),
 			'expandSubElements' => '',
 		);
-
+		
+		if($this->showDraftWorkspace === TRUE) {
+			$this->MOD_MENU['display'][-1] = '[' . $LANG->getLL('shortcut_offlineWS') . ']';
+		}
 			// Add workspaces:
 		if ($GLOBALS['BE_USER']->workspace===0)	{	// Spend time on this only in online workspace because it might take time:
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
