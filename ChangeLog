@@ -1,6 +1,7 @@
 2010-06-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #14662: htmlArea RTE: Should use t3lib_utility_Client::getBrowserInfo
+	* Fixed bug #14691: htmlArea RTE: Hitting ENTER in absence of block element may produce non-valid html in non-IE browser
 
 2010-06-10  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 

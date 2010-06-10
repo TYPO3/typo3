@@ -557,44 +557,91 @@ HTMLArea.Editor.prototype._checkInsertP = function() {
 	}
 	this.emptySelection(sel);
 	if (!block || /^(td|div)$/i.test(block.nodeName)) {
-		if (!block) var block = doc.body;
+		if (!block) {
+			block = doc.body;
+		}
 		if (block.hasChildNodes()) {
 			rangeClone = range.cloneRange();
-			rangeClone.setStartBefore(block.firstChild);
-				// Working around Opera issue: The following gives a range exception
-				// rangeClone.surroundContents(left = doc.createElement("p"));
-			left = doc.createElement("p");
+			if (range.startContainer == block) {
+					// Selection is directly under the block
+				var blockOnLeft = null;
+				var leftSibling = null;
+					// Looking for the farthest node on the left that is not a block
+				for (var i = range.startOffset; --i >= 0;) {
+					if (HTMLArea.isBlockElement(block.childNodes[i])) {
+						blockOnLeft = block.childNodes[i];
+						break;
+					} else {
+						rangeClone.setStartBefore(block.childNodes[i]);
+					}
+				}
+			} else {
+					// Looking for inline or text container immediate child of block
+				var inlineContainer = range.startContainer;
+				while (inlineContainer.parentNode != block) {
+					inlineContainer = inlineContainer.parentNode;
+				}
+					// Looking for the farthest node on the left that is not a block
+				var leftSibling = inlineContainer;
+				while (leftSibling.previousSibling && !HTMLArea.isBlockElement(leftSibling.previousSibling)) {
+					leftSibling = leftSibling.previousSibling;
+				}
+				rangeClone.setStartBefore(leftSibling);
+				var blockOnLeft = leftSibling.previousSibling;
+			}
+				// Avoiding surroundContents buggy in Opera and Safari
+			left = doc.createElement('p');
 			left.appendChild(rangeClone.extractContents());
-			if (!left.textContent && !left.getElementsByTagName("img") && !left.getElementsByTagName("table")) {
-				left.innerHTML = "<br />";
+			if (!left.textContent && !left.getElementsByTagName('img').length && !left.getElementsByTagName('table').length) {
+				left.innerHTML = '<br />';
 			}
 			if (block.hasChildNodes()) {
-				left = block.insertBefore(left, block.firstChild);
+				if (blockOnLeft) {
+					left = block.insertBefore(left, blockOnLeft.nextSibling);
+				} else {
+					left = block.insertBefore(left, block.firstChild);
+				}
 			} else {
 				left = block.appendChild(left);
 			}
-			left.normalize();
-			range.setEndAfter(block.lastChild);
-			range.setStartAfter(left);
-				// Working around Safari issue: The following gives a range exception
-				// range.surroundContents(right = doc.createElement("p"));
-			right = doc.createElement("p");
-			right.appendChild(range.extractContents());
-			if (!right.textContent && !left.getElementsByTagName("img") && !left.getElementsByTagName("table")) {
-				right.innerHTML = "<br />";
+			block.normalize();
+				// Looking for the farthest node on the right that is not a block
+			var rightSibling = left;
+			while (rightSibling.nextSibling && !HTMLArea.isBlockElement(rightSibling.nextSibling)) {
+				rightSibling = rightSibling.nextSibling;
 			}
-			block.appendChild(right);
-			right.normalize();
+			var blockOnRight = rightSibling.nextSibling;
+			range.setEndAfter(rightSibling);
+			range.setStartAfter(left);
+				// Avoiding surroundContents buggy in Opera and Safari
+			right = doc.createElement('p');
+			right.appendChild(range.extractContents());
+			if (!right.textContent && !right.getElementsByTagName('img').length && !right.getElementsByTagName('table').length) {
+				right.innerHTML = '<br />';
+			}
+			if (!(left.childNodes.length == 1 && right.childNodes.length == 1 && left.firstChild.nodeName.toLowerCase() == 'br' && right.firstChild.nodeName.toLowerCase() == 'br')) {
+				if (blockOnRight) {
+					right = block.insertBefore(right, blockOnRight);
+				} else {
+					right = block.appendChild(right);
+				}
+				this.selectNodeContents(right, true);
+			} else {
+				this.selectNodeContents(left, true);
+			}
+			block.normalize();
 		} else {
 			var first = block.firstChild;
-			if (first) block.removeChild(first);
+			if (first) {
+				block.removeChild(first);
+			}
 			right = doc.createElement("p");
 			if (Ext.isWebKit || Ext.isOpera) {
 				right.innerHTML = "<br />";
 			}
 			right = block.appendChild(right);
+			this.selectNodeContents(right, true);
 		}
-		this.selectNodeContents(right, true);
 	} else {
 		range.setEndAfter(block);
 		var df = range.extractContents(), left_empty = false;
