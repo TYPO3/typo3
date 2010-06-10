@@ -5302,8 +5302,12 @@ class tslib_cObj {
 						if (substr($addQueryParams,0,1)!='&')		{
 							$addQueryParams = '';
 						} elseif ($conf['useCacheHash']) {	// cache hashing:
-							$pA = t3lib_div::cHashParams($addQueryParams.$GLOBALS['TSFE']->linkVars);	// Added '.$this->linkVars' dec 2003: The need for adding the linkVars is that they will be included in the link, but not the cHash. Thus the linkVars will always be the problem that prevents the cHash from working. I cannot see what negative implications in terms of incompatibilities this could bring, but for now I hope there are none. So here we go... (- kasper)
-							$addQueryParams.= '&cHash='.t3lib_div::shortMD5(serialize($pA));
+								// Mind the order below! See http://bugs.typo3.org/view.php?id=5117
+							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams;
+							if ($params) {
+								$pA = t3lib_div::cHashParams($params);
+								$addQueryParams.= '&cHash='.t3lib_div::shortMD5(serialize($pA));
+							}
 						}
 
 						$tCR_domain = '';
