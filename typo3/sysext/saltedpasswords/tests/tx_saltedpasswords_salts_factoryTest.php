@@ -40,7 +40,7 @@
  * @package     TYPO3
  * @subpackage  tx_saltedpasswords
  */
-class tx_saltedpasswords_salts_factory_testcase extends tx_phpunit_testcase {
+class tx_saltedpasswords_salts_factoryTest extends tx_phpunit_testcase {
 
 
 	/**

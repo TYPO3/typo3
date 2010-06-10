@@ -30,7 +30,7 @@
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class tx_scheduler_croncmd_testcase extends tx_phpunit_testcase {
+class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 	/**
 	 * @const	integer	timestamp of 1.1.2010 0:00 (Friday)
 	 */

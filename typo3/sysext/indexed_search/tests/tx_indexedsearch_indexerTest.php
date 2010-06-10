@@ -36,7 +36,7 @@ require_once(t3lib_extMgm::extPath('indexed_search', 'class.indexer.php'));
   * @package TYPO3
   * @subpackage tx_indexedsearch
   */
-class tx_indexedsearch_indexer_testcase extends tx_phpunit_testcase {
+class tx_indexedsearch_indexerTest extends tx_phpunit_testcase {
 
 	/**
 	 * Indexer instance

@@ -38,7 +38,7 @@
  * @package  TYPO3
  * @subpackage  tx_saltedpasswords
  */
-class tx_saltedpasswords_salts_md5_testcase extends tx_phpunit_testcase {
+class tx_saltedpasswords_salts_md5Test extends tx_phpunit_testcase {
 
 
 	/**

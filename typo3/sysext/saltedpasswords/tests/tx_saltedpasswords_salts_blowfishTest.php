@@ -38,7 +38,7 @@
  * @package  TYPO3
  * @subpackage  tx_saltedpasswords
  */
-class tx_saltedpasswords_salts_blowfish_testcase extends tx_phpunit_testcase {
+class tx_saltedpasswords_salts_blowfishTest extends tx_phpunit_testcase {
 
 
 	/**

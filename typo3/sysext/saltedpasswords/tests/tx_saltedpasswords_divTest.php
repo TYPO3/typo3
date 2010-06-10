@@ -38,7 +38,7 @@
  * @package  TYPO3
  * @subpackage  tx_saltedpasswords
  */
-class tx_saltedpasswords_div_testcase extends tx_phpunit_testcase {
+class tx_saltedpasswords_divTest extends tx_phpunit_testcase {
 	protected $backupGlobals = TRUE;
 
 	public function setUp() {
