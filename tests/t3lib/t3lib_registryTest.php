@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_Registry_testcase extends tx_phpunit_testcase {
+class t3lib_RegistryTest extends tx_phpunit_testcase {
 
 	/**
 	 * @var t3lib_Registry

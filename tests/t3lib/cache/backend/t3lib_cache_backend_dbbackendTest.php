@@ -53,7 +53,7 @@ require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_dbbackend.php
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
+class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * If set, the tearDown() method will clean up the cache table used by this unit test.

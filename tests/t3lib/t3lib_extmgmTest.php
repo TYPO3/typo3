@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_extmgm_testcase extends tx_phpunit_testcase {
+class t3lib_extmgmTest extends tx_phpunit_testcase {
 	/**
 	 * backup of defined GLOBALS
 	 *

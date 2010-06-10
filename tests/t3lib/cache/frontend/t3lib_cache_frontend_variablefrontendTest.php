@@ -33,7 +33,7 @@
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_frontend_VariableFrontendTestCase extends tx_phpunit_testcase {
+class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @expectedException InvalidArgumentException

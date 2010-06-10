@@ -33,7 +33,7 @@
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_frontend_PhpFrontendTestCase extends tx_phpunit_testcase {
+class t3lib_cache_frontend_PhpFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test

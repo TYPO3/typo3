@@ -33,7 +33,7 @@ require_once(PATH_typo3 . 'contrib/RemoveXSS/RemoveXSS.php');
  * @ see http://ha.ckers.org/xss.html
  * @ examples from http://ha.ckers.org/xssAttacks.xml
  */
-class RemoveXSS_testcase extends tx_phpunit_testcase {
+class RemoveXSSTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test

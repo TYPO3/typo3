@@ -30,7 +30,7 @@
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class tslib_fe_testcase extends tx_phpunit_testcase {
+class tslib_feTest extends tx_phpunit_testcase {
 	/**
 	 * @var tslib_fe
 	 */

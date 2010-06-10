@@ -36,7 +36,7 @@ require_once('backend/class.t3lib_cache_backend_mockbackend.php');
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_FactoryTestCase extends tx_phpunit_testcase {
+class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 
 	/**
 	 * Sets up this testcase

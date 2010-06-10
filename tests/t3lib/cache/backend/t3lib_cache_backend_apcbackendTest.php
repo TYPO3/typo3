@@ -55,7 +55,7 @@ require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_apcbackend.ph
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_backend_ApcBackendTestCase extends tx_phpunit_testcase {
+class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Sets up this testcase

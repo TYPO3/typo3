@@ -32,7 +32,7 @@ require_once(PATH_t3lib . 'class.t3lib_befunc.php');
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_befunc_testcase extends tx_phpunit_testcase {
+class t3lib_befuncTest extends tx_phpunit_testcase {
 	/**
 	 * @var t3lib_BEfunc
 	 */

@@ -35,7 +35,7 @@ require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_stringfront
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_frontend_StringFrontendTestCase extends tx_phpunit_testcase {
+class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @expectedException InvalidArgumentException

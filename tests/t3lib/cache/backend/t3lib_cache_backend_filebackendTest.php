@@ -56,7 +56,7 @@ require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.p
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
+class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	/**
 	 * Backup of global variable EXEC_TIME
 	 *

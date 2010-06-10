@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_matchCondition_testcase extends tx_phpunit_testcase {
+class t3lib_matchConditionTest extends tx_phpunit_testcase {
 	/**
 	 * @var	array
 	 */

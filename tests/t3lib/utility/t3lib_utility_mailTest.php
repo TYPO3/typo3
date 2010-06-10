@@ -30,7 +30,7 @@
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_utility_mail_testcase extends tx_phpunit_testcase {
+class t3lib_utility_mailTest extends tx_phpunit_testcase {
 	/**
 	 * backed-up TYPO3_CONF_VARS SC_OPTIONS
 	 *

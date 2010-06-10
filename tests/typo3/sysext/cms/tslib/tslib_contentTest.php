@@ -31,7 +31,7 @@
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class tslib_content_testcase extends tx_phpunit_testcase {
+class tslib_contentTest extends tx_phpunit_testcase {
 	/**
 	 * @var	array
 	 */

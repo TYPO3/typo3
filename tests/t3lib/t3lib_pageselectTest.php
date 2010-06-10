@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_pageselect_testcase extends tx_phpunit_testcase {
+class t3lib_pageselectTest extends tx_phpunit_testcase {
 
 	/**
 	 * @var t3lib_DB

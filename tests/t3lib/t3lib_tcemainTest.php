@@ -34,7 +34,7 @@ require_once(PATH_t3lib . 'class.t3lib_tcemain.php');
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_tcemain_testcase extends tx_phpunit_testcase {
+class t3lib_tcemainTest extends tx_phpunit_testcase {
 	/**
 	 * @var	boolean
 	 */

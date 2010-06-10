@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_div_testcase extends tx_phpunit_testcase {
+class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * backup of the global variables _GET, _POST, _SERVER
 	 *

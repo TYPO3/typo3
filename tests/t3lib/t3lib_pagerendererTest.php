@@ -31,7 +31,7 @@
  *
  * @author Steffen Kamper (info@sk-typo3.de)
  */
-class t3lib_PageRenderer_testcase extends tx_phpunit_testcase {
+class t3lib_PageRendererTest extends tx_phpunit_testcase {
 	/**
 	 * @var t3lib_PageRenderer
 	 */

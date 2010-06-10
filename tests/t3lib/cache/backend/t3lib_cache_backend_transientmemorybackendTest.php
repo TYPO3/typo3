@@ -55,7 +55,7 @@ require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_transientmemo
  * @subpackage tests
  * @version $Id$
  */
-class t3lib_cache_backend_TransientMemoryBackendTestCase extends tx_phpunit_testcase {
+class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @expectedException t3lib_cache_Exception
