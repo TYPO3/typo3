@@ -1392,23 +1392,13 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$userAgent = t3lib_div::getIndpEnv('HTTP_USER_AGENT');
 		}
 		$browserInfo = t3lib_utility_Client::getBrowserInfo($userAgent);
-			// Known engines: order is not irrelevant.
+			// Known engines: order is not irrelevant!
 		$knownEngines = array('opera', 'msie', 'gecko', 'webkit');
 		if (is_array($browserInfo['all'])) {
 			foreach ($knownEngines as $engine) {
 				if ($browserInfo['all'][$engine]) {
 					$browserInfo['browser'] = $engine;
-					switch ($engine) {
-						case 'gecko':
-								// We need the Gecko revision number as version of the Gecko engine, not the build date
-							$tmp = strstr($browserInfo['useragent'], 'rv:');
-							$browserInfo['version'] = t3lib_utility_Client::getVersion(substr($tmp, 3));
-						break;
-						default:
-							$browserInfo['version'] = t3lib_utility_Client::getVersion($browserInfo['all'][$engine]);
-						break;
-					}
-					break;
+					$browserInfo['version'] = t3lib_utility_Client::getVersion($browserInfo['all'][$engine]);
 				}
 			}
 		}

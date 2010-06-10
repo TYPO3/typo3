@@ -1,6 +1,7 @@
 2010-06-09  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14677: htmlArea RTE: Toolbar state incorect in the absence of block element
+	* Follow-up to issue #14662: htmlArea RTE: Should use t3lib_utility_Client::getBrowserInfo
 
 2010-06-08  Stanislas Rolland  <typo3@sjbr.ca>
 
