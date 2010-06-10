@@ -1399,6 +1399,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				if ($browserInfo['all'][$engine]) {
 					$browserInfo['browser'] = $engine;
 					$browserInfo['version'] = t3lib_utility_Client::getVersion($browserInfo['all'][$engine]);
+					break;
 				}
 			}
 		}

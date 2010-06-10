@@ -1,3 +1,7 @@
+2010-06-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to issue #14662: htmlArea RTE: Should use t3lib_utility_Client::getBrowserInfo
+
 2010-06-10  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 
 	* Fixed bug #5117: typolink: cHash corrupted due to linkVars (together with Pierre Dudoret (Popy))
