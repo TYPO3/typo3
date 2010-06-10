@@ -11,6 +11,7 @@
 
 	* Follow-up to issue #14662: htmlArea RTE: Should use t3lib_utility_Client::getBrowserInfo
 	* Fixed bug #14691: htmlArea RTE: Hitting ENTER in absence of block element may produce non-valid html in non-IE browser
+	* Fixed bug #14692: t3lib_utility_client is not working with php 5.2.0 (Thanks to Franz Koch)
 
 2010-06-10  Dmitry Dulepov  <dmitry.dulepov@gmail.com>
 

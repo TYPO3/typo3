@@ -71,7 +71,7 @@ final class t3lib_utility_Client {
 				'lynx', 'amaya', 'omniweb', 'avant', 'camino', 'flock', 'aol');
 		$matches = array();
 
-		$pattern = '#(?<browser>' . join('|', $known) . ')[/ ]+(?<version>[0-9]+(?:\.[0-9]+)?)#';
+		$pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\.[0-9]+)?)#';
 			// Find all phrases (or return empty array if none found)
 		if (!preg_match_all($pattern, strtolower($userAgent), $matches)) {
 			$browserInfo['browser'] = 'unknown';
