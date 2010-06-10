@@ -1,3 +1,7 @@
+2010-06-10 Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #14685: Some status reports classes have wrong XCLASS inclusion (thanks to Peter Niederlag)
+
 2010-06-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to issue #14662: htmlArea RTE: Should use t3lib_utility_Client::getBrowserInfo
