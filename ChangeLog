@@ -1,6 +1,7 @@
 2010-06-10 Susanne Moog <typo3@susanne-moog.de>
 
 	* Added feature #8778: Add possibility to disable TYPO3 draft workspace by localconf.php configuration (Thanks to Sonja Scholz)
+	* Cleanup #14683: Remove misc/phpcheck/ directory (Thanks to Sebastian Michaelsen) 
 
 2010-06-10 Francois Suter  <francois@typo3.org>
 
