@@ -36,7 +36,7 @@ require_once('FakeDbConnection.php');
  * @package TYPO3
  * @subpackage dbal
  */
-class db_mssql_testcase extends BaseTestCase {
+class dbMssqlTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db
