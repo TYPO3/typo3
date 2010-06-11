@@ -131,7 +131,7 @@ Ext.onReady(function() {
 				]
 			};
 			// set the default options, if not set yet by the application from outside
-			Ext.applyif(this, initialConfig);
+			Ext.applyIf(this, initialConfig);
 
 			// set default options that cannot be overriden from outside
 			var staticConfig = {

@@ -1,3 +1,7 @@
+2010-06-11  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14668: Bug: Make flashupload work again (Thanks to Patrick Bahne)
+
 2010-06-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Cleanup #14405: Rename test cases from *_testcase to *Test (Thanks to Stefano Kowalke)
