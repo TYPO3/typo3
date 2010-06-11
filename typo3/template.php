@@ -798,6 +798,19 @@ class template {
 			$this->pageRenderer->addExtOnReadyCode($this->extJScode);
 		}
 
+			// hook for additional headerData
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'])) {
+			$preHeaderRenderHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'];
+			if (is_array($preHeaderRenderHook)) {
+				$hookParameters = array(
+					'pageRenderer' => &$this->pageRenderer,
+				);
+				foreach ($preHeaderRenderHook as $hookFunction) {
+					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+				}
+			}
+		}
+
 			// Construct page header.
 		$str = $this->pageRenderer->render(t3lib_PageRenderer::PART_HEADER);
 
@@ -814,8 +827,8 @@ $str.=$this->docBodyTagBegin().
 ($this->divClass?'
 
 <!-- Wrapping DIV-section for whole page BEGIN -->
-<div class="'.$this->divClass.'">
-':'').trim($this->form);
+<div class="' . $this->divClass . '">
+' : '' ) . trim($this->form);
 		return $str;
 	}
 
@@ -2277,5 +2290,6 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/templ
 // The template is loaded
 // ******************************
 $GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
+
 
 ?>
