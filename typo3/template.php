@@ -1934,7 +1934,7 @@ $str.=$this->docBodyTagBegin().
 									</table>
 								';
 							}
-						} else {
+						} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] == FALSE && $GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'] == 0) { // only add this info if old/deprecated newPagesVersioning is allowed
 							return '
 
 								<!--

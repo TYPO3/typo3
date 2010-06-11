@@ -930,9 +930,14 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Workspace Versioning type access?
+	 * Workspace Versioning type access. Check wether the requsted type of versioning (element/page/branch) is allowd in current workspace
+	 *   (element/pages/branches type of versioning can/could be set on custom workspaces on filed "vtype")
 	 *
+	 * @todo workspacecleanup: this seems mostly obsolete and should be removed
 	 * @param	integer		Versioning type to evaluation: -1, 0, >1
+	 *						0 = page (deprecated)
+	 *						-1 = element
+	 *						>1 = branch (deprecated), indicating the "nesting" level
 	 * @return	boolean		TRUE if OK
 	 */
 	function workspaceVersioningTypeAccess($type)	{
@@ -969,6 +974,7 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Finding "closest" versioning type, used for creation of new records.
 	 *
+	 * @see workspaceVersioningTypeAccess() for hints on $type
 	 * @param	integer		Versioning type to evaluation: -1, 0, >1
 	 * @return	integer		Returning versioning type
 	 */
