@@ -509,7 +509,7 @@ class tx_cms_layout extends recordList {
 							<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
 					}
 					$out.= '
-							<td class="t3-page-column">' . $head[$key] . $content[$key] . '</td>';
+							<td class="t3-page-column t3-page-column-' . $key . '">' . $head[$key] . $content[$key] . '</td>';
 
 						// Storing content for use if languageMode is set:
 					if ($this->tt_contentConfig['languageMode'])	{

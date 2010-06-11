@@ -1,5 +1,6 @@
 2010-06-11  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14598: Add unique column name in page module (Thanks to Steffen Gebert)
 	* Followup to #485: Hookrequest for ~ TemplaVoila unlink doesn't work for Non-Admins - added an additional hook parameter (Thanks to Tolleiv Nietsch)
 
 2010-06-11  Steffen Kamper  <info@sk-typo3.de>
