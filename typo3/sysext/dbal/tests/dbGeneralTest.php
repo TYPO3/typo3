@@ -35,7 +35,7 @@ require_once('BaseTestCase.php');
  * @package TYPO3
  * @subpackage dbal
  */
-class db_general_testcase extends BaseTestCase {
+class dbGeneralTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db

@@ -35,7 +35,7 @@ require_once('BaseTestCase.php');
  * @package TYPO3
  * @subpackage dbal
  */
-class sqlparser_general_testcase extends BaseTestCase {
+class sqlParserGeneralTest extends BaseTestCase {
 
 	/**
 	 * @var ux_t3lib_sqlparser (extended to make protected methods public)

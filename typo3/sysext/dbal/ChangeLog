@@ -1,3 +1,7 @@
+2010-06-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14405: Rename the test cases from *_testcase to *Test
+
 2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14372: Mapping does not work with table alias
