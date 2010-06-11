@@ -71,6 +71,15 @@ img {
 	border: 0px;
 }
 
+em {
+	font-style: italic;
+}
+
+th,
+strong {
+	font-weight: bold;
+}
+
 /* - - - - - - - - - - - - - - - - - - - - -
 Background color classes
 - - - - - - - - - - - - - - - - - - - - - */
