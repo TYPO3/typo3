@@ -144,6 +144,21 @@ class t3lib_basicFileFunctions	{
 
 	/**
 	 * Returns an array with a whole lot of fileinformation.
+	 * Information includes:
+	 * - path			: path part of give file
+	 * - file			: filename
+	 * - filebody		: filename without extension
+	 * - fileext		: lowercase extension
+	 * - realFileext	: extension
+	 * - tstamp			: timestamp of modification
+	 * - size			: file size
+	 * - type			: file type (block/char/dir/fifo/file/link)
+	 * - owner			: user ID of owner of file
+	 * - perms			: numerical representation of file permissions
+	 * - writable		: is file writeable by web user (FALSE = yes; TRUE = no) *)
+	 * - readable		: is file readable by web user (FALSE = yes; TRUE = no) *)
+	 *
+	 * *) logic is reversed because of handling by functions in class.file_list.inc
 	 *
 	 * @param	string		Filepath to existing file. Should probably be absolute. Filefunctions are performed on this value.
 	 * @return	array		Information about the file in the filepath

@@ -1,5 +1,6 @@
 2010-06-11  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #171: added documentatino for calculate and display filepermissions in filelist (Thanks to Jigal van Hemert)
 	* Added feature #14546: Make sprite icons / PNGs work in Internet Explorer 6 through PNGfix that works with background images (Thanks to Steffen Ritter)
 	* Added feature #14546: Hook in typo3/template.php to add additional header data (Thanks to Steffen Ritter)
 	* Fixed bug #14598: Add unique column name in page module (Thanks to Steffen Gebert)
