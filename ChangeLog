@@ -1,3 +1,7 @@
+2010-06-11  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #485: Hookrequest for ~ TemplaVoila unlink doesn't work for Non-Admins - added an additional hook parameter (Thanks to Tolleiv Nietsch)
+
 2010-06-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14682: ExtJS removes font-weight and font-style from several tags (Thanks to Steffen Gebert)
