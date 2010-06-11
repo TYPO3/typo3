@@ -197,7 +197,7 @@ class template {
 
 	/**
 	 * Whether to use the X-UA-Compatible meta tag
-	 * @var boolean 
+	 * @var boolean
 	 */
 	protected $useCompatibilityTag = TRUE;
 
@@ -2116,10 +2116,16 @@ $str.=$this->docBodyTagBegin().
 	protected function getPagePath($pageRecord) {
 			// Is this a real page
 		if ($pageRecord['uid'])	{
-			$title = $pageRecord['_thePathFull'];
+			$title = substr($pageRecord['_thePathFull'], 0, -1);
+				// remove current page title
+			$pos = strrpos($title, '/');
+			if ($pos !== FALSE) {
+				$title = substr($title, 0, $pos) . '/';
+			}
 		} else {
-			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+			$title = '';
 		}
+
 			// Setting the path of the page
 		$pagePath = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.path', 1) . ': <span class="typo3-docheader-pagePath">';
 
@@ -2149,7 +2155,8 @@ $str.=$this->docBodyTagBegin().
 			$iconImg = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageRecord, array('title'=>$alttext));
 				// Make Icon:
 			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
-			$pid = $pageRecord['uid'];
+			$uid = $pageRecord['uid'];
+			$title = t3lib_BEfunc::getRecordTitle('pages', $pageRecord);
 		} else {	// On root-level of page tree
 				// Make Icon
 			$iconImg = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root', array('title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']));
@@ -2158,11 +2165,12 @@ $str.=$this->docBodyTagBegin().
 			} else {
 				$theIcon = $iconImg;
 			}
-			$pid = '0 (root)';
+			$uid = '0';
+			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		}
 
 			// Setting icon with clickmenu + uid
-		$pageInfo = $theIcon . '<em>[pid: ' . $pid . ']</em>';
+		$pageInfo = $theIcon . '<strong>' . htmlspecialchars($title) . '&nbsp;[' . $uid . ']</strong>';
 		return $pageInfo;
 	}
 

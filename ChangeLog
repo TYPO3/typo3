@@ -1,5 +1,6 @@
 2010-06-11  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14605: rootline says "pid" where it should be "uid" or just "ID"
 	* Fixed bug #14668: Bug: Make flashupload work again (Thanks to Patrick Bahne)
 
 2010-06-11  Christian Kuhn  <lolli@schwarzbu.ch>
