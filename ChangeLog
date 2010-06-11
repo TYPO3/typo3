@@ -1,5 +1,6 @@
 2010-06-11  Benjamin Mack  <benni@typo3.org>
 
+	* Added feature #14546: Make sprite icons / PNGs work in Internet Explorer 6 through PNGfix that works with background images (Thanks to Steffen Ritter)
 	* Added feature #14546: Hook in typo3/template.php to add additional header data (Thanks to Steffen Ritter)
 	* Fixed bug #14598: Add unique column name in page module (Thanks to Steffen Gebert)
 	* Followup to #485: Hookrequest for ~ TemplaVoila unlink doesn't work for Non-Admins - added an additional hook parameter (Thanks to Tolleiv Nietsch)
