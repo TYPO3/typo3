@@ -1001,13 +1001,12 @@ class localRecordList extends recordList {
 	 *
 	 * @return	string	Navigation HTML
 	 *
-	 * @author	Dmitry Pikhno <dpi@goldenplanet.com>
-	 * @author	Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	protected function renderListNavigation() {
 		$totalPages = ceil($this->totalItems / $this->iLimit);
 
 		$content = '';
+		$returnContent = '';
 
 			// Show page selector if not all records fit into one page
 		if ($totalPages > 1) {
@@ -1117,13 +1116,15 @@ class localRecordList extends recordList {
 				. $next . $last . '<span class="bar">&nbsp;</span>'
 				. $reload
 				. '</div>';
+
+			$data = Array();
+			$titleColumn = $this->fieldArray[0];
+			$data[$titleColumn] = $content;
+
+			$returnContent = $this->addElement(1, '', $data);
 		} // end of if pages > 1
 
-		$data = Array();
-		$titleColumn = $this->fieldArray[0];
-		$data[$titleColumn] = $content;
-
-		return ($this->addElement(1, '', $data));
+		return $returnContent;
 	}
 
 

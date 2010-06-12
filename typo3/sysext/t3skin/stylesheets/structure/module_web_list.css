@@ -17,6 +17,11 @@ table.typo3-dblist tr td {
 	padding: 3px 1px 3px 6px;
 }
 
+table.typo3-dblist tr.db_list_normal td {
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
 table.typo3-dblist tr td.c-headLine,
 table.typo3-dblist tr.c-headLine td {
 	height: 24px;
@@ -29,7 +34,6 @@ table.typo3-dblist tr.c-table-row-spacer td {
 table.typo3-dblist tr td div.typo3-DBctrl {
 	height: 16px;
 	min-width: 252px;
-	padding: 2px;
 }
 
 tr.t3-row-header td {
@@ -127,6 +131,7 @@ table#typo3-versionSelector {
 table#typo3-versionSelector td {
 	padding-left: 2px;
 	padding-right: 2px;
+	vertical-align:middle;
 }
 
 div#typo3-newRecordLink,
