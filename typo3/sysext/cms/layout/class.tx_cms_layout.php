@@ -480,7 +480,9 @@ class tx_cms_layout extends recordList {
 								// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
 							$singleElementHTML .= '</div>';
 
-							$singleElementHTML = '<div class="t3-page-ce">' . $singleElementHTML . '</div>';
+
+							$statusHidden = ($this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '');
+							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '">' . $singleElementHTML . '</div>';
 
 							if ($this->defLangBinding && $this->tt_contentConfig['languageMode'])	{
 								$defLangBinding[$key][$lP][$row[($lP ? 'l18n_parent' : 'uid')]] = $singleElementHTML;

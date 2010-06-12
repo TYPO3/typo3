@@ -39,6 +39,30 @@ $Id$
 	background-color: #ffffff;
 }
 
+.t3-page-ce.active .t3-page-ce-body .t3-icon ,
+.t3-page-ce.active .t3-page-ce-body img {
+	opacity: inherit;
+}
+
+.t3-page-ce-hidden .t3-page-ce-body {
+	background-color: transparent;
+	border-style: none dotted dotted;
+}
+
+.t3-page-ce-hidden .t3-page-ce-body .t3-icon ,
+.t3-page-ce-hidden .t3-page-ce-body img {
+	opacity: 0.4;
+}
+
+.t3-page-ce-hidden .t3-page-ce-body,
+.t3-page-ce-hidden .t3-page-ce-body a {
+	color: #bbbbbb;
+}
+
+.t3-page-ce-hidden .t3-page-ce-header {
+	background-color: #e5e5e5;
+}
+
 table.typo3-page-columnsMode tr td a {
 	text-decoration: none;
 }
