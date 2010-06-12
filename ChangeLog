@@ -1,5 +1,6 @@
 2010-06-12  Susanne Moog  <typo3@susanne-moog.de>
 
+	* Follow-up to #14627: SpriteIcons: page-tree, not age-tree
 	* Fixed bug #14627: SpriteIcons: Several Icons replaced with non-existent sprite-Icons / not replaced / replaced wrong (Thanks to Steffen Ritter)
 
 2010-06-11  Benjamin Mack  <benni@typo3.org>
