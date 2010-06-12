@@ -1,3 +1,7 @@
+2010-06-12  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #13895: Bug: getTSConfigVal called with wrong object (Thanks to Andreas Stauder)
+
 2010-06-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14691: htmlArea RTE: Hitting ENTER in absence of block element may produce non-valid html in non-IE browser
