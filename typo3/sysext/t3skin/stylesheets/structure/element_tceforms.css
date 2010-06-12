@@ -3,253 +3,101 @@ TCEforms
 
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
-img.t3-TCEforms-reqImg {
-	display: inline-block;
-	height: 16px;
-	margin-left: 3px;
-	margin-right: 3px;
-	margin-top: 4px;
-	width: 16px;
+
+.t3-form-sheet {
+	padding: 10px 0;
 }
 
-img.t3-TCEforms-reqTabImg {
-	height: 16px;
+.t3-form-field {
+	margin: 0 10px;
+	padding: 9px 0;
+}
+
+.t3-form-palField .t3-form-palette-fieldset {
+	margin: 0px 10px 10px;
+}
+
+.t3-form-palFieldHeader {
+	margin: 15px 12px 5px;
+}
+
+.t3-form-palFieldHeader strong {
+	font-weight: bold;
+}
+
+.t3-form-field-label {
+	display: inline-block;
+	width: 80px;
+}
+
+.t3-icon-system-options-view,
+.t3-form-field img,
+.t3-form-palette-field img {
 	margin-left: 4px;
-	margin-bottom: -3px;
-	width: 16px;
 }
 
-img.t3-TCEforms-contentchangedImg {
-	display: inline-block;
-	margin-bottom: 2px;
-	width: 7px;
+.typo3-TCEforms-selectIcons img {
+	margin-left: 0;
 }
 
-.t3-form-palette-icon-required {
-	display: inline-block;
-	height: 16px;
-	margin-right: 2px;
-	width: 16px;
-}
-/* renamed to .t3-form-palette-icon-required, lines below kept for backwards-compatibility */
-img.t3-TCEforms-reqPaletteImg {
-	display: inline-block;
-	height: 16px;
-	margin-right: 2px;
-	width: 16px;
-}
-
-.t3-form-palette-icon-contentchanged {
-	width: 7px;
-}
-/* renamed to .t3-form-palette-icon-contentchanged, lines below kept for backwards-compatibility */
-img.t3-TCEforms-contentchangedPaletteImg {
-	width: 7px;
-}
-
-table.typo3-TCEforms {
-	width: 93%;
-}
-
-table.typo3-TCEforms .bgColor2,
-table.typo3-TCEforms tr.bgColor2 td {
-	padding-bottom: 5px;
-}
-
-table.typo3-TCEforms optgroup.c-divider,
-select option.c-divider {
-	margin-top: 10px;
-	padding: 0px;
-}
-
-table.typo3-TCEforms optgroup option {
-	margin: 0px;
-	padding: 2px;
-}
-
-
-table.typo3-TCEforms select.icon-select option {
-	padding-left: 22px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox {
-	margin-bottom: 10px;
-	width: 98%;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td {
-	padding: 1px 3px 1px 3px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-	padding-right: 30px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr td.c-labelCell P.c-descr {
-	margin-left: 30px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header td {
-	padding-left: 4px;
-	padding-top: 10px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header-checkbox-controls td {
-	padding-right: 16px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox tr.c-header-checkbox-controls td a {
-	padding-left: 16px;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-checkbox td.c-descr img {
-	float: right;
-}
-
-table.typo3-TCEforms table.typo3-TCEforms-select-singlebox {
-	margin-bottom: 10px;
-	margin-top: 4px;
-}
-
-table.typo3-TCEforms div.typo3-dyntabmenu-tabs {
-	margin-top: 10px;
-}
-
-.checkbox,
-.checkbox:hover {
-	margin: 4px 0 4px 2px;
-}
-
-table.typo3-TCEforms .class-main1 td,
-table.typo3-TCEforms .class-main11 td,
-table.typo3-TCEforms .class-main21 td,
-table.typo3-TCEforms .class-main31 td,
-table.typo3-TCEforms .class-main41 td,
-table.typo3-TCEforms .class-main51 td {
-	padding: 2px 0px 2px 0px;
-}
-
-table.typo3-TCEforms .class-main2 td,
-table.typo3-TCEforms .class-main12 td,
-table.typo3-TCEforms .class-main22 td,
-table.typo3-TCEforms .class-main32 td,
-table.typo3-TCEforms .class-main42 td,
-table.typo3-TCEforms .class-main52 td {
-	padding: 2px 0px 2px 0px;
-}
-
-table.typo3-TCEforms .class-main3,
-table.typo3-TCEforms .class-main13,
-table.typo3-TCEforms .class-main23,
-table.typo3-TCEforms .class-main33,
-table.typo3-TCEforms .class-main43,
-table.typo3-TCEforms .class-main53 {
-	padding: 2px 0px 2px 0px;
-}
-
-table.typo3-TCEforms .formField,
-table.typo3-TCEforms .formField1,
-table.typo3-TCEforms .formField2,
-table.typo3-TCEforms .formField3,
-table.typo3-TCEforms .formField4,
-table.typo3-TCEforms .formField5 {
-	margin: 4px 2px;
-	padding: 1px;
-	vertical-align: middle;
-}
-
-table.typo3-TCEforms .wrapperTable,
-table.typo3-TCEforms .wrapperTable1,
-table.typo3-TCEforms .wrapperTable2,
-table.typo3-TCEforms .wrapperTable3,
-table.typo3-TCEforms .wrapperTable4,
-table.typo3-TCEforms .wrapperTable5 {
-	margin: 0 0 5px 0;
-}
-
-table.typo3-TCEforms td.icons {
-	padding: 6px 2px;
-}
-
-table.typo3-TCEforms td.thumbnails {
-	padding-top: 6px;
-}
-
-.typo3-TCEforms-palette .typo3-csh-link img {
-	padding-top: 3px;
+.t3-form-field textarea,
+.t3-form-field table {
 	vertical-align: top;
+	display: inline;
 }
 
-.typo3-TCEforms-palette selct.select {
-	margin-top: 2px;
+.t3-form-recHeaderRow {
+	float: right;
+	margin-top: 15px;
 }
 
 .t3-form-palette-field-container {
-	display:inline-block;
-	margin-left:20px;
-	vertical-align:top;
+	display: inline-block;
+	width: 300px;
+	margin: 3px 20px 3px 0;
 }
 
-.t3-form-palette-field-container .t3-form-palette-field-label, .t3-form-palette-field-container .t3-form-palette-field {
-	display:block;
+.t3-form-palette-field-label {
+	display: inline-block;
+	margin-left: 4px;
+	width: 98px;
 }
 
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms suggest
-- - - - - - - - - - - - - - - - - - - - - */
-div.typo3-TCEforms-suggest-position-right {
-	margin-left: 10px;
-	margin-top: 5px;
+.t3-form-palette-field select {
+	width: 125px;
 }
 
-div.typo3-TCEforms-suggest label {
-	margin-right: 5px;
+.t3-form-palette-field .tceforms-textfield {
+	width: 101px !important;
 }
 
-div.typo3-TCEforms-suggest-indicator {
-	left: 230px;
-	position: relative;
-	top: -18px;
-}
-
-div.typo3-TCEforms-suggest-choices {
-	position: absolute;
-	width: 250px;
-}
-
-div.typo3-TCEforms-suggest-choices ul {
-	margin: 0;
-	padding: 0;
-}
-
-div.typo3-TCEforms-suggest-choices li {
-	display: block;
-	margin: 0;
-	padding: 4px 2px 4px 24px;
-}
-
-div.typo3-TCEforms-suggest-choices li.suggest-noresults {
-	height: auto;
-}
-
-div.typo3-TCEforms-suggest-choices span.suggest-uid {
-	margin-left: 0.3em;
-}
-
-div.typo3-TCEforms-suggest-choices span.suggest-path {
-	margin-top: 0.3em;
-}
-
-input.typo3-TCEforms-suggest-search {
-	width: 200px;
-	padding-left: 20px;
+.t3-form-palette-field table {
+	display: inline;
 	vertical-align: middle;
 }
 
-/* - - - - - - - - - - - - - - - - - - - - -
-TCEforms Inline-Relational-Record-Editing
-- - - - - - - - - - - - - - - - - - - - - */
-
-.typo3-TCEforms div.inlineDivMSIE {
+.t3-form .t3-csh-not-available {
 	display: inline-block;
+	width: 18px;
+}
+
+.formField5 {
+	width: 300px !important;
+}
+
+.formField5.tceforms-multiselect {
+	width: 300px !important;
+}
+
+.typo3-TCEforms-flexForm .bgColor5 {
+	width: 200px;
+}
+
+.typo3-TCEforms-flexForm {
+	padding: 10px 0;
+}
+
+.typo3-TCEforms-flexForm > div {
+	margin: 0 10px;
+	padding: 9px 0;
 }

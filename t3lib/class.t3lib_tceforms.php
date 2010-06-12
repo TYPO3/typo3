@@ -658,7 +658,7 @@ class t3lib_TCEforms	{
 				$content = implode('', $sheetContent);
 				if ($content) {
 					// Wrap content (row) with table-tag, otherwise tab/sheet will be disabled (see getdynTabMenu() )
-					$content = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.$content.'</table>';
+					$content = '<div class="t3-form-sheet">' . $content . '</div>';
 				}
 				$parts[$idx] = array(
 					'label' => $out_array_meta[$idx]['title'],
@@ -679,11 +679,9 @@ class t3lib_TCEforms	{
 			}
 
 			$output = '
-				<tr>
-					<td colspan="2">
+				<div class="t3-form-mainFields">
 					'.$output.'
-					</td>
-				</tr>';
+				</div>';
 
 		} else {
 				// Only one, so just implode:
@@ -1801,8 +1799,8 @@ class t3lib_TCEforms	{
 					$hasHelp = ($p[3] !='');
 
 					$label = t3lib_div::deHSCentities(htmlspecialchars($p[0]));
-					$help = $hasHelp ? '<span class="typo3-csh-inline show-right"><span class="header">' . $label . '</span>' .
-						'<span class="paragraph">' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</span></span>' : '';
+					$help = $hasHelp ? '<div class="typo3-csh-inline show-right"><h2 class="t3-row-header">' . $label . '</h2>' .
+						'<p>' . $GLOBALS['LANG']->hscAndCharConv(nl2br(trim(htmlspecialchars($p[3]))), false) . '</p></div>' : '';
 
 					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
 						$helpIcon  = '<a class="typo3-csh-link" href="#">';
@@ -4753,48 +4751,36 @@ class t3lib_TCEforms	{
 
 			// Wrapping all table rows for a particular record being edited:
 		$this->totalWrap='
-		<h2>###PAGE_TITLE###</h2>
+		<h3>###PAGE_TITLE###</h3>
 
-		<table class="typo3-TCEforms">'.
-			'<tr class="typo3-TCEforms-recHeaderRow">
-				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
-			</tr>'.
-			'|'.
-			'<tr>
-				<td><!-- --></td>
-				<td><img src="clear.gif" width="'.($this->docLarge ? 440+150 : 440).'" height="1" alt="" /></td>
-			</tr>
-		</table>';
+		<div class="t3-form">
+			|
+			<div class="t3-form-recHeaderRow">
+				###RECORD_ICON### <span class="t3-form-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR###
+			</div>
+		</div>';
 
 			// Wrapping a single field:
 		$this->fieldTemplate='
-			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td>###FIELD_HELP_ICON###</td>
-				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><strong>###FIELD_NAME###</strong></span>###FIELD_HELP_TEXT###</td>
-			</tr>
-			<tr ###BGCOLOR######CLASSATTR_1###>
-				<td nowrap="nowrap"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-reqImg" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" /></td>
-				<td valign="top">###FIELD_ITEM######FIELD_PAL_LINK_ICON###</td>
-			</tr>';
+			<div class="t3-form-field">
+				###FIELD_HELP_ICON### <label class="t3-form-field-label">###FIELD_NAME###</label>###FIELD_HELP_TEXT###
+				<img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-form-reqImg" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" />
+				###FIELD_ITEM######FIELD_PAL_LINK_ICON###
+			</div>';
 
 		$this->palFieldTemplate='
-			<tr ###BGCOLOR######CLASSATTR_1###>
-				<td></td>
-				<td nowrap="nowrap" valign="top">###FIELD_PALETTE###</td>
-			</tr>';
+			<div class="t3-form-palField">
+				###FIELD_PALETTE###
+			</div>';
 		$this->palFieldTemplateHeader='
-			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td><!-- --></td>
-				<td nowrap="nowrap" valign="top"><strong>###FIELD_HEADER###</strong></td>
-			</tr>';
+			<div class="t3-form-palFieldHeader">
+				<strong>###FIELD_HEADER###</strong>
+			</div>';
 
 		$this->sectionWrap='
-			<tr>
-				<td colspan="2"><img src="clear.gif" width="1" height="###SPACE_BEFORE###" alt="" /></td>
-			</tr>
-			<tr>
-				<td colspan="2"><table ###TABLE_ATTRIBS###>###CONTENT###</table></td>
-			</tr>
+			<div class="t3-form-section">
+				###CONTENT###
+			</div>
 			';
 	}
 
@@ -4874,23 +4860,22 @@ class t3lib_TCEforms	{
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new',1).
 						'</span>';
 
-			#t3lib_BEfunc::fixVersioningPid($table,$rec);	// Kasper: Should not be used here because NEW records are not offline workspace versions...
 			$truePid = t3lib_BEfunc::getTSconfig_pidValue($table,$rec['uid'],$rec['pid']);
 			$prec = t3lib_BEfunc::getRecordWSOL('pages',$truePid,'title');
 			$pageTitle = t3lib_BEfunc::getRecordTitle('pages', $prec, TRUE, FALSE);
 			$rLabel = '<em>[PID: ' . $truePid . '] ' . $pageTitle . '</em>';
+			
 		} else {
 			$newLabel = ' <span class="typo3-TCEforms-recUid">['.$rec['uid'].']</span>';
 			$rLabel   = t3lib_BEfunc::getRecordTitle($table, $rec, TRUE, FALSE);
 			$prec = t3lib_BEfunc::getRecordWSOL('pages',$rec['pid'],'title');
-			$pageTitle = t3lib_BEfunc::getRecordTitle('pages', $prec, TRUE, FALSE);
+			$pageTitle = t3lib_BEfunc::getRecordTitle('pages', $prec, TRUE, FALSE);			
 		}
 
 		foreach ($arr as $k => $v)	{
 				// Make substitutions:
 			$arr[$k] = str_replace('###PAGE_TITLE###', $pageTitle, $arr[$k]);
 			$arr[$k] = str_replace('###ID_NEW_INDICATOR###', $newLabel, $arr[$k]);
-			$arr[$k] = str_replace('###RECORD_LABEL###',$rLabel,$arr[$k]);
 			$arr[$k] = str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);
 
 			$titleA=t3lib_BEfunc::titleAltAttrib($this->getRecordPath($table,$rec));
@@ -4934,11 +4919,6 @@ class t3lib_TCEforms	{
 		$inTemplate = str_replace('###BGCOLOR_HEAD###',$this->colorScheme[1]?' bgcolor="'.$this->colorScheme[1].'"':'',$inTemplate);
 		$inTemplate = str_replace('###FONTCOLOR_HEAD###',$this->colorScheme[3],$inTemplate);
 
-			// Classes:
-		$inTemplate = str_replace('###CLASSATTR_1###',$this->classScheme[0]?' class="'.$this->classScheme[0].'"':'',$inTemplate);
-		$inTemplate = str_replace('###CLASSATTR_2###',$this->classScheme[1]?' class="'.$this->classScheme[1].'"':'',$inTemplate);
-		$inTemplate = str_replace('###CLASSATTR_4###',$this->classScheme[3]?' class="'.$this->classScheme[3].'"':'',$inTemplate);
-
 		return $inTemplate;
 	}
 
@@ -4959,27 +4939,6 @@ class t3lib_TCEforms	{
 	 * @return	string		HTML output
 	 */
 	function printPalette($palArr) {
-		$fieldAttributes = $labelAttributes = '';
-
-			// Init color/class attributes:
-		if ($this->colorScheme[2]) {
-			$labelAttributes .= ' bgcolor="' . $this->colorScheme[2] . '"';
-		}
-
-		if ($this->classScheme[2]) {
-			$labelAttributes .= ' class="t3-form-palette-field-label ' . $this->classScheme[2] . '"';
-		} else {
-			$labelAttributes .= ' class="t3-form-palette-field-label"';
-		}
-
-		if ($this->colorScheme[4]) {
-			$fieldAttributes .= ' style="color: ' . $this->colorScheme[4] . '"';
-		}
-		
-		if ($this->classScheme[4]) {
-			$fieldAttributes .= ' class="t3-form-palette-field' . $this->classScheme[4] . '"';
-		}
-
 		$row = 0;
 		$hRow = $iRow = array();
 		$lastLineWasLinebreak = FALSE;
@@ -4995,14 +4954,14 @@ class t3lib_TCEforms	{
 				$lastLineWasLinebreak = FALSE;
 				$fieldIdentifierForJs = $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'];
 				$iRow[$row][] = '<span class="t3-form-palette-field-container">' .
-						'<label' . $labelAttributes . '>' .
+						$content['HELP_ICON'] .
+						'<label class="t3-form-palette-field-label">' .
 							$content['NAME'] . 
 							'<img name="req_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-required" alt="" />' .
 							'<img name="cm_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />' .
 						'</label>' .
-						'<span' . $fieldAttributes . '>' .
+						'<span class="t3-form-palette-field">' .
 							$content['ITEM'] .
-							$content['HELP_ICON'] .
 						'</span>' .
 					'</span>';
 			}
@@ -5031,7 +4990,7 @@ class t3lib_TCEforms	{
 			return t3lib_BEfunc::helpTextIcon($table, $field, $this->backPath, $force);
 		} else {
 				// Detects fields with no CSH and outputs dummy line to insert into CSH locallang file:
-			return '<span class="nbsp">&nbsp;</span>';
+			return '<span class="t3-csh-not-available">&nbsp;</span>';
 		}
 	}
 
