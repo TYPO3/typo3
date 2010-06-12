@@ -10,6 +10,8 @@ General
 
 	* Versioning: "Page" and "Branch" versioning has been disabled for all installations, because it is deprecated since TYPO3 4.2. If you still use one of these versioning types, make sure to set $TYPO3_CONF_VARS['BE']['elementVersioningOnly'] = FALSE in your localconf.php. Please be aware that this option will vanish with TYPO3 4.6 and that "Page" and "Branch" versioning is neither supported nor maintained any longer.
 
+	* Versioning: The dummy "draft workspace" has been disabled for all installations. If you need it you can enable it again in the extension configuration of the version extension.
+
 	* There is now a complete new Backend skin for all backend modules, the login screen and the install tool. It is still called "t3skin", however due to the use of icon sprites and the refactoring of the CSS files, it is not possible anymore to run the TYPO3 backend with the old backend skin (from 3.x), the t3skin look and feel from the previous 4.x versions can be obtained by the TER, but is not actively maintained anymore.
 
 	* The static templates for some basic designs that were part of the TYPO3 Core since TYPO3 3.5 are now moved to a system extension that is not included by default. If you are using one of these templates (GLUECK, GREEN, CANDIDATE etc) or one of the old table-based layouts for rendering content (like content (default) or plaintext rendering), make sure to install the system extension via the TYPO3 Installer.
