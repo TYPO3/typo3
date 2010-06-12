@@ -15,7 +15,7 @@ ol, ul {
 }
 
 ul { 
-	list-style:disc;
+	list-style: disc;
 }
 
 ol { 
@@ -109,11 +109,15 @@ fieldset.t3-install-form-submit {
 	width: auto;
 }
 
+.t3-install-login fieldset.t3-install-form-submit {
+	margin-left: 8em;
+}
+
 fieldset select,
 input.t3-install-form-input-text,
 textarea {
 	background: url('../Images/input-background.gif') repeat-x scroll 0 0 #FFFFFF;
-	border: 1px solid #7C7C7C;
+	border: 1px solid #7c7c7c;
 	color: #000000;
 	font-size: 1.1em;
 	line-height: 1.7em;
@@ -194,7 +198,7 @@ button span.t3-install-form-button-icon-positive {
 
 #t3-install-menu {
 	margin: 0;
-	padding: 0.5em 0;
+	padding: 0;
 	list-style: none;
 	width: 16em;
 	font-size: 110%;
@@ -202,11 +206,12 @@ button span.t3-install-form-button-icon-positive {
 }
 
 #t3-install-menu li {
-	padding: 0 0 0 2.8em;
+	padding: 0.35em 0 0.35em 2.8em;
 }
 
 #t3-install-menu li.act {
 	background-color: #585858;
+	line-height: 1.5em;
 }
 
 #t3-install-menu a {
@@ -215,7 +220,7 @@ button span.t3-install-form-button-icon-positive {
 }
 
 #t3-install-menu a:hover {
-	text-decoration: underline;
+	color: #111;
 }
 
 #t3-install-menu li.act a {
@@ -292,10 +297,33 @@ button span.t3-install-form-button-icon-positive {
 
 #t3-install-box-body {
 	font-size: 110%;
-	line-height: 1.5em;
-	padding: 0.1em 1.8em 1em 1.8em;
+	line-height: 1.7em;
+	padding: 0.1em 1.8em 1.8em 1.8em;
 	color: #606060;
 }
+
+.t3-install-login #t3-install-box-body {
+	padding: 0.1em 0 0 3.6em;
+}
+
+#t3-install-box-body h3 {
+	margin: 0.75em 0 2em;
+}
+
+.t3-install-login #t3-install-box-body h3 {
+	margin: 1em 0;
+}
+
+#t3-install-box-body a {
+	color: #606060 !important;
+	text-decoration: underline !important;
+}
+
+#t3-install-box-body a:hover {
+	color: #111 !important;
+}
+
+
 
 .typo3-message {
 	padding: 0.6em 0.6em 0.6em 2.6em;

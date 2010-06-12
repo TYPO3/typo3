@@ -17,7 +17,7 @@ h1 {
 
 .standalone h1 {
 	background: url('../../gfx/installlogo.gif') no-repeat scroll 0 0 transparent;
-	text-indent:-999em;
+	text-indent: -999em;
 	display: block;
 	height: 34px;
 	margin: 0 0 1.85em;
@@ -29,23 +29,23 @@ h2 {
 
 #container {
 	margin: 0 auto;
-	width: 39em;
+	width: 41em;
 	font-size: 110%;
-	line-height: 1.5em;
+	line-height: 1.7em;
 }
 
 .typo3-message {
-	padding: 0.6em 0.6em 0.6em 2.6em;
+	background-position: 1.2em 1.8em;
 	background-repeat: no-repeat;
-	background-position: 0.5em 0.7em;
 	border: 1px solid;
-	color: #000000;
+	color: #9e7d4a;
+	padding: 1.5em 1.5em 1em 3.5em;
 }
 
 .message-warning {
 	background-image: url("../../gfx/warning.png");
-	background-color: #fbffb3;
-	border-color: #c4b70d;
+	background-color: #fbf6de;
+	border-color: #b1905c;
 }
 
 .typo3-message ul {
@@ -53,7 +53,7 @@ h2 {
 }
 
 .typo3-message a {
-	color: #212424;
+	color: #9e7d4a;
 }
 
 .typo3-message a:hover {
