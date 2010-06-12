@@ -148,17 +148,12 @@ final class t3lib_iconWorks	{
 	 * @param	string		Additional attributes for the image tag
 	 * @param	boolean		If set, the icon will be grayed/shaded
 	 * @return	string		<img>-tag
+	 * @deprecated	since TYPO3 4.4, use t3lib_iconWorks::getSpriteIconForRecord instead
 	 * @see getIcon()
 	 */
 	public static function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
-		$str = '<img' .
-				self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') .
-				(trim($params) ? ' ' . trim($params) : '');
-		if (!stristr($str, 'alt="')) {
-			$str.=' alt=""';
-		}
-		$str.=' />';
-		return $str;
+		t3lib_div::logDeprecatedFunction();
+		return self::getSpriteIconForRecord($table,$row);
 	}
 
 	/**
