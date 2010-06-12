@@ -657,7 +657,7 @@ class fileList extends t3lib_recordList {
 		$elFromTable = $this->clipObj->elFromTable('_FILE');
 		if (@is_dir($fullIdent) && count($elFromTable))	{
 			$cells[]='<a href="'.htmlspecialchars($this->clipObj->pasteUrl('_FILE',$fullIdent)).'" onclick="return '.htmlspecialchars($this->clipObj->confirmMsg('_FILE',$fullIdent,'into',$elFromTable)).'" title="' . $GLOBALS['LANG']->getLL('clip_pasteInto', TRUE) . '">'.
-			  t3lib_iconWorks::getSpriteIcon('document-paste-into') . 
+			  t3lib_iconWorks::getSpriteIcon('actions-document-paste-into') . 
 			'</a>';
 		}
 

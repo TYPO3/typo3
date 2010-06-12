@@ -1078,18 +1078,24 @@ class t3lib_TCEforms	{
 		if (in_array('date', $evalList)) {
 			$inputId = uniqid('tceforms-datefield-');
 			$cssClasses[] = 'tceforms-textfield tceforms-datefield';
-			$fieldAppendix = '<img' . t3lib_iconWorks::skinImg(
-				$this->backPath, 'gfx/datepicker.gif', '', 0)
-				. ' style="cursor:pointer; vertical-align:middle;" alt=""'
-				. ' id="picker-' . $inputId . '" />';
+			$fieldAppendix = t3lib_iconWorks::getSpriteIcon(
+				'actions-edit-pick-date',
+				array(
+					'style' => 'cursor:pointer;',
+					'id' => 'picker-' . $inputId
+				)
+			);
 
 		} elseif (in_array('datetime', $evalList)) {
 			$inputId = uniqid('tceforms-datetimefield-');
 			$cssClasses[] = 'tceforms-textfield tceforms-datetimefield';
-			$fieldAppendix = '<img' . t3lib_iconWorks::skinImg(
-				$this->backPath, 'gfx/datepicker.gif', '', 0)
-				. ' style="cursor:pointer; vertical-align:middle;" alt=""'
-				. ' id="picker-' . $inputId . '" />';
+			$fieldAppendix = t3lib_iconWorks::getSpriteIcon(
+				'actions-edit-pick-date',
+				array(
+					'style' => 'cursor:pointer;',
+					'id' => 'picker-' . $inputId
+				)
+			);
 
 		} elseif (in_array('timesec', $evalList)) {
 			$inputId = uniqid('tceforms-timesecfield-');
@@ -2181,8 +2187,18 @@ class t3lib_TCEforms	{
 						$absFilePath = t3lib_div::getFileAbsFileName($config['uploadfolder'] ? $config['uploadfolder'] . '/' . $imgPath : $imgPath);
 
 						$fI = pathinfo($imgPath);
-						$fileIcon = t3lib_BEfunc::getFileIcon(strtolower($fI['extension']));
-						$fileIcon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/fileicons/'.$fileIcon,'width="18" height="16"').' class="absmiddle" title="'.htmlspecialchars($fI['basename'].($absFilePath && @is_file($absFilePath) ? ' ('.t3lib_div::formatSize(filesize($absFilePath)).'bytes)' : ' - FILE NOT FOUND!')).'" alt="" />';
+						$fileIcon = t3lib_iconWorks::getSpriteIconForFile(
+							strtolower($fI['extension']),
+							array(
+								'title' => htmlspecialchars(
+									$fI['basename'] . 
+									($absFilePath && @is_file($absFilePath) 
+										? ' (' . t3lib_div::formatSize(filesize($absFilePath)) . 'bytes)' : 
+										' - FILE NOT FOUND!'
+									)
+								)
+							)
+						);
 
 						$imgs[] = '<span class="nobr">'.t3lib_BEfunc::thumbCode($rowCopy,$table,$field,$this->backPath,'thumbs.php',$config['uploadfolder'],0,' align="middle"').
 									($absFilePath ? $this->getClickMenu($fileIcon, $absFilePath) : $fileIcon).
@@ -2279,7 +2295,18 @@ class t3lib_TCEforms	{
 					if (!$disabled && $show_thumbs)	{
 						$rr = t3lib_BEfunc::getRecordWSOL($this_table,$this_uid);
 						$imgs[] = '<span class="nobr">'.
-								$this->getClickMenu(t3lib_iconWorks::getIconImage($this_table,$rr,$this->backPath,'align="top" title="'.htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'],$perms_clause,15)).' [UID: '.$rr['uid'].']"'),$this_table, $this_uid).
+								$this->getClickMenu(
+									t3lib_iconWorks::getSpriteIconForRecord(
+										$this_table,
+										$rr,
+										array(
+											'style' => 'vertical-align:top',
+											'title' => htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'], $perms_clause, 15) . ' [UID: ' . $rr['uid'] . ']"')
+										)
+									),
+									$this_table,
+									$this_uid
+								) .
 								'&nbsp;'.
 								t3lib_BEfunc::getRecordTitle($this_table,$rr,TRUE).' <span class="typo3-dimmed"><em>['.$rr['uid'].']</em></span>'.
 								'</span>';
@@ -2754,7 +2781,6 @@ class t3lib_TCEforms	{
 									</td>
 									<td align="right">'.
 										($mayRestructureFlexforms ? t3lib_iconWorks::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move')) : '').
-									#	'<a href="#" onclick="'.htmlspecialchars($onClickCopy).'"><img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/clip_copy.gif','width="12" height="12"').' alt="Copy" title="Copy" /></a>'.	// DISABLED - see what above in definition of variable $onClickCopy
 										($mayRestructureFlexforms ? '<a href="#" onclick="'.htmlspecialchars($onClickRemove).'">'.t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => 'Delete')) : '').
 									'</td>
 									</tr>
@@ -3653,7 +3679,7 @@ class t3lib_TCEforms	{
 				}
 				$aOnClick.= 'return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-						t3lib_iconWorks::getSpriteIcon('actions-edit-paste', array('title' => htmlspecialchars(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))))) . 
+						t3lib_iconWorks::getSpriteIcon('actions-document-paste-into', array('title' => htmlspecialchars(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))))) . 
 				'</a>';
 			}
 			$rOnClick = $rOnClickInline.'setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false';

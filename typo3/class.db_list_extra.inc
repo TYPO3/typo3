@@ -281,7 +281,7 @@ class localRecordList extends recordList {
 				// Back
 			if ($this->returnUrl) {
 				$buttons['back'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisUrl($this->returnUrl, array('id' => $this->id))) . '" class="typo3-goBack" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
-									t3lib_iconWorks::getSpriteIcon('actions-go-back') .
+									t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 								'</a>';
 			}
 		}
@@ -694,7 +694,7 @@ class localRecordList extends recordList {
 						// If the record is edit-locked	by another user, we will show a little warning sign:
 					if (($lockInfo = t3lib_BEfunc::isRecordLocked($table, $row['uid']))) {
 						$warning = '<a href="#" onclick="' . htmlspecialchars('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . '); return false;') . '" title="' . htmlspecialchars($lockInfo['msg']) . '">' .
-								t3lib_iconWorks::getSpriteIcon('status-warning-record') .
+								t3lib_iconWorks::getSpriteIcon('status-warning-in-use') .
 							'</a>';
 					}
 					$theData[$fCol] = $warning . $this->linkWrapItems($table, $row['uid'], $recTitle, $row);
@@ -1020,45 +1020,41 @@ class localRecordList extends recordList {
 			if ($currentPage > 1) {
 				$labelFirst = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:first');
 
-				$first = '<a href="' . $listURL . '&pointer=0">
-					<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_first.gif')
-					. 'alt="' . $labelFirst . '" title="' . $labelFirst . '" />
-				</a>';
+				$first = '<a href="' . $listURL . '&pointer=0">' .
+					t3lib_iconWorks::getSpriteIcon('actions-view-paging-first', array('title'=> $labelFirst)) .
+				'</a>';
 			} else {
-				$first = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_first_disabled.gif') . 'alt="" title="" />';
+				$first = t3lib_iconWorks::getSpriteIcon('actions-view-paging-first-disabled');
 			}
 
 			if (($currentPage - 1) > 0) {
 				$labelPrevious = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:previous');
 
-				$previous = '<a href="' . $listURL . '&pointer=' . (($currentPage - 2) * $this->iLimit) . '">
-					<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_previous.gif')
-					. 'alt="' . $labelPrevious . '" title="' . $labelPrevious . '" />
-					</a>';
+				$previous = '<a href="' . $listURL . '&pointer=' . (($currentPage - 2) * $this->iLimit) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-view-paging-previous', array('title' => $labelPrevious)) .
+					'</a>';
 			} else {
-				$previous = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_previous_disabled.gif') . 'alt="" title="" />';
+				$previous = t3lib_iconWorks::getSpriteIcon('actions-view-paging-previous-disabled');
 			}
 
 			if (($currentPage + 1) <= $totalPages) {
 				$labelNext = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:next');
 
-				$next = '<a href="' . $listURL . '&pointer=' . (($currentPage) * $this->iLimit) . '">
-					<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_next.gif')
-					. 'alt="' . $labelNext . '" title="' . $labelNext . '" />
-					</a>';
+				$next = '<a href="' . $listURL . '&pointer=' . (($currentPage) * $this->iLimit) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-view-paging-next', array('title' => $labelNext)) .
+					'</a>';
 			} else {
-				$next = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_next_disabled.gif') . 'alt="" title="" />';
+				$next = t3lib_iconWorks::getSpriteIcon('actions-view-paging-next-disabled');
 			}
 
 			if ($currentPage != $totalPages) {
 				$labelLast = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:last');
 
-				$last = '<a href="' . $listURL . '&pointer=' . (($totalPages - 1) * $this->iLimit) . '">
-					<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_last.gif')
-					. 'alt="' . $labelLast . '" title="' . $labelLast . '" />
-					</a>';
+				$last = '<a href="' . $listURL . '&pointer=' . (($totalPages - 1) * $this->iLimit) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-view-paging-last', array('title' => $labelLast)) .
+					'</a>';
 			} else {
-				$last = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/control_last_disabled.gif') . 'alt="" title="" />';
+				$last = t3lib_iconWorks::getSpriteIcon('actions-view-paging-last-disabled');
 			}
 
 			$reload = '<a href="#" onclick="document.dblistForm.action=\''

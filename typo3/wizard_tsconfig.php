@@ -347,7 +347,7 @@ class SC_wizard_tsconfig {
 
 				// Title and description:
 			$out.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>''))).'" class="typo3-goBack">'.
-					t3lib_iconWorks::getSpriteIcon('actions-go-back') . 
+					t3lib_iconWorks::getSpriteIcon('actions-view-go-back') . 
 					htmlspecialchars($obj_string).
 					'</a><br />';
 			if ($rec['title'])	$out.= '<strong>'.htmlspecialchars($rec['title']).': </strong>';

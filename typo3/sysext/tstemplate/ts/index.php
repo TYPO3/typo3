@@ -307,7 +307,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				if(!empty($this->sObj)) {
 						// BACK
 					$buttons['back'] = '<a href="index.php?id=' . $this->id . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
-									t3lib_iconWorks::getSpriteIcon('actions-go-back') . 
+									t3lib_iconWorks::getSpriteIcon('actions-view-go-back') . 
 								'</a>';
 				}
 			}

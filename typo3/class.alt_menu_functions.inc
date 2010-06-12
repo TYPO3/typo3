@@ -212,7 +212,7 @@ class alt_menu_functions {
 				// make menu collapsable
 			if($collapsable == 1 && is_array($moduleInfo['sub'])) {
 				$collapseJS = 'onclick="window.location.href=\'alt_menu.php?collapsedOverride['.$moduleName.']='.($config[$moduleName] ? '0' : '1').'\'"';
-				$collapseIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-' . ($config[$moduleName]) ? 'expand' : 'collapse', array('class' => 'c-iconCollapse'));
+				$collapseIcon = t3lib_iconWorks::getSpriteIcon('actions-view-table-' . ($config[$moduleName] ? 'expand' : 'collapse'), array('class' => 'c-iconCollapse'));
 			} else {
 				$collapseJS = $collapseIcon = '';
 			}

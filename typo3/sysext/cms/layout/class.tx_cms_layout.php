@@ -2330,7 +2330,7 @@ class tx_cms_layout extends recordList {
 	 * @return	string		IMG tag for icon.
 	 */
 	function noEditIcon($label='noEditItems')	{
-		return t3lib_iconWorks::getSpriteIcon('status-edit-deny', array('title' => $GLOBALS['LANG']->getLL($label, TRUE)));
+		return t3lib_iconWorks::getSpriteIcon('status-edit-read-only', array('title' => $GLOBALS['LANG']->getLL($label, TRUE)));
 	}
 
 	/**

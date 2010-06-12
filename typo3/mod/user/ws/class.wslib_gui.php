@@ -1184,7 +1184,7 @@ class wslib_gui {
 				if ($table==='pages')	{
 					$actionLinks.=
 						'<a href="#" onclick="top.loadEditId('.$uid.');top.goToModule(\''.$this->pageModule.'\'); return false;" title="' . $LANG->getLL('img_title_edit_page') . '">'.
-						  t3lib_iconWorks::getSpriteIcon('apps-version-page-open') .
+						  t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 						'</a>';
 				} else {
 					$params = '&edit['.$table.']['.$uid.']=edit';

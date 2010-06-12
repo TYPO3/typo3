@@ -179,7 +179,7 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 			$this->content .= $LANG->getLL($this->isEditAction ? 'edit_workspace_no_permission' : 'create_workspace_no_permission');
 			$this->content .= $this->doc->spacer(5);
 			$goBack = $GLOBALS['LANG']->getLL('edit_workspace_go_back');
-			$this->content .= t3lib_iconWorks::getSpriteIcon('actions-go-back') .
+			$this->content .= t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 						'<a href="javascript:history.back()" title="'. $goBack . '">' .
 						$goBack .
 						'</a>';

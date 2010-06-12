@@ -634,8 +634,12 @@ class t3lib_TCEforms_inline {
 						$style = ' style="'.$config['inline']['inlineNewButtonStyle'].'"';
 					}
 					$cells['new']='<a href="#" onclick="'.htmlspecialchars($onClick).'"'.$class.$style.'>'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/new_'.($isPagesTable?'page':'el').'.gif','width="'.($isPagesTable?13:11).'" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new'.($isPagesTable?'Page':'Record'),1).'" alt="" />'.
-							'</a>';
+						t3lib_iconWorks::getSpriteIcn('actions-' . ($isPagesTable? 'page' :'document') . '-new',
+							array(
+								'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new' . ($isPagesTable ? 'Page' : 'Record' ), 1)
+							)
+						).
+						'</a>';
 				}
 			}
 
@@ -665,12 +669,24 @@ class t3lib_TCEforms_inline {
 				$onClick = "return inline.enableDisableRecord('".$nameObjectFtId."')";
 				if ($rec[$hiddenField])	{
 					$cells['hide.unhide']='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_unhide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide'.($isPagesTable?'Page':''),1).'" alt="" id="'.$nameObjectFtId.'_disabled" />'.
-							'</a>';
+						t3lib_iconWorks::getSpriteIcon(
+							'actions-edit-unhide',
+							array(
+								'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:unHide' . ($isPagesTable ? 'Page' : ''), 1),
+								'id' => $nameObjectFtId . '_disabled'
+							)
+						) .
+						'</a>';
 				} else {
 					$cells['hide.hide']='<a href="#" onclick="'.htmlspecialchars($onClick).'">'.
-							'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/button_hide.gif','width="11" height="10"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide'.($isPagesTable?'Page':''),1).'" alt="" id="'.$nameObjectFtId.'_disabled" />'.
-							'</a>';
+						t3lib_iconWorks::getSpriteIcon(
+							'actions-edit-hide',
+							array(
+								'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:hide' . ($isPagesTable ? 'Page' : ''), 1),
+								'id' => $nameObjectFtId . '_disabled'
+							)
+						) .
+						'</a>';
 				}
 			}
 
@@ -694,7 +710,7 @@ class t3lib_TCEforms_inline {
 			// If the record is edit-locked	by another user, we will show a little warning sign:
 		if ($lockInfo=t3lib_BEfunc::isRecordLocked($foreign_table,$rec['uid']))	{
 			$cells['locked']='<a href="#" onclick="'.htmlspecialchars('alert('.$GLOBALS['LANG']->JScharCode($lockInfo['msg']).');return false;').'">'.
-					t3lib_iconWorks::getSpriteIcon('status-record-warning', array('title' => htmlspecialchars($lockInfo['msg']))) .
+					t3lib_iconWorks::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) .
 					'</a>';
 		}
 
@@ -902,8 +918,7 @@ class t3lib_TCEforms_inline {
 		switch($type) {
 			case 'newRecord':
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.createnew', 1);
-				$iconFile = 'gfx/new_el.gif';
-				// $iconAddon = 'width="11" height="12"';
+				$icon = 'actions-document-new';
 				$className = 'typo3-newRecordLink';
 				$attributes['class'] = 'inlineNewButton '.$this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = "return inline.createNewRecord('$objectPrefix')";
@@ -916,22 +931,22 @@ class t3lib_TCEforms_inline {
 				break;
 			case 'localize':
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:localizeAllRecords', 1);
-				$iconFile = 'gfx/localize_el.gif';
+				$icon = 'actions-document-localize';
 				$className = 'typo3-localizationLink';
 				$attributes['onclick'] = "return inline.synchronizeLocalizeRecords('$objectPrefix', 'localize')";
 				break;
 			case 'synchronize':
 				$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:synchronizeWithOriginalLanguage', 1);
-				$iconFile = 'gfx/synchronize_el.gif';
+				$icon = 'actions-document-synchronize';
 				$className = 'typo3-synchronizationLink';
 				$attributes['class'] = 'inlineNewButton '.$this->inlineData['config'][$nameObject]['md5'];
 				$attributes['onclick'] = "return inline.synchronizeLocalizeRecords('$objectPrefix', 'synchronize')";
 				break;
 		}
 			// Create the link:
-		$icon = ($iconFile ? '<img'.t3lib_iconWorks::skinImg($this->backPath, $iconFile, $iconAddon).' alt="'.htmlspecialchars($title.$titleAddon).'" />' : '');
-		$link = $this->wrapWithAnchor($icon.$title.$titleAddon, '#', $attributes);
-		return '<div'.($className ? ' class="'.$className.'"' : '').'>'.$link.'</div>';
+		$icon = ($icon ? t3lib_iconWorks::getSpriteIcon($icon, array('title' => htmlspecialchars($title . $titleAddon))) : '');
+		$link = $this->wrapWithAnchor($icon . $title . $titleAddon, '#', $attributes);
+		return '<div' . ($className ? ' class="' . $className . '"' : '').'>' . $link . '</div>';
 	}
 
 

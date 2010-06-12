@@ -897,7 +897,7 @@ class SC_alt_doc {
 					// If only SOME fields are shown in the form, this will link the user to the FULL form:
 				if ($this->columnsOnly)	{
 					$buttons['columns_only'] = '<a href="'.htmlspecialchars($this->R_URI.'&columnsOnly=').'" title="' . $LANG->getLL('editWholeRecord', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-edit-edit') .
+							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 						'</a>';
 				}
 			}

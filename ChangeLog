@@ -1,3 +1,7 @@
+2010-06-12  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14627: SpriteIcons: Several Icons replaced with non-existent sprite-Icons / not replaced / replaced wrong (Thanks to Steffen Ritter)
+
 2010-06-11  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #14636: Improvements to new Backend skin, replace old styling (Thanks to Steffen Gebert and Lars Zimmermann)

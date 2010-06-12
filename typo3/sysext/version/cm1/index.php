@@ -820,7 +820,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		} else $table = '';
 
 		$linkBack = t3lib_div::_GP('returnUrl') ? '<a href="' . htmlspecialchars(t3lib_div::_GP('returnUrl')) . '" class="typo3-goBack">' .
-				t3lib_iconWorks::getSpriteIcon('actions-go-back') . $GLOBALS['LANG']->getLL('goBack', TRUE) .
+				t3lib_iconWorks::getSpriteIcon('actions-view-go-back') . $GLOBALS['LANG']->getLL('goBack', TRUE) .
 			'</a><br /><br />' : '';
 		$resetDiffOnly = $this->diffOnly ? '<a href="index.php?id=' . intval($this->id) . '" class="typo3-goBack">' . $GLOBALS['LANG']->getLL('showAllInformation') . '</a><br /><br />' : '';
 
