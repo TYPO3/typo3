@@ -14,7 +14,7 @@ table.typo3-csh-inline a.typo3-csh-link {
 	margin-right: 0;
 }
 
-a.typo3-csh-link span.typo3-csh-inline {
+a.typo3-csh-link .typo3-csh-inline {
 	display: none;
 	padding: 0px;
 	position: absolute;
@@ -22,26 +22,32 @@ a.typo3-csh-link span.typo3-csh-inline {
 	z-index: 100;
 }
 
-table.typo3-csh-inline a.typo3-csh-link,
-table.typo3-csh-inline span.header,
-span.typo3-csh-inline span.header,
-a.typo3-csh-link span.typo3-csh-inline span.header {
-	display: block;
-}
-
-a.typo3-csh-link:hover span.typo3-csh-inline {
-	display: block;
+a.typo3-csh-link .typo3-csh-inline.show-right {
+	right: 10px;
 }
 
 table.typo3-csh-inline a.typo3-csh-link,
-table.typo3-csh-inline span.header {
+table.typo3-csh-inline span.t3-row-header,
+span.typo3-csh-inline span.t3-row-header,
+a.typo3-csh-link span.typo3-csh-inline span.t3-row-header {
+	display: block;
+}
+
+a.typo3-csh-link:hover .typo3-csh-inline {
+	display: block;
+}
+
+.typo3-csh-inline h2.t3-row-header {
+	margin: 0;
+	height: auto;
+}
+
+.typo3-csh-inline p.t3-csh-short {
+	padding: 3px;
+}
+
+table.typo3-csh-inline a.typo3-csh-link {
 	height: 16px;
-}
-
-span.typo3-csh-inline span.header,
-table.typo3-csh-inline span.header {
-	float: left;
-	width: 100%;
 }
 
 table.typo3-csh-inline tr td h4 {
@@ -54,7 +60,6 @@ a.typo3-csh-link span.typo3-csh-inline span.paragraph {
 	display: block;
 	padding: 3px;
 }
-
 
 img.typo3-csh-icon {
 	vertical-align: middle;

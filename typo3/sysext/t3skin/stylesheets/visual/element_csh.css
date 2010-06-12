@@ -9,30 +9,22 @@ table.typo3-csh-inline {
 	border: 1px solid #a2aab8;
 }
 
-span.typo3-csh-inline {
+.typo3-csh-inline {
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
 	line-height: 16px;
 }
 
-a.typo3-csh-link span.typo3-csh-inline {
+a.typo3-csh-link .typo3-csh-inline {
 	background: #ffffff;
-	border: 1px solid #050505;
 	color: #000000;
 	font-weight: normal;
 }
 
-table.typo3-csh-inline a.typo3-csh-link,
-table.typo3-csh-inline span.header,
-span.typo3-csh-inline span.header,
-a.typo3-csh-link span.typo3-csh-inline span.header {
-	background-color: #b8bec9;
-	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
-	background-repeat: repeat-x;
-	color: white;
-}
-
-span.typo3-csh-inline span.header,
-table.typo3-csh-inline span.header {
-	font-weight: bold;
+div.typo3-csh-inline p.t3-csh-short {
+	border: #b6b6b6 1px solid;
+	border-top: none;
 }
 
 img.typo3-csh-icon {
