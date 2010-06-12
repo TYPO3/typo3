@@ -1,3 +1,7 @@
+2010-06-13  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #14624: Use Flash Message in Template module
+
 2010-06-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13895: Bug: getTSConfigVal called with wrong object (Thanks to Andreas Stauder)

@@ -370,14 +370,18 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$tmpl->tt_track = false;	// Do not log time-performance information
 		$tmpl->init();
 
-		$areYouSure = $GLOBALS['LANG']->getLL('areYouSure');
-		$confirm = ' onClick="return confirm(\'' . $areYouSure . '\');"';
-
 			// No template
 		$theOutput .= $this->doc->spacer(10);
-		$theOutput .= $this->doc->section('<span class="typo3-red">' . $GLOBALS['LANG']->getLL('noTemplate') . '</span>', $GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />
-			' . $GLOBALS['LANG']->getLL('createTemplate'), 0, 0, 0, 1);
-
+		
+		$flashMessage = t3lib_div::makeInstance(
+			't3lib_FlashMessage',
+			$GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />' . $GLOBALS['LANG']->getLL('createTemplateToEditConfiguration'),
+			$GLOBALS['LANG']->getLL('noTemplate'),
+			t3lib_FlashMessage::INFO
+		);
+		$theOutput .= $flashMessage->render();
+		
+		
 			// New standard?
 		if ($newStandardTemplate) {
 			if (t3lib_extMgm::isLoaded('statictemplates')) { // check wether statictemplates are supported
@@ -388,7 +392,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 						$opt .= '<option value="' . $row['uid'] . '">' . htmlspecialchars($row['title']) . '</option>';
 					}
  				}
-				$selector = '<select name="createStandard"><option></option>' . $opt . '</select>';
+				$selector = '<select name="createStandard"><option></option>' . $opt . '</select><br />';
 				$staticsText = ', optionally based on one of the standard templates';
 			} else {
 				$selector = '<input type="hidden" name="createStandard" value="" />';
@@ -397,17 +401,14 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 				// Extension?
 			$theOutput .= $this->doc->spacer(10);
-			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br />
-			<br />' .
-			$selector . '<br />' .
-				t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . 
-			'<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '"' . $confirm . '>', 0, 1);
+			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br /><br />' .
+			$selector . 
+			'<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '" />', 0, 1);
 		}
 			// Extension?
 		$theOutput .= $this->doc->spacer(10);
 		$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('extTemplate'), $GLOBALS['LANG']->getLL('extTemplateDescription') . '<br /><br />' .
-				t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . 
-			'<input type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '"' . $confirm . '>', 0, 1);
+			'<input type="submit" name="createExtension" value="' . $GLOBALS['LANG']->getLL('extTemplateAction') . '" />', 0, 1);
 
 			// Go to first appearing...
 		$first = $tmpl->ext_prevPageWithTemplate($this->id, $this->perms_clause);

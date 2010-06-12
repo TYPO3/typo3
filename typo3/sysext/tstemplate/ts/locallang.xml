@@ -17,10 +17,11 @@
 			<label index="isRoot">Is Root?</label>
 			<label index="isExt">Is Ext?</label>
 			<label index="overview">This is an overview of the pages in the database containing one or more template records. Click a page title to go to the page.</label>
-			<label index="areYouSure">Are you sure you want to do this?</label>
+			<label deprecated="true" index="areYouSure">Are you sure you want to do this?</label>
 			<label index="noTemplate">No template</label>
 			<label index="noTemplateDescription">There was no template on this page!</label>
-			<label index="createTemplate">Create a template record first in order to edit constants!</label>
+			<label deprecated="true" index="createTemplate">Create a template record first in order to edit constants!</label>
+			<label index="createTemplateToEditConfiguration">You need to create a template record below in order to edit your configuration.</label>
 			<label index="newWebsite">Create new website</label>
 			<label index="newWebsiteDescription">If you want this page to be the root of a new website, optionally based on one of the standard templates, then press the button below:</label>
 			<label index="newWebsiteAction">Create template for a new site</label>
