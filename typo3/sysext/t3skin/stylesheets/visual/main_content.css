@@ -242,6 +242,7 @@ select,
 submit {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
+	line-height: 16px;
 }
 
 textarea {

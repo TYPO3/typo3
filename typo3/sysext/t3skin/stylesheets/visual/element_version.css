@@ -5,19 +5,14 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 #typo3-pagetree .workspace-info {
-	background-color: #ccccff;
-	border-bottom: 1px solid #999999;
+	background-color: #ffec97;
 }
 
 table#typo3-versionSelector {
-	background-color: #b8bec9;
-	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
+	background-color: #ffec97;
+	/*background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
 	background-repeat: repeat-x;
-	border: 1px solid #a2aab8;
-}
-
-table#typo3-versionSelector td {
-	color: #fff;
+	border: 1px solid #a2aab8;*/
 }
 
 .ver-element,
@@ -27,7 +22,7 @@ ul.tree ul li.ver-element {
 
 .ver-page,
 ul.tree ul li.ver-page {
-	background-color: #ccccff;
+	background-color: #ffec97;
 }
 
 .ver-branch,
@@ -39,6 +34,7 @@ ul.tree ul li.ver-branch {
 ul.tree ul li.ver-branchpoint {
 	background-color: #ff9999;
 }
+
 .ver-versions,
 ul.tree ul li.ver-versions {
 	background-color: #ffffaa;

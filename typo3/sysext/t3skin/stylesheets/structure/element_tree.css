@@ -26,6 +26,11 @@ p.c-refresh img {
 	vertical-align: middle;
 }
 
+#typo3-pagetree #typo3-docheader div.buttonsright,
+#typo3-alt-file-navframe-php #typo3-docheader div.buttonsright {
+	margin-right: 3px;
+}
+
 body#typo3-alt-db-navframe-php div.c-notice {
 	margin-top: 5px;
 	margin-bottom: 10px;
@@ -44,7 +49,7 @@ body#typo3-alt-file-navframe-php {
 
 body#typo3-pagetree #typo3-inner-docbody,
 body#typo3-alt-file-navframe-php #typo3-inner-docbody {
-	padding: 0 10px 10px 5px;
+	padding: 0 0 10px 5px;
 }
 
 ul.tree {

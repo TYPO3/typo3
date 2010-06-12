@@ -480,7 +480,10 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
  */
 
 .ext-el-mask {
-	background-color: #ccc;
+	background-color: #000;
+	-moz-opacity: 0.75;
+	opacity: .75;
+	filter: alpha(opacity=75);
 }
 
 .ext-el-mask-msg {

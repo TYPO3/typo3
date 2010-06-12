@@ -15,6 +15,7 @@ $Id$
 
 #typo3-menu li {
 	clear: both;
+	margin-bottom: 1px;
 }
 
 #typo3-menu li a {

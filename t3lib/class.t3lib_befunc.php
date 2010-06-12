@@ -2485,7 +2485,7 @@ final class t3lib_BEfunc {
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && (isset($BE_USER->uc['edit_showFieldHelp']) || $force)) {
 			if ($BE_USER->uc['edit_showFieldHelp'] == 'icon') {
 				$text = self::helpText($table, $field, $BACK_PATH, '');
-				$text = '<span class="typo3-csh-inline">'.$GLOBALS['LANG']->hscAndCharConv($text, false).'</span>';
+				$text = '<div class="typo3-csh-inline">' . $GLOBALS['LANG']->hscAndCharConv($text, false) . '</div>';
 			}
 			return '<a class="typo3-csh-link" href="#" onclick="'.htmlspecialchars($onClick).'">' . t3lib_iconWorks::getSpriteIcon('actions-system-help-open', array('class' => 'typo3-csh-icon')) . $text.'</a>';
 		}
@@ -2517,12 +2517,12 @@ final class t3lib_BEfunc {
 			}
 				// add description text
 			if ($data['description'] || $arrow) {
-				$output = '<span class="paragraph">'.nl2br(htmlspecialchars($data['description'])).$arrow.'</span>';
+				$output = '<p class="t3-csh-short">' . nl2br(htmlspecialchars($data['description'])) . $arrow . '</p>';
 			}
 
 				// put header before the rest of the text
 			if ($data['alttitle']) {
-				$output = '<span class="header">'.$data['alttitle'].'</span><br />'.$output;
+				$output = '<h2 class="t3-row-header">' . $data['alttitle'] . '</h2>' . $output;
 			}
 		}
 		return $output;
@@ -2563,7 +2563,7 @@ final class t3lib_BEfunc {
 					// Compile table with CSH information:
 					$fullText = '<table border="0" cellpadding="0" cellspacing="0" class="typo3-csh-inline"'.$params.'>
 					<tr>
-					<td valign="top" width="14">'.$icon.'</td>
+					<td valign="top" width="14"><div class="t3-row-header">' . $icon . '</div></td>
 					<td valign="top">'.$fullText.'</td>
 					</tr>
 					</table>';

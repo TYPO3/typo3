@@ -5,8 +5,9 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 div.workspace-info {
-	margin: -10px -10px 5px -10px;
-	padding: 14px 10px 3px;
+	/*margin: -10px -10px 5px -10px;*/
+	font-weight:bold;
+	padding: 3px 7px;
 }
 
 table.workspace-overview td {

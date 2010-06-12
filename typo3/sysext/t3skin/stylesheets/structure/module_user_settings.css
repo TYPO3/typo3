@@ -4,8 +4,13 @@ User settings
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
+table.typo3-usersettings {
+	padding-bottom: 10px;
+}
+
 table.typo3-usersettings td {
 	width: 300px;
+	padding-left: 8px;
 }
 
 table.typo3-usersettings td.td-label label {
