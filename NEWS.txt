@@ -10,7 +10,7 @@ General
 
 	* Versioning: "Page" and "Branch" versioning has been disabled for all installations, because it is deprecated since TYPO3 4.2. If you still use one of these versioning types, make sure to set $TYPO3_CONF_VARS['BE']['elementVersioningOnly'] = FALSE in your localconf.php. Please be aware that this option will vanish with TYPO3 4.6 and that "Page" and "Branch" versioning is neither supported nor maintained any longer.
 
-	* Versioning: The dummy "draft workspace" has been disabled for all installations. If you need it you can enable it again in the extension configuration of the version extension.
+	* Versioning: The dummy "draft workspace" has been disabled for all installations. If you need it you can enable it again in the extension configuration of the "version" extension.
 
 	* There is now a complete new Backend skin for all backend modules, the login screen and the install tool. It is still called "t3skin", however due to the use of icon sprites and the refactoring of the CSS files, it is not possible anymore to run the TYPO3 backend with the old backend skin (from 3.x), the t3skin look and feel from the previous 4.x versions can be obtained by the TER, but is not actively maintained anymore.
 
@@ -65,7 +65,9 @@ Backend
 
 	* The "bigButtons" (Edit page properties, Move page, ...) in the Page module are now disabled by default to have a cleaner interface. The old behavior can be restored by setting mod.web_layout.disableBigButtons = 0 in UserTS or PageTS.
 	
-	* The "backend_old" was removed. This was the BE interface from 4.1. As it wasn't maintained and didn't worked correct, all references are removed, so remaining interfaces for login are backend and frontend. 
+	* The interface "backend_old" was completely removed. This was the BE interface from 4.1. As it wasn't maintained and didn't worked correct, all references are removed, so remaining interfaces for login are backend and frontend. 
+
+	* The extension manager option "Enable extensions without review (basic security check)" was completely removed as most extensions in TER weren't reviewed anyway. Thus, when searching for an extension in TER through the extension manager, all matching extensions, not regarding the review state, are shown up.
 
 Frontend
 ========
