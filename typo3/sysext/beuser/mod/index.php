@@ -315,7 +315,7 @@ class printAllPageTree_perms extends printAllPageTree {
 				<td nowrap="nowrap">'.$be_group_Array[$row['perms_groupid']]['title'].' &nbsp;</td>
 				<td nowrap="nowrap">'.$this->ext_printPerms($row['perms_group']).' &nbsp;</td>
 				<td nowrap="nowrap" align="center" '.$col1.'>'.$this->ext_printPerms($row['perms_everybody']).' &nbsp;</td>
-				<td nowrap="nowrap" align="center">' . ($row['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-lock', array('title' => $GLOBALS['LANG']->getLL('editLock', true))) : $this->ext_printPerms($this->BE_USER->calcPerms($row))) . ' &nbsp;</td>
+				<td nowrap="nowrap" align="center">' . ($row['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-in-use', array('title' => $GLOBALS['LANG']->getLL('editLock', true))) : $this->ext_printPerms($this->BE_USER->calcPerms($row))) . ' &nbsp;</td>
 				<td nowrap="nowrap" align="center">'.$this->ext_printPerms($this->ext_groupPerms($row,$be_group_Array[$this->BE_USER->firstMainGroup])).' &nbsp;</td>
 			</tr>';
 		}
