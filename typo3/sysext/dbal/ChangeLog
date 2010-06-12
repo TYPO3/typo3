@@ -1,3 +1,7 @@
+2010-06-12  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13431: Include BE:forceCharset config option (thanks to Armin Guenther)
+
 2010-06-11  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14405: Rename the test cases from *_testcase to *Test
