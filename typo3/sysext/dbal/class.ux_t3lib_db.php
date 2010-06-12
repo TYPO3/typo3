@@ -2529,7 +2529,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						}
 						$setDBinit = t3lib_div::trimExplode(chr(10), $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'], 1);
 						foreach ($setDBinit as $v) {
-							if (mysql_query($v, $this->link) === FALSE) {
+							if (mysql_query($v, $link) === FALSE) {
 								t3lib_div::sysLog('Could not initialize DB connection with query "'.$v.'".','Core',3);
 							}
 						}
