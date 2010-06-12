@@ -384,7 +384,7 @@ class t3lib_TCEmain	{
 		$this->username = $this->BE_USER->user['username'];
 		$this->admin = $this->BE_USER->user['admin'];
 
-		if ($GLOBALS['BE_USER']->uc['recursiveDelete'])    {
+		if ($this->BE_USER->uc['recursiveDelete']) {
 			$this->deleteTree = 1;
 		}
 
@@ -2623,7 +2623,7 @@ class t3lib_TCEmain	{
 										}
 									break;
 									case 'swap':
-										$swapMode = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.swapMode');
+										$swapMode = $this->BE_USER->getTSConfigVal('options.workspaces.swapMode');
 										$elementList = array();
 										if ($swapMode == 'any' || ($swapMode == 'page' && $table == 'pages')) {
 											// check if we are allowed to do synchronios publish. We must have a single element in the cmdmap to be allowed
@@ -2649,14 +2649,14 @@ class t3lib_TCEmain	{
 									case 'setStage':
 										$elementList = array();
 										$idList = $elementList[$table] = t3lib_div::trimExplode(',',$id,1);
-										$setStageMode = $GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.changeStageMode');
+										$setStageMode = $this->BE_USER->getTSConfigVal('options.workspaces.changeStageMode');
 										if ($setStageMode == 'any' || $setStageMode == 'page') {
 											if (count($idList) == 1) {
 												$rec = t3lib_BEfunc::getRecord($table, $idList[0], 't3ver_wsid');
 												$workspaceId = $rec['t3ver_wsid'];
 											}
 											else {
-												$workspaceId = $GLOBALS['BE_USER']->workspace;
+												$workspaceId = $this->BE_USER->workspace;
 											}
 											if ($table !== 'pages') {
 												if ($setStageMode == 'any') {
@@ -4766,7 +4766,7 @@ class t3lib_TCEmain	{
 											// Write lock-file:
 										t3lib_div::writeFileToTypo3tempDir($lockFileName,serialize(array(
 											'tstamp' => $GLOBALS['EXEC_TIME'],
-											'user'=>$GLOBALS['BE_USER']->user['username'],
+											'user'   => $this->BE_USER->user['username'],
 											'curVersion'=>$curVersion,
 											'swapVersion'=>$swapVersion
 										)));

@@ -1,5 +1,6 @@
 2010-06-12  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13895: Bug: getTSConfigVal called with wrong object (Thanks to Andreas Stauder)
 	* Fixed bug #14467: Code cleanup: t3lib_iconWorks::getIconImage is not needed anymore (Thanks to Steffen Ritter)
 	* Fixed bug #14356: Make disable_controls available for all group fields, not just type "file" (Thanks to Sven Teuber)
 
