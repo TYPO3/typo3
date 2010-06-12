@@ -748,7 +748,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if (is_array($cat[$this->MOD_SETTINGS['listOrder']]))	{
 			$content='';
 			$lines=array();
-			$lines[] = $this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="1" height="1" alt="" /></td>'));
+			$lines[] = $this->extensionListRowHeader(' class="t3-row-header"',array('<td><img src="clear.gif" width="1" height="1" alt="" /></td>'));
 
 			foreach($cat[$this->MOD_SETTINGS['listOrder']] as $catName => $extEkeys)	{
 				natcasesort($extEkeys);
@@ -798,7 +798,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		if (is_array($cat[$this->MOD_SETTINGS['listOrder']]))	{
 			$content='';
 			$lines=array();
-			$lines[]=$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>'));
+			$lines[]=$this->extensionListRowHeader(' class="t3-row-header"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>'));
 
 			$allKeys=array();
 			foreach($cat[$this->MOD_SETTINGS['listOrder']] as $catName => $extEkeys)	{
@@ -896,7 +896,7 @@ EXTENSION KEYS:
 					// Available extensions
 				if (is_array($cat[$this->MOD_SETTINGS['listOrder']]))	{
 					$lines=array();
-					$lines[]=$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>'),1);
+					$lines[]=$this->extensionListRowHeader(' class="t3-row-header"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>'),1);
 
 					foreach($cat[$this->MOD_SETTINGS['listOrder']] as $catName => $extEkeys)	{
 						if (count($extEkeys))	{
@@ -989,7 +989,7 @@ EXTENSION KEYS:
 						$content .= $GLOBALS['LANG']->getLL('list_of_local_extensions') .
 							'<br />' . $GLOBALS['LANG']->getLL('might_be_user_defined') . '<br /><br />';
 						$content.= '<table border="0" cellpadding="2" cellspacing="1">'.
-							$this->extensionListRowHeader(' class="bgColor5"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>')).
+							$this->extensionListRowHeader(' class="t3-row-header"',array('<td><img src="clear.gif" width="18" height="1" alt="" /></td>')).
 							implode('',$lines).'</table>';
 						$this->content.=$this->doc->spacer(20);
 						$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('only_on_this_server'), $content, 0, 1);
@@ -1299,7 +1299,7 @@ EXTENSION KEYS:
 				<br />
 				<br /><p>' . $GLOBALS['LANG']->getLL('translation_table_check') . '</p><br />
 				<table border="0" cellpadding="2" cellspacing="2">
-					<tr class="bgColor2"><td>' . $GLOBALS['LANG']->getLL('translation_extension_key') . '</td>
+					<tr class="t3-row-header"><td>' . $GLOBALS['LANG']->getLL('translation_extension_key') . '</td>
 				';
 
 				foreach($selectedLanguages as $lang) {
@@ -1395,7 +1395,7 @@ EXTENSION KEYS:
 				<br /><p>' . $GLOBALS['LANG']->getLL('translation_table_update') . '<br />
 				<em>' . $GLOBALS['LANG']->getLL('translation_full_check_update') . '</em></p><br />
 				<table border="0" cellpadding="2" cellspacing="2">
-					<tr class="bgColor2"><td>' . $GLOBALS['LANG']->getLL('translation_extension_key') . '</td>
+					<tr class="t3-row-header"><td>' . $GLOBALS['LANG']->getLL('translation_extension_key') . '</td>
 				');
 
 				foreach($selectedLanguages as $lang) {
@@ -2574,7 +2574,7 @@ EXTENSION KEYS:
 		$extArray = explode(',',$extList);
 		$outputRow = array();
 		$outputRow[] = '
-			<tr class="bgColor5 tableheader">
+			<tr class="t3-row-header tableheader">
 				<td>' . $GLOBALS['LANG']->getLL('reqInstExt_install_import') . '</td>
 				<td>' . $GLOBALS['LANG']->getLL('reqInstExt_ext_key') . '</td>
 			</tr>
@@ -2787,7 +2787,7 @@ EXTENSION KEYS:
 
 			// Header:
 			$lines[] = '
-				<tr class="bgColor5">
+				<tr class="t3-row-header">
 					<td>' . $GLOBALS['LANG']->getLL('extFileList_file') . '</td>
 					<td>' . $GLOBALS['LANG']->getLL('extFileList_size') . '</td>
 					<td>' . $GLOBALS['LANG']->getLL('extFileList_edit') . '</td>
@@ -2942,7 +2942,7 @@ EXTENSION KEYS:
 			} else {
 				$techInfo = $this->makeDetailedExtensionAnalysis($extKey,$extInfo);
 				$lines=array();
-				$lines[]='<tr class="bgColor5"><td colspan="2"><strong>' .
+				$lines[]='<tr class="t3-row-header"><td colspan="2"><strong>' .
 					$GLOBALS['LANG']->getLL('extBackup_select') . '</strong></td></tr>';
 				$lines[]='<tr class="bgColor4"><td><strong>' .
 					$GLOBALS['LANG']->getLL('extBackup_files') . '</strong></td><td>' .
@@ -3027,7 +3027,7 @@ EXTENSION KEYS:
 	 */
 	function extInformationArray($extKey,$extInfo,$remote=0)	{
 		$lines=array();
-		$lines[] = '<tr class="bgColor5"><td colspan="2"><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_general_info') . '</strong></td>' .
+		$lines[] = '<tr class="t3-row-header"><td colspan="2"><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_general_info') . '</strong></td>' .
 				$this->helpCol('') . '</tr>';
 		$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_title') . '</td>
 				<td>' . $extInfo['EM_CONF']['_icon'] . $extInfo['EM_CONF']['title'] . '</td>' .
@@ -3104,7 +3104,7 @@ EXTENSION KEYS:
 			// Installation status:
 			$techInfo = $this->makeDetailedExtensionAnalysis($extKey,$extInfo,1);
 			$lines[] = '<tr><td>&nbsp;</td><td></td>'.$this->helpCol('').'</tr>';
-			$lines[] = '<tr class="bgColor5"><td colspan="2"><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_inst_status') . '</strong></td>' .
+			$lines[] = '<tr class="t3-row-header"><td colspan="2"><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_inst_status') . '</strong></td>' .
 					$this->helpCol('') . '</tr>';
 			$lines[] = '<tr class="bgColor4"><td>' . $GLOBALS['LANG']->getLL('extInfoArray_inst_type') . '</td>
 					<td>' . $this->typeLabels[$extInfo['type']] . ' - <em>' . $this->typeDescr[$extInfo['type']] . '</em></td>' .
@@ -3529,7 +3529,7 @@ EXTENSION KEYS:
 		if ($this->xmlhandler->getReviewState($extKey,$extInfo['EM_CONF']['version']) < 0) {
 			$bgclass = ' class="unsupported-ext"';
 		} else {
-			$bgclass = ' class="' . ($bgColorClass ? $bgColorClass : 'em-listbg2') . '"';
+			$bgclass = ' class="' . ($bgColorClass ? $bgColorClass : 'em-listbg1') . '"';
 		}
 
 		return '
@@ -6120,7 +6120,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$extList = $this->getInstalledExtensions();
 
 		$content = '<table border="0" cellpadding="2" cellspacing="1">'.
-		'<tr class="bgColor5">'.
+		'<tr class="t3-row-header">'.
 			'<td></td>'.
 			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_name').'</td>'.
 			'<td>'.$LANG->sL('LLL:EXT:lang/locallang_mod_tools_em.xml:tab_mod_key').'</td>'.
