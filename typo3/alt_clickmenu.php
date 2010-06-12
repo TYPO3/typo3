@@ -1239,7 +1239,7 @@ class clickMenu {
 
 				// Create the table displayed in the clickmenu layer:
 			$CMtable = '
-				<table border="0" cellpadding="0" cellspacing="0" class="typo3-CSM bgColor4">
+				<table border="0" cellpadding="0" cellspacing="0" class="typo3-CSM">
 					'.implode('',$this->menuItemsForClickMenu($menuItems)).'
 				</table>';
 
@@ -1274,18 +1274,9 @@ class clickMenu {
 	 */
 	function wrapColorTableCM($str)	{
 
-			// Clear-gifs needed if opera is to set the table row height correctly in skins.
-		$str = '<table border="0" cellspacing="0" class="typo3-CSM-wrapperCM">
-				<tr class="c-rowA">
-					<td class="c-aa">'.$str.'</td>
-					<td class="c-ab"></td>
-				</tr>
-				<tr class="c-rowB">
-					<td class="c-ba"><img src="clear.gif" width="1" height="1" alt="" /></td>
-					<td class="c-bb"><img src="clear.gif" width="1" height="1" alt="" /></td>
-				</tr>
-			</table>';
-		return $str;
+		return '<div class="typo3-CSM-wrapperCM">
+			' . $str . '
+			</div>';
 	}
 
 	/**

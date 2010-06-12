@@ -5,10 +5,6 @@ Notice: Rollover color is set by ->bgColor5 in the template object of alt_clickm
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-table.typo3-CSM-wrapperCM td {
-	padding: 0;
-}
-
 table.typo3-CSM tr.typo3-CSM-itemRow td {
 	padding: 2px 6px;
 }

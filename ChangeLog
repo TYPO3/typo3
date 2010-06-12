@@ -1,5 +1,6 @@
 2010-06-11  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14636: Improvements to new Backend skin, replace old styling (Thanks to Steffen Gebert)
 	* Fixed #14679: Deprecating page and branch versioning, these versioning types are now disabled by default, see NEWS.txt for 4.4 for more info
 	* Fixed bug #171: added documentatino for calculate and display filepermissions in filelist (Thanks to Jigal van Hemert)
 	* Added feature #14546: Make sprite icons / PNGs work in Internet Explorer 6 through PNGfix that works with background images (Thanks to Steffen Ritter)
