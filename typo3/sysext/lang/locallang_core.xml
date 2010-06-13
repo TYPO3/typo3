@@ -69,6 +69,14 @@ Do you want to continue WITHOUT saving?</label>
 			<label index="labels.refreshList">Reload list from server</label>
 			<label index="labels.close">Close</label>
 			<label index="labels.new">NEW</label>
+			<label index="labels.createNewPage">Create new %s</label>
+			<label index="labels.createNewRecord">Create new %s on page "%s"</label>
+			<label index="labels.createNewRecordRootLevel">Create new %s on root level</label>
+			<label index="labels.editPage">Edit %s "%s"</label>
+			<label index="labels.editRecord">Edit %s "%s" on page "%s"</label>
+			<label index="labels.editRecordNoTitle">Edit %s on page "%s"</label>
+			<label index="labels.editRecordRootLevel">Edit %s "%s" on root level</label>
+			<label index="labels.rootLevel">root level</label>
 			<label index="labels.addnew">Add new</label>
 			<label index="labels.toggleall">Toggle all</label>
 			<label index="labels.selected">Selected</label>
