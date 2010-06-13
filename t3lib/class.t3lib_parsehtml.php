@@ -181,7 +181,7 @@ class t3lib_parsehtml	{
 		$between = substr($content, $startAM, $stop-$startAM);
 
 		if ($recursive) {
-			$after = t3lib_parsehtml::substituteSubpart(
+			$after = self::substituteSubpart(
 				$after,
 				$marker,
 				$subpartContent,
@@ -250,7 +250,7 @@ class t3lib_parsehtml	{
 	 */
 	public static function substituteSubpartArray($content, array $subpartsContent) {
 		foreach ($subpartsContent as $subpartMarker => $subpartContent) {
-			$content = t3lib_parsehtml::substituteSubpart(
+			$content = self::substituteSubpart(
 				$content,
 				$subpartMarker,
 				$subpartContent

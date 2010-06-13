@@ -67,11 +67,11 @@ class t3lib_SpriteManager {
 	 */
 	function __construct($regenerate = TRUE) {
 			// we check for existance of our targetDirectory
-		if (!is_dir(PATH_site . t3lib_SpriteManager::$tempPath)) {
-			t3lib_div::mkdir(PATH_site . t3lib_SpriteManager::$tempPath);
+		if (!is_dir(PATH_site . self::$tempPath)) {
+			t3lib_div::mkdir(PATH_site . self::$tempPath);
 		}
 			// create a fileName, the hash includes all icons and css-styles registered and the extlist
-		$this->tempFileName = PATH_site . t3lib_SpriteManager::$tempPath .
+		$this->tempFileName = PATH_site . self::$tempPath .
 							md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
 							$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
 			// if no cache-file for the current config ist present, regenerate it
@@ -95,7 +95,7 @@ class t3lib_SpriteManager {
 				$this->rebuildCache();
 			} else {
 					// use old file if present
-				list($this->tempFileName) = t3lib_div::getFilesInDir(PATH_site . t3lib_SpriteManager::$tempPath, 'inc', 1);
+				list($this->tempFileName) = t3lib_div::getFilesInDir(PATH_site . self::$tempPath, 'inc', 1);
 			}
 		}
 	}
@@ -130,7 +130,7 @@ class t3lib_SpriteManager {
 		$fileContent = '<?php $GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString . '\')); ?>';
 
 			// delete old cache files
-		$oldFiles = t3lib_div::getFilesInDir(PATH_site . t3lib_SpriteManager::$tempPath, 'inc', 1);
+		$oldFiles = t3lib_div::getFilesInDir(PATH_site . self::$tempPath, 'inc', 1);
 		foreach ($oldFiles as $file) {
 			@unlink($file);
 		}
