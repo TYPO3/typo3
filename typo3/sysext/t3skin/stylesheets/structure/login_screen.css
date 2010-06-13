@@ -101,7 +101,6 @@ body#typo3-index-php .t3-login-field input {
 }
 
 body#typo3-index-php #t3-login-form-fields {
-	display: none;
 	margin: 0;
 	padding: 14px 0 5px 30px;
 }
@@ -138,6 +137,10 @@ body#typo3-index-php .t3-login-submit {
 body#typo3-index-php .t3-login-error {
 	margin: 2px;
 	padding: 10px;
+}
+
+#t3-nocookies-ignore {
+	margin-top: 10px;
 }
 
 body#typo3-index-php div#t3-copyright-notice {

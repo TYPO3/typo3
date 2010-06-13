@@ -10,6 +10,7 @@ TYPO3BackendLogin = {
 		TYPO3BackendLogin.registerEventListeners();
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-username'), $('t3-username-clearIcon'));
 		TYPO3BackendLogin.setVisibilityOfClearIcon($('t3-password'), $('t3-password-clearIcon'));
+		TYPO3BackendLogin.checkCookieSupport();
 		TYPO3BackendLogin.checkForLogintypeCookie();
 		TYPO3BackendLogin.checkForInterfaceCookie();
 		$('t3-username').activate();
@@ -157,7 +158,37 @@ TYPO3BackendLogin = {
 		
 		TYPO3BackendLogin.setLogintypeCookie('username');
 	},
-	
+
+	/**
+	 * Checks browser's cookie support
+	 */
+	checkCookieSupport: function() {
+		Ext.util.Cookies.set('typo3-login-cookiecheck', true);
+		cookieEnabled = Ext.util.Cookies.get('typo3-login-cookiecheck');
+
+		if (!cookieEnabled) {
+			TYPO3BackendLogin.showCookieWarning()
+		}
+
+		Ext.util.Cookies.clear('typo3-login-cookiecheck');
+	},
+
+	/**
+	 * Hides input fields and shows cookie warning
+	 */
+	showCookieWarning: function() {
+		Ext.get('t3-login-form-fields').setVisibilityMode(Ext.Element.DISPLAY).hide();
+		Ext.get('t3-nocookies-error').show();
+	},
+
+	/**
+	 * Hides cookie warning and shows input fields
+	 */
+	hideCookieWarning: function() {
+		Ext.get('t3-nocookies-error').setVisibilityMode(Ext.Element.DISPLAY).hide();
+		Ext.get('t3-login-form-fields').show();
+	},
+
 	/**
 	 * Store a login type in a cookie to save it for future visits
 	 * Login type means wether you login by username/password or OpenID
@@ -218,4 +249,4 @@ TYPO3BackendLogin = {
 	}
 };
 
-Event.observe(window, 'load', TYPO3BackendLogin.start);
+Ext.onReady(TYPO3BackendLogin.start, TYPO3BackendLogin);

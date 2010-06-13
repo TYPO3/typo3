@@ -195,6 +195,10 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
 	color: #be0027;
 }
 
+#t3-nocookies-ignore {
+	text-align: center;
+}
+
 .t3-login-alert-warning {
 	background: #fbf6de;
 	border: 1px solid #b1905c;
