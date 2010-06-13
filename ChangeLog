@@ -1,3 +1,7 @@
+2010-06-13  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* Fixed bug #13903: wrong links with multiple domain records on one page with typolinkCheckRootline (thanks to Irene Höppner)
+
 2010-06-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13895: Bug: getTSConfigVal called with wrong object (Thanks to Andreas Stauder)
