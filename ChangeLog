@@ -1,5 +1,6 @@
 2010-06-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14565: There is no way to disable compress and concatenate
 	* Fixed bug #14545: [No Title] shown when editing a record on root level (Thanks to Reinhard Fuehricht)
 	* Fixed bug #14681: Use self:: for static method calls with classname:: within the same class in t3lib (Thanks to Sebastian Michaelsen)
 	* Fixed bug #14538: Icons missing in page tree for "Page contains" pages (Thanks to Steffen Ritter)

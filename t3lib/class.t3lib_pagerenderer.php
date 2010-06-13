@@ -311,10 +311,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/*****************************************************/
 	/*                                                   */
-	/*  Public Enablers                                  */
+	/*  Public Enablers / Disablers                      */
 	/*                                                   */
 	/*                                                   */
 	/*****************************************************/
+
 	/**
 	 * Enables MoveJsFromHeaderToFooter
 	 *
@@ -323,6 +324,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function enableMoveJsFromHeaderToFooter() {
 		$this->moveJsFromHeaderToFooter = TRUE;
+	}
+
+	/**
+	 * Disables MoveJsFromHeaderToFooter
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public function disableMoveJsFromHeaderToFooter() {
+		$this->moveJsFromHeaderToFooter = FALSE;
 	}
 
 	/**
@@ -336,6 +347,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Disables compression of javascript
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public function disableCompressJavascript() {
+		$this->compressJavascript = FALSE;
+	}
+
+	/**
 	 * Enables compression of css
 	 *
 	 * @param void
@@ -346,6 +367,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Disables compression of css
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public function disableCompressCss() {
+		$this->compressCss = FALSE;
+	}
+
 	/**
 	 * Enables concatenation of js/css files
 	 *
@@ -357,6 +387,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Disables concatenation of js/css files
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public function disableConcatenateFiles() {
+		$this->concatenateFiles = FALSE;
+	}
+
+	/**
 	 * Sets removal of all line breaks in template
 	 *
 	 * @param void
@@ -364,6 +404,30 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function enableRemoveLineBreaksFromTemplate() {
 		$this->removeLineBreaksFromTemplate = TRUE;
+	}
+
+	/**
+	 * Unsets removal of all line breaks in template
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public function disableRemoveLineBreaksFromTemplate() {
+		$this->removeLineBreaksFromTemplate = FALSE;
+	}
+
+	/**
+	 * Enables Debug Mode
+	 * This is a shortcut to switch off all compress/concatenate features to enable easier debug
+	 *
+	 * @param void
+	 * @return void
+	 */
+	public function enableDebugMode() {
+		$this->compressJavascript = FALSE;
+		$this->compressCss = FALSE;
+		$this->concatenateFiles = FALSE;
+		$this->removeLineBreaksFromTemplate = FALSE;
 	}
 
 	/*****************************************************/
