@@ -769,46 +769,61 @@ final class t3lib_iconWorks	{
 	 **/
 	protected static function mapRecordTypeToSpriteIconClass($table, $row) {
 		$iconName = '';
+		$recordType = array();
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
 			$column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
 
-			if(isset($row[$column])) {
-				$recordType = $row[$column];
+			if (isset($row[$column])) {
+				$recordType[1] = $row[$column];
 			} else {
-				$recordType = 'default';
+				$recordType[1] = 'default';
 			}
 
 				// workaround to give nav_hide pages a complete different icon
 				// although it's not a separate doctype
 				// and to give root-pages an own icon
-			if ($table === 'pages' && $row['is_siteroot']) {
-				$recordType .= '-root';
-			} else if ($table === 'pages' && $row['nav_hide']) {
-				$recordType .= '-hideinmenu';
-			}
-
-			if(is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
-				if(isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType])) {
-					$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType];
-				} else {
-					$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+			if ($table === 'pages') {
+				if ($row['nav_hide']) {
+					$recordType[2] = $recordType[1] . '-hideinmenu';
 				}
+				if ($row['is_siteroot']) {
+					$recordType[3] = $recordType[1] . '-root';
+				}
+				if ($row['module']) {
+					$recordType[4] = 'contains-' . $row['module'];
+				}
+			} 
 
+			if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+				foreach ($recordType AS $key => $type) {
+					if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type])) {
+						$recordType[$key] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type];
+					} else {
+						unset($recordType[$key]);
+					}
+				}
+				$recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
 			} else {
-				if (in_array('tcarecords-' . $table . '-' . $recordType, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
-					$iconName = 'tcarecords-' . $table . '-' . $recordType;
-				} else {
-					$iconName = $iconName = 'tcarecords-' . $table . '-default';
+				foreach ($recordType AS $key => $type) {
+					$recordType[$key] = 'tcarecords-' . $table . '-' . $type;
 				}
+				$recordType[0] = 'tcarecords-' . $table . '-default';
 			}
 		} else {
-			if(is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
-				$iconName = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
-			} else if (in_array('tcarecords-' . $table . '-default', $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
-				$iconName = 'tcarecords-' . $table . '-default';
+			if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+				$recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+			} else {
+				$recordType[0] = 'tcarecords-' . $table . '-default';
 			}
 		}
-		return self::getSpriteIconClasses(($iconName != '' ? $iconName : 'status-status-icon-missing'));
+
+		$recordTypeCount = count($recordType);
+		for($i = $recordTypeCount; $i >= 0; $i--) {
+			if(in_array($recordType[$i], $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+				return self::getSpriteIconClasses($recordType[$i]); 
+			}
+		}
+		return self::getSpriteIconClasses('status-status-icon-missing');
 	}
 
 
