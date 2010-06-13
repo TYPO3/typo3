@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2009 Sebastian Kurfuerst <sebastian@garbage-group.de>
+*  (c) 1999-2010 Sebastian Kurfuerst <sebastian@garbage-group.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

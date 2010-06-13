@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  (c) 2010 Georg Ringer <typo3@ringerge.org>
 *  All rights reserved
 *

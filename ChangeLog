@@ -1,3 +1,7 @@
+2010-06-13  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Updated copyright comments
+
 2010-06-13  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #14624: Use Flash Message in Template module

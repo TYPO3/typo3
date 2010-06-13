@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2009 Kasper Skaarhoj <kasperYYYY@typo3.com>
-*  (c) 2008-2009 Benjamin Mack <benni . typo3 . o)rg>
+*  (c) 1999-2010 Kasper Skaarhoj <kasperYYYY@typo3.com>
+*  (c) 2008-2010 Benjamin Mack <benni . typo3 . o)rg>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is

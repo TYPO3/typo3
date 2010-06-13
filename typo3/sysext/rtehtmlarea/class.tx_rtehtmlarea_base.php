@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2009 Kasper Skaarhoj (kasper@typo3.com)
-*  (c) 2004-2009 Philipp Borgmann <philipp.borgmann@gmx.de>
+*  (c) 2004-2010 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2004-2010 Philipp Borgmann <philipp.borgmann@gmx.de>
 *  (c) 2004-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
