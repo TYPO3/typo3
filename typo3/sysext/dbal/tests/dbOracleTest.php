@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,14 +29,14 @@ require_once('FakeDbConnection.php');
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
  * 
- * $Id: db_oracle_testcase.php 29977 2010-02-13 13:18:32Z xperseguers $
+ * $Id$
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3
  * @subpackage dbal
  */
-class db_oracle_testcase extends BaseTestCase {
+class dbOracleTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -297,7 +297,7 @@ class db_oracle_testcase extends BaseTestCase {
 			. ' AND sys_refindex.ref_string LIKE CONCAT(tx_dam_file_tracking.file_path, tx_dam_file_tracking.file_name)'
 		));
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
+		$expected .= ' AND (instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."file_path","tx_dam_file_tracking"."file_name"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -427,7 +427,7 @@ class db_oracle_testcase extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
-		$expected .= ' AND (dbms_lob.instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
+		$expected .= ' AND (instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -633,6 +633,61 @@ class db_oracle_testcase extends BaseTestCase {
 		$expected .= ')';
 		$expected .= ' ORDER BY "pages"."news_uid"';
 		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14479
+	 */
+	public function likeIsRemappedAccordingToFieldType() {
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'tt_content.bodytext LIKE \'foo%\''
+		));
+		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr("tt_content"."bodytext", \'foo\',1,1) > 0)';
+		$this->assertEquals($expected, $select);
+
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'fe_users',
+			'fe_users.usergroup LIKE \'2\''
+		));
+		$expected = 'SELECT * FROM "fe_users" WHERE (instr("fe_users"."usergroup", \'2\',1,1) > 0)';
+		$this->assertEquals($expected, $select);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14479
+	 */
+	public function instrIsUsedForCEOnPages() {
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'uid IN (62) AND tt_content.deleted=0 AND tt_content.t3ver_state<=0' .
+				' AND tt_content.hidden=0 AND (tt_content.starttime<=1264487640)' .
+				' AND (tt_content.endtime=0 OR tt_content.endtime>1264487640)' .
+				' AND (tt_content.fe_group=\'\' OR tt_content.fe_group IS NULL OR tt_content.fe_group=\'0\'' .
+				' OR (tt_content.fe_group LIKE \'%,0,%\' OR tt_content.fe_group LIKE \'0,%\' OR tt_content.fe_group LIKE \'%,0\'' .
+				' OR tt_content.fe_group=\'0\')' .
+				' OR (tt_content.fe_group LIKE\'%,-1,%\' OR tt_content.fe_group LIKE \'-1,%\' OR tt_content.fe_group LIKE \'%,-1\'' .
+				' OR tt_content.fe_group=\'-1\'))'
+		));
+		$expected = 'SELECT * FROM "tt_content"';
+		$expected .= ' WHERE "uid" IN (62) AND "tt_content"."deleted" = 0 AND "tt_content"."t3ver_state" <= 0';
+		$expected .= ' AND "tt_content"."hidden" = 0 AND ("tt_content"."starttime" <= 1264487640)';
+		$expected .= ' AND ("tt_content"."endtime" = 0 OR "tt_content"."endtime" > 1264487640)';
+		$expected .= ' AND ("tt_content"."fe_group" = \'\' OR "tt_content"."fe_group" IS NULL OR "tt_content"."fe_group" = \'0\'';
+		$expected .= ' OR ((instr("tt_content"."fe_group", \',0,\',1,1) > 0)';
+		$expected .= ' OR (instr("tt_content"."fe_group", \'0,\',1,1) > 0)';
+		$expected .= ' OR (instr("tt_content"."fe_group", \',0\',1,1) > 0)';
+		$expected .= ' OR "tt_content"."fe_group" = \'0\')';
+		$expected .= ' OR ((instr("tt_content"."fe_group", \',-1,\',1,1) > 0)';
+		$expected .= ' OR (instr("tt_content"."fe_group", \'-1,\',1,1) > 0)';
+		$expected .= ' OR (instr("tt_content"."fe_group", \',-1\',1,1) > 0)';
+		$expected .= ' OR "tt_content"."fe_group" = \'-1\'))';
+		$this->assertEquals($expected, $select); 
 	}
 
 	///////////////////////////////////////

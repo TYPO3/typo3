@@ -533,7 +533,20 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											} else {
 												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1]; 
 											}
-											$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+												// To be on the safe side
+											$isLob = TRUE;
+											if ($v['table']) {
+													// Table and field names are quoted:
+												$tableName = substr($v['table'], 1, strlen($v['table']) - 2);
+												$fieldName = substr($v['field'], 1, strlen($v['field']) - 2);
+												$fieldType = $GLOBALS['TYPO3_DB']->sql_field_metatype($tableName, $fieldName);
+												$isLob = ($fieldType === 'B' || $fieldType === 'XL');
+											}
+											if ($isLob) {
+												$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+											} else {
+												$output .= '(instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
+											}
 										break;
 									default:
 										$output .= ' ' . $v['comparator'];

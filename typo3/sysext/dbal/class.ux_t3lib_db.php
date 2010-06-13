@@ -985,12 +985,15 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	string		See exec_UPDATEquery()
 	 * @param	array		See exec_UPDATEquery()
-	 * @param mixed		See exec_UPDATEquery()
+	 * @param	mixed		See exec_UPDATEquery()
 	 * @return	mixed		Full SQL query for UPDATE as string or array (unless $fields_values does not contain any elements in which case it will be FALSE). If BLOB fields will be affected and one is not running the native type, an array will be returned, where 0 => plain SQL, 1 => fieldname/value pairs of BLOB fields
 	 */
 	public function UPDATEquery($table, $where, $fields_values, $no_quote_fields = '') {
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function (contrary to values in the arrays which may be insecure).
 		if (is_string($where)) {
+			$fields = array();
+			$blobfields = array();
+			$clobfields = array();
 			if (is_array($fields_values) && count($fields_values)) {
 
 				if (is_string($no_quote_fields)) {
@@ -999,7 +1002,6 @@ class ux_t3lib_DB extends t3lib_DB {
 					$no_quote_fields = array();
 				}
 
-				$blobfields = array();
 				$nArr = array();
 				foreach ($fields_values as $k => $v) {
 					if (!$this->runningNative() && $this->sql_field_metatype($table, $k) == 'B') {
@@ -1020,36 +1022,46 @@ class ux_t3lib_DB extends t3lib_DB {
 						$nArr[] = $this->quoteFieldNames($k) . '=' . ((!in_array($k, $no_quote_fields)) ? $this->fullQuoteStr($v, $table) : $v);
 					}
 				}
-
-				if (count($blobfields) || count($clobfields)) {
-					if (count($nArr)) {
-						$query[0] = 'UPDATE '.$this->quoteFromTables($table).'
-						SET
-							'.implode(',
-							',$nArr).
-							(strlen($where)>0 ? '
-						WHERE
-							'.$this->quoteWhereClause($where) : '');
-					}
-					if (count($blobfields)) $query[1] = $blobfields;
-					if (count($clobfields)) $query[2] = $clobfields;
-					if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query[0];
-				} else {
-					$query = 'UPDATE '.$this->quoteFromTables($table).'
-					SET
-						'.implode(',
-						',$nArr).
-						(strlen($where)>0 ? '
-					WHERE
-						'.$this->quoteWhereClause($where) : '');
-
-						if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
-				}
-
-				return $query;
 			}
+
+			if (count($blobfields) || count($clobfields)) {
+				if (count($nArr)) {
+					$query[0] = 'UPDATE ' . $this->quoteFromTables($table) . '
+						SET
+							' . implode(',
+							', $nArr) .
+							(strlen($where) > 0 ? '
+						WHERE
+							' . $this->quoteWhereClause($where) : '');
+				}
+				if (count($blobfields)) {
+					$query[1] = $blobfields;
+				}
+				if (count($clobfields)) {
+					$query[2] = $clobfields;
+				}
+				if ($this->debugOutput || $this->store_lastBuiltQuery) {
+					$this->debug_lastBuiltQuery = $query[0];
+				}
+			} else {
+				$query = 'UPDATE ' . $this->quoteFromTables($table) . '
+					SET
+						' . implode(',
+						', $nArr) .
+						(strlen($where) > 0 ? '
+					WHERE
+						' . $this->quoteWhereClause($where) : '');
+
+				if ($this->debugOutput || $this->store_lastBuiltQuery) {
+					$this->debug_lastBuiltQuery = $query;
+				}
+			}
+			return $query;
 		} else {
-			die('<strong>TYPO3 Fatal Error:</strong> "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !');
+			throw new InvalidArgumentException(
+				'TYPO3 Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !',
+				1270853880
+			);
 		}
 	}
 
@@ -2517,7 +2529,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						}
 						$setDBinit = t3lib_div::trimExplode(chr(10), $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'], 1);
 						foreach ($setDBinit as $v) {
-							if (mysql_query($v, $this->link) === FALSE) {
+							if (mysql_query($v, $link) === FALSE) {
 								t3lib_div::sysLog('Could not initialize DB connection with query "'.$v.'".','Core',3);
 							}
 						}

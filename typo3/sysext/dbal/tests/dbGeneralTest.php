@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,14 +28,14 @@ require_once('BaseTestCase.php');
 /**
  * Testcase for class ux_t3lib_db.
  * 
- * $Id: db_general_testcase.php 29978 2010-02-13 13:45:56Z xperseguers $
+ * $Id$
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3
  * @subpackage dbal
  */
-class db_general_testcase extends BaseTestCase {
+class dbGeneralTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db

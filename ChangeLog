@@ -1,3 +1,7 @@
+2010-06-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised DBAL version from 1.1.6 to 1.1.7
+
 2010-06-13  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Updated copyright comments
