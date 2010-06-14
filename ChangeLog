@@ -1,3 +1,7 @@
+2010-06-14  Peter Niederlag  <netservice@niekom.de>
+
+	* Cleanup, #14660: add hint on required rewrite for compression in config_default.php
+
 2010-06-14  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #11447: Unwanted control fields exported in CSV file (Thanks to Andreas Lappe)
