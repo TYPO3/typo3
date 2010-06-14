@@ -1,3 +1,7 @@
+2010-06-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14354: Bug: fix percentage of changes in Workspace Manager -> "Show differences inline" (Thanks to Marco Huber)
+
 2010-06-13  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* Fixed bug #13903: wrong links with multiple domain records on one page with typolinkCheckRootline (thanks to Irene Höppner)

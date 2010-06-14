@@ -143,6 +143,7 @@
 			<label index="label_allWSes">All workspaces</label>
 			<label index="label_notapplicable">n/a</label>
 			<label index="label_percentchange">%%% change:</label>
+			<label index="label_percentChange">%d%% change:</label>
 			<label index="label_doaction_default">Do:</label>
 			<label index="label_doaction_publish">Publish</label>
 			<label index="label_doaction_swap">Swap</label>

@@ -447,8 +447,8 @@ class wslib_gui {
 										} elseif ($rec_off['t3ver_state']==4)	{
 											$diffCode.= $this->doc->icons(1) . $LANG->getLL('label_moveto_pointer') . '<br/>';
 										} else {
-											$diffCode.= ($diffPct<0 ? 'N/A' : ($diffPct ? $diffPct.'% change:' : ''));
-											$diffCode.= ($diffPct<0 ? $LANG->getLL('label_notapplicable') : ($diffPct ? sprintf($LANG->getLL('label_percentchange'), $diffPct) : ''));
+											$diffCode .= ($diffPct < 0 ? $LANG->getLL('label_notapplicable') :
+												($diffPct ? sprintf($LANG->getLL('label_percentChange'), $diffPct) : ''));
 											$diffCode.= $diffHTML;
 										}
 
