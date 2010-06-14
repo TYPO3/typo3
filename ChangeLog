@@ -1,3 +1,7 @@
+2010-06-14  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #14465: Make use of the new Sprite API throughout the TYPO3 Core Backend - Typo in IRRE (Thanks to Steffen Gebert)
+
 2010-06-14  Steffen Kamper  <info@sk-typo3.de>
 
 	* Reverted revision 7901:  #14467: Code cleanup: t3lib_iconWorks::getIconImage is not needed anymore

@@ -634,7 +634,7 @@ class t3lib_TCEforms_inline {
 						$style = ' style="'.$config['inline']['inlineNewButtonStyle'].'"';
 					}
 					$cells['new']='<a href="#" onclick="'.htmlspecialchars($onClick).'"'.$class.$style.'>'.
-						t3lib_iconWorks::getSpriteIcn('actions-' . ($isPagesTable? 'page' :'document') . '-new',
+						t3lib_iconWorks::getSpriteIcon('actions-' . ($isPagesTable? 'page' :'document') . '-new',
 							array(
 								'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:new' . ($isPagesTable ? 'Page' : 'Record' ), 1)
 							)
