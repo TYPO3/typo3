@@ -107,7 +107,9 @@ class localRecordList extends recordList {
 		// Internal:
 	var $pageRow=array();					// Set to the page record (see writeTop())
 
-	var $csvLines=array();					// Used to accumulate CSV lines in for CSV export.
+		// Used to accumulate CSV lines for CSV export.
+	protected $csvLines = array();
+
 	var $csvOutput=FALSE;					// If set, the listing is returned as CSV instead.
 
 	/**
@@ -1784,60 +1786,52 @@ class localRecordList extends recordList {
 	 *
 	 * @return	void
 	 */
-	function initCSV()	{
-
-			// Reset:
-		$this->csvLines=array();
-
-			// Getting header line with field names:
-		$csvRow = array();
-		foreach ($this->fieldArray as $fN) {
-			if ($fN == '_CONTROL_' || $fN == '_CLIPBOARD_') {
-					continue;
-			}
-			$csvRow[] = $fN;
-		}
-
-			// Set the header + an empty row:
-		$this->setCsvRow($csvRow);
-		$this->csvLines[] = '';
+	protected function initCSV() {
+		$this->addHeaderRowToCSV();
 	}
 
+	/**
+	 * Add header line with field names as CSV line
+	 *
+	 * @return void
+	 */
+	protected function addHeaderRowToCSV() {
+			// Add header row, control fields will be reduced inside addToCSV()
+		$this->addToCSV(array_combine($this->fieldArray, $this->fieldArray));
+	}
 
 	/**
-	 * Adds the content of input array $row to the CSV list:
+	 * Adds selected columns of one table row as CSV line.
 	 *
 	 * @param	array		Record array, from which the values of fields found in $this->fieldArray will be listed in the CSV output.
-	 * @param	string		Table name
+	 * @param	string		Table name @deprecated since 4.4
 	 * @return	void
 	 */
-	function addToCSV($row,$table)	{
+	protected function addToCSV(array $row = array(), $table = '') {
+		$rowReducedByControlFields = self::removeControlFieldsFromFieldRow($row);
+		$rowReducedToSelectedColumns = array_intersect_key($rowReducedByControlFields, array_flip($this->fieldArray));
+		$this->setCsvRow($rowReducedToSelectedColumns);
+	}
 
-			// Traversing fields, adding values from $row:
-		$csvRow = array();
-		foreach ($this->fieldArray as $fN) {
-			switch ($fN) {
-				case '_PATH_':
-					$csvRow[] = $this->recPath($row['pid']);
-					break;
-
-				case '_REF_':
-					$csvRow[] = $this->createReferenceHtml($table, $row['uid']);
-					break;
-
-					// remove these columns from the CSV view
-				case '_CONTROL_':
-				case '_CLIPBOARD_':
-					continue;
-					break;
-
-				default:
-					$csvRow[] = $row[$fN];
-			}
-		}
-
-			// Set the values in the CSV list
-		$this->setCsvRow($csvRow);
+	/**
+	 * Remove control fields from row for CSV export
+	 *
+	 * @param array fieldNames => fieldValues
+	 * @return array Input array reduces by control fields
+	 */
+	protected static function removeControlFieldsFromFieldRow(array $row = array()) {
+			// Possible control fields in a list row
+		$controlFields = array(
+			'_PATH_',
+			'_REF_',
+			'_CONTROL_',
+			'_AFTERCONTROL_',
+			'_AFTERREF_',
+			'_CLIPBOARD_',
+			'_LOCALIZATION_',
+			'_LOCALIZATION_b',
+		);
+		return array_diff_key($row, array_flip($controlFields));
 	}
 
 

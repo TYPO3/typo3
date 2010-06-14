@@ -1,3 +1,7 @@
+2010-06-14  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #11447: Unwanted control fields exported in CSV file (Thanks to Andreas Lappe)
+
 2010-06-14  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #14324: Feature: Add spriteGeneratorAPI to support the new sprite-icon-api - Renamed array, added functionality to add TCA type icons from Extensions, allow changes in core icons to trigger cache clearing (Thanks to Steffen Ritter)
