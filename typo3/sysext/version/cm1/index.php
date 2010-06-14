@@ -515,7 +515,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		}
 		$content.='</table></form>';
 
-		$this->content.=$this->doc->section('',$content,0,1);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('title'), $content, 0, 1);
 
 
 			// Create new:
