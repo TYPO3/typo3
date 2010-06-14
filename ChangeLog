@@ -9,6 +9,7 @@
 
 2010-06-14  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14236: logging into the Install Tool gives an alert (Thanks to Steffen Gebert)
 	* Added missing flags #11461: Serbian flag in sys_language selector 
 	* Added missing flags #11807: Flags for belgium is missing
 	* Fixed bug #14708: Version selector looks cryptic

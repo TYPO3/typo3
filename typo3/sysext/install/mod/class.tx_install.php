@@ -228,7 +228,6 @@ class tx_install extends t3lib_install {
 		'about' => 'About',
 		'logout' => 'Logout from Install Tool',
 	);
-	var $JSmessage = '';
 
 
 
@@ -323,18 +322,6 @@ class tx_install extends t3lib_install {
 			// *******************
 		if (!$this->session->hasSession()) {
 			$this->session->startSession();
-
-			$this->JSmessage='SECURITY:
-Make sure to protect the Install Tool with another password than "joh316".
-Better yet you can add a die() function call to typo3/install/index.php after usage.
-
-IF THE INSTALL TOOL CRASHES...
-The Install Tool is checking PHPs support for image formats. However certain versions of PHP (fx. 4.3.0 with bundled GD) will crash when trying to read the PNG test file. If this happens you will see a blank screen or error message.
-Workaround: Open the file typo3/sysext/install/mod/class.tx_install.php, go to the line where the function "isPNG()" is defined and make it return "0" hardcoded. PNG is not checked anymore and the rest of the Install Tool will work as expected. The same has been known with the other image formats as well. You can use a similar method to bypass the testing if that is also a problem.
-On behalf of PHP we regret this inconvenience.
-
-BTW: This Install Tool will only work if cookies are accepted by your web browser. If this dialog pops up over and over again you didn\'t enable cookies.
-';
 		}
 
 		if ($this->session->isAuthorized() || $this->checkPassword()) {
@@ -492,6 +479,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					The Install Tool Password is <em>not</em> the admin password
 					of TYPO3.
 					<br />
+					The default password is <em>joh316</em>. Be sure to change it!
+					<br /><br />
 					If you don\'t know the current password, you can set a new
 					one by setting the value of
 					$TYPO3_CONF_VARS[\'BE\'][\'installToolPassword\'] in
@@ -7634,11 +7623,6 @@ $out="
 					'sysext/install/Resources/Public/Stylesheets/install_login.css'
 				) . '" />';
 			}
-
-			// Include javascript message
-		$this->javascript[] = $this->JSmessage ?
-			'<script type="text/javascript">alert(unescape(\'' . t3lib_div::rawUrlEncodeJS($this->JSmessage) . '\'));</script>' :
-			'';
 
 			// Define the markers content
 		if ($this->mode == '123') {
