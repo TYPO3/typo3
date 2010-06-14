@@ -1,5 +1,6 @@
 2010-06-14  Benjamin Mack  <benni@typo3.org>
 
+	* Followup to #14324: Feature: Add spriteGeneratorAPI to support the new sprite-icon-api - Renamed array, added functionality to add TCA type icons from Extensions, allow changes in core icons to trigger cache clearing (Thanks to Steffen Ritter)
 	* Followup to #14465: Make use of the new Sprite API throughout the TYPO3 Core Backend - Typo in IRRE (Thanks to Steffen Gebert)
 
 2010-06-14  Steffen Kamper  <info@sk-typo3.de>

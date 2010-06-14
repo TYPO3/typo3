@@ -73,6 +73,7 @@ class t3lib_SpriteManager {
 			// create a fileName, the hash includes all icons and css-styles registered and the extlist
 		$this->tempFileName = PATH_site . self::$tempPath .
 							md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
+							md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) . 
 							$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
 			// if no cache-file for the current config ist present, regenerate it
 		if(!@file_exists($this->tempFileName)) {
@@ -111,7 +112,7 @@ class t3lib_SpriteManager {
 		$this->handler->generate();
 
 			// get all Icons registered from skins, merge with core-Icon-List
-		$availableSkinIcons = (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageName'];
+		$availableSkinIcons = (array)$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
 		foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinName => $skinData) {
 			$availableSkinIcons = array_merge($availableSkinIcons, (array)$skinData['availableSpriteIcons']);
 		}
@@ -183,6 +184,20 @@ class t3lib_SpriteManager {
 		foreach ($icons as $iconName => $iconFile) {
 			$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extKey . '-' . $iconName] = $iconFile;
 		}
+	}
+
+	/**
+	 * static function to add a type-with icon to an already existent table which makes use of "typeicon_classes"
+	 * feature or to provide icon for "modules" in pages table
+	 * @param string	$table	the table the type has been added
+	 * @param string	$type	the type - must equal the value of the column in the table
+	 * @param string	$iconFile	relative to PATH_typo3
+	 */
+	public static function addTcaTypeIcon($table, $type, $iconFile) {
+		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type] = $iconFile;
+		if(isset($GLOBALS['TCA'][$table]['typeicon_classes'])) {
+			$GLOBALS['TCA'][$table]['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
+		} 
 	}
 }
 

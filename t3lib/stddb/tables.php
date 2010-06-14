@@ -552,7 +552,7 @@ $FILEICONS = array(
 /**
  * backend sprite icon-names
  */
-$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageName'] = array(
+$GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-version-document-remove',
 	'actions-document-paste-into',
 	'actions-system-cache-clear-impact-high',
