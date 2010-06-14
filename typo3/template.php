@@ -1833,29 +1833,42 @@ $str.=$this->docBodyTagBegin().
 
 					// If more than one was found...:
 				if (count($versions)>1)	{
+					$selectorLabel = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.label', TRUE) . '</strong>';
 
 						// Create selector box entries:
 					$opt = array();
 					foreach($versions as $vRow)	{
-						$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$vRow['uid']))).'"'.($id==$vRow['uid']?' selected="selected"':'').'>'.
-								htmlspecialchars($vRow['t3ver_label'].' [v#'.$vRow['t3ver_id'].', WS:'.$vRow['t3ver_wsid'].']'.($vRow['uid']==$onlineId ? ' =>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online').'<=':'')).
-								'</option>';
+						if ($vRow['uid'] == $onlineId) {
+								//Live version
+							$label = '[' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.live', TRUE) . ']';
+						} else {
+							$label = $vRow['t3ver_label'] . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionId', TRUE) . ' ' . $vRow['t3ver_id'] .
+								($vRow['t3ver_wsid'] != 0 ? ' ' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspaceId', TRUE) . ' ' . $vRow['t3ver_wsid'] : '') . ')';
+						}
+
+						$opt[] = '<option value="' . htmlspecialchars(t3lib_div::linkThisScript(array('id' => $vRow['uid']))) . '"' .
+							($id == $vRow['uid'] ? ' selected="selected"' : '') . '>' .
+							htmlspecialchars($label) . '</option>';
 					}
 
 						// Add management link:
-					$opt[] = '<option value="'.htmlspecialchars(t3lib_div::linkThisScript(array('id'=>$id))).'">---</option>';
-					$opt[] = '<option value="'.htmlspecialchars($this->backPath.t3lib_extMgm::extRelPath('version').'cm1/index.php?table=pages&uid='.$onlineId).'">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm',1).'</option>';
-
+					$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm', TRUE) . '" onclick="window.location.href=\'' .
+							htmlspecialchars($this->backPath . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $onlineId) . '\';" />';
 						// Create onchange handler:
 					$onChange = "window.location.href=this.options[this.selectedIndex].value;";
 
 						// Controls:
-					if ($id==$onlineId)	{
-						$controls = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="absmiddle" alt="" /> <strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online',1).'</strong>';
+					if ($id == $onlineId) {
+						$controls .= '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/blinkarrow_left.gif','width="5" height="9"') .
+							' class="absmiddle" alt="" /> <strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online', TRUE) .
+							'</strong>';
 					} elseif (!$noAction) {
-						$controls = '<a href="'.$this->issueCommand('&cmd[pages]['.$onlineId.'][version][swapWith]='.$id.'&cmd[pages]['.$onlineId.'][version][action]=swap',t3lib_div::linkThisScript(array('id'=>$onlineId))).'" class="nobr">'.
-								'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/insert1.gif','width="14" height="14"').' style="margin-right: 2px;" class="absmiddle" alt="" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage',1).'" />'.
-								'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap',1).'</strong></a>';
+						$controls .= '<a href="' . $this->issueCommand('&cmd[pages][' . $onlineId . '][version][swapWith]=' . $id .
+							'&cmd[pages][' . $onlineId . '][version][action]=swap', t3lib_div::linkThisScript(array('id' => $onlineId))) .
+							'" class="nobr">' . t3lib_iconWorks::getSpriteIcon('actions-version-swap-version', array(
+								'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swapPage', TRUE),
+								'style' => 'margin-left:5px;vertical-align:bottom;'
+							)) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.swap', TRUE) . '</strong></a>';
 					}
 
 						// Write out HTML code:
@@ -1866,32 +1879,33 @@ $str.=$this->docBodyTagBegin().
 						-->
 						<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 							<tr>
-								<td>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.selVer',1).'</td>
+								<td>' . $selectorLabel . '</td>
 								<td>
-									<select onchange="'.htmlspecialchars($onChange).'">
-										'.implode('',$opt).'
+									<select onchange="' . htmlspecialchars($onChange) . '">
+										' . implode('', $opt) . '
 									</select></td>
-								<td>'.$controls.'</td>
+								<td>' . $controls . '</td>
+								<td>' . $management . '</td>
 							</tr>
 						</table>
 					';
 				}
-			} elseif ($GLOBALS['BE_USER']->workspace!==0) {
+			} elseif ($GLOBALS['BE_USER']->workspace !== 0) {
 
 					// Write out HTML code:
-				switch($GLOBALS['BE_USER']->workspace)	{
+				switch($GLOBALS['BE_USER']->workspace) {
 					case 0:
-						$wsTitle = 'LIVE';
+						$wsTitle = $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:live', TRUE);
 					break;
 					case -1:
-						$wsTitle = 'Draft';
+						$wsTitle = $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:draft', TRUE);
 					break;
 					default:
 						$wsTitle = $GLOBALS['BE_USER']->workspaceRec['title'];
 					break;
 				}
 
-				if (t3lib_BEfunc::isPidInVersionizedBranch($id)=='branchpoint')	{
+				if (t3lib_BEfunc::isPidInVersionizedBranch($id) == 'branchpoint') {
 					return '
 
 						<!--
@@ -1899,26 +1913,30 @@ $str.=$this->docBodyTagBegin().
 						-->
 						<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 							<tr>
-								<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
-								<td><em>Inside branch, no further versioning possible</em></td>
+								<td>' . $selectorLabel . '</td>
+								<td>Workspace: "' . htmlspecialchars($wsTitle) . '"</td>
+								<td><em>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.inBranch', TRUE) . '</em></td>
 							</tr>
 						</table>
 					';
 				} else {
 						// Get Current page record:
-					$curPage = t3lib_BEfunc::getRecord('pages',$id);
+					$curPage = t3lib_BEfunc::getRecord('pages', $id);
 						// If the selected page is not online, find the right ID
 					$onlineId = ($curPage['pid']==-1 ? $curPage['t3ver_oid'] : $id);
 						// The version of page:
 					$verPage = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $onlineId);
 
-					if (!$verPage)	{
+					if (!$verPage) {
 
-						if (!count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId)))	{
-							if ($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0))	{
+						if (!count(t3lib_BEfunc::countVersionsOfRecordsOnPage($GLOBALS['BE_USER']->workspace, $onlineId))) {
+							if ($GLOBALS['BE_USER']->workspaceVersioningTypeAccess(0)) {
 
-								$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=new&cmd[pages]['.$onlineId.'][version][treeLevels]=0',t3lib_div::linkThisScript(array('id'=>$onlineId)));
-								$onClick = 'window.location.href=\''.$onClick.'\'; return false;';
+								$onClick = $this->issueCommand('&cmd[pages][' . $onlineId . '][version][action]=new&cmd[pages][' . $onlineId . '][version][treeLevels]=0',
+									t3lib_div::linkThisScript(array(
+										'id' => $onlineId
+									)));
+								$onClick = 'window.location.href=\'' . $onClick . '\'; return false;';
 									// Write out HTML code:
 								return '
 
@@ -1927,14 +1945,16 @@ $str.=$this->docBodyTagBegin().
 									-->
 									<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 										<tr>
-											<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+											<td>' . $selectorLabel . '</td>
+											<td>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspace', TRUE) . ': "' . htmlspecialchars($wsTitle) . '"</td>
 											<td>
-												<input type="submit" value="New version of page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
+												<input type="button" value="New version of page" name="_" onclick="' . htmlspecialchars($onClick) . '" /></td>
 										</tr>
 									</table>
 								';
 							}
-						} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] == FALSE && $GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'] == 0) { // only add this info if old/deprecated newPagesVersioning is allowed
+						} elseif ($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'] == FALSE && $GLOBALS['TYPO3_CONF_VARS']['BE']['newPagesVersioningType'] == 0) {
+								// only add this info if old/deprecated newPagesVersioning is allowed
 							return '
 
 								<!--
@@ -1942,15 +1962,20 @@ $str.=$this->docBodyTagBegin().
 								-->
 								<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 									<tr>
-										<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
-										<td><em>Versions found on page, no "Page" versioning possible</em></td>
+										<td>' . $selectorLabel . '</td>
+										<td>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspace', TRUE) . ': "' . htmlspecialchars($wsTitle) . '"</td>
+										<td><em>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.versionsFound', TRUE) . '</em></td>
 									</tr>
 								</table>
 							';
 						}
 					} elseif ($verPage['t3ver_swapmode']==0) {
-						$onClick = $this->issueCommand('&cmd[pages]['.$onlineId.'][version][action]=swap&cmd[pages]['.$onlineId.'][version][swapWith]='.$verPage['uid'],t3lib_div::linkThisScript(array('id'=>$onlineId)));
-						$onClick = 'window.location.href=\''.$onClick.'\'; return false;';
+						$onClick = $this->issueCommand('&cmd[pages][' . $onlineId . '][version][action]=swap&cmd[pages][' .
+							$onlineId . '][version][swapWith]=' . $verPage['uid'],
+							t3lib_div::linkThisScript(array(
+								'id' => $onlineId
+							)));
+						$onClick = 'window.location.href=\'' . $onClick . '\'; return false;';
 
 							// Write out HTML code:
 						return '
@@ -1960,9 +1985,11 @@ $str.=$this->docBodyTagBegin().
 							-->
 							<table border="0" cellpadding="0" cellspacing="0" id="typo3-versionSelector">
 								<tr>
-									<td>Workspace: "'.htmlspecialchars($wsTitle).'"</td>
+									<td>' . $selectorLabel . '</td>
+									<td>' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:workspace', TRUE) . ': "' . htmlspecialchars($wsTitle) . '"</td>
 									<td>
-										<input type="submit" value="Publish page" name="_" onclick="'.htmlspecialchars($onClick).'" /></td>
+										<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:version/locallang.xml:versionSelect.publish', TRUE) .
+											'" onclick="' . htmlspecialchars($onClick) . '" /></td>
 								</tr>
 							</table>
 						';

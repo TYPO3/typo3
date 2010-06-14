@@ -9,6 +9,7 @@
 
 2010-06-14  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14708: Version selector looks cryptic
 	* Fixed bug #14354: Bug: fix percentage of changes in Workspace Manager -> "Show differences inline" (Thanks to Marco Huber)
 	* Reverted revision 7901:  #14467: Code cleanup: t3lib_iconWorks::getIconImage is not needed anymore
 

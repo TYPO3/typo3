@@ -126,6 +126,7 @@ table.typo3-dblist-overview td.c-tableDescription img {
 table#typo3-versionSelector {
 	margin-bottom: 5px;
 	margin-top: 5px;
+	padding: 5px;
 }
 
 table#typo3-versionSelector td {

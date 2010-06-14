@@ -10,9 +10,7 @@ $Id$
 
 table#typo3-versionSelector {
 	background-color: #ffec97;
-	/*background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
-	background-repeat: repeat-x;
-	border: 1px solid #a2aab8;*/
+	border: 1px solid #a2aab8;
 }
 
 .ver-element,

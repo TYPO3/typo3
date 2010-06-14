@@ -118,6 +118,14 @@
 			<label index="errors">Errors:</label>
 			<label index="refresh">Refresh</label>
 			<label index="allowPreviewOfWholeWorkspace">Allow preview of whole workspace</label>
+			<label index="versionId">ID:</label>
+			<label index="workspaceId">Workspace-Id:</label>
+			<label index="live">LIVE</label>
+			<label index="versionSelect.label">Versions of this page:</label>
+			<label index="versionSelect.live">LIVE version</label>
+			<label index="versionSelect.publish">Publish page</label>
+			<label index="versionSelect.inBranch">Inside branch, no further versioning possible</label>
+			<label index="versionSelect.versionsFound">Versions found on page, no "Page" versioning possible</label>
 		</languageKey>
 	</data>
 </T3locallang>
