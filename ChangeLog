@@ -1,3 +1,7 @@
+2010-06-14  Steffen Kamper  <info@sk-typo3.de>
+
+	* Reverted revision 7901:  #14467: Code cleanup: t3lib_iconWorks::getIconImage is not needed anymore
+
 2010-06-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14640: Improve cookie detection at login screen (Thanks to Steffen Gebert)
