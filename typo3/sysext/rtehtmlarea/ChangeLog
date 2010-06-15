@@ -1,6 +1,7 @@
 2010-06-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14737: htmlArea RTE: Missing labels for SelectFont extension
+	* Fixed bug #14738: htmlArea RTE: Cleaning dead scripts
 
 2010-06-14  Stanislas Rolland  <typo3@sjbr.ca>
 
