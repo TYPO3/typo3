@@ -1896,7 +1896,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 				autoDestroy:  true,
 				fields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
 				data: [[this.localize('No block style'), 'none']]
-			}),
+			})
 			}, {
 			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 			}, this.configDefaults['combo']

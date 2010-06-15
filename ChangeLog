@@ -1,3 +1,7 @@
+2010-06-14  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14723: htmlArea RTE: JS errors block RTE usage in IE6 and IE7 (Thanks to Jo Hasenau)
+
 2010-06-14  Peter Niederlag  <netservice@niekom.de>
 
 	* Cleanup, #14660: add hint on required rewrite for compression in config_default.php

@@ -312,7 +312,7 @@ HTMLArea.DefaultImage = HTMLArea.Plugin.extend({
 									]
 								}),
 								hidden: this.removeItems.test('align'),
-								hideLabel: this.removeItems.test('align'),
+								hideLabel: this.removeItems.test('align')
 								}, this.configDefaults['combo'])
 							,{
 								itemId: 'border',
