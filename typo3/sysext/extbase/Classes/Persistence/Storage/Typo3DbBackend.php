@@ -246,7 +246,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$statementParts['fields'] = array('COUNT(*)');
 		$statement = $this->buildQuery($statementParts, $parameters);
 		$this->replacePlaceholders($statement, $parameters);
-		// debug($sql,-2);
+		// debug($statement,-2);
 		$result = $this->databaseHandle->sql_query($statement);
 		$this->checkSqlErrors($statement);
 		$rows = $this->getRowsFromResult($query->getSource(), $result);
