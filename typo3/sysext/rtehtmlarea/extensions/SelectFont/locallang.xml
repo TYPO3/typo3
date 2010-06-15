@@ -18,6 +18,15 @@
 			<label index="Large">Large</label>
 			<label index="Very large">Very large</label>
 			<label index="Extra large">Extra large</label>
+			<label index="Arial">Arial</label>
+			<label index="Arial Black">Arial Black</label>
+			<label index="Verdana">Verdana</label>
+			<label index="Times New Roman">Times New Roman</label>
+			<label index="Garamond">Garamond</label>
+			<label index="Lucida Handwriting">Lucida Handwriting</label>
+			<label index="Courier">Courier</label>
+			<label index="Webdings">Webdings</label>
+			<label index="Wingdings">Wingdings</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">
