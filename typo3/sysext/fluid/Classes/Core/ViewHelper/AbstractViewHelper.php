@@ -292,7 +292,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 
 				if ($type === 'array') {
 					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof ArrayAccess && !$this->arguments[$argumentName] instanceof Traversable) {
-						throw new RuntimeException('The argument "' . $argumentName . '" was registered with type "array", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '". Value of argument: "' . strval($this->arguments[$argumentName]) . '"', 1237900529);
+						throw new RuntimeException('The argument "' . $argumentName . '" was registered with type "array", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '"', 1237900529);
 					}
 				} elseif ($type === 'boolean') {
 					if (!is_bool($this->arguments[$argumentName])) {
