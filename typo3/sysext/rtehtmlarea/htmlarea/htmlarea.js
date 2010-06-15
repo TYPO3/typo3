@@ -3454,7 +3454,7 @@ HTMLArea.util.Tips = function () {
 				if (label && this.helpIcon && !Ext.isIE) {
 					var helpImage = label.insertFirst({
 						tag: 'img',
-						src: HTMLArea.editorSkin + 'images/helpbubble.gif',
+						src: HTMLArea.editorSkin + 'images/system-help-open.png',
 						style: 'vertical-align: middle; padding-right: 2px;'
 					});
 					if (this.helpDisplay == 'image' || this.helpDisplay == 'both'){

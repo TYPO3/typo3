@@ -1,6 +1,7 @@
 2010-06-14  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14723: htmlArea RTE: JS errors block RTE usage in IE6 and IE7 (Thanks to Jo Hasenau)
+	* Follow-up to bug #14360: htmlArea RTE: Toolbar and context menu styling needs adjustments
 
 2010-06-14  Peter Niederlag  <netservice@niekom.de>
 
