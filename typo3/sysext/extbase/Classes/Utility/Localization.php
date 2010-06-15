@@ -138,7 +138,7 @@ class Tx_Extbase_Utility_Localization {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
-		$locallangPathAndFilename = t3lib_extMgm::extPath(t3lib_div::camelCaseToLowerCaseUnderscored($extensionName), self::$locallangPath . 'locallang.php');
+		$locallangPathAndFilename = 'EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xml';
 
 		self::setLanguageKeys();
 
