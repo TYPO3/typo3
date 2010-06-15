@@ -2,6 +2,7 @@
 
 	* Fixed bug #14737: htmlArea RTE: Missing labels for SelectFont extension
 	* Fixed bug #14738: htmlArea RTE: Cleaning dead scripts
+	* Fixed bug #14622: htmlArea RTE: Drop down boxes have no width when displayed with feeditadvanced
 
 2010-06-14  Stanislas Rolland  <typo3@sjbr.ca>
 

@@ -404,7 +404,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
 		$this->addStyleSheet(
 			'rtehtmlarea-page-style',
-			$this->getFullFileName($filename),
+			($this->isFrontendEditActive() ? '../' : '') . $this->getFullFileName($filename),
 			'htmlArea RTE Content CSS',
 			'alternate stylesheet'
 			);
@@ -418,21 +418,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	protected function addSkin() {
 			// Get skin file name from Page TSConfig if any
 		$skinFilename = trim($this->thisConfig['skin']) ? trim($this->thisConfig['skin']) : 'EXT:' . $this->ID . '/htmlarea/skins/default/htmlarea.css';
-			// Skin provided by some extension
-		if (substr($skinFilename,0,4) == 'EXT:') {
-			list($extKey,$local) = explode('/',substr($skinFilename,4),2);
-			$skinFilename='';
-			if (strcmp($extKey,'') &&  t3lib_extMgm::isLoaded($extKey) && strcmp($local,'')) {
-				$skinFilename = ($this->is_FE() ? t3lib_extMgm::siteRelPath($extKey) : t3lib_extMgm::extRelPath($extKey)) . $local;
-				$skinDir = ($this->is_FE() ? t3lib_extMgm::siteRelPath($extKey) : t3lib_extMgm::extRelPath($extKey)) . dirname($local);
-			}
-		} elseif (substr($skinFilename,0,1) != '/') {
-			$skinDir = dirname($skinFilename);
-			$skinFilename = $skinFilename;
-		} else {
-			$skinDir = substr($this->siteURL,0,-1) . dirname($skinFilename);
-		}
-		$this->editorCSS = $skinFilename;
+		$this->editorCSS = $this->getFullFileName($skinFilename);
+		$skinDir = dirname($this->editorCSS);
 			// Editing area style sheet
 		$this->editedContentCSS = $skinDir . '/htmlarea-edited-content.css';
 		$this->addStyleSheet(
@@ -452,7 +439,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$key = $this->registeredPlugins[$pluginId]->getExtensionKey();
 					$this->addStyleSheet(
 						'rtehtmlarea-plugin-' . $pluginId . '-skin',
-						($this->is_FE() ? t3lib_extMgm::siteRelPath($key) : $this->TCEform->backPath . t3lib_extMgm::extRelPath($key)) . $pathToSkin
+						($this->is_FE() ? t3lib_extMgm::siteRelPath($key) : $this->backPath . t3lib_extMgm::extRelPath($key)) . $pathToSkin
 						);
 				}
 			}
@@ -737,9 +724,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				RTEarea[0] = new Object();
 				RTEarea[0].version = "' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['version'] . '";
 				RTEarea[0].editorUrl = "' . $this->extHttpPath . 'htmlarea/";
-				RTEarea[0].editorCSS = "' . t3lib_div::createVersionNumberedFilename($this->editorCSS) . '";
-				RTEarea[0].editorSkin = "' . dirname($this->editorCSS) . '/";
-				RTEarea[0].editedContentCSS = "' .  t3lib_div::createVersionNumberedFilename($this->editedContentCSS)  . '";
+				RTEarea[0].editorCSS = "' . t3lib_div::createVersionNumberedFilename(($this->isFrontendEditActive() ? $this->TCEform->backPath : '') . $this->editorCSS) . '";
+				RTEarea[0].editorSkin = "' . dirname(($this->isFrontendEditActive() ? $this->TCEform->backPath : '') . $this->editorCSS) . '/";
+				RTEarea[0].editedContentCSS = "' . t3lib_div::createVersionNumberedFilename(($this->isFrontendEditActive() ? $this->TCEform->backPath : '') . $this->editedContentCSS)  . '";
 				RTEarea[0].hostUrl = "' . $this->hostURL . '";
 				RTEarea[0].enableDebugMode = ' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableDebugMode'] ? 'true' : 'false') . ';
 				RTEarea.init = function() {
@@ -1107,21 +1094,21 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$destination = PATH_site . $relativeFilename;
 		if(!file_exists($destination)) {
 			$compressedJavaScript = '';
-			if ($compress) {
+			if ($compress && $fileExtension == 'js') {
 				$compressedJavaScript = t3lib_div::minifyJavaScript($output);
 			}
-			$failure = t3lib_div::writeFileToTypo3tempDir($destination, $compressedJavaScript?$compressedJavaScript:$output);
+			$failure = t3lib_div::writeFileToTypo3tempDir($destination, $compressedJavaScript ? $compressedJavaScript : $output);
 			if ($failure)  {
 				die($failure);
 			}
 		}
-		if ($concatenate) {
+		if ($concatenate && $fileExtension == 'js') {
 			$this->cumulativeScripts[$this->TCEform->RTEcounter][] = $destination;
 		}
 		if ($this->is_FE()) {
 			return ($GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . t3lib_div::createVersionNumberedFilename($relativeFilename);
 		} else {
-			$filename = t3lib_div::createVersionNumberedFilename('../' . $this->backPath . $relativeFilename);
+			$filename = t3lib_div::createVersionNumberedFilename(($this->isFrontendEditActive() ? '' : '../' . $this->backPath) . $relativeFilename);
 			if ($this->isFrontendEditActive()) {
 				$filename = preg_replace('/^..\//', '', $filename);
 			}
@@ -1162,9 +1149,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		} else {
 			if ($compress) {
 				$compressor = t3lib_div::makeInstance('t3lib_Compressor');
-				$filename = $compressor->compressJsFile('../' . $this->backPath  . $relativeFilename);
+				$filename = $compressor->compressJsFile('../' . $this->backPath . $relativeFilename);
 			} else {
-				$filename = t3lib_div::createVersionNumberedFilename('../' . $this->backPath  . $relativeFilename);
+				$filename = t3lib_div::createVersionNumberedFilename('../' . $this->backPath . $relativeFilename);
 			}
 			if ($this->isFrontendEditActive()) {
 				$filename = preg_replace('/^..\//', '', $filename);
