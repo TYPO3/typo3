@@ -198,10 +198,12 @@ class Tx_Extbase_Property_Mapper {
 				if ($targetClassSchema !== NULL && $targetClassSchema->hasProperty($propertyName)) {
 					$propertyMetaData = $targetClassSchema->getProperty($propertyName);
 
-					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage')) && strpos($propertyMetaData['elementType'], '_') !== FALSE) {
+					if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage')) && (strpos($propertyMetaData['elementType'], '_') !== FALSE || $propertyValue === '')) {
 						$objects = array();
-						foreach ($propertyValue as $value) {
-							$objects[] = $this->transformToObject($value, $propertyMetaData['elementType'], $propertyName);
+						if (is_array($propertyValue)) {
+							foreach ($propertyValue as $value) {
+								$objects[] = $this->transformToObject($value, $propertyMetaData['elementType'], $propertyName);
+							}
 						}
 
 							// make sure we hand out what is expected
