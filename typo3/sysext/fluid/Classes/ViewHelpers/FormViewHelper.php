@@ -148,6 +148,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		$this->removeFormObjectFromViewHelperVariableContainer();
 		$this->removeFormNameFromViewHelperVariableContainer();
 		$this->removeFormFieldNamesFromViewHelperVariableContainer();
+		$this->removeCheckboxFieldNamesFromViewHelperVariableContainer();
 
 		return $this->tag->render();
 	}
@@ -357,6 +358,15 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		}
 
 		return 'tx_' . strtolower($extensionName) . '_' . strtolower($pluginName);
+	}
+	
+	/**
+	 * Remove Checkbox field names from ViewHelper variable container, to start from scratch when a new form starts.
+	 */
+	protected function removeCheckboxFieldNamesFromViewHelperVariableContainer() {
+		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper', 'checkboxFieldNames')) {
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper', 'checkboxFieldNames');
+		}
 	}
 }
 
