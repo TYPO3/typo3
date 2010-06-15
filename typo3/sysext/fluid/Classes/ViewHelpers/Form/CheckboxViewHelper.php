@@ -117,7 +117,10 @@ class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends Tx_Fluid_ViewHelpers_
 	}
 	
 	/**
-	 * Renders a hidden field with the same name as the element, to make sure the 
+	 * Renders a hidden field with the same name as the element, to make sure the empty value is submitted
+	 * in case the checkbox is not selected.
+	 * 
+	 * @return string the hidden field.
 	 */
 	protected function renderHiddenFieldForEmptyValue() {
 		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper', 'checkboxFieldNames')) {
