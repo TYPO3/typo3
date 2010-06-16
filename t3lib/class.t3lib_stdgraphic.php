@@ -1315,7 +1315,7 @@ class t3lib_stdGraphic	{
 	protected function getWordPairsForLineBreak($string) {
 		$wordPairs = array();
 
-		$wordsArray = preg_split('#([ -.,!:]+)#', $string, -1,  PREG_SPLIT_DELIM_CAPTURE);
+		$wordsArray = preg_split('#([- .,!:]+)#', $string, -1,  PREG_SPLIT_DELIM_CAPTURE);
 		$wordsCount = count($wordsArray);
 		for ($index=0; $index < $wordsCount; $index+= 2) {
 			$wordPairs[] = $wordsArray[$index] . $wordsArray[$index + 1];

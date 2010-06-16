@@ -1,5 +1,6 @@
 2010-06-16  Susanne Moog  <typo3@susanne-moog.de>
 
+	* Fixed bug #14132: Regexp for automatic line breaks in Gifbuilder is incorrect (Thanks to Jigal van Hemert)
 	* Follow-up to #14733: Improvements to Backend skin - Fixed typo
 	* Fixed bug #14733: Improvements to Backend skin (Thanks to Steffen Gebert)
 
