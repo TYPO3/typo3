@@ -1815,6 +1815,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			itemsConfig.push(Ext.apply({
 				xtype: 'combo',
 				fieldLabel: this.localize('Headers:'),
+				labelSeparator: '',
 				itemId: 'f_headers',
 				helpTitle: this.localize('Table headers'),
 				store: store,
