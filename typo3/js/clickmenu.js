@@ -25,7 +25,8 @@ var Clickmenu = {
 	clickURL: 'alt_clickmenu.php',	// URL to the clickmenu.php file, see template.php
 	ajax: true,	// template.php -> isCMLayers check
 	mousePos: { X: null, Y: null },
-
+	delayClickMenuHide: false,
+	
 
 	/**
 	 * main function, called from most clickmenu links
@@ -166,7 +167,12 @@ var Clickmenu = {
 	 * @result	nothing
 	 */
 	hide: function(obj) {
-		Element.hide(obj);
+		this.delayClickMenuHide = false;
+		window.setTimeout(function() {
+			if (!Clickmenu.delayClickMenuHide) {
+				Element.hide(obj);
+			}
+		}, 500);
 	},
 
 	/**
