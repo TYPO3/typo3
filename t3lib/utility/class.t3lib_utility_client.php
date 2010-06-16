@@ -51,7 +51,10 @@ final class t3lib_utility_Client {
 					'returnResult' => &$returnResult,
 				);
 
-				$hookResult = t3lib_div::callUserFunction($hookFunction, $hookParameters, NULL);
+					// need reference for third parameter in t3lib_div::callUserFunction,
+					// so create a reference to NULL
+				$null = NULL;
+				$hookResult = t3lib_div::callUserFunction($hookFunction, $hookParameters, $null);
 				if ($returnResult && is_array($hookResult) && count($hookResult)) {
 					return $hookResult;
 				}
@@ -155,7 +158,10 @@ final class t3lib_utility_Client {
 					'returnResult' => &$returnResult,
 				);
 
-				$hookResult = t3lib_div::callUserFunction($hookFunction, $hookParameters, NULL);
+					// need reference for third parameter in t3lib_div::callUserFunction,
+					// so create a reference to NULL
+				$null = NULL;
+				$hookResult = t3lib_div::callUserFunction($hookFunction, $hookParameters, $null);
 				if ($returnResult && is_string($hookResult) && !empty($hookResult)) {
 					return $hookResult;
 				}

@@ -12,6 +12,7 @@
 
 2010-06-16  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #13874: NULL reference when using hook in class.t3lib_utility_client.php (Thanks to Steffen Mueller)
 	* Fixed bug #14717: [Usability] Add delay to close the context menu
 	* Fixed bug #14016: typo in class.t3lib_tcemain.php (Thanks to Vladimir Podkovanov)
 
