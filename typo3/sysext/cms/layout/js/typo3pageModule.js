@@ -3,13 +3,7 @@ var typo3pageModule = {
 	 * Initialization
 	 */
 	init: function() {
-		if (Ext.isIE) {
-			// set all content elements active
-			// the whole functionality doesn't work in IE6-8
-			Ext.select('div.t3-page-ce').addClass('active');
-		} else {
-			typo3pageModule.enableHighlighting();
-		}
+		typo3pageModule.enableHighlighting();
 	},
 
 	/**

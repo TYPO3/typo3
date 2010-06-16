@@ -1114,7 +1114,7 @@ class SC_db_layout {
 
 				// Making search form:
 			if (!$this->modTSconfig['properties']['disableSearchBox'] && count($tableOutput))	{
-				$content.=$this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:labels.search'),$dblist->getSearchBox(),0,1);
+				$content .= $this->doc->section($LANG->sL('LLL:EXT:lang/locallang_core.php:labels.search'), $dblist->getSearchBox(0), 0, 1);
 			}
 
 				// Making display of Sys-notes (from extension "sys_note")
