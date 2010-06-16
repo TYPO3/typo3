@@ -7809,7 +7809,7 @@ State was change by %s (username: %s)
 				case 'inline':
 					if ($TCA[$table]['columns'][$field]['config']['foreign_field']) {
 						if (!t3lib_div::testInt($value)) {
-							$result[$field] = count(t3lib_div::trimExplode(',', true));
+							$result[$field] = count(t3lib_div::trimExplode(',', $value, TRUE));
 						}
 					}
 					break;
