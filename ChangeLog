@@ -12,6 +12,7 @@
 
 2010-06-16  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14717: [Usability] Add delay to close the context menu
 	* Fixed bug #14016: typo in class.t3lib_tcemain.php (Thanks to Vladimir Podkovanov)
 
 2010-06-15  Stanislas Rolland  <typo3@sjbr.ca>
