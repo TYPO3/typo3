@@ -1,3 +1,7 @@
+2010-06-16  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14016: typo in class.t3lib_tcemain.php (Thanks to Vladimir Podkovanov)
+
 2010-06-15  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 1.8.11
@@ -10,7 +14,7 @@
 
 2010-06-13  Tobias Liebig  <mail_typo3@etobi.de>
 
-	* Fixed bug #13903: wrong links with multiple domain records on one page with typolinkCheckRootline (thanks to Irene Höppner)
+	* Fixed bug #13903: wrong links with multiple domain records on one page with typolinkCheckRootline (thanks to Irene Hoeppner)
 
 2010-06-12  Steffen Kamper  <info@sk-typo3.de>
 
