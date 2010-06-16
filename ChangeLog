@@ -1,3 +1,7 @@
+2010-06-16  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14567: htmlArea RTE: RTE is greyed out and has no "styles" in page module QuickEdit
+
 2010-06-16  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14016: typo in class.t3lib_tcemain.php (Thanks to Vladimir Podkovanov)
