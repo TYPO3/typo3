@@ -16,6 +16,10 @@ td.t3-page-column {
 	position: relative;
 }
 
+.t3-page-colHeader a {
+	position: relative;
+}
+
 .t3-page-colHeader-icons {
 	position: absolute;
 	left: 4px;

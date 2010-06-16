@@ -49,12 +49,12 @@ body#typo3-alt-file-navframe-php {
 
 body#typo3-pagetree #typo3-inner-docbody,
 body#typo3-alt-file-navframe-php #typo3-inner-docbody {
-	padding: 0 0 10px 5px;
+	padding: 0 0 10px 0;
 }
 
 ul.tree {
 	clear: both;
-	margin: 16px 0 0 5px;
+	margin: 16px 0 0 10px;
 	padding: 0;
 }
 

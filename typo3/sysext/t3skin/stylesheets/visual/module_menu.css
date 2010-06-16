@@ -4,14 +4,18 @@ Module menu
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-#typo3-side-menu {
+#typo3-module-menu {
 	background: #dddddd;
 	background-image: url('../../images/backgrounds/module-menu-right.gif');
 	background-position: right top;
 	background-repeat: repeat-y;
 }
 
-#typo3-menu {
+#typo3-module-menu .x-panel-body {
+	background-color: transparent;
+}
+
+#typo3-side-menu {
 	background-image: url('../../images/backgrounds/module-menu-top.png');
 	background-position: right top;
 	background-repeat: no-repeat;

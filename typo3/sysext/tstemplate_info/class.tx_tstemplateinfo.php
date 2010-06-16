@@ -63,9 +63,10 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * @return	string		A row for a HTML table
 	 */
 	function tableRow($label, $data, $field)	{
-		$ret = '<tr><td class="bgColor4" width="1%">';
-		$ret.= '<a href="index.php?id='.$this->pObj->id.'&e['.$field.']=1">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array("title"=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', true))) . '</a>';
-		$ret.= '</td><td class="bgColor4" width="1%"><strong>'.$label.'&nbsp;&nbsp;</strong></td><td class="bgColor4" width="99%">'.$data.'&nbsp;</td></tr>';
+		$ret = '<tr><td class="bgColor4" width="20%">';
+		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' . 
+			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', true))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
+		$ret.= '</td><td class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
 	}
 
@@ -492,18 +493,13 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[config]) ? count(explode(LF, $tplRow[config])) : 0)),
 				'config'
 			);
-			$outCode = '<table border=0 cellpadding=1 cellspacing=1 width="100%">'.$outCode.'</table>';
-
-			$outCode = '<table border=0 cellpadding=0 cellspacing=0>
-				<tr><td class="bgColor2">'.$outCode.'<img src=clear.gif width=465 height=1></td></tr>
-			</table>';
+			$outCode = '<table class="typo3-dblist">' . $outCode . '</table>';
 
 				// Edit all icon:
 			$outCode.= '<br /><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') .
 				'&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong>' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title'=> 
 				$GLOBALS['LANG']->getLL('editTemplateRecord') ))  . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
-			$theOutput.= $this->pObj->doc->spacer(25);
 			$theOutput.= $this->pObj->doc->section('', $outCode);
 
 

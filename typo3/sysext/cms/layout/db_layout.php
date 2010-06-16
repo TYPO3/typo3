@@ -1216,7 +1216,7 @@ class SC_db_layout {
 					'</a>';
 				// Move page
 			$buttons['move_page'] = '<a href="' . htmlspecialchars($BACK_PATH . 'move_el.php?table=pages&uid=' . $this->id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '" title="' . $LANG->getLL('move_page', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-move-move') .
+						t3lib_iconWorks::getSpriteIcon('actions-page-move') .
 					'</a>';
 				// Move record
 			if (t3lib_div::testInt($this->eRParts[1])) {
@@ -1232,7 +1232,7 @@ class SC_db_layout {
 			if ($this->CALC_PERMS&2)	{
 				$params='&edit[pages][' . $this->id . ']=edit';
 				$buttons['edit_page'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $BACK_PATH)) . '" title="' . $LANG->getLL('editPageProperties', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+							t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 						'</a>';
 			}
 

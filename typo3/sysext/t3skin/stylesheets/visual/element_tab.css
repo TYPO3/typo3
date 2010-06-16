@@ -3,50 +3,9 @@ Tab menu (template.php)
 
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
-/*
-table#typo3-tabmenu td.tabact {
-	color: black;
-	background: #e7dba8;
-	border: solid black 1px;
-}
 
-table#typo3-tabmenu td.tab {
-	background: #c4d4cd;
-	border: solid #555 1px;
-	border-left: solid #aaa 3px;
-	color: #666;
-}
-
-table#typo3-tabmenu td.tab,
-table#typo3-tabmenu td.tabact {
-	border-bottom: 0px;
-	border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-}
-
+table.typo3-dyntabmenu td a,
 table#typo3-tabmenu td a {
-	color: #666;
-	text-decoration: none;
-}
-
-table#typo3-tabmenu td.tabact a {
-	color: black;
-}
-
-table#typo3-tabmenu td A:hover {
-	color: black;
-	text-decoration: none;
-}
-
-table#typo3-tabmenu td.tab:hover {
-	background: #f6eab7;
-}
-
-/* - - - - - - - - - - - - - - - - - - - - -
-Dynamic Tab menu (template.php)
-- - - - - - - - - - - - - - - - - - - - - */
-table.typo3-dyntabmenu td {
 	background: #dadada;
 	border: 1px solid #adadad;
 	border-bottom: none;
@@ -58,36 +17,31 @@ table.typo3-dyntabmenu td {
 	-webkit-border-top-right-radius: 3px;
 }
 
-table.typo3-dyntabmenu td.tabact,
-table.typo3-dyntabmenu td.tab_over,
-table.typo3-dyntabmenu td.tabact_over {
-	background: #ffffff;
-}
-
 table.typo3-dyntabmenu td.tabact a,
 table.typo3-dyntabmenu td.tab_over a,
-table.typo3-dyntabmenu td.tabact_over a {
+table.typo3-dyntabmenu td.tabact_over a,
+table#typo3-tabmenu td.tabact a,
+table#typo3-tabmenu td.tab_oder a,
+table#typo3-tabmenu td.tabact_over a {
+	color: #000;
 	background: #ffffff;
-	padding-bottom: 6px;
-	padding-top: 4px;
-	position: relative;
-	top: 1px;
 }
 
-table.typo3-dyntabmenu td.disabled,
-table.typo3-dyntabmenu td.disabled_over {
+table.typo3-dyntabmenu td.disabled a,
+table.typo3-dyntabmenu td.disabled_over a {
 	background: #ccc;
 	color: #999;
 	cursor: default;
 }
 
-table.typo3-dyntabmenu td a {
+table.typo3-dyntabmenu td a,
+table#typo3-tabmenu td a {
 	color: #666;
 	text-decoration: none;
 }
 
 div.typo3-dyntabmenu-divs {
-	background: #ffffff;
+	background: #ececec;
 	background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
 	background-image: -moz-linear-gradient(center top, #ffffff 0px, #ececec 100px);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0px, #ffffff), color-stop(100px, #ececec));
@@ -151,6 +105,7 @@ div.typo3-dyntabmenu-divs-foldout div.tabact a,
 div.typo3-dyntabmenu-divs-foldout div.tab_over a,
 div.typo3-dyntabmenu-divs-foldout div.tabact_over a {
 	text-decoration: none;
+	color: #000;
 }
 
 /*

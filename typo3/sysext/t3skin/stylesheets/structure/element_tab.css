@@ -22,7 +22,9 @@ table#typo3-tabmenu td.disabled {
 
 table#typo3-tabmenu td a {
 	display: block;
+	margin-top: 1px;
 	padding: 5px 10px 5px 10px;
+	margin-right: 1px;
 }
 
 table#typo3-tabmenu td.tabact a {
@@ -33,6 +35,7 @@ table#typo3-tabmenu td.tabact a {
 /* - - - - - - - - - - - - - - - - - - - - -
 Dynamic Tab menu (template.php)
 - - - - - - - - - - - - - - - - - - - - - */
+
 div.typo3-dyntabmenu-divs {
 	padding: 0;
 }
@@ -59,6 +62,22 @@ table.typo3-dyntabmenu td.disabled_over {
 table.typo3-dyntabmenu td a {
 	display: block;
 	padding: 5px 10px 5px 10px;
+	margin-right: 1px;
+	position: relative;
+	top: 1px;
+}
+
+table.typo3-dyntabmenu td.tabact a,
+table.typo3-dyntabmenu td.tabact_over a,
+table#typo3-tabmenu td.tabact a,
+table#typo3-tabmenu td.tabact_over a {
+	margin-top: 0px;
+	padding-bottom: 6px;
+}
+
+table.typo3-dyntabmenu td.tab_over a,
+table#typo3-tabmenu td.tab_over a {
+	margin-top: 0px;
 }
 
 div.typo3-dyntabmenu-divs-foldout div.c-tablayer {

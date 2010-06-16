@@ -10,8 +10,8 @@ $Id$
 
 .typo3-message {
 	margin-bottom: 4px;
-	padding: 6px;
-	padding-left: 26px;
+	padding: 12px;
+	padding-left: 36px;
 }
 
 .typo3-message ul,
@@ -21,6 +21,4 @@ $Id$
 
 .typo3-message .message-header {
 	display: block;
-	margin-bottom: 5px;
-	margin-top: -1px;
 }

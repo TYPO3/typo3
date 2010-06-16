@@ -1603,7 +1603,6 @@ $str.=$this->docBodyTagBegin().
 			$widthAct = $widthNo + $addToAct;
 			$widthRight = 100 - ($widthLeft + ($count*$widthNo) + $addToAct);
 
-			$first=true;
 			foreach($menuItems as $id => $def) {
 				$isActive = $def['isActive'];
 				$class = $isActive ? 'tabact' : 'tab';
@@ -1614,14 +1613,7 @@ $str.=$this->docBodyTagBegin().
 				$url = htmlspecialchars($def['url']);
 				$params = $def['addParams'];
 
-				if($first) {
-					$options.= '
-							<td width="'.$width.'%" class="'.$class.'" style="border-left: solid #000 1px;"><a href="'.$url.'" style="padding-left:5px;padding-right:2px;" '.$params.'>'.$label.'</a></td>';
-				} else {
-					$options.='
-							<td width="'.$width.'%" class="'.$class.'"><a href="'.$url.'" '.$params.'>'.$label.'</a></td>';
-				}
-				$first=false;
+				$options .= '<td width="' . $width . '%" class="' . $class . '"><a href="' . $url . '" ' . $params . '>' . $label . '</a></td>';
 			}
 
 			if ($options)	{

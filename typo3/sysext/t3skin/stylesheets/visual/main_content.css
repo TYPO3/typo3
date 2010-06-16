@@ -26,7 +26,7 @@ h2 {
 
 /* Normal section headers */
 h3 {
-	font-size: 13px;
+	font-size: 12px;
 }
 
 /* Discrete section headers (no background) */
@@ -166,7 +166,8 @@ textarea.fixed-font {
 }
 
 .uppercase {
-	text-transform: uppercase;
+	padding-bottom: 6px;
+	border-bottom: 1px solid #cdcdcd;
 }
 
 .tableheader td {

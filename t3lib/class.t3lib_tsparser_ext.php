@@ -620,11 +620,11 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap>' . $HTML . '</td>
-							<td align="center" class="bgColor5">' . ($row['root'] ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;</td>
+							<td align="center">' . ($row['root'] ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;</td>
 							<td align="center">' . ($row['clConf'] ? t3lib_iconWorks::getSpriteIcon('status-status-checked') :'') . '&nbsp;&nbsp;' . '</td>
-							<td align="center" class="bgColor5">' . ($row['clConst'] ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
+							<td align="center">' . ($row['clConst'] ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
 							<td align="center">' . ($row['pid'] ? $row['pid'] : '') . '</td>
-							<td align="center" class="bgColor5">' . (strcmp($RL, '') ? $RL : '') . '</td>
+							<td align="center">' . (strcmp($RL, '') ? $RL : '') . '</td>
 							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
 						</tr>';
 			if ($deeper)	{

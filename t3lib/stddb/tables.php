@@ -609,6 +609,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-edit-restore',
 	'actions-system-extension-import',
 	'actions-edit-upload',
+	'actions-edit-insert-default',
 	'actions-view-table-expand',
 	'actions-document-open',
 	'actions-document-localize',

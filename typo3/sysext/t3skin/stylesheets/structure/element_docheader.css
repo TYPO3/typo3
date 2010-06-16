@@ -86,7 +86,7 @@ div#typo3-docbody {
 	bottom: 0;
 	overflow: auto;
 	position: absolute;
-	top: 51px;
+	top: 49px;
 	width: 100%;
 	z-index: 2;
 }

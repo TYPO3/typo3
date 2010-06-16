@@ -486,13 +486,13 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					<tr>
 						<td><img src=clear.gif width=4 height=1></td>
 						<td class="bgColor2">
-							<table border=0 cellpadding=0 cellspacing=0 class="bgColor5" width="100%"><tr><td nowrap width="99%"><strong>'.$label.'</strong></td>'.$remove.'</tr></table>
+							<table border=0 cellpadding=0 cellspacing=0 class="bgColor5" width="100%"><tr class="t3-row-header"><td nowrap width="99%"><strong>'.$label.'</strong></td>'.$remove.'</tr></table>
 						</td>
 					</tr>
 					<tr>
 						<td><img src=clear.gif width=4 height=1></td>
 						<td class="bgColor2">
-							<table border=0 cellpadding=0 cellspacing=0 class="bgColor4" width="100%"><tr><td nowrap>'.$tree.'</td></tr></table><img src=clear.gif width=465 height=1></td>
+							<table border=0 cellpadding=0 cellspacing=0 class="bgColor4" width="100%"><tr><td nowrap>'.$tree.'</td></tr></table></td>
 					</tr>
 				</table>
 			';

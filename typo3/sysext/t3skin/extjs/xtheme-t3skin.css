@@ -21,8 +21,6 @@
 .x-tab-strip-spacer { display: none; }
 .x-tab-strip { padding-left: 10px; }
 
-
-
 .x-panel {
 	border-style: solid;
 	border-color: #A2AAB8;
@@ -473,7 +471,7 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 
 
 /*
- * "xtheme-typo3be" by José Alfonso Dacosta Dominguez (galdaka@hotmail.com)
+ * "xtheme-typo3be" by Josï¿½ Alfonso Dacosta Dominguez (galdaka@hotmail.com)
  * Donate: https://www.paypal.com/es/cgi-bin/webscr?cmd=_flow&SESSION=dK9etfumWahABPggjpbeXDhdwxUJtKuUo1_iQW8d3fQQaXdS9w51j25Gm7O&dispatch=5885d80a13c0db1f998ca054efbdf2c25fe4a05bcb33bff6399b4b6a7ee9cf98
  * Custom themes and licence: galdaka@hotmail.com
  * Site: www.jadacosta.es
@@ -1840,7 +1838,7 @@ a.x-menu-item {
 
 .x-panel-body {
 	border-color: #A2AAB8;
-	background-color:#fff;
+	background-color: #f1f1f1;
 }
 
 .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {

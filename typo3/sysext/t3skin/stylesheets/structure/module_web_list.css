@@ -187,7 +187,10 @@ div#typo3-dblist-pagination span.bar {
 	padding-right: 0px;
 }
 
-/* Special treatment for searchfield on page */
+#typo3-dblist-search-container {
+	position: relative;
+}
+
 #typo3-dblist-search input[type="submit"] {
 	height: 19px;
 	margin-left: 5px;
