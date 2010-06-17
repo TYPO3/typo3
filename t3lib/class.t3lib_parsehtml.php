@@ -810,8 +810,27 @@ class t3lib_parsehtml	{
 													$tagAttrib[0][$attr]=t3lib_div::intInRange($tagAttrib[0][$attr],intval($params['range'][0]));
 												}
 											}
-											if (is_array($params['list']))	{
-												if (!in_array($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['list'],$params['casesensitiveComp'],$tagName)))	$tagAttrib[0][$attr]=$params['list'][0];
+											if (is_array($params['list'])) {
+													// For the class attribute, remove from the attribute value any class not in the list
+													// Classes are case sensitive
+												if ($attr == 'class') {
+													$newClasses = array();
+													$classes = t3lib_div::trimExplode(' ', $tagAttrib[0][$attr], TRUE);
+													foreach ($classes as $class) {
+														if (in_array($class, $params['list'])) {
+															$newClasses[] = $class;
+														}
+													}
+													if (count($newClasses)) {
+														$tagAttrib[0][$attr] = implode(' ', $newClasses);
+													} else {
+														$tagAttrib[0][$attr] = '';
+													}
+												} else {
+													if (!in_array($this->caseShift($tagAttrib[0][$attr],$params['casesensitiveComp']),$this->caseShift($params['list'],$params['casesensitiveComp'],$tagName))) {
+														$tagAttrib[0][$attr]=$params['list'][0];
+													}
+												}
 											}
 											if (($params['removeIfFalse'] && $params['removeIfFalse']!='blank' && !$tagAttrib[0][$attr]) || ($params['removeIfFalse']=='blank' && !strcmp($tagAttrib[0][$attr],'')))	{
 												unset($tagAttrib[0][$attr]);

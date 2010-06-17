@@ -9,6 +9,7 @@
 
 	* Fixed bug #14567: htmlArea RTE: RTE is greyed out and has no "styles" in page module QuickEdit
 	* Fixed bug #14746: htmlArea RTE: TableOperations: Label for "Headers" has a colon in excess
+	* Fixed bug #14748: Span tags with multiple classes being removed by RTE transformation
 
 2010-06-16  Steffen Kamper  <info@sk-typo3.de>
 
