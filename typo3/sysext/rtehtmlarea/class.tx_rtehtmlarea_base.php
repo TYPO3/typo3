@@ -928,7 +928,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 			// Process default style configuration
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].defaultPageStyle = "' . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
+			RTEarea[editornumber].defaultPageStyle = "' . ($this->thisConfig['forceHTTPS'] ? '' : $this->hostURL) . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
 
 			// Setting the pageStyle
 		$filename = trim($this->thisConfig['contentCSS']) ? trim($this->thisConfig['contentCSS']) : 'EXT:' . $this->ID . '/res/contentcss/default.css';
@@ -1045,7 +1045,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 
 			// Include JS arrays of configured classes
 		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber]["classesUrl"] = "' . $this->writeTemporaryFile('', 'classes_'.$LANG->lang, 'js', $this->buildJSClassesArray()) . '";';
+			RTEarea[editornumber]["classesUrl"] = "' . ($this->thisConfig['forceHTTPS'] ? '' : $this->hostURL) . $this->writeTemporaryFile('', 'classes_'.$LANG->lang, 'js', $this->buildJSClassesArray()) . '";';
 
 		return $configureRTEInJavascriptString;
 	}
