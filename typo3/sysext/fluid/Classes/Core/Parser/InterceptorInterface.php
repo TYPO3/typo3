@@ -24,7 +24,7 @@
  * An interceptor interface. Interceptors are used in the parsing stage to change
  * the syntax tree of a template, e.g. by adding viewhelper nodes.
  *
- * @version $Id: InterceptorInterface.php 3952 2010-03-16 08:00:53Z sebastian $
+ * @version $Id: InterceptorInterface.php 4004 2010-03-23 14:11:29Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -41,7 +41,7 @@ interface Tx_Fluid_Core_Parser_InterceptorInterface {
 	 * that will be used in place of the given node.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node
-	 * @param int One of the INTERCEPT_* constants for the current interception point
+	 * @param integer $interceptorPosition One of the INTERCEPT_* constants for the current interception point
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
 	 */
 	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition);

@@ -23,7 +23,7 @@
 /**
  * An interceptor adding the escape viewhelper to the suitable places.
  *
- * @version $Id: Escape.php 3953 2010-03-16 08:08:17Z sebastian $
+ * @version $Id: Escape.php 4040 2010-04-08 16:02:57Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser\Interceptor
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -60,7 +60,7 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	 * If "escapingInterceptorEnabled" in the ViewHelper is FALSE, will disable itself inside the ViewHelpers body.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node
-	 * @param int One of the INTERCEPT_* constants for the current interception point
+	 * @param integer $interceptorPosition One of the INTERCEPT_* constants for the current interception point
 	 * @return Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

@@ -23,7 +23,7 @@
 /**
  * Testcase for ViewHelperNode's evaluateBooleanExpression()
  *
- * @version $Id: ViewHelperNodeComparatorTest.php 3845 2010-02-23 22:04:14Z k-fish $
+ * @version $Id: ViewHelperNodeComparatorTest.php 4483 2010-06-10 13:57:32Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest extends Tx_Extbase_BaseTestCase {
@@ -44,7 +44,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest extends Tx_Ex
 
 	/**
 	 * @test
-	 * @expectedException \RuntimeException
+	 * @expectedException Tx_Fluid_Core_Parser_Exception
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function havingMoreThanThreeElementsInTheSyntaxTreeThrowsException() {

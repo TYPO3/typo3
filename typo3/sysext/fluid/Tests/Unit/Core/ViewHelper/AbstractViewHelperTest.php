@@ -25,7 +25,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
 /**
  * Testcase for AbstractViewHelper
  *
- * @version $Id: AbstractViewHelperTest.php 3835 2010-02-22 15:15:17Z robert $
+ * @version $Id: AbstractViewHelperTest.php 4483 2010-06-10 13:57:32Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_BaseTestCase {
@@ -190,7 +190,7 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_BaseTes
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @expectedException \RuntimeException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function validateArgumentsCallsTheRightValidatorsAndThrowsExceptionIfValidationIsWrong() {
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);

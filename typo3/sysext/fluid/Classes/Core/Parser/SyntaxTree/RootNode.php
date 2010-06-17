@@ -39,10 +39,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_RootNode extends Tx_Fluid_Core_Parser_Synt
 	 */
 	public function evaluate() {
 		if ($this->renderingContext === NULL) {
-			throw new RuntimeException('Rendering Context is null in RootNode, but necessary. If this error appears, please report a bug!', 1242669004);
+			throw new Tx_Fluid_Core_Parser_Exception('Rendering Context is NULL in RootNode, but necessary. If this error appears, please report a bug!', 1242669004);
 		}
-		$text = $this->evaluateChildNodes();
-		return $text;
+		$result = $this->evaluateChildNodes();
+		return $result;
 	}
 }
 

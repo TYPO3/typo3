@@ -219,10 +219,12 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	}
 
 	/**
-	 * Resolve the template path and filename for the given action. If action is null, looks into the current request.
+	 * Resolve the template path and filename for the given action. If $actionName
+	 * is NULL, looks into the current request.
 	 *
 	 * @param string $actionName Name of the action. If NULL, will be taken from request.
 	 * @return string Full path to template
+	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function resolveTemplatePathAndFilename($actionName = NULL) {
@@ -241,7 +243,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 				return $path;
 			}
 		}
-		throw new RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('Template could not be loaded. I tried "' . implode('", "', $paths) . '"', 1225709595);
 	}
 
 	/**
@@ -249,6 +251,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 *
 	 * @param string $sectionName Name of section to render
 	 * @return string rendered template for the section
+	 * @throws Tx_Fluid_View_Exception_InvalidSectionException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -257,7 +260,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 		$sections = $parsedTemplate->getVariableContainer()->get('sections');
 		if(!array_key_exists($sectionName, $sections)) {
-			throw new RuntimeException('The given section does not exist!', 1227108982);
+			throw new Tx_Fluid_View_Exception_InvalidSectionException('The given section does not exist!', 1227108982);
 		}
 		$section = $sections[$sectionName];
 
@@ -291,6 +294,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 *
 	 * @param string $layoutName Name of the layout to use. If none given, use "default"
 	 * @return string Path and filename of layout file
+	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function resolveLayoutPathAndFilename($layoutName = 'default') {
@@ -305,7 +309,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 				return $path;
 			}
 		}
-		throw new RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -331,6 +335,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 *
 	 * @param string $partialName The name of the partial
 	 * @return string the full path which should be used. The path definitely exists.
+	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function resolvePartialPathAndFilename($partialName) {
@@ -341,7 +346,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 				return $path;
 			}
 		}
-		throw new RuntimeException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
+		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -356,7 +361,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		try {
 			$this->resolveTemplatePathAndFilename();
 			return TRUE;
-		} catch (RuntimeException $e) {
+		} catch (Tx_Fluid_View_Exception_InvalidTemplateResourceException $e) {
 			return FALSE;
 		}
 	}
@@ -500,12 +505,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 
 		$results = array();
 
-		if ($controllerName !== NULL) {
-			$i = -1;
-		} else {
-			$i = 0;
-		}
-
+		$i = ($controllerName === NULL) ? 0 : -1;
 		do {
 			$temporaryPattern = $pattern;
 			if ($i < 0) {

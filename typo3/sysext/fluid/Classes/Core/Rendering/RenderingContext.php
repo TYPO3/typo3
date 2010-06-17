@@ -38,7 +38,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	protected $templateVariableContainer;
 
 	/**
-	 * Object factory which is bubbled through. The ViewHelperNode cannot get an ObjectManager injected because
+	 * Object manager which is bubbled through. The ViewHelperNode cannot get an ObjectManager injected because
 	 * the whole syntax tree should be cacheable
 	 * @var Tx_Fluid_Compatibility_ObjectManager
 	 */
@@ -57,7 +57,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	protected $viewHelperVariableContainer;
 
 	/**
-	 * Inject the object factory
+	 * Inject the object manager
 	 *
 	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -67,7 +67,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	}
 
 	/**
-	 * Returns the object factory. Only the ViewHelperNode should do this.
+	 * Returns the object manager. Only the ViewHelperNode should do this.
 	 *
 	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>

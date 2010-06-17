@@ -162,7 +162,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function getOptions() {
-		if (!is_array($this->arguments['options']) && !($this->arguments['options'] instanceof Iterator)) {
+		if (!is_array($this->arguments['options']) && !($this->arguments['options'] instanceof Traversable)) {
 			return array();
 		}
 		$options = array();

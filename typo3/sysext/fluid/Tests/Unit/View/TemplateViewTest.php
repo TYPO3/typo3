@@ -26,7 +26,7 @@ include_once(dirname(__FILE__) . '/Fixtures/TemplateViewFixture.php');
 /**
  * Testcase for the TemplateView
  *
- * @version $Id: TemplateViewTest.php 3835 2010-02-22 15:15:17Z robert $
+ * @version $Id: TemplateViewTest.php 4334 2010-05-28 10:06:01Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
@@ -124,7 +124,7 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function setupMockControllerContextForPathResolving($packageKey, $subPackageKey, $controllerName, $format) {
-		$controllerObjectName = "F3\\$packageKey\\" . ($subPackageKey != $subPackageKey . '\\' ? : '') . 'Controller\\' . $controllerName . 'Controller';
+     	$controllerObjectName = 'Tx_' . $packageKey . '_' . ($subPackageKey !== '' ? '_' . $subPackageKey . '_' : '') . 'Controller_' . $controllerName . 'Controller';
 
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
 		$mockRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue($packageKey));
@@ -244,10 +244,10 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 		$mockPackageManager = $this->getMock('Tx_Fluid_Package_PackageManagerInterface', array('getPackage'));
 		$mockPackageManager->expects($this->any())->method('getPackage')->with('DummyPackageKey')->will($this->returnValue($mockPackage));
 
-		\vfsStreamWrapper::register();
+		vfsStreamWrapper::register();
 		$mockRootDirectory = vfsStreamDirectory::create('ExamplePackagePath/Resources/Private/Partials');
 		$mockRootDirectory->getChild('Resources/Private/Partials')->addChild('Partials');
-		\vfsStreamWrapper::setRoot($mockRootDirectory);
+		vfsStreamWrapper::setRoot($mockRootDirectory);
 
 		$this->getAccessibleMock('Tx_Fluid_Core_Parser_TemplateParser', array(''), array(), '', FALSE);
 	}
@@ -311,6 +311,43 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 		$templateView->setLayoutPathAndFilename(dirname(__FILE__) . '/Fixtures/LayoutFixture.html');
 		$this->assertEquals($templateView->renderWithLayout('LayoutFixture'), '<div>Output</div>', 'Specific section was not rendered correctly!');
 	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function resolveTemplatePathAndFilenameChecksDifferentPathPatternsAndReturnsTheFirstPathWhichExists() {
+		$this->markTestSkipped('vfs not yet supported in v4');
+		vfsStreamWrapper::register();
+		mkdir('vfs://MyTemplates');
+		file_put_contents('vfs://MyTemplates/MyCoolAction.html', '');
+
+		$paths = array(
+			 'vfs://NonExistantDir/UnknowFile.html',
+			 'vfs://MyTemplates/@action.html'
+		);
+
+		$templateView = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('expandGenericPathPattern'), array(), '', FALSE);
+		$templateView->expects($this->once())->method('expandGenericPathPattern')->with('@templateRoot/@subpackage/@controller/@action.@format', FALSE, FALSE)->will($this->returnValue($paths));
+
+		$templateView->setTemplateRootPath('MyTemplates');
+		$templateView->setPartialRootPath('MyPartials');
+		$templateView->setLayoutRootPath('MyLayouts');
+
+		$this->assertSame('vfs://MyTemplates/MyCoolAction.html', $templateView->_call('resolveTemplatePathAndFilename', 'myCoolAction'));
+		
+	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function resolveTemplatePathAndFilenameReturnsTheExplicitlyConfiguredTemplatePathAndFilename() {
+		$templateView = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'), array(), '', FALSE);
+		$templateView->_set('templatePathAndFilename', 'Foo/Bar/Baz.html');
+
+		$this->assertSame('Foo/Bar/Baz.html', $templateView->_call('resolveTemplatePathAndFilename'));
+  	}
 }
 
 ?>

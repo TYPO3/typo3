@@ -21,55 +21,15 @@
  *                                                                        */
 
 /**
- * Array Syntax Tree Node. Handles JSON-like arrays.
+ * A "Invalid Variable" exception.
  *
  * @version $Id$
  * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
+ * @subpackage Core\ViewHelper\Exception
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
+ * @api
  */
-class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
-
-	/**
-	 * An associative array. Each key is a string. Each value is either a literal, or an AbstractNode.
-	 * @var array
-	 */
-	protected $internalArray = array();
-
-	/**
-	 * Constructor.
-	 *
-	 * @param array $internalArray Array to store
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function __construct($internalArray) {
-		$this->internalArray = $internalArray;
-	}
-
-	/**
-	 * Evaluate the array and return an evaluated array
-	 *
-	 * @return array An associative array with literal values
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	public function evaluate() {
-		if ($this->renderingContext === NULL) {
-			throw new Tx_Fluid_Core_Parser_Exception('Rendering Context is null in ArrayNode, but necessary. If this error appears, please report a bug!', 1242668976);
-		}
-		$arrayToBuild = array();
-		foreach ($this->internalArray as $key => $value) {
-			if ($value instanceof Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode) {
-				$value->setRenderingContext($this->renderingContext);
-				$arrayToBuild[$key] = $value->evaluate();
-			} else {
-				// TODO - this case should not happen!
-				$arrayToBuild[$key] = $value;
-			}
-		}
-		return $arrayToBuild;
-	}
+class Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException extends Tx_Fluid_Core_ViewHelper_Exception {
 }
 
 ?>
