@@ -1,3 +1,7 @@
+2010-06-17  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #14577: Ext.ux.elasticTextArea causes JS errors in all version of IE (Thanks to Jo Hasenau)
+
 2010-06-16  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14748: Span tags with multiple classes being removed by RTE transformation
