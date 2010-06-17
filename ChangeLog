@@ -1,3 +1,7 @@
+2010-06-17  Benjamin Mack  <benni@typo3.org>
+
+	* Partly reverted #14636: Improvements to new Backend skin - reverted TCEforms styling, will be included later
+
 2010-06-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14633: Nested form tag breaks editing icons and ExtJS funcitonality in the page module for IE8 users (Thanks to Jo Hasenau)
