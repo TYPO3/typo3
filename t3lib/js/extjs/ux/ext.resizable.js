@@ -1003,11 +1003,13 @@ Ext.ux.elasticTextArea = function(){
                                 .replace(/\n/g, '<br />&nbsp;') 
                     );
             
-			var growBy = parseInt(el.getStyle('line-height')) + 1;
+			var growBy = parseInt(el.getStyle('line-height'));
+			growBy = growBy ? growBy + 1 : 1;
 			if (growBy === 1) {
 				growBy = options.growBy;
 			}
-			var textHeight = this.div.getHeight() + growBy;
+			var textHeight = this.div.getHeight();
+			textHeight = textHeight ? textHeight + growBy : growBy;
             
             if ( (textHeight > options.maxHeight ) && (options.maxHeight > 0) ){
                 textHeight = options.maxHeight ;
