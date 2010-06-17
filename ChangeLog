@@ -1,3 +1,7 @@
+2010-06-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14770: htmlArea RTE: Abbreviation dialogue not always correctly initialized
+
 2010-06-17  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed issue #14729: Backwards compatibility broken by disabled deprecation log

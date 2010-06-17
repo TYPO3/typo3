@@ -42,13 +42,13 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "2.1",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: "SJBR",
-			sponsorUrl	: "http://www.sjbr.ca/",
-			license		: "GPL"
+			version		: '2.2',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: 'SJBR',
+			sponsorUrl	: 'http://www.sjbr.ca/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*
@@ -254,7 +254,13 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 			width: 350,
 			listeners: {
 				beforerender: {
-					fn: this.onSelectorRender,
+					fn: function (combo) {
+							// Ensure the store is loaded
+						combo.getStore().load({
+							callback: function () { this.onSelectorRender(combo); },
+							scope: this
+						});
+					},
 					scope: this
 				},
 				select: {
@@ -281,7 +287,13 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 			width: 100,
 			listeners: {
 				beforerender: {
-					fn: this.onSelectorRender,
+					fn: function (combo) {
+							// Ensure the store is loaded
+						combo.getStore().load({
+							callback: function () { this.onSelectorRender(combo); },
+							scope: this
+						});
+					},
 					scope: this
 				},
 				select: {
@@ -394,19 +406,30 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 			// Make sure the combo list is filtered
 		store.snapshot = store.data;
 		var store = combo.getStore();
-		if (combo.getItemId() == 'termSelector' && this.params.title) {
-			var index = store.findExact('term', this.params.title);
-			if (index !== -1) {
-				combo.setValue(store.getAt(index).get('term'));
+			// Initialize the term and abbr combos
+		if (combo.getItemId() == 'termSelector') {
+			if (this.params.title) {
+				var index = store.findExact('term', this.params.title);
+				if (index !== -1) {
+					var record = store.getAt(index);
+					combo.setValue(record.get('term'));
+					this.onTermSelect(combo, record, index);
+				}
+			} else if (this.params.text) {
+				var index = store.findExact('term', this.params.text);
+				if (index !== -1) {
+					var record = store.getAt(index);
+					combo.setValue(record.get('term'));
+					this.onTermSelect(combo, record, index);
+				}
 			}
 		} else if (combo.getItemId() == 'abbrSelector' && this.params.text) {
 			var index = store.findExact('abbr', this.params.text);
 			if (index !== -1) {
-				combo.setValue(store.getAt(index).get('abbr'));
+				var record = store.getAt(index);
+				combo.setValue(record.get('abbr'));
+				this.onAbbrSelect(combo, record, index);
 			}
-		}
-		if (this.params.abbr && store.getCount() < 2) {
-			combo.ownerCt.hide();
 		}
 	},
 	/*
