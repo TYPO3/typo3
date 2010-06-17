@@ -25,7 +25,7 @@ body#ext-reports-mod-index-php {
 
 .report-list dd {
 	margin: 2px 0 15px 20px;
-	padding-left: 22px; 
+	padding-left: 22px;
 }
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
@@ -53,6 +53,10 @@ body#ext-reports-mod-index-php {
 
 #ext-reports-mod-index-php .message-body {
 	clear: left;
+}
+
+#ext-reports-mod-index-php .message-body p {
+	padding: 5px 0;
 }
 
 #ext-reports-mod-index-php .message-left {

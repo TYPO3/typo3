@@ -18,12 +18,14 @@
 			<label index="descending">Descending</label>
 			<label index="details">Details</label>
 			<label index="disable">Disable</label>
+			<label index="disabled">Disabled</label>
 			<label index="down">Down</label>
 			<label index="download">Download</label>
 			<label index="edit">Edit</label>
 			<label index="editField">Edit field</label>
 			<label index="editFile">Edit file</label>
 			<label index="enable">Enable</label>
+			<label index="enabled">Enabled</label>
 			<label index="file">File</label>
 			<label index="files">Files</label>
 			<label index="first">First</label>

@@ -34,6 +34,12 @@
  */
 class tx_reports_reports_status_ConfigurationStatus implements tx_reports_StatusProvider {
 
+		// 10 MB
+	protected $deprecationLogFileSizeWarningThreshold = 10485760;
+		// 100 MB
+	protected $deprecationLogFileSizeErrorThreshold   = 104857600;
+
+
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
@@ -43,6 +49,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	public function getStatus() {
 		$statuses = array(
 			'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
+			'deprecationLog'      => $this->getDeprecationLogStatus()
 		);
 
 		if ($this->isMemcachedUsed()) {
@@ -64,7 +71,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_refindex');
 		$registry = t3lib_div::makeInstance('t3lib_Registry');
-		$lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate'); 
+		$lastRefIndexUpdate = $registry->get('core', 'sys_refindex_lastUpdate');
 
 		if (!$count && $lastRefIndexUpdate) {
 			$value    = $GLOBALS['LANG']->getLL('status_empty');
@@ -177,6 +184,72 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$GLOBALS['LANG']->getLL('status_memcachedConfiguration'), $value, $message, $severity
 		);
+	}
+
+	/**
+	 * Provides status information on the deprecation log, whether it's enabled
+	 * and if so whether certain limits in file size are reached.
+	 *
+	 * @return	tx_reports_reports_status_Status	The deprecation log status.
+	 */
+	protected function getDeprecationLogStatus() {
+		$title    = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLog');
+		$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disabled');
+		$message  = '';
+		$severity = tx_reports_reports_status_Status::OK;
+
+		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
+			$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:enabled');
+			$message  = '<p>' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
+			$severity = tx_reports_reports_status_Status::NOTICE;
+
+			$logFile     = t3lib_div::getDeprecationLogFileName();
+			$logFileSize = 0;
+
+			if (file_exists($logFile)) {
+				$logFileSize = filesize($logFile);
+
+				$message .= '<p> ' . sprintf(
+						$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'),
+						$this->getDeprecationLogFileLink()
+					) . '</p>';
+			}
+
+			if ($logFileSize > $this->deprecationLogFileSizeWarningThreshold) {
+				$severity = tx_reports_reports_status_Status::WARNING;
+			}
+
+			if ($logFileSize > $this->deprecationLogFileSizeErrorThreshold) {
+				$severity = tx_reports_reports_status_Status::ERROR;
+			}
+
+			if ($severity > tx_reports_reports_status_Status::OK) {
+				$message .= '<p> ' . sprintf(
+					$GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'),
+					t3lib_div::formatSize($logFileSize)
+				) . '</p>';
+			}
+		}
+
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$title, $value, $message, $severity
+		);
+	}
+
+	/**
+	 * Creates a link to the deprecation log file with the absolute path as the
+	 * link text.
+	 *
+	 * @return	string	Link to the deprecation log file
+	 */
+	protected function getDeprecationLogFileLink() {
+		$logFile      = t3lib_div::getDeprecationLogFileName();
+		$documentRoot = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
+
+		$relativePath = substr($logFile, strlen($documentRoot));
+		$link = '<a href="..' . $relativePath . '">' . $logFile . '</a>';
+
+		return $link;
 	}
 
 }

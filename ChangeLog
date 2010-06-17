@@ -1,3 +1,7 @@
+2010-06-17  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed issue #14729: Backwards compatibility broken by disabled deprecation log
+
 2010-06-17  Benjamin Mack  <benni@typo3.org>
 
 	* Release of TYPO3 4.4.0RC1
@@ -55,7 +59,7 @@
 
 	* Fixed bug #14716: Version module don't display Title
 	* Fixed bug #14236: logging into the Install Tool gives an alert (Thanks to Steffen Gebert)
-	* Added missing flags #11461: Serbian flag in sys_language selector 
+	* Added missing flags #11461: Serbian flag in sys_language selector
 	* Added missing flags #11807: Flags for belgium is missing
 	* Fixed bug #14708: Version selector looks cryptic
 	* Fixed bug #14354: Bug: fix percentage of changes in Workspace Manager -> "Show differences inline" (Thanks to Marco Huber)
