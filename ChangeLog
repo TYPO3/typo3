@@ -1,5 +1,9 @@
 2010-06-17  Benjamin Mack  <benni@typo3.org>
 
+	* Release of TYPO3 4.4.0RC1
+
+2010-06-17  Benjamin Mack  <benni@typo3.org>
+
 	* Fixed bug #14577 Ext.ux.elasticTextArea causes JS errors in all version of IE (Thanks to Jo Hasenau)
 	* Partly reverted #14636: Improvements to new Backend skin - reverted TCEforms styling, will be included later
 
