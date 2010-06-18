@@ -233,14 +233,21 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		}
 
 		$actionName = ($actionName !== NULL ? $actionName : $this->controllerContext->getRequest()->getControllerActionName());
-		$actionName = strtolower($actionName);
+		$actionName = ucfirst($actionName);
 
 		$paths = $this->expandGenericPathPattern($this->templatePathAndFilenamePattern, FALSE, FALSE);
 
 		foreach ($paths as &$path) {
-			$path = str_replace('@action', $actionName, $path);
+			// TODO remove fallback to lower case template files after grace period
+			$fallbackPath = str_replace('@action', strtolower($actionName), $path);
+			$path = str_replace('@action', $actionName . 'f', $path);
 			if (file_exists($path)) {
 				return $path;
+			} else {
+				if (file_exists($fallbackPath)) {
+					t3lib_div::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($path) . '"');
+					return $fallbackPath;
+				}
 			}
 		}
 		throw new Tx_Fluid_View_Exception_InvalidTemplateResourceException('Template could not be loaded. I tried "' . implode('", "', $paths) . '"', 1225709595);
