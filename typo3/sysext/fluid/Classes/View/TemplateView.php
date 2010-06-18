@@ -240,7 +240,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		foreach ($paths as &$path) {
 			// TODO remove fallback to lower case template files after grace period
 			$fallbackPath = str_replace('@action', strtolower($actionName), $path);
-			$path = str_replace('@action', $actionName . 'f', $path);
+			$path = str_replace('@action', $actionName, $path);
 			if (file_exists($path)) {
 				return $path;
 			} else {
