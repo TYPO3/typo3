@@ -1,3 +1,7 @@
+2010-06-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug ##14436: External links are prepended with current domain by RTE transformation
+
 2010-06-18  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid versions to 1.2.0RC1

@@ -690,15 +690,15 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 
 			// Split content by the TYPO3 pseudo tag "<link>":
 		$blockSplit = $this->splitIntoBlock('link',$value,1);
+		$siteUrl = $this->siteUrl();
 		foreach($blockSplit as $k => $v)	{
 			$error = '';
 			if ($k%2)	{	// block:
 				$tagCode = t3lib_div::unQuoteFilenames(trim(substr($this->getFirstTag($v),0,-1)),true);
 				$link_param = $tagCode[1];
 				$href = '';
-				$siteUrl = $this->siteUrl();
 					// Parsing the typolink data. This parsing is roughly done like in tslib_content->typolink()
-				if(strstr($link_param,'@'))	{		// mailadr
+				if (strstr($link_param,'@')) {		// mailadr
 					$href = 'mailto:'.preg_replace('/^mailto:/i','',$link_param);
 				} elseif (substr($link_param,0,1)=='#') {	// check if anchor
 					$href = $siteUrl.$link_param;
@@ -706,15 +706,19 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					$fileChar=intval(strpos($link_param, '/'));
 					$urlChar=intval(strpos($link_param, '.'));
 					$external = FALSE;
-
+						// Parse URL:
+					$pU = parse_url($link_param);
 						// Detects if a file is found in site-root OR is a simulateStaticDocument.
 					list($rootFileDat) = explode('?',$link_param);
 					$rFD_fI = pathinfo($rootFileDat);
 					if (trim($rootFileDat) && !strstr($link_param,'/') && (@is_file(PATH_site.$rootFileDat) || t3lib_div::inList('php,html,htm',strtolower($rFD_fI['extension']))))	{
 						$href = $siteUrl.$link_param;
-					} elseif($urlChar && (strstr($link_param,'//') || !$fileChar || $urlChar<$fileChar))	{	// url (external): If doubleSlash or if a '.' comes before a '/'.
-						if (!preg_match('/^[a-z]*:\/\//',trim(strtolower($link_param))))	{$scheme='http://';} else {$scheme='';}
-						$href = $scheme.$link_param;
+					} elseif ($pU['scheme'] || ($urlChar && (!$fileChar || $urlChar < $fileChar))) {
+							// url (external): if has scheme or if a '.' comes before a '/'.
+						$href = $link_param;
+						if (!$pU['scheme']) {
+							$href = 'http://' . $href;
+						}
 						$external = TRUE;
 					} elseif($fileChar)	{	// file (internal)
 						$href = $siteUrl.$link_param;
