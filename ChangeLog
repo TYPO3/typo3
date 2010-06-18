@@ -1,3 +1,7 @@
+2010-06-18  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #14774: Scheduler: Improve documentation with various advice for developers
+
 2010-06-17  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14770: htmlArea RTE: Abbreviation dialogue not always correctly initialized
