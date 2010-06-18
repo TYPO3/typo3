@@ -1,6 +1,7 @@
 2010-06-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug ##14436: External links are prepended with current domain by RTE transformation
+	* Updated htmlArea RTE version to 2.0.1
 
 2010-06-18  Sebastian Kurfuerst  <sebastian@typo3.org>
 
