@@ -298,7 +298,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 					if (!is_bool($this->arguments[$argumentName])) {
 						throw new InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "boolean", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1240227732);
 					}
-				} elseif (class_exists($type)) {
+				} elseif (class_exists($type, FALSE)) {
 					if (! ($this->arguments[$argumentName] instanceof $type)) {
 						if (is_object($this->arguments[$argumentName])) {
 							throw new InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "' . $type . '", but is of type "' . get_class($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1256475114);
