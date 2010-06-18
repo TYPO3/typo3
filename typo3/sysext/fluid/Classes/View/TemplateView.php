@@ -318,15 +318,19 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 	 * @param string $partialName
 	 * @param string $sectionToRender
 	 * @param array $variables
+	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer the View Helper Variable container to use.
 	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function renderPartial($partialName, $sectionToRender, array $variables) {
+	public function renderPartial($partialName, $sectionToRender, array $variables, $viewHelperVariableContainer = NULL) {
 		$partial = $this->parseTemplate($this->resolvePartialPathAndFilename($partialName));
 		$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
 		$renderingContext = $this->buildRenderingContext($variableContainer);
+		if ($viewHelperVariableContainer !== NULL) {
+			$renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
+		}
 		return $partial->render($renderingContext);
 	}
 

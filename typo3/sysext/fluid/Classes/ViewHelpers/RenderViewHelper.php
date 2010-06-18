@@ -43,7 +43,7 @@ class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 */
 	public function render($section = '', $partial = '', $arguments = array()) {
 		if ($partial !== '') {
-			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
+			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments, $this->viewHelperVariableContainer);
 		} elseif ($section !== '') {
 			return $this->viewHelperVariableContainer->getView()->renderSection($section);
 		}
