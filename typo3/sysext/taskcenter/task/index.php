@@ -75,8 +75,8 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	public function menuConfig() {
 		$this->MOD_MENU   = array('mode' => array());
 
+		$this->MOD_MENU['mode']['information'] = $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/locallang.xml:task_overview');
 		$this->MOD_MENU['mode']['tasks'] = 'Tasks';
-		$this->MOD_MENU['mode']['information'] = $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:function.info');
 		
 		parent::menuConfig();
 	}

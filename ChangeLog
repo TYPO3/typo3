@@ -1,3 +1,7 @@
+2010-06-18  Benjamin Mack  <benni@typo3.org>
+
+	* Followup to #14733: Improvements to Backend skin - Added updated styles for the taskcenter module
+
 2010-06-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug ##14436: External links are prepended with current domain by RTE transformation

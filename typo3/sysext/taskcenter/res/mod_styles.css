@@ -96,18 +96,17 @@ body#ext-taskcenter-task-index-php h3 {
 
 
 #taskcenter-menu .link {
-	background:url(item-background.jpg) repeat-x;
-	border:1px solid #b0b7c2;
-	border-width:1px 1px 0;
-	line-height:18px;
-	/*height:23px;*/
-	display:block;
+	border: 1px solid #adadad;
+	border-width: 1px 1px 0;
+	line-height: 18px;
+	display: block;
+	background: #585858;
 }
 
 #taskcenter-menu .link a {
-	padding:2px 5px;
-	display:block;
-	color:#fff;
+	padding: 2px 5px;
+	display: block;
+	color: #fff;
 }
 
 #taskcenter-menu .active-task .link a {
@@ -117,7 +116,7 @@ body#ext-taskcenter-task-index-php h3 {
 #taskcenter-menu .content {
 	padding:5px 0;
 	background:#fff;
-	border:1px solid #b7bec9;
+	border: 1px solid #adadad;
 }
 
 #taskcenter-menu .content p {
@@ -139,12 +138,12 @@ body#ext-taskcenter-task-index-php h3 {
 }
 
 #taskcenter-menu .content ul li.active {
-	background-color:#e1e6ec;
+	background-color: #DADADA;
 }
 
 #taskcenter-menu .content ul li.active a {
-	color:#272527;
-	font-weight:bold;
+	color: #000000;
+	font-weight: bold;
 	background-image:url(list-item-act.gif);
 }
 
@@ -223,7 +222,7 @@ body#ext-taskcenter-task-index-php h3 {
 	/*margin-left:140px;*/
 	width:160px;
 	float:left;
-	border:1px solid #ccc;
+	border: 1px solid #ccc;
 	padding:2px 3px;
 }
 
