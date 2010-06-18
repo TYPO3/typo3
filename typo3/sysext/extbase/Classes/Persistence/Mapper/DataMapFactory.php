@@ -55,6 +55,10 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	 * @return Tx_Extbase_Persistence_Mapper_DataMap The data map
 	 */
 	public function buildDataMap($className) {
+		if (!class_exists($className)) {
+			throw new Tx_Extbase_Persistence_Exception_InvalidClass('Could not find class definition for name "' . $className . '". This could be caused by a mis-spelling of the class name in the class definition.');
+		}
+
 		$recordType = NULL;
 		$subclasses = array();
 		$tableName = strtolower($className);
@@ -72,7 +76,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			if (isset($classSettings['mapping']['tableName']) && strlen($classSettings['mapping']['tableName']) > 0) {
 				$tableName = $classSettings['mapping']['tableName'];
 			}
-			$classHierachy = array($className) + class_parents($className);
+			$classHierachy = array_merge(array($className), class_parents($className));
 			foreach ($classHierachy as $currentClassName) {
 				if (in_array($currentClassName, array('Tx_Extbase_DomainObject_AbstractEntity', 'Tx_Extbase_DomainObject_AbstractValueObject'))) {
 					break;
@@ -172,7 +176,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	 * @return void
 	 */
 	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap, $columnConfiguration, $propertyMetaData) {
-		if (isset($columnConfiguration) && $columnConfiguration['type'] !== 'passthrough') {
+		if (isset($columnConfiguration)) {
 			if (isset($propertyMetaData['elementType'])) {
 				if (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
 					$columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);

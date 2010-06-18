@@ -21,37 +21,15 @@
  *                                                                        */
 
 /**
+ * An "Invalid Section" exception
  *
- * @version $Id: RenderViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
+ * @version $Id$
  * @package Fluid
- * @subpackage ViewHelpers
+ * @subpackage View\Exception
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
- * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
-
-	/**
-	 * Renders the content.
-	 *
-	 * @param string $section Name of section to render. If used in a layout, renders a section of the main content file. If used inside a standard template, renders a section of the same file.
-	 * @param string $partial Reference to a partial.
-	 * @param array $arguments Arguments to pass to the partial.
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @api
-	 */
-	public function render($section = '', $partial = '', $arguments = array()) {
-		if ($partial !== '') {
-			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments, $this->viewHelperVariableContainer);
-		} elseif ($section !== '') {
-			return $this->viewHelperVariableContainer->getView()->renderSection($section);
-		}
-		return '';
-	}
-
-
+class Tx_Fluid_View_Exception_InvalidSectionException extends Tx_Fluid_View_Exception {
 }
-
 
 ?>

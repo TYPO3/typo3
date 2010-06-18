@@ -78,13 +78,6 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	protected $typeOfRelation;
 
 	/**
-	 * The type of value
-	 *
-	 * @var int
-	 **/
-	protected $propertyType;
-
-	/**
 	 * The name of the child's class
 	 *
 	 * @var string

@@ -23,7 +23,7 @@
 /**
  * Testcase for ParsingState
  *
- * @version $Id: RenderingContextTest.php 3751 2010-01-22 15:56:47Z k-fish $
+ * @version $Id: RenderingContextTest.php 4005 2010-03-23 14:28:15Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Rendering_RenderingContextTest extends Tx_Extbase_BaseTestCase {

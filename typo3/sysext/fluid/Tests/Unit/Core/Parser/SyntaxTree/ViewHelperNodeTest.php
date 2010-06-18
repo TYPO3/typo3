@@ -26,7 +26,7 @@ require_once(dirname(__FILE__) . '/../../Fixtures/TestViewHelper.php');
 /**
  * Testcase for [insert classname here]
  *
- * @version $Id: ViewHelperNodeTest.php 3835 2010-02-22 15:15:17Z robert $
+ * @version $Id: ViewHelperNodeTest.php 4005 2010-03-23 14:28:15Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_BaseTestCase {

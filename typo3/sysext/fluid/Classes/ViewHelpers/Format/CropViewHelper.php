@@ -45,7 +45,6 @@
  * Output:
  * This is so...
  *
- * WARNING: This tag does NOT handle tags currently.
  * WARNING: This tag doesn't care about multibyte charsets currently.
  *
  * @package Fluid
@@ -81,6 +80,7 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @author Andreas Pattynama <andreas.pattynama@innocube.ch>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @author Felix Oertel <oertel@networkteam.com>
 	 */
 	public function render($maxCharacters, $append = '...', $respectWordBoundaries = TRUE) {
 		$stringToTruncate = $this->renderChildren();
@@ -90,7 +90,11 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 			}
 			return $stringToTruncate;
 		} else {
-			return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			if (strip_tags($stringToTruncate) != $stringToTruncate) {
+				return $this->contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			} else {
+				return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			}
 		}
 	}
 }

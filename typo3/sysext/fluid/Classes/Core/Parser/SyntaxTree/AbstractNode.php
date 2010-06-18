@@ -72,8 +72,9 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 				}
 				$output = (string)$output;
 				$subNodeOutput = $subNode->evaluate();
+
 				if (is_object($subNodeOutput) && !method_exists($subNodeOutput, '__toString')) {
-					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1248356140);
+					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1273753083);
 				}
 				$output .= (string)$subNodeOutput;
 			}

@@ -172,6 +172,16 @@ class Tx_Extbase_Security_Channel_RequestHashService implements t3lib_singleton 
 				}
 			} elseif (!is_array($requestArguments[$argumentName]) && !is_array($allowedFields[$argumentName])) {
 				// do nothing, as this is allowed
+			} elseif (!is_array($requestArguments[$argumentName]) && $requestArguments[$argumentName] === '' && is_array($allowedFields[$argumentName])) {
+				// do nothing, as this is allowed.
+				// This case is needed for making an array of checkboxes work, in case they are fully unchecked.
+				// Example: if the following checkbox names are defined:
+				//     foo[a]
+				//     foo[b]
+				// then, Fluid automatically renders a hidden field "foo" with the value '' (empty string) in front of it,
+				// to determine the case if the user un-checks all checkboxes.
+				// in this case, the property mapping already does the right thing, but without this condition here,
+				// the request hash checking would fail because of the strong type checks.
 			} else {
 				// different types - error
 				return FALSE;

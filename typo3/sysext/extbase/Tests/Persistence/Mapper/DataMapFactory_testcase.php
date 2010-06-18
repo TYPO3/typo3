@@ -310,5 +310,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
 	}
 	
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Persistence_Exception_InvalidClass
+	 */
+	public function buildDataMapThrowsExceptionIfClassNameIsNotKnown() {
+		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getControlSection'), array(), '', FALSE);
+		$mockDataMapFactory->buildDataMap('UnknownObject');
+	}
+	
 }
 ?>

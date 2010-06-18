@@ -114,7 +114,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 		// debug($sqlString,-2);
 		$this->databaseHandle->sql_query($sqlString);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($sqlString);
 		$uid = $this->databaseHandle->sql_insert_id();
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
@@ -146,7 +146,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 		// debug($sqlString,-2);
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($sqlString);
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
 		}
@@ -169,7 +169,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 		// debug($statement, -2);
 		$returnValue = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($statement);
 		return $returnValue;
 	}
 
@@ -185,7 +185,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($statement, $identifier);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($statement);
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {
 			return $row;
@@ -225,7 +225,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sql, $parameters);
 		// debug($sql,-2);
 		$result = $this->databaseHandle->sql_query($sql);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($sql);
 		$rows = $this->getRowsFromResult($query->getSource(), $result);
 		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows);
 		// TODO: implement $objectData = $this->processObjectRecords($statementHandle);
@@ -246,9 +246,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$statementParts['fields'] = array('COUNT(*)');
 		$statement = $this->buildQuery($statementParts, $parameters);
 		$this->replacePlaceholders($statement, $parameters);
-		// debug($sql,-2);
+		// debug($statement,-2);
 		$result = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($statement);
 		$rows = $this->getRowsFromResult($query->getSource(), $result);
 		return current(current($rows));
 	}
@@ -277,7 +277,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->parseOrderings($query->getOrderings(), $source, $sql);
 		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
 
-		foreach (array_keys($sql['tables']) as $tableName) {
+		$tableNames = array_unique(array_keys($sql['tables'] + $sql['unions']));
+		foreach ($tableNames as $tableName) {
 			if (is_string($tableName) && strlen($tableName) > 0) {
 				$this->addAdditionalWhereClause($query->getQuerySettings(), $tableName, $sql);
 			}
@@ -347,7 +348,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($statement, $parameters);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($statement);
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {
 			return (int)$row['uid'];
@@ -957,11 +958,13 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * Checks if there are SQL errors in the last query, and if yes, throw an exception.
 	 *
 	 * @return void
+	 * @param string $sql The SQL statement
 	 * @throws Tx_Extbase_Persistence_Storage_Exception_SqlError
 	 */
-	protected function checkSqlErrors() {
+	protected function checkSqlErrors($sql='') {
 		$error = $this->databaseHandle->sql_error();
 		if ($error !== '') {
+			$error .= $sql ? ': ' . $sql : '';
 			throw new Tx_Extbase_Persistence_Storage_Exception_SqlError($error, 1247602160);
 		}
 	}

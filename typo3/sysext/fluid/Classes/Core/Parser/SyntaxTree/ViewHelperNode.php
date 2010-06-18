@@ -130,7 +130,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 */
 	public function evaluate() {
 		if ($this->renderingContext === NULL) {
-			throw new RuntimeException('RenderingContext is null in ViewHelperNode, but necessary. If this error appears, please report a bug!', 1242669031);
+			throw new Tx_Fluid_Core_Parser_Exception('RenderingContext is null in ViewHelperNode, but necessary. If this error appears, please report a bug!', 1242669031);
 		}
 
 		$objectManager = $this->renderingContext->getObjectManager();
@@ -230,12 +230,13 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode Value to be converted
 	 * @return boolean Evaluated value
+	 * @throws Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function evaluateBooleanExpression(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode) {
 		$childNodes = $syntaxTreeNode->getChildNodes();
 		if (count($childNodes) > 3) {
-			throw new RuntimeException('The expression "' . $syntaxTreeNode->evaluate() . '" has more than tree parts.', 1244201848);
+			throw new Tx_Fluid_Core_Parser_Exception('The expression "' . $syntaxTreeNode->evaluate() . '" has more than tree parts.', 1244201848);
 		}
 
 		$leftSide = NULL;
@@ -292,6 +293,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * @param mixed $leftSide Left side to compare
 	 * @param mixed $rightSide Right side to compare
 	 * @return boolean TRUE if comparison of left and right side using the comparator emit TRUE, false otherwise
+	 * @throws Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	protected function evaluateComparator($comparator, $leftSide, $rightSide) {
@@ -313,7 +315,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			case '<=':
 				return ($leftSide <= $rightSide);
 			default:
-				throw new RuntimeException('Comparator "' . $comparator . '" was not implemented.', 1244234398);
+				throw new Tx_Fluid_Core_Parser_Exception('Comparator "' . $comparator . '" is not implemented.', 1244234398);
 		}
 	}
 

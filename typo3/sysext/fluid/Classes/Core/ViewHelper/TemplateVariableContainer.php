@@ -34,7 +34,7 @@
  * @api
  * @scope prototype
  */
-class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
+class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer implements ArrayAccess {
 
 	/**
 	 * List of reserved words that can't be used as variable identifiers in Fluid templates
@@ -55,8 +55,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
-	public function __construct($variableArray = array()) {
-		if (!is_array($variableArray)) throw new RuntimeException('Context has to be initialized with an array, ' . gettype($variableArray) . ' given.', 1224592343);
+	public function __construct(array $variableArray = array()) {
 		$this->variables = $variableArray;
 	}
 
@@ -71,8 +70,8 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function add($identifier, $value) {
-		if (array_key_exists($identifier, $this->variables)) throw new RuntimeException('Duplicate variable declarations!', 1224479063);
-		if (in_array(strtolower($identifier), self::$reservedVariableNames)) throw new RuntimeException('"' . $identifier . '" is a reserved variable name and can\'t be used as variable identifier.', 1256730379);
+		if (array_key_exists($identifier, $this->variables)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Duplicate variable declarations!', 1224479063);
+		if (in_array(strtolower($identifier), self::$reservedVariableNames)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('"' . $identifier . '" is a reserved variable name and can\'t be used as variable identifier.', 1256730379);
 		$this->variables[$identifier] = $value;
 	}
 
@@ -85,7 +84,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function get($identifier) {
-		if (!array_key_exists($identifier, $this->variables)) throw new RuntimeException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
+		if (!array_key_exists($identifier, $this->variables)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Tried to get a variable "' . $identifier . '" which is not stored in the context!', 1224479370);
 		return $this->variables[$identifier];
 	}
 
@@ -98,7 +97,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 * @api
 	 */
 	public function remove($identifier) {
-		if (!array_key_exists($identifier, $this->variables)) throw new RuntimeException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
+		if (!array_key_exists($identifier, $this->variables)) throw new Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException('Tried to remove a variable "' . $identifier . '" which is not stored in the context!', 1224479372);
 		unset($this->variables[$identifier]);
 	}
 
@@ -132,6 +131,51 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainer {
 	 */
 	public function __sleep() {
 		return array('variables');
+	}
+
+	/**
+	 * Adds a variable to the context.
+	 *
+	 * @param string $identifier Identifier of the variable to add
+	 * @param mixed $value The variable's value
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function offsetSet($identifier, $value) {
+		return $this->add($identifier, $value);
+	}
+
+	/**
+	 * Remove a variable from context. Throws exception if variable is not found in context.
+	 *
+	 * @param string $identifier The identifier to remove
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function offsetUnset($identifier) {
+		return $this->remove($identifier);
+	}
+
+	/**
+	 * Checks if this property exists in the VariableContainer.
+	 *
+	 * @param string $identifier
+	 * @return boolean TRUE if $identifier exists, FALSE otherwise
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function offsetExists($identifier) {
+		return $this->exists($identifier);
+	}
+
+	/**
+	 * Get a variable from the context. Throws exception if variable is not found in context.
+	 *
+	 * @param string $identifier
+	 * @return variable The variable identified by $identifier
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function offsetGet($identifier) {
+		return $this->get($identifier);
 	}
 }
 ?>

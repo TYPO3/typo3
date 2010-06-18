@@ -23,7 +23,7 @@
 /**
  * Testcase for TemplateVariableContainer
  *
- * @version $Id: TemplateVariableContainerTest.php 3751 2010-01-22 15:56:47Z k-fish $
+ * @version $Id: TemplateVariableContainerTest.php 4494 2010-06-11 13:05:24Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_BaseTestCase {
@@ -40,6 +40,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 	public function tearDown() {
 		unset($this->variableContainer);
 	}
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -49,6 +50,17 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 		$this->variableContainer->add("variable", $object);
 		$this->assertSame($this->variableContainer->get('variable'), $object, 'The retrieved object from the context is not the same as the stored object.');
 	}
+
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function addedObjectsCanBeRetrievedAgainUsingArrayAccess() {
+		$object = "StringObject";
+		$this->variableContainer['variable'] = $object;
+		$this->assertSame($this->variableContainer->get('variable'), $object);
+		$this->assertSame($this->variableContainer['variable'], $object);
+	}
 	
 	/**
 	 * @test
@@ -57,7 +69,8 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 	public function addedObjectsExistInArray() {
 		$object = "StringObject";
 		$this->variableContainer->add("variable", $object);
-		$this->assertSame($this->variableContainer->exists('variable'), TRUE, 'The object is reported to not be in the VariableContainer, but it is.');
+		$this->assertTrue($this->variableContainer->exists('variable'));
+		$this->assertTrue(isset($this->variableContainer['variable']));
 	}
 	
 	/**
@@ -72,35 +85,26 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 	
 	/**
 	 * @test
-	 * @expectedException \RuntimeException
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function contextTakesOnlyArraysInConstructor() {
-		new Tx_Fluid_Core_ViewHelper_TemplateVariableContainer("string");
-	}
-	
-	/**
-	 * @test
-	 * @expectedException \RuntimeException
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function duplicateIdentifiersThrowException() {
 		$this->variableContainer->add('variable', 'string1');
-		$this->variableContainer->add('variable', 'string2');
+		$this->variableContainer['variable'] = 'string2';
 	}
 
 	/**
 	 * @test
-	 * @expectedException \RuntimeException
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function addingReservedIdentifiersThrowException() {
-		$this->variableContainer->add('True', 'someValue');
+		$this->variableContainer->add('TrUe', 'someValue');
 	}
 
 	/**
 	 * @test
-	 * @expectedException \RuntimeException
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function gettingNonexistentValueThrowsException() {
@@ -109,7 +113,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 	
 	/**
 	 * @test
-	 * @expectedException \RuntimeException
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function deletingNonexistentValueThrowsException() {
@@ -118,14 +122,13 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 	
 	/**
 	 * @test
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function deleteReallyDeletesObjects() {
+	public function removeReallyRemovesVariables() {
 		$this->variableContainer->add('variable', 'string1');
 		$this->variableContainer->remove('variable');
-		try {
-			$this->variableContainer->get('variable');
-		} catch (RuntimeException $e) {}
+		$this->variableContainer->get('variable');
 	}
 }
 

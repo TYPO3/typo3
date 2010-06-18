@@ -389,6 +389,28 @@ class Tx_Extbase_Security_Channel_RequestHashService_testcase extends Tx_Extbase
 				// Expected result
 				FALSE
 			),
+			
+			// hierarchical fields with requestfields != responsefields (different types)
+			// This case happens if an array of checkboxes is rendered, in case they are fully unchecked.
+			array(
+				// Request
+				array(
+					'a' => '', // this is the only allowed value.
+					'b' => 'X',
+					'c' => 'X'
+				),
+				// Allowed
+				array(
+					'a' => array(
+						'x' => 1,
+						'y' => 1
+					),
+					'b' => 1,
+					'c' => 1
+				),
+				// Expected result
+				TRUE
+			),
 		);
 	}
 

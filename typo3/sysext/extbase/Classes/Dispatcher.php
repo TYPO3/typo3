@@ -112,6 +112,7 @@ class Tx_Extbase_Dispatcher {
 		if (isset($this->cObj->data) && is_array($this->cObj->data)) {
 			// we need to check the above conditions as cObj is not available in Backend.
 			$request->setContentObjectData($this->cObj->data);
+			$request->setIsCached($this->cObj->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER);
 		}
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
@@ -143,14 +144,10 @@ class Tx_Extbase_Dispatcher {
 
 		self::$reflectionService->shutdown();
 		
-		if (substr($response->getStatus(), 0, 3) === '303') {
-			$response->sendHeaders();
-			exit;
-		}
-
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
+		$response->sendHeaders();
 		$this->timeTrackPull();
 		return $response->getContent();
 	}
@@ -197,7 +194,7 @@ class Tx_Extbase_Dispatcher {
 		} catch (t3lib_cache_exception_NoSuchCache $exception) {
 			$GLOBALS['typo3CacheFactory']->create(
 				'cache_extbase_reflection',
-				't3lib_cache_frontend_VariableFrontend',
+				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['frontend'],
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
 				$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']
 			);

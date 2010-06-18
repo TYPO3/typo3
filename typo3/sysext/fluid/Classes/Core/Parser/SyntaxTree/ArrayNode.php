@@ -56,7 +56,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	 */
 	public function evaluate() {
 		if ($this->renderingContext === NULL) {
-			throw new RuntimeException('Rendering Context is null in ArrayNode, but necessary. If this error appears, please report a bug!', 1242668976);
+			throw new Tx_Fluid_Core_Parser_Exception('Rendering Context is null in ArrayNode, but necessary. If this error appears, please report a bug!', 1242668976);
 		}
 		$arrayToBuild = array();
 		foreach ($this->internalArray as $key => $value) {
