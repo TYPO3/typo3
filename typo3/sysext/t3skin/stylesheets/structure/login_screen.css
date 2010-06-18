@@ -76,7 +76,7 @@ body#typo3-index-php .t3-login-field {
 }
 
 body#typo3-index-php .t3-login-field .t3-login-clearInputField {
-	left: 260px;
+	left: 280px;
 	position: absolute;
 	top: 4px;
 }
@@ -90,7 +90,7 @@ body#typo3-index-php .t3-login-field .t3-login-alert-capslock {
 body#typo3-index-php .t3-login-field label {
 	float: left;
 	padding-right: 10px;
-	width: 70px;
+	width: 90px;
 }
 
 body#typo3-index-php .t3-login-field input {
@@ -130,7 +130,7 @@ body#typo3-index-php .t3-login-openid-disabled #t3-login-openIdLogo {
 }
 
 body#typo3-index-php .t3-login-submit {
-	margin: 15px 0 0 80px;
+	margin: 15px 0 0 100px;
 	padding: 3px 16px;
 }
 
