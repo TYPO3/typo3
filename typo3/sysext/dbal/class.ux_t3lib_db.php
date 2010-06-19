@@ -738,14 +738,18 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 
 		if ($this->debug) {
+			$data = array(
+				'handlerType' => $hType,
+				'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit),
+				'ORIG_from_table' => $ORIG_tableName,
+			);
+			if ($this->conf['debugOptions']['numberRows']) {
+				$data['numberRows'] = $this->sql_num_rows($sqlResult);
+			}
 			$this->debugHandler(
 				'exec_SELECTquery',
 				t3lib_div::milliseconds()-$pt,
-				array(
-					'handlerType' => $hType,
-					'args' => array($from_table,$select_fields,$where_clause,$groupBy,$orderBy,$limit),
-					'ORIG_from_table' => $ORIG_tableName
-				)
+				$data
 			);
 		}
 
@@ -3217,6 +3221,19 @@ class ux_t3lib_DB extends t3lib_DB {
 				$query = implode(' ', $inData['args']);
 			} else {
 				$query = $this->lastQuery;
+			}
+
+			if ($this->conf['debugOptions']['numberRows']) {
+				switch ($function) {
+					case 'exec_INSERTquery':
+					case 'exec_UPDATEquery':
+					case 'exec_DELETEquery':
+						$data['numberRows'] = $this->sql_affected_rows();
+						break;
+					case 'exec_SELECTquery':
+						$data['numberRows'] = $inData['numberRows'];
+						break;
+				}
 			}
 
 			if ($this->conf['debugOptions']['backtrace']) {

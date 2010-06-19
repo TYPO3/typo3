@@ -1,5 +1,6 @@
 2010-06-19  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #3855: Log number of returned or affected rows
 	* Updated copyright year in manual
 
 2010-06-12  Xavier Perseguers  <typo3@perseguers.ch>
