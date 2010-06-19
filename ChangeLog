@@ -1,3 +1,7 @@
+2010-06-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14464: htmlArea RTE: Type of block accumulation if the block is manually selected in Safari
+
 2010-06-19  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #14593: Link wizard tabs have no style / Followup to #14733 (On behalf of Stanislas Rolland)

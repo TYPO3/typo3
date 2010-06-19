@@ -1,3 +1,7 @@
+2010-06-19  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14464: htmlArea RTE: Type of block accumulation if the block is manually selected in Safari
+
 2010-06-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 2.0.1

@@ -267,8 +267,12 @@ HTMLArea.BlockElements = HTMLArea.Plugin.extend({
 						element = "<" + element + ">";
 					}
 					this.editor.focus();
-					if (Ext.isWebKit && !this.editor._doc.body.hasChildNodes()) {
-						this.editor._doc.body.appendChild((this.editor._doc.createElement("br")));
+					if (Ext.isWebKit) {
+						if (!this.editor._doc.body.hasChildNodes()) {
+							this.editor._doc.body.appendChild((this.editor._doc.createElement("br")));
+						}
+							// WebKit sometimes leaves empty block at the end of the selection
+						this.editor._doc.body.normalize();
 					}
 					try {
 						this.editor._doc.execCommand(buttonId, false, element);
