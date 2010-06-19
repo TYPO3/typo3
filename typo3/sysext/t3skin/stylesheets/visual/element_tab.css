@@ -5,7 +5,8 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 table.typo3-dyntabmenu td a,
-table#typo3-tabmenu td a {
+table#typo3-tabmenu td.tab,
+table#typo3-tabmenu td.tabact {
 	background: #dadada;
 	border: 1px solid #adadad;
 	border-bottom: none;
@@ -20,9 +21,9 @@ table#typo3-tabmenu td a {
 table.typo3-dyntabmenu td.tabact a,
 table.typo3-dyntabmenu td.tab_over a,
 table.typo3-dyntabmenu td.tabact_over a,
-table#typo3-tabmenu td.tabact a,
-table#typo3-tabmenu td.tab_over a,
-table#typo3-tabmenu td.tabact_over a {
+table#typo3-tabmenu td.tabact,
+table#typo3-tabmenu td.tab:hover,
+table#typo3-tabmenu td.tabact:hover {
 	color: #000;
 	background: #ffffff;
 }

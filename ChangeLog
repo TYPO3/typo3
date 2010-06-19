@@ -1,3 +1,7 @@
+2010-06-19  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #14593: Link wizard tabs have no style / Followup to #14733 (On behalf of Stanislas Rolland)
+
 2010-06-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14705: In BE login form labels are to small (for German BE-Language)
