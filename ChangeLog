@@ -1,6 +1,7 @@
 2010-06-19 Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #13315: Scheduler: Failed status hides other statuses
+	* Fixed bug: #14184: Scheduler: Handle invalid serialized exception objects
 
 2010-06-19  Stanislas Rolland  <typo3@sjbr.ca>
 

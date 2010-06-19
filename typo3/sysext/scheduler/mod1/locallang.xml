@@ -68,6 +68,7 @@
 			<label index="msg.noTasks">No tasks defined yet.</label>
 			<label index="msg.notExecuted">Not executed: %s</label>
 			<label index="msg.executionFailed">Execution of task "%1$s" failed with the following message: %2$s</label>
+			<label index="msg.executionFailureDefault">The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</label>
 			<label index="msg.executionFailureReport">Execution failed: %1$d, %2$s</label>
 			<label index="msg.noStartDate">Please define a start date.</label>
 			<label index="msg.invalidStartDate">Start date is invalid.</label>
