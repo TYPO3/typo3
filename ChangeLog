@@ -1,6 +1,7 @@
 2010-06-19 Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #14184: Scheduler: Handle invalid serialized exception objects
+	* Fixed bug: #14792: Scheduler: Screenshots in the manual must be updated for new skin
 
 2010-06-19  Stanislas Rolland  <typo3@sjbr.ca>
 
