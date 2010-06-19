@@ -3213,10 +3213,11 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 
 				// if lastQuery is empty (for whatever reason) at least log inData.args
-			if (empty($this->lastQuery))
-				$query = implode(' ',$inData['args']);
-			else
+			if (empty($this->lastQuery)) {
+				$query = implode(' ', $inData['args']);
+			} else {
 				$query = $this->lastQuery;
+			}
 
 			if ($this->conf['debugOptions']['backtrace']) {
 				$backtrace = debug_backtrace();
