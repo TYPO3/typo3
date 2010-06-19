@@ -1,3 +1,7 @@
+2010-06-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated copyright year in manual
+
 2010-06-12  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #13431: Include BE:forceCharset config option (thanks to Armin Guenther)
