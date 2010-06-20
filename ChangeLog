@@ -1,3 +1,7 @@
+2010-06-20  Benjamin Mack  <benni@typo3.org>
+
+	* Release of TYPO3 4.4.0RC2
+
 2010-06-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14797: htmlArea RTE: Toolbar combo boxes do not float left in IE6 (Thnaks to Jigal van Hemert).
