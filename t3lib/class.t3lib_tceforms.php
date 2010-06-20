@@ -4789,7 +4789,7 @@ class t3lib_TCEforms	{
 
 		<table class="typo3-TCEforms">'.
 			'<tr class="typo3-TCEforms-recHeaderRow">
-				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR### - ###RECORD_LABEL###</td>
+				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR###</td>
 			</tr>'.
 			'|'.
 			'<tr>
