@@ -256,6 +256,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					case 'SplObjectStorage':
 					case 'Tx_Extbase_Persistence_ObjectStorage':
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
+						$propertyValue->_memorizeCleanState();
 					break;
 					default:
 						if (($propertyData['type'] === 'DateTime') || in_array('DateTime', class_parents($propertyData['type']))) {

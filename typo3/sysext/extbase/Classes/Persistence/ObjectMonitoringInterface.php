@@ -23,55 +23,31 @@
 ***************************************************************/
 
 /**
- * A Domain Object Interface. All domain objects which should be persisted need to implement the below interface.
- * Usually you will need to subclass Tx_Extbase_DomainObject_AbstractEntity and Tx_Extbase_DomainObject_AbstractValueObject
- * instead.
+ * An interface how to monitor changes on an object and its properties. All domain objects which should be persisted need to implement the below interface.
  *
  * @see Tx_Extbase_DomainObject_AbstractEntity
  * @see Tx_Extbase_DomainObject_AbstractValueObject
  *
  * @package Extbase
- * @subpackage DomainObject
+ * @subpackage Persistence
  * @version $ID:$
  */
-interface Tx_Extbase_DomainObject_DomainObjectInterface {
+interface Tx_Extbase_Persistence_ObjectMonitoringInterface {
 
 	/**
-	 * Getter for uid.
+	 * Register an object's clean state, e.g. after it has been reconstituted
+	 * from the database
 	 *
-	 * @return int the uid or NULL if none set yet.
+	 * @return void
 	 */
-	public function getUid();
+	public function _memorizeCleanState();
 
 	/**
-	 * Returns TRUE if the object is new (the uid was not set, yet). Only for internal use
+	 * Returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @return boolean
 	 */
-	public function _isNew();
-
-	/**
-	 * Reconstitutes a property. Only for internal use.
-	 *
-	 * @param string $propertyName
-	 * @param string $value
-	 * @return void
-	 */
-	public function _setProperty($propertyName, $value);
-
-	/**
-	 * Returns the property value of the given property name. Only for internal use.
-	 *
-	 * @return mixed The propertyValue
-	 */
-	public function _getProperty($propertyName);
-
-	/**
-	 * Returns a hash map of property names and property values
-	 *
-	 * @return array The properties
-	 */
-	public function _getProperties();
-
+	public function _isDirty();
+	
 }
 ?>

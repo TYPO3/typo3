@@ -36,9 +36,8 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 		$domainObject = new $domainObjectName();
 		$domainObject->foo = 'Test';
 		$domainObject->bar = 'It is raining outside';
+		$domainObject->_memorizeCleanState();
 		
-		$domainObject->_memorizePropertyCleanState('foo');
-		$domainObject->_memorizePropertyCleanState('bar');
 		$this->assertFalse($domainObject->_isDirty());
 	}
 
@@ -55,9 +54,9 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 		$domainObject->foo = 'Test';
 		$domainObject->bar = 'It is raining outside';
 
-		$domainObject->_memorizePropertyCleanState('foo');
-		$domainObject->_memorizePropertyCleanState('bar');
+		$domainObject->_memorizeCleanState();
 		$domainObject->bar = 'Now it is sunny.';
+
 		$this->assertTrue($domainObject->_isDirty());
 	}
 
@@ -73,9 +72,8 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 		$domainObject = new $domainObjectName();
 		$domainObject->foo = new DateTime();
 		$domainObject->bar = 'It is raining outside';
+		$domainObject->_memorizeCleanState();
 
-		$domainObject->_memorizePropertyCleanState('foo');
-		$domainObject->_memorizePropertyCleanState('bar');
 		$this->assertFalse($domainObject->_isDirty());
 	}
 
@@ -94,13 +92,15 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 			public $foo;
 			public $bar;
 		}');
+		$secondDomainObject = new $secondDomainObjectName;
+		$secondDomainObject->_memorizeCleanState();
+		
 
 		$domainObject = new $domainObjectName();
-		$domainObject->foo = new $secondDomainObjectName;
+		$domainObject->foo = $secondDomainObject;
 		$domainObject->bar = 'It is raining outside';
+		$domainObject->_memorizeCleanState();
 
-		$domainObject->_memorizePropertyCleanState('foo');
-		$domainObject->_memorizePropertyCleanState('bar');
 		$this->assertFalse($domainObject->_isDirty());
 	}
 }
