@@ -77,11 +77,6 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 		// Setting the relative path to the extension in temp. variable:
 	$temp_eP = t3lib_extMgm::extRelPath($_EXTKEY);
 
-		// Setting login box image rotation folder:
-	$TBE_STYLES['loginBoxImage_rotationFolder'] = $temp_eP.'images/login/';
-	$TBE_STYLES['loginBoxImage_author']['loginimage_4_2.jpg'] = 'Photo by Photo by J.C. Franca (www.digitalphoto.com.br)';
-#	$TBE_STYLES['loginBoxImage_rotationFolder'] = '';
-
 		// Alternative dimensions for frameset sizes:
 	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;		// Left menu frame width
 	$TBE_STYLES['dims']['topFrameH']      = 42;			// Top frame height
@@ -145,23 +140,8 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 		// Logo at login screen
 	$TBE_STYLES['logo_login'] = $temp_eP . 'images/login/typo3logo-white.png';
 
-		// Adding icon for photomarathon extensions' backend module, if enabled:
-	if (t3lib_extMgm::isloaded('user_photomarathon'))	{
-		$TBE_STYLES['skinImg']['MOD:web_uphotomarathon/tab_icon.gif'] = array($temp_eP.'icons/ext/user_photomarathon/tab_icon.gif','width="24" height="24"');
-	}
-		// Adding icon for templavoila extensions' backend module, if enabled:
-	if (t3lib_extMgm::isloaded('templavoila'))	{
-		$TBE_STYLES['skinImg']['MOD:web_txtemplavoilaM1/moduleicon.gif'] = array($temp_eP.'icons/ext/templavoila/mod1/moduleicon.gif','width="22" height="22"');
-		$TBE_STYLES['skinImg']['MOD:web_txtemplavoilaM2/moduleicon.gif'] = array($temp_eP.'icons/ext/templavoila/mod1/moduleicon.gif','width="22" height="22"');
-	}
-		// Adding icon for extension manager' backend module, if enabled:
-	$TBE_STYLES['skinImg']['MOD:tools_em/install.gif']   = array($temp_eP.'icons/ext/templavoila/mod1/moduleicon.gif','width="22" height="22"');
-	$TBE_STYLES['skinImg']['MOD:tools_em/uninstall.gif'] = array($temp_eP.'icons/ext/templavoila/mod1/moduleicon.gif','width="22" height="22"');
-
 		// extJS theme
 	$TBE_STYLES['extJS']['theme'] =  $temp_eP . 'extjs/xtheme-t3skin.css';
-
-	//print_a($TBE_STYLES,2);
 
 	// Adding HTML template for login screen
 	$TBE_STYLES['htmlTemplates']['templates/login.html'] = 'sysext/t3skin/templates/login.html';
