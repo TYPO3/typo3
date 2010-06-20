@@ -1,5 +1,6 @@
 2010-06-20  Susanne Moog  <typo3@susanne-moog.de>
 
+	* Fixed bug #14516: Strip background gradients - smaller image size and no wrong colors in browsers with color profile capability (Thanks to Helmut Hummel)
 	* Followup to #14465: Make use of the new Sprite API - help in backend access lists (Thanks to Steffen Ritter)
 	* Followup to #14465: Make use of the new Sprite API - delete icon in QuickEdit (Thanks to Steffen Gebert)
 	* Followup to #14465: Make use of the new Sprite API - sys_language, sys_action (Thanks to Steffen Ritter)
