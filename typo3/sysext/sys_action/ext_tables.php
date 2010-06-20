@@ -20,8 +20,11 @@ if (TYPO3_MODE == 'BE')	{
 			'enablecolumns' => array (
 				'disabled' => 'hidden'
 			),
+			'typeicon_classes' => array(
+				'default' => 'mimetypes-x-sys_action',
+			), 
 			'type' => 'type',
-			'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'sys_action.gif',
+			'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY).'x-sys_action.png',
 			'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tca.php'
 		)
 	);

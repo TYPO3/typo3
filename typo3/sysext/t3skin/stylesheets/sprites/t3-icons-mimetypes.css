@@ -3,117 +3,123 @@
 	background-image:url('../../images/sprites/t3-icon-mimetypes.png');
 }
 
-.t3-icon-mimetypes.t3-icon-media-image {
+.t3-icon-mimetypes.t3-icon-x-content-link {
 	background-position: 0 0px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-list-bullets {
+.t3-icon-mimetypes.t3-icon-text-css {
 	background-position: 0 -24px;
 }
-.t3-icon-mimetypes.t3-icon-other-other {
+.t3-icon-mimetypes.t3-icon-media-video {
 	background-position: 0 -48px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-text {
+.t3-icon-mimetypes.t3-icon-x-sys_action {
 	background-position: 0 -72px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-table {
+.t3-icon-mimetypes.t3-icon-x-content-script {
 	background-position: 0 -96px;
 }
-.t3-icon-mimetypes.t3-icon-powerpoint {
+.t3-icon-mimetypes.t3-icon-x-content-plugin {
 	background-position: 0 -120px;
 }
-.t3-icon-mimetypes.t3-icon-text-text {
+.t3-icon-mimetypes.t3-icon-x-content-template-extension {
 	background-position: 0 -144px;
 }
-.t3-icon-mimetypes.t3-icon-text-php {
+.t3-icon-mimetypes.t3-icon-x-content-page-language-overlay {
 	background-position: 0 -168px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-plugin {
+.t3-icon-mimetypes.t3-icon-media-audio {
 	background-position: 0 -192px;
 }
-.t3-icon-mimetypes.t3-icon-media-audio {
+.t3-icon-mimetypes.t3-icon-other-other {
 	background-position: 0 -216px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-menu {
+.t3-icon-mimetypes.t3-icon-x-sys_language {
 	background-position: 0 -240px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-html {
+.t3-icon-mimetypes.t3-icon-pdf {
 	background-position: 0 -264px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-form-search {
+.t3-icon-mimetypes.t3-icon-x-content-divider {
 	background-position: 0 -288px;
 }
-.t3-icon-mimetypes.t3-icon-media-video {
+.t3-icon-mimetypes.t3-icon-powerpoint {
 	background-position: 0 -312px;
 }
-.t3-icon-mimetypes.t3-icon-text-html {
+.t3-icon-mimetypes.t3-icon-x-content-table {
 	background-position: 0 -336px;
 }
-.t3-icon-mimetypes.t3-icon-text-js {
+.t3-icon-mimetypes.t3-icon-x-content-text-picture {
 	background-position: 0 -360px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-image {
+.t3-icon-mimetypes.t3-icon-x-sys_workspace {
 	background-position: 0 -384px;
 }
-.t3-icon-mimetypes.t3-icon-excel {
+.t3-icon-mimetypes.t3-icon-x-content-login {
 	background-position: 0 -408px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-divider {
+.t3-icon-mimetypes.t3-icon-x-content-header {
 	background-position: 0 -432px;
 }
-.t3-icon-mimetypes.t3-icon-compressed {
+.t3-icon-mimetypes.t3-icon-x-content-form-search {
 	background-position: 0 -456px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-header {
+.t3-icon-mimetypes.t3-icon-excel {
 	background-position: 0 -480px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-multimedia {
+.t3-icon-mimetypes.t3-icon-x-content-template {
 	background-position: 0 -504px;
 }
-.t3-icon-mimetypes.t3-icon-pdf {
+.t3-icon-mimetypes.t3-icon-x-content-multimedia {
 	background-position: 0 -528px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-text-picture {
+.t3-icon-mimetypes.t3-icon-text-csv {
 	background-position: 0 -552px;
 }
-.t3-icon-mimetypes.t3-icon-text-css {
+.t3-icon-mimetypes.t3-icon-x-content-list-files {
 	background-position: 0 -576px;
 }
-.t3-icon-mimetypes.t3-icon-media-flash {
+.t3-icon-mimetypes.t3-icon-x-content-text {
 	background-position: 0 -600px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-link {
+.t3-icon-mimetypes.t3-icon-text-text {
 	background-position: 0 -624px;
 }
-.t3-icon-mimetypes.t3-icon-text-csv {
+.t3-icon-mimetypes.t3-icon-text-php {
 	background-position: 0 -648px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-template-static {
+.t3-icon-mimetypes.t3-icon-x-content-list-bullets {
 	background-position: 0 -672px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-form {
+.t3-icon-mimetypes.t3-icon-media-image {
 	background-position: 0 -696px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-script {
+.t3-icon-mimetypes.t3-icon-x-content-form {
 	background-position: 0 -720px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-login {
+.t3-icon-mimetypes.t3-icon-x-content-image {
 	background-position: 0 -744px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-template {
+.t3-icon-mimetypes.t3-icon-x-content-menu {
 	background-position: 0 -768px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-list-files {
+.t3-icon-mimetypes.t3-icon-compressed {
 	background-position: 0 -792px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-template-extension {
+.t3-icon-mimetypes.t3-icon-x-content-domain {
 	background-position: 0 -816px;
 }
-.t3-icon-mimetypes.t3-icon-x-sys_workspace {
+.t3-icon-mimetypes.t3-icon-x-content-html {
 	background-position: 0 -840px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-page-language-overlay {
+.t3-icon-mimetypes.t3-icon-text-html {
 	background-position: 0 -864px;
 }
-.t3-icon-mimetypes.t3-icon-x-content-domain {
+.t3-icon-mimetypes.t3-icon-media-flash {
 	background-position: 0 -888px;
+}
+.t3-icon-mimetypes.t3-icon-x-content-template-static {
+	background-position: 0 -912px;
+}
+.t3-icon-mimetypes.t3-icon-text-js {
+	background-position: 0 -936px;
 }
