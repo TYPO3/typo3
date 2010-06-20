@@ -177,18 +177,14 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	 */
 	protected function setRelations(Tx_Extbase_Persistence_Mapper_ColumnMap $columnMap, $columnConfiguration, $propertyMetaData) {
 		if (isset($columnConfiguration)) {
-			if (isset($propertyMetaData['elementType'])) {
-				if (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
-					$columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
-				} else {
-					$columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
-				}
+			if (isset($columnConfiguration['MM']) || isset($columnConfiguration['foreign_selector'])) {
+				$columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
+			} elseif (isset($propertyMetaData['elementType'])) {
+				$columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
+			} elseif (isset($propertyMetaData['type']) && strpos($propertyMetaData['type'], '_') !== FALSE) {
+				$columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
 			} else {
-				if (isset($propertyMetaData['type']) && strpos($propertyMetaData['type'], '_') !== FALSE) {
-					$columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
-				} else {
 					$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
-				}
 			}
 		} else {
 			$columnMap->setTypeOfRelation(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_NONE);
