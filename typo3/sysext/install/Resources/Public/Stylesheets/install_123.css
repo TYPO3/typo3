@@ -199,3 +199,16 @@ h3 {
 #t3-install-123-stepoutputsummary dd {
 	float: left;
 }
+
+#t3-install-123-step3 ul {
+	list-style: none;
+}
+
+#t3-install-123-step3 ul li div {
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+#t3-install-123-step3 ul li input.radio {
+	vertical-align: top;
+}

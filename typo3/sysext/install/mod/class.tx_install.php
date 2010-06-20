@@ -1073,9 +1073,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							'step' => $this->step + 1,
 							'llOptions' => 'You have two options in this step.',
 							'action' => htmlspecialchars($this->action),
-							'llOption1' => '1: Create new database (recommended):',
+							'llOption1' => 'Create new database (recommended):',
 							'llRemark1' => 'Enter your desired name for the database.',
-							'llOption2' => '2: Select an EMPTY existing database:',
+							'llOption2' => 'Select an EMPTY existing database:',
 							'llRemark2' => 'All tables used by TYPO3 will be overwritten in step 3.',
 							'continue' => 'Continue'
 						);

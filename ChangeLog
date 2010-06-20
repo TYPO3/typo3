@@ -1,5 +1,6 @@
 2010-06-20  Susanne Moog  <typo3@susanne-moog.de>
 
+	* Fixed bug #14755: Step 2 - Select method should be radio choice (On behalf of Steffen Kamper)
 	* Fixed bug #14752: Add Update Wizards for Skinning Changes (Thanks to Steffen Ritter)
 
 2010-06-20  Benjamin Mack  <benni@typo3.org>
