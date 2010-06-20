@@ -1459,7 +1459,7 @@ class SC_mod_tools_be_user_index {
 	function elementLinks($table,$row)	{
 			// Info:
 		$cells[]='<a href="#" onclick="top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\',\'' . $GLOBALS['BACK_PATH'] . '\'); return false;" title="' . $GLOBALS['LANG']->getLL('showInformation', TRUE) . '">' .
-				t3lib_iconWorks::getSpriteIcon('actions-document-view') .
+				t3lib_iconWorks::getSpriteIcon('actions-document-info') .
 			'</a>';
 
 			// Edit:

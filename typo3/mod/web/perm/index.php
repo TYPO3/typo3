@@ -592,26 +592,26 @@ class SC_mod_web_perm_index {
 		$code='';
 		if ($this->MOD_SETTINGS['mode']=='perms') {
 			$code.='
-				<tr>
-					<td class="bgColor2" colspan="2">&nbsp;</td>
-					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('Owner',1).'</strong></td>
-					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('Group',1).'</strong></td>
-					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('Everybody',1).'</strong></td>
-					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('EditLock',1).'</strong></td>
-				</tr>
+				<tr class="t3-row-header">
+					<td colspan="2">&nbsp;</td>
+					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td>' . $LANG->getLL('Owner', TRUE) . '</td>
+					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $LANG->getLL('Group', TRUE) . '</td>
+					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $LANG->getLL('Everybody', TRUE) . '</td>
+					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $LANG->getLL('EditLock', TRUE) . '</td>
+				</tr>   
 			';
 		} else {
 			$code.='
-				<tr>
-					<td class="bgColor2" colspan="2">&nbsp;</td>
-					<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center" nowrap="nowrap"><strong>'.$LANG->getLL('User',1).':</strong> ' . htmlspecialchars($BE_USER->user['username']) . '</td>
-					'.(!$BE_USER->isAdmin()?'<td class="bgColor2"><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
-					<td class="bgColor2" align="center"><strong>'.$LANG->getLL('EditLock',1).'</strong></td>':'').'
+				<tr class="t3-row-header">
+					<td colspan="2">&nbsp;</td>
+					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center" nowrap="nowrap">' . $LANG->getLL('User', TRUE) . ': ' . htmlspecialchars($BE_USER->user['username']) . '</td>
+					' . (!$BE_USER->isAdmin() ? '<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $LANG->getLL('EditLock', TRUE) . '</td>' : '') . '
 				</tr>';
 		}
 
@@ -661,22 +661,22 @@ class SC_mod_web_perm_index {
 				// Rest of columns (depending on mode)
 			if ($this->MOD_SETTINGS['mode'] == 'perms') {
 				$cells[]='
-					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($pageId ? SC_mod_web_perm_ajax::renderPermissions($data['row']['perms_user'], $pageId, 'user').' '.$userName : '').'</td>
 
-					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($pageId ? SC_mod_web_perm_ajax::renderPermissions($data['row']['perms_group'], $pageId, 'group').' '.$groupName : '').'</td>
 
-					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($pageId ? ' '.SC_mod_web_perm_ajax::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '').'</td>
 
-					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock']?'<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'1\');" title="'.$LANG->getLL('EditLock_descr',1).'">' .
 						t3lib_iconWorks::getSpriteIcon('status-warning-lock') . '</a></span>' : ( $pageId === 0 ? '' : '<span id="el_'.$pageId.'" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\''.$pageId.'\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')).'</td>
 				';
 			} else {
 				$cells[]='
-					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>';
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>';
 
 				$bgCol = ($BE_USER->user['uid'] == $data['row']['perms_userid'] ? ' class="bgColor-20"' : $lE_bgCol);
 
@@ -684,7 +684,7 @@ class SC_mod_web_perm_index {
 				$cells[]='
 					<td'.$bgCol.' nowrap="nowrap" align="center">'.($pageId ? $owner.SC_mod_web_perm_ajax::renderPermissions($BE_USER->calcPerms($data['row']), $pageId, 'user') : '').'</td>
 					'.(!$BE_USER->isAdmin()?'
-					<td'.$bgCol.'><img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/line.gif','width="5" height="16"').' alt="" /></td>
+					<td' . $bgCol . ' class="center"><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td'.$bgCol.' nowrap="nowrap">'.($data['row']['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-lock', array('title' => $LANG->getLL('EditLock_descr', TRUE))) : '').'</td>
 					':'');
 				$bgCol = $lE_bgCol;
@@ -699,7 +699,7 @@ class SC_mod_web_perm_index {
 		}
 
 			// Wrap rows in table tags:
-		$code = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList" width="99.5%">'.$code.'</table>';
+		$code = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList">' . $code . '</table>';
 
 			// Adding the content as a section:
 		$this->content.=$this->doc->section('',$code);

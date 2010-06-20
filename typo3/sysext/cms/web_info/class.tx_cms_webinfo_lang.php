@@ -126,24 +126,6 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 				// Create the tree from starting point:
 			if ($depth)	$tree->getTree($treeStartingPoint, $depth, '');
-			#debug($tree->tree);
-
-				// Add CSS needed:
-			$this->pObj->doc->inDocStylesArray[] = '
-				table#langTable {
-					margin-top: 10px;
-				}
-				table#langTable tr td {
-					padding-left : 2px;
-					padding-right : 2px;
-					white-space: nowrap;
-				}
-				td.c-blocked { background-color: #f72116; }
-				td.c-ok { background-color: #86b571; }
-				td.c-fallback {  }
-				td.c-leftLine {border-left: 2px solid black; }
-				.bgColor5 { font-weight: bold; }
-			';
 
 				// Render information table:
 			$theOutput.= $this->renderL10nTable($tree);
@@ -317,14 +299,14 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 		}
 
 		$output = '
-			<tr class="bgColor5">
+			<tr class="t3-row-header">
 				'.implode('
 				',$tCells).'
 			</tr>'.$output;
 
 		$output = '
 
-		<table border="0" cellspacing="0" cellpadding="0" id="langTable">'.$output.'
+		<table border="0" cellspacing="0" cellpadding="0" id="langTable" class="typo3-dblist">' . $output . '
 		</table>';
 
 		return $output;

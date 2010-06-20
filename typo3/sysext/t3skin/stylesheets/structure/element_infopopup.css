@@ -1,0 +1,21 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Information popup, show_item.php
+
+$Id: element_infopopup.css 7906 2010-06-13 14:56:44Z ohader $
+- - - - - - - - - - - - - - - - - - - - - */
+
+#typo3-show-item-php {
+	width: 100%;
+}
+#typo3-show-item-php > div {
+	padding: 0 10px;
+}
+
+#typo3-show-item-php h3 {
+	margin-top: 0;
+	padding-left: 10px;
+}
+
+table#typo3-showitem {
+	margin: 10px 0;
+}

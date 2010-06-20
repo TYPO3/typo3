@@ -9,15 +9,18 @@ $Id$
 }
 
 #typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner {
-	background: #eaeaea;
-	border: 1px solid black;
+	background: #ffffff;
+	border: 1px solid #adadad;
 	text-align: left;
 }
 
 #typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner h3 {
-	background-color: transparent;
 	font-size: 14px;
-	text-align: center;
+	text-align: left;
+}
+
+#typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner p {
+	color: #555555;
 }
 
 #typo3-mod-help-about-index-php-outer .typo3-mod-help-about-index-php-inner a {

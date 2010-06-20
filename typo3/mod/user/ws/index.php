@@ -273,7 +273,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				image = document.getElementById("spanw1_" + rowNumber);
 				if (element.style)	{
 					if (element.style.display == "none")	{
-						element.style.display = "block";
+						element.style.display = "table-row";
 						image.className = "t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-table-collapse";
 					} else {
 						element.style.display = "none";
@@ -477,22 +477,22 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 			// Add header to content variable:
 		$content = '
-		<table border="0" cellpadding="1" cellspacing="1" class="lrPadding" style="border: 1px solid black;">
+		<table border="0" cellpadding="0" cellspacing="0" id="t3-user-ws-wsinfotable" class="t3-table t3-table-info">
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_workspace') . '</strong>&nbsp;</td>
-				<td class="bgColor4" nowrap="nowrap">'.$title.'</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_workspace') . '&nbsp;</th>
+				<td nowrap="nowrap">' . $title . '</td>
 			</tr>
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_description') . '</strong>&nbsp;</td>
-				<td class="bgColor4">'.$description.'</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_description') . '&nbsp;</td>
+				<td>' . $description . '</td>
 			</tr>'.($GLOBALS['BE_USER']->workspace!=-99 && !$details ? '
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_options') . '</strong>&nbsp;</td>
-				<td class="bgColor4">'.$menu.$actionLinks.'</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_options') . '&nbsp;</td>
+				<td>' . $menu . $actionLinks . '</td>
 			</tr>
 			<tr>
-				<td class="bgColor2" nowrap="nowrap"><strong>' . $LANG->getLL('label_status') . '</strong>&nbsp;</td>
-				<td class="bgColor4">'.$LANG->getLL('label_access_level').' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $LANG->getLL('label_status') . '&nbsp;</td>
+				<td>' . $LANG->getLL('label_access_level') . ' ' . $GLOBALS['LANG']->getLL('workspace_list_access_' . $wsAccess['_ACCESS']) . '</td>
 			</tr>' : '').'
 		</table>
 		<br />
@@ -600,7 +600,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// (1) Folding + Icons + Title + Description
 			// (2) Information about workspace (initially hidden)
 
-			$cssClass = ($currentWksp ? 'bgColor3' : 'bgColor4');
+			$cssClass = ($currentWksp ? 't3-row t3-row-active bgColor3' : 't3-row bgColor4');
 				// Start first row
 			$content .= '<tr class="' . $cssClass . '">';
 
@@ -696,7 +696,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	function workspaceList_formatWorkspaceData(&$wksp)	{
 		global $LANG;
 
-		$content = '<table cellspacing="1" cellpadding="1" width="100%" class="ver-wl-details-table">' .
+		$content = '<table cellspacing="0" cellpadding="0" width="100%" class="ver-wl-details-table">' .
 				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_file_mountpoints') . '</strong></td>' .
 				'<td class="ver-wl-details">' . $this->workspaceList_getFileMountPoints($wksp) . '</td></tr>' .
 				'<tr><td class="ver-wl-details-label"><strong>' . $LANG->getLL('workspace_list_label_db_mountpoints') . '</strong></td>' .
@@ -838,8 +838,8 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	function workspaceList_displayUserWorkspaceListHeader()	{
 		global	$LANG;
 		// TODO CSH lables?
-		return '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview ver-wl-table">
-			<tr class="bgColor5 tableheader">
+		return '<table border="0" cellpadding="0" cellspacing="0" class="workspace-overview">
+			<tr class="t3-row-header">
 				<td width="1">&nbsp;</td>
 				<td width="1">&nbsp;</td>
 				<td nowrap="nowrap">' . $LANG->getLL('workspace_list_label_current_workspace') . '</td>

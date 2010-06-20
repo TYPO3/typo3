@@ -13,11 +13,6 @@ a.perm-denied,
 	font-weight: bold;
 }
 
-#perm-legend .perm-allowed,
-#perm-legend .perm-denied {
-	cursor: auto;
-}
-
 a.perm-allowed:hover,
 a.perm-denied:hover {
 	background-color: #e3dfdb;

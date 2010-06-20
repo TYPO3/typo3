@@ -135,7 +135,7 @@ table.typo3-TCEforms .class-main22 td,
 table.typo3-TCEforms .class-main32 td,
 table.typo3-TCEforms .class-main42 td,
 table.typo3-TCEforms .class-main52 td {
-	padding: 2px 0px 2px 0px;
+	padding: 6px 0px 2px 0px;
 }
 
 table.typo3-TCEforms .class-main3,
@@ -164,7 +164,7 @@ table.typo3-TCEforms .wrapperTable2,
 table.typo3-TCEforms .wrapperTable3,
 table.typo3-TCEforms .wrapperTable4,
 table.typo3-TCEforms .wrapperTable5 {
-	margin: 0 0 5px 0;
+	padding: 5px 0 5px 0;
 }
 
 table.typo3-TCEforms td.icons {
@@ -192,6 +192,10 @@ table.typo3-TCEforms td.thumbnails {
 
 .t3-form-palette-field-container .t3-form-palette-field-label, .t3-form-palette-field-container .t3-form-palette-field {
 	display:block;
+}
+
+.typo3-TCEforms .typo3-csh-link {
+	margin-left: 5px;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -

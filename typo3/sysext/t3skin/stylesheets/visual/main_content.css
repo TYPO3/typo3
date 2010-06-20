@@ -59,6 +59,10 @@ a:hover {
 	background-color: transparent;
 }
 
+a.t3-link {
+	text-decoration: underline;
+}
+
 /* horizontal ruler */
 hr, div.hr {
 	background-color: #ddd;
@@ -122,6 +126,13 @@ Background color classes
 Various classes
 - - - - - - - - - - - - - - - - - - - - - */
 
+/** used for any table where a table is used for displaying information (and thus, there is air to breathe) **/
+table.t3-table-info {
+	background: #ffffff;
+	border: 1px solid #cccccc;
+	border-collapse: collapse;
+}
+
 .t3-row-header {
 	background-color: #7f7f7f;
 	background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
@@ -136,6 +147,15 @@ Various classes
 .t3-row-header a {
 	color: #fff;
 	float: left;
+}
+
+.t3-col-header {
+	background-color: #585858;
+	color: #fff;
+	font-size: 10px;
+	line-height: 19px;
+	height: 20px;
+	font-weight: bold;
 }
 
 .nobr {
@@ -165,12 +185,17 @@ textarea.fixed-font {
 	font-size: 11px;
 }
 
+/** .uppercase is kept for backwards-compatibility, use .divider */
+.divider,
 .uppercase {
-	padding-bottom: 6px;
 	border-bottom: 1px solid #cdcdcd;
 }
-
 .tableheader td {
+	font-weight: bold;
+}
+
+/** used in the admin tools => DB check **/
+.t3-overview-list dt {
 	font-weight: bold;
 }
 

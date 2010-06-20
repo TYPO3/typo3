@@ -1348,7 +1348,7 @@ $str.=$this->docBodyTagBegin().
 		)
 	);
 	var $table_TR = '<tr>';
-	var $table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-tmpltable">';
+	var $table_TABLE = '<table border="0" cellspacing="0" cellpadding="0" class="typo3-dblist" id="typo3-tmpltable">';
 
 	/**
 	 * Returns a table based on the input $data

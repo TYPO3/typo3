@@ -4,28 +4,8 @@ Context Sensitive Help window (view_help.php)
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
-div.typo3-view-help {
-	margin-left: 3px;
-	margin-top: 6px;
-	width: 95%;
-}
-
 div.typo3-view-help img.c-inlineimg {
-	margin-bottom: 3px;
-	margin-top: 5px;
-}
 
-div.typo3-view-help h2 {
-	margin: 20px 0px 10px 0px;
-	padding: 3px 3px 3px 3px;
-}
-
-div.typo3-view-help h3 {
-	margin-top: 0px;
-}
-
-div.typo3-view-help h4 {
-	margin-top: 15px;
 }
 
 div.typo3-view-help div.c-toc ul li {
@@ -37,9 +17,5 @@ div.typo3-view-help div.c-toc ul li ul li {
 }
 
 div.typo3-view-help p.c-nav {
-	padding: 6px 0px 0px 0px;
-}
-
-div.typo3-view-help p.c-nav a {
-	padding: 2px 2px 2px 2px;
+	margin: 0px 10px 0 10px;
 }

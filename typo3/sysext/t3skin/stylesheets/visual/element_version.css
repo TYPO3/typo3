@@ -113,15 +113,15 @@ table.ver-subtree tr.typo3-ver-noComp td {
 }
 
 .ver-wl-details-table {
-	border: 1px solid #d9d5c9;
+	border: 1px solid #cccccc;
 }
 
 .ver-wl-details {
-	background-color: #e6e2d5;
+	background-color: #ffffff;
 }
 
 .ver-wl-details-label {
-	background-color: #e6e2d5;
+	background-color: #ffffff;
 	white-space: nowrap;
 }
 

@@ -4,6 +4,14 @@ Element Browser / RTE link selection
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
+#typo3-browse-links-php {
+	width: 100%;
+}
+
+#typo3-browse-links-php #typo3-tabmenu {
+	margin-top: 10px;
+}
+
 table#typo3-curUrl {
 	margin-bottom: 2px;
 	width: 100%;
@@ -17,11 +25,26 @@ table#typo3-linkTarget {
 	margin-bottom: 25px;
 }
 
+
+#typo3-browse-links-php form,
 table#typo3-linkPages tr td.c-wCell,
 table#typo3-linkFiles tr td.c-wCell,
 table#typo3-EBrecords tr td.c-wCell,
 table#typo3-EBfiles tr td.c-wCell {
-	padding-right: 5px;
+	padding: 0 10px;
+}
+
+table#typo3-linkPages h3,
+table#typo3-linkFiles h3,
+table#typo3-EBrecords h3,
+table#typo3-EBfiles h3 {
+	padding: 0 0 0 5px;
+}
+
+table#typo3-linkPages,
+table#typo3-linkFiles,
+table#typo3-EBrecords,
+table#typo3-EBfiles {
 }
 
 body#typo3-browse-links-php img,
@@ -37,10 +60,6 @@ table#typo3-linkMail,
 table#typo3-linkURL,
 table#typo3-linkTarget {
 	margin-top: 5px;
-}
-
-body#typo3-browse-links-php H3.bgColor5 {
-	margin-top: 2px;
 }
 
 table#typo3-msgBox {

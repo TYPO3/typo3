@@ -10,12 +10,13 @@ div.typo3-alt-intro-php {
 }
 
 #typo3-alt-intro-php-sub {
-	margin-left: 10px;
+	margin: 30px 20px;
 	width: 600px;
 }
 
-table#typo3-about-modules {
-	margin-top: 5px;
+#typo3-alt-intro-php-sub p a img {
+	margin-right: 8px;
+	margin-bottom: 2px;
 }
 
 table#typo3-about-modules tr td {
@@ -23,7 +24,19 @@ table#typo3-about-modules tr td {
 	vertical-align: top;
 }
 
+table#typo3-about-modules tr.c-mainitem td {
+	padding-top: 14px;
+}
+
+table#typo3-about-modules tr.c-mainitem:first-child td {
+	padding-top: 0;
+}
+
 table#typo3-about-modules tr.c-mainitem td img {
-	padding: 0px 2px 0px 2px;
+	padding: 0px 2px 2px 4px;
 	vertical-align: middle;
+}
+
+table#typo3-about-modules tr.c-subitem-row td:first-child {
+	padding-left: 23px;
 }

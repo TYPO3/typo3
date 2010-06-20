@@ -25,6 +25,21 @@ table#typo3-tree tr:hover {
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
+Configuration trees, used in Admin Tools => Configuration
+- - - - - - - - - - - - - - - - - - - - - */
+table.t3-tree-config {
+	background: #ececec;
+	background-image: linear-gradient(center top, #ffffff 0px, #ececec 100px);
+	background-image: -moz-linear-gradient(center top, #ffffff 0px, #ececec 100px);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0px, #ffffff), color-stop(100px, #ececec));
+	border: 1px solid #adadad;
+}
+
+table.t3-tree-config .t3-tree-config-header {
+	text-align: left;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
 AJAX Page Tree
 - - - - - - - - - - - - - - - - - - - - - */
 

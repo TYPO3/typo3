@@ -20,7 +20,13 @@ table.ver-verElement {
 	width: 100%;
 }
 
+.ver-wl-details-table {
+	width: 100%;
+	margin: 5px 0 10px;
+}
+
 .ver-wl-details {
+	padding: 0 2px;
 	vertical-align: top;
 }
 

@@ -63,10 +63,10 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * @return	string		A row for a HTML table
 	 */
 	function tableRow($label, $data, $field)	{
-		$ret = '<tr><td class="bgColor4" width="20%">';
+		$ret = '<tr><td>';
 		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' . 
 			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', true))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
-		$ret.= '</td><td class="bgColor4">' . $data . '&nbsp;</td></tr>';
+		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
 	}
 
@@ -493,7 +493,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				sprintf($GLOBALS['LANG']->getLL('editToView'), (trim($tplRow[config]) ? count(explode(LF, $tplRow[config])) : 0)),
 				'config'
 			);
-			$outCode = '<table class="typo3-dblist">' . $outCode . '</table>';
+			$outCode = '<br /><br /><table class="t3-table-info">' . $outCode . '</table>';
 
 				// Edit all icon:
 			$outCode.= '<br /><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') .

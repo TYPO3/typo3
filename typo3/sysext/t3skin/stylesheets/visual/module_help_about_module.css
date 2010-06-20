@@ -1,0 +1,25 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+Help > About modules (alt_intro.php)
+
+$Id: module_help_about_module.css 7906 2010-06-13 14:56:44Z ohader $
+- - - - - - - - - - - - - - - - - - - - - */
+
+table#typo3-about-modules {
+	background: #ffffff;
+	border-collapse: collapse;
+}
+
+table#typo3-about-modules tr.c-first td {
+	border-top: 1px solid #ccc;
+}
+
+table#typo3-about-modules tr.c-endrow td {
+	border-bottom: 1px solid #ccc;
+}
+
+table#typo3-about-modules tr.c-first,
+table#typo3-about-modules tr.c-endrow,
+table#typo3-about-modules tr.c-subitem-row {
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}

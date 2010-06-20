@@ -384,7 +384,7 @@ class tx_cms_layout extends recordList {
 			$out = t3lib_BEfunc::cshItem($this->descrTable,'func_'.$pKey,$GLOBALS['BACK_PATH']).
 				'
 				<table border="0" cellpadding="0" cellspacing="0" class="typo3-page-pages">
-					'.$this->addelement(1,'',$theData,' class="c-headLine"',20).
+					'.$this->addelement(1, '', $theData, ' class="t3-row-header"', 20).
 					$out.'
 				</table>';
 		}
@@ -837,7 +837,7 @@ class tx_cms_layout extends recordList {
 				$theData['__cmds__'] ='';
 				$theData['info'] = '<strong>Info</strong><br /><img src="clear.gif" height="1" width="220" alt="" />';
 				$theData['note'] = '<strong>Note</strong>';
-				$out.=$this->addelement(1,'',$theData,' class="c-headLine"',20);
+				$out .= $this->addelement(1, '', $theData, ' class="t3-row-header"', 20);
 
 					// half line is drawn
 				$theData = Array();
@@ -936,7 +936,7 @@ class tx_cms_layout extends recordList {
 			if ($GLOBALS['SOBE']->MOD_SETTINGS['tt_board']!='expand') {
 				$theData['replys'] = '<strong>'.$GLOBALS['LANG']->getLL('tt_board_RE',1).'</strong>';
 			}
-			$out.=$this->addelement(1,'',$theData,' class="c-headLine"',20);
+			$out .= $this->addelement(1, '', $theData, ' class="t3-row-header"', 20);
 
 				// half line is drawn
 			$theData = Array();

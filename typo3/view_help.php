@@ -620,11 +620,11 @@ class SC_view_help {
 	function headerLine($str,$type=0)	{
 		switch($type)	{
 			case 1:
-				$str='<h3>'.htmlspecialchars($str).'</h3>
+				$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
 				';
 			break;
 			case 0:
-				$str='<h4 class="uppercase">'.htmlspecialchars($str).'</h4>
+				$str = '<h3 class="section">' . htmlspecialchars($str) . '</h3>
 				';
 			break;
 		}

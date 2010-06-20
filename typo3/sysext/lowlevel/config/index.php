@@ -296,18 +296,12 @@ class SC_mod_tools_config_index {
 
 		}
 
-		$this->content.= '<br /><table border="0" cellpadding="1" cellspacing="0">';
+		$this->content.= '<br /><table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config">';
 		$this->content.= '<tr>
-					<td><img src="clear.gif" width="1" height="1" alt="" /></td>
-					<td class="bgColor2">
-						<table border="0" cellpadding="0" cellspacing="0" class="bgColor5" width="100%"><tr><td nowrap="nowrap"><strong>'.$label.'</strong></td></tr></table>
-					</td>
-				</tr>';
-		$this->content.='<tr>
-					<td></td>
-					<td class="bgColor2">
-						<table border="0" cellpadding="0" cellspacing="0" class="bgColor4" width="100%"><tr><td nowrap="nowrap">'.$tree.'</td></tr></table>' .
-								'<img src="clear.gif" width="465" height="1" alt="" /></td>
+					<th class="t3-row-header t3-tree-config-header">' . $label . '</th>
+				</tr>
+				<tr>
+					<td>' . $tree . '</td>
 				</tr>
 			</table>
 		';

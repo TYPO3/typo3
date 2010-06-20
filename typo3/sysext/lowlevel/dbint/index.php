@@ -326,15 +326,23 @@ class SC_mod_tools_dbint_index {
 	 * @return	void
 	 */
 	function func_default()	{
-		global $LANG;
+		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 
-		$this->content.=$this->doc->header($GLOBALS['LANG']->getLL('title'));
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=records">' . $GLOBALS['LANG']->getLL('records') . '</a>',$GLOBALS['LANG']->getLL('records_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=tree">' . $GLOBALS['LANG']->getLL('tree') . '</a>',$GLOBALS['LANG']->getLL('tree_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=relations">' . $GLOBALS['LANG']->getLL('relations') . '</a>',$GLOBALS['LANG']->getLL('relations_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=search">' . $GLOBALS['LANG']->getLL('search') . '</a>',$GLOBALS['LANG']->getLL('search_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=filesearch">' . $GLOBALS['LANG']->getLL('filesearch') . '</a>',$GLOBALS['LANG']->getLL('filesearch_description'),1,1,0,1);
-		$this->content.=$this->doc->section('<a href="index.php?SET[function]=refindex">' . $GLOBALS['LANG']->getLL('refindex') . '</a>',$GLOBALS['LANG']->getLL('refindex_description'),1,1,0,1);
+		$content = '<dl class="t3-overview-list">';
+
+		$availableModFuncs = array('records', 'tree', 'relations', 'search', 'filesearch', 'refindex');
+		foreach ($availableModFuncs as $modFunc) {
+			$link = 'index.php?SET[function]=' . $modFunc;
+			$title = $GLOBALS['LANG']->getLL($modFunc);
+			$description = $GLOBALS['LANG']->getLL($modFunc . '_description');
+			$content .= '
+				<dt><a href="' . $link . '">' . $title . '</a></dt>
+				<dd>' . $description . '</dd>
+			';
+		}
+
+		$content .= '</dl>';
+		$this->content .= $content;
 	}
 
 

@@ -2508,11 +2508,11 @@ EXTENSION KEYS:
 								$content, 0, 1
 							);
 						} else {
-							$content = t3lib_BEfunc::cshItem('_MOD_tools_em', 'backup_delete', $GLOBALS['BACK_PATH'], '|<br />');
-							$content.= $this->extBackup($extKey,$list[$extKey]);
+							$csh = t3lib_BEfunc::cshItem('_MOD_tools_em', 'backup_delete', $GLOBALS['BACK_PATH'], '|<br />');
+							$content = $this->extBackup($extKey, $list[$extKey]);
 							$this->content .= $this->doc->section(
-								$GLOBALS['LANG']->getLL('ext_details_backup'),
-								$content, 0, 1
+								$GLOBALS['LANG']->getLL('ext_details_backup') . '&nbsp;' . $csh,
+								$content, 0, 1, 0, 1
 							);
 
 							$content = $this->extDelete($extKey,$list[$extKey]);
@@ -2868,7 +2868,7 @@ EXTENSION KEYS:
 				$deleteFromServer = $GLOBALS['LANG']->getLL('extDelete_from_server');
 				$onClick = "if (confirm('$areYouSure')) {window.location.href='index.php?CMD[showExt]=" .
 					$extKey . '&CMD[doDelete]=1&CMD[absPath]=' . rawurlencode($absPath) . "';}";
-				$content .= '<a href="#" onclick="' . htmlspecialchars($onClick) .
+				$content .= '<a class="t3-link" href="#" onclick="' . htmlspecialchars($onClick) .
 					' return false;"><strong>' . $deleteFromServer . '</strong> ' .
 					sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
 						$this->typeLabels[$extInfo['type']],
@@ -2896,7 +2896,7 @@ EXTENSION KEYS:
 			$updateEMConf = $GLOBALS['LANG']->getLL('extUpdateEMCONF_file');
 			$onClick = "if (confirm('$sure')) {window.location.href='index.php?CMD[showExt]=" .
 				$extKey . "&CMD[doUpdateEMCONF]=1';}";
-			$content .= '<a href="#" onclick="' . htmlspecialchars($onClick) .
+			$content .= '<a class="t3-link" href="#" onclick="' . htmlspecialchars($onClick) .
 				' return false;"><strong>' . $updateEMConf . '</strong> ' .
 				sprintf($GLOBALS['LANG']->getLL('extDelete_from_location'),
 					$this->typeLabels[$extInfo['type']],
@@ -2942,11 +2942,11 @@ EXTENSION KEYS:
 			} else {
 				$techInfo = $this->makeDetailedExtensionAnalysis($extKey,$extInfo);
 				$lines=array();
-				$lines[]='<tr class="t3-row-header"><td colspan="2"><strong>' .
-					$GLOBALS['LANG']->getLL('extBackup_select') . '</strong></td></tr>';
+				$lines[] = '<tr class="t3-row-header"><td colspan="2">' .
+					$GLOBALS['LANG']->getLL('extBackup_select') . '</td></tr>';
 				$lines[]='<tr class="bgColor4"><td><strong>' .
 					$GLOBALS['LANG']->getLL('extBackup_files') . '</strong></td><td>' .
-					'<a href="' . htmlspecialchars('index.php?CMD[doBackup]=1&CMD[showExt]=' . $extKey) .
+					'<a class="t3-link" href="' . htmlspecialchars('index.php?CMD[doBackup]=1&CMD[showExt]=' . $extKey) .
 					'">' . sprintf($GLOBALS['LANG']->getLL('extBackup_download'),
 						$extKey
 					) . '</a><br />
@@ -2991,7 +2991,7 @@ EXTENSION KEYS:
 			if (in_array($tN, $allTables))	{
 				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $tN);
 				$tables[$tN] = '<tr><td>&nbsp;</td><td>
-					<a href="' . htmlspecialchars('index.php?CMD[dumpTables]=' . rawurlencode($tN) .
+					<a class="t3-link" href="' . htmlspecialchars('index.php?CMD[dumpTables]=' . rawurlencode($tN) .
 					 '&CMD[showExt]=' . $extKey) .
 					 '" title="' .
 					 sprintf($GLOBALS['LANG']->getLL('extBackup_dump_table'),
@@ -3006,7 +3006,7 @@ EXTENSION KEYS:
 		}
 		$label = '<table border="0" cellpadding="0" cellspacing="0">'.implode('',array_merge($tables,$tablesNA)).'</table>';// Candidate for t3lib_div::array_merge() if integer-keys will some day make trouble...
 		if (count($tables))	{
-			$label = '<a href="' . htmlspecialchars('index.php?CMD[dumpTables]=' .
+			$label = '<a class="t3-link" href="' . htmlspecialchars('index.php?CMD[dumpTables]=' .
 				rawurlencode(implode(',', array_keys($tables))) . '&CMD[showExt]=' . $extKey) .
 				'" title="' . $GLOBALS['LANG']->getLL('extBackup_dump_all_tables') . '">' .
 				$GLOBALS['LANG']->getLL('extBackup_download_all_data') . '</a><br /><br />' . $label;

@@ -2526,11 +2526,8 @@ class browse_links {
 	 */
 	function barheader($str)	{
 		return '
-
-			<!--
-				Bar header:
-			-->
-			<h3 class="bgColor5">'.htmlspecialchars($str).'</h3>
+			<!-- Bar header: -->
+			<h3>' . htmlspecialchars($str) . '</h3>
 			';
 	}
 
@@ -2566,16 +2563,17 @@ class browse_links {
 	 * @return	string		HTML content, wrapped in a table.
 	 */
 	function printCurrentUrl($str)	{
-		return '
-
-			<!--
-				Print current URL
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" class="bgColor5" id="typo3-curUrl">
-				<tr>
-					<td>'.$GLOBALS['LANG']->getLL('currentLink',1).': '.htmlspecialchars(rawurldecode($str)).'</td>
-				</tr>
-			</table>';
+		if (strlen($str)) {
+			return '
+				<!-- Print current URL -->
+				<table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
+					<tr>
+						<td>' . $GLOBALS['LANG']->getLL('currentLink',1) . ': ' .htmlspecialchars(rawurldecode($str)) . '</td>
+					</tr>
+				</table>';
+		} else {
+			return '';
+		}
 	}
 
 	/**

@@ -221,7 +221,7 @@ class SC_file_newfolder {
 		for ($a=0;$a<$this->number;$a++)	{
 			$code.='
 					<input'.$this->doc->formWidth(20).' type="text" name="file[newfolder]['.$a.'][data]" onchange="changed=true;" />
-					<input type="hidden" name="file[newfolder]['.$a.'][target]" value="'.htmlspecialchars($this->target).'" />
+					<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" /><br />
 				';
 		}
 		$code.='

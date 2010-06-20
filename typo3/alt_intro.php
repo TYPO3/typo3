@@ -118,7 +118,7 @@ class SC_alt_intro {
 			'.t3lib_BEfunc::displayWarningMessages();
 
 		$this->content .= '
-			<p>'.$LANG->getLL('introtext2').'</p>';
+			<h3>' . $LANG->getLL('introtext2') . '</h3>';
 
 
 			// Printing the description of the modules available

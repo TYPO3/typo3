@@ -174,21 +174,19 @@ class wslib_gui {
 		$pointer = t3lib_div::_GP('browsePointer');
 		$browseStat = $this->cropWorkspaceOverview_list($pArray,$pointer,$resultsPerPage);
 		$browse = '';
-		$browse .= 'Showing ' . $browseStat['begin'] . ' to ' . ($browseStat['end'] ? $browseStat['end'] . ' out of ' . $browseStat['allItems'] : $browseStat['allItems']) . ' versions:<br />';
+		$browse .= '<h3>Showing ' . $browseStat['begin'] . ' to ' . ($browseStat['end'] ? $browseStat['end'] . ' out of ' . $browseStat['allItems'] : $browseStat['allItems']) . ' versions:</h3>';
 		if (!($browseStat['begin']==1 && !$browseStat['end']))	{
 			for($a=0;$a<ceil($browseStat['allItems']/$resultsPerPage);$a++)	{
 				$browse.=($a==(int)$pointer?'<strong>':'').'<a href="'.htmlspecialchars('index.php?browsePointer='.rawurlencode($a)).'">['.($a+1).']</a>'.($a==(int)$pointer?'</strong>':'').' ';
 			}
-			$browse.= '<br />';
 		}
-		$browse.= '<br />';
 
 		$workspaceOverviewList = $this->displayWorkspaceOverview_list($pArray);
 		if ($workspaceOverviewList || $this->alwaysDisplayHeader) {
 			// Make header of overview:
 			$tableRows = array();
 			$tableHeader = '
-				<tr class="bgColor5 tableheader">
+				<tr class="t3-row-header">
 					<td nowrap="nowrap" width="100">' . $LANG->getLL('label_pagetree') . '</td>
 					<td nowrap="nowrap" colspan="2">' . $LANG->getLL('label_live_version') . '</td>
 					<td nowrap="nowrap" colspan="2">' . $LANG->getLL('label_draft_versions') . '</td>
@@ -221,7 +219,7 @@ class wslib_gui {
 			// Add lines from overview:
 			$tableRows = array_merge($tableRows, $workspaceOverviewList);
 
-			$table = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">'.implode('',$tableRows).'</table>';
+			$table = '<table border="0" cellpadding="0" cellspacing="0" id="t3-user-ws-wsoverview-table" class="typo3-dblist">' . implode('', $tableRows) . '</table>';
 
 			// script
 			if ($this->addHlSubelementsScript && !strstr($this->doc->JScode, 'function hlSubelements(')) {

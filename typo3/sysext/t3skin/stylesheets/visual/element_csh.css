@@ -43,33 +43,10 @@ div.typo3-view-help h1 {
 	text-align: left;
 }
 
-div.typo3-view-help h2 {
-	color: #fff;
-	font-size: 130%;
-	background: #acb3bf;
-	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
-	background-repeat: repeat-x;
-}
-
-div.typo3-view-help h3 {
-	background-color: #b8bec9;
-	background-image: url('../../icons/gfx/alt_menu_mainitem_bg.gif');
-	background-repeat: repeat-x;
-	color: white;
-}
-
-div.typo3-view-help h4 {
-	background: none;
-}
-
-div.typo3-view-help {
-	background-color: #f7f7f9;
-	border: 1px solid #ccc;
-}
 
 div.typo3-view-help p {
 	font-size: 12px;
-	line-height: 1.4;
+	line-height: 1.5;
 }
 
 div.typo3-view-help p.c-nav a {
@@ -87,12 +64,6 @@ div.typo3-view-help div.c-toc ul {
 
 div.typo3-view-help div.c-toc ul li ul {
 	list-style: disc;
-}
-
-div.typo3-view-help div.c-toc a:hover,
-div.typo3-view-help .manual-title a:hover,
-div.typo3-view-help p a:hover {
-	color: red;
 }
 
 div.typo3-view-help .manual-title,

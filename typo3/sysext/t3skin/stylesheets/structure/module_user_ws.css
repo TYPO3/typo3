@@ -1,0 +1,6 @@
+/**
+ * Styling for the module User => Workspace
+ */
+#typo3-mod-user-ws-index-php .typo3-dyntabmenu-divs {
+	padding: 10px;
+}

@@ -5,25 +5,11 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 div.typo3-view-help img.c-inlineimg {
-	border: 1px solid black;
-}
-
-div.typo3-view-help h2 {
-	font-size: 16px;
-	text-align: left;
-}
-
-div.typo3-view-help h3 {
-	background-color: #abbbb4;
-}
-
-div.typo3-view-help h4 {
-	border-bottom: 1px black solid;
+	border: 1px solid #cccccc;
 }
 
 div.typo3-view-help div.c-toc {
-	background-color: #d9d5c9;
-	border: 1px solid black;
+	border: 1px solid #cccccc;
 }
 
 div.typo3-view-help div.c-toc ul li {
@@ -37,11 +23,9 @@ div.typo3-view-help div.c-toc ul li ul li {
 }
 
 div.typo3-view-help p.c-nav a {
-	background-color: #e7dba8;
 	font-weight: bold;
 }
 
 div.typo3-view-help a.glossary-term {
-	color: maroon;
 	font-style: italic;
 }

@@ -204,12 +204,12 @@ class SC_show_item {
 		}
 
 			// Initialize document template object:
-		$this->doc = t3lib_div::makeInstance('smallDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 
 			// Starting the page by creating page header stuff:
 		$this->content.=$this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));
-		$this->content.=$this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));
+		$this->content.='<h3 class="t3-row-header">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem') . '</h3>';
 		$this->content.=$this->doc->spacer(5);
 	}
 
@@ -285,8 +285,8 @@ class SC_show_item {
 					$i++;
 					$tableRows[] = '
 						<tr>
-							<td class="bgColor5">'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($this->table,$name),1).'</td>
-							<td class="bgColor4">'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table,$name,$this->row[$name])).'</td>
+							<td class="t3-col-header">' . $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($this->table, $name), 1) . '</td>
+							<td>' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table, $name, $this->row[$name])) . '</td>
 						</tr>';
 				}
 			}
@@ -294,11 +294,10 @@ class SC_show_item {
 
 			// Create table from the information:
 		$tableCode = '
-					<table border="0" cellpadding="1" cellspacing="1" id="typo3-showitem">
+					<table border="0" cellpadding="0" cellspacing="0" id="typo3-showitem" class="t3-table-info">
 						'.implode('',$tableRows).'
 					</table>';
 		$this->content.=$this->doc->section('',$tableCode);
-		$this->content.=$this->doc->divider(2);
 
 			// Add path and table information in the bottom:
 		$code = '';

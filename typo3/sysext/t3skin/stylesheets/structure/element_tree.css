@@ -39,6 +39,13 @@ body#typo3-alt-db-navframe-php div.c-notice {
 }
 
 /* - - - - - - - - - - - - - - - - - - - - -
+Configuration trees, used in Admin Tools => Configuration
+- - - - - - - - - - - - - - - - - - - - - */
+table.t3-tree-config {
+	min-width: 500px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - -
 AJAX Page Tree
 - - - - - - - - - - - - - - - - - - - - - */
 body#typo3-pagetree,

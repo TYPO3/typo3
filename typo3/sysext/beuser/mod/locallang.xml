@@ -52,7 +52,7 @@
 			<label index="changeToMode">[change-to mode]</label>
 			<label index="switchBackMode">[switch-back mode]</label>
 			<label index="cachedGrouplistsUpdated">(All cached group-lists updated.)</label>
-			<label index="result">result</label>
+			<label index="result">Result</label>
 			<label index="showInformation">Show information</label>
 			<label index="sureToDelete">Are you sure you want to delete this element?</label>
 			<label index="delete">Delete(!)</label>
