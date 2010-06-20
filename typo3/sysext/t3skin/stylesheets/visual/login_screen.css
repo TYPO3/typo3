@@ -218,8 +218,10 @@ body#typo3-index-php .t3-login-logout-form div.t3-login-label {
  * @section box layout
  */
 .t3-login-box-body {
-	background: #ebebeb;
+	background-color: #c9c9c9;
+	background-image: url('../../images/backgrounds/login-box.png');
 	background-image: linear-gradient(center top, #ebebeb 0%, #c9c9c9 100%);
 	background-image: -moz-linear-gradient(center top, #ebebeb 0%, #c9c9c9 100%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #ebebeb), color-stop(1, #c9c9c9));
+	background-repeat: repeat-x;
 }

@@ -134,10 +134,12 @@ table.t3-table-info {
 }
 
 .t3-row-header {
-	background-color: #7f7f7f;
+	background-color: #5b5b5b;
+	background-image: url('../../images/backgrounds/row-header.png');
 	background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
 	background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
+	background-repeat: repeat-x;
 	color: #fff;
 	font-size: 10px;
 	line-height: 19px;
@@ -283,10 +285,13 @@ textarea:hover {
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-	background-color: #e2e2e2;
+	background-color: #f6f6f6;
+	background-image: url('../../images/backgrounds/button.png');
 	background-image: linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
 	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #d5d5d5 90%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #d5d5d5));
+	background-position: bottom;
+	background-repeat: repeat-x;
 	border: 1px solid #7c7c7c;
 	border-radius: 1px;
 	-moz-border-radius: 1px;
@@ -297,10 +302,13 @@ input[type="button"] {
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover {
-	background-color: #c3c7ce;
+	background-color: #c8c8c8;
+	background-image: url('../../images/backgrounds/button-hover.png');
 	background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
 	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #c8c8c8));
+	background-position: bottom;
+	background-repeat: repeat-x;
 	border: 1px solid #737f91;
 	color: #1e1e1e;
 	cursor: pointer;

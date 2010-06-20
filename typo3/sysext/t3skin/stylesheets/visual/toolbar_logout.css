@@ -13,7 +13,8 @@ $Id$
 }
 
 #logout-button input:hover {
-	background-color: #c3c7ce;
+	background-color: #c8c8c8;
+	background-image: url('../../images/backgrounds/button-hover.png');
 	background-image: linear-gradient(center top, #f6f6f6 10%, #c8c8c8 90%);
 	background-image: -moz-linear-gradient(center top, #f6f6f6 10%, #bdbcbc 90%);
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #f6f6f6), color-stop(0.9, #c8c8c8));

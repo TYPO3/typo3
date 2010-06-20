@@ -1,5 +1,6 @@
 2010-06-20  Susanne Moog  <typo3@susanne-moog.de>
 
+	* Fixed bug #14788: Add fallback graphics for CSS3 background gradients (Thanks to Steffen Gebert)
 	* Fixed bug #14755: Step 2 - Select method should be radio choice (On behalf of Steffen Kamper)
 	* Fixed bug #14752: Add Update Wizards for Skinning Changes (Thanks to Steffen Ritter)
 
