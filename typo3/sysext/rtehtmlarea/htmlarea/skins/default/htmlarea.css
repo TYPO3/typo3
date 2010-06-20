@@ -61,6 +61,10 @@
 	border-style:none;
 	margin:0;padding:3px 3px 0px 3px;
 }
+/* Fix combo box left loat in IE6 */
+body.ext-ie6 .htmlarea .toolbar .x-form-item {
+	width: 1%;
+}
 .htmlarea .toolbar .button {
 	background-color: transparent;
 	color: ButtonText;

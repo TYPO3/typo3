@@ -216,7 +216,7 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 						url: config.storeUrl
 					});
 				}
-				config.hideLabel = Ext.isEmpty(config.fieldLabel);
+				config.hideLabel = Ext.isEmpty(config.fieldLabel) || Ext.isIE6;
 				config.helpTitle = config.tooltip;
 				break;
 			default:
