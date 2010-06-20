@@ -1813,7 +1813,7 @@ class t3lib_TCEforms	{
 					if ($hasHelp && $this->edit_showFieldHelp == 'icon') {
 						$helpIcon  = '<a class="typo3-csh-link" href="#">';
 						$helpIcon .= t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
-						$helpIcon .= ' hspace="2" border="0" class="absmiddle"' . ($GLOBALS['CLIENT']['FORMSTYLE'] ? ' style="cursor:help;"' : '') . ' alt="" />' . $help;
+						$helpIcon .= $help;
 						$helpIcon .= '</a>';
 						$help = $helpIcon;
 					}
