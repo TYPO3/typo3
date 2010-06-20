@@ -406,6 +406,16 @@ body.standalone #t3-install-copyright {
 	display: block;
 }
 
+body.standalone #t3-install-form-login,
+body.standalone #t3-install-form-login .t3-install-form-submit,
+body.standalone #t3-install-box-body {
+	margin-bottom: 0;
+}
+
+body.standalone #t3-install-form-login .t3-install-form-submit {
+	padding-bottom: 1em;
+}
+
 body.standalone h1 {
 	background: url('../Images/logo.gif') no-repeat scroll 0 0 transparent;
 	text-indent:-999em;
@@ -454,7 +464,7 @@ body.standalone #t3-install-menu {
 body.standalone #t3-install-menu-bottom {
 	width: 17.6em;
 	height: 3px;
-	background: #3e3e3e url('../Images/content-top.png') no-repeat center bottom;
+	background: #3e3e3e url('../Images/content-bottom.png') no-repeat center bottom;
 }
 
 body.standalone .t3-install-login h2 {
