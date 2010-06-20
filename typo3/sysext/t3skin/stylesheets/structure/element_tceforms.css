@@ -112,7 +112,7 @@ table.typo3-TCEforms table.typo3-TCEforms-select-singlebox {
 }
 
 table.typo3-TCEforms div.typo3-dyntabmenu-tabs {
-	margin-top: 10px;
+	padding-top: 10px;
 }
 
 .checkbox,

@@ -165,7 +165,7 @@ class SC_wizard_tsconfig {
 		}
 
 			// Init the document table object:
-		$this->doc = t3lib_div::makeInstance('mediumDoc');
+		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->form='<form action="" name="editform">';
 
@@ -388,7 +388,8 @@ class SC_wizard_tsconfig {
 			<!--
 				TSconfig, object tree:
 			-->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-objtree">
+				<table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config" id="typo3-objtree">
+					<tr class="t3-row-header"><td>TSref</td></tr>
 					<tr>
 						<td nowrap="nowrap">'.$tmpl->ext_getObjTree($this->removePointerObjects($objTree[$mode.'.']),'','','','','1').'</td>
 					</tr>
@@ -530,22 +531,15 @@ class SC_wizard_tsconfig {
 
 				// Adding header:
 			$lines[]='
-				<tr>
-					<td><img src="clear.gif" width="175" height="1" alt="" /></td>
-					<td><img src="clear.gif" width="100" height="1" alt="" /></td>
-					<td><img src="clear.gif" width="400" height="1" alt="" /></td>
-					<td><img src="clear.gif" width="70" height="1" alt="" /></td>
-				</tr>';
-			$lines[]='
-				<tr class="bgColor5">
-					<td><strong>Property:</strong></td>
-					<td><strong>Data type:</strong></td>
-					<td><strong>Description:</strong></td>
-					<td><strong>Default:</strong></td>
+				<tr class="t3-row-header">
+					<td>Property:</td>
+					<td>Data type:</td>
+					<td>Description:</td>
+					<td>Default:</td>
 				</tr>';
 
 				// Traverse the content of "rows":
-			foreach($table['rows'] as $row)	{
+			foreach($table['rows'] as $i => $row)	{
 
 					// Linking:
 				$lP=t3lib_div::trimExplode(LF,$row['property'],1);
@@ -573,8 +567,8 @@ class SC_wizard_tsconfig {
 
 
 				$lines[]='
-					<tr class="bgColor4">
-						<td valign="top" class="bgColor4-20"><strong>'.$linkedProperties.'</strong></td>
+					<tr class="t3-row ' . ($i % 2 ? 't3-row-even' : 't3-row-odd') . '">
+						<td valign="top" class="bgColor4-20" nowrap="nowrap"><strong>'.$linkedProperties.'</strong></td>
 						<td valign="top">'.nl2br($dataType.'&nbsp;').'</td>
 						<td valign="top">'.nl2br($row['description']).'</td>
 						<td valign="top">'.nl2br($row['default']).'</td>
@@ -588,7 +582,7 @@ class SC_wizard_tsconfig {
 			<!--
 				TSconfig, attribute selector:
 			-->
-				<table border="0" cellpadding="0" cellspacing="1" width="500" id="typo3-attributes">
+				<table border="0" cellpadding="0" cellspacing="1" width="98%" class="t3-table" id="typo3-attributes">
 					'.implode('',$lines).'
 				</table>';
 		}

@@ -254,7 +254,7 @@ class SC_db_new_content_el {
 			$wizardItems = $this->getWizardItems();
 
 				// Wrapper for wizards
-			$this->elementWrapper['sectionHeader'] = array('<h3 class="bgColor5">', '</h3>');
+			$this->elementWrapper['sectionHeader'] = array('<h3 class="divider">', '</h3>');
 			$this->elementWrapper['section'] = array('<table border="0" cellpadding="1" cellspacing="2">', '</table>');
 			$this->elementWrapper['wizard'] = array('<tr>', '</tr>');
 			$this->elementWrapper['wizardPart'] = array('<td>', '</td>');

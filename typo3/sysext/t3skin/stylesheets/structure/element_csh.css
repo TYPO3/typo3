@@ -89,11 +89,15 @@ div.typo3-view-help {
 }
 
 div.typo3-view-help p {
-	margin: 4px 4px 12px 12px;
+	margin: 4px 4px 12px 10px;
 }
 
 div.typo3-view-help div.c-toc {
 	padding-left: 6px;
+}
+
+div.typo3-view-help div.c-toc p {
+	margin: 0;
 }
 
 div.typo3-view-help div.c-toc ul {

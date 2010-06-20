@@ -624,7 +624,7 @@ class SC_view_help {
 				';
 			break;
 			case 0:
-				$str = '<h3 class="section">' . htmlspecialchars($str) . '</h3>
+				$str = '<h3 class="divider">' . htmlspecialchars($str) . '</h3>
 				';
 			break;
 		}

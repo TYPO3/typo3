@@ -2905,14 +2905,14 @@ class t3lib_TCEforms	{
 									// possible linebreaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace
 								$processedTitle = str_replace('\n', '<br />', $theTitle);
 								$helpText = $this->helpText_typeFlex($key, $processedTitle, $PA['_cshFile']);
-								$tRows[]='<div>' .
-									'<div class="bgColor5">' .
+								$tRows[]='<div class="t3-form-field-container t3-form-field-container-flex">' .
+									'<div class="t3-form-field-label t3-form-field-label-flex">' .
 									($helpText ?
 										($vDEFkey=='vDEF' ? '' : $this->getLanguageIcon($table, $row, $vDEFkey)) . '<strong>' . $processedTitle . '</strong>' . $helpText :
 										$this->helpTextIcon_typeFlex($key, $processedTitle, $PA['_cshFile']) . ($vDEFkey == 'vDEF' ? '' : $this->getLanguageIcon($table, $row, $vDEFkey)) . $processedTitle
 									) .
 									'</div>
-									<div class="bgColor4">'.$theFormEl.$defInfo.$this->renderVDEFDiff($editData[$key],$vDEFkey).'</div>
+									<div class="t3-form-field t3-form-field-flex">'.$theFormEl.$defInfo.$this->renderVDEFDiff($editData[$key],$vDEFkey).'</div>
 								</div>';
 							}
 						}

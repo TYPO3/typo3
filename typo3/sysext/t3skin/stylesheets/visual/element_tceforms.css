@@ -6,6 +6,12 @@ $Id$
 
 table.typo3-TCEforms {
 	border-collapse: collapse;
+	background-color: #ececec;
+	background-image: url('../../images/backgrounds/tab.png');
+	background-image: linear-gradient(center top, #ffffff 30px, #ececec 130px);
+	background-image: -moz-linear-gradient(center top, #ffffff 0px, #ececec 130px);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(30px, #ffffff), color-stop(130px, #ececec));
+	background-repeat: repeat-x;
 }
 
 
@@ -38,6 +44,11 @@ table.typo3-TCEforms table#typo3-altdoc-header input:hover,
 table.typo3-TCEforms span.typo3-TCEforms-recHeader {
 	color: #333366;
 	font-weight: bold;
+}
+
+table.typo3-TCEforms div.typo3-dyntabmenu-tabs,
+table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
+	background: #F1F1F1;
 }
 
 table.typo3-TCEforms tr.typo3-TCEforms-recHeaderRow td {
@@ -224,8 +235,6 @@ table.typo3-TCEforms .typo3-dyntabmenu-divs .wrapperTable5 {
 	border-bottom: 1px solid #c0c0c0;
 }
 
-
-
 table.typo3-TCEforms table.wrapperAttention .wrapperTable,
 table.typo3-TCEforms table.wrapperAttention .wrapperTable1,
 table.typo3-TCEforms table.wrapperAttention .wrapperTable2,
@@ -283,4 +292,76 @@ div.typo3-TCEforms-suggest-choices span.suggest-path abbr {
 
 div.typo3-TCEforms-suggest-choises a {
 	cursor: pointer;
+}
+
+/** Flexforms **/
+.t3-form-field-container-flex {
+}
+
+.t3-form-field-label-flex {
+	padding: 5px;
+	border-top: 1px solid #c0c0c0;
+}
+
+.t3-form-field-container:first-child .t3-form-field-label-flex {
+	border-top: 0;
+}
+
+.t3-form-field-flex {
+	padding: 0 5px 5px;
+}
+
+
+/** no separate background for dyntabs in flexforms **/
+table.typo3-TCEforms .wrapperTable div.typo3-dyntabmenu-tabs ,
+table.typo3-TCEforms .wrapperTable1 div.typo3-dyntabmenu-tabs,
+table.typo3-TCEforms .wrapperTable2 div.typo3-dyntabmenu-tabs,
+table.typo3-TCEforms .wrapperTable3 div.typo3-dyntabmenu-tabs,
+table.typo3-TCEforms .wrapperTable4 div.typo3-dyntabmenu-tabs,
+table.typo3-TCEforms .wrapperTable5 div.typo3-dyntabmenu-tabs {
+	background: transparent;
+}
+
+
+/** tabs inside the table => flexforms */
+table.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
+	margin-right: 20px;
+	margin-bottom: 10px;
+	border: 1px solid #c0c0c0;
+}
+
+
+/**
+ IRRE
+***/
+table.typo3-TCEforms .inlineDiv {
+}
+.t3-form-field-container-inline {
+	margin-right: 20px;
+	margin-bottom: 3px;
+	border: 1px solid #c0c0c0;
+}
+
+.t3-form-field-header-inline {
+	background: #DADADA;
+	padding: 0 5px;
+}
+
+.t3-form-field-record-inline {
+	padding: 0 5px;
+	border-top: 1px solid #c0c0c0;
+}
+
+table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable,
+table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable1,
+table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable2,
+table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable3,
+table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable4,
+table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
+	border: 0;
 }

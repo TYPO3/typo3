@@ -36,17 +36,18 @@ a.typo3-csh-link {
 }
 
 /*  view_help.php */
+#typo3-view-help-php {
+}
+
+
 div.typo3-view-help h1 {
 	background: none;
 	color: #000;
-	font-size: 150%;
 	text-align: left;
 }
 
 
 div.typo3-view-help p {
-	font-size: 12px;
-	line-height: 1.5;
 }
 
 div.typo3-view-help p.c-nav a {
@@ -68,7 +69,7 @@ div.typo3-view-help div.c-toc ul li ul {
 
 div.typo3-view-help .manual-title,
 div.typo3-view-help .introduction {
-	font-size: 1.2em;
+	font-size: 12px;
 	line-height: 1.4;
 }
 

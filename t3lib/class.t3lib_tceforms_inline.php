@@ -437,13 +437,13 @@ class t3lib_TCEforms_inline {
 			$out = $fields . $combination;
 		} else {
 			// set the record container with data for output
-			$out = '<div id="' . $objectId . '_fields"' . $appearanceStyleFields . '>' . $fields . $combination . '</div>';
+			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields"' . $appearanceStyleFields . '>' . $fields . $combination . '</div>';
 			$header = $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
-			$out = '<div id="' . $objectId . '_header">' . $header . '</div>' . $out;
+			$out = '<div class="t3-form-field-header-inline" id="' . $objectId . '_header">' . $header . '</div>' . $out;
 				// wrap the header, fields and combination part of a child record with a div container
 			$classMSIE = ($this->fObj->clientInfo['BROWSER']=='msie' && $this->fObj->clientInfo['VERSION'] < 8 ? 'MSIE' : '');
 			$class = 'inlineDiv' . $classMSIE . ($isNewRecord ? ' inlineIsNewRecord' : '');
-			$out = '<div id="' . $objectId . '_div" class="'.$class.'">' . $out . '</div>';
+			$out = '<div id="' . $objectId . '_div" class="t3-form-field-container-inline '.$class.'">' . $out . '</div>';
 		}
 			// Remove the current level also from the dynNestedStack of TCEforms:
 		$this->fObj->popFromDynNestedStack();
