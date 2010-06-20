@@ -250,10 +250,47 @@ input.typo3-TCEforms-suggest-search {
 	vertical-align: middle;
 }
 
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Flexforms
+- - - - - - - - - - - - - - - - - - - - - */
+/** tabs inside the table => flexforms */
+table.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
+table.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+
+.t3-form-field-label-flex {
+	padding: 5px;
+}
+
+.t3-form-field-flex {
+	padding: 0 5px 5px;
+}
+
+
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Inline-Relational-Record-Editing
 - - - - - - - - - - - - - - - - - - - - - */
 
 .typo3-TCEforms div.inlineDivMSIE {
 	display: inline-block;
+}
+
+.t3-form-field-container-inline {
+	margin-right: 20px;
+	margin-bottom: 3px;
+}
+
+.t3-form-field-header-inline {
+	padding: 0 5px;
+}
+
+.t3-form-field-record-inline {
+	padding: 0 5px;
 }

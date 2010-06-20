@@ -294,23 +294,19 @@ div.typo3-TCEforms-suggest-choises a {
 	cursor: pointer;
 }
 
-/** Flexforms **/
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Flexforms
+- - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-container-flex {
 }
 
 .t3-form-field-label-flex {
-	padding: 5px;
 	border-top: 1px solid #c0c0c0;
 }
 
 .t3-form-field-container:first-child .t3-form-field-label-flex {
 	border-top: 0;
 }
-
-.t3-form-field-flex {
-	padding: 0 5px 5px;
-}
-
 
 /** no separate background for dyntabs in flexforms **/
 table.typo3-TCEforms .wrapperTable div.typo3-dyntabmenu-tabs ,
@@ -322,7 +318,6 @@ table.typo3-TCEforms .wrapperTable5 div.typo3-dyntabmenu-tabs {
 	background: transparent;
 }
 
-
 /** tabs inside the table => flexforms */
 table.typo3-TCEforms .wrapperTable .typo3-dyntabmenu-divs,
 table.typo3-TCEforms .wrapperTable1 .typo3-dyntabmenu-divs,
@@ -330,30 +325,22 @@ table.typo3-TCEforms .wrapperTable2 .typo3-dyntabmenu-divs,
 table.typo3-TCEforms .wrapperTable3 .typo3-dyntabmenu-divs,
 table.typo3-TCEforms .wrapperTable4 .typo3-dyntabmenu-divs,
 table.typo3-TCEforms .wrapperTable5 .typo3-dyntabmenu-divs {
-	margin-right: 20px;
-	margin-bottom: 10px;
 	border: 1px solid #c0c0c0;
 }
 
 
-/**
- IRRE
-***/
-table.typo3-TCEforms .inlineDiv {
-}
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Inline-Relational-Record-Editing
+- - - - - - - - - - - - - - - - - - - - - */
 .t3-form-field-container-inline {
-	margin-right: 20px;
-	margin-bottom: 3px;
 	border: 1px solid #c0c0c0;
 }
 
 .t3-form-field-header-inline {
 	background: #DADADA;
-	padding: 0 5px;
 }
 
 .t3-form-field-record-inline {
-	padding: 0 5px;
 	border-top: 1px solid #c0c0c0;
 }
 
