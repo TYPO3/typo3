@@ -12,7 +12,7 @@
 			<label index=".details">For most people TYPO3 is equivalent to a CMS providing a backend for management of the content and a frontend engine for website display. However TYPO3s core is natively designed to be a general purpose framework for management of database content. The core of TYPO3 delivers a set of principles for storage of this content, user access management, editing of the content, uploading and managing files etc. Many of these principles are expressed as an API (Application Programmers Interface) for use in the &lt;em&gt;extensions&lt;/em&gt; which ultimately adds most of the real functionality.</label>
 			<label index="_.seeAlso">Inside TYPO3 | http://typo3.org/documentation/document-library/doc_core_inside/This_document-1/</label>
 			<label index="_.image">EXT:lang/cshimages/login.png</label>
-			<label index=".image_descr">TYPO3 backend login screen summer 2004 (version 3.6.1).</label>
+			<label index=".image_descr">TYPO3 backend login screen.</label>
 			<label index="menu_modules.alttitle">Backend modules</label>
 			<label index="menu_modules.description">The Backend menu reflects the hierarchy of main- and sub-modules in TYPO3. Click a menu item to access the corresponding module.</label>
 			<label index="menu_modules.details">Backend Users might see different menu items depending on their access permissions. The &quot;Admin&quot; user on a system will always see all modules available.
