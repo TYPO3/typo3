@@ -5,6 +5,7 @@
 
 2010-06-20  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #10424: Old version (3.x) screenshots in CSH (Big thanks to Philipp Gampe)
 	* Followup to #14733: Improvements to Backend skin - Added styling to missing parts of the Backend
 
 2010-06-19 Francois Suter  <francois@typo3.org>
