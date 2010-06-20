@@ -137,7 +137,6 @@ class tx_cms_layout extends recordList {
 	var $tt_contentConfig = Array (
 		'showInfo' => 1,					// Boolean: Display info-marks or not
 		'showCommands' => 1,				// Boolean: Display up/down arrows and edit icons for tt_content records
-		'showCommands_info' => 1,			// Boolean: Displays infoGif with the command buttons
 		'single' => 1, 						// Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
 		'showSingleCol' => 0,				// The column(s) to show if single mode (under each other)
 		'languageCols' => 0,
@@ -1689,7 +1688,6 @@ class tx_cms_layout extends recordList {
 				$hiddenHeaderNote = ' <em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.hidden', true) . ']</em>';
 			}
 			$outHeader=  ($row['date'] ? htmlspecialchars($this->itemLabels['date'].' '.t3lib_BEfunc::date($row['date'])).'<br />':'').
-					$this->infoGif($infoArr).
 					'<strong>' . $this->linkEditContent($this->renderText($row['header']), $row) . $hiddenHeaderNote . '</strong><br />';
 		}
 
@@ -1717,9 +1715,7 @@ class tx_cms_layout extends recordList {
 			switch($row['CType'])	{
 				case 'header':
 					if ($row['subheader'])	{
-						$this->getProcessedValue('tt_content','layout',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->linkEditContent($this->renderText($row['subheader']),$row).'<br />';
+						$out .= $this->linkEditContent($this->renderText($row['subheader']), $row) . '<br />';
 					}
 				break;
 				case 'text':
@@ -1728,45 +1724,28 @@ class tx_cms_layout extends recordList {
 					if ($row['CType']=='text' || $row['CType']=='textpic')	{
 						if ($row['bodytext'])	{
 							$this->getProcessedValue('tt_content','text_align,text_face,text_size,text_color,text_properties',$row,$infoArr);
-							$out.= $this->infoGif($infoArr).
-									$this->linkEditContent($this->renderText($row['bodytext']),$row).'<br />';
+							$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 						}
 					}
 					if ($row['CType']=='textpic' || $row['CType']=='image')	{
 						if ($row['image'])	{
-							$infoArr=Array();
-							$this->getProcessedValue('tt_content','imageorient,imagecols,image_noRows,imageborder,imageheight,image_link,image_zoom,image_compression,image_effects,image_frames',$row,$infoArr);
-							$out.=	$this->infoGif($infoArr).
-									$this->thumbCode($row,'tt_content','image').'<br />';
-
+							$out .= $this->thumbCode($row,'tt_content','image') . '<br />';
 							if ($row['imagecaption'])	{
-								$infoArr=Array();
-								$this->getProcessedValue('tt_content','imagecaption_position',$row,$infoArr);
-								$out.=	$this->infoGif($infoArr).
-										$this->linkEditContent($this->renderText($row['imagecaption']),$row).'<br />';
+								$out.= $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
 							}
 						}
 					}
 				break;
 				case 'bullets':
-					if ($row['bodytext'])	{
-						$this->getProcessedValue('tt_content','layout,text_align,text_face,text_size,text_color,text_properties',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->linkEditContent($this->renderText($row['bodytext']),$row).'<br />';
-					}
-				break;
 				case 'table':
+				case 'mailform':
 					if ($row['bodytext'])	{
-						$this->getProcessedValue('tt_content','table_bgColor,table_border,table_cellspacing,cols,layout,text_align,text_face,text_size,text_color,text_properties',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->linkEditContent($this->renderText($row['bodytext']),$row).'<br />';
+						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 					}
 				break;
 				case 'uploads':
 					if ($row['media'])	{
-						$this->getProcessedValue('tt_content','media,select_key,layout,filelink_size,table_bgColor,table_border,table_cellspacing',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->linkEditContent($this->renderText($row['bodytext']),$row).'<br />';
+						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 					}
 				break;
 				case 'multimedia':
@@ -1775,42 +1754,26 @@ class tx_cms_layout extends recordList {
 						$out.=	$this->renderText($row['parameters']).'<br />';
 					}
 				break;
-				case 'mailform':
-					if ($row['bodytext'])	{
-						$this->getProcessedValue('tt_content','pages,subheader',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->linkEditContent($this->renderText($row['bodytext']),$row).'<br />';
-					}
-				break;
 				case 'splash':
 					if ($row['bodytext'])	{
 						$out.=	$this->linkEditContent($this->renderText($row['bodytext']),$row).'<br />';
 					}
 					if ($row['image'])	{
-						$infoArr=Array();
-						$this->getProcessedValue('tt_content','imagewidth',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->thumbCode($row,'tt_content','image').'<br />';
+						$out .= $this->thumbCode($row,'tt_content','image') . '<br />';
 					}
 				break;
 				case 'menu':
 					if ($row['pages'])	{
-						$this->getProcessedValue('tt_content','menu_type',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->linkEditContent($row['pages'],$row).'<br />';
+						$out .= $this->linkEditContent($row['pages'], $row) . '<br />';
 					}
 				break;
 				case 'shortcut':
 					if ($row['records'])	{
-						$this->getProcessedValue('tt_content','layout',$row,$infoArr);
-						$out.=	$this->infoGif($infoArr).
-								$this->linkEditContent($row['shortcut'],$row).'<br />';
+						$out .= $this->linkEditContent($row['shortcut'], $row) . '<br />';
 					}
 				break;
 				case 'list':
-					$this->getProcessedValue('tt_content','layout',$row,$infoArr);
-					$out.=	$this->infoGif($infoArr).
-							$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type'),1).' '.
+					$out .= $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','list_type'), 1) . ' ' .
 							$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','list_type',$row['list_type']),1).'<br />';
 					$hookArr = array();
 					$hookOut = '';
@@ -1831,10 +1794,7 @@ class tx_cms_layout extends recordList {
 						$out.=	$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','select_key'),1).' '.$row['select_key'].'<br />';
 					}
 
-					$infoArr=Array();
-					$this->getProcessedValue('tt_content','recursive',$row,$infoArr);
-					$out.=	$this->infoGif($infoArr).
-							$GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','pages',$row['pages']),1).'<br />';
+					$out .= $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content','pages',$row['pages']), 1) . '<br />';
 				break;
 				case 'script':
 					$out.=	$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content','select_key'),1).' '.$row['select_key'].'<br />';
@@ -1926,10 +1886,13 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	array		Array where values are human readable output of field values (not htmlspecialchars()'ed though). The values are imploded by a linebreak.
 	 * @return	string		HTML img tag if applicable.
+	 * @deprecated since TYPO3 4.4, this function will be removed in TYPO3 4.6
 	 */
 	function infoGif($infoArr)	{
+		t3lib_div::logDeprecatedFunction();
+
 		if (count($infoArr) && $this->tt_contentConfig['showInfo'])	{
-			return t3lib_iconWorks::getSpriteIcon('actions-document-view', array('title' => htmlspecialchars(implode(LF, $infoArr))));
+			return t3lib_iconWorks::getSpriteIcon('actions-document-info', array('title' => htmlspecialchars(implode(LF, $infoArr))));
 		}
 	}
 

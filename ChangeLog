@@ -11,6 +11,7 @@
 
 2010-06-20  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #14722: Remove info icon from CEs in page module (Thanks to Steffen Gebert)
 	* Followup to #14733: Improvements to Backend skin - Added styling to missing parts of the Backend - TCEforms without tabs, TCEforms with Flexforms, TCEforms with IRRE, TSconfig help, help styling improvements
 	* Followup to #13379: Sprite Icon API - Removed unneeded checks in ext_tables.php for t3skin (Thanks to Steffen Ritter)
 	* Followup to #14733: Improvements to Backend skin - Exchanges "selection delete" icon to make it consistent look again (Thanks to Steffen Ritter)
