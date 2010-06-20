@@ -29,8 +29,14 @@ $TYPO3_CONF_VARS['FE']['eID_include']['tx_install_ajax'] = 'EXT:install/mod/clas
 	// install versioning since TYPO3 4.3
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installVersioning'] = 'tx_coreupdates_installversioning';
 
-	// add static_template if needed (since TYPO3 4.3 this table is not standard)
+	// add static_template if needed (since TYPO3 4.4 this table is not standard)
 	// if needed, sysext statictables is loaded, which gives back functionality
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForStaticTypoScriptTemplates'] = 'tx_coreupdates_statictemplates';
+
+	// warn for t3skin installed in Version 4.4
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForT3SkinInstalled'] = 'tx_coreupdates_t3skin';
+
+	// Version 4.4: warn for set CompressionLevel and warn user to update his .htaccess
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForCompressionLevel'] = 'tx_coreupdates_compressionlevel';
 
 ?>
