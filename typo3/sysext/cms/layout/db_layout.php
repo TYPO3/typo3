@@ -1260,7 +1260,7 @@ class SC_db_layout {
 					// Delete record
 				if($this->deleteButton) {
 					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(\'' . $this->eRParts[0] . '\',\'' . $this->eRParts[1] . '\',\'' . t3lib_div::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id . '\');') . '" title="' . $LANG->getLL('deleteItem', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-document-delete') .
+							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 						'</a>';
 				}
 
