@@ -60,7 +60,7 @@ class Tx_Extbase_Persistence_QOM_Statement {
 	 *
 	 * @param string $statement The statement
 	 * @param array $boundVariables An array of variables to bind to the statement
-	 * @param string $language 
+	 * @param string $language The query language. One of the above constants.
 	 */
 	public function __construct($statement, array $boundVariables = array(), $language = self::TYPO3_SQL_MYSQL) {
 		$this->statement = $statement;

@@ -97,6 +97,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 			foreach ($objects as $object) {
 				parent::attach($object);
 			}
+			$this->_memorizeCleanState();
 			$this->parentObject->_memorizeCleanState($this->propertyName);
 		}
 	}

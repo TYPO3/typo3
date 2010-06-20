@@ -35,7 +35,7 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	/**
 	 * @var An array holding the clean property values. Set right after reconstitution of the object
 	 */
-	private $_cleanProperties = array();
+	private $_cleanProperties;
 
 	/**
 	 * Register an object's clean state, e.g. after it has been reconstituted
@@ -66,6 +66,9 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 */
 	public function _memorizePropertyCleanState($propertyName) {
 		$propertyValue = $this->$propertyName;
+		if (!is_array($this->_cleanProperties)) {
+			$this->_cleanProperties = array();
+		}
 		if (is_object($propertyValue)) {
 			$this->_cleanProperties[$propertyName] = clone($propertyValue);
 
@@ -114,35 +117,40 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 	 * @return boolean
 	 */
 	public function _isDirty($propertyName = NULL) {
-		if (empty($this->_cleanProperties)) return TRUE;
-		// if (!is_array($this->_cleanProperties)) throw new Tx_Extbase_Persistence_Exception_CleanStateNotMemorized('The clean state of the object "' . get_class($this) . '" has not been memorized before asking _isDirty().', 1233309106);
-		if ($this->uid !== NULL && $this->uid != $this->_cleanProperties['uid']) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
-		$result = FALSE;
-		if ($propertyName !== NULL) {
-			if (is_object($this->$propertyName)) {
-				// In case it is an object, we do a simple comparison (!=) as we want cloned objects to return the same values.
-				$result = $this->_cleanProperties[$propertyName] != $this->$propertyName;
-			} else {
-				$result = $this->_cleanProperties[$propertyName] !== $this->$propertyName;
+		if ($this->uid !== NULL && is_array($this->_cleanProperties) && $this->uid != $this->_getCleanProperty('uid')) throw new Tx_Extbase_Persistence_Exception_TooDirty('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
+		if ($propertyName === NULL) {
+			foreach ($this->_getCleanProperties() as $propertyName => $cleanPropertyValue) {
+				if ($this->isPropertyDirty($cleanPropertyValue, $this->$propertyName) === TRUE) return TRUE;
 			}
 		} else {
-			foreach ($this->_cleanProperties as $propertyName => $propertyValue) {
-				if (is_object($this->$propertyName)) {
-					// In case it is an object, we do a simple comparison (!=) as we want cloned objects to return the same values.
-					if ($this->$propertyName != $propertyValue) {
-						$result = TRUE;
-						break;
-					}
-				} else {
-					if ($this->$propertyName !== $propertyValue) {
-						$result = TRUE;
-						break;
-					}
-				}
+			if ($this->isPropertyDirty($this->_getCleanProperty($propertyName), $this->$propertyName) === TRUE) return TRUE;
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Checks the $value against the $cleanState.
+	 *
+	 * @param mixed $previousValue
+	 * @param mixed $currentValue
+	 * @return boolan
+	 */
+	protected function isPropertyDirty($previousValue, $currentValue) {
+		$result = FALSE;
+		// In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
+		// We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
+		if (is_object($currentValue)) {
+			if ($currentValue instanceof Tx_Extbase_Persistence_ObjectMonitoringInterface) {
+				$result = !is_object($previousValue) || $currentValue->_isDirty() || (get_class($previousValue) !== get_class($currentValue));
+			} else {
+				// For all other objects we do only a simple comparison (!=) as we want cloned objects to return the same values.
+				$result = ($previousValue != $currentValue);
 			}
+		} else {
+			$result = ($previousValue !== $currentValue);
 		}
 		return $result;
 	}
-
+	
 }
 ?>

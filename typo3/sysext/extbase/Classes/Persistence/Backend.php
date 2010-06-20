@@ -46,6 +46,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $aggregateRootObjects;
 
 	/**
+	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 */
+	protected $visitedDuringPersistence;
+
+	/**
 	 * @var Tx_Extbase_Persistence_IdentityMap
 	 **/
 	protected $identityMap;
@@ -335,6 +340,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return void
 	 */
 	protected function persistObjects() {
+		$this->visitedDuringPersistence = new Tx_Extbase_Persistence_ObjectStorage();
 		foreach ($this->aggregateRootObjects as $object) {
 			if (!$this->identityMap->hasObject($object)) {
 				$this->insertObject($object);
@@ -354,6 +360,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return void
 	 */
 	protected function persistObject(Tx_Extbase_DomainObject_DomainObjectInterface $object) {
+		if (isset($this->visitedDuringPersistence[$object])) {
+			return $this->visitedDuringPersistence[$object];
+		} else {
+			$this->visitedDuringPersistence[$object] = $object->getUid();
+		}
+
 		$row = array();
 		$queue = array();
 		$className = get_class($object);
@@ -383,12 +395,12 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					if ($propertyValue->_isNew()) {
 						if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
 							$this->insertObject($propertyValue);
-							$queue[] = $propertyValue;
 						} else {
 							$this->persistValueObject($propertyValue);
 						}
 					}
 					$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
+					$queue[] = $propertyValue;
 				}
 			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || $object->_isNew() || $object->_isDirty($propertyName)) {
 				$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);

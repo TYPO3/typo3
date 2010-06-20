@@ -91,6 +91,7 @@ return array(
 	'tx_extbase_persistence_lazyloadingproxy' => $extensionClassesPath . 'Persistence/LazyLoadingProxy.php',
 	'tx_extbase_persistence_lazyobjectstorage' => $extensionClassesPath . 'Persistence/LazyObjectStorage.php',
 	'tx_extbase_persistence_loadingstrategyinterface' => $extensionClassesPath . 'Persistence/LoadingStrategyInterface.php',
+	'tx_extbase_persistence_objectmonitoringinterface' => $extensionClassesPath . 'Persistence/ObjectMonitoringInterface.php',
 	'tx_extbase_persistence_manager' => $extensionClassesPath . 'Persistence/Manager.php',
 	'tx_extbase_persistence_managerinterface' => $extensionClassesPath . 'Persistence/ManagerInterface.php',
 	'tx_extbase_persistence_objectstorage' => $extensionClassesPath . 'Persistence/ObjectStorage.php',

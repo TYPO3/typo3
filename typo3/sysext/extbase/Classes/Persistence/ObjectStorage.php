@@ -32,7 +32,7 @@
  * @subpackage Persistence
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, ArrayAccess {
+class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, ArrayAccess, Tx_Extbase_Persistence_ObjectMonitoringInterface {
 
 	/**
 	 * An array holding the objects and the stored information. The key of the array items ist the 
@@ -50,6 +50,12 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 */
 	protected $storage = array();
 
+	/**
+	 * A flag indication if the object storage was modified after reconstitution (eg. by adding a new object)
+	 * @var bool
+	 */
+	protected $isModified = FALSE;
+		
 	/**
 	 * Rewind the iterator to the first storage element.
 	 *
@@ -114,6 +120,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 * @return void
 	 */
 	public function offsetSet($object, $information) {
+		$this->isModified = TRUE;
 		$this->storage[spl_object_hash($object)] = array('obj' => $object, 'inf' => $information);
 	}
 
@@ -134,6 +141,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	 * @return void
 	 */
 	public function offsetUnset($object) {
+		$this->isModified = TRUE;
 		unset($this->storage[spl_object_hash($object)]);
 	}
 
@@ -189,6 +197,7 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 	}
 	
 	public function setInfo($data) {
+		$this->isModified = TRUE;
 		$key = key($this->storage);
 		$this->storage[$key]['inf']  = $data;
 	}
@@ -236,6 +245,25 @@ class Tx_Extbase_Persistence_ObjectStorage implements Countable, Iterator, Array
 
 	public function unserialize($serialized) {
 		throw new RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);
+	}
+	
+	/**
+	 * Register an object's clean state, e.g. after it has been reconstituted
+	 * from the database
+	 *
+	 * @return void
+	 */
+	public function _memorizeCleanState() {
+		$this->isModified = FALSE;
+	}
+
+	/**
+	 * Returns TRUE if the properties were modified after reconstitution
+	 *
+	 * @return boolean
+	 */
+	public function _isDirty() {
+		return $this->isModified;
 	}
 	
 }

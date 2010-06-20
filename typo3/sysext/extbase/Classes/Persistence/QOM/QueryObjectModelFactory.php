@@ -92,10 +92,11 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * Sets a statement as constraint. This is not part of the JCR 2.0 Specification!
 	 *
 	 * @param string $statement The statement
-	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_* or 
+	 * @param array $boundVariables An array of variables to bind to the statement
+	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelFactory::TYPO3_*
 	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
 	 */
-	public function statement($statement, $boundVariables, $language) {
+	public function statement($statement, array $boundVariables = array(), $language = Tx_Extbase_Persistence_QOM_Statement::TYPO3_SQL_MYSQL) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Statement', $statement, $boundVariables, $language);
 	}
 

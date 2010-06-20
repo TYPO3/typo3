@@ -31,7 +31,7 @@
  * @subpackage DomainObject
  * @version $ID:$
  */
-abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbase_DomainObject_DomainObjectInterface {
+abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbase_DomainObject_DomainObjectInterface, Tx_Extbase_Persistence_ObjectMonitoringInterface {
 
 	/**
 	 * @var int The uid

@@ -84,6 +84,8 @@ Compatibility
 
 	* Extbase: has been updated to support "Single Table Inheritance" which is a breaking change.  In TYPO3 4.3, Extbase made a "best guess" for the table name if it was not the lowercased class name (simply by crawling the class hierarchy upwards trying to find a mapping rule or table). This "magic" was removed because It was very hard to understand what was happening; especially if there was an error. This behaviour is now changed and you define the recordType and the tableName through TypoScript now. See the typo3.projecty.typo3v4mvc mailing list for more details on this topic.
 
+	* Extbase: Template filenames are expected to be UpperCamelCased from now on. Before, they were expected to be all lowercase. For a grace period there is still a fallback mechanism, so that your old template filenames will still work. But you should rename your templates from "myaction.html" to "MyAction.html" to make sure, that it still works in upcoming versions of Fluid!  A message to the deprecation log is generated in case an "old" template name is found.
+
 	* Support for GDlib 1.x was completely dropped, only GDlib 2.x is supported, which is bundled with most PHP installations.
 
 	* Versioning: "Page" and "Branch" versioning has been disabled for all installations, because it is deprecated since TYPO3 4.2. If you still use one of these versioning types, make sure to set $TYPO3_CONF_VARS['BE']['elementVersioningOnly'] = FALSE in your localconf.php. Please be aware that this option will vanish with TYPO3 4.6 and that "Page" and "Branch" versioning is neither supported nor maintained any longer.

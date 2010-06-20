@@ -482,11 +482,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	public function buildFrontendUri() {
 		$typolinkConfiguration = $this->buildTypolinkConfiguration();
 
-		$uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
-		$uri = ltrim($uri, '/');
 		if ($this->createAbsoluteUri === TRUE) {
-			$uri = $this->request->getBaseURI() . $uri;
+			$typolinkConfiguration['forceAbsoluteUrl'] = TRUE;
 		}
+
+		$uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
 		return $uri;
 	}
 
