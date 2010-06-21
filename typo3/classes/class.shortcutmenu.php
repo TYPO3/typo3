@@ -26,7 +26,7 @@
 ***************************************************************/
 
 if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-	require_once('interfaces/interface.backend_toolbaritem.php');
+	require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 
 		// needed to get the correct icons when reloading the menu after saving it

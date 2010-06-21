@@ -1,3 +1,7 @@
+2010-06-21  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #11543: Shortcuts broken if current directory is not in include path (Thanks to Mads Chr. Olesen)
+
 2010-06-19 Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #13315: Scheduler: Failed status hides other statuses
