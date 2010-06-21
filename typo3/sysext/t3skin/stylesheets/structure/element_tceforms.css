@@ -299,3 +299,39 @@ TCEforms Inline-Relational-Record-Editing
 .t3-form-field-record-inline {
 	padding: 0 5px;
 }
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Sections
+- - - - - - - - - - - - - - - - - - - - - */
+.t3-form-field-container-flexsection {
+	padding-left: 20px;
+}
+
+.t3-form-field-header-flexsection {
+	width: 100%;
+	height: 16px;
+}
+
+.t3-form-field-label-flexsection {
+	padding: 5px 10px;
+}
+
+.t3-form-field-toggle-flexsection {
+	padding: 5px 0 5px 20px;
+}
+
+.t3-form-field-add-flexsection {
+	padding: 10px 5px 5px 20px;
+}
+
+.t3-form-field-container-flexsections {
+	margin: 5px 0;
+}
+
+.t3-form-field-record-flexsection {
+	padding: 5px 0;
+}
+
+.t3-form-field-record-flexsection > div {
+	margin:0 10px;
+}

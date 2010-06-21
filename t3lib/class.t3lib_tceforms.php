@@ -2193,9 +2193,9 @@ class t3lib_TCEforms	{
 							strtolower($fI['extension']),
 							array(
 								'title' => htmlspecialchars(
-									$fI['basename'] . 
-									($absFilePath && @is_file($absFilePath) 
-										? ' (' . t3lib_div::formatSize(filesize($absFilePath)) . 'bytes)' : 
+									$fI['basename'] .
+									($absFilePath && @is_file($absFilePath)
+										? ' (' . t3lib_div::formatSize(filesize($absFilePath)) . 'bytes)' :
 										' - FILE NOT FOUND!'
 									)
 								)
@@ -2673,7 +2673,7 @@ class t3lib_TCEforms	{
 								// Load script.aculo.us if flexform sections can be moved by drag'n'drop:
 							$GLOBALS['SOBE']->doc->getPageRenderer()->loadScriptaculous();
 								// Render header of section:
-							$output.= '<div class="bgColor2"><strong>'.$theTitle.'</strong></div>';
+							$output .= '<div class="t3-form-field-label-flexsection"><strong>' . $theTitle . '</strong></div>';
 
 								// Render elements in data array for section:
 							$tRows = array();
@@ -2752,14 +2752,14 @@ class t3lib_TCEforms	{
 								// Adding the sections:
 							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1);
 							$output.= '
-							<div style="padding: 5px 0px 5px 20px;">
-							<a href="#" onclick="' . htmlspecialchars('flexFormToggleSubs("' . $idTagPrefix . '"); return false;') . '">'
-								. t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
-							</a>
+							<div class="t3-form-field-toggle-flexsection">
+								<a href="#" onclick="' . htmlspecialchars('flexFormToggleSubs("' . $idTagPrefix . '"); return false;') . '">'
+									. t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
+								</a>
 							</div>
 
-							<div id="'.$idTagPrefix.'" style="padding-left: 20px;">'.implode('',$tRows).'</div>';
-							$output.= $mayRestructureFlexforms ? '<div style="padding: 10px 5px 5px 20px;"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.addnew', 1) . ':</strong> '.implode(' | ',$newElementsLinks).'</div>' : '';
+							<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsection">' . implode('', $tRows) . '</div>';
+							$output.= $mayRestructureFlexforms ? '<div class="t3-form-field-add-flexsection"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.addnew', 1) . ':</strong> '.implode(' | ',$newElementsLinks).'</div>' : '';
 						} else {
 							// It is a container
 
@@ -2779,7 +2779,7 @@ class t3lib_TCEforms	{
 								// I didn't know how to make something right-aligned without a table, so I put it in a table. can be made into <div>'s if someone like to.
 								// Notice: The fact that I make a "Sortable.create" right onmousedown is that if we initialize this when rendering the form in PHP new and copied elements will not be possible to move as a sortable. But this way a new sortable is initialized everytime someone tries to move and it will always work.
 							$ctrlHeader= '
-								<table border="0" cellpadding="0" cellspacing="0" width="100%" onmousedown="'.($mayRestructureFlexforms?htmlspecialchars($onMove):'').'">
+								<table class="t3-form-field-header-flexsection" onmousedown="' . ($mayRestructureFlexforms ? htmlspecialchars($onMove) : '') . '">
 								<tr>
 									<td>
 										<a href="#" onclick="'.htmlspecialchars($onClickToggle).'" id="'.$idTagPrefix.'-toggle">
@@ -2800,21 +2800,22 @@ class t3lib_TCEforms	{
 								// Putting together the container:
 							$this->additionalJS_delete = array();
 							$output.= '
-								<div id="'.$idTagPrefix.'" class="bgColor2">
+								<div id="'.$idTagPrefix.'" class="t3-form-field-container-flexsections">
 									<input id="'.$idTagPrefix.'-action" type="hidden" name="'.htmlspecialchars($actionFieldName).'" value=""/>
 
 									'.$ctrlHeader.'
-									<div id="'.$idTagPrefix.'-content"'.($toggleClosed?' style="display:none;"':'').'>'.$this->getSingleField_typeFlex_draw(
-										$value['el'],
-										$editData[$key]['el'],
-										$table,
-										$field,
-										$row,
-										$PA,
-										$formPrefix.'['.$key.'][el]',
-										$level+1,
-										$idTagPrefix
-									).'
+									<div class="t3-form-field-record-flexsection" id="' . $idTagPrefix . '-content"' . ($toggleClosed ? ' style="display:none;"' : '') . '>' .
+										$this->getSingleField_typeFlex_draw(
+											$value['el'],
+											$editData[$key]['el'],
+											$table,
+											$field,
+											$row,
+											$PA,
+											$formPrefix.'['.$key.'][el]',
+											$level+1,
+											$idTagPrefix
+										).'
 									</div>
 									<input id="'.$idTagPrefix.'-toggleClosed" type="hidden" name="'.htmlspecialchars('data['.$table.']['.$row['uid'].']['.$field.']'.$formPrefix.'[_TOGGLE]').'" value="'.($toggleClosed?1:0).'" />
 								</div>';
@@ -3659,7 +3660,7 @@ class t3lib_TCEforms	{
 					'</a>';
 				}
 				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Up\'); return false;">'.
-				  t3lib_iconWorks::getSpriteIcon('actions-move-up', array('title' => htmlspecialchars($this->getLL('l_move_up')))) . 
+				  t3lib_iconWorks::getSpriteIcon('actions-move-up', array('title' => htmlspecialchars($this->getLL('l_move_up')))) .
 				'</a>';
 				$icons['L'][]='<a href="#" onclick="setFormValueManipulate(\''.$fName.'\',\'Down\'); return false;">'.
 				  t3lib_iconWorks::getSpriteIcon('actions-move-down', array('title' => htmlspecialchars($this->getLL('l_move_down')))) .
@@ -3687,12 +3688,12 @@ class t3lib_TCEforms	{
 				}
 				$aOnClick.= 'return false;';
 				$icons['R'][]='<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-						t3lib_iconWorks::getSpriteIcon('actions-document-paste-into', array('title' => htmlspecialchars(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))))) . 
+						t3lib_iconWorks::getSpriteIcon('actions-document-paste-into', array('title' => htmlspecialchars(sprintf($this->getLL('l_clipInsert_' . ($mode == 'db' ? 'db' : 'file')), count($clipElements))))) .
 				'</a>';
 			}
 			$rOnClick = $rOnClickInline.'setFormValueManipulate(\''.$fName.'\',\'Remove\'); return false';
 			$icons['L'][]='<a href="#" onclick="'.htmlspecialchars($rOnClick).'">'.
-			  t3lib_iconWorks::getSpriteIcon('actions-selection-delete', array('title' => htmlspecialchars($this->getLL('l_remove_selected')))) . 
+			  t3lib_iconWorks::getSpriteIcon('actions-selection-delete', array('title' => htmlspecialchars($this->getLL('l_remove_selected')))) .
 			'</a>';
 		}
 
@@ -3973,7 +3974,7 @@ class t3lib_TCEforms	{
 										<td>'.
 											$colorBoxLinks[0].'<img '.
 											t3lib_iconWorks::skinImg($this->backPath,
-																(strlen(trim($color))==0 || strcmp(trim($color),'0')==0) ? 'gfx/colorpicker_empty.png' : 'gfx/colorpicker.png', 
+																(strlen(trim($color))==0 || strcmp(trim($color),'0')==0) ? 'gfx/colorpicker_empty.png' : 'gfx/colorpicker.png',
 																'width="'.$dX.'" height="'.$dY.'"'.t3lib_BEfunc::titleAltAttrib(trim($iTitle.' '.$PA['itemFormElValue'])).' border="0"').
 											'>'.$colorBoxLinks[1].
 											'</td>
@@ -5051,7 +5052,7 @@ class t3lib_TCEforms	{
 		if ($this->colorScheme[4]) {
 			$fieldAttributes .= ' style="color: ' . $this->colorScheme[4] . '"';
 		}
-		
+
 		if ($this->classScheme[4]) {
 			$fieldAttributes .= ' class="t3-form-palette-field' . $this->classScheme[4] . '"';
 		}
@@ -5072,7 +5073,7 @@ class t3lib_TCEforms	{
 				$fieldIdentifierForJs = $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'];
 				$iRow[$row][] = '<span class="t3-form-palette-field-container">' .
 						'<label' . $labelAttributes . '>' .
-							$content['NAME'] . 
+							$content['NAME'] .
 							'<img name="req_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-required" alt="" />' .
 							'<img name="cm_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />' .
 						'</label>' .

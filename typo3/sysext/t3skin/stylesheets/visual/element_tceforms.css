@@ -352,3 +352,29 @@ table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable4,
 table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
 	border: 0;
 }
+
+/* - - - - - - - - - - - - - - - - - - - - -
+TCEforms Sections
+- - - - - - - - - - - - - - - - - - - - - */
+
+.typo3-TCEforms-flexForm .bgColor4,
+.typo3-TCEforms-flexForm .bgColor5 {
+	background: none;
+	display: inline-block;
+}
+
+.t3-form-field-label-flexsection {
+	border-top: 1px solid #cdcdcd;
+}
+
+.t3-form-field-container-flexsections {
+	background: #dadada;
+}
+
+.t3-form-field-record-flexsection {
+	background: #eee;
+}
+
+.t3-form-field-add-flexsection {
+	border-top: 1px solid #cdcdcd;
+}
