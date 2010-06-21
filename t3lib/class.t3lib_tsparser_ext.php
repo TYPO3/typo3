@@ -1317,7 +1317,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 								}
 
 								if ($copyFile && @is_file($copyFile))	{
-									$p_field .= '<img src="clear.gif" width="20" ' . 'height="1" alt="" />' . t3lib_iconWorks::getSpriteIcon('actions-edit-copy') . ' border="0" alt="" /><input type="checkbox" ' . 'name="_copyResource[' . $params['name'] . ']" value="' . htmlspecialchars($copyFile) . '" onclick="uFormUrl(' . $aname . ');if (this.checked && !confirm(\'' . t3lib_div::slashJS(htmlspecialchars(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsparser.xml:tsparser_ext.make_copy'), $params['value']))) . '\')) this.checked=false;" />';
+									$p_field .= '<img src="clear.gif" width="20" ' . 'height="1" alt="" />' . t3lib_iconWorks::getSpriteIcon('actions-edit-copy') . '<input type="checkbox" ' . 'name="_copyResource[' . $params['name'] . ']" value="' . htmlspecialchars($copyFile) . '" onclick="uFormUrl(' . $aname . ');if (this.checked && !confirm(\'' . t3lib_div::slashJS(htmlspecialchars(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsparser.xml:tsparser_ext.make_copy'), $params['value']))) . '\')) this.checked=false;" />';
 								}
 
 								// Upload?

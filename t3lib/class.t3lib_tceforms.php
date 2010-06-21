@@ -4788,13 +4788,14 @@ class t3lib_TCEforms	{
 		<h2>###PAGE_TITLE###</h2>
 
 		<table class="typo3-TCEforms">'.
-			'<tr class="typo3-TCEforms-recHeaderRow">
-				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR###</td>
-			</tr>'.
 			'|'.
-			'<tr>
+			'
+			<tr>
 				<td><!-- --></td>
 				<td><img src="clear.gif" width="'.($this->docLarge ? 440+150 : 440).'" height="1" alt="" /></td>
+			</tr>
+			<tr class="typo3-TCEforms-recHeaderRow">
+				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR###</td>
 			</tr>
 		</table>';
 

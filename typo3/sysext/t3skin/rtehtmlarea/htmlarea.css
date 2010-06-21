@@ -19,9 +19,8 @@
  	padding: 0;
 }
 .editorWrap textarea {
-	border: 1px solid #A2AAB8;
 	border-style:solid;
-	border-color:#A2AAB8;
+	border-color:#C7C7C7;
 	border-width:0px 1px 1px 1px;
 	padding:0px 1px;
 	margin:0;
@@ -37,9 +36,9 @@
 }
 /* Selectors for the editor toolbar */
 .htmlarea .toolbar {
-	background-color: #EFEFF4;
+	background-color: #f3f3f3;
 	cursor: default;
-	border: 1px solid #A2AAB8;
+	border: 1px solid #c7c7c7;
 	border-bottom: 0;
 	margin: 0;
 	padding: 2px;
@@ -173,21 +172,23 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 .htmlarea .editorIframe {
 	clear:both;
 	width:100%;
-	border:1px solid #A2AAB8;border-bottom:1px solid #e4e0db;
+	border:1px solid #c7c7c7;
+	border-bottom: none; 
 	margin:0;padding:0;
 }
 .htmlarea .noStatusBar {
 	border-bottom:1px solid #A2AAB8;
 }
 .htmlarea .statusBar {
+        background-color: #5b5b5b;
+        background-image: url('../../images/backgrounds/row-header.png');
+        background-image: linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+        background-image: -moz-linear-gradient(center top , #7f7f7f 10%, #5b5b5b 100%);
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0.1, #7f7f7f), color-stop(1, #5b5b5b));
+        background-repeat: repeat-x;
 	color: #FFFFFF;
-	background-color: #EFEFF4;
-	background-image: url("images/alt_menu_mainitem_bg.gif");
-	background-repeat: repeat;
 	font-size: 10px;
-	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
-	border: 1px solid;
-	border-color: #C5C5D5 #A2AAB8 #A2AAB8 #A2AAB8;
+	border: 1px solid #c7c7c7;
 	margin: 0;
 	padding: 0 3px;
 	line-height: 20px;

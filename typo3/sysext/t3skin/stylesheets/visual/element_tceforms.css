@@ -42,7 +42,7 @@ table.typo3-TCEforms table#typo3-altdoc-header input:hover,
 }
 
 table.typo3-TCEforms span.typo3-TCEforms-recHeader {
-	color: #333366;
+	color: #555555;
 	font-weight: bold;
 }
 
@@ -160,7 +160,7 @@ table.typo3-TCEforms .class-main22 td,
 table.typo3-TCEforms .class-main32 td,
 table.typo3-TCEforms .class-main42 td,
 table.typo3-TCEforms .class-main52 td {
-	border-top: 1px solid #adadad;
+	border-top: 1px solid #c0c0c0;
 }
 
 table.typo3-TCEforms tr.class-main2:first-child td,
