@@ -60,7 +60,7 @@ var inline = {
 				$(objectId + '_icon').hide();
 				$(objectId + '_iconcontainer').addClassName('loading-indicator');
 			}
-			return this.getRecordDetails(objectId, returnURL);	
+			return this.getRecordDetails(objectId, returnURL);
 		}		
 		
 		var currentState = '';
@@ -224,6 +224,7 @@ var inline = {
 			if (json.scriptCall && json.scriptCall.length) {
 				$A(json.scriptCall).each(function(value) { eval(value); });
 			}
+			TYPO3.TCEFORMS.convertDateFieldsToDatePicker();
 		}
 	},
 

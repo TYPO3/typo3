@@ -7,6 +7,7 @@
 	* Fixed bug #14804: Updated extension icons for system extensions (Thanks to Jigal van Hemert)
 	* Followup to #10424: Old version (3.x) screenshots in CSH - removed label reference to version 3.6 (Thanks to Philipp Gampe)
 	* Fixed bug #14760: Use labels for search in list view (Thanks to Georg Ringer)
+	* Fixed bug #14601: Date picker does not work on IRRE elements (Thanks to Steffen Ritter)
 
 2010-06-21  Stanislas Rolland  <typo3@sjbr.ca>
 
