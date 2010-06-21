@@ -470,11 +470,11 @@ function evalFunc_output(type,value,FObj)	{
 	return theString;
 }
 function evalFunc_getSecs(timeObj)	{
-	return Math.round(timeObj.getUTCSeconds()/1000);
+	return timeObj.getUTCSeconds();
 }
 // Seconds since midnight:
 function evalFunc_getTime(timeObj)	{
-	return timeObj.getUTCHours()*60*60+timeObj.getUTCMinutes()*60+Math.round(timeObj.getUTCSeconds()/1000);
+	return timeObj.getUTCHours() * 60 * 60 + timeObj.getUTCMinutes() * 60 + this.getSecs(timeObj);
 }
 function evalFunc_getYear(timeObj)	{
 	return timeObj.getUTCFullYear();

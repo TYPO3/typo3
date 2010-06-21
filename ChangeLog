@@ -1,3 +1,7 @@
+2010-06-21  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #8893: eval "timesec" sets seconds to zero (Thanks to Ralf Hettinger and Andy Grunwald)
+
 2010-06-21  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #11543: Shortcuts broken if current directory is not in include path (Thanks to Mads Chr. Olesen)
