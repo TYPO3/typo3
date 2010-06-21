@@ -205,6 +205,7 @@ var inline = {
 			if (json.scriptCall && json.scriptCall.length) {
 				$A(json.scriptCall).each(function(value) { eval(value); });
 			}
+			TYPO3.TCEFORMS.convertDateFieldsToDatePicker();
 		}
 	},
 
