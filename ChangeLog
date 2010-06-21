@@ -5,6 +5,7 @@
 2010-06-21  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #14804: Updated extension icons for system extensions (Thanks to Jigal van Hemert)
+	* Followup to #10424: Old version (3.x) screenshots in CSH - removed label reference to version 3.6 (Thanks to Philipp Gampe)
 
 2010-06-21  Stanislas Rolland  <typo3@sjbr.ca>
 
