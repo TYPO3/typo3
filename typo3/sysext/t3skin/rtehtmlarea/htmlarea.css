@@ -75,6 +75,10 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 	padding: 0;
 	float: left;
 }
+/* fixing button border-color in IE6 */
+body.ext-ie6 .htmlarea .toolbar .button {
+	border-color: #f3f3f3;
+}
 .htmlarea .toolbar .x-btn-mc {
 	background-color: transparent;
 	background-image: none;
@@ -100,6 +104,8 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 	padding: 0;
 	margin: 1px 0 1px 2px;
 }
+/* fixing button background-color and border-color in IE6 */
+body.ext-ie6 .htmlarea .toolbar .buttonHover,
 .htmlarea .toolbar .buttonHover {
 	border-style: solid;
 	border-width: 1px;
@@ -107,6 +113,10 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 	background-color: #E0E0E9;
 	opacity: 1.00;
 }
+/* fixing button background-color and border-color in IE6 */
+body.ext-ie6 .htmlarea .toolbar .buttonActive,
+body.ext-ie6 .htmlarea .toolbar .buttonPressed,
+body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .toolbar .buttonActive,
 .htmlarea .toolbar .buttonPressed,
 .htmlarea-context-menu .buttonActive {
@@ -361,6 +371,13 @@ body.ext-ie6 .htmlarea .toolbar .x-form-item {
 	margin-left: -2px;
 	width: 18px;
 	height: 18px;
+}
+/* Remove the icons in IE6 as they are not iepngfixed */
+body.ext-ie6 .htmlarea-context-menu a.x-menu-item {
+	padding-left: 3px;
+}
+body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
+	background-image: none;
 }
 /* Window status bar selectors */
 .htmlarea-window .status-ready {

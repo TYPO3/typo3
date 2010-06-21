@@ -10,7 +10,7 @@ class tx_templatehook {
 		&& strpos($userAgent, 'MSIE 7') === false) {
 				//make sure we match IE6 but not Opera or IE7
 				$parent->loadJavascriptLib('sysext/t3skin/pngfix/iepngfix.js');
-				$params['pageRenderer']->addCssInlineBlock('iepngfix', ".t3-icon { behavior: url('" . $parent->backPath . 'sysext/t3skin/pngfix/iepngfix.php' . "\');");
+				$params['pageRenderer']->addCssInlineBlock('iepngfix', ".t3-icon, .htmlarea .toolbar .x-btn-text, .htmlarea-window .x-panel-icon { behavior: url('" . $parent->backPath . 'sysext/t3skin/pngfix/iepngfix.php' . "\');");
 		}
 
 	}
