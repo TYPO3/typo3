@@ -359,8 +359,8 @@ Ext.Resizable = function(el, config){
     if(this.adjustments == 'auto'){
         var hw = this.west, he = this.east, hn = this.north, hs = this.south;
         this.adjustments = [
-            (he ? -he.el.getWidth() : 0) + (hw ? -hw.el.getWidth() : 0),
-            (hn ? -hn.el.getHeight() : 0) + (hs ? -hs.el.getHeight() : 0) -1 
+            (he.el ? -he.el.getWidth() : 0) + (hw.el ? -hw.el.getWidth() : 0),
+            (hn.el ? -hn.el.getHeight() : 0) + (hs.el ? -hs.el.getHeight() : 0) -1 
         ];
     }
 
@@ -867,10 +867,10 @@ new Ext.Panel({
 
     syncHandleHeight : function(){
         var h = this.el.getHeight(true);
-        if(this.west){
+        if(this.west.el){
             this.west.el.setHeight(h);
         }
-        if(this.east){
+        if(this.east.el){
             this.east.el.setHeight(h);
         }
     }
