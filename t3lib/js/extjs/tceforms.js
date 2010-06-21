@@ -43,7 +43,7 @@ TYPO3.TCEFORMS = {
 			var index = element.dom.id.match(/tceforms-datefield-/) ? 0 : 1;
 			var format = TYPO3.settings.datePickerUSmode ? TYPO3.settings.dateFormatUS : TYPO3.settings.dateFormat;
 
-			var datepicker = element.next('span');
+			var datepicker = element.next('img');
 
 			var menu = new Ext.menu.DateMenu({
 				id:			'p' + element.dom.id,
