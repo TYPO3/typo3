@@ -1,6 +1,7 @@
 2010-06-21  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14799: htmlArea RTE: Color dialogue may raise a js error in IE
+	* Updated htmlArea RTE version to 2.0.2
 
 2010-06-21  Ernesto Baschny  <ernst@cron-it.de>
 
