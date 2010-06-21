@@ -258,7 +258,11 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 	 */
 	showColor: function (color) {
 		if (color) {
-			this.dialog.find('itemId', 'show-color')[0].el.setStyle('backgroundColor', '#' + color);
+			var newColor = color;
+			if (newColor.indexOf('#') == 0) {
+				newColor = newColor.substr(1);
+			}
+			this.dialog.find('itemId', 'show-color')[0].el.setStyle('backgroundColor', HTMLArea.util.Color.colorToHex(parseInt(newColor, 16)));
 		}
 	},
 	/*
@@ -340,7 +344,10 @@ HTMLArea.TYPO3Color = HTMLArea.Plugin.extend({
 		var buttonId = this.dialog.arguments.buttonId;
 		var color = this.dialog.find('itemId', 'color')[0].getValue();
 		if (color) {
-			color = '#' + color;
+			if (color.indexOf('#') == 0) {
+				color = color.substr(1);
+			}
+			color = HTMLArea.util.Color.colorToHex(parseInt(color, 16));
 		}
 		this.editor.focus();
 		var 	element,

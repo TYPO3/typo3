@@ -3515,9 +3515,9 @@ HTMLArea.util.Color = function () {
 				return (d < 16) ? ('0' + d.toString(16)) : d.toString(16);
 			};
 			if (typeof(v) == 'number') {
-				var r = v & 0xFF;
+				var b = v & 0xFF;
 				var g = (v >> 8) & 0xFF;
-				var b = (v >> 16) & 0xFF;
+				var r = (v >> 16) & 0xFF;
 				return '#' + hex(r) + hex(g) + hex(b);
 			}
 			if (v.substr(0, 3) === 'rgb') {
