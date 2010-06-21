@@ -3,6 +3,7 @@
 	* Fixed bug #14799: htmlArea RTE: Color dialogue may raise a js error in IE
 	* Updated htmlArea RTE version to 2.0.2
 	* Fixed bug #14793: htmlArea RTE: Problematic icons in IE6
+	* Fixed bug #14812: htmlArea RTE: Path to acronym record icon is not correct (Thanks to Helmut Hummel)
 
 2010-06-20  Stanislas Rolland  <typo3@sjbr.ca>
 
