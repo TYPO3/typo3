@@ -45,7 +45,7 @@ $Id$
 }
 
 #typo3-menu li ul li {
-	height: 21px;
+	min-height: 21px;
 }
 
 #typo3-menu li ul li a {

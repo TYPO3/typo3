@@ -22,7 +22,8 @@
 
 2010-06-21  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #14752: #14798: Sitename missing in Login form
+	* Fixed bug #14514: Long lines in module menu are unreadable
+	* Fixed bug #14798: Sitename missing in Login form
 	* Fixed bug #14752: Add Update Wizards for Skinning Changes (Thanks to Jigal van Hemert)
 	* Fixed bug #14800: JS errors prevent JS pased popups from working in IE (Thanks to Jo Hasenau)
 	* Fixed bug #14808 tceforms.js slows down performance of IE dramatically (Thanks to Jo Hasenau)

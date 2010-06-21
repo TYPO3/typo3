@@ -63,8 +63,11 @@ var IECompatibility = Class.create({
 			if (Prototype.Browser.IE) {
 				var version = parseFloat(navigator.appVersion.split(';')[1].strip().split(' ')[1]);
 				if (version === 6) {
-					$$('img').each(function(img){
+					$$('img').each(function(img) {
 						img.pngHack();
+					});
+					$$('#typo3-menu li ul li').each(function(li) {
+						li.setStyle({height: '21px'});
 					});
 				}
 			}
