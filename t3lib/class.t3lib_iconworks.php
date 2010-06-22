@@ -821,11 +821,10 @@ final class t3lib_iconWorks	{
 				$recordType[0] = 'tcarecords-' . $table . '-default';
 			}
 		}
-
-		$recordTypeCount = count($recordType);
-		for($i = $recordTypeCount; $i >= 0; $i--) {
-			if(in_array($recordType[$i], $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
-				return self::getSpriteIconClasses($recordType[$i]); 
+		krsort($recordType);
+		foreach ($recordType as $record) {
+			if (in_array($record, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+				return self::getSpriteIconClasses($record); 
 			}
 		}
 		return self::getSpriteIconClasses('status-status-icon-missing');
