@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "wizard_sortpages".
 #
-# Auto generated 25-11-2009 22:15
+# Auto generated 22-06-2010 13:06
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -31,12 +31,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => 'kasperYYYY@typo3.com',
 	'author_company' => 'Curby Soft Multimedia',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:6:{s:38:"class.tx_wizardsortpages_webfunc_2.php";s:4:"1511";s:12:"ext_icon.gif";s:4:"d638";s:14:"ext_tables.php";s:4:"f74d";s:13:"locallang.xml";s:4:"4ca6";s:17:"locallang_csh.xml";s:4:"6194";s:23:"cshimages/wizards_1.png";s:4:"1ac8";}',
+	'_md5_values_when_last_written' => 'a:6:{s:38:"class.tx_wizardsortpages_webfunc_2.php";s:4:"ef41";s:12:"ext_icon.gif";s:4:"02e3";s:14:"ext_tables.php";s:4:"f74d";s:13:"locallang.xml";s:4:"4ca6";s:17:"locallang_csh.xml";s:4:"6194";s:23:"cshimages/wizards_1.png";s:4:"428f";}',
 	'constraints' => array(
 		'depends' => array(
 			'func_wizards' => '',
 			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.3.0-0.0.0',
+			'typo3' => '4.4.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

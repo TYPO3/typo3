@@ -1,13 +1,13 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "cshmanual"
+# Extension Manager/Repository config file for ext "cshmanual".
 #
-# Auto generated 22-12-2008 12:33
+# Auto generated 22-06-2010 13:04
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write.
-# "version" and "dependencies" must not be touched!
+# Only the data in the array - everything else is removed by next
+# writing. "version" and "dependencies" must not be touched!
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
@@ -38,7 +38,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.2.0-',
+			'typo3' => '4.2.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

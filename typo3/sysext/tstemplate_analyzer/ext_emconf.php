@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate_analyzer".
 #
-# Auto generated 21-10-2009 11:26
+# Auto generated 22-06-2010 13:06
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,12 +34,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"b76f";s:31:"class.tx_tstemplateanalyzer.php";s:4:"9db0";s:12:"ext_icon.gif";s:4:"52a3";s:14:"ext_tables.php";s:4:"6463";s:13:"locallang.xml";s:4:"0e91";}',
+	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"b76f";s:31:"class.tx_tstemplateanalyzer.php";s:4:"e61e";s:12:"ext_icon.gif";s:4:"52a3";s:14:"ext_tables.php";s:4:"6463";s:13:"locallang.xml";s:4:"bd19";}',
 	'constraints' => array(
 		'depends' => array(
 			'tstemplate' => '',
 			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.3.0-0.0.0',
+			'typo3' => '4.4.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

@@ -1,13 +1,13 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "aboutmodules"
+# Extension Manager/Repository config file for ext "aboutmodules".
 #
-# Auto generated 11-03-2009 19:04
+# Auto generated 22-06-2010 13:04
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write.
-# "version" and "dependencies" must not be touched!
+# Only the data in the array - everything else is removed by next
+# writing. "version" and "dependencies" must not be touched!
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
@@ -34,11 +34,11 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:5:{s:12:"ext_icon.gif";s:4:"24ff";s:14:"ext_tables.php";s:4:"b809";s:20:"mod/aboutmodules.gif";s:4:"24ff";s:12:"mod/conf.php";s:4:"86ca";s:21:"mod/locallang_mod.xml";s:4:"f533";}',
+	'_md5_values_when_last_written' => 'a:5:{s:12:"ext_icon.gif";s:4:"6101";s:14:"ext_tables.php";s:4:"b809";s:20:"mod/aboutmodules.gif";s:4:"24ff";s:12:"mod/conf.php";s:4:"86ca";s:21:"mod/locallang_mod.xml";s:4:"f533";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.3.0-0.0.0',
+			'typo3' => '4.4.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

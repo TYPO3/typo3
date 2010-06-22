@@ -1,3 +1,7 @@
+2010-06-22  Oliver Hader  <oliver@typo3.org>
+
+	* Cleanup: Updated ext_emconf.php files in system extensions
+
 2010-06-22  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raising Extbase and Fluid to 1.2.0
