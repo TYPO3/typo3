@@ -215,7 +215,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * Sets the given properties on the object.
 	 *
 	 * @param Tx_Extbase_DomainObject_DomainObjectInterface $object The object to set properties on
-	 * @param Tx_Extbase_Persistence_RowInterface $row
+	 * @param array $row
 	 * @return void
 	 */
 	protected function thawProperties(Tx_Extbase_DomainObject_DomainObjectInterface $object, array $row) {
@@ -256,7 +256,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					case 'SplObjectStorage':
 					case 'Tx_Extbase_Persistence_ObjectStorage':
 						$propertyValue = $this->mapResultToPropertyValue($object, $propertyName, $this->fetchRelated($object, $propertyName, $row[$columnName]));
-						$propertyValue->_memorizeCleanState();
 					break;
 					default:
 						if (($propertyData['type'] === 'DateTime') || in_array('DateTime', class_parents($propertyData['type']))) {
@@ -449,6 +448,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					foreach ($objects as $object) {
 						$propertyValue->attach($object);
 					}
+					$propertyValue->_memorizeCleanState();
 				} else {
 					$propertyValue = $objects;
 				}

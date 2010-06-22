@@ -1,3 +1,7 @@
+2010-06-22  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raising Extbase and Fluid to 1.2.0
+
 2010-06-22  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to#14798: Sitename missing in Login form
