@@ -10,7 +10,7 @@ General
 	  installations, because it is deprecated since TYPO3 4.2. If you still
 	  use one of these versioning types, make sure to set
 	  $TYPO3_CONF_VARS['BE']['elementVersioningOnly'] = FALSE in your
-	  localconf.php. Please be aware that this option will vanish with 
+	  localconf.php. Please be aware that this option will vanish with
 	  TYPO3 4.6 and that "Page" and "Branch" versioning is neither supported
 	  nor maintained any longer.
 
@@ -18,14 +18,14 @@ General
 	  installations. If you need it you can enable it again in the
 	  extension configuration of the "version" extension.
 
-	* All CSS and JS files in the TYPO3 Backend are compressed now. This 
+	* All CSS and JS files in the TYPO3 Backend are compressed now. This
 	  means that they are added up to a single file without unnecessary
 	  whitespace. This will reduce the count of requests drastically, which
 	  eventually leads to faster loading and better performance.
-	  CAUTION: If compressionLevel is configured 
+	  CAUTION: If compressionLevel is configured
 	  ($TYPO3_CONF_VARS[TYPO3_MODE]['compressionLevel'] = 1 [1-9 for compression
 	  level or TRUE for "enabled"]) the files will be served with gzip compression.
-	  Be sure to enable / uncomment the needed configuration in your .htaccess file, 
+	  Be sure to enable / uncomment the needed configuration in your .htaccess file,
 	  also found in misc/advanced.htaccess.
 
 		<FilesMatch "\.js\.gzip$">
@@ -35,18 +35,18 @@ General
 		  AddType "text/css" .gzip
 		</FilesMatch>
 		AddEncoding gzip .gzip
-		
+
 	  IMPORTANT: If you have any trouble accessing the Backend after upgrading
 	  to TYPO3 4.4, make sure to clear the typo3temp/ directory manually or through
 	  the TYPO3 install tool.
 
-	* There is now a complete new Backend skin for all backend modules, 
+	* There is now a complete new Backend skin for all backend modules,
 	  the login screen and the install tool. It is still called "t3skin",
 	  however due to the use of icon sprites and the refactoring of the
 	  CSS files, it is not possible anymore to run the TYPO3 Backend
-	  with the old backend skin (from 3.x) or with the look and feel from 
+	  with the old backend skin (from 3.x) or with the look and feel from
 	  previous 4.x versions.
-	  If you have not installed any skins in your system, you will now see 
+	  If you have not installed any skins in your system, you will now see
 	  a completely unstyled TYPO3 Backend, no unneeded additional styles
 	  are loaded.
 
@@ -60,8 +60,8 @@ General
 
 	* The RTE has undergone major changes as UI components have been transformed
 	  into ExtJS widgets:
-		1. The RTE framework becomes an ExtJS Panel comprising the toolbar, 
-		   the iframe, the textarea and the status bar. All components 
+		1. The RTE framework becomes an ExtJS Panel comprising the toolbar,
+		   the iframe, the textarea and the status bar. All components
 		   are ExtJS objects.
 		2. When BE textareas are resizable, the framework is resizable as
 		   a whole. In the FE, the framework is always resizable.
@@ -105,7 +105,7 @@ General
 
 	* Support for GDlib 1.x was completely dropped. Only GDlib 2.x is supported now,
 	  which is bundled with most PHP installations.
-	
+
 	* HTML5 is now officially supported. For the Frontend output simply use
 	  these two TypoScript lines in your Setup:
 
@@ -123,7 +123,7 @@ Backend
 	* The TYPO3 Backend was moved into an ExtJS Viewport. This is one of the
 	  first steps in a sequence to ExtJSify the complete Backend. Currently
 	  this gives you the possibility to create your own left sidebar,
-	  like the page tree, in your backend modules. Also you can extend the 
+	  like the page tree, in your backend modules. Also you can extend the
 	  viewport easily with own code to create e.g. a collapsable module menu.
 	  More information can be found in the TYPO3 Wiki and the official ExtJS
 	  viewport documentation. See these links:
@@ -132,7 +132,7 @@ Backend
 		http://www.extjs.com/deploy/dev/docs/
 
 	* Inline Records (IRRE Elements) are now loaded on demand, meaning only when
-	  they are opened. This should speed up the editing process drastically.  
+	  they are opened. This should speed up the editing process drastically.
 
 	* The t3editor code completion DB was updated to reflect the latest additions.
 	  Also the syntax highlighting engine is now extracted from the system extension
@@ -158,9 +158,9 @@ Backend
 
 	* The interface "backend_old" was completely removed. This was the BE interface
 	  from 4.1. As it wasn't maintained and didn't worked correct, all references
-	  are removed, so remaining interfaces for login are backend and frontend. 
+	  are removed, so remaining interfaces for login are backend and frontend.
 
-	* The extension manager option "Enable extensions without review (basic security 
+	* The extension manager option "Enable extensions without review (basic security
 	  check)" was completely removed as most extensions in TER weren't reviewed on
 	  a regular basis. Thus, when searching for an extension in TER through the
 	  Extension Manager, all matching extensions, not regarding the review state,
@@ -176,7 +176,7 @@ Frontend
 	* The system extensions "CSS Styled Content" (css_styled_content) and
 	  "Frontend User Login" (felogin) now have new manuals that reflect the
 	  current state of the extension.
-	
+
 	* The browser condition in TypoScript now delivers reliable information
 	  about the client browser. So now it's possible to make a condition
 	  for usage of Firefox, or even a webkit based browser.
@@ -188,7 +188,7 @@ Compatibility
 	* Extbase: has been updated to support "Single Table Inheritance" which is
 	  a breaking change. In TYPO3 4.3, Extbase made a "best guess" for the table
 	  name if it was not the lowercased class name (simply by crawling the class
-	  hierarchy upwards trying to find a mapping rule or table). This "magic" 
+	  hierarchy upwards trying to find a mapping rule or table). This "magic"
 	  was removed because It was very hard to understand what was happening;
 	  especially if there was an error. This behaviour is now changed and you
 	  define the recordType and the tableName through TypoScript now. See the
@@ -209,7 +209,7 @@ Compatibility
 	  installations, because it is deprecated since TYPO3 4.2. If you still
 	  use one of these versioning types, make sure to set
 	  $TYPO3_CONF_VARS['BE']['elementVersioningOnly'] = FALSE in your
-	  localconf.php. Please be aware that this option will vanish with 
+	  localconf.php. Please be aware that this option will vanish with
 	  TYPO3 4.6 and that "Page" and "Branch" versioning is neither supported
 	  nor maintained any longer.
 
@@ -233,14 +233,14 @@ Development
 
 	* There are new hooks available for you to use: t3lib_page::getRecordOverlay,
 	  t3lib_page::getPageOverlay, several new hooks in the impexp extension,
-	  alt_doc::makeEditForm() to enable further access-restrictions, 
-	  in tslib_fe::settingLanguage(), in tslib_content, and in tslib_menu for 
+	  alt_doc::makeEditForm() to enable further access-restrictions,
+	  in tslib_fe::settingLanguage(), in tslib_content, and in tslib_menu for
 	  further filtering of menu items
-	
+
 	* The newly introduced Flash messages in TYPO3 4.3 are now also available
 	  as JavaScript messages done by ExtJS and available in the global
 	  TYPO3 backend JS space.
-	
+
 	* There is now a new API for sending emails. t3lib_utility_Mail::mail()
 	  serves as a proxy for the PHP mail() function, and is now the recommended
 	  way for sending emails, in order to have a central place to use a
@@ -249,10 +249,10 @@ Development
 	* The debug in the TYPO3 Backend was enhanced. There is a new debug console,
 	  which will show each debug in a single tab. The console will pop up
 	  as soon a debug statement is present.
-	
+
 	* t3lib_div::debug(): Removed the feature of passing an integer
 	  as $header (second argument) to add multiple br-tags.
-	
+
 	* There is a new API in place to generate HTML <span> tags with corresponding
 	  CSS classes in order to display previously created sprite images in
 	  the right background position. Make sure to have a look at
@@ -280,13 +280,13 @@ DBAL
 Backend skin
 ============
 
-	* There is now a complete new Backend skin for all backend modules, 
+	* There is now a complete new Backend skin for all backend modules,
 	  the login screen and the install tool. It is still called "t3skin",
 	  however due to the use of icon sprites and the refactoring of the
 	  CSS files, it is not possible anymore to run the TYPO3 Backend
-	  with the old backend skin (from 3.x) or with the look and feel from 
-	  previous 4.x versions. 
-	  If you have not installed any skins in your system, you will now see 
+	  with the old backend skin (from 3.x) or with the look and feel from
+	  previous 4.x versions.
+	  If you have not installed any skins in your system, you will now see
 	  a completely unstyled TYPO3 Backend, no unneeded additional styles
 	  are loaded.
 
