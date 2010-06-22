@@ -1,5 +1,6 @@
 2010-06-22  Benjamin Mack  <benni@typo3.org>
 
+	* Followup to #14636: Improvements to new Backend skin - small change to the versioning color in the pagetree (Thanks to Steffen Gebert)
 	* Updated and formatted NEWS.txt
 
 2010-06-21  Benjamin Mack  <benni@typo3.org>
