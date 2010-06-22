@@ -138,7 +138,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 	));
 
 		// Logo at login screen
-	$TBE_STYLES['logo_login'] = $temp_eP . 'images/login/typo3logo-white.png';
+	$TBE_STYLES['logo_login'] = $temp_eP . 'images/login/typo3logo-white-greyback.gif';
 
 		// extJS theme
 	$TBE_STYLES['extJS']['theme'] =  $temp_eP . 'extjs/xtheme-t3skin.css';

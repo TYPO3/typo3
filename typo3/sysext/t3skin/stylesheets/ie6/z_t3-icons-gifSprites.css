@@ -18,3 +18,11 @@
 .t3-icon-status {
 	background-image:url('../../images/sprites/t3-icon-status.gif');
 }
+
+#t3-login-form-inner .shadow-box-top-428 {
+	background-image:url('../../typo3/sysext/t3skin/images/shadows/box-top-428.gif');
+}
+
+#t3-login-form-inner .shadow-box-bottom-424 {
+	background-image:url('../../typo3/sysext/t3skin/images/shadows/box-bottom-424.gif');
+}
