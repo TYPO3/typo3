@@ -12,6 +12,7 @@
 
 2010-06-22  Steffen Kamper  <info@sk-typo3.de>
 
+	* removed unnecessary files in sysext sys_action
 	* Fixed bug #14816 bugfix : BE login in IE6 looks bad (Thanks to Jigal van Hemert and Jo Hasenau)
 	* Follow-up to #14538: Icons missing in page tree for "Page contains" pages (Thanks to Steffen Ritter)
 	* Added manuals for taskcenter and sys_action (Thanks to Georg Ringer)
