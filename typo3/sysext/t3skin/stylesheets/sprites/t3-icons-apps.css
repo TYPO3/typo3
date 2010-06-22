@@ -3,183 +3,186 @@
 	background-image:url('../../images/sprites/t3-icon-apps.png');
 }
 
-.t3-icon-apps.t3-icon-pagetree-backend-user {
+.t3-icon-apps.t3-icon-filetree-root {
 	background-position: 0 0px;
 }
-.t3-icon-apps.t3-icon-filetree-mount {
+.t3-icon-apps.t3-icon-pagetree-page-frontend-users {
 	background-position: 0 -24px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-frontend-user {
+.t3-icon-apps.t3-icon-toolbar-menu-opendocs {
 	background-position: 0 -48px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-shortcut-external {
+.t3-icon-apps.t3-icon-pagetree-page-recycler {
 	background-position: 0 -72px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-no-icon-found-root {
+.t3-icon-apps.t3-icon-filetree-folder-temp {
 	background-position: 0 -96px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-shortcut-root {
+.t3-icon-apps.t3-icon-pagetree-page-advanced-hideinmenu {
 	background-position: 0 -120px;
 }
-.t3-icon-apps.t3-icon-toolbar-menu-workspace {
+.t3-icon-apps.t3-icon-pagetree-page-shortcut-hideinmenu {
 	background-position: 0 -144px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-mountpoint-root {
+.t3-icon-apps.t3-icon-pagetree-backend-user {
 	background-position: 0 -168px;
 }
-.t3-icon-apps.t3-icon-clipboard-images {
+.t3-icon-apps.t3-icon-pagetree-page-frontend-user-hideinmenu {
 	background-position: 0 -192px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-no-icon-found-hideinmenu {
+.t3-icon-apps.t3-icon-pagetree-page-default {
 	background-position: 0 -216px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-shortcut-hideinmenu {
+.t3-icon-apps.t3-icon-pagetree-drag-place-denied {
 	background-position: 0 -240px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-mountpoint-hideinmenu {
+.t3-icon-apps.t3-icon-filetree-folder-user {
 	background-position: 0 -264px;
 }
-.t3-icon-apps.t3-icon-pagetree-drag-new-inside {
+.t3-icon-apps.t3-icon-pagetree-page-shortcut-external-hideinmenu {
 	background-position: 0 -288px;
 }
-.t3-icon-apps.t3-icon-clipboard-list {
+.t3-icon-apps.t3-icon-toolbar-menu-actions {
 	background-position: 0 -312px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-advanced {
+.t3-icon-apps.t3-icon-pagetree-page-shortcut-root {
 	background-position: 0 -336px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-domain {
+.t3-icon-apps.t3-icon-pagetree-drag-new-inside {
 	background-position: 0 -360px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-temp {
+.t3-icon-apps.t3-icon-pagetree-drag-move-into {
 	background-position: 0 -384px;
 }
-.t3-icon-apps.t3-icon-toolbar-menu-opendocs {
+.t3-icon-apps.t3-icon-pagetree-page-backend-users-root {
 	background-position: 0 -408px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-recycler {
+.t3-icon-apps.t3-icon-filetree-folder-add {
 	background-position: 0 -432px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-shortcut-external-root {
+.t3-icon-apps.t3-icon-pagetree-folder-contains-fe_users {
 	background-position: 0 -456px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-mountpoint {
+.t3-icon-apps.t3-icon-pagetree-page-domain {
 	background-position: 0 -480px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-frontend-user-root {
+.t3-icon-apps.t3-icon-pagetree-folder-contains-shop {
 	background-position: 0 -504px;
 }
-.t3-icon-apps.t3-icon-pagetree-backend-user-hideinmenu {
+.t3-icon-apps.t3-icon-toolbar-menu-workspace {
 	background-position: 0 -528px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-list {
+.t3-icon-apps.t3-icon-pagetree-drag-new-between {
 	background-position: 0 -552px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-shortcut-external-hideinmenu {
+.t3-icon-apps.t3-icon-pagetree-page-shortcut-external {
 	background-position: 0 -576px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-frontend-user-hideinmenu {
+.t3-icon-apps.t3-icon-pagetree-drag-move-between {
 	background-position: 0 -600px;
 }
-.t3-icon-apps.t3-icon-pagetree-drag-move-into {
+.t3-icon-apps.t3-icon-pagetree-page-backend-users {
 	background-position: 0 -624px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-news {
+.t3-icon-apps.t3-icon-filetree-folder-locked {
 	background-position: 0 -648px;
 }
-.t3-icon-apps.t3-icon-pagetree-drag-new-between {
+.t3-icon-apps.t3-icon-pagetree-folder-contains-news {
 	background-position: 0 -672px;
 }
-.t3-icon-apps.t3-icon-pagetree-folder-default {
+.t3-icon-apps.t3-icon-pagetree-backend-user-hideinmenu {
 	background-position: 0 -696px;
 }
-.t3-icon-apps.t3-icon-pagetree-folder-contains-shop {
+.t3-icon-apps.t3-icon-pagetree-page-mountpoint {
 	background-position: 0 -720px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-advanced-root {
+.t3-icon-apps.t3-icon-pagetree-root {
 	background-position: 0 -744px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-default {
+.t3-icon-apps.t3-icon-pagetree-folder-contains-approve {
 	background-position: 0 -768px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-advanced-hideinmenu {
+.t3-icon-apps.t3-icon-pagetree-page-frontend-user {
 	background-position: 0 -792px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-add {
+.t3-icon-apps.t3-icon-pagetree-page-shortcut-external-root {
 	background-position: 0 -816px;
 }
-.t3-icon-apps.t3-icon-pagetree-drag-move-between {
+.t3-icon-apps.t3-icon-pagetree-page-advanced {
 	background-position: 0 -840px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-frontend-users-root {
+.t3-icon-apps.t3-icon-toolbar-menu-cache {
 	background-position: 0 -864px;
 }
 .t3-icon-apps.t3-icon-pagetree-page-frontend-users-hideinmenu {
 	background-position: 0 -888px;
 }
-.t3-icon-apps.t3-icon-toolbar-menu-cache {
+.t3-icon-apps.t3-icon-pagetree-page-frontend-users-root {
 	background-position: 0 -912px;
 }
-.t3-icon-apps.t3-icon-pagetree-folder-contains-board {
+.t3-icon-apps.t3-icon-pagetree-page-frontend-user-root {
 	background-position: 0 -936px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-locked {
+.t3-icon-apps.t3-icon-pagetree-folder-contains-board {
 	background-position: 0 -960px;
 }
-.t3-icon-apps.t3-icon-pagetree-spacer {
+.t3-icon-apps.t3-icon-filetree-mount {
 	background-position: 0 -984px;
 }
-.t3-icon-apps.t3-icon-toolbar-menu-search {
+.t3-icon-apps.t3-icon-toolbar-menu-shortcut {
 	background-position: 0 -1008px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-not-in-menu {
+.t3-icon-apps.t3-icon-pagetree-page-no-icon-found-hideinmenu {
 	background-position: 0 -1032px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-backend-users-root {
+.t3-icon-apps.t3-icon-filetree-folder-default {
 	background-position: 0 -1056px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-backend-users-hideinmenu {
+.t3-icon-apps.t3-icon-pagetree-page-shortcut {
 	background-position: 0 -1080px;
 }
-.t3-icon-apps.t3-icon-pagetree-root {
+.t3-icon-apps.t3-icon-clipboard-images {
 	background-position: 0 -1104px;
 }
-.t3-icon-apps.t3-icon-toolbar-menu-shortcut {
+.t3-icon-apps.t3-icon-pagetree-page-no-icon-found {
 	background-position: 0 -1128px;
 }
-.t3-icon-apps.t3-icon-pagetree-drag-place-denied {
+.t3-icon-apps.t3-icon-filetree-folder-media {
 	background-position: 0 -1152px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-no-icon-found {
+.t3-icon-apps.t3-icon-pagetree-spacer {
 	background-position: 0 -1176px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-shortcut {
+.t3-icon-apps.t3-icon-pagetree-page-mountpoint-root {
 	background-position: 0 -1200px;
 }
-.t3-icon-apps.t3-icon-filetree-root {
+.t3-icon-apps.t3-icon-pagetree-page-advanced-root {
 	background-position: 0 -1224px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-frontend-users {
+.t3-icon-apps.t3-icon-pagetree-page-mountpoint-hideinmenu {
 	background-position: 0 -1248px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-user {
+.t3-icon-apps.t3-icon-pagetree-page-backend-users-hideinmenu {
 	background-position: 0 -1272px;
 }
-.t3-icon-apps.t3-icon-filetree-folder-media {
+.t3-icon-apps.t3-icon-pagetree-folder-default {
 	background-position: 0 -1296px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-default {
+.t3-icon-apps.t3-icon-pagetree-page-not-in-menu {
 	background-position: 0 -1320px;
 }
-.t3-icon-apps.t3-icon-pagetree-page-backend-users {
+.t3-icon-apps.t3-icon-toolbar-menu-search {
 	background-position: 0 -1344px;
 }
-.t3-icon-apps.t3-icon-pagetree-folder-contains-fe_users {
+.t3-icon-apps.t3-icon-clipboard-list {
 	background-position: 0 -1368px;
 }
-.t3-icon-apps.t3-icon-pagetree-folder-contains-news {
+.t3-icon-apps.t3-icon-filetree-folder-news {
 	background-position: 0 -1392px;
 }
-.t3-icon-apps.t3-icon-pagetree-folder-contains-approve {
+.t3-icon-apps.t3-icon-pagetree-page-no-icon-found-root {
 	background-position: 0 -1416px;
+}
+.t3-icon-apps.t3-icon-filetree-folder-list {
+	background-position: 0 -1440px;
 }

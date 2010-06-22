@@ -4,7 +4,8 @@
 
 2010-06-22  Steffen Kamper  <info@sk-typo3.de>
 
-	* Follow-up to#14798: Sitename missing in Login form
+	* Follow-up to #14465: Make use of the new Sprite API throughout the TYPO3 Core Backend (Thanks to Steffen Ritter)
+	* Follow-up to #14798: Sitename missing in Login form
 
 2010-06-22  Benjamin Mack  <benni@typo3.org>
 

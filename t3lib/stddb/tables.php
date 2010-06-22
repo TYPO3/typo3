@@ -702,6 +702,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'apps-pagetree-page-shortcut-root',
 	'apps-pagetree-root',
 	'apps-pagetree-spacer',
+	'apps-toolbar-menu-actions',
 	'apps-toolbar-menu-cache',
 	'apps-toolbar-menu-opendocs',
 	'apps-toolbar-menu-search',
