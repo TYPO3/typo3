@@ -8,6 +8,7 @@
 	* Followup to #10424: Old version (3.x) screenshots in CSH - removed label reference to version 3.6 (Thanks to Philipp Gampe)
 	* Fixed bug #14760: Use labels for search in list view (Thanks to Georg Ringer)
 	* Fixed bug #14601: Date picker does not work on IRRE elements (Thanks to Steffen Ritter)
+	* Added feature #14719: Add ability to use typo3conf/FIRST_INSTALL to temporarily enable the Install Tool and allow an easier first install.
 
 2010-06-21  Stanislas Rolland  <typo3@sjbr.ca>
 

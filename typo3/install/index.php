@@ -49,9 +49,15 @@ if (defined('E_DEPRECATED')) {
 $PATH_thisScript = str_replace('//','/', str_replace('\\','/', (PHP_SAPI=='cgi'||PHP_SAPI=='isapi' ||PHP_SAPI=='cgi-fcgi')&&($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED'])? ($_SERVER['ORIG_PATH_TRANSLATED']?$_SERVER['ORIG_PATH_TRANSLATED']:$_SERVER['PATH_TRANSLATED']):($_SERVER['ORIG_SCRIPT_FILENAME']?$_SERVER['ORIG_SCRIPT_FILENAME']:$_SERVER['SCRIPT_FILENAME'])));
 $PATH_site = dirname(dirname(dirname($PATH_thisScript)));
 
-	// Only allow Install Tool access if the file "typo3conf/ENABLE_INSTALL_TOOL" is found
+$quickstartFile = $PATH_site . '/typo3conf/FIRST_INSTALL';
 $enableInstallToolFile = $PATH_site . '/typo3conf/ENABLE_INSTALL_TOOL';
 
+	// If typo3conf/QUICKSTART is present and can be deleted, automatically create typo3conf/ENABLE_INSTALL_TOOL
+if (is_file($quickstartFile) && unlink($quickstartFile)) {
+	touch($enableInstallToolFile);
+}
+
+	// Only allow Install Tool access if the file "typo3conf/ENABLE_INSTALL_TOOL" is found
 if (is_file($enableInstallToolFile) && (time() - filemtime($enableInstallToolFile) > 3600)) {
 	$content = file_get_contents($enableInstallToolFile);
 	$verifyString = 'KEEP_FILE';
