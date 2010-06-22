@@ -2,6 +2,7 @@
 
 	* Fixed bug #14814: Improve texts in the 1-2-3 Install Tool
 	* Fixed bug #14822: Missing link in Install Tool footer
+	* Follow-up to ##14465: Make use of the new Sprite API - create new relation in IRRE
 
 2010-06-22  Oliver Hader  <oliver@typo3.org>
 

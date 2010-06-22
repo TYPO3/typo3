@@ -867,7 +867,7 @@ class t3lib_TCEforms_inline {
 			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation',1);
 			$item .=
 				'<a href="#" onclick="'.htmlspecialchars($onChange).'" align="abstop">'.
-					t3lib_iconWorks::getSpriteIcon('actions-edit-edit', array('title' => $createNewRelationText)) . $createNewRelationText .
+					t3lib_iconWorks::getSpriteIcon('actions-document-new', array('title' => $createNewRelationText)) . $createNewRelationText .
 				'</a>';
 				// wrap the selector and add a spacer to the bottom
 			$item = '<div style="margin-bottom: 20px;">'.$item.'</div>';
