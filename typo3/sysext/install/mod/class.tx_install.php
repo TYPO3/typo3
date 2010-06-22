@@ -897,7 +897,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Define the markers content
 		$markers = array(
 			'stepHeader' => $this->stepHeader(),
-			'notice' => 'Skip this wizard (for powerusers only)',
+			'notice' => 'Skip this wizard (for power users only)',
 			'skip123' => $this->scriptSelf
 		);
 
@@ -912,7 +912,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				Host: <em>' . TYPO3_db_host . '</em>,
 				Using Password: YES)
 				<br />
-				Go to Step 1 and enter a proper username/password!
+				Go to Step 1 and enter a valid username and password!
 			</p>
 		';
 		$error_missingDB = '
@@ -921,7 +921,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					There is no access to the database (<em>' . TYPO3_db . '</em>)!
 				</strong>
 				<br />
-				Go to Step 2 and select an accessible database!
+				Go to Step 2 and select a valid database!
 			</p>
 		';
 
@@ -955,17 +955,16 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$templateFile, '###STEP1###'
 					);
 						// Add header marker for main template
-					$markers['header'] = 'Welcome to the TYPO3 installation process';
+					$markers['header'] = 'Welcome to the TYPO3 Install Tool';
 						// Define the markers content for the subpart
 					$step1SubPartMarkers = array(
 						'llIntroduction' => '
 							<p>
 								TYPO3 is an enterprise content management system
-								that is very powerful and yet easy to install.
+								that is powerful, yet easy to install.
 							</p>
 							<p>
-								Choose your database, import some data and
-								you\'re done!
+								In three simple steps you\'ll be ready to add content to your website.
 							</p>
 						',
 						'step' => $this->step + 1,
@@ -1000,7 +999,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'password' => TYPO3_db_password,
 						'labelHost' => 'Host',
 						'host' => TYPO3_db_host ? TYPO3_db_host : 'localhost',
-						'continue' => 'Continue'
+						'continue' => 'Continue',
+						'llDescription' => 'If you have not already created a username and password to access the database, please do so now. This can be done using tools provided by your host.'
 					);
 						// Add step marker for main template
 					$markers['step'] = t3lib_parsehtml::substituteMarkerArray(
@@ -1071,12 +1071,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							// Define the markers content
 						$step3SubPartMarkers = array(
 							'step' => $this->step + 1,
-							'llOptions' => 'You have two options in this step.',
+							'llOptions' => 'You have two options:',
 							'action' => htmlspecialchars($this->action),
-							'llOption1' => 'Create new database (recommended):',
-							'llRemark1' => 'Enter your desired name for the database.',
+							'llOption1' => 'Create a new database (recommended):',
+							'llRemark1' => 'Enter a name for your TYPO3 database.',
 							'llOption2' => 'Select an EMPTY existing database:',
-							'llRemark2' => 'All tables used by TYPO3 will be overwritten in step 3.',
+							'llRemark2' => 'Any tables used by TYPO3 will be overwritten.',
 							'continue' => 'Continue'
 						);
 							// Add step marker for main template
@@ -1094,7 +1094,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 				case 4:
 						// Add header marker for main template
-					$markers['header'] = 'Import the database sql-file';
+					$markers['header'] = 'Import the Database Tables';
 						// There should be a database host connection at this point
 					if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(
 						TYPO3_db_host, TYPO3_db_username, TYPO3_db_password
@@ -1114,12 +1114,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 								// Check if default database scheme "database.sql" already exists, otherwise create it
 							if (!strstr(implode(',',$sFiles).',', '/database.sql,')) {
-								array_unshift($sFiles,'Create default database tables');
+								array_unshift($sFiles,'Default TYPO3 Tables');
 							}
 
 							$opt='';
 							foreach ($sFiles as $f) {
-								if ($f=='Create default database tables')	$key='CURRENT_TABLES+STATIC';
+								if ($f=='Default TYPO3 Tables')	$key='CURRENT_TABLES+STATIC';
 								else $key=htmlspecialchars($f);
 									// Define the markers content for database type subpart
 								$step4DatabaseTypeOptionMarkers = array(
@@ -1153,7 +1153,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								'llNumberTables' => 'Number of tables:',
 								'numberTables' => count($whichTables),
 								'action' => htmlspecialchars($this->action),
-								'llDatabaseType' => 'Please select a database dump:',
+								'llDatabaseType' => 'Select database contents:',
 								'label' => 'Import database'
 							);
 								// Add step marker for main template
@@ -1175,7 +1175,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				break;
 				case 'go':
 						// Add header marker for main template
-					$markers['header'] = 'You\'re done!';
+					$markers['header'] = 'Congratulations!';
 						// There should be a database host connection at this point
 					if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(
 						TYPO3_db_host, TYPO3_db_username, TYPO3_db_password
@@ -1191,13 +1191,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									// Define the markers content
 								$stepGoSubPartMarkers = array(
 									'messageBasicFinished' => $this->messageBasicFinished(),
-									'llImportant' => 'Important',
+									'llImportant' => 'Important Security Warning',
 									'securityRisk' => $this->securityRisk(),
-									'llSwitchMode' => 'Enter
+									'llSwitchMode' => '
 										<a href="' . $this->scriptSelf . '">
-											"Normal"
+											Change the Install Tool password here
 										</a>
-										mode for the Install Tool to change this!
 									'
 								);
 									// Add step marker for main template
@@ -6737,11 +6736,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 				'.(count($tables)?'':'- You haven\'t imported any tables yet.
 				')
-				.($beuser?'':'- You haven\'t created an admin-user yet.
+				.($beuser?'':'- You haven\'t created an admin user yet.
 				')
 				.'
 
-				You you\'re about to import a database with a complete site in it, these three points should be met.
+				You\'re about to import a database with a complete site in it, these three points should be met.
 				'),-1,1);
 			}
 		}
@@ -7851,31 +7850,22 @@ $out="
 	function securityRisk() {
 		return '
 			<p>
-				This script is a
-				<strong>great danger to the security of TYPO3</strong>
-				if you don\'t secure it somehow.
-				<br />
-				We suggest one of the following:
+				<strong>An unsecured Install Tool presents a security risk.</strong>
+				Minimize the risk with the following actions:
 			</p>
 			<ul>
 				<li>
-					Change the password as defined by the md5-hash in
-					TYPO3_CONF_VARS[BE][installToolPassword]
+					Change the Install Tool password.
 				</li>
 				<li>
-					Delete the folder \'typo3/install/\' with this script in or
-					just insert an \'exit;\' line in the script-file there
+					Delete the ENABLE_INSTALL_TOOL file in the /typo3conf folder. This can be done 
+					manually or through User tools &gt; User settings in the backend.
 				</li>
 				<li>
-					Password protect the \'typo3/install/\' folder, eg. with a
-					.htaccess file
+					For additional security, the /typo3/install/ folder can be
+					renamed, deleted, or password protected with a .htaccess file.
 				</li>
 			</ul>
-			<p>
-				The TYPO3_CONF_VARS[BE][installToolPassword] is always active,
-				but choosing one of the other options will improve security and
-				is recommended highly.
-			</p>
 		';
 	}
 
@@ -7942,33 +7932,29 @@ $out="
 	function messageBasicFinished() {
 		return '
 			<p>
-				Apparently you have completed the basic setup of the TYPO3 database.
-				<br />
-				Now you can choose between these options:
+				You have completed the basic setup of the TYPO3 Content Management System. 
+				Choose between these options to continue:
 			</p>
 			<ul>
 				<li>
+					<a href="' . $this->scriptSelf . '">Configure TYPO3</a> (Recommended)
+					<br />
+					This will let you analyze and verify that everything in your
+					installation is in order. In addition, you can configure advanced
+					TYPO3 options in this step.
+		 		</li>
+				<li>
 					<a href="../../index.php">
-						Go to the frontend pages
+						Visit the frontend
 					</a>
 				</li>
 				<li>
 					<a href="../index.php">
-						Go to the backend login
+						Login to the backend
 					</a>
 					<br />
-			 		(username may be: <em>admin</em>, password may be: <em>password</em>.)
+			 		(Default username: <em>admin</em>, default password: <em>password</em>.)
 				</li>
-				<li>
-					<a href="' . $this->scriptSelf . '">
-						Continue to configure TYPO3
-					</a> (Recommended).
-					<br />
-			 		This will let you analyse and verify that everything in your
-			 		PHP installation is alright. Also if you want to configure
-			 		TYPO3 to use all the cool features, you <em>must</em> dig
-			 		into the this!
-			 	</li>
 			 </ul>
 		';
 	}

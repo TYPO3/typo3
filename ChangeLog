@@ -1,3 +1,7 @@
+2010-06-22  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #14814: Improve texts in the 1-2-3 Install Tool
+
 2010-06-22  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Updated ext_emconf.php files in system extensions
