@@ -26,7 +26,7 @@
 /**
  * Status of tasks
  *
- * @author		Georg Ringer <typo3@ringerge.org
+ * @author		Georg Ringer <typo3@ringerge.org>
  * @package		TYPO3
  * @subpackage	taskcenter
  *
@@ -41,7 +41,7 @@ class tx_taskcenter_status {
 	 * @return	void
 	 */
 	public function saveCollapseState(array $params, TYPO3AJAX $ajaxObj) {
-			// remove 'el_' in the beginning which is needed for the saveSortingState
+			// remove 'el_' in the beginning which is needed for the saveSortingState()
 		$item	= substr(htmlspecialchars(t3lib_div::_POST('item')), 3);
 		$state	= (bool)t3lib_div::_POST('state');
 

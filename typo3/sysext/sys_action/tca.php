@@ -3,40 +3,40 @@
 // ******************************************************************
 // sys_action
 // ******************************************************************
-$TCA['sys_action'] = array (
+$TCA['sys_action'] = array(
 	'ctrl' => $TCA['sys_action']['ctrl'],
-	'interface' => array (
+	'interface' => array(
 		'showRecordFieldList' => 'hidden,title,type,description,assign_to_groups'
 	),
-	'columns' => array (
-		'title' => array (
+	'columns' => array(
+		'title' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.title',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '256',
 				'eval' => 'trim,required'
 			)
 		),
-		'description' => array (
+		'description' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.description',
-			'config' => array (
+			'config' => array(
 				'type' => 'text',
 				'rows' => 10,
 				'cols' => 48
 			)
 		),
-		'hidden' => array (
+		'hidden' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.hidden',
-			'config' => array (
+			'config' => array(
 				'type' => 'check'
 			)
 		),
-		'type' => array (
+		'type' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
+				'items' => array(
 					array('', '0'),
 					array('LLL:EXT:sys_action/locallang_tca.php:sys_action.type.1', '1'),
 					array('LLL:EXT:sys_action/locallang_tca.php:sys_action.type.2', '2'),
@@ -46,9 +46,9 @@ $TCA['sys_action'] = array (
 				)
 			)
 		),
-		'assign_to_groups' => array (
+		'assign_to_groups' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.assign_to_groups',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
 				'foreign_table_where' => 'ORDER BY be_groups.title',
@@ -59,18 +59,18 @@ $TCA['sys_action'] = array (
 				'autoSizeMax' => '10'
 			)
 		),
-		't1_userprefix' => array (
+		't1_userprefix' => array(
 			'label' =>  'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_userprefix',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '25',
 				'max' => '10',
 				'eval' => 'trim'
 			)
 		),
-		't1_allowed_groups' => array (
+		't1_allowed_groups' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_allowed_groups',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'be_groups',
 				'foreign_table_where' => 'ORDER BY be_groups.title',
@@ -79,15 +79,15 @@ $TCA['sys_action'] = array (
 				'autoSizeMax' => '10'
 			)
 		),
-		't1_create_user_dir' => array (
+		't1_create_user_dir' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_create_user_dir',
-			'config' => array (
+			'config' => array(
 				'type' => 'check'
 			)
 		),
-		't1_copy_of_user' => array (
+		't1_copy_of_user' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_copy_of_user',
-			'config' => array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'be_users',
@@ -102,9 +102,9 @@ $TCA['sys_action'] = array (
 				)
 			)
 		),
-		't3_listPid' => array (
+		't3_listPid' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t3_listPid',
-			'config' => array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'pages',
@@ -119,19 +119,19 @@ $TCA['sys_action'] = array (
 				)
 			)
 		),
-		't3_tables' => array (
+		't3_tables' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t3_tables',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
 				'special' => 'tables',
-				'items' => array (
+				'items' => array(
 					array('','')
 				)
 			)
 		),
-		't4_recordsToEdit' => array (
+		't4_recordsToEdit' => array(
 			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t4_recordsToEdit',
-			'config' => array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => '*',
@@ -149,8 +149,8 @@ $TCA['sys_action'] = array (
 		),
 
 	),
-	'types' => array (
-		'0' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2'),
+	'types' => array(
+		'0' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,'),
 		'1' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t1_userprefix;;;;5-5-5,t1_copy_of_user,t1_allowed_groups,t1_create_user_dir'),
 		'2' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,'),
 		'3' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t3_listPid;;;;5-5-5,t3_tables;'),

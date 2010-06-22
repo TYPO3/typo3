@@ -2,16 +2,16 @@
 
 /* general */
 body#ext-taskcenter-task-index-php {
-	margin:0;
+	margin: 0;
 }
 
 body#ext-taskcenter-task-index-php div#typo3-docbody {
-	top:60px;
+	top: 60px;
 }
 
 body#ext-taskcenter-task-index-php div#typo3-inner-docbody {
-	padding:0 10px;
-	height:100%;
+	padding: 0 10px;
+	height: 100%;
 }
 
 #typo3-inner-docbody p.help {
@@ -24,74 +24,73 @@ body#ext-taskcenter-task-index-php img.icon {
 }
 
 body#ext-taskcenter-task-index-php h3 {
-	margin:4px 0 8px;
-	padding:0;
+	margin: 4px 0 8px;
+	padding: 0;
 }
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* overview */
 
 #taskcenter-main {
-	width:100%;
+	width: 100%;
 }
 
 #taskcenter-main #taskcenter-menu {
-	width:250px;
+	width: 250px;
 }
 
 #taskcenter-main #taskcenter-item {
-	position:absolute;
-	margin-left:270px;
-	margin-right:20px;
-	top:0;
-	min-width:300px;
-
+	position: absolute;
+	margin-left: 270px;
+	margin-right: 20px;
+	top: 0;
+	min-width: 300px;
 }
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* menu */
 #taskcenter-menu ul {
-	list-style:none;
-	padding:0;
-	margin:0;
-	border-bottom:1px solid #b0b7c2;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	border-bottom: 1px solid #b0b7c2;
 }
 
 #taskcenter-menu li {
-	margin-top:1px;
-	border-top:1px solid #EFEFF4;
+	margin-top: 1px;
+	border-top: 1px solid #EFEFF4;
 }
 
 #taskcenter-menu .image {
-	float:left;
-	height:23px;
-	width:23px;
+	float: left;
+	height: 23px;
+	width: 23px;
 }
 #taskcenter-menu .image img {
-	margin:3px 0 0 1px;
+	margin: 3px 0 0 1px;
 }
 
 #taskcenter-menu .down {
-	background:url(../../t3skin/icons/gfx/pil2down.gif) no-repeat 5px 7px;
-	height:23px;
-	float:left;
-	width:25px;
-	cursor:pointer;
+	background: url(../../t3skin/icons/gfx/pil2down.gif) no-repeat 5px 7px;
+	height: 23px;
+	float: left;
+	width: 25px;
+	cursor: pointer;
 }
 
 #taskcenter-menu .collapsed .down {
-	background-image:url(../../t3skin/icons/gfx/pil2right.gif);
+	background-image: url(../../t3skin/icons/gfx/pil2right.gif);
 }
 
 #taskcenter-menu .drag {
-	float:right;
-	height:23px;
-	width:24px;
+	float: right;
+	height: 23px;
+	width: 24px;
 }
 
 #taskcenter-menu .drag img {
-	margin-top:6px;
-	cursor:move;
+	margin-top: 6px;
+	cursor: move;
 }
 
 
@@ -100,7 +99,10 @@ body#ext-taskcenter-task-index-php h3 {
 	border-width: 1px 1px 0;
 	line-height: 18px;
 	display: block;
-	background: #585858;
+}
+
+#taskcenter-menu .t3-row-header a{
+	float: none;
 }
 
 #taskcenter-menu .link a {
@@ -110,41 +112,41 @@ body#ext-taskcenter-task-index-php h3 {
 }
 
 #taskcenter-menu .active-task .link a {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 #taskcenter-menu .content {
-	padding:5px 0;
-	background:#fff;
-	border: 1px solid #adadad;
+	padding: 5px 0;
+	background: #fff;
+	border: 1px solid #b7bec9;
 }
 
 #taskcenter-menu .content p {
-	padding:3px 5px 5px 5px;
-	margin:0;
+	padding: 3px 5px 5px 5px;
+	margin: 0;
 }
 
 #taskcenter-menu .content ul, #taskcenter-menu .content ul li {
-	border:0;
+	border: 0;
 }
 
 
 #taskcenter-menu .content ul li a {
-	display:block;
-	line-height:16px;
-	margin:0;
-	padding:2px 24px;
-	background:url(list-item.gif) no-repeat 10px 6px;
+	display: block;
+	line-height: 16px;
+	margin: 0;
+	padding: 2px 24px;
+	background: url(list-item.gif) no-repeat 10px 6px;
 }
 
 #taskcenter-menu .content ul li.active {
-	background-color: #DADADA;
+	background-color: #dadada;
 }
 
 #taskcenter-menu .content ul li.active a {
 	color: #000000;
 	font-weight: bold;
-	background-image:url(list-item-act.gif);
+	background-image: url(list-item-act.gif);
 }
 
 
@@ -152,21 +154,21 @@ body#ext-taskcenter-task-index-php h3 {
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* content section */
 #taskcenter-item ul {
-	padding:5px 0 5px 5px;
-	margin:0;
-	list-style:none;
+	padding: 5px 0 5px 5px;
+	margin: 0;
+	list-style: none;
 }
 
 #taskcenter-item ul li {
-	padding:5px 0 0 12px;
+	padding: 5px 0 0 12px;
 }
 
 #taskcenter-item ul.withicons li {
-	background:url(list-item.gif) no-repeat 0 7px;
+	background: url(list-item.gif) no-repeat 0 7px;
 }
 
 #taskcenter-item ul .image {
-	float:left;
+	float: left;
 	width: 20px;
 }
 
@@ -176,61 +178,60 @@ body#ext-taskcenter-task-index-php h3 {
 }
 
 #taskcenter-item ul .link a {
-	padding:5px;
+	padding: 5px;
 }
 
-#taskcenter-item ul .link a:hover {
-	text-decoration:underline;
+#taskcenter-item ul .link a: hover {
+	text-decoration: underline;
 }
 
 #taskcenter-item ul .content {
-	padding:2px 0 0 25px;
+	padding: 2px 0 0 25px;
 }
 
 #taskcenter-item ul .content .edit {
-	display:block;
-	margin-top:2px;
+	display: block;
+	margin-top: 2px;
 }
 
 
 /* ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- */
 /* forms */
 #taskcenter-item fieldset.fields legend {
-	font-weight:bold;
-	border-bottom:1px solid #ccc;
-	width:100%;
-	padding:0 0 2px 20px;
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	width: 100%;
+	padding: 0 0 2px 20px;
 }
 
 #taskcenter-item fieldset.fields {
-	border:0;
+	border: 0;
 }
 
 #taskcenter-item fieldset.fields .row {
-	width:350px;
-	clear:both;
-	padding:5px 0;
+	width: 350px;
+	clear: both;
+	padding: 5px 0;
 }
 
 #taskcenter-item fieldset.fields label {
-	width:120px;
-	display:block;
-	float:left;
+	width: 120px;
+	display: block;
+	float: left;
 }
 
 #taskcenter-item fieldset.fields input, #taskcenter-item fieldset.fields select {
-	/*margin-left:140px;*/
-	width:160px;
-	float:left;
+	width: 160px;
+	float: left;
 	border: 1px solid #ccc;
-	padding:2px 3px;
+	padding: 2px 3px;
 }
 
 #taskcenter-item fieldset.fields select {
-	width:170px;
+	width: 170px;
 }
 
 #taskcenter-item fieldset.fields input[type=checkbox] {
-	width:16px;
-	text-align:left;
+	width: 16px;
+	text-align: left;
 }

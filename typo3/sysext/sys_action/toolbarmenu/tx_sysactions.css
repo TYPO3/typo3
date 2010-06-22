@@ -5,8 +5,8 @@
 #tx-sys-action-menu ul {
 	position: absolute;
 	list-style: none;
-	padding: 2px 0px 0px;
-	margin: 0px;
+	padding: 2px 0 0;
+	margin: 0;
 	background-color: #f9f9f9;
 	border: 1px solid #abb2bc;
 	border-top: none;

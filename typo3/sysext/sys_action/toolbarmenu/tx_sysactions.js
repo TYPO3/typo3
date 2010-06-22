@@ -39,7 +39,7 @@ var SysActionMenu = Class.create({
 
 		Ext.onReady(function() {
 			this.positionMenu();
-			this.toolbarItemIcon = $$('#tx-sys-action-menu .toolbar-item img')[0].src;
+			this.toolbarItemIcon = $$('#tx-sys-action-menu .toolbar-item span')[0].src;
 
 			Event.observe('tx-sys-action-menu', 'click', this.toggleMenu);
 

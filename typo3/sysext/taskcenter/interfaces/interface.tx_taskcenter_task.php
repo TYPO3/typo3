@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Georg Ringer <typo3@ringerge.orgY
+*  (c) 2010 Georg Ringer <typo3@ringerge.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 
 
 /**
- * Interface for classes which provide a report.
+ * Interface for classes which provide a task.
  *
  * @author		Georg Ringer <typo3@ringerge.org
  * @package		TYPO3

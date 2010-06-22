@@ -59,9 +59,9 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			// if no task selected, render the menu
 		if ($show == 0) {
 			$content .= $this->taskObject->description(
-							$GLOBALS['LANG']->getLL('sys_action'),
-							$GLOBALS['LANG']->getLL('description')
-						);
+				$GLOBALS['LANG']->getLL('sys_action'),
+				$GLOBALS['LANG']->getLL('description')
+			);
 
 			$content .= $this->renderActionList();
 		} else {
@@ -71,7 +71,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			if (count($record) == 0) {
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
-					$GLOBALS['LANG']->getLL('action_error-not-found', true),
+					$GLOBALS['LANG']->getLL('action_error-not-found', TRUE),
 					$GLOBALS['LANG']->getLL('action_error'),
 					t3lib_FlashMessage::ERROR
 				);
@@ -100,7 +100,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 					default:
 						$flashMessage = t3lib_div::makeInstance(
 							't3lib_FlashMessage',
-							$GLOBALS['LANG']->getLL('action_noType', true),
+							$GLOBALS['LANG']->getLL('action_noType', TRUE),
 							$GLOBALS['LANG']->getLL('action_error'),
 							t3lib_FlashMessage::ERROR
 						);
@@ -121,16 +121,16 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		$content = '<p>' . $GLOBALS['LANG']->getLL('description') . '</p>';
 
 			// get the actions
-		$lines = $this->getActions();
-		if (count($lines) > 0) {
+		$actionList = $this->getActions();
+		if (count($actionList) > 0) {
 			$items = '';
 
 				// render a single action menu item
-			foreach ($lines as $line) {
-				$active = (t3lib_div::_GP('show') === $line['uid']) ? ' class="active" ' : '';
+			foreach ($actionList as $action) {
+				$active = (t3lib_div::_GP('show') === $action['uid']) ? ' class="active" ' : '';
 				$items .= '<li' . $active . '>
-								<a href="' . $line['link'] . '" title="' . htmlspecialchars($line['description']) . '">' .
-									htmlspecialchars($line['title']) .
+								<a href="' . $action['link'] . '" title="' . htmlspecialchars($action['description']) . '">' .
+									htmlspecialchars($action['title']) .
 								'</a>
 							</li>';
 			}
@@ -144,11 +144,11 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	 * Get all actions of an user. Admins can see any action, all others only those
 	 * whic are allowed in sys_action record itself.
 	 *
-	 * @param	boolean		$toOverview: If true, the link redirects to the taskcenter
+	 * @param	boolean		$toOverview: If TRUE, the link redirects to the taskcenter
 	 * @return	array Array holding every needed information of a sys_action
 	 */
 	protected function getActions() {
-		$lines = array();
+		$actionList = array();
 
 			// admins can see any record
 		if ($GLOBALS['BE_USER']->isAdmin()) {
@@ -188,18 +188,18 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				 		'</a>';
 			}
 
-			$lines[] = array(
+			$actionList[] = array(
 				'uid'				=> $actionRow['uid'],
 				'title'				=> $actionRow['title'],
 				'description'		=> $actionRow['description'],
 				'descriptionHtml'	=> nl2br(htmlspecialchars($actionRow['description'])) . $editActionLink,
-				'link'				=> 'mod.php?M=user_task&SET[function]=sys_action.tasks&show=' . $actionRow['uid'],
+				'link'				=> 'mod.php?M=user_task&SET[function]=sys_action.tx_sysaction_task&show=' . $actionRow['uid'],
 				'icon'				=> 'EXT:sys_action/sys_action.gif'
 			);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
-		return $lines;
+		return $actionList;
 	}
 
 	/**
@@ -211,15 +211,15 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		$content = '';
 
 			// get the sys_action records
-		$lines = $this->getActions();
+		$actionList = $this->getActions();
 
 			// if any actions are found for the current users
-		if (count($lines) > 0) {
-			$content .= $this->taskObject->renderListMenu($lines);
+		if (count($actionList) > 0) {
+			$content .= $this->taskObject->renderListMenu($actionList);
 		} else {
 			$flashMessage = t3lib_div::makeInstance (
 				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('action_not-found-description', true),
+				$GLOBALS['LANG']->getLL('action_not-found-description', TRUE),
 				$GLOBALS['LANG']->getLL('action_not-found'),
 				t3lib_FlashMessage::INFO
 			);
@@ -255,7 +255,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		if (!is_array($beRec)) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('action_notReady', true),
+				$GLOBALS['LANG']->getLL('action_notReady', TRUE),
 				$GLOBALS['LANG']->getLL('action_error'),
 				t3lib_FlashMessage::ERROR
 			);
@@ -264,8 +264,6 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			return $content;
 		}
 
-		$userRecord = array();
-		$newFlag = 0;
 		$vars = t3lib_div::_POST('data');
 		$key = 'NEW';
 
@@ -311,13 +309,12 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 
 		}
 
-
 			// load BE user to edit
 		if (intval(t3lib_div::_GP('be_users_uid')) > 0) {
 			$tmpUserId = intval(t3lib_div::_GP('be_users_uid'));
 
+				// check if the selected user is created by the current user
 			$rawRecord = $this->isCreatedByUser($tmpUserId, $record);
-
 			if ($rawRecord) {
 					// delete user
 				if (t3lib_div::_GP('delete') == 1) {
@@ -327,7 +324,6 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				$key = $tmpUserId;
 				$vars = $rawRecord;
 			}
-
 		}
 
 		$this->JScode();
@@ -338,37 +334,37 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 						<fieldset class="fields">
 							<legend>General fields</legend>
 							<div class="row">
-								<label for="disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.disable') . '</label>
-								<input type="checkbox" id="disable" name="data[disable]" value="1" class="checkbox" ' . ($vars['disable'] == 1 ? ' checked="checked" ' : '') . ' />
+								<label for="field_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.disable') . '</label>
+								<input type="checkbox" id="field_disable" name="data[disable]" value="1" class="checkbox" ' . ($vars['disable'] == 1 ? ' checked="checked" ' : '') . ' />
 							</div>
 							<div class="row">
-								<label for="realname">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.name') . '</label>
-								<input type="text" id="realname" name="data[realName]" value="' . htmlspecialchars($vars['realName']) .'" />
+								<label for="field_realname">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.name') . '</label>
+								<input type="text" id="field_realname" name="data[realName]" value="' . htmlspecialchars($vars['realName']) .'" />
 							</div>
 							<div class="row">
-								<label for="username">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.username') . '</label>
-								<input type="text" id="username" name="data[username]" value="' . htmlspecialchars($vars['username']) .'" />
+								<label for="field_username">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.username') . '</label>
+								<input type="text" id="field_username" name="data[username]" value="' . htmlspecialchars($vars['username']) .'" />
 							</div>
 							<div class="row">
-								<label for="password">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.password') . '</label>
-								<input type="password" id="password" name="data[password]" value="" />
+								<label for="field_password">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.password') . '</label>
+								<input type="password" id="field_password" name="data[password]" value="" />
 							</div>
 							<div class="row">
-								<label for="email">' .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.email') . '</label>
-								<input type="text" id="email" name="data[email]" value="' . htmlspecialchars($vars['email']) .'" />
+								<label for="field_email">' .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.email') . '</label>
+								<input type="text" id="field_email" name="data[email]" value="' . htmlspecialchars($vars['email']) .'" />
 							</div>
 						</fieldset>
 						<fieldset class="fields">
 							<legend>Configuration</legend>
 
 							<div class="row">
-								<label for="usergroup">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.usergroup') . '</label>
-								<select id="usergroup" name="data[usergroup][]" multiple="multiple">
+								<label for="field_usergroup">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.usergroup') . '</label>
+								<select id="field_usergroup" name="data[usergroup][]" multiple="multiple">
 									' . $this->getUsergroups($record, $vars) . '
 								</select>
 							</div>
 							<div class="row">
-								<label for="db_mountpoints">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts') . '</label>
+								<label for="field_db_mountpoints">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts') . '</label>
 								' . $this->t3lib_TCEforms->dbFileIcons('data[db_mountpoints]', 'db', 'pages', $loadDB->itemArray, '', array('size' => 3)) . '
 							</div>
 							<div class="row">
@@ -396,8 +392,8 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			'be_users',
 			'uid=' . $userId,
 			array (
-				'deleted' => 1,
-				'tstamp' => $GLOBALS['ACCESS_TIME']
+				'deleted'	=> 1,
+				'tstamp'	=> $GLOBALS['ACCESS_TIME']
 			)
 		);
 
@@ -411,14 +407,14 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	 *
 	 * @param	int		$id: Id of the BE user
 	 * @param	array		$action: sys_action record.
-	 * @return	mixed the record of the BE user if found, otherwise false
+	 * @return	mixed the record of the BE user if found, otherwise FALSE
 	 */
 	protected function isCreatedByUser($id, $action) {
 		$record = t3lib_BEfunc::getRecord(
 			'be_users',
 			$id,
 			'*',
-			' AND cruser_id=' . $GLOBALS['BE_USER']->user['uid'] . ' AND createdByAction=' . intval($action['uid'])
+			' AND cruser_id=' . $GLOBALS['BE_USER']->user['uid'] . ' AND createdByAction=' . $action['uid']
 		);
 
 		if (is_array($record)) {
@@ -438,7 +434,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	 */
 	protected function getCreatedUsers($action, $selectedUser) {
 		$content = '';
-		$lines = array();
+		$userList = array();
 
 			// List of users
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -459,13 +455,13 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				$line = '<strong>' . $line . '</strong>';
 			}
 
-			$lines[] = $line;
+			$userList[] = $line;
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 			// if any records found
-		if (count($lines)) {
-			$content .= '<br />' . $this->taskObject->doc->section($GLOBALS['LANG']->getLL('action_t1_listOfUsers'), implode('<br />', $lines));
+		if (count($userList)) {
+			$content .= '<br />' . $this->taskObject->doc->section($GLOBALS['LANG']->getLL('action_t1_listOfUsers'), implode('<br />', $userList));
 		}
 
 		return $content;
@@ -507,8 +503,6 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	 * @return	int Id of the new/updated user
 	 */
 	protected function saveNewBackendUser($record, $vars) {
-		$content = '';
-
 			// check if the db mount is a page the current user is allowed to.);
 		$vars['db_mountpoints'] = $this->fixDbMount($vars['db_mountpoints']);
 			// check if the usergroup is allowed
@@ -709,6 +703,13 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		}
 	}
 
+	/**
+	 * Get all allowed usergroups which can be applied to a user record
+	 *
+	 * @param array $record sys_action record
+	 * @param array $vars Selected be_user record
+	 * @return string rendered user groups
+	 */
 	protected function getUsergroups($record, $vars) {
 		$content = '';
 			// do nothing if no groups are allowed
@@ -750,7 +751,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	 */
 	protected function viewEditRecord($record) {
 		$content = '';
-		$lines = array();
+		$actionList = array();
 
 		$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
 		$dbAnalysis->fromTC = 0;
@@ -767,7 +768,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				$description .= ' - ' . t3lib_BEfunc::dateTimeAge($record['crdate']);
 			}
 
-			$lines[$el['id']] = array(
+			$actionList[$el['id']] = array(
 				'title'				=> $title,
 				'description'		=> t3lib_BEfunc::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]),
 				'descriptionHtml'	=> $description,
@@ -777,7 +778,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		}
 
 			// render the record list
-		$content .= $this->taskObject->renderListMenu($lines);
+		$content .= $this->taskObject->renderListMenu($actionList);
 
 		return $content;
 	}
@@ -801,7 +802,6 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				$fullsearch->formW = 40;
 				$fullsearch->noDownloadB = 1;
 
-
 				$type = $sql_query['qC']['search_query_makeQuery'];
 				$res = $GLOBALS['TYPO3_DB']->sql_query($sql_query['qSelect']);
 
@@ -823,14 +823,14 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				// Admin users are allowed to see and edit the query
 				if ($GLOBALS['BE_USER']->isAdmin()) {
 					$actionContent .= '<hr /> ' . $fullsearch->tableWrap($sql_query['qSelect']);
-					$actionContent .= '<br /><a title="' . $GLOBALS['LANG']->getLL('action_editQuery') . '" href="'.$GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('lowlevel') . 'dbint/index.php?id='.
+					$actionContent .= '<br /><a title="' . $GLOBALS['LANG']->getLL('action_editQuery') . '" href="' . $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('lowlevel') . 'dbint/index.php?id=' .
 						'&SET[function]=search' .
 						'&SET[search]=query' .
 						'&storeControl[STORE]=-' . $record['uid'] .
 						'&storeControl[LOAD]=1' .
 						'">
 						<img class="icon"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif') . ' alt="" />' .
-							$GLOBALS['LANG']->getLL('action_editQuery') . '</a><br /><br />';
+						$GLOBALS['LANG']->getLL('action_editQuery') . '</a><br /><br />';
 				}
 
 				$content .= $this->taskObject->doc->section($GLOBALS['LANG']->getLL('action_t2_result'), $actionContent, 0, 1);
@@ -838,7 +838,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 					// query is not configured
 				$flashMessage = t3lib_div::makeInstance (
 					't3lib_FlashMessage',
-					$GLOBALS['LANG']->getLL('action_notReady', true),
+					$GLOBALS['LANG']->getLL('action_notReady', TRUE),
 					$GLOBALS['LANG']->getLL('action_error'),
 					t3lib_FlashMessage::ERROR
 				);
@@ -848,7 +848,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				// required sysext lowlevel is not installed
 			$flashMessage = t3lib_div::makeInstance (
 				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('action_lowlevelMissing', true),
+				$GLOBALS['LANG']->getLL('action_lowlevelMissing', TRUE),
 				$GLOBALS['LANG']->getLL('action_error'),
 				t3lib_FlashMessage::ERROR
 			);
@@ -872,7 +872,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		if ($this->id == 0 || $this->table == '') {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('action_lowlevelMissing', true),
+				$GLOBALS['LANG']->getLL('action_lowlevelMissing', TRUE),
 				$GLOBALS['LANG']->getLL('action_error'),
 				t3lib_FlashMessage::ERROR
 			);
@@ -884,14 +884,9 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		require_once($GLOBALS['BACK_PATH'] . 'class.db_list.inc');
 		require_once($GLOBALS['BACK_PATH'] . 'class.db_list_extra.inc');
 
-
-			// Start document template object:
-//		$this->doc = t3lib_div::makeInstance('template');
-
 			// Loading current page record and checking access:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->taskObject->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
-
 
 			// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access) {
@@ -978,7 +973,6 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				// Setting up the context sensitive menu:
 			$this->taskObject->doc->getContextMenuCode();
 
-
 				// Begin to compile the whole page
 			$content .= '<form action="'.htmlspecialchars($dblist->listURL()).'" method="post" name="dblistForm">' .
 							$dblist->HTMLcode .
@@ -987,7 +981,6 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 
 				// If a listing was produced, create the page footer with search form etc:
 			if ($dblist->HTMLcode) {
-
 					// Making field select box (when extended view for a single table is enabled):
 				if ($dblist->table) {
 					$tmpBackpath = $GLOBALS['BACK_PATH'];
@@ -1000,7 +993,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				// not enough rights to access the list view or the page
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('action_error-access', true),
+				$GLOBALS['LANG']->getLL('action_error-access', TRUE),
 				$GLOBALS['LANG']->getLL('action_error'),
 				t3lib_FlashMessage::ERROR
 			);

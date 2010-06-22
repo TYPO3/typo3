@@ -5,7 +5,6 @@
  */
 $extensionPath = t3lib_extMgm::extPath('taskcenter');
 return array (
-	'tx_taskcenter_task' => $extensionPath . 'interfaces/interface.tx_taskcenter_task.php',
-	'tx_taskcenter_about' => $extensionPath . 'task/class.tx_taskcenter_about.php',
+	'tx_taskcenter_task' => $extensionPath . 'interfaces/interface.tx_taskcenter_task.php'
 );
 ?>

@@ -79,12 +79,9 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 			$this->addCssToBackend();
 			$title = $GLOBALS['LANG']->getLL('action_toolbaritem', TRUE);
 
-			$actionMenu[] = '<a href="#" class="toolbar-item"><img' .
-				t3lib_iconWorks::skinImg(
-					$this->backPath,
-					t3lib_extMgm::extRelPath($this->EXTKEY) . 'ext_icon.gif',
-					'width="16" height="16"'
-				) . ' title="' . $title . '" alt="' . $title . '" /></a>';
+			$actionMenu[] = '<a href="#" class="toolbar-item">'.
+				t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-actions', array('title' => $title)) .
+				'</a>';
 
 			$actionMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 			foreach ($actionEntries as $linkConf) {
@@ -142,12 +139,10 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 			while ($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResource)) {
 				$actions[] = array(
 					$actionRow['title'],
-					'mod.php?M=user_task&SET[function]=sys_action.tasks&show=' . $actionRow['uid'],
-					t3lib_iconworks::getIconImage(
+					'mod.php?M=user_task&SET[function]==sys_action.tx_sysaction_task&show=' . $actionRow['uid'],
+					t3lib_iconworks::getSpriteIconForRecord(
 						'sys_action',
-						$actionRow,
-						$GLOBALS['BACK_PATH'],
-						'hspace="2" class="absmiddle"'
+						$actionRow
 					),
 				);
 			}

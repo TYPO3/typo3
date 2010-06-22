@@ -68,8 +68,6 @@ class tx_impexp_task implements tx_taskcenter_Task {
 		return '';
 	}
 
-
-
 	/**
 	 * Main Task center module
 	 *
@@ -86,9 +84,9 @@ class tx_impexp_task implements tx_taskcenter_Task {
 		} else {
 				// header
 			$content .= $this->taskObject->description(
-							$GLOBALS['LANG']->getLL('.alttitle'),
-							$GLOBALS['LANG']->getLL('.description')
-						);
+				$GLOBALS['LANG']->getLL('.alttitle'),
+				$GLOBALS['LANG']->getLL('.description')
+			);
 
 			$thumbnails = $lines = array();
 
@@ -109,15 +107,8 @@ class tx_impexp_task implements tx_taskcenter_Task {
 				foreach($presets as $key => $presetCfg) {
 					$configuration = unserialize($presetCfg['preset_data']);
 					$thumbnailFile = $thumbnails[$configuration['meta']['thumbnail']];
-					$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '['.$presetCfg['uid'].']';
-
-					if ($thumbnailFile && 1==2) {
-						// @todo: create icon or maybe completly remove it because where to display?
-						$src=  '../' . $GLOBALS['BACK_PATH'] .  substr($tempDir, strlen(PATH_site)) . basename($thumbnailFile);
-						$icon = $src;
-					} else {
-						$icon = 'EXT:impexp/export.gif';
-					}
+					$title = strlen($presetCfg['title']) ? $presetCfg['title'] : '[' . $presetCfg['uid'] . ']';
+					$icon = 'EXT:impexp/export.gif';
 
 					$description = array();
 
@@ -157,10 +148,10 @@ class tx_impexp_task implements tx_taskcenter_Task {
 
 						// collect all preset information
 					$lines[$key] = array(
-						'icon' => $icon,
-						'title' => htmlspecialchars($title),
-						'descriptionHtml' => implode('<br />', $description),
-						'link' => 'mod.php?M=user_task&SET[function]=impexp.tasks&display=' . $presetCfg['uid']
+						'icon'				=> $icon,
+						'title'				=> $title,
+						'descriptionHtml'	=> implode('<br />', $description),
+						'link'				=> 'mod.php?M=user_task&SET[function]=impexp.tx_impexp_task&display=' . $presetCfg['uid']
 					);
 
 				}
@@ -174,7 +165,6 @@ class tx_impexp_task implements tx_taskcenter_Task {
 					$GLOBALS['LANG']->getLL('no-presets'),
 					'',
 					t3lib_FlashMessage::NOTICE
-
 				);
 				$content .= $flashMessage->render();
 			}
@@ -189,14 +179,14 @@ class tx_impexp_task implements tx_taskcenter_Task {
 	 *
 	 * @return	array		Array of preset records
 	 */
-	function getPresets() {
+	protected function getPresets() {
 		$presets = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'*',
-				'tx_impexp_presets',
-				'(public > 0 OR user_uid=' . $GLOBALS['BE_USER']->user['uid'] . ')',
-				'',
-				'item_uid DESC, title'
-			);
+			'*',
+			'tx_impexp_presets',
+			'(public > 0 OR user_uid=' . $GLOBALS['BE_USER']->user['uid'] . ')',
+			'',
+			'item_uid DESC, title'
+		);
 
 		return $presets;
 	}
@@ -206,15 +196,16 @@ class tx_impexp_task implements tx_taskcenter_Task {
 	 *
 	 * @return	string		Absolute path to first "_temp_" folder of the current user, otherwise blank.
 	 */
-	function userTempFolder() {
+	protected function userTempFolder() {
 		foreach($GLOBALS['FILEMOUNTS'] as $filePathInfo) {
 			$tempFolder = $filePathInfo['path'] . '_temp_/';
 			if (@is_dir($tempFolder)) {
 				return $tempFolder;
 			}
 		}
-	}
 
+		return '';
+	}
 
 }
 
