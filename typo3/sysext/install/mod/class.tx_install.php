@@ -7912,8 +7912,8 @@ $out="
 				for details. TYPO3 comes with ABSOLUTELY NO WARRANTY;
 				<a href="http://typo3.com/1316.0.html">click</a> for details.
 				This is free software, and you are welcome to redistribute it
-				under certain conditions; click for details. Obstructing the
-				appearance of this notice is prohibited by law.
+				under certain conditions; <a href="http://typo3.com/1316.0.html">click</a>
+				for details. Obstructing the appearance of this notice is prohibited by law.
 			</p>
 			<p>
 				<a href="http://typo3.org/donate"><strong>Donate</strong></a> |
