@@ -4,6 +4,7 @@
 
 2010-06-22  Steffen Kamper  <info@sk-typo3.de>
 
+	* Added manuals for taskcenter and sys_action (Thanks to Georg Ringer)
 	* Fixed bug #14771: Updates for taskcenter, sys_action, impexp (Thanks to Georg Ringer)
 	* Follow-up to #14465: Make use of the new Sprite API throughout the TYPO3 Core Backend (Thanks to Steffen Ritter)
 	* Follow-up to #14798: Sitename missing in Login form
