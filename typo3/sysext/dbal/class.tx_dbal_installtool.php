@@ -275,7 +275,8 @@ class tx_dbal_installtool {
 			'encryptionKey' => $instObj->createEncryptionKey(),
 			'branch' => TYPO3_branch,
 			'driver_options' => $driverOptionsSubPart,
-			'continue' => 'Continue'
+			'continue' => 'Continue',
+			'llDescription' => 'If you have not already created a username and password to access the database, please do so now. This can be done using tools provided by your host.'
 		);
 		$subPartMarkers = array_merge($subPartMarkers, $driverMarkers);
 
@@ -464,7 +465,7 @@ class tx_dbal_installtool {
 				Host: <em>' . TYPO3_db_host . '</em>,
 				Using Password: YES)
 				<br />
-				Go to Step 1 and enter a proper username/password!
+				Go to Step 1 and enter a valid username and password!
 			</p>
 		';
 
@@ -539,7 +540,7 @@ class tx_dbal_installtool {
 				'step' => $instObj->step + 1,
 				'action' => htmlspecialchars($instObj->action),
 				'llOption2' => 'Select an EMPTY existing database:',
-				'llRemark2' => 'All tables used by TYPO3 will be overwritten in step 3.',
+				'llRemark2' => 'Any tables used by TYPO3 will be overwritten.',
 				'continue' => 'Continue'
 			);
 				// Add step marker for main template
