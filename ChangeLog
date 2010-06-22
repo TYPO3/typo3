@@ -1,3 +1,7 @@
+2010-06-22  Steffen Kamper  <info@sk-typo3.de>
+
+	* Follow-up to#14798: Sitename missing in Login form
+
 2010-06-22  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #14636: Improvements to new Backend skin - small change to the versioning color in the pagetree (Thanks to Steffen Gebert)

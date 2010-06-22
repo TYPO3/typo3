@@ -6531,7 +6531,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$updateMarkers,
 							'###|###',
 							TRUE,
-							FALSE
+							TRUE
 						);
 					}
 					$updatesAvailableSubpart = implode(chr(10), $updateItems);
