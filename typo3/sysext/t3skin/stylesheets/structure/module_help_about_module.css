@@ -40,3 +40,7 @@ table#typo3-about-modules tr.c-mainitem td img {
 table#typo3-about-modules tr.c-subitem-row td:first-child {
 	padding-left: 23px;
 }
+
+table#typo3-about-modules tr.c-subitem-row td.module-description {
+	padding-right: 10px;
+}
