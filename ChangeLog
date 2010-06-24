@@ -1,5 +1,6 @@
 2010-06-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14857: Reports Module: Wrong icon and a styling problem (Thanks to Georg Ringer)
 	* Fixed bug #14834: About module need padding
 	* Fixed bug #14844: Milliseconds on logout (Thanks to Georg Ringer)
 
