@@ -2,25 +2,23 @@
 /* $Id$ */
 
 .tx_sv_reportlist td {
-	vertical-align: top;
+	vertical-align: middle;
 }
-.tx_sv_reportlist td.cell {
-	padding: 2px 4px;
-}
-.tx_sv_reportlist td.typo3-message {
-	padding: 6px 6px 6px 26px;
-}
+
 .tx_sv_reportlist .bgColor2 td {
 	text-align: left;
 	font-weight: bold;
 	color: #fff;
 }
+
 .service-header {
 	margin-bottom: 4px;
 }
+
 .service-title {
 	font-weight: bold;
 }
+
 .service-description {
 	margin-bottom: 6px;
 	font-style: italic;
