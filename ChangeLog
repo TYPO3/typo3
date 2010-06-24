@@ -1,3 +1,7 @@
+2010-06-25  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #14844: Milliseconds on logout (Thanks to Georg Ringer)
+
 2010-06-22  Benjamin Mack  <benni@typo3.org>
 
 	* Branching TYPO3 4.4.0 to TYPO3_4-4
