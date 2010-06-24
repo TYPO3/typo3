@@ -364,7 +364,7 @@ class alt_menu_functions {
 
 					if (!empty($moduleLabel) || !empty($moduleDescription)) {
 						$descrCode .= '
-								<td>' . $moduleLabelHtml . $moduleDescription . '</td>';
+								<td class="module-description">' . $moduleLabelHtml . $moduleDescription . '</td>';
 					} else {
 						$descrCode .= '
 								<td>&nbsp;</td>';

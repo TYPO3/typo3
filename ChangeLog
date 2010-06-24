@@ -1,5 +1,6 @@
 2010-06-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14834: About module need padding
 	* Fixed bug #14844: Milliseconds on logout (Thanks to Georg Ringer)
 
 2010-06-22  Benjamin Mack  <benni@typo3.org>
