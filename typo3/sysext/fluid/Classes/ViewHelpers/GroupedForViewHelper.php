@@ -105,19 +105,11 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 			}
 			$each = $this->convertToArray($each);
 		}
-		$groups = array();
-		foreach ($each as $keyValue => $singleElement) {
-			if (is_array($singleElement)) {
-				$currentGroupKey = isset($singleElement[$groupBy]) ? $singleElement[$groupBy] : NULL;
-			} elseif (is_object($singleElement)) {
-				$currentGroupKey = Tx_Extbase_Reflection_ObjectAccess::getProperty($singleElement, $groupBy);
-			} else {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects' , 1253120365);
-			}
-			$groups[$currentGroupKey][$keyValue] = $singleElement;
-		}
-		foreach ($groups as $currentGroupKey => $group) {
-			$this->templateVariableContainer->add($groupKey, $currentGroupKey);
+
+		$groups = $this->groupElements($each, $groupBy);
+
+		foreach ($groups['values'] as $currentGroupIndex => $group) {
+			$this->templateVariableContainer->add($groupKey, $groups['keys'][$currentGroupIndex]);
 			$this->templateVariableContainer->add($as, $group);
 			$output .= $this->renderChildren();
 			$this->templateVariableContainer->remove($groupKey);
@@ -140,6 +132,34 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 			$array[$keyValue] = $singleElement;
 		}
 		return $array;
+	}
+
+	/**
+	 * Groups the given array by the specified groupBy property.
+	 *
+	 * @param array $elements The array / traversable object to be grouped
+	 * @param string $groupBy Group by this property
+	 * @return array The grouped array in the form array('keys' => array('key1' => [key1value], 'key2' => [key2value], ...), 'values' => array('key1' => array([key1value] => [element1]), ...), ...)
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function groupElements(array $elements, $groupBy) {
+		$groups = array('keys' => array(), 'values' => array());
+		foreach ($elements as $key => $value) {
+			if (is_array($value)) {
+				$currentGroupIndex = isset($value[$groupBy]) ? $value[$groupBy] : NULL;
+			} elseif (is_object($value)) {
+				$currentGroupIndex = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $groupBy);
+			} else {
+				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects' , 1253120365);
+			}
+			$currentGroupKeyValue = $currentGroupIndex;
+			if (is_object($currentGroupIndex)) {
+				$currentGroupIndex = spl_object_hash($currentGroupIndex);
+			}
+			$groups['keys'][$currentGroupIndex] = $currentGroupKeyValue;
+			$groups['values'][$currentGroupIndex][$key] = $value;
+		}
+		return $groups;
 	}
 }
 
