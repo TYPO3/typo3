@@ -229,7 +229,7 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 
 		});
 		progressControl.on('update', function(control, value, text) {
-			var rest = 30-(value * 30);
+			var rest = parseInt(30 - (value * 30), 10);
 			if (rest === 1) {
 				control.updateText(String.format(TYPO3.LLL.core.refresh_login_countdown_singular, rest));
 			} else {
