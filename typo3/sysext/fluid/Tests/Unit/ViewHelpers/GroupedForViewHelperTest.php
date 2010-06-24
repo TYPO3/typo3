@@ -26,7 +26,7 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * Testcase for CycleViewHelper
  *
- * @version $Id: GroupedForViewHelperTest.php 3350 2009-10-27 12:01:08Z k-fish $
+ * @version $Id: GroupedForViewHelperTest.php 4620 2010-06-24 10:03:16Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_GroupedForViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

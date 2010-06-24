@@ -96,6 +96,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		$this->registerArgument('optionValueField', 'string', 'If specified, will call the appropriate getter on each object to determine the value.');
 		$this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.');
 		$this->registerArgument('sortByOptionLabel', 'boolean', 'If true, List will be sorted by label.', FALSE, FALSE);
+		$this->registerArgument('selectAllByDefault', 'boolean', 'If specified options are selected if none was set before.', FALSE, FALSE);
 		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 	}
 
@@ -212,16 +213,21 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	/**
 	 * Render the option tags.
 	 *
-	 * @return boolean true if the
+	 * @return boolean TRUE if the value should be marked a s selected; FALSE otherwise
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function isSelected($value) {
 		$selectedValue = $this->getSelectedValue();
 		if ($value === $selectedValue || (string)$value === $selectedValue) {
 			return TRUE;
 		}
-		if ($this->arguments->hasArgument('multiple') && is_array($selectedValue) && in_array($value, $selectedValue)) {
-			return TRUE;
+		if ($this->arguments->hasArgument('multiple')) {
+			if (is_null($selectedValue) && $this->arguments['selectAllByDefault'] === TRUE) {
+				return TRUE;
+			} elseif (is_array($selectedValue) && in_array($value, $selectedValue)) {
+				return TRUE;
+			}
 		}
 		return FALSE;
 	}

@@ -24,7 +24,7 @@
  * The parser configuration. Contains all configuration needed to configure
  * the building of a SyntaxTree.
  *
- * @version $Id: Configuration.php 4269 2010-05-05 10:03:16Z robert $
+ * @version $Id: Configuration.php 4628 2010-06-24 14:34:08Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -33,19 +33,10 @@
 class Tx_Fluid_Core_Parser_Configuration {
 
 	/**
-	 * generic interceptors registered with the configuration.
+	 * Generic interceptors registered with the configuration.
 	 * @var array<\SplObjectStorage>
 	 */
-	protected $interceptors;
-
-	/**
-	 * Set up the internals...
-	 *
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function __construct() {
-		$this->interceptors = array();
-	}
+	protected $interceptors = array();
 
 	/**
 	 * Adds an interceptor to apply to values coming from object accessors.
