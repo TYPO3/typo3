@@ -79,7 +79,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function setCache(t3lib_cache_frontend_frontend $cache) {
+	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
 
 		if (empty($this->cacheDirectory)) {
