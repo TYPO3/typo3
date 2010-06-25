@@ -28,7 +28,7 @@
 										<script>browse_links.php?mode=wizard&amp;act=file|url</script>
 										<params type="array">
 											<blindLinkOptions>page,folder,mail,spec</blindLinkOptions>
-											<allowedExtensions>class,swf,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,flv</allowedExtensions>
+											<allowedExtensions>class,swf,swa,dcr,wav,avi,au,mov,asf,mpg,wmv,mp3,mp4,m4v,m4a,flv</allowedExtensions>
 										</params>
 										<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
 									</link>
