@@ -1,5 +1,6 @@
 2010-06-25  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14866: Quicktime audio format m4a isn't supported
 	* Fixed bug #14847: Bug: Template Analyzer: Line numbers barely readable (Thanks to Andy Grunwald)
 	* Fixed bug #14857: Reports Module: Wrong icon and a styling problem (Thanks to Georg Ringer)
 	* Fixed bug #14834: About module need padding
