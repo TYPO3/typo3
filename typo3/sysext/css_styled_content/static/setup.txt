@@ -1104,6 +1104,8 @@ tt_content.media {
 			flv = SWF
 			swf = SWF
 			mov = QT
+			m4v = QT
+			m4a = QT
 		}
 		
 		mimeConf.swfobject < tt_content.swfobject.20
