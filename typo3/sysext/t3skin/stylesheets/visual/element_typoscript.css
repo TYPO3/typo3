@@ -57,4 +57,5 @@ pre.ts-hl .ts-error {
 
 pre.ts-hl .ts-linenum {
 	background-color: #eee;
+	color: #212424;
 }
