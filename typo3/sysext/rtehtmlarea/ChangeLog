@@ -1,6 +1,7 @@
 2010-06-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14876: htmlArea RTE: SelectFont plugin may cause js error
+	* Follow-up to bug #14793: htmlArea RTE: Problematic icons in IE6
 
 2010-06-21  Stanislas Rolland  <typo3@sjbr.ca>
 

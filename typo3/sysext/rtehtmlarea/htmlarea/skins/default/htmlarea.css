@@ -104,6 +104,9 @@ body.ext-ie6 .htmlarea .toolbar .button {
 	padding: 0;
 	margin: 1px 0 1px 2px;
 }
+body.ext-ie6 .htmlarea .toolbar .x-btn-text {
+	background-image: url("images/sprites/actions.gif");
+}
 /* fixing button background-color and border-color in IE6 */
 body.ext-ie6 .htmlarea .toolbar .buttonHover,
 .htmlarea .toolbar .buttonHover {
@@ -197,6 +200,7 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	margin: 0;
 	padding: 0 3px;
 	line-height: 20px;
+	font-family: Verdana, Helvetica, Geneva, Arial, sans-serif;
 }
 .htmlarea .statusBar .statusBarTree a {
 	color:ButtonText;
@@ -216,6 +220,9 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	background-repeat: no-repeat;
 	margin-top: 2px;
 	height: 22px;
+}
+body.ext-ie6 .htmlarea-window .x-panel-icon {
+	background-image: url("images/sprites/actions.gif");
 }
 .htmlarea-window ul.x-tab-strip {
 	list-style: none;
@@ -367,12 +374,8 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 	width: 18px;
 	height: 18px;
 }
-/* Remove the icons in IE6 as they are not iepngfixed */
-body.ext-ie6 .htmlarea-context-menu a.x-menu-item {
-	padding-left: 3px;
-}
 body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
-	background-image: none;
+	background-image: url("images/sprites/actions.gif");
 }
 /* Window status bar selectors */
 .htmlarea-window .status-ready {
