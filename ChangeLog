@@ -1,3 +1,7 @@
+2010-06-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14876: htmlArea RTE: SelectFont plugin may cause js error
+
 2010-06-25  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14870: typo in parameter type causes php error (Thanks to Jigal van Hemert)
