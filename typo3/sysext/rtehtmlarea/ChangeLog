@@ -1,3 +1,7 @@
+2010-06-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14886: htmlArea RTE: Incorrect function scope when error is raised
+
 2010-06-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14876: htmlArea RTE: SelectFont plugin may cause js error

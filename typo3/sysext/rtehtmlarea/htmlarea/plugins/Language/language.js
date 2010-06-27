@@ -152,7 +152,7 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 					styleSheet.addRule(selector, style);
 				}
 				return true;
-			});
+			}, this);
 				// Load the language dropdown
 			select.getStore().load({
 				callback: function () { this.getButton('Language').setValue('none'); },
