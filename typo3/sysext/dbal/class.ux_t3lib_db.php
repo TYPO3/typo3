@@ -2020,7 +2020,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		Username to connect with.
 	 * @param	string		Password to connect with.
 	 * @return	mixed		Returns handler connection value
-	 * @deprecated since TYPO3 4.1
 	 * @see handler_init()
 	 */
 	public function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
@@ -2040,7 +2039,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		Database to connect to.
 	 * @return	boolean		Always returns TRUE; function is obsolete, database selection is made in handler_init() function!
-	 * @deprecated since TYPO3 4.1
 	 */
 	public function sql_select_db($TYPO3_db) {
 		return TRUE;
