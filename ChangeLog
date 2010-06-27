@@ -1,6 +1,7 @@
 2010-06-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14886: htmlArea RTE: Incorrect function scope when error is raised
+	* Fixed bug #14887: htmlArea RTE: RTE may be started before style sheets are loaded
 
 2010-06-26  Stanislas Rolland  <typo3@sjbr.ca>
 

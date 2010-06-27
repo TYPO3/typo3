@@ -966,14 +966,26 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		if (Ext.isOpera) {
 			if (this.document.readyState != 'complete') {
 				stylesAreLoaded = false;
-				errorText = 'Stylesheets not yet loaded';
+				errorText = 'Document.readyState not complete';
 			}
 		} else {
-			Ext.each(this.document.styleSheets, function (styleSheet) {
-				if (!Ext.isIE) try { rules = styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-				if (Ext.isIE) try { rules = styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-				if (Ext.isIE) try { rules = styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
-			});
+				// Test if the styleSheets array is at all accessible
+			if (Ext.isIE) {
+				try { rules = this.document.styleSheets[0].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			} else {
+				try { rules = this.document.styleSheets[0].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			}
+				// Then test if all stylesheets are accessible
+			if (stylesAreLoaded) {
+				Ext.each(this.document.styleSheets, function (styleSheet) {
+					if (Ext.isIE) {
+						try { rules = styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+						try { rules = styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+					} else {
+						try { rules = styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+					}
+				});
+			}
 		}
 		if (!stylesAreLoaded) {
 			this.getStyleSheets.defer(100, this);
