@@ -1069,8 +1069,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	setOptions: function () {
 		if (!Ext.isIE) {
 			try {
-				if (this.document.queryCommandEnabled('insertbronreturn')) {
-					this.document.execCommand('insertbronreturn', false, this.config.disableEnterParagraphs);
+				if (this.document.queryCommandEnabled('insertBrOnReturn')) {
+					this.document.execCommand('insertBrOnReturn', false, this.config.disableEnterParagraphs);
 				}
 				if (this.document.queryCommandEnabled('styleWithCSS')) {
 					this.document.execCommand('styleWithCSS', false, this.config.useCSS);
@@ -1334,7 +1334,23 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			return false;
 		}
 		if (event.shiftKey || this.config.disableEnterParagraphs) {
-			this.getEditor()._detectURL(event);
+			var editor = this.getEditor();
+			editor._detectURL(event);
+			if (Ext.isSafari) {
+				var brNode = editor.document.createElement('br');
+				editor.insertNodeAtSelection(brNode);
+				brNode.parentNode.normalize();
+					// Selection issue when an URL was detected
+				if (editor._unlinkOnUndo) {
+					brNode = brNode.parentNode.parentNode.insertBefore(brNode, brNode.parentNode.nextSibling);
+				}
+				if (!brNode.nextSibling || !/\S+/i.test(brNode.nextSibling.textContent)) {
+					var secondBrNode = editor.document.createElement('br');
+					secondBrNode = brNode.parentNode.appendChild(secondBrNode);
+				}
+				editor.selectNode(brNode, false);
+				event.stopEvent();
+			}
 		}
 			// Update the toolbar state after some time
 		this.getToolbar().updateLater.delay(200);
