@@ -1,3 +1,7 @@
+2010-06-29  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14905: htmlArea RTE: Image dialogue shows tab "Current picture" when there is no current image
+
 2010-06-29  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #14553: topFrameH configuration option doesn't work anymore

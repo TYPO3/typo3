@@ -1154,6 +1154,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		foreach ($this->hookObjects as $hookObject) {
 			$allowedItems = $hookObject->addAllowedItems($allowedItems);
 		}
+			// Remove tab "image" if there is no current image
+		if ($this->act !== 'image') {
+			$allowedItems = array_diff($allowedItems, array('image'));
+		}
 			// Remove options according to RTE configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->buttonConfig['options.']['removeItems'], 1));

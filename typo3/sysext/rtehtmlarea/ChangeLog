@@ -1,3 +1,7 @@
+2010-06-29  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14905: htmlArea RTE: Image dialogue shows tab "Current picture" when there is no current image 
+
 2010-06-28  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14830: htmlArea RTE: Entering line breaks with Safari not possible
