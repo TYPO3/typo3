@@ -1422,9 +1422,9 @@
 	 *
 	 * @return	boolean		True/false whether the pageUnavailable_handler should be used.
 	 */
-	function checkPageUnavailableHandler()	{
-		if($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
-		   !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
+	function checkPageUnavailableHandler() {
+		if ($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
+			!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 			$checkPageUnavailableHandler = TRUE;
 		} else {
 			$checkPageUnavailableHandler = FALSE;
@@ -3618,16 +3618,16 @@ if (version == "n3") {
 	 * @return	void
 	 * @access private
 	 */
-	function setParseTime()	{
-        // Compensates for the time consumed with Back end user initialization.
-        $microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
-        $microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
-        $microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
-        $microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
-        
-        $this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
-                                - ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
-    }
+	function setParseTime() {
+		// Compensates for the time consumed with Back end user initialization.
+		$microtime_start            = (isset($GLOBALS['TYPO3_MISC']['microtime_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_start'] : NULL;
+		$microtime_end              = (isset($GLOBALS['TYPO3_MISC']['microtime_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_end'] : NULL;
+		$microtime_BE_USER_start    = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] : NULL;
+		$microtime_BE_USER_end      = (isset($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'])) ? $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] : NULL;
+
+		$this->scriptParseTime = $GLOBALS['TT']->getMilliseconds($microtime_end) - $GLOBALS['TT']->getMilliseconds($microtime_start)
+			- ($GLOBALS['TT']->getMilliseconds($microtime_BE_USER_end) - $GLOBALS['TT']->getMilliseconds($microtime_BE_USER_start));
+	}
 
 	/**
 	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
@@ -3789,7 +3789,7 @@ if (version == "n3") {
 
 						// Hook for preprocessing the list of fields to insert into sys_stat:
 					if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'])) {
-						foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'] as $_classRef)    {
+						foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'] as $_classRef) {
 							$_procObj = t3lib_div::getUserObj($_classRef);
 							$insertFields = $_procObj->sysstat_preProcessFields($insertFields,$this);
 						}
