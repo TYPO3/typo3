@@ -1642,7 +1642,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$optValues['_ALL'] = '['.$LANG->getLL('ALL_tables').']';
 		}
 
-		foreach ($TCA as $table => $value) {
+		foreach ($TCA as $table => $_) {
 			if ($GLOBALS['BE_USER']->check('tables_select',$table) && !t3lib_div::inList($excludeList,$table))	{
 				$optValues[$table] = $table;
 			}
