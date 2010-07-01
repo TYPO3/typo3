@@ -378,6 +378,9 @@ class SC_db_new_content_el {
 				$code.= $posMap->printContentElementColumns($this->id,0,$colPosList,1,$this->R_URI);
 				$this->content.= $this->doc->section($LANG->getLL('2_selectPosition'),$code,0,1);
 			}
+
+				// Close wrapper div
+			$this->content .= '</div>';
 		} else {		// In case of no access:
 			$this->content = '';
 			$this->content.= $this->doc->header($LANG->getLL('newContentElement'));

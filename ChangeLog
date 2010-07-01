@@ -1,3 +1,7 @@
+2010-07-02  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #14947: Missing closing div in db_new_content_el.php (Thanks to Georg Ringer)
+
 2010-06-29  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #14810: Follow-up to bug #13670: Export module does not keep pagetree configuration (exports only the page tree) (Thanks to Thomas Juhnke) 
