@@ -378,6 +378,7 @@ class Tx_Extbase_MVC_Controller_Argument {
 	protected function findObjectByUid($uid) {
 		$query = $this->queryFactory->create($this->dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$result = $query->matching($query->equals('uid', $uid))->execute();
 		$object = NULL;
 		if (count($result) > 0) {

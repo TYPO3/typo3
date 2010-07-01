@@ -343,25 +343,19 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 */
 	protected function getPreparedQuery(Tx_Extbase_DomainObject_DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
 		$type = $this->getType(get_class($parentObject), $propertyName);
-		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
-			$query = $queryFactory->create($type);
-		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-			$query = $queryFactory->create($type);
-			$query->getQuerySettings()->setRespectStoragePage(FALSE);
+		$queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory');
+		$query = $queryFactory->create($type);
+		$query->getQuerySettings()->setRespectStoragePage(FALSE);
+		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
 				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
 		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-			$query = $queryFactory->create($type);
-			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			$query->setSource($this->getSource($parentObject, $propertyName));
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
 				$query->setOrderings(array($columnMap->getChildSortByFieldName() => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
 			}
-		} else {
-			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation for the property "' . $propertyName . '". This is mainly caused by a missing type declaration above the property definition. If the PHPDoc comment is there, make sure it starts with "/**" and not just with "/*".', 1252502725);
 		}
 		$query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->getRelationTableMatchFields()));
 		return $query;
