@@ -155,6 +155,7 @@ HTMLArea.Config = function (editorId) {
 			lastQuery: '',
 			triggerAction: 'all',
 			editable: !Ext.isIE,
+			selectOnFocus: !Ext.isIE,
 			validationEvent: false,
 			validateOnBlur: false,
 			submitValue: false,

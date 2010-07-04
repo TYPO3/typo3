@@ -73,6 +73,7 @@ HTMLArea.Acronym = HTMLArea.Plugin.extend({
 	configDefaults: {
 		combo: {
 			editable: true,
+			selectOnFocus: true,
 			typeAhead: true,
 			triggerAction: 'all',
 			forceSelection: true,
