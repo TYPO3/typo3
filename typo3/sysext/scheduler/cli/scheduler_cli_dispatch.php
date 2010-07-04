@@ -32,7 +32,7 @@
  *
  * $Id$
  */
-if (defined('TYPO3_cliMode') && TYPO3_cliMode && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
+if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
 	$hasTask = true;
 		// Create an instance of the scheduler object
 		/**

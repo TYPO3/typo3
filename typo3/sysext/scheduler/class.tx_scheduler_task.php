@@ -325,7 +325,7 @@ abstract class tx_scheduler_Task {
 
 			// Define the context in which the script is running
 		$context = 'BE';
-		if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
+		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) {
 			$context = 'CLI';
 		}
 

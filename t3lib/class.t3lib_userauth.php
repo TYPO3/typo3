@@ -497,8 +497,9 @@ class t3lib_userAuth {
 				$this->logoff();
 			}
 
-				// Refuse login for _CLI users (used by commandline scripts)
-			if ((strtoupper(substr($loginData['uname'],0,5))=='_CLI_') && (!defined('TYPO3_cliMode') || !TYPO3_cliMode))	{	// although TYPO3_cliMode should never be set when using active login...
+				// Refuse login for _CLI users, if not processing a CLI request type
+				// (although we shouldn't be here in case of a CLI request type)
+			if ((strtoupper(substr($loginData['uname'],0,5)) == '_CLI_') && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI)) {
 				throw new RuntimeException(
 					'TYPO3 Fatal Error: You have tried to login using a CLI user. Access prohibited!',
 					1270853931

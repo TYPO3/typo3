@@ -1,3 +1,7 @@
+2010-07-04 Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #14989: Use TYPO3_REQUESTTYPE consistently for CLI calls detection
+
 2010-07-03 Francois Suter  <francois@typo3.org>
 
 	* Cleanup #14987: Spelling mistakes in cli_dispatch.phpsh

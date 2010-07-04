@@ -4199,6 +4199,8 @@ final class t3lib_div {
 	 */
 	public static function getHostname($requestHost=TRUE)	{
 		$host = '';
+			// If not called from the command-line, resolve on getIndpEnv()
+			// Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
 		if ($requestHost && (!defined('TYPO3_cliMode') || !TYPO3_cliMode))	{
 			$host = self::getIndpEnv('HTTP_HOST');
 		}
@@ -5593,6 +5595,7 @@ final class t3lib_div {
 		global $TYPO3_CONF_VARS;
 
 			// for CLI logging name is <fqdn-hostname>:<TYPO3-path>
+			// Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode)	{
 			$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname($requestHost=FALSE).':'.PATH_site;
 		}
