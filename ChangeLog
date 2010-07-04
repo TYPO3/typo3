@@ -1,6 +1,7 @@
 2010-07-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14929: htmlArea RTE: Font Family and Font Size Dropdown boxes don't open
+	* Fixed bug #14996: htmlArea RTE: Clicking in drop down boxes should mark text
 
 2010-07-04 Francois Suter  <francois@typo3.org>
 
