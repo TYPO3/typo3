@@ -152,6 +152,7 @@ HTMLArea.Config = function (editorId) {
 		htmlareacombo: {
 			cls: 'select',
 			typeAhead: true,
+			lastQuery: '',
 			triggerAction: 'all',
 			editable: !Ext.isIE,
 			validationEvent: false,
@@ -206,7 +207,6 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 						data: config.options
 					});
 				} else if (config.storeUrl) {
-					config.mode = 'remote';
 						// Create combo json store
 					config.store = new Ext.data.JsonStore({
 						autoDestroy:  true,

@@ -1,3 +1,7 @@
+2010-07-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14929: htmlArea RTE: Font Family and Font Size Dropdown boxes don't open
+
 2010-06-29  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14905: htmlArea RTE: Image dialogue shows tab "Current picture" when there is no current image 
