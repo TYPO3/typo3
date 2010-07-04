@@ -1,3 +1,7 @@
+2010-07-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14929: htmlArea RTE: Font Family and Font Size Dropdown boxes don't open
+
 2010-07-02  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14947: Missing closing div in db_new_content_el.php (Thanks to Georg Ringer)

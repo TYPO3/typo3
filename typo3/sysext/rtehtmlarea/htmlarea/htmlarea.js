@@ -152,6 +152,7 @@ HTMLArea.Config = function (editorId) {
 		htmlareacombo: {
 			cls: 'select',
 			typeAhead: true,
+			lastQuery: '',
 			triggerAction: 'all',
 			editable: !Ext.isIE,
 			validationEvent: false,
@@ -206,7 +207,6 @@ HTMLArea.Config = Ext.extend(HTMLArea.Config, {
 						data: config.options
 					});
 				} else if (config.storeUrl) {
-					config.mode = 'remote';
 						// Create combo json store
 					config.store = new Ext.data.JsonStore({
 						autoDestroy:  true,
@@ -3184,20 +3184,38 @@ HTMLArea.Editor.prototype.getFullySelectedNode = function (selection, range, anc
 		if (!range) {
 			var range = this._createRange(selection);
 		}
-		if (!ancestors) {
-			var ancestors = this.getAllAncestors();
+		if (!Ext.isIE) {
+				// Testing boundaries
+			if (range.startContainer.nodeType === 3
+					&& range.startOffset == range.startContainer.textContent.length
+					&& range.startContainer.nextSibling.textContent == range.toString()) {
+				fullNodeSelected = true;
+				node = range.startContainer.nextSibling;
+			}
+			if (!fullNodeSelected
+					&& range.endContainer.nodeType === 3
+					&& range.endOffset == 0
+					&& range.endContainer.previousSibling.textContent == range.toString()) {
+				fullNodeSelected = true;
+				node = range.endContainer.previousSibling;
+			}
 		}
-		Ext.each(ancestors, function (ancestor) {
-			if (Ext.isIE) {
-				fullNodeSelected = (selection.type !== 'Control' && ancestor.innerText == range.text) || (selection.type === 'Control' && ancestor.innerText == range.item(0).text);
-			} else {
-				fullNodeSelected = (ancestor.textContent == range.toString());
+		if (!fullNodeSelected) {
+			if (!ancestors) {
+				var ancestors = this.getAllAncestors();
 			}
-			if (fullNodeSelected) {
-				node = ancestor;
-				return false;
-			}
-		});
+			Ext.each(ancestors, function (ancestor) {
+				if (Ext.isIE) {
+					fullNodeSelected = (selection.type !== 'Control' && ancestor.innerText == range.text) || (selection.type === 'Control' && ancestor.innerText == range.item(0).text);
+				} else {
+					fullNodeSelected = (ancestor.textContent == range.toString());
+				}
+				if (fullNodeSelected) {
+					node = ancestor;
+					return false;
+				}
+			});
+		}
 			// Working around bug with WebKit selection
 		if (Ext.isWebKit && !fullNodeSelected) {
 			var statusBarSelection = this.statusBar ? this.statusBar.getSelection() : null;
