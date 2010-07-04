@@ -58,13 +58,13 @@
 
 	* Fixed bug #14814: Improve texts in the 1-2-3 Install Tool
 	* Fixed bug #14822: Missing link in Install Tool footer
-	* Follow-up to ##14465: Make use of the new Sprite API - create new relation in IRRE
+	* Follow-up to #14465: Make use of the new Sprite API - create new relation in IRRE
 
 2010-06-22  Oliver Hader  <oliver@typo3.org>
 
 	* Cleanup: Updated ext_emconf.php files in system extensions
 
-2010-06-22  Sebastian Kurfuerst  <sebastian@typo3.org>
+2010-06-22  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raising Extbase and Fluid to 1.2.0
 
@@ -173,7 +173,7 @@
 	* Fixed bug ##14436: External links are prepended with current domain by RTE transformation
 	* Updated htmlArea RTE version to 2.0.1
 
-2010-06-18  Sebastian Kurfuerst  <sebastian@typo3.org>
+2010-06-18  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid versions to 1.2.0RC1
 
@@ -213,7 +213,7 @@
 
 2010-06-16  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #13874: NULL reference when using hook in class.t3lib_utility_client.php (Thanks to Steffen Mueller)
+	* Fixed bug #13874: NULL reference when using hook in class.t3lib_utility_client.php (Thanks to Steffen Müller)
 	* Fixed bug #14717: [Usability] Add delay to close the context menu
 	* Fixed bug #14016: typo in class.t3lib_tcemain.php (Thanks to Vladimir Podkovanov)
 
@@ -256,7 +256,7 @@
 
 	* Fixed bug #14640: Improve cookie detection at login screen (Thanks to Steffen Gebert)
 	* Fixed bug #14565: There is no way to disable compress and concatenate
-	* Fixed bug #14545: [No Title] shown when editing a record on root level (Thanks to Reinhard Fuehricht)
+	* Fixed bug #14545: [No Title] shown when editing a record on root level (Thanks to Reinhard Führicht)
 	* Fixed bug #14681: Use self:: for static method calls with classname:: within the same class in t3lib (Thanks to Sebastian Michaelsen)
 	* Fixed bug #14538: Icons missing in page tree for "Page contains" pages (Thanks to Steffen Ritter)
 
@@ -558,7 +558,7 @@
 	* Added feature #14490: A new skin for the TYPO3 Backend (Thanks to Steffen Gebert and Lars Zimmermann)
 	* Fixed bug #14342: t3lib_compressor does not rewrite "data:" URIs (Thanks to Steffen Gebert)
 
-2010-05-28  Sebastian Kurfuerst  <sebastian@typo3.org>
+2010-05-28  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase version from 1.2.0beta1 to 1.2.0beta2
 
@@ -706,8 +706,8 @@
 
 2010-05-15  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #14312: Notice undefined index systemLog and undefined constant TYPO3_ERRORHANDLER_MODE (thanks to Martin Mueller)
-	* Fixed bug #14309: Notice undefined index "error" & "debug" in index_ts.php (thanks to Martin Mueller)
+	* Fixed bug #14312: Notice undefined index systemLog and undefined constant TYPO3_ERRORHANDLER_MODE (thanks to Martin Müller)
+	* Fixed bug #14309: Notice undefined index "error" & "debug" in index_ts.php (thanks to Martin Müller)
 	* Fixed bug #14180: No Message shown when accessing backend if TYPO3_CONF_VARS[BE][adminOnly] = -1 (thanks to Georg Ringer)
 
 2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
@@ -795,7 +795,7 @@
 	* Fixed bug #13995: Hardcoded TYPO3 logo image shown in "HELP > About Modules" (Thanks to Stephan Kellermayr and Steffen Kamper)
 	* Fixed bug #14291: TCEforms: Incorrect background color style in type fields with images (Thanks to Stefan Galinski)
 	* Fixed bug #14316: Updated TYPO3_copyright_year in constants section of config_default.php (Thanks to Steffen Gebert)
-	* Fixed bug #14217: options.pageTree.showPageIdWithTitle doesn't work in record picker and RTE (Thanks to Reinhard Fuehricht)
+	* Fixed bug #14217: options.pageTree.showPageIdWithTitle doesn't work in record picker and RTE (Thanks to Reinhard Führicht)
 
 2010-05-06  Susanne Moog  <typo3@susanne-moog.de>
 
@@ -855,7 +855,7 @@
 	* Fixed bug #14277: Improve t3lib_compressor (thanks to Steffen Gebert)
 	* Fixed bug #14279: Some non-XHTML tags in Backend (thanks to Steffen Gebert)
 
-2010-05-02  Sebastian Kurfuerst  <sebastian@typo3.org>
+2010-05-02  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid versions to 1.2.0beta1.
 
@@ -866,7 +866,7 @@
 2010-05-01  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #14064: Removed unused functions to detect GDlib/TTF() in the installer
-	* Fixed bug #14243: some notices, undefined index in tslib_fe.php (Thanks to Martin Mueller)
+	* Fixed bug #14243: some notices, undefined index in tslib_fe.php (Thanks to Martin Müller)
 	* Followup to #14064: Textual change to the new install tool
 	* Followup to #7501: Removed check for static templates from installer
 
@@ -885,7 +885,7 @@
 
 2010-05-01  Susanne Moog  <typo3@susanne-moog.de>
 
-	* Fixed bug #236: Rendered pages do not validate if no doctype is set. (thanks to Christian Buelter)
+	* Fixed bug #236: Rendered pages do not validate if no doctype is set. (thanks to Christian Bülter)
 	* Fixed bug #14231: csc static template "v4.3" won't include the registered plugins
 
 2010-04-30  Benjamin Mack  <benni@typo3.org>
@@ -917,9 +917,9 @@
 
 	* Follow-up to bug #13194: Additional unit tests and test renamings for class tx_scheduler_CronCmd
 	* Fixed bug #13194: tx_scheduler_CronCmd does not correctly parse step values
-	* Fixed bug #14223: Notice undefined index in tslib_fe.php isOutputting() (Thanks to Martin Mueller)
-	* Fixed bug #14222: Notice undefined index in tslib_pibase.php (Thanks to Martin Mueller)
-	* Fixed bug #14220: Notice undefined index in t3lib_div::_GPmerged() (Thanks to Martin Mueller)
+	* Fixed bug #14223: Notice undefined index in tslib_fe.php isOutputting() (Thanks to Martin Müller)
+	* Fixed bug #14222: Notice undefined index in tslib_pibase.php (Thanks to Martin Müller)
+	* Fixed bug #14220: Notice undefined index in t3lib_div::_GPmerged() (Thanks to Martin Müller)
 	* Fixed bug #14256: tslib_cObj has two test case files (Thanks to Oliver Klee)
 
 2010-04-30  Susanne Moog  <typo3@susanne-moog.de>
@@ -935,7 +935,7 @@
 	* Follow-up to bug #14207: Duplicate submodule URL in JavaScript
 	* Fixed bug #9758: Write Configuration to extTables.php
 	* Fixed bug #14212: Better styling of BE login news (thanks to Georg Ringer)
-	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Fuehricht)
+	* Fixed bug #14116: Selecting/deselecting all records does not work with translated records (thanks to Reinhard Führicht)
 
 2010-04-29  Jeff Segars  <jeff@webempoweredchurch.org>
 
@@ -1425,7 +1425,7 @@
 
 	* Release of TYPO3 4.4.0alpha2
 
-2010-03-16  Sebastian Kurfuerst  <sebastian@typo3.org>
+2010-03-16  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raising Extbase to 1.1.0alpha1 and Fluid to 1.1.0alpha2
 
@@ -1502,7 +1502,7 @@
 
 2010-02-27  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #8191: IRRE - Storing data crashes somehow with MM tables (thanks to Peter Kuehn & Franz Koch)
+	* Fixed bug #8191: IRRE - Storing data crashes somehow with MM tables (thanks to Peter Kühn & Franz Koch)
 
 2010-02-27  Steffen Kamper  <info@sk-typo3.de>
 
@@ -2016,7 +2016,7 @@
 	* Fixed bug #12788: Recycler does not show up
 	* Fixed bug #12825: Wrong encoding of labels in t3editor
 	* Fixed bug #12766: CSS in "User Settings" broken (thanks to Georg Ringer)
-	* Fixed bug #9766: Use correct memory limit definition in Install Tool (thanks to Steffen Mueller)
+	* Fixed bug #9766: Use correct memory limit definition in Install Tool (thanks to Steffen Müller)
 	* Fixed bug #12830: Wrong encoding of JSON data in t3lib_PageRenderer
 	* Fixed bug #11395: TCAdefaults in Page TSConfig without effect on creating new element after existing one (thanks to Tolleiv Nietsch)
 	* Fixed bug #12800: Add functionality to work with caching framework and DBAL (thanks to Xavier Perseguers)
@@ -2304,7 +2304,7 @@
 
 	* Fixed bug #12019: Added missing style definition to Install Tool CSS file
 	* Fixed bug #12423: Reports: Services overview does not provide extension key
-	* Fixed bug #12482: Extension manager does not search in extension titles when in "import extension" section (thanks to Steffen Mueller)
+	* Fixed bug #12482: Extension manager does not search in extension titles when in "import extension" section (thanks to Steffen Müller)
 
 2009-11-08  Steffen Kamper  <info@sk-typo3.de>
 
@@ -2317,7 +2317,7 @@
 	* Fixed bug #12324: Page tree will not be shown in the TYPO3 backend
 	* Follow-up to bugfix #12324: Renamed sanitizeBackEndUrl() to sanitizeLocalUrl() in t3lib_div
 
-2009-11-08  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-11-08  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid versions from 0.9.16 to 0.9.17
 
@@ -2359,7 +2359,7 @@
 
 	* Follow-up to #12215: Scheduler: Added GMT time difference to server time display for improved clarity
 
-2009-11-06  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-11-06  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raising Extbase and Fluid versions to 0.9.12
 
@@ -2547,7 +2547,7 @@
 	* Fixed bug #12307: XSS vulnerability in alt_palette (thanks to Oliver Klee)
 	* Fixed bug #10501: XSS vulnerability in the install tool (thanks to Oliver Klee)
 
-2009-10-21  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-10-21  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid version numbers to 0.9.11.
 
@@ -2616,7 +2616,7 @@
 	* Fixed bug #10081: t3lib_div must not die if a locallang file is not found (thanks to Franz Holzinger)
 	* Fixed bug #12194: The filetree does not show whether a folder is write protected
 
-2009-10-20  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-10-20  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid versions to 0.9.10
 
@@ -2787,8 +2787,8 @@
 
 2009-09-30  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #12035: BE style must match t3skin in reports module and flash messages (thanks to Tom Ruether)
-	* Fixed bug #12036: BE style must match t3skin in Install Tool (thanks to Tom Ruether)
+	* Fixed bug #12035: BE style must match t3skin in reports module and flash messages (thanks to Tom Rüther)
+	* Fixed bug #12036: BE style must match t3skin in Install Tool (thanks to Tom Rüther)
 	* Added feature #7461: Transfer cookies via SSL only whenever possible
 
 2009-09-30  Rupert Germann  <rupi@gmx.li>
@@ -2842,7 +2842,7 @@
 	* Cleanup #12053: Cleanup of Extension Manager
 	* Fixed bug #12021: Extension Manager is not translatable (part 8) (thanks to Christopher Stelmaszyk)
 
-2009-09-24  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-09-24  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised extbase and fluid versions to 0.9.9
 
@@ -2868,7 +2868,7 @@
 	* Follow-up to bug #12017: Added vars from tbe_editor.js to TS-object
 	* Fixed bug #11994: Add more Flexibility to PageRenderer
 
-2009-09-21  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-09-21  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised extbase version to 0.9.8. This is a follow-up to bug #11903 and additionally makes the reflection cache work.
 
@@ -2938,7 +2938,7 @@
 	* Fixed bug #11992: treelist cache fills devlog
 	* Follow-up to bug #11505: added a forgotten comma to table definition of cache_hash
 
-2009-09-18  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-09-18  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase version to 0.9.7 so it works with the caching framework adjustments.
 
@@ -2994,7 +2994,7 @@
 	* Added feature #2278: Add hook to t3lib_TCEmain::checkModifyAccessList() (thanks to Michael Stucki)
 	* Follow-up to feature #2278: Added unit tests for the new checkModifyAccessList hook
 
-2009-09-17  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-09-17  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised Extbase and Fluid Versions from 0.9.5 to 0.9.6
 
@@ -3152,7 +3152,7 @@
 	* Fixed bug #11844: Description in about module uses htmlspecialchars which is wrong (thanks to Georg Ringer)
 	* Added test #11846: Add unit tests for t3lib_div::removeDotsFromTS()
 
-2009-09-01  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-09-01  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Raised extbase and fluid versions from 844 to 1181 (and pointing to a tag now instead of a revision)
 	* Changed sysext dbal to svn:externals. Thanks to Andreas Wolf for converting the Repositories!
@@ -3578,7 +3578,7 @@
 
 	* Fixed bug #11377: synced Ext JS resources with Ext JS 3.0RC2, removed skins and unused css/images
 
-2009-06-22  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-06-22  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Included up-to date Extbase and Fluid (revision 844, before it was 680). Lots of changes during the last development period starting at the developer days.
 
@@ -3856,7 +3856,7 @@
 
 2009-05-22  Rupert Germann  <rupi@gmx.li>
 
-	* Added feature #11074: Add more information to the list of extensions in EM import mode (thanks to Steffen Mueller)
+	* Added feature #11074: Add more information to the list of extensions in EM import mode (thanks to Steffen Müller)
 
 2009-05-21  Steffen Kamper  <info@sk-typo3.de>
 
@@ -3878,7 +3878,7 @@
 	* Fixed bug #10861: Eval of double2 doesn't work
 	* Fixed bug #10994: allow using custom adapter for Ext JS
 
-2009-05-19  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-05-19  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Updated Extbase revisions to 680; that fixed a small issue on registering plugins
 
@@ -3909,7 +3909,7 @@
 
 	* Clean up #11118: Reduce memory usage of db_list_extra
 
-2009-05-18  Sebastian Kurfuerst  <sebastian@typo3.org>
+2009-05-18  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* New Feature #1110: Added Extbase and Fluid to System Extensions via svn:externals.
 
@@ -3938,7 +3938,7 @@
 
 2009-05-16  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #10165: FlexForms: wrong mm-relations after copy and localize (thanks to Peter Kuehn)
+	* Fixed bug #10165: FlexForms: wrong mm-relations after copy and localize (thanks to Peter Kühn)
 
 2009-05-15  Christian Jul Jensen  <julle@typo3.org>
 
@@ -4320,7 +4320,7 @@
 
 2009-03-11  Francois Suter  <francois@typo3.org>
 
-	* Fixed issue #10573: CSH external Links in seeAlso not working (thanks to Steffen Mueller)
+	* Fixed issue #10573: CSH external Links in seeAlso not working (thanks to Steffen Müller)
 
 2009-03-11  Oliver Hader  <oliver@typo3.org>
 
@@ -4349,13 +4349,13 @@
 
 2009-03-10  Francois Suter  <francois@typo3.org>
 
-	* Added feature #10575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen Mueller)
+	* Added feature #10575: Add hover textbox popup (alttitle + description) for FlexForm CSH (thanks to Steffen Müller)
 
 2009-03-09  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #10099: Use TYPO3_DB->exec_SELECTcountRows() to determine the number of rows
 	* Follow-up to bug #10099: Added additional conversion to integer in tslib_feTCE::checkDoublePostExist()
-	* Added feature #8487: Enable configuration of filesize labels for CType uploads (thanks to Tom Ruether)
+	* Added feature #8487: Enable configuration of filesize labels for CType uploads (thanks to Tom Rüther)
 	* Cleanup: Updated copyright notices
 
 2009-03-08  Stanislas Rolland  <typo3@sjbr.ca>
@@ -4654,7 +4654,7 @@
 
 2009-02-06  Ingo Renner  <ingo@typo3.org>
 
-	* Fixed bug #10357: Add gp as an alternative to gpvar in TS getText for a more consistent naming scheme (credits Steffen Mueller)
+	* Fixed bug #10357: Add gp as an alternative to gpvar in TS getText for a more consistent naming scheme (credits Steffen Müller)
 
 2009-02-05  Francois Suter  <francois@typo3.org>
 
@@ -4735,7 +4735,7 @@
 2009-01-30  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #7123: Select wizard doesn't work in Safari (Thanks to Ismael Bidau)
-	* Fixed bug #10282: Table definition in cache_treelist not compliant with MySQL 5.0 strict mode (Thanks to Steffen Mueller and Steffen Kamper)
+	* Fixed bug #10282: Table definition in cache_treelist not compliant with MySQL 5.0 strict mode (Thanks to Steffen Müller and Steffen Kamper)
 	* Followup to #10094: Use foreach instead of while-list-each constructs in t3lib_TCEmain
 
 2009-01-30  Francois Suter  <francois@typo3.org>
@@ -6015,7 +6015,7 @@
 
 2008-06-05  Ingmar Schlecht  <ingmar@typo3.org>
 
-	* Fixed bug #6998: Installation misses key-definition of table pages (Patch by Steffen Mueller)
+	* Fixed bug #6998: Installation misses key-definition of table pages (Patch by Steffen Müller)
 
 2008-06-05  Ingo Renner  <ingo@typo3.org>
 
@@ -6382,7 +6382,7 @@
 
 	* Fixed bug #7496: exclude for header_position, header_link (Thanks to Michael Dengler / die digiparden)
 
-2008-04-03  Sebastian Kurfuerst  <sebastian@typo3.org>
+2008-04-03  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Fixed bug #7476: link in about module opens in the TYPO3 backend frameset (Thanks to Bodo Eichstaedt / wmdb)
 	* Fixed bug #7991: Workspace Preview is not aware of domain records (Thanks to Kian Gould / AOE media)
@@ -7790,7 +7790,7 @@
 	* Fixed bug #6692: When letting TYPO3 generate DB table icons it can happen that transparent areas become rendered black
 	* Added follow up on feature #6670: Enable Tabs in Page Properties
 
-2007-11-14  Sebastian Kurfuerst  <sebastian@typo3.org>
+2007-11-14  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Fixed feature #529: update inline TypoScript help (Thanks to Francois Suter)
 
@@ -8025,7 +8025,7 @@
 	* Fixed bug #6121: Reply-To field in formmails can contain invalid characters if formMailCharset different from site charset (patch by Wolfgang Zenker)
 	* Fixed bug #6533: Wrong naming of version number levels in Extension Manager
 
-2007-10-17  Sebastian Kurfuerst  <sebastian@typo3.org>
+2007-10-17  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Fixed bug #6202: Company field is missing for table fe_users in "View Item" (Thanks to Christian Kuhn)
 
@@ -8939,7 +8939,7 @@
 
 	* Alphabetically sorted TS tree in TS Object Browser (Thanks to Ingo Renner)
 
-2007-01-09  Sebastian Kurfuerst  <sebastian@typo3.org>
+2007-01-09  Sebastian Kurfürst  <sebastian@typo3.org>
 
 	* Rewrote TBE_EDITOR Javascript functions to use JS "objects" and outsourced them to an external file (thanks to Oliver Hader)
 	* !!! Removed the variables TBE_EDITOR_isChanged and TBE_EDITOR_loadTime in TBE_EDITOR javascript
@@ -9184,7 +9184,7 @@
 
 	* Fixed a missing space in typo3/template.php
 
-2006-09-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-09-15  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #3862: Tools>User Admin allows switching to disabled user
 	* Fixed bug #3863: Delete temp_CACHED_* files from "Edit files in typo3conf/:"
@@ -9214,7 +9214,7 @@
 
 	* Fixed bug #1268: plainMailEncoded not working with charset conversion.
 
-2006-09-03  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-09-03  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Added su_back.gif image again to gfx
 
@@ -9671,7 +9671,7 @@
 
 	* Fixed bugs #2949, #3016, #3037: Several Element Browser bugs
 
-2006-04-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-04-04  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Implement Single-Click rollback in record history
 
@@ -9831,7 +9831,7 @@
 
 	* htmlArea RTE: remove alternate skins from core CVS.
 
-2006-03-20  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-03-20  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Reverted the patch "Double-checking of match-conditions" because it caused trouble
 	* Fixed bug #2767: wrong wraps for sitemap/menu elements in accessibility mode
@@ -9892,7 +9892,7 @@
 
 	* More CSS fixes in typo3/stylesheet.css: Changed the height of dyntab-menues & various fixes to login screen
 
-2006-03-10  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-03-10  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Logo change to make it look better on any bright background
 
@@ -9916,7 +9916,7 @@
 	* Minor changes to config_default.php (comments were not displayed)
 	* Some post-cleanup in CSS Styled Context: Removed recently added "captionStdWrap" property (replaced by existing "caption" property) & changed compatVersion dependency
 
-2006-03-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-03-08  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Updated logos in the backend to reflect the new CI
 
@@ -9942,7 +9942,7 @@
 
 	* Enhanced MM handling in TCE for usage from foreign tables. Means MM relations can be edited in TCEForms from both ends of the relation.
 
-2006-03-07  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-03-07  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed skin issue #2766: class.t3lib_tceforms.php / type="checkbox" / bugs
 	* Fixed skin issue #2317: The background-color on highlighted items in alt_db_navframe.php
@@ -9966,7 +9966,7 @@
 	* Changed file icons for recently added advanced-BE-search feature
 	* Changes to indexed search, see local ChangeLog for details
 
-2006-03-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-03-06  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed some broken media relations
 	* Fixed bug #2713: change hardcoded "typo3/" to TYPO3_mainDir in sysext/cms/tslib/index_ts.php
@@ -10033,7 +10033,7 @@
 
 	* Enhance typolink.addQueryString and add addQueyString to HMENU with special=language (fix bug #2280)
 
-2006-02-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-02-28  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug: admin panel doesn't stay on page (introduced by "Change admin panel to use get instead of post"
 	* Made static templates work again by adjusting ext_tables_static+adt.sql (the paths to the media directory needed to be adjusted)
@@ -10047,7 +10047,7 @@
 
 	* !!! Removed showpic.php from TYPO3 root. Future applications will just use index.php instead.
 
-2006-02-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-02-27  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* !!! Avoiding double checking of match-conditions now.
 
@@ -10258,7 +10258,7 @@
 	* Added $TYPO3_CONF_VARS['SYS']['binSetup'] and made t3lib_exec use of it.
 	* Added TSconfig option options.hideRecords.[table]. Used in pagetree nav frame, web>list module, new record wizard
 
-2006-02-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-02-09  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2105: The width of tt_content is too large (due to access options)
 
@@ -10287,7 +10287,7 @@
 
 	* Fix bugtracker issue #408: enable direct mail to fetch https pages with user authentification
 
-2006-02-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-02-06  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* New feature: Integrated ss_dragdrop extension into the core (page and folder drag and drop). Thanks to Stephane Schitter for his work on this.
 
@@ -10295,7 +10295,7 @@
 
 	* Fix: (Versioning sysext) Two cells in table had hard-coded bgcolor attribute (were not skinnable)
 
-2006-02-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-02-04  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed a minor logical bug in undo/history
 	* Made SU-mode work again (was affected by hook name change)
@@ -10354,7 +10354,7 @@
 	* Fixed bug #1878: protect localconf.php from being lost on write error
 	* Enhanced TCE type "none" with many rendering options
 
-2006-01-27  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-27  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2337: remove 30KB editing limit in Template Editor
 	* Fixed bug #2405: CSC - allow styles and additional table class
@@ -10432,7 +10432,7 @@
 
 	* New feature #1639: Implemented form eval API so it's possible to add custom JS and PHP form evaluation functions to input fields in TCEForms (thanks to Thomas Hempel!)
 
-2006-01-22  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-22  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed issues #2333 and #2255, needed for the upcoming skin
 
@@ -10448,11 +10448,11 @@
 2006-01-20  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 4.0beta2
-	* New feature: Merged cron_cssstyledimgtext into CSS Styled Content. Kudos to Ernesto Baschny who did most of the work. Many thanks to Sebastian Kurfuerst for his great support. Great work boys!
+	* New feature: Merged cron_cssstyledimgtext into CSS Styled Content. Kudos to Ernesto Baschny who did most of the work. Many thanks to Sebastian Kurfürst for his great support. Great work boys!
 	* Added support to fetch values from objects in getText: myVar.data = TSFE:fe_user|user|username
 	* Fixed (part of) #2059: Removing "NOT NULL" when parsing SQL data
 
-2006-01-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-19  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* New feature: Revised Undo/History feature.
 	* Fixed issue #1952: New hook in class.t3lib_userauthgroup.php
@@ -10497,7 +10497,7 @@
 
 	* indexed_search: Removed empty line at the end of class.tx_indexedsearch.php. This line caused undesired effects in MSIE with certain PHP versions and UTF-8 encoding in FE.
 
-2006-01-18  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-18  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #1869: Copy sites with flexible content elements inside crash with fatal error
 	* Fixed bug #2136: changing extended view in list mode changes focus
@@ -10557,7 +10557,7 @@
 
 	* rtehtmlarea: Correction to path settings affecting image drag & drop and file/image upload.
 
-2006-01-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-08  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #1938: Selection "Frontend" gets lost on login failure
 	* Fixed bug #1149: FE-Editing in new Popups => Page doesn't reload
@@ -10568,7 +10568,7 @@
 	* Converted locallang files of htmlArea RTE extension to XML format.
 	* Revised all licence notices on all scripts of htmlArea RTE in order to publish under GPL.
 
-2006-01-06  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-06  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #1854: wrong Access check in RTE Wizard
 	* Added PHPdoc comments to the update wizard
@@ -10591,7 +10591,7 @@
 	* Changes to the DBAL extension (details see local ChangeLog)
 	* Minor fix to inline comment in class.t3lib_sqlparser.php
 
-2006-01-04  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2006-01-04  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2169: Import of testsite from T3D exceeds PHP maximum_execution_time
 	* Fixed bug #2127: Fatal error in mod/user/ws/index.php
@@ -10601,11 +10601,11 @@
 
 	* Add alternative field name argument to tslib_pibase->pi_initPIflexForm()
 
-2005-12-30  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-12-30  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2108: Error when using hide in Frontend Editing
 
-2005-12-29  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-12-29  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #2100: Warning: Call-time pass-by-reference has been deprecated
 	* Fixed bug #2126: Updating encryption key sets compat version to same value
@@ -10663,7 +10663,7 @@
 	* Applied DBAL-related changes. This fixes or helps to fix some issues, including bugs #1649, #1781, #2077 and others.
 	* Added dbal and adodb as system extensions.
 
-2005-12-26  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-12-26  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #752: scope of BE- and FE-Cookie: can't cope with multidomain-setup
 
@@ -10675,7 +10675,7 @@
 	* Fixed Gremlin #1643: alt_shortcut.php: Permissions for the target document are checked before a shortcut is displayed.
 	* alt_shortcut.php: The groups have been changed from numbers to practically usable category names. They can be changed with User TSconfig (just set the group to a string instead to "1")
 
-2005-12-25  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-12-25  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed error where deleted pages appear in the page tree when preview is activated. t3lib_pageselect->where_hid_del had to be changed.
 	* Changed length of page alias from 20 to 32 characters
@@ -10710,7 +10710,7 @@
 
 	* Fixed bug #1915: trigger 404 with bogus aliases
 
-2005-12-19  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-12-19  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* New feature #1078: make javascript warning/confirmation popups configurable
 	* Fixed bug #1578: Radio button validation does not work if there is only one radio button
@@ -10752,7 +10752,7 @@
 
 	* Fixed a small SQL-related bug in Dmitris workspace related implementations
 
-2005-12-14  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-12-14  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Updated NEWS.txt
 	* Fixed bug #1343: Minor problem with tslib_fe::prefixLocalAnchorsWithScript()
@@ -10794,7 +10794,7 @@
 	* Implemented access check for workspace editing
 	* Blinding for user and group names is implemented in workspace editing
 
-2005-11-30  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-30  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #874: XHTML compliance of GMENU with onmouseover images
 	* Fixed bug #1657: make default number of file upload forms in the file upload tool configurable
@@ -10811,7 +10811,7 @@
 	* Workspace module uses own classes for editing/creating workspaces (no permission check yet!)
 	* Better visual presentation for workspace list (added icons, ndashes, etc)
 
-2005-11-28  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-28  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed spelling error (Bug #1945)
 	* Inserted "exit" after location header in t3lib_userauth (relates to #1519)
@@ -10848,7 +10848,7 @@
 
 	* Methods imageLinkWrap() and typolink() in class.tslib_content.php: Made the JS PopUps accessible if JS is not available in the user's web browser. Add the TARGET-attribute only if the used doctype allows this.
 
-2005-11-23  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-23  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* XHTML Compliance: prefix local anchors with a string (bug #1243)
 	* Feature request #1453: stdWrap for fontColor attribute of GIFBUILDER?s TEXT-object
@@ -10874,17 +10874,17 @@
 
 	* Added two post-processing hooks into t3lib_tcemain->moveRecord. They are required by TemplaVoila 1.0
 
-2005-11-15  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-15  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #569: The "Access Key" combination now added to the "title" attribute of images
 	* Fixed bug #815: CLI-mode doesn't work with lockSSL enabled
 	* New feature #1518: override all admin panel values from TSConfig
 
-2005-11-12  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-12  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* New feature #1573: switch back to admin user after user switch (SU-mode)
 
-2005-11-11  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-11  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* New feature #1519: new option for lockSSL: get redirected to standard http after BE login with SSL
 	* Fixed bug #1624: Copying of a file in the same folder in the "Filelist" module dosen't work
@@ -10894,7 +10894,7 @@
 
 	* Fix for function getBorderAttr: closes bugs #1360 and #1461
 
-2005-11-09  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-09  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* New feature #1577: display clickmenus with XMLHTTP / ajax
 	* Fixed bug #1066: Shortcut to an invisible page leads to a frontend error
@@ -10904,7 +10904,7 @@
 	* Made TCEForms put <label> tags around icons for moving/deleting repetitive Flexform items
 	* Removed annoying feature of typo3/tab.js to focus the textarea
 
-2005-11-08  Sebastian Kurfuerst  <sebastian@garbage-group.de>
+2005-11-08  Sebastian Kurfürst  <sebastian@garbage-group.de>
 
 	* Fixed bug #586: User Admin can't create new user
 	* Fixed bug #1293: TCAdefaults.pages.doktype is not recognized by the wizard "Create new pages"
@@ -11070,7 +11070,7 @@
 2005-05-19  Michael Stucki  <michael@typo3.org>
 
 	* Small fix in typo3/sysext/install/mod/class.tx_install.php: GraphicsMagick executed without any parameters caused a server error (used in the Install Tool for guessing the product version)
-	* Fixed bug #1065: Labels of radio buttons in listview were not shown. Thanks to Sebastian Kurfuerst.
+	* Fixed bug #1065: Labels of radio buttons in listview were not shown. Thanks to Sebastian Kurfürst.
 	* Changed innerWrap and outerWrap in editPanels to be stdWrap'able. Thanks to Martin Kutschker.
 	* Fixed bug #98: Forms elements should not contain a wrap-attribute for textareas, so this is now optional. Thanks to Martin Kutschker.
 	* Fixed bug #1075: XHTML compliance of FORM elements. Thanks to Martin Kutschker.
@@ -11079,7 +11079,7 @@
 2005-05-19  Karsten Dambekalns  <karsten@typo3.org>
 
 	* typo3/sysext/install/mod/class.tx_install.php: Added a button to generate a random encryption key.
-	* typo3/sysext/cms/layout/db_layout.php: Fix for bug #1042. Thanks to Sebastian Kurfuerst and Michael Stucki.
+	* typo3/sysext/cms/layout/db_layout.php: Fix for bug #1042. Thanks to Sebastian Kurfürst and Michael Stucki.
 	  Additionally removed some unused variables/globalisations
 	* typo3/mod/tools/em/index.php: Applied patch for bug #1043 (ereg calls without escaped curly braces)
 	* t3lib/class.t3lib_install.php: Fix for bug #987 (hardcoded MyISAM table type)
@@ -11116,7 +11116,7 @@
 
 2005-05-11  Michael Scharkow  <mscharkow@gmx.net>
 
-	* Fixed bug #930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfuerst.
+	* Fixed bug #930: The delete button in QuickEdit mode lead to a 404 message. Thanks to Sebastian Kurfürst.
 
 2005-05-09  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -11241,7 +11241,7 @@
 
 2005-04-18  Karsten Dambekalns  <karsten@typo3.org>
 
-	* typo3/file_upload.php: Small fix to fix bug #986, patch by Sebastian Kurfuerst.
+	* typo3/file_upload.php: Small fix to fix bug #986, patch by Sebastian Kurfürst.
 	* t3lib/class.t3lib_befunc.php, sysext/viewpage/view/index.php: Fix to bug #983, preview when BE uses SSL.
 	* t3lib/class.t3lib_befunc.php: Show warning when encryption key is empty (bug #766).
 	* sysext/install/mod/class.tx_install.php: Make encryption key setting accessible in "Basic Configuration".
@@ -11343,7 +11343,7 @@
 2005-04-04  Robert Lemke  <robert@typo3.org>
 
 	* Added a preliminary way for moving containers in a flexform section in TCEforms + TCEmain. Before you could only delete containers.
-	* Added Sebastian Kurfuerst's collapsable modules feature for the backend's module bar
+	* Added Sebastian Kurfürst's collapsable modules feature for the backend's module bar
 
 2005-04-04  Kasper Skaarhoj  <kasper@typo3.com>
 
@@ -11393,12 +11393,12 @@
 	* Fixed bug #341: Changed table definition of "fe_session_data" so field "content" is MEDIUMBLOB instead of BLOB
 	* Fixed bug #890: fe_adminLib.inc procesSetFixed does not support userFunc_afterSave
 	* Fixed bug #316: Backend typo3/template.php output spurious </body> tag for doctype xhtml_frames
-	* Added two hooks to t3lib_userauthgroup for Sebastian Kurfuerst's ACL implementation
+	* Added two hooks to t3lib_userauthgroup for Sebastian Kurfürst's ACL implementation
 	* New feature #341: New option "ascii" for spamProtectEmailAddresses (very cool, because it doesn't need JavaScript! Thanks to Karsten Dambekalns)
 
 2005-03-25  Michael Stucki  <michael@typo3.org>
 
-	* Added two hooks for tx_timtaw, written by Sebastian Kurfuerst
+	* Added two hooks for tx_timtaw, written by Sebastian Kurfürst
 	* FORM object is finally able to create a reset button (closes #743, thanks to Michael Scharkow)
 	* FE editing: Up/Down buttons in panel did not work (closes #849, thanks to Peter Niederlag for pointing me on this)
 	* typeNum 0 is now set automatically by default: If a page object has no typeNum and typeNum '0' is not defined, TYPO3 will automatically do that now
