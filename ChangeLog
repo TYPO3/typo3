@@ -1,6 +1,7 @@
 2010-07-05  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to #14705: In BE login form labels: position of caps lock warning  (thanks to Steffen Gebert)
+	* Fixed bug #14880: introduced type hinting in t3lib_iconWorks (thanks to Jigal van Hemert)
 
 2010-07-05  Steffen Kamper  <info@sk-typo3.de>
 

@@ -634,7 +634,7 @@ final class t3lib_iconWorks	{
 	 * @return	string	the full HTML tag (usually a <span>)
 	 * @access public
 	 */
-	public static function getSpriteIcon($iconName, $options = array(), $overlays = array()) {
+	public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
 		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
 		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
 
@@ -671,7 +671,7 @@ final class t3lib_iconWorks	{
 	 * @return	string	the full HTML tag (usually a <span>)
 	 * @access public
 	 */
-	public static function getSpriteIconForFile($fileExtension, $options = array()) {
+	public static function getSpriteIconForFile($fileExtension, array $options = array()) {
 		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
 		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
 
@@ -732,7 +732,7 @@ final class t3lib_iconWorks	{
 	 * @return	string	the full HTML tag (usually a <span>)
 	 * @access public
 	 */
-	public static function getSpriteIconForRecord($table, $row, $options = array()) {
+	public static function getSpriteIconForRecord($table, array $row, array $options = array()) {
 		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
 		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
 
@@ -772,7 +772,7 @@ final class t3lib_iconWorks	{
 	 * @return	string	the CSS class for the sprite icon of that DB record
 	 * @access	private
 	 **/
-	protected static function mapRecordTypeToSpriteIconClass($table, $row) {
+	protected static function mapRecordTypeToSpriteIconClass($table, array $row) {
 		$iconName = '';
 		$recordType = array();
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
@@ -851,7 +851,7 @@ final class t3lib_iconWorks	{
 	 * @return	string	the CSS class for the sprite icon of that DB record
 	 * @access	private
 	 */
-	protected static function mapRecordOverlayToSpriteIconName($table, $row) {
+	protected static function mapRecordOverlayToSpriteIconName($table, array $row) {
 		$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
 			// Calculate for a given record the actual visibility at the moment
@@ -959,7 +959,7 @@ final class t3lib_iconWorks	{
 	 * @param	string	$innerHtml (optional)	the content within the tag, a "&nbsp;" by default
 	 * @param	string	$tagName (optional)	the name of the HTML element that should be used (span by default)
 	 */
-	protected static function buildSpriteHtmlIconTag($tagAttributes, $innerHtml = '&nbsp;', $tagName = 'span') {
+	protected static function buildSpriteHtmlIconTag(array $tagAttributes, $innerHtml = '&nbsp;', $tagName = 'span') {
 		$attributes = '';
 		foreach ($tagAttributes as $attribute => $value) {
 			$attributes .= ' ' . htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
