@@ -1973,8 +1973,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								$textAreaMarkers = array(
 									'id' => $k . '-' . $vk,
 									'name' => 'TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']',
-									'value' => $value
+									'value' => str_replace(array("'.chr(10).'", "' . LF . '"), array(LF, LF), $value)
 								);
+								$value = str_replace(array("'.chr(10).'", "' . LF . '"), array(' | ', ' | '), $value);
 									// Fill the markers in the subpart
 								$textAreaSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$textAreaSubpart,
@@ -2082,9 +2083,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									$description = trim($commentArr[1][$k][$vk]);
 									if (preg_match('/^string \(textarea\)/i', $description)) {
 											// Force Unix linebreaks in textareas
-										$value = str_replace(chr(13),'',$value);
+										$value = str_replace(chr(13), '', $value);
 											// Preserve linebreaks
-										$value = str_replace(chr(10),"'.chr(10).'",$value);
+										$value = str_replace(LF, "' . LF . '", $value);
 									}
 									if (preg_match('/^boolean/i', $description)) {
 											// When submitting settings in the Install Tool, values that default to "false" or "true"
