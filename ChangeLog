@@ -1,5 +1,6 @@
 2010-07-05  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14907: Help Modules can not be disabled on a per user basis (Thanks to Georg Ringer)
 	* Fixed bug #14957: Styling of record history (Thanks to Georg Ringer)
 
 2010-07-04  Stanislas Rolland  <typo3@sjbr.ca>
