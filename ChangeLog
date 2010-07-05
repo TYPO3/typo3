@@ -1,10 +1,14 @@
-22010-07-05  Steffen Kamper  <info@sk-typo3.de>
+2010-07-05  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Follow-up to #14705: In BE login form labels: position of caps lock warning  (thanks to Steffen Gebert)
+
+2010-07-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10958: Broken i18n_parent relation upon localizing records in workspace (Thanks to Tolleiv Nietsch)
 	* Fixed bug #14907: Help Modules can not be disabled on a per user basis (Thanks to Georg Ringer)
 	* Fixed bug #14957: Styling of record history (Thanks to Georg Ringer)
 
-010-07-04  Stanislas Rolland  <typo3@sjbr.ca>
+2010-07-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14929: htmlArea RTE: Font Family and Font Size Dropdown boxes don't open
 	* Fixed bug #14996: htmlArea RTE: Clicking in drop down boxes should mark text
