@@ -2,6 +2,7 @@
 
 	* Follow-up to #14705: In BE login form labels: position of caps lock warning  (thanks to Steffen Gebert)
 	* Fixed bug #14880: introduced type hinting in t3lib_iconWorks (thanks to Jigal van Hemert)
+	* Fixed bug #14824: wrong icon in template analyzer (thanks to Georg Ringer)
 
 2010-07-05  Steffen Kamper  <info@sk-typo3.de>
 
