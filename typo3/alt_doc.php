@@ -1089,13 +1089,20 @@ class SC_alt_doc {
 				$fetchFields = 'uid,'.$languageField.','.$transOrigPointerField;
 
 					// get record in current language
+				$rowCurrent = t3lib_befunc::getLiveVersionOfRecord($table, $uid, $fetchFields);
+				if (!is_array($rowCurrent)) {
 				$rowCurrent = t3lib_befunc::getRecord($table, $uid, $fetchFields);
+				}
+
 				$currentLanguage = $rowCurrent[$languageField];
 
 				if ($currentLanguage>-1)	{	// Disabled for records with [all] language!
 						// get record in default language if needed
 					if ($currentLanguage) {
+						$rowsByLang[0] = t3lib_befunc::getLiveVersionOfRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
+						if (!is_array($rowsByLang[0])) {
 						$rowsByLang[0] = t3lib_befunc::getRecord($table, $rowCurrent[$transOrigPointerField], $fetchFields);
+						}
 					} else {
 						$rowsByLang[0] = $rowCurrent;
 					}
