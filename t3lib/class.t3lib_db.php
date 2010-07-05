@@ -1114,7 +1114,7 @@ class t3lib_DB {
 				4
 			);
 		} else {
-			$setDBinit = t3lib_div::trimExplode(LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'], TRUE);
+			$setDBinit = t3lib_div::trimExplode(LF, str_replace("' . LF . '", LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
 			foreach ($setDBinit as $v) {
 				if (mysql_query($v, $this->link) === FALSE) {
 					t3lib_div::sysLog('Could not initialize DB connection with query "' . $v .
