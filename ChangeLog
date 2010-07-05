@@ -1,3 +1,7 @@
+2010-07-05  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Follow-up to #14705: In BE login form labels: position of caps lock warning  (thanks to Steffen Gebert)
+
 2010-07-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #10958: Broken i18n_parent relation upon localizing records in workspace (Thanks to Tolleiv Nietsch)
@@ -168,7 +172,7 @@
 
 2010-06-18  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #14705: In BE login form labels are to small (for German BE-Language)
+	* Fixed bug #14705: In BE login form labels are to small (for German BE-Language) (thanks to Falk Wachsmuth)
 
 2010-06-18  Benjamin Mack  <benni@typo3.org>
 
