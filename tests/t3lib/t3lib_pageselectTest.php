@@ -26,7 +26,9 @@
 /**
  * Testcase for class t3lib_page
  *
- * @author	Christian Kuhn <lolli@schwarzbu.ch>
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
+ * @author Oliver Klee <typo3-coding@oliverklee.de>
+ *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -108,6 +110,53 @@ class t3lib_pageselectTest extends tx_phpunit_testcase {
 		$this->assertEquals(
 			'',
 			$this->pageSelectObject->getPathFromRootline(array())
+		);
+	}
+
+
+	///////////////////////////////
+	// Tests concerning getExtURL
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getExtUrlForDokType2ReturnsFalse() {
+		$this->assertEquals(
+			FALSE,
+			$this->pageSelectObject->getExtURL(array('doktype' => 2))
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getExtUrlForDokType3AndUrlType1AddsHttpSchemeToUrl() {
+		$this->assertEquals(
+			'http://www.example.com',
+			$this->pageSelectObject->getExtURL(
+				array(
+					'doktype' => 3,
+					'urltype' => 1,
+					'url' => 'www.example.com',
+				)
+			)
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getExtUrlForDokType3AndUrlType0PrependsSiteUrl() {
+		$this->assertEquals(
+			t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/',
+			$this->pageSelectObject->getExtURL(
+				array(
+					'doktype' => 3,
+					'urltype' => 0,
+					'url' => 'hello/world/',
+				)
+			)
 		);
 	}
 }

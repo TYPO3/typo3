@@ -56,17 +56,76 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 
+	///////////////////////////////
+	// Tests concerning splitCalc
+	///////////////////////////////
+
 	/**
 	 * @test
 	 */
-	public function calcPriorityCalculatesBasicArithmeticOperation() {
-		$this->assertEquals(9, t3lib_div::calcPriority('6 + 3'));
-		$this->assertEquals(3, t3lib_div::calcPriority('6 - 3'));
-		$this->assertEquals(-3, t3lib_div::calcPriority('3 - 6'));
-		$this->assertEquals(6, t3lib_div::calcPriority('2 * 3'));
-		$this->assertEquals(2.5, t3lib_div::calcPriority('5 / 2'));
-		$this->assertEquals(1, t3lib_div::calcPriority('5 % 2'));
-		$this->assertEquals(8, t3lib_div::calcPriority('2 ^ 3'));
+	public function splitCalcForEmptyStringReturnsEmptyArray() {
+		$this->assertEquals(
+			array(),
+			t3lib_div::splitCalc('', '+-*/')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function splitCalcForNumberWithoutOperatorReturnsArrayWithPlusAndNumber() {
+		$this->assertEquals(
+			array(array('+', 42)),
+			t3lib_div::splitCalc('42', '+-*/')
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function splitCalcForTwoNumbersWithAsterikReturnsFirstNumberWithPlusAndSecondNumberWithOperator() {
+		$this->assertEquals(
+			array(
+				array('+', 42),
+				array('*', 31),
+			),
+			t3lib_div::splitCalc('42 * 31', '+-*/')
+		);
+	}
+
+
+	//////////////////////////////////
+	// Tests concerning calcPriority
+	//////////////////////////////////
+
+	/**
+	 * @see calcPriorityCalculatesBasicArithmeticOperation
+	 */
+	public function calcPriorityTwoOperandsDataProvider() {
+		return array(
+			'add' => array(9, '6 + 3'),
+			'substractWithPositiveResult' => array(3, '6 - 3'),
+			'substractWithNegativeResult' => array(-3, '3 - 6'),
+			'multiply' => array(6, '2 * 3'),
+			'divide' => array(2.5, '5 / 2'),
+			'modulus' => array(1, '5 % 2'),
+			'power' => array(8, '2 ^ 3'),
+		);
+	}
+
+	/**
+	 * @test
+	 *
+	 * @dataProvider calcPriorityTwoOperandsDataProvider
+	 *
+	 * @param string $expected the expected value from calcPriority
+	 * @param string $arithmeticExpression the string to feed to calcPriority
+	 */
+	public function calcPriorityCalculatesBasicArithmeticOperation($expected, $arithmeticExpression) {
+		$this->assertEquals(
+			$expected,
+			t3lib_div::calcPriority($arithmeticExpression)
+		);
 	}
 
 	/**
