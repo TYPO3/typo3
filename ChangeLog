@@ -1,5 +1,6 @@
 2010-07-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #14960: [t3skin] apps-pagetree.css is redundant (Thanks to Felix Kopp)
 	* Follow-up to #13379: Sprite Icon API (Thanks to Steffen Ritter)
 	* Fixed bug #14980: Install tool causes PHP warnings if	typo3conf/ is not writeable
 
