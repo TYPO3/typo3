@@ -4,6 +4,7 @@
 
 2010-07-06  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #14984: Add example unit tests from T3DD10 unit testing workshop (Thanks to Oliver Klee)
 	* Fixed bug #14885: No access to taskcenter (tasks) for non-admins (Thanks to Jigal van Hemert)
 	* Fixed bug #14991: Missing fields in "showRecordFieldList" at the TCA for fe_users (Thanks to Frank Nägler)
 	* Fixed bug #14972: Add unit tests for t3lib_div::removeArrayEntryByValue (Thanks to Thorben Kapp)
