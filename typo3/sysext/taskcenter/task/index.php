@@ -503,7 +503,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 			return FALSE;
 		}
 
-		return FALSE;
+		return TRUE;
 	}
 
 	/**
