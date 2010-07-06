@@ -121,7 +121,9 @@ class t3lib_spritemanager_SimpleHandler implements t3lib_spritemanager_SpriteIco
 		$iconPath = '../../' . TYPO3_mainDir;
 
 		foreach((array) $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'] as $iconName => $iconFile) {
-			$css = str_replace('###NAME###', str_replace('extensions-', '', $iconName), $this->styleSheetTemplateExtIcons);
+			$css = str_replace('###NAME###', str_replace(
+				array('extensions-', 'tcarecords-'), array('', ''), $iconName
+			), $this->styleSheetTemplateExtIcons);
 			$css = str_replace('###IMAGE###', t3lib_div::resolveBackPath($iconPath . $iconFile), $css);
 
 			$this->iconNames[] = $iconName;

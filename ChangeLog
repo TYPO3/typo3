@@ -1,5 +1,6 @@
 2010-07-06  Steffen Kamper  <info@sk-typo3.de>
 
+	* Follow-up to #13379: Sprite Icon API (Thanks to Steffen Ritter)
 	* Fixed bug #14980: Install tool causes PHP warnings if	typo3conf/ is not writeable
 
 2010-07-05  Susanne Moog  <typo3@susanne-moog.de>

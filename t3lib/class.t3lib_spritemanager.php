@@ -195,9 +195,9 @@ class t3lib_SpriteManager {
 	 */
 	public static function addTcaTypeIcon($table, $type, $iconFile) {
 		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type] = $iconFile;
-		if(isset($GLOBALS['TCA'][$table]['typeicon_classes'])) {
-			$GLOBALS['TCA'][$table]['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
-		} 
+		if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+			$GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
+		}
 	}
 }
 
