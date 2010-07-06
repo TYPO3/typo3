@@ -1,3 +1,7 @@
+2010-07-06 Francois Suter  <francois@typo3.org>
+
+	* Added feature #14993: Use TYPO3_REQUESTTYPE also for Install Tool access
+
 2010-07-06  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14960: [t3skin] apps-pagetree.css is redundant (Thanks to Felix Kopp)

@@ -558,13 +558,14 @@ define('TYPO3_REQUESTTYPE_FE', 1);
 define('TYPO3_REQUESTTYPE_BE', 2);
 define('TYPO3_REQUESTTYPE_CLI', 4);
 define('TYPO3_REQUESTTYPE_AJAX', 8);
+define('TYPO3_REQUESTTYPE_INSTALL', 16);
 define('TYPO3_REQUESTTYPE',
 	(TYPO3_MODE == 'FE' ? TYPO3_REQUESTTYPE_FE : 0) |
 	(TYPO3_MODE == 'BE' ? TYPO3_REQUESTTYPE_BE : 0) |
 	((defined('TYPO3_cliMode') && TYPO3_cliMode) ? TYPO3_REQUESTTYPE_CLI : 0) |
+	((defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) ? TYPO3_REQUESTTYPE_INSTALL : 0) |
 	($TYPO3_AJAX ? TYPO3_REQUESTTYPE_AJAX : 0)
 );
-
 
 
 // *********************
