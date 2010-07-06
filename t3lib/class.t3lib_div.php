@@ -1811,7 +1811,6 @@ final class t3lib_div {
 				unset($array[$k]);
 			}
 		}
-		reset($array);
 		return $array;
 	}
 

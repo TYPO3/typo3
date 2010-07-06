@@ -201,6 +201,63 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function checkRemoveArrayEntryByValueRemovesEntriesFromOneDimensionalArray() {
+		$inputArray = array(
+			'0' => 'test1',
+			'1' => 'test2',
+			'2' => 'test3',
+			'3' => 'test2',
+		);
+		$compareValue = 'test2';
+		$expectedResult = array(
+			'0' => 'test1',
+			'2' => 'test3',
+		);
+		$actualResult = t3lib_div::removeArrayEntryByValue($inputArray, $compareValue);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkRemoveArrayEntryByValueRemovesEntriesFromMultiDimensionalArray() {
+		$inputArray = array(
+			'0' => 'foo',
+			'1' => array(
+				'10' => 'bar',
+			),
+			'2' => 'bar',
+		);
+		$compareValue = 'bar';
+		$expectedResult = array(
+			'0' => 'foo',
+			'1' => array(),
+		);
+		$actualResult = t3lib_div::removeArrayEntryByValue($inputArray, $compareValue);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkRemoveArrayEntryByValueRemovesEntryWithEmptyString() {
+		$inputArray = array(
+			'0' => 'foo',
+			'1' => '',
+			'2' => 'bar',
+		);
+		$compareValue = '';
+		$expectedResult = array(
+			'0' => 'foo',
+			'2' => 'bar',
+		);
+		$actualResult = t3lib_div::removeArrayEntryByValue($inputArray, $compareValue);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
 	 * Checks whether measurement strings like "100k" return the accordant
 	 * byte representation like 102400 in this case.
 	 *
