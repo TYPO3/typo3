@@ -1,5 +1,6 @@
 2010-07-06  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #14967: [Caching framework] fileBackend testcase removes files in /sbin
 	* Fixed bug #14977: Add php cache frontend to t3lib/config_default.php (Thanks to Felix Oertel)
 
 2010-07-06  Francois Suter  <francois@typo3.org>

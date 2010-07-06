@@ -108,15 +108,24 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @expectedException t3lib_cache_Exception
 	 */
 	public function setCacheDirectoryThrowsExceptionOnNonWritableDirectory() {
-		if (DIRECTORY_SEPARATOR == '\\') {
+		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('test not reliable in Windows environment');
 		}
-		$directoryName = '/sbin';
 
-		$this->backend->setCacheDirectory($directoryName);
+			// Create test directory and remove write permissions
+		$directoryName = PATH_site . 'typo3temp/' . uniqid('test_');
+		t3lib_div::mkdir($directoryName);
+		chmod($directoryName, 1551);
+
+		try {
+			$this->backend->setCacheDirectory($directoryName);
+			$this->fail('setCacheDirectory did not throw an exception on a non writable directory');
+		} catch (t3lib_cache_Exception $e) {
+				// Remove created test directory
+			t3lib_div::rmdir($directoryName);
+		}
 	}
 
 	/**
