@@ -174,7 +174,7 @@ class wslib {
 
 	/****************************
 	 *
-	 * CLI functions
+	 * Scheduler methods
 	 *
 	 ****************************/
 
@@ -182,14 +182,18 @@ class wslib {
 	 * Main function to call from cli-script
 	 *
 	 * @return	void
+	 * @deprecated since TYPO3 4.5 - This was meant for an obsolete CLI script. You shouldn't be calling this.
 	 */
 	function CLI_main()	{
+		self::logDeprecatedFunction();
 		$this->autoPublishWorkspaces();
 	}
 
 	/**
-	 * CLI internal function:
-	 * Will search for workspaces which has timed out regarding publishing and publish them
+	 * This method is called by the Scheduler task that triggers
+	 * the autopublication process
+	 * It searches for workspaces whose publication date is in the past
+	 * and publishes them
 	 *
 	 * @return	void
 	 */

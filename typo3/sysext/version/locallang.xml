@@ -126,6 +126,8 @@
 			<label index="versionSelect.publish">Publish page</label>
 			<label index="versionSelect.inBranch">Inside branch, no further versioning possible</label>
 			<label index="versionSelect.versionsFound">Versions found on page, no "Page" versioning possible</label>
+			<label index="autopublishTask.name">Workspaces auto-publication</label>
+			<label index="autopublishTask.description">This tasks checks any workspace that has a publication date set in the past and automatically publishes it.</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -1,6 +1,7 @@
 2010-07-06 Francois Suter  <francois@typo3.org>
 
 	* Added feature #14993: Use TYPO3_REQUESTTYPE also for Install Tool access
+	* Added feature #14994: Add Scheduler task for autopublication of workspaces
 
 2010-07-06  Steffen Kamper  <info@sk-typo3.de>
 
