@@ -73,7 +73,7 @@ class t3lib_SpriteManager {
 			// create a fileName, the hash includes all icons and css-styles registered and the extlist
 		$this->tempFileName = PATH_site . self::$tempPath .
 							md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
-							md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) . 
+							md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) .
 							$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
 			// if no cache-file for the current config ist present, regenerate it
 		if(!@file_exists($this->tempFileName)) {
@@ -195,9 +195,9 @@ class t3lib_SpriteManager {
 	 */
 	public static function addTcaTypeIcon($table, $type, $iconFile) {
 		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type] = $iconFile;
-		if(isset($GLOBALS['TCA'][$table]['typeicon_classes'])) {
-			$GLOBALS['TCA'][$table]['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
-		} 
+		if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
+			$GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
+		}
 	}
 }
 
