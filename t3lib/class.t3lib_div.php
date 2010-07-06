@@ -1134,15 +1134,16 @@ final class t3lib_div {
 	 */
 	public static function split_fileref($fileref)	{
 		$reg = array();
-		if (preg_match('/(.*\/)(.*)$/',$fileref,$reg)	)	{
+		if (preg_match('/(.*\/)(.*)$/', $fileref, $reg)) {
 			$info['path'] = $reg[1];
 			$info['file'] = $reg[2];
 		} else {
 			$info['path'] = '';
 			$info['file'] = $fileref;
 		}
-		$reg='';
-		if (	preg_match('/(.*)\.([^\.]*$)/',$info['file'],$reg)	)	{
+
+		$reg = '';
+		if (is_file($fileref) && preg_match('/(.*)\.([^\.]*$)/', $info['file'], $reg)) {
 			$info['filebody'] = $reg[1];
 			$info['fileext'] = strtolower($reg[2]);
 			$info['realFileext'] = $reg[2];

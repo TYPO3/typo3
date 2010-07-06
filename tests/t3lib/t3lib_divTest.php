@@ -1454,5 +1454,34 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertTrue($mkdirResult);
 		$this->assertTrue($directoryCreated);
 	}
+
+	/**
+	 * Checks if t3lib_div::split_fileref() return NO file extension if incomming $fileref is a folder
+	 * This test avoid bug #0014845: Filelist module reports "type" of files also for directories
+	 * This test assumes directory 'PATH_site'/typo3temp exists
+	 *
+	 * @test
+	 * @see	t3lib_div::split_fileref()
+	 */
+	public function checkIfSplitFileRefReturnsFileTypeNotForFolders(){
+		$directoryName = uniqid('test_');
+		$directoryPath = PATH_site . 'typo3temp/';
+		$directory = $directoryPath . $directoryName;
+		mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
+
+		$fileInfo = t3lib_div::split_fileref($directory);
+
+		$directoryCreated = is_dir($directory);
+		$this->assertTrue($directoryCreated);
+
+		$this->assertType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+		$this->assertEquals($directoryPath, $fileInfo['path']);
+		$this->assertEquals($directoryName, $fileInfo['file']);
+		$this->assertEquals($directoryName, $fileInfo['filebody']);
+		$this->assertEquals('', $fileInfo['fileext']);
+		$this->assertArrayNotHasKey('realFileext', $fileInfo);
+
+		rmdir($directory);
+	}
 }
 ?>
