@@ -110,7 +110,8 @@ $TYPO3_CONF_VARS = array(
 			'defaultBackend'  => 't3lib_cache_backend_FileBackend',
 			'cacheFrontends' => array(
 				't3lib_cache_frontend_VariableFrontend' => 't3lib/cache/frontend/class.t3lib_cache_frontend_variablefrontend.php:t3lib_cache_frontend_VariableFrontend',
-				't3lib_cache_frontend_StringFrontend'   => 't3lib/cache/frontend/class.t3lib_cache_frontend_stringfrontend.php:t3lib_cache_frontend_StringFrontend'
+				't3lib_cache_frontend_StringFrontend'   => 't3lib/cache/frontend/class.t3lib_cache_frontend_stringfrontend.php:t3lib_cache_frontend_StringFrontend',
+				't3lib_cache_frontend_PhpFrontend'      => 't3lib/cache/frontend/class.t3lib_cache_frontend_phpfrontend.php:t3lib_cache_frontend_PhpFrontend',
 			),
 			'cacheBackends' => array(
 				't3lib_cache_backend_DbBackend'        => 't3lib/cache/backend/class.t3lib_cache_backend_dbbackend.php:t3lib_cache_backend_DbBackend',

@@ -1,4 +1,8 @@
-2010-07-06 Francois Suter  <francois@typo3.org>
+2010-07-06  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #14977: Add php cache frontend to t3lib/config_default.php (Thanks to Felix Oertel)
+
+2010-07-06  Francois Suter  <francois@typo3.org>
 
 	* Added feature #14993: Use TYPO3_REQUESTTYPE also for Install Tool access
 	* Added feature #14994: Add Scheduler task for autopublication of workspaces
@@ -7,7 +11,7 @@
 
 	* Fixed bug #14960: [t3skin] apps-pagetree.css is redundant (Thanks to Felix Kopp)
 	* Follow-up to #13379: Sprite Icon API (Thanks to Steffen Ritter)
-	* Fixed bug #14980: Install tool causes PHP warnings if	typo3conf/ is not writeable
+	* Fixed bug #14980: Install tool causes PHP warnings if typo3conf/ is not writeable
 
 2010-07-05  Susanne Moog  <typo3@susanne-moog.de>
 
@@ -27,11 +31,11 @@
 	* Fixed bug #14929: htmlArea RTE: Font Family and Font Size Dropdown boxes don't open
 	* Fixed bug #14996: htmlArea RTE: Clicking in drop down boxes should mark text
 
-2010-07-04 Francois Suter  <francois@typo3.org>
+2010-07-04  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14989: Use TYPO3_REQUESTTYPE consistently for CLI calls detection
 
-2010-07-03 Francois Suter  <francois@typo3.org>
+2010-07-03  Francois Suter  <francois@typo3.org>
 
 	* Cleanup #14987: Spelling mistakes in cli_dispatch.phpsh
 
