@@ -1,3 +1,7 @@
+2010-07-06  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14845: Bug: Filelist module reports "type" of files also for directories  (thanks to Caspar Stuebs and Andy Grunwald)
+
 2010-07-06  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14885: No access to taskcenter (tasks) for non-admins (Thanks to Jigal van Hemert)
