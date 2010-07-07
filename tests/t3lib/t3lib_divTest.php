@@ -57,6 +57,64 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	///////////////////////////////
+	// Tests concerning validIP
+	///////////////////////////////
+
+	/**
+	 * Data provider for checkValidIpReturnsTrueForValidIp
+	 *
+	 * @return array Data sets
+	 */
+	public static function validIpDataProvider() {
+		return array(
+			'0.0.0.0' => array('0.0.0.0'),
+			'private IPv4 class C' => array('192.168.0.1'),
+			'private IPv4 class A' => array('10.0.13.1'),
+			'private IPv6' => array('fe80::daa2:5eff:fe8b:7dfb'),
+		);
+	}
+
+	/**
+	 * Checks if t3lib_div::validIP() returns true for valid IPs
+	 *
+	 * @test
+	 * @see t3lib_div::validIP()
+	 * @dataProvider validIpDataProvider
+	 */
+	public function checkValidIpReturnsTrueForValidIp($ip) {
+		$this->assertTrue(t3lib_div::validIP($ip));
+	}
+
+	/**
+	 * Data provider for checkValidIpReturnsFalseForInvalidIp
+	 *
+	 * @return array Data sets
+	 */
+	public static function invalidIpDataProvider() {
+		return array(
+			'null' => array(null),
+			'zero' => array(0),
+			'string' => array('test'),
+			'string empty' => array(''),
+			'string null' => array('null'),
+			'out of bounds IPv4' => array('300.300.300.300'),
+			'wrong dotted decimal notation with only two dots' => array('127.0.1'),
+		);
+	}
+
+	/**
+	 * Checks if t3lib_div::validIP() returns false for invalid IPs
+	 *
+	 * @test
+	 * @see t3lib_div::validIP()
+	 * @dataProvider invalidIpDataProvider
+	 */
+	public function checkValidIpReturnsFalseForInvalidIp($ip) {
+		$this->assertFalse(t3lib_div::validIP($ip));
+	}
+
+
+	///////////////////////////////
 	// Tests concerning splitCalc
 	///////////////////////////////
 

@@ -1,3 +1,7 @@
+2010-07-07  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #14968: Add unit tests for t3lib_div::validIP (Thanks to Nikolas Hagelstein and Felix Kopp)
+
 2010-07-07  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to #14845: No preview images with referenced files anymore (thanks to Stefan Galinski)
