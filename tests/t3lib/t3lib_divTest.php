@@ -1523,7 +1523,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @see	t3lib_div::split_fileref()
 	 */
 	public function checkIfSplitFileRefReturnsFileTypeNotForFolders(){
-		$directoryName = uniqid('test_');
+		$directoryName = uniqid('test_') . '.com';
 		$directoryPath = PATH_site . 'typo3temp/';
 		$directory = $directoryPath . $directoryName;
 		mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
@@ -1541,6 +1541,21 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertArrayNotHasKey('realFileext', $fileInfo);
 
 		rmdir($directory);
+	}
+
+	/**
+	 * @test
+	 * @see t3lib_div::split_fileref()
+	 */
+	public function checkIfSplitFileRefReturnsFileTypeForFilesWithoutPathSite() {
+		$testFile = 'fileadmin/media/someFile.png';
+
+		$fileInfo = t3lib_div::split_fileref($testFile);
+		$this->assertType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+		$this->assertEquals('fileadmin/media/', $fileInfo['path']);
+		$this->assertEquals('someFile.png', $fileInfo['file']);
+		$this->assertEquals('someFile', $fileInfo['filebody']);
+		$this->assertEquals('png', $fileInfo['fileext']);
 	}
 }
 ?>

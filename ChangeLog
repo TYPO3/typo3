@@ -1,3 +1,7 @@
+2010-07-07  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Follow-up to #14845: No preview images with referenced files anymore (thanks to Stefan Galinski)
+
 2010-07-06  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14845: Bug: Filelist module reports "type" of files also for directories  (thanks to Caspar Stuebs and Andy Grunwald)

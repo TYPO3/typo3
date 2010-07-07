@@ -1143,7 +1143,7 @@ final class t3lib_div {
 		}
 
 		$reg = '';
-		if (is_file($fileref) && preg_match('/(.*)\.([^\.]*$)/', $info['file'], $reg)) {
+		if (!is_dir($fileref) && preg_match('/(.*)\.([^\.]*$)/', $info['file'], $reg)) {
 			$info['filebody'] = $reg[1];
 			$info['fileext'] = strtolower($reg[2]);
 			$info['realFileext'] = $reg[2];
