@@ -52,7 +52,7 @@ $PATH_site = dirname(dirname(dirname($PATH_thisScript)));
 $quickstartFile = $PATH_site . '/typo3conf/FIRST_INSTALL';
 $enableInstallToolFile = $PATH_site . '/typo3conf/ENABLE_INSTALL_TOOL';
 
-	// If typo3conf/QUICKSTART is present and can be deleted, automatically create typo3conf/ENABLE_INSTALL_TOOL
+	// If typo3conf/FIRST_INSTALL is present and can be deleted, automatically create typo3conf/ENABLE_INSTALL_TOOL
 if (is_file($quickstartFile) && is_writeable($quickstartFile) && unlink($quickstartFile)) {
 	touch($enableInstallToolFile);
 }
