@@ -77,8 +77,8 @@
 			<label index="msg_1_5_3">Too few items in the list of values. (%s)</label>
 			<label index="msg_1_5_10">Could not delete file '%s' (does not exist). (%s)</label>
 			<label index="msg_1_5_11">Copying file '%s' failed!: No destination file (%s) possible!. (%s)</label>
-			<label index="msg_1_5_12">Fileextension '%s' not allowed. (%s)</label>
-			<label index="msg_1_5_13">Filesize (%s) of file '%s' exceeds limit (%s). (%s)</label>
+			<label index="msg_1_5_12">File extension '%s' is not allowed. (%s)</label>
+			<label index="msg_1_5_13">File size (%s) of file '%s' exceeds limit (%s). (%s)</label>
 			<label index="msg_1_5_14">The destination (%s) or the source file (%s) does not exist. (%s)</label>
 			<label index="msg_1_5_15">Copying to file '%s' failed! (%s)</label>
 			<label index="msg_1_5_16">Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</label>
