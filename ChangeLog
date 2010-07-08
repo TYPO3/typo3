@@ -1,3 +1,7 @@
+2010-07-08  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15049: "Fileextension" is not an English word
+
 2010-07-07  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to #14845: No preview images with referenced files anymore (thanks to Stefan Galinski)
