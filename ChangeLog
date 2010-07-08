@@ -1,3 +1,7 @@
+2010-07-08  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15049: "Fileextension" is not an English word
+
 2010-07-08  Francois Suter  <francois@typo3.org>
 
 	* Code cleanup #15036: Indexed search: Remove indexer CLI script which does nothing
@@ -66,7 +70,7 @@
 
 2010-06-29  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Fixed bug #14810: Follow-up to bug #13670: Export module does not keep pagetree configuration (exports only the page tree) (Thanks to Thomas Juhnke) 
+	* Fixed bug #14810: Follow-up to bug #13670: Export module does not keep pagetree configuration (exports only the page tree) (Thanks to Thomas Juhnke)
 
 2010-06-29  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -75,7 +79,7 @@
 2010-06-29  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #14553: topFrameH configuration option doesn't work anymore
-	
+
 2010-06-28  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14830: htmlArea RTE: Entering line breaks with Safari not possible
@@ -176,7 +180,7 @@
 
 2010-06-20  Susanne Moog  <typo3@susanne-moog.de>
 
-	* Followup to #14636: Improvements to new Backend skin - Install tool login shadow fixed 
+	* Followup to #14636: Improvements to new Backend skin - Install tool login shadow fixed
 	* Fixed bug #14516: Strip background gradients - smaller image size and no wrong colors in browsers with color profile capability (Thanks to Helmut Hummel)
 	* Followup to #14465: Make use of the new Sprite API - help in backend access lists (Thanks to Steffen Ritter)
 	* Followup to #14465: Make use of the new Sprite API - delete icon in QuickEdit (Thanks to Steffen Gebert)

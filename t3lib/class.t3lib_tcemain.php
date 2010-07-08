@@ -1695,7 +1695,7 @@ class t3lib_TCEmain	{
 										clearstatcache();
 										if (!@is_file($theDestFile))	$this->log($table,$id,5,0,1,"Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)",16,array($theFile, dirname($theDestFile), $recFID),$propArr['event_pid']);
 									} else $this->log($table,$id,5,0,1,"Copying file '%s' failed!: No destination file (%s) possible!. (%s)",11,array($theFile, $theDestFile, $recFID),$propArr['event_pid']);
-								} else $this->log($table,$id,5,0,1,"Fileextension '%s' not allowed. (%s)",12,array($fI['fileext'], $recFID),$propArr['event_pid']);
+								} else $this->log($table,$id,5,0,1,"File extension '%s' not allowed. (%s)",12,array($fI['fileext'], $recFID),$propArr['event_pid']);
 							} else $this->log($table,$id,5,0,1,"Filesize (%s) of file '%s' exceeds limit (%s). (%s)",13,array(t3lib_div::formatSize($fileSize),$theFile,t3lib_div::formatSize($maxSize*1024),$recFID),$propArr['event_pid']);
 						} else $this->log($table,$id,5,0,1,'The destination (%s) or the source file (%s) does not exist. (%s)',14,array($dest, $theFile, $recFID),$propArr['event_pid']);
 
@@ -1779,7 +1779,7 @@ class t3lib_TCEmain	{
 											clearstatcache();
 											if (!@is_file($theDestFile)) $this->log($table, $id, 5, 0, 1, "Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)", 16, array($theFile, dirname($theDestFile), $recFID), $propArr['event_pid']);
 										} else $this->log($table, $id, 5, 0, 1, "Copying file '%s' failed!: No destination file (%s) possible!. (%s)", 11, array($theFile, $theDestFile, $recFID), $propArr['event_pid']);
-									} else $this->log($table, $id, 5, 0, 1, "Fileextension '%s' not allowed. (%s)", 12, array($fI['fileext'], $recFID), $propArr['event_pid']);
+									} else $this->log($table, $id, 5, 0, 1, "File extension '%s' not allowed. (%s)", 12, array($fI['fileext'], $recFID), $propArr['event_pid']);
 								} else $this->log($table, $id, 5, 0, 1, "Filesize (%s) of file '%s' exceeds limit (%s). (%s)", 13, array(t3lib_div::formatSize($fileSize), $theFile,t3lib_div::formatSize($maxSize * 1024),$recFID), $propArr['event_pid']);
 
 									// If the destination file was created, we will set the new filename in the value array, otherwise unset the entry in the value array!
