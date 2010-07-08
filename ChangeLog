@@ -2,6 +2,7 @@
 
 	* Follow-up to #14719: Wrong code comment (QUICKSTART/FIRST_INSTALL) (thanks to Steffen Gebert)
 	* Fixed bug #14813: Install Tool uses deprecated function t3lib_stdGraphic->imagecreate() (thanks to Stefan Galinski)
+	* Fixed bug #14971: Unit test for sanitizeLocalUrl fails on installations inside a subdirectory (thanks to Stefan Galinski & Pascal Jungblut)
 
 2010-07-08  Dmitry Dulepov  <dmitry@typo3.org>
 
