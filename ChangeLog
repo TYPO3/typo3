@@ -1,3 +1,7 @@
+2010-07-08  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Follow-up to #14719: Wrong code comment (QUICKSTART/FIRST_INSTALL) (thanks to Steffen Gebert)
+
 2010-07-08  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #15049: "Fileextension" is not an English word
