@@ -348,7 +348,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$XY = $this->XY;
 
 			// Gif-start
-		$this->im = $this->imagecreate($XY[0],$XY[1]);
+		$this->im = imagecreatetruecolor($XY[0], $XY[1]);
 		$this->w = $XY[0];
 		$this->h = $XY[1];
 

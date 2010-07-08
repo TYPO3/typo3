@@ -4806,7 +4806,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				if ($gdActive) {
 					// GD with box
 					$imageProc->IM_commands=array();
-					$im = $imageProc->imageCreate(170,136);
+					$im = imagecreatetruecolor(170, 136);
 					$Bcolor = ImageColorAllocate ($im, 0, 0, 0);
 					ImageFilledRectangle($im, 0, 0, 170, 136, $Bcolor);
 					$workArea=array(0,0,170,136);
@@ -4842,7 +4842,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 						// GD with text
 					$imageProc->IM_commands=array();
-					$im = $imageProc->imageCreate(170,136);
+					$im = imagecreatetruecolor(170, 136);
 					$Bcolor = ImageColorAllocate ($im, 128,128,150);
 					ImageFilledRectangle($im, 0, 0, 170, 136, $Bcolor);
 					$workArea=array(0,0,170,136);
