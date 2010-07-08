@@ -1,3 +1,7 @@
+2010-07-08  Francois Suter  <francois@typo3.org>
+
+	* Code cleanup #15036: Indexed search: Remove indexer CLI script which does nothing
+
 2010-07-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14968: Add unit tests for t3lib_div::validIP (Thanks to Nikolas Hagelstein and Felix Kopp)
