@@ -30,11 +30,11 @@
  */
 class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode {
 	public $callProtocol = array();
-	
+
 	public function __construct(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		$this->variableContainer = $variableContainer;
 	}
-	
+
 	public function evaluateChildNodes() {
 		$identifiers = $this->variableContainer->getAllIdentifiers();
 		$callElement = array();
@@ -43,7 +43,7 @@ class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Co
 		}
 		$this->callProtocol[] = $callElement;
 	}
-	
+
 	public function evaluate() {}
 }
 

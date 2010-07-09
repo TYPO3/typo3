@@ -366,7 +366,7 @@ class t3lib_clipboard {
 				'</td>
 				<td>'.
 				'<a href="'.htmlspecialchars($rmall_url).'#clip_head">'.
-					t3lib_iconWorks::getSpriteIcon('actions-document-close', array('title' => $LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE))) . 
+					t3lib_iconWorks::getSpriteIcon('actions-document-close', array('title' => $LANG->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE))) .
 				'</a></td>
 			</tr>';
 

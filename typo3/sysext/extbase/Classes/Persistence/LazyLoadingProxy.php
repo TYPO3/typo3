@@ -55,7 +55,7 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	 * @var mixed
 	 */
 	private $fieldValue;
-	
+
 	/**
 	 * Constructs this proxy instance.
 	 *
@@ -146,7 +146,7 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 		$realInstance = $this->_loadRealInstance();
 		unset($realInstance->$propertyName);
 	}
-	
+
 	/**
 	 * Magic toString call implementation.
 	 *
@@ -156,7 +156,7 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 		$realInstance = $this->_loadRealInstance();
 		return $realInstance->__toString();
 	}
-	
+
 	/**
 	 * Returns the current value of the storage array
 	 *
@@ -186,7 +186,7 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 		$realInstance = $this->_loadRealInstance();
 		next($realInstance);
 	}
-	
+
 	/**
 	 * Resets the array pointer of the storage
 	 *
@@ -206,7 +206,7 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 		return $this->current() !== FALSE;
 	}
 
-	
-	
+
+
 }
 ?>

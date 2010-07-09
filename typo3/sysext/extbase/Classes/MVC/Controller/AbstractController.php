@@ -330,7 +330,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->response->setHeader('Location', (string)$uri);
 		throw new Tx_Extbase_MVC_Exception_StopAction();
 	}
-	
+
 	/**
 	 * Adds the base uri if not already in place.
 	 *

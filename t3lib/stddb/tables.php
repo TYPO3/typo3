@@ -179,7 +179,7 @@ $TCA['pages'] = array(
 			'contains-board' => 'apps-pagetree-folder-contains-board',
 			'contains-news' => 'apps-pagetree-folder-contains-news',
 			'default' => 'apps-pagetree-page-default',
-			
+
 		),
 		'typeicons' => array(
 			'1' => 'pages.gif',
@@ -329,7 +329,7 @@ $TCA['be_users'] = array(
 			'0' => 'status-user-backend',
 			'1' => 'status-user-admin',
 			'default' => 'status-user-backend',
-		), 
+		),
 		'mainpalette' => '1',
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,options,db_mountpoints,file_mountpoints,fileoper_perms,userMods',
 		'dividers2tabs' => true,
@@ -361,7 +361,7 @@ $TCA['be_groups'] = array(
 		),
 		'typeicon_classes' => array(
 			'default' => 'status-user-group-backend',
-		), 
+		),
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
@@ -417,7 +417,7 @@ $TCA['sys_language'] = array(
 		),
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-sys_language',
-		), 
+		),
 		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
 		'versioningWS_alwaysAllowLiveEdit' => TRUE
 	)

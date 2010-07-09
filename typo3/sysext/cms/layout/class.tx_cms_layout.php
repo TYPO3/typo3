@@ -33,7 +33,7 @@
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
- 
+
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
@@ -234,18 +234,18 @@ class tx_cms_layout extends recordList {
 	 * @return	string		HTML for the listing
 	 */
 	function getExternalTables($id, $table)	{
- 
+
 		$type = $GLOBALS['SOBE']->MOD_SETTINGS[$table];
 		if (!isset($type)) {
 			$type = 0;
 		}
-		
-		$fList = $this->externalTables[$table][$type]['fList'];	// eg. "name;title;email;company,image" 
+
+		$fList = $this->externalTables[$table][$type]['fList'];	// eg. "name;title;email;company,image"
 															// The columns are separeted by comma ','.
-															// Values separated by semicolon ';' are shown in the same column. 
+															// Values separated by semicolon ';' are shown in the same column.
 		$icon = $this->externalTables[$table][$type]['icon'];
 		$addWhere = $this->externalTables[$table][$type]['addWhere'];
-		
+
 			// Create listing
 		$out = $this->makeOrdinaryList($table, $id, $fList, $icon, $addWhere);
 		return $out;
@@ -1222,7 +1222,7 @@ class tx_cms_layout extends recordList {
 						}
 						if ($this->doEdit)	{
 							$Nrow['__cmds__'].= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$this->backPath)).'" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
-											t3lib_iconWorks::getSpriteIcon('actions-document-open') . 
+											t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 										'</a>';
 						} else {
 							$Nrow['__cmds__'].= $this->noEditIcon();
@@ -1616,7 +1616,7 @@ class tx_cms_layout extends recordList {
 				$confirm = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning') .
 					t3lib_BEfunc::translationCount('tt_content', $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.translationsOfRecord')));
 				$out.='<a href="'.htmlspecialchars($GLOBALS['SOBE']->doc->issueCommand($params)).'" onclick="'.htmlspecialchars('return confirm('. $confirm .');').'" title="'.$GLOBALS['LANG']->getLL('deleteItem', TRUE).'">'.
-							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') . 
+							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 						'</a>';
 
 				if (!$disableMoveAndNewButtons) {

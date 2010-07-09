@@ -61,7 +61,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 		$this->assertSame($this->variableContainer->get('variable'), $object);
 		$this->assertSame($this->variableContainer['variable'], $object);
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -72,7 +72,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 		$this->assertTrue($this->variableContainer->exists('variable'));
 		$this->assertTrue(isset($this->variableContainer['variable']));
 	}
-	
+
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
@@ -82,7 +82,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 		$this->variableContainer->add("variable", $object);
 		$this->assertEquals($this->variableContainer->getAllIdentifiers(), array('variable'), 'Added key is not visible in getAllIdentifiers');
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
@@ -110,7 +110,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 	public function gettingNonexistentValueThrowsException() {
 		$this->variableContainer->get('nonexistent');
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException
@@ -119,7 +119,7 @@ class Tx_Fluid_Core_ViewHelper_TemplateVariableContainerTest extends Tx_Extbase_
 	public function deletingNonexistentValueThrowsException() {
 		$this->variableContainer->remove('nonexistent');
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException

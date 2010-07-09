@@ -38,7 +38,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	const MODELTYPE_ENTITY = 1;
 	const MODELTYPE_VALUEOBJECT = 2;
-	
+
 	/**
 	 * Name of the class this schema is referring to
 	 *

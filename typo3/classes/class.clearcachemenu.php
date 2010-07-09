@@ -138,7 +138,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		$cacheMenu = array();
 
 		$cacheMenu[] = '<a href="#" class="toolbar-item">' .
-			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . 
+			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) .
 			'</a>';
 
 		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';

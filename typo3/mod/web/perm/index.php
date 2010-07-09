@@ -602,7 +602,7 @@ class SC_mod_web_perm_index {
 					<td align="center">' . $LANG->getLL('Everybody', TRUE) . '</td>
 					<td><img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
 					<td align="center">' . $LANG->getLL('EditLock', TRUE) . '</td>
-				</tr>   
+				</tr>
 			';
 		} else {
 			$code.='

@@ -23,7 +23,7 @@
 /**
  * With this tag, you can select a layout to be used..
  * <code><f:layout name="main" /></code>
- * 
+ *
  *
  *
  * @version $Id: LayoutViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
