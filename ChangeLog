@@ -1,5 +1,6 @@
 2010-07-09  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug Fixed bug #15055: Scheduler: Date picker is broken in add/edit form
 	* Fixed bug #14988: TYPO3.Backend is assigned twice by ExtDirect and the viewport (Thanks to Stefan Galinski)
 	* Fixed bug #15047 Remove trailing whitespaces in front of EOL (Thanks to Nikolas Hagelstein)
 	* Fixed bug #15045: Trailing newlines after php closing tag. (Thanks to Nikolas Hagelstein)

@@ -801,7 +801,13 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$table[$tr][] = t3lib_BEfunc::cshItem($this->cshKey, 'task_start', $this->backPath, '|', false, 'margin-bottom:0px;');
 		$table[$tr][] = '<label for="tceforms-datetimefield-task_start">' . $GLOBALS['LANG']->getLL('label.start') . '</label>';
 		$table[$tr][] = '<input name="tx_scheduler[start]" type="text" id="tceforms-datetimefield-task_start" value="' . strftime('%H:%M %d-%m-%Y', $taskInfo['start']) . '" />' .
-			'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt=""' . ' id="picker-tceforms-datetimefield-task_start" />';;
+			t3lib_iconWorks::getSpriteIcon(
+				'actions-edit-pick-date',
+				array(
+					'style' => 'cursor:pointer;',
+					'id' => 'picker-tceforms-datetimefield-task_start'
+				));
+
 		$tableLayout[$tr] = array (
 				'tr' => array('<tr id="task_start_row">', '</tr>'),
 				'defCol' => $defaultCell
@@ -813,7 +819,13 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$table[$tr][] = t3lib_BEfunc::cshItem($this->cshKey, 'task_end', $this->backPath, '|', false, 'margin-bottom:0px;');
 		$table[$tr][] = '<label for="tceforms-datetimefield-task_end">' . $GLOBALS['LANG']->getLL('label.end') . '</label>';
 		$table[$tr][] = '<input name="tx_scheduler[end]" type="text" id="tceforms-datetimefield-task_end" value="' . ((empty($taskInfo['end'])) ? '' : strftime('%H:%M %d-%m-%Y', $taskInfo['end'])) . '" />' .
-			'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/datepicker.gif', '', 0) . ' style="cursor:pointer; vertical-align:middle;" alt=""' . ' id="picker-tceforms-datetimefield-task_end" />';
+			t3lib_iconWorks::getSpriteIcon(
+				'actions-edit-pick-date',
+				array(
+					'style' => 'cursor:pointer;',
+					'id' => 'picker-tceforms-datetimefield-task_end'
+				));
+
 		$tableLayout[$tr] = array (
 			'tr'     => array('<tr id="task_end_row"' . $style . '>', '</tr>'),
 			'defCol' => $defaultCell
