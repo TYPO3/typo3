@@ -95,9 +95,4 @@ class t3lib_utility_Http {
 	}
 }
 
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/utility/class.t3lib_utility_http.php'])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/utility/class.t3lib_utility_http.php']);
-}
-
 ?>
