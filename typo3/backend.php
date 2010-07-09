@@ -252,14 +252,14 @@ class TYPO3backend {
 		$hasExtDirectRouter = FALSE;
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'] as $key => $value) {
-				if (strpos($key, 'TYPO3.Backend') !== FALSE) {
+				if (strpos($key, 'TYPO3.Ajax.ExtDirect') !== FALSE) {
 					$hasExtDirectRouter = TRUE;
 					break;
 				}
 			}
 		}
 		if ($hasExtDirectRouter) {
-			$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Backend', NULL, FALSE);
+			$this->pageRenderer->addJsFile('ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.Ajax.ExtDirect', NULL, FALSE);
 		}
 
 		$this->generateJavascript();
