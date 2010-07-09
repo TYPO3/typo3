@@ -18,7 +18,7 @@ if (TYPO3_MODE == 'BE') {
 	}
 
 	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Dispatcher';
-	
+
 }
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['extbase'][] = 'tx_extbase_utility_extbaserequirementscheck';

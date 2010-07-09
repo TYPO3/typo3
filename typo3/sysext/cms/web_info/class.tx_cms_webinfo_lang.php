@@ -266,7 +266,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 		if (is_array($langRecUids[0]))	{
 			$params = '&edit[pages]['.implode(',',$langRecUids[0]).']=edit&columnsOnly=title,nav_title,l18n_cfg,hidden';
-			$editIco = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editPageProperties', TRUE) . '">' . 
+			$editIco = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editPageProperties', TRUE) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 				'</a>';
 		} else $editIco = '';

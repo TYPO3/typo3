@@ -18,7 +18,7 @@
  * Currently the specified URI is simply passed through.
  *
  * = Examples =
- * 
+ *
  * <code>
  * <f:uri.external uri="http://www.typo3.org" />
  * </code>

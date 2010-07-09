@@ -92,7 +92,7 @@ class tx_coreupdates_statictemplates {
 				if ($message == 'continue') {
 					$customMessages[] = 'System Extension "statictemplates" was succesfully loaded, static templates are now supported.';
 					return TRUE;
-				} else { 
+				} else {
 					return FALSE;	// something went wrong
 				}
 			}

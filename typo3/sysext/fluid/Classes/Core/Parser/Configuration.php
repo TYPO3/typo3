@@ -78,7 +78,7 @@ class Tx_Fluid_Core_Parser_Configuration {
 				$this->interceptors[$interceptionPoint]->detach($interceptor);
 			}
 		}
-		
+
 	}
 
 	/**

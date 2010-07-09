@@ -162,7 +162,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			),
 			'diff' => ''
 		);
-		
+
 		if($this->showDraftWorkspace === TRUE) {
 			$this->MOD_MENU['display'][-1] = $GLOBALS['LANG']->getLL('defaultDraft');
 		}
@@ -188,7 +188,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function main()	{
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-		
+
 			// Template markers
 		$markers = array(
 			'CSH' => '',

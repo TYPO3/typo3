@@ -329,7 +329,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 		$mockValidator = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Validation_ValidatorResolver'), array('dummy'));
 		$this->assertEquals('Raw', $mockValidator->_call('unifyDataType', 'mixed'));
 	}
-	
+
 	/**
 	 * dataProvider for parseValidatorAnnotationCanParseAnnotations
 	 * @author Karsten Dambekalns <karsten@typo3.org>
@@ -382,7 +382,7 @@ class Tx_Extbase_Validation_ValidatorResolver_testcase extends Tx_Extbase_BaseTe
 
 		$this->assertEquals($result, $expectedResult);
 	}
-	
+
 }
 
 ?>

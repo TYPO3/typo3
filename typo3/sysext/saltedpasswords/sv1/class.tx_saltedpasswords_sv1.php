@@ -196,7 +196,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 					// instanciate default method class
 				$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL);
 				$this->updatePassword(
-					intval($user['uid']), 
+					intval($user['uid']),
 					array('password' => $this->objInstanceSaltedPW->getHashedPassword($password))
 				);
 			}

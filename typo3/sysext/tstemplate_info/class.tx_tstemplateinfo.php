@@ -64,7 +64,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 */
 	function tableRow($label, $data, $field)	{
 		$ret = '<tr><td>';
-		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' . 
+		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', true))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
 		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
@@ -498,7 +498,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				// Edit all icon:
 			$outCode.= '<br /><a href="#" onClick="' . t3lib_BEfunc::editOnClick(rawurlencode('&createExtension=0') .
 				'&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit', $BACK_PATH, '') . '"><strong>' .
-				t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title'=> 
+				t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title'=>
 				$GLOBALS['LANG']->getLL('editTemplateRecord') ))  . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
 			$theOutput.= $this->pObj->doc->section('', $outCode);
 

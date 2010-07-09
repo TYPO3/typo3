@@ -359,7 +359,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 
 		return 'tx_' . strtolower($extensionName) . '_' . strtolower($pluginName);
 	}
-	
+
 	/**
 	 * Remove Checkbox field names from ViewHelper variable container, to start from scratch when a new form starts.
 	 */

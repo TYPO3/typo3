@@ -398,7 +398,7 @@ class tx_scheduler implements t3lib_Singleton {
 	/**
 	 * This is a utility method that writes some message to the BE Log
 	 * It could be expanded to write to some other log
-	 * 
+	 *
 	 * @param	string		The message to write to the log
 	 * @param	integer		Status (0 = message, 1 = error)
 	 * @param	mixed		Key for the message

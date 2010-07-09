@@ -103,7 +103,7 @@ class Tx_Extbase_Dispatcher {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
 		}
-		
+
 		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration);
 
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
@@ -143,7 +143,7 @@ class Tx_Extbase_Dispatcher {
 		$this->timeTrackPull();
 
 		self::$reflectionService->shutdown();
-		
+
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
@@ -229,7 +229,7 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
-		
+
 		$controller->injectSettings(is_array(self::$extbaseFrameworkConfiguration['settings']) ? self::$extbaseFrameworkConfiguration['settings'] : array());
 
 		$flashMessageContainer = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
@@ -264,12 +264,12 @@ class Tx_Extbase_Dispatcher {
 			$dataMapper->injectSession($persistenceSession);
 			$dataMapper->injectReflectionService(self::$reflectionService);
 			$dataMapper->injectDataMapFactory($dataMapFactory);
-			
+
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);
 
 			$qomFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend);
-			
+
 			$dataMapper->setQomFactory($qomFactory);
 
 			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton

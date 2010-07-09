@@ -129,12 +129,12 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 					$tce->start($data,array());
 					$tce->process_datamap();
 					t3lib_BEfunc::setUpdateSignal('updatePageTree');
-					
+
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						'',
 						$GLOBALS['LANG']->getLL('wiz_newPages_create')
-					);					
+					);
 				} else {
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
@@ -143,7 +143,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 						t3lib_FlashMessage::ERROR
 					);
 				}
-				
+
 				$theCode.= $flashMessage->render();
 
 					// Display result:

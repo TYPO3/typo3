@@ -26,19 +26,19 @@
  * Some functional tests for the backport of the reflection service
  */
 class Tx_Extbase_Reflection_Service_testcase extends Tx_Extbase_BaseTestCase {
-	
+
 	/**
 	 * @param array $foo The foo parameter
 	 * @return nothing
 	 */
 	public function fixtureMethodForMethodTagsValues(array $foo) {
-		
+
 	}
-	
+
 	public function test_GetMethodTagsValues() {
 		$service = new Tx_Extbase_Reflection_Service();
 		$tagsValues = $service->getMethodTagsValues('Tx_Extbase_Reflection_Service_testcase', 'fixtureMethodForMethodTagsValues');
-		
+
 		$this->assertEquals(array(
 			'param' => array('array $foo The foo parameter'),
 			'return' => array('nothing')
@@ -48,7 +48,7 @@ class Tx_Extbase_Reflection_Service_testcase extends Tx_Extbase_BaseTestCase {
 	public function test_GetMethodParameters() {
 		$service = new Tx_Extbase_Reflection_Service();
 		$parameters = $service->getMethodParameters('Tx_Extbase_Reflection_Service_testcase', 'fixtureMethodForMethodTagsValues');
-		
+
 		$this->assertEquals(array(
 			'foo' => array(
 				'position' => 0,

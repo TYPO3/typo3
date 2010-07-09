@@ -30,7 +30,7 @@
  * @version $ID:$
  */
 class Tx_Extbase_Persistence_Mapper_DataMapFactory {
-	
+
 	/**
 	 * @var Tx_Extbase_Reflection_Service
 	 */
@@ -45,7 +45,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
 	}
-	
+
 	/**
 	 * Builds a data map by adding column maps for all the configured columns in the $TCA.
 	 * It also resolves the type of values the column is holding and the typo of relation the column
@@ -63,7 +63,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		$subclasses = array();
 		$tableName = strtolower($className);
 		$columnMapping = array();
-		
+
 		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 		$classSettings = $extbaseFrameworkConfiguration['persistence']['classes'][$className];
 		if ($classSettings !== NULL) {
@@ -113,7 +113,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		// debug($dataMap);
 		return $dataMap;
 	}
-		
+
 	/**
 	 * Returns the TCA ctrl section of the specified table; or NULL if not set
 	 *
@@ -124,7 +124,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		$this->includeTca($tableName);
 		return is_array($GLOBALS['TCA'][$tableName]['ctrl']) ? $GLOBALS['TCA'][$tableName]['ctrl'] : NULL;
 	}
-	
+
 	/**
 	 * Returns the TCA columns array of the specified table
 	 *
@@ -135,7 +135,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		$this->includeTca($tableName);
 		return is_array($GLOBALS['TCA'][$tableName]['columns']) ? $GLOBALS['TCA'][$tableName]['columns'] : array();
 	}
-	
+
 	/**
 	 * Includes the TCA for the given table
 	 *
@@ -148,7 +148,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		}
 		t3lib_div::loadTCA($tableName);
 	}
-	
+
 	protected function addMetaDataColumnNames(Tx_Extbase_Persistence_Mapper_DataMap $dataMap, $tableName) {
 		$controlSection = $GLOBALS['TCA'][$tableName]['ctrl'];
 		$dataMap->setPageIdColumnName('pid');
@@ -165,7 +165,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		if (isset($controlSection['enablecolumns']['fe_group'])) $dataMap->setFrontEndUserGroupColumnName($controlSection['enablecolumns']['fe_group']);
 		return $dataMap;
 	}
-		
+
 	/**
 	 * This method tries to determine the type of type of relation to other tables and sets it based on
 	 * the $TCA column configuration
@@ -191,7 +191,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		}
 		return $columnMap;
 	}
-	
+
 	/**
 	 * This method sets the configuration for a 1:1 relation based on
 	 * the $TCA column configuration
@@ -209,7 +209,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
 		return $columnMap;
 	}
-	
+
 	/**
 	 * This method sets the configuration for a 1:n relation based on
 	 * the $TCA column configuration
@@ -227,7 +227,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
 		return $columnMap;
 	}
-	
+
 	/**
 	 * This method sets the configuration for a m:n relation based on
 	 * the $TCA column configuration
@@ -274,5 +274,5 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 		}
 		return $columnMap;
 	}
-		
+
 }

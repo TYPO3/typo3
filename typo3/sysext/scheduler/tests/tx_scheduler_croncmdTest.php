@@ -112,7 +112,7 @@ class tx_scheduler_croncmdTest extends tx_phpunit_testcase {
 		$actualResult = $cronCmdInstance->valid_values;
 		$this->assertEquals($expectedResult, $actualResult[2]);
 	}
-	
+
 	/**
 	 * Tests whether dayList is correctly calculated for stops of month days combined with ranges and lists
 	 *

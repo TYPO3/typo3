@@ -661,7 +661,7 @@ class t3lib_treeView {
 				'title' => ($this->showDefaultTitleAttribute ? 'UID: ' . $row['uid'] : $this->getTitleAttrib($row)),
 				'class' => 'c-recIcon'
 			));
-		
+
 		}
 
 		return $this->wrapIcon($icon,$row);

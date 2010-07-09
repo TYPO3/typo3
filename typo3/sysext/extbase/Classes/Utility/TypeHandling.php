@@ -85,6 +85,6 @@ class Tx_Extbase_Utility_TypeHandling {
 		}
 		return $type;
 	}
-	
+
 }
 ?>

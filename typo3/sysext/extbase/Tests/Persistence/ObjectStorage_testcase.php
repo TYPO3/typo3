@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
 ***************************************************************/
 
 class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestCase {
-	
+
 	/**
 	 * @test
 	 */
@@ -39,7 +39,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$this->assertEquals($objectStorage[$object1], NULL);
 		$this->assertEquals($objectStorage[$object2], 'foo');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -55,7 +55,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$objectStorage->detach($object2);
 		$this->assertEquals(count($objectStorage), 0);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -68,7 +68,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$objectStorage[$object2] = 'bar';
 		$this->assertEquals(count($objectStorage), 2);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -84,7 +84,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$objectStorage->offsetUnset($object1);
 		$this->assertEquals(count($objectStorage), 0);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -97,7 +97,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$this->assertEquals($objectStorage->offsetGet($object1), 'foo');
 		$this->assertEquals($objectStorage->offsetGet($object2), NULL);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -109,7 +109,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$this->assertEquals($objectStorage->offsetExists($object1), TRUE);
 		$this->assertEquals($objectStorage->offsetExists($object2), FALSE);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -128,7 +128,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$objectStorage->next();
 		$this->assertEquals($objectStorage->getInfo(), array('bar', 'baz'));
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -145,7 +145,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$this->assertEquals($objectStorage[$object1], 42);
 		$this->assertEquals($objectStorage[$object2], 'bar');
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -178,7 +178,7 @@ class Tx_Extbase_Persistence_ObjectStorage_testcase extends Tx_Extbase_BaseTestC
 		$this->assertEquals($objectStorageB[$object2], 'baz');
 	}
 
-	
+
 	/**
 	 * @test
 	 */

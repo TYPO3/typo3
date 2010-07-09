@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -71,7 +71,7 @@ class Tx_Extbase_MVC_Controller_Arguments_testcase extends Tx_Extbase_BaseTestCa
 		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array(), '', FALSE);
 		$mockArguments = $this->getMock('Tx_Extbase_MVC_Controller_Arguments', array('createArgument'));
 		$mockArguments->expects($this->any())->method('createArgument')->will($this->returnValue($mockArgument));
-		
+
 		$newArgument = $mockArguments->addNewArgument('someArgument');
 		$this->assertType('Tx_Extbase_MVC_Controller_Argument', $newArgument, 'addNewArgument() did not return an argument object.');
 	}
@@ -83,7 +83,7 @@ class Tx_Extbase_MVC_Controller_Arguments_testcase extends Tx_Extbase_BaseTestCa
 		$mockArgument = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getName'), array(), '', FALSE);
 		$mockArgument->expects($this->any())->method('getName')->will($this->returnValue('argumentName1234'));
 		$arguments = new Tx_Extbase_MVC_Controller_Arguments;
-		
+
 		$arguments[] = $mockArgument;
 		$this->assertTrue($arguments->hasArgument('argumentName1234'), 'Added argument does not exist.');
 		$this->assertSame($mockArgument, $arguments->getArgument('argumentName1234'), 'Added and retrieved arguments are not the same.');

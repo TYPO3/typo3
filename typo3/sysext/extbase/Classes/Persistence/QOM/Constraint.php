@@ -33,7 +33,7 @@
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_Constraint implements Tx_Extbase_Persistence_QOM_ConstraintInterface {
-	
+
 }
 
 ?>

@@ -48,6 +48,6 @@ interface Tx_Extbase_Persistence_ObjectMonitoringInterface {
 	 * @return boolean
 	 */
 	public function _isDirty();
-	
+
 }
 ?>

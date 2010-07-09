@@ -45,6 +45,6 @@ class Tx_Fluid_ViewHelpers_Format_PrintfViewHelperTest extends Tx_Extbase_BaseTe
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('%2$s %1$d %3$s %2$s'));
 		$actualResult = $viewHelper->render(array(123, 'foo', 'bar'));
 		$this->assertEquals('foo 123 bar foo', $actualResult);
-	}	
+	}
 }
 ?>

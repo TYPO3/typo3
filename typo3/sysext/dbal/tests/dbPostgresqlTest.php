@@ -28,7 +28,7 @@ require_once('FakeDbConnection.php');
 
 /**
  * Testcase for class ux_t3lib_db. Testing PostgreSQL database handling.
- * 
+ *
  * $Id$
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
@@ -86,7 +86,7 @@ class dbPostgresqlTest extends BaseTestCase {
 
 	/**
 	 * Cleans a SQL query.
-	 *  
+	 *
 	 * @param mixed $sql
 	 * @return mixed (string or array)
 	 */
@@ -101,7 +101,7 @@ class dbPostgresqlTest extends BaseTestCase {
 	}
 
 	/**
-	 * @test 
+	 * @test
 	 */
 	public function configurationIsUsingAdodbAndDriverPostgres() {
 		$configuration = $GLOBALS['TYPO3_DB']->conf['handlerCfg'];
@@ -110,7 +110,7 @@ class dbPostgresqlTest extends BaseTestCase {
 		$this->assertTrue($GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres') !== FALSE, 'Not using postgres driver');
 	}
 
-	/** 
+	/**
 	 * @test
 	 */
 	public function tablesWithMappingAreDetected() {

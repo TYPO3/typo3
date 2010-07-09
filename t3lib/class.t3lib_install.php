@@ -126,7 +126,7 @@ class t3lib_install {
 	 * @param	array		$line_array	the localconf.php file exploded into an array by linebreaks. (see writeToLocalconf_control())
 	 * @param	string		$variable	The variable name to find and substitute. This string must match the first part of a trimmed line in the line-array. Matching is done backwards so the last appearing line will be substituted.
 	 * @param	string		$value		Is the value to be insert for the variable
-	 * @param	boolean		$quoteValue	Whether the given value should be quoted before being written 
+	 * @param	boolean		$quoteValue	Whether the given value should be quoted before being written
 	 * @return	void
 	 * @see writeToLocalconf_control()
 	 */

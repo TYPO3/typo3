@@ -835,7 +835,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					);
 					$dbmount = $flashMessage->render();
 				}
-				
+
 				$content .= '
 			<!--
 				Wrapper table for page tree / record list:

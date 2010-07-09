@@ -797,7 +797,7 @@ final class t3lib_iconWorks	{
 				if ($row['module']) {
 					$recordType[4] = 'contains-' . $row['module'];
 				}
-			} 
+			}
 
 			if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
 				foreach ($recordType AS $key => $type) {
@@ -824,7 +824,7 @@ final class t3lib_iconWorks	{
 		krsort($recordType);
 		foreach ($recordType as $record) {
 			if (in_array($record, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
-				return self::getSpriteIconClasses($record); 
+				return self::getSpriteIconClasses($record);
 			}
 		}
 		return self::getSpriteIconClasses('status-status-icon-missing');

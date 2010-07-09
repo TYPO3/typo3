@@ -249,14 +249,14 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		if ($this->id && $this->access) {
 				// View page
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
+						t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 					'</a>';
 
 				// If access to Web>List for user, then link to that module.
 			if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
 				$href = $GLOBALS['BACK_PATH'] . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') . 
+							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
 						'</a>';
 			}
 
@@ -272,8 +272,8 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 					$buttons['save'] = t3lib_iconWorks::getSpriteIcon('actions-document-save',
 						array(
 							'html' => '<input type="image" class="c-inputButton" name="submit" src="clear.gif" ' .
-								'title="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) .'" ' . 
-								'value="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) .'" ' . 
+								'title="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) .'" ' .
+								'value="'. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) .'" ' .
 								'/>'
 						));
 
@@ -289,7 +289,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 						// CLOSE button
 					$buttons['close'] = t3lib_iconWorks::getSpriteIcon('actions-document-close',
 						array(
-							'html' => '<input type="image" class="c-inputButton" name="abort" src="clear.gif" ' . 
+							'html' => '<input type="image" class="c-inputButton" name="abort" src="clear.gif" ' .
 								'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" ' .
 								'value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" ' .
 								'/>'
@@ -307,7 +307,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				if(!empty($this->sObj)) {
 						// BACK
 					$buttons['back'] = '<a href="index.php?id=' . $this->id . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
-									t3lib_iconWorks::getSpriteIcon('actions-view-go-back') . 
+									t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 								'</a>';
 				}
 			}
@@ -372,7 +372,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 			// No template
 		$theOutput .= $this->doc->spacer(10);
-		
+
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />' . $GLOBALS['LANG']->getLL('createTemplateToEditConfiguration'),
@@ -380,8 +380,8 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			t3lib_FlashMessage::INFO
 		);
 		$theOutput .= $flashMessage->render();
-		
-		
+
+
 			// New standard?
 		if ($newStandardTemplate) {
 			if (t3lib_extMgm::isLoaded('statictemplates')) { // check wether statictemplates are supported
@@ -402,7 +402,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				// Extension?
 			$theOutput .= $this->doc->spacer(10);
 			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('newWebsite') . $staticsText, $GLOBALS['LANG']->getLL('newWebsiteDescription') . '<br /><br />' .
-			$selector . 
+			$selector .
 			'<input type="Submit" name="newWebsite" value="' . $GLOBALS['LANG']->getLL('newWebsiteAction') . '" />', 0, 1);
 		}
 			// Extension?

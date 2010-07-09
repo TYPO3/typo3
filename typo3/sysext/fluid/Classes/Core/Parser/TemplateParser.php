@@ -581,7 +581,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 			// Object Accessor
 		if (strlen($objectAccessorString) > 0) {
-			
+
 			$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
 			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR);
 
@@ -809,7 +809,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	protected function textHandler(Tx_Fluid_Core_Parser_ParsingState $state, $text) {
 		$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $text);
 		$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_TEXT);
-		
+
 		$state->getNodeFromStack()->addChildNode($node);
 	}
 

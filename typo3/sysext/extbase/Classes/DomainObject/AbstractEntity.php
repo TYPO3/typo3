@@ -109,7 +109,7 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 			return NULL;
 		}
 	}
-	
+
 	/**
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
@@ -151,6 +151,6 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 		}
 		return $result;
 	}
-	
+
 }
 ?>

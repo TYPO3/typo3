@@ -70,7 +70,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	public function isInitialized() {
 		return $this->isInitialized;
 	}
-	
+
 	/**
 	 * Constructs this proxy instance.
 	 *
@@ -83,9 +83,9 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->propertyName = $propertyName;
 		$this->fieldValue = $fieldValue;
 	}
-	
+
 	/**
-	 * This is a function lazy load implementation. 
+	 * This is a function lazy load implementation.
 	 *
 	 * @return void
 	 */
@@ -101,7 +101,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 			$this->parentObject->_memorizeCleanState($this->propertyName);
 		}
 	}
-		
+
 	// Delegation to the ObjectStorage methods below
 
 	/**
@@ -141,7 +141,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 			$numberOfElements = $dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
 		} else {
 			$this->initialize();
-			$numberOfElements = count($this->storage);			
+			$numberOfElements = count($this->storage);
 		}
 		if (is_null($numberOfElements)) {
 			throw new Tx_Extbase_Persistence_Exception('The number of elements could not be determined.', 1252514486);
@@ -236,7 +236,7 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->initialize();
 		return parent::valid();
 	}
-	
+
 	/**
 	 * @see Tx_Extbase_Persistence_ObjectStorage::toArray
 	 */
@@ -244,6 +244,6 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->initialize();
 		return parent::toArray();
 	}
-		
+
 }
 ?>

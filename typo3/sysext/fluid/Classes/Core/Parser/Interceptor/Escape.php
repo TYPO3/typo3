@@ -39,11 +39,11 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	/**
 	 * A stack of ViewHelperNodes which currently disable the interceptor.
 	 * Needed to enable the interceptor again.
-	 * 
+	 *
 	 * @var array<Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface>
 	 */
 	protected $viewHelperNodesWhichDisableTheInterceptor = array();
-	
+
 	/**
 	 * Inject object factory
 	 *

@@ -126,7 +126,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 				$content .= $this->showLogin();
 			}
 		}
-		
+
 			// Process the redirect
 		if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
 			if (!$GLOBALS['TSFE']->fe_user->cookieId) {

@@ -422,7 +422,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 		return $this->build();
 	}
-	
+
 	/**
 	 * Builds the URI
 	 * Depending on the current context this calls buildBackendUri() or buildFrontendUri()
@@ -561,11 +561,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		}
 		return $arguments;
 	}
-	
+
 	/**
 	 * Converts a given object recursively into an array.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractDomainObject $object 
+	 * @param Tx_Extbase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
 	// TODO Refactore this into convertDomainObjectsToIdentityArrays()

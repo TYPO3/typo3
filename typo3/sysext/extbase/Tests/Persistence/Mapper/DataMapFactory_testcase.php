@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +28,7 @@
 require_once(PATH_tslib . 'class.tslib_content.php');
 
 class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_BaseTestCase {
-			
+
 	/**
 	 * @test
 	 */
@@ -49,7 +49,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory->expects($this->never())->method('setManyToManyRelation');
 		$mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $propertyMetaData);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -70,7 +70,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory->expects($this->once())->method('setManyToManyRelation');
 		$mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $propertyMetaData);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -92,7 +92,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory->expects($this->never())->method('setManyToManyRelation');
 		$mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $propertyMetaData);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -113,7 +113,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory->expects($this->once())->method('setManyToManyRelation');
 		$mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $propertyMetaData);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -134,7 +134,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory->expects($this->once())->method('setManyToManyRelation');
 		$mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $propertyMetaData);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -156,7 +156,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory->expects($this->once())->method('setManyToManyRelation');
 		$mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $propertyMetaData);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -180,11 +180,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockColumnMap->expects($this->never())->method('setParentTableFieldName');
 		$mockColumnMap->expects($this->never())->method('setRelationTableMatchFields');
 		$mockColumnMap->expects($this->never())->method('setRelationTableInsertFields');
-		
+
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('dummy'), array(), '', FALSE);
 		$mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -197,7 +197,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 				'MM_opposite_field' => 'rights'
 				),
 			);
-		$leftColumnsDefinition['rights']['MM_opposite_field'] = 'opposite_field';		
+		$leftColumnsDefinition['rights']['MM_opposite_field'] = 'opposite_field';
 		$mockColumnMap = $this->getMock('Tx_Extbase_Persistence_Mapper_ColumnMap', array(), array(), '', FALSE);
 		$mockColumnMap->expects($this->once())->method('setTypeOfRelation')->with($this->equalTo(Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
 		$mockColumnMap->expects($this->once())->method('setRelationTableName')->with($this->equalTo('tx_myextension_mm'));
@@ -208,11 +208,11 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockColumnMap->expects($this->never())->method('setParentTableFieldName');
 		$mockColumnMap->expects($this->never())->method('setRelationTableMatchFields');
 		$mockColumnMap->expects($this->never())->method('setRelationTableInsertFields');
-		
+
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('dummy'), array(), '', FALSE);
 		$mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $rightColumnsDefinition['lefts']);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -235,7 +235,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockColumnMap->expects($this->never())->method('setParentTableFieldName');
 		$mockColumnMap->expects($this->never())->method('setRelationTableMatchFields');
 		$mockColumnMap->expects($this->never())->method('setRelationTableInsertFields');
-		
+
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getColumnsDefinition'), array(), '', FALSE);
 		$mockDataMapFactory->expects($this->never())->method('getColumnsDefinition');
 		$mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
@@ -281,12 +281,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockColumnMap->expects($this->never())->method('setParentTableFieldName');
 		$mockColumnMap->expects($this->never())->method('setRelationTableMatchFields');
 		$mockColumnMap->expects($this->never())->method('setRelationTableInsertFields');
-		
+
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getColumnsDefinition'), array(), '', FALSE);
 		$mockDataMapFactory->expects($this->once())->method('getColumnsDefinition')->with($this->equalTo('tx_myextension_mm'))->will($this->returnValue($relationTableColumnsDefiniton));
 		$mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -303,12 +303,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockColumnMap->expects($this->once())->method('setRelationTableName')->with($this->equalTo('tx_myextension_mm'));
 		$mockColumnMap->expects($this->once())->method('getRelationTableName')->will($this->returnValue('tx_myextension_mm'));
 		$mockColumnMap->expects($this->never())->method('setrelationTablePageIdColumnName');
-		
+
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getControlSection'), array(), '', FALSE);
 		$mockDataMapFactory->expects($this->once())->method('getControlSection')->with($this->equalTo('tx_myextension_mm'))->will($this->returnValue(NULL));
 		$mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -325,12 +325,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockColumnMap->expects($this->once())->method('setRelationTableName')->with($this->equalTo('tx_myextension_mm'));
 		$mockColumnMap->expects($this->once())->method('getRelationTableName')->will($this->returnValue('tx_myextension_mm'));
 		$mockColumnMap->expects($this->once())->method('setrelationTablePageIdColumnName')->with($this->equalTo('pid'));
-		
+
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getControlSection'), array(), '', FALSE);
 		$mockDataMapFactory->expects($this->once())->method('getControlSection')->with($this->equalTo('tx_myextension_mm'))->will($this->returnValue(array('ctrl' => array('foo' => 'bar'))));
 		$mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Extbase_Persistence_Exception_InvalidClass
@@ -339,6 +339,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory_testcase extends Tx_Extbase_B
 		$mockDataMapFactory = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_Persistence_Mapper_DataMapFactory'), array('getControlSection'), array(), '', FALSE);
 		$mockDataMapFactory->buildDataMap('UnknownObject');
 	}
-	
+
 }
 ?>

@@ -124,7 +124,7 @@ class Tx_Extbase_Persistence_Manager implements Tx_Extbase_Persistence_ManagerIn
 	public function getRepositoryClassNames() {
 		return $this->repositoryClassNames;
 	}
-	
+
 	/**
 	 * Returns the number of records matching the query.
 	 *

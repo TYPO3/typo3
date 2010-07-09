@@ -376,7 +376,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 *	+ backend user is a regular user and adminOnly is not defined
 	 *	+ backend user is an admin user
 	 *	+ backend user is used in CLI context and adminOnly is explicitely set to "2"
-	 * 
+	 *
 	 * @return	boolean		Whether a backend user is allowed to access the backend
 	 */
 	protected function isUserAllowedToLogin() {

@@ -33,7 +33,7 @@
  * @version $Id: ClassLoader.php 1729 2009-11-25 21:37:20Z stucki $
  */
 class Tx_Extbase_Utility_ClassLoader {
-	
+
 	/**
 	 * Loads php files containing classes or interfaces found in the classes directory of
 	 * an extension.
@@ -52,6 +52,6 @@ class Tx_Extbase_Utility_ClassLoader {
 			}
 		}
 	}
-	
+
 }
 ?>

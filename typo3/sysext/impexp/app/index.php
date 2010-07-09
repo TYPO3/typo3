@@ -388,14 +388,14 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 					// View
 					$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-view') . 
+						t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				  '</a>';
 
 					// Record list
 					if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
 						$href = $this->doc->backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
 						$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') . 
+							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
 					  '</a>';
 					}
 				}

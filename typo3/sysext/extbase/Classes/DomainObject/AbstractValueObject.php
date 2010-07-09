@@ -40,7 +40,7 @@ abstract class Tx_Extbase_DomainObject_AbstractValueObject extends Tx_Extbase_Do
 	public function getValue() {
 		return $this->__toString();
 	}
-	
+
 	/**
 	 * Clone method. Sets the _isClone property.
 	 *

@@ -67,7 +67,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				if (is_array($selectFields)) {
 					$outputParts = array();
 					foreach ($selectFields as $k => $v) {
-		
+
 							// Detecting type:
 						switch($v['type'])	{
 							case 'function':
@@ -82,12 +82,12 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								$outputParts[$k] = ($v['distinct'] ? $v['distinct'] : '') . ($v['table'] ? $v['table'] . '.' : '') . $v['field'];
 								break;
 						}
-		
+
 							// Alias:
 						if ($v['as']) {
 							$outputParts[$k] .= ' ' . $v['as_keyword'] . ' ' . $v['as'];
 						}
-		
+
 							// Specifically for ORDER BY and GROUP BY field lists:
 						if ($v['sortDir']) {
 							$outputParts[$k] .= ' ' . $v['sortDir'];
@@ -100,10 +100,10 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					$output .= implode(', ', $outputParts);
 				}
 				break;
-		}	
+		}
 		return $output;
 	}
- 
+
  	/**
 	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
 	 *
@@ -152,7 +152,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	protected function compileAddslashes($str) {
 		return $str;
 	}
-	
+
 	/*************************
 	 *
 	 * Compiling queries
@@ -494,7 +494,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 									// Set field/table with modifying prefix if any:
 								$output .= ' ' . trim($v['modifier']) . ' ';
-	
+
 									// DBAL-specific: Set calculation, if any:
 								if ($v['calc'] === '&' && $functionMapping) {
 									switch(TRUE) {
@@ -531,7 +531,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												}
 												$compareValue = ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 											} else {
-												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1]; 
+												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1];
 											}
 												// To be on the safe side
 											$isLob = TRUE;
@@ -554,7 +554,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											// Detecting value type; list or plain:
 										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
 											if (isset($v['subquery'])) {
-												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
+												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 											} else {
 												$valueBuffer = array();
 												foreach ($v['value'] as $realValue) {

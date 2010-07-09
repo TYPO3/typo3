@@ -137,7 +137,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 
 	/**
 	 * Returns the Query Settings.
-	 * 
+	 *
 	 * @return Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The Query Settings
 	 * @api This method is not part of FLOW3 API
 	 */
@@ -164,7 +164,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function setSource(Tx_Extbase_Persistence_QOM_SourceInterface $source) {
 		$this->source = $source;
 	}
-	
+
 	/**
 	 * Returns the selectorn name or an empty string, if the source is not a selector
 	 * // TODO This has to be checked at another place
@@ -204,7 +204,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			return $this->dataMapper->map($this->getType(), $rows);
 		}
 	}
-	
+
 	/**
 	 * Executes the number of matching objects for the query
 	 *
@@ -214,7 +214,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function count() {
 		return $this->persistenceManager->getObjectCountByQuery($this);
 	}
-	
+
 	/**
 	 * Sets the property names to order the result by. Expected like this:
 	 * array(
@@ -231,7 +231,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		$this->orderings = $orderings;
 		return $this;
 	}
-	
+
 	/**
 	 * Returns the property names to order the result by. Like this:
 	 * array(
@@ -293,7 +293,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function getOffset() {
 		return $this->offset;
 	}
-	
+
 	/**
 	 * The constraint used to limit the result set. Returns $this to allow
 	 * for chaining (fluid interface)
@@ -319,7 +319,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		$this->statement = $this->qomFactory->statement($statement, $parameters);
 		return $this;
 	}
-	
+
 	/**
 	 * Returns the statement of this query.
 	 *
@@ -328,7 +328,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	public function getStatement() {
 		return $this->statement;
 	}
-	
+
 	/**
 	 * Gets the constraint for this query.
 	 *
@@ -366,7 +366,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		}
 		return $resultingConstraint;
 	}
-	
+
 	/**
 	 * Performs a logical disjunction of the two given constraints
 	 *
@@ -465,7 +465,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$operand
 			);
 	}
-	
+
 	/**
 	 * Returns a "contains" criterion used for matching objects against a query.
 	 * It matches if the multivalued property contains the given operand.
@@ -496,7 +496,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 		if (!is_array($operand) && (!$operand instanceof ArrayAccess) && (!$operand instanceof Traversable)) {
 			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('The "in" operator must be given a mutlivalued operand (array, ArrayAccess, Traversable).', 1264678095);
 		}
-		
+
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN,
@@ -567,6 +567,6 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			$operand
 			);
 	}
-		
+
 }
 ?>

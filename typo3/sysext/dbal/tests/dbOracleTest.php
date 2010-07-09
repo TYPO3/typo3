@@ -28,7 +28,7 @@ require_once('FakeDbConnection.php');
 
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
- * 
+ *
  * $Id$
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
@@ -86,7 +86,7 @@ class dbOracleTest extends BaseTestCase {
 
 	/**
 	 * Cleans a SQL query.
-	 *  
+	 *
 	 * @param mixed $sql
 	 * @return mixed (string or array)
 	 */
@@ -101,7 +101,7 @@ class dbOracleTest extends BaseTestCase {
 	}
 
 	/**
-	 * @test 
+	 * @test
 	 */
 	public function configurationIsUsingAdodbAndDriverOci8() {
 		$configuration = $GLOBALS['TYPO3_DB']->conf['handlerCfg'];
@@ -110,7 +110,7 @@ class dbOracleTest extends BaseTestCase {
 		$this->assertTrue($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') !== FALSE, 'Not using oci8 driver');
 	}
 
-	/** 
+	/**
 	 * @test
 	 */
 	public function tablesWithMappingAreDetected() {
@@ -269,7 +269,7 @@ class dbOracleTest extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
-	/** 
+	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=6198
 	 */
@@ -500,7 +500,7 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-			// First call to possibly alter (in memory) the mapping from localconf.php 
+			// First call to possibly alter (in memory) the mapping from localconf.php
 		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 
 		$selectFields = 'uid';
@@ -687,7 +687,7 @@ class dbOracleTest extends BaseTestCase {
 		$expected .= ' OR (instr("tt_content"."fe_group", \'-1,\',1,1) > 0)';
 		$expected .= ' OR (instr("tt_content"."fe_group", \',-1\',1,1) > 0)';
 		$expected .= ' OR "tt_content"."fe_group" = \'-1\'))';
-		$this->assertEquals($expected, $select); 
+		$this->assertEquals($expected, $select);
 	}
 
 	///////////////////////////////////////
@@ -755,7 +755,7 @@ class dbOracleTest extends BaseTestCase {
 				firstname varchar(60) DEFAULT \'\' NOT NULL,
 				language varchar(2) NOT NULL,
 				tstamp int(11) DEFAULT \'0\' NOT NULL,
-				
+
 				PRIMARY KEY (uid),
 				KEY name (name)
 			);
@@ -763,7 +763,7 @@ class dbOracleTest extends BaseTestCase {
 
 		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
-	
+
 		$sqlCommands = $GLOBALS['TYPO3_DB']->SQLparser->_call('compileCREATETABLE', $components);
 		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
 		$this->assertEquals(2, count($sqlCommands));
@@ -866,7 +866,7 @@ class dbOracleTest extends BaseTestCase {
 				$table = $GLOBALS['TYPO3_DB']->mapping[$table]['mapTableName'];
 			}
 		}
-		
+
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery($table, $where));
 		$expected = 'DELETE FROM "cf_cache_hash_tags" WHERE "identifier" IN (';
 		$expected .= 'SELECT "identifier" FROM "cf_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
@@ -935,7 +935,7 @@ class dbOracleTest extends BaseTestCase {
 			'process_id, CASE active' .
 				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
 				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
-				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . 
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') .
 			' END AS number',
 			'tx_crawler_process',
 			'1=1'
@@ -952,7 +952,7 @@ class dbOracleTest extends BaseTestCase {
 		$selectFields = 'process_id, CASE active' .
 				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') .
 				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') .
-				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . 
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') .
 			' END AS number';
 		$fromTables   = 'tx_crawler_process';
 		$whereClause  = '1=1';
@@ -975,7 +975,7 @@ class dbOracleTest extends BaseTestCase {
 		$selectFields = 'process_id, CASE tt_news.uid' .
 				' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tt_news') .
 				' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tt_news') .
-				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news') . 
+				' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news') .
 			' END AS number';
 		$fromTables   = 'tx_crawler_process, tt_news';
 		$whereClause  = '1=1';
@@ -998,7 +998,7 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*, CASE WHEN' .
 				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' .
-				' ELSE 1' . 
+				' ELSE 1' .
 			' END AS scope',
 			'tx_templavoila_tmplobj',
 			'1=1'
@@ -1015,7 +1015,7 @@ class dbOracleTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*, CASE WHEN' .
 				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' .
-				' ELSE 1' . 
+				' ELSE 1' .
 			' END AS scope',
 			'tx_templavoila_tmplobj',
 			'1=1'

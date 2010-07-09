@@ -50,7 +50,7 @@ class Tx_Fluid_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {
 	 * extractNamespaceDefinitions($templateString)
 	 * splitTemplateAtDynamicTags($templateString)
 	 * buildObjectTree($splitTemplate)
-	 * 
+	 *
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */

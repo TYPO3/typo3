@@ -28,7 +28,7 @@ require_once('FakeDbConnection.php');
 
 /**
  * Testcase for class ux_t3lib_db. Testing MS SQL database handling.
- * 
+ *
  * $Id$
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
@@ -86,7 +86,7 @@ class dbMssqlTest extends BaseTestCase {
 
 	/**
 	 * Cleans a SQL query.
-	 *  
+	 *
 	 * @param mixed $sql
 	 * @return mixed (string or array)
 	 */
@@ -101,7 +101,7 @@ class dbMssqlTest extends BaseTestCase {
 	}
 
 	/**
-	 * @test 
+	 * @test
 	 */
 	public function configurationIsUsingAdodbAndDriverMssql() {
 		$configuration = $GLOBALS['TYPO3_DB']->conf['handlerCfg'];
@@ -110,7 +110,7 @@ class dbMssqlTest extends BaseTestCase {
 		$this->assertTrue($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') !== FALSE, 'Not using mssql driver');
 	}
 
-	/** 
+	/**
 	 * @test
 	 */
 	public function tablesWithMappingAreDetected() {
@@ -162,7 +162,7 @@ class dbMssqlTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*, CASE WHEN' .
 				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' .
-				' ELSE 1' . 
+				' ELSE 1' .
 			' END AS scope',
 			'tx_templavoila_tmplobj',
 			'1=1'
@@ -179,7 +179,7 @@ class dbMssqlTest extends BaseTestCase {
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
 			'*, CASE WHEN' .
 				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' .
-				' ELSE 1' . 
+				' ELSE 1' .
 			' END AS scope',
 			'tx_templavoila_tmplobj',
 			'1=1'
@@ -195,7 +195,7 @@ class dbMssqlTest extends BaseTestCase {
 	public function locateStatementIsProperlyRemapped() {
 		$selectFields = '*, CASE WHEN' .
 				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' .
-				' ELSE 1' . 
+				' ELSE 1' .
 			' END AS scope';
 		$fromTables   = 'tx_templavoila_tmplobj';
 		$whereClause  = '1=1';
@@ -216,7 +216,7 @@ class dbMssqlTest extends BaseTestCase {
 	public function locateStatementWithExternalTableIsProperlyRemapped() {
 		$selectFields = '*, CASE WHEN' .
 				' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', tx_templavoila_tmplobj.datastructure, 4)>0 THEN 2' .
-				' ELSE 1' . 
+				' ELSE 1' .
 			' END AS scope';
 		$fromTables   = 'tx_templavoila_tmplobj';
 		$whereClause  = '1=1';

@@ -180,18 +180,18 @@ class Tx_Extbase_MVC_Web_Request extends Tx_Extbase_MVC_Request {
 	public function getContentObjectData() {
 		return $this->contentObjectData;
 	}
-	
+
 	/**
 	 * Set if the current request is cached.
-	 * 
+	 *
 	 * @param boolean $isCached
 	 */
 	public function setIsCached($isCached) {
 		$this->isCached = (boolean) $isCached;
-	} 
+	}
 	/**
 	 * Return whether the current request is a cached request or not.
-	 * 
+	 *
 	 * @api (v4 only)
 	 * @return boolean the caching status.
 	 */

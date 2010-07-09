@@ -37,7 +37,7 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 		$domainObject->foo = 'Test';
 		$domainObject->bar = 'It is raining outside';
 		$domainObject->_memorizeCleanState();
-		
+
 		$this->assertFalse($domainObject->_isDirty());
 	}
 
@@ -94,7 +94,7 @@ class Tx_Extbase_DomainObject_AbstractEntity_testcase extends Tx_Extbase_BaseTes
 		}');
 		$secondDomainObject = new $secondDomainObjectName;
 		$secondDomainObject->_memorizeCleanState();
-		
+
 
 		$domainObject = new $domainObjectName();
 		$domainObject->foo = $secondDomainObject;

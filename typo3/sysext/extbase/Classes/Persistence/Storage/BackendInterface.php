@@ -81,6 +81,6 @@ interface Tx_Extbase_Persistence_Storage_BackendInterface {
 	 * @api
 	 */
 	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query);
-	
+
 }
 ?>

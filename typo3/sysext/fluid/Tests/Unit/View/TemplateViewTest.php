@@ -335,7 +335,7 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 		$templateView->setLayoutRootPath('MyLayouts');
 
 		$this->assertSame('vfs://MyTemplates/MyCoolAction.html', $templateView->_call('resolveTemplatePathAndFilename', 'myCoolAction'));
-		
+
 	}
 
 	/**

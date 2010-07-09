@@ -177,7 +177,7 @@ class Tx_Extbase_Reflection_ObjectAccess {
 		}
 		return $properties;
 	}
-	
+
 	/**
 	 * Tells if the value of the specified property can be retrieved by this Object Accessor.
 	 *

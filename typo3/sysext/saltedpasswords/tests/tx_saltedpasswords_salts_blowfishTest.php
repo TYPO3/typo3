@@ -178,10 +178,10 @@ class tx_saltedpasswords_salts_blowfishTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests authentication procedure with alphabet characters.
-	 * 
+	 *
 	 * Checks if a "plain-text password" is everytime mapped to the
-	 * same "salted password hash" when using the same salt. 
-	 * 
+	 * same "salted password hash" when using the same salt.
+	 *
 	 * @test
 	 */
 	public function authenticationWithValidAlphaCharClassPassword() {
@@ -237,7 +237,7 @@ class tx_saltedpasswords_salts_blowfishTest extends tx_phpunit_testcase {
 	 */
 	public function authenticationWithValidLatin1SpecialCharClassPassword() {
 		$this->skipTestIfBlowfishIsNotAvailable();
-		
+
 		$password = '';
 		for ($i = 160; $i <= 191; $i++) {
 			$password .= chr($i);

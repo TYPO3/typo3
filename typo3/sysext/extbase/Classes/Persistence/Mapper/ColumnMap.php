@@ -55,7 +55,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	const STRATEGY_EAGER = 'eager';
 	const STRATEGY_LAZY_PROXY = 'proxy';
 	const STRATEGY_LAZY_STORAGE = 'storage';
-	
+
 	/**
 	 * The property name corresponding to the table name
 	 *
@@ -197,7 +197,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function getColumnName() {
 		return $this->columnName;
 	}
-	
+
 	public function setChildTableName($childTableName) {
 		$this->childTableName = $childTableName;
 	}

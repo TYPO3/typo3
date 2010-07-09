@@ -491,7 +491,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 */
 	function record_registration($recs,$maxSizeOfSessionData=0)	{
 
-			// Storing value ONLY if there is a confirmed cookie set (->cookieID), 
+			// Storing value ONLY if there is a confirmed cookie set (->cookieID),
 			// otherwise a shellscript could easily be spamming the fe_sessions table
 			// with bogus content and thus bloat the database
 		if (!$maxSizeOfSessionData || $this->cookieId) {

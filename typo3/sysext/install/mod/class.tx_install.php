@@ -7859,7 +7859,7 @@ $out="
 					Change the Install Tool password.
 				</li>
 				<li>
-					Delete the ENABLE_INSTALL_TOOL file in the /typo3conf folder. This can be done 
+					Delete the ENABLE_INSTALL_TOOL file in the /typo3conf folder. This can be done
 					manually or through User tools &gt; User settings in the backend.
 				</li>
 				<li>
@@ -7933,7 +7933,7 @@ $out="
 	function messageBasicFinished() {
 		return '
 			<p>
-				You have completed the basic setup of the TYPO3 Content Management System. 
+				You have completed the basic setup of the TYPO3 Content Management System.
 				Choose between these options to continue:
 			</p>
 			<ul>

@@ -23,10 +23,10 @@
 ***************************************************************/
 
 class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_BaseTestCase {
-	
+
 	public function setUp() {
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException InvalidArgumentException
@@ -62,6 +62,6 @@ class Tx_Extbase_Persistence_Query_testcase extends Tx_Extbase_BaseTestCase {
 		$query = new Tx_Extbase_Persistence_Query('Foo_Class_Name');
 		$query->setOffset(-1);
 	}
-	
+
 }
 ?>

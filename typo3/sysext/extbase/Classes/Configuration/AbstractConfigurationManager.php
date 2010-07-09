@@ -77,7 +77,7 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($extbaseConfiguration);
 			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
 		}
-		
+
 		if (isset($pluginConfiguration['settings'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'settings');
 		}

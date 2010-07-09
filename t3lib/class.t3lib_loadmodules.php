@@ -133,9 +133,9 @@ class t3lib_loadModules {
 			//
 		$this->absPathArray = $modulesArray['_PATHS'];
 		unset($modulesArray['_PATHS']);
-			// unset the array for calling external backend module dispatchers in typo3/mod.php 
+			// unset the array for calling external backend module dispatchers in typo3/mod.php
 		unset($modulesArray['_dispatcher']);
-			// unset the array for calling backend modules based on external backend module dispatchers in typo3/mod.php 
+			// unset the array for calling backend modules based on external backend module dispatchers in typo3/mod.php
 		unset($modulesArray['_configuration']);
 
 			/*

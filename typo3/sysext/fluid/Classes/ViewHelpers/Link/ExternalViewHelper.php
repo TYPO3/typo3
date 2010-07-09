@@ -17,7 +17,7 @@
  * A view helper for creating links to external targets.
  *
  * = Examples =
- * 
+ *
  * <code>
  * <f:link.external uri="http://www.typo3.org" target="_blank">external link</f:link.external>
  * </code>

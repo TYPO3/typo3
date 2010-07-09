@@ -862,7 +862,7 @@ class SC_alt_doc {
 
 			// CLOSE button:
 		$buttons['close'] = '<a href="#" onclick="document.editform.closeDoc.value=1; document.editform.submit(); return false;" title="' . $LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-document-close') . 
+					t3lib_iconWorks::getSpriteIcon('actions-document-close') .
 				'</a>';
 
 
@@ -874,7 +874,7 @@ class SC_alt_doc {
 				if ($this->firstEl['deleteAccess'] && !$TCA[$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'],'disableDelete')) {
 					$aOnClick = 'return deleteRecord(\''.$this->firstEl['table'].'\',\''.$this->firstEl['uid'].'\',unescape(\''.rawurlencode($this->retUrl).'\'));';
 					$buttons['delete'] = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'" title="' . $LANG->getLL('deleteItem', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') . 
+							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 							'</a>';
 				}
 
@@ -884,13 +884,13 @@ class SC_alt_doc {
 					$aOnClick = 'window.location.href=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&revert=ALL_FIELDS&sumUp=-1&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
 					$buttons['undo'] = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.
 						' title="' . htmlspecialchars(sprintf($LANG->getLL('undoLastChange'), t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp'], $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-edit-undo') . 
+							t3lib_iconWorks::getSpriteIcon('actions-edit-undo') .
 						'</a>';
 				}
 				if ($this->getNewIconMode($this->firstEl['table'],'showHistory'))	{
 					$aOnClick = 'window.location.href=\'show_rechis.php?element='.rawurlencode($this->firstEl['table'].':'.$this->firstEl['uid']).'&returnUrl='.rawurlencode($this->R_URI).'\'; return false;';
 					$buttons['history'] = '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.
-							t3lib_iconWorks::getSpriteIcon('actions-document-history-open') . 
+							t3lib_iconWorks::getSpriteIcon('actions-document-history-open') .
 						'</a>';
 				}
 

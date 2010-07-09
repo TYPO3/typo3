@@ -190,7 +190,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Extbase_MVC_View_AbstractView implem
 		$parserConfiguration = $this->objectManager->create('Tx_Fluid_Core_Parser_Configuration');
 		if ($this->controllerContext->getRequest()->getFormat() === 'html') {
 			$parserConfiguration->addInterceptor($this->objectManager->get('Tx_Fluid_Core_Parser_Interceptor_Escape'));
-			
+
 		}
 		return $parserConfiguration;
 	}

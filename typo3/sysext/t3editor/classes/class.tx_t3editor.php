@@ -42,7 +42,7 @@ class tx_t3editor implements t3lib_Singleton {
 	const MODE_XML = 'xml';
 
 	protected $mode = '';
-	
+
 	/**
 	 * counts the editors on the current page
 	 *
@@ -148,7 +148,7 @@ class tx_t3editor implements t3lib_Singleton {
 				'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . '"; ' . LF.
 				'T3editor.URL_typo3 = "' . htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . '"; ' .LF.
 				'T3editor.template = '. $this->getPreparedTemplate() .';' .LF.
-				'T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' .LF. 
+				'T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' .LF.
 				'T3editor.stylesheet = ' . $this->getStylesheetByMode($this->mode) . ';'
 			);
 		}

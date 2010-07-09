@@ -157,7 +157,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 		$this->addArgument($argument);
 		return $argument;
 	}
-	
+
 	/**
 	 * Creates a new argument. This is a replacement for $this->objectFactory->create() of FLOW3.
 	 *

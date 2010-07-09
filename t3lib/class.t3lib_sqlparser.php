@@ -681,7 +681,7 @@ class t3lib_sqlparser {
 
 	/**
 	 * Parsing TRUNCATE TABLE query
-	 * 
+	 *
 	 * @param	string		SQL string starting with TRUNCATE TABLE
 	 * @return	mixed		Returns array with components of TRUNCATE TABLE query on success, otherwise an error message string.
 	 */
@@ -810,7 +810,7 @@ class t3lib_sqlparser {
 							// Otherwise, look for regular fieldname:
 						if (($fieldName = $this->nextPart($parseString, '^([[:alnum:]\*._]+)(,|[[:space:]]+)')) !== '') {
 							$stack[$pnt]['type'] = 'field';
-	
+
 								// Explode fieldname into field and table:
 							$tableField = explode('.',$fieldName,2);
 							if (count($tableField)==2)	{
@@ -881,7 +881,7 @@ class t3lib_sqlparser {
 		if (!preg_match('/^when[[:space:]]+/i', $parseString)) {
 			$value = $this->getValue($parseString);
 			if (!(isset($value[1]) || is_numeric($value[0]))) {
-				$result['case_field'] = $value[0]; 
+				$result['case_field'] = $value[0];
 			} else {
 				$result['case_value'] = $value;
 			}
@@ -1075,7 +1075,7 @@ class t3lib_sqlparser {
 							return $this->parseError('No comma found as expected in parseWhereClause()');
 						}
 						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\*._]+)[[:space:]]*')) {
- 
+
 								// Parse field name into field and table:
 							$tableField = explode('.', $fieldName, 2);
 							if (count($tableField) == 2) {
@@ -1089,7 +1089,7 @@ class t3lib_sqlparser {
 							return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
  						}
 						if ($this->nextPart($parseString, '^(,)')) {
-							$stack[$level][$pnt[$level]]['func']['pos'] = $this->getValue($parseString); 
+							$stack[$level][$pnt[$level]]['func']['pos'] = $this->getValue($parseString);
 						}
 						if (!$this->nextPart($parseString, '^([)])')) {
 							return $this->parseError('No ) parenthesis at end of function');
@@ -1098,7 +1098,7 @@ class t3lib_sqlparser {
 						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(IFNULL)[[:space:]]*');
 						$parseString = trim(substr($parseString, 1));	// Strip of "("
 						if ($fieldName = $this->nextPart($parseString, '^([[:alnum:]\*._]+)[[:space:]]*')) {
- 
+
 								// Parse field name into field and table:
 							$tableField = explode('.', $fieldName, 2);
 							if (count($tableField) == 2) {
@@ -1143,7 +1143,7 @@ class t3lib_sqlparser {
 						} else {
 							return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
  						}
-		
+
 							// See if the value is calculated:
 						$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
 						if (strlen($stack[$level][$pnt[$level]]['calc'])) {
@@ -1163,7 +1163,7 @@ class t3lib_sqlparser {
 							}
 						}
  					}
- 	
+
  						// Find "comparator":
 					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS|BETWEEN|NOT[[:space]]+BETWEEN)');
 					if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
@@ -1752,7 +1752,7 @@ class t3lib_sqlparser {
 
 	/**
 	 * Compiles a TRUNCATE TABLE statement from components array
-	 * 
+	 *
 	 * @param	array		Array of SQL query components
 	 * @return	string		SQL TRUNCATE TABLE query
 	 * @see parseTRUNCATETABLE()
@@ -1944,7 +1944,7 @@ class t3lib_sqlparser {
 				} else {
 
 					if (isset($v['func']) && $v['func']['type'] === 'LOCATE') {
-						$output .= ' ' . trim($v['modifier']) . ' LOCATE('; 
+						$output .= ' ' . trim($v['modifier']) . ' LOCATE(';
 						$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
 						$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
@@ -1955,10 +1955,10 @@ class t3lib_sqlparser {
 						$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
 						$output .= ')';
 					} else {
-						
+
 							// Set field/table with modifying prefix if any:
 						$output .= ' ' . trim($v['modifier'] . ' ' . ($v['table'] ? $v['table'] . '.' : '') . $v['field']);
-	
+
 							// Set calculation, if any:
 						if ($v['calc']) {
 							$output .= $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
@@ -1972,7 +1972,7 @@ class t3lib_sqlparser {
 							// Detecting value type; list or plain:
 						if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
 							if (isset($v['subquery'])) {
-								$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
+								$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 							} else {
 								$valueBuffer = array();
 								foreach ($v['value'] as $realValue) {

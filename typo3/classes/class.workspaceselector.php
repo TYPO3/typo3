@@ -190,7 +190,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 		));
 
 		$workspaceMenu[] = '<a href="#" class="toolbar-item">' .
-			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . 
+			t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) .
 				'</a>';
 		$workspaceMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 

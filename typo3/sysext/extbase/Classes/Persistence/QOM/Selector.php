@@ -82,7 +82,7 @@ class Tx_Extbase_Persistence_QOM_Selector implements Tx_Extbase_Persistence_QOM_
 	public function getSelectorName() {
 		return $this->selectorName;
 	}
-	
+
 }
 
 ?>

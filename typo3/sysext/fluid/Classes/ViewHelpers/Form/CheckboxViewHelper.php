@@ -115,11 +115,11 @@ class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends Tx_Fluid_ViewHelpers_
 		$hiddenField = $this->renderHiddenFieldForEmptyValue();
 		return $hiddenField . $this->tag->render();
 	}
-	
+
 	/**
 	 * Renders a hidden field with the same name as the element, to make sure the empty value is submitted
 	 * in case the checkbox is not selected.
-	 * 
+	 *
 	 * @return string the hidden field.
 	 */
 	protected function renderHiddenFieldForEmptyValue() {
@@ -133,7 +133,7 @@ class Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper extends Tx_Fluid_ViewHelpers_
 		if (!in_array($nameOfElement, $checkboxFieldNames)) {
 			$checkboxFieldNames[] = $nameOfElement;
 			$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper', 'checkboxFieldNames', $checkboxFieldNames);
-			
+
 			$tagBuilder = t3lib_div::makeInstance('Tx_Fluid_Core_ViewHelper_TagBuilder', 'input');
 			$tagBuilder->addAttribute('type', 'hidden');
 			$tagBuilder->addAttribute('name', $nameOfElement);

@@ -27,7 +27,7 @@ require_once('BaseTestCase.php');
 
 /**
  * Testcase for class ux_t3lib_sqlparser
- * 
+ *
  * $Id$
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
@@ -59,7 +59,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 
 	/**
 	 * Cleans a SQL query.
-	 *  
+	 *
 	 * @param mixed $sql
 	 * @return mixed (string or array)
 	 */
@@ -185,7 +185,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canSelectAllFieldsFromPages() {
 		$sql = 'SELECT * FROM pages';
 		$expected = $sql;
-		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -434,7 +434,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canUseInnerJoinInSelect() {
 		$sql = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id = be_users.uid';
 		$expected = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id=be_users.uid';
-		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -445,7 +445,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 	public function canUseMultipleInnerJoinsInSelect() {
 		$sql = 'SELECT * FROM tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local';
 		$expected = 'SELECT * FROM tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid=tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid=tt_news_cat_mm.uid_local';
-		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -464,7 +464,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 
 	/**
 	 * @test
-	 * @see http://bugs.typo3.org/view.php?id=14182 
+	 * @see http://bugs.typo3.org/view.php?id=14182
 	 */
 	public function canParseMultipleJoinConditionsWithLessThanOperator() {
 		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size < 4 OR T2.pid = T1.uid WHERE T1.cr_userid = 1';
@@ -478,7 +478,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 	// Tests concerning DB management
 	///////////////////////////////////////
 
-	/** 
+	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=4466
 	 */

@@ -121,8 +121,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		} else {
 			$controllerName = $this->defaultControllerName;
 			$actionName = $this->defaultActionName;
-		}				
-		
+		}
+
 		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginName($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
@@ -135,7 +135,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		if (is_string($parameters['format']) && (strlen($parameters['format']))) {
 			$request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));
 		}
-		
+
 		foreach ($parameters as $argumentName => $argumentValue) {
 			$request->setArgument($argumentName, $argumentValue);
 		}

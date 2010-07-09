@@ -25,7 +25,7 @@ class Tx_Fluid_ViewHelpers_DebugViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 * Wrapper for TYPO3s famous debug()
 	 *
 	 * @param string $title
-	 * @return string the altered string. 
+	 * @return string the altered string.
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($title = NULL) {

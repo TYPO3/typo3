@@ -22,7 +22,7 @@ class ADODB_informix extends ADODB_informix72 {
 	var $databaseType = "informix";
 	var $hasTop = 'FIRST';
 	var $ansiOuter = true;
-	
+
 	function IfNull( $field, $ifNull )
 	{
 		return " NVL($field, $ifNull) "; // if Informix 9.X or 10.X
@@ -31,7 +31,7 @@ class ADODB_informix extends ADODB_informix72 {
 
 class ADORecordset_informix extends ADORecordset_informix72 {
 	var $databaseType = "informix";
-	
+
 	function ADORecordset_informix($id,$mode=false)
 	{
 		$this->ADORecordset_informix72($id,$mode);

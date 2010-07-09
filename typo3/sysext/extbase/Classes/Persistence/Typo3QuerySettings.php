@@ -101,7 +101,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	public function getRespectSysLanguage() {
 		return $this->respectSysLanguage;
 	}
-	
+
 	/**
 	 * Sets the flag if the visibility in the frontend should be respected.
 	 *
@@ -122,7 +122,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	public function getRespectEnableFields() {
 		return $this->respectEnableFields;
 	}
-	
+
 	/**
 	 * Sets the state, if the QueryResult should be returned unmapped.
 	 *
@@ -132,7 +132,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	public function setReturnRawQueryResult($returnRawQueryResult) {
 		$this->returnRawQueryResult = $returnRawQueryResult;
 	}
-	
+
 	/**
 	 * Returns the state, if the QueryResult should be returned unmapped.
 	 *
@@ -140,7 +140,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 */
 	public function getReturnRawQueryResult() {
 		return $this->returnRawQueryResult;
-	}	
+	}
 
 }
 ?>

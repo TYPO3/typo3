@@ -119,7 +119,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 						$params = '&edit[pages]['.$editIdList.']=edit&columnsOnly=TSconfig';
 						$onclickUrl = t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'],'');
 						$editIcon = '<a href="#" onclick="'.htmlspecialchars($onclickUrl).'" title="'.$GLOBALS['LANG']->getLL('editTSconfig',1).'">'.
-									t3lib_iconWorks::getSpriteIcon('actions-document-open') . 
+									t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 								'</a>';
 					}
 

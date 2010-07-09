@@ -127,7 +127,7 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 		$controller->_set('request', $mockRequest);
 		$actualResult = $controller->_call('addBaseUriIfNecessary', 'bar/baz/boom.html');
 		$expectedResult = 'http://www.example.com/foo/bar/baz/boom.html';
-		
+
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -142,7 +142,7 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 		$controller->_set('request', $mockRequest);
 		$actualResult = $controller->_call('addBaseUriIfNecessary', 'http://www.example.com/foo/bar/baz/boom.html');
 		$expectedResult = 'http://www.example.com/foo/bar/baz/boom.html';
-		
+
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
@@ -177,15 +177,15 @@ class Tx_Extbase_MVC_Controller_AbstractController_testcase extends Tx_Extbase_B
 		$mockArgumentFoo = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('foo'), '', FALSE);
 		$mockArgumentFoo->expects($this->once())->method('getDataType')->will($this->returnValue('FooType'));
 		$mockArgumentFoo->expects($this->once())->method('setValidator')->with($mockValidators['foo']);
-		
+
 		$mockArgumentBar = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array(), array('bar'), '', FALSE);
 		$mockArgumentBar->expects($this->once())->method('getDataType')->will($this->returnValue('BarType'));
 		$mockArgumentBar->expects($this->never())->method('setValidator');
-		
+
 		$mockArguments = new Tx_Extbase_MVC_Controller_Arguments();
 		$mockArguments->addArgument($mockArgumentFoo);
 		$mockArguments->addArgument($mockArgumentBar);
-		
+
 		$controller = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_AbstractController'), array('dummy'), array(), '', FALSE);
 		$controller->_set('arguments', $mockArguments);
 		$controller->injectValidatorResolver($mockValidatorResolver);

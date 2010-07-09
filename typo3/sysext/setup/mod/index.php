@@ -895,10 +895,10 @@ class SC_mod_user_setup_index {
 		}
 		return t3lib_BEfunc::cshItem('_MOD_user_setup', $str, $this->doc->backPath, '|', false, 'margin-bottom:0px;');
 	}
-	
+
 	/**
 	 * Returns array with fields defined in $GLOBALS['TYPO3_USER_SETTINGS']['showitem']
-	 * 
+	 *
 	 * @param	void
 	 * @return	array	array with fieldnames visible in form
 	 */

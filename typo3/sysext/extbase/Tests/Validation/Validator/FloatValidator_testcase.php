@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,13 +39,13 @@ class Tx_Extbase_Validation_Validator_FloatValidator_testcase extends Tx_Extbase
 	 * @var array
 	 */
 	protected $validFloatingPointNumbers;
-	
+
 	/**
 	 * An array of invalid floating point numbers addresses
 	 * @var array
 	 */
 	protected $invalidFloatingPointNumbers;
-	
+
 	public function setUp() {
 		$this->validFloatingPointNumbers = array(
 			1029437.234726,
@@ -55,14 +55,14 @@ class Tx_Extbase_Validation_Validator_FloatValidator_testcase extends Tx_Extbase
 			'123.45e3',
 			123.45e3
 			);
-			
+
 		$this->invalidFloatingPointNumbers = array(
 			1029437,
 			'1029437',
 			'not a number'
 			);
 	}
-	
+
 	/**
 	 * @test
 	 */

@@ -160,7 +160,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			),
 			'expandSubElements' => '',
 		);
-		
+
 		if($this->showDraftWorkspace === TRUE) {
 			$this->MOD_MENU['display'][-1] = '[' . $LANG->getLL('shortcut_offlineWS') . ']';
 		}

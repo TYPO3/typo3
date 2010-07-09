@@ -144,7 +144,7 @@ class SC_browse_links {
 		if ($tempDBmount) {
 	 		$altMountPoints = $tempDBmount;
 		}
-		
+
  		if ($altMountPoints) {
  			$GLOBALS['BE_USER']->groupData['webmounts'] = implode(',', array_unique(t3lib_div::intExplode(',', $altMountPoints)));
  			$GLOBALS['WEBMOUNTS'] = $GLOBALS['BE_USER']->returnWebmounts();

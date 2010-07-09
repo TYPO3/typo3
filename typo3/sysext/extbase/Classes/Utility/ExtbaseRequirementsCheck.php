@@ -44,7 +44,7 @@ class Tx_Extbase_Utility_ExtbaseRequirementsCheck implements tx_reports_StatusPr
 		$reports = array(
 			'docCommentsShouldBePreserved' => $this->checkIfDocCommentsArePreserved()
 		);
-		
+
 		return $reports;
 	}
 

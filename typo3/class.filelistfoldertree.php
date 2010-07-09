@@ -339,8 +339,8 @@ class filelistFolderTree extends t3lib_folderTree {
 
 				// Add tree:
 			$treeArr = array_merge($treeArr, $this->tree);
-			
-				// if this is an AJAX call, don't run through all mounts, only 
+
+				// if this is an AJAX call, don't run through all mounts, only
 				// show the expansion of the current one, not the rest of the mounts
 			if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 				break;
@@ -416,7 +416,7 @@ class filelistFolderTree extends t3lib_folderTree {
 				} else {
 					$type = 'readonly';
 					$overlays= array('status-overlay-locked'=>array());
-					
+
 				}
 
 				if($webpath == 'web') {

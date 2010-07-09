@@ -96,7 +96,7 @@ class Tx_Fluid_ViewHelpers_EscapeViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 
 	/**
 	 * Resolve the default encoding. If none is set in Frontend or Backend, uses UTF-8.
-	 * 
+	 *
 	 * @return string the encoding
 	 */
 	protected function resolveDefaultEncoding() {

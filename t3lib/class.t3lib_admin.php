@@ -652,7 +652,7 @@ class t3lib_admin {
 		global $TCA;
 		foreach ($theArray as $table => $dbArr) {
 			if ($TCA[$table])	{
-				$idlist = array_keys($dbArr); 
+				$idlist = array_keys($dbArr);
 
 				$theList = implode(',',$idlist);
 				if ($theList)	{

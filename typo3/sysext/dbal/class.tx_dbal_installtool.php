@@ -73,7 +73,7 @@ class tx_dbal_installtool {
 
 	/**
 	 * Hooks into Installer to let a non-MySQL database to be configured.
-	 * 
+	 *
 	 * @param array $markers
 	 * @param integer $step
 	 * @param tx_install $instObj
@@ -92,7 +92,7 @@ class tx_dbal_installtool {
 
 	/**
 	 * Hooks into Installer to modify lines to be written to localconf.php.
-	 * 
+	 *
 	 * @param array $lines
 	 * @param integer $step
 	 * @param tx_install $instObj
@@ -137,14 +137,14 @@ class tx_dbal_installtool {
 
 	/**
 	 * Creates a specialized form to configure the DBMS connection.
-	 * 
+	 *
 	 * @param array $markers
 	 * @param tx_install $instObj
 	 * @return void
 	 */
 	protected function createConnectionForm(array &$markers, tx_install $instObj) {
 			// Normalize current driver
-		if (!$this->driver) {  
+		if (!$this->driver) {
 			$this->driver = $this->getDefaultDriver();
 		}
 
@@ -450,7 +450,7 @@ class tx_dbal_installtool {
 
 	/**
 	 * Creates a specialized form to configure the database.
-	 * 
+	 *
 	 * @param array $markers
 	 * @param tx_install $instObj
 	 */
