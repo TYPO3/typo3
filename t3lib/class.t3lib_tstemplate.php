@@ -572,7 +572,7 @@ class t3lib_TStemplate	{
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
 			} else {
-					// Normal Operation, which is to include the "based-on" sys_templates, 
+					// Normal Operation, which is to include the "based-on" sys_templates,
 					// if they are not already included, and maintaining the sorting of the templates
 				$basedOnIds = t3lib_div::intExplode(',', $row['basedOn']);
 
@@ -591,7 +591,7 @@ class t3lib_TStemplate	{
 				);
 
 					// traversing list again to ensure the sorting of the templates
-				foreach ($basedOnIds as $id) { 
+				foreach ($basedOnIds as $id) {
 					if (is_array($subTemplates[$id])) {
 						$this->versionOL($subTemplates[$id]);
 						$this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);

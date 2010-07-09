@@ -201,7 +201,7 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockRequest->expects($this->once())->method('getFormat')->will($this->returnValue('MyFormat'));
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ManagerInterface', array(), array(), '', FALSE);
-		
+
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('objectManager', $mockObjectManager);
@@ -573,25 +573,25 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$argument1Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE_AND_MODIFIED;
 		$argument2Origin = Tx_Extbase_MVC_Controller_Argument::ORIGIN_PERSISTENCE;
 		$methodTagsValues = array();
-		
+
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_Web_Request', array('isHmacVerified'), array(), '', FALSE);
 		$mockRequest->expects($this->once())->method('isHmacVerified')->will($this->returnValue($hmacVerified));
-		
+
 		$argument1 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
 		$argument1->expects($this->any())->method('getOrigin')->will($this->returnValue($argument1Origin));
 		$argument2 = $this->getMock('Tx_Extbase_MVC_Controller_Argument', array('getOrigin'), array(), '', FALSE);
 		$argument2->expects($this->any())->method('getOrigin')->will($this->returnValue($argument2Origin));
-		
+
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('dummy'), array(), '', FALSE);
-		
+
 		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array('getMethodTagsValues'), array(), '', FALSE);
 		$mockReflectionService->expects($this->any())->method('getMethodTagsValues')->with(get_class($mockController), 'fooAction')->will($this->returnValue($methodTagsValues));
-		
+
 		$mockController->_set('arguments', array($argument1, $argument2));
 		$mockController->_set('request', $mockRequest);
 		$mockController->_set('actionMethodName', 'fooAction');
 		$mockController->injectReflectionService($mockReflectionService);
-		
+
 		$mockController->_call('checkRequestHash');
 	}
 

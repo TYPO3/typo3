@@ -381,7 +381,7 @@ class SC_db_new {
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
 		$pageIcon = t3lib_iconWorks::getSpriteIconForRecord($table,array());
-						
+
 		$newPageIcon = t3lib_iconWorks::getSpriteIcon('actions-page-new');
 		$rowContent = $firstLevel . $newPageIcon . '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('createNewPage') . '</strong>';
 

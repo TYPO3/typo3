@@ -3637,7 +3637,7 @@ EXTENSION KEYS:
 	 * @return	string		<img> + text string.
 	 */
 	function noImportMsg()	{
-		return t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . 
+		return t3lib_iconWorks::getSpriteIcon('status-dialog-warning') .
 			'<strong>' . $GLOBALS['LANG']->getLL('helperFunction_import_not_possible') . '</strong>';
 	}
 
@@ -5434,7 +5434,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 							<td><img src="clear.gif" width="10" height="1" alt="" /></td>
 							<td nowrap="nowrap">' .
 								($exist ?
-									t3lib_iconWorks::getSpriteIcon('status-dialog-warning') . 
+									t3lib_iconWorks::getSpriteIcon('status-dialog-warning') .
 									$GLOBALS['LANG']->getLL('checkDBupdates_table_exists')
 									: '') .
 							'</td>

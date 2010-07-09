@@ -411,11 +411,11 @@ class SC_file_list {
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
 
 			// upload button
-		$buttons['upload'] = '<a href="' . $BACK_PATH . 'file_upload.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload',1)).'">' . 
+		$buttons['upload'] = '<a href="' . $BACK_PATH . 'file_upload.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload',1)).'">' .
 			t3lib_iconWorks::getSpriteIcon('actions-edit-upload') .
 		'</a>';
 
-		$buttons['new'] = '<a href="' . $BACK_PATH . 'file_newfolder.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new',1)).'">' . 
+		$buttons['new'] = '<a href="' . $BACK_PATH . 'file_newfolder.php?target=' . rawurlencode($this->id) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="'.$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new',1)).'">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 		'</a>';
 

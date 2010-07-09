@@ -274,7 +274,7 @@ class SC_alt_file_navframe {
 
 			// Refresh
 		$buttons['refresh'] = '<a href="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '">' .
-				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') . 
+				t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
 		'</a>';
 
 			// CSH

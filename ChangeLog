@@ -1,3 +1,7 @@
+2010-07-09  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #15047 Remove trailing whitespaces in front of EOL (Thanks to Nikolas Hagelstein)
+
 2010-07-08  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Follow-up to #14719: Wrong code comment (QUICKSTART/FIRST_INSTALL) (thanks to Steffen Gebert)

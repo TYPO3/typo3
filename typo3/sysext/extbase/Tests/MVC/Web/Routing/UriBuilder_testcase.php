@@ -295,7 +295,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 
 		$this->assertSame($expectedResult, $actualResult);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -307,7 +307,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 
 		$this->assertSame($expectedResult, $actualResult);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -492,7 +492,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-	
+
 	/**
 	 * @test
 	 */
@@ -509,7 +509,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 		$expectedResult = array('object' => array('foo' => 'bar'));
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-	
+
 	/**
 	 * @test
 	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentValue
@@ -523,7 +523,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'));
 		$actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', array('object' => $mockEntity));
 	}
-		
+
 	/**
 	 * @test
 	 */
@@ -532,14 +532,14 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 		eval('class ' . $className . ' extends Tx_Extbase_DomainObject_AbstractValueObject { public $name; public $uid; }');
 		$mockValueObject = new $className;
 		$mockValueObject->name = 'foo';
-		
+
 		$mockUriBuilder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_Routing_UriBuilder'), array('dummy'));
 		$actualResult = $mockUriBuilder->_call('convertTransientObjectToArray', $mockValueObject);
 
 		$expectedResult = array('name' => 'foo', 'uid' => NULL);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-		
+
 	/**
 	 * @test
 	 */
@@ -570,7 +570,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 			'uid' => NULL);
 		$this->assertEquals($expectedResult, $actualResult);
 	}
-		
+
 
 }
 ?>

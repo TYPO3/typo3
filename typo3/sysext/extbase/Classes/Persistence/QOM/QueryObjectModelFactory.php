@@ -87,7 +87,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 		}
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Selector', $selectorName, $nodeTypeName);
 	}
-	
+
 	/**
 	 * Sets a statement as constraint. This is not part of the JCR 2.0 Specification!
 	 *
@@ -162,7 +162,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	public function not(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LogicalNot', $constraint);
 	}
-	
+
 	/**
 	 * Filters node-tuples based on the outcome of a binary operation.
 	 *
@@ -175,7 +175,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	public function comparison(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, $operand2) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Comparison', $operand1, $operator, $operand2);
 	}
-	
+
 	/**
 	 * Evaluates to the value (or values, if multi-valued) of a property in the specified or default selector.
 	 *
@@ -187,7 +187,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	public function propertyValue($propertyName, $selectorName = '') {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_PropertyValue', $propertyName, $selectorName);
 	}
-	
+
 	/**
 	 * Evaluates to the lower-case string value (or values, if multi-valued) of an operand.
 	 *
@@ -209,7 +209,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	public function upperCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_UpperCase', $operand);
 	}
-	
+
 	/**
 	 * Orders by the value of the specified operand, in ascending order.
 	 *
@@ -235,7 +235,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	public function descending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Ordering', $operand, Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING);
 	}
-	
+
 	/**
 	 * Evaluates to the value of a bind variable.
 	 *
@@ -246,6 +246,6 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	public function bindVariable($bindVariableName) {
 		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_BindVariableValue', $bindVariableName);
 	}
-	
+
 }
 ?>

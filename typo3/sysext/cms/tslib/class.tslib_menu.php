@@ -514,7 +514,7 @@ class tslib_menu {
 							} else {
 								$row = $loadDB->results['pages'][$val['id']];
 							}
-							
+
 								//Add versioning overlay for current page (to respect workspaces)
 							if (is_array($row)) {
 							    $this->sys_page->versionOL('pages', $row, true);

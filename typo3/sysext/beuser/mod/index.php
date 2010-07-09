@@ -1376,7 +1376,7 @@ class SC_mod_tools_be_user_index {
 			$allCells = array();
 
 			$link_createNewUser='<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[be_users][0]=new',$this->doc->backPath,-1)).'" title="' . $GLOBALS['LANG']->getLL('newUser', true) . '">'.
-					t3lib_iconWorks::getSpriteIcon('actions-document-new') . 
+					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 				'</a>';
 
 			$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td><strong>' . $GLOBALS['LANG']->getLL('usernames', TRUE) . '</strong></td><td width="12">' . $link_createNewUser . '</td></tr></table>';
@@ -1399,10 +1399,10 @@ class SC_mod_tools_be_user_index {
 					if ($curUid != $uDat['uid'] && !$uDat['disable'] && ($uDat['starttime'] == 0 ||
 						$uDat['starttime'] < $GLOBALS['EXEC_TIME']) && ($uDat['endtime'] == 0 ||
 						$uDat['endtime'] > $GLOBALS['EXEC_TIME'])) {
-						$uItem .= '<a href="' . t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])) . '" target="_top" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('switchUserTo', true) . ' ' . $uDat['username']) . ' ' . $GLOBALS['LANG']->getLL('changeToMode', TRUE) . '">' . 
+						$uItem .= '<a href="' . t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'])) . '" target="_top" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('switchUserTo', true) . ' ' . $uDat['username']) . ' ' . $GLOBALS['LANG']->getLL('changeToMode', TRUE) . '">' .
 								t3lib_iconWorks::getSpriteIcon('actions-system-backend-user-switch') .
 							'</a>'.
-							'<a href="' . t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'], 'switchBackUser' => 1)) . '" target="_top" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('switchUserTo', true) . ' ' . $uDat['username']) . ' ' . $GLOBALS['LANG']->getLL('switchBackMode', TRUE) . '">' . 
+							'<a href="' . t3lib_div::linkThisScript(array('SwitchUser'=>$uDat['uid'], 'switchBackUser' => 1)) . '" target="_top" title="' . htmlspecialchars($GLOBALS['LANG']->getLL('switchUserTo', true) . ' ' . $uDat['username']) . ' ' . $GLOBALS['LANG']->getLL('switchBackMode', TRUE) . '">' .
 								t3lib_iconWorks::getSpriteIcon('actions-system-backend-user-emulate') .
 							'</a>';
 					}
@@ -1477,14 +1477,14 @@ class SC_mod_tools_be_user_index {
 			'</a>';
 		} else {
 			$params='&data[' . $table . '][' . $row['uid'] . '][' . $hiddenField . ']=1';
-			$cells[]='<a href="' . $this->doc->issueCommand($params) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disable', true) . '">' . 
+			$cells[]='<a href="' . $this->doc->issueCommand($params) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disable', true) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-edit-hide') .
 			'</a>';
 		}
 
 			// Delete
 		$params='&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-		$cells[]='<a href="' . $this->doc->issueCommand($params) . '" onclick="return confirm(unescape(\'' . rawurlencode($GLOBALS['LANG']->getLL('sureToDelete', TRUE)) . '\'));" title="' . $GLOBALS['LANG']->getLL('delete', TRUE) . '">' . 
+		$cells[]='<a href="' . $this->doc->issueCommand($params) . '" onclick="return confirm(unescape(\'' . rawurlencode($GLOBALS['LANG']->getLL('sureToDelete', TRUE)) . '\'));" title="' . $GLOBALS['LANG']->getLL('delete', TRUE) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 			'</a>';
 
