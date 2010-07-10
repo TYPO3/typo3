@@ -1,3 +1,7 @@
+2010-07-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #14896: ExtJS is not included when RTE is invoked by USER_INT frontend script
+
 2010-07-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14929: htmlArea RTE: Font Family and Font Size Dropdown boxes don't open

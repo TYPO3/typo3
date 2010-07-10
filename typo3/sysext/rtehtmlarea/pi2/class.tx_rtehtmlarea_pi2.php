@@ -51,6 +51,10 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	public $OutputCharset;
 	var $specConf;
 	var $LOCAL_LANG;
+	/**
+	 * @var t3lib_PageRenderer
+	 */
+	protected $pageRenderer;
 
 	/**
 	 * Draws the RTE as an iframe
@@ -202,18 +206,19 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * LOAD JS, CSS and more
 		 * =======================================
 		 */
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		$pageRenderer->setBackPath(TYPO3_mainDir);
+		$pageRenderer = $this->getPageRenderer();
 			// Preloading the pageStyle and including RTE skin stylesheets
 		$this->addPageStyle();
 		$this->addSkin();
-		$pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
-			// Loading JavaScript files and code
-		$pageRenderer->loadExtJs();
-		$pageRenderer->enableExtJSQuickTips();
-		if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
-			$pageRenderer->enableExtJsDebug();
+			// Loading ExtJs JavaScript files and inline code, if not configured in TS setup
+		if (!$GLOBALS['TSFE']->isINTincScript() || !is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.'])) {
+			$pageRenderer->loadExtJs();
+			$pageRenderer->enableExtJSQuickTips();
+			if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
+				$pageRenderer->enableExtJsDebug();
+			}
 		}
+		$pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
 		$pageRenderer->addJsFile($this->siteURL . 't3lib/js/extjs/ux/ext.resizable.js');
 		if ($this->TCEform->RTEcounter == 1) {
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
@@ -224,7 +229,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			'textareaMaxHeight' => '600'
 		);
 		$pageRenderer->addInlineSettingArray('', $resizableSettings);
-
+		if ($GLOBALS['TSFE']->isINTincScript()) {
+			$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea'] = $pageRenderer->render();
+		}
 		/* =======================================
 		 * DRAW THE EDITOR
 		 * =======================================
@@ -268,16 +275,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 * @return	void
 	 */
 	protected function addStyleSheet($key, $href, $title='', $relation='stylesheet') {
-		$pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-		$pageRenderer->addCssFile($href, $relation, 'screen', $title);
-	}
-	/**
-	 * Return true if we are in the FE, but not in the FE editing feature of BE.
-	 *
-	 * @return boolean
-	 */
-	function is_FE() {
-		return true;
+		$this->pageRenderer->addCssFile($href, $relation, 'screen', $title);
 	}
 	/**
 	 * Return the JS-Code for copy the HTML-Code from the editor in the hidden input field.
@@ -300,6 +298,25 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		} else {
 			OK = 0;
 		}';
+	}
+	/**
+	 * Gets instance of PageRenderer
+	 *
+	 * @return	t3lib_PageRenderer
+	 */
+	public function getPageRenderer() {
+		if (!isset($this->pageRenderer)) {
+			if ($GLOBALS['TSFE']->isINTincScript()) {
+					// We use an instance of t3lib_PageRenderer to render additional header data
+					// because this script is invoked after header has been rendered by $GLOBALS['TSFE']->getPageRenderer()
+				$this->pageRenderer = t3lib_div::makeInstance('t3lib_PageRenderer');
+				$this->pageRenderer->setTemplateFile($this->extHttpPath . 'templates/rtehtmlarea_pageheader_frontend.html');
+			} else {
+				$this->pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+			}
+			$this->pageRenderer->setBackPath(TYPO3_mainDir);
+		}
+		return $this->pageRenderer;
 	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi2/class.tx_rtehtmlarea_pi2.php']) {
