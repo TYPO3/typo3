@@ -1,3 +1,7 @@
+2010-07-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15045: Trailing newlines after php closing tag
+
 2010-06-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Synchronized @deprecated annotations with Core
