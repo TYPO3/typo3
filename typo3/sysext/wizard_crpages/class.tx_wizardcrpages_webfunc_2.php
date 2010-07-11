@@ -27,10 +27,10 @@
 /**
  * Contains class for "Create pages" wizard
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skï¿½rhï¿½j
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -152,7 +152,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 				foreach ($menuItems as $rec) {
 					t3lib_BEfunc::workspaceOL('pages',$rec);
 					if (is_array($rec))	{
-						$lines[]= '<nobr>'.t3lib_iconWorks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],'align="top" '.t3lib_BEfunc::titleAttribForPages($rec)).
+						$lines[] = '<nobr>' . t3lib_iconWorks::getSpriteIconForRecord('pages', $rec, array('title' => t3lib_BEfunc::titleAttribForPages($rec , '', FALSE))) .
 							htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'</nobr>';
 					}
 				}

@@ -2277,7 +2277,7 @@ class t3lib_TCEforms	{
 					$onlySingleTableAllowed = (count($tempFT) == 1);
 					foreach ($tempFT as $theT) {
 						$info.= '<span class="nobr">&nbsp;&nbsp;&nbsp;&nbsp;' .
-								t3lib_iconWorks::getIconImage($theT, array(), $this->backPath, 'align="top"') .
+								t3lib_iconWorks::getSpriteIconForRecord($theT, array()) .
 								htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) .
 								'</span><br />';
 					}
@@ -4970,8 +4970,8 @@ class t3lib_TCEforms	{
 			$arr[$k] = str_replace('###RECORD_LABEL###', $rLabel, $arr[$k]);
 			$arr[$k] = str_replace('###TABLE_TITLE###',htmlspecialchars($this->sL($TCA[$table]['ctrl']['title'])),$arr[$k]);
 
-			$titleA=t3lib_BEfunc::titleAltAttrib($this->getRecordPath($table,$rec));
-			$arr[$k]=str_replace('###RECORD_ICON###',t3lib_iconWorks::getIconImage($table,$rec,$this->backPath,'class="absmiddle"'.$titleA),$arr[$k]);
+			$arr[$k] = str_replace('###RECORD_ICON###', t3lib_iconWorks::getSpriteIconForRecord($table, $rec, array('title' => $this->getRecordPath($table, $rec))), $arr[$k]);
+
 		}
 		return $arr;
 	}

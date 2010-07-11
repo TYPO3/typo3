@@ -386,7 +386,7 @@ class recordList extends t3lib_recordList {
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result))	{
 
 					// Create content:
-				$iconImg = t3lib_iconWorks::getIconImage('sys_note',$row,$this->backPath,'');
+				$iconImg = t3lib_iconWorks::getSpriteIconForRecord('sys_note', $row);
 				$subject = htmlspecialchars($row['subject']);
 				$fields = array();
 				$fields['Author:'] = htmlspecialchars($row['author'].($row['email'] && $row['author'] ? ', ':'').$row['email']);

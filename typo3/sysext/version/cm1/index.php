@@ -440,7 +440,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Element:
 		$record = t3lib_BEfunc::getRecord($this->table,$this->uid);
-		$recordIcon = t3lib_iconWorks::getIconImage($this->table,$record,$this->doc->backPath,'class="absmiddle"');
+		$recordIcon = t3lib_iconWorks::getSpriteIconForRecord($this->table, $record);
 		$recTitle = t3lib_BEfunc::getRecordTitle($this->table,$record,TRUE);
 
 			// Display versions:
@@ -848,7 +848,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 						// Get CURRENT online record and icon based on "t3ver_oid":
 					$rec_on = t3lib_BEfunc::getRecord($table,$oid);
-					$icon = t3lib_iconWorks::getIconImage($table, $rec_on, $this->doc->backPath,' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($rec_on,$table).'"');
+					$icon = t3lib_iconWorks::getSpriteIconForRecord($table, $rec_on, array('title' => t3lib_BEfunc::getRecordIconAltText($rec_on,$table)));
 					if ($GLOBALS['BE_USER']->workspace===0) {	// Only edit online records if in ONLINE workspace:
 						$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $rec_on['uid'], 1, '', '+edit,view,info,delete');
 					}
@@ -887,7 +887,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						}
 
 						// Get icon
-						$icon = t3lib_iconWorks::getIconImage($table, $rec_off, $this->doc->backPath, ' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($rec_off,$table).'"');
+						$icon = t3lib_iconWorks::getSpriteIconForRecord($table, $rec_off, array('title' => t3lib_BEfunc::getRecordIconAltText($rec_off, $table)));
 						$tempUid = ($table != 'pages' || $vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
 						$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $tempUid, 1, '', '+edit,' . ($table == 'pages' ? 'view,info,' : '') . 'delete');
 
@@ -1441,7 +1441,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 								$HTMLdata.
 								($iconMode < 2 ?
 									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/join'.($iconMode ? 'bottom' : '').'.gif','width="18" height="16"').' alt="" />'.
-									t3lib_iconWorks::getIconImage($tN, $rec, $this->doc->backPath,'') : '').
+									t3lib_iconWorks::getSpriteIconForRecord($tN, $rec) : '').
 								t3lib_BEfunc::getRecordTitle($tN, $rec, TRUE).
 							'</td>
 							<td class="cmdCell">'.

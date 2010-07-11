@@ -1819,7 +1819,7 @@ class browse_links {
 				// Create header for listing, showing the page title/icon:
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$mainPageRec = t3lib_BEfunc::getRecordWSOL('pages',$expPageId);
-			$picon = t3lib_iconWorks::getIconImage('pages', $mainPageRec, $BACK_PATH, '');
+			$picon = t3lib_iconWorks::getSpriteIconForRecord('pages', $mainPageRec);
 			$picon.= htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			$out.=$picon.'<br />';
 
@@ -1839,7 +1839,7 @@ class browse_links {
 			$c=0;
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$c++;
-				$icon=t3lib_iconWorks::getIconImage('tt_content',$row,$BACK_PATH,'');
+				$icon=t3lib_iconWorks::getSpriteIconForRecord('tt_content', $row,$BACK_PATH);
 				if ($this->curUrlInfo['act']=='page' && $this->curUrlInfo['cElement']==$row['uid'])	{
 					$arrCol='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
 				} else {
@@ -1910,7 +1910,7 @@ class browse_links {
 				$ATag_alt=substr($ATag,0,-4).",'',1);\">";
 				$ATag_e='</a>';
 			}
-			$picon=t3lib_iconWorks::getIconImage('pages',$mainPageRec,$BACK_PATH,'');
+			$picon=t3lib_iconWorks::getSpriteIconForRecord('pages', $mainPageRec);
 			$pBicon=$ATag2?'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/plusbullet2.gif','width="18" height="16"').' alt="" />':'';
 			$pText=htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			$out.=$picon.$ATag2.$pBicon.$ATag_e.$ATag.$pText.$ATag_e.'<br />';

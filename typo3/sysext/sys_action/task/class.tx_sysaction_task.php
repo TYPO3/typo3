@@ -447,7 +447,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 
 			// render the user records
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$icon = t3lib_iconworks::getIconImage('be_users', $row, $GLOBALS['BACK_PATH'], 'title="uid=' . $row['uid'] . '" hspace="2" align="top"');
+			$icon = t3lib_iconworks::getSpriteIconForRecord('be_users', $row, array('title' => 'uid=' . $row['uid']));
 			$line = $icon . $this->action_linkUserName($row['username'], $row['realName'], $action['uid'], $row['uid']);
 
 				// selected user
@@ -773,7 +773,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				'description'		=> t3lib_BEfunc::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]),
 				'descriptionHtml'	=> $description,
 				'link'				=> $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI")) . '&edit[' . $el['table'] . '][' . $el['id'] . ']=edit',
-				'icon'				=> t3lib_iconworks::getIconImage($el['table'], $dbAnalysis->results[$el['table']][$el['id']], $GLOBALS['BACK_PATH'], 'hspace="2" align="top" title="' . htmlspecialchars($path) . '"')
+				'icon'				=> t3lib_iconworks::getSpriteIconForRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']], array('title' => htmlspecialchars($path)))
 			);
 		}
 

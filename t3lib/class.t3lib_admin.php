@@ -167,7 +167,7 @@ class t3lib_admin {
 				$this->genTree_HTML.= $depthData.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.
 					$versionLabel.
-					t3lib_iconWorks::getIconImage('pages',$row,$this->backPath,'align="top"').
+					t3lib_iconWorks::getSpriteIconForRecord('pages', $row) .
 					htmlspecialchars($row['uid'].': '.t3lib_div::fixed_lgd_cs(strip_tags($row['title']),50)).'</span></div>';
 			}
 
@@ -257,7 +257,7 @@ class t3lib_admin {
 				$this->genTree_HTML.= $depthData.
 					'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.$PM.$BTM.'.gif','width="18" height="16"').' align="top" alt="" />'.
 					$versionLabel.
-					t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'align="top" title="'.$table.'"').htmlspecialchars($row['uid'].': '.t3lib_BEfunc::getRecordTitle($table,$row)).'</span></div>';
+					t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title'=> $table)) . htmlspecialchars($row['uid'] . ': ' . t3lib_BEfunc::getRecordTitle($table,$row)) . '</span></div>';
 			}
 
 				// Register various data for this item:

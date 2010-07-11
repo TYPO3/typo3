@@ -527,7 +527,7 @@ class t3lib_clipboard {
 					$lines[]='
 					<tr>
 						<td class="' . $bgColClass . '">' .
-							t3lib_iconWorks::getIconImage($table, $rec, $this->backPath,' style="margin-left: 38px;"') . '</td>
+							t3lib_iconWorks::getSpriteIconForRecord($table, $rec, array('style' => "margin-left: 38px;")) . '</td>
 						<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . htmlspecialchars(
 								t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])) .
 								$modeData . '&nbsp;</td>

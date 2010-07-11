@@ -714,7 +714,7 @@ class SC_alt_shortcut {
 		}
 
 		$selector.= '<a href="mod/user/ws/index.php" target="content">'.
-					t3lib_iconWorks::getIconImage('sys_workspace',array(),$this->doc->backPath,'align="top"').
+					t3lib_iconWorks::getSpriteIconForRecord('sys_workspace', array()).
 					'</a>';
 		if (count($options) > 1) {
 			$selector .= '<select name="_workspaceSelector" onchange="changeWorkspace(this.options[this.selectedIndex].value);">'.implode('',$options).'</select>';
