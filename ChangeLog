@@ -1,6 +1,7 @@
 2010-07-11  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug  #15004: Cleanup cms autoload classes
+	* Fixed bug #14970: ts browser condition results in error if browser is unknown (Thanks to Caspar Stuebs) 
+	* Fixed bug #15004: Cleanup cms autoload classes
 
 2010-07-11  Susanne Moog  <typo3@susanne-moog.de>
 
