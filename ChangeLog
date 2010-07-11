@@ -1,3 +1,7 @@
+2010-07-11  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug  #15004: Cleanup cms autoload classes
+
 2010-07-11  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14923: CleanUp: getIconImage is not replaced in Core (thanks to Steffen Ritter)
