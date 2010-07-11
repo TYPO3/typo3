@@ -289,7 +289,7 @@ class SC_move_el {
 			$elRow = t3lib_BEfunc::getRecordWSOL($this->table,$this->moveUid);
 
 				// Headerline: Icon, record title:
-			$hline = t3lib_iconWorks::getIconImage($this->table,$elRow,$BACK_PATH,' id="c-recIcon" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,$this->table)).'"');
+			$hline = t3lib_iconWorks::getSpriteIconForRecord($this->table, $elRow, array('id' => "c-recIcon", 'title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,$this->table))));
 			$hline.= t3lib_BEfunc::getRecordTitle($this->table,$elRow,TRUE);
 
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
@@ -324,7 +324,7 @@ class SC_move_el {
 									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'</a><br />';
 							} else {
-								$code.= t3lib_iconWorks::getIconImage('pages',$pidPageInfo,$BACK_PATH,'').
+								$code.= t3lib_iconWorks::getSpriteIconForRecord('pages', $pidPageInfo) .
 									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'<br />';
 							}
@@ -355,7 +355,7 @@ class SC_move_el {
 					$posMap->cur_sys_language = $this->sys_language;
 
 						// Headerline for the parent page: Icon, record title:
-					$hline = t3lib_iconWorks::getIconImage('pages',$pageinfo,$BACK_PATH,' title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($pageinfo,'pages')).'"');
+					$hline = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageinfo, array('title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($pageinfo, 'pages'))));
 					$hline.= t3lib_BEfunc::getRecordTitle('pages',$pageinfo,TRUE);
 
 						// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
@@ -379,7 +379,7 @@ class SC_move_el {
 									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'</a><br />';
 							} else {
-								$code.= t3lib_iconWorks::getIconImage('pages',$pidPageInfo,$BACK_PATH,'').
+								$code.= t3lib_iconWorks::getSpriteIconForRecord('pages', $pidPageInfo).
 									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
 									'<br />';
 							}

@@ -4403,7 +4403,7 @@ final class t3lib_BEfunc {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$theRows[] = $row;
 			$out.='<span class="nobr"><a href="'.htmlspecialchars($script.'?id='.$row['uid']).'">'.
-					t3lib_iconWorks::getIconImage('pages', $row, $backPath, 'title="' . htmlspecialchars(self::getRecordPath($row['uid'], $perms_clause, 20)) . '" align="top"') .
+					t3lib_iconWorks::getSpriteIconForRecord('pages', $row, array('title' => htmlspecialchars(self::getRecordPath($row['uid'], $perms_clause, 20)))) .
 					htmlspecialchars($row['title']).
 					'</a></span><br />';
 		}

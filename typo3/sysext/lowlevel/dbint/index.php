@@ -538,7 +538,7 @@ class SC_mod_tools_dbint_index {
 				if ($TCA[$t]['ctrl']['hideTable']) {
 					continue;
 				}
-				$codeArr[$t][]=t3lib_iconWorks::getIconImage($t,array(),$BACK_PATH,'hspace="4" align="top"');
+				$codeArr[$t][]=t3lib_iconWorks::getSpriteIconForRecord($t, array());
 				$codeArr[$t][]=$LANG->sL($TCA[$t]['ctrl']['title']);
 				$codeArr[$t][]=$t;
 

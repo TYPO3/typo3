@@ -1,3 +1,7 @@
+2010-07-11  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14923: CleanUp: getIconImage is not replaced in Core (thanks to Steffen Ritter)
+
 2010-07-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14896: ExtJS is not included when RTE is invoked by USER_INT frontend script

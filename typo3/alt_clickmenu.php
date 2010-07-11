@@ -1089,7 +1089,7 @@ class clickMenu {
 
 			// Return the printed elements:
 		return $this->printItems($menuItems,
-			t3lib_iconWorks::getIconImage($table,$this->rec,$this->PH_backPath,' class="absmiddle" title="'.htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($this->rec,$table)).'"').t3lib_BEfunc::getRecordTitle($table,$this->rec,TRUE)
+			t3lib_iconWorks::getSpriteIconForRecord($table,$this->rec,array('title'=> t3lib_BEfunc::getRecordTitle($table,$this->rec,TRUE)))
 		);
 	}
 

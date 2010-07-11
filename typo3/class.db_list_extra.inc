@@ -682,7 +682,6 @@ class localRecordList extends recordList {
 
 				// The icon with link
 			$alttext = t3lib_BEfunc::getRecordIconAltText($row,$table);
-			//$iconImg = t3lib_iconWorks::getIconImage($table,$row,$this->backPath,'title="'.htmlspecialchars($alttext).'"'.);
 			$iconImg = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($alttext), 'style' => ($indent ? ' margin-left: ' . $indent . 'px;' : '')));
 
 

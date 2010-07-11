@@ -221,7 +221,7 @@ class localPageTree extends t3lib_browseTree {
 
 		if ($pid>0)	{
 			$rootRec = t3lib_befunc::getRecordWSOL('pages',$pid);
-			$firstHtml.= $this->wrapIcon(t3lib_iconWorks::getIconImage('pages',$rootRec,$this->backPath,'align="top"'),$rootRec);
+			$firstHtml.= $this->wrapIcon(t3lib_iconWorks::getSpriteIconForRecord('pages', $rootRec), $rootRec);
 		} else {
 			$rootRec = array(
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
@@ -537,7 +537,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					$tree = t3lib_div::makeInstance('t3lib_pageTree');
 					$tree->init('AND '.$this->perms_clause.$this->filterPageIds($this->export->excludeMap));
 
-					$HTML = t3lib_iconWorks::getIconImage('pages',$sPage,$GLOBALS['BACK_PATH'],'align="top"');
+					$HTML = t3lib_iconWorks::getSpriteIconForRecord('pages', $sPage);
 					$tree->tree[] = Array('row'=>$sPage,'HTML'=>$HTML);
 					$tree->buffer_idH = array();
 					if ($inData['pagetree']['levels']>0)	{
@@ -815,7 +815,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$row[] = '
 				<tr class="bgColor4">
 					<td><strong>'.$LANG->getLL('makeconfig_record',1).'</strong></td>
-					<td>'.t3lib_iconworks::getIconImage($tName,$rec,$GLOBALS['BACK_PATH'],' align="top"').
+					<td>' . t3lib_iconworks::getSpriteIconForRecord($tName, $rec) .
 						t3lib_BEfunc::getRecordTitle($tName,$rec,TRUE).
 						'<input type="hidden" name="tx_impexp[record][]" value="'.htmlspecialchars($tName.':'.$rUid).'" /></td>
 				</tr>';
@@ -836,8 +836,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 				if ($GLOBALS['BE_USER']->check('tables_select',$tName))	{
 					$rec = t3lib_BEfunc::getRecordWSOL('pages', $rParts[1]);
-					$tblList.='Table "'.$tName.'" from '.t3lib_iconworks::getIconImage('pages',$rec,$GLOBALS['BACK_PATH'],' align="top"').
-					t3lib_BEfunc::getRecordTitle('pages',$rec,TRUE).
+					$tblList .= 'Table "' . $tName . '" from ' . t3lib_iconworks::getSpriteIconForRecord('pages', $rec) .
+					t3lib_BEfunc::getRecordTitle('pages', $rec, TRUE).
 					'<input type="hidden" name="tx_impexp[list][]" value="'.htmlspecialchars($ref).'" /><br/>';
 				}
 			}

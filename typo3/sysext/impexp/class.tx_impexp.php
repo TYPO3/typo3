@@ -2675,7 +2675,7 @@ class tx_impexp {
 				}
 			}
 
-			$pInfo['preCode'] = $preCode.t3lib_iconworks::getIconImage($table,$this->dat['records'][$table.':'.$uid]['data'],$GLOBALS['BACK_PATH'],'align="top" title="'.htmlspecialchars($table.':'.$uid).'"');
+			$pInfo['preCode'] = $preCode.t3lib_iconworks::getSpriteIconForRecord($table, (array)$this->dat['records'][$table . ':' . $uid]['data'], array('title' => htmlspecialchars($table . ':' . $uid)));
 			$pInfo['title'] = htmlspecialchars($record['title']);
 
 				// View page:
@@ -2707,7 +2707,7 @@ class tx_impexp {
 			$preCode_B = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 			foreach($record['softrefs'] as $info)	{
 				$pInfo = array();
-				$pInfo['preCode'] = $preCode_A. t3lib_iconWorks::getSpriteIcon('status-reference-soft');
+				$pInfo['preCode'] = $preCode_A. t3lib_iconWorks::getSpriteIcon('status-status-reference-soft');
 				$pInfo['title'] = '<em>'.$info['field'].', "'.$info['spKey'].'" </em>: <span title="'.htmlspecialchars($info['matchString']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['matchString'],60)).'</span>';
 				if ($info['subst']['type'])	{
 					if (strlen($info['subst']['title']))	{
@@ -2839,7 +2839,7 @@ class tx_impexp {
 					return;
 				}
 			}
-			$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;'.t3lib_iconWorks::getSpriteIcon('status-reference-file');
+			$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;'.t3lib_iconWorks::getSpriteIcon('status-status-reference-hard');
 			$pInfo['title'] = htmlspecialchars($fI['filename']);
 			$pInfo['ref'] = 'FILE';
 			$pInfo['size'] = $fI['filesize'];
@@ -2922,7 +2922,7 @@ class tx_impexp {
 
 					$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID],strlen(PATH_site));
 
-					$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.t3lib_iconWorks::getSpriteIcon('actions-reference-file');
+					$pInfo['preCode'] = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.t3lib_iconWorks::getSpriteIcon('actions-insert-reference');
 					$pInfo['title'] = htmlspecialchars($fI['filename']).' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';
 					$pInfo['size'] = $fI['filesize'];
