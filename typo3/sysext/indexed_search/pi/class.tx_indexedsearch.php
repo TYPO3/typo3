@@ -2115,6 +2115,7 @@ class tx_indexedsearch extends tslib_pibase {
 		} else {
 			$pathStr = htmlspecialchars($this->getPathFromPageId($pathId,$pathMP));
 			$tmplArray['path'] = $this->linkPage($pathId,$pathStr,array(
+				'cHashParams' => $row['cHashParams'],
 				'data_page_type' => $row['data_page_type'],
 				'data_page_mp' => $pathMP,
 				'sys_language_uid' => $row['sys_language_uid'],
