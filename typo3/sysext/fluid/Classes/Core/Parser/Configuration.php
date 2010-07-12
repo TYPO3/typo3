@@ -24,7 +24,7 @@
  * The parser configuration. Contains all configuration needed to configure
  * the building of a SyntaxTree.
  *
- * @version $Id: Configuration.php 4628 2010-06-24 14:34:08Z k-fish $
+ * @version $Id: Configuration.php 4665 2010-06-29 15:16:56Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -57,25 +57,9 @@ class Tx_Fluid_Core_Parser_Configuration {
 	}
 
 	/**
-	 * Removes an interceptor to apply to values coming from object accessors.
-	 *
-	 * @param Tx_Fluid_Core_Parser_InterceptorInterface $interceptor
-	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function removeInterceptor($interceptor) {
-		foreach ($interceptor->getInterceptionPoints() as $interceptionPoint) {
-			if ($this->interceptors[$interceptionPoint]->contains($interceptor)) {
-				$this->interceptors[$interceptionPoint]->detach($interceptor);
-			}
-		}
-		
-	}
-
-	/**
 	 * Returns all interceptors for a given Interception Point.
 	 *
-	 * @param int $interceptionPoint one of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants,
+	 * @param integer $interceptionPoint one of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants,
 	 * @return \SplObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */

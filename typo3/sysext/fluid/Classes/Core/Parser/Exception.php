@@ -23,7 +23,7 @@
 /**
  * A Parsing Exception
  *
- * @version $Id$
+ * @version $Id: Exception.php 3751 2010-01-22 15:56:47Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

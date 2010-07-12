@@ -26,7 +26,7 @@
  * 
  *
  *
- * @version $Id$
+ * @version $Id: LayoutViewHelper.php 4653 2010-06-28 18:52:33Z sebastian $
  * @package Fluid
  * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -58,8 +58,7 @@ class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 */
 	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		if (isset($viewHelperArguments['name'])) {
-			$viewHelperArguments['name']->setRenderingContext(new Tx_Fluid_Core_Rendering_RenderingContext());
-			$layoutName = $viewHelperArguments['name']->evaluate();
+			$layoutName = $viewHelperArguments['name']->getText();
 		} else {
 			$layoutName = 'default';
 		}

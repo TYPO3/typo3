@@ -25,7 +25,7 @@
  * Sould be used as the base class for all view helpers which output simple tags, as it provides some
  * convenience methods to register default attributes, ...
  *
- * @version $Id$
+ * @version $Id: TagBasedViewHelper.php 3950 2010-03-15 18:54:23Z sebastian $
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

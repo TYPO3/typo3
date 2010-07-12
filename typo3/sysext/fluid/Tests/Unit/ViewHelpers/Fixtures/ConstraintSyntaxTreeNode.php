@@ -23,7 +23,7 @@
 /**
  * [Enter description here]
  *
- * @version $Id: ConstraintSyntaxTreeNode.php 3751 2010-01-22 15:56:47Z k-fish $
+ * @version $Id: ConstraintSyntaxTreeNode.php 4671 2010-06-30 08:25:50Z robert $
  * @package Fluid
  * @subpackage ViewHelpers\Fixtures
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -35,7 +35,7 @@ class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Co
 		$this->variableContainer = $variableContainer;
 	}
 	
-	public function evaluateChildNodes() {
+	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$identifiers = $this->variableContainer->getAllIdentifiers();
 		$callElement = array();
 		foreach ($identifiers as $identifier) {
@@ -44,7 +44,7 @@ class Tx_Fluid_ViewHelpers_Fixtures_ConstraintSyntaxTreeNode extends Tx_Fluid_Co
 		$this->callProtocol[] = $callElement;
 	}
 	
-	public function evaluate() {}
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {}
 }
 
 

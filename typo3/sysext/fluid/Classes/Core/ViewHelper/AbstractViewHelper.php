@@ -23,7 +23,7 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id$
+ * @version $Id: AbstractViewHelper.php 4836 2010-07-12 18:12:29Z sebastian $
  * @package Fluid
  * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -72,6 +72,11 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	protected $controllerContext;
 
 	/**
+	 * @var Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 */
+	private $renderingContext;
+
+	/**
 	 * ViewHelper Variable Container
 	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
 	 * @api
@@ -118,6 +123,16 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
 	}
+
+	/**
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	 $this->renderingContext = $renderingContext;
+	}
+
 
 	/**
 	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer
@@ -206,7 +221,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 * @api
 	 */
 	protected function renderChildren() {
-		return $this->viewHelperNode->evaluateChildNodes();
+		return $this->viewHelperNode->evaluateChildNodes($this->renderingContext);
 	}
 
 	/**
@@ -333,6 +348,21 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 * @api
 	 */
 	//abstract public function render();
+
+	/**
+	 * Get the rendering context interface.
+	 * THIS METHOD IS NO PUBLIC API AND ONLY CALLABLE INSIDE THE FRAMEWORK!
+	 *
+	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function getRenderingContext() {
+		if ($this instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
+			return $this->renderingContext;
+		} else {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_RenderingContextNotAccessibleException('It is forbidden to call getRenderingContext() if you do not implement Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface. But beware, this interface is NO PUBLIC API! If you want to implement conditions, you should subclass Tx_Fluid_Core_ViewHelper_ConditionViewHelper.', 127895038);
+		}
+	}
 }
 
 ?>

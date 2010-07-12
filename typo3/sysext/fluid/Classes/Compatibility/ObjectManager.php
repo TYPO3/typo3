@@ -39,11 +39,14 @@ class Tx_Fluid_Compatibility_ObjectManager implements t3lib_Singleton {
 		'Tx_Fluid_Core_Parser_ParsingState' => array(
 			'injectVariableContainer' => 'Tx_Fluid_Core_ViewHelper_TemplateVariableContainer'
 		),
+
 		'Tx_Fluid_Core_Parser_TemplateParser' => array(
 			'injectObjectManager' => 'Tx_Fluid_Compatibility_ObjectManager'
 		),
-		'Tx_Fluid_Core_Rendering_RenderingContext' => array(
-			'injectObjectManager' => 'Tx_Fluid_Compatibility_ObjectManager'
+		'Tx_Fluid_Core_Rendering_RenderingContextInterface' => array(
+			'injectObjectManager' => 'Tx_Fluid_Compatibility_ObjectManager',
+			'injectTemplateVariableContainer' => 'Tx_Fluid_Core_ViewHelper_TemplateVariableContainer',
+			'injectViewHelperVariableContainer' => 'Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer'
 		),
 		'Tx_Fluid_Core_Parser_Interceptor_Escape' => array(
 			'injectObjectManager' => 'Tx_Fluid_Compatibility_ObjectManager'

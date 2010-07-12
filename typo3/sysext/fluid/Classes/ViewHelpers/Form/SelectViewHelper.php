@@ -60,7 +60,7 @@
  *
  * The "value" property now expects a domain object, and tests for object equivalence.
  *
- * @version $Id$
+ * @version $Id: SelectViewHelper.php 4630 2010-06-24 18:10:18Z bwaidelich $
  * @package Fluid
  * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

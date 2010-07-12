@@ -21,46 +21,15 @@
  *                                                                        */
 
 /**
- * Node in the syntax tree.
+ * A "Rendering Context not Accessible" exception.
  *
- * @version $Id: NodeInterface.php 4671 2010-06-30 08:25:50Z robert $
+ * @version $Id: InvalidVariableException.php 4483 2010-06-10 13:57:32Z k-fish $
  * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
+ * @subpackage Core\ViewHelper\Exception
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
+ * @api
  */
-interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
-
-	/**
-	 * Evaluate all child nodes and return the evaluated results.
-	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
-	 * @return mixed Normally, an object is returned - in case it is concatenated with a string, a string is returned.
-	 */
-	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
-
-	/**
-	 * Returns all child nodes for a given node.
-	 *
-	 * @return array<Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface> A list of nodes
-	 */
-	public function getChildNodes();
-
-	/**
-	 * Appends a subnode to this node. Is used inside the parser to append children
-	 *
-	 * @param Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode The subnode to add
-	 * @return void
-	 */
-	public function addChildNode(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $childNode);
-
-	/**
-	 * Evaluates the node - can return not only strings, but arbitary objects.
-	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
-	 * @return mixed Evaluated node
-	 */
-	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
+class Tx_Fluid_Core_ViewHelper_Exception_RenderingContextNotAccessibleException extends Tx_Fluid_Core_ViewHelper_Exception {
 }
 
 ?>

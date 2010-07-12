@@ -23,7 +23,7 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id$
+ * @version $Id: TemplateParser.php 4663 2010-06-29 10:45:48Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -269,7 +269,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 	/**
 	 * Set the configuration for the parser.
-	 *h
+	 *
 	 * @param Tx_Fluid_Core_Parser_Configuration $configuration
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>

@@ -25,7 +25,7 @@
  * and the current stack of open nodes (nodeStack) and a variable container used
  * for PostParseFacets.
  *
- * @version $Id$
+ * @version $Id: ParsingState.php 4671 2010-06-30 08:25:50Z robert $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -88,12 +88,11 @@ class Tx_Fluid_Core_Parser_ParsingState implements Tx_Fluid_Core_Parser_ParsedTe
 	/**
 	 * Render the parsed template with rendering context
 	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext The rendering context to use
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext The rendering context to use
 	 * @return Rendered string
 	 */
-	public function render(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext) {
-		$this->rootNode->setRenderingContext($renderingContext);
-		return $this->rootNode->evaluate();
+	public function render(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		return $this->rootNode->evaluate($renderingContext);
 	}
 
 	/**

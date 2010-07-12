@@ -23,7 +23,7 @@
 /**
  * [Enter description here]
  *
- * @version $Id: TransparentSyntaxTreeNode.php 3751 2010-01-22 15:56:47Z k-fish $
+ * @version $Id: TransparentSyntaxTreeNode.php 4671 2010-06-30 08:25:50Z robert $
  * @package Fluid
  * @subpackage View\Fixture
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -31,7 +31,7 @@
 class Tx_Fluid_View_Fixture_TransparentSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {
 	public $variableContainer;
 	
-	public function evaluate() {
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 	}
 }
 

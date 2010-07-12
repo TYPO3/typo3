@@ -23,7 +23,7 @@
 /**
  * Text Syntax Tree Node - is a container for strings.
  *
- * @version $Id$
+ * @version $Id: TextNode.php 4671 2010-06-30 08:25:50Z robert $
  * @package Fluid
  * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -54,11 +54,23 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNode extends Tx_Fluid_Core_Parser_Synt
 	 * Return the text associated to the syntax tree. Text from child nodes is
 	 * appended to the text in the node's own text.
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return string the text stored in this node/subtree.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @todo TextNode shouldn't have child nodes
 	 */
-	public function evaluate() {
-		return $this->text . $this->evaluateChildNodes();
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		return $this->text . $this->evaluateChildNodes($renderingContext);
+	}
+
+	/**
+	 * Getter for text
+	 *
+	 * @return string The text of this node
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function getText() {
+		return $this->text;
 	}
 }
 

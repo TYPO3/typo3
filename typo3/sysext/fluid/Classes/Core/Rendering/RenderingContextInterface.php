@@ -23,123 +23,62 @@
 /**
  *
  *
- * @version $Id: RenderingContext.php 4671 2010-06-30 08:25:50Z robert $
+ * @version $Id: RenderingContext.php 4653 2010-06-28 18:52:33Z sebastian $
  * @package Fluid
  * @subpackage Core\Rendering
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @scope prototype
  */
-class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Rendering_RenderingContextInterface {
-
-	/**
-	 * Template Variable Container. Contains all variables available through object accessors in the template
-	 *
-	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
-	 */
-	protected $templateVariableContainer;
-
-	/**
-	 * Object manager which is bubbled through. The ViewHelperNode cannot get an ObjectManager injected because
-	 * the whole syntax tree should be cacheable
-	 *
-	 * @var Tx_Fluid_Compatibility_ObjectManager
-	 */
-	protected $objectManager;
-
-	/**
-	 * Controller context being passed to the ViewHelper
-	 *
-	 * @var Tx_Extbase_MVC_Controller_ControllerContext
-	 */
-	protected $controllerContext;
-
-	/**
-	 * ViewHelper Variable Container
-	 *
-	 * @var Tx_Fluid_Core_ViewHelpers_ViewHelperVariableContainer
-	 */
-	protected $viewHelperVariableContainer;
-
-	/**
-	 * Inject the object manager
-	 *
-	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function injectObjectManager(Tx_Fluid_Compatibility_ObjectManager $objectManager) {
-		$this->objectManager = $objectManager;
-	}
+interface Tx_Fluid_Core_Rendering_RenderingContextInterface {
 
 	/**
 	 * Returns the object manager. Only the ViewHelperNode should do this.
 	 *
 	 * @param Tx_Fluid_Compatibility_ObjectManager $objectManager
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function getObjectManager() {
-		return $this->objectManager;
-	}
+	public function getObjectManager();
 
 	/**
 	 * Injects the template variable container containing all variables available through ObjectAccessors
 	 * in the template
 	 *
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer The template variable container to set
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function injectTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer) {
-		$this->templateVariableContainer = $templateVariableContainer;
-	}
+	public function injectTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer);
 
 	/**
 	 * Get the template variable container
 	 *
 	 * @return Tx_Fluid_Core_ViewHelper_TemplateVariableContainer The Template Variable Container
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function getTemplateVariableContainer() {
-		return $this->templateVariableContainer;
-	}
+	public function getTemplateVariableContainer();
 
 	/**
 	 * Set the controller context which will be passed to the ViewHelper
 	 *
 	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext The controller context to set
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
-		$this->controllerContext = $controllerContext;
-	}
+	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
 
 	/**
 	 * Get the controller context which will be passed to the ViewHelper
 	 *
 	 * @return Tx_Extbase_MVC_Controller_ControllerContext The controller context to set
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function getControllerContext() {
-		return $this->controllerContext;
-	}
+	public function getControllerContext();
 
 	/**
 	 * Set the ViewHelperVariableContainer
 	 *
 	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer
 	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function injectViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
-		$this->viewHelperVariableContainer = $viewHelperVariableContainer;
-	}
+	public function injectViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer);
 
 	/**
 	 * Get the ViewHelperVariableContainer
 	 *
 	 * @return Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function getViewHelperVariableContainer() {
-		return $this->viewHelperVariableContainer;
-	}
+	public function getViewHelperVariableContainer();
 }
 ?>
