@@ -1,3 +1,7 @@
+2010-07-12  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #15082: [openDocs] Exception is thrown if a record isn't found
+
 2010-07-12  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #1235: indexed search: garbage instead of cHash in the "path" link (thanks to Nikolas Hagestein)
