@@ -45,7 +45,12 @@
  * Output:
  * This is so...
  *
- * WARNING: This tag doesn't care about multibyte charsets currently.
+ * <code title="Don't respect HTML tags">
+ * <f:format.crop maxCharacters="28" respectWordBoundaries="false" respectHtml="false">This is some text with <strong>HTML</strong> tags</f:format.crop>
+ * </code>
+ *
+ * Output:
+ * This is some text with <stro
  *
  * @package Fluid
  * @subpackage ViewHelpers
@@ -59,6 +64,11 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @var	tslib_cObj
 	 */
 	protected $contentObject;
+
+	/**
+	 * @var	t3lib_fe
+	 */
+	protected $tsfeBackup;
 
 	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
@@ -75,26 +85,70 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 *
 	 * @param integer $maxCharacters Place where to truncate the string
 	 * @param string $append What to append, if truncation happened
-	 * @param boolean $respectBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed. This is currently ignored in backend mode!
+	 * @param boolean $respectBoundaries If TRUE and division is in the middle of a word, the remains of that word is removed.
+	 * @param boolean $respectHtml If TRUE the cropped string will respect HTML tags and entities. Technically that means, that cropHTML() is called rather than crop()
 	 * @return string cropped text
 	 * @author Andreas Pattynama <andreas.pattynama@innocube.ch>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Felix Oertel <oertel@networkteam.com>
 	 */
-	public function render($maxCharacters, $append = '...', $respectWordBoundaries = TRUE) {
+	public function render($maxCharacters, $append = '...', $respectWordBoundaries = TRUE, $respectHtml = TRUE) {
 		$stringToTruncate = $this->renderChildren();
 		if (TYPO3_MODE === 'BE') {
-			if (strlen($stringToTruncate) > $maxCharacters) {
-				$stringToTruncate = substr($stringToTruncate, 0, ($maxCharacters - strlen($append))) . $append;
-			}
-			return $stringToTruncate;
+			$this->setUpBackendEnvironment();
+		}
+
+		if ($respectHtml) {
+			return $this->contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		} else {
-			if (strip_tags($stringToTruncate) != $stringToTruncate) {
-				return $this->contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+		}
+
+		if (TYPO3_MODE === 'BE') {
+			$this->resetBackendEnvironment();
+		}
+	}
+
+	/**
+	 * Sets the global variables $GLOBALS['TSFE']->csConvObj and $GLOBALS['TSFE']->renderCharset in Backend mode
+	 * This somewhat hacky work around is currently needed because the crop() and cropHTML() functions of tslib_cObj rely on those variables to be set
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function setUpBackendEnvironment() {
+		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+
+			// preparing csConvObj
+		if (!is_object($GLOBALS['TSFE']->csConvObj)) {
+			if (is_object($GLOBALS['LANG'])) {
+				$GLOBALS['TSFE']->csConvObj = $GLOBALS['LANG']->csConvObj;
 			} else {
-				return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+				$GLOBALS['TSFE']->csConvObj = t3lib_div::makeInstance('t3lib_cs');
 			}
+		}
+
+			// preparing renderCharset
+		if (!is_object($GLOBALS['TSFE']->renderCharset)) {
+			if (is_object($GLOBALS['LANG'])) {
+				$GLOBALS['TSFE']->renderCharset = $GLOBALS['LANG']->charSet;
+			} else {
+				$GLOBALS['TSFE']->renderCharset = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
+			}
+		}
+	}
+
+	/**
+	 * Resets $GLOBALS['TSFE'] if it was previously changed by setUpBackendEnvironment()
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @see setUpBackendEnvironment()
+	 */
+	protected function resetBackendEnvironment() {
+		if (isset($this->tsfeBackup)) {
+			$GLOBALS['TSFE'] = $this->tsfeBackup;
 		}
 	}
 }
