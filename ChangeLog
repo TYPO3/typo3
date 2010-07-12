@@ -1,3 +1,7 @@
+2010-07-12  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #1235: indexed search: garbage instead of cHash in the "path" link (thanks to Nikolas Hagelstein)
+
 2010-07-08  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #15049: "Fileextension" is not an English word
