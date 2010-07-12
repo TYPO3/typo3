@@ -1,3 +1,7 @@
+2010-07-12  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #1235: indexed search: garbage instead of cHash in the "path" link (thanks to Nikolas Hagestein)
+
 2010-07-11  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #14970: ts browser condition results in error if browser is unknown (Thanks to Caspar Stuebs) 
