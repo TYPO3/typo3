@@ -762,13 +762,13 @@ class tx_cms_layout extends recordList {
 			$out = '
 				<table border="0" cellpadding="4" cellspacing="0" class="typo3-page-buttons">
 					<tr>
-						<td>'.implode('</td>
-						<td>',$bArray).'</td>
+						<td>' . implode('</td>
+						<td>', $bArray) . '</td>
+						<td>' . t3lib_BEfunc::cshItem($this->descrTable, 'button_panel', $GLOBALS['BACK_PATH']). '</td>
 					</tr>
 				</table>
-				<img src="clear.gif" width="1" height="5" alt="" /><br />
-				'.t3lib_BEfunc::cshItem($this->descrTable,'button_panel',$GLOBALS['BACK_PATH']).	// CSH
-				$out;
+				<br />
+				'. $out;
 		}
 
 			// Return content:
