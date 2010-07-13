@@ -430,7 +430,7 @@ class filelistFolderTree extends t3lib_folderTree {
 					$row['_title'] = '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:temp', true) . '</strong>';
 				}
 				if ($val == '_recycler_')	{
-					$icon = 'apps-filetree-recycler';
+					$icon = 'apps-pagetree-page-recycler';
 					$row['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true);
 					$row['_title'] = '<strong>' .$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:recycler', true) . '</strong>';
 				}
