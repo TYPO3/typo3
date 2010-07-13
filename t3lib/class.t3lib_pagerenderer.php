@@ -654,7 +654,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addJsInlineCode($name, $block, $compress = TRUE, $forceOnTop = FALSE) {
-		if (!isset($this->jsInline[$name])) {
+		if (!isset($this->jsInline[$name]) && !empty($block)) {
 			$this->jsInline[$name] = array (
 				'code'        => $block . chr(10),
 				'section'     => self::PART_HEADER,
@@ -674,7 +674,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addJsFooterInlineCode($name, $block, $compress = TRUE, $forceOnTop = FALSE) {
-		if (!isset($this->jsInline[$name])) {
+		if (!isset($this->jsInline[$name]) && !empty($block)) {
 			$this->jsInline[$name] = array (
 				'code'        => $block . chr(10),
 				'section'     => self::PART_FOOTER,
@@ -734,7 +734,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function addCssInlineBlock($name, $block, $compressed = FALSE, $forceOnTop = FALSE) {
-		if (!isset($this->cssInline[$name])) {
+		if (!isset($this->cssInline[$name]) && !empty($block)) {
 			$this->cssInline[$name] = array (
 				'code'       => $block,
 				'compress'   => $compress,
