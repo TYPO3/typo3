@@ -25,7 +25,6 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * Testcase for IfViewHelper
  *
- * @version $Id: IfViewHelperTest.php 4836 2010-07-12 18:12:29Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_IfViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

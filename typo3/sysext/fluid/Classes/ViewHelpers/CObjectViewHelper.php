@@ -18,7 +18,6 @@
  *
  * @package TYPO3
  * @subpackage Fluid
- * @version $Id$
  */
 class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 

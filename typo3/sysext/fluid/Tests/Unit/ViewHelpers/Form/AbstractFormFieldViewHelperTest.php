@@ -25,7 +25,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the Abstract Form view helper
  *
- * @version $Id: AbstractFormFieldViewHelperTest.php 3835 2010-02-22 15:15:17Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

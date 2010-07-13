@@ -48,7 +48,6 @@
  * <input type="checkbox" name="user[interests][]" value="TYPO3" checked="checked" />
  * (depending on property "interests")
  *
- * @version $Id$
  * @package Fluid
  * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

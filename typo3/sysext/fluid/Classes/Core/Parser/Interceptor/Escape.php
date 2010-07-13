@@ -23,7 +23,6 @@
 /**
  * An interceptor adding the escape viewhelper to the suitable places.
  *
- * @version $Id: Escape.php 4040 2010-04-08 16:02:57Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser\Interceptor
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

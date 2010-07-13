@@ -16,7 +16,6 @@
 /**
  * @package
  * @subpackage
- * @version $Id$
  */
 class Tx_Fluid_Fluid {
 	const NAMESPACE_SEPARATOR = '_';

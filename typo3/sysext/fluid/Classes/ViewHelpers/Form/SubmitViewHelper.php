@@ -39,7 +39,6 @@
   * Output:
  * <input type="submit" name="mySubmit" value="Send Mail" />
  *
- * @version $Id: SubmitViewHelper.php 3751 2010-01-22 15:56:47Z k-fish $
  * @package Fluid
  * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

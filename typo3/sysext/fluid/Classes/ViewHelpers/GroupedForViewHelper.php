@@ -74,7 +74,6 @@
  *   </li>
  * </ul>
  *
- * @version $Id: GroupedForViewHelper.php 4620 2010-06-24 10:03:16Z bwaidelich $
  * @package Fluid
  * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

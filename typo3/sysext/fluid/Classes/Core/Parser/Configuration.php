@@ -24,7 +24,6 @@
  * The parser configuration. Contains all configuration needed to configure
  * the building of a SyntaxTree.
  *
- * @version $Id: Configuration.php 4665 2010-06-29 15:16:56Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

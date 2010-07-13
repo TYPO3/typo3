@@ -23,7 +23,6 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id: TemplateParser.php 4663 2010-06-29 10:45:48Z k-fish $
  * @package Fluid
  * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

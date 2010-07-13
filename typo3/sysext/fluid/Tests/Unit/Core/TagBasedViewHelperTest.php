@@ -23,7 +23,6 @@
 /**
  * Testcase for TagBasedViewHelper
  *
- * @version $Id: TagBasedViewHelperTest.php 3835 2010-02-22 15:15:17Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_TagBasedViewHelperTest extends Tx_Extbase_BaseTestCase {

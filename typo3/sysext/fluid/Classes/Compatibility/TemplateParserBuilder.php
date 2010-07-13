@@ -17,7 +17,6 @@
 /**
  * @package
  * @subpackage
- * @version $Id$
  */
 /**
  * Build a template parser.

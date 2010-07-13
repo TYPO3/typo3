@@ -22,7 +22,6 @@
 
 /**
  *
- * @version $Id: RenderViewHelper.php 4607 2010-06-22 06:02:55Z sebastian $
  * @package Fluid
  * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

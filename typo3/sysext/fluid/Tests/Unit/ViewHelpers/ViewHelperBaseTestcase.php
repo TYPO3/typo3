@@ -21,7 +21,6 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperBaseTestcase.php 4653 2010-06-28 18:52:33Z sebastian $
  * @package Fluid
  * @subpackage ViewHelpers
  */

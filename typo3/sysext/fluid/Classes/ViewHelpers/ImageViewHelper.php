@@ -19,14 +19,12 @@
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id$
  */
 
 /**
  *
  * @package
  * @subpackage
- * @version $Id$
  */
 class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
 

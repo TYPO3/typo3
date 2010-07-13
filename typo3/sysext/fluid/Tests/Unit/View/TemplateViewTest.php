@@ -26,7 +26,6 @@ include_once(dirname(__FILE__) . '/Fixtures/TemplateViewFixture.php');
 /**
  * Testcase for the TemplateView
  *
- * @version $Id: TemplateViewTest.php 4671 2010-06-30 08:25:50Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {

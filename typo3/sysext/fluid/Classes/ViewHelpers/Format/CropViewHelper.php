@@ -16,7 +16,6 @@
 /**
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id$
  */
 
 /**
@@ -54,7 +53,6 @@
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */

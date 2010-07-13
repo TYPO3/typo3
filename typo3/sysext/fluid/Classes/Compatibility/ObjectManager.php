@@ -16,7 +16,6 @@
 /**
  * @package
  * @subpackage
- * @version $Id: ObjectFactory.php 1734 2009-11-25 21:53:57Z stucki $
  */
 /**
  * Class emulating the object factory for Fluid v4.

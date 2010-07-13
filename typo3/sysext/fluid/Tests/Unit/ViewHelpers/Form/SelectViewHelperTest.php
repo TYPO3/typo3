@@ -27,7 +27,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the "Select" Form view helper
  *
- * @version $Id: SelectViewHelperTest.php 4630 2010-06-24 18:10:18Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

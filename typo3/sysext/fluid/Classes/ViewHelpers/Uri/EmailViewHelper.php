@@ -29,7 +29,6 @@
  *
  * @package Fluid
  * @subpackage ViewHelpers
- * @version $Id$
  */
 class Tx_Fluid_ViewHelpers_Uri_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 

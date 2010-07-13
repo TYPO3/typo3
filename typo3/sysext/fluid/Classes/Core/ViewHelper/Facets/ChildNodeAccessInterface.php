@@ -32,7 +32,6 @@
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  *
- * @version $Id: ChildNodeAccessInterface.php 4836 2010-07-12 18:12:29Z sebastian $
  * @package Fluid
  * @subpackage Core\ViewHelper\Facets
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

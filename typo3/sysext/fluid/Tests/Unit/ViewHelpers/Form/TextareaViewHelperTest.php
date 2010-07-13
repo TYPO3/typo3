@@ -27,7 +27,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the "Textarea" Form view helper
  *
- * @version $Id: TextareaViewHelperTest.php 3835 2010-02-22 15:15:17Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_Form_TextareaViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

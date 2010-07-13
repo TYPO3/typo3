@@ -25,7 +25,6 @@ require_once(dirname(__FILE__) . '/../../ViewHelpers/ViewHelperBaseTestcase.php'
 /**
  * Testcase for Condition ViewHelper
  *
- * @version $Id: IfViewHelperTest.php 4671 2010-06-30 08:25:50Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_ViewHelper_ConditionViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

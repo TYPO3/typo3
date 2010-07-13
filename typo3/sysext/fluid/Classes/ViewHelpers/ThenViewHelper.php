@@ -24,7 +24,6 @@
  * "THEN" -> only has an effect inside of "IF". See If-ViewHelper for documentation.
  * @see Tx_Fluid_ViewHelpers_IfViewHelper
  *
- * @version $Id: ThenViewHelper.php 3751 2010-01-22 15:56:47Z k-fish $
  * @package Fluid
  * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

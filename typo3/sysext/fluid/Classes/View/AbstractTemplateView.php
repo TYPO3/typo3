@@ -25,7 +25,6 @@
  *
  * Contains the fundamental methods which any Fluid based template view needs.
  *
- * @version $Id: TemplateView.php 4607 2010-06-22 06:02:55Z sebastian $
  * @package Fluid
  * @subpackage View
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

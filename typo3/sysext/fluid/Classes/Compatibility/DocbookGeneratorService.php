@@ -16,7 +16,6 @@
 /**
  * @package
  * @subpackage
- * @version $Id$
  */
 /**
  * Class extending the docbook generator service for use in typo3 v4.

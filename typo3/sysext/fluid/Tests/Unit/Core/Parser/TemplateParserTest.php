@@ -28,7 +28,6 @@ require_once(dirname(__FILE__) . '/Fixtures/PostParseFacetViewHelper.php');
  * This is to at least half a system test, as it compares rendered results to
  * expectations, and does not strictly check the parsing...
  *
- * @version $Id: TemplateParserTest.php 4170 2010-04-15 22:10:27Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {

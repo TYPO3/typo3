@@ -25,7 +25,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Testcase for the external uri view helper
  *
- * @version $Id: ExternalViewHelperTest.php 2914 2009-07-28 18:26:38Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

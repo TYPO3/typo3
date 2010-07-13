@@ -23,7 +23,6 @@
 /**
  * Root node of every syntax tree.
  *
- * @version $Id: RootNode.php 4671 2010-06-30 08:25:50Z robert $
  * @package Fluid
  * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later

@@ -23,7 +23,6 @@
 /**
  * Interface of Fluids Template view
  *
- * @version $Id: TemplateViewInterface.php 4653 2010-06-28 18:52:33Z sebastian $
  * @package Fluid
  * @subpackage View
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
