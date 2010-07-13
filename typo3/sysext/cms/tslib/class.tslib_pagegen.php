@@ -945,12 +945,17 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 			*/
 			$inlineJSint = '';
 			self::stripIntObjectPlaceholder($inlineJS, $inlineJSint);
-			$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
+			if ($inlineJSint) {
+				$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
+			}
 			$pageRenderer->addJsFile(TSpagegen::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
+
 			if ($inlineFooterJs) {
 				$inlineFooterJSint = '';
 				self::stripIntObjectPlaceholder($inlineFooterJs, $inlineFooterJSint);
-				$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				if ($inlineFooterJSint) {
+					$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $GLOBALS['TSFE']->config['config']['minifyJS']);
+				}
 				$pageRenderer->addJsFooterFile(TSpagegen::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['minifyJS']);
 			}
 		} else {

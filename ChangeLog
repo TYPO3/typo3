@@ -5,6 +5,7 @@
 
 2010-07-13  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #15073: inlineJS creates superfluous markup (Thanks to Georg Ringer)
 	* Fixed bug #15103: TS Errors are hardly readable (white on yellow) (Thanks to Georg Ringer)
 	* Fixed bug #15098: TS Errors should be shown with flash messages (Thanks to Georg Ringer)
 	* Fixed bug #14855: Big Buttons in Page Module miss padding (Thanks to Georg Ringer)
