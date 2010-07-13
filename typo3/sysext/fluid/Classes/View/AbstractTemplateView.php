@@ -258,7 +258,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 	 * @return string Full path to template
 	 * @throws Tx_Fluid_View_Exception_InvalidTemplateResourceException in case the template was not found
 	 */
-	abstract protected function getTemplateSource($actionName);
+	abstract protected function getTemplateSource($actionName = NULL);
 
 	/**
 	 * Resolve the path and file name of the layout file, based on
