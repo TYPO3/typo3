@@ -465,7 +465,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					$errMsg[]=($inf[1]).": &nbsp; &nbsp;".$inf[0];
 				}
 				$theOutput .= $this->pObj->doc->spacer(10);
-				$theOutput .= $this->pObj->doc->section($GLOBALS['TBE_TEMPLATE']->rfw($GLOBALS['LANG']->getLL('errorsWarnings')), implode($errMsg, "<br />"), 0, 1, 0, 1);
+
+				$flashMessage = t3lib_div::makeInstance(
+						't3lib_FlashMessage',
+						implode($errMsg, '<br />'),
+						$GLOBALS['LANG']->getLL('errorsWarnings'),
+						t3lib_FlashMessage::ERROR
+					);
+				$theOutput .= $flashMessage->render();
 			}
 
 
