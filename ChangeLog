@@ -1,3 +1,7 @@
+2010-07-13  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #14775: Old table header styling in Extension Manager (Thanks to Ralf Büchner)
+
 2010-07-13  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #15098: TS Errors should be shown with flash messages (Thanks to Georg Ringer)

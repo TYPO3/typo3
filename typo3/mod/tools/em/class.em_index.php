@@ -3365,9 +3365,9 @@ EXTENSION KEYS:
 				$cells[] = '<td' . $this->labelInfo($GLOBALS['LANG']->getLL('listRowHeader_title_upload_date')) . '>' .
 							$GLOBALS['LANG']->getLL('listRowHeader_upload_date') . '</td>';
 				$cells[] = '<td>' . $GLOBALS['LANG']->getLL('extInfoArray_author') . '</td>';
-				$cells[] = '<td class="bgColor6"' . $this->labelInfo($GLOBALS['LANG']->getLL('listRowHeader_title_current_version')) . '>' .
+				$cells[] = '<td' . $this->labelInfo($GLOBALS['LANG']->getLL('listRowHeader_title_current_version')) . '>' .
 							$GLOBALS['LANG']->getLL('listRowHeader_current_version') . '</td>';
-				$cells[] = '<td class="bgColor6"' . $this->labelInfo($GLOBALS['LANG']->getLL('listRowHeader_title_current_type')) . '>' .
+				$cells[] = '<td' . $this->labelInfo($GLOBALS['LANG']->getLL('listRowHeader_title_current_type')) . '>' .
 							$GLOBALS['LANG']->getLL('listRowHeader_current_type') . '</td>';
 				$cells[] = '<td' . $this->labelInfo($GLOBALS['LANG']->getLL('listRowHeader_title_number_of_downloads')) . '>' .
 							$GLOBALS['LANG']->getLL('listRowHeader_download_short') . '</td>';
