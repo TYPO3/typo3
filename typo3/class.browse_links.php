@@ -1839,7 +1839,7 @@ class browse_links {
 			$c=0;
 			while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$c++;
-				$icon=t3lib_iconWorks::getSpriteIconForRecord('tt_content', $row,$BACK_PATH);
+				$icon = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $row);
 				if ($this->curUrlInfo['act']=='page' && $this->curUrlInfo['cElement']==$row['uid'])	{
 					$arrCol='<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/blinkarrow_left.gif','width="5" height="9"').' class="c-blinkArrowL" alt="" />';
 				} else {
