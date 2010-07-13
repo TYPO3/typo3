@@ -13,8 +13,6 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
  */
 class Tx_Fluid_Exception extends Exception {
 

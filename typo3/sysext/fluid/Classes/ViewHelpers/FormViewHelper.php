@@ -21,8 +21,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
  */
 
 /**
@@ -52,8 +50,6 @@
  * </code>
  * This automatically inserts the value of {customer.name} inside the textbox and adjusts the name of the textbox accordingly.
  *
- * @package Fluid
- * @subpackage ViewHelpers
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */

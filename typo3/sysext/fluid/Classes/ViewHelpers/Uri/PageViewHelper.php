@@ -42,8 +42,6 @@
  * <a href="index.php?id=1&extension_key[foo]=bar">page link</f:link.action>
  * (depending on your TS configuration)
  *
- * @package Fluid
- * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

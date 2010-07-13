@@ -23,8 +23,6 @@
 /**
  * Node which will call a ViewHelper associated with this node.
  *
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

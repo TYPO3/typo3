@@ -23,8 +23,6 @@
 /**
  * [Enter description here]
  *
- * @package Fluid
- * @subpackage View\Fixture
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_Fixture_TransparentSyntaxTreeNode extends Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode {

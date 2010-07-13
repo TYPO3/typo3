@@ -35,8 +35,6 @@
  * You can also use the "property" attribute if you have bound an object to the form.
  * See <f:form> for more documentation.
  *
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

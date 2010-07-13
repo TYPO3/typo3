@@ -43,8 +43,6 @@
  * List of "Website user" records with a text property of "foo" stored on PID 1 and two levels down.
  * Clicking on a username will open the TYPO3 info popup for the respective record
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be
  * @author      Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id:

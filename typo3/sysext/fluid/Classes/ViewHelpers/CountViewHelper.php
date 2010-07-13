@@ -16,8 +16,6 @@
 /**
  * Counts the number of elements of a given property
  *
- * @package TYPO3
- * @subpackage Fluid
  */
 class Tx_Fluid_ViewHelpers_CountViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 

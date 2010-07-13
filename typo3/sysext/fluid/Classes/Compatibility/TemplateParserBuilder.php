@@ -15,8 +15,6 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
  */
 /**
  * Build a template parser.

@@ -24,8 +24,6 @@
  * This interface is returned by Tx_Fluid_Core_Parser_TemplateParser->parse()
  * method and is a parsed template
  *
- * @package Fluid
- * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 interface Tx_Fluid_Core_Parser_ParsedTemplateInterface {

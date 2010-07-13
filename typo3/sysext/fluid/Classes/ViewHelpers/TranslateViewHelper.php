@@ -17,8 +17,6 @@
  * Translate a key from locallang. The files are loaded from the folder
  * "Resources/Private/Language/".
  *
- * @package TYPO3
- * @subpackage Fluid
  */
 class Tx_Fluid_ViewHelpers_TranslateViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 

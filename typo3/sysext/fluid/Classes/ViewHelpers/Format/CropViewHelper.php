@@ -14,8 +14,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
  */
 
 /**
@@ -51,8 +49,6 @@
  * Output:
  * This is some text with <stro
  *
- * @package Fluid
- * @subpackage ViewHelpers
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope prototype
  */

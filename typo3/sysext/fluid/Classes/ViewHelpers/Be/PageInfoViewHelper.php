@@ -32,8 +32,6 @@
  * Output:
  * Page info icon with context menu
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be
  * @author      Steffen Kamper <info@sk-typo3.de>
  * @author      Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html

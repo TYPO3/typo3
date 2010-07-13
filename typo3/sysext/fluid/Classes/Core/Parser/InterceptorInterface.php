@@ -24,8 +24,6 @@
  * An interceptor interface. Interceptors are used in the parsing stage to change
  * the syntax tree of a template, e.g. by adding viewhelper nodes.
  *
- * @package Fluid
- * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 interface Tx_Fluid_Core_Parser_InterceptorInterface {

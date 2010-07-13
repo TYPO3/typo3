@@ -25,8 +25,6 @@
  * Note: This view helper is experimental!
  *
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be\Menus
  * @author      Steffen Kamper <info@sk-typo3.de>
  * @author      Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html

@@ -23,8 +23,6 @@
 /**
  * The main template view. Should be used as view if you want Fluid Templating
  *
- * @package Fluid
- * @subpackage View
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

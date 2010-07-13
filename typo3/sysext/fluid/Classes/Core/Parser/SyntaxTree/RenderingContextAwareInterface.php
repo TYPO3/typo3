@@ -25,8 +25,6 @@
  * marked with this interface will get the current rendering context injected
  * by the ObjectAccessorNode on trying to evaluate them.
  *
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 interface Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface {

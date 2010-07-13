@@ -25,8 +25,6 @@
  *
  * Contains the fundamental methods which any Fluid based template view needs.
  *
- * @package Fluid
- * @subpackage View
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_TemplateViewInterface {

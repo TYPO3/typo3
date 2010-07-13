@@ -23,8 +23,6 @@
 /**
  * Text Syntax Tree Node - is a container for strings.
  *
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

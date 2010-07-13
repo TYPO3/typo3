@@ -33,8 +33,6 @@
  * Output:
  * <textarea name="myTextArea">This is shown inside the textarea</textarea>
  *
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

@@ -38,8 +38,6 @@
  *   <li>1234567890: Validation errors for argument "newBlog"</li>
  * </ul>
  *
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

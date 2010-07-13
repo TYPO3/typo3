@@ -38,8 +38,6 @@
  * @see Tx_Fluid_ViewHelpers_IfViewHelper for a more detailed explanation and a simple usage example.
  * Make sure to NOT OVERRIDE the constructor.
  *
- * @package Fluid
- * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

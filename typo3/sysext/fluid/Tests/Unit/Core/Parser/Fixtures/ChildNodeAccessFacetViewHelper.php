@@ -23,8 +23,6 @@
 /**
  * Test fixture for the child node access facet.
  *
- * @package Fluid
- * @subpackage Core\Parser\Fixtures
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 abstract class Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {

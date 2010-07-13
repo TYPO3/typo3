@@ -60,8 +60,6 @@
  *
  * The "value" property now expects a domain object, and tests for object equivalence.
  *
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
