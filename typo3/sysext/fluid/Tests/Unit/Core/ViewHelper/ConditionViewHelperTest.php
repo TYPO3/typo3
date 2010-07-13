@@ -27,10 +27,10 @@ require_once(dirname(__FILE__) . '/../../ViewHelpers/ViewHelperBaseTestcase.php'
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_ViewHelper_ConditionViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_Core_ViewHelper_ConditionViewHelper
+	 * var Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper
 	 */
 	protected $viewHelper;
 
@@ -41,7 +41,7 @@ class Tx_Fluid_Core_ViewHelper_ConditionViewHelperTest extends Tx_Fluid_ViewHelp
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_ConditionViewHelper', array('getRenderingContext', 'renderChildren'));
+		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper', array('getRenderingContext', 'renderChildren'));
 		$this->viewHelper->expects($this->any())->method('getRenderingContext')->will($this->returnValue($this->renderingContext));
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 	}

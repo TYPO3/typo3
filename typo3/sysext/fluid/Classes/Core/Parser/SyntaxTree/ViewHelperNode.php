@@ -49,7 +49,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	/**
 	 * A mapping RenderingContext -> ViewHelper to only re-initialize ViewHelpers
 	 * when a context change occurs.
-	 * @var \SplObjectStorage
+	 * @var Tx_Extbase_Persistence_ObjectStorage
 	 */
 	protected $viewHelpersByContext = NULL;
 
@@ -88,10 +88,10 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 */
 	public function __construct(Tx_Fluid_Core_ViewHelper_ViewHelperInterface $viewHelper, array $arguments) {
 		$this->uninitializedViewHelper = $viewHelper;
-		$this->viewHelpersByContext = new SplObjectStorage();
+		$this->viewHelpersByContext = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
 		$this->arguments = $arguments;
 
-		if ($this->uninitializedViewHelper instanceof Tx_Fluid_AOP_ProxyInterface) {
+		if (FALSE /*FIXME*/) {
 			$this->viewHelperClassName = $this->uninitializedViewHelper->FLOW3_AOP_Proxy_getProxyTargetClassName();
 		} else {
 			$this->viewHelperClassName = get_class($this->uninitializedViewHelper);

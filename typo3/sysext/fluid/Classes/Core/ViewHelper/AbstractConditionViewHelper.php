@@ -42,7 +42,7 @@
  * @api
  * @scope prototype
  */
-abstract class Tx_Fluid_Core_ViewHelper_ConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+abstract class Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 
 	/**
 	 * An array of Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode
@@ -64,7 +64,6 @@ abstract class Tx_Fluid_Core_ViewHelper_ConditionViewHelper extends Tx_Fluid_Cor
 	/**
 	 * Initializes the "then" and "else" arguments
 	 *
-	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function __construct() {

@@ -31,7 +31,7 @@ class Tx_Fluid_Core_Parser_Configuration {
 
 	/**
 	 * Generic interceptors registered with the configuration.
-	 * @var array<\SplObjectStorage>
+	 * @var array<Tx_Extbase_Persistence_ObjectStorage>
 	 */
 	protected $interceptors = array();
 
@@ -45,7 +45,7 @@ class Tx_Fluid_Core_Parser_Configuration {
 	public function addInterceptor(Tx_Fluid_Core_Parser_InterceptorInterface $interceptor) {
 		foreach ($interceptor->getInterceptionPoints() as $interceptionPoint) {
 			if (!isset($this->interceptors[$interceptionPoint])) {
-				$this->interceptors[$interceptionPoint] = new SplObjectStorage();
+				$this->interceptors[$interceptionPoint] = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
 			}
 			if (!$this->interceptors[$interceptionPoint]->contains($interceptor)) {
 				$this->interceptors[$interceptionPoint]->attach($interceptor);
@@ -57,14 +57,14 @@ class Tx_Fluid_Core_Parser_Configuration {
 	 * Returns all interceptors for a given Interception Point.
 	 *
 	 * @param integer $interceptionPoint one of the Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_* constants,
-	 * @return \SplObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Fluid_Core_Parser_InterceptorInterface>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getInterceptors($interceptionPoint) {
-		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof SplObjectStorage) {
+		if (isset($this->interceptors[$interceptionPoint]) && $this->interceptors[$interceptionPoint] instanceof Tx_Extbase_Persistence_ObjectStorage) {
 			return $this->interceptors[$interceptionPoint];
 		}
-		return new SplObjectStorage();
+		return t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
 	}
 
 }

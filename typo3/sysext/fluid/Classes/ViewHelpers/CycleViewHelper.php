@@ -58,7 +58,7 @@
 class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var array|\SplObjectStorage the values to be iterated through
+	 * @var array|Tx_Extbase_Persistence_ObjectStorage the values to be iterated through
 	 */
 	protected $values = NULL;
 
@@ -68,7 +68,7 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	protected $currentCycleIndex = NULL;
 
 	/**
-	 * @param array $values The array or SplObjectStorage to iterated over
+	 * @param array $values The array or Tx_Extbase_Persistence_ObjectStorage to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @return string Rendered result
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -98,7 +98,7 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	/**
 	 * Sets this->values to the current values argument and resets $this->currentCycleIndex.
 	 *
-	 * @param array $values The array or SplObjectStorage to be stored in $this->values
+	 * @param array $values The array or Tx_Extbase_Persistence_ObjectStorage to be stored in $this->values
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */

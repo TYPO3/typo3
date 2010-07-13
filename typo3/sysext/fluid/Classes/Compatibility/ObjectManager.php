@@ -30,7 +30,7 @@ class Tx_Fluid_Compatibility_ObjectManager implements t3lib_Singleton {
 		'Tx_Fluid_Core_ViewHelper_AbstractViewHelper' => array(
 			'injectReflectionService' => 'Tx_Extbase_Reflection_Service'
 		),
-		'Tx_Fluid_Core_ViewHelper_TagBasedViewHelper' => array(
+		'Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper' => array(
 			'injectTagBuilder' => 'Tx_Fluid_Core_ViewHelper_TagBuilder'
 		),
 		'Tx_Fluid_Core_Parser_ParsingState' => array(

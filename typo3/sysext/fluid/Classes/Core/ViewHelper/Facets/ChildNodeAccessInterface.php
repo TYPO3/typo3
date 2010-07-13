@@ -28,7 +28,7 @@
  * To render subnodes, you can fetch the RenderingContext via $this->getRenderingContext().
  *
  * In most cases, you will not need this facet, and it is NO PUBLIC API!
- * Right now it is only used internally for conditions, so by subclassing Tx_Fluid_Core_ViewHelpers_ConditionViewHelper, this should be all you need.
+ * Right now it is only used internally for conditions, so by subclassing Tx_Fluid_Core_ViewHelpers_AbstractConditionViewHelper, this should be all you need.
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  *
