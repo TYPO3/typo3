@@ -1,3 +1,7 @@
+2010-07-13  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15096: Missing icon for _recycler_ folders
+
 2010-07-12  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #15082: [openDocs] Exception is thrown if a record isn't found
