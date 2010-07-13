@@ -53,6 +53,7 @@ pre.ts-hl .ts-error {
 	background-color: yellow;
 	border: 1px red dashed;
 	font-weight: bold;
+	color: #000;
 }
 
 pre.ts-hl .ts-linenum {
