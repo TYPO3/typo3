@@ -389,20 +389,21 @@ class alt_menu_functions {
 				}
 			}
 
-				// Add spacers after each main section:
-			$subCode.='
-					<tr class="c-endrow">
-						<td colspan="3"></td>
-					</tr>';
-			$descrCode.='
-					<tr class="c-endrow">
-						<td colspan="3"></td>
-					</tr>';
+			if (!empty($subCode)) {
+					// Add spacers after each main section:
+				$subCode .= '
+						<tr class="c-endrow">
+							<td colspan="3"></td>
+						</tr>';
+				$descrCode .= '
+						<tr class="c-endrow">
+							<td colspan="3"></td>
+						</tr>';
 
-				// Add sub-code:
-			$menuCode.=$subCode;
+					// Add sub-code:
+				$menuCode .= $subCode;
+			}
 		}
-
 			// $descr==0:	Ordinary vertical menu
 		if ($menuCode)	{
 			if($collapsable == 1 || $config['expandAll'] == 1) {
