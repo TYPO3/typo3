@@ -1,3 +1,7 @@
+2010-07-13 Francois Suter  <francois@typo3.org>
+
+	* Fixed bug: #15054: Scheduler: BE module does not use new skin properly
+
 2010-07-13  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #14775: Old table header styling in Extension Manager (Thanks to Ralf Büchner)
