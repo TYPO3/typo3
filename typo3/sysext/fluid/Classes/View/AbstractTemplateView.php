@@ -37,12 +37,12 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 	const RENDERING_LAYOUT = 3;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
 	 */
 	protected $controllerContext;
 
 	/**
-	 * @var \Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Fluid_Compatibility_ObjectManager
 	 */
 	protected $objectManager;
 

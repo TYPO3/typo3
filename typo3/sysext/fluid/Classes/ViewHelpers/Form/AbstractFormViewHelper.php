@@ -32,7 +32,7 @@
 abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
-	 * @var \Tx_Extbase_Persistence_ManagerInterface
+	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
 	protected $persistenceManager;
 

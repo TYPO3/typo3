@@ -234,7 +234,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	);
 
 	/**
-	 * @var \Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Fluid_Compatibility_ObjectManager
 	 */
 	protected $objectManager;
 

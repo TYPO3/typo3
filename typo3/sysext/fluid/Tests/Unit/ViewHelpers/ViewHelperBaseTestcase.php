@@ -35,12 +35,12 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $templateVariableContainer;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
 	 */
 	protected $uriBuilder;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
 	 */
 	protected $controllerContext;
 
@@ -55,7 +55,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $arguments;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Web_Request
+	 * @var Tx_Extbase_MVC_Web_Request
 	 */
 	protected $request;
 
