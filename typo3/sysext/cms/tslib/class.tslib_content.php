@@ -6048,13 +6048,13 @@ class tslib_cObj {
 							// Query Params:
 						$addQueryParams = $conf['addQueryString'] ? $this->getQueryArguments($conf['addQueryString.']) : '';
 						$addQueryParams .= trim($this->stdWrap($conf['additionalParams'],$conf['additionalParams.']));
-						if (substr($addQueryParams,0,1)!='&')		{
+						if ($addQueryParams == '&' || substr($addQueryParams, 0, 1) != '&') {
 							$addQueryParams = '';
 						}
 						if ($conf['useCacheHash']) {
 								// Mind the order below! See http://bugs.typo3.org/view.php?id=5117
 							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams;
-							if ($params) {
+							if (trim($params, '& ') != '') {
 								$addQueryParams .= '&cHash=' . t3lib_div::generateCHash($params);
 							}
 							unset($params);
