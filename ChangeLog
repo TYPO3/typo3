@@ -2,6 +2,7 @@
 
 	* Fixed bug #6208: zlib must be compiled in to make an extension lookup
 	* Fixed bug #12322: cHash is generated when no parameters are given
+	* Fixed bug #13309: t3lib_div::getURL curl connection has no connection timeout
 
 2010-07-13  Jeff Segars  <jeff@webempoweredchurch.org>
 

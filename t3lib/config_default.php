@@ -78,6 +78,7 @@ $TYPO3_CONF_VARS = array(
 		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/.
 		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.).
 		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass.
+		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely.
 		'form_enctype' => 'multipart/form-data',	// String: This is the default form encoding type for most forms in TYPO3. It allows for file uploads to be in the form. However if file-upload is disabled for your PHP version even ordinary data sent with this encryption will not get to the server. So if you have file_upload disabled, you will have to change this to eg. 'application/x-www-form-urlencoded'
 		'textfile_ext' => 'txt,html,htm,css,tmpl,js,sql,xml,csv,' . PHP_EXTENSIONS_DEFAULT,	// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')

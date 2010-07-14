@@ -2817,6 +2817,7 @@ final class t3lib_div {
 			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
 
 				// may fail (PHP 5.2.0+ and 5.1.5+) when open_basedir or safe_mode are enabled
 			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
