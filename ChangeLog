@@ -1,4 +1,8 @@
-2010-07-13 Francois Suter  <francois@typo3.org>
+2010-07-14  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #6208: zlib must be compiled in to make an extension lookup
+
+2010-07-13  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #15054: Scheduler: BE module does not use new skin properly
 
