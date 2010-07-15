@@ -22,8 +22,6 @@
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_t3lib . 'class.t3lib_befunc.php');
-
 /**
  * Testcase for the t3lib_BEfunc class in the TYPO3 core.
  *
