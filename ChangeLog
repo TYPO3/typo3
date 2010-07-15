@@ -1,3 +1,7 @@
+2010-07-16  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #15142: [Unit tests] Remove unnecessary require_once() calls
+
 2010-07-15  Bernhard Kraft  <kraftb@think-open.at>
 
 	* Fixed bug #14095: impexp doesn't work from clipboard

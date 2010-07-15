@@ -22,29 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-	// TODO implement autoloading so that we only require stuff we really need
-require_once(PATH_t3lib . 'class.t3lib_cache.php');
-
-require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php');
-require_once(PATH_t3lib . 'cache/frontend/interfaces/interface.t3lib_cache_frontend_frontend.php');
-
-require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
-require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php');
-require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
-require_once(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
-require_once(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
-require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_variablefrontend.php');
-
-require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_classalreadyloaded.php');
-require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_duplicateidentifier.php');
-require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidbackend.php');
-require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invalidcache.php');
-require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
-require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
-
-require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_transientmemorybackend.php');
-
 /**
  * Testcase for the TransientMemory cache backend
  *

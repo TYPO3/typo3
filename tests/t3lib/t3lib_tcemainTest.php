@@ -22,10 +22,6 @@
 * This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-require_once(PATH_t3lib . 'class.t3lib_beuserauth.php');
-
-require_once(PATH_t3lib . 'class.t3lib_tcemain.php');
-
 /**
  * Testcase for the t3lib_TCEmain class in the TYPO3 core.
  *

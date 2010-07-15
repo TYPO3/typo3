@@ -22,10 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_nullbackend.php');
-require_once('backend/class.t3lib_cache_backend_mockbackend.php');
-
 /**
  * Testcase for the Cache Factory
  *

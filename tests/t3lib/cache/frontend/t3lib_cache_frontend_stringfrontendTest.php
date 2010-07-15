@@ -22,9 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_stringfrontend.php');
-
 /**
  * Testcase for the string cache frontend
  *
