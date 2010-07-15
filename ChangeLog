@@ -1,3 +1,7 @@
+2010-07-15  Bernhard Kraft  <kraftb@think-open.at>
+
+	* Fixed bug #14095: impexp doesn't work from clipboard
+
 2010-07-14  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14911: Validation errors in list view (Thanks to Georg Ringer)
