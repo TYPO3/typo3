@@ -104,8 +104,8 @@ class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_B
 			$pageRenderer->addJsFile($addJsFile);
 		}
 
-		$output = $doc->startPage($pageTitle);
-		$output .= $this->renderChildren();
+		$output = $this->renderChildren();
+		$output = $doc->startPage($pageTitle) . $output;
 		$output .= $doc->endPage();
 		return $output;
 	}
