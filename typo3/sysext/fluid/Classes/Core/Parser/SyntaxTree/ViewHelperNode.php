@@ -344,11 +344,11 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		if (is_bool($value)) {
 			return $value;
 		}
-		if (is_string($value)) {
-			return (!empty($value) && strtolower($value) !== 'false');
-		}
 		if (is_numeric($value)) {
 			return $value > 0;
+		}
+		if (is_string($value)) {
+			return (!empty($value) && strtolower($value) !== 'false');
 		}
 		if (is_array($value) || (is_object($value) && $value instanceof Countable)) {
 			return count($value) > 0;

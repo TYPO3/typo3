@@ -67,6 +67,43 @@ class Tx_Fluid_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_BaseTes
 
 	/**
 	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function overrideArgumentOverwritesExistingArgumentDefinition() {
+		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+
+		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render'), array(), '', FALSE);
+		$viewHelper->injectReflectionService($mockReflectionService);
+
+		$name = 'argumentName';
+		$description = 'argument description';
+		$overriddenDescription = 'overwritten argument description';
+		$type = 'string';
+		$overriddenType = 'integer';
+		$isRequired = TRUE;
+		$expected = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $overriddenType, $overriddenDescription, $isRequired);
+
+		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
+		$viewHelper->_call('overrideArgument', $name, $overriddenType, $isRequired, $overriddenDescription);
+		$this->assertEquals($viewHelper->prepareArguments(), array($name => $expected), 'Argument definitions not returned correctly. The original ArgumentDefinition could not be overridden.');
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @expectedException Tx_Fluid_Core_ViewHelper_Exception
+	 */
+	public function overrideArgumentThrowsExceptionWhenTryingToOverwriteAnNonexistingArgument() {
+		$mockReflectionService = $this->getMock('Tx_Extbase_Reflection_Service', array(), array(), '', FALSE);
+
+		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render'), array(), '', FALSE);
+		$viewHelper->injectReflectionService($mockReflectionService);
+
+		$viewHelper->_call('overrideArgument', 'argumentName', 'string', TRUE, 'description');
+	}
+
+	/**
+	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function prepareArgumentsCallsInitializeArguments() {
