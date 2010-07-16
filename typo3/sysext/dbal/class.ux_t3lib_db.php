@@ -1338,7 +1338,6 @@ class ux_t3lib_DB extends t3lib_DB {
 							$where_clause[$k]['func']['field'] = $this->quoteName($v['func']['field']);
 						}
 						break;
-					break;
 				}
 			} else {
 				if ($where_clause[$k]['table'] != '') {
