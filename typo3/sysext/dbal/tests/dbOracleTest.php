@@ -1070,5 +1070,18 @@ class dbOracleTest extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14818
+	 */
+	public function listQueryIsProperlyRemapped() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'fe_users',
+			$GLOBALS['TYPO3_DB']->listQuery('usergroup', 10, 'fe_users')
+		));
+		$expected = 'SELECT * FROM "fe_users" WHERE \',\'||"usergroup"||\',\' LIKE \'%,10,%\'';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>
