@@ -287,6 +287,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 								$this->setup[$theKey.'.']['height'] = $this->calcOffset($this->setup[$theKey.'.']['height']);
 							}
 						break;
+						case 'ELLIPSE':
+							if ($this->setup[$theKey . '.']['dimensions']) {
+								$this->setup[$theKey . '.']['dimensions'] = $this->calcOffset($this->setup[$theKey . '.']['dimensions']);
+							}
+						break;
 					}
 				}
 			}
@@ -431,6 +436,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							if (isset($conf['clear']))	{
 								$this->workArea = $this->defaultWorkArea;	// this sets the current to the default;
 							}
+						break;
+						case 'ELLIPSE':
+							$this->makeEllipse($this->im, $conf, $this->workArea);
 						break;
 					}
 				}

@@ -1623,6 +1623,39 @@ class t3lib_stdGraphic	{
 	}
 
 	/**
+	 * Implements the "Ellipse" GIFBUILDER object
+	 * Example Typoscript:
+	 * file  =  GIFBUILDER
+	 * file  {
+	 * XY  =  200,200
+	 * format  =  jpg
+     	 * quality  =  100
+	 * 10  =  ELLIPSE
+     	 * 10.dimensions  =  100,100,50,50
+	 * 10.color  =  red
+     	 *
+	 * $workArea = X,Y
+	 * $conf['dimensions'] = offset x, offset y, width of ellipse, height of ellipse
+	 *
+	 * @param	pointer	GDlib image pointer
+	 * @param	array $conf TypoScript array with configuration for the GIFBUILDER object.
+	 * @param	array $workArea The current working area coordinates.
+	 * @return	void
+	 * @see tslib_gifBuilder::make()
+	 */
+	public function makeEllipse(&$im, array $conf, array $workArea) {
+		$ellipseConfiguration = t3lib_div::intExplode(',', $conf['dimensions'] . ',,,');
+		$conf['offset'] = $ellipseConfiguration[0] . ',' . $ellipseConfiguration[1]; // ellipse offset inside workArea (x/y)
+
+		// @see objPosition
+		$imageCoordinates = $this->objPosition($conf, $workArea, array($ellipseConfiguration[2], $ellipseConfiguration[3]));
+
+		$color = $this->convertColor($conf['color']);
+		$fillingColor = imagecolorallocate($im, $color[0], $color[1], $color[2]);
+		imagefilledellipse($im, $imageCoordinates[0], $imageCoordinates[1], $imageCoordinates[2], $imageCoordinates[3], $fillingColor);
+	}
+
+	/**
 	 * Implements the "EFFECT" GIFBUILDER object
 	 * The operation involves ImageMagick for applying effects
 	 *
