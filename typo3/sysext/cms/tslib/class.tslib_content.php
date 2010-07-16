@@ -3170,21 +3170,33 @@ class tslib_cObj {
 				if ($conf['sample']) {$params.='&sample=1';}
 				if ($conf['alternativeTempPath']) {$params.='&alternativeTempPath='.rawurlencode($conf['alternativeTempPath']);}
 
-				if ($conf['bodyTag']) {$params.='&bodyTag='.rawurlencode($conf['bodyTag']);}
-				if ($conf['title']) {$params.='&title='.rawurlencode($conf['title']);}
-				if ($conf['wrap']) {$params.='&wrap='.rawurlencode($conf['wrap']);}
+				// includes lines above in cache
+				$showPicContent = '
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>' . htmlspecialchars($conf['title'] ? $conf['title'] : 'Image') . '</title>
+	' . ($conf['title'] ? '' : '<meta name="robots" content="noindex,follow" />') . '
+</head>
+		' . ($conf['bodyTag'] ? $conf['bodyTag'] : '<body>');
+
+				$wrapParts = explode('|', $conf['wrap']);
+				$showPicContent .= trim($wrapParts[0]) . '###IMAGE###' . trim($wrapParts[1]);
+				$showPicContent .= '
+		</body>
+		</html>';
+				$contentHash = md5('showpic' . $showPicContent);
+				t3lib_pageSelect::storeHash($contentHash, $showPicContent, 'showpic');
 
 				$md5_value = md5(
-						$imageFile.'|'.
-						$conf['width'].'|'.
-						$conf['height'].'|'.
-						$conf['effects'].'|'.
-						$conf['bodyTag'].'|'.
-						$conf['title'].'|'.
-						$conf['wrap'].'|'.
-						$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'].'|');
+						$imageFile . '|' .
+						$conf['width'] . '|' .
+						$conf['height'] . '|' .
+						$conf['effects'] . '||||' .
+						$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . '|');
 
-				$params.= '&md5='.$md5_value;
+				$params .= '&md5=' . $md5_value . '&contentHash=' . $contentHash;
 				$url = $GLOBALS['TSFE']->absRefPrefix.'index.php?eID=tx_cms_showpic&file='.rawurlencode($imageFile).$params;
 				if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.'])	{
 					$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);

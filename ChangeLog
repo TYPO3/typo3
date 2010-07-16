@@ -1,3 +1,7 @@
+2010-07-16  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14858: imageLinkWrap.JSwindow triggers XSS warning or Fails (thanks to Jigal van Hemert)
+
 2010-07-16  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14818: t3lib_db->listQuery() performance (thanks to Caspar Stuebs)
