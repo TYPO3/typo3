@@ -77,6 +77,28 @@ RETURNS anyelement AS $$
 SELECT COALESCE($1, $2)
 $$ IMMUTABLE STRICT LANGUAGE SQL;
 
+-- FIND_IN_SET
+-- FIND_IN_SET()
+CREATE OR REPLACE FUNCTION find_in_set(text, text)
+RETURNS integer AS $$
+DECLARE
+	list text[];
+	len integer;
+BEGIN
+	IF $2 = '' THEN
+		RETURN 0;
+	END IF;
+	list := pg_catalog.string_to_array($2, ',');
+	len := pg_catalog.array_upper(list, 1);
+	FOR i IN 1..len LOOP
+		IF list[i] = $1 THEN
+			RETURN i;
+		END IF;
+	END LOOP;
+	RETURN 0;
+END;
+$$ STRICT IMMUTABLE LANGUAGE PLPGSQL;
+
 -- Remove Compatibility operators
 --
 --DROP OPERATOR ~~ (integer,text);

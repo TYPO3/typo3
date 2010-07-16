@@ -367,6 +367,20 @@ class sqlParserGeneralTest extends BaseTestCase {
 		$this->assertEquals($expected, $alterTable[0]);
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14985
+	 */
+	public function canParseFindInSetStatement() {
+		$parseString = 'SELECT * FROM fe_users WHERE FIND_IN_SET(10, usergroup)';
+		$components = $this->fixture->_callRef('parseSELECT', $parseString);
+
+		$this->assertTrue(is_array($components), $components);
+		$selectTable = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
+		$expected = 'SELECT * FROM fe_users WHERE FIND_IN_SET(10, usergroup)';
+		$this->assertEquals($expected, $selectTable);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning JOINs
 	///////////////////////////////////////

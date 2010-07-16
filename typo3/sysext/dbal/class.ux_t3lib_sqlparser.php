@@ -490,7 +490,57 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 								$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
 								$output .= ')';
-							} else {
+							} elseif (isset($v['func']) && $v['func']['type'] === 'FIND_IN_SET') {
+								$output = ' ' . trim($v['modifier']) . ' ';
+								switch (TRUE) {
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8')):
+										if ($functionMapping) {
+											$field = ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+											if (!isset($v['func']['str_like'])) {
+												$v['func']['str_like'] = $v['func']['str'][0];
+											}
+											$output .= '\',\'||' . $field . '||\',\' LIKE \'%,' . $v['func']['str_like'] . ',%\'';
+											break;
+										}
+										// Beware: No break here if !$functionMapping to handle remapping of fields (twice in this method)
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql')):
+										if ($functionMapping) {
+											$field = ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+											if (!isset($v['func']['str_like'])) {
+												$v['func']['str_like'] = $v['func']['str'][0];
+											}
+											$output .= '\',\'+' . $field . '+\',\' LIKE \'%,' . $v['func']['str_like'] . ',%\'';
+											break;
+										}
+										// Beware: No break here if !$functionMapping to handle remapping of fields (twice in this method)
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres') && $functionMapping):
+										$output .= ' FIND_IN_SET(';
+										$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
+										$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+										$output .= ')';
+										break;
+									default:
+										$field = ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
+										if (!isset($v['func']['str_like'])) {
+											$v['func']['str_like'] = $v['func']['str'][0];
+										}
+										$output .= '('
+											. $field . ' LIKE \'%,' . $v['func']['str_like'] . ',%\''
+											. ' OR ' . $field . ' LIKE \'' . $v['func']['str_like'] . ',%\''
+											. ' OR ' . $field . ' LIKE \'%,' . $v['func']['str_like'] . '\''
+											. ' OR ' . $field . '= ' . $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1]
+											. ')';
+										break;
+								}
+								switch (TRUE) {
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres') && $functionMapping):
+										$output .= ' != 0';
+										break;
+									default:
+										// Nothing more to do
+										break;
+								}
+							}  else {
 
 									// Set field/table with modifying prefix if any:
 								$output .= ' ' . trim($v['modifier']) . ' ';

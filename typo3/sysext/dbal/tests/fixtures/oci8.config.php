@@ -44,7 +44,8 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 	'tt_news' => array(
 		'mapTableName' => 'ext_tt_news',
 		'mapFieldNames' => array(
-			'uid' => 'news_uid',
+			'uid'      => 'news_uid',
+			'fe_group' => 'usergroup',
 		),
 	),
 	'tt_news_cat' => array(

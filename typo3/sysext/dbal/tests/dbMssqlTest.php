@@ -127,6 +127,20 @@ class dbMssqlTest extends BaseTestCase {
 		}
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14985
+	 */
+	public function findInSetIsProperlyRemapped() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'fe_users',
+			'FIND_IN_SET(10, usergroup)'
+		));
+		$expected = 'SELECT * FROM "fe_users" WHERE \',\'+"usergroup"+\',\' LIKE \'%,10,%\'';
+		$this->assertEquals($expected, $query);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning remapping with
 	// external (non-TYPO3) databases
