@@ -981,10 +981,15 @@ class SC_alt_doc {
 	function functionMenus()	{
 		global $LANG;
 
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShowPalettes')) {
 			// Show palettes:
-		return '
-				<!-- Function menus (checkboxes for selecting options): -->
+			return '
+				<!-- Function menu (checkbox for showing all palettes): -->
 				<br />'.t3lib_BEfunc::getFuncCheck('','SET[showPalettes]',$this->MOD_SETTINGS['showPalettes'],'alt_doc.php',t3lib_div::implodeArrayForUrl('',array_merge($this->R_URL_getvars,array('SET'=>''))),'id="checkShowPalettes"').'<label for="checkShowPalettes">'.$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes',1).'</label>';
+		}
+		else {
+			return '';
+		}
 	}
 
 

@@ -1,6 +1,7 @@
 2010-07-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14858: imageLinkWrap.JSwindow triggers XSS warning or Fails (thanks to Jigal van Hemert)
+	* Added feature #13797: new TS config option to disable the "Show secondary options" checkbox (thanks to Jörg Klein)
 
 2010-07-16  Xavier Perseguers  <typo3@perseguers.ch>
 
