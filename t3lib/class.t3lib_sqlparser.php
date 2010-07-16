@@ -1117,6 +1117,31 @@ class t3lib_sqlparser {
 						if (!$this->nextPart($parseString, '^([)])')) {
 							return $this->parseError('No ) parenthesis at end of function');
 	 					}
+					} elseif (preg_match('/^FIND_IN_SET[[:space:]]*[(]/i', $parseString)) {
+						$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(FIND_IN_SET)[[:space:]]*');
+						$parseString = trim(substr($parseString, 1));	// Strip of "("
+						if ($str = $this->getValue($parseString)) {
+							$stack[$level][$pnt[$level]]['func']['str'] = $str;
+							if ($fieldName = $this->nextPart($parseString, '^,[[:space:]]*([[:alnum:]._]+)[[:space:]]*', TRUE)) {
+
+									// Parse field name into field and table:
+								$tableField = explode('.', $fieldName, 2);
+								if (count($tableField) == 2) {
+									$stack[$level][$pnt[$level]]['func']['table'] = $tableField[0];
+									$stack[$level][$pnt[$level]]['func']['field'] = $tableField[1];
+								} else {
+									$stack[$level][$pnt[$level]]['func']['table'] = '';
+									$stack[$level][$pnt[$level]]['func']['field'] = $tableField[0];
+								}
+							} else {
+								return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
+							}
+							if (!$this->nextPart($parseString, '^([)])')) {
+								return $this->parseError('No ) parenthesis at end of function', $parseString);
+		 					}
+						} else {
+							return $this->parseError('No item to look for found as expected in parseWhereClause()', $parseString);
+						}
  					} else {
 
 		 					// Support calculated value only for:
@@ -1953,6 +1978,11 @@ class t3lib_sqlparser {
 						$output = ' ' . trim($v['modifier']) . ' IFNULL(';
 						$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
+						$output .= ')';
+					} elseif (isset($v['func']) && $v['func']['type'] === 'FIND_IN_SET') {
+						$output = ' ' . trim($v['modifier']) . ' FIND_IN_SET(';
+						$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
+						$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= ')';
 					} else {
 
