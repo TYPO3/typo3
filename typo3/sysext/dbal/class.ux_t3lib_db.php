@@ -52,6 +52,7 @@
  *
  *              SECTION: Creates an INSERT SQL-statement for $table from the array with field/value pairs $fields_values.
  *  533:     function SELECTquery($select_fields,$from_table,$where_clause,$groupBy = '',$orderBy = '',$limit = '')
+ *  556:     function quoteSelectFields(&$select_fields)
  *  573:     function quoteFromTables(&$from_table)
  *  595:     function quoteWhereClause(&$where_clause)
  *  620:     function quoteGroupBy(&$groupBy)
@@ -72,6 +73,7 @@
  *  946:     function sql_field_type(&$res,$pointer)
  *
  *              SECTION: Legacy functions, bound to _DEFAULT handler. (Overriding parent methods)
+ *  987:     function sql($db,$query)
  *  999:     function sql_query($query)
  * 1035:     function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password)
  * 1055:     function sql_select_db($TYPO3_db)
@@ -1169,6 +1171,18 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Quotes field (and table) names with the quote character suitable for the DB being used
+	 * Use quoteFieldNames instead!
+	 *
+	 * @param	string		List of fields to be selected from DB
+	 * @return	string		Quoted list of fields to be selected from DB
+	 * @deprecated since TYPO3 4.0
+	 */
+	public function quoteSelectFields($select_fields) {
+		$this->quoteFieldNames($select_fields);
+	}
+
+	/**
+	 * Quotes field (and table) names with the quote character suitable for the DB being used
 	 *
 	 * @param	string		List of fields to be used in query to DB
 	 * @return	string		Quoted list of fields to be in query to DB
@@ -1951,6 +1965,19 @@ class ux_t3lib_DB extends t3lib_DB {
 	* Deprecated or still experimental.
 	*
 	**********/
+
+	/**
+	 * Executes query (on DEFAULT handler!)
+	 * DEPRECATED - use exec_* functions from this class instead!
+	 *
+	 * @param	string		Database name
+	 * @param	string		Query to execute
+	 * @return	pointer		Result pointer
+	 * @deprecated since TYPO3 4.1
+	 */
+	public function sql($db,$query) {
+		return $this->sql_query($query);
+	}
 
 	/**
 	 * Executes a query
