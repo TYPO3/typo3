@@ -11,6 +11,7 @@
 
 2010-07-16  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #14982: Make alt_doc.php unit testable (Thanks to Ingo Schmitt)
 	* Fixed bug #15142: [Unit tests] Remove unnecessary require_once() calls
 
 2010-07-15  Bernhard Kraft  <kraftb@think-open.at>
