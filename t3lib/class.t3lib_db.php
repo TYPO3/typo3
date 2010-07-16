@@ -627,8 +627,9 @@ class t3lib_DB {
 	 * Returns a WHERE clause that can find a value ($value) in a list field ($field)
 	 * For instance a record in the database might contain a list of numbers,
 	 * "34,234,5" (with no spaces between). This query would be able to select that
-	 * record based on the value "34", "234" or "5" regardless of their positioni in
+	 * record based on the value "34", "234" or "5" regardless of their position in
 	 * the list (left, middle or right).
+	 * The value must not contain a comma (,)
 	 * Is nice to look up list-relations to records or files in TYPO3 database tables.
 	 *
 	 * @param	string		Field name
@@ -636,13 +637,12 @@ class t3lib_DB {
 	 * @param	string		Table in which we are searching (for DBAL detection of quoteStr() method)
 	 * @return	string		WHERE clause for a query
 	 */
-	function listQuery($field, $value, $table) {
+	public function listQuery($field, $value, $table) {
+		if (strpos(',', $value) !== FALSE) {
+			throw new InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !');
+		}
 		$pattern = $this->quoteStr($value, $table);
-		$patternForLike = $this->escapeStrForLike($pattern, $table);
-		$where = '(' . $field . ' LIKE \'%,' . $patternForLike . ',%\' OR  ' .
-			$field . ' LIKE \'' . $patternForLike . ',%\' OR ' .
-			$field . ' LIKE \'%,' . $patternForLike . '\' OR ' .
-			$field . '=\'' . $pattern . '\')';
+		$where = 'FIND_IN_SET(\'' . $pattern . '\',' . $field . ')';
 		return $where;
 	}
 

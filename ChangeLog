@@ -1,5 +1,6 @@
 2010-07-16  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #14818: t3lib_db->listQuery() performance (thanks to Caspar Stuebs)
 	* Fixed bug #14985: FIND_IN_SET should be used isntead of complicated LIKE where clause
 
 2010-07-16  Christian Kuhn  <lolli@schwarzbu.ch>
