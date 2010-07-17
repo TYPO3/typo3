@@ -1286,7 +1286,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Quotes the field (and table) names within a where clause with the quote character suitable for the DB being used
 	 *
-	 * @param	string		A where clause that can e parsed by parseWhereClause
+	 * @param	string		A where clause that can be parsed by parseWhereClause
 	 * @return	string		Usable where clause with quoted field/table names
 	 */
 	public function quoteWhereClause($where_clause) {
@@ -1380,10 +1380,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Quotes field names in a SQL GROUP BY clause acccording to DB rules
 	 *
-	 * @param	[type]		$$groupBy: ...
-	 * @return	[type]		...
+	 * @param	array		$groupBy The parsed GROUP BY clause to quote
+	 * @return	array
+	 * @see quoteGroupBy()
 	 */
 	protected function quoteGroupBy($groupBy) {
 		if ($groupBy === '') return '';
@@ -1400,10 +1401,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Quotes the field (and table) names within an order by clause with the quote
+	 * character suitable for the DB being used
 	 *
-	 * @param	[type]		$$orderBy: ...
-	 * @return	[type]		...
+	 * @param	string		An order by clause that can by parsed by parseFieldList
+	 * @return	string		Usable order by clause with quoted field/table names
 	 */
 	protected function quoteOrderBy($orderBy) {
 		if ($orderBy === '') return '';
