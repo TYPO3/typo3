@@ -1,3 +1,7 @@
+2010-07-18  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #15000: remove IM 4.2.9 recommendation in install tool (Thanks to Steffen Gebert)
+
 2010-07-16  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #14982: Make alt_doc.php unit testable (Thanks to Ingo Schmitt)
