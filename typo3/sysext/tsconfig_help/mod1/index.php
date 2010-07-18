@@ -28,7 +28,7 @@ unset($MCONF);
 require_once('conf.php');
 require_once($BACK_PATH.'init.php');
 require_once($BACK_PATH.'template.php');
-require_once($BACK_PATH.'mod/tools/em/class.em_unzip.php');
+require_once($BACK_PATH . 'sysext/em/mod1/class.em_unzip.php');
 
 $LANG->includeLLFile('EXT:tsconfig_help/mod1/locallang.xml');
 $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
@@ -302,6 +302,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	 */
 	function unzip($file, $path)	{
 			// we use the unzip class of the Extension Manager here
+			// TODO: move unzip class to core
 		$unzip = t3lib_div::makeInstance('em_unzip', $file);
 		$ret = $unzip->extract(array('add_path'=>$path));
 		return (is_array($ret));

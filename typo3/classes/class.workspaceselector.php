@@ -70,7 +70,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 	public function checkAccess() {
 		if (t3lib_extMgm::isLoaded('version')) {
 			$MCONF = array();
-			include('mod/user/ws/conf.php');
+			include(t3lib_extMgm::extPath('version') . 'ws/conf.php');
 
 			return ($GLOBALS['BE_USER']->modAccess(array('name' => 'user', 'access' => 'user,group'), false) && $GLOBALS['BE_USER']->modAccess($MCONF, false));
 		}
@@ -227,7 +227,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 
 			// go to workspace module link
 		$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
-			'<a href="mod/user/ws/index.php" target="content" id="goToWsModule">' .
+			'<a href="' . t3lib_extMgm::extRelPath('version') . 'ws/index.php" target="content" id="goToWsModule">' .
 			' '. $GLOBALS['LANG']->getLL('shortcut_workspace', true) . '</a></li>';
 
 		$workspaceMenu[] = '</ul>';

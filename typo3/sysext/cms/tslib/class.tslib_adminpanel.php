@@ -817,7 +817,7 @@ $query . '
 			}
 		}
 		if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
-			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'db_list.php?id=' . $id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
+			$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php?id=' . $id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
 					'<img src="' . TYPO3_mainDir . 'gfx/list.gif" width="11" height="11" hspace="2" border="0" align="top" title="' . $this->extGetLL('edit_db_list') . '" alt="" /></a>';
 		}
 

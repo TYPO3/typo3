@@ -1,5 +1,12 @@
 2010-07-18  Steffen Kamper  <info@sk-typo3.de>
 
+	* Fixed bug #15155: Move file list from mod to sysext
+	* Fixed bug #15154: Move Extension manager from mod to sysext
+	* Fixed bug #15153: Move mod/user/ws to sysext version
+	* Fixed bug #15152: Move Web>List from mod to sysext
+	* Fixed bug #15151: Move Web>Access from mod to sysext
+	* Fixed bug #15150: Move Web>Func from mod to sysext
+	* Fixed bug #15149: Move Web>Info from mod to sysext
 	* Fixed bug #15169: Superfluous comma in CSS
 
 2010-07-18  Susanne Moog  <typo3@susanne-moog.de>

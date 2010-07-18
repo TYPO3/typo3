@@ -43,7 +43,7 @@ class tx_version_tasks_AutoPublish extends tx_scheduler_Task {
 	 */
 	public function execute() {
 			// Load the workspace library class and instatiate it
-		require_once(PATH_typo3 . 'mod/user/ws/class.wslib.php');
+		require_once(t3lib_extMgm::extPath('version') . 'ws/class.wslib.php');
 		$autopubObj = t3lib_div::makeInstance('wslib');
 			// Publish the workspaces that need to be
 		$autopubObj->autoPublishWorkspaces();

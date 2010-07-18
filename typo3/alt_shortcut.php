@@ -461,7 +461,9 @@ class SC_alt_shortcut {
 			// Load search for something.
 		if ($this->searchFor)	{
 			$firstMP = intval($GLOBALS['WEBMOUNTS'][0]);
-			$this->content.= $this->doc->wrapScriptTags('jump(unescape("'.rawurlencode('db_list.php?id='.$firstMP.'&search_field='.rawurlencode($this->searchFor).'&search_levels=4').'"),"web_list","web");');
+			$this->content .= $this->doc->wrapScriptTags('jump(unescape("' .
+				rawurlencode(t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php?id=' . $firstMP . '&search_field=' . rawurlencode($this->searchFor) . '&search_levels=4') .
+			'"), "web_list", "web");');
 		}
 	}
 

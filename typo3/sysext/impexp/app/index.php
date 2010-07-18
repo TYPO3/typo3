@@ -391,13 +391,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				  '</a>';
 
-					// Record list
-					if ($GLOBALS['BE_USER']->check('modules', 'web_list')) {
-						$href = $this->doc->backPath . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-						$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
-					  '</a>';
-					}
+						// Record list
+						// If access to Web>List for user, then link to that module.
+					$buttons['record_list'] = t3lib_extMgm::createListViewLink(
+						$this->pageinfo['uid'],
+						'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
+						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
+					);
 				}
 			}
 		}
@@ -1290,7 +1290,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						unset($passParams['import_file']);
 
 						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?M=xMOD_tximpexp&id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp',$passParams);
-						$emURL = $this->doc->backPath.'mod/tools/em/index.php?CMD[requestInstallExtensions]='.implode(',',$extKeysToInstall).'&returnUrl='.rawurlencode($thisScriptUrl);
+						$emURL = $this->doc->backPath . t3lib_extMgm::extRelPath('em') . 'mod1/index.php?CMD[requestInstallExtensions]=' .
+							implode(',', $extKeysToInstall) . '&returnUrl=' . rawurlencode($thisScriptUrl);
 						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'.implode('", "',$extKeysToInstall).'". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
 					}
 

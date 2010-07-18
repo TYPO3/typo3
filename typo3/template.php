@@ -372,12 +372,12 @@ class template {
 		global $BE_USER;
 		$str = '';
 			// If access to Web>List for user, then link to that module.
-		if ($BE_USER->check('modules','web_list'))	{
-			$href=$backPath.'db_list.php?id='.$id.'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-			$str.= '<a href="'.htmlspecialchars($href).'">'.
-					'<img'.t3lib_iconWorks::skinImg($backPath,'gfx/list.gif','width="11" height="11"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList',1).'"'.($addParams?' '.trim($addParams):'').' alt="" />'.
-					'</a>';
-		}
+		$str .= t3lib_extMgm::createListViewLink(
+			$id,
+			'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
+		);
+
 			// Make link to view page
 		$str.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($id,$backPath,t3lib_BEfunc::BEgetRootLine($id))).'">'.
 				'<img'.t3lib_iconWorks::skinImg($backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'"'.($addParams?' '.trim($addParams):"").' hspace="3" alt="" />'.

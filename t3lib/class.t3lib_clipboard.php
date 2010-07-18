@@ -570,13 +570,21 @@ class t3lib_clipboard {
 			if ($this->fileMode)	{
 				$str=$GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
-				$str='<a href="'.htmlspecialchars($this->backPath.'db_list.php?id='.$rec['pid']).'">'.$str.'</a>';
+				if (t3lib_extMgm::isLoaded('list')) {
+					$str = '<a href="' . htmlspecialchars(
+						$this->backPath . t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php?id=' . $rec['pid']
+					) . '">' . $str . '</a>';
+				}
 			}
 		} elseif (file_exists($rec))	{
 			if (!$this->fileMode)	{
 				$str=$GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
-				$str='<a href="'.htmlspecialchars($this->backPath.'file_list.php?id='.dirname($rec)).'">'.$str.'</a>';
+				if (t3lib_extMgm::isLoaded('filelist')) {
+					$str = '<a href="' . htmlspecialchars(
+						$this->backPath . t3lib_extMgm::extRelPath('filelist') . 'mod1/file_list.php?id=' . dirname($rec)
+					) . '">' . $str . '</a>';
+				}
 			}
 		}
 		return $str;

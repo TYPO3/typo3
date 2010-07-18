@@ -2615,7 +2615,11 @@ final class t3lib_BEfunc {
 	 */
 	public static function viewOnClick($id, $backPath = '', $rootLine = '', $anchor = '', $altUrl = '', $addGetVars = '', $switchFocus = TRUE) {
 
-		$viewScriptPreviewEnabled  = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
+		$viewScriptPreviewEnabled  = t3lib_extMgm::isLoaded('version') ?
+			'/' . TYPO3_mainDir . t3lib_extMgm::extRelPath('version') . 'ws/wsol_preview.php?id='
+			:
+			'/index.php?id='
+		;
 		$viewScriptPreviewDisabled = '/index.php?id=';
 		if ($altUrl) {
 			$viewScriptPreviewEnabled = $viewScriptPreviewDisabled = $altUrl;

@@ -119,7 +119,13 @@ class SC_wizard_list {
 		if (!strcmp($this->pid,'') || strcmp($this->id,''))	{	// If pid is blank OR if id is set, then return...
 			$redirectUrl = $this->P['returnUrl'];
 		} else {	// Otherwise, show the list:
-			$redirectUrl = 'db_list.php?id=' . $this->pid . '&table=' . $this->P['params']['table'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+			$redirectUrl = t3lib_extMgm::createListViewLink(
+				$this->pid,
+				'&table=' . $this->P['params']['table'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
+				'',
+				'',
+				TRUE
+			);
 		}
 		t3lib_utility_Http::redirect($redirectUrl);
 	}
