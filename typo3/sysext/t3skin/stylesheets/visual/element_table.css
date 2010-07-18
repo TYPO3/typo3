@@ -10,7 +10,7 @@ table.t3-table {
 }
 
 table.t3-table .t3-row-odd td,
-table.t3-table .t3-row-odd th, {
+table.t3-table .t3-row-odd th {
 	background-color: #f7f7f7;
 }
 

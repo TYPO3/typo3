@@ -1,3 +1,7 @@
+2010-07-18  Steffen Kamper  <info@sk-typo3.de>
+
+	* Fixed bug #15169: Superfluous comma in CSS
+
 2010-07-18  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15000: remove IM 4.2.9 recommendation in install tool (Thanks to Steffen Gebert)
