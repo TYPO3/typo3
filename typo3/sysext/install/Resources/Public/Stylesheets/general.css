@@ -34,6 +34,11 @@ h3 {
 	margin: 0.7em 0 1.5em
 }
 
+h4 {
+	font-size: 110%;
+	margin: 0;
+}
+
 .clearfix:after { 
 	content: "."; 
 	display: block; 

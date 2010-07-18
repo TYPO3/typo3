@@ -1,6 +1,7 @@
 2010-07-18  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15000: remove IM 4.2.9 recommendation in install tool (Thanks to Steffen Gebert)
+	* Fixed bug #14998: Upgrade Wizards: Headlines have too much space below (Thanks to Steffen Gebert)
 
 2010-07-16  Christian Kuhn  <lolli@schwarzbu.ch>
 
