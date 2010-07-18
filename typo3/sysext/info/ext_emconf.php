@@ -1,9 +1,9 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext "web_info".
+# Extension Manager/Repository config file for ext "info".
 #
-# Auto generated 22-06-2010 13:06
+# Auto generated 18-07-2010 18:35
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:10:{s:12:"ext_icon.gif";s:4:"9b98";s:14:"ext_tables.php";s:4:"a104";s:14:"view/clear.gif";s:4:"cc11";s:13:"view/conf.php";s:4:"33e4";s:15:"view/dummy.html";s:4:"e302";s:17:"view/frameset.php";s:4:"a100";s:14:"view/index.php";s:4:"d07f";s:15:"view/layout.gif";s:4:"9730";s:22:"view/locallang_mod.xml";s:4:"ebf1";s:13:"view/view.gif";s:4:"e65c";}',
+	'_md5_values_when_last_written' => 'a:7:{s:12:"ext_icon.gif";s:4:"0384";s:14:"ext_tables.php";s:4:"aa85";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"a6eb";s:14:"mod1/index.php";s:4:"ca61";s:13:"mod1/info.gif";s:4:"0384";s:12:"mod1/log.gif";s:4:"a61e";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',

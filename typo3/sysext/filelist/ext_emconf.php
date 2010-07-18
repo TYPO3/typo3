@@ -1,9 +1,9 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext "func".
+# Extension Manager/Repository config file for ext "filelist".
 #
-# Auto generated 16-07-2010 13:33
+# Auto generated 18-07-2010 18:33
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:6:{s:12:"ext_icon.gif";s:4:"2d41";s:14:"ext_tables.php";s:4:"6f55";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"ff90";s:13:"mod1/func.gif";s:4:"2d41";s:14:"mod1/index.php";s:4:"69d7";}',
+	'_md5_values_when_last_written' => 'a:6:{s:12:"ext_icon.gif";s:4:"adc5";s:14:"ext_tables.php";s:4:"ff29";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"0c90";s:18:"mod1/file_list.php";s:4:"1d7d";s:13:"mod1/list.gif";s:4:"adc5";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',
