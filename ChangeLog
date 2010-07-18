@@ -1,3 +1,7 @@
+2010-07-18  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #15000: remove IM 4.2.9 recommendation in install tool (thanks to Steffen Gebert)
+
 2010-07-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14858: imageLinkWrap.JSwindow triggers XSS warning or Fails (thanks to Jigal van Hemert)
