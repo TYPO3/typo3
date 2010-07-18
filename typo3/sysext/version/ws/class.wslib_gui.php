@@ -69,7 +69,7 @@
  *
  */
 
-require_once(PATH_typo3 . 'mod/user/ws/class.wslib.php');
+require_once('class.wslib.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 

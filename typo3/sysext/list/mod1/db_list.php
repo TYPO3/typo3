@@ -58,9 +58,9 @@
 
 
 unset($MCONF);
-require ('mod/web/list/conf.php');
-require ('init.php');
-require ('template.php');
+require ('conf.php');
+require ($BACK_PATH.'init.php');
+require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
 require_once ($BACK_PATH.'class.db_list.inc');
 require_once ($BACK_PATH.'class.db_list_extra.inc');
@@ -209,6 +209,7 @@ class SC_db_list {
 			// Initialize the dblist object:
 		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $BACK_PATH;
+		$dblist->script = t3lib_extMgm::extRelPath('list') . 'mod1/db_list.php';
 		$dblist->calcPerms = $BE_USER->calcPerms($this->pageinfo);
 		$dblist->thumbs = $BE_USER->uc['thumbnailsByDefault'];
 		$dblist->returnUrl=$this->returnUrl;
@@ -292,7 +293,7 @@ class SC_db_list {
 
 				// Write the bottom of the page:
 			$dblist->writeBottom();
-
+			$listUrl = substr($dblist->listURL(), strlen($GLOBALS['BACK_PATH']));
 				// Add JavaScript functions to the page:
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 				function jumpToUrl(URL)	{	//
@@ -317,7 +318,7 @@ class SC_db_list {
 						top.content.nav_frame.refresh_nav();
 					}
 				}
-				'.$this->doc->redirectUrls($dblist->listURL()).'
+				' . $this->doc->redirectUrls($listUrl) . '
 				'.$dblist->CBfunctions().'
 				function editRecords(table,idList,addParams,CBflag)	{	//
 					window.location.href="'.$BACK_PATH.'alt_doc.php?returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')).
@@ -418,6 +419,7 @@ class SC_db_list {
 	function printContent()	{
 		echo $this->content;
 	}
+
 }
 
 

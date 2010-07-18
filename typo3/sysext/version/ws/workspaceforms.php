@@ -76,7 +76,6 @@ $BE_USER->modAccess($MCONF,1);
 
 // Include libraries of various kinds used inside:
 $LANG->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
-//require_once(PATH_typo3.'mod/user/ws/class.wslib.php');
 
 /**
  * Module: Workspace forms for editing/creating workspaces.

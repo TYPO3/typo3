@@ -426,7 +426,8 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/em_index.html');
-
+			// the id is needed for getting same styles TODO: general table styles
+		$this->doc->bodyTagId = 'typo3-mod-tools-em-index-php';
 			// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;

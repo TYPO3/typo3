@@ -203,13 +203,12 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 			}
 
 				// If access to Web>List for user, then link to that module.
-			if ($BE_USER->check('modules','web_list'))	{
-				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-system-list-open') . '</a>';
-			}
+			$buttons['record_list'] = t3lib_extMgm::createListViewLink(
+				$this->pageinfo['uid'],
+				'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
+			);
 		}
-
 		return $buttons;
 	}
 }

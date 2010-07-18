@@ -7,7 +7,8 @@ if (TYPO3_MODE=='BE')	{
 		'path' => t3lib_extMgm::extPath($_EXTKEY).'class.tx_version_cm1.php'
 	);
 
-	t3lib_extMgm::addModule('web','txversionM1','',t3lib_extMgm::extPath($_EXTKEY).'cm1/');
+	t3lib_extMgm::addModule('web', 'txversionM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'cm1/');
+	t3lib_extMgm::addModule('user', 'ws', '', t3lib_extMgm::extPath($_EXTKEY) . 'ws/');
 }
 
 

@@ -1,5 +1,5 @@
 <?php
-define('TYPO3_MOD_PATH', 'mod/web/func/');
+define('TYPO3_MOD_PATH', 'sysext/func/mod1/');
 $BACK_PATH='../../../';
 
 $MLANG['default']['tabs_images']['tab'] = 'func.gif';

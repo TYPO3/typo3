@@ -84,7 +84,7 @@ require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:version/locallang.xml');
 	// DEFAULT initialization of a module [END]
 
-require_once(PATH_typo3.'mod/user/ws/class.wslib.php');
+require_once('../ws/class.wslib.php');
 
 
 
@@ -356,12 +356,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 
 				// If access to Web>List for user, then link to that module.
-			if ($BE_USER->check('modules','web_list'))	{
-				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE) . '">' .
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
-						'</a>';
-			}
+			$buttons['record_list'] = t3lib_extMgm::createListViewLink(
+				$this->pageinfo['uid'],
+				'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')),
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', TRUE)
+			);
 		}
 		return $buttons;
 	}
@@ -762,7 +761,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * Rendering the overview of versions in the current workspace
 	 *
 	 * @return	string		HTML (table)
-	 * @see typo3/mod/user/ws/index.php for sister function!
+	 * @see ws/index.php for sister function!
 	 */
 	function displayWorkspaceOverview()	{
 

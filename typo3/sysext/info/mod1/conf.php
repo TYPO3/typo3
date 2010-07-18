@@ -1,5 +1,5 @@
 <?php
-define('TYPO3_MOD_PATH', 'mod/web/info/');
+define('TYPO3_MOD_PATH', 'sysext/info/mod1/');
 $BACK_PATH='../../../';
 
 $MLANG['default']['tabs_images']['tab'] = 'info.gif';

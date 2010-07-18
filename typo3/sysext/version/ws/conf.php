@@ -1,5 +1,5 @@
 <?php
-define('TYPO3_MOD_PATH', 'mod/user/ws/');
+define('TYPO3_MOD_PATH', 'sysext/version/ws/');
 $BACK_PATH='../../../';
 
 $MLANG['default']['tabs_images']['tab'] = 'sys_workspace.gif';
