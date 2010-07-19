@@ -452,6 +452,93 @@ class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelperTest extends Tx_Fluid
 		
 		$formFieldViewHelper->_call('addAdditionalIdentityPropertiesIfNeeded');
 	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderHiddenFieldForEmptyValueRendersHiddenFieldIfItHasNotBeenRenderedBefore() {
+		$formViewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper', array('getName'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($formViewHelper);
+
+		$formViewHelper->expects($this->any())->method('getName')->will($this->returnValue('SomeFieldName'));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(array()));
+
+		$expected = '<input type="hidden" name="SomeFieldName" value="" />';
+		$actual = $formViewHelper->_call('renderHiddenFieldForEmptyValue');
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderHiddenFieldForEmptyValueAddsHiddenFieldNameToVariableContainerIfItHasBeenRendered() {
+		$formViewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper', array('getName'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($formViewHelper);
+
+		$formViewHelper->expects($this->any())->method('getName')->will($this->returnValue('NewFieldName'));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(array('OldFieldName')));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('addOrUpdate')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields', array('OldFieldName', 'NewFieldName'));
+
+		$formViewHelper->_call('renderHiddenFieldForEmptyValue');
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderHiddenFieldForEmptyValueDoesNotRenderHiddenFieldIfItHasBeenRenderedBefore() {
+		$formViewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper', array('getName'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($formViewHelper);
+
+		$formViewHelper->expects($this->any())->method('getName')->will($this->returnValue('SomeFieldName'));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(array('SomeFieldName')));
+		$this->viewHelperVariableContainer->expects($this->never())->method('addOrUpdate');
+
+		$expected = '';
+		$actual = $formViewHelper->_call('renderHiddenFieldForEmptyValue');
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderHiddenFieldForEmptyValueRemovesEmptySquareBracketsFromHiddenFieldName() {
+		$formViewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper', array('getName'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($formViewHelper);
+
+		$formViewHelper->expects($this->any())->method('getName')->will($this->returnValue('SomeFieldName[WithBrackets][]'));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(array()));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('addOrUpdate')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields', array('SomeFieldName[WithBrackets]'));
+
+		$expected = '<input type="hidden" name="SomeFieldName[WithBrackets]" value="" />';
+		$actual = $formViewHelper->_call('renderHiddenFieldForEmptyValue');
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderHiddenFieldForEmptyValueDoesNotRemoveNonEmptySquareBracketsFromHiddenFieldName() {
+		$formViewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper', array('getName'), array(), '', FALSE);
+		$this->injectDependenciesIntoViewHelper($formViewHelper);
+
+		$formViewHelper->expects($this->any())->method('getName')->will($this->returnValue('SomeFieldName[WithBrackets][foo]'));
+		$this->viewHelperVariableContainer->expects($this->at(0))->method('exists')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(TRUE));
+		$this->viewHelperVariableContainer->expects($this->at(1))->method('get')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')->will($this->returnValue(array()));
+		$this->viewHelperVariableContainer->expects($this->at(2))->method('addOrUpdate')->with('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields', array('SomeFieldName[WithBrackets][foo]'));
+
+		$expected = '<input type="hidden" name="SomeFieldName[WithBrackets][foo]" value="" />';
+		$actual = $formViewHelper->_call('renderHiddenFieldForEmptyValue');
+		$this->assertEquals($expected, $actual);
+	}
 }
 
 ?>

@@ -121,10 +121,13 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 
 		$this->setErrorClassAttribute();
 
+		$content = '';
+
 		// register field name for token generation.
 		// in case it is a multi-select, we need to register the field name
 		// as often as there are elements in the box
 		if ($this->arguments->hasArgument('multiple') && $this->arguments['multiple'] !== '') {
+			$content .= $this->renderHiddenFieldForEmptyValue();
 			for ($i=0; $i<count($options); $i++) {
 				$this->registerFieldNameForFormTokenGeneration($name);
 			}
@@ -132,7 +135,8 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 			$this->registerFieldNameForFormTokenGeneration($name);
 		}
 
-		return $this->tag->render();
+		$content .= $this->tag->render();
+		return $content;
 	}
 
 	/**
