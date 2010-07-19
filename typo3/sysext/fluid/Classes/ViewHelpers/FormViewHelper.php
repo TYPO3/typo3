@@ -138,10 +138,12 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 
 		$formContent = $this->renderChildren();
 
-		$content = $this->renderHiddenIdentityField($this->arguments['object'], $this->arguments['name']);
+		$content = chr(10) . '<div style="display: none">';
+		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->arguments['name']);
 		$content .= $this->renderAdditionalIdentityFields();
 		$content .= $this->renderHiddenReferrerFields();
 		$content .= $this->renderRequestHashField(); // Render hmac after everything else has been rendered
+		$content .= chr(10) . '</div>' . chr(10);
 		$content .= $formContent;
 
 		$this->tag->setContent($content);
@@ -173,9 +175,9 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 				->setUseCacheHash(!$this->arguments['noCacheHash'])
 				->setSection($this->arguments['section'])
 				->setCreateAbsoluteUri($this->arguments['absolute'])
-				->setArguments($this->arguments['additionalParams'])
+				->setArguments((array)$this->arguments['additionalParams'])
 				->setAddQueryString($this->arguments['addQueryString'])
-				->setArgumentsToBeExcludedFromQueryString($this->arguments['argumentsToBeExcludedFromQueryString'])
+				->setArgumentsToBeExcludedFromQueryString((array)$this->arguments['argumentsToBeExcludedFromQueryString'])
 				->setFormat($this->arguments['format'])
 				->uriFor($this->arguments['action'], $this->arguments['arguments'], $this->arguments['controller'], $this->arguments['extensionName'], $this->arguments['pluginName']);
 			$this->formActionUriArguments = $uriBuilder->getArguments();
