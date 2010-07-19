@@ -1,3 +1,7 @@
+2010-07-19  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15130: Backend search does not find non-latin1 characters
+
 2010-07-14  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #12322: cHash is generated when no parameters are given

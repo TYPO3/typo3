@@ -632,7 +632,7 @@ class SC_alt_shortcut {
 			if($this->searchFor) {
 				$data['type']            = 'search';
 				$data['firstMountPoint'] = intval($GLOBALS['WEBMOUNTS'][0]);
-				$data['searchFor']       = rawurlencode($this->searchFor);
+				$data['searchFor']       = $this->searchFor;
 			}
 
 			$content = json_encode($data);
