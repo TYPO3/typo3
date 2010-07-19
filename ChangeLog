@@ -1,3 +1,7 @@
+2010-07-19  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15130: Backend search does not find non-latin1 characters
+
 2010-07-18  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #15155: Move file list from mod to sysext
@@ -17,7 +21,7 @@
 2010-07-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14858: imageLinkWrap.JSwindow triggers XSS warning or Fails (thanks to Jigal van Hemert)
-	* Added feature #13797: new TS config option to disable the "Show secondary options" checkbox (thanks to J�rg Klein)
+	* Added feature #13797: new TS config option to disable the "Show secondary options" checkbox (thanks to Jörg Klein)
 	* Added feature #2049: Add the possibility to use "Ellipse" in Gifbuilder (thanks to Kjeld Schumacher)
 	
 2010-07-16  Xavier Perseguers  <typo3@perseguers.ch>
