@@ -48,7 +48,7 @@ class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper extends Tx_Fluid_Core_ViewHelp
 		$uri = t3lib_div::getFileAbsFileName($uri);
 		$uri = substr($uri, strlen(PATH_site));
 
-		if (TYPO3_MODE === 'BE' && $absolute === FALSE) {
+		if (TYPO3_MODE === 'BE' && $absolute === FALSE && $uri !== FALSE) {
 			$uri = '../' . $uri;
 		}
 

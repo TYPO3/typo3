@@ -60,7 +60,7 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	protected $contentObject;
 
 	/**
-	 * @var	t3lib_fe
+	 * @var	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
 	 */
 	protected $tsfeBackup;
 
@@ -90,18 +90,19 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	public function render($maxCharacters, $append = '...', $respectWordBoundaries = TRUE, $respectHtml = TRUE) {
 		$stringToTruncate = $this->renderChildren();
 		if (TYPO3_MODE === 'BE') {
-			$this->setUpBackendEnvironment();
+			$this->simulateFrontendEnvironment();
 		}
 
 		if ($respectHtml) {
-			return $this->contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			$content = $this->contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		} else {
-			return $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
+			$content = $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		}
 
 		if (TYPO3_MODE === 'BE') {
-			$this->resetBackendEnvironment();
+			$this->resetFrontendEnvironment();
 		}
+		return $content;
 	}
 
 	/**
@@ -111,8 +112,9 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function setUpBackendEnvironment() {
+	protected function simulateFrontendEnvironment() {
 		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+		$GLOBALS['TSFE'] = new stdClass();
 
 			// preparing csConvObj
 		if (!is_object($GLOBALS['TSFE']->csConvObj)) {
@@ -134,16 +136,14 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	}
 
 	/**
-	 * Resets $GLOBALS['TSFE'] if it was previously changed by setUpBackendEnvironment()
+	 * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
 	 *
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @see setUpBackendEnvironment()
+	 * @see simulateFrontendEnvironment()
 	 */
-	protected function resetBackendEnvironment() {
-		if (isset($this->tsfeBackup)) {
-			$GLOBALS['TSFE'] = $this->tsfeBackup;
-		}
+	protected function resetFrontendEnvironment() {
+		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
 }
 
