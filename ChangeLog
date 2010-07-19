@@ -1,6 +1,7 @@
 2010-07-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #15130: Backend search does not find non-latin1 characters
+	* Fixed bug #15128: RTE creates <link> tag incorrectly if there is a non-empty title
 
 2010-07-14  Dmitry Dulepov  <dmitry@typo3.org>
 
