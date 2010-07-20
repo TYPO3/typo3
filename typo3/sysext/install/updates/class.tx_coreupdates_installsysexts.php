@@ -196,8 +196,6 @@ class tx_coreupdates_installsysexts {
 				$this->newSystemExtensions,
 				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
 			);
-			t3lib_div::debug(array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext']));
-			t3lib_div::debug($extArray);
 			$extList = $this->addExtToList($extArray);
 			if ($extList) {
 				$this->writeNewExtensionList($extList);
