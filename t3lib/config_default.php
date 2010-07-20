@@ -180,10 +180,10 @@ $TYPO3_CONF_VARS = array(
 		'em_wsdlURL' => 'http://typo3.org/wsdl/tx_ter_wsdl.php',				// The SOAP URL for uploading extensions to the TER2. Usually doesn't need to be changed.
 		'em_mirrorListURL' => 'http://repositories.typo3.org/mirrors.xml.gz',				// Allows to preset the URL for fetching the extension repository mirror list from. Used in the Extension Manager.
 
-		'requiredExt' => 'cms,lang,sv',			// String (exclude). List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
+		'requiredExt' => 'cms,lang,sv,em,list',			// String (exclude). List of extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
 		'excludeForPackaging' => '(CVS|\..*|.*~|.*\.bak)',		// String list: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!
 		'extCache' => 1,						// Integer. 0,1,2,3: 0: ext-scripts (ext_localconf.php and ext_tables.php) are NOT cached, but included every time. 1: scripts cached to typo3conf/temp_CACHED_[sitePathHash]* (saves some milliseconds even with PHP accelerators), 2: scripts cached and prefix includes a hash based on the 'extList' string, 3: scripts cached to typo3conf/temp_CACHED_* (no hash included at all...)
-		'extList' => 'em,list,filelist,version,tsconfig_help,context_help,extra_page_cm_options,impexp,belog,about,cshmanual,aboutmodules,setup,opendocs,install,t3editor,felogin,feedit,recycler',						// String (exclude) List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
+		'extList' => 'filelist,version,tsconfig_help,context_help,extra_page_cm_options,impexp,belog,about,cshmanual,aboutmodules,setup,opendocs,install,t3editor,felogin,feedit,recycler',						// String (exclude) List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
 		'extList_FE' => '',						// String (exclude). Same as extList, but only this extensions are loaded in FE
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()
