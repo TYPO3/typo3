@@ -36,7 +36,7 @@
  */
 class tx_coreupdates_installsysexts {
 	public $versionNumber;	// version number coming from t3lib_div::int_from_ver()
-	protected $newSystemExtensions = array('about', 'cshmanual', 'feedit', 'opendocs', 'simulatestatic');
+	protected $newSystemExtensions = array('info', 'perm', 'func', 'filelist', 'about', 'cshmanual', 'feedit', 'opendocs', 'simulatestatic');
 
 	/**
 	 * parent object
@@ -61,6 +61,26 @@ class tx_coreupdates_installsysexts {
 				is moved out of the TYPO3 base installation and now optional:
 			</p>
 			<ul>
+				<li>
+					<strong>Web&gt;Info [info]</strong>
+					<br />
+					Shows page related information, eg. hit statistics, change log, record counts.
+				</li>
+				<li>
+					<strong>Web&gt;Access [perm]</strong>
+					<br />
+					Sets page editing permissions.
+				</li>
+				<li>
+					<strong>Web&gt;Functions [func]</strong>
+					<br />
+					Advanced functions like wizards for page sorting and batch creating.
+				</li>
+				<li>
+					<strong>File&gt;Filelist [filelist]</strong>
+					<br />
+					 Listing of files in the directory.
+				</li>
 				<li>
 					<strong>Help&gt;About [about]</strong>
 					<br />
@@ -118,6 +138,22 @@ class tx_coreupdates_installsysexts {
 			<fieldset>
 				<ol>
 					<li class="labelAfter">
+						<input type="checkbox" id="info" name="' . $inputPrefix . '[sysext][info]" value="1" checked="checked" />
+						<label for="info">Web&gt;Info [info]</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" id="perm" name="' . $inputPrefix . '[sysext][perm]" value="1" checked="checked" />
+						<label for="perm">Web&gt;Access [perm]</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" id="func" name="' . $inputPrefix . '[sysext][func]" value="1" checked="checked" />
+						<label for="func">Web&gt;Functions [func]</label>
+					</li>
+					<li class="labelAfter">
+						<input type="checkbox" id="filelist" name="' . $inputPrefix . '[sysext][filelist]" value="1" checked="checked" />
+						<label for="filelist">File&gt;Filelist [filelist]</label>
+					</li>
+					<li class="labelAfter">
 						<input type="checkbox" id="about" name="' . $inputPrefix . '[sysext][about]" value="1" checked="checked" />
 						<label for="about">Help&gt;About [about]</label>
 					</li>
@@ -160,6 +196,8 @@ class tx_coreupdates_installsysexts {
 				$this->newSystemExtensions,
 				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
 			);
+			t3lib_div::debug(array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext']));
+			t3lib_div::debug($extArray);
 			$extList = $this->addExtToList($extArray);
 			if ($extList) {
 				$this->writeNewExtensionList($extList);
