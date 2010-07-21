@@ -1,3 +1,7 @@
+2010-07-21  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #15179: Tree depth retrieval inconsistently limited to 20 levels int3lib_pageSelect
+
 2010-07-21  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15067: Background Image in Element Browser is repeated, but should not be! (Thanks to Steffen Gebert)
@@ -62,7 +66,7 @@
 
 2010-07-11  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #14970: ts browser condition results in error if browser is unknown (Thanks to Caspar Stuebs) 
+	* Fixed bug #14970: ts browser condition results in error if browser is unknown (Thanks to Caspar Stuebs)
 
 2010-07-11  Susanne Moog  <typo3@susanne-moog.de>
 
@@ -140,7 +144,7 @@
 
 2010-06-29  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Fixed bug #14810: Follow-up to bug #13670: Export module does not keep pagetree configuration (exports only the page tree) (Thanks to Thomas Juhnke) 
+	* Fixed bug #14810: Follow-up to bug #13670: Export module does not keep pagetree configuration (exports only the page tree) (Thanks to Thomas Juhnke)
 
 2010-06-29  Stanislas Rolland  <typo3@sjbr.ca>
 
@@ -149,7 +153,7 @@
 2010-06-29  Steffen Kamper  <info@sk-typo3.de>
 
 	* Follow-up to #14553: topFrameH configuration option doesn't work anymore
-	
+
 2010-06-28  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #14830: htmlArea RTE: Entering line breaks with Safari not possible
@@ -254,7 +258,7 @@
 
 2010-06-20  Susanne Moog  <typo3@susanne-moog.de>
 
-	* Followup to #14636: Improvements to new Backend skin - Install tool login shadow fixed 
+	* Followup to #14636: Improvements to new Backend skin - Install tool login shadow fixed
 	* Fixed bug #14516: Strip background gradients - smaller image size and no wrong colors in browsers with color profile capability (Thanks to Helmut Hummel)
 	* Followup to #14465: Make use of the new Sprite API - help in backend access lists (Thanks to Steffen Ritter)
 	* Followup to #14465: Make use of the new Sprite API - delete icon in QuickEdit (Thanks to Steffen Gebert)
