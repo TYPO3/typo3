@@ -1,3 +1,7 @@
+2010-07-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15192: Add hook to postprocess filelist operations
+
 2010-07-21  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #15179: Tree depth retrieval inconsistently limited to 20 levels int3lib_pageSelect

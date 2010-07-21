@@ -114,6 +114,7 @@ $t3libClasses = array(
 	't3lib_error_errorhandlerinterface' => PATH_t3lib . 'error/interface.t3lib_error_errorhandlerinterface.php',
 	't3lib_error_exceptionhandlerinterface' => PATH_t3lib . 'error/interface.t3lib_error_exceptionhandlerinterface.php',
 	't3lib_browselinkshook' => PATH_t3lib . 'interfaces/interface.t3lib_browselinkshook.php',
+	't3lib_extfilefunctions_processdatahook' => PATH_t3lib . 'interfaces/interface.t3lib_extfilefunctions_processdatahook.php',
 	't3lib_localrecordlistgettablehook' => PATH_t3lib . 'interfaces/interface.t3lib_localrecordlistgettablehook.php',
 	't3lib_pageselect_getpagehook' => PATH_t3lib . 'interfaces/interface.t3lib_pageselect_getpagehook.php',
 	't3lib_pageselect_getrecordoverlayhook' => PATH_t3lib . 'interfaces/interface.t3lib_pageselect_getrecordoverlayhook.php',

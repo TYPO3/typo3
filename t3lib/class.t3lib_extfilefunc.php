@@ -276,6 +276,19 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions	{
 								$result[$action][] = $this->func_unzip($cmdArr);
 							break;
 						}
+
+							// Hook for post-processing the action
+						if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'])) {
+							foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_extfilefunc.php']['processData'] as $classRef) {
+								$hookObject = t3lib_div::getUserObj($classRef);
+				
+								if (!($hookObject instanceof t3lib_extFileFunctions_processDataHook)) {
+									throw new UnexpectedValueException('$hookObject must implement interface t3lib_extFileFunctions_processDataHook', 1279719168);
+								}
+				
+								$hookObject->processData_postProcessAction($action, $cmdArr, $result[$action], $this);
+							}
+						}
 					}
 				}
 			}
