@@ -143,7 +143,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				.tsob-search-submit {margin-left: 3px; margin-right: 3px;}
 				.tst-analyzer-options { margin:5px 0; }
 				.tst-analyzer-options label {padding-left:5px; vertical-align:text-top; }
-				.bgColor0 {background-color:#fff;}
+				.bgColor0 {background-color:#fff; color: #000; }
 			';
 
 
