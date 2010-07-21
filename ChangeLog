@@ -1,3 +1,7 @@
+2010-07-21  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #15179: Tree depth retrieval inconsistently limited to 20 levels int3lib_pageSelect
+
 2010-07-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #15130: Backend search does not find non-latin1 characters
@@ -93,7 +97,7 @@
 
 2010-06-14  Steffen Kamper  <info@sk-typo3.de>
 
-	* Added missing flags #11461: Serbian flag in sys_language selector 
+	* Added missing flags #11461: Serbian flag in sys_language selector
 	* Added missing flags #11807: Flags for belgium is missing
 	* Fixed bug #14354: Bug: fix percentage of changes in Workspace Manager -> "Show differences inline" (Thanks to Marco Huber)
 
@@ -146,7 +150,7 @@
 2010-06-04  Susanne Moog  <typo3@susannemoog.de>
 
 	* Fixed bug #13818: tcemain versionSwap might break pages_language_overlay relations (thanks to Tolleiv Nietsch)
-	
+
 2010-06-03  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14130: Switching pages with browsebox doesn't work (thanks to Mark Kuiphuis)
@@ -585,7 +589,7 @@
 
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 
+	* Fixed bug #13470: Session/Login not working in IE8 across subdomains
 
 2010-02-24  Steffen Kamper  <info@sk-typo3.de>
 

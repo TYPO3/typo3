@@ -609,7 +609,7 @@ class t3lib_pageSelect {
 		$loopCheck = 0;
 		$theRowArray = Array();
 
-		while ($uid!=0 && $loopCheck<20)	{	// Max 20 levels in the page tree.
+		while ($uid != 0 && $loopCheck < 99) {	// Max 99 levels in the page tree.
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selFields, 'pages', 'uid='.intval($uid).' AND pages.deleted=0 AND pages.doktype!=255');
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
