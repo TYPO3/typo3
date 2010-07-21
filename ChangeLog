@@ -1,3 +1,7 @@
+2010-07-21  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #15179: Tree depth retrieval inconsistently limited to 20 levels int3lib_pageSelect
+
 2010-06-21  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #8893: eval "timesec" sets seconds to zero (Thanks to Ralf Hettinger and Andy Grunwald)
@@ -24,9 +28,9 @@
 	* Fixed bug #12923: Javascript error in tmenu_layers.php & gmenu_layers.php (Thanks to Klaus Goessl)
 
 2010-05-22  Xavier Perseguers  <typo3@perseguers.ch>
- 
+
  	* Fixed bug #14175: belog not shown / error when actions: error is selected (thanks to Philipp Thiele)
- 
+
 2010-05-14  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #14337: "The install tool is locked" doesn't send no-cache headers (thanks to Steffen Gebert)
@@ -122,7 +126,7 @@
 2010-02-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #13258: Make TYPO3 v4.2 work again with PHP 5.1 (was broke since the case since 4.2.11)
-	* Fixed bug #13470: Session/Login not working in IE8 across subdomains 
+	* Fixed bug #13470: Session/Login not working in IE8 across subdomains
 
 2010-02-24  Steffen Kamper  <info@sk-typo3.de>
 
