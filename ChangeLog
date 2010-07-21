@@ -1,3 +1,7 @@
+2010-07-21  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15156: Text in template analyzer is "white on white" if syntax highlighting is disabled (Thanks to Steffen Gebert)
+
 2010-07-19  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #15130: Backend search does not find non-latin1 characters
