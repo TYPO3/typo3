@@ -57,7 +57,7 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 	 * Initialize arguments
 	 *
 	 * @return void
-	 * @author Sebastian Kurfürst <sbastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function initializeArguments() {
@@ -68,7 +68,7 @@ class Tx_Fluid_ViewHelpers_FlashMessagesViewHelper extends Tx_Fluid_Core_ViewHel
 	 * Render method.
 	 *
 	 * @return string rendered Flash Messages, if there are any.
-	 * @author Sebastian Kurfürst <sbastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
 	public function render() {
