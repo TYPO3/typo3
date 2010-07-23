@@ -150,6 +150,8 @@ class t3lib_clipboard {
 	function initializeClipboard()	{
 		global $BE_USER;
 
+		$this->backPath = $GLOBALS['BACK_PATH'];
+
 			// Get data
 		$clipData = $BE_USER->getModuleData('clipboard',$BE_USER->getTSConfigVal('options.saveClipboard')?'':'ses');
 

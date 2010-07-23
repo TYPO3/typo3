@@ -1,3 +1,7 @@
+2010-07-23  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15207: Clipboard doesn't initialize backPath
+
 2010-07-23  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15203: htmlArea RTE: Modify link option missing in context menu
