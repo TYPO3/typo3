@@ -54,7 +54,7 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '3.0',
+			version		: '3.1',
 			developer	: 'Mihai Bazon & Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'dynarch.com & Stanislas Rolland',
@@ -201,6 +201,7 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 			} else if (xtype === 'menuitem') {
 				var button = this.getButton(menuItem.getItemId());
 				if (button) {
+					menuItem.setText(button.tooltip.title);
 					menuItem.setVisible(!button.disabled);
 					lastIsButton = lastIsButton || !button.disabled;
 				} else {

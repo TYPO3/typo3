@@ -4460,7 +4460,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	openContainerWindow: function (buttonId, title, dimensions, url) {
 		this.dialog = new Ext.Window({
 			id: this.editor.editorId + buttonId,
-			title: this.localize(title),
+			title: this.localize(title) || title,
 			cls: 'htmlarea-window',
 			width: dimensions.width,
 			height: dimensions.height,

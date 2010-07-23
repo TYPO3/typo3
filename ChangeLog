@@ -1,3 +1,7 @@
+2010-07-23  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15203: htmlArea RTE: Modify link option missing in context menu
+
 2010-07-21  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #15179: Tree depth retrieval inconsistently limited to 20 levels int3lib_pageSelect
