@@ -683,6 +683,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 			$all = chop($all);
 			$tsparser = t3lib_div::makeInstance('t3lib_TSparser');
 			$tsparser->lineNumberOffset=$this->ext_lineNumberOffset+1;
+			$tsparser->parentObject = $this;
 			return $tsparser->doSyntaxHighlight($all,$lineNumbers?array($this->ext_lineNumberOffset+1):'',$syntaxHLBlockmode);
 		} else {
 			return $this->ext_formatTS($all,$lineNumbers,$comments,$crop);
