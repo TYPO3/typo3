@@ -68,7 +68,7 @@ HTMLArea.DefaultImage = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.0',
+			version		: '2.1',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -156,7 +156,7 @@ HTMLArea.DefaultImage = HTMLArea.Plugin.extend({
 			// Open dialogue window
 		this.openDialogue(
 			buttonId,
-			'Insert Image',
+			this.getButton(buttonId).tooltip.title,
 			this.getWindowDimensions(
 				{
 					width: 460,
@@ -180,7 +180,7 @@ HTMLArea.DefaultImage = HTMLArea.Plugin.extend({
 	 */
 	openDialogue: function (buttonId, title, dimensions, tabItems) {
 		this.dialog = new Ext.Window({
-			title: this.localize(title),
+			title: this.localize(title) || title,
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
@@ -503,6 +503,22 @@ HTMLArea.DefaultImage = HTMLArea.Plugin.extend({
 						break;
 				}
 			});
+		}
+	},
+	/*
+	 * This function gets called when the toolbar is updated
+	 */
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'InsertImage' && !button.disabled) {
+			var image = this.editor.getParentElement();
+			if (image && !/^img$/i.test(image.nodeName)) {
+				image = null;
+			}
+			if (image) {
+				button.setTooltip({ title: this.localize('Modify image') });
+			} else {
+				button.setTooltip({ title: this.localize('Insert image') });
+			}
 		}
 	}
 });

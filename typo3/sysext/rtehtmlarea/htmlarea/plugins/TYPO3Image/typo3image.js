@@ -43,7 +43,7 @@ HTMLArea.TYPO3Image = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.0',
+			version		: '2.1',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -89,7 +89,7 @@ HTMLArea.TYPO3Image = HTMLArea.Plugin.extend({
 		}
 		this.openContainerWindow(
 			buttonId,
-			buttonId + '-Tooltip',
+			this.getButton(buttonId).tooltip.title,
 			this.getWindowDimensions(
 				{
 					width:	610,
@@ -120,5 +120,21 @@ HTMLArea.TYPO3Image = HTMLArea.Plugin.extend({
 			this.editor.iframe.onDrop();
 		}
 		this.close();
+	},
+	/*
+	 * This function gets called when the toolbar is updated
+	 */
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'InsertImage' && !button.disabled) {
+			var image = this.editor.getParentElement();
+			if (image && !/^img$/i.test(image.nodeName)) {
+				image = null;
+			}
+			if (image) {
+				button.setTooltip({ title: this.localize('Modify image') });
+			} else {
+				button.setTooltip({ title: this.localize('Insert image') });
+			}
+		}
 	}
 });

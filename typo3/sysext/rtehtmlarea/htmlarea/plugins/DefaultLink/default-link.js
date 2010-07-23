@@ -47,7 +47,7 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.0',
+			version		: '2.1',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -149,7 +149,7 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 					// Open dialogue window
 				this.openDialogue(
 					buttonId,
-					'Insert/Modify Link',
+					this.getButton(buttonId).tooltip.title,
 					this.getWindowDimensions(
 						{
 							width: 470,
@@ -173,7 +173,7 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
 		this.dialog = new Ext.Window({
-			title: this.localize(title),
+			title: this.localize(title) || title,
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
@@ -383,6 +383,18 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
 		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'CreateLink') {
 			button.setDisabled(selectionEmpty && !button.isInContext(mode, selectionEmpty, ancestors));
+			if (!button.disabled) {
+				var node = this.editor.getParentElement();
+				var el = HTMLArea.getElementObject(node, 'a');
+				if (el != null && /^a$/i.test(el.nodeName)) {
+					node = el;
+				}
+				if (node != null && /^a$/i.test(node.nodeName)) {
+					button.setTooltip({ title: this.localize('Modify link') });
+				} else {
+					button.setTooltip({ title: this.localize('Insert link') });
+				}
+			}
 		}
 	}
 });

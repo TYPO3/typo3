@@ -36,6 +36,8 @@
 			<label index="Border thickness:">Border thickness:</label>
 			<label index="Leave empty for no border">Leave empty for no border</label>
 			<label index="Insert/Modify Link">Insert/Modify Link</label>
+			<label index="Insert link">Insert link</label>
+			<label index="Modify link">Modify link</label>
 			<label index="URL:">URL:</label>
 			<label index="link_href_tooltip">Enter the link URL here</label>
 			<label index="link_url_required">Please enter the URL where this link points to</label>
@@ -70,6 +72,8 @@
 			<label index="Cell padding:">Cell padding:</label>
 			<label index="Space between content and border in cell">Space between content and border in cell</label>
 			<label index="Insert Image">Insert/Modify Image</label>
+			<label index="Insert image">Insert image</label>
+			<label index="Modify image">Modify image</label>
 			<label index="Image URL:">Image URL:</label>
 			<label index="Enter the image URL here">Enter the image URL here</label>
 			<label index="Preview">Preview</label>
