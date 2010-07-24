@@ -638,6 +638,7 @@ class t3lib_DB {
 	 * @return	string		WHERE clause for a query
 	 */
 	public function listQuery($field, $value, $table) {
+		$value = (string)$value;
 		if (strpos(',', $value) !== FALSE) {
 			throw new InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !');
 		}

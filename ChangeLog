@@ -1,3 +1,7 @@
+2010-07-24  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15211: listQuery does not handle passed in int values correctly (follow-up to #14818) (Thanks to Bjoern Pedersen)
+
 2010-07-23  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15195: TSanalyzer: Add link to breakpoints also in syntaxhighlight mode
