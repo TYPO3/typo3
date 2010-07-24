@@ -14,49 +14,23 @@ table#typo3-versionSelector {
 	border: 1px solid #a2aab8;
 }
 
-.ver-element,
-ul.tree ul li.ver-element {
-	background-color: #d7dbe2;
-}
-
-.ver-page,
-ul.tree ul li.ver-page {
+.ver-element div.treeLinkItem,
+.ver-versions div.treeLinkItem,
+.ver-page div.treeLinkItem {
 	background-color: #ffec97;
 }
 
-.ver-branch,
-ul.tree ul li.ver-branch {
-	background-color: #ffcccc;
-}
-
-.ver-branchpoint,
-ul.tree ul li.ver-branchpoint {
+.ver-branch div.treeLinkItem,
+.ver-branchpoint div.treeLinkItem {
 	background-color: #ff9999;
 }
 
-.ver-versions,
-ul.tree ul li.ver-versions {
-	background-color: #ffec97;
-}
-
-ul.tree ul li.ver-element ul {
-	background-color: #efeff4;
-}
-
-ul.tree ul li.ver-page ul {
-	background-color: #efeff4;
-}
-
-ul.tree ul li.ver-branch ul {
-	background-color: #efeff4;
-}
-
-ul.tree ul li.ver-branchpoint ul {
-	background-color: #efeff4;
-}
-
-ul.tree ul li.ver-versions ul {
-	background-color: #efeff4;
+.ver-element ul div.treeLinkItem,
+.ver-versions ul div.treeLinkItem,
+.ver-page ul div.treeLinkItem,
+.ver-branch div.treeLinkItem,
+.ver-branchpoint div.treeLinkItem {
+	background-color: transparent;
 }
 
 table.ver-subtree a {
