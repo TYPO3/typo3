@@ -35,6 +35,15 @@ table.typo3-dyntabmenu td.disabled_over a {
 	cursor: default;
 }
 
+table.typo3-dyntabmenu td a {
+	border-bottom: 1px solid #ffffff;
+}
+
+table.typo3-dyntabmenu td.tab a,
+table.typo3-dyntabmenu td.tab_over a {
+	border-bottom: 1px solid #c0c0c0;
+}
+
 table.typo3-dyntabmenu td a,
 table#typo3-tabmenu td a {
 	color: #666;
