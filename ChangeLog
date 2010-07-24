@@ -6,6 +6,7 @@
 2010-07-23  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15203: htmlArea RTE: Modify link option missing in context menu
+	* Fixed bug #15050: htmlArea RTE: .htmlarea .statusBar relative path incorrect (Thanks to Felix Kopp)
 
 2010-07-21  Xavier Perseguers  <typo3@perseguers.ch>
 
