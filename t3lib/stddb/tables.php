@@ -54,21 +54,20 @@
  * $PAGES_TYPES defines the various types of pages (field: doktype) the system can handle and what restrictions may apply to them.
  * Here you can set the icon and especially you can define which tables are allowed on a certain pagetype (doktype)
  * NOTE: The 'default' entry in the $PAGES_TYPES-array is the 'base' for all types, and for every type the entries simply overrides the entries in the 'default' type!
+ *
+ * NOTE: usage of 'icon' is deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon() instead
  */
 $PAGES_TYPES = array(
 	'254' => array(		//  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
 		'type' => 'sys',
-		'icon' => 'sysf.gif',
 		'allowedTables' => '*'
 	),
 	'255' => array(		// Doktype 255 is a recycle-bin.
 		'type' => 'sys',
-		'icon' => 'recycler.gif',
 		'allowedTables' => '*'
 	),
 	'default' => array(
 		'type' => 'web',
-		'icon' => 'pages.gif',
 		'allowedTables' => 'pages',
 		'onlyAllowedTables' => '0'
 	)
@@ -80,6 +79,7 @@ $PAGES_TYPES = array(
  * Each key is a value from the "module" field of page records and the value is an array with a key/value pair, eg. "icon" => "modules_shop.gif"
  *
  * @see t3lib_iconWorks::getIcon(), typo3/sysext/cms/ext_tables.php
+ * @deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon instead
  */
 $ICON_TYPES = array();
 

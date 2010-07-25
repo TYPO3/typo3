@@ -70,6 +70,9 @@ class t3lib_SpriteManager {
 		if (!is_dir(PATH_site . self::$tempPath)) {
 			t3lib_div::mkdir(PATH_site . self::$tempPath);
 		}
+			// fallback for ways before 4.4, will be removed in 4.7
+		$this->compatibilityCalls();
+
 			// create a fileName, the hash includes all icons and css-styles registered and the extlist
 		$this->tempFileName = PATH_site . self::$tempPath .
 							md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
@@ -139,6 +142,37 @@ class t3lib_SpriteManager {
 		t3lib_div::writeFile($this->tempFileName, $fileContent);
 	}
 
+	/**
+	 * function ensures backwards compatiblity and will throw deprecation warnings
+	 * aimed to be removed in version 4.7
+	 * 
+	 * 	@return void
+	 */
+	private function compatibilityCalls() {
+			// fallback for deprecated $TYPE_ICONS "contains-module" icon assignement
+		foreach ((array) $GLOBALS['ICON_TYPES'] as $module => $icon) {
+			$iconFile = $icon['icon'];
+			t3lib_div::deprecationLog('Usage of $ICON_TYPES is deprecated since 4.4.' . LF .
+				'The extTables.php entry $ICON_TYPES[\'' . $module . '\'] = \'' . $iconFile . '\'; should be replaced with' . LF .
+				't3lib_SpriteManager::addTcaTypeIcon(\'pages\', \'contains-' . $module . '\', \'' . $iconFile . '\');' . LF .
+				'instead.'
+			);
+			t3lib_SpriteManager::addTcaTypeIcon('pages', 'contains-' . $module, $iconFile);
+		}
+			// fallback for deprecated $PAGE_TYPES icons assignement
+		foreach ((array) $GLOBALS['PAGES_TYPES'] as $type => $icon) {
+			if(isset($icon['icon'])) {
+				$iconFile = $icon['icon'];
+				t3lib_div::deprecationLog('Usage of $PAGES_TYPES[\'icon\'] is deprecated since 4.4.' . LF .
+					'The extTables.php entry $PAGE_TYPES[\'' . $type . '\'][\'icon\'] = \'' . $iconFile . '\'; should be replaced with' . LF .
+					't3lib_SpriteManager::addTcaTypeIcon(\'pages\', ' . $type . '\', \'' . $iconFile . '\');' . LF .
+					'instead.'
+				);
+				t3lib_SpriteManager::addTcaTypeIcon('pages', $module, $iconFile);
+			}
+		}
+
+	}
 
 	/**
 	 * includes the generated cacheFile, if present
@@ -162,7 +196,7 @@ class t3lib_SpriteManager {
 	 * Available icons of skins should be located manually (extTables) to $GLOBALS[TBE_STYLES][skins][skinName][availableIcons]
 	 *
 	 * @param array	icons	the names of the introduced icons
-	 * @parram string $styleSheetFile	the name of the styleshet file relative to PATH_site
+	 * @param string $styleSheetFile	the name of the styleshet file relative to PATH_site
 	 */
 	public static function addIconSprite(array $icons, $styleSheetFile) {
 		$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge(
