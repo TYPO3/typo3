@@ -1,3 +1,7 @@
+2010-07-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 2.1.0
+
 2010-07-23  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15203: htmlArea RTE: Modify link option missing in context menu

@@ -1,3 +1,7 @@
+2010-07-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 2.1.0
+
 2010-07-24  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #14794: Missing border-bottom for inactive tabs (Thanks to Steffen Gebert)
