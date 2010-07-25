@@ -1,3 +1,7 @@
+2010-07-25  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14849: Sprites - user defined page types/modules are not respected anymore (thanks to Steffen Ritter)
+
 2010-07-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 2.0.3

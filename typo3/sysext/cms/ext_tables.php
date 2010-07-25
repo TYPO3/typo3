@@ -27,40 +27,23 @@ if (TYPO3_MODE == 'BE') {
 // Extend 'pages'-table
 // ******************************************************************
 
-if (TYPO3_MODE=='BE')	{
-	// Setting ICON_TYPES (obsolete by the removal of the plugin_mgm extension)
-	$ICON_TYPES = array(
-		'shop' => array('icon' => 'gfx/i/modules_shop.gif'),
-		'board' => array('icon' => 'gfx/i/modules_board.gif'),
-		'news' => array('icon' => 'gfx/i/modules_news.gif'),
-		'fe_users' => array('icon' => 'gfx/i/fe_users.gif'),
-		'approve' => array('icon' => 'gfx/state_checked.png'),
-	);
-}
-
-	// Adding pages_types:
+		// Adding pages_types:
 		// t3lib_div::array_merge() MUST be used!
 	$PAGES_TYPES = t3lib_div::array_merge(array(
 		'3' => array(
-			'icon' => 'pages_link.gif'
 		),
 		'4' => array(
-			'icon' => 'pages_shortcut.gif'
 		),
 		'5' => array(
-			'icon' => 'pages_notinmenu.gif'
 		),
 		'6' => array(
 			'type' => 'web',
-			'icon' => 'be_users_section.gif',
 			'allowedTables' => '*'
 		),
 		'7' => array(
-			'icon' => 'pages_mountpoint.gif'
 		),
 		'199' => array(		// TypoScript: Limit is 200. When the doktype is 200 or above, the page WILL NOT be regarded as a 'page' by TypoScript. Rather is it a system-type page
 			'type' => 'sys',
-			'icon' => 'spacer_icon.gif',
 		)
 	),$PAGES_TYPES);
 
