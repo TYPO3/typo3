@@ -112,6 +112,7 @@ class Tx_Extbase_Dispatcher {
 		if (isset($this->cObj->data) && is_array($this->cObj->data)) {
 			// we need to check the above conditions as cObj is not available in Backend.
 			$request->setContentObjectData($this->cObj->data);
+			$request->setIsCached($this->cObj->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER);
 		}
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
