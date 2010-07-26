@@ -1419,9 +1419,9 @@ class t3lib_htmlmail {
 		$c = count($tags);
 		foreach($tags as $tag) {
 			$c--;
-			$regexp .= '<' . sql_regcase($tag) . "[[:space:]]" . (($c) ? '|' : '');
+			$regexp .= '<' . $tag . '[[:space:]]' . (($c) ? '|' : '');
 		}
-		return $regexp . '/';
+		return $regexp . '/i';
 	}
 
 
