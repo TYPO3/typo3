@@ -383,11 +383,11 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 					if ($propertyValue->_isNew()) {
 						if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
 							$this->insertObject($propertyValue);
-							$queue[] = $propertyValue;
 						} else {
 							$this->persistValueObject($propertyValue);
 						}
 					}
+					$queue[] = $propertyValue;
 					$row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue);
 				}
 			} elseif ($object instanceof Tx_Extbase_DomainObject_AbstractValueObject || $object->_isNew() || $object->_isDirty($propertyName)) {
