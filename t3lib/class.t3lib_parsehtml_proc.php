@@ -654,7 +654,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						// Creating the TYPO3 pseudo-tag "<LINK>" for the link (includes href/url, target and class attributes):
 						// If external attribute is set, keep the href unchanged
 					$href = $attribArray['external'] ? $attribArray['href'] : $info['url'].($info['query']?',0,'.$info['query']:'');
-					$bTag='<link '. $href . ($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' "' . $attribArray['title'] . '"':'').'>';
+					$bTag='<link '. $href . ($attribArray['target']?' '.$attribArray['target']:(($attribArray['class'] || $attribArray['title'])?' -':'')).($attribArray['class']?' '.$attribArray['class']:($attribArray['title']?' -':'')).($attribArray['title']?' '.$attribArray['title']:'').'>';
 					$eTag='</link>';
 					$blockSplit[$k] = $bTag.$this->TS_links_db($this->removeFirstAndLastTag($blockSplit[$k])).$eTag;
 				} else {	// ... otherwise store the link as a-tag.
