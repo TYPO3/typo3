@@ -212,7 +212,7 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	/**
 	 * Sets the name of the action contained in this request.
 	 *
-	 * Note that the action name must start with a lower case letter.
+	 * Note that the action name must start with a lower case letter and is case sensitive.
 	 *
 	 * @param string $actionName: Name of the action to execute by the controller
 	 * @return void
@@ -233,6 +233,16 @@ class Tx_Extbase_MVC_Request implements Tx_Extbase_MVC_RequestInterface {
 	 * @api
 	 */
 	public function getControllerActionName() {
+		$controllerObjectName = $this->getControllerObjectName();
+		if ($controllerObjectName !== '' && ($this->controllerActionName === strtolower($this->controllerActionName))) {
+			$actionMethodName = $this->controllerActionName . 'Action';
+			foreach (get_class_methods($controllerObjectName) as $existingMethodName) {
+				if (strtolower($existingMethodName) === strtolower($actionMethodName)) {
+					$this->controllerActionName = substr($existingMethodName, 0, -6);
+					break;
+				}
+			}
+		}
 		return $this->controllerActionName;
 	}
 
