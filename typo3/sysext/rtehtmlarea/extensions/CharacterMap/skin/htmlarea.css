@@ -1,4 +1,6 @@
 /* Selectors for the InsertCharacter plugin of htmlArea RTE */
 /* TYPO3 SVN ID: $Id$ */
-.htmlarea .toolbar .InsertCharacter {background-image:url("images/insertCharacter.gif");}
-
+.htmlarea-action-character-insert-from-map {
+	background-image: url('images/insertCharacter.gif') !important;
+	background-position: 0 0 !important;
+}

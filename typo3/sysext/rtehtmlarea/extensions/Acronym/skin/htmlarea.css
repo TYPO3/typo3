@@ -1,3 +1,6 @@
 /* Selectors for the Acronym extension of htmlArea RTE */
 /* TYPO3 SVN ID: $Id$ */
-.htmlarea .toolbar .Acronym {background-image:url("images/acronym.gif");}
+.htmlarea-action-abbreviation-edit {
+	background-image: url('images/acronym.gif') !important;
+	background-position: 0 0 !important;
+}

@@ -1,5 +1,16 @@
 /* Selectors for the CopyPaste extension of htmlArea RTE */
 /* TYPO3 SVN ID: $Id htmlarea.css $ */
-.htmlarea .toolbar .Copy, .htmlarea-context-menu .Copy  {background-image:url("images/copy.gif");}
-.htmlarea .toolbar .Cut, .htmlarea-context-menu .Cut  {background-image:url("images/cut.gif");}
-.htmlarea .toolbar .Paste, .htmlarea-context-menu .Paste {background-image:url("images/paste.gif");}
+.htmlarea-action-copy { 
+	background-image: url('images/copy.gif') !important;
+}
+.htmlarea-action-cut { 
+	background-image: url('images/cut.gif') !important;
+}
+.htmlarea-action-paste { 
+	background-image: url('images/paste.gif') !important;
+}
+.htmlarea-action-copy,
+.htmlarea-action-cut,
+.htmlarea-action-paste {
+	background-position: 0 0 !important;
+}

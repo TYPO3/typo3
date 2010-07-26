@@ -1,4 +1,12 @@
 /* Selectors for the TYPO3Color plugin of htmlArea RTE */
 /* TYPO3 SVN ID: $Id$ */
-.htmlarea .toolbar .ForeColor {background-image:url("images/forecolor.gif");}
-.htmlarea .toolbar .HiliteColor {background-image:url("images/hilitecolor.gif");}
+.htmlarea-action-color-background {
+	background-image: url('images/hilitecolor.gif') !important;
+}
+.htmlarea-action-color-foreground {
+	background-image: url('images/forecolor.gif') !important;
+}
+.htmlarea-action-color-background,
+.htmlarea-action-color-foreground {
+	background-position: 0 0 !important;
+}

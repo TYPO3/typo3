@@ -1,4 +1,6 @@
 /* Selectors for the Image plugin of htmlArea RTE */
 /* TYPO3 SVN ID: $Id$ */
-.htmlarea .toolbar .Image {background-image:url("images/image.gif");}
-
+.htmlarea-action-image-edit {
+	background-image: url('images/image.gif') !important;
+	background-position: 0 0 !important;
+}

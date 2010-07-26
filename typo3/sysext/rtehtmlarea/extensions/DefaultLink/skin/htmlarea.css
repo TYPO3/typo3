@@ -1,4 +1,12 @@
 /* Selectors for the Default Link plugin of htmlArea RTE */
 /* TYPO3 SVN ID: $Id$ */
-.htmlarea .toolbar .CreateLink {background-image:url("images/link.gif");}
-.htmlarea .toolbar .UnLink {background-image:url("images/unlink.gif");}
+.htmlarea-action-link-edit {
+	background-image: url('images/link.gif') !important;
+}
+.htmlarea-action-unlink {
+	background-image: url('images/unlink.gif') !important;
+}
+.htmlarea-action-link-edit,
+.htmlarea-action-unlink {
+	background-position: 0 0 !important;
+}
