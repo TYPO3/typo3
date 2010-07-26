@@ -241,7 +241,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function findByUid($uid) {
-		if (!is_int($uid) || $uid < 0) throw new InvalidArgumentException('The uid must be a positive integer', 1245071889);
 		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
 			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
 		} else {
