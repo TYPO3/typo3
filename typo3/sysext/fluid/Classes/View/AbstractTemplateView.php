@@ -115,6 +115,17 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 	}
 
 	/**
+	 * Returns the template parser that is used to parse this views template
+	 *
+	 * @return Tx_Fluid_Core_Parser_TemplateParser
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @api
+	 */
+	public function getTemplateParser() {
+		return $this->templateParser;
+	}
+
+	/**
 	 * Assign a value to the variable container.
 	 *
 	 * @param string $key The key of a view variable to set

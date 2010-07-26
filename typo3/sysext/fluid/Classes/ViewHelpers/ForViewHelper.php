@@ -90,14 +90,15 @@ class Tx_Fluid_ViewHelpers_ForViewHelper extends Tx_Fluid_Core_ViewHelper_Abstra
 		if ($each === NULL) {
 			return '';
 		}
-		if (is_object($each)) {
-			if (!$each instanceof Traversable) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('ForViewHelper only supports arrays and objects implementing Traversable interface' , 1248728393);
-			}
-			$each = iterator_to_array($each);
+		if (is_object($each) && !$each instanceof Traversable) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('ForViewHelper only supports arrays and objects implementing Traversable interface' , 1248728393);
 		}
 
 		if ($reverse === TRUE) {
+				// array_reverse only supports arrays
+			if (is_object($each)) {
+				$each = iterator_to_array($each);
+			}
 			$each = array_reverse($each);
 		}
 		$iterationData = array(
