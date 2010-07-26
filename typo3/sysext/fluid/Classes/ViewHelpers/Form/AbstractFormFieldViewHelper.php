@@ -60,14 +60,14 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 */
 	protected function getName() {
 		if ($this->isObjectAccessorMode()) {
-			$formName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
-			if (!empty($formName)) {
+			$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
+			if (!empty($formObjectName)) {
 				$propertySegments = explode('.', $this->arguments['property']);
 				$properties = '';
 				foreach ($propertySegments as $segment) {
 					$properties .= '[' . $segment . ']';
 				}
-				$name = $formName . $properties;
+				$name = $formObjectName . $properties;
 			} else {
 				$name = $this->arguments['property'];
 			}
@@ -122,7 +122,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
 			$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 
-			$objectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+			$objectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 			// If Count == 2 -> we need to go through the for-loop exactly once
 			for ($i=1; $i < count($propertySegments); $i++) {
 				$object = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
@@ -161,7 +161,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 */
 	protected function isObjectAccessorMode() {
 		return $this->arguments->hasArgument('property')
-			&& $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+			&& $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 	}
 
 	/**
@@ -200,11 +200,11 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			return array();
 		}
 		$errors = $this->controllerContext->getRequest()->getErrors();
-		$formName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+		$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 		$propertyName = $this->arguments['property'];
 		$formErrors = array();
 		foreach ($errors as $error) {
-			if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() === $formName) {
+			if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() === $formObjectName) {
 				$formErrors = $error->getErrors();
 				foreach ($formErrors as $formError) {
 					if ($formError instanceof Tx_Extbase_Validation_PropertyError && $formError->getPropertyName() === $propertyName) {

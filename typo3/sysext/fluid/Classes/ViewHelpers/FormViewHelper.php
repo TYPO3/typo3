@@ -120,9 +120,10 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the action URI. Only active if $addQueryString = TRUE and $actionUri is not set
 	 * @param string $fieldNamePrefix Prefix that will be added to all field names within this form. If not set the prefix will be tx_yourExtension_plugin
 	 * @param string $actionUri can be used to overwrite the "action" attribute of the form tag
+	 * @param string $objectName name of the object that is bound to this form. If this argument is not specified, the name attribute of this form is used to determine the FormObjectName
 	 * @return string rendered form
 	 */
-	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $object = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $format = '', array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $fieldNamePrefix = NULL, $actionUri = NULL) {
+	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL, $pluginName = NULL, $pageUid = NULL, $object = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE, $section = '', $format = '', array $additionalParams = array(), $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(), $fieldNamePrefix = NULL, $actionUri = NULL, $objectName = NULL) {
 		$this->setFormActionUri();
 
 		if (strtolower($this->arguments['method']) === 'get') {
@@ -131,7 +132,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 			$this->tag->addAttribute('method', 'post');
 		}
 
-		$this->addFormNameToViewHelperVariableContainer();
+		$this->addFormObjectNameToViewHelperVariableContainer();
 		$this->addFormObjectToViewHelperVariableContainer();
 		$this->addFieldNamePrefixToViewHelperVariableContainer();
 		$this->addFormFieldNamesToViewHelperVariableContainer();
@@ -150,7 +151,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 
 		$this->removeFieldNamePrefixFromViewHelperVariableContainer();
 		$this->removeFormObjectFromViewHelperVariableContainer();
-		$this->removeFormNameFromViewHelperVariableContainer();
+		$this->removeFormObjectNameFromViewHelperVariableContainer();
 		$this->removeFormFieldNamesFromViewHelperVariableContainer();
 		$this->removeCheckboxFieldNamesFromViewHelperVariableContainer();
 
@@ -225,13 +226,14 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	}
 
 	/**
-	 * Adds the form name to the ViewHelperVariableContainer if the name attribute is specified.
+	 * Adds the form object name to the ViewHelperVariableContainer if "objectName" argument or "name" attribute is specified.
 	 *
 	 * @return void
 	 */
-	protected function addFormNameToViewHelperVariableContainer() {
-		if ($this->arguments->hasArgument('name')) {
-			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName', $this->arguments['name']);
+	protected function addFormObjectNameToViewHelperVariableContainer() {
+		$formObjectName = $this->getFormObjectName();
+		if ($formObjectName !== NULL) {
+			$this->viewHelperVariableContainer->add('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName', $formObjectName);
 		}
 	}
 
@@ -240,12 +242,30 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 	 *
 	 * @return void
 	 */
-	protected function removeFormNameFromViewHelperVariableContainer() {
-		if ($this->arguments->hasArgument('name')) {
-			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+	protected function removeFormObjectNameFromViewHelperVariableContainer() {
+		$formObjectName = $this->getFormObjectName();
+		if ($formObjectName !== NULL) {
+			$this->viewHelperVariableContainer->remove('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 		}
 	}
 
+	/**
+	 * Returns the name of the object that is bound to this form.
+	 * If the "objectName" argument has been specified, this is returned. Otherwise the name attribute of this form.
+	 * If neither objectName nor name arguments have been set, NULL is returned.
+	 *
+	 * @return string specified Form name or NULL if neither $objectName nor $name arguments have been specified
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getFormObjectName() {
+		$formObjectName = NULL;
+		if ($this->arguments->hasArgument('objectName')) {
+			$formObjectName = $this->arguments['objectName'];
+		} elseif ($this->arguments->hasArgument('name')) {
+			$formObjectName = $this->arguments['name'];
+		}
+		return $formObjectName;
+	}
 	/**
 	 * Adds the object that is bound to this form to the ViewHelperVariableContainer if the formObject attribute is specified.
 	 *
