@@ -416,7 +416,6 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 					foreach ($objects as $object) {
 						$propertyValue->attach($object);
 					}
-					$propertyValue->_memorizeCleanState();
 				} else {
 					$propertyValue = $objects;
 				}
