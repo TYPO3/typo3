@@ -1,3 +1,7 @@
+2010-07-26  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15172: Add wrapper files for list/filelist modules
+
 2010-07-26  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Reverted the fix for #15128 because further investigation is required
