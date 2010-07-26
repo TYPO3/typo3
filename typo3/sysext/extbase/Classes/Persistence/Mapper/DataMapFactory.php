@@ -39,6 +39,9 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 	 * @return void
 	 */
 	public function buildDataMap($className) {
+		if (!class_exists($className)) {
+			throw new Tx_Extbase_Persistence_Exception_InvalidClass('Could not find class definition for name "' . $className . '". This could be caused by a mis-spelling of the class name in the class definition.');
+		}
 		$tableName = NULL;
 		$columnMapping = array();
 		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
