@@ -148,6 +148,16 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	}
 	
 	/**
+	 * Magic toString call implementation.
+	 *
+	 * @return void
+	 */
+	public function __toString() {
+		$realInstance = $this->_loadRealInstance();
+		return $realInstance->__toString();
+	}
+	
+	/**
 	 * Returns the current value of the storage array
 	 *
 	 * @return void
