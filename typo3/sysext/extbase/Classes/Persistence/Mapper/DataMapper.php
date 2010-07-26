@@ -44,7 +44,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	/**
 	 * @var Tx_Extbase_Persistence_QOM_QueryObjectModelFactory
 	 */
-	protected $QomFactory;
+	protected $qomFactory;
 
 	/**
 	 * @var Tx_Extbase_Persistence_Session
