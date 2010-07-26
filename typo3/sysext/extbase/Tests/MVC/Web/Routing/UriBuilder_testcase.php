@@ -299,10 +299,10 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 	/**
 	 * @test
 	 */
-	public function buildFrontendUriStripsLeadingSlashesFromRelativeUris() {
+	public function buildFrontendUriDoesNotStripLeadingSlashesFromRelativeUris() {
 		$this->contentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('/relative/uri'));
 
-		$expectedResult = 'relative/uri';
+		$expectedResult = '/relative/uri';
 		$actualResult = $this->uriBuilder->buildFrontendUri();
 
 		$this->assertSame($expectedResult, $actualResult);
@@ -312,12 +312,14 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder_testcase extends Tx_Extbase_BaseTest
 	 * @test
 	 */
 	public function buildFrontendUriCreatesAbsoluteUrisIfSpecified() {
-		$this->request->expects($this->any())->method('getBaseURI')->will($this->returnValue('http://baseuri/'));
-		$this->contentObject->expects($this->once())->method('typoLink_URL')->will($this->returnValue('relative/uri'));
-		$this->uriBuilder->setCreateAbsoluteUri(TRUE);
+		$uriBuilder = $this->getMock('Tx_Extbase_MVC_Web_Routing_UriBuilder', array('buildTypolinkConfiguration'), array($this->contentObject));
+		$uriBuilder->expects($this->once())->method('buildTypolinkConfiguration')->will($this->returnValue(array('foo' => 'bar')));
+
+		$this->contentObject->expects($this->once())->method('typoLink_URL')->with(array('foo' => 'bar', 'forceAbsoluteUrl' => TRUE))->will($this->returnValue('http://baseuri/relative/uri'));
+		$uriBuilder->setCreateAbsoluteUri(TRUE);
 
 		$expectedResult = 'http://baseuri/relative/uri';
-		$actualResult = $this->uriBuilder->buildFrontendUri();
+		$actualResult = $uriBuilder->buildFrontendUri();
 		$this->assertSame($expectedResult, $actualResult);
 	}
 
