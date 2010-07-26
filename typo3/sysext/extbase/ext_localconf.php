@@ -6,6 +6,7 @@ require_once(t3lib_extMgm::extPath('extbase') . 'Classes/Utility/Extension.php')
 
 // use own cache table
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection'] = array(
+	'frontend' => 't3lib_cache_frontend_VariableFrontend',
 	'backend' => 't3lib_cache_backend_DbBackend',
 	'options' => array(
 		'cacheTable' => 'tx_extbase_cache_reflection',
