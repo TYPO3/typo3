@@ -369,6 +369,34 @@ class Tx_Fluid_ViewHelpers_ForViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHe
 		$this->assertSame($expectedCallProtocol, $viewHelperNode->callProtocol, 'The call protocol differs -> The for loop does not work as it should!');
 	}
 
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function iterationDataIsAddedToTemplateVariableContainerIfIterationArgumentIsSet() {
+		$viewHelper = new Tx_Fluid_ViewHelpers_ForViewHelper();
+
+		$mockViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('evaluateChildNodes'), array(), '', FALSE);
+		$mockViewHelperNode->expects($this->any())->method('evaluateChildNodes')->will($this->returnValue('foo'));
+
+		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('innerVariable', 'bar');
+		$this->templateVariableContainer->expects($this->at(1))->method('add')->with('iteration', array('index' => 0, 'cycle' => 1, 'total' => 3, 'isFirst' => TRUE, 'isLast' => FALSE, 'isEven' => FALSE, 'isOdd' => TRUE));
+		$this->templateVariableContainer->expects($this->at(2))->method('remove')->with('innerVariable');
+		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('iteration');
+		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('innerVariable', 'Fluid');
+		$this->templateVariableContainer->expects($this->at(5))->method('add')->with('iteration', array('index' => 1, 'cycle' => 2, 'total' => 3, 'isFirst' => FALSE, 'isLast' => FALSE, 'isEven' => TRUE, 'isOdd' => FALSE));
+		$this->templateVariableContainer->expects($this->at(6))->method('remove')->with('innerVariable');
+		$this->templateVariableContainer->expects($this->at(7))->method('remove')->with('iteration');
+		$this->templateVariableContainer->expects($this->at(8))->method('add')->with('innerVariable', 'rocks');
+		$this->templateVariableContainer->expects($this->at(9))->method('add')->with('iteration', array('index' => 2, 'cycle' => 3, 'total' => 3, 'isFirst' => FALSE, 'isLast' => TRUE, 'isEven' => FALSE, 'isOdd' => TRUE));
+		$this->templateVariableContainer->expects($this->at(10))->method('remove')->with('innerVariable');
+		$this->templateVariableContainer->expects($this->at(11))->method('remove')->with('iteration');
+
+		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
+		$viewHelper->setRenderingContext($this->renderingContext);
+		$viewHelper->setViewHelperNode($mockViewHelperNode);
+		$viewHelper->render(array('foo' => 'bar', 'FLOW3' => 'Fluid', 'TYPO3' => 'rocks'), 'innerVariable', '', FALSE, 'iteration');
+	}
 }
 
 ?>
