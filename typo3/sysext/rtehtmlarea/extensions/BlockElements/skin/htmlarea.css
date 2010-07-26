@@ -1,14 +1,52 @@
 /* Selectors for the BlockElements extension of htmlArea RTE */
 /* TYPO3 SVN ID: $Id htmlarea.css $ */
-.htmlarea .toolbar .Indent {background-image:url("images/indent.gif");}
-.htmlarea .toolbar .Outdent {background-image:url("images/outdent.gif");}
-.htmlarea .toolbar .Blockquote {background-image:url("images/blockquote.gif");}
-.htmlarea .toolbar .InsertParagraphBefore, .htmlarea-context-menu .InsertParagraphBefore {background-image:url("images/insertParagraphBefore.gif");}
-.htmlarea .toolbar .InsertParagraphAfter, .htmlarea-context-menu .InsertParagraphAfter {background-image:url("images/insertParagraphAfter.gif");}
-.htmlarea .toolbar .JustifyLeft, .htmlarea-context-menu .JustifyLeft {background-image:url("images/justifyLeft.gif");}
-.htmlarea .toolbar .JustifyCenter, .htmlarea-context-menu .JustifyCenter {background-image:url("images/justifyCenter.gif");}
-.htmlarea .toolbar .JustifyRight, .htmlarea-context-menu .JustifyRight {background-image:url("images/justifyRight.gif");}
-.htmlarea .toolbar .JustifyFull, .htmlarea-context-menu .JustifyFull {background-image:url("images/justifyFull.gif");}
-.htmlarea .toolbar .InsertOrderedList, .htmlarea-context-menu .InsertOrderedList {background-image:url("images/insertOrderedList.gif");}
-.htmlarea .toolbar .InsertUnorderedList, .htmlarea-context-menu .InsertUnorderedList {background-image:url("images/insertUnorderedList.gif");}
-.htmlarea .toolbar .InsertHorinzontalRule, .htmlarea-context-menu .InsertHorinzontalRule {background-image:url("images/insertHorizontalRule.gif");}
+.htmlarea-action-blockquote {
+	background-image: url('images/blockquote.gif') !important;
+}
+.htmlarea-action-horizontal-rule-insert {
+	background-image: url('images/insertHorizontalRule.gif') !important;
+}
+.htmlarea-action-indent {
+	background-image: url('images/indent.gif') !important;
+}
+.htmlarea-action-justify-center {
+	background-image: url('images/justifyCenter.gif') !important;
+}
+.htmlarea-action-justify-full {
+	background-image: url('images/justifyFull.gif') !important;
+}
+.htmlarea-action-justify-left {
+	background-image: url('images/justifyLeft.gif') !important;
+}
+.htmlarea-action-justify-right {
+	background-image: url('images/justifyRight.gif') !important;
+}
+.htmlarea-action-ordered-list {
+	background-image: url('images/insertOrderedList.gif') !important;
+}
+.htmlarea-action-outdent {
+	background-image: url('images/outdent.gif') !important;
+}
+.htmlarea-action-paragraph-insert-after {
+	background-image: url('images/insertParagraphAfter.gif') !important;
+}
+.htmlarea-action-paragraph-insert-before {
+	background-image: url('images/insertParagraphBefore.gif') !important;
+}
+.htmlarea-action-unordered-list {
+	background-image: url('images/insertUnorderedList.gif') !important;
+}
+.htmlarea-action-blockquote,
+.htmlarea-action-horizontal-rule-insert,
+.htmlarea-action-indent,
+.htmlarea-action-justify-center,
+.htmlarea-action-justify-full,
+.htmlarea-action-justify-left,
+.htmlarea-action-justify-right,
+.htmlarea-action-ordered-list,
+.htmlarea-action-outdent,
+.htmlarea-action-paragraph-insert-after,
+.htmlarea-action-paragraph-insert-before,
+.htmlarea-action-unordered-list {
+	background-position: 0 0 !important;
+}

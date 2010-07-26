@@ -1,3 +1,6 @@
 /* Selectors for the Spell Checker plugin of htmlArea RTE */
-/* TYPO3 SVN ID: $Id $ */
-.htmlarea .toolbar .SpellCheck {background-image:url("images/spell-check.gif");}
+/* TYPO3 SVN ID: $Id$ */
+.htmlarea-action-spell-check {
+	background-image: url('images/spell-check.gif') !important;
+	background-position: 0 0 !important;
+}

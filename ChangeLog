@@ -3,6 +3,10 @@
 	* Fixed bug #15196: [caching framework] Speedup t3lib_cache_backend_DbBackend::has($entryIdentifier) (Thanks to Michael Knabe)
 	* Fixed bug #13060: t3lib_htmlmail: Deprecated message with PHP 5.3 for sql_regcase (Thanks to Martin Müller)
 
+2010-07-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15243: htmlArea RTE: Extension stylesheets refer to incorrect selectors
+
 2010-07-26  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15172: Add wrapper files for list/filelist modules

@@ -1,3 +1,7 @@
+2010-07-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15243: htmlArea RTE: Extension stylesheets refer to incorrect selectors
+
 2010-07-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Updated htmlArea RTE version to 2.1.0
