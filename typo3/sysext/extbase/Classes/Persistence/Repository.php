@@ -260,7 +260,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	/**
 	 * Returns a query for objects of this repository
 	 *
-	 * @param boolean $useStoragePageId If FALSE, will NOT add pid=... to the query. TRUE by default. Only change if you know what you are doing.
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 * @api
 	 */
