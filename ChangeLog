@@ -1,3 +1,7 @@
+2010-07-27  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13060: t3lib_htmlmail: Deprecated message with PHP 5.3 for sql_regcase (Thanks to Martin Müller)
+
 2010-07-26  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15172: Add wrapper files for list/filelist modules
