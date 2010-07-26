@@ -1,3 +1,7 @@
+2010-07-26  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Reverted the fix for #15128 because further investigation is required
+
 2010-07-25  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #14849: Sprites - user defined page types/modules are not respected anymore (thanks to Steffen Ritter)
