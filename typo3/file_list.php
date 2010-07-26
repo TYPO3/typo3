@@ -41,7 +41,7 @@ t3lib_div::deprecationLog('The filelist module is a system extension now, do not
 	LF .
 	'Referer: ' . t3lib_div::getIndpEnv('HTTP_REFERER')
 );
-if (t3lib_extMgm::isLoaded('list')) {
+if (t3lib_extMgm::isLoaded('filelist')) {
 	t3lib_utility_Http::redirect(t3lib_extMgm::extRelPath('filelist') . 'mod1/file_list.php?' . $query);
 } else {
 	$title = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:extension.not.installed'), 'list');
