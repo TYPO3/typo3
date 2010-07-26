@@ -140,11 +140,10 @@ class Tx_Extbase_Utility_Arrays {
 	 */
 	static public function containsMultipleTypes(array $array) {
 		if (count($array) > 0) {
-			reset($array);
-			$previousType = gettype(current($array));
-			next($array);
-			while (list(, $value) = each($array)) {
-				if ($previousType !== gettype($value)) {
+			foreach ($array as $key => $value) {
+				if (!isset($previousType)) {
+					$previousType = gettype($value);
+				} else if ($previousType !== gettype($value)) {
 					return TRUE;
 				}
 			}

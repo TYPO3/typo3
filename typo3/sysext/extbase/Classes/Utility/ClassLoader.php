@@ -48,7 +48,7 @@ class Tx_Extbase_Utility_ClassLoader {
 		if (t3lib_extMgm::isLoaded($extensionKey)) {
 			$classFilePathAndName = t3lib_extMgm::extPath($extensionKey) . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
 			if (file_exists($classFilePathAndName)) {
-				require($classFilePathAndName);
+				require_once($classFilePathAndName);
 			}
 		}
 	}
