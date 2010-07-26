@@ -65,7 +65,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
 	 */
-	protected $flashMessages;
+	protected $flashMessageContainer;
 
 	/**
 	 * Set the request of the controller
@@ -169,8 +169,18 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessages
 	 * @return void
 	 */
-	public function setFlashMessages(Tx_Extbase_MVC_Controller_FlashMessages $flashMessages) {
-		$this->flashMessages = $flashMessages;
+	public function setFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+		$this->flashMessageContainer = $flashMessageContainer;
+	}
+
+	/**
+	 * Get the flash messages
+	 *
+	 * @return Tx_Extbase_MVC_Controller_FlashMessages
+	 * @deprecated
+	 */
+	public function getFlashMessages() {
+		return $this->flashMessageContainer;
 	}
 
 	/**
@@ -179,17 +189,8 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * @return Tx_Extbase_MVC_Controller_FlashMessages
 	 * @api
 	 */
-	public function getFlashMessages() {
-		return $this->flashMessages;
-	}
-
-	/**
-	 * Get the flash messages
-	 *
-	 * @return Tx_Extbase_MVC_Controller_FlashMessages
-	 */
 	public function getFlashMessageContainer() {
-		return $this->flashMessages;
+		return $this->flashMessageContainer;
 	}
 }
 ?>

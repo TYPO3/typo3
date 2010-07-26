@@ -105,12 +105,20 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Request');
 
 	/**
-	 * The flash messages. Use $this->flashMessages->add(...) to add a new Flash message.
+	 * The flash messages. DEPRECATED. Use $this->flashMessageContainer instead.
+	 *
+	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @deprecated
+	 */
+	protected $flashMessages;
+
+	/**
+	 * The flash messages. Use $this->flashMessageContainer->add(...) to add a new Flash message.
 	 *
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
 	 * @api
 	 */
-	protected $flashMessages;
+	protected $flashMessageContainer;
 
 	/**
 	 * Constructs the controller.
@@ -178,8 +186,9 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessages
 	 * @return void
 	 */
-	public function injectFlashMessages(Tx_Extbase_MVC_Controller_FlashMessages $flashMessages) {
-		$this->flashMessages = $flashMessages;
+	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+		$this->flashMessageContainer = $flashMessageContainer;
+		$this->flashMessages = $flashMessageContainer; // deprecated, but should still work.
 	}
 
 	/**
@@ -240,7 +249,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 			$controllerContext->setArgumentsMappingResults($this->argumentsMappingResults);
 		}
 		$controllerContext->setUriBuilder($this->uriBuilder);
-		$controllerContext->setFlashMessages($this->flashMessages);
+		$controllerContext->setFlashMessageContainer($this->flashMessageContainer);
 		return $controllerContext;
 	}
 
