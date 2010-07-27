@@ -1691,6 +1691,20 @@ class t3lib_TCEmain	{
 										// If we have a unique destination filename, then write the file:
 									if ($theDestFile)	{
 										t3lib_div::upload_copy_move($theFile,$theDestFile);
+
+											// Hook for post-processing the upload action
+										if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'])) {
+											foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] as $classRef) {
+												$hookObject = t3lib_div::getUserObj($classRef);
+
+												if (!($hookObject instanceof t3lib_TCEmain_processUploadHook)) {
+													throw new UnexpectedValueException('$hookObject must implement interface t3lib_TCEmain_processUploadHook', 1279962349);
+												}
+
+												$hookObject->processUpload_postProcessAction($theDestFile, $this);
+											}
+										}
+
 										$this->copiedFileMap[$theFile] = $theDestFile;
 										clearstatcache();
 										if (!@is_file($theDestFile))	$this->log($table,$id,5,0,1,"Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)",16,array($theFile, dirname($theDestFile), $recFID),$propArr['event_pid']);

@@ -1,3 +1,7 @@
+2010-07-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15221: Add hook to postprocess upload of a file
+
 2010-07-27  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15196: [caching framework] Speedup t3lib_cache_backend_DbBackend::has($entryIdentifier) (Thanks to Michael Knabe)
