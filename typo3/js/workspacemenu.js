@@ -168,7 +168,9 @@ var WorkspaceMenu = Class.create({
 						// the boolean "true" makes the page reload from the server
 					$('content').contentWindow.location.reload(true);
 				} else {
-					top.goToModule('web_layout');
+					if (TYPO3.configuration.pageModule) {
+						top.goToModule(TYPO3.configuration.pageModule);
+					}
 				}
 
 					// reload the module menu

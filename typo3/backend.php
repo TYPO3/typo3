@@ -357,6 +357,9 @@ class TYPO3backend {
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule    = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+		if (!$GLOBALS['BE_USER']->check('modules', $pageModule)) {
+			$pageModule = '';
+		}
 
 		$menuFrameName = 'menu';
 		if($GLOBALS['BE_USER']->uc['noMenuMode'] === 'icons') {
