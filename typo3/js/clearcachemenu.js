@@ -116,9 +116,8 @@ var ClearCacheMenu = Class.create({
 
 			// activate the spinner
 		var parent = Element.up(toolbarItemIcon);
-		var oldIcon = toolbarItemIcon.remove();
-		var spinner = Element('span', { 'class': 'spinner'});
-		parent.insert(spinner, {position: content});
+		var spinner = new Element('span').addClassName('spinner');
+		var oldIcon = toolbarItemIcon.replace(spinner);
 
 		if (clickedElement.tagName === 'SPAN') {
 			url =  clickedElement.up('a').href;
@@ -130,8 +129,7 @@ var ClearCacheMenu = Class.create({
 			var call = new Ajax.Request(url, {
 				'method': 'get',
 				'onComplete': function() {
-					spinner.remove();
-					parent.insert(oldIcon, {position: content});
+					spinner.replace(oldIcon);
 				}.bind(this)
 			});
 		}
