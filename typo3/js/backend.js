@@ -141,8 +141,9 @@ function loadEditId(id,addGetVars)	{	//
 	if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav)	{
 		top.content.nav_frame.refresh_nav();
 	}
-
-	top.goToModule(TYPO3.configuration.pageModule, 0, addGetVars?addGetVars:"");
+	if (TYPO3.configuration.pageModule) {
+		top.goToModule(TYPO3.configuration.pageModule, 0, addGetVars?addGetVars:"");
+	}
 }
 
 /**
