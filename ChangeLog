@@ -1,3 +1,7 @@
+2010-07-27  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #13649: Deprecated function sql_regcase in cms/tslib/class.tslib_pagegen.php (Thanks to Martin Müller)
+
 2010-07-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15121: htmlArea RTE: Javascript Error in IE7 prevent Link dialogue from opening

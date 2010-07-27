@@ -4985,7 +4985,12 @@ class tslib_cObj {
 						if ($GLOBALS['TSFE']->no_cache && $conf['sword'] && is_array($GLOBALS['TSFE']->sWordList) && $GLOBALS['TSFE']->sWordRegEx)	{
 							$newstring = '';
 							do {
-								$pieces = preg_split('/' . $GLOBALS['TSFE']->sWordRegEx . '/', $data, 2);
+								$pregSplitMode = 'i';
+								if (isset($GLOBALS['TSFE']->config['config']['sword_noMixedCase']) &&
+									!empty($GLOBALS['TSFE']->config['config']['sword_noMixedCase'])) {
+										$pregSplitMode = '';
+								}
+								$pieces = preg_split('/' . $GLOBALS['TSFE']->sWordRegEx . '/' . $pregSplitMode, $data, 2);
 								$newstring.=$pieces[0];
 								$match_len = strlen($data)-(strlen($pieces[0])+strlen($pieces[1]));
 								if (strstr($pieces[0],'<') || strstr($pieces[0],'>'))	{
