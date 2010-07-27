@@ -163,17 +163,11 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		$GLOBALS['TSFE']->sWordRegEx='';
 		$GLOBALS['TSFE']->sWordList = t3lib_div::_GP('sword_list');
 		if (is_array($GLOBALS['TSFE']->sWordList))	{
-			$standAlone = trim(''.$GLOBALS['TSFE']->config['config']['sword_standAlone']);
-			$noMixedCase = trim(''.$GLOBALS['TSFE']->config['config']['sword_noMixedCase']);
+			$space = (!empty($GLOBALS['TSFE']->config['config']['sword_standAlone'])) ? '[[:space:]]' : '';
 
-			$space = ($standAlone) ? '[[:space:]]' : '';
 			foreach ($GLOBALS['TSFE']->sWordList as $val) {
-				if (trim($val)) {
-					if (!$noMixedCase) {
-						$GLOBALS['TSFE']->sWordRegEx.= $space.sql_regcase(quotemeta($val)).$space.'|';
-					} else {
+				if (strlen(trim($val)) > 0) {
 						$GLOBALS['TSFE']->sWordRegEx.= $space.quotemeta($val).$space.'|';
-					}
 				}
 			}
 			$GLOBALS['TSFE']->sWordRegEx = preg_replace('/\|$/','',$GLOBALS['TSFE']->sWordRegEx);
