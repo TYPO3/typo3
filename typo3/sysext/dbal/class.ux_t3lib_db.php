@@ -690,8 +690,11 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			// Map table / field names if needed:
 		$ORIG_tableName = $from_table;	// Saving table names in $ORIG_from_table since $from_table is transformed beneath:
-		if ($tableArray = $this->map_needMapping($ORIG_tableName)) {
-			$this->map_remapSELECTQueryParts($select_fields,$from_table,$where_clause,$groupBy,$orderBy);	// Variables passed by reference!
+		$parsedFromTable = array();
+		$remappedParameters = array();
+		if ($tableArray = $this->map_needMapping($ORIG_tableName, FALSE, $parsedFromTable)) {
+			$from = $parsedFromTable ? $parsedFromTable : $from_table;
+			$remappedParameters = $this->map_remapSELECTQueryParts($select_fields, $from, $where_clause, $groupBy, $orderBy);
 		}
 
 			// Get handler key and select API:
@@ -699,7 +702,10 @@ class ux_t3lib_DB extends t3lib_DB {
 		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
 		switch ($hType) {
 			case 'native':
-				$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
+				if (count($remappedParameters) > 0) {
+					list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($remappedParameters);
+				}
+				$this->lastQuery = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
 				$this->resourceIdToTableNameMap[(string)$sqlResult] = $ORIG_tableName;
 				break;
@@ -714,10 +720,18 @@ class ux_t3lib_DB extends t3lib_DB {
 						$offset = 0;
 					}
 
-					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy), $numrows, $offset);
+					if (count($remappedParameters) > 0) {
+						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTqueryFromArray($remappedParameters), $numrows, $offset);
+					} else {
+						$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy), $numrows, $offset);
+					}
 					$this->lastQuery = $sqlResult->sql;
 				} else {
-					$this->lastQuery = $this->SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy);
+					if (count($remappedParameters) > 0) {
+						$this->lastQuery = $this->SELECTqueryFromArray($remappedParameters);
+					} else {
+						$this->lastQuery = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
+					}
 					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
 				}
 
@@ -725,7 +739,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
 				break;
 			case 'userdefined':
-				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($select_fields,$from_table,$where_clause,$groupBy,$orderBy,$limit);
+				if (count($remappedParameters) > 0) {
+					list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($remappedParameters);
+				}
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
 				if (is_object($sqlResult)) {
 					$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';	// Setting handler type in result object (for later recognition!)
 					$sqlResult->TYPO3_DBAL_tableList = $ORIG_tableName;
@@ -1131,6 +1148,60 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
+	 * Creates a SELECT SQL-statement to be used with an ADOdb backend. 
+	 *
+	 * @param	array		parsed parameters: array($select_fields, $from_table, $where_clause, $groupBy, $orderBy)
+	 * @return	string		Full SQL query for SELECT
+	 */
+	protected function SELECTqueryFromArray(array $params) {
+			// $select_fields
+		$params[0] = $this->_quoteFieldNames($params[0]);
+			// $from_table
+		$params[1] = $this->_quoteFromTables($params[1]);
+			// $where_clause
+		if (count($params[2]) > 0) {
+			$params[2] = $this->_quoteWhereClause($params[2]);
+		}
+			// $group_by
+		if (count($params[3]) > 0) {
+			$params[3] = $this->_quoteGroupBy($params[3]);
+		}
+			// $order_by
+		if (count($params[4]) > 0) {
+			$params[4] = $this->_quoteOrderBy($params[4]);
+		}
+
+			// Compile the SELECT parameters
+		list($select_fields, $from_table, $where_clause, $groupBy, $orderBy) = $this->compileSelectParameters($params);
+
+			// Call parent method to build actual query
+		$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
+
+		if ($this->debugOutput || $this->store_lastBuiltQuery) {
+			$this->debug_lastBuiltQuery = $query;
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Compiles and returns an array of SELECTquery parameters (without $limit) to
+	 * be used with SELECTquery() or exec_SELECTquery().
+	 *
+	 * @param array $params
+	 * @return array array($select_fields, $from_table, $where_clause, $groupBy, $orderBy)
+	 */
+	protected function compileSelectParameters(array $params) {
+		$select_fields = $this->SQLparser->compileFieldList($params[0]);
+		$from_table = $this->SQLparser->compileFromTables($params[1]);
+		$where_clause = (count($params[2]) > 0) ? $this->SQLparser->compileWhereClause($params[2]) : '';
+		$groupBy = (count($params[3]) > 0) ? $this->SQLparser->compileFieldList($params[3]) : '';
+		$orderBy = (count($params[4]) > 0) ? $this->SQLparser->compileFieldList($params[4]) : '';
+
+		return array($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
+	}
+
+	/**
 	 * Creates a TRUNCATE TABLE SQL-statement
 	 * 
 	 * @param	string		See exec_TRUNCATEquery()
@@ -1380,24 +1451,37 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * Quotes field names in a SQL GROUP BY clause acccording to DB rules
+	 * Quotes the field (and table) names within a group by clause with the quote
+	 * character suitable for the DB being used
 	 *
-	 * @param	array		$groupBy The parsed GROUP BY clause to quote
-	 * @return	array
-	 * @see quoteGroupBy()
+	 * @param	string		A group by clause that can by parsed by parseFieldList
+	 * @return	string		Usable group by clause with quoted field/table names
 	 */
 	protected function quoteGroupBy($groupBy) {
 		if ($groupBy === '') return '';
 		if ($this->runningNative()) return $groupBy;
 
 		$groupBy = $this->SQLparser->parseFieldList($groupBy);
+		$groupBy = $this->_quoteGroupBy($groupBy);
+
+		return $this->SQLparser->compileFieldList($groupBy);
+	}
+
+	/**
+	 * Quotes field names in a SQL GROUP BY clause acccording to DB rules
+	 *
+	 * @param	array		$groupBy The parsed GROUP BY clause to quote
+	 * @return	array
+	 * @see quoteGroupBy()
+	 */
+	protected function _quoteGroupBy(array $groupBy) {
 		foreach ($groupBy as $k => $v) {
 			$groupBy[$k]['field'] = $this->quoteName($groupBy[$k]['field']);
 			if ($groupBy[$k]['table'] != '') {
 				$groupBy[$k]['table'] = $this->quoteName($groupBy[$k]['table']);
 			}
 		}
-		return $this->SQLparser->compileFieldList($groupBy);
+		return $groupBy;
 	}
 
 	/**
@@ -1412,15 +1496,27 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($this->runningNative()) return $orderBy;
 
 		$orderBy = $this->SQLparser->parseFieldList($orderBy);
+		$orderBy = $this->_quoteOrderBy($orderBy);
+
+		return $this->SQLparser->compileFieldList($orderBy);
+	}
+
+	/**
+	 * Quotes field names in a SQL ORDER BY clause acccording to DB rules
+	 *
+	 * @param	array		$orderBy The parsed ORDER BY clause to quote
+	 * @return	array
+	 * @see quoteOrderBy()
+	 */
+	protected function _quoteOrderBy(array $orderBy) {
 		foreach ($orderBy as $k => $v) {
 			$orderBy[$k]['field'] = $this->quoteName($orderBy[$k]['field']);
 			if ($orderBy[$k]['table'] != '') {
 				$orderBy[$k]['table'] = $this->quoteName($orderBy[$k]['table']);
 			}
 		}
-		return $this->SQLparser->compileFieldList($orderBy);
+		return $orderBy;
 	}
-
 
 
 	/**************************************
@@ -2679,15 +2775,17 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		List of tables in query
 	 * @param	boolean		If TRUE, it will check only if FIELDs are configured and ignore the mapped table name if any.
+	 * @param	array		Parsed list of tables, should be passed as reference to be reused and prevent double parsing 
 	 * @return	mixed		Returns an array of table names (parsed version of input table) if mapping is needed, otherwise just FALSE.
 	 */
-	protected function map_needMapping($tableList, $fieldMappingOnly = FALSE) {
+	protected function map_needMapping($tableList, $fieldMappingOnly = FALSE, array &$parsedTableList = array()) {
 		$key = $tableList.'|'.$fieldMappingOnly;
 		if (!isset($this->cache_mappingFromTableList[$key])) {
 			$this->cache_mappingFromTableList[$key] = FALSE;	// Default:
 
 			$tables = $this->SQLparser->parseFromTables($tableList);
 			if (is_array($tables)) {
+				$parsedTableList = $tables;
 				foreach ($tables as $tableCfg) {
 					if ($fieldMappingOnly) {
 						if (is_array($this->mapping[$tableCfg['table']]['mapFieldNames'])) {
@@ -2769,9 +2867,8 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Remaps table/field names in a SELECT query's parts
-	 * Notice: All arguments are passed by reference!
 	 *
-	 * @param	string		List of fields to select from the table. This is what comes right after "SELECT ...". Required value.
+	 * @param	mixed		Either parsed list of tables (SQLparser->parseFromTables()) or list of fields to select from the table. This is what comes right after "SELECT ...". Required value.
 	 * @param	string		Table(s) from which to select. This is what comes right after "FROM ...". Require value.
 	 * @param	string		Where clause. This is what comes right after "WHERE ...". Can be blank.
 	 * @param	string		Group by field(s)
@@ -2779,12 +2876,12 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return	void
 	 * @see exec_SELECTquery()
 	 */
-	protected function map_remapSELECTQueryParts(&$select_fields, &$from_table, &$where_clause, &$groupBy, &$orderBy) {
+	protected function map_remapSELECTQueryParts($select_fields, $from_table, $where_clause, $groupBy, $orderBy) {
 			// Backup current mapping as it may be altered if aliases on mapped tables are found
 		$backupMapping = $this->mapping;
 
 			// Tables:
-		$tables = $this->SQLparser->parseFromTables($from_table);
+		$tables = is_array($from_table) ? $from_table : $this->SQLparser->parseFromTables($from_table);
 		$defaultTable = $tables[0]['table'];
 			// Prepare mapping for aliased tables. This will copy the definition of the original table name.
 			// The alias is prefixed with a database-incompatible character to prevent naming clash with real table name
@@ -2841,30 +2938,28 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 			}
 		}
-		$from_table = $this->SQLparser->compileFromTables($tables);
+		$fromParts = $tables;
 
 			// Where clause:
 		$whereParts = $this->SQLparser->parseWhereClause($where_clause);
-		$this->map_sqlParts($whereParts,$defaultTable);
-		$where_clause = $this->SQLparser->compileWhereClause($whereParts, FALSE);
+		$this->map_sqlParts($whereParts, $defaultTable);
 
 			// Select fields:
-		$expFields = $this->SQLparser->parseFieldList($select_fields);
-		$this->map_sqlParts($expFields,$defaultTable);
-		$select_fields = $this->SQLparser->compileFieldList($expFields, FALSE, FALSE);
+		$selectParts = $this->SQLparser->parseFieldList($select_fields);
+		$this->map_sqlParts($selectParts, $defaultTable);
 
 			// Group By fields
-		$expFields = $this->SQLparser->parseFieldList($groupBy);
-		$this->map_sqlParts($expFields,$defaultTable);
-		$groupBy = $this->SQLparser->compileFieldList($expFields);
+		$groupByParts = $this->SQLparser->parseFieldList($groupBy);
+		$this->map_sqlParts($groupByParts, $defaultTable);
 
 			// Order By fields
-		$expFields = $this->SQLparser->parseFieldList($orderBy);
-		$this->map_sqlParts($expFields,$defaultTable);
-		$orderBy = $this->SQLparser->compileFieldList($expFields);
+		$orderByParts = $this->SQLparser->parseFieldList($orderBy);
+		$this->map_sqlParts($orderByParts, $defaultTable);
 
 			// Restore the original mapping
 		$this->mapping = $backupMapping;
+
+		return array($selectParts, $fromParts, $whereParts, $groupByParts, $orderByParts);
 	}
 
 	/**
