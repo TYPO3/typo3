@@ -2390,19 +2390,21 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			sorted: HTMLArea.util.TYPO3.simplifyNested(this.config.tceformsNested)
 		};
 		this.isNested = !Ext.isEmpty(this.nestedParentElements.sorted);
-			// Get width of wizards
-		this.wizards = this.textArea.parent().parent().next();
-		if (this.wizards) {
-			if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
-				this.textAreaInitialSize.wizardsWidth = this.wizards.getWidth();
-			} else {
-					// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
-				var parentElements = [].concat(this.nestedParentElements.sorted);
-					// Walk through all nested tabs and inline levels to get correct size
-				this.textAreaInitialSize.wizardsWidth = HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].getWidth()', [this.wizards]);
+			// If in BE, get width of wizards
+		if (Ext.get('typo3-docheader')) {
+			this.wizards = this.textArea.parent().parent().next();
+			if (this.wizards) {
+				if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
+					this.textAreaInitialSize.wizardsWidth = this.wizards.getWidth();
+				} else {
+						// Clone the array of nested tabs and inline levels instead of using a reference as HTMLArea.util.TYPO3.accessParentElements will modify the array
+					var parentElements = [].concat(this.nestedParentElements.sorted);
+						// Walk through all nested tabs and inline levels to get correct size
+					this.textAreaInitialSize.wizardsWidth = HTMLArea.util.TYPO3.accessParentElements(parentElements, 'args[0].getWidth()', [this.wizards]);
+				}
+					// Hide the wizards so that they do not move around while the editor framework is being sized
+				this.wizards.hide();
 			}
-				// Hide the wizards so that they do not move around while the editor framework is being sized
-			this.wizards.hide();
 		}
 			// Plugins register
 		this.plugins = {};
@@ -2771,9 +2773,11 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}, this);
 		this.purgeListeners();
 			// Cleaning references to DOM in order to avoid IE memory leaks
-		this.wizards.dom = null;
-		this.textArea.parent().parent().dom = null;
-		this.textArea.parent().dom = null;
+		if (this.wizards) {
+			this.wizards.dom = null;
+			this.textArea.parent().parent().dom = null;
+			this.textArea.parent().dom = null;
+		}
 		this.textArea.dom = null;
 		RTEarea[this.editorId].editor = null;
 	}
