@@ -248,7 +248,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 			// Register RTE windows:
 		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
-		$textAreaId = htmlspecialchars($PA['itemFormElName']);
+		$textAreaId = htmlspecialchars($PA['itemFormElName']) . '_' . strval($this->TCEform->RTEcounter);
 
 			// Register RTE in JS:
 		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId);
@@ -290,8 +290,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	function setSaveRTE($RTEcounter, $form, $textareaId) {
 		return '
 		if (RTEarea[\'' . $textareaId . '\'] && !RTEarea[\'' . $textareaId . '\'].deleted) {
-			fields = document.getElementsByName(\'' . $textareaId . '\');
-			field = fields.item(0);
+			var field = document.getElementById(\'RTEarea' . $textareaId . '\');
 			if (field && field.nodeName.toLowerCase() == \'textarea\') {
 				field.value = RTEarea[\'' . $textareaId . '\'][\'editor\'].getHTML();
 			}

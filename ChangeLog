@@ -1,3 +1,7 @@
+2010-07-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15244: htmlArea RTE: textearea Id may not be unique in FE
+
 2010-07-27  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15196: [caching framework] Speedup t3lib_cache_backend_DbBackend::has($entryIdentifier) (Thanks to Michael Knabe)
