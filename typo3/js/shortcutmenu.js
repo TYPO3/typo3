@@ -254,9 +254,8 @@ var ShortcutMenu = Class.create({
 		var toolbarItemIcon = $$('#shortcut-menu .toolbar-item span.t3-icon')[0];
 
 		var parent = Element.up(toolbarItemIcon);
-		var oldIcon = toolbarItemIcon.remove();
-		var spinner = Element('span', { 'class': 'spinner'});
-		parent.insert(spinner, {position: content});
+		var spinner = new Element('span').addClassName('spinner');
+		var oldIcon = toolbarItemIcon.replace(spinner);
 
 			// synchrous call to wait for it to complete and call the render
 			// method with backpath _afterwards_
@@ -266,8 +265,7 @@ var ShortcutMenu = Class.create({
 		});
 
 		this.reRenderMenu(null, null, backPath);
-		spinner.remove();
-		parent.insert(oldIcon, {position: content});
+		spinner.replace(oldIcon);
 	}
 
 });
