@@ -454,7 +454,12 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 				}
 			} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
 				if (is_array($result)) {
-					$propertyValue = current($result);
+					
+					if (current($result) !== FALSE) {
+						$propertyValue = current($result);
+					} else {
+						$propertyValue = NULL;
+					}
 				} else {
 					$propertyValue = $result;
 				}
