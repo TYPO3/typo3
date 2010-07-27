@@ -2,6 +2,7 @@
 
 	* Fixed bug #15244: htmlArea RTE: textearea Id may not be unique in FE
 	* Fixed bug #15250: htmlArea RTE: FE additionalJS_post javascript may be displayed as HTML text
+	* Fixed bug #15121: htmlArea RTE: Javascript Error in IE7 prevent Link dialogue from opening
 
 2010-07-26  Stanislas Rolland  <typo3@sjbr.ca>
 

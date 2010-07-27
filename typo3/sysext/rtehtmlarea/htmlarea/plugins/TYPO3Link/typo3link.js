@@ -146,7 +146,8 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 				if (this.pageTSConfiguration && this.pageTSConfiguration.additionalAttributes) {
 					var additionalAttributes = this.pageTSConfiguration.additionalAttributes.split(",");
 					for (var i = additionalAttributes.length; --i >= 0;) {
-						if (node.hasAttribute(additionalAttributes[i])) {
+							// hasAttribute() not available in IE < 8
+						if ((node.hasAttribute && node.hasAttribute(additionalAttributes[i])) || node.getAttribute(additionalAttributes[i]) != null) {
 							additionalParameter += "&curUrl[" + additionalAttributes[i] + "]=" + encodeURIComponent(node.getAttribute(additionalAttributes[i]));
 						}
 					}
