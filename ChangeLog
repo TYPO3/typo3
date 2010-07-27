@@ -1,5 +1,6 @@
 2010-07-27  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15228: Links in TS object browser tree forget the breakkpoint
 	* Fixed bug #14946: Switching workplaces causes nesting of BE (Thanks to Stefan Galinski)
 	* Fixed bug #13649: Deprecated function sql_regcase in cms/tslib/class.tslib_pagegen.php (Thanks to Martin Müller)
 
