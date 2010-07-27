@@ -94,6 +94,13 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	const PART_HEADER = 1;
 	const PART_FOOTER = 2;
 
+	// paths to contibuted libraries
+	protected $prototypePath = 'contrib/prototype/';
+	protected $scriptaculousPath = 'contrib/scriptaculous/';
+	protected $extCorePath = 'contrib/extjs/';
+	protected $extJsPath = 'contrib/extjs/';
+
+
 	// internal flags for JS-libraries
 	protected $addPrototype = FALSE;
 	protected $addScriptaculous = FALSE;
@@ -307,6 +314,46 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function setBodyContent($content) {
 		$this->bodyContent = $content;
+	}
+
+	/**
+	 * Sets Path for prototype library (relative to typo3 directory)
+	 *
+	 * @param string path
+	 * @return void
+	 */
+	public function setPrototypePath($path) {
+		$this->prototypePath = $path;
+	}
+
+	/**
+	 * Sets Path for scriptaculous library (relative to typo3 directory)
+	 *
+	 * @param string $path
+	 * @return void
+	 */
+	public function setScriptaculousPath($path) {
+		$this->scriptaculousPath = $path;
+	}
+
+	/**
+	 * Sets Path for Ext Core library (relative to typo3 directory)
+	 *
+	 * @param string $path
+	 * @return void
+	 */
+	public function setExtCorePath($path) {
+		$this->extCorePath = $path;
+	}
+
+	/**
+	 * Sets Path for ExtJs library (relative to typo3 directory)
+	 *
+	 * @param string $path
+	 * @return void
+	 */
+	public function setExtJsPath($path) {
+		$this->extJsPath = $path;
 	}
 
 	/*****************************************************/
@@ -579,6 +626,42 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function getBodyContent() {
 		return $this->bodyContent;
+	}
+
+	/**
+	 * Gets Path for prototype library (relative to typo3 directory)
+	 *
+	 * @return string
+	 */
+	public function getPrototypePath() {
+		return $this->prototypePath;
+	}
+
+	/**
+	 * Gets Path for scriptaculous library (relative to typo3 directory)
+	 *
+	 * @return string
+	 */
+	public function getScriptaculousPath() {
+		return $this->scriptaculousPath;
+	}
+
+	/**
+	 * Gets Path for Ext Core library (relative to typo3 directory)
+	 *
+	 * @return string
+	 */
+	public function getExtCorePath() {
+		return $this->extCorePath;
+	}
+
+	/**
+	 * Gets Path for ExtJs library (relative to typo3 directory)
+	 *
+	 * @return string
+	 */
+	public function getExtJsPath() {
+		return $this->extJsPath;
 	}
 
 	/*****************************************************/
@@ -1262,9 +1345,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$out = '';
 
 		if ($this->addPrototype) {
-			$out .= '<script src="' . $this->processJsFile($this->backPath  . 'contrib/prototype/prototype.js') .
+			$out .= '<script src="' . $this->processJsFile($this->backPath  . $this->prototypePath . 'prototype.js') .
 				'" type="text/javascript"></script>' . LF;
-			unset($this->jsFiles[$this->backPath . 'contrib/prototype/prototype.js']);
+			unset($this->jsFiles[$this->backPath . $this->prototypePath .'prototype.js']);
 		}
 
 		if ($this->addScriptaculous) {
@@ -1282,32 +1365,32 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			if (count($mods)) {
 				foreach ($mods as $module) {
 					$out .= '<script src="' . $this->processJsFile($this->backPath .
-						'contrib/scriptaculous/' . $module . '.js') . '" type="text/javascript"></script>' . LF;
-					unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/' . $module . '.js']);
+						$this->scriptaculousPath . $module . '.js') . '" type="text/javascript"></script>' . LF;
+					unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . $module . '.js']);
 				}
 			}
-			$out .= '<script src="' . $this->processJsFile($this->backPath .
-				'contrib/scriptaculous/scriptaculous.js') . '" type="text/javascript"></script>' . LF;
-			unset($this->jsFiles[$this->backPath . 'contrib/scriptaculous/scriptaculous.js']);
+			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->scriptaculousPath .
+				'scriptaculous.js') . '" type="text/javascript"></script>' . LF;
+			unset($this->jsFiles[$this->backPath . $this->scriptaculousPath . 'scriptaculous.js']);
 		}
 
 			// include extCore
 		if ($this->addExtCore) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath .
-				'contrib/extjs/ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
+				$this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js') .
 				'" type="text/javascript"></script>' . LF;
-			unset($this->jsFiles[$this->backPath . 'contrib/extjs/ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js']);
+			unset($this->jsFiles[$this->backPath . $this->extCorePath . 'ext-core' . ($this->enableExtCoreDebug ? '-debug' : '') . '.js']);
 		}
 
 			// include extJS
 		if ($this->addExtJS) {
 				// use the base adapter all the time
-			$out .= '<script src="' . $this->processJsFile($this->backPath .
-				'contrib/extjs/adapter/' . ($this->enableExtJsDebug ?
+			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->extJsPath .
+				'adapter/' . ($this->enableExtJsDebug ?
 					str_replace('.js', '-debug.js', $this->extJSadapter) : $this->extJSadapter)) .
 				'" type="text/javascript"></script>' . LF;
-			$out .= '<script src="' . $this->processJsFile($this->backPath .
-				'contrib/extjs/ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') .
+			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->extJsPath .
+				'ext-all' . ($this->enableExtJsDebug ? '-debug' : '') . '.js') .
 				'" type="text/javascript"></script>' . LF;
 
 				// add extJS localization
@@ -1321,7 +1404,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 			$extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
 				// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
-			$extJsLocaleFile = 'contrib/extjs/locale/ext-lang-' . $extJsLang . '.js';
+			$extJsLocaleFile = $this->extJsPath . 'locale/ext-lang-' . $extJsLang . '.js';
 			if (file_exists(PATH_typo3 . $extJsLocaleFile)) {
 				$out .= '<script src="' . $this->processJsFile($this->backPath .
 					$extJsLocaleFile) . '" type="text/javascript" charset="utf-8"></script>' . LF;
@@ -1330,7 +1413,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 				// remove extjs from JScodeLibArray
 			unset(
-				$this->jsFiles[$this->backPath . 'contrib/extjs/ext-all.js'], $this->jsFiles[$this->backPath . 'contrib/extjs/ext-all-debug.js']
+				$this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all.js'],
+				$this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all-debug.js']
 			);
 		}
 
@@ -1369,14 +1453,14 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['theme'])) {
 					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['theme'], 'stylesheet', 'all', '', TRUE, TRUE);
 				} else {
-					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/xtheme-blue.css', 'stylesheet', 'all', '', TRUE, TRUE);
+					$this->addCssFile($this->backPath . $this->extJsPath . 'resources/css/xtheme-blue.css', 'stylesheet', 'all', '', TRUE, TRUE);
 				}
 			}
 			if ($this->extJScss) {
 				if (isset($GLOBALS['TBE_STYLES']['extJS']['all'])) {
 					$this->addCssFile($this->backPath . $GLOBALS['TBE_STYLES']['extJS']['all'], 'stylesheet', 'all', '', TRUE, TRUE);
 				} else {
-					$this->addCssFile($this->backPath . 'contrib/extjs/resources/css/ext-all-notheme.css', 'stylesheet', 'all', '', TRUE, TRUE);
+					$this->addCssFile($this->backPath . $this->extJsPath . 'resources/css/ext-all-notheme.css', 'stylesheet', 'all', '', TRUE, TRUE);
 				}
 			}
 		} else {
