@@ -209,7 +209,7 @@ class localRecordList extends recordList {
 					// Edit
 				$params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
 				$buttons['edit'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, -1)) . '" title="' . $LANG->getLL('editPage', TRUE) . '">' .
-									t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+									t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 								'</a>';
 					// Unhide
 				if ($this->pageRow['hidden'])	{
