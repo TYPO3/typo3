@@ -2629,13 +2629,16 @@
 	function jumpUrl()	{
 		if ($this->jumpurl)	{
 			if (t3lib_div::_GP('juSecure'))	{
+				$locationData = t3lib_div::_GP('locationData');
+				$mimeType = t3lib_div::_GP('mimeType');
+
 				$hArr = array(
 					$this->jumpurl,
 					t3lib_div::_GP('locationData'),
+					t3lib_div::_GP('mimeType'),
 					$this->TYPO3_CONF_VARS['SYS']['encryptionKey']
 				);
 				$calcJuHash=t3lib_div::shortMD5(serialize($hArr));
-				$locationData = t3lib_div::_GP('locationData');
 				$juHash = t3lib_div::_GP('juHash');
 				if ($juHash == $calcJuHash)	{
 					if ($this->locDataCheck($locationData))	{
@@ -2643,7 +2646,6 @@
 							// Deny access to files that match TYPO3_CONF_VARS[SYS][fileDenyPattern] and whose parent directory is typo3conf/ (there could be a backup file in typo3conf/ which does not match against the fileDenyPattern)
 						if (t3lib_div::verifyFilenameAgainstDenyPattern($this->jumpurl) && basename(dirname($this->jumpurl)) !== 'typo3conf') {
 							if (@is_file($this->jumpurl)) {
-								$mimeType = t3lib_div::_GP('mimeType');
 								$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 								header('Content-Type: '.$mimeType);
