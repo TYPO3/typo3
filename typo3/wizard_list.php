@@ -117,7 +117,7 @@ class SC_wizard_list {
 
 			// Make redirect:
 		if (!strcmp($this->pid,'') || strcmp($this->id,''))	{	// If pid is blank OR if id is set, then return...
-			$redirectUrl = $this->P['returnUrl'];
+			$redirectUrl = t3lib_div::sanitizeLocalUrl($this->P['returnUrl']);
 		} else {	// Otherwise, show the list:
 			$redirectUrl = t3lib_extMgm::createListViewLink(
 				$this->pid,

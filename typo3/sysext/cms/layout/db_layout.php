@@ -250,7 +250,7 @@ class SC_db_layout {
 		$this->search_field = t3lib_div::_GP('search_field');
 		$this->search_levels = t3lib_div::_GP('search_levels');
 		$this->showLimit = t3lib_div::_GP('showLimit');
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 		$this->externalTables = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cms']['db_layout']['addTables'];
 
 			// Load page info array:
