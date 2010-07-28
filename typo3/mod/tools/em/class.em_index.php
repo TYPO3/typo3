@@ -2329,7 +2329,7 @@ EXTENSION KEYS:
 
 				// Editing extension file:
 				$editFile = $this->CMD['editFile'];
-				if (t3lib_div::isFirstPartOfStr($editFile,PATH_site) && t3lib_div::isFirstPartOfStr($editFile,$absPath))	{	// Paranoia...
+				if (t3lib_div::isAllowedAbsPath($editFile) && t3lib_div::isFirstPartOfStr($editFile, $absPath)) {
 
 					$fI = t3lib_div::split_fileref($editFile);
 					if (@is_file($editFile) && t3lib_div::inList($this->editTextExtensions,($fI['fileext']?$fI['fileext']:$fI['filebody'])))	{
@@ -2425,7 +2425,7 @@ EXTENSION KEYS:
 					}
 				} else {
 					die (sprintf($GLOBALS['LANG']->getLL('ext_details_fatal_edit_error'),
-							$editFile
+							htmlspecialchars($editFile)
 						)
 					);
 				}
