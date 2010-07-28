@@ -3978,7 +3978,9 @@ class tslib_cObj {
 			while(list(,$v)=each($mimeTypes))	{
 				$parts = explode('=',$v,2);
 				if (strtolower($fI['extension']) == strtolower(trim($parts[0])))	{
-					$mimetype = '&mimeType='.rawurlencode(trim($parts[1]));
+					$mimetypeValue = trim($parts[1]);
+					$mimetype = '&mimeType=' . rawurlencode($mimetypeValue);
+					break;
 				}
 			}
 		}
@@ -3987,6 +3989,7 @@ class tslib_cObj {
 		$hArr = array(
 			$jumpUrl,
 			$locationData,
+			$mimetypeValue,
 			$GLOBALS['TSFE']->TYPO3_CONF_VARS['SYS']['encryptionKey']
 		);
 		$juHash='&juHash='.t3lib_div::shortMD5(serialize($hArr));
