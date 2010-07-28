@@ -101,6 +101,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		if ($this->conf['redirectMode'] && !$this->conf['redirectDisable']) {
 			$this->redirectUrl = $this->processRedirect();
 		}
+		$this->redirectUrl = $this->validateRedirectUrl($this->redirectUrl);
 
 
 			// What to display
@@ -611,6 +612,81 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 */
 	protected function getDisplayText($label, $stdWrapArray=array()) {
 		return $this->flexFormValue($label,'s_messages') ? $this->cObj->stdWrap($this->flexFormValue($label,'s_messages'),$stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_'.$label, '', 1), $stdWrapArray);
+	}
+
+	/**
+	 * Returns a valid and XSS cleaned url for redirect, checked against configuration "allowedRedirectHosts"
+	 *
+	 * @param string $url
+	 * @return string cleaned referer or empty string if not valid
+	 */
+	protected function validateRedirectUrl($url) {
+		$url = strval($url);
+		if ($url === '') {
+			return '';
+		}
+
+		$sanitizedUrl = t3lib_div::removeXSS(rawurldecode($url));
+		if ($url !== $sanitizedUrl) {
+			t3lib_div::sysLog(sprintf($this->pi_getLL('xssAttackDetected'), $url), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			return '';
+		}
+
+		if (!t3lib_div::isValidUrl($sanitizedUrl)) {
+			t3lib_div::sysLog(sprintf($this->pi_getLL('noValidRedirectUrl'), $sanitizedUrl), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			return '';
+		}
+
+			// Validate the URL:
+		if ($this->isInCurrentDomain($sanitizedUrl) || $this->isInLocalDomain($sanitizedUrl)) {
+			return $sanitizedUrl;
+		}
+
+			// URL is not allowed
+		t3lib_div::sysLog(sprintf($this->pi_getLL('noValidRedirectUrl'), $url), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
+		return '';
+	}
+
+	/**
+	 * Determines whether the URL is on the current host
+	 * and belongs to the current TYPO3 installation.
+	 *
+	 * @param string $url URL to be checked
+	 * @return boolean Whether the URL belongs to the current TYPO3 installation
+	 */
+	protected function isInCurrentDomain($url) {
+		return (t3lib_div::isOnCurrentHost($url) && strpos($url, t3lib_div::getIndpEnv('TYPO3_SITE_URL')) === 0);
+	}
+
+	/**
+	 * Determines whether the URL matches a domain
+	 * in the sys_domain databse table.
+	 *
+	 * @param string $domain Name of the domain to be looked up
+	 * @return boolean Whether the domain name is considered to be local
+	 */
+	protected function isInLocalDomain($url) {
+		$result = FALSE;
+
+		$parsedUrl = parse_url($url);
+		$domain = $parsedUrl['host'] . $parsedUrl['path'];
+
+		$localDomains = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'domainName',
+			'sys_domain',
+			'1=1' . $this->cObj->enableFields('sys_domain')
+		);
+
+		if (is_array($localDomains)) {
+			foreach ($localDomains as $localDomain) {
+				if (stripos($domain, $localDomain['domainName']) === 0) {
+					$result = TRUE;
+					break;
+				}
+			}
+		}
+
+		return $result;
 	}
 }
 

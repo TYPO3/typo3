@@ -44,6 +44,8 @@ We couldn't find a username for this email address and so cannot send the passwo
 			<label index="ll_forgot_message">Please enter the email address by which you registered your user account. Then press &quot;Send password&quot; and your password will immediately be emailed to you. Make sure to spell your email address correctly.</label>
 			<label index="ll_forgot_message_emailSent">Your password has now been sent to the email address %s</label>
 			<label index="ll_forgot_header_backToLogin">Return to login form</label>
+			<label index="noValidRedirectUrl">Url "%s" for redirect was not accepted!</label>
+			<label index="xssAttackDetected">Url "%s" contained an XSS attack and was cleaned!</label>
 		</languageKey>
 	</data>
 </T3locallang>
