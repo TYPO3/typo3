@@ -17,10 +17,10 @@
 if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
 
 //Security related constant: Default value of fileDenyPattern
-define('FILE_DENY_PATTERN_DEFAULT', '\.php[3-6]?(\..*)?$|^\.htaccess$');
+define('FILE_DENY_PATTERN_DEFAULT', '\.(php[3-6]?|phpsh|phtml)(\..*)?$|^\.htaccess$');
 
 //Security related constant: Comma separated list of file extensions that should be registered as php script file extensions
-define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc');
+define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
 
 $TYPO3_CONF_VARS = Array(
 	'GFX' => array(		// Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and  GD library respectively.
