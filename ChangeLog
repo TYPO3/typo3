@@ -8,6 +8,7 @@
 	* Fixed bug #14950: XSS in t3editor (thanks to Tobias Liebig)
 	* Fixed bug #14850: Information disclosure in t3lib_htmlmail (thanks to Georg Ringer)
 	* Fixed bug #13961: XSS in impexp (thanks to Georg Ringer)
+	* Fixed bug #13958: XSS in BE Log (thanks to Georg Ringer)
 
 2010-07-27  Steffen Kamper  <steffen@typo3.org>
 
