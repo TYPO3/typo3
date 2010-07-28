@@ -123,7 +123,7 @@ class tx_sysaction extends mod_user_task {
 							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_users', 'pid=0 AND cruser_id='.intval($this->BE_USER->user['uid']).' AND createdByAction='.intval($actionRow['uid']).t3lib_BEfunc::deleteClause('be_users'), '', 'username');
 							$lines = array();
 							while($uRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-								$lines[] = "<nobr>".($uRow["uid"]==$userRecord["uid"]?"<b>":"").$this->action_linkUserName(t3lib_iconworks::getIconImage("be_users",$uRow,$this->backPath,'title="uid='.$uRow["uid"].'" hspace="2" align="top"').$uRow["username"]." (".$uRow["realName"].")".($uRow["uid"]==$userRecord["uid"]?"</b>":"")."</nobr>",$actionRow["uid"],$uRow["uid"])."<br>";
+								$lines[] = '<nobr>' . ($uRow['uid'] == $userRecord['uid'] ? '<strong>' : '') . $this->action_linkUserName(t3lib_iconworks::getIconImage('be_users', $uRow, $this->backPath, 'title="uid=' . $uRow['uid'] . '" hspace="2" align="top"') . htmlspecialchars($uRow['username']) . ' (' . htmlspecialchars($uRow['realName']) . ')' . ($uRow['uid'] == $userRecord['uid'] ? '</strong>' : '') . '</nobr>', $actionRow['uid'], $uRow['uid']) . '<br />';
 							}
 							if (count($lines))	{
 								$theCode.= $this->pObj->doc->section($LANG->getLL("action_t1_listOfUsers"),implode("",$lines),0,1);
@@ -167,7 +167,7 @@ class tx_sysaction extends mod_user_task {
 								} else {
 									$p.= $LANG->getLL("lNone");
 								}
-								$actionContent.=t3lib_iconworks::getIconImage("be_users",$userRecord,$this->backPath,'title="'.htmlspecialchars($p).'" hspace=2 align=top').$userRecord["username"]." (".$userRecord["realName"].")";
+								$actionContent .= t3lib_iconworks::getIconImage('be_users', $userRecord, $this->backPath, 'title="' . htmlspecialchars($p) . '" hspace="2" align="top"') . htmlspecialchars($userRecord['username']) . ' (' . htmlspecialchars($userRecord['realName']) . ')';
 							}
 							$actionContent.=$this->pObj->doc->table($formA);
 							$theCode.= $this->pObj->doc->section($LANG->getLL($newFlag?"action_Create":"action_Update"),$actionContent,0,1);
