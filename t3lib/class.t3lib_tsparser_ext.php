@@ -613,7 +613,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 				$A_B='';
 				$A_E='';
 			}
-			$HTML.=($first?'':'<IMG src="'.$GLOBALS['BACK_PATH'].'gfx/ol/'.$PM.$BTM.'.gif" width="18" height="16" align="top" border=0>').'<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $icon) . ' align="top" title="'.$alttext.'" /> '.$A_B.t3lib_div::fixed_lgd_cs($row['title'],$GLOBALS['BE_USER']->uc['titleLen']).$A_E.'&nbsp;&nbsp;';
+			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM.$BTM . '.gif" width="18" height="16" align="top" border=0>') . '<img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], $icon) . ' align="top" title="' . htmlspecialchars($alttext) . '" /> ' . $A_B . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
 			$keyArray[] = '<tr>
 							<td nowrap>'.$HTML.'</td>
