@@ -20,6 +20,7 @@
 	* Fixed bug #14389: phtml is also PHP extension and should be denied editing / uploading via fileadmin (thanks to Ernesto Baschny)
 	* Follow-up to bug #14389: Added unit test
 	* Fixed bug #1985: XSS vulnerability in wizard classes
+	* Fixed bug #15223: Password request hash in felogin is created with not enough randomness (thanks to Helmut Hummel)
 
 2010-07-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 

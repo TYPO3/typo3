@@ -326,7 +326,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		$validEnd = time() + 3600 * $hours;
 		$validEndString = date($this->conf['dateFormat'], $validEnd);
 
-		$hash =  md5(rand());
+		$hash = md5(t3lib_div::generateRandomBytes(64));
 		$randHash = $validEnd . '|' . $hash;
 		$randHashDB = $validEnd . '|' . md5($hash);
 
