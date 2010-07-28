@@ -1,6 +1,7 @@
 2010-07-28  Oliver Hader  <oliver@typo3.org>
 
 	* Raised Fluid from 1.0.2 to 1.1.0
+	* Fixed bug #14978: XSS in file tree (thanks to Georg Ringer)
 
 2010-07-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 
