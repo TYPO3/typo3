@@ -78,6 +78,7 @@ class SC_wizard_colorpicker {
 	var $P;				// Wizard parameters, coming from TCEforms linking to the wizard.
 	var $colorValue;	// Value of the current color picked.
 	var $fieldChangeFunc;	// Serialized functions for changing the field... Necessary to call when the value is transferred to the TCEform since the form might need to do internal processing. Otherwise the value is simply not be saved.
+	protected $fieldChangeFuncHash;
 	var $fieldName;		// Form name (from opener script)
 	var $formName;		// Field name (from opener script)
 	var $md5ID;			// ID of element in opener script for which to set color.
@@ -115,6 +116,7 @@ class SC_wizard_colorpicker {
 			// Setting GET vars (used in colorpicker script):
 		$this->colorValue = t3lib_div::_GP('colorValue');
 		$this->fieldChangeFunc = t3lib_div::_GP('fieldChangeFunc');
+		$this->fieldChangeFuncHash = t3lib_div::_GP('fieldChangeFuncHash');
 		$this->fieldName = t3lib_div::_GP('fieldName');
 		$this->formName = t3lib_div::_GP('formName');
 		$this->md5ID = t3lib_div::_GP('md5ID');
@@ -133,7 +135,7 @@ class SC_wizard_colorpicker {
 			// Setting field-change functions:
 		$fieldChangeFuncArr = unserialize($this->fieldChangeFunc);
 		$update = '';
-		if (is_array($fieldChangeFuncArr))	{
+		if ($this->areFieldChangeFunctionsValid()) {
 			unset($fieldChangeFuncArr['alert']);
 			foreach($fieldChangeFuncArr as $v)	{
 				$update.= '
@@ -270,7 +272,8 @@ class SC_wizard_colorpicker {
 				'&formName='.rawurlencode($this->P['formName']).
 				'&exampleImg='.rawurlencode($this->P['exampleImg']).
 				'&md5ID='.rawurlencode($this->P['md5ID']).
-				'&fieldChangeFunc='.rawurlencode(serialize($this->P['fieldChangeFunc']));
+				'&fieldChangeFunc='.rawurlencode(serialize($this->P['fieldChangeFunc'])) .
+				'&fieldChangeFuncHash=' . $this->P['fieldChangeFuncHash'];
 
 		$this->content.='
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
@@ -435,6 +438,19 @@ class SC_wizard_colorpicker {
 		}
 		$hex = implode('',$hexvalue);
 		return $hex;
+	}
+
+	/**
+	 * Determines whether submitted field change functions are valid
+	 * and are coming from the system and not from an external abuse.
+	 *
+	 * @return boolean Whether the submitted field change functions are valid
+	 */
+	protected function areFieldChangeFunctionsValid() {
+		return (
+			$this->fieldChangeFunc && $this->fieldChangeFuncHash
+			&& $this->fieldChangeFuncHash == t3lib_div::hmac($this->fieldChangeFunc)
+		);
 	}
 }
 
