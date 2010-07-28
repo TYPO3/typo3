@@ -3896,6 +3896,7 @@ class t3lib_TCEforms	{
 									$params['formName'] = $this->formName;
 									$params['itemName'] = $itemName;
 									$params['fieldChangeFunc'] = $fieldChangeFunc;
+									$params['fieldChangeFuncHash'] = t3lib_div::hmac(serialize($fieldChangeFunc));
 
 									switch((string)$wConf['type'])	{
 										case 'popup':
