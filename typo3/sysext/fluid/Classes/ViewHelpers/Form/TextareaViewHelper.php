@@ -77,7 +77,7 @@ class Tx_Fluid_ViewHelpers_Form_TextareaViewHelper extends Tx_Fluid_ViewHelpers_
 
 		$this->tag->forceClosingTag(TRUE);
 		$this->tag->addAttribute('name', $name);
-		$this->tag->setContent($this->getValue());
+		$this->tag->setContent(htmlspecialchars($this->getValue()));
 
 		$this->setErrorClassAttribute();
 
