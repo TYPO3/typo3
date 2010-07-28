@@ -17,6 +17,7 @@
 	* Fixed bug #12739: XSS in shortcuts (thanks to Francois Suter and Georg Ringer)
 	* Fixed bug #13885: XSS in indexed search BE module (thanks to Benjamin Mack)
 	* Fixed bug #15254: Extension Manager allows to edit arbitrary files if noEdit flag is not set (thanks to Helmut Hummel)
+	* Fixed bug #14389: phtml is also PHP extension and should be denied editing / uploading via fileadmin (thanks to Ernesto Baschny)
 
 2010-07-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 
