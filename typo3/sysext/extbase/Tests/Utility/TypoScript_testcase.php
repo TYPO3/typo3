@@ -33,79 +33,210 @@
 class Tx_Extbase_Utility_TypoScript_testcase extends tx_phpunit_testcase {
 
 	/**
-	 * @test
+	 * @return array
 	 */
-	public function convertTypoScriptArrayToPlainArrayRemovesTrailingDots() {
-		$typoScriptSettings = array(
-			'10' => 'TEXT',
-			'10.' => array(
-				'value' => 'Hello World!',
-				'foo.' => array(
-					'bar' => 5,
+	public function convertTypoScriptArrayToPlainArrayTestdata(){
+		$testdata = array();
+		//convert TypoScript Array To Plain Array Removes Trailing Dots
+		$testdata[0] = array(
+			'typoScriptSettings' => array(
+				'10.' => array(
+					'value' => 'Hello World!',
+					'foo.' => array(
+						'bar' => 5,
+						),
+					),
+				'10' => 'TEXT', // This line was moved down
+				),
+			'expectedSettings' => array(
+				'10' => array(
+					'value' => 'Hello World!',
+					'foo' => array(
+						'bar' => 5,
+						),
+					'_typoScriptNodeValue' => 'TEXT',
+				),
+			)		
+		);
+		
+		//convert TypoScript Array To Plain Array Removes Trailing Dots With Changed Order In The TypoScript Array
+		$testdata[1] = array(
+			'typoScriptSettings' => array(
+				'10' => 'TEXT',
+				'10.' => array(
+					'value' => 'Hello World!',
+					'foo.' => array(
+						'bar' => 5,
 					),
 				),
-			);
-		$expectedSettings = array(
-			'10' => array(
-				'value' => 'Hello World!',
-				'foo' => array(
-					'bar' => 5,
-					),
-				'_typoScriptNodeValue' => 'TEXT',
+			),
+			'expectedSettings' => array(
+				'10' => array(
+					'value' => 'Hello World!',
+					'foo' => array(
+						'bar' => 5,
+						),
+					'_typoScriptNodeValue' => 'TEXT',
 				),
-			);
+			)	
+		);
+		
+		$testdata[2] = array(
+			'typoScriptSettings' => array(
+				'10' => 'COA',
+				'10.' => array(
+					'10' => 'TEXT',
+					'10.' => array(
+						'value' => 'Hello World!',
+						'foo.' => array(
+							'bar' => 5,
+						)
+					),
+					'20' => 'COA',
+					'20.' => array(
+						'10' => 'TEXT',
+						'10.' => array(
+							'value' => 'Test',
+							'wrap' => '[|]'
+						),
+						'20' => 'TEXT',
+						'20.' => array(
+							'value' => 'Test',
+							'wrap' => '[|]'
+						)
+					),
+					'30' => 'custom'
+				),
+			),
+			'expectedSettings' => array(
+				'10' => array(
+					'10' => array(
+						'value' => 'Hello World!',
+						'foo' => array(
+							'bar' => 5,
+							),
+						'_typoScriptNodeValue' => 'TEXT'	
+					),
+					'20' => array(
+							'10' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',
+								'_typoScriptNodeValue' => 'TEXT',					
+							),
+							'20' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',							
+								'_typoScriptNodeValue' => 'TEXT',
+							),
+							'_typoScriptNodeValue' => 'COA',
+						),
+					'30' => 'custom',
+					'_typoScriptNodeValue' => 'COA',
+				),
+			)	
+		);			
+		
+		return $testdata;
+		
+	}
+	
+	/**
+	 * @test
+	 * @dataProvider convertTypoScriptArrayToPlainArrayTestdata
+	 */
+	public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray($typoScriptSettings,$expectedSettings) {
 		$processedSettings = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($typoScriptSettings);
-
 		$this->assertEquals($expectedSettings, $processedSettings);
 	}
 
-	/**
-	 * @test
-	 */
-	public function convertTypoScriptArrayToPlainArrayRemovesTrailingDotsWithChangedOrderInTheTypoScriptArray() {
-		$typoScriptSettings = array(
-			'10.' => array(
-				'value' => 'Hello World!',
-				'foo.' => array(
-					'bar' => 5,
-					),
-				),
-			'10' => 'TEXT', // This line was moved down
-			);
-		$expectedSettings = array(
-			'10' => array(
-				'value' => 'Hello World!',
-				'foo' => array(
-					'bar' => 5,
-					),
-				'_typoScriptNodeValue' => 'TEXT',
-				),
-			);
-		$processedSettings = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($typoScriptSettings);
 
-		$this->assertEquals($expectedSettings, $processedSettings);
+	/**
+	 * Dataprovider for testcase "convertPlainArrayToTypoScriptArray"
+	 * 
+	 * @return array
+	 */
+	public function convertPlainArrayToTypoScriptArrayTestdata() {
+		$testdata = array();
+		
+		$testdata[0] = array(
+			'extbaseTS' => array(
+				'10' => array(
+					'value' => 'Hallo',
+					'_typoScriptNodeValue' => 'TEXT'
+				)
+			),
+	
+			'classic' => array(
+				'10' => 'TEXT',
+				'10.' => array(
+					'value' => 'Hallo'
+				)
+			)
+		);
+
+		$testdata[1] = array(
+			'extbaseTS' => array(
+				'10' => array(
+					'10' => array(
+						'value' => 'Hello World!',
+						'foo' => array(
+							'bar' => 5,
+							),
+						'_typoScriptNodeValue' => 'TEXT'	
+					),
+					'20' => array(
+							'10' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',
+								'_typoScriptNodeValue' => 'TEXT',					
+							),
+							'20' => array(
+								'value' => 'Test',
+								'wrap' => '[|]',							
+								'_typoScriptNodeValue' => 'TEXT',
+							),
+							'_typoScriptNodeValue' => 'COA',
+						),
+					'_typoScriptNodeValue' => 'COA',
+				),
+			),
+	
+			'classic' => array(
+				'10' => 'COA',
+				'10.' => array(
+					'10' => 'TEXT',
+					'10.' => array(
+						'value' => 'Hello World!',
+						'foo.' => array(
+							'bar' => 5,
+						)
+					),
+					'20' => 'COA',
+					'20.' => array(
+						'10' => 'TEXT',
+						'10.' => array(
+							'value' => 'Test',
+							'wrap' => '[|]'
+						),
+						'20' => 'TEXT',
+						'20.' => array(
+							'value' => 'Test',
+							'wrap' => '[|]'
+						)
+					)
+				)
+			)
+		);
+		
+		return $testdata;
 	}
-
+	
 	/**
 	 * @test
+	 * @dataProvider convertPlainArrayToTypoScriptArrayTestdata
 	 */
-	public function convertPlainArrayToTypoScriptArrayAddsNodeValueAndTrailingDots() {
-		$extbaseTS = array(
-			'10' => array(
-				'value' => 'Hallo',
-				'_typoScriptNodeValue' => 'TEXT'
-			)
-		);
-
-		$classic = array(
-			'10' => 'TEXT',
-			'10.' => array(
-				'value' => 'Hallo'
-			)
-		);
-
+	public function convertPlainArrayToTypoScriptArray($extbaseTS, $classic) {
 		$converted = Tx_Extbase_Utility_TypoScript::convertPlainArrayToTypoScriptArray($extbaseTS);
-
 		$this->assertEquals($converted, $classic);
 	}
 }

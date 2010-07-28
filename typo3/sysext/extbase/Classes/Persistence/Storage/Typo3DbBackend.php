@@ -938,7 +938,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 				$tableName = $source->getSelectorName();
 			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
-				$tableName = $source->getLeft()->getSelectorName();
+				$tableName = $source->getRight()->getSelectorName();
 			}
 			$this->pageSelectObject->versionOL($tableName, $row, TRUE);
 			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
