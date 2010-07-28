@@ -159,7 +159,9 @@ class SC_wizard_tsconfig {
 		$this->objString = t3lib_div::_GP('objString');
 		$this->onlyProperty = t3lib_div::_GP('onlyProperty');
 			// Preparing some JavaScript code:
-		if (!is_array($this->P['fieldChangeFunc']))	$this->P['fieldChangeFunc']=array();
+		if (!$this->areFieldChangeFunctionsValid()) {
+			$this->P['fieldChangeFunc']=array();
+		}
 		unset($this->P['fieldChangeFunc']['alert']);
 		$update='';
 		foreach($this->P['fieldChangeFunc'] as $k=>$v)	{
@@ -631,6 +633,19 @@ class SC_wizard_tsconfig {
 
 			// Return link:
 		return $out;
+	}
+
+	/**
+	 * Determines whether submitted field change functions are valid
+	 * and are coming from the system and not from an external abuse.
+	 *
+	 * @return boolean Whether the submitted field change functions are valid
+	 */
+	function areFieldChangeFunctionsValid() {
+		return (
+			isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash'])
+			&& $this->P['fieldChangeFuncHash'] == t3lib_div::hmac(serialize($this->P['fieldChangeFunc']))
+		);
 	}
 }
 

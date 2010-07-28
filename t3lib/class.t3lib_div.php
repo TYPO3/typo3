@@ -971,6 +971,36 @@ class t3lib_div {
 	}
 
 	/**
+	 * Returns a proper HMAC on a given input string and secret TYPO3 encryption key.
+	 *
+	 * @param 	string		Input string to create HMAC from
+	 * @return 	string		resulting (hexadecimal) HMAC currently with a length of 40 (HMAC-SHA-1)
+	 */
+	function hmac($input) {
+		$hashAlgorithm = 'sha1';
+		$hashBlocksize = 64;
+		$hmac = '';
+
+		if (extension_loaded('hash') && function_exists('hash_hmac') && function_exists('hash_algos') && in_array($hashAlgorithm, hash_algos())) {
+			$hmac = hash_hmac($hashAlgorithm, $input, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+		} else {
+				// outer padding
+			$opad = str_repeat(chr(0x5C), $hashBlocksize);
+				// innner padding
+			$ipad = str_repeat(chr(0x36), $hashBlocksize);
+			if (strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) > $hashBlocksize) {
+					// keys longer than blocksize are shorten
+				$key = str_pad(pack('H*', call_user_func($hashAlgorithm, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])), $hashBlocksize, chr(0x00));
+			} else {
+					// keys shorter than blocksize are zero-padded
+				$key = str_pad($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $hashBlocksize, chr(0x00));
+			}
+			$hmac = call_user_func($hashAlgorithm, ($key^$opad) . pack('H*', call_user_func($hashAlgorithm, ($key^$ipad) . $input)));
+		}
+		return $hmac;
+	}
+
+	/**
 	 * Takes comma-separated lists and arrays and removes all duplicates
 	 * If a value in the list is trim(empty), the value is ignored.
 	 * Usage: 16

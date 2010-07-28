@@ -869,6 +869,9 @@ class browse_links {
 
 
 		if ($this->mode=='wizard')	{	// Functions used, if the link selector is in wizard mode (= TCEforms fields)
+			if (!$this->areFieldChangeFunctionsValid()) {
+				$this->P['fieldChangeFunc'] = array();
+			}
 			unset($this->P['fieldChangeFunc']['alert']);
 			reset($this->P['fieldChangeFunc']);
 			$update='';
@@ -2344,6 +2347,19 @@ class browse_links {
 			</form>';
 
 		return $code;
+	}
+
+	/**
+	 * Determines whether submitted field change functions are valid
+	 * and are coming from the system and not from an external abuse.
+	 *
+	 * @return boolean Whether the submitted field change functions are valid
+	 */
+	function areFieldChangeFunctionsValid() {
+		return (
+			isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash'])
+			&& $this->P['fieldChangeFuncHash'] == t3lib_div::hmac(serialize($this->P['fieldChangeFunc']))
+		);
 	}
 }
 
