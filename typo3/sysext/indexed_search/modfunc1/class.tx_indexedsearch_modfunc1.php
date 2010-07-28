@@ -276,7 +276,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			$code.= $this->indexed_info(
 						$data['row'],
 						$data['HTML'].
-							$this->showPageDetails(t3lib_div::fixed_lgd_cs($data['row']['title'], 20),$data['row']['uid'])
+							$this->showPageDetails(t3lib_BEfunc::getRecordTitlePrep($data['row']['title']), $data['row']['uid'])
 					);
 		}
 

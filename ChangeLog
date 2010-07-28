@@ -15,6 +15,7 @@
 	* Fixed bug #12736: XSS in setup module (thanks to Georg Ringer)
 	* Fixed bug #13989: Mitigate PHP's RNG vulnerability (thanks to Marcus Krause and Helmut Hummel)
 	* Fixed bug #12739: XSS in shortcuts (thanks to Francois Suter and Georg Ringer)
+	* Fixed bug #13885: XSS in indexed search BE module (thanks to Benjamin Mack)
 
 2010-07-21  Ingo Renner  <ingo@typo3.org>
 
