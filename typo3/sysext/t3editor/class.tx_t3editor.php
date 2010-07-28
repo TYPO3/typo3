@@ -167,6 +167,7 @@ class tx_t3editor {
 			$this->editorCounter++;
 
 			$class .= ' t3editor';
+			$alt = htmlspecialchars($alt);
 			if (!empty($alt)) {
 				$alt = ' alt="' . $alt . '"';
 			}

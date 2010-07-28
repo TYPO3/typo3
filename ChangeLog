@@ -3,6 +3,7 @@
 	* Fixed bug #14978: XSS in file tree (thanks to Georg Ringer)
 	* Fixed bug #13292: TYPO3 error message reveals path to web root (thanks to Xavier Perseguers)
 	* Fixed bug #11618: XSS vulnerability in install tool / BE login (thanks to Georg Ringer)
+	* Fixed bug #14950: XSS in t3editor (thanks to Tobias Liebig)
 
 2010-07-21  Ingo Renner  <ingo@typo3.org>
 
