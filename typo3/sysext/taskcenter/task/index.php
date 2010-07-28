@@ -242,7 +242,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 
 		$content = '<div id="taskcenter-main">
 						<div id="taskcenter-menu">' . $this->indexAction() . '</div>
-						<div id="taskcenter-item" class="' . $extKey . '-' . $taskClass . '">' .
+						<div id="taskcenter-item" class="' . htmlspecialchars($extKey . '-' . $taskClass) . '">' .
 							$actionContent . '
 						</div>
 					</div>';
