@@ -8,6 +8,7 @@
 	* Fixed bug #13961: XSS in impexp (thanks to Georg Ringer)
 	* Fixed bug #13960: XSS in sys_action (thanks to Georg Ringer)
 	* Fixed bug #13958: XSS in BE Log (thanks to Georg Ringer)
+	* Fixed bug #14317: XSS in Extension Manager (thanks to Georg Ringer)
 
 2010-07-21  Ingo Renner  <ingo@typo3.org>
 

@@ -1974,7 +1974,7 @@ EXTENSION KEYS:
 
 			// Function menu here:
 		if(!$this->CMD['standAlone'] && !t3lib_div::_GP('standAlone')) {
-			$content = 'Extension:&nbsp;<strong>' . $this->extensionTitleIconHeader($extKey, $list[$extKey]) . '</strong> (' . $extKey . ')';
+			$content = 'Extension:&nbsp;<strong>' . $this->extensionTitleIconHeader($extKey, $list[$extKey]) . '</strong> (' . htmlspecialchars($extKey) . ')';
 			$this->content.= $this->doc->section('', $content);
 		}
 
@@ -3008,7 +3008,7 @@ EXTENSION KEYS:
 		if (is_array($imgInfo))	{
 			$out.= '<img src="'.$GLOBALS['BACK_PATH'].$this->typeRelPaths[$extInfo['type']].$extKey.'/ext_icon.gif" '.$imgInfo[3].' align="'.$align.'" alt="" />';
 		}
-		$out.= $extInfo['EM_CONF']['title'] ? htmlspecialchars(t3lib_div::fixed_lgd($extInfo['EM_CONF']['title'],40)) : '<em>'.$extKey.'</em>';
+		$out.= $extInfo['EM_CONF']['title'] ? htmlspecialchars(t3lib_div::fixed_lgd($extInfo['EM_CONF']['title'], 40)) : '<em>' . htmlspecialchars($extKey) . '</em>';
 		return $out;
 	}
 
