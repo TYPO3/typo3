@@ -11,6 +11,7 @@
 	* Fixed bug #14317: XSS in Extension Manager (thanks to Georg Ringer)
 	* Fixed bug #13957: XSS in template analyzer (thanks to Georg Ringer)
 	* Fixed bug #14215: XSS in beuser (thanks to Georg Ringer)
+	* Fixed bug #12458: Session fixation possibility in new sesion machanism of the install tool (thanks to Benjamin Mack, Helmut Hummel and Ernesto Baschny)
 
 2010-07-21  Ingo Renner  <ingo@typo3.org>
 
