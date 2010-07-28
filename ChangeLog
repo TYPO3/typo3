@@ -16,6 +16,7 @@
 	* Fixed bug #13989: Mitigate PHP's RNG vulnerability (thanks to Marcus Krause and Helmut Hummel)
 	* Fixed bug #12739: XSS in shortcuts (thanks to Francois Suter and Georg Ringer)
 	* Fixed bug #13885: XSS in indexed search BE module (thanks to Benjamin Mack)
+	* Fixed bug #15254: Extension Manager allows to edit arbitrary files if noEdit flag is not set (thanks to Helmut Hummel)
 
 2010-07-27  Steffen Kamper  <steffen@typo3.org>
 
