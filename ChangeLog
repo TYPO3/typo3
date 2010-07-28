@@ -1,5 +1,9 @@
 2010-07-28  Oliver Hader  <oliver@typo3.org>
 
+	* Fixed bug #15260: Use of undefined method t3lib_div::sanitizeLocalUrl()
+
+2010-07-28  Oliver Hader  <oliver@typo3.org>
+
 	* Release of TYPO3 4.1.14
 
 2010-07-28  Oliver Hader  <oliver@typo3.org>
