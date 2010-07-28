@@ -1,5 +1,9 @@
 2010-07-28  Oliver Hader  <oliver@typo3.org>
 
+	* Release of TYPO3 4.2.13
+
+2010-07-28  Oliver Hader  <oliver@typo3.org>
+
 	* Fixed bug #14978: XSS in file tree (thanks to Georg Ringer)
 	* Fixed bug #13292: TYPO3 error message reveals path to web root (thanks to Xavier Perseguers)
 	* Fixed bug #11618: XSS vulnerability in install tool / BE login (thanks to Georg Ringer)
