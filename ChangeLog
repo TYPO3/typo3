@@ -3,6 +3,7 @@
 	* Raised Extbase and Fluid from 1.2.0 to 1.2.1
 	* Fixed bug #14953: XSS in (new) taskcenter (thanks to Georg Ringer)
 	* Fixed bug #14978: XSS in file tree (thanks to Georg Ringer)
+	* Fixed bug #13292: TYPO3 error message reveals path to web root (thanks to Xavier Perseguers)
 
 2010-07-27  Steffen Kamper  <steffen@typo3.org>
 
