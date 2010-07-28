@@ -19,6 +19,7 @@
 	* Fixed bug #15254: Extension Manager allows to edit arbitrary files if noEdit flag is not set (thanks to Helmut Hummel)
 	* Fixed bug #14389: phtml is also PHP extension and should be denied editing / uploading via fileadmin (thanks to Ernesto Baschny)
 	* Follow-up to bug #14389: Added unit test
+	* Fixed bug #1985: XSS vulnerability in wizard classes
 
 2010-07-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 
