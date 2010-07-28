@@ -868,7 +868,11 @@ final class t3lib_BEfunc {
 			// Traverse languages
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,flag', 'sys_language', 'pid=0' . self::deleteClause('sys_language'));
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$sysLanguages[] = array($row['title'].' ['.$row['uid'].']', $row['uid'], ($row['flag'] ? 'flags/'.$row['flag'] : ''));
+			$sysLanguages[] = array(
+				htmlspecialchars($row['title']) . ' [' . $row['uid'] . ']',
+				$row['uid'],
+				($row['flag'] ? 'flags/' . $row['flag'] : '')
+			);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
