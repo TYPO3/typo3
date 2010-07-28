@@ -283,6 +283,7 @@ class tx_t3editor implements t3lib_Singleton {
 			$this->editorCounter++;
 
 			$class .= ' t3editor';
+			$alt = htmlspecialchars($alt);
 			if (!empty($alt)) {
 				$alt = ' alt="' . $alt . '"';
 			}
