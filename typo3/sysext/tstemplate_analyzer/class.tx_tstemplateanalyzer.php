@@ -162,14 +162,14 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				reset($tmpl->clearList_const);
 				foreach ($tmpl->constants as $key => $val) {
 					$cVal = current($tmpl->clearList_const);
-					if ($cVal == t3lib_div::_GET('template') || t3lib_div::_GET('template') == "all")	{
+					if ($cVal == t3lib_div::_GET('template') || t3lib_div::_GET('template') == 'all')	{
 						$theOutput .= '
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><b>' . $tmpl->templateTitles[$cVal] . '</b></td></tr>
+								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><b>' . htmlspecialchars($tmpl->templateTitles[$cVal]) . '</b></td></tr>
 							<tr>
 								<td><img src="clear.gif" width="3" height="1" /></td>
-								<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 class="bgColor0" width="100%"><tr><td nowrap>' .
-								$tmpl->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"], $this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"], $this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"], $this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"], $this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"]) .
+								<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">' .
+								$tmpl->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntaxBlockmode']) .
 								'</td></tr></table>
 								</td>
 							</tr>
@@ -200,13 +200,13 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 
 				reset($tmpl->clearList_setup);
 				foreach ($tmpl->config as $key => $val)	{
-					if (current($tmpl->clearList_setup) == t3lib_div::_GET('template') || t3lib_div::_GET('template') == "all")	{
+					if (current($tmpl->clearList_setup) == t3lib_div::_GET('template') || t3lib_div::_GET('template') == 'all')	{
 						$theOutput .= '
 							<tr>
-								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><b>' . $tmpl->templateTitles[current($tmpl->clearList_setup)] . '</b></td></tr>
+								<td><img src="clear.gif" width="3" height="1" /></td><td class="bgColor2"><b>' . htmlspecialchars($tmpl->templateTitles[current($tmpl->clearList_setup)]) . '</b></td></tr>
 							<tr>
 								<td><img src="clear.gif" width="3" height="1" /></td>
-								<td class="bgColor2"><table border=0 cellpadding=0 cellspacing=0 class="bgColor0" width="100%"><tr><td nowrap>'.$tmpl->ext_outputTS(array($val),$this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"],$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntaxBlockmode"]).'</td></tr></table>
+								<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">' . $tmpl->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntaxBlockmode']) . '</td></tr></table>
 								</td>
 							</tr>
 						';
