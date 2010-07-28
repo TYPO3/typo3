@@ -1421,7 +1421,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					'preset_data' => serialize($inData)
 				);
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_impexp_presets',$fields_values);
-				$msg = 'New preset "'.$inData['preset']['title'].'" is created';
+				$msg = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';
 			}
 		}
 
