@@ -66,6 +66,8 @@ For security reasons, this link is only active until %s. If you do not visit the
 			<label index="ll_forgot_reset_message_emailSent">An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</label>
 			<label index="ll_forgot_header_backToLogin">Return to login form</label>
 			<label index="ll_enter_your_data">Username or email address:</label>
+			<label index="noValidRedirectUrl">Url "%s" for redirect was not accepted!</label>
+			<label index="xssAttackDetected">Url "%s" contained an XSS attack and was cleaned!</label>
 		</languageKey>
 	</data>
 </T3locallang>
