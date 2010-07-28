@@ -435,6 +435,8 @@ class TBE_PageTree extends localPageTree {
 	 * @return	string		Wrapping title string.
 	 */
 	function wrapTitle($title,$v,$ext_pArrPages)	{
+		$title = htmlspecialchars($title);
+
 		if ($ext_pArrPages)	{
 			$ficon=t3lib_iconWorks::getIcon('pages',$v);
 			$onClick = "return insertElement('pages', '".$v['uid']."', 'db', ".t3lib_div::quoteJSvalue($v['title']).", '', '', '".$ficon."','',1);";
@@ -482,6 +484,8 @@ class localFolderTree extends t3lib_folderTree {
 	 * @return	string		Wrapping title string.
 	 */
 	function wrapTitle($title,$v)	{
+		$title = htmlspecialchars($title);
+
 		if ($this->ext_isLinkable($v))	{
 			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
@@ -634,6 +638,8 @@ class TBE_FolderTree extends localFolderTree {
 	 * @return	string		Wrapping title string.
 	 */
 	function wrapTitle($title,$v)	{
+		$title = htmlspecialchars($title);
+
 		if ($this->ext_isLinkable($v))	{
 			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandFolder='.rawurlencode($v['path']).'\');';
 			return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$title.'</a>';
