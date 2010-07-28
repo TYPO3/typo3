@@ -221,7 +221,8 @@ class SC_show_item {
 	function main()	{
 
 		if ($this->access)	{
-			$returnLinkTag = t3lib_div::_GP('returnUrl') ? '<a href="'.t3lib_div::_GP('returnUrl').'" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
+			$returnLink =  t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+			$returnLinkTag = $returnLink ? '<a href="' . $returnLink . '" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
 
 				// render type by user func
 			$typeRendered = false;
@@ -252,7 +253,7 @@ class SC_show_item {
 			}
 
 				// If return Url is set, output link to go back:
-			if (t3lib_div::_GP('returnUrl'))	{
+			if (t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl')))	{
 				$this->content = $this->doc->section('',$returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a><br /><br />').$this->content;
 
 				$this->content .= $this->doc->section('','<br />'.$returnLinkTag.'<strong>'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack',1).'</strong></a>');

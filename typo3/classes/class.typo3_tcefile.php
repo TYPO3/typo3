@@ -84,7 +84,7 @@ class TYPO3_tcefile {
 		$this->CB = t3lib_div::_GP('CB');
 		$this->overwriteExistingFiles = t3lib_div::_GP('overwriteExistingFiles');
 		$this->vC = t3lib_div::_GP('vC');
-		$this->redirect = t3lib_div::_GP('redirect');
+		$this->redirect = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect'));
 
 		$this->initClipboard();
 	}

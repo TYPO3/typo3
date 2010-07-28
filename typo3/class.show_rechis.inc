@@ -65,7 +65,7 @@ class recordHistory {
 	function recordHistory()	{
 			// GPvars:
 		$this->element = t3lib_div::_GP('element');
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 		$this->lastSyslogId = t3lib_div::_GP('diff');
 		$this->rollbackFields = t3lib_div::_GP('rollbackFields');
 			// resolve sh_uid if set

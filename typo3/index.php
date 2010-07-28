@@ -121,7 +121,7 @@ class SC_index {
 			// We need a PHP session session for most login levels
 		session_start();
 
-		$this->redirect_url = t3lib_div::_GP('redirect_url');
+		$this->redirect_url = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect_url'));
 		$this->GPinterface = t3lib_div::_GP('interface');
 
 			// Grabbing preset username and password, for security reasons this feature only works if SSL is used

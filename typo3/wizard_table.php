@@ -209,7 +209,7 @@ class SC_wizard_table {
 			$buttons['csh_buttons'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons', $GLOBALS['BACK_PATH'], '');
 
 			// Close
-			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode($this->P['returnUrl']) . '\')); return false;') . '">' .
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode(t3lib_div::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;') . '">' .
 				'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" />' .
 				'</a>';
 
@@ -319,7 +319,7 @@ class SC_wizard_table {
 
 					// If the save/close button was pressed, then redirect the screen:
 				if ($_POST['saveandclosedok_x']) {
-					t3lib_utility_Http::redirect($this->P['returnUrl']);
+					t3lib_utility_Http::redirect(t3lib_div::sanitizeLocalUrl($this->P['returnUrl']));
 				}
 			}
 		} else {	// If nothing has been submitted, load the $bodyText variable from the selected database row:

@@ -249,7 +249,7 @@ class SC_db_layout {
 		$this->search_field = t3lib_div::_GP('search_field');
 		$this->search_levels = t3lib_div::_GP('search_levels');
 		$this->showLimit = t3lib_div::_GP('showLimit');
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 
 			// Load page info array:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
