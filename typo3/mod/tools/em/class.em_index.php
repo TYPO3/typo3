@@ -1960,7 +1960,7 @@ EXTENSION KEYS:
 
 				// Editing extension file:
 				$editFile = $this->CMD['editFile'];
-				if (t3lib_div::isFirstPartOfStr($editFile,PATH_site) && t3lib_div::isFirstPartOfStr($editFile,$absPath))	{	// Paranoia...
+				if (t3lib_div::isAllowedAbsPath($editFile) && t3lib_div::isFirstPartOfStr($editFile, $absPath)) {
 
 					$fI = t3lib_div::split_fileref($editFile);
 					if (@is_file($editFile) && t3lib_div::inList($this->editTextExtensions,($fI['fileext']?$fI['fileext']:$fI['filebody'])))	{
@@ -2016,7 +2016,7 @@ EXTENSION KEYS:
 							$theOutput.=$this->doc->section('Filesize exceeded '.$this->kbMax.' Kbytes','Files larger than '.$this->kbMax.' KBytes are not allowed to be edited.');
 						}
 					}
-				} else die('Fatal Edit error: File "'.$editFile.'" was not inside the correct path of the TYPO3 Extension!');
+				} else die('Fatal Edit error: File "' . htmlspecialchars($editFile) . '" was not inside the correct path of the TYPO3 Extension!');
 			} else {
 
 				// MAIN:
