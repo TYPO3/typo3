@@ -2191,7 +2191,7 @@ $str.=$this->docBodyTagBegin().
 			$title = t3lib_BEfunc::getRecordTitle('pages', $pageRecord);
 		} else {	// On root-level of page tree
 				// Make Icon
-			$iconImg = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root', array('title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']));
+			$iconImg = t3lib_iconWorks::getSpriteIcon('apps-pagetree-root', array('title' => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])));
 			if($BE_USER->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {

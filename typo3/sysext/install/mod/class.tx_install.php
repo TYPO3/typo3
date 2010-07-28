@@ -471,7 +471,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Define the markers content
 		$markers = array(
 			'siteName' => 'Site: ' .
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
+				htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']),
 			'headTitle' => 'Login to TYPO3 ' . TYPO3_version . ' Install Tool',
 			'redirectUrl' => htmlspecialchars($redirect_url),
 			'enterPassword' => 'Password',
@@ -7632,7 +7632,7 @@ $out="
 		} else {
 			$this->markers['headTitle'] = '
 				TYPO3 ' . TYPO3_version . '
-				Install Tool on site: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '
+				Install Tool on site: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '
 			';
 		}
 		$this->markers['title'] = 'TYPO3 ' . TYPO3_version;
