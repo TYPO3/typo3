@@ -349,7 +349,7 @@ class SC_mod_user_setup_index {
 		if ($displayFullText) {
 			$code[$i++][1] = $this->getCSH('emailMeAtLogin');
 		}
-		$code[$i][1] = $this->setLabel('emailMeAtLogin').($BE_USER->user['email'] ? ' ('.$BE_USER->user['email'].')' : '');
+		$code[$i][1] = $this->setLabel('emailMeAtLogin') . ($BE_USER->user['email'] ? ' (' . htmlspecialchars($BE_USER->user['email']) . ')' : '');
 		$code[$i][2] = '<input id="field_emailMeAtLogin" type="checkbox" name="data[emailMeAtLogin]"'.($BE_USER->uc['emailMeAtLogin']?' checked="checked"':'').' />';
 		$code[$i++][3] = $displayFullText ? '&nbsp;' : $this->getCSH('emailMeAtLogin');
 
