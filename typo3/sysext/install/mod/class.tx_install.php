@@ -4854,7 +4854,7 @@ a:hover {color: #006; text-decoration:underline;}
 					<tr>
 						<td bgcolor="#F4F0E8">
 						<div align="center"><span class="size4text"><strong>TYPO3 '.TYPO3_branch.' Install Tool</strong></span></div>
-						<div align="center"><span style="color:navy;"><strong>Site: '.$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].'</strong></span></div>
+						<div align="center"><span style="color:navy;"><strong>Site: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '</strong></span></div>
 						'.($this->passwordOK ? '<div align="center"><span style="color:navy;"><strong>Version: '.TYPO3_version.'</strong></span></div>':'').'<br />
 
 '.($this->step?$this->stepHeader():$this->menu()).$content.'<hr />'.$this->note123().$this->endNotes().'
