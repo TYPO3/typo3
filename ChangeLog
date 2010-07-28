@@ -13,6 +13,7 @@
 	* Fixed bug #14215: XSS in beuser (thanks to Georg Ringer)
 	* Fixed bug #12458: Session fixation possibility in new sesion machanism of the install tool (thanks to Benjamin Mack, Helmut Hummel and Ernesto Baschny)
 	* Fixed bug #12736: XSS in setup module (thanks to Georg Ringer)
+	* Fixed bug #13989: Mitigate PHP's RNG vulnerability (thanks to Marcus Krause and Helmut Hummel)
 
 2010-07-21  Ingo Renner  <ingo@typo3.org>
 
