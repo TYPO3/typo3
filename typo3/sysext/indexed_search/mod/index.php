@@ -454,7 +454,7 @@ class SC_mod_tools_isearch_index {
 		reset($arr);
 		$list=array();
 		while(list($k,$v)=each($arr))	{
-			$list[]=$k."=".$v;
+			$list[] = htmlspecialchars($k) . '=' . htmlspecialchars($v);
 		}
 		return implode("<BR>",$list);
 	}
