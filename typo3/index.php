@@ -211,7 +211,7 @@ class SC_index {
 		}
 
 			// Starting page:
-		$this->content.=$TBE_TEMPLATE->startPage('TYPO3 Login: '.$TYPO3_CONF_VARS['SYS']['sitename']);
+		$this->content .= $TBE_TEMPLATE->startPage('TYPO3 Login: ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['sitename']));
 
 			// Add login form:
 		$this->content.=$this->wrapLoginForm($loginForm);
@@ -343,7 +343,7 @@ class SC_index {
 			'SITELINK'         => '<a href="/">###SITENAME###</a>',
 
 				// global variables will now be replaced (at last)
-			'SITENAME'         => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
+			'SITENAME'         => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
 		);
 		return t3lib_parsehtml::substituteMarkerArray($mainContent, $markers, '###|###');
 	}
