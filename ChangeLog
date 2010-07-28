@@ -1,6 +1,7 @@
 2010-07-28  Oliver Hader  <oliver@typo3.org>
 
 	* Raised Extbase and Fluid from 1.2.0 to 1.2.1
+	* Fixed bug #14953: XSS in (new) taskcenter (thanks to Georg Ringer)
 
 2010-07-27  Steffen Kamper  <steffen@typo3.org>
 
