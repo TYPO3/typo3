@@ -22,6 +22,7 @@
 	* Fixed bug #1985: XSS vulnerability in wizard classes
 	* Fixed bug #15223: Password request hash in felogin is created with not enough randomness (thanks to Helmut Hummel)
 	* Fixed bug #14712: The GET/POST variable mimeType is used to create the http header content-type without verification (thanks to Rupert Germann)
+	* Fixed bug #14412: Field value added to foreign_table_where by replacing ###REC_FIELD_THE_FIELD_NAME### is not quoted (thanks to Helmut Hummel and Xavier Perseguers)
 
 2010-07-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 

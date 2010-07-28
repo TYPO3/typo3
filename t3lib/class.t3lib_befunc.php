@@ -3165,7 +3165,11 @@ final class t3lib_BEfunc {
 			while(list($kk, $vv) = each($fTWHERE_parts)) {
 				if ($kk) {
 					$fTWHERE_subpart = explode('###', $vv, 2);
-					$fTWHERE_parts[$kk] = $TSconfig['_THIS_ROW'][$fTWHERE_subpart[0]].$fTWHERE_subpart[1];
+					if (substr($fTWHERE_parts[0], -1) === '\'' && $fTWHERE_subpart[1]{0} === '\'') {
+						$fTWHERE_parts[$kk] = $GLOBALS['TYPO3_DB']->quoteStr($TSconfig['_THIS_ROW'][$fTWHERE_subpart[0]], $foreign_table) . $fTWHERE_subpart[1];
+					} else {
+						$fTWHERE_parts[$kk] = $GLOBALS['TYPO3_DB']->fullQuoteStr($TSconfig['_THIS_ROW'][$fTWHERE_subpart[0]], $foreign_table) . $fTWHERE_subpart[1];
+					}
 				}
 			}
 			$fTWHERE = implode('', $fTWHERE_parts);
