@@ -146,7 +146,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			<tr id="shortcut-'.$shortcut['raw']['uid'].'" class="shortcut">
 				<td class="shortcut-icon">'.$shortcut['icon'].'</td>
 				<td class="shortcut-label">
-					<a id="shortcut-label-'.$shortcut['raw']['uid'].'" href="" onclick="'.$shortcut['action'].'">'.$shortcut['label'].'</a>
+					<a id="shortcut-label-' . $shortcut['raw']['uid'] . '" href="" onclick="' . $shortcut['action'] . '">' . htmlspecialchars($shortcut['label']) . '</a>
 				</td>
 				<td class="shortcut-edit">'.$editIcon.' id="shortcut-edit-'.$shortcut['raw']['uid'].'" /></td>
 				<td class="shortcut-delete">'.$deleteIcon.'</td>
@@ -179,7 +179,7 @@ class ShortcutMenu implements backend_toolbarItem {
 					<tr id="shortcut-'.$shortcut['raw']['uid'].'" class="shortcut'.$firstRow.'">
 						<td class="shortcut-icon">'.$shortcut['icon'].'</td>
 						<td class="shortcut-label">
-							<a id="shortcut-label-'.$shortcut['raw']['uid'].'" href="" onclick="'.$shortcut['action'].'">'.$shortcut['label'].'</a>
+							<a id="shortcut-label-' . $shortcut['raw']['uid'] . '" href="" onclick="' . $shortcut['action'] . '">' . htmlspecialchars($shortcut['label']) . '</a>
 						</td>
 						<td class="shortcut-edit">'.$editIcon.' id="shortcut-edit-'.$shortcut['raw']['uid'].'" /></td>
 						<td class="shortcut-delete">'.$deleteIcon.'</td>
@@ -501,61 +501,64 @@ class ShortcutMenu implements backend_toolbarItem {
 		$queryParts      = parse_url($url);
 		$queryParameters = t3lib_div::explodeUrl2Array($queryParts['query'], 1);
 
-		if(is_array($queryParameters['edit'])) {
-			$shortcut['table']    = key($queryParameters['edit']);
-			$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
+			// Proceed only if no scheme is defined, as URL is expected to be relative
+		if (empty($queryParts['scheme'])) {
+			if (is_array($queryParameters['edit'])) {
+				$shortcut['table']    = key($queryParameters['edit']);
+				$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
 
-			if($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
-				$shortcut['type']    = 'edit';
-				$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_edit', 1);
-			} elseif($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
-				$shortcut['type']    = 'new';
-				$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_create', 1);
+				if($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
+					$shortcut['type']    = 'edit';
+					$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_edit', 1);
+				} elseif($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
+					$shortcut['type']    = 'new';
+					$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_create', 1);
+				}
+			} else {
+				$shortcut['type'] = 'other';
 			}
-		} else {
-			$shortcut['type'] = 'other';
-		}
 
-			// Lookup the title of this page and use it as default description
-		$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
+				// Lookup the title of this page and use it as default description
+			$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
 
-		if(t3lib_div::testInt($pageId)) {
-			$page = t3lib_BEfunc::getRecord('pages', $pageId);
-			if(count($page)) {
-					// set the name to the title of the page
-				if($shortcut['type'] == 'other') {
-					$shortcutName = $page['title'];
-				} else {
-					$shortcutName = $shortcutNamePrepend.' '.$LANG->sL($TCA[$shortcut['table']]['ctrl']['title']).' ('.$page['title'].')';
+			if(t3lib_div::testInt($pageId)) {
+				$page = t3lib_BEfunc::getRecord('pages', $pageId);
+				if(count($page)) {
+						// set the name to the title of the page
+					if($shortcut['type'] == 'other') {
+						$shortcutName = $page['title'];
+					} else {
+						$shortcutName = $shortcutNamePrepend.' '.$LANG->sL($TCA[$shortcut['table']]['ctrl']['title']).' ('.$page['title'].')';
+					}
+				}
+			} else {
+				$dirName = urldecode($pageId);
+				if (preg_match('/\/$/', $dirName)) {
+						// if $pageId is a string and ends with a slash,
+						// assume it is a fileadmin reference and set
+						// the description to the basename of that path
+					$shortcutName .= ' ' . basename($dirName);
 				}
 			}
-		} else {
-			$dirName = urldecode($pageId);         
-			if (preg_match('/\/$/', $dirName)) {
-					// if $pageId is a string and ends with a slash,
-					// assume it is a fileadmin reference and set
-					// the description to the basename of that path
-				$shortcutName .= ' ' . basename($dirName);
-			}
-		}
 
 			// adding the shortcut
 		if($module && $url) {
-			$fieldValues = array(
-				'userid'      => $GLOBALS['BE_USER']->user['uid'],
-				'module_name' => $module.'|'.$motherModule,
-				'url'         => $url,
-				'description' => $shortcutName,
-				'sorting'     => time(),
-			);
-			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
+				$fieldValues = array(
+					'userid'      => $GLOBALS['BE_USER']->user['uid'],
+					'module_name' => $module.'|'.$motherModule,
+					'url'         => $url,
+					'description' => $shortcutName,
+					'sorting'     => time(),
+				);
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
 
-			if($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
-				$shortcutCreated = 'success';
+				if($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
+					$shortcutCreated = 'success';
+				}
 			}
-		}
 
-		$ajaxObj->addContent('create', $shortcutCreated);
+			$ajaxObj->addContent('create', $shortcutCreated);
+		}
 	}
 
 	/**
