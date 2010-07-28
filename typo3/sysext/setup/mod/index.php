@@ -385,7 +385,7 @@ class SC_mod_user_setup_index {
 		$code[1][2] = '<input type="text" name="ext_beuser[realName]" value="'.htmlspecialchars($BE_USER->user['realName']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />';
 		$code[2][1] = $this->setLabel('beUser_email');
 		$code[2][2] = '<input type="text" name="ext_beuser[email]" value="'.htmlspecialchars($BE_USER->user['email']).'"'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' />';
-		$code[3][1] = $this->setLabel('emailMeAtLogin').' ('.$GLOBALS['BE_USER']->user['email'].')';
+		$code[3][1] = $this->setLabel('emailMeAtLogin').' ('.htmlspecialchars($GLOBALS['BE_USER']->user['email']).')';
 		$code[3][2] = '<input type="checkbox" name="data[emailMeAtLogin]"'.($BE_USER->uc['emailMeAtLogin']?' checked="checked"':'').' />';
 		$code[4][1] = $this->setLabel('newPassword');
 		$code[4][2] = '<input type="password" name="ext_beuser[password1]" value=""'.$GLOBALS['TBE_TEMPLATE']->formWidth(20).' onchange="this.value=this.value?MD5(this.value):\'\';" />';
