@@ -277,7 +277,7 @@ class SC_wizard_table {
 
 					// If the save/close button was pressed, then redirect the screen:
 				if ($_POST['saveandclosedok_x'])	{
-					header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
+					header('Location: '.t3lib_div::locationHeaderUrl(t3lib_div::sanitizeLocalUrl($this->P['returnUrl'])));
 					exit;
 				}
 			}

@@ -118,7 +118,7 @@ class SC_tce_db {
 		$this->cmd = t3lib_div::_GP('cmd');
 		$this->mirror = t3lib_div::_GP('mirror');
 		$this->cacheCmd = t3lib_div::_GP('cacheCmd');
-		$this->redirect = t3lib_div::_GP('redirect');
+		$this->redirect = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect'));
 		$this->prErr = t3lib_div::_GP('prErr');
 		$this->_disableRTE = t3lib_div::_GP('_disableRTE');
 		$this->CB = t3lib_div::_GP('CB');

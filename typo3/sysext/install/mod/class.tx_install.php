@@ -269,7 +269,7 @@ class tx_install extends t3lib_install {
 		} else {
 			$this->step = intval(t3lib_div::_GP('step'));
 		}
-		$this->redirect_url = t3lib_div::_GP('redirect_url');
+		$this->redirect_url = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect_url'));
 
 		$this->INSTALL['type'] = '';
 		if ($_GET['TYPO3_INSTALL']['type']) {

@@ -7217,6 +7217,7 @@ State was change by %s (username: %s)
 					</tr>';
 			}
 
+			$redirect = t3lib_div::sanitizeLocalUrl($redirect);
 			$lines[] = '
 					<tr>
 						<td colspan="2" align="center"><br />'.

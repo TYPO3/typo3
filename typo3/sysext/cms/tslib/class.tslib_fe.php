@@ -1659,8 +1659,9 @@ require_once (PATH_t3lib.'class.t3lib_lock.php');
 				} else {
 					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
 				}
+				$returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GET('returnUrl'));
 				die(sprintf($message,
-					htmlspecialchars(ereg_replace('\&?ADMCMD_prev=[[:alnum:]]+','',t3lib_div::_GET('returnUrl')))
+					htmlspecialchars(ereg_replace('\&?ADMCMD_prev=[[:alnum:]]+','', $returnUrl))
 					));
 			}
 

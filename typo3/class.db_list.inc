@@ -653,7 +653,7 @@ class recordList extends t3lib_recordList {
 			'?id='.(strcmp($altId,'')?$altId:$this->id).
 			'&table='.rawurlencode($table==-1?$this->table:$table).
 			($this->thumbs?'&imagemode='.$this->thumbs:'').
-			($this->returnUrl?'&returnUrl='.rawurlencode($this->returnUrl):'').
+			($this->returnUrl?'&returnUrl='.rawurlencode(t3lib_div::sanitizeLocalUrl($this->returnUrl)):'').
 			($this->searchString?'&search_field='.rawurlencode($this->searchString):'').
 			($this->searchLevels?'&search_levels='.rawurlencode($this->searchLevels):'').
 			($this->showLimit?'&showLimit='.rawurlencode($this->showLimit):'').

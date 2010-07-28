@@ -176,7 +176,7 @@ class SC_db_new {
 		}
 			// Setting GPvars:
 		$this->id = intval(t3lib_div::_GP('id'));	// The page id to operate from
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 		$this->pagesOnly = t3lib_div::_GP('pagesOnly');
 
 			// Create instance of template class for output

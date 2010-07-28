@@ -122,7 +122,7 @@ class SC_index {
 		global $BE_USER,$TYPO3_CONF_VARS;
 
 			// GPvars:
-		$this->redirect_url = t3lib_div::_GP('redirect_url');
+		$this->redirect_url = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect_url'));
 		$this->GPinterface = t3lib_div::_GP('interface');
 
 		if(t3lib_div::getIndpEnv('TYPO3_SSL'))	{	// For security reasons this feature only works if SSL is used

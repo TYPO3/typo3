@@ -194,7 +194,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// Setting module configuration:
 		$this->MCONF = $GLOBALS['MCONF'];
 
-		$this->REQUEST_URI = str_replace('&sendToReview=1','',t3lib_div::getIndpEnv('REQUEST_URI'));
+		$this->REQUEST_URI = str_replace('&sendToReview=1','', t3lib_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI')));
 
 			// Draw the header.
 		$this->doc = t3lib_div::makeInstance('template');
@@ -352,7 +352,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 				// If access to Web>List for user, then link to that module.
 			if ($BE_USER->check('modules','web_list'))	{
-				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				$returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::getIndpEnv('REQUEST_URI'));
+				$href = $BACK_PATH . 'db_list.php?id=' . $this->pageinfo['uid'] . '&returnUrl=' . rawurlencode($returnUrl);
 				$buttons['record_list'] = '<a href="' . htmlspecialchars($href) . '">' .
 						'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/list.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList', 1) . '" alt="" />' .
 						'</a>';
@@ -807,7 +808,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$table = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">'.implode('',$tableRows).'</table>';
 		} else $table = '';
 
-		$linkBack = t3lib_div::_GP('returnUrl') ? '<a href="'.htmlspecialchars(t3lib_div::_GP('returnUrl')).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />Click here to go back</a><br/><br/>' : '';
+		$returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+		$linkBack = $returnUrl ? '<a href="'.htmlspecialchars($returnUrl).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />Click here to go back</a><br/><br/>' : '';
 		$resetDiffOnly = $this->diffOnly ? '<a href="index.php?id='.intval($this->id).'" class="typo3-goBack">Show all information</a><br/><br/>' : '';
 
 		$versionSelector = $GLOBALS['BE_USER']->workspace ? $this->doc->getVersionSelector($this->id) : '';

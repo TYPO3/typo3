@@ -98,7 +98,7 @@ class SC_tce_file {
 
 			// GPvars:
 		$this->file = t3lib_div::_GP('file');
-		$this->redirect = t3lib_div::_GP('redirect');
+		$this->redirect = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect'));
 		$this->CB = t3lib_div::_GP('CB');
 		$this->overwriteExistingFiles = t3lib_div::_GP('overwriteExistingFiles');
 		$this->vC = t3lib_div::_GP('vC');
