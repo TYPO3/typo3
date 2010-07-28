@@ -3,6 +3,7 @@
 	* Raised Fluid from 1.0.2 to 1.1.0
 	* Fixed bug #14978: XSS in file tree (thanks to Georg Ringer)
 	* Fixed bug #13292: TYPO3 error message reveals path to web root (thanks to Xavier Perseguers)
+	* Fixed bug #11618: XSS vulnerability in install tool / BE login (thanks to Georg Ringer)
 
 2010-07-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 
