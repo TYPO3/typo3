@@ -546,7 +546,7 @@ class template {
 		));
 
 		$out ="
-	var T3_RETURN_URL = '".str_replace('%20','',rawurlencode(t3lib_div::_GP('returnUrl')))."';
+	var T3_RETURN_URL = '".str_replace('%20','',rawurlencode(t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('returnUrl'))))."';
 	var T3_THIS_LOCATION = '".str_replace('%20','',rawurlencode($thisLocation))."';
 		";
 		return $out;

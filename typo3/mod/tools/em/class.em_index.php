@@ -2132,7 +2132,7 @@ EXTENSION KEYS:
 	function requestInstallExtensions($extList)	{
 
 			// Return URL:
-		$returnUrl = t3lib_div::_GP('returnUrl');
+		$returnUrl = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('returnUrl'));
 		$installOrImportExtension = t3lib_div::_POST('installOrImportExtension');
 
 			// Extension List:

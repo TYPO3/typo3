@@ -272,7 +272,7 @@ class SC_wizard_table {
 
 					// If the save/close button was pressed, then redirect the screen:
 				if ($_POST['saveandclosedok_x'])	{
-					header('Location: '.t3lib_div::locationHeaderUrl($this->P['returnUrl']));
+					header('Location: '.t3lib_div::locationHeaderUrl(t3lib_div::sanitizeBackEndUrl($this->P['returnUrl'])));
 					exit;
 				}
 			}
@@ -418,7 +418,7 @@ class SC_wizard_table {
 			<div id="c-saveButtonPanel">';
 		$content.= '<input type="image" class="c-inputButton" name="savedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/savedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc',1).'" />';
 		$content.= '<input type="image" class="c-inputButton" name="saveandclosedok"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/saveandclosedok.gif','').' title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc',1).'" />';
-		$content.= '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\''.rawurlencode($this->P['returnUrl']).'\')); return false;').'">'.
+		$content.= '<a href="#" onclick="'.htmlspecialchars('jumpToUrl(unescape(\'' . rawurlencode(t3lib_div::sanitizeBackEndUrl($this->P['returnUrl'])) . '\')); return false;').'">'.
 					'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/closedok.gif','width="21" height="16"').' class="c-inputButton" title="'.$LANG->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc',1).'" alt="" />'.
 					'</a>';
 		$content.= '<input type="image" class="c-inputButton" name="_refresh"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/refresh_n.gif','').' title="'.$LANG->getLL('forms_refresh',1).'" />';

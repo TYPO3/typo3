@@ -178,7 +178,7 @@ class SC_wizard_rte {
 			$rec['pid'] = $rawRec['pid'];
 
 				// Making the toolbar:
-			$closeUrl = $this->P['returnUrl'];
+			$closeUrl = t3lib_div::sanitizeBackEndUrl($this->P['returnUrl']);
 			$R_URI=t3lib_div::linkThisScript(array('popView'=>''));
 
 				// Getting settings for the undo button:

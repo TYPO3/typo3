@@ -95,7 +95,7 @@ class SC_file_edit {
 
 			// Setting target, which must be a file reference to a file within the mounts.
 		$this->target = $this->origTarget = t3lib_div::_GP('target');
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('returnUrl'));
 
 			// Creating file management object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');

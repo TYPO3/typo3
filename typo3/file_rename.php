@@ -98,7 +98,7 @@ class SC_file_rename {
 
 			// Initialize GPvars:
 		$this->target = t3lib_div::_GP('target');
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('returnUrl'));
 
 			// Init basic-file-functions object:
 		$this->basicff = t3lib_div::makeInstance('t3lib_basicFileFunctions');

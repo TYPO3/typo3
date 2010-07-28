@@ -19,6 +19,7 @@
 	* Fixed bug #14712: The GET/POST variable mimeType is used to create the http header content-type without verification (thanks to Rupert Germann)
 	* Fixed bug #14412: Field value added to foreign_table_where by replacing ###REC_FIELD_THE_FIELD_NAME### is not quoted (thanks to Helmut Hummel and Xavier Perseguers)
 	* Fixed bug #14114: Core mailform is open to spam abuse (thanks to Lars Houmark)
+	* Fixed bug #13137: redirect/returnUrl isn't validated in core (thanks to Georg Ringer and Marcus Krause)
 
 2010-05-17  Oliver Hader  <oliver@typo3.org>
 

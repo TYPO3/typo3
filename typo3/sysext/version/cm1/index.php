@@ -747,7 +747,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$table = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">'.implode('',$tableRows).'</table>';
 		} else $table = '';
 
-		$linkBack = t3lib_div::_GP('returnUrl') ? '<a href="'.htmlspecialchars(t3lib_div::_GP('returnUrl')).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />Click here to go back</a><br/><br/>' : '';
+		$returnUrl = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('returnUrl'));
+		$linkBack = $returnUrl ? '<a href="'.htmlspecialchars($returnUrl).'" class="typo3-goBack"><img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/goback.gif','width="14" height="14"').' alt="" />Click here to go back</a><br/><br/>' : '';
 		$resetDiffOnly = $this->diffOnly ? '<a href="index.php?id='.intval($this->id).'" class="typo3-goBack">Show all information</a><br/><br/>' : '';
 
 		$versionSelector = $GLOBALS['BE_USER']->workspace ? $this->doc->getVersionSelector($this->id) : '';

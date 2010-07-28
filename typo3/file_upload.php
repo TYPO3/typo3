@@ -106,7 +106,7 @@ class SC_file_upload {
 			// Initialize GPvars:
 		$this->number = t3lib_div::_GP('number');
 		$this->target = t3lib_div::_GP('target');
-		$this->returnUrl = t3lib_div::_GP('returnUrl');
+		$this->returnUrl = t3lib_div::sanitizeBackEndUrl(t3lib_div::_GP('returnUrl'));
 
 		if (empty($this->number))	{
 			$defaultFileUploads = $GLOBALS['BE_USER']->getTSConfigVal('options.defaultFileUploads');
