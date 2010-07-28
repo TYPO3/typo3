@@ -38,38 +38,28 @@ class Tx_Extbase_Utility_TypoScript {
 	 * Extbase converts the "classical" TypoScript (with trailing dot) to a format without trailing dot,
 	 * to be more future-proof and not to have any conflicts with Fluid object accessor syntax.
 	 *
-	 * This method performs this removal.
-	 *
-	 * @param array $setup The settings array
+	 * @param array $settings The settings array
 	 * @return void
 	 * @api
 	 */
 	public static function convertTypoScriptArrayToPlainArray(array $settings) {
-		$processedSettings = array();
-		foreach ($settings as $key => $value) {
-			if (substr($key, -1) === '.') {
+		foreach ($settings as $key => &$value) {
+			if(substr($key, -1) === '.') {
 				$keyWithoutDot = substr($key, 0, -1);
-				if (is_array($value)) {
-					$processedSettings[$keyWithoutDot] = self::convertTypoScriptArrayToPlainArray($value);
+				$hasNodeWithoutDot = array_key_exists($keyWithoutDot, $settings);
+				$typoScriptNodeValue = $hasNodeWithoutDot ? $settings[$keyWithoutDot] : NULL;
+				if(is_array($value)) {
+					$settings[$keyWithoutDot] = self::convertTypoScriptArrayToPlainArray($value);
+					if(!is_null($typoScriptNodeValue)) {
+						$settings[$keyWithoutDot]['_typoScriptNodeValue']  = $typoScriptNodeValue;
+					}
+					unset($settings[$key]);
 				} else {
-					$processedSettings[$keyWithoutDot] = NULL;
-				}
-				if (array_key_exists($keyWithoutDot, $settings)) {
-					$processedSettings[$keyWithoutDot]['_typoScriptNodeValue'] = $settings[$keyWithoutDot];
-					unset($settings[$keyWithoutDot]);
-				}
-			} else {
-				$keyWithDot = $key . '.';
-				if (array_key_exists($keyWithDot, $settings)) {
-					$processedSettings[$key] = self::convertTypoScriptArrayToPlainArray($settings[$keyWithDot]);
-					$processedSettings[$key]['_typoScriptNodeValue'] = $value;
-					unset($settings[$keyWithDot]);
-				} else {
-					$processedSettings[$key] = $value;
+					$settings[$keyWithoutDot] = NULL;
 				}
 			}
 		}
-		return $processedSettings;
+		return $settings;
 	}
 
 	/**
