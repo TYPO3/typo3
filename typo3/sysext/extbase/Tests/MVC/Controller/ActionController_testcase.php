@@ -214,6 +214,35 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
+	public function resolveActionMethodNameReturnsTheCurrentActionMethodNameFromTheRequest() {
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface', array(), array(), '', FALSE);
+		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
+
+		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array('fooBarAction'), array(), '', FALSE);
+		$mockController->_set('request', $mockRequest);
+
+		$this->assertEquals('fooBarAction', $mockController->_call('resolveActionMethodName'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_MVC_Exception_NoSuchAction
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function resolveActionMethodNameThrowsAnExceptionIfTheActionDefinedInTheRequestDoesNotExist() {
+		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface', array(), array(), '', FALSE);
+		$mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
+
+		$mockController = $this->getAccessibleMock('Tx_Extbase_MVC_Controller_ActionController', array('otherBarAction'), array(), '', FALSE);
+		$mockController->_set('request', $mockRequest);
+
+		$mockController->_call('resolveActionMethodName');
+	}
+
+	/**
+	 * @test
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
 	public function initializeActionMethodArgumentsRegistersArgumentsFoundInTheSignatureOfTheCurrentActionMethod() {
 		$mockRequest = $this->getMock('Tx_Extbase_MVC_RequestInterface', array(), array(), '', FALSE);
 

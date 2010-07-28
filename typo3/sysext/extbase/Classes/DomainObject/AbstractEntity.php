@@ -48,13 +48,11 @@ abstract class Tx_Extbase_DomainObject_AbstractEntity extends Tx_Extbase_DomainO
 		if ($propertyName !== NULL) {
 			$this->_memorizePropertyCleanState($propertyName);
 		} else {
-			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
 			$this->_cleanProperties = array();
 			$properties = get_object_vars($this);
 			foreach ($properties as $propertyName => $propertyValue) {
-				if ($dataMapper->isPersistableProperty(get_class($this), $propertyName)) {
-					$this->_memorizePropertyCleanState($propertyName);
-				}
+				if ($propertyName[0] === '_') continue; // Do not memorize "internal" properties
+				$this->_memorizePropertyCleanState($propertyName);
 			}
 		}
 	}

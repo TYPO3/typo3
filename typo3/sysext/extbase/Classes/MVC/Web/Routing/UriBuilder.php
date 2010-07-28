@@ -17,7 +17,7 @@
  *
  * @package Extbase
  * @subpackage MVC\Web\Routing
- * @version $Id: UriBuilder.php 1495 2009-10-24 10:49:41Z sebastian $
+ * @version $Id: UriBuilder.php 2465 2010-07-26 09:29:49Z jocrau $
  * @api
  */
 class Tx_Extbase_MVC_Web_Routing_UriBuilder {
@@ -422,7 +422,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 		return $this->build();
 	}
-
+	
 	/**
 	 * Builds the URI
 	 * Depending on the current context this calls buildBackendUri() or buildFrontendUri()
@@ -482,10 +482,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	public function buildFrontendUri() {
 		$typolinkConfiguration = $this->buildTypolinkConfiguration();
 
-		$uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
 		if ($this->createAbsoluteUri === TRUE) {
-			$uri = $this->request->getBaseURI() . $uri;
+			$typolinkConfiguration['forceAbsoluteUrl'] = TRUE;
 		}
+
+		$uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
 		return $uri;
 	}
 
@@ -507,7 +508,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if (count($this->arguments) > 0) {
 			$arguments = $this->convertDomainObjectsToIdentityArrays($this->arguments);
 			$this->lastArguments = $arguments;
-			$typolinkConfiguration['additionalParams'] = '&' . http_build_query($arguments, NULL, '&');
+			$typolinkConfiguration['additionalParams'] = t3lib_div::implodeArrayForUrl(NULL, $arguments);
 		}
 
 		if ($this->addQueryString === TRUE) {
@@ -546,13 +547,44 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	 */
 	protected function convertDomainObjectsToIdentityArrays(array $arguments) {
 		foreach ($arguments as $argumentKey => $argumentValue) {
-			if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractEntity) {
-				$arguments[$argumentKey] = $argumentValue->getUid();
+			if ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+				if ($argumentValue->getUid() !== NULL) {
+					$arguments[$argumentKey] = $argumentValue->getUid();
+				} elseif ($argumentValue instanceof Tx_Extbase_DomainObject_AbstractValueObject) {
+					$arguments[$argumentKey] = $this->convertTransientObjectToArray($argumentValue);
+				} else {
+					throw new Tx_Extbase_MVC_Exception_InvalidArgumentValue('Could not serialize Domain Object ' . get_class($argumentValue) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
+				}
 			} elseif (is_array($argumentValue)) {
 				$arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);
 			}
 		}
 		return $arguments;
+	}
+	
+	/**
+	 * Converts a given object recursively into an array.
+	 *
+	 * @param Tx_Extbase_DomainObject_AbstractDomainObject $object 
+	 * @return void
+	 */
+	// TODO Refactore this into convertDomainObjectsToIdentityArrays()
+	public function convertTransientObjectToArray(Tx_Extbase_DomainObject_AbstractDomainObject $object) {
+		$result = array();
+		foreach ($object->_getProperties() as $propertyName => $propertyValue) {
+			if ($propertyValue instanceof Tx_Extbase_DomainObject_AbstractDomainObject) {
+				if ($propertyValue->getUid() !== NULL) {
+					$result[$propertyName] = $propertyValue->getUid();
+				} else {
+					$result[$propertyName] = $this->convertTransientObjectToArray($propertyValue);
+				}
+			} elseif (is_array($propertyValue)) {
+				$result[$propertyName] = $this->convertDomainObjectsToIdentityArrays($propertyValue);
+			} else {
+				$result[$propertyName] = $propertyValue;
+			}
+		}
+		return $result;
 	}
 
 }

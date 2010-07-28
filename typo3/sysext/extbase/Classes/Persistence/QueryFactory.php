@@ -27,7 +27,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: QueryFactory.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: QueryFactory.php 1789 2010-01-18 21:31:59Z jocrau $
  */
 class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_QueryFactoryInterface, t3lib_Singleton {
 
@@ -42,8 +42,9 @@ class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_Quer
 
 		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
 		$dataMapper->injectIdentityMap($persistenceManager->getBackend()->getIdentityMap());
-		$dataMapper->injectPersistenceManager($persistenceManager);
-
+		$dataMapper->injectSession($persistenceManager->getSession());
+		$dataMapper->injectReflectionService($persistenceManager->getBackend()->getReflectionService());
+		
 		$querySettings = t3lib_div::makeInstance('Tx_Extbase_Persistence_Typo3QuerySettings');
 
 		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Query', $className);

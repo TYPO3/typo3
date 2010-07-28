@@ -26,37 +26,14 @@
 ***************************************************************/
 
 /**
- * A row in the query result table.
+ * Base class for constraints in the QOM.
  *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id: RowInterface.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: Constraint.php 3616 2010-01-13 16:30:32Z k-fish $
+ * @api
+ * @scope prototype
  */
-interface Tx_Extbase_Persistence_RowInterface {
-
-	/**
-	 * @return boolean TRUE if the columnName is set
-	 */
-	public function hasValue($columnName);
-
-	/**
-	 * Returns an array of all the values in the same order as the column names
-	 * returned by QueryResult.getColumnNames().
-	 *
-	 * @return array a Value array.
-	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if an error occurs
-	 */
-	public function getValues();
-
-	/**
-	 * Returns the value of the indicated column in this Row.
-	 *
-	 * @param string $columnName name of query result table column
-	 * @return \F3\PHPCR\ValueInterface a Value
-	 * @throws \F3\PHPCR\ItemNotFoundException if columnName s not among the column names of the query result table.
-	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if another error occurs.
-	 */
-	public function getValue($columnName);
-
+class Tx_Extbase_Persistence_QOM_Constraint implements Tx_Extbase_Persistence_QOM_ConstraintInterface {
+	
 }
+
 ?>

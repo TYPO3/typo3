@@ -28,7 +28,7 @@
 /**
  * Testcase for the Request Hash Service
  *
- * @version $Id: RequestHashService_testcase.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: RequestHashService_testcase.php 2457 2010-07-26 09:29:01Z jocrau $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser Public License, version 3 or later
  */
 class Tx_Extbase_Security_Channel_RequestHashService_testcase extends Tx_Extbase_BaseTestCase {
@@ -388,6 +388,28 @@ class Tx_Extbase_Security_Channel_RequestHashService_testcase extends Tx_Extbase
 				),
 				// Expected result
 				FALSE
+			),
+			
+			// hierarchical fields with requestfields != responsefields (different types)
+			// This case happens if an array of checkboxes is rendered, in case they are fully unchecked.
+			array(
+				// Request
+				array(
+					'a' => '', // this is the only allowed value.
+					'b' => 'X',
+					'c' => 'X'
+				),
+				// Allowed
+				array(
+					'a' => array(
+						'x' => 1,
+						'y' => 1
+					),
+					'b' => 1,
+					'c' => 1
+				),
+				// Expected result
+				TRUE
 			),
 		);
 	}

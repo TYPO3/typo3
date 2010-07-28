@@ -31,10 +31,10 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: Typo3QuerySettings.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: Typo3QuerySettings.php 1972 2010-03-08 16:59:20Z jocrau $
  * @api
  */
-class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistence_Typo3QuerySettingsInterface {
+class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistence_QuerySettingsInterface {
 
 	/**
 	 * Flag if the storage page should be respected for the query.
@@ -47,6 +47,12 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 * @var boolean
 	 */
 	protected $respectEnableFields = TRUE;
+
+	/**
+	 * Flag if the sys_language_uid should be respected (default is TRUE).
+	 * @var boolean
+	 */
+	protected $respectSysLanguage = TRUE;
 
 	/**
 	 * Flag if the the query result should be returned as raw QueryResult.
@@ -63,7 +69,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 */
 	public function setRespectStoragePage($respectStoragePage) {
 		$this->respectStoragePage = $respectStoragePage;
-		return this;
+		return $this;
 	}
 
 	/**
@@ -76,6 +82,27 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	}
 
 	/**
+	 * Sets the flag if a  and language overlay should be performed.
+	 *
+	 * @param $respectEnableFields TRUE if a  and language overlay should be performed.
+	 * @return $this (fluent interface)
+	 * @api
+	 */
+	public function setRespectSysLanguage($respectSysLanguage) {
+		$this->respectSysLanguage = $respectSysLanguage;
+		return $this;
+	}
+
+	/**
+	 * Returns the state, if a  and language overlay should be performed.
+	 *
+	 * @return boolean TRUE, if a  and language overlay should be performed; otherwise FALSE.
+	 */
+	public function getRespectSysLanguage() {
+		return $this->respectSysLanguage;
+	}
+	
+	/**
 	 * Sets the flag if the visibility in the frontend should be respected.
 	 *
 	 * @param $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
@@ -84,7 +111,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	 */
 	public function setRespectEnableFields($respectEnableFields) {
 		$this->respectEnableFields = $respectEnableFields;
-		return this;
+		return $this;
 	}
 
 	/**

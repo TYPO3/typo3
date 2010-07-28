@@ -27,7 +27,7 @@
  *
  * @package Extbase
  * @subpackage Domain\Model
- * @version $Id: FrontendUser.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: FrontendUser.php 1949 2010-03-04 06:40:56Z jocrau $
  * @scope prototype
  * @entity
  * @api
@@ -53,6 +53,21 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 * @var string
 	 */
 	protected $name;
+
+	/**
+	 * @var string
+	 */
+	protected $firstName;
+
+	/**
+	 * @var string
+	 */
+	protected $middleName;
+
+	/**
+	 * @var string
+	 */
+	protected $lastName;
 
 	/**
 	 * @var string
@@ -241,6 +256,69 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * Sets the firstName value
+	 *
+	 * @param string $firstName
+	 * @return void
+	 * @api
+	 */
+	public function setFirstName($firstName) {
+		$this->firstName = $firstName;
+	}
+
+	/**
+	 * Returns the firstName value
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getFirstName() {
+		return $this->firstName;
+	}
+
+	/**
+	 * Sets the middleName value
+	 *
+	 * @param string $middleName
+	 * @return void
+	 * @api
+	 */
+	public function setMiddleName($middleName) {
+		$this->middleName = $middleName;
+	}
+
+	/**
+	 * Returns the middleName value
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getMiddleName() {
+		return $this->middleName;
+	}
+
+	/**
+	 * Sets the lastName value
+	 *
+	 * @param string $lastName
+	 * @return void
+	 * @api
+	 */
+	public function setLastName($lastName) {
+		$this->lastName = $lastName;
+	}
+
+	/**
+	 * Returns the lastName value
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getLastName() {
+		return $this->lastName;
 	}
 
 	/**

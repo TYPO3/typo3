@@ -30,16 +30,85 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: QueryInterface.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: QueryInterface.php 2036 2010-03-15 20:53:40Z jocrau $
  * @api
  */
 interface Tx_Extbase_Persistence_QueryInterface {
+
+	/**
+	 * The '=' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_EQUAL_TO = 1;
+
+	/**
+	 * The '!=' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_NOT_EQUAL_TO = 2;
+
+	/**
+	 * The '<' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_LESS_THAN = 3;
+
+	/**
+	 * The '<=' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_LESS_THAN_OR_EQUAL_TO = 4;
+
+	/**
+	 * The '>' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_GREATER_THAN = 5;
+
+	/**
+	 * The '>=' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_GREATER_THAN_OR_EQUAL_TO = 6;
+
+	/**
+	 * The 'like' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_LIKE = 7;
+
+	/**
+	 * The 'contains' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_CONTAINS = 8;
+
+	/**
+	 * The 'in' comparison operator.
+	 * @api
+	*/
+	const OPERATOR_IN = 9;
 
 	/**
 	 * Constants representing the direction when ordering result sets.
 	 */
 	const ORDER_ASCENDING = 'ASC';
 	const ORDER_DESCENDING = 'DESC';
+
+	/**
+	 * An inner join.
+	 */
+	const JCR_JOIN_TYPE_INNER = '{http://www.jcp.org/jcr/1.0}joinTypeInner';
+
+	/**
+	 * A left-outer join.
+	 */
+	const JCR_JOIN_TYPE_LEFT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeLeftOuter';
+
+	/**
+	 * A right-outer join.
+	 */
+	const JCR_JOIN_TYPE_RIGHT_OUTER = '{http://www.jcp.org/jcr/1.0}joinTypeRightOuter';
 
 	/**
 	 * Executes the query against the backend and returns the result
@@ -103,22 +172,20 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	/**
 	 * Performs a logical conjunction of the two given constraints.
 	 *
-	 * @param object $constraint1 First constraint
-	 * @param object $constraint2 Second constraint
+	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return object
 	 * @api
 	 */
-	public function logicalAnd($constraint1, $constraint2);
+	public function logicalAnd($constraint1);
 
 	/**
 	 * Performs a logical disjunction of the two given constraints
 	 *
-	 * @param object $constraint1 First constraint
-	 * @param object $constraint2 Second constraint
+	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
 	 * @return object
 	 * @api
 	 */
-	public function logicalOr($constraint1, $constraint2);
+	public function logicalOr($constraint1);
 
 	/**
 	 * Performs a logical negation of the given constraint
@@ -158,6 +225,28 @@ interface Tx_Extbase_Persistence_QueryInterface {
 	 * @api
 	 */
 	public function like($propertyName, $operand);
+
+	/**
+	 * Returns a "contains" criterion used for matching objects against a query.
+	 * It matches if the multivalued property contains the given operand.
+	 *
+	 * @param string $propertyName The name of the (multivalued) property to compare against
+	 * @param mixed $operand The value to compare with
+	 * @return object
+	 * @api
+	 */
+	public function contains($propertyName, $operand);
+
+	/**
+	 * Returns an "in" criterion used for matching objects against a query. It
+	 * matches if the property's value is contained in the multivalued operand.
+	 *
+	 * @param string $propertyName The name of the property to compare against
+	 * @param mixed $operand The value to compare with, multivalued
+	 * @return object
+	 * @api
+	 */
+	public function in($propertyName, $operand);
 
 	/**
 	 * Returns a less than criterion used for matching objects against a query

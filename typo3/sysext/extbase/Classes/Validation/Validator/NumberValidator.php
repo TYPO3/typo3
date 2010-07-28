@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Validation\Validator
- * @version $Id: NumberValidator.php 1052 2009-08-05 21:51:32Z sebastian $
+ * @version $Id: NumberValidator.php 1789 2010-01-18 21:31:59Z jocrau $
  */
 class Tx_Extbase_Validation_Validator_NumberValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
 

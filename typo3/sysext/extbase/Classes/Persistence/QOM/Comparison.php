@@ -70,7 +70,7 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: Comparison.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: Comparison.php 1971 2010-03-08 16:59:04Z jocrau $
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QOM_ComparisonInterface {
@@ -86,7 +86,7 @@ class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QO
 	protected $operator;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QOM_StaticOperandInterface
+	 * @var mixed
 	 */
 	protected $operand2;
 
@@ -94,23 +94,13 @@ class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QO
 	 * Constructs this Comparison instance
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1
-	 * @param unknown_type $operator
-	 * @param Tx_Extbase_Persistence_QOM_StaticOperandInterface $operand2
+	 * @param int $operator one of Tx_Extbase_Persistence_QueryInterface.OPERATOR_*
+	 * @param mixed $operand2
 	 */
-	public function __construct(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, Tx_Extbase_Persistence_QOM_StaticOperandInterface $operand2) {
+	public function __construct(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, $operand2) {
 		$this->operand1 = $operand1;
 		$this->operator = $operator;
 		$this->operand2 = $operand2;
-	}
-
-	/**
-	 * Fills an array with the names of all bound variables in the operand
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-		$this->operand2->collectBoundVariablenames($boundVariables);
 	}
 
 	/**
@@ -135,7 +125,7 @@ class Tx_Extbase_Persistence_QOM_Comparison implements Tx_Extbase_Persistence_QO
 	/**
 	 * Gets the second operand.
 	 *
-	 * @return Tx_Extbase_Persistence_QOM_StaticOperandInterface the operand; non-null
+	 * @return mixed the operand; non-null
 	 */
 	public function getOperand2() {
 		return $this->operand2;

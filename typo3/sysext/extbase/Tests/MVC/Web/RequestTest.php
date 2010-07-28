@@ -1,8 +1,8 @@
-<?php
+<?php 
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+*  (c) 2010 Sebastian Kurfuerst <sebastian@typo3.org>
 *  All rights reserved
 *
 *  This class is a backport of the corresponding class of FLOW3.
@@ -25,24 +25,22 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * Allows easy iteration through a list of Rows with nextRow as well as a skip
- * method inherited from RangeIterator.
- *
- * @package Extbase
- * @subpackage Persistence
- * @version $Id: RowIteratorInterface.php 1729 2009-11-25 21:37:20Z stucki $
- */
-interface Tx_Extbase_Persistence_RowIteratorInterface extends Tx_Extbase_Persistence_RangeIteratorInterface {
+class Tx_Extbase_MVC_Web_RequestTest extends Tx_Extbase_BaseTestCase {
+	/**
+	 * @test
+	 */
+	public function isCachedReturnsFalseByDefault() {
+		$request = new Tx_Extbase_MVC_Web_Request();
+		$this->assertFalse($request->isCached());
+	}
 
 	/**
-	 * Returns the next Row in the iteration.
-	 *
-	 * @return Tx_Extbase_Persistence_RowInterface
-	 * @throws OutOfBoundsException if the iterator contains no more elements.
+	 * @test
 	 */
-	public function nextRow();
-
+	public function isCachedReturnsTheValueWhichWasPreviouslySet() {
+		$request = new Tx_Extbase_MVC_Web_Request();
+		$request->setIsCached(TRUE);
+		$this->assertTrue($request->isCached());
+	}
 }
-
 ?>

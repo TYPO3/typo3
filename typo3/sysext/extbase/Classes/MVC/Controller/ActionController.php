@@ -202,9 +202,9 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	}
 
 	/**
-	 * Determines the action method and assures that the method exists.
+	 * Resolves and checks the current action method name
 	 *
-	 * @return string The action method name
+	 * @return string Method name of the current action
 	 * @throws Tx_Extbase_MVC_Exception_NoSuchAction if the action specified in the request object does not exist (and if there's no default action either).
 	 */
 	protected function resolveActionMethodName() {

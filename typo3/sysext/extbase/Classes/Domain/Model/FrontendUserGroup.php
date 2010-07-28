@@ -27,7 +27,7 @@
  *
  * @package Extbase
  * @subpackage Domain\Model
- * @version $Id: FrontendUserGroup.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: FrontendUserGroup.php 2143 2010-03-30 09:28:26Z jocrau $
  * @scope prototype
  * @entity
  * @api
@@ -59,6 +59,7 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 *
 	 */
 	public function __construct($title) {
+		$this->setTitle($title);
 		$this->subgroup = new Tx_Extbase_Persistence_ObjectStorage();
 	}
 

@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: LazyObjectStorage.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: LazyObjectStorage.php 2208 2010-04-14 13:41:14Z jocrau $
  */
 class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage implements Tx_Extbase_Persistence_LoadingStrategyInterface {
 
@@ -104,8 +104,6 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$columnMap = $dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
 		$numberOfElements = NULL;
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-			$parentKeyFieldName = $columnMap->getParentKeyFieldName();
-			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
 			$numberOfElements = $dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
 		} else {
 			$this->initializeStorage();

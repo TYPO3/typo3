@@ -190,8 +190,6 @@ tt_content.list.20.' . $pluginSignature . ' {
 		$config = $GLOBALS['TBE_MODULES'][$key]['config'];
 		define('TYPO3_MOD_PATH', $config['extRelPath']);
 
-		$GLOBALS['BACK_PATH'] = '';
-
 			// Fill $MCONF
 		$MCONF['name'] = $key;
 		$MCONF['access'] = $config['access'];
@@ -318,6 +316,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 	// TODO PHPdoc
 	public static function convertCamelCaseToLowerCaseUnderscored($string) {
+		// FIXME The cache doesn't work IMO as it is static (did I really implemented this? ;-))
 		static $conversionMap = array();
 		if (!isset($conversionMap[$string])) {
 			$conversionMap[$string] = strtolower(preg_replace('/(?<=\w)([A-Z])/', '_\\1', $string));
@@ -471,7 +470,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 
 		$returnValue = false;
 		// Iterate with while since we need the current array position:
-		while (list(,$token) = each($tokenList)) {
+		foreach ($tokenList as $token) {
 			// parse token (see http://www.php.net/manual/en/function.token-get-all.php for format of token list)
 			if (is_array($token)) {
 				list($id, $text) = $token;

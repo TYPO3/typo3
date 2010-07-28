@@ -30,10 +30,15 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: Statement.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: Statement.php 2467 2010-07-26 09:29:58Z jocrau $
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_Statement implements Tx_Extbase_Persistence_QOM_StatementInterface {
+class Tx_Extbase_Persistence_QOM_Statement {
+
+	/**
+	 * constants determining the language of the query
+	 */
+	const TYPO3_SQL_MYSQL = 'TYPO3-SQL-MYSQL';
 
 	/**
 	 * @var string
@@ -53,10 +58,11 @@ class Tx_Extbase_Persistence_QOM_Statement implements Tx_Extbase_Persistence_QOM
 	/**
 	 * Constructs the Statement instance
 	 *
-	 * @param string $statement
-	 * @param string $selectorName
+	 * @param string $statement The statement
+	 * @param array $boundVariables An array of variables to bind to the statement
+	 * @param string $language The query language. One of the above constants.
 	 */
-	public function __construct($statement, array $boundVariables = array(), $language) {
+	public function __construct($statement, array $boundVariables = array(), $language = self::TYPO3_SQL_MYSQL) {
 		$this->statement = $statement;
 		$this->boundVariables = $boundVariables;
 		$this->language = $language;
@@ -65,29 +71,28 @@ class Tx_Extbase_Persistence_QOM_Statement implements Tx_Extbase_Persistence_QOM
 	/**
 	 * Gets the statement.
 	 *
-	 * @return the statemenbt; non-null
+	 * @return the statement; non-null
 	 */
 	public function getStatement() {
 		return $this->statement;
 	}
-
+	
 	/**
-	 * Gets the language.
+	 * Gets the bound variables
 	 *
-	 * @return string The language; one of Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::JCR_* or Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_*
+	 * @return array $boundVariables
 	 */
-	public function getLanguage() {
-		return $this->language;
+	public function getBoundVariables() {
+		return $this->boundVariables;
 	}
 	
 	/**
-	 * Does nothing
+	 * Gets the language.
 	 *
-	 * @param array &$boundVariables
-	 * @return void
+	 * @return string The language; one of self::
 	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-		$boundVariables = $this->boundVariables;
+	public function getLanguage() {
+		return $this->language;
 	}
 
 }

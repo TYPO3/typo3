@@ -31,7 +31,7 @@
  *
  * @package Extbase
  * @subpackage Persistence
- * @version $Id: LazyLoadingProxy.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: LazyLoadingProxy.php 2442 2010-07-26 09:27:29Z jocrau $
  */
 class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Persistence_LoadingStrategyInterface {
 
@@ -55,7 +55,7 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	 * @var mixed
 	 */
 	private $fieldValue;
-
+	
 	/**
 	 * Constructs this proxy instance.
 	 *
@@ -80,7 +80,7 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 		// it's parent... the result would be weird.
 		if ($this->parentObject->_getProperty($this->propertyName) instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
 			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
-			$objects = $dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE);
+			$objects = $dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE, FALSE);
 			$propertyValue = $dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
 			$this->parentObject->_setProperty($this->propertyName, $propertyValue);
 			$this->parentObject->_memorizeCleanState($this->propertyName);
@@ -145,6 +145,16 @@ class Tx_Extbase_Persistence_LazyLoadingProxy implements Iterator, Tx_Extbase_Pe
 	public function __unset($propertyName) {
 		$realInstance = $this->_loadRealInstance();
 		unset($realInstance->$propertyName);
+	}
+	
+	/**
+	 * Magic toString call implementation.
+	 *
+	 * @return void
+	 */
+	public function __toString() {
+		$realInstance = $this->_loadRealInstance();
+		return $realInstance->__toString();
 	}
 	
 	/**

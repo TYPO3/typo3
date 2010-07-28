@@ -28,7 +28,7 @@
 /**
  * A class schema
  *
- * @version $Id: ClassSchema.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: ClassSchema.php 2180 2010-04-08 09:23:09Z jocrau $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Extbase_Reflection_ClassSchema {
@@ -38,12 +38,7 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 */
 	const MODELTYPE_ENTITY = 1;
 	const MODELTYPE_VALUEOBJECT = 2;
-
-	/**
-	 * Specifies the allowed property types.
-	 */
-	const ALLOWED_TYPES_PATTERN = '/^(?P<type>integer|int|float|boolean|string|DateTime|Tx_[a-zA-Z0-9_]+|array|ArrayObject|Tx_Extbase_Persistence_ObjectStorage)(?:<(?P<elementType>[a-zA-Z0-9_]+)>)?/';
-
+	
 	/**
 	 * Name of the class this schema is referring to
 	 *
@@ -109,32 +104,19 @@ class Tx_Extbase_Reflection_ClassSchema {
 	 * Adds (defines) a specific property and its type.
 	 *
 	 * @param string $name Name of the property
-	 * @param string $type Type of the property (see ALLOWED_TYPES_PATTERN)
+	 * @param string $type Type of the property
 	 * @param boolean $lazy Whether the property should be lazy-loaded when reconstituting
 	 * @param string $cascade Strategy to cascade the object graph.
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function addProperty($name, $type, $lazy = FALSE, $cascade = '') {
-		$matches = array();
-		if (preg_match(self::ALLOWED_TYPES_PATTERN, $type, $matches)) {
-			$type = ($matches['type'] === 'int') ? 'integer' : $matches['type'];
-			$elementType = isset($matches['elementType']) ? $matches['elementType'] : NULL;
-
-			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'Tx_Extbase_Persistence_ObjectStorage', 'Tx_Extbase_Persistence_LazyObjectStorage'))) {
-				throw new Tx_Extbase_Reflection_Exception_InvalidPropertyType('Property  of type "' . $type . '" must not have an element type hint (' . $elementType . ').', 1248103053);
-			}
-
-			$this->properties[$name] = array(
-				'type' => $type,
-				'elementType' => $elementType,
-				'lazy' => $lazy,
-				'cascade' => $cascade
-			);
-		} else {
-			throw new Tx_Extbase_Reflection_Exception_InvalidPropertyType('Invalid property type encountered: ' . $type, 1220387528);
-		}
+		$type = Tx_Extbase_Utility_TypeHandling::parseType($type);
+		$this->properties[$name] = array(
+			'type' => $type['type'],
+			'elementType' => $type['elementType'],
+			'lazy' => $lazy,
+			'cascade' => $cascade
+		);
 	}
 
 	/**

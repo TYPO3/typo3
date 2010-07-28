@@ -32,7 +32,7 @@
  *
  * @package Extbase
  * @subpackage Validation\Validator
- * @version $Id: RegularExpressionValidator.php 1052 2009-08-05 21:51:32Z sebastian $
+ * @version $Id: RegularExpressionValidator.php 1789 2010-01-18 21:31:59Z jocrau $
  * @scope prototype
  */
 class Tx_Extbase_Validation_Validator_RegularExpressionValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {

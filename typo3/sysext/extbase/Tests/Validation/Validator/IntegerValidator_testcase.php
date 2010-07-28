@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage extbase
- * @version $Id: IntegerValidator_testcase.php 1408 2009-10-08 13:15:09Z jocrau $
+ * @version $Id: IntegerValidator_testcase.php 2447 2010-07-26 09:28:12Z jocrau $
  */
 class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extbase_BaseTestCase {
 
@@ -63,7 +63,6 @@ class Tx_Extbase_Validation_Validator_IntegerValidator_testcase extends Tx_Extba
 	
 	/**
 	 * @test
-	 * @dataProvider validIntegers
 	 */
 	public function integerValidatorReturnsTrueForAValidInteger() {
 		$integerValidator = new Tx_Extbase_Validation_Validator_IntegerValidator();

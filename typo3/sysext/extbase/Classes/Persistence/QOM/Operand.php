@@ -30,19 +30,10 @@
  *
  * @package Extbase
  * @subpackage Persistence\QOM
- * @version $Id: Operand.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: Operand.php 2024 2010-03-15 11:19:42Z jocrau $
  * @scope prototype
  */
 class Tx_Extbase_Persistence_QOM_Operand implements Tx_Extbase_Persistence_QOM_OperandInterface {
-
-	/**
-	 * Does nothing
-	 *
-	 * @param array &$boundVariables
-	 * @return void
-	 */
-	public function collectBoundVariableNames(&$boundVariables) {
-	}
 
 }
 

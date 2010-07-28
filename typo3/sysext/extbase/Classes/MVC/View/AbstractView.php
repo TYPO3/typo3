@@ -42,10 +42,11 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	protected $controllerContext;
 
 	/**
-	 * @var array view data collection.
+	 * View variables and their values
+	 * @var array
 	 * @see assign()
 	 */
-	protected $viewData = array();
+	protected $variables = array();
 
 	/**
 	 * Sets the current controller context
@@ -67,7 +68,7 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 * @api
 	 */
 	public function assign($key, $value) {
-		$this->viewData[$key] = $value;
+		$this->variables[$key] = $value;
 		return $this;
 	}
 

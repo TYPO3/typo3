@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @version $Id: Arrays.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: Arrays.php 2469 2010-07-26 09:30:14Z jocrau $
  (robert) I'm not sure yet if we should use this library statically or as a singleton. The latter might be problematic if we use it from the Core classes.
  * @api
  */
@@ -47,10 +47,9 @@ class Tx_Extbase_Utility_Arrays {
 	 */
 	static public function integerExplode($delimiter, $string) {
 		$chunksArr = explode($delimiter, $string);
-		while (list($key, $value) = each($chunksArr)) {
+		foreach ($chunksArr as $key => $value) {
 			$chunks[$key] = intval($value);
 		}
-		reset($chunks);
 		return $chunks;
 	}
 
@@ -88,8 +87,7 @@ class Tx_Extbase_Utility_Arrays {
 	 * @api
 	 */
 	static public function arrayMergeRecursiveOverrule(array $firstArray, array $secondArray, $dontAddNewKeys = FALSE, $emptyValuesOverride = TRUE) {
-		reset($secondArray);
-		while (list($key, $value) = each($secondArray)) {
+		foreach ($secondArray as $key => $value) {
 			if (array_key_exists($key, $firstArray) && is_array($firstArray[$key])) {
 				if (is_array($secondArray[$key])) {
 					$firstArray[$key] = self::arrayMergeRecursiveOverrule($firstArray[$key], $secondArray[$key], $dontAddNewKeys, $emptyValuesOverride);
@@ -142,11 +140,10 @@ class Tx_Extbase_Utility_Arrays {
 	 */
 	static public function containsMultipleTypes(array $array) {
 		if (count($array) > 0) {
-			reset($array);
-			$previousType = gettype(current($array));
-			next($array);
-			while (list(, $value) = each($array)) {
-				if ($previousType !== gettype($value)) {
+			foreach ($array as $key => $value) {
+				if (!isset($previousType)) {
+					$previousType = gettype($value);
+				} else if ($previousType !== gettype($value)) {
 					return TRUE;
 				}
 			}

@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'A Framework for Extensions',
 	'description' => 'A framework to build extensions in the style of FLOW3 by now.',
 	'category' => 'misc',
-	'author' => '',
+	'author' => 'TYPO3 core team',
 	'author_email' => '',
 	'shy' => '',
 	'dependencies' => '',
@@ -28,12 +28,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'author_company' => 'TYPO3 core team',
-	'version' => '1.0.2',
+	'author_company' => '',
+	'version' => '1.1.0',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.2.0-0.0.0',
-			'typo3' => '4.3.dev-0.0.0',
+			'typo3' => '4.3.0-0.0.0',
 		),
 		'conflicts' => array(
 		),

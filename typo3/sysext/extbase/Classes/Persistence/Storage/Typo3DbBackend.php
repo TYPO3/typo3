@@ -30,15 +30,13 @@
  *
  * @package Extbase
  * @subpackage Persistence\Storage
- * @version $Id: Typo3DbBackend.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: Typo3DbBackend.php 2475 2010-07-26 09:59:07Z jocrau $
  */
 class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persistence_Storage_BackendInterface, t3lib_Singleton {
 
 	const OPERATOR_EQUAL_TO_NULL = 'operatorEqualToNull';
 	const OPERATOR_NOT_EQUAL_TO_NULL = 'operatorNotEqualToNull';
-	const OPERATOR_IN = 'operatorIn';
-	const OPERATOR_NOT_IN = 'operatorNotIn';
-
+	
 	/**
 	 * The TYPO3 database object
 	 *
@@ -116,7 +114,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 		// debug($sqlString,-2);
 		$this->databaseHandle->sql_query($sqlString);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($sqlString);
 		$uid = $this->databaseHandle->sql_insert_id();
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
@@ -148,7 +146,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($sqlString, $parameters);
 		// debug($sqlString,-2);
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($sqlString);
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid);
 		}
@@ -169,8 +167,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		if (!$isRelation) {
 			$this->clearPageCache($tableName, $uid, $isRelation);
 		}
+		// debug($statement, -2);
 		$returnValue = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($statement);
 		return $returnValue;
 	}
 
@@ -186,7 +185,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($statement, $identifier);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($statement);
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {
 			return $row;
@@ -203,31 +202,34 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		}
 		return implode(' AND ', $suffixedFieldNames);
 	}
-
+	
 	/**
-	 * Returns an array with tuples matching the query.
+	 * Returns the object data matching the $query.
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
-	 * @return array The matching tuples
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
+	 * @return array
+	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function getRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
-		$constraint = $query->getConstraint();
-		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
-			if ($constraint->getLanguage() === Tx_Extbase_Persistence_QOM_QueryObjectModelInterface::TYPO3_SQL_MYSQL) {
-				$statement = $constraint->getStatement();
-				$parameters = $query->getBoundVariableValues();
-			} else {
-				throw new Tx_Extbase_Persistence_Exception('Unsupported query language.', 1248701951);
-			}
+	public function getObjectDataByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
+		$parameters = array();
+
+		$statement = $query->getStatement();
+		if($statement instanceof Tx_Extbase_Persistence_QOM_Statement) {
+			$sql = $statement->getStatement();
+			$parameters = $statement->getBoundVariables();
 		} else {
 			$parameters = array();
-			$statement = $this->getStatement($query, $parameters);
+			$statementParts = $this->parseQuery($query, $parameters);			
+			$sql = $this->buildQuery($statementParts, $parameters);
 		}
-		$this->replacePlaceholders($statement, $parameters);
-		// debug($statement,-2);
-		$result = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
-		return $this->getRowsFromResult($query->getSource(), $result);
+		$this->replacePlaceholders($sql, $parameters);
+		// debug($sql,-2);
+		$result = $this->databaseHandle->sql_query($sql);
+		$this->checkSqlErrors($sql);
+		$rows = $this->getRowsFromResult($query->getSource(), $result);
+		$rows = $this->doLanguageAndWorkspaceOverlay($query->getSource(), $rows);
+		// TODO: implement $objectData = $this->processObjectRecords($statementHandle);
+		return $rows;
 	}
 
 	/**
@@ -236,41 +238,32 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
 	 * @return int The number of matching tuples
 	 */
-	public function countRows(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query) {
+	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
 		$constraint = $query->getConstraint();
 		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) throw new Tx_Extbase_Persistence_Storage_Exception_BadConstraint('Could not execute count on queries with a constraint of type Tx_Extbase_Persistence_QOM_StatementInterface', 1256661045);
 		$parameters = array();
 		$statementParts = $this->parseQuery($query, $parameters);
 		$statementParts['fields'] = array('COUNT(*)');
-		$statement = $this->buildStatement($statementParts, $parameters);
+		$statement = $this->buildQuery($statementParts, $parameters);
 		$this->replacePlaceholders($statement, $parameters);
+		// debug($statement,-2);
 		$result = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
-		$tuples = $this->getRowsFromResult($query->getSource(), $result);
-		return current(current($tuples));
+		$this->checkSqlErrors($statement);
+		$rows = $this->getRowsFromResult($query->getSource(), $result);
+		return current(current($rows));
 	}
-	
-	/**
-	 * Returns the statement, ready to be executed.
-	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
-	 * @return string The SQL statement
-	 */
-	public function getStatement(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, array &$parameters) {
-		$statementParts = $this->parseQuery($query, $parameters);
-		$statement = $this->buildStatement($statementParts);
-		return $statement;
-	}
-	
+		
 	/**
 	 * Parses the query and returns the SQL statement parts.
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
+	 * @param Tx_Extbase_Persistence_QueryInterface $query
 	 * @return array The SQL statement parts
 	 */
-	public function parseQuery(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, array &$parameters) {
+	public function parseQuery(Tx_Extbase_Persistence_QueryInterface $query, array &$parameters) {
 		$sql = array();
+		$sql['keywords'] = array();
 		$sql['tables'] = array();
+		$sql['unions'] = array();
 		$sql['fields'] = array();
 		$sql['where'] = array();
 		$sql['additionalWhereClause'] = array();
@@ -279,22 +272,29 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 
 		$source = $query->getSource();
 		
-		$this->parseSource($query, $source, $sql, $parameters);
-		$this->parseConstraint($query->getConstraint(), $source, $sql, $parameters, $query->getBoundVariableValues());
+		$this->parseSource($source, $sql, $parameters);
+		$this->parseConstraint($query->getConstraint(), $source, $sql, $parameters);
 		$this->parseOrderings($query->getOrderings(), $source, $sql);
 		$this->parseLimitAndOffset($query->getLimit(), $query->getOffset(), $sql);
 
+		$tableNames = array_unique(array_keys($sql['tables'] + $sql['unions']));
+		foreach ($tableNames as $tableName) {
+			if (is_string($tableName) && strlen($tableName) > 0) {
+				$this->addAdditionalWhereClause($query->getQuerySettings(), $tableName, $sql);
+			}
+		}
+
 		return $sql;
 	}
-
+	
 	/**
 	 * Returns the statement, ready to be executed.
 	 *
 	 * @param array $sql The SQL statement parts
 	 * @return string The SQL statement
 	 */
-	public function buildStatement(array $sql) {
-		$statement = 'SELECT ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']);
+	public function buildQuery(array $sql) {
+		$statement = 'SELECT ' . implode(' ', $sql['keywords']) . ' '. implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']) . ' '. implode(' ', $sql['unions']);
 		if (!empty($sql['where'])) {
 			$statement .= ' WHERE ' . implode('', $sql['where']);
 			if (!empty($sql['additionalWhereClause'])) {
@@ -326,8 +326,12 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		foreach ($properties as $propertyName => $propertyValue) {
 			// FIXME We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
 			if ($dataMap->isPersistableProperty($propertyName) && ($propertyName !== 'uid')  && ($propertyName !== 'pid') && ($propertyName !== 'isClone')) {
-				$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
-				$parameters[] = $dataMap->convertPropertyValueToFieldValue($propertyValue);
+				if ($propertyValue === NULL) {
+					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . ' IS NULL';
+				} else {
+					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . '=?';
+					$parameters[] = $this->getPlainValue($propertyValue);
+				}
 			}
 		}
 		$sql = array();
@@ -344,7 +348,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$this->replacePlaceholders($statement, $parameters);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
-		$this->checkSqlErrors();
+		$this->checkSqlErrors($statement);
 		$row = $this->databaseHandle->sql_fetch_assoc($res);
 		if ($row !== FALSE) {
 			return (int)$row['uid'];
@@ -356,71 +360,54 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Transforms a Query Source into SQL and parameter arrays
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModel $query
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source
 	 * @param array &$sql
 	 * @param array &$parameters
 	 * @return void
 	 */
-	protected function parseSource(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters) {
+	protected function parseSource(Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
 		if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
 			$tableName = $source->getSelectorName();
-			$sql['fields'][] = $tableName . '.*';
-			$sql['tables'][] = $tableName;
-			$querySettings = $query->getQuerySettings();
-			if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettingsInterface) {
-				if ($querySettings->getRespectEnableFields()) {
-					$this->addEnableFieldsStatement($tableName, $sql);
-				}
-				if ($querySettings->getRespectStoragePage()) {
-					$this->addPageIdStatement($tableName, $sql);
-				}
-			}
+			$sql['fields'][$tableName] = $tableName . '.*';
+			$sql['tables'][$tableName] = $tableName;
 		} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
-			$this->parseJoin($query, $source, $sql);
+			$this->parseJoin($source, $sql);
 		}
 	}
 
 	/**
 	 * Transforms a Join into SQL and parameter arrays
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModel $query The Query Object Model
 	 * @param Tx_Extbase_Persistence_QOM_JoinInterface $join The join
 	 * @param array &$sql The query parts
 	 * @return void
 	 */
-	protected function parseJoin(Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query, Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql) {
+	protected function parseJoin(Tx_Extbase_Persistence_QOM_JoinInterface $join, array &$sql) {
 		$leftSource = $join->getLeft();
+		$leftClassName = $leftSource->getNodeTypeName();
 		$leftTableName = $leftSource->getSelectorName();
+		// $sql['fields'][$leftTableName] = $leftTableName . '.*';
 		$rightSource = $join->getRight();
-		$rightTableName = $rightSource->getSelectorName();
-
-		$sql['fields'][] = $leftTableName . '.*';
-		$sql['fields'][] = $rightTableName . '.*';
-
-		// TODO Implement support for different join types and nested joins
-		$sql['tables'][] = $leftTableName . ' LEFT JOIN ' . $rightTableName;
+		if ($rightSource instanceof	Tx_Extbase_Persistence_QOM_JoinInterface) {
+			$rightClassName = $rightSource->getLeft()->getNodeTypeName();
+			$rightTableName = $rightSource->getLeft()->getSelectorName();
+		} else {
+			$rightClassName = $rightSource->getNodeTypeName();
+			$rightTableName = $rightSource->getSelectorName();
+			$sql['fields'][$leftTableName] = $rightTableName . '.*';
+		}
+		
+		$sql['tables'][$leftTableName] = $leftTableName;
+		$sql['unions'][$rightTableName] = 'LEFT JOIN ' . $rightTableName;
 
 		$joinCondition = $join->getJoinCondition();
-		// TODO Check the parsing of the join
 		if ($joinCondition instanceof Tx_Extbase_Persistence_QOM_EquiJoinCondition) {
-			// TODO Discuss, if we should use $leftSource instead of $selector1Name
-			$column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftSource->getNodeTypeName());
-			$column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightSource->getNodeTypeName());
-			$sql['tables'][] = 'ON ' . $joinCondition->getSelector1Name() . '.' . $column1Name . ' = ' . $joinCondition->getSelector2Name() . '.' . $column2Name;
+			$column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
+			$column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
+			$sql['unions'][$rightTableName] .= ' ON ' . $joinCondition->getSelector1Name() . '.' . $column1Name . ' = ' . $joinCondition->getSelector2Name() . '.' . $column2Name;
 		}
-		// TODO Implement childtableWhere
-
-		$querySettings = $query->getQuerySettings();
-		if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettingsInterface) {
-			if ($querySettings->getRespectEnableFields()) {
-				$this->addEnableFieldsStatement($leftTableName, $sql);
-				$this->addEnableFieldsStatement($rightTableName, $sql);
-			}
-			if ($querySettings->getRespectStoragePage()) {
-				$this->addPageIdStatement($leftTableName, $sql);
-				$this->addPageIdStatement($rightTableName, $sql);
-			}
+		if ($rightSource instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+			$this->parseJoin($rightSource, $sql);
 		}
 	}
 
@@ -434,28 +421,25 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param array $boundVariableValues The bound variables in the query (key) and their values (value)
 	 * @return void
 	 */
-	protected function parseConstraint(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint = NULL, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, array $boundVariableValues) {
-		if ($constraint === NULL) return;
+	protected function parseConstraint(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint = NULL, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters) {
 		if ($constraint instanceof Tx_Extbase_Persistence_QOM_AndInterface) {
 			$sql['where'][] = '(';
-			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters, $boundVariableValues);
-			$sql['where'][] = ' AND ';
-			$this->parseConstraint($constraint->getConstraint2(), $source, $sql, $parameters, $boundVariableValues);
-			$sql['where'][] = ')';
-		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_OrInterface) {
-			$sql['where'][] = '(';
-			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters, $boundVariableValues);
-			$sql['where'][] = ' OR ';
-			$this->parseConstraint($constraint->getConstraint2(), $source, $sql, $parameters, $boundVariableValues);
+			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters);
+			$sql['where'][] = ' AND ';                                                      
+			$this->parseConstraint($constraint->getConstraint2(), $source, $sql, $parameters);
+			$sql['where'][] = ')';                                                          
+		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_OrInterface) {          
+			$sql['where'][] = '(';                                                          
+			$this->parseConstraint($constraint->getConstraint1(), $source, $sql, $parameters);
+			$sql['where'][] = ' OR ';                                                       
+			$this->parseConstraint($constraint->getConstraint2(), $source, $sql, $parameters);
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_NotInterface) {
 			$sql['where'][] = 'NOT (';
-			$this->parseConstraint($constraint->getConstraint(), $source, $sql, $parameters, $boundVariableValues);
+			$this->parseConstraint($constraint->getConstraint(), $source, $sql, $parameters);
 			$sql['where'][] = ')';
 		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_ComparisonInterface) {
-			$this->parseComparison($constraint, $source, $sql, $parameters, $boundVariableValues);
-		} elseif ($constraint instanceof Tx_Extbase_Persistence_QOM_RelatedInterface) {
-			$this->parseRelated($constraint, $sql, $parameters, $boundVariableValues);
+			$this->parseComparison($constraint, $source, $sql, $parameters);
 		}
 	}
 
@@ -469,27 +453,100 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param array $boundVariableValues The bound variables in the query and their values
 	 * @return void
 	 */
-	protected function parseComparison(Tx_Extbase_Persistence_QOM_ComparisonInterface $comparison, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, array $boundVariableValues) {
-		if (!($comparison->getOperand2() instanceof Tx_Extbase_Persistence_QOM_BindVariableValueInterface)) throw new Tx_Extbase_Persistence_Exception('Type of operand is not supported', 1247581135);
-
-		$value = $boundVariableValues[$comparison->getOperand2()->getBindVariableName()];
+	protected function parseComparison(Tx_Extbase_Persistence_QOM_ComparisonInterface $comparison, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters) {
+		$operand1 = $comparison->getOperand1();
 		$operator = $comparison->getOperator();
-		if ($value === NULL) {
-			if ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO) {
-				$operator = self::OPERATOR_EQUAL_TO_NULL;
-			} elseif ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_NOT_EQUAL_TO) {
-				$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
-			}
-		} elseif (is_array($value)) {
-			if ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO) {
-				$operator = self::OPERATOR_IN;
-			} elseif ($operator === Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_NOT_EQUAL_TO) {
-				$operator = self::OPERATOR_NOT_IN;
-			}			
+		$operand2 = $comparison->getOperand2();
+		if (($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO) && (is_array($operand2) || ($operand2 instanceof ArrayAccess) || ($operand2 instanceof Traversable))) {
+			// FIXME this else branch enables equals() to behave like in(). This behavior is deprecated and will be removed in future. Use in() instead.
+			$operator = Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN;
 		}
-		$parameters[] = $value;
-
-		$this->parseDynamicOperand($comparison->getOperand1(), $operator, $source, $sql, $parameters);
+				
+		if ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN) {
+			$items = array();
+			$hasValue = FALSE;
+			foreach ($operand2 as $value) {
+				$value = $this->getPlainValue($value);
+				if ($value !== NULL) {
+					$items[] = $value;
+					$hasValue = TRUE;
+				}
+			}
+			if ($hasValue === FALSE) {
+				$sql['where'][] = '1<>1';
+			} else {
+				$this->parseDynamicOperand($operand1, $operator, $source, $sql, $parameters, NULL, $operand2);
+				$parameters[] = $items;
+			}
+		} elseif ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS) {
+			if ($operand2 === NULL) {
+				$sql['where'][] = '1<>1';
+			} else {
+				$className = $source->getNodeTypeName();
+				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				$propertyName = $operand1->getPropertyName();
+				while (strpos($propertyName, '.') !== FALSE) {
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
+				}
+				$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
+				$dataMap = $this->dataMapper->getDataMap($className);
+				$columnMap = $dataMap->getColumnMap($propertyName);
+				$typeOfRelation = $columnMap->getTypeOfRelation();
+				if ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+					$relationTableName = $columnMap->getRelationTableName();
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->getPlainValue($operand2) . ')';
+				} elseif ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
+					if (isset($parentKeyFieldName)) {
+						$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand1->getPropertyName(), $source->getNodeTypeName());
+						$childTableName = $columnMap->getChildTableName();
+						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
+					} else {
+						$statement = '(' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . ',%\'';
+						$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . '\'';
+						$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'' . $this->getPlainValue($operand2) . ',%\')';
+						$sql['where'][] = $statement;
+					}
+				} else {
+					throw new Tx_Extbase_Persistence_Exception_RepositoryException('Unsupported relation for contains().', 1267832524);
+				}
+			}
+		} else {
+			if ($operand2 === NULL) {
+				if ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO) {
+					$operator = self::OPERATOR_EQUAL_TO_NULL;
+				} elseif ($operator === Tx_Extbase_Persistence_QueryInterface::OPERATOR_NOT_EQUAL_TO) {
+					$operator = self::OPERATOR_NOT_EQUAL_TO_NULL;
+				}
+			}
+			$this->parseDynamicOperand($operand1, $operator, $source, $sql, $parameters);
+			$parameters[] = $this->getPlainValue($operand2);
+		}
+	}
+	
+	/**
+	 * Returns a plain value, i.e. objects are flattened out if possible.
+	 *
+	 * @param mixed $input
+	 * @return mixed
+	 */
+	protected function getPlainValue($input) {
+		if (is_array($input)) {
+			throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('An array could not be converted to a plain value.', 1274799932);
+		}
+		if ($input instanceof DateTime) {
+			return $input->format('U');
+		} elseif (is_object($input)) {
+			if ($input instanceof Tx_Extbase_DomainObject_DomainObjectInterface) {
+				return $input->getUid();
+			} else {
+				throw new Tx_Extbase_Persistence_Exception_UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
+			}
+		} elseif (is_bool($input)) {
+			return $input === TRUE ? 1 : 0;
+		} else {
+			return $input;
+		}
 	}
 
 	/**
@@ -503,30 +560,71 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 * @param string $valueFunction an optional SQL function to apply to the operand value
 	 * @return void
 	 */
-	protected function parseDynamicOperand(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand, $operator, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, $valueFunction = NULL) {
+	protected function parseDynamicOperand(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand, $operator, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql, array &$parameters, $valueFunction = NULL, $operand2 = NULL) {
 		if ($operand instanceof Tx_Extbase_Persistence_QOM_LowerCaseInterface) {
 			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, $parameters, 'LOWER');
 		} elseif ($operand instanceof Tx_Extbase_Persistence_QOM_UpperCaseInterface) {
 			$this->parseDynamicOperand($operand->getOperand(), $operator, $source, $sql, $parameters, 'UPPER');
 		} elseif ($operand instanceof Tx_Extbase_Persistence_QOM_PropertyValueInterface) {
-			$tableName = $operand->getSelectorName();
-			// FIXME Discuss the translation from propertyName to columnName
-			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+			$propertyName = $operand->getPropertyName();
+			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) { // FIXME Only necessary to differ from  Join
 				$className = $source->getNodeTypeName();
-			} else {
-				$className = '';
+				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				while (strpos($propertyName, '.') !== FALSE) {
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
+				}
+			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+				$tableName = $source->getJoinCondition()->getSelector1Name();
 			}
-			$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand->getPropertyName(), $className);
+			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 			$operator = $this->resolveOperator($operator);
-
 			if ($valueFunction === NULL) {
 				$constraintSQL .= (!empty($tableName) ? $tableName . '.' : '') . $columnName .  ' ' . $operator . ' ?';
 			} else {
 				$constraintSQL .= $valueFunction . '(' . (!empty($tableName) ? $tableName . '.' : '') . $columnName .  ' ' . $operator . ' ?';
 			}
 
-			$sql['where'][] = $constraintSQL;
+			$sql['where'][] = $constraintSQL;			
 		}
+	}
+	
+	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql) {
+		$explodedPropertyPath = explode('.', $propertyPath, 2);
+		$propertyName = $explodedPropertyPath[0];
+		$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
+		$tableName = $this->dataMapper->convertClassNameToTableName($className);
+		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
+		$parentKeyFieldName = $columnMap->getParentKeyFieldName();
+		$childTableName = $columnMap->getChildTableName();
+		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_ONE) {
+			if (isset($parentKeyFieldName)) {
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
+			} else {
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.' . $columnName . '=' . $childTableName . '.uid';
+			}
+			$className = $this->dataMapper->getType($className, $propertyName);
+		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
+			if (isset($parentKeyFieldName)) {
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
+			} else {
+				$onStatement = '(' . $tableName . '.' . $columnName . ' LIKE CONCAT(\'%,\',' . $childTableName . '.uid,\',%\')';
+				$onStatement .= ' OR ' . $tableName . '.' . $columnName . ' LIKE CONCAT(\'%,\',' . $childTableName . '.uid)';
+				$onStatement .= ' OR ' . $tableName . '.' . $columnName . ' LIKE CONCAT(' . $childTableName . '.uid,\',%\'))';
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $onStatement;
+			}
+			$className = $this->dataMapper->getType($className, $propertyName);
+		} elseif ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
+			$relationTableName = $columnMap->getRelationTableName();
+			$sql['unions'][$relationTableName] = 'LEFT JOIN ' . $relationTableName . ' ON ' . $tableName . '.uid=' . $relationTableName . '.uid_local';
+			$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $relationTableName . '.uid_foreign=' . $childTableName . '.uid';
+			$className = $this->dataMapper->getType($className, $propertyName);
+		} else {
+			throw new Tx_Extbase_Persistence_Exception('Could not determine type of relation.', 1252502725);
+		}
+		// TODO check if there is another solution for this
+		$sql['keywords']['distinct'] = 'DISTINCT';
+		$propertyPath = $explodedPropertyPath[1];
+		$tableName = $childTableName;
 	}
 
 	/**
@@ -543,31 +641,28 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			case self::OPERATOR_NOT_EQUAL_TO_NULL:
 				$operator = 'IS NOT';
 				break;
-			case self::OPERATOR_IN:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_IN:
 				$operator = 'IN';
 				break;
-			case self::OPERATOR_NOT_IN:
-				$operator = 'NOT IN';
-				break;		
-			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_EQUAL_TO:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_EQUAL_TO:
 				$operator = '=';
 				break;
-			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_NOT_EQUAL_TO:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_NOT_EQUAL_TO:
 				$operator = '!=';
 				break;
-			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN:
 				$operator = '<';
 				break;
-			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LESS_THAN_OR_EQUAL_TO:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO:
 				$operator = '<=';
 				break;
-			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN:
 				$operator = '>';
 				break;
-			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_GREATER_THAN_OR_EQUAL_TO:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
 				$operator = '>=';
 				break;
-			case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_OPERATOR_LIKE:
+			case Tx_Extbase_Persistence_QueryInterface::OPERATOR_LIKE:
 				$operator = 'LIKE';
 				break;
 			default:
@@ -594,7 +689,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if ($markPosition !== FALSE) {
 				if ($parameter === NULL) {
 					$parameter = 'NULL';
-				} elseif (is_array($parameter)) {
+				} elseif (is_array($parameter) || ($parameter instanceof ArrayAccess) || ($parameter instanceof Traversable)) {
 					$items = array();
 					foreach ($parameter as $item) {
 						$items[] = $this->databaseHandle->fullQuoteStr($item, 'foo');
@@ -606,6 +701,28 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$sqlString = substr($sqlString, 0, $markPosition) . $parameter . substr($sqlString, $markPosition + 1);
 			}
 			$offset = $markPosition + strlen($parameter);
+		}
+	}
+
+	/**
+	 * Adds additional WHERE statements according to the query settings.
+	 *
+	 * @param Tx_Extbase_Persistence_QuerySettingsInterface $querySettings The TYPO3 4.x specific query settings
+	 * @param string $tableName The table name to add the additional where clause for
+	 * @param string $sql
+	 * @return void
+	 */
+	protected function addAdditionalWhereClause(Tx_Extbase_Persistence_QuerySettingsInterface $querySettings, $tableName, &$sql) {
+		if ($querySettings instanceof Tx_Extbase_Persistence_Typo3QuerySettings) {
+			if ($querySettings->getRespectEnableFields()) {
+				$this->addEnableFieldsStatement($tableName, $sql);
+			}
+			if ($querySettings->getRespectSysLanguage()) {
+				$this->addSysLanguageStatement($tableName, $sql);
+			}
+			if ($querySettings->getRespectStoragePage()) {
+				$this->addPageIdStatement($tableName, $sql);
+			}
 		}
 	}
 
@@ -630,7 +747,22 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			}
 		}
 	}
-
+	
+	/**
+	 * Builds the language field statement
+	 *
+	 * @param string $tableName The database table name
+	 * @param array &$sql The query parts
+	 * @return void
+	 */
+	protected function addSysLanguageStatement($tableName, array &$sql) {
+		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
+			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
+				$sql['additionalWhereClause'][] = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (0,-1)';
+			}
+		}
+	}
+	
 	/**
 	 * Builds the page ID checking statement
 	 *
@@ -651,37 +783,39 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	/**
 	 * Transforms orderings into SQL.
 	 *
-	 * @param array $orderings Ann array of orderings (Tx_Extbase_Persistence_QOM_Ordering)
+	 * @param array $orderings An array of orderings (Tx_Extbase_Persistence_QOM_Ordering)
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source
 	 * @param array &$sql The query parts
 	 * @return void
 	 */
 	protected function parseOrderings(array $orderings, Tx_Extbase_Persistence_QOM_SourceInterface $source, array &$sql) {
-		foreach ($orderings as $ordering) {
-			$operand = $ordering->getOperand();
-			$order = $ordering->getOrder();
-			if ($operand instanceof Tx_Extbase_Persistence_QOM_PropertyValue) {
-				switch ($order) {
-					case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING:
-						$order = 'ASC';
-						break;
-					case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING:
-						$order = 'DESC';
-						break;
-					default:
-						throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('Unsupported order encountered.', 1242816074);
+		foreach ($orderings as $propertyName => $order) {
+			switch ($order) {
+				case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING: // Deprecated since Extbase 1.1
+				case Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING:
+					$order = 'ASC';
+					break;
+				case Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING: // Deprecated since Extbase 1.1
+				case Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING:
+					$order = 'DESC';
+					break;
+				default:
+					throw new Tx_Extbase_Persistence_Exception_UnsupportedOrder('Unsupported order encountered.', 1242816074);
+			}
+			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+				$className = $source->getNodeTypeName();
+				$tableName = $this->dataMapper->convertClassNameToTableName($className);
+				while (strpos($propertyName, '.') !== FALSE) {
+					$this->addUnionStatement($className, $tableName, $propertyName, $sql);
 				}
-				$tableName = $operand->getSelectorName();
-				$className = '';
-				if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-					$className = $source->getNodeTypeName();
-				}
-				$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand->getPropertyName(), $className);
-				if (strlen($tableName) > 0) {
-					$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
-				} else {
-					$sql['orderings'][] = $columnName . ' ' . $order;
-				}
+			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+				$tableName = $source->getLeft()->getSelectorName();
+			}
+			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
+			if (strlen($tableName) > 0) {
+				$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
+			} else {
+				$sql['orderings'][] = $columnName . ' ' . $order;
 			}
 		}
 	}
@@ -703,8 +837,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	}
 
 	/**
-	 * Transforms a Resource from a database query to an array of rows. Performs the language and
-	 * workspace overlay before.
+	 * Transforms a Resource from a database query to an array of rows.
 	 *
 	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
 	 * @param resource $result The result
@@ -713,73 +846,89 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected function getRowsFromResult(Tx_Extbase_Persistence_QOM_SourceInterface $source, $result) {
 		$rows = array();
 		while ($row = $this->databaseHandle->sql_fetch_assoc($result)) {
-			if	($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
-				// FIXME The overlay is only performed if we query a single table; no joins
-				$row = $this->doLanguageAndWorkspaceOverlay($source->getSelectorName(), $row);
-			}
 			if (is_array($row)) {
 				// TODO Check if this is necessary, maybe the last line is enough
-				$arrayKeys = range(0,count($row));
+				$arrayKeys = range(0, count($row));
 				array_fill_keys($arrayKeys, $row);
 				$rows[] = $row;
 			}
 		}
 		return $rows;
-	}
-
+	} 
+	
 	/**
 	 * Performs workspace and language overlay on the given row array. The language and workspace id is automatically
 	 * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
 	 *
-	 * @param Tx_Extbase_Persistence_Mapper_DataMap $dataMap
+	 * @param Tx_Extbase_Persistence_QOM_SourceInterface $source The source (selector od join)
 	 * @param array $row The row array (as reference)
 	 * @param string $languageUid The language id
 	 * @param string $workspaceUidUid The workspace id
 	 * @return void
 	 */
-	protected function doLanguageAndWorkspaceOverlay($tableName, array $row, $languageUid = NULL, $workspaceUid = NULL) {
-		if (!($this->pageSelectObject instanceof t3lib_pageSelect)) {
-			if (TYPO3_MODE == 'FE') {
-				if (is_object($GLOBALS['TSFE'])) {
-					$this->pageSelectObject = $GLOBALS['TSFE']->sys_page;
-					if ($languageUid === NULL) {
-						$languageUid = $GLOBALS['TSFE']->sys_language_content;
+	protected function doLanguageAndWorkspaceOverlay(Tx_Extbase_Persistence_QOM_SourceInterface $source, array $rows, $languageUid = NULL, $workspaceUid = NULL) {
+		$overlayedRows = array();
+		foreach ($rows as $row) {
+			if (!($this->pageSelectObject instanceof t3lib_pageSelect)) {
+				if (TYPO3_MODE == 'FE') {
+					if (is_object($GLOBALS['TSFE'])) {
+						$this->pageSelectObject = $GLOBALS['TSFE']->sys_page;
+					} else {
+						require_once(PATH_t3lib . 'class.t3lib_page.php');
+						$this->pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
 					}
 				} else {
 					require_once(PATH_t3lib . 'class.t3lib_page.php');
-					$this->pageSelectObject = t3lib_div::makeInstance('t3lib_pageSelect');
-					if ($languageUid === NULL) {
-						$languageUid = intval(t3lib_div::_GP('L'));
-					}
+					$this->pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
+				}
+			}
+			if (is_object($GLOBALS['TSFE'])) {
+				if ($languageUid === NULL) {
+					$languageUid = $GLOBALS['TSFE']->sys_language_uid;
+					$languageMode = $GLOBALS['TSFE']->sys_language_mode;
 				}
 				if ($workspaceUid !== NULL) {
 					$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
 				}
 			} else {
-				require_once(PATH_t3lib . 'class.t3lib_page.php');
-				$this->pageSelectObject = t3lib_div::makeInstance( 't3lib_pageSelect' );
+				if ($languageUid === NULL) {
+					$languageUid = intval(t3lib_div::_GP('L'));
+				}
 				if ($workspaceUid === NULL) {
 					$workspaceUid = $GLOBALS['BE_USER']->workspace;
 				}
 				$this->pageSelectObject->versioningWorkspaceId = $workspaceUid;
 			}
+			if ($source instanceof Tx_Extbase_Persistence_QOM_SelectorInterface) {
+				$tableName = $source->getSelectorName();
+			} elseif ($source instanceof Tx_Extbase_Persistence_QOM_JoinInterface) {
+				$tableName = $source->getLeft()->getSelectorName();
+			}
+			$this->pageSelectObject->versionOL($tableName, $row, TRUE);
+			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
+				if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1,0))) {
+					$overlayMode = ($languageMode === 'strict') ? 'hideNonTranslated' : '';
+					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, $overlayMode);
+				}
+			}
+			if ($row !== NULL) {
+				$overlayedRows[] = $row;
+			}
 		}
-
-		$this->pageSelectObject->versionOL($tableName, $row, TRUE);
-		$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, ''); //'hideNonTranslated'
-		// TODO Skip if empty languageoverlay (languagevisibility)
-		return $row;
+		return $overlayedRows;
 	}
 
 	/**
 	 * Checks if there are SQL errors in the last query, and if yes, throw an exception.
 	 *
 	 * @return void
+	 * @param string $sql The SQL statement
 	 * @throws Tx_Extbase_Persistence_Storage_Exception_SqlError
 	 */
-	protected function checkSqlErrors() {
+	protected function checkSqlErrors($sql='') {
 		$error = $this->databaseHandle->sql_error();
 		if ($error !== '') {
+			$error .= $sql ? ': ' . $sql : '';
 			throw new Tx_Extbase_Persistence_Storage_Exception_SqlError($error, 1247602160);
 		}
 	}

@@ -39,10 +39,20 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	protected $uid;
 
 	/**
+	 * @var int The uid of the localized record. In TYPO3 v4.x the property "uid" holds the uid of the record in default language (the translationOrigin).
+	 */
+	protected $_localizedUid;
+
+	/**
+	 * @var int The uid of the language of the object. In TYPO3 v4.x this is the uid of the language record in the table sys_language.
+	 */
+	protected $_languageUid;
+
+	/**
 	 * TRUE if the object is a clone
 	 * @var boolean
 	 */
-	private $isClone = FALSE;
+	private $_isClone = FALSE;
 
 	/**
 	 * The generic constructor. If you want to implement your own __constructor() method in your Domain Object you have to call
@@ -80,9 +90,13 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return int the uid or NULL if none set yet.
 	 */
 	final public function getUid() {
-		return ($this->uid === NULL ? NULL : (int)$this->uid);
+		if ($this->uid !== NULL) {
+			return (int)$this->uid;
+		} else {
+			return NULL;
+		}
 	}
-
+	
 	/**
 	 * Reconstitutes a property. Only for internal use.
 	 *
@@ -114,7 +128,11 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 */
 	public function _getProperties() {
 		$properties = get_object_vars($this);
-		unset($properties['_cleanProperties']);
+		foreach ($properties as $propertyName => $propertyValue) {
+			if ($propertyName{0} === '_') {
+				unset($properties[$propertyName]);
+			}
+		}
 		return $properties;
 	}
 	
@@ -161,7 +179,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return boolean TRUE if the object has been cloned
 	 */
 	public function _isClone() {
-		return $this->isClone;
+		return $this->_isClone;
 	}
 
 	/**
@@ -173,7 +191,7 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @param boolean $clone
 	 */
 	public function _setClone($clone) {
-		$this->isClone = (boolean)$clone;
+		$this->_isClone = (boolean)$clone;
 	}
 
 	/**
@@ -182,7 +200,8 @@ abstract class Tx_Extbase_DomainObject_AbstractDomainObject implements Tx_Extbas
 	 * @return void
 	 */
 	public function __clone() {
-		$this->isClone = TRUE;
+		$this->_isClone = TRUE;
 	}
+	
 }
 ?>

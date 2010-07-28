@@ -38,7 +38,16 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	const RELATION_NONE = 'RELATION_NONE';
 	const RELATION_HAS_ONE = 'RELATION_HAS_ONE';
 	const RELATION_HAS_MANY = 'RELATION_HAS_MANY';
+	const RELATION_BELONGS_TO_MANY = 'RELATION_BELONGS_TO_MANY';
 	const RELATION_HAS_AND_BELONGS_TO_MANY = 'RELATION_HAS_AND_BELONGS_TO_MANY';
+
+	/**
+	 * Constants reflecting how the relation information is stored
+	 */
+	const RELATION_PARENT_FOREIGN_KEY = 'RELATION_PARENT_FOREIGN_KEY';
+	const RELATION_CHILD_FOREIGN_KEY = 'RELATION_CHILD_FOREIGN_KEY';
+	const RELATION_PARENT_CSV = 'RELATION_PARENT_CSV';
+	const RELATION_INTERMEDIATE_TABLE = 'RELATION_INTERMEDIATE_TABLE';
 
 	/**
 	 * Constants reflecting the loading strategy
@@ -67,13 +76,6 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 * @var int
 	 **/
 	protected $typeOfRelation;
-
-	/**
-	 * The type of value
-	 *
-	 * @var int
-	 **/
-	protected $propertyType;
 
 	/**
 	 * The name of the child's class
@@ -109,6 +111,13 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	 * @var string
 	 **/
 	protected $relationTableName;
+
+	/**
+	 * The name of the column  of the relation table holding the page id
+	 *
+	 * @var string
+	 **/
+	protected $relationTablePageIdColumnName;
 
 	/**
 	 * An array of field => value pairs to both insert and match against when writing/reading MM relations
@@ -166,60 +175,11 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	}
 
 	public function setTypeOfRelation($typeOfRelation) {
-		switch ($typeOfRelation) {
-			case self::RELATION_NONE;
-			case self::RELATION_HAS_ONE;
-			case self::RELATION_HAS_MANY;
-			case self::RELATION_HAS_AND_BELONGS_TO_MANY;
-				$this->typeOfRelation = $typeOfRelation;
-				break;
-			default:
-				$this->typeOfRelation = NULL;
-				break;
-		}
-	}
-
-	public function isRelation() {
-		return $this->typeOfRelation !== NULL && $this->typeOfRelation !== self::RELATION_NONE;
+		$this->typeOfRelation = $typeOfRelation;
 	}
 
 	public function getTypeOfRelation() {
 		return $this->typeOfRelation;
-	}
-
-	public function setPropertyType($propertyType) {
-		switch ($propertyType) {
-			case Tx_Extbase_Persistence_PropertyType::UNDEFINED;
-			case Tx_Extbase_Persistence_PropertyType::STRING;
-			case Tx_Extbase_Persistence_PropertyType::DATE;
-			case Tx_Extbase_Persistence_PropertyType::LONG;
-			case Tx_Extbase_Persistence_PropertyType::DOUBLE;
-			case Tx_Extbase_Persistence_PropertyType::BOOLEAN;
-			case Tx_Extbase_Persistence_PropertyType::REFERENCE;
-				$this->propertyType = $propertyType;
-				break;
-			default:
-				$this->propertyType = Tx_Extbase_Persistence_PropertyType::UNDEFINED;
-				break;
-		}
-	}
-
-	public function getPropertyType() {
-		return $this->propertyType;
-	}
-
-	public function setLoadingStrategy($loadingStrategy) {
-		switch ($loadingStrategy) {
-			case self::STRATEGY_LAZY_PROXY;
-			case self::STRATEGY_LAZY_STORAGE;
-			case self::STRATEGY_EAGER;
-				$this->loadingStrategy = $loadingStrategy;
-				break;
-		}
-	}
-
-	public function getLoadingStrategy() {
-		return $this->loadingStrategy;
 	}
 
 	public function setPropertyName($propertyName) {
@@ -237,15 +197,7 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 	public function getColumnName() {
 		return $this->columnName;
 	}
-
-	public function setChildClassName($childClassName) {
-		$this->childClassName = $childClassName;
-	}
-
-	public function getChildClassName() {
-		return $this->childClassName;
-	}
-
+	
 	public function setChildTableName($childTableName) {
 		$this->childTableName = $childTableName;
 	}
@@ -276,6 +228,14 @@ class Tx_Extbase_Persistence_Mapper_ColumnMap {
 
 	public function getRelationTableName() {
 		return $this->relationTableName;
+	}
+
+	public function setRelationTablePageIdColumnName($relationTablePageIdColumnName) {
+		$this->relationTablePageIdColumnName = $relationTablePageIdColumnName;
+	}
+
+	public function getRelationTablePageIdColumnName() {
+		return $this->relationTablePageIdColumnName;
 	}
 
 	public function setRelationTableMatchFields(array $relationTableMatchFields) {

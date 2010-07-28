@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Validation
- * @version $Id: ValidatorResolver.php 1709 2009-11-25 11:26:13Z jocrau $
+ * @version $Id: ValidatorResolver.php 1790 2010-01-18 22:27:37Z jocrau $
  */
 class Tx_Extbase_Validation_ValidatorResolver {
 
@@ -199,7 +199,7 @@ class Tx_Extbase_Validation_ValidatorResolver {
 		$validatorConjunction = $this->objectManager->getObject('Tx_Extbase_Validation_Validator_ConjunctionValidator');
 
 		// Model based validator
-		if (class_exists($dataType)) {
+		if (strstr($dataType, '_') !== FALSE && class_exists($dataType)) {
 			$validatorCount = 0;
 			$objectValidator = $this->createValidator('GenericObject');
 
@@ -301,13 +301,13 @@ class Tx_Extbase_Validation_ValidatorResolver {
 	 *
 	 *
 	 * Returns an object of an appropriate validator for the given class. If no validator is available
-	 * NULL is returned
+	 * FALSE is returned
 	 *
 	 * @param string $validatorName Either the fully qualified class name of the validator or the short name of a built-in validator
 	 * @return string Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if (class_exists($validatorName)) return $validatorName;
+		if (strstr($validatorName, '_') !== FALSE && class_exists($validatorName)) return $validatorName;
 
 		$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		if (class_exists($possibleClassName)) return $possibleClassName;

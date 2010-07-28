@@ -77,11 +77,11 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 			$extbaseConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($extbaseConfiguration);
 			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, $extbaseConfiguration);
 		}
-
+		
 		if (isset($pluginConfiguration['settings'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'settings');
-			if (!is_array($pluginConfiguration['settings.'])) $pluginConfiguration['settings.'] = array(); // We expect that the settings are arrays on various places
 		}
+		if (!is_array($pluginConfiguration['settings.'])) $pluginConfiguration['settings.'] = array(); // We expect that the settings are arrays on various places
 		if (isset($pluginConfiguration['persistence'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, 'persistence');
 		}
@@ -91,7 +91,6 @@ abstract class Tx_Extbase_Configuration_AbstractConfigurationManager {
 		if (isset($pluginConfiguration['_LOCAL_LANG'])) {
 			$pluginConfiguration = $this->resolveTyposcriptReference($pluginConfiguration, '_LOCAL_LANG');
 		}
-
 		$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration));
 
 		$frameworkConfiguration = $this->getContextSpecificFrameworkConfiguration($frameworkConfiguration);

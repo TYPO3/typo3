@@ -79,7 +79,7 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
 		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
-		$this->persistenceManager->registerRepositoryClassName(get_class($this));
+		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
 	}
 
@@ -208,6 +208,30 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 		$result = $this->createQuery()->execute();
 		return $result;
 	}
+	
+	/**
+	 * Returns the total number objects of this repository.
+	 *
+	 * @return integer The object count
+	 * @api
+	 */
+	public function countAll() {
+		return $this->createQuery()->count();
+	}
+	
+	/**
+	 * Removes all objects of this repository as if remove() was called for
+	 * all of them.
+	 *
+	 * @return void
+	 * @api
+	 */
+	public function removeAll() {
+		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
+		foreach ($this->findAll() as $object) {
+			$this->remove($object);
+		}
+	}
 
 	/**
 	 * Finds an object matching the given identifier.
@@ -217,17 +241,17 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	 * @api
 	 */
 	public function findByUid($uid) {
-		if (!is_int($uid) || $uid < 0) throw new InvalidArgumentException('The uid must be a positive integer', 1245071889);
 		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
 			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
 		} else {
 			$query = $this->createQuery();
-			$result = $query->matching($query->withUid($uid))->execute();
+			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+			$result = $query->matching($query->equals('uid', $uid))->execute();
 			$object = NULL;
 			if (count($result) > 0) {
 				$object = current($result);
+				$this->identityMap->registerObject($object, $uid);
 			}
-			$this->identityMap->registerObject($object, $uid);
 		}
 		return $object;
 	}
@@ -235,7 +259,6 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	/**
 	 * Returns a query for objects of this repository
 	 *
-	 * @param boolean $useStoragePageId If FALSE, will NOT add pid=... to the query. TRUE by default. Only change if you know what you are doing.
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 * @api
 	 */
@@ -270,6 +293,12 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 				$object = current($result);
 			}
 			return $object;
+		} elseif (substr($methodName, 0, 7) === 'countBy' && strlen($methodName) > 8) {
+			$propertyName = strtolower(substr(substr($methodName, 7), 0, 1) ) . substr(substr($methodName, 7), 1);
+			$query = $this->createQuery();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))
+				->count();
+			return $result;
 		}
 		throw new Tx_Extbase_Persistence_Exception_UnsupportedMethod('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}

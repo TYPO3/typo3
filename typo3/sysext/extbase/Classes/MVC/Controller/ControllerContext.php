@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage MVC\Controller
- * @version $Id: ControllerContext.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: ControllerContext.php 2439 2010-07-26 09:27:14Z jocrau $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  * @api
@@ -65,7 +65,7 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	/**
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
 	 */
-	protected $flashMessages;
+	protected $flashMessageContainer;
 
 	/**
 	 * Set the request of the controller
@@ -169,8 +169,18 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * @param Tx_Extbase_MVC_Controller_FlashMessages $flashMessages
 	 * @return void
 	 */
-	public function setFlashMessages(Tx_Extbase_MVC_Controller_FlashMessages $flashMessages) {
-		$this->flashMessages = $flashMessages;
+	public function setFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+		$this->flashMessageContainer = $flashMessageContainer;
+	}
+
+	/**
+	 * Get the flash messages
+	 *
+	 * @return Tx_Extbase_MVC_Controller_FlashMessages
+	 * @deprecated
+	 */
+	public function getFlashMessages() {
+		return $this->flashMessageContainer;
 	}
 
 	/**
@@ -179,8 +189,8 @@ class Tx_Extbase_MVC_Controller_ControllerContext {
 	 * @return Tx_Extbase_MVC_Controller_FlashMessages
 	 * @api
 	 */
-	public function getFlashMessages() {
-		return $this->flashMessages;
+	public function getFlashMessageContainer() {
+		return $this->flashMessageContainer;
 	}
 }
 ?>

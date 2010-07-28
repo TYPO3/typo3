@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3.
+*  This class is a backport of the corresponding class of FLOW3. 
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,26 +26,13 @@
 ***************************************************************/
 
 /**
- * Allows easy iteration through a list of Rows with nextRow as well as a skip
- * method inherited from RangeIterator.
+ * An "Unsupported Order" exception: The order you specified in the query is not supported by now.
  *
  * @package Extbase
- * @subpackage Persistence
- * @version $Id: RowIterator.php 1729 2009-11-25 21:37:20Z stucki $
- * @scope prototype
+ * @subpackage Persistence\Exception
+ * @version $ID:$
  */
-class Tx_Extbase_Persistence_RowIterator extends Tx_Extbase_Persistence_RangeIterator implements Tx_Extbase_Persistence_RowIteratorInterface {
-
-	/**
-	 * Returns the next Row in the iteration.
-	 *
-	 * @return Tx_Extbase_Persistence_RowInterface
-	 * @throws OutOfBoundsException if the iterator contains no more elements.
-	 */
-	public function nextRow() {
-		return $this->next();
-	}
-
+class Tx_Extbase_Persistence_Exception_UnsupportedRelation extends Tx_Extbase_Persistence_Exception {
 }
 
 ?>

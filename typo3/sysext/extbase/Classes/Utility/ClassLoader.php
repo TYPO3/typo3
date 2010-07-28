@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Utility
- * @version $Id: ClassLoader.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $Id: ClassLoader.php 2469 2010-07-26 09:30:14Z jocrau $
  */
 class Tx_Extbase_Utility_ClassLoader {
 	
@@ -48,7 +48,7 @@ class Tx_Extbase_Utility_ClassLoader {
 		if (t3lib_extMgm::isLoaded($extensionKey)) {
 			$classFilePathAndName = t3lib_extMgm::extPath($extensionKey) . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
 			if (file_exists($classFilePathAndName)) {
-				require($classFilePathAndName);
+				require_once($classFilePathAndName);
 			}
 		}
 	}

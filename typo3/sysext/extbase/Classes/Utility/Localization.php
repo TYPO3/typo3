@@ -116,13 +116,15 @@ class Tx_Extbase_Utility_Localization {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function translateFileReference($key) {
-		if (is_object($GLOBALS['LANG'])) {
+		if (TYPO3_MODE === 'FE') {
+			return $GLOBALS['TSFE']->sL($key);
+		} elseif (is_object($GLOBALS['LANG'])) {
 			$value = $GLOBALS['LANG']->sL($key);
 			return $value !== '' ? $value : NULL;
- 		}
-		return $GLOBALS['TSFE']->sL($key);
- 	}
-
+		} else {
+			return $key;
+		}
+	}
 
 	/**
 	 * Loads local-language values by looking for a "locallang.php" (or "locallang.xml") file in the plugin resources directory and if found includes it.
@@ -136,11 +138,11 @@ class Tx_Extbase_Utility_Localization {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
-		$locallangPathAndFilename = t3lib_extMgm::extPath(t3lib_div::camelCaseToLowerCaseUnderscored($extensionName), self::$locallangPath . 'locallang.php');
+		$locallangPathAndFilename = 'EXT:' . t3lib_div::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xml';
 
 		self::setLanguageKeys();
 
-		$renderCharset = (TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
+		$renderCharset = (TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['LANG']->charSet);
 		self::$LOCAL_LANG[$extensionName] = t3lib_div::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
 		if (self::$alternativeLanguageKey !== '') {
 			$alternativeLocalLang = t3lib_div::readLLfile($locallangPathAndFilename, self::$alternativeLanguageKey);
@@ -207,18 +209,19 @@ class Tx_Extbase_Utility_Localization {
 	}
 
 	/**
-	 * Converts a string to the specified charset
+	 * Converts a string from the specified character set to the current.
+	 * The current charset is defined by the TYPO3 mode.
 	 *
 	 * @param string $value string to be converted
-	 * @param string $charset charset
+	 * @param string $charset The source charset
 	 * @return string converted string
 	 */
 	protected function convertCharset($value, $charset) {
 		if (TYPO3_MODE === 'FE') {
 			return $GLOBALS['TSFE']->csConv($value, $charset);
 		} else {
-			$covertedValue = $GLOBALS['LANG']->csConvObj->conv($value, $GLOBALS['LANG']->csConvObj->parse_charset($charset), $GLOBALS['LANG']->renderCharset, 1);
-			return $covertedValue !== NULL ? $covertedValue : $value;
+			$convertedValue = $GLOBALS['LANG']->csConvObj->conv($value, $GLOBALS['LANG']->csConvObj->parse_charset($charset), $GLOBALS['LANG']->charSet, 1);
+			return $convertedValue !== NULL ? $convertedValue : $value;
 		}
 	}
 }

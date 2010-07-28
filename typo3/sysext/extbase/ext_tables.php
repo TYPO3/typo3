@@ -9,7 +9,7 @@ if (TYPO3_MODE == 'BE') {
 		t3lib_cache::initializeCachingFramework();
 		$GLOBALS['typo3CacheFactory']->create(
 			'tx_extbase_cache_reflection',
-			't3lib_cache_frontend_VariableFrontend',
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['frontend'],
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['backend'],
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['cache_extbase_reflection']['options']
 		);

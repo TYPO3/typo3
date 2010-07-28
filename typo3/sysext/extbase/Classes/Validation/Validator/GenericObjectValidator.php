@@ -30,7 +30,7 @@
  *
  * @package Extbase
  * @subpackage Validation\Validator
- * @version $Id: GenericObjectValidator.php 1233 2009-09-14 07:45:12Z jocrau $
+ * @version $Id: GenericObjectValidator.php 1948 2010-03-04 06:40:53Z jocrau $
  * @scope prototype
  */
 class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_Validation_Validator_AbstractObjectValidator {
@@ -47,6 +47,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 *
 	 * @param mixed $value The value that should be validated
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
+	 * @api
 	 */
 	public function isValid($value) {
 		if (!is_object($value)) {
@@ -54,12 +55,13 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 			return FALSE;
 		}
 
+		$result = TRUE;
 		foreach (array_keys($this->propertyValidators) as $propertyName) {
 			if ($this->isPropertyValid($value, $propertyName) === FALSE) {
-				return FALSE;
+				$result = FALSE;
 			}
 		}
-		return TRUE;
+		return $result;
 	}
 
 	/**
@@ -67,6 +69,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 *
 	 * @param object $object The object to be checked
 	 * @return boolean TRUE if the given value is an object
+	 * @api
 	 */
 	public function canValidate($object) {
 		return is_object($object);
@@ -80,18 +83,20 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @param object $object The object containing the property to validate
 	 * @param string $propertyName Name of the property to validate
 	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
+	 * @api
 	 */
 	public function isPropertyValid($object, $propertyName) {
 		if (!is_object($object)) throw new InvalidArgumentException('Object expected, ' . gettype($object) . ' given.', 1241099149);
 		if (!isset($this->propertyValidators[$propertyName])) return TRUE;
 
+		$result = TRUE;
 		foreach ($this->propertyValidators[$propertyName] as $validator) {
 			if ($validator->isValid(Tx_Extbase_Reflection_ObjectAccess::getProperty($object, $propertyName)) === FALSE) {
 				$this->addErrorsForProperty($validator->getErrors(), $propertyName);
-				return FALSE;
+				$result = FALSE;
 			}
 		}
-		return TRUE;
+		return $result;
 	}
 
 	/**
@@ -112,6 +117,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 * @param string $propertyName Name of the property to validate
 	 * @param Tx_Extbase_Validation_Validator_ValidatorInterface $validator The property validator
 	 * @return void
+	 * @api
 	 */
 	public function addPropertyValidator($propertyName, Tx_Extbase_Validation_Validator_ValidatorInterface $validator) {
 		if (!isset($this->propertyValidators[$propertyName])) {

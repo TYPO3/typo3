@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3.
+*  This class is a backport of the corresponding class of FLOW3. 
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,16 +26,13 @@
 ***************************************************************/
 
 /**
- * Exception thrown when an attempt is made to assign a value to a property
- * that has an invalid format, given the type of the property. Also thrown
- * if an attempt is made to read the value of a property using a type-specific
- * read method of a type into which it is not convertible.
+ * An "Invalid Number of Constraints" exception.
  *
  * @package Extbase
  * @subpackage Persistence\Exception
- * @version $Id: ValueFormatException.php 1729 2009-11-25 21:37:20Z stucki $
+ * @version $ID:$
  */
-class Tx_Extbase_Persistence_Exception_ValueFormatException extends Tx_Extbase_Persistence_Exception {
+class Tx_Extbase_Persistence_Exception_InvalidNumberOfConstraints extends Tx_Extbase_Persistence_Exception {
 }
 
 ?>

@@ -65,6 +65,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 */
 	protected function getContextSpecificFrameworkConfiguration($frameworkConfiguration) {
 		$frameworkConfiguration = $this->overrideStoragePidIfStartingPointIsSet($frameworkConfiguration);
+		$frameworkConfiguration = $this->overrideConfigurationFromPlugin($frameworkConfiguration);
 		$frameworkConfiguration = $this->overrideConfigurationFromFlexform($frameworkConfiguration);
 
 		return $frameworkConfiguration;
@@ -78,15 +79,42 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @return array the framework configuration with overriden storagePid
 	 */
 	protected function overrideStoragePidIfStartingPointIsSet($frameworkConfiguration) {
-		if (is_string($this->contentObject->data['pages'])
-		    && strlen($this->contentObject->data['pages']) > 0) {
+		$pages = $this->contentObject->data['pages'];
+		if (is_string($pages) && strlen($pages) > 0) {
+			$list = array();
+			if($this->contentObject->data['recursive'] > 0) {
+				$explodedPages = t3lib_div::trimExplode(',', $pages);
+				foreach($explodedPages as $pid) {
+					$list[] = trim($this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']), ',');
+				}
+			}
+			if (count($list) > 0) {
+				$pages = $pages . ',' . implode(',', $list);
+			}
 			$frameworkConfiguration = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration, array(
 				'persistence' => array(
-					'storagePid' => $this->contentObject->data['pages']
+					'storagePid' => $pages
 				)
 			));
 		}
+		return $frameworkConfiguration;
+	}
 
+	/**
+	 * Overrides configuration settings from the plugin typoscript (plugin.tx_myext_pi1.)
+	 *
+	 * @param array the framework configuration
+	 * @return array the framework configuration with overridden data from typoscript
+	 */
+	protected function overrideConfigurationFromPlugin(array $frameworkConfiguration) {
+		$setup = $this->loadTypoScriptSetup();
+		$pluginConfiguration =  $setup['plugin.']['tx_' . strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']) . '.'];
+		if (is_array($pluginConfiguration)) {
+			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration);
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'settings');
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'persistence');
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'view');
+		}
 		return $frameworkConfiguration;
 	}
 
@@ -101,9 +129,9 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		if (strlen($this->contentObject->data['pi_flexform']) > 0) {
 			$flexformConfiguration = $this->convertFlexformContentToArray($this->contentObject->data['pi_flexform']);
 
-			$frameworkConfiguration = $this->mergeConfigurationPartFromFlexformIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'settings');
-			$frameworkConfiguration = $this->mergeConfigurationPartFromFlexformIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'persistence');
-			$frameworkConfiguration = $this->mergeConfigurationPartFromFlexformIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'view');
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'settings');
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'persistence');
+			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, 'view');
 
 			$frameworkConfiguration = $this->overrideSwitchableControllerActionsFromFlexform($frameworkConfiguration, $flexformConfiguration);
 		}
@@ -148,16 +176,16 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	}
 
 	/**
-	 * Merge a configuration part from the flexform configuration to the framework configuration.
+	 * Merge a configuration into the framework configuration.
 	 *
 	 * @param array $frameworkConfiguration the framework configuration to merge the data on
-	 * @param array $flexformConfiguration The full flexform configuration
+	 * @param array $configuration The configuration
 	 * @param string $configurationPartName The name of the configuration part which should be merged.
 	 * @return array the processed framework configuration
 	 */
-	protected function mergeConfigurationPartFromFlexformIntoFrameworkConfiguration($frameworkConfiguration, $flexformConfiguration, $configurationPartName) {
-		if (is_array($flexformConfiguration[$configurationPartName])) {
-			$frameworkConfiguration[$configurationPartName] = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration[$configurationPartName], $flexformConfiguration[$configurationPartName]);
+	protected function mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $configuration, $configurationPartName) {
+		if (is_array($frameworkConfiguration[$configurationPartName]) && is_array($configuration[$configurationPartName])) {
+			$frameworkConfiguration[$configurationPartName] = t3lib_div::array_merge_recursive_overrule($frameworkConfiguration[$configurationPartName], $configuration[$configurationPartName]);
 		}
 		return $frameworkConfiguration;
 	}

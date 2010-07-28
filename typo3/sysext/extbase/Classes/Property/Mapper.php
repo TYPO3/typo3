@@ -47,7 +47,7 @@
  *
  * @package Extbase
  * @subpackage Property
- * @version $Id: Mapper.php 1687 2009-11-17 22:23:52Z jocrau $
+ * @version $Id: Mapper.php 2240 2010-04-21 09:45:32Z jocrau $
  * @api
  */
 class Tx_Extbase_Property_Mapper {
@@ -216,6 +216,9 @@ class Tx_Extbase_Property_Mapper {
 						}
 					} elseif ($propertyMetaData['type'] === 'DateTime' || strpos($propertyMetaData['type'], '_') !== FALSE) {
 						$propertyValue = $this->transformToObject($propertyValue, $propertyMetaData['type'], $propertyName);
+						if ($propertyValue === NULL) {
+							continue;
+						}
 					}
 				} elseif ($targetClassSchema !== NULL) {
 					$this->mappingResults->addError(new Tx_Extbase_Error_Error("Property '$propertyName' does not exist in target class schema." , 1251813614), $propertyName);
@@ -239,14 +242,19 @@ class Tx_Extbase_Property_Mapper {
 	 * @param mixed $propertyValue The value to transform, string or array
 	 * @param string $targetType The type to transform to
 	 * @param string $propertyName In case of an error we add this to the error message
-	 * @return object
+	 * @return object The object, when no transformation was possible this may return NULL as well
 	 */
 	protected function transformToObject($propertyValue, $targetType, $propertyName) {
-		if ($targetType === 'DateTime' || in_array('DateTime', class_parents($targetType)) ) {
-			try {
-				return new $targetType($propertyValue);
-			} catch (Exception $e) {
-				throw new InvalidArgumentException('Conversion to a ' . $targetType . ' object is not possible. Cause: ' . $e->getMessage(), 1190034628);
+		if ($targetType === 'DateTime' || is_subclass_of($targetType, 'DateTime')) {
+			// TODO replace this with converter implementation of FLOW3
+			if ($propertyValue === '') {
+				$propertyValue = NULL;
+			} else {
+				try {
+					$propertyValue = new $targetType($propertyValue);
+				} catch (Exception $e) {
+					$propertyValue = NULL;
+				}
 			}
 		} else {
 			if (is_numeric($propertyValue)) {
@@ -265,12 +273,16 @@ class Tx_Extbase_Property_Mapper {
 						$newObject = clone $existingObject;
 						if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
 							$propertyValue = $newObject;
+						} else {
+							$propertyValue = NULL;
 						}
 					}
 				} else {
 					$newObject = new $targetType;
 					if ($this->map(array_keys($propertyValue), $propertyValue, $newObject)) {
 						$propertyValue = $newObject;
+					} else {
+						$propertyValue = NULL;
 					}
 				}
 			} else {
@@ -300,7 +312,8 @@ class Tx_Extbase_Property_Mapper {
 	 */
 	protected function findObjectByUid($dataType, $uid) {
 		$query = $this->queryFactory->create($dataType);
-		$result = $query->matching($query->withUid($uid))->execute();
+		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$result = $query->matching($query->equals('uid', intval($uid)))->execute();
 		$object = NULL;
 		if (count($result) > 0) {
 			$object = current($result);
