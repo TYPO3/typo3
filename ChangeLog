@@ -21,6 +21,7 @@
 	* Follow-up to bug #14389: Added unit test
 	* Fixed bug #1985: XSS vulnerability in wizard classes
 	* Fixed bug #15223: Password request hash in felogin is created with not enough randomness (thanks to Helmut Hummel)
+	* Fixed bug #14712: The GET/POST variable mimeType is used to create the http header content-type without verification (thanks to Rupert Germann)
 
 2010-07-28  Sebastian Kurfuerst  <sebastian@typo3.org>
 
