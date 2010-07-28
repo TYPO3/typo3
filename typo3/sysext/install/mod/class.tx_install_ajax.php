@@ -127,8 +127,7 @@ class tx_install_ajax {
 			header("Content-type: text/plain");
 		}
 
-		$bytes = t3lib_div::generateRandomBytes($keyLength);
-		return substr(bin2hex($bytes), -96);
+		return t3lib_div::getRandomHexString($keyLength);
 	}
 
 	/**

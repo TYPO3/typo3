@@ -686,7 +686,7 @@ class t3lib_userAuth {
 	 * @return	string		The new session ID
 	 */
 	public function createSessionId() {
-		return substr(md5(uniqid('') . getmypid()), 0, $this->hash_length);
+		return t3lib_div::getRandomHexString($this->hash_length);
 	}
 
 
