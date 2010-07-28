@@ -250,7 +250,7 @@ class SC_wizard_rte {
 		);
 
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid'])) {
-			$closeUrl = $this->P['returnUrl'];
+			$closeUrl = t3lib_div::sanitizeLocalUrl($this->P['returnUrl']);
 
 			// Getting settings for the undo button:
 			$undoButton = 0;
