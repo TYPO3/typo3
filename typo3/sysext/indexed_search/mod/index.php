@@ -451,7 +451,7 @@ class SC_mod_tools_isearch_index {
 	function formatCHash($arr)	{
 		$list = array();
 		foreach ($arr as $k => $v) {
-			$list[] = $k . '=' . $v;
+			$list[] = htmlspecialchars($k) . '=' . htmlspecialchars($v);
 		}
 		return implode('<br />', $list);
 	}
