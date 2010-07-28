@@ -5,6 +5,7 @@
 	* Fixed bug #11618: XSS vulnerability in install tool / BE login (thanks to Georg Ringer)
 	* Fixed bug #13961: XSS in impexp (thanks to Georg Ringer)
 	* Fixed bug #13960: XSS in sys_action (thanks to Georg Ringer)
+	* Fixed bug #13958: XSS in BE Log (thanks to Georg Ringer)
 
 2010-05-17  Oliver Hader  <oliver@typo3.org>
 

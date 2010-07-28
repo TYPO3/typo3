@@ -200,6 +200,7 @@ class t3lib_BEDisplayLog {
 				$text = str_replace('%s','',$text);
 			}
 		}
+		$text = htmlspecialchars($text);
 
 			// Finding the history for the record
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,fieldlist', 'sys_history', 'sys_log_uid='.intval($sys_log_uid));
