@@ -6012,9 +6012,7 @@ final class t3lib_div {
 	 * @return	void
 	 */
 	public static function cleanOutputBuffers() {
-		while (ob_get_level()) {
-			ob_end_clean();
-		}
+		while (ob_end_clean());
 		header('Content-Encoding: None', TRUE);
 	}
 
@@ -6027,9 +6025,7 @@ final class t3lib_div {
 	public static function flushOutputBuffers() {
 		$obContent = '';
 
-		while (ob_get_level()) {
-			$obContent .= ob_get_clean();
-		}
+		while ($obContent .= ob_get_clean());
 
 			// if previously a "Content-Encoding: whatever" has been set, we have to unset it
 		if (!headers_sent()) {

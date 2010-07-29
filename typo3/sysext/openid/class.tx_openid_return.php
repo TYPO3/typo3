@@ -57,9 +57,7 @@ class tx_openid_return {
 	*/
 	public function main() {
 		if ($GLOBALS['BE_USER']->user['uid']) {
-			while (ob_get_level()>0) {
-				@ob_end_clean();
-			}
+			t3lib_div::cleanOutputBuffers();
 			$backendURL = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
 			t3lib_utility_Http::redirect($backendURL);
 		}
