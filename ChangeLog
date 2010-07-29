@@ -1,3 +1,7 @@
+2010-07-29  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #13427: t3lib_div::cleanOutputBuffers() might loop forever (thanks to Stephan Seitz and Steffen Gebert)
+
 2010-07-28  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.4
