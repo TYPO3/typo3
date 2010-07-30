@@ -1,3 +1,7 @@
+2010-07-30  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15295: Page treeFilter not re-applied after branch toggling (Thanks to Felix Kopp)
+	
 2010-07-29  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #13427: t3lib_div::cleanOutputBuffers() might loop forever (thanks to Stephan Seitz and Steffen Gebert)
