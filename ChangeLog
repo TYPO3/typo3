@@ -1,5 +1,6 @@
 2010-07-30  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to bug #15188: Remove default greyed out effect for CEs (Thanks to Steffen Gebert)
 	* Fixed bug #15295: Page treeFilter not re-applied after branch toggling (Thanks to Felix Kopp)
 	
 2010-07-29  Dmitry Dulepov  <dmitry@typo3.org>
