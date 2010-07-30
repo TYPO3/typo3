@@ -3576,22 +3576,6 @@ class t3lib_div {
 	}
 
 	/**
-	 * Checks if a given string is a valid frame URL to be loaded in the
-	 * backend.
-	 *
-	 * This is a wrapper for sanitizeBackEndUrl() which only exists in TYPO3 4.1.
-	 * Since TYPO3 4.2 the method is called sanitizeLocalUrl().
-	 *
-	 * @param string $url potential URL to check
-	 *
-	 * @return string either $url if $url is considered to be harmless, or an
-	 *                empty string otherwise
-	 */
-	function sanitizeLocalUrl($url = '') {
-		return t3lib_div::sanitizeBackEndUrl($url);
-	}
-
-	/**
 	 * Moves $source file to $destination if uploaded, otherwise try to make a copy
 	 * Usage: 4
 	 *
