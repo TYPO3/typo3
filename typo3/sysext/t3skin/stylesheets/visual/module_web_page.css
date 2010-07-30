@@ -26,6 +26,10 @@ $Id$
 	font-size: 10px;
 }
 
+.t3-page-ce.active .t3-page-ce-body {
+	border-color: #5b5b5b;
+}
+
 .t3-page-ce-hidden .t3-page-ce-body,
 .t3-page-ce-hidden .t3-page-ce-body a {
 	color: #bbbbbb;
