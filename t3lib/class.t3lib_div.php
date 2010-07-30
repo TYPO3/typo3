@@ -826,6 +826,17 @@ class t3lib_div {
 	}
 
 	/**
+	 * Checks if a given URL matches the host that currently handles this HTTP request.
+	 * Scheme, hostname and (optional) port of the given URL are compared.
+	 *
+	 * @param	string		$url: URL to compare with the TYPO3 request host
+	 * @return	boolean		Whether the URL matches the TYPO3 request host
+	 */
+	function isOnCurrentHost($url) {
+		return (strpos(strtolower($url) . '/', strtolower(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST')) . '/') === 0);
+	}
+
+	/**
 	 * Check for item in list
 	 * Check if an item exists in a comma-separated list of items.
 	 * Usage: 163
@@ -3573,6 +3584,66 @@ class t3lib_div {
 		}
 
 		return $url;
+	}
+
+	/**
+	 * Checks if a given string is a valid frame URL to be loaded in the
+	 * backend.
+	 *
+	 * @param string $url potential URL to check
+	 *
+	 * @return string either $url if $url is considered to be harmless, or an
+	 *                empty string otherwise
+	 */
+	function sanitizeLocalUrl($url = '') {
+		$sanitizedUrl = '';
+
+		$decodedUrl = rawurldecode($url);
+		$decodedParts = @parse_url($decodedUrl);
+
+		$whitelistPattern = '/^(\p{Nd}|\p{L}|[_\/\.&=\?\+-~])+$/u';
+
+			// Only http and https are allowed as scheme, and at least a path must be given:
+		if (isset($decodedParts['scheme']) && !t3lib_div::inList('http,https', $decodedParts['scheme']) || !isset($decodedParts['path'])) {
+			$url = '';
+			// Check all URL parts for invalid characters:
+		} else {
+			foreach ($decodedParts as $part) {
+				if (!preg_match($whitelistPattern, $part)) {
+					$url = '';
+					break;
+				}
+			}
+		}
+
+		if (!empty($url)) {
+			$testAbsoluteUrl = t3lib_div::resolveBackPath($decodedUrl);
+			$testRelativeUrl = t3lib_div::resolveBackPath(
+				t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl
+			);
+
+				// Pass if URL is on the current host:
+			if (isset($decodedParts['scheme']) && isset($decodedParts['host'])) {
+				if (t3lib_div::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, t3lib_div::getIndpEnv('TYPO3_SITE_URL')) === 0) {
+					$sanitizedUrl = $url;
+				}
+				// Pass if URL is an absolute file path:
+			} elseif (t3lib_div::isAbsPath($decodedUrl) && t3lib_div::isAllowedAbsPath($decodedUrl)) {
+				$sanitizedUrl = $url;
+				// Pass if URL is absolute and below TYPO3 base directory:
+			} elseif (strpos($testAbsoluteUrl, t3lib_div::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) === '/') {
+				$sanitizedUrl = $url;
+				// Pass if URL is relative and below TYPO3 base directory:
+			} elseif (strpos($testRelativeUrl, t3lib_div::getIndpEnv('TYPO3_SITE_PATH')) === 0 && substr($decodedUrl, 0, 1) !== '/') {
+				$sanitizedUrl = $url;
+			}
+		}
+
+		if (!empty($url) && empty($sanitizedUrl)) {
+			t3lib_div::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'Core', 1);
+		}
+
+		return $sanitizedUrl;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 2010-07-30  Oliver Hader  <oliver@typo3.org>
 
 	* Reverted fix for bug #15260
+	* Fixed bug #15263: Clearing caches in backend only displays empty frame
 
 2010-07-28  Oliver Hader  <oliver@typo3.org>
 
