@@ -1,3 +1,7 @@
+2010-08-01  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #15292: Fatal error in DB browser because of wrong sprite API usage (thanks to Alexandre Gravel-Raymond)
+
 2010-07-30  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to bug #15188: Remove default greyed out effect for CEs (Thanks to Steffen Gebert)
@@ -46,7 +50,7 @@
 	* Fixed bug #15252: Bug: Backend shortcut cannot be set in IE8
 	* Fixed bug #15228: Links in TS object browser tree forget the breakkpoint
 	* Fixed bug #14946: Switching workplaces causes nesting of BE (Thanks to Stefan Galinski)
-	* Fixed bug #13649: Deprecated function sql_regcase in cms/tslib/class.tslib_pagegen.php (Thanks to Martin Müller)
+	* Fixed bug #13649: Deprecated function sql_regcase in cms/tslib/class.tslib_pagegen.php (Thanks to Martin Mï¿½ller)
 
 2010-07-27  Susanne Moog  <typo3@susanne-moog.de>
 
