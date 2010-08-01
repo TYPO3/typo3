@@ -1,6 +1,6 @@
 2010-08-01  Oliver Hader  <oliver@typo3.org>
 
-	* Fixed bug #15321: Unused variable $warningItems in tx_install
+	* Fixed bug #15321: Unused variable $warningItems in tx_install (thanks to Markus Klein)
 
 2010-08-01  Susanne Moog  <typo3@susanne-moog.de>
 
