@@ -1912,14 +1912,19 @@ class browse_links {
 			$ATag='';
 			$ATag_e='';
 			$ATag2='';
-			if (in_array('pages',$tablesArr))	{
-				$ficon=t3lib_iconWorks::getIcon('pages',$mainPageRec);
-				$ATag="<a href=\"#\" onclick=\"return insertElement('pages', '".$mainPageRec['uid']."', 'db', ".t3lib_div::quoteJSvalue($mainPageRec['title']).", '', '', '".$ficon."','',1);\">";
-				$ATag2="<a href=\"#\" onclick=\"return insertElement('pages', '".$mainPageRec['uid']."', 'db', ".t3lib_div::quoteJSvalue($mainPageRec['title']).", '', '', '".$ficon."','',0);\">";
-				$ATag_alt=substr($ATag,0,-4).",'',1);\">";
-				$ATag_e='</a>';
+			$picon = '';
+			if (is_array($mainPageRec)) {
+				$picon = t3lib_iconWorks::getSpriteIconForRecord('pages', $mainPageRec);
+				if (in_array('pages', $tablesArr)) {
+					$ficon = $picon;
+					$ATag = "<a href=\"#\" onclick=\"return insertElement('pages', '" . $mainPageRec['uid'] .
+						"', 'db', " . t3lib_div::quoteJSvalue($mainPageRec['title']) . ", '', '', '" . $ficon . "','',1);\">";
+					$ATag2 = "<a href=\"#\" onclick=\"return insertElement('pages', '" . $mainPageRec['uid'] .
+						"', 'db', " . t3lib_div::quoteJSvalue($mainPageRec['title']) . ", '', '', '" . $ficon . "','',0);\">";
+					$ATag_alt = substr($ATag, 0, -4) . ",'',1);\">";
+					$ATag_e = '</a>';
+				}
 			}
-			$picon=t3lib_iconWorks::getSpriteIconForRecord('pages', $mainPageRec);
 			$pBicon=$ATag2?'<img'.t3lib_iconWorks::skinImg($BACK_PATH,'gfx/plusbullet2.gif','width="18" height="16"').' alt="" />':'';
 			$pText=htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
 			$out.=$picon.$ATag2.$pBicon.$ATag_e.$ATag.$pText.$ATag_e.'<br />';
