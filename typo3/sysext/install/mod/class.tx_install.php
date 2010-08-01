@@ -8132,6 +8132,7 @@ $out="
 			if (count($warnings)) {
 					// Get the subpart for warnings
 				$warningsSubpart = t3lib_parsehtml::getSubpart($content, '###WARNINGS###');
+				$warningItems = array();
 
 				foreach ($warnings as $warning) {
 						// Get the subpart for single warning items
@@ -8139,7 +8140,7 @@ $out="
 						// Define the markers content
 					$warningItemMarker['warning'] = $warning;
 						// Fill the markers in the subpart
-					$warningItem[] = t3lib_parsehtml::substituteMarkerArray(
+					$warningItems[] = t3lib_parsehtml::substituteMarkerArray(
 						$warningItemSubpart,
 						$warningItemMarker,
 						'###|###',
