@@ -1,3 +1,7 @@
+2010-08-02  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #15289: Element-Browser page tree has HSC'ed <span> elements
+
 2010-08-01  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15321: Unused variable $warningItems in tx_install (thanks to Markus Klein)
