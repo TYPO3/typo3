@@ -163,7 +163,7 @@ class t3lib_browseTree extends t3lib_treeView {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain',
 						'pid=' . $GLOBALS['TYPO3_DB']->quoteStr($row['uid'], 'sys_domain'), '', 'sorting', 1);
 			if (is_array($rows) && count($rows) > 0) {
-				$title = sprintf('%s [%s]', $title, $rows[0]['domainName']);
+				$title = sprintf('%s [%s]', $title, htmlspecialchars($rows[0]['domainName']));
 			}
 		}
 		return $title;
