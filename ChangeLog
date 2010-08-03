@@ -1,6 +1,7 @@
 2010-08-03  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15311: t3lib_div::sanitizeLocalUrl() leads to fatal error on PHP4 systems
+	* Fixed bug #15265: InstallTool-login not possible after Update to 4.4.1 due to session_start() in extensions (thanks to Ernesto Baschny and Helmut Hummel)
 
 2010-08-02  Oliver Hader  <oliver@typo3.org>
 

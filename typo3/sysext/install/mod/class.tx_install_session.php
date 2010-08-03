@@ -75,6 +75,13 @@ class tx_install_session {
 	var $regenerateSessionIdTime = 5;
 
 	/**
+	 * On creation of the session, store a potential error message here
+	 *
+	 * @var string
+	 */
+	var $sessionCreationError = NULL;
+
+	/**
 	 * Constructor. Starts PHP session handling in our own var store
 	 *
 	 * Side-effect: might set a cookie, so must be called before any other output.
@@ -113,7 +120,24 @@ class tx_install_session {
 		if (version_compare(phpversion(), '5.2', '<')) {
 			ini_set('session.cookie_httponly', TRUE);
 		}
+		if (ini_get('session.auto_start')) {
+			$this->sessionCreationError = '<p><strong>Error: session.auto-start is enabled</strong></p>';
+			$this->sessionCreationError .= '<p>The PHP option session.auto-start is enabled. Disable this option in php.ini or .htaccess:</p>';
+			$this->sessionCreationError .= '<pre>php_value session.auto_start Off</pre>';
+		} else if (defined('SID')) {
+			$this->sessionCreationError = '<p><strong>Error: Session already started by session_start().</strong></p>';
+			$this->sessionCreationError .= '<p>Make sure no installed extension is starting a session in its ext_localconf.php or ext_tables.php.</p>';
+		}
 		session_start();
+	}
+
+	/**
+	 * Returns a potential error message for session handling. 
+	 *
+	 * @return string Error message on creating our session or NULL if there is no error
+	 */
+	function getErrorCreationMessage() {
+		return $this->sessionCreationError;
 	}
 
 	/**
