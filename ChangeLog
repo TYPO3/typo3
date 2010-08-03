@@ -1,3 +1,7 @@
+2010-08-03  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Fixed regression in Fluid, preventing Extbase/Fluid based extensions to work.
+
 2010-08-02  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15289: Element-Browser page tree has HSC'ed <span> elements
