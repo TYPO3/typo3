@@ -1,3 +1,7 @@
+2010-08-03  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #15313: Link to deprecation logfile doesn't work in installations inside a subdirectory (thanks to Stefan Galinski)
+
 2010-08-03  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15265: InstallTool-login not possible after Update to 4.4.1 due to session_start() in extensions (thanks to Ernesto Baschny and Helmut Hummel)
