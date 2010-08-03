@@ -309,7 +309,11 @@ class tx_install extends t3lib_install {
 			die('Install Tool needs to write to typo3temp/. Make sure this directory is writeable by your webserver: '. $this->typo3temp_path);
 		}
 
-		$this->session = t3lib_div::makeInstance('tx_install_session');
+		try {
+			$this->session = t3lib_div::makeInstance('tx_install_session');
+		} catch (Exception $exception) {
+			$this->outputErrorAndExit($exception->getMessage());
+		}
 
 			// *******************
 			// Check authorization
@@ -2638,8 +2642,8 @@ From sub-directory:
 	 */
 	function getGDSoftwareInfo()	{
 		return trim('
-		You can get GDLib in the PNG version from ' . $this->linkIt('http://www.libgd.org/') . 
-		'. <br />FreeType is for download at ' . $this->linkIt('http://www.freetype.org/') . 
+		You can get GDLib in the PNG version from ' . $this->linkIt('http://www.libgd.org/') .
+		'. <br />FreeType is for download at ' . $this->linkIt('http://www.freetype.org/') .
 		'. <br />Generally, TYPO3 packages are listed at ' . $this->linkIt('http://typo3.org/download/packages/') . '.'
 		);
 	}
@@ -4950,6 +4954,23 @@ $out="
 	</body>
 </html>';
 		return $out;
+	}
+
+	/**
+	 * Outputs an error and dies.
+	 * Should be used by all errors that occur before even starting the install tool process.
+	 *
+	 * @param string The content of the error
+	 * @return void
+	 */
+	protected function outputErrorAndExit($content, $title = 'Install Tool error') {
+			// Output the warning message and exit
+		header('Content-Type: text/html; charset=utf-8');
+		header('Cache-Control: no-cache, must-revalidate');
+		header('Pragma: no-cache');
+		echo '<h1>'.$title.'</h1>';
+		echo $content;
+		exit();
 	}
 
 	/**
