@@ -2330,7 +2330,7 @@ final class t3lib_BEfunc {
 	 */
 	public static function getProcessedValueExtra($table, $fN, $fV, $fixed_lgd_chars = 0, $uid = 0, $forceResult = TRUE) {
 		global $TCA;
-		$fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, 0, 0, $uid, $forceResult);
+		$fVnew = self::getProcessedValue($table, $fN, $fV, $fixed_lgd_chars, 1, 0, $uid, $forceResult);
 		if (!isset($fVnew)) {
 			if (is_array($TCA[$table])) {
 				if ($fN==$TCA[$table]['ctrl']['tstamp'] || $fN==$TCA[$table]['ctrl']['crdate']) {

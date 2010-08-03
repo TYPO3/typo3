@@ -732,7 +732,9 @@ class localRecordList extends recordList {
 				} else {
 					$tmpProc = t3lib_BEfunc::getProcessedValueExtra($table, $fCol, $row[$fCol], 100, $row['uid']);
 					$theData[$fCol] = $this->linkUrlMail(htmlspecialchars($tmpProc), $row[$fCol]);
-					$row[$fCol] = $tmpProc;
+					if ($this->csvOutput) {
+						$row[$fCol] = t3lib_BEfunc::getProcessedValueExtra($table, $fCol, $row[$fCol], 0, $row['uid']);
+					}
 				}
 			}
 
