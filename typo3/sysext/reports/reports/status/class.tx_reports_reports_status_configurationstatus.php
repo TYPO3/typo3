@@ -39,6 +39,12 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		// 100 MB
 	protected $deprecationLogFileSizeErrorThreshold   = 104857600;
 
+	/**
+	 * Backpath to the typo3 main directory
+	 * 
+	 * @var string
+	 */
+	protected $backPath = '../';
 
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
@@ -243,15 +249,14 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	 * @return	string	Link to the deprecation log file
 	 */
 	protected function getDeprecationLogFileLink() {
-		$logFile      = t3lib_div::getDeprecationLogFileName();
-		$documentRoot = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT');
-
-		$relativePath = substr($logFile, strlen($documentRoot));
-		$link = '<a href="..' . $relativePath . '">' . $logFile . '</a>';
+		$logFile = t3lib_div::getDeprecationLogFileName();
+		$relativePath = t3lib_div::resolveBackPath(
+			$this->backPath . substr($logFile, strlen(PATH_site))
+		);
+		$link = '<a href="' . $relativePath . '">' . $logFile . '</a>';
 
 		return $link;
 	}
-
 }
 
 
