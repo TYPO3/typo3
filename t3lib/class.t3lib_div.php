@@ -3578,8 +3578,10 @@ class t3lib_div {
 	 * @access public
 	 */
 	function sanitizeBackEndUrl($url = '') {
-		$whitelistPattern = '/^[a-zA-Z0-9_\/\.&=\?]+$/';
-		if (!preg_match($whitelistPattern, $url)) {
+		$whitelistPattern = '/^[a-z0-9_\/\.&=\?\+~-]+$/i';
+		$charsetConversion = t3lib_div::makeInstance('t3lib_cs');
+
+		if (!preg_match($whitelistPattern, $charsetConversion->specCharsToASCII('utf-8', $url))) {
 			$url = '';
 		}
 
@@ -3601,15 +3603,18 @@ class t3lib_div {
 		$decodedUrl = rawurldecode($url);
 		$decodedParts = @parse_url($decodedUrl);
 
-		$whitelistPattern = '/^(\p{Nd}|\p{L}|[_\/\.&=\?\+-~])+$/u';
+		$whitelistPattern = '/^[a-z0-9_\/\.&=\?\+~-]+$/i';
+		$charsetConversion = t3lib_div::makeInstance('t3lib_cs');
 
 			// Only http and https are allowed as scheme, and at least a path must be given:
 		if (isset($decodedParts['scheme']) && !t3lib_div::inList('http,https', $decodedParts['scheme']) || !isset($decodedParts['path'])) {
 			$url = '';
 			// Check all URL parts for invalid characters:
 		} else {
-			foreach ($decodedParts as $part) {
-				if (!preg_match($whitelistPattern, $part)) {
+			foreach ($decodedParts as $type => $part) {
+				$part = $charsetConversion->specCharsToASCII('utf-8', $part);
+				if ($type != 'host' && !preg_match($whitelistPattern, $part)) {
+					var_dump($part);
 					$url = '';
 					break;
 				}
