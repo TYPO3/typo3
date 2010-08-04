@@ -44,6 +44,26 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext);
 
 	/**
+	 * Add a variable to the view data collection.
+	 * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
+	 *
+	 * @param string $key Key of variable
+	 * @param object $value Value of object
+	 * @return Tx_Extbase_MVC_View_ViewInterface an instance of $this, to enable chaining
+	 * @api
+	 */
+	public function assign($key, $value);
+
+	/**
+	 * Add multiple variables to the view data collection
+	 *
+	 * @param array $values array in the format array(key1 => value1, key2 => value2)
+	 * @return Tx_Extbase_MVC_View_ViewInterface an instance of $this, to enable chaining
+	 * @api
+	 */
+	public function assignMultiple(array $values);
+
+	/**
 	 * Renders the view
 	 *
 	 * @return string The rendered view

@@ -36,6 +36,29 @@
 final class Tx_Extbase_MVC_View_EmptyView extends Tx_Extbase_MVC_View_AbstractView {
 
 	/**
+	 * Dummy method to satisfy the ViewInterface
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return Tx_Extbase_MVC_View_EmptyView instance of $this to allow chaining
+	 * @api
+	 */
+	public function assign($key, $value) {
+		return $this;
+	}
+
+	/**
+	 * Dummy method to satisfy the ViewInterface
+	 *
+	 * @param array $values
+	 * @return Tx_Extbase_MVC_View_EmptyView instance of $this to allow chaining
+	 * @api
+	 */
+	public function assignMultiple(array $values) {
+		return $this;
+	}
+
+	/**
 	 * Renders the empty view
 	 *
 	 * @return string An empty string
