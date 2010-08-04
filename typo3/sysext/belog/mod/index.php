@@ -168,6 +168,7 @@ class SC_mod_tools_log_index {
 				0 => $GLOBALS['LANG']->getLL('any'),
 				1 => $GLOBALS['LANG']->getLL('actionDatabase'),
 				2 => $GLOBALS['LANG']->getLL('actionFile'),
+				3 => $GLOBALS['LANG']->getLL('actionCache'),
 				254 => $GLOBALS['LANG']->getLL('actionSettings'),
 				255 => $GLOBALS['LANG']->getLL('actionLogin'),
 				'-1' => $GLOBALS['LANG']->getLL('actionErrors')

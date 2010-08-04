@@ -7432,6 +7432,8 @@ State was change by %s (username: %s)
 	public function clear_cacheCmd($cacheCmd)	{
 		global $TYPO3_CONF_VARS;
 
+		$this->BE_USER->writelog(3, 1, 0, 0, 'User %s has cleared the cache (cacheCmd=%s)', array($this->BE_USER->user['username'], $cacheCmd));
+
 			// Clear cache for either ALL pages or ALL tables!
 		switch($cacheCmd)	{
 			case 'pages':

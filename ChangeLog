@@ -1,3 +1,7 @@
+2010-08-04  Ingo Renner  <ingo@typo3.org>
+
+	* Added feature #15305: Logging cache clearing, credits Stefan Sprenger
+
 2010-08-03  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15304: csv export is limiting exported fields to 100 chars (thanks to Björn Pedersen)
@@ -23,7 +27,7 @@
 
 	* Follow-up to bug #15188: Remove default greyed out effect for CEs (Thanks to Steffen Gebert)
 	* Fixed bug #15295: Page treeFilter not re-applied after branch toggling (Thanks to Felix Kopp)
-	
+
 2010-07-29  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #13427: t3lib_div::cleanOutputBuffers() might loop forever (thanks to Stephan Seitz and Steffen Gebert)

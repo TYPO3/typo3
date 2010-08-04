@@ -31,6 +31,7 @@
 			<label index="actionAll">All</label>
 			<label index="actionDatabase">Database</label>
 			<label index="actionFile">File</label>
+			<label index="actionCache">Cache</label>
 			<label index="actionSettings">Settings</label>
 			<label index="actionLogin">Login</label>
 			<label index="actionErrors">Errors</label>
@@ -93,6 +94,8 @@
 			<label index="action_2_8">New file</label>
 			<label index="action_2_9">Edit</label>
 			<label index="msg_2_9_1">File saved to '%s', bytes: %s, MD5: %s </label>
+			<label index="type_3">CACHE</label>
+			<label index="action_3_1">Clear Cache</label>
 			<label index="type_254">SETTING</label>
 			<label index="action_254_1">Change</label>
 			<label index="type_255">LOGIN</label>
