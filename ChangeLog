@@ -3,6 +3,7 @@
 	* Fixed bug #15343: dbClientCompress crashes with pconnect
 	* Fixed bug #15280: felogin redirect doesn't work anymore after update to latest releases (4.2x - 4.4.x) (thanks to Helmut Hummel)
 	* Fixed bug #15282: It is impossible to set links to files any more with the link wizard
+	* Fixed bug #15336: sys_actions shows wrong error if an "Record List" action is not propertly configured (thanks to Stefan Galinski)
 
 2010-08-03  Susanne Moog  <typo3@susanne-moog.de>
 

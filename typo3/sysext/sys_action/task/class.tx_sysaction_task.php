@@ -872,7 +872,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		if ($this->id == 0 || $this->table == '') {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
-				$GLOBALS['LANG']->getLL('action_lowlevelMissing', TRUE),
+				$GLOBALS['LANG']->getLL('action_notReady', TRUE),
 				$GLOBALS['LANG']->getLL('action_error'),
 				t3lib_FlashMessage::ERROR
 			);
