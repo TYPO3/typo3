@@ -111,7 +111,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 				$this->redirectUrl = $this->conf['redirectFirstMethod'] ? array_shift($redirectUrl) : array_pop($redirectUrl);
 			} else {
 				$this->redirectUrl = '';
-		}
+			}
 		}
 
 			// What to display
@@ -862,20 +862,17 @@ class tx_felogin_pi1 extends tslib_pibase {
 			return '';
 		}
 
-		$sanitizedUrl = t3lib_div::removeXSS(rawurldecode($url));
-		if ($url !== $sanitizedUrl) {
+		$decodedUrl = rawurldecode($url);
+		$sanitizedUrl = t3lib_div::removeXSS($decodedUrl);
+
+		if ($decodedUrl !== $sanitizedUrl || preg_match('#["<>\\\]+#', $url)) {
 			t3lib_div::sysLog(sprintf($this->pi_getLL('xssAttackDetected'), $url), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
 			return '';
 		}
 
-		if (!t3lib_div::isValidUrl($sanitizedUrl)) {
-			t3lib_div::sysLog(sprintf($this->pi_getLL('noValidRedirectUrl'), $sanitizedUrl), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
-			return '';
-		}
-
 			// Validate the URL:
-		if ($this->isInCurrentDomain($sanitizedUrl) || $this->isInLocalDomain($sanitizedUrl)) {
-			return $sanitizedUrl;
+		if ($this->isRelativeUrl($url) || $this->isInCurrentDomain($url) || $this->isInLocalDomain($url)) {
+			return $url;
 		}
 
 			// URL is not allowed
@@ -891,38 +888,60 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @return boolean Whether the URL belongs to the current TYPO3 installation
 	 */
 	protected function isInCurrentDomain($url) {
-		return (t3lib_div::isOnCurrentHost($url) AND strpos($url, t3lib_div::getIndpEnv('TYPO3_SITE_URL')) === 0);
+		return (t3lib_div::isOnCurrentHost($url) && t3lib_div::isFirstPartOfStr($url, t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
 	}
 
 	/**
 	 * Determines whether the URL matches a domain
 	 * in the sys_domain databse table.
 	 *
-	 * @param string $domain Name of the domain to be looked up
-	 * @return boolean Whether the domain name is considered to be local
+	 * @param string $url Absolute URL which needs to be checked
+	 * @return boolean Whether the URL is considered to be local
 	 */
 	protected function isInLocalDomain($url) {
 		$result = FALSE;
 
-		$parsedUrl = parse_url($url);
-		$domain = $parsedUrl['host'] . $parsedUrl['path'];
+		if (t3lib_div::isValidUrl($url)) {
+			$parsedUrl = parse_url($url);
+			if ($parsedUrl['scheme'] === 'http' || $parsedUrl['scheme'] === 'https' ) {
+				$host = $parsedUrl['host'];
+					// Removes the last path segment and slash sequences like /// (if given):
+				$path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path']);
 
-		$localDomains = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'domainName',
-			'sys_domain',
-			'1=1' . $this->cObj->enableFields('sys_domain')
-		);
-
-		if (is_array($localDomains)) {
-			foreach ($localDomains as $localDomain) {
-				if (stripos($domain, $localDomain['domainName']) === 0) {
-					$result = TRUE;
-					break;
+				$localDomains = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+					'domainName',
+					'sys_domain',
+					'1=1' . $this->cObj->enableFields('sys_domain')
+				);
+				if (is_array($localDomains)) {
+					foreach ($localDomains as $localDomain) {
+							// strip trailing slashes (if given)
+						$domainName = rtrim($localDomain['domainName'], '/');
+						if (t3lib_div::isFirstPartOfStr($host. $path . '/', $domainName . '/')) {
+							$result = TRUE;
+							break;
+						}
+					}
 				}
 			}
 		}
-
 		return $result;
+	}
+
+	/**
+	 * Determines wether the URL is relative to the
+	 * current TYPO3 installation.
+	 *
+	 * @param string $url URL which needs to be checked
+	 * @return boolean Whether the URL is considered to be relative
+	 */
+	protected function isRelativeUrl($url) {
+		$parsedUrl = @parse_url($url);
+		if ($parsedUrl !== FALSE && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {
+				// If the relative URL starts with a slash, we need to check if it's within the current site path
+			return (!t3lib_div::isFirstPartOfStr($parsedUrl['path'], '/') || t3lib_div::isFirstPartOfStr($parsedUrl['path'], t3lib_div::getIndpEnv('TYPO3_SITE_PATH')));
+		}
+		return FALSE;
 	}
 }
 
