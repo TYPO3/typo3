@@ -878,6 +878,7 @@ class browse_links {
 			$P2['itemName']=$this->P['itemName'];
 			$P2['formName']=$this->P['formName'];
 			$P2['fieldChangeFunc']=$this->P['fieldChangeFunc'];
+			$P2['fieldChangeFuncHash'] = t3lib_div::hmac(serialize($this->P['fieldChangeFunc']));
 			$addPassOnParams.=t3lib_div::implodeArrayForUrl('P',$P2);
 
 			$JScode.='
