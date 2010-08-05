@@ -101,7 +101,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']) && $
 
 		// Manual setting up of alternative icons. This is mainly for module icons which has a special prefix:
 	$TBE_STYLES['skinImg'] = array_merge($presetSkinImgs, array (
-		'gfx/ol/blank.gif'                         => array('clear.gif','width="14" height="14"'),
+		'gfx/ol/blank.gif'                         => array('clear.gif','width="18" height="16"'),
 		'MOD:web/website.gif'                      => array($temp_eP.'icons/module_web.gif','width="24" height="24"'),
 		'MOD:web_layout/layout.gif'                => array($temp_eP.'icons/module_web_layout.gif','width="24" height="24"'),
 		'MOD:web_view/view.gif'                    => array($temp_eP.'icons/module_web_view.png','width="24" height="24"'),
