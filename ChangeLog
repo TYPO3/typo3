@@ -1,3 +1,7 @@
+2010-08-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #14773: Styling issue when selecting position of new created page
+
 2010-08-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15343: dbClientCompress crashes with pconnect
