@@ -2730,8 +2730,8 @@ class t3lib_TCEforms	{
 
 									// Makes a "Add new" link:
 								$var = uniqid('idvar');
-								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '"+' . $var . '+"-")';
-								$onClickInsert = 'var ' . $var . ' = "' . $idTagPrefix . '-idx"+(new Date()).getTime();';
+								$replace = 'replace(/' . $idTagPrefix . '-/g,"' . $idTagPrefix . '-"+' . $var . '+"-")';
+								$onClickInsert = 'var ' . $var . ' = "' . 'idx"+(new Date()).getTime();';
 								// Do not replace $isTagPrefix in setActionStatus() because it needs section id!
 								$onClickInsert .= 'new Insertion.Bottom($("'.$idTagPrefix.'"), unescape("'.rawurlencode($newElementTemplate).'").' . $replace . '); setActionStatus("'.$idTagPrefix.'");';
 								$onClickInsert .= 'eval(unescape("' . rawurlencode(implode(';', $this->additionalJS_post)) . '").' . $replace . ');';
