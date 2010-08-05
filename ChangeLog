@@ -1,3 +1,7 @@
+2010-08-05  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #15343: dbClientCompress crashes with pconnect
+
 2010-08-04  Ingo Renner  <ingo@typo3.org>
 
 	* Added feature #15305: Logging cache clearing, credits Stefan Sprenger
