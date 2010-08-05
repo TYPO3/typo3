@@ -1,6 +1,7 @@
 2010-08-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15280: felogin redirect doesn't work anymore after update to latest releases (4.2x - 4.4.x) (thanks to Helmut Hummel)
+	* Fixed bug #15282: It is impossible to set links to files any more with the link wizard
 
 2010-08-03  Oliver Hader  <oliver@typo3.org>
 
