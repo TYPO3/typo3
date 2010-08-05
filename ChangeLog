@@ -1,3 +1,7 @@
+2010-08-05  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #14805: Misleading descriptions for warning_* options in Install Tool (thanks to Markus Klein)
+
 2010-08-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15343: dbClientCompress crashes with pconnect
