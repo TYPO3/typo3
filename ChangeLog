@@ -1,6 +1,7 @@
 2010-08-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15343: dbClientCompress crashes with pconnect
+	* Fixed bug #15280: felogin redirect doesn't work anymore after update to latest releases (4.2x - 4.4.x) (thanks to Helmut Hummel)
 
 2010-08-03  Susanne Moog  <typo3@susanne-moog.de>
 
