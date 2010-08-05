@@ -2,6 +2,7 @@
 
 	* Fixed bug #14805: Misleading descriptions for warning_* options in Install Tool (thanks to Markus Klein)
 	* Fixed bug #15282: It is impossible to set links to files any more with the link wizard
+	* Fixed bug #15336: sys_actions shows wrong error if an "Record List" action is not propertly configured (thanks to Stefan Galinski)
 
 2010-08-05  Oliver Hader  <oliver@typo3.org>
 
