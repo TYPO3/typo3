@@ -1,6 +1,7 @@
 2010-08-05  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #14805: Misleading descriptions for warning_* options in Install Tool (thanks to Markus Klein)
+	* Fixed bug #15282: It is impossible to set links to files any more with the link wizard
 
 2010-08-05  Oliver Hader  <oliver@typo3.org>
 
