@@ -653,18 +653,22 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @see	sanitizeLocalUrlAcceptsValidUrls
 	 */
 	public function validLocalUrlDataProvider() {
+		$subDirectory = t3lib_div::getIndpEnv('TYPO3_SITE_PATH');
+		$typo3SiteUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$typo3RequestHost = t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST');
+
 		return array(
-			array('alt_intro.php'),
-			array('alt_intro.php?foo=1&bar=2'),
-			array('/typo3/alt_intro.php'),
-			array('/index.php'),
-			array('../index.php'),
-			array('../typo3/alt_intro.php'),
-			array('../~userDirectory/index.php'),
-			array('../typo3/mod.php?var1=test-case&var2=~user'),
-			array(PATH_site . 'typo3/alt_intro.php'),
-			array(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'typo3/alt_intro.php'),
-			array(t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/index.php'),
+			'alt_intro.php' => array('alt_intro.php'),
+			'alt_intro.php?foo=1&bar=2' => array('alt_intro.php?foo=1&bar=2'),
+			$subDirectory . 'typo3/alt_intro.php' => array($subDirectory . 'typo3/alt_intro.php'),
+			$subDirectory . 'index.php' => array($subDirectory . 'index.php'),
+			'../index.php' => array('../index.php'),
+			'../typo3/alt_intro.php' => array('../typo3/alt_intro.php'),
+			'../~userDirectory/index.php' => array('../~userDirectory/index.php'),
+			'../typo3/mod.php?var1=test-case&var2=~user' => array('../typo3/mod.php?var1=test-case&var2=~user'),
+			PATH_site . 'typo3/alt_intro.php' => array(PATH_site . 'typo3/alt_intro.php'),
+			$typo3SiteUrl . 'typo3/alt_intro.php' => array($typo3SiteUrl . 'typo3/alt_intro.php'),
+			$typo3RequestHost . $subDirectory . '/index.php' => array($typo3RequestHost . $subDirectory . '/index.php'),
 		);
 	}
 
