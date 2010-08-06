@@ -1,3 +1,7 @@
+2010-08-06  Ingo Renner  <ingo@typo3.org>
+
+	* Release of TYPO3 4.2.14
+
 2010-08-05  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15280: felogin redirect doesn't work anymore after update to latest releases (4.2x - 4.4.x) (thanks to Helmut Hummel)
