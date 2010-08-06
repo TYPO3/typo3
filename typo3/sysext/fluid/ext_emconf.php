@@ -32,7 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'version' => '1.3.0-devel',
 	'constraints' => array(
 		'depends' => array(
-			'extbase' => '1.2.0-1.2.999',
+			'extbase' => '1.3.0.devel',
 		),
 		'conflicts' => array(
 		),
