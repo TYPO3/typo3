@@ -1146,7 +1146,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		} else {
 			if ($compress) {
 				$compressor = t3lib_div::makeInstance('t3lib_Compressor');
-				$filename = $compressor->compressJsFile(($this->isFrontendEditActive() ? '' : ($this->backPath . '../')) . $relativeFilename);
+				$filename = $compressor->compressJsFile(($this->isFrontendEditActive() ? '' : $this->backPath) . '../' . $relativeFilename);
+				if ($this->isFrontendEditActive()) {
+					$filename = preg_replace('/^..\//', '', $filename);
+				}
 			} else {
 				$filename = t3lib_div::createVersionNumberedFilename(($this->isFrontendEditActive() ? '' : ($this->backPath . '../')) . $relativeFilename);
 			}

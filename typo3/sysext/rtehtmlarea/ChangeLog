@@ -1,3 +1,7 @@
+2010-08-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15355: htmlArea RTE: Using the advanded frontend editing, the editor is not loaded in the text tab
+
 2010-07-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15244: htmlArea RTE: textearea Id may not be unique in FE
