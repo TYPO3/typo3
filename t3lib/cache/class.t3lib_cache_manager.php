@@ -33,12 +33,6 @@
  * @version $Id$
  */
 class t3lib_cache_Manager implements t3lib_Singleton {
-
-	/**
-	 * @const Cache Entry depends on the PHP code of the packages
-	 */
-	const TAG_PACKAGES_CODE = '%PACKAGES_CODE%';
-
 	/**
 	 * @var t3lib_cache_Factory
 	 */
