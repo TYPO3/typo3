@@ -1,3 +1,7 @@
+2010-08-07  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #15386: [Caching framework] Remove needless constant in cache manager
+
 2010-08-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15355: htmlArea RTE: Using the advanded frontend editing, the editor is not loaded in the text tab
