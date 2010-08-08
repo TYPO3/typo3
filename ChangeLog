@@ -6,6 +6,7 @@
 
 	* Fixed bug #14952: Opendocs Module relies on taskcenter_recent causing fatal error with new taskcenter (thanks to Georg Ringer and Philipp Gampe)
 	* Fixed bug #15131: Linebreaks do not work anymore using '--linebreak--' in palettes (thanks to Caspar Stuebs)
+	* Fixed bug #15014: Switching workspaces does not reload frames in IE6 (thanks to Andreas Kiessling)
 
 2010-08-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
