@@ -1,3 +1,7 @@
+2010-08-08  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #14952: Opendocs Module relies on taskcenter_recent causing fatal error with new taskcenter (thanks to Georg Ringer and Philipp Gampe)
+
 2010-08-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15386: [Caching framework] Remove needless constant in cache manager
