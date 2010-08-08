@@ -5090,6 +5090,7 @@ class t3lib_TCEforms	{
 		$out = '<fieldset class="t3-form-palette-fieldset">';
 		for ($i = 0; $i <= $row; $i++) {
 			$out .= implode($iRow[$i]);
+			$out .= ($i < $row ? '<br />' : '');
 		}
 		$out .= '</fieldset>';
 		return $out;
