@@ -4,6 +4,7 @@
 
 2010-08-08  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15394: Improve t3lib_SpriteManager code comments
 	* Fixed bug #7901: Workaround for PHP bug with Locale tr_TR (Thanks to Reinhard Führicht)
 
 2010-08-08  Susanne Moog  <typo3@susanne-moog.de>
