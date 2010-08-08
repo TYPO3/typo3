@@ -659,6 +659,28 @@ class dbOracleTest extends BaseTestCase {
 
 	/**
 	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=15253
+	 */
+	public function notLikeIsRemappedAccordingToFieldType() {
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'tt_content.bodytext NOT LIKE \'foo%\''
+		));
+		$expected = 'SELECT * FROM "tt_content" WHERE NOT (dbms_lob.instr("tt_content"."bodytext", \'foo\',1,1) > 0)';
+		$this->assertEquals($expected, $select);
+
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'fe_users',
+			'fe_users.usergroup NOT LIKE \'2\''
+		));
+		$expected = 'SELECT * FROM "fe_users" WHERE NOT (instr("fe_users"."usergroup", \'2\',1,1) > 0)';
+		$this->assertEquals($expected, $select);
+	}
+
+	/**
+	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=14479
 	 */
 	public function instrIsUsedForCEOnPages() {
