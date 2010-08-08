@@ -1190,7 +1190,14 @@ class t3lib_sqlparser {
  					}
 
  						// Find "comparator":
-					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(<=|>=|<|>|=|!=|NOT[[:space:]]+IN|IN|NOT[[:space:]]+LIKE|LIKE|IS[[:space:]]+NOT|IS|BETWEEN|NOT[[:space]]+BETWEEN)');
+ 					$comparatorPatterns = array(
+ 						'<=', '>=', '<', '>', '=', '!=',
+ 						'NOT[[:space:]]+IN', 'IN',
+ 						'NOT[[:space:]]+LIKE[[:space:]]+BINARY', 'LIKE[[:space:]]+BINARY', 'NOT[[:space:]]+LIKE', 'LIKE',
+ 						'IS[[:space:]]+NOT', 'IS',
+ 						'BETWEEN', 'NOT[[:space]]+BETWEEN',
+ 					);
+					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(' . implode('|', $comparatorPatterns) . ')');
 					if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
 						if (preg_match('/^CONCAT[[:space:]]*\(/', $parseString)) {
 							$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');

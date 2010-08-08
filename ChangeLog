@@ -1,3 +1,7 @@
+2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12535: DAM-related: Element browser crashes as where-clause cannot be parsed
+
 2010-08-08  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #7901: Workaround for PHP bug with Locale tr_TR (Thanks to Reinhard Führicht)
