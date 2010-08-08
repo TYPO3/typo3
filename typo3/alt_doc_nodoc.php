@@ -53,12 +53,7 @@ require('init.php');
 require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
-
-if (t3lib_extMgm::isLoaded('taskcenter') && t3lib_extMgm::isLoaded('taskcenter_recent'))	{
-	require_once(t3lib_extMgm::extPath('taskcenter').'task/class.mod_user_task.php');
-	require_once(t3lib_extMgm::extPath('taskcenter_recent').'class.tx_taskcenterrecent.php');
-}
-
+require_once(t3lib_extMgm::extPath('opendocs') . 'class.tx_opendocs.php');
 
 
 /**
@@ -100,6 +95,21 @@ class SC_alt_doc_nodoc {
 		$this->doc->bodyTagMargins['x']=5;
 		$this->doc->bodyTagMargins['y']=5;
 		$this->doc->backPath = $BACK_PATH;
+
+			// Add JS
+		$this->doc->JScode = $this->doc->wrapScriptTags('
+		function jump(url, modName, mainModName) {
+				// clear information about which entry in nav. tree that might have been highlighted.
+			top.fsMod.navFrameHighlightedID = [];
+
+			if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
+				top.content.nav_frame.refresh_nav();
+			}
+
+			top.nextLoadModuleUrl = url;
+			top.goToModule(modName);
+		}
+		');
 
 			// Start the page:
 		$this->content='';
@@ -156,15 +166,9 @@ class SC_alt_doc_nodoc {
 			$msg[]='<p>'.sprintf($LANG->getLL('noDocuments_msg2',1),implode(' ',$msg_2)).'</p><br />';
 		}
 
-			// If the task center is loaded and the module of recent documents is, then display the list of the most recently edited documents:
-		if ($BE_USER->check('modules','user_task') && t3lib_extMgm::isLoaded('taskcenter_recent'))	{
-			$modObj = t3lib_div::makeInstance('tx_taskcenterrecent');
-			$modObj->backPath = $BACK_PATH;
-			$modObj->BE_USER = $BE_USER;
-			$modObj->perms_clause = $BE_USER->getPagePermsClause(1);
-
-			$msg[]='<p>'.$LANG->getLL('noDocuments_msg3',1).'</p><br />'.$modObj->_renderRecent();
-		}
+			// Display the list of the most recently edited documents:
+		$modObj = t3lib_div::makeInstance('tx_opendocs');
+		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg3', TRUE) . '</p><br />' . $modObj->renderMenu();
 
 			// Adding the content:
 		$this->content.=$this->doc->section($LANG->getLL('noDocuments'),implode(' ',$msg),0,1);
