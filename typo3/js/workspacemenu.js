@@ -105,6 +105,8 @@ var WorkspaceMenu = Class.create({
 	 * toggles the workspace frontend preview
 	 */
 	toggleFrontendPreview: function(event) {
+		var clickedElement = Event.element(event);
+
 		new Ajax.Request('ajax.php', {
 			parameters: 'ajaxID=WorkspaceMenu::toggleWorkspacePreview',
 			onSuccess: function(transport, response) {
@@ -112,10 +114,10 @@ var WorkspaceMenu = Class.create({
 				var stateInactiveIcon = $$('#workspace-selector-menu img.state-inactive')[0].cloneNode(true);
 
 				if (response.newWorkspacePreviewState == 1) {
-					Event.element(event).previous().replace(stateActiveIcon);
+					clickedElement.previous().replace(stateActiveIcon);
 					top.WorkspaceFrontendPreviewEnabled = true;
 				} else {
-					Event.element(event).previous().replace(stateInactiveIcon);
+					clickedElement.previous().replace(stateInactiveIcon);
 					top.WorkspaceFrontendPreviewEnabled = false;
 				}
 			}
@@ -137,7 +139,8 @@ var WorkspaceMenu = Class.create({
 	 * switches the workspace, reloads the module menu, and the content frame
 	 */
 	switchWorkspace: function(event) {
-		var workspaceId = Event.element(event).identify().substring(3);
+		var clickedElement = Event.element(event);
+		var workspaceId = clickedElement.identify().substring(3);
 
 		new Ajax.Request('ajax.php', {
 			parameters: 'ajaxID=WorkspaceMenu::setWorkspace&workspaceId=' + workspaceId,
@@ -151,8 +154,8 @@ var WorkspaceMenu = Class.create({
 				$$('#workspace-selector-menu li.selected')[0].removeClassName('selected');
 
 					// add "selected" class and checkmark
-				Event.element(event).previous().replace(stateActiveIcon);
-				Event.element(event).up().addClassName('selected');
+				clickedElement.previous().replace(stateActiveIcon);
+				clickedElement.up().addClassName('selected');
 
 					// when in web module reload, otherwise send the user to the web module
 				if (currentModuleLoaded.startsWith('web_')) {

@@ -1,3 +1,7 @@
+2010-08-08  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #15014: Switching workspaces does not reload frames in IE6 (thanks to Andreas Kiessling)
+
 2010-08-08  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #7901: Workaround for PHP bug with Locale tr_TR (Thanks to Reinhard Führicht)
