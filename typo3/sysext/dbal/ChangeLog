@@ -1,3 +1,7 @@
+2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15253: NOT LIKE is not remapped using dbms_lob.instr with Oracle
+
 2010-07-17  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Updated PHP documentation
