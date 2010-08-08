@@ -1,3 +1,7 @@
+2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #12535: DAM-related: Element browser crashes as where-clause cannot be parsed
+
 2010-07-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #15160: Queries should only be parsed once

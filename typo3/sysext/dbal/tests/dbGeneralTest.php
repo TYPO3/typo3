@@ -242,5 +242,33 @@ class dbGeneralTest extends BaseTestCase {
 		$expected = 'SELECT * FROM pages WHERE MAX(uid) IN (1,2,3,4)';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12535
+	 */
+	public function likeBinaryOperatorIsKept() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'bodytext LIKE BINARY \'test\''
+		));
+		$expected = 'SELECT * FROM tt_content WHERE bodytext LIKE BINARY \'test\'';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12535
+	 */
+	public function notLikeBinaryOperatorIsKept() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'bodytext NOT LIKE BINARY \'test\''
+		));
+		$expected = 'SELECT * FROM tt_content WHERE bodytext NOT LIKE BINARY \'test\'';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>

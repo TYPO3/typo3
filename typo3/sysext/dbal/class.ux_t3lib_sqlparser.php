@@ -575,15 +575,16 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 									} else {
 										$output .= $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 									}
-								} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping)) {
+								} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator']) && $functionMapping)) {
 									$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 								}
 							}
 
 								// Set comparator:
 							if ($v['comparator']) {
+								$isLikeOperator = preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator']);
 								switch (TRUE) {
-									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping):
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $isLikeOperator && $functionMapping):
 												// Oracle cannot handle LIKE on CLOB fields - sigh
 											if (isset($v['value']['operator'])) {
 												$values = array();
@@ -593,6 +594,9 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												$compareValue = ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 											} else {
 												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1]; 
+											}
+											if (t3lib_div::isFirstPartOfStr($v['comparator'], 'NOT')) {
+												$output .= 'NOT ';
 											}
 												// To be on the safe side
 											$isLob = TRUE;
@@ -610,6 +614,32 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											}
 										break;
 									default:
+										if ($isLikeOperator && $functionMapping) {
+											if ($GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres') ||
+												$GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres64') ||
+												$GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres7') ||
+												$GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres8')) {
+
+													// Remap (NOT)? LIKE to (NOT)? ILIKE
+													// and (NOT)? LIKE BINARY to (NOT)? LIKE
+												switch ($v['comparator']) {
+													// Remap (NOT)? LIKE to (NOT)? ILIKE
+													case 'LIKE':
+														$v['comparator'] = 'ILIKE';
+														break;
+													case 'NOT LIKE':
+														$v['comparator'] = 'NOT ILIKE';
+														break;
+													default:
+														$v['comparator'] = str_replace(' BINARY', '', $v['comparator']);
+														break;
+												}
+											} else {
+													// No more BINARY operator
+												$v['comparator'] = str_replace(' BINARY', '', $v['comparator']);
+											} 
+										}
+
 										$output .= ' ' . $v['comparator'];
 
 											// Detecting value type; list or plain:

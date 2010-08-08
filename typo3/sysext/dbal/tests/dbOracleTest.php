@@ -1083,5 +1083,19 @@ class dbOracleTest extends BaseTestCase {
 		$expected = 'SELECT * FROM "fe_users" WHERE \',\'||"usergroup"||\',\' LIKE \'%,10,%\'';
 		$this->assertEquals($expected, $query);
 	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12535
+	 */
+	public function likeBinaryOperatorIsRemoved() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'bodytext LIKE BINARY \'test\''
+		));
+		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr("bodytext", \'test\',1,1) > 0)';
+		$this->assertEquals($expected, $query);
+	}
 }
 ?>
