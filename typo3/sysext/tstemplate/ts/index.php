@@ -356,9 +356,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 	function linkWrapTemplateTitle($title, $onlyKey = '') {
 		if ($onlyKey) {
-			$title = '<a href="index.php?id=' . $GLOBALS['SOBE']->id . '&e[' . $onlyKey . ']=1&SET[function]=tx_tstemplateinfo">' . htmlspecialchars($title) . '</a>';
+			$title = '<a href="index.php?id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&e[' . $onlyKey . ']=1&SET[function]=tx_tstemplateinfo') . '">' . htmlspecialchars($title) . '</a>';
 		} else {
-			$title = '<a href="index.php?id=' . $GLOBALS['SOBE']->id . '&e[constants]=1&e[config]=1&SET[function]=tx_tstemplateinfo">' . htmlspecialchars($title) . '</a>';
+			$title = '<a href="index.php?id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&e[constants]=1&e[config]=1&SET[function]=tx_tstemplateinfo') . '">' . htmlspecialchars($title) . '</a>';
 		}
 		return $title;
 	}

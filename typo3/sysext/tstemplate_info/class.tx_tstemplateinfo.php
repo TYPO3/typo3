@@ -85,9 +85,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			$path = PATH_site.$GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'].'/'.$v;
 			$functions = '';
 			if ($func)	{
-				$functions = '<td bgcolor=red nowrap>' . $GLOBALS['LANG']->getLL('delete') . ' <input type="Checkbox" name="data[remove_resource]['.$k.']" value="'.htmlspecialchars($v).'"></td>';
-				$functions.= '<td'.$bgcol.' nowrap>' . $GLOBALS['LANG']->getLL('toTop') . ' <input type="Checkbox" name="data[totop_resource]['.$k.']" value="'.htmlspecialchars($v).'"></td>';
-				$functions.= '<td'.$bgcol.' nowrap>';
+				$functions = '<td bgcolor="red" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('delete') . ' <input type="checkbox" name="data[remove_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
+				$functions . = '<td' . $bgcol . ' nowrap="nowrap">' . $GLOBALS['LANG']->getLL('toTop') . ' <input type="checkbox" name="data[totop_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
+				$functions .= '<td' . $bgcol . ' nowrap="nowrap">';
 				$fI = t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions,$fI['fileext']))	{
 					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', true))) . '</a>';
@@ -95,16 +95,16 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$functions.= '</td>';
 			}
 			$thumb = t3lib_BEfunc::thumbCode(array('resources' => $v), 'sys_template', 'resources', $GLOBALS['BACK_PATH'], '');
-			$out.= '<tr><td'.$bgcol.' nowrap>'.$v.'&nbsp;&nbsp;</td><td'.$bgcol.' nowrap>&nbsp;'.t3lib_div::formatSize(@filesize($path)).'&nbsp;</td>'.$functions.'<td'.$bgcol.'>'.trim($thumb).'</td></tr>';
+			$out .= '<tr><td' . $bgcol . ' nowrap="nowrap">' . $v . '&nbsp;&nbsp;</td><td' . $bgcol . ' nowrap="nowrap">&nbsp;' . t3lib_div::formatSize(@filesize($path)) . '&nbsp;</td>' . $functions . '<td' . $bgcol . '>' . trim($thumb) . '</td></tr>';
 		}
 		if ($out)	{
 			if ($func)	{
-				$out = '<table border=0 cellpadding=1 cellspacing=1 width="100%">'.$out.'</table>';
-				$out = '<table border=0 cellpadding=0 cellspacing=0>
-					<tr><td class="bgColor2">'.$out.'<img src=clear.gif width=465 height=1></td></tr>
+				$out = '<table border="0" cellpadding="1" cellspacing="1" width="100%">' . $out . '</table>';
+				$out = '<table border="0" cellpadding="0" cellspacing="0">
+					<tr><td class="bgColor2">' . $out . '<img src="clear.gif" width="465px" height="1px"></td></tr>
 				</table>';
 			} else {
-				$out = '<table border=0 cellpadding=0 cellspacing=0>'.$out.'</table>';
+				$out = '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
 			}
 		}
 		return $out;
@@ -128,10 +128,10 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			if (t3lib_div::inList($this->pObj->textExtensions,strtolower($fI['extension'])))	{
 				$path = PATH_site.$GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'].'/'.$v;
 				$thumb = t3lib_BEfunc::thumbCode(array('resources' => $v), 'sys_template', 'resources', $GLOBALS['BACK_PATH'], '');
-				$out.= '<tr><td'.$bgcol.' nowrap>'.$v.'&nbsp;&nbsp;</td><td'.$bgcol.' nowrap>&nbsp;'.t3lib_div::formatSize(@filesize($path)).'&nbsp;</td><td'.$bgcol.'>'.trim($thumb).'</td><td><input type="Checkbox" name="data[makecopy_resource]['.$k.']" value="'.htmlspecialchars($v).'"></td></tr>';
+				$out .= '<tr><td' . $bgcol . ' nowrap="nowrap">' . $v . '&nbsp;&nbsp;</td><td' . $bgcol . ' nowrap="nowrap">&nbsp;' . t3lib_div::formatSize(@filesize($path)) . '&nbsp;</td><td' . $bgcol . '>' . trim($thumb) . '</td><td><input type="Checkbox" name="data[makecopy_resource][' . $k . ']" value="' . htmlspecialchars($v) . '"></td></tr>';
 			}
 		}
-		$out = ($out ? '<table border=0 cellpadding=0 cellspacing=0>'.$out.'</table>' : '');
+		$out = ($out ? '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>' : '');
 		return $out;
 	}
 
