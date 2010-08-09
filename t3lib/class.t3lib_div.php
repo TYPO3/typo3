@@ -1235,7 +1235,23 @@ final class t3lib_div {
 		self::logDeprecatedFunction();
 
 		$value = strtoupper($string);
-		return strtr($value, 'áéúíâêûôîæøåäöü', 'ÁÉÚÍÄËÜÖÏÆØÅÄÖÜ');
+		return strtr($value, array(
+			chr(225) => chr(193),
+			chr(233) => chr(201),
+			chr(250) => chr(218),
+			chr(237) => chr(205),
+			chr(226) => chr(196),
+			chr(234) => chr(203),
+			chr(251) => chr(220),
+			chr(244) => chr(214),
+			chr(238) => chr(207),
+			chr(230) => chr(198),
+			chr(248) => chr(216),
+			chr(229) => chr(197),
+			chr(228) => chr(196),
+			chr(246) => chr(214),
+			chr(252) => chr(220),
+		));
 	}
 
 	/**
@@ -1251,9 +1267,9 @@ final class t3lib_div {
 	public static function convUmlauts($str)	{
 		self::logDeprecatedFunction();
 
-		$pat  = array (	'/ä/',	'/Ä/',	'/ö/',	'/Ö/',	'/ü/',	'/Ü/',	'/ß/',	'/å/',	'/Å/',	'/ø/',	'/Ø/',	'/æ/',	'/Æ/'	);
-		$repl = array (	'ae',	'Ae',	'oe',	'Oe',	'ue',	'Ue',	'ss',	'aa',	'AA',	'oe',	'OE',	'ae',	'AE'	);
-		return preg_replace($pat,$repl,$str);
+		$pattern  = array (chr(228), chr(196), chr(246), chr(214), chr(252), chr(220), chr(223), chr(229), chr(197), chr(248), chr(216), chr(230), chr(198));
+		$replace = array ('ae', 'Ae', 'oe', 'Oe', 'ue', 'Ue', 'ss', 'aa', 'AA', 'oe', 'OE', 'ae', 'AE');
+		return str_replace($pattern, $replace, $str);
 	}
 
 	/**
