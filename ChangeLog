@@ -1,3 +1,7 @@
+2010-08-09  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15403: Missing icons in workspace modules (swap version) (Thanks to Georg Ringer)
+
 2010-08-09  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to bug #15104: Fixed parse error

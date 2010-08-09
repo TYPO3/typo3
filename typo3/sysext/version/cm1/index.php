@@ -1692,7 +1692,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
 						'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid']
 						)).'" title="' . $GLOBALS['LANG']->getLL('publish', TRUE) . '">'.
-					t3lib_iconWorks::getSpriteIcon('actions-version-swap-versions') .
+					t3lib_iconWorks::getSpriteIcon('actions-version-swap-version') .
 				'</a>';
 			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 				$actionLinks.=
