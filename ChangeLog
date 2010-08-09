@@ -1,3 +1,7 @@
+2010-08-09  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to bug #15104: Fixed parse error
+
 2010-08-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15104: Validation erros in tstemplate (Thanks to Georg Ringer)
