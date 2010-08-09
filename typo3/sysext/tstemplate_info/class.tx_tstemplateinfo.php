@@ -86,7 +86,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			$functions = '';
 			if ($func)	{
 				$functions = '<td bgcolor="red" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('delete') . ' <input type="checkbox" name="data[remove_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
-				$functions . = '<td' . $bgcol . ' nowrap="nowrap">' . $GLOBALS['LANG']->getLL('toTop') . ' <input type="checkbox" name="data[totop_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
+				$functions .= '<td' . $bgcol . ' nowrap="nowrap">' . $GLOBALS['LANG']->getLL('toTop') . ' <input type="checkbox" name="data[totop_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
 				$functions .= '<td' . $bgcol . ' nowrap="nowrap">';
 				$fI = t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions,$fI['fileext']))	{
