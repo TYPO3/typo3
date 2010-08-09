@@ -40,7 +40,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @var string
 	 */
-	private $templateSprite = '
+	protected $templateSprite = '
 .###NAMESPACE###-###SPRITENAME### {
 	background-image: url(\'###SPRITEURL###\');
 	height: ###DEFAULTHEIGHT###px;
@@ -54,7 +54,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @var string
 	 */
-	private $templateIcon = '.###NAMESPACE###-###ICONNAME### {
+	protected $templateIcon = '.###NAMESPACE###-###ICONNAME### {
 	background-position: -###LEFT###px -###TOP###px;
 	###SIZE_INFO###
 }
@@ -65,68 +65,68 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @var int
 	 */
-	private $defaultWidth  = 0;
+	protected $defaultWidth  = 0;
 
 	/**
 	 * most common icon-height in the sprite
 	 *
 	 * @var int
 	 */
-	private $defaultHeight = 0;
+	protected $defaultHeight = 0;
 
 	/**
 	 * calculated width of the sprite
 	 *
 	 * @var int
 	 */
-	private $spriteWidth = 0;
+	protected $spriteWidth = 0;
 
 	/**
 	 * calculated height of the sprite
 	 * @var int
 	 */
-	private $spriteHeight = 0;
+	protected $spriteHeight = 0;
 
 	/**
 	 * sprite name, will be the filename, too
 	 *
 	 * @var string
 	 */
-	private $spriteName = '';
+	protected $spriteName = '';
 
 	/**
 	 * the folder the sprite-images will be saved (relative to PATH_site)
 	 *
 	 * @var string
 	 */
-	private $spriteFolder = 'typo3temp/sprites/';
+	protected $spriteFolder = 'typo3temp/sprites/';
 
 	/**
 	 * the folder the sprite-cs will be saved (relative to PATH_site)
 	 *
 	 * @var string
 	 */
-	private $cssFolder = 'typo3temp/sprites/';
+	protected $cssFolder = 'typo3temp/sprites/';
 
 	/**
 	 * the spriteName will not be included in icon names
 	 *
 	 * @var boolean
 	 */
-	private $ommitSpriteNameInIconName = FALSE;
+	protected $ommitSpriteNameInIconName = FALSE;
 
 	/**
 	 * @var boolean
 	 * @deprecated IE6 support will be dropped within 4.6 - then gifcopies are superflous
 	 */
-	private $generateGIFCopy = TRUE;
+	protected $generateGIFCopy = TRUE;
 
 	/**
 	 * namespace of css classes
 	 *
 	 * @var string
 	 */
-	private $nameSpace = 't3-icon';
+	protected $nameSpace = 't3-icon';
 
 	/**
 	 * setting this to true, the timestamp of the creation will be included to the background import
@@ -134,7 +134,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @var boolean
 	 */
-	private $includeTimestampInCSS = TRUE;
+	protected $includeTimestampInCSS = TRUE;
 
 	/**
 	 * all bases/root-names included in the sprite which has to be in css
@@ -142,35 +142,35 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @var array
 	 */
-	private $spriteBases = array();
+	protected $spriteBases = array();
 
 	/**
 	 * collects data about all icons to process
 	 *
 	 * @var array
 	 */
-	private $iconsData = array();
+	protected $iconsData = array();
 
 	/**
 	 * collects all sizes of icons within this sprite and there count
 	 *
 	 * @var array
 	 */
-	private $iconSizes = array();
+	protected $iconSizes = array();
 
 	/**
 	 * maps icon-sizes to iconnames
 	 *
 	 * @var array
 	 */
-	private $iconNamesPerSize = array();
+	protected $iconNamesPerSize = array();
 
 	/**
 	 * space in px between to icons in the sprite (gap)
 	 *
 	 * @var int
 	 */
-	private $space = 2;
+	protected $space = 2;
 
 	/**
 	 * Initializes the configuration of the spritegenerator
@@ -329,7 +329,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @return void
 	 */
-	private function generateCSS() {
+	protected function generateCSS() {
 		$cssData = '';
 		$cssIe6 = '';
 
@@ -391,7 +391,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @return string
 	 */
-	private function resolveSpritePath() {
+	protected function resolveSpritePath() {
 			// Fix window paths
 		$this->cssFolder = str_replace('\\', '/', $this->cssFolder);
 		$this->spriteFolder = str_replace('\\', '/', $this->spriteFolder);
@@ -419,7 +419,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 *
 	 * @return void
 	 */
-	private function generateGraphic() {
+	protected function generateGraphic() {
 		$iconParameters = array();
 		$tempSprite = t3lib_div::tempnam($this->spriteName);
 
@@ -468,7 +468,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 * Arranges icons in sprites,
 	 * afterwards all icons have information about ther position in sprite
 	 */
-	private function calculateSpritePositions() {
+	protected function calculateSpritePositions() {
 		$currentLeft = 0;
 		$currentTop  = 0;
 			// calculate width of every icon-size-group
@@ -524,7 +524,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 * @param string path to an folder which contains images
 	 * @return array returns an array with all files key: iconname, value: fileName
 	 */
-	private function getFolder($directoryPath) {
+	protected function getFolder($directoryPath) {
 		$subFolders = t3lib_div::get_dirs(PATH_site . $directoryPath);
 		if (!$this->ommitSpriteNameInIconName) {
 			$subFolders[] = '';
@@ -558,7 +558,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 * @param array	list of all files with their icon name
 	 * @return void
 	 */
-	private function buildFileInformationCache(array $files) {
+	protected function buildFileInformationCache(array $files) {
 		foreach ($files as $iconName => $iconFile) {
 			$fileInfo = pathinfo(PATH_site . $iconFile);
 			$imageInfo = getimagesize(PATH_site . $iconFile);
@@ -596,7 +596,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 * @param string  a size tag at the cache arrays
 	 * @return array
 	 */
-	private function explodeSizeTag($tag = '') {
+	protected function explodeSizeTag($tag = '') {
 		$size = t3lib_div::trimExplode("x", $tag);
 		return array(
 			'width' => $size[0],
