@@ -167,7 +167,7 @@ class t3lib_SpriteManager {
 				$iconFile = $icon['icon'];
 				t3lib_div::deprecationLog('Usage of $PAGES_TYPES[\'icon\'] is deprecated since 4.4.' . LF .
 					'The extTables.php entry $PAGE_TYPES[\'' . $type . '\'][\'icon\'] = \'' . $iconFile . '\'; should be replaced with' . LF .
-					't3lib_SpriteManager::addTcaTypeIcon(\'pages\', ' . $type . '\', \'' . $iconFile . '\');' . LF .
+					't3lib_SpriteManager::addTcaTypeIcon(\'pages\', \'' . $type . '\', \'' . $iconFile . '\');' . LF .
 					'instead.'
 				);
 				t3lib_SpriteManager::addTcaTypeIcon('pages', $module, $iconFile);
