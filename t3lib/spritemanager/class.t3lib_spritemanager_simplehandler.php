@@ -250,4 +250,7 @@ class t3lib_spritemanager_SimpleHandler implements t3lib_spritemanager_SpriteIco
 	}
 }
 
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_simplehandler.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/spritemanager/class.t3lib_spritemanager_simplehandler.php']);
+}
 ?>
