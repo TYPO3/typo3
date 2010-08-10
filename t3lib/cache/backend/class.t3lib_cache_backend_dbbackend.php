@@ -36,6 +36,16 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	protected $cacheTable;
 	protected $tagsTable;
 
+	/**
+	 * @var boolean Indicates wether data is compressed or not (requires php zlib)
+	 */
+	protected $compression = FALSE;
+
+	/**
+	 * @var integer -1 to 9, indicates zlib compression level: -1 = default level 6, 0 = no compression, 9 maximum compression
+	 */
+	protected $compressionLevel = -1;
+
 	protected $identifierField;
 	protected $creationField;
 	protected $lifetimeField;
@@ -116,6 +126,10 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 
 		$this->remove($entryIdentifier);
 
+		if ($this->compression) {
+			$data = gzcompress($data, $this->compressionLevel);
+		}
+
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery(
 			$this->cacheTable,
 			array(
@@ -166,6 +180,10 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 
 		if (count($cacheEntries) == 1) {
 			$cacheEntry = $cacheEntries[0]['content'];
+		}
+
+		if ($this->compression && strlen($cacheEntry)) {
+			$cacheEntry = gzuncompress($cacheEntry);
 		}
 
 		return $cacheEntry;
@@ -444,6 +462,28 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 */
 	public function getTagsTable() {
 		return $this->tagsTable;
+	}
+
+	/**
+	 * Enable data compression
+	 *
+	 * @param boolean TRUE to enable compression
+	 */
+	public function setCompression($compression) {
+		$this->compression = $compression;
+	}
+
+	/**
+	 * Set data compression level.
+	 * If compression is enabled and this is not set,
+	 * gzcompress default level will be used
+	 *
+	 * @param integer -1 to 9: Compression level
+	 */
+	public function setCompressionLevel($compressionLevel) {
+		if ($compressionLevel >= -1 && $compressionLevel <= 9) {
+			$this->compressionLevel = $compressionLevel;
+		}
 	}
 
 	/**
