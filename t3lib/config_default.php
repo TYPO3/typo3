@@ -122,6 +122,7 @@ $TYPO3_CONF_VARS = array(
 			),
 			'cacheConfigurations' => array(
 				'cache_hash' => array(
+					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
 						'cacheTable' => 'cachingframework_cache_hash',
@@ -129,6 +130,7 @@ $TYPO3_CONF_VARS = array(
 					)
 				),
 				'cache_pages' => array(
+					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
 						'cacheTable' => 'cachingframework_cache_pages',
@@ -136,6 +138,7 @@ $TYPO3_CONF_VARS = array(
 					)
 				),
 				'cache_pagesection' => array(
+					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_DbBackend',
 					'options' => array(
 						'cacheTable' => 'cachingframework_cache_pagesection',

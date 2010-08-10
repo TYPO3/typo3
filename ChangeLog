@@ -1,5 +1,6 @@
 2010-08-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15389: [Caching framework] Hardcoded frontends of core caches
 	* Fixed bug #15388: [Caching framework] Remove default settings for cache configuration
 	* Fixed bug #15180: [Unit tests] t3lib_iconWorks and t3lib_SpriteManager (Thanks to Fabien Udriot)
 	* Fixed bug #15383: [Unit tests] Add tests for t3lib_div::validEmail
