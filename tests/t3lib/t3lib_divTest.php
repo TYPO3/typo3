@@ -161,6 +161,82 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	//////////////////////////////////
+	// Tests concerning calcPriority
+	//////////////////////////////////
+
+	/**
+	 * Data provider for valid validEmail's
+	 *
+	 * @return array Valid email addresses
+	 */
+	public function validEmailValidDataProvider() {
+		return array(
+			'short mail address' => array('a@b.c'),
+			'simple mail address' => array('test@example.com'),
+			'uppercase characters' => array('QWERTYUIOPASDFGHJKLZXCVBNM@QWERTYUIOPASDFGHJKLZXCVBNM.NET'),
+			'equal sign in local part' => array('test=mail@example.com'),
+			'dash in local part' => array('test-mail@example.com'),
+			'plus in local part' => array('test+mail@example.com'),
+			'question mark in local part' => array('test?mail@example.com'),
+			'slash in local part' => array('foo/bar@example.com'),
+			'hash in local part' => array('foo#bar@example.com'),
+			'dot in local part' => array('firstname.lastname@employee.2something.com'),
+				// Fix / change if TYPO3 php requirement changed: Address ok with 5.2.6, but not ok with 5.3.2
+			// 'dash as local part' => array('-@foo.com'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider validEmailValidDataProvider
+	 */
+	public function validEmailReturnsTrueForValidMailAddress($address) {
+		$this->assertTrue(t3lib_div::validEmail($address));
+	}
+
+	/**
+	 * Data provider for invalid validEmail's
+	 *
+	 * @return array Invalid email addresses
+	 */
+	public function validEmailInvalidDataProvider() {
+		return array(
+			'@ sign only' => array('@'),
+			'duplicate @' => array('test@@example.com'),
+			'duplicate @ combined with further special characters in local part' => array('test!.!@#$%^&*@example.com'),
+			'opening parenthesis in local part' => array('foo(bar@example.com'),
+			'closing parenthesis in local part' => array('foo)bar@example.com'),
+			'opening square bracket in local part' => array('foo[bar@example.com'),
+			'closing square bracket as local part' => array(']@example.com'),
+				// Fix / change if TYPO3 php requirement changed: Address ok with 5.2.6, but not ok with 5.3.2
+			// 'top level domain only' => array('test@com'),
+			'dash as second level domain' => array('foo@-.com'),
+			'domain part starting with dash' => array('foo@-foo.com'),
+			'domain part ending with dash' => array('foo@foo-.com'),
+			'number as top level domain' => array('foo@bar.123'),
+				// Fix / change if TYPO3 php requirement changed: Address not ok with 5.2.6, but ok with 5.3.2 (?)
+			// 'dash as top level domain' => array('foo@bar.-'),
+			'dot at beginning of domain part' => array('test@.com'),
+				// Fix / change if TYPO3 php requirement changed: Address ok with 5.2.6, but not ok with 5.3.2
+			// 'local part ends with dot' => array('e.x.a.m.p.l.e.@example.com'),
+			'trailing whitespace' => array('test@example.com '),
+			'trailing carriage return' => array('test@example.com' . CR),
+			'trailing linefeed' => array('test@example.com' . LF),
+			'trailing carriage return linefeed' => array('test@example.com' . CRLF),
+			'trailing tab' => array('test@example.com' . TAB),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider validEmailInvalidDataProvider
+	 */
+	public function validEmailReturnsFalseForInvalidMailAddress($address) {
+		$this->assertFalse(t3lib_div::validEmail($address));
+	}
+
+
+	//////////////////////////////////
 	// Tests concerning intExplode
 	//////////////////////////////////
 
