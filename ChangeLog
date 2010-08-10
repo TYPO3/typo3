@@ -1,3 +1,7 @@
+2010-08-10  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #15382: [Unit tests] Streamline and refactor t3lib_divTest
+
 2010-08-10  Bernhard Kraft  <kraftb@think-open.at>
 
 	* Fixed bug #15395: Code cleanup for t3lib_compressor
