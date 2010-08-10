@@ -1,5 +1,6 @@
 2010-08-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15180: [Unit tests] t3lib_iconWorks and t3lib_SpriteManager (Thanks to Fabien Udriot)
 	* Fixed bug #15383: [Unit tests] Add tests for t3lib_div::validEmail
 	* Fixed bug #15382: [Unit tests] Streamline and refactor t3lib_divTest
 
