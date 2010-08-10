@@ -1,5 +1,6 @@
 2010-08-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15180: [Unit tests] t3lib_iconWorks and t3lib_SpriteManager (Thanks to Fabien Udriot)
 	* Follow-up to feature #15141: Add tests to t3lib_db to test storing of binary data (Thanks to Steffen Kamper)
 	* Added feature #15141: [Caching framework] Add compress data options to DbBackend
 	* Fixed bug #15383: [Unit tests] Add tests for t3lib_div::validEmail
