@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * Testcase for the t3lib_cs class in the TYPO3 Core.
+ * Testcase for the t3lib_db class in the TYPO3 Core.
  *
  * @package TYPO3
  * @subpackage t3lib
@@ -34,14 +34,87 @@ class t3lib_dbTest extends tx_phpunit_testcase {
 	/**
 	 * @var t3lib_db
 	 */
-	private $fixture = null;
+	private $fixture = NULL;
+
+	private $testTable;
 
 	public function setUp() {
-		$this->fixture = new t3lib_db();
+		$this->fixture = $GLOBALS['TYPO3_DB'];
+
+		$this->testTable = 'test_t3lib_dbtest';
+
+		$this->fixture->sql_query('CREATE TABLE ' . $this->testTable . ' (
+			id int(11) unsigned NOT NULL auto_increment,
+			fieldblob mediumblob,
+			PRIMARY KEY (id)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+		');
 	}
 
 	public function tearDown() {
+		$this->fixture->sql_query(
+			'DROP TABLE ' . $this->testTable . ';'
+		);
+
 		unset($this->fixture);
+	}
+
+
+	//////////////////////////////////////////////////
+	// Write/Read tests for charsets and binaries
+	//////////////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function storedFullAsciiRangeReturnsSameData() {
+		$binaryString = '';
+		for ($i = 0; $i < 256; $i ++) {
+			$binaryString .= chr($i);
+		}
+		
+		$this->fixture->exec_INSERTquery(
+			$this->testTable,
+			array('fieldblob' => $binaryString)
+		);
+
+		$id = $this->fixture->sql_insert_id();
+
+		$entry = $this->fixture->exec_SELECTgetRows(
+			'fieldblob',
+			$this->testTable,
+			'id = ' . $id
+		);
+
+		$this->assertEquals(
+			$binaryString,
+			$entry[0]['fieldblob']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function storedGzipCompressedDataReturnsSameData() {
+		$testStringWithBinary = @gzcompress('sdfkljer4587');
+
+		$this->fixture->exec_INSERTquery(
+			$this->testTable,
+			array('fieldblob' => $testStringWithBinary)
+		);
+
+		$id = $this->fixture->sql_insert_id();
+
+		$entry = $this->fixture->exec_SELECTgetRows(
+			'fieldblob',
+			$this->testTable,
+			'id = ' . $id
+		);
+
+		$this->assertEquals(
+			$testStringWithBinary,
+			$entry[0]['fieldblob']
+		);
 	}
 
 
