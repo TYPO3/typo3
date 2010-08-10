@@ -47,13 +47,7 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	/**
 	 * @var array
 	 */
-	protected $cacheConfigurations = array(
-		'default' => array(
-			'frontend'       => 't3lib_cache_frontend_VariableFrontend',
-			'backend'        =>  't3lib_cache_backend_FileBackend',
-			'backendOptions' => array()
-		)
-	);
+	protected $cacheConfigurations = array();
 
 	/**
 	 * Sets configurations for caches. The key of each entry specifies the
@@ -104,13 +98,12 @@ class t3lib_cache_Manager implements t3lib_Singleton {
 	 */
 	public function initialize() {
 		foreach ($this->cacheConfigurations as $identifier => $configuration) {
-			if ($identifier !== 'default') {
-				$frontend       = isset($configuration['frontend'])       ? $configuration['frontend']       : $this->cacheConfigurations['default']['frontend'];
-				$backend        = isset($configuration['backend'])        ? $configuration['backend']        : $this->cacheConfigurations['default']['backend'];
-				$backendOptions = isset($configuration['backendOptions']) ? $configuration['backendOptions'] : $this->cacheConfigurations['default']['backendOptions'];
-
-				$this->cacheFactory->create($identifier, $frontend, $backend, $backendOptions);
-			}
+			$this->cacheFactory->create(
+				$identifier,
+				$configuration['frontend'],
+				$configuration['backend'],
+				$configuration['backendOptions']
+			);
 		}
 	}
 
