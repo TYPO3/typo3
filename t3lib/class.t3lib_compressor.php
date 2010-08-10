@@ -60,7 +60,7 @@ class t3lib_Compressor {
 			$this->createGzipped = TRUE;
 				// $compressionLevel can also be TRUE
 			if (t3lib_div::testInt($compressionLevel)) {
-				$this->gzipCompressionLevel = $compressionLevel;
+				$this->gzipCompressionLevel = intval($compressionLevel);
 			}
 		}
 	}
@@ -354,11 +354,7 @@ class t3lib_Compressor {
 
 		if ($this->createGzipped) {
 				// create compressed version
-			$compressionLevel = -1;
-			if (isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel']) && is_numeric($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel'])) {
-				$compressionLevel = intval($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['compressionLevel']);
-			}
-			t3lib_div::writeFile(PATH_site . $filename . '.gzip', gzencode($contents, $compressionLevel));
+			t3lib_div::writeFile(PATH_site . $filename . '.gzip', gzencode($contents, $this->gzipCompressionLevel));
 		}
 	}
 

@@ -1,3 +1,7 @@
+2010-08-10  Bernhard Kraft  <kraftb@think-open.at>
+
+	* Fixed bug #15395: Code cleanup for t3lib_compressor
+
 2010-08-09  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to bug #15079: Add XCLASS-definitions to spritemanager classes
