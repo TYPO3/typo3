@@ -46,7 +46,11 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 		$mockCacheFactory->expects($this->at(2))->method('create')->with('cache2', 't3lib_cache_frontend_StringFrontend', 't3lib_cache_backend_NullBackend', array('foo' => 'bar'));
 
 		$cacheConfigurations = array(
-			'cache1' => array(),
+			'cache1' => array(
+				'frontend' => 't3lib_cache_frontend_VariableFrontend',
+				'backend' => 't3lib_cache_backend_FileBackend',
+				'backendOptions' => array(),
+			),
 			'cache2' => array(
 				'frontend' => 't3lib_cache_frontend_StringFrontend',
 				'backend' => 't3lib_cache_backend_NullBackend',
