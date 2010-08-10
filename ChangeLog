@@ -1,5 +1,6 @@
 2010-08-10  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15383: [Unit tests] Add tests for t3lib_div::validEmail
 	* Fixed bug #15382: [Unit tests] Streamline and refactor t3lib_divTest
 
 2010-08-09  Steffen Kamper  <steffen@typo3.org>
