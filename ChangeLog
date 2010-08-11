@@ -1,5 +1,6 @@
 2010-08-11  Steffen Gebert  <steffen@steffen-gebert.de>
 
+	* Fixed bug #15375: showDomainNameWithTitle doesn't respect hidden records (Thanks to Henrik Ziegenhain)
 	* Fixed bug #15428: Element-Browser page tree has HTML / JS Errors (Thanks to Sven Juergens)
 
 2010-08-11  Christian Kuhn  <lolli@schwarzbu.ch>
