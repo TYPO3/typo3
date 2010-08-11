@@ -1017,7 +1017,7 @@ class t3lib_pageSelect {
 					$hash,
 					$data,
 					array('ident_' . $ident),
-					$lifetime
+					intval($lifetime)
 				);
 			}
 		} else {

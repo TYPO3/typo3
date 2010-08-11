@@ -253,7 +253,7 @@
 	 * @var t3lib_TStemplate
 	 */
 	var $tmpl='';
-	var $cacheTimeOutDefault='';		// Is set to the time-to-live time of cached pages. If false, default is 60*60*24, which is 24 hours.
+	var $cacheTimeOutDefault = FALSE;		// Is set to the time-to-live time of cached pages. If false, default is 60*60*24, which is 24 hours.
 	var $cacheContentFlag = 0;			// Set internally if cached content is fetched from the database
 	var $cacheExpires=0;				// Set to the expire time of cached content
 	var $isClientCachable=FALSE;		// Set if cache headers allowing caching are sent.
@@ -4614,7 +4614,7 @@ if (version == "n3") {
 	function get_cache_timeout() {
 			// Cache period was set for the page:
 		if ($this->page['cache_timeout']) {
-			$cacheTimeout = $this->page['cache_timeout'];
+			$cacheTimeout = intval($this->page['cache_timeout']);
 			// Cache period was set for the whole site:
 		} elseif ($this->cacheTimeOutDefault) {
 			$cacheTimeout = $this->cacheTimeOutDefault;

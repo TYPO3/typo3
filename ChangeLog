@@ -4,6 +4,7 @@
 
 2010-08-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15393: [Caching framework] API usage: Make sure lifetime is NULL or integer
 	* Fixed bug #15417: [Caching framework] DbBackend has() returns false for entries with unlimited lifetime
 
 2010-08-11  Steffen Kamper  <steffen@typo3.org>
