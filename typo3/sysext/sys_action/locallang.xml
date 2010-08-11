@@ -25,6 +25,8 @@
 			<label index="action_notReady">Error: The action configuration is not finished.</label>
 			<label index="action_download_file">Click here to download the exported data in a file</label>
 			<label index="action_editQuery">Edit Query</label>
+			<label index="action_createQuery">Create Query</label>
+			<label index="action_emptyQuery">Query is empty, create one first!</label>
 			<label index="action_error">Action error!</label>
 			<label index="action_lowlevelMissing">The extension "lowlevel" must be installed in order to create a query.</label>
 			<label index="action_BEu_hidden">Disable user</label>
