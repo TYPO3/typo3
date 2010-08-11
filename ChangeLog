@@ -1,5 +1,6 @@
 2010-08-11  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15338: sys_action: Link to edit the sql query action is missing for newly created actions (Thanks to Stefan Galinski)
 	* Fixed bug #13802: Hardcoded typo3_src Folder in TestCase tests/t3lib/cache/t3lib_cache_factoryTest.php (Thanks to Stefano Kowalke)
 
 2010-08-10  Christian Kuhn  <lolli@schwarzbu.ch>

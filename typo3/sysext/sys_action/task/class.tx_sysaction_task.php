@@ -795,34 +795,52 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		if (t3lib_extMgm::isLoaded('lowlevel')) {
 			$sql_query = unserialize($record['t2_data']);
 
-			if (is_array($sql_query) && strtoupper(substr(trim($sql_query['qSelect']), 0, 6)) == 'SELECT') {
+			if (!is_array($sql_query) ||
+				(is_array($sql_query) && strtoupper(substr(trim($sql_query['qSelect']), 0, 6)) === 'SELECT')) {
+
 				$actionContent = '';
 
-				$fullsearch = t3lib_div::makeInstance("t3lib_fullsearch");
+				$fullsearch = t3lib_div::makeInstance('t3lib_fullsearch');
 				$fullsearch->formW = 40;
 				$fullsearch->noDownloadB = 1;
 
 				$type = $sql_query['qC']['search_query_makeQuery'];
-				$res = $GLOBALS['TYPO3_DB']->sql_query($sql_query['qSelect']);
+				$sqlQuery = $sql_query['qSelect'];
+				$queryIsEmpty = FALSE;
 
-				if (!$GLOBALS['TYPO3_DB']->sql_error()) {
-					$fullsearch->formW = 48;
-						// additional configuration
-					$GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'] = 1;
-					$cP = $fullsearch->getQueryResultCode($type, $res, $sql_query['qC']['queryTable']);
-					$actionContent = $cP['content'];
+				if ($sqlQuery) {
+					$res = $GLOBALS['TYPO3_DB']->sql_query($sqlQuery);
 
-						// if the result is rendered as csv or xml, show a download link
-					if ($type == 'csv' || $type == 'xml' ) {
-						$actionContent .= '<br /><br /><a href="' . t3lib_div::getIndpEnv('REQUEST_URI') . '&download_file=1"><strong>' . $GLOBALS['LANG']->getLL('action_download_file') . '</strong></a>';
+					if (!$GLOBALS['TYPO3_DB']->sql_error()) {
+						$fullsearch->formW = 48;
+							// additional configuration
+						$GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'] = 1;
+						$cP = $fullsearch->getQueryResultCode($type, $res, $sql_query['qC']['queryTable']);
+						$actionContent = $cP['content'];
+
+							// if the result is rendered as csv or xml, show a download link
+						if ($type === 'csv' || $type === 'xml') {
+							$actionContent .= '<br /><br /><a href="' . t3lib_div::getIndpEnv('REQUEST_URI') . '&download_file=1"><strong>' . $GLOBALS['LANG']->getLL('action_download_file') . '</strong></a>';
+						}
+					} else {
+						$actionContent .= $GLOBALS['TYPO3_DB']->sql_error();
 					}
 				} else {
-					$actionContent .= $GLOBALS['TYPO3_DB']->sql_error();
+						// query is empty (not built)
+					$queryIsEmpty = TRUE;
+					$flashMessage = t3lib_div::makeInstance (
+						't3lib_FlashMessage',
+						$GLOBALS['LANG']->getLL('action_emptyQuery', TRUE),
+						$GLOBALS['LANG']->getLL('action_error'),
+						t3lib_FlashMessage::ERROR
+					);
+					$content .= '<br />' . $flashMessage->render();
 				}
-
-				// Admin users are allowed to see and edit the query
+					// Admin users are allowed to see and edit the query
 				if ($GLOBALS['BE_USER']->isAdmin()) {
-					$actionContent .= '<hr /> ' . $fullsearch->tableWrap($sql_query['qSelect']);
+					if (!$queryIsEmpty) {
+						$actionContent .= '<hr /> ' . $fullsearch->tableWrap($sql_query['qSelect']);
+					}
 					$actionContent .= '<br /><a title="' . $GLOBALS['LANG']->getLL('action_editQuery') . '" href="' . $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('lowlevel') . 'dbint/index.php?id=' .
 						'&SET[function]=search' .
 						'&SET[search]=query' .
@@ -830,7 +848,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 						'&storeControl[LOAD]=1' .
 						'">
 						<img class="icon"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif') . ' alt="" />' .
-						$GLOBALS['LANG']->getLL('action_editQuery') . '</a><br /><br />';
+						$GLOBALS['LANG']->getLL($queryIsEmpty ? 'action_createQuery' : 'action_editQuery') . '</a><br /><br />';
 				}
 
 				$content .= $this->taskObject->doc->section($GLOBALS['LANG']->getLL('action_t2_result'), $actionContent, 0, 1);
