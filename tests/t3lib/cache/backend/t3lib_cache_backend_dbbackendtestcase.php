@@ -529,6 +529,22 @@ class t3lib_cache_backend_DbBackendTestCase extends tx_phpunit_testcase {
 
 	/**
 	 * @test
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function hasReturnsTrueForEntryWithUnlimitedLifetime() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+
+		$entryIdentifier = 'BackendDbTest';
+
+		$this->backend->setCache($mockCache);
+		$this->backend->set($entryIdentifier, 'data', array(), 0);
+
+		$GLOBALS['EXEC_TIME'] += 1;
+		$this->assertTrue($this->backend->has($entryIdentifier));
+	}
+
+	/**
+	 * @test
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getReturnsFalseForEntryWithExceededLifetime() {
