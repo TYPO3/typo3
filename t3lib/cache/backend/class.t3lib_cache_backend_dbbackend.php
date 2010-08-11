@@ -185,7 +185,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 			'*',
 			$this->cacheTable,
 			'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($entryIdentifier, $this->cacheTable) .
-				' AND crdate + lifetime >= ' . $GLOBALS['EXEC_TIME']
+				' AND (crdate + lifetime >= ' . $GLOBALS['EXEC_TIME'] . ' OR lifetime = 0)'
 		);
 		if ($cacheEntries >= 1) {
 			$hasEntry = TRUE;
