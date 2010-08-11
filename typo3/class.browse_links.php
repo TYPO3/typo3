@@ -1911,11 +1911,10 @@ class browse_links {
 			if (is_array($mainPageRec)) {
 				$picon = t3lib_iconWorks::getSpriteIconForRecord('pages', $mainPageRec);
 				if (in_array('pages', $tablesArr)) {
-					$ficon = $picon;
 					$ATag = "<a href=\"#\" onclick=\"return insertElement('pages', '" . $mainPageRec['uid'] .
-						"', 'db', " . t3lib_div::quoteJSvalue($mainPageRec['title']) . ", '', '', '" . $ficon . "','',1);\">";
+						"', 'db', " . t3lib_div::quoteJSvalue($mainPageRec['title']) . ", '', '', '','',1);\">";
 					$ATag2 = "<a href=\"#\" onclick=\"return insertElement('pages', '" . $mainPageRec['uid'] .
-						"', 'db', " . t3lib_div::quoteJSvalue($mainPageRec['title']) . ", '', '', '" . $ficon . "','',0);\">";
+						"', 'db', " . t3lib_div::quoteJSvalue($mainPageRec['title']) . ", '', '', '','',0);\">";
 					$ATag_alt = substr($ATag, 0, -4) . ",'',1);\">";
 					$ATag_e = '</a>';
 				}
