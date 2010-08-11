@@ -1,3 +1,7 @@
+2010-08-11  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15375: showDomainNameWithTitle doesn't respect hidden records (Thanks to Henrik Ziegenhain)
+
 2010-08-11  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15417: [Caching framework] DbBackend has() returns false for entries with unlimited lifetime
