@@ -1,3 +1,7 @@
+2010-08-11  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #13802: Hardcoded typo3_src Folder in TestCase tests/t3lib/cache/t3lib_cache_factoryTest.php (Thanks to Stefano Kowalke)
+
 2010-08-08  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15014: Switching workspaces does not reload frames in IE6 (thanks to Andreas Kiessling)
