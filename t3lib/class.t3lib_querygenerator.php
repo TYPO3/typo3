@@ -757,7 +757,7 @@ class t3lib_queryGenerator	{
 					}
 				}
 			}
-			$d = dir(t3lib_div::getIndpEnv(TYPO3_DOCUMENT_ROOT).'/'.$fieldSetup['uploadfolder']);
+			$d = dir(PATH_site . $fieldSetup['uploadfolder']);
 			while (false !== ($entry=$d->read()))	{
 				if ($entry=='.' || $entry=='..')	{
 					continue;

@@ -121,7 +121,7 @@ class t3lib_cache_backend_FileBackendTestCase extends tx_phpunit_testcase {
 	 */
 	public function getCacheDirectoryReturnsThePreviouslySetDirectory() {
 		$directory = $this->testingCacheDirectory;
-		$fullPathToDirectory = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/' . $directory;
+		$fullPathToDirectory = PATH_site . $directory;
 
 		$this->backend->setCacheDirectory($directory);
 		$this->assertEquals($fullPathToDirectory, $this->backend->getCacheDirectory(), 'getCacheDirectory() did not return the expected value.');
