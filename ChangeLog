@@ -4,6 +4,7 @@
 
 2010-08-12 Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #3819: t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') delivers wrong value in Backend
 	* Fixed bug #3819: t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') delivers wrong value in Backend
 	* Fixed bug #15020: Enhancement of t3lib_div::testInt (Thanks to Michiel Roos)
 	* Fixed bug #15029: Testcase for t3lib_div::isFirstPartOfStr is missing. (Thanks to Nikolas Hagestein)
