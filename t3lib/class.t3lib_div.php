@@ -1275,12 +1275,8 @@ final class t3lib_div {
 	 * @param	string		Reference string which must be found as the "first part" of the full string
 	 * @return	boolean		True if $partStr was found to be equal to the first part of $str
 	 */
-	public static function isFirstPartOfStr($str,$partStr)	{
-		// Returns true, if the first part of a $str equals $partStr and $partStr is not ''
-		$psLen = strlen($partStr);
-		if ($psLen)	{
-			return substr($str,0,$psLen)==(string)$partStr;
-		} else return false;
+	public static function isFirstPartOfStr($str,$partStr) {
+		return $partStr != '' && strpos((string) $str, (string) $partStr, 0) === 0;
 	}
 
 	/**

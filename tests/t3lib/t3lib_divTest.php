@@ -164,6 +164,9 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		return array(
 			'match first part of string' => array('hello world', 'hello'),
 			'match whole string' => array('hello', 'hello'),
+			'integer is part of string with same number' => array('24', 24),
+			'string is part of integer with same number' => array(24, '24'),
+			'integer is part of string starting with same number' => array('24 beer please', 24),
 		);
 	}
 
@@ -196,6 +199,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			'empty string is not part of null' => array(NULL, ''),
 			'empty string is not part of false' => array(FALSE, ''),
 			'empty string is not part of zero integer' => array(0, ''),
+			'zero integer is not part of null' => array(NULL, 0),
+			'zero integer is not part of empty string' => array('', 0),
 		);
 	}
 
