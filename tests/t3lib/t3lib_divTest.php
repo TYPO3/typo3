@@ -92,6 +92,66 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	///////////////////////////////
+	// Tests concerning testInt
+	///////////////////////////////
+
+	/**
+	 * Data provider for testIntReturnsTrue
+	 *
+	 * @return array Data sets
+	 */
+	public function testIntValidDataProvider() {
+		return array(
+			'int' => array(32425),
+			'negative int' => array(-32425),
+			'largest int' => array(PHP_INT_MAX),
+			'int as string' => array('32425'),
+			'int as string with leading zero' => array('01234'),
+			'negative int as string' => array('-32425'),
+			'negative int as string with leading zero' => array('-01234'),
+			'zero' => array(0),
+			'zero as string' => array('0'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider testIntValidDataProvider
+	 */
+	public function testIntReturnsTrue($int) {
+		$this->assertTrue(t3lib_div::testInt($int));
+	}
+
+	/**
+	 * Data provider for testIntReturnsFalse
+	 *
+	 * @return array Data sets
+	 */
+	public function testIntInvalidDataProvider() {
+		return array(
+			'largest int plus one' => array(PHP_INT_MAX + 1),
+			'string' => array('testInt'),
+			'empty string' => array(''),
+			'int in string' => array('5 times of testInt'),
+			'float' => array(3.14159),
+			'float as string' => array('3.14159'),
+			'null' => array(NULL),
+			'empty array' => array(array()),
+			'int in array' => array(array(32425)),
+			'int as string in array' => array(array('32425')),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider testIntInvalidDataProvider
+	 */
+	public function testIntReturnsFalse($int) {
+		$this->assertFalse(t3lib_div::testInt($int));
+	}
+
+
+	///////////////////////////////
 	// Tests concerning isFirstPartOfStr
 	///////////////////////////////
 

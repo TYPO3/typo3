@@ -1263,8 +1263,8 @@ final class t3lib_div {
 	 * @param	mixed		Any input variable to test.
 	 * @return	boolean		Returns true if string is an integer
 	 */
-	public static function testInt($var)	{
-		return !strcmp($var,intval($var));
+	public static function testInt($var) {
+		return (string)intval($var) == $var;
 	}
 
 	/**
