@@ -3808,6 +3808,9 @@ class tslib_cObj {
 				if ($conf['prioriCalc']){$content=t3lib_div::calcParenthesis($content); if ($conf['prioriCalc']=='intval') $content=intval($content);}
 				if ((string)$conf['char']!=''){$content=chr(intval($conf['char']));}
 				if ($conf['intval']){$content=intval($content);}
+				if ($conf['numberFormat.']) {
+					$content = $this->numberFormat($content, $conf['numberFormat.']);
+				}
 				if ($conf['date']) {
 					$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
 				}
@@ -4837,6 +4840,21 @@ class tslib_cObj {
 		return $content;
 	}
 
+	/**
+	 * Implements the stdWrap property "numberFormat"
+	 * This is a Wrapper function for php's number_format()
+	 *
+	 * @param	float	Value to process
+	 * @param	array	TypoScript Configuration for numberFormat
+	 * @return	string	The formated number
+	 */
+	function numberFormat($content, $conf) {
+		$decimals = $this->stdWrap($conf['decimals'], $conf['decimals.']);
+		$dec_point = $this->stdWrap($conf['dec_point'], $conf['dec_point.']);
+		$thousands_sep = $this->stdWrap($conf['thousands_sep'], $conf['thousands_sep.']);
+		return number_format($content, $decimals, $dec_point, $thousands_sep);
+	}
+	
 	/**
 	 * Implements the stdWrap property, "parseFunc".
 	 * This is a function with a lot of interesting uses. In classic TypoScript this is used to process text from the bodytext field; This included highlighting of search words, changing http:// and mailto: prefixed strings into links, parsing <typolist>, <typohead> and <typocode> tags etc.
