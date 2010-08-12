@@ -238,7 +238,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
-		$fullPathToCacheFile = t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') . '/typo3temp/cache/UnitTestCache/ExpiredEntry';
+		$fullPathToCacheFile = PATH_site . 'typo3temp/cache/UnitTestCache/ExpiredEntry';
 		$backend->expects($this->once())->method('isCacheFileExpired')->with($fullPathToCacheFile)->will($this->returnValue(TRUE));
 		$backend->setCache($mockCache);
 
