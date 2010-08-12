@@ -957,6 +957,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 		$query = array(
 			'SELECT'  => '*',
 			'FROM'    => 'tx_scheduler_task',
+			'WHERE'   => '1=1',
 			'ORDERBY' => 'nextexecution'
 		);
 
