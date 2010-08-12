@@ -1,3 +1,7 @@
+2010-08-12  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Follow-up to #15383: [Unit tests] Uncomment three tests which fail for php 5.3.0 on windows (Thanks to Steffen Kamper)
+
 2010-08-12 Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15029: Testcase for t3lib_div::isFirstPartOfStr is missing. (Thanks to Nikolas Hagestein)
