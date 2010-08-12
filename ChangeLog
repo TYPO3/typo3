@@ -1,3 +1,7 @@
+2010-08-12  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15396: [scheduler] Wrong query - crashes with DBAL
+
 2010-08-11  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15375: showDomainNameWithTitle doesn't respect hidden records (Thanks to Henrik Ziegenhain)
