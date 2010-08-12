@@ -1273,14 +1273,13 @@ final class t3lib_div {
 	}
 
 	/**
-	 * Tests if the input is an integer.
-	 * Usage: 77
+	 * Tests if the input can be interpreted as integer.
 	 *
-	 * @param	mixed		Any input variable to test.
-	 * @return	boolean		Returns true if string is an integer
+	 * @param mixed Any input variable to test
+	 * @return boolean Returns true if string is an integer
 	 */
-	public static function testInt($var)	{
-		return !strcmp($var,intval($var));
+	public static function testInt($var) {
+		return (string)intval($var) == $var;
 	}
 
 	/**
