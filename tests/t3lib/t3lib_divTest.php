@@ -92,6 +92,63 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 
 	///////////////////////////////
+	// Tests concerning isFirstPartOfStr
+	///////////////////////////////
+
+	/**
+	 * Data provider for isFirstPartOfStrReturnsTrueForMatchingFirstParts
+	 *
+	 * @return array
+	 */
+	public function isFirstPartOfStrReturnsTrueForMatchingFirstPartDataProvider() {
+		return array(
+			'match first part of string' => array('hello world', 'hello'),
+			'match whole string' => array('hello', 'hello'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider isFirstPartOfStrReturnsTrueForMatchingFirstPartDataProvider
+	 */
+	public function isFirstPartOfStrReturnsTrueForMatchingFirstPart($string, $part) {
+		$this->assertTrue(t3lib_div::isFirstPartOfStr($string, $part));
+	}
+
+	/**
+	 * Data provider for checkIsFirstPartOfStrReturnsFalseForNotMatchingFirstParts
+	 *
+	 * @return array
+	 */
+	public function isFirstPartOfStrReturnsFalseForNotMatchingFirstPartDataProvider() {
+		return array(
+			'no string match' => array('hello', 'bye'),
+			'no case sensitive string match' => array('hello world', 'Hello'),
+			'array is not part of string' => array('string', array()),
+			'string is not part of array' => array(array(), 'string'),
+			'null is not part of string' => array('string', NULL),
+			'string is not part of array' => array(NULL, 'string'),
+			'null is not part of array' => array(array(), NULL),
+			'array is not part of string' => array(NULL, array()),
+			'empty string is not part of empty string' => array('', ''),
+			'null is not part of empty string' => array('', NULL),
+			'false is not part of empty string' => array('', FALSE),
+			'empty string is not part of null' => array(NULL, ''),
+			'empty string is not part of false' => array(FALSE, ''),
+			'empty string is not part of zero integer' => array(0, ''),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider isFirstPartOfStrReturnsFalseForNotMatchingFirstPartDataProvider
+	 */
+	public function isFirstPartOfStrReturnsFalseForNotMatchingFirstPart($string, $part) {
+		$this->assertFalse(t3lib_div::isFirstPartOfStr($string, $part));
+	}
+
+
+	///////////////////////////////
 	// Tests concerning splitCalc
 	///////////////////////////////
 
