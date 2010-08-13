@@ -155,7 +155,6 @@ class SC_mod_tools_dbint_index {
 			'function' => array(
 				0 => $GLOBALS['LANG']->getLL('menu', true),
 				'records' => $GLOBALS['LANG']->getLL('recordStatistics', true),
-				'tree' => $GLOBALS['LANG']->getLL('totalPageTree', true),
 				'relations' => $GLOBALS['LANG']->getLL('databaseRelations', true),
 				'search' => $GLOBALS['LANG']->getLL('fullSearch', true),
 				'filesearch' => $GLOBALS['LANG']->getLL('findFilename', true),
@@ -243,9 +242,6 @@ class SC_mod_tools_dbint_index {
 			case 'search':
 				$this->func_search();
 			break;
-			case 'tree':
-				$this->func_tree();
-			break;
 			case 'records':
 				$this->func_records();
 			break;
@@ -330,7 +326,7 @@ class SC_mod_tools_dbint_index {
 
 		$content = '<dl class="t3-overview-list">';
 
-		$availableModFuncs = array('records', 'tree', 'relations', 'search', 'filesearch', 'refindex');
+		$availableModFuncs = array('records', 'relations', 'search', 'filesearch', 'refindex');
 		foreach ($availableModFuncs as $modFunc) {
 			$link = 'index.php?SET[function]=' . $modFunc;
 			$title = $GLOBALS['LANG']->getLL($modFunc);
@@ -434,27 +430,6 @@ class SC_mod_tools_dbint_index {
 		}
 	}
 
-	/**
-	 * Display page tree
-	 *
-	 * @return	void
-	 */
-	function func_tree()	{
-		global $LANG,$BACK_PATH;
-
-		$startID = 0;
-		$admin = t3lib_div::makeInstance('t3lib_admin');
-		$admin->genTree_makeHTML=1;
-		$admin->backPath = $BACK_PATH;
-		$admin->genTree(intval($startID),'<img src="' . $BACK_PATH . 'clear.gif" width="1" height="1" align="top" alt="" />');
-
-		$this->content.= $this->doc->header($GLOBALS['LANG']->getLL('tree'));
-		$this->content.= $this->doc->spacer(5);
-		$this->content.= $this->doc->sectionEnd();
-
-		$this->content.= $admin->genTree_HTML;
-		$this->content.= $admin->lostRecords($admin->genTree_idlist.'0');
-	}
 
 	/**
 	 * Records overview

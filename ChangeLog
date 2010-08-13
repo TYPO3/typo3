@@ -1,5 +1,6 @@
 2010-08-13  Steffen Gebert  <steffen@steffen-gebert.de>
 
+	* Fixed bug #15423: Remove lowlevel page tree (Thanks to Steffen Kamper)
 	* Fixed bug #15450: [felogin] Spelling-error: "reseting" must be "resetting" (Thanks to Stefan Neufeind)
 
 2010-08-13  Christian Kuhn  <lolli@schwarzbu.ch>

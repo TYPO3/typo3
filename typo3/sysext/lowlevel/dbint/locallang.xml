@@ -8,7 +8,6 @@
 		<languageKey index="default" type="array">
 			<label index="menu">[ MENU ]</label>
 			<label index="recordStatistics">Record Statistics</label>
-			<label index="totalPageTree">Total Page Tree</label>
 			<label index="databaseRelations">Database Relations</label>
 			<label index="fullSearch">Full search</label>
 			<label index="findFilename">Find filename</label>
@@ -76,8 +75,6 @@
 			<label index="files_no_file">Missing files:</label>
 			<label index="select_db">Select fields:</label>
 			<label index="group_db">Group fields:</label>
-			<label index="tree">The Page Tree:</label>
-			<label index="tree_description">This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</label>
 			<label index="records">Records Statistics:</label>
 			<label index="records_description">This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</label>
 			<label index="search">Search whole Database</label>
