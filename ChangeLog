@@ -1,3 +1,7 @@
+2010-08-13  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15450: [felogin] Spelling-error: "reseting" must be "resetting" (Thanks to Stefan Neufeind)
+
 2010-08-13  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #13662: rsaauth does not work with special characters (like ä ü ö § ) in password (Thanks to Steffen Ritter)
