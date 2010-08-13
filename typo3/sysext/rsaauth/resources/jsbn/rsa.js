@@ -1,5 +1,7 @@
 // Depends on jsbn.js and rng.js
 
+// Version 1.1: support utf-8 encoding in pkcs1pad2
+
 // convert a (hex) string to a bignum object
 function parseBigInt(str,r) {
   return new BigInteger(str,r);
@@ -24,13 +26,27 @@ function byte2Hex(b) {
 
 // PKCS#1 (type 2, random) pad input string s to n bytes, and return a bigint
 function pkcs1pad2(s,n) {
-  if(n < s.length + 11) {
+  if(n < s.length + 11) { // TODO: fix for utf-8
     alert("Message too long for RSA");
     return null;
   }
   var ba = new Array();
   var i = s.length - 1;
-  while(i >= 0 && n > 0) ba[--n] = s.charCodeAt(i--);
+  while(i >= 0 && n > 0) {
+    var c = s.charCodeAt(i--);
+    if(c < 128) { // encode using utf-8
+      ba[--n] = c;
+    }
+    else if((c > 127) && (c < 2048)) {
+      ba[--n] = (c & 63) | 128;
+      ba[--n] = (c >> 6) | 192;
+    }
+    else {
+      ba[--n] = (c & 63) | 128;
+      ba[--n] = ((c >> 6) & 63) | 128;
+      ba[--n] = (c >> 12) | 224;
+    }
+  }
   ba[--n] = 0;
   var rng = new SecureRandom();
   var x = new Array();
