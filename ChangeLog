@@ -1,3 +1,7 @@
+2010-08-13  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #13662: rsaauth does not work with special characters (like ä ü ö § ) in password (Thanks to Steffen Ritter)
+
 2010-08-12  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Follow-up to #15383: [Unit tests] Uncomment three tests which fail for php 5.3.0 on windows (Thanks to Steffen Kamper)
