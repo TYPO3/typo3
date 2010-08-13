@@ -630,5 +630,71 @@ class tslib_contentTest extends tx_phpunit_testcase {
 			$result
 		);
 	}
+	
+	/**
+	 * Data provider for the numberFormat test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 *               0 => the input float number
+	 *               1 => the conf array for the numberFormat stdWrap function
+	 *               2 => the expected result
+	 *
+	 * @see numberFormat
+	 */
+	public function numberFormatDataProvider() {
+		$data = array(
+			'testing decimals' => array(
+				0.8,
+				array(
+					'decimals' => 2
+				),
+				'0.80'
+			),
+			'testing dec_point' => array(
+				0.8,
+				array(
+					'decimals' => 1,
+					'dec_point' => ','
+				),
+				'0,8'
+			),
+			'testing thousands_sep' => array(
+				999.99,
+				array(
+					'decimals' => 0,
+					'thousands_sep.' => array(
+						'char' => 46
+					)
+				),
+				'1.000'
+			),
+			'testing mixture' => array(
+				1281731.45,
+				array(
+					'decimals' => 1,
+					'dec_point.' => array(
+						'char' => 44
+					),
+					'thousands_sep.' => array(
+						'char' => 46
+					)
+				),
+				'1.281.731,5'
+			)
+		);
+		return $data;
+	}
+	
+	/**
+	 * Check if stdWrap.numberFormat and all of its properties work properly
+	 *
+	 * @dataProvider numberFormatDataProvider
+	 *
+	 * @test
+	 */
+	public function numberFormat($float, $formatConf, $expected) {
+		$result = $this->cObj->numberFormat($float, $formatConf);
+		$this->assertEquals($expected, $result);
+	}
 }
 ?>

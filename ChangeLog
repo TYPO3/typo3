@@ -1,3 +1,7 @@
+2010-08-13 Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #13815: Added Testcase for numberFormat (Thanks to Sebastian Michaelsen)
+
 2010-08-13  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15423: Remove lowlevel page tree (Thanks to Steffen Kamper)
