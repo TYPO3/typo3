@@ -1,8 +1,10 @@
-// Copyright (c) 2005  Tom Wu
+// Copyright (c) 2005-2009  Tom Wu
 // All Rights Reserved.
 // See "LICENSE" for details.
 
 // Extended JavaScript BN functions, required for RSA private ops.
+
+// Version 1.1: new BigInteger("0", 10) returns "proper" zero
 
 // (public)
 function bnClone() { var r = nbi(); this.copyTo(r); return r; }
@@ -310,6 +312,7 @@ function bnpDMultiply(n) {
 
 // (protected) this += n << w words, this >= 0
 function bnpDAddOffset(n,w) {
+  if(n == 0) return;
   while(this.t <= w) this[this.t++] = 0;
   this[w] += n;
   while(this[w] >= this.DV) {

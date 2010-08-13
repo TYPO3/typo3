@@ -1,5 +1,7 @@
 // Depends on rsa.js and jsbn2.js
 
+// Version 1.1: support utf-8 decoding in pkcs1unpad2
+
 // Undo PKCS#1 (type 2, random) padding and, if valid, return the plaintext
 function pkcs1unpad2(d,n) {
   var b = d.toByteArray();
@@ -11,8 +13,20 @@ function pkcs1unpad2(d,n) {
   while(b[i] != 0)
     if(++i >= b.length) return null;
   var ret = "";
-  while(++i < b.length)
-    ret += String.fromCharCode(b[i]);
+  while(++i < b.length) {
+    var c = b[i] & 255;
+    if(c < 128) { // utf-8 decode
+      ret += String.fromCharCode(c);
+    }
+    else if((c > 191) && (c < 224)) {
+      ret += String.fromCharCode(((c & 31) << 6) | (b[i+1] & 63));
+      ++i;
+    }
+    else {
+      ret += String.fromCharCode(((c & 15) << 12) | ((b[i+1] & 63) << 6) | (b[i+2] & 63));
+      i += 2;
+    }
+  }
   return ret;
 }
 
