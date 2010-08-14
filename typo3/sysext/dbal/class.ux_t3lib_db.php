@@ -207,18 +207,18 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Clears the cached field information file.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
 		if (file_exists(PATH_typo3conf . 'temp_fieldInfo.php')) {
-			unlink(PATH_typo3conf . 'temp_fieldInfo.php');	
+			unlink(PATH_typo3conf . 'temp_fieldInfo.php');
 		}
 	}
 
 	/**
 	 * Caches the field information.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
@@ -307,7 +307,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					if (isset($mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]])) {
 						$fieldInfo['incFields'][$mappedTableAlias] = $mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]];
 					} else {
-						$fieldInfo['incFields'][$mappedTableAlias] = $fieldInfo['incFields'][$mappedTable];	
+						$fieldInfo['incFields'][$mappedTableAlias] = $fieldInfo['incFields'][$mappedTable];
 					}
 				}
 
@@ -324,7 +324,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					if (isset($mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]])) {
 						$fieldInfo['primaryKeys'][$mappedTableAlias] = $mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]];
 					} else {
-						$fieldInfo['primaryKeys'][$mappedTableAlias] = $fieldInfo['primaryKeys'][$mappedTable];	
+						$fieldInfo['primaryKeys'][$mappedTableAlias] = $fieldInfo['primaryKeys'][$mappedTable];
 					}
 				}
 			}
@@ -776,7 +776,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Truncates a table.
-	 * 
+	 *
 	 * @param	string		Database tablename
 	 * @return	mixed		Result from handler
 	 */
@@ -833,7 +833,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Executes a query.
 	 * EXPERIMENTAL since TYPO3 4.4.
-	 * 
+	 *
 	 * @param array $queryParts SQL parsed by method parseSQL() of t3lib_sqlparser
 	 * @return pointer Result pointer / DBAL object
 	 * @see ux_t3lib_db::sql_query()
@@ -873,7 +873,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 				}
 				return $this->exec_INSERTquery($table, $values);
-				
+
 			case 'DELETE':
 				$table = $queryParts['TABLE'];
 				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';
@@ -1132,7 +1132,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$limit = $numrows . ' OFFSET ' . $offset;
 			}
 		}
-		
+
 		$select_fields = $this->quoteFieldNames($select_fields);
 		$from_table = $this->quoteFromTables($from_table);
 		$where_clause = $this->quoteWhereClause($where_clause);
@@ -1148,7 +1148,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * Creates a SELECT SQL-statement to be used with an ADOdb backend. 
+	 * Creates a SELECT SQL-statement to be used with an ADOdb backend.
 	 *
 	 * @param	array		parsed parameters: array($select_fields, $from_table, $where_clause, $groupBy, $orderBy)
 	 * @return	string		Full SQL query for SELECT
@@ -1203,7 +1203,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Creates a TRUNCATE TABLE SQL-statement
-	 * 
+	 *
 	 * @param	string		See exec_TRUNCATEquery()
 	 * @return	string		Full SQL query for TRUNCATE TABLE
 	 */
@@ -1229,7 +1229,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Quotes components of a SELECT subquery.
-	 * 
+	 *
 	 * @param array $components	Array of SQL query components
 	 * @return array
 	 */
@@ -1301,7 +1301,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 					foreach ($select_fields[$k]['flow-control']['when'] as $key => $when) {
 						$select_fields[$k]['flow-control']['when'][$key]['when_value'] = $this->_quoteWhereClause($when['when_value']);
-					} 
+					}
 				}
 			}
 		}
@@ -2083,7 +2083,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * You should use exec_* function from this class instead!
 	 * If you don't, anything that does not use the _DEFAULT handler will probably break!
-	 * 
+	 *
 	 * This method was deprecated in TYPO3 4.1 but is considered experimental since TYPO3 4.4
 	 * as it tries to handle the query correctly anyway.
 	 *
@@ -2384,7 +2384,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$theKey['Table'] = $tableName;
 						$theKey['Non_unique'] = (int) !$theKey['unique'];
 						$theKey['Key_name'] = str_replace($tableName.'_','',$k);
-	
+
 							// the following are probably not needed anyway...
 						$theKey['Collation'] = '';
 						$theKey['Cardinality'] = '';
@@ -2393,7 +2393,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$theKey['Null'] = '';
 						$theKey['Index_type'] = '';
 						$theKey['Comment'] = '';
-	
+
 							// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 						$keycols = $theKey['columns'];
 						while (list($c, $theCol) = each($keycols)) {
@@ -2408,7 +2408,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$theKey['Table'] = $tableName;
 				$theKey['Non_unique'] = 0;
 				$theKey['Key_name'] = 'PRIMARY';
-	
+
 					// the following are probably not needed anyway...
 				$theKey['Collation'] = '';
 				$theKey['Cardinality'] = '';
@@ -2417,7 +2417,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$theKey['Null'] = '';
 				$theKey['Index_type'] = '';
 				$theKey['Comment'] = '';
-	
+
 					// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 				if ($priKeyRow !== FALSE) {
 					while (list($c, $theCol) = each($priKeyRow)) {
@@ -2775,7 +2775,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		List of tables in query
 	 * @param	boolean		If TRUE, it will check only if FIELDs are configured and ignore the mapped table name if any.
-	 * @param	array		Parsed list of tables, should be passed as reference to be reused and prevent double parsing 
+	 * @param	array		Parsed list of tables, should be passed as reference to be reused and prevent double parsing
 	 * @return	mixed		Returns an array of table names (parsed version of input table) if mapping is needed, otherwise just FALSE.
 	 */
 	protected function map_needMapping($tableList, $fieldMappingOnly = FALSE, array &$parsedTableList = array()) {
@@ -2911,7 +2911,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						// Mapping withTable of the JOIN
 					$withTableKey = $this->getMappingKey($join['withTable']);
 					if ($this->mapping[$withTableKey]['mapTableName']) {
-						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$withTableKey]['mapTableName'];					
+						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$withTableKey]['mapTableName'];
 					}
 					$onPartsArray = array();
 						// Mapping ON parts of the JOIN
@@ -3096,7 +3096,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						}
 
 							// Mapping flow-control statements
-						if (isset($sqlPartArray[$k]['flow-control'])) {							
+						if (isset($sqlPartArray[$k]['flow-control'])) {
 							if (isset($sqlPartArray[$k]['flow-control']['type'])) {
 								$temp = array($sqlPartArray[$k]['flow-control']);
 								$this->map_sqlParts($temp, $t);	// Call recursively!
@@ -3113,7 +3113,7 @@ class ux_t3lib_DB extends t3lib_DB {
 								$sqlPartArray[$k]['value']['args'][$argK]['table'] = $this->mapping[$tableKey]['mapTableName'];
 							}
 							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']])) {
-								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']];	
+								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']];
 							}
 						}
 					}

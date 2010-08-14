@@ -1,3 +1,7 @@
+2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Code cleanup with useless blank spaces at end of line
+
 2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added unit test for bug #15253: NOT LIKE is not remapped using dbms_lob.instr with Oracle
