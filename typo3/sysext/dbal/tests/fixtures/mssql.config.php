@@ -1,7 +1,7 @@
 <?php
 /**
  * MS SQL configuration
- * 
+ *
  * $Id$
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
@@ -12,13 +12,13 @@
 global $TYPO3_CONF_VARS;
 
 $TYPO3_CONF_VARS['EXTCONF']['dbal']['handlerCfg'] = array(
-	'_DEFAULT' => array( 
-		'type' => 'adodb', 
+	'_DEFAULT' => array(
+		'type' => 'adodb',
 		'config' => array(
 			'driver' => 'mssql',
 			'useNameQuote' => FALSE,
 		),
-	), 
+	),
 );
 
 $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
