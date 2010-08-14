@@ -143,7 +143,7 @@ class tx_dbal_autoloader {
 			$header = 'Error';
 			$message = $e->getMessage();
 			t3lib_timeTrack::debug_typo3PrintError($header, $message, FALSE, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-			exit; 
+			exit;
 		}
 	}
 
