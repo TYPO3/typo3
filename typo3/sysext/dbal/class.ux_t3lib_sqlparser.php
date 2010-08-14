@@ -71,7 +71,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	protected function compileAddslashes($str) {
 		return $str;
 	}
-	
+
 	/*************************
 	 *
 	 * Compiling queries
@@ -392,7 +392,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												}
 												$compareValue = ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 											} else {
-												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1]; 
+												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1];
 											}
 											if (t3lib_div::isFirstPartOfStr($v['comparator'], 'NOT')) {
 												$output .= 'NOT ';
@@ -405,7 +405,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											// Detecting value type; list or plain:
 										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
 											if (isset($v['subquery'])) {
-												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
+												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 											} else {
 												$valueBuffer = array();
 												foreach ($v['value'] as $realValue) {

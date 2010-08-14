@@ -207,18 +207,18 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Clears the cached field information file.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
 		if (file_exists(PATH_typo3conf . 'temp_fieldInfo.php')) {
-			unlink(PATH_typo3conf . 'temp_fieldInfo.php');	
+			unlink(PATH_typo3conf . 'temp_fieldInfo.php');
 		}
 	}
 
 	/**
 	 * Caches the field information.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
@@ -307,7 +307,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					if (isset($mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]])) {
 						$fieldInfo['incFields'][$mappedTableAlias] = $mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]];
 					} else {
-						$fieldInfo['incFields'][$mappedTableAlias] = $fieldInfo['incFields'][$mappedTable];	
+						$fieldInfo['incFields'][$mappedTableAlias] = $fieldInfo['incFields'][$mappedTable];
 					}
 				}
 
@@ -324,7 +324,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					if (isset($mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]])) {
 						$fieldInfo['primaryKeys'][$mappedTableAlias] = $mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]];
 					} else {
-						$fieldInfo['primaryKeys'][$mappedTableAlias] = $fieldInfo['primaryKeys'][$mappedTable];	
+						$fieldInfo['primaryKeys'][$mappedTableAlias] = $fieldInfo['primaryKeys'][$mappedTable];
 					}
 				}
 			}
@@ -929,7 +929,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$limit = $numrows . ' OFFSET ' . $offset;
 			}
 		}
-		
+
 		$select_fields = $this->quoteFieldNames($select_fields);
 		$from_table = $this->quoteFromTables($from_table);
 		$where_clause = $this->quoteWhereClause($where_clause);
@@ -953,7 +953,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Quotes components of a SELECT subquery.
-	 * 
+	 *
 	 * @param array $components	Array of SQL query components
 	 * @return array
 	 */
@@ -2029,7 +2029,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$theKey['Table'] = $tableName;
 						$theKey['Non_unique'] = (int) !$theKey['unique'];
 						$theKey['Key_name'] = str_replace($tableName.'_','',$k);
-	
+
 							// the following are probably not needed anyway...
 						$theKey['Collation'] = '';
 						$theKey['Cardinality'] = '';
@@ -2038,7 +2038,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$theKey['Null'] = '';
 						$theKey['Index_type'] = '';
 						$theKey['Comment'] = '';
-	
+
 							// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 						$keycols = $theKey['columns'];
 						while (list($c, $theCol) = each($keycols)) {
@@ -2053,7 +2053,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$theKey['Table'] = $tableName;
 				$theKey['Non_unique'] = 0;
 				$theKey['Key_name'] = 'PRIMARY';
-	
+
 					// the following are probably not needed anyway...
 				$theKey['Collation'] = '';
 				$theKey['Cardinality'] = '';
@@ -2062,7 +2062,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$theKey['Null'] = '';
 				$theKey['Index_type'] = '';
 				$theKey['Comment'] = '';
-	
+
 					// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 				if ($priKeyRow !== FALSE) {
 					while (list($c, $theCol) = each($priKeyRow)) {
@@ -2527,7 +2527,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						// Mapping withTable of the JOIN
 					$withTableKey = $this->getMappingKey($join['withTable']);
 					if ($this->mapping[$withTableKey]['mapTableName']) {
-						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$withTableKey]['mapTableName'];					
+						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$withTableKey]['mapTableName'];
 					}
 					$onPartsArray = array();
 						// Mapping ON parts of the JOIN
@@ -2668,7 +2668,7 @@ class ux_t3lib_DB extends t3lib_DB {
 								$sqlPartArray[$k]['value']['args'][$argK]['table'] = $this->mapping[$tableKey]['mapTableName'];
 							}
 							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']])) {
-								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']];	
+								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']];
 							}
 						}
 					}

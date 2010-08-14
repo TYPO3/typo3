@@ -39,7 +39,7 @@ class tx_dbal_tsparserext {
 
 	/**
 	 * Renders a message for EM.
-	 * 
+	 *
 	 * @param array $params
 	 * @param t3lib_tsStyleConfig $tsObj
 	 * @return string
