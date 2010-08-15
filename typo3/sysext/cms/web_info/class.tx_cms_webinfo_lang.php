@@ -71,7 +71,8 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 				0 => $LANG->getLL('depth_0'),
 				1 => $LANG->getLL('depth_1'),
 				2 => $LANG->getLL('depth_2'),
-				3 => $LANG->getLL('depth_3')
+				3 => $LANG->getLL('depth_3'),
+				999 => $LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi'),
 			),
 		);
 

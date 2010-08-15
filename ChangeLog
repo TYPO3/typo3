@@ -1,3 +1,7 @@
+2010-08-15 Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15424: [web_info] allow more than 3 levels for pagetree overview and localization overview
+
 2010-08-13  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15450: [felogin] Spelling-error: "reseting" must be "resetting" (Thanks to Stefan Neufeind)
