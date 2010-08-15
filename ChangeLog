@@ -1,3 +1,7 @@
+2010-08-15 Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #15423: Remove lowlevel page tree: added locallang labels again
+
 2010-08-13 Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #13815: Added Testcase for numberFormat (Thanks to Sebastian Michaelsen)
