@@ -1,5 +1,6 @@
 2010-08-15 Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15437: Refactor of recycler
 	* Fixed bug #15424: [web_info] allow more than 3 levels for pagetree overview and localization overview
 	* Follow-up to #15423: Remove lowlevel page tree: added locallang labels again
 

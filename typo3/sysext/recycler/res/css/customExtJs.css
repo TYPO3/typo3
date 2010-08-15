@@ -1,161 +1,48 @@
-body#ext-recycler-mod1-index-php {
-	margin-left: 0;
-}
-
 #recyclerContent {
-	margin: 10px 0 0 0;
+	margin-top: 10px;
 }
 
-.x-panel .x-grid-panel {
-	padding: 0;
-	margin: 0;
-	background-image: none;
-	background: none;
-	border: none;
+.recycler-messagebox {
+	padding: 10px;
+	font-size: 12px;
 }
 
-body .x-panel {
-	margin-bottom:20px;
+ul.recycler-table-list {
+	list-style: disc;
+	margin: 5px 0 5px 15px;
 }
 
-.x-toolbar-left, .x-toolbar-right, .x-panel-mc, x-panel-tbar, .x-toolbar .x-small-editor .x-toolbar-layout-ct, x-toolbar-ct,
-.x-panel-nofooter .x-panel-bc, .x-panel-nofooter .x-window-bc,
-.x-toolbar,
-.x-small-editor,
-.x-toolbar-layout-ct,
-.x-panel-mr, .x-panel-ml, .x-panel-tr, .x-panel-tl, .x-panel-br, .x-panel-bl, .x-panel-ml, .x-panel-mr, .x-panel-tm, .x-panel-tc {
-	background-image: none;
-	background: none;
-	padding: 0;
-	margin: 0;
-	border: none;
+ul.recycler-table-list li {
+	margin-left: 10px;
 }
 
-.x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
-	padding: 2px;
-	margin: 0;
-	border: 0;
+dl.recycler-table-list-entry-details {
+	margin-left: 45px;
 }
 
-.x-panel-mr, .x-panel-ml {
-	padding: 0;
-	margin: 0;
+dl.recycler-table-list-entry-details dt {
+	font-weight: bold;
+	float: left;
+	clear: left;
+	margin-right: 3px;
 }
 
-.x-toolbar {
-	padding: 0;
-	margin: 0;
+button.delete { 
+	background-image: url('../icons/delete.gif');
 }
 
-.x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar,
-.x-panel-tbar-noheader .x-toolbar, .x-panel-mc .x-panel-tbar .x-toolbar {
-	background-color: #585858;
+button.undelete {
+	background-image: url('../icons/arrow_rotate_anticlockwise.png');
 }
 
-.x-toolbar-ct .x-toolbar-left {
-	width: 400px;
+button.backup {
+	background-image: url('../icons/database_save.png');
 }
 
-.x-toolbar-ct .x-toolbar-right, .x-toolbar-cell {
+button.filter_refresh {
+	background-image: url('../icons/filter_refresh.png');
 }
 
-.x-toolbar-ct .xtb-text {
-	color: #fff;
-}
-
-.icon-grid { background-image:url('../icons/recycler2.gif') !important; }
-
-#button-grid .x-panel-body {
-	border:1px solid #99bbe8;
-	border-top:0 none;
-}
-
-.loadingClass { top:200px !important; }
-
-.ext-el-mask-msg { width:200px; }
-
-.ext-el-mask-msg div {
-	height:30px;
-	background-image: url('../icons/loading.gif');
-	background-position: 155px 3px;
-	background-repeat: no-repeat;
-}
-
-.x-toolbar button {
-	color: #fff;
-}
-
-.delete { background-image: url('../icons/delete.gif') !important; }
-.undelete {	background-image: url('../icons/arrow_rotate_anticlockwise.png') !important; }
-.backup { background-image: url('../icons/database_save.png') !important; }
-.filter_refresh { background-image: url('../icons/filter_refresh.png') !important; }
-.filter_clear { background-image: url('../icons/filter_clear.png') !important; }
-
-.deletedPath { color: #ff0000; font-weight: bold; }
-
-.x-toolbar table { width: 100%; }
-
-#recordPaging table { width: auto; }
-#recordPaging .x-tbar-page-number { text-align: center; }
-
-.x-window-body { padding: 5px; }
-.x-window-body label { display: block; margin: 5px 0; }
-.x-window-body .x-form-cb-label { margin-left: 5px; }
-
-/*  Single rows and elements */
-.x-grid3-body .x-grid3-td-expander {
-	background-image: none;
-}
-
-.x-grid3-row {
-	background-image:none;
-}
-
-.x-grid3-row-selected {
-	background-color:#fff !important;
-	background-image:none;
-}
-
-/* Flyout Menus */
-.x-menu-sep {
-	display: none;
-}
-
-.x-menu {
-	background-image: none;
-}
-
-.x-menu-item-active a.x-menu-item {
-	border: 1px solid #adb5c1;
-	background-color: #adb5c1;
-	color: #fff;
-}
-
-.x-menu-list {
-	padding:0;
-}
-
-/* Flyout Menu Shadows */
-.x-shadow .xstl, .x-shadow .xstc, .x-shadow .xstr, .x-shadow .xsbl, 
-.x-shadow .xsbc, .x-shadow .xsbr, .x-shadow .xstl, .x-shadow .xstr, .x-shadow .xsml, .x-shadow .xsmr {
-	background-image: none;
-}
-
-.x-grid3-body .x-grid3-td-checker {
-	background-image: none;
-	background-color: none;
-}
-
-.x-grid3-body .x-grid3-row-selected .x-grid3-td-numberer,
-.x-grid3-body .x-grid3-row-selected .x-grid3-td-checker,
-.x-grid3-body .x-grid3-row-selected .x-grid3-td-expander {
-	background-image: none;
-	background-color: none;
-}
-
-.x-grid3-row-body,
-.x-grid3-row-body-tr,
-.x-grid3-row-body-td,
-.x-grid3-body-cell {
-	background-color: none;
+button.filter_clear {
+	background-image: url('../icons/filter_clear.png');
 }

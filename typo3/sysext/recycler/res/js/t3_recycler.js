@@ -27,262 +27,328 @@
  *
  * @author	Julian Kleinhans <typo3@kj187.de>
  * @author  Erik Frister <erik_frister@otq-solutions.com>
+ * @author  Steffen Kamper <steffen@typo3.org>
  * @package	TYPO3
  * @subpackage	tx_recycler
  * @version $Id$
  */
-Event.observe(window, 'load', function() {
-	//Quicktips initialisieren
-	Ext.QuickTips.init();
 
-	// @todo: description
-	// Ext.form.Field.prototype.msgTarget = 'side';
+Ext.ns('Recycler');
 
-	// disable loadindicator
-	Ext.UpdateManager.defaults.showLoadIndicator = false;
-
-	// fire recycler grid
-	new Recycler.grid.init();
+/****************************************************
+ * row expander
+ ****************************************************/
+Recycler.Expander = new Ext.grid.RowExpander({
+	tpl : new Ext.Template(
+		'<dl class="recycler-table-list-entry-details">' +
+			'<dt>' + TYPO3.lang.table + ': </dt><dd>{table}</dd>' +
+			'<dt>' + TYPO3.lang.crdate + ': </dt><dd>{crdate}</dd>' +
+			'<dt>' + TYPO3.lang.tstamp + ': </dt><dd>{tstamp}</dd>' +
+			'<dt>' + TYPO3.lang.owner + ': </dt><dd>{owner} (UID: {owner_uid})</dd>' +
+			'<dt>' + TYPO3.lang.path + ': </dt><dd>{path}</dd>' +
+		'</dl>'
+	)
 });
 
-Recycler.grid = {
-	/**
-	 * Initializes the grid
-	 *
-	 * @return void
-	 **/
-	init: function() {
-		/****************************************************
-		 * row expander
-		 ****************************************************/
 
-		var expander = new Ext.grid.RowExpander({
-			tpl : new Ext.Template(
-				'<br/>' +
-				'<p style="margin-left:45px;"><strong>' + Recycler.lang.table + ':</strong> {table}</p>' +
-				'<p style="margin-left:45px;"><strong>' + Recycler.lang.crdate + ':</strong> {crdate}</p>' +
-				'<p style="margin-left:45px;"><strong>' + Recycler.lang.tstamp + ':</strong> {tstamp}</p>' +
-				'<p style="margin-left:45px;"><strong>' + Recycler.lang.owner + ':</strong> {owner} (UID: {owner_uid})</p>' +
-				'<p style="margin-left:45px;"><strong>' + Recycler.lang.path + ':</strong> {path}</p>' +
-				'<br/>'
-			)
-		});
+/****************************************************
+ * Main store
+ ****************************************************/
+Recycler.MainStore = new Ext.data.Store({
+	storeId: 'deletedRecordsStore',
+	reader: new Ext.data.JsonReader({
+		totalProperty: 'total',
+		root: 'rows'
+	}, [
+		{name: 'uid', type: 'int'},
+		{name: 'pid', type: 'int'},
+		{name: 'record', mapping: 'title'},
+		{name: 'crdate'},
+		{name: 'tstamp'},
+		{name: 'owner'},
+		{name: 'owner_uid'},
+		{name: 'tableTitle'},
+		{name: 'table'},
+		{name: 'path'}
+	]),
+	sortInfo: {
+		field: 'record',
+		direction: "ASC"
+	},
+	groupField: 'table',
+	url: TYPO3.settings.Recycler.ajaxController + '&cmd=getDeletedRecords',
+	baseParams: {
+		depth: TYPO3.settings.Recycler.depthSelection,
+		startUid: TYPO3.settings.Recycler.startUid,
+		pagingSizeDefault: TYPO3.settings.Recycler.pagingSize,
+		table: TYPO3.settings.Recycler.tableSelection
+	}
+	
+});
 
-		/****************************************************
-		 * pluggable renderer
-		 ****************************************************/
-
-		var renderTopic = function (value, p, record) {
-			return String.format('{0}', value, record.data.table, record.data.uid, record.data.pid);
-		};
-
-		/****************************************************
-		 * row checkbox
-		 ****************************************************/
-
-		var sm = new Ext.grid.CheckboxSelectionModel({
-			singleSelect: false
-		});
-
-		/****************************************************
-		 * filter grid
-		 ****************************************************/
-
-		var filterGrid = function(grid, cmp) {
-			var filterText = cmp.getValue();
-
-			gridDs.setBaseParam('filterTxt', filterText);
-			// load the datastore
-			gridDs.load({
-				params: {
-					start: 0
-				}
-			});
-		};
-
-		/****************************************************
-		 * grid datastore
-		 ****************************************************/
-		var gridDs = new Ext.data.Store({
-			storeId: 'deletedRecordsStore',
-			reader: new Ext.data.JsonReader({
-				totalProperty: 'total',
-				root: 'rows'
-			}, [
-				{name: 'uid', type: 'int'},
-				{name: 'pid', type: 'int'},
-				{name: 'record', mapping: 'title'},
-				{name: 'crdate'},
-				{name: 'tstamp'},
-				{name: 'owner'},
-				{name: 'owner_uid'},
-				{name: 'tableTitle'},
-				{name: 'table'},
-				{name: 'path'}
-			]),
-			sortInfo: {
-				field: 'record',
-				direction: "ASC"
+/****************************************************
+ * Simple table store
+ ****************************************************/
+Recycler.TableStore = new Ext.data.Store({
+	url: TYPO3.settings.Recycler.ajaxController + '&startUid=' + TYPO3.settings.Recycler.startUid + '&cmd=getTables' + '&depth=' + TYPO3.settings.Recycler.depthSelection,
+	reader: new Ext.data.ArrayReader({}, [
+		{name: 'table', type: 'string'},
+		{name: 'records', type: 'int'},
+		{name: 'valueField', type: 'string'},
+		{name: 'tableTitle', type: 'string'}
+	]),
+	listeners: {
+		'load': {
+			fn: function(store, records) {
+				Ext.getCmp('tableSelector').setValue(TYPO3.settings.Recycler.tableSelection);
 			},
-			groupField: 'table',
-			url: Recycler.statics.ajaxController + '&cmd=getDeletedRecords'
-		});
+			single: true
+		}
+	}
+})
+
+/****************************************************
+ * Confirmation Window
+ ****************************************************/
+Recycler.ConfirmWindow = Ext.extend(Ext.Window, {
+	
+	width: 300,
+	height: 200, 
+	
+	title: '',
+	confirmText: '',
+	confirmQuestion: '',
+	records: [],
+	hideRecursive: false,
+	showRecursiveCheckbox: false,
+	arePagesAffected: false,
+	command: '',
+	template: new Ext.XTemplate(
+			'<ul class="recycler-table-list">',
+			'<tpl for=".">',
+				'<li>{[values]}</li>',
+			'</tpl>',
+			'</ul>'
+	),
+	initComponent:function() {
+		Ext.apply(this, {
+			xtype: 'form',
+			bodyCssClass: 'recycler-messagebox',
+			modal: true,
+			
+			items: [
+				{
+					xtype: 'label',
+					text: this.confirmText
+				}, {
+					xtype: 'displayfield',
+					tpl:  this.template,
+					data: this.tables
+				}, {
+					xtype: 'label',
+					text:  this.confirmQuestion
+				}, {
+					xtype: 'checkbox',
+					boxLabel: TYPO3.lang.boxLabel_undelete_recursive,
+					name: 'recursiveCheckbox',
+					disabled: !this.showRecursiveCheckbox,
+					itemId: 'recursiveCheck',
+					hidden: this.hideRecursive // hide the checkbox when frm is used to permanently delete
+				}
+			],
+			buttons: [
+				{
+					text: TYPO3.lang.yes,
+					scope: this,
+					handler: function(button, event) {
+						var tcemainData = [];
 		
-		gridDs.baseParams = {
-				depth: Recycler.statics.depthSelection,
-				startUid: Recycler.statics.startUid,
-				pagingSizeDefault: Recycler.statics.pagingSize,
-				table: Recycler.statics.tableSelection
-		};
+						for (var i=0; i < this.records.length; i++) {
+							tcemainData[i] = [this.records[i].data.table, this.records[i].data.uid];
+						}
+						Ext.Ajax.request({
+							url: TYPO3.settings.Recycler.ajaxController + '&cmd=' + this.command,
+							params: {
+								'data': Ext.encode(tcemainData), 
+								'recursive': this.getComponent('recursiveCheck').getValue()
+							},
+							callback: function(options, success, response) {
+								if (response.responseText === "1") {
+									// reload the records and the table selector
+									Recycler.MainStore.reload();
+									Recycler.TableStore.reload();
+									if (this.arePagesAffected) {
+										Recycler.Utility.updatePageTree();
+									}
+								} else {
+									Ext.MessageBox.show({
+										title: 'ERROR',
+										msg: response.responseText,
+										buttons: Ext.MessageBox.OK,
+										icon: Ext.MessageBox.ERROR
+									});
+								}
+							}
+						});
 		
-		
-
-		/****************************************************
-		 * permanent deleting function
-		 ****************************************************/
-
-		var function_delete = function(ob) {
-			rowAction(ob, Recycler.lang.cmd_doDelete_confirmText, 'doDelete', Recycler.lang.title_delete, Recycler.lang.text_delete);
-		};
-
-		/****************************************************
-		 * Undeleting function
-		 ****************************************************/
-
-		var function_undelete = function(ob) {
-			rowAction(ob, Recycler.lang.sure, 'doUndelete', Recycler.lang.title_undelete, Recycler.lang.text_undelete);
-		};
-
-		/****************************************************
-		 * Row action function   ( deleted or undeleted )
-		 ****************************************************/
-
-		var rowAction = function(ob, confirmQuestion, cmd, confirmTitle, confirmText) {
-				// get the 'undeleted records' grid object
-			var recArray = gridContainer.getSelectionModel().getSelections();
-
-			if (recArray.length > 0) {
-
-					// check if a page is checked
-				var recursiveCheckbox = false;
-				var arePagesAffected = false;
-				var tables = [];
-				var hideRecursive = ('doDelete' == cmd);
-				
-				for (iterator=0; iterator < recArray.length; iterator++) {
-					if (tables.indexOf(recArray[iterator].data.table) < 0) {
-						tables.push(recArray[iterator].data.table);
+						this.close();
 					}
-					if (cmd == 'doUndelete' && recArray[iterator].data.table == 'pages' ) {
-						recursiveCheckbox = true;
-						arePagesAffected = true;
+				},{
+					text: TYPO3.lang.no,
+					scope: this,
+					handler: function(button, event) {
+						this.close();
 					}
 				}
+			]
+		});
+		Recycler.ConfirmWindow.superclass.initComponent.apply(this, arguments);
+	}
+});
 
-				var frmConfirm = new Ext.Window({
-					xtype: 'form',
-					width: 300,
-					height: 200, 
-					modal: true,
-					title: confirmTitle,
-					items: [
-						{
-							xtype: 'label',
-							text: confirmText + tables.join(', ')
-						},{
-							xtype: 'label',
-							text:  confirmQuestion
-						},{
-							xtype: 'checkbox',
-							boxLabel: Recycler.lang.boxLabel_undelete_recursive,
-							name: 'recursiveCheckbox',
-							disabled: !recursiveCheckbox,
-							id: 'recursiveCheckbox',
-							hidden: hideRecursive // hide the checkbox when frm is used to permanently delete
-						}
-					],
-					buttons: [
-						{
-							text: Recycler.lang.yes,
-							handler: function(cmp, e) {
-								var tcemainData = [];
+/****************************************************
+ * Utility functions
+ ****************************************************/
+Recycler.Utility = {
+	updatePageTree: function() {
+		if (top && top.content && top.content.nav_frame && top.content.nav_frame.Tree) {
+			top.content.nav_frame.Tree.refresh();
+		}
+	},
+	
+	// not used?
+	filterGrid: function(grid, component) {
+		var filterText = component.getValue();
 
-								for (iterator=0; iterator < recArray.length; iterator++) {
-									tcemainData[iterator] = [recArray[iterator].data.table, recArray[iterator].data.uid];
-								}
-
-								Ext.Ajax.request({
-									url: Recycler.statics.ajaxController + '&cmd=' + cmd,
-									callback: function(options, success, response) {
-										if (response.responseText === "1") {
-											// reload the records and the table selector
-											gridDs.reload();
-											Ext.getCmp('tableSelector').store.reload();
-											if (arePagesAffected) {
-												Recycler.utility.updatePageTree();
-											}
-										}else{
-											alert('ERROR: '+response.responseText);
-										}
-									},
-									params: {'data': Ext.encode(tcemainData), 'recursive':frmConfirm.getComponent('recursiveCheckbox').getValue() }
-								});
-
-								frmConfirm.destroy();
-							}
-						},{
-							text: Recycler.lang.no,
-							handler: function(cmp, e) {
-								frmConfirm.destroy();
-							}
-						}
-					]
-				});
-				frmConfirm.show();
-
-			} else {
-					// no row selected
-				Ext.MessageBox.show({
-					title: Recycler.lang.error_NoSelectedRows_title,
-					msg: Recycler.lang.error_NoSelectedRows_msg,
-					buttons: Ext.MessageBox.OK,
-					minWidth: 300,
-					minHeight: 200,
-					icon: Ext.MessageBox.INFO
-				});
+		Recycler.MainStore.setBaseParam('filterTxt', filterText);
+		// load the datastore
+		Recycler.MainStore.load({
+			params: {
+				start: 0
 			}
-		};
+		});
+	},
+	
+	/****************************************************
+	 * permanent deleting function
+	 ****************************************************/
 
-		/****************************************************
-		 * grid container
-		 ****************************************************/
-		var gridContainer = new Ext.grid.GridPanel ({
-			layout: 'fit',
-			renderTo: Recycler.statics.renderTo,
-			width: '98%',
-			frame: true,
-			border: true,
-			defaults: {autoScroll: false},
-			plain: true,
+	function_delete: function(button, event) {
+		Recycler.Utility.rowAction(
+			'doDelete', 
+			TYPO3.lang.cmd_doDelete_confirmText, 
+			TYPO3.lang.title_delete, 
+			TYPO3.lang.text_delete
+		);
+	},
+
+	/****************************************************
+	 * Undeleting function
+	 ****************************************************/
+
+	function_undelete: function(button, event) {
+		Recycler.Utility.rowAction(
+			'doUndelete',
+			TYPO3.lang.sure, 
+			TYPO3.lang.title_undelete, 
+			TYPO3.lang.text_undelete
+		);
+	},
+
+	/****************************************************
+	 * Row action function   ( deleted or undeleted )
+	 ****************************************************/
+
+	rowAction: function(command, confirmQuestion, confirmTitle, confirmText) {
+			// get the 'undeleted records' grid object
+		var records = Recycler.Grid.getSelectionModel().getSelections();
+
+		if (records.length > 0) {
+
+				// check if a page is checked
+			var recursiveCheckbox = false;
+			var arePagesAffected = false;
+			var tables = [];
+			var hideRecursive = ('doDelete' == command);
+			
+			for (iterator=0; iterator < records.length; iterator++) {
+				if (tables.indexOf(records[iterator].data.table) < 0) {
+					tables.push(records[iterator].data.table);
+				}
+				if (command == 'doUndelete' && records[iterator].data.table == 'pages' ) {
+					recursiveCheckbox = true;
+					arePagesAffected = true;
+				}
+			}
+
+			var frmConfirm = new Recycler.ConfirmWindow({
+				title: confirmTitle,
+				records: records,
+				tables: tables,
+				confirmText: confirmText,
+				confirmQuestion: confirmQuestion,
+				hideRecursive: hideRecursive,
+				recursiveCheckbox: recursiveCheckbox,
+				arePagesAffected: arePagesAffected,
+				command: command
+			}).show();
+
+		} else {
+				// no row selected
+			Ext.MessageBox.show({
+				title: TYPO3.lang.error_NoSelectedRows_title,
+				msg: TYPO3.lang.error_NoSelectedRows_msg,
+				buttons: Ext.MessageBox.OK,
+				minWidth: 300,
+				minHeight: 200,
+				icon: Ext.MessageBox.ERROR
+			});
+		}
+	},
+	
+	/****************************************************
+	 * pluggable renderer
+	 ****************************************************/
+
+	renderTopic: function (value, p, record) {
+		return String.format('{0}', value, record.data.table, record.data.uid, record.data.pid);
+	}
+};
+
+
+/****************************************************
+ * grid container
+ ****************************************************/
+Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
+	layout: 'fit',
+	renderTo: TYPO3.settings.Recycler.renderTo,
+	width: '98%',
+	frame: true,
+	border: false,
+	defaults: {autoScroll: false},
+	plain: true,
+	
+	initComponent : function() {
+		Ext.apply(this, {
 			id: 'delRecordId',
 			loadMask: true,
 			stripeRows: true,
 			collapsible: false,
 			animCollapse: false,
-			store: gridDs,
+			store: Recycler.MainStore,
 			cm: new Ext.grid.ColumnModel([
-				sm,
-				expander,
+				new Ext.grid.CheckboxSelectionModel({singleSelect: false}),
+				Recycler.Expander,
 				{header: "UID", width: 10, sortable: true, dataIndex: 'uid'},
 				{header: "PID", width: 10, sortable: true, dataIndex: 'pid'},
-				{id: 'record', header: Recycler.lang.records, width: 60, sortable: true, dataIndex: 'record', renderer: renderTopic},
-				{id: 'table', header: Recycler.lang.table, width: 20, sortable: true, dataIndex: 'tableTitle'}
+				{id: 'record', header: TYPO3.lang.records, width: 60, sortable: true, dataIndex: 'record', renderer: Recycler.Utility.renderTopic},
+				{id: 'table', header: TYPO3.lang.table, width: 20, sortable: true, dataIndex: 'tableTitle'}
 			]),
 			viewConfig: {
 				forceFit: true
 			},
-			sm: sm,
-			plugins: [expander, new Ext.ux.plugins.FitToParent()],
+			sm: Recycler.SelectionModel,
+			plugins: [Recycler.Expander, new Ext.ux.plugins.FitToParent()],
 			bbar: [
 				{
 
@@ -291,11 +357,11 @@ Recycler.grid = {
 					 ****************************************************/
 					id: 'recordPaging',
 					xtype: 'paging',
-					store: gridDs,
-					pageSize: Recycler.statics.pagingSize,
+					store: Recycler.MainStore,
+					pageSize: TYPO3.settings.Recycler.pagingSize,
 					displayInfo: true,
-					displayMsg: Recycler.lang.pagingMessage,
-					emptyMsg: Recycler.lang.pagingEmpty
+					displayMsg: TYPO3.lang.pagingMessage,
+					emptyMsg: TYPO3.lang.pagingEmpty
 				}, '-', {
 					/****************************************************
 					 * Delete button
@@ -303,11 +369,11 @@ Recycler.grid = {
 					xtype: 'button',
 					width: 80,
 					id: 'deleteButton',
-					text: Recycler.lang.deleteButton_text,
-					tooltip: Recycler.lang.deleteButton_tooltip,
+					text: TYPO3.lang.deleteButton_text,
+					tooltip: TYPO3.lang.deleteButton_tooltip,
 					iconCls: 'delete',
-					disabled: Recycler.statics.deleteDisable,
-					handler: function_delete
+					disabled: TYPO3.settings.Recycler.deleteDisable,
+					handler: Recycler.Utility.function_delete
 				}, {
 					/****************************************************
 					 * Undelete button
@@ -315,28 +381,28 @@ Recycler.grid = {
 					xtype: 'button',
 					width: 80,
 					id: 'undeleteButton',
-					text: Recycler.lang.undeleteButton_text,
-					tooltip: Recycler.lang.undeleteButton_tooltip,
+					text: TYPO3.lang.undeleteButton_text,
+					tooltip: TYPO3.lang.undeleteButton_tooltip,
 					iconCls: 'undelete',
-					handler: function_undelete
+					handler: Recycler.Utility.function_undelete
 				}
 			],
 
 			tbar: [
-				Recycler.lang.search, ' ',
+				TYPO3.lang.search, ' ',
 					new Ext.app.SearchField({
-					store: gridDs,
+					store: Recycler.MainStore,
 					width: 200
 				}),
 				'-', {
 					xtype: 'tbtext',
-					text: Recycler.lang.depth + ':'
+					text: TYPO3.lang.depth + ':'
 				},{
 
 					/****************************************************
 					 * Depth menu
 					 ****************************************************/
-	
+
 					xtype: 'combo',
 					width: 150,
 					lazyRender: true,
@@ -344,36 +410,36 @@ Recycler.grid = {
 					displayField: 'label',
 					id: 'depthSelector',
 					mode: 'local',
-					emptyText: Recycler.lang.depth,
+					emptyText: TYPO3.lang.depth,
 					selectOnFocus: true,
 					triggerAction: 'all',
 					editable: false,
 					forceSelection: true,
-					hidden: Recycler.lang.showDepthMenu,
+					hidden: TYPO3.lang.showDepthMenu,
 					store: new Ext.data.SimpleStore({
 						autoLoad: true,
 						fields: ['depth','label'],
 						data : [
-							['0', Recycler.lang.depth_0],
-							['1', Recycler.lang.depth_1],
-							['2', Recycler.lang.depth_2],
-							['3', Recycler.lang.depth_3],
-							['4', Recycler.lang.depth_4],
-							['999', Recycler.lang.depth_infi]
+							['0', TYPO3.lang.depth_0],
+							['1', TYPO3.lang.depth_1],
+							['2', TYPO3.lang.depth_2],
+							['3', TYPO3.lang.depth_3],
+							['4', TYPO3.lang.depth_4],
+							['999', TYPO3.lang.depth_infi]
 						]
 					}),
-					value: Recycler.statics.depthSelection,
+					value: TYPO3.settings.Recycler.depthSelection,
 					listeners: {
 						'select': {
 							fn: function(cmp, rec, index) {
 								var depth = rec.get('depth');
-								gridDs.setBaseParam('depth', depth);
-								gridDs.load({
+								Recycler.MainStore.setBaseParam('depth', depth);
+								Recycler.MainStore.load({
 									params: {
 										start: 0
 									}
 								});
-	
+
 								Ext.getCmp('tableSelector').store.load({
 									params: {
 										depth: depth
@@ -384,7 +450,7 @@ Recycler.grid = {
 					}
 				},'-',{
 					xtype: 'tbtext',
-					text: Recycler.lang.tableMenu_label
+					text: TYPO3.lang.tableMenu_label
 				},{
 
 					/****************************************************
@@ -396,45 +462,29 @@ Recycler.grid = {
 					valueField: 'valueField',
 					displayField: 'tableTitle',
 					id: 'tableSelector',
+					width: 220,
 					mode: 'local',
-					emptyText: Recycler.lang.tableMenu_emptyText,
+					emptyText: TYPO3.lang.tableMenu_emptyText,
 					selectOnFocus: true,
 					triggerAction: 'all',
 					editable: false,
 					forceSelection: true,
 					
-					store: new Ext.data.Store({
-						autoLoad: true,
-						url: Recycler.statics.ajaxController + '&startUid=' + Recycler.statics.startUid + '&cmd=getTables' + '&depth=' + Recycler.statics.depthSelection,
-						reader: new Ext.data.ArrayReader({}, [
-							{name: 'table', type: 'string'},
-							{name: 'records', type: 'int'},
-							{name: 'valueField', type: 'string'},
-							{name: 'tableTitle', type: 'string'}
-						]),
-						listeners: {
-							'load': {
-								fn: function(store, records) {
-									Ext.getCmp('tableSelector').setValue(Recycler.statics.tableSelection);
-								},
-								single: true
-							}
-						}
-					}),
-					valueNotFoundText: String.format(Recycler.lang.noValueFound, Recycler.statics.tableSelection),
+					store: Recycler.TableStore,
+					valueNotFoundText: String.format(TYPO3.lang.noValueFound, TYPO3.settings.Recycler.tableSelection),
 					tpl: '<tpl for="."><tpl if="records &gt; 0"><div ext:qtip="{table} ({records})" class="x-combo-list-item">{tableTitle} ({records}) </div></tpl><tpl if="records &lt; 1"><div ext:qtip="{table} ({records})" class="x-combo-list-item x-item-disabled">{tableTitle} ({records}) </div></tpl></tpl>',
 					listeners: {
 						'select': {
-							fn: function(cmp, rec, index) {
-								var table = rec.get('valueField');
+							fn: function(component, record, index) {
+								var table = record.get('valueField');
 
 								// do not reload if the table selected has no deleted records - hide all records
-								if (rec.get('records') <= 0) {
-									gridDs.filter('uid', '-1'); // never true
+								if (record.get('records') <= 0) {
+									Recycler.MainStore.filter('uid', '-1'); // never true
 									return false;
 								}
-								gridDs.setBaseParam('table', table);
-								gridDs.load({
+								Recycler.MainStore.setBaseParam('table', table);
+								Recycler.MainStore.load({
 									params: {
 										start: 0
 									}
@@ -444,50 +494,27 @@ Recycler.grid = {
 					}
 				}
 			]
-
 		});
-		gridDs.load();
+		Recycler.GridContainer.superclass.initComponent.apply(this, arguments);
+		Recycler.TableStore.load();
+	}
+});
+
+Recycler.App = {
+	/**
+	 * Initializes the recycler
+	 *
+	 * @return void
+	 **/
+	init: function() {
+		Recycler.Grid = new Recycler.GridContainer();
+		Recycler.MainStore.load();
 	}
 };
 
-
-Recycler.utility = {
-	updatePageTree: function() {
-		if (top && top.content && top.content.nav_frame && top.content.nav_frame.Tree) {
-			top.content.nav_frame.Tree.refresh();
-		}
-	}
-};
-
-/* plugin for resize of grid in single container */
-Ext.namespace('Ext.ux.plugins');
-Ext.ux.plugins.FitToParent = Ext.extend(Object, {
-	constructor : function(parent) {
-		this.parent = parent;
-	},
-	init : function(c) {
-		c.on('render', function(c) {
-			c.fitToElement = Ext.get(this.parent
-					|| c.getPositionEl().dom.parentNode);
-			if (!c.doLayout) {
-				this.fitSizeToParent();
-				Ext.EventManager.onWindowResize(this.fitSizeToParent, this);
-			}
-		}, this, {
-			single : true
-		});
-		if (c.doLayout) {
-			c.monitorResize = true;
-			c.doLayout = c.doLayout.createInterceptor(this.fitSizeToParent);
-		}
-	},
-	fitSizeToParent : function() {
-		// Uses the dimension of the current viewport, but removes the document header
-		// and an addtional margin of 40 pixels (e.g. Safari needs this addition)
-		
-		this.fitToElement.setHeight(document.viewport.getHeight() - this.fitToElement.getTop() - 40);
-		var pos = this.getPosition(true), size = this.fitToElement.getViewSize();
-		this.setSize(size.width - pos[0], size.height - pos[1]);
-		
-	}
+Ext.onReady(function(){
+	// disable loadindicator
+	Ext.UpdateManager.defaults.showLoadIndicator = false;
+	// fire recycler grid
+	Recycler.App.init();
 });
