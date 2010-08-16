@@ -315,9 +315,15 @@ Recycler.Utility = {
 	}
 };
 
+/****************************************************
+ * Grid SelectionModel
+ ****************************************************/
+Recycler.SelectionModel = new Ext.grid.CheckboxSelectionModel({
+	singleSelect: false
+});
 
 /****************************************************
- * grid container
+ * Grid container
  ****************************************************/
 Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
 	layout: 'fit',
@@ -337,7 +343,7 @@ Recycler.GridContainer = Ext.extend(Ext.grid.GridPanel, {
 			animCollapse: false,
 			store: Recycler.MainStore,
 			cm: new Ext.grid.ColumnModel([
-				new Ext.grid.CheckboxSelectionModel({singleSelect: false}),
+				Recycler.SelectionModel,
 				Recycler.Expander,
 				{header: "UID", width: 10, sortable: true, dataIndex: 'uid'},
 				{header: "PID", width: 10, sortable: true, dataIndex: 'pid'},
