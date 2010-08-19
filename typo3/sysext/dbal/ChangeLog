@@ -1,3 +1,7 @@
+2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15457: Add support for prepared queries
+
 2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Code cleanup with useless blank spaces at end of line

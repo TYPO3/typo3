@@ -1220,6 +1220,284 @@ class ux_t3lib_DB extends t3lib_DB {
 		return $query;
 	}
 
+	/**************************************
+	 *
+	 * Prepared Query Support
+	 *
+	 **************************************/
+
+	/**
+	 * Creates a SELECT prepared SQL statement.
+	 *
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as t3lib_db_PreparedStatement::PARAM_AUTOTYPE.
+	 * @return t3lib_db_PreparedStatement Prepared statement
+	 */
+	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
+		if ($this->debug) {
+			$pt = t3lib_div::milliseconds();
+		}
+
+			// Map table / field names if needed:
+		$ORIG_tableName = $from_table;	// Saving table names in $ORIG_from_table since $from_table is transformed beneath:
+		$parsedFromTable = array();
+		$queryComponents = array();
+		if ($tableArray = $this->map_needMapping($ORIG_tableName, FALSE, $parsedFromTable)) {
+			$from = $parsedFromTable ? $parsedFromTable : $from_table;
+			$components = $this->map_remapSELECTQueryParts($select_fields, $from, $where_clause, $groupBy, $orderBy);
+			$queryComponents['SELECT']     = $components[0];
+			$queryComponents['FROM']       = $components[1];
+			$queryComponents['WHERE']      = $components[2];
+			$queryComponents['GROUPBY']    = $components[3];
+			$queryComponents['ORDERBY']    = $components[4];
+			$queryComponents['parameters'] = $components[5];
+		} else {
+			$queryComponents = $this->getQueryComponents($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
+		}
+
+		$queryComponents['ORIG_tableName'] = $ORIG_tableName;
+
+		if (!$this->runningNative()) {
+				// Quotes all fields
+			$queryComponents['SELECT']  = $this->_quoteFieldNames($queryComponents['SELECT']);
+			$queryComponents['FROM']    = $this->_quoteFromTables($queryComponents['FROM']);
+			$queryComponents['WHERE']   = $this->_quoteWhereClause($queryComponents['WHERE']);
+			$queryComponents['GROUPBY'] = $this->_quoteGroupBy($queryComponents['GROUPBY']);
+			$queryComponents['ORDERBY'] = $this->_quoteOrderBy($queryComponents['ORDERBY']);
+		}
+
+		$precompiledParts = $this->precompileSELECTquery($queryComponents);
+
+		$preparedStatement = t3lib_div::makeInstance('t3lib_db_PreparedStatement', '', $from_table, $precompiledParts);
+		/* @var $preparedStatement t3lib_db_PreparedStatement */
+
+			// Bind values to parameters
+		foreach ($input_parameters as $key => $value) {
+			$preparedStatement->bindValue($key, $value, t3lib_db_PreparedStatement::PARAM_AUTOTYPE);
+		}
+
+		if ($this->debug) {
+			$data = array(
+				'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit, $input_parameters),
+				'ORIG_from_table' => $ORIG_tableName,
+			);
+			$this->debugHandler(
+				'prepare_SELECTquery',
+				t3lib_div::milliseconds() - $pt,
+				$data
+			);
+		}
+
+			// Return prepared statement
+		return $preparedStatement;
+	}
+
+	/**
+	 * Returns the parsed query components.
+	 *
+	 * @param string $select_fields
+	 * @param string $from_table
+	 * @param string $where_clause
+	 * @param string $groupBy
+	 * @param string $orderBy
+	 * @param string $limit
+	 * @return array
+	 */
+	protected function getQueryComponents($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit) {
+		$queryComponents = array(
+			'SELECT'     => '',
+			'FROM'       => '',
+			'WHERE'      => '',
+			'GROUPBY'    => '',
+			'ORDERBY'    => '',
+			'LIMIT'      => '',
+			'parameters' =>  array(),
+		);
+
+		$this->lastHandlerKey = $this->handler_getFromTableList($from_table);
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
+				// Possibly rewrite the LIMIT to be PostgreSQL-compatible
+			$splitLimit = t3lib_div::intExplode(',', $limit);		// Splitting the limit values:
+			if ($splitLimit[1]) {	// If there are two parameters, do mapping differently than otherwise:
+				$numrows = $splitLimit[1];
+				$offset = $splitLimit[0];
+				$limit = $numrows . ' OFFSET ' . $offset;
+			}
+		}
+		$queryComponents['LIMIT'] = $limit;
+
+		$queryComponents['SELECT'] = $this->SQLparser->parseFieldList($select_fields);
+		if ($this->SQLparser->parse_error) {
+			die($this->SQLparser->parse_error . ' in ' . __FILE__ . ' : ' . __LINE__);
+		}
+
+		$queryComponents['FROM'] = $this->SQLparser->parseFromTables($from_table);
+
+		$queryComponents['WHERE'] = $this->SQLparser->parseWhereClause($where_clause, '', $queryComponents['parameters']);
+		if (!is_array($queryComponents['WHERE'])) {
+			die('Could not parse where clause in ' . __FILE__ . ' : ' . __LINE__);
+		}
+
+		$queryComponents['GROUPBY'] = $this->SQLparser->parseFieldList($groupBy);
+		$queryComponents['ORDERBY'] = $this->SQLparser->parseFieldList($orderBy);
+
+			// Return the query components
+		return $queryComponents;
+	}
+
+	/**
+	 * Precompiles a SELECT prepared SQL statement.
+	 *
+	 * @param array $components
+	 * @return array Precompiled SQL statement
+	 */
+	protected function precompileSELECTquery(array $components) {
+		$parameterPrefix = '__' . dechex(time()) . '__';
+		foreach ($components['parameters'] as $key => $params) {
+			if ($key === '?') {
+				foreach ($params as $index => $param) {
+					$components['parameters'][$key][$index][0] = $parameterPrefix . $param[0];
+				}
+			} else {
+				$components['parameters'][$key][0] = $parameterPrefix . $param[0];
+			}
+		}
+
+		$select_fields = $this->SQLparser->compileFieldList($components['SELECT']);
+		$from_table    = $this->SQLparser->compileFromTables($components['FROM']);
+		$where_clause  = $this->SQLparser->compileWhereClause($components['WHERE']);
+		$groupBy       = $this->SQLparser->compileFieldList($components['GROUPBY']);
+		$orderBy       = $this->SQLparser->compileFieldList($components['ORDERBY']);
+		$limit         = $components['LIMIT'];
+		$precompiledParts = array();
+
+		$this->lastHandlerKey = $this->handler_getFromTableList($components['ORIG_tableName']);
+		$hType = (string)$this->handlerCfg[$this->lastHandlerKey]['type'];
+		$precompiledParts['handler'] = $hType;
+		$precompiledParts['ORIG_tableName'] = $components['ORIG_tableName'];
+
+		switch ($hType) {
+			case 'native':
+				$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
+				$precompiledParts['queryParts'] = explode($parameterPrefix, $query);
+				break;
+			case 'adodb':
+				$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
+				$precompiledParts['queryParts'] = explode($parameterPrefix, $query);
+				$precompiledParts['LIMIT'] = $limit;
+				break;
+			case 'userdefined':
+				$precompiledParts['queryParts'] = array(
+					'SELECT'  => $select_fields,
+					'FROM'    => $from_table,
+					'WHERE'   => $where_clause,
+					'GROUPBY' => $groupBy,
+					'ORDERBY' => $orderBy,
+					'LIMIT'   => $limit,
+				);
+				break;
+		}
+
+		return $precompiledParts;
+	}
+
+	/**
+	 * Executes a prepared query.
+	 *
+	 * @param string $query The query to execute
+	 * @param array $queryComponents The components of the query to execute
+	 * @return pointer MySQL result pointer / DBAL object
+	 * @access protected This method may only be called by t3lib_db_PreparedStatement
+	 */
+	public function exec_PREPAREDquery($query, array $precompiledParts) {
+		if ($this->debug) {
+			$pt = t3lib_div::milliseconds();
+		}
+
+			// Get handler key and select API:
+		switch ($precompiledParts['handler']) {
+			case 'native':
+				$this->lastQuery = $query;
+				$sqlResult = mysql_query($this->lastQuery, $this->handlerInstance[$this->lastHandlerKey]['link']);
+				$this->resourceIdToTableNameMap[(string)$sqlResult] = $precompiledParts['ORIG_tableName'];
+				break;
+			case 'adodb':
+				$limit = $precompiledParts['LIMIT'];
+				if ($this->runningADOdbDriver('postgres')) {
+						// Possibly rewrite the LIMIT to be PostgreSQL-compatible
+					$splitLimit = t3lib_div::intExplode(',', $limit);		// Splitting the limit values:
+					if ($splitLimit[1]) {	// If there are two parameters, do mapping differently than otherwise:
+						$numrows = $splitLimit[1];
+						$offset = $splitLimit[0];
+						$limit = $numrows . ' OFFSET ' . $offset;
+					}
+				}
+				if ($limit != '') {
+					$splitLimit = t3lib_div::intExplode(',', $limit);		// Splitting the limit values:
+					if ($splitLimit[1]) {	// If there are two parameters, do mapping differently than otherwise:
+						$numrows = $splitLimit[1];
+						$offset = $splitLimit[0];
+					} else {
+						$numrows = $splitLimit[0];
+						$offset = 0;
+					}
+
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->SelectLimit($query, $numrows, $offset);
+					$this->lastQuery = $sqlResult->sql;
+				} else {
+					$this->lastQuery = $query;
+					$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->_Execute($this->lastQuery);
+				}
+
+				$sqlResult->TYPO3_DBAL_handlerType = 'adodb';	// Setting handler type in result object (for later recognition!)
+				$sqlResult->TYPO3_DBAL_tableList = $precompiledParts['ORIG_tableName'];
+				break;
+			case 'userdefined':
+				$queryParts = $precompiledParts['queryParts'];
+				$sqlResult = $this->handlerInstance[$this->lastHandlerKey]->exec_SELECTquery(
+					$queryParts['SELECT'],
+					$queryParts['FROM'],
+					$queryParts['WHERE'],
+					$queryParts['GROUPBY'],
+					$queryParts['ORDERBY'],
+					$queryParts['LIMIT']
+				);
+				if (is_object($sqlResult)) {
+					$sqlResult->TYPO3_DBAL_handlerType = 'userdefined';	// Setting handler type in result object (for later recognition!)
+					$sqlResult->TYPO3_DBAL_tableList = $precompiledParts['ORIG_tableName'];
+				}
+				break;
+		}
+
+		if ($this->printErrors && $this->sql_error()) {
+			debug(array($this->lastQuery, $this->sql_error()));
+		}
+
+		if ($this->debug) {
+			$data = array(
+				'handlerType' => $precompiledParts['handler'],
+				'args' => $precompiledParts,
+				'ORIG_from_table' => $precompiledParts['ORIG_tableName'],
+			);
+			if ($this->conf['debugOptions']['numberRows']) {
+				$data['numberRows'] = $this->sql_num_rows($sqlResult);
+			}
+			$this->debugHandler(
+				'exec_PREPAREDquery',
+				t3lib_div::milliseconds() - $pt,
+				$data
+			);
+		}
+
+			// Return result handler.
+		return $sqlResult;
+	}
 
 	/**************************************
 	*
@@ -2941,7 +3219,8 @@ class ux_t3lib_DB extends t3lib_DB {
 		$fromParts = $tables;
 
 			// Where clause:
-		$whereParts = $this->SQLparser->parseWhereClause($where_clause);
+		$parameterReferences = array();
+		$whereParts = $this->SQLparser->parseWhereClause($where_clause, '', $parameterReferences);
 		$this->map_sqlParts($whereParts, $defaultTable);
 
 			// Select fields:
@@ -2959,7 +3238,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			// Restore the original mapping
 		$this->mapping = $backupMapping;
 
-		return array($selectParts, $fromParts, $whereParts, $groupByParts, $orderByParts);
+		return array($selectParts, $fromParts, $whereParts, $groupByParts, $orderByParts, $parameterReferences);
 	}
 
 	/**
