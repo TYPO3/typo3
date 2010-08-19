@@ -1,5 +1,6 @@
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Added unit test for feature #15457
 	* Added feature #15457: Add support for prepared queries
 
 2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
