@@ -1,3 +1,7 @@
+2010-08-19  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15494: fatal error in phpunit BE module
+
 2010-08-19  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #15241: Recognize php-fpm sapi for path generation (thanks to Nikolas Hagelstein)
