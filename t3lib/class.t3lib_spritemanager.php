@@ -149,7 +149,7 @@ class t3lib_SpriteManager {
 	 *
 	 * @return void
 	 */
-	private function compatibilityCalls() {
+	protected function compatibilityCalls() {
 			// Fallback for $TYPE_ICONS "contains-module" icons
 		foreach ((array) $GLOBALS['ICON_TYPES'] as $module => $icon) {
 			$iconFile = $icon['icon'];
@@ -241,6 +241,10 @@ class t3lib_SpriteManager {
 			$GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
 		}
 	}
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_spritemanager.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_spritemanager.php']);
 }
 
 ?>

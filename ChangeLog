@@ -1,3 +1,7 @@
+2010-08-19  Ingo Renner  <ingo@typo3.org>
+
+	* Follow-up to #15079: XCLASS include code missing and private declaration in t3lib_SpriteManager
+
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #15505: t3lib_cache_backend_TransientMemoryBackend is not referenced
