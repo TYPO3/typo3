@@ -1,6 +1,7 @@
 2010-08-19  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #15048: Workspaces: Autopublication task has too many rights
+	* Fixed bug #15241: Recognize php-fpm sapi for path generation (thanks to Nikolas Hagelstein)
 
 2010-08-16 Steffen Kamper  <steffen@typo3.org>
 
