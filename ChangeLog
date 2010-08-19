@@ -1,3 +1,7 @@
+2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15457: Add support for prepared queries
+
 2010-08-19  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #15048: Workspaces: Autopublication task has too many rights

@@ -268,6 +268,16 @@ TypoScript changes
 	  when using jumpURLs
 
 
+Database API
+============
+
+	* Prepared queries are now part of the TYPO3 database API. The API is mostly
+	  based on PDO's method naming and currently supports SELECT queries. TYPO3
+	  will progressively use this new database API which is cleaner and quicker
+	  when using DBAL. Extension authors are encouraged to use it in their own
+	  extensions.
+
+
 DBAL
 ====
 

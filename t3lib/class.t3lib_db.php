@@ -676,6 +676,79 @@ class t3lib_DB {
 
 
 
+	/**************************************
+	 *
+	 * Prepared Query Support
+	 *
+	 **************************************/
+
+	/**
+	 * Creates a SELECT prepared SQL statement.
+	 *
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param string See exec_SELECTquery()
+	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as t3lib_db_PreparedStatement::PARAM_AUTOTYPE.
+	 * @return t3lib_db_PreparedStatement Prepared statement
+	 */
+	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
+		$query = $this->SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
+		$preparedStatement = t3lib_div::makeInstance('t3lib_db_PreparedStatement', $query, $from_table, array());
+		/* @var $preparedStatement t3lib_db_PreparedStatement */
+
+			// Bind values to parameters
+		foreach ($input_parameters as $key => $value) {
+			$preparedStatement->bindValue($key, $value, t3lib_db_PreparedStatement::PARAM_AUTOTYPE);
+		}
+
+			// Return prepared statement
+		return $preparedStatement;
+	}
+
+	/**
+	 * Creates a SELECT prepared SQL statement based on input query parts array
+	 *
+	 * @param array Query parts array
+	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as t3lib_db_PreparedStatement::PARAM_AUTOTYPE.
+	 * @return t3lib_db_PreparedStatement Prepared statement
+	 */
+	public function prepare_SELECTqueryArray(array $queryParts, array $input_parameters = array()) {
+		return $this->prepare_SELECTquery(
+			$queryParts['SELECT'],
+			$queryParts['FROM'],
+			$queryParts['WHERE'],
+			$queryParts['GROUPBY'],
+			$queryParts['ORDERBY'],
+			$queryParts['LIMIT'],
+			$input_parameters
+		);
+	}
+
+	/**
+	 * Executes a prepared query.
+	 * This method may only be called by t3lib_db_PreparedStatement.
+	 *
+	 * @param string $query The query to execute
+	 * @param array $queryComponents The components of the query to execute
+	 * @return pointer MySQL result pointer / DBAL object
+	 * @access private
+	 */
+	public function exec_PREPAREDquery($query, array $queryComponents) {
+		$res = mysql_query($query, $this->link);
+		if ($this->debugOutput) {
+			$this->debug('stmt_execute', $query);
+		}
+		return $res;
+	}
+
+
+
+
+
+
 
 
 

@@ -190,10 +190,11 @@ class t3lib_sqlparser {
 	 * Parsing SELECT query
 	 *
 	 * @param	string		SQL string with SELECT query to parse
+	 * @param	array		Array holding references to either named (:name) or question mark (?) parameters found
 	 * @return	mixed		Returns array with components of SELECT query on success, otherwise an error message string.
 	 * @see compileSELECT()
 	 */
-	protected function parseSELECT($parseString) {
+	protected function parseSELECT($parseString, &$parameterReferences = NULL) {
 
 			// Removing SELECT:
 		$parseString = $this->trimSQL($parseString);
@@ -201,6 +202,10 @@ class t3lib_sqlparser {
 
 			// Init output variable:
 		$result = array();
+		if ($parameterReferences === NULL) {
+			$result['parameters'] = array();
+			$parameterReferences = &$result['parameters'];
+		}
 		$result['type'] = 'SELECT';
 
 			// Looking for STRAIGHT_JOIN keyword:
@@ -221,7 +226,7 @@ class t3lib_sqlparser {
 			if ($parseString)	{
 
 					// Get WHERE clause:
-				$result['WHERE'] = $this->parseWhereClause($parseString, '^(GROUP[[:space:]]+BY|ORDER[[:space:]]+BY|LIMIT)[[:space:]]+');
+				$result['WHERE'] = $this->parseWhereClause($parseString, '^(GROUP[[:space:]]+BY|ORDER[[:space:]]+BY|LIMIT)[[:space:]]+', $parameterReferences);
 				if ($this->parse_error)	{ return $this->parse_error; }
 
 					// If the WHERE clause parsing was stopped by GROUP BY, ORDER BY or LIMIT, then proceed with parsing:
@@ -1025,9 +1030,10 @@ class t3lib_sqlparser {
 	 *
 	 * @param	string		WHERE clause to parse. NOTICE: passed by reference!
 	 * @param	string		Regular expressing to STOP parsing, eg. '^(GROUP BY|ORDER BY|LIMIT)([[:space:]]*)'
+	 * @param	array		Array holding references to either named (:name) or question mark (?) parameters found
 	 * @return	mixed		If successful parsing, returns an array, otherwise an error string.
 	 */
-	public function parseWhereClause(&$parseString, $stopRegex = '') {
+	public function parseWhereClause(&$parseString, $stopRegex = '', array &$parameterReferences = array()) {
 
 			// Prepare variables:
 		$parseString = $this->trimSQL($parseString);
@@ -1057,7 +1063,7 @@ class t3lib_sqlparser {
 				if (preg_match('/^EXISTS[[:space:]]*[(]/i', $parseString)) {
 					$stack[$level][$pnt[$level]]['func']['type'] = $this->nextPart($parseString, '^(EXISTS)[[:space:]]*');
 					$parseString = trim(substr($parseString, 1));	// Strip of "("
-					$stack[$level][$pnt[$level]]['func']['subquery'] = $this->parseSELECT($parseString);
+					$stack[$level][$pnt[$level]]['func']['subquery'] = $this->parseSELECT($parseString, $parameterReferences);
 						// Seek to new position in parseString after parsing of the subquery
 					$parseString = $stack[$level][$pnt[$level]]['func']['subquery']['parseString'];
 					unset($stack[$level][$pnt[$level]]['func']['subquery']['parseString']);
@@ -1225,7 +1231,7 @@ class t3lib_sqlparser {
 							$stack[$level][$pnt[$level]]['value'] = $values;
 						} else if (t3lib_div::inList('IN,NOT IN', $stack[$level][$pnt[$level]]['comparator']) && preg_match('/^[(][[:space:]]*SELECT[[:space:]]+/', $parseString)) {
 							$this->nextPart($parseString, '^([(])');
-							$stack[$level][$pnt[$level]]['subquery'] = $this->parseSELECT($parseString);
+							$stack[$level][$pnt[$level]]['subquery'] = $this->parseSELECT($parseString, $parameterReferences);
 								// Seek to new position in parseString after parsing of the subquery
 							$parseString = $stack[$level][$pnt[$level]]['subquery']['parseString'];
 							unset($stack[$level][$pnt[$level]]['subquery']['parseString']);
@@ -1241,7 +1247,7 @@ class t3lib_sqlparser {
 							$stack[$level][$pnt[$level]]['values'][1] = $this->getValue($parseString);
 						} else {
 								// Finding value for comparator:
-							$stack[$level][$pnt[$level]]['value'] = $this->getValue($parseString, $stack[$level][$pnt[$level]]['comparator']);
+							$stack[$level][$pnt[$level]]['value'] = &$this->getValueOrParameter($parseString, $stack[$level][$pnt[$level]]['comparator'], '', $parameterReferences);
 							if ($this->parse_error)	{
 								return $this->parse_error;
 							}
@@ -1387,6 +1393,39 @@ class t3lib_sqlparser {
 		}
 			// No match found
 		return '';
+	}
+
+	/**
+	 * Finds value or either named (:name) or question mark (?) parameter markers at the beginning
+	 * of $parseString, returns result and strips it of parseString.
+	 * This method returns a pointer to the parameter or value that was found. In case of a parameter
+	 * the pointer is a reference to the corresponding item in array $parameterReferences.
+	 *
+	 * @param string $parseString The parseString
+	 * @param string $comparator The comparator used before.
+	 * @param string $mode The mode, e.g., "INDEX"
+	 * @param mixed The value (string/integer) or parameter (:name/?). Otherwise an array with error message in first key (0)
+	 */
+	protected function &getValueOrParameter(&$parseString, $comparator = '', $mode = '', array &$parameterReferences = array()) {
+		$parameter = $this->nextPart($parseString, '^(\\:[[:alnum:]_]+|\\?)');
+		if ($parameter === '?') {
+			if (!isset($parameterReferences['?'])) {
+				$parameterReferences['?'] = array();
+			}
+			$value = array('?');
+			$parameterReferences['?'][] = &$value;
+		} elseif ($parameter !== '') {	// named parameter
+			if (isset($parameterReferences[$parameter])) {
+					// Use the same reference as last time we encountered this parameter
+				$value = &$parameterReferences[$parameter];
+			} else {
+				$value = array($parameter);
+				$parameterReferences[$parameter] = &$value;
+			}
+		} else {
+			$value = $this->getValue($parseString, $comparator, $mode);
+		}
+		return $value;
 	}
 
 	/**
