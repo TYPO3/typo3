@@ -1442,7 +1442,7 @@ class t3lib_DB {
 	function debug($func, $query='') {
 
 		$error = $this->sql_error();
-		if ($error) {
+		if ($error || $this->debugOutput == 2) {
 			debug(
 				array(
 					'caller' => 't3lib_DB::' . $func,

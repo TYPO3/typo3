@@ -1,3 +1,7 @@
+2010-08-19  Steffen Kamper  <steffen@typo3.org>
+
+	* Added feature #15425: [develop] debug all sql queries
+
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #15457: Add support for prepared queries

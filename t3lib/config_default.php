@@ -66,7 +66,7 @@ $TYPO3_CONF_VARS = array(
 		'doNotCheckReferer' => FALSE,			// Boolean. If set, it's NOT checked numerous places that the refering host is the same as the current. This is an option you should set if you have problems with proxies not passing the HTTP_REFERER variable.
 		'recursiveDomainSearch' => FALSE,		// Boolean. If set, the search for domain records will be done recursively by stripping parts of the host name off until a matching domain record is found.
 		'devIPmask' => '127.0.0.1,::1',			// Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function t3lib_div::cmpIP() for details on syntax. Setting this to blank value will deny all. Setting to "*" will allow all.
-		'sqlDebug' => FALSE,					// Boolean. If set, then database queries that fails are outputted in browser. For development.
+		'sqlDebug' => 0,						// Integer (0, 1, 2). If > 0, then database queries are outputted in browser. 1 = show failed queries, 2= show all queries. For development.
 		'enable_DLOG' => FALSE,					// Whether the developer log is enabled. See constant "TYPO3_DLOG"
 		'ddmmyy' => 'd-m-y',					// Format of Date-Month-Year - see PHP-function date()
 		'hhmm' => 'H:i',						// Format of Hours-Minutes - see PHP-function date()
