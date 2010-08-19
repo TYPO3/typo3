@@ -200,7 +200,9 @@ class wslib {
 	function autoPublishWorkspaces()	{
 		global $TYPO3_CONF_VARS;
 
-			// Temporarily set high power...
+			// Temporarily set admin rights
+			// FIXME: once workspaces are cleaned up a better solution should be implemented
+		$currentAdminStatus = $GLOBALS['BE_USER']->user['admin'];
 		$GLOBALS['BE_USER']->user['admin'] = 1;
 
 			// Select all workspaces that needs to be published / unpublished:
@@ -229,6 +231,9 @@ class wslib {
 			$tce->start(array(),$cmd);
 			$tce->process_cmdmap();
 		}
+
+			// Restore admin status
+		$GLOBALS['BE_USER']->user['admin'] = $currentAdminStatus;
 	}
 }
 
