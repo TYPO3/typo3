@@ -1,3 +1,7 @@
+2010-08-19  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #15241: Recognize php-fpm sapi for path generation (thanks to Nikolas Hagelstein)
+
 2010-08-15 Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15424: [web_info] allow more than 3 levels for pagetree overview and localization overview
