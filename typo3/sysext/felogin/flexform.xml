@@ -27,6 +27,15 @@
 							</config>
 						</TCEforms>
 					</showPermaLogin>
+					<showLogoutFormAfterLogin>
+						<TCEforms>
+							<label>LLL:EXT:felogin/locallang_db.xml:tt_content.pi_flexform.show_logoutFormAfterLogin</label>
+							<config>
+								<default></default>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</showLogoutFormAfterLogin>
 					<pages>
 						<TCEforms>
 							<exclude>1</exclude>

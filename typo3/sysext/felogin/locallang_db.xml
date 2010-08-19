@@ -29,6 +29,7 @@
 			<label index="tt_content.pi_flexform.sheet_messages">Messages</label>
 			<label index="tt_content.pi_flexform.show_forgot_password">Show &quot;Forgot password?&quot; link:</label>
 			<label index="tt_content.pi_flexform.show_permalogin">Show &quot;Stay logged in&quot; checkbox (if switched on for the installation):</label>
+			<label index="tt_content.pi_flexform.show_logoutFormAfterLogin">Show logout form after successful login:</label>
 			<label index="tt_content.pi_flexform.groupSelectmode">FE group select mode:</label>
 			<label index="tt_content.pi_flexform.groupSelectmode_showAll">Show all</label>
 			<label index="tt_content.pi_flexform.groupSelectmode_showSelected">Show selected</label>

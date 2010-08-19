@@ -1,5 +1,6 @@
 2010-08-19  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #15421: [felogin] Possibility to show logout form direct after login
 	* Fixed bug #15494: fatal error in phpunit BE module
 	* Added feature #15425: [develop] debug all sql queries
 

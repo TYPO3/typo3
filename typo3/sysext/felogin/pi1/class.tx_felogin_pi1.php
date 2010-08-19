@@ -443,7 +443,11 @@ class tx_felogin_pi1 extends tslib_pibase {
 						}
 					}
 				}
-
+					// show logout form directly
+				if ($this->conf['showLogoutFormAfterLogin']) {
+					$this->redirectUrl = '';
+					return $this->showLogout();
+				}
 			} else {
 					// login error
 				$markerArray['###STATUS_HEADER###'] = $this->getDisplayText('error_header',$this->conf['errorHeader_stdWrap.']);
@@ -684,6 +688,10 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 		if ($this->flexFormValue('showPermaLogin', 'sDEF')) {
 			$flex['showPermaLogin'] = $this->flexFormValue('showPermaLogin', 'sDEF');
+		}
+
+		if ($this->flexFormValue('showLogoutFormAfterLogin', 'sDEF')) {
+			$flex['showLogoutFormAfterLogin'] = $this->flexFormValue('showLogoutFormAfterLogin', 'sDEF');
 		}
 
 		if ($this->flexFormValue('pages', 'sDEF')) {

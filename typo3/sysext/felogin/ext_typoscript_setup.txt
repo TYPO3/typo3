@@ -104,6 +104,9 @@ plugin.tx_felogin_pi1 {
 	# Allowed Referrer-Redirect-Domains:
 	domains =
 	
+	# Show logout form direct after login
+	showLogoutFormAfterLogin =
+	
 	dateFormat = Y-m-d H:i
 }
 
