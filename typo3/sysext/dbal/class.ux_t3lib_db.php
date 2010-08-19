@@ -1358,14 +1358,14 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return array Precompiled SQL statement
 	 */
 	protected function precompileSELECTquery(array $components) {
-		$parameterPrefix = '__' . dechex(time()) . '__';
+		$parameterWrap = '__' . dechex(time()) . '__';
 		foreach ($components['parameters'] as $key => $params) {
 			if ($key === '?') {
 				foreach ($params as $index => $param) {
-					$components['parameters'][$key][$index][0] = $parameterPrefix . $param[0];
+					$components['parameters'][$key][$index][0] = $parameterWrap . $param[0] . $parameterWrap;
 				}
 			} else {
-				$components['parameters'][$key][0] = $parameterPrefix . $param[0];
+				$components['parameters'][$key][0] = $parameterWrap . $params[0] . $parameterWrap;
 			}
 		}
 
@@ -1385,11 +1385,11 @@ class ux_t3lib_DB extends t3lib_DB {
 		switch ($hType) {
 			case 'native':
 				$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
-				$precompiledParts['queryParts'] = explode($parameterPrefix, $query);
+				$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 				break;
 			case 'adodb':
 				$query = parent::SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy);
-				$precompiledParts['queryParts'] = explode($parameterPrefix, $query);
+				$precompiledParts['queryParts'] = explode($parameterWrap, $query);
 				$precompiledParts['LIMIT'] = $limit;
 				break;
 			case 'userdefined':
