@@ -1,3 +1,7 @@
+2010-08-19  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #10730: Release record locks when logging out (Thanks to Oliver Schröder)
+
 2010-08-19  Steffen Kamper  <steffen@typo3.org>
 
 	* Added feature #15421: [felogin] Possibility to show logout form direct after login

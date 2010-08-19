@@ -812,6 +812,9 @@ class t3lib_userAuth {
 	function logoff() {
 		if ($this->writeDevLog) 	t3lib_div::devLog('logoff: ses_id = '.$this->id, 't3lib_userAuth');
 
+			// Release all record locks set by currently logged in be_user
+		t3lib_BEfunc::lockRecords();
+
 			// Hook for pre-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing']))	{
 			$_params = array();
