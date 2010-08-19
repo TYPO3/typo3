@@ -10,6 +10,7 @@
 
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #15505: t3lib_cache_backend_TransientMemoryBackend is not referenced
 	* Follow-up to #15457: Slightly modified API to be strict on param type guessing
 	* Added feature #15457: Add support for prepared queries
 
