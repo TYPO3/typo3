@@ -397,9 +397,9 @@ class t3lib_db_PreparedStatement {
 	protected function guessValueType($value) {
 		if (is_bool($value)) {
 			$type = self::PARAM_BOOL;
-		} elseif (t3lib_div::testInt($value)) {
+		} elseif (is_int($value)) {
 			$type = self::PARAM_INT;
-		} elseif (is_null($value) || strtoupper($value) === 'NULL') {
+		} elseif (is_null($value)) {
 			$type = self::PARAM_NULL;
 		} else {
 			$type = self::PARAM_STR;
