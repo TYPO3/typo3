@@ -277,6 +277,15 @@ DBAL
 	  a convenient driver dropdown list.
 
 
+Workspaces
+==========
+
+	* There is a new Scheduler task for the automatic publication of workspaces.
+	  If a publication date has been set for a given workspace, it will be published
+	  the next time the Scheduler task runs. Note that automatic "un-publication"
+	  still does not work.
+
+
 Backend skin
 ============
 
