@@ -1,3 +1,7 @@
+2010-08-19  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed naming of class.t3lib_db_preparedstatement.php in core_autoload.php
+
 2010-08-19  Steffen Kamper  <steffen@typo3.org>
 
 	* Added feature #15421: [felogin] Possibility to show logout form direct after login
