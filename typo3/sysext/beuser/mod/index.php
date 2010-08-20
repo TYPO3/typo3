@@ -1484,7 +1484,7 @@ class SC_mod_tools_be_user_index {
 
 			// Delete
 		$params='&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-		$cells[]='<a href="' . $this->doc->issueCommand($params) . '" onclick="return confirm(unescape(\'' . rawurlencode($GLOBALS['LANG']->getLL('sureToDelete', TRUE)) . '\'));" title="' . $GLOBALS['LANG']->getLL('delete', TRUE) . '">' .
+		$cells[]='<a href="' . $this->doc->issueCommand($params) . '" onclick="return confirm(unescape(\'' . $GLOBALS['LANG']->getLL('sureToDelete', TRUE) . '\'));" title="' . $GLOBALS['LANG']->getLL('delete', TRUE) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 			'</a>';
 
