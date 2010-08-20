@@ -1,5 +1,6 @@
 2010-08-20  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15514 Bugfix : wrong encoded confirm message in User Admin Module (Thanks to Sven Juergens)
 	* Fixed bug #15507: Bug: MEDIA content element ignores stdWrap configuration (Thanks to Jigal van Hemert)
 
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>

@@ -1472,7 +1472,7 @@ class SC_mod_tools_be_user_index {
 
 			// Delete
 		$params='&cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
-		$cells[]='<a href="' . $this->doc->issueCommand($params) . '" onclick="return confirm(unescape(\'' . rawurlencode($GLOBALS['LANG']->getLL('sureToDelete', true)) . '\'));"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/garbage.gif') . ' border="0" align="top" title="' . $GLOBALS['LANG']->getLL('delete', true) . '" alt="" /></a>';
+		$cells[]='<a href="' . $this->doc->issueCommand($params) . '" onclick="return confirm(unescape(\'' . $GLOBALS['LANG']->getLL('sureToDelete', true) . '\'));"><img ' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/garbage.gif') . ' border="0" align="top" title="' . $GLOBALS['LANG']->getLL('delete', TRUE) . '" alt="" /></a>';
 
 		return implode('',$cells);
 	}
