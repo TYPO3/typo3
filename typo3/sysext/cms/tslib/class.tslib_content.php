@@ -2831,6 +2831,10 @@ class tslib_cObj {
 				}
 		}
 
+		if ($conf['stdWrap.']) {
+			$content = $this->stdWrap($content, $conf['stdWrap.']);
+		}
+
 		return $content;
 	}
 
