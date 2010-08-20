@@ -2831,6 +2831,10 @@ class tslib_cObj {
 				}
 		}
 
+		if ($conf['stdWrap.']) {
+			$content = $this->stdWrap($content, $conf['stdWrap.']);
+		}
+
 		return $content;
 	}
 
@@ -4854,7 +4858,7 @@ class tslib_cObj {
 		$thousands_sep = $this->stdWrap($conf['thousands_sep'], $conf['thousands_sep.']);
 		return number_format($content, $decimals, $dec_point, $thousands_sep);
 	}
-	
+
 	/**
 	 * Implements the stdWrap property, "parseFunc".
 	 * This is a function with a lot of interesting uses. In classic TypoScript this is used to process text from the bodytext field; This included highlighting of search words, changing http:// and mailto: prefixed strings into links, parsing <typolist>, <typohead> and <typocode> tags etc.
