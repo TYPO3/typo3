@@ -278,16 +278,16 @@ class SC_show_item {
 		$i = 0;
 
 			// Traverse the list of fields to display for the record:
-		$fieldList = t3lib_div::trimExplode(',',$TCA[$this->table]['interface']['showRecordFieldList'],1);
-		foreach($fieldList as $name)	{
+		$fieldList = t3lib_div::trimExplode(',', $TCA[$this->table]['interface']['showRecordFieldList'], 1);
+		foreach ($fieldList as $name) {
 			$name = trim($name);
 			if ($TCA[$this->table]['columns'][$name])	{
-				if (!$TCA[$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields',$this->table.':'.$name))	{
+				if (!$TCA[$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $name)) {
 					$i++;
 					$tableRows[] = '
 						<tr>
 							<td class="t3-col-header">' . $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($this->table, $name), 1) . '</td>
-							<td>' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table, $name, $this->row[$name])) . '</td>
+							<td>' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $this->row['uid'])) . '</td>
 						</tr>';
 				}
 			}

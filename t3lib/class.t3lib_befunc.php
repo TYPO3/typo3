@@ -2177,36 +2177,40 @@ final class t3lib_BEfunc {
 				break;
 				case 'select':
 					if ($theColConf['MM']) {
-						// Display the title of MM related records in lists
-						if ($noRecordLookup) {
-							$MMfield = $theColConf['foreign_table'].'.uid';
-						} else	{
-							$MMfields = array($theColConf['foreign_table'].'.'.$TCA[$theColConf['foreign_table']]['ctrl']['label']);
-							foreach (t3lib_div::trimExplode(',', $TCA[$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f)	{
-								$MMfields[] = $theColConf['foreign_table'].'.'.$f;
+						if ($uid) {
+								// Display the title of MM related records in lists
+							if ($noRecordLookup) {
+								$MMfield = $theColConf['foreign_table'] . '.uid';
+							} else	{
+								$MMfields = array($theColConf['foreign_table'] . '.' . $TCA[$theColConf['foreign_table']]['ctrl']['label']);
+								foreach (t3lib_div::trimExplode(',', $TCA[$theColConf['foreign_table']]['ctrl']['label_alt'], 1) as $f)	{
+									$MMfields[] = $theColConf['foreign_table'] . '.' . $f;
+								}
+								$MMfield = join(',', $MMfields);
 							}
-							$MMfield = join(',',$MMfields);
-						}
 
-						$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
-						$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
+							$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
+							$dbGroup->start($value, $theColConf['foreign_table'], $theColConf['MM'], $uid, $table, $theColConf);
+							$selectUids = $dbGroup->tableArray[$theColConf['foreign_table']];
 
-						if (is_array($selectUids) && count($selectUids)>0) {
-							$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-								'uid, '.$MMfield,
-								$theColConf['foreign_table'],
-								'uid IN ('.implode(',', $selectUids).')'
-							);
-							while($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
-								$mmlA[] = ($noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult));
-							}
-							$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
+							if (is_array($selectUids) && count($selectUids)>0) {
+								$MMres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+									'uid, ' . $MMfield,
+									$theColConf['foreign_table'],
+									'uid IN (' . implode(',', $selectUids) . ')'
+								);
+								while ($MMrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($MMres)) {
+									$mmlA[] = ($noRecordLookup ? $MMrow['uid'] : self::getRecordTitle($theColConf['foreign_table'], $MMrow, FALSE, $forceResult));
+								}
+								$GLOBALS['TYPO3_DB']->sql_free_result($MMres);
 
-							if (is_array($mmlA)) {
-								$l = implode('; ', $mmlA);
+								if (is_array($mmlA)) {
+									$l = implode('; ', $mmlA);
+								} else {
+									$l = '';
+								}
 							} else {
-								$l = '';
+								$l = 'N/A';
 							}
 						} else {
 							$l = 'N/A';

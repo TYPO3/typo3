@@ -1,6 +1,7 @@
 2010-08-22  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #15102: Scheduler: BE module does not use new skin properly (TYPO3 4.5)
+	* Fixed bug #14949: "View Item" does not resolve real MM-relations (thanks to Caspar Stuebs)
 
 2010-08-20 Steffen Kamper  <steffen@typo3.org>
 
