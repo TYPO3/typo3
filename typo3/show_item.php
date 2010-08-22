@@ -287,7 +287,7 @@ class SC_show_item {
 					$tableRows[] = '
 						<tr>
 							<td class="bgColor5">'.$GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($this->table,$name),1).'</td>
-							<td class="bgColor4">'.htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table,$name,$this->row[$name])).'</td>
+							<td class="bgColor4">' . htmlspecialchars(t3lib_BEfunc::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $this->row['uid'])) . '</td>
 						</tr>';
 				}
 			}
