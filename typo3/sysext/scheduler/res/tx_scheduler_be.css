@@ -13,26 +13,11 @@
 	text-decoration: none;
 }
 
-.tx_scheduler_mod1 .tx_scheduler_task_list {
-	width: 100%;
-}
-
-.tx_scheduler_mod1 td {
-	vertical-align: top;
-}
-.tx_scheduler_mod1 td.cell {
-	padding: 2px 4px;
-}
 .tx_scheduler_mod1 td.right {
 	text-align: right;
 }
 .tx_scheduler_mod1 tr.disabled td {
 	color: #666;
-}
-.tx_scheduler_mod1 .bgColor2 td {
-	text-align: left;
-	font-weight: bold;
-	color: #fff;
 }
 .tx_scheduler_mod1 .late {
 	color: #f00;
@@ -42,14 +27,19 @@
 	display: block;
 	width: 200px;
 }
-.tx_scheduler_mod1 input{}
+.tx_scheduler_mod1 table.typo3-usersettings td {
+	padding: 2px;
+}
+.tx_scheduler_mod1 table.typo3-usersettings td.td-input {
+	width: 400px;
+}
 .tx_scheduler_mod1 select {
 	margin-bottom: 1.2em;
 	width: 200px;
 }
 .tx_scheduler_mod1 input.wide,
 .tx_scheduler_mod1 select.wide {
-	width: 400px;
+	width: 350px;
 }
 .tx_scheduler_mod1 input.checkboxes {
 	width: auto;
@@ -65,11 +55,6 @@
 	padding-top: 10px;
 	padding-bottom: 5px;
 	font-weight: bold;
-}
-
-.tx_scheduler_mod1 th input,
-.tx_scheduler_mod1 td input {
-	margin-bottom: 2px;
 }
 
 /* Definition for BE function "Setup check" */

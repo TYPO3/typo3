@@ -1,7 +1,11 @@
+2010-08-22  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #15102: Scheduler: BE module does not use new skin properly (TYPO3 4.5)
+
 2010-08-20 Steffen Kamper  <steffen@typo3.org>
 
-	* Fixed bug #15514 Bugfix : wrong encoded confirm message in User Admin Module (Thanks to Sven Juergens)
-	* Fixed bug #15507: Bug: MEDIA content element ignores stdWrap configuration (Thanks to Jigal van Hemert)
+	* Fixed bug #15514: Wrong encoded confirm message in User Admin Module (Thanks to Sven Juergens)
+	* Fixed bug #15507: MEDIA content element ignores stdWrap configuration (Thanks to Jigal van Hemert)
 
 2010-08-19  Ingo Renner  <ingo@typo3.org>
 
