@@ -177,7 +177,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			} else {
 				if (!this.items.getCount()) {
 					this.hide();
-					this.fireEvent('resize');
+					this.ownerCt.fireEvent('resize');
 				}
 				this.tabGroups.removeKey(element.title);
 			}
