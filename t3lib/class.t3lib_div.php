@@ -3571,10 +3571,12 @@ final class t3lib_div {
 						<td>';
 					if (is_array($val))	{
 						$result.=self::view_array($val);
-					} elseif (is_object($val))	{
-						$string = get_class($val);
-						if (method_exists($val, '__toString'))	{
-							$string .= ': '.(string)$val;
+					} elseif (is_object($val)) {
+						$string = '';
+						if (method_exists($val, '__toString')) {
+							$string .= get_class($val) . ': ' . (string) $val;
+						} else {
+							$string .= print_r($val, TRUE);
 						}
 						$result .= '<font face="Verdana,Arial" size="1" color="red">'.nl2br(htmlspecialchars($string)).'<br /></font>';
 					} else	{

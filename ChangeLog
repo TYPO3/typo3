@@ -1,3 +1,7 @@
+2010-08-23 Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #15534: t3lib_div::view_array: Improve rendering of objects (Thanks to Stefan Galinski)
+
 2010-08-23 Steffen Kamper  <steffen@typo3.org>
 
 	* Updated sysexts version numbers and md5 values
