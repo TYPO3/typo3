@@ -70,7 +70,7 @@ final class t3lib_utility_Mail {
 		}
 
 		if (!$success) {
-			t3lib_div::sysLog('Mail to "' . $email . '" could not be sent (Subject: "' . $subject . '").', 'Core', 3);
+			t3lib_div::sysLog('Mail to "' . $to . '" could not be sent (Subject: "' . $subject . '").', 'Core', 3);
 		}
 		return $success;
 	}
