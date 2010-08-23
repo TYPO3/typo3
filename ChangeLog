@@ -1,6 +1,7 @@
 2010-08-24 Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15454: Provide a reason for logDeprecatedTypoScript()
+	* Fixed bug #13623: Deprecation log for IMAGE.alttext does not work (Thanks to Sebastian Michaelsen)
 
 2010-08-23 Steffen Gebert  <steffen@steffen-gebert.de>
 
