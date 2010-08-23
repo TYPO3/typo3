@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "func_wizards".
 #
-# Auto generated 22-06-2010 13:06
+# Auto generated 23-08-2010 16:49
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Adds the \'Wizards\' item to the function menu in Web>Func. This is just a framework for wizard extensions.',
 	'category' => 'module',
 	'shy' => 1,
-	'dependencies' => '',
+	'dependencies' => 'func',
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
@@ -39,6 +39,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
 			'typo3' => '4.4.0-0.0.0',
+			'func' => '',
 		),
 		'conflicts' => array(
 		),

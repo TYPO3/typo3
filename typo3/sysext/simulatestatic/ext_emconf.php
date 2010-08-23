@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "simulatestatic".
 #
-# Auto generated 25-11-2009 22:10
+# Auto generated 23-08-2010 17:00
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:2:{s:27:"class.tx_simulatestatic.php";s:4:"a881";s:17:"ext_localconf.php";s:4:"eace";}',
+	'_md5_values_when_last_written' => 'a:2:{s:27:"class.tx_simulatestatic.php";s:4:"89c8";s:17:"ext_localconf.php";s:4:"eace";}',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',

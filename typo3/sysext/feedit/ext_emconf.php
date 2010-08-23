@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "feedit".
 #
-# Auto generated 21-10-2009 11:09
+# Auto generated 23-08-2010 16:48
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -40,7 +40,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:3:{s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"0933";s:34:"view/class.tx_feedit_editpanel.php";s:4:"fe91";}',
+	'_md5_values_when_last_written' => 'a:3:{s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"0933";s:34:"view/class.tx_feedit_editpanel.php";s:4:"9d0a";}',
 	'suggests' => array(
 	),
 );

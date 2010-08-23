@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "func".
 #
-# Auto generated 18-07-2010 18:35
+# Auto generated 23-08-2010 16:49
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,8 +33,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:6:{s:12:"ext_icon.gif";s:4:"2d41";s:14:"ext_tables.php";s:4:"6f55";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"ff90";s:13:"mod1/func.gif";s:4:"2d41";s:14:"mod1/index.php";s:4:"bfdc";}',
+	'version' => '1.1.0',
+	'_md5_values_when_last_written' => 'a:6:{s:12:"ext_icon.gif";s:4:"2d41";s:14:"ext_tables.php";s:4:"6f55";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"ff90";s:13:"mod1/func.gif";s:4:"2d41";s:14:"mod1/index.php";s:4:"8241";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',

@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "info".
 #
-# Auto generated 18-07-2010 18:35
+# Auto generated 23-08-2010 16:53
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next

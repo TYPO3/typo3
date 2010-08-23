@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate_objbrowser".
 #
-# Auto generated 22-06-2010 13:06
+# Auto generated 23-08-2010 17:05
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -34,7 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.0.0',
-	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"2f22";s:12:"ext_icon.gif";s:4:"4226";s:14:"ext_tables.php";s:4:"a29f";s:13:"locallang.xml";s:4:"d28f";s:12:"doc/TODO.txt";s:4:"6bb0";}',
+	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"63a4";s:33:"class.tx_tstemplateobjbrowser.php";s:4:"c5f6";s:12:"ext_icon.gif";s:4:"4226";s:14:"ext_tables.php";s:4:"a29f";s:13:"locallang.xml";s:4:"d28f";s:12:"doc/TODO.txt";s:4:"6bb0";}',
 	'constraints' => array(
 		'depends' => array(
 			'tstemplate' => '',
