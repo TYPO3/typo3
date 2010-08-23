@@ -213,6 +213,11 @@ class t3lib_db_PreparedStatement {
 					throw new InvalidArgumentException('$value is not a boolean as expected: ' . $value, 1281868687);
 				}
 				break;
+			case self::PARAM_NULL:
+				if (!is_null($value)) {
+					throw new InvalidArgumentException('$value is not NULL as expected: ' . $value, 1282489834);
+				}
+				break;
 		}
 
 		$key = is_int($parameter) ? $parameter - 1 : $parameter;
@@ -233,14 +238,22 @@ class t3lib_db_PreparedStatement {
 	 * 	<li>or pass an array of input-only parameter values</li>
 	 * </ul>
 	 *
-	 * Beware: $input_parameters does not behave as in {@link t3lib_db_PreparedStatement::bindParams()}
-	 *         and only works for question mark parameters:
+	 * $input_parameters behave as in {@link t3lib_db_PreparedStatement::bindParams()}
+	 * and work for both named parameters and question mark parameters.
+	 *
+	 * Example 1:
 	 * <code>
 	 * $statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', 'bugs', 'reported_by = ? AND bug_status = ?');
 	 * $statement->execute(array('goofy', 'FIXED'));
 	 * </code>
 	 *
-	 * @param array $input_parameters An array of values with as many elements as there are question mark bound parameters in the SQL statement being executed. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, null), so make sure your variables are properly casted, if needed.
+	 * Example 2:
+	 * <code>
+	 * $statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', 'bugs', 'reported_by = :nickname AND bug_status = :status');
+	 * $statement->execute(array(':nickname' => 'goofy', ':status' => 'FIXED'));
+	 * </code>
+	 *
+	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. The PHP type of each array value will be used to decide which PARAM_* type to use (int, string, boolean, null), so make sure your variables are properly casted, if needed.
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 * @api
 	 */
@@ -251,8 +264,8 @@ class t3lib_db_PreparedStatement {
 
 		if (count($input_parameters) > 0) {
 			$parameterValues = array();
-			foreach ($input_parameters as $value) {
-				$parameterValues[] = array(
+			foreach ($input_parameters as $key => $value) {
+				$parameterValues[$key] = array(
 					'value' => $value,
 					'type'  => $this->guessValueType($value),
 				);
@@ -447,6 +460,10 @@ class t3lib_db_PreparedStatement {
 					$query = implode('', $parts);
 				}
 			} else {
+				if (!preg_match('/^:[\w]+$/', $key)) {
+					throw new InvalidArgumentException('Parameter names must start with ":" followed by an arbitrary number of alphanumerical characters.', 1282348825);
+				}
+
 				for ($i = 1; $i < count($precompiledQueryParts['queryParts']); $i++) {
 					if ($precompiledQueryParts['queryParts'][$i] === $key) {
 						$precompiledQueryParts['queryParts'][$i] = $value;
