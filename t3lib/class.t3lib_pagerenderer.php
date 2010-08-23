@@ -873,6 +873,57 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 	}
 
+	/**
+	 * Adds the ExtDirect code
+	 *
+	 * @return void
+	 */
+	public function addExtDirectCode() {
+			// Note: we need to iterate thru the object, because the addProvider method
+			// does this only with multiple arguments
+		$this->addExtOnReadyCode(
+			'for (var api in Ext.app.ExtDirectAPI) {
+				Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
+			}
+
+			var extDirectDebug = function(message, header, group) {
+				var TYPO3ViewportInstance = null;
+
+				if (top && top.TYPO3 && typeof top.TYPO3.Backend === "object") {
+					TYPO3ViewportInstance = top.TYPO3.Backend;
+				} else if (typeof TYPO3 === "object" && typeof TYPO3.Backend === "object") {
+					TYPO3ViewportInstance = TYPO3.Backend;
+				}
+
+				if (TYPO3ViewportInstance !== null) {
+					TYPO3ViewportInstance.DebugConsole.addTab(message, header, group);
+				} else {
+					document.write(message);
+				}
+			};
+
+			Ext.Direct.on("exception", function(event) {
+				extDirectDebug(
+					"<p>" + event.message + "</p>" +
+					"<p style=\"margin-top: 20px;\">" +
+						"<strong>Backtrace:</strong><br />" +
+						event.where.replace(/#/g, "<br />#") +
+					"</p>",
+					event.method,
+					"ExtDirect - Exception"
+				);
+			});
+
+			Ext.Direct.on("event", function(event, provider) {
+				if (typeof event.debug !== "undefined" && event.debug !== "") {
+					extDirectDebug(event.debug, event.method, "ExtDirect - Debug");
+				}
+			});
+			',
+			TRUE
+		);
+	}
+
 	/* CSS Files */
 
 	/**

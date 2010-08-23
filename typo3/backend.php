@@ -100,18 +100,12 @@ class TYPO3backend {
 		$this->pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
 		$this->pageRenderer->loadExtJS();
 
-			// register the extDirect API providers
-			// Note: we need to iterate thru the object, because the addProvider method
-			// does this only with multiple arguments
 		$this->pageRenderer->addExtOnReadyCode(
-			'for (var api in Ext.app.ExtDirectAPI) {
-				Ext.Direct.addProvider(Ext.app.ExtDirectAPI[api]);
-			}
-			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
+			'TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
 			',
 			TRUE
 		);
-
+		$this->pageRenderer->addExtDirectCode();
 
 			// add default BE javascript
 		$this->js      = '';
