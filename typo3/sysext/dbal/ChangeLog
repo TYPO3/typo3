@@ -1,5 +1,6 @@
 2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Updated ADOdb version dependency
 	* Set version to 1.2.0alpha1
 
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
