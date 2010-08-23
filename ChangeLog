@@ -1,5 +1,6 @@
 2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #15528: Add unit tests for t3lib_db_PreparedStatement (thanks to Helmut Hummel)
 	* Fixed bug #15527: Enhance t3lib_db_PreparedStatement (thanks to Helmut Hummel)
 
 2010-08-23  Ernesto Baschny  <ernst@cron-it.de>
