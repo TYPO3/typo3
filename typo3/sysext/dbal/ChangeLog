@@ -1,3 +1,7 @@
+2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug with BETWEEN / NOT BETWEEN which was not properly supported
+
 2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Code cleanup with useless blank spaces at end of line
