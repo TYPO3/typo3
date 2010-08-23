@@ -1964,8 +1964,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$textLineSubpart = '';
 
 						$description = trim($commentArr[1][$k][$vk]);
-						$isTextarea = preg_match('/^string \(textarea\)/i',$description) ? TRUE : FALSE;
-						$doNotRender = preg_match('/^string \(exclude\)/i', $description) ? TRUE : FALSE;
+						$isTextarea = preg_match('/^(<.*?>)?string \(textarea\)/i', $description) ? TRUE : FALSE;
+						$doNotRender = preg_match('/^(<.*?>)?string \(exclude\)/i', $description) ? TRUE : FALSE;
 
 						if (!is_array($value) && !$doNotRender && ($this->checkForBadString($value) || $isTextarea)) {
 							$k2 = '['.$vk.']';
@@ -1988,7 +1988,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									TRUE,
 									FALSE
 								);
-							} elseif (preg_match('/^boolean/i',$description)) {
+							} elseif (preg_match('/^(<.*?>)?boolean/i', $description)) {
 									// Get the subpart for a checkbox
 								$booleanSubpart = t3lib_parsehtml::getSubpart($template, '###BOOLEAN###');
 									// Define the markers content
@@ -2044,7 +2044,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							);
 								// Define the markers content
 							$markers = array(
-								'description' => htmlspecialchars($description),
+								'description' => $description,
 								'key' => '[' . $k . '][' . $vk . ']',
 								'label' => htmlspecialchars(t3lib_div::fixed_lgd_cs($value, 40))
 							);

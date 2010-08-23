@@ -5,7 +5,16 @@ body {
 	font: 62.8% Verdana, Arial, Helvetica, sans-serif;
 }
 
-p, form, fieldset, h3, h4, h5, h6, dl { 
+pre {
+	font-size: 1.2em;
+	margin: 1em 1em;
+}
+
+code {
+	font-size: 1.2em;
+}
+
+p, form, fieldset, h3, h4, h5, h6, dl {
 	margin: 1em 0 1em 0;
 }
 
@@ -20,6 +29,14 @@ ul {
 
 ol { 
 	list-style: decimal;
+}
+
+dl dd {
+	margin-left: 1.5em;
+}
+
+fieldset li p {
+	margin-top: 0;
 }
 
 h2 {
