@@ -1,6 +1,6 @@
 20010-08-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
-	* Fixed bug #13623: Bug: Deprecation log for IMAGE.alttext does not work (Thanks to Sebastian Michaelsen)
+	* Fixed bug #13623: Deprecation log for IMAGE.alttext does not work (Thanks to Sebastian Michaelsen)
 
 2010-08-23 Steffen Kamper  <steffen@typo3.org>
 
