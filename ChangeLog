@@ -1,3 +1,7 @@
+2010-08-24 Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #15454: Provide a reason for logDeprecatedTypoScript()
+
 2010-08-23 Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15534: t3lib_div::view_array: Improve rendering of objects (Thanks to Stefan Galinski)
