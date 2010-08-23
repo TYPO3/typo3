@@ -29,7 +29,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.ux_t3lib_sqlparser.php 36759 2010-08-14 15:55:24Z xperseguers $
+ * $Id: class.ux_t3lib_sqlparser.php 37143 2010-08-23 21:13:44Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -491,7 +491,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
 								$output .= ')';
 							} elseif (isset($v['func']) && $v['func']['type'] === 'FIND_IN_SET') {
-								$output = ' ' . trim($v['modifier']) . ' ';
+								$output .= ' ' . trim($v['modifier']) . ' ';
 								if ($functionMapping) {
 									switch (TRUE) {
 										case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql')):
@@ -643,7 +643,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 										$output .= ' ' . $v['comparator'];
 
 											// Detecting value type; list or plain:
-										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
+										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
 											if (isset($v['subquery'])) {
 												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 											} else {
@@ -653,6 +653,12 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												}
 												$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 											}
+										} else if (t3lib_div::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
+											$lbound = $v['values'][0];
+											$ubound = $v['values'][1];
+											$output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
+											$output .= ' AND ';
+											$output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
 										} else if (isset($v['value']['operator'])) {
 											$values = array();
 											foreach ($v['value']['args'] as $fieldDef) {

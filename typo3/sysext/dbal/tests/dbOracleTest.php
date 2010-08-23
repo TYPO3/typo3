@@ -208,6 +208,27 @@ class dbOracleTest extends BaseTestCase {
 		}
 	}
 
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=15535
+	 */
+	public function groupConditionsAreProperlyTransformed() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'pages',
+			'pid=0 AND pages.deleted=0 AND pages.hidden=0 AND pages.starttime<=1281620460 '
+			. 'AND (pages.endtime=0 OR pages.endtime>1281620460) AND NOT pages.t3ver_state>0 '
+			. 'AND pages.doktype<200 AND (pages.fe_group=\'\' OR pages.fe_group IS NULL OR '
+			. 'pages.fe_group=\'0\' OR FIND_IN_SET(\'0\',pages.fe_group) OR FIND_IN_SET(\'-1\',pages.fe_group))'
+		));
+		$expected = 'SELECT * FROM "pages" WHERE "pid" = 0 AND "pages"."deleted" = 0 AND "pages"."hidden" = 0 '
+			. 'AND "pages"."starttime" <= 1281620460 AND ("pages"."endtime" = 0 OR "pages"."endtime" > 1281620460) '
+			. 'AND NOT "pages"."t3ver_state" > 0 AND "pages"."doktype" < 200 AND ("pages"."fe_group" = \'\' '
+			. 'OR "pages"."fe_group" IS NULL OR "pages"."fe_group" = \'0\' OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,0,%\' '
+			. 'OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,-1,%\')';
+		$this->assertEquals($expected, $query);
+	}
+
 	///////////////////////////////////////
 	// Tests concerning quoting
 	///////////////////////////////////////

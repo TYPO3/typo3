@@ -9,6 +9,7 @@
 
 2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Resynchronized DBAL after fixing blocking bug #15535
 	* Raised ADOdb to version 5.11.0
 	* Raised DBAL to version 1.2.0alpha1
 	* Fixed bug #15528: Add unit tests for t3lib_db_PreparedStatement (thanks to Helmut Hummel)

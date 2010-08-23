@@ -1,5 +1,7 @@
 2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Fixed bug #15535: Error: No pages are found on the rootlevel! in Frontend when using Oracle
+	* Updated ADOdb version dependency
 	* Set version to 1.2.0alpha1
 
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
