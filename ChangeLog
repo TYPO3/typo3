@@ -4,6 +4,7 @@
 
 2010-08-23 Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15092: Ajax loaded items of inline records are encoded twice (Thanks to Martin Borer)
 	* Fixed bug #15536: DebugConsole - Compat with ExtJS 3.2.x (broken resize event and double split bar) (Thanks to Stefan Galinski)
 	* Updated sysexts version numbers and md5 values
 	* Added feature #15513: Log ExtDirect Exceptions in DebugConsole (Thanks to Stefan Galinski)

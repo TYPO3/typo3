@@ -1201,9 +1201,6 @@ class t3lib_TCEforms_inline {
 			return $this->getErrorMessageForAJAX('Access denied');
 		}
 
-			// Encode TCEforms AJAX response with utf-8:
-		$item = $GLOBALS['LANG']->csConvObj->utf8_encode($item, $GLOBALS['LANG']->charSet);
-
 		if (!$current['uid']) {
 			$jsonArray = array(
 				'data'	=> $item,
@@ -1311,9 +1308,6 @@ class t3lib_TCEforms_inline {
 		if($item === false) {
 			return $this->getErrorMessageForAJAX('Access denied');
 		}
-
-			// Encode TCEforms AJAX response with utf-8:
-		$item = $GLOBALS['LANG']->csConvObj->utf8_encode($item, $GLOBALS['LANG']->charSet);
 
 		$jsonArray = array(
 			'data'	=> $item,
