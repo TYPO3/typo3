@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2006-2010 Karsten Dambekalns <karsten@typo3.org>
+*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2006-2009 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +28,7 @@
 /**
  * Include file extending localRecordList for DBAL compatibility
  *
- * $Id: class.ux_db_list_extra.php 25913 2009-10-27 14:20:41Z xperseguers $
+ * $Id: class.ux_db_list_extra.php 30032 2010-02-14 23:14:56Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>

@@ -362,8 +362,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT * FROM "ext_tt_news_cat"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
@@ -383,8 +383,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "tstamp", "script", SUM("exec_time") AS "calc_sum", COUNT(*) AS "qrycount", MAX("errorflag") AS "error" FROM "tx_dbal_debuglog" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
@@ -401,8 +401,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT MAX("ext_tt_news_cat"."cat_uid") AS "biggest_id" FROM "ext_tt_news_cat"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat"."cat_uid"="ext_tt_news_cat_mm"."uid_foreign"';
@@ -423,8 +423,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT * FROM "sys_refindex", "tx_dam_file_tracking" WHERE "sys_refindex"."tablename" = \'tx_dam_file_tracking\'';
 		$expected .= ' AND (instr("sys_refindex"."ref_string", CONCAT("tx_dam_file_tracking"."path","tx_dam_file_tracking"."filename"),1,1) > 0)';
@@ -442,8 +442,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = 'cpg_categories.pos';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "my_pages" WHERE "my_pages"."page_uid" = "cpg_categories"."page_id"';
 		$expected .= ' AND "my_pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
@@ -461,8 +461,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "news"."news_uid" FROM "ext_tt_news" AS "news" WHERE "news"."news_uid" = 1';
 		$this->assertEquals($expected, $query);
@@ -482,8 +482,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "tt_news_cat"."news_uid" FROM "ext_tt_news" AS "tt_news_cat" WHERE "tt_news_cat"."news_uid" = 1';
 		$this->assertEquals($expected, $query);
@@ -501,7 +501,7 @@ class dbOracleTest extends BaseTestCase {
 		$orderBy      = '';
 
 			// First call to possibly alter (in memory) the mapping from localconf.php
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 
 		$selectFields = 'uid';
 		$fromTables   = 'foo';
@@ -509,8 +509,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "uid" FROM "foo" WHERE "uid" = 1';
 		$this->assertEquals($expected, $query);
@@ -529,8 +529,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "cat"."cat_uid", "cat_mm"."local_uid", "news"."news_uid"';
 		$expected .= ' FROM "ext_tt_news_cat" AS "cat"';
@@ -551,8 +551,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = 'foo.uid';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat_mm"."local_uid"="foo"."news_uid"';
@@ -574,8 +574,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = 'foo.uid';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat_mm"."local_uid"="foo"."news_uid"';
@@ -600,8 +600,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
 		$expected .= ' WHERE "news_uid" IN (';
@@ -623,8 +623,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = 'pages.uid';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "pages"."news_uid" FROM "ext_tt_news" AS "pages"';
 		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" AS "cat_mm" ON "cat_mm"."local_uid"="pages"."news_uid"';
@@ -654,6 +654,28 @@ class dbOracleTest extends BaseTestCase {
 			'fe_users.usergroup LIKE \'2\''
 		));
 		$expected = 'SELECT * FROM "fe_users" WHERE (instr("fe_users"."usergroup", \'2\',1,1) > 0)';
+		$this->assertEquals($expected, $select);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=15253
+	 */
+	public function notLikeIsRemappedAccordingToFieldType() {
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'tt_content.bodytext NOT LIKE \'foo%\''
+		));
+		$expected = 'SELECT * FROM "tt_content" WHERE NOT (dbms_lob.instr("tt_content"."bodytext", \'foo\',1,1) > 0)';
+		$this->assertEquals($expected, $select);
+
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'fe_users',
+			'fe_users.usergroup NOT LIKE \'2\''
+		));
+		$expected = 'SELECT * FROM "fe_users" WHERE NOT (instr("fe_users"."usergroup", \'2\',1,1) > 0)';
 		$this->assertEquals($expected, $select);
 	}
 
@@ -810,8 +832,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT * FROM "tx_crawler_queue" WHERE "process_id" IN (SELECT "ps_id" FROM "tx_crawler_ps" WHERE "is_active" = 0 AND "deleted" = 0)';
 		$this->assertEquals($expected, $query);
@@ -913,8 +935,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT * FROM "tx_crawler_ps" WHERE "is_active" = 0 AND NOT EXISTS (';
 		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_ps"."ps_id" AND "tx_crawler_queue"."exec_time" = 0';
@@ -959,8 +981,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "ps_id", CASE "is_active" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" ';
 		$expected .= 'FROM "tx_crawler_ps" WHERE 1 = 1';
@@ -982,8 +1004,8 @@ class dbOracleTest extends BaseTestCase {
 		$groupBy      = '';
 		$orderBy      = '';
 
-		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
 
 		$expected = 'SELECT "ps_id", CASE "ext_tt_news"."news_uid" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" ';
 		$expected .= 'FROM "tx_crawler_ps", "ext_tt_news" WHERE 1 = 1';
@@ -1035,6 +1057,66 @@ class dbOracleTest extends BaseTestCase {
 			'IFNULL(tt_news_cat_mm.uid_foreign,0) IN (21,22)'
 		));
 		$expected = 'SELECT * FROM "tt_news_cat_mm" WHERE NVL("tt_news_cat_mm"."uid_foreign", 0) IN (21,22)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14985
+	 */
+	public function findInSetIsProperlyRemapped() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'fe_users',
+			'FIND_IN_SET(10, usergroup)'
+		));
+		$expected = 'SELECT * FROM "fe_users" WHERE \',\'||"usergroup"||\',\' LIKE \'%,10,%\'';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14985
+	 */
+	public function findInSetFieldIsProperlyRemapped() {
+		$selectFields = 'fe_group';
+		$fromTables   = 'tt_news';
+		$whereClause  = 'FIND_IN_SET(10, fe_group)';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->_call('SELECTqueryFromArray', $remappedParameters));
+
+		$expected = 'SELECT "usergroup" FROM "ext_tt_news" WHERE \',\'||"ext_tt_news"."usergroup"||\',\' LIKE \'%,10,%\'';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14818
+	 */
+	public function listQueryIsProperlyRemapped() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'fe_users',
+			$GLOBALS['TYPO3_DB']->listQuery('usergroup', 10, 'fe_users')
+		));
+		$expected = 'SELECT * FROM "fe_users" WHERE \',\'||"usergroup"||\',\' LIKE \'%,10,%\'';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12535
+	 */
+	public function likeBinaryOperatorIsRemoved() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'bodytext LIKE BINARY \'test\''
+		));
+		$expected = 'SELECT * FROM "tt_content" WHERE (dbms_lob.instr("bodytext", \'test\',1,1) > 0)';
 		$this->assertEquals($expected, $query);
 	}
 }

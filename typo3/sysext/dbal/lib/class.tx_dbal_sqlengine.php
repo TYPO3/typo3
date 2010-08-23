@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
-*  (c) 2004-2010 Kasper Skaarhoj <kasperYYYY@typo3.com>
+*  (c) 2004-2009 Kasper Skaarhoj <kasperYYYY@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.tx_dbal_sqlengine.php 28572 2010-01-08 17:13:29Z xperseguers $
+ * $Id: class.tx_dbal_sqlengine.php 35523 2010-07-11 14:04:44Z xperseguers $
  *
  * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author Xavier Perseguers <typo3@perseguers.ch>

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2010 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2004-2009 Kasper Skaarhoj (kasper@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * Contains an example DBAL handler class
  *
- * $Id: class.tx_dbal_handler_xmldb.php 25889 2009-10-27 10:09:11Z xperseguers $
+ * $Id: class.tx_dbal_handler_xmldb.php 35523 2010-07-11 14:04:44Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  */

@@ -29,7 +29,7 @@
 /**
  * Class that renders fields for the Extension Manager configuration.
  *
- * $Id: class.tx_dbal_tsparserext.php 28572 2010-01-08 17:13:29Z xperseguers $
+ * $Id: class.tx_dbal_tsparserext.php 36759 2010-08-14 15:55:24Z xperseguers $
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3

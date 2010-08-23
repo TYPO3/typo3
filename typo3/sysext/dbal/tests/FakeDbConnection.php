@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
+*  (c) 2009 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
 /**
  * Fake ADOdb connection factory.
  *
- * $Id: FakeDbConnection.php 27006 2009-11-25 22:08:07Z xperseguers $
+ * $Id: FakeDbConnection.php 36760 2010-08-14 15:58:41Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

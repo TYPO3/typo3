@@ -1,10 +1,50 @@
+2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0alpha1
+
+2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for feature #15457
+	* Added feature #15457: Add support for prepared queries
+
+2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Code cleanup with useless blank spaces at end of line
+
+2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #15253: NOT LIKE is not remapped using dbms_lob.instr with Oracle
+	* Fixed bug #12535: DAM-related: Element browser crashes as where-clause cannot be parsed
+
+2010-07-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15160: Queries should only be parsed once
+
+2010-07-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated PHP documentation
+
+2010-07-16  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added unit test for bug #14818: t3lib_db->listQuery() performance
+	* Fixed bug #14985: FIND_IN_SET should be used isntead of complicated LIKE where clause
+
+2010-07-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15045: Trailing newlines after php closing tag
+
+2010-06-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Synchronized @deprecated annotations with Core
+
 2010-06-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed bug #14814: Improve install tool texts.
+	* Fixed bug #14814: Improve install tool texts
 
-2010-06-13  Xavier Perseguers  <typo3@perseguers.ch>
+2010-06-19  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* Set version to 1.1.7 (TYPO3 4.4i RC1)
+	* Fixed bug #3855: Log number of returned or affected rows
+	* Updated copyright year in manual
 
 2010-06-12  Xavier Perseguers  <typo3@perseguers.ch>
 
@@ -22,10 +62,6 @@
 
 	* Fixed bug #7015: t3lib_DB displays wrong SQL in error case
 
-2010-05-28  Xavier Perseguers  <typo3@perseguers.ch>
-
-	* Set version to 1.1.6 (TYPO3 4.4 beta3)
-
 2010-05-27  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14496: SQL parser does not handle ALTER TABLE with character set operation
@@ -39,22 +75,13 @@
 
 2010-05-03  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* Set version to 1.1.5 (TYPO3 4.4 beta2)
 	* Fixed 1-2-3 installer crash when having only mysql available
-
-2010-05-02  Xavier Perseguers  <typo3@perseguers.ch>
-
-	* Set version to 1.1.4 (TYPO3 4.4 beta2)
 
 2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #14274: Some exception are not caught when trying to install DBAL in 1-2-3 Install Tool process
 	* Fixed bug #2186: Error installing static_info_tables
 	* Fixed bug #14265: Driver dropdown in install tool should be hidden when only MySQL is available
-
-2010-04-30  Xavier Perseguers  <typo3@perseguers.ch>
-
-	* Set version to 1.1.3
 
 2010-04-29  Xavier Perseguers  <typo3@perseguers.ch>
 

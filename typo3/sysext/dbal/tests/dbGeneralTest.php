@@ -62,7 +62,7 @@ class dbGeneralTest extends BaseTestCase {
 		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->temporaryFiles = array();
 
-		$className =  self::buildAccessibleProxy('ux_t3lib_db');
+		$className = self::buildAccessibleProxy('ux_t3lib_db');
 		$GLOBALS['TYPO3_DB'] = new $className;
 		$GLOBALS['TYPO3_DB']->lastHandlerKey = '_DEFAULT';
 	}
@@ -240,6 +240,62 @@ class dbGeneralTest extends BaseTestCase {
 			'MAX(uid) IN (1,2,3,4)'
 		));
 		$expected = 'SELECT * FROM pages WHERE MAX(uid) IN (1,2,3,4)';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12535
+	 */
+	public function likeBinaryOperatorIsKept() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'bodytext LIKE BINARY \'test\''
+		));
+		$expected = 'SELECT * FROM tt_content WHERE bodytext LIKE BINARY \'test\'';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=12535
+	 */
+	public function notLikeBinaryOperatorIsKept() {
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery(
+			'*',
+			'tt_content',
+			'bodytext NOT LIKE BINARY \'test\''
+		));
+		$expected = 'SELECT * FROM tt_content WHERE bodytext NOT LIKE BINARY \'test\'';
+		$this->assertEquals($expected, $query);
+	}
+
+	///////////////////////////////////////
+	// Tests concerning prepared queries
+	///////////////////////////////////////
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=15457
+	 */
+	public function similarNamedParametersAreProperlyReplaced() {
+		$sql = 'SELECT * FROM cache WHERE tag = :tag1 OR tag = :tag10 OR tag = :tag100';
+		$parameterValues = array(
+			':tag1'   => 'tag-one',
+			':tag10'  => 'tag-two',
+			':tag100' => 'tag-three',
+		);
+
+		$className = self::buildAccessibleProxy('t3lib_db_PreparedStatement');
+		$query = $sql;
+		$precompiledQueryParts = array();
+		$statement = new $className($sql, 'cache');
+		$statement->bindValues($parameterValues);
+		$parameters = $statement->_get('parameters');
+
+		$statement->_callRef('replaceValuesInQuery', $query, $precompiledQueryParts, $parameters);
+		$expected = 'SELECT * FROM cache WHERE tag = \'tag-one\' OR tag = \'tag-two\' OR tag = \'tag-three\'';
 		$this->assertEquals($expected, $query);
 	}
 }

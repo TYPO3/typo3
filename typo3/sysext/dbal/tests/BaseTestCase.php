@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Robert Lemke <robert@typo3.org>
+*  (c) 2009 Robert Lemke <robert@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +28,7 @@
  * Subclass this base class if you want to take advantage of the framework
  * capabilities.
  *
- * $Id: BaseTestCase.php 27006 2009-11-25 22:08:07Z xperseguers $
+ * $Id: BaseTestCase.php 36760 2010-08-14 15:58:41Z xperseguers $
  *
  * @author Robert Lemke <robert@typo3.org>
  *

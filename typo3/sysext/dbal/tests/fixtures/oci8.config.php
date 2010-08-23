@@ -2,7 +2,7 @@
 /**
  * Oracle configuration
  *
- * $Id: oci8.config.php 27125 2009-11-29 17:21:28Z xperseguers $
+ * $Id: oci8.config.php 36760 2010-08-14 15:58:41Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -44,7 +44,8 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 	'tt_news' => array(
 		'mapTableName' => 'ext_tt_news',
 		'mapFieldNames' => array(
-			'uid' => 'news_uid',
+			'uid'      => 'news_uid',
+			'fe_group' => 'usergroup',
 		),
 	),
 	'tt_news_cat' => array(
