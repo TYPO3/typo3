@@ -3126,13 +3126,16 @@ class tslib_cObj {
 			$info[3] = t3lib_div::png_to_gif_by_imagemagick($info[3]);
 			$GLOBALS['TSFE']->imagesOnPage[]=$info[3];		// This array is used to collect the image-refs on the page...
 
-			if (!strlen($conf['altText']) && !is_array($conf['altText.']))	{	// Backwards compatible:
-				if ($conf['altText'] || $conf['altText.']) {
-					$GLOBALS['TSFE']->logDeprecatedTyposcript('IMAGE.alttext');
+				// Backwards compatibility if altText is not set and alttext is set
+				// @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6
+			if (strlen($conf['alttext']) || is_array($conf['alttext.'])) {
+				$GLOBALS['TSFE']->logDeprecatedTyposcript('Usage of deprecated IMAGE.alttext, use IMAGE.altText instead - src: ' . $info[3] . ' - original image: ' . $info['origFile']);
+				if (!strlen($conf['altText']) && !is_array($conf['altText.'])) {
+					$conf['altText'] = $conf['alttext'];
+					$conf['altText.'] = $conf['alttext.'];
 				}
-				$conf['altText'] = $conf['alttext'];
-				$conf['altText.'] = $conf['alttext.'];
 			}
+			
 			$altParam = $this->getAltParam($conf);
 			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"'.$this->getBorderAttr(' border="'.intval($conf['border']).'"').(($conf['params'] || is_array($conf['params.']))?' '.$this->stdWrap($conf['params'],$conf['params.']):'').($altParam).' />';
 			if ($conf['linkWrap'])	{
