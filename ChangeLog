@@ -1,3 +1,7 @@
+2010-08-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15539: Unit Tests: $GLOBALS['TYPO3_DB']->link get lost during backup/ restore of global variables (thanks to Helmut Hummel)
+
 2010-08-24  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15502: localization links in list mode are brocken (Thanks to Bjoern Pedersen)

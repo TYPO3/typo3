@@ -31,10 +31,21 @@
  * @subpackage t3lib
  */
 class t3lib_SpriteManagerTest extends tx_phpunit_testcase {
+
 	/**
 	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
 	 */
-	public $backupGlobals = TRUE;
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 
 	//////////////////////////////////////////
