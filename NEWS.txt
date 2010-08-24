@@ -106,9 +106,9 @@ TypoScript
 			decimals = 2
 			dec_point = ,
 		}
-		noTrimWrap = || €|
+		noTrimWrap = || $|
 	}
-	# Will result in "0,80 €"
+	# Will result in "0,80 $"
 	
 	* GIFBUILDER has a new feature: ELLIPSE (#2049). Example:
 	file  =  GIFBUILDER
