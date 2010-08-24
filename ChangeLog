@@ -12,6 +12,7 @@
 	* Fixed bug #13623: Deprecation log for IMAGE.alttext does not work (Thanks to Sebastian Michaelsen)
 	* Fixed bug #15541: Improve wording in Install Tool "All configuration"
 	* Added feature #15538: Links inside Install Tool "All configuration"
+	* Follow-up to #15454: Typo in PHPDoc comments (Thanks to Ismaël Bidau)
 
 2010-08-23  Stanislas Rolland  <typo3@sjbr.ca>
 

@@ -4267,7 +4267,7 @@ if (version == "n3") {
 	 * Note: The second parameter was introduced in TYPO3 4.5 and is not available in older versions
 	 *
 	 * @param	string		Deprecated object or property
-	 * @param	string		Message or additional infomration
+	 * @param	string		Message or additional information
 	 * @return	void
 	 * @see t3lib_div::deprecationLog(), t3lib_timeTrack::setTSlogMessage()
 	 */
