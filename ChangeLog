@@ -1,3 +1,7 @@
+2010-08-24  Ernesto Baschny  <ernesto@typo3.org>
+
+	* Release of TYPO3 4.5.0alpha1
+
 2010-08-24  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15108: .htaccess cleanups and description in the Install Tool (thanks to Markus Klein)
