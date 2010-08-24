@@ -370,12 +370,17 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	function fetchSessionData()	{
 			// Gets SesData if any AND if not already selected by session fixation check in ->isExistingSessionRecord()
 		if ($this->id && !count($this->sesData)) {
-			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_session_data', 'hash='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'fe_session_data'));
-			if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres))	{
+			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery(
+				'*',
+				'fe_session_data',
+				'hash = :hash'
+			);
+			$statement->execute(array(':hash' => $this->id));
+			if (($sesDataRow = $statement->fetch()) !== FALSE) {
 				$this->sesData = unserialize($sesDataRow['content']);
 				$this->sessionDataTimestamp = $sesDataRow['tstamp'];
 			}
-			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
+			$statement->free();
 		}
 	}
 
@@ -531,17 +536,18 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 			// Check if there are any fe_session_data records for the session ID the client claims to have
 		if ($count == false) {
-			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-							'content',
-							'fe_session_data',
-							'hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, 'fe_session_data')
-						);
-			if ($dbres !== false) {
-				if ($sesDataRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
+			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery(
+				'content',
+				'fe_session_data',
+				'hash = :hash'
+			);
+			$res = $statement->execute(array(':hash' => $id));
+			if ($res !== FALSE) {
+				if ($sesDataRow = $statement->fetch()) {
 					$count = true;
 					$this->sesData = unserialize($sesDataRow['content']);
 				}
-				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
+				$statement->free();
 			}
 		}
 

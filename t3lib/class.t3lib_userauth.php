@@ -772,9 +772,15 @@ class t3lib_userAuth {
 		if ($this->writeDevLog) 	t3lib_div::devLog('Fetch session ses_id = '.$this->id, 't3lib_userAuth');
 
 			// fetch the user session from the DB
-		$dbres = $this->fetchUserSessionFromDB();
+		$statement = $this->fetchUserSessionFromDB();
+		$user = FALSE;
+		if ($statement) {
+			$statement->execute();
+			$user = $statement->fetch();
+			$statement->free();
+		}
 
-		if ($dbres && $user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres)) {
+		if ($statement && $user) {
 				// A user was found
 			if (is_string($this->auth_timeout_field))	{
 				$timeout = intval($user[$this->auth_timeout_field]);		// Get timeout-time from usertable
@@ -849,12 +855,16 @@ class t3lib_userAuth {
 	 * @return	boolean		Returns true if a corresponding session was found in the database
 	 */
 	function isExistingSessionRecord($id) {
-		$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-						'ses_id',
-						$this->session_table,
-						'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($id, $this->session_table)
-					);
-		return (($count ? true : false));
+		$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery(
+			'COUNT(*)',
+			$this->session_table,
+			'ses_id = :ses_id'
+		);
+		$statement->execute(array(':ses_id' => $id));
+		$row = $statement->fetch(t3lib_db_PreparedStatement::FETCH_NUM);
+		$statement->free();
+
+		return (($row[0] ? TRUE : FALSE));
 	}
 
 
@@ -882,40 +892,50 @@ class t3lib_userAuth {
 	 * then don't evaluate with the hashLockClause, as the client/browser is included in this hash
 	 * and thus, the flash request would be rejected
 	 *
-	 * @return DB result object or false on error
+	 * @return t3lib_db_PreparedStatement
 	 * @access private
 	 */
 	protected function fetchUserSessionFromDB() {
+		$statement = null;
+		$ipLockClause = $this->ipLockClause();
 
 		if ($GLOBALS['CLIENT']['BROWSER'] == 'flash') {
 			// if on the flash client, the veri code is valid, then the user session is fetched
 			// from the DB without the hashLock clause
 			if (t3lib_div::_GP('vC') == $this->veriCode()) {
-				$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'*',
-						$this->session_table.','.$this->user_table,
-						$this->session_table.'.ses_id = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
-							AND '.$this->session_table.'.ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table).'
-							AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.'
-							'.$this->ipLockClause().'
-							'.$this->user_where_clause()
+				$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery(
+					'*',
+					$this->session_table . ',' . $this->user_table,
+					$this->session_table . '.ses_id = :ses_id
+						AND ' . $this->session_table . '.ses_name = :ses_name
+						AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
+						' . $ipLockClause['where'] . '
+						' . $this->user_where_clause()
 				);
-			} else {
-				$dbres = false;
+				$statement->bindValues(array(
+					':ses_id'     => $this->id,
+					':ses_name'   => $this->name,
+				));
+				$statement->bindValues($ipLockClause['parameters']);
 			}
 		} else {
-			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*',
-					$this->session_table.','.$this->user_table,
-					$this->session_table.'.ses_id = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table).'
-						AND '.$this->session_table.'.ses_name = '.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table).'
-						AND '.$this->session_table.'.ses_userid = '.$this->user_table.'.'.$this->userid_column.'
-						'.$this->ipLockClause().'
-						'.$this->hashLockClause().'
-						'.$this->user_where_clause()
+			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery(
+				'*',
+				$this->session_table . ',' . $this->user_table,
+				$this->session_table . '.ses_id = :ses_id
+					AND ' . $this->session_table . '.ses_name = :ses_name
+					AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
+					' . $ipLockClause['where'] . '
+					' . $this->hashLockClause() . '
+					' . $this->user_where_clause()
 			);
+			$statement->bindValues(array(
+				':ses_id'     => $this->id,
+				':ses_name'   => $this->name,
+			));
+			$statement->bindValues($ipLockClause['parameters']);
 		}
-		return $dbres;
+		return $statement;
 	}
 
 
@@ -925,7 +945,7 @@ class t3lib_userAuth {
 	 * @return	string
 	 * @access private
 	 */
-	function user_where_clause()	{
+	protected function user_where_clause() {
 		return  (($this->enablecolumns['rootLevel']) ? 'AND '.$this->user_table.'.pid=0 ' : '').
 				(($this->enablecolumns['disabled']) ? ' AND '.$this->user_table.'.'.$this->enablecolumns['disabled'].'=0' : '').
 				(($this->enablecolumns['deleted']) ? ' AND '.$this->user_table.'.'.$this->enablecolumns['deleted'].'=0' : '').
@@ -934,19 +954,26 @@ class t3lib_userAuth {
 	}
 
 	/**
-	 * This returns the where-clause needed to lock a user to the IP address
+	 * This returns the where prepared statement-clause needed to lock a user to the IP address
 	 *
-	 * @return	string
+	 * @return array
 	 * @access private
 	 */
-	function ipLockClause()	{
+	protected function ipLockClause() {
+		$statementClause = array(
+			'where' => '',
+			'parameters' => array(),
+		);
 		if ($this->lockIP)	{
-			$wherePart = 'AND (
-				'.$this->session_table.'.ses_iplock='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->ipLockClause_remoteIPNumber($this->lockIP),$this->session_table).'
-				OR '.$this->session_table.'.ses_iplock=\'[DISABLED]\'
+			$statementClause['where'] = 'AND (
+				' . $this->session_table . '.ses_iplock = :ses_iplock
+				OR ' . $this->session_table . '.ses_iplock=\'[DISABLED]\'
 				)';
-			return $wherePart;
+			$statementClause['parameters'] = array(
+				':ses_iplock' => $this->ipLockClause_remoteIPNumber($this->lockIP),
+			);
 		}
+		return $statementClause;
 	}
 
 	/**
@@ -957,7 +984,7 @@ class t3lib_userAuth {
 	 * @return	string		(Partial) IP address for REMOTE_ADDR
 	 * @access private
 	 */
-	function ipLockClause_remoteIPNumber($parts)	{
+	protected function ipLockClause_remoteIPNumber($parts) {
 		$IP = t3lib_div::getIndpEnv('REMOTE_ADDR');
 
 		if ($parts>=4)	{
@@ -988,7 +1015,7 @@ class t3lib_userAuth {
 	 * @return	string
 	 * @access private
 	 */
-	function hashLockClause()	{
+	protected function hashLockClause() {
 		$wherePart = 'AND '.$this->session_table.'.ses_hashlock='.intval($this->hashLockClause_getHashInt());
 		return $wherePart;
 	}
@@ -999,7 +1026,7 @@ class t3lib_userAuth {
 	 * @return	integer		Hash integer
 	 * @access private
 	 */
-	function hashLockClause_getHashInt()	{
+	protected function hashLockClause_getHashInt() {
 		$hashStr = '';
 
 		if (t3lib_div::inList($this->lockHashKeyWords,'useragent'))	$hashStr.=':'.t3lib_div::getIndpEnv('HTTP_USER_AGENT');
