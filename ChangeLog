@@ -1,3 +1,7 @@
+2010-08-24  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15502: localization links in list mode are brocken (Thanks to Bjoern Pedersen)
+
 2010-08-24  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Raised Fluid and Extbase version numbers to 1.3.0alpha1. See ChangeLog.txt in Extbase/Fluid for a full list of changes.

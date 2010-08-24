@@ -1570,9 +1570,10 @@ class localRecordList extends recordList {
 			$lNew = '';
 			foreach($this->pageOverlays as $lUid_OnPage => $lsysRec)	{
 				if (!isset($translations['translations'][$lUid_OnPage]) && $GLOBALS['BE_USER']->checkLanguageAccess($lUid_OnPage))	{
-					$href = $this->backPath . $GLOBALS['TBE_TEMPLATE']->issueCommand(
-						'&cmd['.$table.']['.$row['uid'].'][localize]='.$lUid_OnPage,
-						$this->listURL().'&justLocalized='.rawurlencode($table.':'.$row['uid'].':'.$lUid_OnPage)
+					$url = substr($this->listURL(), strlen($this->backPath));
+					$href = $GLOBALS['SOBE']->doc->issueCommand(
+						'&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
+						$url . '&justLocalized=' . rawurlencode($table . ':' . $row['uid'] . ':' . $lUid_OnPage)
 					);
 					$language = t3lib_BEfunc::getRecord('sys_language', $lUid_OnPage, 'title');
 					$lC = ($this->languageIconTitles[$lUid_OnPage]['flagIcon'] ? '<img src="'.$this->languageIconTitles[$lUid_OnPage]['flagIcon'].'" class="absmiddle" alt="" />' : $this->languageIconTitles[$lUid_OnPage]['title']);
