@@ -1,3 +1,7 @@
+2010-08-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15439: htmlArea RTE: Deprecated call-time pass-by-reference
+
 20010-08-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #13623: Deprecation log for IMAGE.alttext does not work (Thanks to Sebastian Michaelsen)
