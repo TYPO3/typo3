@@ -6,7 +6,7 @@
 
 	* Fixed bug #12583: htmlArea RTE: RTE fails to load due to security error
 
-2010-08-23 Steffen Kamper  <steffen@typo3.org>
+2010-08-23  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15092: Ajax loaded items of inline records are encoded twice (Thanks to Martin Borer)
 
@@ -14,7 +14,7 @@
 
 	* Fixed bug #15526: No recipient is logged to syslog if sending of mail failed in t3lib_utility_Mail (Thanks to Helmut Hummel)
 
-2010-08-22 Francois Suter  <francois@typo3.org>
+2010-08-22  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14949: "View Item" does not resolve real MM-relations (thanks to Caspar Stuebs)
 
@@ -39,7 +39,7 @@
 
 	* Fixed bug #15241: Recognize php-fpm sapi for path generation (thanks to Nikolas Hagelstein)
 
-2010-08-15 Steffen Kamper  <steffen@typo3.org>
+2010-08-15  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15424: [web_info] allow more than 3 levels for pagetree overview and localization overview
 
@@ -55,7 +55,7 @@
 
 	* Follow-up to #15383: [Unit tests] Uncomment three tests which fail for php 5.3.0 on windows (Thanks to Steffen Kamper)
 
-2010-08-12 Steffen Kamper  <steffen@typo3.org>
+2010-08-12  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #3819: #15440: isFirstPartOfStr doesn't work with non-strings (Thanks to Michiel Roos)
 	* Follow-up to #3819: t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') delivers wrong value in Backend
@@ -536,7 +536,7 @@
 	* Fixed bug #10424: Old version (3.x) screenshots in CSH (Big thanks to Philipp Gampe)
 	* Followup to #14733: Improvements to Backend skin - Added styling to missing parts of the Backend
 
-2010-06-19 Francois Suter  <francois@typo3.org>
+2010-06-19  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #14184: Scheduler: Handle invalid serialized exception objects
 	* Fixed bug: #14792: Scheduler: Screenshots in the manual must be updated for new skin
@@ -916,7 +916,7 @@
 	* Fixed bug #14503: HTML is shown in sysext belog after the usage of the sprite api for icons (thanks to Andy Grunwald)
 	* Follow-up to feature #14490: Fatal error in typo3/sysext/cms/layout/class.tx_cms_layout.php
 
-2010-05-28 Francois Suter  <francois@typo3.org>
+2010-05-28  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #13315: Scheduler: Failed status hides other statuses
 
@@ -1200,7 +1200,7 @@
 	* Fixed bug #14295: Recycler and tcemain->process_cmdmap cannot undelete some records (thanks to Lars Houmark)
 	* Fixed bug #14307: fe_user passwords are visible in the info popup window in the backend (thanks to Lars Houmark)
 
-2010-05-04 Francois Suter  <francois@typo3.org>
+2010-05-04  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14255: Navigation title field should also be displayed on shortcuts page (thanks to Steffen Gebert)
 
@@ -1212,7 +1212,7 @@
 
 	* Release of TYPO3 4.4.0beta2
 
-2010-05-03 Francois Suter  <francois@typo3.org>
+2010-05-03  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14275: Error handler does not catch exception while connecting to DB
 
@@ -1259,7 +1259,7 @@
 	* Followup to #14064: Textual change to the new install tool
 	* Followup to #7501: Removed check for static templates from installer
 
-2010-05-01 Francois Suter  <francois@typo3.org>
+2010-05-01  Francois Suter  <francois@typo3.org>
 
 	* Follow-up to #14195: removed file typo3/sysext/t3skin/stylesheets/.htaccess which has become useless
 
@@ -1281,7 +1281,7 @@
 
 	* Added feature #12502: Use HMACs for authenticity and integrity checks (Thanks to Marcus Krause and the TYPO3 Security Team)
 
-2010-04-30 Francois Suter  <francois@typo3.org>
+2010-04-30  Francois Suter  <francois@typo3.org>
 
 	* Added feature #14195: Reorganize the backend stylesheets (thanks to Fabien Udriot and Steffen Gebert)
 
@@ -1370,7 +1370,7 @@
 	* Follow-up to bug #3977: Added unit tests for t3lib_div:mkdir() and t3lib_div::fixPermissions()
 	* Fixed bug #3977: Permissions not set on extracted localization files (Thanks to Lars Houmark)
 
-2010-04-25 Francois Suter  <francois@typo3.org>
+2010-04-25  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug: #14107: Scheduler: Missing Flash message in the Scheduler (thanks to Georg Ringer)
 
@@ -1378,11 +1378,11 @@
 
 	* Fixed bug #14182: Multiple join conditions are not supported
 
-2010-04-22 Jochen Rau <jochen.rau@typoplanet.de>
+2010-04-22  Jochen Rau <jochen.rau@typoplanet.de>
 
 	* Fixed bug #14131: Styling of cookie warning is hardcoded (thanks to Jigal van Hemert)
 
-2010-04-22 Jochen Rau <jochen.rau@typoplanet.de>
+2010-04-22  Jochen Rau <jochen.rau@typoplanet.de>
 
 	* Fixed bug #13972: cropHTML uses faulty reg exp for HTML entities (thanks to Ralf Hettinger)
 
@@ -1438,7 +1438,7 @@
 	* Fixed bug #13630: Status Report reports "Install Tool: disabled" when it is not. (thanks to Gregor Hermens)
 	* Fixed bug #13941: Deleting pages should check language permissions (thanks to Tolleiv Nietsch)
 
-2010-04-16 Francois Suter  <francois@typo3.org>
+2010-04-16  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14090: In Extension Manager importExtInfo() does not sort versions correctly (thanks to Daniel Minder and Steffen Gebert)
 
@@ -2098,7 +2098,7 @@
 2010-02-05  Steffen Kamper  <info@sk-typo3.de>
 
 	* Fixed bug #13391: JS-error in common.js crashes flash uploader
-	* Fixed bug #13348: Datepicker is brocken with ExtJS 3.1
+	* Fixed bug #13348: Datepicker is broken with ExtJS 3.1
 	* Converted t3lib/extjs files to unix format.
 
 2010-02-05  Francois Suter  <francois@typo3.org>
