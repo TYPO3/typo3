@@ -19,6 +19,7 @@
 			<label index="wiz_newPages_lReset">Clear fields</label>
 			<label index="wiz_newPages_noCreate">No pages were created!</label>
 			<label index="wiz_newPages_create">The pages were created!</label>
+			<label index="wiz_newPages_addMoreLines">Add more lines</label>
 		</languageKey>
 	</data>
 </T3locallang>

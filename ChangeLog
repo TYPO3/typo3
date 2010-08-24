@@ -4,6 +4,7 @@
 
 2010-08-24  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #15524: Create multiple pages wizard: add doktype, dynamic add more fields
 	* Fixed bug #15502: localization links in list mode are broken (Thanks to Bjoern Pedersen)
 
 2010-08-24  Sebastian Kurfuerst  <sebastian@typo3.org>
