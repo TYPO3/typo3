@@ -991,6 +991,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		if (!stylesAreLoaded) {
 			this.getStyleSheets.defer(100, this);
 			HTMLArea._appendToLog('[HTMLArea.Iframe::getStyleSheets]: Stylesheets not yet loaded (' + errorText + '). Retrying...');
+			if (/Security/i.test(errorText)) {
+				HTMLArea._appendToLog('ERROR [HTMLArea.Iframe::getStyleSheets]: A security error occurred. Make sure all stylesheets are accessed from the same domain/subdomain and using the same protocol as the current script.');
+			}
 		} else {
 			HTMLArea._appendToLog('[HTMLArea.Iframe::getStyleSheets]: Stylesheets successfully accessed.');
 				// Style the document body

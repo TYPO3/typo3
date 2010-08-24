@@ -1,3 +1,7 @@
+2010-08-23  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #12583: htmlArea RTE: RTE fails to load due to security error
+
 2010-08-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15355: htmlArea RTE: Using the advanded frontend editing, the editor is not loaded in the text tab
