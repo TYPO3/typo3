@@ -1,4 +1,0 @@
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule   ^typo3$  typo3/index_re.php
-RewriteRule   ^[^/]*\.html$  index.php

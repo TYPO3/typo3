@@ -203,6 +203,11 @@ A:	Make sure that AllowOverride allows "Indexes" and "FileInfo" in the Apache
 	/var/log/httpd. Check with your hosting provider if you are in doubt where
 	the logs are located.
 
+Q:	Backend or Installer looks strange, no images just black and white?
+A:	Maybe you missed some configuration in your .htaccess file.
+	Have a look at typo3_src/misc/advanced.htaccess to find the options
+	you might need.
+
 Q:	I went through the setup process and created an admin user. Why can't I log
 	in now?
 A:	If you use MySQL 5.x or newer, try setting it to "compatible" mode. Open the

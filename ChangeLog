@@ -1,3 +1,7 @@
+2010-08-24  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15108: .htaccess cleanups and description in the Install Tool (thanks to Markus Klein)
+
 2010-08-24  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #15542: Frontend rendering should use prepared queries (1st step)
