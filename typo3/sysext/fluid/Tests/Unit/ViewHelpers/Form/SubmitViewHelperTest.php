@@ -25,7 +25,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the "Submit" Form view helper
  *
- * @version $Id: SubmitViewHelperTest.php 3350 2009-10-27 12:01:08Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_Form_SubmitViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {

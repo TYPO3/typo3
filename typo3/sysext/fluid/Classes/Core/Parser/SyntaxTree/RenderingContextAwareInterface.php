@@ -25,9 +25,6 @@
  * marked with this interface will get the current rendering context injected
  * by the ObjectAccessorNode on trying to evaluate them.
  *
- * @version $Id$
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 interface Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface {
@@ -35,10 +32,10 @@ interface Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface {
 	/**
 	 * Sets the current rendering context
 	 *
-	 * @param $renderingContext
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return void
 	 */
-	public function setRenderingContext($renderingContext);
+	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
 
 }
 

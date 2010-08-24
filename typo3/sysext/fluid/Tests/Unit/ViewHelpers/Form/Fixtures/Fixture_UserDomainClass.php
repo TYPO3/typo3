@@ -23,9 +23,6 @@
 /**
  * Example domain class which can be used to test different view helpers, e.g. the "select" view helper.
  *
- * @version $Id: Fixture_UserDomainClass.php 3350 2009-10-27 12:01:08Z k-fish $
- * @package Fluid
- * @subpackage ViewHelpers\Fixtures
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass {

@@ -25,7 +25,6 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * Testcase for AliasViewHelper
  *
- * @version $Id: AliasViewHelperTest.php 3350 2009-10-27 12:01:08Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_AliasViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
@@ -45,6 +44,7 @@ class Tx_Fluid_ViewHelpers_AliasViewHelperTest extends Tx_Fluid_ViewHelpers_View
 
 		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
 		$viewHelper->setViewHelperNode($mockViewHelperNode);
+		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->render(array('someAlias' => 'someValue'));
 	}
 
@@ -65,6 +65,7 @@ class Tx_Fluid_ViewHelpers_AliasViewHelperTest extends Tx_Fluid_ViewHelpers_View
 
 		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
 		$viewHelper->setViewHelperNode($mockViewHelperNode);
+		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->render(array('someAlias' => 'someValue', 'someOtherAlias' => 'someOtherValue'));
 	}
 
@@ -83,6 +84,7 @@ class Tx_Fluid_ViewHelpers_AliasViewHelperTest extends Tx_Fluid_ViewHelpers_View
 
 		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
 		$viewHelper->setViewHelperNode($mockViewHelperNode);
+		$viewHelper->setRenderingContext($this->renderingContext);
 
 		$this->assertEquals('foo', $viewHelper->render(array()));
 	}

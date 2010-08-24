@@ -25,7 +25,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Testcase for the email uri view helper
  *
- * @version $Id: EmailViewHelperTest_testcase.php 1734 2009-11-25 21:53:57Z stucki $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

@@ -26,7 +26,6 @@ require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
  * Testcase for CycleViewHelper
  *
- * @version $Id: GroupedForViewHelperTest.php 3350 2009-10-27 12:01:08Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_GroupedForViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
@@ -153,6 +152,72 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelperTest extends Tx_Fluid_ViewHelpers
 		$this->templateVariableContainer->expects($this->at(7))->method('remove')->with('products');
 
 		$this->viewHelper->render($products, 'products', 'license', 'myGroupKey');
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderGroupsMultidimensionalArrayByObjectKey() {
+		$customer1 = new stdClass();
+		$customer1->name = 'Anton Abel';
+
+		$customer2 = new stdClass();
+		$customer2->name = 'Balthasar Bux';
+
+		$invoice1 = array('date' => new DateTime('1980-12-13'), 'customer' => $customer1);
+		$invoice2 = array('date' => new DateTime('2010-07-01'), 'customer' => $customer1);
+		$invoice3 = array('date' => new DateTime('2010-07-04'), 'customer' => $customer2);
+
+		$invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+
+		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', $customer1);
+		$this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', array('invoice1' => $invoice1, 'invoice2' => $invoice2));
+		$this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
+		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('invoices');
+		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', $customer2);
+		$this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', array('invoice3' => $invoice3));
+		$this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
+		$this->templateVariableContainer->expects($this->at(7))->method('remove')->with('invoices');
+
+		$this->viewHelper->render($invoices, 'invoices', 'customer', 'myGroupKey');
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function renderGroupsMultidimensionalObjectByObjectKey() {
+		$customer1 = new stdClass();
+		$customer1->name = 'Anton Abel';
+
+		$customer2 = new stdClass();
+		$customer2->name = 'Balthasar Bux';
+
+		$invoice1 = new stdClass();
+		$invoice1->date = new DateTime('1980-12-13');
+		$invoice1->customer = $customer1;
+
+		$invoice2 = new stdClass();
+		$invoice2->date = new DateTime('2010-07-01');
+		$invoice2->customer = $customer1;
+
+		$invoice3 = new stdClass();
+		$invoice3->date = new DateTime('2010-07-04');
+		$invoice3->customer = $customer2;
+
+		$invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
+
+		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('myGroupKey', $customer1);
+		$this->templateVariableContainer->expects($this->at(1))->method('add')->with('invoices', array('invoice1' => $invoice1, 'invoice2' => $invoice2));
+		$this->templateVariableContainer->expects($this->at(2))->method('remove')->with('myGroupKey');
+		$this->templateVariableContainer->expects($this->at(3))->method('remove')->with('invoices');
+		$this->templateVariableContainer->expects($this->at(4))->method('add')->with('myGroupKey', $customer2);
+		$this->templateVariableContainer->expects($this->at(5))->method('add')->with('invoices', array('invoice3' => $invoice3));
+		$this->templateVariableContainer->expects($this->at(6))->method('remove')->with('myGroupKey');
+		$this->templateVariableContainer->expects($this->at(7))->method('remove')->with('invoices');
+
+		$this->viewHelper->render($invoices, 'invoices', 'customer', 'myGroupKey');
 	}
 
 	/**

@@ -15,9 +15,6 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
- * @version $Id: TemplateParserBuilder.php 2043 2010-03-16 08:49:45Z sebastian $
  */
 /**
  * Build a template parser.

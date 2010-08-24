@@ -14,9 +14,6 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
- * @version $Id: Fluid.php 1734 2009-11-25 21:53:57Z stucki $
  */
 class Tx_Fluid_Fluid {
 	const NAMESPACE_SEPARATOR = '_';

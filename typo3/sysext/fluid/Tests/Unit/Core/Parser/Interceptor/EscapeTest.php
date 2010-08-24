@@ -23,7 +23,6 @@
 /**
  * Testcase for Interceptor\Escape
  *
- * @version $Id: EscapeTest.php 3751 2010-01-22 15:56:47Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_Interceptor_EscapeTest extends Tx_Extbase_BaseTestCase {

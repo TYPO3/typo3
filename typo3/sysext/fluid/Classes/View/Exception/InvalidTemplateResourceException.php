@@ -23,9 +23,6 @@
 /**
  * An "Invalid Template Resource" exception
  *
- * @version $Id: InvalidTemplateResourceException.php 3643 2010-01-15 14:38:07Z robert $
- * @package Fluid
- * @subpackage View\Exception
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */

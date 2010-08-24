@@ -26,7 +26,6 @@
  * <link href="Resources/Packages/MyPackage/stylesheet.css" rel="stylesheet" />
  * (depending on current package)
  *
- * @version $Id: ResourceViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -49,7 +48,7 @@ class Tx_Fluid_ViewHelpers_Uri_ResourceViewHelper extends Tx_Fluid_Core_ViewHelp
 		$uri = t3lib_div::getFileAbsFileName($uri);
 		$uri = substr($uri, strlen(PATH_site));
 
-		if (TYPO3_MODE === 'BE' && $absolute === FALSE) {
+		if (TYPO3_MODE === 'BE' && $absolute === FALSE && $uri !== FALSE) {
 			$uri = '../' . $uri;
 		}
 

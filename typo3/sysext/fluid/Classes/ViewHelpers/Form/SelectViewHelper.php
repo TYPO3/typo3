@@ -60,9 +60,6 @@
  *
  * The "value" property now expects a domain object, and tests for object equivalence.
  *
- * @version $Id: SelectViewHelper.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
@@ -96,6 +93,7 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		$this->registerArgument('optionValueField', 'string', 'If specified, will call the appropriate getter on each object to determine the value.');
 		$this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.');
 		$this->registerArgument('sortByOptionLabel', 'boolean', 'If true, List will be sorted by label.', FALSE, FALSE);
+		$this->registerArgument('selectAllByDefault', 'boolean', 'If specified options are selected if none was set before.', FALSE, FALSE);
 		$this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
 	}
 
@@ -123,10 +121,13 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 
 		$this->setErrorClassAttribute();
 
+		$content = '';
+
 		// register field name for token generation.
 		// in case it is a multi-select, we need to register the field name
 		// as often as there are elements in the box
-		if ($this->arguments->hasArgument('multiple')) {
+		if ($this->arguments->hasArgument('multiple') && $this->arguments['multiple'] !== '') {
+			$content .= $this->renderHiddenFieldForEmptyValue();
 			for ($i=0; $i<count($options); $i++) {
 				$this->registerFieldNameForFormTokenGeneration($name);
 			}
@@ -134,7 +135,8 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 			$this->registerFieldNameForFormTokenGeneration($name);
 		}
 
-		return $this->tag->render();
+		$content .= $this->tag->render();
+		return $content;
 	}
 
 	/**
@@ -212,16 +214,21 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	/**
 	 * Render the option tags.
 	 *
-	 * @return boolean true if the
+	 * @return boolean TRUE if the value should be marked a s selected; FALSE otherwise
 	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @author Jochen Rau <jochen.rau@typoplanet.de>
 	 */
 	protected function isSelected($value) {
 		$selectedValue = $this->getSelectedValue();
 		if ($value === $selectedValue || (string)$value === $selectedValue) {
 			return TRUE;
 		}
-		if ($this->arguments->hasArgument('multiple') && is_array($selectedValue) && in_array($value, $selectedValue)) {
-			return TRUE;
+		if ($this->arguments->hasArgument('multiple')) {
+			if (is_null($selectedValue) && $this->arguments['selectAllByDefault'] === TRUE) {
+				return TRUE;
+			} elseif (is_array($selectedValue) && in_array($value, $selectedValue)) {
+				return TRUE;
+			}
 		}
 		return FALSE;
 	}

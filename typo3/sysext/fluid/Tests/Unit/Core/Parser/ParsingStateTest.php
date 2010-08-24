@@ -23,7 +23,6 @@
 /**
  * Testcase for ParsingState
  *
- * @version $Id: ParsingStateTest.php 3751 2010-01-22 15:56:47Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_ParsingStateTest extends Tx_Extbase_BaseTestCase {
@@ -67,12 +66,10 @@ class Tx_Fluid_Core_Parser_ParsingStateTest extends Tx_Extbase_BaseTestCase {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function renderCallsTheRightMethodsOnTheRootNode() {
-		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
+		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContextInterface');
 
 		$rootNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
-		$rootNode->expects($this->once())->method('setRenderingContext')->with($renderingContext);
-
-		$rootNode->expects($this->once())->method('evaluate')->will($this->returnValue('T3DD09 Rock!'));
+		$rootNode->expects($this->once())->method('evaluate')->with($renderingContext)->will($this->returnValue('T3DD09 Rock!'));
 		$this->parsingState->setRootNode($rootNode);
 		$renderedValue = $this->parsingState->render($renderingContext);
 		$this->assertEquals($renderedValue, 'T3DD09 Rock!', 'The rendered value of the Root Node is not returned by the ParsingState.');

@@ -23,16 +23,14 @@
 /**
  *
  *
- * @version $Id: RenderingContext.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage Core\Rendering
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-class Tx_Fluid_Core_Rendering_RenderingContext {
+class Tx_Fluid_Core_Rendering_RenderingContext implements Tx_Fluid_Core_Rendering_RenderingContextInterface {
 
 	/**
 	 * Template Variable Container. Contains all variables available through object accessors in the template
+	 *
 	 * @var Tx_Fluid_Core_ViewHelper_TemplateVariableContainer
 	 */
 	protected $templateVariableContainer;
@@ -40,18 +38,21 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	/**
 	 * Object manager which is bubbled through. The ViewHelperNode cannot get an ObjectManager injected because
 	 * the whole syntax tree should be cacheable
+	 *
 	 * @var Tx_Fluid_Compatibility_ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Controller context being passed to the ViewHelper
+	 *
 	 * @var Tx_Extbase_MVC_Controller_ControllerContext
 	 */
 	protected $controllerContext;
 
 	/**
 	 * ViewHelper Variable Container
+	 *
 	 * @var Tx_Fluid_Core_ViewHelpers_ViewHelperVariableContainer
 	 */
 	protected $viewHelperVariableContainer;
@@ -77,13 +78,13 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	}
 
 	/**
-	 * Sets the template variable container containing all variables available through ObjectAccessors
+	 * Injects the template variable container containing all variables available through ObjectAccessors
 	 * in the template
 	 *
 	 * @param Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer The template variable container to set
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer) {
+	public function injectTemplateVariableContainer(Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $templateVariableContainer) {
 		$this->templateVariableContainer = $templateVariableContainer;
 	}
 
@@ -124,7 +125,7 @@ class Tx_Fluid_Core_Rendering_RenderingContext {
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
+	public function injectViewHelperVariableContainer(Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer) {
 		$this->viewHelperVariableContainer = $viewHelperVariableContainer;
 	}
 

@@ -74,9 +74,6 @@
  *   </li>
  * </ul>
  *
- * @version $Id: GroupedForViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
@@ -86,7 +83,7 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 	/**
 	 * Iterates through elements of $each and renders child nodes
 	 *
-	 * @param array $each The array or SplObjectStorage to iterated over
+	 * @param array $each The array or Tx_Extbase_Persistence_ObjectStorage to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @param string $groupBy Group by this property
 	 * @param string $groupKey The name of the variable to store the current group
@@ -103,21 +100,13 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 			if (!$each instanceof Traversable) {
 				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports arrays and objects implementing Traversable interface' , 1253108907);
 			}
-			$each = $this->convertToArray($each);
+			$each = iterator_to_array($each);
 		}
-		$groups = array();
-		foreach ($each as $keyValue => $singleElement) {
-			if (is_array($singleElement)) {
-				$currentGroupKey = isset($singleElement[$groupBy]) ? $singleElement[$groupBy] : NULL;
-			} elseif (is_object($singleElement)) {
-				$currentGroupKey = Tx_Extbase_Reflection_ObjectAccess::getProperty($singleElement, $groupBy);
-			} else {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects' , 1253120365);
-			}
-			$groups[$currentGroupKey][$keyValue] = $singleElement;
-		}
-		foreach ($groups as $currentGroupKey => $group) {
-			$this->templateVariableContainer->add($groupKey, $currentGroupKey);
+
+		$groups = $this->groupElements($each, $groupBy);
+
+		foreach ($groups['values'] as $currentGroupIndex => $group) {
+			$this->templateVariableContainer->add($groupKey, $groups['keys'][$currentGroupIndex]);
 			$this->templateVariableContainer->add($as, $group);
 			$output .= $this->renderChildren();
 			$this->templateVariableContainer->remove($groupKey);
@@ -127,19 +116,31 @@ class Tx_Fluid_ViewHelpers_GroupedForViewHelper extends Tx_Fluid_Core_ViewHelper
 	}
 
 	/**
-	 * Turns the given object into an array.
-	 * The object has to implement the Traversable interface
+	 * Groups the given array by the specified groupBy property.
 	 *
-	 * @param Traversable $object The object to be turned into an array. If the object implements Iterator the key will be preserved.
-	 * @return array The resulting array
+	 * @param array $elements The array / traversable object to be grouped
+	 * @param string $groupBy Group by this property
+	 * @return array The grouped array in the form array('keys' => array('key1' => [key1value], 'key2' => [key2value], ...), 'values' => array('key1' => array([key1value] => [element1]), ...), ...)
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function convertToArray(Traversable $object) {
-		$array = array();
-		foreach ($object as $keyValue => $singleElement) {
-			$array[$keyValue] = $singleElement;
+	protected function groupElements(array $elements, $groupBy) {
+		$groups = array('keys' => array(), 'values' => array());
+		foreach ($elements as $key => $value) {
+			if (is_array($value)) {
+				$currentGroupIndex = isset($value[$groupBy]) ? $value[$groupBy] : NULL;
+			} elseif (is_object($value)) {
+				$currentGroupIndex = Tx_Extbase_Reflection_ObjectAccess::getProperty($value, $groupBy);
+			} else {
+				throw new Tx_Fluid_Core_ViewHelper_Exception('GroupedForViewHelper only supports multi-dimensional arrays and objects' , 1253120365);
+			}
+			$currentGroupKeyValue = $currentGroupIndex;
+			if (is_object($currentGroupIndex)) {
+				$currentGroupIndex = spl_object_hash($currentGroupIndex);
+			}
+			$groups['keys'][$currentGroupIndex] = $currentGroupKeyValue;
+			$groups['values'][$currentGroupIndex][$key] = $value;
 		}
-		return $array;
+		return $groups;
 	}
 }
 

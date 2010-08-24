@@ -40,8 +40,6 @@
  * Output:
  * This time the "new_el" icon is returned, the button has the title attribute set and links to the "new" action of the current controller.
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be\Buttons
  * @author		Steffen Kamper <info@sk-typo3.de>
  * @author		Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html

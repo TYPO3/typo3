@@ -27,7 +27,6 @@ require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
 /**
  * Test for the "Select" Form view helper
  *
- * @version $Id: SelectViewHelperTest.php 3930 2010-03-11 20:07:52Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
@@ -375,6 +374,57 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid_ViewHelper
 		$this->viewHelper->setArguments($arguments);
 
 		$this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function allOptionsAreSelectedIfSelectAllIsTrue() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3" selected="selected">label3</option>' . chr(10));
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
+		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array(
+			'options' => array(
+				'value1' => 'label1',
+				'value2' => 'label2',
+				'value3' => 'label3'
+			),
+			'name' => 'myName',
+			'multiple' => 'multiple',
+			'selectAllByDefault' => TRUE
+		));
+		$this->viewHelper->setArguments($arguments);
+
+		$this->viewHelper->initialize();
+		$this->viewHelper->render();
+	}
+
+	/**
+	 * @test
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	public function selectAllHasNoEffectIfValueIsSet() {
+		$mockTagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder', array('addAttribute', 'setContent', 'render'), array(), '', FALSE);
+		$mockTagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3">label3</option>' . chr(10));
+		$this->viewHelper->injectTagBuilder($mockTagBuilder);
+
+		$arguments = new Tx_Fluid_Core_ViewHelper_Arguments(array(
+			'options' => array(
+				'value1' => 'label1',
+				'value2' => 'label2',
+				'value3' => 'label3'
+			),
+			'value' => array('value2', 'value1'),
+			'name' => 'myName',
+			'multiple' => 'multiple',
+			'selectAllByDefault' => TRUE
+		));
+		$this->viewHelper->setArguments($arguments);
+
+		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
 }

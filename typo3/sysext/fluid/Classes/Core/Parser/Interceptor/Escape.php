@@ -23,9 +23,6 @@
 /**
  * An interceptor adding the escape viewhelper to the suitable places.
  *
- * @version $Id: Escape.php 4040 2010-04-08 16:02:57Z k-fish $
- * @package Fluid
- * @subpackage Core\Parser\Interceptor
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_InterceptorInterface {
@@ -67,7 +64,7 @@ class Tx_Fluid_Core_Parser_Interceptor_Escape implements Tx_Fluid_Core_Parser_In
 	 */
 	public function process(Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface $node, $interceptorPosition) {
 		if ($interceptorPosition === Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OPENING_VIEWHELPER) {
-			if (!$node->getViewHelper()->isEscapingInterceptorEnabled()) {
+			if (!$node->getUninitializedViewHelper()->isEscapingInterceptorEnabled()) {
 				$this->interceptorEnabled = FALSE;
 				$this->viewHelperNodesWhichDisableTheInterceptor[] = $node;
 			}

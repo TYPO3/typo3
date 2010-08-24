@@ -41,8 +41,6 @@
  * "your module content" wrapped with propper head & body tags.
  * Custom CSS file EXT:your_extension/Resources/Public/styles/backend.css and JavaScript file EXT:your_extension/Resources/Public/scripts/main.js will be loaded
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be
  * @author      Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id:
@@ -106,8 +104,8 @@ class Tx_Fluid_ViewHelpers_Be_ContainerViewHelper extends Tx_Fluid_ViewHelpers_B
 			$pageRenderer->addJsFile($addJsFile);
 		}
 
-		$output = $doc->startPage($pageTitle);
-		$output .= $this->renderChildren();
+		$output = $this->renderChildren();
+		$output = $doc->startPage($pageTitle) . $output;
 		$output .= $doc->endPage();
 		return $output;
 	}

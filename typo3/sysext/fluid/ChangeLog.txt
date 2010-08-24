@@ -1,0 +1,87 @@
+ChangeLog for Fluid
+===================
+
+
+Changes for 1.3.0 Alpha 1
+=========================
+
+In this release, numerous bugs have been fixed, making Fluid more stable than ever. Below are some nice features which have been introduced:
+
+* Instead of <f:form name="...">, you should now write write <f:form objectName="...">, to create an XHTML compliant form (#6521)
+
+* The <f:for>-ViewHelper has now Iteration Information available, if you want that:
+  <f:for each="{objects}" as="object" iteration="iteration">
+     {iteration.index} is a counter which starts at 0
+     {iteration.cycle} is a counter which starts at 1
+     {iteration.isEven} / {iteration.isOdd} is a boolean variable which is true if the index is even/odd
+     {iteration.isFirst} / {iteration.isLast} is a boolean variable which is true if it is the first or last element in the list.
+  </f:for>
+
+!!! Refactored all Condition-ViewHelpers like f:if, f:security.if* to use a newly created base class F3\Fluid\Core\ViewHelper\ConditionViewHelper. This greatly simplifies the implementation of custom conditions.
+  THIS IS A BREAKING CHANGE in case you copied the f:if ViewHelper to create a custom condition ViewHelper, as the internal workings changed. Please check the new f:if ViewHelper to see how to adjust your ViewHelper -- you basically just have to throw away a lot of code. Resolves #8824.
+
+* Fixed section, partial and layout rendering to function in all cases as expected now, and tested this behavior also.
+  !!! Removed renderSection() and renderWithLayout() from public API in Tx_Fluid_View_TemplateView, as this should only be called from inside Fluid.
+
+* Fixing checkbox, radio and select-ViewHelpers, but this task is not finished yet.
+  !!! The value argument is required again in form.checkbox and form.radio ViewHelpers. This is a breaking change, as the value argument has not been mandatory for a while. But it probably won't break existing templates as omitting the value makes no sense at all.
+
+* Fixed BE support of ViewHelpers (cObject, format.crop, uri.resource, format.html, image)
+
+* Negative numeric values are now properly converted to FALSE when used in boolean ViewHelper arguments.
+
+* added f:uri.image ViewHelper, working just like f:image, but returning the URL and not the full image tag.
+
+Full Changes:
+-------------
+[~TASK] Fluid: Changed version of Extbase dependency from '1.2.0-1.2.999' to '1.3.0.devel' to reflect the version scheme defined in the wiki. Relates to #9152.
+[+BUGFIX] Fluid (View): AbstractTemplateView now correctly implements F3\FLOW3\MVC\View\ViewInterface and assign() and assignMultiple() will return an instance of $this to allow chaining again like $this->view->assign()->assign()... This fixes #9090 (backported from Fluid package r4931)
+[~TASK] Fluid (Tests): committing modified AbstractFormFieldViewHelperTest that I forgot to add in previous commit
+[+TASK] Fluid (ViewHelpers): Small performance improvement in ForViewHelper: Objects will only be converted to arrays if reverse is TRUE. Relates to #8732 (backported from Fluid package r4907)
+[+TASK] Fluid (View): Added getter for template parser to AbstractTemplateView. This is useful if you want to use the parser from within your custom ViewHelper (creating a new instance would skip interceptor registration) (backported from Fluid package r4907)
+[~TASK] Fluid (ViewHelpers): Added argument "objectName" to form ViewHelper. This is now the recommended way to specify the name of the object that is bound to a form! If objectName is not specified, the name attribute will be used as object name for backwards-compatibility reasons. This resolves #6521 (backported from Fluid package r4905)
+* Raised Fluid version in trunk to 1.3.0-devel
+[+BUGFIX] Fluid (ViewHelpers): Fixed a possible security issue where the content inside the Fluid a is not properly HTML escaped.
+[+FEATURE] Fluid (ViewHelpers): Added iteration information to for ViewHelper. Thanks to all the contributors for your input and patches! This resolves #6149 (backported from Fluid package r4904)
+[~TASK] Fluid (ViewHelpers): Fresh backport from Fluid package r4899 (Mostly fixed typos. slightly improved count ViewHelper)
+[~TASK] Fluid (ViewHelpers): Replaced custom convertToArray() method by PHPs iterator_to_array() function in cycle, for and groupedFor ViewHelpers. This resolves #8732. (backport from Fluid package r4898)
+[+BUGFIX] Fluid (ViewHelpers): Now, it is possible to "unselect" checkboxes and multiselect fields in editing forms. This fixes #5638. This fixes #8535. This fixes #6897 (improved forward-backport from Fluid package r4874)
+[+TASK] Fluid (Tests): Backported FormViewHelperTest from Fluid package
+[+BUGFIX] Fluid (ViewHelpers): FormViewHelper wraps hidden fields with a div tag to create XHTML valid output. This fixes #5512 (backported from Fluid package)
+[~TASK] Fluid (ViewHelpers): Fixed BE support of the ViewHelpers cObject, format.crop, uri.resource. Relates to #8947
+[~TASK] Fluid (ViewHelpers): Added BE support in the ViewHelpers format.html and image. Relates to #8947
+[!!!][+TASK] Fluid (ViewHelpers): The value argument is required again in form.checkbox and form.radio ViewHelpers. This is a breaking change, as the value argument has not been mandatory for a while. But it probably won't break existing templates as omitting the value makes no sense at all. Relates to #8852 (backported from Fluid package r4864)
+[+FEATURE] Fluid (Core): implemented overrideArgument() method in AbstractViewHelper to be able to override previously registered arguments in subclasses. This resolves #8852 (backported from Fluid package r4864)
+[+BUGFIX] Fluid (Core): Negative numeric values are properly converted to FALSE when used in boolean ViewHelper arguments. This resolves #8893 (backported from Fluid package r4864)
+[+BUGFIX] Fluid (ViewHelpers): Reversed the rendering order of header and childNodes in be.container ViewHelper to enable child nodes to modify the pageRenderer. This resolves #8880 (thanks to Andreas Wolf)
+[+BUGFIX] Fluid: Removed leading slash from @var annotations that were backported by mistake
+[+BUGFIX] Fluid: Replaced SplObjectStorage by Tx_Extbase_Persistence_ObjectStorage to be PHP 5.2-compatible (which ships with a broken implementation of SplObjectStorage)
+[!!!][~TASK] Fluid (Core): Renamed ConditionViewHelper and TagBasedViewHelper to Abstract*ViewHelper as per CGL. (backported from Fluid package r4840). To be backwards-compatible, TagBasedViewHelper.php still exists and will write an entry to TYPO3s deprecation log if used. Please adapt your custom ViewHelpers and inherit from AbstractTagBasedViewHelper instead of TagBasedViewHelper. This resolves #8834
+[~TASK] Fluid: Marked vfs unit tests to be skipped, as vfs is not part of v4 (yet)
+[-TASK] Fluid: Removed @package/@subpackage annotations from all Fluid classes. They have already been removed in FLOW3 packages in r2813.
+[-TASK] Fluid: Removed @version annotation from all Fluid classes to ease the backporting process. Relates to #8835 (backported from Fluid package)
+[+BUGFIX] Fluid (View): fixed method signature of AbstractTemplateView:getTemplateSource() that was different from the concrete implementation (backported from Fluid package)
+Fluid in v5 and v4 are now synchronized again!
+[+FEATURE] Fluid: The TemplateVariableContainer now provides a method to retrieve all variables.
+[~TASK] Fluid (Core): Introduced a RenderingContextInterface to more cleanly decouple Fluid's rendering context from the TypoScript rendering context. Note that view helpers (and other code) should now refer to that interface instead of the concrete Fluid implementation!
+[!!!][+BUGFIX] Fluid (Core): Refactored all Condition-ViewHelpers like f:if, f:security.if* to use a newly created base class F3\Fluid\Core\ViewHelper\ConditionViewHelper. This greatly simplifies the implementation of custom conditions. However, THIS IS A BREAKING CHANGE in case you copied the f:if ViewHelper to create a custom condition ViewHelper, as the internal workings changed. Please check the new f:if ViewHelper to see how to adjust your ViewHelper -- you basically just have to throw away a lot of code. Resolves #8824.
+[!!!][-API] Fluid (TemplateView): Removed renderSection() and renderWithLayout() from public API in Tx_Fluid_View_TemplateView, as this should only be called from inside Fluid.
+[!!!][TASK] Fluid (ViewHelpers): the <f:section />-ViewHelper now does NOT render itself anymore when encountered in a normal template. Example: Before the change, the template "before <f:section name='...'> middle </f:section> after" was rendered as "before middle after", but now it is only rendered as "before after". Although this is a breaking change, it is quite unlikely that anybody relied on this behavior, as it was inconsistent beforehand.
+[TASK] Fluid (TemplateView): Major refactoring of the layout, partial and section rendering mechanism. This also induces a speedup as retundant rendering is eliminated.
+[+FEATURE] Fluid (ViewHelpers): The <f:render>-ViewHelper can be now used to render sections in the same partial and template. In these cases, all arguments need to be specified explicitely. Additionally, it can now be used to render a section recursively.
+[~TASK] Fluid (Core): Removed some non-API-methods which were never called.
+[+FEATURE] Fluid (ViewHelpers): format.crop ViewHelper now supports all features in Backend mode. Relates to #8648
+[+TASK] Fluid: Set dependency to Extbase 1.2.x in ext_emconf.php to avoid confusions when working with different versions
+[+TASK] Fluid: Backported recent changes from Fluid package:
+[+FEATURE] Fluid (ViewHelpers): added "selectAllByDefault" argument to form.select ViewHelper. Resolves #4984
+~TASK] Fluid (Parser): Got rid of the constructor in Parser\Configuration.
+[+FEATURE] Fluid (ViewHelpers): Added uri.image ViewHelper. This resolves #8233
+[+FEATURE] Fluid (ViewHelpers): Added URI options noCache, noCacheHash, section, format, additionalParams, absolute, addQueryString & argumentsToBeExcludedFromQueryString to FormViewHelper. Resolves #8247 [+BUGFIX] Fluid: Removed a leading backslash in ViewHelperBaseTestcase that led to an error with PHP < 5.3
+[+TASK] Fluid: Backported some recent Fluid changes (Note: this is not a complete backport, there are still changes in Fluid Package that are not backported yet):
+[+BUGFIX] Fluid (ViewHelpers): form.select ViewHelper did only check whether "multiple" attribute was set and not whether it was empty or not. Resolves #5879
+[+FEATURE] Fluid (ViewHelpers): GroupedForViewHelper can now group by object. Resolves #7389
+
+
+HOW TO CREATE THE CHANGELOG
+===========================
+git log [startRevision]..HEAD --pretty=format:"%s%n%b%n" | grep -v "^$" | grep -v "git-svn-id"

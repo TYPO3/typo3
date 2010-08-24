@@ -21,7 +21,6 @@
  *                                                                        */
 
 /**
- * @version $Id: AbstractNodeTest.php 3350 2009-10-27 12:01:08Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNodeTest extends Tx_Extbase_BaseTestCase {
@@ -36,7 +35,6 @@ class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNodeTest extends Tx_Extbase_BaseTe
 		$this->renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext', array(), array(), '', FALSE);
 
 		$this->abstractNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode', array('evaluate'));
-		$this->abstractNode->setRenderingContext($this->renderingContext);
 
 		$this->childNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode');
 		$this->abstractNode->addChildNode($this->childNode);
@@ -47,8 +45,8 @@ class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNodeTest extends Tx_Extbase_BaseTe
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function evaluateChildNodesPassesRenderingContextToChildNodes() {
-		$this->childNode->expects($this->once())->method('setRenderingContext')->with($this->renderingContext);
-		$this->abstractNode->evaluateChildNodes();
+		$this->childNode->expects($this->once())->method('evaluate')->with($this->renderingContext);
+		$this->abstractNode->evaluateChildNodes($this->renderingContext);
 	}
 
 	/**

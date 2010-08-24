@@ -21,7 +21,6 @@
  *                                                                        */
 
 /**
- * @version $Id: PaddingViewHelperTest.php 3190 2009-09-16 16:48:39Z bwaidelich $
  */
 class Tx_Fluid_ViewHelpers_Format_PaddingViewHelperTest extends Tx_Extbase_BaseTestCase {
 

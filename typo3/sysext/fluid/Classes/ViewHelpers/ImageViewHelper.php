@@ -17,18 +17,12 @@
  *
  * @todo documentation
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: ImageViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
  */
 
 /**
  *
- * @package
- * @subpackage
- * @version $Id: ImageViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
  */
-class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * @var	tslib_cObj
@@ -41,6 +35,16 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 	protected $tagName = 'img';
 
 	/**
+	 * @var	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+	 */
+	protected $tsfeBackup;
+
+	/**
+	 * @var	string
+	 */
+	protected $workingDirectoryBackup;
+
+	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
 	 *
 	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
@@ -48,9 +52,6 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 	 */
 	public function __construct($contentObject = NULL) {
 		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
-		if (TYPO3_MODE === 'BE') {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('ImageViewHelper does not (yet) work in backend mode' , 1253191784);
-		}
 	}
 
 	/**
@@ -85,6 +86,9 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function render($src, $width = NULL, $height = NULL, $minWidth = NULL, $minHeight = NULL, $maxWidth = NULL, $maxHeight = NULL) {
+		if (TYPO3_MODE === 'BE') {
+			$this->simulateFrontendEnvironment();
+		}
 		$setup = array(
 			'width' => $width,
 			'height' => $height,
@@ -93,6 +97,9 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 			'maxW' => $maxWidth,
 			'maxH' => $maxHeight
 		);
+		if (TYPO3_MODE === 'BE' && substr($src, 0, 3) === '../') {
+			$src = substr($src, 3);
+		}
 		$imageInfo = $this->contentObject->getImgResource($src, $setup);
 		$GLOBALS['TSFE']->lastImageInfo = $imageInfo;
 		if (!is_array($imageInfo)) {
@@ -102,6 +109,10 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 		$GLOBALS['TSFE']->imagesOnPage[] = $imageInfo[3];
 
 		$imageSource = $GLOBALS['TSFE']->absRefPrefix . t3lib_div::rawUrlEncodeFP($imageInfo[3]);
+		if (TYPO3_MODE === 'BE') {
+			$imageSource = '../' . $imageSource;
+			$this->resetFrontendEnvironment();
+		}
 		$this->tag->addAttribute('src', $imageSource);
 		$this->tag->addAttribute('width', $imageInfo[0]);
 		$this->tag->addAttribute('height', $imageInfo[1]);
@@ -110,5 +121,42 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_TagB
 		}
 
 		return $this->tag->render();
+	}
+
+	/**
+	 * Prepares $GLOBALS['TSFE'] for Backend mode
+	 * This somewhat hacky work around is currently needed because the getImgResource() function of tslib_cObj relies on those variables to be set
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function simulateFrontendEnvironment() {
+		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+			// set the working directory to the site root
+		$this->workingDirectoryBackup = getcwd();
+		chdir(PATH_site);
+
+		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+		$typoScriptSetup = $configurationManager->loadTypoScriptSetup();
+		$GLOBALS['TSFE'] = new stdClass();
+		$template = t3lib_div::makeInstance('t3lib_TStemplate');
+		$template->tt_track = 0;
+		$template->init();
+		$template->getFileName_backPath = PATH_site;
+		$GLOBALS['TSFE']->tmpl = $template;
+		$GLOBALS['TSFE']->tmpl->setup = $typoScriptSetup;
+		$GLOBALS['TSFE']->config = $typoScriptSetup;
+	}
+
+	/**
+	 * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @see simulateFrontendEnvironment()
+	 */
+	protected function resetFrontendEnvironment() {
+		$GLOBALS['TSFE'] = $this->tsfeBackup;
+		chdir($this->workingDirectoryBackup);
 	}
 }

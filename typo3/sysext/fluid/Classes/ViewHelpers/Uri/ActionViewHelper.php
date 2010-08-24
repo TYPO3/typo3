@@ -26,15 +26,9 @@
  * index.php?id=123&tx_myextension_plugin[action]=show&tx_myextension_plugin[controller]=Standard&cHash=xyz
  * (depending on the current page and your TS configuration)
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: ActionViewHelper.php 1473 2009-10-20 03:39:21Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  *
- * @package
- * @subpackage
- * @version $Id: ActionViewHelper.php 1473 2009-10-20 03:39:21Z sebastian $
  */
 class Tx_Fluid_ViewHelpers_Uri_ActionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 

@@ -23,9 +23,6 @@
 /**
  * Argument definition of each view helper argument
  *
- * @version $Id: ArgumentDefinition.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_ViewHelper_ArgumentDefinition {

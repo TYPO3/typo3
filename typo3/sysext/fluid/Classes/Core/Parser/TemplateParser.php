@@ -23,9 +23,6 @@
 /**
  * Template parser building up an object syntax tree
  *
- * @version $Id: TemplateParser.php 2046 2010-03-16 10:31:00Z sebastian $
- * @package Fluid
- * @subpackage Core\Parser
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_TemplateParser {
@@ -237,7 +234,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	);
 
 	/**
-	 * @var \Tx_Fluid_Compatibility_ObjectManager
+	 * @var Tx_Fluid_Compatibility_ObjectManager
 	 */
 	protected $objectManager;
 
@@ -269,7 +266,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 	/**
 	 * Set the configuration for the parser.
-	 *h
+	 *
 	 * @param Tx_Fluid_Core_Parser_Configuration $configuration
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
@@ -581,7 +578,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 
 			// Object Accessor
 		if (strlen($objectAccessorString) > 0) {
-
+			
 			$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode', $objectAccessorString);
 			$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR);
 
@@ -809,7 +806,7 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 	protected function textHandler(Tx_Fluid_Core_Parser_ParsingState $state, $text) {
 		$node = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', $text);
 		$this->callInterceptor($node, Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_TEXT);
-
+		
 		$state->getNodeFromStack()->addChildNode($node);
 	}
 

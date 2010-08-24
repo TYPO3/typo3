@@ -14,9 +14,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: EmailViewHelper.php 1492 2009-10-21 16:02:16Z bwaidelich $
  */
 
 /**
@@ -40,11 +37,8 @@
  * Output:
  * <a href="javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');">some custom content</a>
  *
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: EmailViewHelper.php 1492 2009-10-21 16:02:16Z bwaidelich $
  */
-class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_Link_EmailViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * @var	string

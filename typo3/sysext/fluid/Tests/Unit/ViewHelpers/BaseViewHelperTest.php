@@ -22,7 +22,6 @@
 
 require_once(dirname(__FILE__) . '/ViewHelperBaseTestcase.php');
 /**
- * @version $Id: BaseViewHelperTest.php 3954 2010-03-16 08:36:26Z sebastian $
  */
 class Tx_Fluid_ViewHelpers_BaseViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 	/**

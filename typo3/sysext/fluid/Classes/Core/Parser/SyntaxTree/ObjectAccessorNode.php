@@ -23,9 +23,6 @@
 /**
  * A node which handles object access. This means it handles structures like {object.accessor.bla}
  *
- * @version $Id: ObjectAccessorNode.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -61,23 +58,45 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ObjectAccessorNode extends Tx_Fluid_Core_P
 	 * The first part of the object path has to be a variable in the
 	 * TemplateVariableContainer.
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return object The evaluated object, can be any object type.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @todo Depending on the context, either fail or not!!!
 	 */
-	public function evaluate() {
-		$objectPathParts = explode('.', $this->objectPath);
-		$variableName = array_shift($objectPathParts);
-		if (!$this->renderingContext->getTemplateVariableContainer()->exists($variableName)) {
-			return NULL;
-		}
-		$currentObject = $this->renderingContext->getTemplateVariableContainer()->get($variableName);
-		if (count($objectPathParts) > 0) {
-			return Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($currentObject, implode('.', $objectPathParts));
-		} else {
-			return $currentObject;
-		}
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		return $this->getPropertyPath($renderingContext->getTemplateVariableContainer(), $this->objectPath, $renderingContext);
 	}
+
+	/**
+	 * Gets a property path from a given object or array.
+	 *
+	 * If propertyPath is "bla.blubb", then we first call getProperty($object, 'bla'),
+	 * and on the resulting object we call getProperty(..., 'blubb').
+	 *
+	 * For arrays the keys are checked likewise.
+	 *
+	 * @param mixed $subject An object or array
+	 * @param string $propertyPath
+	 * @return mixed Value of the property
+	 */
+	protected function getPropertyPath($subject, $propertyPath, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		$propertyPathSegments = explode('.', $propertyPath);
+		foreach ($propertyPathSegments as $pathSegment) {
+			if (is_object($subject) && Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($subject, $pathSegment)) {
+				$subject = Tx_Extbase_Reflection_ObjectAccess::getProperty($subject, $pathSegment);
+			} elseif ((is_array($subject) || $subject instanceof ArrayAccess) && isset($subject[$pathSegment])) {
+				$subject = $subject[$pathSegment];
+			} else {
+				return NULL;
+			}
+
+			if ($subject instanceof Tx_Fluid_Core_Parser_SyntaxTree_RenderingContextAwareInterface) {
+				$subject->setRenderingContext($renderingContext);
+			}
+		}
+		return $subject;
+	}
+
+
 }
 ?>

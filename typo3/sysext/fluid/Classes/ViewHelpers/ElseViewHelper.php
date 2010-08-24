@@ -22,12 +22,9 @@
 
 /**
  * Else-Branch of a condition. Only has an effect inside of "If". See the If-ViewHelper for documentation.
- *
+ * 
  * @see Tx_Fluid_ViewHelpers_IfViewHelper
  *
- * @version $Id: ElseViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

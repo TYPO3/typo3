@@ -21,15 +21,14 @@
  *                                                                        */
 
 /**
- * Testcase for TagBasedViewHelper
+ * Testcase for AbstractTagBasedViewHelper
  *
- * @version $Id: TagBasedViewHelperTest.php 3835 2010-02-22 15:15:17Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_TagBasedViewHelperTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase_BaseTestCase {
 
 	public function setUp() {
-		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_TagBasedViewHelper', array('dummy'), array(), '', FALSE);
+		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper', array('dummy'), array(), '', FALSE);
 	}
 
 	/**

@@ -23,7 +23,6 @@
 /**
  * Deprecated. Use <f:flashMessages> instead!
  *
- * @version $Id: RenderFlashMessagesViewHelper.php 2043 2010-03-16 08:49:45Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */

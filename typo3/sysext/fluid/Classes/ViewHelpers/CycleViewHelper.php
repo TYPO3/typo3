@@ -51,9 +51,6 @@
  * </ul>
  * </output>
  *
- * @version $Id: CycleViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
@@ -61,7 +58,7 @@
 class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @var array|\SplObjectStorage the values to be iterated through
+	 * @var array|Tx_Extbase_Persistence_ObjectStorage the values to be iterated through
 	 */
 	protected $values = NULL;
 
@@ -71,7 +68,7 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	protected $currentCycleIndex = NULL;
 
 	/**
-	 * @param array $values The array or SplObjectStorage to iterated over
+	 * @param array $values The array or Tx_Extbase_Persistence_ObjectStorage to iterated over
 	 * @param string $as The name of the iteration variable
 	 * @return string Rendered result
 	 * @author Bastian Waidelich <bastian@typo3.org>
@@ -101,7 +98,7 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	/**
 	 * Sets this->values to the current values argument and resets $this->currentCycleIndex.
 	 *
-	 * @param array $values The array or SplObjectStorage to be stored in $this->values
+	 * @param array $values The array or Tx_Extbase_Persistence_ObjectStorage to be stored in $this->values
 	 * @return void
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -110,27 +107,11 @@ class Tx_Fluid_ViewHelpers_CycleViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 			if (!$values instanceof Traversable) {
 				throw new Tx_Fluid_Core_ViewHelper_Exception('CycleViewHelper only supports arrays and objects implementing Traversable interface' , 1248728393);
 			}
-			$this->values = $this->convertToArray($values);
+			$this->values = iterator_to_array($values, FALSE);
 		} else {
 			$this->values = array_values($values);
 		}
 		$this->currentCycleIndex = 0;
-	}
-
-	/**
-	 * Turns the given object into an array.
-	 * The object has to implement the Traversable interface
-	 *
-	 * @param Traversable $object The object to be turned into an array. If the object implements Iterator the key will NOT be preserved.
-	 * @return array The resulting array
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 */
-	protected function convertToArray(Traversable $object) {
-		$array = array();
-		foreach ($object as $singleElement) {
-			$array[] = $singleElement;
-		}
-		return $array;
 	}
 }
 

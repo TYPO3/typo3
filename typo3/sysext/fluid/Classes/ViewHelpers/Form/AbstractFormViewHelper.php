@@ -26,16 +26,13 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id: AbstractFormViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
-abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
+abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
-	 * @var \Tx_Extbase_Persistence_ManagerInterface
+	 * @var Tx_Extbase_Persistence_ManagerInterface
 	 */
 	protected $persistenceManager;
 

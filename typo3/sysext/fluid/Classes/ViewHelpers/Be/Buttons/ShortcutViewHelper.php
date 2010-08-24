@@ -43,8 +43,6 @@
  * Note:
  * Normally you won't need to set getVars & setVars parameters in Extbase modules
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be\Buttons
  * @author		Steffen Kamper <info@sk-typo3.de>
  * @author		Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html

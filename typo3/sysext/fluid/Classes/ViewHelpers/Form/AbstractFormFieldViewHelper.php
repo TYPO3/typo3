@@ -26,9 +26,6 @@
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
  *
- * @version $Id: AbstractFormFieldViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
@@ -63,14 +60,14 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 */
 	protected function getName() {
 		if ($this->isObjectAccessorMode()) {
-			$formName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
-			if (!empty($formName)) {
+			$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
+			if (!empty($formObjectName)) {
 				$propertySegments = explode('.', $this->arguments['property']);
 				$properties = '';
 				foreach ($propertySegments as $segment) {
 					$properties .= '[' . $segment . ']';
 				}
-				$name = $formName . $properties;
+				$name = $formObjectName . $properties;
 			} else {
 				$name = $this->arguments['property'];
 			}
@@ -125,7 +122,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
 			$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 
-			$objectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+			$objectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 			// If Count == 2 -> we need to go through the for-loop exactly once
 			for ($i=1; $i < count($propertySegments); $i++) {
 				$object = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
@@ -164,7 +161,7 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	 */
 	protected function isObjectAccessorMode() {
 		return $this->arguments->hasArgument('property')
-			&& $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+			&& $this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 	}
 
 	/**
@@ -203,11 +200,11 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			return array();
 		}
 		$errors = $this->controllerContext->getRequest()->getErrors();
-		$formName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formName');
+		$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 		$propertyName = $this->arguments['property'];
 		$formErrors = array();
 		foreach ($errors as $error) {
-			if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() === $formName) {
+			if ($error instanceof Tx_Extbase_Validation_PropertyError && $error->getPropertyName() === $formObjectName) {
 				$formErrors = $error->getErrors();
 				foreach ($formErrors as $formError) {
 					if ($formError instanceof Tx_Extbase_Validation_PropertyError && $formError->getPropertyName() === $propertyName) {
@@ -217,6 +214,33 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			}
 		}
 		return array();
+	}
+
+	/**
+	 * Renders a hidden field with the same name as the element, to make sure the empty value is submitted
+	 * in case nothing is selected. This is needed for checkbox and multiple select fields
+	 *
+	 * @return string the hidden field.
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function renderHiddenFieldForEmptyValue() {
+		$hiddenFieldNames = array();
+		if ($this->viewHelperVariableContainer->exists('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields')) {
+			$hiddenFieldNames = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields');
+		}
+
+		$fieldName = $this->getName();
+		if (substr($fieldName, -2) === '[]') {
+			$fieldName = substr($fieldName, 0, -2);
+		}
+		if (!in_array($fieldName, $hiddenFieldNames)) {
+			$hiddenFieldNames[] = $fieldName;
+			$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'renderedHiddenFields', $hiddenFieldNames);
+
+			return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="" />';
+		}
+		return '';
 	}
 }
 

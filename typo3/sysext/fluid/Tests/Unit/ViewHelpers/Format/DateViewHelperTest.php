@@ -21,7 +21,6 @@
  *                                                                        */
 
 /**
- * @version $Id: DateViewHelperTest.php 3365 2009-10-28 15:16:33Z bwaidelich $
  */
 class Tx_Fluid_ViewHelpers_Format_DateViewHelperTest extends Tx_Extbase_BaseTestCase {
 

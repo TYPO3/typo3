@@ -44,15 +44,13 @@
  * </f:be.menus.actionMenu>
  * </code>
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be\Menus
  * @author      Steffen Kamper <info@sk-typo3.de>
  * @author      Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id:
  *
  */
-class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
+class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper implements Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 
 	/**
 	 * @var string
@@ -64,11 +62,6 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_V
 	 * @var array
 	 */
 	protected $childNodes = array();
-
-	/**
-	 * @var Tx_Fluid_Core_Rendering_RenderingContext
-	 */
-	protected $renderingContext;
 
 	/**
 	 * Setter for ChildNodes - as defined in ChildNodeAccessInterface
@@ -83,15 +76,6 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_V
 	}
 
 	/**
-	 * Sets the rendering context which needs to be passed on to child nodes
-	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext the renderingcontext to use
-	 */
-	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext) {
-		$this->renderingContext = $renderingContext;
-	}
-
-	/**
 	 * Render FunctionMenu
 	 *
 	 * @param string $defaultController
@@ -102,8 +86,7 @@ class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuViewHelper extends Tx_Fluid_Core_V
 		$options = '';
 		foreach ($this->childNodes as $childNode) {
 			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode) {
-				$childNode->setRenderingContext($this->renderingContext);
-				$options .= $childNode->evaluate();
+				$options .= $childNode->evaluate($this->getRenderingContext());
 			}
 		}
 		$this->tag->setContent($options);

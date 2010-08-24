@@ -1,0 +1,32 @@
+ChangeLog for Fluid
+===================
+
+
+Changes for 1.3.0 Alpha 1
+=========================
+
+Since the last version, the following notable things happened:
+
+* All methods trying to find an object by uid now ignore the storagePid. This changes the behavior of argument mapping and the way extbase fetches 1:1 relations. Resolves #5631. You should not experience any negative side-effects of this change, i.e. if your extension worked before, it will definitely after this change. However, it makes the record handling more robust.
+* Performance improvements in TypoScript::convertTypoScriptArrayToPlainArray. Thanks to Timo Schmidt.
+* Numerous other bugfixes, see below.
+
+Full Changes:
+-------------
+[~TASK] Extbase: Raised version number to 1.3.0-devel to reflect the version scheme defined in the wiki. Resolves #9152. Thanks Xavier for pointing to it.
+[+TASK] Extbase (MVC): cleaned up View implementations and added assign() and assignMultiple() methods to ViewInterface. This resolves #9137
+[+BUGFIX] Extbase: Fixed a small typo in extension description.
+[+BUGFIX] Extbase (Persistence): DataMapper now mapps NULL into a property on non-existing related object instead of FALSE. Resolves #8973.
+[+BUGFIX] Extbase (Reflection): getParentClass() in Tx_Extbase_Reflection_ClassReflection no longer causes a fatal error if no parent class exists. Resolves #8800.
+[+BUGFIX] Extbase (Utility): Improved performance of TypoScript::convertTypoScriptArrayToPlainArray. Thanks to Timo Schmidt. Resolves #8857.
+[~TASK] Extbase: Changed state to 'stable'. Resolves #8768.
+[+BUGFIX] Extbase: Fixed EOL and encoding of several files. Resolves #8876.
+[+BUGFIX] Extbase (MVC): Fixed a problem where a non-required action argument throwed Exception if it was not found in the Backend. Thanks to Marc Bastian Heinrichs. Resolves #7277.
+[!!!][+BUGFIX] Extbase (Persistence): All methods trying to find an object by uid now ignores the storagePid. This changes the behavior of argument mapping and the way extbase fetches 1:1 relations. Resolves #5631.
+[+BUGFIX] Extbase (Persistence): Fixed a problem where localized objects inside an aggregate are not translated. Resolves #8555.
+[~TASK] Extbase: Removed new lines at the end of php files.
+
+
+HOW TO CREATE THE CHANGELOG
+===========================
+git log [startRevision]..HEAD --pretty=format:"%s%n%b%n" | grep -v "^$" | grep -v "git-svn-id"

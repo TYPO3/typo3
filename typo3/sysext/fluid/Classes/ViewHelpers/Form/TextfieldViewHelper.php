@@ -32,9 +32,6 @@
  * Output:
  * <input type="text" name="myTextBox" value="default value" />
  *
- * @version $Id: TextfieldViewHelper.php 3628 2010-01-14 15:31:38Z robert $
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

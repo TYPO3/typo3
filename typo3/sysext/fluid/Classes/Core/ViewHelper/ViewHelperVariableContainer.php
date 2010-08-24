@@ -21,9 +21,6 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperVariableContainer.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
@@ -39,7 +36,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 
 	/**
 	 *
-	 * @var Tx_Extbase_MVC_View_ViewInterface
+	 * @var Tx_Fluid_View_AbstractTemplateView
 	 */
 	protected $view;
 
@@ -126,11 +123,11 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	/**
 	 * Set the view to pass it to ViewHelpers.
 	 *
-	 * @param Tx_Extbase_MVC_View_ViewInterface $view View to set
+	 * @param Tx_Fluid_View_AbstractTemplateView $view View to set
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function setView(Tx_Extbase_MVC_View_ViewInterface $view) {
+	public function setView(Tx_Fluid_View_AbstractTemplateView $view) {
 		$this->view = $view;
 	}
 
@@ -139,7 +136,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer {
 	 *
 	 * !!! This is NOT a public API and might still change!!!
 	 *
-	 * @return Tx_Extbase_MVC_View_ViewInterface The View
+	 * @return Tx_Fluid_View_AbstractTemplateView The View
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function getView() {

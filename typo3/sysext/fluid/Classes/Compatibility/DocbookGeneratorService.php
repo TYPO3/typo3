@@ -14,9 +14,6 @@
  *                                                                        */
 
 /**
- * @package
- * @subpackage
- * @version $Id: DocbookGeneratorService.php 1734 2009-11-25 21:53:57Z stucki $
  */
 /**
  * Class extending the docbook generator service for use in typo3 v4.

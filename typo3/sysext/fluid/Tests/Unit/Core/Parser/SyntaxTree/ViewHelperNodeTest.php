@@ -26,7 +26,6 @@ require_once(dirname(__FILE__) . '/../../Fixtures/TestViewHelper.php');
 /**
  * Testcase for [insert classname here]
  *
- * @version $Id: ViewHelperNodeTest.php 4005 2010-03-23 14:28:15Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_BaseTestCase {
@@ -71,13 +70,13 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 		$this->renderingContext->injectObjectManager($this->mockObjectManager);
 
 		$this->templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		$this->renderingContext->setTemplateVariableContainer($this->templateVariableContainer);
+		$this->renderingContext->injectTemplateVariableContainer($this->templateVariableContainer);
 
 		$this->controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
 		$this->renderingContext->setControllerContext($this->controllerContext);
 
 		$this->viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$this->renderingContext->setViewHelperVariableContainer($this->viewHelperVariableContainer);
+		$this->renderingContext->injectViewHelperVariableContainer($this->viewHelperVariableContainer);
 	}
 
 	/**
@@ -101,7 +100,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 	public function childNodeAccessFacetWorksAsExpected() {
 		$childNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_TextNode', array(), array('foo'));
 
-		$mockViewHelper = $this->getMock('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments', 'setRenderingContext'));
+		$mockViewHelper = $this->getMock('Tx_Fluid_Core_Parser_Fixtures_ChildNodeAccessFacetViewHelper', array('setChildNodes', 'initializeArguments', 'render', 'prepareArguments'));
 
 		$mockViewHelperArguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
 
@@ -112,8 +111,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 
 		$mockViewHelper->expects($this->once())->method('setChildNodes')->with($this->equalTo(array($childNode)));
 
-		$viewHelperNode->setRenderingContext($this->renderingContext);
-		$viewHelperNode->evaluate();
+		$viewHelperNode->evaluate($this->renderingContext);
 	}
 
 	/**
@@ -131,8 +129,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 
 		$viewHelperNode = new Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode($mockViewHelper, array());
 
-		$viewHelperNode->setRenderingContext($this->renderingContext);
-		$viewHelperNode->evaluate();
+		$viewHelperNode->evaluate($this->renderingContext);
 	}
 
 	/**
@@ -160,8 +157,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 			'param1' => new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('a'),
 		));
 
-		$viewHelperNode->setRenderingContext($this->renderingContext);
-		$viewHelperNode->evaluate();
+		$viewHelperNode->evaluate($this->renderingContext);
 	}
 
 	/**
@@ -177,8 +173,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 
 		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
 
-		$viewHelperNode->setRenderingContext($this->renderingContext);
-		$viewHelperNode->evaluate();
+		$viewHelperNode->evaluate($this->renderingContext);
 	}
 
 	/**
@@ -194,8 +189,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 
 		$this->mockObjectManager->expects($this->once())->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
 
-		$viewHelperNode->setRenderingContext($this->renderingContext);
-		$viewHelperNode->evaluate();
+		$viewHelperNode->evaluate($this->renderingContext);
 	}
 
 	/**
@@ -212,9 +206,8 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 		$this->mockObjectManager->expects($this->at(0))->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
 		$this->mockObjectManager->expects($this->at(1))->method('create')->with('Tx_Fluid_Core_ViewHelper_Arguments')->will($this->returnValue($mockViewHelperArguments));
 
-		$viewHelperNode->setRenderingContext($this->renderingContext);
-		$viewHelperNode->evaluate();
-		$viewHelperNode->evaluate();
+		$viewHelperNode->evaluate($this->renderingContext);
+		$viewHelperNode->evaluate($this->renderingContext);
 	}
 
 	/**
@@ -223,13 +216,12 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 	 */
 	public function convertArgumentValueCallsConvertToBooleanForArgumentsOfTypeBoolean() {
 		$viewHelperNode = $this->getAccessibleMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array('convertToBoolean'), array(), '', FALSE);
-		$viewHelperNode->_set('renderingContext', $this->renderingContext);
 		$argumentViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode', array('evaluate'), array(), '', FALSE);
 		$argumentViewHelperNode->expects($this->once())->method('evaluate')->will($this->returnValue('foo'));
 
 		$viewHelperNode->expects($this->once())->method('convertToBoolean')->with('foo')->will($this->returnValue('bar'));
 
-		$actualResult = $viewHelperNode->_call('convertArgumentValue', $argumentViewHelperNode, 'boolean');
+		$actualResult = $viewHelperNode->_call('convertArgumentValue', $argumentViewHelperNode, 'boolean', $this->renderingContext);
 		$this->assertEquals('bar', $actualResult);
 	}
 
@@ -268,6 +260,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeTest extends Tx_Extbase_Base
 
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', 0));
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', -1));
+		$this->assertFalse($viewHelperNode->_call('convertToBoolean', '-1'));
 		$this->assertFalse($viewHelperNode->_call('convertToBoolean', -.5));
 
 		$this->assertTrue($viewHelperNode->_call('convertToBoolean', 1));

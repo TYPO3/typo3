@@ -23,7 +23,6 @@
 /**
  * Testcase for TextNode
  *
- * @version $Id: TextNodeTest.php 3751 2010-01-22 15:56:47Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_SyntaxTree_TextNodeTest extends Tx_Extbase_BaseTestCase {
@@ -35,7 +34,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_TextNodeTest extends Tx_Extbase_BaseTestCa
 	public function renderReturnsSameStringAsGivenInConstructor() {
 		$string = 'I can work quite effectively in a train!';
 		$node = new Tx_Fluid_Core_Parser_SyntaxTree_TextNode($string);
-		$this->assertEquals($node->evaluate(), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
+		$this->assertEquals($node->evaluate($this->getMock('Tx_Fluid_Core_Rendering_RenderingContext')), $string, 'The rendered string of a text node is not the same as the string given in the constructor.');
 	}
 
 	/**

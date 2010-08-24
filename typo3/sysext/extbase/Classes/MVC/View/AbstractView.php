@@ -60,11 +60,11 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 
 	/**
 	 * Add a variable to $this->viewData.
-	 * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible,
+	 * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
 	 *
 	 * @param string $key Key of variable
 	 * @param object $value Value of object
-	 * @return Tx_Extbase_MVC_View_ViewInterface an instance of $this, to enable chaining.
+	 * @return Tx_Extbase_MVC_View_AbstractView an instance of $this, to enable chaining
 	 * @api
 	 */
 	public function assign($key, $value) {
@@ -76,13 +76,14 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	 * Add multiple variables to $this->viewData.
 	 *
 	 * @param array $values array in the format array(key1 => value1, key2 => value2).
-	 * @return void
+	 * @return Tx_Extbase_MVC_View_AbstractView an instance of $this, to enable chaining
 	 * @api
 	 */
 	public function assignMultiple(array $values) {
 		foreach($values as $key => $value) {
 			$this->assign($key, $value);
 		}
+		return $this;
 	}
 
 	/**

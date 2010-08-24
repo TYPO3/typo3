@@ -23,26 +23,18 @@
 /**
  * Node in the syntax tree.
  *
- * @version $Id: NodeInterface.php 3751 2010-01-22 15:56:47Z k-fish $
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
 interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
 
 	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext Rendering Context to be used for this evaluation
-	 * @return void
-	 */
-	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext);
-
-	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return mixed Normally, an object is returned - in case it is concatenated with a string, a string is returned.
 	 */
-	public function evaluateChildNodes();
+	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
 
 	/**
 	 * Returns all child nodes for a given node.
@@ -62,9 +54,10 @@ interface Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface {
 	/**
 	 * Evaluates the node - can return not only strings, but arbitary objects.
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return mixed Evaluated node
 	 */
-	public function evaluate();
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext);
 }
 
 ?>

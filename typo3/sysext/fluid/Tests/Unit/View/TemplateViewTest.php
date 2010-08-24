@@ -26,14 +26,9 @@ include_once(dirname(__FILE__) . '/Fixtures/TemplateViewFixture.php');
 /**
  * Testcase for the TemplateView
  *
- * @version $Id: TemplateViewTest.php 4334 2010-05-28 10:06:01Z robert $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
-
-	public function initializeViewSetsParserConfiguration() {
-		$this->markTestSkipped('incomplete, needs to be written!');
-	}
 
 	/**
 	 * @test
@@ -179,72 +174,11 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function renderCallsRenderOnParsedTemplateInterface() {
-		$templateView = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('parseTemplate', 'resolveTemplatePathAndFilename', 'buildParserConfiguration'), array(), '', FALSE);
-		$parsedTemplate = $this->getMock('Tx_Fluid_Core_Parser_ParsedTemplateInterface');
-		$objectManager = $this->getMock('Tx_Fluid_Compatibility_ObjectManager');
-		$controllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array(), array(), '', FALSE);
-
-		$variableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		$renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext', array(), array(), '', FALSE);
-
-		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$objectManager->expects($this->exactly(3))->method('create')->will($this->onConsecutiveCalls($variableContainer, $renderingContext, $viewHelperVariableContainer));
-
-		$templateView->_set('objectManager', $objectManager);
-		$templateView->injectTemplateParser($this->getMock('Tx_Fluid_Core_Parser_TemplateParser'));
-		$templateView->setControllerContext($controllerContext);
-
-		$templateView->expects($this->once())->method('parseTemplate')->will($this->returnValue($parsedTemplate));
-
-			// Real expectations
-		$parsedTemplate->expects($this->once())->method('render')->with($renderingContext)->will($this->returnValue('Hello World'));
-
-		$this->assertEquals('Hello World', $templateView->render(), 'The output of the ParsedTemplates render Method is not returned by the TemplateView');
-	}
-
-	/**
-	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function parseTemplateReadsTheGivenTemplateAndReturnsTheParsedResult() {
-		$mockTemplateParser = $this->getMock('Tx_Fluid_Core_Parser_TemplateParser', array('parse'));
-		$mockTemplateParser->expects($this->once())->method('parse')->with('Unparsed Template')->will($this->returnValue('Parsed Template'));
-
-		$templateView = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'), array(), '', FALSE);
-		$templateView->injectTemplateParser($mockTemplateParser);
-
-		$parsedTemplate = $templateView->_call('parseTemplate', dirname(__FILE__) . '/Fixtures/UnparsedTemplateFixture.html');
-		$this->assertSame('Parsed Template', $parsedTemplate);
-	}
-
-	/**
-	 * @test
-	 * @expectedException Tx_Fluid_View_Exception_InvalidTemplateResourceException
-	 * @author Robert Lemke <robert@typo3.org>
-	 */
-	public function parseTemplateThrowsAnExceptionIfTheSpecifiedTemplateResourceDoesNotExist() {
-		$templateView = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'), array(), '', FALSE);
-		$templateView->_call('parseTemplate', 'foo');
-	}
-
-	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
 	public function pathToPartialIsResolvedCorrectly() {
-		$this->markTestSkipped('Needs proper implementation.');
-		$mockRequest = $this->getMock('Tx_Fluid_MVC_Request', array('getControllerPackageKey', ''));
-		$mockRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue('DummyPackageKey'));
-		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array('getRequest'));
-		$mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
-
-		$mockPackage = $this->getMock('Tx_Fluid_Package_PackageInterface', array('getPackagePath'));
-		$mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue('/ExamplePackagePath/'));
-		$mockPackageManager = $this->getMock('Tx_Fluid_Package_PackageManagerInterface', array('getPackage'));
-		$mockPackageManager->expects($this->any())->method('getPackage')->with('DummyPackageKey')->will($this->returnValue($mockPackage));
-
+		$this->markTestSkipped('Needs to be finished');
 		vfsStreamWrapper::register();
+		mkdir('vfs://MyTemplates');
+		file_put_contents('vfs://MyTemplates/MyCoolAction.html', 'contentsOfMyCoolAction');
 		$mockRootDirectory = vfsStreamDirectory::create('ExamplePackagePath/Resources/Private/Partials');
 		$mockRootDirectory->getChild('Resources/Private/Partials')->addChild('Partials');
 		vfsStreamWrapper::setRoot($mockRootDirectory);
@@ -254,73 +188,12 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function viewIsPlacedInVariableContainer() {
-		$this->markTestSkipped('view will be placed in ViewHelperContext soon');
-		$packageManager = t3lib_div::makeInstance('Tx_Fluid_Package_PackageManagerInterface');
-		$resourceManager = t3lib_div::makeInstance('Tx_Fluid_Resource_ResourceManager');
-
-		$syntaxTreeNode = new Tx_Fluid_View_Fixture_TransparentSyntaxTreeNode();
-
-		$parsingState = new Tx_Fluid_Core_Parser_ParsingState();
-		$parsingState->setRootNode($syntaxTreeNode);
-
-		$templateParserMock = $this->getMock('Tx_Fluid_Core_Parser_TemplateParser', array('parse'));
-		$templateParserMock->expects($this->any())->method('parse')->will($this->returnValue($parsingState));
-
-		$mockRequest = $this->getMock('Tx_Extbase_MVC_Request');
-		$mockRequest->expects($this->any())->method('getControllerActionName')->will($this->returnValue('index'));
-		$mockRequest->expects($this->any())->method('getControllerObjectName')->will($this->returnValue('Tx_Fluid_Foo_Bar_Controller_BazController'));
-		$mockRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue('Fluid'));
-		$mockControllerContext = $this->getMock('Tx_Extbase_MVC_Controller_ControllerContext', array('getRequest'), array(), '', FALSE);
-		$mockControllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($mockRequest));
-
-		$templateView = new Tx_Fluid_View_Fixture_TemplateViewFixture(new Tx_Fluid_Compatibility_ObjectManager(), $packageManager, $resourceManager, new Tx_Fluid_Compatibility_ObjectManager());
-		$templateView->injectTemplateParser($templateParserMock);
-		$templateView->setTemplatePathAndFilename(dirname(__FILE__) . '/Fixtures/TemplateViewSectionFixture.html');
-		$templateView->setLayoutPathAndFilename(dirname(__FILE__) . '/Fixtures/LayoutFixture.html');
-		$templateView->setControllerContext($mockControllerContext);
-		$templateView->initializeObject();
-		$templateView->addVariable('name', 'value');
-		$templateView->render();
-
-		$this->assertSame($templateView, $syntaxTreeNode->variableContainer->get('view'), 'The view has not been placed in the variable container.');
-		$this->assertEquals('value', $syntaxTreeNode->variableContainer->get('name'), 'Context variable has been set.');
-	}
-
-	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function renderSingleSectionWorks() {
-		$this->markTestSkipped('needs refactoring - this is a functional test with too many side effects');
-		$templateView = new Tx_Fluid_View_TemplateView();
-		$templateView->setTemplatePathAndFilename(dirname(__FILE__) . '/Fixtures/TemplateViewSectionFixture.html');
-		$this->assertEquals($templateView->renderSection('mySection'), 'Output', 'Specific section was not rendered correctly!');
-	}
-
-	/**
-	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function layoutEngineMergesTemplateAndLayout() {
-		$this->markTestSkipped('needs refactoring - this is a functional test with too many side effects');
-		$templateView = new Tx_Fluid_View_TemplateView();
-		$templateView->setTemplatePathAndFilename(dirname(__FILE__) . '/Fixtures/TemplateViewSectionFixture.html');
-		$templateView->setLayoutPathAndFilename(dirname(__FILE__) . '/Fixtures/LayoutFixture.html');
-		$this->assertEquals($templateView->renderWithLayout('LayoutFixture'), '<div>Output</div>', 'Specific section was not rendered correctly!');
-	}
-
-	/**
-	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function resolveTemplatePathAndFilenameChecksDifferentPathPatternsAndReturnsTheFirstPathWhichExists() {
-		$this->markTestSkipped('vfs not yet supported in v4');
+	public function resolveTemplatePathAndFilenameChecksDifferentPathPatternsAndReturnsTheFirstPathWhichExists() { $this->markTestIncomplete("Not implemented in v4");
 		vfsStreamWrapper::register();
 		mkdir('vfs://MyTemplates');
-		file_put_contents('vfs://MyTemplates/MyCoolAction.html', '');
+		file_put_contents('vfs://MyTemplates/MyCoolAction.html', 'contentsOfMyCoolAction');
 
 		$paths = array(
 			 'vfs://NonExistantDir/UnknowFile.html',
@@ -334,7 +207,7 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 		$templateView->setPartialRootPath('MyPartials');
 		$templateView->setLayoutRootPath('MyLayouts');
 
-		$this->assertSame('vfs://MyTemplates/MyCoolAction.html', $templateView->_call('resolveTemplatePathAndFilename', 'myCoolAction'));
+		$this->assertSame('contentsOfMyCoolAction', $templateView->_call('getTemplateSource', 'myCoolAction'));
 
 	}
 
@@ -342,11 +215,15 @@ class Tx_Fluid_View_TemplateViewTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
-	public function resolveTemplatePathAndFilenameReturnsTheExplicitlyConfiguredTemplatePathAndFilename() {
-		$templateView = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'), array(), '', FALSE);
-		$templateView->_set('templatePathAndFilename', 'Foo/Bar/Baz.html');
+	public function resolveTemplatePathAndFilenameReturnsTheExplicitlyConfiguredTemplatePathAndFilename() { $this->markTestIncomplete("Not implemented in v4");
+		vfsStreamWrapper::register();
+		mkdir('vfs://MyTemplates');
+		file_put_contents('vfs://MyTemplates/MyCoolAction.html', 'contentsOfMyCoolAction');
 
-		$this->assertSame('Foo/Bar/Baz.html', $templateView->_call('resolveTemplatePathAndFilename'));
+		$templateView = $this->getAccessibleMock('Tx_Fluid_View_TemplateView', array('dummy'), array(), '', FALSE);
+		$templateView->_set('templatePathAndFilename', 'vfs://MyTemplates/MyCoolAction.html');
+
+		$this->assertSame('contentsOfMyCoolAction', $templateView->_call('getTemplateSource'));
   	}
 }
 

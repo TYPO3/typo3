@@ -38,9 +38,6 @@
  *   <li>1234567890: Validation errors for argument "newBlog"</li>
  * </ul>
  *
- * @version $Id: ErrorsViewHelper.php 2074 2010-03-19 12:12:15Z sebastian $
- * @package Fluid
- * @subpackage ViewHelpers\Form
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

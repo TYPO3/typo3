@@ -21,11 +21,8 @@
  *                                                                        */
 
 /**
- * Tag builder. Can be easily accessed in TagBasedViewHelper
+ * Tag builder. Can be easily accessed in AbstractTagBasedViewHelper
  *
- * @version $Id: TagBuilder.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype

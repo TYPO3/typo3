@@ -23,9 +23,6 @@
 /**
  * The abstract base class for all view helpers.
  *
- * @version $Id: AbstractViewHelper.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage Core\ViewHelper
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
@@ -70,6 +67,11 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 * @api
 	 */
 	protected $controllerContext;
+
+	/**
+	 * @var Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 */
+	private $renderingContext;
 
 	/**
 	 * ViewHelper Variable Container
@@ -118,6 +120,16 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
 	}
+
+	/**
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
+	 * @return void
+	 * @author Robert Lemke <robert@typo3.org>
+	 */
+	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+	 $this->renderingContext = $renderingContext;
+	}
+
 
 	/**
 	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer $viewHelperVariableContainer
@@ -172,6 +184,29 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	}
 
 	/**
+	 * Overrides a registered argument. Call this method from your ViewHelper subclass
+	 * inside the initializeArguments() method if you want to override a previously registered argument.
+	 * @see registerArgument()
+	 *
+	 * @param string $name Name of the argument
+	 * @param string $type Type of the argument
+	 * @param string $description Description of the argument
+	 * @param boolean $required If TRUE, argument is required. Defaults to FALSE.
+	 * @param mixed $defaultValue Default value of argument
+	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper $this, to allow chaining.
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @todo Object Factory usage!
+	 * @api
+	 */
+	protected function overrideArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
+		if (!array_key_exists($name, $this->argumentDefinitions)) {
+			throw new Tx_Fluid_Core_ViewHelper_Exception('Argument "' . $name . '" has not been defined, thus it can\'t be overridden.', 1279212461);
+		}
+		$this->argumentDefinitions[$name] = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $required, $defaultValue);
+		return $this;
+	}
+
+	/**
 	 * Sets all needed attributes needed for the rendering. Called by the
 	 * framework. Populates $this->viewHelperNode.
 	 * This is PURELY INTERNAL! Never override this method!!
@@ -206,7 +241,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 * @api
 	 */
 	protected function renderChildren() {
-		return $this->viewHelperNode->evaluateChildNodes();
+		return $this->viewHelperNode->evaluateChildNodes($this->renderingContext);
 	}
 
 	/**
@@ -333,6 +368,21 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper implements Tx_Fluid_C
 	 * @api
 	 */
 	//abstract public function render();
+
+	/**
+	 * Get the rendering context interface.
+	 * THIS METHOD IS NO PUBLIC API AND ONLY CALLABLE INSIDE THE FRAMEWORK!
+	 *
+	 * @return Tx_Fluid_Core_Rendering_RenderingContextInterface
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function getRenderingContext() {
+		if ($this instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
+			return $this->renderingContext;
+		} else {
+			throw new Tx_Fluid_Core_ViewHelper_Exception_RenderingContextNotAccessibleException('It is forbidden to call getRenderingContext() if you do not implement Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface. But beware, this interface is NO PUBLIC API! If you want to implement conditions, you should subclass Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper.', 127895038);
+		}
+	}
 }
 
 ?>

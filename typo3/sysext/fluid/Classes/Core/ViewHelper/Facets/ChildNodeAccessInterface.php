@@ -25,18 +25,16 @@
  * need access to the direct children in the Syntax Tree at rendering-time.
  * This might happen if you only want to selectively render a part of the syntax
  * tree depending on some conditions.
+ * To render subnodes, you can fetch the RenderingContext via $this->getRenderingContext().
  *
- * In most cases, you will not need this view helper.
+ * In most cases, you will not need this facet, and it is NO PUBLIC API!
+ * Right now it is only used internally for conditions, so by subclassing Tx_Fluid_Core_ViewHelpers_AbstractConditionViewHelper, this should be all you need.
  *
  * See Tx_Fluid_ViewHelpers_IfViewHelper for an example how it is used.
  *
- * @version $Id: ChildNodeAccessInterface.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage Core\ViewHelper\Facets
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
-
 	/**
 	 * Sets the direct child nodes of the current syntax tree node.
 	 *
@@ -44,15 +42,6 @@ interface Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface {
 	 * @return void
 	 */
 	public function setChildNodes(array $childNodes);
-
-	/**
-	 * Sets the rendering context which needs to be passed on to child nodes
-	 *
-	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext the renderingcontext to use
-	 * @return void
-	 */
-	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext);
-
 }
 
 ?>

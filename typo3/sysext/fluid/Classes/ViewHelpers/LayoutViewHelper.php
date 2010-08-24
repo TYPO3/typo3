@@ -23,12 +23,9 @@
 /**
  * With this tag, you can select a layout to be used..
  * <code><f:layout name="main" /></code>
+ * 
  *
  *
- *
- * @version $Id: LayoutViewHelper.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage ViewHelpers
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  * @scope prototype
@@ -58,8 +55,7 @@ class Tx_Fluid_ViewHelpers_LayoutViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 */
 	static public function postParseEvent(Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode $syntaxTreeNode, array $viewHelperArguments, Tx_Fluid_Core_ViewHelper_TemplateVariableContainer $variableContainer) {
 		if (isset($viewHelperArguments['name'])) {
-			$viewHelperArguments['name']->setRenderingContext(new Tx_Fluid_Core_Rendering_RenderingContext());
-			$layoutName = $viewHelperArguments['name']->evaluate();
+			$layoutName = $viewHelperArguments['name']->getText();
 		} else {
 			$layoutName = 'default';
 		}

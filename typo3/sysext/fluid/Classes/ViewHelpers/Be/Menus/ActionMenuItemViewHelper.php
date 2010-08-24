@@ -25,14 +25,12 @@
  * Note: This view helper is experimental!
  *
  *
- * @package     Fluid
- * @subpackage  ViewHelpers\Be\Menus
  * @author      Steffen Kamper <info@sk-typo3.de>
  * @author      Bastian Waidelich <bastian@typo3.org>
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id:
  */
-class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuItemViewHelper extends Tx_Fluid_Core_ViewHelper_TagBasedViewHelper {
+class Tx_Fluid_ViewHelpers_Be_Menus_ActionMenuItemViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string

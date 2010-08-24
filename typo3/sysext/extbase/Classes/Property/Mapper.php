@@ -317,6 +317,7 @@ class Tx_Extbase_Property_Mapper {
 	protected function findObjectByUid($dataType, $uid) {
 		$query = $this->queryFactory->create($dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		$result = $query->matching($query->equals('uid', intval($uid)))->execute();
 		$object = NULL;
 		if (count($result) > 0) {

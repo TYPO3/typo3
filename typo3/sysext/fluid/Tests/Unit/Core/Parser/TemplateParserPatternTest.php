@@ -23,7 +23,6 @@
 /**
  * Testcase for Regular expressions in parser
  *
- * @version $Id: TemplateParserPatternTest.php 3751 2010-01-22 15:56:47Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_TemplateParserPatternTest extends Tx_Extbase_BaseTestCase {

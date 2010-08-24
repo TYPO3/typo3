@@ -21,7 +21,6 @@
  *                                                                        */
 
 /**
- * @version $Id: NumberViewHelperTest.php 2813 2009-07-16 14:02:34Z k-fish $
  */
 class Tx_Fluid_ViewHelpers_Format_NumberViewHelperTest extends Tx_Extbase_BaseTestCase {
 

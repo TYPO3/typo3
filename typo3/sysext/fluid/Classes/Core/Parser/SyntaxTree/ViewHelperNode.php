@@ -23,9 +23,6 @@
 /**
  * Node which will call a ViewHelper associated with this node.
  *
- * @version $Id: ViewHelperNode.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -47,7 +44,14 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * The ViewHelper associated with this node
 	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperInterface
 	 */
-	protected $viewHelper = NULL;
+	protected $uninitializedViewHelper = NULL;
+
+	/**
+	 * A mapping RenderingContext -> ViewHelper to only re-initialize ViewHelpers
+	 * when a context change occurs.
+	 * @var Tx_Extbase_Persistence_ObjectStorage
+	 */
+	protected $viewHelpersByContext = NULL;
 
 	/**
 	 * List of comparators which are supported in the boolean expression language.
@@ -83,24 +87,25 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function __construct(Tx_Fluid_Core_ViewHelper_ViewHelperInterface $viewHelper, array $arguments) {
-		$this->viewHelper = $viewHelper;
+		$this->uninitializedViewHelper = $viewHelper;
+		$this->viewHelpersByContext = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
 		$this->arguments = $arguments;
 
 		if (FALSE /*FIXME*/) {
-			$this->viewHelperClassName = $this->viewHelper->FLOW3_AOP_Proxy_getProxyTargetClassName();
+			$this->viewHelperClassName = $this->uninitializedViewHelper->FLOW3_AOP_Proxy_getProxyTargetClassName();
 		} else {
-			$this->viewHelperClassName = get_class($this->viewHelper);
+			$this->viewHelperClassName = get_class($this->uninitializedViewHelper);
 		}
 	}
 
 	/**
-	 * Returns the attached ViewHelper for this ViewHelperNode.
+	 * Returns the attached (but still uninitialized) ViewHelper for this ViewHelperNode.
 	 * We need this method because sometimes Interceptors need to ask some information from the ViewHelper.
 	 *
 	 * @return Tx_Fluid_Core_ViewHelper_AbstractViewHelper the attached ViewHelper, if it is initialized
 	 */
-	public function getViewHelper() {
-		return $this->viewHelper;
+	public function getUninitializedViewHelper() {
+		return $this->uninitializedViewHelper;
 	}
 
 	/**
@@ -123,32 +128,30 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 *
 	 * Afterwards, checks that the view helper did not leave a variable lying around.
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return object evaluated node after the view helper has been called.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @todo check recreation of viewhelper when revisiting caching
 	 */
-	public function evaluate() {
-		if ($this->renderingContext === NULL) {
-			throw new Tx_Fluid_Core_Parser_Exception('RenderingContext is null in ViewHelperNode, but necessary. If this error appears, please report a bug!', 1242669031);
-		}
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		$objectManager = $renderingContext->getObjectManager();
+		$contextVariables = $renderingContext->getTemplateVariableContainer()->getAllIdentifiers();
 
-		$objectManager = $this->renderingContext->getObjectManager();
-		$contextVariables = $this->renderingContext->getTemplateVariableContainer()->getAllIdentifiers();
-
-		if ($this->viewHelper === NULL) {
-				// we have been resurrected from the cache
-			$this->viewHelper = $objectManager->create($this->viewHelperClassName);
+		if ($this->viewHelpersByContext->contains($renderingContext)) {
+			$viewHelper = $this->viewHelpersByContext[$renderingContext];
+		} else {
+			$viewHelper = clone $this->uninitializedViewHelper;
+			$this->viewHelpersByContext->attach($renderingContext, $viewHelper);
 		}
 
 		$evaluatedArguments = array();
 		$renderMethodParameters = array();
- 		if (count($this->viewHelper->prepareArguments())) {
- 			foreach ($this->viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
+ 		if (count($viewHelper->prepareArguments())) {
+ 			foreach ($viewHelper->prepareArguments() as $argumentName => $argumentDefinition) {
 				if (isset($this->arguments[$argumentName])) {
 					$argumentValue = $this->arguments[$argumentName];
-					$argumentValue->setRenderingContext($this->renderingContext);
-					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue, $argumentDefinition->getType());
+					$evaluatedArguments[$argumentName] = $this->convertArgumentValue($argumentValue, $argumentDefinition->getType(), $renderingContext);
 				} else {
 					$evaluatedArguments[$argumentName] = $argumentDefinition->getDefaultValue();
 				}
@@ -159,34 +162,28 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		}
 
 		$viewHelperArguments = $objectManager->create('Tx_Fluid_Core_ViewHelper_Arguments', $evaluatedArguments);
-		$this->viewHelper->setArguments($viewHelperArguments);
-		$this->viewHelper->setTemplateVariableContainer($this->renderingContext->getTemplateVariableContainer());
-		if ($this->renderingContext->getControllerContext() !== NULL) {
-			$this->viewHelper->setControllerContext($this->renderingContext->getControllerContext());
+		$viewHelper->setArguments($viewHelperArguments);
+		$viewHelper->setTemplateVariableContainer($renderingContext->getTemplateVariableContainer());
+		if ($renderingContext->getControllerContext() !== NULL) {
+			$viewHelper->setControllerContext($renderingContext->getControllerContext());
 		}
-		$this->viewHelper->setViewHelperVariableContainer($this->renderingContext->getViewHelperVariableContainer());
-		$this->viewHelper->setViewHelperNode($this);
+		$viewHelper->setViewHelperVariableContainer($renderingContext->getViewHelperVariableContainer());
+		$viewHelper->setViewHelperNode($this);
+		$viewHelper->setRenderingContext($renderingContext);
 
-		if ($this->viewHelper instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
-			$this->viewHelper->setChildNodes($this->childNodes);
-			$this->viewHelper->setRenderingContext($this->renderingContext);
+		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_Facets_ChildNodeAccessInterface) {
+			$viewHelper->setChildNodes($this->childNodes);
 		}
 
-		$this->viewHelper->validateArguments();
-		$this->viewHelper->initialize();
+		$viewHelper->validateArguments();
+		$viewHelper->initialize();
 		try {
-			$output = call_user_func_array(array($this->viewHelper, 'render'), $renderMethodParameters);
+			$output = call_user_func_array(array($viewHelper, 'render'), $renderMethodParameters);
 		} catch (Tx_Fluid_Core_ViewHelper_Exception $exception) {
 				// @todo [BW] rethrow exception, log, ignore.. depending on the current context
 			$output = $exception->getMessage();
 		}
 
-		if ($contextVariables != $this->renderingContext->getTemplateVariableContainer()->getAllIdentifiers()) {
-			$endContextVariables = $this->renderingContext->getTemplateVariableContainer();
-			$diff = array_intersect($endContextVariables, $contextVariables);
-
-			throw new RuntimeException('The following context variable has been changed after the view helper "' . $this->viewHelperClassName . '" has been called: ' .implode(', ', $diff), 1236081302);
-		}
 		return $output;
 	}
 
@@ -199,11 +196,11 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function convertArgumentValue(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, $type) {
+	protected function convertArgumentValue(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, $type, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		if ($type === 'boolean') {
-			return $this->evaluateBooleanExpression($syntaxTreeNode);
+			return $this->evaluateBooleanExpression($syntaxTreeNode, $renderingContext);
 		}
-		return $syntaxTreeNode->evaluate();
+		return $syntaxTreeNode->evaluate($renderingContext);
 	}
 
 	/**
@@ -229,23 +226,22 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * Then, we evaluate the obtained left and right side using the given comparator. This is done inside the evaluateComparator method.
 	 *
 	 * @param Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode Value to be converted
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return boolean Evaluated value
 	 * @throws Tx_Fluid_Core_Parser_Exception
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	protected function evaluateBooleanExpression(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode) {
+	protected function evaluateBooleanExpression(Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode $syntaxTreeNode, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$childNodes = $syntaxTreeNode->getChildNodes();
 		if (count($childNodes) > 3) {
-			throw new Tx_Fluid_Core_Parser_Exception('The expression "' . $syntaxTreeNode->evaluate() . '" has more than tree parts.', 1244201848);
+			throw new Tx_Fluid_Core_Parser_Exception('The expression "' . $syntaxTreeNode->evaluate($renderingContext) . '" has more than tree parts.', 1244201848);
 		}
 
 		$leftSide = NULL;
 		$rightSide = NULL;
 		$comparator = NULL;
 		foreach ($childNodes as $childNode) {
-			$childNode->setRenderingContext($this->renderingContext);
-
-			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode && !preg_match(str_replace('COMPARATORS', implode('|', self::$comparators), self::$booleanExpressionTextNodeCheckerRegularExpression), $childNode->evaluate())) {
+			if ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode && !preg_match(str_replace('COMPARATORS', implode('|', self::$comparators), self::$booleanExpressionTextNodeCheckerRegularExpression), $childNode->evaluate($renderingContext))) {
 				$comparator = NULL;
 					// skip loop and fall back to classical to boolean conversion.
 				break;
@@ -254,14 +250,14 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			if ($comparator !== NULL) {
 					// comparator already set, we are evaluating the right side of the comparator
 				if ($rightSide === NULL) {
-					$rightSide = $childNode->evaluate();
+					$rightSide = $childNode->evaluate($renderingContext);
 				} else {
-					$rightSide .= $childNode->evaluate();
+					$rightSide .= $childNode->evaluate($renderingContext);
 				}
 			} elseif ($childNode instanceof Tx_Fluid_Core_Parser_SyntaxTree_TextNode
-				&& ($comparator = $this->getComparatorFromString($childNode->evaluate()))) {
+				&& ($comparator = $this->getComparatorFromString($childNode->evaluate($renderingContext)))) {
 					// comparator in current string segment
-				$explodedString = explode($comparator, $childNode->evaluate());
+				$explodedString = explode($comparator, $childNode->evaluate($renderingContext));
 				if (isset($explodedString[0]) && trim($explodedString[0]) !== '') {
 					$leftSide .= trim($explodedString[0]);
 				}
@@ -271,9 +267,9 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			} else {
 					// comparator not found yet, on the left side of the comparator
 				if ($leftSide === NULL) {
-					$leftSide = $childNode->evaluate();
+					$leftSide = $childNode->evaluate($renderingContext);
 				} else {
-					$leftSide .= $childNode->evaluate();
+					$leftSide .= $childNode->evaluate($renderingContext);
 				}
 			}
 		}
@@ -281,8 +277,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		if ($comparator !== NULL) {
 			return $this->evaluateComparator($comparator, $leftSide, $rightSide);
 		} else {
-			$syntaxTreeNode->setRenderingContext($this->renderingContext);
-			return $this->convertToBoolean($syntaxTreeNode->evaluate());
+			return $this->convertToBoolean($syntaxTreeNode->evaluate($renderingContext));
 		}
 	}
 
@@ -349,11 +344,11 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 		if (is_bool($value)) {
 			return $value;
 		}
-		if (is_string($value)) {
-			return (!empty($value) && strtolower($value) !== 'false');
-		}
 		if (is_numeric($value)) {
 			return $value > 0;
+		}
+		if (is_string($value)) {
+			return (!empty($value) && strtolower($value) !== 'false');
 		}
 		if (is_array($value) || (is_object($value) && $value instanceof Countable)) {
 			return count($value) > 0;

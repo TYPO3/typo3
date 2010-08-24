@@ -23,9 +23,6 @@
 /**
  * Array Syntax Tree Node. Handles JSON-like arrays.
  *
- * @version $Id: ArrayNode.php 1734 2009-11-25 21:53:57Z stucki $
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -50,19 +47,16 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ArrayNode extends Tx_Fluid_Core_Parser_Syn
 	/**
 	 * Evaluate the array and return an evaluated array
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return array An associative array with literal values
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function evaluate() {
-		if ($this->renderingContext === NULL) {
-			throw new Tx_Fluid_Core_Parser_Exception('Rendering Context is null in ArrayNode, but necessary. If this error appears, please report a bug!', 1242668976);
-		}
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$arrayToBuild = array();
 		foreach ($this->internalArray as $key => $value) {
 			if ($value instanceof Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode) {
-				$value->setRenderingContext($this->renderingContext);
-				$arrayToBuild[$key] = $value->evaluate();
+				$arrayToBuild[$key] = $value->evaluate($renderingContext);
 			} else {
 				// TODO - this case should not happen!
 				$arrayToBuild[$key] = $value;

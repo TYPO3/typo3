@@ -23,9 +23,6 @@
 /**
  * Root node of every syntax tree.
  *
- * @version $Id: RootNode.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -34,15 +31,12 @@ class Tx_Fluid_Core_Parser_SyntaxTree_RootNode extends Tx_Fluid_Core_Parser_Synt
 	/**
 	 * Evaluate the root node, by evaluating the subtree.
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return mixed Evaluated subtree
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
-	public function evaluate() {
-		if ($this->renderingContext === NULL) {
-			throw new Tx_Fluid_Core_Parser_Exception('Rendering Context is NULL in RootNode, but necessary. If this error appears, please report a bug!', 1242669004);
-		}
-		$result = $this->evaluateChildNodes();
-		return $result;
+	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
+		return $this->evaluateChildNodes($renderingContext);
 	}
 }
 

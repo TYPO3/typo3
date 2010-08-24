@@ -21,9 +21,6 @@
  *                                                                        */
 
 /**
- * @version $Id: ViewHelperBaseTestcase.php 3643 2010-01-15 14:38:07Z robert $
- * @package Fluid
- * @subpackage ViewHelpers
  */
 abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_BaseTestCase {
 
@@ -38,12 +35,12 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $templateVariableContainer;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
 	 */
 	protected $uriBuilder;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
 	 */
 	protected $controllerContext;
 
@@ -58,9 +55,14 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 	protected $arguments;
 
 	/**
-	 * @var \Tx_Extbase_MVC_Web_Request
+	 * @var Tx_Extbase_MVC_Web_Request
 	 */
 	protected $request;
+
+	/**
+	 * @var Tx_Fluid_Core_Rendering_RenderingContext
+	 */
+	protected $renderingContext;
 
 	/**
 	 * @return void
@@ -88,6 +90,7 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 		$this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
 		$this->tagBuilder = $this->getMock('Tx_Fluid_Core_ViewHelper_TagBuilder');
 		$this->arguments = $this->getMock('Tx_Fluid_Core_ViewHelper_Arguments', array(), array(), '', FALSE);
+		$this->renderingContext = $this->getMock('Tx_Fluid_Core_Rendering_RenderingContext');
 	}
 
 	/**
@@ -99,8 +102,9 @@ abstract class Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase extends Tx_Extbase_Ba
 		$viewHelper->setViewHelperVariableContainer($this->viewHelperVariableContainer);
 		$viewHelper->setTemplateVariableContainer($this->templateVariableContainer);
 		$viewHelper->setControllerContext($this->controllerContext);
+		$viewHelper->setRenderingContext($this->renderingContext);
 		$viewHelper->setArguments($this->arguments);
-		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_TagBasedViewHelper) {
+		if ($viewHelper instanceof Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper) {
 			$viewHelper->injectTagBuilder($this->tagBuilder);
 		}
 	}

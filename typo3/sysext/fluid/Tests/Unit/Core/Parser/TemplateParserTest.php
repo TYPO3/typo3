@@ -28,7 +28,6 @@ require_once(dirname(__FILE__) . '/Fixtures/PostParseFacetViewHelper.php');
  * This is to at least half a system test, as it compares rendered results to
  * expectations, and does not strictly check the parsing...
  *
- * @version $Id: TemplateParserTest.php 3952 2010-03-16 08:00:53Z sebastian $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {
@@ -492,14 +491,6 @@ class Tx_Fluid_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {
 		$templateParser->_set('configuration', $parserConfiguration);
 
 		$templateParser->_call('objectAccessorHandler', $mockState, 'objectAccessorString', '', '', '');
-	}
-
-	/**
-	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function viewHelperArgumentsAreNotRunThroughValueInterceptors() {
-		$this->markTestIncomplete('Needs implementation!');
 	}
 
 	/**

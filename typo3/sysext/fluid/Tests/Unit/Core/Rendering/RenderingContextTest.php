@@ -23,14 +23,13 @@
 /**
  * Testcase for ParsingState
  *
- * @version $Id: RenderingContextTest.php 4005 2010-03-23 14:28:15Z k-fish $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Core_Rendering_RenderingContextTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * Parsing state
-	 * @var Tx_Fluid_Core_Rendering_RenderingContext
+	 * @var Tx_Fluid_Core_Rendering_RenderingContextInterface
 	 */
 	protected $renderingContext;
 
@@ -44,7 +43,7 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest extends Tx_Extbase_BaseTestCa
 	 */
 	public function templateVariableContainerCanBeReadCorrectly() {
 		$templateVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer');
-		$this->renderingContext->setTemplateVariableContainer($templateVariableContainer);
+		$this->renderingContext->injectTemplateVariableContainer($templateVariableContainer);
 		$this->assertSame($this->renderingContext->getTemplateVariableContainer(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
 	}
 
@@ -64,7 +63,7 @@ class Tx_Fluid_Core_Rendering_RenderingContextTest extends Tx_Extbase_BaseTestCa
 	 */
 	public function viewHelperVariableContainerCanBeReadCorrectly() {
 		$viewHelperVariableContainer = $this->getMock('Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer');
-		$this->renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
+		$this->renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
 		$this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
 	}
 }

@@ -24,9 +24,6 @@
  * XML Schema (XSD) Generator. Will generate an XML schema which can be used for autocompletion
  * in schema-aware editors like Eclipse XML editor.
  *
- * @version $Id: DocbookGenerator.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage Service
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 class Tx_Fluid_Service_DocbookGenerator extends Tx_Fluid_Service_AbstractGenerator {

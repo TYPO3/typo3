@@ -23,9 +23,6 @@
 /**
  * Abstract node in the syntax tree which has been built.
  *
- * @version $Id: AbstractNode.php 2043 2010-03-16 08:49:45Z sebastian $
- * @package Fluid
- * @subpackage Core\Parser\SyntaxTree
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @scope prototype
  */
@@ -38,40 +35,24 @@ abstract class Tx_Fluid_Core_Parser_SyntaxTree_AbstractNode implements Tx_Fluid_
 	protected $childNodes = array();
 
 	/**
-	 * The rendering context containing everything to correctly render the subtree
-	 * @var Tx_Fluid_Core_Rendering_RenderingContext
-	 */
-	protected $renderingContext;
-
-	/**
-	 * @param Tx_Fluid_Core_Rendering_RenderingContext $renderingContext Rendering Context to be used for this evaluation
-	 * @return void
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 */
-	public function setRenderingContext(Tx_Fluid_Core_Rendering_RenderingContext $renderingContext) {
-		$this->renderingContext = $renderingContext;
-	}
-
-	/**
 	 * Evaluate all child nodes and return the evaluated results.
 	 *
+	 * @param Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext
 	 * @return mixed Normally, an object is returned - in case it is concatenated with a string, a string is returned.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	public function evaluateChildNodes() {
+	public function evaluateChildNodes(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		$output = NULL;
 		foreach ($this->childNodes as $subNode) {
-			$subNode->setRenderingContext($this->renderingContext);
-
 			if ($output === NULL) {
-				$output = $subNode->evaluate();
+				$output = $subNode->evaluate($renderingContext);
 			} else {
 				if (is_object($output) && !method_exists($output, '__toString')) {
 					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($output) . '" to string.', 1248356140);
 				}
 				$output = (string)$output;
-				$subNodeOutput = $subNode->evaluate();
+				$subNodeOutput = $subNode->evaluate($renderingContext);
 
 				if (is_object($subNodeOutput) && !method_exists($subNodeOutput, '__toString')) {
 					throw new Tx_Fluid_Core_Parser_Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1273753083);

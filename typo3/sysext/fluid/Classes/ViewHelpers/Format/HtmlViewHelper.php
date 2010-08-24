@@ -14,9 +14,6 @@
  *                                                                        */
 
 /**
- * @package Fluid
- * @subpackage ViewHelpers
- * @version $Id: HtmlViewHelper.php 2043 2010-03-16 08:49:45Z sebastian $
  */
 
 /**
@@ -41,9 +38,6 @@
  *
  * @see http://typo3.org/documentation/document-library/references/doc_core_tsref/4.2.0/view/1/5/#id4198758
  *
- * @package
- * @subpackage
- * @version $Id: HtmlViewHelper.php 2043 2010-03-16 08:49:45Z sebastian $
  */
 class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
@@ -51,6 +45,11 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @var	tslib_cObj
 	 */
 	protected $contentObject;
+
+	/**
+	 * @var	t3lib_fe contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+	 */
+	protected $tsfeBackup;
 
 	/**
 	 * If the escaping interceptor should be disabled inside this ViewHelper, then set this value to FALSE.
@@ -77,8 +76,42 @@ class Tx_Fluid_ViewHelpers_Format_HtmlViewHelper extends Tx_Fluid_Core_ViewHelpe
 	 * @author Niels Pardon <mail@niels-pardon.de>
 	 */
 	public function render($parseFuncTSPath = 'lib.parseFunc_RTE') {
+		if (TYPO3_MODE === 'BE') {
+			$this->simulateFrontendEnvironment();
+		}
+
 		$value = $this->renderChildren();
-		return $this->contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
+		$content = $this->contentObject->parseFunc($value, array(), '< ' . $parseFuncTSPath);
+
+		if (TYPO3_MODE === 'BE') {
+			$this->resetFrontendEnvironment();
+		}
+		return $content;
+	}
+
+	/**
+	 * Copies the specified parseFunc configuration to $GLOBALS['TSFE']->tmpl->setup in Backend mode
+	 * This somewhat hacky work around is currently needed because the parseFunc() function of tslib_cObj relies on those variables to be set
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function simulateFrontendEnvironment() {
+		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+		$GLOBALS['TSFE'] = new stdClass();
+		$GLOBALS['TSFE']->tmpl->setup = $configurationManager->loadTypoScriptSetup();
+	}
+
+	/**
+	 * Resets $GLOBALS['TSFE'] if it was previously changed by simulateFrontendEnvironment()
+	 *
+	 * @return void
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 * @see simulateFrontendEnvironment()
+	 */
+	protected function resetFrontendEnvironment() {
+		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
 }
 
