@@ -65,10 +65,13 @@ t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 	// Add Clear RTE Cache to Clear Cache menu
 require_once(t3lib_extMgm::extPath('rtehtmlarea').'hooks/clearrtecache/ext_localconf.php');
 
-	// Troubleshooting and experimentation
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = $_EXTCONF['enableDebugMode'] ? $_EXTCONF['enableDebugMode'] : 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = $_EXTCONF['enableCompressedScripts'] ? $_EXTCONF['enableCompressedScripts'] : 0;
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] && !$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'];
+	// Troubleshooting and script compression
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = isset($_EXTCONF['enableDebugMode']) ? $_EXTCONF['enableDebugMode'] : 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = (isset($_EXTCONF['enableCompressedScripts']) && !$_EXTCONF['enableCompressedScripts']) ? 0 : 1;
+	// Disable script compression when in troubleshooting mode
+if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode']) {
+	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableCompressedScripts'] = 0;
+}
 
 	// Integrating with DAM
 	// DAM browser may be enabled here only for DAM version lower than 1.1
@@ -183,7 +186,7 @@ if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableAccessibilityIcons']) {
 	t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/accessibilityicons/pageTSConfig.txt">');
 }
 	// Register features that use the style attribute
-$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['allowStyleAttribute'] = $_EXTCONF['allowStyleAttribute'] ? $_EXTCONF['allowStyleAttribute'] : 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['allowStyleAttribute'] = (isset($_EXTCONF['allowStyleAttribute']) && !$_EXTCONF['allowStyleAttribute']) ? 0 : 1;
 if ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['allowStyleAttribute']) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color'] = array();
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['TYPO3Color']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/TYPO3Color/class.tx_rtehtmlarea_typo3color.php:&tx_rtehtmlarea_typo3color';
