@@ -266,6 +266,16 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNodeComparatorTest extends Tx_Ex
 		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
 	}
 
+	/**
+	 * @test
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function lessOrEqualsReturnFalseIfComparingWithANegativeNumber() {
+		$rootNode = new Tx_Fluid_Core_Parser_SyntaxTree_RootNode();
+		$rootNode->addChildNode(new Tx_Fluid_Core_Parser_SyntaxTree_TextNode('11 <= -2.1'));
+
+		$this->assertFalse($this->viewHelperNode->_call('evaluateBooleanExpression', $rootNode, $this->renderingContext));
+	}
 }
 
 ?>
