@@ -117,7 +117,7 @@ styles.content.media {
   defaultVideoHeight = 400
     # cat=content/cMedia/j4; type=; label= Audio Player: configure the path to the video player
   audioPlayer = typo3/contrib/flashmedia/player.swf	
-   	# cat=content/cMedia/j5; type=int+; label= Media Audeo Width: define the default width for the media audio
+   	# cat=content/cMedia/j5; type=int+; label= Media Audio Width: define the default width for the media audio
   defaultAudioWidth = 300
     # cat=content/cMedia/j6; type=int+; label= Media Audio Height: define the default height for the media audio
   defaultAudioHeight = 30

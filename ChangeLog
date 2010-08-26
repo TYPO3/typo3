@@ -1,3 +1,7 @@
+2010-08-26  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15559: Typo in CSS Styled Content Constants: "Audeo" (Thanks to Sebastian Michaelsen)
+
 2010-08-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15477: htmlArea RTE: Unlink may unlink the wrong link in IE
