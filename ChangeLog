@@ -1,3 +1,7 @@
+2010-08-26  Ingo Renner  <ingo@typo3.org>
+
+	* Fixed bug #15565: Labels of pages deep in the tree or with long titles are cut off as horizontal scrolling is disabled
+
 2010-08-26  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15559: Typo in CSS Styled Content Constants: "Audeo" (Thanks to Sebastian Michaelsen)

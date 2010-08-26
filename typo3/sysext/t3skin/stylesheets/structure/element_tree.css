@@ -86,7 +86,6 @@ ul.tree ul li {
 ul.tree div.treeLinkItem {
 	display: block;
 	height: 16px;
-	overflow: hidden;
 	padding-left: 2px;
 }
 span.dragIcon {
