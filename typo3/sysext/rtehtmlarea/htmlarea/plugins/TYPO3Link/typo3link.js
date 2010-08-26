@@ -131,7 +131,7 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 			});
 		} else {
 			if (buttonId === "UnLink") {
-				this.unLink();
+				this.unLink(true);
 				return false;
 			}
 			var additionalParameter;
@@ -248,12 +248,19 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 	},
 	
 	/*
-	* Unlink the selection.
-	* This function is called from the TYPO3 link popup and from the context menu.
-	*/
-	unLink : function() {
+	 * Unlink the selection.
+	 * This function is called from the TYPO3 link popup and from unlink button pressed in toolbar or context menu.
+	 *
+	 * @param	string	buttonPressd: true if the unlink button was pressed
+	 *
+	 * @return void
+	 */
+	unLink: function (buttonPressed) {
 		this.editor.focus();
-		this.restoreSelection();
+			// If no dialogue window was opened, the selection should not be restored
+		if (!buttonPressed) {
+			this.restoreSelection();
+		}
 		var node = this.editor.getParentElement();
 		var el = HTMLArea.getElementObject(node, "a");
 		if (el != null && /^a$/i.test(el.nodeName)) node = el;

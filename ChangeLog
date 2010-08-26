@@ -1,3 +1,7 @@
+2010-08-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15477: htmlArea RTE: Unlink may unlink the wrong link in IE
+
 2010-08-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15547: htmlArea RTE may load extJS debug script in FE which makes page loading slow
