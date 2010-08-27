@@ -1,3 +1,7 @@
+2010-08-27  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15579: Deprecation text of t3lib_div::fixed_lgd_pre() refers to deprecated function t3lib_div::fixed_lgd() (Thanks to Markus Klein)
+
 2010-08-27  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #1728: Comma separated list don't accept spaces at "db_layout" in the 'addTables' feature (thanks to Niels Pardon)
