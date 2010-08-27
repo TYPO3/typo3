@@ -499,9 +499,9 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 				// In IE, reclaim lost focus on the editor iframe and restore the bookmarked selection
 			if (Ext.isIE) {
 				editor.focus();
-				if (!Ext.isEmpty(this.bookmark)) {
-					editor.selectRange(editor.moveToBookmark(this.bookmark));
-					this.bookmark = null;
+				if (!Ext.isEmpty(this.savedRange)) {
+					editor.selectRange(this.savedRange);
+					this.savedRange = null;
 				}
 			}
 				// Invoke the plugin onChange handler
@@ -509,7 +509,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 				// In IE, bookmark the updated selection as the editor will be loosing focus
 			if (Ext.isIE) { 
 				editor.focus();
-				this.bookmark = editor.getBookmark(editor._createRange(editor._getSelection()));
+				this.savedRange = editor._createRange(editor._getSelection());
 				this.triggered = true;
 			}
 			if (Ext.isOpera) {
@@ -544,27 +544,15 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 	saveSelection: function (event) {
 		var editor = this.getEditor();
 		if (editor.document.hasFocus()) {
-			var selection = editor._getSelection();
-			switch (selection.type.toLowerCase()) {
-				case 'none':
-				case 'text':
-					this.bookmark = editor.getBookmark(editor._createRange(selection));
-					this.controlRange = null;
-					break;
-				case 'control':
-					this.controlRange = editor._createRange(selection);
-					this.bookmark = null;
-					break;
-			}
+			this.savedRange = editor._createRange(editor._getSelection());
 		}
 	},
 	/*
 	 * Handler invoked in IE when the editor gets the focus back
 	 */
 	restoreSelection: function (event) {
-		if (!Ext.isEmpty(this.bookmark) && this.triggered) {
-			var editor = this.getEditor();
-			editor.selectRange(this.bookmark ? editor.moveToBookmark(this.bookmark) : this.controlRange);
+		if (!Ext.isEmpty(this.savedRange) && this.triggered) {
+			this.getEditor().selectRange(this.savedRange);
 			this.triggered = false;
 		}
 	},
@@ -619,8 +607,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 	 * Cleanup
 	 */
 	onBeforeDestroy: function () {
-		this.controlRange = null;
-		this.bookmark = null;
+		this.savedRange = null;
 		this.getStore().removeAll();
 		this.getStore().destroy();
 	}
@@ -4629,18 +4616,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	saveSelection: function () {
 			// If IE, save the current selection
 		if (Ext.isIE) {
-			var selection = this.editor._getSelection();
-			switch (selection.type.toLowerCase()) {
-				case 'none':
-				case 'text':
-					this.bookmark = this.editor.getBookmark(this.editor._createRange(selection));
-					this.controlRange = null;
-					break;
-				case 'control':
-					this.controlRange = this.editor._createRange(selection);
-					this.bookmark = null;
-					break;
-			}
+			this.savedRange = this.editor._createRange(this.editor._getSelection());
 		}
 	},
 	/*
@@ -4649,10 +4625,10 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	restoreSelection: function () {
 			// If IE, restore the selection saved when the window was shown
-		if (Ext.isIE) {
+		if (Ext.isIE && this.savedRange) {
 				// Restoring the selection will not work if the inner html was replaced by the plugin
 			try {
-				this.editor.selectRange(this.bookmark ? this.editor.moveToBookmark(this.bookmark) : this.controlRange);
+				this.editor.selectRange(this.savedRange);
 			} catch (e) {}
 		}
 	},
