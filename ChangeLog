@@ -6,6 +6,7 @@
 
 	* Fixed bug #15569: htmlArea RTE: RTE not loading when ExtJS 3.2.1 is used
 	* Fixed bug #15570: htmlArea RTE: Incorrect height when loaded in a hidden tab with ExtJS 3.2.1
+	* Fixed bug #15415: htmlArea RTE: RTEs hidden on load not usable with multiple RTEs in a record
 
 2010-08-26  Ingo Renner  <ingo@typo3.org>
 

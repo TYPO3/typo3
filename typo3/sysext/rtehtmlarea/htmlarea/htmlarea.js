@@ -816,7 +816,6 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	initStyleChangeEventListener: function () {
 		if (this.isNested  && !Ext.isWebKit) {
 			var options = {
-				single: true,
 				stopEvent: true
 			};
 			if (Ext.isGecko) {
@@ -1115,9 +1114,9 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 					this.ownerCt.textAreaContainer.fireEvent('show');
 				}
 				this.getToolbar().update();
+				return false;
 			}
 		}
-		this.initStyleChangeEventListener();
 	},
 	/*
 	 * Get the HTML content of the iframe
