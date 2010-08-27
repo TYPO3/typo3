@@ -582,7 +582,7 @@ final class t3lib_div {
 	 * @param	string		string to truncate
 	 * @param	integer		must be an integer of at least 4
 	 * @return	string		new string
-	 * @deprecated since TYPO3 4.1 - Use either fixed_lgd() or fixed_lgd_cs() (with negative input value for $chars)
+	 * @deprecated since TYPO3 4.1 - Use t3lib_div::fixed_lgd_cs() instead (with negative input value for $chars)
 	 * @see fixed_lgd()
 	 */
 	public static function fixed_lgd_pre($string,$chars)	{

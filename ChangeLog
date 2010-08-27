@@ -1,3 +1,7 @@
+2010-08-27  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15579: Deprecation text of t3lib_div::fixed_lgd_pre() refers to deprecated function t3lib_div::fixed_lgd() (Thanks to Markus Klein)
+
 2010-08-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15415: htmlArea RTE: RTEs hidden on load not usable with multiple RTEs in a record
