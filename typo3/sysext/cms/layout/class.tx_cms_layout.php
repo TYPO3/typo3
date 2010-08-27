@@ -1161,7 +1161,7 @@ class tx_cms_layout extends recordList {
 		if ($dbCount)	{
 
 				// Set fields
-			$this->fieldArray = explode(',','__cmds__,'.$fList);
+			$this->fieldArray = t3lib_div::trimExplode(',', '__cmds__,' . $fList, TRUE);
 
 				// Header line is drawn
 			$theData = array();
