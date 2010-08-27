@@ -2311,6 +2311,12 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		}
 	},
 	/*
+	 * Calculate the height available for the editing iframe
+	 */
+	getInnerHeight: function () {
+		return this.getSize().height - this.toolbar.getHeight() - this.statusBar.getHeight() -  5;
+	},
+	/*
 	 * Fire the editor when all components of the framework are rendered and ready
 	 */
 	onIframeReady: function () {
