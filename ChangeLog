@@ -1,3 +1,7 @@
+2010-08-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15415: htmlArea RTE: RTEs hidden on load not usable with multiple RTEs in a record
+
 2010-08-27  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #1728: Comma separated list don't accept spaces at "db_layout" in the 'addTables' feature (thanks to Niels Pardon)
