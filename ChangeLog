@@ -1,3 +1,7 @@
+2010-08-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15569: htmlArea RTE: RTE not loading when ExtJS 3.2.1 is used
+
 2010-08-26  Ingo Renner  <ingo@typo3.org>
 
 	* Fixed bug #15565: Labels of pages deep in the tree or with long titles are cut off as horizontal scrolling is disabled

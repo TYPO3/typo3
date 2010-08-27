@@ -2528,7 +2528,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.iframe = this.htmlArea.getComponent('iframe');
 		this.textAreaContainer = this.htmlArea.getComponent('textAreaContainer');
 			// Get triggered when the framework becomes ready
-		this.relayEvents(this.htmlArea, 'frameworkready');
+		this.relayEvents(this.htmlArea, ['frameworkready']);
 		this.on('frameworkready', this.onFrameworkReady, this, {single: true});
 	},
 	/*
