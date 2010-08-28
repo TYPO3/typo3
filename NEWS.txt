@@ -83,6 +83,15 @@ Compatibility
 
 	* See typo3/sysext/fluid/ChangeLog.txt for some breaking changes in
 	  Fluid.
+	* The API for registering additional cache frontends or backends has changed.
+	  As of TYPO3 4.5 only the classname needs to be specified in favor of both
+	  path to the php file and the classname. Instead the class needs to be
+	  registered for autoloading. See #15586 for details.
+	  Example:
+	  New: 
+	  $TYPO3_CONF_VARS['SYS']['caching']['cacheFrontends']['myext']='tx_myext_cache';
+	  Old:
+	  $TYPO3_CONF_VARS['SYS']['caching']['cacheFrontends']['myext']='/path/tx_myext_cache.php:tx_myext_cache'; 
 
 
 Development

@@ -1,5 +1,6 @@
 2010-08-28  Steffen Kamper  <steffen@typo3.org>
 
+	* Added entry for NEWS.txt about #15586
 	* Fixed bug #15586: Unecessary require_once in t3lib_cache_Factory (Thanks to Helmut Hummel)
 	* Fixed bug #15574: t3lib_extmgmTest::getExtensionVersionForLoadedExtensionReturnsExtensionVersion fails (Thanks to Peter Kühn)
 
