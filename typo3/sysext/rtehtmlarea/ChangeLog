@@ -4,6 +4,7 @@
 	* Fixed bug #15570: htmlArea RTE: Incorrect height when loaded in a hidden tab with ExtJS 3.2.1
 	* Fixed bug #15415: htmlArea RTE: RTEs hidden on load not usable with multiple RTEs in a record
 	* Fixed bug #15328: htmlArea RTE: Strange behaviours inserting links in IE
+	* Fixed bug #15584: htmlArea RTE: iframe baseURL may be incorrectly set
 
 2010-08-26  Stanislas Rolland  <typo3@sjbr.ca>
 

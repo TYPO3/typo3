@@ -118,10 +118,10 @@ HTMLArea.Config = function (editorId) {
 	this.htmlRemoveComments = false;
 		// custom tags (these have to be a regexp, or null if this functionality is not desired)
 	this.customTags = null;
-		// BaseURL included in the iframe document
+		// BaseURL to be included in the iframe document
 	this.baseURL = document.baseURI || document.URL;
-	if (this.baseURL && this.baseURL.match(/(.*)\/([^\/]+)/)) {
-		this.baseURL = RegExp.$1 + "/";
+	if (this.baseURL && this.baseURL.match(/(.*\:\/\/.*\/)[^\/]*/)) {
+		this.baseURL = RegExp.$1;
 	}
 		// URL-s
 	this.popupURL = "popups/";
