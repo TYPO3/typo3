@@ -368,12 +368,18 @@ class t3lib_userAuth {
 	protected function getCookieDomain() {
 		$result = '';
 		$cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'];
+			// If a specific cookie domain is defined for a given TYPO3_MODE,
+			// use that domain
+		if (!empty($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'])) {
+			$cookieDomain = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieDomain'];
+		}
 
 		if ($cookieDomain) {
 			if ($cookieDomain{0} == '/') {
+				$match = array();
 				$matchCnt = @preg_match($cookieDomain, t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'), $match);
 				if ($matchCnt === FALSE) {
-					t3lib_div::sysLog('The regular expression of $TYPO3_CONF_VARS[SYS][cookieDomain] contains errors. The session is not shared across sub-domains.', 'Core', 3);
+					t3lib_div::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'Core', 3);
 				} elseif ($matchCnt) {
 					$result = $match[0];
 				}

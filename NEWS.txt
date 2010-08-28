@@ -10,6 +10,9 @@ General
 	* A Sprite Generator was added. This allows you to create your own
 	  sprite files, also core can generate the files if some new icons
 	  were added (#15079).
+	* When TYPO3 runs with two different domain names for the FE and the BE,
+	  it is now possible to set accordingly different cookie domains using
+	  $TYPO3_CONF_VARS['FE']['cookieDomain'] and $TYPO3_CONF_VARS['BE']['cookieDomain'].
 
 
 Backend
