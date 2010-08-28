@@ -1,3 +1,7 @@
+2010-08-28  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15574: t3lib_extmgmTest::getExtensionVersionForLoadedExtensionReturnsExtensionVersion fails (Thanks to Peter Kühn)
+
 2010-08-27  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15579: Deprecation text of t3lib_div::fixed_lgd_pre() refers to deprecated function t3lib_div::fixed_lgd() (Thanks to Markus Klein)

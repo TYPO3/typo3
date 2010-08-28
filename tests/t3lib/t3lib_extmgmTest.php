@@ -455,7 +455,7 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		$extensionKey = 'unloadedextension' . $uniqueSuffix;
 
 		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array(
-			'siteRelPath' => 'typo3_src/tests/t3lib/fixtures/',
+			'siteRelPath' => 'tests/t3lib/fixtures/',
 		);
 		$this->assertEquals(
 			'1.2.3',
