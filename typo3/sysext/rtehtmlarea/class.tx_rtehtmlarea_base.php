@@ -59,7 +59,24 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			),
 			'webkit' => array (
 				1 => array (
-					'version' => 523
+					'version' => 523,
+					'system' => 'mac'
+				),
+				2 => array (
+					'version' => 523,
+					'system' => 'winNT'
+				),
+				3 => array (
+					'version' => 523,
+					'system' => 'linux'
+				),
+				4 => array (
+					'version' => 523,
+					'system' => 'win98'
+				),
+				5 => array (
+					'version' => 523,
+					'system' => 'win95'
 				)
 			),
 			'opera' => array (
@@ -1385,6 +1402,15 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$browserInfo['version'] = t3lib_utility_Client::getVersion($browserInfo['all'][$engine]);
 					break;
 				}
+			}
+		}
+		if ($browserInfo['system'] == 'mac') {
+			if (strstr($userAgent,'iPad')) {
+				$browserInfo['system'] = 'iPad';
+			} elseif (strstr($userAgent,'iPhone')) {
+				$browserInfo['system'] = 'iPhone';
+			} elseif (strstr($userAgent,'iPod')) {
+				$browserInfo['system'] = 'iPod';
 			}
 		}
 		return $browserInfo;
