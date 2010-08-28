@@ -13,6 +13,7 @@
 	* Fixed bug #15415: htmlArea RTE: RTEs hidden on load not usable with multiple RTEs in a record
 	* Fixed bug #15328: htmlArea RTE: Strange behaviours inserting links in IE
 	* Fixed bug #15584: htmlArea RTE: iframe baseURL may be incorrectly set
+	* Fixed bug #15516: htmlArea RTE: Safari does not support WISIWYG editing on iPad
 
 2010-08-26  Ingo Renner  <ingo@typo3.org>
 
