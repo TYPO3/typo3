@@ -71,15 +71,22 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 	 */
 	public function create($cacheIdentifier, $cacheName, $backendName, array $backendOptions = array()) {
 
-			// loading the cache backend file and class
-		list($backendFile, $backendClassReference) = explode(
-			':',
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'][$backendName]
-		);
+		$backendReference = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheBackends'][$backendName];
 
-		$backendRequireFile = t3lib_div::getFileAbsFileName($backendFile);
-		if ($backendRequireFile) {
-			t3lib_div::requireOnce($backendRequireFile);
+		if (strpos($backendReference, ':') === FALSE) {
+			$backendClassReference = $backendReference;
+		} else {
+			t3lib_div::deprecationLog("Configuring cacheBackend with filename is deprecated since TYPO3 4.5. Use the autoloader instead.");
+				// loading the cache backend file and class
+			list($backendFile, $backendClassReference) = explode(
+				':',
+				$backendReference
+			);
+
+			$backendRequireFile = t3lib_div::getFileAbsFileName($backendFile);
+			if ($backendRequireFile) {
+				t3lib_div::requireOnce($backendRequireFile);
+			}
 		}
 
 		$backend = t3lib_div::makeInstance($backendClassReference, $backendOptions);
@@ -91,17 +98,23 @@ class t3lib_cache_Factory implements t3lib_Singleton {
 			);
 		}
 
-			// loading the cache frontend file and class
-		list($cacheFile, $cacheClassReference) = explode(
-			':',
-			$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheFrontends'][$cacheName]
-		);
+		$cacheReference = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheFrontends'][$cacheName];
 
-		$cacheRequireFile = t3lib_div::getFileAbsFileName($cacheFile);
-		if ($cacheRequireFile) {
-			t3lib_div::requireOnce($cacheRequireFile);
+		if (strpos($cacheReference, ':') === FALSE) {
+			$cacheClassReference = $cacheReference;
+		} else {
+			t3lib_div::deprecationLog("Configuring cacheFrontends with filename is deprecated since TYPO3 4.5. Use the autoloader instead.");
+				// loading the cache frontend file and class
+			list($cacheFile, $cacheClassReference) = explode(
+				':',
+				$cacheReference
+			);
+
+			$cacheRequireFile = t3lib_div::getFileAbsFileName($cacheFile);
+			if ($cacheRequireFile) {
+				t3lib_div::requireOnce($cacheRequireFile);
+			}
 		}
-
 		$cache = t3lib_div::makeInstance($cacheClassReference, $cacheIdentifier, $backend);
 
 
