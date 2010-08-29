@@ -341,20 +341,20 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 */
 	public function collectGarbage() {
 			// Get identifiers of expired cache entries
-		$tagsEntryIdentifierRowsRessource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$tagsEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'identifier',
 			$this->cacheTable,
 			'crdate + lifetime < ' . $GLOBALS['EXEC_TIME'] . ' AND lifetime > 0'
 		);
 
 		$tagsEntryIdentifiers = array();
-		while ($tagsEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($tagsEntryIdentifierRowsRessource)) {
+		while ($tagsEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($tagsEntryIdentifierRowsResource)) {
 			$tagsEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr(
 				$tagsEntryIdentifierRow['identifier'],
 				$this->tagsTable
 			);
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsRessource);
+		$GLOBALS['TYPO3_DB']->sql_free_result($tagsEntryIdentifierRowsResource);
 
 			// Delete tag rows connected to expired cache entries
 		if (count($tagsEntryIdentifiers)) {
