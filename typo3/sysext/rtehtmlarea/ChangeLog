@@ -1,6 +1,7 @@
 2010-08-28  Stanislas Rolland  <typo3@sjbr.ca>
 
-	* Fixed bug #15482: htmlArea RTE: Entering line breaks with Safari not possible in TYPO3 3.4.5 
+	* Fixed bug #15482: htmlArea RTE: Entering line breaks with Safari not possible in TYPO3 3.4.5
+	* Updated htmlArea RTE version to 1.8.12
 
 2010-07-27  Stanislas Rolland  <typo3@sjbr.ca>
 
