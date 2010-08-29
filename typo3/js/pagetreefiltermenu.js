@@ -53,7 +53,7 @@ var PagetreeFilterMenu = Class.create({
 
 		if (toolbarItem.hasClass('active')) {
 			treeFilterBox.fadeOut();
-			treeFilterReset.fadeOut();
+			TYPO3PageTreeFilter.resetSearchField();
 		} else {
 			treeFilterBox.fadeIn();
 			treeFilterItem.focus();

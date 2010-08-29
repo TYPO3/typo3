@@ -161,7 +161,9 @@ class SC_alt_db_navframe {
 		$this->doc->getPageRenderer()->loadScriptaculous('effects');
 		$this->doc->getPageRenderer()->loadExtJS();
 
-		$this->doc->getPageRenderer()->addJsFile('js/pagetreefiltermenu.js');
+		if ($this->hasFilterBox) {
+			$this->doc->getPageRenderer()->addJsFile('js/pagetreefiltermenu.js');
+		}
 
 		$this->doc->JScode .= $this->doc->wrapScriptTags(
 		($this->currentSubScript?'top.currentSubScript=unescape("'.rawurlencode($this->currentSubScript).'");':'').'
