@@ -1,3 +1,7 @@
+2010-08-28  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Updated htmlArea RTE version to 2.0.4
+
 2010-08-28  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15574: t3lib_extmgmTest::getExtensionVersionForLoadedExtensionReturnsExtensionVersion fails (Thanks to Peter Kühn)
