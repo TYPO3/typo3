@@ -1375,7 +1375,9 @@ class tslib_menu {
 
 			if ($submenu->start($this->tmpl, $this->sys_page, $uid, $this->conf, $this->menuNumber+1, $objSuffix))	{
 				$submenu->makeMenu();
-				return $submenu->writeMenu();
+				$content = $submenu->writeMenu();
+				$GLOBALS['TSFE']->register['count_menuItems'] = count($this->menuArr);
+				return $content;
 			}
 		}
 	}
