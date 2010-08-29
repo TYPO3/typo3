@@ -1,3 +1,7 @@
+2010-08-29  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15258: Creating multiple pages doesn't consider the group permissions for all pages (Thanks to Lorenz Ulrich)
+
 2010-08-29  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15294: treeFilterReset disappears + minor optimization (Thanks to Felix Kopp)

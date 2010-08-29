@@ -692,7 +692,9 @@ class t3lib_TCEmain	{
 								if (strstr($pid_value,'NEW'))	{	// If a NEW... id
 									if (substr($pid_value,0,1)=='-') {$negFlag=-1;$pid_value=substr($pid_value,1);} else {$negFlag=1;}
 									if (isset($this->substNEWwithIDs[$pid_value]))	{	// Trying to find the correct numerical value as it should be mapped by earlier processing of another new record.
-										$old_pid_value = $pid_value;
+										if ($negFlag === 1) {
+											$old_pid_value = $this->substNEWwithIDs[$pid_value];
+										}
 										$pid_value=intval($negFlag*$this->substNEWwithIDs[$pid_value]);
 									} else {$OK = 0;}	// If not found in the substArray we must stop the process...
 								} elseif ($pid_value>=0 && $this->BE_USER->workspace!==0 && $TCA[$table]['ctrl']['versioning_followPages'])	{	// PID points to page, the workspace is an offline space and the table follows page during versioning: This means we must check if the PID page has a version in the workspace with swapmode set to 0 (zero = page+content) and if so, change the pid to the uid of that version.
