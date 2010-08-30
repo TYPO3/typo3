@@ -1,3 +1,7 @@
+2010-08-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15582: Call to deprecated function template::middle()
+
 2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug with BETWEEN / NOT BETWEEN which was not properly supported
