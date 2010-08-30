@@ -1,3 +1,7 @@
+2010-08-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15582: Call to deprecated function template::middle()
+
 2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #15535: Error: No pages are found on the rootlevel! in Frontend when using Oracle

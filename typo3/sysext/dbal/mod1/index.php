@@ -122,7 +122,6 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	 * @return	string HTML output
 	 */
 	public function printContent()	{
-		$this->content .= $this->doc->middle();
 		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
