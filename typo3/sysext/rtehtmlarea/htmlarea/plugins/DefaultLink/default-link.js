@@ -381,19 +381,37 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 	 * This function gets called when the toolbar is updated
 	 */
 	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
-		if (mode === 'wysiwyg' && this.editor.isEditable() && button.itemId === 'CreateLink') {
-			button.setDisabled(selectionEmpty && !button.isInContext(mode, selectionEmpty, ancestors));
-			if (!button.disabled) {
-				var node = this.editor.getParentElement();
-				var el = HTMLArea.getElementObject(node, 'a');
-				if (el != null && /^a$/i.test(el.nodeName)) {
-					node = el;
-				}
-				if (node != null && /^a$/i.test(node.nodeName)) {
-					button.setTooltip({ title: this.localize('Modify link') });
-				} else {
-					button.setTooltip({ title: this.localize('Insert link') });
-				}
+		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+			switch (button.itemId) {
+				case 'CreateLink':
+					button.setDisabled(selectionEmpty && !button.isInContext(mode, selectionEmpty, ancestors));
+					if (!button.disabled) {
+						var node = this.editor.getParentElement();
+						var el = HTMLArea.getElementObject(node, 'a');
+						if (el != null && /^a$/i.test(el.nodeName)) {
+							node = el;
+						}
+						if (node != null && /^a$/i.test(node.nodeName)) {
+							button.setTooltip({ title: this.localize('Modify link') });
+						} else {
+							button.setTooltip({ title: this.localize('Insert link') });
+						}
+					}
+					break;
+				case 'UnLink':
+					var link = false;
+						// Let's see if a link was double-clicked in Firefox
+					if (Ext.isGecko && !selectionEmpty) {
+						var range = this.editor._createRange(this.editor._getSelection());
+						if (range.startContainer.nodeType == 1 && range.startContainer == range.endContainer && (range.endOffset - range.startOffset == 1)) {
+							var node = range.startContainer.childNodes[range.startOffset];
+							if (node && /^a$/i.test(node.nodeName) && node.textContent == range.toString()) {
+								link = true;
+							}
+						}
+					}
+					button.setDisabled(!link && !button.isInContext(mode, selectionEmpty, ancestors));
+					break;
 			}
 		}
 	}
