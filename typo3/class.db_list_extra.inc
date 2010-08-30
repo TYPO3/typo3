@@ -2,7 +2,7 @@
 /*************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,10 +29,10 @@
  * Used specifically for the Web>List module (db_list.php)
  *
  * $Id$
- * Revised for TYPO3 3.6 December/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -83,7 +83,7 @@
 /**
  * Class for rendering of Web>List module
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -1347,7 +1347,7 @@ class localRecordList extends recordList {
 		/**
 		 * @hook			recStatInfoHooks: Allows to insert HTML before record icons on various places
 		 * @date			2007-09-22
-		 * @request		Kasper Skaarhoj  <kasper2007@typo3.com>
+		 * @request		Kasper Skårhøj  <kasper2007@typo3.com>
 		 */
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['recStatInfoHooks']))	{
 			$stat='';

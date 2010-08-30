@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Francois Suter <francois@typo3.org>
+*  (c) 2010 François Suter <francois@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  * This class provides a wrapper around the autopublication
  * mechanism of workspaces, as a Scheduler task
  *
- * @author		Francois Suter <francois@typo3.org>
+ * @author		François Suter <francois@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_version
  *

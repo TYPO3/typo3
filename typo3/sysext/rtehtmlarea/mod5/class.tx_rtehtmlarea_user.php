@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasper@typo3.com)
 *  (c) 2005-2010 Stanislas Rolland <typo3(arobas)sjbr.ca>
 *  All rights reserved
 *
@@ -28,7 +28,7 @@
 /**
  * User defined content for htmlArea RTE
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  *
  * $Id$  *

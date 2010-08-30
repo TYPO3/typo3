@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj <kasperYYYY@typo3.com>
+*  (c) 1999-2010 Kasper Skårhøj <kasperYYYY@typo3.com>
 *  (c) 2008-2010 Benjamin Mack <benni . typo3 . o)rg>
 *  All rights reserved
 *
@@ -31,7 +31,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Benjamin Mack <benni . typo3 . o)rg>
  */
 class tx_simulatestatic {

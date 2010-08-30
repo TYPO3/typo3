@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns <karsten@typo3.org>
 *  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
 *  All rights reserved
@@ -31,7 +31,7 @@
  *
  * $Id: class.ux_t3lib_db.php 37006 2010-08-19 16:40:34Z xperseguers $
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
  * @author	Xavier Perseguers <typo3@perseguers.ch>
  */
@@ -108,7 +108,7 @@
 /**
  * TYPO3 database abstraction layer
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
  * @package TYPO3
  * @subpackage tx_dbal

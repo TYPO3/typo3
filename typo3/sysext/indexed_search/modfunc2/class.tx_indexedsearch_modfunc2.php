@@ -200,7 +200,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 *
 	 * @param	string		Name of the function you want to call / hook key
 	 * @return	object		Hook object, if any. Otherwise null.
-	 * @author Kasper Skaarhoj
+	 * @author Kasper Skårhøj
 	 */
 	function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;

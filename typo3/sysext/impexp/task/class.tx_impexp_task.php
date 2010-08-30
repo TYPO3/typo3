@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 1999-2004 Kasper Skårhøj (kasper@typo3.com)
 *  (c) 2010 Georg Ringer (typo3@ringerge.org)
 *  All rights reserved
 *
@@ -27,7 +27,7 @@
 /**
  * This class provides a textarea to save personal notes
  *
- * @author		Kasper Skaarhoj <kasper@typo3.com>
+ * @author		Kasper Skårhøj <kasper@typo3.com>
  * @author		Georg Ringer <typo3@ringerge.org>
  * @package		TYPO3
  * @subpackage	impexp

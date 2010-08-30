@@ -121,7 +121,7 @@ class user_DoubleMetaPhone
             $this->current += 1;
           break;
 
-        case 'Ç':
+        case 'Ã‡':
           $this->primary   .= 'S';
           $this->secondary .= 'S';
           $this->current += 1;
@@ -637,7 +637,7 @@ class user_DoubleMetaPhone
           $this->secondary .= "N";
           break;
 
-        case 'Ñ':
+        case 'Ã‘':
           $this->current += 1;
           $this->primary   .= "N";
           $this->secondary .= "N";

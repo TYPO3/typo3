@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,10 +29,10 @@
  * See 'misc/superadmin.php' for details on how to use!
  *
  * $Id$
- * Revised for TYPO3 3.6 February/2004 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 February/2004 by Kasper Skårhøj
  * XHTML Compliant
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -132,7 +132,7 @@ function debug($p1,$p2='')	{
  * Super Admin class has functions for the administration of multiple TYPO3 sites in folders
  * NOTICE: Only compliant with single MySQL database usage per installation!
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */

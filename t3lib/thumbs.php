@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Sk√•rh√∏j (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,9 +28,9 @@
  * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
  *
  * $Id$
- * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Sk√•rh√∏j
  *
- * @author		Kasper Skaarhoj	<kasperYYYY@typo3.com>
+ * @author		Kasper Sk√•rh√∏j	<kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -118,7 +118,7 @@ if (!$TYPO3_CONF_VARS['GFX']['image_processing'])	die ('ImageProcessing was disa
  *
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
  *
- * @author		Kasper Skaarhoj	<kasperYYYY@typo3.com>
+ * @author		Kasper Sk√•rh√∏j	<kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -228,7 +228,7 @@ class SC_t3lib_thumbs {
 			$outpath = PATH_site.$this->outdir;
 
 				// Should be - ? 'png' : 'gif' - , but doesn't work (ImageMagick prob.?)
-				// RenÈ: png work for me
+				// Ren√©: png work for me
 			$thmMode = t3lib_div::intInRange($TYPO3_CONF_VARS['GFX']['thumbnails_png'],0);
 			$outext = ($ext!='jpg' || ($thmMode & 2)) ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
 
@@ -358,7 +358,7 @@ class SC_t3lib_thumbs {
 		$col = imageColorAllocate($im, 0,0,0);
 
 			// The test string and offset in x-axis.
-		$string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz∆Êÿ¯≈Âƒ‰÷ˆ‹¸ﬂ';
+		$string = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz√Ü√¶√ò√∏√Ö√•√Ñ√§√ñ√∂√ú√º√ü';
 		$x=13;
 
 			// Print (with non-ttf font) the size displayed

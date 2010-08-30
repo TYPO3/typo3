@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Francois Suter <francois@typo3.org>
+*  (c) 2009-2010 François Suter <francois@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,9 +25,9 @@
 
 /**
  * This class provides a report displaying a list of all installed services
- * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by Rene Fritz
+ * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
  *
- * @author		Francois Suter <francois@typo3.org>
+ * @author		François Suter <francois@typo3.org>
  * @package		TYPO3
  * @subpackage	sv
  *

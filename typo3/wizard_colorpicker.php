@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Sk�rh�j (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,11 +28,11 @@
  * Colorpicker wizard
  *
  * $Id $
- * Revised for TYPO3 3.7 May/2004 by Kasper Skaarhoj
+ * Revised for TYPO3 3.7 May/2004 by Kasper Skårhøj
  *
  * @author	Mathias Schreiber <schreiber@wmdb.de>
- * @author	Peter K�hn <peter@kuehn.com>
- * @author	Kasper Skaarhoj <typo3@typo3.com>
+ * @author	Peter Kühn <peter@kuehn.com>
+ * @author	Kasper Skårhøj <typo3@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -66,8 +66,8 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
  * Script Class for colorpicker wizard
  *
  * @author	Mathias Schreiber <schreiber@wmdb.de>
- * @author	Peter K�hn <peter@kuehn.com>
- * @author	Kasper Skaarhoj <typo3@typo3.com>
+ * @author	Peter Kühn <peter@kuehn.com>
+ * @author	Kasper Skårhøj <typo3@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

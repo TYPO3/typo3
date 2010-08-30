@@ -2,8 +2,8 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  (c) 2006-2009 Sebastian Kurfuerst (sebastian@garbage-group.de)
+*  (c) 1999-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
+*  (c) 2006-2009 Sebastian Kurfürst (sebastian@garbage-group.de)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,14 +31,14 @@
  * $Id$
  * XHTML Compliant
  *
- * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
+ * @author	Sebastian Kurfürst <sebastian@garbage-group.de>
  */
 
 
 /**
  * Class for the record history display script (show_rechis.php)
  *
- * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
+ * @author	Sebastian Kurfürst <sebastian@garbage-group.de>
  * @package TYPO3
  * @subpackage core
  */

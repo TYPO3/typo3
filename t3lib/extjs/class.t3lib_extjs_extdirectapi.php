@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Sebastian Kurfuerst <sebastian@typo3.org>
+*  (c) 2010 Sebastian Kurfürst <sebastian@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +28,7 @@
 /**
  * Ext Direct API Generator
  *
- * @author	Sebastian Kurfuerst <sebastian@typo3.org>
+ * @author	Sebastian Kurfürst <sebastian@typo3.org>
  * @author	Stefan Galinski <stefan.galinski@gmail.com>
  * @package	TYPO3
  */

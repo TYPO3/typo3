@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  (c) 2010 Georg Ringer <typo3@ringerge.org>
 *  All rights reserved
 *
@@ -27,7 +27,7 @@
 /**
  * This class provides a task for the taskcenter
  *
- * @author		Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author		Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author		Georg Ringer <typo3@ringerge.org>
  * @package		TYPO3
  * @subpackage	tx_sysaction

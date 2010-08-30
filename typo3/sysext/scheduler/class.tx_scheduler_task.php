@@ -28,7 +28,7 @@
  * It's an abstract class, not designed to be instantiated directly
  * All Scheduler tasks should inherit from this class
  *
- * @author	Francois Suter <francois@typo3.org>
+ * @author	François Suter <francois@typo3.org>
  * @author	Christian Jul Jensen <julle@typo3.org>
  *
  * @package		TYPO3

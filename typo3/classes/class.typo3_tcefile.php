@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  (c) 2009-2010 Benjamin Mack (benni.typo3.org)
 *  All rights reserved
 *
@@ -35,10 +35,10 @@
  *
  * For syntax and API information, see the document 'TYPO3 Core APIs'
  *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * Revised for TYPO3 4.3 Mar/2009 by Benjamin Mack
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require_once(PATH_typo3 . 'template.php');
@@ -46,7 +46,7 @@ require_once(PATH_typo3 . 'template.php');
 /**
  * Script Class, handling the calling of methods in the file admin classes.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */

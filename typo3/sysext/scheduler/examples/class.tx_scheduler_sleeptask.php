@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Francois Suter <francois@typo3.org>
+*  (c) 2009-2010 François Suter <francois@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
  * Class "tx_scheduler_SleepTask" provides a task that sleeps for some time
  * This is useful for testing parallel executions
  *
- * @author		Francois Suter <francois@typo3.org>
+ * @author		François Suter <francois@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_scheduler
  *

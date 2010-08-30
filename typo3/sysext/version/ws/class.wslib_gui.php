@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+ *  (c) 2005-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  *
  * $Id$
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Dmitry Dulepov <dmitry@typo3.org>
  */
 /**
@@ -78,7 +78,7 @@ $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
  * module but also can be used from extensions. Originally 99.9%% of the code
  * was written by Kasper and only transfered here by Dmitry.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Dmitry Dulepov <dmitry@typo3.org>
  * @package TYPO3
  * @subpackage core

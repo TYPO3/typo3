@@ -26,7 +26,7 @@
 /**
  * This class manages the logic of a particular execution of a task
  *
- * @author	Francois Suter <francois@typo3.org>
+ * @author	François Suter <francois@typo3.org>
  * @author	Christian Jul Jensen <julle@typo3.org>
  * @author	Markus Friedrich <markus.friedrich@dkd.de>
  *

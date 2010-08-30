@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Francois Suter <francois@typo3.org>
+*  (c) 2009-2010 François Suter <francois@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,7 +25,7 @@
 /**
  * Aditional fields provider class for usage with the Scheduler's sleep task
  *
- * @author		Francois Suter <francois@typo3.org>
+ * @author		François Suter <francois@typo3.org>
  * @package		TYPO3
  * @subpackage	tx_scheduler
  *

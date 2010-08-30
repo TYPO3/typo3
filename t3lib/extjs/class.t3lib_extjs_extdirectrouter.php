@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Sebastian Kurfuerst <sebastian@typo3.org>
+*  (c) 2010 Sebastian Kurfürst <sebastian@typo3.org>
 *  (c) 2010 Stefan Galinski <stefan.galinski@gmail.com>
 *  All rights reserved
 *
@@ -29,7 +29,7 @@
 /**
  * Ext Direct Router
  *
- * @author	Sebastian Kurfuerst <sebastian@typo3.org>
+ * @author	Sebastian Kurfürst <sebastian@typo3.org>
  * @author	Stefan Galinski <stefan.galinski@gmail.com>
  * @package	TYPO3
  */

@@ -117,7 +117,7 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function removeCallsBackend() {

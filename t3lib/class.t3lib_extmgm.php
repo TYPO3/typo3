@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,9 +28,9 @@
  * Contains a class with Extension Management functions
  *
  * $Id$
- * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -107,7 +107,7 @@
  * This class is never instantiated, rather the methods inside is called as functions like
  * 		t3lib_extMgm::isLoaded('my_extension');
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -812,7 +812,7 @@ final class t3lib_extMgm {
 	 *
 	 *	 Adding SERVICES features
 	 *
-	 *   @author	Rene Fritz <r.fritz@colorcube.de>
+	 *   @author	René Fritz <r.fritz@colorcube.de>
 	 *
 	 ***************************************/
 
@@ -824,7 +824,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service key, must be prefixed "tx_" or "user_"
 	 * @param	array		Service description array
 	 * @return	void
-	 * @author	Rene Fritz <r.fritz@colorcube.de>
+	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
 		global $T3_SERVICES, $TYPO3_CONF_VARS;
@@ -892,7 +892,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service sub type
 	 * @param	mixed		Service keys that should be excluded in the search for a service. Array or comma list.
 	 * @return	mixed		Service info array if a service was found, FLASE otherwise
-	 * @author	Rene Fritz <r.fritz@colorcube.de>
+	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function findService($serviceType, $serviceSubType = '', $excludeServiceKeys = array()) {
 		global $T3_SERVICES, $TYPO3_CONF_VARS;
@@ -961,7 +961,7 @@ final class t3lib_extMgm {
 	 * @param	string		Service type
 	 * @param	string		Service key
 	 * @return	void
-	 * @author	Rene Fritz <r.fritz@colorcube.de>
+	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function deactivateService($serviceType, $serviceKey) {
 		global $T3_SERVICES;

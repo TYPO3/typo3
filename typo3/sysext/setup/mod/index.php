@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,8 +29,8 @@
  *
  * This module lets users viev and change their individual settings
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
- * Revised for TYPO3 3.7 6/2004 by Kasper Skaarhoj
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * Revised for TYPO3 3.7 6/2004 by Kasper Skårhøj
  * XHTML compatible.
  */
 /**
@@ -78,7 +78,7 @@ require($BACK_PATH.'init.php');
 /**
  * Script class for the Setup module
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_setup
  */

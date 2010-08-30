@@ -108,7 +108,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
-	 * @author Sebastian Kurfuerst <sebastian@typo3.org>
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function remove($entryIdentifier) {

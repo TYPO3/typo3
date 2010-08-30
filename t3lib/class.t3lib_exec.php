@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2002-2010 René Fritz (r.fritz@colorcube.de)
+*  (c) 2002-2010 RenÃ© Fritz (r.fritz@colorcube.de)
 *  All rights reserved
 *
 *  This script is part of the Typo3 project. The Typo3 project is
@@ -26,7 +26,7 @@
  *
  * $Id$
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	RenÃ© Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -78,7 +78,7 @@
  * binaries can be preconfigured with
  * $TYPO3_CONF_VARS['SYS']['binSetup']
  *
- * @author		René Fritz <r.fritz@colorcube.de>
+ * @author		RenÃ© Fritz <r.fritz@colorcube.de>
  * @package		TYPO3
  * @subpackage	t3lib
  */

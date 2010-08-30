@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,10 +28,10 @@
  * This document provides a class that loads the modules for the TYPO3 interface.
  *
  * $Id$
- * Modifications by Rene Fritz, 2001
- * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * Modifications by René Fritz, 2001
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @internal
  */
 /**
@@ -72,7 +72,7 @@
  * 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
  * 		$this->loadModules->load($TBE_MODULES);
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -428,7 +428,7 @@ class t3lib_loadModules {
 	 * @return	string		The relative path of destination compared to base.
 	 */
 	function getRelativePath($baseDir,$destDir){
-			// By Rene Fritz
+			// By René Fritz
 			// a special case , the dirs are equals
 		if ($baseDir == $destDir){
 			return './';

@@ -3,7 +3,7 @@
 *  Copyright notice
 *
 *  (c) 2009-2010 Xavier Perseguers <typo3@perseguers.ch>
-*  (c) 2004-2009 Kasper Skaarhoj <kasperYYYY@typo3.com>
+*  (c) 2004-2009 Kasper Skårhøj <kasperYYYY@typo3.com>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  *
  * $Id: class.tx_dbal_sqlengine.php 35523 2010-07-11 14:04:44Z xperseguers $
  *
- * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 /**
@@ -99,7 +99,7 @@
  * Basically this is trying to emulation SQL record selection by PHP, thus allowing SQL queries into alternative data storages managed by PHP.
  * EXPERIMENTAL!
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -825,7 +825,7 @@ class tx_dbal_sqlengine extends ux_t3lib_sqlparser {
 /**
  * PHP SQL engine, result object
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage dbal
  */

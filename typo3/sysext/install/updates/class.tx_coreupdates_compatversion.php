@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Sebastian Kurfuerst <sebastian@garbage-group.de>
+*  (c) 1999-2010 Sebastian Kurfürst <sebastian@garbage-group.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +28,7 @@
 /**
  * Contains the update class for the compatibility version. Used by the update wizard in the install tool.
  *
- * @author Sebastian Kurfuerst <sebastian@garbage-group.de
+ * @author Sebastian Kurfürst <sebastian@garbage-group.de
  * @version $Id$
  */
 class tx_coreupdates_compatversion {

@@ -2,7 +2,7 @@
 /* **************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  (c) 2006-2010 Karsten Dambekalns <karsten@typo3.org>
 *  All rights reserved
 *
@@ -39,7 +39,7 @@ require_once('class.em_soap.php');
  * It contains methods for downloading and uploading extensions and related code
  *
  * @author Karsten Dambekalns <karsten@typo3.org>
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage EM
  */

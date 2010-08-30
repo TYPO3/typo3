@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -53,7 +53,7 @@
 /**
  * Extension class for the t3lib_filetree class, needed for drag and drop and ajax functionality
  *
- * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
+ * @author	Sebastian Kurfürst <sebastian@garbage-group.de>
  * @author	Benjamin Mack   <bmack@xnos.org>
  * @package TYPO3
  * @subpackage core

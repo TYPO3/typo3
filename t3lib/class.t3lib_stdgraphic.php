@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,9 +28,9 @@
  * Standard graphical functions
  *
  * $Id$
- * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -150,7 +150,7 @@
  * With TYPO3 4.4 GDlib 1.x support was dropped, also an option from config_default.php:
  * $TYPO3_CONF_VARS['GFX']['gdlib_2'] = 0,	// String/Boolean. Set this if you are using the new GDlib 2.0.1+. If you don't set this flag and still use GDlib2, you might encounter strange behaviours like black images etc. This feature might take effect only if ImageMagick is installed and working as well! You can also use the value "no_imagecopyresized_fix" - in that case it will NOT try to fix a known issue where "imagecopyresized" does not work correctly.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  * @see tslib_gifBuilder
@@ -932,7 +932,7 @@ class t3lib_stdGraphic	{
 	 * @param	array		The TypoScript properties of the TEXT GIFBUILDER object
 	 * @return	integer		The new fontSize
 	 * @access private
-	 * @author Rene Fritz <r.fritz@colorcube.de>
+	 * @author René Fritz <r.fritz@colorcube.de>
 	 * @see tslib_gifBuilder::start()
 	 */
 	function fontResize($conf) {

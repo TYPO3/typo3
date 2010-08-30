@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2009 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  (c) 2004-2009 Karsten Dambekalns (karsten@typo3.org)
 *  All rights reserved
 *
@@ -25,7 +25,7 @@
 /**
  * Module 'DBAL Debug' for the 'dbal' extension.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <karsten@typo3.org>
  */
 
@@ -36,7 +36,7 @@ $BE_USER->modAccess($MCONF, 1);
 /**
  * Script class; Backend module for DBAL extension
  *
- * @author	Kasper Skaarhoj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Karsten Dambekalns <karsten@typo3.org>
  * @package TYPO3
  * @subpackage dbal

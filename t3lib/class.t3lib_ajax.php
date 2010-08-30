@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2004-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -31,7 +31,7 @@
  * IMPORTANT NOTICE: The API the class provides is still NOT STABLE and SUBJECT TO CHANGE!
  * It is planned to integrate an external AJAX library, so the API will most likely change again.
  *
- * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
+ * @author	Sebastian Kurfürst <sebastian@garbage-group.de>
  */
 
 /**
@@ -40,7 +40,7 @@
  * (1) generation of JavaScript code which creates an XMLHTTP object in a cross-browser manner
  * (2) generation of XML data as a reply
  *
- * @author	Sebastian Kurfuerst <sebastian@garbage-group.de>
+ * @author	Sebastian Kurfürst <sebastian@garbage-group.de>
  * @package TYPO3
  * @subpackage t3lib
  */

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2004-2010 René Fritz <r.fritz@colorcube.de>
+*  (c) 2004-2010 RenÃ© Fritz <r.fritz@colorcube.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * Service base class for 'User authentication'.
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	RenÃ© Fritz <r.fritz@colorcube.de>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -53,7 +53,7 @@ require_once(PATH_t3lib . 'class.t3lib_svbase.php');
 /**
  * Authentication services class
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author	RenÃ© Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage tx_sv
  */

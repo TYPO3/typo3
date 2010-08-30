@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,11 +28,11 @@
  * Contains the reknown class "t3lib_div" with general purpose functions
  *
  * $Id$
- * Revised for TYPO3 3.6 July/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  * Usage counts are based on search 22/2 2003 through whole source including tslib/
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -223,7 +223,7 @@ define('CRLF', CR . LF);
  * So: Don't instantiate - call functions with "t3lib_div::" prefixed the function name.
  * So use t3lib_div::[method-name] to refer to the functions, eg. 't3lib_div::milliseconds()'
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -1258,7 +1258,7 @@ final class t3lib_div {
 	 * Change umlaut characters to plain ASCII with normally two character target
 	 * Only known characters will be converted, so don't expect a result for any character.
 	 *
-	 * � => ae, � => Oe
+	 * ä => ae, Ö => Oe
 	 *
 	 * @param	string		String to convert.
 	 * @deprecated since TYPO3 4.1 - Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
@@ -2318,7 +2318,7 @@ final class t3lib_div {
 	 * @param	boolean		Wrap script element in linebreaks? Default is TRUE.
 	 * @return	string		The wrapped JS code, ready to put into a XHTML page
 	 * @author	Ingmar Schlecht <ingmars@web.de>
-	 * @author	Ren� Fritz <r.fritz@colorcube.de>
+	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function wrapJS($string, $linebreak=TRUE) {
 		if(trim($string)) {
@@ -5308,7 +5308,7 @@ final class t3lib_div {
 	 * @param	string		Sub type like file extensions or similar. Defined by the service.
 	 * @param	mixed		List of service keys which should be exluded in the search for a service. Array or comma list.
 	 * @return	object		The service object or an array with error info's.
-	 * @author	Ren� Fritz <r.fritz@colorcube.de>
+	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	public static function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array()) {
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
@@ -5421,7 +5421,7 @@ final class t3lib_div {
 			$headers = implode(LF,$newHeaders);
 			unset($newHeaders);
 
-			$email = self::encodeHeader($email,$encoding,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Sk�rh�j <kasperYYYY@typo3.com>")
+			$email = self::encodeHeader($email,$encoding,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skårhøj <kasperYYYY@typo3.com>")
 			$subject = self::encodeHeader($subject,$encoding,$charset);
 		}
 

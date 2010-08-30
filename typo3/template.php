@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,10 +28,10 @@
  * Contains class with layout/output function for TYPO3 Backend Scripts
  *
  * $Id$
- * Revised for TYPO3 3.6 2/2003 by Kasper Skaarhoj
+ * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML-trans compliant
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -153,7 +153,7 @@ function fw($str) {
  *
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -1554,7 +1554,7 @@ $str.=$this->docBodyTagBegin().
 	 * @param	string		$script is the script to send the &id to, if empty it's automatically found
 	 * @param	string		$addParams is additional parameters to pass to the script.
 	 * @return	string		HTML code for tab menu
-	 * @author	Rene Fritz <r.fritz@colorcube.de>
+	 * @author	René Fritz <r.fritz@colorcube.de>
 	 */
 	function getTabMenu($mainParams,$elementName,$currentValue,$menuItems,$script='',$addparams='')	{
 		$content='';

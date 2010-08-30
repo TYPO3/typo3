@@ -26,7 +26,7 @@
  * TYPO3 Scheduler. This class handles scheduling and execution of tasks.
  * Formerly known as "Gabriel TYPO3 arch angel"
  *
- * @author	Francois Suter <francois@typo3.org>
+ * @author	François Suter <francois@typo3.org>
  * @author	Christian Jul Jensen <julle@typo3.org>
  *
  * @package		TYPO3

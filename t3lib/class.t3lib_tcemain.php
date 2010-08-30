@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,9 +28,9 @@
  * Contains the TYPO3 Core Engine
  *
  * $Id$
- * Revised for TYPO3 3.9 October 2005 by Kasper Skaarhoj
+ * Revised for TYPO3 3.9 October 2005 by Kasper Skårhøj
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -226,7 +226,7 @@
  *
  * tce_db.php for further comments and SYNTAX! Also see document 'TYPO3 Core API' for details.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -2587,7 +2587,7 @@ class t3lib_TCEmain	{
 			if (!$modifyAccessList)	{
 				$id = 0;
 				$this->log($table,$id,2,0,1,"Attempt to modify table '%s' without permission",1,array($table));
-			}	// FIXME: $id not set here (Comment added by Sebastian Kurfuerst)
+			}	// FIXME: $id not set here (Comment added by Sebastian Kurfürst)
 
 				// Check basic permissions and circumstances:
 			if (isset($TCA[$table]) && !$this->tableReadOnly($table) && is_array($this->cmdmap[$table]) && $modifyAccessList)	{

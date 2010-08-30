@@ -223,12 +223,12 @@ class gzip_encode {
 
 		$gzdata = "\x1f\x8b\x08\x00\x00\x00\x00\x00"; // gzip header
 
-			// By Kasper Skaarhoj, start
+			// By Kasper Skårhøj, start
 		if ($outputCompressedSizes)	{
 			$contents.=LF."<!-- Compressed, level ".$level.", original size was ".strlen($contents)." bytes. New size is ".strlen(gzcompress($contents, $level))." bytes -->";
 			$size = strlen($contents);	// Must set again!
 		}
-			// By Kasper Skaarhoj, end
+			// By Kasper Skårhøj, end
 
 		$size = strlen($contents);
 		$crc = crc32($contents);

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 2001-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,7 +32,7 @@
  * Creates a searchform for indexed search. Indexing must be enabled
  * for this to make sense.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @co-author	Christian Jul Jensen <christian@typo3.com>
  */
 /**
@@ -114,7 +114,7 @@ require_once(t3lib_extMgm::extPath('indexed_search').'class.indexer.php');
  *
  * @package TYPO3
  * @subpackage tx_indexedsearch
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class tx_indexedsearch extends tslib_pibase {
 	var $prefixId = 'tx_indexedsearch';        // Same as class name

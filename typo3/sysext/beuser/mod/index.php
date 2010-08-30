@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 1999-2010 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*  (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * Backend User Administration Module
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -114,7 +114,7 @@ $BE_USER->modAccess($MCONF,1);
 /**
  * Base Extension class for printing a page tree (non-browsable though)
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_beuser
  */
@@ -214,7 +214,7 @@ $BE_USER->modAccess($MCONF,1);
 /**
  * Extension class for printing a page tree: All pages of a mount point.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_beuser
  */
@@ -271,7 +271,7 @@ class printAllPageTree extends localPageTree {
 /**
  * Extension class for printing a page tree: Printing all pages, with permissions.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_beuser
  */
@@ -370,7 +370,7 @@ class printAllPageTree_perms extends printAllPageTree {
 /**
  * Base Extension class for printing a folder tree (non-browsable though)
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_beuser
  */
@@ -463,7 +463,7 @@ class printAllPageTree_perms extends printAllPageTree {
 /**
  * Extension class for printing a folder tree: All folders
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_beuser
  */
@@ -497,7 +497,7 @@ class printAllFolderTree extends localFolderTree {
 /**
  * Extension class of beuserauth class.
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_beuser
  */
@@ -1083,7 +1083,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 /**
  * Main script class
  *
- * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_beuser
  */

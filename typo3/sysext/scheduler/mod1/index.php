@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009-2010 Francois Suter <francois@typo3.org>
+*  (c) 2009-2010 François Suter <francois@typo3.org>
 *  (c) 2005 Christian Jul Jensen <julle@typo3.org>
 *  All rights reserved
 *
@@ -31,7 +31,7 @@ $BE_USER->modAccess($MCONF, 1); // This checks permissions and exits if the user
 /**
  * Module 'TYPO3 Scheduler administration module' for the 'scheduler' extension.
  *
- * @author		Francois Suter <francois@typo3.org>
+ * @author		François Suter <francois@typo3.org>
  * @author		Christian Jul Jensen <julle@typo3.org>
  * @author		Ingo Renner <ingo@typo3.org>
  * @package		TYPO3
