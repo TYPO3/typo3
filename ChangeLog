@@ -1,3 +1,7 @@
+2010-08-30  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15561: Add information about /dev/urandom to INSTALL.txt
+
 2010-08-29  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14143: count_menuItems not working correctly (thanks to Frederic Gaus)

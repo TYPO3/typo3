@@ -64,6 +64,12 @@ The following configuration is recommended:
 - AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
   (see FAQ below)
 
+TYPO3 uses /dev/urandom or /dev/random on Unix-like platforms for security
+purposes. Access to these files is highly recommended and increases TYPO3
+security. Make sure to add "/dev/random:/dev/urandom" to open_basedir
+settings if you use it. If these paths are unavailable, TYPO3 will attempt to
+simulate random number generation. This is less secure, causes performance
+issues and warnings in the TYPO3 system log.
 
 ===============================================================================
 Obtaining TYPO3
