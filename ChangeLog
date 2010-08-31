@@ -71,7 +71,7 @@
 
 2010-08-08  Christian Kuhn  <lolli@schwarzbu.ch>
 
-	* Fixed bug #7901: Workaround for PHP bug with Locale tr_TR (Thanks to Reinhard Führicht)
+	* Fixed bug #7901: Workaround for PHP bug with Locale tr_TR (Thanks to Reinhard FÃ¼hricht)
 
 2010-08-07  Christian Kuhn  <lolli@schwarzbu.ch>
 
@@ -146,7 +146,7 @@
 
 2010-07-27  Steffen Kamper  <steffen@typo3.org>
 
-	* Fixed bug #13649: Deprecated function sql_regcase in cms/tslib/class.tslib_pagegen.php (Thanks to Martin Müller)
+	* Fixed bug #13649: Deprecated function sql_regcase in cms/tslib/class.tslib_pagegen.php (Thanks to Martin MÃ¼ller)
 
 2010-07-27  Stanislas Rolland  <typo3@sjbr.ca>
 
