@@ -911,35 +911,37 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				base.href = this.config.baseURL;
 				head.appendChild(base);
 			}
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Iframe baseURL set to: ' + this.config.baseURL);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Iframe baseURL set to: ' + base.href);
 		}
 		var link0 = this.document.getElementsByTagName('link')[0];
 		if (!link0) {
 			link0 = this.document.createElement('link');
 			link0.rel = 'stylesheet';
-			link0.href = this.config.editedContentStyle;
+				// Firefox 3.0.1 does not apply the base URL while Firefox 3.6.8 does so. Do not know in what version this was fixed.
+				// Therefore, for versions before 3.6.8, we prepend the url with the base, if the url is not absolute
+			link0.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^http(s?):\/{2}/.test(this.config.editedContentStyle)) ? this.config.baseURL : '') + this.config.editedContentStyle;
 			head.appendChild(link0);
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Skin CSS set to: ' + this.config.editedContentStyle);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Skin CSS set to: ' + link0.href);
 		}
 		if (this.config.defaultPageStyle) {
 			var link = this.document.getElementsByTagName('link')[1];
 			if (!link) {
 				link = this.document.createElement('link');
 				link.rel = 'stylesheet';
-				link.href = this.config.defaultPageStyle;
+				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.defaultPageStyle)) ? this.config.baseURL : '') + this.config.defaultPageStyle;
 				head.appendChild(link);
 			}
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Override CSS set to: ' + this.config.defaultPageStyle);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Override CSS set to: ' + link.href);
 		}
 		if (this.config.pageStyle) {
 			var link = this.document.getElementsByTagName('link')[2];
 			if (!link) {
 				link = this.document.createElement('link');
 				link.rel = 'stylesheet';
-				link.href = this.config.pageStyle;
+				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.pageStyle)) ? this.config.baseURL : '') + this.config.pageStyle;
 				head.appendChild(link);
 			}
-			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Content CSS set to: ' + this.config.pageStyle);
+			HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Content CSS set to: ' + link.href);
 		}
 		HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Editor iframe document head successfully built.');
 	},
@@ -1084,7 +1086,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	onNestedShow: function (event, target) {
 		var styleEvent = true;
 			// In older versions of Gecko attrName is not set and refering to it causes a non-catchable crash
-		if ((Ext.isGecko && navigator.productSub > 20071127) || Ext.isOpera) {
+		if ((Ext.isGecko && navigator.productSub > 2007112700) || Ext.isOpera) {
 			styleEvent = (event.browserEvent.attrName == 'style');
 		} else if (Ext.isIE) {
 			styleEvent = (event.browserEvent.propertyName == 'style.display');

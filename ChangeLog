@@ -1,3 +1,7 @@
+2010-08-31  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15068: htmlArea RTE: Not loading in Firefox 3.0.3
+
 2010-08-30  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed issue #15601: Change all core PHP files to UTF8 encoding
