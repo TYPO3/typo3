@@ -98,6 +98,11 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 		$message = 'PHP ' .$errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
 
 		if ($errorLevel & $this->exceptionalErrors) {
+			if (!class_exists('t3lib_error_Exception', FALSE)) {
+				require_once(PATH_t3lib . 'class.t3lib_exception.php');
+				require_once(PATH_t3lib . 'error/class.t3lib_error_exception.php');
+			}
+
 			throw new t3lib_error_Exception($message, 1);
 		} else {
 
