@@ -2493,7 +2493,7 @@ final class t3lib_BEfunc {
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && (isset($BE_USER->uc['edit_showFieldHelp']) || $force)) {
 			if ($BE_USER->uc['edit_showFieldHelp'] == 'icon') {
 				$text = self::helpText($table, $field, $BACK_PATH, '');
-				$text = '<div class="typo3-csh-inline">' . $GLOBALS['LANG']->hscAndCharConv($text, false) . '</div>';
+				$text = '<span class="typo3-csh-inline">' . $GLOBALS['LANG']->hscAndCharConv($text, FALSE) . '</span>';
 			}
 			return '<a class="typo3-csh-link" href="#" onclick="'.htmlspecialchars($onClick).'">' . t3lib_iconWorks::getSpriteIcon('actions-system-help-open', array('class' => 'typo3-csh-icon')) . $text.'</a>';
 		}
