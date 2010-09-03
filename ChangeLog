@@ -1,5 +1,6 @@
 2010-09-03  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15636: ExtDirect router should throw UnexpectedValueException instead of t3lib_error_exception
 	* Fixed bug #15550: t3lib_error_Exception not available in some cases (Thanks to Stefan Galinski)
 
 2010-09-01  Steffen Kamper  <steffen@typo3.org>
