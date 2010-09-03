@@ -1,4 +1,4 @@
-2010-09-02  Ernesto Baschny  <ernst@cron-it.de>
+2010-09-03  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15110: Validation problems with sprites (empty <span>) (Thanks to Georg Ringer, Steffen Ritter and Stefan Galinski)
 
