@@ -1,3 +1,7 @@
+2010-09-03  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15550: t3lib_error_Exception not available in some cases (Thanks to Stefan Galinski)
+
 2010-08-31  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #14858: imageLinkWrap.JSwindow triggers XSS warning or Fails (Thanks to Jigal van Hemert)
