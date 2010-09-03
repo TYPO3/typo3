@@ -1,3 +1,7 @@
+2010-09-02  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15110: Validation problems with sprites (empty <span>) (Thanks to Georg Ringer, Steffen Ritter and Stefan Galinski)
+
 2010-09-01  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15615: Fix and improve page renderer unit tests (Thanks to Helmut Hummel)

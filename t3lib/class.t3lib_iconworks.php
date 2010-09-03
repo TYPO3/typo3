@@ -635,8 +635,8 @@ final class t3lib_iconWorks	{
 	 * @access public
 	 */
 	public static function getSpriteIcon($iconName, array $options = array(), array $overlays = array()) {
-		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
-		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
+		$innerHtml = (isset($options['html'])    ? $options['html']    : NULL);
+		$tagName   = (isset($options['tagName']) ? $options['tagName'] : NULL);
 
 			// deal with the overlays
 		if (count($overlays)) {
@@ -672,8 +672,8 @@ final class t3lib_iconWorks	{
 	 * @access public
 	 */
 	public static function getSpriteIconForFile($fileExtension, array $options = array()) {
-		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
-		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
+		$innerHtml = (isset($options['html'])    ? $options['html']    : NULL);
+		$tagName   = (isset($options['tagName']) ? $options['tagName'] : NULL);
 
 			// create the CSS class
 		$options['class'] = self::mapFileExtensionToSpriteIconClass($fileExtension) . (isset($options['class']) ? ' ' . $options['class'] : '');
@@ -733,8 +733,8 @@ final class t3lib_iconWorks	{
 	 * @access public
 	 */
 	public static function getSpriteIconForRecord($table, array $row, array $options = array()) {
-		$innerHtml = (isset($options['html'])    ? $options['html']    : '');
-		$tagName   = (isset($options['tagName']) ? $options['tagName'] : 'span');
+		$innerHtml = (isset($options['html'])    ? $options['html']    : NULL);
+		$tagName   = (isset($options['tagName']) ? $options['tagName'] : NULL);
 
 			// overlay this record icon with the status of the row
 		$overlaySpriteIconName = self::mapRecordOverlayToSpriteIconName($table, $row);
@@ -959,7 +959,9 @@ final class t3lib_iconWorks	{
 	 * @param	string	$innerHtml (optional)	the content within the tag, a "&nbsp;" by default
 	 * @param	string	$tagName (optional)	the name of the HTML element that should be used (span by default)
 	 */
-	protected static function buildSpriteHtmlIconTag(array $tagAttributes, $innerHtml = '&nbsp;', $tagName = 'span') {
+	protected static function buildSpriteHtmlIconTag(array $tagAttributes, $innerHtml = NULL, $tagName = NULL) {
+		$innerHtml = ($innerHtml === NULL ? '&nbsp;' : $innerHtml);
+		$tagName = ($tagName === NULL ? 'span' : $tagName);
 		$attributes = '';
 		foreach ($tagAttributes as $attribute => $value) {
 			$attributes .= ' ' . htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';

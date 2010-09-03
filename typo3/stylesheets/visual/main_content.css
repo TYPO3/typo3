@@ -15,10 +15,14 @@ span.t3-icon {
 	height: 16px;
 	overflow: hidden;
 }
+
 .t3-icon {
 	background-image:url('../../gfx/icon_fatalerror.gif');
 	background-repeat:no-repeat;
+	font-size:1px;
+	line-height:0;
 }
+
 .t3-icon .c-inputButton {
 	width:16px;
 	height:16px;
