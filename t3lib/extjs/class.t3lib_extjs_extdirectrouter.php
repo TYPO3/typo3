@@ -116,7 +116,7 @@ class t3lib_extjs_ExtDirectRouter {
 	 *
 	 * @param object $singleRequest request object from extJS
 	 * @param string $namespace namespace like TYPO3.Backend
-	 * @throws t3lib_error_exception if the remote method couldn't be found
+	 * @throws UnexpectedValueException if the remote method couldn't be found
 	 * @return mixed return value of the called method
 	 */
 	protected function processRpc($singleRequest, $namespace) {
@@ -125,7 +125,7 @@ class t3lib_extjs_ExtDirectRouter {
 			// theoretically this can never happen, because of an javascript error on
 			// the client side due the missing namespace/endpoint
 		if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
-			throw new t3lib_error_Exception('ExtDirect: Call to undefined endpoint: ' . $endpointName);
+			throw new UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName);
 		}
 
 		$endpointObject = t3lib_div::getUserObj(
