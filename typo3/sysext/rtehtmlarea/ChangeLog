@@ -1,3 +1,7 @@
+2010-09-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15326: htmlArea RTE: W3C Markup Validation issues
+
 2010-08-31  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15068: htmlArea RTE: Not loading in Firefox 3.0.3

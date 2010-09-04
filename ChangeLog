@@ -1,3 +1,7 @@
+2010-09-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15326: htmlArea RTE: W3C Markup Validation issues
+
 2010-09-03  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15637: HTML regression in rev 7893
