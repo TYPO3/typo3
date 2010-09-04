@@ -380,7 +380,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 				// Register RTE windows
 			$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
-			$textAreaId = htmlspecialchars($PA['itemFormElName']);
+			$textAreaId = htmlspecialchars(preg_replace('/\[|\]/', '_', $PA['itemFormElName']));
 
 				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
 			if (basename(PATH_thisScript) == 'wizard_rte.php') {
@@ -394,7 +394,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, $table, $row['uid'], $field, $textAreaId);
 
 				// Set the save option for the RTE:
-			$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
+			$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId, $PA['itemFormElName']);
 			$this->TCEform->additionalJS_delete[] = $this->setDeleteRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
 
 				// Draw the textarea
@@ -402,7 +402,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$item = $this->triggerField($PA['itemFormElName']).'
 				<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $LANG->getLL('Please wait') . '</div>
 				<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; width:' . $editorWrapWidth . '; height:' . $editorWrapHeight . ';">
-				<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.t3lib_div::deHSCentities(htmlspecialchars($this->RTEdivStyle)).'">'.t3lib_div::formatForTextarea($value).'</textarea>
+				<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" rows="0" cols="0" style="'.t3lib_div::deHSCentities(htmlspecialchars($this->RTEdivStyle)).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 				</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 				';
 		}
@@ -1341,11 +1341,12 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @param	integer		$RTEcounter: The index number of the current RTE editing area within the form.
 	 * @param	string		$formName: the name of the form
 	 * @param	string		$textareaId: the id of the textarea
+	 * @param	string		$textareaName: the name of the textarea
 	 *
 	 * @return	string		Javascript code
 	 */
-	function setSaveRTE($RTEcounter, $formName, $textareaId) {
-		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaId . '"].value = RTEarea["' . $textareaId . '"].editor.getHTML(); } else { OK = 0; };';
+	function setSaveRTE($RTEcounter, $formName, $textareaId, $textareaName) {
+		return 'if (RTEarea["' . $textareaId . '"]) { document.' . $formName . '["' . $textareaName . '"].value = RTEarea["' . $textareaId . '"].editor.getHTML(); } else { OK = 0; };';
 	}
 
 	/**

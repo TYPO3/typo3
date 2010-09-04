@@ -248,7 +248,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 			// Register RTE windows:
 		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
-		$textAreaId = htmlspecialchars($PA['itemFormElName']) . '_' . strval($this->TCEform->RTEcounter);
+		$textAreaId = htmlspecialchars(preg_replace('/\[|\]/', '_', $PA['itemFormElName'])) . '_' . strval($this->TCEform->RTEcounter);
 
 			// Register RTE in JS:
 		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId);
@@ -260,7 +260,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$item = $this->triggerField($PA['itemFormElName']).'
 			<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait',$this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
 			<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; '. htmlspecialchars($this->RTEWrapStyle). '">
-			<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
+			<textarea id="RTEarea' . $textAreaId . '" name="'.htmlspecialchars($PA['itemFormElName']).'" rows="0" cols="0" style="'.htmlspecialchars($this->RTEdivStyle).'">'.t3lib_div::formatForTextarea($value).'</textarea>
 			</div>' . ($TYPO3_CONF_VARS['EXTCONF'][$this->ID]['enableDebugMode'] ? '<div id="HTMLAreaLog"></div>' : '') . '
 			';
 		return $item;
