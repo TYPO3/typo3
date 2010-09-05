@@ -713,9 +713,9 @@ final class t3lib_div {
 						// "192.168.3.0/24"
 					$lnet = ip2long($test);
 					$lip = ip2long($baseIP);
-					$binnet = str_pad( decbin($lnet),32,'0','STR_PAD_LEFT');
+					$binnet = str_pad(decbin($lnet), 32, '0', STR_PAD_LEFT);
 					$firstpart = substr($binnet,0,$mask);
-					$binip = str_pad( decbin($lip),32,'0','STR_PAD_LEFT');
+					$binip = str_pad(decbin($lip), 32, '0', STR_PAD_LEFT);
 					$firstip = substr($binip,0,$mask);
 					$yes = (strcmp($firstpart,$firstip)==0);
 				} else {

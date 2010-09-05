@@ -1,3 +1,7 @@
+2010-09-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15562: PHP warning for str_pad() in t3lib_div::cmpIPv4() (Thanks to Markus Klein)
+
 2010-09-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15326: htmlArea RTE: W3C Markup Validation issues
