@@ -1118,7 +1118,7 @@
 	 * Get page shortcut; Finds the records pointed to by input value $SC (the shortcut value)
 	 *
 	 * @param	integer		The value of the "shortcut" field from the pages record
-	 * @param	integer		The shortcut mode: 1 and 2 will select either first subpage or random subpage; the default is the page pointed to by $SC
+	 * @param	integer		The shortcut mode: 1 will select first subpage, 2 a random subpage, 3 the parent page; default is the page pointed to by $SC
 	 * @param	integer		The current page UID of the page which is a shortcut
 	 * @param	integer		Safety feature which makes sure that the function is calling itself recursively max 20 times (since this function can find shortcuts to other shortcuts to other shortcuts...)
 	 * @param	array		An array filled with previous page uids tested by the function - new page uids are evaluated against this to avoid going in circles.
@@ -1147,6 +1147,10 @@
 					}
 					$c++;
 				}
+			break;
+			case 3:
+				$parent = $this->sys_page->getPage($thisUid);
+				$page = $this->sys_page->getPage($parent['pid']);
 			break;
 			default:
 				$page = $this->sys_page->getPage($idArray[0]);

@@ -516,13 +516,19 @@ class t3lib_pageSelect {
 
 					// if shortcut, look up if the target exists and is currently visible
 				if ($row['doktype'] == 4 && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts)	{
-					if ($row['shortcut_mode'] == 0)	{
+					if ($row['shortcut_mode'] == 0) {
+							// no shortcut_mode set, so target is directly set in $row['shortcut']
 						$searchField = 'uid';
 						$searchUid = intval($row['shortcut']);
-					} else { // check subpages - first subpage or random subpage
+					} elseif ($row['shortcut_mode'] == 1 || $row['shortcut_mode'] == 2) {
+							// check subpages - first subpage or random subpage
 						$searchField = 'pid';
 							// If a shortcut mode is set and no valid page is given to select subpags from use the actual page.
 						$searchUid = intval($row['shortcut'])?intval($row['shortcut']):$row['uid'];
+					} elseif ($row['shortcut_mode'] == 3) {
+							// shortcut to parent page
+						$searchField = 'uid';
+						$searchUid = $row['pid'];
 					}
 					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 						'uid',

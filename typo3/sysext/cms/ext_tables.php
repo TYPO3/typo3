@@ -326,6 +326,7 @@ if (TYPO3_MODE == 'BE') {
 					array('', 0),
 					array('LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.1', 1),
 					array('LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.2', 2),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.3', 3),
 				),
 				'default' => '0'
 			)

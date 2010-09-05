@@ -1,6 +1,7 @@
 2010-09-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15562: PHP warning for str_pad() in t3lib_div::cmpIPv4() (Thanks to Markus Klein)
+	* Feature #8623: Shortcut mode: add "parent page" (Thanks to Georg Ringer)
 
 2010-09-04  Stanislas Rolland  <typo3@sjbr.ca>
 
