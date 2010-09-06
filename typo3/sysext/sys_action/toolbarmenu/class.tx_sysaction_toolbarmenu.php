@@ -85,7 +85,7 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 
 			$actionMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 			foreach ($actionEntries as $linkConf) {
-				$actionMenu[] = '<li><a href="' . $linkConf[1] .
+				$actionMenu[] = '<li><a href="' . htmlspecialchars($linkConf[1]) .
 					'" target="content">' . $linkConf[2] .
 					htmlspecialchars($linkConf[0]) . '</a></li>';
 			}

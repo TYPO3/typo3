@@ -1,3 +1,7 @@
+2010-09-06  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15635: XHTML validity of backend when sys_action is loaded
+
 2010-09-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15562: PHP warning for str_pad() in t3lib_div::cmpIPv4() (Thanks to Markus Klein)
