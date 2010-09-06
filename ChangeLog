@@ -1,5 +1,6 @@
 2010-09-06  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15490: Throw exception instead of dying in enableFields() function
 	* Added feature #15588: Extend TYPO3 DebugConsole
 	* Fixed bug #15589: Move debug functions to own utility class
 

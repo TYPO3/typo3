@@ -1156,7 +1156,12 @@ class t3lib_pageSelect {
 				}
 			}
 		} else {
-			die ('NO entry in the $TCA-array for the table "'.$table.'". This means that the function enableFields() is called with an invalid table name as argument.');
+			throw new InvalidArgumentException(
+				'There is no entry in the $TCA array for the table "' . $table .
+					'". This means that the function enableFields() is ' .
+					'called with an invalid table name as argument.',
+				1283790586
+			);
 		}
 
 		return $query;
