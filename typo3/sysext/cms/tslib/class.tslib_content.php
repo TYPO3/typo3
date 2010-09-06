@@ -3138,7 +3138,7 @@ class tslib_cObj {
 					$conf['altText.'] = $conf['alttext.'];
 				}
 			}
-			
+
 			$altParam = $this->getAltParam($conf);
 			$theValue = '<img src="'.htmlspecialchars($GLOBALS['TSFE']->absRefPrefix.t3lib_div::rawUrlEncodeFP($info[3])).'" width="'.$info[0].'" height="'.$info[1].'"'.$this->getBorderAttr(' border="'.intval($conf['border']).'"').(($conf['params'] || is_array($conf['params.']))?' '.$this->stdWrap($conf['params'],$conf['params.']):'').($altParam).' />';
 			if ($conf['linkWrap'])	{
@@ -5509,7 +5509,6 @@ class tslib_cObj {
 													unlink($file);
 												}
 											}
-												//	t3lib_div::print_array($GLOBALS['TSFE']->tmpl->fileCache[$hash]);
 										}
 									}
 								}
@@ -5743,13 +5742,13 @@ class tslib_cObj {
 					case 'debug':
 						switch((string)$key)	{
 							case 'rootLine':
-								$retVal = t3lib_div::view_array($GLOBALS['TSFE']->tmpl->rootLine);
+								$retVal = t3lib_utility_Debug::viewArray($GLOBALS['TSFE']->tmpl->rootLine);
 							break;
 							case 'fullRootLine':
-								$retVal = t3lib_div::view_array($GLOBALS['TSFE']->rootLine);
+								$retVal = t3lib_utility_Debug::viewArray($GLOBALS['TSFE']->rootLine);
 							break;
 							case 'data':
-								$retVal = t3lib_div::view_array($this->data);
+								$retVal = t3lib_utility_Debug::viewArray($this->data);
 							break;
 						}
 					break;

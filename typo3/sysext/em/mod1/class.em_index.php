@@ -3181,7 +3181,7 @@ EXTENSION KEYS:
 						$GLOBALS['LANG']->getLL('extInfoArray_dev_relevant') . '</td>
 					<td>' . (is_array($techInfo['NSerrors']) ?
 						(!t3lib_div::inList($this->nameSpaceExceptions, $extKey) ?
-							t3lib_div::view_array($techInfo['NSerrors']) :
+							t3lib_utility_Debug::viewArray($techInfo['NSerrors']) :
 							$GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('extInfoArray_exception'))) : '') . '</td>' .
 					$this->helpCol('NSerrors') . '</tr>';
 
@@ -3445,7 +3445,7 @@ EXTENSION KEYS:
 			$cells[] = '<td>'.(is_array($techInfo['errors']) ? $GLOBALS['TBE_TEMPLATE']->rfw(implode('<hr />',$techInfo['errors'])) : '').'</td>';
 			$cells[] = '<td>'.(is_array($techInfo['NSerrors']) ?
 						(!t3lib_div::inList($this->nameSpaceExceptions, $extKey) ?
-							t3lib_div::view_array($techInfo['NSerrors']) :
+							t3lib_utility_Debug::viewArray($techInfo['NSerrors']) :
 							$GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('extInfoArray_exception'))) : '') . '</td>';
 		} elseif ($this->MOD_SETTINGS['display_details']==5)	{
 			$currentMd5Array = $this->serverExtensionMD5Array($extKey,$extInfo);

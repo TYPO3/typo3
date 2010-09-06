@@ -393,7 +393,7 @@ class t3lib_readmail {
 	 * The extended version of the extractMailHeader() which will also parse all the content body into an array and further process the header fields and decode content etc. Returns every part of the mail ready to go.
 	 *
 	 * @param	string		Raw email input.
-	 * @return	array		Multidimensional array with all parts of the message organized nicely. Use t3lib_div::debug() to analyse it visually.
+	 * @return	array		Multidimensional array with all parts of the message organized nicely. Use t3lib_utility_Debug::debug() to analyse it visually.
 	 */
 	function fullParse($content)	{
 			// *************************

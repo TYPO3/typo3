@@ -57,7 +57,7 @@ final class t3lib_extjs_ExtDirectDebug {
 	public static function toString() {
 		$messagesAsString = '';
 		if (count(self::$debugMessages)) {
-			$messagesAsString = t3lib_div::view_array(self::$debugMessages);
+			$messagesAsString = t3lib_utility_Debug::viewArray(self::$debugMessages);
 		}
 
 		return $messagesAsString;

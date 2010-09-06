@@ -1,3 +1,7 @@
+2010-09-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15589: Move debug functions to own utility class
+
 2010-09-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15562: PHP warning for str_pad() in t3lib_div::cmpIPv4() (Thanks to Markus Klein)

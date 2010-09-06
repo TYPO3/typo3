@@ -542,7 +542,7 @@ class t3lib_fullsearch {
 			case 'explain':
 			default:
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-					$out.='<BR>'.t3lib_div::view_array($row);
+					$out .= '<br />' . t3lib_utility_Debug::viewArray($row);
 				}
 				$cPR['header']='Explain SQL query';
 				$cPR['content']=$out;

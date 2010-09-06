@@ -3329,7 +3329,7 @@ class tx_impexp {
 	 * @return	string		HTML print of error log
 	 */
 	function printErrorLog()	{
-		return count($this->errorLog) ? t3lib_div::view_array($this->errorLog) : '';
+		return count($this->errorLog) ? t3lib_utility_Debug::viewArray($this->errorLog) : '';
 	}
 }
 

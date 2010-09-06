@@ -442,7 +442,7 @@ class t3lib_timeTrack {
 				}
 			}
 			if ($flag_queries && is_array($data['selectQuery'])) {
-				$msgArr[] = t3lib_div::view_array($data['selectQuery']);
+				$msgArr[] = t3lib_utility_Debug::viewArray($data['selectQuery']);
 			}
 			if ($flag_content && strcmp($data['content'],'')) {
 				$maxlen = 120;

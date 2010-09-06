@@ -1028,7 +1028,6 @@ class t3lib_refindex {
 					$Err = 'Record '.$tableName.':'.$recdat['uid'].' had '.$result['addedNodes'].' added indexes and '.$result['deletedNodes'].' deleted indexes';
 					$errors[]= $Err;
 					if ($cli_echo) echo $Err.LF;
-					#$errors[] = t3lib_div::view_array($result);
 				}
 			}
 

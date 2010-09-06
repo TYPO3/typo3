@@ -1448,7 +1448,7 @@ class t3lib_DB {
 					'caller' => 't3lib_DB::' . $func,
 					'ERROR' => $error,
 					'lastBuiltQuery' => ($query ? $query : $this->debug_lastBuiltQuery),
-					'debug_backtrace' => t3lib_div::debug_trail(),
+					'debug_backtrace' => t3lib_utility_Debug::debugTrail(),
 				),
 				$func,
 				is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'], 'debug')) ? '' : 'DB Error'
@@ -1523,7 +1523,7 @@ class t3lib_DB {
 		}
 
 		$error = $this->sql_error();
-		$trail = t3lib_div::debug_trail();
+		$trail = t3lib_utility_Debug::debugTrail();
 
 		$explain_tables = array();
 		$explain_output = array();
@@ -1578,7 +1578,7 @@ class t3lib_DB {
 				}
 
 				if ($explainMode == 1) {
-					t3lib_div::debug($data, 'Tables: ' . $from_table, 'DB SQL EXPLAIN');
+					t3lib_utility_Debug::debug($data, 'Tables: ' . $from_table, 'DB SQL EXPLAIN');
 				} elseif ($explainMode == 2) {
 					$GLOBALS['TT']->setTSselectQuery($data);
 				}

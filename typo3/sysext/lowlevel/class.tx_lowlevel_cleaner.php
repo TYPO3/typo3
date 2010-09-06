@@ -211,7 +211,7 @@ debug($contentTreeData);
 					} else {
 						$output.='<input type="submit" name="_EDIT" value="EDIT" />';
 						$output.='<input type="submit" name="_DELETE" value="DELETE" onclick="return confirm(\'Are you sure you wish to delete?\');" />';
-						$output.=t3lib_div::view_array($rec);
+						$output.= t3lib_utility_Debug::viewArray($rec);
 						$output.=md5(implode($rec));
 					}
 				} else {
