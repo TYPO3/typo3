@@ -142,6 +142,11 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:resizeTextareas_Flexible',
 			'csh' => 'resizeTextareas_Flexible',
 		),
+		'debugInWindow' => array(
+			'type' => 'check',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:debugInWindow',
+			'access' => 'admin',
+		),
 		'installToolEnableButton' => array(
 			'type' => 'user',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:enableInstallTool.label',
@@ -153,7 +158,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 			--div--;LLL:EXT:setup/mod/locallang.xml:opening,condensedMode,startModule,thumbnailsByDefault,helpText,edit_showFieldHelp,titleLen,
 			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,enableFlashUploader,resizeTextareas,resizeTextareas_MaxHeight,resizeTextareas_Flexible,disableCMlayers,copyLevels,recursiveDelete,
-			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,installToolEnableButton'
+			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow,installToolEnableButton'
 
 );
 ?>

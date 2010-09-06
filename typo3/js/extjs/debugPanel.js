@@ -53,6 +53,14 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	tabGroups: new Ext.util.MixedCollection(),
 
 	/**
+	 * Indicator if the debug panel is wrapped inside a debug panel
+	 * @see addTabWidget()
+	 * 
+	 * @var boolean
+	 */
+	isTabChildren: false,
+
+	/**
 	 * Initializes the widget and merges our defaults with the user-defined ones. The
 	 * user-defined settings are preferred.
 	 *
@@ -71,21 +79,81 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			plugins: new Ext.ux.TabCloseMenu({
 				closeTabText: TYPO3.LLL.core.tabs_close,
 				closeOtherTabsText: TYPO3.LLL.core.tabs_closeOther,
-				closeAllTabsText: TYPO3.LLL.core.tabs_closeAll
+				closeAllTabsText: TYPO3.LLL.core.tabs_closeAll,
+				customMenuEntries: [
+					'-',
+					{
+						itemId: 'openInBrowserWindow',
+						text: TYPO3.LLL.core.tabs_openInBrowserWindow,
+						scope: this,
+						handler: function() {
+							var tab = this.plugins.active;
+							var group = '', content = '';
+
+							if (tab.ownerCt.ownerCt instanceof Ext.TabPanel) {
+								group = tab.ownerCt.title;
+								content = tab.body.dom.innerHTML;
+							} else {
+								group = tab.title;
+								tab.items.each(function(item) {
+									content += item.body.dom.innerHTML;
+								});
+							}
+
+							this.openBrowserWindow(
+								tab.title,
+								content,
+								group
+							);
+						}
+					}
+				]
 			})
 		});
 
-			// create a drop arrow indicator
-		this.on('render', function() {
-			this.arrow = Ext.DomHelper.append(
-				Ext.getBody(),
-				'<div class="typo3-debugPanel-dragDropArrowDown">&nbsp;</div>',
-				true
-			);
-			this.arrow.hide();
+			
+		TYPO3.DebugPanel.superclass.initComponent.call(this);
+	},
+
+	/**
+	 * Create a drop arrow indicator for the tab drag&drop feature while rendering
+	 * the component
+	 *
+	 * @return void
+	 */
+	onRender: function() {
+		this.arrow = Ext.DomHelper.append(
+			Ext.getBody(),
+			'<div class="typo3-debugPanel-dragDropArrowDown">&nbsp;</div>',
+			true
+		);
+		this.arrow.hide();
+
+		this.on('move', function() {
+			this.ownerCt.fireEvent('resize');
 		}, this);
 
-		TYPO3.DebugPanel.superclass.initComponent.call(this);
+		TYPO3.DebugPanel.superclass.onRender.apply(this, arguments);
+	},
+	
+	/**
+	 * Collapse event
+	 *
+	 * @return void
+	 */
+	onCollapse: function() {
+		TYPO3.DebugPanel.superclass.onCollapse.apply(this, arguments);
+		this.ownerCt.fireEvent('resize');
+	},
+
+	/**
+	 * Expand event
+	 *
+	 * @return void
+	 */
+	onExpand: function() {
+		TYPO3.DebugPanel.superclass.onExpand.apply(this, arguments);
+		this.ownerCt.fireEvent('resize');
 	},
 
 	/**
@@ -99,7 +167,8 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	},
 
 	/**
-	 * Adds a new tab
+	 * Adds a new tab inside a new debug console tab or inside a new browser window if the
+	 * debugInWindow configuration variable is set.
 	 *
 	 * If you need more possibilites, you should use the addTabWidget method.
 	 *
@@ -111,16 +180,20 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 * @return void
 	 */
 	addTab: function(tabContent, header, group, position) {
-		var tabWidget = new Ext.Panel({
-			title: header,
-			html: tabContent,
-			border: false,
-			autoScroll: true,
-			closable: true,
-			draggableTab: true
-		});
-
-		this.addTabWidget(tabWidget, group, position);
+		if (TYPO3.configuration.debugInWindow) {
+			this.openBrowserWindow(header, tabContent, group);
+		} else {
+			var tabWidget = new Ext.Panel({
+				title: header,
+				html: tabContent,
+				border: false,
+				autoScroll: true,
+				closable: true,
+				draggableTab: true
+			});
+			
+			this.addTabWidget(tabWidget, group, position);
+		}
 	},
 
 	/**
@@ -138,13 +211,14 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	addTabWidget: function(tabWidget, group, position) {
 		if (this.hidden) {
 			this.show();
+			this.ownerCt.fireEvent('resize');
 		} else if (this.collapsed) {
 			this.expand();
 		}
 
 			// Move the widget into a tab group?
 		var tabGroup = this;
-		if (typeof group !== 'undefined' && group != '' && !this.isTabChildren) {
+		if (typeof group !== 'undefined' && group !== '' && !this.isTabChildren) {
 			if (this.tabGroups.indexOfKey(group) === -1) {
 				tabGroup = new TYPO3.DebugPanel({
 					border: false,
@@ -384,6 +458,155 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 				return true;
 			}
 		});
+	},
+	
+	/**
+	 * Opens debug output in a new browser window
+	 * 
+	 * @param title string
+	 * @param content string
+	 * @param group string
+	 * @return void
+	 */
+	openBrowserWindow: function(title, content, group) {
+		if (Ext.isIE6) {
+			group = group.replace(' ', '_');
+		}
+		var newWindow = window.open('', 'TYPO3DebugWindow_' + group,
+			'width=600,height=400,menubar=0,toolbar=1,status=0,scrollbars=1,resizable=1'
+		);
+		if (newWindow.document.body.innerHTML) {
+			Ext.DomHelper.insertHtml('beforeEnd', newWindow.document.body, '<hr>' + content);
+		} else {
+			newWindow.document.writeln(
+				'<html><head><title>Debug: ' + title + '(' + group + ')</title></head>'
+				+ '<body bgcolor=white onLoad="self.focus()">'
+				+ content
+				+ '</body></html>'
+			);
+		}
+		newWindow.document.close()
+	},
+	
+	/**
+	 * Wrapper for console.log
+	 *
+	 * @return void
+	 */
+	log: function() {
+		this.debug(arguments[0], 'Log', 'Javascript Console');
+	},
+	
+	/**
+	 * Wrapper for console.info
+	 *
+	 * @return void
+	 */
+	info: function() {
+		this.debug(arguments[0], 'Info', 'Javascript Console');
+	},
+	
+	/**
+	 * Wrapper for console.warn
+	 *
+	 * @return void
+	 */
+	warn: function() {
+		this.debug(arguments[0], 'Warning', 'Javascript Console');
+	},
+	
+	/**
+	 * Wrapper for console.error
+	 *
+	 * @return void
+	 */
+	error: function() {
+		this.debug(arguments[0], 'Error', 'Javascript Console');
+	},
+	
+	/**
+	 * Debug output from javascript
+	 * 
+	 * @param out mixed debug output
+	 * @param header string
+	 * @param group string
+	 */
+	debug: function(out, header, group) {
+		var output = this.printObject(out);
+		this.addTab(output, header, group);
+	},
+	
+	/**
+	 * Converts any string/array/object to a string for printing purposes
+	 * 
+	 * @param object object
+	 * @param level integer recursion level counter (max. 3 levels)
+	 * @param prefix string internal use!
+	 * @return string
+	 */
+	printObject: function(object, level, prefix) {
+		var result = '';
+
+		prefix = prefix || '';
+		level = level || 0;
+		if (level >= 3) {
+			return result;
+		}
+
+		var levelPadding = '';
+		for(var j = 0; j < level + 1; ++j) {
+			levelPadding += '    ';
+		}
+
+		if (typeof(object) === 'object') {
+				// Array / Objects
+			for (var item in object) {
+				var value = object[item];
+
+				if (typeof(value) === 'object') {
+					result += levelPadding + '"' + prefix + item + '" ...' + "\n";
+					result += this.printObject(value, level + 1, prefix + item + '.');
+				} else {
+					result += levelPadding + '"' + prefix + item +
+						'" => "' + value + '"' + "\n";
+				}
+			}
+		} else {
+				// Strings/Chars/Numbers etc.
+			result = '[' + typeof(object) + '] ' + object;
+		}
+
+		return '<pre>' + result + '</pre>';
+	},
+	
+	/**
+	 * Debug attached events of a given element (e.g. an Ext.Panel component)
+	 *
+	 * Note: This functionality should be used with an activated debug console like firebug!
+	 *
+	 * @param element object to fetch events from
+	 * @return void
+	 */
+	debugEvents: function(element) {
+		if (element) {
+				// debug events of element
+			Ext.util.Observable.capture(element, function() {
+				console.log(
+					'event "' + arguments[0] + '" was fired with the following arguments: '
+				);
+
+				for (var i = 1; i < arguments.length; ++i) {
+					console.log('        [' + i + '] ', arguments[i]);
+				}
+			});
+		} else {
+				// debug all events
+			Ext.util.Observable.prototype.fireEvent =
+				Ext.util.Observable.prototype.fireEvent.createInterceptor(function() {
+					console.log(arguments);
+					return true;
+				});
+		}
 	}
 });
 

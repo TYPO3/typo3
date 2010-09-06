@@ -40,6 +40,12 @@ Ext.ux.TabCloseMenu = Ext.extend(Object, {
      */
     closeAllTabsText: 'Close All Tabs',
     
+    /**
+	 * @cfg {Array} custom menu entries
+	 */
+	customMenuEntries: [],
+
+    
     constructor : function(config){
         Ext.apply(this, config || {});
     },
@@ -114,6 +120,12 @@ Ext.ux.TabCloseMenu = Ext.extend(Object, {
                     handler: this.onCloseAll
                 });
             }
+            if (this.customMenuEntries.length) {
+            	this.customMenuEntries.each(function(item) {
+            		items.push(item);
+            	});
+            }
+            
             this.menu = new Ext.menu.Menu({
                 items: items
             });

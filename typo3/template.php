@@ -781,7 +781,27 @@ class template {
 		$this->docStyle();
 
 
-		// add jsCode - has to go to headerData as it may contain the script tags already
+			// add jsCode for overriding the console with a debug panel connection
+		$this->pageRenderer->addJsInlineCode(
+			'consoleOverrideWithDebugPanel',
+			'if (typeof top.Ext === "object") {
+				top.Ext.onReady(function() {
+					if (typeof console === "undefined") {
+						if (top && top.TYPO3 && top.TYPO3.Backend && top.TYPO3.Backend.DebugConsole) {
+							console = top.TYPO3.Backend.DebugConsole;
+						} else {
+							console = {
+								log: Ext.log,
+								info: Ext.log,
+								warn: Ext.log,
+								error: Ext.log
+							}
+						}
+					}
+				});
+			}
+		');
+
 		$this->pageRenderer->addHeaderData($this->JScode);
 
 		foreach ($this->JScodeArray as $name => $code) {
@@ -2050,6 +2070,7 @@ $str.=$this->docBodyTagBegin().
 				}
 			}
 		');
+
 			// Get the page path for the docheader
 		$markerArray['PAGEPATH'] = $this->getPagePath($pageRecord);
 			// Get the page info for the docheader

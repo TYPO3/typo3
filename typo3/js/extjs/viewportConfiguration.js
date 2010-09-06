@@ -82,6 +82,7 @@ TYPO3.Viewport.configuration = {
 		xtype: 'typo3DebugPanel',
 		collapsible: true,
 		collapseMode: 'mini',
+		collapsed: true,
 		hideCollapseTool: true,
 		animCollapse: false,
 		split: true,
