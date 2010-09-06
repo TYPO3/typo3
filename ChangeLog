@@ -1,3 +1,7 @@
+2010-09-06  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15635: XHTML validity of backend when sys_action is loaded
+
 2010-09-03  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15550: t3lib_error_Exception not available in some cases (Thanks to Stefan Galinski)
