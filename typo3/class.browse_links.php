@@ -1424,6 +1424,8 @@ class browse_links {
 				$pagetree = t3lib_div::makeInstance('rtePageTree');
 				$pagetree->thisScript = $this->thisScript;
 				$pagetree->ext_showPageId = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPageIdWithTitle');
+				$pagetree->ext_showNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
+				$pagetree->addField('nav_title');
 				$tree=$pagetree->getBrowsableTree();
 				$cElements = $this->expandPage();
 
