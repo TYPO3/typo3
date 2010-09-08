@@ -1,3 +1,7 @@
+2010-09-08  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #13073: options.pageTree.showNavTitle = 1 does not work in typo3/browse_links.php (Thanks to Sebastian Michaelsen)
+
 2010-09-06  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15635: XHTML validity of backend when sys_action is loaded
