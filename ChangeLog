@@ -1,3 +1,7 @@
+2010-09-09  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15532: Memory leak when using old page cache
+
 2010-09-08  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #13073: options.pageTree.showNavTitle = 1 does not work in typo3/browse_links.php (Thanks to Sebastian Michaelsen)
