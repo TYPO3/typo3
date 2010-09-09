@@ -279,6 +279,7 @@ class t3lib_TStemplate	{
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$currentPageData = unserialize($row['content']);
 			}
+			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		}
 
 		return $currentPageData;
