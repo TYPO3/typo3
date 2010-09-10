@@ -176,7 +176,7 @@ Speed improvements
 	  framework (#15141). Enable it like this:
 	$TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['cache_pages'] =
 	array(
-		'frontend' => 't3lib_cache_frontend_StringFrontend',
+		'frontend' => 't3lib_cache_frontend_VariableFrontend',
 		'backend' => 't3lib_cache_backend_DbBackend',
 		'options' => array(
 			'cacheTable' => 'cachingframework_cache_pages',
