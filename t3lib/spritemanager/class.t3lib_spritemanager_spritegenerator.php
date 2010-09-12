@@ -534,7 +534,7 @@ class t3lib_spritemanager_SpriteGenerator {
 		foreach ($subFolders as $folder) {
 			if ($folder !== '.svn') {
 				$icons = t3lib_div::getFilesInDir(PATH_site . $directoryPath . $folder . '/', 'gif,png,jpg');
-				if (!in_array($folder, $this->spriteBases) && count($icons)) {
+				if (!in_array($folder, $this->spriteBases) && count($icons) && $folder !== '') {
 					$this->spriteBases[] = $folder;
 				}
 				foreach ($icons AS $icon) {
