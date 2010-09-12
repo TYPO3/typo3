@@ -483,13 +483,13 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		}
 
 			// link to update the user record
-		$href = 'mod.php?M=user_task&SET[function]=sys_action.tasks&show=' . intval($sysActionUid) . '&be_users_uid=' . intval($userId);
-		$link = '<a href="' . $href . '">' . htmlspecialchars($username) . '</a>';
+		$href = 'mod.php?M=user_task&SET[function]=sys_action.tx_sysaction_task&show=' . intval($sysActionUid) . '&be_users_uid=' . intval($userId);
+		$link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
 
 			// link to delete the user record
 		$onClick = ' onClick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL("lDelete_warning")).');"';
 		$link .= '
-				<a href="' . $href . '&delete=1" ' . $onClick . '>
+				<a href="' . htmlspecialchars($href . '&delete=1') . '" ' . $onClick . '>
 					<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/delete_record.gif') . ' alt="" />
 				</a>';
 		return $link;
