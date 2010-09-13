@@ -492,6 +492,9 @@ tt_content.image.20 {
 
 			JSwindow = 1
 			JSwindow.newWindow = {$styles.content.imgtext.linkWrap.newWindow}
+			JSwindow.if.isFalse = {$styles.content.imgtext.linkWrap.lightboxEnabled}
+
+			directImageLink = {$styles.content.imgtext.linkWrap.lightboxEnabled}
 
 			enable.field = image_zoom
 			enable.ifEmpty.typolink.parameter.field = image_link
@@ -502,6 +505,8 @@ tt_content.image.20 {
 			typolink.parameter.listNum.stdWrap.data = register : IMAGE_NUM_CURRENT
 			typolink.target = {$styles.content.links.target}
 			typolink.extTarget = {$styles.content.links.extTarget}
+			
+			linkParams.ATagParams.dataWrap =  class="{$styles.content.imgtext.linkWrap.lightboxCssClass}" rel="{$styles.content.imgtext.linkWrap.lightboxRelAttribute}"
 		}
 
 		altText = TEXT
@@ -719,8 +724,6 @@ tt_content.image.20 {
 
 	stdWrap.prefixComment = 2 | Image block:
 }
-
-
 
 # *****************
 # CType: textpic

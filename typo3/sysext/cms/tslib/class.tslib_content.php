@@ -3217,10 +3217,16 @@ class tslib_cObj {
 
 				$params .= '&md5=' . $md5_value . '&contentHash=' . $contentHash;
 				$url = $GLOBALS['TSFE']->absRefPrefix.'index.php?eID=tx_cms_showpic&file='.rawurlencode($imageFile).$params;
-				if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.'])	{
-					$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);
-					if ($altUrl)	{
-						$url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file='.rawurlencode($imageFile).$params);
+				
+				if ($conf['directImageLink']) {
+					$imgResourceConf = array(
+						'file' => $imageFile,
+						'file.' => $conf
+					);
+					$url = $this->IMG_RESOURCE($imgResourceConf);
+					if (!$url) {
+							// if no imagemagick / gm is available
+						$url = $imageFile;
 					}
 				}
 
@@ -3234,8 +3240,14 @@ class tslib_cObj {
 				} else {
 					$target = '';
 				}
-
-				if ($conf['JSwindow'])	{
+				$conf['JSwindow'] = $this->stdWrap($conf['JSwindow'], $conf['JSwindow.']);
+				if ($conf['JSwindow']) {
+					if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.']) {
+						$altUrl = $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']);
+						if ($altUrl)	{
+							$url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file='.rawurlencode($imageFile).$params);
+						}
+					}
 					$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 					$gifCreator->init();
 					$gifCreator->mayScaleUp = 0;
@@ -3248,8 +3260,8 @@ class tslib_cObj {
 					$a2='</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
 				} else {
-					$a1='<a href="'.htmlspecialchars($url).'"'.$target.$GLOBALS['TSFE']->ATagParams.'>';
-					$a2='</a>';
+					$conf['linkParams.']['parameter'] = $url;
+					$string = $this->typoLink($string, $conf['linkParams.']);
 				}
 
 				$string = $this->stdWrap($string,$conf['stdWrap.']);
