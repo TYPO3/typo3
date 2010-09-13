@@ -1,3 +1,7 @@
+2010-09-13  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15691: Javascript Error in taskcenter
+
 2010-09-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #15326: htmlArea RTE: W3C Markup Validation issues (Thanks to Jigal van Hemert)
