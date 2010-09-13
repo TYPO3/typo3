@@ -111,15 +111,13 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 *
 	 * @return array Data sets
 	 */
-	public function testIntValidDataProvider() {
+	public function functionTestIntValidDataProvider() {
 		return array(
 			'int' => array(32425),
 			'negative int' => array(-32425),
 			'largest int' => array(PHP_INT_MAX),
 			'int as string' => array('32425'),
-			'int as string with leading zero' => array('01234'),
 			'negative int as string' => array('-32425'),
-			'negative int as string with leading zero' => array('-01234'),
 			'zero' => array(0),
 			'zero as string' => array('0'),
 		);
@@ -127,7 +125,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @dataProvider testIntValidDataProvider
+	 * @dataProvider functionTestIntValidDataProvider
 	 */
 	public function testIntReturnsTrue($int) {
 		$this->assertTrue(t3lib_div::testInt($int));
@@ -138,14 +136,23 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 *
 	 * @return array Data sets
 	 */
-	public function testIntInvalidDataProvider() {
+	public function functionTestIntInvalidDataProvider() {
 		return array(
+			'int as string with leading zero' => array('01234'),
+			'positive int as string with plus modifier' => array('+1234'),
+			'negative int as string with leading zero' => array('-01234'),
 			'largest int plus one' => array(PHP_INT_MAX + 1),
 			'string' => array('testInt'),
 			'empty string' => array(''),
 			'int in string' => array('5 times of testInt'),
+			'int as string with space after' => array('5 '),
+			'int as string with space before' => array(' 5'),
+			'int as string with many spaces before' => array('     5'),
 			'float' => array(3.14159),
 			'float as string' => array('3.14159'),
+			'float as string only a dot' => array('10.'),
+			'float as string trailing zero would evaluate to int 10' => array('10.0'),
+			'float as string trailing zeros	 would evaluate to int 10' => array('10.00'),
 			'null' => array(NULL),
 			'empty array' => array(array()),
 			'int in array' => array(array(32425)),
@@ -155,7 +162,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @dataProvider testIntInvalidDataProvider
+	 * @dataProvider functionTestIntInvalidDataProvider
 	 */
 	public function testIntReturnsFalse($int) {
 		$this->assertFalse(t3lib_div::testInt($int));
