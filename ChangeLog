@@ -1,5 +1,6 @@
 2010-09-12  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15677: Wrapper for console only prints first argument
 	* Follow-up to bug #15589: Move debug functions to own utility class (missing changes in config_default)
 
 2010-09-13  Susanne Moog  <typo3@susanne-moog.de>

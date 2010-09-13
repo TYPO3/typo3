@@ -494,7 +494,11 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 * @return void
 	 */
 	log: function() {
-		this.debug(arguments[0], 'Log', 'Javascript Console');
+		if (arguments.length) {
+			for (var i = 0; i < arguments.length; i++) {
+				this.debug(arguments[i], 'Log', 'Javascript Console');
+			}
+		}
 	},
 	
 	/**
@@ -503,7 +507,11 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 * @return void
 	 */
 	info: function() {
-		this.debug(arguments[0], 'Info', 'Javascript Console');
+		if (arguments.length) {
+			for (var i = 0; i < arguments.length; i++) {
+				this.debug(arguments[i], 'Info', 'Javascript Console');
+			}
+		}
 	},
 	
 	/**
@@ -512,7 +520,11 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 * @return void
 	 */
 	warn: function() {
-		this.debug(arguments[0], 'Warning', 'Javascript Console');
+		if (arguments.length) {
+			for (var i = 0; i < arguments.length; i++) {
+				this.debug(arguments[i], 'Warning', 'Javascript Console');
+			}
+		}
 	},
 	
 	/**
@@ -521,7 +533,11 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 * @return void
 	 */
 	error: function() {
-		this.debug(arguments[0], 'Error', 'Javascript Console');
+		if (arguments.length) {
+			for (var i = 0; i < arguments.length; i++) {
+				this.debug(arguments[i], 'Error', 'Javascript Console');
+			}
+		}
 	},
 	
 	/**
