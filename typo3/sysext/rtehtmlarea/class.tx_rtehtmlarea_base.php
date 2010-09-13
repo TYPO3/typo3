@@ -380,7 +380,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 				// Register RTE windows
 			$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
-			$textAreaId = htmlspecialchars(preg_replace('/\[|\]/', '_', $PA['itemFormElName']));
+			$textAreaId = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $PA['itemFormElName']);
+			$textAreaId = htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $textAreaId));
 
 				// Check if wizard_rte called this for fullscreen edtition; if so, change the size of the RTE to fullscreen using JS
 			if (basename(PATH_thisScript) == 'wizard_rte.php') {

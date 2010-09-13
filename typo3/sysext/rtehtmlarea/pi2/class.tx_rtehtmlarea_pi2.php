@@ -248,7 +248,8 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 			// Register RTE windows:
 		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
-		$textAreaId = htmlspecialchars(preg_replace('/\[|\]/', '_', $PA['itemFormElName'])) . '_' . strval($this->TCEform->RTEcounter);
+		$textAreaId = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $PA['itemFormElName']);
+		$textAreaId = htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $textAreaId)) . '_' . strval($this->TCEform->RTEcounter);
 
 			// Register RTE in JS:
 		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId);
