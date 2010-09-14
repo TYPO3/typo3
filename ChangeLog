@@ -1,3 +1,7 @@
+2010-09-14  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15622: t3lib_TCEforms_inline registers superfluous nested level when renderFieldsOnly is set
+
 2010-09-13  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15691: Javascript Error in taskcenter
@@ -76,7 +80,7 @@
 
 2010-08-28  Steffen Kamper  <steffen@typo3.org>
 
-	* Fixed bug #15574: t3lib_extmgmTest::getExtensionVersionForLoadedExtensionReturnsExtensionVersion fails (Thanks to Peter Kühn)
+	* Fixed bug #15574: t3lib_extmgmTest::getExtensionVersionForLoadedExtensionReturnsExtensionVersion fails (Thanks to Peter Kï¿½hn)
 
 2010-08-27  Steffen Gebert  <steffen@steffen-gebert.de>
 
