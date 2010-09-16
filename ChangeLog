@@ -1,4 +1,8 @@
-2010-10-15  Xavier Perseguers  <typo3@perseguers.ch>
+2010-09-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15531: jumpurl check fails if mime type is not known
+
+2010-09-15  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Follow-up to changeset 8649: Removed useless .orig file
 

@@ -2647,7 +2647,7 @@
 				$hArr = array(
 					$this->jumpurl,
 					t3lib_div::_GP('locationData'),
-					t3lib_div::_GP('mimeType'),
+					(string)t3lib_div::_GP('mimeType'), // Need a type cast here because mimeType is optional!
 					$this->TYPO3_CONF_VARS['SYS']['encryptionKey']
 				);
 				$calcJuHash=t3lib_div::shortMD5(serialize($hArr));
