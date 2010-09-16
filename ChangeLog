@@ -1,3 +1,7 @@
+2010-09-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15531: jumpurl check fails if mime type is not known
+
 2010-09-09  Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Fixed bug #15532: Memory leak when using old page cache
