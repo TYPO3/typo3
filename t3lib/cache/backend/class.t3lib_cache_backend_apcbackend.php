@@ -35,9 +35,7 @@
  *   xxx is identifier, value is array of associated tags. This is "reverse" tag
  *   index. It provides quick access for all tags associated with this identifier
  *   and used when removing the identifier
- * - tagIndex
- *   Value is a List of all tags (array)
-
+ *
  * Each key is prepended with a prefix. By default prefix consists from two parts
  * separated by underscore character and ends in yet another underscore character:
  * - "TYPO3"
@@ -128,7 +126,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 		$success = apc_store($this->identifierPrefix . $entryIdentifier, $data, $expiration);
 		if ($success === TRUE) {
 			$this->removeIdentifierFromAllTags($entryIdentifier);
-			$this->addTagsToTagIndex($tags);
 			$this->addIdentifierToTags($entryIdentifier, $tags);
 		} else {
 			throw new t3lib_cache_Exception(
@@ -289,55 +286,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	}
 
 	/**
-	 * Returns an array with all known tags
-	 *
-	 * @return array
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	protected function getTagIndex() {
-		$success = FALSE;
-		$tagIndex = apc_fetch($this->identifierPrefix . 'tagIndex', $success);
-
-		return ($success ? (array)$tagIndex : array());
-	}
-
-	/**
-	 * Saves the tags known to the backend
-	 *
-	 * @param array $tags
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	protected function setTagIndex(array $tags) {
-		apc_store($this->identifierPrefix . 'tagIndex', array_unique($tags));
-	}
-
-	/**
-	 * Adds the given tags to the tag index
-	 *
-	 * @param array $tags
-	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	protected function addTagsToTagIndex(array $tags) {
-		if (count($tags)) {
-			$this->setTagIndex(array_merge($tags, $this->getTagIndex()));
-		}
-	}
-
-	/**
-	 * Removes the given tags from the tag index
-	 *
-	 * @param array $tags
-	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	protected function removeTagsFromTagIndex(array $tags) {
-		if (count($tags)) {
-			$this->setTagIndex(array_diff($this->getTagIndex(), $tags));
-		}
-	}
-
-	/**
 	 * Associates the identifier with the given tags
 	 *
 	 * @param string $entryIdentifier
@@ -387,7 +335,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 				if (count($identifiers)) {
 					apc_store($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 				} else {
-					$this->removeTagsFromTagIndex(array($tag));
 					apc_delete($this->identifierPrefix . 'tag_' . $tag);
 				}
 			}
