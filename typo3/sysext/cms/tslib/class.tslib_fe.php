@@ -2661,7 +2661,7 @@
 								$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 								header('Content-Type: '.$mimeType);
-								header('Content-Disposition: attachment; filename='.basename($this->jumpurl));
+								header('Content-Disposition: attachment; filename="'.basename($this->jumpurl) . '"');
 								readfile($this->jumpurl);
 								exit;
 							} else die('jumpurl Secure: "'.$this->jumpurl.'" was not a valid file!');
