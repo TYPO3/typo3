@@ -1,3 +1,7 @@
+2010-09-16  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15669: HTML Warnings in Ext Direct Exception Code (Thanks to Stefan Galinski)
+
 2010-09-16  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15497: [Caching framework] Remove tagIndex from memcached and apc backend

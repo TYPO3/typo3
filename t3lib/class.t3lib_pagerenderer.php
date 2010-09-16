@@ -904,11 +904,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 			Ext.Direct.on("exception", function(event) {
 				extDirectDebug(
-					"<p>" + event.message + "</p>" +
+					"<p>" + event.message + "<\/p>" +
 					"<p style=\"margin-top: 20px;\">" +
-						"<strong>Backtrace:</strong><br />" +
-						event.where.replace(/#/g, "<br />#") +
-					"</p>",
+						"<strong>Backtrace:<\/strong><br \/>" +
+						event.where.replace(/#/g, "<br \/>#") +
+					"<\/p>",
 					event.method,
 					"ExtDirect - Exception"
 				);
