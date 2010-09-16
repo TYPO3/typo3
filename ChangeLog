@@ -1,3 +1,7 @@
+2010-09-16  Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed bug #15531: jumpurl check fails if mime type is not known
+
 2010-09-14  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15622: t3lib_TCEforms_inline registers superfluous nested level when renderFieldsOnly is set
