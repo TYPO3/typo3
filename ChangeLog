@@ -1,3 +1,7 @@
+2010-09-18  Steffen Kamper  <steffen@typo3.org>
+
+	* Added feature #5983: #15742: HCI: Add new Icons from Lars for Workspace Module to t3skin (Thanks to Lars Zimmermann and Stefffen Ritter)
+
 2010-09-18  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #5983: Undefined variable is used in t3lib_BEfunc::exec_foreign_table_where_query (Thanks to Oliver Klee)
