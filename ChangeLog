@@ -1,3 +1,7 @@
+2010-09-18  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #11415 - Misleading info: No workspaces found!
+
 2010-09-17  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15628: Remove logging when class loading failed in t3lib_autoloader (Thanks to Helmut Hummel)
