@@ -436,7 +436,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			default:
 				$title = t3lib_iconWorks::getIconImage('sys_workspace', $GLOBALS['BE_USER']->workspaceRec, $this->doc->backPath, ' align="top"').
 							'['.$GLOBALS['BE_USER']->workspace.'] '.t3lib_BEfunc::getRecordTitle('sys_workspace',$GLOBALS['BE_USER']->workspaceRec,TRUE);
-				$description = ($GLOBALS['BE_USER']->workspaceRec['description'] ? htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['description']) : '<em>[' . $LANG->getLL('shortcut_noWSfound') . ']</em>');
+				$description = $GLOBALS['BE_USER']->workspaceRec['description'];
 			break;
 		}
 
@@ -474,10 +474,10 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_workspace') . '</b>&nbsp;</td>
 				<td class="bgColor4" nowrap="nowrap">'.$title.'</td>
 			</tr>
-			<tr>
+			<tr>' . ($description ? '
 				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_description') . '</b>&nbsp;</td>
 				<td class="bgColor4">'.$description.'</td>
-			</tr>'.($GLOBALS['BE_USER']->workspace!=-99 && !$details ? '
+			</tr>' : '') . ($GLOBALS['BE_USER']->workspace!=-99 && !$details ? '
 			<tr>
 				<td class="bgColor2" nowrap="nowrap"><b>' . $LANG->getLL('label_options') . '</b>&nbsp;</td>
 				<td class="bgColor4">'.$menu.$actionLinks.'</td>
