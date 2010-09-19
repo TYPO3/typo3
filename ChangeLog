@@ -1,3 +1,7 @@
+2010-09-19  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #8260: Update Wizard in install tool force temp-configuration files and load configuration twice
+
 2010-09-19  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #3908: DisplayCond => VERSION:IS:false always returns true (Thanks to Daniel Poetzinger)
