@@ -6355,17 +6355,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return void
 	 */
 	function updateWizard() {
-		global $TYPO3_CONF_VARS;
-
 			// clear cache files
-		t3lib_extMgm::removeCacheFiles();
-
-			// generate new cache files and include them
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 1;
-		$TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
-		if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
-			require(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_localconf.php');
-		}
+		t3lib_extMgm::removeCacheFiles(t3lib_extMgm::getCacheFilePrefix());
 
 			// call wizard
 		$action = ($this->INSTALL['database_type'] ? $this->INSTALL['database_type'] : 'checkForUpdate');
