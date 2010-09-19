@@ -4,6 +4,7 @@
 
 2010-09-19  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #12964: feedit - EDITPANEL -> "newRecordinPid" doesn't work anymore with feedit (Thanks to Sven Juergens)
 	* Fixed bug #3908: DisplayCond => VERSION:IS:false always returns true (Thanks to Daniel Poetzinger)
 
 2010-09-18  Benjamin Mack  <benni@typo3.org>
