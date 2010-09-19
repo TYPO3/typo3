@@ -1,6 +1,7 @@
 2010-09-19  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8260: Update Wizard in install tool force temp-configuration files and load configuration twice
+	* Added feature #15741: PageRenderer should be able to include locallang-files as JS-InlineLabels (thanks to Steffen Ritter)
 
 2010-09-19  Benjamin Mack  <benni@typo3.org>
 

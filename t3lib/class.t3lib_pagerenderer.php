@@ -1102,6 +1102,58 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Gets labels to be used in JavaScript fetched from a locallang file.
+	 *
+	 * @param	string		Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a 'locallang.xml' file containing a valid XML TYPO3 language structure.
+	 * @param	string		$selectionPrefix: Prefix to select the correct labels (default: '')
+	 * @param	string		$stripFromSelectionName: Sub-prefix to be removed from label names in the result (default: '')
+	 * @param	integer		Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception
+	 * @return	void
+	 */
+	public function addInlineLanguageLabelFile($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
+		if (!isset($this->lang) || !isset($this->charSet)) {
+			throw new RuntimeException('Language and character encoding are not set.', 1284906026);
+		}
+
+		$labelsFromFile = array();
+		$allLabels = t3lib_div::readLLfile($fileRef, $this->lang, $this->charSet, $errorMode);
+
+			// Regular expression to strip the selection prefix and possibly something from the label name:
+		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
+
+		if ($allLabels !== FALSE) {
+				// Merge language specific translations:
+			if ($this->lang !== 'default' && isset($allLabels[$this->lang])) {
+				$labels = array_merge($allLabels['default'], $allLabels[$this->lang]);
+			} else {
+				$labels = $allLabels['default'];
+			}
+
+				// Iterate through all locallang labels:
+			foreach ($labels as $label => $value) {
+				if ($selectionPrefix === '') {
+					$labelsFromFile[$label] = $value;
+				} elseif (strpos($label, $selectionPrefix) === 0) {
+					$key = preg_replace($labelPattern, '', $label);
+					$labelsFromFile[$key] = $value;
+				}
+			}
+
+			$this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $labelsFromFile);
+		}
+	}
+
+	/**
+	 * Gets the inline language lablels.
+	 *
+	 * @return array The inline language lables
+	 */
+	public function getInlineLanguageLabels() {
+		return $this->inlineLanguageLabels;
+	}
+
+
+	/**
 	 * Adds Javascript Inline Setting. This will occur in TYPO3.settings - object
 	 * The label can be used in scripts with TYPO3.setting.<key>
 	 * Need extJs loaded

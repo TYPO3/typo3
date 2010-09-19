@@ -55,7 +55,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 
 	public function setUp() {
 		$this->fixture = new t3lib_PageRenderer();
-		$this->fixture->setCharSet('utf-8');
+		$this->fixture->setCharSet($GLOBALS['LANG']->charSet);
 	}
 
 	public function tearDown() {
@@ -772,6 +772,86 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 		$out = $this->fixture->render();
 
 		$this->assertContains($testPrefix . '_\\u00d8', $out);
+	}
+
+	/**
+	 * Tests the addInlineLanguageLabelFile() method.
+	 *
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function areInlineLanguageLablesNotProcessable() {
+		$this->fixture->setLanguage(NULL);
+		$this->fixture->addInlineLanguageLabelFile(
+			'EXT:lang/locallang_core.xml'
+		);
+	}
+
+	/**
+	 * Tests the addInlineLanguageLabelFile() method.
+	 *
+	 * @test
+	 */
+	public function areInlineLanguageLablesPassed() {
+		$this->fixture->setLanguage($GLOBALS['LANG']->lang);
+		$this->fixture->addInlineLanguageLabelFile(
+			'EXT:lang/locallang_core.xml'
+		);
+
+		$inlineLanguageLabels = $this->fixture->getInlineLanguageLabels();
+		$this->assertTrue(isset($inlineLanguageLabels['labels.beUser']));
+		$this->assertTrue(isset($inlineLanguageLabels['labels.feUser']));
+	}
+
+	/**
+	 * Tests the addInlineLanguageLabelFile() method.
+	 *
+	 * @test
+	 */
+	public function areInlineLanguageLablesEmptyOnNonExistingFile() {
+		$this->fixture->setLanguage($GLOBALS['LANG']->lang);
+		$this->fixture->addInlineLanguageLabelFile(
+			''
+		);
+
+		$inlineLanguageLabels = $this->fixture->getInlineLanguageLabels();
+		$this->assertEquals(array(), $inlineLanguageLabels);
+	}
+
+	/**
+	 * Tests the addInlineLanguageLabelFile() method.
+	 *
+	 * @test
+	 */
+	public function areInlineLanguageLablesSelected() {
+		$this->fixture->setLanguage($GLOBALS['LANG']->lang);
+		$this->fixture->addInlineLanguageLabelFile(
+			'EXT:lang/locallang_core.xml',
+			'labels.'
+		);
+
+		$inlineLanguageLabels = $this->fixture->getInlineLanguageLabels();
+		$this->assertTrue(isset($inlineLanguageLabels['beUser']));
+		$this->assertTrue(isset($inlineLanguageLabels['feUser']));
+	}
+
+	/**
+	 * Tests the addInlineLanguageLabelFile() method.
+	 *
+	 * @test
+	 */
+	public function areInlineLanguageLablesSelectedAndStripped() {
+		$this->fixture->setLanguage($GLOBALS['LANG']->lang);
+		$this->fixture->addInlineLanguageLabelFile(
+			'EXT:lang/locallang_core.xml',
+			'labels.',
+			'lock'
+		);
+
+		$inlineLanguageLabels = $this->fixture->getInlineLanguageLabels();
+		$this->assertTrue(isset($inlineLanguageLabels['edRecord']));
+		$this->assertTrue(isset($inlineLanguageLabels['edRecord_content']));
+		$this->assertTrue(isset($inlineLanguageLabels['edRecordUser']));
 	}
 }
 ?>
