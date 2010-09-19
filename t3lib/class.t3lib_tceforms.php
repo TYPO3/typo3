@@ -5710,12 +5710,28 @@ class t3lib_TCEforms	{
 				$output = $GLOBALS['BE_USER']->isAdmin() ? TRUE : FALSE;
 			break;
 			case 'VERSION':
-				switch((string)$parts[1])	{
+				switch((string)$parts[1]) {
 					case 'IS':
-						if (strtolower($parts[2])=='true')	{
-							$output = intval($row['pid'])==-1 ? TRUE : FALSE;
-						} elseif (strtolower($parts[2])=='false') {
-							$output = !(intval($row['pid'])==-1) ? TRUE : FALSE;
+						$isNewRecord = (intval($row['uid']) > 0 ? FALSE : TRUE);
+
+							// detection of version can be done be detecting the workspace of the user
+						$isUserInWorkspace = ($GLOBALS['BE_USER']->workspace > 0 ? TRUE : FALSE);
+						if (intval($row['pid']) == -1 || intval($row['_ORIG_pid']) == -1) {
+							$isRecordDetectedAsVersion = TRUE;
+						} else {
+							$isRecordDetectedAsVersion = FALSE;
+						}
+
+							// New records in a workspace are not handled as a version record
+							// if it's no new version, we detect versions like this: 
+							// -- if user is in workspace: always true
+							// -- if editor is in live ws: only true if pid == -1
+						$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
+
+						if (strtolower($parts[2]) == 'true') {
+							$output = $isVersion;
+						} else if (strtolower($parts[2]) == 'false') {
+							$output = !$isVersion;
 						}
 					break;
 				}

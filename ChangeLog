@@ -1,3 +1,7 @@
+2010-09-19  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #3908: DisplayCond => VERSION:IS:false always returns true (Thanks to Daniel Poetzinger)
+
 2010-08-12  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #3819: t3lib_div::getIndpEnv('TYPO3_DOCUMENT_ROOT') delivers wrong value in Backend
