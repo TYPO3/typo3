@@ -123,6 +123,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $enableExtJSQuickTips = false;
 
 	protected $inlineLanguageLabels = array ();
+	protected $inlineLanguageLabelFiles = array();
 	protected $inlineSettings = array ();
 
 	protected $inlineJavascriptWrap = array ();
@@ -664,6 +665,24 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		return $this->extJsPath;
 	}
 
+	/**
+	 * Gets the inline language labels.
+	 *
+	 * @return array The inline language labels
+	 */
+	public function getInlineLanguageLabels() {
+		return $this->inlineLanguageLabels;
+	}
+
+	/**
+	 * Gets the inline language files
+	 *
+	 * @return array
+	 */
+	public function getInlineLanguageLabelFiles() {
+		return $this->inlineLanguageLabelFiles;
+	}
+
 	/*****************************************************/
 	/*                                                   */
 	/*  Public Function to add Data                      */
@@ -1111,45 +1130,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @return	void
 	 */
 	public function addInlineLanguageLabelFile($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
-		if (!isset($this->lang) || !isset($this->charSet)) {
-			throw new RuntimeException('Language and character encoding are not set.', 1284906026);
+		$index = md5($fileRef . $selectionPrefix . $stripFromSelectionName);
+		if ($fileRef && !isset($this->inlineLanguageLabelFiles[$index])) {
+			$this->inlineLanguageLabelFiles[$index] = array(
+				'fileRef' => $fileRef,
+				'selectionPrefix' => $selectionPrefix,
+				'stripFromSelectionName' => $stripFromSelectionName,
+				'errorMode' => $errorMode
+			);
 		}
-
-		$labelsFromFile = array();
-		$allLabels = t3lib_div::readLLfile($fileRef, $this->lang, $this->charSet, $errorMode);
-
-			// Regular expression to strip the selection prefix and possibly something from the label name:
-		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
-
-		if ($allLabels !== FALSE) {
-				// Merge language specific translations:
-			if ($this->lang !== 'default' && isset($allLabels[$this->lang])) {
-				$labels = array_merge($allLabels['default'], $allLabels[$this->lang]);
-			} else {
-				$labels = $allLabels['default'];
-			}
-
-				// Iterate through all locallang labels:
-			foreach ($labels as $label => $value) {
-				if ($selectionPrefix === '') {
-					$labelsFromFile[$label] = $value;
-				} elseif (strpos($label, $selectionPrefix) === 0) {
-					$key = preg_replace($labelPattern, '', $label);
-					$labelsFromFile[$key] = $value;
-				}
-			}
-
-			$this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $labelsFromFile);
-		}
-	}
-
-	/**
-	 * Gets the inline language lablels.
-	 *
-	 * @return array The inline language lables
-	 */
-	public function getInlineLanguageLabels() {
-		return $this->inlineLanguageLabels;
 	}
 
 
@@ -1514,12 +1503,25 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			}
 
 
+
 				// remove extjs from JScodeLibArray
 			unset(
 				$this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all.js'],
 				$this->jsFiles[$this->backPath . $this->extJsPath . 'ext-all-debug.js']
 			);
 		}
+
+		if (count($this->inlineLanguageLabelFiles)) {
+			foreach ($this->inlineLanguageLabelFiles as $languageLabelFile) {
+				$this->includeLanguageFileForInline(
+					$languageLabelFile['fileRef'],
+					$languageLabelFile['selectionPrefix'],
+					$languageLabelFile['stripFromSelectionName'],
+					$languageLabelFile['$errorMode']
+				);
+			}
+		}
+		unset($this->inlineLanguageLabelFiles);
 
 			// Convert labels/settings back to UTF-8 since json_encode() only works with UTF-8:
 		if ($this->getCharSet() !== 'utf-8') {
@@ -1575,6 +1577,38 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		return $out;
 	}
 
+	protected function includeLanguageFileForInline($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
+		if (!isset($this->lang) || !isset($this->charSet)) {
+			throw new RuntimeException('Language and character encoding are not set.', 1284906026);
+		}
+
+		$labelsFromFile = array();
+		$allLabels = t3lib_div::readLLfile($fileRef, $this->lang, $this->charSet, $errorMode);
+
+			// Regular expression to strip the selection prefix and possibly something from the label name:
+		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
+
+		if ($allLabels !== FALSE) {
+				// Merge language specific translations:
+			if ($this->lang !== 'default' && isset($allLabels[$this->lang])) {
+				$labels = array_merge($allLabels['default'], $allLabels[$this->lang]);
+			} else {
+				$labels = $allLabels['default'];
+			}
+
+				// Iterate through all locallang labels:
+			foreach ($labels as $label => $value) {
+				if ($selectionPrefix === '') {
+					$labelsFromFile[$label] = $value;
+				} elseif (strpos($label, $selectionPrefix) === 0) {
+					$key = preg_replace($labelPattern, '', $label);
+					$labelsFromFile[$label] = $value;
+				}
+			}
+
+			$this->inlineLanguageLabels = array_merge($this->inlineLanguageLabels, $labelsFromFile);
+		}
+	}
 	/*****************************************************/
 	/*                                                   */
 	/*  Tools                                            */
@@ -1704,6 +1738,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 		return $filename;
 	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php']) {
