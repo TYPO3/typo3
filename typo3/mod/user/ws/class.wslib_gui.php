@@ -613,7 +613,7 @@ class wslib_gui {
 	function displayWorkspaceOverview_pageTreeIconTitle($pageUid, $title, $indentCount)	{
 		$pRec = t3lib_BEfunc::getRecord('pages',$pageUid);
 		return '<img src="clear.gif" width="1" height="1" hspace="'.($indentCount * $this->pageTreeIndent).'" align="top" alt="" />'.	// Indenting page tree
-			t3lib_iconWorks::getIconImage('pages',$pRec,$this->doc->backPath,' align="top" title="'.t3lib_BEfunc::getRecordIconAltText($pRec,'pages').'"').
+			t3lib_iconWorks::getSpriteIconForRecord('pages', $pRec, array('title'=> t3lib_BEfunc::getRecordIconAltText($pRec,'pages'))) .
 			htmlspecialchars(t3lib_div::fixed_lgd_cs($title,$this->pageTreeIndent_titleLgd)).
 			'&nbsp;&nbsp;';
 	}
