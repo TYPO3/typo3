@@ -1,3 +1,7 @@
+2010-09-20  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #14783: absRefPrefix should work with $TYPO3_CONF_VARS[BE][RTE_imageStorageDir] (thanks to Steffen Mueller)
+
 2010-09-19  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8260: Update Wizard in install tool force temp-configuration files and load configuration twice

@@ -4198,6 +4198,7 @@ if (version == "n3") {
 			$this->content = str_replace('"' . TYPO3_mainDir . 'ext/', '"' . $this->absRefPrefix . TYPO3_mainDir . 'ext/', $this->content);
 			$this->content = str_replace('"' . TYPO3_mainDir . 'sysext/' , '"' . $this->absRefPrefix . TYPO3_mainDir . 'sysext/', $this->content);
 			$this->content = str_replace('"'.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '"'.$this->absRefPrefix.$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], $this->content);
+			$this->content = str_replace('"' . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], '"' . $this->absRefPrefix . $GLOBALS['TYPO3_CONF_VARS']['BE']['RTE_imageStorageDir'], $this->content);
 			// Process additional directories
 			$directories = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['FE']['additionalAbsRefPrefixDirectories'], true);
 			foreach ($directories as $directory) {
