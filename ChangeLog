@@ -1,5 +1,6 @@
 2010-09-20  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #15742: HCI: Add new Icons from Lars for Workspace Module to t3skin
 	* Fixed bug #15753: Pageicons in WS module are broken
 
 2010-09-20  Francois Suter  <francois@typo3.org>

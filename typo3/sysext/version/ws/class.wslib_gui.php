@@ -872,7 +872,7 @@ class wslib_gui {
 				'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
 				'&cmd['.$table.']['.$rec_on['uid'].'][version][swapWith]='.$rec_off['uid']
 				)).' " title="' . $LANG->getLL('img_title_publish') . '">'.
-				  t3lib_iconWorks::getSpriteIcon('actions-version-swap-version') .
+				  t3lib_iconWorks::getSpriteIcon('actions-version-workspace-sendtostage') .
 				'</a>';
 			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
 				$actionLinks.=
