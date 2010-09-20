@@ -1,3 +1,7 @@
+2010-09-20  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15751: dbal does not parse setDBinit correctly (thanks to Tamer Erdogan)
+
 2010-08-30  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #15582: Call to deprecated function template::middle()
