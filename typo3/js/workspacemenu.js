@@ -152,7 +152,10 @@ var WorkspaceMenu = Class.create({
 		var switchRequest = new Ajax.Request('ajax.php', {
 			parameters: 'ajaxID=WorkspaceMenu::setWorkspace&workspaceId=' + workspaceId,
 			onSuccess: function(transport, response) {
-				TYPO3.configuration.inWorkspace = response.setWorkspaceId === 0 ? 0 : 1;
+				if (!response.setWorkspaceId) {
+					response.setWorkspaceId = 0;
+				}
+				top.TYPO3.configuration.inWorkspace = response.setWorkspaceId === 0 ? 0 : 1;
 
 					// first remove all checks, then set the check in front of the selected workspace
 				var stateActiveClass = 't3-icon t3-icon-status t3-icon-status-status t3-icon-status-checked';
