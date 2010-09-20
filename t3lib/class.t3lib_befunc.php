@@ -2623,8 +2623,8 @@ final class t3lib_BEfunc {
 	 */
 	public static function viewOnClick($id, $backPath = '', $rootLine = '', $anchor = '', $altUrl = '', $addGetVars = '', $switchFocus = TRUE) {
 
-		$viewScriptPreviewEnabled  = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
-		$viewScriptPreviewDisabled = '/index.php?id=';
+		$viewScriptPreviewDisabled = '/' . TYPO3_mainDir . 'mod/user/ws/wsol_preview.php?id=';
+		$viewScriptPreviewEnabled = '/index.php?id=';
 		if ($altUrl) {
 			$viewScriptPreviewEnabled = $viewScriptPreviewDisabled = $altUrl;
 		}
@@ -2670,7 +2670,7 @@ final class t3lib_BEfunc {
 		$urlPreviewEnabled  = $viewDomain . $viewScriptPreviewEnabled . $id . $addGetVars . $anchor;
 		$urlPreviewDisabled = $viewDomain . $viewScriptPreviewDisabled . $id . $addGetVars . $anchor;
 
-		return "var previewWin=window.open(top.TYPO3.configuration.inWorkspace !== 0 && top.TYPO3.configuration.workspaceFrontendPreviewEnabled ?'" .
+		return "var previewWin=window.open((top.TYPO3.configuration.inWorkspace === 0 || (top.TYPO3.configuration.inWorkspace !== 0 && top.TYPO3.configuration.workspaceFrontendPreviewEnabled)) ?'" .
 			$urlPreviewEnabled . "':'" . $urlPreviewDisabled .
 			"','newTYPO3frontendWindow');" . ( $switchFocus ? 'previewWin.focus();' : '');
 	}
