@@ -764,6 +764,7 @@ final class t3lib_iconWorks	{
 	 *   -
 	 * This method solely takes care of the type of this record, not any
 	 * statuses, used for overlays.
+	 * You should not use this directly besides if you need classes for ExtJS iconCls.
 	 *
 	 * see t3lib/stddb/tables.php for an example with the TCA table "pages"
 	 *
@@ -772,7 +773,7 @@ final class t3lib_iconWorks	{
 	 * @return	string	the CSS class for the sprite icon of that DB record
 	 * @access	private
 	 **/
-	protected static function mapRecordTypeToSpriteIconClass($table, array $row) {
+	public static function mapRecordTypeToSpriteIconClass($table, array $row) {
 		$iconName = '';
 		$recordType = array();
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
