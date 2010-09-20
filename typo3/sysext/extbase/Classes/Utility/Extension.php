@@ -47,11 +47,11 @@ class Tx_Extbase_Utility_Extension {
 	 * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
 	 * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
 	 * @param string $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
-	 * @param string $nonCachableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
+	 * @param string $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
 	 * @param string $defaultControllerAction is an optional array controller name (as array key) and action name (as array value) that should be called as default
 	 * @return void
 	 */
-	public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCachableControllerActions = array()) {
+	public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = array()) {
 		if (empty($pluginName)) {
 			throw new InvalidArgumentException('The plugin name must not be empty', 1239891987);
 		}
@@ -61,25 +61,19 @@ class Tx_Extbase_Utility_Extension {
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
-		$controllerCounter = 1;
-		$hasMultipleActionsCounter = 0;
 		$controllers = '';
 		foreach ($controllerActions as $controller => $actionsList) {
 			$controllers .= '
-		' . $controllerCounter . '.controller = ' . $controller . '
-		' . $controllerCounter . '.actions = ' . $actionsList;
-			$controllerCounter++;
-			if (strpos($actionsList, ',') !== FALSE) {
-				$hasMultipleActionsCounter++;
+		' . $controller . '.actions = ' . $actionsList;
+			if (!empty($nonCacheableControllerActions[$controller])) {
+				$controllers .= '
+		' . $controller . '.nonCacheableActions = ' . $nonCacheableControllerActions[$controller];
 			}
 		}
 
-		$switchableControllerActions = '';
-		if ($controllerCounter > 1 || $hasMultipleActionsCounter > 0) {
-				$switchableControllerActions = '
+		$switchableControllerActions = '
 	switchableControllerActions {' . $controllers . '
 	}';
-		}
 
 		reset($controllerActions);
 		$defaultController = key($controllerActions);
@@ -88,31 +82,6 @@ class Tx_Extbase_Utility_Extension {
 		$defaultAction = array_shift(t3lib_div::trimExplode(',', current($controllerActions)));
 		$action = '
 	action = ' . $defaultAction;
-
-		$nonCachableActions = array();
-		if (!empty($nonCachableControllerActions[$defaultController])) {
-			$nonCachableActions = t3lib_div::trimExplode(',', $nonCachableControllerActions[$defaultController]);
-		}
-		$cachableActions = array_diff(t3lib_div::trimExplode(',', $controllerActions[$defaultController]), $nonCachableActions);
-
-		$contentObjectType = in_array($defaultAction, $nonCachableActions) ? 'USER_INT' : 'USER';
-
-		$conditions = '';
-		foreach ($controllerActions as $controllerName => $actionsList) {
-			if (!empty($nonCachableControllerActions[$controllerName])) {
-				$nonCachableActions = t3lib_div::trimExplode(',', $nonCachableControllerActions[$controllerName]);
-				$cachableActions = array_diff(t3lib_div::trimExplode(',', $controllerActions[$controllerName]), $nonCachableActions);
-				if (($contentObjectType == 'USER' && count($nonCachableActions) > 0)
-					|| ($contentObjectType == 'USER_INT' && count($cachableActions) > 0)) {
-
-					$conditions .= '
-[globalString = GP:tx_' . $pluginSignature . '|controller = ' . $controllerName . '] && [globalString = GP:tx_' . $pluginSignature . '|action = /' . implode('|', $contentObjectType === 'USER' ? $nonCachableActions : $cachableActions) . '/]
-tt_content.list.20.' . $pluginSignature . ' = ' . ($contentObjectType === 'USER' ? 'USER_INT' : 'USER') . '
-[global]
-';
-				}
-			}
-		}
 
 		$pluginTemplate = 'plugin.tx_' . strtolower($extensionName) . ' {
 	settings {
@@ -133,7 +102,7 @@ tt_content.list.20.' . $pluginSignature . ' = ' . ($contentObjectType === 'USER'
 ' . $pluginTemplate);
 
 		$pluginContent = trim('
-tt_content.list.20.' . $pluginSignature . ' = ' . $contentObjectType . '
+tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = tx_extbase_dispatcher->dispatch
 	pluginName = ' . $pluginName . '
@@ -146,8 +115,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	persistence =< plugin.tx_' . strtolower($extensionName) . '.persistence
 	view =< plugin.tx_' . strtolower($extensionName) . '.view
 	_LOCAL_LANG =< plugin.tx_' . strtolower($extensionName) . '._LOCAL_LANG
-}
-' . $conditions);
+}');
 
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
@@ -334,7 +302,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		return t3lib_div::underscoredToUpperCamelCase($camelCasedString);
 	}
 
-		/**
+	/**
 	 * Build the autoload registry for a given extension and place it ext_autoload.php.
 	 *
 	 * @param	string	$extensionKey	Key of the extension

@@ -103,7 +103,7 @@ class Tx_Extbase_Dispatcher {
 			t3lib_div::sysLog('Extbase was not able to dispatch the request. No configuration.', 'extbase', t3lib_div::SYSLOG_SEVERITY_ERROR);
 			return $content;
 		}
-		
+
 		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration);
 
 		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
@@ -112,7 +112,16 @@ class Tx_Extbase_Dispatcher {
 		if (isset($this->cObj->data) && is_array($this->cObj->data)) {
 			// we need to check the above conditions as cObj is not available in Backend.
 			$request->setContentObjectData($this->cObj->data);
-			$request->setIsCached($this->cObj->getUserObjectType() == tslib_cObj::OBJECTTYPE_USER);
+			if ($this->isCacheable($request->getControllerName(), $request->getControllerActionName())) {
+				$request->setIsCached(TRUE);
+			} else {
+				if ($this->cObj->getUserObjectType() === tslib_cObj::OBJECTTYPE_USER) {
+					$this->cObj->convertToUserIntObject();
+					// tslib_cObj::convertToUserIntObject() will recreate the object, so we have to stop the request here
+					return;
+				}
+				$request->setIsCached(FALSE);
+			}
 		}
 		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
 
@@ -143,13 +152,28 @@ class Tx_Extbase_Dispatcher {
 		$this->timeTrackPull();
 
 		self::$reflectionService->shutdown();
-		
+
 		if (count($response->getAdditionalHeaderData()) > 0) {
 			$GLOBALS['TSFE']->additionalHeaderData[$request->getControllerExtensionName()] = implode("\n", $response->getAdditionalHeaderData());
 		}
 		$response->sendHeaders();
 		$this->timeTrackPull();
 		return $response->getContent();
+	}
+
+	/**
+	 * Determines whether the current action can be cached
+	 *
+	 * @param string $controllerName
+	 * @param string $actionName
+	 * @return boolean TRUE if the given action should be cached, otherwise FALSE
+	 */
+	protected function isCacheable($controllerName, $actionName) {
+		if (isset(self::$extbaseFrameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions'])
+			&& in_array($actionName, t3lib_div::trimExplode(',', self::$extbaseFrameworkConfiguration['switchableControllerActions'][$controllerName]['nonCacheableActions']))) {
+				return FALSE;
+		}
+		return TRUE;
 	}
 
 	/**
@@ -229,7 +253,7 @@ class Tx_Extbase_Dispatcher {
 		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
 		$propertyMapper->injectReflectionService(self::$reflectionService);
 		$controller->injectPropertyMapper($propertyMapper);
-		
+
 		$controller->injectSettings(is_array(self::$extbaseFrameworkConfiguration['settings']) ? self::$extbaseFrameworkConfiguration['settings'] : array());
 
 		$flashMessageContainer = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
@@ -264,12 +288,12 @@ class Tx_Extbase_Dispatcher {
 			$dataMapper->injectSession($persistenceSession);
 			$dataMapper->injectReflectionService(self::$reflectionService);
 			$dataMapper->injectDataMapFactory($dataMapFactory);
-			
+
 			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
 			$storageBackend->injectDataMapper($dataMapper);
 
 			$qomFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend);
-			
+
 			$dataMapper->setQomFactory($qomFactory);
 
 			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
@@ -506,10 +530,11 @@ class Tx_Extbase_Dispatcher {
 			if ($i == 1) {
 				$actions .= ',extObj';
 			}
-			$extbaseConfiguration['switchableControllerActions.'][$i++ . '.'] = array(
+			$extbaseConfiguration['switchableControllerActions.'][$controller . '.'] = array(
 				'controller' => $controller,
 				'actions' => $actions,
 			);
+			$i++;
 		}
 
 			// BACK_PATH is the path from the typo3/ directory from within the
