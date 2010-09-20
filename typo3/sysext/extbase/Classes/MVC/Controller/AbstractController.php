@@ -297,9 +297,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		if ($controllerName === NULL) {
 			$controllerName = $this->request->getControllerName();
 		}
-		if ($pageUid === NULL && isset($GLOBALS['TSFE'])) {
-			$pageUid = $GLOBALS['TSFE']->id;
-		}
 
 		$uri = $this->uriBuilder
 			->reset()
