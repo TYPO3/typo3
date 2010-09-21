@@ -107,8 +107,11 @@ Development
 		http://forge.typo3.org/projects/typo3v45-projects/files
 	* Catch all ExtDirect Exceptions and show them in the DebugConsole.
 	  It now also allows you to call debug() (#15513).
-	* DebugConsole now also catch console-calls from Javascript if no console is available. This allows eg debug prints 
-	  in browsers having no console like the IE 
+	* DebugConsole now also catch console-calls from Javascript if no
+	  console is available. This allows eg debug prints in browsers
+	  having no console like the IE
+	* ExtDirect is available in the frontend now (#15754):
+	  http://wiki.typo3.org/ExtDirect
 
 TypoScript
 ==========

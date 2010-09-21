@@ -1,3 +1,7 @@
+2010-09-21  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #15754: ExtDirect in Frontend (Thanks to Stefan Galinksi)
+
 2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Raised DBAL to version 1.2.0alpha2

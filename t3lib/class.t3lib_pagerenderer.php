@@ -916,18 +916,24 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 				if (TYPO3ViewportInstance !== null) {
 					TYPO3ViewportInstance.DebugConsole.addTab(message, header, group);
+				} else if (typeof console === "object") {
+					console.log(message);
 				} else {
 					document.write(message);
 				}
 			};
 
 			Ext.Direct.on("exception", function(event) {
-				extDirectDebug(
-					"<p>" + event.message + "<\/p>" +
-					"<p style=\"margin-top: 20px;\">" +
+				var backtrace = "";
+				if (event.where) {
+					backtrace = "<p style=\"margin-top: 20px;\">" +
 						"<strong>Backtrace:<\/strong><br \/>" +
 						event.where.replace(/#/g, "<br \/>#") +
-					"<\/p>",
+						"<\/p>";
+				}
+
+				extDirectDebug(
+					"<p>" + event.message + "<\/p>" + backtrace,
 					event.method,
 					"ExtDirect - Exception"
 				);

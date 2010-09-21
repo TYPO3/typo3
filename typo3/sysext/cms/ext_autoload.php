@@ -25,6 +25,7 @@ return array(
 	'fe_loaddbgroup' => PATH_tslib . 'class.tslib_pagegen.php',
 	'tslib_pibase' => PATH_tslib . 'class.tslib_pibase.php',
 	'tslib_search' => PATH_tslib . 'class.tslib_search.php',
+	'tslib_extdirecteid' => PATH_tslib . 'class.tslib_extdirecteid.php',
 	'sc_tslib_showpic' => PATH_tslib . 'showpic.php',
 	'tx_cms_mediaitems' => PATH_tslib . 'hooks/class.tx_cms_mediaitems.php',
 	'tx_cms_treelistcacheupdate' => PATH_tslib . 'hooks/class.tx_cms_treelistcacheupdate.php',
