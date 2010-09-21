@@ -1,3 +1,7 @@
+2010-09-21  Steffen Kamper  <steffen@typo3.org>
+
+	* Added feature #15711: Render ModuleMenu with ExtJs, remove the frameset
+
 2010-09-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #15740: Move versioning code from TCEmain into "version" extension, adding hooks to TCEmain
@@ -35,7 +39,7 @@
 
 2010-09-18  Steffen Kamper  <steffen@typo3.org>
 
-	* Added feature #5983: #15742: HCI: Add new Icons from Lars for Workspace Module to t3skin (Thanks to Lars Zimmermann and Stefffen Ritter)
+	* Added feature #15742: HCI: Add new Icons from Lars for Workspace Module to t3skin (Thanks to Lars Zimmermann and Steffen Ritter)
 
 2010-09-18  Steffen Gebert  <steffen@steffen-gebert.de>
 
