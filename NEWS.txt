@@ -149,6 +149,19 @@ Database API / DBAL
 	  database API which is cleaner and quicker when using DBAL.
 	  Extension authors are encouraged to use it in their own
 	  extensions.
+	* Output of SQL parser when dealing with prepared queries is cached
+	  for enhanced performances. To activate this caching if you don't have
+	  a memcached server:
+	  $TYPO3_CONF_VARS['SYS']['useCachingFramework'] = 1;
+	  In order to have a much higher cache hit ratio, you should use one
+	  or more memcached servers. To activate this enhanced caching, use:
+	  $TYPO3_CONF_VARS['SYS']['useCachingFramework'] = 1;
+	  $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['dbal'] = array(
+	  	'backend' => 't3lib_cache_backend_MemcachedBackend',
+		'options' => array(
+	  		'servers' => array('localhost:11211', 'otherhost:11211'),
+	  	)
+	  );
 	* DBAL now supports "FIND_IN_SET()" (#14818) function and maps it
 	  correct functions in case usage under AdoDB. Using FIND_IN_SET in
 	  listQuery() will provide performance improvements in all areas, as
