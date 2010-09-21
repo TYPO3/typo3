@@ -1,3 +1,7 @@
+2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised DBAL to version 1.2.0alpha2
+
 2010-09-20  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15743: Bug:function in t3lib_iconWorks is not public (Thanks to Steffen Ritter)

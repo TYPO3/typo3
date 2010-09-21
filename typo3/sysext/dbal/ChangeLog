@@ -1,3 +1,22 @@
+2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0alpha2
+
+2010-09-20  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Merged branch QueryCache to trunk
+	* Updated documentation to describe how to use Memcached to cache prepared queries
+	* Fixed bug #15751: dbal does not parse setDBinit correctly (thanks to Tamer Erdogan)
+
+2010-08-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15582: Call to deprecated function template::middle()
+
+2010-08-24  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed caching with Memcached
+	* Synchronized code from trunk
+
 2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #15535: Error: No pages are found on the rootlevel! in Frontend when using Oracle
@@ -6,6 +25,8 @@
 
 2010-08-19  Xavier Perseguers  <typo3@perseguers.ch>
 
+	* Updated caching mechanism to cache prepared queries
+	* Synchronized code from trunk
 	* Added unit test for feature #15457
 	* Added feature #15457: Add support for prepared queries
 
@@ -104,6 +125,10 @@
 2010-04-12  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #13508: Use exec_TRUNCATEquery() instead of DELETE FROM throughout the core
+
+2010-04-06  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added skeleton of a cache for generated queries
 
 2010-03-07  Xavier Perseguers  <typo3@perseguers.ch>
 
