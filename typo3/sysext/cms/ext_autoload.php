@@ -39,5 +39,8 @@ return array(
 	'tslib_gmenu_foldout' => PATH_tslib . 'media/scripts/gmenu_foldout.php',
 	'tslib_gmenu_layers' => PATH_tslib . 'media/scripts/gmenu_layers.php',
 	'tslib_tmenu_layers' => PATH_tslib . 'media/scripts/tmenu_layers.php',
+	'tslib_mediawizardprovider' => PATH_tslib . 'interfaces/interface.tslib_mediawizardprovider.php',
+	'tslib_mediawizardcoreprovider' => PATH_tslib . 'class.tslib_mediawizardcoreprovider.php',
+	'tslib_mediawizardmanager' => PATH_tslib . 'class.tslib_mediawizardmanager.php',
 );
 ?>

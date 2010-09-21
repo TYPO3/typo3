@@ -1,5 +1,6 @@
 2010-09-21  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #15699: Provide a wizard for media to process the video url (Thanks to Aishwara M.B.)
 	* Added feature #15711: Render ModuleMenu with ExtJs, remove the frameset
 
 2010-09-21  Benjamin Mack  <benni@typo3.org>

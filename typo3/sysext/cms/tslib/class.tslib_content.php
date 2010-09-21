@@ -2945,7 +2945,7 @@ class tslib_cObj {
 	}
 
 	/**
-	 * Rendering the cObject, SWFOBJECT
+	 * Rendering the cObject, MEDIA
 	 *
 	 * @param	array		array of TypoScript properties
 	 * @return	string		Output
@@ -2965,10 +2965,17 @@ class tslib_cObj {
 
 		$mode = is_file(PATH_site . $url) ? 'file' : 'url';
 		if ($mode === 'file') {
+				// render FILE
 			$filename = $GLOBALS['TSFE']->tmpl->getFileName($url);
 			$fileinfo = t3lib_div::split_fileref($filename);
 			$conf['file'] = $filename;
 		} else {
+				// render URL
+				// use media wizard to extract video from URL
+			$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($url);
+			if ($mediaWizard !== NULL) {
+				$url = $mediaWizard->rewriteUrl($url);
+			}
 			$conf['file'] = $this->typoLink_URL(array(
 				'parameter' => $url
 			));
