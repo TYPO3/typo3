@@ -1369,7 +1369,13 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			$precompiledParts = $this->precompileSELECTquery($queryComponents);
 			if ($this->queryCache) {
-				$this->queryCache->set($cacheKey, $precompiledParts);
+				try {
+					$this->queryCache->set($cacheKey, $precompiledParts);
+				} catch (t3lib_cache_Exception $e) {
+					if ($this->debug) {
+						t3lib_div::devLog($e->getMessage(), 'dbal', 1);
+					}
+				}
 			}
 		}
 
