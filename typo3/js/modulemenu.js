@@ -1,7 +1,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007-2010 Ingo Renner <ingo@typo3.org>
+*  (c) 2010 Steffen Kamper <steffen@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,143 +26,279 @@
 
 
 /**
- * observes clicks on menuHeader and toggles child ul
+ * Class to render the module menu and handle the BE navigation
  *
- * @author	Ingo Renner
  * @author	Steffen Kamper
  */
-var ModuleMenu = Class.create({
 
-	/**
-	 * initially register event listeners
-	 */
-	initialize: function() {
 
-			// initialize event listeners
-		Event.observe(document, 'dom:loaded', function(){
-			this.registerEventListeners();
-		}.bind(this));
+Ext.ns('TYPO3', 'ModuleMenu');
 
-			// initialize some variables
-		this.currentlyHighLightedMainModule = '';
-		this.currentlyHighlightedModuleId   = '';
-	},
+TYPO3.ModuleMenu = {};
 
-	/**
-	 * registers the event listeners, can be used to re-register them after refreshing the menu
-	 */
-	registerEventListeners: function() {
-		$$('#typo3-menu li.menuSection div').invoke('observe', 'click', this.toggleMenu);
-		if (Prototype.Browser.IE) {
-				//mouseenter and mouseleave are only available but thats our target
-			$$('#typo3-menu li.menuSection li').invoke('observe', 'mouseenter', this.toggleHoverClass);
-			$$('#typo3-menu li.menuSection li').invoke('observe', 'mouseleave', this.toggleHoverClass);		
-		}
-	},
-	
-	/**
-	 * toggles the hover classname for IE menu hover support
-	 */
-	toggleHoverClass: function(event) {
-		var menuItem = Event.element(event);
-		menuItem.toggleClassName('hover');
-	},
-
-	/**
-	 * toggles the associated submodule menu when clicking a main module header
-	 */
-	toggleMenu: function(event) {
-		var mainModuleHeader = Event.element(event);
-
-		var mainMenuId       = mainModuleHeader.up().identify();
-		var subModulesMenu   = mainModuleHeader.next('ul');
-		if (!subModulesMenu) {
-			return;
-		}
-		var state            = subModulesMenu.visible();
-
-			// save state
-		var save = new Ajax.Request('ajax.php', {
-			parameters : 'ajaxID=ModuleMenu::saveMenuState&menuid=' + mainMenuId + '&state=' + state
-		});
-
-		if (state) {
-			Effect.BlindUp(subModulesMenu, {duration : 0.1});
-			$(mainModuleHeader).removeClassName('expanded');
-			$(mainModuleHeader).addClassName('collapsed');
-		} else {
-			Effect.BlindDown(subModulesMenu, {duration : 0.1});
-			$(mainModuleHeader).removeClassName('collapsed');
-			$(mainModuleHeader).addClassName('expanded');
-		}
-	},
-
-	/**
-	 * refreshes the complete module menu
-	 */
-	refreshMenu: function() {
-		var refresh = new Ajax.Updater('typo3-menu', TS.PATH_typo3 + 'ajax.php', {
-			parameters   : 'ajaxID=ModuleMenu::render',
-			asynchronous : false,
-			evalScripts  : true
-		});
-
-		this.registerEventListeners();
-		this.highlightModule(this.currentlyHighlightedModuleId, this.currentlyHighLightedMainModule);
-	},
-
-	/**
-	 * de-highlights the old menu item and highlights the new one
-	 *
-	 * @param	string		css module id to highlight
-	 */
-	highlightModule: function(moduleId, mainModule) {
-			// reset the currently highlighted module
-		$$('#typo3-menu .highlighted').invoke('removeClassName', 'highlighted');
-
-			// highlight the new one
-		if ($(moduleId)) {
-			$(moduleId).addClassName('highlighted');
-		}
-
-		if (undefined !== mainModule) {
-			this.currentlyHighLightedMainModule = mainModule;
-		}
-		this.currentlyHighlightedModuleId = moduleId;
-
-		// kept for backwards compatibility
-		// @TODO: remove in TYPO3 4.5
-		// @deprecated since TYPO3 4.3, remove in 4.5
-		top.currentlyHighLightedId   = moduleId;
-		top.currentlyHighLightedMain = mainModule;
+TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
+	storeId: 'ModuleMenuStore',
+	root: 'root',
+	fields: [
+		{name: 'index', type: 'int', mapping: 'sub.index'},
+		{name: 'key', type: 'string'},
+		{name: 'label', type: 'string'},
+		{name: 'menuState', type: 'int'},
+		{name: 'subitems', type: 'int'},
+		'sub'
+	],
+	url: 'ajax.php?ajaxID=ModuleMenu::getData',
+	baseParams: {
+		'action': 'getModules'
 	}
 
 });
 
-var TYPO3ModuleMenu = new ModuleMenu();
+TYPO3.ModuleMenu.Template = new Ext.XTemplate(
+		'<div id="typo3-docheader">',
+		'	<div id="typo3-docheader-row1">',
+		'		<div class="buttonsleft"></div>',
+		'		<div class="buttonsright"></div>',
+		'	</div>',
+		'</div>',
+		'<ul id="typo3-menu">',
+		'<tpl for=".">',
+		'	<li class="menuSection" id="{key}">',
+		'		<div class="modgroup {[this.getStateClass(values)]}">{label}</div>',
+		'	<ul {[this.getStateStyle(values)]}>',
+		'	<tpl for="sub">',
+		'	<li id="{name}" class="submodule mod-{name}">',
+		'		<a title="{description}" href="#" class="modlink">',
+		'			<span class="submodule-icon">',
+		'				<img width="16" height="16" alt="{label}" title="{label}" src="{icon}" />',
+		'			</span>',
+		'			<span>{label}</span>',
+		'		</a>',
+		'	</li>',
+		'	</tpl>',
+		'	</ul>',
+		'	</li>',
+		'</tpl>',
+		'</ul>',
+		{
+			getStateClass: function(value) {
+				return value.menuState ? 'collapsed' : 'expanded';
+			},
+			getStateStyle: function(value) {
+				return value.menuState ? 'style="display:none"' : '';
+			}
+		}
+);
+
+TYPO3.ModuleMenu.App = {
+	loadedModule: null,
+
+	init: function() {
+		TYPO3.ModuleMenu.Store.load({
+			scope: this,
+			callback: function(records, options) {
+				this.renderMenu(records);
+				if (top.startInModule) {
+					this.showModule(top.startInModule[0],top.startInModule[1]);
+				}
+			}
+		});
+	},
+
+	renderMenu: function(records) {
+		TYPO3.Backend.ModuleMenuContainer.removeAll();
+		TYPO3.Backend.ModuleMenuContainer.add({
+			xtype: 'dataview',
+			animCollapse: true,
+			store: TYPO3.ModuleMenu.Store,
+			tpl: TYPO3.ModuleMenu.Template,
+			singleSelect: true,
+			itemSelector: 'li.submodule',
+			overClass: 'x-view-over',
+			selectedClass: 'highlighted',
+			autoHeight: true,
+			itemId: 'modDataView',
+			tbar: [{text: 'test'}],
+			listeners: {
+				click: function(view, index, node, event) {
+					var el = Ext.fly(node);
+					if (el.hasClass('submodule')) {
+						TYPO3.ModuleMenu.App.showModule(el.getAttribute('id'));
+					}
+				},
+				containerclick: function(view, event) {
+					var item = event.getTarget('li.menuSection', view.getEl());
+					if (item) {
+						var el = Ext.fly(item);
+						var id = el.getAttribute('id');
+						var section = el.first('div'), state;
+						if (section.hasClass('expanded')) {
+							state = true;
+							section.removeClass('expanded').addClass('collapsed');
+							el.first('ul').slideOut('t', {
+								easing: 'easeOut',
+								duration: .2,
+								remove: false,
+								useDisplay: true
+							});
+
+						} else {
+							state = false;
+							section.removeClass('collapsed').addClass('expanded');
+							el.first('ul').slideIn('t', {
+								easing: 'easeIn',
+								duration: .2,
+								remove: false,
+								useDisplay: true
+							});
+						}
+						// save menu state
+						Ext.Ajax.request({
+							url: 'ajax.php?ajaxID=ModuleMenu::saveMenuState',
+							params: {
+								'menuid': 'modmenu_' + id,
+								'state': state
+							}
+						});
+					}
+				},
+				scope: this
+			}
+		});
+		TYPO3.Backend.ModuleMenuContainer.doLayout();
+	},
+
+	getRecordFromIndex: function(index) {
+		var i, record;
+		for (i = 0; i < TYPO3.ModuleMenu.Store.getCount(); i++) {
+			record = TYPO3.ModuleMenu.Store.getAt(i);
+			if (index < record.data.subitems) {
+				return record.data.sub[index];
+			}
+			index -= record.data.subitems;
+		}
+	},
+
+	getRecordFromName: function(name) {
+		var i, j, record;
+		for (i = 0; i < TYPO3.ModuleMenu.Store.getCount(); i++) {
+			record = TYPO3.ModuleMenu.Store.getAt(i);
+			for (j = 0; j < record.data.subitems; j++) {
+				if (record.data.sub[j].name === name) {
+					return record.data.sub[j];
+				}
+			}
+		}
+	},
+
+	showModule: function(mod, params) {
+		params = params || '';
+		this.selecteModule = mod;
+		var record = this.getRecordFromName(mod);
+
+		if (record) {
+
+			//get id
+			var section = mod.split('_')[0];
+			if (top.fsMod.recentIds[section]) {
+				params = 'id=' + top.fsMod.recentIds[section] + params;
+			}
+
+			if (record.navframe) {
+				this.openInNavFrame(record.navframe);
+			} else {
+				TYPO3.Backend.NavigationContainer.hide();
+			}
+			this.openInContentFrame(record.originalLink, params);
+			this.loadedModule = mod;
+			this.highlightModuleMenuItem(mod);
+
+			// compatibility
+			top.currentSubScript = record.originalLink;
+			top.currentModuleLoaded = mod;
+
+			TYPO3.Backend.doLayout();
+		} else {
+			console.log(mod + ' was not found in modules');
+		}
+	},
+
+	openInNavFrame: function(url, params) {
+		var navUrl = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
+		var currentUrl = this.relativeUrl(TYPO3.Backend.NavigationContainer.getUrl());
+		TYPO3.Backend.NavigationContainer.show();
+		if (currentUrl !== navUrl) {
+			TYPO3.Backend.NavigationContainer.setUrl(navUrl);
+		}
+	},
+
+	openInContentFrame: function(url, params) {
+		if (top.nextLoadModuleUrl) {
+			TYPO3.Backend.ContentContainer.setUrl(top.nextLoadModuleUrl);
+			top.nextLoadModuleUrl = '';
+		} else {
+			TYPO3.Backend.ContentContainer.setUrl(url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : ''));
+		}
+	},
+
+	highlightModuleMenuItem: function(module, mainModule) {
+		TYPO3.Backend.ModuleMenuContainer.getComponent('modDataView').select(module, false, false);
+	},
+
+	relativeUrl: function(url) {
+		return url.replace(TYPO3.configuration.siteUrl + 'typo3/', '');
+	},
+
+	refreshMenu: function() {
+		TYPO3.ModuleMenu.Store.load({
+			scope: this,
+			callback: function(records, options) {
+				this.renderMenu(records);
+				if (this.loadedModule) {
+					this.highlightModuleMenuItem(this.loadedModule);
+				}
+			}
+		});
+	},
+
+	reloadFrames: function() {
+		TYPO3.Backend.NavigationContainer.refresh();
+		TYPO3.Backend.ContentContainer.refresh();
+	}
+
+};
+
+
+
+Ext.onReady(function() {
+	TYPO3.ModuleMenu.App.init();
+
+		// keep backward compatibility
+	top.list = TYPO3.Backend.ContentContainer;
+    top.nav = TYPO3.Backend.NavigationContainer;
+    top.list_frame = top.list.getIframe();
+    top.nav_frame = top.nav.getIframe();
+
+	top.TYPO3ModuleMenu = TYPO3.ModuleMenu.App;
+	top.content = {
+		nav_frame: TYPO3.Backend.NavigationContainer.getIframe(),
+		list_frame: TYPO3.Backend.ContentContainer.getIframe()
+	}
+});
 
 
 /*******************************************************************************
- *
- * Backwards compatability handling down here
- *
- ******************************************************************************/
+*
+* Backwards compatability handling down here
+*
+******************************************************************************/
 
 /**
- * Highlight module:
- */
+* Highlight module:
+*/
 var currentlyHighLightedId = '';
 var currentlyHighLighted_restoreValue = '';
 var currentlyHighLightedMain = '';
 function highlightModuleMenuItem(trId, mainModule) {
-	TYPO3ModuleMenu.highlightModule(trId, mainModule);
+	TYPO3.ModuleMenu.App.highlightModule(trId, mainModule);
 }
-
-
-
-
-
-
-
-
-

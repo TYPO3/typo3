@@ -2933,8 +2933,8 @@ final class t3lib_BEfunc {
 				$signals[] = $params['JScode'];
 			} else if ($set == 'updatePageTree' || $set == 'updateFolderTree') {
 				$signals[] = '
-					if (top && top.content && top.content.nav_frame && top.content.nav_frame.Tree) {
-						top.content.nav_frame.Tree.refresh();
+					if (top && top.TYPO3.Backend.NavigationContainer) {
+						top.TYPO3.Backend.NavigationContainer.refresh();
 					}';
 			}
 		}

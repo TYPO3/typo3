@@ -122,7 +122,6 @@ class TYPO3backend {
 			'contrib/swfupload/plugins/swfupload.queue.js',
 			'md5.js',
 			'js/common.js',
-			'js/extjs/backendsizemanager.js',
 			'js/toolbarmanager.js',
 			'js/modulemenu.js',
 			'js/iecompatibility.js',
@@ -134,6 +133,7 @@ class TYPO3backend {
 			'js/loginrefresh.js',
 			'js/extjs/debugPanel.js',
 			'js/extjs/viewport.js',
+			'js/extjs/iframepanel.js',
 			'js/extjs/viewportConfiguration.js',
 		);
 
@@ -197,34 +197,17 @@ class TYPO3backend {
 		$logo         = t3lib_div::makeInstance('TYPO3Logo');
 		$logo->setLogo('gfx/typo3logo_mini.png');
 
-		$menu         = $this->moduleMenu->render();
 
-		if ($this->menuWidth != $this->menuWidthDefault) {
-			$this->css .= '
-				#typo3-top {
-					margin-left: ' . $this->menuWidth . 'px;
-				}
-			';
-		}
 
 			// create backend scaffolding
 		$backendScaffolding = '
-	<div id="typo3-backend">
 		<div id="typo3-top-container" class="x-hide-display">
 			<div id="typo3-logo">'.$logo->render().'</div>
 			<div id="typo3-top" class="typo3-top-toolbar">' .
 				$this->renderToolbar() .
 			'</div>
 		</div>
-		<div id="typo3-main-container">
-			<div id="typo3-side-menu" class="x-hide-display">' .
-				$menu .
-			'</div>
-			<div id="typo3-content" class="x-hide-display">
-				<iframe src="alt_intro.php" name="content" id="content" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto"></iframe>
-			</div>
-		</div>
-	</div>
+
 ';
 
 		/******************************************************
@@ -351,8 +334,6 @@ class TYPO3backend {
 	protected function generateJavascript() {
 
 		$pathTYPO3          = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
-		$goToModuleSwitch   = $this->moduleMenu->getGotoModuleJavascript();
-		$moduleFramesHelper = implode(LF, $this->moduleMenu->getFsMod());
 
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
@@ -405,6 +386,7 @@ class TYPO3backend {
 			'refresh_login_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_button'),
 			'refresh_logout_button' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_logout_button'),
 			'please_wait' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.please_wait'),
+			'loadingIndicator' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:loadingIndicator'),
 			'be_locked' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.be_locked'),
 			'refresh_login_countdown_singular' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_countdown_singular'),
 			'refresh_login_countdown' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_countdown'),
@@ -483,9 +465,7 @@ class TYPO3backend {
 		this.denyFileTypes = TYPO3.configuration.denyFileTypes;
 	}
 	var TS = new typoSetup();
-
-	var currentModuleLoaded = "";
-
+		//backwards compatibility
 	/**
 	 * Frameset Module object
 	 *
@@ -500,16 +480,16 @@ class TYPO3backend {
 		this.currentMainLoaded="";
 		this.currentBank="0";
 	}
-	var fsMod = new fsModules();' . $moduleFramesHelper . ';';
+	var fsMod = new fsModules();
 
-			// add goToModule code
-		$this->pageRenderer->addExtOnReadyCode('
-			top.goToModule = ' . $goToModuleSwitch . ';
-		');
+	top.goToModule = function(modName, cMR_flag, addGetVars) {
+		TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
+	}
+	' . $this->setStartupModule();
 
 			// Check editing of page:
 		$this->handlePageEditing();
-		$this->setStartupModule();
+
 	}
 
 	/**
@@ -586,17 +566,14 @@ class TYPO3backend {
 
 		$moduleParameters = t3lib_div::_GET('modParams');
 		if($startModule) {
-			$this->pageRenderer->addExtOnReadyCode('
-			// start in module:
-		function startInModule(modName, cMR_flag, addGetVars)	{
-			Ext.onReady(function() {
-				top.goToModule(modName, cMR_flag, addGetVars);
-			});
+			return '
+					// start in module:
+				top.startInModule = [\'' . $startModule . '\', ' . t3lib_div::quoteJSvalue($moduleParameters) . '];
+			';
+		} else {
+			return '';
 		}
 
-		startInModule(\''.$startModule.'\', false, '.t3lib_div::quoteJSvalue($moduleParameters).');
-			');
-		}
 	}
 
 	/**

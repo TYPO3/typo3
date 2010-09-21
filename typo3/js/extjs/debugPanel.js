@@ -47,7 +47,7 @@ Ext.ns('TYPO3');
 TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	/**
 	 * Tab Groups
-	 * 
+	 *
 	 * @var Ext.util.MixedCollection
 	 */
 	tabGroups: new Ext.util.MixedCollection(),
@@ -55,7 +55,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	/**
 	 * Indicator if the debug panel is wrapped inside a debug panel
 	 * @see addTabWidget()
-	 * 
+	 *
 	 * @var boolean
 	 */
 	isTabChildren: false,
@@ -111,7 +111,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			})
 		});
 
-			
+
 		TYPO3.DebugPanel.superclass.initComponent.call(this);
 	},
 
@@ -129,13 +129,9 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 		);
 		this.arrow.hide();
 
-		this.on('move', function() {
-			this.ownerCt.fireEvent('resize');
-		}, this);
-
 		TYPO3.DebugPanel.superclass.onRender.apply(this, arguments);
 	},
-	
+
 	/**
 	 * Collapse event
 	 *
@@ -143,7 +139,6 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 */
 	onCollapse: function() {
 		TYPO3.DebugPanel.superclass.onCollapse.apply(this, arguments);
-		this.ownerCt.fireEvent('resize');
 	},
 
 	/**
@@ -153,7 +148,6 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	 */
 	onExpand: function() {
 		TYPO3.DebugPanel.superclass.onExpand.apply(this, arguments);
-		this.ownerCt.fireEvent('resize');
 	},
 
 	/**
@@ -191,7 +185,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 				closable: true,
 				draggableTab: true
 			});
-			
+
 			this.addTabWidget(tabWidget, group, position);
 		}
 	},
@@ -211,7 +205,6 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 	addTabWidget: function(tabWidget, group, position) {
 		if (this.hidden) {
 			this.show();
-			this.ownerCt.fireEvent('resize');
 		} else if (this.collapsed) {
 			this.expand();
 		}
@@ -251,7 +244,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			} else {
 				if (!this.items.getCount()) {
 					this.hide();
-					this.ownerCt.fireEvent('resize');
+					this.ownerCt.doLayout();
 				}
 				this.tabGroups.removeKey(element.title);
 			}
@@ -459,10 +452,10 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			}
 		});
 	},
-	
+
 	/**
 	 * Opens debug output in a new browser window
-	 * 
+	 *
 	 * @param title string
 	 * @param content string
 	 * @param group string
@@ -487,7 +480,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 		}
 		newWindow.document.close()
 	},
-	
+
 	/**
 	 * Wrapper for console.log
 	 *
@@ -500,7 +493,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			}
 		}
 	},
-	
+
 	/**
 	 * Wrapper for console.info
 	 *
@@ -513,7 +506,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			}
 		}
 	},
-	
+
 	/**
 	 * Wrapper for console.warn
 	 *
@@ -526,7 +519,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			}
 		}
 	},
-	
+
 	/**
 	 * Wrapper for console.error
 	 *
@@ -539,10 +532,10 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 			}
 		}
 	},
-	
+
 	/**
 	 * Debug output from javascript
-	 * 
+	 *
 	 * @param out mixed debug output
 	 * @param header string
 	 * @param group string
@@ -551,10 +544,10 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 		var output = this.printObject(out);
 		this.addTab(output, header, group);
 	},
-	
+
 	/**
 	 * Converts any string/array/object to a string for printing purposes
-	 * 
+	 *
 	 * @param object object
 	 * @param level integer recursion level counter (max. 3 levels)
 	 * @param prefix string internal use!
@@ -594,7 +587,7 @@ TYPO3.DebugPanel = Ext.extend(Ext.TabPanel, {
 
 		return '<pre>' + result + '</pre>';
 	},
-	
+
 	/**
 	 * Debug attached events of a given element (e.g. an Ext.Panel component)
 	 *

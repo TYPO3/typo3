@@ -89,18 +89,25 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 	 * @return void
 	 */
 	initComponent: function() {
-		// adjust the width of module menu and the height of the topbar
+		// adjust the module menu and the height of the topbar
 		this.initialConfig.items[0].height = TYPO3.configuration.topBarHeight;
-		this.initialConfig.items[1].width = TYPO3.configuration.moduleMenuWidth;
+		
+		var moduleMenu = this.initialConfig.items[1];
+		moduleMenu.width = TYPO3.configuration.moduleMenuWidth;
+		if (!TYPO3.configuration.moduleMenuSplit) {
+			moduleMenu.split = false;
+			moduleMenu.collapsible = false;
+			moduleMenu.collapseMode = null
+		}
 
 		// call parent constructor
 		TYPO3.Viewport.superclass.initComponent.apply(this, arguments);
 
-		this.ContentContainer = Ext.ComponentMgr.get('typo3-contentContainer');
-		this.NavigationContainer = Ext.ComponentMgr.get('typo3-navigationContainer');
-		this.Topbar = Ext.ComponentMgr.get('typo3-topbar');
-		this.ModuleMenuContainer = Ext.ComponentMgr.get('typo3-module-menu');
-		this.DebugConsole = Ext.ComponentMgr.get('typo3-debug-console');
+		this.ContentContainer = Ext.getCmp('typo3-contentContainer');
+		this.NavigationContainer = Ext.getCmp('typo3-navigationContainer');
+		this.Topbar = Ext.getCmp('typo3-topbar');
+		this.ModuleMenuContainer = Ext.getCmp('typo3-module-menu');
+		this.DebugConsole = Ext.getCmp('typo3-debug-console');
 	},
 
 	/**
@@ -142,10 +149,8 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 		if (contentScript.indexOf(top.TS.PATH_typo3) !== 0) {
 			contentScript = top.TS.PATH_typo3 + contentScript;
 		}
-		Ext.get('content').set({
-			src: contentScript
-		});
-
+		this.ContentContainer.setUrl(contentScript);
+		
 		this.NavigationContainer.ownerCt.doLayout();
 	},
 

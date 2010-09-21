@@ -454,7 +454,7 @@ class t3lib_loadModules {
 		for($i=0;$i < $slashes;$i++)	{
 			$destDir = '../'.$destDir;
 		}
-		return $destDir;
+		return t3lib_div::resolveBackPath($destDir);
 	}
 }
 

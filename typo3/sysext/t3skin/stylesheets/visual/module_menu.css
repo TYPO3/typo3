@@ -53,7 +53,7 @@ $Id$
 	font-weight: bold;
 }
 
-#typo3-menu li div {
+#typo3-menu li div.modgroup {
 	color: #252524;
 	cursor: pointer;
 	font-weight: bold;

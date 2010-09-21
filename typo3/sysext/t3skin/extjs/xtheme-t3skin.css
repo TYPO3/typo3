@@ -1,19 +1,19 @@
-/** 
+/**
  * TYPO3 Backend colors defaults!
- * 
+ *
  * Colors:
  * General Background 	#EFEFF4
  * Dark Grey			#D7DBE2
  * Text					#55545E
  * headline Text		#FFFFFF
  * Border 				#A2AAB8
- * 
+ *
  * Attributes:
  * font-family			verdana, arial, tahoma, helvetica, sans-serif
  * font-size			10px
  */
 
-/* preliminary code for the tabmenu */ 
+/* preliminary code for the tabmenu */
 .x-tab-panel-body .x-panel-body {
 	padding: 10px;
 	background-color: #EFEFF4;
@@ -123,13 +123,14 @@
 	background-image:url(images/panel/light-hd.gif);
 }
 
-.x-layout-collapsed{
+.x-layout-collapsed {
 	background-color:#EFEFF4;
-	border-color:#A2AAB8;
 }
+
 .x-layout-collapsed-over{
-	 background-color:#EFEFF4;
+	background-color:#EFEFF4;
 }
+
 
 /* qtips */
 .x-tip .x-tip-top {
@@ -478,7 +479,7 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
  */
 
 .ext-el-mask {
-	background-color: #000;
+	background-color: #aaa;
 	-moz-opacity: 0.75;
 	opacity: .75;
 	filter: alpha(opacity=75);
@@ -1229,7 +1230,7 @@ td.x-grid3-hd-over .x-grid3-hd-inner, td.sort-desc .x-grid3-hd-inner, td.sort-as
 	border-bottom-color:#A2AAB8;
 }
 
-.x-grid-group-hd div.x-grid-group-title { 
+.x-grid-group-hd div.x-grid-group-title {
 	background-image:url(images/grid/group-expand-sprite.gif);
 	background-position: 3px -46px;
 	color:#3764a0;
@@ -2023,9 +2024,8 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	background-image: url(images/panel/light-hd.gif);
 }
 
-.x-layout-collapsed{
+.x-layout-collapsed {
 	background-color:#dfdfdf;
-	border-color:#bcbcbc;
 }
 
 .x-layout-collapsed-over{
@@ -2177,7 +2177,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 
 /* Pagetree */
 .x-layout-split {
-	background-color: #aeb6c1;
+	background-color: #dadada;
 }
 
 #widget-navigation-tree .x-panel-noborder .x-panel-body-noborder {

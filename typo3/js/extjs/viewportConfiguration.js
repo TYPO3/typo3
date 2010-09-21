@@ -44,38 +44,45 @@ TYPO3.Viewport.configuration = {
 		contentEl: 'typo3-top-container',
 		border: false
 	}, {
-		layout: 'absolute',
+		layout: 'fit',
 		region: 'west',
 		id: 'typo3-module-menu',
-		contentEl: 'typo3-side-menu',
-		width: 159,
-		anchor: '100% 100%',
-		border: false
+		collapsible: true,
+		collapseMode: 'mini',
+		floatable: true,
+		hideCollapseTool: true,
+		split: true,
+		border: false,
+		autoScroll: true
 	}, {
 		region: 'center',
 		layout: 'border',
 		border: false,
 		items: [{
 			region: 'west',
-			layout: 'absolute',
+			layout: 'fit',
 			id: 'typo3-navigationContainer',
 			width: 300,
-			anchor: '100% 100%',
+			minWidth: 20,
+			floatable: true,
+			animCollapse: false,
+			split: true,
 			collapsible: true,
 			collapseMode: 'mini',
 			hideCollapseTool: true,
-			animCollapse: false,
-			split: true,
 			autoScroll: true,
 			hidden: true,
-			border: false
+			border: false,
+			xtype: 'iframePanel',
+			name: 'navigation'
 		}, {
 			region: 'center',
-			layout: 'absolute',
+			layout: 'fit',
 			id: 'typo3-contentContainer',
-			contentEl: 'typo3-content',
 			anchor: '100% 100%',
-			border: false
+			border: false,
+			xtype: 'iframePanel',
+			name: 'content'
 		}]
 	}, {
 		region: 'south',
