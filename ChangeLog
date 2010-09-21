@@ -1,3 +1,7 @@
+2010-09-21  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #13705: Record info in workspace always shows live version (Thanks to Julia Pardanaud)
+
 2010-09-20  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #14783: absRefPrefix should work with $TYPO3_CONF_VARS[BE][RTE_imageStorageDir] (thanks to Steffen Mueller)
