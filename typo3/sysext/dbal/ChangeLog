@@ -1,3 +1,7 @@
+2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0alpha2
+
 2010-09-20  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Merged branch QueryCache to trunk
