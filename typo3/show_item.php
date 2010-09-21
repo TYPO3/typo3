@@ -179,7 +179,7 @@ class SC_show_item {
 					$this->access = is_array($this->pageinfo) ? 1 : 0;
 					$this->row = $this->pageinfo;
 				} else {
-					$this->row = t3lib_BEfunc::getRecord($this->table,$this->uid);
+					$this->row = t3lib_BEfunc::getRecordWSOL($this->table, $this->uid);
 					if ($this->row)	{
 						$this->pageinfo = t3lib_BEfunc::readPageAccess($this->row['pid'],$this->perms_clause);
 						$this->access = is_array($this->pageinfo) ? 1 : 0;

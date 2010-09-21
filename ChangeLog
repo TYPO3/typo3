@@ -1,3 +1,7 @@
+2010-09-21  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed #13705: Record info in workspace always shows live version (Thanks to Julia Pardanaud)
+
 2010-09-21  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #15754: ExtDirect in Frontend (Thanks to Stefan Galinksi)
