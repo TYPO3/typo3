@@ -76,6 +76,7 @@ Frontend
 Extbase / Fluid
 ===============
 
+	* Fixed Extbase Caching Bug.
 	* All methods trying to find an object by uid now ignore the
 	  storagePid. This changes the behavior of argument mapping and the
 	  way extbase fetches 1:1 relations. Resolves #5631. You should not
@@ -84,12 +85,13 @@ Extbase / Fluid
 	  However, it makes the record handling more robust.
 	* Performance improvements in
 	  TypoScript::convertTypoScriptArrayToPlainArray.
-	* Numerous other bugfixes, see extbase/ChangeLog.txt
 	* Fluid contains many new features you might want to start using.
 	  There are some changes that require special attention in case you
 	  created custom condition ViewHelpers or if you call renderSection()
 	  and renderWithLayout() from Tx_Fluid_View_TemplateView.
-	* Check out typo3/sysext/fluid/ChangeLog.txt for more details!
+	* Check out these ChangeLogs for more details:
+	  - typo3/sysext/extbase/ChangeLog.txt
+	  - typo3/sysext/fluid/ChangeLog.txt
 
 
 Compatibility
@@ -97,6 +99,9 @@ Compatibility
 
 	* See typo3/sysext/fluid/ChangeLog.txt for some breaking changes in
 	  Fluid.
+	* See typo3/sysext/extbase/ChangeLog.txt for a fix that might break
+	  certain setups (caching bug fixed, might break extbase extensions
+	  that setup their own TS configuration manually)
 	* The API for registering additional cache frontends or backends has changed.
 	  As of TYPO3 4.5 only the classname needs to be specified in favor of both
 	  path to the php file and the classname. Instead the class needs to be
