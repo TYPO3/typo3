@@ -39,9 +39,8 @@ class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 	 * @api
 	 */
 	public function render($section = NULL, $partial = NULL, $arguments = array()) {
-		if (!isset($arguments['settings'])) {
-			$arguments['settings'] = $this->templateVariableContainer->get('settings');
-		}
+		$arguments = $this->loadSettingsIntoArguments($arguments);
+
 		if ($partial !== NULL) {
 			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
 		} elseif ($section !== NULL) {
@@ -50,8 +49,18 @@ class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_Abs
 		return '';
 	}
 
-
+	/**
+	 * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
+	 *
+	 * @param array $arguments
+	 * @return array
+	 */
+	protected function loadSettingsIntoArguments($arguments) {
+		if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
+			$arguments['settings'] = $this->templateVariableContainer->get('settings');
+		}
+		return $arguments;
+	}
 }
-
 
 ?>
