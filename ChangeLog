@@ -1,5 +1,6 @@
 2010-09-22  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15465: sys_action: setting mountpoints as non-admin (Thanks to Georg Ringer)
 	* Fixed bug #15761: tslib_menu misses test of html5
 
 2010-09-21  Benjamin Mack  <benni@typo3.org>
