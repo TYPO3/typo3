@@ -1,3 +1,7 @@
+2010-09-22  Ernesto Baschny  <ernesto@typo3.org>
+
+	* Release of TYPO3 4.5.0alpha2
+
 2010-09-22  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15732: Backend textarea fields should also be flexible in height, even if text is just a continuous text (Thanks to Sebastian Müller)
