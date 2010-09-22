@@ -627,7 +627,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 
 					// check rootline and access rights
 				if ($this->checkRootline($uid) && $GLOBALS['BE_USER']->calcPerms($page)) {
-					$cleanDbMountList[] = 'pages' . $uid;
+					$cleanDbMountList[] = 'pages_' . $uid;
 				}
 			}
 				// build the clean list
