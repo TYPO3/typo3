@@ -221,6 +221,7 @@ class tslib_menu {
 			case 'xhtml_strict':
 			case 'xhtml_11':
 			case 'xhtml_2':
+            case 'html_5':
 				$this->nameAttribute = 'id';
 				break;
 			default:
