@@ -155,6 +155,10 @@ TypoScript
 		10.dimensions  =  100,100,50,50
 		10.color  =  red
 	}
+	* Added easy interface to integrate lightbox style image enlargement
+	  in the frontend. Just set some constants in the "CONTENT" part of
+	  css_styled_content and your images will get attributes added that
+	  are needed for lightbox JS frameworks to work out of the box.
 
 
 Database API / DBAL
