@@ -1,5 +1,5 @@
-ChangeLog for Fluid
-===================
+ChangeLog for Extbase
+=====================
 
 Changes for 1.3.0 Alpha 2
 =========================
