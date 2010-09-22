@@ -1264,7 +1264,10 @@ final class t3lib_div {
 	 * @return	boolean		Returns true if string is an integer
 	 */
 	public static function testInt($var) {
-		return (string)intval($var) == $var;
+		if ($var === '') {
+			return FALSE;
+		}
+		return (string)intval($var) === (string)$var;
 	}
 
 	/**
