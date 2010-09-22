@@ -1,9 +1,32 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 1.3.0 Alpha 2
+=========================
+included in TYPO3 4.5.0 Alpha 2.
+
+Since the last version, one (possible BREAKING) change happened:
+
+ * Fixed Extbase Caching Bug.
+   Non-cacheable actions were cached due to the fact that TYPO3s
+   TypoScript condition "GP" does not merge GET & POST vars.
+   Additionally "switchableControllerActions" that were overridden
+   in the plugin flexform were not taken into account.
+
+!!! This is a breaking change if you set up your TS configuration
+    of the plugin manually.
+
+Full Changes:
+-------------
+
+[!!!][+BUGFIX] Extbase: Fix Extbase Caching Bug (thanks to Bastian Waidelich)
+
+[-TASK] Extbase (MVC): removed fallback to current page in AbstractController::redirect() as that's already done within the UriBuilder if $targetPageUid is NULL
+
 
 Changes for 1.3.0 Alpha 1
 =========================
+included in TYPO3 4.5.0 Alpha 1.
 
 Since the last version, the following notable things happened:
 
