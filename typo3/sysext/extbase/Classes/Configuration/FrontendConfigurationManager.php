@@ -216,13 +216,19 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 			}
 
 			if (count($newSwitchableControllerActionsFromFlexform)) {
-				$frameworkConfiguration['switchableControllerActions'] = array();
+				$overriddenSwitchableControllerActions = array();
 				foreach ($newSwitchableControllerActionsFromFlexform as $controller => $actions) {
-					$frameworkConfiguration['switchableControllerActions'][] = array(
+					$overriddenSwitchableControllerActions[$controller] = array(
 						'controller' => $controller,
 						'actions' => implode(',', $actions)
 					);
+					$nonCacheableActions = t3lib_div::trimExplode(',', $frameworkConfiguration['switchableControllerActions'][$controller]['nonCacheableActions']);
+					$overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);
+					if (!empty($overriddenNonCacheableActions)) {
+						$overriddenSwitchableControllerActions[$controller]['nonCacheableActions'] = implode(',', $overriddenNonCacheableActions);
+					}
 				}
+				$frameworkConfiguration['switchableControllerActions'] = $overriddenSwitchableControllerActions;
 
 				// We want the first controller/action be the default.
 				unset($frameworkConfiguration['controller']);

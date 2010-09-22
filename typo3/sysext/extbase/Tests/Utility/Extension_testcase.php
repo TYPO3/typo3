@@ -37,14 +37,34 @@ class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 	 */
 	protected $typo3ConfVars = array();
 
+	/**
+	 * @var t3lib_DB
+	 */
+	protected $typo3DbBackup;
+
+	/**
+	 * @var	t3lib_fe contains a backup of the current $GLOBALS['TSFE']
+	 */
+	protected $tsfeBackup;
+
 	public function setUp() {
 		global $TYPO3_CONF_VARS;
 		$this->typo3ConfVars = $TYPO3_CONF_VARS;
+		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
+		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('fullQuoteStr', 'exec_SELECTgetRows'));
+		$this->tsfeBackup = $GLOBALS['TSFE'];
+		if (!isset($GLOBALS['TSFE']->tmpl)) {
+			$GLOBALS['TSFE']->tmpl = new stdClass();
+		}
+		if (!isset($GLOBALS['TSFE']->tmpl->setup)) {
+			$GLOBALS['TSFE']->tmpl->setup = array();
+		}
 	}
 
 	public function tearDown() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS = $this->typo3ConfVars;
+		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
 
 	/**
@@ -162,7 +182,7 @@ plugin.tx_myextension {
 	 * @test
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
-	public function configurePluginRespectsDefaultActionAsANonCachableAction() {
+	public function configurePluginRespectsDefaultActionAsANonCacheableAction() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
 		Tx_Extbase_Utility_Extension::configurePlugin(
@@ -176,20 +196,18 @@ plugin.tx_myextension {
 				)
 			);
 		$staticTypoScript = $TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.']['43'];
-
 		$this->assertContains('
-tt_content.list.20.myextension_pi1 = USER_INT
+tt_content.list.20.myextension_pi1 = USER
 tt_content.list.20.myextension_pi1 {', $staticTypoScript);
-		$this->assertContains('
-[globalString = GP:tx_myextension_pi1|controller = FirstController] && [globalString = GP:tx_myextension_pi1|action = /new|create|delete|edit|update/]
-tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+		$this->assertContains('FirstController.nonCacheableActions = index,show
+', $staticTypoScript);
 	}
 
 	/**
 	 * @test
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
-	public function configurePluginRespectsNonDefaultActionAsANonCachableAction() {
+	public function configurePluginRespectsNonDefaultActionAsANonCacheableAction() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
 		Tx_Extbase_Utility_Extension::configurePlugin(
@@ -207,16 +225,15 @@ tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
 tt_content.list.20.myextension_pi1 = USER
 tt_content.list.20.myextension_pi1 {', $staticTypoScript);
-		$this->assertContains('
-[globalString = GP:tx_myextension_pi1|controller = FirstController] && [globalString = GP:tx_myextension_pi1|action = /show|new/]
-tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
+		$this->assertContains('FirstController.nonCacheableActions = show,new
+', $staticTypoScript);
 	}
 
 	/**
 	 * @test
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
-	public function configurePluginWorksForMultipleControllerActionsWithCachableActionAsDefault() {
+	public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
 		Tx_Extbase_Utility_Extension::configurePlugin(
@@ -231,8 +248,7 @@ tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
 				'FirstController' => 'new,create,edit,update',
 				'SecondController' => 'delete',
 				'ThirdController' => 'create'
-				),
-			array('SecondController' => 'show')
+				)
 			);
 		$staticTypoScript = $TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.']['43'];
 
@@ -240,17 +256,14 @@ tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
 tt_content.list.20.myextension_pi1 = USER
 tt_content.list.20.myextension_pi1 {', $staticTypoScript);
 
-		$this->assertContains('
-[globalString = GP:tx_myextension_pi1|controller = FirstController] && [globalString = GP:tx_myextension_pi1|action = /new|create|edit|update/]
-tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
+		$this->assertContains('FirstController.nonCacheableActions = new,create,edit,update
+', $staticTypoScript);
 
-		$this->assertContains('
-[globalString = GP:tx_myextension_pi1|controller = SecondController] && [globalString = GP:tx_myextension_pi1|action = /delete/]
-tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
+		$this->assertContains('SecondController.nonCacheableActions = delete
+', $staticTypoScript);
 
-		$this->assertContains('
-[globalString = GP:tx_myextension_pi1|controller = ThirdController] && [globalString = GP:tx_myextension_pi1|action = /create/]
-tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
+		$this->assertContains('ThirdController.nonCacheableActions = create
+', $staticTypoScript);
 	}
 
 
@@ -258,7 +271,7 @@ tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
 	 * @test
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
-	public function configurePluginWorksForMultipleControllerActionsWithNonCachableActionAsDefault() {
+	public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault() {
 		global $TYPO3_CONF_VARS;
 		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
 		Tx_Extbase_Utility_Extension::configurePlugin(
@@ -278,52 +291,18 @@ tt_content.list.20.myextension_pi1 = USER_INT', $staticTypoScript);
 		$staticTypoScript = $TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.']['43'];
 
 		$this->assertContains('
-tt_content.list.20.myextension_pi1 = USER_INT
+tt_content.list.20.myextension_pi1 = USER
 tt_content.list.20.myextension_pi1 {', $staticTypoScript);
 
-		$this->assertContains('
-[globalString = GP:tx_myextension_pi1|controller = FirstController] && [globalString = GP:tx_myextension_pi1|action = /show|delete/]
-tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+		$this->assertContains('FirstController.nonCacheableActions = index,new,create,edit,update
+', $staticTypoScript);
 
-		$this->assertContains('
-[globalString = GP:tx_myextension_pi1|controller = SecondController] && [globalString = GP:tx_myextension_pi1|action = /index|show/]
-tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+		$this->assertContains('SecondController.nonCacheableActions = delete
+', $staticTypoScript);
 
-		$this->assertNotContains('[globalString = GP:tx_myextension_pi1|controller = ThirdController]', $staticTypoScript);
+		$this->assertContains('ThirdController.nonCacheableActions = create
+', $staticTypoScript);
 	}
-
-	/**
-	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
-	 */
-	public function configurePluginWorksForMultipleControllerActionsWithNonCachableActionAsDefaultAndOnlyNonCachableActions() {
-		global $TYPO3_CONF_VARS;
-		$TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.'] = array();
-		Tx_Extbase_Utility_Extension::configurePlugin(
-			'MyExtension',
-			'Pi1',
-			array(
-				'FirstController' => 'index,show,new,create,delete,edit,update',
-				'SecondController' => 'index,show,delete',
-				'ThirdController' => 'create'
-				),
-			array(
-				'FirstController' => 'index,show,new,create,delete,edit,update',
-				'SecondController' => 'index,show,delete',
-				'ThirdController' => 'create'
-				)
-			);
-		$staticTypoScript = $TYPO3_CONF_VARS['FE']['defaultTypoScript_setup.']['43'];
-
-		$this->assertContains('
-tt_content.list.20.myextension_pi1 = USER_INT
-tt_content.list.20.myextension_pi1 {', $staticTypoScript);
-
-		$this->assertNotContains('GP', $staticTypoScript);
-	}
-
-	// TODO switchableControllerActionsIsSupressedIfOnlyOneControllerActionIsGiven()
-	// TODO switchableControllerDingsIsGeneratedWithMultipleControllersEachHavingOnlyOneAction
 
 }
 

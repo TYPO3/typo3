@@ -114,17 +114,6 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 		$this->controllerContext = $controllerContext;
 	}
 
-	/**
-	 * Returns the template parser that is used to parse this views template
-	 *
-	 * @return Tx_Fluid_Core_Parser_TemplateParser
-	 * @author Bastian Waidelich <bastian@typo3.org>
-	 * @api
-	 */
-	public function getTemplateParser() {
-		return $this->templateParser;
-	}
-
 	public function initializeView() {
 	}
 	// Here, the backporter can insert the initializeView method, which is needed for Fluid v4.

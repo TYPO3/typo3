@@ -140,7 +140,7 @@ class Tx_Fluid_ViewHelpers_FormViewHelper extends Tx_Fluid_ViewHelpers_Form_Abst
 		$formContent = $this->renderChildren();
 
 		$content = chr(10) . '<div style="display: none">';
-		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->arguments['name']);
+		$content .= $this->renderHiddenIdentityField($this->arguments['object'], $this->getFormObjectName());
 		$content .= $this->renderAdditionalIdentityFields();
 		$content .= $this->renderHiddenReferrerFields();
 		$content .= $this->renderRequestHashField(); // Render hmac after everything else has been rendered

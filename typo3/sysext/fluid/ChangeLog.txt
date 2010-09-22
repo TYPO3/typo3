@@ -1,9 +1,85 @@
 ChangeLog for Fluid
 ===================
 
+Changes for 1.3.0 Alpha 2
+=========================
+included in TYPO3 4.5.0 Alpha 2.
+
+In this release, mostly small bugfixes have been made in Fluid. Highlights are:
+
+ * {settings} is now automatically in partials. (#6289)
+
+ * You can now use <f:security.ifAuthenticated> and <f:security.ifHasRole role="foo"> (#9143)
+   in your Fluid templates to check whether an FE user is currently logged in / belongs to the
+   specified usergroup.
+   Note: if "role" is a numeric value the uid of the usergroup is compared, otherwise the title
+   of the usergroup.
+   To deal with BE users you can use the respective be.security.* view helpers
+
+ * Boolean expressions can now contain negative numbers. Resolves #9434.
+
+Full Changes:
+-------------
+
+[+FEATURE] Fluid (Core): {settings} is available in Partials
+Now, the {settings} are automatically available in partials and sections.
+Before, they had to be passed explicitely, i.e. by calling
+<f:render section="..." arguments="{settings: settings}" />.
+If somebody defined his own "settings"-argument, this still takes precedence:
+<f:render section="..." arguments="{settings: some.different.settings}" />
+This means that this change is completely backwards compatible.
+NOTE: The settings are NOT merged together, like it has been suggested in #6289,
+as this will lead to un-obvious behavior for the user.
+
+[-API] Fluid (Core): Remove getTemplateParser() method.
+This method has accidentally gotten an @api annotation,
+and was only needed for the Viewhelpertest package.
+Now, this package is cleaned up, and this method can be
+completely thrown away.
+
+[+BUGFIX] Fluid (ViewHelpers): Fix bug in Form ViewHelper
+Since #6521 you can use the "objectName" argument to specify the name of a bound object rather then using the "name" attribute.
+But if you do so, the rendered hidden identity field is not correct anymore. This behavior is fixed with this commit.
+Resolves: #9515
+
+* Documentation Cleanup
+
+[+FEATURE] Fluid (ViewHelpers): Backported ifAuthenticated & ifHasRole security ViewHelpers
+you can now use <f:security.ifAuthenticated> and <f:security.ifHasRole role="foo">
+in your Fluid templates to check whether an FE user is currently logged in / belongs to the
+specified usergroup.
+Note: if role is a numeric value the uid of the usergroup is compared, otherwise the title
+of the usergroup.
+to deal with BE users you can use the respective be.security.* view helpers
+Resolves #9143
+
+[TASK] Fluid (Core): Regular Expression performance improvements
+In rare cases, on some systems (like mine), the
+PCRE parser reproducably crashes if one passes very
+long argument strings into it, or very complex ones.
+With this patch, the parser is slightly modified
+to decrease the use of backtracking; which then avoids
+the crashes mostly.
+
+[TASK] Fluid (Core): Formatted Regular Expressions more nicely
+There were some undocumented regular expressions
+in the parser, which needed to be formatted nicely.
+
+[+BUGFIX] Fluid (Core): Boolean expressions can now contain negative numbers. Resolves #9434.
+Boolean expressions with negative numbers did not work so far.
+Now, they work as expected. Example from Viewhelpertest which displayed
+a wrong result before, and now displays the correct result:
+<f:if condition="{testVariables.number.minusOne} < -1.1">
+	<f:then>Then part!</f:then>
+	<f:else>Else part!</f:else>
+</f:if>
+Issue: #9434
+
+
 
 Changes for 1.3.0 Alpha 1
 =========================
+included in TYPO3 4.5.0 Alpha 1.
 
 In this release, numerous bugs have been fixed, making Fluid more stable than ever. Below are some nice features which have been introduced:
 

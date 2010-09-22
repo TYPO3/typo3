@@ -123,9 +123,9 @@ class Tx_Fluid_ViewHelpers_Form_SelectViewHelper extends Tx_Fluid_ViewHelpers_Fo
 
 		$content = '';
 
-		// register field name for token generation.
-		// in case it is a multi-select, we need to register the field name
-		// as often as there are elements in the box
+			// register field name for token generation.
+			// in case it is a multi-select, we need to register the field name
+			// as often as there are elements in the box
 		if ($this->arguments->hasArgument('multiple') && $this->arguments['multiple'] !== '') {
 			$content .= $this->renderHiddenFieldForEmptyValue();
 			for ($i=0; $i<count($options); $i++) {

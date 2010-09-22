@@ -21,46 +21,50 @@
  *                                                                        */
 
 /**
+ * This view helper implements an ifAuthenticated/else condition for FE users/groups.
+ *
+ * = Examples =
+ *
+ * <code title="Basic usage">
+ * <f:security.ifAuthenticated>
+ *   This is being shown whenever a FE user is logged in
+ * </f:security.ifAuthenticated>
+ * </code>
+ * <output>
+ * Everything inside the <f:ifAuthenticated> tag is being displayed if you are authenticated with any FE user account.
+ * </output>
+ *
+ * <code title="IfAuthenticated / then / else">
+ * <f:security.ifAuthenticated>
+ *   <f:then>
+ *     This is being shown in case you have access.
+ *   </f:then>
+ *   <f:else>
+ *     This is being displayed in case you do not have access.
+ *   </f:else>
+ * </f:security.ifAuthenticated>
+ * </code>
+ * <output>
+ * Everything inside the "then" tag is displayed if you have access.
+ * Otherwise, everything inside the "else"-tag is displayed.
+ * </output>
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
- * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Security_IfAuthenticatedViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
 
 	/**
-	 * Renders the content.
+	 * Renders <f:then> child if any FE user is currently authenticated, otherwise renders <f:else> child.
 	 *
-	 * @param string $section Name of section to render. If used in a layout, renders a section of the main content file. If used inside a standard template, renders a section of the same file.
-	 * @param string $partial Reference to a partial.
-	 * @param array $arguments Arguments to pass to the partial.
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 * @return string the rendered string
 	 * @api
 	 */
-	public function render($section = NULL, $partial = NULL, $arguments = array()) {
-		$arguments = $this->loadSettingsIntoArguments($arguments);
-
-		if ($partial !== NULL) {
-			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
-		} elseif ($section !== NULL) {
-			return $this->viewHelperVariableContainer->getView()->renderSection($section, $arguments);
+	public function render() {
+		if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->loginUser) {
+			return $this->renderThenChild();
 		}
-		return '';
-	}
-
-	/**
-	 * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
-	 *
-	 * @param array $arguments
-	 * @return array
-	 */
-	protected function loadSettingsIntoArguments($arguments) {
-		if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
-			$arguments['settings'] = $this->templateVariableContainer->get('settings');
-		}
-		return $arguments;
+		return $this->renderElseChild();
 	}
 }
-
 ?>

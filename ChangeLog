@@ -1,3 +1,7 @@
+2010-09-22  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Raised Extbase and Fluid version numbers to 1.3.0alpha2. See the ChangeLog in Extbase and Fluid for details.
+
 2010-09-21  Steffen Kamper  <steffen@typo3.org>
 
 	* Added feature #15699: Provide a wizard for media to process the video url (Thanks to Aishwara M.B.)

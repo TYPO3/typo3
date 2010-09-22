@@ -63,11 +63,11 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 			$formObjectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
 			if (!empty($formObjectName)) {
 				$propertySegments = explode('.', $this->arguments['property']);
-				$properties = '';
+				$propertyPath = '';
 				foreach ($propertySegments as $segment) {
-					$properties .= '[' . $segment . ']';
+					$propertyPath .= '[' . $segment . ']';
 				}
-				$name = $formObjectName . $properties;
+				$name = $formObjectName . $propertyPath;
 			} else {
 				$name = $this->arguments['property'];
 			}
@@ -119,17 +119,17 @@ abstract class Tx_Fluid_ViewHelpers_Form_AbstractFormFieldViewHelper extends Tx_
 	protected function addAdditionalIdentityPropertiesIfNeeded() {
 		$propertySegments = explode('.', $this->arguments['property']);
 		if (count($propertySegments) >= 2) {
-			// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
+				// hierarchical property. If there is no "." inside (thus $propertySegments == 1), we do not need to do anything
 			$formObject = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObject');
 
 			$objectName = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'formObjectName');
-			// If Count == 2 -> we need to go through the for-loop exactly once
+				// If Count == 2 -> we need to go through the for-loop exactly once
 			for ($i=1; $i < count($propertySegments); $i++) {
 				$object = Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
 				$objectName .= '[' . $propertySegments[$i-1] . ']';
 				$hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
 
-				// Add the hidden identity field to the ViewHelperVariableContainer
+					// Add the hidden identity field to the ViewHelperVariableContainer
 				$additionalIdentityProperties = $this->viewHelperVariableContainer->get('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties');
 				$additionalIdentityProperties[$objectName] = $hiddenIdentityField;
 				$this->viewHelperVariableContainer->addOrUpdate('Tx_Fluid_ViewHelpers_FormViewHelper', 'additionalIdentityProperties', $additionalIdentityProperties);

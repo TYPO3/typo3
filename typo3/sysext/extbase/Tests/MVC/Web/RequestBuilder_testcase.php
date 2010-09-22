@@ -44,26 +44,26 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 	public function setUp() {
 		$this->configuration = array(
 			'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',
-			'pluginName' => 'pi1',
+			'pluginName' => 'Pi1',
 			'extensionName' => 'MyExtension',
 			'controller' => 'TheFirstController',
 			'action' => 'show',
-			'switchableControllerActions.' => array(
-				'1.' => array(
+			'switchableControllerActions' => array(
+				'TheFirstController' => array(
 					'controller' => 'TheFirstController',
 					'actions' => 'show,index, ,new,create,delete,edit,update,setup,test'
-					),
-				'2.' => array(
+				),
+				'TheSecondController' => array(
 					'controller' => 'TheSecondController',
 					'actions' => 'show, index'
-					),
-				'3.' => array(
+				),
+				'TheThirdController' => array(
 					'controller' => 'TheThirdController',
 					'actions' => 'delete,create'
-					)
 				)
-			);
-		$this->builder = new Tx_Extbase_MVC_Web_RequestBuilder;
+			)
+		);
+		$this->builder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_RequestBuilder'), array('dummy'));
 		$this->getBackup = $_GET;
 		$this->postBackup = $_POST;
 	}
@@ -80,7 +80,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 		$this->builder->initialize($this->configuration);
 		$request = $this->builder->build();
 		$this->assertEquals('Tx_Extbase_MVC_Web_Request', get_class($request));
-		$this->assertEquals('pi1', $request->getPluginName());
+		$this->assertEquals('Pi1', $request->getPluginName());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('TheFirstController', $request->getControllerName());
 		$this->assertEquals('show', $request->getControllerActionName());
@@ -104,10 +104,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 		$configuration = $this->configuration;
 		unset($configuration['controller']);
 		unset($configuration['action']);
-		unset($configuration['switchableControllerActions.']);
+		unset($configuration['switchableControllerActions']);
 		$this->builder->initialize($configuration);
 		$request = $this->builder->build();
-		$this->assertEquals('pi1', $request->getPluginName());
+		$this->assertEquals('Pi1', $request->getPluginName());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('Standard', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
@@ -119,9 +119,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 	public function buildWithMissingActionsReturnsAWebRequestObjectWithDefaultControllerSettings() {
 		$configuration = $this->configuration;
 		unset($configuration['action']);
+		unset($configuration['switchableControllerActions']);
 		$this->builder->initialize($configuration);
 		$request = $this->builder->build();
-		$this->assertEquals('pi1', $request->getPluginName());
+		$this->assertEquals('Pi1', $request->getPluginName());
 		$this->assertEquals('MyExtension', $request->getControllerExtensionName());
 		$this->assertEquals('TheFirstController', $request->getControllerName());
 		$this->assertEquals('index', $request->getControllerActionName());
@@ -140,9 +141,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 	 * @test
 	 */
 	public function buildSetsParametersFromGetAndPostVariables() {
-		$builder = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Web_RequestBuilder'), array('dummy'));
-		$builder->_set('extensionName', 'someExtensionName');
-		$builder->_set('pluginName', 'somePluginName');
+		$this->builder->_set('extensionName', 'someExtensionName');
+		$this->builder->_set('pluginName', 'somePluginName');
 
 		$_GET = array(
 			'tx_someotherextensionname_somepluginname' => array(
@@ -167,7 +167,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 			)
 		);
 
-		$request = $builder->build();
+		$request = $this->builder->build();
 		$expectedResult = array(
 			'parameter1' => 'value1',
 			'parameter2' => array(
@@ -179,5 +179,24 @@ class Tx_Extbase_MVC_Web_RequestBuilder_testcase extends Tx_Extbase_BaseTestCase
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
+	/**
+	 * @test
+	 */
+	public function initializeCorrectlySetsAllowedControllerActions() {
+		$this->builder->initialize($this->configuration);
+		$expectedResult = array(
+			'TheFirstController' => array(
+				'show', 'index', 'new', 'create', 'delete', 'edit', 'update', 'setup', 'test'
+			),
+			'TheSecondController' => array(
+				'show', 'index'
+			),
+			'TheThirdController' => array(
+				'delete', 'create'
+			)
+		);
+		$actualResult = $this->builder->_get('allowedControllerActions');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
 }
 ?>

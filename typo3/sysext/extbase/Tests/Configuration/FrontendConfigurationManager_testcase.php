@@ -59,5 +59,47 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager_testcase extends Tx_
 		$this->assertEquals(array('foo' => 'bar'), $this->frontendConfigurationManager->loadTypoScriptSetup());
 	}
 
+	/**
+	 * @test
+	 */
+	public function overrideSwitchableControllerActionsFromFlexformMergesNonCacheableActions() {
+		$frameworkConfiguration = array(
+			'userFunc' => 'tx_extbase_dispatcher->dispatch',
+			'pluginName' => 'Pi1',
+			'extensionName' => 'SomeExtension',
+			'switchableControllerActions' => array(
+				'Controller1' => array(
+					'controller' => 'Controller1',
+					'actions' => 'action1 , action2'
+				),
+				'Controller2' => array(
+					'controller' => 'Controller2',
+					'actions' => 'action2 , action1,action3',
+					'nonCacheableActions' => 'action2, action3'
+				)
+			)
+		);
+		$flexformConfiguration = array(
+			'switchableControllerActions' => 'Controller1->action2;Controller2->action3;Controller2->action1'
+		);
+		$expectedResult = array(
+			'userFunc' => 'tx_extbase_dispatcher->dispatch',
+			'pluginName' => 'Pi1',
+			'extensionName' => 'SomeExtension',
+			'switchableControllerActions' => array(
+				'Controller1' => array(
+					'controller' => 'Controller1',
+					'actions' => 'action2'
+				),
+				'Controller2' => array(
+					'controller' => 'Controller2',
+					'actions' => 'action3,action1',
+					'nonCacheableActions' => 'action3'
+				)
+			)
+		);
+		$actualResult = $this->frontendConfigurationManager->_callRef('overrideSwitchableControllerActionsFromFlexform', $frameworkConfiguration, $flexformConfiguration);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
 }
 ?>

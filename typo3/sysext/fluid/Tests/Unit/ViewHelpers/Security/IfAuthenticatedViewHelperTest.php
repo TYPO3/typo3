@@ -20,46 +20,60 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+require_once(dirname(__FILE__) . '/../ViewHelperBaseTestcase.php');
+
 /**
+ * Testcase for security.ifAuthenticated view helper
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @api
- * @scope prototype
  */
-class Tx_Fluid_ViewHelpers_RenderViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class Tx_Fluid_ViewHelpers_Security_IfAuthenticatedViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
 
 	/**
-	 * Renders the content.
-	 *
-	 * @param string $section Name of section to render. If used in a layout, renders a section of the main content file. If used inside a standard template, renders a section of the same file.
-	 * @param string $partial Reference to a partial.
-	 * @param array $arguments Arguments to pass to the partial.
-	 * @return string
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @api
+	 * var Tx_Fluid_ViewHelpers_Security_IfAuthenticatedViewHelper
 	 */
-	public function render($section = NULL, $partial = NULL, $arguments = array()) {
-		$arguments = $this->loadSettingsIntoArguments($arguments);
+	protected $viewHelper;
 
-		if ($partial !== NULL) {
-			return $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments);
-		} elseif ($section !== NULL) {
-			return $this->viewHelperVariableContainer->getView()->renderSection($section, $arguments);
-		}
-		return '';
+	/**
+	 * @var tslib_fe
+	 */
+	protected $tsfeBackup;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->tsfeBackup = isset($GLOBALS['TSFE']) ? $GLOBALS['TSFE'] : NULL;
+		$GLOBALS['TSFE'] = new stdClass();
+		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_ViewHelpers_Security_IfAuthenticatedViewHelper', array('renderThenChild', 'renderElseChild'));
+		$this->viewHelper->expects($this->any())->method('renderThenChild')->will($this->returnValue('then child'));
+		$this->viewHelper->expects($this->any())->method('renderElseChild')->will($this->returnValue("else child"));
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+		$this->viewHelper->initializeArguments();
+	}
+
+	public function tearDown() {
+		$GLOBALS['TSFE'] = $this->tsfeBackup;
 	}
 
 	/**
-	 * If $arguments['settings'] is not set, it is loaded from the TemplateVariableContainer (if it is available there).
-	 *
-	 * @param array $arguments
-	 * @return array
+	 * @test
 	 */
-	protected function loadSettingsIntoArguments($arguments) {
-		if (!isset($arguments['settings']) && $this->templateVariableContainer->exists('settings')) {
-			$arguments['settings'] = $this->templateVariableContainer->get('settings');
-		}
-		return $arguments;
+	public function viewHelperRendersThenChildIfFeUserIsLoggedIn() {
+		$GLOBALS['TSFE']->loginUser = 1;
+
+		$actualResult = $this->viewHelper->render();
+		$this->assertEquals('then child', $actualResult);
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function viewHelperRendersElseChildIfFeUserIsNotLoggedIn() {
+		$GLOBALS['TSFE']->loginUser = 0;
+
+		$actualResult = $this->viewHelper->render();
+		$this->assertEquals('else child', $actualResult);
 	}
 }
 
