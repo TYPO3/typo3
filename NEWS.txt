@@ -10,18 +10,30 @@ General
 	* A Sprite Generator was added. This allows you to create your own
 	  sprite files, also core can generate the files if some new icons
 	  were added (#15079).
-	* When TYPO3 runs with two different domain names for the FE and the BE,
-	  it is now possible to set accordingly different cookie domains using
-	  $TYPO3_CONF_VARS['FE']['cookieDomain'] and $TYPO3_CONF_VARS['BE']['cookieDomain'].
-	* Pages of type "Shortcut" can now also link to the parent page, not only to the
-	  first or a random subpage.
+	* When TYPO3 runs with two different domain names for the FE and the
+	  BE, it is now possible to set accordingly different cookie domains
+	  using $TYPO3_CONF_VARS['FE']['cookieDomain'] and
+	  $TYPO3_CONF_VARS['BE']['cookieDomain'].
+	* Pages of type "Shortcut" can now also link to the parent page, not
+	  only to the first or a random subpage.
+	* The media element now has a core wizard for rewriting URLs. This
+	  allows the user to copy the URL from browser (eg a youtube URL like
+	  http://www.youtube.com/watch?v=pkA9qw80xO0) and use
+	  it in the media element as URL. Currently supported platforms:
+	  youtube, dailymotion, sevenload, vimeo, clipfish, google,
+	  metacafe, myvideo, liveleak and veoh.
+
 
 
 Backend
 =======
 
+	* The frameset was removed. This makes the Backend a lot faster. 
+          Now the navigation tree also can be resized. The new backend works
+          using the ExtJS viewport, providing an easy and unified interface
+          to manipulate the content of the different panels.
 	* The user can decide the type of each page created in the
-	  "Create multiple pages" Wizard. And the wizard can create more 
+	  "Create multiple pages" Wizard. And the wizard can create more
 	  than 9 pages at once.
 	* All system extensions from typo3/mod were moved to real system
 	  extensions. These modules are:
@@ -46,7 +58,7 @@ Backend
 	    don't know how to resize the pictures or do not have the software
 	  - Prevent fileadmin to be overflooded with huge pictures which
 	    will never be used in their original size
-	  - Automatically resize "huge" pictures after the upload 
+	  - Automatically resize "huge" pictures after the upload
 	  Extension using it already:
 	  http://forge.typo3.org/projects/show/extension-image_autoresize
 	* New TS config option to disable the "Show secondary options"
@@ -68,7 +80,7 @@ Extbase / Fluid
 	  storagePid. This changes the behavior of argument mapping and the
 	  way extbase fetches 1:1 relations. Resolves #5631. You should not
 	  experience any negative side-effects of this change, i.e. if your
-	  extension worked before, it will definitely after this change. 
+	  extension worked before, it will definitely after this change.
 	  However, it makes the record handling more robust.
 	* Performance improvements in
 	  TypoScript::convertTypoScriptArrayToPlainArray.
@@ -90,10 +102,10 @@ Compatibility
 	  path to the php file and the classname. Instead the class needs to be
 	  registered for autoloading. See #15586 for details.
 	  Example:
-	  New: 
+	  New:
 	  $TYPO3_CONF_VARS['SYS']['caching']['cacheFrontends']['myext']='tx_myext_cache';
 	  Old:
-	  $TYPO3_CONF_VARS['SYS']['caching']['cacheFrontends']['myext']='/path/tx_myext_cache.php:tx_myext_cache'; 
+	  $TYPO3_CONF_VARS['SYS']['caching']['cacheFrontends']['myext']='/path/tx_myext_cache.php:tx_myext_cache';
 
 
 Development
@@ -127,7 +139,7 @@ TypoScript
 		noTrimWrap = || $|
 	}
 	# Will result in "0,80 $"
-	
+
 	* GIFBUILDER has a new feature: ELLIPSE (#2049). Example:
 	file  =  GIFBUILDER
 	file  {
@@ -138,7 +150,7 @@ TypoScript
 		10.dimensions  =  100,100,50,50
 		10.color  =  red
 	}
-	
+
 
 Database API / DBAL
 ===================
