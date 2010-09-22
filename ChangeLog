@@ -1,5 +1,6 @@
 2010-09-22  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15738: TCA field for versioning type (vtype) should only be available if elementVersioningOnly is not set (Thanks to Benjamin Mack)
 	* Fixed bug #15465: sys_action: setting mountpoints as non-admin (Thanks to Georg Ringer)
 	* Fixed bug #15761: tslib_menu misses test of html5
 

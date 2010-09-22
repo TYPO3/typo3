@@ -169,17 +169,6 @@ $TCA['sys_workspace'] = array(
 				),
 			)
 		),
-		'vtypes' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.vtypes',
-			'config' => array(
-				'type' => 'check',
-				'items' => array(
-					array('Element', 0),
-					array('Page', 0),
-					array('Branch', 0)
-				),
-			)
-		),
 		'publish_access' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.publish_access',
 			'config' => array(
@@ -207,9 +196,31 @@ $TCA['sys_workspace'] = array(
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.users,adminusers,members,reviewers,stagechg_notification,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.mountpoints,db_mountpoints,file_mountpoints,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.publishing,publish_time,unpublish_time,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,review_stage_edit,disable_autocreate,swap_modes,vtypes,publish_access'
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_filemounts.tabs.other,freeze,live_edit,review_stage_edit,disable_autocreate,swap_modes,publish_access'
 		)
 	)
 );
+
+// if other versioning options than element versions are active, 
+// the TCA column needs to be added as well
+if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly'])
+	&& !$GLOBALS['TYPO3_CONF_VARS']['BE']['elementVersioningOnly']) {
+	$additionalWorkspaceTcaColumn = array(
+		'vtypes' => array(
+			'label' => 'LLL:EXT:lang/locallang_tca.xml:sys_workspace.vtypes',
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					array('Element', 0),
+					array('Page',    0),
+					array('Branch',  0)
+				)
+			)
+		)
+	);
+	t3lib_extMgm::addTCAcolumns('sys_workspace', $additionalWorkspaceTcaColumn, FALSE);
+	t3lib_extMgm::addToAllTCAtypes('sys_workspace', 'vtypes', '', 'after:swap_modes');
+}
+
 
 ?>
