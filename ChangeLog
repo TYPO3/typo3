@@ -1,3 +1,7 @@
+2010-09-23  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to 15691: Javascript Error in taskcenter
+
 2010-09-22  Ernesto Baschny <ernst@cron-it.de>
 
 	* Fixed bug #15685: Enhancement of t3lib_div::testInt (#15020) introduced a different behaviour. This restores original behaviour. (Thanks to Helmut Hummel)
