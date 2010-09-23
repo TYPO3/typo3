@@ -416,13 +416,14 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($this->format !== '') {
 			$controllerArguments['format'] = $this->format;
 		}
-		$argumentPrefix = strtolower('tx_' . $extensionName . '_' . $pluginName);
-		$prefixedControllerArguments = array($argumentPrefix => $controllerArguments);
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature($pluginSignature);
+		$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
 
 		return $this->build();
 	}
-	
+
 	/**
 	 * Builds the URI
 	 * Depending on the current context this calls buildBackendUri() or buildFrontendUri()
@@ -561,11 +562,11 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		}
 		return $arguments;
 	}
-	
+
 	/**
 	 * Converts a given object recursively into an array.
 	 *
-	 * @param Tx_Extbase_DomainObject_AbstractDomainObject $object 
+	 * @param Tx_Extbase_DomainObject_AbstractDomainObject $object
 	 * @return void
 	 */
 	// TODO Refactore this into convertDomainObjectsToIdentityArrays()

@@ -22,6 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once (t3lib_extMgm::extPath('extbase') . 'Tests/Fixtures/Dispatcher.php');
 
 /**
  * Testcase for class Tx_Extbase_Utility_Extension
@@ -59,6 +60,57 @@ class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 		if (!isset($GLOBALS['TSFE']->tmpl->setup)) {
 			$GLOBALS['TSFE']->tmpl->setup = array();
 		}
+		$GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'] = array(
+			'9' => 'CASE',
+			'9.' => array(
+				'key.' => array(
+					'field' => 'layout'),
+					0 => '< plugin.tt_news'
+				),
+			'someextension_someplugin' => 'USER',
+			'someextension_someplugin.' => array(
+				'userFunc' => 'tx_extbase_dispatcher->dispatch',
+				'pluginName' => 'SomePlugin',
+				'extensionName' => 'SomeExtension',
+				'controller' => 'ControllerName',
+				'action' => 'index',
+				'switchableControllerActions.' => array(
+					'ControllerName.' => array(
+						'actions' => 'index,otherAction',
+					),
+				),
+			),
+			'someotherextensionname_secondplugin' => 'USER',
+			'someotherextensionname_secondplugin.' => array(
+				'userFunc' => 'tx_extbase_dispatcher->dispatch',
+				'pluginName' => 'SecondPlugin',
+				'extensionName' => 'SomeOtherExtensionName',
+				'controller' => 'ControllerName',
+				'action' => 'index',
+				'switchableControllerActions.' => array(
+					'ControllerName.' => array(
+						'actions' => 'index,otherAction',
+					),
+					'SecondControllerName.' => array(
+						'actions' => 'someAction,someOtherAction',
+						'nonCacheableActions' => 'someOtherAction',
+					),
+				),
+			),
+			'extensionname_thirdplugin' => 'USER',
+			'extensionname_thirdplugin.' => array(
+				'userFunc' => 'tx_extbase_dispatcher->dispatch',
+				'pluginName' => 'ThirdPlugin',
+				'extensionName' => 'ExtensionName',
+				'controller' => 'ControllerName',
+				'action' => 'index',
+				'switchableControllerActions.' => array(
+					'FirstController.' => array(
+						'actions' => 'otherAction,thirdAction',
+					),
+				),
+			),
+		);
 	}
 
 	public function tearDown() {
@@ -304,6 +356,43 @@ tt_content.list.20.myextension_pi1 {', $staticTypoScript);
 ', $staticTypoScript);
 	}
 
+	/**
+	 * DataProvider for getPluginNamespaceByPluginSignatureTests()
+	 *
+	 * @return array
+	 */
+	public function getPluginNamespaceByPluginSignatureDataProvider() {
+		return array(
+			array('someextension_someplugin', 'tx_someextension_someplugin'),
+			array('nonexistingextension_someplugin', 'tx_nonexistingextension_someplugin'),
+			array('InvalidPluginNamespace', 'tx_InvalidPluginNamespace'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getPluginNamespaceByPluginSignatureDataProvider
+	 */
+	public function getPluginNamespaceByPluginSignatureTests($pluginSignature, $expectedResult) {
+		$dispatcher = new Tx_Extbase_Tests_Fixtures_Dispatcher();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'loadTypoScriptSetup'));
+		$dispatcher->setConfigurationManager($mockConfigurationManager);
+		$actualResult = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature($pluginSignature);
+		$this->assertEquals($expectedResult, $actualResult, 'Failing for $pluginSignature: "' . $pluginSignature . '"');
+	}
+
+	/**
+	 * @test
+	 */
+	public function pluginNamespaceCanBeOverridden() {
+		$dispatcher = new Tx_Extbase_Tests_Fixtures_Dispatcher();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'loadTypoScriptSetup', 'getFrameworkConfiguration'));
+		$mockConfigurationManager->expects($this->once())->method('getFrameworkConfiguration')->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
+		$dispatcher->setConfigurationManager($mockConfigurationManager);
+		$expectedResult = 'overridden_plugin_namespace';
+		$actualResult = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature('somePluginSignature');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
 }
 
 ?>

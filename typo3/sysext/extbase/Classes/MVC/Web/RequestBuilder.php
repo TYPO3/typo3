@@ -108,7 +108,9 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 * @return Tx_Extbase_MVC_Web_Request The web request as an object
 	 */
 	public function build() {
-		$parameters = t3lib_div::_GPmerged('tx_' . strtolower($this->extensionName) . '_' . strtolower($this->pluginName));
+		$pluginSignature = strtolower($this->extensionName . '_' . $this->pluginName);
+		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature($pluginSignature);
+		$parameters = t3lib_div::_GPmerged($pluginNamespace);
 
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {
 			$controllerName = filter_var($parameters['controller'], FILTER_SANITIZE_STRING);

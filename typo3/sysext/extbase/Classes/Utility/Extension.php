@@ -458,5 +458,27 @@ tt_content.list.20.' . $pluginSignature . ' {
 		return $returnValue;
 	}
 
+	/**
+	 * Determines the plugin namespace of the specified plugin (defaults to "tx_[extensionName]_[pluginName]")
+	 * If plugin.tx_$pluginSignature.view.pluginNamespace is set, this value is returned
+	 * If pluginNamespace is not specified "tx_[extensionName]_[pluginName]" is returned.
+	 *
+	 * @param string $pluginSignature Plugin signature: strtolower($extensionName) . '_' . strtolower($pluginName)
+	 * @return string plugin namespace
+	 */
+	public static function getPluginNamespaceByPluginSignature($pluginSignature) {
+		$defaultPluginNamespace = 'tx_' . $pluginSignature;
+		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+		if (!isset($configurationManager) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
+			return $defaultPluginNamespace;
+		}
+		$pluginConfiguration = $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'][$pluginSignature . '.'];
+		$frameworkConfiguration = $configurationManager->getFrameworkConfiguration($pluginConfiguration);
+		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
+			return $defaultPluginNamespace;
+		}
+		return $frameworkConfiguration['view']['pluginNamespace'];
+	}
+
 }
 ?>
