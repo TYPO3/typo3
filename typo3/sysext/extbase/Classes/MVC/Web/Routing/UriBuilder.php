@@ -410,13 +410,19 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($extensionName === NULL) {
 			$extensionName = $this->request->getControllerExtensionName();
 		}
+		if ($pluginName === NULL && TYPO3_MODE === 'FE') {
+			$pluginName = Tx_Extbase_Utility_Extension::getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action']);
+		}
 		if ($pluginName === NULL) {
 			$pluginName = $this->request->getPluginName();
+		}
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		if ($this->targetPageUid === NULL && TYPO3_MODE === 'FE') {
+			$this->targetPageUid = Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature($pluginSignature);
 		}
 		if ($this->format !== '') {
 			$controllerArguments['format'] = $this->format;
 		}
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature($pluginSignature);
 		$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);

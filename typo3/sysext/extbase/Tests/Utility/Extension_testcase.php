@@ -67,11 +67,11 @@ class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 					'field' => 'layout'),
 					0 => '< plugin.tt_news'
 				),
-			'someextension_someplugin' => 'USER',
-			'someextension_someplugin.' => array(
+			'extensionname_someplugin' => 'USER',
+			'extensionname_someplugin.' => array(
 				'userFunc' => 'tx_extbase_dispatcher->dispatch',
 				'pluginName' => 'SomePlugin',
-				'extensionName' => 'SomeExtension',
+				'extensionName' => 'ExtensionName',
 				'controller' => 'ControllerName',
 				'action' => 'index',
 				'switchableControllerActions.' => array(
@@ -105,7 +105,7 @@ class Tx_Extbase_Utility_Extension_testcase extends tx_phpunit_testcase {
 				'controller' => 'ControllerName',
 				'action' => 'index',
 				'switchableControllerActions.' => array(
-					'FirstController.' => array(
+					'ControllerName.' => array(
 						'actions' => 'otherAction,thirdAction',
 					),
 				),
@@ -170,6 +170,8 @@ plugin.tx_myextension {
 		templateRootPath =
 		layoutRootPath =
 		partialRootPath =
+		 # the defaultPid can be an integer but defaults to the string "auto" which means that the target pid is determined automatically
+		defaultPid = auto
 	}
 }', $defaultTypoScript);
 	}
@@ -393,6 +395,126 @@ tt_content.list.20.myextension_pi1 {', $staticTypoScript);
 		$actualResult = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature('somePluginSignature');
 		$this->assertEquals($expectedResult, $actualResult);
 	}
+
+	/**
+	 * DataProvider for getPluginNameByActionTests()
+	 *
+	 * @return array
+	 */
+	public function getPluginNameByActionDataProvider() {
+		return array(
+			array('ExtensionName', 'ControllerName', 'someNonExistingAction', NULL),
+			array('ExtensionName', 'ControllerName', 'index', 'SomePlugin'),
+			array('ExtensionName', 'ControllerName', 'thirdAction', 'ThirdPlugin'),
+			array('eXtEnSiOnNaMe', 'cOnTrOlLeRnAmE', 'thirdAction', 'ThirdPlugin'),
+			array('eXtEnSiOnNaMe', 'cOnTrOlLeRnAmE', 'ThIrDaCtIoN', NULL),
+			array('SomeOtherExtensionName', 'ControllerName', 'otherAction', 'SecondPlugin'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getPluginNameByActionDataProvider
+	 */
+	public function getPluginNameByActionTests($extensionName, $controllerName, $actionName, $expectedResult) {
+		$actualResult = Tx_Extbase_Utility_Extension::getPluginNameByAction($extensionName, $controllerName, $actionName);
+		$this->assertEquals($expectedResult, $actualResult, 'Failing for $extensionName: "' . $extensionName . '", $controllerName: "' . $controllerName . '", $actionName: "' . $actionName . '" - ');
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Exception
+	 */
+	public function getPluginNameByActionThrowsExceptionIfMoreThanOnePluginMatches() {
+		Tx_Extbase_Utility_Extension::getPluginNameByAction('ExtensionName', 'ControllerName', 'otherAction');
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTargetPidByPluginSignatureReturnsNullIfConfigurationManagerIsNotInitialized() {
+		$this->assertNull(Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature('plugin_signature'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTargetPidByPluginSignatureReturnsNullIfDefaultPidIsNotConfigured() {
+		$dispatcher = new Tx_Extbase_Tests_Fixtures_Dispatcher();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'loadTypoScriptSetup', 'getFrameworkConfiguration'));
+		$mockConfigurationManager->expects($this->once())->method('getFrameworkConfiguration')->with($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']['extensionname_someplugin.'])->will($this->returnValue(array()));
+		$dispatcher->setConfigurationManager($mockConfigurationManager);
+		$this->assertNull(Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature('extensionname_someplugin'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTargetPidByPluginSignatureReturnsTheConfiguredDefaultPid() {
+		$dispatcher = new Tx_Extbase_Tests_Fixtures_Dispatcher();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'loadTypoScriptSetup', 'getFrameworkConfiguration'));
+		$mockConfigurationManager->expects($this->once())->method('getFrameworkConfiguration')->with($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']['extensionname_someplugin.'])->will($this->returnValue(array('view' => array('defaultPid' => '123'))));
+		$dispatcher->setConfigurationManager($mockConfigurationManager);
+		$expectedResult = 123;
+		$actualResult = Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature('extensionname_someplugin');
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto() {
+		$dispatcher = new Tx_Extbase_Tests_Fixtures_Dispatcher();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'loadTypoScriptSetup', 'getFrameworkConfiguration'));
+		$mockConfigurationManager->expects($this->once())->method('getFrameworkConfiguration')->with($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']['extensionname_someplugin.'])->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
+		$dispatcher->setConfigurationManager($mockConfigurationManager);
+		$pluginSignature = 'extensionname_someplugin';
+		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->with('tt_content')->will($this->returnValue(' AND enable_fields'));
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->with($pluginSignature, 'tt_content')->will($this->returnValue('"pluginSignature"'));
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->with(
+			'pid',
+			'tt_content',
+			'list_type="pluginSignature" AND enable_fields',
+			'',
+			''
+		)->will($this->returnValue(array(array('pid' => '321'))));
+		$expectedResult = 321;
+		$actualResult = Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature($pluginSignature);
+		$this->assertEquals($expectedResult, $actualResult);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined() {
+		$dispatcher = new Tx_Extbase_Tests_Fixtures_Dispatcher();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'loadTypoScriptSetup', 'getFrameworkConfiguration'));
+		$mockConfigurationManager->expects($this->once())->method('getFrameworkConfiguration')->with($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']['extensionname_someplugin.'])->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
+		$dispatcher->setConfigurationManager($mockConfigurationManager);
+		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array()));
+		$this->assertNull(Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature('extensionname_someplugin'));
+	}
+
+	/**
+	 * @test
+	 * @expectedException Tx_Extbase_Exception
+	 */
+	public function getTargetPidByPluginSignatureThrowsExceptionIfMoreThanOneTargetPidsWereFound() {
+		$dispatcher = new Tx_Extbase_Tests_Fixtures_Dispatcher();
+		$mockConfigurationManager = $this->getMock('Tx_Extbase_Configuration_AbstractConfigurationManager', array('getContextSpecificFrameworkConfiguration', 'loadTypoScriptSetup', 'getFrameworkConfiguration'));
+		$mockConfigurationManager->expects($this->once())->method('getFrameworkConfiguration')->with($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']['extensionname_someplugin.'])->will($this->returnValue(array('view' => array('defaultPid' => 'auto'))));
+		$dispatcher->setConfigurationManager($mockConfigurationManager);
+		$GLOBALS['TSFE']->sys_page = $this->getMock('t3lib_pageSelect', array('enableFields'));
+		$GLOBALS['TSFE']->sys_page->expects($this->once())->method('enableFields')->will($this->returnValue(' AND enable_fields'));
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('fullQuoteStr')->will($this->returnValue('"pluginSignature"'));
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_SELECTgetRows')->will($this->returnValue(array(array('pid' => 123), array('pid' => 124))));
+		Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature('extensionname_someplugin');
+	}
+
 }
 
 ?>

@@ -95,6 +95,8 @@ class Tx_Extbase_Utility_Extension {
 		templateRootPath =
 		layoutRootPath =
 		partialRootPath =
+		 # the defaultPid can be an integer but defaults to the string "auto" which means that the target pid is determined automatically
+		defaultPid = auto
 	}
 }';
 		t3lib_extMgm::addTypoScript($extensionName, 'setup', '
@@ -480,5 +482,81 @@ tt_content.list.20.' . $pluginSignature . ' {
 		return $frameworkConfiguration['view']['pluginNamespace'];
 	}
 
+	/**
+	 * Iterates through the global TypoScript configuration and returns the name of the plugin
+	 * that matches specified extensionName, controllerName and actionName.
+	 * If no matching plugin was found, NULL is returned.
+	 * If more than one plugin matches, an Exception will be thrown
+	 *
+	 * @param string $extensionName name of the target extension (UpperCamelCase)
+	 * @param string $controllerName name of the target controller (UpperCamelCase)
+	 * @param string $actionName name of the target action (lowerCamelCase)
+	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
+	 */
+	public static function getPluginNameByAction($extensionName, $controllerName, $actionName) {
+		if (!isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
+			return NULL;
+		}
+		$pluginNames = array();
+		foreach($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'] as $pluginConfiguration) {
+			if (!is_array($pluginConfiguration) || !isset($pluginConfiguration['switchableControllerActions.']) || !isset($pluginConfiguration['extensionName'])) {
+				continue;
+			}
+			if (strtolower($extensionName) !== strtolower($pluginConfiguration['extensionName'])) {
+				continue;
+			}
+			foreach($pluginConfiguration['switchableControllerActions.'] as $controller => $switchableControllerActions) {
+				if (strtolower(rtrim($controller, '.')) !== strtolower($controllerName)) {
+					continue;
+				}
+				$actions = t3lib_div::trimExplode(',', $switchableControllerActions['actions']);
+				if (in_array($actionName, $actions)) {
+					$pluginNames[] = $pluginConfiguration['pluginName'];
+				}
+			}
+		}
+		if (count($pluginNames) > 1) {
+			throw new Tx_Extbase_Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument' , 1280825466);
+		}
+		return count($pluginNames) > 0 ? $pluginNames[0] : NULL;
+	}
+
+	/**
+	 * Determines the target page of the specified plugin.
+	 * If plugin.tx_$pluginSignature.view.defaultPid is set, this value is used as target page id
+	 * If defaultPid is set to "auto", a the target pid is determined by loading the tt_content record that contains this plugin
+	 * If the page could not be determined, NULL is returned
+	 * If defaultPid is "auto" and more than one page contains the specified plugin, an Exception is thrown
+	 *
+	 * @param string $pluginSignature Plugin signature: strtolower($extensionName) . '_' . strtolower($pluginName)
+	 * @return integer uid of the target page or NULL if target page could not be determined
+	 */
+	public static function getTargetPidByPluginSignature($pluginSignature) {
+		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+		if (!isset($configurationManager) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
+			return NULL;
+		}
+		$pluginConfiguration = $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'][$pluginSignature . '.'];
+		$frameworkConfiguration = $configurationManager->getFrameworkConfiguration($pluginConfiguration);
+		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
+			return NULL;
+		}
+		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'pid',
+				'tt_content',
+				'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . $GLOBALS['TSFE']->sys_page->enableFields('tt_content'),
+				'',
+				'',
+				2
+			);
+			if (count($pages) > 1) {
+				throw new Tx_Extbase_Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.' . $pluginSignature . '.view.defaultPid" to a fixed page id' , 1280773643);
+			}
+			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
+		}
+		return (integer)$frameworkConfiguration['view']['defaultPid'];
+	}
 }
+
 ?>
