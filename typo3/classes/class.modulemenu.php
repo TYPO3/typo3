@@ -207,8 +207,20 @@ class ModuleMenu {
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey.'label']
 			);
 
-			if(is_array($moduleData['sub'])) {
-
+			if (!is_array($moduleData['sub'])) {
+					// Work around for modules with own main entry, but being self the only submodule
+				$modules[$moduleKey]['subitems'][$moduleKey] = array(
+					'name' => $moduleName,
+					'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
+					'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
+					'icon' => $this->getModuleIcon($moduleName . '_tab'),
+					'link' => $moduleLink,
+					'originalLink' => $moduleLink,
+					'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label'],
+					'navigationFrameScript' => NULL,
+					'navigationFrameScriptParam' => NULL,
+				);
+			} else {
 				foreach($moduleData['sub'] as $submoduleName => $submoduleData) {
 					$submoduleLink = t3lib_div::resolveBackPath($submoduleData['script']);
 
