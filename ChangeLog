@@ -1,3 +1,7 @@
+2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15653: Only show upload comments that are newer than installed version in update function of EM
+
 2010-09-19  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #8260: Update Wizard in install tool force temp-configuration files and load configuration twice
