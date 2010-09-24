@@ -1,6 +1,7 @@
 2010-09-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15792: List view page browser: navigating to last page doesn't work
+	* Fixed bug #15373: Page browser single table list view: Entering page number doesn't work
 
 2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
 
