@@ -418,7 +418,7 @@ function evalFunc_input(type,inVal)	{
 					var min = (values.values[2])?this.parseInt(values.values[2]):today.getUTCMinutes();
 					if (min > 59)	{min=59;}
 					var hour = (values.values[1])?this.parseInt(values.values[1]):today.getUTCHours();
-					if (hour > 23)	{hour=23;}
+					if (hour >= 24)	{hour=0;}
 
 					var theTime = new Date(this.getYear(this.refDate), this.refDate.getUTCMonth(), this.refDate.getUTCDate(), hour, min, ((type=="timesec")?sec:0));
 
