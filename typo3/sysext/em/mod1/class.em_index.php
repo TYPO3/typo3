@@ -2089,7 +2089,7 @@ EXTENSION KEYS:
 													$this->installButton() . ' ' . $GLOBALS['LANG']->getLL('ext_import_install') . '</a>';
 											} else {
 												$content = $GLOBALS['LANG']->getLL('ext_import_imported') .
-													'<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">' .
+													'<br /><br /><a href="javascript:opener.top.list.iframe.document.forms[0].submit();window.close();">' .
 													$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 											}
 										}
@@ -2256,7 +2256,7 @@ EXTENSION KEYS:
 											$GLOBALS['LANG']->getLL('ext_details_removed')
 										)
 									) .
-									'<br /><br /><a href="javascript:opener.top.content.document.forms[0].submit();window.close();">' .
+									'<br /><br /><a href="javascript:opener.top.list.iframe.document.forms[0].submit();window.close();">' .
 									$GLOBALS['LANG']->getLL('ext_import_close_check') . '</a>';
 							} else {
 									// Determine if new modules were installed:

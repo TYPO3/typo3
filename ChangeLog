@@ -5,6 +5,7 @@
 	* Fixed bug #15485: username in sys_lockedrecords to short (Thanks to Peter Russ)
 	* Fixed bug #15462: Wrong order of quote and escape in LIKE DB clause (Thanks to Marcus Krause)
 	* Fixed bug #15787: Misleading security message in extension manager (Thanks to Marcus Krause)
+	* Fixed bug #15778: "Close window and check dependencies" doesn't work anymore (Thanks to Søren Malling)
 
 2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
 
