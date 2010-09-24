@@ -1,3 +1,7 @@
+2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15653: Only show upload comments that are newer than installed version in update function of EM
+
 2010-09-23  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to 15691: Javascript Error in taskcenter
