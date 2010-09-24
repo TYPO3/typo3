@@ -1,3 +1,7 @@
+2010-09-25  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15748: BE input validation "time" rejects 0:00 and 24:00 (Thanks to Lars Peipmann)
+
 2010-09-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15373: Page browser single table list view: Entering page number doesn't work
