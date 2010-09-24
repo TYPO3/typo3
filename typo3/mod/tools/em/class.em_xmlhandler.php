@@ -74,8 +74,8 @@ class SC_mod_tools_em_xmlhandler {
 		if ($search && $exactMatch)	{
 			$where.= ' AND extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($search, 'cache_extensions');
 		} elseif ($search) {
-			$quotedSearch = $GLOBALS['TYPO3_DB']->quoteStr(
-				$GLOBALS['TYPO3_DB']->escapeStrForLike($search, 'cache_extensions'),
+			$quotedSearch = $GLOBALS['TYPO3_DB']->escapeStrForLike(
+				$GLOBALS['TYPO3_DB']->quoteStr($search, 'cache_extensions'),
 				'cache_extensions'
 			);
 			$where .= ' AND (extkey LIKE \'%' . $quotedSearch . '%\' OR title LIKE \'%' . $quotedSearch . '%\')';
