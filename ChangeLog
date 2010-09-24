@@ -1,3 +1,7 @@
+2010-09-25  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15748: BE input validation "time" rejects 0:00 and 24:00 (Thanks to Lars Peipmann)
+
 2010-09-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15792: List view page browser: navigating to last page doesn't work
