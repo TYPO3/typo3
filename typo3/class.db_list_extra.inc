@@ -593,8 +593,7 @@ class localRecordList extends recordList {
 
 					// Record navigation is added to the beginning and end of the table if in single table mode
 				if ($this->table) {
-					$pageNavigation = $this->renderListNavigation();
-					$iOut = $pageNavigation . $iOut . $pageNavigation;
+					$iOut = $this->renderListNavigation('top') . $iOut . $this->renderListNavigation('bottom');
 				} else {
 						// show that there are more records than shown
 					if ($this->totalItems > $this->itemsLimitPerTable) {
@@ -1000,10 +999,11 @@ class localRecordList extends recordList {
 	/**
 	 * Creates a page browser for tables with many records
 	 *
+	 * @param	string		Distinguish between 'top' and 'bottom' part of the navigation (above or below the records)
 	 * @return	string	Navigation HTML
 	 *
 	 */
-	protected function renderListNavigation() {
+	protected function renderListNavigation($renderPart = 'top') {
 		$totalPages = ceil($this->totalItems / $this->iLimit);
 
 		$content = '';
@@ -1059,18 +1059,17 @@ class localRecordList extends recordList {
 			}
 
 			$reload = '<a href="#" onclick="document.dblistForm.action=\''
-				. $listURL . '&pointer=\'+calculatePointer(); document.dblistForm.submit(); return true;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:reload', TRUE) . '">' .
+				. $listURL . '&pointer=\'+calculatePointer(document.getElementById(\'jumpPage-' . $renderPart .'\').value); document.dblistForm.submit(); return true;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:reload', TRUE) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-system-refresh') .
 				'</a>';
 
-			// Add js to traverse a page select input to a pointer value
-			$content = '
+			if ($renderPart === 'top') {
+					// Add js to traverse a page select input to a pointer value
+				$content = '
 <script type="text/JavaScript">
 /*<![CDATA[*/
 
-	function calculatePointer(){
-		page = document.getElementById(\'jumpPage\').value;
-
+	function calculatePointer(page) {
 		if (page > ' . $totalPages . ') {
 			page = ' . $totalPages . ';
 		}
@@ -1087,10 +1086,10 @@ class localRecordList extends recordList {
 /*]]>*/
 </script>
 ';
-
+			}
 			$pageNumberInput = '<span>
 				<input type="text" value="' . $currentPage
-				. '" size="3" id="jumpPage" name="jumpPage" onkeyup="if (event.keyCode == Event.KEY_RETURN) { document.dblistForm.action=\'' . $listURL . '&pointer=\'+calculatePointer(); document.dblistForm.submit(); } return true;" />
+				. '" size="3" id="jumpPage-' . $renderPart . '" name="jumpPage-' . $renderPart . '" onkeyup="if (event.keyCode == Event.KEY_RETURN) { document.dblistForm.action=\'' . $listURL . '&pointer=\'+calculatePointer(this.value); document.dblistForm.submit(); } return true;" />
 				</span>';
 			$pageIndicator = '<span class="pageIndicator">'
 				. sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:pageIndicator'), $pageNumberInput, $totalPages)
