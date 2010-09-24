@@ -2986,8 +2986,8 @@ final class t3lib_BEfunc {
 	public static function exec_foreign_table_where_query($fieldValue, $field = '', $TSconfig = array(), $prefix = '') {
 		global $TCA;
 
+		$foreign_table = $fieldValue['config'][$prefix . 'foreign_table'];
 		t3lib_div::loadTCA($foreign_table);
-		$foreign_table = $fieldValue['config'][$prefix.'foreign_table'];
 		$rootLevel = $TCA[$foreign_table]['ctrl']['rootLevel'];
 
 		$fTWHERE = $fieldValue['config'][$prefix.'foreign_table_where'];
