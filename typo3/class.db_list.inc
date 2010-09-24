@@ -708,7 +708,7 @@ class recordList extends t3lib_recordList {
 			($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '') .
 			($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '') .
 			($this->showLimit ? '&showLimit=' . rawurlencode($this->showLimit) : '') .
-			($this->firstElementNumber? ' &pointer=' . rawurlencode($this->firstElementNumber) : '') .
+			($this->firstElementNumber ? '&pointer=' . rawurlencode($this->firstElementNumber) : '') .
 			((!$exclList || !t3lib_div::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '') .
 			((!$exclList || !t3lib_div::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '');
 
