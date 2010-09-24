@@ -2,6 +2,7 @@
 
 	* Fixed bug #15642: Wrong order of quote and escape in LIKE DB clause (Thanks to Marcus Krause)
 	* Fixed bug #5983: Undefined variable is used in t3lib_BEfunc::exec_foreign_table_where_query
+	* Fixed bug #15787: Misleading security message in extension manager (Thanks to Marcus Krause)
 
 2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
 

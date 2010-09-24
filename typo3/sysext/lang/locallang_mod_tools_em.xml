@@ -32,7 +32,7 @@
 			<label index="descr_global">Global extension (typo3/ext/) - Available for shared source on server (dynamic).</label>
 			<label index="descr_local">Local extension (typo3conf/ext/) - Local for this TYPO3 installation only (dynamic).</label>
 			<label index="privacy_notice">When you interact with the online repository, server information may be sent and stored in the repository for statistics.</label>
-			<label index="security_header">Found a security problem? Please get in touch with us!</label>
+			<label index="security_header">Did you find a security problem?</label>
 			<label index="security_descr">If you think you have found a security issue in TYPO3 or an extension, please contact the %sTYPO3 security team%s! Thank you!</label>
 			<label index="menu_loaded_extensions">Loaded extensions</label>
 			<label index="menu_install_extensions">Install extensions</label>
