@@ -1,6 +1,7 @@
 2010-09-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15642: Wrong order of quote and escape in LIKE DB clause (Thanks to Marcus Krause)
+	* Fixed bug #5983: Undefined variable is used in t3lib_BEfunc::exec_foreign_table_where_query
 
 2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
 
