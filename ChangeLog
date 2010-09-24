@@ -3,6 +3,7 @@
 	* Fixed bug #15792: List view page browser: navigating to last page doesn't work
 	* Fixed bug #15373: Page browser single table list view: Entering page number doesn't work
 	* Fixed bug #15485: username in sys_lockedrecords to short (Thanks to Peter Russ)
+	* Fixed bug #15462: Wrong order of quote and escape in LIKE DB clause (Thanks to Marcus Krause)
 
 2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
 
