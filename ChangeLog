@@ -1,3 +1,7 @@
+2010-09-24  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15653: Only show upload comments that are newer than installed version in update function of EM
+
 2010-09-21  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed #13705: Record info in workspace always shows live version (Thanks to Julia Pardanaud)
