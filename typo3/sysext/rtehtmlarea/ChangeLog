@@ -1,3 +1,7 @@
+2010-09-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15430: htmlArea RTE: Text not editable after pasting with server-based cleaning
+
 2010-09-12  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #15326: htmlArea RTE: W3C Markup Validation issues (Thanks to Jigal van Hemert)
