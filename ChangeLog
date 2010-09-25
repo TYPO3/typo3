@@ -1,3 +1,7 @@
+2010-09-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15430: htmlArea RTE: Text not editable after pasting with server-based cleaning
+
 2010-09-25  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15748: BE input validation "time" rejects 0:00 and 24:00 (Thanks to Lars Peipmann)
