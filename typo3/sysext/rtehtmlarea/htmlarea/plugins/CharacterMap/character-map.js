@@ -444,7 +444,8 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 			this.editor.insertHTML(entity);
 			this.saveSelection();
 		} else {
-			this.editor.insertNodeAtSelection(this.editor.document.createTextNode(entity));
+				// Firefox converts '&nbsp;' to '&amp;nbsp;'
+			this.editor.insertNodeAtSelection(this.editor.document.createTextNode((Ext.isGecko && entity == '&nbsp;') ? '\xA0' : entity));
 		}
 	},
 	/*
