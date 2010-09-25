@@ -388,9 +388,7 @@ HTMLArea.prototype.moveToBookmark = function (bookmark) {
 		} else {
 			range.setStartBefore(startSpan);
 		}
-		parent = startSpan.parentNode;
 		HTMLArea.removeFromParent(startSpan);
-		parent.normalize();
 	} else {
 			// For some reason, the startSpan was removed or its id attribute was removed so that it cannot be retrieved
 		range.setStart(this._doc.body, 0);
@@ -403,9 +401,7 @@ HTMLArea.prototype.moveToBookmark = function (bookmark) {
 		} else {
 			range.setEndBefore(endSpan);
 		}
-		parent = endSpan.parentNode;
 		HTMLArea.removeFromParent(endSpan);
-		parent.normalize();
 	} else {
 		range.collapse(true);
 	}
