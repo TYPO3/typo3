@@ -3,6 +3,7 @@
 	* Fixed bug #15430: htmlArea RTE: Text not editable after pasting with server-based cleaning
 	* Follow-up to bug #15430: htmlArea RTE: Text not editable after pasting with server-based cleaning
 	* Fixed bug #15797: htmlArea RTE: Problem in Firefox inserting non-breaking space with Insert Special Character dialogue
+	* Fixed bug #15749: htmlArea RTE: Firefox shows &amp; in external links with query string
 
 2010-09-12  Stanislas Rolland  <typo3@sjbr.ca>
 
