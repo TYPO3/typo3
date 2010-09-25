@@ -2542,6 +2542,11 @@ class t3lib_TCEforms	{
 						$PA['_lang'] = $lang;
 						$PA['_cshFile'] = ((isset($dataStruct['ROOT']['TCEforms']) && isset($dataStruct['ROOT']['TCEforms']['cshFile'])) ? $dataStruct['ROOT']['TCEforms']['cshFile'] : '');
 
+							// Push the sheet level tab to DynNestedStack
+						if (is_array($dataStructArray['sheets'])) {
+							$tabIdentString = $GLOBALS['TBE_TEMPLATE']->getDynTabMenuId('TCEFORMS:flexform:' . $PA['itemFormElName'] . $PA['_lang']);
+							$this->pushToDynNestedStack('tab', $tabIdentString . '-' . (count($tabParts)+1));
+						}
 							// Render flexform:
 						$tRows = $this->getSingleField_typeFlex_draw(
 									$dataStruct['ROOT']['el'],
@@ -2557,6 +2562,11 @@ class t3lib_TCEforms	{
 
 			#			$item = '<div style=" position:absolute;">'.$item.'</div>';
 						//visibility:hidden;
+
+							// Pop the sheet level tab from DynNestedStack
+						if (is_array($dataStructArray['sheets'])) {
+							$this->popFromDynNestedStack('tab', $tabIdentString . '-' . (count($tabParts)+1));
+						}
 					} else $sheetContent='Data Structure ERROR: No ROOT element found for sheet "'.$sheet.'".';
 
 						// Add to tab:
@@ -2797,6 +2807,9 @@ class t3lib_TCEforms	{
 							$s = t3lib_div::revExplode('[]',$formPrefix,2);
 							$actionFieldName = '_ACTION_FLEX_FORM'.$PA['itemFormElName'].$s[0].'][_ACTION]['.$s[1];
 
+								// Push the container to DynNestedStack as it may be toggled							
+							$this->pushToDynNestedStack('flex' , $idTagPrefix);
+
 								// Putting together the container:
 							$this->additionalJS_delete = array();
 							$output.= '
@@ -2821,6 +2834,9 @@ class t3lib_TCEforms	{
 								</div>';
 							$output = str_replace('/*###REMOVE###*/', t3lib_div::slashJS(htmlspecialchars(implode('', $this->additionalJS_delete))), $output);
 									// NOTICE: We are saving the toggle-state directly in the flexForm XML and "unauthorized" according to the data structure. It means that flexform XML will report unclean and a cleaning operation will remove the recorded togglestates. This is not a fatal problem. Ideally we should save the toggle states in meta-data but it is much harder to do that. And this implementation was easy to make and with no really harmful impact.
+
+								// Pop the container from DynNestedStack
+							$this->popFromDynNestedStack('flex' , $idTagPrefix);
 						}
 
 						// If it's a "single form element":

@@ -2794,10 +2794,16 @@ HTMLArea.util.TYPO3 = function () {
 				for (i=0, max=nested.length; i<max; i++) {
 					type = nested[i][0];
 					level = nested[i][1];
-					if (type=='tab') {
-						simplifiedNested.push(level+'-DIV');
-					} else if (type=='inline') {
-						simplifiedNested.push(level+'_fields');
+					switch (type) {
+						case 'tab':
+							simplifiedNested.push(level+'-DIV');
+							break;
+						case 'inline':
+							simplifiedNested.push(level+'_fields');
+							break;
+						case 'flex':
+							simplifiedNested.push(level+'-content');
+							break;
 					}
 				}
 			}
