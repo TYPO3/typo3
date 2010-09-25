@@ -245,7 +245,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// CurrentUrl - the current link url must be passed around if it exists
 		$this->curUrlArray = t3lib_div::_GP('curUrl');
 		if ($this->curUrlArray['all'])	{
-			$this->curUrlArray=t3lib_div::get_tag_attributes($this->curUrlArray['all']);
+			$this->curUrlArray = t3lib_div::get_tag_attributes($this->curUrlArray['all']);
+			$this->curUrlArray['href'] = htmlspecialchars_decode($this->curUrlArray['href']);
 		}
 			// Note: parseCurUrl will invoke the hooks
 		$this->curUrlInfo = $this->parseCurUrl($this->curUrlArray['href'],$this->siteURL);
