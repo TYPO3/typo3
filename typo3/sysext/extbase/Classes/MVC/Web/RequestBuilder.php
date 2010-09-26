@@ -92,10 +92,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		}
 		$allowedControllerActions = array();
 		if (is_array($configuration['switchableControllerActions'])) {
-			foreach ($configuration['switchableControllerActions'] as $controllerConfiguration) {
-				$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions']);
+			foreach ($configuration['switchableControllerActions'] as $controller => $controllerConfiguration) {
+				$controllerActions = t3lib_div::trimExplode(',', $controllerConfiguration['actions'], TRUE);
 				foreach ($controllerActions as $actionName) {
-					$allowedControllerActions[$controllerConfiguration['controller']][] = $actionName;
+					$allowedControllerActions[$controller][] = $actionName;
 				}
 			}
 		}

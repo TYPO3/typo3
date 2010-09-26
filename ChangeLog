@@ -1,3 +1,7 @@
+2010-09-26  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Fixed bug #9892: Extbase: broke switchableControllerAndActions (due to a merge failure of Extbase trunk into the Core)
+
 2010-09-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15430: htmlArea RTE: Text not editable after pasting with server-based cleaning
