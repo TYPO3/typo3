@@ -2792,7 +2792,12 @@ HTMLArea.util.TYPO3 = function () {
 		 * @author	Oliver Hader <oh@inpublica.de>
 		 */
 		simplifyNested: function(nested) {
-			var i, type, level, max, simplifiedNested=[];
+			var i, type, level, elementId, max, simplifiedNested=[],
+				elementIdSuffix = {
+					tab: '-DIV',
+					inline: '_fields',
+					flex: '-content'
+				};
 			if (nested && nested.length) {
 				if (nested[0][0]=='inline') {
 					nested = inline.findContinuedNestedLevel(nested, nested[0][1]);
@@ -2800,16 +2805,9 @@ HTMLArea.util.TYPO3 = function () {
 				for (i=0, max=nested.length; i<max; i++) {
 					type = nested[i][0];
 					level = nested[i][1];
-					switch (type) {
-						case 'tab':
-							simplifiedNested.push(level+'-DIV');
-							break;
-						case 'inline':
-							simplifiedNested.push(level+'_fields');
-							break;
-						case 'flex':
-							simplifiedNested.push(level+'-content');
-							break;
+					elementId = level + elementIdSuffix[type];
+					if (Ext.get(elementId)) {
+						simplifiedNested.push(elementId);
 					}
 				}
 			}
