@@ -6,6 +6,7 @@
 	* Fixed bug #15749: htmlArea RTE: Firefox shows &amp; in external links with query string
 	* Fixed bug #15512: htmlArea RTE: Initialization in flexforms broken with TYPO3 4.4
 	* Follow-up to bug #15622: t3lib_TCEforms_inline registers superfluous nested level when renderFieldsOnly is set
+	* Fixed bug #15569: htmlArea RTE: RTE not loading when ExtJS 3.2.1 is used
 
 2010-09-12  Stanislas Rolland  <typo3@sjbr.ca>
 
