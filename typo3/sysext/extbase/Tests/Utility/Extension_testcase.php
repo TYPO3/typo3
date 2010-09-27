@@ -170,8 +170,8 @@ plugin.tx_myextension {
 		templateRootPath =
 		layoutRootPath =
 		partialRootPath =
-		 # the defaultPid can be an integer but defaults to the string "auto" which means that the target pid is determined automatically
-		defaultPid = auto
+		 # with defaultPid you can specify the default page uid of this plugin. If you set this to the string "auto" the target page will be determined automatically. Defaults to an empty string that expects the target page to be the current page.
+		defaultPid =
 	}
 }', $defaultTypoScript);
 	}
