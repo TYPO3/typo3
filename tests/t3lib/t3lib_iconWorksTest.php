@@ -142,7 +142,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 */
 	public function getSpriteIconWithEmptyStringReturnsSpanWithIconMissingSprite() {
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing"></span>',
+			'<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>',
 			t3lib_iconWorks::getSpriteIcon('')
 		);
 	}
@@ -153,7 +153,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 */
 	public function getSpriteIconWithMissingIconReturnsSpanWithIconMissingSprite() {
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing"></span>',
+			'<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>',
 			t3lib_iconWorks::getSpriteIcon('actions-juggle-speed')
 		);
 	}
@@ -164,7 +164,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 */
 	public function getSpriteIconWithExistingIconReturnsSpanWithIconSprite() {
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new"></span>',
+			'<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">&nbsp;</span>',
 			t3lib_iconWorks::getSpriteIcon('actions-document-new')
 		);
 	}
@@ -175,7 +175,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 */
 	public function getSpriteIconWithExistingIconAndAttributeReturnsSpanWithIconSpriteAndAttribute() {
 		$this->assertEquals(
-			'<span title="foo" class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new"></span>',
+			'<span title="foo" class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">&nbsp;</span>',
 			t3lib_iconWorks::getSpriteIcon('actions-document-new', array('title' => 'foo'))
 		);
 	}
@@ -186,7 +186,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 */
 	public function getSpriteIconWithExistingIconAndClassAttributeReturnsSpanWithIconSpriteAndClassAttribute() {
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new foo"></span>',
+			'<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new foo">&nbsp;</span>',
 			t3lib_iconWorks::getSpriteIcon('actions-document-new', array('class' => 'foo'))
 		);
 	}
@@ -208,7 +208,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 */
 	public function getSpriteIconWithExistingIconAndOverlayReturnsSpanWithIconSpriteAndOverlay() {
 		$result = t3lib_iconWorks::getSpriteIcon('actions-document-new', array(), array('status-overlay-hidden' => array()));
-		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay"></span>';
+		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>';
 		$this->assertEquals(
 			'<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">' . $overlay . '</span>',
 			$result
@@ -241,7 +241,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForRecord('', array());
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing"></span>',
+			'<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>',
 			$result
 		);
 	}
@@ -254,7 +254,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForRecord('tt_content', array());
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">&nbsp;</span>',
 			$result
 		);
 	}
@@ -268,7 +268,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $mockRecord);
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">&nbsp;</span>',
 			$result
 		);
 	}
@@ -282,7 +282,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $mockRecord, array('class' => 'foo', 'title' => 'bar'));
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text foo" title="bar"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text foo" title="bar">&nbsp;</span>',
 			$result
 		);
 	}
@@ -297,7 +297,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $mockRecord);
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-plugin"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-plugin">&nbsp;</span>',
 			$result
 		);
 	}
@@ -310,7 +310,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$mockRecord = $this->mockRecord;
 		$mockRecord['hidden'] = '1';
 		$result = t3lib_iconWorks::getSpriteIconForRecord('tt_content', $mockRecord);
-		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay"></span>';
+		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>';
 
 		$this->assertEquals(
 			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">' . $overlay . '</span>',
@@ -331,7 +331,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForFile('');
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other">&nbsp;</span>',
 			$result
 		);
 	}
@@ -344,7 +344,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForFile('foo');
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other">&nbsp;</span>',
 			$result
 		);
 	}
@@ -357,7 +357,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForFile('pdf');
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-pdf t3-icon-pdf"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-pdf t3-icon-pdf">&nbsp;</span>',
 			$result
 		);
 	}
@@ -370,7 +370,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForFile('png');
 
 		$this->assertEquals(
-			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image"></span>',
+			'<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image">&nbsp;</span>',
 			$result
 		);
 	}
@@ -383,7 +383,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 		$result = t3lib_iconWorks::getSpriteIconForFile('png', array('title' => 'bar'));
 
 		$this->assertEquals(
-			'<span title="bar" class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image"></span>',
+			'<span title="bar" class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image">&nbsp;</span>',
 			$result
 		);
 	}

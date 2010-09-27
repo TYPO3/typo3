@@ -1,3 +1,7 @@
+2010-09-27  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed unit tests #15802: t3lib_iconWorksTest fails some tests since fix in #15110 (Thanks to Philipp Gampe)
+
 2010-09-26  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #15797: htmlArea RTE: Problem in Firefox inserting non-breaking space with Insert Special Character dialogue
