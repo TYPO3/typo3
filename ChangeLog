@@ -1,3 +1,7 @@
+2010-09-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to bug #15797: htmlArea RTE: Problem in Firefox inserting non-breaking space with Insert Special Character dialogue
+
 2010-09-26  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Fixed bug #9892: Extbase: broke switchableControllerAndActions (due to a merge failure of Extbase trunk into the Core)

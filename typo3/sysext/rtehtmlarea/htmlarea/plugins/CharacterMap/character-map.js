@@ -444,8 +444,8 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 			this.editor.insertHTML(entity);
 			this.saveSelection();
 		} else {
-				// Firefox converts '&nbsp;' to '&amp;nbsp;'
-			this.editor.insertNodeAtSelection(this.editor.document.createTextNode((Ext.isGecko && entity == '&nbsp;') ? '\xA0' : entity));
+				// Firefox and WebKit convert '&nbsp;' to '&amp;nbsp;'
+			this.editor.insertNodeAtSelection(this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit) && entity == '&nbsp;') ? '\xA0' : entity));
 		}
 	},
 	/*

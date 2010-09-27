@@ -1,3 +1,7 @@
+2010-09-26  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to bug #15797: htmlArea RTE: Problem in Firefox inserting non-breaking space with Insert Special Character dialogue
+
 2010-09-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15430: htmlArea RTE: Text not editable after pasting with server-based cleaning
