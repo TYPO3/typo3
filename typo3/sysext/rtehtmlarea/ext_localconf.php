@@ -63,7 +63,9 @@ t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKE
 t3lib_extMgm::addUserTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/' . strtolower($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration']) . '/userTSConfig.txt">');
 
 	// Add Clear RTE Cache to Clear Cache menu
-require_once(t3lib_extMgm::extPath('rtehtmlarea').'hooks/clearrtecache/ext_localconf.php');
+require_once(t3lib_extMgm::extPath('rtehtmlarea') . 'hooks/clearrtecache/ext_localconf.php');
+	// Add Status Report about Conflicting Extensions
+require_once(t3lib_extMgm::extPath('rtehtmlarea') . 'hooks/statusreport/ext_localconf.php');
 
 	// Troubleshooting and script compression
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['enableDebugMode'] = isset($_EXTCONF['enableDebugMode']) ? $_EXTCONF['enableDebugMode'] : 0;
