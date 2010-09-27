@@ -444,32 +444,38 @@ HTMLArea.CopyPaste = HTMLArea.Plugin.extend({
 	 * Mozilla clipboard access exception handler
 	 */
 	mozillaClipboardAccessException: function () {
-		if (this.buttonsConfiguration.paste && this.buttonsConfiguration.paste.mozillaAllowClipboardURL) {
-			if (confirm(this.localize('Allow-Clipboard-Helper-Extension'))) {
-				if (InstallTrigger.enabled()) {
-					var mozillaXpi = new Object();
-					mozillaXpi['AllowClipboard Helper'] = this.buttonsConfiguration.paste.mozillaAllowClipboardURL;
-					InstallTrigger.install(mozillaXpi, this.mozillaInstallCallback);
-				} else {
-					alert(this.localize('Mozilla-Org-Install-Not-Enabled'));
-					this.appendToLog('mozillaClipboardAccessException', 'Mozilla install was not enabled.');
-					return;
+		if (InstallTrigger && this.buttonsConfiguration.paste && this.buttonsConfiguration.paste.mozillaAllowClipboardURL) {
+			Ext.MessageBox.confirm('', this.localize('Allow-Clipboard-Helper-Extension'), function (button) {
+				if (button == 'yes') {
+					if (InstallTrigger.enabled()) {
+						var self = this;
+						function mozillaInstallCallback(url, returnCode) {
+							if (returnCode == 0) {
+								Ext.MessageBox.alert('', self.localize('Allow-Clipboard-Helper-Extension-Success'));
+							} else {
+								Ext.MessageBox.alert('', self.localize('Moz-Extension-Failure'));
+								self.appendToLog('mozillaInstallCallback', 'Mozilla install return code was: ' + returnCode + '.');
+							}
+							return;
+						}
+						var mozillaXpi = new Object();
+						mozillaXpi['AllowClipboard Helper'] = this.buttonsConfiguration.paste.mozillaAllowClipboardURL;
+						InstallTrigger.install(mozillaXpi, mozillaInstallCallback);
+					} else {
+						Ext.MessageBox.alert('', this.localize('Mozilla-Org-Install-Not-Enabled'));
+						this.appendToLog('mozillaClipboardAccessException', 'Mozilla install was not enabled.');
+					}
 				}
-			}
-		} else if (confirm(this.localize('Moz-Clipboard'))) {
-			window.open('http://mozilla.org/editor/midasdemo/securityprefs.html');
-		}
-	},
-	/*
-	 * Mozilla Add-on installer call back
-	 */
-	mozillaInstallCallback: function (url, returnCode) {
-		if (returnCode == 0) {
-			alert(this.localize('Allow-Clipboard-Helper-Extension-Success'));
+			}, this);
 		} else {
-			alert(this.localize('Moz-Extension-Failure'));
-			this.appendToLog('mozillaInstallCallback', 'Mozilla install return code was: ' + returnCode + '.');
+			Ext.MessageBox.confirm('', this.localize('Moz-Clipboard'), function (button) {
+				if (button == 'yes') {
+					window.open('http://mozilla.org/editor/midasdemo/securityprefs.html');
+				}
+			}, this);
+			if (!InstallTrigger) {
+				this.appendToLog('mozillaClipboardAccessException', 'Firefox InstallTrigger was not defined.');
+			}
 		}
-		return;
 	}
 });

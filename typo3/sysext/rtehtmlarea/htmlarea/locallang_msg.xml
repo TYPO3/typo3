@@ -15,8 +15,8 @@
 			<label index="Moz-Extension-Success">The installation was successful. You need to exit and restart your browser for the change to take effect.</label>
 			<label index="Moz-Extension-Failure">Sorry, the installation failed.</label>
 			<label index="Moz-Extension-Install-Not-Enabled">The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from this site.</label>
-			<label index="Allow-Clipboard-Helper-Extension">For security reasons, unprivileged applications cannot access the clipboard. Click OK to install a component that will enable you to specify the sites or pages that will be allowed to access the clipboard and perform copy, cut and paste operations.</label>
-			<label index="Mozilla-Org-Install-Not-Enabled">The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from http://ftp.mozilla.org.</label>
+			<label index="Allow-Clipboard-Helper-Extension">For security reasons, unprivileged applications cannot access the clipboard. Click YES to install a component that will enable you to specify the sites or pages that will be allowed to access the clipboard and perform copy, cut and paste operations.</label>
+			<label index="Mozilla-Org-Install-Not-Enabled">The installation cannot be performed. Please change your browser preferences in order to allow installation of sofware from http://addons.mozilla.org.</label>
 			<label index="Allow-Clipboard-Helper-Extension-Success">The installation was successful. You need to exit and restart your browser for the change to take effect. Afterwards, use the AllowClipboard Helper from the tools menu to allow specific sites to use the clipboard.</label>
 		</languageKey>
 	</data>
