@@ -556,13 +556,13 @@ class SC_index {
 	 *
 	 * @return	string		HTML content
 	 * @credits			Idea by Jan-Hendrik Heuing
+	 * @deprecated $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] is deprecated since 4.5. Use system news records instead.
 	 */
 	function makeLoginNews() {
 		$newsContent = '';
 
 		$systemNews = $this->getSystemNews();
-		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
-			/** @deprecated since 4.5. Use system news records instead. */
+		if (count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
 			t3lib_div::logDeprecatedFunction();
 
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] = array_merge(

@@ -4,6 +4,7 @@
 
 2010-09-28  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #15812: Add backend maintenance for login news - correction for deprecation call
 	* Follow-up to #15812: Add backend maintenance for login news - added sprites for icon
 
 2010-09-28  Ingo Renner  <ingo@typo3.org>
