@@ -1,3 +1,7 @@
+2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.8
+
 2010-09-20  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #15751: dbal does not parse setDBinit correctly (thanks to Tamer Erdogan)
