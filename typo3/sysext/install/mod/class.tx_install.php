@@ -231,6 +231,19 @@ class tx_install extends t3lib_install {
 		'logout' => 'Logout from Install Tool',
 	);
 
+		// PHP modules which are required. Can be changed by hook in getMissingPhpModules()
+	protected $requiredPhpModules = array(
+		'filter',
+		'gd',
+		'json',
+		'mysql',
+		'pcre',
+		'session',
+		'SPL',
+		'standard',
+		'xml',
+		'zlib'
+	);
 
 
 
@@ -254,6 +267,12 @@ class tx_install extends t3lib_install {
 			header('Pragma: no-cache');
 		}
 
+			// Let DBAL decide whether to load itself
+		$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php';
+		if (@is_file($dbalLoaderFile)) {
+			include($dbalLoaderFile);
+		}
+
 			// ****************************
 			// Initializing incoming vars.
 			// ****************************
@@ -261,6 +280,18 @@ class tx_install extends t3lib_install {
 		$this->mode = t3lib_div::_GP('mode');
 		if ($this->mode !== '123') {
 			$this->mode = '';
+		} else {
+				// Check for mandatory PHP modules
+			$missingPhpModules = $this->getMissingPhpModules();
+			if (count($missingPhpModules) > 0) {
+				t3lib_BEfunc::typo3PrintError(
+					'TYPO3 Installation Error',
+					'The following PHP module(s) is/are missing: <em>' .
+						implode(', ', $missingPhpModules) .
+						'</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.'
+				);
+				die();
+			}
 		}
 		if (t3lib_div::_GP('step') === 'go') {
 			$this->step = 'go';
@@ -338,12 +369,6 @@ class tx_install extends t3lib_install {
 			if (is_file ($enableInstallToolFile)) {
 					// Extend the age of the ENABLE_INSTALL_TOOL file by one hour
 				@touch($enableInstallToolFile);
-			}
-
-				// Let DBAL decide whether to load itself
-			$dbalLoaderFile = $this->backPath . 'sysext/dbal/class.tx_dbal_autoloader.php';
-			if (@is_file($dbalLoaderFile)) {
-				include($dbalLoaderFile);
 			}
 
 			if($this->redirect_url) {
@@ -4115,15 +4140,43 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		return (is_array($test) ? 1 : 0);
 	}
 
+	/**
+	 * Checks if the essential PHP modules are loaded
+	 *
+	 * @return array list of modules which are missing
+	 */
+	protected function getMissingPhpModules() {
 
-
-
-
-
-
-
-
-
+			// Hook to adjust the required PHP modules in the 1-2-3 installer
+		$modules = $this->requiredPhpModules;
+		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'])) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['requiredPhpModules'] as $classData) {
+				$hookObject = t3lib_div::getUserObj($classData);
+				$modules = $hookObject->setRequiredPhpModules($modules, $this);
+			}
+		}
+		$this->requiredPhpModules = $modules;
+		
+		$result = array();
+		foreach ($this->requiredPhpModules as $module) {
+			if (is_array($module)) {
+				$detectedSubmodules = FALSE;
+				foreach ($module as $submodule) {
+					if (extension_loaded($submodule)) {
+						$detectedSubmodules = TRUE;
+					}
+				}
+				if ($detectedSubmodules === FALSE) {
+					$result[] = 'one of: (' . implode(', ', $module) . ')';
+				}
+			} else {
+				if (!extension_loaded($module)) {
+					$result[] = $module;
+				}
+			}
+		}
+		return $result;
+	}
 
 	/*****************************************
 	 *
