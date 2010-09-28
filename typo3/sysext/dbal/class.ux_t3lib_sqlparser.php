@@ -67,7 +67,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 				if (is_array($selectFields)) {
 					$outputParts = array();
 					foreach ($selectFields as $k => $v) {
-		
+
 							// Detecting type:
 						switch($v['type'])	{
 							case 'function':
@@ -82,12 +82,12 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								$outputParts[$k] = ($v['distinct'] ? $v['distinct'] : '') . ($v['table'] ? $v['table'] . '.' : '') . $v['field'];
 								break;
 						}
-		
+
 							// Alias:
 						if ($v['as']) {
 							$outputParts[$k] .= ' ' . $v['as_keyword'] . ' ' . $v['as'];
 						}
-		
+
 							// Specifically for ORDER BY and GROUP BY field lists:
 						if ($v['sortDir']) {
 							$outputParts[$k] .= ' ' . $v['sortDir'];
@@ -100,10 +100,10 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 					$output .= implode(', ', $outputParts);
 				}
 				break;
-		}	
+		}
 		return $output;
 	}
- 
+
  	/**
 	 * Compiles a CASE ... WHEN flow-control construct based on input array (made with ->parseCaseStatement())
 	 *
@@ -152,7 +152,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	protected function compileAddslashes($str) {
 		return $str;
 	}
-	
+
 	/*************************
 	 *
 	 * Compiling queries
@@ -494,7 +494,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 
 									// Set field/table with modifying prefix if any:
 								$output .= ' ' . trim($v['modifier']) . ' ';
-	
+
 									// DBAL-specific: Set calculation, if any:
 								if ($v['calc'] === '&' && $functionMapping) {
 									switch(TRUE) {
@@ -514,7 +514,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 									} else {
 										$output .= $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 									}
-								} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping)) {
+								} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE/', $v['comparator']) && $functionMapping)) {
 									$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 								}
 							}
@@ -522,7 +522,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								// Set comparator:
 							if ($v['comparator']) {
 								switch (TRUE) {
-									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping):
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE/', $v['comparator']) && $functionMapping):
 												// Oracle cannot handle LIKE on CLOB fields - sigh
 											if (isset($v['value']['operator'])) {
 												$values = array();
@@ -531,7 +531,10 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												}
 												$compareValue = ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 											} else {
-												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1]; 
+												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1];
+											}
+											if (t3lib_div::isFirstPartOfStr($v['comparator'], 'NOT')) {
+												$output .= 'NOT ';
 											}
 												// To be on the safe side
 											$isLob = TRUE;
@@ -554,7 +557,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											// Detecting value type; list or plain:
 										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
 											if (isset($v['subquery'])) {
-												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
+												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 											} else {
 												$valueBuffer = array();
 												foreach ($v['value'] as $realValue) {
@@ -562,6 +565,12 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												}
 												$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 											}
+										} else if (t3lib_div::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
+											$lbound = $v['values'][0];
+											$ubound = $v['values'][1];
+											$output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
+											$output .= ' AND ';
+											$output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
 										} else if (isset($v['value']['operator'])) {
 											$values = array();
 											foreach ($v['value']['args'] as $fieldDef) {

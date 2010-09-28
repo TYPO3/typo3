@@ -1,6 +1,46 @@
+2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.1.8
+
+2010-09-20  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15751: dbal does not parse setDBinit correctly (thanks to Tamer Erdogan)
+
+2010-08-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15582: Call to deprecated function template::middle()
+
+2010-08-23  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug with BETWEEN / NOT BETWEEN which was not properly supported
+
+2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Code cleanup with useless blank spaces at end of line
+
+2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15253: NOT LIKE is not remapped using dbms_lob.instr with Oracle
+
+2010-07-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated PHP documentation
+
+2010-07-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15045: Trailing newlines after php closing tag
+
+2010-06-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Synchronized @deprecated annotations with Core
+
 2010-06-22  Jeff Segars  <jeff@webempoweredchurch.org>
 
-	* Fixed bug #14814: Improve install tool texts.
+	* Fixed bug #14814: Improve install tool texts
+
+2010-06-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated copyright year in manual
 
 2010-06-13  Xavier Perseguers  <typo3@perseguers.ch>
 

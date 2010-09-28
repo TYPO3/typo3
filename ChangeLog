@@ -1,3 +1,7 @@
+2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised DBAL version from 1.1.7 to 1.1.8
+
 2010-09-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15820: htmlArea RTE: Failure to install AllowClipboard Helper extension raises js error
