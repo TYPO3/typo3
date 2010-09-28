@@ -2,6 +2,7 @@
 
 	* Fixed bug #15820: htmlArea RTE: Failure to install AllowClipboard Helper extension raises js error
 	* Fixed bug #15339: htmlArea RTE: tkr_rteanchors breaks the link editing dialogue
+	* Fixed bug #15730: htmlArea RTE: Problem editing a new list entry in list of items with inline markup
 
 2010-09-26  Stanislas Rolland  <typo3@sjbr.ca>
 
