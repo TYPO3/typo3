@@ -147,7 +147,9 @@ HTMLArea.Config = function (editorId) {
 		},
 		htmlareabutton: {
 			cls: 'button',
-			overCls: 'buttonHover'
+			overCls: 'buttonHover',
+				// Erratic behaviour of click event in WebKit and IE browsers
+			clickEvent: (Ext.isWebKit || Ext.isIE) ? 'mousedown' : 'click'
 		},
 		htmlareacombo: {
 			cls: 'select',
@@ -285,13 +287,11 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 	 */
 	initEventListeners: function () {
 		this.addListener({
-			click: {
-				fn: this.onButtonClick
-			},
 			hotkey: {
 				fn: this.onHotKey
 			}
 		});
+		this.setHandler(this.onButtonClick, this);
 			// Monitor toolbar updates in order to refresh the state of the button
 		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
 	},
