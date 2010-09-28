@@ -781,6 +781,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-x-content-text-picture',
 	'mimetypes-x-sys_action',
 	'mimetypes-x-sys_language',
+	'mimetypes-x-sys_news',
 	'mimetypes-x-sys_workspace',
 	'places-folder-closed',
 	'places-folder-opened',
@@ -868,6 +869,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
 
 
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array('hidden', 'starttime', 'endtime', 'futureendtime', 'fe_group', 'protectedSection');
