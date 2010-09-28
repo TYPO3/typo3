@@ -72,6 +72,27 @@ class tx_dbal_installtool {
 	}
 
 	/**
+	 * Hooks into Installer to set required PHP modules.
+	 *
+	 * @param array $modules
+	 * @param tx_install $instObj
+	 * @return array modules
+	 */
+	public function setRequiredPhpModules(array &$modules, tx_install $instObj) {
+		foreach ($modules as $key => $module) {
+			if ($module === 'mysql') {
+				$dbModules = array();
+				foreach ($this->supportedDrivers as $abstractionLayer => $drivers) {
+					$dbModules = array_merge($dbModules, array_keys($drivers));
+				}
+				$module = $dbModules;
+			}
+			$modifiedModules[] = $module;
+		}
+		return $modifiedModules;
+	}
+
+	/**
 	 * Hooks into Installer to let a non-MySQL database to be configured.
 	 *
 	 * @param array $markers
