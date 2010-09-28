@@ -723,7 +723,7 @@ HTMLArea.prototype._checkInsertP = function() {
 		}
 		p = df.firstChild;
 		if (p) {
-			if (!/\S/.test(p.innerHTML) || (p.childNodes.length == 1 && /^br$/i.test(p.firstChild.nodeName))) {
+			if (!/\S/.test(p.innerHTML) || (!/\S/.test(p.textContent) && !/<(img|hr|table)/i.test(p.innerHTML))) {
  				if (/^h[1-6]$/i.test(p.nodeName)) {
 					p = this.convertNode(p, "p");
 				}
@@ -733,7 +733,7 @@ HTMLArea.prototype._checkInsertP = function() {
 				if (!HTMLArea.is_opera) {
 					p.innerHTML = "<br />";
 				}
-				if(/^li$/i.test(p.nodeName) && left_empty && !block.nextSibling) {
+				if (/^li$/i.test(p.nodeName) && left_empty && (!block.nextSibling || !/^li$/i.test(block.nextSibling.nodeName))) {
 					left = block.parentNode;
 					left.removeChild(block);
 					range.setEndAfter(left);
@@ -742,7 +742,6 @@ HTMLArea.prototype._checkInsertP = function() {
 				}
 			}
 			range.insertNode(df);
-				// Remove any anchor created empty
 				// Remove any anchor created empty on both sides of the selection
 			if (p.previousSibling) {
 				var a = p.previousSibling.lastChild;
@@ -754,8 +753,15 @@ HTMLArea.prototype._checkInsertP = function() {
 			if (a && /^a$/i.test(a.nodeName) && !/\S/.test(a.innerHTML)) {
 				this.convertNode(a, 'br');
 			}
+				// Walk inside the deepest child element (presumably inline element)
+			while (p.firstChild && p.firstChild.nodeType == 1 && !/^(br|img|hr|table)$/i.test(p.firstChild.nodeName)) {
+				p = p.firstChild;
+			}
 			if (/^br$/i.test(p.nodeName)) {
-				p = p.parentNode.insertBefore(this._doc.createTextNode("\x20"), p);
+				p = p.parentNode.insertBefore(doc.createTextNode('\x20'), p);
+			} else if (!/\S/.test(p.innerHTML)) {
+					// Need some element inside the deepest element
+				p.appendChild(doc.createElement('br'));
 			}
 			this.selectNodeContents(p, true);
 		} else {
