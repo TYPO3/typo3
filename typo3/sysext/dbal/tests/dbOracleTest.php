@@ -28,15 +28,15 @@ require_once('FakeDbConnection.php');
 
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
- * 
- * $Id: db_oracle_testcase.php 29689 2010-02-05 08:30:02Z xperseguers $
+ *
+ * $Id: dbOracleTest.php 36761 2010-08-14 16:00:33Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3
  * @subpackage dbal
  */
-class db_oracle_testcase extends BaseTestCase {
+class dbOracleTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -84,7 +84,7 @@ class db_oracle_testcase extends BaseTestCase {
 
 	/**
 	 * Cleans a SQL query.
-	 *  
+	 *
 	 * @param mixed $sql
 	 * @return mixed (string or array)
 	 */
@@ -99,7 +99,7 @@ class db_oracle_testcase extends BaseTestCase {
 	}
 
 	/**
-	 * @test 
+	 * @test
 	 */
 	public function configurationIsUsingAdodbAndDriverOci8() {
 		$configuration = $GLOBALS['TYPO3_DB']->conf['handlerCfg'];
@@ -108,7 +108,7 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertTrue($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') !== FALSE, 'Not using oci8 driver');
 	}
 
-	/** 
+	/**
 	 * @test
 	 */
 	public function tablesWithMappingAreDetected() {
@@ -190,7 +190,7 @@ class db_oracle_testcase extends BaseTestCase {
 		$this->assertEquals($expected, $query);
 	}
 
-	/** 
+	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=6198
 	 */
@@ -366,8 +366,170 @@ class db_oracle_testcase extends BaseTestCase {
 		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
 
-		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "pages" WHERE "pages"."uid" = "cpg_categories"."page_id"';
-		$expected .= ' AND "pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
+		$expected = 'SELECT "cpg_categories"."uid", "cpg_categories"."name" FROM "cpg_categories", "my_pages" WHERE "my_pages"."page_uid" = "cpg_categories"."page_id"';
+		$expected .= ' AND "my_pages"."deleted" = 0 AND 1 = 1 ORDER BY "cpg_categories"."pos"';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14372
+	 */
+	public function fieldFromAliasIsRemapped() {
+		$selectFields = 'news.uid';
+		$fromTables   = 'tt_news AS news';
+		$whereClause  = 'news.uid = 1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "news"."news_uid" FROM "ext_tt_news" AS "news" WHERE "news"."news_uid" = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * Trick here is that we already have a mapping for both table tt_news and table tt_news_cat
+	 * (see tests/fixtures/oci8.config.php) which is used as alias name.
+	 *
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14372
+	 */
+	public function fieldFromAliasIsRemappedWithoutBeingTricked() {
+		$selectFields = 'tt_news_cat.uid';
+		$fromTables   = 'tt_news AS tt_news_cat';
+		$whereClause  = 'tt_news_cat.uid = 1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "tt_news_cat"."news_uid" FROM "ext_tt_news" AS "tt_news_cat" WHERE "tt_news_cat"."news_uid" = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14372
+	 */
+	public function aliasRemappingDoesNotAlterFurtherQueries() {
+		$selectFields = 'foo.uid';
+		$fromTables   = 'tt_news AS foo';
+		$whereClause  = 'foo.uid = 1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+			// First call to possibly alter (in memory) the mapping from localconf.php
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+
+		$selectFields = 'uid';
+		$fromTables   = 'foo';
+		$whereClause  = 'uid = 1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "uid" FROM "foo" WHERE "uid" = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14372
+	 */
+	public function fieldFromAliasInJoinIsRemapped() {
+		$selectFields = 'cat.uid, cat_mm.uid_local, news.uid';
+		$fromTables   = 'tt_news_cat AS cat' .
+			' INNER JOIN tt_news_cat_mm AS cat_mm ON cat.uid = cat_mm.uid_foreign' .
+			' INNER JOIN tt_news AS news ON news.uid = cat_mm.uid_local';
+		$whereClause  = '1=1';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "cat"."cat_uid", "cat_mm"."local_uid", "news"."news_uid"';
+		$expected .= ' FROM "ext_tt_news_cat" AS "cat"';
+		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" AS "cat_mm" ON "cat"."cat_uid"="cat_mm"."uid_foreign"';
+		$expected .= ' INNER JOIN "ext_tt_news" AS "news" ON "news"."news_uid"="cat_mm"."local_uid"';
+		$expected .= ' WHERE 1 = 1';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14372
+	 */
+	public function aliasRemappingWithInSubqueryDoesNotAffectMainQuery() {
+		$selectFields = 'foo.uid';
+		$fromTables   = 'tt_news AS foo INNER JOIN tt_news_cat_mm ON tt_news_cat_mm.uid_local = foo.uid';
+		$whereClause  = 'tt_news_cat_mm.uid_foreign IN (SELECT foo.uid FROM tt_news_cat AS foo WHERE foo.hidden = 0)';
+		$groupBy      = '';
+		$orderBy      = 'foo.uid';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
+		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" ON "ext_tt_news_cat_mm"."local_uid"="foo"."news_uid"';
+		$expected .= ' WHERE "ext_tt_news_cat_mm"."uid_foreign" IN (';
+		$expected .= 	'SELECT "foo"."cat_uid" FROM "ext_tt_news_cat" AS "foo" WHERE "foo"."hidden" = 0';
+		$expected .= ')';
+		$expected .= ' ORDER BY "foo"."news_uid"';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14372
+	 */
+	public function aliasRemappingSupportsNestedSubqueries() {
+		$selectFields = 'foo.uid';
+		$fromTables   = 'tt_news AS foo';
+		$whereClause  = 'uid IN (' .
+			'SELECT foobar.uid_local FROM tt_news_cat_mm AS foobar WHERE uid_foreign IN (' .
+				'SELECT uid FROM tt_news_cat WHERE deleted = 0' .
+			'))';
+		$groupBy      = '';
+		$orderBy      = '';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "foo"."news_uid" FROM "ext_tt_news" AS "foo"';
+		$expected .= ' WHERE "news_uid" IN (';
+		$expected .= 	'SELECT "foobar"."local_uid" FROM "ext_tt_news_cat_mm" AS "foobar" WHERE "uid_foreign" IN (';
+		$expected .=		'SELECT "cat_uid" FROM "ext_tt_news_cat" WHERE "deleted" = 0';
+		$expected .=	')';
+		$expected .= ')';
+		$this->assertEquals($expected, $query);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14372
+	 */
+	public function remappingDoesNotMixUpAliasesInSubquery() {
+		$selectFields = 'pages.uid';
+		$fromTables   = 'tt_news AS pages INNER JOIN tt_news_cat_mm AS cat_mm ON cat_mm.uid_local = pages.uid';
+		$whereClause  = 'pages.pid IN (SELECT uid FROM pages WHERE deleted = 0 AND cat_mm.uid_local != 100)';
+		$groupBy      = '';
+		$orderBy      = 'pages.uid';
+
+		$GLOBALS['TYPO3_DB']->_callRef('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery($selectFields, $fromTables, $whereClause, $groupBy, $orderBy));
+
+		$expected = 'SELECT "pages"."news_uid" FROM "ext_tt_news" AS "pages"';
+		$expected .= ' INNER JOIN "ext_tt_news_cat_mm" AS "cat_mm" ON "cat_mm"."local_uid"="pages"."news_uid"';
+		$expected .= ' WHERE "pages"."pid" IN (';
+		$expected .= 	'SELECT "page_uid" FROM "my_pages" WHERE "deleted" = 0 AND "cat_mm"."local_uid" != 100';
+		$expected .= ')';
+		$expected .= ' ORDER BY "pages"."news_uid"';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -436,7 +598,7 @@ class db_oracle_testcase extends BaseTestCase {
 				firstname varchar(60) DEFAULT \'\' NOT NULL,
 				language varchar(2) NOT NULL,
 				tstamp int(11) DEFAULT \'0\' NOT NULL,
-				
+
 				PRIMARY KEY (uid),
 				KEY name (name)
 			);
@@ -444,7 +606,7 @@ class db_oracle_testcase extends BaseTestCase {
 
 		$components = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('parseCREATETABLE', $parseString);
 		$this->assertTrue(is_array($components), 'Not an array: ' . $components);
-	
+
 		$sqlCommands = $GLOBALS['TYPO3_DB']->SQLparser->_call('compileCREATETABLE', $components);
 		$this->assertTrue(is_array($sqlCommands), 'Not an array: ' . $sqlCommands);
 		$this->assertEquals(2, count($sqlCommands));
@@ -547,7 +709,7 @@ class db_oracle_testcase extends BaseTestCase {
 				$table = $GLOBALS['TYPO3_DB']->mapping[$table]['mapTableName'];
 			}
 		}
-		
+
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery($table, $where));
 		$expected = 'DELETE FROM "cf_cache_hash_tags" WHERE "identifier" IN (';
 		$expected .= 'SELECT "identifier" FROM "cf_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';

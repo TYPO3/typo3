@@ -29,7 +29,7 @@
 /**
  * Class that renders fields for the Extension Manager configuration.
  *
- * $Id: class.tx_dbal_tsparserext.php 28574 2010-01-08 17:16:16Z xperseguers $
+ * $Id: class.tx_dbal_tsparserext.php 36761 2010-08-14 16:00:33Z xperseguers $
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3
@@ -39,7 +39,7 @@ class tx_dbal_tsparserext {
 
 	/**
 	 * Renders a message for EM.
-	 * 
+	 *
 	 * @param array $params
 	 * @param t3lib_tsStyleConfig $tsObj
 	 * @return string

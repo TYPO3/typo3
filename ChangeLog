@@ -1,3 +1,7 @@
+2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised DBAL version from 1.0.5 to 1.0.6
+
 2010-09-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15730: htmlArea RTE: Problem editing a new list entry in list of items with inline markup

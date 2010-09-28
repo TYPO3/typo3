@@ -27,11 +27,11 @@
  *
  * Subclass this base class if you want to take advantage of the framework
  * capabilities.
- * 
- * $Id: BaseTestCase.php 26966 2009-11-25 15:20:04Z stucki $
- * 
+ *
+ * $Id: BaseTestCase.php 36761 2010-08-14 16:00:33Z xperseguers $
+ *
  * @author Robert Lemke <robert@typo3.org>
- * 
+ *
  * This method is backported from FLOW3's BaseTestCase class.
  * @link https://svn.typo3.org/FLOW3/Packages/Testing/trunk/Classes/BaseTestCase.php
  *

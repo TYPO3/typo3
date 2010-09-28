@@ -1,3 +1,55 @@
+2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.0.6
+
+2010-08-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15582: Call to deprecated function template::middle()
+
+2010-08-14  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Code cleanup with useless blank spaces at end of line
+
+2010-08-08  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15253: NOT LIKE is not remapped using dbms_lob.instr with Oracle
+
+2010-07-17  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated PHP documentation
+
+2010-07-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15045: Trailing newlines after php closing tag
+
+2010-06-27  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Synchronized @deprecated annotations with Core
+
+2010-06-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Updated copyright year in manual
+
+2010-06-12  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #13431: Include BE:forceCharset config option (thanks to Armin Guenther)
+
+2010-06-11  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14405: Rename the test cases from *_testcase to *Test
+
+2010-05-21  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14372: Mapping does not work with table alias
+
+2010-05-01  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #2186: Error installing static_info_tables
+
+2010-04-22  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #14182: Multiple join conditions are not supported
+
 2010-04-13  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.0.5

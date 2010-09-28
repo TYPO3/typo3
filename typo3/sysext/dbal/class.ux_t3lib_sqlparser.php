@@ -29,7 +29,7 @@
 /**
  * PHP SQL engine
  *
- * $Id: class.ux_t3lib_sqlparser.php 29767 2010-02-07 13:26:29Z xperseguers $
+ * $Id: class.ux_t3lib_sqlparser.php 36761 2010-08-14 16:00:33Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasperYYYY@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -71,7 +71,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	protected function compileAddslashes($str) {
 		return $str;
 	}
-	
+
 	/*************************
 	 *
 	 * Compiling queries
@@ -210,6 +210,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 						break;
 					case 'ADDKEY':
 					case 'ADDPRIMARYKEY':
+					case 'ADDUNIQUE':
 						$query .= ' (' . implode(',', $components['fields']) . ')';
 						break;
 				}
@@ -375,14 +376,14 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								} else {
 									$output .= $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 								}
-							} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping)) {
+							} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE/', $v['comparator']) && $functionMapping)) {
 								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 							}
 
 								// Set comparator:
 							if ($v['comparator']) {
 								switch (TRUE) {
-									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $v['comparator'] === 'LIKE' && $functionMapping):
+									case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE/', $v['comparator']) && $functionMapping):
 												// Oracle cannot handle LIKE on CLOB fields - sigh
 											if (isset($v['value']['operator'])) {
 												$values = array();
@@ -391,7 +392,10 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 												}
 												$compareValue = ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 											} else {
-												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1]; 
+												$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1];
+											}
+											if (t3lib_div::isFirstPartOfStr($v['comparator'], 'NOT')) {
+												$output .= 'NOT ';
 											}
 											$output .= '(dbms_lob.instr(' . trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']) . ', ' . $compareValue . ',1,1) > 0)';
 										break;
@@ -401,7 +405,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 											// Detecting value type; list or plain:
 										if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', "\t", "\r", "\n"), '', $v['comparator'])))) {
 											if (isset($v['subquery'])) {
-												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';	
+												$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 											} else {
 												$valueBuffer = array();
 												foreach ($v['value'] as $realValue) {

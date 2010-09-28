@@ -1,8 +1,8 @@
 <?php
 /**
  * Oracle configuration
- * 
- * $Id: oci8.config.php 27126 2009-11-29 17:28:15Z xperseguers $
+ *
+ * $Id: oci8.config.php 36761 2010-08-14 16:00:33Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -12,12 +12,12 @@
 global $TYPO3_CONF_VARS;
 
 $TYPO3_CONF_VARS['EXTCONF']['dbal']['handlerCfg'] = array(
-	'_DEFAULT' => array( 
-		'type' => 'adodb', 
+	'_DEFAULT' => array(
+		'type' => 'adodb',
 		'config' => array(
 			'driver' => 'oci8',
 		),
-	), 
+	),
 );
 
 $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
@@ -33,6 +33,12 @@ $TYPO3_CONF_VARS['EXTCONF']['dbal']['mapping'] = array(
 	'cpg_categories' => array(
 		'mapFieldNames' => array(
 			'pid' => 'page_id',
+		),
+	),
+	'pages' => array(
+		'mapTableName' => 'my_pages',
+		'mapFieldNames' => array(
+			'uid' => 'page_uid',
 		),
 	),
 	'tt_news' => array(

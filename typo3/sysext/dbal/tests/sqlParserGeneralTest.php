@@ -27,15 +27,15 @@ require_once('BaseTestCase.php');
 
 /**
  * Testcase for class ux_t3lib_sqlparser
- * 
- * $Id: sqlparser_general_testcase.php 30010 2010-02-14 17:46:31Z xperseguers $
+ *
+ * $Id: sqlParserGeneralTest.php 36761 2010-08-14 16:00:33Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3
  * @subpackage dbal
  */
-class sqlparser_general_testcase extends BaseTestCase {
+class sqlParserGeneralTest extends BaseTestCase {
 
 	/**
 	 * @var ux_t3lib_sqlparser (extended to make protected methods public)
@@ -59,7 +59,7 @@ class sqlparser_general_testcase extends BaseTestCase {
 
 	/**
 	 * Cleans a SQL query.
-	 *  
+	 *
 	 * @param mixed $sql
 	 * @return mixed (string or array)
 	 */
@@ -185,7 +185,7 @@ class sqlparser_general_testcase extends BaseTestCase {
 	public function canSelectAllFieldsFromPages() {
 		$sql = 'SELECT * FROM pages';
 		$expected = $sql;
-		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -300,7 +300,7 @@ class sqlparser_general_testcase extends BaseTestCase {
 	public function canUseInnerJoinInSelect() {
 		$sql = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id = be_users.uid';
 		$expected = 'SELECT pages.uid, be_users.username FROM be_users INNER JOIN pages ON pages.cruser_id=be_users.uid';
-		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -311,7 +311,31 @@ class sqlparser_general_testcase extends BaseTestCase {
 	public function canUseMultipleInnerJoinsInSelect() {
 		$sql = 'SELECT * FROM tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid = tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid = tt_news_cat_mm.uid_local';
 		$expected = 'SELECT * FROM tt_news_cat INNER JOIN tt_news_cat_mm ON tt_news_cat.uid=tt_news_cat_mm.uid_foreign INNER JOIN tt_news ON tt_news.uid=tt_news_cat_mm.uid_local';
-		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql)); 
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14182
+	 */
+	public function canParseMultipleJoinConditions() {
+		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.pid = T1.uid AND T2.size = 4 WHERE T1.cr_userid = 1';
+		$expected = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.pid=T1.uid AND T2.size=4 WHERE T1.cr_userid = 1';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=14182
+	 */
+	public function canParseMultipleJoinConditionsWithLessThanOperator() {
+		$sql = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size < 4 OR T2.pid = T1.uid WHERE T1.cr_userid = 1';
+		$expected = 'SELECT * FROM T1 LEFT OUTER JOIN T2 ON T2.size<4 OR T2.pid=T1.uid WHERE T1.cr_userid = 1';
+		$actual = $this->cleanSql($this->fixture->debug_testSQL($sql));
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -320,7 +344,7 @@ class sqlparser_general_testcase extends BaseTestCase {
 	// Tests concerning DB management
 	///////////////////////////////////////
 
-	/** 
+	/**
 	 * @test
 	 * @see http://bugs.typo3.org/view.php?id=4466
 	 */
@@ -356,6 +380,21 @@ class sqlparser_general_testcase extends BaseTestCase {
 		$parseString = 'ALTER TABLE tx_realurl_uniqalias ADD KEY bk_realurl02 (tablename,field_alias,field_id,value_alias(220),expire)';
 		$alterTables = $this->fixture->_callRef('parseALTERTABLE', $parseString);
 		$this->assertTrue(is_array($alterTables), $alterTables);
+	}
+
+	/**
+	 * @test
+	 * @see http://bugs.typo3.org/view.php?id=2186
+	 */
+	public function canParseUniqueIndexCreation() {
+		$sql = 'ALTER TABLE static_territories ADD UNIQUE uid (uid)';
+		$expected = $sql;
+		$alterTables = $this->fixture->_callRef('parseALTERTABLE', $sql);
+		$queries = $this->fixture->compileSQL($alterTables);
+
+		$this->assertTrue(is_array($queries), $queries);
+		$this->assertTrue(count($queries) == 1, $queries);
+		$this->assertEquals($expected, $queries[0]);
 	}
 
 	///////////////////////////////////////

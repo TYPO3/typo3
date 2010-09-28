@@ -25,8 +25,8 @@
 
 /**
  * Fake ADOdb connection factory.
- * 
- * $Id: FakeDbConnection.php 26966 2009-11-25 15:20:04Z stucki $
+ *
+ * $Id: FakeDbConnection.php 36761 2010-08-14 16:00:33Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
@@ -37,7 +37,7 @@ class FakeDbConnection {
 
 	/**
 	 * Creates a fake database connection.
-	 * 
+	 *
 	 * @param ux_t3lib_db $db
 	 * @param string $databaseType Type of the database (e.g., 'oracle')
 	 * @param string $driver Driver to use (e.g., 'oci8')

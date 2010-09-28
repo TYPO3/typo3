@@ -29,7 +29,7 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id: class.ux_t3lib_db.php 29974 2010-02-13 09:32:39Z xperseguers $
+ * $Id: class.ux_t3lib_db.php 36761 2010-08-14 16:00:33Z xperseguers $
  *
  * @author	Kasper Skaarhoj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -207,18 +207,18 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Clears the cached field information file.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
 		if (file_exists(PATH_typo3conf . 'temp_fieldInfo.php')) {
-			unlink(PATH_typo3conf . 'temp_fieldInfo.php');	
+			unlink(PATH_typo3conf . 'temp_fieldInfo.php');
 		}
 	}
 
 	/**
 	 * Caches the field information.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
@@ -307,7 +307,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					if (isset($mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]])) {
 						$fieldInfo['incFields'][$mappedTableAlias] = $mappedConf['mapFieldNames'][$fieldInfo['incFields'][$mappedTable]];
 					} else {
-						$fieldInfo['incFields'][$mappedTableAlias] = $fieldInfo['incFields'][$mappedTable];	
+						$fieldInfo['incFields'][$mappedTableAlias] = $fieldInfo['incFields'][$mappedTable];
 					}
 				}
 
@@ -324,7 +324,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					if (isset($mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]])) {
 						$fieldInfo['primaryKeys'][$mappedTableAlias] = $mappedConf['mapFieldNames'][$fieldInfo['primaryKeys'][$mappedTable]];
 					} else {
-						$fieldInfo['primaryKeys'][$mappedTableAlias] = $fieldInfo['primaryKeys'][$mappedTable];	
+						$fieldInfo['primaryKeys'][$mappedTableAlias] = $fieldInfo['primaryKeys'][$mappedTable];
 					}
 				}
 			}
@@ -929,7 +929,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$limit = $numrows . ' OFFSET ' . $offset;
 			}
 		}
-		
+
 		$select_fields = $this->quoteFieldNames($select_fields);
 		$from_table = $this->quoteFromTables($from_table);
 		$where_clause = $this->quoteWhereClause($where_clause);
@@ -953,7 +953,7 @@ class ux_t3lib_DB extends t3lib_DB {
 
 	/**
 	 * Quotes components of a SELECT subquery.
-	 * 
+	 *
 	 * @param array $components	Array of SQL query components
 	 * @return array
 	 */
@@ -1054,10 +1054,12 @@ class ux_t3lib_DB extends t3lib_DB {
 				foreach ($v['JOIN'] as $joinCnt => $join) {
 					$from_table[$k]['JOIN'][$joinCnt]['withTable'] = $this->quoteName($join['withTable']);
 					$from_table[$k]['JOIN'][$joinCnt]['as'] = ($join['as']) ? $this->quoteName($join['as']) : '';
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['table'] = ($join['ON'][0]['table']) ? $this->quoteName($join['ON'][0]['table']) : '';
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][0]['field'] = $this->quoteName($join['ON'][0]['field']);
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['table'] = ($join['ON'][1]['table']) ? $this->quoteName($join['ON'][1]['table']) : '';
-					$from_table[$k]['JOIN'][$joinCnt]['ON'][1]['field'] = $this->quoteName($join['ON'][1]['field']);
+					foreach ($from_table[$k]['JOIN'][$joinCnt]['ON'] as &$condition) {
+						$condition['left']['table'] = ($condition['left']['table']) ? $this->quoteName($condition['left']['table']) : '';
+						$condition['left']['field'] = $this->quoteName($condition['left']['field']);
+						$condition['right']['table'] = ($condition['right']['table']) ? $this->quoteName($condition['right']['table']) : '';
+						$condition['right']['field'] = $this->quoteName($condition['right']['field']);
+					}
 				}
 			}
 		}
@@ -1068,7 +1070,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * Quotes the field (and table) names within a where clause with the quote character suitable for the DB being used
 	 *
-	 * @param	string		A where clause that can e parsed by parseWhereClause
+	 * @param	string		A where clause that can be parsed by parseWhereClause
 	 * @return	string		Usable where clause with quoted field/table names
 	 */
 	public function quoteWhereClause($where_clause) {
@@ -1138,10 +1140,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Quotes field names in a SQL GROUP BY clause acccording to DB rules
 	 *
-	 * @param	[type]		$$groupBy: ...
-	 * @return	[type]		...
+	 * @param	array		$groupBy The parsed GROUP BY clause to quote
+	 * @return	array
+	 * @see quoteGroupBy()
 	 */
 	protected function quoteGroupBy($groupBy) {
 		if ($groupBy === '') return '';
@@ -1158,10 +1161,11 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Quotes the field (and table) names within an order by clause with the quote
+	 * character suitable for the DB being used
 	 *
-	 * @param	[type]		$$orderBy: ...
-	 * @return	[type]		...
+	 * @param	string		An order by clause that can by parsed by parseFieldList
+	 * @return	string		Usable order by clause with quoted field/table names
 	 */
 	protected function quoteOrderBy($orderBy) {
 		if ($orderBy === '') return '';
@@ -1772,7 +1776,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param	string		Username to connect with.
 	 * @param	string		Password to connect with.
 	 * @return	mixed		Returns handler connection value
-	 * @deprecated since TYPO3 4.1
 	 * @see handler_init()
 	 */
 	public function sql_pconnect($TYPO3_db_host, $TYPO3_db_username, $TYPO3_db_password) {
@@ -1792,7 +1795,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	 *
 	 * @param	string		Database to connect to.
 	 * @return	boolean		Always returns TRUE; function is obsolete, database selection is made in handler_init() function!
-	 * @deprecated since TYPO3 4.1
 	 */
 	public function sql_select_db($TYPO3_db) {
 		return TRUE;
@@ -2027,7 +2029,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$theKey['Table'] = $tableName;
 						$theKey['Non_unique'] = (int) !$theKey['unique'];
 						$theKey['Key_name'] = str_replace($tableName.'_','',$k);
-	
+
 							// the following are probably not needed anyway...
 						$theKey['Collation'] = '';
 						$theKey['Cardinality'] = '';
@@ -2036,7 +2038,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						$theKey['Null'] = '';
 						$theKey['Index_type'] = '';
 						$theKey['Comment'] = '';
-	
+
 							// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 						$keycols = $theKey['columns'];
 						while (list($c, $theCol) = each($keycols)) {
@@ -2051,7 +2053,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$theKey['Table'] = $tableName;
 				$theKey['Non_unique'] = 0;
 				$theKey['Key_name'] = 'PRIMARY';
-	
+
 					// the following are probably not needed anyway...
 				$theKey['Collation'] = '';
 				$theKey['Cardinality'] = '';
@@ -2060,7 +2062,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				$theKey['Null'] = '';
 				$theKey['Index_type'] = '';
 				$theKey['Comment'] = '';
-	
+
 					// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 				if ($priKeyRow !== FALSE) {
 					while (list($c, $theCol) = each($priKeyRow)) {
@@ -2273,7 +2275,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						}
 						$setDBinit = t3lib_div::trimExplode(chr(10), $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'], 1);
 						foreach ($setDBinit as $v) {
-							if (mysql_query($v, $this->link) === FALSE) {
+							if (mysql_query($v, $link) === FALSE) {
 								t3lib_div::sysLog('Could not initialize DB connection with query "'.$v.'".','Core',3);
 							}
 						}
@@ -2444,13 +2446,14 @@ class ux_t3lib_DB extends t3lib_DB {
 	protected function map_assocArray($input, $tables, $rev = FALSE) {
 			// Traverse tables from query (hopefully only one table):
 		foreach ($tables as $tableCfg) {
-			if (is_array($this->mapping[$tableCfg['table']]['mapFieldNames'])) {
+			$tableKey = $this->getMappingKey($tableCfg['table']);
+			if (is_array($this->mapping[$tableKey]['mapFieldNames'])) {
 
 					// Get the map (reversed if needed):
 				if ($rev) {
-					$theMap = array_flip($this->mapping[$tableCfg['table']]['mapFieldNames']);
+					$theMap = array_flip($this->mapping[$tableKey]['mapFieldNames']);
 				} else {
-					$theMap = $this->mapping[$tableCfg['table']]['mapFieldNames'];
+					$theMap = $this->mapping[$tableKey]['mapFieldNames'];
 				}
 
 					// Traverse selected record, map fieldnames:
@@ -2490,33 +2493,63 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @see exec_SELECTquery()
 	 */
 	protected function map_remapSELECTQueryParts(&$select_fields, &$from_table, &$where_clause, &$groupBy, &$orderBy) {
+			// Backup current mapping as it may be altered if aliases on mapped tables are found
+		$backupMapping = $this->mapping;
+
 			// Tables:
 		$tables = $this->SQLparser->parseFromTables($from_table);
 		$defaultTable = $tables[0]['table'];
+			// Prepare mapping for aliased tables. This will copy the definition of the original table name.
+			// The alias is prefixed with a database-incompatible character to prevent naming clash with real table name
+			// Further access to $this->mapping should be made through $this->getMappingKey() method
 		foreach ($tables as $k => $v) {
-			if ($this->mapping[$v['table']]['mapTableName']) {
-				$tables[$k]['table'] = $this->mapping[$v['table']]['mapTableName'];
+			if ($v['as'] && is_array($this->mapping[$v['table']]['mapFieldNames'])) {
+				$mappingKey = $this->getFreeMappingKey($v['as']);
+				$this->mapping[$mappingKey]['mapFieldNames'] =& $this->mapping[$v['table']]['mapFieldNames'];
+			}
+			if (is_array($v['JOIN'])) {
+				foreach ($v['JOIN'] as $joinCnt => $join) {
+					if ($join['as'] && is_array($this->mapping[$join['withTable']]['mapFieldNames'])) {
+						$mappingKey = $this->getFreeMappingKey($join['as']);
+						$this->mapping[$mappingKey]['mapFieldNames'] =& $this->mapping[$join['withTable']]['mapFieldNames'];
+					}
+				}
+			}
+		}
+		foreach ($tables as $k => $v) {
+			$tableKey = $this->getMappingKey($v['table']);
+			if ($this->mapping[$tableKey]['mapTableName']) {
+				$tables[$k]['table'] = $this->mapping[$tableKey]['mapTableName'];
 			}
 				// Mapping JOINS
 			if (is_array($v['JOIN'])) {
 				foreach($v['JOIN'] as $joinCnt => $join) {
 						// Mapping withTable of the JOIN
-					if ($this->mapping[$join['withTable']]['mapTableName']) {
-						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$join['withTable']]['mapTableName'];					
+					$withTableKey = $this->getMappingKey($join['withTable']);
+					if ($this->mapping[$withTableKey]['mapTableName']) {
+						$tables[$k]['JOIN'][$joinCnt]['withTable'] = $this->mapping[$withTableKey]['mapTableName'];
 					}
 					$onPartsArray = array();
 						// Mapping ON parts of the JOIN
-					if (is_array($join['ON'])) {
-						foreach ($join['ON'] as $onParts) {
-							if (isset($this->mapping[$onParts['table']]['mapFieldNames'][$onParts['field']])) {
-								$onParts['field'] = $this->mapping[$onParts['table']]['mapFieldNames'][$onParts['field']];
+					if (is_array($tables[$k]['JOIN'][$joinCnt]['ON'])) {
+						foreach ($tables[$k]['JOIN'][$joinCnt]['ON'] as &$condition) {
+								// Left side of the comparator
+							$leftTableKey = $this->getMappingKey($condition['left']['table']);
+							if (isset($this->mapping[$leftTableKey]['mapFieldNames'][$condition['left']['field']])) {
+								$condition['left']['field'] = $this->mapping[$leftTableKey]['mapFieldNames'][$condition['left']['field']];
 							}
-							if (isset($this->mapping[$onParts['table']]['mapTableName'])) {
-								$onParts['table'] = $this->mapping[$onParts['table']]['mapTableName'];
+							if (isset($this->mapping[$leftTableKey]['mapTableName'])) {
+								$condition['left']['table'] = $this->mapping[$leftTableKey]['mapTableName'];
 							}
-							$onPartsArray[]	= $onParts;
+								// Right side of the comparator
+							$rightTableKey = $this->getMappingKey($condition['right']['table']);
+							if (isset($this->mapping[$rightTableKey]['mapFieldNames'][$condition['right']['field']])) {
+								$condition['right']['field'] = $this->mapping[$rightTableKey]['mapFieldNames'][$condition['right']['field']];
+							}
+							if (isset($this->mapping[$rightTableKey]['mapTableName'])) {
+								$condition['right']['table'] = $this->mapping[$rightTableKey]['mapTableName'];
+							}
 						}
-						$tables[$k]['JOIN'][$joinCnt]['ON'] = $onPartsArray;
 					}
 				}
 			}
@@ -2542,6 +2575,37 @@ class ux_t3lib_DB extends t3lib_DB {
 		$expFields = $this->SQLparser->parseFieldList($orderBy);
 		$this->map_sqlParts($expFields,$defaultTable);
 		$orderBy = $this->SQLparser->compileFieldList($expFields);
+
+			// Restore the original mapping
+		$this->mapping = $backupMapping;
+	}
+
+	/**
+	 * Returns the key to be used when retrieving information from $this->mapping. This ensures
+	 * that mapping from aliased tables is properly retrieved.
+	 *
+	 * @param string $tableName
+	 * @return string
+	 */
+	protected function getMappingKey($tableName) {
+			// Search deepest alias mapping
+		while (isset($this->mapping['*' . $tableName])) {
+			$tableName = '*' . $tableName;
+		}
+		return $tableName;
+	}
+
+	/**
+	 * Returns a free key to be used to store mapping information in $this->mapping.
+	 *
+	 * @param string $tableName
+	 * @return string
+	 */
+	protected function getFreeMappingKey($tableName) {
+		while (isset($this->mapping[$tableName])) {
+			$tableName = '*' . $tableName;
+		}
+		return $tableName;
 	}
 
 	/**
@@ -2554,6 +2618,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @see map_remapSELECTQueryParts()
 	 */
 	protected function map_sqlParts(&$sqlPartArray, $defaultTable) {
+		$defaultTableKey = $this->getMappingKey($defaultTable);
 			// Traverse sql Part array:
 		if (is_array($sqlPartArray)) {
 			foreach ($sqlPartArray as $k => $v) {
@@ -2564,6 +2629,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				} else {
 						// For the field, look for table mapping (generic):
 					$t = $sqlPartArray[$k]['table'] ? $sqlPartArray[$k]['table'] : $defaultTable;
+					$t = $this->getMappingKey($t);
 
 						// Mapping field name, if set:
 					if (is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$sqlPartArray[$k]['field']])) {
@@ -2580,13 +2646,14 @@ class ux_t3lib_DB extends t3lib_DB {
 						elseif (count($fieldArray) == 2) {
 								// Map the external table
 							$table = $fieldArray[0];
-							if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
-								$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+							$tableKey = $this->getMappingKey($table);
+							if (isset($this->mapping[$tableKey]['mapTableName'])) {
+								$table = $this->mapping[$tableKey]['mapTableName'];
 							}
 								// Map the field itself
 							$field = $fieldArray[1];
-							if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
-								$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
+								$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 							}
 							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $table . '.' . $field;
 							$sqlPartArray[$k]['func_content'] = $table . '.' . $field;
@@ -2596,21 +2663,19 @@ class ux_t3lib_DB extends t3lib_DB {
 						// Do we have a function (e.g., CONCAT)
 					if (isset($v['value']['operator'])) {
 						foreach ($sqlPartArray[$k]['value']['args'] as $argK => $fieldDef) {
-							if (isset($this->mapping[$fieldDef['table']]['mapTableName'])) {
-								$sqlPartArray[$k]['value']['args'][$argK]['table'] = $this->mapping[$fieldDef['table']]['mapTableName'];
+							$tableKey = $this->getMappingKey($fieldDef['table']);
+							if (isset($this->mapping[$tableKey]['mapTableName'])) {
+								$sqlPartArray[$k]['value']['args'][$argK]['table'] = $this->mapping[$tableKey]['mapTableName'];
 							}
-							if (is_array($this->mapping[$fieldDef['table']]['mapFieldNames']) && isset($this->mapping[$fieldDef['table']]['mapFieldNames'][$fieldDef['field']])) {
-								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$fieldDef['table']]['mapFieldNames'][$fieldDef['field']];	
+							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']])) {
+								$sqlPartArray[$k]['value']['args'][$argK]['field'] = $this->mapping[$tableKey]['mapFieldNames'][$fieldDef['field']];
 							}
 						}
 					}
 
 						// Do we have a subquery (WHERE parts only)?
 					if (isset($sqlPartArray[$k]['subquery'])) {
-						$subqueryDefaultTable = $sqlPartArray[$k]['subquery']['FROM'][0]['table'];
-						$this->map_sqlParts($sqlPartArray[$k]['subquery']['SELECT'], $subqueryDefaultTable);
-						$this->map_sqlParts($sqlPartArray[$k]['subquery']['FROM'], $subqueryDefaultTable);
-						$this->map_sqlParts($sqlPartArray[$k]['subquery']['WHERE'], $subqueryDefaultTable);
+						$this->map_subquery($sqlPartArray[$k]['subquery']);
 					}
 
 						// do we have a field name in the value?
@@ -2622,25 +2687,65 @@ class ux_t3lib_DB extends t3lib_DB {
 						} elseif (count($fieldArray) == 2) {
 								// Map the external table
 							$table = $fieldArray[0];
-							if (isset($this->mapping[$fieldArray[0]]['mapTableName'])) {
-								$table = $this->mapping[$fieldArray[0]]['mapTableName'];
+							$tableKey = $this->getMappingKey($table);
+							if (isset($this->mapping[$tableKey]['mapTableName'])) {
+								$table = $this->mapping[$tableKey]['mapTableName'];
 							}
 								// Map the field itself
 							$field = $fieldArray[1];
-							if (is_array($this->mapping[$fieldArray[0]]['mapFieldNames']) && isset($this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]])) {
-								$field = $this->mapping[$fieldArray[0]]['mapFieldNames'][$fieldArray[1]];
+							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
+								$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 							}
 							$sqlPartArray[$k]['value'][0] = $table . '.' . $field;
 						}
 					}
 
 						// Map table?
-					if ($sqlPartArray[$k]['table'] && $this->mapping[$sqlPartArray[$k]['table']]['mapTableName']) {
-						$sqlPartArray[$k]['table'] = $this->mapping[$sqlPartArray[$k]['table']]['mapTableName'];
+					$tableKey = $this->getMappingKey($sqlPartArray[$k]['table']);
+					if ($sqlPartArray[$k]['table'] && $this->mapping[$tableKey]['mapTableName']) {
+						$sqlPartArray[$k]['table'] = $this->mapping[$tableKey]['mapTableName'];
 					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Maps table and field names in a subquery.
+	 *
+	 * @param array $parsedQuery
+	 * @return void
+	 */
+	protected function map_subquery(&$parsedQuery) {
+			// Backup current mapping as it may be altered
+		$backupMapping = $this->mapping;
+
+		foreach ($parsedQuery['FROM'] as $k => $v) {
+			$mappingKey = $v['table'];
+			if ($v['as'] && is_array($this->mapping[$v['table']]['mapFieldNames'])) {
+				$mappingKey = $this->getFreeMappingKey($v['as']);
+			} else {
+					// Should ensure that no alias is defined in the external query
+					// which would correspond to a real table name in the subquery
+				if ($this->getMappingKey($v['table']) !== $v['table']) {
+					$mappingKey = $this->getFreeMappingKey($v['table']);
+						// This is the only case when 'mapTableName' should be copied
+					$this->mapping[$mappingKey]['mapTableName'] =& $this->mapping[$v['table']]['mapTableName'];
+				}
+			}
+			if ($mapping !== $v['table']) {
+				$this->mapping[$mappingKey]['mapFieldNames'] =& $this->mapping[$v['table']]['mapFieldNames'];
+			}
+		}
+
+			// Perform subquery's remapping
+		$defaultTable = $parsedQuery['FROM'][0]['table'];
+ 		$this->map_sqlParts($parsedQuery['SELECT'], $defaultTable);
+ 		$this->map_sqlParts($parsedQuery['FROM'], $defaultTable);
+ 		$this->map_sqlParts($parsedQuery['WHERE'], $defaultTable);
+
+ 			// Restore the mapping
+ 		$this->mapping = $backupMapping;
 	}
 
 	/**
@@ -2772,10 +2877,11 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 
 				// if lastQuery is empty (for whatever reason) at least log inData.args
-			if (empty($this->lastQuery))
-				$query = implode(' ',$inData['args']);
-			else
+			if (empty($this->lastQuery)) {
+				$query = implode(' ', $inData['args']);
+			} else {
 				$query = $this->lastQuery;
+			}
 
 			if ($this->conf['debugOptions']['backtrace']) {
 				$backtrace = debug_backtrace();

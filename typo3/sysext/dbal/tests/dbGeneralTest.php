@@ -27,15 +27,15 @@ require_once('BaseTestCase.php');
 
 /**
  * Testcase for class ux_t3lib_db.
- * 
- * $Id: db_general_testcase.php 26966 2009-11-25 15:20:04Z stucki $
+ *
+ * $Id: dbGeneralTest.php 36761 2010-08-14 16:00:33Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *
  * @package TYPO3
  * @subpackage dbal
  */
-class db_general_testcase extends BaseTestCase {
+class dbGeneralTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -47,7 +47,7 @@ class db_general_testcase extends BaseTestCase {
 	 */
 	protected $loadedExtensions;
 
-	/** 
+	/**
 	 * @var array
 	 */
 	protected $temporaryFiles;
@@ -83,7 +83,7 @@ class db_general_testcase extends BaseTestCase {
 
 	/**
 	 * Cleans a SQL query.
-	 *  
+	 *
 	 * @param mixed $sql
 	 * @return mixed (string or array)
 	 */
@@ -99,7 +99,7 @@ class db_general_testcase extends BaseTestCase {
 
 	/**
 	 * Creates a fake extension with a given table definition.
-	 * 
+	 *
 	 * @param string $tableDefinition SQL script to create the extension's tables
 	 * @return void
 	 */
