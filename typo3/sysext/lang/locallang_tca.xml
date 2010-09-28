@@ -72,6 +72,8 @@
 			<label index="sys_filemounts.base">Base:</label>
 			<label index="sys_filemounts.base_absolute">absolute (root) / </label>
 			<label index="sys_filemounts.base_relative">relative ../fileadmin/</label>
+			<label index="sys_news">System News</label>
+			<label index="sys_news.tabs.access">Access</label>
 			<label index="sys_workspace.adminusers">Owners:</label>
 			<label index="sys_workspace.members">Members:</label>
 			<label index="sys_workspace.reviewers">Reviewers:</label>

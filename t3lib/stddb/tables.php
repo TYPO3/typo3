@@ -424,6 +424,35 @@ $TCA['sys_language'] = array(
 );
 
 
+/**
+ * Table "sys_news":
+ * Holds news records to be displayed in the login screen
+ * This is only the 'header' part (ctrl). The full configuration is found
+ * in t3lib/stddb/tbl_be.php
+ */
+$TCA['sys_news'] = array(
+	'ctrl' => array(
+		'title'             => 'LLL:EXT:lang/locallang_tca.xml:sys_news',
+		'label'             => 'title',
+		'tstamp'            => 'tstamp',
+		'crdate'            => 'crdate',
+		'cruser_id'         => 'cruser_id',
+		'adminOnly'         => TRUE,
+		'rootLevel'         => TRUE,
+		'delete'            => 'deleted',
+		'enablecolumns'     => array(
+			'disabled'  => 'hidden',
+			'starttime' => 'starttime',
+			'endtime'   => 'endtime'
+		),
+		'default_sortby'    => 'crdate DESC',
+		'typeicon_classes'  => array(
+			'default' => 'mimetypes-x-sys_news',
+		),
+		'dynamicConfigFile' => 'T3LIB:tbl_be.php',
+		'dividers2tabs'     => TRUE
+	)
+);
 
 
 
@@ -471,6 +500,7 @@ t3lib_extMgm::addLLrefForTCAdescr('be_users','EXT:lang/locallang_csh_be_users.xm
 t3lib_extMgm::addLLrefForTCAdescr('be_groups','EXT:lang/locallang_csh_be_groups.xml');
 t3lib_extMgm::addLLrefForTCAdescr('sys_filemounts','EXT:lang/locallang_csh_sysfilem.xml');
 t3lib_extMgm::addLLrefForTCAdescr('sys_language','EXT:lang/locallang_csh_syslang.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_news','EXT:lang/locallang_csh_sysnews.xml');
 t3lib_extMgm::addLLrefForTCAdescr('sys_workspace','EXT:lang/locallang_csh_sysws.xml');
 t3lib_extMgm::addLLrefForTCAdescr('xMOD_csh_corebe','EXT:lang/locallang_csh_corebe.xml');	// General Core
 t3lib_extMgm::addLLrefForTCAdescr('_MOD_tools_em','EXT:lang/locallang_csh_em.xml');		// Extension manager

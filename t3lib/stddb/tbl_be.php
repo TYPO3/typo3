@@ -820,4 +820,74 @@ $TCA['sys_language'] = array(
 	)
 );
 
+
+
+
+/**
+ * System News (displayed on Login screen)
+ */
+$TCA['sys_news'] = array(
+	'ctrl' => $TCA['sys_news']['ctrl'],
+	'interface' => array(
+		'showRecordFieldList' => 'hidden,title,content,starttime,endtime'
+	),
+	'columns' => array(
+		'hidden' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
+			'exclude' => 1,
+			'config' => array(
+				'type' => 'check',
+				'default' => '0'
+			)
+		),
+		'starttime' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
+			'config' => array(
+				'type' => 'input',
+				'size' => '8',
+				'max' => '20',
+				'eval' => 'date',
+				'checkbox' => '0',
+				'default' => '0'
+			)
+		),
+		'endtime' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'config' => array(
+				'type' => 'input',
+				'size' => '8',
+				'max' => '20',
+				'eval' => 'date',
+				'checkbox' => '0',
+				'default' => '0'
+			)
+		),
+		'title' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.title',
+			'config' => array(
+				'type' => 'input',
+				'size' => '30',
+				'max' => '255',
+				'eval' => 'required'
+			)
+		),
+		'content' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.text',
+			'config' => array(
+				'type' => 'text',
+				'cols' => '48',
+				'rows' => '5'
+			)
+		)
+	),
+	'types' => array(
+		'1' => array('showitem' => '
+			hidden, title, content,
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_news.tabs.access, starttime, endtime'
+		)
+	)
+);
+
 ?>

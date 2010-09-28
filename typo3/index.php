@@ -560,6 +560,19 @@ class SC_index {
 	function makeLoginNews() {
 		$newsContent = '';
 
+		$systemNews = $this->getSystemNews();
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
+			/** @deprecated since 4.5. Use system news records instead. */
+			t3lib_div::logDeprecatedFunction();
+
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] = array_merge(
+				$systemNews,
+				$GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']
+			);
+		} else {
+			$GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] = $systemNews;
+		}
+
 			// Traverse news array IF there are records in it:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && !t3lib_div::_GP('loginRefresh')) {
 
@@ -579,8 +592,8 @@ class SC_index {
 				$newsItemMarker = array(
 					'###HEADER###'  => htmlspecialchars($newsItem['header']),
 					'###DATE###'    => htmlspecialchars($newsItem['date']),
-					'###CONTENT###' => trim($newsItem['content']),
-					'###CLASS###'	=> $additionalClass
+					'###CONTENT###' => nl2br(htmlspecialchars(trim($newsItem['content']))),
+					'###CLASS###'   => $additionalClass
 				);
 
 				$count++;
@@ -594,6 +607,40 @@ class SC_index {
 		}
 
 		return $newsContent;
+	}
+
+	/**
+	 * Gets news from sys_news and converts them into a format suitable for
+	 * showing them at the login screen.
+	 *
+	 * @return	array	An array of login news.
+	 */
+	protected function getSystemNews() {
+		$systemNewsTable = 'sys_news';
+		$systemNews      = array();
+
+		$systemNewsRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'title, content, crdate',
+			$systemNewsTable,
+			'1=1' .
+				t3lib_BEfunc::BEenableFields($systemNewsTable) .
+				t3lib_BEfunc::deleteClause($systemNewsTable),
+			'',
+			'crdate DESC'
+		);
+
+		foreach ($systemNewsRecords as $systemNewsRecord) {
+			$systemNews[] = array(
+				'date'    => date(
+					$GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
+					$systemNewsRecord['crdate']
+				),
+				'header'  => $systemNewsRecord['title'],
+				'content' => $systemNewsRecord['content']
+			);
+		}
+
+		return $systemNews;
 	}
 
 	/**
