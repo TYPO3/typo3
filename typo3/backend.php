@@ -129,6 +129,7 @@ class TYPO3backend {
 			'../t3lib/jsfunc.evalfield.js',
 			'../t3lib/js/extjs/ux/flashmessages.js',
 			'../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
+			'../t3lib/js/extjs/notifications.js',
 			'js/backend.js',
 			'js/loginrefresh.js',
 			'js/extjs/debugPanel.js',

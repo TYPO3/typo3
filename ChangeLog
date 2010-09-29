@@ -1,3 +1,7 @@
+2010-09-29  Steffen Kamper  <steffen@typo3.org>
+
+	* Added feature #15745: Integrate generic notification methods to show windows and dialogs based on ExtJS
+
 2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #15075: [Install] make a pre-check for required php-extensions (Thanks to Jigal van Hemert)
