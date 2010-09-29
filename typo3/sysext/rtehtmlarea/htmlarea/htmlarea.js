@@ -962,7 +962,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			if (Ext.isIE) {
 				try { rules = this.document.styleSheets[0].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
 			} else {
-				try { rules = this.document.styleSheets[0].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+				try { this.document.styleSheets[0] && this.document.styleSheets[0].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
 			}
 				// Then test if all stylesheets are accessible
 			if (stylesAreLoaded) {
