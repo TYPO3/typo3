@@ -402,7 +402,7 @@ class user_feAdmin	{
 			while(list($theField,$theValue)=each($this->conf['parseValues.']))	{
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				while(list(,$cmd)=each($listOfCommands))	{
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd=trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'int':
@@ -664,7 +664,7 @@ class user_feAdmin	{
 			while(list($theField,$theValue)=each($this->conf[$this->cmdKey.'.']['evalValues.']))	{
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				while(list(,$cmd)=each($listOfCommands))	{
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'uniqueGlobal':
@@ -999,7 +999,7 @@ class user_feAdmin	{
 			if (!is_array($this->dataArr)) {
 				$this->dataArr = array();
 			}
-			
+
 			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->dataArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 			if ($this->conf['create.']['preview'] && !$this->previewLabel)	{$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="preview" value="1" />';}
 			$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
@@ -1223,7 +1223,7 @@ class user_feAdmin	{
 			while(list($theField,$theValue)=each($this->conf[$this->cmdKey.'.']['evalValues.']))	{
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				while(list(,$cmd)=each($listOfCommands))	{
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'twice':
@@ -1243,7 +1243,7 @@ class user_feAdmin	{
 			while(list($theField,$theValue)=each($this->conf['parseValues.']))	{
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				while(list(,$cmd)=each($listOfCommands))	{
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'multiple':
@@ -1512,7 +1512,7 @@ class user_feAdmin	{
 	 */
 	function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	{
 		if (trim($recipient) && trim($content))	{
-			$parts = spliti('<title>|</title>',$content,3);
+			$parts = preg_spliti('/<title>|</title>/', $content, 3);
 			$subject = trim($parts[1]) ? trim($parts[1]) : 'TYPO3 FE Admin message';
 
 			$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
