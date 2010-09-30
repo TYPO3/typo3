@@ -401,7 +401,7 @@ class user_feAdmin	{
 			foreach ($this->conf['parseValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				foreach ($listOfCommands as $cmd) {
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd=trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'int':
@@ -653,7 +653,7 @@ class user_feAdmin	{
 			foreach ($this->conf[$this->cmdKey.'.']['evalValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				foreach ($listOfCommands as $cmd) {
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'uniqueGlobal':
@@ -1207,7 +1207,7 @@ class user_feAdmin	{
 			foreach ($this->conf[$this->cmdKey.'.']['evalValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				foreach ($listOfCommands as $cmd) {
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'twice':
@@ -1226,7 +1226,7 @@ class user_feAdmin	{
 			foreach ($this->conf['parseValues.'] as $theField => $theValue) {
 				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
 				foreach ($listOfCommands as $cmd) {
-					$cmdParts = split('\[|\]',$cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
+					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
 					switch($theCmd)	{
 						case 'multiple':
@@ -1493,7 +1493,7 @@ class user_feAdmin	{
 	 */
 	function sendHTMLMail($content,$recipient,$dummy,$fromEmail,$fromName,$replyTo='')	{
 		if (trim($recipient) && trim($content))	{
-			$parts = spliti('<title>|</title>',$content,3);
+			$parts = preg_spliti('<title>|</title>', $content, 3);
 			$subject = trim($parts[1]) ? trim($parts[1]) : 'TYPO3 FE Admin message';
 
 			$Typo3_htmlmail = t3lib_div::makeInstance('t3lib_htmlmail');
