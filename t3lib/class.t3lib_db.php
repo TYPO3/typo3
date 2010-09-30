@@ -828,7 +828,7 @@ class t3lib_DB {
 	 * @see quoteStr()
 	 */
 	function escapeStrForLike($str, $table) {
-		return preg_replace('/[_%]/', '\\\$0', $str);
+		return addcslashes($str, '_%');
 	}
 
 	/**

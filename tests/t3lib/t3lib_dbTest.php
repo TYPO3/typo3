@@ -135,5 +135,19 @@ class t3lib_dbTest extends tx_phpunit_testcase {
 		);
 	}
 
+
+	/////////////////////////////////////////////////
+	// Tests concerning escapeStringForLikeComparison
+	/////////////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function escapeStringForLikeComparison() {
+		$this->assertEquals(
+			'foo\_bar\%',
+			$this->fixture->escapeStrForLike('foo_bar%', 'table')
+		);
+	}
 }
 ?>

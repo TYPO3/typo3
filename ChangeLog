@@ -1,6 +1,7 @@
 2010-09-30  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #15639: Scheduler: Add missing classes and interface to autoload registry (Thanks to Marcus Krause)
+	* Fixed bug #14997: Performance: t3lib_db->escapeStrForLike() is using preg_replace, which is not necessary (Thanks to Caspar Stuebs and Marcus Krause)
 
 2010-09-30  Steffen Gebert  <steffen@steffen-gebert.de>
 
