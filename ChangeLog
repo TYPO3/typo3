@@ -1,3 +1,7 @@
+2010-09-30  Francois Suter  <francois@typo3.org>
+
+	* Fixed bug #15639: Scheduler: Add missing classes and interface to autoload registry (Thanks to Marcus Krause)
+
 2010-09-30  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #12889: fe_adminLib.inc usages deprecated function split() (Thanks to Steffen Kamper)
