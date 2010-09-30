@@ -11,14 +11,14 @@ a img {
 span.t3-icon {
 	display: inline-block;
 	position: relative;
-	width: 16px;
-	height: 16px;
 	overflow: hidden;
 }
 
 .t3-icon {
 	background-image:url('../../gfx/icon_fatalerror.gif');
 	background-repeat:no-repeat;
+	width: 16px;
+	height: 16px;
 	font-size:1px;
 	line-height:0;
 }

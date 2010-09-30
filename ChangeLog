@@ -5,6 +5,7 @@
 2010-09-30  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #12889: fe_adminLib.inc usages deprecated function split() (Thanks to Steffen Kamper and Ismaël Bidau)
+	* Fixed bug #15872: Size definition in to restrictive, selector prevents other stylesheet to overwrite icon size (Thanks to Steffen Ritter)
 
 2010-09-29  Stanislas Rolland  <typo3@sjbr.ca>
 
