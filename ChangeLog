@@ -2,6 +2,7 @@
 
 	* Fixed bug #15639: Scheduler: Add missing classes and interface to autoload registry (Thanks to Marcus Krause)
 	* Fixed bug #14997: Performance: t3lib_db->escapeStrForLike() is using preg_replace, which is not necessary (Thanks to Caspar Stuebs and Marcus Krause)
+	* Fixed bug #15873: Scheduler: Links on action icons should not be underlined
 
 2010-09-30  Steffen Gebert  <steffen@steffen-gebert.de>
 
