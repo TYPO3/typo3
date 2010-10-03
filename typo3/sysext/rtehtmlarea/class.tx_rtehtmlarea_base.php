@@ -364,6 +364,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			if (!$GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->ID]['enableCompressedScripts']) {
 				$pageRenderer->enableExtJsDebug();
 			}
+			$pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
 			/* =======================================
 			 * DRAW THE EDITOR
 			 * =======================================

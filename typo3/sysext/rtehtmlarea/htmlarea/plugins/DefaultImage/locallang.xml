@@ -14,6 +14,7 @@
 			<label index="Top:">Top:</label>
 			<label index="Right:">Right:</label>
 			<label index="Bottom:">Bottom:</label>
+			<label index="image_url">Image URL</label>
 			<label index="image_url_invalid">The url could not be accessed or is not a valid image.</label>
 		</languageKey>
 	</data>

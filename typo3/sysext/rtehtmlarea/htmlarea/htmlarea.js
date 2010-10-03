@@ -2572,7 +2572,10 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 					this.document.body.innerHTML = this.getHTML();
 				} catch(e) {
 					HTMLArea._appendToLog('[HTMLArea.Editor::setMode]: The HTML document is not well-formed.');
-					alert(HTMLArea.I18N.msg['HTML-document-not-well-formed']);
+					TYPO3.Dialog.ErrorDialog({
+						title: 'htmlArea RTE',
+						msg: HTMLArea.I18N.msg['HTML-document-not-well-formed']
+					});
 					break;
 				}
 				this.textAreaContainer.hide();
@@ -3226,7 +3229,7 @@ HTMLArea.Editor.prototype.execCommand = function(cmdID, UI, param) {
 			try {
 				this.document.execCommand(cmdID, UI, param);
 			} catch(e) {
-				if (this.config.debug) alert(e + "\n\nby execCommand(" + cmdID + ");");
+				HTMLArea._appendToLog('[HTMLArea.Editor::execCommand]: ' + e + 'by execCommand(' + cmdID + ')');
 			}
 	}
 	this.toolbar.update();
@@ -3358,10 +3361,16 @@ HTMLArea.getHTML = function(root, outputRoot, editor){
 	try {
 		return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
 	} catch(e) {
-		HTMLArea._appendToLog("The HTML document is not well-formed.");
-		if (!HTMLArea.enableDebugMode) alert(HTMLArea.I18N.msg["HTML-document-not-well-formed"]);
-			else return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
-		return editor.document.body.innerHTML;
+		HTMLArea._appendToLog('[HTMLArea::getHTML]: The HTML document is not well-formed.');
+		if (!HTMLArea.enableDebugMode) {
+			TYPO3.Dialog.ErrorDialog({
+				title: 'htmlArea RTE',
+				msg: HTMLArea.I18N.msg['HTML-document-not-well-formed']
+			});
+			return editor.document.body.innerHTML;
+		} else {
+			return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
+		}
 	}
 };
 

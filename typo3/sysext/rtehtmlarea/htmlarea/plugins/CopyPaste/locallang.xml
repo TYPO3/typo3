@@ -7,10 +7,8 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="How many columns would you like to copy?">How many columns would you like to copy?</label>
-			<label index="How many rows would you like to copy?">How many rows would you like to copy?</label>
-			<label index="How many columns would you like to cut?">How many columns would you like to cut?</label>
-			<label index="How many rows would you like to cut?">How many rows would you like to cut?</label>
+			<label index="Allow-Clipboard-Helper-Add-On-Title">Firefox Add-on AllowClipboard Helper</label>
+			<label index="Firefox-Security-Prefs-Question-Title">Firefox Clipboard Access Security Settings</label>
 			<label index="Technische Universitat Ilmenau">Technische Universität Ilmenau</label>
 		</languageKey>
 	</data>

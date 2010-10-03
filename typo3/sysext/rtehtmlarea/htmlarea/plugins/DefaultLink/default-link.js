@@ -131,7 +131,10 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 				if (!this.link) {
 					var selection = this.editor._getSelection();
 					if (this.editor._selectionEmpty(selection)) {
-						Ext.MessageBox.alert('', this.localize('Select some text'));
+						TYPO3.Dialog.InformationDialog({
+							title: this.getButton(buttonId).tooltip.title,
+							msg: this.localize('Select some text')
+						});
 						break;
 					}
 					this.parameters = {
@@ -293,7 +296,7 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 	onOK: function () {
 		var hrefField = this.dialog.find('itemId', 'href')[0];
 		var href = hrefField.getValue().trim();
-		if (href) {
+		if (href && href != 'http://') {
 			var title = this.dialog.find('itemId', 'title')[0].getValue();
 			var target = this.dialog.find('itemId', 'target')[0].getValue();
 			if (target == '_other') {
@@ -302,7 +305,11 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 			this.createLink(href, title, target);
 			this.close();
 		} else {
-			Ext.MessageBox.alert('', this.localize('link_url_required'), function () { hrefField.focus(); });
+			TYPO3.Dialog.InformationDialog({
+				title: this.localize('URL'),
+				msg: this.localize('link_url_required'),
+				fn: function () { hrefField.focus(); }
+			});
 		}
 		return false;
 	},

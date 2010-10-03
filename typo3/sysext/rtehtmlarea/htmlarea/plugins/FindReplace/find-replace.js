@@ -272,7 +272,12 @@ HTMLArea.FindReplace = HTMLArea.Plugin.extend({
 	 */
 	requestReplacement: function () {
 		if (!this.dialog.find('itemId', 'replacement')[0].getValue() && this.dialog.find('itemId', 'replaceAll')[0].getValue()) {
-			Ext.MessageBox.alert('', this.localize('Inform a replacement word'));
+			TYPO3.Dialog.InformationDialog({
+				title: this.getButton('FindReplace').tooltip.title,
+				msg: this.localize('Inform a replacement word'),
+				fn: function () { this.dialog.find('itemId', 'replacement')[0].focus(); },
+				scope: this
+			});
 		}
 		this.clearDoc();
 	},
@@ -281,8 +286,12 @@ HTMLArea.FindReplace = HTMLArea.Plugin.extend({
 	 */
 	onNext: function () {
 		if (!this.dialog.find('itemId', 'pattern')[0].getValue()) {
-			Ext.MessageBox.alert('', this.localize('Enter the text you want to find'));
-			this.dialog.find('itemId', 'pattern')[0].focus();
+			TYPO3.Dialog.InformationDialog({
+				title: this.getButton('FindReplace').tooltip.title,
+				msg: this.localize('Enter the text you want to find'),
+				fn: function () { this.dialog.find('itemId', 'pattern')[0].focus(); },
+				scope: this
+			});
 			return false;
 		}
 		var fields = [
@@ -361,7 +370,12 @@ HTMLArea.FindReplace = HTMLArea.Plugin.extend({
 						replace('yes');
 						return true;
 					} else {
-						Ext.MessageBox.confirm('', this.localize('Substitute this occurrence?'), replace, this);
+						TYPO3.Dialog.QuestionDialog({
+							title: this.getButton('FindReplace').tooltip.title,
+							msg: this.localize('Substitute this occurrence?'),
+							fn: replace,
+							scope: this
+						});
 						return false;
 					}
 				}
@@ -399,8 +413,11 @@ HTMLArea.FindReplace = HTMLArea.Plugin.extend({
 				message += '"' + pattern + '" ' + this.localize('not found');
 				this.disableActions('hiliteall,clear', true);
 			}
-			Ext.MessageBox.minWidth = 300;
-			Ext.MessageBox.alert('', message + '.');
+			TYPO3.Dialog.InformationDialog({
+				title: this.getButton('FindReplace').tooltip.title,
+				msg: message + '.',
+				minWidth: 300
+			});
 		}
 	},
 	/*

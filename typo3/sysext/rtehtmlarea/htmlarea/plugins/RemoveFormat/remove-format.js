@@ -190,7 +190,10 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 			this.applyRequest(params);
 			this.close();
 		} else {
-			Ext.MessageBox.alert('', this.localize('Select the type of formatting you wish to remove.'));
+			TYPO3.Dialog.InformationDialog({
+				title: this.getButton('RemoveFormat').tooltip.title,
+				msg: this.localize('Select the type of formatting you wish to remove.')
+			});
 		}
 		return false;
 	},

@@ -441,11 +441,16 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 	 */
 	onCancel: function () {
 		if (this.modified) {
-			Ext.MessageBox.confirm('', this.localize('QUIT_CONFIRMATION'), function (button) {
-				if (button == 'yes') {
-					this.close();
-				}
-			}, this);
+			TYPO3.Dialog.QuestionDialog({
+				title: this.getButton('SpellCheck').tooltip.title,
+				msg: this.localize('QUIT_CONFIRMATION'),
+				fn: function (button) { 
+					if (button == 'yes') {
+						this.close();
+					}
+				},
+				scope: this
+			});
 			return false;
 		} else {
 			return this.base();
@@ -552,10 +557,17 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 			}
 		} else {
 			if (!this.modified) {
-				Ext.MessageBox.alert('', this.localize('NO_ERRORS_CLOSING'));
-				this.onOK();
+				TYPO3.Dialog.InformationDialog({
+					title: this.getButton('SpellCheck').tooltip.title,
+					msg: this.localize('NO_ERRORS_CLOSING'),
+					fn: this.onOK,
+					scope: this
+				});
 			} else {
-				Ext.MessageBox.alert('', this.localize('NO_ERRORS'));
+				TYPO3.Dialog.InformationDialog({
+					title: this.getButton('SpellCheck').tooltip.title,
+					msg: this.localize('NO_ERRORS')
+				});
 			}
 			return false;
 		}
@@ -723,7 +735,10 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 		} while (index != start && this.misspelledWords[index].htmlareaFixed);
 		if (index == start) {
 			index = 0;
-			Ext.MessageBox.alert('', this.localize('Finished list of mispelled words'));
+			TYPO3.Dialog.InformationDialog({
+				title: this.getButton('SpellCheck').tooltip.title,
+				msg: this.localize('Finished list of mispelled words')
+			});
 		}
 		this.setCurrentWord(this.misspelledWords[index], true);
 		return false;
@@ -786,14 +801,20 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 	onInfoClick: function () {
 		var info = this.dialog.getComponent('spell-check-iframe').getEl().dom.contentWindow.spellcheckInfo;
 		if (!info) {
-			Ext.MessageBox.alert('', this.localize('No information available'));
+			TYPO3.Dialog.InformationDialog({
+				title: this.getButton('SpellCheck').tooltip.title,
+				msg: this.localize('No information available')
+			});
 		} else {
-			var txt = this.localize('Document information') + '<br />';
+			var txt = '';
 			Ext.iterate(info, function (key, value) {
-				txt += '<br />' + this.localize(key) + ': ' + value;
+				txt += (txt ? '<br />' : '') + this.localize(key) + ': ' + value;
 			}, this);
 			txt += ' ' + this.localize('seconds');
-			Ext.MessageBox.alert('', txt);
+			TYPO3.Dialog.InformationDialog({
+				title: this.localize('Document information'),
+				msg: txt
+			});
 		}
 		return false;
 	}

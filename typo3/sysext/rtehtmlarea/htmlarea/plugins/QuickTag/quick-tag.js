@@ -399,16 +399,23 @@ HTMLArea.QuickTag = HTMLArea.Plugin.extend({
 		var insertedTag = this.insertedTag.getValue();
 		var currentTag = this.tagCombo.getValue();
 		if (!insertedTag) {
-			Ext.MessageBox.alert('', this.localize("Enter the TAG you want to insert"));
-			this.insertedTag.focus();
+			TYPO3.Dialog.InformationDialog({
+				title: this.getButton('InsertTag').tooltip.title,
+				msg: this.localize('Enter the TAG you want to insert'),
+				fn: function () { this.insertedTag.focus(); },
+				scope: this
+			});
 			event.stopEvent();
 			return false;
 		}
 		if (this.quotes.test(insertedTag)) {
 			if (this.quotes.test(insertedTag + '"')) {
-				Ext.MessageBox.alert('', this.localize("There are some unclosed quote"));
-				this.insertedTag.focus();
-				this.insertedTag.select();
+				TYPO3.Dialog.InformationDialog({
+					title: this.getButton('InsertTag').tooltip.title,
+					msg: this.localize('There are some unclosed quote'),
+					fn: function () { this.insertedTag.focus(); this.insertedTag.select(); },
+					scope: this
+				});
 				event.stopEvent();
 				return false;
 			} else {

@@ -220,6 +220,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		}
 		$pageRenderer->addCssFile($this->siteURL . 't3lib/js/extjs/ux/resize.css');
 		$pageRenderer->addJsFile($this->siteURL . 't3lib/js/extjs/ux/ext.resizable.js');
+		$pageRenderer->addJsFile($this->siteURL . '/t3lib/js/extjs/notifications.js');
 		if ($this->TCEform->RTEcounter == 1) {
 			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
 		}

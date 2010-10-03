@@ -7,6 +7,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="URL">URL</label>
 			<label index="Select some text">You need to select some text before creating a link</label>
 			<label index="frame">Frame name:</label>
 			<label index="frame_help">Enter the name of the frame to be used as target</label>

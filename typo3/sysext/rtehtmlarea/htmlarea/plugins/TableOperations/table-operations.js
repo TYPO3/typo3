@@ -129,7 +129,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 		['cell-insert-before',	'td,th',			'cellinsertbefore', false, 'cell-insert-before'],
 		['cell-insert-after',	'td,th',			'cellinsertafter', false, 'cell-insert-after'],
 		['cell-delete',		'td,th',			'celldelete', false, 'cell-delete'],
-		['cell-merge',		'tr',				'cellmerge', false, 'cell-merge'],
+		['cell-merge',		Ext.isGecko? 'tr' : 'td,th',	'cellmerge', false, 'cell-merge'],
 		['cell-split',		'td,th[colSpan!=1,rowSpan!=1]',	'cellsplit', false, 'cell-split']
 	],
 	/*
@@ -398,7 +398,10 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 		if (this.properties.required) {
 			if (this.properties.required.indexOf('captionOrSummary') != -1) {
 				if (!/\S/.test(params.f_caption) && !/\S/.test(params.f_summary)) {
-					Ext.MessageBox.alert(this.localize('Error'), this.localize('captionOrSummary' + '-required'));
+					TYPO3.Dialog.ErrorDialog({
+						title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
+						msg: this.localize('captionOrSummary' + '-required')
+					});
 					var field = this.dialog.find('itemId', 'f_caption')[0];
 					var tab = field.findParentByType('container');
 					tab.ownerCt.activate(tab);
@@ -412,7 +415,10 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 				};
 				Ext.iterate(required, function (item) {
 					if (!params[item] && this.properties.required.indexOf(required[item]) != -1) {
-						Ext.MessageBox.alert(this.localize('Error'), this.localize(required[item] + '-required'));
+						TYPO3.Dialog.ErrorDialog({
+							title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
+							msg: this.localize(required[item] + '-required')
+						});
 						var field = this.dialog.find('itemId', item)[0];
 						var tab = field.findParentByType('container');
 						tab.ownerCt.activate(tab);
@@ -434,7 +440,10 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			};
 			Ext.iterate(required, function (item) {
 				if (!params[item]) {
-					Ext.MessageBox.alert(this.localize('Error'), this.localize(required[item]));
+					TYPO3.Dialog.ErrorDialog({
+						title: this.getButton(this.dialog.arguments.buttonId).tooltip.title,
+						msg: this.localize(required[item])
+					});
 					var field = this.dialog.find('itemId', item)[0];
 					var tab = field.findParentByType('container');
 					tab.ownerCt.activate(tab);
@@ -1038,7 +1047,10 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 				var cell = this.getClosest("td");
 				if (!cell) var cell = this.getClosest("th");
 				if (!cell) {
-					Ext.MessageBox.alert('', this.localize("Please click into some cell"));
+					TYPO3.Dialog.InformationDialog({
+						title: this.getButton('TO-cell-merge').tooltip.title,
+						msg: this.localize('Please click into some cell')
+					});
 					break;
 				}
 				var tr = cell.parentElement;
@@ -1134,7 +1146,7 @@ HTMLArea.TableOperations = HTMLArea.Plugin.extend({
 			this.toggleBorders();
 			break;
 		    default:
-			alert("Button [" + buttonId + "] not yet implemented");
+			break;
 		}
 	},
 	/*
