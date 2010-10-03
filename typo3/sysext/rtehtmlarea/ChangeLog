@@ -1,6 +1,7 @@
 2010-10-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #15879: htmlArea RTE: Use TYPO3 ExtJS API for RTE notification dialogues
+	* Fixed bug #15880: htmlArea RTE: Context menu not working in TYPO3 4.4.3 and 4.5-dev
 
 2010-09-29  Stanislas Rolland  <typo3@sjbr.ca>
 

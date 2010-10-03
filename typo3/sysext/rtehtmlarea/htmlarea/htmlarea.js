@@ -273,7 +273,12 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 			 * @event hotkey
 			 * Fires when the button hotkey is pressed
 			 */
-			'hotkey'
+			'hotkey',
+			/*
+			 * @event context
+			 * Fires when the button is triggered from the context menu
+			 */
+			'context'
 		);
 		this.addListener({
 			afterrender: {
@@ -289,7 +294,10 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 		this.addListener({
 			hotkey: {
 				fn: this.onHotKey
-			}
+			},
+			context: {
+				fn: this.onButtonClick
+			},
 		});
 		this.setHandler(this.onButtonClick, this);
 			// Monitor toolbar updates in order to refresh the state of the button
