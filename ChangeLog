@@ -1,3 +1,7 @@
+2010-10-03  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #15884: htmlArea RTE: Remove class Ext.ux.StatusBar
+
 2010-10-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #15879: htmlArea RTE: Use TYPO3 ExtJS API for RTE notification dialogues

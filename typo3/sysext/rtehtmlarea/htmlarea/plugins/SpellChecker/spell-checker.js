@@ -362,22 +362,24 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 					]
 				}
 			],
-			bbar: new Ext.ux.StatusBar({
-				id: this.editor.editorId + '-spell-check-status',
-				defaultText: this.localize('statusBarReady'),
-				defaultIconCls: 'status-ready',
-				text: this.localize('Please wait. Calling spell checker.'),
-				iconCls: 'status-wait',
+			bbar: {
 				defaults: {
-					minWidth: 100,
 					disabled: true
 				},
 				items: [
+					{
+						xtype: 'tbtext',
+						itemId: 'spell-check-status',
+						text: this.localize('Please wait. Calling spell checker.'),
+						cls: 'status-wait',
+						disabled: false
+					},
+					'->',
 					this.buildButtonConfig('OK', this.onOK),
 					this.buildButtonConfig('Info', this.onInfoClick),
 					this.buildButtonConfig('Cancel', this.onCancel)
 				]
-			})
+			}
 		});
 		this.show();
 	},
@@ -397,6 +399,8 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 			'accept-charset': this.contentCharset.toUpperCase()
 		});
 		this.dialog.getComponent('spell-check-form').getForm().submit();
+		this.status = this.dialog.getBottomToolbar().getComponent('spell-check-status');
+		this.statusIconClass = 'status-wait';
 	},
 	/*
 	 * Handler invoked after the window is resized
@@ -457,6 +461,18 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 		}
 	},
 	/*
+	 * Set icon in statusbar
+	 *
+	 * @param	string		iconCls: class to be assigned to the statusbar text
+	 *
+	 * @return	void
+	 */
+	setStatusIconClass: function (iconCls) {
+		this.status.removeClass(this.statusIconClass);
+		this.statusIconClass = iconCls;
+		this.status.addClass(this.statusIconClass);
+	},
+	/*
 	 * Clean away span elements from the text before leaving or re-submitting
 	 *
 	 * @param	boolean		leaveFixed: if true, span elements of corrected words will be left in the text (re-submit case)
@@ -499,11 +515,8 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 			// Suggested words
 		this.suggestedWords = contentWindow.suggestedWords;
 			// Set status
-		Ext.getCmp(this.editor.editorId + '-spell-check-status').setStatus({
-		    text: this.localize('statusBarReady'),
-		    iconCls: 'status-ready',
-		    clear: false
-		});
+		this.status.setText(this.localize('statusBarReady'));
+		this.setStatusIconClass('status-ready');
 			// Process all misspelled words
 		var id = 0;
 		var self = this;
@@ -532,7 +545,7 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 		Ext.each(this.dialog.findByType('button'), function (button) {
 			button.setDisabled(false);
 		});
-		Ext.each(Ext.getCmp(this.editor.editorId + '-spell-check-status').findByType('button'), function (button) {
+		Ext.each(this.dialog.getBottomToolbar().findByType('button'), function (button) {
 			button.setDisabled(false);
 		});
 		if (this.misspelledWords.length) {
@@ -640,11 +653,8 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 			txt = occurrences.length + ' ' + this.localize('occurrences');
 			txt2 = this.localize('were found.');
 		}
-		Ext.getCmp(this.editor.editorId + '-spell-check-status').setStatus({
-			text: txt + ' ' + this.localize('of the word') + ' "<b>' + this.currentElement.htmlareaOriginalWord + '</b>" ' + txt2,
-			iconCls: 'status-info',
-			clear: false
-		});
+		this.status.setText(txt + ' ' + this.localize('of the word') + ' "<b>' + this.currentElement.htmlareaOriginalWord + '</b>" ' + txt2);
+		this.setStatusIconClass('status-info');
 			// Update suggestions
 		var suggestions = this.suggestedWords[this.currentElement.htmlareaOriginalWord];
 		if (suggestions) {
@@ -784,14 +794,11 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 		Ext.each(this.dialog.findByType('button'), function (button) {
 			button.setDisabled(true);
 		});
-		Ext.each(Ext.getCmp(this.editor.editorId + '-spell-check-status').findByType('button'), function (button) {
+		Ext.each(this.dialog.getBottomToolbar().findByType('button'), function (button) {
 			button.setDisabled(true);
 		});
-		Ext.getCmp(this.editor.editorId + '-spell-check-status').setStatus({
-			text: this.localize('Please wait: changing dictionary to') + ': "' + this.dialog.find('itemId', 'dictionary')[0].getValue() + '".',
-			iconCls: 'status-wait',
-			clear: false
-		});
+		this.status.setText(this.localize('Please wait: changing dictionary to') + ': "' + this.dialog.find('itemId', 'dictionary')[0].getValue() + '".');
+		this.setStatusIconClass('status-wait');
 		this.dialog.find('itemId', 'content')[0].setValue(this.cleanDocument(true));
 		this.dialog.getComponent('spell-check-form').getForm().submit();
 	},

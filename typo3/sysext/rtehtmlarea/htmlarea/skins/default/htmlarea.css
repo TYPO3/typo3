@@ -396,39 +396,38 @@ body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
 	background-image:url("images/loading-balls.gif");
 	background-position: 0px 6px;
 }
-.x-statusbar .x-btn {
+.htmlarea-window .x-toolbar .x-btn {
 	margin-left: 5px;
 }
-.x-statusbar .x-status-text {
-    cursor: default;
+.htmlarea-window .x-toolbar .xtb-text {
+	cursor: default;
 }
-
 /* Button background positioning in window status bar*/
-.x-statusbar .x-btn-tl{
+.htmlarea-window .x-toolbar .x-btn-tl{
 	background-position: 0 0;
 }
-.x-statusbar .x-btn-tr{
+.htmlarea-window .x-toolbar .x-btn-tr{
 	background-position: -3px 0;
 }
-.x-statusbar .x-btn-tc{
+.htmlarea-window .x-toolbar .x-btn-tc{
 	background-position: 0 -6px;
 }
-.x-statusbar .x-btn-ml{
+.htmlarea-window .x-toolbar .x-btn-ml{
 	background-position: 0 -24px;
 }
-.x-statusbar .x-btn-mr{
+.htmlarea-window .x-toolbar .x-btn-mr{
 	background-position: -3px -24px;
 }
-.x-statusbar .x-btn-mc{
+.htmlarea-window .x-toolbar .x-btn-mc{
 	background-position: 0 -1096px;
 }
-.x-statusbar .x-btn-bl{
+.htmlarea-window .x-toolbar .x-btn-bl{
 	background-position: 0 -3px;
 }
-.x-statusbar .x-btn-br{
+.htmlarea-window .x-toolbar .x-btn-br{
 	background-position: -3px -3px;
 }
-.x-statusbar .x-btn-bc{
+.htmlarea-window .x-toolbar .x-btn-bc{
 	background-position: 0 -15px;
 }
 /* Action icon selectors for toolbar, context menu and window headers */
