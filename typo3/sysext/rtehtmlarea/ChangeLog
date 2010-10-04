@@ -1,6 +1,7 @@
 2010-10-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #15884: htmlArea RTE: Remove class Ext.ux.StatusBar
+	* Added feature #15885: htmlArea RTE: Add option to remove typographical punctuation (Thanks to Daniel Schwarzloh)
 
 2010-10-02  Stanislas Rolland  <typo3@sjbr.ca>
 

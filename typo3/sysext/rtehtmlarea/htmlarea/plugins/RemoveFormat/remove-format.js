@@ -119,7 +119,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 					xtype: 'fieldset',
 					title: this.localize('Cleaning Area'),
 					defaultType: 'radio',
-					labelWidth: 150,
+					labelWidth: 140,
 					defaults: {
 						labelSeparator: ''
 					},
@@ -138,7 +138,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 					xtype: 'fieldset',
 					defaultType: 'checkbox',
 					title: this.localize('Cleaning options'),
-					labelWidth: 150,
+					labelWidth: 170,
 					defaults: {
 						labelSeparator: ''
 					},
@@ -149,6 +149,9 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 							itemId: 'msWordFormatting',
 							fieldLabel: this.localize('MS Word Formatting:'),
 							checked: true
+						},{
+							itemId: 'typographical',
+							fieldLabel: this.localize('Typographical punctuation:'),
 						},{
 							itemId: 'spaces',
 							fieldLabel: this.localize('Spaces')
@@ -178,6 +181,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 			'allContent',
 			'formatting',
 			'msWordFormatting',
+			'typographical',
 			'spaces',
 			'images',
 			'allHtml'
@@ -186,7 +190,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 		Ext.each(fields, function (field) {
 			params[field] = this.dialog.find('itemId', field)[0].getValue();
 		}, this);
-		if (params['allHtml'] || params['formatting'] || params['spaces'] || params['images'] || params['msWordFormatting']) {
+		if (params['allHtml'] || params['formatting'] || params['spaces'] || params['images'] || params['msWordFormatting'] || params['typographical']) {
 			this.applyRequest(params);
 			this.close();
 		} else {
@@ -263,6 +267,32 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 						// Remove multiple spaces
 					html = html.replace(/[\x20]+/gi, " ");
 				}
+			}
+			if (params['typographical']) {
+					// Remove typographical punctuation
+					// Search pattern stored here
+				var SrcCd;
+					// Replace horizontal ellipsis with three periods
+				SrcCd = String.fromCharCode(8230);
+				html = html.replace(new RegExp(SrcCd, 'g'), '...');
+					// Replace en-dash and  em-dash with hyphen
+				SrcCd = String.fromCharCode(8211) + '|' + String.fromCharCode(8212);
+				html = html.replace(new RegExp(SrcCd, 'g'), '-');
+				html = html.replace(new RegExp(SrcCd, 'g'), "'");
+					// Replace double low-9 / left double / right double quotation mark with double quote
+				SrcCd = String.fromCharCode(8222) + '|' + String.fromCharCode(8220) + '|' + String.fromCharCode(8221);
+				html = html.replace(new RegExp(SrcCd, 'g'), '"');
+					// Replace left single / right single / single low-9 quotation mark with sigle quote
+				SrcCd = String.fromCharCode(8216) + '|' + String.fromCharCode(8217) + '|' + String.fromCharCode(8218);
+				html = html.replace(new RegExp(SrcCd, 'g'), "'");
+					// Replace single left/right-pointing angle quotation mark with single quote
+				SrcCd = String.fromCharCode(8249) + '|' + String.fromCharCode(8250);
+				html = html.replace(new RegExp(SrcCd, 'g'), "'");
+					// Replace left/right-pointing double angle quotation mark (left/right pointing guillemet) with double quote
+				SrcCd = String.fromCharCode(171) + '|' + String.fromCharCode(187);
+				html = html.replace(new RegExp(SrcCd, 'g'), '"');
+					// Replace grave accent (spacing grave) and acute accent (spacing acute) with apostrophe (single quote)
+				SrcCd = String.fromCharCode(96) + '|' + String.fromCharCode(180);
 			}
 			if (params['allContent']) {
 				editor.setHTML(html);
