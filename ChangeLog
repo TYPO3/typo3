@@ -1,3 +1,7 @@
+2010-10-04  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15880: htmlArea RTE: Context menu not working in TYPO3 4.4.3 and 4.5-dev
+
 2010-09-30  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #15639: Scheduler: Add missing classes and interface to autoload registry (Thanks to Marcus Krause)

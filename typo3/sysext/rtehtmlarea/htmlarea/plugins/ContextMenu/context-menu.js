@@ -241,7 +241,7 @@ HTMLArea.ContextMenu = HTMLArea.Plugin.extend({
 	onItemClick: function (item, event) {
 		var button = this.getButton(item.getItemId());
 		if (button) {
-			button.fireEvent('click', button, event);
+			button.fireEvent('context', button, event);
 		} else if (item.getItemId() === 'DeleteTarget') {
 				// Do not leave a non-ie table cell empty
 			var parent = this.deleteTarget.parent().dom;
