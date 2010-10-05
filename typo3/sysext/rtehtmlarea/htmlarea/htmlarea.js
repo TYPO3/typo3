@@ -1878,7 +1878,12 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 	 * Resize the framework components
 	 */
 	onFrameworkResize: function () {
-		this.iframe.setSize(this.getInnerWidth(), this.getInnerHeight());
+			// For unknown reason, in Chrome 7, this following is the only way to set the height of the iframe
+		if (Ext.isChrome) {
+			this.iframe.getResizeEl().dom.setAttribute('style', 'width:' + this.getInnerWidth() + 'px; height:' + this.getInnerHeight() + 'px;');
+		} else {
+			this.iframe.setSize(this.getInnerWidth(), this.getInnerHeight());
+		}
 		this.textArea.setSize(this.getInnerWidth(), this.getInnerHeight());
 	},
 	/*
@@ -1895,7 +1900,12 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		if (this.getInnerHeight() <= 0) {
 			this.onWindowResize();
 		} else {
-			this.iframe.setHeight(this.getInnerHeight());
+				// For unknown reason, in Chrome 7, this following is the only way to set the height of the iframe
+			if (Ext.isChrome) {
+				this.iframe.getResizeEl().dom.setAttribute('style', 'width:' + this.getInnerWidth() + 'px; height:' + this.getInnerHeight() + 'px;');
+			} else {
+				this.iframe.setHeight(this.getInnerHeight());
+			}
 			this.textArea.setHeight(this.getInnerHeight());
 		}
 	},

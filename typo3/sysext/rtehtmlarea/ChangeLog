@@ -1,6 +1,7 @@
 2010-10-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #15858: htlmArea RTE: Stylesheet access error in Google Chrome 7
+	* Fixed bug #15899: htmlArea RTE: Editing area collapsed in Chrome 7
 
 2010-10-03  Stanislas Rolland  <typo3@sjbr.ca>
 
