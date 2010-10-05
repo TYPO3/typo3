@@ -968,20 +968,35 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		} else {
 				// Test if the styleSheets array is at all accessible
 			if (Ext.isIE) {
-				try { rules = this.document.styleSheets[0].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+				try { 
+					rules = this.document.styleSheets[0].rules;
+				} catch(e) {
+					stylesAreLoaded = false;
+					errorText = e;
+				}
 			} else {
-				try { this.document.styleSheets[0] && this.document.styleSheets[0].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+				try { 
+					this.document.styleSheets && this.document.styleSheets[0] && this.document.styleSheets[0].rules;
+				} catch(e) {
+					stylesAreLoaded = false;
+					errorText = e;
+				}
 			}
 				// Then test if all stylesheets are accessible
 			if (stylesAreLoaded) {
-				Ext.each(this.document.styleSheets, function (styleSheet) {
-					if (Ext.isIE) {
-						try { rules = styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
-						try { rules = styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
-					} else {
-						try { rules = styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
-					}
-				});
+				if (this.document.styleSheets.length) {
+					Ext.each(this.document.styleSheets, function (styleSheet) {
+						if (Ext.isIE) {
+							try { rules = styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+							try { rules = styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+						} else {
+							try { rules = styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; return false; }
+						}
+					});
+				} else {
+					stylesAreLoaded = false;
+					errorText = 'Empty stylesheets array';
+				}
 			}
 		}
 		if (!stylesAreLoaded) {
@@ -2063,7 +2078,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 						id: this.editorId + '-iframe',
 						tag: 'iframe',
 						cls: 'editorIframe',
-						src: Ext.isGecko ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
+						src: (Ext.isGecko || Ext.isChrome) ? 'javascript:void(0);' : HTMLArea.editorUrl + 'popups/blank.html'
 					},
 					isNested: this.isNested,
 					nestedParentElements: this.nestedParentElements,
