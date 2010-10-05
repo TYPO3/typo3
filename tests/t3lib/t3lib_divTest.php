@@ -1778,5 +1778,42 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals('someFile', $fileInfo['filebody']);
 		$this->assertEquals('png', $fileInfo['fileext']);
 	}
+
+
+	/////////////////////////////
+	// Tests concerning dirname
+	/////////////////////////////
+
+	/**
+	 * @see dirnameWithDataProvider
+	 *
+	 * @return array<array>
+	 */
+	public function dirnameDataProvider() {
+		return array(
+			'absolute path with multiple part and file' => array('/dir1/dir2/script.php', '/dir1/dir2'),
+			'absolute path with one part' => array('/dir1/', '/dir1'),
+			'absolute path with directory without file' => array('/dir1/something', '/dir1'),
+			'relative path with one part and file' => array('dir1/script.php', 'dir1'),
+			'relative one-character path with one part and file' => array('d/script.php', 'd'),
+			'absolute zero-part path with file' => array('/script.php', ''),
+			'empty string' => array('', ''),
+		);
+	}
+
+	/**
+	 * @test
+	 *
+	 * @dataProvider dirnameDataProvider
+	 *
+	 * @param string $input the input for dirname
+	 * @param string $expectedValue the expected return value expected from dirname
+	 */
+	public function dirnameWithDataProvider($input, $expectedValue) {
+		$this->assertEquals(
+			$expectedValue,
+			t3lib_div::dirname($input)
+		);
+	}
 }
 ?>
