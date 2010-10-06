@@ -5,6 +5,7 @@
 	* Fixed bug #15887: XSS in template analyzer (thanks to Georg Ringer)
 	* Fixed bug #15728: Extension Manager allows to download arbitrary files beyond PATH_site or rootpath (thanks to Marcus Krause)
 	* Fixed bug #15729: Sysext setup's user simulation is susceptible to XSS (thanks to Marcus Krause)
+	* Fixed bug #15860: Mitigate libpcre recursion crash in email address validation (thanks to Marcus Krause)
 
 2010-10-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
