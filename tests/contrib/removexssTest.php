@@ -366,7 +366,45 @@ class RemoveXSSTest extends tx_phpunit_testcase {
 		$this->assertEquals($expectedString, $actualString);
 	}
 
+	/**
+	 * @return array<array> input strings and expected output strings to test
+	 *
+	 * @see processWithDataProvider
+	 */
+	public function processDataProvider() {
+		return array(
+			'attackWithHexEncodedCharacter' => array(
+				'<a href="j&#x61;vascript:alert(123);">click</a>',
+				'<a href="ja<x>vascript:alert(123);">click</a>',
+			),
+			'attackWithNestedHexEncodedCharacter' => array(
+				'<a href="j&#x6&#x31;;vascript:alert(123);">click</a>',
+				'<a href="ja<x>vascript:alert(123);">click</a>',
+			),
+			'attackWithUnicodeNumericalEncodedCharacter' => array(
+				'<a href="j&#x6&#x31;;vascript:alert(123);">click</a>',
+				'<a href="ja<x>vascript:alert(123);">click</a>',
+			),
+			'attackWithNestedUnicodeNumericalEncodedCharacter' => array(
+				'<a href="j&#6&#53;;vascript:alert(123);">click</a>',
+				'<a href="ja<x>vascript:alert(123);">click</a>',
+			),
+		);
+	}
 
+	/**
+	 * @test
+	 *
+	 * @param string $input input value to test
+	 * @param string $expected expected output value
+	 *
+	 * @dataProvider processDataProvider
+	 */
+	public function processWithDataProvider($input, $expected) {
+		$this->assertEquals(
+			$expected,
+			RemoveXSS::process($input)
+		);
+	}
 }
-
 ?>
