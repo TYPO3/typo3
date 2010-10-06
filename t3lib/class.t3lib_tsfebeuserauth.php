@@ -185,7 +185,7 @@ class t3lib_tsfeBeUserAuth extends t3lib_beUserAuth {
 				if (is_array($v)) {
 					$query.= $this->extPrintFeAdminDialogHiddenFields($k,$v);
 				} else {
-					$query.= '<input type="hidden" name="'.$k.'" value="'.htmlspecialchars($v).'">'.chr(10);
+					$query .= '<input type="hidden" name="' . htmlspecialchars($k) . '" value="' . htmlspecialchars($v) . '">' . chr(10);
 				}
 			}
 		}
@@ -253,7 +253,7 @@ $query.'
 			if (is_array($v))	{
 				$out.= $this->extPrintFeAdminDialogHiddenFields($key.'['.$k.']',$v);
 			} else {
-				$out.= '<input type="hidden" name="'.$key.'['.$k.']" value="'.htmlspecialchars($v).'">'.chr(10);
+				$out.= '<input type="hidden" name="' . htmlspecialchars($key) . '[' . htmlspecialchars($k) . ']" value="' . htmlspecialchars($v) . '">' . chr(10);
 			}
 		}
 		return $out;
