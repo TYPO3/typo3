@@ -1,3 +1,7 @@
+2010-10-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15917: Parse error in Adminpanel in 4.3.7 (Thanks to Ingo Schmitt)
+
 2010-10-06  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.7

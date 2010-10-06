@@ -399,7 +399,7 @@ $query . '
 			if (is_array($v)) {
 				$out .= $this->getHiddenFields($key . '[' . $k . ']', $v);
 			} else {
-				$out .= '<input type="hidden" name="' . hmtlspecialchars($key) . '[' . htmlspecialchars($k) . ']" value="' . htmlspecialchars($v) . '">' . chr(10);
+				$out .= '<input type="hidden" name="' . htmlspecialchars($key) . '[' . htmlspecialchars($k) . ']" value="' . htmlspecialchars($v) . '">' . chr(10);
 			}
 		}
 		return $out;
