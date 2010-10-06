@@ -4,6 +4,7 @@
 	* Follow-up to bug #15461: Added unit tests (thanks to Marcus Krause)
 	* Fixed bug #15887: XSS in template analyzer (thanks to Georg Ringer)
 	* Fixed bug #15728: Extension Manager allows to download arbitrary files beyond PATH_site or rootpath (thanks to Marcus Krause)
+	* Fixed bug #15729: Sysext setup's user simulation is susceptible to XSS (thanks to Marcus Krause)
 
 2010-10-04  Stanislas Rolland  <typo3@sjbr.ca>
 
