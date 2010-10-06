@@ -2317,7 +2317,7 @@ EXTENSION KEYS:
 
 				// Link for downloading extension has been clicked - deliver content stream:
 				$dlFile = $this->CMD['downloadFile'];
-				if (t3lib_div::isFirstPartOfStr($dlFile,PATH_site) && t3lib_div::isFirstPartOfStr($dlFile,$absPath) && @is_file($dlFile))	{
+				if (t3lib_div::isAllowedAbsPath($dlFile) && t3lib_div::isFirstPartOfStr($dlFile, PATH_site) && t3lib_div::isFirstPartOfStr($dlFile, $absPath) && @is_file($dlFile)) {
 					$mimeType = 'application/octet-stream';
 					Header('Content-Type: '.$mimeType);
 					Header('Content-Disposition: attachment; filename='.basename($dlFile));
