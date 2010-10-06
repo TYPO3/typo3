@@ -1494,7 +1494,12 @@ final class t3lib_div {
 	 * @return	boolean		Returns true if the $email address (input string) is valid
 	 */
 	public static function validEmail($email)	{
-		return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+			// enforce maximum length to prevent libpcre recursion crash bug #52929 in PHP
+			// fixed in PHP 5.2+ later than Sept 2010; length restriction per SMTP RFC 2821
+		if (strlen($email) > 320) {
+			return FALSE;
+		}
+		return (filter_var($email, FILTER_VALIDATE_EMAIL) !== FALSE);
 	}
 
 	/**
