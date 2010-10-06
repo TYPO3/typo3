@@ -310,7 +310,7 @@ class tx_sysaction extends mod_user_task {
 				$data["be_users"][$key]["disable"]=intval($arr[$key]["disable"]);
 				$data["be_users"][$key]["admin"]=0;
 				$data["be_users"][$key]["usergroup"] = $this->fixUserGroup($data["be_users"][$key]["usergroup"],$actionRow["t1_allowed_groups"],$arr[$key]["usergroups"]);
-				$data["be_users"][$key]["db_mountpoints"]=$arr[$key]["db_mountpoints"];
+				$data["be_users"][$key]["db_mountpoints"]=$this->fixDbMount($arr[$key]["db_mountpoints"]);
 				$data["be_users"][$key]["createdByAction"]=$actionRow["uid"];
 			}
 		} else {
@@ -339,7 +339,7 @@ class tx_sysaction extends mod_user_task {
 					$data["be_users"][$key]["disable"]=intval($arr[$key]["disable"]);
 					$data["be_users"][$key]["admin"]=0;
 					$data["be_users"][$key]["usergroup"] = $this->fixUserGroup($beRec["usergroup"],$actionRow["t1_allowed_groups"],$arr[$key]["usergroups"]);
-					$data["be_users"][$key]["db_mountpoints"]=$arr[$key]["db_mountpoints"];
+					$data["be_users"][$key]["db_mountpoints"]=$this->fixDbMount($arr[$key]["db_mountpoints"]);
 					$nId=$key;
 				}
 			}
@@ -371,6 +371,12 @@ class tx_sysaction extends mod_user_task {
 			return $prefix.$username;
 		} else return false;
 	}
+	/**
+	 * @param  array $curUserGroup	Group array in which the user is already in
+	 * @param  array $allowedGroups	Groups this task allows the be users to be in
+	 * @param  array $inGroups	List of groups the user wants to be in, comes from $_POST
+	 * @return string
+	 */
 	function fixUserGroup($curUserGroup,$allowedGroups,$inGroups)	{
 			// User group:
 			// All current groups:
@@ -385,6 +391,7 @@ class tx_sysaction extends mod_user_task {
 		if (is_array($inGroups))	{
 			reset($inGroups);
 			while(list(,$gu)=each($inGroups))	{
+				$gu = intval($gu);
 				$checkGr = t3lib_BEfunc::getRecord("be_groups",$gu);
 				if (is_array($checkGr) && in_array($gu,$grList))	{
 					$cGroups[]=$gu;
@@ -393,6 +400,53 @@ class tx_sysaction extends mod_user_task {
 		}
 		return implode(",",$cGroups);
 	}
+
+	/**
+	 * Clean the to be applied DB-Mounts from not allowed ones
+	 *
+	 * @param	string		$appliedDbMounts: List of pages like pages_123,pages_456
+	 * @return	string		Cleaned list
+	 */
+	protected function fixDbMount($appliedDbMounts) {
+		if (!empty($appliedDbMounts) && !$GLOBALS['BE_USER']->isAdmin()) {
+			$cleanDbMountList = array();
+			$dbMounts = t3lib_div::trimExplode(',', $appliedDbMounts, 1);
+
+				// walk through every wanted DB-Mount and check if it is allowed for the current user
+			foreach ($dbMounts as $dbMount) {
+				$uid = intval(substr($dbMount,  (strrpos($dbMount, '_') + 1)));
+				$page = t3lib_BEfunc::getRecord('pages', $uid);
+
+					// check rootline and access rights
+				if ($this->checkRootline($uid) && $GLOBALS['BE_USER']->calcPerms($page)) {
+					$cleanDbMountList[] = 'pages_' . $uid;
+				}
+
+			}
+			$appliedDbMounts = implode(',', $cleanDbMountList);
+		}
+		return $appliedDbMounts;
+	}
+
+	/**
+	 * Check if a page is inside the rootline the current user can see
+	 *
+	 * @param	int		$pageId: Id of the the page to be checked
+	 * @return	boolean	Access to the page
+	 */
+	protected function checkRootline($pageId) {
+		$access = FALSE;
+
+		$dbMounts =  array_flip(explode(',', trim($GLOBALS['BE_USER']->dataLists['webmount_list'], ',')));
+		$rootline = t3lib_BEfunc::BEgetRootLine($pageId);
+		foreach ($rootline as $page) {
+			if (isset($dbMounts[$page['uid']]) && !$access) {
+				$access = TRUE;
+			}
+		}
+		return $access;
+	}
+
 	function action_createDir($uid)	{
 		$path = $this->action_getUserMainDir();
 		if ($path)	{

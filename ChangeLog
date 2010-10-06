@@ -1,3 +1,7 @@
+2010-10-06  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #13650: Information disclosure in sys_actions (DB mount, usergroups) (thanks to Georg Ringer)
+
 2010-09-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #5983: Undefined variable is used in t3lib_BEfunc::exec_foreign_table_where_query
