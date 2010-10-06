@@ -1,3 +1,7 @@
+2010-10-06  Susanne Moog  <typo3@susanne-moog.de>
+
+	*  Fixed bug #15840: Broken loading icon when loading IRRE elements (thanks to Lars Houmark)
+
 2010-10-06  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15784: Resolve errors in tslib_content
