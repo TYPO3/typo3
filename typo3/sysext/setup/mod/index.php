@@ -798,7 +798,7 @@ class SC_mod_user_setup_index {
 		$this->simulateSelector = '';
 		unset($this->OLD_BE_USER);
 		if ($BE_USER->isAdmin())	{
-			$this->simUser = t3lib_div::_GP('simUser');
+			$this->simUser = intval(t3lib_div::_GP('simUser'));
 
 				// Make user-selector:
 			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName', t3lib_BEfunc::BEenableFields('be_users'));
