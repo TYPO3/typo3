@@ -7,6 +7,7 @@
 	* Fixed bug #15729: Sysext setup's user simulation is susceptible to XSS (thanks to Marcus Krause)
 	* Fixed bug #15860: Mitigate libpcre recursion crash in email address validation (thanks to Marcus Krause)
 	* Fixed bug #15733: Admin Panel is susceptible to XSS (thanks to Helmut Hummel)
+	* Fixed bug #15898: It is (still) possible to download arbitrary files through the jumpurl feature (thanks to Helmut Hummel and Marcus Krause)
 
 2010-10-04  Stanislas Rolland  <typo3@sjbr.ca>
 
