@@ -1,3 +1,7 @@
+2010-10-06  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #13650: Information disclosure in sys_actions (DB mount, usergroups) (thanks to Georg Ringer)
+
 2010-09-30  Francois Suter  <francois@typo3.org>
 
 	* Fixed bug #15639: Scheduler: Add missing classes and interface to autoload registry (Thanks to Marcus Krause)
