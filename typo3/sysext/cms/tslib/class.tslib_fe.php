@@ -2265,7 +2265,7 @@
 				$calcJuHash=t3lib_div::shortMD5(serialize($hArr));
 				$locationData = t3lib_div::_GP('locationData');
 				$juHash = t3lib_div::_GP('juHash');
-				if ($juHash == $calcJuHash)	{
+				if ($juHash === $calcJuHash)	{
 					if ($this->locDataCheck($locationData))	{
 						$this->jumpurl = rawurldecode($this->jumpurl);	// 211002 - goes with cObj->filelink() rawurlencode() of filenames so spaces can be allowed.
 							// Deny access to files that match TYPO3_CONF_VARS[SYS][fileDenyPattern] and whose parent directory is typo3conf/ (there could be a backup file in typo3conf/ which does not match against the fileDenyPattern)

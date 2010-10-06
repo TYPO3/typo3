@@ -1,3 +1,7 @@
+2010-10-06  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #15898: It is (still) possible to download arbitrary files through the jumpurl feature (thanks to Helmut Hummel and Marcus Krause)
+
 2009-07-03  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed issue #10656: htmlArea RTE: Initialization fails in presence of Firefox extension Ant.com Toolbar 1.3 (patch by Stanislas Rolland)
