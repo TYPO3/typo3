@@ -1,6 +1,7 @@
 2010-10-06  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #13650: Information disclosure in sys_actions (DB mount, usergroups) (thanks to Georg Ringer)
+	* Fixed bug #15461: RemoveXSS exposes XSS vulnerability for double encoded characters (thanks to Marcus Krause)
 
 2010-09-30  Francois Suter  <francois@typo3.org>
 
