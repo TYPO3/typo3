@@ -2,6 +2,7 @@
 
 	* Fixed bug #15461: RemoveXSS exposes XSS vulnerability for double encoded characters (thanks to Marcus Krause)
 	* Follow-up to bug #15461: Added unit tests (thanks to Marcus Krause)
+	* Fixed bug #15887: XSS in template analyzer (thanks to Georg Ringer)
 
 2010-10-04  Stanislas Rolland  <typo3@sjbr.ca>
 
