@@ -1,3 +1,7 @@
+2010-10-06  Oliver Hader  <oliver@typo3.org>
+
+	* Fixed bug #15461: RemoveXSS exposes XSS vulnerability for double encoded characters (thanks to Marcus Krause)
+
 2010-10-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15880: htmlArea RTE: Context menu not working in TYPO3 4.4.3 and 4.5-dev
