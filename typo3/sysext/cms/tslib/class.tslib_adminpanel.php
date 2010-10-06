@@ -321,7 +321,7 @@ class tslib_AdminPanel {
 				if (is_array($value)) {
 					$query .= $this->getHiddenFields($key, $value);
 				} else {
-					$query .= '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($value) . '">' . LF;
+					$query .= '<input type="hidden" name="' . htmlspecialchars($key) . '" value="' . htmlspecialchars($value) . '">' . LF;
 				}
 			}
 		}
@@ -399,7 +399,7 @@ $query . '
 			if (is_array($v)) {
 				$out .= $this->getHiddenFields($key . '[' . $k . ']', $v);
 			} else {
-				$out .= '<input type="hidden" name="' . $key . '[' . $k . ']" value="' . htmlspecialchars($v) . '">' . LF;
+				$out .= '<input type="hidden" name="' . htmlspecialchars($key) . '[' . htmlspecialchars($k) . ']" value="' . htmlspecialchars($v) . '">' . LF;
 			}
 		}
 		return $out;
