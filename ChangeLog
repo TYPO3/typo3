@@ -1,3 +1,7 @@
+2010-10-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15784: Resolve errors in tslib_content
+
 2010-10-06  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15461: RemoveXSS exposes XSS vulnerability for double encoded characters (thanks to Marcus Krause)

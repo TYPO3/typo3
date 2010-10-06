@@ -1187,7 +1187,7 @@ class tslib_cObj {
 			$tableWidth = max($imageRowsFinalWidths) + $colspacing * ($colCount - 1) + $colCount * $border * $borderThickness * 2;
 
 				// make table for pictures
-			$index = $imgStart;
+			$index = $imgIndex = $imgStart;
 
 			$noRows = $this->stdWrap($conf['noRows'], $conf['noRows.']);
 			$noCols = $this->stdWrap($conf['noCols'], $conf['noCols.']);
@@ -6052,7 +6052,7 @@ class tslib_cObj {
 			// Strips profile information of image to save some space:
 		if (isset($configuration['stripProfile'])) {
 			if ($configuration['stripProfile']) {
-				$parameters = $gfxConf['im_stripProfileCommand'] . $parameters;
+				$parameters = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_stripProfileCommand'] . $parameters;
 			} else {
 				$parameters .= '###SkipStripProfile###';
 			}
@@ -8505,12 +8505,13 @@ class tslib_cObj {
 	function checkPidArray($listArr) {
 		$outArr = array();
 		if (is_array($listArr) && count($listArr)) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$query = $GLOBALS['TYPO3_DB']->SELECTquery(
 				'uid',
 				'pages',
 				'uid IN (' . implode(',', $listArr) . ')' . $this->enableFields('pages') .
 					' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')'
 			);
+			$res = $GLOBALS['TYPO3_DB']->sql_query($query);
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
 				$GLOBALS['TT']->setTSlogMessage($error . ': ' . $query, 3);
 			} else {
