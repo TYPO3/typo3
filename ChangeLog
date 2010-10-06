@@ -1,6 +1,7 @@
 2010-10-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15858: htlmArea RTE: Stylesheet access error in Google Chrome 7
+	* Fixed bug #15863: htmlArea RTE: Initialization never completes in Google Chrome 7
 
 2010-10-06  Susanne Moog  <typo3@susanne-moog.de>
 

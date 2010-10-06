@@ -2109,11 +2109,13 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			'frameworkready'
 		);
 		this.addListener({
-			afterrender: {
-				fn: this.initEventListeners,
+			beforedestroy: {
+				fn: this.onBeforeDestroy,
 				single: true
 			}
 		});
+			// Monitor iframe becoming ready
+		this.mon(this.iframe, 'iframeready', this.onIframeReady, this, {single: true});
 			// Let the framefork render itself, but it will fail to do so if inside a hidden tab or inline element
 		if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 			this.render(this.textArea.parent(), this.textArea.id);
@@ -2128,8 +2130,6 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 	 * Initiate events monitoring
 	 */
 	initEventListeners: function () {
-			// Monitor iframe becoming ready
-		this.mon(this.iframe, 'iframeready', this.onIframeReady, this, {single: true});
 			// Make the framework resizable, if configured by the user
 		this.makeResizable();
 			// Monitor textArea container becoming shown or hidden as it may change the height of the status bar
@@ -2152,10 +2152,6 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		this.addListener({
 			resize: {
 				fn: this.onFrameworkResize
-			},
-			beforedestroy: {
-				fn: this.onBeforeDestroy,
-				single: true
 			}
 		});
 	},
@@ -2310,8 +2306,9 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 	 * Fire the editor when all components of the framework are rendered and ready
 	 */
 	onIframeReady: function () {
-		this.ready = this.toolbar.rendered && this.statusBar.rendered && this.textAreaContainer.rendered;
+		this.ready = this.rendered && this.toolbar.rendered && this.statusBar.rendered && this.textAreaContainer.rendered;
 		if (this.ready) {
+			this.initEventListeners();
 			this.textAreaContainer.show();
 			if (!this.getEditor().config.showStatusBar) {
 				this.statusBar.hide();
@@ -2355,7 +2352,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		this.toolbar.destroy();
 		this.statusBar.destroy();
 		this.removeAll(true);
-		if (this.resizable) {
+		if (this.resizer) {
 			this.resizer.destroy();
 		}
 		return true;
