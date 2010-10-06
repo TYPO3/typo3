@@ -1097,10 +1097,22 @@ HTMLArea.prototype.stylesLoaded = function() {
 			errorText = "Stylesheets not yet loaded";
 		}
 	} else {
-		for (var rule = 0; rule < doc.styleSheets.length; rule++) {
-			if (HTMLArea.is_gecko) try { rules = doc.styleSheets[rule].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-			if (HTMLArea.is_ie) try { rules = doc.styleSheets[rule].imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			// Test if the styleSheets array is at all accessible
+		if (HTMLArea.is_ie) {
+			try { rules = doc.styleSheets[0].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+		} else {
+			try { doc.styleSheets[0] && doc.styleSheets[0].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+		}
+			// Then test if all stylesheets are accessible
+		if (stylesAreLoaded) {
+			for (var rule = 0; rule < doc.styleSheets.length; rule++) {
+				if (HTMLArea.is_ie) {
+					try { rules = doc.styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+					try { rules = doc.styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
+				} else {
+					try { rules = doc.styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+				}
+			}
 		}
 	}
 	if (!stylesAreLoaded && !HTMLArea.is_wamcom) {
