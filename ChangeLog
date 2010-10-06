@@ -3,6 +3,7 @@
 	* Fixed bug #13650: Information disclosure in sys_actions (DB mount, usergroups) (thanks to Georg Ringer)
 	* Fixed bug #15461: RemoveXSS exposes XSS vulnerability for double encoded characters (thanks to Marcus Krause)
 	* Fixed bug #15728: Extension Manager allows to download arbitrary files beyond PATH_site or rootpath (thanks to Marcus Krause)
+	* Fixed bug #15729: Sysext setup's user simulation is susceptible to XSS (thanks to Marcus Krause)
 
 2010-09-24  Steffen Gebert  <steffen@steffen-gebert.de>
 
