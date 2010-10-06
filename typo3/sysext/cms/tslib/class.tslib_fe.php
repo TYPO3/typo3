@@ -2618,31 +2618,31 @@
 	function jumpUrl()	{
 		if ($this->jumpurl)	{
 			if (t3lib_div::_GP('juSecure'))	{
-				$locationData = t3lib_div::_GP('locationData');
-				$mimeType = t3lib_div::_GP('mimeType');
+				$locationData = (string)t3lib_div::_GP('locationData');
+				$mimeType = (string)t3lib_div::_GP('mimeType');  // Need a type cast here because mimeType is optional!
 
 				$hArr = array(
 					$this->jumpurl,
-					t3lib_div::_GP('locationData'),
-					(string)t3lib_div::_GP('mimeType'), // Need a type cast here because mimeType is optional!
-					$this->TYPO3_CONF_VARS['SYS']['encryptionKey']
+					$locationData,
+					$mimeType
 				);
-				$calcJuHash=t3lib_div::shortMD5(serialize($hArr));
-				$juHash = t3lib_div::_GP('juHash');
-				if ($juHash == $calcJuHash)	{
+				$calcJuHash = t3lib_div::hmac(serialize($hArr));
+				$juHash = (string)t3lib_div::_GP('juHash');
+				if ($juHash === $calcJuHash)	{
 					if ($this->locDataCheck($locationData))	{
 						$this->jumpurl = rawurldecode($this->jumpurl);	// 211002 - goes with cObj->filelink() rawurlencode() of filenames so spaces can be allowed.
 							// Deny access to files that match TYPO3_CONF_VARS[SYS][fileDenyPattern] and whose parent directory is typo3conf/ (there could be a backup file in typo3conf/ which does not match against the fileDenyPattern)
-						if (t3lib_div::verifyFilenameAgainstDenyPattern($this->jumpurl) && basename(dirname($this->jumpurl)) !== 'typo3conf') {
-							if (@is_file($this->jumpurl)) {
+						$absoluteFileName = t3lib_div::getFileAbsFileName(t3lib_div::resolveBackPath($this->jumpurl), FALSE);
+						if (t3lib_div::isAllowedAbsPath($absoluteFileName) && t3lib_div::verifyFilenameAgainstDenyPattern($absoluteFileName) && !t3lib_div::isFirstPartOfStr($absoluteFileName, PATH_site . 'typo3conf')) {
+							if (@is_file($absoluteFileName)) {
 								$mimeType = $mimeType ? $mimeType : 'application/octet-stream';
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 								header('Content-Type: '.$mimeType);
-								header('Content-Disposition: attachment; filename="'.basename($this->jumpurl) . '"');
-								readfile($this->jumpurl);
+								header('Content-Disposition: attachment; filename="'.basename($absoluteFileName) . '"');
+								readfile($absoluteFileName);
 								exit;
 							} else die('jumpurl Secure: "'.$this->jumpurl.'" was not a valid file!');
-						} else die('jumpurl Secure: The requested file type was not allowed to be accessed through jumpUrl (fileDenyPattern)!');
+						} else die('jumpurl Secure: The requested file was not allowed to be accessed through jumpUrl (path or file not allowed)!');
 					} else die('jumpurl Secure: locationData, '.$locationData.', was not accessible.');
 				} else die('jumpurl Secure: Calculated juHash did not match the submitted juHash.');
 			} else {

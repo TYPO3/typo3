@@ -4688,6 +4688,7 @@ class tslib_cObj {
 	function locDataJU($jumpUrl,$conf)	{
 		$fI = pathinfo($jumpUrl);
 		$mimetype='';
+		$mimetypeValue = '';
 		if ($fI['extension'])	{
 			$mimeTypes = t3lib_div::trimExplode(',',$conf['mimeTypes'],1);
 			foreach ($mimeTypes as $v) {
@@ -4702,12 +4703,9 @@ class tslib_cObj {
 		$locationData = $GLOBALS['TSFE']->id.':'.$this->currentRecord;
 		$rec='&locationData='.rawurlencode($locationData);
 		$hArr = array(
-			$jumpUrl,
-			$locationData,
-			$mimetypeValue,
-			$GLOBALS['TSFE']->TYPO3_CONF_VARS['SYS']['encryptionKey']
+			$jumpUrl, $locationData, $mimetypeValue
 		);
-		$juHash='&juHash='.t3lib_div::shortMD5(serialize($hArr));
+		$juHash = '&juHash=' . t3lib_div::hmac(serialize($hArr));
 		return '&juSecure=1'.$mimetype.$rec.$juHash;
 	}
 
