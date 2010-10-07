@@ -297,7 +297,7 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 			},
 			context: {
 				fn: this.onButtonClick
-			},
+			}
 		});
 		this.setHandler(this.onButtonClick, this);
 			// Monitor toolbar updates in order to refresh the state of the button
