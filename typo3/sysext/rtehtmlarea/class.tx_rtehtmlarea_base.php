@@ -1372,7 +1372,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 
 	function is_FE() {
-		return is_object($GLOBALS['TSFE']) && !$this->isFrontendEditActive();
+		return is_object($GLOBALS['TSFE']) && !$this->isFrontendEditActive() && TYPO3_MODE=='FE';
 	}
 
 	/**
