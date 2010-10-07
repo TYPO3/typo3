@@ -166,6 +166,8 @@ class tx_rtehtmlarea_acronym_mod {
 						abbr.title = title;
 						if(document.content.acronymSelector.options.length != 1 && document.content.termSelector.selectedIndex > 0 && document.content.termSelector.options[document.content.termSelector.selectedIndex].value == title) {
 							html = document.content.acronymSelector.options[document.content.acronymSelector.selectedIndex].value;
+						} else {
+							html = editor.getSelectedHTML();
 						}
 						abbr.innerHTML = html;
 						if (languageObject && plugin.isButtonInToolbar("Language")) {

@@ -2,6 +2,7 @@
 
 	* Fixed bug #15858: htlmArea RTE: Stylesheet access error in Google Chrome 7
 	* Follow-up to bug #15858: htlmArea RTE: Stylesheet access error in Google Chrome 7
+	* Fixed bug #15774: Inserting an abbr/acronym that is not predefined deletes the abbreviated phrase
 
 2010-10-06  Steffen Kamper  <steffen@typo3.org>
 
