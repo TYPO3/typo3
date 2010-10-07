@@ -1,3 +1,7 @@
+2010-10-07  Susanne Moog  <typo3@susanne-moog.de>
+
+	*  Fixed bug #15772:  template::getHtmlTemplate() doesn't allow absolute file paths (thanks to Jigal van Hemert and Peter Russ)
+
 2010-10-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to bug #15880: htmlArea RTE: Context menu not working in TYPO3 4.4.3 and 4.5-dev

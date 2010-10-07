@@ -2022,12 +2022,18 @@ $str.=$this->docBodyTagBegin().
 		if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
 			$filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
 		}
-		if (substr($filename,0,4) != 'EXT:') {
+		if (t3lib_div::isFirstPartOfStr($filename, 'EXT:')) {
+			$filename = t3lib_div::getFileAbsFileName($filename, TRUE, TRUE);
+		} else if (!t3lib_div::isAbsPath($filename)) {
 			$filename = t3lib_div::resolveBackPath($this->backPath . $filename);
-		} else {
-			$filename = t3lib_div::getFileAbsFileName($filename, true, true);
+		} else if (!t3lib_div::isAllowedAbsPath($filename)) {
+			$filename = '';
 		}
-		return t3lib_div::getURL($filename);
+		$htmlTemplate = '';
+		if ($filename !== '') {
+			$htmlTemplate = t3lib_div::getURL($filename);
+		}
+		return $htmlTemplate;
 	}
 
 	/**
