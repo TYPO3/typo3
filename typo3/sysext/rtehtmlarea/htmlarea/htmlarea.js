@@ -825,7 +825,7 @@ HTMLArea.prototype.generate = function () {
 
 		// create and append the IFRAME
 	var iframe = document.createElement("iframe");
-	if (HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) {
+	if ((HTMLArea.is_gecko && !HTMLArea.is_safari && !HTMLArea.is_opera) || HTMLArea.is_chrome) {
 		iframe.setAttribute("src", "javascript:void(0);");
 	} else {
 		iframe.setAttribute("src", (HTMLArea.is_opera?_typo3_host_url:"") + _editor_url + "popups/blank.html");
@@ -1101,17 +1101,22 @@ HTMLArea.prototype.stylesLoaded = function() {
 		if (HTMLArea.is_ie) {
 			try { rules = doc.styleSheets[0].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
 		} else {
-			try { doc.styleSheets[0] && doc.styleSheets[0].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			try { doc.styleSheets && doc.styleSheets[0] && doc.styleSheets[0].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
 		}
 			// Then test if all stylesheets are accessible
 		if (stylesAreLoaded) {
-			for (var rule = 0; rule < doc.styleSheets.length; rule++) {
-				if (HTMLArea.is_ie) {
-					try { rules = doc.styleSheet.rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
-					try { rules = doc.styleSheet.imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
-				} else {
-					try { rules = doc.styleSheet.cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+			if (doc.styleSheets.length) {
+				for (var rule = 0; rule < doc.styleSheets.length; rule++) {
+					if (HTMLArea.is_ie) {
+						try { rules = doc.styleSheets[rule].rules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+						try { rules = doc.styleSheets[rule].imports; } catch(e) { stylesAreLoaded = false; errorText = e; }
+					} else {
+						try { rules = doc.styleSheets[rule].cssRules; } catch(e) { stylesAreLoaded = false; errorText = e; }
+					}
 				}
+			} else {
+				stylesAreLoaded = false;
+				errorText = 'Empty stylesheets array';
 			}
 		}
 	}
