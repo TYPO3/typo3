@@ -130,7 +130,7 @@ if (!defined('TYPO3_MODE'))	die("Can't include this file directly.");
  *
  * @param	string		Input string
  * @return	string		Output string (in the old days this was wrapped in <font> tags)
- * @deprecated since TYPO3 3.6
+ * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6
  */
 function fw($str) {
 	t3lib_div::logDeprecatedFunction();
@@ -1034,9 +1034,10 @@ $str.=$this->docBodyTagBegin().
 	 *
 	 * @return	void
 	 * @internal
-	 * @deprecated since TYPO3 3.6
+	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6
 	 */
 	function middle()	{
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**

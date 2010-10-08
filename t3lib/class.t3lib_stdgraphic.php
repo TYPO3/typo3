@@ -2981,7 +2981,7 @@ class t3lib_stdGraphic	{
 	 * @param	string		The filename to write to
 	 * @return	mixed		The output of either imageGif, imagePng or imageJpeg based on the filename to write
 	 * @see imageWrite()
-	 * @deprecated since TYPO3 4.0, this function will be removed in TYPO3 4.5.
+	 * @deprecated since TYPO3 4.0, this function will be removed in TYPO3 4.6.
 	 */
 	function imageGif($destImg, $theImage)	{
 		t3lib_div::logDeprecatedFunction();
@@ -2995,7 +2995,7 @@ class t3lib_stdGraphic	{
 	 *
 	 * @param	string		Image filename
 	 * @return	pointer		Image Resource pointer
-	 * @deprecated since TYPO3 4.0, this function will be removed in TYPO3 4.5.
+	 * @deprecated since TYPO3 4.0, this function will be removed in TYPO3 4.6.
 	 */
 	function imageCreateFromGif($sourceImg)	{
 		t3lib_div::logDeprecatedFunction();

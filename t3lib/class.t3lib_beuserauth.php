@@ -160,7 +160,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 	 *
 	 * @param	boolean		Activate insertion of the URL.
 	 * @return	void
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5.
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
 	 */
 	function trackBeUser($flag)	{
 		t3lib_div::logDeprecatedFunction();

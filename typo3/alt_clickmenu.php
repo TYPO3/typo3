@@ -635,9 +635,10 @@ class clickMenu {
 	 * @param	integer		page uid to edit (PID)
 	 * @return	array		Item array, element in $menuItems
 	 * @internal
-	 * @deprecated since TYPO3 4.0 - Use DB_editPageProperties instead
+	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6 - Use DB_editPageProperties instead
 	 */
 	function DB_editPageHeader($uid)	{
+		t3lib_div::logDeprecatedFunction();
 		return $this->DB_editPageProperties($uid);
 	}
 

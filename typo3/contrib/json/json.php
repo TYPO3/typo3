@@ -116,6 +116,13 @@ define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
  */
 class Services_JSON
 {
+	/**
+	 * Constructor
+	 */
+	function __construct() {
+		t3lib_div::deprecationLog("Class Services_JSON - since TYPO3 4.3, will be removed in TYPO3 4.6");
+	}
+
    /**
     * constructs a new JSON instance
     *

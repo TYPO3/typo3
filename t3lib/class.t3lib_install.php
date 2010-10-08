@@ -1045,7 +1045,7 @@ class t3lib_install {
 	 *
 	 * @param	string		Should be a string read from an SQL-file made with 'mysqldump [database_name] -d'
 	 * @return	array		Array with information about table.
-	 * @deprecated	since TYPO3 4.2, this function will be removed in TYPO3 4.5, use ->getFieldDefinitions_fileContent() instead!
+	 * @deprecated	since TYPO3 4.2, this function will be removed in TYPO3 4.6, use ->getFieldDefinitions_fileContent() instead!
 	 */
 	function getFieldDefinitions_sqlContent($fileContent)	{
 		t3lib_div::logDeprecatedFunction();

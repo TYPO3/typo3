@@ -1302,7 +1302,7 @@ class t3lib_TStemplate	{
 	 * @param	string		Property name in the menu array
 	 * @param	array		Menu array to traverse
 	 * @return	array		Modified menu array
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5.
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
 	 * @internal
 	 */
 	function checkFile($name,$menuArr)	{

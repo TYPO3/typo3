@@ -930,7 +930,7 @@ class tslib_menu {
 	 * @param	array		TypoScript parameters for "special.". In particular the property "file" is reserved and specifies the file to include. Seems like any other property can be used freely by the script.
 	 * @param	string		The sorting field. Can be used from the script in the $incFile.
 	 * @return	array		An array with the menu items
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use HMENU of type "userfunction" instead of "userdefined"
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use HMENU of type "userfunction" instead of "userdefined"
 	 * @access private
 	 */
 	function includeMakeMenu($conf,$altSortField)	{

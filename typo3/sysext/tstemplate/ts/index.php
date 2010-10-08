@@ -334,9 +334,11 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	*
 	* @param boolean $humanReadable: Returns human readable string instead of an array
 	* @return mixed The number of records in cache_* tables as array or string
-	* @deprecated since TYPO3 4.2.0
+	* @deprecated since TYPO3 4.2.0, will be removed in TYPO3 4.6
 	*/
 	function getCountCacheTables($humanReadable) {
+		t3lib_div::logDeprecatedFunction();
+
 		$out = array();
 
 		$out['cache_pages'] = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('id', 'cache_pages');

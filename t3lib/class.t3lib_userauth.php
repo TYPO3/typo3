@@ -289,8 +289,9 @@ class t3lib_userAuth {
 		}
 
 			// If any redirection (inclusion of file) then it will happen in this function
-		$this->redirect();
-
+		if (!$this->userid && $this->auth_url)	{ // if no userid AND an include-document for login is given
+			$this->redirect();
+		}
 			// Set all posible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders)	{
 			header('Expires: 0');
@@ -1317,16 +1318,14 @@ class t3lib_userAuth {
 	 * Redirect to somewhere (obsolete).
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5.
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
 	 * @obsolete
 	 * @ignore
 	 */
 	function redirect() {
-		if (!$this->userid && $this->auth_url)	{	 // if no userid AND an include-document for login is given
-			t3lib_div::deprecationLog('Redirection after login via PHP include is deprecated.');
-			include ($this->auth_include);
-			exit;
-		}
+		t3lib_div::logDeprecatedFunction();
+		include ($this->auth_include);
+		exit;
 	}
 
 	/**

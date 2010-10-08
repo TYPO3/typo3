@@ -772,7 +772,7 @@ class localRecordList extends recordList {
 	 * @param	integer		Uid of current record
 	 * @return	void
 	 *
-	 * @deprecated since 4.4: Use getReferenceCount instead
+	 * @deprecated since 4.4, will be removed in TYPO3 4.6 - Use getReferenceCount instead
 	 */
 	function setReferences($table, $uid) {
 		t3lib_div::logDeprecatedFunction();
@@ -1474,7 +1474,7 @@ class localRecordList extends recordList {
 	 * @param	integer		UID of record
 	 * @return	string		HTML-table
 	 *
-	 * @deprecated since 4.4: Use getReferenceHTML() instead
+	 * @deprecated since 4.4, will be removed in TYPO3 4.6 - Use getReferenceHTML() instead
 	 */
 	function makeRef($table,$uid)	{
 		t3lib_div::logDeprecatedFunction();

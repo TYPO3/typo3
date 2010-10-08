@@ -686,7 +686,7 @@ class SC_index {
 	 *
 	 * @param	string	$unused	Unused
 	 * @return	string		HTML output
-	 * @deprecated since TYPO3 4.3, all the functionality was put in $this->startForm() and $this->addFields_hidden
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6 - all the functionality was put in $this->startForm() and $this->addFields_hidden
 	 */
 	function getHiddenFields($unused = '') {
 		t3lib_div::logDeprecatedFunction();

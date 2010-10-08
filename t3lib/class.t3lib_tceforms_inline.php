@@ -955,7 +955,7 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$objectPrefix: The "path" to the child record to create (e.g. 'data-parentPageId-partenTable-parentUid-parentField-childTable')
 	 * @param	array		$conf: TCA configuration of the parent(!) field
 	 * @return	string		The HTML code for the new record link
-	 * @deprecated	since TYPO3 4.2.0-beta1, this function will be removed in TYPO3 4.5.
+	 * @deprecated	since TYPO3 4.2.0-beta1, this function will be removed in TYPO3 4.6.
 	 */
 	function getNewRecordLink($objectPrefix, $conf = array()) {
 		t3lib_div::logDeprecatedFunction();
@@ -1108,7 +1108,7 @@ class t3lib_TCEforms_inline {
 	 * @param	string		$method: Name of the method to be called
 	 * @param	array		$arguments: Arguments to be delivered to the method
 	 * @return	void
-	 * @deprecated	since TYPO3 4.2.0-alpha3, this function will be removed in TYPO3 4.5.
+	 * @deprecated	since TYPO3 4.2.0-alpha3, this function will be removed in TYPO3 4.6.
 	 */
 	function initForAJAX($method, &$arguments) {
 		t3lib_div::logDeprecatedFunction();
@@ -2390,7 +2390,7 @@ class t3lib_TCEforms_inline {
 	 *
 	 * @param	array		$jsonArray: The array (or part of) to be transformed to JSON
 	 * @return	string		If $level>0: part of JSON literal; if $level==0: whole JSON literal wrapped with <script> tags
-	 * @deprecated			Since TYPO3 4.2: Moved to t3lib_div::array2json, will be removed in TYPO3 4.4
+	 * @deprecated			Since TYPO3 4.2: Moved to t3lib_div::array2json, will be removed in TYPO3 4.6
 	 */
 	function getJSON($jsonArray) {
 		t3lib_div::logDeprecatedFunction();

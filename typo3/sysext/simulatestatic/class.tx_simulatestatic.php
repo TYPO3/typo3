@@ -273,9 +273,11 @@ class tx_simulatestatic {
 	 * @param	tslib_fe	Reference to the calling TSFE instance
 	 * @return	string		The body of the filename.
 	 * @see makeSimulatedFileName()
-	 * @deprecated since TYPO3 4.3, will be deleted in TYPO3 4.5
+	 * @deprecated since TYPO3 4.3, will be deleted in TYPO3 4.6
 	 */
 	public function makeSimulatedFileNameCompat(array &$parameters, tslib_fe &$parentObject) {
+		t3lib_div::logDeprecatedFunction();
+
 		return $this->makeSimulatedFileName(
 			$parameters['inTitle'],
 			$parameters['page'],

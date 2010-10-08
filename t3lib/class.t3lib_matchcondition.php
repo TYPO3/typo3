@@ -88,7 +88,7 @@ class t3lib_matchCondition extends t3lib_matchCondition_frontend {
 	 * Constructor for this class
 	 *
 	 * @return	void
-	 * @deprecated	since TYPO3 4.3, will be removed in TYPO3 4.5 - The functionality was moved to t3lib_matchCondition_frontend
+	 * @deprecated	since TYPO3 4.3, will be removed in TYPO3 4.6 - The functionality was moved to t3lib_matchCondition_frontend
 	 */
 	function __construct()	{
 		t3lib_div::logDeprecatedFunction();
@@ -178,7 +178,7 @@ class t3lib_matchCondition extends t3lib_matchCondition_frontend {
 	 *
 	 * @param	string		A string with version number, eg. "/7.32 blablabla"
 	 * @return	double		Returns double value, eg. "7.32"
-	 * @deprecated	since TYPO3 4.3 - use t3lib_utility_Client::getVersion() instead
+	 * @deprecated	since TYPO3 4.3, will be removed in TYPO3 4.6 - use t3lib_utility_Client::getVersion() instead
 	 */
 	function browserInfo_version($tmp)	{
 		t3lib_div::logDeprecatedFunction();

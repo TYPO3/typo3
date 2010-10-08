@@ -472,7 +472,7 @@
 	 * May exit after outputting an error message or some JavaScript redirecting to the install tool.
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 3.8, this function will be removed in TYPO3 4.5, use connectToDB() instead!
+	 * @deprecated since TYPO3 3.8, this function will be removed in TYPO3 4.6, use connectToDB() instead!
 	 */
 	function connectToMySQL()	{
 		t3lib_div::logDeprecatedFunction();
@@ -3968,10 +3968,12 @@ if (version == "n3") {
 	 * @param	boolean		The "no_cache" status of the link.
 	 * @return	string		The body of the filename.
 	 * @see getSimulFileName(), t3lib_tstemplate::linkData(), tslib_frameset::frameParams()
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6, please use the "simulatestatic" sysext directly
 	 * @todo	Deprecated but still used in the Core!
 	 */
 	function makeSimulFileName($inTitle, $page, $type, $addParams = '', $no_cache = false) {
+		t3lib_div::logDeprecatedFunction();
+
 		if (t3lib_extMgm::isLoaded('simulatestatic')) {
 			$parameters = array(
 				'inTitle' => $inTitle,
@@ -3996,7 +3998,7 @@ if (version == "n3") {
 	 * @param	string		Query string to analyse
 	 * @return	array		Two num keys returned, first is the parameters that MAY be encoded, second is the non-encodable parameters.
 	 * @see makeSimulFileName(), t3lib_tstemplate::linkData()
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6, please use the "simulatestatic" sysext directly
 	 */
 	function simulateStaticDocuments_pEnc_onlyP_proc($linkVars)	{
 		t3lib_div::logDeprecatedFunction();
@@ -4017,10 +4019,12 @@ if (version == "n3") {
 	 *
 	 * @return	string		The filename (without path)
 	 * @see makeSimulFileName(), publish.php
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6, please use the "simulatestatic" sysext directly
 	 * @todo	Deprecated but still used in the Core!
 	 */
 	function getSimulFileName()	{
+		t3lib_div::logDeprecatedFunction();
+
 		return $this->makeSimulFileName(
 			$this->page['title'],
 			($this->page['alias'] ? $this->page['alias'] : $this->id),
@@ -4032,7 +4036,7 @@ if (version == "n3") {
 	 * Checks and sets replacement character for simulateStaticDocuments. Default is underscore.
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6, please use the "simulatestatic" sysext directly
 	 */
 	function setSimulReplacementChar() {
 		t3lib_div::logDeprecatedFunction();
@@ -4055,7 +4059,7 @@ if (version == "n3") {
 	 * @param	integer		Number of characters in the string
 	 * @param	string		Character to put in the end of string to merge it with the next value.
 	 * @return	string		String
-	 * @deprecated since TYPO3, 4.3, will be removed in TYPO3 4.5, please use the "simulatestatic" sysext directly
+	 * @deprecated since TYPO3, 4.3, will be removed in TYPO3 4.6, please use the "simulatestatic" sysext directly
 	 * @todo	Deprecated but still used in the Core!
 	 */
 	function fileNameASCIIPrefix($inTitle,$titleChars,$mergeChar='.')	{
@@ -4559,7 +4563,7 @@ if (version == "n3") {
 	 * Seeds the random number engine.
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.5, the random number generator is seeded automatically since PHP 4.2.0
+	 * @deprecated since TYPO3 4.3, this function will be removed in TYPO3 4.6, the random number generator is seeded automatically since PHP 4.2.0
 	 */
 	function make_seed() {
 		t3lib_div::logDeprecatedFunction();

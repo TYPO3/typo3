@@ -7360,7 +7360,7 @@ class tslib_cObj {
 	 * @param	string		Labels for bytes, kilo, mega and giga separated by vertical bar (|) and possibly encapsulated in "". Eg: " | K| M| G" (which is the default value)
 	 * @return	string
 	 * @see t3lib_div::formatSize(), stdWrap()
-	 * @deprecated since TYPO3 3.6 - Use t3lib_div::formatSize() instead
+	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6 - Use t3lib_div::formatSize() instead
 	 */
 	function bytes($sizeInBytes, $labels) {
 		t3lib_div::logDeprecatedFunction();
@@ -7454,7 +7454,7 @@ class tslib_cObj {
 	 * @param	string		Input string to evaluate
 	 * @return	boolean		Returns TRUE if the $email address (input string) is valid; Has a "@", domain name with at least one period and only allowed a-z characters.
 	 * @see t3lib_div::validEmail()
-	 * @deprecated since TYPO3 3.6 - Use t3lib_div::validEmail() instead
+	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6 - Use t3lib_div::validEmail() instead
 	 */
 	function checkEmail($email) {
 		t3lib_div::logDeprecatedFunction();
@@ -8159,9 +8159,10 @@ class tslib_cObj {
 	 * @param	string		The field name to look in
 	 * @param	string		The value to look for.
 	 * @return	string
-	 * @deprecated since TYPO3 3.6 - Use $GLOBALS['TYPO3_DB']->listQuery() directly!
+	 * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.6 - Use $GLOBALS['TYPO3_DB']->listQuery() directly!
 	 */
 	function whereSelectFromList($field, $value) {
+		t3lib_div::logDeprecatedFunction();
 		return $GLOBALS['TYPO3_DB']->listQuery($field, $value, '');
 	}
 

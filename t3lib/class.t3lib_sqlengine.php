@@ -114,6 +114,12 @@ class t3lib_sqlengine extends t3lib_sqlparser {
 
 
 
+	/**
+	 * Constrcutor
+	 */
+	function __construct() {
+		t3lib_div::deprecationLog("Class t3lib_sqlengine is deprecated since TYPO3 4.3, will be removed in TYPO3 4.6, it has been integrated to extension DBAL.");
+	}
 
 
 	/**
@@ -835,6 +841,12 @@ class t3lib_sqlengine_resultobj {
 	var $TYPO3_DBAL_handlerType = '';
 	var $TYPO3_DBAL_tableList = '';
 
+	/**
+	 * Constrcutor
+	 */
+	function __construct() {
+		t3lib_div::deprecationLog("Class t3lib_sqlengine_resultobj is deprecated since TYPO3 4.3, will be removed in TYPO3 4.6, it has been integrated to extension DBAL.");
+	}
 
 	/**
 	 * Counting number of rows

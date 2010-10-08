@@ -554,6 +554,8 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			// @deprecated: Check for commerce basket records. The following lines should be removed once a fixed commerce version is released.
 			// Extensions like commerce which have their own session table should just put some small bit of data into fe_session_data using $GLOBALS['TSFE']->fe_user->setKey('ses', ...) to make the session stable.
 		if ($count == false && t3lib_extMgm::isLoaded('commerce')) {
+			t3lib_div::deprecationLog("EXT:commerce specific code in tslib_feuserauth::isExistingSessionRecord() is deprecated. Will be removed in 4.6");
+
 			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 							'*',
 							'tx_commerce_baskets',

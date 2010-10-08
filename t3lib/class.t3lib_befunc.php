@@ -340,7 +340,7 @@ final class t3lib_BEfunc {
 	 * @param	array		Array of fields
 	 * @param	string		Table in which we are searching (for DBAL detection of quoteStr() method)
 	 * @return	string		WHERE clause for search
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use $GLOBALS['TYPO3_DB']->searchQuery() directly!
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->searchQuery() directly!
 	 */
 	public static function searchQuery($searchWords, $fields, $table = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -357,7 +357,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Table field name
 	 * @param	string		Value to find in list
 	 * @return	string		WHERE clause for a query
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use $GLOBALS['TYPO3_DB']->listQuery() directly!
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->listQuery() directly!
 	 */
 	public static function listQuery($field, $value) {
 		t3lib_div::logDeprecatedFunction();
@@ -502,7 +502,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Optional ORDER BY field(s), if none, supply blank string.
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return	string		Full SQL query
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query() instead since that will return the result pointer while this returns the query. Using this function may make your application less fitted for DBAL later.
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query() instead since that will return the result pointer while this returns the query. Using this function may make your application less fitted for DBAL later.
 	 * @see t3lib_DB::exec_SELECT_mm_query()
 	 */
 	public static function mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
@@ -527,7 +527,7 @@ final class t3lib_BEfunc {
 	 * @param	string		Table name
 	 * @param	array		Field values as key=>value pairs.
 	 * @return	string		Full SQL query for INSERT
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use $GLOBALS['TYPO3_DB']->exec_INSERTquery() directly!
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->exec_INSERTquery() directly!
 	 */
 	public static function DBcompileInsert($table, $fields_values) {
 		t3lib_div::logDeprecatedFunction();
@@ -543,7 +543,7 @@ final class t3lib_BEfunc {
 	 * @param	string		WHERE clause, eg. "uid=1"
 	 * @param	array		Field values as key=>value pairs.
 	 * @return	string		Full SQL query for UPDATE
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use $GLOBALS['TYPO3_DB']->exec_UPDATEquery() directly!
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, use $GLOBALS['TYPO3_DB']->exec_UPDATEquery() directly!
 	 */
 	public static function DBcompileUpdate($table, $where, $fields_values) {
 		t3lib_div::logDeprecatedFunction();
@@ -1705,7 +1705,7 @@ final class t3lib_BEfunc {
 	 * @param	string		String to set as title-attribute. If no $content is given only the attribute name is returned.
 	 * @param	boolean		If $hsc is set, then content of the attribute is htmlspecialchar()'ed (which is good for XHTML and other reasons...)
 	 * @return	string
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5 - The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6 - The idea made sense with older browsers, but now all browsers should support the "title" attribute - so just hardcode the title attribute instead!
 	 */
 	public static function titleAttrib($content = '', $hsc = 0) {
 		t3lib_div::logDeprecatedFunction();
@@ -2863,7 +2863,7 @@ final class t3lib_BEfunc {
 	 * @return	string		HTML code (<script> section)
 	 * @see	t3lib_BEfunc::getUpdateSignalCode()
 	 * @see	t3lib_BEfunc::setUpdateSignal()
-	 * @deprecated	since TYPO3 4.2, this function will be removed in TYPO3 4.5, use the setUpdateSignal function instead, as it allows you to add more parameters
+	 * @deprecated	since TYPO3 4.2, this function will be removed in TYPO3 4.6, use the setUpdateSignal function instead, as it allows you to add more parameters
 	 */
 	public static function getSetUpdateSignal($set = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -4405,7 +4405,7 @@ final class t3lib_BEfunc {
 	 * @param	string		The URL/script to jump to (used in A tag)
 	 * @return	array		Two keys, rows and list
 	 * @internal
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5.
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6.
 	 * @obsolete
 	 */
 	public static function getListOfBackendModules($name, $perms_clause, $backPath = '', $script = 'index.php') {

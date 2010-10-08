@@ -502,7 +502,7 @@ class t3lib_basicFileFunctions	{
 	 *
 	 * @param	integer		Bytes to be formated
 	 * @return	string		Formatted with M,K or &nbsp;&nbsp; appended.
-	 * @deprecated since at least TYPO3 4.2 - Use t3lib_div::formatSize() instead
+	 * @deprecated since at least TYPO3 4.2, will be removed in TYPO3 4.6 - Use t3lib_div::formatSize() instead
 	 */
 	function formatSize($sizeInBytes)	{
 		t3lib_div::logDeprecatedFunction();

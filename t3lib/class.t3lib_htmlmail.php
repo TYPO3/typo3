@@ -1477,9 +1477,11 @@ class t3lib_htmlmail {
 	 *
 	 * @param	string		Content to encode
 	 * @return	string		The QP encoded string
-	 * @deprecated since TYPO3 4.0, remove in TYPO 4.3
+	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6 
 	 */
 	public function quoted_printable($string) {
+		t3lib_div::logDeprecatedFunction();
+
 		return t3lib_div::quoted_printable($string, 76);
 	}
 
@@ -1490,9 +1492,11 @@ class t3lib_htmlmail {
 	 *
 	 * @param	string		$name: the name
 	 * @return	string		the name
-	 * @deprecated since TYPO3 4.0, remove in TYPO3 4.3
+	 * @deprecated since TYPO3 4.0, will be removed in TYPO3 4.6 
 	 */
 	public function convertName($name) {
+		t3lib_div::logDeprecatedFunction();
+
 		return $name;
 	}
 }

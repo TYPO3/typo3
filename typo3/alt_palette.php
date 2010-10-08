@@ -74,7 +74,7 @@ $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
- * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.5
+ * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6
  */
 class formRender extends t3lib_TCEforms {
 
@@ -83,10 +83,13 @@ class formRender extends t3lib_TCEforms {
 	 * (Horizontally, for display in the top frame)
 	 * (Used if GET var "backRef" IS set)
 	 *
+	 * @deprecated since TYPO3 4.3, will be removed in TYPO3 4.6
 	 * @param	array		Array of information from which the fields are built.
 	 * @return	string		HTML output
 	 */
 	function printPalette($palArr)	{
+		t3lib_div::logDeprecatedFunction();
+
 		$out='';
 
 			// For each element on the palette, write a few table cells with the field name, content and control images:

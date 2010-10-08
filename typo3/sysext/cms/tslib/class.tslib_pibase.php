@@ -789,7 +789,7 @@ class tslib_pibase {
 	 * @param	string		$data: CSS data
 	 * @param	string		If $selector is set to any CSS selector, eg 'P' or 'H1' or 'TABLE' then the style $data will regard those HTML-elements only
 	 * @return	void
-	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, I think this function should not be used (and probably isn't used anywhere). It was a part of a concept which was left behind quite quickly.
+	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.6, I think this function should not be used (and probably isn't used anywhere). It was a part of a concept which was left behind quite quickly.
 	 * @obsolete
 	 * @private
 	 */
@@ -1050,10 +1050,11 @@ class tslib_pibase {
 	 * @return	mixed		The query build.
 	 * @access private
 	 * @deprecated since TYPO3 3.6, this function will be removed in TYPO3 4.5, use pi_exec_query() instead!
+	 * @todo	Deprecated but still used in the Core!
 	 */
 	function pi_list_query($table,$count=0,$addWhere='',$mm_cat='',$groupBy='',$orderBy='',$query='',$returnQueryArray=FALSE)	{
 
-			// Begin Query:
+		// Begin Query:
 		if (!$query)	{
 				// Fetches the list of PIDs to select from.
 				// TypoScript property .pidList is a comma list of pids. If blank, current page id is used.

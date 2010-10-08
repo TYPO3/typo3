@@ -257,7 +257,7 @@ class t3lib_timeTrack {
 	 * Returns the current time in milliseconds
 	 *
 	 * @return	integer
-	 * @deprecated	since TYPO3 4.3, this function will be removed in TYPO3 4.5, use getDifferenceToStarttime() instead
+	 * @deprecated	since TYPO3 4.3, this function will be removed in TYPO3 4.6, use getDifferenceToStarttime() instead
 	 */
 	protected function mtime() {
 		t3lib_div::logDeprecatedFunction();
@@ -270,7 +270,7 @@ class t3lib_timeTrack {
 	 *
 	 * @param	string		PHP microtime string
 	 * @return	integer
-	 * @deprecated	since TYPO3 4.3, this function will be removed in TYPO3 4.5, use getMilliseconds() instead that expects microtime as float instead of a string
+	 * @deprecated	since TYPO3 4.3, this function will be removed in TYPO3 4.6, use getMilliseconds() instead that expects microtime as float instead of a string
 	 */
 	public function convertMicrotime($microtime) {
 		t3lib_div::logDeprecatedFunction();
