@@ -809,6 +809,12 @@ final class t3lib_iconWorks	{
 					}
 				}
 				$recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
+				if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask'])) {
+					$recordType[5] = str_replace('###TYPE###', $row[$column], $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['mask']);
+				}
+				if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'])) {
+					$recordType[6] = t3lib_div::callUserFunction($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['userFunc'], array('row' => $row));
+				}
 			} else {
 				foreach ($recordType AS $key => $type) {
 					$recordType[$key] = 'tcarecords-' . $table . '-' . $type;
