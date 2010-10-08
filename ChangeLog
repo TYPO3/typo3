@@ -1,3 +1,7 @@
+2010-10-09  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15870: bug More instances of split() (Thanks to Jigal van Hemert)
+
 2010-10-08  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15580: Add calls to logDeprecatedFunction() for more deprecated functions and adjust log messages

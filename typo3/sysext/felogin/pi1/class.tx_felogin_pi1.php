@@ -598,7 +598,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 								if (preg_match('/^http://([[:alnum:]._-]+)//', $url, $match)) {
 									$redirect_domain = $match[1];
 									$found = false;
-									foreach(split(',', $this->conf['domains']) as $d) {
+									foreach(t3lib_div::trimExplode(',', $this->conf['domains'], TRUE) as $d) {
 										if (preg_match('/(^|\.)/'.$d.'$', $redirect_domain)) {
 											$found = true;
 											break;
