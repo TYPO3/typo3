@@ -645,6 +645,7 @@ $TCA['tt_content'] = array (
 		'versioning_followPages' => true,
 		'origUid' => 't3_origuid',
 		'type' => 'CType',
+		'hideAtCopy' => true,
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
 		'copyAfterDuplFields' => 'colPos,sys_language_uid',
 		'useColumnsForDefaultValues' => 'colPos,sys_language_uid',

@@ -382,8 +382,8 @@ class SC_db_layout {
 			// Clean up settings
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
 
-			// For all elements to be shown in draft workspaces:
-		if ($GLOBALS['BE_USER']->workspace!=0)	{
+			// For all elements to be shown in draft workspaces & to also show hidden elements by default if user hasn't disabled the option
+		if (($GLOBALS['BE_USER']->workspace != 0) || ($this->MOD_SETTINGS['tt_content_showHidden'] !== '0')) {
 			$this->MOD_SETTINGS['tt_content_showHidden'] = 1;
 		}
 	}
