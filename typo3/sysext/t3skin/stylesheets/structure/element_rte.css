@@ -70,3 +70,7 @@ table#typo3-msgBox {
 table#typo3-msgBox tr td {
 	padding: 10px 50px 10px 50px;
 }
+
+input.typo3-link-input {
+	width: 250px;
+}

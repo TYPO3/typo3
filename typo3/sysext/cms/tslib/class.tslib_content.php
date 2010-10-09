@@ -6402,9 +6402,16 @@ class tslib_cObj {
 			if ($linkClass == '-')
 				$linkClass = ''; // The '-' character means 'no class'. Necessary in order to specify a title as fourth parameter without setting the target or class!
 			$forceTarget = trim($link_paramA[1]); // Target value
+			if ($forceTarget == '-') {
+				$forceTarget = '';	// The '-' character means 'no target'. Necessary in order to specify a class as third parameter without setting the target!
+			}
 			$forceTitle = trim($link_paramA[3]); // Title value
-			if ($forceTarget == '-')
-				$forceTarget = ''; // The '-' character means 'no target'. Necessary in order to specify a class as third parameter without setting the target!
+			if ($forceTitle == '-') {
+				$forceTitle = '';	// The '-' character means 'no title'. Necessary in order to specify further parameters without setting the title!
+			}
+			$forceParams = trim($link_paramA[4]);	// params value
+			$conf['additionalParams'] .= $forceParams[0] == '&' ? $forceParams : '&' . $forceParams;
+
 				// Check, if the target is coded as a JS open window link:
 			$JSwindowParts = array();
 			$JSwindowParams = '';

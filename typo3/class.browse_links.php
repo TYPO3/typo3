@@ -820,6 +820,7 @@ class browse_links {
 				'target' => $currentLinkParts[1],
 				'class'  => $currentLinkParts[2],
 				'title'  => $currentLinkParts[3],
+				'params'  => $currentLinkParts[4]
 			);
 			$this->curUrlArray = (is_array(t3lib_div::_GP('curUrl'))) ?
 				array_merge($initialCurUrlArray, t3lib_div::_GP('curUrl')) :
@@ -882,6 +883,9 @@ class browse_links {
 
 			// Initializing the title value (RTE)
 		$this->setTitle = ($this->curUrlArray['title'] != '-') ? $this->curUrlArray['title'] : '';
+		
+			// Initializing the params value
+		$this->setParams = ($this->curUrlArray['params'] != '-') ? $this->curUrlArray['params'] : '';
 
 			// BEGIN accumulation of header JavaScript:
 		$JScode = '
@@ -894,8 +898,9 @@ class browse_links {
 
 			var cur_href="'.($this->curUrlArray['href']?$this->curUrlArray['href']:'').'";
 			var cur_target="'.($this->setTarget?$this->setTarget:'').'";
-			var cur_class = "'.($this->setClass ? $this->setClass : '-').'";
+			var cur_class = "' . ($this->setClass ? $this->setClass : '') . '";
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
+			var cur_params="' . ($this->setParams ? $this->setParams : '') . '";
 
 			function browse_links_setTarget(target)	{	//
 				cur_target=target;
@@ -912,6 +917,10 @@ class browse_links {
 			function browse_links_setValue(value) {	//
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
+			}
+			function browse_links_setParams(params)	{	//
+				cur_params=params;
+				add_params="&curUrl[params]="+escape(params);
 			}
 		';
 
@@ -975,21 +984,27 @@ class browse_links {
 				function updateValueInMainForm(input)	{	//
 					var field = checkReference();
 					if (field)	{
-						if (cur_target == "" && (cur_title != "" || cur_class != "-")) {
+						if (cur_target == "" && (cur_class != "" || cur_title != "" || cur_params != "")) {
 							cur_target = "-";
 						}
-						if (cur_title == "" && cur_class == "-") {
-							cur_class = "";
+						if (cur_class == "" && (cur_title != "" || cur_params != "")) {
+							cur_class = "-";
 						}
 						cur_class = cur_class.replace(/[\'\"]/g, "");
 						if (cur_class.indexOf(" ") != -1) {
 							cur_class = "\"" + cur_class + "\"";
 						}
+						if (cur_title == "" && cur_params != "") {
+ 							cur_title = "-";
+ 						}
 						cur_title = cur_title.replace(/(^\")|(\"$)/g, "");
 						if (cur_title.indexOf(" ") != -1) {
 							cur_title = "\"" + cur_title + "\"";
 						}
-						input = input + " " + cur_target + " " + cur_class + " " + cur_title;
+						if (cur_params) {
+							cur_params = cur_params.replace(/\bid\=.*?(\&|$)/, "");
+						}
+						input = input + " " + cur_target + " " + cur_class + " " + cur_title + " " + cur_params;
 						field.value = input;
 						'.$update.'
 					}
@@ -1465,6 +1480,17 @@ class browse_links {
 		}
 
 		$content .= '
+			<!--
+				Selecting params for link:
+			-->
+				<form action="" name="lparamsform" id="lparamsform">
+					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkParams">
+						<tr>
+							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('params', 1) . '</td>
+							<td><input type="text" name="lparams" class="typo3-link-input" onchange="browse_links_setParams(this.value);" value="' . htmlspecialchars($this->setParams) . '" /></td>
+						</tr>
+					</table>
+				</form>
 
 			<!--
 				Selecting class for link:
@@ -1473,7 +1499,7 @@ class browse_links {
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
 							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('class', 1) . '</td>
-							<td><input type="text" name="lclass" onchange="browse_links_setClass(this.value);" value="' . htmlspecialchars($this->setClass) . '"' . $this->doc->formWidth(10) . ' /></td>
+							<td><input type="text" name="lclass" class="typo3-link-input" onchange="browse_links_setClass(this.value);" value="' . htmlspecialchars($this->setClass) . '" /></td>
 						</tr>
 					</table>
 				</form>
@@ -1485,7 +1511,7 @@ class browse_links {
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
 						<tr>
 							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('title', 1) . '</td>
-							<td><input type="text" name="ltitle" onchange="browse_links_setTitle(this.value);" value="' . htmlspecialchars($this->setTitle) . '"' . $this->doc->formWidth(10) . ' /></td>
+							<td><input type="text" name="ltitle" class="typo3-link-input" onchange="browse_links_setTitle(this.value);" value="' . htmlspecialchars($this->setTitle) . '" /></td>
 						</tr>
 					</table>
 				</form>
@@ -1524,6 +1550,7 @@ class browse_links {
 					browse_links_setTarget(document.ltargetform.ltarget.value);
 					browse_links_setClass(document.lclassform.lclass.value);
 					browse_links_setTitle(document.ltitleform.ltitle.value);
+					browse_links_setParams(document.lparamsform.lparams.value);
 					document.ltargetform.popup_width.selectedIndex=0;
 					document.ltargetform.popup_height.selectedIndex=0;
 				}

@@ -21,6 +21,7 @@
 			<label index="target">Target</label>
 			<label index="class">CSS-Class</label>
 			<label index="title">Title</label>
+			<label index="params">Additional link parameters</label>
 			<label index="target_popUpWindow">Open in window</label>
 			<label index="target_popUpWindow_width">Width</label>
 			<label index="target_popUpWindow_height">Height</label>
