@@ -1,3 +1,7 @@
+2010-10-10  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15230: Bug/Feature: Core only is able to load one specific IE6 CSS file (Thanks to Steffen Ritter)
+
 2010-10-09  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15869: Feature: t3lib_iconWorks is less flexible in mapping Icons to record rows (Thanks to Steffen Ritter)
