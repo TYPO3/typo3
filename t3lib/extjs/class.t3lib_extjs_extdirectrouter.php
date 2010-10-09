@@ -42,6 +42,8 @@ class t3lib_extjs_ExtDirectRouter {
 	 * @return void
 	 */
 	public function route($ajaxParams, TYPO3AJAX $ajaxObj) {
+		$GLOBALS['error'] = t3lib_div::makeInstance('t3lib_extjs_ExtDirectDebug');
+
 		$isForm = FALSE;
 		$isUpload = FALSE;
 		$rawPostData = file_get_contents('php://input');
@@ -82,7 +84,7 @@ class t3lib_extjs_ExtDirectRouter {
 			try {
 				$response[$index]['type'] = 'rpc';
 				$response[$index]['result'] = $this->processRpc($singleRequest, $namespace);
-				$response[$index]['debug'] = t3lib_extjs_ExtDirectDebug::toString();
+				$response[$index]['debug'] = $GLOBALS['error']->toString();
 
 			} catch (Exception $exception) {
 				$response[$index]['type'] = 'exception';

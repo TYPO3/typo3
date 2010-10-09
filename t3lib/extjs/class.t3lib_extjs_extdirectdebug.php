@@ -31,13 +31,13 @@
  * @author	Stefan Galinski <stefan.galinski@gmail.com>
  * @package	TYPO3
  */
-final class t3lib_extjs_ExtDirectDebug {
+class t3lib_extjs_ExtDirectDebug {
 	/**
 	 * Internal debug message array
 	 *
 	 * @var array
 	 */
-	protected static $debugMessages = array();
+	protected $debugMessages = array();
 
 	/**
 	 * Adds a new message of any data type to the internal debug message array.
@@ -45,8 +45,8 @@ final class t3lib_extjs_ExtDirectDebug {
 	 * @param mixed $message
 	 * @return void
 	 */
-	public static function debug($message) {
-		self::$debugMessages[] = $message;
+	public function debug($message) {
+		$this->debugMessages[] = $message;
 	}
 
 	/**
@@ -54,14 +54,18 @@ final class t3lib_extjs_ExtDirectDebug {
 	 *
 	 * @return string
 	 */
-	public static function toString() {
+	public function toString() {
 		$messagesAsString = '';
-		if (count(self::$debugMessages)) {
-			$messagesAsString = t3lib_utility_Debug::viewArray(self::$debugMessages);
+		if (count($this->debugMessages)) {
+			$messagesAsString = t3lib_utility_Debug::viewArray($this->debugMessages);
 		}
 
 		return $messagesAsString;
 	}
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/extjs/class.t3lib_extjs_extdirectdebug.php'])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['t3lib/extjs/class.t3lib_extjs_extdirectdebug.php']);
 }
 
 ?>
