@@ -5846,7 +5846,8 @@ class tslib_cObj {
 		$delimiter = $conf['delimiter']?$conf['delimiter']:' ,';
 
 		$GLOBALS['TSFE']->includeTCA();
-
+		t3lib_div::loadTCA($table);
+		
 		if (is_array($TCA[$table]) && is_array($TCA[$table]['columns'][$field]) && is_array($TCA[$table]['columns'][$field]['config']['items'])) {
 			$values = t3lib_div::trimExplode(',',$inputValue);
 			$output = array();
