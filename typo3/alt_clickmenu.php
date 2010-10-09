@@ -342,6 +342,10 @@ class clickMenu {
 			// Processing by external functions?
 		$menuItems = $this->externalProcessingOfDBMenuItems($menuItems);
 
+		if (!is_array($this->rec)) {
+			$this->rec = array();
+		}
+
 			// Return the printed elements:
 		return $this->printItems($menuItems,
 			$root?
