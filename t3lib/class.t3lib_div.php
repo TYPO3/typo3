@@ -1235,14 +1235,14 @@ final class t3lib_div {
 		self::logDeprecatedFunction();
 
 		$value = strtoupper($string);
-		return strtr($value, 'áéúíâêûôîæøåäöü', 'ÁÉÚÍÄËÜÖÏÆØÅÄÖÜ');
+		return strtr($value, 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 	}
 
 	/**
 	 * Change umlaut characters to plain ASCII with normally two character target
 	 * Only known characters will be converted, so don't expect a result for any character.
 	 *
-	 * ä => ae, Ö => Oe
+	 * ï¿½ => ae, ï¿½ => Oe
 	 *
 	 * @param	string		String to convert.
 	 * @deprecated since TYPO3 4.1 - Works only for western europe single-byte charsets! Use t3lib_cs::specCharsToASCII() instead!
@@ -1251,7 +1251,7 @@ final class t3lib_div {
 	public static function convUmlauts($str)	{
 		self::logDeprecatedFunction();
 
-		$pat  = array (	'/ä/',	'/Ä/',	'/ö/',	'/Ö/',	'/ü/',	'/Ü/',	'/ß/',	'/å/',	'/Å/',	'/ø/',	'/Ø/',	'/æ/',	'/Æ/'	);
+		$pat  = array (	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/',	'/ï¿½/'	);
 		$repl = array (	'ae',	'Ae',	'oe',	'Oe',	'ue',	'Ue',	'ss',	'aa',	'AA',	'oe',	'OE',	'ae',	'AE'	);
 		return preg_replace($pat,$repl,$str);
 	}
@@ -2311,7 +2311,7 @@ final class t3lib_div {
 	 * @param	boolean		Wrap script element in linebreaks? Default is TRUE.
 	 * @return	string		The wrapped JS code, ready to put into a XHTML page
 	 * @author	Ingmar Schlecht <ingmars@web.de>
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 */
 	public static function wrapJS($string, $linebreak=TRUE) {
 		if(trim($string)) {
@@ -5296,7 +5296,7 @@ final class t3lib_div {
 	 * @param	string		Sub type like file extensions or similar. Defined by the service.
 	 * @param	mixed		List of service keys which should be exluded in the search for a service. Array or comma list.
 	 * @return	object		The service object or an array with error info's.
-	 * @author	René Fritz <r.fritz@colorcube.de>
+	 * @author	Renï¿½ Fritz <r.fritz@colorcube.de>
 	 */
 	public static function makeInstanceService($serviceType, $serviceSubType='', $excludeServiceKeys=array()) {
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
@@ -5409,7 +5409,7 @@ final class t3lib_div {
 			$headers = implode(LF,$newHeaders);
 			unset($newHeaders);
 
-			$email = self::encodeHeader($email,$encoding,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skårhøj <kasperYYYY@typo3.com>")
+			$email = self::encodeHeader($email,$encoding,$charset);		// Email address must not be encoded, but it could be appended by a name which should be so (e.g. "Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>")
 			$subject = self::encodeHeader($subject,$encoding,$charset);
 		}
 
@@ -5818,7 +5818,8 @@ final class t3lib_div {
 			self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
 		}
 
-		if (stripos($log, 'console') !== FALSE) {
+			// do not use console in login screen
+		if (stripos($log, 'console') !== FALSE && isset($GLOBALS['BE_USER']->user['uid'])) {
 			self::debug($msg, $date, 'Deprecation Log');
 		}
 	}
