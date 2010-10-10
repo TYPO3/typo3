@@ -5839,7 +5839,8 @@ final class t3lib_div {
 			self::devLog($msg, 'Core', self::SYSLOG_SEVERITY_WARNING);
 		}
 
-		if (stripos($log, 'console') !== FALSE) {
+			// do not use console in login screen
+		if (stripos($log, 'console') !== FALSE && isset($GLOBALS['BE_USER']->user['uid'])) {
 			self::debug($msg, $date, 'Deprecation Log');
 		}
 	}

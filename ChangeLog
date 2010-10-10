@@ -4,6 +4,7 @@
 
 2010-10-10  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15835: deprecationLog in console crashes output on login page
 	* Fixed bug #15727: Clean-up for PageRenderer
 	* Fixed bug #15690: Change text of exception in t3lib_cache_frontend_stringfrontend
 	* Fixed bug #15944: Flashmessage "content_from_pid" misses page title
