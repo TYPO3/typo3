@@ -1,6 +1,7 @@
 2010-10-10  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15783: Improve ExtJS skin: Tabs
+	* Follow-up to #15649: Fixed "false" statement in JS code (Thanks to Jigal van Hemert)
 
 2010-10-10  Steffen Kamper  <steffen@typo3.org>
 

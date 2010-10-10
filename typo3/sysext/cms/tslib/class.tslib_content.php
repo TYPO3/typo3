@@ -3545,7 +3545,7 @@ class tslib_cObj {
 						htmlspecialchars('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url) . '\',\'' .
 						($conf['JSwindow.']['newWindow'] ? md5($url) : 'thePicture') . '\',\'width=' .
 						($dims[0] + $offset[0]) . ',height=' . ($dims[1] + $offset[1]) .
-						',status=0,menubar=0\'); return FALSE;') . '"' .
+						',status=0,menubar=0\'); return false;') . '"' .
 						$target . $GLOBALS['TSFE']->ATagParams . '>';
 					$a2 = '</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
