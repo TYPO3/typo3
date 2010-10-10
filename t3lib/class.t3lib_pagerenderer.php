@@ -44,6 +44,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	protected $moveJsFromHeaderToFooter = FALSE;
 
+	/* @var t3lib_cs Instance of t3lib_cs */
 	protected $csConvObj;
 	protected $lang;
 
@@ -76,6 +77,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	// static inline code blocks
 	protected $jsInline = array ();
+	protected $jsFooterInline = array ();
 	protected $extOnReadyCode = array ();
 	protected $cssInline = array ();
 
@@ -114,6 +116,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $inlineSettings = array ();
 
 	protected $inlineJavascriptWrap = array ();
+
+	// saves error messages generated during compression
+	protected $compressError = '';
 
 	// used by BE modules
 	public $backPath;
@@ -733,7 +738,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param boolean $forceOnTop
 	 * @return void
 	 */
-	public function addCssInlineBlock($name, $block, $compressed = FALSE, $forceOnTop = FALSE) {
+	public function addCssInlineBlock($name, $block, $compress = FALSE, $forceOnTop = FALSE) {
 		if (!isset($this->cssInline[$name]) && !empty($block)) {
 			$this->cssInline[$name] = array (
 				'code'       => $block,
@@ -959,7 +964,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$jsFooterInline = '';
 		$jsFooterLibs = '';
 		$jsFooterFiles = '';
-		$noJS = FALSE;
 
 
 		// preRenderHook for possible manuipulation
@@ -1099,7 +1103,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$templateFile = t3lib_div::getFileAbsFileName($this->templateFile, TRUE);
 		$template = t3lib_div::getURL($templateFile);
 
-		if ($this->removeEmptyLinesFromTemplate) {
+		if ($this->removeLineBreaksFromTemplate) {
 			$template = strtr($template, array(chr(10) => '', chr(13) => ''));
 		}
 		if ($part != self::PART_COMPLETE) {
@@ -1325,7 +1329,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['jsCompressHandler'], $params, $this);
 		} else {
 				// traverse the arrays, compress files
-			$this->compressError = '';
 
 			if ($this->compressJavascript) {
 				if (count($this->jsInline)) {

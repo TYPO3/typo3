@@ -1,5 +1,6 @@
 2010-10-10  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15727: Clean-up for PageRenderer
 	* Fixed bug #15690: Change text of exception in t3lib_cache_frontend_stringfrontend
 
 2010-10-06  Stanislas Rolland  <typo3@sjbr.ca>
