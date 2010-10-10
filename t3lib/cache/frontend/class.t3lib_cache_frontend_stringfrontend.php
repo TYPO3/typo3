@@ -56,7 +56,7 @@ class t3lib_cache_frontend_StringFrontend extends t3lib_cache_frontend_AbstractF
 
 		if (!is_string($string)) {
 			throw new t3lib_cache_exception_InvalidData(
-				'Only strings can be digested by the StringCache. Thanks.',
+				'Given data is of type "' . gettype($string) . '", but a string is expected for string cache.',
 				1222808333
 			);
 		}
