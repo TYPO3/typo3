@@ -1,3 +1,7 @@
+2010-10-10  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #15783: Improve ExtJS skin: Tabs
+
 2010-10-10  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15690: Change text of exception in t3lib_cache_frontend_stringfrontend
