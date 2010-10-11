@@ -114,7 +114,7 @@ class tslib_tmenu_layers extends tslib_tmenu {
 	 * @return	void
 	 */
 	function extProc_init()	{
-		$this->WMid = trim($this->mconf['layer_menu_id'])?trim($this->mconf['layer_menu_id']).'x':substr(md5(microtime()),0,6);	// NO '_' (underscore) in the ID!!! NN4 breaks!
+		$this->WMid = trim($this->mconf['layer_menu_id']) ? trim($this->mconf['layer_menu_id']) . 'x' : substr(md5('gl' . serialize($this->mconf)), 0, 6);
 
 		$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'][]=$this->WMid;
 		$this->WMtempStore = $GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'];
