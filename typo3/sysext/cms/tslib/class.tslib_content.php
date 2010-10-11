@@ -2,7 +2,7 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
+ * (c) 1999-2010 Kasper Skï¿½rhï¿½j (kasperYYYY@typo3.com)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,7 +28,7 @@
  * Contains classes for Content Rendering based on TypoScript Template configuration
  *
  * $Id$
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
+ * Revised for TYPO3 3.6 June/2003 by Kasper SkÃ¥rhÃ¸j
  * XHTML compliant
  *
  * class tslib_cObj			:		All main TypoScript features, rendering of content objects (cObjects). This class is the backbone of TypoScript Template rendering.
@@ -36,7 +36,7 @@
  * class tslib_tableOffset		:		Makes a table-offset (TS)
  * class tslib_frameset			: 		Generates framesets (TS)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper SkÃ¥rhÃ¸j <kasperYYYY@typo3.com>
  */
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
@@ -225,7 +225,7 @@
  * The class "tslib_cObj" is normally instantiated and referred to as "cObj".
  * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
@@ -690,6 +690,9 @@ class tslib_cObj {
 						break;
 						case 'QTOBJECT' :
 							$content .= $this->QTOBJECT($conf);
+						break;
+						case 'SVG' :
+							$content .= $this->SVG($conf);
 						break;
 						default :
 								// call hook functions for extra processing
@@ -3281,8 +3284,50 @@ class tslib_cObj {
 		return $content;
 	}
 
+	/**
+	 * Rendering the cObject, SVG
+	 *
+	 * @param	array		array of TypoScript properties
+	 * @return	string		Output
+	 */
+	public function SVG($conf) {
 
+		$width = $conf['width'] ? $this->stdWrap($conf['width'], $conf['width.']) : 600;
+		$height = $conf['height'] ? $this->stdWrap($conf['height'], $conf['height.']) : 400;
 
+		$src = $conf['src'] ? $this->stdWrap($conf['src'], $conf['src.']) : NULL;
+		$value = $this->stdWrap($conf['value'], $conf['value.']);
+
+		if ($src) {
+			$content = '
+
+					<!--[if IE]>
+					<object src="' . $src . '" classid="image/svg+xml" width="' . $width . '" height="' . $height . '">
+					<![endif]-->
+					<!--[if !IE]>-->
+					<object data="' . $src . '" type="image/svg+xml" width="' . $width . '" height="' . $height . '">
+					<!--<![endif]-->
+					' . $this->stdWrap($conf['noscript'], $conf['noscript.']) . '
+					</object>
+
+			';
+		} else {
+			$content = '
+				<script type="image/svg+xml">
+					<svg xmlns="http://www.w3.org/2000/svg"
+					xmlns:xlink="http://www.w3.org/1999/xlink"
+					width="' . $width . '"
+					height="' . $height . '">
+			' . $value . '
+				</svg>
+				</script>
+				<noscript>
+			' . $this->stdWrap($conf['noscript'], $conf['noscript.']) . '
+				</noscript>
+			';
+		}
+		return $content;
+	}
 	/************************************
 	 *
 	 * Various helper functions for content objects:
@@ -4822,7 +4867,7 @@ class tslib_cObj {
 	 * @param	array		TypoScript configuration.
 	 * @return	string		Return string
 	 * @author	Thomas Bley (all from moregroupware cvs code / readmessage.inc.php, published under gpl by Thomas)
-	 * @author	Kasper Skårhøj
+	 * @author	Kasper Skï¿½rhï¿½j
 	 */
 	function removeBadHTML($text, $conf) {
 
@@ -8732,7 +8777,7 @@ class tslib_cObj {
 /**
  * Rendering of framesets
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -8845,7 +8890,7 @@ class tslib_frameset {
  * Rendering of tables for offset
  *
  * @see	tslib_cObj::OTABLE(), tslib_cObj::stdWrap()
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -8939,7 +8984,7 @@ class tslib_tableOffset {
  * Rendering of tables for content positioning
  *
  * @see tslib_cObj::CTABLE()
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */

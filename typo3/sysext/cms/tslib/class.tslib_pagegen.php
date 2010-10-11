@@ -641,6 +641,16 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 
 			// Javascript Libraries
 		if (is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.'])) {
+			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['SVG']) {
+				$pageRenderer->loadSvg();
+				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['SVG.']['debug']) {
+					$pageRenderer->enableSvgDebug();
+				}
+				if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['SVG.']['forceFlash']) {
+					$pageRenderer->svgForceFlash();
+				}
+			}
+
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['Prototype']) {
 				$pageRenderer->loadPrototype();
 			}

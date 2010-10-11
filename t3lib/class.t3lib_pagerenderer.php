@@ -101,6 +101,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $scriptaculousPath = 'contrib/scriptaculous/';
 	protected $extCorePath = 'contrib/extjs/';
 	protected $extJsPath = 'contrib/extjs/';
+	protected $svgPath = 'contrib/websvg/';
 
 
 	// internal flags for JS-libraries
@@ -110,6 +111,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $addExtJS = FALSE;
 	protected $addExtCore = FALSE;
 	protected $extJSadapter = 'ext/ext-base.js';
+
 
 	protected $enableExtJsDebug = FALSE;
 	protected $enableExtCoreDebug = FALSE;
@@ -132,6 +134,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	// saves error messages generated during compression
 	protected $compressError = '';
+
+	// SVG library
+	protected $addSvg = FALSE;
+	protected $enableSvgDebug = FALSE;
+
 
 	// used by BE modules
 	public $backPath;
@@ -360,6 +367,16 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function setExtJsPath($path) {
 		$this->extJsPath = $path;
+	}
+
+	/**
+	 * Sets Path for SVG library (websvg)
+	 *
+	 * @param string $path
+	 * @return void
+	 */
+	public function setSvgPath($path) {
+		$this->svgPath = $path;
 	}
 
 	/*****************************************************/
@@ -668,6 +685,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	public function getExtJsPath() {
 		return $this->extJsPath;
+	}
+
+	/**
+	 * Gets Path for SVG library (relative to typo3 directory)
+	 *
+	 * @return string
+	 */
+	public function getSvgPath() {
+		return $this->svgPath;
 	}
 
 	/**
@@ -1089,6 +1115,31 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * call function if you need the SVG library
+	 *
+	 * @return void
+	 */
+	public function loadSvg() {
+		$this->addSvg = TRUE;
+	}
+
+	/**
+	 * call this function to load debug version of ExtJS. Use this for development only
+	 *
+	 */
+	public function enableSvgDebug() {
+		$this->enableSvgDebug = TRUE;
+	}
+
+	/**
+	 * call this function to force flash usage with SVG library
+	 *
+	 */
+	public function svgForceFlash() {
+		$this->addMetaTag('<meta name="svg.render.forceflash" content="true" />');
+	}
+
+	/**
 	 * call this function to load debug version of ExtJS. Use this for development only
 	 *
 	 */
@@ -1445,6 +1496,12 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	protected function renderJsLibraries() {
 		$out = '';
+
+		if ($this->addSvg) {
+			$out .= '<script src="' . $this->processJsFile($this->backPath  . $this->svgPath . 'svg.js') .
+				'" data-path="' . $this->backPath  . $this->svgPath .
+				'"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>';
+		}
 
 		if ($this->addPrototype) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath  . $this->prototypePath . 'prototype.js') .
