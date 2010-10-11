@@ -155,6 +155,20 @@ class SC_file_edit {
 
 		$this->content = $this->doc->startPage($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
 
+			// hook	before compiling the output
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
+			$preOutputProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
+			if (is_array($preOutputProcessingHook)) {
+				$hookParameters = array(
+					'content' => &$this->content,
+					'target' => &$this->target,
+				);
+				foreach ($preOutputProcessingHook as $hookFunction)	{
+					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+				}
+			}
+		}
+
 		$pageContent = $this->doc->header($LANG->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
 		$pageContent .= $this->doc->spacer(2);
 
@@ -191,6 +205,20 @@ class SC_file_edit {
 			// Ending of section and outputting editing form:
 		$pageContent.= $this->doc->sectionEnd();
 		$pageContent.=$code;
+
+				// hook	after compiling the output
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'])) {
+			$postOutputProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
+			if (is_array($postOutputProcessingHook)) {
+				$hookParameters = array(
+					'pageContent' => &$pageContent,
+					'target' => &$this->target,
+				);
+				foreach ($postOutputProcessingHook as $hookFunction)	{
+					t3lib_div::callUserFunction($hookFunction, $hookParameters, $this);
+				}
+			}
+		}
 
 			// Add the HTML as a section:
 		$markerArray = array(

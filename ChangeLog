@@ -1,5 +1,6 @@
 2010-10-11  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #15907: file_edit: add hooks to mutate the output
 	* Added feature #15900: [Feature] Add SVG support for all browsers
 	* Fixed bug #12376: typo3temp got filled with thousands of javascript_* files (Thanks to Georg Ringer)
 
