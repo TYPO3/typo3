@@ -117,6 +117,7 @@ class tx_t3editor implements t3lib_Singleton {
 		if ($this->isEnabled()) {
 
 			$path_t3e = t3lib_extmgm::extRelPath('t3editor');
+			$path_codemirror = 'contrib/codemirror/js/';
 
 				// include needed javascript-frameworks
 			/** @var $pageRenderer t3lib_PageRenderer */
@@ -132,7 +133,7 @@ class tx_t3editor implements t3lib_Singleton {
 				'" type="text/css" rel="stylesheet" />';
 
 				// include editor-js-lib
-			$doc->loadJavascriptLib($path_t3e . 'res/jslib/codemirror/codemirror.js');
+			$doc->loadJavascriptLib($path_codemirror . 'codemirror.js');
 			$doc->loadJavascriptLib($path_t3e . 'res/jslib/t3editor.js');
 
 			if ($this->mode == self::MODE_TYPOSCRIPT) {
@@ -145,7 +146,8 @@ class tx_t3editor implements t3lib_Singleton {
 			$content .= t3lib_div::wrapJS(
 				'T3editor = T3editor || {};' .
 				'T3editor.lang = ' . json_encode($this->getJavaScriptLabels()) .';' . LF.
-				'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . '"; ' . LF.
+				'T3editor.PATH_t3e = "' . $GLOBALS['BACK_PATH'] . $path_t3e . '"; ' . LF.
+				'T3editor.PATH_codemirror = "' . $GLOBALS['BACK_PATH'] . $path_codemirror . '"; ' . LF.
 				'T3editor.URL_typo3 = "' . htmlspecialchars(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . '"; ' .LF.
 				'T3editor.template = '. $this->getPreparedTemplate() .';' .LF.
 				'T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' .LF.
@@ -182,7 +184,8 @@ class tx_t3editor implements t3lib_Singleton {
 	protected function getParserfileByMode($mode) {
 		switch ($mode) {
 			case tx_t3editor::MODE_TYPOSCRIPT:
-				$parserfile = '["tokenizetyposcript.js", "parsetyposcript.js"]';
+				$relPath = $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor') . 'res/jslib/parse_typoscript/';
+				$parserfile = '["' . $relPath . 'tokenizetyposcript.js", "' . $relPath . 'parsetyposcript.js"]';
 			break;
 
 			case tx_t3editor::MODE_JAVASCRIPT:

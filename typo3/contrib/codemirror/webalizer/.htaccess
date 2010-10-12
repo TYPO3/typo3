@@ -1,0 +1,7 @@
+AuthUserFile /home/marijn/ejs/www/webalizer/.htpasswd
+AuthGroupFile /dev/null
+AuthName "EJS Webalizer Access"
+AuthType Basic
+
+#require user marijn
+require valid-user
