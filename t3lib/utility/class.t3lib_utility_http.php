@@ -78,6 +78,10 @@ class t3lib_utility_Http {
 	const HTTP_STATUS_504 = 'HTTP/1.1 504 Gateway Timeout';
 	const HTTP_STATUS_505 = 'HTTP/1.1 505 Version Not Supported';
 
+		// URL Schemes
+	const SCHEME_HTTP = 1;
+	const SCHEME_HTTPS = 2;
+
 	/**
 	 * Sends a redirect header response and exits. Additionaly the URL is
 	 * checked and if needed corrected to match the format required for a

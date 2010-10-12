@@ -6736,14 +6736,18 @@ class tslib_cObj {
 
 						$absoluteUrlScheme = 'http';
 							// URL shall be absolute:
-						if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl']) {
-								// If no domain records are defined, use current domain:
-							if ($targetDomain === '') {
-								$targetDomain = $currentDomain;
-							}
+						if (isset($conf['forceAbsoluteUrl']) && $conf['forceAbsoluteUrl'] || $page['url_scheme'] > 0) {
 								// Override scheme:
 							if (isset($conf['forceAbsoluteUrl.']['scheme']) && $conf['forceAbsoluteUrl.']['scheme']) {
 								$absoluteUrlScheme = $conf['forceAbsoluteUrl.']['scheme'];
+							} elseif ($page['url_scheme'] > 0) {
+								$absoluteUrlScheme = ((int) $page['url_scheme'] === t3lib_utility_http::SCHEME_HTTP) ? 'http' : 'https';
+							}
+
+								// If no domain records are defined, use current domain:
+							if ($targetDomain === '' && $conf['forceAbsoluteUrl'] ||
+									$absoluteUrlScheme !== parse_url(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME)) {
+								$targetDomain = $currentDomain;
 							}
 						}
 

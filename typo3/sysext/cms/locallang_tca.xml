@@ -22,6 +22,9 @@
 			<label index="pages.layout.I.1">Layout 1</label>
 			<label index="pages.layout.I.2">Layout 2</label>
 			<label index="pages.layout.I.3">Layout 3</label>
+			<label index="pages.url_scheme">URL Scheme:</label>
+			<label index="pages.url_scheme.http">Force HTTP</label>
+			<label index="pages.url_scheme.https">Force HTTPS</label>
 			<label index="pages.extendToSubpages">Include subpages:</label>
 			<label index="pages.nav_title">Navigation title:</label>
 			<label index="pages.nav_hide">Hide in menu:</label>

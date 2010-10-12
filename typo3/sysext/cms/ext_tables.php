@@ -143,6 +143,19 @@ if (TYPO3_MODE == 'BE') {
 				'default' => '0'
 			)
 		),
+		'url_scheme' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.url_scheme',
+			'config' => array (
+				'type' => 'select',
+				'items' => array (
+					array('', 0),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.url_scheme.http', 1),
+					array('LLL:EXT:cms/locallang_tca.xml:pages.url_scheme.https', 2)
+				),
+				'default' => 0
+			)
+		),
 		'fe_group' => array (
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.fe_group',
@@ -583,7 +596,7 @@ if (TYPO3_MODE == 'BE') {
 	$TCA['pages']['palettes'] = t3lib_div::array_merge($TCA['pages']['palettes'],array(
 		'1' => array('showitem' => 'starttime, endtime, extendToSubpages'),
 		'2' => array('showitem' => 'layout, lastUpdated, newUntil, no_search'),
-		'3' => array('showitem' => 'alias, target, no_cache, cache_timeout'),
+		'3' => array('showitem' => 'alias, target, no_cache, cache_timeout, url_scheme'),
 		'5' => array('showitem' => 'author, author_email', 'canNotCollapse' => 1)
 	));
 

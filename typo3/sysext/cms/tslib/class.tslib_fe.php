@@ -982,6 +982,23 @@
 			$this->pageNotFoundAndExit($pNotFoundMsg[$this->pageNotFound]);
 		}
 
+		if ($this->page['url_scheme'] > 0) {
+			$newUrl = '';
+			$requestUrlScheme = parse_url(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), PHP_URL_SCHEME);
+			if ((int) $this->page['url_scheme'] === t3lib_utility_http::SCHEME_HTTP && $requestUrlScheme == 'https') {
+				$newUrl = 'http://' . substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), 8);
+			} elseif ((int) $this->page['url_scheme'] === t3lib_utility_http::SCHEME_HTTPS && $requestUrlScheme == 'http') {
+				$newUrl = 'https://' . substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), 7);
+			}
+			if ($newUrl !== '') {
+				if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+					$headerCode = t3lib_utility_Http::HTTP_STATUS_303;
+				} else {
+					$headerCode = t3lib_utility_Http::HTTP_STATUS_301;
+				}
+				t3lib_utility_http::redirect($newUrl, $headerCode);
+			}
+		}
 			// set no_cache if set
 		if ($this->page['no_cache'])	{
 			$this->set_no_cache();
