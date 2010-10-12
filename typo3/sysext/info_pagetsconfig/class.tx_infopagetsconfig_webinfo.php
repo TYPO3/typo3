@@ -127,7 +127,7 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 
 					$tsparser = t3lib_div::makeInstance('t3lib_TSparser');
 					$tsparser->lineNumberOffset=0;
-					$TScontent = $tsparser->doSyntaxHighlight(trim($v).chr(10),'',1);
+					$TScontent = $tsparser->doSyntaxHighlight(trim($v) .LF, '', 0);
 
 					$lines[]='
 						<tr><td nowrap="nowrap" class="bgColor5">'.$pTitle.'</td></tr>
