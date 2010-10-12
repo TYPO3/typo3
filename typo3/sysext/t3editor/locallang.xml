@@ -8,6 +8,7 @@
 		<languageKey index="default" type="array">
 			<label index="deactivate">Deactivate t3editor</label>
 			<label index="template">Template</label>
+			<label index="file">File</label>
 			<label index="delimiter">:</label>
 			<label index="constants">Constants</label>
 			<label index="setup">Setup</label>
