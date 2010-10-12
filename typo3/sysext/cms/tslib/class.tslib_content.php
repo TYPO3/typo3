@@ -3326,6 +3326,8 @@ class tslib_cObj {
 				</noscript>
 			';
 		}
+		$GLOBALS['TSFE']->getPageRenderer()->loadSvg();
+
 		return $content;
 	}
 	/************************************
