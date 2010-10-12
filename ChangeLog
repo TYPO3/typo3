@@ -1,5 +1,6 @@
 2010-10-12  Steffen Kamper  <steffen@typo3.org>
 
+	* Update #15970: Update ExtJS to version 3.3.0
 	* Follow-up to #15900: [Feature] Add SVG support for all browsers
 
 2010-10-11  Steffen Kamper  <steffen@typo3.org>

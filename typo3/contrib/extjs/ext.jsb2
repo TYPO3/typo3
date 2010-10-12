@@ -1,50 +1,38 @@
 {
     "projectName": "Ext JS",
-    "deployDir": "ext-3.1+",
-    "licenseText": "Ext JS Library 3.1.1\nCopyright(c) 2006-2010 Ext JS, LLC\nlicensing@extjs.com\nhttp://www.extjs.com/license",
+    "deployDir": "ext-3.3+",
+    "licenseText": "Ext JS Library 3.3.0\nCopyright(c) 2006-2010 Ext JS, Inc.\nlicensing@extjs.com\nhttp://www.extjs.com/license",
     "pkgs": [{
         "name": "Ext Base",
         "file": "adapter/ext/ext-base.js",
         "isDebug": true,
         "fileIncludes": [{
             "text": "Ext.js",
-            "path": "src/core/core/"
-        },{
-            "text": "Ext-more.js",
-            "path": "src/core/"
+            "path": "src/ext-core/src/core/"
         },{
             "text": "TaskMgr.js",
-            "path": "src/util/core/"
+            "path": "src/ext-core/src/util/"
         },{
             "text": "ext-base-begin.js",
-            "path": "src/adapter/core/"
+            "path": "src/ext-core/src/adapter/"
         },{
             "text": "ext-base-dom.js",
-            "path": "src/adapter/core/"
-        },{
-            "text": "ext-base-dom-more.js",
-            "path": "src/adapter/"
+            "path": "src/ext-core/src/adapter/"
         },{
             "text": "ext-base-event.js",
-            "path": "src/adapter/core/"
+            "path": "src/ext-core/src/adapter/"
         },{
             "text": "ext-base-ajax.js",
-            "path": "src/adapter/core/"
-        },{
-            "text": "ext-base-region.js",
-            "path": "src/adapter/core/"
-        },{
-            "text": "ext-base-point.js",
-            "path": "src/adapter/core/"
+            "path": "src/ext-core/src/adapter/"
         },{
             "text": "ext-base-anim.js",
-            "path": "src/adapter/core/"
+            "path": "src/ext-core/src/adapter/"
         },{
             "text": "ext-base-anim-extra.js",
-            "path": "src/adapter/core/"
+            "path": "src/ext-core/src/adapter/"
         },{
             "text": "ext-base-end.js",
-            "path": "src/adapter/core/"
+            "path": "src/ext-core/src/adapter/"
         }]
     },{
         "name": "YUI Adapter",
@@ -52,13 +40,10 @@
         "isDebug": true,
         "fileIncludes": [{
             "text": "Ext.js",
-            "path": "src/core/core/"
-        },{
-            "text": "Ext-more.js",
-            "path": "src/core/"
+            "path": "src/ext-core/src/core/"
         },{
             "text": "TaskMgr.js",
-            "path": "src/util/core/"
+            "path": "src/ext-core/src/util/"
         },{
             "text": "yui-bridge.js",
             "path": "src/adapter/"
@@ -69,13 +54,10 @@
         "isDebug": true,
         "fileIncludes": [{
             "text": "Ext.js",
-            "path": "src/core/core/"
-        },{
-            "text": "Ext-more.js",
-            "path": "src/core/"
+            "path": "src/ext-core/src/core/"
         },{
             "text": "TaskMgr.js",
-            "path": "src/util/core/"
+            "path": "src/ext-core/src/util/"
         },{
             "text": "prototype-bridge.js",
             "path": "src/adapter/"
@@ -86,55 +68,102 @@
         "isDebug": true,
         "fileIncludes": [{
             "text": "Ext.js",
-            "path": "src/core/core/"
-        },{
-            "text": "Ext-more.js",
-            "path": "src/core/"
+            "path": "src/ext-core/src/core/"
         },{
             "text": "TaskMgr.js",
-            "path": "src/util/core/"
+            "path": "src/ext-core/src/util/"
         },{
             "text": "jquery-bridge.js",
             "path": "src/adapter/"
         }]
     },{
+        "name": "Ext Core",
+        "file": "pkgs/ext-core.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "Observable.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "DomHelper.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Template.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "DomQuery.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "DelayedTask.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "Element.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.traversal.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.insertion.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.style.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.position.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.scroll.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.fx.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Fx.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "CompositeElementLite.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Connection.js",
+            "path": "src/ext-core/src/data/"
+        },{
+            "text": "JSON.js",
+            "path": "src/ext-core/src/util/"
+        },
+        {
+            "text": "EventManager.js",
+            "path": "src/ext-core/src/core/"
+        }]
+    },{
         "name": "Ext Foundation",
         "file": "pkgs/ext-foundation.js",
         "isDebug": true,
-        "pkgDeps": ["ext-base.js"],
         "fileIncludes": [{
-            "text": "DomHelper.js",
-            "path": "src/core/core/"
+            "text": "Ext-more.js",
+            "path": "src/core/"
+        },{
+            "text": "ext-base-dom-more.js",
+            "path": "src/adapter/"
+        },{
+            "text": "ext-base-region.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-point.js",
+            "path": "src/ext-core/src/adapter/"
         },{
             "text": "DomHelper-more.js",
             "path": "src/core/"
         },{
-            "text": "Template.js",
-            "path": "src/core/core/"
-        },{
             "text": "Template-more.js",
             "path": "src/core/"
         },{
-            "text": "DomQuery.js",
-            "path": "src/core/core/"
-        },{
-            "text": "DelayedTask.js",
-            "path": "src/util/core/"
-        },{
-            "text": "Observable.js",
-            "path": "src/util/core/"
+            "text": "Function.js",
+            "path": "src/util/"
         },{
             "text": "Observable-more.js",
             "path": "src/util/"
         },{
-            "text": "EventManager.js",
-            "path": "src/core/core/"
-        },{
             "text": "EventManager-more.js",
             "path": "src/core/"
-        },{
-            "text": "Element.js",
-            "path": "src/core/core/"
         },{
             "text": "Element-more.js",
             "path": "src/core/"
@@ -142,38 +171,20 @@
             "text": "Element.alignment.js",
             "path": "src/core/"
         },{
-            "text": "Element.traversal.js",
-            "path": "src/core/core/"
-        },{
             "text": "Element.traversal-more.js",
             "path": "src/core/"
-        },{
-            "text": "Element.insertion.js",
-            "path": "src/core/core/"
         },{
             "text": "Element.insertion-more.js",
             "path": "src/core/"
         },{
-            "text": "Element.style.js",
-            "path": "src/core/core/"
-        },{
             "text": "Element.style-more.js",
             "path": "src/core/"
-        },{
-            "text": "Element.position.js",
-            "path": "src/core/core/"
         },{
             "text": "Element.position-more.js",
             "path": "src/core/"
         },{
-            "text": "Element.scroll.js",
-            "path": "src/core/core/"
-        },{
             "text": "Element.scroll-more.js",
             "path": "src/core/"
-        },{
-            "text": "Element.fx.js",
-            "path": "src/core/core/"
         },{
             "text": "Element.fx-more.js",
             "path": "src/core/"
@@ -181,20 +192,11 @@
             "text": "Element.keys.js",
             "path": "src/core/"
         },{
-            "text": "Fx.js",
-            "path": "src/core/core/"
-        },{
-            "text": "CompositeElementLite.js",
-            "path": "src/core/core/"
-        },{
             "text": "CompositeElementLite-more.js",
             "path": "src/core/"
         },{
             "text": "CompositeElement.js",
             "path": "src/core/"
-        },{
-            "text": "Connection.js",
-            "path": "src/data/core/"
         },{
             "text": "UpdateManager.js",
             "path": "src/util/"
@@ -205,8 +207,8 @@
             "text": "MixedCollection.js",
             "path": "src/util/"
         },{
-            "text": "JSON.js",
-            "path": "src/util/core/"
+            "text": "AbstractManager.js",
+            "path": "src/util/"
         },{
             "text": "Format.js",
             "path": "src/util/"
@@ -317,6 +319,9 @@
             "path": "src/data/"
         },{
             "text": "MemoryProxy.js",
+            "path": "src/data/"
+        },{
+            "text": "Types.js",
             "path": "src/data/"
         }]
     },{
@@ -461,6 +466,18 @@
             "path": "src/widgets/layout/"
         },{
             "text": "BoxLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "MenuOverflow.js",
+            "path": "src/widgets/layout/box/"
+        },{
+            "text": "ScrollerOverflow.js",
+            "path": "src/widgets/layout/box/"
+        },{
+            "text": "HBoxLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "VBoxLayout.js",
             "path": "src/widgets/layout/"
         },{
             "text": "ToolbarLayout.js",
@@ -623,6 +640,9 @@
         },{
             "text": "QuickTips.js",
             "path": "src/widgets/tips/"
+        },{
+            "text": "SliderTip.js",
+            "path": "src/widgets/tips/"
         }]
     },{
         "name": "Trees",
@@ -756,6 +776,9 @@
             "text": "CheckboxGroup.js",
             "path": "src/widgets/form/"
         },{
+            "text": "CompositeField.js",
+            "path": "src/widgets/form/"
+        },{
             "text": "Radio.js",
             "path": "src/widgets/form/"
         },{
@@ -780,6 +803,9 @@
             "text": "TimeField.js",
             "path": "src/widgets/form/"
         },{
+            "text": "SliderField.js",
+            "path": "src/widgets/form/"
+        },{
             "text": "Label.js",
             "path": "src/widgets/form/"
         },{
@@ -798,7 +824,16 @@
             "text": "GridPanel.js",
             "path": "src/widgets/grid/"
         },{
+            "text": "PivotGrid.js",
+            "path": "src/widgets/grid/"
+        },{
             "text": "GridView.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "PivotGridView.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "PivotAxis.js",
             "path": "src/widgets/grid/"
         },{
             "text": "ColumnDD.js",
@@ -862,8 +897,18 @@
             "path": "src/widgets/grid/"
         }]
     },{
-        "name": "Ext All",
-        "file": "ext-all.js",
+        "name": "Ext Core",
+        "file": "ext-core-all.js",
+        "isDebug": true,
+        "includeDeps": true,
+        "pkgDeps": [
+            "adapter/ext/ext-base.js",
+            "pkgs/ext-core.js"
+        ],
+        "fileIncludes": []
+    },{
+        "name": "Ext All No Core",
+        "file": "ext-all-no-core.js",
         "isDebug": true,
         "includeDeps": true,
         "pkgDeps": [
@@ -895,6 +940,49 @@
         ],
         "fileIncludes": []
     },{
+        "name": "Ext All",
+        "file": "ext-all.js",
+        "isDebug": true,
+        "includeDeps": true,
+        "pkgDeps": [
+            "pkgs/ext-core.js",
+            "ext-all-no-core.js"
+        ],
+        "fileIncludes": []
+    },
+    {
+        "name": "Calendar",
+        "file": "examples/calendar/calendar-all.js",
+        "isDebug": true,
+        "fileIncludes": [
+            {"path": "examples/calendar/src/",           "text": "Ext.calendar.js"},
+            {"path": "examples/calendar/src/templates/", "text": "DayHeaderTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "DayBodyTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "DayViewTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "BoxLayoutTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "MonthViewTemplate.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "CalendarScrollManager.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "StatusProxy.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "CalendarDD.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "DayViewDD.js"},
+            {"path": "examples/calendar/src/",           "text": "EventRecord.js"},
+            {"path": "examples/calendar/src/views/",     "text": "MonthDayDetailView.js"},
+            {"path": "examples/calendar/src/widgets/",   "text": "CalendarPicker.js"},
+            {"path": "examples/calendar/src/",           "text": "WeekEventRenderer.js"},
+            {"path": "examples/calendar/src/views/",     "text": "CalendarView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "MonthView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "DayHeaderView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "DayBodyView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "DayView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "WeekView.js"},
+            {"path": "examples/calendar/src/widgets/",   "text": "DateRangeField.js"},
+            {"path": "examples/calendar/src/widgets/",   "text": "ReminderField.js"},
+            {"path": "examples/calendar/src/",           "text": "EventEditForm.js"},
+            {"path": "examples/calendar/src/",           "text": "EventEditWindow.js"},
+            {"path": "examples/calendar/src/",           "text": "CalendarPanel.js"}
+        ]
+    },
+    {
        "name": "User Extension JS Pack",
        "file": "examples/ux/ux-all.js",
        "isDebug": true,
@@ -999,9 +1087,6 @@
           "path": "examples/ux/"
        },{
           "text": "SelectBox.js",
-          "path": "examples/ux/"
-       },{
-          "text": "SliderTip.js",
           "path": "examples/ux/"
        },{
           "text": "SlidingPager.js",
@@ -1141,6 +1226,9 @@
            "text": "grid.css",
            "path": "resources/css/structure/"
        },{
+           "text": "pivotgrid.css",
+           "path": "resources/css/structure/"
+       },{
            "text": "dd.css",
            "path": "resources/css/structure/"
        },{
@@ -1195,6 +1283,82 @@
     },{
        "name": "Ext Blue Theme",
        "file": "resources/css/xtheme-blue.css",
+       "fileIncludes": [{
+           "text": "core.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "tabs.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "form.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "button.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "toolbar.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "resizable.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "grid.css",
+           "path": "resources/css/visual/"
+       },{
+          "text": "pivotgrid.css",
+          "path": "resources/css/visual/"
+       },{
+           "text": "dd.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "tree.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "date-picker.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "qtips.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "menu.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "box.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "combo.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "panel.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "window.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "editor.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "borders.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "layout.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "progress.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "list-view.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "slider.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "dialog.css",
+           "path": "resources/css/visual/"
+       }]
+    },{
+       "name": "Your Theme",
+       "file": "resources/css/yourtheme.css",
        "fileIncludes": [{
            "text": "core.css",
            "path": "resources/css/visual/"
@@ -1430,6 +1594,10 @@
         "src": "examples/",
         "dest": "examples/",
         "filters": ".*[\\.html|\\.jpg|\\.png|\\.gif|\\.css|\\.js|\\.php]"
+    },{
+        "src": "test/",
+        "dest": "test/",
+        "filters": ".*[\\.js]"
     },{
         "src": "welcome/",
         "dest": "welcome/",
