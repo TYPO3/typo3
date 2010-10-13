@@ -1,6 +1,7 @@
 2010-10-13  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15644: Replace magic numbers for shortcut_mode with class constants
+	* Follow-up to #15874: Provide unit tests for t3lib_div::dirname (Thanks to Oliver Klee)
 
 2010-10-12  Susanne Moog  <typo3@susanne-moog.de>
 

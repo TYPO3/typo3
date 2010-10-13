@@ -1793,7 +1793,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		return array(
 			'absolute path with multiple part and file' => array('/dir1/dir2/script.php', '/dir1/dir2'),
 			'absolute path with one part' => array('/dir1/', '/dir1'),
-			'absolute path with directory without file' => array('/dir1/something', '/dir1'),
+			'absolute path to file without extension' => array('/dir1/something', '/dir1'),
 			'relative path with one part and file' => array('dir1/script.php', 'dir1'),
 			'relative one-character path with one part and file' => array('d/script.php', 'd'),
 			'absolute zero-part path with file' => array('/script.php', ''),
