@@ -1884,7 +1884,7 @@ final class t3lib_BEfunc {
 				$lRec = self::getRecordWSOL('pages', intval($row['shortcut']), 'title');
 				$label = $lRec['title'];
 			}
-			if ($row['shortcut_mode']>0) {
+			if ($row['shortcut_mode'] != t3lib_pageSelect::SHORTCUT_MODE_NONE) {
 				$label.=', '.$LANG->sL($TCA['pages']['columns']['shortcut_mode']['label']).' '.
 							$LANG->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode']));
 			}

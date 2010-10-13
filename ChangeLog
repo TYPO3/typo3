@@ -1,3 +1,7 @@
+2010-10-13  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15644: Replace magic numbers for shortcut_mode with class constants
+
 2010-10-12  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15168: Template auto complete is hidden beneath next text area field

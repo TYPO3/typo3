@@ -130,6 +130,14 @@ class t3lib_pageSelect {
 	protected $cache_getMountPointInfo = array();
 
 	/**
+	 * Named constants for "magic numbers" of the field shortcut_mode
+	 */
+	const SHORTCUT_MODE_NONE = 0;
+	const SHORTCUT_MODE_FIRST_SUBPAGE = 1;
+	const SHORTCUT_MODE_RANDOM_SUBPAGE = 2;
+	const SHORTCUT_MODE_PARENT_PAGE = 3;
+
+	/**
 	 * init() MUST be run directly after creating a new template-object
 	 * This sets the internal variable $this->where_hid_del to the correct where clause for page records taking deleted/hidden/starttime/endtime/t3ver_state into account
 	 *
@@ -516,16 +524,16 @@ class t3lib_pageSelect {
 
 					// if shortcut, look up if the target exists and is currently visible
 				if ($row['doktype'] == 4 && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts)	{
-					if ($row['shortcut_mode'] == 0) {
+					if ($row['shortcut_mode'] == self::SHORTCUT_MODE_NONE) {
 							// no shortcut_mode set, so target is directly set in $row['shortcut']
 						$searchField = 'uid';
 						$searchUid = intval($row['shortcut']);
-					} elseif ($row['shortcut_mode'] == 1 || $row['shortcut_mode'] == 2) {
+					} elseif ($row['shortcut_mode'] == self::SHORTCUT_MODE_FIRST_SUBPAGE || $row['shortcut_mode'] == self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
 							// check subpages - first subpage or random subpage
 						$searchField = 'pid';
 							// If a shortcut mode is set and no valid page is given to select subpags from use the actual page.
 						$searchUid = intval($row['shortcut'])?intval($row['shortcut']):$row['uid'];
-					} elseif ($row['shortcut_mode'] == 3) {
+					} elseif ($row['shortcut_mode'] == self::SHORTCUT_MODE_PARENT_PAGE) {
 							// shortcut to parent page
 						$searchField = 'uid';
 						$searchUid = $row['pid'];
