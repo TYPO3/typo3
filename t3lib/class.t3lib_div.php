@@ -1217,8 +1217,11 @@ final class t3lib_div {
 	 *
 	 * @param	string		String from which the comma in the end (if any) will be removed.
 	 * @return	string
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - Use rtrim() directly
 	 */
 	public static function rm_endcomma($string)	{
+		self::logDeprecatedFunction();
+
 		return rtrim($string, ',');
 	}
 
