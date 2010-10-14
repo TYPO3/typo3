@@ -72,8 +72,7 @@ class tx_version_tcemain {
 	 * @return	void
 	 */
 	public function processCmdmap($command, $table, $id, $value, &$commandIsProcessed, &$tcemainObj) {
-		
-		
+
 			// custom command "version"
 		if ($command == 'version') {
 			$commandWasProcessed = TRUE;
@@ -182,58 +181,63 @@ class tx_version_tcemain {
 	 * @return	void
 	 */
 	public function processCmdmap_deleteAction($table, $id, $record, &$recordWasDeleted, &$tcemainObj) {
-		$id = $record['uid'];
+			// only process the hook if it wasn't processed 
+			// by someone else before
+		if (!$recordWasDeleted) {
+			$recordWasDeleted = TRUE;
+			$id = $record['uid'];
 	
-			// For Live version, try if there is a workspace version because if so, rather "delete" that instead
-			// Look, if record is an offline version, then delete directly:
-		if ($record['pid'] != -1) {
-			if ($wsVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $id)) {
-				$record = $wsVersion;
-				$id = $record['uid'];
-			}
-		}
-
+				// For Live version, try if there is a workspace version because if so, rather "delete" that instead
 				// Look, if record is an offline version, then delete directly:
-		if ($record['pid'] == -1) {
-			if ($TCA[$table]['ctrl']['versioningWS']) {
-					// In Live workspace, delete any. In other workspaces there must be match.
-				if ($tcemainObj->BE_USER->workspace == 0 || (int) $record['t3ver_wsid'] == $tcemainObj->BE_USER->workspace) {
-					$liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
+			if ($record['pid'] != -1) {
+				if ($wsVersion = t3lib_BEfunc::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $id)) {
+					$record = $wsVersion;
+					$id = $record['uid'];
+				}
+			}
 
-						// Delete those in WS 0 + if their live records state was not "Placeholder".
-					if ($record['t3ver_wsid']==0 || (int) $liveRec['t3ver_state'] <= 0) {
-						$tcemainObj->deleteEl($table, $id);
-					} else {
-							// If live record was placeholder (new/deleted), rather clear
-							// it from workspace (because it clears both version and placeholder).
-						$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
-					}
-				} else $tcemainObj->newlog('Tried to delete record from another workspace',1);
-			} else $tcemainObj->newlog('Versioning not enabled for record with PID = -1!',2);
-		} elseif ($res = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($record['pid'], $table)) {
-				// Look, if record is "online" or in a versionized branch, then delete directly.
-			if ($res>0) {
+					// Look, if record is an offline version, then delete directly:
+			if ($record['pid'] == -1) {
+				if ($TCA[$table]['ctrl']['versioningWS']) {
+						// In Live workspace, delete any. In other workspaces there must be match.
+					if ($tcemainObj->BE_USER->workspace == 0 || (int) $record['t3ver_wsid'] == $tcemainObj->BE_USER->workspace) {
+						$liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
+
+							// Delete those in WS 0 + if their live records state was not "Placeholder".
+						if ($record['t3ver_wsid']==0 || (int) $liveRec['t3ver_state'] <= 0) {
+							$tcemainObj->deleteEl($table, $id);
+						} else {
+								// If live record was placeholder (new/deleted), rather clear
+								// it from workspace (because it clears both version and placeholder).
+							$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
+						}
+					} else $tcemainObj->newlog('Tried to delete record from another workspace',1);
+				} else $tcemainObj->newlog('Versioning not enabled for record with PID = -1!',2);
+			} elseif ($res = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($record['pid'], $table)) {
+					// Look, if record is "online" or in a versionized branch, then delete directly.
+				if ($res>0) {
+					$tcemainObj->deleteEl($table, $id);
+				} else {
+					$tcemainObj->newlog('Stage of root point did not allow for deletion',1);
+				}
+			} elseif ((int)$record['t3ver_state']===3) {
+					// Placeholders for moving operations are deletable directly.
+
+					// Get record which its a placeholder for and reset the t3ver_state of that:
+				if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($record['t3ver_wsid'], $table, $record['t3ver_move_id'], 'uid')) {
+						// Clear the state flag of the workspace version of the record
+						// Setting placeholder state value for version (so it can know it is currently a new version...)
+					$updateFields = array(
+						't3ver_state' => 0
+					);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsRec['uid']), $updateFields);
+				}
 				$tcemainObj->deleteEl($table, $id);
 			} else {
-				$tcemainObj->newlog('Stage of root point did not allow for deletion',1);
+				// Otherwise, try to delete by versioning:
+				$tcemainObj->versionizeRecord($table, $id, 'DELETED!', TRUE);
+				$tcemainObj->deleteL10nOverlayRecords($table, $id);
 			}
-		} elseif ((int)$record['t3ver_state']===3) {
-				// Placeholders for moving operations are deletable directly.
-
-				// Get record which its a placeholder for and reset the t3ver_state of that:
-			if ($wsRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($record['t3ver_wsid'], $table, $record['t3ver_move_id'], 'uid')) {
-					// Clear the state flag of the workspace version of the record
-					// Setting placeholder state value for version (so it can know it is currently a new version...)
-				$updateFields = array(
-					't3ver_state' => 0
-				);
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsRec['uid']), $updateFields);
-			}
-			$tcemainObj->deleteEl($table, $id);
-		} else {
-			// Otherwise, try to delete by versioning:
-			$tcemainObj->versionizeRecord($table, $id, 'DELETED!', TRUE);
-			$tcemainObj->deleteL10nOverlayRecords($table, $id);
 		}
 	}
 
