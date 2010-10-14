@@ -418,8 +418,10 @@ class template {
 	 * Use this in links to remove the underlining after being clicked
 	 *
 	 * @return	string
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
 	 */
 	function thisBlur()	{
+		t3lib_div::logDeprecatedFunction();
 		return ($GLOBALS['CLIENT']['FORMSTYLE']?'this.blur();':'');
 	}
 
@@ -428,8 +430,10 @@ class template {
 	 * Use for <a>-links to help texts
 	 *
 	 * @return	string
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
 	 */
 	function helpStyle()	{
+		t3lib_div::logDeprecatedFunction();
 		return $GLOBALS['CLIENT']['FORMSTYLE'] ? ' style="cursor:help;"':'';
 	}
 

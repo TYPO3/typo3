@@ -258,7 +258,7 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 	 * @return	string		HTML code for a help-bubble image.
 	 */
 	function helpBubble()	{
-		return '<img src="'.$GLOBALS['BACK_PATH'].'gfx/helpbubble.gif" width="14" height="14" hspace="2" align="top"'.$this->pObj->doc->helpStyle().' alt="" />';
+		return '<img src="'.$GLOBALS['BACK_PATH'].'gfx/helpbubble.gif" width="14" height="14" hspace="2" align="top" alt="" />';
 	}
 
 	/**

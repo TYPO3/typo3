@@ -309,11 +309,11 @@ class SC_db_new_content_el {
 						// Radio button:
 					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
 					$content .= $this->elementWrapper['wizardPart'][0] .
-						'<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($this->doc->thisBlur().$oC) . '" />' .
+						'<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" />' .
 						$this->elementWrapper['wizardPart'][1];
 
 						// Onclick action for icon/title:
-					$aOnClick = 'document.getElementsByName(\'tempB\')['.$cc.'].checked=1;'.$this->doc->thisBlur().$oC.'return false;';
+					$aOnClick = 'document.getElementsByName(\'tempB\')['.$cc.'].checked=1;'.$oC.'return false;';
 
 						// Icon:
 					$iInfo = @getimagesize($wInfo['icon']);

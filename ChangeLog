@@ -1,5 +1,6 @@
 2010-10-14  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #15798: Deprecate some old functions in typo3/template.php
 	* Fixed bug #15801: Deprecate t3lib_div::rm_endcomma
 	* Fixed bug #103: No Plain-text List Option
 
