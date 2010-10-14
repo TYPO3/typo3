@@ -1,3 +1,7 @@
+2010-10-14  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #103: No Plain-text List Option
+
 2010-10-12  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15168: Template auto complete is hidden beneath next text area field
