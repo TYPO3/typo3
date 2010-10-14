@@ -1,3 +1,7 @@
+2010-10-14  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #103: No Plain-text List Option
+
 2010-10-12  Oliver Hader  <oliver@typo3.org>
 
 	* Release of TYPO3 4.3.8
