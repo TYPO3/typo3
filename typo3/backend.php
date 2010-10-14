@@ -104,7 +104,8 @@ class TYPO3backend {
 			'TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
 			if (typeof console === "undefined") {
 				console = TYPO3.Backend.DebugConsole;
-			}',
+			}
+			TYPO3.ContextHelpWindow.init();',
 			TRUE
 		);
 		$this->pageRenderer->addJsInlineCode(
@@ -374,6 +375,10 @@ class TYPO3backend {
 			'showRefreshLoginPopup' => isset($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) ? intval($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup']) : FALSE,
 			'listModulePath' => t3lib_extMgm::isLoaded('list') ? t3lib_extMgm::extRelPath('list') . 'mod1/' : '',
 			'debugInWindow' => $GLOBALS['BE_USER']->uc['debugInWindow'] ? 1 : 0,
+			'ContextHelpWindows' => array(
+				'width' => 600,
+				'height' => 400
+			)
 		);
 		$t3LLLcore = array(
 			'waitTitle' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:mess.refresh_login_logging_in') ,

@@ -262,3 +262,78 @@ TYPO3.Dialog = function() {
 		}
 	}
 }();
+
+/**
+ * Helper class for dialog windows
+ *
+ * Example usage:
+ *
+ * TYPO3.ContextHelpWindow.open(identifier);
+ */
+TYPO3.ContextHelpWindow = function() {
+	/**
+	* Path to typo3 directory
+	*
+	* @type {String}
+	* @private
+	*/
+	var typo3Path = '';
+
+	/**
+	* Context for open a window
+	* "window" - open a new window
+	* "inline" - open a TYPO3.Window (not currently implementy)
+	*
+	* @type {String}
+	* @private
+	*/
+	var openContext;
+
+	/**
+	* Width for the window
+	*
+	* @type {Number}
+	* @private
+	*/
+	var width;
+	/**
+	* Height of the window
+	*
+	* @type {Number}
+	* @private
+	*/
+	var height;
+
+
+	return {
+		/**
+		 * init class vars
+		 *
+		 * @return void
+		 */
+		init: function() {
+			this.typo3Path = top.TYPO3.configuration.PATH_typo3;
+			this.openContext = 'window';
+			this.width = top.TYPO3.configuration.ContextHelpWindows.width;
+			this.height = top.TYPO3.configuration.ContextHelpWindows.height;
+		},
+
+		/**
+		 * Open window for TYPO3 inline help
+		 *
+		 * @param {String} help identifier
+		 * @return {Object} window
+		 */
+		open: function(helpIdentifier) {
+			if (this.openContext === 'window') {
+				var cshWindow = window.open(
+					this.typo3Path + 'view_help.php?tfID=' + helpIdentifier,
+					'ContextHelpWindow',
+					'height=' + this.height + ',width=' + this.width + ',status=0,menubar=0,scrollbars=1'
+				);
+				cshWindow.focus();
+				return cshWindow;
+			}
+		}
+	}
+}();

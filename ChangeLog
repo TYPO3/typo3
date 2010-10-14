@@ -1,3 +1,7 @@
+2010-10-14  Jeff Segars  <jeff@webempoweredchurch.org>
+
+	* Fixed bug #15800: Cleanup CSH code (Thanks to Benjamin Mack and Steffen Kamper)
+
 2010-10-14  Benjamin Mack  <benni@typo3.org>
 
 	* Followup to #15740: Move versioning code from TCEmain into "version" extension - delete action deleted entries twice (once in deleteAction and once in version extension)

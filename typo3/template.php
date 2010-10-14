@@ -748,6 +748,9 @@ class template {
 			$this->loadJavascriptLib('tab.js');
 		}
 
+			// include the JS for the Context Sensitive Help
+		$this->loadCshJavascript();
+
 			// Get the browser info
 		$browserInfo = t3lib_utility_Client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 
@@ -1565,6 +1568,26 @@ $str.=$this->docBodyTagBegin().
 	       return array('','','');
 	}
 
+	 /**
+	 * This loads everything needed for the Context Sensitive Help (CSH)
+	 *
+	 * @return void
+	 */
+	protected function loadCshJavascript() {
+		$this->pageRenderer->loadExtJS();
+		$this->pageRenderer->addExtOnReadyCode('
+			Ext.getBody().on({
+				click: {
+					delegate: "a.typo3-csh-link",
+					scope:this,
+					fn:function(event, link) {
+						event.stopEvent();
+						top.TYPO3.ContextHelpWindow.open(link.rel);
+					}
+				}
+			});
+		');
+	}
 
 	/**
 	 * Creates a tab menu from an array definition
