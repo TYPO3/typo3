@@ -475,7 +475,11 @@ class t3lib_spritemanager_SpriteGenerator {
 		$sizes = array();
 		foreach ($this->iconSizes as $sizeTag => $count) {
 			$size = $this->explodeSizeTag($sizeTag);
-			$sizes[ceil(sqrt($count)) * $size['width']] = $sizeTag;
+			$rowWidth = ceil(sqrt($count)) * $size['width'];
+			while (isset($sizes[$rowWidth])) {
+				$rowWidth++;
+			}
+			$sizes[$rowWidth] = $sizeTag;
 		}
 			// reverse sorting: widest group to top
 		krsort($sizes);
