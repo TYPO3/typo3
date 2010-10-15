@@ -58,6 +58,21 @@
  * NOTE: usage of 'icon' is deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon() instead
  */
 $PAGES_TYPES = array(
+	'3' => array(
+	),
+	'4' => array(
+	),
+	'5' => array(
+	),
+	'6' => array(
+		'type' => 'web',
+		'allowedTables' => '*'
+	),
+	'7' => array(
+	),
+	'199' => array(		// TypoScript: Limit is 200. When the doktype is 200 or above, the page WILL NOT be regarded as a 'page' by TypoScript. Rather is it a system-type page
+		'type' => 'sys',
+	),
 	'254' => array(		//  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
 		'type' => 'sys',
 		'allowedTables' => '*'
@@ -147,7 +162,15 @@ $TCA['pages'] = array(
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.php:LGL.prependAtCopy',
 		'cruser_id' => 'cruser_id',
 		'editlock' => 'editlock',
-		'useColumnsForDefaultValues' => 'doktype',
+		'useColumnsForDefaultValues' => 'doktype,fe_group,hidden',
+		'dividers2tabs' => 1,
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+			'fe_group' => 'fe_group',
+		),
+		'transForeignTable' => 'pages_language_overlay',
 		'typeicon_column' => 'doktype',
 		'typeicon_classes' => array(
 			'1' => 'apps-pagetree-page-default',
@@ -179,124 +202,18 @@ $TCA['pages'] = array(
 			'contains-board' => 'apps-pagetree-folder-contains-board',
 			'contains-news' => 'apps-pagetree-folder-contains-news',
 			'default' => 'apps-pagetree-page-default',
-
 		),
 		'typeicons' => array(
 			'1' => 'pages.gif',
 			'254' => 'sysf.gif',
 			'255' => 'recycler.gif',
-		)
-	),
-	'interface' => array(
-		'showRecordFieldList' => 'doktype,title',
-		'maxDBListItems' => 30,
-		'maxSingleDBListItems' => 50
-	),
-	'columns' => array(
-		'doktype' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
-			'config' => array(
-				'type' => 'select',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.php:doktype.I.0', '1', 'i/pages.gif'),
-					array('LLL:EXT:lang/locallang_tca.php:doktype.I.1', '254', 'i/sysf.gif'),
-					array('LLL:EXT:lang/locallang_tca.php:doktype.I.2', '255', 'i/recycler.gif')
-				),
-				'default' => '1',
-				'iconsInOptionTags' => 1,
-				'noIconsBelowSelect' => 1,
-			)
 		),
-		'title' => array(
-			'label' => 'LLL:EXT:lang/locallang_tca.php:title',
-			'config' => array(
-				'type' => 'input',
-				'size' => '30',
-				'max' => '255',
-				'eval' => 'required'
-			)
-		),
-		'TSconfig' => array(
-			'exclude' => 1,
-			'label' => 'TSconfig:',
-			'config' => array(
-				'type' => 'text',
-				'cols' => '40',
-				'rows' => '5',
-				'wizards' => array(
-					'_PADDING' => 4,
-					'0' => array(
-						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
-						'title' => 'TSconfig QuickReference',
-						'script' => 'wizard_tsconfig.php?mode=page',
-						'icon' => 'wizard_tsconfig.gif',
-						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
-					)
-				),
-				'softref' => 'TSconfig'
-			),
-			'defaultExtras' => 'fixed-font : enable-tab',
-		),
-		'php_tree_stop' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_tca.php:php_tree_stop',
-			'config' => array(
-				'type' => 'check'
-			)
-		),
-		'is_siteroot' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_tca.php:is_siteroot',
-			'config' => array(
-				'type' => 'check'
-			)
-		),
-		'storage_pid' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_tca.php:storage_pid',
-			'config' => array(
-				'type' => 'group',
-				'internal_type' => 'db',
-				'allowed' => 'pages',
-				'size' => '1',
-				'maxitems' => '1',
-				'minitems' => '0',
-				'show_thumbs' => '1',
-				'wizards' => array(
-					'suggest' => array(
-						'type' => 'suggest',
-					),
-				),
-			)
-		),
-		'tx_impexp_origuid' => array('config'=>array('type'=>'passthrough')),
-		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
-			'config' => array(
-				'type' => 'input',
-				'size' => '30',
-				'max' => '255',
-			)
-		),
-		'editlock' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_tca.php:editlock',
-			'config' => array(
-				'type' => 'check'
-			)
-		),
-	),
-	'types' => array(
-		'1' => array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7'),
-		'254' => array('showitem' => 'doktype, title;LLL:EXT:lang/locallang_general.php:LGL.title, TSconfig;;6;nowrap, storage_pid;;7'),
-		'255' => array('showitem' => 'doktype, title, TSconfig;;6;nowrap, storage_pid;;7')
-	),
-	'palettes' => array(
-		'6' => array('showitem' => 'php_tree_stop, editlock'),
-		'7' => array('showitem' => 'is_siteroot')
+		'dynamicConfigFile' => 'T3LIB:tbl_pages.php',
 	)
 );
+
+// Initialize the additional configuration of the table 'pages':
+t3lib_div::loadTCA('pages');
 
 /**
  * Table "be_users":

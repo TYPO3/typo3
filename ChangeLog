@@ -1,3 +1,7 @@
+2010-10-15  Oliver Hader  <oliver@typo3.org>
+
+	* Added feature #15988: Refactor TCA definitions of table pages
+
 2010-10-15  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15942: locallangXMLOverride should not distinguish between paths ending with php and xml (Thanks to Andreas Kiessling)
