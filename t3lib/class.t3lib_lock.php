@@ -151,22 +151,28 @@ class t3lib_lock {
 			case 'simple':
 				if (is_file($this->resource)) {
 					$this->sysLog('Waiting for a different process to release the lock');
-					$i = 0;
-					while ($i<$this->loops) {
-						$i++;
-						usleep($this->step * 1000);
-						clearstatcache();
-						if (!is_file($this->resource)) {	// Lock became free, leave the loop
-							$this->sysLog('Different process released the lock');
-							$noWait = FALSE;
-							break;
-						}
+					$maxExecutionTime = ini_get('max_execution_time');
+					$maxAge = time() - ($maxExecutionTime ? $maxExecutionTime : 120);
+					if(@filectime($this->resource) < $maxAge) {
+						@unlink($this->resource);
+						$this->sysLog('Unlink stale lockfile');
 					}
-				} else {
-					$noWait = TRUE;
 				}
 
-				if (($this->filepointer = touch($this->resource)) == FALSE) {
+				$isAcquired = FALSE;
+				for ($i = 0; $i < $this->loops; $i++) {
+					$filepointer = @fopen($this->resource, 'x');
+					if ($filepointer !== FALSE) {
+						fclose($filepointer);
+						$this->sysLog('Lock aquired');
+						$noWait = ($i === 0);
+						$isAcquired = TRUE;
+						break;
+					}
+					usleep($this->step * 1000);
+				}
+
+				if (!$isAcquired) {
 					throw new Exception('Lock file could not be created');
 				}
 			break;
