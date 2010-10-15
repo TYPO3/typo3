@@ -2053,8 +2053,9 @@ final class t3lib_BEfunc {
 				$params['table'] = $table;
 				$params['row'] = $row;
 				$params['title'] = '';
-
-				t3lib_div::callUserFunction($TCA[$table]['ctrl']['label_userFunc'], $params, $this);
+					//create NULL-reference
+				$null = NULL;
+				t3lib_div::callUserFunction($TCA[$table]['ctrl']['label_userFunc'], $params, $null);
 				$t = $params['title'];
 			} else {
 
@@ -2164,8 +2165,10 @@ final class t3lib_BEfunc {
 				 *HOOK: pre-processing the human readable output from a record
 				 ****************/
 			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] as $_funcRef) {
-					t3lib_div::callUserFunction($_funcRef,$theColConf,$this);
+					// create NULL-reference
+				$null = NULL;
+				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['preProcessValue'] as $_funcRef) {
+					t3lib_div::callUserFunction($_funcRef, $theColConf, $null);
 				}
 			}
 
@@ -2302,12 +2305,14 @@ final class t3lib_BEfunc {
 				 *HOOK: post-processing the human readable output from a record
 				 ****************/
 			if (is_array ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'])) {
-			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
+					// create NULL-reference
+				$null = NULL;
+				foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['postProcessValue'] as $_funcRef) {
 					$params = array(
 						'value' => $l,
 						'colConf' => $theColConf
 					);
-					$l = t3lib_div::callUserFunction($_funcRef, $params, $this);
+					$l = t3lib_div::callUserFunction($_funcRef, $params, $null);
 				}
 			}
 
@@ -4141,7 +4146,7 @@ final class t3lib_BEfunc {
 			);
 		}
 		$cNotice = '<a href="http://typo3.com/" target="_blank">' .
-			'<img' . t3lib_iconWorks::skinImg($BACK_PATH, 'gfx/loginlogo_transp.gif', 'width="75" height="19" vspace="2" hspace="4"') . ' alt="' .
+			'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/loginlogo_transp.gif', 'width="75" height="19" vspace="2" hspace="4"') . ' alt="' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.logo') . '" align="left" />' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.cms') . ' ' .
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:version.short') . ' ' .
