@@ -8,6 +8,7 @@
 
 2010-10-15  Benjamin Mack  <benni@typo3.org>
 
+	* Added feature #15990: Introduce a new CSH API function and make use of it in TCEforms
 	* Added feature #15989: Create a new abstract class t3lib_message_abstractmessage
 
 2010-10-15 Steffen Kamper  <steffen@typo3.org>

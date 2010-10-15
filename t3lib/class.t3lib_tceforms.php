@@ -921,11 +921,14 @@ class t3lib_TCEforms	{
 					}
 
 						// If the record has been saved and the "linkTitleToSelf" is set, we make the field name into a link, which will load ONLY this field in alt_doc.php
-					$PA['label'] = t3lib_div::deHSCentities(htmlspecialchars($PA['label']));
+					$label = t3lib_div::deHSCentities(htmlspecialchars($PA['label']));
 					if (t3lib_div::testInt($row['uid']) && $PA['fieldTSConfig']['linkTitleToSelf'] && !t3lib_div::_GP('columnsOnly'))	{
 						$lTTS_url = $this->backPath.'alt_doc.php?edit['.$table.']['.$row['uid'].']=edit&columnsOnly='.$field.'&returnUrl='.rawurlencode($this->thisReturnUrl());
-						$PA['label'] = '<a href="'.htmlspecialchars($lTTS_url).'">'.$PA['label'].'</a>';
+						$label = '<a href="' . htmlspecialchars($lTTS_url) . '">' . $label . '</a>';
 					}
+					
+						// wrap the label with help text
+					$PA['label'] = $label = t3lib_BEfunc::wrapInHelp($table, $field, $label);
 
 						// Create output value:
 					if ($PA['fieldConf']['config']['form_type']=='user' && $PA['fieldConf']['config']['noTableWrapping'])	{
@@ -933,23 +936,20 @@ class t3lib_TCEforms	{
 					} elseif ($PA['palette'])	{
 							// Array:
 						$out=array(
-							'NAME'=>$PA['label'],
+							'NAME' => $label,
 							'ID'=>$row['uid'],
 							'FIELD'=>$field,
 							'TABLE'=>$table,
-							'ITEM'=>$item,
-							'HELP_ICON' => $this->helpTextIcon($table,$field,1)
+							'ITEM'=>$item
 						);
 						$out = $this->addUserTemplateMarkers($out,$table,$field,$row,$PA);
 					} else {
 							// String:
 						$out=array(
-							'NAME'=>$PA['label'],
+							'NAME'=>$label,
 							'ITEM'=>$item,
 							'TABLE'=>$table,
 							'ID'=>$row['uid'],
-							'HELP_ICON'=>$this->helpTextIcon($table,$field),
-							'HELP_TEXT'=>$this->helpText($table,$field),
 							'PAL_LINK_ICON'=>$thePalIcon,
 							'FIELD'=>$field
 						);
@@ -4820,8 +4820,8 @@ class t3lib_TCEforms	{
 			// Wrapping a single field:
 		$this->fieldTemplate='
 			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td>###FIELD_HELP_ICON###</td>
-				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><strong>###FIELD_NAME###</strong></span>###FIELD_HELP_TEXT###</td>
+				<td>&nbsp;</td>
+				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><strong>###FIELD_NAME###</strong></span></td>
 			</tr>
 			<tr ###BGCOLOR######CLASSATTR_1###>
 				<td nowrap="nowrap"><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-reqImg" alt="" /><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" /></td>
@@ -5096,7 +5096,6 @@ class t3lib_TCEforms	{
 						'</label>' .
 						'<span' . $fieldAttributes . '>' .
 							$content['ITEM'] .
-							$content['HELP_ICON'] .
 						'</span>' .
 					'</span>';
 			}

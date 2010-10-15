@@ -2482,8 +2482,14 @@ final class t3lib_BEfunc {
 
 	/**
 	 * Returns help-text icon if configured for.
-	 * TCA_DESCR must be loaded prior to this function and $BE_USER must have 'edit_showFieldHelp' set to 'icon', otherwise nothing is returned
+	 * TCA_DESCR must be loaded prior to this function and $BE_USER must 
+	 * have 'edit_showFieldHelp' set to 'icon', otherwise nothing is returned
 	 * Usage: 6
+	 * 
+	 * Please note: since TYPO3 4.5 the UX team decided to not use CSH in its former way,
+	 * but to wrap the given text (where before the help icon was, and you could hover over it)
+	 * Please also note that since TYPO3 4.5 the option to enable help (none, icon only, full text) 
+	 * was completely removed.
 	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
@@ -2496,7 +2502,7 @@ final class t3lib_BEfunc {
 
 		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field]) && (isset($BE_USER->uc['edit_showFieldHelp']) || $force)) {
 			if ($BE_USER->uc['edit_showFieldHelp'] == 'icon') {
-				$text = self::helpText($table, $field, $BACK_PATH, '');
+				$text = self::helpText($table, $field);
 				$text = '<span class="typo3-csh-inline">' . $GLOBALS['LANG']->hscAndCharConv($text, FALSE) . '</span>';
 			}
 			return '<a class="typo3-csh-link" href="#" rel="' . $table . '.' . $field . '">' . t3lib_iconWorks::getSpriteIcon('actions-system-help-open', array('class' => 'typo3-csh-icon')) . $text.'</a>';
@@ -2513,11 +2519,11 @@ final class t3lib_BEfunc {
 	 *
 	 * @param	string		Table name
 	 * @param	string		Field name
-	 * @param	string		Back path
+	 * @param	string		Back path, deprecated since TYPO3 4.5, will be removed in TYPO3 4.7, because not used at all
 	 * @param	string		DEPRECATED: Additional style-attribute content for wrapping table (now: only in function cshItem needed)
 	 * @return	string		HTML content for help text
 	 */
-	public static function helpText($table, $field, $BACK_PATH, $styleAttrib = '') {
+	public static function helpText($table, $field, $BACK_PATH = '', $styleAttrib = '') {
 		global $TCA_DESCR, $BE_USER;
 		$output = '';
 
@@ -2529,7 +2535,7 @@ final class t3lib_BEfunc {
 			}
 				// add description text
 			if ($data['description'] || $arrow) {
-				$output = '<p class="t3-csh-short">' . nl2br(htmlspecialchars($data['description'])) . $arrow . '</p>';
+				$output = '<p class="t3-help-short">' . nl2br(htmlspecialchars($data['description'])) . $arrow . '</p>';
 			}
 
 				// put header before the rest of the text
@@ -2539,6 +2545,36 @@ final class t3lib_BEfunc {
 		}
 		return $output;
 	}
+
+	/**
+	 * API function that wraps the text / html in help text, so if a user hovers over it
+	 * the help text will show up
+	 * This is the new help API function since TYPO3 4.5, and uses the new behaviour
+	 * (hover over text, no icon, no fulltext option, no option to disable the help)
+	 * 
+	 * @param	string	$table	The table name for which the help should be shown
+	 * @param	string	$field	The field name for which the help should be shown
+	 * @param	string	$text	the text which should be wrapped with the help text
+	 * @return	string	the HTML code ready to render
+	 * @api	public
+	 */
+	public static function wrapInHelp($table, $field, $text = '') {
+			// get the help text that should be shown on hover
+		$GLOBALS['LANG']->loadSingleTableDescription($table);
+		$helpText = self::helpText($table, $field);
+		if ($helpText) {
+				// if no text was given, just use the regular help icon 
+			if ($text == '') {
+				$text = t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
+			}
+
+			$helpText = '<span class="t3-help-inline">' . $GLOBALS['LANG']->hscAndCharConv($helpText, FALSE) . '</span>';
+			$text = '<abbr class="t3-help-teaser">' . $text . '</abbr>';
+
+			$text = '<a class="t3-help-link" href="#" rel="' . $table . '|' . $field . '">' . $text . $helpText . '</a>';
+		}
+		return $text;
+	} 
 
 
 	/**

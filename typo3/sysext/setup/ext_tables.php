@@ -74,22 +74,11 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:edit_wideDocument',
 			'csh' => 'edit_wideDocument',
 		),
-		'edit_showFieldHelp' => array(
-			'type' => 'select',
-			'items' => array (
-				'0' => 'LLL:EXT:setup/mod/locallang.xml:edit_showFieldHelp_none',
-				'icon' => 'LLL:EXT:setup/mod/locallang.xml:edit_showFieldHelp_icon',
-				'text' => 'LLL:EXT:setup/mod/locallang.xml:edit_showFieldHelp_message',
-			),
-			'label' => 'LLL:EXT:setup/mod/locallang.xml:edit_showFieldHelp',
-			'csh' => 'edit_showFieldHelp',
-		),
 		'titleLen' => array(
 			'type' => 'text',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:maxTitleLen',
 			'csh' => 'maxTitleLen',
 		),
-
 		'edit_RTE' => array(
 			'type' => 'check',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:edit_RTE',

@@ -1578,11 +1578,14 @@ $str.=$this->docBodyTagBegin().
 		$this->pageRenderer->addExtOnReadyCode('
 			Ext.getBody().on({
 				click: {
-					delegate: "a.typo3-csh-link",
+					delegate: "a",
 					scope:this,
 					fn:function(event, link) {
-						event.stopEvent();
-						top.TYPO3.ContextHelpWindow.open(link.rel);
+						var element = Ext.fly(link);
+						if (element.hasClass("typo3-csh-link") || element.hasClass("t3-help-link")) {
+							event.stopEvent();
+							top.TYPO3.ContextHelpWindow.open(link.rel);
+						}
 					}
 				}
 			});

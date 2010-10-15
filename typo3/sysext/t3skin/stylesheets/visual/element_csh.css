@@ -35,6 +35,39 @@ a.typo3-csh-link {
 	white-space: normal;
 }
 
+/** new CSH code **/
+table.t3-help-inline {
+	background-color: #ffffff;
+	border: 1px solid #a2aab8;
+}
+
+.t3-help-inline {
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+	line-height: 16px;
+}
+
+a.t3-help-link .t3-help-inline {
+	background: #ffffff;
+	color: #000000;
+	font-weight: normal;
+}
+
+div.t3-help-inline p.t3-help-short {
+	border: #b6b6b6 1px solid;
+	border-top: none;
+}
+
+img.t3-help-icon {
+	cursor: help;
+}
+
+a.t3-help-link {
+	white-space: normal;
+}
+
+
 /*  view_help.php */
 #typo3-view-help-php {
 }
