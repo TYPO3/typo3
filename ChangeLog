@@ -12,6 +12,7 @@
 
 2010-10-15 Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15928:#15543 Bugfix : PHP Warning in t3lib_spritemanager (Thanks to Steffen Ritter)
 	* Fixed bug #15928: Replace the current if-construct of stdWrap with real functions and make each of them stdWrap awaret (Thanks to Jo Hasenau)
 	* Fixed bug #15662: Bug: SpriteGeneration generates wrong output if there are several icons sizes which are same width and nearly same count (Thanks to Steffen Ritter)
 	* Fixed bug #15822: t3lib_beFunc use $this in static methods
