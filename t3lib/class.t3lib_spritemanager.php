@@ -206,7 +206,7 @@ class t3lib_SpriteManager {
 	 */
 	public static function addIconSprite(array $icons, $styleSheetFile) {
 		$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge(
-			$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'],
+		(array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'],
 			$icons
 		);
 		$GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'][] = $styleSheetFile;
