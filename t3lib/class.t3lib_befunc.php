@@ -3961,7 +3961,7 @@ final class t3lib_BEfunc {
 
 	/**
 	 * Will return where clause de-selecting new(/deleted)-versions from other workspaces.
-	 * If in live-workspace, don't show MOVE-TO-PLACEHOLDERS if versioningWS is 2 (allows moving)
+	 * If in live-workspace, don't show "MOVE-TO-PLACEHOLDERS" records if versioningWS is 2 (allows moving)
 	 *
 	 * @param	string		Table name
 	 * @return	string		Where clause if applicable.
@@ -3974,8 +3974,7 @@ final class t3lib_BEfunc {
 					// if in any workspace other than live
 				return ' AND (' . $table . '.t3ver_state <= 0 OR ' . $table . '.t3ver_wsid = ' . $currentWorkspace . ')';
 			} elseif ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] == 2) {
-					// if in live workspace, don't show MOVE-TO-PLACEHOLDERS
-					// but only if if versioning of this table allows moving (versioningWS=2) 
+					// if in live workspace, don't show "MOVE-TO-PLACEHOLDERS"
 				return ' AND (' . $table . '.t3ver_state != 3)';
 			}
 		}
