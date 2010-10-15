@@ -4675,8 +4675,20 @@ final class t3lib_div {
 				}
 				$fileNotFound = TRUE;
 			}
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRef])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRef] as $overrideFile) {
+
+
+			$overrides = array();
+			$fileRefWithoutExtension = preg_replace('/\.(php|xml)$/', '', $fileRef);
+
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.php'])) {
+				$overrides = array_merge($overrides, $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.php']);
+			}
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.xml'])) {
+				$overrides = array_merge($overrides, $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'][$fileRefWithoutExtension . '.xml']);
+			}
+
+			if (count($overrides) > 0) {
+				foreach ($overrides as $overrideFile) {
 					$languageOverrideFileName = self::getFileAbsFileName($overrideFile);
 					if (@is_file($languageOverrideFileName)) {
 						$languageOverrideArray = self::readLLXMLfile($languageOverrideFileName, $langKey, $charset);
