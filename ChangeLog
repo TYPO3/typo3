@@ -1,3 +1,7 @@
+2010-10-15  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #11444: Workspace Dropdown in "Workspace" -> "Review and Publish" [LIVE workspace] always shows "[Draft Workspace]" (Thanks to Robert Heel)
+
 2010-10-15 Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15928:#15543 Bugfix : PHP Warning in t3lib_spritemanager (Thanks to Sven Juergens)
