@@ -127,7 +127,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 				$content .= $this->showLogin();
 			}
 		}
-		
+
 			// Process the redirect
 		if (($this->logintype === 'login' || $this->logintype === 'logout') && $this->redirectUrl && !$this->noRedirect) {
 			if (!$GLOBALS['TSFE']->fe_user->cookieId) {
@@ -521,7 +521,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 
 			// Permanent Login is only possible if permalogin is not deactivated (-1) and lifetime is greater than 0
-		if ($this->conf['showPermaLogin'] && t3lib_div::inList('0,1,2', $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] > 0) {
+		if ($this->conf['showPermaLogin'] && t3lib_div::inList('0,1', $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'] > 0) {
 			$markerArray['###PERMALOGIN###'] = $this->pi_getLL('permalogin', '', 1);
 			if($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
 				$markerArray['###PERMALOGIN_HIDDENFIELD_ATTRIBUTES###'] = 'disabled="disabled"';
