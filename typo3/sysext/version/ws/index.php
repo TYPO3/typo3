@@ -161,9 +161,11 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			'expandSubElements' => '',
 		);
 
-		if($this->showDraftWorkspace === TRUE) {
+			// check if draft workspace was enabled, and if the user has access to it
+		if ($this->showDraftWorkspace === TRUE && $GLOBALS['BE_USER']->checkWorkspace(array('uid' => -1))) {
 			$this->MOD_MENU['display'][-1] = '[' . $LANG->getLL('shortcut_offlineWS') . ']';
 		}
+
 			// Add workspaces:
 		if ($GLOBALS['BE_USER']->workspace===0)	{	// Spend time on this only in online workspace because it might take time:
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
