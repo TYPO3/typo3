@@ -19,6 +19,7 @@
 2010-10-15  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #8980: unlink of non existant lockfiles generates warnings in frontend (Thanks to André Stösel)
+	* Added feature #16004:  Add RTE to login news to give users the possibility to format the news and to add links etc.
 
 2010-10-14  Jeff Segars  <jeff@webempoweredchurch.org>
 

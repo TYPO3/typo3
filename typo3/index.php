@@ -575,35 +575,37 @@ class SC_index {
 
 			// Traverse news array IF there are records in it:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews']) && !t3lib_div::_GP('loginRefresh')) {
-
+			$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml_proc');
 				// get the main news template, and replace the subpart after looped through
 			$newsContent      = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
 			$newsItemTemplate = t3lib_parsehtml::getSubpart($newsContent, '###NEWS_ITEM###');
 
-			$newsItemContent = '';
+			$newsItem = '';
 			$count = 1;
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItem) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'] as $newsItemData) {
 				$additionalClass = '';
 				if ($count == 1) {
 					$additionalClass = ' first-item';
 				} elseif($count == count($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNews'])) {
 					$additionalClass = ' last-item';
 				}
+
+				$newsItemContent = $htmlParser->TS_transform_rte($htmlParser->TS_links_rte($newsItemData['content']));
 				$newsItemMarker = array(
-					'###HEADER###'  => htmlspecialchars($newsItem['header']),
-					'###DATE###'    => htmlspecialchars($newsItem['date']),
-					'###CONTENT###' => nl2br(htmlspecialchars(trim($newsItem['content']))),
+					'###HEADER###'  => htmlspecialchars($newsItemData['header']),
+					'###DATE###'    => htmlspecialchars($newsItemData['date']),
+					'###CONTENT###' => $newsItemContent,
 					'###CLASS###'   => $additionalClass
 				);
 
 				$count++;
-				$newsItemContent .= t3lib_parsehtml::substituteMarkerArray($newsItemTemplate, $newsItemMarker);
+				$newsItem .= t3lib_parsehtml::substituteMarkerArray($newsItemTemplate, $newsItemMarker);
 			}
 
 			$title = ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['loginNewsTitle'] : $GLOBALS['LANG']->getLL('newsheadline'));
 
 			$newsContent = t3lib_parsehtml::substituteMarker($newsContent,  '###NEWS_HEADLINE###', htmlspecialchars($title));
-			$newsContent = t3lib_parsehtml::substituteSubpart($newsContent, '###NEWS_ITEM###', $newsItemContent);
+			$newsContent = t3lib_parsehtml::substituteSubpart($newsContent, '###NEWS_ITEM###', $newsItem);
 		}
 
 		return $newsContent;

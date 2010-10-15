@@ -878,13 +878,25 @@ $TCA['sys_news'] = array(
 			'config' => array(
 				'type' => 'text',
 				'cols' => '48',
-				'rows' => '5'
-			)
-		)
+				'rows' => '5',
+				'wizards' => array(
+					'_PADDING' => 4,
+					'_VALIGN' => 'middle',
+					'RTE' => array(
+						'notNewRecords' => 1,
+						'RTEonly' => 1,
+						'type' => 'script',
+						'title' => 'LLL:EXT:cms/locallang_ttc.php:bodytext.W.RTE',
+						'icon' => 'wizard_rte2.gif',
+						'script' => 'wizard_rte.php'
+					),
+				),
+			),
+		),
 	),
 	'types' => array(
 		'1' => array('showitem' => '
-			hidden, title, content,
+			hidden, title, content;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3,
 			--div--;LLL:EXT:lang/locallang_tca.xml:sys_news.tabs.access, starttime, endtime'
 		)
 	)
