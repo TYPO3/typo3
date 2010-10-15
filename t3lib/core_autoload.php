@@ -42,6 +42,7 @@ $t3libClasses = array(
 	't3lib_loadmodules' => PATH_t3lib . 'class.t3lib_loadmodules.php',
 	't3lib_lock' => PATH_t3lib . 'class.t3lib_lock.php',
 	't3lib_matchcondition' => PATH_t3lib . 'class.t3lib_matchcondition.php',
+	't3lib_message_abstractmessage' => PATH_t3lib . 'message/class.t3lib_message_abstractmessage.php',
 	't3lib_modsettings' => PATH_t3lib . 'class.t3lib_modsettings.php',
 	't3lib_pageselect' => PATH_t3lib . 'class.t3lib_page.php',
 	't3lib_pagerenderer' => PATH_t3lib . 'class.t3lib_pagerenderer.php',

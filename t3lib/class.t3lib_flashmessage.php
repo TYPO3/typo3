@@ -33,34 +33,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_FlashMessage {
-
-	const NOTICE  = -2;
-	const INFO    = -1;
-	const OK      = 0;
-	const WARNING = 1;
-	const ERROR   = 2;
-
-	/**
-	 * The message's title
-	 *
-	 * @var string
-	 */
-	protected $title = '';
-
-	/**
-	 * The message
-	 *
-	 * @var string
-	 */
-	protected $message = '';
-
-	/**
-	 * The message's severity
-	 *
-	 * @var integer
-	 */
-	protected $severity = self::OK;
+class t3lib_FlashMessage extends t3lib_message_AbstractMessage {
 
 	/**
 	 * defines whether the message should be stored in the session (to survive redirects) or only for one request (default)
@@ -86,25 +59,6 @@ class t3lib_FlashMessage {
 		$this->setStoreInSession($storeInSession);
 	}
 
-	/**
-	 * Gets the message's title.
-	 *
-	 * @return	string	The message's title.
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
-
-	/**
-	 * Sets the message's title
-	 *
-	 * @param	string	The message's title
-	 * @return	void
-	 */
-	public function setTitle($title) {
-		$this->title = (string) $title;
-	}
-
 
 	/**
 	 * Gets the message's storeInSession flag.
@@ -125,50 +79,6 @@ class t3lib_FlashMessage {
 		$this->storeInSession = (bool) $storeInSession;
 	}
 
-
-	/**
-	 * Gets the message.
-	 *
-	 * @return	string	The message.
-	 */
-	public function getMessage() {
-		return $this->message;
-	}
-
-	/**
-	 * Sets the message
-	 *
-	 * @param	string	The message
-	 * @return	void
-	 */
-	public function setMessage($message) {
-		$this->message = (string) $message;
-	}
-
-	/**
-	 * Gets the message' severity.
-	 *
-	 * @return	integer	The message' severity, either of t3lib_FlashMessage::INFO, t3lib_FlashMessage::OK, t3lib_FlashMessage::WARNING or t3lib_FlashMessage::ERROR
-	 */
-	public function getSeverity() {
-		return $this->severity;
-	}
-
-	/**
-	 * Sets the message' severity
-	 *
-	 * @param	string	The severity, must be either of t3lib_FlashMessage::INFO, t3lib_FlashMessage::OK, t3lib_FlashMessage::WARNING or t3lib_FlashMessage::ERROR. Default is t3lib_FlashMessage::OK.
-	 * @return	void
-	 */
-	public function setSeverity($severity = self::OK) {
-		$this->severity = t3lib_div::intInRange(
-			$severity,
-			self::NOTICE, // minimum
-			self::ERROR, // maximum
-			self::OK // default if out of bounds
-		);
-	}
-
 	/**
 	 * Renders the flash message.
 	 *
@@ -176,11 +86,11 @@ class t3lib_FlashMessage {
 	 */
 	public function render() {
 		$classes = array(
-			t3lib_FlashMessage::NOTICE  => 'notice',
-			t3lib_FlashMessage::INFO    => 'information',
-			t3lib_FlashMessage::OK      => 'ok',
-			t3lib_FlashMessage::WARNING => 'warning',
-			t3lib_FlashMessage::ERROR   => 'error',
+			self::NOTICE  => 'notice',
+			self::INFO    => 'information',
+			self::OK      => 'ok',
+			self::WARNING => 'warning',
+			self::ERROR   => 'error',
 		);
 
 		$title = '';
@@ -194,29 +104,6 @@ class t3lib_FlashMessage {
 			. '</div>';
 
 		return $message;
-	}
-
-
-	/**
-	 * Creates a string representation of the flash message. Useful for command
-	 * line use.
-	 *
-	 * @return	string	A string representation of the flash message.
-	 */
-	public function __toString() {
-		$severities = array(
-			t3lib_FlashMessage::INFO    => 'INFO',
-			t3lib_FlashMessage::OK      => 'OK',
-			t3lib_FlashMessage::WARNING => 'WARNING',
-			t3lib_FlashMessage::ERROR   => 'ERROR',
-		);
-
-		$title = '';
-		if (!empty($this->title)) {
-			$title = ' - ' . $this->title;
-		}
-
-		return $severities[$this->severity] . $title . ': ' . $this->message;
 	}
 
 }

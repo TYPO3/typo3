@@ -1,3 +1,7 @@
+2010-10-15  Benjamin Mack  <benni@typo3.org>
+
+	* Added feature #15989: Create a new abstract class t3lib_message_abstractmessage
+
 2010-10-15 Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15993: Bug: Felogin shouldn't show the permalogin form controls when permalogin is set to "forced on" in install tool
