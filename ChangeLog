@@ -1,3 +1,7 @@
+2010-10-15 Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15993: Bug: Felogin shouldn't show the permalogin form controls when permalogin is set to "forced on" in install tool
+
 2010-10-15  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #8980: unlink of non existant lockfiles generates warnings in frontend (Thanks to André Stösel)
