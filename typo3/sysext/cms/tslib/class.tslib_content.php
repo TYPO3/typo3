@@ -2,7 +2,7 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 1999-2010 Kasper Sk�rh�j (kasperYYYY@typo3.com)
+ * (c) 1999-2010 Kasper Skårhøj (kasperYYYY@typo3.com)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -225,7 +225,7 @@
  * The class "tslib_cObj" is normally instantiated and referred to as "cObj".
  * When you call your own PHP-code typically through a USER or USER_INT cObject then it is this class that instantiates the object and calls the main method. Before it does so it will set (if you are using classes) a reference to itself in the internal variable "cObj" of the object. Thus you can access all functions and data from this class by $this->cObj->... from within you classes written to be USER or USER_INT content objects.
  *
- * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
@@ -233,6 +233,174 @@
 class tslib_cObj {
 	var $align = array(
 		'center', 'right', 'left'
+	);
+
+	/**
+	 * stdWrap functions in their correct order
+	 *
+	 * @see stdWrap()
+	 */
+	var $stdWrapOrder = array(
+		'stdWrapPreProcess' => 1, // this is a placeholder for the first Hook
+		'setContentToCurrent' => 1,
+		'setContentToCurrent.' => 1,
+		'setCurrent' => 1,
+		'setCurrent.' => 1,
+		'lang' => 1,
+		'lang.' => 1,
+		'data' => 1,
+		'data.' => 1,
+		'field' => 1,
+		'field.' => 1,
+		'current' => 1,
+		'current.' => 1,
+		'cObject' => 1,
+		'cObject.' => 1,
+		'numRows' => 1,
+		'numRows.' => 1,
+		'filelist' => 1,
+		'filelist.' => 1,
+		'preUserFunc' => 1,
+		'preUserFunc.' => 1,
+		'stdWrapOverride' => 1, // this is a placeholder for the second Hook
+		'override' => 1,
+		'override.' => 1,
+		'preIfEmptyListNum' => 1,
+		'preIfEmptyListNum.' => 1,
+		'ifEmpty' => 1,
+		'ifEmpty.' => 1,
+		'ifBlank' => 1,
+		'ifBlank.' => 1,
+		'listNum' => 1,
+		'listNum.' => 1,
+		'trim' => 1,
+		'trim.' => 1,
+		'stdWrap' => 1,
+		'stdWrap.' => 1,
+		'stdWrapProcess' => 1, // this is a placeholder for the third Hook
+		'required' => 1,
+		'required.' => 1,
+		'if' => 1,
+		'if.' => 1,
+		'fieldRequired' => 1,
+		'fieldRequired.' => 1,
+		'csConv' => 1,
+		'csConv.' => 1,
+		'parseFunc' => 1,
+		'parseFunc.' => 1,
+		'HTMLparser' => 1,
+		'HTMLparser.' => 1,
+		'split' => 1,
+		'split.' => 1,
+		'prioriCalc' => 1,
+		'prioriCalc.' => 1,
+		'char' => 1,
+		'char.' => 1,
+		'intval' => 1,
+		'intval.' => 1,
+		'numberFormat' => 1,
+		'numberFormat.' => 1,
+		'date' => 1,
+		'date.' => 1,
+		'strftime' => 1,
+		'strftime.' => 1,
+		'age' => 1,
+		'age.' => 1,
+		'case' => 1,
+		'case.' => 1,
+		'bytes' => 1,
+		'bytes.' => 1,
+		'substring' => 1,
+		'substring.' => 1,
+		'removeBadHTML' => 1,
+		'removeBadHTML.' => 1,
+		'cropHTML' => 1,
+		'cropHTML.' => 1,
+		'stripHtml' => 1,
+		'stripHtml.' => 1,
+		'crop' => 1,
+		'crop.' => 1,
+		'rawUrlEncode' => 1,
+		'rawUrlEncode.' => 1,
+		'htmlSpecialChars' => 1,
+		'htmlSpecialChars.' => 1,
+		'doubleBrTag' => 1,
+		'doubleBrTag.' => 1,
+		'br' => 1,
+		'br.' => 1,
+		'brTag' => 1,
+		'brTag.' => 1,
+		'encapsLines' => 1,
+		'encapsLines.' => 1,
+		'keywords' => 1,
+		'keywords.' => 1,
+		'innerWrap' => 1,
+		'innerWrap.' => 1,
+		'innerWrap2' => 1,
+		'innerWrap2.' => 1,
+		'fontTag' => 1,
+		'fontTag.' => 1,
+		'addParams' => 1,
+		'addParams.' => 1,
+		'textStyle' => 1,
+		'textStyle.' => 1,
+		'tableStyle' => 1,
+		'tableStyle.' => 1,
+		'filelink' => 1,
+		'filelink.' => 1,
+		'preCObject' => 1,
+		'preCObject.' => 1,
+		'postCObject' => 1,
+		'postCObject.' => 1,
+		'wrapAlign' => 1,
+		'wrapAlign.' => 1,
+		'typolink' => 1,
+		'typolink.' => 1,
+		'TCAselectItem' => 1,
+		'TCAselectItem.' => 1,
+		'space' => 1,
+		'space.' => 1,
+		'spaceBefore' => 1,
+		'spaceBefore.' => 1,
+		'spaceAfter' => 1,
+		'spaceAfter.' => 1,
+		'wrap' => 1,
+		'wrap.' => 1,
+		'noTrimWrap' => 1,
+		'noTrimWrap.' => 1,
+		'wrap2' => 1,
+		'wrap2.' => 1,
+		'dataWrap' => 1,
+		'dataWrap.' => 1,
+		'prepend' => 1,
+		'prepend.' => 1,
+		'append' => 1,
+		'append.' => 1,
+		'wrap3' => 1,
+		'wrap3.' => 1,
+		'outerWrap' => 1,
+		'outerWrap.' => 1,
+		'insertData' => 1,
+		'insertData.' => 1,
+		'offsetWrap' => 1,
+		'offsetWrap.' => 1,
+		'postUserFunc' => 1,
+		'postUserFunc.' => 1,
+		'postUserFuncInt' => 1,
+		'postUserFuncInt.' => 1,
+		'prefixComment' => 1,
+		'prefixComment.' => 1,
+		'editIcons' => 1,
+		'editIcons.' => 1,
+		'editPanel' => 1,
+		'editPanel.' => 1,
+		'stdWrapPostProcess' => 1, // this is a placeholder for the last Hook
+		'debug' => 1,
+		'debug.' => 1,
+		'debugFunc' => 1,
+		'debugFunc.' => 1,
+		'debugData' => 1,
+		'debugData.' => 1
 	);
 
 	/**
@@ -4039,14 +4207,11 @@ class tslib_cObj {
 		return $markContentArray;
 	}
 
-
-
 	/***********************************************
 	 *
 	 * "stdWrap" + sub functions
 	 *
 	 ***********************************************/
-
 
 	/**
 	 * The "stdWrap" function. This is the implementation of what is known as "stdWrap properties" in TypoScript.
@@ -4060,321 +4225,1266 @@ class tslib_cObj {
 	 * @return	string		The processed input value
 	 * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=314&cHash=02ab044c7b
 	 */
-	function stdWrap($content, $conf) {
-		if (is_array($conf)) {
-
+	public function stdWrap($content = '', $conf = array()) {
+		if (count($this->stdWrapHookObjects)) {
 			foreach ($this->stdWrapHookObjects as $hookObject) {
-				$content = $hookObject->stdWrapPreProcess($content, $conf, $this);
+				if (is_callable(array($hookObject, 'stdWrapPreProcess'))) {
+					$conf['stdWrapPreProcess'] = 1;
+				}
+				;
+				if (is_callable(array($hookObject, 'stdWrapOverride'))) {
+					$conf['stdWrapOverride'] = 1;
+				}
+				;
+				if (is_callable(array($hookObject, 'stdWrapProcess'))) {
+					$conf['stdWrapProcess'] = 1;
+				}
+				;
+				if (is_callable(array($hookObject, 'stdWrapPostProcess'))) {
+					$conf['stdWrapPostProcess'] = 1;
+				}
+				;
 			}
+		}
+		if (count($conf)) {
+			// check, which of the available stdWrap functions is needed for the current conf Array
+			// and keep only those but still in the same order
+			$sortedConf = array_intersect_key($this->stdWrapOrder, $conf);
+			// functions that should not make use of nested stdWrap function calls to avoid conflicts with internal TypoScript used by these functions
+			$stdWrapDisabledFunctions = 'cObject,preUserFunc,stdWrap,preCObject,postCObject,prepend,append,postUserFunc,postUserFuncInt';
+			// additional Array to check whether a function has already been executed
+			$isExecuted = array();
+			// additional switch to make sure 'required', 'if' and 'fieldRequired'
+			// will still stop rendering immediately in case they return false
+			$this->stopRendering = false;
 
-				// Setting current value, if so
-			if ($conf['setContentToCurrent']) {
-				$this->data[$this->currentValKey] = $content;
-			}
-			if ($conf['setCurrent'] || $conf['setCurrent.']) {
-				$this->data[$this->currentValKey] = $this->stdWrap($conf['setCurrent'], $conf['setCurrent.']);
-			}
-
-			// Getting data:
-			if (isset($conf['lang.']) && $GLOBALS['TSFE']->config['config']['language'] && isset($conf['lang.'][$GLOBALS['TSFE']->config['config']['language']])) {
-				$content = $conf['lang.'][$GLOBALS['TSFE']->config['config']['language']];
-			}
-			if ($conf['data']) {
-				$content = $this->getData($conf['data'], is_array($this->alternativeData) ? $this->alternativeData : $this->data);
-			}
-			$this->alternativeData = ''; // This must be unset directly after
-			if ($conf['field']) {
-				$content = $this->getFieldVal($conf['field']);
-			}
-			if ($conf['current']) {
-				$content = $this->data[$this->currentValKey];
-			}
-			if ($conf['cObject']) {
-				$content = $this->cObjGetSingle($conf['cObject'], $conf['cObject.'], '/stdWrap/.cObject');
-			}
-			if ($conf['numRows.']) {
-				$content = $this->numRows($conf['numRows.']);
-			}
-			if ($conf['filelist'] || $conf['filelist.']) {
-				$content = $this->filelist($this->stdWrap($conf['filelist'], $conf['filelist.']));
-			}
-			if ($conf['preUserFunc']) {
-				$content = $this->callUserFunction($conf['preUserFunc'], $conf['preUserFunc.'], $content);
-			}
-
-			foreach ($this->stdWrapHookObjects as $hookObject) {
-				$content = $hookObject->stdWrapOverride($content, $conf, $this);
-			}
-
-				// Overriding values, evaluating conditions
-			if ($conf['override'] || $conf['override.']) {
-				$override = $this->stdWrap($conf['override'], $conf['override.']);
-				if (trim($override)) {
-					$content = $override;
-				}
-			}
-			if (isset($conf['preIfEmptyListNum']) || isset($conf['preIfEmptyListNum.']['stdWrap.'])) {
-				$preIfEmptyListNumber = isset($conf['preIfEmptyListNum.']['stdWrap.']) ? $this->stdWrap($conf['preIfEmptyListNum'], $conf['preIfEmptyListNum.']['stdWrap.']) : $conf['preIfEmptyListNum'];
-				$content = $this->listNum($content, $preIfEmptyListNumber, $conf['preIfEmptyListNum.']['splitChar']);
-			}
-			if (!trim($content) && ($conf['ifEmpty'] || $conf['ifEmpty.'])) {
-				$content = $this->stdWrap($conf['ifEmpty'], $conf['ifEmpty.']);
-			}
-			if (!strlen(trim($content)) && ($conf['ifBlank'] || $conf['ifBlank.'])) {
-				$content = $this->stdWrap($conf['ifBlank'], $conf['ifBlank.']);
-			}
-
-				// values...
-			if (isset($conf['listNum']) || isset($conf['listNum.']['stdWrap.'])) {
-				$listNumber = isset($conf['listNum.']['stdWrap.']) ? $this->stdWrap($conf['listNum'], $conf['listNum.']['stdWrap.']) : $conf['listNum'];
-				$content = $this->listNum($content, $listNumber, $conf['listNum.']['splitChar']);
-			}
-
-			if ($conf['trim']) {
-				$content = trim($content);
-			}
-
-				// Call stdWrap recursively
-			if ($conf['stdWrap.']) {
-				$content = $this->stdWrap($content, $conf['stdWrap.']);
-			}
-
-			foreach ($this->stdWrapHookObjects as $hookObject) {
-				$content = $hookObject->stdWrapProcess($content, $conf, $this);
-			}
-
-			if (($conf['required'] && (string) $content == '') || ($conf['if.'] && !$this->checkIf($conf['if.'])) || ($conf['fieldRequired'] && !trim($this->data[$conf['fieldRequired']]))) {
-				$content = '';
-			} else {
-				// Perform data processing:
-					if ($conf['csConv']) {
-					$content = $GLOBALS['TSFE']->csConv($content, $conf['csConv']);
-				}
-				if ($conf['parseFunc.'] || $conf['parseFunc']) {
-					$content = $this->parseFunc($content, $conf['parseFunc.'], $conf['parseFunc']);
-				}
-				if ($conf['HTMLparser'] && is_array($conf['HTMLparser.'])) {
-					$content = $this->HTMLparser_TSbridge($content, $conf['HTMLparser.']);
-				}
-				if ($conf['split.']) {
-					$content = $this->splitObj($content, $conf['split.']);
-				}
-				if ($conf['prioriCalc']) {
-					$content = t3lib_div::calcParenthesis($content);
-					if ($conf['prioriCalc'] == 'intval')
-						$content = intval($content);
-				}
-				if ((string) $conf['char'] != '') {
-					$content = chr(intval($conf['char']));
-				}
-				if ($conf['intval']) {
-					$content = intval($content);
-				}
-				if ($conf['numberFormat.']) {
-					$content = $this->numberFormat($content, $conf['numberFormat.']);
-				}
-				if ($conf['date']) {
-					$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
-				}
-				if ($conf['strftime']) {
-					$content = ($conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content));
-					$tmp_charset = $conf['strftime.']['charset'] ? $conf['strftime.']['charset'] : $GLOBALS['TSFE']->localeCharset;
-					if ($tmp_charset) {
-						$content = $GLOBALS['TSFE']->csConv($content, $tmp_charset);
+			// execute each funtion in the predefined order
+			foreach ($sortedConf as $stdWrapName => $enabled) {
+				// eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
+				if (!$isExecuted[$stdWrapName] && !$this->stopRendering) {
+					$functionName = rtrim($stdWrapName, '.');
+					$functionProperties = $functionName . '.';
+					// if there is any code one the next level, check if it contains "official" stdWrap functions
+					// if yes, execute them first - will make each function stdWrap aware
+					// so additional stdWrap calls within the functions can be removed, since the result will be the same
+					// exception: the recursive stdWrap function and cObject will still be using their own stdWrap call, since it modifies the content and not a property
+					if (count($conf[$functionProperties]) &&
+							!t3lib_div::inList($stdWrapDisabledFunctions, $functionName)) {
+						if (array_intersect_key($this->stdWrapOrder, $conf[$functionProperties])) {
+							$conf[$functionName] = $this->stdWrap($conf[$functionName], $conf[$functionProperties]);
+						}
 					}
-				}
-				if ($conf['age']) {
-					$content = $this->calcAge($GLOBALS['EXEC_TIME'] - $content, $conf['age']);
-				}
-				if ($conf['case']) {
-					$content = $this->HTMLcaseshift($content, $conf['case']);
-				}
-				if ($conf['bytes']) {
-					$content = t3lib_div::formatSize($content, $conf['bytes.']['labels']);
-				}
-				if ($conf['substring']) {
-					$content = $this->substring($content, $conf['substring']);
-				}
-				if ($conf['removeBadHTML']) {
-					$content = $this->removeBadHTML($content, $conf['removeBadHTML.']);
-				}
-				if ($conf['cropHTML']) {
-					$content = $this->cropHTML($content, $conf['cropHTML']);
-				}
-				if ($conf['stripHtml']) {
-					$content = strip_tags($content);
-				}
-				if ($conf['crop']) {
-					$content = $this->crop($content, $conf['crop']);
-				}
-				if ($conf['rawUrlEncode']) {
-					$content = rawurlencode($content);
-				}
-				if ($conf['htmlSpecialChars']) {
-					$content = htmlSpecialChars($content);
-					if ($conf['htmlSpecialChars.']['preserveEntities'])
-						$content = t3lib_div::deHSCentities($content);
-				}
-
-				if ($conf['doubleBrTag']) {
-					$content = preg_replace("/\r?\n[\t ]*\r?\n/", $conf['doubleBrTag'], $content);
-				}
-				if ($conf['br']) {
-					$content = nl2br($content);
-				}
-				if ($conf['brTag']) {
-					$content = str_replace(LF, $conf['brTag'], $content);
-				}
-				if ($conf['encapsLines.']) {
-					$content = $this->encaps_lineSplit($content, $conf['encapsLines.']);
-				}
-				if ($conf['keywords']) {
-					$content = $this->keywords($content);
-				}
-				if ($conf['innerWrap'] || $conf['innerWrap.']) {
-					$content = $this->wrap($content, $this->stdWrap($conf['innerWrap'], $conf['innerWrap.']));
-				}
-				if ($conf['innerWrap2'] || $conf['innerWrap2.']) {
-					$content = $this->wrap($content, $this->stdWrap($conf['innerWrap2'], $conf['innerWrap2.']));
-				}
-				if ($conf['fontTag']) {
-					$content = $this->wrap($content, $conf['fontTag']);
-				}
-				if ($conf['addParams.']) {
-					$content = $this->addParams($content, $conf['addParams.']);
-				}
-				if ($conf['textStyle.']) {
-					$content = $this->textStyle($content, $conf['textStyle.']);
-				}
-				if ($conf['tableStyle.']) {
-					$content = $this->tableStyle($content, $conf['tableStyle.']);
-				}
-				if ($conf['filelink.']) {
-					$content = $this->filelink($content, $conf['filelink.']);
-				}
-				if ($conf['preCObject']) {
-					$content = $this->cObjGetSingle($conf['preCObject'], $conf['preCObject.'], '/stdWrap/.preCObject') . $content;
-				}
-				if ($conf['postCObject']) {
-					$content .= $this->cObjGetSingle($conf['postCObject'], $conf['postCObject.'], '/stdWrap/.postCObject');
-				}
-
-				if ($conf['wrapAlign'] || $conf['wrapAlign.']) {
-					$wrapAlign = trim($this->stdWrap($conf['wrapAlign'], $conf['wrapAlign.']));
-					if ($wrapAlign) {
-						$content = $this->wrap($content, '<div style="text-align:' . $wrapAlign . ';">|</div>');
-					}
-				}
-				if ($conf['typolink.']) {
-					$content = $this->typolink($content, $conf['typolink.']);
-				}
-				if (is_array($conf['TCAselectItem.'])) {
-					$content = $this->TCAlookup($content, $conf['TCAselectItem.']);
-				}
-
-					// Spacing
-				if ($conf['space'] || $conf['space.']) {
-					$space = trim($this->stdWrap($conf['space'], $conf['space.']));
-					$content = $this->wrapSpace($content, $space, $conf['space.']);
-				}
-				$spaceBefore = '';
-				if ($conf['spaceBefore'] || $conf['spaceBefore.']) {
-					$spaceBefore = trim($this->stdWrap($conf['spaceBefore'], $conf['spaceBefore.']));
-				}
-				$spaceAfter = '';
-				if ($conf['spaceAfter'] || $conf['spaceAfter.']) {
-					$spaceAfter = trim($this->stdWrap($conf['spaceAfter'], $conf['spaceAfter.']));
-				}
-				if ($spaceBefore || $spaceAfter) {
-					$content = $this->wrapSpace($content, $spaceBefore . '|' . $spaceAfter, $conf['space.']);
-				}
-
-					// Wraps
-				if ($conf['wrap']) {
-					$content = $this->wrap($content, $conf['wrap'], ($conf['wrap.']['splitChar'] ? $conf['wrap.']['splitChar'] : '|'));
-				}
-				if ($conf['noTrimWrap']) {
-					$content = $this->noTrimWrap($content, $conf['noTrimWrap']);
-				}
-				if ($conf['wrap2']) {
-					$content = $this->wrap($content, $conf['wrap2'], ($conf['wrap2.']['splitChar'] ? $conf['wrap2.']['splitChar'] : '|'));
-				}
-				if ($conf['dataWrap']) {
-					$content = $this->dataWrap($content, $conf['dataWrap']);
-				}
-				if ($conf['prepend']) {
-					$content = $this->cObjGetSingle($conf['prepend'], $conf['prepend.'], '/stdWrap/.prepend') . $content;
-				}
-				if ($conf['append']) {
-					$content .= $this->cObjGetSingle($conf['append'], $conf['append.'], '/stdWrap/.append');
-				}
-				if ($conf['wrap3']) {
-					$content = $this->wrap($content, $conf['wrap3'], ($conf['wrap3.']['splitChar'] ? $conf['wrap3.']['splitChar'] : '|'));
-				}
-				if ($conf['outerWrap'] || $conf['outerWrap.']) {
-					$content = $this->wrap($content, $this->stdWrap($conf['outerWrap'], $conf['outerWrap.']));
-				}
-				if ($conf['insertData']) {
-					$content = $this->insertData($content);
-				}
-				if ($conf['offsetWrap']) {
-					$controlTable = t3lib_div::makeInstance('tslib_tableOffset');
-					if ($conf['offsetWrap.']['tableParams'] || $conf['offsetWrap.']['tableParams.']) {
-						$controlTable->tableParams = $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.']);
-					}
-					if ($conf['offsetWrap.']['tdParams'] || $conf['offsetWrap.']['tdParams.']) {
-						$controlTable->tdParams = ' ' . $this->stdWrap($conf['offsetWrap.']['tdParams'], $conf['offsetWrap.']['tdParams.']);
-					}
-					$content = $controlTable->start($content, $conf['offsetWrap']);
-					if ($conf['offsetWrap.']['stdWrap.']) {
-						$content = $this->stdWrap($content, $conf['offsetWrap.']['stdWrap.']);
-					}
-				}
-				if ($conf['postUserFunc']) {
-					$content = $this->callUserFunction($conf['postUserFunc'], $conf['postUserFunc.'], $content);
-				}
-				if ($conf['postUserFuncInt']) {
-					$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-					$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
-						'content' => $content, 'postUserFunc' => $conf['postUserFuncInt'], 'conf' => $conf['postUserFuncInt.'], 'type' => 'POSTUSERFUNC', 'cObj' => serialize($this)
+					// get just that part of $conf that is needed for the particular function
+					$singleConf = array(
+						$functionName => $conf[$functionName],
+						$functionProperties => $conf[$functionProperties]
 					);
-					$content = '<!--' . $substKey . '-->';
-				}
-					// Various:
-				if ($conf['prefixComment'] && !$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
-					$content = $this->prefixComment($conf['prefixComment'], $conf['prefixComment.'], $content);
-				}
 
-				if ($conf['editIcons'] && $GLOBALS['TSFE']->beUserLogin) {
-					$content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
-				}
+					// in this special case 'spaceBefore' and 'spaceAfter' need additional stuff from 'space.''
+					if ($functionName == 'spaceBefore' || $functionName == 'spaceAfter') {
+						$singleConf['space.'] = $conf['space.'];
+					}
 
-				if ($conf['editPanel'] && $GLOBALS['TSFE']->beUserLogin) {
-					$content = $this->editPanel($content, $conf['editPanel.']);
-				}
-			}
+					// hand over the whole $conf array to the stdWrapHookObjects
+					if ($conf[$functionName] == 'stdWrapHookObject') {
+						$singleConf = $conf;
+					}
 
-			foreach ($this->stdWrapHookObjects as $hookObject) {
-				$content = $hookObject->stdWrapPostProcess($content, $conf, $this);
-			}
-
-				//Debug:
-			if ($conf['debug']) {
-				$content = '<pre>' . htmlspecialchars($content) . '</pre>';
-			}
-			if ($conf['debugFunc']) {
-				debug($conf['debugFunc'] == 2 ? array(
-					$content
-				) : $content);
-			}
-			if ($conf['debugData']) {
-				echo '<strong>$cObj->data:</strong>';
-				debug($this->data, '$cObj->data:');
-				if (is_array($this->alternativeData)) {
-					echo '<strong>$cObj->alternativeData:</strong>';
-					debug($this->alternativeData, '$this->alternativeData');
+					// check if key is still containing something, since it might have been changed by next level stdWrap before
+					if ($conf[$functionName] || $conf[$functionProperties]) {
+						//add both keys - with and without the dot - to the set of executed functions
+						$isExecuted[$functionName] = true;
+						$isExecuted[$functionProperties] = true;
+						// call the function with the prefix stdWrap_ to make sure nobody can execute functions just by adding their name to the TS Array
+						$functionName = 'stdWrap_' . $functionName;
+						$content = $this->$functionName(
+							$content,
+							$singleConf
+						);
+					}
 				}
 			}
+		}
+		return $content;
+	}
+
+	/**
+	 * stdWrap pre process hook
+	 * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
+	 * this hook will execute functions before any other stdWrap function can modify anything
+	 *
+	 * @param	string		Input value undergoing processing in these functions.
+	 * @param	array		All stdWrap properties, not just the ones for a particular function.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_stdWrapPreProcess($content = '', $conf = array()) {
+		foreach ($this->stdWrapHookObjects as $hookObject) {
+			$content = $hookObject->stdWrapPreProcess($content, $conf, $this);
+		}
+		return $content;
+	}
+
+	/**
+	 * setContentToCurrent
+	 * actually it just does the contrary: Sets the value of 'current' based on current content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for setContentToCurrent.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_setContentToCurrent($content = '', $conf = array()) {
+		$this->data[$this->currentValKey] = $content;
+	}
+
+	/**
+	 * setCurrent
+	 * Sets the value of 'current' based on the outcome of stdWrap operations
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for setCurrent.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_setCurrent($content = '', $conf = array()) {
+		$this->data[$this->currentValKey] = $conf['setCurrent'];
+	}
+
+	/**
+	 * lang
+	 * Translates content based on the language currently used by the FE
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for lang.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_lang($content = '', $conf = array()) {
+		if (isset($conf['lang.']) && $GLOBALS['TSFE']->config['config']['language'] && isset($conf['lang.'][$GLOBALS['TSFE']->config['config']['language']])) {
+			$content = $conf['lang.'][$GLOBALS['TSFE']->config['config']['language']];
+		}
+		return $content;
+	}
+
+	/**
+	 * data
+	 * Gets content from different sources based on getText functions, makes use of alternativeData, when set
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for data.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_data($content = '', $conf = array()) {
+		$content = $this->getData($conf['data'], is_array($this->alternativeData) ? $this->alternativeData : $this->data);
+		$this->alternativeData = ''; // This must be unset directly after
+		return $content;
+	}
+
+	/**
+	 * field
+	 * Gets content from a DB field
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for field.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_field($content = '', $conf = array()) {
+		$content = $this->getFieldVal($conf['field']);
+		return $content;
+	}
+
+	/**
+	 * current
+	 * Gets content that has been perviously set as 'current'
+	 * Can be set via setContentToCurrent or setCurrent or will be set automatically i.e. inside the split function
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for current.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_current($content = '', $conf = array()) {
+		$content = $this->data[$this->currentValKey];
+		return $content;
+	}
+
+	/**
+	 * cObject
+	 * Will replace the content with the value of a any official TypoScript cObject
+	 * like TEXT, COA, HMENU
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for cObject.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_cObject($content = '', $conf = array()) {
+		$content = $this->cObjGetSingle($conf['cObject'], $conf['cObject.'], '/stdWrap/.cObject');
+		return $content;
+	}
+
+	/**
+	 * numRows
+	 * Counts the number of returned records of a DB operation
+	 * makes use of select internally
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for numRows.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_numRows($content = '', $conf = array()) {
+		$content = $this->numRows($conf['numRows.']);
+		return $content;
+	}
+
+	/**
+	 * filelist
+	 * Will create a list of files based on some additional parameters
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for filelist.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_filelist($content = '', $conf = array()) {
+		$content = $this->filelist($conf['filelist']);
+		return $content;
+	}
+
+	/**
+	 * preUserFunc
+	 * Will execute a user public function before the content will be modified by any other stdWrap function
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for preUserFunc.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_preUserFunc($content = '', $conf = array()) {
+		$content = $this->callUserFunction($conf['preUserFunc'], $conf['preUserFunc.'], $content);
+		return $content;
+	}
+
+	/**
+	 * stdWrap override hook
+	 * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
+	 * this hook will execute functions on existing content but still before the content gets modified or replaced
+	 *
+	 * @param	string		Input value undergoing processing in these functions.
+	 * @param	array		All stdWrap properties, not just the ones for a particular function.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_stdWrapOverride($content = '', $conf = array()) {
+		foreach ($this->stdWrapHookObjects as $hookObject) {
+			$content = $hookObject->stdWrapOverride($content, $conf, $this);
+		}
+		return $content;
+	}
+
+	/**
+	 * override
+	 * Will override the current value of content with its own value'
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for override.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_override($content = '', $conf = array()) {
+		if (trim($conf['override'])) {
+			$content = $conf['override'];
+		}
+		return $content;
+	}
+
+	/**
+	 * preIfEmptyListNum
+	 * Gets a value off a CSV list before the following ifEmpty check
+	 * Makes sure that the result of ifEmpty will be true in case the CSV does not contain a value at the position given by preIfEmptyListNum
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for preIfEmptyListNum.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_preIfEmptyListNum($content = '', $conf = array()) {
+		$content = $this->listNum($content, $conf['preIfEmptyListNum'], $conf['preIfEmptyListNum.']['splitChar']);
+		return $content;
+	}
+
+	/**
+	 * ifEmpty
+	 * Will set content to a replacement value in case the trimmed value of content returns false
+	 * 0 (zero) will be replaced as well
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for ifEmpty.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_ifEmpty($content = '', $conf = array()) {
+		if (!trim($content)) {
+			$content = $conf['ifEmpty'];
+		}
+		return $content;
+	}
+
+	/**
+	 * ifBlank
+	 * Will set content to a replacement value in case the trimmed value of content has no length
+	 * 0 (zero) will not be replaced
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for ifBlank.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_ifBlank($content = '', $conf = array()) {
+		if (!strlen(trim($content))) {
+			$content = $conf['ifBlank'];
+		}
+		return $content;
+	}
+
+	/**
+	 * listNum
+	 * Gets a value off a CSV list after ifEmpty check
+	 * Might return an empty value in case the CSV does not contain a value at the position given by listNum
+	 * Use preIfEmptyListNum to avoid that behaviour
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for listNum.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_listNum($content = '', $conf = array()) {
+		$content = $this->listNum($content, $conf['listNum'], $conf['listNum.']['splitChar']);
+		return $content;
+	}
+
+	/**
+	 * trim
+	 * Cuts off any whitespace at the beginning and the end of the content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for trim.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_trim($content = '', $conf = array()) {
+		$content = trim($content);
+		return $content;
+	}
+
+	/**
+	 * stdWrap
+	 * A recursive call of the stdWrap function set
+	 * This enables the user to execute stdWrap functions in another than the predefined order
+	 * It modifies the content, not the property
+	 * while the new feature of chained stdWrap functions modifies the property and not the content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for stdWrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_stdWrap($content = '', $conf = array()) {
+		$content = $this->stdWrap($content, $conf['stdWrap.']);
+		return $content;
+	}
+
+	/**
+	 * stdWrap process hook
+	 * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
+	 * this hook executes functions directly after the recursive stdWrap function call but still before the content gets modified
+	 *
+	 * @param	string		Input value undergoing processing in these functions.
+	 * @param	array		All stdWrap properties, not just the ones for a particular function.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_stdWrapProcess($content = '', $conf = array()) {
+		foreach ($this->stdWrapHookObjects as $hookObject) {
+			$content = $hookObject->stdWrapProcess($content, $conf, $this);
+		}
+		return $content;
+	}
+
+	/**
+	 * required
+	 * Will immediately stop rendering and return an empty value
+	 * when there is no content at this point
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for required.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_required($content = '', $conf = array()) {
+		if ((string) $content == '') {
+			$content = '';
+			$this->stopRendering = TRUE;
+		}
+		return $content;
+	}
+
+	/**
+	 * if
+	 * Will immediately stop rendering and return an empty value
+	 * when the result of the checks returns false
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for if.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_if($content = '', $conf = array()) {
+		if (!$this->checkIf($conf['if.'])) {
+			$content = '';
+			$this->stopRendering = TRUE;
+		}
+		return $content;
+	}
+
+	/**
+	 * fieldRequired
+	 * Will immediately stop rendering and return an empty value
+	 * when there is no content in the field given by fieldRequired
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for fieldRequired.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_fieldRequired($content = '', $conf = array()) {
+		if (!trim($this->data[$conf['fieldRequired']])) {
+			$content = '';
+			$this->stopRendering = TRUE;
+		}
+		return $content;
+	}
+
+	/**
+	 * csConv
+	 * Will convert the current chracter set of the content to the one given in csConv
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for csConv.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_csConv($content = '', $conf = array()) {
+		$content = $GLOBALS['TSFE']->csConv($content, $conf['csConv']);
+		return $content;
+	}
+
+	/**
+	 * parseFunc
+	 * Will parse the content based on functions given as stdWrap properties
+	 * Heavily used together with RTE based content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for parseFunc.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_parseFunc($content = '', $conf = array()) {
+		$content = $this->parseFunc($content, $conf['parseFunc.'], $conf['parseFunc']);
+		return $content;
+	}
+
+	/**
+	 * HTMLparser
+	 * Will parse HTML content based on functions given as stdWrap properties
+	 * Heavily used together with RTE based content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for HTMLparser.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_HTMLparser($content = '', $conf = array()) {
+		if (is_array($conf['HTMLparser.'])) {
+			$content = $this->HTMLparser_TSbridge($content, $conf['HTMLparser.']);
+		}
+		return $content;
+	}
+
+	/**
+	 * split
+	 * Will split the content by a given token and treat the results separately
+	 * Automatically fills 'current' with a single result
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for split.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_split($content = '', $conf = array()) {
+		$content = $this->splitObj($content, $conf['split.']);
+		return $content;
+	}
+
+	/**
+	 * prioriCalc
+	 * Will use the content as a mathematical term and calculate the result
+	 * Can be set to 1 to just get a calculated value or 'intval' to get the integer of the result
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for prioriCalc.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_prioriCalc($content = '', $conf = array()) {
+		$content = t3lib_div::calcParenthesis($content);
+		if ($conf['prioriCalc'] == 'intval')
+			$content = intval($content);
+		return $content;
+	}
+
+	/**
+	 * char
+	 * Will return a character based on its position within the current character set
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for char.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_char($content = '', $conf = array()) {
+		$content = chr(intval($conf['char']));
+		return $content;
+	}
+
+	/**
+	 * intval
+	 * Will return an integer value of the current content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for intval.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_intval($content = '', $conf = array()) {
+		$content = intval($content);
+		return $content;
+	}
+
+	/**
+	 * numberFormat
+	 * Will return a formatted number based on configuration given as stdWrap properties
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for numberFormat.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_numberFormat($content = '', $conf = array()) {
+		$content = $this->numberFormat($content, $conf['numberFormat.']);
+		return $content;
+	}
+
+	/**
+	 * date
+	 * Will return a formatted date based on configuration given according to PHP date/gmdate properties
+	 * Will return gmdate when the property GMT returns true
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for date.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_date($content = '', $conf = array()) {
+		$content = ($conf['date.']['GMT'] ? gmdate($conf['date'], $content) : date($conf['date'], $content));
+		return $content;
+	}
+
+	/**
+	 * strftime
+	 * Will return a formatted date based on configuration given according to PHP strftime/gmstrftime properties
+	 * Will return gmstrftime when the property GMT returns true
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for strftime.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_strftime($content = '', $conf = array()) {
+		$content = ($conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content));
+		$tmp_charset = $conf['strftime.']['charset'] ? $conf['strftime.']['charset'] : $GLOBALS['TSFE']->localeCharset;
+		if ($tmp_charset) {
+			$content = $GLOBALS['TSFE']->csConv($content, $tmp_charset);
+		}
+		return $content;
+	}
+
+	/**
+	 * age
+	 * Will return the age of a given timestamp based on configuration given by stdWrap properties
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for age.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_age($content = '', $conf = array()) {
+		$content = $this->calcAge($GLOBALS['EXEC_TIME'] - $content, $conf['age']);
+		return $content;
+	}
+
+	/**
+	 * case
+	 * Will transform the content to be upper or lower case only
+	 * Leaves HTML tags untouched
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for case.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_case($content = '', $conf = array()) {
+		$content = $this->HTMLcaseshift($content, $conf['case']);
+		return $content;
+	}
+
+	/**
+	 * bytes
+	 * Will return the size of a given number in Bytes	 *
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for bytes.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_bytes($content = '', $conf = array()) {
+		$content = t3lib_div::formatSize($content, $conf['bytes.']['labels']);
+		return $content;
+	}
+
+	/**
+	 * substring
+	 * Will return a substring based on position information given by stdWrap properties
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for substring.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_substring($content = '', $conf = array()) {
+		$content = $this->substring($content, $conf['substring']);
+		return $content;
+	}
+
+	/**
+	 * removeBadHTML
+	 * Removes HTML tags based on stdWrap properties
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for removeBadHTML.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_removeBadHTML($content = '', $conf = array()) {
+		$content = $this->removeBadHTML($content, $conf['removeBadHTML.']);
+		return $content;
+	}
+
+	/**
+	 * cropHTML
+	 * Crops content to a given size while leaving HTML tags untouched
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for cropHTML.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_cropHTML($content = '', $conf = array()) {
+		$content = $this->cropHTML($content, $conf['cropHTML']);
+		return $content;
+	}
+
+	/**
+	 * stripHtml
+	 * Copmletely removes HTML tags from content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for stripHtml.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_stripHtml($content = '', $conf = array()) {
+		$content = strip_tags($content);
+		return $content;
+	}
+
+	/**
+	 * cropHTML
+	 * Crops content to a given size without caring abhout HTML tags
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for crop.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_crop($content = '', $conf = array()) {
+		$content = $this->crop($content, $conf['crop']);
+		return $content;
+	}
+
+	/**
+	 * rawUrlEncode
+	 * Encodes content to be used within URLs
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for rawUrlEncode.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_rawUrlEncode($content = '', $conf = array()) {
+		$content = rawurlencode($content);
+		return $content;
+	}
+
+	/**
+	 * htmlSpecialChars
+	 * Transforms HTML tags to readable text by replacing special characters with their HTML entity
+	 * When preserveEntities returns true, existing entities will be left untouched
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for htmlSpecalChars.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_htmlSpecialChars($content = '', $conf = array()) {
+		$content = htmlSpecialChars($content);
+		if ($conf['htmlSpecialChars.']['preserveEntities'])
+			$content = t3lib_div::deHSCentities($content);
+		return $content;
+	}
+
+	/**
+	 * doubleBrTag
+	 * Searches for double line breaks and replaces them with the given value
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for doubleBrTag.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_doubleBrTag($content = '', $conf = array()) {
+		$content = preg_replace("/\r?\n[\t ]*\r?\n/", $conf['doubleBrTag'], $content);
+		return $content;
+	}
+
+	/**
+	 * br
+	 * Searches for single line breaks and replaces them with a <br /> tag
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for br.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_br($content = '', $conf = array()) {
+		$content = nl2br($content);
+		return $content;
+	}
+
+	/**
+	 * brTag
+	 * Searches for single line feeds and replaces them with the given value
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for brTag.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_brTag($content = '', $conf = array()) {
+		$content = str_replace(LF, $conf['brTag'], $content);
+		return $content;
+	}
+
+	/**
+	 * encapsLines
+	 * Modifies text blocks by searching for lines which are not surrounded by HTML tags yet
+	 * and wrapping them with values given by stdWrap properties
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for erncapsLines.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_encapsLines($content = '', $conf = array()) {
+		$content = $this->encaps_lineSplit($content, $conf['encapsLines.']);
+		return $content;
+	}
+
+	/**
+	 * keywords
+	 * Transforms content into a CSV list to be used i.e. as keywords within a meta tag
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for keywords.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_keywords($content = '', $conf = array()) {
+		$content = $this->keywords($content);
+		return $content;
+	}
+
+	/**
+	 * innerWrap
+	 * First of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for innerWrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_innerWrap($content = '', $conf = array()) {
+		$content = $this->wrap($content, $conf['innerWrap']);
+		return $content;
+	}
+
+	/**
+	 * innerWrap2
+	 * Second of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for innerWrap2.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_innerWrap2($content = '', $conf = array()) {
+		$content = $this->wrap($content, $conf['innerWrap2']);
+		return $content;
+	}
+
+	/**
+	 * fontTag
+	 * A wrap formerly used to apply font tags to format the content
+	 * Still used by lib.stdheader although real font tags are not state of the art anymore
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for fontTag.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_fontTag($content = '', $conf = array()) {
+		$content = $this->wrap($content, $conf['fontTag']);
+		return $content;
+	}
+
+	/**
+	 * addParams
+	 * Adds tag attributes to any content that is a tag
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for addParams.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_addParams($content = '', $conf = array()) {
+		$content = $this->addParams($content, $conf['addParams.']);
+		return $content;
+	}
+
+	/**
+	 * textStyle
+	 * Wraps content in font tags
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for textStyle.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_textStyle($content = '', $conf = array()) {
+		$content = $this->textStyle($content, $conf['textStyle.']);
+		return $content;
+	}
+
+	/**
+	 * tableStyle
+	 * Wraps content with table tags
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for tableStyle.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_tableStyle($content = '', $conf = array()) {
+		$content = $this->tableStyle($content, $conf['tableStyle.']);
+		return $content;
+	}
+
+	/**
+	 * filelink
+	 * Used to make lists of links to files
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for filelink.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_filelink($content = '', $conf = array()) {
+		$content = $this->filelink($content, $conf['filelink.']);
+		return $content;
+	}
+
+	/**
+	 * preCObject
+	 * A content object that is prepended to the current content but between the innerWraps and the rest of the wraps
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for preCObject.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_preCObject($content = '', $conf = array()) {
+		$content = $this->cObjGetSingle($conf['preCObject'], $conf['preCObject.'], '/stdWrap/.preCObject') . $content;
+		return $content;
+	}
+
+	/**
+	 * postCObject
+	 * A content object that is appended to the current content but between the innerWraps and the rest of the wraps
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for postCObject.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_postCObject($content = '', $conf = array()) {
+		$content .= $this->cObjGetSingle($conf['postCObject'], $conf['postCObject.'], '/stdWrap/.postCObject');
+		return $content;
+	}
+
+	/**
+	 * wrapAlign
+	 * Wraps content with a div container having the style attribute text-align set to the given value
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for wrapAlign.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_wrapAlign($content = '', $conf = array()) {
+		$wrapAlign = trim($conf['wrapAlign']);
+		if ($wrapAlign) {
+			$content = $this->wrap($content, '<div style="text-align:' . $wrapAlign . ';">|</div>');
+		}
+		return $content;
+	}
+
+	/**
+	 * typolink
+	 * Wraps the content with a link tag
+	 * URLs and other attributes are created automatically by the values given in the stdWrap properties
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for typolink.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_typolink($content = '', $conf = array()) {
+		$content = $this->typolink($content, $conf['typolink.']);
+		return $content;
+	}
+
+	/**
+	 * TCAselectItem
+	 * Returns a list of options available for a given field in the DB which has to be of the type select
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for TCAselectItem.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_TCAselectItem($content = '', $conf = array()) {
+		if (is_array($conf['TCAselectItem.'])) {
+			$content = $this->TCAlookup($content, $conf['TCAselectItem.']);
+		}
+		return $content;
+	}
+
+	/**
+	 * spaceBefore
+	 * Will add space before the current content
+	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to true
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for spaceBefore and space.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_spaceBefore($content = '', $conf = array()) {
+		$content = $this->wrapSpace($content, trim($conf['spaceBefore']) . '|', $conf['space.']);
+		return $content;
+	}
+
+	/**
+	 * spaceAfter
+	 * Will add space after the current content
+	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to true
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for spaceAfter and space.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_spaceAfter($content = '', $conf = array()) {
+		$content = $this->wrapSpace($content, '|' . trim($conf['spaceAfter']), $conf['space.']);
+		return $content;
+	}
+
+	/**
+	 * space
+	 * Will add space before or after the current content
+	 * By default this is done with a clear.gif but it can be done with CSS margins by setting the property space.useDiv to true
+	 * See wrap
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for space.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_space($content = '', $conf = array()) {
+		$content = $this->wrapSpace($content, trim($conf['space']), $conf['space.']);
+		return $content;
+	}
+
+	/**
+	 * wrap
+	 * This is the "mother" of all wraps
+	 * Third of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 * Basically it will put additional content before and after the current content using a split character as a placeholder for the current content
+	 * The default split character is | but it can be replaced with other characters by the property splitChar
+	 * Any other wrap that does not have own splitChar settings will be using the default split char though
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for wrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_wrap($content = '', $conf = array()) {
+		$content = $this->wrap($content, $conf['wrap'], ($conf['wrap.']['splitChar'] ? $conf['wrap.']['splitChar'] : '|'));
+		return $content;
+	}
+
+	/**
+	 * noTrimWrap
+	 * Fourth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 * The major difference to any other wrap is, that this one can make use of whitespace without trimming	 *
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for noTrimWrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_noTrimWrap($content = '', $conf = array()) {
+		$content = $this->noTrimWrap($content, $conf['noTrimWrap']);
+		return $content;
+	}
+
+	/**
+	 * wrap2
+	 * Fifth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 * The default split character is | but it can be replaced with other characters by the property splitChar
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for wrap2.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_wrap2($content = '', $conf = array()) {
+		$content = $this->wrap($content, $conf['wrap2'], ($conf['wrap2.']['splitChar'] ? $conf['wrap2.']['splitChar'] : '|'));
+		return $content;
+	}
+
+	/**
+	 * dataWrap
+	 * Sixth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 * Can fetch additional content the same way data does (i.e. {field:whatever}) and apply it to the wrap before that is applied to the content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for dataWrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_dataWrap($content = '', $conf = array()) {
+		$content = $this->dataWrap($content, $conf['dataWrap']);
+		return $content;
+	}
+
+	/**
+	 * prepend
+	 * A content object that will be prepended to the current content after most of the wraps have already been applied
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for prepend.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_prepend($content = '', $conf = array()) {
+		$content = $this->cObjGetSingle($conf['prepend'], $conf['prepend.'], '/stdWrap/.prepend') . $content;
+		return $content;
+	}
+
+	/**
+	 * append
+	 * A content object that will be appended to the current content after most of the wraps have already been applied
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for append.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_append($content = '', $conf = array()) {
+		$content .= $this->cObjGetSingle($conf['append'], $conf['append.'], '/stdWrap/.append');
+		return $content;
+	}
+
+	/**
+	 * wrap3
+	 * Seventh of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 * The default split character is | but it can be replaced with other characters by the property splitChar
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for wrap3.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_wrap3($content = '', $conf = array()) {
+		$content = $this->wrap($content, $conf['wrap3'], ($conf['wrap3.']['splitChar'] ? $conf['wrap3.']['splitChar'] : '|'));
+		return $content;
+	}
+
+	/**
+	 * outerWrap
+	 * Eighth of a set of different wraps which will be applied in a certain order before or after other functions that modify the content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for outerWrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_outerWrap($content = '', $conf = array()) {
+		$content = $this->wrap($content, $conf['outerWrap']);
+		return $content;
+	}
+
+	/**
+	 * inserData
+	 * Can fetch additional content the same way data does and replaces any occurence of {field:whatever} with this content
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for insertData.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_insertData($content = '', $conf = array()) {
+		$content = $this->insertData($content);
+		return $content;
+	}
+
+	/**
+	 * offsetWrap
+	 * Creates a so called offset table around the content
+	 * Still here for historical reasons even not used too much nowadays
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for offsetWrap.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_offsetWrap($content = '', $conf = array()) {
+		$controlTable = t3lib_div::makeInstance('tslib_tableOffset');
+		if ($conf['offsetWrap.']['tableParams'] || $conf['offsetWrap.']['tableParams.']) {
+			$controlTable->tableParams = $this->stdWrap($conf['offsetWrap.']['tableParams'], $conf['offsetWrap.']['tableParams.']);
+		}
+		if ($conf['offsetWrap.']['tdParams'] || $conf['offsetWrap.']['tdParams.']) {
+			$controlTable->tdParams = ' ' . $this->stdWrap($conf['offsetWrap.']['tdParams'], $conf['offsetWrap.']['tdParams.']);
+		}
+		$content = $controlTable->start($content, $conf['offsetWrap']);
+		if ($conf['offsetWrap.']['stdWrap.']) {
+			$content = $this->stdWrap($content, $conf['offsetWrap.']['stdWrap.']);
+		}
+		return $content;
+	}
+
+	/**
+	 * postUserFunc
+	 * Will execute a user function after the content has been modified by any other stdWrap function
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for postUserFunc.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_postUserFunc($content = '', $conf = array()) {
+		$content = $this->callUserFunction($conf['postUserFunc'], $conf['postUserFunc.'], $content);
+		return $content;
+	}
+
+	/**
+	 * postUserFuncInt
+	 * Will execute a user function after the content has been created and each time it is fetched from Cache
+	 * The result of this function itself will not be cached
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for postUserFuncInt.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_postUserFuncInt($content = '', $conf = array()) {
+		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
+			'content' => $content, 'postUserFunc' => $conf['postUserFuncInt'], 'conf' => $conf['postUserFuncInt.'], 'type' => 'POSTUSERFUNC', 'cObj' => serialize($this)
+		);
+		$content = '<!--' . $substKey . '-->';
+		return $content;
+	}
+
+	/**
+	 * prefixComment
+	 * Will add HTML comments to the content to make it easier to identify certain content elements within the HTML output later on
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for prefixComment.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_prefixComment($content = '', $conf = array()) {
+		if (!$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
+			$content = $this->prefixComment($conf['prefixComment'], $conf['prefixComment.'], $content);
+		}
+		return $content;
+	}
+
+	/**
+	 * editIcons
+	 * Will render icons for frontend editing as long as there is a BE user logged in
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for editIcons.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_editIcons($content = '', $conf = array()) {
+		if ($GLOBALS['TSFE']->beUserLogin) {
+			$content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
+		}
+		return $content;
+	}
+
+	/**
+	 * editPanel
+	 * Will render the edit panel for frontend editing as long as there is a BE user logged in
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for editPanel.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_editPanel($content = '', $conf = array()) {
+		if ($GLOBALS['TSFE']->beUserLogin) {
+			$content = $this->editPanel($content, $conf['editPanel.']);
+		}
+		return $content;
+	}
+
+	/**
+	 * stdWrap post process hook
+	 * can be used by extensions authors to modify the behaviour of stdWrap functions to their needs
+	 * this hook executes functions at after the content has been modified by the rest of the stdWrap functions but still before debugging
+	 *
+	 * @param	string		Input value undergoing processing in these functions.
+	 * @param	array		All stdWrap properties, not just the ones for a particular function.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_stdWrapPostProcess($content = '', $conf = array()) {
+		foreach ($this->stdWrapHookObjects as $hookObject) {
+			$content = $hookObject->stdWrapPostProcess($content, $conf, $this);
+		}
+		return $content;
+	}
+
+	/**
+	 * debug
+	 * Will output the content as readable HTML code
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for debug.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_debug($content = '', $conf = array()) {
+		$content = '<pre>' . htmlspecialchars($content) . '</pre>';
+		return $content;
+	}
+
+	/**
+	 * debugFunc
+	 * Will output the content in a debug table
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for debugFunc.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_debugFunc($content = '', $conf = array()) {
+		debug($conf['debugFunc'] == 2 ? array(
+			$content
+		) : $content);
+		return $content;
+	}
+
+	/**
+	 * debugData
+	 * Will output the data used by the current record in a debug table
+	 *
+	 * @param	string		Input value undergoing processing in this function.
+	 * @param	array		stdWrap properties for debugData.
+	 * @return	string		The processed input value
+	 */
+	public function stdWrap_debugData($content = '', $conf = array()) {
+		debug($this->data, '$cObj->data:');
+		if (is_array($this->alternativeData)) {
+			debug($this->alternativeData, '$this->alternativeData');
 		}
 		return $content;
 	}
