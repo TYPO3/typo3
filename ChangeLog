@@ -1,6 +1,7 @@
 2010-10-16  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15696: Implement TypoScript conditions for the current page record (Thanks to Stefan Neufeind)
+	* Follow-up to #15576: Code for t3lib_message_ErrorpageMessage was contained twice
 
 2010-10-16  Susanne Moog  <typo3@susanne-moog.de>
 
