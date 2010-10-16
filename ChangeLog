@@ -1,3 +1,7 @@
+2010-10-16  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #14835: IRRE Move-Icon should have curser:move (Thanks to Georg Ringer)
+
 2010-10-15  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #16005: Live workspace does not respect move-to-placeholders
