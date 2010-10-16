@@ -198,7 +198,7 @@ class tx_version_tcemain {
 
 					// Look, if record is an offline version, then delete directly:
 			if ($record['pid'] == -1) {
-				if ($TCA[$table]['ctrl']['versioningWS']) {
+				if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 						// In Live workspace, delete any. In other workspaces there must be match.
 					if ($tcemainObj->BE_USER->workspace == 0 || (int) $record['t3ver_wsid'] == $tcemainObj->BE_USER->workspace) {
 						$liveRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
