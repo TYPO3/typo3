@@ -284,13 +284,10 @@ class tx_install extends t3lib_install {
 				// Check for mandatory PHP modules
 			$missingPhpModules = $this->getMissingPhpModules();
 			if (count($missingPhpModules) > 0) {
-				t3lib_BEfunc::typo3PrintError(
-					'TYPO3 Installation Error',
-					'The following PHP module(s) is/are missing: <em>' .
+				throw new RuntimeException('TYPO3 Installation Error: The following PHP module(s) is/are missing: <em>' .
 						implode(', ', $missingPhpModules) .
 						'</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.'
 				);
-				die();
 			}
 		}
 		if (t3lib_div::_GP('step') === 'go') {

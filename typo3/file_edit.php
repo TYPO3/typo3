@@ -110,9 +110,10 @@ class SC_file_edit {
 			$this->target='';
 		}
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
-		if (!$this->target || !$key)	{
-			t3lib_BEfunc::typo3PrintError($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', true), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', true), '');
-			exit;
+		if (!$this->target || !$key) {
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
+			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
+			throw new RuntimeException($title . ': ' . $message);
 		}
 			// Finding the icon
 		switch($GLOBALS['FILEMOUNTS'][$key]['type'])	{

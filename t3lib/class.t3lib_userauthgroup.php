@@ -267,9 +267,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 		}
-		if ($exitOnError)	{
-			t3lib_BEfunc::typo3PrintError ('Access Error','This page is not within your DB-mounts',0);
-			exit;
+		if ($exitOnError) {
+			throw new RuntimeException('Access Error: This page is not within your DB-mounts');
 		}
 	}
 
@@ -282,9 +281,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	function modAccess($conf,$exitOnError)	{
 		if (!t3lib_BEfunc::isModuleSetInTBE_MODULES($conf['name']))	{
-			if ($exitOnError)	{
-				t3lib_BEfunc::typo3PrintError ('Fatal Error','This module "'.$conf['name'].'" is not enabled in TBE_MODULES',0);
-				exit;
+			if ($exitOnError) {
+				throw new RuntimeException('Fatal Error: This module "'.$conf['name'].'" is not enabled in TBE_MODULES');
 			}
 			return FALSE;
 		}
@@ -296,9 +294,8 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 				($this->workspace>0 && t3lib_div::inList($conf['workspaces'],'custom')))	{
 					// ok, go on...
 			} else {
-				if ($exitOnError)	{
-					t3lib_BEfunc::typo3PrintError ('Workspace Error','This module "'.$conf['name'].'" is not available under the current workspace',0);
-					exit;
+				if ($exitOnError) {
+					throw new RuntimeException('Workspace Error: This module "'.$conf['name'].'" is not available under the current workspace');
 				}
 				return FALSE;
 			}
@@ -312,9 +309,10 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 			$acs = $this->check('modules',$conf['name']);
 		}
 		if (!$acs && $exitOnError)	{
-			t3lib_BEfunc::typo3PrintError ('Access Error','You don\'t have access to this module.',0);
-			exit;
-		} else return $acs;
+			throw new RuntimeException('Access Error: You don\'t have access to this module.');
+		} else {
+			return $acs;
+		}
 	}
 
 	/**

@@ -498,7 +498,7 @@
 		}
 		if ($link !== FALSE) {
 			if (!TYPO3_db)	{
-				$this->printError('No database selected','Database Error');
+				throw new RuntimeException('Database Error: No database selected');
 					// Redirects to the Install Tool:
 				echo '<script type="text/javascript">
 						/*<![CDATA[*/
@@ -513,8 +513,7 @@
 					$message = 'Cannot connect to the current database, "'.TYPO3_db.'"';
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
-					$this->printError($message, 'Database Error');
-					exit;
+					throw new RuntimeException('Database Error: ' . $message);
 				}
 			}
 		} else {
@@ -534,8 +533,7 @@
 				$message = 'The current username, password or host was not accepted when the connection to the database was attempted to be established!';
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 				header('HTTP/1.0 503 Service Temporarily Unavailable');
-				$this->printError($message, 'Database Error');
-				exit;
+				throw new RuntimeException('Database Error: ' . $message);
 			}
 		}
 
@@ -959,8 +957,7 @@
 						$message = 'No pages are found on the rootlevel!';
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
 						header('HTTP/1.0 503 Service Temporarily Unavailable');
-						$this->printError($message);
-						exit;
+						throw new RuntimeException($message);
 					}
 				}
 			}
@@ -1052,8 +1049,7 @@
 					$message = 'The requested page does not exist!';
 					header('HTTP/1.0 404 Page Not Found');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					$this->printError($message);
-					exit;
+					throw new RuntimeException($message);
 				}
 			}
 		}
@@ -1066,8 +1062,7 @@
 				$message = 'The requested page does not exist!';
 				header('HTTP/1.0 404 Page Not Found');
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				$this->printError($message);
-				exit;
+				throw new RuntimeException($message);
 			}
 		}
 
@@ -1103,8 +1098,7 @@
 					$message = 'The requested page didn\'t have a proper connection to the tree-root! <br /><br />('.$this->sys_page->error_getRootLine.')';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog(str_replace('<br /><br />','',$message), 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					$this->printError($message);
-					exit;
+					throw new RuntimeException($message);
 				}
 			}
 			$this->fePreview = 1;
@@ -1119,8 +1113,7 @@
 					$message = 'The requested page was not accessible!';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					$this->printError($message);
-					exit;
+					throw new RuntimeException($message);
 				}
 			} else {
 				$el = reset($this->rootLine);
@@ -1184,8 +1177,7 @@
 				$message = 'Page shortcuts were looping in uids '.implode(',',$pageLog).'...!';
 				header('HTTP/1.0 500 Internal Server Error');
 				t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-				$this->printError($message);
-				exit;
+				throw new RuntimeException($message);
 			}
 		}
 			// Return resulting page:
@@ -1457,7 +1449,7 @@
 	/**
 	 * Page unavailable handler. Acts a wrapper for the pageErrorHandler method.
 	 *
-	 * @param	mixed		Which type of handling; If a true PHP-boolean or TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+	 * @param	mixed		Which type of handling; If a true PHP-boolean or TRUE then a ->t3lib_message_ErrorPageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exits!)
@@ -1469,7 +1461,7 @@
 	/**
 	 * Page not found handler. Acts a wrapper for the pageErrorHandler method.
 	 *
-	 * @param	mixed		Which type of handling; If a true PHP-boolean or TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+	 * @param	mixed		Which type of handling; If a true PHP-boolean or TRUE then a ->t3lib_message_ErrorPageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exits!)
@@ -1482,7 +1474,7 @@
 	 * Generic error page handler.
 	 * Exits.
 	 *
-	 * @param	mixed		Which type of handling; If a true PHP-boolean or TRUE then a ->printError message is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
+	 * @param	mixed		Which type of handling; If a true PHP-boolean or TRUE then a ->t3lib_message_ErrorPageMessage is outputted. If integer an error message with that number is shown. Otherwise the $code value is expected to be a "Location:" header value.
 	 * @param	string		If set, this is passed directly to the PHP function, header()
 	 * @param	string		If set, error messages will also mention this as the reason for the page-not-found.
 	 * @return	void		(The function exits!)
@@ -1499,7 +1491,7 @@
 
 			// Create response:
 		if (gettype($code)=='boolean' || !strcmp($code,1))	{	// Simply boolean; Just shows TYPO3 error page with reason:
-			$this->printError('The page did not exist or was inaccessible.'.($reason ? ' Reason: '.htmlspecialchars($reason) : ''));
+			throw new RuntimeException('The page did not exist or was inaccessible.' . ($reason ? ' Reason: ' . htmlspecialchars($reason) : ''));
 		} elseif (t3lib_div::isFirstPartOfStr($code,'USER_FUNCTION:')) {
 			$funcRef = trim(substr($code,14));
 			$params = array(
@@ -1516,7 +1508,7 @@
 				$fileContent = str_replace('###REASON###', htmlspecialchars($reason), $fileContent);
 				echo $fileContent;
 			} else {
-				$this->printError('Configuration Error: 404 page "'.$readFile.'" could not be found.');
+				throw new RuntimeException('Configuration Error: 404 page "' . $readFile.'" could not be found.');
 			}
 		} elseif (t3lib_div::isFirstPartOfStr($code,'REDIRECT:')) {
 			t3lib_utility_Http::redirect(substr($code, 9));
@@ -1537,8 +1529,7 @@
 					$reason = 'Page cannot be found.';
 				}
 				$reason.= LF . LF . 'Additionally, ' . $code . ' was not found while trying to retrieve the error document.';
-				$this->printError('Reason: '.nl2br(htmlspecialchars($reason)));
-				exit();
+				throw new RuntimeException('Reason: ' . nl2br(htmlspecialchars($reason)));
 			}
 
 				// Prepare headers
@@ -1600,7 +1591,7 @@
 				echo $content;	// Output the content
 			}
 		} else {
-			$this->printError($reason ? 'Reason: '.htmlspecialchars($reason) : 'Page cannot be found.');
+			throw new RuntimeException($reason ? 'Reason: '.htmlspecialchars($reason) : 'Page cannot be found.');
 		}
 		exit();
 	}
@@ -2095,8 +2086,7 @@
 						$message = 'The page is not configured! [type= '.$this->type.']['.$this->sPre.']';
 						header('HTTP/1.0 503 Service Temporarily Unavailable');
 						t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-						$this->printError($message);
-						exit;
+						throw new RuntimeException($message);
 					}
 				} else {
 					$this->config['config'] = array();
@@ -2155,8 +2145,7 @@
 					$message = 'No TypoScript template found!';
 					header('HTTP/1.0 503 Service Temporarily Unavailable');
 					t3lib_div::sysLog($message, 'cms', t3lib_div::SYSLOG_SEVERITY_ERROR);
-					$this->printError($message);
-					exit;
+					throw new RuntimeException($message);
 				}
 			}
 		}
@@ -4281,9 +4270,11 @@ if (version == "n3") {
 	 * @param	string		Header string
 	 * @return	void
 	 * @see t3lib_timeTrack::debug_typo3PrintError()
+	 * @see	t3lib_message_ErrorPageMessage
 	 */
-	function printError($label,$header='Error!')	{
-		t3lib_timeTrack::debug_typo3PrintError($header,$label,0,t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+	function printError($label,$header='Error!') {
+		t3lib_div::logDeprecatedFunction();
+		t3lib_timeTrack::debug_typo3PrintError($header, $label, 0, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
 	}
 
 	/**

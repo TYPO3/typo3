@@ -55,8 +55,8 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 			header("HTTP/1.1 500 Internal Server Error");
 		}
 		$this->writeLogEntries($exception,self::CONTEXT_WEB);
-
-		t3lib_timeTrack::debug_typo3PrintError(get_class($exception), $exception->getMessage(), 0, t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+		$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $exception->getMessage(), get_class($exception));
+		$messageObj->output();
 	}
 
 	/**

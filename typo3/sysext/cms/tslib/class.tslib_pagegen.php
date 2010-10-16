@@ -118,16 +118,14 @@ class TSpagegen {
 			// Base url:
 		if ($GLOBALS['TSFE']->config['config']['baseURL'])	{
 			if ($GLOBALS['TSFE']->config['config']['baseURL']==='1')	{
-					// Deprecated property, going to be dropped.
+					// Deprecated property, going to be dropped in TYPO3 4.7.
 				$error = 'Unsupported TypoScript property was found in this template: "config.baseURL="1"
 
 This setting has been deprecated in TYPO 3.8.1 due to security concerns.
 You need to change this value to the URL of your website root, otherwise TYPO3 will not work!
 
 See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.typo3.org/index.php/TYPO3_3.8.1</a> for more information.';
-
-				$GLOBALS['TSFE']->printError(nl2br($error));
-				exit;
+				throw new RuntimeException(nl2br($error));
 			} else {
 				$GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
 			}

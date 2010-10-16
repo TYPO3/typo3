@@ -133,9 +133,10 @@ class SC_file_newfolder {
 		$this->target = $this->charsetConversion->conv($this->target, 'utf-8', $GLOBALS['LANG']->charSet);
 		$this->target = $this->basicff->is_directory($this->target);
 		$key=$this->basicff->checkPathAgainstMounts($this->target.'/');
-		if (!$this->target || !$key)	{
-			t3lib_BEfunc::typo3PrintError ($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', true), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', true), '');
-			exit;
+		if (!$this->target || !$key) {
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
+			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
+			throw new RuntimeException($title . ': ' . $message);
 		}
 
 			// Finding the icon

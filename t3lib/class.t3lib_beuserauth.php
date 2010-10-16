@@ -214,12 +214,10 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 					$this->backendSetUC();		// Setting the UC array. It's needed with fetchGroupData first, due to default/overriding of values.
 					$this->emailAtLogin();		// email at login - if option set.
 				} else {
-					t3lib_BEfunc::typo3PrintError ('Login-error','TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.',0);
-					exit;
+					throw new RuntimeException('Login Error: TYPO3 is in maintenance mode at the moment. Only administrators are allowed access.');
 				}
 			} else {
-				t3lib_BEfunc::typo3PrintError ('Login-error','IP locking prevented you from being authorized. Can\'t proceed, sorry.',0);
-				exit;
+				throw new RuntimeException('Login Error: IP locking prevented you from being authorized. Can\'t proceed, sorry.');
 			}
 		}
 	}
