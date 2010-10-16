@@ -5,6 +5,7 @@
 2010-10-16  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16007: Allow skins to register sprites through addIconSprite
+	* Added feature #15229: Core lacks current flags
 
 2010-10-16 Steffen Kamper  <steffen@typo3.org>
 
