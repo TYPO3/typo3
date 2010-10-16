@@ -1,3 +1,7 @@
+2010-10-16  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #15877: Put versioning code from TCEmain in version extension - part #2 - moving records
+
 2010-10-16  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16007: Allow skins to register sprites through addIconSprite

@@ -242,6 +242,74 @@ class tx_version_tcemain {
 	}
 
 
+	/**
+	 * hook for t3lib_TCEmain::moveRecord that cares about moving records that
+	 * are *not* in the live workspace
+	 * @param	$table	the table
+	 */
+	public function moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, &$recordWasMoved, &$tcemainObj) {
+		global $TCA;
+
+			// Only do something in Draft workspace
+		if ($tcemainObj->BE_USER->workspace !== 0) {
+			$recordWasMoved = TRUE;
+
+				// Get workspace version of the source record, if any:
+			$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');
+
+				// If no version exists and versioningWS is in version 2, a new placeholder is made automatically:
+			if (!$WSversion['uid'] && (int)$TCA[$table]['ctrl']['versioningWS']>=2 && (int)$moveRec['t3ver_state']!=3)	{
+				$tcemainObj->versionizeRecord($table, $uid, 'Placeholder version for moving record');
+				$WSversion = t3lib_BEfunc::getWorkspaceVersionOfRecord($tcemainObj->BE_USER->workspace, $table, $uid, 'uid,t3ver_oid');	// Will not create new versions in live workspace though...
+			}
+
+				// Check workspace permissions:
+			$workspaceAccessBlocked = array();
+				// Element was in "New/Deleted/Moved" so it can be moved...
+			$recIsNewVersion = (int)$moveRec['t3ver_state']>0;
+
+			$destRes = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($resolvedPid, $table);
+			$canMoveRecord = $recIsNewVersion || (int)$TCA[$table]['ctrl']['versioningWS'] >= 2;
+
+				// Workspace source check:
+			if (!$recIsNewVersion) {
+				$errorCode = $tcemainObj->BE_USER->workspaceCannotEditRecord($table, $WSversion['uid'] ? $WSversion['uid'] : $uid);
+				if ($errorCode) {
+					$workspaceAccessBlocked['src1'] = 'Record could not be edited in workspace: ' . $errorCode . ' ';
+				} elseif (!$canMoveRecord && $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($moveRec['pid'], $table) <= 0) {
+					$workspaceAccessBlocked['src2'] = 'Could not remove record from table "' . $table . '" from its page "'.$moveRec['pid'].'" ';
+				}
+			}
+
+				// Workspace destination check:
+
+				// All records can be inserted if $destRes is greater than zero. 
+				// Only new versions can be inserted if $destRes is false. 
+				// NO RECORDS can be inserted if $destRes is negative which indicates a stage
+				//  not allowed for use. If "versioningWS" is version 2, moving can take place of versions.
+			if (!($destRes > 0 || ($canMoveRecord && !$destRes))) {
+				$workspaceAccessBlocked['dest1'] = 'Could not insert record from table "' . $table . '" in destination PID "' . $resolvedPid . '" ';
+			} elseif ($destRes == 1 && $WSversion['uid']) {
+				$workspaceAccessBlocked['dest2'] = 'Could not insert other versions in destination PID ';
+			}
+
+			if (!count($workspaceAccessBlocked)) {
+					// If the move operation is done on a versioned record, which is 
+					// NOT new/deleted placeholder and versioningWS is in version 2, then...
+				if ($WSversion['uid'] && !$recIsNewVersion && (int)$TCA[$table]['ctrl']['versioningWS'] >= 2) {
+					$this->moveRecord_wsPlaceholders($table, $uid, $destPid, $WSversion['uid'], $tcemainObj);
+				} else {
+					// moving not needed, just behave like in live workspace
+					$recordWasMoved = FALSE;
+				}
+			} else {
+				$tcemainObj->newlog("Move attempt failed due to workspace restrictions: " . implode(' // ', $workspaceAccessBlocked), 1);
+			}
+		}
+	}
+
+
+
 	/****************************
 	 *****  Notifications  ******
 	 ****************************/
@@ -1061,6 +1129,91 @@ State was change by %s (username: %s)
 			}
 		}
 	}
+
+
+	/**
+	 * Creates a move placeholder for workspaces.
+	 * USE ONLY INTERNALLY
+	 * Moving placeholder: Can be done because the system sees it as a placeholder for NEW elements like t3ver_state=1
+	 * Moving original: Will either create the placeholder if it doesn't exist or move existing placeholder in workspace.
+	 *
+	 * @param	string		Table name to move
+	 * @param	integer		Record uid to move (online record)
+	 * @param	integer		Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+	 * @param	integer		UID of offline version of online record
+	 * @return	void
+	 * @see moveRecord()
+	 */
+	protected function moveRecord_wsPlaceholders($table, $uid, $destPid, $wsUid, &$tcemainObj) {
+		global $TCA;
+
+		if ($plh = t3lib_BEfunc::getMovePlaceholder($table, $uid, 'uid')) {
+				// If already a placeholder exists, move it:
+			$tcemainObj->moveRecord_raw($table, $plh['uid'], $destPid);
+		} else {
+				// First, we create a placeholder record in the Live workspace that
+				// represents the position to where the record is eventually moved to.
+			$newVersion_placeholderFieldArray = array();
+			if ($TCA[$table]['ctrl']['crdate']) {
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['crdate']] = $GLOBALS['EXEC_TIME'];
+			}
+			if ($TCA[$table]['ctrl']['cruser_id']) {
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['cruser_id']] = $tcemainObj->userid;
+			}
+			if ($TCA[$table]['ctrl']['tstamp'] && count($fieldArray)) {
+				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+			}
+
+			if ($table == 'pages') {
+					// Copy page access settings from original page to placeholder
+				$perms_clause = $tcemainObj->BE_USER->getPagePermsClause(1);
+				$access = t3lib_BEfunc::readPageAccess($uid, $perms_clause);
+
+				$newVersion_placeholderFieldArray['perms_userid']    = $access['perms_userid'];
+				$newVersion_placeholderFieldArray['perms_groupid']   = $access['perms_groupid'];
+				$newVersion_placeholderFieldArray['perms_user']      = $access['perms_user'];
+				$newVersion_placeholderFieldArray['perms_group']     = $access['perms_group'];
+				$newVersion_placeholderFieldArray['perms_everybody'] = $access['perms_everybody'];
+			}
+
+			$newVersion_placeholderFieldArray['t3ver_label'] = 'MOVE-TO PLACEHOLDER for #' . $uid;
+			$newVersion_placeholderFieldArray['t3ver_move_id'] = $uid;
+				// Setting placeholder state value for temporary record
+			$newVersion_placeholderFieldArray['t3ver_state'] = 3;
+
+				// Setting workspace - only so display of place holders can filter out those from other workspaces.
+			$newVersion_placeholderFieldArray['t3ver_wsid'] = $tcemainObj->BE_USER->workspace;
+			$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['label']] = '[MOVE-TO PLACEHOLDER for #' . $uid . ', WS#' . $tcemainObj->BE_USER->workspace . ']';
+
+				// moving localized records requires to keep localization-settings for the placeholder too
+			if (array_key_exists('languageField', $GLOBALS['TCA'][$table]['ctrl']) && array_key_exists('transOrigPointerField', $GLOBALS['TCA'][$table]['ctrl'])) {
+				$l10nParentRec = t3lib_BEfunc::getRecord($table, $uid);
+				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['languageField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['languageField']];
+				$newVersion_placeholderFieldArray[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] = $l10nParentRec[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']];
+				unset($l10nParentRec);
+			}
+
+				// Initially, create at root level.
+			$newVersion_placeholderFieldArray['pid'] = 0;
+			$id = 'NEW_MOVE_PLH';
+				// Saving placeholder as 'original'
+			$tcemainObj->insertDB($table, $id, $newVersion_placeholderFieldArray, FALSE);
+
+				// Move the new placeholder from temporary root-level to location:
+			$tcemainObj->moveRecord_raw($table, $tcemainObj->substNEWwithIDs[$id], $destPid);
+
+				// Move the workspace-version of the original to be the version of the move-to-placeholder:
+				// Setting placeholder state value for version (so it can know it is currently a new version...)
+			$updateFields = array(
+				't3ver_state' => 4
+			);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($wsUid), $updateFields);
+		}
+
+			// Check for the localizations of that element and move them as well
+		$tcemainObj->moveL10nOverlayRecords($table, $uid, $destPid);
+	}
+
 }
 
 ?>
