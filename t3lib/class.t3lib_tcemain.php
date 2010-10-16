@@ -374,7 +374,7 @@ class t3lib_TCEmain	{
 	 * @param	object		An alternative userobject you can set instead of the default, which is $GLOBALS['BE_USER']
 	 * @return	void
 	 */
-	function start($data,$cmd,$altUserObject='')	{
+	public function start($data, $cmd, $altUserObject = '') {
 
 			// Initializing BE_USER
 		$this->BE_USER = is_object($altUserObject) ? $altUserObject : $GLOBALS['BE_USER'];
@@ -614,7 +614,7 @@ class t3lib_TCEmain	{
 	 *
 	 * @return	void
 	 */
-	function process_datamap() {
+	public function process_datamap() {
 		global $TCA, $TYPO3_CONF_VARS;
 			// Keep versionized(!) relations here locally:
 		$registerDBList = array();
@@ -2557,7 +2557,7 @@ class t3lib_TCEmain	{
 	 *
 	 * @return	void
 	 */
-	function process_cmdmap() {
+	public function process_cmdmap() {
 		global $TCA, $TYPO3_CONF_VARS;
 
 			// Editing frozen:
@@ -6653,7 +6653,7 @@ class t3lib_TCEmain	{
 	 * @param	string		the cache command, see above description
 	 * @return	void
 	 */
-	public function clear_cacheCmd($cacheCmd)	{
+	public function clear_cacheCmd($cacheCmd) {
 		global $TYPO3_CONF_VARS;
 
 		$this->BE_USER->writelog(3, 1, 0, 0, 'User %s has cleared the cache (cacheCmd=%s)', array($this->BE_USER->user['username'], $cacheCmd));

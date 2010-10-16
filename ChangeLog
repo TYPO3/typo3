@@ -9,6 +9,7 @@
 
 2010-10-16  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #16021: TCEmain: Put visibility functions to the appropriate methods (Thanks to Tolleiv Nietsch)
 	* Fixed bug #14835: IRRE Move-Icon should have curser:move (Thanks to Georg Ringer)
 	* Fixed bug #15799: Uninitialized variables in t3lib within TCEmain (Thanks to Oliver Klee)
 	* Fixed bug #15799: Uninitialized variables in t3lib within version extension (Thanks to Oliver Klee)
