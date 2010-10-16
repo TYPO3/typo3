@@ -117,6 +117,8 @@ class SC_mod_user_setup_index {
 	protected $passwordIsSubmitted = FALSE;
 	protected $setupIsUpdated = FALSE;
 	protected $tempDataIsCleared = FALSE;
+	protected $installToolFileExists = FALSE;
+	protected $installToolFileKeep = FALSE;
 
 
 	/******************************
@@ -266,6 +268,9 @@ class SC_mod_user_setup_index {
 	function init()	{
 		$this->MCONF = $GLOBALS['MCONF'];
 
+			// check Install Tool enable file
+		$this->setInstallToolFileExists();
+		$this->setInstallToolFileKeep();
 
 			// Returns the script user - that is the REAL logged in user! ($GLOBALS[BE_USER] might be another user due to simulation!)
 		$scriptUser = $this->getRealScriptUserObj();
@@ -305,10 +310,20 @@ class SC_mod_user_setup_index {
 
 			// file creation / delete
 		if ($this->isAdmin) {
+			if ($this->installToolFileKeep) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					$LANG->getLL('enableInstallTool.fileHasKeep'),
+					$LANG->getLL('enableInstallTool.file'),
+					t3lib_FlashMessage::WARNING
+				);
+				$this->content .= $flashMessage->render();
+			}
+
 			if (t3lib_div::_POST('deleteInstallToolEnableFile')) {
 				unlink(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-				$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-				if ($installToolEnableFileExists) {
+				$this->setInstallToolFileExists();
+				if ($this->getInstallToolFileExists()) {
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						$LANG->getLL('enableInstallTool.fileDelete_failed'),
@@ -328,8 +343,8 @@ class SC_mod_user_setup_index {
 			if (t3lib_div::_POST('createInstallToolEnableFile')) {
 				touch(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
 				t3lib_div::fixPermissions(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-				$installToolEnableFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
-				if ($installToolEnableFileExists) {
+				$this->setInstallToolFileExists();
+				if ($this->getInstallToolFileExists()) {
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						$LANG->getLL('enableInstallTool.fileCreate_ok'),
@@ -450,6 +465,42 @@ class SC_mod_user_setup_index {
 		$this->content.= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 
+	}
+
+	/**
+	 * Sets existance of Install Tool file
+	 *
+	 * return void
+	 */
+	public function setInstallToolFileExists() {
+		$this->installToolFileExists = is_file(PATH_typo3conf . 'ENABLE_INSTALL_TOOL');
+	}
+
+	/**
+	 * Sets property if Install Tool file contains "KEEP_FILE"
+	 */
+	public function setInstallToolFileKeep() {
+		if ($this->installToolFileExists) {
+			$this->installToolFileKeep = (trim(file_get_contents(PATH_typo3conf . 'ENABLE_INSTALL_TOOL')) === 'KEEP_FILE');
+		}
+	}
+
+	/**
+	 * Gets property installToolFileExists
+	 *
+	 * @return boolean $this->installToolFileExists
+	 */
+	public function getInstallToolFileExists() {
+		return $this->installToolFileExists;
+	}
+
+	/**
+	 * Gets property installToolFileKeep
+	 *
+	 * @return boolean $this->installToolFileKeep
+	 */
+	public function getInstallToolFileKeep() {
+		return $this->installToolFileKeep;
 	}
 
 	/**
@@ -761,22 +812,20 @@ class SC_mod_user_setup_index {
 	 * @return string	                       html with description and button
 	 */
 	public function renderInstallToolEnableFileButton(array $params, SC_mod_user_setup_index $parent) {
-		// Install Tool access file
+			// Install Tool access file
 		$installToolEnableFile = PATH_typo3conf . 'ENABLE_INSTALL_TOOL';
-		$installToolEnableFileExists = is_file($installToolEnableFile);
-		if ($installToolEnableFileExists && (time() - filemtime($installToolEnableFile) > 3600)) {
-			$content = file_get_contents($installToolEnableFile);
-			$verifyString = 'KEEP_FILE';
-
-			if (trim($content) !== $verifyString) {
+		if ($parent->getInstallToolFileExists() && ($GLOBALS['EXEC_TIME'] - filemtime($installToolEnableFile) > 3600)) {
+			if (!$parent->getInstallToolFileKeep()) {
 					// Delete the file if it is older than 3600s (1 hour)
 				unlink($installToolEnableFile);
-				$installToolEnableFileExists = is_file($installToolEnableFile);
+				$parent->setInstallToolFileExists();
 			}
 		}
 
-		if ($installToolEnableFileExists) {
-			return '<input type="submit" name="deleteInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" />';
+		if ($parent->getInstallToolFileExists()) {
+			return '<input type="submit" name="deleteInstallToolEnableFile"' .
+					($parent->getInstallToolFileKeep() ? ' disabled="disabled"' : '') .
+					' value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.deleteFile') . '" />';
 		} else {
 			return '<input type="submit" name="createInstallToolEnableFile" value="' . $GLOBALS['LANG']->sL('LLL:EXT:setup/mod/locallang.xml:enableInstallTool.createFile') . '" />';
 		}

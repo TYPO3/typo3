@@ -112,6 +112,7 @@
 			<label index="enableInstallTool.deleteFile">Delete Install Tool Enable File</label>
 			<label index="enableInstallTool.fileDelete_ok">The Install Tool Enable file has been deleted.</label>
 			<label index="enableInstallTool.fileDelete_failed">The Install Tool Enable file could not be deleted!</label>
+			<label index="enableInstallTool.fileHasKeep">The Install Tool file has the content "KEEP_FILE" and can not be deleted!</label>
 			<label index="tempDataCleared">Temporary data cleared</label>
 			<label index="tempDataClearedFlashMessage">The temporary data has been cleared.</label>
 			<label index="tempDataClearedLog">Temporary data cleared</label>
