@@ -1,6 +1,7 @@
 2010-10-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15868: Provide function to open debug messages in a popup (Thanks to Stefan Galinski)
+	* Fixed bug #15799: Uninitialized variables in t3lib (Thanks to Oliver Klee)
 
 2010-10-16  Benjamin Mack  <benni@typo3.org>
 

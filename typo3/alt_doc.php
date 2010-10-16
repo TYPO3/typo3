@@ -629,6 +629,7 @@ class SC_alt_doc {
 		$this->newC=0;
 		$thePrevUid='';
 		$editForm='';
+		$trData = NULL;
 
 			// Traverse the GPvar edit array
 		foreach($this->editconf as $table => $conf)	{	// Tables:

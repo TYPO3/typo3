@@ -587,7 +587,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate	{
 		}
 		$a=0;
 		$c=count($keyArr);
-		static $i;
+		static $i = 0;
 		foreach ($keyArr as $key => $value) {
 			$HTML = '';
 			$a++;

@@ -908,7 +908,6 @@ class t3lib_stdGraphic	{
 			$bits = explode(' ',$text);
 			foreach ($bits as $word) {
 				$word.=' ';
-				$word = $word;
 				$wordInf = $this->ImageTTFBBoxWrapper($fontSize, $angle, $fontFile, $word, $splitRenderingConf ,$sF);
 				$wordW = ($wordInf[2]-$wordInf[0]);
 				$this->ImageTTFTextWrapper($im, $fontSize, $angle, $x, $y, $Fcolor, $fontFile, $word, $splitRenderingConf, $sF);

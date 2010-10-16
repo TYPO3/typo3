@@ -1021,7 +1021,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if (!isset($this->cssInline[$name]) && !empty($block)) {
 			$this->cssInline[$name] = array (
 				'code'       => $block,
-				'compress'   => $compress,
+				'compress'   => $compressed,
 				'forceOnTop' => $forceOnTop
 			);
 		}

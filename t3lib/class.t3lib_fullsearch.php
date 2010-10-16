@@ -507,13 +507,12 @@ class t3lib_fullsearch {
 				while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 					if ($first)	{
 						$xmlObj->setRecFields($table,implode(',',array_keys($row)));
-		//				debug($xmlObj->XML_recFields);
 						$first=0;
 					}
 					$valueArray = $row;
 					if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels'])	{
 						foreach ($valueArray as $key => $val)	{
-							$valueArray[$key] = $this->getProcessedValueExtra($table, $key, $val, $conf, ',');
+							$valueArray[$key] = $this->getProcessedValueExtra($table, $key, $val, array(), ',');
 						}
 					}
 					$xmlObj->addRecord($table, $valueArray);
@@ -849,6 +848,7 @@ class t3lib_fullsearch {
 	 */
 	function makeValueList($fN, $fV, $conf, $table, $splitString) {
 		$fieldSetup = $conf;
+		$out = '';
 		if ($fieldSetup['type'] == 'files') {
 			$d = dir(PATH_site . $fieldSetup['uploadfolder']);
 			while (false !== ($entry = $d->read())) {
@@ -938,7 +938,7 @@ class t3lib_fullsearch {
 								}
 							}
 						}
-						$GLOBALS['TYPO3_DB']->sql_free_result($res);
+						$GLOBALS['TYPO3_DB']->sql_free_result($checkres);
 					}
 				}
 			} else {
@@ -987,6 +987,7 @@ class t3lib_fullsearch {
 					if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
 						$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 						$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
+						$webMountPageTree = '';
 						foreach($webMounts as $key => $val) {
 							if ($webMountPageTree) {
 								$webMountPageTreePrefix = ',';
@@ -1099,6 +1100,7 @@ class t3lib_fullsearch {
 	 * @return	[type]		...
 	 */
 	function csvRowTitles($row, $conf, $table)	{
+		$out = '';
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		foreach ($row as $fN => $fV)	{
 			if (t3lib_div::inList($SET['queryFields'], $fN) || (!$SET['queryFields'] && $fN!='pid'))	{

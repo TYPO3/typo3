@@ -765,6 +765,8 @@ class t3lib_treeView {
 		$c = $this->getDataCount($res);
 		$crazyRecursionLimiter = 999;
 
+		$idH = array();
+
 			// Traverse the records:
 		while ($crazyRecursionLimiter>0 && $row = $this->getDataNext($res,$subCSSclass))	{
 			$a++;

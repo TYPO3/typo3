@@ -154,7 +154,7 @@ class t3lib_frontendedit {
 			if ($editClass) {
 				$edit = t3lib_div::getUserObj($editClass);
 				if (is_object($edit)) {
-					$content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addURLParamStr, $table, $editUid, $fieldList);
+					$content = $edit->editIcons($content, $params, $conf, $currentRecord, $dataArray, $addUrlParamStr, $table, $editUid, $fieldList);
 				}
 			}
 		}
