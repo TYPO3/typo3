@@ -1,3 +1,7 @@
+2010-10-16  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #16007: Allow skins to register sprites through addIconSprite
+
 2010-10-16 Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #14396: Warn when KEEP_FILE is set

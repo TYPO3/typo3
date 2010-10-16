@@ -197,19 +197,18 @@ class t3lib_SpriteManager {
 	 * - CSS class for loading the sprite: t3-icon-extensions-$extKey
 	 * - CSS class for single icons: t3-icon-$extKey-$iconName
 	 *
-	 * Do not use this for skins, stylesheets of skins will be included automatically.
-	 * Skin icons should be added manually to $GLOBALS[TBE_STYLES][skins][skinName][availableIcons] via ext_tables.php
-	 *
 	 * @param array Icon names
-	 * @param string Stylesheet filename relative to PATH_typo3
+	 * @param string Stylesheet filename relative to PATH_typo3. Skins do not need to supply the $styleSheetFile, if the CSS file is within the registered stylesheet folders
 	 * @return void
 	 */
-	public static function addIconSprite(array $icons, $styleSheetFile) {
+	public static function addIconSprite(array $icons, $styleSheetFile = '') {
 		$GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'] = array_merge(
 		(array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'],
 			$icons
 		);
-		$GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'][] = $styleSheetFile;
+		if ($styleSheetFile !== '') {
+			$GLOBALS['TBE_STYLES']['spritemanager']['cssFiles'][] = $styleSheetFile;
+		}
 	}
 
 	/**
