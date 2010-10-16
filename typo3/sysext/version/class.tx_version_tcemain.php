@@ -1160,7 +1160,7 @@ State was change by %s (username: %s)
 			if ($TCA[$table]['ctrl']['cruser_id']) {
 				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['cruser_id']] = $tcemainObj->userid;
 			}
-			if ($TCA[$table]['ctrl']['tstamp'] && count($fieldArray)) {
+			if ($TCA[$table]['ctrl']['tstamp']) {
 				$newVersion_placeholderFieldArray[$TCA[$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
 			}
 
