@@ -315,6 +315,9 @@ class template {
 			$this->pageRenderer->enableCompressCss();
 			$this->pageRenderer->enableCompressJavascript();
 		}
+		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) === 1) {
+			$this->pageRenderer->enableDebugMode();
+		}
 		return $this->pageRenderer;
 	}
 

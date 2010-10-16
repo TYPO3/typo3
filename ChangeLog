@@ -13,6 +13,7 @@
 	* Added feature #16007: Allow skins to register sprites through addIconSprite
 	* Added feature #15229: Core lacks current flags (Thanks to Steffen Ritter)
 	* Cleanup #16009: Refactor sprite icon API, to have more elementary functions instead of big ones (Thanks to Steffen Ritter)
+	* Added feature #15966: Adds mode to debug the backend ($TYPO3_CONF_VARS['BE']['debug']) (Thanks to Steffen Kamper)
 
 2010-10-16  Steffen Kamper  <steffen@typo3.org>
 

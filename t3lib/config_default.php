@@ -266,6 +266,7 @@ $TYPO3_CONF_VARS = array(
 		'versionNumberInFilename' => FALSE,	// <p>Boolean: If true, included CSS and JS files will have the timestamp embedded in the filename, ie. filename.1269312081.js. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). IMPORTANT: this feature requires extra .htaccess rules to work (please refer to misc/advanced.htaccess or the _.htaccess file from the dummy package)</p><p>If false the filemtime will be appended as a query-string.</p>
 		'spriteIconGenerator_handler' => '',	// String: Used to register own/other spriteGenerating Handler, they have to implement the interface t3lib_spritemanager_SpriteIconGenerator
 		'allowDonateWindow' => TRUE,			// Boolean: Defines whether to display a TYPO3 donate window to admin users that have been working with the system for more than three months.
+		'debug' => FALSE,			// Boolean: If set, the loginrefresh is disabled and pageRenderer is set to debug mode. Use this to debug the backend only!
 		'AJAX' => array(				// array of key-value pairs for a unified use of AJAX calls in the TYPO3 backend. Keys are the unique ajaxIDs where the value will be resolved to call a method in an object. See ajax.php and the classes/class.typo3ajax.php for more information.
 			'SC_alt_db_navframe::expandCollapse'                => 'typo3/alt_db_navframe.php:SC_alt_db_navframe->ajaxExpandCollapse',
 			'SC_alt_file_navframe::expandCollapse'              => 'typo3/alt_file_navframe.php:SC_alt_file_navframe->ajaxExpandCollapse',

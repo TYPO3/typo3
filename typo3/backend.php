@@ -61,6 +61,7 @@ class TYPO3backend {
 	protected $toolbarItems;
 	private   $menuWidthDefault = 190; // intentionally private as nobody should modify defaults
 	protected $menuWidth;
+	protected $debug;
 
 	/**
 	 * Object for loading backend modules
@@ -89,6 +90,8 @@ class TYPO3backend {
 	 * @return	void
 	 */
 	public function __construct() {
+			// set debug flag for BE development only
+		$this->debug = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) === 1;
 
 			// Initializes the backend modules structure for use later.
 		$this->moduleLoader = t3lib_div::makeInstance('t3lib_loadModules');
@@ -138,6 +141,10 @@ class TYPO3backend {
 			'js/extjs/iframepanel.js',
 			'js/extjs/viewportConfiguration.js',
 		);
+
+		if ($this->debug) {
+			unset($this->jsFiles['js/loginrefresh.js']);
+		}
 
 			// add default BE css
 		$this->css      = '';
