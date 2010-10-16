@@ -323,8 +323,8 @@ input[type="button"][disabled="disabled"],
 input[type="submit"][disabled="disabled"]:hover,
 input[type="reset"][disabled="disabled"]:hover,
 input[type="button"][disabled="disabled"]:hover {
-	color: #ffffff;
 	cursor: default;
+	opacity: 0.5;
 }
 
 .checkbox,

@@ -29,6 +29,7 @@
 
 2010-10-16  Steffen Kamper  <steffen@typo3.org>
 
+	* Followup to #14396: Warn when KEEP_FILE is set
 	* Fixed bug #14396: Warn when KEEP_FILE is set
 	* Fixed bug #15789: Improve ExtJS skin: Grids
 
