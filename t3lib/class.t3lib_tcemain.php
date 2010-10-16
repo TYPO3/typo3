@@ -4142,7 +4142,7 @@ class t3lib_TCEmain	{
 					unlink ($dat['ID_absFile']);
 #echo 'DELETE FlexFormFile:'.$dat['ID_absFile'].LF;
 				} else {
-					$this->log($table,0,3,0,100,"Delete: Referenced file '".$dat['ID_absFile']."' that was supposed to be deleted together with it's record didn't exist");
+					$this->log('', 0, 3, 0, 100, "Delete: Referenced file '" . $dat['ID_absFile'] . "' that was supposed to be deleted together with its record which didn't exist");
 				}
 			}
 		}

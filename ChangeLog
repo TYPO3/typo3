@@ -5,6 +5,7 @@
 
 2010-10-16  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #15799: Uninitialized variables in t3lib within TCEmain (Thanks to Oliver Klee)
 	* Fixed bug #15799: Uninitialized variables in t3lib within version extension (Thanks to Oliver Klee)
 	* Fixed bug #15576: Enable customization for fatal error messages in the backend and frontend / Make all page errors RuntimeExceptions and unify BE and FE fatal errors in a single HTML template (Thanks to Reinhard Führicht, Aske Ertmann)
 	* Fixed bug #15877: Put versioning code from TCEmain in version extension - part #2 - moving records
