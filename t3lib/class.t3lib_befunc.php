@@ -4128,6 +4128,7 @@ final class t3lib_BEfunc {
 	 * @param	boolean		Will return an alert() with the content of header and text.
 	 * @param	boolean		Print header.
 	 * @return	void
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - use RuntimeException from now on
 	 */
 	public static function typo3PrintError($header, $text, $js = '', $head = 1) {
 			// This prints out a TYPO3 error message.
@@ -4135,36 +4136,9 @@ final class t3lib_BEfunc {
 		if ($js) {
 			echo "alert('".t3lib_div::slashJS($header.'\n'.$text)."');";
 		} else {
-			echo $head?'<html>
-				<head>
-					<title>Error!</title>
-				</head>
-				<body bgcolor="white" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">':'';
-			echo '<div align="center">
-					<table border="0" cellspacing="0" cellpadding="0" width="333">
-						<tr>
-							<td align="center">'.
-								($GLOBALS['TBE_STYLES']['logo_login']?'<img src="'.$GLOBALS['BACK_PATH'].$GLOBALS['TBE_STYLES']['logo_login'].'" alt="" />':'<img src="'.$GLOBALS['BACK_PATH'].'gfx/typo3logo.gif" width="123" height="34" vspace="10" />').
-							'</td>
-						</tr>
-						<tr>
-							<td bgcolor="black">
-								<table width="100%" border="0" cellspacing="1" cellpadding="10">
-									<tr>
-										<td bgcolor="#F4F0E8">
-											<font face="verdana,arial,helvetica" size="2">';
-			echo '<strong><center><font size="+1">'.$header.'</font></center></strong><br />'.$text;
-			echo '							</font>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-				</div>';
-			echo $head?'
-				</body>
-			</html>':'';
+			t3lib_div::logDeprecatedFunction();
+			$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $text, $header);
+			$messageObj->output();
 		}
 	}
 

@@ -587,37 +587,15 @@ class t3lib_timeTrack {
 	 * @param	boolean		If set, then this will produce a alert() line for inclusion in JavaScript.
 	 * @param	string		URL for the <base> tag (if you want it)
 	 * @return	string
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - use RuntimeException from now on
 	 */
 	public function debug_typo3PrintError($header, $text, $js, $baseUrl = '') {
 		if ($js) {
 			$errorMessage = 'alert(\'' . t3lib_div::slashJS($header . '\n' . $text) . '\');';
 		} else {
-			$errorMessage = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-					"http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
-				<?xml version="1.0" encoding="utf-8"?>
-				<html>
-					<head>
-						'.($baseUrl ? '<base href="'.htmlspecialchars($baseUrl).'" />' : '').'
-						<title>Error!</title>
-						<style type="text/css"><!--/*--><![CDATA[/*><!--*/
-							body { font-family:Verdana,Arial,Helvetica,sans-serif; font-size: 90%; text-align: center; background-color: #ffffff; }
-							h1 { font-size: 1.2em; margin: 0 0 1em 0; }
-							p { margin: 0; text-align: left; }
-							img { border: 0; margin: 10px 0; }
-							div.center div { margin: 0 auto; }
-							.errorBox { width: 400px; padding: 0.5em; border: 1px solid black; background-color: #F4F0E8; }
-						/*]]>*/--></style>
-					</head>
-					<body>
-						<div class="center">
-							<img src="'.TYPO3_mainDir.'gfx/typo3logo.gif" width="123" height="34" alt="" />
-							<div class="errorBox">
-								<h1>'.$header.'</h1>
-								<p>'.$text.'</p>
-							</div>
-						</div>
-					</body>
-				</html>';
+			t3lib_div::logDeprecatedFunction();
+			$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $text, $header);
+			$errorMessage = $messageObj->render();
 		}
 
 			// Hook to modify error message
