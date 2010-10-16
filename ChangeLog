@@ -5,9 +5,9 @@
 2010-10-16  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Added feature #16007: Allow skins to register sprites through addIconSprite
-	* Added feature #15229: Core lacks current flags
+	* Added feature #15229: Core lacks current flags (Thanks to Steffen Ritter)
 
-2010-10-16 Steffen Kamper  <steffen@typo3.org>
+2010-10-16  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #14396: Warn when KEEP_FILE is set
 	* Fixed bug #15789: Improve ExtJS skin: Grids
@@ -29,7 +29,7 @@
 
 2010-10-15 Steffen Kamper  <steffen@typo3.org>
 
-	* Fixed bug #15928:#15543 Bugfix : PHP Warning in t3lib_spritemanager (Thanks to Sven Juergens)
+	* Fixed bug #15543: Bugfix: PHP Warning in t3lib_spritemanager (Thanks to Sven Juergens)
 	* Fixed bug #15928: Replace the current if-construct of stdWrap with real functions and make each of them stdWrap awaret (Thanks to Jo Hasenau)
 	* Fixed bug #15662: Bug: SpriteGeneration generates wrong output if there are several icons sizes which are same width and nearly same count (Thanks to Steffen Ritter)
 	* Fixed bug #15822: t3lib_beFunc use $this in static methods
