@@ -61,25 +61,14 @@ class t3lib_utility_Debug {
 		if (ob_get_level() == 0) {
 			ob_start();
 		}
-		$debug = '';
 
-		if (is_array($var)) {
-			$debug .= self::viewArray($var);
-		} elseif (is_object($var)) {
-			$debug .= '<strong>|Object:<pre>';
-			$debug .= print_r($var, TRUE);
-			$debug .= '</pre>|</strong>';
-		} elseif ((string) $var !== '') {
-			$debug .= '<strong>|' . htmlspecialchars((string) $var) . '|</strong>';
-		} else {
-			$debug .= '<strong>| debug |</strong>';
-		}
-
+		$debug = self::convertVariableToString($var);
 		if ($header) {
 			$debug = sprintf(self::DEBUG_TABLE_TEMPLATE, htmlspecialchars((string) $header), $debug);
 		}
 
 		if (TYPO3_MODE === 'BE') {
+			$debugString = self::prepareVariableForJavascript($debug, is_object($var));
 			$group = htmlspecialchars($group);
 
 			if ($header !== '') {
@@ -88,23 +77,9 @@ class t3lib_utility_Debug {
 				$tabHeader = 'Debug';
 			}
 
-			if (is_object($var)) {
-				$debug = str_replace(array (
-					'"', '/', '<', "\n", "\r"
-				), array (
-					'\"', '\/', '\<', '<br />', ''
-				), $debug);
-			} else {
-				$debug = str_replace(array (
-					'"', '/', '<', "\n", "\r"
-				), array (
-					'\"', '\/', '\<', '', ''
-				), $debug);
-			}
-
 			$script = '
 				(function debug() {
-					var debugMessage = "' . $debug . '";
+					var debugMessage = "' . $debugString . '";
 					var header = "' . $tabHeader . '";
 					var group = "' . $group . '";
 
@@ -138,6 +113,106 @@ class t3lib_utility_Debug {
 		} else {
 			echo $debug;
 		}
+	}
+
+	/**
+	 * Replaces special characters for the usage inside javascript
+	 *
+	 * @param string $string
+	 * @param boolean $asObject
+	 * @return string
+	 */
+	public static function prepareVariableForJavascript($string, $asObject) {
+		if ($asObject) {
+			$string = str_replace(array (
+				'"', '/', '<', "\n", "\r"
+			), array (
+				'\"', '\/', '\<', '<br />', ''
+			), $string);
+		} else {
+			$string = str_replace(array (
+				'"', '/', '<', "\n", "\r"
+			), array (
+				'\"', '\/', '\<', '', ''
+			), $string);
+		}
+
+		return $string;
+	}
+
+	/**
+	 * Converts a variable to a string
+	 *
+	 * @param mixed $variable
+	 * @return string
+	 */
+	public static function convertVariableToString($variable) {
+		$string = '';
+		if (is_array($variable)) {
+			$string = self::viewArray($variable);
+		} elseif (is_object($variable)) {
+			$string = '<strong>|Object:<pre>';
+			$string .= print_r($variable, TRUE);
+			$string .= '</pre>|</strong>';
+		} elseif ((string) $variable !== '') {
+			$string = '<strong>|' . htmlspecialchars((string) $variable) . '|</strong>';
+		} else {
+			$string = '<strong>| debug |</strong>';
+		}
+
+		return $string;
+	}
+
+	/**
+	 * Opens a debug message inside a popup window
+	 *
+	 * @param mixed $debugVariable
+	 * @param string $header
+	 * @param string $group
+	 */
+	public static function debugInPopUpWindow($debugVariable, $header = 'Debug', $group = 'Debug') {
+		$debugString = self::prepareVariableForJavascript(
+			self::convertVariableToString($debugVariable),
+			is_object($debugVariable)
+		);
+
+		$script = '
+			(function debug() {
+				var debugMessage = "' . $debugString . '",
+					header = "' . htmlspecialchars($header) . '",
+					group = "' . htmlspecialchars($group) . '",
+
+					browserWindow = function(debug, header, group) {
+						var newWindow = window.open("", "TYPO3DebugWindow_" + group,
+							"width=600,height=400,menubar=0,toolbar=1,status=0,scrollbars=1,resizable=1"
+						);
+						if (newWindow.document.body.innerHTML) {
+							newWindow.document.body.innerHTML = newWindow.document.body.innerHTML +
+								"<hr />" + debugMessage;
+						} else {
+							newWindow.document.writeln(
+								"<html><head><title>Debug: " + header + "(" + group + ")</title></head>"
+								+ "<body onload=\"self.focus()\">"
+								+ debugMessage
+								+ "</body></html>"
+							);
+						}
+					}
+
+				if (!top.Ext) {
+					browserWindow(debugMessage, header, group);
+				} else {
+					top.Ext.onReady(function() {
+						if (top && top.TYPO3 && top.TYPO3.Backend) {
+							top.TYPO3.Backend.DebugConsole.openBrowserWindow(header, debugMessage, group);
+						} else {
+							browserWindow(debugMessage, header, group);
+						}
+					});
+				}
+			})();
+		';
+		echo t3lib_div::wrapJS($script);
 	}
 
 	/**

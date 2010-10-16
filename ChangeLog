@@ -1,3 +1,7 @@
+2010-10-16  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #15868: Provide function to open debug messages in a popup (Thanks to Stefan Galinski)
+
 2010-10-16  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #15877: Put versioning code from TCEmain in version extension - part #2 - moving records
@@ -272,7 +276,7 @@
 
 2010-09-21  Ernesto Baschny  <ernst@cron-it.de>
 
-	* Added feature #15754: ExtDirect in Frontend (Thanks to Stefan Galinksi)
+	* Added feature #15754: ExtDirect in Frontend (Thanks to Stefan Galinski)
 
 2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
 
