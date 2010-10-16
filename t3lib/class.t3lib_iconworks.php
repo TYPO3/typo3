@@ -685,13 +685,26 @@ final class t3lib_iconWorks	{
 
 
 	/**
-	 * Generates the spriteicon name for a given path or fileExtension
-	 * usually called from getSpriteIconForFile
+	 * Generates the spriteicon css classes name for a given path or fileExtension
+	 * usually called from getSpriteIconForFile or ExtJs Provider
 	 *
 	 * @param	string		fileExtension can be jpg, gif etc, but also be 'mount' or 'folder', but can also be a full path which will be resolved then
 	 * @return	string		the string of the CSS class, see t3lib_iconworks::$fileSpriteIconNames
+	 * @access private
 	 */
 	public static function mapFileExtensionToSpriteIconClass($fileExtension) {
+		return self::getSpriteIconClasses(self::mapFileExtensionToSpriteIconName($fileExtension));
+	}
+
+	/**
+	 * Generates the spriteicon name for a given path or fileExtension
+	 * usually called from mapFileExtensionToSpriteIconClass and tceforms
+	 *
+	 * @param	string		fileExtension can be jpg, gif etc, but also be 'mount' or 'folder', but can also be a full path which will be resolved then
+	 * @return	string		the string of the CSS class, see t3lib_iconworks::$fileSpriteIconNames
+	 * @access private
+	 */
+	public static function mapFileExtensionToSpriteIconName($fileExtension) {
 
 			// if the file is a whole file with name etc (mainly, if it has a "." or a "/"),
 			// then it is checked whether it is a valid directory
@@ -715,7 +728,8 @@ final class t3lib_iconWorks	{
 			$fileExtension = 'default';
 		}
 		$iconName = self::$fileSpriteIconNames[$fileExtension];
-		return self::getSpriteIconClasses($iconName);
+
+	    return $iconName;
 	}
 
 
@@ -774,7 +788,28 @@ final class t3lib_iconWorks	{
 	 * @access	private
 	 **/
 	public static function mapRecordTypeToSpriteIconClass($table, array $row) {
-		$iconName = '';
+		return self::getSpriteIconClasses(self::mapRecordTypeToSpriteIconName($table, $row));
+	}
+
+	/**
+	 * this helper functions looks up the column that is used for the type of
+	 * the chosen TCA table. And then fetches the corresponding iconname
+	 * based on the chosen iconsprite class in this TCA
+	 * The TCA looks up
+	 *   - [ctrl][typeicon_column]
+	 *   -
+	 * This method solely takes care of the type of this record, not any
+	 * statuses, used for overlays.
+	 * You should not use this directly besides if you need it in tceforms/core classes
+	 *
+	 * see t3lib/stddb/tables.php for an example with the TCA table "pages"
+	 *
+	 * @param	string	$table	the TCA table
+	 * @param	array	$row	the selected record
+	 * @return	string	the CSS class for the sprite icon of that DB record
+	 * @access	private
+	 **/
+	public static function mapRecordTypeToSpriteIconName($table, array $row) {
 		$recordType = array();
 		if (isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
 			$column = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
@@ -829,12 +864,12 @@ final class t3lib_iconWorks	{
 			}
 		}
 		krsort($recordType);
-		foreach ($recordType as $record) {
-			if (in_array($record, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
-				return self::getSpriteIconClasses($record);
+		foreach ($recordType as $iconName) {
+			if (in_array($iconName, $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable'])) {
+				return $iconName;
 			}
 		}
-		return self::getSpriteIconClasses('status-status-icon-missing');
+		return 'status-status-icon-missing';
 	}
 
 
@@ -858,7 +893,7 @@ final class t3lib_iconWorks	{
 	 * @return	string	the CSS class for the sprite icon of that DB record
 	 * @access	private
 	 */
-	protected static function mapRecordOverlayToSpriteIconName($table, array $row) {
+	public static function mapRecordOverlayToSpriteIconName($table, array $row) {
 		$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
 			// Calculate for a given record the actual visibility at the moment
