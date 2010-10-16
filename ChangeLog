@@ -1,3 +1,7 @@
+2010-10-16 Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15789: Improve ExtJS skin: Grids
+
 2010-10-15  Oliver Hader  <oliver@typo3.org>
 
 	* Added feature #15988: Refactor TCA definitions of table pages
