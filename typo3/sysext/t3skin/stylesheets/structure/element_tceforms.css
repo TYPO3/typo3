@@ -301,6 +301,10 @@ TCEforms Inline-Relational-Record-Editing
 	padding: 0 5px;
 }
 
+.sortableHandle {
+	cursor: move;
+}
+
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Sections
 - - - - - - - - - - - - - - - - - - - - - */
