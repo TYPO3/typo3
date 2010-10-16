@@ -222,6 +222,15 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	}
 
 	/**
+	 * Gets the properties for the current page.
+	 *
+	 * @return	array		The properties for the current page.
+	 */
+	protected function getPage() {
+		return $GLOBALS['TSFE']->page;
+	}
+
+	/**
 	 * Determines the rootline for the current page.
 	 *
 	 * @return	array		The rootline for the current page.

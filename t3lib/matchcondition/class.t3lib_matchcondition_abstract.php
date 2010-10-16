@@ -210,8 +210,9 @@ abstract class t3lib_matchCondition_abstract {
 		if (t3lib_div::inList('browser,version,system,useragent', strtolower($key))) {
 			$browserInfo = $this->getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
 		}
+		$keyParts = t3lib_div::trimExplode('|', $key);
 
-		switch ($key) {
+		switch ($keyParts[0]) {
 			case 'browser':
 				$values = t3lib_div::trimExplode(',', $value, true);
 					// take all identified browsers into account, eg chrome deliver
@@ -348,6 +349,17 @@ abstract class t3lib_matchCondition_abstract {
 				} else {
 					if ($value === '') {
 						return TRUE;
+					}
+				}
+			break;
+			case 'page':
+				if ($keyParts[1]) {
+					$page = $this->getPage();
+					$property = $keyParts[1];
+					if (!empty($page) && isset($page[$property])) {
+						if (strcmp($page[$property], $value) === 0) {
+							return TRUE;
+						}
 					}
 				}
 			break;
@@ -595,6 +607,13 @@ abstract class t3lib_matchCondition_abstract {
 	 * @return	integer		The current page Id
 	 */
 	abstract protected function determinePageId();
+
+	/**
+	 * Gets the properties for the current page.
+	 *
+	 * @return	array		The properties for the current page.
+	 */
+	abstract protected function getPage();
 
 	/**
 	 * Determines the rootline for the current page.

@@ -176,6 +176,16 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	}
 
 	/**
+	 * Gets the properties for the current page.
+	 *
+	 * @return	array		The properties for the current page.
+	 */
+	protected function getPage() {
+		$pageId = (isset($this->pageId) ? $this->pageId : $this->determinePageId());
+		return t3lib_BEfunc::getRecord('pages', $pageId);
+	}
+
+	/**
 	 * Gets the page id by a record.
 	 *
 	 * @param	string		$table: Name of the table

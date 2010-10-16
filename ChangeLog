@@ -1,3 +1,7 @@
+2010-10-16  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Added feature #15696: Implement TypoScript conditions for the current page record (Thanks to Stefan Neufeind)
+
 2010-10-16  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15868: Provide function to open debug messages in a popup (Thanks to Stefan Galinski)
