@@ -520,6 +520,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-document-save-new',
 	'actions-document-save-view',
 	'actions-document-select',
+	'actions-document-synchronize',
 	'actions-document-view',
 	'actions-edit-add',
 	'actions-edit-copy',
@@ -538,6 +539,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-edit-undo',
 	'actions-edit-unhide',
 	'actions-edit-upload',
+	'actions-input-clear',
 	'actions-insert-record',
 	'actions-insert-reference',
 	'actions-move-down',
@@ -786,6 +788,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
 
 
 

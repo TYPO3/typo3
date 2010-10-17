@@ -1,5 +1,6 @@
 2010-10-17  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15830: Sprite - IRRE record synchronization icon missing (Thanks to Stefan Galinski)
 	* Follow-up to #15663: SpriteGenerator adds empty folder to spritebase, which results in wrong css (Thanks to Steffen Ritter)
 	* Fixed bug #16023: Deprecate unused / old files in typo3/ that belong to the old, removed backend
 
