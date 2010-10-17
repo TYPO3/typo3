@@ -1,3 +1,7 @@
+2010-10-17  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #16006: Remove the checkbox that clears the input fields in TCE-forms and replace it with a sprite icon (Thanks to Jo Hasenau)
+
 2010-10-16  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15696: Implement TypoScript conditions for the current page record (Thanks to Stefan Neufeind)

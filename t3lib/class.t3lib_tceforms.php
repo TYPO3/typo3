@@ -926,7 +926,7 @@ class t3lib_TCEforms	{
 						$lTTS_url = $this->backPath.'alt_doc.php?edit['.$table.']['.$row['uid'].']=edit&columnsOnly='.$field.'&returnUrl='.rawurlencode($this->thisReturnUrl());
 						$label = '<a href="' . htmlspecialchars($lTTS_url) . '">' . $label . '</a>';
 					}
-					
+
 						// wrap the label with help text
 					$PA['label'] = $label = t3lib_BEfunc::wrapInHelp($table, $field, $label);
 
@@ -1172,33 +1172,39 @@ class t3lib_TCEforms	{
 			}
 		}
 
-		$paramsList = "'".$PA['itemFormElName']."','".implode(',',$evalList)."','".trim($config['is_in'])."',".(isset($config['checkbox'])?1:0).",'".$config['checkbox']."'";
-		if (isset($config['checkbox']))	{
-				// Setting default "click-checkbox" values for eval types "date" and "datetime":
-			$thisMidnight = gmmktime(0,0,0);
-			if (in_array('date',$evalList))	{
-				$checkSetValue = $thisMidnight;
-			} elseif (in_array('datetime',$evalList))	{
-				$checkSetValue = $GLOBALS['EXEC_TIME'];
-			} elseif (in_array('year',$evalList))	{
-				$checkSetValue = gmdate('Y');
-			}
-			$cOnClick = 'typo3form.fieldGet('.$paramsList.',1,\''.$checkSetValue.'\');'.implode('',$PA['fieldChangeFunc']);
-			$item .= '<input type="checkbox" id="' . uniqid('tceforms-check-') . '" class="' . $this->formElStyleClassValue('check', TRUE) . '" name="' . $PA['itemFormElName'] . '_cb" onclick="' . htmlspecialchars($cOnClick) . '" />';
-		}
-		if ((in_array('date',$evalList) || in_array('datetime',$evalList)) && $PA['itemFormElValue']>0){
+		$paramsList = "'" . $PA['itemFormElName'] . "','" . implode(',', $evalList) . "','" . trim($config['is_in']) . "'," . (isset($config['checkbox']) ? 1 : 0) . ",'" . $config['checkbox'] . "'";
+		if ((in_array('date', $evalList) || in_array('datetime', $evalList))) {
+			$item .= '<span class="t3-tceforms-input-wrapper-datetime" onmouseOver="if (document.getElementById(\'' .
+					$inputId . '\').value) {this.className=\'t3-tceforms-input-wrapper-datetime-hover\';} else {this.className=\'t3-tceforms-input-wrapper-datetime\';};" onmouseOut="this.className=\'t3-tceforms-input-wrapper-datetime\';">';
+
 				// Add server timezone offset to UTC to our stored date
-			$PA['itemFormElValue'] += date('Z', $PA['itemFormElValue']);
+			if ($PA['itemFormElValue'] > 0) {
+				$PA['itemFormElValue'] += date('Z', $PA['itemFormElValue']);
+			}
+		} else {
+			$item .= '<span class="t3-tceforms-input-wrapper" onmouseOver="if (document.getElementById(\'' . $inputId .
+					'\').value) {this.className=\'t3-tceforms-input-wrapper-hover\';} else {this.className=\'t3-tceforms-input-wrapper\';};" onmouseOut="this.className=\'t3-tceforms-input-wrapper\';">';
+		}
+			// old function "checkbox" now the option to set the date / remove the date
+		if (isset($config['checkbox'])) {
+			$item .= t3lib_iconWorks::getSpriteIcon('actions-input-clear', array('tag' => 'a', 'class' => 't3-tceforms-input-clearer', 'onclick' => 'document.getElementById(\'' . $inputId . '\').value=\'\';' . implode('', $PA['fieldChangeFunc'])));
 		}
 
-		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet'=>'typo3form.fieldGet('.$paramsList.');'), $PA['fieldChangeFunc']);
-		$mLgd = ($config['max']?$config['max']:256);
-		$iOnChange = implode('',$PA['fieldChangeFunc']);
+		$PA['fieldChangeFunc'] = array_merge(
+			array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'),
+			$PA['fieldChangeFunc']
+		);
+		$mLgd = ($config['max'] ? $config['max'] : 256);
+		$iOnChange = implode('', $PA['fieldChangeFunc']);
 
-		$item.='<input type="text" id="' . $inputId . '" class="' . implode(' ', $cssClasses) . '" name="'.$PA['itemFormElName'].'_hr" value="" style="' . $cssStyle . '" maxlength="'.$mLgd.'" onchange="'.htmlspecialchars($iOnChange).'"'.$PA['onFocus'].' />';	// This is the EDITABLE form field.
-		$item.='<input type="hidden" name="'.$PA['itemFormElName'].'" value="'.htmlspecialchars($PA['itemFormElValue']).'" />';			// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
-		$item .= $fieldAppendix;
-		$this->extJSCODE.='typo3form.fieldSet('.$paramsList.');';
+		$item .= '<input type="text" id="' . $inputId .
+				'" class="' . implode(' ', $cssClasses) . '" name="' . $PA['itemFormElName'] .
+				'_hr" value="" style="' . $cssStyle . '" maxlength="' . $mLgd . '" onchange="' .
+				htmlspecialchars($iOnChange) . '"' . $PA['onFocus'] . ' />'; // This is the EDITABLE form field.
+		$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' .
+				htmlspecialchars($PA['itemFormElValue']) . '" />'; // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
+		$item .= $fieldAppendix . '</span>';
+		$this->extJSCODE .= 'typo3form.fieldSet(' . $paramsList . ');';
 
 			// going through all custom evaluations configured for this field
 		foreach ($evalList as $evalData) {
@@ -2807,7 +2813,7 @@ class t3lib_TCEforms	{
 							$s = t3lib_div::revExplode('[]',$formPrefix,2);
 							$actionFieldName = '_ACTION_FLEX_FORM'.$PA['itemFormElName'].$s[0].'][_ACTION]['.$s[1];
 
-								// Push the container to DynNestedStack as it may be toggled							
+								// Push the container to DynNestedStack as it may be toggled
 							$this->pushToDynNestedStack('flex' , $idTagPrefix);
 
 								// Putting together the container:
@@ -6102,7 +6108,7 @@ class t3lib_TCEforms	{
 						}
 
 							// New records in a workspace are not handled as a version record
-							// if it's no new version, we detect versions like this: 
+							// if it's no new version, we detect versions like this:
 							// -- if user is in workspace: always true
 							// -- if editor is in live ws: only true if pid == -1
 						$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;

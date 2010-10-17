@@ -35,6 +35,53 @@ table#typo3-altdoc-header input,
 	border: 0;
 }
 
+.t3-tceforms-input-wrapper,
+.t3-tceforms-input-wrapper-hover,
+.t3-tceforms-input-wrapper-datetime,
+.t3-tceforms-input-wrapper-datetime-hover {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+
+
+.t3-tceforms-input-wrapper .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer {
+	position: absolute;
+	right: 4px;
+	top: 6px;
+	z-index: 1000;
+	cursor: pointer;
+}
+
+.t3-tceforms-input-wrapper-datetime .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
+	position: absolute;
+	right: 24px;
+	top: 6px;
+	z-index: 1000;
+	cursor: pointer;
+}
+
+.t3-tceforms-input-wrapper .tceforms-textfield,
+.t3-tceforms-input-wrapper-hover .tceforms-textfield,
+.t3-tceforms-input-wrapper .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-hover .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-datetime .tceforms-textfield,
+.t3-tceforms-input-wrapper-datetime-hover .tceforms-textfield,
+.t3-tceforms-input-wrapper-datetime .tceforms-datetimefield,
+.t3-tceforms-input-wrapper-datetime-hover .tceforms-datetimefield {
+	position: relative;
+	z-index: 2000;
+	min-height: 14px;
+}
+
+.t3-tceforms-input-wrapper-hover .t3-tceforms-input-clearer,
+.t3-tceforms-input-wrapper-datetime-hover .t3-tceforms-input-clearer {
+	z-index: 3000;
+}
+
 table.typo3-TCEforms table#typo3-altdoc-header input:hover,
 .c-inputButton:hover {
 	background: none;
