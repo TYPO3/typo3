@@ -56,7 +56,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 */
 	protected $templateIcon = '.###NAMESPACE###-###ICONNAME### {
 	background-position: -###LEFT###px -###TOP###px;
-	###SIZE_INFO###
+###SIZE_INFO###
 }
 ';
 
@@ -363,9 +363,12 @@ class t3lib_spritemanager_SpriteGenerator {
 		}
 
 		foreach ($this->iconsData as $key => $data) {
+			$temp = $data['iconNameParts'];
+			array_shift($temp);
+			$cssName = implode('-' , $temp);
 			$markerArrayIcons = array(
 				'###NAMESPACE###'	=> $this->nameSpace,
-				'###ICONNAME###'	=> $data['singleName'],
+				'###ICONNAME###'	=> $cssName,
 				'###LEFT###'		=> $data['left'],
 				'###TOP###'		=> $data['top'],
 				'###SIZE_INFO###'	=> ''
@@ -564,11 +567,17 @@ class t3lib_spritemanager_SpriteGenerator {
 	 */
 	protected function buildFileInformationCache(array $files) {
 		foreach ($files as $iconName => $iconFile) {
-			$fileInfo = pathinfo(PATH_site . $iconFile);
-			$imageInfo = getimagesize(PATH_site . $iconFile);
+		
+			$iconNameParts = t3lib_div::trimExplode('-', $iconName);
+			if(!in_array($iconNameParts[0], $this->spriteBases)) {
+				$this->spriteBases[] = $iconNameParts[0];
+			}
+			$fileInfo = @pathinfo(PATH_site . $iconFile);
+			$imageInfo = @getimagesize(PATH_site . $iconFile);
 
 			$this->iconsData[$iconName] = array(
 				'iconName'		=> $iconName,
+				'iconNameParts'	=> $iconNameParts,
 				'singleName'	=> $fileInfo['filename'],
 				'fileExtension'	=> $fileInfo['extension'],
 				'fileName'		=> PATH_site . $iconFile,
