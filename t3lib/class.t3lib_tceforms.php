@@ -4814,10 +4814,6 @@ class t3lib_TCEforms	{
 		<table class="typo3-TCEforms">'.
 			'|'.
 			'
-			<tr>
-				<td><!-- --></td>
-				<td><img src="clear.gif" width="'.($this->docLarge ? 440+150 : 440).'" height="1" alt="" /></td>
-			</tr>
 			<tr class="typo3-TCEforms-recHeaderRow">
 				<td colspan="2">###RECORD_ICON### <span class="typo3-TCEforms-recHeader">###TABLE_TITLE###</span> ###ID_NEW_INDICATOR###</td>
 			</tr>
@@ -4846,9 +4842,6 @@ class t3lib_TCEforms	{
 			</tr>';
 
 		$this->sectionWrap='
-			<tr>
-				<td colspan="2"><img src="clear.gif" width="1" height="###SPACE_BEFORE###" alt="" /></td>
-			</tr>
 			<tr>
 				<td colspan="2"><table ###TABLE_ATTRIBS###>###CONTENT###</table></td>
 			</tr>
@@ -5015,8 +5008,7 @@ class t3lib_TCEforms	{
 			if ($tableAttribs)	{
 				$tableAttribs='border="0" cellspacing="0" cellpadding="0" width="100%"'.$tableAttribs;
 				$out_array[$out_pointer] = str_replace('###CONTENT###',$out_array[$out_pointer],
-					str_replace('###TABLE_ATTRIBS###',$tableAttribs,
-						str_replace('###SPACE_BEFORE###',intval($this->borderStyle[1]),$this->sectionWrap)));
+					str_replace('###TABLE_ATTRIBS###',$tableAttribs, $this->sectionWrap));
 			}
 			$out_pointer++;
 		}

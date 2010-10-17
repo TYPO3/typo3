@@ -730,18 +730,18 @@ class template {
 	PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">';
 				break;
+			case 'xhtml_trans':
+				$headerStart = '<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+				// The fallthrough is intended as HTML5, as this is the default for the BE since TYPO3 4.5
 			case 'html_5':
+			default:
 				$headerStart = '<!DOCTYPE html>' . LF;
 				$htmlTag = '<html>';
 				// disable rendering of XHTML tags
 				$this->getPageRenderer()->setRenderXhtml(FALSE);
 				break;
-				// The fallthrough is intended as XHTML 1.0 transitional is the default for the BE.
-			case 'xhtml_trans':
-			default:
-				$headerStart = '<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
 		}
 
 		$this->pageRenderer->setHtmlTag($htmlTag);
@@ -765,7 +765,7 @@ class template {
 		$xmlStylesheet = '<?xml-stylesheet href="#internalStyle" type="text/css"?>';
 
 			// Add the XML prologue for XHTML doctypes
-		if ($this->docType !== 'html_3' && $this->docType !== 'html_5') {
+		if (strpos($this->doctype, 'xhtml') !== FALSE) {
 				// Put the XML prologue before or after the doctype declaration according to browser
 			if ($browserInfo['browser'] === 'msie' && $browserInfo['version'] < 7) {
 				$headerStart = $headerStart . LF . $xmlPrologue;

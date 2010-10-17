@@ -9,6 +9,7 @@
 
 2010-10-17  Benjamin Mack  <benni@typo3.org>
 
+	* Added feature #15844: Use HTML5 as the default TYPO3 Backend doktype
 	* Added feature #16026: Added hook / Cannot hook into the marker replacement functionality for BE templates
 	* Fixed bug #16020: Streamline usage of template.php:dynTabMenu
 	* Fixed bug #16022: Size calculation function can only deal with integers
