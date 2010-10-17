@@ -200,7 +200,6 @@ class SC_db_new_content_el {
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/db_new_content_el.html');
 		$this->doc->JScode='';
-		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		$this->doc->form='<form action="" name="editForm"><input type="hidden" name="defValues" value="" />';
 
 			// Setting up the context sensitive menu:
@@ -347,7 +346,7 @@ class SC_db_new_content_el {
 					.typo3-dyntabmenu-divs table { margin: 15px; }
 					.typo3-dyntabmenu-divs table td { padding: 3px; }
 				';
-				$code = $LANG->getLL('sel1',1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', false, false, 100);
+				$code = $LANG->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE);
 			} else {
 				$code = $LANG->getLL('sel1',1) . '<br /><br />';
 				foreach ($menuItems as $section) {

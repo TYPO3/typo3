@@ -289,9 +289,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 
-			// Add JS for dynamic tabs:
-		$this->doc->JScode.= $this->doc->getDynTabMenuJScode();
-
 			// Setting publish access permission for workspace:
 		$this->publishAccess = $BE_USER->workspacePublishAccess($BE_USER->workspace);
 
@@ -338,7 +335,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			);
 
 				// Add hidden fields and create tabs:
-			$content = $this->doc->getDynTabMenu($menuItems,'user_ws');
+			$content = $this->doc->getDynTabMenu($menuItems, 'user_ws');
 			$this->content.=$this->doc->section('',$content,0,1);
 
 				// Setting up the buttons and markers for docheader

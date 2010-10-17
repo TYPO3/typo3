@@ -288,7 +288,6 @@ class SC_mod_user_setup_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/setup.html');
-		$this->doc->JScodeLibArray['dyntabmenu'] = $this->doc->getDynTabMenuJScode();
 		$this->doc->form = '<form action="index.php" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
 		$this->doc->tableLayout = array(
 			'defRow' => array(
@@ -427,7 +426,7 @@ class SC_mod_user_setup_index {
 			// render the menu items
 		$menuItems = $this->renderUserSetup();
 
-		$this->content .= $this->doc->spacer(20) . $this->doc->getDynTabMenu($menuItems, 'user-setup', false, false, 100, 1, false, 1, $this->dividers2tabs);
+		$this->content .= $this->doc->spacer(20) . $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 0, 1, FALSE, 1, $this->dividers2tabs);
 
 
 			// Submit and reset buttons

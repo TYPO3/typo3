@@ -494,7 +494,7 @@ class SC_alt_doc {
 				t3lib_BEfunc::viewOnClick($this->popViewId,'',t3lib_BEfunc::BEgetRootLine($this->popViewId),'',$this->viewUrl,$this->popViewId_addParams).
 				' } '
 			: '')
-		).$this->doc->getDynTabMenuJScode();
+		);
 
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();

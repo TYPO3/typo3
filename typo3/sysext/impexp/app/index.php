@@ -299,9 +299,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			}
 		');
 
-			// Set up JS for dynamic tab menu
-		$this->doc->JScode .= $this->doc->getDynTabMenuJScode();
-
 		// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 

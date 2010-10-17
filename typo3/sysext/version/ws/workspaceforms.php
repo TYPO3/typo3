@@ -137,7 +137,6 @@ class SC_mod_user_ws_workspaceForms extends t3lib_SCbase {
 		$this->doc->form = '<form action="' . t3lib_div::getIndpEnv('SCRIPT_NAME').'" method="post" enctype="'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'].'" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 
 		$this->doc->getContextMenuCode();
-		$this->doc->JScode.= $this->doc->getDynTabMenuJScode();
 
 		// Parent initialization:
 		t3lib_SCbase::init();

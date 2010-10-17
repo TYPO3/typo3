@@ -235,7 +235,7 @@ class t3lib_TCEforms	{
 	 */
 	var $clipObj=FALSE;
 	var $enableClickMenu=FALSE;			// Enable click menu on reference icons.
-	var $enableTabMenu = FALSE;			// Enable Tab Menus. If set to true, the JavaScript content from template::getDynTabMenuJScode() must be included in the document.
+	var $enableTabMenu = FALSE;			// Enable Tab Menus.
 	var $renderReadonly = FALSE; 		// When enabled all fields are rendered non-editable.
 
 	var $form_rowsToStylewidth = 9.58;	// Form field width compensation: Factor from NN4 form field widths to style-aware browsers (like NN6+ and MSIE, with the $CLIENT[FORMSTYLE] value set)
@@ -4380,7 +4380,7 @@ class t3lib_TCEforms	{
 	function getDynTabMenu($parts, $idString, $dividersToTabsBehaviour = 1) {
 		if (is_object($GLOBALS['TBE_TEMPLATE'])) {
 			$GLOBALS['TBE_TEMPLATE']->backPath = $this->backPath;
-			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, false, 50, 1, false, 1, $dividersToTabsBehaviour);
+			return $GLOBALS['TBE_TEMPLATE']->getDynTabMenu($parts, $idString, 0, FALSE, 0, 1, FALSE, 1, $dividersToTabsBehaviour);
 		} else {
 			$output = '';
 			foreach($parts as $singlePad)	{
