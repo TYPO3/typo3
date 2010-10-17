@@ -2482,13 +2482,13 @@ final class t3lib_BEfunc {
 
 	/**
 	 * Returns help-text icon if configured for.
-	 * TCA_DESCR must be loaded prior to this function and $BE_USER must 
+	 * TCA_DESCR must be loaded prior to this function and $BE_USER must
 	 * have 'edit_showFieldHelp' set to 'icon', otherwise nothing is returned
 	 * Usage: 6
-	 * 
+	 *
 	 * Please note: since TYPO3 4.5 the UX team decided to not use CSH in its former way,
 	 * but to wrap the given text (where before the help icon was, and you could hover over it)
-	 * Please also note that since TYPO3 4.5 the option to enable help (none, icon only, full text) 
+	 * Please also note that since TYPO3 4.5 the option to enable help (none, icon only, full text)
 	 * was completely removed.
 	 *
 	 * @param	string		Table name
@@ -2551,7 +2551,7 @@ final class t3lib_BEfunc {
 	 * the help text will show up
 	 * This is the new help API function since TYPO3 4.5, and uses the new behaviour
 	 * (hover over text, no icon, no fulltext option, no option to disable the help)
-	 * 
+	 *
 	 * @param	string	$table	The table name for which the help should be shown
 	 * @param	string	$field	The field name for which the help should be shown
 	 * @param	string	$text	the text which should be wrapped with the help text
@@ -2563,18 +2563,18 @@ final class t3lib_BEfunc {
 		$GLOBALS['LANG']->loadSingleTableDescription($table);
 		$helpText = self::helpText($table, $field);
 		if ($helpText) {
-				// if no text was given, just use the regular help icon 
+				// if no text was given, just use the regular help icon
 			if ($text == '') {
 				$text = t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
 			}
 
-			$helpText = '<span class="t3-help-inline">' . $GLOBALS['LANG']->hscAndCharConv($helpText, FALSE) . '</span>';
+			$helpText = '<div class="t3-help-inline">' . $helpText . '</div>';
 			$text = '<abbr class="t3-help-teaser">' . $text . '</abbr>';
 
 			$text = '<a class="t3-help-link" href="#" rel="' . $table . '|' . $field . '">' . $text . $helpText . '</a>';
 		}
 		return $text;
-	} 
+	}
 
 
 	/**
