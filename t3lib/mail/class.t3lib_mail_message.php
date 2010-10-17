@@ -73,7 +73,7 @@ class t3lib_mail_message extends Swift_Message {
 	public function send() {
 		$this->initializeMailer();
 		$this->sent = TRUE;
-		return $this->mailer->send($this, &$this->failedRecipients);
+		return $this->mailer->send($this, $this->failedRecipients);
 	}
 
 	/**
