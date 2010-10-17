@@ -312,7 +312,7 @@ class t3lib_clipboard {
 			// Upper header
 		$out[]='
 			<tr class="t3-row-header">
-				<td colspan="3" nowrap="nowrap" align="center"><strong>' . $this->clLabel('clipboard', 'buttons') . '</strong></td>
+				<td colspan="3">' . t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_clipboard', $this->clLabel('clipboard', 'buttons')) . '</td>
 			</tr>';
 
 			// Button/menu header:

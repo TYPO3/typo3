@@ -469,32 +469,18 @@ class localRecordList extends recordList {
 				// Header line is drawn
 			$theData = Array();
 			if ($this->disableSingleTableView)	{
-				$theData[$titleCol] = '<span class="c-table">'.$GLOBALS['LANG']->sL($TCA[$table]['ctrl']['title'],1).'</span> ('.$this->totalItems.')';
+				$theData[$titleCol] = '<span class="c-table">' . t3lib_BEfunc::wrapInHelp($table, '', $GLOBALS['LANG']->sL($TCA[$table]['ctrl']['title'], TRUE)) . '</span> ('.$this->totalItems.')';
 			} else {
 				$theData[$titleCol] = $this->linkWrapTable($table, '<span class="c-table">' . $GLOBALS['LANG']->sL($TCA[$table]['ctrl']['title'], TRUE) . '</span> (' . $this->totalItems . ') ' .
 						($this->table ? t3lib_iconWorks::getSpriteIcon('actions-view-table-collapse', array('title' => $GLOBALS['LANG']->getLL('contractView', TRUE))) : t3lib_iconWorks::getSpriteIcon('actions-view-table-expand', array('title' => $GLOBALS['LANG']->getLL('expandView', TRUE))))
 					);
 			}
 
-				// CSH:
-			$theData[$titleCol].= t3lib_BEfunc::cshItem($table,'',$this->backPath,'',FALSE,'margin-bottom:0px; white-space: normal;');
-
 			if ($listOnlyInSingleTableMode)	{
 				$out.='
 					<tr>
-						<td class="t3-row-header" style="width:95%;">' . $theData[$titleCol] . '</td>
+						<td class="t3-row-header" style="width:95%;">' . t3lib_BEfunc::wrapInHelp($table, '', $theData[$titleCol]) . '</td>
 					</tr>';
-
-				if ($GLOBALS['BE_USER']->uc["edit_showFieldHelp"])	{
-					$GLOBALS['LANG']->loadSingleTableDescription($table);
-					if (isset($GLOBALS['TCA_DESCR'][$table]['columns']['']))	{
-						$onClick = 'vHWin=window.open(\'view_help.php?tfID='.$table.'.\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
-						$out.='
-					<tr>
-						<td class="c-tableDescription">'.t3lib_BEfunc::helpTextIcon($table,'',$this->backPath,TRUE).$GLOBALS['TCA_DESCR'][$table]['columns']['']['description'].'</td>
-					</tr>';
-					}
-				}
 			} else {
 				// Render collapse button if in multi table mode
 				$collapseIcon = '';

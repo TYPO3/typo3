@@ -374,24 +374,31 @@ class SC_db_list {
 					<div id="typo3-listOptions">
 						<form action="" method="post">';
 
-			$this->body.=t3lib_BEfunc::getFuncCheck($this->id,'SET[bigControlPanel]',$this->MOD_SETTINGS['bigControlPanel'],'db_list.php',($this->table?'&table='.$this->table:''),'id="checkLargeControl"').' <label for="checkLargeControl">'.$LANG->getLL('largeControl',1).'</label><br />';
+			$this->body .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], 'db_list.php', ($this->table ? '&table=' . $this->table : ''), 'id="checkLargeControl"');
+			$this->body .= '<label for="checkLargeControl">' . t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_options', $LANG->getLL('largeControl', TRUE)) . '</label><br />';
 			if ($dblist->showClipboard)	{
-				$this->body.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'db_list.php',($this->table?'&table='.$this->table:''),'id="checkShowClipBoard"').' <label for="checkShowClipBoard">'.$LANG->getLL('showClipBoard',1).'</label><br />';
+				$this->body .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], 'db_list.php', ($this->table ? '&table=' . $this->table : ''), 'id="checkShowClipBoard"');
+				$this->body .= '<label for="checkShowClipBoard">' . t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_options', $LANG->getLL('showClipBoard', TRUE)) . '</label><br />';
 			}
-			$this->body.=t3lib_BEfunc::getFuncCheck($this->id,'SET[localization]',$this->MOD_SETTINGS['localization'],'db_list.php',($this->table?'&table='.$this->table:''),'id="checkLocalization"').' <label for="checkLocalization">'.$LANG->getLL('localization',1).'</label><br />';
+			$this->body .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], 'db_list.php', ($this->table ? '&table=' . $this->table : ''), 'id="checkLocalization"');
+			$this->body .= '<label for="checkLocalization">' . t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_options', $LANG->getLL('localization', TRUE)) . '</label><br />';
+
 			$this->body.='
 						</form>
 					</div>';
-			$this->body.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_options', $GLOBALS['BACK_PATH']);
 
 				// Printing clipboard if enabled:
 			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard)	{
 				$this->body.= $dblist->clipObj->printClipboard();
-				$this->body.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'list_clipboard', $GLOBALS['BACK_PATH']);
 			}
 
 				// Search box:
-			$this->body.=$dblist->getSearchBox();
+			$sectionTitle = t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $LANG->sL('LLL:EXT:lang/locallang_core.php:labels.search', TRUE));
+			$this->body .= $this->doc->section(
+				$sectionTitle,
+				$dblist->getSearchBox(),
+				FALSE, TRUE, FALSE, TRUE
+			);
 
 				// Display sys-notes, if any are found:
 			$this->body.=$dblist->showSysNotesForPage();

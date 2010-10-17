@@ -2924,16 +2924,18 @@ class t3lib_TCEforms	{
 									}
 								}
 
+								$languageIcon = '';
+								if ($vDEFkey != 'vDEF') {
+									$languageIcon = $this->getLanguageIcon($table, $row, $vDEFkey);
+								}
 									// Put row together
 									// possible linebreaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace
 								$processedTitle = str_replace('\n', '<br />', $theTitle);
-								$helpText = $this->helpText_typeFlex($key, $processedTitle, $PA['_cshFile']);
 								$tRows[]='<div class="t3-form-field-container t3-form-field-container-flex">' .
 									'<div class="t3-form-field-label t3-form-field-label-flex">' .
-									($helpText ?
-										($vDEFkey=='vDEF' ? '' : $this->getLanguageIcon($table, $row, $vDEFkey)) . '<strong>' . $processedTitle . '</strong>' . $helpText :
-										$this->helpTextIcon_typeFlex($key, $processedTitle, $PA['_cshFile']) . ($vDEFkey == 'vDEF' ? '' : $this->getLanguageIcon($table, $row, $vDEFkey)) . $processedTitle
-									) .
+									$this->helpTextIcon_typeFlex($key, $processedTitle, $PA['_cshFile']) . 
+									$languageIcon . 
+									$processedTitle .
 									'</div>
 									<div class="t3-form-field t3-form-field-flex">'.$theFormEl.$defInfo.$this->renderVDEFDiff($editData[$key],$vDEFkey).'</div>
 								</div>';
@@ -5117,8 +5119,10 @@ class t3lib_TCEforms	{
 	 * @param	string		The field name
 	 * @param	boolean		Force the return of the help-text icon.
 	 * @return	string		HTML, <a>-tag with
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
 	 */
 	function helpTextIcon($table,$field,$force=0)	{
+		t3lib_div::logDeprecatedFunction();
 		if ($this->globalShowHelp && $GLOBALS['TCA_DESCR'][$table]['columns'][$field] && (($this->edit_showFieldHelp=='icon'&&!$this->doLoadTableDescr($table)) || $force))	{
 			return t3lib_BEfunc::helpTextIcon($table, $field, $this->backPath, $force);
 		} else {
@@ -5133,8 +5137,10 @@ class t3lib_TCEforms	{
 	 * @param	string		The table name
 	 * @param	string		The field name
 	 * @return	string
+	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7
 	 */
 	function helpText($table,$field)	{
+		t3lib_div::logDeprecatedFunction();
 		if ($this->globalShowHelp && $GLOBALS['TCA_DESCR'][$table]['columns'][$field] && ($this->edit_showFieldHelp=='text' || $this->doLoadTableDescr($table)))	{
 			$fDat = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
 			return '<table border="0" cellpadding="2" cellspacing="0" width="90%"><tr><td valign="top" width="14">'.
@@ -5217,6 +5223,7 @@ class t3lib_TCEforms	{
 		}
 		return '';
 	}
+
 
 	/**
 	 * Setting the current color scheme ($this->colorScheme) based on $this->defColorScheme plus input string.

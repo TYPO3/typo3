@@ -558,13 +558,6 @@ class SC_mod_user_setup_index {
 
 		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? intval($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) : 0;
 
-
-		// "display full help" is active?
-		$displayFullText = ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] == 'text');
-		if ($displayFullText) {
-			$this->doc->tableLayout['defRowEven'] = array('defCol' => array ('<td valign="top" colspan="3">','</td>'));
-		}
-
 		foreach ($fieldArray as $fieldName) {
 			$more = '';
 
@@ -598,10 +591,8 @@ class SC_mod_user_setup_index {
 			}
 
 			$label = $this->getLabel($config['label'], $fieldName);
-			$csh = $this->getCSH($config['csh'] ? $config['csh'] : $fieldName);
-			if (!$csh) {
-				$csh = '<img class="csh-dummy" src="' . $this->doc->backPath . 'clear.gif" width="16" height="16" />';
-			}
+			$label = $this->getCSH($config['csh'] ? $config['csh'] : $fieldName, $label);
+
 			$type = $config['type'];
 			$eval = $config['eval'];
 			$class = $config['class'];
@@ -679,14 +670,8 @@ class SC_mod_user_setup_index {
 			}
 
 
-				// add another table row with the full text help if needed
-			if ($displayFullText) {
-				$code[$i++][1] = $csh;
-				$csh = '';
-			}
-
-			$code[$i][1] = $csh . $label;
-			$code[$i++][2]   = $html;
+			$code[$i][1] = $label;
+			$code[$i++][2] = $html;
 
 
 
@@ -935,13 +920,14 @@ class SC_mod_user_setup_index {
 	 * Returns the CSH Icon for given string
 	 *
 	 * @param	string		Locallang key
+	 * @param	string		The label to be used, that should be wrapped in help
 	 * @return	string		HTML output.
 	 */
-	protected function getCSH($str) {
+	protected function getCSH($str, $label) {
 		if (!t3lib_div::inList('language,simuser', $str)) {
 			$str = 'option_' . $str;
 		}
-		return t3lib_BEfunc::cshItem('_MOD_user_setup', $str, $this->doc->backPath, '|', false, 'margin-bottom:0px;');
+		return t3lib_BEfunc::wrapInHelp('_MOD_user_setup', $str, $label);
 	}
 
 	/**
