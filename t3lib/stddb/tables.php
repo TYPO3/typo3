@@ -574,6 +574,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-document-save-view',
 	'actions-document-select',
 	'actions-document-view',
+	'actions-document-synchronize',
 	'actions-edit-add',
 	'actions-edit-copy',
 	'actions-edit-copy-release',
