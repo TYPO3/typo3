@@ -51,13 +51,18 @@ class t3lib_mail_mailer extends Swift_Mailer {
 	/**
 	 * When constructing, also initializes the Swift_Transport like configured
 	 *
+	 * @param Swift_Transport optionally pass a transport to the constructor. By default the configured transport from $TYPO3_CONF_VARS is used
 	 * @throws t3lib_exception
 	 */
-	public function __construct() {
-		try {
-			$this->initializeTransport();
-		} catch (Exception $e) {
-			throw new t3lib_exception($e->getMessage());
+	public function __construct(Swift_Transport $transport = NULL) {
+		if ($transport !== NULL) {
+			$this->transport = $transport;
+		} else {
+			try {
+				$this->initializeTransport();
+			} catch (Exception $e) {
+				throw new t3lib_exception($e->getMessage());
+			}
 		}
 		parent::__construct($this->transport);
 	}
