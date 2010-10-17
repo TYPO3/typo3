@@ -60,9 +60,12 @@ ul.tree ul {
 	list-style: none;
 }
 
+ul.tree li {
+	white-space: nowrap;
+}
+
 ul.tree ul li {
 	list-style: none;
-	white-space: nowrap;
 }
 
 ul.tree ul li.expanded ul {

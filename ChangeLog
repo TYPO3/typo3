@@ -1,3 +1,7 @@
+2010-10-17  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16030: Page tree root node lacks white-space: nowrap
+
 2010-10-17  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15830: Sprite - IRRE record synchronization icon missing (Thanks to Stefan Galinski)
