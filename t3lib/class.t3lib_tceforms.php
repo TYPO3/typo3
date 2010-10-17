@@ -1203,7 +1203,7 @@ class t3lib_TCEforms	{
 				htmlspecialchars($iOnChange) . '"' . $PA['onFocus'] . ' />'; // This is the EDITABLE form field.
 		$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' .
 				htmlspecialchars($PA['itemFormElValue']) . '" />'; // This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
-		$item .= $fieldAppendix . '</span>';
+		$item .= $fieldAppendix . '</span><div style="clear:both;"></div>';
 		$this->extJSCODE .= 'typo3form.fieldSet(' . $paramsList . ');';
 
 			// going through all custom evaluations configured for this field
