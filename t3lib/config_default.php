@@ -353,6 +353,14 @@ $TYPO3_CONF_VARS = array(
 		'versionNumberInFilename' => 'querystring',	// String: embed,querystring,''. Allows to automatically include a version number (timestamp of the file) to referred CSS and JS filenames on the rendered page. This will make browsers and proxies reload the files if they change (thus avoiding caching issues). Set to 'embed' will have the timestamp embedded in the filename, ie. filename.1269312081.js. IMPORTANT: 'embed' requires extra .htaccess rules to work (please refer to misc/advanced.htaccess or the _.htaccess file from the dummy package)<p>Set to 'querystring' (default setting) to append the version number as a query parameter (doesn't require mod_rewrite). Set to '' will turn this functionality off (behaves like TYPO3 &lt; v4.4).</p>
 		'XCLASS' => array(),					// See 'Inside TYPO3' document for more information.
 	),
+	'MAIL' => array(		// Mail configurations to tune how t3lib_mail classes will send their mails.
+		'transport' => 'mail',					// <p>String:</p><dl><dt>mail</dt><dd>Sends messages by delegating to PHP's internal mail() function. No further settings required. This is the most unreliable option. If you are serious about sending mails, consider using "smtp" or "sendmail".</dd><dt>smtp</dt><dd>Sends messages over the (standardized) Simple Message Transfer Protocol. It can deal with encryption and authentication. Most flexible option, requires a mail server and configurations in transport_smtp_* settings below. Works the same on Windows, Unix and MacOS.</dd><dt>sendmail</dt><dd>Sends messages by communicating with a locally installed MTA – such as sendmail. See setting transport_sendmail_command bellow.<dd></dl>
+		'transport_smtp_server' => 'localhost:25',			// String: <em>only with transport=smtp</em>: &lt;server:port> of mailserver to connect to. &lt;port> defaults to "25".
+		'transport_smtp_encrypt' => FALSE,		// Boolean: <em>only with transport=smtp</em>: Connect to the server using encryption and TLS. Requires openssl library.
+		'transport_smtp_username' => '',		// String: <em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your username here.
+		'transport_smtp_password' => '',		// String: <em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your password here.
+		'transport_sendmail_command' => '/usr/sbin/sendmail -bs',	// String: <em>only with transport=sendmail</em>: The command to call to send a mail locally. The default works on most modern UNIX based mail server (sendmail, postfix, exim)
+	),
 	'MODS' => array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
 	'USER' => array(		// Here you may define your own setup-vars for use in your include-scripts. (obsolete, make extension instead)

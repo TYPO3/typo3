@@ -1,3 +1,7 @@
+2010-10-18  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Added feature #15998: Create a new API to send mails based on SwiftMailer to replace t3lib_htmlmail
+
 2010-10-17  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #16006: Remove the checkbox that clears the input fields in TCE-forms and replace it with a sprite icon (Thanks to Jo Hasenau)
