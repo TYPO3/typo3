@@ -3411,13 +3411,13 @@ final class t3lib_div {
 	 */
 	public static function getBytesFromSizeMeasurement($measurement) {
 		if (stripos($measurement, 'G')) {
-			$bytes = intval($measurement) * 1024 * 1024 * 1024;
+			$bytes = doubleval($measurement) * 1024 * 1024 * 1024;
 		} else if (stripos($measurement, 'M')) {
-			$bytes = intval($measurement) * 1024 * 1024;
+			$bytes = doubleval($measurement) * 1024 * 1024;
 		} else if (stripos($measurement, 'K')) {
-			$bytes = intval($measurement) * 1024;
+			$bytes = doubleval($measurement) * 1024;
 		} else {
-			$bytes = intval($measurement);
+			$bytes = doubleval($measurement);
 		}
 		return $bytes;
 	}

@@ -1,3 +1,7 @@
+2010-10-17  Benjamin Mack  <benni@typo3.org>
+
+	* Fixed bug #16022: Size calculation function can only deal with integers
+
 2010-10-16  Benjamin Mack  <benni@typo3.org>
 
 	* Fixed bug #14835: IRRE Move-Icon should have curser:move (Thanks to Georg Ringer)
