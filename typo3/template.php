@@ -169,6 +169,7 @@ class template {
 	var $postCode='';				// Additional 'page-end' code could be accommulated in this var. It will be outputted at the end of page before </body> and some other internal page-end code.
 	var $docType = '';				// Doc-type used in the header. Default is xhtml_trans. You can also set it to 'html_3', 'xhtml_strict' or 'xhtml_frames'.
 	var $moduleTemplate = '';		// HTML template with markers for module
+	protected $moduleTemplateFilename = '';	// the base file (not overlaid by TBE_STYLES) for the current module, useful for hooks when finding out which modules is rendered currently
 
 		// Other vars you can change, but less frequently used:
 	var $scriptID='';				// Script ID.
@@ -2057,6 +2058,9 @@ $str.=$this->docBodyTagBegin().
 	 * @return	string		HTML of template
 	 */
 	function getHtmlTemplate($filename)	{
+			// setting the name of the original HTML template
+		$this->moduleTemplateFilename = $filename;
+
 		if ($GLOBALS['TBE_STYLES']['htmlTemplates'][$filename]) {
 			$filename = $GLOBALS['TBE_STYLES']['htmlTemplates'][$filename];
 		}
@@ -2079,7 +2083,7 @@ $str.=$this->docBodyTagBegin().
 	 *
 	 * @param	string		filename
 	 */
-	function setModuleTemplate($filename) {
+	public function setModuleTemplate($filename) {
 			// Load Prototype lib for IE event
 		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('js/iecompatibility.js');
@@ -2128,27 +2132,35 @@ $str.=$this->docBodyTagBegin().
 			$moduleBody = t3lib_parsehtml::substituteSubpart($moduleBody, $marker, $content);
 		}
 
+			// adding flash messages
 		if ($this->showFlashMessages) {
-				// adding flash messages
 			$flashMessages = t3lib_FlashMessageQueue::renderFlashMessages();
 			if (!empty($flashMessages)) {
-				$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
-			}
+				$markerArray['FLASHMESSAGES'] = '<div id="typo3-messages">' . $flashMessages . '</div>';
 
-			if (strstr($moduleBody, '###FLASHMESSAGES###')) {
-					// either replace a dedicated marker for the messages if present
-				$moduleBody = str_replace(
-					'###FLASHMESSAGES###',
-					$flashMessages,
-					$moduleBody
-				);
-			} else {
-					// or force them to appear before the content
-				$moduleBody = str_replace(
-					'###CONTENT###',
-					$flashMessages . '###CONTENT###',
-					$moduleBody
-				);
+					// if there is no dedicated marker for the messages present
+					// then force them to appear before the content
+				if (strpos($moduleBody, '###FLASHMESSAGES###') === FALSE) {
+					$moduleBody = str_replace(
+						'###CONTENT###',
+						'###FLASHMESSAGES######CONTENT###',
+						$moduleBody
+					);
+				}
+			}
+		}
+
+			// Hook for adding more markers/content to the page, like the version selector
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'])) {
+			$params = array(
+				'moduleTemplateFilename' => &$this->moduleTemplateFilename,
+				'moduleTemplate' => &$this->moduleTemplate,
+				'moduleBody' => &$moduleBody,
+				'markers' => &$markerArray,
+				'parentObject' => &$this
+			);
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['moduleBodyPostProcess'] as $funcRef) {
+				t3lib_div::callUserFunction($funcRef, $params, $this);
 			}
 		}
 
