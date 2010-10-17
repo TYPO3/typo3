@@ -9,6 +9,7 @@
 
 2010-10-17  Benjamin Mack  <benni@typo3.org>
 
+	* Fixed bug #16022: Size calculation function can only deal with integers
 	* Fixed bug #16006: Remove the checkbox that clears the input fields in TCE-forms and replace it with a sprite icon (Thanks to Jo Hasenau)
 
 2010-10-16  Steffen Gebert  <steffen@steffen-gebert.de>
