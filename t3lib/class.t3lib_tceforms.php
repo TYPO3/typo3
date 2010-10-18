@@ -2933,8 +2933,8 @@ class t3lib_TCEforms	{
 								$processedTitle = str_replace('\n', '<br />', $theTitle);
 								$tRows[]='<div class="t3-form-field-container t3-form-field-container-flex">' .
 									'<div class="t3-form-field-label t3-form-field-label-flex">' .
-									$this->helpTextIcon_typeFlex($key, $processedTitle, $PA['_cshFile']) . 
-									$languageIcon . 
+									$this->helpTextIcon_typeFlex($key, $processedTitle, $PA['_cshFile']) .
+									$languageIcon .
 									$processedTitle .
 									'</div>
 									<div class="t3-form-field t3-form-field-flex">'.$theFormEl.$defInfo.$this->renderVDEFDiff($editData[$key],$vDEFkey).'</div>
@@ -5104,8 +5104,11 @@ class t3lib_TCEforms	{
 			// Final wrapping into the fieldset:
 		$out = '<fieldset class="t3-form-palette-fieldset">';
 		for ($i = 0; $i <= $row; $i++) {
-			$out .= implode($iRow[$i]);
-			$out .= ($i < $row ? '<br />' : '');
+			if (isset($iRow[$i])) {
+				$out .= implode('', $iRow[$i]);
+				$out .= ($i < $row ? '<br />' : '');
+			}
+
 		}
 		$out .= '</fieldset>';
 		return $out;
