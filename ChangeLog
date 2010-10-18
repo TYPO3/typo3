@@ -1,3 +1,7 @@
+2010-10-17  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #15657: IRRE: Foreign selector with groupdb won't add new items (Thanks to Thomas Maroschik)
+
 2010-10-17  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #15830: Sprite - IRRE record synchronization icon missing (Thanks to Stefan Galinski)
