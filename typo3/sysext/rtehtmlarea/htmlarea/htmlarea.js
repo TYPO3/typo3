@@ -270,15 +270,15 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 		Ext.ux.HTMLAreaButton.superclass.initComponent.call(this);
 		this.addEvents(
 			/*
-			 * @event hotkey
+			 * @event HTMLAreaEventHotkey
 			 * Fires when the button hotkey is pressed
 			 */
-			'hotkey',
+			'HTMLAreaEventHotkey',
 			/*
-			 * @event context
+			 * @event HTMLAreaEventContextMenu
 			 * Fires when the button is triggered from the context menu
 			 */
-			'context'
+			'HTMLAreaEventContextMenu'
 		);
 		this.addListener({
 			afterrender: {
@@ -292,16 +292,16 @@ Ext.ux.HTMLAreaButton = Ext.extend(Ext.Button, {
 	 */
 	initEventListeners: function () {
 		this.addListener({
-			hotkey: {
+			HTMLAreaEventHotkey: {
 				fn: this.onHotKey
 			},
-			context: {
+			HTMLAreaEventContextMenu: {
 				fn: this.onButtonClick
 			}
 		});
 		this.setHandler(this.onButtonClick, this);
 			// Monitor toolbar updates in order to refresh the state of the button
-		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
+		this.mon(this.getToolbar(), 'HTMLAreaEventToolbarUpdate', this.onUpdateToolbar, this);
 	},
 	/*
 	 * Get a reference to the editor
@@ -414,7 +414,7 @@ Ext.ux.Toolbar.HTMLAreaToolbarText = Ext.extend(Ext.Toolbar.TextItem, {
 	 */
 	initEventListeners: function () {
 			// Monitor toolbar updates in order to refresh the state of the button
-		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
+		this.mon(this.getToolbar(), 'HTMLAreaEventToolbarUpdate', this.onUpdateToolbar, this);
 	},
 	/*
 	 * Get a reference to the editor
@@ -450,10 +450,10 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 		Ext.ux.form.HTMLAreaCombo.superclass.initComponent.call(this);
 		this.addEvents(
 			/*
-			 * @event hotkey
+			 * @event HTMLAreaEventHotkey
 			 * Fires when a hotkey configured for the combo is pressed
 			 */
-			'hotkey'
+			'HTMLAreaEventHotkey'
 		);
 		this.addListener({
 			afterrender: {
@@ -473,7 +473,7 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 			specialkey: {
 				fn: this.onSpecialKey
 			},
-			hotkey: {
+			HTMLAreaEventHotkey: {
 				fn: this.onHotKey
 			},
 			beforedestroy: {
@@ -482,9 +482,9 @@ Ext.ux.form.HTMLAreaCombo = Ext.extend(Ext.form.ComboBox, {
 			}
 		});
 			// Monitor toolbar updates in order to refresh the state of the combo
-		this.mon(this.getToolbar(), 'update', this.onUpdateToolbar, this);
+		this.mon(this.getToolbar(), 'HTMLAreaEventToolbarUpdate', this.onUpdateToolbar, this);
 			// Monitor framework becoming ready
-		this.mon(this.getToolbar().ownerCt, 'frameworkready', this.onFrameworkReady, this);
+		this.mon(this.getToolbar().ownerCt, 'HTMLAreaEventFrameworkReady', this.onFrameworkReady, this);
 	},
 	/*
 	 * Get a reference to the editor
@@ -635,10 +635,10 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 		HTMLArea.Toolbar.superclass.initComponent.call(this);
 		this.addEvents(
 			/*
-			 * @event update
+			 * @event HTMLAreaEventToolbarUpdate
 			 * Fires when the toolbar is updated
 			 */
-			'update'
+			'HTMLAreaEventToolbarUpdate'
 		);
 			// Build the deferred toolbar update task
 		this.updateLater = new Ext.util.DelayedTask(this.update, this);
@@ -662,7 +662,7 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 			}
 		});
 			// Monitor editor becoming ready
-		this.mon(this.getEditor(), 'editorready', this.update, this, {single: true});
+		this.mon(this.getEditor(), 'HTMLAreaEventEditorReady', this.update, this, {single: true});
 	},
 	/*
 	 * editorId should be set in config
@@ -750,7 +750,7 @@ HTMLArea.Toolbar = Ext.extend(Ext.Container, {
 			ancestors = editor.getAllAncestors();
 			endPointsInSameBlock = editor.endPointsInSameBlock();
 		}
-		this.fireEvent('update', mode, selectionEmpty, ancestors, endPointsInSameBlock);
+		this.fireEvent('HTMLAreaEventToolbarUpdate', mode, selectionEmpty, ancestors, endPointsInSameBlock);
 	},
 	/*
 	 * Cleanup
@@ -772,10 +772,10 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		HTMLArea.Iframe.superclass.initComponent.call(this);
 		this.addEvents(
 			/*
-			 * @event iframeready
+			 * @event HTMLAreaEventIframeReady
 			 * Fires when the iframe style sheets become accessible
 			 */
-			'iframeready'
+			'HTMLAreaEventIframeReady'
 		);
 		this.addListener({
 			afterrender: {
@@ -954,7 +954,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		HTMLArea._appendToLog('[HTMLArea.Iframe::createHead]: Editor iframe document head successfully built.');
 	},
 	/*
-	 * Fire event 'iframeready' when the iframe style sheets become accessible
+	 * Fire event 'HTMLAreaEventIframeReady' when the iframe style sheets become accessible
 	 */
 	getStyleSheets: function () {
 		var stylesAreLoaded = true;
@@ -1018,7 +1018,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			this.hide();
 				// Set iframe ready
 			this.ready = true;
-			this.fireEvent('iframeready');
+			this.fireEvent('HTMLAreaEventIframeReady');
 		}
 	},
 	/*
@@ -1304,7 +1304,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			var button = this.getButton(this.config.hotKeyList[keyName].cmd);
 			if (button) {
 				event.stopEvent();
-				button.fireEvent('hotkey', keyName, event);
+				button.fireEvent('HTMLAreaEventHotkey', keyName, event);
 				return false;
 			}
 		}
@@ -1401,7 +1401,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			return false;
 		}
 		var hotKey = String.fromCharCode(key).toLowerCase();
-		this.getButton(this.config.hotKeyList[hotKey].cmd).fireEvent('hotkey', hotKey, event);
+		this.getButton(this.config.hotKeyList[hotKey].cmd).fireEvent('HTMLAreaEventHotkey', hotKey, event);
 		return false;
 	},
 	/*
@@ -1470,9 +1470,9 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 		});
 			// Monitor toolbar updates in order to refresh the contents of the statusbar
 			// The toolbar must have been rendered
-		this.mon(this.ownerCt.toolbar, 'update', this.onUpdateToolbar, this);
+		this.mon(this.ownerCt.toolbar, 'HTMLAreaEventToolbarUpdate', this.onUpdateToolbar, this);
 			// Monitor editor changing mode
-		this.mon(this.getEditor(), 'modeChange', this.onModeChange, this);
+		this.mon(this.getEditor(), 'HTMLAreaEventModeChange', this.onModeChange, this);
 	},
 	/*
 	 * editorId should be set in config
@@ -1700,10 +1700,10 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 		this.textAreaContainer = this.getComponent('textAreaContainer');
 		this.addEvents(
 			/*
-			 * @event frameworkready
+			 * @event HTMLAreaEventFrameworkReady
 			 * Fires when the iframe is ready and all components are rendered
 			 */
-			'frameworkready'
+			'HTMLAreaEventFrameworkReady'
 		);
 		this.addListener({
 			beforedestroy: {
@@ -1712,7 +1712,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			}
 		});
 			// Monitor iframe becoming ready
-		this.mon(this.iframe, 'iframeready', this.onIframeReady, this, {single: true});
+		this.mon(this.iframe, 'HTMLAreaEventIframeReady', this.onIframeReady, this, {single: true});
 			// Let the framefork render itself, but it will fail to do so if inside a hidden tab or inline element
 		if (!this.isNested || HTMLArea.util.TYPO3.allElementsAreDisplayed(this.nestedParentElements.sorted)) {
 			this.render(this.textArea.parent(), this.textArea.id);
@@ -1928,7 +1928,7 @@ HTMLArea.Framework = Ext.extend(Ext.Panel, {
 			}
 				// Set the initial size of the framework
 			this.onWindowResize();
-			this.fireEvent('frameworkready');
+			this.fireEvent('HTMLAreaEventFrameworkReady');
 		} else {
 			this.onIframeReady.defer(50, this);
 		}
@@ -2027,20 +2027,15 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.inhibitKeyboardInput = false;
 		this.addEvents(
 			/*
-			 * @event editorready
+			 * @event HTMLAreaEventEditorReady
 			 * Fires when initialization of the editor is complete
 			 */
-			'editorready',
+			'HTMLAreaEventEditorReady',
 			/*
-			 * @event modeChange
+			 * @event HTMLAreaEventModeChange
 			 * Fires when the editor changes mode
 			 */
-			'modeChange',
-			/*
-			 * @event beforedestroy
-			 * Fires before the editor is to be destroyed
-			 */
-			'beforedestroy'
+			'HTMLAreaEventModeChange'
 		);
 	},
 	/*
@@ -2134,8 +2129,8 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		this.iframe = this.htmlArea.getComponent('iframe');
 		this.textAreaContainer = this.htmlArea.getComponent('textAreaContainer');
 			// Get triggered when the framework becomes ready
-		this.relayEvents(this.htmlArea, ['frameworkready']);
-		this.on('frameworkready', this.onFrameworkReady, this, {single: true});
+		this.relayEvents(this.htmlArea, ['HTMLAreaEventFrameworkReady']);
+		this.on('HTMLAreaEventFrameworkReady', this.onFrameworkReady, this, {single: true});
 	},
 	/*
 	 * Initialize the editor
@@ -2163,7 +2158,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			}
 		}, this);
 		this.ready = true;
-		this.fireEvent('editorready');
+		this.fireEvent('HTMLAreaEventEditorReady');
 		HTMLArea._appendToLog('[HTMLArea.Editor::onFrameworkReady]: Editor ready.');
 	},
 	/*
@@ -2199,7 +2194,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				this.mode = mode;
 				break;
 		}
-		this.fireEvent('modeChange', this.mode);
+		this.fireEvent('HTMLAreaEventModeChange', this.mode);
 		this.focus();
 		Ext.iterate(this.plugins, function(pluginId) {
 			this.getPlugin(pluginId).onMode(this.mode);
@@ -2376,7 +2371,6 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 			}, false);
 		}
 			// Cleanup
-		this.fireEvent('beforedestroy');
 		Ext.TaskMgr.stopAll();
 			// ExtJS is not releasing any resources when the iframe is unloaded
 		this.htmlArea.destroy();
@@ -4209,7 +4203,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	show: function () {
 			// Close the window if the editor changes mode
-		this.dialog.mon(this.editor, 'modeChange', this.close, this, {single: true });
+		this.dialog.mon(this.editor, 'HTMLAreaEventModeChange', this.close, this, {single: true });
 		this.saveSelection();
 		this.dialog.show();
 		this.restoreSelection();

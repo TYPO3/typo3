@@ -1,6 +1,7 @@
 2010-10-17  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15657: IRRE: Foreign selector with groupdb won't add new items (Thanks to Thomas Maroschik)
+	* Added feature #16037: htmlArea RTE: Bring custom events under HTMLArea namespace
 
 2010-10-17  Steffen Gebert  <steffen@steffen-gebert.de>
 
