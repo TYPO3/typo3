@@ -1,3 +1,7 @@
+2010-10-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #1318: 'removeTag' does not remove closing tags
+
 2005-11-14  Michael Stucki  <michael@typo3.org>
 
 	* Release of TYPO3 3.8.1
