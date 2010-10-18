@@ -1,3 +1,7 @@
+2010-10-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #1318: 'removeTag' does not remove closing tags
+
 2010-10-11  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #12376: typo3temp got filled with thousands of javascript_* files (Thanks to Georg Ringer)
