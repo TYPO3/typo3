@@ -1,0 +1,142 @@
+<?php
+/***************************************************************
+*  Copyright notice
+*
+*  (c) 2010 TYPO3 Tree Team <http://forge.typo3.org/projects/typo3v4-extjstrees>
+*  All rights reserved
+*
+*  This script is part of the TYPO3 project. The TYPO3 project is
+*  free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  The GNU General Public License can be found at
+*  http://www.gnu.org/copyleft/gpl.html.
+*  A copy is found in the textfile GPL.txt and important notices to the license
+*  from the author is found in LICENSE.txt distributed with these scripts.
+*
+*
+*  This script is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  This copyright notice MUST APPEAR in all copies of the script!
+***************************************************************/
+
+/**
+ * Context Menu Action
+ *
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @package TYPO3
+ * @subpackage t3lib
+ */
+class t3lib_contextmenu_Action {
+	/**
+	 * Label
+	 *
+	 * @var string
+	 */
+	protected $label = '';
+
+	/**
+	 * Identifier
+	 *
+	 * @var string
+	 */
+	protected $id = '';
+
+	/**
+	 * Icon
+	 *
+	 * @var string
+	 */
+	protected $icon = '';
+
+	/**
+	 * Class
+	 *
+	 * @var string
+	 */
+	protected $class = '';
+
+	/**
+	 * Callback Action
+	 *
+	 * @var string
+	 */
+	protected $callbackAction = '';
+
+	/**
+	 * Returns the label
+	 *
+	 * @return string
+	 */
+	public function getLabel() {
+		return $this->label;
+	}
+
+	/**
+	 * Sets the label
+	 *
+	 * @param string $label
+	 */
+	public function setLabel($label) {
+		$this->label = $label;
+	}
+
+	/**
+	 * Returns the identifier
+	 *
+	 * @return string
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * Sets the identifier
+	 *
+	 * @param string $id
+	 */
+	public function setId($id) {
+		$this->id = $id;
+	}
+
+	/**
+	 * Returns the class
+	 *
+	 * @return string
+	 */
+	public function getClass() {
+		return $this->class;
+	}
+
+	/**
+	 * Sets the class
+	 *
+	 * @param string $class
+	 */
+	public function setClass($class) {
+		$this->class = $class;
+	}
+
+	/**
+	 * Returns the callback action
+	 *
+	 * @return string
+	 */
+	public function getCallbackAction() {
+		return $this->callbackAction;
+	}
+
+	/**
+	 * Sets the callback action
+	 *
+	 * @param string $callbackAction
+	 */
+	public function setCallbackAction($callbackAction) {
+		$this->callbackAction = $callbackAction;
+	}
+}
