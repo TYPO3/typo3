@@ -1,3 +1,7 @@
+2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #16047: htmlArea RTE: Add word count in the status bar
+
 2010-10-18  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15991: Style error messages in the TYPO3 way (Thanks to Lars Zimmermann, T3UXW09)

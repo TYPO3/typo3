@@ -214,6 +214,9 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 .htmlarea .statusBar .statusBarTree a:hover {
 	text-decoration: underline;
 }
+.htmlarea .statusBar .statusBarWordCount {
+	float: right;
+}
 /* Selectors for dialogue windows */
 .htmlarea-window .x-panel-icon {
 	background-image: url("images/sprites/actions.png");

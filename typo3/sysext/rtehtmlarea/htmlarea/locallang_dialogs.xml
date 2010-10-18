@@ -117,6 +117,8 @@
 			<label index="Remove language mark">Remove language</label>
 			<label index="statusBarStyle">Style</label>
 			<label index="statusBarReady">Ready</label>
+			<label index="word">word</label>
+			<label index="words">words</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

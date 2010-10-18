@@ -52,6 +52,7 @@ Ext.apply(HTMLArea, {
 	is_chrome	: Ext.isChrome,
 	is_opera	: Ext.isOpera,
 		// Compile some regular expressions
+	RE_htmlTag		: /<.[^<>]*?>/g,
 	RE_tagName		: /(<\/|<)\s*([^ \t\n>]+)/ig,
 	RE_head			: /<head>((.|\n)*?)<\/head>/i,
 	RE_body			: /<body>((.|\n)*?)<\/body>/i,
@@ -61,7 +62,8 @@ Ext.apply(HTMLArea, {
 	RE_url			: /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i,
 	RE_blockTags		: /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/,
 	RE_closingTags		: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/,
-	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/
+	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/,
+	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g
 });
 /***************************************************
  *  TROUBLESHOOTING
@@ -775,7 +777,12 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			 * @event HTMLAreaEventIframeReady
 			 * Fires when the iframe style sheets become accessible
 			 */
-			'HTMLAreaEventIframeReady'
+			'HTMLAreaEventIframeReady',
+			/*
+			 * @event HTMLAreaEventWordCountChange
+			 * Fires when the word count may have changed
+			 */
+			'HTMLAreaEventWordCountChange'
 		);
 		this.addListener({
 			afterrender: {
@@ -845,6 +852,12 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 */
 	getToolbar: function () {
 		return this.ownerCt.getTopToolbar();
+	},
+	/*
+	 * Get a reference to the statusBar
+	 */
+	getStatusBar: function () {
+		return this.ownerCt.getBottomToolbar();
 	},
 	/*
 	 * Get a reference to a button
@@ -1243,6 +1256,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 				return letBubble;
 			}
 		}
+		this.fireEvent('HTMLAreaEventWordCountChange', 100);
 		if (!event.altKey && !event.ctrlKey) {
 				// Detect URL in non-IE browsers
 			if (!Ext.isIE && (event.getKey() != Ext.EventObject.ENTER || (event.shiftKey && !Ext.isWebKit))) {
@@ -1447,6 +1461,8 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 	 */
 	initComponent: function () {
 		HTMLArea.StatusBar.superclass.initComponent.call(this);
+			// Build the deferred word count update task
+		this.updateWordCountLater = new Ext.util.DelayedTask(this.updateWordCount, this);
 		this.addListener({
 			render: {
 				fn: this.addComponents,
@@ -1473,6 +1489,8 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 		this.mon(this.ownerCt.toolbar, 'HTMLAreaEventToolbarUpdate', this.onUpdateToolbar, this);
 			// Monitor editor changing mode
 		this.mon(this.getEditor(), 'HTMLAreaEventModeChange', this.onModeChange, this);
+			// Monitor word count change
+		this.mon(this.ownerCt.iframe, 'HTMLAreaEventWordCountChange', this.onWordCountChange, this);
 	},
 	/*
 	 * editorId should be set in config
@@ -1488,6 +1506,12 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 	 * Create span elements to display when the status bar tree or a message when the editor is in text mode
 	 */
 	addComponents: function () {
+		this.statusBarWordCount = Ext.DomHelper.append(this.getEl(), {
+			id: this.editorId + '-statusBarWordCount',
+			tag: 'span',
+			cls: 'statusBarWordCount',
+			html: '&nbsp;'
+		}, true);
 		this.statusBarTree = Ext.DomHelper.append(this.getEl(), {
 			id: this.editorId + '-statusBarTree',
 			tag: 'span',
@@ -1583,7 +1607,36 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 				}
 			}, this);
 		}
+		this.updateWordCount();
 		this.noUpdate = false;
+	},
+	/*
+	 * Handler when the word count may have changed
+	 */
+	onWordCountChange: function(delay) {
+		this.updateWordCountLater.delay(delay ? delay : 0);
+	},
+	/*
+	 * Update the word count
+	 */
+	updateWordCount: function() {
+		var wordCount = 0;
+		if (this.getEditor().getMode() == 'wysiwyg') {
+				// Get the html content
+			var text = this.getEditor().getHTML();
+			if (!Ext.isEmpty(text)) {
+					// Replace html tags with spaces
+				text = text.replace(HTMLArea.RE_htmlTag, ' ');
+					// Replace html space entities
+				text = text.replace(/&nbsp;|&#160;/gi, ' ');
+					// Remove numbers and punctuation
+				text = text.replace(HTMLArea.RE_numberOrPunctuation, '');
+					// Get the number of word
+				wordCount = text.split(/\S\s+/g).length - 1;
+			}
+		}
+			// Update the word count of the status bar
+		this.statusBarWordCount.dom.innerHTML = wordCount ? ( wordCount + ' ' + HTMLArea.I18N.dialogs[(wordCount == 1) ? 'word' : 'words']) : '&nbsp;';
 	},
 	/*
 	 * Adapt status bar to current editor mode
