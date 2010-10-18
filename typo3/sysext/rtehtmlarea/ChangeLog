@@ -1,6 +1,7 @@
 2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #16047: htmlArea RTE: Add word count in the status bar
+	* Fixed bug #16050: htmlArea RTE: Backspacing in empty editing area may raise js error
 
 2010-10-17  Stanislas Rolland  <typo3@sjbr.ca>
 
