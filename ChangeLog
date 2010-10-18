@@ -1,5 +1,6 @@
 2010-10-18  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #16015: Feature - Implement new layout and labels for pages as result of T3UXW09 (Thanks to Jo Hasenau)
 	* Added feature #16033: API for Trees and ContextMenus (Thanks to Stefan Galinski)
 
 2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>

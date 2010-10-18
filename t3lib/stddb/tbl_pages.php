@@ -17,31 +17,73 @@ $TCA['pages'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.div.page', '--div--'),
-					array('LLL:EXT:lang/locallang_tca.php:doktype.I.0', '1', 'i/pages.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.4', '6', 'i/be_users_section.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.div.link', '--div--'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.2', '4', 'i/pages_shortcut.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.5', '7', 'i/pages_mountpoint.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.8', '3', 'i/pages_link.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.div.special', '--div--'),
-					array('LLL:EXT:lang/locallang_tca.php:doktype.I.1', '254', 'i/sysf.gif'),
-					array('LLL:EXT:lang/locallang_tca.php:doktype.I.2', '255', 'i/recycler.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.7', '199', 'i/spacer_icon.gif'),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.div.page',
+						'--div--',
+					),
+					array(
+						'LLL:EXT:lang/locallang_tca.php:doktype.I.0',
+						'1',
+						'i/pages.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.4',
+						'6',
+						'i/be_users_section.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.div.link',
+						'--div--',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.2',
+						'4',
+						'i/pages_shortcut.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.5',
+						'7',
+						'i/pages_mountpoint.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.8',
+						'3',
+						'i/pages_link.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.div.special',
+						'--div--',
+					),
+					array(
+						'LLL:EXT:lang/locallang_tca.php:doktype.I.1',
+						'254',
+						'i/sysf.gif',
+					),
+					array(
+						'LLL:EXT:lang/locallang_tca.php:doktype.I.2',
+						'255',
+						'i/recycler.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.7',
+						'199',
+						'i/spacer_icon.gif',
+					),
 				),
 				'default' => '1',
 				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1,
-			)
+			),
 		),
 		'title' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.php:title',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '50',
 				'max' => '255',
-				'eval' => 'required'
-			)
+				'eval' => 'trim,required',
+				'checkbox' => '',
+			),
 		),
 		'TSconfig' => array(
 			'exclude' => 1,
@@ -58,9 +100,9 @@ $TCA['pages'] = array(
 						'script' => 'wizard_tsconfig.php?mode=page',
 						'icon' => 'wizard_tsconfig.gif',
 						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
-					)
+					),
 				),
-				'softref' => 'TSconfig'
+				'softref' => 'TSconfig',
 			),
 			'defaultExtras' => 'fixed-font : enable-tab',
 		),
@@ -68,8 +110,8 @@ $TCA['pages'] = array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:php_tree_stop',
 			'config' => array(
-				'type' => 'check'
-			)
+				'type' => 'check',
+			),
 		),
 		'storage_pid' => array(
 			'exclude' => 1,
@@ -87,246 +129,357 @@ $TCA['pages'] = array(
 						'type' => 'suggest',
 					),
 				),
-			)
+			),
 		),
 		'tx_impexp_origuid' => array('config'=>array('type'=>'passthrough')),
 		't3ver_label' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '23',
 				'max' => '255',
-			)
+			),
 		),
 		'editlock' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.php:editlock',
 			'config' => array(
-				'type' => 'check'
-			)
+				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.editlock_checkbox_1_formlabel',
+					),
+				),
+			),
 		),
-		'hidden' => array (
+		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.hidden',
-			'config' => array (
+			'config' => array(
 				'type' => 'check',
-				'default' => '1'
-			)
+				'default' => '1',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.hidden_checkbox_1_formlabel',
+					),
+				),
+			),
 		),
-		'starttime' => array (
+		'starttime' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '8',
-				'max' => '20',
-				'eval' => 'date',
-				'checkbox' => '0',
-				'default' => '0'
-			)
-		),
-		'endtime' => array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
-			'config' => array (
-				'type' => 'input',
-				'size' => '8',
+				'size' => '13',
 				'max' => '20',
 				'eval' => 'date',
 				'checkbox' => '0',
 				'default' => '0',
-				'range' => array (
-					'upper' => mktime(0,0,0,12,31,2020),
-				)
-			)
+			),
 		),
-		'layout' => array (
+		'endtime' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'config' => array(
+				'type' => 'input',
+				'size' => '13',
+				'max' => '20',
+				'eval' => 'date',
+				'checkbox' => '0',
+				'default' => '0',
+				'range' => array(
+					'upper' => mktime(0,0,0,12,31,2020),
+				),
+			),
+		),
+		'layout' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.layout',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
-					array('LLL:EXT:lang/locallang_general.xml:LGL.normal', '0'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.layout.I.1', '1'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.layout.I.2', '2'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.layout.I.3', '3')
+				'items' => array(
+					array(
+						'LLL:EXT:lang/locallang_general.xml:LGL.normal',
+						'0',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.layout.I.1',
+						'1',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.layout.I.2',
+						'2',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.layout.I.3',
+						'3',
+					),
 				),
-				'default' => '0'
-			)
+				'default' => '0',
+			),
 		),
-		'url_scheme' => array (
+		'url_scheme' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.url_scheme',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
-					array('', 0),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.url_scheme.http', 1),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.url_scheme.https', 2)
+				'items' => array(
+					array(
+						'',
+						0,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.url_scheme.http',
+						1,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.url_scheme.https',
+						2,
+					),
 				),
-				'default' => 0
-			)
+				'default' => 0,
+			),
 		),
-		'fe_group' => array (
+		'fe_group' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.fe_group',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'size' => 5,
+				'size' => 7,
 				'maxitems' => 20,
-				'items' => array (
-					array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
-					array('LLL:EXT:lang/locallang_general.xml:LGL.any_login', -2),
-					array('LLL:EXT:lang/locallang_general.xml:LGL.usergroups', '--div--')
+				'items' => array(
+					array(
+						'LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login',
+						-1,
+					),
+					array(
+						'LLL:EXT:lang/locallang_general.xml:LGL.any_login',
+						-2,
+					),
+					array(
+						'LLL:EXT:lang/locallang_general.xml:LGL.usergroups',
+						'--div--',
+					),
 				),
 				'exclusiveKeys' => '-1,-2',
 				'foreign_table' => 'fe_groups',
 				'foreign_table_where' => 'ORDER BY fe_groups.title',
-			)
+			),
 		),
-		'extendToSubpages' => array (
+		'extendToSubpages' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.extendToSubpages',
-			'config' => array (
-				'type' => 'check'
-			)
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.extendToSubpages_checkbox_1_formlabel',
+					),
+				),
+			),
 		),
-		'nav_title' => array (
+		'nav_title' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.nav_title',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '50',
 				'max' => '255',
 				'checkbox' => '',
-				'eval' => 'trim'
-			)
+				'eval' => 'trim',
+			),
 		),
-		'nav_hide' => array (
+		'nav_hide' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.nav_hide',
-			'config' => array (
-				'type' => 'check'
-			)
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.nav_hide_checkbox_1_formlabel',
+					),
+				),
+			),
 		),
-		'subtitle' => array (
+		'subtitle' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.subtitle',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '50',
 				'max' => '255',
-				'eval' => ''
-			)
+				'eval' => '',
+				'checkbox' => '',
+			),
 		),
-		'target' => array (
+		'target' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.target',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '20',
+				'size' => '50',
 				'max' => '80',
 				'eval' => 'trim',
-				'checkbox' => ''
-			)
+				'checkbox' => '',
+			),
 		),
-		'alias' => array (
+		'alias' => array(
 			'displayCond' => 'VERSION:IS:false',
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.alias',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '10',
+				'size' => '50',
 				'max' => '32',
 				'eval' => 'nospace,alphanum_x,lower,unique',
-				'softref' => 'notify'
-			)
+				'softref' => 'notify',
+				'checkbox' => '',
+			),
 		),
-		'url' => array (
+		'url' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.url',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '25',
+				'size' => '23',
 				'max' => '255',
 				'eval' => 'trim,required',
-				'softref' => 'url'
-			)
+				'softref' => 'url',
+				'checkbox' => '',
+			),
 		),
-		'urltype' => array (
+		'urltype' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.type',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
-					array('', '0'),
-					array('http://', '1'),
-					array('https://', '4'),
-					array('ftp://', '2'),
-					array('mailto:', '3')
+				'items' => array(
+					array(
+						'',
+						'0',
+					),
+					array(
+						'http://',
+						'1',
+					),
+					array(
+						'https://',
+						'4',
+					),
+					array(
+						'ftp://',
+						'2',
+					),
+					array(
+						'mailto:',
+						'3',
+					),
 				),
-				'default' => '1'
-			)
+				'default' => '1',
+			),
 		),
-		'lastUpdated' => array (
+		'lastUpdated' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.lastUpdated',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '12',
+				'size' => '13',
 				'max' => '20',
 				'eval' => 'datetime',
 				'checkbox' => '0',
-				'default' => '0'
-			)
+				'default' => '0',
+			),
 		),
-		'newUntil' => array (
+		'newUntil' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.newUntil',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '8',
+				'size' => '13',
 				'max' => '20',
 				'eval' => 'date',
 				'checkbox' => '0',
-				'default' => '0'
-			)
+				'default' => '0',
+			),
 		),
-		'cache_timeout' => array (
+		'cache_timeout' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
-					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.1', 60),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.2', 300),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.3', 900),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.4', 1800),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.5', 3600),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.6', 14400),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.7', 86400),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.8', 172800),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.9', 604800),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.10', 2678400)
+				'items' => array(
+					array(
+						'LLL:EXT:lang/locallang_general.xml:LGL.default_value',
+						0,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.1',
+						60,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.2',
+						300,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.3',
+						900,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.4',
+						1800,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.5',
+						3600,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.6',
+						14400,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.7',
+						86400,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.8',
+						172800,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.9',
+						604800,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout.I.10',
+						2678400,
+					),
 				),
-				'default' => '0'
-			)
+				'default' => '0',
+			),
 		),
-		'no_cache' => array (
+		'no_cache' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_cache',
-			'config' => array (
-				'type' => 'check'
-			)
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_cache_checkbox_1_formlabel',
+					),
+				),
+			),
 		),
-		'no_search' => array (
+		'no_search' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_search',
-			'config' => array (
-				'type' => 'check'
-			)
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.no_search_checkbox_1_formlabel',
+					),
+				),
+			),
 		),
-		'shortcut' => array (
+		'shortcut' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.shortcut_page',
-			'config' => array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'pages',
@@ -341,23 +494,35 @@ $TCA['pages'] = array(
 				),
 			),
 		),
-		'shortcut_mode' => array (
+		'shortcut_mode' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
-					array('', 0),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.1', 1),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.2', 2),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.3', 3),
+				'items' => array(
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.0',
+						0,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.1',
+						1,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.2',
+						2,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.3',
+						3,
+					),
 				),
-				'default' => '0'
-			)
+				'default' => '0',
+			),
 		),
-		'content_from_pid' => array (
+		'content_from_pid' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.content_from_pid',
-			'config' => array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'pages',
@@ -372,9 +537,9 @@ $TCA['pages'] = array(
 				),
 			),
 		),
-		'mount_pid' => array (
+		'mount_pid' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid',
-			'config' => array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'pages',
@@ -389,58 +554,60 @@ $TCA['pages'] = array(
 				),
 			),
 		),
-		'keywords' => array (
+		'keywords' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.keywords',
-			'config' => array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
-				'rows' => '3'
-			)
+				'rows' => '3',
+			),
 		),
-		'description' => array (
+		'description' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.description',
-			'config' => array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
-				'rows' => '3'
-			)
+				'rows' => '3',
+			),
 		),
-		'abstract' => array (
+		'abstract' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.abstract',
-			'config' => array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
-				'rows' => '3'
-			)
+				'rows' => '3',
+			),
 		),
-		'author' => array (
+		'author' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.author',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '20',
-				'eval' => 'trim',
-				'max' => '80'
-			)
-		),
-		'author_email' => array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.email',
-			'config' => array (
-				'type' => 'input',
-				'size' => '20',
+				'size' => '23',
 				'eval' => 'trim',
 				'max' => '80',
-				'softref' => 'email[subst]'
-			)
+				'checkbox' => '',
+			),
 		),
-		'media' => array (
+		'author_email' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.email',
+			'config' => array(
+				'type' => 'input',
+				'size' => '23',
+				'eval' => 'trim',
+				'max' => '80',
+				'softref' => 'email[subst]',
+				'checkbox' => '',
+			),
+		),
+		'media' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.media',
-			'config' => array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'file',
 				'allowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].',html,htm,ttf,txt,css',
@@ -449,160 +616,406 @@ $TCA['pages'] = array(
 				'show_thumbs' => '1',
 				'size' => '3',
 				'maxitems' => '5',
-				'minitems' => '0'
-			)
+				'minitems' => '0',
+			),
 		),
-		'is_siteroot' => array (
+		'is_siteroot' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.is_siteroot',
-			'config' => array (
-				'type' => 'check'
-			)
+			'config' => array(
+				'type' => 'check',
+				'items' => array(
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.is_siteroot_checkbox_1_formlabel'
+					),
+				),
+			),
 		),
-		'mount_pid_ol' => array (
+		'mount_pid_ol' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol',
-			'config' => array (
-				'type' => 'check'
-			)
+			'config' => array(
+				'type' => 'radio',
+				'items' => array(
+					'0' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol.I.0',
+					),
+					'1' => array(
+						'0' => 'LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol.I.1',
+					),
+				),
+			),
 		),
-		'module' => array (
+		'module' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.module',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
-					array('', '', ''),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.1', 'shop', 'i/modules_shop.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.2', 'board', 'i/modules_board.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.3', 'news', 'i/modules_news.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.4', 'fe_users', 'i/fe_users.gif'),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.module.I.6', 'approve', 'state_checked.png')
+				'items' => array(
+					array(
+						'',
+						'',
+						'',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.1',
+						'shop',
+						'i/modules_shop.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.2',
+						'board',
+						'i/modules_board.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.3',
+						'news',
+						'i/modules_news.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.4',
+						'fe_users',
+						'i/fe_users.gif',
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.6',
+						'approve',
+						'state_checked.png',
+					),
 				),
 				'default' => '',
 				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1,
-			)
+			),
 		),
-		'fe_login_mode' => array (
+		'fe_login_mode' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode',
-			'config' => array (
+			'config' => array(
 				'type' => 'select',
-				'items' => array (
-					array('', 0),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableAll', 1),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableGroups', 3),
-					array('LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.enableAgain', 2),
-				)
-			)
+				'items' => array(
+					array(
+						'',
+						0,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableAll',
+						1,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.disableGroups',
+						3,
+					),
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode.enableAgain',
+						2,
+					),
+				),
+			),
 		),
-		'l18n_cfg' => array (
+		'l18n_cfg' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg',
-			'config' => array (
+			'config' => array(
 				'type' => 'check',
-				'items' => array (
-					array('LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg.I.1', ''),
-					array($GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] ? 'LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg.I.2a' : 'LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg.I.2', ''),
+				'items' => array(
+					array(
+						'LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg.I.1',
+						'',
+					),
+					array(
+						$GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] ?
+							'LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg.I.2a' :
+							'LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg.I.2',
+						'',
+					),
 				),
-			)
+			),
 		),
 	),
 	'types' => array(
 			// normal
-		'1' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
-				--palette--;LLL:EXT:lang/locallang_general.xml:LGL.author;5;;3-3-3, abstract, keywords, description,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
-				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;6-6-6, storage_pid;;7, l18n_cfg, module, content_from_pid,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'1'	=>	array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;visibility,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.metatags;metatags,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.layout;layout,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.module;module,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.replace;replace,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.links;links,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.caching;caching,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.language;language,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;miscellaneous,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.storage;storage,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// external URL
-		'3' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.url,
-				url;;;;3-3-3, urltype,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
-				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'3' => array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.external;external,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;visibility,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.layout;layout,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.links;links,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.language;language,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;miscellaneous,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.storage;storage,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// shortcut
-		'4' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut,
-				shortcut;;;;3-3-3, shortcut_mode,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
-				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
-		'),
+		'4' => array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.shortcut;shortcut,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.shortcutpage;shortcutpage,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;visibility,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.layout;layout,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.links;links,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.language;language,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;miscellaneous,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.storage;storage,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+				'),
 			// not in menu
-		'5' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
-				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'5' => array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;hiddenonly,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.metatags;metatags,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.layout;layout,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.module;module,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.replace;replace,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.links;links,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.caching;caching,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.language;language,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;miscellaneous,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.storage;storage,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// mount page
-		'7' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, nav_hide, title;;3;;2-2-2, subtitle, nav_title,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.mount,
-				mount_pid;;;;3-3-3, mount_pid_ol,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
-				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, l18n_cfg, module, content_from_pid,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
-				starttime, endtime, fe_login_mode, fe_group, extendToSubpages,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'7' => array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.mountpoint;mountpoint,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.mountpage;mountpage,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;title,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;visibility,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.abstract;abstract,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.editorial;editorial,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.layout;layout,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.links;links,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.language;language,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;miscellaneous,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// spacer
-		'199' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, title,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;5-5-5, storage_pid;;7,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
-		'),
+		'199' => array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;titleonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;visibility,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;adminsonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+			'),
 			// sysfolder
-		'254' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, title;LLL:EXT:lang/locallang_general.xml:LGL.title,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files,
-				media,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.options,
-				TSconfig;;6;nowrap;5-5-5, storage_pid;;7, module,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'254' => array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;titleonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;hiddenonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;adminsonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.resources,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.config;config,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 			// trash
-		'255' => array('showitem' =>
-				'doktype;;2;;1-1-1, hidden, title,
-			--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
+		'255' => array(
+			'showitem' =>
+					'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.title;titleonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.visibility;hiddenonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.behaviour,
+					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.miscellaneous;adminsonly,
+				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'starttime, endtime, extendToSubpages'),
-		'2' => array('showitem' => 'layout, lastUpdated, newUntil, no_search'),
-		'3' => array('showitem' => 'alias, target, no_cache, cache_timeout, url_scheme'),
-		'5' => array('showitem' => 'author, author_email', 'canNotCollapse' => 1),
-		'6' => array('showitem' => 'php_tree_stop, editlock'),
-		'7' => array('showitem' => 'is_siteroot'),
-	)
+		'1' => array(
+			'showitem' => 'starttime, endtime, extendToSubpages',
+		),
+		'2' => array(
+			'showitem' => 'layout, lastUpdated, newUntil, no_search',
+		),
+		'3' => array(
+			'showitem' => 'alias, target, no_cache, cache_timeout, url_scheme',
+		),
+		'5' => array(
+			'showitem' => 'author, author_email', 'canNotCollapse' => 1,
+		),
+		'6' => array(
+			'showitem' => 'php_tree_stop, editlock',
+		),
+		'7' => array(
+			'showitem' => 'is_siteroot',
+		),
+		'standard' => array(
+			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xml:pages.doktype_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'shortcut' => array(
+			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xml:pages.doktype_formlabel, shortcut_mode;LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'shortcutpage' => array(
+			'showitem' => 'shortcut;Selected shortcut target||Ausgew�hltes Verweisziel',
+			'canNotCollapse' => 1,
+		),
+		'mountpoint' => array(
+			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xml:pages.doktype_formlabel, mount_pid_ol;LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_ol_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'mountpage' => array(
+			'showitem' => 'mount_pid;LLL:EXT:cms/locallang_tca.xml:pages.mount_pid_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'external' => array(
+			'showitem' => 'doktype;LLL:EXT:cms/locallang_tca.xml:pages.doktype_formlabel, urltype;LLL:EXT:cms/locallang_tca.xml:pages.urltype_formlabel, url;LLL:EXT:cms/locallang_tca.xml:pages.url_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'title' => array(
+			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xml:pages.title_formlabel, --linebreak--, nav_title;LLL:EXT:cms/locallang_tca.xml:pages.nav_title_formlabel, --linebreak--, subtitle;LLL:EXT:cms/locallang_tca.xml:pages.subtitle_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'titleonly' => array(
+			'showitem' => 'title;LLL:EXT:cms/locallang_tca.xml:pages.title_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'visibility' => array(
+			'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xml:pages.hidden_formlabel, nav_hide;LLL:EXT:cms/locallang_tca.xml:pages.nav_hide_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'hiddenonly' => array(
+			'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xml:pages.hidden_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'access' => array(
+			'showitem' => 'starttime;LLL:EXT:cms/locallang_tca.xml:pages.starttime_formlabel, endtime;LLL:EXT:cms/locallang_tca.xml:pages.endtime_formlabel, extendToSubpages;LLL:EXT:cms/locallang_tca.xml:pages.extendToSubpages_formlabel, --linebreak--, fe_group;LLL:EXT:cms/locallang_tca.xml:pages.fe_group_formlabel, --linebreak--, fe_login_mode;LLL:EXT:cms/locallang_tca.xml:pages.fe_login_mode_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'abstract' => array(
+			'showitem' => 'abstract;LLL:EXT:cms/locallang_tca.xml:pages.abstract_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'metatags' => array(
+			'showitem' => 'keywords;LLL:EXT:cms/locallang_tca.xml:pages.keywords_formlabel, --linebreak--, description;LLL:EXT:cms/locallang_tca.xml:pages.description_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'editorial' => array(
+			'showitem' => 'author;LLL:EXT:cms/locallang_tca.xml:pages.author_formlabel, author_email;LLL:EXT:cms/locallang_tca.xml:pages.author_email_formlabel, lastUpdated;LLL:EXT:cms/locallang_tca.xml:pages.lastUpdated_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'layout' => array(
+			'showitem' => 'layout;LLL:EXT:cms/locallang_tca.xml:pages.layout_formlabel, newUntil;LLL:EXT:cms/locallang_tca.xml:pages.newUntil_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'module' => array(
+			'showitem' => 'module;LLL:EXT:cms/locallang_tca.xml:pages.module_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'replace' => array(
+			'showitem' => 'content_from_pid;LLL:EXT:cms/locallang_tca.xml:pages.content_from_pid_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'links' => array(
+			'showitem' => 'alias;LLL:EXT:cms/locallang_tca.xml:pages.alias_formlabel, --linebreak--, target;LLL:EXT:cms/locallang_tca.xml:pages.target_formlabel, --linebreak--, url_scheme;LLL:EXT:cms/locallang_tca.xml:pages.url_scheme_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'caching' => array(
+			'showitem' => 'cache_timeout;LLL:EXT:cms/locallang_tca.xml:pages.cache_timeout_formlabel, no_cache;LLL:EXT:cms/locallang_tca.xml:pages.no_cache_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'language' => array(
+			'showitem' => 'l18n_cfg;LLL:EXT:cms/locallang_tca.xml:pages.l18n_cfg_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'miscellaneous' => array(
+			'showitem' => 'is_siteroot;LLL:EXT:cms/locallang_tca.xml:pages.is_siteroot_formlabel, no_search;LLL:EXT:cms/locallang_tca.xml:pages.no_search_formlabel, editlock;LLL:EXT:cms/locallang_tca.xml:pages.editlock_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'adminsonly' => array(
+			'showitem' => 'editlock;LLL:EXT:cms/locallang_tca.xml:pages.editlock_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'media' => array(
+			'showitem' => 'media;LLL:EXT:cms/locallang_tca.xml:pages.media_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'storage' => array(
+			'showitem' => 'storage_pid;LLL:EXT:cms/locallang_tca.xml:pages.storage_pid_formlabel',
+			'canNotCollapse' => 1,
+		),
+		'config' => array(
+			'showitem' => 'TSconfig;LLL:EXT:cms/locallang_tca.xml:pages.TSconfig_formlabel',
+			'canNotCollapse' => 1,
+		),
+	),
 );
 
 
@@ -615,8 +1028,16 @@ if (!t3lib_div::compat_version('4.2')) {
 		2,
 		0,
 		array(
-			array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.0', '2', 'i/pages.gif'),
-			array('LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.3', '5', 'i/pages_notinmenu.gif'),
+			array(
+				'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.0',
+				'2',
+				'i/pages.gif',
+			),
+			array(
+				'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.3',
+				'5',
+				'i/pages_notinmenu.gif',
+			),
 		)
 	);
 		// setting the doktype 1 ("Standard") to show less fields
