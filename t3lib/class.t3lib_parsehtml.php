@@ -728,7 +728,7 @@ class t3lib_parsehtml	{
 
 								// rmTagIfNoAttrib
 							if ($endTag || trim($tagParts[1]) || !$tags[$tagName]['rmTagIfNoAttrib'])	{
-								$setTag=1;
+								$setTag = !$tags[$tagName]['rmTagIfNoAttrib'];
 
 								if ($tags[$tagName]['nesting'])	{
 									if (!is_array($tagRegister[$tagName]))	$tagRegister[$tagName]=array();
