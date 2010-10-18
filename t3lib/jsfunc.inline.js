@@ -258,7 +258,7 @@ var inline = {
 	importElement: function(objectId, table, uid, type) {
 		window.setTimeout(
 			function() {
-				inline.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, uid], true);
+				inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true);
 			},
 			10
 		);
