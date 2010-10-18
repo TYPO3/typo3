@@ -6,10 +6,11 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="CType_formlabel">Type</label>
 			<label index="CType.I.0">Header</label>
 			<label index="CType.I.1">Text</label>
-			<label index="CType.I.2">Text w/image</label>
-			<label index="CType.I.3">Image</label>
+			<label index="CType.I.2">Text &amp; images</label>
+			<label index="CType.I.3">Images</label>
 			<label index="CType.I.4">Bullet list</label>
 			<label index="CType.I.5">Table</label>
 			<label index="CType.I.6">Filelinks</label>
@@ -33,16 +34,22 @@
 			<label index="layout.I.2">Layout 2</label>
 			<label index="layout.I.3">Layout 3</label>
 			<label index="colPos">Columns:</label>
+			<label index="colPos_formlabel">Column</label>
 			<label index="colPos.I.0">Left</label>
 			<label index="colPos.I.2">Right</label>
 			<label index="colPos.I.3">Border</label>
 			<label index="date">Date:</label>
+			<label index="date_formlabel">Date</label>
 			<label index="header">Header:</label>
+			<label index="header_formlabel">Main headline</label>
 			<label index="header_position">Align:</label>
+			<label index="header_position_formlabel">Alignment</label>
 			<label index="header_position.I.1">Center</label>
 			<label index="header_position.I.2">Right</label>
 			<label index="header_position.I.3">Left</label>
 			<label index="header_link">Link:</label>
+			<label index="header_link_formlabel">Link</label>
+			<label index="header_layout_formlabel">Type</label>
 			<label index="header_layout.I.1">Layout 1</label>
 			<label index="header_layout.I.2">Layout 2</label>
 			<label index="header_layout.I.3">Layout 3</label>
@@ -50,11 +57,14 @@
 			<label index="header_layout.I.5">Layout 5</label>
 			<label index="header_layout.I.6">Hidden</label>
 			<label index="text_align">Align:</label>
+			<label index="text_align_formlabel">Text alignment</label>
 			<label index="text_align.I.1">Center</label>
 			<label index="text_align.I.2">Right</label>
 			<label index="text_align.I.3">Left</label>
 			<label index="text_face">Fontface:</label>
+			<label index="text_face_formlabel">Text face</label>
 			<label index="text_size">Size:</label>
+			<label index="text_size_formlabel">Text size</label>
 			<label index="text_size.I.1">1: Small</label>
 			<label index="text_size.I.2">2: Medium</label>
 			<label index="text_size.I.3">3: Large</label>
@@ -63,6 +73,7 @@
 			<label index="text_size.I.6">Default +1</label>
 			<label index="text_size.I.7">Default -1</label>
 			<label index="text_color">Color:</label>
+			<label index="text_color_formlabel">Text color</label>
 			<label index="text_color.I.1">Color 1</label>
 			<label index="text_color.I.2">Color 2</label>
 			<label index="text_color.I.3">None</label>
@@ -78,6 +89,7 @@
 			<label index="text_color.I.14">Olive</label>
 			<label index="text_color.I.15">Maroon</label>
 			<label index="text_properties">Properties:</label>
+			<label index="text_properties_formlabel">Text decoration</label>
 			<label index="text_properties.I.0">Bold</label>
 			<label index="text_properties.I.1">Italics</label>
 			<label index="text_properties.I.2">Underline</label>
@@ -171,8 +183,11 @@
 			<label index="filelink_size">Show filesize:</label>
 			<label index="records">Items:</label>
 			<label index="spaceBefore">Before:</label>
+			<label index="spaceBefore_formlabel">Top margin</label>
 			<label index="spaceAfter">After:</label>
+			<label index="spaceAfter_formlabel">Bottom margin</label>
 			<label index="section_frame">Frame:</label>
+			<label index="section_frame_formlabel">Indentations and frames</label>
 			<label index="section_frame.I.1">Invisible</label>
 			<label index="section_frame.I.2">Ruler before</label>
 			<label index="section_frame.I.3">Ruler after</label>
@@ -188,8 +203,14 @@
 			<label index="splash_layout.I.4">__Graphical:__</label>
 			<label index="splash_layout.I.5">Postit 1</label>
 			<label index="sectionIndex">Index:</label>
+			<label index="sectionIndex_formlabel">In section menus</label>
+			<label index="sectionIndex.I.0">Visible</label>
 			<label index="linkToTop">To top:</label>
+			<label index="linkToTop_formlabel">Link to top of page</label>
+			<label index="linkToTop.I.0">Activate</label>
 			<label index="rte_enabled">Disable Rich Text Editor:</label>
+			<label index="rte_enabled_formlabel">Rich Text Editor for this text</label>
+			<label index="rte_enabled.I.0">Disable</label>			
 			<label index="pi_flexform">Plugin Options:</label>
 			<label index="ALT.imgOptions">Image Options</label>
 			<label index="ALT.imgLinks">Image Links</label>
@@ -239,6 +260,28 @@
 			<label index="media.params.customEntry">Custom Parameters</label>
 			<label index="media.params.customEntryLabel">Enter flashvars, params or attributes</label>
 			<label index="media.noFile">ERROR: Missing URL or File!</label>
+			<label index="sys_language_uid_formlabel">Language</label>
+			<label index="subheader_formlabel">Secondary headline</label>
+			<label index="hidden_formlabel">Content element</label>
+			<label index="hidden.I.0">Disable</label>
+			<label index="starttime_formlabel">Release date</label>
+			<label index="endtime_formlabel">Expiration date</label>
+			<label index="fe_group_formlabel">Usergroups and general login response</label>
+			<label index="layout_formlabel">Frontend variants</label>
+			<label index="bodytext_formlabel">Text</label>
+			<label index="palette.general">Content Element</label>
+			<label index="palette.headers">Headlines</label>
+			<label index="palette.header">Headline</label>
+			<label index="palette.visibility">General visibility</label>
+			<label index="palette.access">Access times and rights</label>
+			<label index="palette.frames">General layout</label>
+			<label index="palette.textlayout">Text layout</label>
+			<label index="tabs.access">Access</label>
+			<label index="tabs.appearance">Appearance</label>
+			<label index="tabs.behaviour">Behaviour</label>
+			<label index="tabs.script">Script</label>
+			<label index="tabs.media">Media</label>
+			<label index="tabs.images">Images</label>
 		</languageKey>
 	</data>
 </T3locallang>
