@@ -572,7 +572,9 @@ HTMLArea.prototype._checkBackspace = function() {
 			var range = self._createRange(selection);
 			var startContainer = range.startContainer;
 			var startOffset = range.startOffset;
+				// If the selection is collapsed...
 			if (self._selectionEmpty()) {
+					// ... and the cursor lies in a direct child of body...
 				if (/^(body)$/i.test(startContainer.nodeName)) {
 					var node = startContainer.childNodes[startOffset];
 				} else if (/^(body)$/i.test(startContainer.parentNode.nodeName)) {
@@ -580,20 +582,27 @@ HTMLArea.prototype._checkBackspace = function() {
 				} else {
 					return false;
 				}
+					// ... which is a br or text node containing no non-whitespace character
 				if (/^(br|#text)$/i.test(node.nodeName) && !/\S/.test(node.textContent)) {
+						// Get a meaningful previous sibling in which to reposition de cursor
 					var previousSibling = node.previousSibling;
 					while (previousSibling && /^(br|#text)$/i.test(previousSibling.nodeName) && !/\S/.test(previousSibling.textContent)) {
 						previousSibling = previousSibling.previousSibling;
 					}
-					HTMLArea.removeFromParent(node);
-					if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
-						self.selectNodeContents(previousSibling.lastChild, false);
-					} else if (/^(table)$/i.test(previousSibling.nodeName)) {
-						self.selectNodeContents(previousSibling.rows[previousSibling.rows.length-1].cells[previousSibling.rows[previousSibling.rows.length-1].cells.length-1], false);
-					} else if (!/\S/.test(previousSibling.textContent) && previousSibling.firstChild) {
-						self.selectNode(previousSibling.firstChild, true);
-					} else {
-						self.selectNodeContents(previousSibling, false);
+						// If there is no meaningful previous sibling, the cursor is at the start of body
+					if (previousSibling) {
+							// Remove the node
+						HTMLArea.removeFromParent(node);
+							// Position the cursor
+						if (/^(ol|ul|dl)$/i.test(previousSibling.nodeName)) {
+							self.selectNodeContents(previousSibling.lastChild, false);
+						} else if (/^(table)$/i.test(previousSibling.nodeName)) {
+							self.selectNodeContents(previousSibling.rows[previousSibling.rows.length-1].cells[previousSibling.rows[previousSibling.rows.length-1].cells.length-1], false);
+						} else if (!/\S/.test(previousSibling.textContent) && previousSibling.firstChild) {
+							self.selectNode(previousSibling.firstChild, true);
+						} else {
+							self.selectNodeContents(previousSibling, false);
+						}
 					}
 				}
 			}
