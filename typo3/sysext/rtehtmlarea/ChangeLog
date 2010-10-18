@@ -1,6 +1,7 @@
 2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16050: htmlArea RTE: Backspacing in empty editing area may raise js error
+	* Updated htmlArea RTE version to 1.8.13
 
 2010-10-06  Stanislas Rolland  <typo3@sjbr.ca>
 
