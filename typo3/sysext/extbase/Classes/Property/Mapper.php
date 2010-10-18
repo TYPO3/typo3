@@ -111,8 +111,8 @@ class Tx_Extbase_Property_Mapper {
 	 * @param array $propertyNames Names of the properties to map.
 	 * @param mixed $source Source containing the properties to map to the target object. Must either be an array, ArrayObject or any other object.
 	 * @param object $target The target object
-	 * @param Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator A validator used for validating the target object
 	 * @param array $optionalPropertyNames Names of optional properties. If a property is specified here and it doesn't exist in the source, no error is issued.
+	 * @param Tx_Extbase_Validation_Validator_ObjectValidatorInterface $targetObjectValidator A validator used for validating the target object
 	 * @return boolean TRUE if the mapped properties are valid, otherwise FALSE
 	 * @see getMappingResults()
 	 * @see map()
