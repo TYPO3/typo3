@@ -1,3 +1,7 @@
+2010-10-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #1318: 'removeTag' does not remove closing tags
+
 2010-10-17  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #15657: IRRE: Foreign selector with groupdb won't add new items (Thanks to Thomas Maroschik)
