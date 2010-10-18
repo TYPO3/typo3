@@ -486,28 +486,35 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
  * Site: www.jadacosta.es
  */
 
+/* the mask for dialogs */
 .ext-el-mask {
-	background-color: #aaa;
-	-moz-opacity: 0.75;
-	opacity: .75;
-	filter: alpha(opacity=75);
+	background-color: #000000;
+	-moz-opacity: 0.9;
+	opacity: 0.9;
+	filter:alpha(opacity=90);
 }
 
-.ext-el-mask-msg {
-	border-color:#8f8f8f;
-	background-color:#EFEFF4;
-	background-image:url(images/box/tb-gray.gif);
-}
-.ext-el-mask-msg div {
-	background-color: #EFEFF4;
-	border-color:#ccc;
-	color:#222;
-	font:normal 10px verdana, arial, tahoma, helvetica, sans-serif;
+/* mask while loading */
+.t3-mask-loading .ext-el-mask {
+	background-color: #f8f8f8;
 }
 
-.x-mask-loading div {
-	background-color:#fbfbfb;
-	background-image:url(images/grid/loading.gif);
+.x-mask-loading-div {
+	padding: 0;
+}
+
+.x-mask-loading-message.ext-el-mask-msg {
+	border: none;
+	background: none;
+}
+
+.x-mask-loading-message div {
+	background-color: transparent;
+	background-image: url("../images/spinner/big-f0f0f0.gif");
+	border: none;
+	height: 32px;
+	padding: 0;
+	width: 32px;
 }
 
 .x-item-disabled {

@@ -5,6 +5,7 @@
 2010-10-18  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #15991: Style error messages in the TYPO3 way (Thanks to Lars Zimmermann, T3UXW09)
+	* Added feature #16046: Improve ExtJS skin: Loading mask (Thanks to Lars Zimmermann)
 
 2010-10-18  Xavier Perseguers  <typo3@perseguers.ch>
 

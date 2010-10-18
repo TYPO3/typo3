@@ -37,7 +37,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 	name: 'iframe',
 	iframe: null,
 	src: Ext.isIE && Ext.isSecure ? Ext.SSL_SECURE_URL : 'about:blank',
-	maskMessage: 'loading ...',
+	maskMessage: ' ',
 	doMask: true,
 
 		// component build
@@ -60,7 +60,7 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 
 	onRender : function() {
 		TYPO3.iframePanel.superclass.onRender.apply(this, arguments);
-		this.maskMessage = TYPO3.LLL.core.loadingIndicator;
+		this.maskMessage = ' ';
 		this.iframe = Ext.isIE ? this.body.dom.contentWindow : window.frames[this.name];
 		this.body.dom[Ext.isIE ? 'onreadystatechange' : 'onload'] = this.loadHandler.createDelegate(this);
 	},
@@ -95,16 +95,17 @@ TYPO3.iframePanel = Ext.extend(Ext.Panel, {
 		this.body.dom.src = this.body.dom.src;
 	},
 
-    /** @private */
-    setMask: function() {
-        if (this.doMask) {
-		    this.el.mask(this.maskMessage, 'x-mask-loading');
+	/** @private */
+	setMask: function() {
+		if (this.doMask) {
+			this.el.mask(this.maskMessage, 'x-mask-loading-message');
+			this.el.addClass('t3-mask-loading');
 		}
-    },
-    removeMask: function() {
-        if (this.doMask) {
+	},
+	removeMask: function() {
+		if (this.doMask) {
 			this.el.unmask();
 		}
-    }
+	}
 });
 Ext.reg('iframePanel', TYPO3.iframePanel);
