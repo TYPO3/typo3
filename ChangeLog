@@ -1,3 +1,7 @@
+2010-10-18  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #1318: 'removeTag' does not remove closing tags
+
 2010-10-06  Oliver Hader  <oliver@typo3.org>
 
 	* Fixed bug #15898: It is (still) possible to download arbitrary files through the jumpurl feature (thanks to Helmut Hummel and Marcus Krause)
