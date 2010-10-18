@@ -842,6 +842,9 @@ class tslib_cObj {
 						case 'TEMPLATE' :
 							$content .= $this->TEMPLATE($conf);
 						break;
+						case 'FLUIDTEMPLATE':
+							$content .= $this->FLUIDTEMPLATE($conf);
+						break;
 						case 'EDITPANEL' :
 							if ($GLOBALS['TSFE']->beUserLogin) {
 								$content .= $this->editPanel($content, $conf);
@@ -3049,6 +3052,170 @@ class tslib_cObj {
 			}
 		}
 		return $content;
+	}
+
+	/**
+	 * Rendering the cObject, FLUIDTEMPLATE
+	 *   configuration properties are:
+	 *   - file	string+stdWrap	the FLUID template file
+	 *   - extbase.pluginName, extbase.controllerExtensionName,
+	 *   - extbase.controllerName, extbase.controllerActionName
+	 *   - layoutRootPath	filepath+stdWrap	by default,
+	 *   - partialRootPath	filepath+stdWrap	the
+	 *   - variables	array of cObjects, the keys are the variable names in fluid
+	 *
+	 * an example would be
+	 * 10 = FLUIDTEMPLATE
+	 * 10.file = fileadmin/templates/mytemplate.html
+	 * 10.partialRootPath = fileadmin/templates/partial/
+	 * 10.variables {
+	 *    mylabel = TEXT
+	 *    mylabel.value = Label from TypoScript coming
+	 * }
+	 *
+	 * @param	array		array of TypoScript properties
+	 * @return	string		the HTML output
+	 *
+	 * @author	Steffen Ritter	<info@steffen-ritter.net>
+	 * @author	Benjamin Mack	<benni@typo3.org>
+	 */
+	protected function FLUIDTEMPLATE(array $conf) {
+
+			// check if the needed extensions are installed
+		if (!t3lib_extMgm::isLoaded('fluid')) {
+			return 'You need to install "Fluid" in order to use the FLUIDTEMPLATE content element';
+		}
+		if (!t3lib_extMgm::isLoaded('extbase')) {
+			return 'You need to install "Extbase" in order to use the FLUIDTEMPLATE content element';
+		}
+
+			// initialize the extbase autoloader,
+			// see Extbase_Dispatcher->initializeClassLoader
+		if (!class_exists('Tx_Extbase_Utility_ClassLoader')) {
+			require(t3lib_extmgm::extPath('extbase') . 'Classes/Utility/ClassLoader.php');
+
+			$classLoader = new Tx_Extbase_Utility_ClassLoader();
+			spl_autoload_register(array($classLoader, 'loadClass'));
+		}
+
+
+		/**
+		 * 1. initializing configuration parameters
+		 **/
+
+			// fetch the FLUID file
+		$templateFile = $GLOBALS['TSFE']->tmpl->getFileName($this->stdWrap($conf['file'], $conf['file.']));
+		$templatePath = dirname($templateFile) . '/';
+		$layoutRootPath = $templatePath . 'Layouts';
+		$partialRootPath = $templatePath . 'Partials';
+
+			// override the default layout path via typoscript
+		if (isset($conf['layoutRootPath']) || isset($conf['layoutRootPath.'])) {
+			$layoutRootPath = $this->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.']);
+			$layoutRootPath = t3lib_div::getFileAbsFileName($layoutRootPath);
+		}
+
+			// override the default partials path via typoscript
+		if (isset($conf['partialRootPath']) || isset($conf['partialRootPath.'])) {
+			$partialRootPath = $this->stdWrap($conf['partialRootPath'], $conf['partialRootPath.']);
+			$partialRootPath = t3lib_div::getFileAbsFileName($partialRootPath);
+		}
+
+
+			// set some default variables for initializing Extbase
+		if (isset($conf['extbase.']['pluginName'])) {
+			$requestPluginName = $conf['extbase.']['pluginName'];
+		} else {
+			$requestPluginName = 'pi1';
+		}
+
+		if (isset($conf['extbase.']['controllerExtensionName'])) {
+			$requestControllerExtensionName = $conf['extbase.']['controllerExtensionName'];
+		} else {
+			$requestControllerExtensionName = 'cms';
+		}
+
+		if (isset($conf['extbase.']['controllerName'])) {
+			$requestControllerName = $conf['extbase.']['controllerName'];
+		} else {
+			$requestControllerName = 'cms';
+		}
+
+		if (isset($conf['extbase.']['controllerActionName'])) {
+			$requestControllerActionName = $conf['extbase.']['controllerActionName'];
+		} else {
+			$requestControllerActionName = 'index';
+		}
+
+
+		/**
+		 * 2. initializing Fluid classes,
+		 * first, the controller context needs to be created
+		 **/
+		$objectManager = t3lib_div::makeInstance('Tx_Fluid_Compatibility_ObjectManager');
+
+			// creating a request object
+		$controllerContext = $objectManager->create('Tx_Extbase_MVC_Controller_ControllerContext');
+		/**
+		 * @var $request Tx_Extbase_MVC_Web_Request
+		 */
+		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
+		$request->setPluginName($requestPluginName);
+		$request->setControllerExtensionName($requestControllerExtensionName);
+		$request->setControllerName($requestControllerName);
+		$request->setControllerActionName($requestControllerActionName);
+		$request->setRequestURI(t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'));
+		$request->setBaseURI(t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+
+		/**
+		 * @var $uriBuilder Tx_Extbase_MVC_Web_Routing_UriBuilder
+		 */
+		$uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$uriBuilder->setRequest($request);
+
+		$controllerContext->setRequest($request);
+		$controllerContext->setUriBuilder($uriBuilder);
+
+		/**
+		 * @var $view Tx_Fluid_View_TemplateView
+		 */
+		$view = t3lib_div::makeInstance('Tx_Fluid_View_TemplateView');
+		$view->setControllerContext($controllerContext);
+
+			// setting the paths for the template and the layouts/partials
+		$view->setTemplatePathAndFilename($templateFile);
+		$view->setLayoutRootPath($layoutRootPath);
+		$view->setPartialRootPath($partialRootPath);
+
+			// In FLOW3, solved through Object Lifecycle methods,
+			// v4 needs to call it explicitely
+		$view->initializeView();
+
+
+		/**
+		 * 3. variable replacement
+		 */
+		$reservedVariables = array('data', 'current');
+			// accumulate the variables to be replaced
+			// and loop them through cObjGetSingle
+		$variables = (array) $conf['variables.'];
+		foreach ($variables as $variableName => $cObjType) {
+			if(!in_array($variableName, $reservedVariables)) {
+				if (!is_array($cObjType)) {
+					$view->assign($variableName, $this->cObjGetSingle($cObjType, $variables[$variableName . '.']));
+				}
+			} else {
+				throw new InvalidArgumentException('Cannot use reserved name "' . $variableName . '" as variable name in FLUIDTEMPLATE');
+			}
+		}
+		$view->assign('data', $this->data);
+		$view->assign('current', $this->data[$this->currentValKey]);
+
+		/**
+		 * 4. render the content
+		 */
+		$content = $view->render();
+		return $this->stdWrap($content, $conf['stdWrap.']);
 	}
 
 	/**

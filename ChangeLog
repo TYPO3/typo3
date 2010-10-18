@@ -1,5 +1,6 @@
 2010-10-18  Steffen Kamper  <steffen@typo3.org>
 
+	* Added feature #16008: A new TypoScript cObject: FLUIDTEMPLATE
 	* Added feature #16031: Feature - Implement new layout and labels for tt_content as result of T3UXW09 (Thanks to Jo Hasenau)
 	* Fixed bug #16051: Palette render wrong and throw php warning if fieldset starts with palette
 	* Added feature #16015: Feature - Implement new layout and labels for pages as result of T3UXW09 (Thanks to Jo Hasenau)
