@@ -1,0 +1,115 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	color: #000000;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 11px;
+	line-height: 14px;
+}
+
+.t3-message-page {
+	background: url("../../images/login/background.png") repeat-x fixed 0 0 #4f4f4f;
+	padding-bottom: 20px;
+	padding-top: 75px;
+}
+
+.t3-errorpage-message .t3-message-page-logo {
+	background-image: url("../../images/login/typo3logo-white-greyback.gif");
+	background-position: right;
+	background-repeat: no-repeat;
+	height: auto;
+	margin: 0 0 30px;
+	padding: 0;
+	-moz-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+.t3-errorpage-message .t3-message-page-logo img {
+	visibility: hidden;
+}
+
+.t3-message-page-container {
+	color: #606060;
+	font-size: 11px;
+	text-align: left;
+	margin: 30px 16% 10px;
+	width: 456px;
+}
+
+.t3-errorpage-message .typo3-message {
+	background-position: 10px 12px;
+	background-repeat: no-repeat;
+	border: 1px solid;
+	padding: 12px 12px 12px 36px;
+}
+
+.t3-errorpage-message .message-error {
+	background-color: #f6d3cf;
+	background-image: url("../../images/icons/status/dialog-error.png");
+	border-color: #d66c68;
+	color: #aa0225;
+}
+
+.message-error a {
+	color: #aa0225;
+}
+
+.message-error a:hover {
+	color: #000000;
+}
+
+.t3-errorpage-message .t3-message-page-message {
+	background-position: 20px 20px;
+	padding-left: 45px;
+	padding-bottom: 20px;
+}
+
+.t3-errorpage-message h1 {
+	font-size: 15px;
+	margin-top: 9px;
+	margin-bottom: 25px;
+}
+
+.t3-message-page p.t3-error-text {
+	font-weight: bold;
+}
+
+#t3-footer {
+	border-top: 1px solid #5c5c5c;
+	font-size: 10px;
+	margin: 40px 16% 10px;
+	width: 456px;
+}
+
+#t3-copyright-notice {
+	color: #797878;
+	margin-top: 15px;
+}
+
+#t3-copyright-notice a {
+	color: #797878;
+	text-decoration: underline;
+}
+
+#t3-copyright-notice a:hover {
+	color: #b0b0b0;
+}
+
+.shadow-box-top-428 {
+	background-image: url("../../images/shadows/box-top-428.png");
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	height: 4px;
+}
+
+.shadow-box-bottom-424 {
+	background-image: url("../../images/shadows/box-bottom-424.png");
+	background-position: center top;
+	background-repeat: no-repeat;
+	height: 3px;
+}

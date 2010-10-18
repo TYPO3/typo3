@@ -53,7 +53,7 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 	 * @return	void
 	 */
 	public function __construct($message, $title, $severity = self::ERROR) {
-		$this->htmlTemplate = TYPO3_mainDir . 'templates/errorpage.html';
+		$this->htmlTemplate = TYPO3_mainDir . 'sysext/t3skin/templates/errorpage-message.html';
 		$this->setMessage($message);
 		$this->setTitle(strlen($title) > 0 ? $title : 'Error!');
 		$this->setSeverity($severity);
@@ -95,10 +95,10 @@ class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractMessage {
 		
 		$markers = array(
 			'###CSS_CLASS###' => $classes[$this->severity],
-			'###LOGO###'      => '<img src="' . TYPO3_mainDir . 'gfx/typo3logo.gif" width="123" height="34" alt="" />',
 			'###TITLE###'     => $this->title,
 			'###MESSAGE###'   => $this->message,
-			'###BASEURL###'   => t3lib_div::getIndpEnv('TYPO3_SITE_URL')
+			'###BASEURL###'   => t3lib_div::getIndpEnv('TYPO3_SITE_URL'),
+			'###TYPO3_mainDir###' => TYPO3_mainDir,
 		);
 
 		$content = t3lib_div::getUrl(PATH_site . $this->htmlTemplate);

@@ -55,7 +55,8 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 			header("HTTP/1.1 500 Internal Server Error");
 		}
 		$this->writeLogEntries($exception,self::CONTEXT_WEB);
-		$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $exception->getMessage(), get_class($exception));
+			// we use a nice-looking title for our visitors instead of the exception's class name
+		$messageObj = t3lib_div::makeInstance('t3lib_message_ErrorPageMessage', $exception->getMessage(), 'Oops, an error occured!');
 		$messageObj->output();
 	}
 
