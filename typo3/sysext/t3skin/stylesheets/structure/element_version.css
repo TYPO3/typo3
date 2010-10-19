@@ -16,6 +16,12 @@ table.ver-subtree tr td img {
 	vertical-align: middle;
 }
 
+.t3-version-infolayer {
+	z-index: 1;
+	visibility: hidden;
+	position: absolute;
+}
+
 table.ver-verElement {
 	width: 100%;
 }
