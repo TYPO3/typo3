@@ -498,6 +498,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$this->compressCss = FALSE;
 		$this->concatenateFiles = FALSE;
 		$this->removeLineBreaksFromTemplate = FALSE;
+		$this->enableExtCoreDebug = TRUE;
+		$this->enableExtJsDebug = TRUE;
+		$this->enableSvgDebug = TRUE;
 	}
 
 	/*****************************************************/
@@ -1021,7 +1024,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		if (!isset($this->cssInline[$name]) && !empty($block)) {
 			$this->cssInline[$name] = array (
 				'code'       => $block,
-				'compress'   => $compressed,
+				'compress'   => $compress,
 				'forceOnTop' => $forceOnTop
 			);
 		}

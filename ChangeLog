@@ -1,3 +1,7 @@
+2010-10-19  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16055: BE debug mode should also enable debug mode for libraries
+
 2010-10-19  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15095: Bug: The Web>Versioning view has style issues resulting in "wrong layers"
