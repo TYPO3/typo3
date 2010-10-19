@@ -850,8 +850,8 @@ class wslib_gui {
 			$entry[] = $text;
 		}
 
-		return count($entry) ? '<span onmouseover="document.getElementById(\'log_'.$table.$id.'\').style.visibility = \'visible\';" onmouseout="document.getElementById(\'log_'.$table.$id.'\').style.visibility = \'hidden\';">'.$stageCommands.' ('.count($entry).')</span>'.
-			'<div class="logLayer" style="visibility: hidden; position: absolute;" id="log_'.$table.$id.'">'.implode('<hr/>',$entry).'</div>' : $stageCommands;
+		return count($entry) ? '<span onmouseover="document.getElementById(\'log_' . $table . $id . '\').style.visibility = \'visible\';" onmouseout="document.getElementById(\'log_' . $table . $id . '\').style.visibility = \'hidden\';">' . $stageCommands . ' (' . count($entry) . ')</span>' .
+				'<div class="t3-version-infolayer logLayer" id="log_' . $table . $id . '">' . implode('<hr/>', $entry) . '</div>' : $stageCommands;
 	}
 
 	/**

@@ -1,3 +1,7 @@
+2010-10-19  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Fixed bug #15095: Bug: The Web>Versioning view has style issues resulting in "wrong layers"
+
 2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16050: htmlArea RTE: Backspacing in empty editing area may raise js error
