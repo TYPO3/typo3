@@ -26,7 +26,7 @@
 /**
  * Fake ADOdb connection factory.
  *
- * $Id: FakeDbConnection.php 36760 2010-08-14 15:58:41Z xperseguers $
+ * $Id: FakeDbConnection.php 37022 2010-08-19 19:34:19Z xperseguers $
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  *

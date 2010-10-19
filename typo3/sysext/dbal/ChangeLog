@@ -1,3 +1,11 @@
+2010-10-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Set version to 1.2.0alpha3
+
+2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #15075: [Install] make a pre-check for required php-extensions (Thanks to Jigal van Hemert)
+
 2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.2.0alpha2

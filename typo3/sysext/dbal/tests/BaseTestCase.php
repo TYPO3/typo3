@@ -28,7 +28,7 @@
  * Subclass this base class if you want to take advantage of the framework
  * capabilities.
  *
- * $Id: BaseTestCase.php 36760 2010-08-14 15:58:41Z xperseguers $
+ * $Id: BaseTestCase.php 37022 2010-08-19 19:34:19Z xperseguers $
  *
  * @author Robert Lemke <robert@typo3.org>
  *

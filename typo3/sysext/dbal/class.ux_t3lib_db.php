@@ -29,7 +29,7 @@
 /**
  * Contains a database abstraction layer class for TYPO3
  *
- * $Id: class.ux_t3lib_db.php 37006 2010-08-19 16:40:34Z xperseguers $
+ * $Id: class.ux_t3lib_db.php 38418 2010-09-21 16:46:57Z xperseguers $
  *
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Karsten Dambekalns <k.dambekalns@fishfarm.de>
@@ -1369,7 +1369,13 @@ class ux_t3lib_DB extends t3lib_DB {
 
 			$precompiledParts = $this->precompileSELECTquery($queryComponents);
 			if ($this->queryCache) {
+				try {
 				$this->queryCache->set($cacheKey, $precompiledParts);
+				} catch (t3lib_cache_Exception $e) {
+					if ($this->debug) {
+						t3lib_div::devLog($e->getMessage(), 'dbal', 1);
+					}
+				}
 			}
 		}
 

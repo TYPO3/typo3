@@ -1,3 +1,7 @@
+2010-10-19  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Raised DBAL to version 1.2.0alpha3
+
 2010-10-19  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16055: BE debug mode should also enable debug mode for libraries
