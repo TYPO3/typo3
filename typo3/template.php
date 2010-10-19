@@ -677,10 +677,11 @@ class template {
 	 * This includes the proper header with charset, title, meta tag and beginning body-tag.
 	 *
 	 * @param	string		HTML Page title for the header
+	 * @param	boolean		flag for including CSH
 	 * @return	string		Returns the whole header section of a HTML-document based on settings in internal variables (like styles, javascript code, charset, generator and docType)
 	 * @see endPage()
 	 */
-	function startPage($title)	{
+	function startPage($title, $includeCsh = TRUE) {
 			// hook	pre start page
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook']))	{
 			$preStartPageHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
@@ -753,7 +754,9 @@ class template {
 		}
 
 			// include the JS for the Context Sensitive Help
-		$this->loadCshJavascript();
+		if ($includeCsh) {
+			$this->loadCshJavascript();
+		}
 
 			// Get the browser info
 		$browserInfo = t3lib_utility_Client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
@@ -1579,21 +1582,9 @@ $str.=$this->docBodyTagBegin().
 	 */
 	protected function loadCshJavascript() {
 		$this->pageRenderer->loadExtJS();
-		$this->pageRenderer->addExtOnReadyCode('
-			Ext.getBody().on({
-				click: {
-					delegate: "a",
-					scope:this,
-					fn:function(event, link) {
-						var element = Ext.fly(link);
-						if (element.hasClass("typo3-csh-link") || element.hasClass("t3-help-link")) {
-							event.stopEvent();
-							top.TYPO3.ContextHelpWindow.open(link.rel);
-						}
-					}
-				}
-			});
-		');
+		$this->pageRenderer->addJsFile($this->backPath .'../t3lib/js/extjs/contexthelp.js');
+		$this->pageRenderer->addJsFile($this->backPath . 'ajax.php?ajaxID=ExtDirect::getAPI&namespace=TYPO3.CSH', NULL, FALSE);
+		$this->pageRenderer->addExtDirectCode();
 	}
 
 	/**

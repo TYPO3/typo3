@@ -2571,7 +2571,7 @@ final class t3lib_BEfunc {
 			$helpText = '<div class="t3-help-inline">' . $helpText . '</div>';
 			$text = '<abbr class="t3-help-teaser">' . $text . '</abbr>';
 
-			$text = '<a class="t3-help-link" href="#" rel="' . $table . '|' . $field . '">' . $text . $helpText . '</a>';
+			$text = '<a class="t3-help-link" href="#" data-table="' . $table . '" data-field="' . $field . '">' . $text . '</a>';
 		}
 		return $text;
 	}

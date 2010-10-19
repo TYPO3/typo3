@@ -59,6 +59,10 @@ div.t3-help-inline p.t3-help-short {
 	border-top: none;
 }
 
+p.t3-help-short {
+	cursor: pointer;
+}
+
 img.t3-help-icon {
 	cursor: help;
 }
