@@ -13,8 +13,9 @@
 
 2010-10-19  Susanne Moog  <typo3@susanne-moog.de>
 
-	* Fixed bug #15095: Bug: The Web>Versioning view has style issues resulting in "wrong layers"
+	* Fixed bug #15095: The Web>Versioning view has style issues resulting in "wrong layers"
 	* Fixed bug #13294: IRRE deleted combo records are still validated by TBE_EDITOR (Thanks to Marcel Greter)
+	* Added feature #3613: additional wrap for FORM radio buttons
 
 2010-10-18  Steffen Kamper  <steffen@typo3.org>
 

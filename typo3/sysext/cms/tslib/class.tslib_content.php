@@ -2330,23 +2330,23 @@ class tslib_cObj {
 							// Create the select-box:
 						$iCount = count($items);
 						for ($a = 0; $a < $iCount; $a++) {
+							$optionParts = '';
 							$radioId = $prefix . $fName . $this->cleanFormName($items[$a][0]);
 							if ($conf['accessibility']) {
 								$radioLabelIdAttribute = ' id="' . $radioId . '"';
 							} else {
 								$radioLabelIdAttribute = '';
 							}
-							$option .= '<input type="radio" name="' . $confData['fieldname'] . '"' .
-								$radioLabelIdAttribute . ' value="' . $items[$a][1] . '"' .
-								(!strcmp($items[$a][1], $default) ? ' checked="checked"' : '') .
-								$addParams . ' />';
+							$optionParts .= '<input type="radio" name="' . $confData['fieldname'] . '"' .
+									$radioLabelIdAttribute . ' value="' . $items[$a][1] . '"' .
+									(!strcmp($items[$a][1], $default) ? ' checked="checked"' : '') . $addParams . ' />';
 							if ($conf['accessibility']) {
-								$option .= '<label for="' . $radioId . '">' .
-									$this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) .
-									'</label>';
+								$optionParts .= '<label for="' . $radioId . '">' . $this->stdWrap(trim($items[$a][0]),
+									$conf['radioWrap.']) . '</label>';
 							} else {
-								$option .= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
+								$optionParts .= $this->stdWrap(trim($items[$a][0]), $conf['radioWrap.']);
 							}
+							$option .= $this->stdWrap($optionParts, $conf['radioInputWrap.']);
 						}
 
 						if ($conf['accessibility']) {
