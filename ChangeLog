@@ -8,6 +8,7 @@
 
 2010-10-19  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16071: PHP Fatal error in t3lib_contextmenu_renderer_Abstract (Thanks to Stefan Kowalke)
 	* Removal of unused and illegal files inside of codemirror library
 	* Fixed bug #16055: BE debug mode should also enable debug mode for libraries
 

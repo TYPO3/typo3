@@ -40,7 +40,7 @@ abstract class t3lib_contextmenu_renderer_Abstract {
 	 * @param bool $recursive
 	 * @return mixed
 	 */
-	public function renderAction(t3lib_contextmenu_Action $action, $recursive = FALSE);
+	abstract public function renderAction(t3lib_contextmenu_Action $action, $recursive = FALSE);
 
 	/**
 	 * Renders an action collection recursive or just a single one
@@ -49,7 +49,7 @@ abstract class t3lib_contextmenu_renderer_Abstract {
 	 * @param bool $recursive
 	 * @return mixed
 	 */
-	public function renderActionCollection(
+	abstract public function renderActionCollection(
 		t3lib_contextmenu_ActionCollection $actionCollection, $recursive = FALSE
 	);
 
@@ -60,7 +60,7 @@ abstract class t3lib_contextmenu_renderer_Abstract {
 	 * @param bool $recursive
 	 * @return mixed
 	 */
-	public function renderContextMenu(
+	abstract public function renderContextMenu(
 		t3lib_contextmenu_AbstractContextMenu $contextMenu, $recursive = FALSE
 	);
 }
