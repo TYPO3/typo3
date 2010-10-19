@@ -61,8 +61,8 @@ var inline = {
 				$(objectId + '_iconcontainer').addClassName('loading-indicator');
 			}
 			return this.getRecordDetails(objectId, returnURL);
-		}		
-		
+		}
+
 		var currentState = '';
 		var collapse = new Array();
 		var expand = new Array();
@@ -118,7 +118,7 @@ var inline = {
 			ucFormObj[0].value = value;
 		}
 	},
-	
+
 	getRecordDetails: function(objectId, returnURL) {
 		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true);
 		return false;
@@ -717,6 +717,12 @@ var inline = {
 			TBE_EDITOR.removeElementArray(removeStack);
 		}
 
+			// Mark this container as deleted
+		var deletedRecordContainer = $(objectId + '_div');
+		if (deletedRecordContainer) {
+			deletedRecordContainer.addClassName('inlineIsDeletedRecord');
+		}
+
 			// If the record is new and was never saved before, just remove it from DOM:
 		if (this.isNewRecord(objectId) || options && options.forceDirectRemoval) {
 			this.fadeAndRemove(objectId+'_div');
@@ -933,7 +939,7 @@ var inline = {
 
 	setVisibilityOfElementsWithClassName: function(action, selector, parentElement) {
 		var domObjects = Selector.findChildElements($(parentElement), [selector]);
-		if (action == 'hide') { 
+		if (action == 'hide') {
 			$A(domObjects).each(function(domObject) { new Effect.Fade(domObject); });
 		} else if (action == 'show') {
 			$A(domObjects).each(function(domObject) { new Effect.Appear(domObject); });

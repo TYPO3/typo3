@@ -1,6 +1,7 @@
 2010-10-19  Susanne Moog  <typo3@susanne-moog.de>
 
-	* Fixed bug #15095: Bug: The Web>Versioning view has style issues resulting in "wrong layers"
+	* Fixed bug #15095: The Web>Versioning view has style issues resulting in "wrong layers"
+	* Fixed bug #13294: IRRE deleted combo records are still validated by TBE_EDITOR (Thanks to Marcel Greter)
 
 2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>
 
