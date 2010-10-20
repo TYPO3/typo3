@@ -202,7 +202,7 @@ class tx_t3editor implements t3lib_Singleton {
             return '';
         }
 
-        $path_t3e = t3lib_extmgm::extRelPath('t3editor');
+        $path_t3e = $GLOBALS['BACK_PATH'] . t3lib_extmgm::extRelPath('t3editor');
 
         if ($this->mode == self::MODE_TYPOSCRIPT) {
 			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/tsref.js' . '"></script>';

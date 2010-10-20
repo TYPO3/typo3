@@ -1,5 +1,6 @@
 2010-10-20  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #15950: use t3editor in file_edit to edit files in fileadmin
 	* Fixed bug #16019: Workspaces - Stage notification emails should be localizable
 
 2010-10-20  Ernesto Baschny  <ernst@cron-it.de>
