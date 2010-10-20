@@ -2,6 +2,7 @@
 
 	* Added feature #16073: htmlArea RTE: Add paste as plain text feature
 	* Follow-up to bug #15339: htmlArea RTE: tkr_rteanchors breaks the link editing dialogue
+	* Follow-up to feature #16073: htmlArea RTE: Add paste as plain text feature
 
 2010-10-19  Benjamin Mack  <benni@typo3.org>
 

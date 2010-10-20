@@ -64,6 +64,6 @@ class tx_rtehtmlarea_plaintext extends tx_rtehtmlareaapi {
 	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/Plaintext/class.tx_rtehtmlarea_plaintext.php']);
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php']);
 }
 ?>
