@@ -4824,7 +4824,7 @@ class t3lib_TCEforms	{
 			// Wrapping a single field:
 		$this->fieldTemplate='
 			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td>&nbsp;</td>
+				<td class="t3-form-col1"><div>&nbsp;</div></td>
 				<td width="99%"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><strong>###FIELD_NAME###</strong></span></td>
 			</tr>
 			<tr ###BGCOLOR######CLASSATTR_1###>
@@ -4839,7 +4839,7 @@ class t3lib_TCEforms	{
 			</tr>';
 		$this->palFieldTemplateHeader='
 			<tr ###BGCOLOR_HEAD######CLASSATTR_2###>
-				<td><!-- --></td>
+				<td class="t3-form-col1"><div>&nbsp;</div></td>
 				<td nowrap="nowrap" valign="top"><strong>###FIELD_HEADER###</strong></td>
 			</tr>';
 
