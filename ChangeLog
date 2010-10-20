@@ -1,7 +1,10 @@
+2010-10-20  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16019: Workspaces - Stage notification emails should be localizable
+
 2010-10-20  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16075: Add IfModule mod_rewrite.c to misc/advanced.htaccess
-	* Fixed bug #16077: Palette titles have no margin to the left in the new page / tt_content form layouts
 
 2010-10-20  Steffen Gebert  <steffen@steffen-gebert.de>
 

@@ -15,4 +15,17 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_version_task
 	'title'            => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:autopublishTask.name',
 	'description'      => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:autopublishTask.description'
 );
+
+
+if (TYPO3_MODE == 'BE') {
+
+	// add default notification options to every page
+t3lib_extMgm::addPageTSconfig('
+	tx_version.workspaces.stageNotificationEmail.subject = LLL:EXT:version/Resources/Private/Language/emails.xml:subject
+	tx_version.workspaces.stageNotificationEmail.message = LLL:EXT:version/Resources/Private/Language/emails.xml:message
+	# tx_version.workspaces.stageNotificationEmail.additionalHeaders =
+');
+}
+
+
 ?>

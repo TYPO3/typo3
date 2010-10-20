@@ -331,6 +331,8 @@ class tx_version_tcemain {
 
 		if (is_array($workspaceRec)) {
 
+				// TODO: CONSTANTS SHOULD BE USED - tx_service_workspace_workspaces
+				// TODO: use localized labels
 				// Compile label:
 			switch ((int)$stageId) {
 				case 1:
@@ -384,7 +386,7 @@ class tx_version_tcemain {
 								foreach ($rows as $dat) {
 									$data = unserialize($dat['log_data']);
 
-									$emails = array_merge($emails, $this->getEmailsForStageChangeNotification($dat['userid'], TRUE));
+									$emails = t3lib_div::array_merge($emails, $this->getEmailsForStageChangeNotification($dat['userid'], TRUE));
 
 									if ($data['stage'] == 1) {
 										break;
@@ -402,70 +404,158 @@ class tx_version_tcemain {
 						break;
 					}
 				break;
-
 				case 10:
 					$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
-					$emails = array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']));
-					$emails = array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['members']));
+					$emails = t3lib_div::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']));
+					$emails = t3lib_div::array_merge($emails, $this->getEmailsForStageChangeNotification($workspaceRec['members']));
 				break;
 			}
-			$emails = array_unique($emails);
 
-				// Path to record is found:
-			list($eTable,$eUid) = explode(':', $elementName);
-			$eUid = intval($eUid);
-			$rr = t3lib_BEfunc::getRecord($eTable, $eUid);
-			$recTitle = t3lib_BEfunc::getRecordTitle($eTable, $rr);
-			if ($eTable != 'pages') {
-				t3lib_BEfunc::fixVersioningPid($eTable, $rr);
-				$eUid = $rr['pid'];
-			}
-			$path = t3lib_BEfunc::getRecordPath($eUid, '', 20);
+				// prepare and then send the emails
+			if (count($emails)) {
+				
+					// Path to record is found:
+				list($elementTable, $elementUid) = explode(':', $elementName);
+				$elementUid = intval($elementUid);
+				$elementRecord = t3lib_BEfunc::getRecord($elementTable, $elementUid);
+				$recordTitle = t3lib_BEfunc::getRecordTitle($elementTable, $elementRecord);
 
-				// ALternative messages:
-			$TSConfig = $tcemainObj->getTCEMAIN_TSconfig($eUid);
-			$body = trim($TSConfig['notificationEmail_body']) ? trim($TSConfig['notificationEmail_body']) : '
-At the TYPO3 site "%s" (%s)
-in workspace "%s" (#%s)
-the stage has changed for the element(s) "%11$s" (%s) at location "%10$s" in the page tree:
+				if ($elementTable == 'pages') {
+					$pageUid = $elementUid;
+				} else {
+					t3lib_BEfunc::fixVersioningPid($elementTable, $elementRecord);
+					$pageUid = $elementUid = $elementRecord['pid'];
+				}
 
-==> %s
+					// fetch the TSconfig settings for the email
 
-User Comment:
-"%s"
+					// old way, options are TCEMAIN.notificationEmail_body/subject
+				$TCEmainTSConfig = $tcemainObj->getTCEMAIN_TSconfig($pageUid);
 
-State was change by %s (username: %s)
-			';
-			$subject = trim($TSConfig['notificationEmail_subject']) ? trim($TSConfig['notificationEmail_subject']) : 'TYPO3 Workspace Note: Stage Change for %s';
+					// these options are deprecated since TYPO3 4.5, but are still
+					// used in order to provide backwards compatibility
+				$emailMessage = trim($TCEmainTSConfig['notificationEmail_body']);
+				$emailSubject = trim($TCEmainTSConfig['notificationEmail_subject']);
 
-				// Send email:
-			if (count($emails))	{
-				$message = sprintf($body,
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-				t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir,
-				$workspaceRec['title'],
-				$workspaceRec['uid'],
-				$elementName,
-				$newStage,
-				$comment,
-				$this->BE_USER->user['realName'],
-				$this->BE_USER->user['username'],
-				$path,
-				$recTitle);
+					// new way, options are
+					// pageTSconfig: tx_version.workspaces.stageNotificationEmail.subject
+					// userTSconfig: page.tx_version.workspaces.stageNotificationEmail.subject
+				$pageTsConfig = t3lib_BEfunc::getPagesTSconfig($pageUid);
+				$emailConfig = $pageTsConfig['tx_version.']['workspaces.']['stageNotificationEmail.'];
 
-				t3lib_div::plainMailEncoded(
-					implode(',', $emails),
-					sprintf($subject, $elementName),
-					trim($message)
+				$markers = array(
+					'###RECORD_TITLE###' => $recordTitle,
+					'###RECORD_PATH###' => t3lib_BEfunc::getRecordPath($elementUid, '', 20),
+					'###SITE_NAME###' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
+					'###SITE_URL###' => t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir,
+					'###WORKSPACE_TITLE###' => $workspaceRec['title'],
+					'###WORKSPACE_UID###' => $workspaceRec['uid'],
+					'###ELEMENT_NAME###' => $elementName,
+					'###NEXT_STAGE###' => $newStage,
+					'###COMMENT###' => $comment,
+					'###USER_REALNAME###' => $tcemainObj->BE_USER->user['realName'],
+					'###USER_USERNAME###' => $tcemainObj->BE_USER->user['username']
 				);
 
-				$tcemainObj->newlog2('Notification email for stage change was sent to "' . implode(', ', $emails) . '"', $table, $id);
+					
+					// sending the emails the old way with sprintf(), 
+					// because it was set explicitly in TSconfig
+				if ($emailMessage && $emailSubject) {
+					t3lib_div::deprecationLog('This TYPO3 installation uses Workspaces staging notification by setting the TSconfig options "TCEMAIN.notificationEmail_subject" / "TCEMAIN.notificationEmail_body". Please use the more flexible marker-based options tx_version.workspaces.stageNotificationEmail.message / tx_version.workspaces.stageNotificationEmail.subject');
+
+					$emailSubject = sprintf($subject, $elementName);
+					$emailMessage = sprintf($emailMessage,
+						$markers['###SITE_NAME###'],
+						$markers['###SITE_URL###'],
+						$markers['###WORKSPACE_TITLE###'],
+						$markers['###WORKSPACE_UID###'],
+						$markers['###ELEMENT_NAME###'],
+						$markers['###NEXT_STAGE###'],
+						$markers['###COMMENT###'],
+						$markers['###USER_REALNAME###'],
+						$markers['###USER_USERNAME###'],
+						$markers['###RECORD_PATH###'],
+						$markers['###RECORD_TITLE###']
+					);
+
+						// filter out double email addresses
+					$emailRecipients = array();
+					foreach ($emails as $recip) {
+						$emailRecipients[$recip['email']] = $recip['email'];
+					}
+					$emailRecipients = implode(',', $emailRecipients);
+
+						// Send one email to everybody
+					t3lib_div::plainMailEncoded(
+						$emailRecipients,
+						$emailSubject,
+						$emailMessage
+					);
+				} else {
+						// send an email to each individual user, to ensure the 
+						// multilanguage version of the email
+
+					$emailHeaders = $emailConfig['additionalHeaders'];
+					$emailRecipients = array();
+
+						// an array of language objects that are needed
+						// for emails with different languages
+					$languageObjects = array(
+						$GLOBALS['LANG']->lang => $GLOBALS['LANG']
+					);
+
+						// loop through each recipient and send the email
+					foreach ($emails as $recipientData) {
+							// don't send an email twice
+						if (isset($emailRecipients[$recipientData['email']])) {
+							continue;
+						}
+						$emailSubject = $emailConfig['subject'];
+						$emailMessage = $emailConfig['message'];
+						$emailRecipients[$recipientData['email']] = $recipientData['email'];
+
+							// check if the email needs to be localized 
+							// in the users' language
+						if (t3lib_div::isFirstPartOfStr($emailSubject, 'LLL:') || t3lib_div::isFirstPartOfStr($emailMessage, 'LLL:')) {
+							$recipientLanguage = ($recipientData['lang'] ? $recipientData['lang'] : 'default');
+							if (!isset($languageObjects[$recipientLanguage])) {
+									// a LANG object in this language hasn't been 
+									// instantiated yet, so this is done here
+								$languageObject = t3lib_div::makeInstance('language');
+								$languageObject->init($recipientLanguage);
+								$languageObjects[$recipientLanguage] = $languageObject;
+							} else {
+								$languageObject = $languageObjects[$recipientLanguage];
+							}
+
+							if (t3lib_div::isFirstPartOfStr($emailSubject, 'LLL:')) {
+								$emailSubject = $languageObject->sL($emailSubject);
+							}
+
+							if (t3lib_div::isFirstPartOfStr($emailMessage, 'LLL:')) {
+								$emailMessage = $languageObject->sL($emailMessage);
+							}
+						}
+
+						$emailSubject = t3lib_parseHtml::substituteMarkerArray($emailSubject, $markers, '', TRUE, TRUE);
+						$emailMessage = t3lib_parseHtml::substituteMarkerArray($emailMessage, $markers, '', TRUE, TRUE);
+							// Send an email to the recipient
+						t3lib_div::plainMailEncoded(
+							$recipientData['email'],
+							$emailSubject,
+							$emailMessage,
+							$emailHeaders
+						);
+					}
+					$emailRecipients = implode(',', $emailRecipients);
+				}
+				$tcemainObj->newlog2('Notification email for stage change was sent to "' . $emailRecipients . '"', $table, $id);
 			}
 		}
 	}
 
 	/**
-	 * Return emails addresses of be_users from input list.
+	 * Return be_users that should be notified on stage change from input list.
 	 * previously called notifyStageChange_getEmails() in tcemain
 	 *
 	 * @param	string		List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
@@ -482,16 +572,15 @@ State was change by %s (username: %s)
 				list($table, $id) = t3lib_div::revExplode('_', $userIdent, 2);
 			}
 			if ($table === 'be_users' || $noTablePrefix) {
-				if ($userRecord = t3lib_BEfunc::getRecord('be_users', $id, 'email')) {
+				if ($userRecord = t3lib_BEfunc::getRecord('be_users', $id, 'uid,email,lang,realName')) {
 					if (strlen(trim($userRecord['email']))) {
-						$emails[$id] = $userRecord['email'];
+						$emails[$id] = $userRecord;
 					}
 				}
 			}
 		}
 		return $emails;
 	}
-
 
 
 	/****************************
