@@ -2509,6 +2509,43 @@ final class t3lib_BEfunc {
 		}
 	}
 
+	/**
+	 * Returns CSH help text (description), if configured for, as an array (title, description)
+	 * Will automatically call t3lib_BEfunc::helpTextIcon() to get the icon for the text.
+	 *
+	 * @param	string	Table name
+	 * @param	string	Field name
+	 * @return	array	With keys 'description' (raw, as available in locallang), 'title' (optional), 'moreInfo'
+	 */
+	public static function helpTextArray($table, $field) {
+		if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'])) {
+			$GLOBALS['LANG']->loadSingleTableDescription($table);
+		}
+		$output = array(
+			'description' => NULL,
+			'title' => NULL,
+			'moreInfo' => FALSE,
+		);
+		if (is_array($GLOBALS['TCA_DESCR'][$table]) && is_array($GLOBALS['TCA_DESCR'][$table]['columns'][$field])) {
+			$data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
+
+				// add alternative title, if defined
+			if ($data['alttitle']) {
+				$output['title'] = $data['alttitle'];
+			}
+
+				// if we have more information to show
+			if ($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax']) {
+				$output['moreInfo'] = TRUE;
+			}
+
+				// add description
+			if ($data['description']) {
+				$output['description'] = $data['description'];
+			}
+		}
+		return $output;
+	}
 
 	/**
 	 * Returns CSH help text (description), if configured for.
@@ -2524,25 +2561,27 @@ final class t3lib_BEfunc {
 	 * @return	string		HTML content for help text
 	 */
 	public static function helpText($table, $field, $BACK_PATH = '', $styleAttrib = '') {
-		global $TCA_DESCR, $BE_USER;
+		$helpTextArray = self::helpTextArray($table, $field);
+
 		$output = '';
 
-		if (is_array($TCA_DESCR[$table]) && is_array($TCA_DESCR[$table]['columns'][$field])) {
-			$data = $TCA_DESCR[$table]['columns'][$field];
-				// add see also arrow
-			if ($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax']) {
-				$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
-			}
-				// add description text
-			if ($data['description'] || $arrow) {
-				$output = '<p class="t3-help-short">' . nl2br(htmlspecialchars($data['description'])) . $arrow . '</p>';
-			}
-
-				// put header before the rest of the text
-			if ($data['alttitle']) {
-				$output = '<h2 class="t3-row-header">' . $data['alttitle'] . '</h2>' . $output;
-			}
+			// put header before the rest of the text
+		if ($helpTextArray['title'] !== NULL) {
+			$output .= '<h2 class="t3-row-header">' . $helpTextArray['title'] . '</h2>';
 		}
+			// add the content
+		if ($helpTextArray['description'] !== NULL) {
+			$output .= $helpTextArray['description'];
+		}
+			// add see also arrow if we have more info
+		if ($data['moreInfo']) {
+			$arrow = t3lib_iconWorks::getSpriteIcon('actions-view-go-forward');
+		}
+			// add description text
+		if ($data['description'] || $arrow) {
+			$output['description'] = '<p class="t3-help-short">' . nl2br(htmlspecialchars($data['description'])) . $arrow . '</p>';
+		}
+
 		return $output;
 	}
 
@@ -2567,10 +2606,7 @@ final class t3lib_BEfunc {
 			if ($text == '') {
 				$text = t3lib_iconWorks::getSpriteIcon('actions-system-help-open');
 			}
-
-			$helpText = '<div class="t3-help-inline">' . $helpText . '</div>';
 			$text = '<abbr class="t3-help-teaser">' . $text . '</abbr>';
-
 			$text = '<a class="t3-help-link" href="#" data-table="' . $table . '" data-field="' . $field . '">' . $text . '</a>';
 		}
 		return $text;

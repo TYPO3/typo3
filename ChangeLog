@@ -6,6 +6,8 @@
 2010-10-20  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16075: Add IfModule mod_rewrite.c to misc/advanced.htaccess
+	* Fixed bug #16077: Palette titles have no margin to the left in the new page / tt_content form layouts
+	* Fixed bug #16074: Add new API t3lib_befunc::helpTextArray and use it in the ExtDirect tooltips
 
 2010-10-20  Steffen Gebert  <steffen@steffen-gebert.de>
 

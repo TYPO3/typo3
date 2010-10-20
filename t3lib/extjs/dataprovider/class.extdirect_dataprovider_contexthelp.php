@@ -38,23 +38,10 @@ class extDirect_DataProvider_ContextHelp {
 	 * @return array complete help information
 	 */
 	public function getContextHelp($table, $field) {
-
-		if (!isset($GLOBALS['TCA_DESCR'][$table]['columns'])) {
-			$GLOBALS['LANG']->loadSingleTableDescription($table);
-		}
-		$data = $GLOBALS['TCA_DESCR'][$table]['columns'][$field];
-
-
-			// add description text
-		if ($data['description']) {
-			$description = '<p class="t3-help-short">' . nl2br(strip_tags($data['description'])) . '</p>';
-		}
-
-		$title = $data['alttitle'] ? $data['alttitle'] : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_view_help.xml:title');
-
+		$helpTextArray = t3lib_befunc::helpTextArray($table, $field);
 		return array(
-			'title' => $title,
-			'description' => $description,
+			'title' => $helpTextArray['title'],
+			'description' => '<p class="t3-help-short">' . nl2br(strip_tags($helpTextArray['description'])) . '</p>',
 			'id' => $table . '.' . $field,
 		);
 	}
