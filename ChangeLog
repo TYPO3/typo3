@@ -1,3 +1,7 @@
+2010-10-20  Ernesto Baschny  <ernesto@typo3.org>
+
+	* Release of TYPO3 4.5.0alpha3
+
 2010-10-20  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #15950: use t3editor in file_edit to edit files in fileadmin
