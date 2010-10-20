@@ -512,6 +512,7 @@ body.x-body-masked .x-window-mc, body.x-body-masked .x-window-plain .x-window-mc
 	background-color: transparent;
 	background-image: url("../images/spinner/big-f0f0f0.gif");
 	border: none;
+	cursor: pointer;
 	height: 32px;
 	padding: 0;
 	width: 32px;
