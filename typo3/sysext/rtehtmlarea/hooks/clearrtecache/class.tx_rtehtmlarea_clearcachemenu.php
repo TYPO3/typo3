@@ -31,6 +31,7 @@
  * @author	Steffen kamper <info@sk-typo3.de>
  * @package	TYPO3
  */
+require_once (PATH_typo3.'interfaces/interface.backend_cacheActionsHook.php');
 class tx_rtehtmlarea_clearcachemenu implements backend_cacheActionsHook {
 	/**
 	 * modifies CacheMenuItems array

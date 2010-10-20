@@ -1,6 +1,7 @@
 2010-10-20  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #16079: htmlArea RTE: Register RTE scripts with the autoloader
+	* Follow-up to feature #16079: htmlArea RTE: Register RTE scripts with the autoloader
 
 2010-10-19  Stanislas Rolland  <typo3@sjbr.ca>
 
