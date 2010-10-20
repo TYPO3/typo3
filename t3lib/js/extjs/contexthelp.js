@@ -31,11 +31,13 @@ Ext.ns('TYPO3', 'TYPO3.CSH.ExtDirect');
  * need the tags data-table and data-field (HTML5)
  */
 TYPO3.ContextHelp = function() {
+
 	/**
 	 * Tooltip
 	 * @type {Ext.ToolTip}
 	 */
 	var tip;
+
 	/**
 	 * Cache for CSH
 	 * @type {Ext.util.MixedCollection}
@@ -102,6 +104,7 @@ TYPO3.ContextHelp = function() {
 				}, this);
 			}
 		},
+
 		/**
 		 * Opens the help window, triggered from click event handler
 		 *
@@ -116,6 +119,7 @@ TYPO3.ContextHelp = function() {
 	}
 
 }();
+
 /**
  * Calls the init on Ext.onReady
  */

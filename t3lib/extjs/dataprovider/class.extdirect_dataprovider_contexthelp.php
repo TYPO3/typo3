@@ -59,3 +59,5 @@ class extDirect_DataProvider_ContextHelp {
 		);
 	}
 }
+
+?>
