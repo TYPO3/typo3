@@ -1,3 +1,7 @@
+2010-10-20  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #16079: htmlArea RTE: Register RTE scripts with the autoloader
+
 2010-10-20  Ernesto Baschny  <ernesto@typo3.org>
 
 	* Release of TYPO3 4.5.0alpha3

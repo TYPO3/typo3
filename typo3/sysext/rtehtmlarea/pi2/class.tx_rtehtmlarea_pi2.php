@@ -31,7 +31,6 @@
  *
  * $Id$  *
  */
-require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlarea_base.php');
 class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 		// External:

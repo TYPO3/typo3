@@ -30,7 +30,7 @@
  *
  */
 
-abstract class tx_rtehtmlareaapi {
+abstract class tx_rtehtmlarea_api {
 
 	protected $extensionKey;				// The key of the extension that is extending htmlArea RTE
 	protected $pluginName;					// The name of the plugin registered by the extension
@@ -228,10 +228,10 @@ abstract class tx_rtehtmlareaapi {
 	public function getRequiredPlugins() {
 		return $this->requiredPlugins;
 	}
-} // end of class
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/class.tx_rtehtmlareaapi.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/class.tx_rtehtmlareaapi.php']);
 }
-
+/*
+ * Class alias for backward compatibility (TYPO3 4.5)
+ */
+abstract class tx_rtehtmlareaapi extends tx_rtehtmlarea_api {
+}
 ?>

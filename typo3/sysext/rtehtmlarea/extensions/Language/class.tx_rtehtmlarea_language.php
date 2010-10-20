@@ -29,10 +29,7 @@
  * TYPO3 SVN ID: $Id$
  *
  */
-
-require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlareaapi.php');
-
-class tx_rtehtmlarea_language extends tx_rtehtmlareaapi {
+class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 
 	protected $extensionKey = 'rtehtmlarea';	// The key of the extension that is extending htmlArea RTE
 	protected $pluginName = 'Language';		// The name of the plugin registered by the extension

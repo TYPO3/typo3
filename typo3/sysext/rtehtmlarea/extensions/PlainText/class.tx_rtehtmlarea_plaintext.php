@@ -29,8 +29,7 @@
  * TYPO3 SVN ID: $Id: class.tx_rtehtmlarea_plaintext.php 7838 2010-06-08 16:10:41Z stan $
  *
  */
-require_once(t3lib_extMgm::extPath('rtehtmlarea').'class.tx_rtehtmlareaapi.php');
-class tx_rtehtmlarea_plaintext extends tx_rtehtmlareaapi {
+class tx_rtehtmlarea_plaintext extends tx_rtehtmlarea_api {
 	protected $extensionKey = 'rtehtmlarea';		// The key of the extension that is extending htmlArea RTE
 	protected $pluginName = 'PlainText';			// The name of the plugin registered by the extension
 	protected $relativePathToLocallangFile = '';		// Path to this main locallang file of the extension relative to the extension dir.

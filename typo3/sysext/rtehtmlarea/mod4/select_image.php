@@ -39,7 +39,6 @@ unset($MCONF);
 require('conf.php');
 require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
-require_once('class.tx_rtehtmlarea_select_image.php');
 $LANG->includeLLFile('EXT:lang/locallang_browse_links.xml');
 $LANG->includeLLFile('EXT:rtehtmlarea/mod4/locallang.xml');
 $LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
