@@ -1,3 +1,7 @@
+2010-10-20  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16075: Add IfModule mod_rewrite.c to misc/advanced.htaccess
+
 2010-10-20  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16049: Loading mask doesn't disappear on hitting Esc/cancel loading
