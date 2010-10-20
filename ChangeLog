@@ -1,3 +1,7 @@
+2010-10-20  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16075: Add IfModule mod_rewrite.c to misc/advanced.htaccess
+
 2010-10-19  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #15095: The Web>Versioning view has style issues resulting in "wrong layers"

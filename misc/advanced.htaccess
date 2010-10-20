@@ -52,6 +52,8 @@
 
 ### Begin: Rewrite stuff ###
 
+<IfModule mod_rewrite.c>
+
 # Enable URL rewriting
 RewriteEngine On
 
@@ -111,6 +113,8 @@ RewriteCond %{REQUEST_FILENAME} !-l
 # RewriteRule .* /index.php [L]
 
 RewriteRule .* index.php [L]
+
+</IfModule>
 
 ### End: Rewrite stuff ###
 
