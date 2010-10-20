@@ -43,6 +43,8 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(
 			'rte_conf' => '',
 			'tkr_rteanchors' => '',
+			'ad_rtepasteplain' => '',
+			'rtehtmlarea_definitionlist' => '',
 		),
 		'suggests' => array(
 			'rtehtmlarea_api_manual' => '',
