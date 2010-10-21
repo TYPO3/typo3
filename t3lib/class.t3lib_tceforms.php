@@ -754,28 +754,44 @@ class t3lib_TCEforms	{
 		$parts = $this->loadPaletteElements($table, $row, $palette, $itemList);
 
 			// Put palette together if there are fields in it:
-		if (count($parts))	{
-			if ($header)	{
+		if (count($parts)) {
+
+			$realFields = 0;
+
+			foreach ($parts as $part) {
+				if ($part['NAME'] !== '--linebreak--') {
+					$realFields++;
+				}
+			}
+
+			if ($realFields > 0) {
+
+				if ($header) {
+					$out .= $this->intoTemplate(
+							array('HEADER' => htmlspecialchars($header)),
+							$this->palFieldTemplateHeader
+						);
+				}
+
+				$collapsed = $this->isPalettesCollapsed($table, $palette);
+
+				$thePalIcon = '';
+				if ($collapsed && $collapsedHeader !== NULL) {
+					list($thePalIcon,) = $this->wrapOpenPalette(
+						t3lib_iconWorks::getSpriteIcon(
+							'actions-system-options-view',
+							array('title' => htmlspecialchars($this->getLL('l_moreOptions')))
+						), $table, $row, $palette, 1);
+					$thePalIcon = '<span style="margin-left: 20px;">' . $thePalIcon . $collapsedHeader . '</span>';
+				}
+
+				$paletteHtml = $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed);
+
 				$out .= $this->intoTemplate(
-						array('HEADER' => htmlspecialchars($header)),
-						$this->palFieldTemplateHeader
+						array('PALETTE' => $thePalIcon . $paletteHtml),
+						$this->palFieldTemplate
 					);
 			}
-
-			$collapsed = $this->isPalettesCollapsed($table,$palette);
-
-			$thePalIcon = '';
-			if ($collapsed && $collapsedHeader !== NULL) {
-				list($thePalIcon,) = $this->wrapOpenPalette(t3lib_iconWorks::getSpriteIcon('actions-system-options-view', array('title' => htmlspecialchars($this->getLL('l_moreOptions')))), $table, $row, $palette, 1);
-				$thePalIcon = '<span style="margin-left: 20px;">' . $thePalIcon . $collapsedHeader . '</span>';
-			}
-
-			$paletteHtml = $this->wrapPaletteField($this->printPalette($parts), $table, $row ,$palette, $collapsed);
-
-			$out .= $this->intoTemplate(
-					array('PALETTE' => $thePalIcon . $paletteHtml),
-					$this->palFieldTemplate
-				);
 		}
 		return $out;
 	}
