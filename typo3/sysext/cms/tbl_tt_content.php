@@ -2001,7 +2001,7 @@ $TCA['tt_content'] = array(
 			'canNotCollapse' => 1,
 		),
 		'imagelinks' => array(
-			'showitem' => 'image_zoom;On click, image_link;Links (separate with commas)',
+			'showitem' => 'image_zoom;Enlarge, image_link;Links (separate with commas)',
 			'canNotCollapse' => 1,
 		),
 		'image_accessibility' => array(
