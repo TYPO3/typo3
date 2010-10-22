@@ -1,3 +1,7 @@
+2010-10-21  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to bug #15622: t3lib_TCEforms_inline registers superfluous nested level when renderFieldsOnly is set
+
 2010-10-20  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16075: Add IfModule mod_rewrite.c to misc/advanced.htaccess
