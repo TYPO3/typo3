@@ -387,6 +387,8 @@ class t3lib_TCEforms_inline {
 		$nameObject = $this->inlineNames['object'];
 		$appendFormFieldNames = '['.$foreign_table.']['.$rec['uid'].']';
 		$objectId = $nameObject . self::Structure_Separator . $foreign_table . self::Structure_Separator . $rec['uid'];
+			// Put the current level also to the dynNestedStack of TCEforms:
+		$this->fObj->pushToDynNestedStack('inline', $objectId);
 
 		if (!$isVirtualRecord) {
 				// Get configuration:
@@ -434,9 +436,7 @@ class t3lib_TCEforms_inline {
 		if ($config['renderFieldsOnly']) {
 			$out = $fields . $combination;
 		} else {
-				// Put the current level also to the dynNestedStack of TCEforms:
-			$this->fObj->pushToDynNestedStack('inline', $objectId);
-				// set the record container with data for output
+			// set the record container with data for output
 			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields"' . $appearanceStyleFields . '>' . $fields . $combination . '</div>';
 			$header = $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 			$out = '<div class="t3-form-field-header-inline" id="' . $objectId . '_header">' . $header . '</div>' . $out;
@@ -444,9 +444,10 @@ class t3lib_TCEforms_inline {
 			$classMSIE = ($this->fObj->clientInfo['BROWSER']=='msie' && $this->fObj->clientInfo['VERSION'] < 8 ? 'MSIE' : '');
 			$class = 'inlineDiv' . $classMSIE . ($isNewRecord ? ' inlineIsNewRecord' : '');
 			$out = '<div id="' . $objectId . '_div" class="t3-form-field-container-inline '.$class.'">' . $out . '</div>';
-				// Remove the current level also from the dynNestedStack of TCEforms:
-			$this->fObj->popFromDynNestedStack();
 		}
+			// Remove the current level also from the dynNestedStack of TCEforms:
+		$this->fObj->popFromDynNestedStack();
+
 		return $out;
 	}
 
