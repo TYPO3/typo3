@@ -1,3 +1,7 @@
+2010-10-22  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #16114: htmlArea RTE: cleanup some js code generation code
+
 2010-10-22  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16094: Label "on-click" for formerly "click-enlarge" does not make sense

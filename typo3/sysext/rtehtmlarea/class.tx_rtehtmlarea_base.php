@@ -734,10 +734,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		}
 		$this->buildJSMainLangFile($RTEcounter);
 			// Avoid re-initialization on AJax call when RTEarea object was already initialized
-		$loadJavascriptCode = '
-		<script type="text/javascript" src="' . $this->doConcatenate($RTEcounter) . '"></script>
-		<script type="text/javascript">
-		/*<![CDATA[*/
+		$loadJavascriptCode = '<script type="text/javascript" src="' . $this->doConcatenate($RTEcounter) . '"></script>'. LF;
+		$loadJavascriptCode .= t3lib_div::wrapJS('
 			if (typeof(RTEarea) == "undefined") {
 				RTEarea = new Object();
 				RTEarea[0] = new Object();
@@ -763,9 +761,8 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 						HTMLArea.initEditor(editorNumber);
 					}
 				};
-			}
-		/*]]>*/
-		</script>';
+			}'
+		);
 		return $loadJavascriptCode;
 	}
 
@@ -777,11 +774,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return 	string		the Javascript code for initializing the RTE
 	 */
 	function loadJScode($RTEcounter) {
-		return (!$this->is_FE() ? '' : '
-		' . '/*<![CDATA[*/') . '
-			RTEarea.init();' . (!$this->is_FE() ? '' : '
-		/*]]>*/
-		');
+		return TAB . 'RTEarea.init();';
 	}
 
 	/**
@@ -795,9 +788,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		the Javascript code for configuring the RTE
 	 */
 	function registerRTEinJS($RTEcounter, $table='', $uid='', $field='', $textAreaId = '') {
-
-		$configureRTEInJavascriptString = (!$this->is_FE() ? '' : '
-			' . '/*<![CDATA[*/') . '
+		$configureRTEInJavascriptString = '
 			if (typeof(configureEditorInstance) == "undefined") {
 				configureEditorInstance = new Object();
 			}
@@ -912,8 +903,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea.initEditor(editornumber);
 				}
 			};
-			configureEditorInstance["' . $textAreaId . '"]();'. (!$this->is_FE() ? '' : '
-			/*]]>*/');
+			configureEditorInstance["' . $textAreaId . '"]();';
 		return $configureRTEInJavascriptString;
 	}
 

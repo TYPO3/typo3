@@ -221,7 +221,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$pageRenderer->addJsFile($this->siteURL . 't3lib/js/extjs/ux/ext.resizable.js');
 		$pageRenderer->addJsFile($this->siteURL . '/t3lib/js/extjs/notifications.js');
 		if ($this->TCEform->RTEcounter == 1) {
-			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->loadJScode($this->TCEform->RTEcounter);
+			$this->TCEform->additionalJS_pre['rtehtmlarea-loadJScode'] = $this->wrapCDATA($this->loadJScode($this->TCEform->RTEcounter));
 		}
 		$this->TCEform->additionalJS_initial = $this->loadJSfiles($this->TCEform->RTEcounter);
 		$resizableSettings = array(
@@ -252,7 +252,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		$textAreaId = htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $textAreaId)) . '_' . strval($this->TCEform->RTEcounter);
 
 			// Register RTE in JS:
-		$this->TCEform->additionalJS_post[] = $this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId);
+		$this->TCEform->additionalJS_post[] = $this->wrapCDATA($this->registerRTEinJS($this->TCEform->RTEcounter, '', '', '',$textAreaId));
 
 			// Set the save option for the RTE:
 		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
@@ -317,6 +317,23 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 			$this->pageRenderer->setBackPath(TYPO3_mainDir);
 		}
 		return $this->pageRenderer;
+	}
+	/**
+	 * Wrap input string in CDATA enclosure
+	 *
+	 * @param	string		$string: input to be wrapped
+	 *
+	 * @return	string		wrapped string
+	 */
+	public function wrapCDATA ($string) {
+		return implode(LF,
+			array(
+				'',
+				'/*<![CDATA[*/',
+				$string,
+				'/*]]>*/'
+			)
+		);
 	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/pi2/class.tx_rtehtmlarea_pi2.php']) {
