@@ -4423,12 +4423,15 @@ class tslib_cObj {
 			$isExecuted = array();
 			// additional switch to make sure 'required', 'if' and 'fieldRequired'
 			// will still stop rendering immediately in case they return false
-			$this->stopRendering = false;
+
+			$this->stdWrapRecursionLevel++;
+			$this->stopRendering[$this->stdWrapRecursionLevel] = false;
 
 			// execute each funtion in the predefined order
 			foreach ($sortedConf as $stdWrapName => $enabled) {
+
 				// eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
-				if (!$isExecuted[$stdWrapName] && !$this->stopRendering) {
+				if (!$isExecuted[$stdWrapName] && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
 					$functionName = rtrim($stdWrapName, '.');
 					$functionProperties = $functionName . '.';
 					// if there is any code one the next level, check if it contains "official" stdWrap functions
@@ -4470,6 +4473,9 @@ class tslib_cObj {
 						);
 					}
 				}
+
+				unset($this->stopRendering[$this->stdWrapRecursionLevel]);
+				$this->stdWrapRecursionLevel--;
 			}
 		}
 		return $content;
@@ -4774,7 +4780,7 @@ class tslib_cObj {
 	public function stdWrap_required($content = '', $conf = array()) {
 		if ((string) $content == '') {
 			$content = '';
-			$this->stopRendering = TRUE;
+			$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 		}
 		return $content;
 	}
@@ -4791,7 +4797,7 @@ class tslib_cObj {
 	public function stdWrap_if($content = '', $conf = array()) {
 		if (!$this->checkIf($conf['if.'])) {
 			$content = '';
-			$this->stopRendering = TRUE;
+			$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 		}
 		return $content;
 	}
@@ -4808,7 +4814,7 @@ class tslib_cObj {
 	public function stdWrap_fieldRequired($content = '', $conf = array()) {
 		if (!trim($this->data[$conf['fieldRequired']])) {
 			$content = '';
-			$this->stopRendering = TRUE;
+			$this->stopRendering[$this->stdWrapRecursionLevel] = TRUE;
 		}
 		return $content;
 	}
