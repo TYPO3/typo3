@@ -60,9 +60,9 @@ Ext.apply(HTMLArea, {
 	reservedClassNames	: /htmlarea/,
 	RE_email		: /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i,
 	RE_url			: /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*)/i,
-	RE_blockTags		: /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/,
-	RE_closingTags		: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/,
-	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/,
+	RE_blockTags		: /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/i,
+	RE_closingTags		: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/i,
+	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/i,
 	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g
 });
 /***************************************************
@@ -107,19 +107,19 @@ HTMLArea.Config = function (editorId) {
 	this.enableMozillaExtension = true;
 	this.disableEnterParagraphs = false;
 	this.disableObjectResizing = false;
-	this.removeTrailingBR = false;
+	this.removeTrailingBR = true;
 		// style included in the iframe document
 	this.editedContentStyle = HTMLArea.editedContentCSS;
 		// content style
 	this.pageStyle = "";
-		// remove tags (these have to be a regexp, or null if this functionality is not desired)
-	this.htmlRemoveTags = null;
-		// remove tags and any contents (these have to be a regexp, or null if this functionality is not desired)
-	this.htmlRemoveTagsAndContents = null;
-		// remove comments
+		// Remove tags (must be a regular expression)
+	this.htmlRemoveTags = /none/i;
+		// Remove tags and their contents (must be a regular expression)
+	this.htmlRemoveTagsAndContents = /none/i;
+		// Remove comments
 	this.htmlRemoveComments = false;
-		// custom tags (these have to be a regexp, or null if this functionality is not desired)
-	this.customTags = null;
+		// Custom tags (must be a regular expression)
+	this.customTags = /none/i;
 		// BaseURL to be included in the iframe document
 	this.baseURL = document.baseURI || document.URL;
 	if (this.baseURL && this.baseURL.match(/(.*\:\/\/.*\/)[^\/]*/)) {
@@ -795,6 +795,11 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			}
 		});
 		this.config = this.getEditor().config;
+		this.htmlRenderer = new HTMLArea.DOM.Walker({
+			keepComments: !this.config.htmlRemoveComments,
+			removeTags: this.config.htmlRemoveTags,
+			removeTagsAndContents: this.config.htmlRemoveTagsAndContents
+		});
 		if (!this.config.showStatusBar) {
 			this.addClass('noStatusBar');
 		}
@@ -1144,10 +1149,14 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 		}
 	},
 	/*
+	 * Instance of DOM walker
+	 */
+	htmlRenderer: {},
+	/*
 	 * Get the HTML content of the iframe
 	 */
 	getHTML: function () {
-		return HTMLArea.getHTML(this.document.body, false, this.getEditor());
+		return this.htmlRenderer.render(this.document.body, false);
 	},
 	/*
 	 * Start listening to things happening in the iframe
@@ -2261,7 +2270,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	},
 	/*
 	 * Retrieve the HTML
-	 * In the case of the wysiwyg mode, the html content is parsed
+	 * In the case of the wysiwyg mode, the html content is rendered from the DOM tree
 	 *
 	 * @return	string		the textual html content from the current editing mode
 	 */
@@ -3013,15 +3022,17 @@ HTMLArea.htmlEncode = function(str) {
 	str = str.replace(/\x22/g, "&quot;"); // \x22 means '"'
 	return str;
 };
-
 /*
  * Retrieve the HTML code from the given node.
  * This is a replacement for getting innerHTML, using standard DOM calls.
  * Wrapper catches a Mozilla-Exception with non well-formed html source code.
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
+ ***********************************************
  */
 HTMLArea.getHTML = function(root, outputRoot, editor){
 	try {
-		return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
+		return editor.iframe.htmlRenderer.render(root, outputRoot);
 	} catch(e) {
 		HTMLArea._appendToLog('[HTMLArea::getHTML]: The HTML document is not well-formed.');
 		if (!HTMLArea.enableDebugMode) {
@@ -3031,92 +3042,10 @@ HTMLArea.getHTML = function(root, outputRoot, editor){
 			});
 			return editor.document.body.innerHTML;
 		} else {
-			return HTMLArea.getHTMLWrapper(root,outputRoot,editor);
+			return editor.iframe.htmlRenderer.render(root, outputRoot);
 		}
 	}
 };
-
-HTMLArea.getHTMLWrapper = function(root, outputRoot, editor) {
-	var html = "";
-	if(!root) return html;
-	switch (root.nodeType) {
-	   case 1:	// ELEMENT_NODE
-	   case 11:	// DOCUMENT_FRAGMENT_NODE
-	   case 9:	// DOCUMENT_NODE
-		var closed, i, config = editor.config;
-		var root_tag = (root.nodeType == 1) ? root.tagName.toLowerCase() : '';
-		if (root_tag == "br" && config.removeTrailingBR && !root.nextSibling && HTMLArea.isBlockElement(root.parentNode) && (!root.previousSibling || root.previousSibling.nodeName.toLowerCase() != "br")) {
-			if (!root.previousSibling && root.parentNode && root.parentNode.nodeName.toLowerCase() == "p" && root.parentNode.className) html += "&nbsp;";
-			break;
-		}
-		if (config.htmlRemoveTagsAndContents && config.htmlRemoveTagsAndContents.test(root_tag)) break;
-		var custom_tag = (config.customTags && config.customTags.test(root_tag));
-		if (outputRoot) outputRoot = !(config.htmlRemoveTags && config.htmlRemoveTags.test(root_tag));
-		if (outputRoot) {
-			if (Ext.isGecko && root.hasAttribute('_moz_editor_bogus_node')) break;
-			closed = (!(root.hasChildNodes() || HTMLArea.needsClosingTag(root) || custom_tag));
-			html = "<" + root_tag;
-			var a, name, value, attrs = root.attributes;
-			var n = attrs.length;
-			for (i = attrs.length; --i >= 0 ;) {
-				a = attrs.item(i);
-				name = a.nodeName.toLowerCase();
-				if ((!a.specified && name != 'value') || /_moz|contenteditable|_msh|complete/.test(name)) continue;
-				if (!Ext.isIE || name != "style") {
-						// IE5.5 reports wrong values. For this reason we extract the values directly from the root node.
-						// Using Gecko the values of href and src are converted to absolute links unless we get them using nodeValue()
-					if (typeof(root[a.nodeName]) != "undefined" && name != "href" && name != "src" && name != "style" && !/^on/.test(name)) {
-						value = root[a.nodeName];
-					} else {
-						value = a.nodeValue;
-						if (Ext.isIE && (name == "href" || name == "src") && editor.plugins.link && editor.plugins.link.instance && editor.plugins.link.instance.stripBaseURL) {
-							value = editor.plugins.link.instance.stripBaseURL(value);
-						}
-					}
-				} else { // IE fails to put style in attributes list.
-					value = root.style.cssText;
-				}
-					// Mozilla reports some special values; we don't need them.
-				if(/(_moz|^$)/.test(value)) continue;
-					// Strip value="0" reported by IE on all li tags
-				if(Ext.isIE && root_tag == "li" && name == "value" && value == 0) continue;
-					// Strip id generated by ExtJS
-				if (name === 'id' && value.substr(0, 7) === 'ext-gen') {
-					continue;
-				}
-				html += " " + name + '="' + HTMLArea.htmlEncode(value) + '"';
-			}
-			if (html != "") html += closed ? " />" : ">";
-		}
-		for (i = root.firstChild; i; i = i.nextSibling) {
-			if (/^li$/i.test(i.tagName) && !/^[ou]l$/i.test(root.tagName)) html += "<ul>" + HTMLArea.getHTMLWrapper(i, true, editor) + "</ul>";
-				 else html += HTMLArea.getHTMLWrapper(i, true, editor);
-		}
-		if (outputRoot && !closed) html += "</" + root_tag + ">";
-		break;
-	    case 3:	// TEXT_NODE
-		html = /^(script|style)$/i.test(root.parentNode.tagName) ? root.data : HTMLArea.htmlEncode(root.data);
-		break;
-	    case 8:	// COMMENT_NODE
-		if (!editor.config.htmlRemoveComments) html = "<!--" + root.data + "-->";
-		break;
-	    case 4:	// Node.CDATA_SECTION_NODE
-			// Mozilla seems to convert CDATA into a comment when going into wysiwyg mode, don't know about IE
-		html += '<![CDATA[' + root.data + ']]>';
-		break;
-	    case 5:	// Node.ENTITY_REFERENCE_NODE
-		html += '&' + root.nodeValue + ';';
-		break;
-	    case 7:	// Node.PROCESSING_INSTRUCTION_NODE
-			// PI's don't seem to survive going into the wysiwyg mode, (at least in moz) so this is purely academic
-		html += '<?' + root.target + ' ' + root.data + ' ?>';
-		break;
-	    default:
-	    	break;
-	}
-	return html;
-};
-
 HTMLArea.getPrevNode = function(node) {
 	if(!node)                return null;
 	if(node.previousSibling) return node.previousSibling;
@@ -3137,6 +3066,242 @@ HTMLArea.removeFromParent = function(el) {
 	pN.removeChild(el);
 	return el;
 };
+/*****************************************************************
+ * HTMLArea.DOM: Utility functions for dealing with the DOM tree *
+ *****************************************************************/
+/***************************************************
+ *  DOM-RELATED CONSTANTS
+ ***************************************************/
+HTMLArea.DOM = function () {
+	return {
+			// DOM node types
+		ELEMENT_NODE: 1,
+		ATTRIBUTE_NODE: 2,
+		TEXT_NODE: 3,
+		CDATA_SECTION_NODE: 4,
+		ENTITY_REFERENCE_NODE: 5,
+		ENTITY_NODE: 6,
+		PROCESSING_INSTRUCTION_NODE: 7,
+		COMMENT_NODE: 8,
+		DOCUMENT_NODE: 9,
+		DOCUMENT_TYPE_NODE: 10,
+		DOCUMENT_FRAGMENT_NODE: 11,
+		NOTATION_NODE: 12
+	};
+}();
+/***************************************************
+ *  HTMLArea.DOM.Walker: DOM tree walk
+ ***************************************************/
+HTMLArea.DOM.Walker = function (config) {
+	var configDefaults = {
+		keepComments: false,
+		keepCDATASections: false,
+		removeTags: /none/i,
+		removeTagsAndContents: /none/i,
+		keepTags: /.*/i,
+		removeAttributes: /none/i,
+		removeTrailingBR: true
+	}
+	Ext.apply(this, config, configDefaults);
+};
+HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
+	/*
+	 * Walk the DOM tree
+	 *
+	 * @param	object		node: the root node of the tree
+	 * @param	boolean		includeNode: if set, apply callback to the node
+	 * @param	string		startCallback: a function call to be evaluated on each node, before walking the children
+	 * @param	string		endCallback: a function call to be evaluated on each node, after walking the children
+	 * @param	array		args: array of arguments
+	 * @return	void
+	 */
+	walk: function (node, includeNode, startCallback, endCallback, args) {
+		if (!this.removeTagsAndContents.test(node.nodeName)) {
+			if (includeNode) {
+				eval(startCallback);
+			}
+				// Walk the children
+			var child = node.firstChild;
+			while (child) {
+				this.walk(child, true, startCallback, endCallback, args);
+				child = child.nextSibling;
+			}
+			if (includeNode) {
+				eval(endCallback);
+			}
+		}
+	},
+	/*
+	 * Generate html string from DOM tree
+	 *
+	 * @param	object		node: the root node of the tree
+	 * @param	boolean		includeNode: if set, apply callback to root element
+	 * @return	string		rendered html code
+	 */
+	render: function (node, includeNode) {
+		this.html = '';
+		this.walk(node, includeNode, 'args[0].renderNodeStart(node)', 'args[0].renderNodeEnd(node)', [this]);
+		return this.html;
+	},
+	/*
+	 * Generate html string for the start of a node
+	 *
+	 * @param	object		node: the root node of the tree
+	 * @return	string		rendered html code (accumulated in this.html)
+	 */
+	renderNodeStart: function (node) {
+		var html = '';
+		switch (node.nodeType) {
+			case HTMLArea.DOM.ELEMENT_NODE:
+				if (this.keepTags.test(node.nodeName) && !this.removeTags.test(node.nodeName)) {
+					html += this.setOpeningTag(node);
+				}
+				break;
+			case HTMLArea.DOM.TEXT_NODE:
+				html += /^(script|style)$/i.test(node.parentNode.nodeName) ? node.data : HTMLArea.htmlEncode(node.data);
+				break;
+			case HTMLArea.DOM.ENTITY_NODE:
+				html += node.nodeValue;
+				break;
+			case HTMLArea.DOM.ENTITY_REFERENCE_NODE:
+				html += '&' + node.nodeValue + ';';
+				break;
+			case HTMLArea.DOM.COMMENT_NODE:
+				if (this.keepComments) {
+					html += '<!--' + node.data + '-->';
+				}
+				break;
+			case HTMLArea.DOM.CDATA_SECTION_NODE:
+				if (this.keepCDATASections) {
+					html += '<![CDATA[' + node.data + ']]>';
+				}
+				break;
+			default:
+					// Ignore all other node types
+				break;
+		}
+		this.html += html;
+	},
+	/*
+	 * Generate html string for the end of a node
+	 *
+	 * @param	object		node: the root node of the tree
+	 * @return	string		rendered html code (accumulated in this.html)
+	 */
+	renderNodeEnd: function (node) {
+		var html = '';
+		if (node.nodeType == HTMLArea.DOM.ELEMENT_NODE) {
+			if (this.keepTags.test(node.nodeName) && !this.removeTags.test(node.nodeName)) {
+				html += this.setClosingTag(node);
+			}
+		}
+		this.html += html;
+	},
+	/*
+	 * Get the attributes of the node, filtered and cleaned-up
+	 *
+	 * @param	object		node: the node
+	 * @return	object		an object with attribute name as key and attribute value as value
+	 */
+	getAttributes: function (node) {
+		var attributes = node.attributes;
+		var filterededAttributes = {};
+		var attribute, attributeName, attributeValue;
+		for (var i = attributes.length; --i >= 0 ;) {
+			attribute = attributes.item(i);
+			attributeName = attribute.nodeName.toLowerCase();
+			attributeValue = attribute.nodeValue;
+				// Ignore some attributes and those configured to be removed
+			if (/_moz|contenteditable|complete/.test(attributeName) || this.removeAttributes.test(attributeName)) {
+				continue;
+			}
+				// Ignore default values except for the value attribute
+			if (!attribute.specified && attributeName !== 'value') {
+				continue;
+			}
+			if (Ext.isIE) {
+					// IE fails to put style in attributes list.
+				if (attributeName === 'style') {
+					attributeValue = node.style.cssText;
+					// May need to strip the base url
+				} else if (attributeName === 'href' || attributeName === 'src') {
+					attributeValue = this.stripBaseURL(attributeValue);
+					// Ignore value="0" reported by IE on all li elements
+				} else if (attributeName === 'value' && /^li$/i.test(node.nodeName) && attributeValue == 0) {
+					continue;
+				}
+				// Ignore special values reported by Mozilla
+			} else if (Ext.isGecko && /(_moz|^$)/.test(attributeValue)) {
+				continue;
+			}
+				// Ignore id attributes generated by ExtJS
+			if (attributeName === 'id' && /^ext-gen/.test(attributeValue)) {
+				continue;
+			}
+			filterededAttributes[attributeName] = attributeValue;
+		}
+		return filterededAttributes;
+	},
+	/*
+	 * Set opening tag for a node
+	 *
+	 * @param	object		node: the node
+	 * @return	object		opening tag
+	 */
+	setOpeningTag: function (node) {
+		var html = '';
+			// Handle br oddities
+		if (/^br$/i.test(node.nodeName)) {
+				// Remove Mozilla special br node
+			if (Ext.isGecko && node.hasAttribute('_moz_editor_bogus_node')) {
+				return html;
+				// In Gecko, whenever some text is entered in an empty block, a trailing br tag is added by the browser.
+				// If the br element is a trailing br in a block element with no other content or with content other than a br, it may be configured to be removed
+			} else if (this.removeTrailingBR && !node.nextSibling && HTMLArea.isBlockElement(node.parentNode) && (!node.previousSibling || !/^br$/i.test(node.previousSibling.nodeName))) {
+						// If an empty paragraph with a class attribute, insert a non-breaking space so that RTE transform does not clean it away
+					if (!node.previousSibling && node.parentNode && /^p$/i.test(node.parentNode.nodeName) && node.parentNode.className) {
+						html += "&nbsp;";
+					}
+				return html;
+			}
+		}
+			// Normal node
+		var attributes = this.getAttributes(node);
+		for (var attributeName in attributes) {
+			html +=  ' ' + attributeName + '="' + HTMLArea.htmlEncode(attributes[attributeName]) + '"';
+		}
+		html = '<' + node.nodeName.toLowerCase() + html + (HTMLArea.RE_noClosingTag.test(node.nodeName) ? ' />' : '>');
+			// Fix orphan list elements
+		if (/^li$/i.test(node.nodeName) && !/^[ou]l$/i.test(node.parentNode.nodeName)) {
+			html = '<ul>' + html;
+		}
+		return html;
+	},
+	/*
+	 * Set closing tag for a node
+	 *
+	 * @param	object		node: the node
+	 * @return	object		closing tag, if required
+	 */
+	setClosingTag: function (node) {
+		var html = HTMLArea.RE_noClosingTag.test(node.nodeName) ? '' : '</' + node.nodeName.toLowerCase() + '>';
+			// Fix orphan list elements
+		if (/^li$/i.test(node.nodeName) && !/^[ou]l$/i.test(node.parentNode.nodeName)) {
+			html += '</ul>';
+		}
+		return html;
+	},
+	/*
+	 * Strip base url
+	 * May be overridden by link handling plugin
+	 *
+	 * @param	string		value: value of a href or src attribute
+	 * @return	tring		stripped value
+	 */
+	stripBaseURL: function (value) {
+		return value;
+	}
+});
 /***************************************************
  *  TIPS ON FORM FIELDS AND MENU ITEMS
  ***************************************************/

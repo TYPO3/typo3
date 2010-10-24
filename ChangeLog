@@ -1,3 +1,7 @@
+2010-10-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #16118: htmlArea RTE: cleanup/rewrite DOM to html rendering
+
 2010-10-23  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Fixed bug #16110: stdWrap functions stop working as soon as there is one conditional function returning false (Thanks to Jo Hasenau)

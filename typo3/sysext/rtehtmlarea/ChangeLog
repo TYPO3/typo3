@@ -1,3 +1,7 @@
+2010-10-24  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #16118: htmlArea RTE: cleanup/rewrite DOM to html rendering
+
 2010-10-22  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #16114: htmlArea RTE: cleanup some js code generation code

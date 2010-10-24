@@ -102,6 +102,14 @@ HTMLArea.DefaultLink = HTMLArea.Plugin.extend({
 		}
 	},
 	/*
+	 * This function gets called when the editor is generated
+	 */
+	onGenerate: function () {
+		if (Ext.isIE) {
+			this.editor.iframe.htmlRenderer.stripBaseUrl = this.stripBaseUrl;
+		}
+	},
+	/*
 	 * This function gets called when the button was pressed.
 	 *
 	 * @param	object		editor: the editor instance
