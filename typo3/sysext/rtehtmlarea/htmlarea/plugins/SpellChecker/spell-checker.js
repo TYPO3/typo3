@@ -498,7 +498,7 @@ HTMLArea.SpellChecker = HTMLArea.Plugin.extend({
 		Ext.each(iframeDocument.getElementsByTagName('a'), function (link) {
 			link.onclick = null;
 		}, this);
-		return HTMLArea.getHTML(iframeDocument.body, false, this.editor);
+		return this.editor.iframe.htmlRenderer.render(iframeDocument.body, false);
 	},
 	/*
 	 * Handler invoked when the response from the server has finished loading
