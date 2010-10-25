@@ -2837,14 +2837,11 @@ final class t3lib_div {
 	 *
 	 * @param	string		File/URL to read
 	 * @param	integer		Whether the HTTP header should be fetched or not. 0=disable, 1=fetch header+content, 2=fetch header only
-	 * @param	array		HTTP headers to be used in the request
-	 * @param	array		Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
-	 * @param	mixed		The full data to post in a HTTP "POST" operation. To post a file, prepend a filename with @ and use the full path.
-	 *						This can either be passed as a urlencoded string like 'para1=val1&para2=val2&...' or as an array with the field
-	 *						name as key and field data as value. If value is an array, the Content-Type header will be set to multipart/form-data.
-	 * @return	string		The content from the resource given as input. FALSE if an error has occured.
+	 * @param	array			HTTP headers to be used in the request
+	 * @param	array			Error code/message and, if $includeHeader is 1, response meta data (HTTP status and content type)
+	 * @return	string	The content from the resource given as input. FALSE if an error has occured.
 	 */
-	public static function getURL($url, $includeHeader = 0, $requestHeaders = false, &$report = NULL, $postFields = NULL)	{
+	public static function getURL($url, $includeHeader = 0, $requestHeaders = false, &$report = NULL)	{
 		$content = false;
 
 		if (isset($report))	{
@@ -2872,11 +2869,6 @@ final class t3lib_div {
 			curl_setopt($ch, CURLOPT_HEADER, $includeHeader ? 1 : 0);
 			curl_setopt($ch, CURLOPT_NOBODY, $includeHeader == 2 ? 1 : 0);
 			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
-			if (!is_null($postFields)) {
-				curl_setopt($ch, CURLOPT_HTTPGET, FALSE);
-				curl_setopt($ch, CURLOPT_POST, TRUE);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-			}
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));

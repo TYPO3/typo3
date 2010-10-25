@@ -1,3 +1,7 @@
+2010-10-25  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Reverted #16011: Incomplete implementation
+
 2010-10-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16087: htmlArea RTE: Missing soft hyphen entity in CharacterMap
