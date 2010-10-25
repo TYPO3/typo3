@@ -1,6 +1,7 @@
 2010-10-25  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16087: htmlArea RTE: Missing soft hyphen entity in CharacterMap
+	* Added feature #16127: htmlArea RTE: Add quick tips in character map
 
 2010-10-24  Stanislas Rolland  <typo3@sjbr.ca>
 
