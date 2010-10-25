@@ -148,6 +148,7 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 			['&tilde;', '&amp;tilde;'],
 			['&uml;', '&amp;uml;'],
 			['&cedil;', '&amp;cedil;'],
+			['&shy;', '&amp;shy;'],
 			['&ndash;', '&amp;ndash;'],
 			['&mdash;', '&amp;mdash;'],
 			['&lsquo;', '&amp;lsquo;'],
@@ -297,8 +298,7 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 			['&Psi;', '&amp;Psi;'],
 			['&psi;', '&amp;psi;'],
 			['&Omega;', '&amp;Omega;'],
-			['&omega;', '&amp;omega;'],
-			['&nbsp;', '&amp;nbsp;']
+			['&omega;', '&amp;omega;']
 		],
 		graphical: [
 			['&crarr;', '&amp;crarr;'],
@@ -312,7 +312,6 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 			['&lArr;', '&amp;lArr;'],
 			['&rArr;', '&amp;rArr;'],
 			['&hArr;', '&amp;hArr;'],
-			['&nbsp;', '&amp;nbsp;'],
 			['&nbsp;', '&amp;nbsp;'],
 			['&nbsp;', '&amp;nbsp;'],
 			['&nbsp;', '&amp;nbsp;'],
@@ -338,7 +337,7 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 		this.openDialogue(
 			buttonId,
 			'Insert special character',
-			this.getWindowDimensions({width:462, height:330}, buttonId),
+			this.getWindowDimensions({width:434, height:360}, buttonId),
 			this.buildTabItems()
 		);
 		return false;
