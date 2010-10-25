@@ -1,3 +1,7 @@
+2010-10-25  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16087: htmlArea RTE: Missing soft hyphen entity in CharacterMap
+
 2010-10-18  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16050: htmlArea RTE: Backspacing in empty editing area may raise js error

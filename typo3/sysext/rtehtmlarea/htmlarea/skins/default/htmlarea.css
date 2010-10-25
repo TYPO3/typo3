@@ -305,11 +305,12 @@ body.ext-ie6 .htmlarea-window .x-panel-icon {
 .htmlarea-window .character-map .character {
 	display: block;
 	float: left;
+	height: 20px;
 	width: 20px;
 	font-size: 14px;
 	font-weight: bold;
 	text-align: center;
-	padding: 5px 3px;
+	padding: 3px;
 	border: 1px solid transparent;
 }
 .htmlarea-window .character-map .character:hover {
