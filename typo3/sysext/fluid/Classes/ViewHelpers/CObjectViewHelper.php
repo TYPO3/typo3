@@ -48,6 +48,10 @@ class Tx_Fluid_ViewHelpers_CObjectViewHelper extends Tx_Fluid_Core_ViewHelper_Ab
 			$this->typoScriptSetup = $typoScriptSetup;
 		} else {
 			$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+			if ($configurationManager === NULL) {
+				$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager');
+				$configurationManager->setContentObject($this->contentObject);
+			}
 			$this->typoScriptSetup = $configurationManager->loadTypoScriptSetup();
 		}
 	}
