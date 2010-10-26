@@ -298,6 +298,102 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function invalidEntryIdentifiers() {
+		return array(
+			'trailing slash' => array('/myIdentifer'),
+			'trailing dot and slash' => array('./myIdentifer'),
+			'trailing two dots and slash' => array('../myIdentifier'),
+			'trailing with multiple dots and slashes' => array('.././../myIdentifier'),
+			'slash in middle part' => array('my/Identifier'),
+			'dot and slash in middle part' => array('my./Identifier'),
+			'two dots and slash in middle part' => array('my../Identifier'),
+			'multiple dots and slashes in middle part' => array('my.././../Identifier'),
+			'pending slash' => array('myIdentifier/'),
+			'pending dot and slash' => array('myIdentifier./'),
+			'pending dots and slash' => array('myIdentifier../'),
+			'pending multiple dots and slashes' => array('myIdentifier.././../'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidEntryIdentifiers
+	 * @expectedException InvalidArgumentException
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function setThrowsExceptionForInvalidIdentifier($identifier) {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', TRUE);
+		$backend->setCache($mockCache);
+
+		$backend->set($identifier, 'cache data', array());
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidEntryIdentifiers
+	 * @expectedException InvalidArgumentException
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function getThrowsExceptionForInvalidIdentifier($identifier) {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend->setCache($mockCache);
+
+		$backend->get($identifier);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidEntryIdentifiers
+	 * @expectedException InvalidArgumentException
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function hasThrowsExceptionForInvalidIdentifier($identifier) {
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+
+		$backend->has($identifier);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidEntryIdentifiers
+	 * @expectedException InvalidArgumentException
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function removeThrowsExceptionForInvalidIdentifier($identifier) {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend->setCache($mockCache);
+
+		$backend->remove($identifier);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider invalidEntryIdentifiers
+	 * @expectedException InvalidArgumentException
+	 * @author Christian Kuhn <lolli@schwarzbu.ch>
+	 */
+	public function requireOnceThrowsExceptionForInvalidIdentifier($identifier) {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
+
+		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend->setCache($mockCache);
+
+		$backend->requireOnce($identifier);
+	}
+
+	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>

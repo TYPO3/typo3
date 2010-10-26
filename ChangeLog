@@ -1,3 +1,7 @@
+2010-10-26  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #15936: [Caching framework] Entry identifier needs to be sanitized in FileBackend
+
 2010-10-25  Susanne Moog  <typo3@susanne-moog.de>
 
 	* Reverted #16011: Incomplete implementation

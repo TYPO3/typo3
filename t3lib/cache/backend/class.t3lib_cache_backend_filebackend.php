@@ -222,6 +222,13 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			);
 		}
 
+		if ($entryIdentifier !== basename($entryIdentifier)) {
+			throw new InvalidArgumentException(
+				'The specified entry identifier must not contain a path segment.',
+				1282073032
+			);
+		}
+
 		$this->remove($entryIdentifier);
 
 		$temporaryCacheEntryPathAndFilename = $this->root . $this->cacheDirectory . uniqid() . '.temp';
@@ -271,6 +278,13 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function get($entryIdentifier) {
+		if ($entryIdentifier !== basename($entryIdentifier)) {
+			throw new InvalidArgumentException(
+				'The specified entry identifier must not contain a path segment.',
+				1282073033
+			);
+		}
+
 		$pathAndFilename = $this->root . $this->cacheDirectory . $entryIdentifier;
 		if ($this->isCacheFileExpired($pathAndFilename)) {
 			return FALSE;
@@ -288,6 +302,13 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function has($entryIdentifier) {
+		if ($entryIdentifier !== basename($entryIdentifier)) {
+			throw new InvalidArgumentException(
+				'The specified entry identifier must not contain a path segment.',
+				1282073034
+			);
+		}
+
 		return !$this->isCacheFileExpired($this->root . $this->cacheDirectory . $entryIdentifier);
 	}
 
@@ -301,6 +322,13 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
+		if ($entryIdentifier !== basename($entryIdentifier)) {
+			throw new InvalidArgumentException(
+				'The specified entry identifier must not contain a path segment.',
+				1282073035
+			);
+		}
+
 		$pathAndFilename = $this->root . $this->cacheDirectory . $entryIdentifier;
 		if (!file_exists($pathAndFilename)) {
 			return FALSE;
@@ -499,6 +527,13 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function requireOnce($entryIdentifier) {
+		if ($entryIdentifier !== basename($entryIdentifier)) {
+			throw new InvalidArgumentException(
+				'The specified entry identifier must not contain a path segment.',
+				1282073036
+			);
+		}
+
 		$pathAndFilename = $this->root . $this->cacheDirectory . $entryIdentifier;
 		return ($this->isCacheFileExpired($pathAndFilename)) ? FALSE : require_once($pathAndFilename);
 	}
