@@ -1,3 +1,7 @@
+2010-10-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16148: htmlArea RTE: Missing cancel browser default after inserting character or emoticon
+
 2010-10-27  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #15503: Improve t3lib_userAuth::getCookie() (Thanks to Michael Bürgi)

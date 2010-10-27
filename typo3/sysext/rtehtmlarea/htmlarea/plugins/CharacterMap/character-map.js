@@ -436,6 +436,7 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 	 * @return	void
 	 */
 	insertCharacter: function (event, target) {
+		event.stopEvent();
 		this.editor.focus();
 		this.restoreSelection();
 		var entity = Ext.get(target).dom.innerHTML;
@@ -446,6 +447,7 @@ HTMLArea.CharacterMap = HTMLArea.Plugin.extend({
 				// Firefox and WebKit convert '&nbsp;' to '&amp;nbsp;'
 			this.editor.insertNodeAtSelection(this.editor.document.createTextNode(((Ext.isGecko || Ext.isWebKit) && entity == '&nbsp;') ? '\xA0' : entity));
 		}
+		return false;
 	},
 	/*
 	 * Reset focus on the the current selection, if at all possible
