@@ -1,5 +1,6 @@
 2010-10-27  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16122: Improve tooltip behaviour
 	* Fixed bug #15094: Refactor of content objects of tslib_content
 
 2010-10-27  Steffen Gebert  <steffen@steffen-gebert.de>

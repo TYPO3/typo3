@@ -30,19 +30,50 @@ Ext.ns('TYPO3', 'TYPO3.CSH.ExtDirect');
  * Class to show tooltips for links that have the css t3-help-link
  * need the tags data-table and data-field (HTML5)
  */
-TYPO3.ContextHelp = function() {
 
-	/**
-	 * Tooltip
-	 * @type {Ext.ToolTip}
-	 */
-	var tip;
+
+TYPO3.ContextHelp = function() {
 
 	/**
 	 * Cache for CSH
 	 * @type {Ext.util.MixedCollection}
 	 */
-	var cshHelp = new Ext.util.MixedCollection(true);
+	var cshHelp = new Ext.util.MixedCollection(true),
+	tip;
+
+	/**
+	 * Shows the tooltip, triggered from mouseover event handler
+	 *
+	 */
+	function showToolTipHelp() {
+		var link = tip.triggerElement;
+		var table = link.getAttribute('data-table');
+		var field = link.getAttribute('data-field');
+		var key = table + '.' + field;
+		var response = cshHelp.key(key);
+		tip.target = tip.triggerElement;
+		if (response ) {
+			updateTip(response);
+		} else {
+			TYPO3.CSH.ExtDirect.getContextHelp(table, field, function(response, options) {
+				cshHelp.add(response);
+				updateTip(response);
+			}, this);
+		}
+	}
+
+	/**
+	 * Update tooltip message
+	 *
+	 * @param {Object} response
+	 */
+	function updateTip(response) {
+		tip.body.dom.innerHTML = response.description;
+		tip.cshLink = response.id;
+		tip.setTitle(response.title);
+		tip.syncShadow();
+	}
+
 
 	return {
 		/**
@@ -50,60 +81,38 @@ TYPO3.ContextHelp = function() {
 		 */
 		init: function() {
 			tip = new Ext.ToolTip({
-				title: 'TYPO3 CSH',
+				title: 'CSH', // needs a title for init because of the markup
 				html: '',
-				anchorToTarget: true,
-				width: 160,
+				anchor: 'left',
+				minWidth: 160,
+				maxWidth: 240,
+				target: Ext.getBody(),
+				delegate: 'a.t3-help-link',
 				renderTo: Ext.getBody(),
 				cls: 'typo3-csh-tooltip',
-				dismissDelay: 3000, // auto hide after 3 seconds
-				showsDelay: 2000, // show after 2 seconds
+				dismissDelay: 0, // tooltip stays while mouse is over target
+				showDelay: 1500, // show after 1.5 seconds
+				hideDelay: 1500, // hide after 1.5 seconds
 				listeners: {
-					'render': function(){
-						this.body.on('click', function(e){
-							e.stopEvent();
+					beforeshow: showToolTipHelp,
+					render: function(tip) {
+						tip.body.on('click', function(event){
+							event.stopEvent();
 							top.TYPO3.ContextHelpWindow.open(this.cshLink);
-						}, this);
-					}
+						});
+					},
+					hide: function(tip) {
+						tip.setTitle('');
+						tip.body.dom.innerHTML = '';
+					},
+					scope: this
 				}
-
 			});
-			Ext.select('div').on('mouseover', TYPO3.ContextHelp.showToolTipHelp, TYPO3.ContextHelp, {delegate: 'a.t3-help-link'});
 			Ext.select('div').on('click', TYPO3.ContextHelp.openHelpWindow, TYPO3.ContextHelp, {delegate: 'a.t3-help-link'});
 		},
 
-		/**
-		 * Shows the tooltip, triggered from mouseover event handler
-		 *
-		 * @param {Event} event
-		 * @param {Node} link
-		 */
-		showToolTipHelp: function(event, link) {
-			event.stopEvent();
-			var table = link.getAttribute('data-table');
-			var field = link.getAttribute('data-field');
-			var key = table + '.' + field;
-			var element = Ext.fly(link);
-			var response;
 
-			tip.target = element;
 
-			if (response = cshHelp.key(key)) {
-				tip.body.dom.innerHTML = response.description;
-				tip.cshLink = response.id;
-				tip.setTitle(response.title);
-				tip.showBy(element, 'tl-tr');
-			} else {
-				TYPO3.CSH.ExtDirect.getContextHelp(table, field, function(response, options) {
-					cshHelp[table + '.' + field] = response;
-					tip.body.dom.innerHTML = response.description;
-					tip.cshLink = response.id;
-					tip.setTitle(response.title);
-					cshHelp.add(response);
-					tip.showAt(event.getXY());
-				}, this);
-			}
-		},
 
 		/**
 		 * Opens the help window, triggered from click event handler
