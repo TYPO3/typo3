@@ -231,6 +231,7 @@
  * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&cHash=4ad9d7acb4
  */
 class tslib_cObj {
+
 	/**
 	 * @var tslib_content_abstract
 	 */
@@ -790,7 +791,7 @@ class tslib_cObj {
 								// log error in AdminPanel
 							$warning = sprintf('Content Object "%s" does not exist', $name);
 							$GLOBALS['TT']->setTSlogMessage($warning, 2);
-							}
+						}
 					}
 				}
 			}
@@ -919,10 +920,10 @@ class tslib_cObj {
 	function USER($conf, $ext = '') {
 		if ($ext === 'INT') {
 			return $this->getContentObject('USER_INT')->render($conf);
-				} else {
+		} else {
 			return $this->getContentObject('USER')->render($conf);
-				}
 		}
+	}
 
 	/**
 	 * Retrieves a type of object called as USER or USER_INT. Object can detect their
@@ -945,6 +946,7 @@ class tslib_cObj {
 	public function setUserObjectType($userObjectType) {
 		$this->userObjectType = $userObjectType;
 	}
+
 	/**
 	 * Requests the current USER object to be converted to USER_INT.
 	 *
@@ -966,7 +968,7 @@ class tslib_cObj {
 	 */
 	function FILE($conf) {
 		return $this->getContentObject('FILE')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, IMAGE
@@ -977,7 +979,7 @@ class tslib_cObj {
 	 */
 	function IMAGE($conf) {
 		return $this->getContentObject('IMAGE')->render($conf);
-			}
+	}
 
 	/**
 	 * Rendering the cObject, IMG_RESOURCE
@@ -998,7 +1000,7 @@ class tslib_cObj {
 	 */
 	function IMGTEXT($conf) {
 		return $this->getContentObject('IMGTEXT')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, CONTENT
@@ -1008,7 +1010,7 @@ class tslib_cObj {
 	 */
 	function CONTENT($conf) {
  		return $this->getContentObject('CONTENT')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, RECORDS
@@ -1018,7 +1020,7 @@ class tslib_cObj {
 	 */
 	function RECORDS($conf) {
 		return $this->getContentObject('RECORDS')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, HMENU
@@ -1028,7 +1030,7 @@ class tslib_cObj {
 	 */
 	function HMENU($conf) {
 		return $this->getContentObject('HMENU')->render($conf);
-				}
+	}
 
 	/**
 	 * Rendering the cObject, CTABLE
@@ -1038,7 +1040,7 @@ class tslib_cObj {
 	 */
 	function CTABLE($conf) {
 		return $this->getContentObject('CTABLE')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, OTABLE
@@ -1048,7 +1050,7 @@ class tslib_cObj {
 	 */
 	function OTABLE($conf) {
 		return $this->getContentObject('OTABLE')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, COLUMNS
@@ -1058,7 +1060,7 @@ class tslib_cObj {
 	 */
 	function COLUMNS($conf) {
 		return $this->getContentObject('COLUMNS')->render($conf);
-			}
+	}
 
 	/**
 	 * Rendering the cObject, HRULER
@@ -1068,7 +1070,7 @@ class tslib_cObj {
 	 */
 	function HRULER($conf) {
 		return $this->getContentObject('HRULER')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, CASE
@@ -1078,7 +1080,7 @@ class tslib_cObj {
 	 */
 	function CASEFUNC($conf) {
 		return $this->getContentObject('CASE')->render($conf);
-			}
+	}
 
 	/**
 	 * Rendering the cObject, LOAD_REGISTER and RESTORE_REGISTER
@@ -1093,8 +1095,8 @@ class tslib_cObj {
 			return $this->getContentObject('RESTORE_REGISTER')->render($conf);
 		} else {
 			return $this->getContentObject('LOAD_REGISTER')->render($conf);
-						}
-					}
+		}
+	}
 
 	/**
 	 * Rendering the cObject, FORM
@@ -1105,7 +1107,7 @@ class tslib_cObj {
 	 */
 	function FORM($conf, $formData = '') {
 		return $this->getContentObject('FORM')->render($conf);
-			}
+	}
 
 	/**
 	 * Rendering the cObject, SEARCHRESULT
@@ -1115,7 +1117,7 @@ class tslib_cObj {
 	 */
 	function SEARCHRESULT($conf) {
 		return $this->getContentObject('SEARCHRESULT')->render($conf);
-					}
+	}
 
 	/**
 	 * Rendering the cObject, PHP_SCRIPT, PHP_SCRIPT_INT and PHP_SCRIPT_EXT
@@ -1127,10 +1129,10 @@ class tslib_cObj {
 	function PHP_SCRIPT($conf, $ext = '') {
 		if ($ext === 'INT' || $ext === 'EXT') {
 			return $this->getContentObject('PHP_SCRIPT_INT')->render($conf, $ext);
-					} else {
+		} else {
 			return $this->getContentObject('PHP_SCRIPT')->render($conf);
-					}
-					}
+		}
+	}
 
 	/**
 	 * Rendering the cObject, TEMPLATE
@@ -1141,7 +1143,7 @@ class tslib_cObj {
 	 */
 	function TEMPLATE($conf) {
 		return $this->getContentObject('TEMPLATE')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, FLUIDTEMPLATE
@@ -1153,7 +1155,7 @@ class tslib_cObj {
 	 */
 	protected function FLUIDTEMPLATE(array $conf) {
 		return $this->getContentObject('FLUIDTEMPLATE')->render($conf);
-		}
+	}
 
 		/**
 	 * Rendering the cObject, MULTIMEDIA
@@ -1163,7 +1165,7 @@ class tslib_cObj {
 	 */
 	function MULTIMEDIA($conf) {
 		return $this->getContentObject('MULTIMEDIA')->render($conf);
-				}
+	}
 
 	/**
 	 * Rendering the cObject, MEDIA
@@ -1172,9 +1174,8 @@ class tslib_cObj {
 	 * @return	string		Output
 	 */
 	public function MEDIA($conf) {
-	  return $this->getContentObject('MEDIA')->render($conf);
-		}
-
+		return $this->getContentObject('MEDIA')->render($conf);
+	}
 
 	/**
 	 * Rendering the cObject, SWFOBJECT
@@ -1184,7 +1185,7 @@ class tslib_cObj {
 	 */
 	public function SWFOBJECT($conf) {
 		return $this->getContentObject('SWFOBJECT')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, QTOBJECT
@@ -1194,7 +1195,7 @@ class tslib_cObj {
 	 */
 	public function QTOBJECT($conf) {
 		return $this->getContentObject('QTOBJECT')->render($conf);
-		}
+	}
 
 	/**
 	 * Rendering the cObject, SVG
@@ -1204,7 +1205,8 @@ class tslib_cObj {
 	 */
 	public function SVG($conf) {
 		return $this->getContentObject('SVG')->render($conf);
-		}
+	}
+
 	/************************************
 	 *
 	 * Various helper functions for content objects:
