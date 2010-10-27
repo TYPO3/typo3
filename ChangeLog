@@ -1,3 +1,7 @@
+2010-10-27  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #15503: Improve t3lib_userAuth::getCookie() (Thanks to Michael Bürgi)
+
 2010-10-26  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #15936: [Caching framework] Entry identifier needs to be sanitized in FileBackend

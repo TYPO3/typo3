@@ -410,9 +410,9 @@ class t3lib_userAuth {
 			$cookies = t3lib_div::trimExplode(';', $_SERVER['HTTP_COOKIE']);
 			foreach ($cookies as $cookie) {
 				list ($name, $value) = t3lib_div::trimExplode('=', $cookie);
-				if ($name == $cookieName) {
+				if (strcmp(trim($name), $cookieName) == 0) {
 					// Use the last one
-					$cookieValue = stripslashes($value);
+					$cookieValue = urldecode($value);
 				}
 			}
 		} else {
