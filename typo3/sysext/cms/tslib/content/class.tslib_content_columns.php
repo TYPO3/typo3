@@ -1,0 +1,126 @@
+<?php
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2010 Steffen Kamper <steffen@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+/**
+ * Contains COLUMNS class object.
+ *
+ * $Id: class.tslib_content.php 7905 2010-06-13 14:42:33Z ohader $
+ * @author Xavier Perseguers <typo3@perseguers.ch>
+ * @author Steffen Kamper <steffen@typo3.org>
+ */
+class tslib_content_Columns extends tslib_content_Abstract {
+
+	/**
+	 * Rendering the cObject, COLUMNS
+	 *
+	 * @param	array		Array of TypoScript properties
+	 * @return	string		Output
+	 */
+	public function render($conf = array()) {
+		$content = '';
+		if (is_array($conf) && $this->cObj->checkIf($conf['if.'])) {
+			$tdRowCount = 0;
+			$tableParams = $conf['tableParams'] ? ' ' . $conf['tableParams'] : ' border="0" cellspacing="0" cellpadding="0"';
+			$TDparams = $conf['TDparams'] ? ' ' . $conf['TDparams'] : ' valign="top"';
+			$rows = t3lib_div::intInRange($conf['rows'], 2, 20);
+			$totalWidth = intval($conf['totalWidth']);
+			$columnWidth = 0;
+
+			$totalGapWidth = 0;
+			$gapData = array(
+				'gapWidth' => $this->cObj->stdWrap($conf['gapWidth'], $conf['gapWidth.']),
+				'gapBgCol' => $this->cObj->stdWrap($conf['gapBgCol'], $conf['gapBgCol.']),
+				'gapLineThickness' => $this->cObj->stdWrap($conf['gapLineThickness'], $conf['gapLineThickness.']),
+				'gapLineCol' => $this->cObj->stdWrap($conf['gapLineCol'], $conf['gapLineCol.']),
+			);
+			$gapData = $GLOBALS['TSFE']->tmpl->splitConfArray($gapData, $rows - 1);
+			foreach ($gapData as $val) {
+				$totalGapWidth += intval($val['gapWidth']);
+			}
+
+			if ($totalWidth) {
+				$columnWidth = ceil(($totalWidth - $totalGapWidth) / $rows);
+				$TDparams .= ' width="' . $columnWidth . '"';
+				$tableParams .= ' width="' . $totalWidth . '"';
+			} else {
+				$TDparams .= ' width="' . floor(100 / $rows) . '%"';
+				$tableParams .= ' width="100%"';
+			}
+
+			for ($a = 1; $a <= $rows; $a++) {
+				$tdRowCount++;
+				$content .= '<td' . $TDparams . '>';
+				$content .= $this->cObj->cObjGetSingle($conf[$a], $conf[$a . '.'], $a);
+				$content .= '</td>';
+				if ($a < $rows) {
+					$gapConf = $gapData[($a - 1)];
+					$gapWidth = intval($gapConf['gapWidth']);
+					if ($gapWidth) {
+						$tdPar = $gapConf['gapBgCol'] ? ' bgcolor="' . $gapConf['gapBgCol'] . '"' : '';
+						$gapLine = intval($gapConf['gapLineThickness']);
+						if ($gapLine) {
+							$gapSurround = t3lib_div::intInRange(($gapWidth - $gapLine) / 2, 1, 1000);
+							// right gap
+							$content .= '<td' . $tdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
+								$gapSurround . '" height="1" alt="" title="" /></td>';
+							$tdRowCount++;
+							// line:
+							$GtdPar = $gapConf['gapLineCol'] ? ' bgcolor="' . $gapConf['gapLineCol'] . '"' : ' bgcolor="black"';
+							$content .= '<td' . $GtdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
+								$gapLine . '" height="1" alt="" title="" /></td>';
+							$tdRowCount++;
+							// left gap
+							$content .= '<td' . $tdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
+								$gapSurround . '" height="1" alt="" title="" /></td>';
+							$tdRowCount++;
+						} else {
+							$content .= '<td' . $tdPar . '><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
+								$gapWidth . '" height="1" alt="" title="" /></td>';
+							$tdRowCount++;
+						}
+					}
+				}
+			}
+			$content = '<tr>' . $content . '</tr>';
+			$content = '<table' . $tableParams . '>' . $content . '</table>';
+			$content .= $this->cObj->cObjGetSingle($conf['after'], $conf['after.'], 'after');
+			if ($conf['stdWrap.']) {
+				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+			}
+		}
+		return $content;
+	}
+
+}
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_columns.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_columns.php']);
+}
+
+?>

@@ -1,0 +1,133 @@
+<?php
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2010 Xavier Perseguers <typo3@perseguers.ch>
+ *  (c) 2010 Steffen Kamper <steffen@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+/**
+ * Contains CONTENT class object.
+ *
+ * $Id: class.tslib_content.php 7905 2010-06-13 14:42:33Z ohader $
+ * @author Xavier Perseguers <typo3@perseguers.ch>
+ * @author Steffen Kamper <steffen@typo3.org>
+ */
+class tslib_content_Content extends tslib_content_Abstract {
+
+	/**
+	 * Rendering the cObject, CONTENT
+	 *
+	 * @param	array		Array of TypoScript properties
+	 * @return	string		Output
+	 */
+	public function render($conf = array()) {
+		$theValue = '';
+
+		$originalRec = $GLOBALS['TSFE']->currentRecord;
+		if ($originalRec) { // If the currentRecord is set, we register, that this record has invoked this function. It's should not be allowed to do this again then!!
+			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
+		}
+
+		$conf['table'] = trim($this->cObj->stdWrap($conf['table'], $conf['table.']));
+		if ($conf['table'] == 'pages' || substr($conf['table'], 0, 3) == 'tt_' || substr($conf['table'], 0, 3) == 'fe_' || substr($conf['table'], 0, 3) == 'tx_' || substr($conf['table'], 0, 4) == 'ttx_' || substr($conf['table'], 0, 5) == 'user_' || substr($conf['table'], 0, 7) == 'static_') {
+
+			$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<' . $conf['table'];
+			$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
+			$renderObjConf = $conf['renderObj.'];
+
+			$slide = intval($conf['slide']) ? intval($conf['slide']) : 0;
+			$slideCollect = intval($conf['slide.']['collect']) ? intval($conf['slide.']['collect']) : 0;
+			$slideCollectReverse = intval($conf['slide.']['collectReverse']) ? TRUE : FALSE;
+			$slideCollectFuzzy = $slideCollect ? (intval($conf['slide.']['collectFuzzy']) ? TRUE : FALSE) : TRUE;
+			$again = FALSE;
+
+			do {
+				$res = $this->cObj->exec_getQuery($conf['table'], $conf['select.']);
+				if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
+					$GLOBALS['TT']->setTSlogMessage($error, 3);
+				} else {
+					$this->cObj->currentRecordTotal = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+					$GLOBALS['TT']->setTSlogMessage('NUMROWS: ' . $GLOBALS['TYPO3_DB']->sql_num_rows($res));
+					$cObj = t3lib_div::makeInstance('tslib_cObj');
+					$cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
+					$this->cObj->currentRecordNumber = 0;
+					$cobjValue = '';
+					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+
+							// Versioning preview:
+						$GLOBALS['TSFE']->sys_page->versionOL($conf['table'], $row, TRUE);
+
+							// Language overlay:
+						if (is_array($row) && $GLOBALS['TSFE']->sys_language_contentOL) {
+							$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+						}
+
+						if (is_array($row)) { // Might be unset in the sys_language_contentOL
+							if (!$GLOBALS['TSFE']->recordRegister[$conf['table'] . ':' . $row['uid']]) {
+								$this->cObj->currentRecordNumber++;
+								$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
+								$GLOBALS['TSFE']->currentRecord = $conf['table'] . ':' . $row['uid'];
+								$this->cObj->lastChanged($row['tstamp']);
+								$cObj->start($row, $conf['table']);
+								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
+								$cobjValue .= $tmpValue;
+							}
+						}
+					}
+					$GLOBALS['TYPO3_DB']->sql_free_result($res);
+				}
+				if ($slideCollectReverse) {
+					$theValue = $cobjValue . $theValue;
+				} else {
+					$theValue .= $cobjValue;
+				}
+				if ($slideCollect > 0) {
+					$slideCollect--;
+				}
+				if ($slide) {
+					if ($slide > 0) {
+						$slide--;
+					}
+					$conf['select.']['pidInList'] = $this->cObj->getSlidePids($conf['select.']['pidInList'], $conf['select.']['pidInList.']);
+					$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
+				}
+			} while ($again && (($slide && !strlen($tmpValue) && $slideCollectFuzzy) || ($slide && $slideCollect)));
+		}
+
+		$theValue = $this->cObj->wrap($theValue, $conf['wrap']);
+		if ($conf['stdWrap.'])
+			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+
+		$GLOBALS['TSFE']->currentRecord = $originalRec; // Restore
+		return $theValue;
+	}
+
+}
+
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_content.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['tslib/content/class.tslib_content_content.php']);
+}
+
+?>
