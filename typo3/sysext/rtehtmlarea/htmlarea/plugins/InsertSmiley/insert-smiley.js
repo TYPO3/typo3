@@ -154,6 +154,7 @@ HTMLArea.InsertSmiley = HTMLArea.Plugin.extend({
 	 * @return	void
 	 */
 	insertImageTag: function (event, target) {
+		event.stopEvent();
 		this.editor.focus();
 		this.restoreSelection();
 		var icon = Ext.get(target).first();
@@ -166,5 +167,6 @@ HTMLArea.InsertSmiley = HTMLArea.Plugin.extend({
 			this.editor.selectNode(imgTag, false);
 		}
 		this.close();
+		return false;
 	}
 });

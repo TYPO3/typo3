@@ -1,3 +1,7 @@
+2010-10-27  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Fixed bug #16148: htmlArea RTE: Missing cancel browser default after inserting character or emoticon
+
 2010-10-27  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16122: Improve tooltip behaviour
