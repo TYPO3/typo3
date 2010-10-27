@@ -2328,7 +2328,7 @@ class t3lib_TCEforms	{
 										$rr,
 										array(
 											'style' => 'vertical-align:top',
-											'title' => htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'], $perms_clause, 15) . ' [UID: ' . $rr['uid'] . ']"')
+											'title' => htmlspecialchars(t3lib_BEfunc::getRecordPath($rr['pid'], $perms_clause, 15) . ' [UID: ' . $rr['uid'] . ']')
 										)
 									),
 									$this_table,

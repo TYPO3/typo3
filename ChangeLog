@@ -1,3 +1,7 @@
+2010-10-27  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16135: Output of superfluous "&qout;" in title of TCEform icon for record in group of type "db" (Thanks to Sven Juergens)
+
 2010-10-27  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16148: htmlArea RTE: Missing cancel browser default after inserting character or emoticon
