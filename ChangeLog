@@ -1,3 +1,7 @@
+2010-10-28  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #15745: Integrate generic notification methods to show windows and dialogs based on ExtJS
+
 2010-10-27  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16135: Output of superfluous "&qout;" in title of TCEform icon for record in group of type "db" (Thanks to Sven Juergens)

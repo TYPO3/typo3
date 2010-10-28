@@ -25,12 +25,12 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-Ext.ns('TYPO3', 'TYPO3.components');
+Ext.ns('TYPO3', 'TYPO3.Components');
 
 /**
  * TYPO3window - General TYPO3 window component
  */
-TYPO3.components.Window = Ext.extend(Ext.Window, {
+TYPO3.Components.Window = Ext.extend(Ext.Window, {
 	width: 450,
 	autoHeight: true,
 	closable: true,
@@ -45,10 +45,10 @@ TYPO3.components.Window = Ext.extend(Ext.Window, {
 	constructor: function(config) {
 		config = config || {};
 		Ext.apply(this, config);
-		TYPO3.components.Window.superclass.constructor.call(this, config);
+		TYPO3.Components.Window.superclass.constructor.call(this, config);
 	}
 });
-Ext.reg('TYPO3window', TYPO3.components.Window);
+Ext.reg('TYPO3window', TYPO3.Components.Window);
 
 
 /**
@@ -74,8 +74,8 @@ TYPO3.Windows = function() {
 		/**
 		 * Get a window. If already in collection return it, otherwise create a new one
 		 *
-		 * @param (Object) configuration
-		 * @return (Object) window
+		 * @param {Object} configuration
+		 * @return {Object} window
 		 */
 		getWindow: function(configuration) {
 			var id = configuration.id || '', window;
@@ -86,7 +86,7 @@ TYPO3.Windows = function() {
 			if (window) {
 				return window;
 			} else {
-				window = new TYPO3.components.Window(configuration);
+				window = new TYPO3.Components.Window(configuration);
 				windowCollection.add(window);
 				return window;
 			}
@@ -95,8 +95,8 @@ TYPO3.Windows = function() {
 		/**
 		 * Get a window and show. If already in collection return it, otherwise create a new one
 		 *
-		 * @param (Object) configuration
-		 * @return (Object) window
+		 * @param {Object} configuration
+		 * @return {Object} window
 		 */
 		showWindow: function(configuration) {
 			var window = this.getWindow(configuration);
@@ -107,8 +107,8 @@ TYPO3.Windows = function() {
 		/**
 		 * Shows window with id and return reference. If not exist return false
 		 *
-		 * @param (String) id
-		 * @return (Object) window false if not found
+		 * @param {String} id
+		 * @return {Object} window false if not found
 		 */
 		show: function(id) {
 			var window = this.getById(id);
@@ -122,8 +122,8 @@ TYPO3.Windows = function() {
 		/**
 		 * Shows window with id and return reference. If not exist return false
 		 *
-		 * @param (String) id
-		 * @return (Object) window or false if not found
+		 * @param {String} id
+		 * @return {Object} window or false if not found
 		 */
 		getById: function(id) {
 			return windowCollection.key(id);
@@ -132,7 +132,7 @@ TYPO3.Windows = function() {
 		/**
 		 * Get the window collection
 		 *
-		 * @return (Ext.util.MixedCollection) windowCollection
+		 * @return {Ext.util.MixedCollection} windowCollection
 		 */
 		getCollection: function () {
 			return windowCollection;
@@ -141,7 +141,7 @@ TYPO3.Windows = function() {
 		/**
 		 * Get count of windows
 		 *
-		 * @return (Int) count
+		 * @return {Int} count
 		 */
 		getCount: function() {
 			return windowCollection.length;
@@ -150,8 +150,8 @@ TYPO3.Windows = function() {
 		/**
 		 * Each for windowCollection
 		 *
-		 * @param (Function) function
-		 * @param (Object) scope
+		 * @param {Function} function
+		 * @param {Object} scope
 		 * @return void
 		 */
 		each : function(fn, scope) {
@@ -161,7 +161,7 @@ TYPO3.Windows = function() {
 		/**
 		 * Close window and remove from stack
 		 *
-		 * @param (Int) id
+		 * @param {Int} id
 		 * @return void
 		 */
 		close: function(id) {
