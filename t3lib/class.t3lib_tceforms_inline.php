@@ -393,13 +393,14 @@ class t3lib_TCEforms_inline {
 		if (!$isVirtualRecord) {
 				// Get configuration:
 			$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
+			$expandAll = (isset($config['appearance']['collapseAll']) && !$config['appearance']['collapseAll']);
 			$ajaxLoad = (isset($config['appearance']['ajaxLoad']) && !$config['appearance']['ajaxLoad']) ? false : true;
 
 			if ($isNewRecord) {
 					// show this record expanded or collapsed
-				$isExpanded = (!$collapseAll ? 1 : 0);
+				$isExpanded = ($expandAll || (!$collapseAll ? 1 : 0));
 			} else {
-				$isExpanded = ($config['renderFieldsOnly'] || (!$collapseAll && $this->getExpandedCollapsedState($foreign_table, $rec['uid'])));
+				$isExpanded = ($config['renderFieldsOnly'] || (!$collapseAll && $this->getExpandedCollapsedState($foreign_table, $rec['uid'])) || $expandAll);
 			}
 				// Render full content ONLY IF this is a AJAX-request, a new record, the record is not collapsed or AJAX-loading is explicitly turned off
 			if ($isNewRecord || $isExpanded || !$ajaxLoad) {
