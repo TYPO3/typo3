@@ -1,3 +1,7 @@
+2010-10-29  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #16140: [reports] PHP warning on missing array in reports system extension (Thanks to Rudi Meyer)
+
 2010-10-29  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16155: t3lib_db::INSERTquery misses a space when generering the INSERT INTO statement
