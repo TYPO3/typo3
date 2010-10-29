@@ -1,3 +1,7 @@
+2010-10-29  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16155: t3lib_db::INSERTquery misses a space when generering the INSERT INTO statement
+
 2010-10-27  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16135: Output of superfluous "&qout;" in title of TCEform icon for record in group of type "db" (Thanks to Sven Juergens)
