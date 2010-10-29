@@ -366,7 +366,10 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL) {
 // *************************
 // Connect to the database
 // *************************
-if ($TYPO3_DB->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password))	{
+	// Redirect to install tool if database host and database are not defined
+if (!TYPO3_db_host && !TYPO3_db) {
+	t3lib_utility_Http::redirect('install/index.php?mode=123&step=1&password=joh316');
+} elseif ($TYPO3_DB->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 	if (!TYPO3_db)	{
 		throw new RuntimeException('Database Error: No database selected', time());
 	} elseif (!$TYPO3_DB->sql_select_db(TYPO3_db))	{

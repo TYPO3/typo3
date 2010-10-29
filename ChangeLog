@@ -4,6 +4,7 @@
 
 2010-10-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15042: Accessing BE in fresh install fails with "No database selected" (Thanks to Lars Peipmann)
 	* Fixed bug #16140: [reports] PHP warning on missing array in reports system extension (Thanks to Rudi Meyer)
 	* Added feature #16137: [em] Task to update extension list
 	* Fixed bug #4272: Inconsistent return values of ini_get() produce false positives for safe_mode detection (Thanks to Peter Beernink)
