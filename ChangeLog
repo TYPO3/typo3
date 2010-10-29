@@ -1,3 +1,7 @@
+2010-10-29  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #16155: t3lib_db::INSERTquery misses a space when generering the INSERT INTO statement
+
 2010-10-28  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #15745: Integrate generic notification methods to show windows and dialogs based on ExtJS

@@ -432,7 +432,7 @@ class t3lib_DB {
 
 				// Build query:
 			$query = 'INSERT INTO ' . $table .
-				'(' . implode(',', array_keys($fields_values)) . ') VALUES ' .
+				' (' . implode(',', array_keys($fields_values)) . ') VALUES ' .
 				'(' . implode(',', $fields_values) . ')';
 
 				// Return query:
