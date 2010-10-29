@@ -397,10 +397,11 @@ class t3lib_TCEforms_inline {
 			$fields = $this->wrapFormsSection($fields);
 				// Get configuration:
 			$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
+			$expandAll = (isset($config['appearance']['collapseAll']) && !$config['appearance']['collapseAll']);
 
 			if ($isNewRecord) {
 					// show this record expanded or collapsed
-				$isExpanded = (!$collapseAll ? 1 : 0);
+				$isExpanded = ($expandAll || (!$collapseAll ? 1 : 0));
 					// get the top parent table
 				$top = $this->getStructureLevel(0);
 				$ucFieldName = 'uc[inlineView]['.$top['table'].']['.$top['uid'].']'.$appendFormFieldNames;
@@ -409,7 +410,7 @@ class t3lib_TCEforms_inline {
 				$fields .= '<input type="hidden" name="'.$ucFieldName.'" value="'.$isExpanded.'" />';
 			} else {
 					// show this record expanded or collapsed
-				$isExpanded = (!$collapseAll && $this->getExpandedCollapsedState($foreign_table, $rec['uid']));
+				$isExpanded = ((!$collapseAll && $this->getExpandedCollapsedState($foreign_table, $rec['uid'])) || $expandAll);
 					// set additional field for processing for saving
 				$fields .= '<input type="hidden" name="'.$this->prependCmdFieldNames.$appendFormFieldNames.'[delete]" value="1" disabled="disabled" />';
 			}

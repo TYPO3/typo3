@@ -1,5 +1,6 @@
 2010-10-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
+	* Fixed bug #15551: [IRRE] Open all child records when opening parent records (Thanks to Sebastian Fischer)
 	* Fixed bug #16140: [reports] PHP warning on missing array in reports system extension (Thanks to Rudi Meyer)
 
 2010-10-29  Ernesto Baschny  <ernst@cron-it.de>
