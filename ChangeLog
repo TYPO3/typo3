@@ -1,3 +1,7 @@
+2010-10-29  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Fixed bug #4272: Inconsistent return values of ini_get() produce false positives for safe_mode detection (Thanks to Peter Beernink)
+
 2010-10-29  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #16155: t3lib_db::INSERTquery misses a space when generering the INSERT INTO statement

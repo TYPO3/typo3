@@ -72,7 +72,7 @@ class tx_rtehtmlarea_pi1 {
 		$this->pspell_is_available = in_array('pspell', get_loaded_extensions());
 		$this->AspellDirectory = trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory'])? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['AspellDirectory']) : '/usr/bin/aspell';
 		$this->forceCommandMode = (trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']))? trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extKey]['plugins']['SpellChecker']['forceCommandMode']) : 0;
-		$safe_mode_is_enabled = ini_get('safe_mode');
+		$safe_mode_is_enabled = t3lib_utility_PhpOptions::isSafeModeEnabled();
 		if($safe_mode_is_enabled && !$this->pspell_is_available ) echo('Configuration problem: Spell checking cannot be performed');
 		if($safe_mode_is_enabled && $this->forceCommandMode) echo('Configuration problem: Spell checking cannot be performed in command mode');
 		if(!$safe_mode_is_enabled && (!$this->pspell_is_available || $this->forceCommandMode)) {

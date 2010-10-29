@@ -1278,7 +1278,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		}
 
 		asort($paths);
-		if (ini_get('safe_mode')) {
+		if (t3lib_utility_PhpOptions::isSafeModeEnabled()) {
 			$paths=array(ini_get('safe_mode_exec_dir'),'/usr/local/php/bin/');
 		}
 		if ($this->INSTALL['checkIM']['lzw']) {
@@ -2408,7 +2408,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// *****************
 			// Safe mode related
 			// *****************
-		if (ini_get('safe_mode')) {
+		if (t3lib_utility_PhpOptions::isSafeModeEnabled()) {
 			$this->message($ext, 'Safe mode turned on', '
 				<p>
 					<em>safe_mode=' . ini_get('safe_mode') . '</em>
@@ -2488,7 +2488,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		} else {
 			$this->message($ext, 'safe_mode: off',"",-1);
 		}
-		if (ini_get('sql.safe_mode')) {
+		if (t3lib_utility_PhpOptions::isSqlSafeModeEnabled()) {
 			$this->message($ext, 'sql.safe_mode is enabled', '
 				<p>
 					<em>sql.safe_mode=' . ini_get('sql.safe_mode') . '</em>

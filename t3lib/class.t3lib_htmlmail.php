@@ -732,7 +732,7 @@ class t3lib_htmlmail {
 		$recipient = t3lib_div::normalizeMailAddress($this->recipient);
 
 		// If safe mode is on, the fifth parameter to mail is not allowed, so the fix wont work on unix with safe_mode=On
-		$returnPathPossible = (!ini_get('safe_mode') && $this->forceReturnPath);
+		$returnPathPossible = (!t3lib_utility_PhpOptions::isSafeModeEnabled() && $this->forceReturnPath);
 		if ($returnPathPossible) {
 			$mailWasSent = t3lib_utility_Mail::mail($recipient,
 				  $this->subject,
