@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Labels for Extension Manager</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tasks_updateExtensionlistTask.name">Update extension list</label>
+			<label index="tasks_updateExtensionlistTask.description">Update extension list on a regular basis. Once a day is a good interval.</label>
+		</languageKey>
+	</data>
+</T3locallang>
