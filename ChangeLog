@@ -1,3 +1,7 @@
+2010-10-29  Sebastian Kurfuerst  <sebastian@typo3.org>
+
+	* Updated Fluid version to 1.3.0alpha3
+
 2010-10-29  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Fixed bug #16140: [reports] PHP warning on missing array in reports system extension (Thanks to Rudi Meyer)

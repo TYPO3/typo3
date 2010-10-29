@@ -52,6 +52,7 @@ class Tx_Fluid_ViewHelpers_ImageViewHelper extends Tx_Fluid_Core_ViewHelper_Abst
 	 */
 	public function __construct($contentObject = NULL) {
 		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
+		parent::__construct();
 	}
 
 	/**
