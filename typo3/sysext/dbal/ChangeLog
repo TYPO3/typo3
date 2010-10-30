@@ -4,7 +4,7 @@
 
 2010-09-28  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* Added feature #15075: [Install] make a pre-check for required php-extensions (Thanks to Jigal van Hemert)
+	* Added feature #15075: [Install] make a pre-check for required php-extensions (thanks to Jigal van Hemert)
 
 2010-09-21  Xavier Perseguers  <typo3@perseguers.ch>
 
@@ -196,7 +196,7 @@
 
 2010-01-14  Steffen Kamper  <info@sk-typo3.de>
 
-	* Fixed bug #13199: fileadminDir is hardcoded in several places (Thanks to Susanne Moog)
+	* Fixed bug #13199: fileadminDir is hardcoded in several places (thanks to Susanne Moog)
 
 2010-01-08  Xavier Perseguers  <typo3@perseguers.ch>
 
@@ -335,7 +335,7 @@
 
 2009-10-08  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* Fixed bug #6953: Mapping of fieldnames in SQL-functions like MIN(), MAX() or SUM() does not work (Thanks to Christian and Michael Miousse)
+	* Fixed bug #6953: Mapping of fieldnames in SQL-functions like MIN(), MAX() or SUM() does not work (thanks to Christian and Michael Miousse)
 
 2009-10-01  Xavier Perseguers  <typo3@perseguers.ch>
 
@@ -359,7 +359,7 @@
 
 2009-09-03  Xavier Perseguers  <typo3@perseguers.ch>
 
-	* Fixed bug #11436: Unknown tables break Install-Tool (Thanks to David Bruchmann)
+	* Fixed bug #11436: Unknown tables break Install-Tool (thanks to David Bruchmann)
 	* Fixed bug #11108: DBAL wildly quotes fields and table names
 
 2009-09-04  Karsten Dambekalns <karsten@typo3.org>
