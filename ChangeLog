@@ -1,3 +1,7 @@
+2010-10-30  Christian Kuhn  <lolli@schwarzbu.ch>
+
+	* Added feature #15306: [Caching framework] Add scheduler task to execute garbage collection
+
 2010-10-29  Sebastian Kurfuerst  <sebastian@typo3.org>
 
 	* Updated Fluid version to 1.3.0alpha3

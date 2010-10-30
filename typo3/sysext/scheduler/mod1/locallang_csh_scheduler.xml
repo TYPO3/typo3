@@ -62,6 +62,8 @@
 			<label index="task_email.description">Enter a recipient for the mails sent by the test task</label>
 			<label index="task_sleepTime.alttitle">Sleep time</label>
 			<label index="task_sleepTime.description">Enter a number of seconds during which the task will just sleep.</label>
+			<label index="task_cachingFrameworkGarbageCollection_selectedBackends.alttitle">Select backends</label>
+			<label index="task_cachingFrameworkGarbageCollection_selectedBackends.description">If a cache uses one of the selected backends, the garbage collection will be called for this cache.</label>
 		</languageKey>
 	</data>
 </T3locallang>
