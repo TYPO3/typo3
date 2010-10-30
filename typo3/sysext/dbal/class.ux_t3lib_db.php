@@ -920,7 +920,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			case 'UPDATE':
 				$table = $queryParts['TABLE'];
 				$fields = array();
-				foreach ($components['FIELDS'] as $fN => $fV) {
+				foreach ($queryParts['FIELDS'] as $fN => $fV) {
 					$fields[$fN] = $fV[0];
 				}
 				$whereClause = isset($queryParts['WHERE']) ? $this->SQLparser->compileWhereClause($queryParts['WHERE']) : '1=1';

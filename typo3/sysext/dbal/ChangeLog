@@ -1,3 +1,7 @@
+2010-10-30  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #16120: UPDATE queries fails for $GLOBALS['TYPO3_DB']->sql_query (thanks to Alan Oguzhan)
+
 2010-10-19  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Set version to 1.2.0alpha3
