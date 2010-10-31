@@ -1,5 +1,6 @@
 2010-10-33  Steffen Kamper  <steffen@typo3.org>
 
+	* Follow-up to #15745: Integrate generic notification methods to show windows and dialogs based on ExtJS
 	* Follow-up to #15966: Enable debug mode in BE
 
 2010-10-30  Christian Kuhn  <lolli@schwarzbu.ch>

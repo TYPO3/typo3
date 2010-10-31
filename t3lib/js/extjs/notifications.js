@@ -168,7 +168,7 @@ TYPO3.Windows = function() {
 			var window = this.getById(id);
 			if (window) {
 				window.close();
-				windowCollection.remove(id);
+				windowCollection.remove(window);
 			}
 		},
 
