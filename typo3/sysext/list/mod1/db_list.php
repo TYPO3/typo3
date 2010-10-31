@@ -206,6 +206,28 @@ class SC_db_list {
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
+			// Apply predefined values for hidden checkboxes
+			// Set predefined value for DisplayBigControlPanel:
+		if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'activated') {
+			$this->MOD_SETTINGS['bigControlPanel'] = TRUE;	 
+		} elseif ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'deactivated') {
+			$this->MOD_SETTINGS['bigControlPanel'] = FALSE;
+		}
+
+			// Set predefined value for Clipboard:
+		if ($this->modTSconfig['properties']['enableClipBoard'] === 'activated') {
+			$this->MOD_SETTINGS['clipBoard'] = TRUE;	 
+		} elseif ($this->modTSconfig['properties']['enableClipBoard'] === 'deactivated') {
+			$this->MOD_SETTINGS['clipBoard'] = FALSE;
+		}
+
+			// Set predefined value for LocalizationView:
+		if ($this->modTSconfig['properties']['enableLocalizationView'] === 'activated') {
+			$this->MOD_SETTINGS['localization'] = TRUE;	 
+		} elseif ($this->modTSconfig['properties']['enableLocalizationView'] === 'deactivated') {
+			$this->MOD_SETTINGS['localization'] = FALSE;
+		}
+
 			// Initialize the dblist object:
 		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $BACK_PATH;
@@ -369,19 +391,66 @@ class SC_db_list {
 			$this->body.='
 
 					<!--
-						Listing options for clipboard and thumbnails
+						Listing options for extended view, clipboard and localization view
 					-->
 					<div id="typo3-listOptions">
 						<form action="" method="post">';
 
-			$this->body .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], 'db_list.php', ($this->table ? '&table=' . $this->table : ''), 'id="checkLargeControl"');
-			$this->body .= '<label for="checkLargeControl">' . t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_options', $LANG->getLL('largeControl', TRUE)) . '</label><br />';
-			if ($dblist->showClipboard)	{
-				$this->body .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], 'db_list.php', ($this->table ? '&table=' . $this->table : ''), 'id="checkShowClipBoard"');
-				$this->body .= '<label for="checkShowClipBoard">' . t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_options', $LANG->getLL('showClipBoard', TRUE)) . '</label><br />';
+				// Add "display bigControlPanel" checkbox:
+			if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'selectable') {
+				$this->body .= t3lib_BEfunc::getFuncCheck(
+					$this->id,
+					'SET[bigControlPanel]',
+					$this->MOD_SETTINGS['bigControlPanel'],
+					'db_list.php',
+					($this->table ? '&table=' . $this->table : ''),
+					'id="checkLargeControl"'
+				);
+				$this->body .= '<label for="checkLargeControl">' .
+					t3lib_BEfunc::wrapInHelp(
+						'xMOD_csh_corebe',
+						'list_options',
+						$GLOBALS['LANG']->getLL('largeControl', TRUE)
+					) . '</label><br />';
 			}
-			$this->body .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], 'db_list.php', ($this->table ? '&table=' . $this->table : ''), 'id="checkLocalization"');
-			$this->body .= '<label for="checkLocalization">' . t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_options', $LANG->getLL('localization', TRUE)) . '</label><br />';
+
+				// Add "clipboard" checkbox:
+			if ($this->modTSconfig['properties']['enableClipBoard'] === 'selectable') {
+				if ($dblist->showClipboard)	{
+					$this->body .= t3lib_BEfunc::getFuncCheck(
+						$this->id,
+						'SET[clipBoard]',
+						$this->MOD_SETTINGS['clipBoard'],
+						'db_list.php',
+						($this->table ? '&table=' . $this->table : ''),
+						'id="checkShowClipBoard"'
+					);
+					$this->body .= '<label for="checkShowClipBoard">' .
+						t3lib_BEfunc::wrapInHelp(
+							'xMOD_csh_corebe',
+							'list_options',
+							$GLOBALS['LANG']->getLL('showClipBoard', TRUE)
+						) . '</label><br />';
+				}
+			}
+
+				// Add "localization view" checkbox:
+			if ($this->modTSconfig['properties']['enableLocalizationView'] === 'selectable') {
+				$this->body .= t3lib_BEfunc::getFuncCheck(
+					$this->id,
+					'SET[localization]',
+					$this->MOD_SETTINGS['localization'],
+					'db_list.php',
+					($this->table ? '&table=' . $this->table : ''),
+					'id="checkLocalization"'
+				);
+				$this->body .= '<label for="checkLocalization">' .
+					t3lib_BEfunc::wrapInHelp(
+						'xMOD_csh_corebe',
+						'list_options',
+						$GLOBALS['LANG']->getLL('localization', TRUE)
+					) . '</label><br />';
+			}
 
 			$this->body.='
 						</form>

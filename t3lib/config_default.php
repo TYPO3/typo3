@@ -226,8 +226,13 @@ $TYPO3_CONF_VARS = array(
 		'forceCharset' => '',					// String: Normally the charset of the backend users language selection is used. If you set this value to a charset found in t3lib/csconvtbl/ (or "utf-8") the backend (and database) will ALWAYS use this charset. Always use a lowercase value.
 		'installToolPassword' => '',			// String: This is the md5-hashed password for the Install Tool. Set this to '' and access will be totally denied. PLEASE consider to externally password protect the typo3/install/ folder, eg. with a .htaccess file.
 		'defaultUserTSconfig' => 'options.enableShortcuts=1
-			options.enableShowPalettes=1',	// String (exclude). Enter lines of default backend user/group TSconfig.
-		'defaultPageTSconfig' => '',			// String (exclude).Enter lines of default Page TSconfig.
+			options.enableShowPalettes=1
+			options.file_list.enableDisplayBigControlPanel=selectable
+			options.file_list.enableDisplayThumbnails=selectable
+			options.file_list.enableClipBoard=selectable',	// String (exclude). Enter lines of default backend user/group TSconfig.
+		'defaultPageTSconfig' => 'mod.web_list.enableDisplayBigControlPanel=selectable
+			mod.web_list.enableClipBoard=selectable
+			mod.web_list.enableLocalizationView=selectable',			// String (exclude).Enter lines of default Page TSconfig.
 		'defaultPermissions' => array (			// Default permissions set for new pages in t3lib/tce_main.php. Keys are 'show,edit,delete,new,editcontent'. Enter as comma-list
 //			'user' => '',						// default in tce_main is 'show,edit,delete,new,editcontent'. If this is set (uncomment), this value is used instead.
 //			'group' => '',						// default in tce_main is 'show,edit,new,editcontent'. If this is set (uncomment), this value is used instead.

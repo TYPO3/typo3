@@ -141,7 +141,7 @@ If you select one of the numeric clipboard pads you will be able to store more t
 			<label index="_list_searchbox.seeAlso">xMOD_csh_corebe:list_module</label>
 			<label index="_list_searchbox.image">EXT:lang/cshimages/core_15.png,</label>
 			<label index="list_options.alttitle">List module options</label>
-			<label index="list_options.description">Enable the &quot;Extended view&quot; mode to see additional control buttons for each record in the listing. Enable the &quot;Clipboard&quot; to see the clipboard and its content.</label>
+			<label index="list_options.description">Enable additional options like the &quot;Extended view&quot; mode to see additional control buttons for each record in the listing or the &quot;Clipboard&quot; to see the clipboard and its content.</label>
 			<label index="_list_options.seeAlso">xMOD_csh_corebe:list_module,
 xMOD_csh_corebe:list_clipboard,
 xMOD_csh_corebe:filelist_options</label>

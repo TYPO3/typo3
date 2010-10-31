@@ -238,6 +238,28 @@ class SC_file_list {
 			$this->filelist = t3lib_div::makeInstance('fileList');
 			$this->filelist->backPath = $BACK_PATH;
 
+				// Apply predefined values for hidden checkboxes
+				// Set predefined value for DisplayBigControlPanel:
+			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'activated') {
+				$this->MOD_SETTINGS['bigControlPanel'] = TRUE;	 
+			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'deactivated') {
+				$this->MOD_SETTINGS['bigControlPanel'] = FALSE;
+			}
+
+				// Set predefined value for DisplayThumbnails:
+			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'activated') {
+				$this->MOD_SETTINGS['displayThumbs'] = TRUE;	 
+			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'deactivated') {
+				$this->MOD_SETTINGS['displayThumbs'] = FALSE;
+			}
+
+				// Set predefined value for Clipboard:
+			if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'activated') {
+				$this->MOD_SETTINGS['clipBoard'] = TRUE;	 
+			} elseif ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'deactivated') {
+				$this->MOD_SETTINGS['clipBoard'] = FALSE;
+			}
+
 				// if user never opened the list module, set the value for displayThumbs
 			if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
 				$this->MOD_SETTINGS['displayThumbs'] = $BE_USER->uc['thumbnailsByDefault'];
@@ -331,19 +353,46 @@ class SC_file_list {
 				$pageContent.='
 
 					<!--
-						Listing options for clipboard and thumbnails
+						Listing options for extended view, clipboard and thumbnails
 					-->
 					<div id="typo3-listOptions">
 				';
 
 			   		// Add "display bigControlPanel" checkbox:
-				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], 'file_list.php', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ' .$LANG->getLL('bigControlPanel', 1) . '</label><br />';
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
+					$pageContent .= t3lib_BEfunc::getFuncCheck(
+						$this->id,
+						'SET[bigControlPanel]',
+						$this->MOD_SETTINGS['bigControlPanel'],
+						'file_list.php',
+						'',
+						'id="bigControlPanel"'
+					) . '<label for="bigControlPanel"> ' . $GLOBALS['LANG']->getLL('bigControlPanel', TRUE) . '</label><br />';
+				}
 
 					// Add "display thumbnails" checkbox:
-				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id,'SET[displayThumbs]',$this->MOD_SETTINGS['displayThumbs'],'file_list.php','','id="checkDisplayThumbs"').' <label for="checkDisplayThumbs">'.$LANG->getLL('displayThumbs',1).'</label><br />';
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable') {
+					$pageContent .= t3lib_BEfunc::getFuncCheck(
+						$this->id,
+						'SET[displayThumbs]',
+						$this->MOD_SETTINGS['displayThumbs'],
+						'file_list.php',
+						'',
+						'id="checkDisplayThumbs"'
+					) . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->getLL('displayThumbs', TRUE) . '</label><br />';
+				}
 
-					// Add clipboard button
-				$pageContent.=t3lib_BEfunc::getFuncCheck($this->id,'SET[clipBoard]',$this->MOD_SETTINGS['clipBoard'],'file_list.php','','id="checkClipBoard"').' <label for="checkClipBoard">'.$LANG->getLL('clipBoard',1).'</label>';
+					// Add "clipboard" checkbox:
+				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable') {
+					$pageContent .= t3lib_BEfunc::getFuncCheck(
+						$this->id,
+						'SET[clipBoard]',
+						$this->MOD_SETTINGS['clipBoard'],
+						'file_list.php',
+						'',
+						'id="checkClipBoard"'
+					) . ' <label for="checkClipBoard">' . $GLOBALS['LANG']->getLL('clipBoard', TRUE) . '</label>';
+				}
 
 				$pageContent.='
 					</div>

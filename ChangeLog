@@ -1,3 +1,7 @@
+2010-10-31  Susanne Moog  <typo3@susanne-moog.de>
+
+	* Added feature 15645: Make checkboxes at the bottom of modules configurable (Thanks to Jörg Klein)
+
 2010-10-31  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #15830: Sprite - IRRE record synchronization icon missing (icon was missing)
