@@ -120,30 +120,30 @@ class TYPO3backend {
 			// add default BE javascript
 		$this->js      = '';
 		$this->jsFiles = array(
-			'contrib/swfupload/swfupload.js',
-			'contrib/swfupload/plugins/swfupload.swfobject.js',
-			'contrib/swfupload/plugins/swfupload.cookies.js',
-			'contrib/swfupload/plugins/swfupload.queue.js',
-			'md5.js',
-			'js/common.js',
-			'js/toolbarmanager.js',
-			'js/modulemenu.js',
-			'js/iecompatibility.js',
-			'js/flashupload.js',
-			'../t3lib/jsfunc.evalfield.js',
-			'../t3lib/js/extjs/ux/flashmessages.js',
-			'../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
-			'../t3lib/js/extjs/notifications.js',
-			'js/backend.js',
-			'js/loginrefresh.js',
-			'js/extjs/debugPanel.js',
-			'js/extjs/viewport.js',
-			'js/extjs/iframepanel.js',
-			'js/extjs/viewportConfiguration.js',
+			'swfupload'             => 'contrib/swfupload/swfupload.js',
+			'swfupload.swfobject'   => 'contrib/swfupload/plugins/swfupload.swfobject.js',
+			'swfupload.cookies'     => 'contrib/swfupload/plugins/swfupload.cookies.js',
+			'swfupload.queue'       => 'contrib/swfupload/plugins/swfupload.queue.js',
+			'md5'                   => 'md5.js',
+			'common'                => 'js/common.js',
+			'toolbarmanager'        => 'js/toolbarmanager.js',
+			'modulemenu'            => 'js/modulemenu.js',
+			'iecompatibility'       => 'js/iecompatibility.js',
+			'flashupload'           => 'js/flashupload.js',
+			'evalfield'             => '../t3lib/jsfunc.evalfield.js',
+			'flashmessages'         => '../t3lib/js/extjs/ux/flashmessages.js',
+			'tabclosemenu'          => '../t3lib/js/extjs/ux/ext.ux.tabclosemenu.js',
+			'notifications'         => '../t3lib/js/extjs/notifications.js',
+			'backend'               => 'js/backend.js',
+			'loginrefresh'          => 'js/loginrefresh.js',
+			'debugPanel'            => 'js/extjs/debugPanel.js',
+			'viewport'              => 'js/extjs/viewport.js',
+			'iframepanel'           => 'js/extjs/iframepanel.js',
+			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
 		);
 
 		if ($this->debug) {
-			unset($this->jsFiles['js/loginrefresh.js']);
+			unset($this->jsFiles['loginrefresh']);
 		}
 
 			// add default BE css

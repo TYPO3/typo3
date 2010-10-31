@@ -1,3 +1,7 @@
+2010-10-33  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #15966: Enable debug mode in BE
+
 2010-10-30  Christian Kuhn  <lolli@schwarzbu.ch>
 
 	* Added feature #15306: [Caching framework] Add scheduler task to execute garbage collection
