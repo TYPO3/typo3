@@ -1,3 +1,7 @@
+2010-11-01  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed issue #16151: The rearranged TCA layout of tt_content still contains hardcoded labels (Thanks to Jo Hasenau)
+
 2010-11-01  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #16195: author/author_email are not shown when author_company exists
