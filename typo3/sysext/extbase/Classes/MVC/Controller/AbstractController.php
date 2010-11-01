@@ -34,7 +34,6 @@
  * @api
  */
 abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
-
 	/**
 	 * @var Tx_Extbase_Object_ManagerInterface
 	 */
@@ -124,20 +123,15 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * Constructs the controller.
 	 */
 	public function __construct() {
-		$this->initializeObjects();
 		list(, $this->extensionName) = explode('_', get_class($this));
 	}
 
 	/**
-	 * Initializes objects this class depends on
-	 *
+	 * @param Tx_Extbase_MVC_Controller_Arguments $arguments
 	 * @return void
 	 */
-	protected function initializeObjects() {
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
-		$this->arguments = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_Arguments');
-		$this->arguments->injectPersistenceManager(Tx_Extbase_Dispatcher::getPersistenceManager());
-		$this->arguments->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
+	public function injectArguments(Tx_Extbase_MVC_Controller_Arguments $arguments) {
+		$this->arguments = $arguments;
 	}
 
 	/**
@@ -156,7 +150,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @param array $settings Settings container of the current extension
 	 * @return void
 	 */
-	public function injectSettings(array $settings) {
+	public function setSettings(array $settings) {
 		$this->settings = $settings;
 	}
 

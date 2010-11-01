@@ -33,7 +33,7 @@
  * @version $ID:$
  * @scope prototype
  */
-class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
+class Tx_Extbase_MVC_Controller_Arguments { // extends ArrayObject {
 
 	/**
 	 * @var Tx_Extbase_Persistence_ManagerInterface
@@ -41,7 +41,7 @@ class Tx_Extbase_MVC_Controller_Arguments extends ArrayObject {
 	protected $persistenceManager;
 
 	/**
-	 * @var Tx_Extbase_Persistence_QueryFactory
+	 * @var Tx_Extbase_Persistence_QueryFactoryInterface
 	 */
 	protected $queryFactory;
 

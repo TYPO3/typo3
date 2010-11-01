@@ -72,6 +72,10 @@ class Tx_Extbase_Dispatcher {
 	 */
 	protected static $extbaseFrameworkConfiguration;
 
+	/**
+	 * @var Tx_Extbase_Object_Manager
+	 */
+	protected $objectManager;
 
 	/**
 	 * Constructs this Dispatcher and registers the autoloader
@@ -79,6 +83,7 @@ class Tx_Extbase_Dispatcher {
 	public function __construct() {
 		t3lib_cache::initializeCachingFramework();
 		$this->initializeClassLoader();
+		$this->initializeObjectManager();
 		$this->initializeCache();
 		$this->initializeReflection();
 	}
@@ -106,7 +111,7 @@ class Tx_Extbase_Dispatcher {
 
 		$this->initializeConfigurationManagerAndFrameworkConfiguration($configuration);
 
-		$requestBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_RequestBuilder');
+		$requestBuilder = $this->objectManager->get('Tx_Extbase_MVC_Web_RequestBuilder');
 		$request = $requestBuilder->initialize(self::$extbaseFrameworkConfiguration);
 		$request = $requestBuilder->build();
 		if (isset($this->cObj->data) && is_array($this->cObj->data)) {
@@ -123,10 +128,10 @@ class Tx_Extbase_Dispatcher {
 				$request->setIsCached(FALSE);
 			}
 		}
-		$response = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Response');
+		$response = $this->objectManager->get('Tx_Extbase_MVC_Web_Response');
 
 		// Request hash service
-		$requestHashService = t3lib_div::makeInstance('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
+		$requestHashService = $this->objectManager->get('Tx_Extbase_Security_Channel_RequestHashService'); // singleton
 		$requestHashService->verifyRequest($request);
 
 		$persistenceManager = self::getPersistenceManager();
@@ -146,7 +151,7 @@ class Tx_Extbase_Dispatcher {
 		$this->timeTrackPull();
 
 		$this->timeTrackPush('Extbase persists all changes.','');
-		$flashMessages = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
+		$flashMessages = $this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
 		$flashMessages->persist();
 		$persistenceManager->persistAll();
 		$this->timeTrackPull();
@@ -189,6 +194,14 @@ class Tx_Extbase_Dispatcher {
 		$classLoader = new Tx_Extbase_Utility_ClassLoader();
 		spl_autoload_register(array($classLoader, 'loadClass'));
 	}
+	
+	/**
+	 * Initializes the objectManager which's taking care of building our objects
+	 * @return void
+	 */
+	protected function initializeObjectManager() {
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+	}
 
 	/**
 	 * Initializes the configuration manager and the Extbase settings
@@ -198,10 +211,10 @@ class Tx_Extbase_Dispatcher {
 	 */
 	protected function initializeConfigurationManagerAndFrameworkConfiguration($configuration) {
 		if (TYPO3_MODE === 'FE') {
-			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_FrontendConfigurationManager');
+			self::$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_FrontendConfigurationManager');
 			self::$configurationManager->setContentObject($this->cObj);
 		} else {
-			self::$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_BackendConfigurationManager');
+			self::$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_BackendConfigurationManager');
 		}
 		self::$extbaseFrameworkConfiguration = self::$configurationManager->getFrameworkConfiguration($configuration);
 	}
@@ -231,7 +244,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return void
 	 */
 	protected function initializeReflection() {
-		self::$reflectionService = t3lib_div::makeInstance('Tx_Extbase_Reflection_Service');
+		self::$reflectionService = $this->objectManager->get('Tx_Extbase_Reflection_Service');
 		self::$reflectionService->setCache($this->cacheManager->getCache('cache_extbase_reflection'));
 		if (!self::$reflectionService->isInitialized()) {
 			self::$reflectionService->initialize();
@@ -246,27 +259,17 @@ class Tx_Extbase_Dispatcher {
 	 */
 	protected function getPreparedController(Tx_Extbase_MVC_Web_Request $request) {
 		$controllerObjectName = $request->getControllerObjectName();
-		$controller = t3lib_div::makeInstance($controllerObjectName);
+		$controller = $this->objectManager->get($controllerObjectName);
 		if (!$controller instanceof Tx_Extbase_MVC_Controller_ControllerInterface) {
 			throw new Tx_Extbase_MVC_Exception_InvalidController('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the Tx_Extbase_MVC_Controller_ControllerInterface.', 1202921619);
 		}
-		$propertyMapper = t3lib_div::makeInstance('Tx_Extbase_Property_Mapper');
-		$propertyMapper->injectReflectionService(self::$reflectionService);
-		$controller->injectPropertyMapper($propertyMapper);
 
-		$controller->injectSettings(is_array(self::$extbaseFrameworkConfiguration['settings']) ? self::$extbaseFrameworkConfiguration['settings'] : array());
+		$controller->setSettings(is_array(self::$extbaseFrameworkConfiguration['settings']) ? self::$extbaseFrameworkConfiguration['settings'] : array());
 
-		$flashMessageContainer = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
+		$flashMessageContainer = $this->objectManager->get('Tx_Extbase_MVC_Controller_FlashMessages'); // singleton
 		$flashMessageContainer->reset();
 		$controller->injectFlashMessageContainer($flashMessageContainer);
 
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
-		$validatorResolver = t3lib_div::makeInstance('Tx_Extbase_Validation_ValidatorResolver');
-		$validatorResolver->injectObjectManager($objectManager);
-		$validatorResolver->injectReflectionService(self::$reflectionService);
-		$controller->injectValidatorResolver($validatorResolver);
-		$controller->injectReflectionService(self::$reflectionService);
-		$controller->injectObjectManager($objectManager);
 		return $controller;
 	}
 
@@ -277,40 +280,7 @@ class Tx_Extbase_Dispatcher {
 	 */
 	public static function getPersistenceManager() {
 		if (self::$persistenceManager === NULL) {
-			$identityMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap');
-			$persistenceSession = t3lib_div::makeInstance('Tx_Extbase_Persistence_Session'); // singleton
-
-			$dataMapFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory');
-			$dataMapFactory->injectReflectionService(self::$reflectionService);
-
-			$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper'); // singleton
-			$dataMapper->injectIdentityMap($identityMap);
-			$dataMapper->injectSession($persistenceSession);
-			$dataMapper->injectReflectionService(self::$reflectionService);
-			$dataMapper->injectDataMapFactory($dataMapFactory);
-
-			$storageBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Storage_Typo3DbBackend', $GLOBALS['TYPO3_DB']); // singleton
-			$storageBackend->injectDataMapper($dataMapper);
-
-			$qomFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory', $storageBackend);
-
-			$dataMapper->setQomFactory($qomFactory);
-
-			$persistenceBackend = t3lib_div::makeInstance('Tx_Extbase_Persistence_Backend', $persistenceSession, $storageBackend); // singleton
-			$persistenceBackend->injectDataMapper($dataMapper);
-			$persistenceBackend->injectIdentityMap($identityMap);
-			$persistenceBackend->injectReflectionService(self::$reflectionService);
-			$persistenceBackend->injectQueryFactory(t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'));
-			$persistenceBackend->injectQomFactory($qomFactory);
-
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager'); // singleton
-
-			$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager'); // singleton
-			$persistenceManager->injectBackend($persistenceBackend);
-			$persistenceManager->injectSession($persistenceSession);
-			$persistenceManager->injectObjectManager($objectManager);
-
-			self::$persistenceManager = $persistenceManager;
+			self::$persistenceManager = Tx_Container_Container::getContainer()->getInstance('Tx_Extbase_Persistence_Manager');
 		}
 
 		return self::$persistenceManager;

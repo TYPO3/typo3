@@ -35,6 +35,10 @@
  * @scope prototype
  */
 class Tx_Extbase_MVC_Web_RequestBuilder {
+	/**
+	 * @var Tx_Extbase_Object_ManagerInterface
+	 */
+	protected $objectManager;
 
 	/**
 	 * This is a unique key for a plugin (not the extension key!)
@@ -100,6 +104,16 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 			}
 		}
 		$this->allowedControllerActions = $allowedControllerActions;
+	}
+	
+	/**
+	 * Injects the object manager
+	 *
+	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
 	}
 
 	/**

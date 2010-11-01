@@ -41,12 +41,9 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	protected $storageBackend;
 
 	/**
-	 * Constructs the Component Factory
-	 *
-	 * @param Tx_Extbase_Persistence_Storage_BackendInterfasce $storageBackend
-	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
+	 * @param Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend
 	 */
-	public function __construct(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
+	public function injectStorageBackend(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
 		$this->storageBackend = $storageBackend;
 	}
 

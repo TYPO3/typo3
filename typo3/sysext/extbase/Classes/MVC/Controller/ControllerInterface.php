@@ -43,7 +43,7 @@ interface Tx_Extbase_MVC_Controller_ControllerInterface {
 	 * @param array $settings Settings container of the current package
 	 * @return void
 	 */
-	public function injectSettings(array $settings);
+	public function setSettings(array $settings);
 
 	/**
 	 * Checks if the current request type is supported by the controller.

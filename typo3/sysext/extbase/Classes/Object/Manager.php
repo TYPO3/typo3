@@ -35,71 +35,47 @@
 class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t3lib_Singleton {
 
 	/**
-	 * @var Tx_Extbase_Object_RegistryInterface
+	 * @var Tx_Container_Container
 	 */
-	protected $singletonObjectsRegistry;
+	protected $objectContainer;
 
 	/**
 	 * Constructs a new Object Manager
 	 */
 	public function __construct() {
-		$this->singletonObjectsRegistry = t3lib_div::makeInstance('Tx_Extbase_Object_TransientRegistry'); // singleton
+		$this->objectContainer = Tx_Container_Container::getContainer();
+	}
+
+	/**
+	 * @param string $objectName The name of the object to return an instance of
+	 * @return object The object instance
+	 * @deprecated since 1.3.0, will be removed in 1.5.0
+	 */
+	public function getObject($objectName) {
+		return $this->get($objectName);
 	}
 
 	/**
 	 * Returns a fresh or existing instance of the object specified by $objectName.
 	 *
-	 * Important:
-	 *
-	 * If possible, instances of Prototype objects should always be created with the
-	 * Object Factory's create() method and Singleton objects should rather be
-	 * injected by some type of Dependency Injection.
-	 *
 	 * @param string $objectName The name of the object to return an instance of
 	 * @return object The object instance
-	 * // TODO This is not part of the official API! Explain why.
+	 * @api
 	 */
-	public function getObject($objectName) {
-		if (in_array('t3lib_Singleton', class_implements($objectName))) {
-			if ($this->singletonObjectsRegistry->objectExists($objectName)) {
-				$object = $this->singletonObjectsRegistry->getObject($objectName);
-			} else {
-				$arguments = array_slice(func_get_args(), 1);
-				$object = $this->makeInstance($objectName, $arguments);
-				$this->singletonObjectsRegistry->putObject($objectName, $object);
-			}
-		} else {
-			$arguments = array_slice(func_get_args(), 1);
-			$object = $this->makeInstance($objectName, $arguments);
-		}
-		return $object;
+	public function get($objectName) {
+		return call_user_func_array(array($this->objectContainer, 'getInstance'), func_get_args());
 	}
 
 	/**
-	 * Speed optimized alternative to ReflectionClass::newInstanceArgs().
-	 * Delegates the instanciation to the makeInstance method of t3lib_div.
+	 * Registers a classname that should be used to resolve a given interface.
 	 *
-	 * @param string $objectName Name of the object to instantiate
-	 * @param array $arguments Arguments to pass to t3lib_div::makeInstance
-	 * @return object The object
+	 * Per default the interface's name stripped of "Interface" will be used.
+	 * @param string $className
+	 * @param string $alternativeClassName
 	 */
-	protected function makeInstance($objectName, array $arguments) {
-		switch (count($arguments)) {
-			case 0: return t3lib_div::makeInstance($objectName);
-			case 1: return t3lib_div::makeInstance($objectName, $arguments[0]);
-			case 2: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1]);
-			case 3: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1], $arguments[2]);
-			case 4: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1], $arguments[2], $arguments[3]);
-			case 5: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4]);
-			case 6: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5]);
-			case 7: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6]);
-			case 8: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6], $arguments[7]);
-			case 9: return t3lib_div::makeInstance($objectName, $arguments[0], $arguments[1], $arguments[2], $arguments[3], $arguments[4], $arguments[5], $arguments[6], $arguments[7], $arguments[8]);
-		}
-		throw new Tx_Extbase_Object_Exception_CannotBuildObject('Object "' . $objectName . '" has too many arguments.', 1166550023);
+	static public function registerImplementation($className, $alternativeClassName) {
+		return Tx_Container_Container::getContainer()->registerImplementation($className, $alternativeClassName);
 	}
-
-
 }
 
 ?>

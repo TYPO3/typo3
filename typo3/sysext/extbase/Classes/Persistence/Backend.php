@@ -95,16 +95,37 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	/**
 	 * Constructs the backend
 	 *
-	 * @param Tx_Extbase_Persistence_Session $session The persistence session used to persist data
+	 * @return void
 	 */
-	public function __construct(Tx_Extbase_Persistence_Session $session, Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
-		$this->session = $session;
-		$this->storageBackend = $storageBackend;
+	public function __construct() {
 		$this->extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
 		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 		}
-		$this->aggregateRootObjects = new Tx_Extbase_Persistence_ObjectStorage();
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_Session $session
+	 * @return void
+	 */
+	public function injectSession(Tx_Extbase_Persistence_Session $session) {
+		$this->session = $session;
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend
+	 * @return void
+	 */
+	public function injectStorageBackend(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
+		$this->storageBackend = $storageBackend;
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_ObjectStorage $aggregateRootObjects
+	 * @return void
+	 */
+	public function injectAggregateRootObjects(Tx_Extbase_Persistence_ObjectStorage $aggregateRootObjects) {
+		$this->aggregateRootObjects = $aggregateRootObjects;
 	}
 
 	/**
@@ -155,16 +176,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 */
 	public function injectQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface $qomFactory) {
 		$this->qomFactory = $qomFactory;
-	}
-
-	/**
-	 * Injects the ValueFactory
-	 *
-	 * @param Tx_Extbase_Persistence_ValueFactoryInterface $valueFactory
-	 * @return void
-	 */
-	public function injectValueFactory(Tx_Extbase_Persistence_ValueFactoryInterface $valueFactory) {
-		$this->valueFactory = $valueFactory;
 	}
 
 	/**
