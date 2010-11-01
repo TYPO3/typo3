@@ -3071,7 +3071,7 @@ EXTENSION KEYS:
 		$key = 'author';
 		$dataCol = $this->wrapEmail($emConf['author'] . ($emConf['author_email'] ? ' <' . $emConf['author_email'] . '>' : ''), $emConf['author_email']);
 		if ($emConf['author_company']) {
-			$dataCol = ', ' . $emConf['author_company'];
+			$dataCol .= ', ' . $emConf['author_company'];
 		}
 		$lines[] = array(
 			$this->headerCol($key),
