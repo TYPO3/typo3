@@ -49,7 +49,7 @@ $TCA['fe_users'] = array(
 	'feInterface' => $TCA['fe_users']['feInterface'],
 	'columns' => array(
 		'username' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.username',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.username',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -58,7 +58,7 @@ $TCA['fe_users'] = array(
 			)
 		),
 		'password' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.password',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.password',
 			'config' => array(
 				'type' => 'input',
 				'size' => '10',
@@ -67,7 +67,7 @@ $TCA['fe_users'] = array(
 			)
 		),
 		'usergroup' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.usergroup',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.usergroup',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
@@ -79,7 +79,7 @@ $TCA['fe_users'] = array(
 		),
 		'lockToDomain' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_users.lockToDomain',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_users.lockToDomain',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -91,7 +91,7 @@ $TCA['fe_users'] = array(
 		),
 		'name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.name',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '40',
@@ -101,7 +101,7 @@ $TCA['fe_users'] = array(
 		),
 		'first_name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.first_name',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.first_name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -111,7 +111,7 @@ $TCA['fe_users'] = array(
 		),
 		'middle_name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.middle_name',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.middle_name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -121,7 +121,7 @@ $TCA['fe_users'] = array(
 		),
 		'last_name' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.last_name',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.last_name',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -131,7 +131,7 @@ $TCA['fe_users'] = array(
 		),
 		'address' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.address',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.address',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '20',
@@ -140,7 +140,7 @@ $TCA['fe_users'] = array(
 		),
 		'telephone' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.phone',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.phone',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -150,7 +150,7 @@ $TCA['fe_users'] = array(
 		),
 		'fax' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.fax',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.fax',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -160,7 +160,7 @@ $TCA['fe_users'] = array(
 		),
 		'email' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.email',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.email',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -170,7 +170,7 @@ $TCA['fe_users'] = array(
 		),
 		'title' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.title_person',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.title_person',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -180,7 +180,7 @@ $TCA['fe_users'] = array(
 		),
 		'zip' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.zip',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.zip',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -190,7 +190,7 @@ $TCA['fe_users'] = array(
 		),
 		'city' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.city',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.city',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -200,7 +200,7 @@ $TCA['fe_users'] = array(
 		),
 		'country' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.country',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.country',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -210,7 +210,7 @@ $TCA['fe_users'] = array(
 		),
 		'www' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.www',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.www',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -220,7 +220,7 @@ $TCA['fe_users'] = array(
 		),
 		'company' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.company',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.company',
 			'config' => array(
 				'type' => 'input',
 				'eval' => 'trim',
@@ -230,7 +230,7 @@ $TCA['fe_users'] = array(
 		),
 		'image' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.image',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.image',
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'file',
@@ -245,14 +245,14 @@ $TCA['fe_users'] = array(
 		),
 		'disable' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
 			'config' => array(
 				'type' => 'check'
 			)
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '8',
@@ -264,7 +264,7 @@ $TCA['fe_users'] = array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '8',
@@ -300,7 +300,7 @@ $TCA['fe_users'] = array(
 		),
 		'lastlogin' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.lastlogin',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.lastlogin',
 			'config' => array(
 				'type' => 'input',
 				'readOnly' => '1',
@@ -342,7 +342,7 @@ $TCA['fe_groups'] = array(
 	),
 	'columns' => array(
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -350,7 +350,7 @@ $TCA['fe_groups'] = array(
 			)
 		),
 		'title' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_groups.title',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups.title',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -360,7 +360,7 @@ $TCA['fe_groups'] = array(
 		),
 		'subgroup' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_groups.subgroup',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups.subgroup',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_groups',
@@ -373,7 +373,7 @@ $TCA['fe_groups'] = array(
 		),
 		'lockToDomain' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.php:fe_groups.lockToDomain',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups.lockToDomain',
 			'config' => array(
 				'type' => 'input',
 				'size' => '20',
@@ -383,7 +383,7 @@ $TCA['fe_groups'] = array(
 			)
 		),
 		'description' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.description',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.description',
 			'config' => array(
 				'type' => 'text',
 				'rows' => 5,
@@ -434,7 +434,7 @@ $TCA['sys_domain'] = array(
 	),
 	'columns' => array(
 		'domainName' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.domainName',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain.domainName',
 			'config' => array(
 				'type' => 'input',
 				'size' => '35',
@@ -444,7 +444,7 @@ $TCA['sys_domain'] = array(
 			),
 		),
 		'redirectTo' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.redirectTo',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain.redirectTo',
 			'config' => array(
 				'type' => 'input',
 				'size' => '35',
@@ -471,7 +471,7 @@ $TCA['sys_domain'] = array(
 			),
 		),
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -479,7 +479,7 @@ $TCA['sys_domain'] = array(
 			)
 		),
 		'prepend_params' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.prepend_params',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain.prepend_params',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -487,7 +487,7 @@ $TCA['sys_domain'] = array(
 			)
 		),
 		'forced' => array(
-			'label' => 'LLL:EXT:cms/locallang_tca.php:sys_domain.forced',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain.forced',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -527,7 +527,7 @@ $TCA['pages_language_overlay'] = array(
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '8',
@@ -539,7 +539,7 @@ $TCA['pages_language_overlay'] = array(
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
 			'config' => array(
 				'type' => 'input',
 				'size' => '8',
@@ -650,7 +650,7 @@ $TCA['pages_language_overlay'] = array(
 		),
 		'url' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:cms/locallang_tca.php:pages.url',
+			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.url',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -660,7 +660,7 @@ $TCA['pages_language_overlay'] = array(
 		),
 		'urltype' => array(
 			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.type',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.type',
 			'config' => array(
 				'type' => 'select',
 				'items' => $TCA['pages']['columns']['urltype']['config']['items'],
@@ -694,20 +694,20 @@ $TCA['pages_language_overlay'] = array(
 			)
 		),
 		'sys_language_uid' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
+					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value',0)
 				)
 			)
 		),
 		'tx_impexp_origuid' => array('config'=>array('type'=>'passthrough')),
 		'l18n_diffsource' => array('config'=>array('type'=>'passthrough')),
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
@@ -763,7 +763,7 @@ $TCA['sys_template'] = array(
 			)
 		),
 		'hidden' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.disable',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'check',
@@ -771,7 +771,7 @@ $TCA['sys_template'] = array(
 			)
 		),
 		'starttime' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'input',
@@ -783,7 +783,7 @@ $TCA['sys_template'] = array(
 			)
 		),
 		'endtime' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.endtime',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
 			'exclude' => 1,
 			'config' => array(
 				'type' => 'input',
@@ -977,7 +977,7 @@ $TCA['sys_template'] = array(
 		),
 		'tx_impexp_origuid' => array('config' => array('type' => 'passthrough')),
 		't3ver_label' => array(
-			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
