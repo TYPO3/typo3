@@ -1,3 +1,7 @@
+2010-11-01  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #11957: Close Button is at the wrong place when editing a file in filelist (Thanks to Simon Schaufelberger)
+
 2010-11-01  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed issue #16151: The rearranged TCA layout of tt_content still contains hardcoded labels (Thanks to Jo Hasenau)
