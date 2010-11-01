@@ -534,13 +534,11 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				} elseif ($typeOfRelation === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {
-						$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand1->getPropertyName(), $source->getNodeTypeName());
 						$childTableName = $columnMap->getChildTableName();
 						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
 					} else {
-						$statement = '(' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . ',%\'';
-						$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'%,' . $this->getPlainValue($operand2) . '\'';
-						$statement .= ' OR ' . $tableName . '.' . $operand1->getPropertyName() . ' LIKE \'' . $this->getPlainValue($operand2) . ',%\')';
+						$columnName = $this->dataMapper->convertPropertyNameToColumnName($operand1->getPropertyName(), $source->getNodeTypeName());
+						$statement = 'FIND_IN_SET(' . $this->getPlainValue($operand2) . ',' . $tableName . '.' . $columnName . ')';
 						$sql['where'][] = $statement;
 					}
 				} else {
