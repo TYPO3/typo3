@@ -164,8 +164,8 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	public function removeRow($tableName, array $identifier, $isRelation = FALSE) {
 		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
 		$this->replacePlaceholders($statement, $identifier);
-		if (!$isRelation) {
-			$this->clearPageCache($tableName, $uid, $isRelation);
+		if (!$isRelation && isset($identifier['uid'])) {
+			$this->clearPageCache($tableName, $identifier['uid'], $isRelation);
 		}
 		// debug($statement, -2);
 		$returnValue = $this->databaseHandle->sql_query($statement);
