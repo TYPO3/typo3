@@ -1,3 +1,7 @@
+2010-11-02  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Follow-up to feature #16079: htmlArea RTE: Register RTE scripts with the autoloader
+
 2010-11-02  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16173: Refactor FLUIDTEMPLATE cObject to use the new Fluid standalone view (Thanks to Bastian Waidelich)
