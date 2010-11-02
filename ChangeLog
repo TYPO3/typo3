@@ -1,3 +1,7 @@
+2010-11-02  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16173: Refactor FLUIDTEMPLATE cObject to use the new Fluid standalone view (Thanks to Bastian Waidelich)
+
 2010-11-02  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Added feature #16177: Add DB structure update pre-processing hook in EM
