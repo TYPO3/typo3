@@ -121,14 +121,6 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	}
 
 	/**
-	 * @param Tx_Extbase_Persistence_ObjectStorage $aggregateRootObjects
-	 * @return void
-	 */
-	public function injectAggregateRootObjects(Tx_Extbase_Persistence_ObjectStorage $aggregateRootObjects) {
-		$this->aggregateRootObjects = $aggregateRootObjects;
-	}
-
-	/**
 	 * Injects the DataMapper to map nodes to objects
 	 *
 	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
