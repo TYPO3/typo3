@@ -119,7 +119,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$this->request->setDispatched(TRUE);
 		$this->response = $response;
 
-		$this->uriBuilder = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		$this->uriBuilder = $this->objectManager->create('Tx_Extbase_MVC_Web_Routing_UriBuilder');
 		$this->uriBuilder->setRequest($request);
 
 		$this->actionMethodName = $this->resolveActionMethodName();
@@ -252,7 +252,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @api
 	 */
 	protected function resolveView() {
-		$view = $this->objectManager->getObject('Tx_Fluid_View_TemplateView');
+		$view = $this->objectManager->create('Tx_Fluid_View_TemplateView');
 		$controllerContext = $this->buildControllerContext();
 		$view->setControllerContext($controllerContext);
 
@@ -271,7 +271,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		if ($view->hasTemplate() === FALSE) {
 			$viewObjectName = $this->resolveViewObjectName();
 			if (class_exists($viewObjectName) === FALSE) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
-			$view = $this->objectManager->getObject($viewObjectName);
+			$view = $this->objectManager->create($viewObjectName);
 			$view->setControllerContext($controllerContext);
 		}
 		if (method_exists($view, 'injectSettings')) {

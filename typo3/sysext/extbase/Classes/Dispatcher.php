@@ -73,7 +73,7 @@ class Tx_Extbase_Dispatcher {
 	protected static $extbaseFrameworkConfiguration;
 
 	/**
-	 * @var Tx_Extbase_Object_Manager
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
 	protected $objectManager;
 
@@ -200,7 +200,7 @@ class Tx_Extbase_Dispatcher {
 	 * @return void
 	 */
 	protected function initializeObjectManager() {
-		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_Manager');
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 	}
 
 	/**

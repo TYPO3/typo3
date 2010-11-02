@@ -33,8 +33,21 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface, t3lib_Singleton {
-// SK: Needs to be cleaned up (methods might need to be removed, and comments fixed)
+class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements t3lib_Singleton {
+
+	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+	
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
 	/**
 	 * Selects a subset of the nodes in the repository based on node type.
 	 *
@@ -47,7 +60,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 		if ($selectorName === '') {
 			$selectorName = $nodeTypeName;
 		}
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Selector', $selectorName, $nodeTypeName);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_Selector', $selectorName, $nodeTypeName);
 	}
 	
 	/**
@@ -59,7 +72,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
 	 */
 	public function statement($statement, array $boundVariables = array(), $language = Tx_Extbase_Persistence_QOM_Statement::TYPO3_SQL_MYSQL) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Statement', $statement, $boundVariables, $language);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_Statement', $statement, $boundVariables, $language);
 	}
 
 	/**
@@ -73,7 +86,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function join(Tx_Extbase_Persistence_QOM_SourceInterface $left, Tx_Extbase_Persistence_QOM_SourceInterface $right, $joinType, Tx_Extbase_Persistence_QOM_JoinConditionInterface $joinCondition) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Join', $left, $right, $joinType, $joinCondition);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_Join', $left, $right, $joinType, $joinCondition);
 	}
 
 	/**
@@ -87,7 +100,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function equiJoinCondition($selector1Name, $property1Name, $selector2Name, $property2Name) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_EquiJoinCondition', $selector1Name, $property1Name, $selector2Name, $property2Name);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_EquiJoinCondition', $selector1Name, $property1Name, $selector2Name, $property2Name);
 	}
 
 	/**
@@ -99,7 +112,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _and(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LogicalAnd', $constraint1, $constraint2);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_LogicalAnd', $constraint1, $constraint2);
 	}
 
 	/**
@@ -111,7 +124,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function _or(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint1, Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint2) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LogicalOr', $constraint1, $constraint2);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_LogicalOr', $constraint1, $constraint2);
 	}
 
 	/**
@@ -122,7 +135,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function not(Tx_Extbase_Persistence_QOM_ConstraintInterface $constraint) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LogicalNot', $constraint);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_LogicalNot', $constraint);
 	}
 	
 	/**
@@ -135,7 +148,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function comparison(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand1, $operator, $operand2) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Comparison', $operand1, $operator, $operand2);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_Comparison', $operand1, $operator, $operand2);
 	}
 	
 	/**
@@ -147,7 +160,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function propertyValue($propertyName, $selectorName = '') {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_PropertyValue', $propertyName, $selectorName);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_PropertyValue', $propertyName, $selectorName);
 	}
 	
 	/**
@@ -158,7 +171,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function lowerCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_LowerCase', $operand);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_LowerCase', $operand);
 	}
 
 	/**
@@ -169,7 +182,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function upperCase(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_UpperCase', $operand);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_UpperCase', $operand);
 	}
 	
 	/**
@@ -182,7 +195,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function ascending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Ordering', $operand, Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_Ordering', $operand, Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_ASCENDING);
 	}
 
 	/**
@@ -195,7 +208,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function descending(Tx_Extbase_Persistence_QOM_DynamicOperandInterface $operand) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_Ordering', $operand, Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_Ordering', $operand, Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface::JCR_ORDER_DESCENDING);
 	}
 	
 	/**
@@ -206,7 +219,7 @@ class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_P
 	 * @throws Tx_Extbase_Persistence_Exception_RepositoryException if the operation otherwise fails
 	 */
 	public function bindVariable($bindVariableName) {
-		return t3lib_div::makeInstance('Tx_Extbase_Persistence_QOM_BindVariableValue', $bindVariableName);
+		return $this->objectManager->create('Tx_Extbase_Persistence_QOM_BindVariableValue', $bindVariableName);
 	}
 	
 }

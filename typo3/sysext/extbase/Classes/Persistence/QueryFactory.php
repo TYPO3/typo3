@@ -32,30 +32,28 @@
 class Tx_Extbase_Persistence_QueryFactory implements Tx_Extbase_Persistence_QueryFactoryInterface, t3lib_Singleton {
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 */
+	protected $objectManager;
+
+	/**
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 * @author Sebastian Kurfürst <sebastian@typo3.org>
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * Creates a query object working on the given class name
 	 *
 	 * @param string $className The class name
 	 * @return Tx_Extbase_Persistence_QueryInterface
 	 */
 	public function create($className) {
-		$persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
-
-		$reflectionService = $persistenceManager->getBackend()->getReflectionService();
-		
-		$dataMapFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapFactory');
-		$dataMapFactory->injectReflectionService($reflectionService);
-
-		$dataMapper = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMapper');
-		$dataMapper->injectIdentityMap($persistenceManager->getBackend()->getIdentityMap());
-		$dataMapper->injectSession($persistenceManager->getSession());
-		$dataMapper->injectReflectionService($reflectionService);
-		$dataMapper->injectDataMapFactory($dataMapFactory);
-		
-		$querySettings = t3lib_div::makeInstance('Tx_Extbase_Persistence_Typo3QuerySettings');
-
-		$query = t3lib_div::makeInstance('Tx_Extbase_Persistence_Query', $className);
-		$query->injectPersistenceManager($persistenceManager);
-		$query->injectDataMapper($dataMapper);
+		$query = $this->objectManager->create('Tx_Extbase_Persistence_QueryInterface', $className);
+		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
 		$query->setQuerySettings($querySettings);
 
 		return $query;

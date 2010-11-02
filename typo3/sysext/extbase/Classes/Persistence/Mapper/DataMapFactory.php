@@ -29,7 +29,7 @@
  * @subpackage Persistence\Mapper
  * @version $ID:$
  */
-class Tx_Extbase_Persistence_Mapper_DataMapFactory {
+class Tx_Extbase_Persistence_Mapper_DataMapFactory implements t3lib_Singleton {
 	
 	/**
 	 * @var Tx_Extbase_Reflection_Service
@@ -91,7 +91,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapFactory {
 			}
 		}
 
-		$dataMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_Mapper_DataMap', $className, $tableName, $recordType, $subclasses);
+		$dataMap = new Tx_Extbase_Persistence_Mapper_DataMap($className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);

@@ -72,15 +72,46 @@ class Tx_Extbase_Persistence_Repository implements Tx_Extbase_Persistence_Reposi
 	/**
 	 * Constructs a new Repository
 	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 */
-	public function __construct() {
-		$this->identityMap = t3lib_div::makeInstance('Tx_Extbase_Persistence_IdentityMap');
+	public function __construct(Tx_Extbase_Object_ObjectManagerInterface $objectManager = NULL) {
 		$this->addedObjects = new Tx_Extbase_Persistence_ObjectStorage();
 		$this->removedObjects = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->queryFactory = t3lib_div::makeInstance('Tx_Extbase_Persistence_QueryFactory'); // singleton
-		$this->persistenceManager = Tx_Extbase_Dispatcher::getPersistenceManager();
-		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 		$this->objectType = str_replace(array('_Repository_', 'Repository'), array('_Model_', ''), $this->getRepositoryClassName());
+
+		if ($objectManager === NULL) {
+			// Legacy creation, in case the object manager is NOT injected
+			// If ObjectManager IS there, then all properties are automatically injected
+			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			$this->injectIdentityMap($objectManager->get('Tx_Extbase_Persistence_IdentityMap'));
+			$this->injectQueryFactory($objectManager->get('Tx_Extbase_Persistence_QueryFactory'));
+			$this->injectPersistenceManager($objectManager->get('Tx_Extbase_Persistence_Manager'));
+		}
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_IdentityMap $identityMap
+	 * @return void
+	 */
+	public function injectIdentityMap(Tx_Extbase_Persistence_IdentityMap $identityMap) {
+		$this->identityMap = $identityMap;
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_QueryFactory $queryFactory
+	 * @return void
+	 */
+	public function injectQueryFactory(Tx_Extbase_Persistence_QueryFactory $queryFactory) {
+		$this->queryFactory = $queryFactory;
+	}
+
+	/**
+	 * @param Tx_Extbase_Persistence_Manager $persistenceManager
+	 * @return void
+	 */
+	public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+		$this->persistenceManager->registerRepositoryClassName($this->getRepositoryClassName());
 	}
 
 	/**

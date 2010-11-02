@@ -30,9 +30,8 @@
  *
  * @package Extbase
  * @subpackage Object
- * @version $Id$
  */
-class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t3lib_Singleton {
+class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManagerInterface {
 
 	/**
 	 * @var Tx_Container_Container
@@ -47,23 +46,43 @@ class Tx_Extbase_Object_Manager implements Tx_Extbase_Object_ManagerInterface, t
 	}
 
 	/**
-	 * @param string $objectName The name of the object to return an instance of
-	 * @return object The object instance
-	 * @deprecated since 1.3.0, will be removed in 1.5.0
-	 */
-	public function getObject($objectName) {
-		return $this->get($objectName);
+     * Returns a fresh or existing instance of the object specified by $objectName.
+     *
+     * Important:
+     *
+     * If possible, instances of Prototype objects should always be created with the
+     * Object Manager's create() method and Singleton objects should rather be
+     * injected by some type of Dependency Injection.
+     *
+     * @param string $objectName The name of the object to return an instance of
+     * @return object The object instance
+     * @api
+     */
+	public function get($objectName) {
+		return call_user_func_array(array($this->objectContainer, 'getInstance'), func_get_args());
 	}
 
 	/**
-	 * Returns a fresh or existing instance of the object specified by $objectName.
+	 * Creates a fresh instance of the object specified by $objectName.
 	 *
-	 * @param string $objectName The name of the object to return an instance of
-	 * @return object The object instance
+	 * This factory method can only create objects of the scope prototype.
+	 * Singleton objects must be either injected by some type of Dependency Injection or
+	 * if that is not possible, be retrieved by the get() method of the
+	 * Object Manager
+	 *
+	 * @param string $objectName The name of the object to create
+	 * @return object The new object instance
+	 * @throws Tx_Extbase_Object_Exception_WrongScropeException if the created object is not of scope prototype
 	 * @api
 	 */
-	public function get($objectName) {
-		return call_user_func_array(array($this->objectContainer, 'getInstance'), func_get_args());
+	public function create($objectName) {
+		$instance = call_user_func_array(array($this->objectContainer, 'getInstance'), func_get_args());
+
+		if ($instance instanceof t3lib_Singleton) {
+			throw new Tx_Extbase_Object_Exception_WrongScope('Object "' . $objectName . '" is of not of scope prototype, but only prototype is supported by create()', 1265203124);
+		}
+
+		return $instance;
 	}
 
 	/**

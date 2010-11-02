@@ -106,7 +106,7 @@ class Tx_Extbase_Validation_Validator_GenericObjectValidator extends Tx_Extbase_
 	 */
 	protected function addErrorsForProperty($errors, $propertyName) {
 		if (!isset($this->errors[$propertyName])) {
-			$this->errors[$propertyName] = t3lib_div::makeInstance('Tx_Extbase_Validation_PropertyError', $propertyName);
+			$this->errors[$propertyName] = new Tx_Extbase_Validation_PropertyError($propertyName);
 		}
 		$this->errors[$propertyName]->addErrors($errors);
 	}

@@ -36,6 +36,11 @@
 class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_ObjectStorage implements Tx_Extbase_Persistence_LoadingStrategyInterface {
 
 	/**
+	 * @var Tx_Extbase_Persistence_DataMapper
+	 */
+	protected $dataMapper;
+
+	/**
 	 * The object this property is contained in.
 	 *
 	 * @var object
@@ -83,7 +88,17 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 		$this->propertyName = $propertyName;
 		$this->fieldValue = $fieldValue;
 	}
-	
+
+	/**
+	 * Injects the DataMapper to map nodes to objects
+	 *
+	 * @param Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper
+	 * @return void
+	 */
+	public function injectDataMapper(Tx_Extbase_Persistence_Mapper_DataMapper $dataMapper) {
+		$this->dataMapper = $dataMapper;
+	}
+
 	/**
 	 * This is a function lazy load implementation. 
 	 *
@@ -92,8 +107,8 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	protected function initialize() {
 		if (!$this->isInitialized) {
 			$this->isInitialized = TRUE;
-			$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
-			$objects = $dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE);
+
+			$objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, FALSE);
 			foreach ($objects as $object) {
 				parent::attach($object);
 			}
@@ -134,11 +149,10 @@ class Tx_Extbase_Persistence_LazyObjectStorage extends Tx_Extbase_Persistence_Ob
 	 * @return int The number of elements in the ObjectStorage
 	 */
 	public function count() {
-		$dataMapper = Tx_Extbase_Dispatcher::getPersistenceManager()->getBackend()->getDataMapper();
-		$columnMap = $dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
+		$columnMap = $this->dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
 		$numberOfElements = NULL;
 		if ($columnMap->getTypeOfRelation() === Tx_Extbase_Persistence_Mapper_ColumnMap::RELATION_HAS_MANY) {
-			$numberOfElements = $dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
+			$numberOfElements = $this->dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
 		} else {
 			$this->initialize();
 			$numberOfElements = count($this->storage);			

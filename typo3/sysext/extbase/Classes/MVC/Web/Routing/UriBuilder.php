@@ -97,11 +97,9 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 
 	/**
 	 * Constructs this URI Helper
-	 *
-	 * @param tslib_cObj $contentObject
 	 */
-	public function __construct(tslib_cObj $contentObject = NULL) {
-		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
+	public function __construct() {
+		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
 	}
 
 	/**

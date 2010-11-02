@@ -36,7 +36,7 @@
  */
 class Tx_Extbase_MVC_Web_RequestBuilder {
 	/**
-	 * @var Tx_Extbase_Object_ManagerInterface
+	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -109,10 +109,10 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ManagerInterface $objectManager
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ManagerInterface $objectManager) {
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -139,7 +139,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 			$actionName = $this->defaultActionName;
 		}
 
-		$request = t3lib_div::makeInstance('Tx_Extbase_MVC_Web_Request');
+		$request = $this->objectManager->create('Tx_Extbase_MVC_Web_Request');
 		$request->setPluginName($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);

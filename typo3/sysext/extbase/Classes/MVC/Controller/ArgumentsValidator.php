@@ -105,7 +105,7 @@ class Tx_Extbase_MVC_Controller_ArgumentsValidator extends Tx_Extbase_Validation
 	 */
 	protected function addErrorsForArgument(array $errors, $argumentName) {
 		if (!isset($this->errors[$argumentName])) {
-			$this->errors[$argumentName] = t3lib_div::makeInstance('Tx_Extbase_MVC_Controller_ArgumentError', $argumentName);
+			$this->errors[$argumentName] = new Tx_Extbase_MVC_Controller_ArgumentError($argumentName);
 		}
 		$this->errors[$argumentName]->addErrors($errors);
 	}
