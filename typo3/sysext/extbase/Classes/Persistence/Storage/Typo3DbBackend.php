@@ -71,10 +71,10 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	protected $tableInformationCache = array();
 
 	/**
-	 * @param t3lib_db $databaseHandle The database handle
+	 * Constructor. takes the database handle from $GLOBALS['TYPO3_DB']
 	 */
-	public function injectDatabaseHandle(t3lib_db $databaseHandle) {
-		$this->databaseHandle = $databaseHandle;
+	public function __construct() {
+		$this->databaseHandle = $GLOBALS['TYPO3_DB'];
 	}
 
 	/**
