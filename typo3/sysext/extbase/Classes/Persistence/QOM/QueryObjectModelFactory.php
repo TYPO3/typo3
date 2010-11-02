@@ -33,20 +33,8 @@
  * @version $Id$
  * @scope prototype
  */
-class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface {
+class Tx_Extbase_Persistence_QOM_QueryObjectModelFactory implements Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface, t3lib_Singleton {
 // SK: Needs to be cleaned up (methods might need to be removed, and comments fixed)
-	/**
-	 * @var Tx_Extbase_Persistence_Storage_BackendInterface
-	 */
-	protected $storageBackend;
-
-	/**
-	 * @param Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend
-	 */
-	public function injectStorageBackend(Tx_Extbase_Persistence_Storage_BackendInterface $storageBackend) {
-		$this->storageBackend = $storageBackend;
-	}
-
 	/**
 	 * Selects a subset of the nodes in the repository based on node type.
 	 *

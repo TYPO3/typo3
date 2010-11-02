@@ -136,7 +136,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory
 	 * @return void
 	 */
-	public function setQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory) {
+	public function injectQomFactory(Tx_Extbase_Persistence_QOM_QueryObjectModelFactory $qomFactory) {
 		$this->qomFactory = $qomFactory;
 	}
 
