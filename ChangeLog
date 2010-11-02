@@ -1,3 +1,7 @@
+2010-11-02  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Added feature #16177: Add DB structure update pre-processing hook in EM
+
 2010-11-01  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #11957: Close Button is at the wrong place when editing a file in filelist (Thanks to Simon Schaufelberger)

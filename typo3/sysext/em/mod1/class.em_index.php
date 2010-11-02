@@ -5525,6 +5525,7 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 		$dbStatus = array();
 
 			// Updating tables and fields?
+		$showUpdateStatements = TRUE;
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$fileContent = t3lib_div::getUrl($this->getExtPath($extKey,$extInfo['type']).'ext_tables.sql');
 
@@ -5543,18 +5544,37 @@ $EM_CONF[$_EXTKEY] = '.$this->arrayToCode($EM_CONF, 0).';
 					$instObj->performUpdateQueries($update_statements['change'],$instObj->INSTALL['database_update']);
 					$instObj->performUpdateQueries($update_statements['create_table'],$instObj->INSTALL['database_update']);
 				} else {
-					$content .= $instObj->generateUpdateDatabaseForm_checkboxes(
-						$update_statements['add'], $GLOBALS['LANG']->getLL('checkDBupdates_add_fields'));
-					$content .= $instObj->generateUpdateDatabaseForm_checkboxes(
-						$update_statements['change'], $GLOBALS['LANG']->getLL('checkDBupdates_changing_fields'), 1, 0, $update_statements['change_currentValue']);
-					$content .= $instObj->generateUpdateDatabaseForm_checkboxes(
-						$update_statements['create_table'], $GLOBALS['LANG']->getLL('checkDBupdates_add_tables'));
+					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'])) {
+						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/mod/tools/em/index.php']['checkDBupdates'] as $classData) {
+							$hookObject = t3lib_div::getUserObj($classData);
+
+							if (!($hookObject instanceof em_index_checkDatabaseUpdatesHook)) {
+								throw new UnexpectedValueException('$hookObject must implement interface em_index_checkDatabaseUpdatesHook', 1288418476);
+							}
+
+							/* @var $hookObject em_index_checkDatabaseUpdatesHook */
+							$preprocessContent = $hookObject->preProcessDatabaseUpdates($extKey, $extInfo, $diff, $instObj, $this);
+							if ($preprocessContent) {
+								$content .= $preprocessContent;
+								$showUpdateStatements = FALSE;
+								break;
+							}
+						}
+					}
+					if ($showUpdateStatements) {
+						$content .= $instObj->generateUpdateDatabaseForm_checkboxes(
+							$update_statements['add'], $GLOBALS['LANG']->getLL('checkDBupdates_add_fields'));
+						$content .= $instObj->generateUpdateDatabaseForm_checkboxes(
+							$update_statements['change'], $GLOBALS['LANG']->getLL('checkDBupdates_changing_fields'), 1, 0, $update_statements['change_currentValue']);
+						$content .= $instObj->generateUpdateDatabaseForm_checkboxes(
+							$update_statements['create_table'], $GLOBALS['LANG']->getLL('checkDBupdates_add_tables'));
+					}
 				}
 			}
 		}
 
 			// Importing static tables?
-		if (is_array($extInfo['files']) && in_array('ext_tables_static+adt.sql',$extInfo['files']))	{
+		if ($showUpdateStatements && is_array($extInfo['files']) && in_array('ext_tables_static+adt.sql',$extInfo['files']))	{
 			$fileContent = t3lib_div::getUrl($this->getExtPath($extKey,$extInfo['type']).'ext_tables_static+adt.sql');
 
 			$statements = $instObj->getStatementArray($fileContent,1);
