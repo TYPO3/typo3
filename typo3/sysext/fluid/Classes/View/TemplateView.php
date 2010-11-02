@@ -139,7 +139,8 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */
-	public function hasTemplate() {
+	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+		$this->setControllerContext($controllerContext);
 		try {
 			$this->getTemplateSource();
 			return TRUE;
