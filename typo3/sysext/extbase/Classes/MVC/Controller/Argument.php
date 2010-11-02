@@ -399,12 +399,10 @@ class Tx_Extbase_MVC_Controller_Argument {
 		$query = $this->queryFactory->create($this->dataType);
 		$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query->getQuerySettings()->setRespectStoragePage(FALSE);
-		$result = $query->matching($query->equals('uid', $uid))->execute();
-		$object = NULL;
-		if (count($result) > 0) {
-			$object = current($result);
-		}
-		return $object;
+		return $query->matching(
+			$query->equals('uid', $uid))
+			->execute()
+			->getFirst();
 	}
 
 	/**

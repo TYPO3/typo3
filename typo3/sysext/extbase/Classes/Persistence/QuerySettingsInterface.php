@@ -5,7 +5,7 @@
 *  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
 *  All rights reserved
 *
-*  This class is a backport of the corresponding class of FLOW3. 
+*  This class is a backport of the corresponding class of FLOW3.
 *  All credits go to the v5 team.
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -33,6 +33,69 @@
  * @version $Id$
  */
 interface Tx_Extbase_Persistence_QuerySettingsInterface {
+
+	/**
+	 * Sets the flag if the storage page should be respected for the query.
+	 *
+	 * @param $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+	 * @return $this (fluent interface)
+	 * @api
+	 */
+	public function setRespectStoragePage($respectStoragePage);
+
+	/**
+	 * Returns the state, if the storage page should be respected for the query.
+	 *
+	 * @return boolean TRUE, if the storage page should be respected; otherwise FALSE.
+	 */
+	public function getRespectStoragePage();
+
+	/**
+	 * Sets the flag if a  and language overlay should be performed.
+	 *
+	 * @param $respectEnableFields TRUE if a  and language overlay should be performed.
+	 * @return $this (fluent interface)
+	 * @api
+	 */
+	public function setRespectSysLanguage($respectSysLanguage);
+
+	/**
+	 * Returns the state, if a  and language overlay should be performed.
+	 *
+	 * @return boolean TRUE, if a  and language overlay should be performed; otherwise FALSE.
+	 */
+	public function getRespectSysLanguage();
+
+	/**
+	 * Sets the flag if the visibility in the frontend should be respected.
+	 *
+	 * @param $respectEnableFields TRUE if the visibility in the frontend should be respected. If TRUE, the "enable fields" of TYPO3 will be added to the query statement.
+	 * @return $this (fluent interface)
+	 * @api
+	 */
+	public function setRespectEnableFields($respectEnableFields);
+
+	/**
+	 * Returns the state, if the visibility settings for the frontend should be respected for the query.
+	 *
+	 * @return boolean TRUE, if the visibility settings for the frontend should should be respected; otherwise FALSE.
+	 */
+	public function getRespectEnableFields();
+
+	/**
+	 * Sets the state, if the QueryResult should be returned unmapped.
+	 *
+	 * @var boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @return void
+	 */
+	public function setReturnRawQueryResult($returnRawQueryResult);
+
+	/**
+	 * Returns the state, if the QueryResult should be returned unmapped.
+	 *
+	 * @return boolean TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 */
+	public function getReturnRawQueryResult();
 
 }
 ?>
