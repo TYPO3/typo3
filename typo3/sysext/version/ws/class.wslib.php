@@ -185,7 +185,7 @@ class wslib {
 	 * @deprecated since TYPO3 4.5, will be removed in TYPO3 4.7 - This was meant for an obsolete CLI script. You shouldn't be calling this.
 	 */
 	function CLI_main()	{
-		self::logDeprecatedFunction();
+		t3lib_div::logDeprecatedFunction();
 		$this->autoPublishWorkspaces();
 	}
 
