@@ -26,71 +26,58 @@
 ***************************************************************/
 
 /**
- * An empty view - a special case.
+ * The not found view - a special case.
  *
  * @package Extbase
  * @subpackage MVC\View
- * @version $Id$
+ * @version $Id: EmptyView.php 2517 2010-08-04 17:56:45Z bwaidelich $
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-final class Tx_Extbase_MVC_View_EmptyView implements Tx_Extbase_MVC_View_ViewInterface {
+class Tx_Extbase_MVC_View_NotFoundView extends Tx_Extbase_MVC_View_AbstractView {
 
 	/**
-	 * Dummy method to satisfy the ViewInterface
-	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
-	 * @return void
+	 * @var array
 	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
-	}
+	protected $variablesMarker = array('errorMessage' => 'ERROR_MESSAGE');
 
 	/**
-	 * Dummy method to satisfy the ViewInterface
+	 * Renders the not found view
 	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return Tx_Extbase_MVC_View_EmptyView instance of $this to allow chaining
+	 * @return string The rendered view
+	 * @throws Tx_Extbase_MVC_Exception if no request has been set
 	 * @api
-	 */
-	public function assign($key, $value) {
-		return $this;
-	}
-
-	/**
-	 * Dummy method to satisfy the ViewInterface
-	 *
-	 * @param array $values
-	 * @return Tx_Extbase_MVC_View_EmptyView instance of $this to allow chaining
-	 * @api
-	 */
-	public function assignMultiple(array $values) {
-		return $this;
-	}
-
-	/**
-	 * This view can be used in any case.
-	 *
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
-	 * @return boolean TRUE
-	 * @api
-	 */
-	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
-		return TRUE;
-	}
-
-	/**
-	 * Renders the empty view
-	 *
-	 * @return string An empty string
 	 */
 	public function render() {
-		return '<!-- This is the output of the Empty View. An appropriate View was not found. -->';
+		if (!is_object($this->controllerContext->getRequest())) throw new Tx_Extbase_MVC_Exception('Can\'t render view without request object.', 1192450280);
+
+		$template = file_get_contents($this->getTemplatePathAndFilename());
+
+		if ($this->controllerContext->getRequest() instanceof Tx_Extbase_MVC_Web_Request) {
+			$template = str_replace('###BASEURI###', t3lib_div::getIndpEnv('TYPO3_SITE_URL'), $template);
+		}
+
+		foreach ($this->variablesMarker as $variableName => $marker) {
+			$variableValue = isset($this->variables[$variableName]) ? $this->variables[$variableName] : '';
+			$template = str_replace('###' . $marker . '###', $variableValue, $template);
+		}
+
+		return $template;
+	}
+
+	/**
+	 * Retrieves path and filename of the not-found-template
+	 *
+	 * @return string path and filename of the not-found-template
+	 * @author Bastian Waidelich <bastian@typo3.org>
+	 */
+	protected function getTemplatePathAndFilename() {
+		return t3lib_extmgm::extPath('extbase') . 'Resources/Private/MVC/NotFoundView_Template.html';
 	}
 
 	/**
 	 * A magic call method.
 	 *
-	 * Because this empty view is used as a Special Case in situations when no matching
+	 * Because this not found view is used as a Special Case in situations when no matching
 	 * view is available, it must be able to handle method calls which originally were
 	 * directed to another type of view. This magic method should prevent PHP from issuing
 	 * a fatal error.

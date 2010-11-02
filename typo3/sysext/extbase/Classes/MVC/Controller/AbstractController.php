@@ -104,6 +104,12 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $supportedRequestTypes = array('Tx_Extbase_MVC_Request');
 
 	/**
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @api
+	 */
+	protected $controllerContext;
+
+	/**
 	 * The flash messages. DEPRECATED. Use $this->flashMessageContainer instead.
 	 *
 	 * @var Tx_Extbase_MVC_Controller_FlashMessages
@@ -218,6 +224,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 
 		$this->initializeControllerArgumentsBaseValidators();
 		$this->mapRequestArgumentsToControllerArguments();
+		$this->controllerContext = $this->buildControllerContext();
 	}
 
 	/**

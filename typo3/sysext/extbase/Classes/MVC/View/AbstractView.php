@@ -87,6 +87,20 @@ abstract class Tx_Extbase_MVC_View_AbstractView implements Tx_Extbase_MVC_View_V
 	}
 
 	/**
+	 * Tells if the view implementation can render the view for the given context.
+	 *
+	 * By default we assume that the view implementation can handle all kinds of
+	 * contexts. Override this method if that is not the case.
+	 *
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @return boolean TRUE if the view has something useful to display, otherwise FALSE
+	 * @api
+	 */
+	public function canRender(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+		return TRUE;
+	}
+
+	/**
 	 * Initializes this view.
 	 *
 	 * Override this method for initializing your concrete view implementation.

@@ -41,10 +41,8 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected $reflectionService;
 
 	/**
-	 * By default a Fluid TemplateView is provided, if a template is available,
-	 * then a view with the same name as the current action will be looked up.
-	 * If none is available the $defaultViewObjectName will be used and finally
-	 * an EmptyView will be created.
+	 * The current view, as resolved by resolveView()
+	 *
 	 * @var Tx_Extbase_MVC_View_ViewInterface
 	 * @api
 	 */
@@ -59,12 +57,24 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	protected $viewObjectNamePattern = 'Tx_@extension_View_@controller_@action@format';
 
 	/**
-	 * The default view object to use if neither a Fluid template nor an action
-	 * specific view object could be found.
+	 * A list of formats and object names of the views which should render them.
+	 *
+	 * Example:
+	 *
+	 * array('html' => 'Tx_MyExtension_View_MyHtmlView', 'json' => 'F3...
+	 *
+	 * @var array
+	 */
+	protected $viewFormatToObjectNameMap = array();
+
+	/**
+	 * The default view object to use if none of the resolved views can render
+	 * a response for the current request.
+	 *
 	 * @var string
 	 * @api
 	 */
-	protected $defaultViewObjectName = NULL;
+	protected $defaultViewObjectName = 'Tx_Fluid_View_TemplateView';
 
 	/**
 	 * Name of the action method
@@ -135,6 +145,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 
 		$this->mapRequestArgumentsToControllerArguments();
 		$this->checkRequestHash();
+		$this->controllerContext = $this->buildControllerContext();
 		$this->view = $this->resolveView();
 		if ($this->view !== NULL) $this->initializeView($this->view);
 		$this->callActionMethod();
@@ -252,28 +263,43 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @api
 	 */
 	protected function resolveView() {
-		$view = $this->objectManager->create('Tx_Fluid_View_TemplateView');
-		$controllerContext = $this->buildControllerContext();
-		$view->setControllerContext($controllerContext);
+		$viewObjectName = $this->resolveViewObjectName();
+		if ($viewObjectName !== FALSE) {
+			$view = $this->objectManager->create($viewObjectName);
+			if ($view->canRender($this->controllerContext) === FALSE) {
+				unset($view);
+			}
+		}
+		if (!isset($view) && $this->defaultViewObjectName != '') {
+			$view = $this->objectManager->create($this->defaultViewObjectName);
+			if ($view->canRender($this->controllerContext) === FALSE) {
+				unset($view);
+			}
+		}
+		if (!isset($view)) {
+			$view = $this->objectManager->create('Tx_Extbase_MVC_View_NotFoundView');
+			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "' . $this->request->getControllerActionName() . '"');
+		}
+		$view->setControllerContext($this->controllerContext);
 
 		// Template Path Override
 		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) {
+		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
+			&& strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0
+			&& method_exists($view, 'setTemplateRootPath')) {
 			$view->setTemplateRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']));
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['layoutRootPath']) && strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0) {
+		if (isset($extbaseFrameworkConfiguration['view']['layoutRootPath'])
+			&& strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0
+			&& method_exists($view, 'setLayoutRootPath')) {
 			$view->setLayoutRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['layoutRootPath']));
 		}
-		if (isset($extbaseFrameworkConfiguration['view']['partialRootPath']) && strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0) {
+		if (isset($extbaseFrameworkConfiguration['view']['partialRootPath'])
+			&& strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0
+			&& method_exists($view, 'setPartialRootPath')) {
 			$view->setPartialRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialRootPath']));
 		}
 
-		if ($view->hasTemplate() === FALSE) {
-			$viewObjectName = $this->resolveViewObjectName();
-			if (class_exists($viewObjectName) === FALSE) $viewObjectName = 'Tx_Extbase_MVC_View_EmptyView';
-			$view = $this->objectManager->create($viewObjectName);
-			$view->setControllerContext($controllerContext);
-		}
 		if (method_exists($view, 'injectSettings')) {
 			$view->injectSettings($this->settings);
 		}
@@ -294,15 +320,16 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		$possibleViewName = str_replace('@extension', $extensionName, $possibleViewName);
 		$possibleViewName = str_replace('@controller', $this->request->getControllerName(), $possibleViewName);
 		$possibleViewName = str_replace('@action', ucfirst($this->request->getControllerActionName()), $possibleViewName);
+		$format = $this->request->getFormat();
 
 		$viewObjectName = str_replace('@format', ucfirst($this->request->getFormat()), $possibleViewName);
 		if (class_exists($viewObjectName) === FALSE) {
 			$viewObjectName = str_replace('@format', '', $possibleViewName);
 		}
-		if (class_exists($viewObjectName) === FALSE && $this->defaultViewObjectName !== NULL) {
-			$viewObjectName = $this->defaultViewObjectName;
+		if (class_exists($viewObjectName) === FALSE && isset($this->viewFormatToObjectNameMap[$format])) {
+			$viewObjectName = $this->viewFormatToObjectNameMap[$format];
 		}
-		return $viewObjectName;
+		return class_exists($viewObjectName) ? $viewObjectName : FALSE;
 	}
 
 	/**
