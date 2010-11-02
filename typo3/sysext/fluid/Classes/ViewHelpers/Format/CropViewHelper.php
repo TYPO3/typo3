@@ -67,11 +67,10 @@ class Tx_Fluid_ViewHelpers_Format_CropViewHelper extends Tx_Fluid_Core_ViewHelpe
 	/**
 	 * Constructor. Used to create an instance of tslib_cObj used by the render() method.
 	 *
-	 * @param tslib_cObj $contentObject injector for tslib_cObj (optional)
 	 * @return void
 	 */
-	public function __construct($contentObject = NULL) {
-		$this->contentObject = $contentObject !== NULL ? $contentObject : t3lib_div::makeInstance('tslib_cObj');
+	public function __construct() {
+		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
 	}
 
 	/**

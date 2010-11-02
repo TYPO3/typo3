@@ -211,7 +211,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 		} else {
 			$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
 			$renderingContext = clone $renderingContext;
-			$renderingContext->injectTemplateVariableContainer($variableContainer);
+			$renderingContext->setTemplateVariableContainer($variableContainer);
 			$renderingTypeOnNextLevel = $this->getCurrentRenderingType();
 		}
 
@@ -240,7 +240,7 @@ abstract class Tx_Fluid_View_AbstractTemplateView implements Tx_Fluid_View_Templ
 		$partial = $this->templateParser->parse($this->getPartialSource($partialName));
 		$variableContainer = $this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer', $variables);
 		$renderingContext = clone $this->getCurrentRenderingContext();
-		$renderingContext->injectTemplateVariableContainer($variableContainer);
+		$renderingContext->setTemplateVariableContainer($variableContainer);
 
 		$this->startRendering(self::RENDERING_PARTIAL, $partial, $renderingContext);
 		if ($sectionName !== NULL) {

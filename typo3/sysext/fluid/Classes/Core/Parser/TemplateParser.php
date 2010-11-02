@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_Parser_TemplateParser {
+class Tx_Fluid_Core_Parser_TemplateParser implements t3lib_Singleton {
 
 	public static $SCAN_PATTERN_NAMESPACEDECLARATION = '/(?<!\\\\){namespace\s*([a-zA-Z]+[a-zA-Z0-9]*)\s*=\s*((?:F3|Tx)(?:FLUID_NAMESPACE_SEPARATOR\w+)+)\s*}/m';
 
@@ -403,6 +403,8 @@ class Tx_Fluid_Core_Parser_TemplateParser {
 		$rootNode = $this->objectManager->create('Tx_Fluid_Core_Parser_SyntaxTree_RootNode');
 		$state->setRootNode($rootNode);
 		$state->pushNodeToStack($rootNode);
+
+		$state->setVariableContainer($this->objectManager->create('Tx_Fluid_Core_ViewHelper_TemplateVariableContainer'));
 
 		foreach ($splitTemplate as $templateElement) {
 			$matchedVariables = array();
