@@ -60,3 +60,4 @@ abstract class t3lib_tree_Renderer_Abstract {
 	 */
 	abstract public function renderTree(t3lib_tree_AbstractTree $tree, $recursive = TRUE);
 }
+?>

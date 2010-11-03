@@ -180,3 +180,4 @@ class t3lib_tree_RepresentationNode extends t3lib_tree_Node {
 		$this->setCallbackAction($data['callbackAction']);
 	}
 }
+?>

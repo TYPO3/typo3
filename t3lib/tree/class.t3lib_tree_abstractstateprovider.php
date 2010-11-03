@@ -49,3 +49,4 @@ abstract class t3lib_tree_AbstractStateProvider {
 	 */
 	abstract public function getState();
 }
+?>

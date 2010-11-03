@@ -58,3 +58,4 @@ abstract class t3lib_tree_AbstractDataProvider {
 	 */
 	 abstract public function getNodes(t3lib_tree_Node $node);
 }
+?>

@@ -125,3 +125,4 @@ class t3lib_tree_SortedNodeCollection extends t3lib_tree_NodeCollection {
 		}
 	}
 }
+?>

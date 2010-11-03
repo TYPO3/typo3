@@ -257,3 +257,4 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 		$this->dataFromArray($arrayRepresentation);
 	}
 }
+?>
