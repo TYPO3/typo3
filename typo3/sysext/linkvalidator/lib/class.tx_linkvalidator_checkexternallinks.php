@@ -35,10 +35,11 @@ class tx_linkvalidator_checkexternallinks extends tx_linkvalidator_checkbase {
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param	string		$url: url to check
+	 * @param	 array       $softRefEntry: the softref entry which builds the context of that url
 	 * @param	object		$reference:  parent instance of tx_linkvalidator_processing
 	 * @return	string		validation error message or succes code
 	 */
-	function checkLink($url, $reference) {
+	function checkLink($url, $softRefEntry, $reference) {
 		if($this->url_reports[$url]) {
 			return $this->url_reports[$url];
 		}

@@ -175,7 +175,7 @@ class tx_linkvalidator_processing {
 					$record['field'] = $entryValue['field'];
 					$url = $entryValue['substr']['tokenValue'];
 					$this->linkCounts[$table]++;
-					$checkURL = $hookObj->checkLink($url, $this);
+					$checkURL = $hookObj->checkLink($url,  $entryValue, $this);
 					// broken link found!
 					if ($checkURL != 1) {
 						$this->brokenLinkCounts[$table]++;

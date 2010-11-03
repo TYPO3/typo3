@@ -1,3 +1,7 @@
+2010-11-03 Tolleiv Nietsch <info@tolleiv.de>
+
+	* Fixed issue: #10598 - extend tx_linkvalidator_checkbase API a bit
+
 2010-07-19 Jochen Rieger / Dimitri Knig / Michael Miousse  <j.rieger@connecta.ag, mmiousse@infoglobe.ca>
 
 	* initial code generated with kickstarter

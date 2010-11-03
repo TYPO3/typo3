@@ -29,7 +29,7 @@
  */
 abstract class tx_linkvalidator_checkbase {
 
-	abstract function checkLink($url, $reference);
+	abstract function checkLink($url, $softRefEntry, $reference);
 	
     /**
      * Base type fetching method, based on the type that softRefParserObj returns.
