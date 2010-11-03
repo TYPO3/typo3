@@ -1,5 +1,6 @@
 2010-11-03  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16225: Disable draft workspace and migrate it to a real workspace (Thanks to Tolleiv Nietsch)
 	* Added feature #16228: [Feature] TCA tree (Thanks to Steffen Ritter)
 
 2010-11-03  Stanislas Rolland  <typo3@sjbr.ca>

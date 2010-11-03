@@ -39,4 +39,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForT3SkinInstalled
 	// Version 4.4: warn for set CompressionLevel and warn user to update his .htaccess
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['checkForCompressionLevel'] = 'tx_coreupdates_compressionlevel';
 
+	// Version 4.5: migrate workspaces to use custom stages and install the required extensions
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['migrateWorkspaces'] = 'tx_coreupdates_migrateworkspaces';
+
 ?>

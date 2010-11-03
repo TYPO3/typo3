@@ -155,6 +155,7 @@ require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install_session.ph
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_statictemplates.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_t3skin.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_compressionlevel.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_migrateworkspaces.php');
 
 /**
  * Install Tool module
@@ -4153,7 +4154,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			}
 		}
 		$this->requiredPhpModules = $modules;
-		
+
 		$result = array();
 		foreach ($this->requiredPhpModules as $module) {
 			if (is_array($module)) {
