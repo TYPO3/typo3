@@ -113,7 +113,7 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlareaapi {
 					$JSClassesAnchorArray .= (($index++)?',':'') . 'type : "' . $conf['type'] . '"' . $linebreak;
 				}
 				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
-					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) . '"' . $linebreak;
+					$JSClassesAnchorArray .= (($index++)?',':'') . 'image : "' . $this->htmlAreaRTE->siteURL . t3lib_div::resolveBackPath(TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image']))))) . '"' . $linebreak;
 				}
 				$JSClassesAnchorArray .= (($index++)?',':'') . 'addIconAfterLink : ' . ($conf['addIconAfterLink']?'true':'false') . $linebreak;
 				if (trim($conf['altText'])) {
