@@ -158,12 +158,20 @@ $t3libClasses = array(
 	't3lib_tree_labeleditable' => PATH_t3lib . 'interfaces/tree/interface.t3lib_tree_labeleditable.php',
 	't3lib_tree_renderer_abstract' => PATH_t3lib . 'tree/renderer/class.t3lib_tree_renderer_abstract.php',
 	't3lib_tree_renderer_unorderedlist' => PATH_t3lib . 'tree/renderer/class.t3lib_tree_renderer_unorderedlist.php',
+	't3lib_tree_renderer_extjsjson' => PATH_t3lib . 'tree/renderer/class.t3lib_tree_renderer_extjsjson.php',
 	't3lib_contextmenu_abstractcontextmenu' => PATH_t3lib . 'contextmenu/class.t3lib_contextmenu_abstractcontextmenu.php',
 	't3lib_contextmenu_abstractdataprovider' => PATH_t3lib . 'contextmenu/class.t3lib_contextmenu_abstractdataprovider.php',
 	't3lib_contextmenu_action' => PATH_t3lib . 'contextmenu/class.t3lib_contextmenu_action.php',
 	't3lib_contextmenu_actioncollection' => PATH_t3lib . 'contextmenu/class.t3lib_contextmenu_actioncollection.php',
 	't3lib_contextmenu_renderer_abstract' => PATH_t3lib . 'contextmenu/renderer/class.t3lib_contextmenu_renderer_abstract.php',
 	't3lib_contextmenu_extdirect_contextmenu' => PATH_t3lib . 'contextmenu/extdirect/class.t3lib_contextmenu_extdirect_contextmenu.php',
+	't3lib_tceforms_tree' => PATH_t3lib . 'tceforms/class.t3lib_tceforms_tree.php',
+	't3lib_tree_tca_abstracttcatreedataprovider' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_abstracttcatreedataprovider.php',
+	't3lib_tree_tca_extjsarrayrenderer' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_extjsarrayrenderer.php',
+	't3lib_tree_tca_databasenode' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_databasenode.php',
+	't3lib_tree_tca_databasetreedataprovider' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_databasetreedataprovider.php',
+	't3lib_tree_tca_dataproviderfactory' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_dataproviderfactory.php',
+	't3lib_tree_tca_tcatree' => PATH_t3lib . 'tree/tca/class.t3lib_tree_tca_tcatree.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
