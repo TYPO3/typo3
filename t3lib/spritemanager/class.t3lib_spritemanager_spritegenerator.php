@@ -42,7 +42,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 */
 	protected $templateSprite = '
 .###NAMESPACE###-###SPRITENAME### {
-	background-image: url(\'###SPRITEURL###\');
+	background-image: url(\'###SPRITEURL###\') !important;
 	height: ###DEFAULTHEIGHT###px;
 	width: ###DEFAULTWIDTH###px;
 }
@@ -55,7 +55,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 * @var string
 	 */
 	protected $templateIcon = '.###NAMESPACE###-###ICONNAME### {
-	background-position: -###LEFT###px -###TOP###px;
+	background-position: -###LEFT###px -###TOP###px !important;
 ###SIZE_INFO###
 }
 ';
@@ -567,7 +567,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 */
 	protected function buildFileInformationCache(array $files) {
 		foreach ($files as $iconName => $iconFile) {
-		
+
 			$iconNameParts = t3lib_div::trimExplode('-', $iconName);
 			if(!in_array($iconNameParts[0], $this->spriteBases)) {
 				$this->spriteBases[] = $iconNameParts[0];

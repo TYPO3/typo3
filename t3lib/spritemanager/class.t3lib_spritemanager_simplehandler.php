@@ -45,8 +45,8 @@ class t3lib_spritemanager_SimpleHandler extends t3lib_spritemanager_AbstractHand
 	 */
 	protected $styleSheetTemplateExtIcons = '
 .t3-icon-###NAME### {
-	background-position: 0px 0px;
-	background-image: url(\'###IMAGE###\');
+	background-position: 0px 0px !important;
+	background-image: url(\'###IMAGE###\') !important;
 }
 	';
 
