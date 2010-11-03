@@ -151,7 +151,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 							checked: true
 						},{
 							itemId: 'typographical',
-							fieldLabel: this.localize('Typographical punctuation:'),
+							fieldLabel: this.localize('Typographical punctuation:')
 						},{
 							itemId: 'spaces',
 							fieldLabel: this.localize('Spaces')

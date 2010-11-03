@@ -1,6 +1,7 @@
 2010-11-02  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Follow-up to feature #16079: htmlArea RTE: Register RTE scripts with the autoloader
+	* Fixed bug #16167: htmlArea RTE: Doesn't work in IE6 in current trunk
 
 2010-10-27  Stanislas Rolland  <typo3@sjbr.ca>
 
