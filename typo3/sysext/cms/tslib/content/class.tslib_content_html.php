@@ -42,7 +42,19 @@ class tslib_content_Html extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		return $this->cObj->stdWrap($conf['value'], $conf['value.']);
+
+		$theValue = $conf['value'];
+
+		if (isset($conf['value.'])) {
+			$theValue = $this->cObj->stdWrap($theValue, $conf['value.']);
+		}
+
+		if (isset($conf['stdWrap.'])) {
+			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		}
+
+		return $theValue;
+
 	}
 
 }
