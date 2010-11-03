@@ -1248,7 +1248,7 @@ class t3lib_TCEmain	{
 		$recFID = $table.':'.$id.':'.$field;
 
 			// Processing special case of field pages.doktype
-		if ($table=='pages' && $field=='doktype')	{
+		if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
 				// If the user may not use this specific doktype, we issue a warning
 			if (! ($this->admin || t3lib_div::inList($this->BE_USER->groupData['pagetypes_select'],$value)))	{
 				$propArr = $this->getRecordProperties($table,$id);
