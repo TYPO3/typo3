@@ -42,28 +42,67 @@ class tslib_content_HorizontalRuler extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		$lineThickness = t3lib_div::intInRange($this->cObj->stdWrap($conf['lineThickness'], $conf['lineThickness.']), 1, 50);
-		$lineColor = $conf['lineColor'] ? $conf['lineColor'] : 'black';
-		$spaceBefore = intval($conf['spaceLeft']);
-		$spaceAfter = intval($conf['spaceRight']);
-		$tableWidth = $conf['tableWidth'] ? $conf['tableWidth'] : '99%';
-		$content = '';
 
-		$content .= '<table border="0" cellspacing="0" cellpadding="0" width="' . htmlspecialchars($tableWidth) . '" summary=""><tr>';
+		$lineThickness = isset($conf['lineThickness.'])
+			? $this->cObj->stdWrap($conf['lineThickness'], $conf['lineThickness.'])
+			: $conf['lineThickness'];
+		$lineThickness = t3lib_div::intInRange($lineThickness, 1, 50);
+
+		$lineColor = isset($conf['lineColor.'])
+			? $this->cObj->stdWrap($conf['lineColor'], $conf['lineColor.'])
+			: $conf['lineColor'];
+		if(!$lineColor) {
+			$lineColor = 'black';
+		}
+
+		$spaceBefore = isset($conf['spaceLeft.'])
+			? intval($this->cObj->stdWrap($conf['spaceLeft'], $conf['spaceLeft.']))
+			: intval($conf['spaceLeft']);
+
+		$spaceAfter = isset($conf['spaceRight.'])
+			? intval($this->cObj->stdWrap($conf['spaceRight'], $conf['spaceRight.']))
+			: intval($conf['spaceRight']);
+
+		$tableWidth = isset($conf['tableWidth.'])
+			? intval($this->cObj->stdWrap($conf['tableWidth'], $conf['tableWidth.']))
+			: intval($conf['tableWidth']);
+		if(!$tableWidth) {
+			$tableWidth = '99%';
+		}
+
+		$theValue = '';
+
+		$theValue .= '<table border="0" cellspacing="0" cellpadding="0"
+			width="' . htmlspecialchars($tableWidth) . '"
+			summary=""><tr>';
 		if ($spaceBefore) {
-			$content .= '<td width="1"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
-				$spaceBefore . '" height="1" alt="" title="" /></td>';
+			$theValue .= '<td width="1">
+				<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
+				width="' . $spaceBefore . '"
+				height="1" alt="" title="" />
+			</td>';
 		}
-		$content .= '<td bgcolor="' . $lineColor . '"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' .
-			$lineThickness . '" alt="" title="" /></td>';
+		$theValue .= '<td bgcolor="' . $lineColor . '">
+			<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
+			width="1"
+			height="' . $lineThickness . '"
+			alt="" title="" />
+		</td>';
 		if ($spaceAfter) {
-			$content .= '<td width="1"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
-				$spaceAfter . '" height="1" alt="" title="" /></td>';
+			$theValue .= '<td width="1">
+				<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
+				width="' . $spaceAfter . '"
+				height="1" alt="" title="" />
+			</td>';
 		}
-		$content .= '</tr></table>';
+		$theValue .= '</tr></table>';
 
-		$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
-		return $content;
+		if (isset($conf['stdWrap.'])) {
+			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		}
+
+		return $theValue;
+
 	}
 
 }
