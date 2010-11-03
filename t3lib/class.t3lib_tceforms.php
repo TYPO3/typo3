@@ -1527,7 +1527,7 @@ class t3lib_TCEforms	{
 			}
 
 				// Removing doktypes with no access:
-			if ($table.'.'.$field == 'pages.doktype')	{
+			if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
 				if (!($GLOBALS['BE_USER']->isAdmin() || t3lib_div::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'],$p[1])))	{
 					unset($selItems[$tk]);
 				}
@@ -2807,7 +2807,7 @@ class t3lib_TCEforms	{
 							$s = t3lib_div::revExplode('[]',$formPrefix,2);
 							$actionFieldName = '_ACTION_FLEX_FORM'.$PA['itemFormElName'].$s[0].'][_ACTION]['.$s[1];
 
-								// Push the container to DynNestedStack as it may be toggled							
+								// Push the container to DynNestedStack as it may be toggled
 							$this->pushToDynNestedStack('flex' , $idTagPrefix);
 
 								// Putting together the container:
@@ -6103,7 +6103,7 @@ class t3lib_TCEforms	{
 						}
 
 							// New records in a workspace are not handled as a version record
-							// if it's no new version, we detect versions like this: 
+							// if it's no new version, we detect versions like this:
 							// -- if user is in workspace: always true
 							// -- if editor is in live ws: only true if pid == -1
 						$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;

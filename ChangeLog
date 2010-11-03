@@ -1,3 +1,7 @@
+2010-11-03  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #15995: Bug: doktype limitation is not applied to alternative page languages (pages_language_overlay) (Thanks to Andreas Kiessling)
+
 2010-11-03  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16175: htmlArea RTE: The path of classesAnchor images are modified when saving
