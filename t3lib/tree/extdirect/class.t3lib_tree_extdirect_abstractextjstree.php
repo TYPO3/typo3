@@ -32,7 +32,8 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_extdirect_AbstractExtJsTree extends t3lib_tree_AbstractTree {
+abstract class t3lib_tree_ExtDirect_AbstractExtJsTree extends t3lib_tree_AbstractTree {
+
 	/**
 	 * State Provider
 	 *
@@ -64,3 +65,5 @@ abstract class t3lib_tree_extdirect_AbstractExtJsTree extends t3lib_tree_Abstrac
 	 */
 	abstract public function getNextTreeLevel(t3lib_tree_Node $node);
 }
+
+?>

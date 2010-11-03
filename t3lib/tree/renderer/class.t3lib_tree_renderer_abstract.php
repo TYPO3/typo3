@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_tree_renderer_Abstract {
+abstract class t3lib_tree_Renderer_Abstract {
 	/**
 	 * Renders a node recursive or just a single instance
 	 *

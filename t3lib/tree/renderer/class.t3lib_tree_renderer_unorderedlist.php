@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_tree_renderer_UnorderedList extends t3lib_tree_renderer_Abstract {
+class t3lib_tree_Renderer_UnorderedList extends t3lib_tree_Renderer_Abstract {
 	/**
 	 * recursion level
 	 *
@@ -51,7 +51,7 @@ class t3lib_tree_renderer_UnorderedList extends t3lib_tree_renderer_Abstract {
 		$code = '<li><span class="' . $node->getIcon() .'">&nbsp;</span>' . $node->getLabel();
 		if ($recursive && $node->getChildNodes() !== NULL) {
 			$this->recursionLevel++;
-			$code .= $this->renderCollection($node->getChildNodes());
+			$code .= $this->renderNodeCollection($node->getChildNodes());
 			$this->recursionLevel--;
 
 		}
