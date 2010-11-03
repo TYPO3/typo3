@@ -2233,3 +2233,10 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	padding-left: 100px;
 	background: url(../images/general/donate_teaser.png) no-repeat 25px 10px !important;
 }
+
+.icon-collapse-all {
+    background-image: url("images/tree/collapse-all.gif") !important;
+}
+.icon-expand-all {
+    background-image: url("images/tree/expand-all.gif") !important;
+}
