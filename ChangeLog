@@ -29,7 +29,7 @@
 
 2010-10-31  Steffen Gebert  <steffen@steffen-gebert.de>
 
-        * Fixed bug #15583: Core calls deprecated function tslib_pibase::pi_list_query()
+	* Fixed bug #15583: Core calls deprecated function tslib_pibase::pi_list_query()
 
 2010-10-31  Susanne Moog  <typo3@susanne-moog.de>
 
