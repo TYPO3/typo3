@@ -1970,7 +1970,6 @@ class tslib_cObj {
 
 			// execute each funtion in the predefined order
 			foreach ($sortedConf as $stdWrapName => $enabled) {
-
 				// eliminate the second key of a pair 'key'|'key.' to make sure functions get called only once and check if rendering has been stopped
 				if (!$isExecuted[$stdWrapName] && !$this->stopRendering[$this->stdWrapRecursionLevel]) {
 					$functionName = rtrim($stdWrapName, '.');
@@ -2014,10 +2013,11 @@ class tslib_cObj {
 						);
 					}
 				}
-
-				unset($this->stopRendering[$this->stdWrapRecursionLevel]);
-				$this->stdWrapRecursionLevel--;
 			}
+
+			unset($this->stopRendering[$this->stdWrapRecursionLevel]);
+			$this->stdWrapRecursionLevel--;
+
 		}
 		return $content;
 	}
