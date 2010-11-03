@@ -1,5 +1,6 @@
 2010-11-03  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #15995: Bug: doktype limitation is not applied to alternative page languages (pages_language_overlay) (Thanks to Andreas Kiessling)
 	* Fixed bug #16225: Disable draft workspace and migrate it to a real workspace (Thanks to Tolleiv Nietsch)
 	* Added feature #16228: [Feature] TCA tree (Thanks to Steffen Ritter)
 

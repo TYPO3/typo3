@@ -1623,7 +1623,7 @@ class t3lib_TCEforms_inline {
 				}
 
 					// Removing doktypes with no access:
-				if ($table.'.'.$field == 'pages.doktype')	{
+				if (($table === 'pages' || $table === 'pages_language_overlay') && $field === 'doktype') {
 					if (!($GLOBALS['BE_USER']->isAdmin() || t3lib_div::inList($GLOBALS['BE_USER']->groupData['pagetypes_select'],$p[1])))	{
 						unset($selItems[$tk]);
 					}
