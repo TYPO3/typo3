@@ -1,3 +1,7 @@
+2010-11-04  Steffen Kamper  <steffen@typo3.org>
+
+	* Follow-up to #16228: [Feature] TCA tree
+
 2010-11-03  Steffen Kamper  <steffen@typo3.org>
 
 	* Fixed bug #16190: Optimize stdWrap usage for TypoScript content element COLUMNS (Thanks to Jo Hasenau)

@@ -60,7 +60,7 @@ TYPO3.Components.Tree.StandardTree = function(config) {
 		listeners: {
 			'checkchange': function(checkedNode, checked) {
 				if (Ext.isFunction(this.checkChangeHandler)) {
-				 	this.checkChangeHandler.call(this, checkedNode, checked);
+					this.checkChangeHandler.call(this, checkedNode, checked);
 				}
 			},
 			scope: this
