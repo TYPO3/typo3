@@ -29,6 +29,7 @@
 			<label index="resources">Resources:</label>
 			<label index="editToView">(edit to view, %s lines)</label>
 			<label index="editTemplateRecord">Edit the whole template record</label>
+			<label index="includeTypoScriptFileContent">Include TypoScript file content</label>
 		</languageKey>
 	</data>
 </T3locallang>

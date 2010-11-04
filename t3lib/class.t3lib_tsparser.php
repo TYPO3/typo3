@@ -514,7 +514,7 @@ class t3lib_TSparser {
 					'files' => $includedFiles,
 				);
 			}
-			return '';
+			return "\n###\n### ERROR: Recursion!\n###\n";
 		}
 		$splitStr='<INCLUDE_TYPOSCRIPT:';
 		if (strstr($string,$splitStr))	{
@@ -581,7 +581,137 @@ class t3lib_TSparser {
 		}
 		return $array;
 	}
+	
+	/**
+	 * Search for commented INCLUDE_TYPOSCRIPT statements 
+	 * and save the content between the BEGIN and the END line to the specified file
+	 * 
+	 * @param 	string	template content
+	 * @param 	int		Counter for detecting endless loops
+	 * @return 	string 	template content with uncommented include statements
+	 * @author 	Fabrizio Branca <typo3@fabrizio-branca.de>
+	 */
+	function extractIncludes($string, $cycle_counter=1, $extractedFileNames=array()) {
+		
+		if ($cycle_counter>10) {
+			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags','Core',2);
+			return "\n###\n### ERROR: Recursion!\n###\n";
+		}
+		
+		$fileContent = array();
+		$restContent = array();
+		$fileName = NULL;
+		$inIncludePart = false;
+		$lines = explode("\n", $string);
+		$skipNextLineIfEmpty = false;
+		$openingCommentedIncludeStatement = NULL;
+		foreach ($lines as $line) {
+			
+				// t3lib_TSparser::checkIncludeLines inserts an additional empty line, remove this again
+			if ($skipNextLineIfEmpty) {
+				if (trim($line) == '') {
+					continue;
+				}
+				$skipNextLineIfEmpty = false;
+			}
+			
+			if (!$inIncludePart) { // outside commented include statements
+				
+					// search for beginning commented include statements
+				$matches = array();
+				if (preg_match('/###\s*<INCLUDE_TYPOSCRIPT:\s*source\s*=\s*"\s*FILE\s*:\s*(.*)\s*">\s*BEGIN/i', $line, $matches)) {
+					
+						// save this line in case there is no ending tag
+					$openingCommentedIncludeStatement = trim($line);
+					$openingCommentedIncludeStatement = trim(preg_replace('/### Warning: .*###/', '', $openingCommentedIncludeStatement));
+					
+						// found a commented include statement
+					$fileName = trim($matches[1]);	
+					$inIncludePart = true;
+					
+					$expectedEndTag = '### <INCLUDE_TYPOSCRIPT: source="FILE:'.$fileName.'"> END';
+						// strip all whitespace characters to make comparision safer
+					$expectedEndTag = strtolower(preg_replace('/\s/', '', $expectedEndTag)); 
+				} else {
+						// if this is not a beginning commented include statement this line goes into the rest content
+					$restContent[] = $line;
+				}	
+				
+			} else { // inside commented include statements
+				
+					// search for the matching ending commented include statement
+				$strippedLine = strtolower(preg_replace('/\s/', '', $line));
+				if (strpos($strippedLine, $expectedEndTag) !== false) {
+						
+						// found the matching ending include statement
+					$fileContentString = implode("\n", $fileContent);
+					
+						// write the content to the file
+					$realFileName = t3lib_div::getFileAbsFileName($fileName);
+					
+						// some file checks
+					if (empty($realFileName)) {
+						throw new Exception(sprintf('"%s" is not a valid file location.', $fileName));
+					}
+					
+					if (!is_writable($realFileName)) {
+						throw new Exception(sprintf('"%s" is not writable.', $fileName));
+					}
+					
+					if (in_array($realFileName, $extractedFileNames)) {
+						throw new Exception(sprintf('Recursive/multiple inclusion of file "%s"', $realFileName));
+					}
+					$extractedFileNames[] = $realFileName;
+					
+						// recursive call to detected nested commented include statements
+					$fileContentString = self::extractIncludes($fileContentString, ++$cycle_counter, $extractedFileNames);
+					
+					if (!t3lib_div::writeFile($realFileName, $fileContentString)) {
+						throw new Exception(sprintf('Could not write file "%s"', $realFileName));
+					}
+					
+						// insert reference to the file in the rest content
+					$restContent[] = "<INCLUDE_TYPOSCRIPT: source=\"FILE:$fileName\">";
+					
+						// reset variables (preparing for the next commented include statement)
+					$fileContent = array();
+					$fileName = NULL;
+					$inIncludePart = false;
+					$openingCommentedIncludeStatement = NULL;
+						// t3lib_TSparser::checkIncludeLines inserts an additional empty line, remove this again
+					$skipNextLineIfEmpty = true;
+				} else {
+						// if this is not a ending commented include statement this line goes into the file content
+					$fileContent[] = $line;
+				}
+				
+			}
+			
+		}
+		
+			// if we're still inside commented include statements copy the lines back to the rest content
+		if ($inIncludePart) {
+			$restContent[] = $openingCommentedIncludeStatement . ' ### Warning: Corresponding end line missing! ###';
+			$restContent = array_merge($restContent, $fileContent);
+		}
+		
+		$restContentString = implode("\n", $restContent);
+		return $restContentString;
+	}
 
+	/**
+	 * Processes the string in each value of the input array with extractIncludes
+	 *
+	 * @param	array		Array with TypoScript in each value
+	 * @return	array		Same array but where the values has been processed with extractIncludes
+	 * @author 	Fabrizio Branca <typo3@fabrizio-branca.de>
+	 */
+	function extractIncludes_array($array)	{
+		foreach ($array as $k => $v) {
+			$array[$k]=t3lib_TSparser::extractIncludes($array[$k]);
+		}
+		return $array;
+	}
 
 
 

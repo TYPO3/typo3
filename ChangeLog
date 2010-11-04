@@ -1,3 +1,7 @@
+2010-11-04  Tobias Liebig  <mail_typo3@etobi.de>
+
+	* added feature #16183: Edit TypoScript file content in t3editor (Thanks to Fabrizio Branca)
+
 2010-11-04  Steffen Kamper  <steffen@typo3.org>
 
 	* Follow-up to #16228: [Feature] TCA tree

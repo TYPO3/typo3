@@ -53,7 +53,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
 	public $tce_processed = false;  // indicator for t3editor, whether data is stored
-
+	
 	/**
 	 * Creates a row for a HTML table
 	 *
@@ -152,7 +152,39 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		$tmpl->init();
 
 		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
+		$tplRow = $this->processTemplateRowAfterLoading($tplRow);
 		return (is_array($tplRow) ? true : false);
+	}
+	
+	/**
+	 * Process template row after loading
+	 * 
+	 * @param 	array 	$tplRow: template row
+	 * @return 	array	preprocessed template row
+	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
+	 */
+	function processTemplateRowAfterLoading(array $tplRow) {
+		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {
+				// Let the recursion detection counter start at 91, so that only 10 recursive calls will be resolved
+				// Otherwise the editor will be bloated with way to many lines making it hard the break the cyclic recursion.
+			$tplRow['config'] = t3lib_TSparser::checkIncludeLines($tplRow['config'], 91);
+			$tplRow['constants'] = t3lib_TSparser::checkIncludeLines($tplRow['constants'], 91);
+		}
+		return $tplRow;
+	}
+	
+	/**
+	 * Process template row before saving
+	 * 
+	 * @param 	array 	$tplRow: template row
+	 * @return 	array	preprocessed template row
+	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
+	 */
+	function processTemplateRowBeforeSaving(array $tplRow) {
+		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {
+			$tplRow = t3lib_TSparser::extractIncludes_array($tplRow);
+		}
+		return $tplRow;
 	}
 
 	/**
@@ -163,6 +195,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	function main()	{
 		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 		global $tmpl,$tplRow,$theConstants;
+		
+		$this->pObj->MOD_MENU['includeTypoScriptFileContent'] = true;
 
 		$edit = $this->pObj->edit;
 		$e = $this->pObj->e;
@@ -274,6 +308,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$recData['sys_template'][$saveId]['resources'] = $resList;
 				}
 				if (count($recData))	{
+					
+					$recData['sys_template'][$saveId] = $this->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
+					
 						// Create new  tce-object
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
@@ -413,6 +450,19 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			if ($e['constants'])	{
 				$outCode = '<textarea name="data[constants]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['constants']).'</textarea>';
 				$outCode.= '<input type="Hidden" name="e[constants]" value="1">';
+				
+					// Display "Include TypoScript file content?" checkbox
+				$outCode .= t3lib_BEfunc::getFuncCheck(
+					$this->pObj->id, 
+					'SET[includeTypoScriptFileContent]', 
+					$this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], 
+					'index.php', 
+					'&e[constants]=1', 
+					'id="checkIncludeTypoScriptFileContent"'
+				);
+				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
+				
+				
 				$theOutput.= $this->pObj->doc->spacer(15);
 				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants'), '');
 				$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
@@ -445,6 +495,18 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 			}
 			if ($e['config'])	{
 				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
+				$outCode.= '<input type="Hidden" name="e[config]" value="1">';
+				
+					// Display "Include TypoScript file content?" checkbox
+				$outCode .= t3lib_BEfunc::getFuncCheck(
+					$this->pObj->id, 
+					'SET[includeTypoScriptFileContent]', 
+					$this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], 
+					'index.php', 
+					'&e[config]=1', 
+					'id="checkIncludeTypoScriptFileContent"'
+				);
+				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
 
 				if (t3lib_extMgm::isLoaded('tsconfig_help'))	{
 					$url = $BACK_PATH.'wizard_tsconfig.php?mode=tsref';
@@ -455,12 +517,11 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$outCode.= '<a href="#" onClick="vHWin=window.open(\''.$url.t3lib_div::implodeArrayForUrl('', array('P' => $params)).'\',\'popUp'.$md5ID.'\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">'.t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open', array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef', true))) . '</a>';
 				}
 
-				$outCode.= '<input type="Hidden" name="e[config]" value="1">';
 				$theOutput.= $this->pObj->doc->spacer(15);
 				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup'), '');
 				$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
 			}
-
+			
 				// Processing:
 			$outCode = '';
 			$outCode.= $this->tableRow(
