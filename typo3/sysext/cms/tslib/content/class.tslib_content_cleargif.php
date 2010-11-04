@@ -42,18 +42,40 @@ class tslib_content_ClearGif extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		$w = $this->cObj->stdWrap($conf['width'], $conf['width.']);
-		$h = $this->cObj->stdWrap($conf['height'], $conf['height.']);
-		$w = $w ? $w : 1;
-		$h = $h ? $h : 1;
-		$wrap = $conf['wrap'] ? $conf['wrap'] : '|<br />';
-		$theValue = $this->cObj->wrap(
-			'<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $w . '" height="' . $h . '"' .
-			$this->cObj->getBorderAttr(' border="0"') . ' alt="" title="" />',
-			$wrap
-		);
 
-		return $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		$width = isset($conf['width.'])
+				? $this->cObj->stdWrap($conf['width'], $conf['width.'])
+				: $conf['width'];
+		if (!$width) {
+			$width = 1;
+		}
+		$height = isset($conf['height.'])
+				? $this->cObj->stdWrap($conf['height'], $conf['height.'])
+				: $conf['height'];
+		if (!$height) {
+			$height = 1;
+		}
+		$wrap = isset($conf['wrap.'])
+				? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.'])
+				: $conf['wrap'];
+		if (!$wrap) {
+			$wrap = '|<br />';
+		}
+		$theValue = $this->cObj->wrap(
+			'<img
+			src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
+			width="' . $width . '"
+			height="' . $height . '"' .
+			$this->cObj->getBorderAttr(' border="0"') . '
+			alt="" />',
+			$wrap);
+
+		if (isset($conf['stdWrap.'])) {
+			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		}
+
+		return $theValue;
+
 	}
 
 }

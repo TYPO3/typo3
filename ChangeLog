@@ -1,5 +1,6 @@
 2010-11-03  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16189: Optimize stdWrap usage for TypoScript content element CLEARGIF (Thanks to Jo Hasenau)
 	* Fixed bug #16217: Regression : Typoscript "required" did not work anymore (Thanks to Jo Hasenau)
 	* Fixed bug #16227: Optimize stdWrap usage for TypoScript content element HTML (Thanks to Jo Hasenau)
 	* Fixed bug #16226: Optimize stdWrap usage for TypoScript content element HRULER (Thanks to Jo Hasenau)
