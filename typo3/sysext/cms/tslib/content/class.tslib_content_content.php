@@ -49,17 +49,51 @@ class tslib_content_Content extends tslib_content_Abstract {
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
-		$conf['table'] = trim($this->cObj->stdWrap($conf['table'], $conf['table.']));
-		if ($conf['table'] == 'pages' || substr($conf['table'], 0, 3) == 'tt_' || substr($conf['table'], 0, 3) == 'fe_' || substr($conf['table'], 0, 3) == 'tx_' || substr($conf['table'], 0, 4) == 'ttx_' || substr($conf['table'], 0, 5) == 'user_' || substr($conf['table'], 0, 7) == 'static_') {
+		$conf['table'] = isset($conf['table.'])
+			? trim($this->cObj->stdWrap($conf['table'], $conf['table.']))
+			: trim($conf['table']);
+		$tablePrefix = t3lib_div::trimExplode('_', $conf['table'], TRUE);
+		if (t3lib_div::inList('pages,tt,fe,tx,ttx,user,static', $tablePrefix[0])) {
 
-			$renderObjName = $conf['renderObj'] ? $conf['renderObj'] : '<' . $conf['table'];
-			$renderObjKey = $conf['renderObj'] ? 'renderObj' : '';
+			$renderObjName = $conf['renderObj']
+				? $conf['renderObj']
+				: '<' . $conf['table'];
+			$renderObjKey = $conf['renderObj']
+				? 'renderObj'
+				: '';
 			$renderObjConf = $conf['renderObj.'];
 
-			$slide = intval($conf['slide']) ? intval($conf['slide']) : 0;
-			$slideCollect = intval($conf['slide.']['collect']) ? intval($conf['slide.']['collect']) : 0;
-			$slideCollectReverse = intval($conf['slide.']['collectReverse']) ? TRUE : FALSE;
-			$slideCollectFuzzy = $slideCollect ? (intval($conf['slide.']['collectFuzzy']) ? TRUE : FALSE) : TRUE;
+			$slide = isset($conf['slide.'])
+				? intval($this->cObj->stdWrap($conf['slide'], $conf['slide.']))
+				: intval($conf['slide']);
+			if(!$slide) {
+				$slide = 0;
+			}
+
+			if(isset($conf['slide.'])) {
+				$slideCollect = isset($conf['slide.']['collect.'])
+					? intval($this->cObj->stdWrap($conf['slide.']['collect'], $conf['slide.']['collect.']))
+					: intval($conf['slide.']['collect']);
+				if(!$slideCollect) {
+					$slideCollect = 0;
+				}
+
+				$slideCollectReverse = isset($conf['slide.']['collectReverse.'])
+					? intval($this->cObj->stdWrap($conf['slide.']['collectReverse'], $conf['slide.']['collectReverse.']))
+					: intval($conf['slide.']['collectReverse']);
+				$slideCollectReverse = $slideCollectReverse ? TRUE : FALSE;
+
+				$slideCollectFuzzy = isset($conf['slide.']['collectFuzzy.'])
+					? intval($this->cObj->stdWrap($conf['slide.']['collectFuzzy'], $conf['slide.']['collectFuzzy.']))
+					: intval($conf['slide.']['collectFuzzy']);
+
+				if(!$slideCollectFuzzy) {
+					$slideCollectFuzzy = FALSE;
+				} else if ($slideCollect) {
+					$slideCollectFuzzy = TRUE;
+				};
+			}
+
 			$again = FALSE;
 
 			do {
@@ -97,6 +131,7 @@ class tslib_content_Content extends tslib_content_Abstract {
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}
+
 				if ($slideCollectReverse) {
 					$theValue = $cobjValue . $theValue;
 				} else {
@@ -113,14 +148,24 @@ class tslib_content_Content extends tslib_content_Abstract {
 					$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
 				}
 			} while ($again && (($slide && !strlen($tmpValue) && $slideCollectFuzzy) || ($slide && $slideCollect)));
+
 		}
 
-		$theValue = $this->cObj->wrap($theValue, $conf['wrap']);
-		if ($conf['stdWrap.'])
+		$wrap = isset($conf['wrap.'])
+			? $this->cObj->stdWrap($conf['wrap'],$conf['wrap.'])
+			: $conf['wrap'];
+		if($wrap) {
+			$theValue = $this->cObj->wrap($theValue, $wrap);
+		}
+
+		if (isset($conf['stdWrap.'])) {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+		}
 
 		$GLOBALS['TSFE']->currentRecord = $originalRec; // Restore
+
 		return $theValue;
+
 	}
 
 }
