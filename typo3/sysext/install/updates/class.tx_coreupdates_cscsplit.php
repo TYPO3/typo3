@@ -137,7 +137,12 @@ class tx_coreupdates_cscsplit {
 							$includedTemplates[$j] = 'EXT:css_styled_content/static/v4.3/';
 							$templateNeedsUpdate = true;
 						}
-					} elseif ($compatVersion === $currentVersion || $compatVersion > '4.3') {
+					} elseif ($compatVersion <= t3lib_div::int_from_ver('4.4')) {
+						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/v4.4/') {
+							$includedTemplates[$j] = 'EXT:css_styled_content/static/v4.4/';
+							$templateNeedsUpdate = true;
+						}
+					} elseif ($compatVersion === $currentVersion || $compatVersion > '4.5') {
 						if ($includedTemplates[$j] != 'EXT:css_styled_content/static/') {
 							$includedTemplates[$j] = 'EXT:css_styled_content/static/';
 							$templateNeedsUpdate = true;

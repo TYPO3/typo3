@@ -1,6 +1,7 @@
 2010-11-04  Susanne Moog <typo3@susanne-moog.de>
 
 	* Added feature #1333: stdWrap.age should differenciate between singular/plural
+	* Added feature #6147: Sitemaps/Menu of subpages with active state - Prerequisite (Part I): new csc version template
 
 2010-11-04  Steffen Gebert  <steffen@steffen-gebert.de>
 
