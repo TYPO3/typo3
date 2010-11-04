@@ -44,9 +44,13 @@ class tslib_content_ContentObjectArray_Internal extends tslib_content_Abstract {
 	public function render($conf = array()) {
 		if (is_array($conf)) {
 			$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
+			$includeLibs = isset($conf['includeLibs.'])
+				? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.'])
+				: $conf['includeLibs'];
+
 			$content = '<!--' . $substKey . '-->';
 			$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array (
-				'file' => $conf['includeLibs'],
+				'file' => $includeLibs,
 				'conf' => $conf,
 				'cObj' => serialize($this->cObj),
 				'type' => 'COA'
