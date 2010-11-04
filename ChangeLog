@@ -1,3 +1,7 @@
+2010-11-04  Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #15656: indexed_search: Template corrections of #14130 not applied to the CSS template (Thanks to Lorenz Ulrich)
+
 2010-11-04  Tobias Liebig  <mail_typo3@etobi.de>
 
 	* added feature #16183: Edit TypoScript file content in t3editor (Thanks to Fabrizio Branca)
