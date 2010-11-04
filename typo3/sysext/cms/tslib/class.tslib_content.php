@@ -6260,21 +6260,29 @@ class tslib_cObj {
 	 */
 	function calcAge($seconds, $labels) {
 		if (t3lib_div::testInt($labels)) {
-			$labels = ' min| hrs| days| yrs';
+			$labels = ' min| hrs| days| yrs| min| hour| day| year';
 		} else {
 			$labels = str_replace('"', '', $labels);
 		}
 
 		$labelArr = explode('|', $labels);
+		if (count($labelArr) == 4) {
+			$labelArr = array_merge($labelArr, $labelArr);
+		}
 		$absSeconds = abs($seconds);
+		$sign = ($seconds > 0 ? 1 : -1);
 		if ($absSeconds < 3600) {
-			$seconds = round($seconds / 60) . $labelArr[0];
+			$val = round($absSeconds / 60);
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[4] : $labelArr[0]);
 		} elseif ($absSeconds < 24 * 3600) {
-			$seconds = round($seconds / 3600) . $labelArr[1];
+			$val = round($absSeconds / 3600);
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[5] : $labelArr[1]);
 		} elseif ($absSeconds < 365 * 24 * 3600) {
-			$seconds = round($seconds / (24 * 3600)) . $labelArr[2];
+			$val = round($absSeconds / (24 * 3600));
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[6] : $labelArr[2]);
 		} else {
-			$seconds = round($seconds / (365 * 24 * 3600)) . $labelArr[3];
+			$val = round($absSeconds / (365 * 24 * 3600));
+			$seconds = ($sign * $val) . ($val == 1 ? $labelArr[7] : $labelArr[3]);
 		}
 		return $seconds;
 	}
