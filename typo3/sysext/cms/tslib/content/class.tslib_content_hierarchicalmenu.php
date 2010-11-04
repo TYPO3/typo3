@@ -42,13 +42,19 @@ class tslib_content_HierarchicalMenu extends tslib_content_Abstract {
 	 * @return	string		Output
 	 */
 	public function render($conf = array()) {
-		$content = '';
+
+		$theValue = '';
+
 		if ($this->cObj->checkIf($conf['if.'])) {
+
 			$cls = strtolower($conf[1]);
+
 			if (t3lib_div::inList($GLOBALS['TSFE']->tmpl->menuclasses, $cls)) {
-				if ($conf['special.']['value.']) {
+
+				if (isset($conf['special.']['value.'])) {
 					$conf['special.']['value'] = $this->cObj->stdWrap($conf['special.']['value'], $conf['special.']['value.']);
 				}
+
 				$GLOBALS['TSFE']->register['count_HMENU']++;
 				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
 				$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['WMid'] = array();
@@ -58,14 +64,26 @@ class tslib_content_HierarchicalMenu extends tslib_content_Abstract {
 				$menu->parent_cObj = $this->cObj;
 				$menu->start($GLOBALS['TSFE']->tmpl, $GLOBALS['TSFE']->sys_page, '', $conf, 1);
 				$menu->makeMenu();
-				$content .= $menu->writeMenu();
+
+				$theValue .= $menu->writeMenu();
+
 			}
-			if ($conf['wrap'])
-				$content = $this->cObj->wrap($content, $conf['wrap']);
-			if ($conf['stdWrap.'])
-				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
+
+			$wrap =  isset($conf['wrap.'])
+				? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.'])
+				: $conf['wrap'];
+			if ($wrap) {
+				$theValue = $this->cObj->wrap($theValue, $wrap);
+			}
+
+			if (isset($conf['stdWrap.'])) {
+				$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
+			}
+
 		}
-		return $content;
+
+		return $theValue;
+
 	}
 
 }
