@@ -45,18 +45,21 @@ class tslib_content_Columns extends tslib_content_Abstract {
 		$content = '';
 		if (is_array($conf) && $this->cObj->checkIf($conf['if.'])) {
 			$tdRowCount = 0;
-			$tableParams = $conf['tableParams'] ? ' ' . $conf['tableParams'] : ' border="0" cellspacing="0" cellpadding="0"';
-			$TDparams = $conf['TDparams'] ? ' ' . $conf['TDparams'] : ' valign="top"';
-			$rows = t3lib_div::intInRange($conf['rows'], 2, 20);
-			$totalWidth = intval($conf['totalWidth']);
+			$tableParams = isset($conf['tableParams.']) ? $this->cObj->stdWrap($conf['tableParams'], $conf['tableParams.']) : $conf['tableParams'];
+			$tableParams = $tableParams ? ' ' . $tableParams : ' border="0" cellspacing="0" cellpadding="0"';
+			$TDParams = isset($conf['TDParams.']) ? $this->cObj->stdWrap($conf['TDParams'], $conf['TDParams.']) : $conf['TDParams'];
+			$TDparams = $TDparams ? ' ' . $TDparams : ' valign="top"';
+			$rows = isset($conf['rows.']) ? $this->cObj->stdWrap($conf['rows'], $conf['rows.']) : $conf['rows'];
+			$rows = t3lib_div::intInRange($rows, 2, 20);
+			$totalWidth = isset($conf['totalWidth.']) ? intval($this->cObj->stdWrap($conf['totalWidth'], $conf['totalWidth.'])) : intval($conf['totalWidth']);
 			$columnWidth = 0;
 
 			$totalGapWidth = 0;
 			$gapData = array(
-				'gapWidth' => $this->cObj->stdWrap($conf['gapWidth'], $conf['gapWidth.']),
-				'gapBgCol' => $this->cObj->stdWrap($conf['gapBgCol'], $conf['gapBgCol.']),
-				'gapLineThickness' => $this->cObj->stdWrap($conf['gapLineThickness'], $conf['gapLineThickness.']),
-				'gapLineCol' => $this->cObj->stdWrap($conf['gapLineCol'], $conf['gapLineCol.']),
+				'gapWidth' => isset($conf['gapWidth.']) ? $this->cObj->stdWrap($conf['gapWidth'], $conf['gapWidth.']) : $conf['gapWidth'],
+				'gapBgCol' => isset($conf['gapBgCol.']) ? $this->cObj->stdWrap($conf['gapBgCol'], $conf['gapBgCol.']) : $conf['gapBgCol'],
+				'gapLineThickness' => isset($conf['gapLineThickness.']) ? $this->cObj->stdWrap($conf['gapLineThickness'], $conf['gapLineThickness.']) : $conf['gapLineThickness'],
+				'gapLineCol' => isset($conf['gapLineCol.']) ? $this->cObj->stdWrap($conf['gapLineCol'], $conf['gapLineCol.']) : $conf['gapLineCol'],
 			);
 			$gapData = $GLOBALS['TSFE']->tmpl->splitConfArray($gapData, $rows - 1);
 			foreach ($gapData as $val) {
@@ -108,8 +111,10 @@ class tslib_content_Columns extends tslib_content_Abstract {
 			}
 			$content = '<tr>' . $content . '</tr>';
 			$content = '<table' . $tableParams . '>' . $content . '</table>';
-			$content .= $this->cObj->cObjGetSingle($conf['after'], $conf['after.'], 'after');
-			if ($conf['stdWrap.']) {
+			if($conf['after'] || isset($conf['after.'])) {
+				$content .= $this->cObj->cObjGetSingle($conf['after'], $conf['after.'], 'after');
+			}
+			if (isset($conf['stdWrap.'])) {
 				$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 			}
 		}
