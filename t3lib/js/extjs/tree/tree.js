@@ -190,7 +190,7 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 	this.suspendEvents();
 
 	if (this.tcaExclusiveKeys.length) {
-		if (checked = true && exclusiveKeys.indexOf(uid) > -1) {
+		if (checked === true && exclusiveKeys.indexOf(uid) > -1) {
 				// this key is exclusive, so uncheck all others
 			this.root.cascade(function(node) {
 				if (node !== checkedNode && node.attributes.checked) {
@@ -199,7 +199,7 @@ TYPO3.Components.Tree.TcaCheckChangeHandler = function(checkedNode, checked) {
 				}
 			});
 			this.exclusiveSelectedKey = uid;
-		} else if (checked = true && exclusiveKeys.indexOf(uid) === -1 && !Ext.isEmpty(this.exclusiveSelectedKey)) {
+		} else if (checked === true && exclusiveKeys.indexOf(uid) === -1 && !Ext.isEmpty(this.exclusiveSelectedKey)) {
 				// this key is exclusive, so uncheck all others
 			this.root.cascade(function(node) {
 				if (exclusiveKeys.indexOf('' + node.attributes.uid) > -1) {
