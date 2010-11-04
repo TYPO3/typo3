@@ -86,7 +86,7 @@ var ShortcutMenu = Class.create({
 			// activate delete icon
 		$$('.shortcut-delete img').each(function(element) {
 			element.observe('click', function(event) {
-				if (confirm('Do you really want to remove this shortcut?')) {
+				if (confirm('Do you really want to remove this bookmark?')) {
 					var deleteControl = event.element();
 					var shortcutId = deleteControl.up('tr.shortcut').identify().slice(9);
 

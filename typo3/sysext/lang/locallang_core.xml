@@ -9,6 +9,7 @@
 			<label index="labels.openInNewWindow">Open in new window</label>
 			<label index="labels.goBack">Go back</label>
 			<label index="labels.makeShortcut">Create a shortcut to this page?</label>
+			<label index="labels.makeBookmark">Create a bookmark to this page</label>
 			<label index="labels.lockedRecord">The user '%s' began to edit this record %s ago.</label>
 			<label index="labels.lockedRecord_content">The user '%s' began to edit content on this page %s ago.</label>
 			<label index="labels.lockedRecordUser">The %s '%s' began to edit this record %s ago.</label>
@@ -270,6 +271,11 @@ Would you like to save now in order to refresh the display?</label>
 			<label index="toolbarItems.shortcutsGroup">Shortcut Group</label>
 			<label index="toolbarItems.shortcutsEdit">Edit Shortcut</label>
 			<label index="toolbarItems.shortcutsDelete">Delete Shortcut</label>
+			<label index="toolbarItems.bookmarks">Bookmarks</label>
+			<label index="toolbarItems.bookmark">Bookmark</label>
+			<label index="toolbarItems.bookmarksGroup">Bookmark group</label>
+			<label index="toolbarItems.bookmarksEdit">Edit bookmark</label>
+			<label index="toolbarItems.bookmarksDelete">Delete bookmark</label>
 			<label index="toolbarItems.search">Search</label>
 			<label index="toolbarItems.workspace">Workspace</label>
 			<label index="tabs.closeAll">Close All Tabs</label>

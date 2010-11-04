@@ -320,10 +320,10 @@ class SC_alt_db_navframe {
 		if ($GLOBALS['BE_USER']->workspace!==0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))	{
 			switch($GLOBALS['BE_USER']->workspace)	{
 				case 0:
-					$wsTitle = '&nbsp;'.$this->doc->icons(2).'['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_onlineWS',1).']';
+					$wsTitle = '&nbsp;'.$this->doc->icons(2).'['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:bookmark_onlineWS',1).']';
 				break;
 				case -1:
-					$wsTitle = '['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:shortcut_offlineWS',1).']';
+					$wsTitle = '['.$LANG->sL('LLL:EXT:lang/locallang_misc.xml:bookmark_offlineWS',1).']';
 				break;
 				default:
 					$wsTitle = '['.$GLOBALS['BE_USER']->workspace.'] '.htmlspecialchars($GLOBALS['BE_USER']->workspaceRec['title']);

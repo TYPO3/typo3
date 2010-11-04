@@ -439,6 +439,18 @@ EXT:lang/cshimages/core_68.png,</label>
 You will have to confirm the creation of the shortcut. It is nothing dangerous - only annoying to clean up if you happen to create shortcuts against your own will. Just answer &quot;OK&quot; here.
 When you answer &quot;OK&quot; you should immediately see the shortcut frame reload and a new icon (the module icon) appear. If you click this icon you will now jump to the page you created the shortcut from!
 You can name shortcuts, you can even group them and share them. If you want to edit or delete a shortcut you select the &quot;Edit&quot; checkbox and then click the shortcut icon. This will reload the shortcut frame so you get a field for entering a title. You can also delete all shortcuts in a &quot;group&quot; - here, just click the &quot;0&quot; (zero) to the left of the icons and you will remove all shortcuts in the group.</label>
+			<label index="bookmarks.alttitle">Backend Bookmarks</label>
+			<label index="bookmarks.description">You can create bookmarks to modules in TYPO3 quite easily. The treat is that you can jump between screens in TYPO3 in &lt;em&gt;one&lt;/em&gt; click rather than multiple clicks through backend modules etc. The frame also contains a field for entering a page or record id to edit or just search records.</label>
+			<label index="bookmarks.details">In order to create a bookmark it must be supported by the module you want to create the bookmark to. Whether bookmarks are supported can be seen in the top of a module. If there is a small star icon you can click it to create the bookmark.</label>
+			<label index="_bookmarks.seeAlso">User TSconfig -&gt;SETUP | http://typo3.org/documentation/document-library/doc_core_tsconfig/OPTIONS/</label>
+			<label index="_bookmarks.image">EXT:lang/cshimages/core_64.png,
+EXT:lang/cshimages/core_65.png,
+EXT:lang/cshimages/core_67.png,
+EXT:lang/cshimages/core_68.png,</label>
+			<label index="bookmarks.image_descr">To create a bookmark to a page, just click the star icon usually found in the top of pages.
+You will have to confirm the creation of the bookmark. It is nothing dangerous - only annoying to clean up if you happen to create bookmarks against your own will. Just answer &quot;OK&quot; here.
+When you answer &quot;OK&quot; you should immediately see the bookmark icon in the toolbar reloading and, after opening the menu, the new entry appear. If you click this entry, you will now jump to the page you created the bookmark from!
+You can name bookmarks, you can even group them and share them. If you want to edit or delete a bookmark you select the &quot;Edit&quot; checkbox and then click the bookmark icon.</label>
 			<label index="workspaceSelector.alttitle">Workspace Selector</label>
 			<label index="workspaceSelector.description">By this selectorbox you can switch between the workspaces available to you. When you switch workspace the whole backend will reload.</label>
 			<label index="workspaceSelector.details">There are two basic workspace types in TYPO3: The &quot;Live&quot; workspace and a number of &quot;Draft&quot; workspaces.

@@ -111,7 +111,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return	string		workspace selector as HTML select
 	 */
 	public function render() {
-		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcuts', true);
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', true);
 		$this->addJavascriptToBackend();
 
 		$shortcutMenu = array();
@@ -133,9 +133,9 @@ class ShortcutMenu implements backend_toolbarItem {
 	 */
 	public function renderMenu() {
 
-		$shortcutGroup  = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcutsGroup', true);
-		$shortcutEdit   = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcutsEdit', true);
-		$shortcutDelete = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcutsDelete', true);
+		$shortcutGroup  = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksGroup', true);
+		$shortcutEdit   = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksEdit', true);
+		$shortcutDelete = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksDelete', true);
 
 		$groupIcon  = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/sysf.gif', 'width="18" height="16"').' title="'.$shortcutGroup.'" alt="'.$shortcutGroup.'" />';
 		$editIcon   = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/edit2.gif', 'width="11" height="12"').' title="'.$shortcutEdit.'" alt="'.$shortcutEdit.'"';
@@ -196,11 +196,11 @@ class ShortcutMenu implements backend_toolbarItem {
 
 		if(count($shortcutMenu) == 1) {
 				//no shortcuts added yet, show a small help message how to add shortcuts
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcuts', true);
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', true);
 			$icon = t3lib_iconWorks::getSpriteIcon('actions-system-shortcut-new', array(
 				'title' => $title
 			));
-			$label = str_replace('%icon%', $icon, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:shortcutDescription'));
+			$label = str_replace('%icon%', $icon, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:bookmarkDescription'));
 
 			$shortcutMenu[] = '<tr><td style="padding:1px 2px; color: #838383;">'.$label.'</td></tr>';
 		}
@@ -411,24 +411,24 @@ class ShortcutMenu implements backend_toolbarItem {
 			$label = $groupLabel;
 
 			if($groupLabel == '1') {
-				$label = $GLOBALS['LANG']->getLL('shortcut_group_'.abs($groupId), 1);
+				$label = $GLOBALS['LANG']->getLL('bookmark_group_'.abs($groupId), 1);
 
 				if(empty($label)) {
 						// fallback label
-					$label = $GLOBALS['LANG']->getLL('shortcut_group', 1).' '.abs($groupId);
+					$label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.abs($groupId);
 				}
 			}
 
 			if($groupId < 0) {
 					// global group
-				$label = $GLOBALS['LANG']->getLL('shortcut_global', 1).': '.
+				$label = $GLOBALS['LANG']->getLL('bookmark_global', 1).': '.
 					(!empty($label) ?
 						$label :
 						abs($groupId)
 					);
 
 				if($groupId == -100) {
-					$label = $GLOBALS['LANG']->getLL('shortcut_global', 1).': '.$GLOBALS['LANG']->getLL('shortcut_all', 1);
+					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1).': '.$GLOBALS['LANG']->getLL('bookmark_all', 1);
 				}
 			}
 

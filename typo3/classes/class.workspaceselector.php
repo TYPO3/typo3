@@ -146,10 +146,10 @@ class WorkspaceSelector implements backend_toolbarItem {
 
 			// add default workspaces
 		if($GLOBALS['BE_USER']->checkWorkspace(array('uid' => 0))) {
-			$availableWorkspaces[0] = '['.$GLOBALS['LANG']->getLL('shortcut_onlineWS').']';
+			$availableWorkspaces[0] = '['.$GLOBALS['LANG']->getLL('bookmark_onlineWS').']';
 		}
 		if ($GLOBALS['BE_USER']->checkWorkspace(array('uid' => -1))) {
-			$availableWorkspaces[-1] = '['.$GLOBALS['LANG']->getLL('shortcut_offlineWS').']';
+			$availableWorkspaces[-1] = '['.$GLOBALS['LANG']->getLL('bookmark_offlineWS').']';
 		}
 
 			// add custom workspaces (selecting all, filtering by BE_USER check):
@@ -186,7 +186,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 		$stateCheckedIcon = t3lib_iconWorks::getSpriteIcon('status-status-checked');
 
 		$stateUncheckedIcon = t3lib_iconWorks::getSpriteIcon('empty-empty', array(
-			'title' => $GLOBALS['LANG']->getLL('shortcut_inactive')
+			'title' => $GLOBALS['LANG']->getLL('bookmark_inactive')
 		));
 
 		$workspaceMenu[] = '<a href="#" class="toolbar-item">' .
@@ -210,7 +210,7 @@ class WorkspaceSelector implements backend_toolbarItem {
 			}
 		} else {
 			$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
-				$GLOBALS['LANG']->getLL('shortcut_noWSfound', true) .
+				$GLOBALS['LANG']->getLL('bookmark_noWSfound', true) .
 				'</li>';
 		}
 
@@ -223,12 +223,12 @@ class WorkspaceSelector implements backend_toolbarItem {
 		$workspaceMenu[] = '<li class="divider">' . $frontendPreviewActiveIcon .
 			'<a href="backend.php?changeWorkspacePreview=' .
 			($GLOBALS['BE_USER']->user['workspace_preview'] ? '0' : '1') .
-			'" id="frontendPreviewToggle">' . $GLOBALS['LANG']->getLL('shortcut_FEPreview', true) . '</a></li>';
+			'" id="frontendPreviewToggle">' . $GLOBALS['LANG']->getLL('bookmark_FEPreview', true) . '</a></li>';
 
 			// go to workspace module link
 		$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' .
 			'<a href="' . t3lib_extMgm::extRelPath('version') . 'ws/index.php" target="content" id="goToWsModule">' .
-			' '. $GLOBALS['LANG']->getLL('shortcut_workspace', true) . '</a></li>';
+			' '. $GLOBALS['LANG']->getLL('bookmark_workspace', true) . '</a></li>';
 
 		$workspaceMenu[] = '</ul>';
 
