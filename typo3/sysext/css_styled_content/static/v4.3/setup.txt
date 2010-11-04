@@ -1396,11 +1396,16 @@ tt_content.menu {
 			1 = TMENU
 			1 {
 				target = {$PAGE_TARGET}
+				NO = 1
 				NO {
 					stdWrap.htmlSpecialChars = 1
 					wrapItemAndSub = <li>|</li>
 					ATagTitle.field = description // title
 				}
+				ACT < .NO
+				ACT.wrapItemAndSub = <li class="csc-menu-active">|</li>
+				CUR < .ACT
+				CUR.wrapItemAndSub = <li class="csc-menu-current">|</li>
 				noBlur = 1
 			}
 		}
@@ -1422,11 +1427,16 @@ tt_content.menu {
 				noBlur = 1
 				expAll = 1
 				wrap = <ul>|</ul>
+				NO = 1
 				NO {
 					stdWrap.htmlSpecialChars = 1
 					wrapItemAndSub = <li>|</li>
 					ATagTitle.field = description // title
 				}
+				ACT < .NO
+				ACT.wrapItemAndSub = <li class="csc-menu-active">|</li>
+				CUR < .ACT
+				CUR.wrapItemAndSub = <li class="csc-menu-current">|</li>
 			}
 			2 < .1
 			3 < .1
@@ -1459,16 +1469,29 @@ tt_content.menu {
 		4 < .1
 		4 {
 			wrap = <dl class="csc-menu csc-menu-4">|</dl>
-			1.NO {
-				wrapItemAndSub >
-				linkWrap = <dt>|</dt>
-				after {
-					data = field : abstract // field : description // field : subtitle
-					required = 1
-					htmlSpecialChars = 1
-					wrap = <dd>|</dd>
+			1 {
+				NO = 1
+				NO {
+					wrapItemAndSub >
+					linkWrap = <dt>|</dt>
+					after {
+						data = field : abstract // field : description // field : subtitle
+						required = 1
+						htmlSpecialChars = 1
+						wrap = <dd>|</dd>
+					}
+					ATagTitle.field = description // title
 				}
-				ATagTitle.field = description // title
+				ACT < .NO
+				ACT {
+					linkWrap = <dt class="csc-menu-active">|</dt>
+					after.wrap = <dd class="csc-menu-active">|</dd>
+				}
+				CUR < .ACT
+				CUR {
+					linkWrap = <dt class="csc-menu-current">|</dt>
+					after.wrap = <dd class="csc-menu-current">|</dd>
+				}
 			}
 		}
 	
