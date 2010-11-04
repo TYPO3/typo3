@@ -47,10 +47,11 @@ class tslib_content_ContentObjectArray extends tslib_content_Abstract {
 			if ($this->cObj->checkIf($conf['if.'])) {
 				$this->cObj->includeLibs($conf);
 				$content = $this->cObj->cObjGet($conf);
-				if ($conf['wrap']) {
-					$content = $this->cObj->wrap($content, $conf['wrap']);
+				$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
+				if ($wrap) {
+					$content = $this->cObj->wrap($content, $wrap);
 				}
-				if ($conf['stdWrap.']) {
+				if (isset($conf['stdWrap.'])) {
 					$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 				}
 			}
