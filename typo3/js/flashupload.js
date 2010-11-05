@@ -282,6 +282,7 @@ Ext.onReady(function() {
 			swfConfig.post_params.vC         = top.TS.veriCode;
 			swfConfig.file_types_description = Ext.value(this.uploadFileTypesDescription, this.swfDefaultConfig.file_types_description);
 			this.setFileTypeRestrictions(this.uploadFileTypes);
+			swfConfig.file_types = this.swfDefaultConfig.file_types;
 			return swfConfig;
 		},
 		
@@ -291,7 +292,7 @@ Ext.onReady(function() {
 		 */
 		setFileTypeRestrictions: function(typo3FileTypes) {
 			if (typo3FileTypes.allow && typo3FileTypes.allow != '' && typo3FileTypes.allow != '*') {
-				var allowedFiles = TYPO3.helpers.split(typo3FileTypes.allow, ',');
+				var allowedFiles = typo3FileTypes.allow.split(',');
 				this.swfDefaultConfig.file_types = '*.' + allowedFiles.join(';*.');
 			}
 			if (typo3FileTypes.deny && typo3FileTypes.deny != '') {

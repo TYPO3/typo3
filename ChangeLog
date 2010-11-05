@@ -1,3 +1,7 @@
+2010-11-05  Steffen Gebert  <steffen@steffen-gebert.de>
+
+	* Fixed bug #16130: buggy initialization of flash uploader when only certain file extensions are allowed (Thanks to Andreas Kiessling)
+
 2010-11-04  Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #15656: indexed_search: Template corrections of #14130 not applied to the CSS template (Thanks to Lorenz Ulrich)
