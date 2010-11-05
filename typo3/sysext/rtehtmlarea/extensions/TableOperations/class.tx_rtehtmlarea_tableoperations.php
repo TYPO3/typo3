@@ -40,8 +40,7 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlarea_api {
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
 	protected $requiresClassesConfiguration = true;		// True if the registered plugin requires the PageTSConfig Classes configuration
-	protected $requiredPlugins = 'TYPO3Color';		// The comma-separated list of names of prerequisite plugins
-
+	protected $requiredPlugins = 'TYPO3Color,BlockStyle';	// The comma-separated list of names of prerequisite plugins
 	protected $pluginButtons = 'table, toggleborders, tableproperties, tablerestyle, rowproperties, rowinsertabove, rowinsertunder, rowdelete, rowsplit,
 						columnproperties, columninsertbefore, columninsertafter, columndelete, columnsplit,
 						cellproperties, cellinsertbefore, cellinsertafter, celldelete, cellsplit, cellmerge';
@@ -67,20 +66,13 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlarea_api {
 		'cellsplit'		=> 'TO-cell-split',
 		'cellmerge'		=> 'TO-cell-merge',
 		);
-
 	public function main($parentObject) {
-
 		$available = parent::main($parentObject);
-
 		if ($this->htmlAreaRTE->client['browser'] == 'opera') {
 			$this->thisConfig['hideTableOperationsInToolbar'] = 0;
 		}
-		if ($this->thisConfig['disableSelectColor'] && $this->htmlAreaRTE->client['browser'] != 'gecko') {
-			$this->requiredPlugins = 'DefaultColor';
-		}
 		return $available;
 	}
-
 	/**
 	 * Return JS configuration of the htmlArea plugins registered by the extension
 	 *
@@ -144,8 +136,6 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlarea_api {
 		}
 		return $registerRTEinJavascriptString;
 	}
-
-
 	/**
 	 * Return an updated array of toolbar enabled buttons
 	 *
@@ -161,11 +151,8 @@ class tx_rtehtmlarea_tableoperations extends tx_rtehtmlarea_api {
 			return $show;
 		}
 	}
-
-} // end of class
-
+}
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TableOperations/class.tx_rtehtmlarea_tableoperations.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/TableOperations/class.tx_rtehtmlarea_tableoperations.php']);
 }
-
 ?>

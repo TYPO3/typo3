@@ -1,3 +1,7 @@
+2010-11-05  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #7872: htmlArea RTE: Allow CSS-styles for tables without having to activate blockstyle
+
 2010-11-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #16257: htmlArea RTE: Rewrite stylesheets parsing functions
