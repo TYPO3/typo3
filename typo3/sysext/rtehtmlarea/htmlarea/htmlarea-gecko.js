@@ -481,13 +481,13 @@ HTMLArea.Editor.prototype.cleanAppleStyleSpans = function(node) {
 		} else {
 			var spans = node.getElementsByTagName("span");
 			for (var i = spans.length; --i >= 0;) {
-				if (HTMLArea._hasClass(spans[i], "Apple-style-span")) {
+				if (HTMLArea.DOM.hasClass(spans[i], "Apple-style-span")) {
 					this.removeMarkup(spans[i]);
 				}
 			}
 			var fonts = node.getElementsByTagName("font");
 			for (i = fonts.length; --i >= 0;) {
-				if (HTMLArea._hasClass(fonts[i], "Apple-style-span")) {
+				if (HTMLArea.DOM.hasClass(fonts[i], "Apple-style-span")) {
 					this.removeMarkup(fonts[i]);
 				}
 			}

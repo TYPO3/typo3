@@ -36,20 +36,14 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 	/*
 	 * Let the base class do some initialization work
 	 */
-	constructor : function(editor, pluginName) {
+	constructor: function (editor, pluginName) {
 		this.base(editor, pluginName);
 	},
-	
 	/*
 	 * This function gets called by the class constructor
 	 */
-	configurePlugin : function (editor) {
-		
-		this.cssLoaded = false;
-		this.cssTimeout = null;
-		this.cssParseCount = 0;
-		this.cssArray = new Object();
-		
+	configurePlugin: function (editor) {
+		this.cssArray = {};
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.pageTSconfiguration = this.editorConfiguration.buttons.textstyle;
 		this.tags = this.pageTSconfiguration.tags;
@@ -94,21 +88,19 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		if (Ext.isIE) {
 			this.addAllowedAttribute("className");
 		}
-		
 		/*
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: "1.1",
-			developer	: "Stanislas Rolland",
-			developerUrl	: "http://www.sjbr.ca/",
-			copyrightOwner	: "Stanislas Rolland",
-			sponsor		: this.localize("Technische Universitat Ilmenau"),
-			sponsorUrl	: "http://www.tu-ilmenau.de/",
-			license		: "GPL"
+			version		: '2.0',
+			developer	: 'Stanislas Rolland',
+			developerUrl	: 'http://www.sjbr.ca/',
+			copyrightOwner	: 'Stanislas Rolland',
+			sponsor		: this.localize('Technische Universitat Ilmenau'),
+			sponsorUrl	: 'http://www.tu-ilmenau.de/',
+			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
 		/* 
 		 * Registering the dropdown list
 		 */
@@ -139,10 +131,9 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		return true;
 	},
 	
-	isInlineElement : function (el) {
+	isInlineElement: function (el) {
 		return el && (el.nodeType === 1) && this.REInlineTags.test(el.nodeName.toLowerCase());
 	},
-
 	/*
 	 * This function adds an attribute to the array of allowed attributes on inline elements
 	 *
@@ -150,14 +141,13 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 	 *
 	 * @return	void
 	 */
-	addAllowedAttribute : function (attribute) {
+	addAllowedAttribute: function (attribute) {
 		this.allowedAttributes.push(attribute);
 	},
-
 	/*
 	 * This function gets called when some style in the drop-down list applies it to the highlighted textt
 	 */
-	onChange : function (editor, combo, record, index) {
+	onChange: function (editor, combo, record, index) {
 		var className = combo.getValue();
 		var classNames = null;
 		var fullNodeSelected = false;
@@ -196,7 +186,7 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			if (className !== "none") {
 					// Add span element with class attribute
 				var newElement = editor._doc.createElement("span");
-				HTMLArea._addClass(newElement, className);
+				HTMLArea.DOM.addClass(newElement, className);
 				editor.wrapWithInlineElement(newElement, selection, range);
 				if (!Ext.isIE) {
 					range.detach();
@@ -207,10 +197,10 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			if (parent && !HTMLArea.isBlockElement(parent)) {
 				if (className === "none" && parent.className && /\S/.test(parent.className)) {
 					classNames = parent.className.trim().split(" ");
-					HTMLArea._removeClass(parent, classNames[classNames.length-1]);
+					HTMLArea.DOM.removeClass(parent, classNames[classNames.length-1]);
 				}
 				if (className !== "none") {
-					HTMLArea._addClass(parent, className);
+					HTMLArea.DOM.addClass(parent, className);
 				}
 					// Remove the span tag if it has no more attribute
 				if ((parent.nodeName.toLowerCase() === "span") && !HTMLArea.hasAllowedAttributes(parent, this.allowedAttributes)) {
@@ -219,211 +209,56 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-
 	/*
 	 * This function gets called when the plugin is generated
 	 * Get the classes configuration and initiate the parsing of the style sheets
 	 */
-	onGenerate: function() {
+	onGenerate: function () {
 			// Monitor editor changing mode
-		this.editor.iframe.mon(this.editor, 'modeChange', this.onModeChange, this);
-		this.generate(this.editor, "TextStyle");
+		this.editor.iframe.mon(this.editor, 'HTMLAreaEventModeChange', this.onModeChange, this);
+			// Create CSS Parser object
+		this.textStyles = new HTMLArea.CSS.Parser({
+			prefixLabelWithClassName: this.prefixLabelWithClassName,
+			postfixLabelWithClassName: this.postfixLabelWithClassName,
+			showTagFreeClasses: this.showTagFreeClasses,
+			tags: this.tags,
+			editor: this.editor
+		});
+			// Monitor css parsing being completed
+		this.editor.iframe.mon(this.textStyles, 'HTMLAreaEventCssParsingComplete', this.onCssParsingComplete, this);
+		this.textStyles.initiateParsing();
 	},
-	
 	/*
-	 * This function gets called on plugin generation, on toolbar update and  on change mode
-	 * Re-initiate the parsing of the style sheets, if not yet completed, and refresh our toolbar components
+	 * This handler gets called when parsing of css classes is completed
 	 */
-	generate: function (editor, dropDownId) {
-		if (this.cssLoaded) {
-			this.updateToolbar(dropDownId);
-		} else {
-			if (this.cssTimeout) {
-				window.clearTimeout(this.cssTimeout);
-				this.cssTimeout = null;
-			}
-			if (this.classesUrl && (typeof(HTMLArea.classesLabels) === 'undefined')) {
-				this.getJavascriptFile(this.classesUrl, function (options, success, response) {
-					if (success) {
-						try {
-							if (typeof(HTMLArea.classesLabels) === 'undefined') {
-								eval(response.responseText);
-								this.appendToLog('generate', 'Javascript file successfully evaluated: ' + this.classesUrl);
-							}
-						} catch(e) {
-							this.appendToLog('generate', 'Error evaluating contents of Javascript file: ' + this.classesUrl);
-						}
-					}
-					this.buildCssArray(this.editor, dropDownId);
-				});
-			} else {
-				this.buildCssArray(this.editor, dropDownId);
-			}
+	onCssParsingComplete: function () {
+		if (this.textStyles.isReady) {
+			this.cssArray = this.textStyles.getClasses();
+		}
+		if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
+			this.updateToolbar('TextStyle');
 		}
 	},
-	
-	buildCssArray : function(editor, dropDownId) {
-		this.cssArray = this.parseStyleSheet();
-		if (!this.cssLoaded && (this.cssParseCount < 17)) {
-			this.cssTimeout = this.buildCssArray.defer(200, this, [editor, dropDownId]);
-			this.cssParseCount++;
-		} else {
-			this.cssTimeout = null;
-			this.cssLoaded = true;
-			this.cssArray = this.sortCssArray(this.cssArray);
-			this.updateToolbar(dropDownId);
-		}
-	},
-	
-	parseStyleSheet : function() {
-		var iframe = this.editor._iframe.contentWindow ? this.editor._iframe.contentWindow.document : this.editor._iframe.contentDocument;
-		var newCssArray = new Object();
-		this.cssLoaded = true;
-		for (var i = 0; i < iframe.styleSheets.length; i++) {
-			if (!Ext.isIE) {
-				try {
-					newCssArray = this.parseCssRule(iframe.styleSheets[i].cssRules, newCssArray);
-				} catch(e) {
-					this.cssLoaded = false;
-				}
-			} else {
-				try{
-						// @import StyleSheets (IE)
-					if (iframe.styleSheets[i].imports) {
-						newCssArray = this.parseCssIEImport(iframe.styleSheets[i].imports, newCssArray);
-					}
-					if (iframe.styleSheets[i].rules) {
-						newCssArray = this.parseCssRule(iframe.styleSheets[i].rules, newCssArray);
-					}
-				} catch(e) {
-					this.cssLoaded = false;
-				}
-			}
-		}
-		return newCssArray;
-	},
-	
-	parseCssIEImport : function(cssIEImport, cssArray) {
-		var newCssArray = new Object();
-		newCssArray = cssArray;
-		for (var i=0; i < cssIEImport.length; i++) {
-			if (cssIEImport[i].imports) {
-				newCssArray = this.parseCssIEImport(cssIEImport[i].imports, newCssArray);
-			}
-			if (cssIEImport[i].rules) {
-				newCssArray = this.parseCssRule(cssIEImport[i].rules, newCssArray);
-			}
-		}
-		return newCssArray;
-	},
-	
-	parseCssRule : function(cssRules, cssArray) {
-		var newCssArray = new Object();
-		newCssArray = cssArray;
-		for (var rule = 0; rule < cssRules.length; rule++) {
-				// StyleRule
-			if (cssRules[rule].selectorText) {
-				newCssArray = this.parseSelectorText(cssRules[rule].selectorText, newCssArray);
-			} else {
-					// ImportRule (Mozilla)
-				if (cssRules[rule].styleSheet) {
-					newCssArray = this.parseCssRule(cssRules[rule].styleSheet.cssRules, newCssArray);
-				}
-					// MediaRule (Mozilla)
-				if (cssRules[rule].cssRules) {
-					newCssArray = this.parseCssRule(cssRules[rule].cssRules, newCssArray);
-				}
-			}
-		}
-		return newCssArray;
-	},
-	
-	parseSelectorText : function(selectorText, cssArray) {
-		var cssElements = new Array();
-		var cssElement = new Array();
-		var tagName, className;
-		var newCssArray = new Object();
-		newCssArray = cssArray;
-		if (selectorText.search(/:+/) == -1) {
-				// split equal Styles (Mozilla-specific) e.q. head, body {border:0px}
-				// for ie not relevant. returns allways one element
-			cssElements = selectorText.split(",");
-			for (var k = 0; k < cssElements.length; k++) {
-					// Match ALL classes (<element name (optional)>.<class name>) in selector rule
-				var s = cssElements[k],
-					pattern = /(\S*)\.(\S+)/,
-					index;
-				while ((index = s.search(pattern)) > -1) {
-					var match = pattern.exec(s.substring(index));
-					s = s.substring(index+match[0].length);
-
-					tagName = (match[1] && (match[1] != '*')) ? match[1].toLowerCase().trim() : "all";
-					className = match[2];
-
-					if (className && !HTMLArea.reservedClassNames.test(className)) {
-						if (((tagName != "all") && (!this.tags || !this.tags[tagName]))
-							|| ((tagName == "all") && (!this.tags || !this.tags[tagName]) && this.showTagFreeClasses)
-							|| (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses && this.tags[tagName].allowedClasses.test(className))) {
-							if (!newCssArray[tagName]) {
-								newCssArray[tagName] = new Object();
-							}
-							if (className) {
-								cssName = className;
-								if (HTMLArea.classesLabels && HTMLArea.classesLabels[className]) {
-									cssName = this.prefixLabelWithClassName ? (className + " - " + HTMLArea.classesLabels[className]) : HTMLArea.classesLabels[className];
-									cssName = this.postfixLabelWithClassName ? (cssName + " - " + className) : cssName;
-								}
-							} else {
-								className = 'none';
-								cssName = this.localize("Element style");
-							}
-							newCssArray[tagName][className] = cssName;
-						}
-					}
-				}
-			}
-		}
-		return newCssArray;
-	},
-	
-	sortCssArray : function(cssArray) {
-		var newCssArray = new Object();
-		for (var tagName in cssArray) {
-			if (cssArray.hasOwnProperty(tagName)) {
-				newCssArray[tagName] = new Object();
-				var tagArrayKeys = new Array();
-				for (var cssClass in cssArray[tagName]) {
-					if (cssArray[tagName].hasOwnProperty(cssClass)) {
-						tagArrayKeys.push(cssClass);
-					}
-				}
-				function compare(a, b) {
-					x = cssArray[tagName][a];
-					y = cssArray[tagName][b];
-					return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-				}
-				tagArrayKeys = tagArrayKeys.sort(compare);
-				for (var i = 0; i < tagArrayKeys.length; ++i) {
-					newCssArray[tagName][tagArrayKeys[i]] = cssArray[tagName][tagArrayKeys[i]];
-				}
-			}
-		}
-		return newCssArray;
-	},
-	
 	/*
-	 * This function gets called when the toolbar is being updated
+	 * This handler gets called when the toolbar is being updated
 	 */
-	onUpdateToolbar: function(button, mode, selectionEmpty, ancestors) {
-		if (mode === "wysiwyg" && this.editor.isEditable()) {
-			this.generate(this.editor, button.itemId);
+	onUpdateToolbar: function (button, mode, selectionEmpty, ancestors) {
+		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+			this.updateToolbar(button.itemId);
 		}
 	},
-	
+	/*
+	 * This handler gets called when the editor has changed its mode to "wysiwyg"
+	 */
+	onModeChange: function (mode) {
+		if (mode === 'wysiwyg' && this.editor.isEditable()) {
+			this.updateToolbar('TextStyle');
+		}
+	},
 	/*
 	* This function gets called when the drop-down list needs to be refreshed
 	*/
-	updateToolbar : function(dropDownId) {
+	updateToolbar: function(dropDownId) {
 		var editor = this.editor;
 		if (this.getEditorMode() === "wysiwyg" && this.editor.isEditable()) {
 			var tagName = false, classNames = Array(), fullNodeSelected = false;
@@ -475,11 +310,10 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			}
 		}
 	},
-
 	/*
 	 * This function reinitializes the options of the dropdown
 	 */
-	initializeDropDown : function (dropDown) {
+	initializeDropDown: function (dropDown) {
 		var store = dropDown.getStore();
 		store.removeAll(false);
 		store.insert(0, new store.recordType({
@@ -488,11 +322,10 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 		}));
 		dropDown.setValue('none');
 	},
-
 	/*
 	 * This function sets the selected option of the dropDown box
 	 */
-	setSelectedOption : function (dropDown, classNames, noUnknown, defaultClass) {
+	setSelectedOption: function (dropDown, classNames, noUnknown, defaultClass) {
 		var store = dropDown.getStore();
 		var index = store.findExact('value', classNames[classNames.length-1]);
 		if (index != -1) {
@@ -519,95 +352,36 @@ HTMLArea.TextStyle = HTMLArea.Plugin.extend({
 			return true;
 		});
 	},
-
-	updateValue : function(dropDownId, tagName, classNames, selectionEmpty, fullNodeSelected, disabled) {
+	/*
+	 * This function updates the current value of the dropdown list
+	 */
+	updateValue: function (dropDownId, nodeName, classNames, selectionEmpty, fullNodeSelected, disabled) {
 		var editor = this.editor;
 		var dropDown = this.getButton(dropDownId);
 		if (dropDown) {
 			var store = dropDown.getStore();
-			var cssArray = new Array();
 			this.initializeDropDown(dropDown);
-			if (this.REInlineTags.test(tagName)) {
-					// Get classes allowed for all tags
-				if (typeof(this.cssArray["all"]) !== "undefined") {
-					var cssArrayAll = this.cssArray.all;
-					if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
-						var allowedClasses = this.tags[tagName].allowedClasses;
-						for (var cssClass in cssArrayAll) {
-							if (cssArrayAll.hasOwnProperty(cssClass) && allowedClasses.test(cssClass)) {
-								cssArray[cssClass] = cssArrayAll[cssClass];
-							}
-						}
-					} else {
-						for (var cssClass in cssArrayAll) {
-							if (cssArrayAll.hasOwnProperty(cssClass)) {
-								cssArray[cssClass] = cssArrayAll[cssClass];
-							}
-						}
+			if (this.textStyles.isReady) {
+				var allowedClasses = {};
+				if (this.REInlineTags.test(nodeName)) {
+					if (Ext.isDefined(this.cssArray[nodeName])) {
+						allowedClasses = this.cssArray[nodeName];
+					} else if (this.showTagFreeClasses && Ext.isDefined(this.cssArray['all'])) {
+						allowedClasses = this.cssArray['all'];
 					}
 				}
-					// Merge classes allowed for tagName and sort the array
-				if (typeof(this.cssArray[tagName]) !== "undefined") {
-					var cssArrayTagName = this.cssArray[tagName];
-					if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
-						var allowedClasses = this.tags[tagName].allowedClasses;
-						for (var cssClass in cssArrayTagName) {
-							if (cssArrayTagName.hasOwnProperty(cssClass) && allowedClasses.test(cssClass)) {
-								cssArray[cssClass] = cssArrayTagName[cssClass];
-							}
-						}
-					} else {
-						for (var cssClass in cssArrayTagName) {
-							if (cssArrayTagName.hasOwnProperty(cssClass)) {
-								cssArray[cssClass] = cssArrayTagName[cssClass];
-							}
-						}
-					}
-					var sortedCssArray = new Object();
-					var cssArrayKeys = new Array();
-					for (var cssClass in cssArray) {
-						if (cssArray.hasOwnProperty(cssClass)) {
-							cssArrayKeys.push(cssClass);
-						}
-					}
-					function compare(a, b) {
-						x = cssArray[a];
-						y = cssArray[b];
-						return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-					}
-					cssArrayKeys = cssArrayKeys.sort(compare);
-					for (var i = 0; i < cssArrayKeys.length; ++i) {
-						sortedCssArray[cssArrayKeys[i]] = cssArray[cssArrayKeys[i]];
-					}
-					cssArray = sortedCssArray;
-				}
-				for (var cssClass in cssArray) {
-					if (cssArray.hasOwnProperty(cssClass) && cssArray[cssClass]) {
-						if (cssClass == 'none') {
-							store.getAt(0).set('text', cssArray[cssClass]);
-						} else {
-							store.add(new store.recordType({
-								text: cssArray[cssClass],
-								value: cssClass,
-								style: (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
-							}));
-						}
-					}
-				}
-				if (classNames.length && (selectionEmpty || fullNodeSelected)) {
-					this.setSelectedOption(dropDown, classNames);
-				}
+				Ext.iterate(allowedClasses, function (cssClass, value) {
+					store.add(new store.recordType({
+						text: value,
+						value: cssClass,
+						style: (!this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
+					}));
+				}, this);
+			}
+			if (classNames.length && (selectionEmpty || fullNodeSelected)) {
+				this.setSelectedOption(dropDown, classNames);
 			}
 			dropDown.setDisabled(!(store.getCount()>1) || disabled);
 		}
-	},
-	/*
-	 * This function gets called when the editor has changed its mode to "wysiwyg"
-	 */
-	onModeChange: function(mode) {
-		if (mode === "wysiwyg" && this.editor.isEditable()) {
-			this.generate(this.editor, "TextStyle");
-		}
 	}
 });
-

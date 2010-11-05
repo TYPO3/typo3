@@ -36,10 +36,7 @@
 	// Avoid re-initialization on AJax call when HTMLArea object was already initialized
 if (typeof(HTMLArea) == 'undefined') {
 	// Establish HTMLArea name space
-Ext.namespace('HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color', 'Ext.ux.form', 'Ext.ux.menu', 'Ext.ux.Toolbar');
-/***************************************************
- *  CONSTANTS
- ***************************************************/
+Ext.namespace('HTMLArea.CSS', 'HTMLArea.util.TYPO3', 'HTMLArea.util.Tips', 'HTMLArea.util.Color', 'Ext.ux.form', 'Ext.ux.menu', 'Ext.ux.Toolbar');
 Ext.apply(HTMLArea, {
 	/*************************************************************************
 	 * THESE BROWSER IDENTIFICATION CONSTANTS ARE DEPRECATED AS OF TYPO3 4.4 *
@@ -51,7 +48,9 @@ Ext.apply(HTMLArea, {
 	is_safari	: Ext.isWebKit,
 	is_chrome	: Ext.isChrome,
 	is_opera	: Ext.isOpera,
-		// Compile some regular expressions
+	/***************************************************
+	 * COMPILED REGULAR EXPRESSIONS                    *
+	 ***************************************************/
 	RE_htmlTag		: /<.[^<>]*?>/g,
 	RE_tagName		: /(<\/|<)\s*([^ \t\n>]+)/ig,
 	RE_head			: /<head>((.|\n)*?)<\/head>/i,
@@ -63,38 +62,47 @@ Ext.apply(HTMLArea, {
 	RE_blockTags		: /^(body|p|h1|h2|h3|h4|h5|h6|ul|ol|pre|dl|dt|dd|div|noscript|blockquote|form|hr|table|caption|fieldset|address|td|tr|th|li|tbody|thead|tfoot|iframe)$/i,
 	RE_closingTags		: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/i,
 	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/i,
-	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g
-});
-/***************************************************
- *  TROUBLESHOOTING
- ***************************************************/
-HTMLArea._appendToLog = function(str){
-	if (HTMLArea.enableDebugMode) {
-		var log = document.getElementById('HTMLAreaLog');
-		if(log) {
-			log.appendChild(document.createTextNode(str));
-			log.appendChild(document.createElement('br'));
+	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g,
+	/***************************************************
+	 * TROUBLESHOOTING                                 *
+	 ***************************************************/
+	_appendToLog: function(str){
+		if (HTMLArea.enableDebugMode) {
+			var log = document.getElementById('HTMLAreaLog');
+			if(log) {
+				log.appendChild(document.createTextNode(str));
+				log.appendChild(document.createElement('br'));
+			}
 		}
+	},
+	appendToLog: function (editorId, objectName, functionName, text) {
+		HTMLArea._appendToLog(editorId + '[' + objectName + '::' + functionName + ']: ' + text);
+	},
+	/***************************************************
+	 * LOCALIZATION                                    *
+	 ***************************************************/
+	localize: function (label) {
+		return HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label] || label;
+	},
+	/***************************************************
+	 * INITIALIZATION                                  *
+	 ***************************************************/
+	init: function () {
+			// Apply global configuration settings
+		Ext.apply(HTMLArea, RTEarea[0]);
+		Ext.applyIf(HTMLArea, {
+			editorSkin	: HTMLArea.editorUrl + 'skins/default/',
+			editorCSS	: HTMLArea.editorUrl + 'skins/default/htmlarea.css'
+		});
+		if (!Ext.isString(HTMLArea.editedContentCSS)) {
+			HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
+		}
+		HTMLArea.isReady = true;
+		HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + HTMLArea.editorUrl);
+		HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + HTMLArea.editorCSS);
+		HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + HTMLArea.editedContentCSS);
 	}
-};
-/***************************************************
- *  HTMLArea INITIALIZATION
- ***************************************************/
-HTMLArea.init = function() {
-		// Apply global configuration settings
-	Ext.apply(HTMLArea, RTEarea[0]);
-	Ext.applyIf(HTMLArea, {
-		editorSkin	: HTMLArea.editorUrl + 'skins/default/',
-		editorCSS	: HTMLArea.editorUrl + 'skins/default/htmlarea.css'
-	});
-	if (!Ext.isString(HTMLArea.editedContentCSS)) {
-		HTMLArea.editedContentCSS = HTMLArea.editorSkin + 'htmlarea-edited-content.css';
-	}
-	HTMLArea.isReady = true;
-	HTMLArea._appendToLog("[HTMLArea::init]: Editor url set to: " + HTMLArea.editorUrl);
-	HTMLArea._appendToLog("[HTMLArea::init]: Editor skin CSS set to: " + HTMLArea.editorCSS);
-	HTMLArea._appendToLog("[HTMLArea::init]: Editor content skin CSS set to: " + HTMLArea.editedContentCSS);
-};
+});
 /***************************************************
  *  EDITOR CONFIGURATION
  ***************************************************/
@@ -2085,6 +2093,10 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 				this.registerPlugin(plugin);
 			}
 		}, this);
+			// Create Ajax object
+		this.ajax = new HTMLArea.Ajax({
+			editor: this
+		});
 			// Initialize keyboard input inhibit flag
 		this.inhibitKeyboardInput = false;
 		this.addEvents(
@@ -2423,6 +2435,17 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		document.getElementById('editorWrap' + this.editorId).style.visibility = 'visible';
 	},
 	/*
+	 * Append an entry at the end of the troubleshooting log
+	 *
+	 * @param	string		functionName: the name of the editor function writing to the log
+	 * @param	string		text: the text of the message
+	 *
+	 * @return	void
+	 */
+	appendToLog: function (objectName, functionName, text) {
+		HTMLArea.appendToLog(this.editorId, objectName, functionName, text);
+	},
+	/*
 	 * Iframe unload handler: Update the textarea for submission and cleanup
 	 */
 	onUnload: function (event) {
@@ -2448,6 +2471,83 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}
 		this.textArea.dom = null;
 		RTEarea[this.editorId].editor = null;
+	}
+});
+HTMLArea.Ajax = function (config) {
+	Ext.apply(this, config);
+};
+HTMLArea.Ajax = Ext.extend(HTMLArea.Ajax, {
+	/*
+	 * Load a Javascript file asynchronously
+	 *
+	 * @param	string		url: url of the file to load
+	 * @param	function	callBack: the callBack function
+	 * @param	object		scope: scope of the callbacks
+	 *
+	 * @return	boolean		true on success of the request submission
+	 */
+	getJavascriptFile: function (url, callback, scope) {
+		var success = false;
+		var self = this;
+		this.editor.appendToLog('HTMLArea.Ajax', 'getJavascriptFile', 'Requesting script ' + url);
+		Ext.Ajax.request({
+			method: 'GET',
+			url: url,
+			callback: callback,
+			success: function (response) {
+				success = true;
+			},
+			failure: function (response) {
+				self.editor.inhibitKeyboardInput = false;
+				self.editor.appendToLog('HTMLArea.Ajax', 'getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + response.status);
+			},
+			scope: scope
+		});
+		return success;
+	},
+	/*
+	 * Post data to the server
+	 *
+	 * @param	string		url: url to post data to
+	 * @param	object		data: data to be posted
+	 * @param	function	callback: function that will handle the response returned by the server
+	 * @param	object		scope: scope of the callbacks
+	 *
+	 * @return	boolean		true on success
+	 */
+	postData: function (url, data, callback, scope) {
+		var success = false;
+		var self = this;
+		data.charset = this.editor.config.typo3ContentCharset ? this.editor.config.typo3ContentCharset : 'utf-8';
+		var params = '';
+		Ext.iterate(data, function (parameter, value) {
+			params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(value);
+		});
+		params += this.editor.config.RTEtsConfigParams;
+		this.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Posting to ' + url + '. Data: ' + params);
+		Ext.Ajax.request({
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			url: url,
+			params: params,
+			callback: Ext.isFunction(callback) ? callback: function (options, success, response) {
+				if (success) {
+					self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Post request to ' + url + ' successful. Server response: ' + response.responseText);
+				} else {
+					self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Post request to ' + url + ' failed. Server reported ' + response.status);
+				}
+			},
+			success: function (response) {
+				success = true;
+			},
+			failure: function (response) {
+				self.editor.appendToLog('HTMLArea.Ajax', 'postData', 'Unable to post ' + url + ' . Server reported ' + response.status);
+			},
+			scope: scope
+		});
+		return success;
 	}
 });
 /***************************************************
@@ -2929,7 +3029,6 @@ HTMLArea.Editor.prototype.scrollToCaret = function() {
 HTMLArea.checkSupportedBrowser = function() {
 	return Ext.isGecko || Ext.isWebKit || Ext.isOpera || Ext.isIE;
 };
-
 /*
  * Remove a class name from the class attribute of an element
  *
@@ -2937,51 +3036,22 @@ HTMLArea.checkSupportedBrowser = function() {
  * @param	string		className: the class name to remove
  * @param	boolean		substring: if true, remove the first class name starting with the given string
  * @return	void
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
+ ***********************************************
  */
 HTMLArea._removeClass = function(el, className, substring) {
-	if (!el || !el.className) return;
-	var classes = el.className.trim().split(" ");
-	var newClasses = new Array();
-	for (var i = classes.length; --i >= 0;) {
-		if (!substring) {
-			if (classes[i] != className) {
-				newClasses[newClasses.length] = classes[i];
-			}
-		} else if (classes[i].indexOf(className) != 0) {
-			newClasses[newClasses.length] = classes[i];
-		}
-	}
-	if (newClasses.length == 0) {
-		if (!Ext.isOpera) {
-			el.removeAttribute("class");
-			if (Ext.isIE) {
-				el.removeAttribute("className");
-			}
-		} else {
-			el.className = '';
-		}
-	} else {
-		el.className = newClasses.join(" ");
-	}
+	HTMLArea.DOM.removeClass(el, className, substring);
 };
-
 /*
  * Add a class name to the class attribute
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
+ ***********************************************
  */
-HTMLArea._addClass = function(el, addClassName) {
-	HTMLArea._removeClass(el, addClassName);
-	if (el.className && HTMLArea.classesXOR && HTMLArea.classesXOR.hasOwnProperty(addClassName) && typeof(HTMLArea.classesXOR[addClassName].test) == "function") {
-		var classNames = el.className.trim().split(" ");
-		for (var i = classNames.length; --i >= 0;) {
-			if (HTMLArea.classesXOR[addClassName].test(classNames[i])) {
-				HTMLArea._removeClass(el, classNames[i]);
-			}
-		}
-	}
-	if (el.className) el.className += " " + addClassName;
-		else el.className = addClassName;
+HTMLArea._addClass = function(el, className) {
+	HTMLArea.DOM.addClass(el, className);
 };
-
 /*
  * Check if a class name is in the class attribute of an element
  *
@@ -2989,14 +3059,12 @@ HTMLArea._addClass = function(el, addClassName) {
  * @param	string		className: the class name to look for
  * @param	boolean		substring: if true, look for a class name starting with the given string
  * @return	boolean		true if the class name was found
+ ***********************************************
+ * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.5 *
+ ***********************************************
  */
 HTMLArea._hasClass = function(el, className, substring) {
-	if (!el || !el.className) return false;
-	var classes = el.className.trim().split(" ");
-	for (var i = classes.length; --i >= 0;) {
-		if (classes[i] == className || (substring && classes[i].indexOf(className) == 0)) return true;
-	}
-	return false;
+	return HTMLArea.DOM.hasClass(el, className, substring);
 };
 
 HTMLArea.isBlockElement = function(el) { return el && el.nodeType == 1 && HTMLArea.RE_blockTags.test(el.nodeName.toLowerCase()); };
@@ -3069,11 +3137,11 @@ HTMLArea.removeFromParent = function(el) {
 /*****************************************************************
  * HTMLArea.DOM: Utility functions for dealing with the DOM tree *
  *****************************************************************/
-/***************************************************
- *  DOM-RELATED CONSTANTS
- ***************************************************/
 HTMLArea.DOM = function () {
 	return {
+		/***************************************************
+		*  DOM-RELATED CONSTANTS
+		***************************************************/
 			// DOM node types
 		ELEMENT_NODE: 1,
 		ATTRIBUTE_NODE: 2,
@@ -3086,7 +3154,110 @@ HTMLArea.DOM = function () {
 		DOCUMENT_NODE: 9,
 		DOCUMENT_TYPE_NODE: 10,
 		DOCUMENT_FRAGMENT_NODE: 11,
-		NOTATION_NODE: 12
+		NOTATION_NODE: 12,
+		/*
+		 * Gets the class names assigned to a node, reserved classes removed
+		 *
+		 * @param	object		node: the node
+		 * @return	array		array of class names on the node, reserved classes removed
+		 */
+		getClassNames: function (node) {
+			var classNames = [];
+			if (node) {
+				if (node.className && /\S/.test(node.className)) {
+					classNames = node.className.trim().split(' ');
+				}
+				if (HTMLArea.reservedClassNames.test(node.className)) {
+					var cleanClassNames = [];
+					var j = -1;
+					for (var i = 0; i < classNames.length; ++i) {
+						if (!HTMLArea.reservedClassNames.test(classNames[i])) {
+							cleanClassNames[++j] = classNames[i];
+						}
+					}
+					classNames = cleanClassNames;
+				}
+			}
+			return classNames;
+		},
+		/*
+		 * Check if a class name is in the class attribute of a node
+		 *
+		 * @param	object		node: the node
+		 * @param	string		className: the class name to look for
+		 * @param	boolean		substring: if true, look for a class name starting with the given string
+		 * @return	boolean		true if the class name was found, false otherwise
+		 */
+		hasClass: function (node, className, substring) {
+			var found = false;
+			if (node && node.className) {
+				var classes = node.className.trim().split(' ');
+				for (var i = classes.length; --i >= 0;) {
+					found = ((classes[i] == className) || (substring && classes[i].indexOf(className) == 0));
+					if (found) {
+						break;
+					}
+				}
+			}
+			return found;
+		},
+		/*
+		 * Add a class name to the class attribute of a node
+		 *
+		 * @param	object		node: the node
+		 * @param	string		className: the name of the class to be added
+		 * @return	void
+		 */
+		addClass: function (node, className) {
+			if (node) {
+				HTMLArea.DOM.removeClass(node, className);
+					// Remove classes configured to be incompatible with the class to be added
+				if (node.className && HTMLArea.classesXOR && HTMLArea.classesXOR[className] && Ext.isFunction(HTMLArea.classesXOR[className].test)) {
+					var classNames = node.className.trim().split(' ');
+					for (var i = classNames.length; --i >= 0;) {
+						if (HTMLArea.classesXOR[className].test(classNames[i])) {
+							HTMLArea.DOM.removeClass(node, classNames[i]);
+						}
+					}
+				}
+				if (node.className) {
+					node.className += ' ' + className;
+				} else {
+					node.className = className;
+				}
+			}
+		},
+		/*
+		 * Remove a class name from the class attribute of a node
+		 *
+		 * @param	object		node: the node
+		 * @param	string		className: the class name to removed
+		 * @param	boolean		substring: if true, remove the class names starting with the given string
+		 * @return	void
+		 */
+		removeClass: function (node, className, substring) {
+			if (node && node.className) {
+				var classes = node.className.trim().split(' ');
+				var newClasses = [];
+				for (var i = classes.length; --i >= 0;) {
+					if ((!substring && classes[i] != className) || (substring && classes[i].indexOf(className) != 0)) {
+						newClasses[newClasses.length] = classes[i];
+					}
+				}
+				if (newClasses.length) {
+					node.className = newClasses.join(' ');
+				} else {
+					if (!Ext.isOpera) {
+						node.removeAttribute('class');
+						if (Ext.isIE) {
+							node.removeAttribute('className');
+						}
+					} else {
+						node.className = '';
+					}
+				}
+			}
+		}
 	};
 }();
 /***************************************************
@@ -3101,7 +3272,7 @@ HTMLArea.DOM.Walker = function (config) {
 		keepTags: /.*/i,
 		removeAttributes: /none/i,
 		removeTrailingBR: true
-	}
+	};
 	Ext.apply(this, config, configDefaults);
 };
 HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
@@ -3300,6 +3471,304 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 	 */
 	stripBaseURL: function (value) {
 		return value;
+	}
+});
+/***************************************************
+ *  HTMLArea.CSS.Parser: CSS Parser
+ ***************************************************/
+HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
+	/*
+	 * HTMLArea.CSS.Parser constructor
+	 */
+	constructor: function (config) {
+		HTMLArea.CSS.Parser.superclass.constructor.call(this, {});
+		var configDefaults = {
+			parseAttemptsMaximumNumber: 17,
+			prefixLabelWithClassName: false,
+			postfixLabelWithClassName: false,
+			showTagFreeClasses: false,
+			tags: null,
+			editor: null
+		};
+		Ext.apply(this, config, configDefaults);
+		this.addEvents(
+			/*
+			 * @event HTMLAreaEventCssParsingComplete
+			 * Fires when parsing of the stylesheets of the iframe is complete
+			 */
+			'HTMLAreaEventCssParsingComplete'
+		);
+	},
+	/*
+	 * The parsed classes
+	 */
+	parsedClasses: {},
+	/*
+	 * Boolean indicating whether are not parsing is complete
+	 */
+	isReady: false,
+	/*
+	 * Boolean indicating whether or not the stylesheets were accessible
+	 */
+	cssLoaded: false,
+	/*
+	 * Counter of the number of attempts at parsing the stylesheets
+	 */
+	parseAttemptsCounter: 0,
+	/*
+	 * Parsing attempt timeout id
+	 */
+	attemptTimeout: null,
+	/*
+	 * The error that occurred on the last attempt at parsing the stylesheets
+	 */
+	error: null,
+	/*
+	 * This function gets the parsed css classes
+	 *
+	 * @return	object	this.parsedClasses
+	 */
+	getClasses: function() {
+		return this.parsedClasses;
+	},
+	/*
+	 * This function initiates parsing of the stylesheets
+	 *
+	 * @return	void
+	 */
+	initiateParsing: function () {
+		if (this.editor.config.classesUrl && (typeof(HTMLArea.classesLabels) === 'undefined')) {
+			this.editor.ajax.getJavascriptFile(this.editor.config.classesUrl, function (options, success, response) {
+				if (success) {
+					try {
+						if (typeof(HTMLArea.classesLabels) === 'undefined') {
+							eval(response.responseText);
+							this.editor.appendToLog('HTMLArea.CSS.Parser', 'initiateParsing', 'Javascript file successfully evaluated: ' + this.editor.config.classesUrl);
+						}
+					} catch(e) {
+						this.editor.appendToLog('HTMLArea.CSS.Parser', 'initiateParsing', 'Error evaluating contents of Javascript file: ' + this.editor.config.classesUrl);
+					}
+				}
+				this.parse();
+			}, this);
+		} else {
+			this.parse();
+		}
+	},
+	/*
+	 * This function parses the stylesheets of the iframe set in config
+	 *
+	 * @return	void	parsed css classes are accumulated in this.parsedClasses
+	 */
+	parse: function() {
+		if (this.editor.document) {
+			this.parseStyleSheets();
+			if (!this.cssLoaded) {
+				if (this.parseAttemptsCounter < this.parseAttemptsMaximumNumber) {
+					this.attemptTimeout = this.parse.defer(200, this);
+					this.parseAttemptsCounter++;
+				} else {
+					this.editor.appendToLog('HTMLArea.CSS.Parser', 'parse', 'The stylesheets could not be parsed. Reported error: ' + this.error);
+					this.fireEvent('HTMLAreaEventCssParsingComplete');
+				}
+			} else {
+				this.attemptTimeout = null;
+				this.isReady = true;
+				this.filterAllowedClasses();
+				this.sort();
+				this.fireEvent('HTMLAreaEventCssParsingComplete');
+			}
+		}
+	},
+	/*
+	 * This function parses the stylesheets of an iframe
+	 *
+	 * @return	void	parsed css classes are accumulated in this.parsedClasses
+	 */
+	parseStyleSheets: function () {
+		this.cssLoaded = true;
+		this.error = null;
+		for (var i = 0; i < this.editor.document.styleSheets.length; i++) {
+			if (!Ext.isIE) {
+				try {
+					this.parseRules(this.editor.document.styleSheets[i].cssRules);
+				} catch (e) {
+					this.error = e;
+					this.cssLoaded = false;
+					this.parsedClasses = {};
+				}
+			} else {
+				try{
+					if (this.editor.document.styleSheets[i].imports) {
+						this.parseIeRules(this.editor.document.styleSheets[i].imports);
+					}
+					if (this.editor.document.styleSheets[i].rules) {
+						this.parseRules(this.editor.document.styleSheets[i].rules);
+					}
+				} catch (e) {
+					this.error = e;
+					this.cssLoaded = false;
+					this.parsedClasses = {};
+				}
+			}
+		}
+	},
+	/*
+	 * This function parses the set of rules from a standard stylesheet
+	 *
+	 * @param	array		cssRules: the array of rules of a stylesheet
+	 * @return	void
+	 */
+	parseRules: function (cssRules) {
+		for (var rule = 0; rule < cssRules.length; rule++) {
+				// Style rule
+			if (cssRules[rule].selectorText) {
+				this.parseSelectorText(cssRules[rule].selectorText);
+			} else {
+					// Import rule
+				if (cssRules[rule].styleSheet) {
+					this.parseRules(cssRules[rule].styleSheet.cssRules);
+				}
+					// Media rule
+				if (cssRules[rule].cssRules) {
+					this.parseRules(cssRules[rule].cssRules);
+				}
+			}
+		}
+	},
+	/*
+	 * This function parses the set of rules from an IE stylesheet
+	 *
+	 * @param	array		cssRules: the array of rules of a stylesheet
+	 * @return	void
+	 */
+	parseIeRules: function (cssRules) {
+		for (var rule = 0; rule < cssRules.length; rule++) {
+				// Import rule
+			if (cssRules[rule].imports) {
+				this.parseIeRules(cssRules[rule].imports);
+			}
+				// Style rule
+			if (cssRules[rule].rules) {
+				this.parseRules(cssRules[rule].rules);
+			}
+		}
+	},
+	/*
+	 * This function parses a selector rule
+	 *
+	 * @param 	string		selectorText: the text of the rule to parsed
+	 * @return	void
+	 */
+	parseSelectorText: function (selectorText) {
+		var cssElements = [],
+			cssElement = [],
+			nodeName, className,
+			pattern = /(\S*)\.(\S+)/;
+		if (selectorText.search(/:+/) == -1) {
+				// Split equal styles
+			cssElements = selectorText.split(',');
+			for (var k = 0; k < cssElements.length; k++) {
+					// Match all classes (<element name (optional)>.<class name>) in selector rule
+				var s = cssElements[k], index;
+				while ((index = s.search(pattern)) > -1) {
+					var match = pattern.exec(s.substring(index));
+					s = s.substring(index+match[0].length);
+					nodeName = (match[1] && (match[1] != '*')) ? match[1].toLowerCase().trim() : 'all';
+					className = match[2];
+					if (className && !HTMLArea.reservedClassNames.test(className)) {
+						if (((nodeName != 'all') && (!this.tags || !this.tags[nodeName]))
+							|| ((nodeName == 'all') && (!this.tags || !this.tags[nodeName]) && this.showTagFreeClasses)
+							|| (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses && this.tags[nodeName].allowedClasses.test(className))) {
+							if (!this.parsedClasses[nodeName]) {
+								this.parsedClasses[nodeName] = {};
+							}
+							cssName = className;
+							if (HTMLArea.classesLabels && HTMLArea.classesLabels[className]) {
+								cssName = this.prefixLabelWithClassName ? (className + ' - ' + HTMLArea.classesLabels[className]) : HTMLArea.classesLabels[className];
+								cssName = this.postfixLabelWithClassName ? (cssName + ' - ' + className) : cssName;
+							}
+							this.parsedClasses[nodeName][className] = cssName;
+						}
+					}
+				}
+			}
+		}
+	},
+	/*
+	 * This function filters the class selectors allowed for each nodeName
+	 *
+	 * @return	void
+	 */
+	filterAllowedClasses: function() {
+		Ext.iterate(this.tags, function (nodeName) {
+			var allowedClasses = {};
+				// Get classes allowed for all tags
+			if (nodeName !== 'all' && Ext.isDefined(this.parsedClasses['all'])) {
+				if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
+					var allowed = this.tags[nodeName].allowedClasses;
+					Ext.iterate(this.parsedClasses['all'], function (cssClass, value) {
+						if (allowed.test(cssClass)) {
+							allowedClasses[cssClass] = value;
+						}
+					});
+				} else {
+					allowedClasses = this.parsedClasses['all'];
+				}
+			}
+				// Merge classes allowed for nodeName
+			if (Ext.isDefined(this.parsedClasses[nodeName])) {
+				if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
+					var allowed = this.tags[nodeName].allowedClasses;
+					Ext.iterate(this.parsedClasses[nodeName], function (cssClass, value) {
+						if (allowed.test(cssClass)) {
+							allowedClasses[cssClass] = value;
+						}
+					});
+				} else {
+					Ext.iterate(this.parsedClasses[nodeName], function (cssClass, value) {
+						allowedClasses[cssClass] = value;
+					});
+				}
+			}
+			this.parsedClasses[nodeName] = allowedClasses;
+		}, this);
+			// If showTagFreeClasses is set and there is no allowedClasses clause on a tag, merge classes allowed for all tags
+		if (this.showTagFreeClasses && Ext.isDefined(this.parsedClasses['all'])) {
+			Ext.iterate(this.parsedClasses, function (nodeName) {
+				if (nodeName !== 'all' && !this.tags[nodeName]) {
+					Ext.iterate(this.parsedClasses['all'], function (cssClass, value) {
+						this.parsedClasses[nodeName][cssClass] = value;
+					}, this);
+				}
+			}, this);
+		}
+	},
+	/*
+	 * This function sorts the class selectors for each nodeName
+	 *
+	 * @return	void
+	 */
+	sort: function() {
+		Ext.iterate(this.parsedClasses, function (nodeName, value) {
+			var classes = [];
+			var sortedClasses= {};
+				// Collect keys
+			Ext.iterate(value, function (cssClass) {
+				classes.push(cssClass);
+			});
+			function compare(a, b) {
+				x = value[a];
+				y = value[b];
+				return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+			}
+				// Sort keys by comparing texts
+			classes = classes.sort(compare);
+			for (var i = 0; i < classes.length; ++i) {
+				sortedClasses[classes[i]] = value[classes[i]];
+			}
+			this.parsedClasses[nodeName] = sortedClasses;
+		}, this);
 	}
 });
 /***************************************************
@@ -4156,7 +4625,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	string		the localization of the label
 	 */
 	localize: function (label) {
-		return this.I18N[label] || HTMLArea.I18N.dialogs[label] || HTMLArea.I18N.tooltips[label] || HTMLArea.I18N.msg[label];
+		return this.I18N[label] || HTMLArea.localize(label);
 	},
 	/**
 	 * Load a Javascript file asynchronously
@@ -4167,22 +4636,8 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	boolean		true on success of the request submission
 	 */
 	getJavascriptFile: function (url, callback) {
-		var success = false;
 		this.appendToLog('getJavascriptFile', 'Requesting script ' + url);
-		Ext.Ajax.request({
-			method: 'GET',
-			url: url,
-			callback: callback,
-			success: function (response) {
-				success = true;
-			},
-			failure: function (response) {
-				this.editor.inhibitKeyboardInput = false;
-				this.appendToLog('getJavascriptFile', 'Unable to get ' + url + ' . Server reported ' + response.status);
-			},
-			scope: this
-		});
-		return success;
+		return this.editor.ajax.getJavascriptFile(url, callback, this);
 	},
 	/**
 	 * Post data to the server
@@ -4193,39 +4648,10 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 *
 	 * @return	boolean		true on success
 	 */
-	 postData: function (url, data, callback) {
-		var success = false;
-		data.charset = this.editorConfiguration.typo3ContentCharset ? this.editorConfiguration.typo3ContentCharset : 'utf-8';
-		var params = '';
-		Ext.iterate(data, function (parameter, value) {
-			params += (params.length ? '&' : '') + parameter + '=' + encodeURIComponent(value);
-		});
-		params += this.editorConfiguration.RTEtsConfigParams;
-		this.appendToLog('postData', 'Posting to ' + url + '. Data: ' + params);
-		Ext.Ajax.request({
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-			},
-			url: url,
-			params: params,
-			callback: Ext.isFunction(callback) ? callback: function (options, success, response) {
-				if (success) {
-					this.appendToLog('postData', 'Post request to ' + url + ' successful. Server response: ' + response.responseText);
-				} else {
-					this.appendToLog('postData', 'Post request to ' + url + ' failed. Server reported ' + response.status);
-				}
-			},
-			success: function (response) {
-				success = true;
-			},
-			failure: function (response) {
-				this.appendToLog('postData', 'Unable to post ' + url + ' . Server reported ' + response.status);
-			},
-			scope: this
-		});
-		return success;
-	 },
+	postData: function (url, data, callback) {
+	 	this.appendToLog('postData', 'Posting to ' + url + '. Data: ' + params);
+	 	return this.editor.ajax.postData(url, data, callback, this);
+	},
 	/**
 	 ***********************************************
 	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.4 *
@@ -4390,7 +4816,7 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 * @return	void
 	 */
 	appendToLog: function (functionName, text) {
-		HTMLArea._appendToLog('[' + this.name + '::' + functionName + ']: ' + text);
+		this.editor.appendToLog(this.name, functionName, text);
 	},
 	/*
 	 * Add a config element to config array if not empty

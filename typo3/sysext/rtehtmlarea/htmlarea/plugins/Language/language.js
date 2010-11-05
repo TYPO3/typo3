@@ -216,10 +216,10 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 	 */
 	toggleLanguageMarks : function (forceLanguageMarks) {
 		var body = this.editor._doc.body;
-		if (!HTMLArea._hasClass(body, 'htmlarea-show-language-marks')) {
-			HTMLArea._addClass(body,'htmlarea-show-language-marks');
+		if (!HTMLArea.DOM.hasClass(body, 'htmlarea-show-language-marks')) {
+			HTMLArea.DOM.addClass(body,'htmlarea-show-language-marks');
 		} else if (!forceLanguageMarks) {
-			HTMLArea._removeClass(body,'htmlarea-show-language-marks');
+			HTMLArea.DOM.removeClass(body,'htmlarea-show-language-marks');
 		}
 	},
 
@@ -408,7 +408,7 @@ HTMLArea.Language = HTMLArea.Plugin.extend({
 					}
 					break;
 				case 'ShowLanguageMarks':
-					button.setInactive(!HTMLArea._hasClass(this.editor._doc.body, 'htmlarea-show-language-marks'));
+					button.setInactive(!HTMLArea.DOM.hasClass(this.editor._doc.body, 'htmlarea-show-language-marks'));
 					break;
 				case 'Language':
 						// Updating the language drop-down
