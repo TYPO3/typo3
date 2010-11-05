@@ -1,6 +1,7 @@
 2010-11-04  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #16257: htmlArea RTE: Rewrite stylesheets parsing functions
+	* Fixed bug #16248: htmlArea RTE: Mistake in locallang file of character map
 
 2010-11-04  Susanne Moog <typo3@susanne-moog.de>
 
