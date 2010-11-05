@@ -27,7 +27,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper.php');
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_ViewHelper_ViewHelperVariableContainerTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 *
@@ -104,7 +104,7 @@ class Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainerTest extends Tx_Extbas
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function viewCanBeReadOutAgain() {
-		$view = $this->getMock('Tx_Fluid_View_AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'hasTemplate'));
+		$view = $this->getMock('Tx_Fluid_View_AbstractTemplateView', array('getTemplateSource', 'getLayoutSource', 'getPartialSource', 'hasTemplate', 'canRender'));
 		$this->viewHelperVariableContainer->setView($view);
 		$this->assertSame($view, $this->viewHelperVariableContainer->getView());
 	}

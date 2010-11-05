@@ -25,7 +25,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_AbstractTagBasedViewHelperTest extends Tx_Extbase_BaseTestCase {
 
 	public function setUp() {
 		$this->viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper', array('dummy'), array(), '', FALSE);

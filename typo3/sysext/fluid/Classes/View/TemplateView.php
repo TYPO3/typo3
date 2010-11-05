@@ -69,13 +69,13 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 	 * File pattern for resolving the template file
 	 * @var string
 	 */
-	protected $templatePathAndFilenamePattern = '@templateRoot/@controller/@action.@format';
+	protected $templatePathAndFilenamePattern = '@templateRoot/@subpackage/@controller/@action.@format';
 
 	/**
 	 * Directory pattern for global partials. Not part of the public API, should not be changed for now.
 	 * @var string
 	 */
-	private $partialPathAndFilenamePattern = '@partialRoot/@partial.@format';
+	private $partialPathAndFilenamePattern = '@partialRoot/@subpackage/@partial.@format';
 
 	/**
 	 * File pattern for resolving the layout
@@ -103,7 +103,7 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 
 		public function initializeView() {
 		}
-					
+
 	// Here, the backporter can insert a constructor method, which is needed for Fluid v4.
 
 	/**
@@ -374,10 +374,10 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 		$pattern = str_replace('@partialRoot', $this->getPartialRootPath(), $pattern);
 		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
 
-		$subPackageKey = '';
+		$subpackageKey = $this->controllerContext->getRequest()->getControllerSubpackageKey();
 		$controllerName = $this->controllerContext->getRequest()->getControllerName();
 
-		$subpackageParts = ($subPackageKey !== '') ? explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $subPackageKey) : array();
+		$subpackageParts = ($subpackageKey !== NULL) ? explode(Tx_Fluid_Fluid::NAMESPACE_SEPARATOR, $subpackageKey) : array();
 
 		$results = array();
 
@@ -397,7 +397,6 @@ class Tx_Fluid_View_TemplateView extends Tx_Fluid_View_AbstractTemplateView {
 			}
 
 		} while($i++ < count($subpackageParts) && $bubbleControllerAndSubpackage);
-
 		return $results;
 	}
 

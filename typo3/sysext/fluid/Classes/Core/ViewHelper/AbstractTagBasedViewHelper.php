@@ -101,7 +101,7 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper extends Tx_Fl
 	 * Register a new tag attribute. Tag attributes are all arguments which will be directly appended to a tag if you call $this->initializeTag()
 	 *
 	 * @param string $name Name of tag attribute
-	 * @param strgin $type Type of the tag attribute
+	 * @param string $type Type of the tag attribute
 	 * @param string $description Description of tag attribute
 	 * @param boolean $required set to TRUE if tag attribute is required. Defaults to FALSE.
 	 * @return void

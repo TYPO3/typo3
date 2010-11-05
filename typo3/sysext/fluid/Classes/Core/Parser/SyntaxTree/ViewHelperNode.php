@@ -42,7 +42,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 
 	/**
 	 * The ViewHelper associated with this node
-	 * @var Tx_Fluid_Core_ViewHelper_ViewHelperInterface
+	 * @var Tx_Fluid_Core_ViewHelper_AbstractViewHelper
 	 */
 	protected $uninitializedViewHelper = NULL;
 
@@ -85,12 +85,12 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	/**
 	 * Constructor.
 	 *
-	 * @param Tx_Fluid_Core_ViewHelper_ViewHelperInterface $viewHelper The view helper
+	 * @param Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper The view helper
 	 * @param array $arguments Arguments of view helper - each value is a RootNode.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function __construct(Tx_Fluid_Core_ViewHelper_ViewHelperInterface $viewHelper, array $arguments) {
+	public function __construct(Tx_Fluid_Core_ViewHelper_AbstractViewHelper $viewHelper, array $arguments) {
 		$this->uninitializedViewHelper = $viewHelper;
 		$this->viewHelpersByContext = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
 		$this->arguments = $arguments;
@@ -179,14 +179,7 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 			$viewHelper->setChildNodes($this->childNodes);
 		}
 
-		$viewHelper->validateArguments();
-		$viewHelper->initialize();
-		try {
-			$output = call_user_func_array(array($viewHelper, 'render'), $renderMethodParameters);
-		} catch (Tx_Fluid_Core_ViewHelper_Exception $exception) {
-				// @todo [BW] rethrow exception, log, ignore.. depending on the current context
-			$output = $exception->getMessage();
-		}
+		$output = $viewHelper->initializeArgumentsAndRender($renderMethodParameters);
 
 		return $output;
 	}

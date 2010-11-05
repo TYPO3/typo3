@@ -30,7 +30,7 @@ require_once(dirname(__FILE__) . '/Fixtures/PostParseFacetViewHelper.php');
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Fluid_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test
@@ -312,8 +312,8 @@ class Tx_Fluid_Core_Parser_TemplateParserTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
-	public function initializeViewHelperAndAddItToStackhandlesPostParseFacets() {
-		$mockViewHelper = $this->getMock('Tx_Fluid_Core_Parser_Fixtures_PostParseFacetViewHelper');
+	public function initializeViewHelperAndAddItToStackHandlesPostParseFacets() {
+		$mockViewHelper = $this->getMock('Tx_Fluid_Core_Parser_Fixtures_PostParseFacetViewHelper', array('prepareArguments'));
 		$mockViewHelperNode = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode', array(), array(), '', FALSE);
 
 		$mockNodeOnStack = $this->getMock('Tx_Fluid_Core_Parser_SyntaxTree_NodeInterface');

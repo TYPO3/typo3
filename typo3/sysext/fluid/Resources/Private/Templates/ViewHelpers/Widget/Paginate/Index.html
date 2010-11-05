@@ -1,0 +1,29 @@
+<f:if condition="{configuration.insertAbove}">
+	<f:render section="paginator" arguments="{page: page}" />
+</f:if>
+
+<f:renderChildren arguments="{contentArguments}" />
+
+<f:if condition="{configuration.insertBelow}">
+	<f:render section="paginator" arguments="{page: page}" />
+</f:if>
+
+<f:section name="paginator">
+	<ul class="f3-widget-paginator">
+		<f:if condition="{page.previous}">
+			<li class="previous">
+				<f:link.widget arguments="{currentPage: page.previous}">previous</f:link.widget>
+			</li>
+		</f:if>
+		<f:for each="{page.list}" as="singlePage" iteration="iteraton">
+			<li{f:if(condition:'{singlePage.number} == {page.current}', then: ' class="current"')}>
+				<f:link.widget arguments="{currentPage: singlePage.number}">{singlePage.number}</f:link.widget>
+			</li>
+		</f:for>
+		<f:if condition="{page.next}">
+			<li class="next">
+				<f:link.widget arguments="{currentPage: page.next}">next</f:link.widget>
+			</li>
+		</f:if>
+	</ul>
+</f:section>

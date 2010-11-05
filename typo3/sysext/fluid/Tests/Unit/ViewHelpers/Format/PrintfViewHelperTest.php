@@ -22,7 +22,7 @@
 
 /**
  */
-class Tx_Fluid_ViewHelpers_Format_PrintfViewHelperTest extends Tx_Extbase_BaseTestCase {
+class Tx_Fluid_Tests_Unit_ViewHelpers_Format_PrintfViewHelperTest extends Tx_Extbase_BaseTestCase {
 
 	/**
 	 * @test
