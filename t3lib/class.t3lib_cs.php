@@ -280,6 +280,7 @@ class t3lib_cs {
 		'it' => 'west_european',	// Italian
 		'ja' => 'japanese',
 		'kl' => 'west_european',	// Greenlandic
+		'km' => 'unicode',	// Khmer
 		'ko' => 'korean',
 		'lt' => 'lithuanian',
 		'lv' => 'west_european',	// Latvian/Lettish
@@ -335,6 +336,7 @@ class t3lib_cs {
 		'ita' => 'west_european',	// Italian
 		'its' => 'west_european',	// Italian (Swiss)
 		'jpn' => 'japanese',
+		'khm' => 'unicode',	// Khmer
 		'kor' => 'korean',
 		'lth' => 'lithuanian',
 		'lvi' => 'west_european',	// Latvian/Lettish
@@ -388,6 +390,7 @@ class t3lib_cs {
 		'hungarian' => 'east_european',
 		'icelandic' => 'west_european',
 		'italian' => 'west_european',
+		'khmer' => 'unicode',
 		'latvian' => 'west_european',
 		'lettish' => 'west_european',
 		'lithuanian' => 'lithuanian',
@@ -516,6 +519,7 @@ class t3lib_cs {
 		'sq' => 'utf-8',
 		'ge' => 'utf-8',
 		'ga' => '',
+		'km' => 'utf-8',
 	);
 
 		// TYPO3 specific: Array with the iso names used for each system language in TYPO3:
