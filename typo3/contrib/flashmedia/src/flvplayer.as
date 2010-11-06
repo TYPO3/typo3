@@ -62,7 +62,7 @@ if(!_root.file) {
 
 // toggle for autostarting the video
 // you can change the 'true' in 'false'
-if(_root.autoStart == "true") {
+if(_root.autoPlay == "true") {
 	autoStart = true;
 } else {
 	autoStart = false;
