@@ -177,45 +177,55 @@ class SC_mod_tools_config_index {
 		switch($this->MOD_SETTINGS['function'])	{
 			case 0:
 				$theVar = $GLOBALS['TYPO3_CONF_VARS'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TYPO3_CONF_VARS';
 			break;
 			case 1:
-				foreach ($GLOBALS['TCA'] as $table => $config)	{
+				foreach ($GLOBALS['TCA'] as $table => $config) {
 					t3lib_div::loadTCA($table);
 				}
 				$theVar = $GLOBALS['TCA'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TCA';
 			break;
 			case 2:
 				$theVar = $GLOBALS['TCA_DESCR'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TCA_DESCR';
 			break;
 			case 3:
 				$theVar = $GLOBALS['TYPO3_LOADED_EXT'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TYPO3_LOADED_EXT';
 			break;
 			case 4:
 				$theVar = $GLOBALS['T3_SERVICES'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$T3_SERVICES';
 			break;
 			case 5:
 				$theVar = $GLOBALS['TBE_MODULES'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TBE_MODULES';
 			break;
 			case 6:
 				$theVar = $GLOBALS['TBE_MODULES_EXT'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TBE_MODULES_EXT';
 			break;
 			case 7:
 				$theVar = $GLOBALS['TBE_STYLES'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TBE_STYLES';
 			break;
 			case 8:
 				$theVar = $GLOBALS['BE_USER']->uc;
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$BE_USER->uc';
 			break;
 			case 9:
 				$theVar = $GLOBALS['TYPO3_USER_SETTINGS'];
+				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
 			break;
 			default:

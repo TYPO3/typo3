@@ -2190,14 +2190,22 @@ final class t3lib_div {
 		return $out;
 	}
 
-
-
-
-
-
-
-
-
+	/**
+	 * Sorts an array by key recursive - uses natural sort order (aAbB-zZ)
+	 *
+	 * @param  array $array  array to be sorted recursively, passed by reference
+	 * @return boolean TRUE if param is an array
+	 */
+	public static function naturalKeySortRecursive(&$array) {
+		if (!is_array($array)) {
+			return FALSE;
+		}
+		uksort($array, 'strcasecmp');
+		foreach ($array as $key => $value) {
+			self::naturalKeySortRecursive($array[$key]);
+		}
+		return TRUE;
+	}
 
 
 
