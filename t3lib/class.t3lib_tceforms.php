@@ -1201,15 +1201,15 @@ class t3lib_TCEforms	{
 			$item .= '<span class="t3-tceforms-input-wrapper" onmouseOver="if (document.getElementById(\'' . $inputId .
 					'\').value) {this.className=\'t3-tceforms-input-wrapper-hover\';} else {this.className=\'t3-tceforms-input-wrapper\';};" onmouseOut="this.className=\'t3-tceforms-input-wrapper\';">';
 		}
-			// old function "checkbox" now the option to set the date / remove the date
-		if (isset($config['checkbox'])) {
-			$item .= t3lib_iconWorks::getSpriteIcon('actions-input-clear', array('tag' => 'a', 'class' => 't3-tceforms-input-clearer', 'onclick' => 'document.getElementById(\'' . $inputId . '\').value=\'\';' . implode('', $PA['fieldChangeFunc'])));
-		}
 
 		$PA['fieldChangeFunc'] = array_merge(
 			array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'),
 			$PA['fieldChangeFunc']
 		);
+			// old function "checkbox" now the option to set the date / remove the date
+		if (isset($config['checkbox'])) {
+			$item .= t3lib_iconWorks::getSpriteIcon('actions-input-clear', array('tag' => 'a', 'class' => 't3-tceforms-input-clearer', 'onclick' => 'document.getElementById(\'' . $inputId . '\').value=\'\';' . implode('', $PA['fieldChangeFunc'])));
+		}
 		$mLgd = ($config['max'] ? $config['max'] : 256);
 		$iOnChange = implode('', $PA['fieldChangeFunc']);
 
