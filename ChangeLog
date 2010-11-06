@@ -1,3 +1,7 @@
+2010-11-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16214: Bug: Change value of Media(Flash) parameter (Thanks to Janos Thiele)
+
 2010-11-05  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16130: buggy initialization of flash uploader when only certain file extensions are allowed (Thanks to Andreas Kiessling)
