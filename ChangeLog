@@ -1,3 +1,7 @@
+2010-11-06  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16214: Bug: Change value of Media(Flash) parameter (Thanks to Janos Thiele)
+
 2010-11-05  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #7872: htmlArea RTE: Allow CSS-styles for tables without having to activate blockstyle

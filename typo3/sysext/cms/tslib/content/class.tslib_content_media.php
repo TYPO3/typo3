@@ -142,7 +142,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 						if (isset($val['mmParamSet'])) {
 							$pName = $val['mmParamName'];
 							$pSet = $val['mmParamSet'];
-							$pValue = $pSet == 2 ? $val['mmParamValue'] : ($pSet == 0 ? 'FALSE' : 'TRUE');
+							$pValue = $pSet == 2 ? $val['mmParamValue'] : ($pSet == 0 ? 'false' : 'true');
 							$conf['predefined'][$pName] = $pValue;
 						}
 					}
