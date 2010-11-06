@@ -1,5 +1,6 @@
 2010-11-06  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16250: prototype methods are used to determine the available viewport dimensions in ExtJS plugins
 	* Fixed bug #16254: Dead logo function in backend.php
 	* Fixed bug #16116: Configuration module is hard to find the array key because it's not sorted
 	* Fixed bug #15587: Bug: htmlspecialchars called twice (Thanks to Mickel Ricky)

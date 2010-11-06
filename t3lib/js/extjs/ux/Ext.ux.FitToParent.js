@@ -21,11 +21,20 @@ Ext.ux.plugins.FitToParent = Ext.extend(Object, {
 			c.doLayout = c.doLayout.createInterceptor(this.fitSizeToParent);
 		}
 	},
+
 	fitSizeToParent : function() {
-		// Uses the dimension of the current viewport, but removes the document header
-		// and an addtional margin of 40 pixels (e.g. Safari needs this addition)
-		
-		this.fitToElement.setHeight(document.viewport.getHeight() - this.fitToElement.getTop() - 40);
+			// Uses the dimension of the current viewport, but removes the document header
+		var documentHeaderHeight = 0;
+		var documentHeader = Ext.get('typo3-docheader');
+
+		if (Ext.isObject(documentHeader)) {
+			documentHeaderHeight = documentHeader.getHeight();
+		}
+
+		this.fitToElement.setHeight(
+			Ext.lib.Dom.getViewportHeight() - this.fitToElement.getTop() - documentHeaderHeight
+		);
+
 		var pos = this.getPosition(true), size = this.fitToElement.getViewSize();
 		this.setSize(size.width - pos[0], size.height - pos[1]);
 		
