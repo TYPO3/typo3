@@ -1,5 +1,6 @@
 2010-11-06  Steffen Kamper  <steffen@typo3.org>
 
+	* Fixed bug #16187: Optimize stdWrap usage for TypoScript content element CASE (Thanks to Jo Hasenau)
 	* Fixed bug #16261: Clearing input field using clear icon doesn't get saved. (Thanks to Peter Beernink)
 	* Fixed bug #16250: prototype methods are used to determine the available viewport dimensions in ExtJS plugins
 	* Fixed bug #16254: Dead logo function in backend.php
