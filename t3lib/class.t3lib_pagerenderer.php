@@ -1340,9 +1340,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			foreach ($this->cssFiles as $file => $properties) {
 				$file = t3lib_div::resolveBackPath($file);
 				$file = t3lib_div::createVersionNumberedFilename($file);
-				$tag = '<link rel="' . $properties['rel'] . '" type="text/css" href="' .
-					htmlspecialchars($file) . '" media="' . $properties['media'] . '"' .
-					($properties['title'] ? ' title="' . $properties['title'] . '"' : '') .
+				$tag = '<link rel="' . htmlspecialchars($properties['rel']) . '" type="text/css" href="' .
+					htmlspecialchars($file) . '" media="' . htmlspecialchars($properties['media']) . '"' .
+					($properties['title'] ? ' title="' . htmlspecialchars($properties['title']) . '"' : '') .
 					$endingSlash . '>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
@@ -1370,7 +1370,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			foreach ($this->jsLibs as $name => $properties) {
 				$properties['file'] = t3lib_div::resolveBackPath($properties['file']);
 				$properties['file'] = t3lib_div::createVersionNumberedFilename($properties['file']);
-				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . $properties['type'] . '"></script>';
+				$tag = '<script src="' . htmlspecialchars($properties['file']) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
 				}
@@ -1394,7 +1394,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			foreach ($this->jsFiles as $file => $properties) {
 				$file = t3lib_div::resolveBackPath($file);
 				$file = t3lib_div::createVersionNumberedFilename($file);
-				$tag = '<script src="' . htmlspecialchars($file) . '" type="' . $properties['type'] . '"></script>';
+				$tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"></script>';
 				if ($properties['allWrap'] && strpos($properties['allWrap'], '|') !== FALSE) {
 					$tag = str_replace('|', $tag, $properties['allWrap']);
 				}
