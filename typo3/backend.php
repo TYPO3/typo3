@@ -590,29 +590,6 @@ class TYPO3backend {
 	}
 
 	/**
-	 * generates the code for the TYPO3 logo, either the default TYPO3 logo or a custom one
-	 *
-	 * @return	string	HTML code snippet to display the TYPO3 logo
-	 */
-	protected function getLogo() {
-		$logo = '<a href="http://www.typo3.com/" target="_blank">'.
-				'<img'.t3lib_iconWorks::skinImg('','gfx/alt_backend_logo.gif','width="117" height="32"').' title="TYPO3 Content Management Framework" alt="" />'.
-				'</a>';
-
-			// overwrite with custom logo
-		if($GLOBALS['TBE_STYLES']['logo'])	{
-			if(substr($GLOBALS['TBE_STYLES']['logo'], 0, 3) == '../')	{
-				$imgInfo = @getimagesize(PATH_site.substr($GLOBALS['TBE_STYLES']['logo'], 3));
-			}
-			$logo = '<a href="http://www.typo3.com/" target="_blank">'.
-				'<img src="'.$GLOBALS['TBE_STYLES']['logo'].'" '.$imgInfo[3].' title="TYPO3 Content Management Framework" alt="" />'.
-				'</a>';
-		}
-
-		return $logo;
-	}
-
-	/**
 	 * adds a javascript snippet to the backend
 	 *
 	 * @param	string	javascript snippet
