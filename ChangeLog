@@ -1,6 +1,7 @@
 2010-11-07  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16246: Create class constants for pages.doktype
+	* Fixed bug #16252: Apply "bookmarks" naming to UserTS options
 
 2010-11-07  Stanislas Rolland  <typo3@sjbr.ca>
 

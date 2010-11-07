@@ -732,8 +732,12 @@ class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return	boolean
 	 */
 	function mayMakeShortcut()	{
-		return $this->getTSConfigVal('options.enableShortcuts') &&
-			!$this->getTSConfigVal('options.mayNotCreateEditShortcuts');
+			// "Shortcuts" have been renamed to "Bookmarks"
+			// @deprecated remove shortcuts code in TYPO3 4.7
+		return 	($this->getTSConfigVal('options.enableShortcuts')
+				|| $this->getTSConfigVal('options.enableBookmarks'))
+				&& 	(!$this->getTSConfigVal('options.mayNotCreateEditShortcuts')
+				&& !$this->getTSConfigVal('options.mayNotCreateEditBookmarks'));
 	}
 
 	/**

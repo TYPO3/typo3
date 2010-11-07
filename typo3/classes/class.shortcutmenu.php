@@ -99,10 +99,15 @@ class ShortcutMenu implements backend_toolbarItem {
 	 * @return  boolean  true if user has access, false if not
 	 */
 	public function checkAccess() {
-		if ($GLOBALS['BE_USER']->getTSConfigVal('options.enableShortcuts')) {
-			return true;
+			// "Shortcuts" have been renamed to "Bookmarks"
+			// @deprecated remove shortcuts code in TYPO3 4.7
+		$useShortcuts = $GLOBALS['BE_USER']->getTSConfigVal('options.enableShortcuts');
+		if ($useShortcuts !== NULL) {
+			t3lib_div::deprecationLog('options.enableShortcuts - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.enableBookmarks instead');
+			return (bool) $useShortcuts;
 		}
-		return false;
+
+		return (bool) $GLOBALS['BE_USER']->getTSConfigVal('options.enableBookmarks');
 	}
 
 	/**
@@ -383,10 +388,19 @@ class ShortcutMenu implements backend_toolbarItem {
 	 */
 	protected function initShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = null) {
 			// groups from TSConfig
-		$userShortcutGroups = $GLOBALS['BE_USER']->getTSConfig('options.shortcutGroups');
+			// "Shortcuts" have been renamed to "Bookmarks"
+			// @deprecated remove shortcuts code in TYPO3 4.7
+		$userShortcutGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.shortcutGroups');
+		if ($userShortcutGroups) {
+			t3lib_div::deprecationLog('options.shortcutGroups - since TYPO3 4.5, will be removed in TYPO3 4.7 - use options.bookmarkGroups instead');
+		}
+		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
+		if ($bookmarkGroups !== NULL) {
+			$userShortcutGroups = $bookmarkGroups;
+		}
 
-		if(is_array($userShortcutGroups['properties']) && count($userShortcutGroups['properties'])) {
-			foreach($userShortcutGroups['properties'] as $groupId => $label) {
+		if(is_array($userShortcutGroups) && count($userShortcutGroups)) {
+			foreach($userShortcutGroups as $groupId => $label) {
 				if(strcmp('', $label) && strcmp('0', $label)) {
 					$this->shortcutGroups[$groupId] = (string) $label;
 				} elseif($GLOBALS['BE_USER']->isAdmin()) {
