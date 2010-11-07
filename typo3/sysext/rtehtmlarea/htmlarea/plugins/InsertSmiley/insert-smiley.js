@@ -121,7 +121,7 @@ HTMLArea.InsertSmiley = HTMLArea.Plugin.extend({
 				xtype: 'box',
 				cls: 'emoticon-array',
 				tpl: new Ext.XTemplate(
-					'<tpl for="."><a href="#" class="emoticon" hidefocus="on"><img alt="{alt}" title="{title}" src="{file}" /></a></tpl>'
+					'<tpl for="."><a href="#" class="emoticon" hidefocus="on" ext:qtitle="{alt}" ext:qtip="{title}"><img src="{file}" /></a></tpl>'
 				),
 				listeners: {
 					render: {
@@ -160,8 +160,8 @@ HTMLArea.InsertSmiley = HTMLArea.Plugin.extend({
 		var icon = Ext.get(target).first();
 		var imgTag = this.editor.document.createElement('img');
 		imgTag.setAttribute('src', icon.getAttribute('src'));
-		imgTag.setAttribute('alt', icon.getAttribute('alt'));
-		imgTag.setAttribute('title', icon.getAttribute('title'));
+		imgTag.setAttribute('alt', target.getAttribute('ext:qtitle'));
+		imgTag.setAttribute('title', target.getAttribute('ext:qtip'));
 		this.editor.insertNodeAtSelection(imgTag);
 		if (!Ext.isIE) {
 			this.editor.selectNode(imgTag, false);

@@ -1,3 +1,7 @@
+2010-11-07  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #16293: htmlArea RTE: Add quick tips to insert emoticon dialogue
+
 2010-11-06  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #16281: htmlArea RTE: Add context sensitive help to remove format dialogue (BE only)
