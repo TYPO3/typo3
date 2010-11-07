@@ -240,6 +240,10 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		this.loginRefreshWindow.on('close', function(){
 			TYPO3.loginRefresh.startTimer();
 		});
+		this.loginRefreshWindow.on('show', function() {
+			// this focus needs a delay, because Ext JS sets focus to another element when it shows the layer
+			Ext.get('password').focus(800);
+		});
 	},
 
 	showLoginPopup: function() {
@@ -260,7 +264,12 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 		var form = Ext.getCmp("loginform").getForm();
 		var fields = form.getValues();
 		if (fields.p_field === "") {
-			Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_emptyPassword);
+			Ext.Msg.alert(
+					TYPO3.LLL.core.refresh_login_failed,
+					TYPO3.LLL.core.refresh_login_emptyPassword,
+					function() {
+						Ext.get("password").focus();
+					});
 		} else {
 			if (TS.securityLevel === "superchallenged") {
 				fields.p_field = MD5(fields.p_field);
@@ -295,7 +304,12 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 						TYPO3.loginRefresh.startTimer();
 					} else {
 						// TODO: add failure to notification system instead of alert
-						Ext.Msg.alert(TYPO3.LLL.core.refresh_login_failed, TYPO3.LLL.core.refresh_login_failed_message);
+						Ext.Msg.alert(
+								TYPO3.LLL.core.refresh_login_failed,
+								TYPO3.LLL.core.refresh_login_failed_message,
+								function() {
+									Ext.get("password").focus();
+								});
 					}
 				}
 			});

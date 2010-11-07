@@ -2,6 +2,7 @@
 
 	* Fixed bug #16246: Create class constants for pages.doktype
 	* Fixed bug #16252: Apply "bookmarks" naming to UserTS options
+	* Follow-up to #16136: Added unit-tests for t3lib_basicFileFunctions (Thanks to Andreas Kiessling)
 
 2010-11-07  Stanislas Rolland  <typo3@sjbr.ca>
 
