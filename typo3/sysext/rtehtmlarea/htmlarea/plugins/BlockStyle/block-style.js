@@ -42,10 +42,7 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 		this.cssArray = {};
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.pageTSconfiguration = this.editorConfiguration.buttons.blockstyle;
-		this.tags = this.pageTSconfiguration.tags;
-		if (!this.tags) {
-			this.tags = new Object();
-		}
+		this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
 		if (typeof(this.editorConfiguration.classesTag) !== "undefined") {
 			if (this.editorConfiguration.classesTag.div) {
 				if (!this.tags.div) {
@@ -86,9 +83,9 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 				}
 			}
 		}
-		this.showTagFreeClasses = this.pageTSconfiguration.showTagFreeClasses || this.editorConfiguration.showTagFreeClasses;
-		this.prefixLabelWithClassName = this.pageTSconfiguration.prefixLabelWithClassName;
-		this.postfixLabelWithClassName = this.pageTSconfiguration.postfixLabelWithClassName;
+		this.showTagFreeClasses = (this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false) || this.editorConfiguration.showTagFreeClasses;
+		this.prefixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.prefixLabelWithClassName : false;
+		this.postfixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.postfixLabelWithClassName : false;
 		/*
 		 * Registering plugin "About" information
 		 */
@@ -106,7 +103,7 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 		 * Registering the drop-down list
 		 */
 		var dropDownId = 'BlockStyle';
-		var fieldLabel = this.pageTSconfiguration.fieldLabel;
+		var fieldLabel = this.pageTSconfiguration ? this.pageTSconfiguration.fieldLabel : '';
 		if (Ext.isEmpty(fieldLabel) && this.isButtonInToolbar('I[Block style label]')) {
 			fieldLabel = this.localize('Block style label');
 		}
@@ -119,14 +116,16 @@ HTMLArea.BlockStyle = HTMLArea.Plugin.extend({
 			storeFields: [ { name: 'text'}, { name: 'value'}, { name: 'style'} ],
 			tpl: '<tpl for="."><div ext:qtip="{value}" style="{style}text-align:left;font-size:11px;" class="x-combo-list-item">{text}</div></tpl>'
 		};
-		if (this.pageTSconfiguration.width) {
-			dropDownConfiguration.width = parseInt(this.pageTSconfiguration.width, 10);
-		}
-		if (this.pageTSconfiguration.listWidth) {
-			dropDownConfiguration.listWidth = parseInt(this.pageTSconfiguration.listWidth, 10);
-		}
-		if (this.pageTSconfiguration.maxHeight) {
-			dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
+		if (this.pageTSconfiguration) {
+			if (this.pageTSconfiguration.width) {
+				dropDownConfiguration.width = parseInt(this.pageTSconfiguration.width, 10);
+			}
+			if (this.pageTSconfiguration.listWidth) {
+				dropDownConfiguration.listWidth = parseInt(this.pageTSconfiguration.listWidth, 10);
+			}
+			if (this.pageTSconfiguration.maxHeight) {
+				dropDownConfiguration.maxHeight = parseInt(this.pageTSconfiguration.maxHeight, 10);
+			}
 		}
 		this.registerDropDown(dropDownConfiguration);
 		return true;
