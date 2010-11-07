@@ -124,7 +124,7 @@ class t3lib_pageselectTest extends tx_phpunit_testcase {
 	public function getExtUrlForDokType2ReturnsFalse() {
 		$this->assertEquals(
 			FALSE,
-			$this->pageSelectObject->getExtURL(array('doktype' => 2))
+			$this->pageSelectObject->getExtURL(array('doktype' => t3lib_pageSelect::DOKTYPE_ADVANCED))
 		);
 	}
 
@@ -136,7 +136,7 @@ class t3lib_pageselectTest extends tx_phpunit_testcase {
 			'http://www.example.com',
 			$this->pageSelectObject->getExtURL(
 				array(
-					'doktype' => 3,
+					'doktype' => t3lib_pageSelect::DOKTYPE_LINK,
 					'urltype' => 1,
 					'url' => 'www.example.com',
 				)
@@ -152,7 +152,7 @@ class t3lib_pageselectTest extends tx_phpunit_testcase {
 			t3lib_div::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/',
 			$this->pageSelectObject->getExtURL(
 				array(
-					'doktype' => 3,
+					'doktype' => t3lib_pageSelect::DOKTYPE_LINK,
 					'urltype' => 0,
 					'url' => 'hello/world/',
 				)

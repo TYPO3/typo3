@@ -5497,10 +5497,10 @@ class tslib_cObj {
 								// If we link across domains and page is free type shortcut, we must resolve the shortcut first!
 								// If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
 								// they return relative links and (2) show proper page if no RealURL/CoolURI exists when link is clicked
-							if ($enableLinksAcrossDomains && $page['doktype'] == 4 && $page['shortcut_mode'] == 0) {
+							if ($enableLinksAcrossDomains && $page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == t3lib_pageSelect::SHORTCUT_MODE_NONE) {
 								$page2 = $page; // Save in case of broken destination or endless loop
 								$maxLoopCount = 20; // Same as in RealURL, seems enough
-								while ($maxLoopCount && is_array($page) && $page['doktype'] == 4 && $page['shortcut_mode'] == 0) {
+								while ($maxLoopCount && is_array($page) && $page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == t3lib_pageSelect::SHORTCUT_MODE_NONE) {
 									$page = $GLOBALS['TSFE']->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
 									$maxLoopCount--;
 								}
@@ -6949,7 +6949,7 @@ class tslib_cObj {
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 
-					if ($row['doktype'] == 255 || $row['doktype'] == 6 || $row['t3ver_state'] > 0) {
+					if ($row['doktype'] == t3lib_pageSelect::DOKTYPE_RECYCLER || $row['doktype'] == t3lib_pageSelect::DOKTYPE_BE_USER_SECTION || $row['t3ver_state'] > 0) {
 							// Doing this after the overlay to make sure changes
 							// in the overlay are respected.
 							// However, we do not process pages below of and
@@ -6977,7 +6977,7 @@ class tslib_cObj {
 
 						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 
-						if ($row['doktype'] == 255 || $row['doktype'] == 6 || $row['t3ver_state'] > 0) {
+						if ($row['doktype'] == t3lib_pageSelect::DOKTYPE_RECYCLER || $row['doktype'] == t3lib_pageSelect::DOKTYPE_BE_USER_SECTION || $row['t3ver_state'] > 0) {
 								// Doing this after the overlay to make sure
 								// changes in the overlay are respected.
 

@@ -717,25 +717,25 @@ $TCA['pages_language_overlay'] = array(
 	),
 	'types' => array(
 			// Standard
-		'1'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle, nav_title,                                                                                              --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata, --palette--;LLL:EXT:lang/locallang_general.xml:LGL.author;5;;3-3-3, abstract, keywords, description, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+		(string)t3lib_pageSelect::DOKTYPE_DEFAULT => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle, nav_title,                                                                                              --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.metadata, --palette--;LLL:EXT:lang/locallang_general.xml:LGL.author;5;;3-3-3, abstract, keywords, description, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
 
 			// External URL - URL and URL type can be different for the translated page
-		'3'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle,            --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.url, url;;;;3-3-3, urltype,                                                                                                                                                                                 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+		(string)t3lib_pageSelect::DOKTYPE_LINK => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle,            --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.url, url;;;;3-3-3, urltype,                                                                                                                                                                                 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
 
 			// Shortcut - shortcut and shortcut mode can be different for the translated page
-		'4'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle,            --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut, shortcut;;;;3-3-3, shortcut_mode,                                                                                                                                                                 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+		(string)t3lib_pageSelect::DOKTYPE_SHORTCUT => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle,            --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.shortcut, shortcut;;;;3-3-3, shortcut_mode,                                                                                                                                                                 --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
 
 			// Mount Point - mount point options can _NOT_ be different for the translated page
-		'7'   => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle, nav_title,                                                                                                                                                                                                                                                              --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
+		(string)t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2, subtitle, nav_title,                                                                                                                                                                                                                                                              --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.files, media;;;;4-4-4, --div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.access, starttime, endtime'),
 
 			// Separator
-		'199' => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2'),
+		(string)t3lib_pageSelect::DOKTYPE_SPACER => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2'),
 
 			// Sysfolder
-		'254' => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;LLL:EXT:lang/locallang_general.xml:LGL.title;;;2-2-2'),
+		(string)t3lib_pageSelect::DOKTYPE_SYSFOLDER => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;LLL:EXT:lang/locallang_general.xml:LGL.title;;;2-2-2'),
 
 			// Recycler
-		'255' => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2')
+		(string)t3lib_pageSelect::DOKTYPE_RECYCLER => array('showitem' => 'doktype;;;;1-1-1, hidden, sys_language_uid, title;;;;2-2-2')
 	),
 	'palettes' => array(
 		'5' => array('showitem' => 'author,author_email', 'canNotCollapse' => true)

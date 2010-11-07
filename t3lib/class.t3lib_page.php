@@ -130,6 +130,21 @@ class t3lib_pageSelect {
 	protected $cache_getMountPointInfo = array();
 
 	/**
+	 * Named constants for "magic numbers" of the field doktype
+	 */
+	const DOKTYPE_DEFAULT = 1;
+	const DOKTYPE_ADVANCED = 2; // @deprecated since TYPO3 4.2
+	const DOKTYPE_LINK = 3;
+	const DOKTYPE_SHORTCUT = 4;
+	const DOKTYPE_HIDE_IN_MENU = 5;  // @deprecated since TYPO3 4.2
+	const DOKTYPE_BE_USER_SECTION = 6;
+	const DOKTYPE_MOUNTPOINT = 7;
+	const DOKTYPE_SPACER = 199;
+	const DOKTYPE_SYSFOLDER = 254;
+	const DOKTYPE_RECYCLER = 255;
+
+
+	/**
 	 * Named constants for "magic numbers" of the field shortcut_mode
 	 */
 	const SHORTCUT_MODE_NONE = 0;
@@ -523,7 +538,7 @@ class t3lib_pageSelect {
 				}
 
 					// if shortcut, look up if the target exists and is currently visible
-				if ($row['doktype'] == 4 && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts)	{
+				if ($row['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts) {
 					if ($row['shortcut_mode'] == self::SHORTCUT_MODE_NONE) {
 							// no shortcut_mode set, so target is directly set in $row['shortcut']
 						$searchField = 'uid';
@@ -549,7 +564,7 @@ class t3lib_pageSelect {
 					if (!$count) {
 						unset($row);
 					}
-				} elseif ($row['doktype'] == 4 && $checkShortcuts)	{
+				} elseif ($row['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT && $checkShortcuts) {
 						// Neither shortcut target nor mode is set. Remove the page from the menu.
 					unset($row);
 				}
@@ -665,7 +680,7 @@ class t3lib_pageSelect {
 
 				if (is_array($row))	{
 						// Mount Point page types are allowed ONLY a) if they are the outermost record in rootline and b) if the overlay flag is not set:
-					if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $row['doktype']==7 && !$ignoreMPerrors)	{
+					if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $row['doktype'] == t3lib_pageSelect::DOKTYPE_MOUNTPOINT && !$ignoreMPerrors) {
 						$mount_info = $this->getMountPointInfo($row['uid'], $row);
 						if ($loopCheck>0 || $mount_info['overlay'])	{
 							$this->error_getRootLine = 'Illegal Mount Point found in rootline';
@@ -782,7 +797,7 @@ class t3lib_pageSelect {
 	 * @see tslib_fe::setExternalJumpUrl()
 	 */
 	function getExtURL($pagerow,$disable=0)	{
-		if ($pagerow['doktype']==3 && !$disable)	{
+		if ($pagerow['doktype'] == t3lib_pageSelect::DOKTYPE_LINK && !$disable) {
 			$redirectTo = $this->urltypes[$pagerow['urltype']].$pagerow['url'];
 
 				// If relative path, prefix Site URL:
@@ -829,7 +844,7 @@ class t3lib_pageSelect {
 
 				// Look for mount pid value plus other required circumstances:
 			$mount_pid = intval($pageRec['mount_pid']);
-			if (is_array($pageRec) && $pageRec['doktype']==7 && $mount_pid>0 && !in_array($mount_pid, $prevMountPids))	{
+			if (is_array($pageRec) && $pageRec['doktype']== t3lib_pageSelect::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids)) {
 
 					// Get the mount point record (to verify its general existence):
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid='.$mount_pid.' AND pages.deleted=0 AND pages.doktype!=255');

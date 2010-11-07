@@ -253,7 +253,7 @@ class localPageTree extends t3lib_browseTree {
 
 		$this->init();
 
-		$this->clause = ' AND doktype!=255'.$this->clause;
+		$this->clause = ' AND doktype!=' . t3lib_pageSelect::DOKTYPE_RECYCLER . $this->clause;
 	}
 
 	/**

@@ -58,26 +58,26 @@
  * NOTE: usage of 'icon' is deprecated since TYPO3 4.4, use t3lib_SpriteManager::addTcaTypeIcon() instead
  */
 $PAGES_TYPES = array(
-	'3' => array(
+	(string)t3lib_pageSelect::DOKTYPE_LINK => array(
 	),
-	'4' => array(
+	(string)t3lib_pageSelect::DOKTYPE_SHORTCUT => array(
 	),
-	'5' => array(
+	(string)t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU => array(
 	),
-	'6' => array(
+	(string)t3lib_pageSelect::DOKTYPE_BE_USER_SECTION  => array(
 		'type' => 'web',
 		'allowedTables' => '*'
 	),
-	'7' => array(
+	(string)t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array(
 	),
-	'199' => array(		// TypoScript: Limit is 200. When the doktype is 200 or above, the page WILL NOT be regarded as a 'page' by TypoScript. Rather is it a system-type page
+	(string)t3lib_pageSelect::DOKTYPE_SPACER => array(		// TypoScript: Limit is 200. When the doktype is 200 or above, the page WILL NOT be regarded as a 'page' by TypoScript. Rather is it a system-type page
 		'type' => 'sys',
 	),
-	'254' => array(		//  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
+	(string)t3lib_pageSelect::DOKTYPE_SYSFOLDER => array(		//  Doktype 254 is a 'sysFolder' - a general purpose storage folder for whatever you like. In CMS context it's NOT a viewable page. Can contain any element.
 		'type' => 'sys',
 		'allowedTables' => '*'
 	),
-	'255' => array(		// Doktype 255 is a recycle-bin.
+	(string)t3lib_pageSelect::DOKTYPE_RECYCLER => array(		// Doktype 255 is a recycle-bin.
 		'type' => 'sys',
 		'allowedTables' => '*'
 	),

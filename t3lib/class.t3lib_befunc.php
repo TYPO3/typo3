@@ -1875,9 +1875,9 @@ final class t3lib_BEfunc {
 			break;
 		}
 
-		if ($row['doktype']=='3') {
+		if ($row['doktype'] == t3lib_pageSelect::DOKTYPE_LINK) {
 			$parts[] = $LANG->sL($TCA['pages']['columns']['url']['label']).' '.$row['url'];
-		} elseif ($row['doktype']=='4') {
+		} elseif ($row['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			if ($perms_clause) {
 				$label = self::getRecordPath(intval($row['shortcut']), $perms_clause, 20);
 			} else {
@@ -1889,7 +1889,7 @@ final class t3lib_BEfunc {
 							$LANG->sL(self::getLabelFromItemlist('pages', 'shortcut_mode', $row['shortcut_mode']));
 			}
 			$parts[] = $LANG->sL($TCA['pages']['columns']['shortcut']['label']).' '.$label;
-		} elseif ($row['doktype']=='7') {
+		} elseif ($row['doktype'] == t3lib_pageSelect::DOKTYPE_MOUNTPOINT) {
 			if ($perms_clause) {
 				$label = self::getRecordPath(intval($row['mount_pid']), $perms_clause, 20);
 			} else {

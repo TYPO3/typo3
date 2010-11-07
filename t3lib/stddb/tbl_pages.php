@@ -23,12 +23,12 @@ $TCA['pages'] = array(
 					),
 					array(
 						'LLL:EXT:lang/locallang_tca.php:doktype.I.0',
-						'1',
+						(string)t3lib_pageSelect::DOKTYPE_DEFAULT,
 						'i/pages.gif',
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.4',
-						'6',
+						(string)t3lib_pageSelect::DOKTYPE_BE_USER_SECTION,
 						'i/be_users_section.gif',
 					),
 					array(
@@ -37,17 +37,17 @@ $TCA['pages'] = array(
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.2',
-						'4',
+						(string)t3lib_pageSelect::DOKTYPE_SHORTCUT,
 						'i/pages_shortcut.gif',
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.5',
-						'7',
+						(string)t3lib_pageSelect::DOKTYPE_MOUNTPOINT,
 						'i/pages_mountpoint.gif',
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.8',
-						'3',
+						(string)t3lib_pageSelect::DOKTYPE_LINK,
 						'i/pages_link.gif',
 					),
 					array(
@@ -56,21 +56,21 @@ $TCA['pages'] = array(
 					),
 					array(
 						'LLL:EXT:lang/locallang_tca.php:doktype.I.1',
-						'254',
+						(string)t3lib_pageSelect::DOKTYPE_SYSFOLDER,
 						'i/sysf.gif',
 					),
 					array(
 						'LLL:EXT:lang/locallang_tca.php:doktype.I.2',
-						'255',
+						(string)t3lib_pageSelect::DOKTYPE_RECYCLER,
 						'i/recycler.gif',
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.doktype.I.7',
-						'199',
+						(string)t3lib_pageSelect::DOKTYPE_SPACER,
 						'i/spacer_icon.gif',
 					),
 				),
-				'default' => '1',
+				'default' => (string)t3lib_pageSelect::DOKTYPE_DEFAULT,
 				'iconsInOptionTags' => 1,
 				'noIconsBelowSelect' => 1,
 			),

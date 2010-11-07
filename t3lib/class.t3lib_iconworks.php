@@ -200,7 +200,9 @@ final class t3lib_iconWorks	{
 			// First, find the icon file name. This can depend on configuration in TCA, field values and more:
 		if ($table=='pages') {
 				// @TODO: RFC #7370: doktype 2&5 are deprecated since TYPO3 4.2-beta1
-			if ($row['nav_hide'] && ($row['doktype']==1||$row['doktype']==2))	$row['doktype'] = 5;	// Workaround to change the icon if "Hide in menu" was set
+			if ($row['nav_hide'] && ($row['doktype'] == t3lib_pageSelect::DOKTYPE_DEFAULT || $row['doktype'] == t3lib_pageSelect::DOKTYPE_ADVANCED)) {
+				$row['doktype'] = t3lib_pageSelect::DOKTYPE_HIDE_IN_MENU;
+			}	// Workaround to change the icon if "Hide in menu" was set
 
 			if (!$iconfile = $PAGES_TYPES[$row['doktype']]['icon']) {
 				$iconfile = $PAGES_TYPES['default']['icon'];

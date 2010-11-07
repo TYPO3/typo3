@@ -1253,7 +1253,7 @@ class tslib_menu {
 		}
 
 			// Override URL if using "External URL" as doktype with a valid e-mail address:
-		if ($this->menuArr[$key]['doktype'] == 3 && $this->menuArr[$key]['urltype'] == 3 && t3lib_div::validEmail($this->menuArr[$key]['url'])) {
+		if ($this->menuArr[$key]['doktype'] == t3lib_pageSelect::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3 && t3lib_div::validEmail($this->menuArr[$key]['url'])) {
 				// Create mailto-link using tslib_cObj::typolink (concerning spamProtectEmailAddresses):
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
 			$LD['target'] = '';

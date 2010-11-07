@@ -1055,7 +1055,7 @@
 		}
 
 			// Spacer is not accessible in frontend
-		if ($this->page['doktype'] == 199)	{
+		if ($this->page['doktype'] == t3lib_pageSelect::DOKTYPE_SPACER) {
 			if ($this->TYPO3_CONF_VARS['FE']['pageNotFound_handling'])	{
 				$this->pageNotFoundAndExit('The requested page does not exist!');
 			} else {
@@ -1067,7 +1067,7 @@
 		}
 
 			// Is the ID a link to another page??
-		if ($this->page['doktype']==4)	{
+		if ($this->page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			$this->MP = '';		// We need to clear MP if the page is a shortcut. Reason is if the short cut goes to another page, then we LEAVE the rootline which the MP expects.
 
 				// saving the page so that we can check later - when we know
@@ -1143,7 +1143,7 @@
 		switch($mode)	{
 			case 1:
 			case 2:
-				$pageArray = $this->sys_page->getMenu($idArray[0]?$idArray[0]:$thisUid,'*','sorting','AND pages.doktype<199 AND pages.doktype!=6');
+				$pageArray = $this->sys_page->getMenu(($idArray[0] ? $idArray[0] : $thisUid), '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . t3lib_pageSelect::DOKTYPE_BE_USER_SECTION);
 				$pO = 0;
 				if ($mode==2 && count($pageArray))	{	// random
 					$randval = intval(rand(0,count($pageArray)-1));
@@ -1168,7 +1168,7 @@
 		}
 
 			// Check if short cut page was a shortcut itself, if so look up recursively:
-		if ($page['doktype']==4)	{
+		if ($page['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT) {
 			if (!in_array($page['uid'],$pageLog) && $itera>0)	{
 				$pageLog[] = $page['uid'];
 				$page = $this->getPageShortcut($page['shortcut'],$page['shortcut_mode'],$page['uid'],$itera-1,$pageLog);
@@ -1200,7 +1200,7 @@
 				$this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
 				$removeTheRestFlag=1;
 			}
-			if ($this->rootLine[$a]['doktype']==6)	{
+			if ($this->rootLine[$a]['doktype'] == t3lib_pageSelect::DOKTYPE_BE_USER_SECTION) {
 				if ($this->beUserLogin)	{	// If there is a backend user logged in, check if he has read access to the page:
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid='.intval($this->id).' AND '.$GLOBALS['BE_USER']->getPagePermsClause(1));	// versionOL()?
 					list($isPage) = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
