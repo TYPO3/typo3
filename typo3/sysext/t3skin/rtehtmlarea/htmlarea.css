@@ -232,6 +232,9 @@ body.ext-ie6 .htmlarea-context-menu .buttonActive,
 body.ext-ie6 .htmlarea-window .x-panel-icon {
 	background-image: url("images/sprites/actions.gif");
 }
+.htmlarea-window .x-window-header .t3-help-link {
+	color: #fff;
+}
 .htmlarea-window ul.x-tab-strip {
 	list-style: none;
 }

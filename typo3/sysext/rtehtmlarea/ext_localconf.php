@@ -235,6 +235,7 @@ $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['RemoveFormat'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['RemoveFormat']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/RemoveFormat/class.tx_rtehtmlarea_removeformat.php:&tx_rtehtmlarea_removeformat';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['RemoveFormat']['addIconsToSkin'] = 0;
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['RemoveFormat']['disableInFE'] = 0;
+$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['RemoveFormat']['contextHelpFile'] = 'EXT:' . $_EXTKEY . '/extensions/RemoveFormat/locallang_csh.xml';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['PlainText'] = array();
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['PlainText']['objectReference'] = 'EXT:'.$_EXTKEY.'/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php:&tx_rtehtmlarea_plaintext';
 $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['PlainText']['addIconsToSkin'] = 0;

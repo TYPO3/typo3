@@ -4616,7 +4616,6 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 		return (function(arg1, arg2, arg3) {
 			return (self[functionName](arg1, arg2, arg3));});
 	},
-
 	/**
 	 * Localize a string
 	 *
@@ -4626,6 +4625,34 @@ HTMLArea.Plugin = HTMLArea.Base.extend({
 	 */
 	localize: function (label) {
 		return this.I18N[label] || HTMLArea.localize(label);
+	},
+	/**
+	 * Get localized label wrapped with contextual help markup when available
+	 *
+	 * @param	string		fieldName: the name of the field in the CSH file
+	 * @param	string		label: the name of the label to localize
+	 * @param	string		pluginName: overrides this.name
+	 *
+	 * @return	string		localized label with CSH markup
+	 */
+	getHelpTip: function (fieldName, label, pluginName) {
+		if (Ext.isDefined(TYPO3.ContextHelp)) {
+			var pluginName = Ext.isDefined(pluginName) ? pluginName : this.name;
+			return '<a class="t3-help-link" href="#" data-table="xEXT_rtehtmlarea_' + pluginName + '" data-field="' + fieldName + '"><abbr class="t3-help-teaser">' + this.localize(label) + '</abbr></a>';
+		} else {
+			return this.localize(label);
+		}
+	},
+	/**
+	 * Initiate context help listening on the dialogue window
+	 * This is normally specified as render handler of the window
+	 *
+	 * @return	void
+	 */
+	enableContextHelp: function () {
+		if (Ext.isDefined(TYPO3.ContextHelp) && Ext.isFunction(TYPO3.ContextHelp.openHelpWindow)) {
+			Ext.select('div').on('click', TYPO3.ContextHelp.openHelpWindow, TYPO3.ContextHelp, {delegate: 'a.t3-help-link'});
+		}
 	},
 	/**
 	 * Load a Javascript file asynchronously

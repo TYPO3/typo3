@@ -47,7 +47,8 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 			copyrightOwner	: 'Stanislas Rolland',
 			sponsor		: 'SJBR',
 			sponsorUrl	: 'http://www.sjbr.ca/',
-			license		: 'GPL'
+			license		: 'GPL',
+			hasHelp		: true
 		};
 		this.registerPluginInformation(pluginInformation);
 		/*
@@ -101,7 +102,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 	 */
 	openDialogue: function (buttonId, title, dimensions) {
 		this.dialog = new Ext.Window({
-			title: this.localize(title),
+			title: this.getHelpTip('', title),
 			cls: 'htmlarea-window',
 			border: false,
 			width: dimensions.width,
@@ -110,6 +111,9 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 			resizable: !Ext.isIE,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
+				render: {
+					fn: this.enableContextHelp
+				},
 				close: {
 					fn: this.onClose,
 					scope: this
@@ -117,7 +121,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 			},
 			items: [{
 					xtype: 'fieldset',
-					title: this.localize('Cleaning Area'),
+					title: this.getHelpTip('area', 'Cleaning Area'),
 					defaultType: 'radio',
 					labelWidth: 140,
 					defaults: {
@@ -125,11 +129,11 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 					},
 					items: [{
 							itemId: 'selection',
-							fieldLabel: this.localize('Selection'),
+							fieldLabel: this.getHelpTip('selection', 'Selection'),
 							name: 'htmlarea-removeFormat-area'
 						},{
 							itemId: 'allContent',
-							fieldLabel: this.localize('All'),
+							fieldLabel: this.getHelpTip('all', 'All'),
 							checked: true,
 							name: 'htmlarea-removeFormat-area'
 						}
@@ -137,30 +141,30 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 				},{
 					xtype: 'fieldset',
 					defaultType: 'checkbox',
-					title: this.localize('Cleaning options'),
+					title: this.getHelpTip('options', 'Cleaning options'),
 					labelWidth: 170,
 					defaults: {
 						labelSeparator: ''
 					},
 					items: [{
 							itemId: 'formatting',
-							fieldLabel: this.localize('Formatting:')
+							fieldLabel: this.getHelpTip('htmlFormat', 'Formatting:')
 						},{
 							itemId: 'msWordFormatting',
-							fieldLabel: this.localize('MS Word Formatting:'),
+							fieldLabel: this.getHelpTip('msWordFormat', 'MS Word Formatting:'),
 							checked: true
 						},{
 							itemId: 'typographical',
-							fieldLabel: this.localize('Typographical punctuation:')
+							fieldLabel: this.getHelpTip('typographicalPunctuation', 'Typographical punctuation:')
 						},{
 							itemId: 'spaces',
-							fieldLabel: this.localize('Spaces')
+							fieldLabel: this.getHelpTip('nonBreakingSpace', 'Spaces')
 						},{
 							itemId: 'images',
-							fieldLabel: this.localize('Images:')
+							fieldLabel: this.getHelpTip('images', 'Images:')
 						},{
 							itemId: 'allHtml',
-							fieldLabel: this.localize('All HTML:')
+							fieldLabel: this.getHelpTip('allHtml', 'All HTML:')
 						}
 					]
 				}
@@ -282,7 +286,7 @@ HTMLArea.RemoveFormat = HTMLArea.Plugin.extend({
 					// Replace double low-9 / left double / right double quotation mark with double quote
 				SrcCd = String.fromCharCode(8222) + '|' + String.fromCharCode(8220) + '|' + String.fromCharCode(8221);
 				html = html.replace(new RegExp(SrcCd, 'g'), '"');
-					// Replace left single / right single / single low-9 quotation mark with sigle quote
+					// Replace left single / right single / single low-9 quotation mark with single quote
 				SrcCd = String.fromCharCode(8216) + '|' + String.fromCharCode(8217) + '|' + String.fromCharCode(8218);
 				html = html.replace(new RegExp(SrcCd, 'g'), "'");
 					// Replace single left/right-pointing angle quotation mark with single quote

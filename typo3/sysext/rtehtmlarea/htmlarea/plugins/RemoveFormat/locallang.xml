@@ -6,19 +6,19 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="RemoveFormatTooltip">Remove formatting</label>
+			<label index="RemoveFormatTooltip">Remove format</label>
 			<label index="Cleaning Area">Cleaning Area</label>
-			<label index="Selection">Selection</label>
+			<label index="Selection">Selected text</label>
 			<label index="All">All</label>
-			<label index="Remove formatting">Remove formatting</label>
-			<label index="Cleaning options">Type of formatting to remove</label>
-			<label index="Formatting:">HTML Formatting:</label>
-			<label index="MS Word Formatting:">MS Word Formatting:</label>
+			<label index="Remove formatting">Remove format</label>
+			<label index="Cleaning options">Type(s) of format to remove</label>
+			<label index="Formatting:">HTML Format:</label>
+			<label index="MS Word Formatting:">MS Word Format:</label>
 			<label index="Typographical punctuation:">Typographical punctuation:</label>
 			<label index="Spaces">Non-breaking spaces:</label>
 			<label index="Images:">Images:</label>
 			<label index="All HTML:">All HTML tags:</label>
-			<label index="Select the type of formatting you wish to remove.">Select the type of formatting to remove.</label>
+			<label index="Select the type of formatting you wish to remove.">Select the type(s) of format to remove.</label>
 			<label index="OK">OK</label>
 			<label index="Cancel">Cancel</label>
 		</languageKey>

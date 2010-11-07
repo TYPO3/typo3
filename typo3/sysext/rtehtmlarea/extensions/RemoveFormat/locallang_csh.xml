@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<description>CSH for Remove Format Extension of htmlArea RTE</description>
+		<type>CSH</type>
+		<csh_table>xEXT_rtehtmlarea_RemoveFormat</csh_table>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index=".alttitle">htmlArea RTE &gt; Remove Format</label>
+			<label index=".description">The Remove Format feature offers options for cleaning up the HTML markup of the text being edited.</label>
+			<label index=".details">This feature may be useful in order to clean up text that was copied from some external source and pasted into the editing area.
+
+The feature is accessed by clicking on the "Remove format" button in the editor tool bar.
+
+In the dialogue window that opens when the button is clicked:
+- First, select the area to be cleaned;
+- Second, choose the format removal options that you wish to be applied to the selected area;
+- Press the OK button for the format removal operation to be performed. The dialogue window will be automatically closed.</label>
+			<label index=".image">EXT:rtehtmlarea/extensions/RemoveFormat/skin/images/remove-format.gif</label>
+			<label index=".image_descr">Remove format icon in the editor tool bar.</label>
+			<label index=".seeAlso">xEXT_rtehtmlarea_RemoveFormat:area,xEXT_rtehtmlarea_RemoveFormat:options</label>
+			<label index="area.alttitle">Select the area to be cleaned</label>
+			<label index="area.description">The format removal operation may be applied either to the currently highlighted text or to the whole contents of the editing area.</label>
+			<label index="area.details">Use one of these two radio buttons to select the area to which you wish to apply the format removal operation.</label>
+			<label index="selection.alttitle">Remove format on selected text only</label>
+			<label index="selection.description">Select this option to perform the format removal operation on the currently selected text only.</label>
+			<label index="_selection.seeAlso">xEXT_rtehtmlarea_RemoveFormat:area</label>
+			<label index="all.alttitle">Remove format on all contents</label>
+			<label index="all.description">Select this option to perform the format removal operation on the whole contents of the editing area.</label>
+			<label index="_all.seeAlso">xEXT_rtehtmlarea_RemoveFormat:area</label>
+			<label index="options.alttitle">Select the types of format to be removed</label>
+			<label index="options.description">The format removal operation may remove various types of format.</label>
+			<label index="options.details">Check one or more of these check boxes to select the type(s) of format you wish to be removed.</label>
+			<label index="options.seeAlso">xEXT_rtehtmlarea_RemoveFormat:htmlFormat,xEXT_rtehtmlarea_RemoveFormat:msWordFormat,xEXT_rtehtmlarea_RemoveFormat:typographicalPunctuation,xEXT_rtehtmlarea_RemoveFormat:nonBreakingSpace,xEXT_rtehtmlarea_RemoveFormat:images,xEXT_rtehtmlarea_RemoveFormat:allHtml</label>
+			<label index="htmlFormat.alttitle">Remove all HTML inline markup and style</label>
+			<label index="htmlFormat.description">Check this option if you wish to remove all HTML inline markup and style.</label>
+			<label index="htmlFormat.details">This option removes:
+- the following HTML elements, but keeps their textual contents: abbr, acronym, b, big, cite, code, em, font, i, q, s, samp, small, span, strike, strong, sub, sup, tt, u, var;
+- the following attributes on all HTML elements: align, bgcolor, cellpadding, cellspacing, class, frame, style.</label>
+			<label index="msWordFormat.alttitle">Remove all MS Word markup and style</label>
+			<label index="msWordFormat.description">Check this option if you wish to remove all MS Word markup and style.</label>
+			<label index="msWordFormat.details">This option removes:
+- all attributes on the following elements: b, em, i, li, p, strong, ul;
+- the following attributes on all HTML elements: align, class, style;
+- the following elements, but keeps their textual contents: div, link, meta, span, any element containing ":" in its name;
+- the following elements and their contents: style, title;
+- HTML comments;
+- the following elements whenever they have no textual contents: b, big, i, s, small, strike, tt, u;
+- double opening and double closing tags;
+- multiples spaces, replacing them by single spaces.</label>
+			<label index="typographicalPunctuation.alttitle">Replace typographical punctuation</label>
+			<label index="typographicalPunctuation.description">Check this option if you wish to replace typographical punctuation with ASCII character codes.</label>
+			<label index="typographicalPunctuation.details">This option replaces typographical punctuation entities with ASCII character codes. The following substitutions are performed:
+- replace horizontal ellipsis with three periods;
+- replace en-dash and em-dash with hyphen;
+- replace double low-9, left double and right double quotation mark with double quote;
+- replace left single, right single and single low-9 quotation mark with single quote;
+- replace single left/right-pointing angle quotation mark with single quote;
+- replace left/right-pointing double angle quotation mark (also known as left/right pointing guillemet) with double quote;
+- replace grave accent (spacing grave) and acute accent (spacing acute) with single quote.</label>
+			<label index="nonBreakingSpace.alttitle">Replace non-breaking spaces</label>
+			<label index="nonBreakingSpace.description">Check this option if you wish to replace non-breaking spaces with normal spaces.</label>
+			<label index="nonBreakingSpace.details">This option replaces any non-breaking space with a simple normal space.</label>
+			<label index="images.alttitle">Remove images</label>
+			<label index="images.description">Check this option if you wish to remove all images.</label>
+			<label index="images.details">This option removes all images from the selected text.</label>
+			<label index="allHtml.alttitle">Remove all HTML format</label>
+			<label index="allHtml.description">Check this option if you wish to remove all HTML format.</label>
+			<label index="allHtml.details">This option removes all HTML markup from the selected text.</label>
+		</languageKey>
+	</data>
+</T3locallang>
