@@ -1,6 +1,7 @@
 2010-11-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16245: htmlArea RTE: When inserting link with IE8, trailing line break is also linked
+	* Updated htmlArea RTE version to 2.1.3
 
 2010-11-07  Steffen Gebert  <steffen@steffen-gebert.de>
 
