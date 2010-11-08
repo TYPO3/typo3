@@ -4,6 +4,11 @@ Username inside the toolbar
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
+#username {
+	color: #ffffff;
+	font-weight: bold;
+}
+
 #username.su-user {
 	color: #eb6e5a;
 	font-weight: bold;
