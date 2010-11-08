@@ -229,6 +229,13 @@ HTMLArea.TYPO3Link = HTMLArea.Plugin.extend({
 		el = HTMLArea.getElementObject(node, "a");
 		if (el != null && /^a$/i.test(el.nodeName)) node = el;
 		if (node) {
+				// Export trailing br that IE may include in the link
+			if (Ext.isIE) {
+				if (node.lastChild && /^br$/i.test(node.lastChild.nodeName)) {
+					HTMLArea.removeFromParent(node.lastChild);
+					node.parentNode.insertBefore(this.editor.document.createElement('br'), node.nextSibling);
+				}
+			}
 			if (HTMLArea.classesAnchorSetup && cur_class) {
 				for (var i = HTMLArea.classesAnchorSetup.length; --i >= 0;) {
 					anchorClass = HTMLArea.classesAnchorSetup[i];
