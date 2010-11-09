@@ -152,8 +152,11 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		$tmpl->init();
 
 		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-		$tplRow = $this->processTemplateRowAfterLoading($tplRow);
-		return (is_array($tplRow) ? true : false);
+		if(is_array($tplRow)) {
+			$this->processTemplateRowAfterLoading($tplRow);
+			return TRUE;
+	}
+		return FALSE;
 	}
 	
 	/**

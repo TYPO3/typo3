@@ -1,6 +1,7 @@
 2010-11-09  Ernesto Baschny  <ernst@cron-it.de>
 
 	* Fixed bug #15184: Generation transparent images with GMENU fails (Thanks to Mathias Schreiber)
+	* Fixed bug #16302: Template module crashes, if no template exists on a page (Thanks to Reinhard Führicht and Andreas Kiessling)
 
 2010-11-09  Steffen Kamper  <steffen@typo3.org>
 
