@@ -177,40 +177,29 @@ class t3lib_basicFileFunctions	{
 	}
 
 	/**
-	 * Checks if a file extension is allowed according to $this->f_ext.
+	 * Checks if a $iconkey (fileextension) is allowed according to $this->f_ext.
 	 *
-	 * @param string $fileExtension The extension to check, eg. "php" or "html" etc.
-	 * @param string $type          Either "webspage" or "ftpspace" - points to a key in $this->f_ext
-	 * @return boolean TRUE if file extension is allowed.
+	 * @param	string		The extension to check, eg. "php" or "html" etc.
+	 * @param	string		Either "webspage" or "ftpspace" - points to a key in $this->f_ext
+	 * @return	boolean		True if file extension is allowed.
 	 */
-	function is_allowed($fileExtension, $type) {
-		$fileExtension = strtolower($fileExtension);
-
-		if (!isset($this->f_ext[$type])) {
-			return FALSE;
+	function is_allowed($iconkey,$type)	{
+		if (isset($this->f_ext[$type]))	{
+			$ik = strtolower($iconkey);
+			if ($ik)	{
+					// If the extension is found amongst the allowed types, we return true immediately
+				if ($this->f_ext[$type]['allow']=='*' || t3lib_div::inList($this->f_ext[$type]['allow'],$ik))	return true;
+					// If the extension is found amongst the denied types, we return false immediately
+				if ($this->f_ext[$type]['deny']=='*' || t3lib_div::inList($this->f_ext[$type]['deny'],$ik))	return false;
+					// If no match we return true
+				return true;
+			} else {	// If no extension:
+				if ($this->f_ext[$type]['allow']=='*')	return true;
+				if ($this->f_ext[$type]['deny']=='*')	return false;
+				return true;
+			}
 		}
-
-		if (t3lib_div::inList($this->f_ext[$type]['deny'], '*')) {
-			return FALSE;
-		}
-
-			// file name without extension
-		if (!$fileExtension && !t3lib_div::inList($this->f_ext[$type]['allow'], '*')) {
-			return FALSE;
-		}
-
-			// extension is found amongst the denied types
-		if (t3lib_div::inList($this->f_ext[$type]['deny'], $fileExtension)) {
-			return FALSE;
-		}
-
-			// if allowed types are set, check against them
-		if ($this->f_ext[$type]['allow'] !== '' && !t3lib_div::inList($this->f_ext[$type]['allow'], '*') &&
-			!t3lib_div::inList($this->f_ext[$type]['allow'], $fileExtension)) {
-			return FALSE;
-		}
-
-		return TRUE;
+		return false;
 	}
 
 	/**
