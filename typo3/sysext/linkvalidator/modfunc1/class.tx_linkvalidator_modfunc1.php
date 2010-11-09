@@ -163,7 +163,7 @@ class tx_linkvalidator_modfunc1 extends t3lib_extobjbase {
 		foreach ($modTS['searchFields.'] as $table => $fieldList) {
 			$fields = t3lib_div::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
-				if(array_search($field, $searchFields[$table]) == FALSE || !$searchFields) {
+				if(!$searchFields || !is_array($searchFields[$table]) || array_search($field, $searchFields[$table]) == FALSE) {
 					$searchFields[$table][] = $field;
 				}
 			}
