@@ -1,6 +1,7 @@
 2010-11-09  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16280: Field size for "shortcut" is 3, although maxitems is 1
+	* Fixed bug #16279: Use class constants for pages:shortcut_mode in tbl_pages.php
 
 2010-11-09  Ernesto Baschny  <ernst@cron-it.de>
 

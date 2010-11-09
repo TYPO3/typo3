@@ -502,19 +502,19 @@ $TCA['pages'] = array(
 				'items' => array(
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.0',
-						0,
+						t3lib_pageSelect::SHORTCUT_MODE_NONE,
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.1',
-						1,
+						t3lib_pageSelect::SHORTCUT_MODE_FIRST_SUBPAGE,
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.2',
-						2,
+						t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE,
 					),
 					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.shortcut_mode.I.3',
-						3,
+						t3lib_pageSelect::SHORTCUT_MODE_PARENT_PAGE,
 					),
 				),
 				'default' => '0',
