@@ -45,7 +45,7 @@ HTMLArea.CopyPaste = HTMLArea.Plugin.extend({
 		 * Registering plugin "About" information
 		 */
 		var pluginInformation = {
-			version		: '2.1',
+			version		: '2.2',
 			developer	: 'Stanislas Rolland',
 			developerUrl	: 'http://www.sjbr.ca/',
 			copyrightOwner	: 'Stanislas Rolland',
@@ -84,9 +84,14 @@ HTMLArea.CopyPaste = HTMLArea.Plugin.extend({
 	 */
 	onGenerate: function () {
 		this.editor.iframe.mon(Ext.get(Ext.isIE ? this.editor.document.body : this.editor.document.documentElement), 'cut', this.cutHandler, this);
-			// Add hot key handling if the button is not enabled in the toolbar
 		Ext.iterate(this.buttonList, function (buttonId, button) {
-			if (!this.isButtonInToolbar(buttonId)) {
+				// Remove button from toolbar, if command is not supported
+				// Starting with Safari 5 and Chrome 6, cut and copy commands are not supported anymore by WebKit
+			if (!Ext.isGecko && !this.editor.document.queryCommandSupported(buttonId)) {
+				this.editor.toolbar.remove(buttonId);
+			}
+				// Add hot key handling if the button is not enabled in the toolbar
+			if (!this.getButton(buttonId)) {
 				this.editor.iframe.hotKeyMap.addBinding({
 					key: button[1].toUpperCase(),
 					ctrl: true,
