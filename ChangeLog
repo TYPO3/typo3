@@ -1,3 +1,7 @@
+2010-11-09  Jeff Segars <jeff@webempoweredchurch.org>
+
+	* Fixed bug #16262: Link browser shows wrong title for pages and tt_content elements (Thanks to Reinhard Führicht)
+
 2010-11-09  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Fixed bug #16280: Field size for "shortcut" is 3, although maxitems is 1

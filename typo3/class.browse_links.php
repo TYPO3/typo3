@@ -1853,7 +1853,7 @@ class browse_links {
 			$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$mainPageRec = t3lib_BEfunc::getRecordWSOL('pages',$expPageId);
 			$picon = t3lib_iconWorks::getSpriteIconForRecord('pages', $mainPageRec);
-			$picon.= htmlspecialchars(t3lib_div::fixed_lgd_cs($mainPageRec['title'],$titleLen));
+			$picon .= t3lib_BEfunc::getRecordTitle('pages', $mainPageRec, TRUE);
 			$out.=$picon.'<br />';
 
 				// Look up tt_content elements from the expanded page:
@@ -1883,7 +1883,7 @@ class browse_links {
 						$arrCol.
 						'<a href="#" onclick="return link_typo3Page(\''.$expPageId.'\',\'#'.$row['uid'].'\');">'.
 						$icon.
-						htmlspecialchars(t3lib_div::fixed_lgd_cs($row['header'],$titleLen)).
+						t3lib_BEfunc::getRecordTitle('tt_content', $row, TRUE) .
 						'</a><br />';
 
 					// Finding internal anchor points:
