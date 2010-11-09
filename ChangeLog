@@ -1,3 +1,7 @@
+2010-11-09  Ernesto Baschny  <ernst@cron-it.de>
+
+	* Fixed bug #15184: Generation transparent images with GMENU fails (Thanks to Mathias Schreiber)
+
 2010-11-08  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Fixed bug #14901: Forgotten styling: User Name at the top misses a CSS definition (Thanks to Christopher Stelmaszyk)

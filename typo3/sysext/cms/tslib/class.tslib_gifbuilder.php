@@ -440,7 +440,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 
 		if ($this->setup['transparentBackground'])	{
 				// Auto transparent background is set
-			$Bcolor = ImageColorExact($this->im, $BGcols[0],$BGcols[1],$BGcols[2]);
+			$Bcolor = ImageColorClosest($this->im, $BGcols[0],$BGcols[1],$BGcols[2]);
 			imagecolortransparent($this->im, $Bcolor);
 		} elseif (is_array($this->setup['transparentColor_array']))	{
 				// Multiple transparent colors are set. This is done via the trick that all transparent colors get converted to one color and then this one gets set as transparent as png/gif can just have one transparent color.
