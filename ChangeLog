@@ -1,3 +1,7 @@
+2010-11-09  Steffen Kamper  <steffen@typo3.org>
+
+	* Fixed bug #16298: Set focus to password field when "loginRefreshLayer" shows up (Thanks to Andreas Kiessling)
+
 2010-11-08  Jeff Segars  <jeff@webempoweredchurch.org>
 
 	* Added feature #16133: Introduce new config setting to completely disable the preview notification box (Thanks to Andreas Kiessling)

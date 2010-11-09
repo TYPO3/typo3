@@ -147,7 +147,12 @@ Ext.ux.TYPO3.loginRefresh = Ext.extend(Ext.util.Observable, {
 			border: false,
 			modal: true,
 			draggable: false,
-			items: [loginPanel]
+			items: [loginPanel],
+			listeners: {
+				activate: function() {
+					Ext.getCmp('password').focus(false, 800);
+				}
+			}
 		});
 
 		var progressControl = new Ext.ProgressBar({
