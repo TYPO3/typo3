@@ -151,11 +151,12 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		$tmpl->tt_track = 0;	// Do not log time-performance information
 		$tmpl->init();
 
-		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-		if(is_array($tplRow)) {
+			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
+		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
+		if (is_array($tplRow)) {
 			$this->processTemplateRowAfterLoading($tplRow);
 			return TRUE;
-	}
+		}
 		return FALSE;
 	}
 	
