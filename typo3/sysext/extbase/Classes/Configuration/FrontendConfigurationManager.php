@@ -34,24 +34,11 @@
 class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_Configuration_AbstractConfigurationManager {
 
 	/**
-	 * @var tslib_cObj
-	 */
-	protected $contentObject;
-
-	/**
-	 * @param tslib_cObj $contentObject
-	 * @return void
-	 */
-	public function setContentObject(tslib_cObj $contentObject) {
-		$this->contentObject = $contentObject;
-	}
-
-	/**
 	 * Returns TypoScript Setup array from current Environment.
 	 *
-	 * @return array the TypoScript setup
+	 * @return array the raw TypoScript setup
 	 */
-	public function loadTypoScriptSetup() {
+	public function getTypoScriptSetup() {
 		return $GLOBALS['TSFE']->tmpl->setup;
 	}
 
@@ -107,8 +94,9 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 	 * @return array the framework configuration with overridden data from typoscript
 	 */
 	protected function overrideConfigurationFromPlugin(array $frameworkConfiguration) {
-		$setup = $this->loadTypoScriptSetup();
-		$pluginConfiguration =  $setup['plugin.']['tx_' . strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']) . '.'];
+		$setup = $this->getTypoScriptSetup();
+		$pluginSignature = strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']);
+		$pluginConfiguration =  $setup['plugin.']['tx_' . $pluginSignature . '.'];
 		if (is_array($pluginConfiguration)) {
 			$pluginConfiguration = Tx_Extbase_Utility_TypoScript::convertTypoScriptArrayToPlainArray($pluginConfiguration);
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'settings');

@@ -96,9 +96,15 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	protected $format = '';
 
 	/**
+	 * @var string
+	 */
+	protected $argumentPrefix = NULL;
+
+	/**
 	 * Constructs this URI Helper
 	 */
 	public function __construct() {
+		// TODO shouldn't we retrieve the current cObject from the request?
 		$this->contentObject = t3lib_div::makeInstance('tslib_cObj');
 	}
 
@@ -247,6 +253,24 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 	}
 
 	/**
+	 * Specifies the prefix to be used for all arguments.
+	 *
+	 * @param string $argumentPrefix
+	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder the current UriBuilder to allow method chaining
+	 */
+	public function setArgumentPrefix($argumentPrefix) {
+		$this->argumentPrefix = (string)$argumentPrefix;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getArgumentPrefix() {
+		return $this->argumentPrefix;
+	}
+
+	/**
 	 * If set, URIs for pages without access permissions will be created
 	 *
 	 * @param boolean $linkAccessRestrictedPages
@@ -379,6 +403,7 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		$this->targetPageType = 0;
 		$this->noCache = FALSE;
 		$this->useCacheHash = TRUE;
+		$this->argumentPrefix = NULL;
 
 		return $this;
 	}
@@ -414,15 +439,18 @@ class Tx_Extbase_MVC_Web_Routing_UriBuilder {
 		if ($pluginName === NULL) {
 			$pluginName = $this->request->getPluginName();
 		}
-		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		if ($this->targetPageUid === NULL && TYPO3_MODE === 'FE') {
-			$this->targetPageUid = Tx_Extbase_Utility_Extension::getTargetPidByPluginSignature($pluginSignature);
+			$this->targetPageUid = Tx_Extbase_Utility_Extension::getTargetPidByPlugin($extensionName, $pluginName);
 		}
 		if ($this->format !== '') {
 			$controllerArguments['format'] = $this->format;
 		}
-		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature($pluginSignature);
-		$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
+		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
+		if ($this->argumentPrefix !== NULL) {
+			$prefixedControllerArguments = array($this->argumentPrefix => $controllerArguments);
+		} else {
+			$prefixedControllerArguments = array($pluginNamespace => $controllerArguments);
+		}
 		$this->arguments = t3lib_div::array_merge_recursive_overrule($this->arguments, $prefixedControllerArguments);
 
 		return $this->build();

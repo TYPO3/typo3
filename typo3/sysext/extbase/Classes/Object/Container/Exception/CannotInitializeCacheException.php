@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+*  (c) 2010 Extbase Team
 *  All rights reserved
 *
 *  This class is a backport of the corresponding class of FLOW3.
@@ -26,38 +26,8 @@
 ***************************************************************/
 
 /**
- * A generic and very basic response implementation
- *
- * @version $Id$
- * @api
+ * Exception thrown if cache cannot be built.
  */
-interface Tx_Extbase_MVC_ResponseInterface {
-
-	/**
-	 * Overrides and sets the content of the response
-	 *
-	 * @param string $content The response content
-	 * @return void
-	 * @api
-	 */
-	public function setContent($content);
-
-	/**
-	 * Appends content to the already existing content.
-	 *
-	 * @param string $content More response content
-	 * @return void
-	 * @api
-	 */
-	public function appendContent($content);
-
-	/**
-	 * Returns the response content without sending it.
-	 *
-	 * @return string The response content
-	 * @api
-	 */
-	public function getContent();
-
+class Tx_Extbase_Object_Container_Exception_CannotInitializeCacheException extends Tx_Extbase_Object_Exception {
 }
 ?>

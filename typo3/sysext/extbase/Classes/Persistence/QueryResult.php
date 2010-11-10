@@ -242,5 +242,21 @@ class Tx_Extbase_Persistence_QueryResult implements Tx_Extbase_Persistence_Query
 		$this->initialize();
 		return current($this->queryResult) !== FALSE;
 	}
+
+	/**
+	 * @return void
+	 */
+	public function __wakeup() {
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$this->persistenceManager = $objectManager->get('Tx_Extbase_Persistence_ManagerInterface');
+		$this->dataMapper = $objectManager->get('Tx_Extbase_Persistence_Mapper_DataMapper');
+	}
+
+	/**
+	 * @return array
+	 */
+	public function __sleep() {
+		return array('query');
+	}
 }
 ?>

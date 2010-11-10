@@ -88,18 +88,19 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	protected $referenceIndex;
 
 	/**
-	 * @var array
-	 **/
-	protected $extbaseSettings;
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
 
 	/**
 	 * Constructs the backend
 	 *
 	 * @return void
 	 */
-	public function __construct() {
-		$this->extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+	public function __construct(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex = t3lib_div::makeInstance('t3lib_refindex');
 		}
 	}
@@ -675,7 +676,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$row
 			);
 		$object->_setProperty('uid', (int)$uid);
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
 		}
 		$this->identityMap->registerObject($object, $uid);
@@ -793,7 +795,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 			$dataMap->getTableName(),
 			$row
 			);
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
 		}
 		return $res;
@@ -864,7 +867,8 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 				);
 		}
 		$this->removeRelatedObjects($object);
-		if ($this->extbaseSettings['persistence']['updateReferenceIndex'] === '1') {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex->updateRefIndexTable($tableName, $object->getUid());
 		}
 	}
@@ -907,14 +911,14 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 	 * @return int the storage Page ID where the object should be stored
 	 */
 	protected function determineStoragePageIdForNewRecord(Tx_Extbase_DomainObject_DomainObjectInterface $object = NULL) {
-		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ($object !== NULL) {
 			$className = get_class($object);
-			if (isset($extbaseSettings['persistence']['classes'][$className]) && !empty($extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'])) {
-				return (int)$extbaseSettings['persistence']['classes'][$className]['newRecordStoragePid'];
+			if (isset($frameworkConfiguration['persistence']['classes'][$className]) && !empty($frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'])) {
+				return (int)$frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
 			}
 		}
-		$storagePidList = t3lib_div::intExplode(',', $extbaseSettings['persistence']['storagePid']);
+		$storagePidList = t3lib_div::intExplode(',', $frameworkConfiguration['persistence']['storagePid']);
 		return (int) $storagePidList[0];
 	}
 

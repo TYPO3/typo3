@@ -110,7 +110,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @param Tx_Extbase_MVC_Request $request The current request
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 */
-	public function canProcessRequest(Tx_Extbase_MVC_Request $request) {
+	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
 		return parent::canProcessRequest($request);
 
 	}
@@ -122,7 +122,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @param Tx_Extbase_MVC_Response $response The response, modified by this handler
 	 * @return void
 	 */
-	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
+	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
 
 		$this->request = $request;
@@ -282,8 +282,23 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 		}
 		$view->setControllerContext($this->controllerContext);
 
-		// Template Path Override
-		$extbaseFrameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		$this->setViewConfiguration($view);
+
+		if (method_exists($view, 'injectSettings')) {
+			$view->injectSettings($this->settings);
+		}
+		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely
+		$view->assign('settings', $this->settings); // same with settings injection.
+		return $view;
+	}
+
+	/**
+	 * @param Tx_Extbase_MVC_View_ViewInterface $view
+	 * @return void
+	 */
+	protected function setViewConfiguration(Tx_Extbase_MVC_View_ViewInterface $view) {
+			// Template Path Override
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath'])
 			&& strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0
 			&& method_exists($view, 'setTemplateRootPath')) {
@@ -299,13 +314,6 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 			&& method_exists($view, 'setPartialRootPath')) {
 			$view->setPartialRootPath(t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialRootPath']));
 		}
-
-		if (method_exists($view, 'injectSettings')) {
-			$view->injectSettings($this->settings);
-		}
-		$view->initializeView(); // In FLOW3, solved through Object Lifecycle methods, we need to call it explicitely
-		$view->assign('settings', $this->settings); // same with settings injection.
-		return $view;
 	}
 
 	/**
@@ -441,7 +449,7 @@ class Tx_Extbase_MVC_Controller_ActionController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	protected function clearCacheOnError() {
-		$extbaseSettings = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		$extbaseSettings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (isset($extbaseSettings['persistence']['enableAutomaticCacheClearing']) && $extbaseSettings['persistence']['enableAutomaticCacheClearing'] === '1') {
 			if (isset($GLOBALS['TSFE'])) {
 				$pageUid = $GLOBALS['TSFE']->id;

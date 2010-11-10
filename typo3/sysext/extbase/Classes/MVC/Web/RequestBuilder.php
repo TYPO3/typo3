@@ -34,7 +34,7 @@
  *
  * @scope prototype
  */
-class Tx_Extbase_MVC_Web_RequestBuilder {
+class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
@@ -75,7 +75,33 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 */
 	protected $allowedControllerActions;
 
-	public function initialize($configuration) {
+	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * Injects the object manager
+	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function loadDefaultValues() {
+		$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if (!empty($configuration['pluginName'])) {
 			$this->pluginName = $configuration['pluginName'];
 		}
@@ -105,16 +131,6 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 		}
 		$this->allowedControllerActions = $allowedControllerActions;
 	}
-	
-	/**
-	 * Injects the object manager
-	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 
 	/**
 	 * Builds a web request object from the raw HTTP information and the configuration
@@ -122,8 +138,8 @@ class Tx_Extbase_MVC_Web_RequestBuilder {
 	 * @return Tx_Extbase_MVC_Web_Request The web request as an object
 	 */
 	public function build() {
-		$pluginSignature = strtolower($this->extensionName . '_' . $this->pluginName);
-		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespaceByPluginSignature($pluginSignature);
+		$this->loadDefaultValues();
+		$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($this->extensionName, $this->pluginName);
 		$parameters = t3lib_div::_GPmerged($pluginNamespace);
 
 		if (is_string($parameters['controller']) && array_key_exists($parameters['controller'], $this->allowedControllerActions)) {

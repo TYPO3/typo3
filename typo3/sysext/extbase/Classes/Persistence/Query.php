@@ -591,5 +591,22 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 			);
 	}
 
+	/**
+	 * @return void
+	 */
+	public function __wakeup() {
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_ManagerInterface');
+		$this->dataMapper = $this->objectManager->get('Tx_Extbase_Persistence_Mapper_DataMapper');
+		$this->qomFactory = $this->objectManager->get('Tx_Extbase_Persistence_QOM_QueryObjectModelFactory');
+	}
+
+	/**
+	 * @return array
+	 */
+	public function __sleep() {
+		return array('type', 'source', 'constraint', 'statement', 'orderings', 'limit', 'offset', 'querySettings');
+	}
+
 }
 ?>

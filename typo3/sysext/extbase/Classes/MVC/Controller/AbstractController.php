@@ -33,7 +33,7 @@
  * @version $ID:$
  * @api
  */
-abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface {
+abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbase_MVC_Controller_ControllerInterface, t3lib_Singleton {
 	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
@@ -126,11 +126,24 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	protected $flashMessageContainer;
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManager
+	 */
+	protected $configurationManager;
+
+	/**
 	 * Constructs the controller.
 	 */
 	public function __construct() {
 		list(, $this->extensionName) = explode('_', get_class($this));
+	}
 
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManager $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManager $configurationManager) {
+		$this->configurationManager = $configurationManager;
+		$this->settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 	}
 
 	/**
@@ -141,16 +154,6 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 */
 	public function injectPropertyMapper(Tx_Extbase_Property_Mapper $propertyMapper) {
 		$this->propertyMapper = $propertyMapper;
-	}
-
-	/**
-	 * Injects the settings of the extension.
-	 *
-	 * @param array $settings Settings container of the current extension
-	 * @return void
-	 */
-	public function setSettings(array $settings) {
-		$this->settings = $settings;
 	}
 
 	/**
@@ -196,7 +199,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @return boolean TRUE if this request type is supported, otherwise FALSE
 	 * @api
 	 */
-	public function canProcessRequest(Tx_Extbase_MVC_Request $request) {
+	public function canProcessRequest(Tx_Extbase_MVC_RequestInterface $request) {
 		foreach ($this->supportedRequestTypes as $supportedRequestType) {
 			if ($request instanceof $supportedRequestType) return TRUE;
 		}
@@ -212,7 +215,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestType if the controller doesn't support the current request type
 	 * @api
 	 */
-	public function processRequest(Tx_Extbase_MVC_Request $request, Tx_Extbase_MVC_Response $response) {
+	public function processRequest(Tx_Extbase_MVC_RequestInterface $request, Tx_Extbase_MVC_ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) throw new Tx_Extbase_MVC_Exception_UnsupportedRequestType(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes) , 1187701131);
 
 		$this->request = $request;
@@ -322,7 +325,7 @@ abstract class Tx_Extbase_MVC_Controller_AbstractController implements Tx_Extbas
 		$this->response->setHeader('Location', (string)$uri);
 		throw new Tx_Extbase_MVC_Exception_StopAction();
 	}
-	
+
 	/**
 	 * Adds the base uri if not already in place.
 	 *

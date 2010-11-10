@@ -1,4 +1,10 @@
 config.tx_extbase {
+	mvc {
+		requestHandlers {
+			Tx_Extbase_MVC_Web_FrontendRequestHandler = Tx_Extbase_MVC_Web_FrontendRequestHandler
+			Tx_Extbase_MVC_Web_BackendRequestHandler = Tx_Extbase_MVC_Web_BackendRequestHandler
+		}
+	}
 	persistence{
 		enableAutomaticCacheClearing = 1
 		updateReferenceIndex = 0

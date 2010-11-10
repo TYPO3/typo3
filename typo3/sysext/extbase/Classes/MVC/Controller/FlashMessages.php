@@ -58,6 +58,19 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	protected $flashMessageStorageKey = NULL;
 
 	/**
+	 * @var Tx_Extbase_Configuration_ConfigurationManager
+	 */
+	protected $configurationManager;
+
+	/**
+	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager = $configurationManager;
+	}
+
+	/**
 	 * Add another flash message.
 	 *
 	 * @param string $message
@@ -111,7 +124,7 @@ class Tx_Extbase_MVC_Controller_FlashMessages implements t3lib_Singleton {
 	protected function initialize() {
 		if ($this->initialized) return;
 
-		$frameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->flashMessageStorageKey = 'Tx_Extbase_MVC_Controller_FlashMessages_messages_' . $frameworkConfiguration['extensionName'] . $frameworkConfiguration['pluginName'];
 
 		$flashMessages = $this->loadFlashMessagesFromSession();

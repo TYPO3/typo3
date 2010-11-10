@@ -34,7 +34,7 @@
 class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManagerInterface {
 
 	/**
-	 * @var Tx_Container_Container
+	 * @var Tx_Extbase_Object_Container_Container
 	 */
 	protected $objectContainer;
 
@@ -42,7 +42,7 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	 * Constructs a new Object Manager
 	 */
 	public function __construct() {
-		$this->objectContainer = Tx_Container_Container::getContainer();
+		$this->objectContainer = Tx_Extbase_Object_Container_Container::getContainer();
 	}
 
 	/**
@@ -95,7 +95,7 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	 * @param string $alternativeClassName
 	 */
 	static public function registerImplementation($className, $alternativeClassName) {
-		return Tx_Container_Container::getContainer()->registerImplementation($className, $alternativeClassName);
+		return Tx_Extbase_Object_Container_Container::getContainer()->registerImplementation($className, $alternativeClassName);
 	}
 }
 

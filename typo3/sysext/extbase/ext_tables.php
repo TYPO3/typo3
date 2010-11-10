@@ -1,7 +1,6 @@
 <?php
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-
 if (TYPO3_MODE == 'BE') {
 
 	// register the cache in BE so it will be cleared with "clear all caches"
@@ -17,7 +16,7 @@ if (TYPO3_MODE == 'BE') {
 
 	}
 
-	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Dispatcher';
+	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Bootstrap->callModule';
 	
 }
 

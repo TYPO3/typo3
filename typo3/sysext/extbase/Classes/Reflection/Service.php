@@ -31,6 +31,7 @@
  * @version $Id$
  * @api
  */
+// FIXME This class should be a Prototype
 class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 
 	/**
@@ -43,7 +44,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	/**
 	 * @var t3lib_cache_frontend_VariableFrontend
 	 */
-	protected $cache;
+	protected $dataCache;
 
 	/**
 	 * Whether class alterations should be detected on each initialization.
@@ -121,7 +122,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 *
 	 * @var boolean
 	 */
-	protected $cacheNeedsUpdate = FALSE;
+	protected $dataCacheNeedsUpdate = FALSE;
 
 	/**
 	 * Local cache for Class schemata
@@ -130,15 +131,15 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected $classSchemata = array();
 
 	/**
-	 * Sets the cache.
+	 * Sets the data cache.
 	 *
 	 * The cache must be set before initializing the Reflection Service.
 	 *
-	 * @param t3lib_cache_frontend_VariableFrontend $cache Cache for the Reflection service
+	 * @param t3lib_cache_frontend_VariableFrontend $dataCache Cache for the Reflection service
 	 * @return void
 	 */
-	public function setCache(t3lib_cache_frontend_VariableFrontend $cache) {
-		$this->cache = $cache;
+	public function setDataCache(t3lib_cache_frontend_VariableFrontend $dataCache) {
+		$this->dataCache = $dataCache;
 	}
 
 	/**
@@ -170,7 +171,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function shutdown() {
-		if ($this->cacheNeedsUpdate) {
+		if ($this->dataCacheNeedsUpdate) {
 			$this->saveToCache();
 		}
 	}
@@ -360,7 +361,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		}
 		ksort($this->reflectedClassNames);
 
-		$this->cacheNeedsUpdate = TRUE;
+		$this->dataCacheNeedsUpdate = TRUE;
 	}
 
 	/**
@@ -399,7 +400,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 			}
 		}
 		$this->classSchemata[$className] = $classSchema;
-		$this->cacheNeedsUpdate = TRUE;
+		$this->dataCacheNeedsUpdate = TRUE;
 		return $classSchema;
 	}
 
@@ -450,7 +451,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	protected function getMethodReflection($className, $methodName) {
 		if (!isset($this->methodReflections[$className][$methodName])) {
 			$this->methodReflections[$className][$methodName] = new Tx_Extbase_Reflection_MethodReflection($className, $methodName);
-			$this->cacheNeedsUpdate = TRUE;
+			$this->dataCacheNeedsUpdate = TRUE;
 		}
 		return $this->methodReflections[$className][$methodName];
 	}
@@ -461,9 +462,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function loadFromCache() {
-		$cacheKey = $this->getCacheKey();
-		if ($this->cache->has($cacheKey)) {
-			$data = $this->cache->get($cacheKey);
+		if ($this->dataCache->has('ReflectionData')) {
+			$data = $this->dataCache->get('ReflectionData');
 			foreach ($data as $propertyName => $propertyValue) {
 				$this->$propertyName = $propertyValue;
 			}
@@ -476,7 +476,7 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function saveToCache() {
-		if (!is_object($this->cache)) {
+		if (!is_object($this->dataCache)) {
 			throw new Tx_Extbase_Reflection_Exception(
 				'A cache must be injected before initializing the Reflection Service.',
 				1232044697
@@ -497,19 +497,8 @@ class Tx_Extbase_Reflection_Service implements t3lib_Singleton {
 		foreach ($propertyNames as $propertyName) {
 			$data[$propertyName] = $this->$propertyName;
 		}
-		$this->cache->set($this->getCacheKey(), $data);
+		$this->dataCache->set('ReflectionData', $data);
 	}
 
-	/**
-	 * Get the name of the cache row identifier. Incorporates the extension name
-	 * and the plugin name so that all information which is needed for a single
-	 * plugin can be found in one cache row.
-	 *
-	 * @return string
-	 */
-	protected function getCacheKey() {
-		$frameworkConfiguration = Tx_Extbase_Dispatcher::getExtbaseFrameworkConfiguration();
-		return $frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName'];
-	}
 }
 ?>

@@ -106,7 +106,7 @@ class Tx_Extbase_Utility_Extension {
 		$pluginContent = trim('
 tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
-	userFunc = tx_extbase_dispatcher->dispatch
+	userFunc = tx_extbase_core_bootstrap->run
 	pluginName = ' . $pluginName . '
 	extensionName = ' . $extensionName . '
 	' . $controller .
@@ -265,7 +265,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 		}
 
 		if ((strlen($sub) > 0)) {
-			$sub = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($sub);
+			//$sub = $extensionName . self::convertLowerUnderscoreToUpperCamelCase($sub);
 			$key = $main . '_' . $sub;
 		} else {
 			$key = $main;
@@ -309,12 +309,13 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 *
 	 * @param	string	$extensionKey	Key of the extension
 	 * @param	string	$extensionPath	full path of the extension
+	 * @param   array   $additionalAutoloadClasses additional classes to be added to the autoloader. The key must be the classname all-lowercase, the value must be the entry to be inserted
 	 * @return	string	HTML string which should be outputted
 	 */
-	public function createAutoloadRegistryForExtension($extensionKey, $extensionPath) {
+	public static function createAutoloadRegistryForExtension($extensionKey, $extensionPath, $additionalAutoloadClasses = array()) {
 		$classNameToFileMapping = array();
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionKey)));
-		$errors = $this->buildAutoloadRegistryForSinglePath($classNameToFileMapping, $extensionPath . 'Classes/', '.*tslib.*', '$extensionClassesPath . \'|\'');
+		$errors = self::buildAutoloadRegistryForSinglePath($classNameToFileMapping, $extensionPath . 'Classes/', '.*tslib.*', '$extensionClassesPath . \'|\'');
 		if ($errors) {
 			return $errors;
 		}
@@ -327,7 +328,8 @@ tt_content.list.20.' . $pluginSignature . ' {
 				unset($classNameToFileMapping[$className]);
 			}
 		}
-		$autoloadFileString = $this->generateAutoloadPHPFileData($classNameToFileMapping, $globalPrefix);
+		$classNameToFileMapping = array_merge($classNameToFileMapping, $additionalAutoloadClasses);
+		$autoloadFileString = self::generateAutoloadPHPFileData($classNameToFileMapping, $globalPrefix);
 		if (!@file_put_contents($extensionPath . 'ext_autoload.php', $autoloadFileString)) {
 			$errors[] = '<b>' . $extensionPath . 'ext_autoload.php could not be written!</b>';
 		}
@@ -367,14 +369,14 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	string	$valueWrap	Wrap for the file name
 	 * @return void
 	 */
-	protected function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
+	protected static function buildAutoloadRegistryForSinglePath(&$classNameToFileMapping, $path, $excludeRegularExpression = '', $valueWrap = '\'|\'') {
 //		if (file_exists($path . 'Classes/')) {
 //			return "<b>This appears to be a new-style extension which has its PHP classes inside the Classes/ subdirectory. It is not needed to generate the autoload registry for these extensions.</b>";
 //		}
 		$extensionFileNames = t3lib_div::removePrefixPathFromList(t3lib_div::getAllFilesAndFoldersInPath(array(), $path, 'php', FALSE, 99, $excludeRegularExpression), $path);
 
 		foreach ($extensionFileNames as $extensionFileName) {
-			$classNamesInFile = $this->extractClassNames($path . $extensionFileName);
+			$classNamesInFile = self::extractClassNames($path . $extensionFileName);
 			if (!count($classNamesInFile)) continue;
 			foreach ($classNamesInFile as $className) {
 				$classNameToFileMapping[strtolower($className)] = str_replace('|', $extensionFileName, $valueWrap);
@@ -388,24 +390,24 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	string	$filePath	File path (absolute)
 	 * @return	array	Class names
 	 */
-	protected function extractClassNames($filePath) {
+	protected static function extractClassNames($filePath) {
 		$fileContent = php_strip_whitespace($filePath);
 		$classNames = array();
-		if (function_exists('token_get_all')) {
+		if (FALSE) {
 			$tokens = token_get_all($fileContent);
 			while(1) {
 				// look for "class" or "interface"
-				$token = $this->findToken($tokens, array(T_ABSTRACT, T_CLASS, T_INTERFACE));
+				$token = self::findToken($tokens, array(T_ABSTRACT, T_CLASS, T_INTERFACE));
 				// fetch "class" token if "abstract" was found
 				if ($token === 'abstract') {
-					$token = $this->findToken($tokens, array(T_CLASS));
+					$token = self::findToken($tokens, array(T_CLASS));
 				}
 				if ($token === false) {
 					// end of file
 					break;
 				}
 				// look for the name (a string) skipping only whitespace and comments
-				$token = $this->findToken($tokens, array(T_STRING), array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT));
+				$token = self::findToken($tokens, array(T_STRING), array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT));
 				if ($token === false) {
 					// unexpected end of file or token: remove found names because of parse error
 					t3lib_div::sysLog('Parse error in "' . $filePath. '".', 'Core', 2);
@@ -435,7 +437,7 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * @param	array	$intermediateTokens	optional: list of tokens that are allowed to skip when looking for the wanted token
 	 * @return	mixed
 	 */
-	protected function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
+	protected static function findToken(array &$tokenList, array $wantedTokens, array $intermediateTokens = array()) {
 		$skipAllTokens = count($intermediateTokens) ? false : true;
 
 		$returnValue = false;
@@ -461,21 +463,23 @@ tt_content.list.20.' . $pluginSignature . ' {
 	}
 
 	/**
-	 * Determines the plugin namespace of the specified plugin (defaults to "tx_[extensionName]_[pluginName]")
+	 * Determines the plugin namespace of the specified plugin (defaults to "tx_[extensionname]_[pluginname]")
 	 * If plugin.tx_$pluginSignature.view.pluginNamespace is set, this value is returned
-	 * If pluginNamespace is not specified "tx_[extensionName]_[pluginName]" is returned.
+	 * If pluginNamespace is not specified "tx_[extensionname]_[pluginname]" is returned.
 	 *
-	 * @param string $pluginSignature Plugin signature: strtolower($extensionName) . '_' . strtolower($pluginName)
+	 * @param string $extensionName name of the extension to retrieve the namespace for
+	 * @param string $pluginName name of the plugin to retrieve the namespace for
 	 * @return string plugin namespace
 	 */
-	public static function getPluginNamespaceByPluginSignature($pluginSignature) {
+	public static function getPluginNamespace($extensionName, $pluginName) {
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		$defaultPluginNamespace = 'tx_' . $pluginSignature;
-		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 		if (!isset($configurationManager) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
 			return $defaultPluginNamespace;
 		}
-		$pluginConfiguration = $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'][$pluginSignature . '.'];
-		$frameworkConfiguration = $configurationManager->getFrameworkConfiguration($pluginConfiguration);
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
 			return $defaultPluginNamespace;
 		}
@@ -528,16 +532,18 @@ tt_content.list.20.' . $pluginSignature . ' {
 	 * If the page could not be determined, NULL is returned
 	 * If defaultPid is "auto" and more than one page contains the specified plugin, an Exception is thrown
 	 *
-	 * @param string $pluginSignature Plugin signature: strtolower($extensionName) . '_' . strtolower($pluginName)
+	 * @param string $extensionName name of the extension to retrieve the target PID for
+	 * @param string $pluginName name of the plugin to retrieve the target PID for
 	 * @return integer uid of the target page or NULL if target page could not be determined
 	 */
-	public static function getTargetPidByPluginSignature($pluginSignature) {
-		$configurationManager = Tx_Extbase_Dispatcher::getConfigurationManager();
+	public static function getTargetPidByPlugin($extensionName, $pluginName) {
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManagerInterface');
 		if (!isset($configurationManager) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.']) || !is_array($GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'])) {
 			return NULL;
 		}
-		$pluginConfiguration = $GLOBALS['TSFE']->tmpl->setup['tt_content.']['list.']['20.'][$pluginSignature . '.'];
-		$frameworkConfiguration = $configurationManager->getFrameworkConfiguration($pluginConfiguration);
+		$frameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
 			return NULL;
 		}

@@ -26,38 +26,17 @@
 ***************************************************************/
 
 /**
- * A generic and very basic response implementation
+ * A QueryObjectModelFactory creates instances of the JCR query object model.
  *
- * @version $Id$
- * @api
+ * Refer to QueryObjectModelInterface for a description of the query object model.
+ *
+ * @package Extbase
+ * @subpackage Persistence\QOM
+ * @version $Id: QueryObjectModelFactoryInterface.php 1971 2010-03-08 16:59:04Z jocrau $
  */
-interface Tx_Extbase_MVC_ResponseInterface {
+interface Tx_Extbase_Persistence_QOM_QueryObjectModelFactoryInterface extends Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface {
 
-	/**
-	 * Overrides and sets the content of the response
-	 *
-	 * @param string $content The response content
-	 * @return void
-	 * @api
-	 */
-	public function setContent($content);
-
-	/**
-	 * Appends content to the already existing content.
-	 *
-	 * @param string $content More response content
-	 * @return void
-	 * @api
-	 */
-	public function appendContent($content);
-
-	/**
-	 * Returns the response content without sending it.
-	 *
-	 * @return string The response content
-	 * @api
-	 */
-	public function getContent();
 
 }
+
 ?>

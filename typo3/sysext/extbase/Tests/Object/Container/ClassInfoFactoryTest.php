@@ -1,8 +1,8 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*
-*  (c) 2009 Jochen Rau <jochen.rau@typoplanet.de>
+*  (c) 2010 Daniel Pötzinger
+*  (c) 2010 Bastian Waidelich <bastian@typo3.org>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,22 +22,28 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once(t3lib_extMgm::extPath('extbase') . 'Tests/Object/Container/Fixtures/Testclasses.php');
+
 /**
- * Creates a request an dispatches it to the controller which was specified
- * by TS Setup, Flexform and returns the content to the v4 framework.
+ * Testcase for class t3lib_object_ClassInfoFactory.
  *
- * This class is the main entry point for extbase extensions.
- *
- * @package Extbase
+ * @author Daniel Pötzinger
+ * @author Bastian Waidelich <bastian@typo3.org>
+ * @package TYPO3
+ * @subpackage t3lib
  */
-class Tx_Extbase_Tests_Fixtures_Dispatcher extends Tx_Extbase_Dispatcher {
+class Tx_Extbase_Object_Container_ClassInfoFactoryTest extends tx_phpunit_testcase {
 
 	/**
-	 * sets the configuration manager
+	 * @var t3lib_object_ClassInfoFactory
 	 */
-	public function setConfigurationManager(Tx_Extbase_Configuration_AbstractConfigurationManager $configurationManager) {
-		parent::$configurationManager = $configurationManager;
-	}
+	private $classInfoFactory;
 
+	/**
+	 *
+	 */
+	public function setUp() {
+		$this->classInfoFactory = new Tx_Extbase_Object_Container_ClassInfoFactory();
+	}
 }
 ?>

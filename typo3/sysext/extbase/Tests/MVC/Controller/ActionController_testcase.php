@@ -49,7 +49,7 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockController->expects($this->at(3))->method('initializeAction');
 		$mockController->expects($this->at(4))->method('initializeFooAction');
 		$mockController->expects($this->at(5))->method('mapRequestArgumentsToControllerArguments');
-                $mockController->expects($this->at(6))->method('checkRequestHash');
+		$mockController->expects($this->at(6))->method('checkRequestHash');
 		$mockController->expects($this->at(7))->method('resolveView')->will($this->returnValue($mockView));
 		$mockController->expects($this->at(8))->method('initializeView');
 		$mockController->expects($this->at(9))->method('callActionMethod');
@@ -179,7 +179,7 @@ class Tx_Extbase_MVC_Controller_ActionController_testcase extends Tx_Extbase_Bas
 		$mockFluidTemplateView->expects($this->once())->method('hasTemplate')->will($this->returnValue(TRUE));
 
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface', array(), array(), '', FALSE);
-		$mockObjectManager->expects($this->at(0))->method('getObject')->with('Tx_Fluid_View_TemplateView')->will($this->returnValue($mockFluidTemplateView));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_View_TemplateView')->will($this->returnValue($mockFluidTemplateView));
 
 		$mockController = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Controller_ActionController'), array('buildControllerContext'), array(), '', FALSE);
 		$mockController->expects($this->once())->method('buildControllerContext')->will($this->returnValue($mockControllerContext));

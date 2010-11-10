@@ -105,7 +105,7 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 		$this->markTestIncomplete();
 
 		$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue(TRUE));
-		$this->mockObjectManager->expects($this->any())->method('getObject')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
+		$this->mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
 
 		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Tx_Extbase_Validation_Validator_TextValidator');
 		$argument->injectObjectManager($this->mockObjectManager);
@@ -120,7 +120,7 @@ class Tx_Extbase_MVC_Controller_Argument_testcase extends Tx_Extbase_BaseTestCas
 		$this->markTestIncomplete();
 
 		$this->mockObjectManager->expects($this->once())->method('isObjectRegistered')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue(TRUE));
-		$this->mockObjectManager->expects($this->any())->method('getObject')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
+		$this->mockObjectManager->expects($this->any())->method('get')->with('Tx_Extbase_Validation_Validator_TextValidator')->will($this->returnValue($this->getMock('Tx_Extbase_Validation_Validator_TextValidator')));
 
 		$argument = new Tx_Extbase_MVC_Controller_Argument('SomeArgument', 'Text');
 		$argument->injectObjectManager($this->mockObjectManager);
