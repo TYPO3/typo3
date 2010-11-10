@@ -94,11 +94,6 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 		
 		var moduleMenu = this.initialConfig.items[1];
 		moduleMenu.width = TYPO3.configuration.moduleMenuWidth;
-		if (!TYPO3.configuration.moduleMenuSplit) {
-			moduleMenu.split = false;
-			moduleMenu.collapsible = false;
-			moduleMenu.collapseMode = null
-		}
 
 		// call parent constructor
 		TYPO3.Viewport.superclass.initComponent.apply(this, arguments);
@@ -108,6 +103,27 @@ TYPO3.Viewport = Ext.extend(Ext.Viewport, {
 		this.Topbar = Ext.getCmp('typo3-topbar');
 		this.ModuleMenuContainer = Ext.getCmp('typo3-module-menu');
 		this.DebugConsole = Ext.getCmp('typo3-debug-console');
+
+		// place a wrapper-div inside the split bar,
+		// this enables us to set width of the split bar to 0 to make it invisible
+		Ext.getCmp('typo3-viewport').on(
+			'afterRender',
+			function(el) {
+				Ext.each([
+					'typo3-navigationContainer-xsplit',
+					'typo3-module-menu-xsplit'
+					], function(value) {
+					var splitbar = Ext.get(value);
+					var button = splitbar.first();
+					var wrapper = splitbar.createChild({
+						cls: 'x-layout-mini-wrapper'
+					});
+					if (button !== null) {
+						wrapper.appendChild(button);
+					}
+				});
+			}
+		);
 	},
 
 	/**

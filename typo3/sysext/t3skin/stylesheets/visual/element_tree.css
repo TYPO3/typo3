@@ -4,6 +4,19 @@ Tree
 $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
+body#typo3-pagetree,
+body#typo3-alt-file-navframe-php {
+	background: #ebebeb;
+}
+
+#typo3-pagetree #typo3-docbody,
+#typo3-alt-file-navframe-php #typo3-docbody {
+	-moz-box-shadow: inset -2px 0 1px #c4c4c4;
+	-ms-box-shadow: inset -2px 0 1px #c4c4c4;
+	-webkit-box-shadow: inset -2px 0 1px #c4c4c4;
+	box-shadow: inset -2px 0 1px #c4c4c4;
+}
+
 table#typo3-tree a {
 	text-decoration: none;
 }
@@ -69,16 +82,25 @@ ul.tree ul li {
 }
 
 ul.tree ul li.expanded ul {
-	background: transparent url('../../icons/gfx/ol/line.gif') 2px top repeat-y;
+	background: transparent url('../../icons/gfx/ol/line.gif') 1px top repeat-y;
 }
 
 ul.tree ul li.last > ul {
 	background: none;
 }
 
+ul.tree div.treeLinkItem {
+	border-bottom: 1px solid transparent;
+	border-left: 1px solid transparent;
+	border-top: 1px solid transparent;
+}
+
 ul.tree li.active > div.treeLinkItem,
 ul.tree ul li.active > div.treeLinkItem {
-	background-color: #d8d8d8;
+	background-color: #f8f8f8;
+	border-bottom: 1px solid #d7d7d7;
+	border-left: 1px solid #d7d7d7;
+	border-top: 1px solid #d7d7d7;
 }
 
 ul.tree li.active span a,
@@ -102,7 +124,6 @@ ul.tree ul li.active ul span a {
 	background-image: url('../../icons/gfx/filter_bg.gif');
 	background-repeat: no-repeat;
 	background-position: 0 -2px;
-	background-color: #f2f2f2;
 	border-bottom: 1px solid #dadada;
 }
 

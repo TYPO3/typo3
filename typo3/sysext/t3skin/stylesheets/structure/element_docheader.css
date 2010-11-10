@@ -17,7 +17,7 @@ div#typo3-docheader {
 
 #typo3-pagetree #typo3-docheader,
 #typo3-alt-file-navframe-php #typo3-docheader {
-	min-width: 0px;
+	min-width: 0;
 }
 
 div#typo3-docheader-row1 {

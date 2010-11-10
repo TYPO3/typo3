@@ -6,19 +6,17 @@ $Id$
 
 #typo3-module-menu {
 	background: #dddddd;
-	background-image: url('../../images/backgrounds/module-menu-right.gif');
-	background-position: right top;
-	background-repeat: repeat-y;
+	background-image: -moz-linear-gradient(top, #bdbdbd, 100px #dddddd);
+	background-image: -webkit-gradient(linear, 0 0, 0 25%, color-stop(0, #bdbdbd), color-stop(1, #dddddd));
+	background-image: linear-gradient(top, #bdbdbd, 100px #dddddd);
+	-moz-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
+	-ms-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
+	box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15);
 }
 
 #typo3-module-menu .x-panel-body {
 	background-color: transparent;
-}
-
-#typo3-side-menu {
-	background-image: url('../../images/backgrounds/module-menu-top.png');
-	background-position: right top;
-	background-repeat: no-repeat;
 }
 
 #typo3-menu,
@@ -28,6 +26,7 @@ $Id$
 
 #typo3-menu a {
 	color: #1e2121;
+	outline: 0;
 }
 
 #typo3-menu > li {
@@ -44,7 +43,7 @@ $Id$
 #typo3-menu li.menuSection li a:hover,
 #typo3-menu li.menuSection li.hover a,
 #typo3-menu li.highlighted a {
-	background-color: #f1f1f1;
+	background-color: #ebebeb;
 	border-top: 1px solid #b8b8b8;
 	border-bottom: 1px solid #b8b8b8;
 }

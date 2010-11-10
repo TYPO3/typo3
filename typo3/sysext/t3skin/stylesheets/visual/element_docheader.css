@@ -41,3 +41,22 @@ div#typo3-docheader input {
 div#typo3-docheader-row2 div {
 	line-height: normal;
 }
+
+/* customized docheader style for module menu and tree frames */
+#typo3-module-menu #typo3-docheader-row1,
+#typo3-pagetree #typo3-docheader-row1,
+#typo3-alt-file-navframe-php #typo3-docheader-row1 {
+	-moz-box-shadow: inset -2px 0 1px #414141;
+	-ms-box-shadow: inset -2px 0 1px #414141;
+	-webkit-box-shadow: inset -2px 0 1px #414141;
+	box-shadow: inset -2px 0 1px #414141;
+}
+
+#typo3-module-menu #typo3-docheader-row2,
+#typo3-pagetree #typo3-docheader-row2,
+#typo3-alt-file-navframe-php #typo3-docheader-row2 {
+	-moz-box-shadow: inset -2px 0 1px #b7b7b7;
+	-ms-box-shadow: inset -2px 0 1px #b7b7b7;
+	-webkit-box-shadow: inset -2px 0 1px #b7b7b7;
+	box-shadow: inset -2px 0 1px #b7b7b7;
+}

@@ -2021,6 +2021,14 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	background-color:#e6e6e6;
 }
 
+.x-layout-mini {
+	opacity: 0.6;
+}
+
+.x-layout-mini:hover {
+	opacity: 0.8;
+}
+
 .x-layout-split-west .x-layout-mini {
 	background-image:url(images/layout/mini-left.gif);
 }
@@ -2164,9 +2172,70 @@ body.x-body-masked .x-window-plain .x-window-mc {
 	color: #606060;
 }
 
-/* Pagetree */
-.x-layout-split {
-	background-color: #dadada;
+/* Tree frame split bar */
+#typo3-module-menu-xsplit,
+#typo3-navigationContainer-xsplit {
+	width: 0;
+}
+
+/* Collapse icon */
+#typo3-module-menu-xsplit .x-layout-mini-west,
+#typo3-module-menu-xcollapsed .x-layout-mini-west,
+#typo3-navigationContainer-xsplit .x-layout-mini-west,
+#typo3-navigationContainer-xcollapsed .x-layout-mini-west {
+	background-position: center;
+	background-repeat: no-repeat;
+	display: none;
+	left: 0px;
+	padding: 5px 0;
+	position: absolute;
+}
+
+/* Only show collapse icon, when user hovers the split bar */
+#typo3-module-menu-xsplit:hover .x-layout-mini-west,
+#typo3-module-menu-xcollapsed:hover .x-layout-mini-west,
+#typo3-navigationContainer-xsplit:hover .x-layout-mini-west,
+#typo3-navigationContainer-xcollapsed:hover .x-layout-mini-west {
+	display: block;
+}
+
+#typo3-module-menu-xcollapsed:hover .x-layout-mini-west,
+#typo3-navigationContainer-xcollapsed:hover .x-layout-mini-west {
+	left: 5px;
+}
+
+/* Collapsed tree frame is not invisible, but 5px wide */
+#typo3-navigationContainer-xcollapsed {
+	background-color: #ebebeb;
+	-moz-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 22px #585858,
+		inset 0 49px #dadada;
+	-ms-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 22px #585858,
+		inset 0 49px #dadada;
+	-webkit-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 22px #585858,
+		inset 0 49px #dadada;
+	box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 22px #585858,
+		inset 0 49px #dadada;
+	overflow: visible;
+	width: 5px;
+}
+
+/**
+ * this is our invisible wrapper around the collapse button,
+ * which enables us to have kind of invisible splitbar
+ */
+.x-layout-mini-wrapper {
+	height: 100%;
+	left: 0;
+	position: absolute;
+	width: 1px;
+}
+
+.x-splitbar-proxy.x-splitbar-proxy-h {
+	width: 2px !important;
 }
 
 #widget-navigation-tree .x-panel-noborder .x-panel-body-noborder {

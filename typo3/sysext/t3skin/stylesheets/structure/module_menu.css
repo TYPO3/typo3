@@ -69,3 +69,7 @@ $Id$
 #typo3-menu div.collapsed {
 	margin-left: 0px;
 }
+
+#typo3-module-menu #typo3-docheader {
+	min-width: 0;
+}
