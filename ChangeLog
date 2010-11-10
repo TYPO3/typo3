@@ -1,11 +1,12 @@
 2010-11-10  Steffen Gebert  <steffen@steffen-gebert.de>
 
 	* Added feature #16032: Overwork tree frame design (Thanks to Lars Zimmermann)
+	* Fixed bug #16335: Workspace Draft Records are shown in Live Workspace in some cases (Thanks to Joerg Kinast)
 
 2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Added feature #8349: htmlArea RTE: Clean paste feature with three options
-	* Fixed bug #16327: JS error after feature #16257: Rewrite stylesheets parsing functions (Thanks to Andreas Kiessling ).
+	* Fixed bug #16327: JS error after feature #16257: Rewrite stylesheets parsing functions (Thanks to Andreas Kiessling)
 
 2010-11-09  Jeff Segars <jeff@webempoweredchurch.org>
 

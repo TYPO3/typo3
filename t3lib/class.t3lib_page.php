@@ -1140,7 +1140,7 @@ class t3lib_pageSelect {
 
 				// Filter out new place-holder records in case we are NOT in a versioning preview (that means we are online!)
 			if ($ctrl['versioningWS'] && !$this->versioningPreview)	{
-				$query.=' AND '.$table.'.t3ver_state<=0';	// Shadow state for new items MUST be ignored!
+				$query .= ' AND ' . $table . '.t3ver_state<=0 AND ' . $table . '.pid!=-1';	// Shadow state for new items MUST be ignored!
 			}
 
 				// Enable fields:
