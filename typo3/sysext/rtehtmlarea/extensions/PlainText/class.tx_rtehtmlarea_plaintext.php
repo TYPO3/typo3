@@ -38,12 +38,13 @@ class tx_rtehtmlarea_plaintext extends tx_rtehtmlarea_api {
 	protected $thisConfig;					// Reference to RTE PageTSConfig
 	protected $toolbar;					// Reference to RTE toolbar array
 	protected $LOCAL_LANG; 					// Frontend language array
-	protected $pluginButtons = 'pasteastext';
+	protected $pluginButtons = 'pastetoggle,pastebehaviour';
 	protected $convertToolbarForHtmlAreaArray = array (
-		'pasteastext'	=> 'PlainText',
+		'pastetoggle'		=> 'PasteToggle',
+		'pastebehaviour'	=> 'PasteBehaviour',
 		);
-	public function main($parentObject) {
-			// Opera has no onPaste event to hook on
+	public function main ($parentObject) {
+			// Opera has no onPaste event to handle
 		return parent::main($parentObject) && $this->htmlAreaRTE->client['browser'] != 'opera';
 	}
 	/**
@@ -59,7 +60,36 @@ class tx_rtehtmlarea_plaintext extends tx_rtehtmlarea_api {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
+		$button = 'pastebehaviour';
+			// Get current TYPO3 User Setting, if available
+		if (TYPO3_MODE === 'BE' && t3lib_extMgm::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
+			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][$button.'.'])) {
+					$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
+			}
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.current = "' . (isset($GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour']) ? $GLOBALS['BE_USER']->uc['rteCleanPasteBehaviour'] : 'plainText') . '";';
+		}
 		return $registerRTEinJavascriptString;
+	}
+	/**
+	 * Return an updated array of toolbar enabled buttons
+	 *
+	 * @param	array		$show: array of toolbar elements that will be enabled, unless modified here
+	 *
+	 * @return 	array		toolbar button array, possibly updated
+	 */
+	public function applyToolbarConstraints ($show) {
+		$removeButtons = array();
+			// Remove pastebehaviour button if pastetoggle is not configured
+		if (!in_array('pastetoggle', $show)) {
+			$removeButtons[] = 'pastebehaviour';
+		}
+			// Remove pastebehaviour button if TYPO3 User Settings are available
+		if (TYPO3_MODE === 'BE' && t3lib_extMgm::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS']) && is_object($GLOBALS['BE_USER'])) {
+			$removeButtons[] = 'pastebehaviour';
+		}
+		return array_diff($show, $removeButtons);
 	}
 }
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/rtehtmlarea/extensions/PlainText/class.tx_rtehtmlarea_plaintext.php']) {

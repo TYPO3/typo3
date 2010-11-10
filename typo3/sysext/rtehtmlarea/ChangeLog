@@ -1,3 +1,7 @@
+2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #8349: htmlArea RTE: Clean paste feature with three options
+
 2010-11-08  Stanislas Rolland  <typo3@sjbr.ca>
 
 	* Fixed bug #16245: htmlArea RTE: When inserting link with IE8, trailing line break is also linked

@@ -1,6 +1,10 @@
 /* Selectors for the PlainText extension of htmlArea RTE */
 /* TYPO3 SVN ID: $Id: htmlarea.css 8281 2010-07-26 23:18:50Z stan $ */
-.htmlarea-action-paste-as-plain-text {
-	background-image: url('images/paste-as-plain-text.gif') !important;
+.htmlarea-action-paste-toggle {
+	background-image: url('images/paste-toggle.gif') !important;
+	background-position: 0 0 !important;
+}
+.htmlarea-action-paste-behaviour {
+	background-image: url('images/paste-behaviour.gif') !important;
 	background-position: 0 0 !important;
 }

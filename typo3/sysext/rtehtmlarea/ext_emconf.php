@@ -48,6 +48,7 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 			'rtehtmlarea_api_manual' => '',
+			'setup' => '',
 		),
 	),
 	'suggests' => array(

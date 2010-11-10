@@ -1,3 +1,7 @@
+2010-11-10  Stanislas Rolland  <typo3@sjbr.ca>
+
+	* Added feature #8349: htmlArea RTE: Clean paste feature with three options
+
 2010-11-09  Jeff Segars <jeff@webempoweredchurch.org>
 
 	* Fixed bug #16262: Link browser shows wrong title for pages and tt_content elements (Thanks to Reinhard Führicht)

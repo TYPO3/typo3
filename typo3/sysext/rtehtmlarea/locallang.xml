@@ -18,6 +18,9 @@
 			<label index="Address">Address</label>
 			<label index="No font">No font</label>
 			<label index="No size">No font size</label>
+			<label index="rteSettings">Rich Text Editor</label>
+			<label index="rteResize">Make RTE resizable</label>
+			<label index="rteMaxHeight">Maximal height of resizable RTE in pixels</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

@@ -6,9 +6,21 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="PlainTextTooltip">Toggle Paste as Plain Text</label>
-			<label index="Paste-as-Plain-Text">Paste as Plain Text</label>
+			<label index="PasteToggleTooltip">Toggle paste behaviour</label>
+			<label index="plainText">Paste as plain text</label>
+			<label index="pasteStructure">Paste structure only</label>
+			<label index="pasteFormat">Paste structure and basic format</label>
+			<label index="PasteBehaviourTooltip">Select alternate paste behaviour</label>
+			<label index="Paste-as-Plain-Text">Paste as plain text</label>
 			<label index="Access-to-clipboard-denied">Content could not be pasted as plain text because permission to access the clipboard was denied.</label>
+			<label index="enableplainText">Enable paste as plain text</label>
+			<label index="enablepasteStructure">Enable paste structure only</label>
+			<label index="enablepasteFormat">Enable paste structure and basic format</label>
+			<label index="disableplainText">Disable paste as plain text</label>
+			<label index="disablepasteStructure">Disable paste structure only</label>
+			<label index="disablepasteFormat">Disable paste structure and basic format</label>
+			<label index="pasteInPastingPad">Paste the content into this pasting pad and click OK.</label>
+			<label index="rteCleanPasteBehaviour">Clean paste behaviour</label>
 		</languageKey>
 	</data>
 	<orig_hash type="array">

@@ -443,84 +443,85 @@ body.ext-ie6 .htmlarea-context-menu .x-menu-item-icon {
 	background-position: 0 -15px;
 }
 /* Action icon selectors for toolbar, context menu and window headers */
-.htmlarea-action-abbreviation-edit { background-position: 0 0 !important; }
-.htmlarea-action-bidi-override { background-position: 0 -58px !important; }
-.htmlarea-action-big { background-position: 0 -116px !important; }
-.htmlarea-action-blockquote { background-position: 0 -174px !important; }
-.htmlarea-action-bold { background-position: 0 -232px !important; }
-.htmlarea-action-cell-delete { background-position: 0 -290px !important; }
-.htmlarea-action-cell-edit-properties { background-position: 0 -348px !important; }
-.htmlarea-action-cell-insert-after { background-position: 0 -406px !important; }
-.htmlarea-action-cell-insert-before { background-position: 0 -464px !important; }
-.htmlarea-action-cell-merge { background-position: 0 -522px !important; }
-.htmlarea-action-cell-split { background-position: 0 -580px !important; }
-.htmlarea-action-character-insert-from-map { background-position: 0 -638px !important; }
-.htmlarea-action-citation { background-position: 0 -696px !important; }
-.htmlarea-action-code { background-position: 0 -754px !important; }
-.htmlarea-action-color-background { background-position: 0 -812px !important; }
-.htmlarea-action-color-foreground { background-position: 0 -870px !important; }
-.htmlarea-action-column-delete { background-position: 0 -928px !important; }
-.htmlarea-action-column-edit-properties { background-position: 0 -986px !important; }
-.htmlarea-action-column-insert-after { background-position: 0 -1044px !important; }
-.htmlarea-action-column-insert-before { background-position: 0 -1102px !important; }
-.htmlarea-action-column-split { background-position: 0 -1160px !important; }
-.htmlarea-action-copy { background-position: 0 -1218px !important; }
-.htmlarea-action-cut { background-position: 0 -1276px !important; }
-.htmlarea-action-definition-list-item { background-position: 0 -1334px !important; }
-.htmlarea-action-definition-list { background-position: 0 -1392px !important; }
-.htmlarea-action-definition { background-position: 0 -1450px !important; }
-.htmlarea-action-delete-item { background-position: 0 -1508px !important; }
-.htmlarea-action-deleted-text { background-position: 0 -1566px !important; }
-.htmlarea-action-editor-show-about { background-position: 0 -1624px !important; }
-.htmlarea-action-editor-toggle-mode { background-position: 0 -1682px !important; }
-.htmlarea-action-emphasis { background-position: 0 -1740px !important; }
-.htmlarea-action-find-replace { background-position: 0 -1798px !important; }
-.htmlarea-action-horizontal-rule-insert { background-position: 0 -1856px !important; }
-.htmlarea-action-image-edit { background-position: 0 -1914px !important; }
-.htmlarea-action-indent { background-position: 0 -1972px !important; }
-.htmlarea-action-inserted-text { background-position: 0 -2030px !important; }
-.htmlarea-action-italic { background-position: 0 -2088px !important; }
-.htmlarea-action-justify-center { background-position: 0 -2146px !important; }
-.htmlarea-action-justify-full { background-position: 0 -2204px !important; }
-.htmlarea-action-justify-left { background-position: 0 -2262px !important; }
-.htmlarea-action-justify-right { background-position: 0 -2320px !important; }
-.htmlarea-action-keyboard { background-position: 0 -2378px !important; }
-.htmlarea-action-language-marks-show { background-position: 0 -2436px !important; }
-.htmlarea-action-link-edit { background-position: 0 -2494px !important; }
-.htmlarea-action-mono-spaced { background-position: 0 -2552px !important; }
-.htmlarea-action-ordered-list { background-position: 0 -2610px !important; }
-.htmlarea-action-outdent { background-position: 0 -2668px !important; }
-.htmlarea-action-paragraph-insert-after { background-position: 0 -2726px !important; }
-.htmlarea-action-paragraph-insert-before { background-position: 0 -2784px !important; }
-.htmlarea-action-paste-as-plain-text { background-position: 0 -2842px !important; }
-.htmlarea-action-paste { background-position: 0 -2900px !important; }
-.htmlarea-action-quotation { background-position: 0 -2958px !important; }
-.htmlarea-action-redo { background-position: 0 -3016px !important; }
-.htmlarea-action-remove-format { background-position: 0 -3074px !important; }
-.htmlarea-action-row-delete { background-position: 0 -3132px !important; }
-.htmlarea-action-row-edit-properties { background-position: 0 -3190px !important; }
-.htmlarea-action-row-insert-above { background-position: 0 -3248px !important; }
-.htmlarea-action-row-insert-under { background-position: 0 -3306px !important; }
-.htmlarea-action-row-split { background-position: 0 -3364px !important; }
-.htmlarea-action-sample { background-position: 0 -3422px !important; }
-.htmlarea-action-small { background-position: 0 -3480px !important; }
-.htmlarea-action-smiley-insert { background-position: 0 -3538px !important; }
-.htmlarea-action-span { background-position: 0 -3596px !important; }
-.htmlarea-action-spell-check { background-position: 0 -3654px !important; }
-.htmlarea-action-strike-through { background-position: 0 -3712px !important; }
-.htmlarea-action-strong { background-position: 0 -3770px !important; }
-.htmlarea-action-subscript { background-position: 0 -3828px !important; }
-.htmlarea-action-superscript { background-position: 0 -3886px !important; }
-.htmlarea-action-table-edit-properties { background-position: 0 -3944px !important; }
-.htmlarea-action-table-insert { background-position: 0 -4002px !important; }
-.htmlarea-action-table-restyle { background-position: 0 -4060px !important; }
-.htmlarea-action-table-show-borders { background-position: 0 -4118px !important; }
-.htmlarea-action-tag-insert { background-position: 0 -4176px !important; }
-.htmlarea-action-text-direction-left-to-right { background-position: 0 -4234px !important; }
-.htmlarea-action-text-direction-right-to-left { background-position: 0 -4292px !important; }
-.htmlarea-action-underline { background-position: 0 -4350px !important; }
-.htmlarea-action-undo { background-position: 0 -4408px !important; }
-.htmlarea-action-unlink { background-position: 0 -4466px !important; }
-.htmlarea-action-unordered-list { background-position: 0 -4524px !important; }
-.htmlarea-action-user-element-edit { background-position: 0 -4582px !important; }
-.htmlarea-action-variable { background-position: 0 -4640px !important; }
+.htmlarea-action-abbreviation-edit{ background-position: 0 0 !important; }
+.htmlarea-action-bidi-override{ background-position: 0 -58px !important; }
+.htmlarea-action-big{ background-position: 0 -116px !important; }
+.htmlarea-action-blockquote{ background-position: 0 -174px !important; }
+.htmlarea-action-bold{ background-position: 0 -232px !important; }
+.htmlarea-action-cell-delete{ background-position: 0 -290px !important; }
+.htmlarea-action-cell-edit-properties{ background-position: 0 -348px !important; }
+.htmlarea-action-cell-insert-after{ background-position: 0 -406px !important; }
+.htmlarea-action-cell-insert-before{ background-position: 0 -464px !important; }
+.htmlarea-action-cell-merge{ background-position: 0 -522px !important; }
+.htmlarea-action-cell-split{ background-position: 0 -580px !important; }
+.htmlarea-action-character-insert-from-map{ background-position: 0 -638px !important; }
+.htmlarea-action-citation{ background-position: 0 -696px !important; }
+.htmlarea-action-code{ background-position: 0 -754px !important; }
+.htmlarea-action-color-background{ background-position: 0 -812px !important; }
+.htmlarea-action-color-foreground{ background-position: 0 -870px !important; }
+.htmlarea-action-column-delete{ background-position: 0 -928px !important; }
+.htmlarea-action-column-edit-properties{ background-position: 0 -986px !important; }
+.htmlarea-action-column-insert-after{ background-position: 0 -1044px !important; }
+.htmlarea-action-column-insert-before{ background-position: 0 -1102px !important; }
+.htmlarea-action-column-split{ background-position: 0 -1160px !important; }
+.htmlarea-action-copy{ background-position: 0 -1218px !important; }
+.htmlarea-action-cut{ background-position: 0 -1276px !important; }
+.htmlarea-action-definition-list-item{ background-position: 0 -1334px !important; }
+.htmlarea-action-definition-list{ background-position: 0 -1392px !important; }
+.htmlarea-action-definition{ background-position: 0 -1450px !important; }
+.htmlarea-action-delete-item{ background-position: 0 -1508px !important; }
+.htmlarea-action-deleted-text{ background-position: 0 -1566px !important; }
+.htmlarea-action-editor-show-about{ background-position: 0 -1624px !important; }
+.htmlarea-action-editor-toggle-mode{ background-position: 0 -1682px !important; }
+.htmlarea-action-emphasis{ background-position: 0 -1740px !important; }
+.htmlarea-action-find-replace{ background-position: 0 -1798px !important; }
+.htmlarea-action-horizontal-rule-insert{ background-position: 0 -1856px !important; }
+.htmlarea-action-image-edit{ background-position: 0 -1914px !important; }
+.htmlarea-action-indent{ background-position: 0 -1972px !important; }
+.htmlarea-action-inserted-text{ background-position: 0 -2030px !important; }
+.htmlarea-action-italic{ background-position: 0 -2088px !important; }
+.htmlarea-action-justify-center{ background-position: 0 -2146px !important; }
+.htmlarea-action-justify-full{ background-position: 0 -2204px !important; }
+.htmlarea-action-justify-left{ background-position: 0 -2262px !important; }
+.htmlarea-action-justify-right{ background-position: 0 -2320px !important; }
+.htmlarea-action-keyboard{ background-position: 0 -2378px !important; }
+.htmlarea-action-language-marks-show{ background-position: 0 -2436px !important; }
+.htmlarea-action-link-edit{ background-position: 0 -2494px !important; }
+.htmlarea-action-mono-spaced{ background-position: 0 -2552px !important; }
+.htmlarea-action-ordered-list{ background-position: 0 -2610px !important; }
+.htmlarea-action-outdent{ background-position: 0 -2668px !important; }
+.htmlarea-action-paragraph-insert-after{ background-position: 0 -2726px !important; }
+.htmlarea-action-paragraph-insert-before{ background-position: 0 -2784px !important; }
+.htmlarea-action-paste-behaviour{ background-position: 0 -2842px !important; }
+.htmlarea-action-paste-toggle{ background-position: 0 -2900px !important; }
+.htmlarea-action-paste{ background-position: 0 -2958px !important; }
+.htmlarea-action-quotation{ background-position: 0 -3016px !important; }
+.htmlarea-action-redo{ background-position: 0 -3074px !important; }
+.htmlarea-action-remove-format{ background-position: 0 -3132px !important; }
+.htmlarea-action-row-delete{ background-position: 0 -3190px !important; }
+.htmlarea-action-row-edit-properties{ background-position: 0 -3248px !important; }
+.htmlarea-action-row-insert-above{ background-position: 0 -3306px !important; }
+.htmlarea-action-row-insert-under{ background-position: 0 -3364px !important; }
+.htmlarea-action-row-split{ background-position: 0 -3422px !important; }
+.htmlarea-action-sample{ background-position: 0 -3480px !important; }
+.htmlarea-action-small{ background-position: 0 -3538px !important; }
+.htmlarea-action-smiley-insert{ background-position: 0 -3596px !important; }
+.htmlarea-action-span{ background-position: 0 -3654px !important; }
+.htmlarea-action-spell-check{ background-position: 0 -3712px !important; }
+.htmlarea-action-strike-through{ background-position: 0 -3770px !important; }
+.htmlarea-action-strong{ background-position: 0 -3828px !important; }
+.htmlarea-action-subscript{ background-position: 0 -3886px !important; }
+.htmlarea-action-superscript{ background-position: 0 -3944px !important; }
+.htmlarea-action-table-edit-properties{ background-position: 0 -4002px !important; }
+.htmlarea-action-table-insert{ background-position: 0 -4060px !important; }
+.htmlarea-action-table-restyle{ background-position: 0 -4118px !important; }
+.htmlarea-action-table-show-borders{ background-position: 0 -4176px !important; }
+.htmlarea-action-tag-insert{ background-position: 0 -4234px !important; }
+.htmlarea-action-text-direction-left-to-right{ background-position: 0 -4292px !important; }
+.htmlarea-action-text-direction-right-to-left{ background-position: 0 -4350px !important; }
+.htmlarea-action-underline{ background-position: 0 -4408px !important; }
+.htmlarea-action-undo{ background-position: 0 -4466px !important; }
+.htmlarea-action-unlink{ background-position: 0 -4524px !important; }
+.htmlarea-action-unordered-list{ background-position: 0 -4582px !important; }
+.htmlarea-action-user-element-edit{ background-position: 0 -4640px !important; }
+.htmlarea-action-variable{ background-position: 0 -4698px !important; }

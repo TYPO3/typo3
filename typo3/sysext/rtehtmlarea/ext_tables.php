@@ -4,6 +4,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 		// Add static template for Click-enlarge rendering
 	t3lib_extMgm::addStaticFile($_EXTKEY,'static/clickenlarge/','Clickenlarge Rendering');
 
+		// Add acronyms table
 	$TCA['tx_rtehtmlarea_acronym'] = Array (
 		'ctrl' => Array (
 			'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym',
@@ -25,7 +26,27 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 		// Add contextual help files
 	foreach ($TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'] as $pluginName => $config) {
 		if ($config['contextHelpFile']) {
-			t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_' . $pluginName, $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins']['RemoveFormat']['contextHelpFile']);
+			t3lib_extMgm::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_' . $pluginName, $TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['plugins'][$pluginName]['contextHelpFile']);
 		}
 	}
+
+		// Extend TYPO3 User Settings Configuration
+if (TYPO3_MODE === 'BE' && t3lib_extMgm::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS'])) {
+	$GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge(
+		$GLOBALS['TYPO3_USER_SETTINGS']['columns'],
+		array(
+			'rteCleanPasteBehaviour' => array(
+				'type' => 'select',
+				'label' => 'LLL:EXT:rtehtmlarea/htmlarea/plugins/PlainText/locallang.xml:rteCleanPasteBehaviour',
+				'items' => array(
+					'plainText' => 'LLL:EXT:rtehtmlarea/htmlarea/plugins/PlainText/locallang.xml:plainText',
+					'pasteStructure' => 'LLL:EXT:rtehtmlarea/htmlarea/plugins/PlainText/locallang.xml:pasteStructure',
+					'pasteFormat' => 'LLL:EXT:rtehtmlarea/htmlarea/plugins/PlainText/locallang.xml:pasteFormat',
+				),
+				'csh' => 'xEXT_rtehtmlarea_PlainText:behaviour',
+			),
+		)
+	);
+	$GLOBALS['TYPO3_USER_SETTINGS']['showitem'] .= ',--div--;LLL:EXT:rtehtmlarea/locallang.xml:rteSettings,rteResize,rteMaxHeight,rteCleanPasteBehaviour';
+}
 ?>
